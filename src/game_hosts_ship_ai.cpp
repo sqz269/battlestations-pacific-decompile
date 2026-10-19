@@ -2005,6 +2005,8 @@ struct GameShipAiHost::Impl {
     unsigned long long arc_centre_command_arm{0};
     unsigned long long arc_centre_path_arm{0};
     unsigned long long arc_centre_node18_refusals{0};
+    unsigned long long arc_centre_plan_dead_cursor_nonzero{0};
+    unsigned long long arc_centre_cursor_past_end{0};
     // Packet cc9_heading_wrap_census: 00605070 leaves a value in (-pi, pi] alone.
     void count_heading_wrap_store(float heading) {
         ++summary.heading_wrap_stores;
@@ -8672,6 +8674,8 @@ bool ship_ai_arc_centre_next_point_009e46f0(GameShipAiHost::Impl& owner,
     ++owner.arc_centre_calls;
     const bool image_path_arm = live.search_state != 0;               // 009E46FC
     if (image_path_arm && live.node_count == 0) ++owner.arc_centre_plan_live_cursor0;
+    // The reverse case: OFF runs 009E3C00 here, ON takes the command arm.
+    if (!image_path_arm && live.node_count != 0) ++owner.arc_centre_plan_dead_cursor_nonzero;
     const bool path_arm = bsp::kShipAiArcCentrePlanTestCc13Bound
         ? image_path_arm : live.node_count != 0;
     if (!path_arm) {
@@ -8698,10 +8702,27 @@ bool ship_ai_arc_centre_next_point_009e46f0(GameShipAiHost::Impl& owner,
     }
     ++owner.arc_centre_path_arm;
     if constexpr (bsp::kShipAiArcCentrePlanTestCc13Bound) {
-        // 009E47D3..009E47F1: the two side bytes, before 009E3C00 can move the
-        // cursor they walk from.
+        // 009E47D3..009E47F1: the two side bytes, before 009E3C00. Both walks
+        // start at plan+20h, the head (009D5AE1), not at the cursor, and store
+        // 009D5930's direction into each undecided node's +4h, which
+        // 009E3C00's cursor walk then keeps, so the order matters.
         ctl.approach.override_11d4 = bsp::ship_ai_path_any_positive_side_ahead_009d5ae0(live);
         ctl.approach.override_11d5 = bsp::ship_ai_path_any_negative_side_ahead_009d5b90(live);
+    }
+    // Log only: a cursor longer than the linked path, where 009E3C80 faults in
+    // the image and the host returns the pose. This replays the cursor walk of
+    // ship_ai_path_cursor_node_009e3c6c on copies, so no node+4h is written.
+    if (live.head != nullptr) {
+        const bsp::ShipAiPathNode* node = live.head;
+        for (std::int32_t step = live.node_count; step > 0; --step) {
+            if (node == nullptr) {
+                ++owner.arc_centre_cursor_past_end;
+                break;
+            }
+            bsp::ShipAiPathNode copy = *node;
+            copy.direction = bsp::ship_ai_path_node_direction_009d9e6c(*node);
+            node = bsp::ship_ai_path_node_next_009d9ee6(copy);
+        }
     }
     bsp::ShipAiPathPointRecord record{};
     // 009E47F3..009E480D: the query is the unit's own world x and z, the pair
@@ -15107,10 +15128,12 @@ void GameShipAiHost::report() {
         host.summary.heading_wrap_out_of_range, static_cast<double>(host.summary.heading_wrap_max_abs));
     host.log.notef("summary mission ship ai arc centre plan test bound=%d calls=%llu "
         "plan_live_cursor0=%llu command_arm=%llu path_arm=%llu node18_refusals=%llu "
-        "(009E46F0 at 009F27C6, 009E46FC; packet cc13-arcplan)",
+        "(009E46F0 at 009F27C6, 009E46FC; packet cc13-arcplan) "
+        "plan_dead_cursor_nonzero=%llu cursor_past_end=%llu",
         bsp::kShipAiArcCentrePlanTestCc13Bound ? 1 : 0, host.arc_centre_calls,
         host.arc_centre_plan_live_cursor0, host.arc_centre_command_arm,
-        host.arc_centre_path_arm, host.arc_centre_node18_refusals);
+        host.arc_centre_path_arm, host.arc_centre_node18_refusals,
+        host.arc_centre_plan_dead_cursor_nonzero, host.arc_centre_cursor_past_end);
     host.log.notef("summary mission ship ai arm final area key calls=%llu differs=%llu bound=%d "
         "(0070E450 at 009DEEE9 / 009DEFD3; packet cc9_arm_final_area_key)",
         host.summary.arm_final_area_keys, host.summary.arm_final_area_key_differs,
