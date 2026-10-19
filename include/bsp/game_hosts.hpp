@@ -504,6 +504,7 @@ private:
     bool capture_requested_{};
     unsigned long long frames_{};
     bool stop_after_end_exit_{false};   // harness only: --stop-after-end
+    unsigned char mission_ship_capture_mask_{}; // ON-only mission landmarks
 };
 
 // What one run produced, for the report.

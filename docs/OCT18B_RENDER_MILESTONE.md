@@ -6,6 +6,10 @@ BeginFrame; the ordinary retained command executes before the existing overlay
 and screenshot callback. The installed model is
 `models/ships/us/fletcher.mmod` (SHA-256
 `a6d4d1bac3d7e13f01f3ab474d5c2f445f42dfb04cb95facc8d8f7257470d211`).
+When ON and `--screenshot <path>` is supplied, the existing capture callback
+also retains mission frames 1, 60 and 180 with `_N001`, `_N060` and `_N180`
+inserted before the filename extension. All three use the same run and normal
+back-buffer capture after the ordinary command and HUD overlay.
 
 The composition reuses the existing renderer, original VFS/material/shader and
 geometry providers, frame-clock publication and native queue. It adds the
