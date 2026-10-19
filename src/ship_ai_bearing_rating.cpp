@@ -17,16 +17,21 @@
 #include "bsp/gun_gravity_arc.hpp"
 #include "bsp/gun_heading_snap.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/widened_literals_g53.hpp"
 
 #include <cmath>
 
 namespace bsp {
 namespace {
 
-// 00CE3828, 00CE3D18 and 00CE3D28, the three doubles 00605070 uses.
-constexpr double kTurn = 6.283185307179586;   // 00CE3828
-constexpr double kNegHalfTurn = -3.14159265358979; // 00CE3D18
-constexpr double kHalfTurn = 3.14159265358979;     // 00CE3D28
+// 00CE3828, 00CE3D18 and 00CE3D28, the three doubles 00605070 uses. Each is a float
+// widened to a double (kShipAiWidenedLiteralsBound, include/bsp/widened_literals_g53.hpp).
+constexpr double kTurn = kShipAiWidenedLiteralsBound
+    ? 6.2831854820251465 : 6.283185307179586;      // 00CE3828
+constexpr double kNegHalfTurn = kShipAiWidenedLiteralsBound
+    ? -3.1415927410125732 : -3.14159265358979;     // 00CE3D18
+constexpr double kHalfTurn = kShipAiWidenedLiteralsBound
+    ? 3.1415927410125732 : 3.14159265358979;       // 00CE3D28
 
 // 00415690, `__fastcall(float* v, const float* lo, const float* hi)`, RET 4.
 // The order matters: the low bound is applied first and wins outright.

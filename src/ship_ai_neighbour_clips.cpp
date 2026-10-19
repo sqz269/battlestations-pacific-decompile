@@ -6,6 +6,7 @@
 #include "bsp/native_scalar_float_by_ref.hpp" // max_native_float_by_ref_00415550
 #include "bsp/unit_rudder.hpp"      // wrapped_angle_add_00438aa0 / _subtract_00438b10
 #include "bsp/ship_ai_throttle_ring.hpp" // heading_to_direction_006bc0c0
+#include "bsp/widened_literals_g53.hpp"  // kShipAiWidenedLiteralsBound
 
 #include <cmath>
 
@@ -352,11 +353,16 @@ constexpr float kCrossingEpsilon = 0.001f;          // 00D7A23C
 constexpr double kCrossingLengthScale = 2.5;        // 00CE3DE0
 constexpr float kCrossingRangeCap = 400.0f;         // 00CFD710
 constexpr double kCrossingWidthScale = 4.0;         // 00D7A328
-constexpr double kCrossingLengthDivisor = 1.8000000476837158; // 00D049A8
+// 00D049A8 and 00D7A358 are floats widened to doubles (kShipAiWidenedLiteralsBound,
+// include/bsp/widened_literals_g53.hpp): 1.8f is 1.7999999523162842, and the old value
+// here was the next float up.
+constexpr double kCrossingLengthDivisor = kShipAiWidenedLiteralsBound
+    ? 1.7999999523162842 : 1.8000000476837158;     // 00D049A8, FDIV m64 009D9044
 constexpr float kCrossingLengthFloor = 100.0f;      // 00CE3D08
 constexpr double kCrossingHalf = 0.5;               // 00D7A280
 constexpr float kTrafficOpenSide = 3.14f;           // 00CF0AA8
-constexpr double kTrafficWindowNudge = 0.01;        // 00D7A358
+constexpr double kTrafficWindowNudge = kShipAiWidenedLiteralsBound
+    ? 0.009999999776482582 : 0.01;                 // 00D7A358
 constexpr float kTrafficNoDistance = 1.0e8f;        // 00D21A90
 constexpr float kTrafficHold = 3.0f;                // 00CE3854
 
