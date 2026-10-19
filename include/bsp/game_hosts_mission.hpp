@@ -52,6 +52,8 @@ class GameMissionLuaHost;
 class GameMissionFrameHost;
 class GameObserverRuntime;
 class GameHudHost;
+class GameProfileOwner;
+class GameHintTrackerSlot;
 
 // Packet cc15-wD1. 0058BFEF: 004D2A80 (ledger BSP_Game_ClearPendingMissionName,
 // a misnomer: __fastcall(ECX = block)) destroys the loading-config temporary at
@@ -204,6 +206,10 @@ public:
 
     // Borrow the startup-owned runtime through frame/unit destruction.
     void bind_observer_runtime(GameObserverRuntime&);
+    // cc15 lane L2: the menu host's game+650h profile owner and the [00E198D0]
+    // hint tracker slot. Both outlive this host; the rows read them only when
+    // kProfileOwnerCc15Bound / kHintTrackerCc15Bound are on.
+    void bind_profile(GameProfileOwner&, GameHintTrackerSlot&);
 
     // Milestone 2n, --order-unit <name>: the created instance the command form
     // of --order is issued to, instead of the controlled unit.

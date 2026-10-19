@@ -747,7 +747,7 @@ Worker cc9-ships2, on main `5eab91a79`. Ghidra was read-only. The switch is in
 - The reference missions were identity (the pairs above).
 - The think's later stop at line 683 (`Scoring_GetPlayerShotDown`) does not reach this path.
 
-## NavigatorForceTorpedo, 008A7200 (packet `cc9_navigator_force_torpedo`, `kNavigatorForceTorpedoBound`, committed OFF)
+## NavigatorForceTorpedo, 008A7200 (packet `cc9_navigator_force_torpedo`, `kNavigatorForceTorpedoBound`, ON since cc9-gunnery53)
 
 Worker cc9-ships2, on main `ca39e028f`. Ghidra was read-only. The switch is in
 `include/bsp/game_hosts_script_orders.hpp`.
@@ -816,3 +816,17 @@ Worker cc9-ships2, on main `ca39e028f`. Ghidra was read-only. The switch is in
 **Verdict: `kNavigatorForceTorpedoBound` stays OFF, build-tested only.** Measuring it needs JM06's
 script to load (the `chunk error` in `luaStageInit`), and then a run that destroys the convoy so
 that `luaJM6ConvoyDestroyedMovie` schedules the two shots.
+
+### The JM06 pair and the flip (cc9-gunnery53, 2026-10-19)
+
+JM06 now loads, and the WINS row `config/win_orders/jm06_s45_j6_k.txt` destroys the convoy.
+Working-tree exes `local\g53_nf_{off,on}` (the switch only), 32000 frames. Logs
+`local\g53_nf{off,on}_j6.log` (reference env) and `local\g53_nfd{off,on}_j6.log` (default env).
+
+| env | result |
+| --- | --- |
+| reference | **Reached:** 2 calls, `NavigatorForceTorpedo: unit=22 first_only=1 marked=1`, `forced torpedo marks=2 fires=2`. JM06 still completes, 772.93 -> 790.93 s. Shots 439 -> 671, deaths 23 -> 24. Narwhal-class Submarine 01 survives (it was sunk at 486.30 s). Lexington-class 01 sinks at 706.85 s instead of 759.04 s, and 3 more Lexington plane sections die |
+| default | the convoy movie is not reached (marks=0); the mission does not end on either side; identical |
+
+**Verdict: ON by mechanism** (the two torpedoes are the script's own shots). The JM06 reference
+completion time moves, and the row went to cc9-lua70.

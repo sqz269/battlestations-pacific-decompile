@@ -61,9 +61,26 @@ void native_loading_queue_on_filestore_ready_00504850(
 // calls GetLastError); every other status returns its unmodified low byte.
 std::uint8_t poll_native_event_owner_00bd1920(const NativeEventOwnerStorage*) noexcept;
 
-// Source-only owner entry coverage. Do not wire getter/callback into production
-// or install a placeholder deleting dispatcher: registered CEB198 lifetime
-// requires actual509FD0/50ACE0/5092E0 and the complete drain/resource domains.
+// Complete 00509190 for the empty queue only: native ECX owner, RET; count +14
+// zero returns before any read. The non-empty states drive FileStore requests,
+// 00506BF0 retirement and 00501620 work submission, which have no native
+// binding here; a non-empty queue throws a source contract error instead.
+void update_native_loading_queue_00509190(NativeLoadingQueueOwnerStorage* actual_owner);
+
+// 0050ACE0 deleting destructor over 509FD0 (cc15-ob3). Native ECX owner, stack
+// flags, RET4/EAX owner. 509FD0 restamps CEB198 and calls 5092E0, whose
+// 004254B0 diagnostic is a trivial body and whose count +14 zero test returns.
+// Then 4FB4B0(+10, 0), free(+10), +0C slot-0 delete(1) when non-null (BD19B0)
+// and clear +0C, clear the borrowed E18D4C cell unconditionally, stamp CE3818,
+// and free the owner when flags bit0 is set. A non-empty queue would pump the
+// VFS and 00509190 every 100 ms in 5092E0; that throws before any store here.
+NativeLoadingQueueOwnerStorage* delete_native_loading_queue_owner_0050ace0(
+    NativeLoadingQueueOwnerStorage* actual_owner, std::uint32_t flags,
+    NativeLoadingQueueOwnerStorage* volatile& actual_publication_00e18d4c);
+
+// The getter and 00509190 are wired by GameFrameHost::update_loading_queue
+// behind kLoadingQueueCc15Bound, with the CEB198 drain profile; both admit only
+// the empty queue. The FileStore-ready callback stays source-only coverage.
 // No owner RAII rollback is added. Native FH3/SEH, mutable EH-spill aliases,
 // original CRT throw identities and hardware-fault cleanup are not reproduced.
 } // namespace bsp
