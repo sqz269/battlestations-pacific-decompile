@@ -521,3 +521,17 @@ On USNOS, the remaining OTHER-line differences are renderer lost-device frames a
 
 Not censused, and still open: the load-time resolves in 00743450 LandConvoy roster, 006F3660 CommandBuilding garrison, 0084D170 / 0084D560 support sites, plus the three open items listed under step 3 (traffic, PowerupClass, shipyards).
 
+
+## Convoys, garrisons and support sites, and the purge (cc15-vcp7)
+
+Census of the three load-time resolves left open by cc15-vcp6 (read-only, on main 8a905274a), then the fixes, behind `kVehicleClassPreloadCc15Bound`.
+
+| site | what it resolves | marked pre-purge in the image | host before | verdict / host now |
+|---|---|---|---|---|
+| 00743891 (00743450 LandConvoy InitAll pass A, vt+9Ch) | each roster slot's member type, when type > 0 (0074379C), with 00964790(type, DL=1) | yes, for convoys created at load. A held-back (Hidden) convoy has no instance at load; its members are first resolved when GenerateObject spawns it | **no**. The roster read never marked the member types, so a spawned convoy hit the `creator=00000000` throw in `create_units` | fixed: `game_hosts_mission_frame.cpp`, the `kLandConvoyMembersBound` load walk marks each slot type > 0 of every generated convoy before `build_land_convoy_roster_00743450`. Hidden convoys are skipped, as in the image |
+| 006F3660 CommandBuilding garrison (006F5E3A, 008F41F0 on entity+724h) | the adopted entity's own class, from a bag clone | yes, through the adopted entity's own load | yes (the adopted entity's own row) | covered. The host revives in place; no fix |
+| 0084D304 / 0084D41E (0084D170 SpawnPoint InitAll pass B, vtable 00CEA218 +A0h; 0084D560 is the same walk's other list) | each `Stock %d` Type with Count != 0, when the effective game mode (004BCA50) is not 4 | yes | **no**. The host only queued the classes (0095C4D0), and nothing consumes the queue, so there was no crash, only row parity | fixed: `game_hosts_scene_contents.cpp`, `scene_stock_queue_list` marks each counted Type on the 0046BF70 SpawnPoint walk. The index carries from JapanList into AlliedList, as in 0084D170. The host's mode is never 4 |
+
+Data. The JM05 family (`COTP-IJN/jm05.lua:3645`, `PRCPIJN/jm05.lua:3830`, `ijn/JM/jm05.lua:3631`) spawns `Event3Convoy 01/02/03` (jeep 466, truck 464) with GenerateObject. The visible `SecondaryLandConvoy 01` and `RadarStationLandConvoy 01` carry the same two types, so on JM05 the convoy marks are already made at load by the visible convoys. SpawnPoint stock is authored in single player only by `ijn_02_force_z` (Betty 167, Nell 166) and `ijn_11_operation_to` (14 plane classes).
+
+CONTRACT: the support-site mark is made on the registration walk, not on an instantiated SpawnPoint. No SpawnPoint in this installation is Hidden, so the two agree.
