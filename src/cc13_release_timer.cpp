@@ -27,8 +27,9 @@ std::vector<bool> bomb_rack_bay_doors(bsp::game::GameMissionLuaHost& lua, int ty
     // The flags are a property of the class, so they are read once per (Lua
     // host, class): the chunk below then runs once per class instead of on
     // every refused tick, and touches the host's last_status_/last_chunk_ only
-    // that once. Cached only once BSPGun exists (n > 0), i.e. after the
-    // gunnery flatten; the host is single-threaded here.
+    // that once. Cached only once BSPGun exists (n > 0, i.e. after the
+    // gunnery flatten) and the chunk succeeded; the host is single-threaded
+    // here.
     static std::map<std::pair<const void*, int>, std::vector<bool>> cache;
     const std::pair<const void*, int> cache_key{&lua, type_id};
     if (const auto it = cache.find(cache_key); it != cache.end()) return it->second;
@@ -54,11 +55,13 @@ std::vector<bool> bomb_rack_bay_doors(bsp::game::GameMissionLuaHost& lua, int ty
         type_id);
     const int top = lua.lua_gettop();
     std::string flags;
-    if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::char_traits<char>::length(chunk)),
+    // A failed load or call leaves every flag false and is not cached, so the
+    // next refused tick tries again.
+    const bool ok =
+        lua.luaL_loadbuffer(chunk, static_cast<int>(std::char_traits<char>::length(chunk)),
                             "bsp_release_timer_bay_doors") == 0
-        && lua.lua_pcall(0, 1, 0) == 0) {
-        flags = lua.lua_tolstring_at_top();
-    }
+        && lua.lua_pcall(0, 1, 0) == 0;
+    if (ok) flags = lua.lua_tolstring_at_top();
     lua.lua_settop(top);
 
     // The rack filter of GameUnitsHost::Impl::ordnance_racks, in its order.
@@ -76,7 +79,7 @@ std::vector<bool> bomb_rack_bay_doors(bsp::game::GameMissionLuaHost& lua, int ty
         const std::size_t i = static_cast<std::size_t>(p - 1);
         out.push_back(i < flags.size() && flags[i] == '1');
     }
-    if (platforms > 0) cache.emplace(cache_key, out);
+    if (ok && platforms > 0) cache.emplace(cache_key, out);
     return out;
 }
 

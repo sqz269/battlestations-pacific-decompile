@@ -62,6 +62,9 @@ def reaches(src, dst):
 
 
 rows = json.load(open(root + r"\tools\cc13_mistag_candidates.json"))
+# Row 120 (rev4): outside the 16 scanned segments (segment 34); the out-of-line copy of the
+# 00CF88F8 store that 006CDD40 inlines.
+rows.append([34, "006fbc10", "TRIV_body_006fbc10", "trivial_body", "00cf88f8", 0, 0, "vtreset"])
 out, bad = [], []
 for sid, a, n, cat, v, *_ in rows:
     A, vt = int(a, 16), int(v, 16)
