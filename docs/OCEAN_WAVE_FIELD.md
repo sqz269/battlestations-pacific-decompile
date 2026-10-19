@@ -3677,3 +3677,22 @@ Prediction: with BSP_GUNNERY_RNG_STREAMS=1 (the reference env) each purpose has 
 009B11C4-009B1205 (the standby 009B0FE0) and 009B1FC2-009B1FDF (the final 009B1ED0) both compute +2B4h = a + [approach+4Ch] * (b - a). The sequence is FLD b, FLD a, FLD ST0, FSUBP ST2 (b - a), FLD +4Ch, FMULP ST2, FADDP, FSTP; on the main thread every op rounds to float. In the standby, a = 007C47F0 (LevelFlight x StallSpd) and b = class+190h; in the final, a is the local at [ESP+20h] and b is the 00419010 result.
 
 The host rounded the sum once: in the standby (b - a) was taken in float, in the final in double, and the product and sum in double. Switch **kLandBlendFloatOpsBound**, committed OFF, takes each op in float (`land_blend_2b4`). OFF keeps both old expressions exactly. Prediction: the commanded speeds differ by at most one float ulp, so landings move at the last bit at most; expected gameplay identical, or a sub-tick shift on carrier recoveries (USN01).
+
+**92, result.** Exes built at 25ef73b11 (`local\p22f_off`, `local\p22f_on`). On USN01 `usn01_p8_u1_i` (`local\p22f_{off,on}_u1i.log`) the standby is reached (ScoutDauntless, spacing 1.000) and gameplay is identical. USN21 `s46_u21_f` (`local\p22f_{off,on}_u21f.log`, which completes at 2861.67 s in both) is identical apart from noise (pair_diff 0). The mechanism is faithful to the bytes, so the switch is to be flipped ON. The flip waits for src/game_hosts_units.cpp (cc13-stophead holds it; p22_flip4_units is queued).
+
+## 93. HANDOFF (cc9-physics22, 2026-10-18)
+
+The lane is PHYSICS / PLANE FLIGHT, worked in tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (branch agent/cc9-physics1). The pair launcher is `local\p22_pair.ps1 <exportdir> <row>`, with rows u21f, u04, os, u1i (the orders paths are inside it).
+
+Switches this session (sections 87-92):
+- ON: kTorpedoLineOfSightBound (moves USN21: 53 screened answers, torpedo drops 12 -> 8), kTorpedoCruisePassBound, kMoveToC25ArmBound (unreached), kMoveToTickHeadBound, kLevelBombGoAwayOrderBound (unreached: ratio 1.0, no goaway), kStrafeDrawCountBound.
+- Not switched: the moveto +2B0h clears, the stale-cite fixes on 009D4A70 (`torpedo_engage_range_009d4b63`), and the kRows comment.
+- **OFF, flip ready: kLandBlendFloatOpsBound.** Its pairs are identical (section 92). Flipping it is a one-line edit in src/game_hosts_units.cpp; the lease is queued as p22_flip4_units behind cc13-stophead. Build, add a line to section 92, commit.
+
+Open:
+1. The two items the lead routed after the resume, "the ConTBD3 stow trace (Q1 only)" and "the ~20472 comment", reached this session only by name (lost in compaction). Get the brief from the lead.
+2. A reach for the moveto C25h arm: a moveto-command task on a plane with a pending release.
+3. A reach for prepare. USN01 `usn01_p8_u1_i` re-enters aim (ConTBD3|.-III, 3 enters), but the +2Ch clear is a no-op there.
+4. The dive goaway 009C4A40 ceiling and the 009D4C10 break-off differ from the host only on NaN, which no row reaches.
+5. Section 75's whole-frame item (the core law's ctl+18h while parented). Section 90's census found no other direction-dependent reader.
+6. The deck term stays OFF (section 83). The ships lane has the Enterprise turn question.
