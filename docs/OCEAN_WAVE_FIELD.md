@@ -3680,6 +3680,8 @@ The host rounded the sum once: in the standby (b - a) was taken in float, in the
 
 **92, result.** Exes built at 25ef73b11 (`local\p22f_off`, `local\p22f_on`). On USN01 `usn01_p8_u1_i` (`local\p22f_{off,on}_u1i.log`) the standby is reached (ScoutDauntless, spacing 1.000) and gameplay is identical. USN21 `s46_u21_f` (`local\p22f_{off,on}_u21f.log`, which completes at 2861.67 s in both) is identical apart from noise (pair_diff 0). The mechanism is faithful to the bytes, so the switch is to be flipped ON. The flip waits for src/game_hosts_units.cpp (cc13-stophead holds it; p22_flip4_units is queued).
 
+**92, flip (cc9-physics23).** kLandBlendFloatOpsBound is ON, on the `local\p22f_{off,on}_{u1i,u21f}` pairs above (identical, faithful). The same commit corrects the comment at the 007D87F6-007D8838 vy-zero arm: the rule is (dyn+A4h != 0, the 007D87FD JNE, OR dyn+94h > 0) AND |dyn+6Ch| < 1e-5 -> dyn+68h = 0, and a NaN vz keeps vy. The code already did this.
+
 ## 93. HANDOFF (cc9-physics22, 2026-10-18)
 
 The lane is PHYSICS / PLANE FLIGHT, worked in tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (branch agent/cc9-physics1). The pair launcher is `local\p22_pair.ps1 <exportdir> <row>`, with rows u21f, u04, os, u1i (the orders paths are inside it).
