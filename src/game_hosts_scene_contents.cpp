@@ -930,6 +930,15 @@ private:
 
 int scene_stock_int(GameSceneContentsHost::Impl& owner, const ScenePropertyBlock& bag,
     const char* key) {
+    // cc15-vcp7: scene_enum_property reports any property as present, so an
+    // `I` value (`Count = I -1`, `NumSlots`) went to the symbol lookup and read
+    // 0. Every SpawnPoint stock and deck count was skipped as uncounted.
+    if (const SceneProperty* authored = bag.find(key);
+        authored != nullptr && equal_insensitive(authored->type_letter, "I")
+        && !authored->values.empty()) {
+        std::int32_t value = 0;
+        if (scene_scan_int(authored->values.back(), value)) return value;
+    }
     const SceneEnumProperty e = scene_enum_property(bag, key);
     if (e.present) {
         int value = 0;
