@@ -289,7 +289,10 @@ for a host submarine, as in the teleport) and the seeded `sub_bands`. Each step 
 rounded float op, so 24-bit and 53-bit agree. OFF leaves the earlier value.
 
 **Reach (the eleven census logs, local/subdive_nearest.py).** Y is the first
-`submarine depth trace` sample (step 1, vy 0, equal to the seed Y to the logged precision).
+`submarine depth trace` sample (step 1, vy 0). The host stage itself reads the seed-time hull
+Y (`slot->motion.position[1]`, from the placement `entity.world[13]`), not the trace. In these
+logs the two are equal to the logged precision, because nothing moves the hull before step 1
+except the `Dive` teleport, and these boats have no `Dive`.
 
 | Mission | Sub | Dive / TargetDive | Seed Y | Bands | Host | Image |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -297,7 +300,7 @@ rounded float op, so 24-bit and 53-bit agree. OFF leaves the earlier value.
 | USNOS | Gato | none | -15.0 | 0, -12.8, -40, -80 | 0 | **1** |
 | USNOS | twelve Kaitens (#3.1-#3.6, #6.1-#6.6) | none | -3.66..-4.37 | 0, -3, -40, -80 | 0 (1 under the kamikaze switch) | **1** |
 | JM06 | I-400 #2.1 | none | -49.53 | 0, -20, -40, -80 | 0 | **2** |
-| USN21, BSM01 Tautog, IJN08, LOMP06, JM06 (five others) | each has `Dive` | - | - | - | stage skipped | stage skipped |
+| the twelve `Dive` holders: USN21 Darter, Dace; BSM01 Tautog; IJN08 JapSub1-3; LOMP06 Narwhal; JM06 Narwhal-class Submarine 01, Gato-class Submarine 01, PlayerSub 01-03 | each has `Dive` | - | - | - | stage skipped | stage skipped |
 
 Fifteen boats in three missions differ. JM08, USN04, USN01, BSM09 and USN15 have no
 submarine.
