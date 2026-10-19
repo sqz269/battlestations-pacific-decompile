@@ -803,7 +803,7 @@ inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (L
 // boolean. LABELLED: an entity with no units-host slot is skipped (Remove) or answers
 // false (Is), as AddUntouchableUnit already does. False: both rows stay unimplemented
 // records, so a removal never happens and IsUnitUntouchable reads nil.
-inline constexpr bool kLuaUntouchableClearBound = false;
+inline constexpr bool kLuaUntouchableClearBound = true;  // ON: lua70 pair, verdict FLIP (cc9, 2026-10-19)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
 // Inert: nothing in this process reads it until the gunnery lane binds 00862440.
