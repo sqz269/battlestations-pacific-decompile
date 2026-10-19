@@ -1,7 +1,8 @@
 # cc15 object bring-up, lane L3: loading queue, application, VFS pump
 
 Lane cc15-ob3 covers ranks 10, 12 and 13 of the ranking in `docs/CC15_WIRE_FRONTIER.md`. All three objects sit
-in `game_hosts.cpp`. Each one has its own switch, and every switch is OFF.
+in `game_hosts.cpp`. Each one has its own switch. `kLoadingQueueCc15Bound` is ON (see its "Flipped ON" note); the
+others are OFF.
 
 ## Native loading queue (rank 10), `kLoadingQueueCc15Bound`
 
@@ -57,6 +58,24 @@ frontend) remain host-interface bodies.
   or the 005092E0 stop on menu screens could call it first. That would change the queue's registration slot, and
   therefore its drain order. Within this host, RunFrame is the first caller.
 - The event is deleted through `delete_native_event_owner_00bd19b0` directly, not through slot 0 of its table.
+
+**Flipped ON (cc15-flip, base f906d5934, 2026-10-19).** `kLoadingQueueCc15Bound` is now true. The pairs were run
+in the ref env (`BSP_DEATH_TABLE=1`, `BSP_GUNNERY_RNG_STREAMS=1`, `--stop-after-end 40`; each log has the
+in-process "rng streams: on" line). They cover USN04 plus the 12 wins rows: u01, u02, l6, b9, l10, u12, p01, b1,
+i18, u21, j6 and e8.
+- All 13 rows give `pair_diff` exit 1 with gameplay identical. Death rows, unit tables and summary lines are
+  identical, and every row keeps its mission-end line and time (BSM09 285.05 s).
+- Each row moves exactly three lines:
+  - `update_loading_queue 004fde20` goes from UNIMPLEMENTED to concrete, with the call count unchanged;
+  - `singleton lifetime drained: registered_slots` goes 43 -> 44 (the line is removed on OFF and added on ON).
+    The queue drained through CEB198 without error.
+- No contract error appears. Both sides have 671 lines that mention "contract", all of them pre-existing summary
+  lines, and no loading-queue or non-empty-queue line. The queue stayed empty.
+- I ran a strict index-by-index diff of the activation, draw, power-up, weather, voice, warning, clip, message,
+  dialog, hint, objective and Lua lines, with `registered_slots` dropped. It shows 0 mismatched positions on all
+  13 rows.
+- The save and profile files under Documents\Battlestations-Pacific are unchanged: the SHA-256 and mtime of all
+  6 entries are the same before and after.
 
 ## Native application object (rank 12), `kApplicationCc15Bound`
 
