@@ -261,6 +261,7 @@ void build_native_material_constants_00b42350(void* pass, void* entry,
         if (animator) {
             const Word profile = word(animator); // Capture BEFORE B75E50.
             reached(frame, 0x00b42794);
+            require(c.actual_types_010900fc != nullptr);
             const Word required_type = get_native_optimized_animator_type_id_00b75e50(*c.actual_types_010900fc);
             reached(frame, 0x00b427a7);
             require(profile == 0x00d62eb0);

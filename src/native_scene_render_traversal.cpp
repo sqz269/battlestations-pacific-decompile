@@ -20,6 +20,16 @@ static_assert(offsetof(NativeTracelineRenderAccess, render20_profiles) == 56);
 static_assert(sizeof(NativeTracelineRenderAccess) == 60);
 
 NativeRender20Profiles::NativeRender20Profiles(const NativeCameraEnvironment& camera,
+    const NativeModelEnvironment& model)
+    : node_00d62c88(camera.vtable_00d62c88),
+      camera_00d62cf0(camera.vtable_00d62cf0),
+      model_00d62de8(model.vtable_00d62de8), traceline_00d0c928(nullptr) {
+    if (!node_00d62c88 || !camera_00d62cf0 || !model_00d62de8 ||
+        model.vtable_00d62c88 != node_00d62c88)
+        throw std::invalid_argument("ordinary render traversal requires canonical node/camera/model table views");
+}
+
+NativeRender20Profiles::NativeRender20Profiles(const NativeCameraEnvironment& camera,
     const NativeModelEnvironment& model, const NativeTracelineLifetimeAccess& line,
     const NativeModelEnvironment& line_model)
     : node_00d62c88(camera.vtable_00d62c88),
