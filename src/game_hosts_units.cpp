@@ -41596,6 +41596,15 @@ bool GameUnitsHost::plane_order_view(std::size_t index, int& state_900, bool& la
     return true;
 }
 
+bool GameUnitsHost::plane_launch_spot_arm_9dc(std::size_t index, std::uint32_t& arms,
+                                              float& cooldown) const noexcept {
+    if (index >= impl_->slots.size() || !impl_->slots[index]) return false;
+    const GameUnitSlot& s = *impl_->slots[index];
+    arms = s.launch_spot_arms_9dc;
+    cooldown = s.launch_spot_cooldown_9dc;
+    return true;
+}
+
 void GameUnitsHost::store_unit_moveto_range(std::size_t index, float range) noexcept {
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->moveto_range = range;

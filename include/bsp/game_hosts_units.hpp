@@ -826,6 +826,10 @@ public:
     // host stored. False for an index out of range.
     bool plane_order_view(std::size_t index, int& state_900, bool& landed_904,
                           bool& enabled_5c, unsigned int& command_class) const noexcept;
+    // Packet cc13-cool9dc: 007C5F60's plane+9DCh store (3.0, or 5.0 on an AirField)
+    // and how many times it has run for this plane.
+    bool plane_launch_spot_arm_9dc(std::size_t index, std::uint32_t& arms,
+                                   float& cooldown) const noexcept;
     // Packet cc9_pilot_moveto_task: the moveto order's range, descriptor +14h
     // (008A4708), which the kind-7 task's approach reads.
     void store_unit_moveto_range(std::size_t index, float range) noexcept;
