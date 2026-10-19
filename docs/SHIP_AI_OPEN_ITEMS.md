@@ -20144,3 +20144,12 @@ USN21 construct arms 6 -> 6 with launch spot arms 0 (also 134 and 0 on the 64000
 51 -> 66 with launch spot arms 15; USNOS os_k 63 -> 75 with launch spot arms 12; airfield=0 everywhere. Deck-launched
 planes now take 1.0 at first sight and then 3.0 at placement, so their first swept step is unchanged, as predicted.
 The 5.0 AirField arm is not reached on these rows.
+
+**306.3 addendum: confirmation pairs on the lead's rows.** OFF = `local\g54_pf_off` (26bbb19a3 with the puff switch
+forced false), ON = the tree build `local\g54_d_off`, 36000 frames with the current WINS orders (IJN08
+`ijn08_s49_i08_i11`, JM06 `jm06_l70_j6_n`, LOMP06 `lomp06_l70_l6_c`).
+- Reference env: all three exit 1 (gameplay identical). Puff draws are 4 / 12 / 4. Outcomes are unchanged:
+  IJN08 has no end in 36000 frames, JM06 completes at 1658.49 s, LOMP06 fails at 653.11 s (OFF too).
+- Default env: IJN08 exits 3 (8 puff draws). JM06 exits 3: deaths 22 -> 21, and it still completes, at 805.93 s
+  instead of 724.95 s. LOMP06 exits 1 (no breakup; it fails at 672.11 s both ways).
+- No WINS outcome moves in the reference env.
