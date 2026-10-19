@@ -18,10 +18,26 @@ So with a live plan whose cursor sits at node 0, the host takes the command-desc
 an entity target such as CB4 that arm yields the zero vector `00F87574`, the world origin.
 
 The seed does not create this. In OFF the same 1D8h already points at the origin, but OFF steers
-mode 3 through the navigation arm toward the goal, so nothing follows it. With the skip ON, mode 3
-steers by 1D8h. With 32Ch = 0, the -0.625 astern flips (docs/CC13_MODE3STEER.md section 2) kept
-the ship from following it. The seed removes the flips, so the ship follows 1D8h to the origin and
-circles it, because the bearing to a point it is passing over keeps turning.
+mode 3 through the navigation arm toward the goal, so nothing follows it. With the astern skip
+ON, mode 3 steers by 1D8h; seg67n's log side found that `s61_n3s` (skip + 3E0h) orbits the same
+way, and that the 3E0h seed and the constructor seeds are not involved. The ship follows 1D8h to
+the origin and circles it, because the bearing to a point it is passing over keeps turning.
+
+**Verdict (image side): host defect, skip premise correct.** seg67n reads Ashigara's live plan
+as state 7 with 0 nodes all run, its point CB4. State 7 is `search_state` = Ready at +1Ch
+(`009EC742`, bytes `C7 46 1C 07 00 00 00`, MOV [ESI+1Ch],7). "0 nodes" is the +34h cursor. So the
+image's `009E46FC` test is non-zero and `009E4701 JNE 009E47D3` takes the path arm, giving the
+bearing to the next path point. The command arm, and with it 00F87574, is faithful only for
+`search_state == 0`. The skip itself is faithful (section 1a).
+
+## 1a. The image's mode-3 caller steers by 1D8h
+
+- `009ED7D8..009ED7F3`: `MOV EAX,[ESI+1C4h]` (the mode), `CMP EAX,3`, `SETE BL`,
+  `MOV [ESP+4Fh],BL`.
+- `009EE756 CMP byte [ESP+4Fh],0` / `009EE75B JNE 009EF206` skips the whole output block
+  `009EE765..009EEAA2`, the only path-driven 324h writer, and goes to `009EF206` (`009DE5B0`).
+- So in mode 3, 324h is `009ED947`'s copy of 1D8h, then the arm final's free-bearing rewrite
+  (section 3). `kShipAiNavigateAsternSkipBound` models this.
 
 ## 1. Which image path writes 1D8h in mode 3
 
@@ -123,13 +139,17 @@ Re-check IJN18 and the s60 set, because every ship with an entity order whose pl
 0 changes 11DCh.
 
 **A faithful image result.** When no plan exists (`search_state == 0`), the image also aims an
-entity-target attackmove at the origin. If Ashigara has no plan in the image either, the orbit
-is faithful, and the difference from the game lies upstream in the planner.
+entity-target attackmove at the origin. seg67n's state 7 rules that out for Ashigara.
+
+**Residual.** The host's path arm refuses when `record.node_18 == 0` and returns 11DCh = 0. Check
+that `009E3C00`, called with the cursor at 0 on a Ready plan, writes the record's node. Otherwise
+the switch would turn the orbit into a steer to bearing 0.
 
 ## Uncertainty
 
-- The image values of `search_state` for Ashigara are inferred, not observed. The host never logs
-  it at `009E46F0`. The log-only counter above settles that.
+- `search_state` = 7 for Ashigara is seg67n's reading of the host log; this doc did not re-read
+  it. The image side assumes the image's plan reaches Ready as the host's does. ships61 owns the
+  host plan population.
 - The ring-slot argument (section 1) relies on the host reconstructions of the four slot scorers.
   I did not re-read their bytes for this packet.
 - The 1D8h-to-origin match uses the heading convention atan2(dx, dz), inferred from the opening
