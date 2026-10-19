@@ -20256,3 +20256,22 @@ Scripts: local\s60_osmk.py (variants c18a-c21), local\s60_rows.ps1 (launcher, -J
 local\s59_sum.py, local\s60_firstdiv.py (first diverging line per regex), local\s60_kaiten.py.
 
 **Still open from earlier handoffs:** the Fuso USN15 close-range gunnery question (297).
+
+## 310. Leak router delivery paired and flipped; nav set pair (cc9-ships61, 2026-10-19)
+
+**kLeakMessageRouterDeliveryCc13Bound ON** (include/bsp/cc13_leak92.hpp, docs/CC13_LEAK92.md). Reference-env JM08 pair
+(`jm08_l65_j8_p2`, 72000 frames, "rng streams: on") on origin/main 9b5457ae7: OFF = tree build (`local\s61_off_j08`),
+ON = pair_export `local\s61_lk` (`local\s61_lk_j08`). Both fail at 1031.93 / 1030.93 s (the row's known loss).
+pair_diff 3 (moved). Mechanism: every wreck whose first water time is unchanged reads within 0.03% water
+(Gyoraitei Y1-Y11 within 0.03%, Hosho +0.025%, Nevada +0.021%, San Francisco -0.034%), the size cc13 predicted for a
+one-pump delay. Larger deltas only on wrecks whose sink time moved. Script `local\s61_wreck.py <off> <on>`.
+
+**Nav set (queue item 1), first pair on 9b5457ae7** (OFF `local\s61_off_*`, ON `s61_n4` all four, `s61_nss` seeds+sync,
+`s61_n3s` 3E0h+skip; LOMP10 p3_l10_b, USN21 u21f, USN04):
+- d32c/d330 read 1000/3000 ON. The l70_astern d32c0 census is already 0 OFF on current main.
+- -0.625 step lines: USN21 71 -> 0 (n4, nss); USN04 28 -> 28; LOMP10 Ashigara 3 -> 0 (n4), 18 (n3s).
+- LOMP10 n4/n3s: Ashigara orbits the world origin from step 8480 and the row never ends (OFF completes 1303.70 s).
+  cc13 traced it (docs/CC13_ORBIT.md): with the skip ON the 009E46F0 arm test reads the wrong plan field and aims at
+  (0,0). The skip is byte-correct; the fix is cc13's plan-test switch, to be paired with 3E0h + skip.
+- **Iowa (USN21) open item:** Iowa never moves in any variant (state=follow mode=navigate, thr=0, speed <= 0.002 over
+  1749 escape-trace rows, OFF included). Not caused by this set.
