@@ -1,14 +1,15 @@
-# cc13-movaudit: census rows 14 and 15 (moveto steer, torpedo SetRanges)
+# cc13-movaudit: census row 15 (torpedo moveto SetRanges)
 
-This packet audits two labelled substitutions from cc13-stubcensus (docs/CC13_STUB_CENSUS.md
-at 1e2d7a2e9, rows 14 and 15). It was read-only: no code changed and there were no game
-runs. Names are hypotheses, not recovered symbols. The ship and aim-point numbers come from
-recent cc9 logs (l70r_vb9_vcon_ref, p24h_on_u21f_def, p24_off_j8, p24r_on_u04).
+This packet audits a labelled substitution from cc13-stubcensus (docs/CC13_STUB_CENSUS.md
+at 1e2d7a2e9, row 15). Row 14 was dropped and is noted at the end. The packet was
+read-only: no code changed and there were no game runs. Names are hypotheses, not recovered
+symbols. The ship heights come from recent cc9 logs (l70r_vb9_vcon_ref, p24h_on_u21f_def,
+p24_off_j8, p24r_on_u04).
 
 | Row | Site | Verdict |
 |---|---|---|
 | 15 | 009BDE80 SetRanges at 009D48CF (torpedo) | FAITHFUL in effect. Not urgent. |
-| 14 | 009F9E40 at 009C1B23 (dive-bomb moveto steer) | GAP, small. An OFF switch already exists: `kDiveBombMoveToOriginBound`. |
+| 14 | 009F9E40 at 009C1B23 (dive-bomb moveto steer) | Resolved: covered by the existing switch `kDiveBombMoveToOriginBound`. Not audited. |
 
 ## Row 15: 009BDE80 at 009D48CF, torpedo moveto SetRanges
 
@@ -83,68 +84,13 @@ The skipped stores have one reader, and the host feeds that reader the same valu
 same tick. This is a torpedo class row, but it is not a mismatch, so there is nothing urgent.
 The census's "unproven (torpedo)" can become "faithful in effect".
 
-## Row 14: 009F9E40 at 009C1B23, dive-bomb moveto steer
+## Row 14: 009F9E40 at 009C1B23 (resolved: existing switch, not audited)
 
-### The image
+This row was dropped from the packet. The census note "body unread" is stale. 009F9E40 is
+reconstructed as `bsp::heading_command_009f9e40` (src/plane_flight.cpp:81), and the
+dive-bomb moveto site is gated by `kDiveBombMoveToOriginBound` (OFF). Flipping that switch
+is cc9's call.
 
-009F9E40 (009F9E40-009F9ECC, `__thiscall(bot, const float* point)`, RET 4):
-- If the unit's pose is stale (+C8h clear), it refreshes it with 00414DB0.
-- It computes `dz = p[2] - unit+104h` and `dx = p[0] - unit+FCh`, rounding each to float.
-- It computes `h = (double)pi/2 - atan2(dz, dx)` (00BF701A, double 00CE3830), rounded to
-  float. If 0 > h, it adds 2 pi (double 00CE3828).
-- It stores cmd+2C0h = h and cmd+2CCh = 2 (009F9EB9 and 009F9EC1).
-
-At 009C1B1C-009C1B23 the argument is `LEA ECX,[ESP+1Ch]`, the target entity's pose origin
-from step 1 (009C18EC-009C1913).
-
-The census says "the body is unread". That is stale. The body is reconstructed as
-`bsp::heading_command_009f9e40` (src/plane_flight.cpp:81), and the host already uses it in
-three places:
-- the torpedo moveto, under `kPilotStateHeadingWritesBound` (ON);
-- the dogfight;
-- the dive-bomb moveto, under `kDiveBombMoveToOriginBound` (OFF, units.cpp:6235).
-
-### The host, with the switch OFF
-
-`run_dive_bomb_move_to_tick_009c18c0` (near line 30010) writes
-`plan_heading_2c0 = db_bearing_c0` with mode 2. db_bearing_c0 comes from
-`update_dive_bomb_approach` (near line 4892, 009C7B8A-009C7BB0). It uses the same law, but
-the point it steers at is the hull aim point from 009FADA0 (`tp_hull`), not the target
-origin. Planar separation follows the same pattern: with the switch OFF it is db_planar_bc,
-measured to the aim point. That separation feeds 009C1850's speed and the glide.
-
-Only the value of cmd+2C0h differs. cmd+2CCh is 2 either way, and nothing else is skipped.
-
-### The size of the effect
-
-These are the four `hull_aim inrange` lines in recent logs, sampled where the range latch
-(009C7BFB) first trips. The heading difference is roughly aim offset / range, so it grows as
-the bomber closes. I did not confirm that the moveto state hands over exactly at this latch.
-If it runs closer in, the difference is larger: about 10 degrees for an 86 m offset at
-500 m.
-
-| Mission log | Target | Aim offset | Range to origin | Heading difference | Planar, aim vs origin |
-|---|---|---|---|---|---|
-| l70r_vb9 | Lexington | 86.3 m | 1939 m | -1.83 deg | 1877.6 vs 1938.7 |
-| p24h_u21f | Musashi | 43.2 m | 2252 m | +0.71 deg | 2219.3 vs 2252.3 |
-| p24_j8 | Missouri | 42.8 m | 1728 m | +0.10 deg | 1684.9 vs 1727.6 |
-| p24r_u04 | Lexington | 41.9 m | 2358 m | -0.71 deg | 2327.8 vs 2357.9 |
-
-So, with the switch OFF:
-- the dive bomber heads 0.1-1.8 degrees off the image's heading at the latch, and less
-  further out;
-- the separation fed to the speed and the glide is 30-61 m short, about 1.5-3 %.
-
-The census found the row live in 7 of 11 WINS missions: every dive-bomb moveto tick takes
-the substitution.
-
-### Verdict: GAP, small
-
-The proposal is to reuse the existing `kDiveBombMoveToOriginBound`, not to add a new switch.
-It already carries both halves: the origin separation and the 009F9E40 heading. Its doc is
-docs/DIVE_BOMB_APPROACH.md section 19. Before a flip it needs the usual OFF/ON pair on the
-seven live missions, judged on dive-bomb hits and the inrange handover times.
-
-ON-only lookups when flipped: `origin_tgt` is
-`owner_.slots[command_target_plus_one - 1]`. That is the same slot the OFF path already reads
-for `tp` in the same tick, so it is live whenever the ON path runs.
+Note from before the scope change: with the switch OFF, the host steers at the 009FADA0
+hull aim point instead of the target origin. Four `hull_aim inrange` samples put that at
+0.1-1.8 degrees, with the separation 30-61 m short.
