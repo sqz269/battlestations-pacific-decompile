@@ -338,9 +338,9 @@ check can be re-run now that the records exist. For each vt-reset candidate the 
 - applies one hand override (`MANUAL`, below);
 - lists the row's callers from the index.
 
-**119 game rows** are rebuilt as the table `kVtResetDestructors` with `vt_reset_destruct()`,
+**120 game rows** are rebuilt as the table `kVtResetDestructors` with `vt_reset_destruct()`,
 each `__thiscall(ECX = object)`, RET, doing `[object] = vtable`. Under the destructor rule above
-each is a class's out-of-line destructor. Every row has at least one caller. 229 of the 230
+each is a class's out-of-line destructor. Every row has at least one caller. 242 of the 243
 indexed call sites are EH unwind funclets; the one direct call is 0077D7F0
 BSP_Replication_StepLocalPlayerRecord calling `0075B420`, which destroys its stack message. No
 row is reached from its vtable's slot 0.
@@ -349,24 +349,32 @@ A scan of the image for each row's address as an absolute dword (`tools/cc13_mis
 finds only `0075A5B0`. Four `PUSH` immediates pass it as the eh_vector element destructor (size
 44h, count 64h): at 00760C46 (beside the 0075FE90 constructor), 00760CCD, 0080FD54 and 00816C2E.
 
+The rows by vtable:
+- **98 rows** store the session message root vtable 00CE4974. They are named
+  `BSP_SessionMessageRoot_StoreVtable_<address>`, following the three cc13-seg40b records of the
+  same shape (00729090, 007290A0, 007293B0).
+- **14 rows** store 00D056D0, the bot-state root (docs/LANDING_MOVETO_CONSTRUCTOR_CC11.md).
+- **8 rows** store a vtable each: 00D1FDB8, 00D20838, 00D20E84, 00D21148, 00D21B40, 00CFF354, and
+  rows 119 and 120 below.
+- These 22 rows (the 14 and the 8) are named mechanically `BSP_Vt<vtable>_Destruct_<address>`.
+
+All 120 names are provisional, and each ledger record lists the row's callers. The Ghidra renames
+for the first 118 were made in three batches under the lock. The old names are kept in
+`local/ghidra-annotations-20261019T085020Z.json`, `...T085054Z.json` and `...T085128Z.json`.
+
 **Row 119 is a hand override (rev4).** `007B5910` (`C7 01 40 58 D0 00 C3`) stores 00D05840,
 which the slot-name rule had called library. The vtable has no RTTI locator (`[00D0583C]` =
 007B45E0 is code), and its slots are `__purecall`, 007B5920, `__purecall`, `__purecall`.
 007B5920 is a game deleting destructor in segment 47 that stores 00D05840 itself. The name is
 `BSP_Vt00D05840_Destruct_007b5910`, and the Ghidra rename log is
 `local/ghidra-annotations-20261019T091219Z.json`.
-- **98 rows** store the session message root vtable 00CE4974. They are named
-  `BSP_SessionMessageRoot_StoreVtable_<address>`, following the three cc13-seg40b records of the
-  same shape (00729090, 007290A0, 007293B0).
-- **14 rows** store 00D056D0, the bot-state root (docs/LANDING_MOVETO_CONSTRUCTOR_CC11.md).
-- **6 rows** store a vtable each: 00D1FDB8, 00D20838, 00D20E84, 00D21148, 00D21B40, 00CFF354.
-- These 20 rows (the 14 and the 6) are named mechanically `BSP_Vt<vtable>_Destruct_<address>`.
 
-- 007B5910 also takes a mechanical name.
-
-All 119 names are provisional, and each ledger record lists the row's callers. The Ghidra
-renames for the first 118 were made in three batches under the lock. The old names are kept in
-`local/ghidra-annotations-20261019T085020Z.json`, `...T085054Z.json` and `...T085128Z.json`.
+**Row 120 was added after rev4.** `006FBC10` (`C7 01 F8 88 CF 00 C3`) is in segment 34, outside
+the 16 scanned segments, which is why the scan missed it. The check script now appends it as an
+extra candidate. It stores 00CF88F8, a game vtable with three game slots, and it is the recorded
+out-of-line copy that part C's 006CDD40 inlines. Its one caller is the unwind funclet 00C83990 of
+006FC2E0 BSP_ElevatorPlatform_Destruct. It is named `BSP_Vt00CF88F8_Destruct_006fbc10`. The Ghidra
+log `local/ghidra-annotations-20261019T092616Z.json` has this rename and 006CDD40's.
 
 **Left unbound** (library vtables, no game slot):
 
@@ -394,7 +402,7 @@ That is a test of flags & 1, the vt-reset destructor inlined as `MOV [ESI], vt`,
 when the bit is set, and `EAX = this`, RET 4. The script requires vt to equal the scanned vtable,
 classes the vtable as part B does, and finds every recorded `C7 01 <vt> C3` copy of the store.
 
-**98 game rows are bound** (`library_instantiation_out_of_scope`, names unchanged). Each cites a
+**99 game rows are bound** (`library_instantiation_out_of_scope`, names unchanged). Each cites a
 recorded out-of-line copy of its vtable store:
 
 | Rows | Vtable |
@@ -402,26 +410,41 @@ recorded out-of-line copy of its vtable store:
 | 74 | 00CE4974 |
 | 14 | 00D056D0 |
 | 2 | 00CFE2B8 |
-| 1 each | 00D056E8, 00D1FDB8, 00D20838, 00D20E84, 00D21148, 00D21B40, 00CFF354, 00D05840 |
+| 1 each | 00D056E8, 00D1FDB8, 00D20838, 00D20E84, 00D21148, 00D21B40, 00CFF354, 00D05840, 00CF88F8 |
 
-`007B5920` (00D05840) moved from the library list to here after rev4's reclassification; it cites
-part B's row 119, 007B5910.
+Two rows moved here after rev4:
+- `007B5920` (00D05840) moved from the library list after rev4's reclassification. It cites part
+  B's row 119, 007B5910.
+- `006CDD40` (00CF88F8) was rebuilt until part B's row 120, 006FBC10, recorded its copy. It now
+  cites that copy, and its Ghidra name is back to `CG_scalar_deleting_dtor_006cdd40`.
 
-**5 game rows are rebuilt** as `kVtResetDeletingDestructors` with
+**4 game rows are rebuilt** as `kVtResetDeletingDestructors` with
 `vt_reset_scalar_deleting_destruct()`. Their vtable store has no recorded copy, and their only
 callee is `_free`, so under the rule there is no routine to cite. This follows batch 1's
-singleton rows, and the lead accepted the five as rebuilt. They take provisional names
+singleton rows, and the lead accepted them as rebuilt. They take provisional names
 `BSP_Vt<vtable>_ScalarDeletingDestruct_<address>`:
 
 | Address | Vtable |
 |---|---|
-| `006CDD40` | 00CF88F8 |
 | `00735990` | 00CFE9F4 |
 | `00861BA0` | 00D0D314 |
 | `00862750` | 00D0D314 |
 | `008627F0` | 00D0D31C |
 
-The Ghidra rename log for these five is `local/ghidra-annotations-20261019T085852Z.json`.
+The Ghidra rename log for these is `local/ghidra-annotations-20261019T085852Z.json`.
+
+**Left open (rev4):** each of these four does have an out-of-line `C7 01 <vt> C3` copy in the
+image, but every copy is an undefined chunk, not a recorded function, so there is nothing to
+cite yet:
+
+| Vtable | Undefined copies | Rebuilt row |
+|---|---|---|
+| 00D0D314 | 00861B80, 00862740 | 00861BA0, 00862750 |
+| 00D0D31C | 00861BD0, 00862790 | 008627F0 |
+| 00CFE9F4 | 00735980 | 00735990 |
+
+00CF88F8's other copies, 006CDD30 and 006CE280, are undefined chunks too. If those chunks are
+ever defined and recorded, the four rows can be rebound to cite them.
 
 **Left unbound.**
 
