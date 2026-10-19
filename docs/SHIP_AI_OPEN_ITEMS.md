@@ -19815,7 +19815,7 @@ The branch was read from the disk bytes: 009EE59F JZ 009EF206, then 009EF213 CAL
 
 Flipped by mechanism.
 
-### 2. kShipAiNavigateAsternSkipBound: OFF, waiting on the lead
+### 2. kShipAiNavigateAsternSkipBound: ON
 
 The branch was read from the disk bytes:
 - 009ED7E6 `CMP [1C4h],3` / SETE -> [ESP+4Fh];
@@ -19832,10 +19832,22 @@ steering them.
 | JM05 | the same failure at 300.05 s and identical death rows; damage 48529 -> 48042, and the player's Mogami moves 3375 -> 3267 m |
 | USN04, USN07, USN13 | identical; no attack-move ships |
 
-**Open.** The mechanism matches the image, but it changes JM08's outcome. Before flipping, the host's
-approach-step steering in mode 3 should be checked: with the block skipped, the approach's own
-writes are all that steer the ship. A rudder or throttle write that the host leaves to the output
-block would strand the fleet, where the image would have it written by the approach.
+**Audit (done).** The host's approach step was compared with 009F3240 store by store:
+- 009F3330..009F3346: 368h and 360h are cleared when 1C4h != 3. The host does this with clear_brain_turn_accumulators_0368.
+- 009F335C: 1D8h = heading. The host writes blk.desired_heading.
+- 009F3360: 00605070 wraps 1D8h in place. The host records this but does not apply it. The census (packet cc9_heading_wrap_census) on the ON JM08 run counted 87873 stores, 0 out of range, and max |h| 3.1416, so the wrap is the identity on every store.
+- 1CCh = 0: requested_direction.
+- 009F3375: 1C4h = 3: blk.mode.
+- 009F337B / 009F3383: 250h and 2B8h = throttle.
+
+On the skip path, the host still runs the 009EE671..009EE6CB prelude (A90h..A9Ch, 1F0h) and then
+009DE5B0(dt), as the image does. No steering store is left to the output block that the image
+makes in the approach.
+- Nevada on ON JM08: rudder -0.358, throttle 1.000, desired 1D8h 0.9425. The ship steers on the approach's heading.
+
+**ON** by mechanism. JM08 loses its HQ-capture failure and becomes a no-end: the landing ships
+spawn at about 937 s and die to the HQ guns and AA trucks after 1128 s, so CheckHQ never sees
+CommandBuilding.Party == 2. The JM08 row change went to cc9-lua70.
 
 ### 3. kLineOfFireLandFromMuzzleBound: ON
 
