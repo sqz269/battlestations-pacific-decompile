@@ -173,11 +173,98 @@ In listing order:
 9. `004C9550(+A30h, 0)`, then `00BF6989([+A30h])` with no null test.
 10. `006E25A0(+72Ch)`, then 00959940 BSP_UnitGameObject_Destruct on the plane.
 
-## Left open (2 rows)
+### 007CFD20 BSP_PlaneUnitInstance_Construct
+
+`plane_unit_instance_construct_007cfd20`, `__thiscall(ECX = plane; arg, cls)`, RET 8, EAX =
+plane (007CFD20..007D0342). The name was already in the ledger (cc2_plane_flight). Rule-1: no body
+in `src/`, only the hooks in cc13_seg41_land, cc13_seg47 and cc13_seg48. Constants were read at
+their load sites:
+
+| Address | Value |
+|---|---|
+| 00D7A260 | -1.0f |
+| 00D7A24C | 1.0f |
+| 00CE4C04 | 10000.0f |
+| 00CE65D8 | -100.0f |
+| 00CE3804 | 1000.0f |
+
+EDI holds -1 from 007CFD69 to the end, and EBX holds 0. In listing order:
+
+1. `0095CC90(arg, cls)`. Then `006E22D0(+72Ch)`, after which +72Ch takes vtable 00D06130.
+2. The seven other vtables, exactly as 007D03A0 restores them.
+3. Fields up to the controller:
+   - +800h = -1; +808h and +80Ch = 0.
+   - `007C4560(+810h, plane)`, then `007BAF90(+84Ch, plane)`.
+   - +914h = -1.0f.
+   - The bytes +8FCh, +8FDh, +911h, +9C0h, +9C1h, +9C8h, +9C9h and +9E0h..+9E2h = 0; +9C3h and
+     +9CBh = 1.
+   - +964h and +9B8h = 0.0f; +994h..+9B0h and +9D4h = 0.
+   - +9D8h = the dword -1 (007CFE72); +9DCh = 1.0f (007CFE78).
+   - The live controls +9E4h..+9F8h = 0 with the throttle +9F0h = 1.0f (007CFEB0).
+   - The pilot command block +9FCh..+A10h = 0 with its throttle +A08h = 1.0f (007CFED6); +A14h = 0.
+   - +A18h, +A1Ch, +A24h and +A28h = 0.0f; +A20h and +A2Ch = 1.0f.
+   - The triples of +A30h, +A3Ch and +A4Ch = 0.
+4. Wing-tip records and the controller:
+   - `00BF7CD1(+A5Ch, 10h, 4, 007C3670, 007C3680)`.
+   - +A9Dh and +AA8h = 0; +AA4h = 0.
+   - `007D7EA0(+AB0h, plane)`.
+5. Before the fx component:
+   - +BB0h..+BC8h = 0; +BCCh..+BE4h = 1.0f.
+   - +C04h = 0.0f; +C18h = 5; +C2Ch = 1.0f.
+   - +C30h, +C50h and +C58h = 0; the bytes +C41h and +C49h = 0.
+   - `007CD520(+C98h)`.
+6. After it:
+   - +969h = 1; +324h = 2; +C4Ch = 0.
+   - +900h = 0; +904h is cleared when it is set.
+   - +C10h = 10000.0f; +C14h = -1.0f.
+   - +910h and +DFCh = 0; +908h and +90Ch = 0.0f.
+   - +BC4h = 1.0f, over step 5's 0.
+   - +C5Ch = -100.0f; +C60h = 0.0f.
+7. The counter: +968h takes the .data byte 00F87151. The counter steps and is stored, then reset
+   to 0 when the signed byte is not below 12.
+8. The rest:
+   - +DDCh..+DE8h = 0 (the counts 007D03A0 walks).
+   - +C00h, +C01h, +C35h, +C3Ah, +BF8h and +C02h = 0.
+   - +AACh = 0Ah; +C4h = 0Fh.
+   - The unaligned dword +C36h = 0.
+   - +7F8h = the plane itself; +770h = 1.
+   - +9BCh and +C64h..+C88h = 0.0f; +BF4h = 0.
+   - +DF8h = 1; +9D0h, +970h and +96Ch = 0.
+   - +E8Ch = 0.0f; +E90h = -1; +BFCh = 1000.0f.
+9. The matrices: an identity 4x4 at +E40h, then +E00h = 1.0f, and +E44h..+E7Ch are copied to
+   +E04h..+E3Ch through FLD/FSTP. The copy is exact because the values are only 0.0f and 1.0f.
+
+**Host agreement.** These citations were each checked against the bytes and agree:
+
+| Where | Claim |
+|---|---|
+| game_hosts_units.cpp | +900h zeroed |
+| game_hosts_units.cpp | +C04h 0.0 (007D0006), +BF4h, +BF8h and +C02h clear, +BFCh 1000.0 (007D01EB), +C18h 5 (007D000E) |
+| game_hosts_units.cpp | the throttle 007CFEB0 and air brake 007CFEA4 |
+| game_hosts_units.cpp | +914h -1.0 (007CFDDF) |
+| game_hosts_units.cpp | +9D8h -1 (007CFE72) |
+| game_hosts_units.cpp | 007D0136 (+C3Ah) |
+| game_hosts_units.cpp | 007CFDC6 (007C4560) |
+| game_hosts_units.cpp | 007CFD78 (00D05F20) |
+| game_hosts_gunnery.cpp | +800h -1 (007CFDB4) |
+| plane_death_modes.hpp | +800h -1 (007CFDB4) |
+| plane_flight.hpp | +9E4h..+9F8h, +310h at 007CFDA0, +AB0h at 007CFF6A |
+| plane_formation.hpp and plane_squadron_host.hpp | +9D0h at 007D01C3 |
+| approach_target_ref.hpp | 007CFD78 |
+
+**Two citations disagree with the bytes** (other owners' files, left for the lead):
+- `include/bsp/plane_crash_sweep.hpp` says the cooldown +9DCh is "0 from the constructor
+  (007CFE78)". 007CFE78 is `MOVSS [ESI+9DCh], XMM1`, and XMM1 holds 1.0f from 007CFDEA
+  (00D7A24C); nothing writes XMM1 in between. The gunnery host's stand-in `cooldown_9dc` starts at
+  0.0f (game_hosts_gunnery.cpp), and src/cc13_large3.cpp reads +9DCh as `turnEfficiency`
+  against 1.0f.
+- `include/bsp/pilot_controls.hpp` says the pilot command block is "zero-initialised ... at
+  007CFEB8-007CFED6". Its throttle +A08h is set to 1.0f at 007CFED6.
+
+## Left open (1 row)
 
 | Address | Size | What |
 |---|---|---|
-| `007CFD20` | 1573 | BSP_PlaneUnitInstance_Construct (no host body; see above) |
 | `0086C240` | 2763 | the Flare effect component's Lua reader (docs/GAMEPLAY_EFFECT_COMPONENTS.md row Flare) |
 
 ## Uncertainty

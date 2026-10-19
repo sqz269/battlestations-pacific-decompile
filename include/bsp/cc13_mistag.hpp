@@ -156,6 +156,34 @@ public:
 // instance, primary vtable 00D05F20; reached from 17 deleting destructors and chunks.
 void plane_unit_instance_destruct_007d03a0(PlaneDtorHost& host, void* plane);
 
+// --- 007CFD20: the plane unit-instance constructor (batch 2, big four #3) ---
+// RET forms of the callees follow from the caller's stack balance (no ADD ESP after any call).
+class PlaneCtorHost {
+public:
+    virtual ~PlaneCtorHost() = default;
+    // 0095CC90, __thiscall(ECX = plane; arg, cls), RET 8: BSP_UnitGameObject_Construct.
+    virtual void unit_game_object_construct_0095cc90(void* plane, std::uint32_t arg, std::uint32_t cls) = 0;
+    // 006E22D0, __thiscall(ECX = plane+72Ch): BSP_ProjectileShotBase_Construct.
+    virtual void projectile_shot_base_construct_006e22d0(void* device) = 0;
+    // 007C4560, __thiscall(ECX = plane+810h; plane), RET 4: BSP_PlaneWanderer_Construct.
+    virtual void plane_wanderer_construct_007c4560(void* wanderer, void* plane) = 0;
+    // 007BAF90, __thiscall(ECX = plane+84Ch; plane), RET 4.
+    virtual void plane_init_control_block_007baf90(void* block, void* plane) = 0;
+    // 00BF7CD1 eh_vector_constructor_iterator(first, size, count, ctor, dtor).
+    virtual void eh_vector_construct_00bf7cd1(void* first, std::uint32_t size, std::uint32_t count,
+        std::uint32_t ctor, std::uint32_t dtor) = 0;
+    // 007D7EA0, __thiscall(ECX = plane+AB0h; plane), RET 4: BSP_PlaneFlightController_Construct.
+    virtual void plane_flight_controller_construct_007d7ea0(void* controller, void* plane) = 0;
+    // 007CD520, __thiscall(ECX = plane+C98h), RET: BSP_PlaneFxComponent_Construct.
+    virtual void plane_fx_component_construct_007cd520(void* block) = 0;
+    // The .data byte 00F87151: a construction counter cycling 0..11.
+    virtual std::uint8_t read_counter_00f87151() = 0;
+    virtual void write_counter_00f87151(std::uint8_t value) = 0;
+};
+// 007CFD20, __thiscall(ECX = plane; arg, cls), RET 8, EAX = plane: BSP_PlaneUnitInstance_Construct.
+void* plane_unit_instance_construct_007cfd20(PlaneCtorHost& host, void* plane, std::uint32_t arg,
+    std::uint32_t cls);
+
 // 0099A880, __thiscall(ECX = memory), RET, EAX = bot: BSP_PilotBot_Construct.
 void* pilot_bot_construct_0099a880(MistagHost& host, void* bot);
 // 0099BE30, __thiscall(ECX = plan, base), RET 4, EAX = plan: the pilot plan block embedded at

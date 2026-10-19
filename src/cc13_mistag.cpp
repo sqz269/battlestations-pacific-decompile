@@ -1,6 +1,8 @@
 // Library-tagged game rows, packet cc13-mistag (marker cc13_mistag). docs/CC13_MISTAG.md.
 #include "bsp/cc13_mistag.hpp"
 
+#include <cstring>
+
 namespace bsp::cc13_mistag {
 namespace {
 
@@ -208,6 +210,133 @@ void game_settings_destruct_0083b120(SettingsDtorHost& host, void* settings) {
     at<std::uint32_t>(s, 0x1E8) = 0;
     host.clear_game_settings_publication_00f8753c();
     at<std::uint32_t>(s, 0x000) = 0x00CE3818;
+}
+
+// 007CFD20..007D0342, in listing order (the SEH state bytes are not modelled). Constants read
+// at the load sites: 00D7A260 = -1.0f, 00D7A24C = 1.0f, 00CE4C04 = 10000.0f (461C3C00h),
+// 00CE65D8 = -100.0f (C2C80000h), 00CE3804 = 1000.0f (447A0000h). EDI holds -1 from 007CFD69
+// to the end, EBX holds 0.
+void* plane_unit_instance_construct_007cfd20(PlaneCtorHost& host, void* plane, std::uint32_t arg,
+    std::uint32_t cls) {
+    void* const p = plane;
+    auto* const b = static_cast<std::uint8_t*>(p);
+    host.unit_game_object_construct_0095cc90(p, arg, cls);
+    host.projectile_shot_base_construct_006e22d0(b + 0x72C);
+    at<std::uint32_t>(p, 0x72C) = 0x00D06130;
+    at<std::uint32_t>(p, 0x000) = 0x00D05F20;
+    at<std::uint32_t>(p, 0x010) = 0x00D05F08;
+    at<std::uint32_t>(p, 0x024) = 0x00D05F00;
+    at<std::uint32_t>(p, 0x170) = 0x00D05EFC;
+    at<std::uint32_t>(p, 0x1E4) = 0x00D05EF4;
+    at<std::uint32_t>(p, 0x310) = 0x00D05EDC;
+    at<std::uint32_t>(p, 0x38C) = 0x00D05ED8;
+    at<std::int32_t>(p, 0x800) = -1;                                     // 007CFDB4
+    at<std::uint32_t>(p, 0x808) = 0;
+    at<std::uint32_t>(p, 0x80C) = 0;
+    host.plane_wanderer_construct_007c4560(b + 0x810, p);                // 007CFDC6
+    host.plane_init_control_block_007baf90(b + 0x84C, p);
+    at<float>(p, 0x914) = -1.0f;                                         // 007CFDDF
+    at<std::uint8_t>(p, 0x8FC) = 0;
+    at<std::uint8_t>(p, 0x8FD) = 0;
+    at<std::uint8_t>(p, 0x911) = 0;
+    at<float>(p, 0x964) = 0.0f;
+    for (std::size_t off = 0x994; off <= 0x9B0; off += 4) at<std::uint32_t>(p, off) = 0;
+    at<float>(p, 0x9B8) = 0.0f;
+    at<std::uint8_t>(p, 0x9C1) = 0;
+    at<std::uint8_t>(p, 0x9C0) = 0;
+    at<std::uint8_t>(p, 0x9C3) = 1;
+    at<std::uint8_t>(p, 0x9C9) = 0;
+    at<std::uint8_t>(p, 0x9C8) = 0;
+    at<std::uint8_t>(p, 0x9CB) = 1;
+    at<std::uint32_t>(p, 0x9D4) = 0;
+    at<std::int32_t>(p, 0x9D8) = -1;                                     // 007CFE72, the dword -1
+    at<float>(p, 0x9DC) = 1.0f;                                          // 007CFE78 (XMM1 from 007CFDEA)
+    at<std::uint8_t>(p, 0x9E0) = 0;
+    at<std::uint8_t>(p, 0x9E1) = 0;
+    at<std::uint8_t>(p, 0x9E2) = 0;
+    // 007CFE92..007CFEB8: the live controls (yaw, pitch, roll, air brake, boost) zero and the
+    // throttle +9F0h 1.0f; 007CFEB8..007CFEDE: the pilot command block the same, its throttle
+    // +A08h 1.0f, the pending byte +A14h clear.
+    for (std::size_t base : {0x9E4u, 0x9FCu}) {
+        for (std::size_t i = 0; i < 6; ++i) at<std::uint32_t>(p, base + 4 * i) = 0;
+        at<float>(p, base + 0xC) = 1.0f;
+    }
+    at<std::uint8_t>(p, 0xA14) = 0;
+    at<float>(p, 0xA20) = 1.0f;
+    at<float>(p, 0xA1C) = 0.0f;
+    at<float>(p, 0xA18) = 0.0f;
+    at<float>(p, 0xA2C) = 1.0f;
+    at<float>(p, 0xA28) = 0.0f;
+    at<float>(p, 0xA24) = 0.0f;
+    // The {first, last, end} triples of +A30h, +A3Ch and +A4Ch (their allocator dwords untouched).
+    for (std::size_t off : {0xA30u, 0xA34u, 0xA38u, 0xA40u, 0xA44u, 0xA48u, 0xA50u, 0xA54u, 0xA58u})
+        at<std::uint32_t>(p, off) = 0;
+    host.eh_vector_construct_00bf7cd1(b + 0xA5C, 0x10, 4, 0x007C3670, 0x007C3680);
+    at<std::uint8_t>(p, 0xA9D) = 0;
+    at<std::uint32_t>(p, 0xAA4) = 0;
+    at<std::uint8_t>(p, 0xAA8) = 0;
+    host.plane_flight_controller_construct_007d7ea0(b + 0xAB0, p);       // 007CFF87
+    for (std::size_t off = 0xBB0; off <= 0xBC8; off += 4) at<std::uint32_t>(p, off) = 0;
+    for (std::size_t off = 0xBCC; off <= 0xBE4; off += 4) at<float>(p, off) = 1.0f;
+    at<float>(p, 0xC04) = 0.0f;                                          // 007D0006 (XORPS 007CFF94)
+    at<std::uint32_t>(p, 0xC18) = 5;
+    at<float>(p, 0xC2C) = 1.0f;
+    at<std::uint32_t>(p, 0xC30) = 0;
+    at<std::uint8_t>(p, 0xC41) = 0;
+    at<std::uint8_t>(p, 0xC49) = 0;
+    at<std::uint32_t>(p, 0xC50) = 0;
+    at<std::uint32_t>(p, 0xC58) = 0;
+    host.plane_fx_component_construct_007cd520(b + 0xC98);
+    at<std::uint8_t>(p, 0x969) = 1;
+    at<std::uint32_t>(p, 0x324) = 2;
+    at<std::uint32_t>(p, 0xC4C) = 0;
+    at<std::uint32_t>(p, 0x900) = 0;                                     // 007D0060, the flight state
+    if (at<std::uint8_t>(p, 0x904) != 0) at<std::uint8_t>(p, 0x904) = 0;
+    at<float>(p, 0xC10) = 10000.0f;
+    at<float>(p, 0xC14) = -1.0f;
+    at<std::uint8_t>(p, 0x910) = 0;
+    at<float>(p, 0x908) = 0.0f;
+    at<float>(p, 0x90C) = 0.0f;
+    at<std::uint8_t>(p, 0xDFC) = 0;
+    at<float>(p, 0xBC4) = 1.0f;                                          // over 007CFFBD's 0
+    at<float>(p, 0xC5C) = -100.0f;
+    at<float>(p, 0xC60) = 0.0f;
+    // 007D00D5..007D00F2: +968h takes the counter; the counter steps and wraps to 0 at 12
+    // (signed byte compare; the stepped value is stored before the reset).
+    const std::uint8_t counter = host.read_counter_00f87151();
+    at<std::uint8_t>(p, 0x968) = counter;
+    const auto next = static_cast<std::uint8_t>(counter + 1);
+    host.write_counter_00f87151(next);
+    if (!(static_cast<std::int8_t>(next) < 12)) host.write_counter_00f87151(0);
+    for (std::size_t off : {0xDDCu, 0xDE0u, 0xDE4u, 0xDE8u}) at<std::uint32_t>(p, off) = 0;
+    at<std::uint8_t>(p, 0xC00) = 0;
+    at<std::uint8_t>(p, 0xC01) = 0;
+    at<std::uint32_t>(p, 0xAAC) = 0x0A;
+    at<std::uint32_t>(p, 0x0C4) = 0x0F;                                  // the plane base class id
+    const std::uint32_t zero = 0;
+    std::memcpy(b + 0xC36, &zero, 4);                                    // unaligned dword store
+    at<std::uint8_t>(p, 0xC3A) = 0;                                      // 007D0136
+    at<void*>(p, 0x7F8) = p;
+    at<std::uint8_t>(p, 0x770) = 1;
+    at<float>(p, 0x9BC) = 0.0f;
+    for (std::size_t off = 0xC64; off <= 0xC88; off += 4) at<float>(p, off) = 0.0f;
+    at<std::uint8_t>(p, 0xC35) = 0;
+    at<std::uint32_t>(p, 0xBF4) = 0;
+    at<std::uint8_t>(p, 0xBF8) = 0;
+    at<std::uint8_t>(p, 0xC02) = 0;
+    at<std::uint32_t>(p, 0xDF8) = 1;
+    at<std::uint32_t>(p, 0x9D0) = 0;                                     // 007D01C3
+    at<std::uint32_t>(p, 0x970) = 0;
+    at<std::uint32_t>(p, 0x96C) = 0;
+    at<float>(p, 0xE8C) = 0.0f;
+    at<std::int32_t>(p, 0xE90) = -1;
+    at<float>(p, 0xBFC) = 1000.0f;                                       // 007D01EB
+    // 007D01F3..007D0273: an identity 4x4 at +E40h; +E00h = 1.0f and 007D027B..007D0332 copy
+    // +E44h..+E7Ch to +E04h..+E3Ch through FLD/FSTP (0.0f and 1.0f copy exactly).
+    for (std::size_t i = 0; i < 16; ++i) at<float>(p, 0xE40 + 4 * i) = (i % 5 == 0) ? 1.0f : 0.0f;
+    at<float>(p, 0xE00) = 1.0f;
+    for (std::size_t i = 1; i < 16; ++i) at<float>(p, 0xE00 + 4 * i) = at<float>(p, 0xE40 + 4 * i);
+    return p;
 }
 
 // 007D03A0..007D05B3, in listing order. The SEH frame's state bytes (7 down to -1) only track
