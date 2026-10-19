@@ -1,4 +1,5 @@
 #include "bsp/director_geommesh_seg38_39_argon.hpp"
+#include "bsp/cc13_seg33a.hpp"
 #include "bsp/cc13_sweepA.hpp"
 
 #include <cstring>
@@ -1587,13 +1588,70 @@ void* bsp_gun_base_construct_00728960(Seg38_39Host& host, void* self, std::uint3
   return self;
 }
 
+// oct18b-nB-low additions. All return-only bodies have the original ECX
+// receiver, no used register inputs, and RET unless an argument is listed.
+std::uint8_t __fastcall DirectorPathBase_VSlot04_False_0071bc40(const void*) { return 0; }
+std::uint32_t __fastcall DirectorPathBase_VSlot08_Zero_0071bc50(const void*) { return 0; }
+std::uint8_t __fastcall DirectorPathBase_VSlot0C_False_0071bc60(const void*) { return 0; }
+std::int32_t __fastcall DirectorPathBase_VSlot10_MinusOne_0071bc70(const void*) { return -1; }
+std::int32_t __fastcall DirectorPathBase_VSlot14_MinusOne_0071bc80(const void*) { return -1; }
+// 0071BC90 RET 4, 0071BCA0 RET; neither establishes a return value.
+void __fastcall DirectorPathBase_VSlot18_NoOp_0071bc90(void*, void*, std::uint32_t) {}
+void __fastcall DirectorPathBase_VSlot1C_NoOp_0071bca0(void*) {}
+
+// 0071D550..0071D556: an ordinary vtable tail dispatch, not a no-return
+// function and not a deleting thunk. Preserve stack and result registers for
+// the unknown signature of the virtual target at +18h.
+__declspec(naked) void __fastcall WeaponDirector_ForwardSlot18_0071d550(void*) {
+    __asm {
+        mov eax, dword ptr [ecx]
+        mov edx, dword ptr [eax + 18h]
+        jmp edx
+    }
+}
+
+// 0071EA90..0071EAF5: __thiscall(params)(archive), RET 4. The decompiler
+// mistakes the two output addresses for saved pointers. The listing actually
+// passes two eight-byte tagged arguments to archive->vtable[10h]: key kind 0,
+// output kind 1 (u32*). Reuse ArchiveArg rather than introducing another tag.
+void __fastcall PathFollowParams_Read_0071ea90(void* self, void*, void* archive) {
+    using cc13_seg33a::ArchiveArg;
+    using ReadField = void(__thiscall*)(void*, ArchiveArg, ArchiveArg);
+    auto** table = *reinterpret_cast<void***>(archive);
+    auto read_field = reinterpret_cast<ReadField>(table[0x10 / 4]);
+    // These initial words are the saved ECX and original argument slots used
+    // as scratch by the original; a valid archive read replaces each one.
+    std::uint32_t follow = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(self));
+    read_field(archive, ArchiveArg{0, 0x00cfdacc},
+               ArchiveArg{1, reinterpret_cast<std::uintptr_t>(&follow)});
+    raw_of(self).at<std::uint32_t>(0) = follow;
+    std::uint32_t start = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(archive));
+    table = *reinterpret_cast<void***>(archive);
+    read_field = reinterpret_cast<ReadField>(table[0x10 / 4]);
+    read_field(archive, ArchiveArg{0, 0x00cfdac0},
+               ArchiveArg{1, reinterpret_cast<std::uintptr_t>(&start)});
+    raw_of(self).at<std::uint32_t>(4) = start;
+}
+
+// 00720F40 is a literal RET 4. 00721970 is a tail JMP 00721890 with no
+// receiver adjustment: ECX=message, stack=controller, target cleanup RET 4.
+void __fastcall CommandController_VSlot_NoOp_00720f40(void*, void*, std::uint32_t) {}
+void __fastcall CommandControllerStateMessage_Apply_00721970(void* self, void*, void* controller) {
+    reinterpret_cast<void(__thiscall*)(void*, void*)>(0x00721890)(self, controller);
+}
+
 }  // namespace bsp::director_geommesh_seg38_39_argon
 
 namespace bsp::director_geommesh_seg38_39_argon {
 void gun_apply_damage_if_enabled_00728080(void* gun, float amount, cc13_sweepA::SweepAHost& host) {
     auto* bytes = static_cast<std::uint8_t*>(gun);
-    if (bytes[0x3b8] == 0)
-        cc13_sweepA::device_apply_scaled_damage_00442ae0({bytes}, amount, host);
+    if (bytes[0x3b8] == 0) {
+        // 00728089..00728091 quiets/forwards the stack float through x87.
+        float forwarded;
+        __asm { fld amount }
+        __asm { fstp forwarded }
+        cc13_sweepA::device_apply_scaled_damage_00442ae0({bytes}, forwarded, host);
+    }
 }
 std::uint8_t gun_failure_slot101_007289b0(void*, std::uint32_t, std::uint32_t) noexcept { return 0; }
 std::uint8_t gun_failure_slot102_007289c0(void*, std::uint32_t, std::uint32_t, std::uint32_t) noexcept { return 0; }
