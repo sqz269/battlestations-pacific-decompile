@@ -4182,6 +4182,7 @@ struct GameGunneryHost::Impl {
         float cooldown_9dc{0.0f};   // unit+9DCh stand-in
         bool armed_9dc{false};      // kPlaneCrashConstructCooldownCc13Bound
         bool grounded_9dc{false};   // seen off free flight before the first arm
+        std::uint32_t launch_serial_9dc{0};  // units' 007C5F60 count last taken
     };
     std::vector<PlaneCrashPrev> crash_prev;
     std::vector<GameBulletClassRow> crash_bullets;   // read on first use, by id
@@ -4191,6 +4192,7 @@ struct GameGunneryHost::Impl {
     unsigned long long pc_hits_21{0}, pc_hits_98{0}, pc_hits_99{0}, pc_hits_other{0};
     unsigned long long pc_logged{0}, pc_cooldown_steps{0};
     unsigned long long pc_construct_cooldown_arms{0};
+    unsigned long long pc_launch_spot_arms{0}, pc_launch_spot_airfield_arms{0};
     double pc_blast_damage{0.0};
     // DIAGNOSTIC: the closest any live kamikaze bow came to a hostile hull box.
     float kz_min_gap{-1.0f};
@@ -12710,9 +12712,31 @@ void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
         prev.valid = airborne;
         // 007C091C..007C092D / 007C0C43: the cooldown unit+9DCh, decremented by
         // the step. LABELLED stand-in for 007C5F60's launch-spot stores (3.0 s,
-        // 00CE3854): armed on the first free-flight step, because a host plane is
-        // in state 7 while still on its deck.
-        if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
+        // 00CE3854): armed on every entry to free flight. "Grounded" (any step
+        // off free flight) relies on the deck placement setting +900h = 2
+        // (place_on_launch_spot_007c5f60 in the units host); a host plane is
+        // created in state 7.
+        if constexpr (bsp::kPlaneCrashLaunchArmCc13Bound) {
+            // Packet cc13-cool9dc-b: only 007CFD20 (1.0f, 007CFE78) and 007C5F60
+            // (3.0 at 007C605D, 5.0 for an AirField base at 007C60EA) write +9DCh,
+            // so the constructor value is taken at first sight and the units
+            // host's placement store each time its count moves; a return to
+            // state 7 does not re-arm.
+            std::uint32_t arms = 0;
+            float placed = 0.0f;
+            const bool have_arm = units.plane_launch_spot_arm_9dc(i, arms, placed);
+            if (!prev.armed_9dc) {
+                prev.cooldown_9dc = bsp::kPlaneCrashConstructCooldown;
+                prev.armed_9dc = true;
+                ++pc_construct_cooldown_arms;
+            }
+            if (have_arm && arms != prev.launch_serial_9dc) {
+                prev.cooldown_9dc = placed;
+                prev.launch_serial_9dc = arms;
+                ++pc_launch_spot_arms;
+                if (placed == bsp::kPlaneCrashAirfieldLaunchCooldown) ++pc_launch_spot_airfield_arms;
+            }
+        } else if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
             // Packet cc13-cool9dc: a plane in free flight on every step seen so far
             // never went through 007C5F60, so it still holds 007CFE78's 1.0f.
             if (!airborne) prev.grounded_9dc = true;
@@ -17954,6 +17978,11 @@ void GameGunneryHost::report() {
     if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
         host.log.notef("summary mission gunnery plane crash construct cooldown arms=%llu "
             "(007CFE78 1.0f, packet cc13-cool9dc)", host.pc_construct_cooldown_arms);
+    }
+    if constexpr (bsp::kPlaneCrashLaunchArmCc13Bound) {
+        host.log.notef("summary mission gunnery plane crash launch spot arms=%llu airfield=%llu "
+            "(007C605D 3.0 / 007C60EA 5.0, packet cc13-cool9dc-b)",
+            host.pc_launch_spot_arms, host.pc_launch_spot_airfield_arms);
     }
     host.log.notef("summary mission gunnery ground target origin aims=%llu bound=%d "
         "(006DF520 with 0042D810, packet cc9_ground_target_aim_point)",
