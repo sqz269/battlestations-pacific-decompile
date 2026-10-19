@@ -19836,3 +19836,19 @@ steering them.
 approach-step steering in mode 3 should be checked: with the block skipped, the approach's own
 writes are all that steer the ship. A rudder or throttle write that the host leaves to the output
 block would strand the fleet, where the image would have it written by the approach.
+
+### 3. kLineOfFireLandFromMuzzleBound: ON
+
+This is a gunnery switch, recorded here with the other pairs. 0072CDD0's landscape query 0098ADD0
+starts at the caller's unraised muzzle (0072CDF1 MOV EBX,[ESP+28h]; 0072CE8E PUSH EBX). Only the
+unit walk 0098B130 uses the copy raised by 5.0.
+
+Pairs on aa5aaab54, reference env, 30000 frames:
+
+| row | AA line-of-fire blocks | result |
+| --- | --- | --- |
+| JM08 | 34 / 34 | gameplay identical |
+| USN07 | no queries | identical |
+| USN13 | 420 -> 426 (refusals 1598 -> 1625) | first moved death is plane `bruh #2.5` at 415 s (killer Maru6 -> Maru17). The last player plane `bruh #4.1` dies at 655.76 s instead of 832.57 s (Heavy AA 01 instead of 02), so "Game Over" comes at 659.96 s instead of 834.92 s; the 8 OFF-only deaths are planes that died after 660 s |
+
+Flipped by mechanism.
