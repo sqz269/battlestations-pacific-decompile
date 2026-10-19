@@ -48,7 +48,7 @@ unbound by the lead's ruling.
 
 `0081ACF0`, `006D37A0` (inlines 006D3770), `007378B0`, `007416B0` (inlines 00741180),
 `00743E30`, `00743E60`, `00749780` (JMP 0080E380, renamed thunk_BSP_SessionMessage_SHIP_CREATE_Destruct;
-it had shared its target's name), `0074CC90`, `0074CCC0`, `00750520`, `008139E0` (inlines 0080E380),
+it had shared its target's name; status `existing_recorded_thunk`), `0074CC90`, `0074CCC0`, `00750520`, `008139E0` (inlines 0080E380),
 `0093CC80`, `0093CC90`, `00943F70` (JMP 00943BB0), `0094CAD0` (JMP 0094CA40), `0094E2A0` (TOrderedMap
 vector deleting destructor over 0094CA40 / 0094CAD0, iostdnet allocators 00A51E70 / 00A51EB0),
 `007AC950`, `007AC980`, `007B0ED0`, `007B1050`, `007B2D30`.
