@@ -58,6 +58,38 @@ registers35/36/43/44/46/52 for fog/height/ambient/diffuse/cube/direction only wh
 the Get call succeeds. The gather frame's prefix is an input preimage and is not
 misreported as an output snapshot. These reads change no native draw inputs.
 
+Primary ON10 log lines3544..3550 records successful actual VS/PS readback with
+ambient/cube (1,1.12,1.28), diffuse (1.4,1.36,1.2), direction
+(0.57735,0.57735,0.57735), and SRGBWRITEENABLE0. Both stages contain identical
+system inputs, so the remaining dark image is not explained by missing lighting
+uploads. The actual N180 capture shows faint texture detail.
+
+The installed normal combiner computes distance fog as
+`cFogParams.z*(1-saturate((cFogParams.y-Distance)/(cFogParams.y-cFogParams.x)))`
+and height fog as
+`cFogHeightParams.y*saturate((cFogHeightParams.x-WorldY)/cFogHeightParams.x)`.
+It blends using their maximum. Constructor values read back as (200,7000,0.4)
+and (200,0.4,-120), so height fog contributes about0.31..0.40 over worldY0..45.
+The installed GetFog helper weights the directional colors then blends toward
+ambient fog by vertical direction; it contains no sRGB power operation.
+
+For the explicit clear-air camera diagnostic, the verified native MOVSS/RET4
+setters B84D00 and B84D40 can set SAME-owner +68 and +78 to float+0 bits00000000.
+Gather maps (+6C,+70,+68) to row35 and (+74,+78,+7C) to row36. Keeping constructor
+distances200/7000 and height200 preserves nonzero denominators; setting only these
+two densities makes both authored fog factors exactly0 for finite ship coordinates.
+Camera-file integration belongs to the primary; no shader/postprocess replacement
+is part of this recommendation.
+
+The optional pass-frame observation is absent by default and assigned only on ON
+first-frame records. Immediately before staging draw arguments, B43410 calls it
+once to capture the selected material's live counted texture names/profiles/COM
+pointers, pass selectors/stage bytes/pixel enabled mask, actual device textures0..5
+and level0 descriptions, plus SRGBTEXTURE state. Every GetTexture AddRef is balanced
+by scope-bound Release on success, HRESULT failure with a nonnull result, and C++
+unwind. This changes no texture/sampler/draw inputs. The expected compiled ship
+sampler stages are0ShipMap,1Camo,2LightMap,3SpecularMap,4NormalMap,5ShadowTexture.
+
 The native ambient98h storage gains only trivial field lifetimes at +18/+28/+38
 after B7C290; placement default initialization writes no byte. Its allocation is not
 enlarged and no semantic SceneResource is overlaid. Gather consumes the actual raw
