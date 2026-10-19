@@ -1058,7 +1058,30 @@ public:
     void role_request_0077c470(std::size_t unit, std::uint32_t mask, bool take) override {
         if constexpr (kHudGunnerRoleTakeBound) {
             if (unit != 0 && owner_.units != nullptr) {
+                // kRoleOwnerDeviceWalkBound. SUBSTITUTION, labelled: the image
+                // runs the device walk inside 00780120's loop, per role whose
+                // holder changed (00780393 -> 007803A8 0077FE80 -> vtable[164h]
+                // -> 0095ABE0). The host compares the mask's holders around
+                // its role take here instead, so 4Bh senders other than this
+                // screen get no walk. It should move into the units host's
+                // role_message_4b_00780162 (SHIP_AI_OPEN_ITEMS 296.8).
+                std::int32_t before[bsp::kUnitRoleTableEntries];
+                for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i) {
+                    if (!owner_.units->unit_current_role_slot(unit - 1, i, before[i])) before[i] = 8;
+                }
                 owner_.units->role_request_0077c470(unit - 1, mask, take);
+                if constexpr (kRoleOwnerDeviceWalkBound) {
+                    GameGunneryHost* gunnery = owner_.units->gunnery();
+                    for (int i = 0; i < bsp::kUnitRoleTableEntries && gunnery != nullptr; ++i) {
+                        if ((mask & (1u << i)) == 0) continue;
+                        std::int32_t after = 8;
+                        if (!owner_.units->unit_current_role_slot(unit - 1, i, after)) after = 8;
+                        if (after == before[i]) continue;
+                        // msg+28h: the slot that took the role, or the one releasing it.
+                        gunnery->role_owner_device_walk_0095ac1d(unit - 1, mask,
+                            take ? after : before[i], take);
+                    }
+                }
                 owner_.done("HudWeaponGroupScreen::role_request", 0x0077c470u);
                 return;
             }

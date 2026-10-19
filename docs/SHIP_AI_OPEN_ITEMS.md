@@ -19697,9 +19697,11 @@ player. Single player is `game+1FE4h = 0`. `[unit+1BCh]` is role 4, not role 3.
    00953F60, a release.
 
 This host never ran that walk, so the artillery stayed AI-held (held_ticks 0).
-- Binding: `GameGunneryHost::role_owner_device_walk_0095ac1d`, called from
-  `role_message_4b_00780162`. Details are in docs/PLAYER_GUN_SEAT.md 7.5, which also corrects
-  7.2's "single-player 1".
+- Binding: `GameGunneryHost::role_owner_device_walk_0095ac1d`. It is called from the HUD's
+  role-request site as a labelled substitution, because game_hosts_units.cpp was held. It should
+  move to `role_message_4b_00780162`; local\g53_units_hook.patch in the gunnery52 tree has the
+  6-line version. Details are in docs/PLAYER_GUN_SEAT.md 7.5, which also corrects 7.2's
+  "single-player 1".
 - Preview pair on USN01, same orders, working tree:
   - takes 8 (Northampton's 3 turrets, Dunlap's 5 Function 6 mounts), held_ticks 0 to 5661;
   - no player shells, because the HUD camera aims 10 degrees down at the sea and every 0085ABA0

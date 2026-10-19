@@ -463,8 +463,11 @@ The image's path is the role take:
   - `& 10h`: 00954000. On a take, Function 2/3/4/6 get `vtable[154h](0, slot)`, and Function 6
     also gets 0072D5B0(0, 0). On a release, 00729F70.
   - `& 20h` / `& 80h` (009540D0 / 00954170) stay with the group 4/5 models.
-- **Binding.** `GameUnitsHost::Impl::role_message_4b_00780162` calls
-  `GameGunneryHost::role_owner_device_walk_0095ac1d` when a holder changed. 00729F70 is
+- **Binding.** `GameGunneryHost::role_owner_device_walk_0095ac1d` runs once per role in the mask
+  whose holder changed. SUBSTITUTION, labelled: it is called from the HUD's
+  `role_request_0077c470` (game_hosts_hud.cpp), which compares holders before and after the units
+  host's role take. Other 4Bh senders (Lua 008A6060, 00927D20) therefore get no walk. It should
+  move into `GameUnitsHost::Impl::role_message_4b_00780162`, at the holder change. 00729F70 is
   modelled as in step 3 of section 2. 0072D5B0 is a record, because the host picks the ammo per
   shot. A new summary line, `gunnery role owner device walk takes= releases=`, is printed on both
   sides.
