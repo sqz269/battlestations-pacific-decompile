@@ -102,8 +102,10 @@ The log set is frozen in `reports/cc13_sink_logs.txt`: the 471 bsp_game logs ove
 were written in `cc9-physics1\local` and `cc9-gunnery52\local` in the 36 hours before
 2026-10-19 12:30 UTC, covering 33 missions. These are current main and its pairs. The list was
 made by `python tools/cc13_sink_log_scan.py freeze`, and the table below is the output of `scan`
-over it. (The first version of this table used a moving 36-hour window, 464 logs; it is replaced
-by this frozen set. packet cc13-sinkrng, rev4 N3.) Columns:
+over it. The first version of this table used a moving 36-hour window (464 logs), as did the
+first CC13_SINKRNG.md table. Both one-off scripts, `leak92_scan.py` and `sinkrng_scan.py`, are
+superseded by the frozen list and this tool, and both tables are regenerated from it (packet
+cc13-sinkrng, rev4 N3). Columns:
 - *92h posts*: `LeakManager::route_ship_sink_92h` calls, one per sinking ship;
 - *wreck hits*: `applied_wreck`, the 0074F440 leaks added to a wreck;
 - *sinkTime*: the range of `sunk ship kill depth ... sinkTime=` over the mission's logs.
@@ -138,8 +140,10 @@ USN16 or USN20. Twenty of the 33 missions post at least one 92h.
 destroyer in JM08 (rate_cap 19.38) that is 38.8 water units per second, or 1.9 units over one
 0.05 s step, against a final water of about 4300. For a troop transport (rate_cap 411.36) it is
 41 units against about 84600. Either way, about 0.05 % of the water, once per ship. The sinks to
-kill depth take 60.2 to 254.6 s over the frozen set (the sinkTime column; for example JM08
-66.7-161.2 s, USNOS 68.4-169.8 s). The figures for the destroyer and the transport come from
+kill depth take 60.2 to 254.6 s over the frozen set (the sinkTime column). Per log they are
+narrower. JM08 is 66.7-143.7 s in `p24_off_j8_def.log` and 66.7-161.2 s across its 33 logs.
+USNOS is 69.2-137.3 s in `p23h_off_os.log` (and the other `p22e`/`p23*` USNOS logs) and
+68.4-169.8 s across its 20 logs. The figures for the destroyer and the transport come from
 `p24s3_j8_def.log`.
 
 **The overwrite effect.** It needs a wreck hit inside the one-step window after the death, for
@@ -171,8 +175,13 @@ stream can diverge from there. Kill-depth times can move by a step.
   host's fixed six match it. Image stream 1 also carries the gunnery and ship-AI draws, which the
   host keeps on its gunnery generator (H-G). The host splits one image stream into two
   generators, so whichever generator takes the six draws, the other one misses them.
-  docs/CC13_SINKRNG.md settles which side the image's thread model favours and adds the OFF
-  switch for the other choice (packet cc13-sinkrng, rev4 N1).
+  - In the image, the six draws shift every later main-thread stream-1 draw. That always
+    includes the row 6/14 hit effects and the break-up. It includes the gunnery-pass and
+    pilot-bot draws only when the main thread wins those jobs in the pool race (`00875BB0`,
+    `00E0B6CE = 1`; docs/CC13_RNG_STREAM_CENSUS.md section 3).
+  - So "every later gunnery draw shifts" holds for the main-thread share, not for all of them.
+  - docs/CC13_SINKRNG.md takes H-G as the better approximation and adds the OFF switch
+    `kSinkLeakDrawStreamCc13Bound` (packet cc13-sinkrng, rev4 N1).
 
 ## 6. Expected movers with the switch ON
 
