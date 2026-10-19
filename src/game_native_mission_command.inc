@@ -86,7 +86,7 @@ struct MissionCommandGraph {
   NativeRenderCommandExecutionFrame frame{&system,{&batch_frames[0].frame,&batch_frames[1].frame}};
   NativeRenderCommandExecutionFrame* frame_pointer{&frame};
   U entry_counts[2]{};
-  bool ready{},failed{};
+  bool ready{},executed{},failed{};
   explicit Record(MissionCommandGraph& g):graph(g) {
    std::memcpy(prefix.data(),g.globals.vertex.values.data(),sizeof prefix);
   }
@@ -178,11 +178,11 @@ struct MissionCommandGraph {
    command_lifetime{batch_lifetime,batches,owners,providers.models,strings,
     reinterpret_cast<const char*>(g.profiles(0xce9a38))},
    raw_lifetime{batches,owners,providers.models,raw},
-   frustum{application_camera_axes_crt().dispatch_bypass_0109dd78,*g.profiles(0xd7a208)},
+   frustum{*application_camera_axes_crt().dispatch_bypass_0109dd78,*g.profiles(0xd7a208)},
    camera_prepare{frustum,g.sync,*reinterpret_cast<const volatile double*>(g.profiles(0xce4b48)),
     *reinterpret_cast<const volatile U*>(0x109eea4)},
    camera_command{c.current_renderer_00f8d394,g.profiles(0xd5f0a8),camera_prepare,f.clear},
-   axes{application_camera_axes_crt().dispatch_bypass_0109dd78,*g.profiles(0xd7a24c),*g.profiles(0xce3800)},
+   axes{*application_camera_axes_crt().dispatch_bypass_0109dd78,*g.profiles(0xd7a24c),*g.profiles(0xce3800)},
    mapping{d.renderer,g.sync,d.lock,g.physical_profiles},
    collection{&frustum.length_access,reinterpret_cast<const volatile float*>(g.profiles(0xd7a24c)),
     reinterpret_cast<const volatile double*>(g.profiles(0xce4d70)),
@@ -206,16 +206,16 @@ struct MissionCommandGraph {
    constants{globals.vertex.values.data(),globals.pixel.values.data(),c.current_renderer_00f8d394,service,
     &game_native_renderer_scalar_process().shadow_target_publication_00f8bbf0(),&g.texture_binding,
     collection,providers.animator_types_010900fc,*reinterpret_cast<const volatile float*>(g.profiles(0xd7a238)),
-    c.live_one_00d7a24c,*reinterpret_cast<const volatile float*>(g.profiles(0xce3978)),
+    float_cell(c.live_one_00d7a24c),*reinterpret_cast<const volatile float*>(g.profiles(0xce3978)),
     g.profiles(0xd5f0a8),g.profiles(0xd61d6c),g.profiles(0xd5b5d8),g.profiles(0xd62eb0),
     g.profiles(0xd64478),g.profiles(0xd644b4)},
    passes{c.current_renderer_00f8d394,service,globals.cached_effect,native_shader_register_limit_cell_00e13078(),
     globals.vertex.values.data(),globals.pixel.values.data(),*reinterpret_cast<const volatile float*>(g.profiles(0xd7a208)),
-    *reinterpret_cast<const volatile float*>(g.profiles(0xd7a218)),c.live_one_00d7a24c,g.sync,
+    *reinterpret_cast<const volatile float*>(g.profiles(0xd7a218)),float_cell(c.live_one_00d7a24c),g.sync,
     g.vertex_binding,g.index_binding,g.layout,g.texture_binding,indexed,g.material,f.queue_getter,raw,
     game_native_renderer_scalar_process().increment_iat_00ce221c(),constants,g.profiles(0xd5f0a8),
     g.profiles(0xd61d6c),g.profiles(0xd62a80),g.profiles(0xd61be8)},
-   entries{c.current_renderer_00f8d394,globals.cached_effect,c.live_one_00d7a24c,
+   entries{c.current_renderer_00f8d394,globals.cached_effect,float_cell(c.live_one_00d7a24c),
     g.profiles(0xd5f0a8),g.profiles(0xd61a00),&passes,&render,nullptr,&g.types,nullptr,
     g.profiles(0xd62f58),g.profiles(0xd62fb0),g.profiles(0xd63008)},
    system{&service,&c.current_renderer_00f8d394,&providers.clock.actual_clock_01090ab0,
@@ -237,6 +237,9 @@ struct MissionCommandGraph {
  static NativeRenderActualOwners& given_owners(GameNativeMissionCommandProviders& p) {
   return p.geometry.models.retained_owners;
  }
+ static const volatile float& float_cell(const volatile U& raw) noexcept {
+  return reinterpret_cast<const volatile float&>(raw);
+ }
  static void* __cdecl allocate(std::size_t n) {
   check(n<=std::numeric_limits<U>::max(),"mission native allocation size overflow");
   return singleton_lifetime_allocate({SingletonAllocationKind::object,static_cast<U>(n),n});
@@ -247,6 +250,22 @@ struct MissionCommandGraph {
  }
  NativeTracelineRenderAccess& render_access() noexcept {return render;}
  bool requires_process_retention() const noexcept {return failed || pending!=nullptr;}
+ void observe_failed_frame() {
+  failed=true;
+  if(!pending) {log.note("native_mission_command frame_failed retained=1 pending=0");return;}
+  pending->failed=true;
+  U indexed_calls=0,primitive_calls=0,returned=0,last_stage=0,last_constant=0;
+  for(auto& batch:pending->batch_frames) for(const auto& record:batch.records) {
+   if(record->pass.draw_terminal==0xb24010) ++indexed_calls;
+   if(record->pass.draw_terminal==0xb21b40) ++primitive_calls;
+   if(record->pass.draw_returned) ++returned;
+   if(record->pass.stage) last_stage=record->pass.stage;
+   if(record->constants.reached_callsite) last_constant=record->constants.reached_callsite;
+  }
+  log.notef("native_mission_command frame_failed retained=1 command_invocations=%u entries=%u,%u B24010=%u B21B40=%u returned=%u last_pass=%08x last_constant=%08x sampler_phase=%u",
+   queue_frame.used,pending->entry_counts[0],pending->entry_counts[1],indexed_calls,primitive_calls,returned,
+   last_stage,last_constant,static_cast<U>(pending->system.sampler.phase));
+ }
  void before_device_generation(unsigned long current) {
   check(!failed && !pending,"mission command must drain before a device generation change");
   if(generation!=current) {
@@ -279,10 +298,36 @@ struct MissionCommandGraph {
    log.note("native_mission_command submission_failed retained=1");throw;
   }
  }
+ void execute_before_overlay() {
+  check(pending && pending->ready && !pending->executed && !failed,
+    "mission ordinary command execution is one-shot before overlay");
+  check(frames.queue && frames.queue->commands_14.count_04==1 &&
+    frames.queue->control_20==0 && !frames.queue->context_30 && queue_frame.used==0,
+    "mission command requires its retained single-entry ordinary queue");
+  try {
+   // Original mission render executes its commands before finish/overlay.
+   // Keep the existing BeginScene active; no Begin/End/Present is introduced.
+   execute_native_render_queue_00b1ebe0(*frames.queue,&queue_execution,&queue_frame);
+   pending->executed=true;
+   check(frames.queue->commands_14.count_04==0 && !frames.queue->context_30 && pending->retired(),
+     "mission queue execution did not retire native command owners");
+   U indexed_calls=0,primitive_calls=0,returned=0;
+   for(auto& batch:pending->batch_frames) for(const auto& record:batch.records) {
+    if(record->pass.draw_terminal==0xb24010) ++indexed_calls;
+    if(record->pass.draw_terminal==0xb21b40) ++primitive_calls;
+    if(record->pass.draw_returned) ++returned;
+   }
+   log.notef("native_mission_command execute_before_overlay=B1EBE0/B1D950 command_invocations=%u entries=%u,%u B24010=%u B21B40=%u returned=%u queue_count=0 owners=retired",
+    queue_frame.used,pending->entry_counts[0],pending->entry_counts[1],indexed_calls,primitive_calls,returned);
+  } catch(...) {
+   observe_failed_frame();throw;
+  }
+ }
  void complete_frame() {
   if(!pending) return;
   try {
-   check(pending->ready && !failed && !pending->failed,"mission command frame is not executable");
+   check(pending->ready && pending->executed && !failed && !pending->failed,
+    "mission command did not execute before overlay");
    check(frames.queue && frames.queue->commands_14.count_04==0 && !frames.queue->context_30 && pending->retired(),
     "mission command did not complete native queue/context/batch retirement");
    U indexed_calls=0,primitive_calls=0,returned=0;
