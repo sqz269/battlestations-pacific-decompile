@@ -17,8 +17,9 @@ instead of through the session router. This is timing only." It is half right.
 - **The delivery overwrites the rates.** `0074E860` copies the message's array over the
   manager's array. Any leak a hit adds to the wreck between the post and the delivery
   (`0074F440`) is lost in the image. The host keeps it today.
-- The draws themselves sit on a different stream in the host than in the image. That is a
-  separate substitution, which this packet does not change (see "RNG").
+- The host makes the draws on one of the two generators it splits image stream 1 into. That is
+  a separate substitution, which this packet does not change (see "RNG" and
+  docs/CC13_SINKRNG.md).
 
 So the delay does not move a draw directly. It can move a mission only chaotically, through the
 wreck's pose: shells that hit wrecks draw from the gunnery stream. Rated **minor**, with a cheap
@@ -80,8 +81,8 @@ host keeps that leak.
     stays valid.
   - *Unit death:* the record is posted after the death, by design. A ship that reaches kill depth
     before the next pump would still be delivered. In the image, the id resolve holds a message
-    to a missing entity for ten ticks and then drops it (`007807C4`). Sinking takes 87 s or more
-    in the logs below, so the case does not arise.
+    to a missing entity for ten ticks and then drops it (`007807C4`). Every sink to kill depth in
+    the frozen log set below takes 60 s or more, so the case does not arise.
   - *Mission end:* the queue belongs to the units host and dies with it. In the image, the
     loopback array dies with the session. A record left at teardown is not delivered in either.
   - *When the world is inactive,* the host skips its pump as the image skips rows 9-13. The record
@@ -97,49 +98,59 @@ leak array (the 91h cheat has no host), so this order cannot change a rate.
 
 ## 4. Reach
 
-These are the bsp_game logs from the last 36 hours in `cc9-physics1\local` and
-`cc9-gunnery52\local`, current main and its pairs: 464 logs over 31 missions (script
-`local\leak92_scan.py` in the leak92 tree). Columns:
+The log set is frozen in `reports/cc13_sink_logs.txt`: the 471 bsp_game logs over 100 KB that
+were written in `cc9-physics1\local` and `cc9-gunnery52\local` in the 36 hours before
+2026-10-19 12:30 UTC, covering 33 missions. These are current main and its pairs. The list was
+made by `python tools/cc13_sink_log_scan.py freeze`, and the table below is the output of `scan`
+over it. The first version of this table used a moving 36-hour window (464 logs), as did the
+first CC13_SINKRNG.md table. Both one-off scripts, `leak92_scan.py` and `sinkrng_scan.py`, are
+superseded by the frozen list and this tool, and both tables are regenerated from it (packet
+cc13-sinkrng, rev4 N3). Columns:
 - *92h posts*: `LeakManager::route_ship_sink_92h` calls, one per sinking ship;
-- *wreck hits*: `applied_wreck`, the 0074F440 leaks added to a wreck.
+- *wreck hits*: `applied_wreck`, the 0074F440 leaks added to a wreck;
+- *sinkTime*: the range of `sunk ship kill depth ... sinkTime=` over the mission's logs.
 
-| mission | logs | 92h posts min/median/max | logs with wreck hits | max wreck hits |
-| --- | --- | --- | --- | --- |
-| BSM01 | 28 | 4 / 7 / 12 | 28 | 51 |
-| BSM09 | 61 | 1 / 2 / 10 | 2 | 26 |
-| JM03 | 5 | 16 / 16 / 26 | 5 | 66 |
-| JM05 | 11 | 1 / 1 / 10 | 1 | 21 |
-| JM06 | 12 | 17 / 19 / 20 | 12 | 42 |
-| JM08 | 33 | 1 / 25 / 39 | 26 | 277 |
-| JM16 | 2 | 51 / 51 / 51 | 2 | 136 |
-| PRCP01 | 5 | 9 / 9 / 20 | 5 | 26 |
-| PRCP05 | 6 | 1 / 3 / 5 | 0 | 0 |
-| PRCP07 | 1 | 2 / 2 / 2 | 1 | 10 |
-| PRCP08 | 5 | 1 / 1 / 1 | 5 | 4 |
-| USN01 | 88 | 0 / 4 / 7 | 78 | 8 |
-| USN10 | 2 | 24 / 24 / 24 | 2 | 25 |
-| USN11 | 3 | 3 / 3 / 3 | 0 | 0 |
-| USN12 | 2 | 21 / 21 / 21 | 2 | 37 |
-| USN13 | 4 | 2 / 5 / 5 | 0 | 0 |
-| USN15 | 7 | 15 / 23 / 54 | 7 | 100 |
-| USN21 | 61 | 0 / 16 / 17 | 0 | 0 |
-| USNOS | 21 | 19 / 24 / 37 | 21 | 63 |
-| USNRM01 | 2 | 10 / 11 / 11 | 2 | 11 |
+| mission | logs | 92h posts min/median/max | logs with wreck hits | max wreck hits | sinkTime (s) |
+| --- | --- | --- | --- | --- | --- |
+| BSM01 | 28 | 4 / 7 / 12 | 28 | 51 | 74.8-254.6 |
+| BSM09 | 61 | 1 / 2 / 10 | 2 | 26 | 86.8-161.3 |
+| JM03 | 6 | 0 / 16 / 26 | 5 | 66 | 76.2-130.2 |
+| JM05 | 12 | 0 / 1 / 10 | 1 | 21 | 94.2-104.2 |
+| JM06 | 12 | 17 / 19 / 20 | 12 | 42 | 65.9-149.3 |
+| JM08 | 33 | 1 / 25 / 39 | 26 | 277 | 66.7-161.2 |
+| JM16 | 2 | 51 / 51 / 51 | 2 | 136 | 65.0-139.9 |
+| PRCP01 | 5 | 9 / 9 / 20 | 5 | 26 | 80.0-115.2 |
+| PRCP05 | 6 | 1 / 3 / 5 | 0 | 0 | 96.3-206.9 |
+| PRCP07 | 1 | 2 / 2 / 2 | 1 | 10 | 141.8-153.7 |
+| PRCP08 | 5 | 1 / 1 / 1 | 5 | 4 | 99.9 |
+| USN01 | 88 | 0 / 4 / 7 | 78 | 8 | 68.8-172.9 |
+| USN10 | 2 | 24 / 24 / 24 | 2 | 25 | 75.2-161.6 |
+| USN11 | 3 | 3 / 3 / 3 | 0 | 0 | 156.4-165.8 |
+| USN12 | 2 | 21 / 21 / 21 | 2 | 37 | 80.0-133.8 |
+| USN13 | 4 | 2 / 5 / 5 | 0 | 0 | 91.5-162.6 |
+| USN15 | 7 | 15 / 23 / 54 | 7 | 100 | 78.5-162.7 |
+| USN21 | 65 | 0 / 15 / 17 | 0 | 0 | 60.2-168.9 |
+| USNOS | 20 | 19 / 24 / 37 | 20 | 63 | 68.4-169.8 |
+| USNRM01 | 2 | 10 / 11 / 11 | 2 | 11 | 99.0-167.1 |
 
-No 92h was posted in BSM04, ESMP08, JM02, JM04, JM13, LOMP01, USN04, USN07, USN09, USN16 or USN20.
-Twenty of the 31 missions post at least one 92h.
+No 92h was posted in BSM04, CHG05, ESMP08, JM01, JM02, JM04, JM13, LOMP01, USN04, USN07, USN09,
+USN16 or USN20. Twenty of the 33 missions post at least one 92h.
 
 **Size of the timing effect.** Summed over the leaks, step 6 adds `2cap` in total. For a
 destroyer in JM08 (rate_cap 19.38) that is 38.8 water units per second, or 1.9 units over one
 0.05 s step, against a final water of about 4300. For a troop transport (rate_cap 411.36) it is
 41 units against about 84600. Either way, about 0.05 % of the water, once per ship. The sinks to
-kill depth in the same log take 87 to 153 s (`sunk ship kill depth ... sinkTime=`).
+kill depth take 60.2 to 254.6 s over the frozen set (the sinkTime column). Per log they are
+narrower. JM08 is 66.7-143.7 s in `p24_off_j8_def.log` and 66.7-161.2 s across its 33 logs.
+USNOS is 69.2-137.3 s in `p23h_off_os.log` (and the other `p22e`/`p23*` USNOS logs) and
+68.4-169.8 s across its 20 logs. The figures for the destroyer and the transport come from
+`p24s3_j8_def.log`.
 
 **The overwrite effect.** It needs a wreck hit inside the one-step window after the death, for
 example a shell already in flight. The aggregate counts do not show the timing of the hits, so
 how often that happens is not measured. Missions with wreck hits are the candidates: BSM01,
 JM03, JM06, JM08, JM16, PRCP01, USN01, USN10, USN12, USN15, USNOS and USNRM01. USN21, cc9's
-first re-pair mission, has 16 posts and no wreck hits, so ON there moves only the one-tick rate
+first re-pair mission, has up to 17 posts and no wreck hits, so ON there moves only the one-tick rate
 timing.
 
 **Can it move a mission?** Not through a draw (below). Through physics, yes, but only
@@ -150,7 +161,7 @@ stream can diverge from there. Kill-depth times can move by a step.
 
 ## 5. RNG
 
-- **Image.** The six `00BD2F10` draws (`ECX = 1`) are made at row 15 of the death step, at the
+- **Image.** The `[manager+14h]` = 6 `00BD2F10` draws (`ECX = 1`) are made at row 15 of the death step, at the
   post. The delivery makes no draw. The window the lead asked about (the draws landing in a
   stream-1 window shared with the kill/aim draws) does not open: the delay moves no draw.
 - **Host, ON and OFF.** The draws are made at the same point, the row 15 flush. ON only defers
@@ -159,12 +170,18 @@ stream can diverge from there. Kill-depth times can move by a step.
   on its gunnery stream (`GameGunneryHost::Impl::draw` -> `random_range_00bd2f10`). They come
   from the units host's `release_altitude_draw_00bd2f10`. That stream (`db_release_rng`, keyed per
   unit name when `BSP_GUNNERY_RNG_STREAMS=1`) is shared with the plane AI's dive-bomb, torpedo,
-  dogfight and take-off draws. In the image, each sinking ship takes six draws from stream 1 at
-  row 15. Whether stream 1 is the stream the host's gunnery draws model is not established here.
-  If it is, the image shifts every later gunnery draw by six per sinking ship and the host does
-  not. That would be a larger effect than the delivery timing. Recommended as its own packet:
-  identify which host stream models `00BD2F10` stream 1, then move the leak draws onto it under
-  an OFF switch.
+  dogfight and take-off draws. In the image, each sinking ship takes `[manager+14h]` draws from
+  stream 1 at row 15, one per leak. `0074F490` always sets that count to 6 (`0074F4DD`), so the
+  host's fixed six match it. Image stream 1 also carries the gunnery and ship-AI draws, which the
+  host keeps on its gunnery generator (H-G). The host splits one image stream into two
+  generators, so whichever generator takes the six draws, the other one misses them.
+  - In the image, the six draws shift every later main-thread stream-1 draw. That always
+    includes the row 6/14 hit effects and the break-up. It includes the gunnery-pass and
+    pilot-bot draws only when the main thread wins those jobs in the pool race (`00875BB0`,
+    `00E0B6CE = 1`; docs/CC13_RNG_STREAM_CENSUS.md section 3).
+  - So "every later gunnery draw shifts" holds for the main-thread share, not for all of them.
+  - docs/CC13_SINKRNG.md takes H-G as the better approximation and adds the OFF switch
+    `kSinkLeakDrawStreamCc13Bound` (packet cc13-sinkrng, rev4 N1).
 
 ## 6. Expected movers with the switch ON
 

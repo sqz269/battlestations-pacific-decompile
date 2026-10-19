@@ -19,6 +19,14 @@
 // GameGunneryHost::death_mode_draw_00bd2f10(1, ship, 0, 1), in call order, as
 // every other units-host stream-1 draw routed to gunnery is.
 //
+// H-G is the better approximation, not an exact one: the sink draws always share
+// slot 0 with the row 6/14 hit effects, the break-up and the reseeds (all H-G),
+// but with the plane-AI and gunnery-pass jobs only when the main thread wins the
+// job race (00E0B6CE = 1). The H-G/H-U split stays a labelled substitution.
+// Under BSP_GUNNERY_RNG_STREAMS=1 the ON key (death_mode, ship) is shared with
+// Lua BreakShip / SetDeadMeat draws on the same ship. The count is exact:
+// 0074F4DD fixes [manager+14h] at 6.
+//
 // OFF is identical: the ON-only call is behind `if constexpr`. Not yet
 // game-validated.
 
