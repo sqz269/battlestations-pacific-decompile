@@ -1,0 +1,1539 @@
+{
+  "packet": "oct18b-nA2",
+  "created_utc": "2026-10-19T05:49:41.562898+00:00",
+  "assigned_row_file": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\local\\codex_new_nA.txt",
+  "address_bounds": [
+    "004f16f0",
+    "006d60b0"
+  ],
+  "assigned_count": 66,
+  "reconstructed_count": 55,
+  "library_count": 11,
+  "blocked_count": 0,
+  "build": {
+    "state": "passed",
+    "command": "./scripts/build.ps1",
+    "log": "local/oct18b_nA2_build_final.txt",
+    "checks": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "initial_full_log": "local/oct18b_nA2_build.txt",
+    "initial_full_log_sha256": "0d5f3187aa4bcf857ada6661ae58db409e6606e0c1e4cef57ac71de60c9461d8"
+  },
+  "evidence_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_by": "bsp.py ghidra client.verify before export and bytes batches"
+  },
+  "scope": "Build-only source reconstruction; no gameplay host changes, game runs, native-entry replacement or ABI validation.",
+  "rows": [
+    {
+      "segment": 11,
+      "address": "004f16f0",
+      "body_bytes": 3,
+      "old_ghidra_name": "FUN_004f16f0",
+      "name": "ignore_argument_004f16f0",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX ignored; one unused stack DWORD; RET4. No defined return value.",
+      "evidence": "Whole assembly is RET4. 004F16F0 and004F1710 occupy entity vtable CEA218 slots96/95; 006BA440 is CFB9C8 slot1; 006578B0 has no known callers. Shared instruction-identical implementation; semantic role of anonymous entries remains unknown.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_ignore_argument_004f16f0",
+      "export": "exports/bsp/functions/004f16f0"
+    },
+    {
+      "segment": 11,
+      "address": "004f1710",
+      "body_bytes": 3,
+      "old_ghidra_name": "FUN_004f1710",
+      "name": "ignore_argument_004f16f0",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX ignored; one unused stack DWORD; RET4. No defined return value.",
+      "evidence": "Whole assembly is RET4. 004F16F0 and004F1710 occupy entity vtable CEA218 slots96/95; 006BA440 is CFB9C8 slot1; 006578B0 has no known callers. Shared instruction-identical implementation; semantic role of anonymous entries remains unknown.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_ignore_argument_004f16f0_004f1710",
+      "export": "exports/bsp/functions/004f1710"
+    },
+    {
+      "segment": 11,
+      "address": "004f17d0",
+      "body_bytes": 3,
+      "old_ghidra_name": "FUN_004f17d0",
+      "name": "return_zero_004f17d0",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX ignored; XOR EAX,EAX; RET.",
+      "evidence": "Whole3-byte body returns DWORD0;42 entity vtable slot93 references including CEA218,CEA570,CF8C08. No inferred state or side effects.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_return_zero_004f17d0",
+      "export": "exports/bsp/functions/004f17d0"
+    },
+    {
+      "segment": 14,
+      "address": "0051e9a0",
+      "body_bytes": 8,
+      "old_ghidra_name": "FUN_0051e9a0",
+      "name": "binoculars_observer_delete_0051e9a0",
+      "source": "src/view_seg14_cc13.cpp",
+      "abi": "ECX=observer subobject; flags stack/RET4 through0051ED40; EAX=base identity.",
+      "evidence": "SUB ECX,8; JMP0051ED40. Inspected target body:0051EA20 destructor then optional_free for flags bit0. Reuses existing binoculars destructor and free hook. VtableCEC998 slot0.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_binoculars_observer_delete_0051e9a0",
+      "export": "exports/bsp/functions/0051e9a0"
+    },
+    {
+      "segment": 14,
+      "address": "0051f380",
+      "body_bytes": 1,
+      "old_ghidra_name": "FUN_0051f380",
+      "name": "callback_noop_0051f380",
+      "source": "src/view_seg14_cc13.cpp",
+      "abi": "ECX ignored; RET.",
+      "evidence": "Whole RET, callback vtableCECA28 slot7.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_callback_noop_0051f380",
+      "export": "exports/bsp/functions/0051f380"
+    },
+    {
+      "segment": 14,
+      "address": "0051f390",
+      "body_bytes": 3,
+      "old_ghidra_name": "FUN_0051f390",
+      "name": "callback_noop_0051f390",
+      "source": "src/view_seg14_cc13.cpp",
+      "abi": "ECX ignored; unused DWORD stack/RET4.",
+      "evidence": "Whole RET4, callback vtableCECA28 slot8.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_callback_noop_0051f390",
+      "export": "exports/bsp/functions/0051f390"
+    },
+    {
+      "segment": 14,
+      "address": "00521160",
+      "body_bytes": 33,
+      "old_ghidra_name": "FUN_00521160",
+      "name": "callback_collect_member_00521160",
+      "source": "src/view_seg14_cc13.cpp",
+      "abi": "ECX=owner; destination vector stack/RET4.",
+      "evidence": "ADD ECX,1C; PUSH ECX; MOV ECX,[ESP+8]; CALL004D6790. Appends address of owner+1C into caller vector; pseudocode lost the destination argument. CECA28 slot9.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_callback_collect_member_00521160",
+      "export": "exports/bsp/functions/00521160"
+    },
+    {
+      "segment": 14,
+      "address": "005212e0",
+      "body_bytes": 37,
+      "old_ghidra_name": "FUN_005212e0",
+      "name": "hud_screen_2f_exit_005212e0",
+      "source": "src/view_seg14_cc13.cpp",
+      "abi": "ECX=screen; RET.",
+      "evidence": "Load globalE198C4, receiver[root+50], call005470C0 first; reload screen+1C, if nonnull call0077C470 with1FE,0. CF79B8 slot7. Recovered calls are mandatory methods on a separate existing-family host extension.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_hud_screen_2f_exit_005212e0",
+      "export": "exports/bsp/functions/005212e0"
+    },
+    {
+      "segment": 15,
+      "address": "0052d500",
+      "body_bytes": 9,
+      "old_ghidra_name": "FUN_0052d500",
+      "name": "clear_word_0052d500",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX=word; EAX=identity; RET.",
+      "evidence": "MOV EAX,ECX; MOV DWORD[EAX],0; RET. Source returns the original pointer, which pseudocode omitted.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_clear_word_0052d500",
+      "export": "exports/bsp/functions/0052d500"
+    },
+    {
+      "segment": 15,
+      "address": "00534550",
+      "body_bytes": 7,
+      "old_ghidra_name": "FUN_00534550",
+      "name": "high_byte_00534550",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX=value; AL=high byte; plain RET.",
+      "evidence": "PUSH ECX; MOV AL,[ESP+3]; POP ECX; RET. Only the low-byte result is meaningful.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_high_byte_00534550",
+      "export": "exports/bsp/functions/00534550"
+    },
+    {
+      "segment": 16,
+      "address": "005457f0",
+      "body_bytes": 141,
+      "old_ghidra_name": "FUN_005457f0",
+      "name": "class_kind_matches_bits_005457f0",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX=object; requested kind on stack; RET4; AL predicate, high24 EAX retained from kind.",
+      "evidence": "Whole141-byte listing compares +8 against exact kind or families1:{2,3},4:{5,6,7},12:{15,13,14},8:{9..15,18,19}. Native MOV AL/XOR AL leaves upper kind bits; Source returns the full observed EAX bits. Tail-jump caller00906420.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_class_kind_matches_bits_005457f0",
+      "export": "exports/bsp/functions/005457f0"
+    },
+    {
+      "segment": 16,
+      "address": "0054d450",
+      "body_bytes": 7,
+      "old_ghidra_name": "FUN_0054d450",
+      "name": "word_ec_0054d450",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX=object; EAX=DWORD[this+EC]; RET.",
+      "evidence": "Whole7-byte MOV/RET getter; no known callers. Field meaning remains unclassified.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_word_ec_0054d450",
+      "export": "exports/bsp/functions/0054d450"
+    },
+    {
+      "segment": 16,
+      "address": "00553060",
+      "body_bytes": 4,
+      "old_ghidra_name": "FUN_00553060",
+      "name": "member_c_00553060",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX=object; EAX=this+C; RET.",
+      "evidence": "Whole4-byte LEA/RET; no known callers. No invented member layout beyond offset.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_member_c_00553060",
+      "export": "exports/bsp/functions/00553060"
+    },
+    {
+      "segment": 18,
+      "address": "0056b250",
+      "body_bytes": 15,
+      "old_ghidra_name": "FUN_0056b250",
+      "name": "STL_CheckedEndpoint_0056b250",
+      "source": "reports/oct18b_nA2.json",
+      "abi": "ECX=container; outputiteratorstack/RET4; EAX=out.",
+      "evidence": "Whole15-byte body constructs debug iterator pair{owner,owner+4}; adjacent0056B260 is taggedSTL_Tree_Construct. This is a container iterator endpoint instantiation, not game logic; exact container specialization is not established.",
+      "uncertainty": "Template type/name is descriptive; compiler/library instantiation is outside game reconstruction credit.",
+      "outcome": "library_instantiation_out_of_scope",
+      "status": "library_instantiation_out_of_scope",
+      "ghidra_name": "STL_CheckedEndpoint_0056b250",
+      "export": "exports/bsp/functions/0056b250"
+    },
+    {
+      "segment": 19,
+      "address": "0057d350",
+      "body_bytes": 33,
+      "old_ghidra_name": "FUN_0057d350",
+      "name": "set_fields_0057d350",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX=object; DWORD,DWORD,BYTE in three stack slots; RET0C.",
+      "evidence": "Whole33-byte listing stores arguments at+9C,+A0,+A4 in order; field meanings unknown.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_set_fields_0057d350",
+      "export": "exports/bsp/functions/0057d350"
+    },
+    {
+      "segment": 19,
+      "address": "0057fac0",
+      "body_bytes": 1,
+      "old_ghidra_name": "FUN_0057fac0",
+      "name": "empty_leaf_0057fac0",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX unused; plain RET; no defined return value.",
+      "evidence": "Whole1-byte body is RET; no observed callers. Shared implementation of the complete empty body; no invented role.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_empty_leaf_0057fac0",
+      "export": "exports/bsp/functions/0057fac0"
+    },
+    {
+      "segment": 20,
+      "address": "005828d0",
+      "body_bytes": 5,
+      "old_ghidra_name": "FUN_005828d0",
+      "name": "identity_005828d0",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX=object; two unused stack DWORDs; EAX=identity; RET8.",
+      "evidence": "Whole5-byte MOV EAX,ECX; RET8. Parameters lost by pseudocode retained as explicit unused arguments.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_identity_005828d0",
+      "export": "exports/bsp/functions/005828d0"
+    },
+    {
+      "segment": 20,
+      "address": "00583230",
+      "body_bytes": 15,
+      "old_ghidra_name": "FUN_00583230",
+      "name": "STL_CheckedEndpoint_00583230",
+      "source": "reports/oct18b_nA2.json",
+      "abi": "ECX=container; outputiteratorstack/RET4; EAX=out.",
+      "evidence": "Instruction-identical15-byte endpoint pair constructor to0056B250:out[1]=this[1],out[0]=this; checked iterator layout and identical compiler pattern establish library family.",
+      "uncertainty": "Template type/name is descriptive; compiler/library instantiation is outside game reconstruction credit.",
+      "outcome": "library_instantiation_out_of_scope",
+      "status": "library_instantiation_out_of_scope",
+      "ghidra_name": "STL_CheckedEndpoint_00583230",
+      "export": "exports/bsp/functions/00583230"
+    },
+    {
+      "segment": 23,
+      "address": "005edaa0",
+      "body_bytes": 51,
+      "old_ghidra_name": "FUN_005edaa0",
+      "name": "STL_CheckedVectorIterator_005edaa0",
+      "source": "reports/oct18b_nA2.json",
+      "abi": "ECX=iteratorout; position,containerstack/RET8; EAX=out.",
+      "evidence": "Whole51-byte debug-vector iterator construction:clear owner, verify container nonnull and begin<=position<=end usingcontainer+4/+8; callMSVC invaliditeratorBF6713;publish{owner,position}. No game fields.",
+      "uncertainty": "Template type/name is descriptive; compiler/library instantiation is outside game reconstruction credit.",
+      "outcome": "library_instantiation_out_of_scope",
+      "status": "library_instantiation_out_of_scope",
+      "ghidra_name": "STL_CheckedVectorIterator_005edaa0",
+      "export": "exports/bsp/functions/005edaa0"
+    },
+    {
+      "segment": 24,
+      "address": "006054c0",
+      "body_bytes": 195,
+      "old_ghidra_name": "FUN_006054c0",
+      "name": "update_phase_widgets_006054c0",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX=object; float phase stack argument; RET4.",
+      "evidence": "Whole195-byte x87/SSE listing: store +20; widget+4 uses incoming phase/period+18; widget+8 reloads phase+20/period+1C after callbacks. FDIV,FADD ST0,ST0,FMUL doubleCE3D28,FADD float+14,spill float; call00605070; optional SUBSS(-0,angle); virtual+44. Live constant bytes CE3D28=00 00 00 60 FB 21 09 40 and D7A208=00 00 00 80 verified. Caller00605C80.",
+      "uncertainty": "Uses established53-bit x87 arithmetic model. Wrap and widget callbacks are explicit recovered contracts; x87 control-word, exceptional values, exact native emitted schedule and game behavior remain unproved.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_update_phase_widgets_006054c0",
+      "export": "exports/bsp/functions/006054c0"
+    },
+    {
+      "segment": 25,
+      "address": "00612970",
+      "body_bytes": 5,
+      "old_ghidra_name": "FUN_00612970",
+      "name": "identity_00612970",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX=object; one unused stack DWORD; EAX=identity; RET4.",
+      "evidence": "Whole5-byte MOV EAX,ECX; RET4; no observed callers.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_identity_00612970",
+      "export": "exports/bsp/functions/00612970"
+    },
+    {
+      "segment": 25,
+      "address": "00612af0",
+      "body_bytes": 1,
+      "old_ghidra_name": "FUN_00612af0",
+      "name": "empty_leaf_0057fac0",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX unused; plain RET; no defined return value.",
+      "evidence": "Whole1-byte body is RET; no observed callers. Shared implementation of the complete empty body; no invented role.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_empty_leaf_0057fac0_00612af0",
+      "export": "exports/bsp/functions/00612af0"
+    },
+    {
+      "segment": null,
+      "address": "0061d5b0",
+      "body_bytes": 11,
+      "old_ghidra_name": "FUN_0061d5b0",
+      "name": "STL_SwapDword_0061d5b0",
+      "source": "reports/oct18b_nA2.json",
+      "abi": "ECX,EDX=DWORD pointers; RET.",
+      "evidence": "Whole11-byte compiler generic swap:loadbothpointedDWORDs and exchangethem; immediately precedes taggedSTL_PushHeap_Int_0061D5C0. Primitive template specialization, no game state.",
+      "uncertainty": "Template type/name is descriptive; compiler/library instantiation is outside game reconstruction credit.",
+      "outcome": "library_instantiation_out_of_scope",
+      "status": "library_instantiation_out_of_scope",
+      "ghidra_name": "STL_SwapDword_0061d5b0",
+      "export": "exports/bsp/functions/0061d5b0"
+    },
+    {
+      "segment": 26,
+      "address": "0061dc90",
+      "body_bytes": 41,
+      "old_ghidra_name": "FUN_0061dc90",
+      "name": "STL_TreeLowerBoundInt_0061dc90",
+      "source": "reports/oct18b_nA2.json",
+      "abi": "ECX=tree; keypointerstack/RET4; EAX=node.",
+      "evidence": "Whole41-byte red-black-tree lower_bound:head+4,root+4,left+0,right+8,signedintegerkey+0C,nilbyte+1D; descendright fornodekey<key elseleft whiletrackingcandidate. MSVC_STL node/header shape and generic comparator identify template body.",
+      "uncertainty": "Template type/name is descriptive; compiler/library instantiation is outside game reconstruction credit.",
+      "outcome": "library_instantiation_out_of_scope",
+      "status": "library_instantiation_out_of_scope",
+      "ghidra_name": "STL_TreeLowerBoundInt_0061dc90",
+      "export": "exports/bsp/functions/0061dc90"
+    },
+    {
+      "segment": 26,
+      "address": "0061e1a0",
+      "body_bytes": 74,
+      "old_ghidra_name": "FUN_0061e1a0",
+      "name": "STL_AdjustHeapInt_0061e1a0",
+      "source": "reports/oct18b_nA2.json",
+      "abi": "ECX=array,EDX=hole; length,value stack/RET8.",
+      "evidence": "Whole74-byte standard adjust_heap:child=2*hole+2,choosegreaterofright/left,sinkhole,oddchildtail,then taggedSTL_PushHeap_Int_0061D5C0. Three genericheapcallerfunctions0061E250/EB60/F130; no game behavior.",
+      "uncertainty": "Template type/name is descriptive; compiler/library instantiation is outside game reconstruction credit.",
+      "outcome": "library_instantiation_out_of_scope",
+      "status": "library_instantiation_out_of_scope",
+      "ghidra_name": "STL_AdjustHeapInt_0061e1a0",
+      "export": "exports/bsp/functions/0061e1a0"
+    },
+    {
+      "segment": 26,
+      "address": "00639c10",
+      "body_bytes": 6,
+      "old_ghidra_name": "FUN_00639c10",
+      "name": "STL_AllocatorMaxSizeDword_00639c10",
+      "source": "reports/oct18b_nA2.json",
+      "abi": "Unusedreceiver; EAX=3FFFFFFFh; RET.",
+      "evidence": "Whole6-byte constantreturnUINT_MAX/sizeof(DWORD),the32-bit allocator max_size formula for4-bytevalues; no call,globalaccessoror game field. Neighbors00639B60/BA0/D80/DB0/DE0 are taggedstl_instantiation and00639C60/CB0 are taggedSTL_Tree_Rotate. Concrete allocator-size pattern in anSTLinstantiationisland; template element identity is provisional.",
+      "uncertainty": "Template type/name is descriptive; compiler/library instantiation is outside game reconstruction credit.",
+      "outcome": "library_instantiation_out_of_scope",
+      "status": "library_instantiation_out_of_scope",
+      "ghidra_name": "STL_AllocatorMaxSizeDword_00639c10",
+      "export": "exports/bsp/functions/00639c10"
+    },
+    {
+      "segment": 27,
+      "address": "006578b0",
+      "body_bytes": 3,
+      "old_ghidra_name": "FUN_006578b0",
+      "name": "ignore_argument_004f16f0",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX ignored; one unused stack DWORD; RET4. No defined return value.",
+      "evidence": "Whole assembly is RET4. 004F16F0 and004F1710 occupy entity vtable CEA218 slots96/95; 006BA440 is CFB9C8 slot1; 006578B0 has no known callers. Shared instruction-identical implementation; semantic role of anonymous entries remains unknown.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_ignore_argument_004f16f0_006578b0",
+      "export": "exports/bsp/functions/006578b0"
+    },
+    {
+      "segment": 27,
+      "address": "00657a70",
+      "body_bytes": 19,
+      "old_ghidra_name": "FUN_00657a70",
+      "name": "STL_ConstructDword_00657a70",
+      "source": "reports/oct18b_nA2.json",
+      "abi": "Destination,source stack; RET8.",
+      "evidence": "Whole19-byte conditionalplacement construction:ifdestinationnonnull,copyoneDWORDfromsource; adjacent00657A20 is taggedSTL_List_Clear. MSVC allocator/_Construct specialization pattern without game-state access.",
+      "uncertainty": "Template type/name is descriptive; compiler/library instantiation is outside game reconstruction credit.",
+      "outcome": "library_instantiation_out_of_scope",
+      "status": "library_instantiation_out_of_scope",
+      "ghidra_name": "STL_ConstructDword_00657a70",
+      "export": "exports/bsp/functions/00657a70"
+    },
+    {
+      "segment": 27,
+      "address": "006594a0",
+      "body_bytes": 72,
+      "old_ghidra_name": "FUN_006594a0",
+      "name": "STL_ListTidy_006594a0",
+      "source": "reports/oct18b_nA2.json",
+      "abi": "ECX=list; RET.",
+      "evidence": "Whole72-byte listtidy resetscircularheadnext/previous,size+8=0,walksfreesallnodes,freessentinel,nullshead+4. Called by taggedSTL_List_Destroy_0065B1D0 via tailjump. Direct library provenance.",
+      "uncertainty": "Template type/name is descriptive; compiler/library instantiation is outside game reconstruction credit.",
+      "outcome": "library_instantiation_out_of_scope",
+      "status": "library_instantiation_out_of_scope",
+      "ghidra_name": "STL_ListTidy_006594a0",
+      "export": "exports/bsp/functions/006594a0"
+    },
+    {
+      "segment": 27,
+      "address": "0067e0a0",
+      "body_bytes": 51,
+      "old_ghidra_name": "FUN_0067e0a0",
+      "name": "STL_CheckedVectorIterator_0067e0a0",
+      "source": "reports/oct18b_nA2.json",
+      "abi": "ECX=iteratorout; position,containerstack/RET8; EAX=out.",
+      "evidence": "Whole51-byte body is identical checked-vector iterator constructor to005EDAA0, including begin/end checks andBF6713 invaliditerator handler.",
+      "uncertainty": "Template type/name is descriptive; compiler/library instantiation is outside game reconstruction credit.",
+      "outcome": "library_instantiation_out_of_scope",
+      "status": "library_instantiation_out_of_scope",
+      "ghidra_name": "STL_CheckedVectorIterator_0067e0a0",
+      "export": "exports/bsp/functions/0067e0a0"
+    },
+    {
+      "segment": 29,
+      "address": "00697fd0",
+      "body_bytes": 57,
+      "old_ghidra_name": "FUN_00697fd0",
+      "name": "STL_UninitializedCopyVector16_00697fd0",
+      "source": "reports/oct18b_nA2.json",
+      "abi": "First,last,destinationstack;cdeclempty RET/EAX=end.",
+      "evidence": "Whole57-byte stride16range loop callstaggedSTL_Vector_Assign_00697BD0 on eachrecord,thenreturnsdestination+floor((last-first)/16)*16. Compiler vector-element uninitialized-copy/assignment specialization; no game fields.",
+      "uncertainty": "Template type/name is descriptive; compiler/library instantiation is outside game reconstruction credit.",
+      "outcome": "library_instantiation_out_of_scope",
+      "status": "library_instantiation_out_of_scope",
+      "ghidra_name": "STL_UninitializedCopyVector16_00697fd0",
+      "export": "exports/bsp/functions/00697fd0"
+    },
+    {
+      "segment": 29,
+      "address": "006ad4d0",
+      "body_bytes": 84,
+      "old_ghidra_name": "FUN_006ad4d0",
+      "name": "write_entity_id_registries_006ad4d0",
+      "source": "src/save_settings_cc13.cpp",
+      "abi": "ECX=two registry owners; archive stack; RET4.",
+      "evidence": "Whole84-byte listing: archive slot4(0,cont0),00951940(this,archive),slot8; then slot4(0,cont1),00951940(this+54,archive),slot8. Extends existing matching reader-family interface with table-index callback; no replacement registry invented.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_write_entity_id_registries_006ad4d0",
+      "export": "exports/bsp/functions/006ad4d0"
+    },
+    {
+      "segment": 29,
+      "address": "006b7ee0",
+      "body_bytes": 22,
+      "old_ghidra_name": "FUN_006b7ee0",
+      "name": "lua_stack_is_nil_006b7ee0",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX=context; stack index; RET4; EAX=(lua_type==0).",
+      "evidence": "Reads Lua state fromcontext+4, index fromstack, calls stock lua_type00A675A0; NEG/SBB/ADD returns1 exactly when type0. Caller00884530.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_lua_stack_is_nil_006b7ee0",
+      "export": "exports/bsp/functions/006b7ee0"
+    },
+    {
+      "segment": 29,
+      "address": "006b7f00",
+      "body_bytes": 25,
+      "old_ghidra_name": "FUN_006b7f00",
+      "name": "lua_stack_is_table_006b7f00",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX=context; stack index; RET4; EAX=(lua_type==5).",
+      "evidence": "Same Lua context+4/index binding; explicit CMP EAX,5/SETZ. Caller00884530. Interpreter remains a stock binding.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_lua_stack_is_table_006b7f00",
+      "export": "exports/bsp/functions/006b7f00"
+    },
+    {
+      "segment": 29,
+      "address": "006ba440",
+      "body_bytes": 3,
+      "old_ghidra_name": "FUN_006ba440",
+      "name": "ignore_argument_004f16f0",
+      "source": "src/oct18b_nA2_misc.cpp",
+      "abi": "ECX ignored; one unused stack DWORD; RET4. No defined return value.",
+      "evidence": "Whole assembly is RET4. 004F16F0 and004F1710 occupy entity vtable CEA218 slots96/95; 006BA440 is CFB9C8 slot1; 006578B0 has no known callers. Shared instruction-identical implementation; semantic role of anonymous entries remains unknown.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_ignore_argument_004f16f0_006ba440",
+      "export": "exports/bsp/functions/006ba440"
+    },
+    {
+      "segment": 29,
+      "address": "006bc440",
+      "body_bytes": 44,
+      "old_ghidra_name": "FUN_006bc440",
+      "name": "airbase_do_launch_slot_write_006bc440",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; stream stack argument; RET4.",
+      "evidence": "Whole assembly and pseudocode reviewed; CF85F0 slot1; write common byte1C:1 and DWORD20:8. First calls existing extended-header0075B480/4C0. Writers use cursor directly; readers ADD EDI,4 after header. Reuses native cursor/field functions preserving widths, order and existing unchecked behavior.",
+      "uncertainty": "Names are provisional. Complete codec normal bodies use existing Source cursor/header implementations; constructor/profile wiring, native ABI, wire fixtures and live game behavior are not verified.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_do_launch_slot_write_006bc440",
+      "export": "exports/bsp/functions/006bc440"
+    },
+    {
+      "segment": 29,
+      "address": "006bc470",
+      "body_bytes": 46,
+      "old_ghidra_name": "FUN_006bc470",
+      "name": "airbase_do_launch_slot_read_006bc470",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; stream stack argument; RET4.",
+      "evidence": "Whole assembly and pseudocode reviewed; CF85F0 slot2; read common byte1C:1 and DWORD20:8. First calls existing extended-header0075B480/4C0. Writers use cursor directly; readers ADD EDI,4 after header. Reuses native cursor/field functions preserving widths, order and existing unchecked behavior.",
+      "uncertainty": "Names are provisional. Complete codec normal bodies use existing Source cursor/header implementations; constructor/profile wiring, native ABI, wire fixtures and live game behavior are not verified.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_do_launch_slot_read_006bc470",
+      "export": "exports/bsp/functions/006bc470"
+    },
+    {
+      "segment": 29,
+      "address": "006bd8c0",
+      "body_bytes": 83,
+      "old_ghidra_name": "FUN_006bd8c0",
+      "name": "airbase_set_slot_write_006bd8c0",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; stream stack argument; RET4.",
+      "evidence": "Whole assembly and pseudocode reviewed; CF8624 slot1; write common byte1C:1 then DWORD20:6,24:10,28:6,2C:4. First calls existing extended-header0075B480/4C0. Writers use cursor directly; readers ADD EDI,4 after header. Reuses native cursor/field functions preserving widths, order and existing unchecked behavior.",
+      "uncertainty": "Names are provisional. Complete codec normal bodies use existing Source cursor/header implementations; constructor/profile wiring, native ABI, wire fixtures and live game behavior are not verified.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_set_slot_write_006bd8c0",
+      "export": "exports/bsp/functions/006bd8c0"
+    },
+    {
+      "segment": 29,
+      "address": "006bd920",
+      "body_bytes": 85,
+      "old_ghidra_name": "FUN_006bd920",
+      "name": "airbase_set_slot_read_006bd920",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; stream stack argument; RET4.",
+      "evidence": "Whole assembly and pseudocode reviewed; CF8624 slot2; read common byte1C:1 then DWORD20:6,24:10,28:6,2C:4. First calls existing extended-header0075B480/4C0. Writers use cursor directly; readers ADD EDI,4 after header. Reuses native cursor/field functions preserving widths, order and existing unchecked behavior.",
+      "uncertainty": "Names are provisional. Complete codec normal bodies use existing Source cursor/header implementations; constructor/profile wiring, native ABI, wire fixtures and live game behavior are not verified.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_set_slot_read_006bd920",
+      "export": "exports/bsp/functions/006bd920"
+    },
+    {
+      "segment": 29,
+      "address": "006bd9a0",
+      "body_bytes": 57,
+      "old_ghidra_name": "FUN_006bd9a0",
+      "name": "airbase_stock_item_write_006bd9a0",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; stream stack argument; RET4.",
+      "evidence": "Whole assembly and pseudocode reviewed; CF8638 slot1; write common byte1C:1 then DWORD20:10,24:8. First calls existing extended-header0075B480/4C0. Writers use cursor directly; readers ADD EDI,4 after header. Reuses native cursor/field functions preserving widths, order and existing unchecked behavior.",
+      "uncertainty": "Names are provisional. Complete codec normal bodies use existing Source cursor/header implementations; constructor/profile wiring, native ABI, wire fixtures and live game behavior are not verified.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_stock_item_write_006bd9a0",
+      "export": "exports/bsp/functions/006bd9a0"
+    },
+    {
+      "segment": 29,
+      "address": "006bda80",
+      "body_bytes": 59,
+      "old_ghidra_name": "FUN_006bda80",
+      "name": "airbase_stock_item_read_006bda80",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; stream stack argument; RET4.",
+      "evidence": "Whole assembly and pseudocode reviewed; CF8638 slot2; read common byte1C:1 then DWORD20:10,24:8. First calls existing extended-header0075B480/4C0. Writers use cursor directly; readers ADD EDI,4 after header. Reuses native cursor/field functions preserving widths, order and existing unchecked behavior.",
+      "uncertainty": "Names are provisional. Complete codec normal bodies use existing Source cursor/header implementations; constructor/profile wiring, native ABI, wire fixtures and live game behavior are not verified.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_stock_item_read_006bda80",
+      "export": "exports/bsp/functions/006bda80"
+    },
+    {
+      "segment": 29,
+      "address": "006bdb00",
+      "body_bytes": 34,
+      "old_ghidra_name": "FUN_006bdb00",
+      "name": "airbase_type86_is_type_006bdb00",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX ignored; type stack; RET4; EAX=0/1.",
+      "evidence": "Whole34-byte full-DWORD compare predicate accepts86h,49h,46h; vtableCF864C slot3. Adds a callable predicate without inventing a concrete message constructor.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_type86_is_type_006bdb00",
+      "export": "exports/bsp/functions/006bdb00"
+    },
+    {
+      "segment": 29,
+      "address": "006bdb30",
+      "body_bytes": 45,
+      "old_ghidra_name": "FUN_006bdb30",
+      "name": "airbase_type86_write_006bdb30",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; stream stack argument; RET4.",
+      "evidence": "Whole assembly and pseudocode reviewed; CF864C slot1; write common byte1C:1 then WORD20:12. First calls existing extended-header0075B480/4C0. Writers use cursor directly; readers ADD EDI,4 after header. Reuses native cursor/field functions preserving widths, order and existing unchecked behavior.",
+      "uncertainty": "Names are provisional. Complete codec normal bodies use existing Source cursor/header implementations; constructor/profile wiring, native ABI, wire fixtures and live game behavior are not verified.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_type86_write_006bdb30",
+      "export": "exports/bsp/functions/006bdb30"
+    },
+    {
+      "segment": 29,
+      "address": "006bdb60",
+      "body_bytes": 46,
+      "old_ghidra_name": "FUN_006bdb60",
+      "name": "airbase_type86_read_006bdb60",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; stream stack argument; RET4.",
+      "evidence": "Whole assembly and pseudocode reviewed; CF864C slot2; read common byte1C:1 then WORD20:12. First calls existing extended-header0075B480/4C0. Writers use cursor directly; readers ADD EDI,4 after header. Reuses native cursor/field functions preserving widths, order and existing unchecked behavior.",
+      "uncertainty": "Names are provisional. Complete codec normal bodies use existing Source cursor/header implementations; constructor/profile wiring, native ABI, wire fixtures and live game behavior are not verified.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_type86_read_006bdb60",
+      "export": "exports/bsp/functions/006bdb60"
+    },
+    {
+      "segment": 29,
+      "address": "006bdb90",
+      "body_bytes": 73,
+      "old_ghidra_name": "FUN_006bdb90",
+      "name": "airbase_type86_has_entity_bits_006bdb90",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; RET; AL=payload!=null, high24EAX preserved frompayload.",
+      "evidence": "Whole73-byte listing reads WORD+20, signed JGE splitF89A10; subtract baseF89A0C/F89A60,shift4,load tableF89A54/F89AA8 slot+C; setAL while preservingupper24. Uses existing live ObjectHandleTables aliases; no zero guard or bounds check added.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_type86_has_entity_bits_006bdb90",
+      "export": "exports/bsp/functions/006bdb90"
+    },
+    {
+      "segment": 29,
+      "address": "006bdce0",
+      "body_bytes": 68,
+      "old_ghidra_name": "FUN_006bdce0",
+      "name": "airbase_set_orders_write_006bdce0",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; stream stack argument; RET4.",
+      "evidence": "Whole assembly and pseudocode reviewed; CF8660 slot1; write byte1C:1,20:1,21:1 then DWORD24:3. First calls existing extended-header0075B480/4C0. Writers use cursor directly; readers ADD EDI,4 after header. Reuses native cursor/field functions preserving widths, order and existing unchecked behavior.",
+      "uncertainty": "Names are provisional. Complete codec normal bodies use existing Source cursor/header implementations; constructor/profile wiring, native ABI, wire fixtures and live game behavior are not verified.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_set_orders_write_006bdce0",
+      "export": "exports/bsp/functions/006bdce0"
+    },
+    {
+      "segment": 29,
+      "address": "006bdd30",
+      "body_bytes": 68,
+      "old_ghidra_name": "FUN_006bdd30",
+      "name": "airbase_set_orders_read_006bdd30",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; stream stack argument; RET4.",
+      "evidence": "Whole assembly and pseudocode reviewed; CF8660 slot2; read byte1C:1,20:1,21:1 then DWORD24:3. First calls existing extended-header0075B480/4C0. Writers use cursor directly; readers ADD EDI,4 after header. Reuses native cursor/field functions preserving widths, order and existing unchecked behavior.",
+      "uncertainty": "Names are provisional. Complete codec normal bodies use existing Source cursor/header implementations; constructor/profile wiring, native ABI, wire fixtures and live game behavior are not verified.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_set_orders_read_006bdd30",
+      "export": "exports/bsp/functions/006bdd30"
+    },
+    {
+      "segment": 29,
+      "address": "006bdd80",
+      "body_bytes": 31,
+      "old_ghidra_name": "FUN_006bdd80",
+      "name": "airbase_message_delete_006bdd80",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; flags stack; RET4; EAX=identity.",
+      "evidence": "Whole31-byte instruction-identical scalar deletes stamp rootCE4974 then free viaBF65AC only whenflags bit0. CF8660/CF85F0 slot0. Reuses existing native-session-root Source profile/free body.",
+      "uncertainty": "Source uses existing translated root profile, not numeric image address; no binary virtual-entry adapter or game validation claimed.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_message_delete_006bdd80",
+      "export": "exports/bsp/functions/006bdd80"
+    },
+    {
+      "segment": 30,
+      "address": "006bedb0",
+      "body_bytes": 31,
+      "old_ghidra_name": "FUN_006bedb0",
+      "name": "airbase_message_delete_006bdd80",
+      "source": "src/band_006b_cc13.cpp",
+      "abi": "ECX=message; flags stack; RET4; EAX=identity.",
+      "evidence": "Whole31-byte instruction-identical scalar deletes stamp rootCE4974 then free viaBF65AC only whenflags bit0. CF8660/CF85F0 slot0. Reuses existing native-session-root Source profile/free body.",
+      "uncertainty": "Source uses existing translated root profile, not numeric image address; no binary virtual-entry adapter or game validation claimed.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_airbase_message_delete_006bdd80_006bedb0",
+      "export": "exports/bsp/functions/006bedb0"
+    },
+    {
+      "segment": 30,
+      "address": "006bf1b0",
+      "body_bytes": 126,
+      "old_ghidra_name": "FUN_006bf1b0",
+      "name": "air_ops_holder_at_006bf1b0",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=air-ops block; index stack/RET4; EAX=payload or0.",
+      "evidence": "Whole126-byte checked-list traversal: list+40,head+44,node+8; reload sentinel at native checks, callsBF6713 on invalid iterator; unmatched/negative index reaches end then0. VslotsCF88A0,CF8BA0,D015C4 slot1.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_air_ops_holder_at_006bf1b0",
+      "export": "exports/bsp/functions/006bf1b0"
+    },
+    {
+      "segment": 30,
+      "address": "006c0020",
+      "body_bytes": 44,
+      "old_ghidra_name": "FUN_006c0020",
+      "name": "archive_write_object_006c0020",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=archive; three DWORDs key(kind,value),object; RET0C.",
+      "evidence": "Whole44-byte listing creates by-value tagged{4,object}, pushes the two-DWORD key and calls vtable+C. Existing ArchiveArg and archive_write_0c reproduce the actual four-DWORD virtual call.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_archive_write_object_006c0020",
+      "export": "exports/bsp/functions/006c0020"
+    },
+    {
+      "segment": 30,
+      "address": "006ce290",
+      "body_bytes": 31,
+      "old_ghidra_name": "FUN_006ce290",
+      "name": "observer_scalar_delete_006ce290",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=observer; flags stack/RET4; EAX=identity.",
+      "evidence": "Whole31-byte listing stampsCF88F8, optional_free BF65AC forflags bit0; vtableCF8928 slot0. No inferred nonempty destructor.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_observer_scalar_delete_006ce290",
+      "export": "exports/bsp/functions/006ce290"
+    },
+    {
+      "segment": 30,
+      "address": "006cfe10",
+      "body_bytes": 19,
+      "old_ghidra_name": "FUN_006cfe10",
+      "name": "mothership_site_air_ops_006cfe10",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=site; EAX=pointer or0; RET.",
+      "evidence": "Whole19-byte listing returns null when+B8 null, else pointer+B8+1188. VtableCF8A58 slot19; extends existing mothership-site family.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_mothership_site_air_ops_006cfe10",
+      "export": "exports/bsp/functions/006cfe10"
+    },
+    {
+      "segment": 30,
+      "address": "006d0c60",
+      "body_bytes": 11,
+      "old_ghidra_name": "FUN_006d0c60",
+      "name": "air_field_reset_slots_006d0c60",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=airfield; adjusted+72C tail-jump006BD360; RET.",
+      "evidence": "Whole11-byte ADD ECX,72C/JMP wrapper; CF8C08 slot115. Retains real air-ops reset as explicit engine contract including its lock semantics.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_air_field_reset_slots_006d0c60",
+      "export": "exports/bsp/functions/006d0c60"
+    },
+    {
+      "segment": 30,
+      "address": "006d1d50",
+      "body_bytes": 3,
+      "old_ghidra_name": "FUN_006d1d50",
+      "name": "air_field_ignore_006d1d50",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX ignored; unusedDWORD stack; RET4.",
+      "evidence": "Whole3-byte RET4, airfieldCF8C08 slot96.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_air_field_ignore_006d1d50",
+      "export": "exports/bsp/functions/006d1d50"
+    },
+    {
+      "segment": 30,
+      "address": "006d1e90",
+      "body_bytes": 1,
+      "old_ghidra_name": "FUN_006d1e90",
+      "name": "unit_empty_hook_006d1e90",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX ignored; plain RET.",
+      "evidence": "Whole1-byte RET;16 vtable slot113 references includingCF8C08.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_unit_empty_hook_006d1e90",
+      "export": "exports/bsp/functions/006d1e90"
+    },
+    {
+      "segment": 30,
+      "address": "006d1ea0",
+      "body_bytes": 1,
+      "old_ghidra_name": "FUN_006d1ea0",
+      "name": "unit_empty_hook_006d1e90",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX ignored; plain RET.",
+      "evidence": "Whole1-byte RET;16 vtable slot114 references includingCF8C08. Shared instruction-identical implementation with006D1E90.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_unit_empty_hook_006d1e90_006d1ea0",
+      "export": "exports/bsp/functions/006d1ea0"
+    },
+    {
+      "segment": 30,
+      "address": "006d1ed0",
+      "body_bytes": 5,
+      "old_ghidra_name": "FUN_006d1ed0",
+      "name": "unit_false_hook_006d1ed0",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX ignored; unusedDWORD stack; RET4; AL=0.",
+      "evidence": "Whole5-byte XOR AL,AL;RET4.16 entity vtable slot116 references; highEAX is not a defined Boolean result.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_unit_false_hook_006d1ed0",
+      "export": "exports/bsp/functions/006d1ed0"
+    },
+    {
+      "segment": 30,
+      "address": "006d1fb0",
+      "body_bytes": 7,
+      "old_ghidra_name": "FUN_006d1fb0",
+      "name": "unit_class_006d1fb0",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=unit; EAX=DWORD[this+C4]; RET.",
+      "evidence": "Whole7-byte getter;25 entity vtable slot48 references. Field meaning is a descriptive hypothesis.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_unit_class_006d1fb0",
+      "export": "exports/bsp/functions/006d1fb0"
+    },
+    {
+      "segment": 30,
+      "address": "006d2070",
+      "body_bytes": 104,
+      "old_ghidra_name": "FUN_006d2070",
+      "name": "air_field_party_race_006d2070",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=self; threeDWORD arguments; RET0C.",
+      "evidence": "Whole104-byte listing stores*arg3=0F before00951F30(self,args), traverses12-byte child records at+830/count+834 calling child+2C; end reloaded after each callback. CF8C08 slot11.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_air_field_party_race_006d2070",
+      "export": "exports/bsp/functions/006d2070"
+    },
+    {
+      "segment": 30,
+      "address": "006d2210",
+      "body_bytes": 305,
+      "old_ghidra_name": "FUN_006d2210",
+      "name": "air_field_set_failure_006d2210",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=self; NativeString*,value stack; RET8; AL success.",
+      "evidence": "Whole305-byte listing:RunwayFailure/HangarFailure -> existingmessage72/74 constructors thenroute0077C2A0(self,message,7,0),returntrue;else00953DA0(self,name,value). Both literal comparison paths and receiver recovered fromassembly. CF8C08 slot101.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_air_field_set_failure_006d2210",
+      "export": "exports/bsp/functions/006d2210"
+    },
+    {
+      "segment": 30,
+      "address": "006d2350",
+      "body_bytes": 115,
+      "old_ghidra_name": "FUN_006d2350",
+      "name": "air_field_query_failure_006d2350",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=self; NativeString*,value,byte*out stack; RET0C; AL success.",
+      "evidence": "Whole115-byte listing:RunwayFailure reads+748,HangarFailure reads+749,returntrue;else00953E60(self,name,value,out). CF8C08 slot102.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_air_field_query_failure_006d2350",
+      "export": "exports/bsp/functions/006d2350"
+    },
+    {
+      "segment": 30,
+      "address": "006d23d0",
+      "body_bytes": 305,
+      "old_ghidra_name": "FUN_006d23d0",
+      "name": "air_field_clear_failure_006d23d0",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=self; NativeString*,value stack; RET8; AL success.",
+      "evidence": "Whole305-byte listing matchesset counterpart butmessage73/75 andfallback00953EA0. Existing message constructors retain original field initialization. CF8C08 slot103.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_air_field_clear_failure_006d23d0",
+      "export": "exports/bsp/functions/006d23d0"
+    },
+    {
+      "segment": 30,
+      "address": "006d2850",
+      "body_bytes": 183,
+      "old_ghidra_name": "FUN_006d2850",
+      "name": "air_field_target_order_006d2850",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=self; order message stack; RET4.",
+      "evidence": "Whole183-byte listing calls0077A020,then snapshotsmessage+24..3B;0077A050 equals E08EF8 ->00521EA0(local),00835860(director+8C8,target,1);E08F00/E08F08 ->clear target. Repeated ordinal calls preserved. Checked00521EA0 listing:RET0,so earlier PUSH1 belongs to director call, not resolver. CF8C08 slot88.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_air_field_target_order_006d2850",
+      "export": "exports/bsp/functions/006d2850"
+    },
+    {
+      "segment": 30,
+      "address": "006d3eb0",
+      "body_bytes": 98,
+      "old_ghidra_name": "FUN_006d3eb0",
+      "name": "air_field_forward_float_006d3eb0",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=self; float stack; RET4.",
+      "evidence": "Whole98-byte listing passesfloat through0042ED80 thenchildvirtual+F4 over12-byte records at+830/+834;reloadcurrentend aftereverychildcall. Function naming avoids assuming the older SetInvincible label accurately describes itsfloatargument. CF8C08 slot61.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_air_field_forward_float_006d3eb0",
+      "export": "exports/bsp/functions/006d3eb0"
+    },
+    {
+      "segment": 31,
+      "address": "006d60b0",
+      "body_bytes": 182,
+      "old_ghidra_name": "FUN_006d60b0",
+      "name": "air_field_send_create_006d60b0",
+      "source": "src/cc13_seg30.cpp",
+      "abi": "ECX=self; peerDWORD stack; RET4.",
+      "evidence": "Whole182-byte listing captures+B4 then+B0 fromself+7AC ifnonnull,elsezero; constructs148h local message via006D4C70(self,floatA,floatB), sends779FC0(self,peer,message),destructs006D4420. Uses existing segment31 message family and C++cleanup on send exception. CF8C08 slot95.",
+      "uncertainty": "Descriptive name is provisional; new C++ interface, no native register ABI or game proof.",
+      "outcome": "reconstructed",
+      "status": "reconstructed_build_tested",
+      "ghidra_name": "BSP_air_field_send_create_006d60b0",
+      "export": "exports/bsp/functions/006d60b0"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "0051e9a3",
+      "native": "0051ed40",
+      "function": "0051e9a0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00521168",
+      "native": "004d6790",
+      "function": "00521160"
+    },
+    {
+      "address": "005212eb",
+      "native": "005470c0",
+      "function": "005212e0"
+    },
+    {
+      "address": "005212ff",
+      "native": "0077c470",
+      "function": "005212e0"
+    },
+    {
+      "address": "005edac1",
+      "native": "00bf6713",
+      "function": "005edaa0"
+    },
+    {
+      "address": "006054f0",
+      "native": "00605070",
+      "function": "006054c0"
+    },
+    {
+      "address": "00605547",
+      "native": "00605070",
+      "function": "006054c0"
+    },
+    {
+      "address": "0061e1e0",
+      "native": "0061d5c0",
+      "function": "0061e1a0"
+    },
+    {
+      "address": "006594c3",
+      "native": "00bf65ac",
+      "function": "006594a0"
+    },
+    {
+      "address": "006594d7",
+      "native": "00bf65ac",
+      "function": "006594a0"
+    },
+    {
+      "address": "0067e0c1",
+      "native": "00bf6713",
+      "function": "0067e0a0"
+    },
+    {
+      "address": "00697ff6",
+      "native": "00697bd0",
+      "function": "00697fd0"
+    },
+    {
+      "address": "006ad4ed",
+      "native": "00951940",
+      "function": "006ad4d0"
+    },
+    {
+      "address": "006ad511",
+      "native": "00951940",
+      "function": "006ad4d0"
+    },
+    {
+      "address": "006b7ee7",
+      "native": "00a675a0",
+      "function": "006b7ee0"
+    },
+    {
+      "address": "006b7f07",
+      "native": "00a675a0",
+      "function": "006b7f00"
+    },
+    {
+      "address": "006bc449",
+      "native": "0075b480",
+      "function": "006bc440"
+    },
+    {
+      "address": "006bc455",
+      "native": "004290b0",
+      "function": "006bc440"
+    },
+    {
+      "address": "006bc462",
+      "native": "00429070",
+      "function": "006bc440"
+    },
+    {
+      "address": "006bc479",
+      "native": "0075b4c0",
+      "function": "006bc470"
+    },
+    {
+      "address": "006bc487",
+      "native": "00428d70",
+      "function": "006bc470"
+    },
+    {
+      "address": "006bc494",
+      "native": "00428d10",
+      "function": "006bc470"
+    },
+    {
+      "address": "006bd8c9",
+      "native": "0075b480",
+      "function": "006bd8c0"
+    },
+    {
+      "address": "006bd8d5",
+      "native": "004290b0",
+      "function": "006bd8c0"
+    },
+    {
+      "address": "006bd8e2",
+      "native": "00429070",
+      "function": "006bd8c0"
+    },
+    {
+      "address": "006bd8ef",
+      "native": "00429070",
+      "function": "006bd8c0"
+    },
+    {
+      "address": "006bd8fc",
+      "native": "00429070",
+      "function": "006bd8c0"
+    },
+    {
+      "address": "006bd909",
+      "native": "00429070",
+      "function": "006bd8c0"
+    },
+    {
+      "address": "006bd929",
+      "native": "0075b4c0",
+      "function": "006bd920"
+    },
+    {
+      "address": "006bd937",
+      "native": "00428d70",
+      "function": "006bd920"
+    },
+    {
+      "address": "006bd944",
+      "native": "00428d10",
+      "function": "006bd920"
+    },
+    {
+      "address": "006bd951",
+      "native": "00428d10",
+      "function": "006bd920"
+    },
+    {
+      "address": "006bd95e",
+      "native": "00428d10",
+      "function": "006bd920"
+    },
+    {
+      "address": "006bd96b",
+      "native": "00428d10",
+      "function": "006bd920"
+    },
+    {
+      "address": "006bd9a9",
+      "native": "0075b480",
+      "function": "006bd9a0"
+    },
+    {
+      "address": "006bd9b5",
+      "native": "004290b0",
+      "function": "006bd9a0"
+    },
+    {
+      "address": "006bd9c2",
+      "native": "00429070",
+      "function": "006bd9a0"
+    },
+    {
+      "address": "006bd9cf",
+      "native": "00429070",
+      "function": "006bd9a0"
+    },
+    {
+      "address": "006bda89",
+      "native": "0075b4c0",
+      "function": "006bda80"
+    },
+    {
+      "address": "006bda97",
+      "native": "00428d70",
+      "function": "006bda80"
+    },
+    {
+      "address": "006bdaa4",
+      "native": "00428d10",
+      "function": "006bda80"
+    },
+    {
+      "address": "006bdab1",
+      "native": "00428d10",
+      "function": "006bda80"
+    },
+    {
+      "address": "006bdb39",
+      "native": "0075b480",
+      "function": "006bdb30"
+    },
+    {
+      "address": "006bdb45",
+      "native": "004290b0",
+      "function": "006bdb30"
+    },
+    {
+      "address": "006bdb53",
+      "native": "00429120",
+      "function": "006bdb30"
+    },
+    {
+      "address": "006bdb69",
+      "native": "0075b4c0",
+      "function": "006bdb60"
+    },
+    {
+      "address": "006bdb77",
+      "native": "00428d70",
+      "function": "006bdb60"
+    },
+    {
+      "address": "006bdb84",
+      "native": "00428e30",
+      "function": "006bdb60"
+    },
+    {
+      "address": "006bdce9",
+      "native": "0075b480",
+      "function": "006bdce0"
+    },
+    {
+      "address": "006bdcf5",
+      "native": "004290b0",
+      "function": "006bdce0"
+    },
+    {
+      "address": "006bdd01",
+      "native": "004290b0",
+      "function": "006bdce0"
+    },
+    {
+      "address": "006bdd0d",
+      "native": "004290b0",
+      "function": "006bdce0"
+    },
+    {
+      "address": "006bdd1a",
+      "native": "00429070",
+      "function": "006bdce0"
+    },
+    {
+      "address": "006bdd39",
+      "native": "0075b4c0",
+      "function": "006bdd30"
+    },
+    {
+      "address": "006bdd47",
+      "native": "00428d70",
+      "function": "006bdd30"
+    },
+    {
+      "address": "006bdd52",
+      "native": "00428d70",
+      "function": "006bdd30"
+    },
+    {
+      "address": "006bdd5d",
+      "native": "00428d70",
+      "function": "006bdd30"
+    },
+    {
+      "address": "006bdd6a",
+      "native": "00428d10",
+      "function": "006bdd30"
+    },
+    {
+      "address": "006bdd91",
+      "native": "00bf65ac",
+      "function": "006bdd80"
+    },
+    {
+      "address": "006bedc1",
+      "native": "00bf65ac",
+      "function": "006bedb0"
+    },
+    {
+      "address": "006bf1cb",
+      "native": "00bf6713",
+      "function": "006bf1b0"
+    },
+    {
+      "address": "006bf1de",
+      "native": "00bf6713",
+      "function": "006bf1b0"
+    },
+    {
+      "address": "006bf1e8",
+      "native": "00bf6713",
+      "function": "006bf1b0"
+    },
+    {
+      "address": "006bf1ff",
+      "native": "00bf6713",
+      "function": "006bf1b0"
+    },
+    {
+      "address": "006bf215",
+      "native": "00bf6713",
+      "function": "006bf1b0"
+    },
+    {
+      "address": "006bf21f",
+      "native": "00bf6713",
+      "function": "006bf1b0"
+    },
+    {
+      "address": "006ce2a1",
+      "native": "00bf65ac",
+      "function": "006ce290"
+    },
+    {
+      "address": "006d0c66",
+      "native": "006bd360",
+      "function": "006d0c60",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "006d208b",
+      "native": "00951f30",
+      "function": "006d2070"
+    },
+    {
+      "address": "006d2240",
+      "native": "00bf7fbf",
+      "function": "006d2210"
+    },
+    {
+      "address": "006d2257",
+      "native": "0075b430",
+      "function": "006d2210"
+    },
+    {
+      "address": "006d2295",
+      "native": "0077c2a0",
+      "function": "006d2210"
+    },
+    {
+      "address": "006d22b7",
+      "native": "00425850",
+      "function": "006d2210"
+    },
+    {
+      "address": "006d22c6",
+      "native": "0075b430",
+      "function": "006d2210"
+    },
+    {
+      "address": "006d2305",
+      "native": "0077c2a0",
+      "function": "006d2210"
+    },
+    {
+      "address": "006d2328",
+      "native": "00953da0",
+      "function": "006d2210"
+    },
+    {
+      "address": "006d2365",
+      "native": "00bf7fbf",
+      "function": "006d2350"
+    },
+    {
+      "address": "006d2390",
+      "native": "00425850",
+      "function": "006d2350"
+    },
+    {
+      "address": "006d23b9",
+      "native": "00953e60",
+      "function": "006d2350"
+    },
+    {
+      "address": "006d2400",
+      "native": "00bf7fbf",
+      "function": "006d23d0"
+    },
+    {
+      "address": "006d2417",
+      "native": "0075b430",
+      "function": "006d23d0"
+    },
+    {
+      "address": "006d2455",
+      "native": "0077c2a0",
+      "function": "006d23d0"
+    },
+    {
+      "address": "006d2477",
+      "native": "00425850",
+      "function": "006d23d0"
+    },
+    {
+      "address": "006d2486",
+      "native": "0075b430",
+      "function": "006d23d0"
+    },
+    {
+      "address": "006d24c5",
+      "native": "0077c2a0",
+      "function": "006d23d0"
+    },
+    {
+      "address": "006d24e8",
+      "native": "00953ea0",
+      "function": "006d23d0"
+    },
+    {
+      "address": "006d285d",
+      "native": "0077a020",
+      "function": "006d2850"
+    },
+    {
+      "address": "006d28a9",
+      "native": "0077a050",
+      "function": "006d2850"
+    },
+    {
+      "address": "006d28bb",
+      "native": "00521ea0",
+      "function": "006d2850"
+    },
+    {
+      "address": "006d28c7",
+      "native": "00835860",
+      "function": "006d2850"
+    },
+    {
+      "address": "006d28d6",
+      "native": "0077a050",
+      "function": "006d2850"
+    },
+    {
+      "address": "006d28e4",
+      "native": "0077a050",
+      "function": "006d2850"
+    },
+    {
+      "address": "006d28fa",
+      "native": "00835860",
+      "function": "006d2850"
+    },
+    {
+      "address": "006d3ebc",
+      "native": "0042ed80",
+      "function": "006d3eb0"
+    },
+    {
+      "address": "006d611a",
+      "native": "006d4c70",
+      "function": "006d60b0"
+    },
+    {
+      "address": "006d6135",
+      "native": "00779fc0",
+      "function": "006d60b0"
+    },
+    {
+      "address": "006d6149",
+      "native": "006d4420",
+      "function": "006d60b0"
+    }
+  ],
+  "receipts": {
+    "build": {
+      "path": "local/oct18b_nA2_build_final.txt",
+      "sha256": "24b61948951461808bfe0321762f8fd0b391faa305db86da1f30bf4dad303da6"
+    },
+    "annotations": {
+      "path": "local/oct18b_nA2_annotations.txt",
+      "sha256": "9f8715755239f09ce3fdedcc7ab88b619b32ac3fa1da4b1fc01f51eb360db4b1"
+    },
+    "exports": {
+      "path": "local/oct18b_nA2_export_refresh.txt",
+      "sha256": "3b5b2905c7b58c8f536fdaddce01db21a01533634d0e8386709d5a3c6a83099d"
+    },
+    "call_verification": {
+      "path": "local/oct18b_nA2_call_verification.txt",
+      "sha256": "fc7b7f14b949fe78cccdbb62731d7c04afbd887d9322f2ab6f771e3e90025471"
+    }
+  },
+  "annotations": {
+    "state": "saved",
+    "prior_values": "local/ghidra-annotations-20261019T054605Z.json",
+    "export_refresh_count": 66
+  },
+  "call_verification": {
+    "command": "python tools/verify_report_calls.py reports/oct18b_nA2.json",
+    "exit_code": 0,
+    "direct_and_tail_sites": 97
+  }
+}

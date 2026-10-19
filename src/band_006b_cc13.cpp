@@ -3,6 +3,7 @@
 // wired into any game host. See docs/CC13_GP_006B_0070.md.
 
 #include "bsp/band_006b_cc13.hpp"
+#include "bsp/native_bit_cursor_fields.hpp"
 
 #include <cstring>
 #include <utility>
@@ -10,6 +11,89 @@
 #include "bsp/band_0067_cc13.hpp"
 
 namespace bsp::band_006b_cc13 {
+namespace {
+template<class T> T airbase_load(const void* p,std::size_t offset) noexcept {
+    T value; std::memcpy(&value,static_cast<const std::uint8_t*>(p)+offset,sizeof value); return value;
+}
+template<class T> T* airbase_field(void* p,std::size_t offset) noexcept {
+    return reinterpret_cast<T*>(static_cast<std::uint8_t*>(p)+offset);
+}
+void airbase_write_common(const void* p,NativeBitCursor* cursor) {
+    write_native_session_message_header_0075b480(p,cursor);
+    write_native_bool_bit_004290b0(cursor,airbase_load<std::uint8_t>(p,0x1c));
+}
+void airbase_read_common(void* p,NativeSessionReadStream* stream) {
+    read_native_session_message_header_0075b4c0(p,stream);
+    read_native_bool_bit_00428d70(&stream->cursor_04,airbase_field<bool>(p,0x1c));
+}
+}
+void airbase_do_launch_slot_write_006bc440(const void* p,NativeBitCursor* c) {
+    airbase_write_common(p,c);
+    write_native_unsigned_dword_bits_00429070(c,airbase_load<std::uint32_t>(p,0x20),8);
+}
+void airbase_do_launch_slot_read_006bc470(void* p,NativeSessionReadStream* s) {
+    airbase_read_common(p,s);
+    read_native_u32_bits_00428d10(&s->cursor_04,airbase_field<std::uint32_t>(p,0x20),8);
+}
+void airbase_set_slot_write_006bd8c0(const void* p,NativeBitCursor* c) {
+    airbase_write_common(p,c);
+    write_native_unsigned_dword_bits_00429070(c,airbase_load<std::uint32_t>(p,0x20),6);
+    write_native_unsigned_dword_bits_00429070(c,airbase_load<std::uint32_t>(p,0x24),10);
+    write_native_unsigned_dword_bits_00429070(c,airbase_load<std::uint32_t>(p,0x28),6);
+    write_native_unsigned_dword_bits_00429070(c,airbase_load<std::uint32_t>(p,0x2c),4);
+}
+void airbase_set_slot_read_006bd920(void* p,NativeSessionReadStream* s) {
+    airbase_read_common(p,s);
+    read_native_u32_bits_00428d10(&s->cursor_04,airbase_field<std::uint32_t>(p,0x20),6);
+    read_native_u32_bits_00428d10(&s->cursor_04,airbase_field<std::uint32_t>(p,0x24),10);
+    read_native_u32_bits_00428d10(&s->cursor_04,airbase_field<std::uint32_t>(p,0x28),6);
+    read_native_u32_bits_00428d10(&s->cursor_04,airbase_field<std::uint32_t>(p,0x2c),4);
+}
+void airbase_stock_item_write_006bd9a0(const void* p,NativeBitCursor* c) {
+    airbase_write_common(p,c);
+    write_native_unsigned_dword_bits_00429070(c,airbase_load<std::uint32_t>(p,0x20),10);
+    write_native_unsigned_dword_bits_00429070(c,airbase_load<std::uint32_t>(p,0x24),8);
+}
+void airbase_stock_item_read_006bda80(void* p,NativeSessionReadStream* s) {
+    airbase_read_common(p,s);
+    read_native_u32_bits_00428d10(&s->cursor_04,airbase_field<std::uint32_t>(p,0x20),10);
+    read_native_u32_bits_00428d10(&s->cursor_04,airbase_field<std::uint32_t>(p,0x24),8);
+}
+bool airbase_type86_is_type_006bdb00(std::uint32_t type) noexcept {
+    return type==0x86 || type==0x49 || type==0x46;
+}
+void airbase_type86_write_006bdb30(const void* p,NativeBitCursor* c) {
+    airbase_write_common(p,c);
+    write_native_word_bits_00429120(c,airbase_load<std::uint16_t>(p,0x20),12);
+}
+void airbase_type86_read_006bdb60(void* p,NativeSessionReadStream* s) {
+    airbase_read_common(p,s);
+    read_native_word_bits_00428e30(&s->cursor_04,airbase_field<std::uint16_t>(p,0x20),12);
+}
+std::uint32_t airbase_type86_has_entity_bits_006bdb90(const void* p,const ObjectHandleTables& tables) noexcept {
+    const auto id=airbase_load<std::uint16_t>(p,0x20);
+    const bool low=static_cast<std::int32_t>(id)<tables.first_end_00f89a10;
+    const auto base=static_cast<std::uint32_t>(low ? tables.first_begin_00f89a0c : tables.second_begin_00f89a60);
+    const void* const slots=low ? tables.first_entries_00f89a54 : tables.second_entries_00f89aa8;
+    const std::uint32_t offset=((static_cast<std::uint32_t>(id)-base)<<4)+0xc;
+    const auto payload=airbase_load<std::uint32_t>(slots,offset);
+    return (payload&0xffffff00u)|(payload!=0 ? 1u : 0u);
+}
+void airbase_set_orders_write_006bdce0(const void* p,NativeBitCursor* c) {
+    airbase_write_common(p,c);
+    write_native_bool_bit_004290b0(c,airbase_load<std::uint8_t>(p,0x20));
+    write_native_bool_bit_004290b0(c,airbase_load<std::uint8_t>(p,0x21));
+    write_native_unsigned_dword_bits_00429070(c,airbase_load<std::uint32_t>(p,0x24),3);
+}
+void airbase_set_orders_read_006bdd30(void* p,NativeSessionReadStream* s) {
+    airbase_read_common(p,s);
+    read_native_bool_bit_00428d70(&s->cursor_04,airbase_field<bool>(p,0x20));
+    read_native_bool_bit_00428d70(&s->cursor_04,airbase_field<bool>(p,0x21));
+    read_native_u32_bits_00428d10(&s->cursor_04,airbase_field<std::uint32_t>(p,0x24),3);
+}
+NativeSessionMessageStorage* airbase_message_delete_006bdd80(NativeSessionMessageStorage* p,std::uint32_t flags) {
+    return delete_native_session_message_root_00449910(p,flags);
+}
 
 const TypeIdRule kSessionMessageTypeRules[] = {
     {0x006BC410u, 0x00CF85F0u, 3, {0x89, 0x49, 0x46}},       // BSP_SessionMessage_AIRBASE_DOLAUNCHSLOT_IsType

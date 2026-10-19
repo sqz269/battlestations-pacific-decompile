@@ -58,6 +58,40 @@ const EntityOrderCommandClass kEntityOrderCommandClasses[kEntityOrderCommandCoun
     {26, 0x00E08FC0u, 0x00CFB570u, "tutorial", 3, false},
 };
 
+// Each representative is the complete original body (MOV/XOR result; RET).
+// The report records all 56 addresses, their exact listings and vtable edges.
+// Category is slot +0Ch, target predicate +08h; slot +10h semantics are unknown.
+std::uint32_t entity_order_command_dword_one_006f8020() noexcept { return 1u; }
+std::uint32_t entity_order_command_dword_zero_006f80c0() noexcept { return 0u; }
+std::uint32_t entity_order_command_dword_two_006f82a0() noexcept { return 2u; }
+std::uint32_t entity_order_command_dword_three_006f8840() noexcept { return 3u; }
+bool entity_order_command_predicate_true_006f8040() noexcept { return true; }
+bool entity_order_command_predicate_false_006f80e0() noexcept { return false; }
+
+// 006F8960..006F89C7. Assembly resolves the overlapping-global warning: one
+// flags dword follows four value dwords. 00D7A24C contains 3F800000 (1.0f).
+// Preserve bitwise copies, initialization of bit 0 only, and original load/store
+// order. State is caller-owned; no new process-global initialization is implied.
+std::uint32_t* entity_order_moveto_defaults_006f8960(
+    EntityOrderMoveToDefaultState& state, std::uint32_t* destination) noexcept {
+    if ((state.initialization_flags & 1u) == 0u) {
+        state.initialization_flags |= 1u;
+        state.words[0] = 0u;
+        state.words[1] = 0u;
+        state.words[2] = 0x3f800000u;
+        state.words[3] = 0x3f800000u;
+    }
+    const std::uint32_t first = state.words[0];
+    const std::uint32_t second = state.words[1];
+    destination[0] = first;
+    const std::uint32_t third = state.words[2];
+    destination[1] = second;
+    const std::uint32_t fourth = state.words[3];
+    destination[2] = third;
+    destination[3] = fourth;
+    return destination;
+}
+
 const EntityOrderCommandClass* entity_order_command_class_by_name(const std::string& name) noexcept {
     for (const EntityOrderCommandClass& row : kEntityOrderCommandClasses) {
         if (equals_ignore_case(row.name, name)) {

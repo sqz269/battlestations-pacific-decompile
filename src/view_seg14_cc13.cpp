@@ -8,6 +8,23 @@
 // Segment 14, packet cc13-seg14. Evidence, ABI and simplifications per function:
 // docs/CC13_SEG14.md.
 namespace bsp::cc13_seg14 {
+Raw binoculars_observer_delete_0051e9a0(Raw observer,std::uint32_t flags,ViewSeg14Hooks& hooks) {
+    Raw const base=static_cast<unsigned char*>(observer)-8;
+    binoculars_screen_destruct_0051ea20(base,hooks);
+    if (flags&1) hooks.free_block(base);
+    return base;
+}
+void callback_noop_0051f380() noexcept {}
+void callback_noop_0051f390(std::uint32_t) noexcept {}
+void callback_collect_member_00521160(Raw owner,Raw vector,ViewSeg14Hooks& hooks) {
+    hooks.vector_push_back_004d6790(vector,static_cast<unsigned char*>(owner)+0x1c);
+}
+void hud_screen_2f_exit_005212e0(Raw screen,const ViewGlobals& globals,HudExitHooks& hooks) {
+    Raw group; std::memcpy(&group,globals.hud_root_00e198c4+0x50,sizeof group);
+    hooks.weapon_group_release_005470c0(group);
+    Raw unit; std::memcpy(&unit,static_cast<unsigned char*>(screen)+0x1c,sizeof unit);
+    if (unit) hooks.send_role_transfer_0077c470(unit,0x1fe,0);
+}
 namespace {
 
 template <class T> T get(const void* p, std::size_t offset) noexcept {
