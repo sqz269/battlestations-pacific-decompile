@@ -27,6 +27,8 @@ done on 2026-10-19 by cc13-steer, from origin/main `4890e900a`.
 **Result.** No row needed a new switch. Every remaining row falls into one of these classes:
 * already fixed by a switch that is ON (stale);
 * presentation only;
+* bound by a switch that is ON, with 0 calls on the measured rows (a shipped script may still reach it
+  in a mission that was not measured);
 * unreached on the measured rows and by the shipped scripts;
 * owned by another lane.
 
@@ -40,10 +42,10 @@ Each verdict is in the row's ledger record, with the evidence appended.
 | E | `00988510` hit listeners | Mostly STALE | Callback arguments, filter fields and the rate limit are ON. `attackerPlayerIndex` and `targetDevice` are still open. Their only shipped user is JM06 `hshit`, whose hospital ship is never hit. |
 | E | `009813A0` kill listeners | Labelled cadence | Unchanged. It is cc9-lua's lane, and the six-win pairs were identical when `kKillListenerHarmOnlyBound` was flipped. |
 | E | `00982120` exitzone | One more producer, unreached | See section 1. |
-| E | `00898E30` FindEntity | FAITHFUL | `0088B1B0` uses `__stricmp`. |
+| E | `00898E30` FindEntity | FAITHFUL | `0088B1B0` uses `__stricmp`. One difference remains for two names that differ only in case. The image takes the first match in its bucket-walk order, and the host takes the exact match. No shipped case is known. |
 | E | `0088BF80` GetProperty | Open, liveness not shown | See section 2. |
 | F | `00892DE0` GetCatapultStock | STALE | `kShipCatapultLaunchBound` (ON) reads the launch-maintained `+638h`. |
-| F | `00892860` GetLastCatapulted | Unreached | 0 calls. |
+| F | `00892860` GetLastCatapulted | Bound, not measured | Bound under `kLuaLastCatapultedBound` (ON). It has 0 calls on the measured rows. Shipped scripts call it in JM02 (1), JM03 (2), JM05 (2) and USN16 (`Mission.MovPlane = GetLastCatapulted(Mission.TF1[1])`), plus the ijn\JM and PRCPIJN copies of the JM scripts. None of those missions was measured. |
 | F | `00893C00` SetUnlimitedAirSupply | No gap | Every shipped call names a submarine. The 8 live calls all stored. |
 | F | `008963E0`, `00896A90`, `008975B0` | Presentation, or unreached skips | The preload mark, the GUI and peer messages, and the no-deck or negative-n skips. |
 | G | `008198A0` set failure from message | STALE for gameplay | See section 3. |
