@@ -130,6 +130,36 @@ Before that, I made a parser check on a copy (`BSP_PROFILE_LOAD_ROOT` = `local\p
   so the title reset does not erase it. It also runs before `main-menu path PressStartPoll ->
   TitleSkip`, as natively the read and its continuation 0067CA40 precede 0068D8A0.
 
+### Flipped ON (cc15-flip, base ec8fc67e1, 2026-10-19)
+
+`kProfileOwnerCc15Bound` is already on (main eca2d69b7) and `kHintTrackerCc15Bound` stays false.
+OFF = ec8fc67e1, ON = the same tree with this switch true. Both run through tools/run_game.ps1 with
+`BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`, and every log has the in-process `per-consumer random
+streams ON` line. The ON runs read the real save.
+
+- **USN04** (`--frames 5000 --mission-frames 4800`): gameplay identical. Deaths 53, hits 691, damage
+  12678.5, 81 units. The death, plane-death and unit tables are unchanged, and so are the 786 summary
+  lines. The moved rows are exactly the section 4 load rows: 14 `ProfileLoad::*` rows and
+  `PressStartScreen::apply_sign_in profile load 0067cc60` (1 call each; six unimplemented), and
+  `ProfileReset::xenon_state_is_two` 2 -> 3 calls. The four `profile load:` notes (`seen_hints=38
+  mission_records=75 completed=1`) are new, and `getters` moves 128 -> 130. `map_flag_visible` did
+  not move (36 calls, all false: no campaign record is completed). There are no HintTracker rows,
+  because that switch is off.
+- **Wins set** (`--stop-after-end 40`): `pair_diff` reports gameplay identical on all 12 rows. The
+  end, the clock, the death rows, the unit table, the summary lines and the guard line match per
+  row, and each native table moves only the same 16 rows. The ends are the same as in
+  CC15_OBJECT_PROFILE_HINTS.md's ProfileOwner table (USN01 completed 1200.05 s, USN02 failed
+  170.06 s, USN12 1395.24 s, PRCP01 915.10 s, USN21 2906.71 s, ESMP08 1314.31 s, LOMP10 991.43 s,
+  JM06 1658.49 s, BSM09 EndMission 285.05 s, LOMP06 failed 653.11 s, IJN18 failed 525.00 s, BSM01
+  no end).
+- The one other moved line is USN12's ring-scan `clear_37c` for Montpelier (FLT_MAX -> 10000.0).
+  This is the heap-dependent value of SHIP_AI_OPEN_ITEMS 140.
+- **Save untouched.** Every file under `Documents\Battlestations-Pacific` was recorded before the
+  first run and after the last: `options.txt` (226 bytes, FF5CF395...), `save\0\player` (2182,
+  58E93D77...), `save\0\quick` (1806, 54E3F992...) and `save\0\valid` (0, E3B0C442...). The SHA-256
+  values, sizes and mtimes (UTC 2026-09-19 06:27:02 / 06:11:06; directory `save` 2026-05-04,
+  `save\0` 06:27:02) are identical.
+
 ## 5. Uncertainties and open items
 
 - **Substituted sign-in.** The host has no XenonSystemManager, so the press the host takes to the

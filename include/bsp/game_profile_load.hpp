@@ -20,7 +20,7 @@ class GameProfileOwner;
 // together with kProfileOwnerCc15Bound: where the host passes the press-start
 // screen, it applies the profile half of the sign-in 0067CC60 and reads the
 // save through 007FF100 without any write to the save directory.
-inline constexpr bool kProfileLoadCc15Bound = false;
+inline constexpr bool kProfileLoadCc15Bound = true;
 
 struct GameProfileLoadReport {
     bool queried{};            // 0109CECC vtable +1Ch(name, 1): valid and player exist
