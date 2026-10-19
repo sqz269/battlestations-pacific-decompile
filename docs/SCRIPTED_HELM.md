@@ -1182,6 +1182,8 @@ Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of it
   - The hold starts one frame after its line, at the input prologue, as a real key press would.
   - The action is held at amount 1.0 through no binding or device.
   - Screen 2Eh must be up with the player's ship (`[00E188D8]`) for `005484F0` to build anything. That is the case when the mission's HUD runs.
+  - The hold counts down whether or not screen 2Eh is up. An edge that falls on a frame without 2Eh (the map screen, a cutscene, pause, a load) is lost. Time the line for a frame on which the HUD runs.
+  - The injected record is outside the image's input-suppression set (`game+5B0h`, `004e4ec2` / `004e4eee`). An injected key therefore stays held through states that would clear a real one.
 
 **Example.** Select the artillery group, then hold fire for 10 seconds at 0.05 s per frame:
 
