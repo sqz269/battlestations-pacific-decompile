@@ -709,7 +709,9 @@ constexpr bool kFlakSecondAmmoRangeCc13Bound = false;
 //    unit_gun_range_sq_049c and the rebuild's flak alternate read it). On, the
 //    guard erases the entry it wrote. Host bookkeeping, no image site; moves
 //    dp_air_ammo where a mission hits the guard: docs/CC13_FLAK2.md section 5.
-constexpr bool kSecondAmmoArcDropKeyCc13Bound = false;
+//    ON by cc9's order, 0 reach, no pair (no platform in this installation's
+//    data reaches the guard).
+constexpr bool kSecondAmmoArcDropKeyCc13Bound = true;
 //  * kAaGunnerErrorBound: the AAGunnerBot's commanded vertical, when negative, is
 //    halved before 0085ABA0 (00902F62..00902F76, [00D7A280] = 0.5). Only this
 //    step of 00902920's error model is bound; the swinging error pair
