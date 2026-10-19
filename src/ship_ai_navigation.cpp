@@ -221,6 +221,7 @@ ShipAiNavResult ship_ai_navigation_arm_009ee671(ShipAiControlBlock& blk,
         waypoint.steer_enabled) {
         result.bearing_taken = true;
         blk.heading_target_324 = heading_angle_00414eb0(to_waypoint); // 009EE813, 009EE818
+        blk.last_writer_324 = 0x009EE818u;
         // 009EE83A/009EE842: the turn lead only runs inside 1000.0.
         if (static_cast<double>(blk.distance_32c) < kShipAiNavTurnLeadRange) {
             const ShipAiTurnLead lead =
@@ -230,6 +231,7 @@ ShipAiNavResult ship_ai_navigation_arm_009ee671(ShipAiControlBlock& blk,
                 result.turn_lead_applied = true;
                 blk.heading_target_324 = wrapped_angle_add_00438aa0(blk.heading_target_324,
                                                                     lead.correction); // 009EE9C7
+                blk.last_writer_324 = 0x009EE9D2u;
                 nav.turn_lead_328 = lead.correction;                                  // 009EE9D8
             }
         }

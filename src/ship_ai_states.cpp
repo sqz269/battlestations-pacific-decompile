@@ -170,6 +170,7 @@ bool ship_ai_direct_control_arm_009ed6b0(ShipAiControlBlock& blk, float seconds,
         if (blk.mode == ShipAiSteeringMode::Rudder) {             // 009ED938
             const float heading = host.unit_heading_vtable_0050(); // 009ED95D
             blk.heading_target_324 = heading;                      // 009ED976
+            blk.last_writer_324 = 0x009ED976u;
             if (blk.clamp_354 < 2.0f) {                            // 009ED96F, 00CE3958
                 blk.clamp_354 = 2.0f;                              // 009ED97E
             }
@@ -177,14 +178,19 @@ bool ship_ai_direct_control_arm_009ed6b0(ShipAiControlBlock& blk, float seconds,
             if (blk.direction == ShipAiThrottleDirection::Astern) { // 009ED986
                 aim = wrapped_angle_add_00438aa0(heading, kPi);
                 blk.heading_target_324 = aim;                      // 009ED9A3
+                blk.last_writer_324 = 0x009ED9A3u;
             }
             aim = blk.heading_target_324;                          // 009ED9AD
             const float yaw_rate = host.unit_current_yaw_rate_00811940(); // 009ED9C1
             blk.heading_target_324 = blk.yaw_rate_subtracts_364     // 009ED9D1
                 ? wrapped_angle_subtract_00438b10(aim, yaw_rate)    // 009ED9E5
                 : wrapped_angle_add_00438aa0(aim, yaw_rate);        // 009ED9EC
+            // 009ED9F9 is the store both arms share; the tag names the arm.
+            // 009ED976/009ED9A3 above are always overwritten here, so they never appear.
+            blk.last_writer_324 = 0x009ED9D1u;
         } else {
             blk.heading_target_324 = blk.desired_heading;           // 009ED947
+            blk.last_writer_324 = 0x009ED947u;
         }
     }
 
