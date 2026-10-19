@@ -127,6 +127,10 @@ struct MissionCommandGraph {
     check(actual.count_10>=0,"mission batch has a negative entry count");
     entry_counts[i]=static_cast<U>(actual.count_10);
     batch_frames[i].prepare(frame_capacity(actual));
+    if(graph.completed==0)for(auto& record:batch_frames[i].records) {
+     record->pass.observation_context=&graph;
+     record->pass.observe_before_draw=&MissionCommandGraph::observe_first_material_draw;
+    }
    }
    check(graph.execution.actual_synchronization_0108d6dc.mode_00!=0 ||
      entry_counts[0]<=50 || entry_counts[1]<=50,
@@ -166,6 +170,7 @@ struct MissionCommandGraph {
  std::unique_ptr<Record> pending;
  Record* acquiring{};
  bool failed{};
+ bool material_observed{};
  unsigned long generation{};
  std::uint64_t submitted{},completed{};
 
@@ -251,6 +256,98 @@ struct MissionCommandGraph {
  }
  NativeTracelineRenderAccess& render_access() noexcept {return render;}
  bool requires_process_retention() const noexcept {return failed || pending!=nullptr;}
+ static void observe_first_material_draw(void* context,void* pass,void* entry,void* renderer) {
+  auto& self=*static_cast<MissionCommandGraph*>(context);
+  if(self.material_observed)return;
+  self.material_observed=true;
+  auto& output=self.log;
+  void* const section=get<void*>(entry,4);
+  void* const material=get<void*>(section,0x20);
+  const auto count=static_cast<std::int16_t>(get<std::uint16_t>(material,0x34));
+  const U pair_count=get<U>(pass,0x28);
+  const U enabled=get<U>(get<void*>(pass,0x74),0x84);
+  auto* const pairs=get<unsigned char*>(pass,0x24);
+  output.notef("native_mission_command first_draw pass=%p material=%p texture_count=%d pair_count=%u pixel_enabled=%08x",
+      pass,material,static_cast<int>(count),pair_count,enabled);
+  for(U i=0;i<5;++i) {
+   void* const texture=static_cast<int>(i)<count?get<void*>(material,0x10+i*4):nullptr;
+   if(!texture){output.notef("native_mission_command material_texture slot=%u owner=null",i);continue;}
+   const U profile=get<U>(texture);
+   if(profile!=0xd61948) {
+    output.notef("native_mission_command material_texture slot=%u owner=%p profile=%08x unsupported_readback=1",i,texture,profile);
+    continue;
+   }
+   const U length=get<U>(texture,8);
+   const char* const name=get<const char*>(texture,0xc);
+   const int shown=static_cast<int>(length<120?length:120);
+   output.notef("native_mission_command material_texture slot=%u owner=%p profile=%08x COM=%p name_length=%u name=%.*s",
+       i,texture,profile,get<void*>(texture,0x10),length,name?shown:0,name?name:"");
+  }
+  for(U i=0;i<pair_count && i<16;++i)
+   output.notef("native_mission_command pass_pair ordinal=%u selector=%d vertex_sampler=%u pixel_enabled=%u",
+       i,get<std::int32_t>(pairs,i*8),static_cast<U>(get<std::uint8_t>(pairs,i*8+4)),
+       static_cast<U>((enabled>>(i&31))&1));
+  auto* const device=get<IDirect3DDevice9*>(renderer,0x1a10);
+  if(!device){output.note("native_mission_command first_draw device=null");return;}
+  for(DWORD slot=0;slot<6;++slot) {
+   IDirect3DBaseTexture9* texture=nullptr;
+   const HRESULT result=device->GetTexture(slot,&texture);
+   // GetTexture adds one COM credit even when the returned object is already
+   // referenced by the renderer. Balance it on every diagnostic exit/unwind.
+   struct TextureCredit {
+    IDirect3DBaseTexture9* value;
+    ~TextureCredit(){if(value)value->Release();}
+   } credit{texture};
+   DWORD srgb=0;
+   const HRESULT sampler_result=device->GetSamplerState(slot,D3DSAMP_SRGBTEXTURE,&srgb);
+   output.notef("native_mission_command device_sampler slot=%lu srgb_result=%08lx srgb_texture=%lu",
+       slot,static_cast<unsigned long>(sampler_result),srgb);
+   if(FAILED(result) || !texture) {
+    output.notef("native_mission_command device_texture slot=%lu HRESULT=%08lx texture=%p",
+        slot,static_cast<unsigned long>(result),texture);
+    continue;
+   }
+   const auto type=texture->GetType();
+   if(type==D3DRTYPE_TEXTURE) {
+    D3DSURFACE_DESC desc;
+    const HRESULT described=static_cast<IDirect3DTexture9*>(texture)->GetLevelDesc(0,&desc);
+    if(SUCCEEDED(described))
+     output.notef("native_mission_command device_texture slot=%lu HRESULT=%08lx texture=%p type=%u desc=%08lx width=%u height=%u format=%08x",
+         slot,static_cast<unsigned long>(result),texture,static_cast<U>(type),
+         static_cast<unsigned long>(described),desc.Width,desc.Height,static_cast<U>(desc.Format));
+    else output.notef("native_mission_command device_texture slot=%lu HRESULT=%08lx texture=%p type=%u desc=%08lx",
+         slot,static_cast<unsigned long>(result),texture,static_cast<U>(type),static_cast<unsigned long>(described));
+   } else output.notef("native_mission_command device_texture slot=%lu HRESULT=%08lx texture=%p type=%u",
+       slot,static_cast<unsigned long>(result),texture,static_cast<U>(type));
+  }
+ }
+ void observe_first_device_constants() {
+  if(completed!=0)return;
+  // Read-only stock D3D9 observation AFTER native uploads/draws, BEFORE overlay.
+  // Gather's supplied prefix is an input preimage, not its resulting stack;
+  // the actual device answers whether system constants reached this draw.
+  auto* const device=get<IDirect3DDevice9*>(execution.actual_renderer_00f8d394,0x1a10);
+  if(!device){log.note("native_mission_command constants_readback device=null");return;}
+  std::array<float,53*4> vertex,pixel;
+  const HRESULT vs=device->GetVertexShaderConstantF(0,vertex.data(),53);
+  const HRESULT ps=device->GetPixelShaderConstantF(0,pixel.data(),53);
+  DWORD srgb=0;
+  const HRESULT srgb_result=device->GetRenderState(D3DRS_SRGBWRITEENABLE,&srgb);
+  log.notef("native_mission_command constants_readback VS=%08lx PS=%08lx srgb_result=%08lx srgb_write=%lu",
+      static_cast<unsigned long>(vs),static_cast<unsigned long>(ps),
+      static_cast<unsigned long>(srgb_result),static_cast<unsigned long>(srgb));
+  const auto record=[&](const char* stage,const std::array<float,53*4>& values) {
+   log.notef("native_mission_command device_%s fog=%g,%g,%g height=%g,%g,%g ambient=%g,%g,%g diffuse=%g,%g,%g cube0=%g,%g,%g sun=%g,%g,%g",
+       stage,values[35*4],values[35*4+1],values[35*4+2],
+       values[36*4],values[36*4+1],values[36*4+2],
+       values[43*4],values[43*4+1],values[43*4+2],
+       values[44*4],values[44*4+1],values[44*4+2],
+       values[46*4],values[46*4+1],values[46*4+2],
+       values[52*4],values[52*4+1],values[52*4+2]);
+  };
+  if(SUCCEEDED(vs))record("VS",vertex);
+  if(SUCCEEDED(ps))record("PS",pixel);
+ }
  void observe_failed_frame() {
   failed=true;
   if(!pending) {log.note("native_mission_command frame_failed retained=1 pending=0");return;}
@@ -344,6 +441,7 @@ struct MissionCommandGraph {
    }
    log.notef("native_mission_command execute_before_overlay=B1EBE0/B1D950 command_invocations=%u entries=%u,%u B24010=%u B21B40=%u returned=%u queue_count=0 owners=retired",
     queue_frame.used,pending->entry_counts[0],pending->entry_counts[1],indexed_calls,primitive_calls,returned);
+   observe_first_device_constants();
   } catch(...) {
    observe_failed_frame();throw;
   }

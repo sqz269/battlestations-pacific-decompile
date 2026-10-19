@@ -4,6 +4,8 @@
 
 namespace bsp {
 struct NativeRendererDeviceRecreationContext;
+class NativeTextureLoadOwners;
+class RenderCommandReference;
 
 // Same canonical serial used by all named/unnamed texture producers. Full
 // B33FC0..B34006: ECX owner; COM/flags stack words; EAX owner; RET8. Does not
@@ -44,6 +46,10 @@ struct NativeRuntimeTextureCreationContext {
     volatile std::uint32_t& allocation_bytes_0108d4bc;
     const volatile float& unsigned_dword_fix_00ce3978;
     const volatile double& unsigned_counter_fix_00d57da0;
+    // Optional SAME canonical texture service, for completed runtime creators.
+    // Source metadata admission only, after the complete native normal return
+    // schedule. No extra retain/cache/COM work; failure retains the creator.
+    NativeTextureLoadOwners* canonical_owners{};
 };
 // Retained mutable five-DWORD call cells. B2A20B replaces levels with raw
 // slot bits before state1; cleanup reads that CURRENT word. When accounting
@@ -70,6 +76,10 @@ struct NativeRuntimeTextureCreationAcquired {
     void* owner{};
     bool raw_slot_returned{};
     NativeRuntimeTextureConstructionAcquired construction;
+    // Appended Source admission diagnostics; never overlay Native fields.
+    RenderCommandReference* companion{};
+    void* owner_record{};
+    bool canonical_registration_started{}, canonical_registered{};
 };
 
 // Full B2A070..B2A360 plus original four-entry switch table. ECX renderer,
