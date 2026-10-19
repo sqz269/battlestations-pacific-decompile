@@ -1135,6 +1135,9 @@ public:
     // message whose holder changed; kRoleOwnerDeviceWalkBound.
     void role_owner_device_walk_0095ac1d(std::size_t unit_index, std::uint32_t mask,
                                          std::int32_t slot, bool take);
+    // 00953B80's [unit+49Ch]: the square of the largest bullet range over the
+    // unit's Function 0/1/5/6 guns (Function 6 takes its Bullet[2]).
+    float unit_gun_range_sq_049c(std::size_t unit_index) const;
 
     // One fixed simulation step: the gunnery pass 00864FE0, the aim ticks and
     // the trigger latch, 0072D130's 0ADh send with BSP_Gun_Fire behind it, and

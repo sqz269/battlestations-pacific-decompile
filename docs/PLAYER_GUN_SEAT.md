@@ -563,6 +563,31 @@ The image's path is the role take:
   0 messages. Gameplay, death rows, the unit table and the native table are identical apart from
   that one record.
 - USN21: no seat messages; identical.
-- **Reach is the open item.** With an idle or fixed camera, the pick never holds a fast enemy
+- **Reach was the open item.** With an idle or fixed camera, the pick never holds a fast enemy
   plane while group 1/2 is up. Exercising 00957C29 needs a camera that tracks a plane, e.g.
   cc13's aim-at-unit helm line, with group 2 selected (0x9C).
+
+**The second blocker: the target marks cleared the pick.** With `aim unit "B5N Kate #2.1"`
+(SCRIPTED_HELM 18.1), `target_virtual_10c` answered true (70 to 94 m/s), but no target reached
+the gunnery side.
+- The marks (00548E59..0054900D, `target_marks`) look for the nearest entry unit where the player
+  holds role 2 or 3 and `[unit+49Ch] > |unit - target|^2`. With none found, 0054900D zeroes
+  screen +54h, before the 005488FE gate reads it.
+- Both sides were unimplemented stubs answering 0, so `0 > 0` failed every time.
+- Now bound under the same switch:
+  - 00548EA9..00548ECC: 00427EB0 on both units, then 00427C90 and 00427E30 (the squared length).
+  - 00548ED0 `[unit+49Ch]`: the square of 00953B80's largest bullet range over the Function
+    0/1/5/6 guns, read as `[[[dev+3F4h]+74h]+34h]+60h` (Function 6 reads +7Ch, its Bullet[2]).
+    In the host that is `GameGunneryHost::unit_gun_range_sq_049c`: `gun.max_range`, and
+    `SecondAmmo::max_range` for Function 6.
+
+**The pairs, ON exe `local\g53_ti_on3` against OFF `local\g53_au`** (`local\g53_ti3{off,on}_*`):
+
+| row | result |
+| --- | --- |
+| USN04, `local\g53_ti_kate.txt` (1600 `aim unit "B5N Kate #2.1"`, 1610 0x9C, 1612 0x99 hold 800), reference env | 235 targeted messages, 5170 gun aims. Kate #2.1 dies at 113.80 s to the Lexington's player-fired gun 14 (cat 1), against 116.65 s to Northampton-class02's flak. Its wingmen IV and III also fall to the Lexington. The Lexington's damage dealt goes 934 -> 1059. The same 29 deaths, and hit records 386 -> 384 |
+| the same, default env | 200 messages, 4400 aims. The leader dies at 111.85 s (Lexington gun 14), against 116.05 s. The run's one torpedo drop (1 -> 0) does not happen. Deaths 30 -> 31 through the shared stream |
+| USN04 idle, 9000 frames | gameplay identical; same_side concrete at 6 calls |
+| USN21, 9000 frames | identical |
+
+**Verdict: ON by mechanism.** The player's AA leads the plane it looks at, as 00957C29 does.

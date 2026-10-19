@@ -14341,6 +14341,30 @@ void GameGunneryHost::apply_gun_aim_message_00959c20(std::size_t unit_index,
     impl_->apply_gun_aim_message(unit_index, message);
 }
 
+// 00953B80 (cc9-gunnery53, PLAYER_GUN_SEAT 7.6): for each kind-20h gun of
+// Function 0/1/5 the range is [[[dev+3F4h]+74h]+34h]+60h; Function 6 uses +7Ch,
+// its Bullet[2]. [unit+49Ch] is the largest, squared. This host's range is
+// gun.max_range (the +60h the seat ray reads) and SecondAmmo::max_range.
+float GameGunneryHost::unit_gun_range_sq_049c(std::size_t unit) const {
+    float best = 0.0f;
+    for (std::size_t g = 0; g < impl_->guns.size(); ++g) {
+        const GameGunRow& gun = impl_->guns[g];
+        if (gun.unit_index != unit) continue;
+        float range = 0.0f;
+        if (gun.category == 0 || gun.category == 1 || gun.category == 5) {
+            range = gun.max_range;
+        } else if (gun.category == 6) {
+            const auto second = impl_->second_ammo_by_gun.find(g);
+            range = second != impl_->second_ammo_by_gun.end() ? second->second.max_range
+                                                              : gun.max_range;
+        } else {
+            continue;
+        }
+        if (best < range) best = range;
+    }
+    return best * best;
+}
+
 // cc9-gunnery53 (SHIP_AI_OPEN_ITEMS 296.8): 0095AC1D's device walks, reached
 // from 00780120's holder-change call (007803A8 0077FE80 -> 0078002F
 // vtable[164h] -> 00821EEA -> 0095ABE0). The first matching mask test wins.

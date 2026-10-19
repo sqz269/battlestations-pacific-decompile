@@ -1231,13 +1231,35 @@ public:
             return 0;
         }
     }
-    float gunner_distance_00548ea9(std::size_t, std::size_t) override {
-        owner_.record("HudWeaponGroupScreen::gunner_distance", 0x00548ea9u);
-        return 0.0f;
+    float gunner_distance_00548ea9(std::size_t unit, std::size_t target) override {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            // 00548EA9..00548ECC: 00427EB0 on both (pose +FCh), 00427C90,
+            // then 00427E30, the squared length.
+            float r[3], u[3], f[3], up[3], tp[3];
+            if (unit == 0 || target == 0 || owner_.units == nullptr
+                || !owner_.units->unit_pose(unit - 1, r, u, f, up)
+                || !owner_.units->unit_pose(target - 1, r, u, f, tp)) {
+                return 0.0f;
+            }
+            const float d[3] = {up[0] - tp[0], up[1] - tp[1], up[2] - tp[2]};
+            owner_.done("HudWeaponGroupScreen::gunner_distance", 0x00548ea9u);
+            return d[0] * d[0] + d[1] * d[1] + d[2] * d[2];
+        } else {
+            owner_.record("HudWeaponGroupScreen::gunner_distance", 0x00548ea9u);
+            return 0.0f;
+        }
     }
-    float gunner_range_49c(std::size_t) override {
-        owner_.record("HudWeaponGroupScreen::gunner_range", 0x00548ed0u);
-        return 0.0f;
+    float gunner_range_49c(std::size_t unit) override {
+        if constexpr (kPlayerGunSeatTargetInterceptBound) {
+            // 00548ED0: [unit+49Ch], which 00953B80 writes.
+            GameGunneryHost* gunnery = owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+            if (unit == 0 || gunnery == nullptr) return 0.0f;
+            owner_.done("HudWeaponGroupScreen::gunner_range", 0x00548ed0u);
+            return gunnery->unit_gun_range_sq_049c(unit - 1);
+        } else {
+            owner_.record("HudWeaponGroupScreen::gunner_range", 0x00548ed0u);
+            return 0.0f;
+        }
     }
     bool target_virtual_10c(std::size_t target) override {
         if constexpr (kPlayerGunSeatTargetInterceptBound) {
