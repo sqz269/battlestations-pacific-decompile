@@ -2413,6 +2413,7 @@ struct GameGunneryHost::Impl {
         auto_target_phase = kDrawKeyCollisionFixBound ? 32u : 30u, // 009F6A8F, -U(0, 1) into the auto-target think countdown, stream 1, key (unit, 0)
         trace_scene_damage = 33, // 0084C19F, U(+ACh, +B0h) for 00428420, stream 1, key (shot serial | plane, 0)
         ship_break_in_two = 34, // 00935D30's 11 piece-offset draws, stream 1, key (unit, 0 front | 1 back)
+        sink_leak = 35,       // 0074ECA5, 0074EC50's per-leak U(0, 1), stream 1, key (ship, 0)
     };
     unsigned long long next_projectile_serial{0};
     unsigned long long trace_scene_draws{0};   // kTraceSceneDamageDrawBound
@@ -16165,6 +16166,13 @@ void GameGunneryHost::submarine_wake_draws_008546df(std::size_t unit_index, floa
 int GameGunneryHost::plane_spin_side_800(std::size_t unit_index) const {
     if (!kPlaneSpinSideBound || unit_index >= impl_->plane_spin_side_800.size()) return -1;
     return impl_->plane_spin_side_800[unit_index];
+}
+
+float GameGunneryHost::sink_leak_draw_0074eca5(std::size_t ship_index, float low,
+    float high) {
+    // 0074ECA5, ECX = 1. Shared generator: random_range_00bd2f10, exactly the
+    // call death_mode_draw_00bd2f10(1, ...) makes there.
+    return impl_->draw(Impl::Draw::sink_leak, ship_index, 0, low, high);
 }
 
 float GameGunneryHost::death_mode_draw_00bd2f10(int stream, std::size_t unit_index,

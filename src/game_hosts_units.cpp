@@ -3806,7 +3806,7 @@ struct GameUnitsHost::Impl {
             float r = 0.0f;
             if constexpr (bsp::kSinkLeakDrawStreamCc13Bound) {
                 r = gunnery != nullptr
-                    ? gunnery->death_mode_draw_00bd2f10(1, s.process_index, 0.0f, 1.0f)
+                    ? gunnery->sink_leak_draw_0074eca5(s.process_index, 0.0f, 1.0f)
                     : release_altitude_draw_00bd2f10(s.row.name + "#leak", 0.0f, 1.0f);
             } else {
                 r = release_altitude_draw_00bd2f10(s.row.name + "#leak", 0.0f, 1.0f);
