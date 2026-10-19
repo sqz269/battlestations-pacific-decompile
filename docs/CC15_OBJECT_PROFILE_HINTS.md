@@ -290,3 +290,128 @@ Builds: base (328ee346b), OFF (this change), ON (`kHintTrackerCc15Bound = true`;
 - The per-frame trigger passes (TriggerHint and the queue, `hint_cooldowns` in
   `game_hosts_mission_frame.cpp`) still do not run on this object, so the loaded definitions are not
   yet consumed during a mission; with an empty profile nothing reads them in this run.
+  (Section 6 adds them, behind its own switch.)
+
+## 6. The per-frame passes, TriggerHint and screen 34h (packet cc15-hint2, 2026-10-19)
+
+Switch `kHintTriggerPassesCc15Bound` (`include/bsp/game_hint_passes.hpp`), committed **OFF**. Code:
+`src/game_hint_passes.cpp` (new), the tracker in `game_profile_owner.{hpp,cpp}`, the frame binding in
+`game_hosts_mission_frame.cpp`, and the screen-34h pump in `game_hosts_menu.cpp`. It reuses the typed
+bodies `hint_tracker_trigger_00690fd0` and `hud_hints_*` (`src/gui_screens_3.cpp`) and the pass
+helpers in `src/award_trackers.cpp`. The new code is their hosts.
+
+### What ON changes
+
+- **The seven OnMove passes** (004E525E..004E52BA, after the screen pump 004E5259) run on the tracker
+  [00E198D0] instead of the mission frame's stand-in:
+  - 0068EC10 cooldowns: subtract the raw delta and erase entries below 0.
+  - 00692B00 drain: front() to TriggerHint with forced = 1, then pop.
+  - 00692B60 unit class: the BASICSUB/PLANE/SHIP tutorial if the profile has not seen it, else the
+    class name.
+  - 006926F0 weapon.
+  - 00692580 environment.
+  - 00692FD0 zone: returns early only when BOTH LANDING1STGET and CAPTURE1STGET have been shown.
+  - 00692960 strategic map.
+- **The PowerUps rows** (`hint_has_been_shown` 0068E600, `trigger_hint`) go to the tracker.
+- **TriggerHint 00690FD0** `__thiscall(tracker, NativeString*, char)`, RET 8, through
+  `GameHintTracker::trigger_hint_00690fd0`.
+- **The profile seen list** (`ProfileResetState::string_list_08`, AllSeenHints): 007F8E00 reads it.
+  007FAE20 removes the name case-insensitively (005FE8B0) and appends it. The list is **in memory
+  only**: nothing in the process writes a profile, and the run logs each add as
+  `hint profile seen += NAME (in memory only)`.
+- **Screen 34h** (vtable 00CEE290) is owned by the tracker and pumped by the menu host:
+  - 0054D670 (vtable +4h) returns true, so the screen is self-managed.
+  - Register 0054D860 sets +4h (wanted) last.
+  - Enter 0054E380, Update 0054E6B0 (counts +54h down and calls the finish 0068E420), Exit 0054E3D0.
+  - Show 0054E020 and Dismiss 0054E610.
+  - The widgets are a state model; nothing is drawn.
+  - The seconds for duration -1 are 2 × (characters × 0.04 + 1.0) (DialogGlobals.lua through screen
+    33h +7Ch/+80h). The character count is the locale entry's length.
+- **A critical hint**: 004D94F0 stores game+620h and parks the GUI screens. In effective mode 8 the
+  hint calls game_set_cinematic(true, true, true) and waits for action 4Ah. No run presses it.
+
+### Labelled substitutions (open items, each in a cc9-owned file or not hosted)
+
+These inputs are recorded calls with neutral answers.
+
+- **Screen 2Eh's weapon group +44h** answers -1, so the weapon pass never names a hint. It still calls
+  TriggerHint with "" each frame; this matches the listing, which builds the string unconditionally,
+  and the call finds no definition.
+- **The repair task**: `class_repair_d0` is false, so the environment pass stops there.
+- **The narrative blend 005B5D50** (33h +C0h) is false.
+- **Screen 4Eh's 0066FFA0 / 00652A30** are false.
+- **Plane ordnance 007BCA50** answers none.
+- **The side nation +28h** is the local party; the player slot is 0; the hints setting 00F8898C is
+  2 (the 008D41C0 default; the only image writer is the command line).
+- **006B8AD0 (the hint's Lua command)** is recorded, not run; the run logs it as `hint lua`.
+- **'#' tokens** are not expanded in the character count.
+- **Unit type +170h** comes from `warning_entity_category_cc15(class_id)`. The +8h of screens 45h and
+  3Eh is approximated by their registry "applied" byte.
+- **0068C526 (`screen_34_query`, cc9's `kHudHintsSecondsLeftBound`)** reads the HUD host's own
+  34h bytes, not this screen. Both switches need to agree before either flips.
+- **Whether game+620h stops the simulation natively has not been traced.** OnMove 004E4A40 itself
+  does not read it. The host leaves the simulation running and only logs the pause.
+
+### Evidence (2026-10-19, tree base 7f4f75b85, commits 1f40f2b90 + 1cf2447d7)
+
+Ref env: BSP_DEATH_TABLE=1, BSP_GUNNERY_RNG_STREAMS=1, BSP_FRAME_JITTER unset. Every log has its
+`rng streams: on` line. Builds:
+- base: 7f4f75b85.
+- OFF: this commit.
+- ON: the same with the switch true, not committed.
+
+**USN04 base vs OFF:** `pair_diff` exit 0 (native table 1589 rows unchanged, 793 summary lines
+unchanged).
+
+**ON vs OFF:** `pair_diff` exits 1 on every row, and **gameplay is identical on all 13**: deaths, hit
+records, damage, shots, death rows, plane death modes, unit table and mission end. The
+native-table moves are the same on every row:
+- New rows for screen 34h's register, enter and update.
+- The five pass rows go from UNIMPLEMENTED to concrete.
+- New TriggerHint, dismiss, narrative-blend, class-repair and weapon-group record rows.
+- Front-end enters 25 -> 26 and commits 46 -> 47: screen 34h's own enter.
+
+The strict index-order check uses `local/hint2_strict.py` in the worker tree (ignored; not committed). It compares every hint, tutorial, dialog,
+message, objective, blackout, Lua script-entity/timer and mission-end line OFF vs ON, index by
+index, after setting aside the new `hint ...` tracker lines. The result is **0 differing indices
+on all 13 rows**: no dialog, message, objective or Lua timing line moved or was re-timed.
+
+Seen-list refusals: the profile in this installation's save is loaded read-only, and its seen list
+starts with 38 names.
+
+| Row | Mission end (OFF = ON) | Strict diff | What the tracker did (ON only) |
+| --- | --- | --- | --- |
+| USN04 | none (4800 frames) | 0 | hidden DESTROYER t=0.10, hidden MOTHERSHIP t=25.20 |
+| USN01 | completed 410.02 s | 0 | hidden DESTROYER 0.10, CRUISER 20.20, DIVEBOMBER 86.20, MOTHERSHIP 251.26; refused TORPEDOBOMBER from 134.45 (3x, profile seen), DIVEBOMBER from 165.01 (2x, seen at 86.20) |
+| USN02 | failed 55.05 s | 0 | hidden DESTROYER 0.10, CRUISER 26.25 |
+| USN12 | completed 1560.40 s | 0 | hidden DESTROYER 0.10, CRUISER 22.20; refused DESTROYER from 651.41 (7x), CRUISER from 830.12 (6x) |
+| PRCP01 | completed 715.45 s | 0 | no TriggerHint call: every pass returned at its mode/slot/unit gate (no 005B5D50 call) |
+| USN21 | none (80000 frames) | 0 | **shown** BASICSUB t=0.10, critical as in LOMP06, active to the end |
+| LOMP06 | failed 628.12 s | 0 | **shown** BASICSUB t=0.10, critical (pausing=1, 28.40 s), Lua command recorded, cinematic hide at 0.25; never confirmed (no 4Ah), so it stays active to the end and blocks every later hint |
+| LOMP10 | completed 751.49 s | 0 | refused COMMANDBUILDING t=0.05 (profile seen); hidden LEVELBOMBER 52.70 |
+| JM06 | completed 778.93 s | 0 | **shown** PUM1STGET t=321.05 (9.44 s, not pausing), finished 330.54; its Lua command recorded |
+| ESMP08 | completed 1337.38 s | 0 | hidden DESTROYER 0.10, MOTHERSHIP 44.25 |
+| IJN18 | none (64000 frames) | 0 | hidden DESTROYER 0.10, CRUISER 35.25 |
+| BSM09 | nil at 405.02 s (EndMission) | 0 | hidden DESTROYER 0.15, MOTHERSHIP 42.75 |
+| BSM01 | none (40000 frames) | 0 | hidden DESTROYER 0.10, PT 3.10 |
+
+A "hidden" hint here is one of the unit-class type names. Those definitions are hidden: they become
+the active hint for one frame, are marked seen (in memory), and finish on the next screen-34h update
+without a show.
+
+- **Re-timed hints:** none. OFF never shows a hint (its stand-in records only), so the two shows
+  (LOMP06 BASICSUB, JM06 PUM1STGET) are new rather than re-timed.
+- **Suppressed by seen history:** the refusals in the table above. In addition, the unit-class pass
+  skips the BASICSHIP/BASICPLANE tutorial whenever the loaded profile already lists it; that is
+  control flow before TriggerHint and is not counted.
+
+Save safety: the four files under Documents\Battlestations-Pacific (options.txt, save\0\player,
+quick, valid) have identical SHA-256, size and mtime before the first run and after the last.
+
+### Before a flip
+
+- Host screen 2Eh +44h, the repair task and 005B5D50 (cc9 HUD/damage); without them the weapon and
+  environment hints cannot fire.
+- Decide the LOMP06/USN21 critical-hint behaviour for unattended runs. Natively the hint waits for
+  action 4Ah. Here it stays active and suppresses every later hint of the mission.
+- Align `kHudHintsSecondsLeftBound` (0068C526) with this screen.
