@@ -1152,3 +1152,39 @@ Worker cc9-ships39, 2026-10-06. This is a harness line over cc9-lua44's entry. T
 **Smoke** (`local\s39_e8smoke.log`, ESMP08, 300 frames, switch OFF):
 - Slot 0 and order 4 are refused at read.
 - Orders 1, 3 and 2 reach the entry, which refuses each one with "kAirOpsHeldSlotOrdersBound is off".
+
+## 17. `input`: hold an input action through the action records (packet `cc13-firehold`)
+
+Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of its own. It lets a pair exercise the player's HUD fire path, `005484F0` → `00954A10` → `0077C2A0` (message 79h, `kGunAimMessageCc15Bound`), which section 15's `fire` line skips.
+
+```
+<frame> input <action> [hold <frames>]
+```
+
+- **Action.** The action is an input action number, in decimal or `0x` hex, as `scripts\datatables\Inputs.lua` numbers it. Useful ones:
+  - `153` / `0x99`, `IC_GUN_FIRE`;
+  - `156` / `0x9C`, `IC_GUNC_AAFLAK` (group 2);
+  - `157` / `0x9D`, `IC_GUNC_ARTILLERY` (group 3);
+  - `158` / `0x9E`, `IC_GUNC_TORPEDO` (group 4);
+  - `159` / `0x9F`, `IC_GUNC_DEPTHCHARGE` (group 5).
+  - `0x4E`, press-start, is refused, because `--press-start-frame` owns it.
+- **Hold length.** `hold <frames>` defaults to 1 frame. It counts presented frames.
+- **What it does.** `bsp::game::inject_input_action_hold` queues the hold, and `GameMenuHost::frame` takes it at the next frame's input prologue. A record for the action is driven by the same rules as the press-start injection:
+  - `00a92aa0` on the first frame, so `004c43c0` reports one rising edge;
+  - `00a919f0` on the following frames, so the held test answers true and no new edge appears;
+  - `00a92370` after the last frame, so the release follows on the next frame.
+  - Every reader of `GameMenuHost::input_action_pressed / held / released` sees the action, including screen 2Eh's `005484F0`. That screen sets the held and pressed bytes of message 79h from action 99h, takes the group keys 9Ch..9Fh, and routes the message per group entry through `0077C2A0`.
+  - A new line for an action still held restarts its count.
+- **What it logs.** One line when the order applies (`helm order applied: ... input 0x99 hold N frame(s)`), and one when the hold starts (`helm input action 0x99 held for N frame(s) from frame F`). Nothing goes to the console.
+- **Default runs.** With no `input` line, no record exists and every action other than 4Eh answers false, as before.
+- **LABELLED.**
+  - The hold starts one frame after its line, at the input prologue, as a real key press would.
+  - The action is held at amount 1.0 through no binding or device.
+  - Screen 2Eh must be up with the player's ship (`[00E188D8]`) for `005484F0` to build anything. That is the case when the mission's HUD runs.
+
+**Example.** Select the artillery group, then hold fire for 10 seconds at 0.05 s per frame:
+
+```
+6000 input 0x9D
+6002 input 0x99 hold 200
+```

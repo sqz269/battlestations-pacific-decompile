@@ -227,4 +227,15 @@ private:
     std::unique_ptr<Impl> impl_;
 };
 
+// Harness only (the helm `input` line, docs/SCRIPTED_HELM.md): hold input action
+// `action` down for `frames` presented frames, starting at the next frame's input
+// prologue. The record is driven through the same 00a92aa0 / 00a919f0 / 00a92370
+// rules as the press-start injection, so 004c43c0 reports one rising edge on the
+// first frame, the held test (004C5090) answers true on every frame of the hold,
+// and the release follows on the frame after. A repeat for an action still held
+// restarts its count. Action 4Eh (press-start) is refused. Nothing calls this
+// unless a helm line asks, so default runs are unchanged. Returns false when
+// refused.
+bool inject_input_action_hold(int action, unsigned frames);
+
 }  // namespace bsp::game

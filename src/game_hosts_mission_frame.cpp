@@ -460,6 +460,13 @@ struct GameMissionFrameHost::Impl {
         bool fire_group{false};
         int fire_group_id{0};
         bool fire_held{true};
+        // Packet cc13-firehold: `input <action> [hold <frames>]`, an input action
+        // held through the menu host's action records (inject_input_action_hold),
+        // so 005484F0 reads the fire key 99h (and the group keys 9Ch..9Fh) as it
+        // reads a real press.
+        bool input_hold{false};
+        int input_action{0};
+        unsigned input_frames{1};
         // Packet cc9_player_bomb_release: `release <unit> [on <target...>
         // [within <m>] [until <frame>]]`, the plane screen's bomb fire 006082D0.
         bool bomb_release{false};
@@ -3416,7 +3423,10 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 || words[1] == "attack" || words[1] == "target" || words[1] == "launch"
                 || words[1] == "release" || words[1] == "build"
                 || words[1] == "depthcharge" || words[1] == "fire" || words[1] == "order"
-            || words[1] == "torpedo");
+            || words[1] == "torpedo" || words[1] == "input");
+        // `<frame> input <action> [hold <frames>]`.
+        const bool input_ok = verb_ok && words[1] == "input"
+            && (words.size() == 3 || (words.size() == 5 && words[3] == "hold"));
         // `<frame> order <base> <slot> <order> [target...]`.
         const bool air_order_ok = verb_ok && words[1] == "order" && words.size() >= 5;
         // `<frame> depthcharge <ship...>`.
@@ -3457,6 +3467,7 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 : words[1] == "depthcharge" ? !depthcharge_ok
                 : words[1] == "fire" ? !fire_ok
                 : words[1] == "torpedo" ? !torpedo_ok
+                : words[1] == "input" ? !input_ok
                 : words[1] == "order" ? !air_order_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
@@ -3465,10 +3476,29 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 "<class> <count> <target> [loadout <n>]` or `<frame> release <unit> [on <target> [within "
                 "<m>] [until <frame>]]` or `<frame> build <shipyard> class <id>` or `<frame> "
                 "fire <ship> group <g> [release]` or `<frame> torpedo <ship> at <target>|release` "
-                "or `<frame> order <base> <slot> <1|2|3> [target]`", line, path.c_str());
+                "or `<frame> order <base> <slot> <1|2|3> [target]` or `<frame> input "
+                "<action> [hold <frames>]`", line, path.c_str());
             continue;
         }
         order.unit = words[2];
+        if (input_ok) {
+            char* ae = nullptr;
+            char* fe = nullptr;
+            const long a = std::strtol(words[2].c_str(), &ae, 0);   // decimal or 0x hex
+            const long n = words.size() == 5 ? std::strtol(words[4].c_str(), &fe, 10) : 1;
+            if (ae == nullptr || *ae != '\0' || a < 0 || a == 0x4E
+                || (words.size() == 5 && (fe == nullptr || *fe != '\0')) || n < 1) {
+                host.log.notef("helm order refused: line %d of \"%s\": input needs an action "
+                    "number other than 4Eh (decimal or 0x hex) and a hold of at least one "
+                    "frame", line, path.c_str());
+                continue;
+            }
+            order.input_hold = true;
+            order.input_action = static_cast<int>(a);
+            order.input_frames = static_cast<unsigned>(n);
+            host.helm_orders.push_back(order);
+            continue;
+        }
         if (air_order_ok) {
             char* se = nullptr;
             char* oe = nullptr;
@@ -3948,6 +3978,19 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
             }
             order.applied = true;
             const long due = order.frame;
+            if (order.input_hold) {
+                // Packet cc13-firehold: the action is held from the next frame's
+                // input prologue (GameMenuHost::frame), the way 00a92aa0 starts a
+                // real press there; every reader of 004c43c0 / 004C5090 sees it.
+                const bool accepted = inject_input_action_hold(order.input_action,
+                                                               order.input_frames);
+                if (accepted) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) input "
+                    "0x%02X hold %u frame(s) through the action record (00a92aa0 / 00a919f0 / "
+                    "00a92370 -> 004c43c0)", accepted ? "applied" : "refused", order.line, due,
+                    now, static_cast<unsigned>(order.input_action), order.input_frames);
+                continue;
+            }
             if (order.select) {
                 // Packet cc9_player_order_capture_row: the player's unit click as
                 // the HUD root update commits it (00649860, 0064A00E..0064A101):
