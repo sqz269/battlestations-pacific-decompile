@@ -364,8 +364,12 @@ inline constexpr bool kPlayerGunSeatSegmentQueryBound = true;
 //   vtable[34h] when [unit+4A0h] (00953B80: the OR of AddsSpeed over the unit's
 //   Function 0/1/5/6 guns) is set, else zero.
 // The group 3 arm (00957740) never reads the target.
+// The marks' gunner range (00548EA9 / 00548ED0, [unit+49Ch]) is bound with it;
+// without it 0054900D clears the pick before the gate.
 // False: the gate answers false and the intercept is recorded only.
-inline constexpr bool kPlayerGunSeatTargetInterceptBound = false;
+// ON by mechanism (PLAYER_GUN_SEAT 7.6): with a tracked Kate, USN04's player AA
+// leads it and the Lexington kills it 2.9 s earlier; idle USN04/USN21 identical.
+inline constexpr bool kPlayerGunSeatTargetInterceptBound = true;
 
 // Packet cc9_unit_death_route, docs/UNIT_DEATH_ROUTE.md. True: a sunk or
 // wrecked unit goes through 00959450 BSP_Unit_OnDestroyed's model
