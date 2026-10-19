@@ -108,3 +108,23 @@ which of the expected cache-row/fallback credits remains. B316C0 is ECX cache,
 RET; B32370 is ECX texture registry, RET; the callback is a new C++ diagnostic
 interface. Static diff validation passed; combined build/live evidence belongs
 to the primary run.
+
+ON16 (`local/oct18b_render_cache_trace_usn04.log`, primary) proves a
+callback-sensitive cache transition. B316C0 enters with two rows, releases
+white texture1ACFC6E4 from1 to0, and the callback leaves one row. The loop
+then exits with zero rows without releasing error texture16AA50E0. B32370
+subsequently releases that fallback from2 to1. The sole retained companion
+is therefore explained by the skipped error-row credit; it is not evidence
+of missing cube/volume dispatch or a second texture context.
+
+The original listing was rechecked: immediately after the virtual release
+call atB316FC, B316FE reloads `[ESI+08]`; B31705 reloads data, B31708 computes
+the current count times2Ch, B3170B selects the current last row, B3170F destroys
+its storage, and B31714 decrements the current count. There is no saved row
+count across the callback. Changing that behavior in Source would diverge
+from Original. The outer737F30 listing calls current renderer virtual+0C at
+737F63 and virtual+14 at737F70 before retiring Application+08 references at
+737F80..737FB0. Those earlier native shutdown operations are the next missing
+composition boundary to verify; the existing caller-array retirement alone
+does not establish that protocol. No cache decrement, callback suppression,
+guard relaxation or residual-owner sweep was added.
