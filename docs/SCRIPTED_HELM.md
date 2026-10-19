@@ -1183,6 +1183,8 @@ Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of it
   - The action is held at amount 1.0 through no binding or device.
   - Screen 2Eh must be up with the player's ship (`[00E188D8]`) for `005484F0` to build anything. That is the case when the mission's HUD runs.
   - The hold counts down whether or not screen 2Eh is up. An edge that falls on a frame without 2Eh (the map screen, a cutscene, pause, a load) is lost. Time the line for a frame on which the HUD runs.
+  - **The 2Eh window.** Screen 2Eh is registered only while the mission's HUD runs. On USN01 that is frames ~410-1823; the script's SetSelectedUnit takes it down. Any `input` line outside the window reaches no 2Eh reader.
+  - **Lost-input lines.** The run log reports the loss rather than dropping it silently. When the rising edge falls on a frame without 2Eh, the log says `helm input action 0x99 edge on frame F lost: screen 2Eh is not registered`. When a hold ends after any held frames without 2Eh, it says `helm input action 0x99 hold ended on frame F: N held frame(s) without screen 2Eh`. The test is the menu host's screen registry (slot 2Eh) at the frame's input prologue.
   - The injected record is outside the image's input-suppression set (`game+5B0h`, `004e4ec2` / `004e4eee`). An injected key therefore stays held through states that would clear a real one.
 
 **Example.** Select the artillery group, then hold fire for 10 seconds at 0.05 s per frame:
