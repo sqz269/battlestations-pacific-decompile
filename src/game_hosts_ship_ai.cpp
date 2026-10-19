@@ -255,18 +255,6 @@ inline constexpr bool kShipTurnRadiusTorpedoBoatExempt = true;
 // False: the walk is recorded, the list stays empty and the gate answers false.
 // Landed ON after the USN04 4500 and E2 9000 pairs (docs/SHIP_TORPEDO_RESPONSE.md section 5).
 inline constexpr bool kShipTorpedoResponseBound = true;
-// Packet cc13-helmlatch (docs/CC13_IJN18LOSS.md section 7). 009E1170's latched
-// arm 009E11CE..009E1262 runs when +184h is set and role 1 is 8 or AI-held (the
-// map-up case). While the cruise state's +8h is below -10.0f (00CE6848, COMISS
-// at 009E11F9), it latches +8h = unit+994h (009E1207) and +0Ch = unit+998h
-// (009E1237), or 0 for a kind-0Eh unit (009E121F). On every re-plan it re-sends
-// +0Ch through 009DFFB0 (009E1249) and +8h through 009DBF90 (009E1257). The helm
-// arm stores -99.0f (00CF5BFC) into both at 009E1407/009E140C, so a later fall
-// to the latched arm latches again; the brain constructor stores the same -99.0f
-// at 009F3A22/009F3A27. The latch state is tracked in both settings. ON: the
-// re-send writes the control block. OFF: nothing is written, and only the
-// summary counts change.
-inline constexpr bool kCruiseLatchedPlayerArmCc13Bound = false;
 // Packet cc9_ship_torpedo_response, secondary. 0082E850 multiplies class+520h by
 // settings+438h (2.0) at every call site. True: the follow step's two sites
 // (009E16F0 station latch, 009E1790 back-off), the path follower's (009E3EAE)
@@ -10666,7 +10654,7 @@ public:
             ++owner_.cruise_latches;
         }
         ++owner_.cruise_latch_resends;
-        if constexpr (kCruiseLatchedPlayerArmCc13Bound) {
+        if constexpr (bsp::kCruiseLatchedPlayerArmCc13Bound) {
             bsp::ship_ai_set_desired_steering_009dffb0(ctl_.blk, ctl_.cruise_latch_rudder_b7c,
                 setters);                                                  // 009E1249
             owner_.done("CruiseState::latched_set_desired_steering", 0x009e1249u);
@@ -14328,7 +14316,7 @@ void GameShipAiHost::report() {
         host.avoidance_role_reads, host.avoidance_role_unavailable);
     host.log.notef("summary ship cruise latched player arm bound=%d latches=%llu resends=%llu "
         "helm_sentinels=%llu (009E11CE..009E1262, 009E1407/009E140C, packet cc13-helmlatch)",
-        kCruiseLatchedPlayerArmCc13Bound ? 1 : 0, host.cruise_latches,
+        bsp::kCruiseLatchedPlayerArmCc13Bound ? 1 : 0, host.cruise_latches,
         host.cruise_latch_resends, host.cruise_latch_sentinels);
     host.log.notef("native ship pre-step: updates=%llu; pose=cache-valid; "
         "model=absent; class-depth=loaded; width=loaded; full009e0270=bound",

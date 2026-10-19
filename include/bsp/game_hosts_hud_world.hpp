@@ -45,6 +45,8 @@
 #include <string>
 #include <vector>
 
+#include "bsp/ship_ai_seg67_switches_cc13.hpp"  // kCruiseLatchedPlayerArmCc13Bound
+
 namespace bsp::game {
 
 // Packet cc9_hud_presentation_top (docs/HUD_PRESENTATION_TOP.md). ON binds three
@@ -249,6 +251,9 @@ inline constexpr bool kHarnessReleaseGunMapBound = false;
 inline constexpr bool kHelmPrepareMapUpGateCc13Bound = false;
 static_assert(!kHelmPrepareMapUpGateCc13Bound || kHarnessReleaseGunMapBound,
     "kHelmPrepareMapUpGateCc13Bound needs kHarnessReleaseGunMapBound: only that path opens the map");
+static_assert(!kHelmPrepareMapUpGateCc13Bound || bsp::kCruiseLatchedPlayerArmCc13Bound,
+    "kHelmPrepareMapUpGateCc13Bound needs kCruiseLatchedPlayerArmCc13Bound: without the latch "
+    "009F3F80 drives the ring from a stale control block");
 
 // Packet cc9_hud_camera_team_lists (docs/HUD_CAMERA_TEAM_LISTS.md). ON answers
 // 004B4B00 exactly for the minimap (005C154E) and the markers screen: the

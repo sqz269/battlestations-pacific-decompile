@@ -166,4 +166,18 @@ inline constexpr bool kShipAiNavBlockCtorSeedsCc13Bound = false;
 // seeds ON).
 inline constexpr bool kShipAiClearance364SyncCc13Bound = false;
 
+// Packet cc13-helmlatch (docs/CC13_IJN18LOSS.md section 7). 009E1170's latched
+// arm 009E11CE..009E1262 runs when +184h is set and role 1 is 8 or AI-held (the
+// map-up case). While the cruise state's +8h is below -10.0f (00CE6848, COMISS
+// at 009E11F9), it latches +8h = unit+994h (009E1207) and +0Ch = unit+998h
+// (009E1237), or 0 for a kind-0Eh unit (009E121F). On every re-plan it re-sends
+// +0Ch through 009DFFB0 (009E1249) and +8h through 009DBF90 (009E1257). The helm
+// arm stores -99.0f (00CF5BFC) into both at 009E1407/009E140C, so a later fall
+// to the latched arm latches again; the brain constructor stores the same -99.0f
+// at 009F3A22/009F3A27. The latch state is tracked in both settings. ON: the
+// re-send writes the control block. OFF writes only the controller's latch pair
+// (read by nothing else) and the summary counts. kHelmPrepareMapUpGateCc13Bound
+// (bsp/game_hosts_hud_world.hpp) requires this switch.
+inline constexpr bool kCruiseLatchedPlayerArmCc13Bound = false;
+
 } // namespace bsp

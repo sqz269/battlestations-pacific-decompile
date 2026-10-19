@@ -315,7 +315,8 @@ It differs in two ways:
   0064B870 is screen 46h's update, and that does not run while the map is up (below). So a takehelm ship with
   |throttle| > 0.1 is back in the helm arm within one step.
 
-**Built (packet `cc13-helmlatch`):** `kCruiseLatchedPlayerArmCc13Bound` in `src/game_hosts_ship_ai.cpp`, OFF.
+**Built (packet `cc13-helmlatch`):** `kCruiseLatchedPlayerArmCc13Bound` in `include/bsp/ship_ai_seg67_switches_cc13.hpp`
+(used in `src/game_hosts_ship_ai.cpp`), OFF.
 
 The harness writes `+994h`/`+998h` in one place only. `player_helm_issue_0064b870` issues the levers into the ring
 once per fixed step through `issue_into_ring` (00816A40), but only while the local player holds role 1 (00927F30).
@@ -376,6 +377,10 @@ When 0068AC30 opens the map, the HUD host now calls `set_helm_screen_occluded_by
 ON, the units host then skips `player_helm_prepare_0064b870` and the controlled unit's `player_helm_issue_0064b870`.
 OFF runs both as before.
 
+The gate also skips the prepare's one-shot `helm_opened` step, SetRoleAvailable(2, 9) (units.cpp, 008ABA51's
+0077F360). That matters only if the map opens before the first fixed step of a run with `BSP_PLAYER_HELM` or a helm
+route set.
+
 The summary line `helm map-up gate bound=.. map_up=.. prepares=.. skipped=.. issues=.. skipped=..` counts the steps
 in both settings. Closing the map is not hosted, so the gate stays closed for the rest of the run.
 
@@ -384,7 +389,8 @@ The ring is not stranded:
   is cleared by every re-plan pre-pass and never set again, because the helm arm cannot return without a re-take. So
   009F3F80 writes the latched pair, re-sent by `cc13-helmlatch`, on every step.
 - **This gate ON without the latch.** 009F3F80 still writes every step, but from whatever the control block last
-  held. That is not the image's pair. Flip the two together.
+  held. That is not the image's pair. A second static_assert next to the first therefore requires
+  `kCruiseLatchedPlayerArmCc13Bound` when this gate is ON.
 - **`--order` harness standing order.** Its refill (`issue_into_ring` before the helm call) is not gated. It is a
   harness-only path.
 
