@@ -147,7 +147,8 @@ inline constexpr bool kShipAiCruiseDistanceSeedBound = false;
 // after) should show positive throttle with this ON, and the count of
 // throttle -0.625 lines should fall; check with BSP_SHIP_ESCAPE_TRACE=Iowa.
 // Later items, not here: the 3A5h/3C1h dead copies (station_request.enable,
-// Snapshot.station.enable) and the plan pair's +DCh = -1 (009DBE1D, blk+300h),
+// Snapshot.station.enable; labelled, not removed, by packet cc13-deadcopy)
+// and the plan pair's +DCh = -1 (009DBE1D, blk+300h),
 // which has no host storage or reader. 009DFCB0's 3DCh = 400.0f has no image
 // reader and 3C0h = 1 already matches Snapshot.station.making_way, so neither
 // is seeded here.

@@ -219,3 +219,57 @@ and no host reader, so it is a later item.
 - 384h with ON: the host still keeps two fields. The seed reproduces the image only while the marker
   model holds, meaning every image zero of blk+384h is mirrored by a marker zero.
 - No arithmetic in this packet needs x87 modelling. The seeds are exact constants (1, -1.0f).
+
+## 7. The 3A5h/3C1h dead copies (packet cc13-deadcopy)
+
+The image holds blk+3A5h as one byte, and blk+3C1h is its saved copy. The host holds each twice:
+- blk+3A5h is `ShipAiControlBlock::flag_3a5` (live) and `Controller::station_request.enable`, which
+  the 009DA3B0 copy writes.
+- blk+3C1h is `Snapshot.flag_3a5` (live) and `Snapshot.station.enable`, which the whole-struct copy
+  of `station_request` writes.
+
+Nothing in `src/` reads either `.enable` copy. The only `.enable` reads are of the 009E1610 stack
+request, at `game_hosts_ship_ai.cpp` (the 009DA3F7 store into `flag_3a5`) and
+`ship_ai_follow_land.cpp`.
+
+### Image scan
+
+A disp32 scan of 009D0000..00A00000 looked for +3A5h, +3C1h, and brain+3ADh/+3C9h (blk = brain+8h).
+
+| address | function | access | host model |
+|---|---|---|---|
+| 009DA3F7 | 009DA3B0 publish | write | `blk.flag_3a5 = request.enable` |
+| 009DA12B | 009DA0D0 restore | write from +3C1h (read at 009DA125) | `blk.flag_3a5 = s.flag_3a5` |
+| 009DDC15 | 009DDBC0 save | read, stored to +3C1h at 009DDC1B | `s.flag_3a5 = blk.flag_3a5` |
+| 009DF074 | 009DE5B0 | read | `ship_ai_arm_final_step.cpp` `blk.flag_3a5` (009DF065..009DF097) |
+| 009ED730 / 009ED753 | 009ED6B0 | read, then clear | `ship_ai_states.cpp` `blk.flag_3a5` |
+| 009EDA28 | 009ED6B0 station-keeping arm | read | the `blk.flag_3a5 && !flag_3a6` gate in the host |
+| 009EEF45, 009EF0A8 | 009ED6B0 arm tail | read | `ship_ai_navigation_arm_tail.cpp` `blk.flag_3a5` |
+| 009F145E | 009F1420 pre-pass | brain+3ADh = 0 | host `blk.flag_3a5 = false` (kShipStationKeepingBound) |
+| 009F4F8C | 009F4DA0 | brain+3ADh read | host `ctl.blk.flag_3a5` (kShipStationKeepingBound) |
+| 009D5C80 | (undefined, 8 bytes) | write 0 | none: the stub `MOV byte [ECX+3A5h],0 / RET` has no rel32 or absolute reference |
+
+Excluded hits:
+- 009D3433 `[ECX+3ADh]` is the torpedo approach state (`torpedo_approach_update.cpp`), not a brain.
+- 009FD181 is a misdecode.
+
++3C1h has one reader in the image, the restore at 009DA125. The host models that through
+`Snapshot.flag_3a5`.
+
+The reference scan covers every section, for rel32 E8/E9 and absolute dwords. It found:
+- no hits for 009D5C80;
+- positive controls: 009DA3B0 called from 009E18B6, and 009DA0D0 called from 009F51B7.
+
+### Result
+
+Every image access to the byte is modelled on `flag_3a5`. The `.enable` copies are host-only and
+have no image counterpart beyond the same byte.
+
+Removing them would change `ShipAiStationRequest`, whose `enable` field is the live 009E1610 request
+value. So the tidy labels the two dead copies in place: comments at the `Controller` members and at
+the 009DA3B0 copy. There is no code change, so OFF behaviour and output are identical.
+
+Scope:
+- The +3A5h/+3C1h/+3ADh/+3C9h scans covered only the ship AI band.
+- The sibling +3A6h (`station_request.suppress` against `Controller::flag_3a6`) looks like the same
+  pattern, but it was not scanned.
