@@ -24399,7 +24399,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
                         unit_.gl_yaw_mode_2d4_zero = true;
                         if (reaim) {
-                            // 009FCDD3-009FCE01: +4Ah = 0 (009FCDE9), so the second
+                            // 009FCDD3-009FCE01: +4Ah = 0 (009FCDE5), so the second
                             // 009F9FC0 is undamped, on the vertical + 0.25
                             // (00D7A348); the tail then skips the +54h/+58h store
                             // and leaves +4Ah clear.
@@ -24609,10 +24609,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (auto_target || unit_.st_gun_point_armed_28) {
                                 st.hold_4c = -1.0f;                        // D, 009FCAC2
                             } else if (st.hold_4c > 0.0f) {
-                                // E, 009FCA3A-009FCAC0: own position plus +34h times
-                                // [[unit+9D4h]+3D0h]'s +94h..+9Ch, the first member's
-                                // forward row (world[8..10], its pose_row2). Labelled.
-                                const std::size_t self = owner_.index_of_slot(unit_);
+                                // E, 009FCA3A-009FCAC0: 009FCA47-009FCA53 load ECX =
+                                // [[unit+9D4h]+3D0h], the squadron's first member, or
+                                // the unit with no squadron; ECX is untouched up to the
+                                // __thiscall 00427EB0 at 009FCA86, so the point is the
+                                // LEADER's position plus +34h times its +94h..+9Ch.
+                                // +94h is local row 2 (block +74h); the host reads
+                                // world[8..10], equal for an unparented plane. Labelled.
+                                // The leader is the first listed member, dying or not:
+                                // a leader killed earlier this step stays first until
+                                // remove_member_unit_007f3970 compacts the list, as in
+                                // the image. Slots are never freed in this host, so a
+                                // listed index always names a live object.
+                                const std::size_t self = unit_.process_index;
                                 std::size_t leader = self;
                                 if (const bsp::PlaneSquadronHostRecord* r =
                                         bsp::plane_squadron_registry().find_by_member_unit(self)) {
@@ -24623,12 +24632,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         break;
                                     }
                                 }
-                                const GameUnitSlot& l = leader < owner_.slots.size()
-                                    ? *owner_.slots[leader] : unit_;
+                                // HOST-ONLY guard, no image equivalent: a null slot
+                                // falls back to the unit itself.
+                                const GameUnitSlot* lp = leader < owner_.slots.size()
+                                    ? owner_.slots[leader].get() : nullptr;
+                                const GameUnitSlot& l = lp != nullptr ? *lp : unit_;
                                 const float s = gi.shoot_distance;
-                                const float p[3] = {unit_.world[12] + s * l.world[8],
-                                                    unit_.world[13] + s * l.world[9],
-                                                    unit_.world[14] + s * l.world[10]};
+                                const float p[3] = {l.world[12] + s * l.world[8],
+                                                    l.world[13] + s * l.world[9],
+                                                    l.world[14] + s * l.world[10]};
                                 df_local(p, gi.lead_local);
                                 gi.has_target = true;
                                 ++unit_.fe_hold_ahead_ticks;
@@ -24644,6 +24656,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ei.lateral_cap_38 = gi.lateral_cap_38;
                             ei.dont_shoot_3c = gi.dont_shoot_3c;
                             ei.auto_target_74 = auto_target;
+                            // k08/k0c stay 0: +0Ch is 0 from the constructor
+                            // (009FAB3C), so 2 * +0Ch * +08h * d is 0 whatever +08h is.
                             env = bsp::gun_fire_envelope_009fcb25<false>(ei);   // PC24
                             if (bsp::gun_fire_envelope_009fcb25<true>(ei).envelope != env.envelope) {
                                 ++unit_.fe_pc53_disagree_ticks;
@@ -24658,7 +24672,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (blocked) {
                                 ++unit_.fe_blocked_ticks;
                             } else if constexpr (GameUnitsHost::Impl::kFighterFriendlyInLineBound) {
-                                // B, 009FCDC5: 007B96D0 only here.
+                                // B, 009FCDC7: 007B96D0 only here.
                                 busy = owner_.friendly_in_line_eval_007dedb0(unit_);
                                 if (busy) ++unit_.ff_busy_ticks;
                             }
@@ -24750,7 +24764,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009FCE2D: +4Ah = "the fine aim ran this tick".
                             // SUBSTITUTION, labelled, with kDogfightFireEnvelopeBound
                             // OFF: the fire branch's re-aim (009FCDB6-009FCE01,
-                            // which clears it at 009FCDE9 and adds 0.25 before a
+                            // which clears it at 009FCDE5 and adds 0.25 before a
                             // second 009F9FC0) is not modelled, so the flag is
                             // never cleared by it. ON, reaim carries it.
                             if constexpr (GameUnitsHost::Impl::kFighterAimTermsBound) {
