@@ -20493,7 +20493,7 @@ Row `config/win_orders/usn12_l68_u12_e8.txt`, 36000 frames, reference env, fresh
 - **Verdict.** This is the hitq flip, already judged faithful (306.2 / 306.6 and cc13 rev2). A one-hit timing change
   at 375 s cascades through a knife-edge surface battle. Nothing to fix, and main currently wins the row (1560.40 s).
 
-## 316. cc9-ships61 handoff (2026-10-19)
+## 318. cc9-ships61 handoff (2026-10-19)
 
 **Landed** (all on main): SHIP_AI 311 (leak92 ON; 3E0h seed, ctor seeds + 364 sync, sinkleak ON) and 314 (arc-centre
 plan test + astern skip ON). LOMP10 p3_l10_b wins at 736.49 s on the arcplan build.
