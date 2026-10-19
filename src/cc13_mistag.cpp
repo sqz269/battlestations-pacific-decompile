@@ -149,6 +149,67 @@ void path_component_destruct_007b1be0(MistagDtorHost& host, void* component) {
     host.point3_ptr_array_destruct_007b1a80(component);
 }
 
+// 0083B120..0083B34F, in listing order. Vector fields are {allocator, first, last, end} with the
+// first pointer named by its offset; RefPtr slots release through InterlockedDecrement(+4h).
+void game_settings_destruct_0083b120(SettingsDtorHost& host, void* settings) {
+    void* const s = settings;
+    at<std::uint32_t>(s, 0x000) = 0x00CE3994;
+    // 0083B152..0083B1B5: std::vector<RefPtr> first +664h / last +668h, walked by a checked
+    // index; a non-null slot is released and nulled.
+    for (std::uint32_t i = 0;; ++i) {
+        auto* const first = at<void**>(s, 0x664);
+        if (first == nullptr) break;
+        if (i >= static_cast<std::uint32_t>(at<void**>(s, 0x668) - first)) break;
+        void*& slot = first[i];
+        if (slot != nullptr) {
+            host.ref_release(slot);
+            slot = nullptr;
+        }
+    }
+    // 0083B1B7..0083B209: 30h-byte elements first +740h / last +744h.
+    if (auto* const first = at<std::uint8_t*>(s, 0x740)) {
+        for (std::uint8_t* p = first; p != at<std::uint8_t*>(s, 0x744); p += 0x30)
+            host.element30_destruct_0041e7a0(p);
+        host.free_00bf65ac(at<void*>(s, 0x740));
+    }
+    at<std::uint32_t>(s, 0x740) = 0;
+    at<std::uint32_t>(s, 0x744) = 0;
+    at<std::uint32_t>(s, 0x748) = 0;
+    host.eh_vector_destruct_00bf7c6e(static_cast<std::uint8_t*>(s) + 0x72C, 4, 2, 0x0041DE40);
+    host.container_6b8_resize_0041f370(static_cast<std::uint8_t*>(s) + 0x6B8, 0);
+    host.free_00bf6989(at<void*>(s, 0x6B8));
+    if (at<void*>(s, 0x674) != nullptr) host.free_00bf65ac(at<void*>(s, 0x674));
+    at<std::uint32_t>(s, 0x674) = 0;
+    at<std::uint32_t>(s, 0x678) = 0;
+    at<std::uint32_t>(s, 0x67C) = 0;
+    if (at<void*>(s, 0x664) != nullptr) host.free_00bf65ac(at<void*>(s, 0x664));
+    at<std::uint32_t>(s, 0x664) = 0;
+    at<std::uint32_t>(s, 0x668) = 0;
+    at<std::uint32_t>(s, 0x66C) = 0;
+    // 0083B26F..0083B2B3: the vector at +3E4h (first +3E8h, last +3ECh).
+    void* const v = static_cast<std::uint8_t*>(s) + 0x3E4;
+    if (at<void*>(v, 4) != nullptr) {
+        host.destroy_range_00421470(v, s, at<void*>(v, 4), at<void*>(v, 8));
+        host.free_00bf65ac(at<void*>(v, 4));
+    }
+    at<std::uint32_t>(v, 4) = 0;
+    at<std::uint32_t>(v, 8) = 0;
+    at<std::uint32_t>(v, 0xC) = 0;
+    // RefPtrs +3A8h then +3A4h: nulled only when they were set.
+    for (std::size_t off : {0x3A8u, 0x3A4u}) {
+        if (void* const object = at<void*>(s, off)) {
+            host.ref_release(object);
+            at<void*>(s, off) = nullptr;
+        }
+    }
+    if (at<void*>(s, 0x1E0) != nullptr) host.free_00bf65ac(at<void*>(s, 0x1E0));
+    at<std::uint32_t>(s, 0x1E0) = 0;
+    at<std::uint32_t>(s, 0x1E4) = 0;
+    at<std::uint32_t>(s, 0x1E8) = 0;
+    host.clear_game_settings_publication_00f8753c();
+    at<std::uint32_t>(s, 0x000) = 0x00CE3818;
+}
+
 // 0099A880..0099A934. Float constants read from the image: 00E0E2EC = 0.24f (3E75C28Fh, a .data
 // dword with no writer in the index), 00CF8B3C = 256.0f, 00D7A260 = -1.0f.
 void* pilot_bot_construct_0099a880(MistagHost& host, void* bot) {

@@ -115,13 +115,33 @@ Bound, each scalar deleting destructor with the out-of-line copy it inlines: `00
 body reaches: `00729510` (chunk 00727B50; 004704B0 on +4h), `0085EB60` (chunk 0085EA70;
 006E2A20), `00865CB0` (chunk 00865B50; the pool pair 00419CC0 / 00BD1510).
 
-## Left open (4 rows)
+## Batch 2, big four
+
+### 0083B120 BSP_GameSettings_Destruct
+
+`game_settings_destruct_0083b120`, `__thiscall(ECX = settings)`, RET. The game settings singleton
+(vtable 00CE3994; published at 00F8753C by 00424C40 BSP_GameSettings_GetSingleton); only caller
+the scalar deleting destructor 00424C20. Rule-1: include/bsp/gameplay_settings.hpp names the
+vtable (`kGameplayTuningSettingsVTableAddress`) but has no destructor, and no file in `src/`
+has a body. In listing order:
+
+1. vtable 00CE3994.
+2. The RefPtr vector (first +664h, last +668h) by checked index: each non-null slot is released
+   (InterlockedDecrement on +4h; zero calls its vtable[0] with no argument) and nulled.
+3. The 30h-byte element vector +740h: 0041E7A0 on each, free the buffer; +740h..+748h zeroed.
+4. `00BF7C6E(+72Ch, 4, 2, 0041DE40)`: two RefCountedHandles.
+5. `0041F370(+6B8h, 0)`, then `00BF6989([+6B8h])` with no null test.
+6. Free +674h and +664h (each triple zeroed).
+7. The vector +3E4h (first +3E8h): `00421470(ECX = first, EDX = last; vector, settings)`, free.
+8. RefPtrs +3A8h then +3A4h, each nulled only when it was set.
+9. Free +1E0h (triple zeroed); `[00F8753C] = 0`; base vtable 00CE3818.
+
+## Left open (3 rows)
 
 | Address | Size | What |
 |---|---|---|
 | `007CFD20` | 1573 | BSP_PlaneUnitInstance_Construct (no host body; see above) |
 | `007D03A0` | 532 | plane unit-instance destructor, vtable 00D05F20 (tagged CG_vector_deleting_dtor) |
-| `0083B120` | 560 | gameplay tuning settings destructor, vtable 00CE3994 (include/bsp/gameplay_settings.hpp has no destructor), caller 00424C20 |
 | `0086C240` | 2763 | the Flare effect component's Lua reader (docs/GAMEPLAY_EFFECT_COMPONENTS.md row Flare) |
 
 ## Uncertainty

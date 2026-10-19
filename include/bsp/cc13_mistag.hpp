@@ -100,6 +100,30 @@ void bot_approach_move_to_destruct_009be2b0(MistagDtorHost& host, void* block); 
 void path_component_destruct_007b1bd0(MistagDtorHost& host, void* component);         // 00D053D8
 void path_component_destruct_007b1be0(MistagDtorHost& host, void* component);         // 00D053D8
 
+// --- 0083B120: the game settings singleton destructor (batch 2, big four #1) ---
+class SettingsDtorHost {
+public:
+    virtual ~SettingsDtorHost() = default;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void free_00bf6989(void* block) = 0;                 // thunk to _free
+    [[noreturn]] virtual void invalid_index_00bf6713() = 0;
+    // [CE2220] InterlockedDecrement(&object->count_4); 0 -> object->vtable[0]() (no argument).
+    virtual void ref_release(void* object) = 0;
+    // 0041E7A0, __thiscall(ECX = element): the 30h-byte element destructor of +740h.
+    virtual void element30_destruct_0041e7a0(void* element) = 0;
+    // 0041F370, __thiscall(ECX = +6B8h, 0), RET 4.
+    virtual void container_6b8_resize_0041f370(void* container, std::uint32_t zero) = 0;
+    // 00421470: element-range destroy, ECX = first, EDX = last, stack (vector, owner).
+    virtual void destroy_range_00421470(void* vector, void* owner, void* first, void* last) = 0;
+    // 00BF7C6E eh_vector_destructor_iterator(first, size, count, dtor).
+    virtual void eh_vector_destruct_00bf7c6e(void* first, std::uint32_t size, std::uint32_t count,
+        std::uint32_t dtor) = 0;
+    // MOV dword [00F8753C], 0: the BSP_GameSettings_GetSingleton publication.
+    virtual void clear_game_settings_publication_00f8753c() = 0;
+};
+// 0083B120, __thiscall(ECX = settings), RET. Only caller the scalar deleting destructor 00424C20.
+void game_settings_destruct_0083b120(SettingsDtorHost& host, void* settings);
+
 // 0099A880, __thiscall(ECX = memory), RET, EAX = bot: BSP_PilotBot_Construct.
 void* pilot_bot_construct_0099a880(MistagHost& host, void* bot);
 // 0099BE30, __thiscall(ECX = plan, base), RET 4, EAX = plan: the pilot plan block embedded at
