@@ -17,6 +17,7 @@
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_mission.hpp"
+#include "bsp/game_hint_passes.hpp"
 #include "bsp/game_profile_load.hpp"
 #include "bsp/game_profile_owner.hpp"
 #include "bsp/gui_layout_loader.hpp"
@@ -238,6 +239,9 @@ struct GameMenuHost::Impl {
     // cc15-prof2: bound by the startup host; empty unless kQuickSettingsApplyCc15Bound.
     GameProfileSettingsSinks profile_settings_sinks{};
     void load_signed_in_profile_0067cc60();
+    // cc15-hint2 (kHintTriggerPassesCc15Bound): the registry, input and locale
+    // reads the hint tracker and its screen 34h make; bound at game_on_init.
+    std::unique_ptr<HintScreenRegistry> hint_registry;
 
     Impl(GameHostLog& log_in, GameFrontendHost& frontend_in, GameStateSlot& state_in,
         GameSingletonHost& singletons, long press_start_frame_in, GameVfsHost& vfs_in);
@@ -301,6 +305,11 @@ public:
     bool screen_manages_own_visibility(int slot) override {
         // Vtable +4h. The base 004f7570 is `xor al,al; ret` and no leaf this
         // milestone builds overrides it, so the screen sets own every request.
+        // cc15-hint2: the hints screen 34h overrides it with 0054D670, which
+        // returns true (vtable 00CEE290 +4h).
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (slot == 0x34) return true;
+        }
         static_cast<void>(slot);
         return front_end_screen_self_managed_004f7570();
     }
@@ -862,6 +871,13 @@ public:
             owner_.hud->exit_weapon_group_screen_005470a0();
             return;
         }
+        // cc15-hint2: screen 34h's +1Ch, 0054E3D0.
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (slot == 0x34 && owner_.hint_tracker.built() != nullptr) {
+                owner_.hint_tracker.built()->hints_screen_34().exit_0054e3d0();
+                return;
+            }
+        }
         // Packet cc13-releasegun: screen 46h's +1Ch, 0064A490.
         if (kHarnessReleaseGunMapBound && owner_.hud != nullptr && slot == 0x46
             && owner_.hud->release_gun_armed()) {
@@ -893,6 +909,13 @@ public:
             owner_.hud->enter_weapon_group_screen_005494c0();
             return;
         }
+        // cc15-hint2: screen 34h's +18h, 0054E380.
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (slot == 0x34 && owner_.hint_tracker.built() != nullptr) {
+                owner_.hint_tracker.built()->hints_screen_34().enter_0054e380();
+                return;
+            }
+        }
         owner_.log.unimplemented("FrontEndScreen::enter", "004f75a0");
         if (screen == nullptr) return;
         owner_.log.notef("screen %d (%s) enter virtual %08lx", slot, screen->name.c_str(),
@@ -919,6 +942,13 @@ public:
         if (owner_.hud != nullptr && slot == 0x35) {
             owner_.hud->update_minimap_screen_005c0f20(seconds);
             return;
+        }
+        // cc15-hint2: screen 34h's update, 0054E6B0.
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (slot == 0x34 && owner_.hint_tracker.built() != nullptr) {
+                owner_.hint_tracker.built()->hints_screen_34().update_0054e6b0(seconds);
+                return;
+            }
         }
         if (owner_.hud != nullptr && slot == 0x4d) {
             owner_.hud->update_markers_screen_006435d0(seconds);
@@ -1501,6 +1531,9 @@ public:
             // reloads the hint tables on it (HintSystemMessages.lua into the
             // definition map +30h).
             owner_.hint_tracker.get_004e1ca0().reload_hint_tables_006921b0(owner_.vfs);
+            if constexpr (kHintTriggerPassesCc15Bound) {
+                owner_.hint_tracker.get_004e1ca0().bind_registry(owner_.hint_registry.get());
+            }
         }
     }
     void poll_platform_session_events() override {
@@ -1854,6 +1887,35 @@ void GameMenuHost::Impl::load_signed_in_profile_0067cc60() {
 // GameMenuHost
 // ---------------------------------------------------------------------------
 
+namespace {
+
+// cc15-hint2: the registry flag bytes (+4h wanted, +5h applied), the input
+// action query 00535EE0 and the locale table 00A9EC70 the hint tracker reads.
+class MenuHintRegistry final : public HintScreenRegistry {
+public:
+    MenuHintRegistry(GameMenuHost::Impl& owner, GameMenuHost& menu, LocaleTables& locale)
+        : owner_(owner), menu_(menu), locale_(locale) {}
+
+    bool screen_applied_05(int slot) override { return menu_.in_game_screen_applied(slot); }
+    bool screen_wanted_04(int slot) override {
+        GameMenuHost::Impl::MenuScreen* screen = owner_.screen_at(slot);
+        return screen != nullptr && screen->flags != nullptr && screen->flags->wanted;
+    }
+    bool input_action_pressed_00535ee0(int action) override {
+        return menu_.input_action_pressed(action);
+    }
+    const std::u16string* locale_text(const std::string& key) override {
+        return locale_.find_00a9ec70(key);
+    }
+
+private:
+    GameMenuHost::Impl& owner_;
+    GameMenuHost& menu_;
+    LocaleTables& locale_;
+};
+
+} // namespace
+
 GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameStateSlot& state,
     GameSingletonHost& singletons, long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts, LocaleTables& locale,
     std::string menu_select, long mission_frames, GameFrameProfiler* profiler,
@@ -1866,6 +1928,9 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     // object owns, so the HUD host is built here and handed to the mission.
     impl_->hud = std::make_unique<GameHudHost>(log, *this);
     impl_->profile_scripts = &scripts;
+    if constexpr (kHintTriggerPassesCc15Bound) {
+        impl_->hint_registry = std::make_unique<MenuHintRegistry>(*impl_, *this, locale);
+    }
     if constexpr (kProfileOwnerCc15Bound) {
         // The profile constructor 007FEE20 runs 007FDB20 at 007FEF9F while
         // 004DDB90 builds the game, so +64h exists before any title reset.
@@ -1932,6 +1997,15 @@ bool GameMenuHost::register_in_game_screen(int slot, const std::string& name,
         false);
     screen.enter_virtual = register_virtual;
     register_front_end_screen_004f71d0(host.world.screens, *screen.flags, slot);
+    // cc15-hint2: 34h's register 0054D860 runs the base, builds its widgets,
+    // and stores +4h = 1 last (0054D862), so the hints screen is wanted from
+    // registration on and pumped every frame.
+    if constexpr (kHintTriggerPassesCc15Bound) {
+        if (slot == 0x34) {
+            host.hint_tracker.get_004e1ca0().hints_screen_34().register_0054d860();
+            screen.flags->wanted = true;
+        }
+    }
     ++host.summary.screens_registered;
     return true;
 }
