@@ -304,8 +304,12 @@ public:
     }
     bool screen_occludes_lower_levels(int slot) override {
         // Vtable +8h, base 004f7580, also false.
-        static_cast<void>(slot);
-        static_cast<void>(owner_);
+        // Packet cc13-releasegun: the map screen 4Ch overrides it with 005A8EF0,
+        // `MOV AL,1 ; RET`. Only an armed plan publishes 4Ch.
+        if (kHarnessReleaseGunMapBound && slot == 0x4c && owner_.hud != nullptr
+            && owner_.hud->release_gun_armed()) {
+            return true;
+        }
         return front_end_screen_predicate_004f7580();
     }
 
@@ -854,6 +858,12 @@ public:
         // Packet cc9_role_retake_4bh: screen 2Eh's +1Ch, 005470A0.
         if (kHudWeaponGroupEnterExitBound && owner_.hud != nullptr && slot == 0x2e) {
             owner_.hud->exit_weapon_group_screen_005470a0();
+            return;
+        }
+        // Packet cc13-releasegun: screen 46h's +1Ch, 0064A490.
+        if (kHarnessReleaseGunMapBound && owner_.hud != nullptr && slot == 0x46
+            && owner_.hud->release_gun_armed()) {
+            owner_.hud->exit_ship_view_screen_0064a490();
             return;
         }
         // Every other leaf's +1Ch is its own routine; none is reconstructed.
@@ -1988,6 +1998,29 @@ void GameMenuHost::publish_level1_input_contexts_004d8a50(const int* ids,
     host.input_contexts.levels[kFrontEndScreenSetLowestLevel - 1] = pending;
     apply_input_context_levels_004c4300(host.input_contexts,
         kFrontEndScreenSetLowestLevel);
+}
+
+void GameMenuHost::publish_level2_screen_set_004f85d0(const int* ids, std::size_t count) {
+    // Packet cc13-releasegun: 004F85D0 is 004f8530's shape on level 2 (its
+    // global, then 004F7620 at 004F8643).
+    Impl& host = *impl_;
+    MenuSetBindings bindings(host);
+    set_front_end_screen_set_level(host.screen_sets, host.world.screens, bindings, 2, ids,
+        count);
+}
+
+void GameMenuHost::publish_level2_input_contexts_004d8ae0(const int* ids,
+    std::size_t count) {
+    // Packet cc13-releasegun: 004D8AE0's tail is `PUSH 2 ; CALL 004d6410`
+    // (004D8B46), 004d8a50's setter on level 2.
+    Impl& host = *impl_;
+    std::vector<int> pending;
+    for (std::size_t i = 0; i < count && ids != nullptr; ++i) {
+        if (ids[i] == 0) break;
+        pending.push_back(ids[i]);
+    }
+    host.input_contexts.levels[1] = pending;
+    apply_input_context_levels_004c4300(host.input_contexts, 2);
 }
 
 void GameMenuHost::pump_interface_only_004c40f0(float raw_delta) {

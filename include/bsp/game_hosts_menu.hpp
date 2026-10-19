@@ -213,6 +213,9 @@ public:
     void publish_level1_screen_set_004f8530(const int* ids, std::size_t count);
     // 004d8a50, level 1 of the input-context stack at game+570h.
     void publish_level1_input_contexts_004d8a50(const int* ids, std::size_t count);
+    // Packet cc13-releasegun: 004f85d0 and 004d8ae0, level 2 of the same stacks.
+    void publish_level2_screen_set_004f85d0(const int* ids, std::size_t count);
+    void publish_level2_input_contexts_004d8ae0(const int* ids, std::size_t count);
     // 004c40f0's pump pass, for the frames the mission owns.
     void pump_interface_only_004c40f0(float raw_delta);
     // The load's release at 004dfd96 calls the main-menu manager's vtable slot

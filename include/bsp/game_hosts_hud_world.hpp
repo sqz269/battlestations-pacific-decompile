@@ -229,6 +229,15 @@ inline constexpr bool kHudGuiExtentBound = true;
 // (section 40).
 inline constexpr bool kHudWeaponGroupEnterExitBound = true;
 
+// Packet cc13-releasegun (docs/CC13_IJN18LOSS.md section 7). ON lets a plan's
+// `<frame> releasegun <unit>` line open the map the way the player's C1h
+// (IC_MAP_TOGGLE) does: 0068C1F0 -> 0068B470 -> 0068AC30 publishes the level-2
+// set {4Ch 39h 44h 29h 49h}, 4Ch's +8h (005A8EF0) occludes level 1, and screen
+// 46h's exit 0064A490 releases the weapon group (005470C0) and roles 1..8
+// (0077C470(unit, 1FEh, 0)). Everything here waits for the first such line,
+// so a plan without one runs as OFF. OFF: the line is refused.
+inline constexpr bool kHarnessReleaseGunMapBound = false;
+
 // Packet cc9_hud_camera_team_lists (docs/HUD_CAMERA_TEAM_LISTS.md). ON answers
 // 004B4B00 exactly for the minimap (005C154E) and the markers screen: the
 // controlled unit [00E188D8] when it is kind 5, its +3D0h when kind 18h (a

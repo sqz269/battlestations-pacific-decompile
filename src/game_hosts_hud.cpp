@@ -181,6 +181,13 @@ struct GameHudHost::Impl {
     alignas(4) std::uint8_t hints_screen[0x7C]{};
     // Packet cc9_screen_46h: screen 46h's +1Ch, stored by 0064DA40.
     bool ship_view_has_unit{false};
+    std::size_t ship_view_unit{SIZE_MAX};
+    // Packet cc13-releasegun (kHarnessReleaseGunMapBound): armed by the plan's
+    // first `releasegun` line; map_up is screen 4Ch's +4h ([this+54h]+4h)
+    // once 0068AC30 has published the level-2 set.
+    bool release_gun_armed{false};
+    bool release_gun_map_up{false};
+    void back_out_one_overlay_level_0068b470();
     bsp::IntegratedControlsState ship_view_controls{};
     bsp::BinocularsState binoculars{};
     // Screen 44h, the HUD root (00649860). The enter 006488D0 zeroes +F4h;
@@ -424,6 +431,7 @@ public:
         // 0064DA40 stores the unit at screen 46h's +1Ch.
         if (manager_offset == 0x7C && owner_.units != nullptr && owner_.units->controlled_bound()) {
             owner_.ship_view_has_unit = true;
+            owner_.ship_view_unit = owner_.units->controlled_index();
         }
         // The 25h arm's hand-off on interface+78h is 0064D590, which stores
         // the unit in screen 45h's +184h (0064D598..0064D5EC).
@@ -541,7 +549,12 @@ public:
         owner_.done("InGameInterfaceUpdate::input_action_pressed", 0x004c43c0u);
         return owner_.menu.input_action_pressed(action);
     }
-    bool modifier_key_allows_back_out() override { return false; }
+    bool modifier_key_allows_back_out() override {
+        // 0068C65A..0068C66E: [00F88A30] or GetKeyState(A4h, VK_LMENU) >= 0.
+        // Packet cc13-releasegun: an armed plan answers "left Alt not held";
+        // the harness has no keyboard (LABELLED).
+        return kHarnessReleaseGunMapBound && owner_.release_gun_armed;
+    }
     bool session_flag_19c4() override { return false; }
     bool overlay_c_extra_gate() override { return false; }
 
@@ -615,6 +628,10 @@ public:
         owner_.record("InGameInterfaceUpdate::exit_free_camera_overlay", 0x0068b3f0u);
     }
     void back_out_one_overlay_level() override {
+        if (kHarnessReleaseGunMapBound && owner_.release_gun_armed) {
+            owner_.back_out_one_overlay_level_0068b470();
+            return;
+        }
         owner_.record("InGameInterfaceUpdate::back_out_one_overlay_level", 0x0068b470u);
     }
     void collapse_overlays(bool, bool) override {
@@ -1595,6 +1612,79 @@ bool hud_force_select_unit_006485a0() {
     if (hud == nullptr) return false;
     hud->force_select_unit_006485a0();
     return true;
+}
+
+bool hud_arm_release_gun_map_toggle(bool& reached) {
+    GameHudHost* hud = attached_hud_for_selection();
+    reached = hud != nullptr;
+    if (hud == nullptr || !kHarnessReleaseGunMapBound) return false;
+    hud->arm_release_gun_map_toggle();
+    return true;
+}
+
+void GameHudHost::arm_release_gun_map_toggle() noexcept {
+    if (kHarnessReleaseGunMapBound) impl_->release_gun_armed = true;
+}
+
+bool GameHudHost::release_gun_armed() const noexcept {
+    return kHarnessReleaseGunMapBound && impl_->release_gun_armed;
+}
+
+// Packet cc13-releasegun: 0068B470, reached from 0068C6B1 on the C1h edge
+// (IC_MAP_TOGGLE in this installation's Inputs.lua).
+void GameHudHost::Impl::back_out_one_overlay_level_0068b470() {
+    // 0068B4A8..0068B4C6: the level-3 collapse runs only with 00E18D1C non-empty; this
+    // host never fills level 3 (level3_screen_count answers 0).
+    record("InGameInterface::binoculars_reset", 0x0051e8e0u);   // 0068B4CE
+    if (release_gun_map_up) {
+        // 0068B4E9..0068B507: 004F85D0(0), 004D8AE0(game, 0), then 0068AA40
+        // for the controlled vehicle. Not hosted: the line only opens the map.
+        record("InGameInterface::back_out_close_level2", 0x0068b4e9u);
+        log.note("releasegun: C1h with the map up would close it (0068B4E9); not hosted");
+        return;
+    }
+    // 0068AC30. 00E08880 is EnableMap, 1 in single player
+    // (docs/MISSION_LOBBY_SETTINGS.md), so the sound-queue arm is not taken.
+    // 0068AC50: 0068AB30 pushes 20h only on interface 31h/32h; the captain's
+    // is 25h.
+    record("InGameInterface::leave_unit_request_level", 0x0068ab30u);
+    // 0068AC63 / 0068AC73: HUD root +1Ch to +ECh, [00E188D8] to +F0h. The HUD
+    // root object is not this host's.
+    record("InGameInterface::hud_root_copy_selection", 0x0068ac63u);
+    // 0068AC79 / 0068AC8E, both pushed right to left and zero-terminated.
+    static const int kLevel2Screens[] = {0x4C, 0x39, 0x44, 0x29, 0x49};
+    static const int kLevel2Contexts[] = {0x0E, 0x14, 0x0C, 0x11};
+    menu.publish_level2_screen_set_004f85d0(kLevel2Screens, 5);
+    done("InGameInterface::set_level2_screen_set", 0x004f85d0u);
+    menu.publish_level2_input_contexts_004d8ae0(kLevel2Contexts, 4);
+    done("InGameInterface::set_level2_input_contexts", 0x004d8ae0u);
+    release_gun_map_up = true;
+    done("InGameInterface::restore_hud_screen_set", 0x0068ac30u);
+    log.note("releasegun: C1h opened the map: level 2 {4Ch 39h 44h 29h 49h}, contexts "
+        "{0Eh 14h 0Ch 11h}; 4Ch's +8h (005A8EF0) occludes level 1");
+}
+
+// 0064A490, screen 46h's +1Ch (vtable 00CF7978): 005470C0 with ECX =
+// [[00E198C4]+50h], then, with +1Ch (the unit 0064DA40 stored) set,
+// 0077C470(+1Ch, 1FEh, 0), session message 4Bh with take 0.
+void GameHudHost::exit_ship_view_screen_0064a490() {
+    Impl& impl = *impl_;
+    if constexpr (kHudWeaponGroupScreenBound) {
+        WeaponGroupScreenBinding group_host(impl);
+        bsp::weapon_group_screen_release_005470c0(impl.weapon_group, group_host);
+        impl.done("HudWeaponGroupScreen::release", 0x005470c0u);
+    } else {
+        impl.record("HudWeaponGroupScreen::release", 0x005470c0u);
+    }
+    const bool roles = impl.ship_view_has_unit && impl.units != nullptr
+        && impl.ship_view_unit < impl.units->count();
+    if (roles) {
+        impl.units->role_request_0077c470(impl.ship_view_unit, 0x1FEu, false);
+        impl.done("HudShipView::release_roles", 0x0077c470u);
+    }
+    impl.done("HudShipView::exit", 0x0064a490u);
+    impl.log.notef("releasegun: screen 46h exit 0064A490 released the weapon group%s",
+        roles ? " and roles 1..8 (1FEh)" : "; no ship-view unit");
 }
 
 void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua) {
