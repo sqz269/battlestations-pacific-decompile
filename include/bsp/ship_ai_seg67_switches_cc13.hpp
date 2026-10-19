@@ -88,4 +88,35 @@ inline constexpr bool kShipAiNavigateAsternSkipBound = false;
 // SHIP_AI_OPEN_ITEMS 300.
 inline constexpr bool kShipAiNavGateClosedArmFinalBound = true;
 
+// cc13-mode3steer (rev4's bytes; docs/CC13_MODE3STEER.md). The nav-block
+// constructor 009E4330 calls 009DFCB0 at 009E43CC with ECX = blk+1C4h
+// (009E43A4 LEA ECX,[ESI+1C4h]). 009DFD49 MOVSS XMM2,[00CE3804] (1000.0f) is
+// stored at 009DFEA8 as blk+3E0h. Its only reader is the prologue: 009ED918
+// copies it to 32Ch for any non-Stopped direction, and 330h = 32Ch + 2000. The
+// host left ShipAiControlBlock::cruise_distance_3e0 at 0, hence d32c = 0 /
+// d330 = 2000 on every mode-3 row.
+// What 32Ch = 0 does (wire1, bytes): nothing on the mode-3 path reads 32Ch for
+// throttle or arrival. The -0.625 hunt is the 009F3F80 sector-escape 364h
+// ahead/astern flip (009EC9DB/009EC9E5 negate the ceiling and floor it at
+// -0.625, [00D21A78]; a 1 s 368h dwell, 009F4AA0..009F4B95). 32Ch = 0 keeps it
+// going through 009F0100's neighbour clear at 009F06D4..009F06EC (so no pass
+// side is posted), the arm-final query range (009DE633 -> 009DC313), the
+// leader corridor cap (009DEEBF) and the slot+40h crossing negotiation
+// (009D8CE0).
+// True: the nav-block build seeds 3E0h (for controllers created after load
+// too). False: it stays 0, as before. The other 009DFCB0 mismatches are left to
+// a separate switch (docs/CC13_MODE3STEER.md section 4).
+// NOT neutral with the skip OFF: mode 0 and 1 ships with a non-Stopped
+// direction also take 009ED918.
+// Expected ON signature: mode-3 rows show d32c=1000.00 / d330=3000.00, and the
+// l70_astern.py d32c0 count falls to 0 (today LOMP10 Ashigara 3113/3113; IJN18
+// Gear3 406/406, Oma4 401/401, Gear1 366/366). Pass criteria: that signature;
+// pass_posts and traffic_writes > 0; free bearing > 263; fewer -0.625 steps;
+// LOMP10 completing near 1072 s (not guaranteed).
+// Pairing plan: (1) this ON + kShipAiNavigateAsternSkipBound ON against both
+// OFF, on LOMP10 and IJN18; (2) this ON against OFF with the skip OFF. Re-flip
+// the skip only after (1) passes. cc9-lua52's local\l70_astern.py does the
+// d32c census.
+inline constexpr bool kShipAiCruiseDistanceSeedBound = false;
+
 } // namespace bsp
