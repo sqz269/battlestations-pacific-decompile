@@ -553,6 +553,23 @@ The image's path is the role take:
     run in every gunrow and seat count. A ray from the camera on one ship with muzzles on another
     stays the open question. **Time box closed (cc9-gunnery54):** a row where the camera ship
     owns the group 3 turrets is still needed.
+- **A player turret kill, USN02 (cc9-gunnery55, tree 6f682c696, reference env).** Houston is the
+  camera ship and owns the group 3 turrets. Orders `local\g55_u2_aim.txt` = usn02_l68_u2_a plus four
+  windows of `aim unit <ship>` (auto pitch), 0x9D, then 0x99 held: Yamakaze 1800 (hold 400),
+  Asagumo 2300 (800), Yukikaze 3200 (600), Nachi 4100 (2400). Log `local\g55_pt_u2aim.log`; the
+  baseline is the same plan without the aim lines (`local\g55_tgon_u2.log`, same code).
+  - Baseline: Houston's turrets are player-held all run (held_ticks 18096, trigger_ticks 0) and
+    fire **0** shots; Houston deals 0 damage.
+  - Aim run: tracking holds (heading error under 0.001 rad at 300..1100 m), trigger_ticks 6822,
+    `seat artillery lead ship=8787 turned=8784`. Houston fires 123 shots (gunrows plat 1 and 2:
+    57 each, first at 90.75 / 90.85 s, 0.15 s into the Yamakaze window) and deals **1931**
+    damage. Every Houston shot is therefore a player shot.
+  - **Yukikaze dies to the player:** first damage 163.86 s (inside the Yukikaze window from
+    160.6 s), death row `killer=Houston killer_gun=36 killer_cat=3 killer_range=275` at 177.36 s.
+    In the baseline it dies at 192.11 s to John1.
+  - The mission still fails (Game Over 305.05 s, Houston sunk by Nachi at 301.20 s; baseline
+    330.04 s). **7.5's open item is closed:** a player turret hit on a ship with `aim unit` and
+    auto pitch is produced when the camera ship owns the turrets.
 
 ### 7.6 The 79h target: AA only (`kPlayerGunSeatTargetInterceptBound`, cc9-gunnery53)
 

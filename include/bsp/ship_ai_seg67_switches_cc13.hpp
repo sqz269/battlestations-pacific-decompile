@@ -121,7 +121,7 @@ inline constexpr bool kShipAiNavGateClosedArmFinalBound = true;
 // OFF, on LOMP10 and IJN18; (2) this ON against OFF with the skip OFF. Re-flip
 // the skip only after (1) passes. cc9-lua52's local\l70_astern.py does the
 // d32c census.
-inline constexpr bool kShipAiCruiseDistanceSeedBound = false;
+inline constexpr bool kShipAiCruiseDistanceSeedBound = true;  // ON: skip OFF, LOMP10 identical, USN21 d32c 0 -> 1000 and -0.625 71 -> 46 (SHIP_AI 311)
 
 // Packet cc13-navseeds2 (docs/CC13_NAVSEEDS2.md). Three more 009DFCB0 seeds
 // (ECX = blk+1C4h) the host starts at zero:
@@ -156,7 +156,7 @@ inline constexpr bool kShipAiCruiseDistanceSeedBound = false;
 // which has no host storage or reader. 009DFCB0's 3DCh = 400.0f has no image
 // reader and 3C0h = 1 already matches Snapshot.station.making_way, so neither
 // is seeded here.
-inline constexpr bool kShipAiNavBlockCtorSeedsCc13Bound = false;
+inline constexpr bool kShipAiNavBlockCtorSeedsCc13Bound = true;  // ON with the sync: LOMP10 Ashigara never reverses, completes 1050.45 s (SHIP_AI 311)
 
 // Packet cc13-navseeds2 (rev2 nit a). 009EF910 (ESI = ECX = blk at 009EF91B)
 // reads blk+364h live at 009EFFDC (steering mode 1: committed = !364h) and
@@ -169,7 +169,7 @@ inline constexpr bool kShipAiNavBlockCtorSeedsCc13Bound = false;
 // so it changes behaviour on its own. Reach: every ship whose clearance
 // refresh runs in steering mode 1 or 2; needs its own pair (and one with the
 // seeds ON).
-inline constexpr bool kShipAiClearance364SyncCc13Bound = false;
+inline constexpr bool kShipAiClearance364SyncCc13Bound = true;  // ON with the ctor seeds (SHIP_AI 311)
 
 // Packet cc13-helmlatch (docs/CC13_IJN18LOSS.md section 7). 009E1170's latched
 // arm 009E11CE..009E1262 runs when +184h is set and role 1 is 8 or AI-held (the

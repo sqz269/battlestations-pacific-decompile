@@ -32,7 +32,7 @@ inline constexpr bool kProfileOwnerCc15Bound = true;
 // Off: 0068EA00 and 00690CD0 stay unimplemented. On: the tracker is
 // built by the first 004E1CA0 call, OnInit's 006921B0 loads the definitions
 // map +30h from HintSystemMessages.lua, and the rows run on it.
-inline constexpr bool kHintTrackerCc15Bound = false;
+inline constexpr bool kHintTrackerCc15Bound = true;
 
 // The profile block GGame holds inline at game+650h. Natively the profile
 // constructor 007FEE20 already calls 007FDB20, so +64h is allocated from game

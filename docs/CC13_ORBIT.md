@@ -145,6 +145,92 @@ entity-target attackmove at the origin. seg67n's state 7 rules that out for Ashi
 that `009E3C00`, called with the cursor at 0 on a Ready plan, writes the record's node. Otherwise
 the switch would turn the orbit into a steer to bearing 0.
 
+## 5. The switch (packet cc13-arcplan)
+
+`kShipAiArcCentrePlanTestCc13Bound` (`include/bsp/cc13_arc_centre.hpp`) lands OFF. It changes
+`ship_ai_arc_centre_next_point_009e46f0` (`game_hosts_ship_ai.cpp`).
+
+**ON:**
+- The arm test is `live.search_state != 0` (`009E46FC`), not `node_count != 0`.
+- The path arm stores `009D5AE0` into nested+11D4h and `009D5B90` into nested+11D5h, before
+  `009E3C00`. The order comes from `009E47D3..009E47F1`. The caller passes `&+11D4h`
+  (`009F27A5 LEA ESI,[EBP+11D4h]`) and `&+11D5h` (`009F279E LEA EDI,[EBP+11D5h]`).
+  Both walks start at plan+20h, the head (`009D5AE1 MOV ECX,[ECX+20h]`), not at the cursor.
+  Each stores `009D5930`'s direction into an undecided node's +4h, and `009E3C00`'s cursor
+  walk keeps a non-zero +4h, so the walks must run first, as in the image.
+- The `record.node_18 == 0` refusal is dropped.
+
+**OFF:** unchanged behaviour. The only new output is the summary line, which prints in both
+settings:
+
+```
+summary mission ship ai arc centre plan test bound=%d calls=%llu plan_live_cursor0=%llu command_arm=%llu path_arm=%llu node18_refusals=%llu (009E46F0 at 009F27C6, 009E46FC; packet cc13-arcplan) plan_dead_cursor_nonzero=%llu cursor_past_end=%llu
+```
+
+The last two fields come after the parenthesis, so a grep for the original line and its field
+order still match.
+
+Its fields:
+- `plan_live_cursor0` counts calls where the image would take the path arm and the old test
+  would not (search_state != 0, node_count == 0);
+- `command_arm` and `path_arm` count the arm actually taken;
+- `node18_refusals` counts path-arm calls with record+18h = 0. OFF refuses those, ON does not;
+- `plan_dead_cursor_nonzero` counts the reverse of `plan_live_cursor0` (search_state == 0,
+  node_count != 0). OFF runs `009E3C00` on those calls, and ON takes the command arm. Not
+  proved impossible: a state reset that leaves the cursor would land here;
+- `cursor_past_end` counts path-arm calls whose cursor is longer than the linked path. It
+  replays the cursor walk on node copies, so it writes nothing.
+
+**The node_18 residual, traced.**
+- `009E3C00` zeroes record+18h in its prologue (`009E3C37`) and writes it again only at
+  `009E4243`, with the target node's anchor handle +10h, when a corner was found.
+- A straight leg (no corner, `009E4197..009E41A7`) leaves it 0.
+- So a Ready plan with its cursor at 0 on a straight run to CB4 refuses in the old host and
+  returns 11DCh = 0, which is bearing 0, while the image uses the published point.
+- Every `009E3C00` exit writes the record point (`ship_ai_path_follower.cpp`): the pose on the
+  empty-plan and no-target exits, the published point otherwise. The refusal guarded nothing.
+- The test alone would have turned the orbit into a steer to bearing 0, so ON drops it as well.
+
+**Data lifetime: a non-zero state on a plan that is not yet usable.** The host path arm runs the
+same `009E3C00` reconstruction on the same block, so it matches the image in each state:
+
+| state | plan contents | 009E3C00 result | 11DCh |
+| --- | --- | --- | --- |
+| Seeded (1) | two nodes, start and goal (`009E381E`) | the cursor is the start node and the target is the goal node; with no node after it, more_path is set and the point is the goal (no corner) | the bearing to the goal |
+| Failed (2) with no head | empty | `009E3C3A` empty-plan exit, point = the pose | dx = dz = 0, below the `009E4851` threshold, so 0 (`FLDZ`), as in the image |
+| Failed (2) or Searched (3) with the seeded nodes | start and goal | as Seeded | the bearing to the goal |
+| Extracting (4), ExtendSearch (5), Extracted (6) | the partly extracted graph; `009EC721` resets the cursor | the next point on what is linked | the bearing to that point |
+| Ready (7) | the path | the next point, advancing the cursor on a clear shortcut (`009E421F`) | the bearing to the next path point |
+
+One host deviation remains in `009E3C00`: a cursor past the end of the path returns the pose,
+where the image dereferences null (`ship_ai_path_cursor_node_009e3c6c`). That is reachable only
+with a corrupt cursor, and `cursor_past_end` counts it.
+
+**Other effects of ON.** Every path-arm call now writes 11D4h / 11D5h. Every host reader of
+the pair:
+
+| image | reader | host |
+| --- | --- | --- |
+| `009F282D` | the mode-2 11DCh gate (`CMP [EBP+1234h],2`) | `game_hosts_ship_ai.cpp`, ApproachStep (mode 2, both clear) |
+| `009E8005` | the clearance end | `ship_ai_approach_update.cpp`, either set, then both set |
+| `009E6B5B` | standoff 4 | `ship_ai_approach_update.cpp`, both clear |
+| `009E6E94` | the -1000 standoff | `ship_ai_approach_update.cpp`, both set |
+| `009E6640` | the slot probe's side refusal | `ship_ai_approach_update.cpp` and its `ship_ai_ring_scan.cpp` twin (the `009E7709` scoring pass) |
+| `009E7C80` | the goal-override arm under 1209h | `ship_ai_approach_update.cpp` and its `ship_ai_ring_scan.cpp` twin (`009E7C72`), both clear |
+
+The image's only other writer of the pair is `009E5530` (`009E5633 MOV [EDI+11D5h],BL`,
+`009E5639 MOV [EDI+11D4h],BL`), in the ring construct.
+- The extra `009E3C00` calls move the plan's follower fields (+4Ch..+64h) and can advance its
+  cursor, as the image's calls do. The navigation arm's own `009E3C00` call reads those.
+
+**Pairing.** Use LOMP10 with the skip ON, switch ON against OFF. Pass criteria:
+- `plan_live_cursor0` is above 0 in both;
+- the switch-ON run has `command_arm` near 0 for Ashigara's plan-live calls;
+- d1d8 tracks the path to CB4;
+- the mission completes.
+
+Re-check IJN18 and the s60 set.
+
 ## Uncertainty
 
 - `search_state` = 7 for Ashigara is seg67n's reading of the host log; this doc did not re-read

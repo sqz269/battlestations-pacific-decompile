@@ -20,7 +20,12 @@ namespace bsp {
 // rows that store a heading outside (-pi, pi]. The 2026-10-19 census
 // (cc9-lua52 l70r_n_*_main_ref.log) finds those on 14 of 24 rows, up to
 // 14134 stores on j6k; the table is in the doc.
-// No parent switch: the four hooks run on the OFF path already.
-inline constexpr bool kShipAiHeadingStoreWrapCc13Bound = false;
+// The census bound is exact: 00CE3D18 / 00CE3D28 are float pi widened to
+// double (bytes 00000060FB2109C0 / ...0940 = -/+3.1415927410125732), not
+// double pi, so count_heading_wrap_store's float compare against 3.14159265f
+// (the same float) matches 00605070's arms: wrap when x <= -pi
+// (00605091 FCOMIP / JB) or x > pi (006050A8 FCOMI / JBE).
+// No parent switch: the three hooks run on the OFF path already.
+inline constexpr bool kShipAiHeadingStoreWrapCc13Bound = true;  // ON: docs/SHIP_AI_OPEN_ITEMS.md 312 (JM06 j6k/j6n, IJN18 pairs)
 
 }  // namespace bsp

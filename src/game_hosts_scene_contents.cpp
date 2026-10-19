@@ -2814,7 +2814,39 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         ++owner.summary.held_back_hidden;
         // The stand-in for the scene database's named-object map at sceneDb+18h,
         // which is the only thing 0046D930 looks a name up in.
+        const std::size_t pool_before = scene_spawn_pool().size();
         scene_spawn_pool().add(record);
+        // Packet cc13-hiddencarry. The two bag reads the created path makes and
+        // this branch skips: 004E6B30's Command/CommandTarget, for the creators
+        // whose row calls it, and the StartSpeed key 0082356C reads at InitAll
+        // (retain_start_speed, the load path's own reader). Taken for every
+        // creator class; create_units' runs_ship_base() gate decides the seed as
+        // it does at load. Only stored here; the spawn copies it under the switch.
+        // Only when add() inserted: a repeated name keeps the first entry's
+        // record, so its carry must come from the same (first) bag.
+        const bool pool_inserted = scene_spawn_pool().size() != pool_before;
+        if (const SceneUnitCreatorRow* creator = pool_inserted && klass != nullptr
+                ? find_scene_unit_creator(klass->class_id) : nullptr) {
+            if (SceneSpawnPoolEntry* held = scene_spawn_pool().find(record.name)) {
+                if (creator->applies_command_property) {
+                    const SceneUnitCommand command = scene_unit_command_004e6b30(bag);
+                    if (command.queued) {
+                        held->carry_command_queued = true;
+                        held->carry_command = command.command;
+                        held->carry_command_target = command.target;
+                    }
+                }
+                GameSceneEntityRecord speed;
+                if (retain_start_speed(bag, speed)) {
+                    held->carry_start_speed_present = true;
+                    held->carry_start_speed_type = speed.start_speed_type;
+                    held->carry_start_speed_float = speed.start_speed_float;
+                    held->carry_start_speed_int = speed.start_speed_int;
+                }
+                held->carry_present = held->carry_command_queued
+                    || held->carry_start_speed_present;
+            }
+        }
         // Same shape for a held-back PlaneSquadronGen row: 007F4580's mode-1 loop
         // reads `WingCount` out of this bag and the bag does not survive the
         // hold-back, so the key is carried on the pool entry and the wing is
@@ -3888,6 +3920,14 @@ std::size_t SceneSpawnPool::spawned_count() const noexcept {
     std::size_t total = 0;
     for (const SceneSpawnPoolEntry& entry : entries_) {
         if (entry.spawned) ++total;
+    }
+    return total;
+}
+
+std::size_t SceneSpawnPool::carried_count() const noexcept {
+    std::size_t total = 0;
+    for (const SceneSpawnPoolEntry& entry : entries_) {
+        if (entry.carry_present) ++total;
     }
     return total;
 }

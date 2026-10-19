@@ -28,7 +28,7 @@
 
 namespace bsp {
 
-inline constexpr bool kLeakMessageRouterDeliveryCc13Bound = false;
+inline constexpr bool kLeakMessageRouterDeliveryCc13Bound = true;  // ON: JM08 pair, same-time wrecks within 0.03% water (SHIP_AI 311)
 
 }  // namespace bsp
 

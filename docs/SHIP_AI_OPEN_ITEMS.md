@@ -20256,3 +20256,99 @@ Scripts: local\s60_osmk.py (variants c18a-c21), local\s60_rows.ps1 (launcher, -J
 local\s59_sum.py, local\s60_firstdiv.py (first diverging line per regex), local\s60_kaiten.py.
 
 **Still open from earlier handoffs:** the Fuso USN15 close-range gunnery question (297).
+
+## 310. Torpedo owner player gate paired (cc9-gunnery55, 2026-10-19)
+
+### 310.1 kTorpedoBotOwnerPlayerGateCc13Bound (src/game_hosts_gunnery.cpp, packet cc13-torpgate)
+
+Image: 008FFF20 walks the gun to its first IsKindOf(5) owner (vtable[5Ch] at 0090005C) and, when that owner's +184h
+is set (00900080), jumps at 00900087 to the exit 00900985 (docs/CC13_IJN18LOSS.md section 7). +184h is set by a
+`takehelm` whose |helm_throttle| > 0.1 while role 0 is player-held (0064B940..0064B9A6) and survives a releasegun.
+
+**Predictions (before the pair):** only rows whose OFF summary shows `torpedo owner player gate ... ticks>0` can move.
+On those, the taken ship launches no bot torpedo after its first non-trivial takehelm: its torpedo fire records drop to
+0 from that frame, the torpedo hits it scored vanish, and later draws, deaths and the mission end may move from the
+first suppressed launch on. Before the first takehelm OFF and ON are identical. Rows with ticks=0 stay identical.
+No WINS row takehelms a torpedo ship other than IJN18 `l67_i18_d` (Zao), BSM01 `l69_b1_d` (HenryPT) and USN02
+`l68_u2_a` (Houston); JM06 `l70_j6_n` takehelms PlayerSub only from frame 52000, after its 817.92 s completion.
+Pair: OFF = the tree build at dc6d0d1a3, ON = `local\g55_tg_on` (pair_export, same commit); IJN18 24000, BSM01 20000,
+USN02 16000 frames, reference env (`g55_tgoff_*` / `g55_tgon_*`).
+
+**310.1 measured; FLIPPED ON by mechanism.** OFF summaries (`torpedo owner player gate ... ticks=`): IJN18 23116,
+BSM01 33180, USN02 0 (USN02 `l68_u2_a` now fails at 330.04 s, Game Over, before Houston's takehelm at frame 5300;
+sent to lua70). ON exits on every counted tick (exits = ticks). pair_diff exit 1 on all three: deaths, hit records,
+damage, shots, death rows, plane death modes, unit tables and the native table identical; IJN18 ends with no
+EndMission in 24000 frames both ways, BSM01 ends EndMission 812.93 s both ways with the sus_prog.exe refusal logged.
+The one other IJN18 line, Oma6's end-of-run `clear_37c` (2025.4 vs FLT_MAX), also differs between two OFF runs of the
+same binary (`g55_tgoff_i18` / `g55_tgoff2_i18`): it is static-zone clearance noise. No launch was suppressed: neither
+Zao nor HenryPT launches a bot torpedo OFF after its takehelm (no `shooter=Zao|HenryPT` launch), so these rows
+exercise the exit but not a lost torpedo. A row whose taken ship's bot would launch OFF is still unpaired.
+
+## 311. Leak router delivery paired and flipped; nav set pair (cc9-ships61, 2026-10-19)
+
+**kLeakMessageRouterDeliveryCc13Bound ON** (include/bsp/cc13_leak92.hpp, docs/CC13_LEAK92.md). Reference-env JM08 pair
+(`jm08_l65_j8_p2`, 72000 frames, "rng streams: on") on origin/main 9b5457ae7: OFF = tree build (`local\s61_off_j08`),
+ON = pair_export `local\s61_lk` (`local\s61_lk_j08`). Both fail at 1031.93 / 1030.93 s (the row's known loss).
+pair_diff 3 (moved). Mechanism: every wreck whose first water time is unchanged reads within 0.03% water
+(Gyoraitei Y1-Y11 within 0.03%, Hosho +0.025%, Nevada +0.021%, San Francisco -0.034%), the size cc13 predicted for a
+one-pump delay. Larger deltas only on wrecks whose sink time moved. Script `local\s61_wreck.py <off> <on>`.
+
+**Nav set (queue item 1), first pair on 9b5457ae7** (OFF `local\s61_off_*`, ON `s61_n4` all four, `s61_nss` seeds+sync,
+`s61_n3s` 3E0h+skip; LOMP10 p3_l10_b, USN21 u21f, USN04):
+- d32c/d330 read 1000/3000 ON. The l70_astern d32c0 census is already 0 OFF on current main.
+- -0.625 step lines: USN21 71 -> 0 (n4, nss); USN04 28 -> 28; LOMP10 Ashigara 3 -> 0 (n4), 18 (n3s).
+- LOMP10 n4/n3s: Ashigara orbits the world origin from step 8480 and the row never ends (OFF completes 1303.70 s).
+  cc13 traced it (docs/CC13_ORBIT.md): with the skip ON the 009E46F0 arm test reads the wrong plan field and aims at
+  (0,0). The skip is byte-correct; the fix is cc13's plan-test switch, to be paired with 3E0h + skip.
+- **Iowa (USN21) open item:** Iowa never moves in any variant (state=follow mode=navigate, thr=0, speed <= 0.002 over
+  1749 escape-trace rows, OFF included). Not caused by this set.
+
+**Nav set re-pair on origin/main ab7bb54ec and flip** (OFF = tree build `local\s61_off2_bin`, logs `s61_o2_*`;
+ref env, "rng streams: on" in every log; LOMP10 completions log the exec guard's sus_prog.exe refusal):
+- `kShipAiCruiseDistanceSeedBound` alone, skip OFF (`s61_c3`): LOMP10 gameplay identical (Ashigara's mode-3 output
+  overrides), completed 1303.70 s both. USN21: d32c 0 -> 1000 on 38072 step rows, -0.625 step lines 71 -> 46
+  (Yamato 36, Takao 10 left), no end in either run (row length). **ON.**
+- `kShipAiNavBlockCtorSeedsCc13Bound` + `kShipAiClearance364SyncCc13Bound` (`s61_ss2`): LOMP10 Ashigara never reverses
+  (escape trace dirneg 20 -> 0, -0.625 3 -> 0; all step-line -0.625 94 -> 0) and the row completes at 1050.45 s
+  (OFF 1303.70 s; cc13 predicted near 1072 s). USN04: -0.625 28 -> 28; they are Northampton-class02 and
+  Fletcher-class07 station-keeping astern, image behaviour (STATION_KEEPING.md). USN21 passed in the first pair.
+  **ON.**
+- `kSinkLeakDrawStreamCc13Bound` rides with this flip (rev4 calls ON the closer model).
+- `kShipAiNavigateAsternSkipBound` stays OFF until cc13's plan-test switch (CC13_ORBIT.md) is paired with it.
+## 312. Ship AI heading store wrap paired (cc9-gunnery55, 2026-10-19)
+
+### 312.1 kShipAiHeadingStoreWrapCc13Bound (include/bsp/cc13_heading_wrap.hpp, packet cc13-wrap605, main ab7bb54ec)
+
+Image: 00605070 wraps blk+1D8h (desired_heading) in place after the stores at 009DFF81, 009E00FA, 009E0083 and
+009F3360 (docs/CC13_WRAP605.md). OFF the host stores the value unwrapped and counts the out-of-range stores.
+**Predictions (before the pair):** every reader goes through 00438AA0 / 00438B10, sin/cos or a log, so ON changes
+float rounding of the heading error and the logged headings only. Rows with no out-of-range store stay identical.
+On rows with stores (census: JM06 j6k 14134, j6n 1221, IJN18 w_i18 614), the first moved value is a rudder or heading
+term on a ship that turned through +/-pi; after it, positions, aim, draws and deaths can cascade, so per-entity
+moves (not totals) decide. A mechanism failure would show as a heading reader that sees a different angle class
+(e.g. a turn the long way round); a cascade of small differences is expected and flips.
+Pair: OFF = tree build dc2c8c9e9, ON = `local\g55_hw_on` (pair_export, same commit); JM06 jm06_s45_j6_k and
+jm06_l70_j6_n (120000 frames, stop 40 s after the end), IJN18 ijn18_l67_i18_d (64000 frames); reference env
+(`g55_hwoff_*` / `g55_hwon_*`).
+
+**312.1 measured; FLIPPED ON by mechanism.** pair_diff exit 3 on all three rows; every move is a rounding cascade.
+- **First moves.** IJN18: the first moved values are the logged `desired_1d8` of the stopped Gear3 / Gear6 at
+  ship-AI step 40, -3.1416 OFF and +3.1416 ON (00605070 maps -pi to +pi). Rudder, throttle and the hull heading are
+  unchanged. Gameplay first moves at 390..395 s (shots 1820 -> 1821).
+- JM06 j6k: the controlled Yamato first moves at 501.95 s by 0.001 m/s of forward speed (11.413 -> 11.414). The
+  rudder (-1) and the position are unchanged. The gunnery census first moves at 539.94 s (damage 48075.4 -> 48076.0).
+  j6n is the same plan up to there and first moves at the same steps.
+- **No mechanism failure.** In the first moved lines no reader sees a different angle class: no turn the long way and
+  no rudder sign change.
+
+| row | OFF | ON | deaths | changed death rows |
+|---|---|---|---|---|
+| JM06 j6k | completed 898.90 s | completed 889.91 s | 20 / 20 | 3 (Fletcher-class 01/02, PBY times and killers) |
+| JM06 j6n (WINS) | completed 808.93 s | completed 811.93 s | 22 / 22 | 5 |
+| IJN18 l67_i18_d | no end in 64000 | no end in 64000 | 48 / 48 | 1 (Asa1 nearest 1342 -> 1340) |
+
+- **Census.** j6k out_of_range 3160 -> 2980 (cascade), IJN18 1141 both ways.
+- **Build fix in the flip commit.** ON failed to compile: C4702, unreachable code after the early return in
+  `ShipAiApproach::wrap_brain_heading_00605070` (src/game_hosts_ship_ai.cpp). The flip commit turns it into if/else,
+  and the ON export was built with that same edit.
+- Wins: the JM06 j6n row still completes (+3.00 s). IJN18 does not end either way.

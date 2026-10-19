@@ -3276,6 +3276,12 @@ constexpr double kSceneGenerateObjectYawSentinelCeiling = 6.283185307179586;
 // ON by section 257: USN01 control gameplay identical (s52_c0_u1 / s52_c1_u1);
 // BSM09 runs past luaIntroMovie7 to its EndMission at 917.90 s (s52_c1_b9).
 constexpr bool kGenerateObjectRecordOnlyCreatorBound = true;
+// Packet cc13-hiddencarry: spawns that took the pool entry's carry, and of them
+// the ones whose authored command the commands host issued.
+unsigned long long g_hidden_spawn_carry_applied = 0;
+unsigned long long g_hidden_spawn_carry_commands = 0;
+// Host-only: carried spawns that took no `thisTable` slot, whose command was dropped.
+unsigned long long g_hidden_spawn_carry_unattached = 0;
 unsigned long long g_generate_object_record_only = 0;
 
 // CORRECTED by packet cc8_spawn_new_route. 00888760 BSP_LuaObject_ReadVector3
@@ -3490,6 +3496,24 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
         log_.implemented("MissionLuaNative::GenerateObject", "00944fd0");
         return 0;
     }
+    // Packet cc13-hiddencarry. 0046DC10's creator call (0046DE9A) and its InitAll
+    // (0046DEDD) read the held-back record's own bag; the hold-back kept what
+    // they read on the pool entry. The command lands in the record as the
+    // creator's 004E6B30 queue does, and the StartSpeed is what create_units'
+    // 0082356C arm seeds the ring from, before the command is resolved below.
+    const bool carried = kSceneHiddenSpawnCarryCc13Bound && entry->carry_present;
+    if (carried) {
+        if (entry->carry_command_queued) {
+            record.command = entry->carry_command;
+            record.command_target = entry->carry_command_target;
+        }
+        if (entry->carry_start_speed_present) {
+            record.start_speed_present = true;
+            record.start_speed_type = entry->carry_start_speed_type;
+            record.start_speed_float = entry->carry_start_speed_float;
+            record.start_speed_int = entry->carry_start_speed_int;
+        }
+    }
     const std::size_t units_before = script_orders_->units().count();
     const std::uint32_t entity_id
         = script_orders_->create_unit_from_scene_record_0046db4b(record);
@@ -3541,6 +3565,10 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
         log_.notef("  GenerateObject 00944fd0: \"%s\" was created as unit %u but took no "
             "`thisTable` slot, so the script's variable would be an id no binding "
             "resolves", name.c_str(), entity_id);
+        // Packet cc13-hiddencarry, HOST-ONLY: the image has no such exit (its
+        // 009453BB resolve runs regardless), so a carried spawn that ends here
+        // keeps its StartSpeed seed but its command is never issued. Counted.
+        if (carried) ++g_hidden_spawn_carry_unattached;
         return 0;
     }
     entry->spawned = true;
@@ -3556,6 +3584,19 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
         log_.notef("  GenerateObject 00944fd0: \"%s\" carries an air-ops deck "
             "(slots=%zu stock=%zu), registered now that the unit exists",
             name.c_str(), entry->deck.slots.size(), entry->deck.stock.size());
+    }
+    // Packet cc13-hiddencarry: 0046AAB0 at 009453BB, after the spawn's InitAll
+    // (0046DEDD) and 00874D00 (00945311), resolves the record the creator
+    // queued. The target lookup is 00925A90 over the entities that exist at that
+    // moment, which is what the commands host's registry holds after this
+    // spawn's create_units, so a CommandTarget naming a unit not yet spawned
+    // resolves to nothing here as it does there.
+    if (carried) {
+        ++g_hidden_spawn_carry_applied;
+        if (entry->carry_command_queued && units_hooks_ != nullptr
+            && units_hooks_->issue_generated_authored_command(units_before, name)) {
+            ++g_hidden_spawn_carry_commands;
+        }
     }
     ++summary_.generate_object_created;
     if (summary_.generate_object_created <= 16) {
@@ -11895,6 +11936,12 @@ void GameMissionLuaHost::report_mission_script_state() {
         "every_call=%llu bound=%d (00944FD0, packet p16_lua_natives)", summary_.generate_object_calls,
         summary_.generate_object_repeat, summary_.generate_object_respawned,
         summary_.generate_object_every_call, kGenerateObjectEveryCallBound ? 1 : 0);
+    log_.notef("summary mission generate object hidden carry bound=%d carried=%zu "
+        "applied=%llu commands=%llu (0046DC10 creator 0046DE9A / InitAll 0046DEDD, "
+        "0046AAB0 at 009453BB, packet cc13-hiddencarry) unattached_host_only=%llu",
+        kSceneHiddenSpawnCarryCc13Bound ? 1 : 0, scene_spawn_pool().carried_count(),
+        g_hidden_spawn_carry_applied, g_hidden_spawn_carry_commands,
+        g_hidden_spawn_carry_unattached);
     log_.notef("summary mission script formation leader bound=%d calls=%llu found=%llu "
         "other=%llu (00899AF0 -> 007788D0, packet cc9_get_formation_leader)",
         kLuaFormationLeaderBound ? 1 : 0, summary_.formation_leader_calls,
