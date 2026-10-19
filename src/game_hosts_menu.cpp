@@ -2,6 +2,7 @@
 // pump and the main menu. See include/bsp/game_hosts_menu.hpp for the address
 // list and the evidence.
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_scene_contents.hpp"
 
 #include "bsp/frontend_entry.hpp"
 #include "bsp/frontend_managers.hpp"
@@ -1458,6 +1459,9 @@ public:
         // 004e3aa0's first store is game+5D4h = 3.
         owner_.state.value = kGameStateFrontEndInit;
         owner_.log.implemented("FrontEndShell::game_on_init", "004e3ac2");
+        // cc15-ob4 (kSceneDatabaseCc15Bound): 0046F350 at 004E3E60, the scene
+        // database at [00E18680] (docs/CC15_OBJECT_SCENE_DATABASE.md).
+        if constexpr (kSceneDatabaseCc15Bound) scene_database_create_0046f350(owner_.log);
     }
     void poll_platform_session_events() override {
         owner_.log.unimplemented("FrontEndShell::poll_platform_session_events", "004db290");
