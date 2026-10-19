@@ -251,6 +251,33 @@ struct MissionCommandGraph {
  }
  NativeTracelineRenderAccess& render_access() noexcept {return render;}
  bool requires_process_retention() const noexcept {return failed || pending!=nullptr;}
+ void observe_first_device_constants() {
+  if(completed!=0)return;
+  // Read-only stock D3D9 observation AFTER native uploads/draws, BEFORE overlay.
+  // Gather's supplied prefix is an input preimage, not its resulting stack;
+  // the actual device answers whether system constants reached this draw.
+  auto* const device=get<IDirect3DDevice9*>(execution.actual_renderer_00f8d394,0x1a10);
+  if(!device){log.note("native_mission_command constants_readback device=null");return;}
+  std::array<float,53*4> vertex,pixel;
+  const HRESULT vs=device->GetVertexShaderConstantF(0,vertex.data(),53);
+  const HRESULT ps=device->GetPixelShaderConstantF(0,pixel.data(),53);
+  DWORD srgb=0;
+  const HRESULT srgb_result=device->GetRenderState(D3DRS_SRGBWRITEENABLE,&srgb);
+  log.notef("native_mission_command constants_readback VS=%08lx PS=%08lx srgb_result=%08lx srgb_write=%lu",
+      static_cast<unsigned long>(vs),static_cast<unsigned long>(ps),
+      static_cast<unsigned long>(srgb_result),static_cast<unsigned long>(srgb));
+  const auto record=[&](const char* stage,const std::array<float,53*4>& values) {
+   log.notef("native_mission_command device_%s fog=%g,%g,%g height=%g,%g,%g ambient=%g,%g,%g diffuse=%g,%g,%g cube0=%g,%g,%g sun=%g,%g,%g",
+       stage,values[35*4],values[35*4+1],values[35*4+2],
+       values[36*4],values[36*4+1],values[36*4+2],
+       values[43*4],values[43*4+1],values[43*4+2],
+       values[44*4],values[44*4+1],values[44*4+2],
+       values[46*4],values[46*4+1],values[46*4+2],
+       values[52*4],values[52*4+1],values[52*4+2]);
+  };
+  if(SUCCEEDED(vs))record("VS",vertex);
+  if(SUCCEEDED(ps))record("PS",pixel);
+ }
  void observe_failed_frame() {
   failed=true;
   if(!pending) {log.note("native_mission_command frame_failed retained=1 pending=0");return;}
@@ -344,6 +371,7 @@ struct MissionCommandGraph {
    }
    log.notef("native_mission_command execute_before_overlay=B1EBE0/B1D950 command_invocations=%u entries=%u,%u B24010=%u B21B40=%u returned=%u queue_count=0 owners=retired",
     queue_frame.used,pending->entry_counts[0],pending->entry_counts[1],indexed_calls,primitive_calls,returned);
+   observe_first_device_constants();
   } catch(...) {
    observe_failed_frame();throw;
   }

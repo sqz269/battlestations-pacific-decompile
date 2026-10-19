@@ -123,11 +123,15 @@ struct MissionShipLightingGraph {
   void* const actual_ambient=get<void*>(resource,0x10);
   check(actual_ambient && resource_acquired.ambient_reference && sun_owner,
       "mission lighting requires completed native ambient and sun owners");
-  const auto ambient_color=color(0.25f,0.28f,0.32f);
+  // Explicit diagnostic gain for this direct linear backbuffer view. The
+  // installed ship shader decodes sRGB textures; the normal post20 exposure/
+  // display conversion has not been composed in this bounded ordinary path.
+  // These are real configuration inputs, not substitute constant-bank writes.
+  const auto ambient_color=color(1.00f,1.12f,1.28f);
   std::array<SystemLightingWords4,6> cube;
   for(auto& face:cube)face=ambient_color;
-  const auto diffuse=color(0.70f,0.68f,0.60f);
-  const auto specular=color(0.12f,0.12f,0.12f);
+  const auto diffuse=color(1.40f,1.36f,1.20f);
+  const auto specular=color(0.24f,0.24f,0.24f);
   const U one=*graph.profiles(0xd7a24c);
   const U yaw=float_bits(0.7853981634f),elevation=float_bits(0.6154797087f);
   const LightingConfigurationFields configuration{ambient_color,ambient_color,cube,
@@ -191,7 +195,7 @@ struct MissionShipLightingGraph {
    resource_name_live=false;destroy_native_string_header_0041dd20(&resource_name,strings);
    phase=Phase::ready;
    log.notef("native mission lighting ready: outer=%p resource=%p ambient=%p sun=%p first_light=1 "
-       "configuration=004BACD0 captured_scale_ambient=%u ambient_cube=0.25,0.28,0.32 diffuse=0.70,0.68,0.60 specular=0.12,0.12,0.12 shadow=null",
+       "configuration=004BACD0 captured_scale_ambient=%u ambient_cube=1.00,1.12,1.28 diffuse=1.40,1.36,1.20 specular=0.24,0.24,0.24 shadow=null",
        outer,resource,get<void*>(resource,0x10),sun,unsigned(captured_scale_ambient));
   } catch(...) {phase=Phase::failed;throw;}
  }
