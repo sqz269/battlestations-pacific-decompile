@@ -3858,3 +3858,10 @@ Exports of 39ac16569: `local\p25c_off`, `local\p25c_pbc` (kPilotBotConfigLoadBou
 - **Enter draws, flipped ON.** USN01 still completes (ref 1195.04 -> 1270.11 s, default 1139.99 -> 1300.14 s). JM08 ref is still lost (1025.93 -> 1033.93 s); JM08 default has no end on either side.
 - **Tick draws, flipped ON.** USN01 ref ends at 1270.11 s on both enter and tick, with a small difference in shot counts; USN01 default completes at 1280.12 s. JM08 ref tick is the same as enter (the tick draws are unreached there); JM08 default moves and has no end on either side.
 - Every move is RNG-coupled; no row changes its outcome.
+## 109. Flak second-ammo range (cc9-physics25, 2026-10-19)
+
+Exports of 3ca24854e: `local\p25d_off`, `local\p25d_flak` (kFlakSecondAmmoRangeCc13Bound, src/game_hosts_gunnery.cpp, on loan for this one commit). Reference env. As predicted it moves every row that has category-6 flak, since AA reach grows from 1500-1600 m to 2000 m:
+- USN01 u1i completes earlier (1270.11 -> 1155.00 s).
+- BSM09 d1 ends later (EndMission 285.05 -> 405.02 s).
+- USN21 completes slightly earlier (2886.69 -> 2876.68 s).
+Flipped ON by mechanism. BSM01 is left out: from 39ac16569 on, the row spawns only 284 of its 663 units and has no hits (an origin/main regression in 5481a7ca5..39ac16569, reported to the lead).
