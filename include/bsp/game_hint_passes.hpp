@@ -22,7 +22,7 @@ namespace bsp::game {
 // the hints screen 34h is never entered. On: the passes run on the tracker,
 // TriggerHint decides and records each hint, screen 34h is self-managed and
 // pumped, and its Update times the shown hint and finishes it.
-inline constexpr bool kHintTriggerPassesCc15Bound = false;
+inline constexpr bool kHintTriggerPassesCc15Bound = true;
 
 // The game-side reads of the passes and TriggerHint. The mission frame host
 // implements it over its units and scene state for as long as it lives.
