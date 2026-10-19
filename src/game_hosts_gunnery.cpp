@@ -4123,6 +4123,8 @@ struct GameGunneryHost::Impl {
         bool valid{false};
         float points[3][3]{};
         float cooldown_9dc{0.0f};   // unit+9DCh stand-in
+        bool armed_9dc{false};      // kPlaneCrashConstructCooldownCc13Bound
+        bool grounded_9dc{false};   // seen off free flight before the first arm
     };
     std::vector<PlaneCrashPrev> crash_prev;
     std::vector<GameBulletClassRow> crash_bullets;   // read on first use, by id
@@ -4131,6 +4133,7 @@ struct GameGunneryHost::Impl {
     unsigned long long pc_surface_cuts{0}, pc_impacts{0}, pc_blast_records{0};
     unsigned long long pc_hits_21{0}, pc_hits_98{0}, pc_hits_99{0}, pc_hits_other{0};
     unsigned long long pc_logged{0}, pc_cooldown_steps{0};
+    unsigned long long pc_construct_cooldown_arms{0};
     double pc_blast_damage{0.0};
     // DIAGNOSTIC: the closest any live kamikaze bow came to a hostile hull box.
     float kz_min_gap{-1.0f};
@@ -12420,7 +12423,22 @@ void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
         // the step. LABELLED stand-in for 007C5F60's launch-spot stores (3.0 s,
         // 00CE3854): armed on the first free-flight step, because a host plane is
         // in state 7 while still on its deck.
-        if (airborne && !had_prev) prev.cooldown_9dc = bsp::kPlaneCrashLaunchCooldown;
+        if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
+            // Packet cc13-cool9dc: a plane in free flight on every step seen so far
+            // never went through 007C5F60, so it still holds 007CFE78's 1.0f.
+            if (!airborne) prev.grounded_9dc = true;
+            if (airborne && !had_prev) {
+                if (!prev.armed_9dc && !prev.grounded_9dc) {
+                    prev.cooldown_9dc = bsp::kPlaneCrashConstructCooldown;
+                    ++pc_construct_cooldown_arms;
+                } else {
+                    prev.cooldown_9dc = bsp::kPlaneCrashLaunchCooldown;
+                }
+                prev.armed_9dc = true;
+            }
+        } else {
+            if (airborne && !had_prev) prev.cooldown_9dc = bsp::kPlaneCrashLaunchCooldown;
+        }
         if (!airborne || !had_prev) continue;
         if (prev.cooldown_9dc > 0.0f) {
             prev.cooldown_9dc -= step;
@@ -17470,6 +17488,10 @@ void GameGunneryHost::report() {
         host.pc_hits_98, host.pc_hits_99, host.pc_hits_other, host.pc_same_squadron,
         host.pc_land_hits, host.pc_submerged, host.pc_surface_cuts, host.pc_cooldown_steps, host.pc_impacts,
         host.pc_blast_records, host.pc_blast_damage, bsp::kPlaneCrashSweepBound ? 1 : 0);
+    if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
+        host.log.notef("summary mission gunnery plane crash construct cooldown arms=%llu "
+            "(007CFE78 1.0f, packet cc13-cool9dc)", host.pc_construct_cooldown_arms);
+    }
     host.log.notef("summary mission gunnery ground target origin aims=%llu bound=%d "
         "(006DF520 with 0042D810, packet cc9_ground_target_aim_point)",
         host.ground_origin_aims, kArtilleryGroundOriginAimBound ? 1 : 0);
