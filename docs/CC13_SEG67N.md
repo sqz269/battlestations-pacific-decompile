@@ -19,9 +19,17 @@ into the 26-slot task interface.
 ## Skipped
 
 - `009A7A40`: inside cc13-undef's leased range 009A76E0-009A7E7F.
-- `009E49F0`, `009E4CA0`, `009E50D0`, `009E6060`: the 009E ship-AI range under cc13-prop review
-  (packet brief). Each is a one-line `MOV EAX,00E08F78; RET` slot +24h of the ship-AI state
-  vtables 00D218F0, 00D21920, 00D2195C, 00D21994.
+
+The four 009E rows first skipped here (`009E49F0`, `009E4CA0`, `009E50D0`, `009E6060`) were not
+leased by cc13-prop (`lease list`, 2026-10-18) and are reconstructed in the follow-up below.
+
+## Follow-up: the 009E ship-AI command slots (reconstructed)
+
+`ship_ai_state_command_009e49f0` / `_009e4ca0` / `_009e50d0` / `_009e6060`
+(`BSP_ShipAiState218F0_Command` .. `BSP_ShipAiState21994_Command`): each is slot +24h of the
+ship-AI state vtables 00D218F0, 00D21920, 00D2195C, 00D21994, body `MOV EAX,00E08F78; RET`
+(the attackmove command object; same body as 009DB350/009DB5A0). Original ABI `__thiscall`,
+ECX unused, result in EAX. Uncertainty: which state each vtable is was not traced.
 
 ## Batch A: plane bot-task slots (reconstructed)
 
@@ -124,6 +132,37 @@ Slot +58h of moveto (00D20B68) and attackmove (00D20BE0): `009C32B8` calls
 current state's exit at release is not modelled there. Not wired; LIVE in a normal mission
 whenever a plane's moveto or attackmove task is released. Shared RNG: not involved.
 
+The caller is `00999EE0` (drains the bot+64h retired list filled by `0099A660`;
+`00999EF7: mov eax,[edx+58h]; call eax`). Attackmove's constructor `009C3B10` calls the moveto
+constructor `009C3000`, so both tasks own the same three states, and only these can be current at
+release:
+
+| state (task offset) | vtable | exit (`+8h`) | what the exit does |
+| --- | --- | --- | --- |
+| moveto (+47Ch) | 00D20A80 | `007B3DC0` | bare `RET` |
+| circle (+52Ch) | 00D20A9C | `007B3DC0` | bare `RET` |
+| follow (+494h) | 00D20AB8 | `009BDE40` | `007B8A90(unit)` clears the turbo byte unit+9F9h; stores 0.0 to `[[state+4]+1Ch]+4Ch`, the gun hold timer |
+
+No exit issues an order or draws from `00BD2F10`. Only the follow exit has an effect.
+
+Host (game_hosts_units.cpp, read-only): `follow_exit_009bde40` (6537-6606, under
+`kFollowExitClearsBound`) is reached only from the state switch (~26377) and the exit_follow
+override (~36529). The moveto/attackmove release sites (9655, 14247, 14957, 17720, 17869, 17904)
+set `moveto_task_installed = false` and `moveto_state = kNone` and do not call it. Visible
+difference when the release happens in follow:
+
+- `plane_turbo_9f9` stays set only until the next pilot commit, which rewrites it from
+  `plan_turbo_2e5` (37514). `0099B572` resets that value every think (37113). The effect is
+  transient: at most one commit.
+- `df_gun.hold_4c` keeps the follow sight's value (2.0 at 9487, `009C232A`) instead of 0.0. The gun
+  envelope reads it at 24330 (`009FCCB4`: `hold_4c > 0` returns no fire), so the next task's guns
+  can stay held for up to 2.0 s. The gun tick decays it by dt (`009FC7CD`-`009FC7EE`; host
+  dogfight_task.cpp:272), and 9487 or 24605 (strafe point, -1.0) can rewrite it sooner.
+
+LIVE? yes, when a wingman's moveto/attackmove is released in the follow state (override sites
+17869/17904, 14957). RNG? no. Fix belongs to the host lane: call `follow_exit_009bde40` at those
+release sites when `moveto_state` is follow.
+
 ## Batch C: maneuver ticks, the follow debug draw, the ship AI states
 
 | address | slot / vtable | C++ | notes |
@@ -160,9 +199,19 @@ The immelmann tick (009B9AF0), the split s tick (009B9CA0), and the batch-A swee
 
 `bot_task_barrel_roll_tick_009b9740` and `bot_task_gain_altitude_tick_009ba2f0`
 (src/cc13_seg67b.cpp) write `task+2E4h &= 0xFFFFFFFBu`. The image's bytes at `009B9752` and
-`009BA300` are also `81 A6 E4 02 00 00 FB 00 00 00`, so they must be `&= 0xFBu`. That is a REAL
-defect if any upper bit of avoidFlags is ever set. It is reported to the lead and not changed here,
-because seg67b belongs to another packet.
+`009BA300` are also `81 A6 E4 02 00 00 FB 00 00 00`, so they must be `&= 0xFBu`.
+
+FIXED in the follow-up commit (both ticks now `&= 0xFBu`; ledger evidence carries the
+correction). Every image clear of +2E4h uses that imm32 form: 009B9752, 009B9C86, 009B9D2D,
+009B9D69, 009B9E29, 009BA1CB, 009BA300. No host file applies a mask to +2E4h; the only mention is
+the comment at game_hosts_units.cpp:25720 ("009BA1C8's +2E4h &= ~4 is not modelled").
+
+Does it matter? Image writers of +2E4h store 0 or 0FFh as dwords (009998F1, 00999950, 009A1A08,
+009CD1D8, 007B7CA8), bytes (0099B3F4, 0099B56C, 009A4F14, 009A513D), or copy approach fields
+holding 0FFh/1/3 (009A6750, 009AB20A, 009AE92D, 009AF550, 009B3F41, 009B8BDD, 009C885B, 009CFDBA,
+009D4905). Readers are byte reads (0099BF18, 009A18BA, 009A1951, 009A1974); the only dword
+reader is the save at 0099D060 (the load passes the address, 0099C9B1). Bits 8-31 are neither set
+nor read on a live path, so the fix is fidelity-only with no gameplay effect.
 
 ### Uncertainties (batch C)
 

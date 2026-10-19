@@ -1410,7 +1410,7 @@ float clamp_unit_01(float x) {
 }  // namespace
 
 // 009B9740 (009B9740-009B99DB), barrelroll. u = task+2F4h, cls = task+2F8h.
-//  - 009B9752-009B9791: +2E4h &= ~4; +27Ch = 1.0, +280h = 1; +2ACh = 0, +2B0h = 1;
+//  - 009B9752-009B9791: +2E4h &= 0FBh (imm32: bits 8-31 clear too); +27Ch = 1.0, +280h = 1; +2ACh = 0, +2B0h = 1;
 //    +2DCh = 0; +288h = 0, +28Ch = 1; +2D8h = 0.
 //  - 009B97A4-009B97BC: e = cls+1ECh x 1.5 (qword 00CE3D78) - u+C64h, stored float.
 //  - 009B9797-009B97D1: until byte +404h is set it takes 009B9680's answer; while that
@@ -1427,7 +1427,7 @@ float clamp_unit_01(float x) {
 // the alternative. No draw. Only reference: vtable 00D206D0 slot +64h (00D20734, image
 // scan); no target-equal twin.
 void bot_task_barrel_roll_tick_009b9740(Cc13Seg67bHost& host, void* task, float) {
-    at<std::uint32_t>(task, 0x2E4) &= 0xFFFFFFFBu;
+    at<std::uint32_t>(task, 0x2E4) &= 0xFBu;  // 81 A6 E4 02 00 00 FB 00 00 00 (imm32)
     at<float>(task, 0x27C) = 1.0f;
     at<std::uint8_t>(task, 0x280) = 1;
     at<float>(task, 0x2AC) = 0.0f;
@@ -1477,7 +1477,7 @@ void bot_task_barrel_roll_tick_009b9740(Cc13Seg67bHost& host, void* task, float)
 
 // 009BA2F0 (009BA2F0-009BA6E3), gainaltitude. u = task+2F4h, cls = task+2F8h, the
 // target t = task+3F8h (may be 0), the altitude margin task+3FCh.
-//  - 009BA300: +2E4h &= ~4.
+//  - 009BA300: +2E4h &= 0FBh (imm32: bits 8-31 clear too).
 //  - With t (009BA31E-009BA41F): d = t - u in x and z; |d| (1e-10 guard); |d| > 1000.0
 //    (qword 00CE47A0, FCOMIP JBE, NaN -> near) -> +2C4h = _CIatan2(dx, dz), +2D0h = 2;
 //    else +2C8h = 0, +2D0h = 1.
@@ -1495,7 +1495,7 @@ void bot_task_barrel_roll_tick_009b9740(Cc13Seg67bHost& host, void* task, float)
 // 24-bit results); 53-bit is the alternative. Only reference: vtable 00D20480 slot +64h
 // (00D204E4, image scan); no target-equal twin.
 void bot_task_gain_altitude_tick_009ba2f0(Cc13Seg67bHost& host, void* task, float) {
-    at<std::uint32_t>(task, 0x2E4) &= 0xFFFFFFFBu;
+    at<std::uint32_t>(task, 0x2E4) &= 0xFBu;  // 81 A6 E4 02 00 00 FB 00 00 00 (imm32)
     if (ptr_at(task, 0x3F8) != nullptr) {
         void* const unit = ptr_at(task, 0x2F4);
         if (at<std::uint8_t>(unit, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(unit);
