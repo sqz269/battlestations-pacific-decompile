@@ -125,3 +125,30 @@ Virtual18 consumes the original logical creator only once, guarded by byte+44.
 
 No native body was newly reconstructed or renamed by this packet. Existing
 reconstructed source bodies and their ledger evidence are reused unchanged.
+
+## Attempt04 cached-row failure follow-up
+
+The primary's real USN04 ON attempt04 crashed before MMOD loading, after a
+resource post-effect compiler sampler-scope log. The matching executable hash
+was `de3c1a12bc17fe49be449e389edaca84dfe571f53c46568e9bc217427da01e68`.
+Minidump exception EIP10354D54 was a read of address8 with ESI=0. Matching
+executable disassembly identifies the failed instruction as `MOV EDX,[ESI+8]`
+inside the cached shader path, where ESI is the null B34890 returned record.
+Nearby native-site stores select B3B85F/B3BDCA. The earlier sampler-scope log
+therefore does not identify the fault as an entry-word producer failure.
+
+The existing B34890 implementation and header establish a forward-only cache
+cursor; a miss never wraps or resets. An isolated cold B107F0 acquisition can
+therefore violate the original shader preload request order, even if a needed
+name exists earlier in the installed cache. This remains a hypothesis until the
+exact missing query and cache cursor are observed; the native names/order must
+be repaired, rather than replacing B34890 with a random lookup or cursor reset.
+
+`cached_shader` now rejects a null cache record before releasing its exact query
+or dereferencing row+08. The retained exception reports vertex/pixel stage,
+counted key, actual record count/cursor, examined rows and the live source-mode
+flags. It supplies no row, shader, fallback or compiler-null result. The existing
+outer compiler marks its one-shot frame failed and preserves every prior native
+effect and live name. This is an explicit Source provider-domain rejection,
+distinct from the Original invalid-row access violation. Combined build and the
+primary's next authorized ON run remain the validation boundary.
