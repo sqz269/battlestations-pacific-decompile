@@ -12664,8 +12664,14 @@ void GameGunneryHost::Impl::plane_crash_impact_0084bc60(std::size_t plane, std::
         static_cast<double>(weapon.blast_damage_min), static_cast<double>(weapon.blast_damage_max),
         static_cast<double>(weapon.blast_range), reached, dealt,
         static_cast<double>(unit_state[victim].health));
-    // 007BBA10: Kill(1) for an entity or plane hit.
-    if (!unit_state[plane].dead) kill_unit(plane);
+    // 007BBA10: Kill(1) for an entity or plane hit (007BBA7F / 007BBAED, 00926D90 on
+    // the plane in ESI, 007BBA18). Packet cc13-killx: it is a 00926D90 Kill, not
+    // SetHealth, so the units host records the cause (+70h = 1, 00926E02) and
+    // with it the funnel path tag (kPlaneFunnelKillPathTagCc13Bound).
+    if (!unit_state[plane].dead) {
+        if (kKillFunnelCauseBound) units.note_kill_cause_00926e02(plane, 1);
+        kill_unit(plane);
+    }
 }
 
 void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
@@ -15982,7 +15988,11 @@ void GameGunneryHost::copy_director_allow_bytes_00720450(std::size_t dst, std::s
 
 void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
     if (unit_index >= impl_->unit_state.size()) return;
-    // The funnel is the one a gunfire death takes (cause 1, 0077D1A0 -> 00926C80).
+    // The host's kill funnel, which ends in the same destroy as a gunfire death
+    // (0077D1A0 -> 00926C80). SetHealth's chain reaches 00926D90 only in 007D0B80's
+    // explosion arm (007D0CFD, +70h = 1), after 007CA8A0 drew the mode; its other
+    // arms destroy through 007D12FC's vtable[70h](1) and leave +70h unwritten.
+    // This entry stands for the 00926D90 callers.
     // kKillFunnelCauseBound: 00926D90 returns on +5Fh, else stores the cause at
     // +70h (00926E02, 7 stored as 2), which the `Dead`/entityKilled publishers
     // read as 00E0CF04[cause]: Lua Kill(x, true) passes 2, "soft".

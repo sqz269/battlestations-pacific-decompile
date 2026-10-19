@@ -165,6 +165,7 @@
 #include "bsp/world_construct.hpp"
 #include "bsp/plane_class_fields.hpp"
 #include "bsp/cc13_jm08_switches.hpp"
+#include "bsp/cc13_torp_goaway.hpp"           // packet cc13-goaway (009D0D90 draws, 00901610)
 #include "bsp/follow_release_seams_cc13.hpp"
 
 #include <cfloat>
@@ -2947,7 +2948,21 @@ struct GameUnitsHost::Impl {
     void note_kill_cause(std::size_t unit, int cause) {
         if (kill_cause_by_unit.size() <= unit) kill_cause_by_unit.resize(unit + 1, 1);
         kill_cause_by_unit[unit] = cause;
+        // Packet cc13-killx (kPlaneFunnelKillPathTagCc13Bound): every caller here
+        // stands for a 00926D90 Kill, except a site that raised
+        // funnel_path_tag_suppressed around its kill_unit_00926d90 call.
+        if (!funnel_path_tag_suppressed) {
+            if (funnel_path_tag_by_unit.size() <= unit) funnel_path_tag_by_unit.resize(unit + 1, 0);
+            funnel_path_tag_by_unit[unit] = 1;
+        }
     }
+    // Packet cc13-killx: the unit died through a 00926D90 stand-in (not SetHealth).
+    // Grown per slot index at the kill, read by the plane death-mode block one
+    // step later; nothing clears it (slots are never freed).
+    std::vector<std::uint8_t> funnel_path_tag_by_unit;
+    // Raised by the host sites that call kill_unit_00926d90 for a direct
+    // vtable[70h](1), which is not 00926D90.
+    bool funnel_path_tag_suppressed = false;
     unsigned long long land_retired_invalid{0};
     unsigned long long land_retired_own_target_ok{0};   // packet cc9_land_command_own_target
     // Packet cc9_unit_yaw_rate_forward_speed: the accessor's calls and non-zero answers.
@@ -11755,7 +11770,11 @@ public:
         if (air.drowned && !slot_.sub_drowned && owner_.gunnery != nullptr) {
             // 008553A1..008553B8: vtable[70h](1), 0077D1A0 -> 00926C80.
             slot_.sub_drowned = true;
+            // Packet cc13-killx: a direct vtable[70h](1), not 00926D90, so no
+            // funnel path tag.
+            owner_.funnel_path_tag_suppressed = true;
             owner_.gunnery->kill_unit_00926d90(slot_.process_index, 1);
+            owner_.funnel_path_tag_suppressed = false;
             owner_.log.notef("submarine air: unit=%s drowned (vtable[70h](1), packet "
                 "cc9_submarine_air)", slot_.row.name.c_str());
         }
@@ -13509,6 +13528,38 @@ void GameUnitsHost::load_gameplay_settings_0083b5e0() {
     // Idempotent: a second call re-runs the scripts and rewrites the block with
     // the same values.
     host.lua.load_plane_globals_007e2a20();
+    // Packet cc13-goaway: 00901610 load_robot_config, which the image runs once
+    // per process from 004DC6A0 (recorded, not run, by the mission frame). Here
+    // it runs through the mission host's VFS script reader on its own Lua owner,
+    // before any unit exists, and keeps the PilotBot rows ([00F8A30C]) for the
+    // goaway enter's 009D0EA3 draw. A second call answers already_loaded.
+    if constexpr (bsp::cc13_torp_goaway::kPilotBotConfigLoadBound) {
+        bsp::cc13_torp_goaway::MissionScriptFiles files(host.lua);
+        const bsp::cc13_torp_goaway::PilotBotLoadResult robots =
+            bsp::cc13_torp_goaway::load_pilot_bot_config_00901610(files);
+        if (!robots.already_loaded) {
+            if (robots.loaded) {
+                host.done("RobotConfig::load_00901610", 0x00901610u);
+            } else {
+                host.record("RobotConfig::load_00901610", 0x00901610u);
+            }
+            const auto* rows = bsp::cc13_torp_goaway::loaded_pilot_bot_rows();
+            auto pair = [rows](int i, int k) {
+                if (rows == nullptr) return 0.0;
+                const bsp::PilotBotParameters& row = (*rows)[static_cast<std::size_t>(i)];
+                return static_cast<double>(k == 1 ? row.torp_flik_flak_time_1_01c
+                                                  : row.torp_flik_flak_time_2_020);
+            };
+            host.log.notef("pilot bot config (00901610, packet cc13-goaway): loaded=%d "
+                "script reads=%zu misses=%zu error=%s; TorpFlikFlakTime by level "
+                "Stun %.3g,%.3g SPNormal %.3g,%.3g SPVeteran %.3g,%.3g MPNormal %.3g,%.3g "
+                "MPVeteran %.3g,%.3g Elite %.3g,%.3g",
+                robots.loaded ? 1 : 0, robots.script_reads, robots.script_misses,
+                robots.error.empty() ? "-" : robots.error.c_str(),
+                pair(0, 1), pair(0, 2), pair(1, 1), pair(1, 2), pair(2, 1), pair(2, 2),
+                pair(3, 1), pair(3, 2), pair(4, 1), pair(4, 2), pair(5, 1), pair(5, 2));
+        }
+    }
     if (host.rudder_curve_loaded) return;
     // 0083b5e0's head: run Scripts\datatables\ShipGlobals.lua and take the
     // `ShipGlobals` global. Then the fragment 0083ce56..0083d10d, which is what
@@ -21159,9 +21210,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Packet cc13-landc (kPlaneFunnelKillDestroyOnlyCc13Bound): a
                         // 00926D90 Kill (a cause other than 1) reaches 0077D1A0 Destroy
                         // without SetHealth, so 007CA8A0 never runs for it.
+                        // Packet cc13-killx (kPlaneFunnelKillPathTagCc13Bound): the
+                        // test is the 00926D90 path tag, for every cause, so a
+                        // cause-1 Lua Kill(x) or 007CE3A7 depth kill is included.
                         const bool destroy_only = bsp::kPlaneFunnelKillDestroyOnlyCc13Bound
-                            && index < host.kill_cause_by_unit.size()
-                            && host.kill_cause_by_unit[index] != 1;
+                            && (bsp::kPlaneFunnelKillPathTagCc13Bound
+                                ? index < host.funnel_path_tag_by_unit.size()
+                                    && host.funnel_path_tag_by_unit[index] != 0
+                                : index < host.kill_cause_by_unit.size()
+                                    && host.kill_cause_by_unit[index] != 1);
                         bsp::PlaneDeathModeInputs din;
                         din.health_370 = 0.0f;
                         // 007CA914: 00BD2F10(ECX = 1, 0.0, 1.0), the shared stream.
@@ -22268,7 +22325,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                             static_cast<double>(unit_.motion.position[1]),
                                             static_cast<double>(min_water_spd),
                                             static_cast<double>(unit_.motion.pose_row1[1]));
+                                        // Packet cc13-killx: 007D12FC's vtable[70h](1),
+                                        // not 00926D90, so no funnel path tag (the
+                                        // powerlost mode stays the death block's).
+                                        owner_.funnel_path_tag_suppressed = true;
                                         gun_host->kill_unit_00926d90(self_index, 1);
+                                        owner_.funnel_path_tag_suppressed = false;
                                     }
                                 }
                                 // 007CB92C: 7, 4 and 5 all go to 6. The
@@ -23480,6 +23542,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // every draw, as random_between already does.
                                 gin.distance_jitter =
                                     bsp::torpedo_goaway::kDistanceJitterLo;
+                                // Packet cc13-goaway: 009D0E2C's draw, the
+                                // first of the enter's three on stream 1.
+                                if constexpr (bsp::cc13_torp_goaway::distance_jitter_draw_on()) {
+                                    if (owner_.gunnery) {
+                                        gin.distance_jitter =
+                                            owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                                owner_.index_of_slot(slot_),
+                                                bsp::torpedo_goaway::kDistanceJitterLo,
+                                                bsp::torpedo_goaway::kDistanceJitterHi);
+                                    }
+                                }
                                 gin.side_bit = (slot_.torpedo_goaway_enters & 1) != 0;
                                 const bsp::TorpedoGoAwayState g =
                                     bsp::torpedo_goaway_enter_009d0d90(gin);
@@ -23546,6 +23619,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // every draw.
                                 gt.climb_jitter =
                                     bsp::torpedo_goaway_tick::kClimbJitterLo;
+                                // Packet cc13-goaway: the draw itself, on
+                                // stream 1, taken only on the ordnance leg
+                                // (009D0E4A JZ skips it for a spent bomber).
+                                if constexpr (bsp::cc13_torp_goaway::climb_jitter_draw_on()) {
+                                    if (owner_.gunnery && gt.has_ordnance_132) {
+                                        gt.climb_jitter =
+                                            owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                                owner_.index_of_slot(slot_),
+                                                bsp::torpedo_goaway_tick::kClimbJitterLo,
+                                                bsp::torpedo_goaway_tick::kClimbJitterHi);
+                                    }
+                                }
                                 // UniformFloatRange(row+10h, row+14h) at
                                 // 009D0EA3. row+10h and row+14h are
                                 // TorpFlikFlakTime 1 and 2 in
@@ -23557,10 +23642,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // manoeuvre window therefore opens on the first
                                 // tick the aircraft is above +20h instead of
                                 // after the authored delay.
-                                owner_.log.unimplemented(
-                                    "PilotBotParameters::TorpFlikFlakTime",
-                                    "00997c68");
-                                gt.window_delay_draw = 0.0f;
+                                // Packet cc13-goaway: with the PilotBot rows
+                                // loaded (00901610, kPilotBotConfigLoadBound)
+                                // the row is levels[bot+34h], as 009F9D22
+                                // captures it, and the draw is taken on stream 1.
+                                const bsp::PilotBotParameters* flik_row = nullptr;
+                                if constexpr (bsp::cc13_torp_goaway::window_delay_draw_on()) {
+                                    if (owner_.gunnery) {
+                                        flik_row = bsp::cc13_torp_goaway::pilot_bot_row(
+                                            kSkillLevelBound ? slot_.pilot_skill_index : 1);
+                                    }
+                                }
+                                if (flik_row != nullptr) {
+                                    owner_.log.implemented(
+                                        "PilotBotParameters::TorpFlikFlakTime",
+                                        "00997c68");
+                                    gt.window_delay_draw =
+                                        owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                            owner_.index_of_slot(slot_),
+                                            flik_row->torp_flik_flak_time_1_01c,
+                                            flik_row->torp_flik_flak_time_2_020);
+                                } else {
+                                    owner_.log.unimplemented(
+                                        "PilotBotParameters::TorpFlikFlakTime",
+                                        "00997c68");
+                                    gt.window_delay_draw = 0.0f;
+                                }
                                 bsp::torpedo_goaway_enter_tail_009d0e3a(
                                     gt, slot_.torpedo_goaway_runtime);
                                 slot_.torpedo_goaway_runtime
@@ -40113,7 +40220,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         unit_.row.name.c_str(),
                                         static_cast<double>(owner_.summary.simulated_seconds),
                                         static_cast<double>(depth));
+                                    // Packet cc13-killx: 007D12FC's vtable[70h](1),
+                                    // not 00926D90, so no funnel path tag.
+                                    owner_.funnel_path_tag_suppressed = true;
                                     gh->kill_unit_00926d90(self, 1);
+                                    owner_.funnel_path_tag_suppressed = false;
                                 }
                             }
                             if (++unit_.plane_water_powerlost == 1) {
