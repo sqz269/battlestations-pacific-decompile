@@ -89,6 +89,20 @@ inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = false;
 // that meets that posted copy (the unit's own or its leader's) is posted third, as
 // 0077C980 / 0077CA60 queue it, and runs at the pump like the image's; every other
 // Lua leave stays synchronous.
+// The image does deliver a HitDrainAfterPump 77h at the next pump (cc13-deadleadnits):
+// - 0076E520 stamps msg+18h with D+174h (0076E5B9) and +0Ch with the current tick
+//   (0076E5C6), so the message is due at once.
+// - At the next pump, 00780670 resolves D at 0078077E. The handle is released only in
+//   the entity destructor 009287B0.
+// - The row-15 flush runs only the ship's destroy hook. That is vt+74h 00926390, which
+//   tail-calls vt+7Ch 00824B60 OnWrecked. Neither frees D.
+// - 00903610 frees an entity on the second expiry pass after it is marked. Row 16 of
+//   the next step comes after that step's pump.
+// - D+BDh, set by 00923840, has no clearing writer in the entity code. So D passes
+//   00780789, and 007807B8 dispatches the 77h through 00780120, which runs the copy.
+// - 007807C4 is the arm for a recipient that does not resolve. It keeps the message
+//   while it is less than 10 ticks old, then drops it. It is not the copy.
+// So the host's always-deliver path matches the image here, and no sub-switch is needed.
 // False:the successor keeps its own queue, as before. No 00BD2F10 draw.
 inline constexpr bool kDeadLeaderDirectorStateCopyBound = true;  // ON: JM08 San Francisco takes Nevada's attackmove at 527.49 s (SHIP_AI 304)
 
