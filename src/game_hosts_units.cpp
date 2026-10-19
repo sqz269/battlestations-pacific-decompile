@@ -24560,7 +24560,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // and leaves +4Ah clear.
                             damp = false;
                             ++unit_.fe_reaims;
-                            const float e_v2 = e_v + bsp::kGunReaimVerticalStep_00d7a348;
+                            const float e_v2 = static_cast<float>(e_v + bsp::kGunReaimVerticalStep_00d7a348);
                             unit_.plan_slots[bsp::kPilotSlotPitch].desired =
                                 stick(e_v2, terms.prev[1], unit_.plane_class.pitch_spd,
                                       unit_.plane_class.pitch_accel);
@@ -24780,15 +24780,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 std::size_t leader = self;
                                 if (const bsp::PlaneSquadronHostRecord* r =
                                         bsp::plane_squadron_registry().find_by_member_unit(self)) {
-                                    for (const std::size_t m : r->member_units) {
-                                        if (m == bsp::kPlaneSquadronNoUnit ||
-                                            m >= owner_.slots.size()) continue;
-                                        leader = m;
-                                        break;
-                                    }
+                                    leader = r->flight_leader();   // +3D0h[0], NoUnit skipped
                                 }
-                                // HOST-ONLY guard, no image equivalent: a null slot
-                                // falls back to the unit itself.
+                                // HOST-ONLY guard, no image equivalent: a null or
+                                // out-of-range slot falls back to the unit itself.
                                 const GameUnitSlot* lp = leader < owner_.slots.size()
                                     ? owner_.slots[leader].get() : nullptr;
                                 const GameUnitSlot& l = lp != nullptr ? *lp : unit_;
@@ -24796,6 +24791,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const float p[3] = {l.world[12] + s * l.world[8],
                                                     l.world[13] + s * l.world[9],
                                                     l.world[14] + s * l.world[10]};
+                                // LABELLED: the image also stores the point to the
+                                // gun's +5Ch..+64h (009FCAAB..009FCABD); the host feeds
+                                // it only to this tick's lead_local. That differs only
+                                // when a strafe-point arm sets +28h without rewriting
+                                // +5Ch, since +28h is reset at 009FCE55.
                                 df_local(p, gi.lead_local);
                                 gi.has_target = true;
                                 ++unit_.fe_hold_ahead_ticks;
