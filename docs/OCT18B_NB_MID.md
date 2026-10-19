@@ -4,7 +4,10 @@ The exact 64 dispatch rows from `00759090` through `007F22E0` are enumerated in
 `reports/oct18b_nB_mid.json`. The batch supplies 59 source interfaces in the
 existing message, MovCam, movie-camera, path, bot-task, engine, paratrooper,
 player-record and plane-squadron families. Three compiler/reference-counted
-copies are classified `library_instantiation_out_of_scope`. Two larger game
+copies are classified `library_instantiation_out_of_scope`. Dispatch byte sizes
+are retained as `dispatch_body_bytes`; the current live listing/prototype is
+the body authority where analysis has since shortened a dispatched extent.
+Two larger game
 bodies remain in bounded contract recovery, with no placeholder implementation.
 
 The evidence is the saved Ghidra pseudocode and x86 listing from the existing
@@ -39,12 +42,14 @@ leaves have exact data/vtable references but no stronger recovered class name.
 
 `0078CFB0` constructs a reference-counted holder from owner+0Ch;
 `007C4330` and `007C4390` copy a reference-counted pointer and three floats under
-compiler EH registration. Each increments through IAT `00CE221C`. They are
+compiler EH registration. `0078CFB0` takes ECX=destination and a stack owner,
+returns destination in EAX and uses RET4. Both latter copies take ECX=destination,
+EDX=source, and RET without a defined value result. Each increments through IAT `00CE221C`. They are
 recorded as library instantiations without a reconstructed game body or credit.
 
 `007AE930` belongs to the pointer-array path geometry family near the existing
 `point3_ptr_array_nearest_point_to_line_007aeec0`. ECX is the array, origin and
-direction are stack pointers, result is ST0. Its remaining work is the full
+direction are stack pointers, result is ST0, RET8. Its remaining work is the full
 x87 spill/NaN order and the hidden register/stack arguments at geometry calls
 `0046F440`, `0046F940`, `00470150`; the pseudocode omits them.
 

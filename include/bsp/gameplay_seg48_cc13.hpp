@@ -256,7 +256,7 @@ std::vector<NodeVisibility> rotor_blur_blend_007ec3b0(const PlaneRotor& rotor,
 // 00D0865C rotor, 40h bytes), as the list loops below call it. Slot 0 (Init)
 // is called once by 007ECC85 and is not part of this interface. The base's
 // +10h/+14h/+18h are the empty bodies 007E23B0 (RET 8), 007E23C0 (RET 4) and
-// 007E23D0 (RET), which have no Ghidra function.
+// 007E23D0 (RET), defined by the Oct18b live-function dispatch and now exposed above.
 class PlaneEngineSlots {
 public:
     bool burning_8{false};  // set once by 007E24F7 (OnDestroyed); 0 from 007ECBD6
