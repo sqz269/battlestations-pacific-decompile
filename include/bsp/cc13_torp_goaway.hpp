@@ -61,6 +61,40 @@ inline constexpr bool tick_delay_draw_on() noexcept {
     return kTorpGoawayEnterDrawsBound && kTorpGoawayTickDelayDrawBound && kPilotBotConfigLoadBound;
 }
 
+// ---------------------------------------------------------------------------
+// The dive-bomb goaway (docs/CC13_TORP_GOAWAY.md part C). Same stream, same
+// shape as the torpedo's; the host pinned all three at their low ends.
+//   009C49FC  UniformFloatRange(1.0 FLD1, 1.25 [00CF29A8]) * +20h -> +20h
+//             (enter 009C4950, ECX = 1 at 009C49F2, unconditional)
+//   009C4D13  UniformFloatRange(3.0 [00CE3854], 6.0 [00CE6630])   -> +2Ch
+//   009C4D33  UniformFloatRange(12.0 [00CEB4B8], 15.0 [00CE5380]) + +2Ch -> +24h
+//             (both inside 009C4CF1's 0 > +24h guard; ECX = EBX = 1 from
+//             009C4A5C, the only EBX write on that path)
+// ---------------------------------------------------------------------------
+inline constexpr bool kDiveGoawayDrawsCc13Bound = false;           // parent
+inline constexpr bool kDiveGoawayStandoffDrawBound = false;        // 009C49FC
+inline constexpr bool kDiveGoawayWindowDrawBound = false;          // 009C4D13
+inline constexpr bool kDiveGoawayCountdownDrawBound = false;       // 009C4D33
+
+inline constexpr bool dive_standoff_draw_on() noexcept {
+    return kDiveGoawayDrawsCc13Bound && kDiveGoawayStandoffDrawBound;
+}
+inline constexpr bool dive_window_draw_on() noexcept {
+    return kDiveGoawayDrawsCc13Bound && kDiveGoawayWindowDrawBound;
+}
+inline constexpr bool dive_countdown_draw_on() noexcept {
+    return kDiveGoawayDrawsCc13Bound && kDiveGoawayCountdownDrawBound;
+}
+
+// 007B5BE0 BSP_UnitInstance_GetLargestExtent on the goaway target, in both
+// enters: dive 009C49A5-009C49E0 (approach+48h) and torpedo 009D0DDF-009D0E0F
+// (approach+CCh), each when the target is non-null and answers
+// vtable[5Ch](5) (kind 5 = any unit). Despite the name it is
+// max(max(+448h, +444h), +434h) = the longest category 6 / 5 / 1 gun range
+// (00956C20's unit+430h + cat*4; LIGHTARTILLERYFLAK / FLAK / AAMACHINEGUN), so
+// the standoff grows to clear the target's AA envelope. OFF: no target term.
+inline constexpr bool kDiveGoawayTargetExtentCc13Bound = false;
+
 inline constexpr bool distance_jitter_draw_on() noexcept {
     return kTorpGoawayEnterDrawsBound && kTorpGoawayDistanceJitterDrawBound;
 }

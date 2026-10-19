@@ -10684,6 +10684,27 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     unsigned long long torpedo_reset_draws_{0};
     unsigned long long torpedo_reset_seeds_{0};
     double torpedo_reset_seed_sum_{0.0};
+    // Packet cc13-goaway (kDiveGoawayTargetExtentCc13Bound): 007B5BE0 on the
+    // goaway target, as the dive (009C49A5) and torpedo (009D0DDF) enters call
+    // it. The target is the command target (every host slot answers kind 5);
+    // the fields are the gunnery row's category 6 / 5 / 1 ranges (unit+448h,
+    // +444h, +434h). False when there is no target or no gunnery row.
+    bool goaway_target_extent_007b5be0(const GameUnitSlot& flyer, float& extent) {
+        if (gunnery == nullptr || flyer.command_target_plus_one == 0) return false;
+        const std::size_t ti = flyer.command_target_plus_one - 1;
+        if (ti >= slots.size() || !slots[ti]) return false;
+        const std::size_t idx = slots[ti]->process_index;
+        for (const GameGunneryUnitRow& r : gunnery->unit_rows()) {
+            if (r.unit_index != idx) continue;
+            const float a = r.category_ranges[5];  // +444h
+            const float b = r.category_ranges[6];  // +448h
+            const float m = (b > a) ? b : a;       // 007B5BF9 FCOMPI / JA
+            const float c = r.category_ranges[1];  // +434h
+            extent = (m > c) ? m : c;              // 007B5C0A FCOMPI / JBE
+            return true;
+        }
+        return false;
+    }
     // 009FD5FF-009FD743 for the cache `k` of `flyer`, with `lead` the solver's
     // lead point (unit+FCh + 3.0 * vtable[34h]).
     const std::vector<bsp::FlyToObstacle>& fly_to_obstacles_009fd63c(
@@ -23961,6 +23982,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // entity bounds, which this host does not model.
                                 gin.has_extent_target = false;
                                 gin.target_extent = 0.0f;
+                                // Packet cc13-goaway: 009D0DC9-009D0E0F on the
+                                // command target (007B5BE0 = its longest AA
+                                // range, not its bounds; docs/CC13_TORP_GOAWAY.md C.3).
+                                if constexpr (bsp::cc13_torp_goaway::kDiveGoawayTargetExtentCc13Bound) {
+                                    gin.has_extent_target =
+                                        owner_.goaway_target_extent_007b5be0(slot_, gin.target_extent);
+                                }
                                 // 00BD2F10 UniformFloatRange(1.0, 1.15). This
                                 // host's torpedo binding takes the low end of
                                 // every draw, as random_between already does.
@@ -31045,6 +31073,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // every draw (random_between).
                             rin.window_draw = bsp::dive_bomb_goaway_turn::kBankWindowLo;
                             rin.countdown_draw = bsp::dive_bomb_goaway_turn::kCountdownLo;
+                            // Packet cc13-goaway: both draws sit inside 009C4CF1's
+                            // 0 > +24h guard (ECX = EBX = 1 from 009C4A5C), so they
+                            // are taken only on a tick that re-rolls, in this order.
+                            if constexpr (bsp::cc13_torp_goaway::dive_window_draw_on()
+                                          || bsp::cc13_torp_goaway::dive_countdown_draw_on()) {
+                                if (0.0f > gt.countdown_24 && owner_.gunnery) {
+                                    if (bsp::cc13_torp_goaway::dive_window_draw_on()) {
+                                        rin.window_draw = owner_.gunnery->death_mode_draw_00bd2f10(
+                                            1, owner_.index_of_slot(unit_),
+                                            bsp::dive_bomb_goaway_turn::kBankWindowLo,
+                                            bsp::dive_bomb_goaway_turn::kBankWindowHi);    // 009C4D13
+                                    }
+                                    if (bsp::cc13_torp_goaway::dive_countdown_draw_on()) {
+                                        rin.countdown_draw = owner_.gunnery->death_mode_draw_00bd2f10(
+                                            1, owner_.index_of_slot(unit_),
+                                            bsp::dive_bomb_goaway_turn::kCountdownLo,
+                                            bsp::dive_bomb_goaway_turn::kCountdownHi);     // 009C4D33
+                                    }
+                                }
+                            }
                             if (bsp::dive_bomb_goaway_reroll_009c4cf1(rin, gt)) {
                                 ++unit_.db_goaway_rerolls;
                                 if (unit_.db_goaway_first_reroll_tick < 0) {
@@ -31201,8 +31249,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // which this host does not model; the torpedo enter
                         // 009D0D90 reports the same hole.
                         in.has_extent_target = false;
+                        // Packet cc13-goaway: 009C499C-009C49E0 on the command
+                        // target (docs/CC13_TORP_GOAWAY.md C.3).
+                        if constexpr (bsp::cc13_torp_goaway::kDiveGoawayTargetExtentCc13Bound) {
+                            in.has_extent_target =
+                                owner_.goaway_target_extent_007b5be0(unit_, in.target_extent);
+                        }
                         // 00BD2F10 UniformFloatRange(1.0, 1.25): the low end.
                         in.standoff_jitter = bsp::dive_bomb_goaway_turn::kStandoffJitterLo;
+                        // Packet cc13-goaway: 009C49FC (ECX = 1 at 009C49F2), taken on
+                        // every enter after the target term.
+                        if constexpr (bsp::cc13_torp_goaway::dive_standoff_draw_on()) {
+                            if (owner_.gunnery) {
+                                in.standoff_jitter = owner_.gunnery->death_mode_draw_00bd2f10(
+                                    1, owner_.index_of_slot(unit_),
+                                    bsp::dive_bomb_goaway_turn::kStandoffJitterLo,
+                                    bsp::dive_bomb_goaway_turn::kStandoffJitterHi);
+                            }
+                        }
                         // [00F876B0] is the mission step counter, +1 per step. This
                         // host has none; the aircraft's own arm tick count also
                         // advances once per step, so its parity is the step's

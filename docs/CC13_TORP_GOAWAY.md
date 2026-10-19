@@ -247,6 +247,102 @@ it has ammo" is faithful in effect; the residue is the damage gate `+3B8h` (a de
 `dropBombs` and never drops), which needs a plane-rack failure producer the host does not have, so a
 switch would have nothing to read. Ledger only; no switch.
 
+## C. The dive-bomb goaway: three draws and the target term (follow-up packet)
+
+Source: docs/CC13_FRONTIER_MERGE.md section 6.5 (cc13-frontier, `f932f7d11`). The dive goaway
+state is `task+704h` (vtable `00D20CA0`); the host's turn lives in `src/dive_bomb_goaway_turn.cpp`.
+The `+68h` desired direction (`009C4E27`-`009C4E58`) belongs to cc13-steergate and is not touched.
+
+### C.1 The draws (re-read from the bytes)
+
+| call | stream | bounds | result |
+| --- | --- | --- | --- |
+| `009C49FC` (enter `009C4950`) | `ECX = 1` at `009C49F2` | `1.0` (`FLD1` `009C49F7`), `1.25` (`[00CF29A8]` `009C49E5`) | `009C4A01 FMUL [ESI+20h]`, then `FSTP`/`FLD`/`FST [ESI+20h]` |
+| `009C4D13` (tick, re-roll) | `ECX = EBX` at `009C4D08` | `3.0` (`[00CE3854]`), `6.0` (`[00CE6630]`) | `FSTP [ESI+2Ch]` at `009C4D18` |
+| `009C4D33` (tick, re-roll) | `ECX = EBX` at `009C4D24` | `12.0` (`[00CEB4B8]`), `15.0` (`[00CE5380]`) | `FADD [ESI+2Ch]`, `FSTP [ESI+24h]` at `009C4D3E` |
+
+The enter's draw is unconditional; it comes after the target term (`009C49E5` is the join of both
+`JE`s). `EBX = 1` at `009C4A5C`. From there to `009C4D08`, the only other `EBX` instruction is
+`009C4CB3 POP EBX`, on the `RET 4` path, which never reaches the re-roll. Both re-roll draws are
+inside `009C4CF1`'s `0 > +24h` guard.
+
+### C.2 The host and the switches (include/bsp/cc13_torp_goaway.hpp, all false)
+
+- `kDiveGoawayDrawsCc13Bound` is the parent, with one sub-switch per draw in image order:
+  `kDiveGoawayStandoffDrawBound` (`009C49FC`), `kDiveGoawayWindowDrawBound` (`009C4D13`) and
+  `kDiveGoawayCountdownDrawBound` (`009C4D33`).
+- When a sub-switch is on, `run_dive_bomb_goaway_enter_009c4950` or the re-roll block draws through
+  `owner_.gunnery->death_mode_draw_00bd2f10(1, index_of_slot(unit_), lo, hi)` in place of the low end.
+- The re-roll draws are taken only when `0.0f > gt.countdown_24`, which is `009C4CF1`'s own test on
+  the same state just before `dive_bomb_goaway_reroll_009c4cf1` runs it. A tick without a re-roll
+  therefore takes no draw, as in the image. No new state.
+- OFF keeps 1.0, 3.0 and 12.0 exactly as before. `if constexpr` removes the draw code, so the OFF
+  run is unchanged.
+- Stream 1 is per-thread and clock-seeded in the image (see A), so these switches restore the value
+  ranges, not the image's sequences.
+
+x87: the enter's `FMUL` of the draw by `+20h` is rounded to float by `009C4A08 FSTP`. The re-roll's
+`FADD` is rounded by `FSTP [ESI+24h]`. At the 24-bit control word (the main thread), both match the
+host's float arithmetic exactly. At 53 bits, the draw's `ST0` would carry more than float precision
+into the `FMUL`/`FADD`. The host's draw returns a float, so it can differ by 1 float ulp there. Modelled
+at 24 bits; 53 recorded.
+
+### C.3 The target term, `kDiveGoawayTargetExtentCc13Bound` (dive and torpedo enters)
+
+- **Dive enter.** `009C499C`-`009C49E0`: when `[approach+48h]` (the latched target) is non-null and
+  its `vtable[5Ch](5)` answers true, the code calls `007B5BE0` on it and takes
+  `+20h = max(+20h, result)`. The comparison is `FCOMIP`/`JBE`, so an equal value takes the
+  result.
+- **Torpedo enter.** `009D0DC9`-`009D0E0F` has the same arm on `[approach+CCh]` against SafeDist
+  (`JA` keeps SafeDist only when it is strictly larger).
+- **The kind test.** Kind 5 is "a unit" (docs/UNIT_KIND_QUERY.md: every ship, plane, land vehicle,
+  fort, command building, airfield and shipyard), so any unit target passes.
+- **`007B5BE0` is not a physical extent.** It computes `m = (+448h > +444h) ? +448h : +444h`
+  (`FCOMPI`/`JA`), then `(m > +434h) ? m : +434h` (`JBE`). Those fields are `00956C20`'s
+  `unit+430h + cat*4` longest gun ranges for category 6 LIGHTARTILLERYFLAK, 5 FLAK and 1
+  AAMACHINEGUN. This is the same triple `009FD66F`-`009FD6F9` uses for the fly-to obstacle radius
+  (docs/TORPEDO_AIM_LEAD.md). So the standoff grows to clear the target's longest AA reach. The
+  Ghidra name "GetLargestExtent" and earlier "half-extent" readings (docs/CC13_VERIFY8.md L4) are
+  wrong about what it measures.
+- **Host binding.** The target is `command_target_plus_one`, the same substitution the dive
+  heading (`goaway_turn_heading_009c47d0`) and the torpedo run-in latch already use. Every host slot
+  is a unit, so the kind test is true whenever there is a target. The ranges come from the gunnery
+  host's `GameGunneryUnitRow::category_ranges[1/5/6]`, the same source `fly_to_obstacles_009fd63c`
+  reads. The image's comparison order is kept, so a NaN takes the image's arm.
+
+ON-only lookup lifetime: `category_ranges` is filled by `GameGunneryHost::Impl::build_guns` when a
+unit's guns are built (`00956C20`'s host binding), and nothing clears it. `unit_rows()` returns a
+fresh copy on every call; the enter reads it once, by value, at the enter. The image re-runs
+`00956C20` when a unit's weapon set changes; the host does not, so a target that has lost guns keeps
+its build-time ranges. The target slot comes from `owner_.slots`, which owns every unit for the
+mission. No lookup crosses a mission boundary.
+
+### C.4 Reach and movers
+
+| | dive enters (`009C49FC` + target term) | dive re-rolls (2 draws each) | torpedo enters (target term) |
+| --- | --- | --- | --- |
+| USN21 | 4 | 0 | 0 |
+| USN01 | 3 | 0 | 3 |
+| USNOS | 9 | 3 | 0 |
+| JM08 | 0 | 0 | 9 |
+| USN04, BSM09, BSM01, IJN08, USN15, LOMP06, JM06 | 0 | 0 | 0 |
+
+The dive columns are from cc13-frontier's current-main logs (6.5). The torpedo column is A.7.
+
+Movers with the draws ON:
+- the dive standoff `+20h` (up to x1.25), which is `009C7F00`'s completion distance, so how long
+  goaway lasts;
+- in USNOS, the bank window `+2Ch` and the re-roll countdown `+24h` (both up to +3 s before the
+  altitude scale), so when the evasive bank comes.
+
+Every draw also advances the shared stream 1, so other stream-1 consumers in those three missions
+shift (memory: AA kill deltas are RNG-coupled).
+
+The target term moves the standoff only when the target's longest AA range exceeds the base:
+`2 * approach+B4h` for the dive, SafeDist for the torpedo. No current log prints those ranges, so
+how often that happens is not measured here. It is the larger potential mover: a flak range of
+several km would multiply the goaway distance.
+
 ## Uncertainties
 
 - The PilotBot load is probe-tested, not game-tested. An ad hoc probe (`local/goaway_probe.cpp`,
