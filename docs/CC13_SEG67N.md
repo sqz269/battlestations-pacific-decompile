@@ -196,11 +196,18 @@ Census of the image:
 
 - Every bot task is built through 0099C6F0, or 0099C8B0 from a stream. Both call `009FAAD0` on
   task+314h (`0099C790`, `0099C950`).
-- A rel32 byte scan finds 22 call sites to `0099C6F0` and 13 to `0099C8B0`. They cover
-  closetoship, depthcharge, divebomb, dogfight, dropkamikaze, flikflak, gainaltitude, immelmann,
-  kamikaze, land, leavealone, levelbomb, moveonpath, moveto (and attackmove via `009C3000`),
-  pullup, retreat, rocket, splitS, stop, strafe, torpedo, takeoff and conditioned.
-- No task kind keeps the old block.
+- A rel32 byte scan finds 26 call sites to `0099C6F0` and 14 to `0099C8B0`. (Ghidra's callers
+  give 22 and 13 caller functions, because some sites are not in any Ghidra function.) The named
+  callers cover closetoship, depthcharge, divebomb, dogfight, dropkamikaze, flikflak, gainaltitude,
+  immelmann, kamikaze, land, leavealone, levelbomb, moveonpath, moveto (and attackmove via
+  `009C3000`), pullup, retreat, rocket, splitS, stop, strafe, torpedo, takeoff and conditioned.
+- The four extra `0099C6F0` sites, `009BA7EA`, `009BA8CA`, `009BAA3A` and `009BAC0A`, are in
+  undefined small constructors. They sit next to GainAltitude_Tick, Conditioned_ConstructFromStream,
+  FUN_009ba9e0 and FUN_009bab70.
+- The extra `0099C8B0` site, `009BAC81`, is in undefined code `009BAC70`-`009BAC92` (34 bytes), next
+  to BSP_BotTaskStop_GetName (`009BAC60`).
+- Every one of the 40 sites goes through `009FAAD0`, because both base constructors call it
+  unconditionally (`0099C790`, `0099C950`). No task kind keeps the old block.
 
 In the host, every install calls `bot_task_ctor_seeds_0099c6f0`, cc9's `0099C6F0` hook. The
 install sites are:

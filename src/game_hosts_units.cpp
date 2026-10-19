@@ -42693,6 +42693,10 @@ void GameUnitsHost::report() {
             host.attack_mode_cadence_skips, Impl::kTaskAttackModeCadenceBound ? 1 : 0);
         host.log.notef("summary bot task ctor seeds=%llu bound=%d (0099C6F0 / 009C2980, packet "
             "p20_ctor_seeds)", host.bot_task_ctor_seeds, Impl::kBotTaskCtorSeedsBound ? 1 : 0);
+        host.log.notef("summary task gun block resets=%llu bound=%d burst=%d (009FAAD0 per "
+            "install, packet cc13-seg67n3)", host.task_gun_block_resets,
+            bsp::kTaskGunBlockReconstructBound ? 1 : 0,
+            bsp::kTaskGunBlockBurstTimerResetBound ? 1 : 0);
         if (host.strafe_draw_count_takes > 0) {
             host.log.notef("summary strafe draw-count takes=%llu (009CB116 / 0099C6F0 pushes, "
                 "packet p22_strafe_draws)", host.strafe_draw_count_takes);
