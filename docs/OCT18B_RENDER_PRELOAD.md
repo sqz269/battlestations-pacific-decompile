@@ -82,3 +82,12 @@ and `77f3abcd2c6dca082ad1b49acd114774f297be2656ced03788ed2a10f2d6a41c`.
 Ignored receipt: `local/oct18b_a1_preload_byte_proof.json`.
 `git diff --check` passed. The primary owns the combined build and live runs;
 this worker performs neither and claims no new runtime or visual proof.
+
+Primary integration subsequently built and ran ON attempt06. Its
+`local/oct18b_render_on_attempt06.log:3537` records full preload completion,
+179 entries and a closed cache at native site73C204. The same run completed
+B107F0, loaded26 Fletcher models/445 sections and reached the ready mission
+graph (lines3541..3544). First command execution then faulted separately at
+host RVA4161FB reading28. This verifies the normal preload/cache-order path
+in that integrated run; it supplies no completed draw, visual result or normal
+preload-reference/Application retirement proof.
