@@ -20099,3 +20099,23 @@ breakup as predicted. Default env: IJN18 has no breakup and is gameplay identica
 the shared RNG from the first breakup on: deaths 96 -> 98, and the failure moves from 939.89 to 974.89 s. Note for
 lua70: IJN18 `ijn18_l67_i18_d` does not reach EndMission in 64000 frames on 97bd59009 in either env (OFF too). Its
 reference ended at 1691.52 s.
+
+## 307. Sub dive, sub seed and helm release paired (cc9-ships60, 2026-10-19)
+
+Reference-env pairs on 10cd2414c (OFF = the tree build, local\s60_m2_off_bin; ON = pair_export trees local\s60_m2_kd,
+_sb, _kdsb, _hr). Rows: USNOS 60000 frames with local\s60_os_c19.txt; BSM01 20000 with bsm01_l69_b1_d; JM06 20000
+with jm06_p12_j6_c1; IJN08 20000 with ijn08_p10_i08_z. Kaiten rows come from `local\s60_kaiten.py`.
+
+- **kCc13SubDiveKamikazeBound** (USNOS exit 3). The OFF run matches cc13's count: of the 12 Kaitens (#3.1-3.6 and
+  #6.1-6.6), 5 are shot (NH x2, Portland2, DM1 x2) and 7 drown. ON, all 12 drown with no killer: the first wave
+  together at 161.21 s, the second at 1102.45 s, and there are no gunfire kills, as predicted. Flipped ON.
+- **kSubSeedNearestBandCc13Bound** (USNOS exit 3; BSM01 and JM06 exit 1, gameplay identical). Seeds: the 12 Kaitens go
+  0 -> 1 (y -2.8 to -4.4), JM06 I-400 #2.1 goes 0 -> 2 (y -49.43), and USNOS **Gato goes 0 -> 2** (y -30.00; the
+  lead's note said 1). Alone, it has 1 Kaiten shot (NH) and 11 drowning. Together with SubDiveKamikaze (kdsb) it
+  gives the same 12 drownings as kd alone. Flipped ON.
+- **kHelmReleaseGunsToRestCc13Bound** (IJN08 and USNOS exit 3). In IJN08, 0080E290 runs 386 times: the HUD release
+  site (194) and the kind-6 role release (192) go from unimplemented to concrete. The first moved death is an AA kill
+  at 662.26 -> 662.31 s (Jap_Airfield_sqn10). After it, killers and kill times shift through gun aim (for example
+  Haruna -> Kongo), with no unit-state change before then. Flipped ON.
+None of these rows' WINS orders end in the paired window, so no WINS result is claimed here. The USNOS prefix moves
+with each switch, so the c19-c21 notes in 305 need a rerun on the new exe.
