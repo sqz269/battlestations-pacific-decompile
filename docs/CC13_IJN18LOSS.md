@@ -242,6 +242,14 @@ Records only:
 - 0051E8E0, 0068AB30, and the selection copy;
 - the screen 4Ch and 39h enter, update and exit virtuals.
 
+Map state log lines, which need no switch:
+- `map open t=<hud update frame> unit=<ship-view unit>` is written when 0068AC30 publishes level 2.
+- `map close-requested (not hosted, map stays open) ...` is written for a second C1h.
+- The 46h exit adds `releasegun: screen 46h exit 0064A490 released the weapon group and roles 1..8 (1FEh)`.
+
+The host's map changes state only on this path. With the switch OFF, or in a plan without the line, none of these lines
+appears.
+
 In the image, a later `select` re-applies 25h. Its 0064DA40 re-binds 2Eh, which re-takes the group, but 46h stays
 occluded while 4Ch is up. The host does not change that path.
 

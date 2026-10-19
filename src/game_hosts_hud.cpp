@@ -188,6 +188,7 @@ struct GameHudHost::Impl {
     bool release_gun_armed{false};
     bool release_gun_map_up{false};
     void back_out_one_overlay_level_0068b470();
+    void log_map_state(const char* state);
     bsp::IntegratedControlsState ship_view_controls{};
     bsp::BinocularsState binoculars{};
     // Screen 44h, the HUD root (00649860). The enter 006488D0 zeroes +F4h;
@@ -1630,6 +1631,16 @@ bool GameHudHost::release_gun_armed() const noexcept {
     return kHarnessReleaseGunMapBound && impl_->release_gun_armed;
 }
 
+// Packet cc13-releasegun, for cc9's plans: one line per map state change (log
+// only, no switch), naming the ship-view unit whose roles 0064A490 releases.
+void GameHudHost::Impl::log_map_state(const char* state) {
+    const std::size_t unit = ship_view_unit;
+    const GameUnitRow* row = units != nullptr && unit < units->count()
+        ? units->unit_row(unit) : nullptr;
+    log.notef("map %s t=%llu (hud update frame) unit=%s", state, summary.update_frames,
+        row != nullptr ? row->name.c_str() : "-");
+}
+
 // Packet cc13-releasegun: 0068B470, reached from 0068C6B1 on the C1h edge
 // (IC_MAP_TOGGLE in this installation's Inputs.lua).
 void GameHudHost::Impl::back_out_one_overlay_level_0068b470() {
@@ -1641,6 +1652,7 @@ void GameHudHost::Impl::back_out_one_overlay_level_0068b470() {
         // for the controlled vehicle. Not hosted: the line only opens the map.
         record("InGameInterface::back_out_close_level2", 0x0068b4e9u);
         log.note("releasegun: C1h with the map up would close it (0068B4E9); not hosted");
+        log_map_state("close-requested (not hosted, map stays open)");
         return;
     }
     // 0068AC30. 00E08880 is EnableMap, 1 in single player
@@ -1660,6 +1672,7 @@ void GameHudHost::Impl::back_out_one_overlay_level_0068b470() {
     done("InGameInterface::set_level2_input_contexts", 0x004d8ae0u);
     release_gun_map_up = true;
     done("InGameInterface::restore_hud_screen_set", 0x0068ac30u);
+    log_map_state("open");
     log.note("releasegun: C1h opened the map: level 2 {4Ch 39h 44h 29h 49h}, contexts "
         "{0Eh 14h 0Ch 11h}; 4Ch's +8h (005A8EF0) occludes level 1");
 }
