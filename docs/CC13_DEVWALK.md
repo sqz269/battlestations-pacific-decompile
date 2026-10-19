@@ -2,7 +2,7 @@
 
 Packet cc13-devwalk. Code: `include/bsp/cc13_devwalk.hpp` (the walk) and
 `src/game_hosts_units.cpp` (`run_device_walk_per_rack_007c0d90`, `rack_delay_draw_007c0e88`).
-Status: reconstructed and build-tested. kPlaneDeviceWalkPerRackBound is ON (main cff560b45, OCEAN_WAVE_FIELD 97: physics23's pairs judged it faithful); kPlaneDeviceWalkSharedDrawBound is OFF until physics23 pairs it. Not game-validated beyond those pairs.
+Status: reconstructed and build-tested. kPlaneDeviceWalkPerRackBound is ON per OCEAN_WAVE_FIELD 97 (cff560b45), flipped in 76955ab1d (physics23's pairs judged it faithful); kPlaneDeviceWalkSharedDrawBound is OFF until physics23 pairs it. Not game-validated beyond those pairs.
 Names are hypotheses, not recovered symbols.
 
 ## The image (disk bytes 007C0D90-007C0F0D)
@@ -49,7 +49,7 @@ Four gaps remained:
 | c | The level bomber's next-rack draw comes from the host's private release sequence (`lb_draw("rk")`), not from the shared stream 1. | kPlaneDeviceWalkSharedDrawBound |
 | d | The ctl+3ECh store at 007EE802. | none (see below) |
 
-## The two switches (PerRack ON since cff560b45, OCEAN_WAVE_FIELD 97; SharedDraw OFF)
+## The two switches (PerRack ON per OCEAN_WAVE_FIELD 97 (cff560b45), flipped in 76955ab1d; SharedDraw OFF)
 
 **`bsp::cc13_devwalk::kPlaneDeviceWalkPerRackBound`** is the behaviour switch. It
 replaces the whole body of `run_release_order_issue_007c0d90`:
@@ -73,6 +73,11 @@ replaces the whole body of `run_release_order_issue_007c0d90`:
   (`level bomber issue: ... racks=%d last_delay=...`), its `Plane::release_issue_level_bomber_007c0e67`
   record, and the `lb_rack_issues` / `torpedo_orders_issue_ticks` counts, including on a tick
   that fires nothing. ON and OFF pairs therefore compare line for line.
+  - ON logs from before 76955ab1d lack these restored `lb_rack_issues` and
+    `torpedo_orders_issue_ticks` counts. pair_diff must not read their appearance as a
+    gameplay change.
+  - The non-level ON branch that finds no eligible rack (`!found`) still counts no issue tick,
+    as the OFF non-level path never did. This is unchanged behaviour.
 
 **`bsp::cc13_devwalk::kPlaneDeviceWalkSharedDrawBound`** is the draw sub-switch.
 It covers both stream-1 draws on the issue path, in call order, taken from
@@ -81,7 +86,7 @@ It covers both stream-1 draws on the issue path, in call order, taken from
 1. `rack_delay_draw_007c0e88`, the next-rack delay draws inside 007C0D90 (007C0E88). It is
    used by both the existing level-bomber path and the per-rack walk, so this switch works on
    its own.
-2. `issue_interval_draw_007ceab3`, the next-issue interval C28h that the issue stage draws
+2. `issue_interval_draw_007ceab3` (site in 007CE040), the next-issue interval C28h that the issue stage draws
    right after 007C0D90 returns (007CEA9A-007CEABE, under kReleaseIssueIntervalDrawBound).
    It was added in cc13-devwalk2. Without it, ON would have moved one draw of the pair onto
    stream 1 and left the other private.
