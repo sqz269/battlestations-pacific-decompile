@@ -27573,17 +27573,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.done("Rack::attach_next_round_006e3e70", 0x006e3e70u);
                     }
                     // Packet cc13-para. 007BCCF0 (__thiscall(ECX = plane; float* out),
-                    // RET 4): t = (float)(y / 2.8) with y = +100h; out = position +
-                    // velocity +94h..+9Ch x t; out.y = 0078CF20 (the sea) at (out.x,
-                    // out.z); then every Landscape node's 0087FA50 height replaces it
-                    // when strictly greater (FCOMI/JBE). The node walk is 00903860's
-                    // (the same [+3D0h] vtable[28h] per node, seeded -1000, which no
-                    // sea height undercuts). LABELLED: +94h is the host's world
-                    // velocity, as vtable[34h] is in the 009B7C90 inputs.
+                    // RET 4): t = (float)(y / 2.8) with y = +100h and 2.8 the double
+                    // [00D05A38] (007BCD25 FLD, 007BCD33 FDIVR); out = position +
+                    // FORWARD row +94h..+9Ch x t (007BCD4D/007BCD61/007BCD6D: the
+                    // +74h local matrix's row 2, a unit vector), so the point is the
+                    // ground a 2.8:1 glide ahead; out.y = 0078CF20 (the sea) at
+                    // (out.x, out.z); then every Landscape node's 0087FA50 height
+                    // replaces it when strictly greater (FCOMI/JBE). The node walk is
+                    // 00903860's (the same [+3D0h] vtable[28h] per node, seeded -1000,
+                    // which no sea height undercuts). The host's local[8..10] is that
+                    // row: publish_pose copies the committed motion pose into world
+                    // and local each plane step. (The first binding read the world
+                    // velocity here, which put the point ~67x too far ahead, about
+                    // 30 km at 1283 m, so JM08's aim never released.)
                     void paratrooper_release_point_007bccf0(float out[3]) {
                         const float p[3] = {unit_.motion.position[0], unit_.motion.position[1],
                                             unit_.motion.position[2]};
-                        const float* v = unit_.plane_world_velocity;
+                        const float v[3] = {unit_.local[8], unit_.local[9], unit_.local[10]};
                         const float t = static_cast<float>(static_cast<double>(p[1]) /
                             bsp::level_bomb_paratrooper::kReleaseHeightDivisor);
                         out[0] = p[0] + v[0] * t;
