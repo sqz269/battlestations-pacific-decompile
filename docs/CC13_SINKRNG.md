@@ -151,11 +151,12 @@ Columns:
 - Missions that post no 92h are not listed. There the switch changes nothing.
 - **Most of the table runs in streams mode:** 77 of the 364 listed logs are shared. In the rest,
   ON changes the six values directly, and from there whatever the sink physics feeds (section 5).
-- **cc9's current re-pairs run in streams mode.** All 22 `s60_m1*` / `s60_m2*` manifests in
-  cc9-ships44 (checked 2026-10-19) carry `BSP_GUNNERY_RNG_STREAMS=1`, and a finished one,
-  `s60_m2off_j06.log`, prints the "per-consumer random streams ON" summary. No startup line prints the mode; the manifest env and that
-  summary line are where it shows. cc9-physics1's `p23j` pairs run both modes (the `*_def`
-  logs are shared).
+- **cc9's current re-pairs run in streams mode.** The evidence is the manifests: all 22 of the 22
+  `s60_m1*` / `s60_m2*` `*.log.manifest.json` files in cc9-ships44 (rechecked 2026-10-19) carry
+  `"BSP_GUNNERY_RNG_STREAMS": "1"` in their env. No startup line prints the mode, so the manifest
+  env is the record of it. As a cross-check, the "per-consumer random streams ON" summary was
+  read in `s60_m2off_j06.log` before that log was removed; only its `.done`, launch file and
+  manifest remain. cc9-physics1's `p23j` pairs run both modes (the `*_def` logs are shared).
 - JM06's first sink at 0.05 s is a death on the first step with no damage (`first_damage=-1.00`),
   for example `Gato-class Submarine 01` in `p17htd_jm06w.log`. It is a wreck that is instant at
   load, not one that sank in combat.

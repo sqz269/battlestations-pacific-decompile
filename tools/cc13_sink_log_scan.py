@@ -5,7 +5,8 @@
           "path<TAB>size<TAB>mtime", mtime in UTC ISO seconds)
   scan:   python tools/cc13_sink_log_scan.py scan LIST
           (one row per log, then per-mission summaries; warns when a log's size or
-          mtime no longer matches the frozen line)
+          mtime no longer matches the frozen line, when it is gone, and when the list
+          has unstamped one-column lines)
 """
 import argparse, collections, datetime, os, re
 
@@ -75,9 +76,16 @@ def scan(args):
     paths = [r[0] for r in rows]
     by = collections.defaultdict(list)
     mismatches = 0
+    if any(len(row) < 3 for row in rows):
+        print("WARNING list has", sum(1 for row in rows if len(row) < 3),
+              "unstamped lines (old one-column format?); those cannot be checked")
     for row in rows:
         p = row[0]
-        if len(row) >= 3 and os.path.exists(p) and stamp(p) != "\t".join(row[:3]):
+        if not os.path.exists(p):
+            mismatches += 1
+            print("WARNING deleted since freeze:", p)
+            continue
+        if len(row) >= 3 and stamp(p) != "\t".join(row[:3]):
             mismatches += 1
             print("WARNING changed since freeze:", p, "frozen", row[1], row[2],
                   "now", os.path.getsize(p), mtime_iso(p))
