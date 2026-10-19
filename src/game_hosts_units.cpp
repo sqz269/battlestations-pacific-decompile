@@ -2308,11 +2308,16 @@ struct GameUnitSlot {
     // unit+284h, the unit group pointer 0070EF38 writes before any test, as an
     // index into Impl::formation_groups. -1 is a null pointer.
     std::int32_t formation_group{-1};
-    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): the 0071C150 handover
-    // already ran or was posted from this unit's kill, so its 0077BD70 must not
-    // run it again. Set only by leader_death_handover_at_kill, cleared by
-    // leave_group_on_destroy_0077bd70; slots are appended and never reused.
-    bool director_handover_done{false};
+    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound), the 0071C150 handover
+    // of this unit's kill. `ran`: already done (BeforePump, or the posted entry
+    // delivered), so 0077BD70 must not repeat it; cleared by leave_group.
+    // `posted`: queued (HitDrainAfterPump) and not yet run; whoever comes first
+    // runs it and clears it - the posted entry, or a leave_group of the unit or
+    // of a member of its group (the kill's 77h is ahead of any Lua 77h in the
+    // FIFO). Set only by leader_death_handover_at_kill (or cleared there on a
+    // failed post); slots are appended and never reused.
+    bool director_handover_ran{false};
+    bool director_handover_posted{false};
     bsp::UnitHullExtents hull_extents{};
     float class_width_00a4{};
     bsp::ShipClassFields fields{};
@@ -3267,6 +3272,11 @@ struct GameUnitsHost::Impl {
     unsigned long long pitch_mode_two_steps{0};   // packet cc9_torpedo_run_pitch_profile
     unsigned long long formation_death_handovers{0};
     unsigned long long formation_groups_emptied{0};
+    // Packet cc13-jm08: leader handovers 0071C150 run (in leave_group, at the
+    // kill, or by the posted entry), posted at a kill, and posted entries that
+    // found theirs already run by a leave_group.
+    unsigned long long director_handovers_run{0}, director_handovers_posted{0},
+        director_handovers_skipped{0};
 
     bool unit_torn_down_005d(std::size_t index) const {
         return index < slots.size() && slots[index]->state != nullptr
@@ -3286,6 +3296,7 @@ struct GameUnitsHost::Impl {
         if (!commands.copy_director_state_00720450(successor, index)) return false;
         if (gunnery != nullptr) gunnery->copy_director_allow_bytes_00720450(successor, index);
         if (ship_ai != nullptr) ship_ai->copy_fire_target_00836680(successor, index);
+        ++director_handovers_run;
         done("WeaponDirector::leader_handover_0071c150", 0x0071c150u);
         return true;
     }
@@ -40644,6 +40655,19 @@ void GameUnitsHost::leave_group_on_destroy_0077bd70(std::size_t index) {
     GameUnitSlot& slot = *host.slots[index];
     const std::int32_t g = slot.formation_group;
     if (g < 0 || static_cast<std::size_t>(g) >= host.formation_groups.size()) return;
+    if constexpr (kDeadLeaderDirectorStateCopyBound) {
+        // Packet cc13-jm08. A leader whose kill posted its 77h (HitDrainAfterPump)
+        // has that entry ahead of this one in the image's FIFO (0076E520 /
+        // 0076C600; a Lua 00899EB0 / 0089A020 leave posts through 0077C980 too),
+        // so its 0077BD70 runs first, while it still leads. This host's Lua
+        // leave is synchronous, so run it here.
+        const std::size_t lead = host.formation_groups[static_cast<std::size_t>(g)].leader;
+        if (lead != index && lead < host.slots.size()
+            && host.slots[lead]->director_handover_posted
+            && host.slots[lead]->formation_group == g) {
+            leave_group_on_destroy_0077bd70(lead);
+        }
+    }
     Impl::FormationGroup& fg = host.formation_groups[static_cast<std::size_t>(g)];
     const std::size_t none = static_cast<std::size_t>(-1);
     const std::size_t leader_before = fg.leader < host.slots.size() ? fg.leader : none;
@@ -40653,12 +40677,16 @@ void GameUnitsHost::leave_group_on_destroy_0077bd70(std::size_t index) {
     // vtable[114h]->vtable[5Ch](successor): the unit's director is told.
     host.record("UnitGroup::leave_director_notice_vtable114", 0x0077bde4u);
     if constexpr (kDeadLeaderDirectorStateCopyBound) {
-        // 0071C150, before the SetLeader below. A kill that already ran or
-        // posted it (leader_death_handover_at_kill) is not repeated.
-        if (slot.director_handover_done) {
-            slot.director_handover_done = false;
-        } else if (successor != none && fg.leader == index) {
-            host.director_handover_0071c150(index, successor);
+        // 0071C150, before the SetLeader below. A kill that already ran it
+        // (leader_death_handover_at_kill) is not repeated; one that only posted
+        // it is run here, and the posted entry then finds nothing to do.
+        if (slot.director_handover_ran) {
+            slot.director_handover_ran = false;
+        } else {
+            slot.director_handover_posted = false;
+            if (successor != none && fg.leader == index) {
+                host.director_handover_0071c150(index, successor);
+            }
         }
     }
     // 0077BE0x: 0070D0C0 SetLeader(ship(successor), ship(unit)) when it differs.
@@ -40741,7 +40769,8 @@ void GameUnitsHost::leader_death_handover_at_kill(std::size_t index,
         Impl& host = *impl_;
         if (index >= host.slots.size() || phase == bsp::DeadLeaderDeathPhase::Unmapped) return;
         GameUnitSlot& slot = *host.slots[index];
-        if (slot.formation_group < 0 || slot.director_handover_done) return;
+        if (slot.formation_group < 0 || slot.director_handover_ran
+            || slot.director_handover_posted) return;
         const auto run = [&host, index]() {
             const std::int32_t g = host.slots[index]->formation_group;
             if (g < 0 || static_cast<std::size_t>(g) >= host.formation_groups.size()) return;
@@ -40756,15 +40785,31 @@ void GameUnitsHost::leader_death_handover_at_kill(std::size_t index,
                 successor < host.slots.size() ? host.slots[successor]->row.name.c_str() : "-",
                 static_cast<double>(host.summary.simulated_seconds), copied ? 1 : 0);
         };
-        slot.director_handover_done = true;
         if (phase == bsp::DeadLeaderDeathPhase::BeforePump) {
             // The pump copies before the flush's 0071DDB0: no 5Dh for the successor.
+            slot.director_handover_ran = true;
             run();
             return;
         }
         // HitDrainAfterPump: the 77h waits for the next pump, queued ahead of the
-        // successor's 5Dh that 0071DDB0 posts at this kill.
-        if (!host.commands.post_loopback_callback(index, run)) slot.director_handover_done = false;
+        // successor's 5Dh that 0071DDB0 posts at this kill. A leave_group that
+        // comes first runs it and clears `posted` (see there).
+        slot.director_handover_posted = true;
+        ++host.director_handovers_posted;
+        const auto deliver = [&host, index, run]() {
+            GameUnitSlot& s = *host.slots[index];
+            if (!s.director_handover_posted) {
+                ++host.director_handovers_skipped;
+                return;
+            }
+            s.director_handover_posted = false;
+            s.director_handover_ran = true;
+            run();
+        };
+        if (!host.commands.post_loopback_callback(index, deliver)) {
+            slot.director_handover_posted = false;
+            --host.director_handovers_posted;
+        }
     }
 }
 
@@ -43185,6 +43230,10 @@ void GameUnitsHost::report() {
         "(0077BD70 / 0070D8D0 / 0070D0C0 / 0070E4C0, packet cc9_dead_member_group_removal)",
         host.formation_death_leaves, host.formation_death_handovers,
         host.formation_groups_emptied, kDeadMemberLeavesGroupBound ? 1 : 0);
+    host.log.notef("summary unit formation leader handover run=%llu posted=%llu skipped=%llu "
+        "bound=%d (0071C150 -> 00836680 -> 00720450, packet cc13-jm08)",
+        host.director_handovers_run, host.director_handovers_posted,
+        host.director_handovers_skipped, kDeadLeaderDirectorStateCopyBound ? 1 : 0);
     host.log.notef("summary unit formation join follow calls=%llu pushed=%llu bound=%d "
         "(0077FA8D -> 00720CD0, packet cc9_formation_join_follow)",
         host.formation_join_follows, host.formation_join_follows_pushed,

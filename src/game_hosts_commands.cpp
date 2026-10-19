@@ -4469,6 +4469,9 @@ void GameCommandsHost::report() {
         "00836D67 / 0071E610)", kAutoTargetOverrideBound ? 1 : 0,
         host.summary.override_sends, host.summary.override_installs,
         host.summary.override_arm_ends, host.summary.override_clears);
+    host.log.notef("summary mission director state copies=%llu land_kept=%llu (packet "
+        "cc13-jm08, 00720450 from 0071C150; kDeadLeaderDirectorStateCopyBound)",
+        host.summary.director_state_copies, host.summary.director_copy_land_kept);
     host.log.notef("summary mission director override push-end bound=%d weapon_pushes=%llu "
         "with_override=%llu echoes=%llu clears=%llu (packet s57_override_push, 0071E6C0 tail -> "
         "0071E2E0 -> 0071E610)", kAttackPushEndsOverrideBound ? 1 : 0,
