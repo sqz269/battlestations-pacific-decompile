@@ -16925,7 +16925,13 @@ void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char
     p.plane_taxi_queue_910 = false;
     p.plane_landed_904 = false;
     p.plane_airborne_908 = (prev == 4 || prev == 3) ? 0.0f : 3600.0f;
-    record("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
+    // 007C71C3: 007C11E0(0) after the +900h..+908h stores (007C7183..007C71BB).
+    // Packet cc13-frontier: covered by the same switch as the other notify sites.
+    if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+        flight_state_notify_007c11e0(p);
+    } else {
+        record("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
+    }
     ++base_launch_liftoffs;
     log.notef("base launch lift-off: %s %d -> 7 at %.2f s (%s) y=%.2f |v|=%.2f "
         "(007CC1B3 -> C6h -> 007C6F50 -> C3h 7 -> 007C7110; packet cc9_base_launch_liftoff)",
