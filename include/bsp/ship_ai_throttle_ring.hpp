@@ -102,6 +102,13 @@ inline constexpr double kShipAiRudderSpeedFloor = kConstExactImageBitsBound ? 0x
 // 009DA28C and 009DA2A8, the clamp on the raw demand.
 inline constexpr float kShipAiRudderLow = -1.0f;  // 00D7A260
 inline constexpr float kShipAiRudderHigh = 1.0f;  // 00D7A24C
+// cc9-ships60 (SHIP_AI 299): the unordered arms of 009DA250's clamp and the
+// 009F4C0E/009F4C86 slews. 009DA292 FCOMIP(-1, raw) JBE and 009DA2A8 COMISS(raw,
+// 1) JBE both take the unordered arm, so a NaN raw demand passes through (the
+// host sent -1). 009F4C4E FCOMI(step, |d|) JBE and 009F4C6A FCOMPI(desired,
+// previous) JBE take the step-and-subtract arm on NaN, so a NaN desired value
+// gives previous - step (the host passed the NaN through). False: the old arms.
+inline constexpr bool kShipAiRingNanArmsBound = false;
 
 float ship_ai_rudder_from_heading_error_009da250(ShipAiThrottleDirection latched_direction,
                                                  float heading_error,

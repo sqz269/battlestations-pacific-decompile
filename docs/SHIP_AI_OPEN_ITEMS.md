@@ -19728,3 +19728,18 @@ and the host assumes same-tick delivery, as it already does for 9Ah.
 Predictions: in the reference env (`BSP_GUNNERY_RNG_STREAMS=1`) the draws are on their own key, so a pair is
 gameplay identical, with `break_in_two_draws = 11 * 98h`. In the default env every draw on the shared stream after
 the first 98h moves, so the pair moves (exit 3) from the first breakup on, when the row has one.
+
+## 299. The NaN arms of the rudder clamp and the ring slews, kShipAiRingNanArmsBound (cc9-ships60, 2026-10-18)
+
+Two NaN-only lows from 297, both in ship_ai_throttle_ring.cpp, bound OFF together as `kShipAiRingNanArmsBound`
+(ship_ai_throttle_ring.hpp):
+- 009DA250's clamp. 009DA28C loads -1.0 ([00D7A260]), 009DA292 FCOMIP ST0(-1), ST1(raw) and JBE 009DA2A2: an
+  unordered compare sets CF and ZF, so a NaN raw takes the keep arm; 009DA2A8 COMISS raw, [00D7A24C] JBE also keeps
+  it. The image passes NaN; the host's `kShipAiRudderLow <= raw` sent -1.
+- The slews 009F4C0E/009F4C86. After 009F4C4E FCOMI ST0(step), ST1(|previous - desired|) the JBE at 009F4C52 takes
+  the stepping arm on an unordered compare, and 009F4C6A FCOMPI ST0(desired), ST2(previous) JBE 009F4C72 takes FSUBP,
+  so a NaN desired gives previous - step. The host's `step <= |d|` returned the NaN desired value.
+Read with `disasm-raw 009F4C10 --length 120` and `ghidra disasm 009DA250`.
+
+Predictions: no row is known to feed a NaN here, so pairs are gameplay identical (exit 0 or 1). A moved pair means a
+NaN reached the rudder or a ring value, which would be a finding of its own.
