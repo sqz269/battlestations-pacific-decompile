@@ -71,10 +71,10 @@ inline constexpr bool tick_delay_draw_on() noexcept {
 //             (both inside 009C4CF1's 0 > +24h guard; ECX = EBX = 1 from
 //             009C4A5C, the only EBX write on that path)
 // ---------------------------------------------------------------------------
-inline constexpr bool kDiveGoawayDrawsCc13Bound = false;           // parent
-inline constexpr bool kDiveGoawayStandoffDrawBound = false;        // 009C49FC
-inline constexpr bool kDiveGoawayWindowDrawBound = false;          // 009C4D13
-inline constexpr bool kDiveGoawayCountdownDrawBound = false;       // 009C4D33
+inline constexpr bool kDiveGoawayDrawsCc13Bound = true;           // parent
+inline constexpr bool kDiveGoawayStandoffDrawBound = true;        // 009C49FC
+inline constexpr bool kDiveGoawayWindowDrawBound = true;          // 009C4D13
+inline constexpr bool kDiveGoawayCountdownDrawBound = true;       // 009C4D33
 
 inline constexpr bool dive_standoff_draw_on() noexcept {
     return kDiveGoawayDrawsCc13Bound && kDiveGoawayStandoffDrawBound;
@@ -100,7 +100,7 @@ inline constexpr bool dive_countdown_draw_on() noexcept {
 // Strike/AttackDist * 0.8 qword 00CE3D40, JA) has no switch: the host runs no
 // rocket task (RocketTaskHost has no implementer), so there is nothing to bind.
 inline constexpr bool kDiveGoawayTargetExtentCc13Bound = true;
-inline constexpr bool kTorpGoawayTargetExtentCc13Bound = false;
+inline constexpr bool kTorpGoawayTargetExtentCc13Bound = true;
 inline constexpr bool kLevelGoawayTargetExtentCc13Bound = true;
 
 inline constexpr bool distance_jitter_draw_on() noexcept {
