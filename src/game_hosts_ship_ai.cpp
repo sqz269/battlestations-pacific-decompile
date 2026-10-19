@@ -20,6 +20,7 @@
 #include "bsp/hit_narrowphase.hpp"
 #include "bsp/ship_ai_goal_vector_visibility.hpp"
 #include "bsp/ship_ai_search_storage.hpp"
+#include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (capture arm 3)
 #include "bsp/session_participant_pools.hpp"
 
 #include <algorithm>
@@ -1328,6 +1329,9 @@ struct GameShipAiHost::Impl {
     unsigned long long ramp_lowers{0};
     unsigned long long ramp_unloads{0};
     unsigned long long capture_landed_adds{0};
+    unsigned long long capture_paratrooper_adds{0};   // packet cc13-para2, arm 3
+    unsigned long long capture_paratrooper_bad_side{0};
+    std::vector<std::pair<int, float>> paratrooper_capturers;   // arm 3 scratch
     bool landing_ship_ground_contact(std::size_t unit, float ground[3]) const;
     void landing_ship_ramp_step(float seconds);
     unsigned long long traffic_trace_lines{0};
@@ -12603,6 +12607,19 @@ const GameAvoidZoneRuntime* GameShipAiHost::avoid_zone_runtime() const noexcept 
     return impl_->zones.ready() ? &impl_->zones : nullptr;
 }
 
+GameAvoidZoneRuntime* GameShipAiHost::avoid_zone_runtime_mutable() noexcept {
+    return impl_->zones.ready() ? &impl_->zones : nullptr;
+}
+
+bool GameShipAiHost::command_building_armour_0368(std::size_t unit_index, float& out) {
+    Impl& host = *impl_;
+    if (!host.capture_built) host.build_capture_buildings();
+    const Impl::CaptureBuilding* b = host.capture_building_of(unit_index);
+    if (b == nullptr) return false;
+    out = b->armour_368;
+    return true;
+}
+
 bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
     Impl& host = *impl_;
     if (unit_index >= host.controllers.size()) return false;
@@ -13014,7 +13031,27 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
                 ++capture_landed_adds;
             }
         }
-        // Arm 3, the paratrooper list +7DCh: always empty in this process.
+        // Arm 3, the paratrooper list +7DCh (006F6BFA..006F6D5D). Packet cc13-para2:
+        // under bsp::kParatrooperRoundBound the units host keeps the list (006F39B0
+        // appends a landed MParatrooper, 006F34B0 erases it at its death); every
+        // member adds s[member+54h] = CVTTSS2SI((float)s + [[member+314h]+D8h])
+        // (CapturePower), with no alive or party test. The member+54h index is
+        // unchecked in the image (a stack array of two); a side outside 0..1 is
+        // counted and skipped here (LABELLED). The scoring slot (vtable[108h]
+        // owner +180h or +4B8h) is not modelled, as for arm 1. Otherwise the list
+        // is empty, as before.
+        if constexpr (bsp::kParatrooperRoundBound) {
+            units.paratrooper_capturers_07dc(b.unit, paratrooper_capturers);
+            for (const std::pair<int, float>& c : paratrooper_capturers) {
+                if (c.first < 0 || c.first >= 2) {
+                    ++capture_paratrooper_bad_side;
+                    continue;
+                }
+                strength[c.first] = static_cast<std::int32_t>(
+                    static_cast<float>(strength[c.first]) + c.second);   // 006F6C1C..006F6C47
+                ++capture_paratrooper_adds;
+            }
+        }
         const bsp::CommandBuildingTickOutcome tick = bsp::command_building_capture_tick_006f6760(
             b.state, strength[0], strength[1], bsp::kCommandBuildingFallbackCapturePower);
         if (tick.progress_changed) ++capture_progress_messages;   // D5h, 006F29D0 stores it back
@@ -14156,6 +14193,9 @@ void GameShipAiHost::report() {
         "landed_capture_adds=%llu bound=%d (0074AFCC..0074B0AC, 006F6A58..006F6BF8, packet "
         "cc9_landing_ramp_capture)", host.ramp_ground_contacts, host.ramp_lowers,
         host.capture_landed_adds, kLandingShipRampBound ? 1 : 0);
+    host.log.notef("summary mission capture paratroopers adds=%llu bad_side=%llu bound=%d "
+        "(006F6BFA..006F6D5D arm 3, packet cc13-para2)", host.capture_paratrooper_adds,
+        host.capture_paratrooper_bad_side, bsp::kParatrooperRoundBound ? 1 : 0);
     host.log.notef("summary mission landing ship unload unloads=%llu bound=%d (0074B109..0074B329, "
         "0074AD90, packet cc9_landing_unload_latch)", host.ramp_unloads,
         kLandingShipUnloadBound ? 1 : 0);

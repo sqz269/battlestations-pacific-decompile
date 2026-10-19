@@ -443,6 +443,13 @@ Probes after step 3 (cc15-vcp4). Both switches were flipped locally for these ru
   - The end movie plays through the mission-end movie player, not BSP_EngineMovie_Stop 0045F600, so it never reaches 0045F6C1.
 
 Open item for `kVehicleClassMovieStopPurgeCc15Bound` (stays OFF): a 0045F600 stop later than the first in-mission frame. No known row reaches one. In this host the only 0045F600 path is the engine-movie skip (004C6B20), on the first frame, which USN11 covers.
+
+Required evidence before flipping `kVehicleClassMovieStopPurgeCc15Bound` (cc9 lead, 2026-10-19): a JM05-family
+ON/OFF pair that reaches the Event3Convoy GenerateObject spawn (jm05.lua ~3645). JM05 takes 004E0A50's
+mode-9 arm, so its only purge is this movie-stop site. The spawn must show no `creator=00000000` (the members
+464/466 are marked at 00743891 by the visible convoys, cc15-vcp7). The default stream picks event 2 first, so
+the run needs orders that capture or finish event 2.
+
 ## kVehicleClassPreloadCc15Bound ON (cc9-lua69, 2026-10-18)
 
 Confirming pair on main 011d651dc, BSM09 `config/win_orders/bsm09_l68_b9_d1.txt` (36000 frames, reference env):
@@ -521,3 +528,32 @@ On USNOS, the remaining OTHER-line differences are renderer lost-device frames a
 
 Not censused, and still open: the load-time resolves in 00743450 LandConvoy roster, 006F3660 CommandBuilding garrison, 0084D170 / 0084D560 support sites, plus the three open items listed under step 3 (traffic, PowerupClass, shipyards).
 
+
+## Convoys, garrisons and support sites, and the purge (cc15-vcp7)
+
+Census of the three load-time resolves left open by cc15-vcp6 (read-only, on main 8a905274a), then the fixes, behind `kVehicleClassPreloadCc15Bound`.
+
+| site | what it resolves | marked pre-purge in the image | host before | verdict / host now |
+|---|---|---|---|---|
+| 00743891 (00743450 LandConvoy InitAll pass A, vt+9Ch) | each roster slot's member type, when type > 0 (0074379C), with 00964790(type, DL=1) | yes, for convoys created at load. A held-back (Hidden) convoy has no instance at load; its members are first resolved when GenerateObject spawns it | **no**. The roster read never marked the member types, so a spawned convoy hit the `creator=00000000` throw in `create_units` | fixed: `game_hosts_mission_frame.cpp`, the `kLandConvoyMembersBound` load walk marks each slot type > 0 of every generated convoy before `build_land_convoy_roster_00743450`. Hidden convoys are skipped, as in the image |
+| 006F3660 CommandBuilding garrison (006F5E3A, 008F41F0 on entity+724h) | the adopted entity's own class, from a bag clone | yes, through the adopted entity's own load | yes (the adopted entity's own row) | covered. The host revives in place; no fix |
+| 0084D304 / 0084D41E (0084D170 SpawnPoint InitAll pass B, vtable 00CEA218 +A0h; 0084D560 is the same walk's other list) | each `Stock %d` Type with Count != 0, when the effective game mode (004BCA50) is not 4 | yes | **no**. The host only queued the classes (0095C4D0), and nothing consumes the queue, so there was no crash, only row parity | fixed: `game_hosts_scene_contents.cpp`, `scene_stock_queue_list` marks each counted Type on the 0046BF70 SpawnPoint walk. The index carries from JapanList into AlliedList, as in 0084D170. The host's mode is never 4 |
+
+Data. The JM05 family (`COTP-IJN/jm05.lua:3645`, `PRCPIJN/jm05.lua:3830`, `ijn/JM/jm05.lua:3631`) spawns `Event3Convoy 01/02/03` (jeep 466, truck 464) with GenerateObject. The visible `SecondaryLandConvoy 01` and `RadarStationLandConvoy 01` carry the same two types, so on JM05 the convoy marks are already made at load by the visible convoys. SpawnPoint stock is authored in single player only by `ijn_02_force_z` (Betty 167, Nell 166) and `ijn_11_operation_to` (14 plane classes).
+
+CONTRACT: the support-site mark is made on the registration walk, not on an instantiated SpawnPoint. No SpawnPoint in this installation is Hidden, so the two agree.
+
+A second fault blocked the support-site marks. `scene_stock_int` asked `scene_enum_property` first, and that reports every property as present, so an `I` value (`Count = I -1`, `NumSlots`) went to the symbol lookup and read 0. Every SpawnPoint stock was skipped as uncounted (IJN11: 0 queue appends). An `I` property is now scanned as an integer first (491f66b90). It is reached only under the switch.
+
+Pairs on 491f66b90, same tree, the switch flipped only in the ON export (`local\vcp7_on2`). Env `BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`. All three pair_diffs exit 1 with gameplay, death rows, plane death modes and the unit table identical. The only rows that moved are the vehicle-class lines (the purge and census lines, the +08h vector line, the `marked` summary) and the 0046BF20/0046BF70 status rows. Neither side has a `creator=00000000` or "creator projection is unavailable" line. Lua errors and script nil reads are 0.
+
+| mission | orders / frames | purged | marked OFF -> ON | new marks | notes |
+|---|---|---|---|---|---|
+| IJN11 (`ijn_11_operation_to`) | none, 12000 | 542 (553 before 491f66b90) | 68 -> 91 | 14 classes at 0084D304: 101 108 113 116 121 125 136 150 158 162 167 172 174 186; stock queue appends 0 -> 38 | the census's 14 plane classes |
+| JM05 | none, 24000 (the mission fails at 300.05 s on both sides) | 0 (see below) | 111 -> 131 | 464, 465, 466, 471 at 00743891 (truck, ambulance, jeep, apc of the two visible convoys); 467 (tank, only in the hidden `Event5Convoy`) stays unmarked, as in the image | Event 3 not reached |
+| USN21 | `s46_u21_f`, 12000 | 590 | 36 -> 43 | none | as in the cc15-vcp6 pair |
+
+JM05 notes:
+- JM05 is an engine-movie mission. Its load takes 004E0A50's mode-9 arm, so the host purges nothing at 004E0A9B. The census runs at 0045F6C1, which stays log only until `kVehicleClassMovieStopPurgeCc15Bound`. The JM05 rows above therefore show the marks, not a purge. The 00743891 marks were read from a diagnostic build that logged every kept row, because the census line stops at 900 characters.
+- The Event 3 `GenerateObject("Event3Convoy 0n")` spawn (PRCPIJN/jm05.lua:3830) was not reached. Events start only while `MainCommandBuilding 01` is Allied (jm05.lua:1301). The deterministic stream picks event 2 (Reconnaissance) first, which spawns nothing. With no orders the mission fails at 300 s. cc9-physics1's 36000-frame `p18off_jm05l` run also shows no event spawn other than `Event2Pt`. The Event3 members (jeep, truck) are marked at load by the visible convoys, so that spawn finds its rows.
+- Event 5 (`Event5Convoy`, Us_tank 467 and Us_apc 471) is hidden. 467 has no visible user, so neither the image nor the host marks it before 0045F6C1. That only matters for a purge at that site.

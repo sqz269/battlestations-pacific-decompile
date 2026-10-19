@@ -3597,6 +3597,172 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "recreate": "006e7250",
+   "previous": "Function: BSP_bullet_update_effects_006e7250 at 006e7250\nSignature: undefined BSP_bullet_update_effects_006e7250(void)\nEntry: 006e7250\nBody: 006e7250 - 006e766e",
+   "plate": "[BSP reconstruction 006e7250]\nHypothesis, not a recovered symbol. Packet oct18b-nA3. Full effect update. Water branch transforms+19C by node+CC into effect+194, scale from node slot38 and direction+EC. Air branch effect+198 uses x87 horizontal threshold at00CF4868 then orientation/offset, or creates selected descriptor+40/+44 with retained result and zero-delta update. Disk disasm006E754A-006E7557 repairs malformed saved listing:006E7551 JE006E765A. No live listing mutation was needed. Native SEH/register return is not replicated by the new C++ API. Original ABI: ECX bullet; one unused stack DWORD; RET4; EAX incidental. Existing class family extended; MSVC Win32 build and existing2 CTests passed. New C++ interface; not ABI-equivalent, not fixture-tested, not wired or game-validated. Evidence: src/cc13_seg33a.cpp and reports/oct18b_nA3_late.json.\n\n[BSP reconstruction 006e7250] update\nHypothesis, not a recovered symbol. Packet oct18b-nA3. Full effect update. Water branch transforms+19C by node+CC into effect+194, scale from node slot38 and direction+EC. Air branch effect+198 uses x87 horizontal threshold at00CF4868 then orientation/offset, or creates selected descriptor+40/+44 with retained result and zero-delta update. Disk disasm006E754A-006E7557 decodes the malformed saved listing:006E7551 JE006E765A. No live listing/body mutation was attempted; repair remains pending. Native SEH/register return is not replicated by the new C++ API. Live typed metadata owns only006E7250-006E7550 and006E765A-006E766E; eight creation-tail CALL sites in006E7551-006E7659 have no Ghidra caller ownership. Native bytes are retained in pending_ghidra_repair; listing/body repair remains pending. Original ABI: ECX bullet; one unused stack DWORD; RET4; EAX incidental. MSVC Win32 build and2 existing CTests passed; new C++ interface, not ABI/fixture/game proof."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "006e7250"
+   },
+   "result": {
+    "success": true,
+    "address": "006e7250",
+    "deleted_function": "BSP_bullet_update_effects_006e7250",
+    "body_size": 790,
+    "message": "Function 'BSP_bullet_update_effects_006e7250' deleted at 006e7250"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006e7250",
+    "end_address": "006e766f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006e7250",
+    "end_address": "006e766e",
+    "bytes_disassembled": 1055,
+    "message": "Successfully disassembled 1055 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006e7250",
+    "disassemble_first": false,
+    "name": "BSP_bullet_update_effects_006e7250"
+   },
+   "result": {
+    "success": true,
+    "address": "006e7250",
+    "function_name": "BSP_bullet_update_effects_006e7250",
+    "entry_point": "006e7250",
+    "body_size": 790,
+    "message": "Function created successfully at 006e7250",
+    "warnings": [
+     "Function name 'BSP_bullet_update_effects_006e7250' \u2014 main part 'BSP_bullet_update_effects_006e7250' is not PascalCase. Expected: BspBulletUpdateEffects006e7250",
+     "Function name 'BSP_bullet_update_effects_006e7250' \u2014 main part 'BSP_bullet_update_effects_006e7250' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "006e7250",
+    "comment": "[BSP reconstruction 006e7250]\nHypothesis, not a recovered symbol. Packet oct18b-nA3. Full effect update. Water branch transforms+19C by node+CC into effect+194, scale from node slot38 and direction+EC. Air branch effect+198 uses x87 horizontal threshold at00CF4868 then orientation/offset, or creates selected descriptor+40/+44 with retained result and zero-delta update. Disk disasm006E754A-006E7557 repairs malformed saved listing:006E7551 JE006E765A. No live listing mutation was needed. Native SEH/register return is not replicated by the new C++ API. Original ABI: ECX bullet; one unused stack DWORD; RET4; EAX incidental. Existing class family extended; MSVC Win32 build and existing2 CTests passed. New C++ interface; not ABI-equivalent, not fixture-tested, not wired or game-validated. Evidence: src/cc13_seg33a.cpp and reports/oct18b_nA3_late.json.\n\n[BSP reconstruction 006e7250] update\nHypothesis, not a recovered symbol. Packet oct18b-nA3. Full effect update. Water branch transforms+19C by node+CC into effect+194, scale from node slot38 and direction+EC. Air branch effect+198 uses x87 horizontal threshold at00CF4868 then orientation/offset, or creates selected descriptor+40/+44 with retained result and zero-delta update. Disk disasm006E754A-006E7557 decodes the malformed saved listing:006E7551 JE006E765A. No live listing/body mutation was attempted; repair remains pending. Native SEH/register return is not replicated by the new C++ API. Live typed metadata owns only006E7250-006E7550 and006E765A-006E766E; eight creation-tail CALL sites in006E7551-006E7659 have no Ghidra caller ownership. Native bytes are retained in pending_ghidra_repair; listing/body repair remains pending. Original ABI: ECX bullet; one unused stack DWORD; RET4; EAX incidental. MSVC Win32 build and2 existing CTests passed; new C++ interface, not ABI/fixture/game proof."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 006e7250",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "006e7250",
+   "end": "006e766f",
+   "name": "BSP_bullet_update_effects_006e7250",
+   "after": "Function: BSP_bullet_update_effects_006e7250 at 006e7250\nSignature: undefined BSP_bullet_update_effects_006e7250(void)\nEntry: 006e7250\nBody: 006e7250 - 006e766e"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "006e7250",
+   "previous": "Function: BSP_bullet_update_effects_006e7250 at 006e7250\nSignature: undefined BSP_bullet_update_effects_006e7250(void)\nEntry: 006e7250\nBody: 006e7250 - 006e766e",
+   "plate": "[BSP reconstruction 006e7250]\nHypothesis, not a recovered symbol. Packet oct18b-nA3. Full effect update. Water branch transforms+19C by node+CC into effect+194, scale from node slot38 and direction+EC. Air branch effect+198 uses x87 horizontal threshold at00CF4868 then orientation/offset, or creates selected descriptor+40/+44 with retained result and zero-delta update. Disk disasm006E754A-006E7557 repairs malformed saved listing:006E7551 JE006E765A. No live listing mutation was needed. Native SEH/register return is not replicated by the new C++ API. Original ABI: ECX bullet; one unused stack DWORD; RET4; EAX incidental. Existing class family extended; MSVC Win32 build and existing2 CTests passed. New C++ interface; not ABI-equivalent, not fixture-tested, not wired or game-validated. Evidence: src/cc13_seg33a.cpp and reports/oct18b_nA3_late.json.\n\n[BSP reconstruction 006e7250] update\nHypothesis, not a recovered symbol. Packet oct18b-nA3. Full effect update. Water branch transforms+19C by node+CC into effect+194, scale from node slot38 and direction+EC. Air branch effect+198 uses x87 horizontal threshold at00CF4868 then orientation/offset, or creates selected descriptor+40/+44 with retained result and zero-delta update. Disk disasm006E754A-006E7557 decodes the malformed saved listing:006E7551 JE006E765A. No live listing/body mutation was attempted; repair remains pending. Native SEH/register return is not replicated by the new C++ API. Live typed metadata owns only006E7250-006E7550 and006E765A-006E766E; eight creation-tail CALL sites in006E7551-006E7659 have no Ghidra caller ownership. Native bytes are retained in pending_ghidra_repair; listing/body repair remains pending. Original ABI: ECX bullet; one unused stack DWORD; RET4; EAX incidental. MSVC Win32 build and2 existing CTests passed; new C++ interface, not ABI/fixture/game proof."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "006e7250"
+   },
+   "result": {
+    "success": true,
+    "address": "006e7250",
+    "deleted_function": "BSP_bullet_update_effects_006e7250",
+    "body_size": 790,
+    "message": "Function 'BSP_bullet_update_effects_006e7250' deleted at 006e7250"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006e7250",
+    "end_address": "006e766f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006e7250",
+    "end_address": "006e766e",
+    "bytes_disassembled": 1055,
+    "message": "Successfully disassembled 1055 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006e7250",
+    "disassemble_first": false,
+    "name": "BSP_bullet_update_effects_006e7250"
+   },
+   "result": {
+    "success": true,
+    "address": "006e7250",
+    "function_name": "BSP_bullet_update_effects_006e7250",
+    "entry_point": "006e7250",
+    "body_size": 1055,
+    "message": "Function created successfully at 006e7250",
+    "warnings": [
+     "Function name 'BSP_bullet_update_effects_006e7250' \u2014 main part 'BSP_bullet_update_effects_006e7250' is not PascalCase. Expected: BspBulletUpdateEffects006e7250",
+     "Function name 'BSP_bullet_update_effects_006e7250' \u2014 main part 'BSP_bullet_update_effects_006e7250' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "006e7250",
+    "comment": "[BSP reconstruction 006e7250]\nHypothesis, not a recovered symbol. Packet oct18b-nA3. Full effect update. Water branch transforms+19C by node+CC into effect+194, scale from node slot38 and direction+EC. Air branch effect+198 uses x87 horizontal threshold at00CF4868 then orientation/offset, or creates selected descriptor+40/+44 with retained result and zero-delta update. Disk disasm006E754A-006E7557 repairs malformed saved listing:006E7551 JE006E765A. No live listing mutation was needed. Native SEH/register return is not replicated by the new C++ API. Original ABI: ECX bullet; one unused stack DWORD; RET4; EAX incidental. Existing class family extended; MSVC Win32 build and existing2 CTests passed. New C++ interface; not ABI-equivalent, not fixture-tested, not wired or game-validated. Evidence: src/cc13_seg33a.cpp and reports/oct18b_nA3_late.json.\n\n[BSP reconstruction 006e7250] update\nHypothesis, not a recovered symbol. Packet oct18b-nA3. Full effect update. Water branch transforms+19C by node+CC into effect+194, scale from node slot38 and direction+EC. Air branch effect+198 uses x87 horizontal threshold at00CF4868 then orientation/offset, or creates selected descriptor+40/+44 with retained result and zero-delta update. Disk disasm006E754A-006E7557 decodes the malformed saved listing:006E7551 JE006E765A. No live listing/body mutation was attempted; repair remains pending. Native SEH/register return is not replicated by the new C++ API. Live typed metadata owns only006E7250-006E7550 and006E765A-006E766E; eight creation-tail CALL sites in006E7551-006E7659 have no Ghidra caller ownership. Native bytes are retained in pending_ghidra_repair; listing/body repair remains pending. Original ABI: ECX bullet; one unused stack DWORD; RET4; EAX incidental. MSVC Win32 build and2 existing CTests passed; new C++ interface, not ABI/fixture/game proof."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 006e7250",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "006e7250",
+   "end": "006e766f",
+   "name": "BSP_bullet_update_effects_006e7250",
+   "after": "Function: BSP_bullet_update_effects_006e7250 at 006e7250\nSignature: undefined BSP_bullet_update_effects_006e7250(void)\nEntry: 006e7250\nBody: 006e7250 - 006e766e"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }
