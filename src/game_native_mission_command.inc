@@ -86,7 +86,7 @@ struct MissionCommandGraph {
   NativeRenderCommandExecutionFrame frame{&system,{&batch_frames[0].frame,&batch_frames[1].frame}};
   NativeRenderCommandExecutionFrame* frame_pointer{&frame};
   U entry_counts[2]{};
-  bool ready{},failed{};
+  bool ready{},executed{},failed{};
   explicit Record(MissionCommandGraph& g):graph(g) {
    std::memcpy(prefix.data(),g.globals.vertex.values.data(),sizeof prefix);
   }
@@ -298,10 +298,36 @@ struct MissionCommandGraph {
    log.note("native_mission_command submission_failed retained=1");throw;
   }
  }
+ void execute_before_overlay() {
+  check(pending && pending->ready && !pending->executed && !failed,
+    "mission ordinary command execution is one-shot before overlay");
+  check(frames.queue && frames.queue->commands_14.count_04==1 &&
+    frames.queue->control_20==0 && !frames.queue->context_30 && queue_frame.used==0,
+    "mission command requires its retained single-entry ordinary queue");
+  try {
+   // Original mission render executes its commands before finish/overlay.
+   // Keep the existing BeginScene active; no Begin/End/Present is introduced.
+   execute_native_render_queue_00b1ebe0(*frames.queue,&queue_execution,&queue_frame);
+   pending->executed=true;
+   check(frames.queue->commands_14.count_04==0 && !frames.queue->context_30 && pending->retired(),
+     "mission queue execution did not retire native command owners");
+   U indexed_calls=0,primitive_calls=0,returned=0;
+   for(auto& batch:pending->batch_frames) for(const auto& record:batch.records) {
+    if(record->pass.draw_terminal==0xb24010) ++indexed_calls;
+    if(record->pass.draw_terminal==0xb21b40) ++primitive_calls;
+    if(record->pass.draw_returned) ++returned;
+   }
+   log.notef("native_mission_command execute_before_overlay=B1EBE0/B1D950 command_invocations=%u entries=%u,%u B24010=%u B21B40=%u returned=%u queue_count=0 owners=retired",
+    queue_frame.used,pending->entry_counts[0],pending->entry_counts[1],indexed_calls,primitive_calls,returned);
+  } catch(...) {
+   observe_failed_frame();throw;
+  }
+ }
  void complete_frame() {
   if(!pending) return;
   try {
-   check(pending->ready && !failed && !pending->failed,"mission command frame is not executable");
+   check(pending->ready && pending->executed && !failed && !pending->failed,
+    "mission command did not execute before overlay");
    check(frames.queue && frames.queue->commands_14.count_04==0 && !frames.queue->context_30 && pending->retired(),
     "mission command did not complete native queue/context/batch retirement");
    U indexed_calls=0,primitive_calls=0,returned=0;
