@@ -55,6 +55,14 @@ PRESENTATION. "Standalone" means a reconstruction exists in `src/` that the host
 | F17 | 005251C0 HUD screen reset | game_hosts_hud.cpp:2161, 2260 | 1 + 1; 11 of 11 | PRESENTATION / input context levels (00A933F0). | `hud_screen_reset_selection_005251c0` (src/cc13_sweepA.cpp:2048) |
 | F18 | 005B5D40 BSP_HudNarrativeScreen_HideText | game_hosts_script_orders.cpp:5664, 5717 (`unimplemented`) | 1; 11 of 11 (LOMP06 311) | PRESENTATION (narrative widget hide). | `hud_narrative_hide_text_005b5d40` (src/frontend_screens_cc13.cpp:488) |
 
+**Ownership (cc9 boundary, user-approved, 2026-10-19).** cc15 owns single-player object bring-up:
+the MessageManager (game+21DCh, 007065E0), the hint tracker (0068EA00 / 00690CD0), MissionProgress
+(005C2F70), the globals (004DC6A0, 004FDE20, 00737970, 00BDB0B0) and the GUI screens (00583E50,
+00AB6BD0, 00AA6BC0, 00588C70, 00683820). None of the 18 rows is blocked **only** by one of those
+objects. The gameplay rows F1-F6 need units, gunnery or recon state, not bring-up. If the
+presentation rows F9-F18 are ever wired, the GUI side is cc15's (object bring-up). None of
+them is on the build list.
+
 For (a), each row was matched by address, by name and by behaviour. None of the 18 has an
 existing switch that makes it a mere marker, except as stated in the table. F7 and F8 are markers
 for the reasons given there. F2's body exists, but it is OFF and the lift-off site sits outside
@@ -146,3 +154,59 @@ existing switch. cc9 decides the files and the pairs.
 
 The torpedo rows (census 1-2) are in build or blocked on PilotBotConfig. The census's built
 switches (rows 8-13) need only pairs. They are not repeated here.
+
+## 6. Build packet results (cc13-frontier, second packet)
+
+### 6.3 009A7650: recorded, not built
+
+The question was whether the host keeps the aim offset that 009FB5E0 and 009FA350 reset. It
+does not.
+
+- 009FA350 copies the zero vector 00F87574 into the dogfight target ref's body offset
+  (approach+2Ch, +28h..+30h) and sets the dirty byte +41h. The next 009FADA0 on that ref
+  (009AAE35, the aim tick) therefore re-picks the body offset inside the target's hull
+  extents, which is a draw.
+- The host's dogfight aim point is `00954650(target, projtime)`: the target's origin plus the
+  lead, with the body offset taken as zero (`kDogfightAimLeadBound`, game_hosts_units.cpp:8018-8029;
+  docs/DOGFIGHT_ENGAGED.md, "The aim point is the target's origin instead of 009FADA0's hull
+  point"). No call to `aim_point_009fada0` / `hull_aim_world_point` lies in the dogfight states.
+  The per-unit `hull_aim_ref` belongs to the torpedo, dive and level-bomb approaches.
+- So there is no host offset to reset. The gap is the unmodelled dogfight hull-point model: the
+  offset pick and its draw. That is a labelled substitution elsewhere, not a defect of
+  009A7650's site. The record at game_hosts_units.cpp:24102 stays a record.
+  `kDogfightSetTargetRefResetCc13Bound` is not built.
+
+### 6.4 008069A0: recorded, not built
+
+Reader survey. A linear Capstone sweep of .text (`local/frontier_det_scan.py`) found 35
+instructions that index the detection block `[unit + side*34h + 1E8h]` through a register.
+By function:
+
+- **Recon internals:** 00803CE0 RelationIfIdentified, 00803D40 FilterUndetectedUnit, 00803DC0
+  DisplayNameForParty, 00803E40 SendDetectionLevelsToPeer, 008065B0 AddOrRefreshUnit, 00806840
+  RunSensorPass, 008069A0 / 00806A60 (the two publishers), 00806CD0 label refresh, 008073C0
+  RebuildSlotLists, 0077986A / 00780711 (the RECONLEVEL session message), and the Lua
+  Set/ClearForcedReconLevel (008AA8F0, 008AAB90).
+- **Presentation:** 005C0F20 minimap; 00522F10 and 00523130 (HUD, unnamed); 0097D650,
+  009813A0 and 00988510 warnings; 006EDB40 debug side swap; 008DACD0 objective reveal; 00779D00
+  the Lua recon property.
+- **Gameplay:** 009A5F50 depth-charge approach. Its target is a submarine, not a squadron.
+  Also 00803D40, reached from 0071EDA0 WeaponDirector_ActiveTargetObject and 00835840
+  WeaponDirector_DetectedTarget (tail jumps). 00803D40 filters a unit answering IsKindOf(2),
+  and a squadron entity answers 2 (007EFB00: 18h, 2, 1, 0). So in the image, a ship's director
+  target that is a squadron is filtered by the level 008069A0 publishes. 00803CE0 also gates
+  00749B20 (landing-ship motion), but on landing-ship targets.
+
+A gameplay reader exists in the image (the weapon director's detected-target filter). The
+publish is still not buildable in this host, for two reasons:
+
+1. The host fuses the squadron entity with its wing-0 plane (`PlaneSquadronHostRecord::squadron_unit`,
+   plane_squadron_host.hpp:147-150). A per-side group level written to that slot would
+   overwrite the leader plane's own detection level, which the image never does. This is the
+   finding of GUNNERY_OPEN_ITEMS rank 5, and it still holds.
+2. The host's director does not consult a detection filter. 00835840 / 0071EDA0 / 00803D40 exist
+   only as standalones (src/cc13_seg52.cpp:80, src/cc13_seg49.cpp:163).
+
+The record at game_hosts_gunnery.cpp:7731 stays. Two prerequisites come first: a squadron
+entity separate from its leader, and the director's detection filter wired.
+`kReconGroupLevelPublishCc13Bound` is not built.
