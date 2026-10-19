@@ -10985,9 +10985,21 @@ public:
         }
         if (bsp::kShipAiNavigateAsternSkipBound
             && ctl_.blk.mode == bsp::ShipAiSteeringMode::NavigateAstern) {
-            // 009EE756 JNE 009EF206: no output block, no tail. 009EF206..009EF213
-            // is 009DE5B0(dt), which the path branch otherwise reaches through
-            // the tail's after_arm_009de5b0.
+            // 009EE671..009EE6CB still run in mode 3: the A90h..A9Ch goal publish
+            // and the running max of 1F0h over 009D9E50 (FCOMPI/JBE). Duplicated
+            // here so ship_ai_navigation_arm_009ee671's OFF path is untouched.
+            ctl_.nav.goal_valid_0a90 = true;
+            ctl_.nav.goal_x_0a94 = ctl_.path_point.point_x_08;
+            ctl_.nav.goal_y_0a98 = 0.0f;
+            ctl_.nav.goal_z_0a9c = ctl_.path_point.point_z_0c;
+            NavArmBinding prelude_host(owner_, ctl_, index_);
+            const float path_length = prelude_host.remaining_path_length_009d9e50();
+            if (path_length > ctl_.nav.longest_path_1f0) {
+                ctl_.nav.longest_path_1f0 = path_length;
+            }
+            // 009EE756 JNE 009EF206: no 009EE765..009EEAA2 output, no tail.
+            // 009EF206..009EF213 is 009DE5B0(dt), which the path branch otherwise
+            // reaches through the tail's after_arm_009de5b0.
             if (kShipAiArmFinalWholeBound)
                 owner_.arm_final_step_009de5b0(index_, ctl_, row_);
             else if (kShipTorpedoResponseBound || kShipAvoidZoneEscapeBound)
