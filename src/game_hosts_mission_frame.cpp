@@ -197,7 +197,7 @@ constexpr bool kMessageManagerCc15Bound = true;
 // tables, once per owner, and its scalar resets run; its roster, effects and
 // hooks do not. A later load first tears the set down in 004D2BB0's order. False:
 // no owners; the manager is the host's own two fields, as before.
-constexpr bool kGlobalSubsystemsCc15Bound = false;
+constexpr bool kGlobalSubsystemsCc15Bound = true;
 
 // Packet cc9_construct_world part 2 (docs/CONSTRUCT_WORLD.md section 9). True:
 // the load step construct_world 004DE610 sets the world-active byte
