@@ -2735,7 +2735,7 @@ struct LandConvoyLifeState {
     std::vector<std::size_t> slots;  // +394h vector (+398h..+39Ch); npos = a null slot
     std::int32_t live_3bc{0};        // +3BCh
     bool killed_5f{false};           // +5Fh, set by 00926D90 on the convoy
-    bool pending_destroy_60{false};  // +60h; nothing destroys a convoy marker here
+    bool pending_destroy_60{false};  // +60h; never set: the host does not model 00926C80 (0077D243)
     std::int32_t cause_70{0};        // +70h
     bool kill_queued{false};         // on 00F899B4; its +080h (00742180) not yet run
     struct Member {
@@ -13382,8 +13382,11 @@ public:
         life.killed_5f = true;                                       // 00926DF3
         if (!life.pending_destroy_60) {                              // 00926DEF
             life.cause_70 = stored;                                  // 00926E02
-            // OMITTED (labelled): 00926E05 vtable+70h(1), the entity's own
-            // notification; not modelled for a convoy marker.
+            // 00926E05 vtable+70h(1) is 0077D1A0 for a convoy, whose 00926C80
+            // Destroy (0077D243) queues it on the destroy list 00F899A8. That
+            // chain is modelled only as its Lua `Dead` / `KillReason` write,
+            // under kLandConvoyDeadWired, in land_convoy_flush_009273a0; the
+            // rest of it is OMITTED (labelled), see land_convoy_dead_cc13.hpp.
         }
         if (cause == 7) life.cause_70 = stored;                      // 00926E07..00926E0C
         // OMITTED (labelled): 00926E0F..00926E23, 00926D90(cause) on each child of
@@ -13724,15 +13727,17 @@ void GameUnitsHost::land_convoy_flush_009273a0() {
                 }
             }
             if (convoys.empty() && members.empty()) break;  // 009273D0 JE 009275BF
+            if constexpr (kLandConvoyDeadWired) {
+                // Packet cc13-dead: in the same 009273A0 pass, the whole destroy list
+                // (0092747F) runs before any of the kill list's +080h (0092751F); each
+                // convoy's 00926D90 queued its destroy at 00926E05 (0077D1A0 ->
+                // 00926C80), whose +7Ch chain ends in 00929800. So every queued
+                // convoy's Dead is written before the first 00742180.
+                for (LandConvoyLifeState* life : convoys)
+                    host.lua.publish_land_convoy_dead_00929800(life->name, life->cause_70);
+            }
             for (LandConvoyLifeState* life : convoys) {
                 life->kill_queued = false;
-                if constexpr (kLandConvoyDeadWired) {
-                    // Packet cc13-dead: in the same 009273A0 pass, the destroy list
-                    // (0092747F) runs before the kill list's +080h (0092751F); the
-                    // convoy's 00926D90 queued its destroy at 00926E05 (0077D1A0 ->
-                    // 00926C80), whose +7Ch chain ends in 00929800.
-                    host.lua.publish_land_convoy_dead_00929800(life->name, life->cause_70);
-                }
                 LandConvoyKillBinding kill(host);
                 bsp::cc15_land_convoy::land_convoy_kill_members_00742180(convoy_handle(*life), kill);
                 host.done("LandConvoy::kill_members_00742180", 0x00742180u);

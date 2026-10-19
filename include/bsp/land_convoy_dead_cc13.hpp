@@ -22,6 +22,18 @@
 // on the convoy marker's self table (GameMissionLuaHost::
 // publish_land_convoy_dead_00929800). False: a convoy's `Dead` stays the false
 // its attach seeded (00928BC7), as before.
+//
+// OMITTED (labelled): of that chain the host models only the two Lua writes.
+// Not modelled, with either switch:
+//   - the 0077C7B0 / 0077C980 broadcast from 0077D1A0;
+//   - 00986480 FireEntityKilled at 0077D253. GAMEPLAY-VISIBLE: it raises the
+//     Lua entityKilled event. cc9's note: only jm01.lua (three times) and seven
+//     training-grounds scripts mention entityKilled, and none of them is a
+//     convoy or a WINS row;
+//   - 00926C80's loop over the +48h child chain (destroying each child);
+//   - 00925C90;
+//   - 0077D270's store to +193Ch and its 00803BA0 loop;
+//   - 00927F60 and 00928100, which 00929B60 runs before 00929800.
 
 #include "bsp/land_convoy_wiring_cc13.hpp"
 

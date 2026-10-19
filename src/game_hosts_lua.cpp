@@ -9378,7 +9378,8 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
 // Packet cc13-dead. 00929800 on a LandConvoy marker (include/bsp/land_convoy_dead_cc13.hpp
 // has the chain from 00926D90). SUBSTITUTIONS (labelled): the convoy is found as the
 // first findable pending node of class 1Ah with that name (the host's convoys are keyed
-// by name); the own-slot test (`Ptr` is the marker id, as the 00928A00 seed writes it)
+// by name, so the lookup is first-wins: two convoys sharing a name resolve to the
+// earlier node, where the image follows its own pointer); the own-slot test (`Ptr` is the marker id, as the 00928A00 seed writes it)
 // stands for 00929800's +178h test. OMITTED (labelled): 009298DB's think call and the
 // 00928300 think-list drops, for a marker with a think registration (+1D8h).
 bool GameMissionLuaHost::publish_land_convoy_dead_00929800(const std::string& convoy, int cause) {
@@ -9407,6 +9408,8 @@ bool GameMissionLuaHost::publish_land_convoy_dead_00929800(const std::string& co
             // 00E0CF04[+70h] (009298C2): none, harm, soft, sell, exitzone, landed, editor.
             static const char* const kKillReasons[] = {
                 "none", "harm", "soft", "sell", "exitzone", "landed", "editor"};
+            // SUBSTITUTION (labelled): the image indexes the table unchecked; an
+            // out-of-range cause (none reaches here: 007422A0 passes 2) reads "harm".
             const char* const reason = (cause >= 0 && cause < 7) ? kKillReasons[cause] : "harm";
             lua_pushboolean(state_, 1);
             lua_setfield(state_, -2, "Dead");                 // 00929896
