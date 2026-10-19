@@ -1818,7 +1818,7 @@ float plane_formation_wait_value_007bcc20(Seg47Host& host, Raw plane) {
 // 007BCCF0, __thiscall(ECX = plane; float* out), RET 4, EAX = out (the
 // level-bomb task's paratrooper branch, 009B7D7D). The pose refresh when +C8h
 // is clear; t = (float)(y / 2.799999952316284) with y = +100h; a = t * the
-// velocity +94h..+9Ch (each float); out = (x + a.x, y + a.y, z + a.z) with
+// forward row +94h..+9Ch (row 2 of the +74h local matrix; each float); out = (x + a.x, y + a.y, z + a.z) with
 // (x, y, z) = +FCh..+104h (each stored float; the y sum in x87 extended is
 // stored once); out.y = 0078CF20([[00E188A8]+19F0h]; out.x, out.z); then for
 // every node of [[00E188A8]+19CCh]+34Ch (no kind test here) h =
