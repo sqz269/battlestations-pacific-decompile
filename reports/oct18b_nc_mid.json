@@ -1,0 +1,747 @@
+{
+  "packet": "oct18b-nC-mid",
+  "source": "src/oct18b_nc_mid.cpp",
+  "header": "include/bsp/oct18b_nc_mid.hpp",
+  "scope": "Only 42 dispatch rows 009F6C10..00AF37A0; segment67 reserved and untouched.",
+  "game_reconstructed": 35,
+  "library_compiler_classified": 7,
+  "open": 0,
+  "validation": {
+    "source_compile": "passed: registered combined MSVC Win32 Release; compiled and linked into bsp_core and bsp_game",
+    "original_abi": false,
+    "runtime": false,
+    "game": false,
+    "new_tests": 0,
+    "primary_integrator_build_log": "J:\\PROG\\battlestations-pacific-decompile-oct18b-nC\\local\\nc_combined_build2.log",
+    "baseline_worker_build_log": "local/oct18b-nc-mid-build.log",
+    "existing_ctests": "2/2 passed in both worker baseline and integrator combined build",
+    "native_call_sites": "29/29 checked, 0 failed; local/oct18b-nc-mid-callcheck.log",
+    "exact_row_and_symbol_audit": "42 unique assigned addresses; all35 mapped C++ symbols present",
+    "ghidra_annotations": "42/42 applied, saved; prior names/comments preserved in local/ghidra-annotations-20261019T054023Z.json",
+    "exports": "42/42 refreshed after annotations; local/oct18b-nc-mid-export-refresh.log"
+  },
+  "functions": [
+    {
+      "address": "009f6c10",
+      "name": "BSP_SquadronFilter_Enabled_009f6c10",
+      "cpp_symbol": "bsp::cc13_seg68::filter_enabled_009f6c10",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; AL=1; plain RET; this unused.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; MOV AL,1 / RET. Existing cc13_seg68 filter_enabled_slot4 models filters A/C; neighboring vtables 00D21BC8 and 00D21BE4.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "009f7070",
+      "name": "BSP_SquadronFilter_Disabled_009f7070",
+      "cpp_symbol": "bsp::cc13_seg68::filter_disabled_009f7070",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; AL=0; plain RET; this unused.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; XOR AL,AL / RET. Existing cc13_seg68 filter_enabled_slot4 models filter B at 00D21B98.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "009f7110",
+      "name": "CG_SquadronFilter_ScalarDeletingDestructor_009f7110",
+      "cpp_symbol": null,
+      "source": "docs/OCT18B_NC_MID.md",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall(ECX=filter; byte flags), RET 4, EAX=original pointer.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Identical MSVC deleting wrappers: install root filter vtable 00D21B50; flags bit0 conditionally calls free 00BF65AC; return this. No independent nontrivial game destructor body.",
+      "remaining": "Compiler/library wrapper classification only; no reconstructed game-body or build credit.",
+      "compiled": false
+    },
+    {
+      "address": "009f7130",
+      "name": "CG_SquadronFilter_ScalarDeletingDestructor_009f7130",
+      "cpp_symbol": null,
+      "source": "docs/OCT18B_NC_MID.md",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall(ECX=filter; byte flags), RET 4, EAX=original pointer.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Identical MSVC deleting wrappers: install root filter vtable 00D21B50; flags bit0 conditionally calls free 00BF65AC; return this. No independent nontrivial game destructor body.",
+      "remaining": "Compiler/library wrapper classification only; no reconstructed game-body or build credit.",
+      "compiled": false
+    },
+    {
+      "address": "009f7280",
+      "name": "CG_SquadronFilter_ScalarDeletingDestructor_009f7280",
+      "cpp_symbol": null,
+      "source": "docs/OCT18B_NC_MID.md",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall(ECX=filter; byte flags), RET 4, EAX=original pointer.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Identical MSVC deleting wrappers: install root filter vtable 00D21B50; flags bit0 conditionally calls free 00BF65AC; return this. No independent nontrivial game destructor body.",
+      "remaining": "Compiler/library wrapper classification only; no reconstructed game-body or build credit.",
+      "compiled": false
+    },
+    {
+      "address": "00a00800",
+      "name": "BSP_AiCallback_FirstWord_Provisional_00a00800",
+      "cpp_symbol": "bsp::cc13_seg69::first_word_callback_00a00800",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__cdecl(const uint32_t*), caller stack cleanup, EAX=*argument.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; MOV EAX,[ESP+4]; MOV EAX,[EAX]; RET. Address taken at 011F7BC4; semantic callback ownership remains provisional.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00a04c70",
+      "name": "BSP_AiMappedCache_EntryPresent_Provisional_00a04c70",
+      "cpp_symbol": "bsp::cc13_seg69::mapped_cache_entry_present_00a04c70",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=owner; int index), RET 4, EAX=0/1.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Mapped index at owner+10h+4*index; cache data/size at +4h/+8h. Resize 00437BD0 receives ECX=owner+4h and mapped+1. Reload data; NEG/SBB/AND 00F8A0BD/NEG/SBB/NEG normalizes nonzero. 00F8A0BD is not dereferenced.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00a05560",
+      "name": "STL_Vector120_AllocateStorage_00a05560",
+      "cpp_symbol": null,
+      "source": "docs/OCT18B_NC_MID.md",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall(ECX=vector; uint count), RET 4, AL=success.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; VS2008 vector allocation shape: clear first/last/end at +4/+8/+Ch; count0 returns false; max_size 02222222h (= UINT_MAX/120); length-error site 00A05300; allocator 009FF4F0; end=data+120*count. Known STL neighbors and vector<T> too long throw site.",
+      "remaining": "Compiler/library wrapper classification only; no reconstructed game-body or build credit.",
+      "compiled": false
+    },
+    {
+      "address": "00a055b0",
+      "name": "STL_Vector120_AllocateStorage_00a055b0",
+      "cpp_symbol": null,
+      "source": "docs/OCT18B_NC_MID.md",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "__thiscall(ECX=vector; uint count), RET 4, AL=success.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; VS2008 vector allocation shape: clear first/last/end at +4/+8/+Ch; count0 returns false; max_size 02222222h (= UINT_MAX/120); length-error site 00A05370; allocator 009FF550; end=data+120*count. Known STL neighbors and vector<T> too long throw site.",
+      "remaining": "Compiler/library wrapper classification only; no reconstructed game-body or build credit.",
+      "compiled": false
+    },
+    {
+      "address": "00a18570",
+      "name": "BSP_AiPlanner_ForwardSlot24_00a18570",
+      "cpp_symbol": "bsp::cc13_seg70::planner_forward_slot24_00a18570",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=object; MOV EAX,[ECX]; MOV EAX,[EAX+24h]; JMP EAX; incoming frame forwarded unchanged.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Shared slot1 of planner vtables 00D22D08/44/94/E4 and others. Exact tail dispatch preserves ECX and incoming stack; no arguments consumed by this body.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "Only tail-dispatch control flow is modeled. Continuation owns original register/stack arguments and callee cleanup; target signature remains unknown. No native ABI/runtime/gameplay proof.",
+      "compiled": true
+    },
+    {
+      "address": "00a2bd40",
+      "name": "BSP_AiGroup_ForwardSlot04_00a2bd40",
+      "cpp_symbol": "bsp::cc13_seg70::group_forward_slot04_00a2bd40",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=object; MOV EAX,[ECX]; MOV EAX,[EAX+4]; JMP EAX; incoming frame forwarded unchanged.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Vtable 00D2306C slot2; neighboring group command installer at 00A2BD00. Exact indirect tail dispatch to slot04.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "Only tail-dispatch control flow is modeled. Continuation owns original register/stack arguments and callee cleanup; target signature remains unknown. No native ABI/runtime/gameplay proof.",
+      "compiled": true
+    },
+    {
+      "address": "00a2da60",
+      "name": "BSP_AiGroup_ObserverRemoveEntity_00a2da60",
+      "cpp_symbol": "bsp::cc13_seg70::group_observer_remove_entity_00a2da60",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=group+10h observer; entity), RET 4.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Search list head at observer+5630h, node value+8. If found, adjust ECX -10h; tail duplicates existing group_remove_entity_00A2D9D0(entity,1): list_remove 0077BEA0, conditional entity+16Ch clear, observer unregister 006956A0, then queue empty group at 00F8AA78. All 00A2DA60..00A2DB40 assembly inspected.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "Valid native list required, matching cc13_seg70 family policy: corrupted-iterator 00BF6713 diagnostics are not modeled. New C++ interface; no native ABI/runtime/gameplay proof.",
+      "compiled": true
+    },
+    {
+      "address": "00a31bf0",
+      "name": "CG_AiController_AdjustorThunk_00a31bf0",
+      "cpp_symbol": null,
+      "source": "docs/OCT18B_NC_MID.md",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "ECX-=170h; JMP 00A329D0; caller frame and deleting flags forwarded.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Exactly SUB ECX,170h / JMP 00A329D0. Target is the established MSVC scalar deleting wrapper for AiController. Compiler multiple-inheritance this-adjustor, no independent game body.",
+      "remaining": "Compiler/library wrapper classification only; no reconstructed game-body or build credit.",
+      "compiled": false
+    },
+    {
+      "address": "00a31d60",
+      "name": "BSP_AiCoordinator_SingletonScalarDelete_00a31d60",
+      "cpp_symbol": "bsp::cc13_seg70::coordinator_singleton_scalar_delete_00a31d60",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=singleton; byte flags), RET 4, EAX=original pointer.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; 00A31D68 writes global 00F8AAFC=0; 00A31D72 installs singleton base vtable 00CE3818; flags bit0 calls free 00BF65AC. Game singleton side effects are preserved rather than discarded as pure compiler boilerplate.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00a9de50",
+      "name": "BSP_GuiListbox_RevealIndex_00a9de50",
+      "cpp_symbol": "bsp::cc13_gui1::listbox_reveal_index_00a9de50",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=listbox; int absolute_index, byte center), RET 8.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Center offset=(signed(+158h+1)/2)-1; recursively choose page, then select. Noncenter max=max(+154h-+158h,0); +164h updated before rebuild 00A9D870. Out-of-range selection subtracts reloaded +164h after rebuild. Calls 00A9C7C0 and 00A9C920. Assembly 00A9DE50..00A9DF04 inspected.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00aa1cf0",
+      "name": "BSP_GuiObject_GetWordEC_Provisional_00aa1cf0",
+      "cpp_symbol": "bsp::cc13_gui1::gui_field_ec_00aa1cf0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=GUI object; AX=word [ECX+ECh]; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; MOV AX,[ECX+ECh] / RET. No inferred meaning assigned to this field.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00aa64b0",
+      "name": "BSP_GuiListbox_CreateOrCopy_00aa64b0",
+      "cpp_symbol": "bsp::cc13_gui1::create_listbox_00aa64b0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=nullable copy source; plain RET, EAX=listbox or null.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; 00AA64C9 supplies 17Ch to allocator wrapper 00A9B7E0; nonnull source uses 00AA5B40 copy constructor, null uses 00A9DF40. Null allocation returns0. EH FuncInfo 00DEDB94 has unwind map 00DEDB84; states0/1 actions 00CB7340/48 both pass saved storage to pool return 00A9B330. C++ catch/rethrow routes that cleanup through an explicit hook.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00ab0fe0",
+      "name": "BSP_GuiColor_Equal_00ab0fe0",
+      "cpp_symbol": "bsp::cc13_gui1::gui_color_equal_00ab0fe0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=float4; const float4*), RET 4, EAX=0/1.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Four ordered FUCOMIP tests; failure returns0, all equal returns1. Signed zeros equal; unordered NaN unequal. Assembly 00AB0FE0..00AB1030 inspected.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "Value/control-flow semantics reconstructed; C++ equality does not promise original floating-point exception flags or exact generated x87 ABI. No runtime/gameplay proof.",
+      "compiled": true
+    },
+    {
+      "address": "00ab6a70",
+      "name": "BSP_GuiText_SetFlag77_00ab6a70",
+      "cpp_symbol": "bsp::cc13_gui1::gui_text_set_flag77_00ab6a70",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=text; byte flag), JMP vtable+80h after replacing stack word with flag?3:0; target consumes 4 bytes.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Store byte text+77h; nonzero -> stack arg3, zero -> stack arg0; tail JMP to slot80. Pseudocode omitted the replaced argument, so assembly 00AB6A70..00AB6A95 is the source of the callback contract.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00acab10",
+      "name": "STL_Fill_Record20FloatVector_00acab10",
+      "cpp_symbol": null,
+      "source": "docs/OCT18B_NC_MID.md",
+      "status": "library_instantiation_out_of_scope",
+      "original_abi": "__cdecl(first,last,const value*), plain RET; caller cleans three words.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Generic fill over 14h-byte records: copy first float through x87; assign member vector at +4 via STL_DwordVector_Assign_00ACA7E0; advance until first==last. Typed fill/assignment instantiation; no game-specific branches or fields beyond record layout.",
+      "remaining": "Compiler/library wrapper classification only; no reconstructed game-body or build credit.",
+      "compiled": false
+    },
+    {
+      "address": "00ad56e0",
+      "name": "BSP_Terrain_ZeroSample_00ad56e0",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_zero_sample_00ad56e0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; FLDZ; RET 8; ST0=+0.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Exact FLDZ / RET 8; two stack argument words unused.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00ad9cb0",
+      "name": "BSP_TerrainRenderObject_EmptySlot_00ad9cb0",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_empty_slot_00ad9cb0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Single RET; neighboring terrain object constructor 00AD9D00 and provisional factory 00AD9C40 establish family.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00ad9cc0",
+      "name": "BSP_TerrainRenderObject_GetWord04_00ad9cc0",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_object_word04_00ad9cc0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=terrain render object; EAX=dword [ECX+4h]; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Exact MOV EAX,[ECX+4h] / RET; slot at vtable 00D5D2A0; existing terrain_particles_cc13 base constructor 00AD9D00. Field meaning remains provisional.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00ad9cd0",
+      "name": "BSP_TerrainRenderObject_GetWord10_00ad9cd0",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_object_word10_00ad9cd0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=terrain render object; EAX=dword [ECX+10h]; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Exact MOV EAX,[ECX+10h] / RET; slot at vtable 00D5D2A0; existing terrain_particles_cc13 base constructor 00AD9D00. Field meaning remains provisional.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00adc080",
+      "name": "BSP_TerrainBlock_AddUniquePointer_Provisional_00adc080",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_add_unique_pointer_00adc080",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=owner; pointer), RET 4.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Scan pointer array +44h/+48h; duplicate returns. Full capacity +4Ch grows to max(2*capacity,1) through 00ADB050(array=owner+44h). Reload data/count after reserve, skip null destination store but increment count. Assembly 00ADC080..00ADC0DF inspected.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "Valid array invariant required; ownership/type of stored pointers provisional. New C++ interface; no native ABI/runtime/gameplay proof.",
+      "compiled": true
+    },
+    {
+      "address": "00adc4b0",
+      "name": "BSP_TerrainBlock_EmptyThreeArgumentSlot_00adc4b0",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_empty_three_args_00adc4b0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; RET 0Ch; three stack words ignored.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Single RET 0Ch. Empty game virtual slot, preserved as no-op; no invented return value.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00aed1a0",
+      "name": "BSP_TerrainBlock_EmptyThreeArgumentSlot_00aed1a0",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_empty_three_args_00aed1a0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; RET 0Ch; three stack words ignored.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Single RET 0Ch. Empty game virtual slot, preserved as no-op; no invented return value.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00aed1c0",
+      "name": "BSP_TerrainBlock_EmptyThreeArgumentSlot_00aed1c0",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_empty_three_args_00aed1c0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; RET 0Ch; three stack words ignored.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Single RET 0Ch. Empty game virtual slot, preserved as no-op; no invented return value.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00aed200",
+      "name": "BSP_TerrainBlock_EmptyThreeArgumentSlot_00aed200",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_empty_three_args_00aed200",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; RET 0Ch; three stack words ignored.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Single RET 0Ch. Empty game virtual slot, preserved as no-op; no invented return value.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00adc520",
+      "name": "BSP_TerrainBlock_MinHeight_00adc520",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_min_height_00adc520",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; float result in ST0; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; FLD float ptr [00CE4ADC] / RET. Verified bytes F9 02 15 D0 (-1e10f); identical constant bodies share implementation.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00adc530",
+      "name": "BSP_TerrainBlock_MaxHeight_00adc530",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_max_height_00adc530",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; float result in ST0; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; FLD float ptr [00CE4970] / RET. Verified bytes F9 02 15 50 (+1e10f); identical constant bodies share implementation.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00adfb00",
+      "name": "BSP_TerrainBlock_MinHeight_00adfb00",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_min_height_00adfb00",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; float result in ST0; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; FLD float ptr [00CE4ADC] / RET. Verified bytes F9 02 15 D0 (-1e10f); identical constant bodies share implementation.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00adfb10",
+      "name": "BSP_TerrainBlock_MaxHeight_00adfb10",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_max_height_00adfb10",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; float result in ST0; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; FLD float ptr [00CE4970] / RET. Verified bytes F9 02 15 50 (+1e10f); identical constant bodies share implementation.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00aedb50",
+      "name": "BSP_TerrainBlock_MaxHeight_00aedb50",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_max_height_00aedb50",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; float result in ST0; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; FLD float ptr [00CE4970] / RET. Verified bytes F9 02 15 50 (+1e10f); identical constant bodies share implementation.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00adc580",
+      "name": "BSP_TerrainBlock16_SetSample_00adc580",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_u16_block_set_00adc580",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=block; float height,int i,int j), RET 0Ch.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; FCOMIP with exact double -1000 at 00CE6658; height<=threshold writes 16-bit all-ones. Else FSUB +2Ch; FNSTCW; FMUL +30h; OR control word 0C00h; FISTP int32; restore control; retain low16. Grid width +38h/data +40h. Unordered height follows FISTP path, preserving native indefinite result on MSVC Win32.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "Exact arithmetic path implemented with MSVC Win32 x87; portable fallback is only a value model. Unmasked FP exception/ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00adfa90",
+      "name": "BSP_TerrainBlock8_SetSample_00adfa90",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_u8_block_set_00adfa90",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=block; float height,int i,int j), RET 0Ch.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; FCOMIP with exact double -1000 at 00CE6658; height<=threshold writes 8-bit all-ones. Else FSUB +2Ch; FNSTCW; FMUL +30h; OR control word 0C00h; FISTP int32; restore control; retain low8. Grid width +38h/data +40h. Unordered height follows FISTP path, preserving native indefinite result on MSVC Win32.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "Exact arithmetic path implemented with MSVC Win32 x87; portable fallback is only a value model. Unmasked FP exception/ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00adf090",
+      "name": "BSP_TerrainTile_SetPosition_00adf090",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_tile_set_position_00adf090",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=tile; int x,int z), RET 8.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Store tile+Ch=x,+10h=z; owner=tile+8h; spacing=owner+18h. x87 FDIV exact double 0x3FC0101020000000 at 00D5D408, round to float scale. Matrix diag(scale,1,scale,1), copied by existing 004134F0; reload spacing; x87 int*float translations round to float; node=tile+24h, slot38(matrix). Entire 00ADF090..00ADF1AB listing inspected.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "Matrix scale divisor semantic origin provisional; exact constant and float-rounding boundaries preserved. New C++ interface; no ABI/runtime/gameplay proof.",
+      "compiled": true
+    },
+    {
+      "address": "00aed6f0",
+      "name": "BSP_TerrainFloatLayer_Set_00aed6f0",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_float_layer_set_00aed6f0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=block; float value,int i,int j), RET 0Ch.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; MOVSS stores bit-preserving value into data+34h[(width+2Ch)*j+i]. No bounds checks; NaN payload retained.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00aed8e0",
+      "name": "BSP_TerrainVectorLayer_Set_00aed8e0",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_vector_layer_set_00aed8e0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=block; float3 value/out,int i,int j), RET 0Ch.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Width+18h, data+20h, stride0Ch. Set copies three sequential FLD/FSTP floats at linear index width*j+i. MSVC Win32 implementation preserves x87 copies and component ordering; no bounds checks.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00aed910",
+      "name": "BSP_TerrainVectorLayer_Get_00aed910",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_vector_layer_get_00aed910",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "__thiscall(ECX=block; float3 value/out,int i,int j), RET 0Ch.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Width+18h, data+20h, stride0Ch. Get copies three sequential FLD/FSTP floats at linear index width*j+i. MSVC Win32 implementation preserves x87 copies and component ordering; no bounds checks.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00aeda70",
+      "name": "BSP_TerrainBlock_EmptyOneArgumentSlot_00aeda70",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_empty_one_arg_00aeda70",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "No inputs read; RET 4; one stack word ignored.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Single RET4, base block family between 00AED9A0 constructor and 00AEDA80 destructor.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    },
+    {
+      "address": "00af37a0",
+      "name": "BSP_Terrain_StoreGlobalVector_Provisional_00af37a0",
+      "cpp_symbol": "bsp::cc13_terrain::terrain_store_global_vector_00af37a0",
+      "source": "src/oct18b_nc_mid.cpp",
+      "status": "reconstructed_build_tested",
+      "original_abi": "ECX=source float3; plain RET; globals 00E13028/2C/30 written.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/OCT18B_NC_MID.md; Three ordered MOVSS load/store pairs. Caller 00AF5BA0 references it. Explicit destination view represents 00E13028; bit payload and sequential overlap behavior preserved; global semantic role provisional.; Registered combined MSVC Win32 Release build and 2/2 existing CTests passed (primary integrator local/nc_combined_build2.log, 2026-10-19 UTC).",
+      "remaining": "New C++ interface; native ABI/runtime/gameplay not validated.",
+      "compiled": true
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "009f7110",
+      "address": "009f7121",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "function": "009f7130",
+      "address": "009f7141",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "function": "009f7280",
+      "address": "009f7291",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "function": "00a04c70",
+      "address": "00a04c88",
+      "native": "00437bd0",
+      "kind": "call"
+    },
+    {
+      "function": "00a05560",
+      "address": "00a05586",
+      "native": "00a05300",
+      "kind": "call"
+    },
+    {
+      "function": "00a05560",
+      "address": "00a0558f",
+      "native": "009ff4f0",
+      "kind": "call"
+    },
+    {
+      "function": "00a055b0",
+      "address": "00a055d6",
+      "native": "00a05370",
+      "kind": "call"
+    },
+    {
+      "function": "00a055b0",
+      "address": "00a055df",
+      "native": "009ff550",
+      "kind": "call"
+    },
+    {
+      "function": "00a2da60",
+      "address": "00a2dad4",
+      "native": "0077bea0",
+      "kind": "call"
+    },
+    {
+      "function": "00a2da60",
+      "address": "00a2daf8",
+      "native": "006956a0",
+      "kind": "call"
+    },
+    {
+      "function": "00a2da60",
+      "address": "00a2db21",
+      "native": "00a16ab0",
+      "kind": "call"
+    },
+    {
+      "function": "00a2da60",
+      "address": "00a2db2f",
+      "native": "00a172a0",
+      "kind": "call"
+    },
+    {
+      "function": "00a31bf0",
+      "address": "00a31bf6",
+      "native": "00a329d0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00a31d60",
+      "address": "00a31d7b",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "function": "00a9de50",
+      "address": "00a9de7b",
+      "native": "00a9de50",
+      "kind": "call"
+    },
+    {
+      "function": "00a9de50",
+      "address": "00a9de83",
+      "native": "00a9c7c0",
+      "kind": "call"
+    },
+    {
+      "function": "00a9de50",
+      "address": "00a9de91",
+      "native": "00a9de50",
+      "kind": "call"
+    },
+    {
+      "function": "00a9de50",
+      "address": "00a9de98",
+      "native": "00a9c920",
+      "kind": "call"
+    },
+    {
+      "function": "00a9de50",
+      "address": "00a9dea2",
+      "native": "00a9c7c0",
+      "kind": "call"
+    },
+    {
+      "function": "00a9de50",
+      "address": "00a9ded6",
+      "native": "00a9d870",
+      "kind": "call"
+    },
+    {
+      "function": "00a9de50",
+      "address": "00a9dee4",
+      "native": "00a9c7c0",
+      "kind": "call"
+    },
+    {
+      "function": "00a9de50",
+      "address": "00a9def4",
+      "native": "00a9d870",
+      "kind": "call"
+    },
+    {
+      "function": "00a9de50",
+      "address": "00a9defd",
+      "native": "00a9c7c0",
+      "kind": "call"
+    },
+    {
+      "function": "00aa64b0",
+      "address": "00aa64ce",
+      "native": "00a9b7e0",
+      "kind": "call"
+    },
+    {
+      "function": "00aa64b0",
+      "address": "00aa64ea",
+      "native": "00aa5b40",
+      "kind": "call"
+    },
+    {
+      "function": "00aa64b0",
+      "address": "00aa650d",
+      "native": "00a9df40",
+      "kind": "call"
+    },
+    {
+      "function": "00acab10",
+      "address": "00acab2f",
+      "native": "00aca7e0",
+      "kind": "call"
+    },
+    {
+      "function": "00adc080",
+      "address": "00adc0c6",
+      "native": "00adb050",
+      "kind": "call"
+    },
+    {
+      "function": "00adf090",
+      "address": "00adf146",
+      "native": "004134f0",
+      "kind": "call"
+    }
+  ]
+}
