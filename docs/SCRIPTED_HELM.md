@@ -1080,7 +1080,7 @@ first frame, from its own, whose bomb released now is predicted by `009C7D71`
 velocity) to fall within `<m>` (default 25) of the target's position advanced by the target's
 velocity (its last frame's displacement) over the fall time; `until` ends the watch with a
 refusal that reports the nearest miss. The units host's `player_bomb_release_006082d0` applies the
-gates of 1 and 2 and calls the host's `007BBBA0` (`release_ordnance_007bbba0`).
+gates of 1 and 2, then reaches the host's `release_ordnance_007bbba0` directly. The image reaches `007BBBA0` through the message route of steps 3 and 4.
 
 **Refusals, each with its reason:** not the controlled unit; not a plane; dead; a torpedo
 bomber; no bomb in a rack; not in free flight; a level bomber (`007C7750`/`007C4D90` unread);
@@ -1183,8 +1183,10 @@ Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of it
   - The action is held at amount 1.0 through no binding or device.
   - Screen 2Eh must be up with the player's ship (`[00E188D8]`) for `005484F0` to build anything. That is the case when the mission's HUD runs.
   - The hold counts down whether or not screen 2Eh is up. An edge that falls on a frame without 2Eh (the map screen, a cutscene, pause, a load) is lost. Time the line for a frame on which the HUD runs.
-  - **The 2Eh window.** Screen 2Eh is registered only while the mission's HUD runs. On USN01 that is frames ~410-1823; the script's SetSelectedUnit takes it down. Any `input` line outside the window reaches no 2Eh reader.
-  - **Lost-input lines.** The run log reports the loss rather than dropping it silently. When the rising edge falls on a frame without 2Eh, the log says `helm input action 0x99 edge on frame F lost: screen 2Eh is not registered`. When a hold ends after any held frames without 2Eh, it says `helm input action 0x99 hold ended on frame F: N held frame(s) without screen 2Eh`. The test is the menu host's screen registry (slot 2Eh) at the frame's input prologue.
+  - **The 2Eh window.** Screen 2Eh's `005484F0` runs only while screen 46h's update passes its gate (`0064D62B`, wanted `+4h` and a unit at `+1Ch`). On USN01 that is frames ~410-1823; after the script's SetSelectedUnit the gate fails. Screen 2Eh itself stays registered, because the registry never erases a screen, so registration is not the test. Any `input` line outside the window reaches no 2Eh reader.
+  - **Lost-input lines.** The run log reports the loss rather than dropping it silently. The HUD tells the menu host on each frame `005484F0` actually runs, and the next frame's input prologue judges the frame before. The lines therefore appear one frame late and name the frame they are about.
+    - When `005484F0` did not run on the frame of the rising edge: `helm input action 0x99 edge on frame F lost: screen 2Eh's 005484F0 did not run`.
+    - When a hold ends after any held frames on which it did not run: `helm input action 0x99 hold ended on frame F: N held frame(s) without screen 2Eh's 005484F0`.
   - The injected record is outside the image's input-suppression set (`game+5B0h`, `004e4ec2` / `004e4eee`). An injected key therefore stays held through states that would clear a real one.
 
 **Example.** Select the artillery group, then hold fire for 10 seconds at 0.05 s per frame:
@@ -1220,6 +1222,7 @@ Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of it
   - `helm order applied: ... aim yaw Y pitch P rad through the look axes` when the line applies.
   - `helm aim reached: mover yaw Y pitch P rad (+384h / +388h)` when the camera is there. The pitch reported is the clamped one.
 - **LABELLED.** GlobalConfig+4 still reads 1.0 (as before), and the raise axis `+15E4h` stays zero. The target is process-wide and is not cleared at mission end.
+- **With the zoom toggle.** An `aim` combined with `input 0xE0` (zoom toggle) overshoots by one frame. The axes are computed from the zoom `+38h` before `0051EF00` changes it in the same frame. The next frame steers back, and the "reached" line comes one frame later.
 
 **Example.** Level the camera on the bow, then fire the artillery group for 10 s:
 
