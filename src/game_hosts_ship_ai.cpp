@@ -103,6 +103,7 @@
 #include "bsp/command_building_capture.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/weapon_director.hpp"
+#include "bsp/ship_ai_seg67_switches_cc13.hpp"
 
 namespace bsp::game {
 
@@ -10762,7 +10763,14 @@ public:
         in.own_speed = owner_.units.unit_forward_speed_0092d730(index_);
         in.acceleration = owner_.units.unit_class_max_accel_0504(index_);
         in.hull_half_width = owner_.units.unit_half_width_09cc(index_);
-        in.hull_beam = owner_.units.unit_hull_length_09c8(index_);
+        if (bsp::kShipAiTorpedoMarginClassLengthBound) {
+            // 009E089A..009E08EF: [[blk+3FCh]+538h]+A0h, the own class Length.
+            float class_length = 0.0f, right = 0.0f, up = 0.0f;
+            owner_.units.unit_class_extents(index_, class_length, right, up);
+            in.hull_beam = class_length;
+        } else {
+            in.hull_beam = owner_.units.unit_hull_length_09c8(index_);
+        }
         const auto& hull = ctl_.hull_geometry;
         in.position_x = hull.position_184[0];
         in.position_z = hull.position_184[1];
