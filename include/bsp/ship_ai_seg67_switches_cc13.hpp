@@ -68,6 +68,10 @@ static_assert(kShipAiClearanceRefreshSentinel == 0x1.388p+13f);    // 0x461C4000
 // ESMP08 Iowa 1848/1848; USN02, USN15 and IJN18 attack forces. The l69 base has
 // none. With only this switch OFF, LOMP10 completes at 1072.47 s. Whatever
 // steers mode-3 units in the image is unhosted; re-flip once cc13 binds it.
+// Name note (packet cc13-astern3a6): "NavigateAstern" is a misnomer kept here
+// because cc9 flips this switch by name. Mode 3 is the caller-steered navigate
+// the attackmove approach step enters (provisional NavigateCallerSteered; see
+// ShipAiSteeringMode in ship_ai_states.hpp and docs/CC13_MODE3STEER.md).
 inline constexpr bool kShipAiNavigateAsternSkipBound = false;
 
 // 009EE59B/009EE59F. When blk+1C4h is neither 2 nor 3 (Rudder or Heading),
@@ -118,5 +122,67 @@ inline constexpr bool kShipAiNavGateClosedArmFinalBound = true;
 // the skip only after (1) passes. cc9-lua52's local\l70_astern.py does the
 // d32c census.
 inline constexpr bool kShipAiCruiseDistanceSeedBound = false;
+
+// Packet cc13-navseeds2 (docs/CC13_NAVSEEDS2.md). Three more 009DFCB0 seeds
+// (ECX = blk+1C4h) the host starts at zero:
+//  - 009DFDB7 MOV byte [ECX+1A0h],1: blk+364h = 1, the committed-ahead
+//    direction. 009ED9D1 picks 00438B10 (subtract) on it and 009EC9CD keeps
+//    the throttle ceiling positive; with it clear the ceiling is negated and
+//    floored at -0.625. The host's ShipAiControlBlock::yaw_rate_subtracts_364
+//    starts false, so a ship that never runs the escape (the only image
+//    writers after the seed, 009F4B0F = 0 and 009F4B74 = 1) stays astern.
+//  - 009DFD79: blk+384h = -1.0f. Seeded as stall_time_384 = -1 with the
+//    direction_counter_384 marker = 1 (no direction-change zero yet), so the
+//    stall 009F47EE accumulates from -1 until the first zero. Long term the
+//    host should hold blk+384h as one float, not the int marker plus the float.
+//  - 009DFD71: blk+354h = -1.0f, both host copies (blk.clamp_354 and
+//    throttle_profile.hold_354). OFF starts the hold at 0, and 009E0591 counts
+//    it down on the first 009E04E0 pass even when nothing raised it (0 >= 0
+//    gives -dt), so OFF differs only until that first countdown. Separately,
+//    the host sends the 009F00E3 raise to ShipAiClearanceBlock::hold_354,
+//    which nothing reads, while the image raises the same blk+354h that
+//    009DE8FF tests; this switch does not route that raise.
+// Lifetime: written once in the controller build, before the first 009ED6B0;
+// register_units rebuilds every controller, and register_generated_units runs
+// the same build for units created after load. After the build only the
+// escape (ship_ai_obstacle_tables.cpp, 009F4B0F/009F4B74) writes 364h.
+// Reach: every mission with navigating ships, so a pair is needed. Pass
+// signature: in p24_off_u21f the Iowa group (steps 5050+, no positive throttle
+// after) should show positive throttle with this ON, and the count of
+// throttle -0.625 lines should fall; check with BSP_SHIP_ESCAPE_TRACE=Iowa.
+// Later items, not here: the 3A5h/3C1h dead copies (station_request.enable,
+// Snapshot.station.enable; labelled, not removed, by packet cc13-deadcopy)
+// and the plan pair's +DCh = -1 (009DBE1D, blk+300h),
+// which has no host storage or reader. 009DFCB0's 3DCh = 400.0f has no image
+// reader and 3C0h = 1 already matches Snapshot.station.making_way, so neither
+// is seeded here.
+inline constexpr bool kShipAiNavBlockCtorSeedsCc13Bound = false;
+
+// Packet cc13-navseeds2 (rev2 nit a). 009EF910 (ESI = ECX = blk at 009EF91B)
+// reads blk+364h live at 009EFFDC (steering mode 1: committed = !364h) and
+// 009EFFEC (mode 2: committed = 364h), and never writes it. The host models
+// that read with ShipAiClearanceBlock::committed_ahead_364, which nothing in
+// src/ writes, so it stays false while blk.yaw_rate_subtracts_364 is seeded
+// (kShipAiNavBlockCtorSeedsCc13Bound) or flipped by the escape. ON copies the
+// block's value in beside the other 009EF910 inputs, just before each call.
+// Separate from the seed switch because it also mirrors later escape flips,
+// so it changes behaviour on its own. Reach: every ship whose clearance
+// refresh runs in steering mode 1 or 2; needs its own pair (and one with the
+// seeds ON).
+inline constexpr bool kShipAiClearance364SyncCc13Bound = false;
+
+// Packet cc13-helmlatch (docs/CC13_IJN18LOSS.md section 7). 009E1170's latched
+// arm 009E11CE..009E1262 runs when +184h is set and role 1 is 8 or AI-held (the
+// map-up case). While the cruise state's +8h is below -10.0f (00CE6848, COMISS
+// at 009E11F9), it latches +8h = unit+994h (009E1207) and +0Ch = unit+998h
+// (009E1237), or 0 for a kind-0Eh unit (009E121F). On every re-plan it re-sends
+// +0Ch through 009DFFB0 (009E1249) and +8h through 009DBF90 (009E1257). The helm
+// arm stores -99.0f (00CF5BFC) into both at 009E1407/009E140C, so a later fall
+// to the latched arm latches again; the brain constructor stores the same -99.0f
+// at 009F3A22/009F3A27. The latch state is tracked in both settings. ON: the
+// re-send writes the control block. OFF writes only the controller's latch pair
+// (read by nothing else) and the summary counts. kHelmPrepareMapUpGateCc13Bound
+// (bsp/game_hosts_hud_world.hpp) requires this switch.
+inline constexpr bool kCruiseLatchedPlayerArmCc13Bound = false;
 
 } // namespace bsp
