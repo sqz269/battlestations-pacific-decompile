@@ -969,6 +969,15 @@ void scene_stock_queue_0095c4d0(GameSceneContentsHost::Impl& owner, int value) {
     ++owner.scene_stock_queue_appends;
 }
 
+// The outer bag's `Hidden` byte (00CE5708, +0Ch), the same retained byte
+// 0046D3C5 tests. cc15-vcp5: an authored `Hidden = B true` keeps its value in
+// the owning B data, which scene_stock_int never read, so every held-back
+// carrier's PlaneStock went to the 0095C4D0 queue instead of the +08h vector
+// and 0046EC77 never marked it; 004E0A9B then nil'd the deck's classes.
+bool scene_stock_hidden(const ScenePropertyBlock& bag) {
+    return hidden_property_bool(bag.find(bsp::kSceneHiddenPropertyKey));
+}
+
 // route_counted_stock (0046C07A..0046C0D8, 0046C11F..0046C180).
 void scene_stock_route_counted(GameSceneContentsHost::Impl& owner,
     const ScenePropertyBlock& bag, const std::string& key) {
@@ -976,7 +985,7 @@ void scene_stock_route_counted(GameSceneContentsHost::Impl& owner,
     if (sub == nullptr) return;
     const int type = scene_stock_int(owner, *sub, "Type");
     if (scene_stock_int(owner, *sub, "Count") == 0) return;
-    if (scene_stock_int(owner, bag, "Hidden") == 0) {
+    if (!scene_stock_hidden(bag)) {
         scene_stock_queue_0095c4d0(owner, type);
     } else if (scene_stock_register_0046be90(owner, type)) {
         ++owner.scene_vector_stock_pushes;
@@ -1022,7 +1031,7 @@ void scene_stock_lists_0046bf70(GameSceneContentsHost::Impl& owner,
             if (sub == nullptr) continue;
             const int type = scene_stock_int(owner, *sub, "Type");
             if (type <= 0) continue;
-            if (scene_stock_int(owner, bag, "Hidden") == 0) {
+            if (!scene_stock_hidden(bag)) {
                 scene_stock_queue_0095c4d0(owner, type);
             } else if (scene_stock_register_0046be90(owner, type)) {
                 ++owner.scene_vector_stock_pushes;
