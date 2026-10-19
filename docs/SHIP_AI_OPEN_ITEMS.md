@@ -20243,3 +20243,13 @@ No WINS row takehelms a torpedo ship other than IJN18 `l67_i18_d` (Zao), BSM01 `
 `l68_u2_a` (Houston); JM06 `l70_j6_n` takehelms PlayerSub only from frame 52000, after its 817.92 s completion.
 Pair: OFF = the tree build at dc6d0d1a3, ON = `local\g55_tg_on` (pair_export, same commit); IJN18 24000, BSM01 20000,
 USN02 16000 frames, reference env (`g55_tgoff_*` / `g55_tgon_*`).
+
+**309.1 measured; FLIPPED ON by mechanism.** OFF summaries (`torpedo owner player gate ... ticks=`): IJN18 23116,
+BSM01 33180, USN02 0 (USN02 `l68_u2_a` now fails at 330.04 s, Game Over, before Houston's takehelm at frame 5300;
+sent to lua70). ON exits on every counted tick (exits = ticks). pair_diff exit 1 on all three: deaths, hit records,
+damage, shots, death rows, plane death modes, unit tables and the native table identical; IJN18 ends with no
+EndMission in 24000 frames both ways, BSM01 ends EndMission 812.93 s both ways with the sus_prog.exe refusal logged.
+The one other IJN18 line, Oma6's end-of-run `clear_37c` (2025.4 vs FLT_MAX), also differs between two OFF runs of the
+same binary (`g55_tgoff_i18` / `g55_tgoff2_i18`): it is static-zone clearance noise. No launch was suppressed: neither
+Zao nor HenryPT launches a bot torpedo OFF after its takehelm (no `shooter=Zao|HenryPT` launch), so these rows
+exercise the exit but not a lost torpedo. A row whose taken ship's bot would launch OFF is still unpaired.
