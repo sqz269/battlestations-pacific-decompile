@@ -131,6 +131,48 @@ BSP_GUNNERY_RNG_STREAMS=1`. USN04: `--frames 4700 --press-start-frame 30 --menu-
   key=USN04 count_284=1 completed_00=0 ...` line; on ON that record lives in the profile owner's
   MissionProgress, so a later map-flag query in the same process would read it.
 
+### Flipped ON: `kProfileOwnerCc15Bound` alone (cc15-flip, base 88b7eb3d1, 2026-10-19)
+
+`kProfileLoadCc15Bound` and `kHintTrackerCc15Bound` stay false. OFF = 88b7eb3d1, ON = the same tree
+with the switch true. Both builds run through tools/run_game.ps1 with `BSP_DEATH_TABLE=1
+BSP_GUNNERY_RNG_STREAMS=1`, and every log has the in-process `summary mission gunnery per-consumer
+random streams ON` line.
+
+- **USN04** (`--frames 5000 --mission-frames 4800`): gameplay identical. Deaths 53, hits 691, damage
+  12678.5, 81 units. Only the four section 3 profile rows moved: `+ Game::construct_profile_reset
+  007fef9f`, `+ ProfileReset::xenon_state_is_two 00f8abe8` (2 calls), and `TitleInit::reset_player_profile
+  007fdb20` and `MissionDetail::map_flag_visible 005c2f70` going from unimplemented to concrete. The
+  summary lines and the other lines did not change.
+- **Wins set** (`--stop-after-end 40`): `pair_diff` reports gameplay identical on all 12 rows. The
+  end, the clock, the death rows, the unit table and the guard line match per row, and the native
+  table moves only those four rows (map_flag_visible has 27-36 calls per mission):
+
+  | Row | Orders | End (OFF = ON) |
+  |---|---|---|
+  | USN01 | usn01_l69_u1_a | completed 1200.05 s |
+  | USN02 | usn02_l68_u2_a | failed 170.06 s (Game Over) |
+  | USN12 | usn12_l68_u12_e8 | completed 1395.24 s |
+  | PRCP01 | prcp01_p9_p01_k | completed 915.10 s |
+  | USN21 | s46_u21_f | completed 2906.71 s |
+  | ESMP08 | esmp08_p12_e8_rb | completed 1314.31 s |
+  | LOMP10 | lomp10_p3_l10_b | completed 991.43 s |
+  | JM06 | jm06_s45_j6_k | completed 1658.49 s |
+  | BSM09 | bsm09_l68_b9_d1 | EndMission (nil) 285.05 s |
+  | LOMP06 | lomp06_l70_l6_c | failed 653.11 s |
+  | IJN18 | ijn18_l67_i18_d | failed 525.00 s (Game Over) |
+  | BSM01 | bsm01_l69_b1_d | no end |
+
+- The one other moved line is LOMP10's ring-scan `clear_37c` for Kaya (10000.0 -> FLT_MAX). This is
+  the heap-dependent value of SHIP_AI_OPEN_ITEMS 140; see CC15_OBJECT_SCENE_DATABASE.md.
+- No profile read or write: the load call site needs `kProfileLoadCc15Bound` as well
+  (game_hosts_menu.cpp), and no ON log mentions a profile load. `Documents\Battlestations-Pacific`
+  (`options.txt`, `save\0\player` 2,182 bytes, `quick`, `valid`) has the same sizes and mtimes
+  (2026-09-18) before and after the runs.
+- Not caused by the flip (both sides alike): on this main, USN02, LOMP06, IJN18 and BSM01 lose the
+  wins docs/WINS_TABLE.md records for these order files. BSM09 d1 ends at 285.05 s, against 351.04 s
+  at c95d107da. The env matches cc9's l70 'ref' runner and its manifests. On 4cc9872bc, where the ref
+  env also gave 285.05 s, the same exe without `BSP_GUNNERY_RNG_STREAMS` ends at 429.02 s.
+
 ## 4. Uncertainties and open items
 
 - The real profile load (and so the saved `AllSeenHints` and mission scores) is out of scope.
