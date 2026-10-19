@@ -36,8 +36,8 @@ so offset = contact - unit+FCh. Read from the raw listing, `00819A20`-`00819BD4`
 
 **+14h ends at 0.** Every class whose handler reaches `00819A20` has `vtable[54h] = 0042B8D0`
 (`FLDZ; RET`). The classes checked are the vtables whose `+164h` holds `00821E80`, `00852C60`,
-`0074B570` or `00758EB0`: `00CF90B0`, `00CFA778`, `00CFB738`, `00CFC3D0`, `00CFFA30`, `00D01630` and
-`00D0BF80`. So SetShot overwrites the `+510h` store, and `KamikazeDamage` decides only the gate.
+`0074B570` or `00758EB0`: `00CF90B0`, `00CFA778`, `00CFB738`, `00CFC3D0`, `00CFFA30`, `00D01630`,
+`00D09678`, `00D0BF80` and `00D0C648` (`00D09678` and `00D0C648` hold `00821E80` at `+164h`). So SetShot overwrites the `+510h` store, and `KamikazeDamage` decides only the gate.
 In the same vtables `vtable[58h] = 0042B8E0` (`FLD1`, the weapon scale) and
 `vtable[108h] = 0042BB30` (`XOR EAX,EAX`, no weapon), and `vtable[B0h] = 006D1DF0`.
 
@@ -141,7 +141,9 @@ For each detonation with a trace hit:
   segment;
 - `notify_plane_hit_007bbcf0` on the target;
 - the `00915F20` record is counted only on a trace hit (`kz_direct_traced`); misses show in
-  `kz_direct_missed`.
+  `kz_direct_missed`;
+- `kz_direct_arms` is counted only after the `+5Ch`..`+60h` liveness gate (`00819A51`..`00819A73`),
+  so ON and OFF can differ for a target that is pending destroy (`+60h` set) but not yet dead.
 
 No health, death, attribution or RNG change is expected.
 
