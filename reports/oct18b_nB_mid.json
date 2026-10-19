@@ -5,9 +5,10 @@
   "project": "C:/Users/sqz269/bsp.gpr",
   "validation": {
     "build": "Win32 scripts/build.ps1 passed and existing CTest 2/2 passed; dedicated src/oct18b_nB_mid.cpp awaits parent registration and merged build; final signature refinements require incremental build.",
-    "call_sites": "pending",
+    "call_sites": "tools/verify_report_calls.py: 111 call rows checked, 0 failed",
     "game_run": "not requested or run",
-    "abi": "source interfaces, not drop-in binary replacements"
+    "abi": "source interfaces, not drop-in binary replacements",
+    "ghidra": "62 reviewed names/comments applied and project saved; affected exports force-refreshed; prior annotations local/ghidra-annotations-20261019T055221Z.json"
   },
   "family_exceptions": [
     {
@@ -57,7 +58,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_instantiate_ship_message_thunk_00759090",
-      "dispatch_body_bytes": 5
+      "dispatch_body_bytes": 5,
+      "original_abi": "ECX=SHIP_CREATE message; JMP0081BFE0, no added arguments; EAX=entity, target RET."
     },
     {
       "address": "007593b0",
@@ -84,7 +86,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_read_mothership_create_007593b0",
-      "dispatch_body_bytes": 31
+      "dispatch_body_bytes": 31,
+      "original_abi": "ECX=message, [entry ESP+4]=stream; void, RET4; stock receiver becomes message+12Ch."
     },
     {
       "address": "0075ac90",
@@ -100,7 +103,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_is_type_cc_49_46_0075ac90",
-      "dispatch_body_bytes": 34
+      "dispatch_body_bytes": 34,
+      "original_abi": "ECX unused; stack type dword; EAX ordered integer 0/1; RET4."
     },
     {
       "address": "00763e40",
@@ -116,7 +120,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_is_type_aa_49_46_00763e40",
-      "dispatch_body_bytes": 34
+      "dispatch_body_bytes": 34,
+      "original_abi": "ECX unused; stack type dword; EAX ordered integer 0/1; RET4."
     },
     {
       "address": "007681f0",
@@ -193,7 +198,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_read_plane_create_007681f0",
-      "dispatch_body_bytes": 267
+      "dispatch_body_bytes": 267,
+      "original_abi": "ECX=message, one stack read-stream pointer; reader ECX=stream+4h; void RET4."
     },
     {
       "address": "00768300",
@@ -230,7 +236,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_read_torpedo_create_00768300",
-      "dispatch_body_bytes": 98
+      "dispatch_body_bytes": 98,
+      "original_abi": "ECX=message, one stack read-stream pointer; reader ECX=stream+4h; void RET4."
     },
     {
       "address": "00768370",
@@ -257,7 +264,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_read_paratrooper_create_00768370",
-      "dispatch_body_bytes": 52
+      "dispatch_body_bytes": 52,
+      "original_abi": "ECX=message, one stack read-stream pointer; reader ECX=stream+4h; void RET4."
     },
     {
       "address": "007683b0",
@@ -278,7 +286,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_read_net_entity_create_thunk_007683b0",
-      "dispatch_body_bytes": 5
+      "dispatch_body_bytes": 5,
+      "original_abi": "ECX=message, one stack read-stream pointer; reader ECX=stream+4h; void RET4."
     },
     {
       "address": "0076a710",
@@ -294,7 +303,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_decrement_session_byte12b_0076a710",
-      "dispatch_body_bytes": 8
+      "dispatch_body_bytes": 8,
+      "original_abi": "ECX=owner; byte owner+12Bh decremented modulo256; no value result; RET."
     },
     {
       "address": "0076c420",
@@ -317,7 +327,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_stamp_local_voice_time_0076c420",
-      "dispatch_body_bytes": 37
+      "dispatch_body_bytes": 37,
+      "original_abi": "Original ECX unused; global game; stack bool flag passed unchanged; record=game+748h+signed_index*118h; RET4 or tail007F7490."
     },
     {
       "address": "0077d500",
@@ -344,7 +355,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_broadcast_activate_if_clear_0077d500",
-      "dispatch_body_bytes": 117
+      "dispatch_body_bytes": 117,
+      "original_abi": "ECX=session owner; stack byte flag in a dword slot; void RET4."
     },
     {
       "address": "00780800",
@@ -360,7 +372,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_descriptor_identity_00780800",
-      "dispatch_body_bytes": 5
+      "dispatch_body_bytes": 5,
+      "original_abi": "ECX=input receiver, ignored stack dword; EAX=ECX; RET4."
     },
     {
       "address": "00781080",
@@ -376,7 +389,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_session_false_slot_00781080",
-      "dispatch_body_bytes": 5
+      "dispatch_body_bytes": 5,
+      "original_abi": "ECX unused, ignored stack dword; AL=0, upper EAX unspecified; RET4."
     },
     {
       "address": "0078cfb0",
@@ -391,7 +405,8 @@
       "status": "library_instantiation_out_of_scope",
       "source": "docs/OCT18B_NB_MID.md",
       "evidence": "Compiler/reference-counted helper instantiation. InterlockedIncrement through IAT 00CE221C; holder copy, with EH registration and three scalar float copies in 007C4330/007C4390. No game-code body or credit added.",
-      "dispatch_body_bytes": 44
+      "dispatch_body_bytes": 44,
+      "original_abi": "ECX=destination; stack owner pointer; EAX=destination; RET4."
     },
     {
       "address": "0078e450",
@@ -407,7 +422,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_movcam_description_0078e450",
-      "dispatch_body_bytes": 20
+      "dispatch_body_bytes": 20,
+      "original_abi": "ECX=MovCam; EAX=description cstring; RET."
     },
     {
       "address": "0078e730",
@@ -423,7 +439,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_modifier_write_noop_0078e730",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX=modifier, stack cursor (unused); void RET4."
     },
     {
       "address": "0078e740",
@@ -439,7 +456,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_modifier_read_noop_0078e740",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX=modifier, stack stream (unused); void RET4."
     },
     {
       "address": "0078e760",
@@ -455,7 +473,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_modifier_type_zero_0078e760",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX unused; EAX=0; RET."
     },
     {
       "address": "0078eaa0",
@@ -471,7 +490,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_descriptor_identity_0078eaa0",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX=input receiver; EAX=ECX; RET."
     },
     {
       "address": "00790390",
@@ -487,7 +507,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_movie_camera_fixed_driver_00790390",
-      "dispatch_body_bytes": 193
+      "dispatch_body_bytes": 193,
+      "original_abi": "ECX=MovCamNew, ignored stack dword; void RET4; element receiver is camera+170h."
     },
     {
       "address": "007a66d0",
@@ -514,7 +535,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0xc. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_movcam_set_cinematic_007a66d0",
-      "dispatch_body_bytes": 62
+      "dispatch_body_bytes": 62,
+      "original_abi": "ECX=MovCam; three dword slots: byte enabled, int transition, ignored word; void RET0Ch."
     },
     {
       "address": "007ab330",
@@ -542,7 +564,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_handle_message_007ab330",
-      "dispatch_body_bytes": 33
+      "dispatch_body_bytes": 33,
+      "original_abi": "ECX=paratrooper; stack message pointer; AL=1 for71h, otherwise inherited bomb handler result; RET4/tail006E09F0."
     },
     {
       "address": "007ac970",
@@ -558,7 +581,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_path_source_zero_007ac970",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX unused; EAX=0; RET."
     },
     {
       "address": "007ad820",
@@ -595,7 +619,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_write_path_set_007ad820",
-      "dispatch_body_bytes": 73
+      "dispatch_body_bytes": 73,
+      "original_abi": "ECX=message, one stack write cursor pointer; void RET4."
     },
     {
       "address": "007ad870",
@@ -632,7 +657,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_read_path_set_007ad870",
-      "dispatch_body_bytes": 75
+      "dispatch_body_bytes": 75,
+      "original_abi": "ECX=message, one stack read-stream pointer; reader ECX=stream+4h; void RET4."
     },
     {
       "address": "007ad8c0",
@@ -664,7 +690,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_write_path_add_007ad8c0",
-      "dispatch_body_bytes": 60
+      "dispatch_body_bytes": 60,
+      "original_abi": "ECX=message, one stack write cursor pointer; void RET4."
     },
     {
       "address": "007ad900",
@@ -696,7 +723,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_read_path_add_007ad900",
-      "dispatch_body_bytes": 62
+      "dispatch_body_bytes": 62,
+      "original_abi": "ECX=message, one stack read-stream pointer; reader ECX=stream+4h; void RET4."
     },
     {
       "address": "007ad940",
@@ -733,7 +761,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_write_path_insert_007ad940",
-      "dispatch_body_bytes": 73
+      "dispatch_body_bytes": 73,
+      "original_abi": "ECX=message, one stack write cursor pointer; void RET4."
     },
     {
       "address": "007ad990",
@@ -770,7 +799,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_read_path_insert_007ad990",
-      "dispatch_body_bytes": 75
+      "dispatch_body_bytes": 75,
+      "original_abi": "ECX=message, one stack read-stream pointer; reader ECX=stream+4h; void RET4."
     },
     {
       "address": "007ad9e0",
@@ -802,7 +832,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_write_path_delete_007ad9e0",
-      "dispatch_body_bytes": 44
+      "dispatch_body_bytes": 44,
+      "original_abi": "ECX=message, one stack write cursor pointer; void RET4."
     },
     {
       "address": "007ada10",
@@ -834,7 +865,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_read_path_delete_007ada10",
-      "dispatch_body_bytes": 46
+      "dispatch_body_bytes": 46,
+      "original_abi": "ECX=message, one stack read-stream pointer; reader ECX=stream+4h; void RET4."
     },
     {
       "address": "007ae930",
@@ -910,7 +942,8 @@
       "status": "deferred_contract_recovery",
       "source": "docs/OCT18B_NB_MID.md",
       "evidence": "Pointer-array polyline/line minimum distance. ECX=array, origin at [entry ESP+4], direction at [entry ESP+8], ST0 return, RET8. Requires full x87 spill/NaN ordering recovery and the EDX/ECX plus stack contracts at calls 0046F440, 0046F940 and 00470150; decompiler hides those receivers. Same family: path_movcam_seg46_argon.hpp PointLineDistanceHost / point3_ptr_array_nearest_point_to_line_007aeec0. No stub added; continuing bounded recovery.",
-      "dispatch_body_bytes": 986
+      "dispatch_body_bytes": 986,
+      "original_abi": "ECX=pointer array, stack origin pointer then direction pointer; ST0=float-spilled distance; RET8."
     },
     {
       "address": "007b0b90",
@@ -926,7 +959,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_path_entity_noop_007b0b90",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX unused; ignored stack dword; void RET4."
     },
     {
       "address": "007b0c90",
@@ -958,7 +992,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_read_path_create_points_007b0c90",
-      "dispatch_body_bytes": 151
+      "dispatch_body_bytes": 151,
+      "original_abi": "ECX=message, one stack read-stream pointer; reader ECX=stream+4h; void RET4."
     },
     {
       "address": "007b1010",
@@ -974,7 +1009,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_path_cursor_index_007b1010",
-      "dispatch_body_bytes": 4
+      "dispatch_body_bytes": 4,
+      "original_abi": "ECX=PathCursor; EAX=dword at+8h; RET."
     },
     {
       "address": "007b1800",
@@ -990,7 +1026,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_path_cursor_save_007b1800",
-      "dispatch_body_bytes": 191
+      "dispatch_body_bytes": 191,
+      "original_abi": "ECX=PathCursor; stack archive pointer; void RET4."
     },
     {
       "address": "007b2780",
@@ -1017,7 +1054,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_point3_vector_load_from_archive_007b2780",
-      "dispatch_body_bytes": 163
+      "dispatch_body_bytes": 163,
+      "original_abi": "ECX=point vector; stack archive pointer; void RET4."
     },
     {
       "address": "007b40d0",
@@ -1033,7 +1071,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_bot_task_zero_007b40d0",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX unused; EAX=0; RET."
     },
     {
       "address": "007b4110",
@@ -1049,7 +1088,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_bot_task_false_007b4110",
-      "dispatch_body_bytes": 5
+      "dispatch_body_bytes": 5,
+      "original_abi": "ECX unused; ignored stack word; AL=0, upper EAX unspecified; RET4."
     },
     {
       "address": "007b4170",
@@ -1065,7 +1105,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_bot_task_clear_point_valid_007b4170",
-      "dispatch_body_bytes": 11
+      "dispatch_body_bytes": 11,
+      "original_abi": "ECX unused; stack output pointer; writes output+Ch=0 only; RET4, no defined return value."
     },
     {
       "address": "007b4180",
@@ -1081,7 +1122,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_bot_task_notify_current_state_007b4180",
-      "dispatch_body_bytes": 18
+      "dispatch_body_bytes": 18,
+      "original_abi": "ECX=task; if current+310h null RET, else ECX=current and tail current.vslot08 with unchanged stack; source models void notification."
     },
     {
       "address": "007b6ce0",
@@ -1097,7 +1139,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_rocket_slot_return9_007b6ce0",
-      "dispatch_body_bytes": 6
+      "dispatch_body_bytes": 6,
+      "original_abi": "ECX unused; EAX=9; RET."
     },
     {
       "address": "007b6d00",
@@ -1113,7 +1156,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_rocket_on_hit_007b6d00",
-      "dispatch_body_bytes": 81
+      "dispatch_body_bytes": 81,
+      "original_abi": "ECX=rocket task; ignored stack word; +43Ch=0.0f, AL=1; RET4."
     },
     {
       "address": "007b7270",
@@ -1140,7 +1184,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_rocket_follow_wait_007b7270",
-      "dispatch_body_bytes": 26
+      "dispatch_body_bytes": 26,
+      "original_abi": "ECX=rocket task; no stack arguments; tail009BE3E0 with ECX=task+520h only for that state, else0099B720; ST0 result, target RET."
     },
     {
       "address": "007b7830",
@@ -1156,7 +1201,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_bot_task_point_result_007b7830",
-      "dispatch_body_bytes": 55
+      "dispatch_body_bytes": 55,
+      "original_abi": "ECX=task; hidden output pointer on stack; interface at task+3F8h returns temporary Vec3; EAX=out, RET4."
     },
     {
       "address": "007b9070",
@@ -1177,7 +1223,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_projectile_set_air_mode_thunk_007b9070",
-      "dispatch_body_bytes": 5
+      "dispatch_body_bytes": 5,
+      "original_abi": "ECX=shot; one unused stack word; JMP006E6410, target RET4."
     },
     {
       "address": "007c4330",
@@ -1192,7 +1239,8 @@
       "status": "library_instantiation_out_of_scope",
       "source": "docs/OCT18B_NB_MID.md",
       "evidence": "Compiler/reference-counted helper instantiation. InterlockedIncrement through IAT 00CE221C; holder copy, with EH registration and three scalar float copies in 007C4330/007C4390. No game-code body or credit added.",
-      "dispatch_body_bytes": 93
+      "dispatch_body_bytes": 93,
+      "original_abi": "ECX=destination, EDX=source; no stack arguments; void/unspecified EAX; RET."
     },
     {
       "address": "007c4390",
@@ -1207,7 +1255,8 @@
       "status": "library_instantiation_out_of_scope",
       "source": "docs/OCT18B_NB_MID.md",
       "evidence": "Compiler/reference-counted helper instantiation. InterlockedIncrement through IAT 00CE221C; holder copy, with EH registration and three scalar float copies in 007C4330/007C4390. No game-code body or credit added.",
-      "dispatch_body_bytes": 93
+      "dispatch_body_bytes": 93,
+      "original_abi": "ECX=destination, EDX=source; no stack arguments; void/unspecified EAX; RET."
     },
     {
       "address": "007e23b0",
@@ -1223,7 +1272,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x8. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_engine_step_rpm_noop_007e23b0",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX=engine (unused); two float stack arguments, both ignored; void RET8."
     },
     {
       "address": "007e23c0",
@@ -1239,7 +1289,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_engine_apply_spin_noop_007e23c0",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX=engine (unused); one ignored float stack argument; void RET4."
     },
     {
       "address": "007e23d0",
@@ -1255,7 +1306,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_engine_blur_blend_noop_007e23d0",
-      "dispatch_body_bytes": 1
+      "dispatch_body_bytes": 1,
+      "original_abi": "ECX=engine (unused); no arguments or effects; void RET."
     },
     {
       "address": "007ecf70",
@@ -1269,7 +1321,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_leader_slot12c_007ecf70",
-      "dispatch_body_bytes": 16
+      "dispatch_body_bytes": 16,
+      "original_abi": "ECX=squadron; replace ECX with member+3D0h and tail its vslot12Ch; stack and return category inherited, source forwarding template."
     },
     {
       "address": "007ed000",
@@ -1285,7 +1338,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x28. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_noop_007ed000",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX=squadron (unused), ten ignored dword stack slots; void RET28h."
     },
     {
       "address": "007ed450",
@@ -1301,7 +1355,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_leader_position_007ed450",
-      "dispatch_body_bytes": 25
+      "dispatch_body_bytes": 25,
+      "original_abi": "ECX=squadron, stack out pointer; leader.vslot34(out), then EAX=out; RET4."
     },
     {
       "address": "007ed470",
@@ -1315,7 +1370,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_leader_slot38_007ed470",
-      "dispatch_body_bytes": 13
+      "dispatch_body_bytes": 13,
+      "original_abi": "ECX=squadron -> leader, tail leader.vslot38; stack unchanged, ST0 speed result inherited."
     },
     {
       "address": "007ed480",
@@ -1331,7 +1387,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_description_007ed480",
-      "dispatch_body_bytes": 23
+      "dispatch_body_bytes": 23,
+      "original_abi": "ECX=squadron; leader.vslot28 or fallback string; EAX=cstring; RET."
     },
     {
       "address": "007ed4a0",
@@ -1345,7 +1402,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup tail forwarding; native target ABI retained. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_leader_slotbc_007ed4a0",
-      "dispatch_body_bytes": 39
+      "dispatch_body_bytes": 39,
+      "original_abi": "ECX=squadron -> leader, tail leader.vslotBCh; stack/return category inherited, source forwarding template."
     },
     {
       "address": "007ed4d0",
@@ -1361,7 +1419,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_leader_float_007ed4d0",
-      "dispatch_body_bytes": 44
+      "dispatch_body_bytes": 44,
+      "original_abi": "ECX=squadron; ST0=leader.vslot50 rounded through float, or +0.0f; RET."
     },
     {
       "address": "007ee290",
@@ -1388,7 +1447,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_heading_007ee290",
-      "dispatch_body_bytes": 65
+      "dispatch_body_bytes": 65,
+      "original_abi": "ECX=squadron; ST0=leader.vslotC8 if present, else -(float)atan2(world+ECh,world+F4h); RET."
     },
     {
       "address": "007efaa0",
@@ -1404,7 +1464,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_true_007efaa0",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX unused; AL=1, upper EAX unspecified; RET."
     },
     {
       "address": "007efab0",
@@ -1420,7 +1481,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_noop_007efab0",
-      "dispatch_body_bytes": 3
+      "dispatch_body_bytes": 3,
+      "original_abi": "ECX unused; one ignored stack word; void RET4."
     },
     {
       "address": "007efba0",
@@ -1576,7 +1638,8 @@
       "status": "deferred_contract_recovery",
       "source": "docs/OCT18B_NB_MID.md",
       "evidence": "PlaneSquadronGen command permission predicate, ECX=squadron, command string and nullable target on stack, AL boolean, RET8. Requires command constants and call/receiver contracts for 0060C5B0(class+35Ch), 006BF050(target ECX, DL=1), 007EEC50, 007ED7E0/007ED8D0, plus exact party and vslot168 order. Same family: plane_squadron_entity.hpp. No stub added; continuing bounded recovery.",
-      "dispatch_body_bytes": 769
+      "dispatch_body_bytes": 769,
+      "original_abi": "ECX=squadron; stack command cstring then nullable target; AL boolean result; RET8."
     },
     {
       "address": "007f2290",
@@ -1598,7 +1661,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_set_invincible_007f2290",
-      "dispatch_body_bytes": 74
+      "dispatch_body_bytes": 74,
+      "original_abi": "ECX=squadron; stack float seconds; void RET4."
     },
     {
       "address": "007f22e0",
@@ -1630,7 +1694,8 @@
       "status": "reconstructed_source_interfaces",
       "evidence": "Oct18b newly defined function; exact listing and caller/vslot evidence retained in report. Descriptive name is provisional. Original cleanup RET 0x4. Explicit source interface and required dependencies; no host wiring or game run.",
       "ghidra_name": "BSP_plane_squadron_follow_leader_pose_007f22e0",
-      "dispatch_body_bytes": 191
+      "dispatch_body_bytes": 191,
+      "original_abi": "ECX=squadron; one ignored stack word; void RET4."
     }
   ],
   "counts": {
