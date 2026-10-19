@@ -207,6 +207,11 @@ public:
     void enter_hud_root_screen_006488d0();
     void force_select_unit_006485a0();
     void exit_weapon_group_screen_005470a0();
+    // Packet cc13-releasegun: whether a plan's `releasegun` line armed the map
+    // toggle, and screen 46h's exit 0064A490 for the pump.
+    bool release_gun_armed() const noexcept;
+    void arm_release_gun_map_toggle() noexcept;
+    void exit_ship_view_screen_0064a490();
 
     // One summary line for the run log.
     void report();
@@ -230,6 +235,9 @@ inline constexpr bool kSetSelectedUnitBound = true;
 // while a world is attached (attach_world_2k / detach_world_2k). Returns false
 // with `reached` false when no HUD is attached.
 bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached);
+// Packet cc13-releasegun: arms the attached HUD's map toggle for the plan's
+// `releasegun` line. Returns false with `reached` false when no HUD is attached.
+bool hud_arm_release_gun_map_toggle(bool& reached);
 // 00645060 alone, with no selection change: whether the player could select
 // `unit` (single player, teamIndex 0, allowSpectate 1 as 00647317 passes).
 // cc9-ships38: the helm-order moveto's gate (SHIP_AI 190.1). `reached` is

@@ -18,14 +18,14 @@ namespace bsp::cc13_kz_latch {
 // do. False: those loops ask only the racks, as before, and a kamikaze
 // squadron latches spent at its first command. Changes no task: pairable on
 // its own.
-inline constexpr bool kKamikazeRackRoundLatchCc13Bound = false;
+inline constexpr bool kKamikazeRackRoundLatchCc13Bound = true;  // ON: USN21 staged pairs (docs/SHIP_AI_OPEN_ITEMS.md 306.4)
 
 // The same AL feeds the dead-target retest (009F820E-009F8412,
 // kSquadronDeadTargetRetestBound). True: its loop also counts a kamikaze
 // member, so a kamikaze squadron whose target dies has its command ended
 // (0071E430) and re-issued, as in the image. False: the retest skips a
 // kamikaze squadron, as before. Separate because it changes tasks.
-inline constexpr bool kKamikazeDeadTargetRetestCc13Bound = false;
+inline constexpr bool kKamikazeDeadTargetRetestCc13Bound = true;  // ON: USN21 staged pairs (docs/SHIP_AI_OPEN_ITEMS.md 306.4)
 static_assert(!kKamikazeDeadTargetRetestCc13Bound || kKamikazeRackRoundLatchCc13Bound,
               "the kamikaze retest arm is the same 007ED790 answer as the latch arm");
 
@@ -37,7 +37,7 @@ static_assert(!kKamikazeDeadTargetRetestCc13Bound || kKamikazeRackRoundLatchCc13
 // kamikaze squadron's spawn-time latch into retreat or land. ON only, the
 // 007F16D0 log line also carries the retreat arm's zone result
 // (zone-hit / zone-miss, 004C7730).
-inline constexpr bool kRtbHeadC24PilotFiresCc13Bound = false;
+inline constexpr bool kRtbHeadC24PilotFiresCc13Bound = true;  // ON: USN21 staged pairs (docs/SHIP_AI_OPEN_ITEMS.md 306.4)
 static_assert(!kRtbHeadC24PilotFiresCc13Bound || kKamikazeRackRoundLatchCc13Bound,
               "PilotFires into 007F16D0 needs the kamikaze latch arm, or kamikazes go home at spawn");
 

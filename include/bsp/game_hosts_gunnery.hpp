@@ -1347,6 +1347,12 @@ public:
     // Under BSP_GUNNERY_RNG_STREAMS=1, a MEASUREMENT option, each (stream, unit)
     // key gets its own deterministic generator instead.
     float death_mode_draw_00bd2f10(int stream, std::size_t unit_index, float low, float high);
+    // Packet cc13-sinkfix: 0074EC50's per-leak U(0, 1) (00BD2F10 ECX = 1 at
+    // 0074ECA5) for the units host. On the shared generator it is the same call
+    // as death_mode_draw_00bd2f10(1, ...); under BSP_GUNNERY_RNG_STREAMS=1 it has
+    // its own key (sink_leak, ship), so it shares no keyed stream with the
+    // death-mode draws (Lua BreakShip / SetDeadMeat) on the same ship.
+    float sink_leak_draw_0074eca5(std::size_t ship_index, float low, float high);
     // Packet g43_plane_spin_side: unit+800h as 007BBCF0 last stored it from a
     // direct hit's element kind (0 lwing, 1 rwing), -1 (007CFDB4) before any or
     // with kPlaneSpinSideBound OFF.
