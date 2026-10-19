@@ -145,23 +145,48 @@ release:
 
 No exit issues an order or draws from `00BD2F10`. Only the follow exit has an effect.
 
-Host (game_hosts_units.cpp, read-only): `follow_exit_009bde40` (6537-6606, under
-`kFollowExitClearsBound`) is reached only from the state switch (~26377) and the exit_follow
-override (~36529). The moveto/attackmove release sites (9655, 14247, 14957, 17720, 17869, 17904)
-set `moveto_task_installed = false` and `moveto_state = kNone` and do not call it. Visible
-difference when the release happens in follow:
+Where the exit's gun store lands. The follow state's +4 is the moveto approach: task+3F8h, with the
+follow state at approach+9Ch (`009C2E73`). Approach +4h is the unit (`009F9CEA`). Approach +1Ch is
+the retiring task's own gun block, task+314h: `009F9980`, called from `009C30CF`, stores it at
+`009F999D`. Right after slot +58h, `00999EE0` deletes the task (`00999F0B`, vtable+0 with flag 1).
+The exit's +4Ch = 0.0 therefore lands on a block that is freed a moment later.
 
-- `plane_turbo_9f9` stays set only until the next pilot commit, which rewrites it from
-  `plan_turbo_2e5` (37514). `0099B572` resets that value every think (37113). The effect is
-  transient: at most one commit.
-- `df_gun.hold_4c` keeps the follow sight's value (2.0 at 9487, `009C232A`) instead of 0.0. The gun
-  envelope reads it at 24330 (`009FCCB4`: `hold_4c > 0` returns no fire), so the next task's guns
-  can stay held for up to 2.0 s. The gun tick decays it by dt (`009FC7CD`-`009FC7EE`; host
-  dogfight_task.cpp:272), and 9487 or 24605 (strafe point, -1.0) can rewrite it sooner.
+Every replacement task builds its own gun block: both base constructors call `009FAAD0` on
+task+314h (`0099C790`, `0099C950`), and +4Ch = 0.0 (`009FAB19` XORPS, `009FAB4B`).
 
-LIVE? yes, when a wingman's moveto/attackmove is released in the follow state (override sites
-17869/17904, 14957). RNG? no. Fix belongs to the host lane: call `follow_exit_009bde40` at those
-release sites when `moveto_state` is follow.
+Order in the image:
+
+1. `0099A4C0` (bot tick, `0099AE7E`) moves the head to the retired list +64h.
+2. In the same tick, the new head's +54h start runs, then its update `009998A0` (gun tick
+   `00999979`) runs on the new block.
+3. At the next tick's drain (`0099ADA3`/`0099ADC2`), `00999EE0` runs `009C32A0`, which:
+   1. drops the leg via `009FD050(-1.0)`;
+   2. JMPs to the state exit;
+   3. returns to `00999EFC`, which deletes the task.
+
+Nothing frees or resets the state or approach+1Ch before the exit.
+
+Host (game_hosts_units.cpp): one `df_gun` per unit lives for the slot's life (1155), and no install
+re-runs `009FAAD0`. `follow_exit_009bde40` (6596) is reached only from the in-task state switch and
+the exit_follow override. The moveto/attackmove release sites (9655, 14247, 14957, 17720, 17869,
+17904) clear the state without it. All six are `0099A4C0` retires, so in the image each reaches
+`00999EE0` -> `009C32A0`.
+
+Visible difference after any task change:
+
+- `df_gun.hold_4c` keeps the follow sight's 2.0 (9487, `009C232A`). The image's new task starts
+  at 0.0.
+- In the gun tick, a hold above 0 forces the envelope: `009FCC33` JA -> `009FCC9E` BL = 1, which
+  skips the range and cone tests. `009FCCB4` (units.cpp:24330) skips only the fine-aim
+  correction, and the path then fires at `009FCDB4` (host dogfight_task.cpp:286-296).
+- So a stale hold makes the next task's guns FIRE without aim correction whenever a target is in
+  the gun range. This lasts up to 2.0 s, decayed by dt (`009FC7D0`; dogfight_task.cpp:272).
+- `plane_turbo_9f9` is transient: the next pilot commit rewrites it from `plan_turbo_2e5`
+  (37514), and `0099B572` resets that value every think (37113).
+
+LIVE? yes, after a release in a follow state. For moveto/attackmove this means a wingman's override
+or end (17869, 17904, 14957). The other follow-state tasks (depthcharge, dropkamikaze, kamikaze,
+land, levelbomb, all of which build `009C2980`) behave the same way. RNG? not directly.
 
 ## Batch C: maneuver ticks, the follow debug draw, the ship AI states
 
@@ -206,12 +231,28 @@ correction). Every image clear of +2E4h uses that imm32 form: 009B9752, 009B9C86
 009B9D69, 009B9E29, 009BA1CB, 009BA300. No host file applies a mask to +2E4h; the only mention is
 the comment at game_hosts_units.cpp:25720 ("009BA1C8's +2E4h &= ~4 is not modelled").
 
-Does it matter? Image writers of +2E4h store 0 or 0FFh as dwords (009998F1, 00999950, 009A1A08,
-009CD1D8, 007B7CA8), bytes (0099B3F4, 0099B56C, 009A4F14, 009A513D), or copy approach fields
-holding 0FFh/1/3 (009A6750, 009AB20A, 009AE92D, 009AF550, 009B3F41, 009B8BDD, 009C885B, 009CFDBA,
-009D4905). Readers are byte reads (0099BF18, 009A18BA, 009A1951, 009A1974); the only dword
-reader is the save at 0099D060 (the load passes the address, 0099C9B1). Bits 8-31 are neither set
-nor read on a live path, so the fix is fidelity-only with no gameplay effect.
+Does it matter? No: it is fidelity-only, with no gameplay effect.
+
+The proof is the per-tick reset. Every think, `009998A0` stores the whole dword just before the
+task arm `CALL [vt+64h]`:
+
+- `009998F1`: `MOV dword [ESI+2E4h], 0`, then `009998FB` CALL.
+- `00999950`: `MOV dword [ESI+2E4h], 0FFh`, then `0099995A` CALL.
+
+So bits 8-31 are zero whenever an arm runs, whatever a load or an earlier tick left there.
+
+Census (task classes only, instruction-level `+ 0x2e4]` operands):
+
+- Other dword stores of 0/0FFh: 009A1A08, 009CD1D8, 007B7CA8.
+- Byte stores: 0099B3F4, 0099B56C, 009A4F14, 009A513D.
+- Copies of approach fields holding 0FFh/1/3: 009A6750, 009AB20A, 009AE92D, 009AF550, 009B3F41,
+  009B8BDD, 009C885B, 009CFDBA, 009D4905.
+- Readers are byte reads (0099BF18, 009A18BA, 009A1951, 009A1974). The only dword reader is the
+  save at 0099D060; the load passes the address at 0099C9B1.
+- A different layout, excluded: 009B774C, 009B7764, 009B7906 and 009B791E access +2E4h of the
+  level-bomb approach subobject's owner pointer inside 009B75E0, not a task's avoidFlags.
+
+Not censused: REP MOVSD whole-task copies, which xref only a base.
 
 ### Uncertainties (batch C)
 
