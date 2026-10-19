@@ -1493,3 +1493,322 @@ void mparatrooper_class_create_with_pose_007ac2c0(
 }
 
 }  // namespace bsp::path_movcam_seg46_argon
+
+namespace bsp::path_movcam_seg46_argon {
+// 007AE930..007AED09 (986 bytes). Original ECX=array, stack origin/dir,
+// ST0=float, RET8. EDX adds the immutable borrowed target table.
+// Reserve 16 extra tail bytes to save EBP without changing original
+// call-site alignment modulo16. Original locals keep every offset;
+// only entry argument loads shift by10h. All 280 original instructions
+// retain their schedule, apart from the explicit frame/target binding.
+__declspec(naked) float __fastcall point3_ptr_array_distance_to_line_007ae930(
+    const void*, const PointLineDistanceTargets_007ae930*, const Vec3*, const Vec3*) {
+    __asm {
+        SUB ESP,0x94 // 007ae930
+        mov dword ptr [esp + 0x84], ebp // added save outside original locals
+        mov ebp, edx // borrowed immutable native target bindings
+        PUSH EBX // 007ae936
+        PUSH ESI // 007ae937
+        PUSH EDI // 007ae938
+        MOV EDI,dword ptr [ESP + 0xa8] // 007ae939
+        MOV ESI,ECX // 007ae940
+        MOV ECX,EDI // 007ae942
+        CALL dword ptr [EBP + 0x0] // 007ae944
+        FSTP dword ptr [ESP + 0x14] // 007ae949
+        FLDZ // 007ae94d
+        FLD dword ptr [ESP + 0x14] // 007ae94f
+        FCOMI st(0),st(1) // 007ae953
+        FSTP st(1) // 007ae955
+        JBE loc_007ae963 // 007ae957
+        FLD1 // 007ae959
+        FDIVRP st(1), st(0) // 007ae95b
+        FSTP dword ptr [ESP + 0xc] // 007ae95d
+        JMP loc_007ae96e // 007ae961
+    loc_007ae963:
+        XORPS XMM0,XMM0 // 007ae963
+        FSTP st(0) // 007ae966
+        MOVSS dword ptr [ESP + 0xc],XMM0 // 007ae968
+    loc_007ae96e:
+        FLD dword ptr [EDI] // 007ae96e
+        MOV EAX,dword ptr [ESI + 0x8] // 007ae970
+        TEST EAX,EAX // 007ae973
+        FLD dword ptr [ESP + 0xc] // 007ae975
+        FLD st(0) // 007ae979
+        FMULP st(2), st(0) // 007ae97b
+        FXCH st(1) // 007ae97d
+        FSTP dword ptr [ESP + 0x14] // 007ae97f
+        FLD dword ptr [EDI + 0x4] // 007ae983
+        FMUL st(1) // 007ae986
+        FSTP dword ptr [ESP + 0xc] // 007ae988
+        FMUL dword ptr [EDI + 0x8] // 007ae98c
+        FSTP dword ptr [ESP + 0x10] // 007ae98f
+        FLD dword ptr [ESP + 0x14] // 007ae993
+        FSTP dword ptr [ESP + 0x30] // 007ae997
+        FLD dword ptr [ESP + 0xc] // 007ae99b
+        FSTP dword ptr [ESP + 0x34] // 007ae99f
+        FLD dword ptr [ESP + 0x10] // 007ae9a3
+        FSTP dword ptr [ESP + 0x38] // 007ae9a7
+        JZ loc_007ae9b7 // 007ae9ab
+        MOV ECX,dword ptr [ESI + 0xc] // 007ae9ad
+        SUB ECX,EAX // 007ae9b0
+        SAR ECX,0x2 // 007ae9b2
+        JNZ loc_007ae9bc // 007ae9b5
+    loc_007ae9b7:
+        CALL dword ptr [EBP + 0xc] // 007ae9b7
+    loc_007ae9bc:
+        MOV EDX,dword ptr [ESI + 0x8] // 007ae9bc
+        MOV EAX,dword ptr [EDX] // 007ae9bf
+        MOVSS XMM0,dword ptr [EAX] // 007ae9c1
+        MOV EBX,dword ptr [ESP + 0xa4] // 007ae9c5
+        MOVSS dword ptr [ESP + 0x18],XMM0 // 007ae9cc
+        MOVSS XMM0,dword ptr [EAX + 0x4] // 007ae9d2
+        MOVSS dword ptr [ESP + 0x1c],XMM0 // 007ae9d7
+        MOVSS XMM0,dword ptr [EAX + 0x8] // 007ae9dd
+        LEA EAX,[ESP + 0x30] // 007ae9e2
+        PUSH EAX // 007ae9e6
+        MOV EDX,EBX // 007ae9e7
+        LEA ECX,[ESP + 0x1c] // 007ae9e9
+        MOVSS dword ptr [ESP + 0x24],XMM0 // 007ae9ed
+        CALL dword ptr [EBP + 0x4] // 007ae9f3
+        FSTP dword ptr [ESP + 0x10] // 007ae9f8
+        MOV ECX,ESI // 007ae9fc
+        MOV EDI,0x1 // 007ae9fe
+        CALL dword ptr [EBP + 0x8] // 007aea03
+        CMP EAX,EDI // 007aea08
+        JLE loc_007aecfa // 007aea0a
+    loc_007aea10:
+        MOV ECX,dword ptr [ESI + 0x8] // 007aea10
+        TEST ECX,ECX // 007aea13
+        JZ loc_007aea23 // 007aea15
+        MOV EAX,dword ptr [ESI + 0xc] // 007aea17
+        SUB EAX,ECX // 007aea1a
+        SAR EAX,0x2 // 007aea1c
+        CMP EDI,EAX // 007aea1f
+        JC loc_007aea28 // 007aea21
+    loc_007aea23:
+        CALL dword ptr [EBP + 0xc] // 007aea23
+    loc_007aea28:
+        MOV ECX,dword ptr [ESI + 0x8] // 007aea28
+        MOV EAX,dword ptr [ECX + EDI*0x4] // 007aea2b
+        MOVSS XMM0,dword ptr [EAX] // 007aea2e
+        MOVSS dword ptr [ESP + 0x60],XMM0 // 007aea32
+        MOVSS XMM0,dword ptr [EAX + 0x4] // 007aea38
+        LEA EDX,[ESP + 0x30] // 007aea3d
+        MOVSS dword ptr [ESP + 0x64],XMM0 // 007aea41
+        MOVSS XMM0,dword ptr [EAX + 0x8] // 007aea47
+        PUSH EDX // 007aea4c
+        MOV EDX,EBX // 007aea4d
+        LEA ECX,[ESP + 0x64] // 007aea4f
+        MOVSS dword ptr [ESP + 0x6c],XMM0 // 007aea53
+        CALL dword ptr [EBP + 0x4] // 007aea59
+        FSTP dword ptr [ESP + 0xc] // 007aea5e
+        FLD dword ptr [ESP + 0xc] // 007aea62
+        FLD dword ptr [ESP + 0x10] // 007aea66
+        FCOMIP st(0),st(1) // 007aea6a
+        FSTP st(0) // 007aea6c
+        JBE loc_007aea7c // 007aea6e
+        MOVSS XMM0,dword ptr [ESP + 0xc] // 007aea70
+        MOVSS dword ptr [ESP + 0x10],XMM0 // 007aea76
+    loc_007aea7c:
+        MOVSS XMM0,dword ptr [ESP + 0x30] // 007aea7c
+        PUSH 0x0 // 007aea82
+        LEA EAX,[ESP + 0x88] // 007aea84
+        PUSH EAX // 007aea8b
+        SUB ESP,0xc // 007aea8c
+        MOV EAX,ESP // 007aea8f
+        MOVSS dword ptr [EAX],XMM0 // 007aea91
+        MOVSS XMM0,dword ptr [ESP + 0x48] // 007aea95
+        MOVSS dword ptr [EAX + 0x4],XMM0 // 007aea9b
+        MOVSS XMM0,dword ptr [ESP + 0x4c] // 007aeaa0
+        MOVSS dword ptr [EAX + 0x8],XMM0 // 007aeaa6
+        MOV ECX,dword ptr [ESI + 0x8] // 007aeaab
+        TEST ECX,ECX // 007aeaae
+        JZ loc_007aeac1 // 007aeab0
+        MOV EAX,dword ptr [ESI + 0xc] // 007aeab2
+        SUB EAX,ECX // 007aeab5
+        SAR EAX,0x2 // 007aeab7
+        LEA ECX,[EDI - 0x1] // 007aeaba
+        CMP ECX,EAX // 007aeabd
+        JC loc_007aeac6 // 007aeabf
+    loc_007aeac1:
+        CALL dword ptr [EBP + 0xc] // 007aeac1
+    loc_007aeac6:
+        MOV EDX,dword ptr [ESI + 0x8] // 007aeac6
+        MOV EAX,dword ptr [EDX + EDI*0x4 - 0x4] // 007aeac9
+        MOVSS XMM0,dword ptr [EAX] // 007aeacd
+        MOVSS dword ptr [ESP + 0x2c],XMM0 // 007aead1
+        MOVSS XMM0,dword ptr [EAX + 0x4] // 007aead7
+        MOV ECX,EDX // 007aeadc
+        TEST ECX,ECX // 007aeade
+        MOVSS dword ptr [ESP + 0x30],XMM0 // 007aeae0
+        MOVSS XMM0,dword ptr [EAX + 0x8] // 007aeae6
+        MOVSS dword ptr [ESP + 0x34],XMM0 // 007aeaeb
+        JZ loc_007aeaff // 007aeaf1
+        MOV EAX,dword ptr [ESI + 0xc] // 007aeaf3
+        SUB EAX,ECX // 007aeaf6
+        SAR EAX,0x2 // 007aeaf8
+        CMP EDI,EAX // 007aeafb
+        JC loc_007aeb04 // 007aeafd
+    loc_007aeaff:
+        CALL dword ptr [EBP + 0xc] // 007aeaff
+    loc_007aeb04:
+        MOV EAX,dword ptr [ESI + 0x8] // 007aeb04
+        MOV EAX,dword ptr [EAX + EDI*0x4] // 007aeb07
+        FLD dword ptr [EAX] // 007aeb0a
+        FSTP dword ptr [ESP + 0x50] // 007aeb0c
+        FLD dword ptr [EAX + 0x4] // 007aeb10
+        FSTP dword ptr [ESP + 0x54] // 007aeb13
+        FLD dword ptr [EAX + 0x8] // 007aeb17
+        FSTP dword ptr [ESP + 0x58] // 007aeb1a
+        FLD dword ptr [ESP + 0x50] // 007aeb1e
+        FSUB dword ptr [ESP + 0x2c] // 007aeb22
+        FSTP dword ptr [ESP + 0x38] // 007aeb26
+        FLD dword ptr [ESP + 0x54] // 007aeb2a
+        FSUB dword ptr [ESP + 0x30] // 007aeb2e
+        FSTP dword ptr [ESP + 0x3c] // 007aeb32
+        FLD dword ptr [ESP + 0x58] // 007aeb36
+        FSUB dword ptr [ESP + 0x34] // 007aeb3a
+        FSTP dword ptr [ESP + 0x40] // 007aeb3e
+        FLD dword ptr [ESP + 0x3c] // 007aeb42
+        FLD dword ptr [ESP + 0x38] // 007aeb46
+        FLD dword ptr [ESP + 0x40] // 007aeb4a
+        FLD st(2) // 007aeb4e
+        FMULP st(3), st(0) // 007aeb50
+        FXCH st(2) // 007aeb52
+        FSTP dword ptr [ESP + 0x20] // 007aeb54
+        FLD dword ptr [ESP + 0x20] // 007aeb58
+        FLD st(1) // 007aeb5c
+        FMULP st(2), st(0) // 007aeb5e
+        FXCH st(1) // 007aeb60
+        FSTP dword ptr [ESP + 0x20] // 007aeb62
+        FADD dword ptr [ESP + 0x20] // 007aeb66
+        FLD st(1) // 007aeb6a
+        FMULP st(2), st(0) // 007aeb6c
+        FXCH st(1) // 007aeb6e
+        FSTP dword ptr [ESP + 0x20] // 007aeb70
+        FADD dword ptr [ESP + 0x20] // 007aeb74
+        FSTP dword ptr [ESP + 0x20] // 007aeb78
+        FLD dword ptr [ESP + 0x20] // 007aeb7c
+        CALL dword ptr [EBP + 0x10] // 007aeb80
+        FSTP dword ptr [ESP + 0x20] // 007aeb85
+        FLD dword ptr [ESP + 0x20] // 007aeb89
+        FSTP dword ptr [ESP + 0x20] // 007aeb8d
+        FLDZ // 007aeb91
+        FLD dword ptr [ESP + 0x20] // 007aeb93
+        FCOMI st(0),st(1) // 007aeb97
+        FSTP st(1) // 007aeb99
+        JBE loc_007aeba7 // 007aeb9b
+        FLD1 // 007aeb9d
+        FDIVRP st(1), st(0) // 007aeb9f
+        FSTP dword ptr [ESP + 0x28] // 007aeba1
+        JMP loc_007aebb2 // 007aeba5
+    loc_007aeba7:
+        XORPS XMM0,XMM0 // 007aeba7
+        FSTP st(0) // 007aebaa
+        MOVSS dword ptr [ESP + 0x28],XMM0 // 007aebac
+    loc_007aebb2:
+        FLD dword ptr [ESP + 0x38] // 007aebb2
+        MOV ECX,dword ptr [ESI + 0x8] // 007aebb6
+        TEST ECX,ECX // 007aebb9
+        FLD dword ptr [ESP + 0x28] // 007aebbb
+        FLD st(0) // 007aebbf
+        FMULP st(2), st(0) // 007aebc1
+        FXCH st(1) // 007aebc3
+        FSTP dword ptr [ESP + 0x5c] // 007aebc5
+        FLD dword ptr [ESP + 0x3c] // 007aebc9
+        FMUL st(1) // 007aebcd
+        FSTP dword ptr [ESP + 0x60] // 007aebcf
+        FMUL dword ptr [ESP + 0x40] // 007aebd3
+        FSTP dword ptr [ESP + 0x64] // 007aebd7
+        JZ loc_007aebe9 // 007aebdb
+        MOV EAX,dword ptr [ESI + 0xc] // 007aebdd
+        SUB EAX,ECX // 007aebe0
+        SAR EAX,0x2 // 007aebe2
+        CMP EDI,EAX // 007aebe5
+        JC loc_007aebee // 007aebe7
+    loc_007aebe9:
+        CALL dword ptr [EBP + 0xc] // 007aebe9
+    loc_007aebee:
+        MOV ECX,dword ptr [ESI + 0x8] // 007aebee
+        MOV EAX,dword ptr [ECX + EDI*0x4] // 007aebf1
+        MOVSS XMM0,dword ptr [EAX] // 007aebf4
+        MOVSS dword ptr [ESP + 0x8c],XMM0 // 007aebf8
+        MOVSS XMM0,dword ptr [EAX + 0x4] // 007aec01
+        MOVSS dword ptr [ESP + 0x90],XMM0 // 007aec06
+        MOVSS XMM0,dword ptr [EAX + 0x8] // 007aec0f
+        PUSH EBX // 007aec14
+        LEA EDX,[ESP + 0x60] // 007aec15
+        LEA ECX,[ESP + 0x90] // 007aec19
+        MOVSS dword ptr [ESP + 0x98],XMM0 // 007aec20
+        CALL dword ptr [EBP + 0x14] // 007aec29
+        FSTP dword ptr [ESP + 0xc] // 007aec2e
+        FLD dword ptr [ESP + 0xc] // 007aec32
+        FLD dword ptr [ESP + 0x10] // 007aec36
+        FCOMIP st(0),st(1) // 007aec3a
+        FSTP st(0) // 007aec3c
+        JBE loc_007aece8 // 007aec3e
+        MOV ECX,dword ptr [ESI + 0x8] // 007aec44
+        TEST ECX,ECX // 007aec47
+        JZ loc_007aec57 // 007aec49
+        MOV EAX,dword ptr [ESI + 0xc] // 007aec4b
+        SUB EAX,ECX // 007aec4e
+        SAR EAX,0x2 // 007aec50
+        CMP EDI,EAX // 007aec53
+        JC loc_007aec5c // 007aec55
+    loc_007aec57:
+        CALL dword ptr [EBP + 0xc] // 007aec57
+    loc_007aec5c:
+        MOV EDX,dword ptr [ESI + 0x8] // 007aec5c
+        MOV EAX,dword ptr [EDX + EDI*0x4] // 007aec5f
+        MOVSS XMM0,dword ptr [EAX] // 007aec62
+        MOVSS dword ptr [ESP + 0x54],XMM0 // 007aec66
+        MOVSS XMM0,dword ptr [EAX + 0x4] // 007aec6c
+        MOV ECX,EDX // 007aec71
+        TEST ECX,ECX // 007aec73
+        MOVSS dword ptr [ESP + 0x58],XMM0 // 007aec75
+        MOVSS XMM0,dword ptr [EAX + 0x8] // 007aec7b
+        MOVSS dword ptr [ESP + 0x5c],XMM0 // 007aec80
+        JZ loc_007aec97 // 007aec86
+        MOV EAX,dword ptr [ESI + 0xc] // 007aec88
+        SUB EAX,ECX // 007aec8b
+        SAR EAX,0x2 // 007aec8d
+        LEA ECX,[EDI - 0x1] // 007aec90
+        CMP ECX,EAX // 007aec93
+        JC loc_007aec9c // 007aec95
+    loc_007aec97:
+        CALL dword ptr [EBP + 0xc] // 007aec97
+    loc_007aec9c:
+        MOV EDX,dword ptr [ESI + 0x8] // 007aec9c
+        MOV EAX,dword ptr [EDX + EDI*0x4 - 0x4] // 007aec9f
+        MOVSS XMM0,dword ptr [EAX] // 007aeca3
+        MOVSS dword ptr [ESP + 0x6c],XMM0 // 007aeca7
+        MOVSS XMM0,dword ptr [EAX + 0x4] // 007aecad
+        MOVSS dword ptr [ESP + 0x70],XMM0 // 007aecb2
+        MOVSS XMM0,dword ptr [EAX + 0x8] // 007aecb8
+        LEA EAX,[ESP + 0x54] // 007aecbd
+        PUSH EAX // 007aecc1
+        LEA EDX,[ESP + 0x70] // 007aecc2
+        LEA ECX,[ESP + 0x88] // 007aecc6
+        MOVSS dword ptr [ESP + 0x78],XMM0 // 007aeccd
+        CALL dword ptr [EBP + 0x18] // 007aecd3
+        TEST AL,AL // 007aecd8
+        JZ loc_007aece8 // 007aecda
+        MOVSS XMM0,dword ptr [ESP + 0xc] // 007aecdc
+        MOVSS dword ptr [ESP + 0x10],XMM0 // 007aece2
+    loc_007aece8:
+        MOV ECX,ESI // 007aece8
+        ADD EDI,0x1 // 007aecea
+        CALL dword ptr [EBP + 0x8] // 007aeced
+        CMP EDI,EAX // 007aecf2
+        JL loc_007aea10 // 007aecf4
+    loc_007aecfa:
+        FLD dword ptr [ESP + 0x10] // 007aecfa
+        POP EDI // 007aecfe
+        POP ESI // 007aecff
+        POP EBX // 007aed00
+        mov ebp, dword ptr [esp + 0x84] // restore borrowed-register save
+        ADD ESP,0x94 // 007aed01
+        RET 0x8 // 007aed07
+    }
+}
+}  // namespace bsp::path_movcam_seg46_argon

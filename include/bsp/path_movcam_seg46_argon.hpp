@@ -9,6 +9,8 @@
 // hypotheses, not recovered symbols or drop-in binary ABI replacements.
 
 #include <cstdint>
+#include <cstddef>
+#include <type_traits>
 #include <vector>
 
 namespace bsp::path_movcam_seg46_argon {
@@ -83,6 +85,43 @@ std::uint32_t point3_ptr_array_nearest_point_to_line_007aeec0(
     const Vec3& line_dir,
     float* out_distance,
     PointLineDistanceHost& host);
+
+// 007AE930 is the neighboring native minimum-distance operation over the
+// polyline, including its segment interiors. Actual object +08h/+0Ch contain
+// the checked pointer-vector begin/end. The original ECX, two stack words,
+// ST0 result and RET8 are kept; EDX adds these borrowed, immutable bindings.
+// Every target is required and must obey its stated original native ABI.
+struct PointLineDistanceTargets_007ae930 {
+    float (__fastcall* vector_length_00419440)(const Vec3*);
+    float (__fastcall* point_line_distance_0046f440)(const Vec3*, const Vec3*, const Vec3*);
+    std::int32_t (__fastcall* vector_size_00415870)(const void*);
+    void (__cdecl* invalid_parameter_00bf6713)();
+    // Assembly-only call: one argument already in ST0, replaced by sqrt in
+    // ST0, no stack arguments. A native CRT binding, not a new sqrt body.
+    void (__cdecl* sqrt_st0_00bf7030)();
+    // ECX=p1, EDX=unit_u; stack=(p3, unit_v BY VALUE, out_a, out_b), RET18h.
+    float (__fastcall* closest_points_between_lines_0046f940)(
+        const Vec3*, const Vec3*, const Vec3*, Vec3, Vec3*, Vec3*);
+    // ECX=point, EDX=start, stack=end; RET4, boolean AL result.
+    std::uint8_t (__fastcall* point_projects_onto_segment_00470150)(
+        const Vec3*, const Vec3*, const Vec3*);
+};
+static_assert(sizeof(void*) == 4 && sizeof(Vec3) == 12 && alignof(Vec3) == 4);
+static_assert(std::is_trivially_copyable<Vec3>::value);
+static_assert(offsetof(PointLineDistanceTargets_007ae930, vector_length_00419440) == 0);
+static_assert(offsetof(PointLineDistanceTargets_007ae930, point_line_distance_0046f440) == 4);
+static_assert(offsetof(PointLineDistanceTargets_007ae930, vector_size_00415870) == 8);
+static_assert(offsetof(PointLineDistanceTargets_007ae930, invalid_parameter_00bf6713) == 12);
+static_assert(offsetof(PointLineDistanceTargets_007ae930, sqrt_st0_00bf7030) == 16);
+static_assert(offsetof(PointLineDistanceTargets_007ae930, closest_points_between_lines_0046f940) == 20);
+static_assert(offsetof(PointLineDistanceTargets_007ae930, point_projects_onto_segment_00470150) == 24);
+
+// Original: __thiscall(array)(origin*, direction*), ST0=float minimum, RET8.
+// Names are hypotheses. Exact x87/branch/checked-load schedule, no host wiring;
+// callers supply the original checked-vector/CRT/geometry target contracts.
+float __fastcall point3_ptr_array_distance_to_line_007ae930(
+    const void* actual_array, const PointLineDistanceTargets_007ae930*,
+    const Vec3* line_origin, const Vec3* line_direction);
 
 // 007AF020 BSP_Point3PtrArray_LoadFromArchive
 // __thiscall(ECX = array, archive*), RET 4.
