@@ -30,6 +30,13 @@
 namespace bsp::game {
 namespace {
 
+// The helm `input` line's requests (inject_input_action_hold), taken into the
+// menu host's records at the next frame's input prologue: action -> frames.
+std::map<int, unsigned>& pending_input_holds() {
+    static std::map<int, unsigned> holds;
+    return holds;
+}
+
 // Packet cc9_menu_pump_once: during a mission frame the front-end pump 004f8830
 // runs only from the mission frame's own 004c40f0 passes (GameMenuHost::frame).
 constexpr bool kMenuPumpYieldsToMissionFrameBound = true;  // ON: 17 rows identical (GUNNERY_OPEN_ITEMS 76.4)
@@ -167,6 +174,10 @@ struct GameMenuHost::Impl {
     // --- the injected input edge, 004c43c0 ----------------------------------
     InputActionRecord press_action{};
     bool press_start_handoff_requested{false};
+    // The helm `input` line's held actions (inject_input_action_hold): one record
+    // per action, and the frames of hold left (0: released, or let go).
+    std::map<int, InputActionRecord> injected_actions;
+    std::map<int, unsigned> injected_frames_left;
 
     // --- the state-request ring, game+5D8h ---------------------------------
     GameStateRequestQueue requests{};
@@ -1982,21 +1993,38 @@ void GameMenuHost::run_title_init_004c9a70() {
 
 bool GameMenuHost::input_action_pressed(int action) {
     Impl& host = *impl_;
-    if (action != kPressStartInputAction) return false;
+    if (action != kPressStartInputAction) {
+        const auto it = host.injected_actions.find(action);   // the helm `input` line
+        return it != host.injected_actions.end() && action_pressed_this_frame_004c43c0(it->second);
+    }
     return action_pressed_this_frame_004c43c0(host.press_action);
 }
 
+bool inject_input_action_hold(int action, unsigned frames) {
+    if (action == kPressStartInputAction || action < 0 || frames == 0) return false;
+    pending_input_holds()[action] = frames;
+    return true;
+}
+
 // The executable's action table holds one record, press-start 4Eh. Every other
-// index is a record nothing starts, so both rules answer false for it.
+// index is a record nothing starts, so both rules answer false for it, unless a
+// helm `input` line holds it (inject_input_action_hold).
 bool GameMenuHost::input_action_held(int action) {
     Impl& host = *impl_;
-    if (action != kPressStartInputAction) return false;
+    if (action != kPressStartInputAction) {
+        const auto it = host.injected_actions.find(action);   // the helm `input` line
+        return it != host.injected_actions.end() && action_down_current(it->second);
+    }
     return host.press_action.current_down && host.press_action.current_hold > 0.0f;
 }
 
 bool GameMenuHost::input_action_released(int action) {
     Impl& host = *impl_;
-    if (action != kPressStartInputAction) return false;
+    if (action != kPressStartInputAction) {
+        const auto it = host.injected_actions.find(action);   // the helm `input` line
+        return it != host.injected_actions.end() && !action_down_current(it->second)
+            && action_down_previous(it->second);
+    }
     const bool held_now = host.press_action.current_down && host.press_action.current_hold > 0.0f;
     return !held_now && host.press_action.previous_down && host.press_action.previous_hold > 0.0f;
 }
@@ -2017,6 +2045,30 @@ void GameMenuHost::frame(float raw_delta, unsigned long long frame_index) {
             kPressStartInputAction, frame_index);
     } else {
         begin_action_frame_00a92370(host.press_action);
+    }
+    // The helm `input` line: the same three rules drive each held action, so the
+    // first frame is the rising edge, the rest continue it, and the frame after
+    // the last is the release.
+    for (const auto& request : pending_input_holds()) {
+        host.injected_actions[request.first];
+        host.injected_frames_left[request.first] = request.second;
+        host.log.notef("helm input action 0x%02X held for %u frame(s) from frame %llu",
+            static_cast<unsigned>(request.first), request.second, frame_index);
+    }
+    pending_input_holds().clear();
+    for (auto& entry : host.injected_actions) {
+        unsigned& left = host.injected_frames_left[entry.first];
+        if (left > 0) {
+            if (action_down_current(entry.second)) {
+                continue_action_00a919f0(entry.second, 1.0f);
+            } else {
+                const InputEffectParam no_param{};
+                start_action_00a92aa0(entry.second, 1.0f, no_param, nullptr);
+            }
+            --left;
+        } else {
+            begin_action_frame_00a92370(entry.second);
+        }
     }
 
     if (is_front_end_game_state(host.state.value)) {

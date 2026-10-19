@@ -58,7 +58,11 @@ namespace {
 // The native stores nothing (004694F0 discards each entry); the entries are
 // counted and the lexer leaves the block at its closing brace, where the
 // stand-in left the loop to step over the block's tokens as unknown keywords.
-constexpr bool kSceneBrowserGroupsBound = false;
+// ON by cc9-ships59's pairs in the reference env at 7d6b27b65 (local\s59_bg_off_* /
+// s59_bg_on_* .log.manifest.json): USN01 3200 (0 entries, ok=1) and JM05 600
+// (PRCPIJN ijn_05, 33 entries, ok=1), both exit 1, gameplay identical; only
+// 00469E40 UNIMPLEMENTED -> concrete and the one count line moved.
+constexpr bool kSceneBrowserGroupsBound = true;
 
 // Packet cc9_s59_traffic (docs/SHIP_AI_OPEN_ITEMS.md 292): the `traffic` block
 // (009514B0, called at 0046EB5B) is read by scene_traffic_groups.cpp's body over
@@ -965,6 +969,15 @@ void scene_stock_queue_0095c4d0(GameSceneContentsHost::Impl& owner, int value) {
     ++owner.scene_stock_queue_appends;
 }
 
+// The outer bag's `Hidden` byte (00CE5708, +0Ch), the same retained byte
+// 0046D3C5 tests. cc15-vcp5: an authored `Hidden = B true` keeps its value in
+// the owning B data, which scene_stock_int never read, so every held-back
+// carrier's PlaneStock went to the 0095C4D0 queue instead of the +08h vector
+// and 0046EC77 never marked it; 004E0A9B then nil'd the deck's classes.
+bool scene_stock_hidden(const ScenePropertyBlock& bag) {
+    return hidden_property_bool(bag.find(bsp::kSceneHiddenPropertyKey));
+}
+
 // route_counted_stock (0046C07A..0046C0D8, 0046C11F..0046C180).
 void scene_stock_route_counted(GameSceneContentsHost::Impl& owner,
     const ScenePropertyBlock& bag, const std::string& key) {
@@ -972,7 +985,7 @@ void scene_stock_route_counted(GameSceneContentsHost::Impl& owner,
     if (sub == nullptr) return;
     const int type = scene_stock_int(owner, *sub, "Type");
     if (scene_stock_int(owner, *sub, "Count") == 0) return;
-    if (scene_stock_int(owner, bag, "Hidden") == 0) {
+    if (!scene_stock_hidden(bag)) {
         scene_stock_queue_0095c4d0(owner, type);
     } else if (scene_stock_register_0046be90(owner, type)) {
         ++owner.scene_vector_stock_pushes;
@@ -1018,7 +1031,7 @@ void scene_stock_lists_0046bf70(GameSceneContentsHost::Impl& owner,
             if (sub == nullptr) continue;
             const int type = scene_stock_int(owner, *sub, "Type");
             if (type <= 0) continue;
-            if (scene_stock_int(owner, bag, "Hidden") == 0) {
+            if (!scene_stock_hidden(bag)) {
                 scene_stock_queue_0095c4d0(owner, type);
             } else if (scene_stock_register_0046be90(owner, type)) {
                 ++owner.scene_vector_stock_pushes;

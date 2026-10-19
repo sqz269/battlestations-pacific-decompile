@@ -88,7 +88,10 @@ def apply_entries(client, entries):
             continue
         changes.append({'address': address, 'before': old, 'after': entry, 'status': 'pending'})
         write(log, changes)
-        post('rename_function_by_address', function_address=address, new_name=entry['name'])
+        # An unchanged library name can still trip the bridge's name-collision
+        # heuristics (for example XSocketRecv versus XSocketRecvFrom).
+        if old.get('function_name') != entry['name']:
+            post('rename_function_by_address', function_address=address, new_name=entry['name'])
         post('set_plate_comment', address=address, comment=comment)
         changes[-1]['status'] = 'applied'
         write(log, changes)

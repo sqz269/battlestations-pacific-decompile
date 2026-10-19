@@ -132,7 +132,11 @@ constexpr bool kEntityCommandSelfKindBound = true;
 // 13 bits (this host's synthesised 50000+ ids) are kept as posted. CORRECTION:
 // the exit 3 first reported for f0d2c7b7b (shots 2032 -> 1938) was those 3
 // cut ids, a host artefact, not the quantisation.
-constexpr bool kSetCommandMessageCc13Bound = false;
+// ON by cc9-ships59's USN01 3200 pair in the reference env (local\s59_sm_off_u01 /
+// s59_sm1_on_u01 .log.manifest.json, 662d8bc7d): exit 1, gameplay identical;
+// 103 round trips, the same 10 sub-mm moveto quantisations, 3 cut ids restored,
+// command and object never changed; 0071C830 UNIMPLEMENTED -> concrete (103).
+constexpr bool kSetCommandMessageCc13Bound = true;
 
 // cc15-sm2. True: the MT_COMMAND (58h) that 0077D600 posts is delivered as the
 // copy 0076E520 rebuilds from its bits (00764D40 write, 00768530 case 88 at
@@ -141,7 +145,10 @@ constexpr bool kSetCommandMessageCc13Bound = false;
 // the flags byte (one bit), a trailing value below 1.0 (dropped to 0) and the
 // object (13-bit handle, none when the target bit is clear). False: the posted
 // record is delivered. The pair is cc15's; cc9 flips.
-constexpr bool kCommandMessageCc13Bound = false;
+// ON by cc9-ships59's USN01 3200 pair in the reference env (local\s59_sm_off_u01 /
+// s59_sm2_on_u01 .log.manifest.json, 662d8bc7d): exit 1, gameplay identical;
+// 51 round trips and no line other than the summary count moved.
+constexpr bool kCommandMessageCc13Bound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
@@ -4100,6 +4107,33 @@ std::uint32_t GameCommandsHost::director_slot_command(std::size_t unit_index,
     if (unit_index >= host.directors.size()) return 0u;
     if (slot_index < 0 || slot_index >= bsp::kDirectorCommandSlotCount) return 0u;
     return host.directors[unit_index].slot_command[slot_index];
+}
+
+bool GameCommandsHost::director_slot_target(std::size_t unit_index, int slot_index,
+    bsp::SceneCommandTarget& out) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return false;
+    if (slot_index < 0 || slot_index >= bsp::kDirectorCommandSlotCount) return false;
+    out = host.directors[unit_index].slot_target[slot_index];
+    return true;
+}
+
+int GameCommandsHost::director_stage_0048(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0;
+    return host.directors[unit_index].stage;
+}
+
+int GameCommandsHost::director_override_stage_0050(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0;
+    return host.directors[unit_index].override_stage;
+}
+
+int GameCommandsHost::director_command_count_0071be60(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0;
+    return host.command_count(host.directors[unit_index]);
 }
 
 std::uint64_t GameCommandsHost::director_head_key(std::size_t unit_index) const {

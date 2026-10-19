@@ -9376,12 +9376,14 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
 }
 
 // Packet cc13-dead. 00929800 on a LandConvoy marker (include/bsp/land_convoy_dead_cc13.hpp
-// has the chain from 00926D90). SUBSTITUTIONS (labelled): the convoy is found as the
-// first findable pending node of class 1Ah with that name (the host's convoys are keyed
-// by name). Both the units host's convoy lives and this marker lookup are
-// first-wins by name, so two convoys sharing a name can pair the wrong objects
-// if the roster build order differs from the pending order; the image follows
-// its own pointer. The own-slot test (`Ptr` is the marker id, as the 00928A00 seed writes it)
+// has the chain from 00926D90). SUBSTITUTIONS (labelled): the convoy is found by name
+// in the FindEntity name index (the host's convoys are keyed by name; the members
+// carry "-I", "-II" suffixes, so the name is the convoy marker's). The pending list is no source: InitAll's 00926335 clears it,
+// so after load it never holds a convoy (cc9-gunnery53: the first ON pair found no
+// self table for JM05's RadarStationLandConvoy 01, attached at load through
+// 0074347E -> 0077E830 -> 00928A00). The name index keeps the last entity of a
+// name, so two convoys sharing a name can pair the wrong objects; the image
+// follows its own pointer. The own-slot test (`Ptr` is the marker id, as the 00928A00 seed writes it)
 // stands for 00929800's +178h test. OMITTED (labelled): 009298DB's think call and the
 // 00928300 think-list drops, for a marker with a think registration (+1D8h).
 bool GameMissionLuaHost::publish_land_convoy_dead_00929800(const std::string& convoy, int cause) {
@@ -9392,11 +9394,8 @@ bool GameMissionLuaHost::publish_land_convoy_dead_00929800(const std::string& co
     } else {
         if (state_ == nullptr) return false;
         int id = 0;
-        for (const PendingEntity& node : pending_entities_) {
-            if (node.marker_class_id != 0x1a || !node.findable || node.name != convoy) continue;
-            id = node.entity_id;
-            break;
-        }
+        const std::map<std::string, int>::const_iterator found = scene_entity_ids_.find(convoy);
+        if (found != scene_entity_ids_.end()) id = found->second;
         if (id <= 0 || !push_resolved_entity_by_id(state_, id)) {
             log_.notef("  LandConvoy \"%s\": 00929800 found no self table, Dead not written "
                 "(packet cc13-dead)", convoy.c_str());

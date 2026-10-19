@@ -1,8 +1,84 @@
 #include "bsp/native_render_resource_initializer.hpp"
 
 #include <stdexcept>
+#include <type_traits>
+#include <exception>
 
 namespace bsp {
+
+void NativeRenderResourceInitialization::close_children_after_host_quiescence() noexcept {
+    if (children_closed_) return;
+    if (phase_ == Phase::fresh || phase_ == Phase::already_initialized_returned) {
+        children_closed_ = true;
+        return;
+    }
+    if (phase_ != Phase::normal_work_complete) std::terminate();
+    // The existing blocks reject surviving native creators, companions,
+    // parameter borrows and viewport records. Prepared-only blocks own no
+    // native work and use their existing cancellation path.
+    const auto close_post = [](auto& block) noexcept {
+        using Block = std::remove_reference_t<decltype(block)>;
+        if (block.phase() == Block::Phase::idle) return;
+        if (block.phase() == Block::Phase::prepared) block.cancel_preparation();
+        else block.reset_after_host_quiescence();
+    };
+    const auto close_pass = [&](auto& block) noexcept {
+        using Block = std::remove_reference_t<decltype(block)>;
+        if (block.phase() == Block::Phase::idle) return;
+        if (block.phase() == Block::Phase::prepared) block.cancel_preparation();
+        else {
+            close_post(block.post_effect());
+            block.reset_after_host_quiescence();
+        }
+    };
+    const auto close_bloom = [&](NativeBloomInitializationBlock& block) noexcept {
+        using Block = NativeBloomInitializationBlock;
+        if (block.phase() == Block::Phase::idle) return;
+        if (block.phase() == Block::Phase::prepared) block.cancel_preparation();
+        else {
+            close_post(block.blur()); close_post(block.bloom());
+            block.reset_after_host_quiescence();
+        }
+    };
+    // Reverse parent construction order; every native owner is already retired.
+    close_post(tail_.clear); close_post(tail_.wave);
+    close_post(post664_.post); close_post(post65c_.post); close_post(post658_.post);
+    auto& dust = passthrough_dust_.dust;
+    if (dust.phase() == NativePostEffectDustBlock::Phase::prepared) dust.cancel_preparation();
+    else if (dust.phase() != NativePostEffectDustBlock::Phase::idle) {
+        close_post(dust.child()); dust.reset_after_host_quiescence();
+    }
+    close_post(passthrough_dust_.post);
+    auto& distortion = distortion_.distortion;
+    if (distortion.phase() == NativeDistortionInitializationBlock::Phase::prepared)
+        distortion.cancel_preparation();
+    else if (distortion.phase() != NativeDistortionInitializationBlock::Phase::idle) {
+        for (std::uint32_t i = 0; i != 3; ++i) close_post(distortion.post(i));
+        distortion.reset_after_host_quiescence();
+    }
+    close_bloom(second_bloom_.bloom);
+    close_post(dof_.post);
+    for (auto& post : continuation_.posts) close_post(post);
+    close_bloom(continuation_.bloom);
+    close_pass(continuation_.bright);
+    auto& luminance = continuation_.luminance;
+    if (luminance.phase() == NativeLuminanceInitializationBlock::Phase::prepared)
+        luminance.cancel_preparation();
+    else if (luminance.phase() != NativeLuminanceInitializationBlock::Phase::idle) {
+        for (std::size_t i = 0; i != 6; ++i) close_post(luminance.post_effect(i));
+        luminance.reset_after_host_quiescence();
+    }
+    for (auto& pass : continuation_.passes) close_pass(pass);
+    for (auto& reference : continuation_.pass_references) {
+        if (reference && !reference->retired()) std::terminate();
+        reference.reset();
+    }
+    if (second_bloom_.bloom_reference && !second_bloom_.bloom_reference->retired()) std::terminate();
+    second_bloom_.bloom_reference.reset();
+    if (distortion_.pass_reference && !distortion_.pass_reference->retired()) std::terminate();
+    distortion_.pass_reference.reset();
+    children_closed_ = true;
+}
 
 void initialize_native_render_resources_00b107f0(void* service,
     const volatile NativeRenderResourceInitArguments& arguments,

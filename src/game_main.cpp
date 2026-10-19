@@ -93,11 +93,20 @@ void attach_parent_console() {
 // These explicit spans are the union of the original read-only 64-KB bands
 // consumed by the raw VFS entry path and the composed particle graph. The mapper
 // verifies the entire original PE before it admits any table/literal read.
-constexpr std::array<bsp::game::GameNativeDataSpan, 7> native_data_spans{{
+constexpr std::array<bsp::game::GameNativeDataSpan, 8> native_data_spans{{
     {0x00ce2000u, 1}, {0x00cf0000u, 1}, {0x00d00000u, 1},
     {0x00d10000u, 1}, {0x00d50000u, 1}, {0x00d60000u, 1},
-    {0x00d70000u, 1}
+    {0x00d70000u, 1}, {0x00d21d00u, 320}
 }};
+std::size_t selected_native_data_span_count() noexcept {
+    // B1DFF0's installed-model ordinary command consumes D21D00. Preserve
+    // the original seven-band reservation/child capability when the new
+    // diagnostic is OFF, and map genuine verified original bytes only ON.
+    char value[2]{};
+    const bool mission_ship = GetEnvironmentVariableA("BSP_NATIVE_MISSION_SHIP", value,
+        sizeof value) == 1 && value[0] == '1';
+    return mission_ship ? native_data_spans.size() : native_data_spans.size() - 1;
+}
 constexpr char handoff_prefix[] = "--bsp-native-data-handoff=";
 
 // ---- Harness crash record (packet cc9_tooling_1). Harness only: nothing here is read by the
@@ -343,7 +352,7 @@ int run_bootstrap_parent(const bsp::game::GameExecutableOptions& options) {
     check_original_identity(original_executable(options));
     const auto child_path = own_executable();
     bsp::game::GameNativeDataBootstrapChild child(child_path, child_arguments(),
-        native_data_spans.data(), native_data_spans.size(),
+        native_data_spans.data(), selected_native_data_span_count(),
         bsp::game::GameNativeDataPlan::CanonicalCrtV2);
     child.reserve_and_resume();
     child.wait_for_mapping(30000);
@@ -1067,10 +1076,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     volatile std::uint32_t* native_crt_feature = nullptr;
     try {
         auto reservation = bsp::game::accept_native_data_handoff(
-            native_data_spans.data(), native_data_spans.size(),
+            native_data_spans.data(), selected_native_data_span_count(),
             bsp::game::GameNativeDataPlan::CanonicalCrtV2);
         const auto& owner = bsp::game::GameNativeCanonicalDataOwner::initialize(original_image,
-            native_data_spans.data(), native_data_spans.size(), std::move(reservation));
+            native_data_spans.data(), selected_native_data_span_count(), std::move(reservation));
         native_data = &owner.read_only_data();
         native_crt_feature = &owner.mutable_crt_data().feature_word();
         log.notef("native-data handoff mapped verified original image %s",
