@@ -213,3 +213,102 @@ Expected ON effect:
   `Unit::can_release_007bb110` unimplemented record is replaced by an implemented one.
 - Notify: no behaviour; a `release timer notify` line only for a fire with no round aboard (none
   expected, since every fire above is a first fire).
+
+## 10. The bay opener (packet `cc13-reltimer2`, switch `kReleaseBayOpenCc13Bound`)
+
+physics24's pairs showed `kReleaseTimerPredicate007BB110Bound` failing by mechanism: BSM09 ref
+`timer_blocked=378`, `timer_fires=0`, torpedo drops 3 -> 0 and the mission lost; USN21 def drops
+5 -> 0. `007BB110` refuses while channel C (`[unit+DECh]+60h`) is enabled, not at exactly 1.0f, and
+`9C3h` is set, and the only host writer of the channel's target was `007BBBA0`, which runs behind
+that very test. The image opens the bay earlier, in two pieces.
+
+### 10.1 `0099AFCC-0099B055` in `0099ACD0` BSP_PilotBot_Tick: `unit+DF0h`
+
+- `0099AFCC-0099B003`: `mode` = the first task in the bot's list `bot+58h/+5Ch` whose `vtable[+50h]()`
+  is not 1; 1 when none answers otherwise.
+- `0099B006 CMP EBP,2 / SETE DL`: flag = (mode == 2), kept at `[ESP+10h]` (read as `[ESP+0Ch]` after
+  `0099B019 POP EBP`).
+- `0099B012-0099B049`: in mode 1 only, when `[unit+9D4h]` (the squadron) and its `+3D0h` (the
+  leader) are set and the leader is not this unit, flag = the leader's step byte `9C1h` (channel C
+  disabled or at exactly 1.0f; `007CDC70`).
+- `0099B055` reaches `007BB150`: `unit+DF0h` = flag ? `9C3h` : 0.
+- Torpedo task (vtable `00D213C8`, slot `+50h` at `00D21418`) = `009D49E0`: in the aim (`task+710h`),
+  done (`+618h`), goaway (`+6D8h`), attackrun (`+6B4h`) and prepare (`+740h`) states it answers
+  `task+528h ? 2 : 0`; elsewhere 1. `task+528h` is `approach+130h`, the aim-solution byte the aim
+  tick writes at `009D2021` (interpolated range * speed + 200 > range). Its only other writers are
+  `009D05AB` in `009D0380` BSP_BotApproachTorpedo_Reset (0, reached only from `009D2DA0` at task
+  construction) and the unreferenced setter `009D1330`.
+- Dive-bomb task slot `+50h` = `009C8290`: in the attacking states (`009C7910`: aimdive, aimglide,
+  done, flyabove, goaway, prepare, attackrun, turndown) it answers 2 in aimdive and 0 in the rest;
+  elsewhere 1.
+
+### 10.2 `007C6A8D-007C6B2E` in `007C6820` BSP_Plane_DriveActuatorChannels: channel C's target
+
+Skipped entirely when `unit+520h` is set. With drop-kamikaze ordnance (`007B91C0(2Fh, 0)`) the
+channel is forced open: `+64h` = 1.0f, `+61h` = 1, `+68h` = 1, unless the target is already 1 and
+the value exactly 1.0f. Otherwise `BL` = (`+DF0h` || `+C25h` || `+C20h`) ? `9C3h` : 0 and the
+target `+61h` = `BL`; a change marks `+68h`, and a moving channel raises the block's `+11h`. The
+block step then drives the value toward the target, and once it reaches 1.0f `007BB110` passes.
+Other `+61h` writers found by rel32 + absolute scans: `007BBBA0` and the unreferenced `007B8840`.
+`007BB150`'s rel32 callers are `0060887C` (HUD) and `0099B055`.
+
+So the opener is the pilot think's `DF0h` plus the plane tick, and its trigger is the torpedo aim
+solution (release distance + 200 m) in the aim state, or a dive bomber entering aimdive. The host
+task state that reaches it: `torpedo_state` aim/done/goaway/attackrun/prepare with
+`torpedo_approach.aim_solution_130` set (written by the host's aim tick), or `dive_bomb_state`
+kAimDive.
+
+### 10.3 Host binding
+
+`GameUnitsHost::Impl::bay_open_step_cc13` (`src/game_hosts_units.cpp`), run per plane in the block
+step loop just before `plane_actuator_block_step_007de3a0`, under `kReleaseBayOpenCc13Bound`.
+The pure pieces are `pilot_step_flag_df0_0099b055`, `step_byte_9c1_007cdc84` and
+`plane_bay_target_007c6a8d` (`src/cc13_release_timer.cpp`). The torpedo task install also clears
+`aim_solution_130` (`009D05AB`). `kReleaseTimerPredicate007BB110Bound` now `static_assert`s this
+switch, so the predicate cannot be flipped alone. New lines: `bay target:` per target write and
+`summary bay opener steps= target_writes=`.
+
+Substitutions, labelled:
+- `DF0h` is refreshed every fixed step, not on the pilot think's own timer.
+- `9C1h`/`9C3h` are read live from the channel and the racks, not from the previous step record
+  (`[00F876B8]`).
+- `mode` is modelled for the torpedo (`009D49E0`) and dive-bomb (`009C8290`) tasks only; a plane
+  with neither installed is left alone (its target is not touched).
+- The opener runs before the block step in the same fixed step; the image's order between the
+  pilot think, the plane tick and the block step is not established.
+
+ON-only lookups (container, filler, clearing):
+- `plane_squadron_registry().find_by_member_unit(index)->member_units[0]` for the leader: filled by
+  the squadron spawns (`game_hosts_script_orders.cpp`, `game_hosts_ai.cpp`), a held wing slot
+  stored as `kPlaneSquadronNoUnit`, cleared with the squadron record; the host does not model
+  `+3D0h` moving to a surviving wingman when the leader dies (uncertainty). A slot that is
+  `kPlaneSquadronNoUnit`, out of range, empty or this unit is ignored.
+- `bay_rack_holds_round_9c3(s)`: the racks and the cached `bomb_rack_bay_doors` flags (section 6),
+  filled at the gunnery flatten, read per call.
+- `torpedo_state`/`dive_bomb_state` and `aim_solution_130`: set at the task install and by the aim
+  tick, cleared at the install (`009D05AB`).
+
+### 10.4 Reach and expected ON effect
+
+The host's predicate is read only by the torpedo release timer (`AimTickBinding`), so the opener
+changes releases only for torpedo bombers; for dive bombers it moves channel C (aimdive) but no
+host dive release reads `007BB110`. physics24's predicate-ON logs
+(`cc9-physics1/local/p24h2_*`) list the planes that were refused, all in the aim state with the
+timer enabled, i.e. with the aim solution set, so each would now get `DF0h` = `9C3h` = 1, a channel
+C target of 1, and a release once the channel reaches 1.0f:
+- BSM09 ref: 13 planes refused (Yorktown_sqn01/-II/-III, sqn11/-II, sqn16/-II/-III, sqn17/-II/-III,
+  sqn18, sqn19); OFF fired Yorktown_sqn01|.-II and .-III.
+- BSM09 def: 8 refused (Yorktown_sqn01|.-II, sqn12/-II, sqn16/-II, sqn18/-II, sqn24); OFF fired
+  Yorktown_sqn12|.-III, sqn16|.-III, sqn18|.-III, sqn21.
+- USN21 ref: 7 refused (Intrepid_sqn31/-II/-III, Cabot_sqn56/-II/-III, Lexington_sqn94); OFF fired
+  Intrepid_sqn31|.-III and Cabot_sqn56|.-III.
+- USN21 def: 7 refused (Intrepid_sqn31/-II/-III, Cabot_sqn56/-II/-III, Franklin_sqn60); OFF fired
+  Enterprise_sqn23|.-III and Cabot_sqn56|.-III.
+
+No dive release is gated by the predicate in these missions. Expected with all three switches ON:
+fires return in those squadrons, delayed by the bay travel (channel C rate 1.0, so about one second
+after the solution) and then spaced by the 0.5-1.0 s reseed, possibly more than one fire per plane.
+Wingmen in mode 1 (outside the listed states) take the leader's `9C1h`, so a wingman whose leader's
+channel is disabled or fully open opens its own loaded bay early; that is the image's rule. With
+only this switch ON (predicate OFF) the substituted predicate ignores channel C, so releases are
+unchanged and only `bay target:` lines and channel C motion appear.

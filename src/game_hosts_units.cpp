@@ -64,6 +64,7 @@
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
 #include "bsp/cc13_release_timer.hpp"            // packet cc13-reltimer (009FA3A0 stubs)
+#include "bsp/band_0099_cc13.hpp"                // 009D49E0 / 009C8290 (cc13-reltimer2)
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_squadron_host.hpp"
@@ -2018,6 +2019,9 @@ struct GameUnitSlot {
     int torpedo_aim_timer_fires{0};
     int torpedo_aim_timer_blocked_007bb110{0};
     int torpedo_aim_timer_first_fire_tick{-1};
+    // unit+DF0h, 007BB150 from the pilot think 0099B055 (packet cc13-reltimer2,
+    // written only with kReleaseBayOpenCc13Bound).
+    std::uint8_t pilot_step_flag_df0{0};
     // timer+0Dh, set at 009FA405 (packet cc13-reltimer, written only with
     // kReleaseTimerNotify0DhBound). The image has no reader.
     bool torpedo_aim_timer_notify_0d{false};
@@ -3890,6 +3894,88 @@ struct GameUnitsHost::Impl {
         char text[16];
         std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
         log.implemented(method, text);
+    }
+    // Packet cc13-reltimer. 007CD9A0 as 007CDC70 publishes it at unit+9C3h: the
+    // first rack whose platform authors UseBayDoor answers vtable[210h](2Ah, 0);
+    // none answers 0. Live, not one step late; host rack order.
+    // docs/CC13_RELEASE_TIMER.md.
+    bool bay_rack_holds_round_9c3(GameUnitSlot& s) {
+        const std::vector<PlaneOrdnanceRack>& racks = ordnance_racks(s);
+        const std::vector<bool> bay =
+            bsp::cc13_release_timer::bomb_rack_bay_doors(lua, s.row.type_id);
+        for (std::size_t i = 0; i < racks.size() && i < bay.size(); ++i) {
+            if (bay[i]) return plane_rack_holds_round(s, racks[i]);
+        }
+        return false;
+    }
+    // Packet cc13-reltimer2, kReleaseBayOpenCc13Bound (docs/CC13_RELEASE_TIMER.md
+    // section 10): the image's bay opener, run once per fixed step before the
+    // block step. 0099AFCC-0099B055 (the pilot think's unit+DF0h) then
+    // 007C6A8D-007C6B2E (the plane tick's channel C target). SUBSTITUTIONS,
+    // labelled: DF0h is refreshed every fixed step, not on the pilot think's
+    // own timer; 9C1h/9C3h are read live, not one step late; the task's
+    // vtable[+50h] is modelled for the torpedo (009D49E0) and dive-bomb
+    // (009C8290) tasks only, and a plane with neither task is left alone.
+    unsigned long long bay_open_target_writes{0}, bay_open_steps{0};
+    void bay_open_step_cc13(GameUnitSlot& s, std::size_t index) {
+        namespace rt = bsp::cc13_release_timer;
+        if (!bsp::unit_is_kind_of(s.class_id, 0x0F)) return;
+        int mode = 1;
+        if (s.torpedo_task_installed && s.torpedo_state != bsp::TorpedoState::kNone) {
+            const bsp::TorpedoState t = s.torpedo_state;
+            const bool listed = t == bsp::TorpedoState::kAim || t == bsp::TorpedoState::kDone
+                || t == bsp::TorpedoState::kGoAway || t == bsp::TorpedoState::kAttackRun
+                || t == bsp::TorpedoState::kPrepare;
+            mode = bsp::band0099::torpedo_step_result_009d49e0(
+                listed, s.torpedo_approach.aim_solution_130);
+        } else if (s.dive_bomb_task_installed
+                   && s.dive_bomb_state != bsp::DiveBombState::kNone) {
+            const bsp::DiveBombState d = s.dive_bomb_state;
+            const bool attacking = d == bsp::DiveBombState::kAimDive
+                || d == bsp::DiveBombState::kAimGlide || d == bsp::DiveBombState::kDone
+                || d == bsp::DiveBombState::kFlyAbove || d == bsp::DiveBombState::kGoAway
+                || d == bsp::DiveBombState::kPrepare || d == bsp::DiveBombState::kAttackRun
+                || d == bsp::DiveBombState::kTurnDown;               // 009C7910
+            mode = bsp::band0099::dive_bomb_step_result_009c8290(
+                attacking, d == bsp::DiveBombState::kAimDive);
+        } else {
+            return;
+        }
+        ++bay_open_steps;
+        const bool own_9c3 = bay_rack_holds_round_9c3(s);
+        // 0099B01C-0099B039: [unit+9D4h]+3D0h, the squadron's first member.
+        bool has_leader = false, leader_9c1 = false;
+        if (mode == 1) {
+            if (const bsp::PlaneSquadronHostRecord* r =
+                    bsp::plane_squadron_registry().find_by_member_unit(index)) {
+                const std::size_t m = r->member_units.empty()
+                    ? bsp::kPlaneSquadronNoUnit : r->member_units[0];
+                if (m != bsp::kPlaneSquadronNoUnit && m < slots.size() && slots[m]
+                    && m != index) {
+                    const bsp::PlaneActuatorChannel& lc =
+                        slots[m]->actuator_block_dec.channel_c;
+                    has_leader = true;
+                    leader_9c1 = rt::step_byte_9c1_007cdc84(lc.enabled, lc.value);
+                }
+            }
+        }
+        s.pilot_step_flag_df0 = rt::pilot_step_flag_df0_0099b055(mode, has_leader,
+                                                                  leader_9c1, own_9c3);
+        const bool before = s.actuator_block_dec.channel_c.target;
+        const bsp::OrdnanceKindSet set{s.ordnance_mask};
+        if (rt::plane_bay_target_007c6a8d(s.actuator_block_dec, s.generic_suppress_520,
+                bsp::ordnance_has_drop_kamikaze_2fh(set), s.pilot_step_flag_df0 != 0,
+                s.torpedo_release_pending_c25, s.torpedo_issue_requests_c20 != 0,
+                own_9c3)) {
+            ++bay_open_target_writes;
+            log.notef("bay target: unit=%s t=%.2f target=%d->%d mode=%d df0=%d c25=%d "
+                "c20=%d (0099B055, 007C6A8D)", s.row.name.c_str(),
+                static_cast<double>(summary.simulated_seconds), before ? 1 : 0,
+                s.actuator_block_dec.channel_c.target ? 1 : 0, mode,
+                s.pilot_step_flag_df0, s.torpedo_release_pending_c25 ? 1 : 0,
+                s.torpedo_issue_requests_c20);
+        }
+        done("Plane::bay_target_007c6a8d", 0x007c6a8du);
     }
     // An indirect dispatch has no call-site address of its own; the slot is the
     // evidence, so the report carries `<vtable>+vtableNN` for it.
@@ -21604,6 +21690,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
             if constexpr (GameUnitsHost::Impl::kPlaneWingFoldElevatorBound) {
                 host.wing_fold_notify_007c11e0(*unit_slot);
             }
+            if constexpr (bsp::cc13_release_timer::kReleaseBayOpenCc13Bound) {
+                // 0099B055 / 007C6A8D, the bay opener (packet cc13-reltimer2).
+                host.bay_open_step_cc13(*unit_slot,
+                    static_cast<std::size_t>(&unit_slot - host.slots.data()));
+            }
             bsp::plane_actuator_block_step_007de3a0(unit_slot->actuator_block_dec,
                 step_seconds, static_cast<unsigned>(host.summary.motion_steps));
         }
@@ -32299,6 +32390,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     : bsp::TorpedoState::kFollow;
                             unit_.torpedo_drop_timer = -1.0f;
                             unit_.torpedo_done_timer_98 = -1.0f;
+                            if constexpr (bsp::cc13_release_timer::kReleaseBayOpenCc13Bound) {
+                                // 009D05AB: 009D0380, run from 009D2DA0 at the
+                                // task's construction, clears approach+130h,
+                                // which the bay opener's 009D49E0 reads.
+                                unit_.torpedo_approach.aim_solution_130 = false;
+                            }
                             // 009D4A70, the task's +54h cruise profile, is the
                             // one producer of the engage distance the engaged
                             // predicate 009D3210 compares the range against:
@@ -34002,20 +34099,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                         }
-                        // 007CD9A0 as 007CDC70 publishes it at unit+9C3h: the
-                        // first rack whose platform authors UseBayDoor answers
-                        // vtable[210h](2Ah, 0); none answers 0. Live, not one
-                        // step late; host rack order. docs/CC13_RELEASE_TIMER.md.
                         bool bay_rack_holds_round_9c3() {
-                            const std::vector<PlaneOrdnanceRack>& racks =
-                                owner_.ordnance_racks(s_);
-                            const std::vector<bool> bay =
-                                bsp::cc13_release_timer::bomb_rack_bay_doors(
-                                    owner_.lua, s_.row.type_id);
-                            for (std::size_t i = 0; i < racks.size() && i < bay.size(); ++i) {
-                                if (bay[i]) return owner_.plane_rack_holds_round(s_, racks[i]);
-                            }
-                            return false;
+                            return owner_.bay_rack_holds_round_9c3(s_);
                         }
                         void arm_release_timer_009d2287() override {
                             // 009D2279-009D2287: refuses to re-arm, and leaves
@@ -44433,6 +44518,11 @@ void GameUnitsHost::report() {
                 "no_force_bound=%d (007BBBA6, 007EABC0, packet p19_bay_force)",
                 host.bay_channel_disabled_requests, host.bay_door_classes,
                 Impl::kBayRequestNoForceEnableBound ? 1 : 0);
+            if constexpr (bsp::cc13_release_timer::kReleaseBayOpenCc13Bound) {
+                host.log.notef("summary bay opener steps=%llu target_writes=%llu "
+                    "(0099B055, 007C6A8D, packet cc13-reltimer2)",
+                    host.bay_open_steps, host.bay_open_target_writes);
+            }
             host.log.notef("summary moveto cruise by_ordnance=%llu bound=%d leg separations=%llu "
                 "bound=%d (009C3650, 009BEC85, packet p16_moveto_cruise)",
                 host.moveto_cruise_by_ordnance, Impl::kMoveToCruiseByOrdnanceBound ? 1 : 0,
