@@ -963,3 +963,17 @@ mechanism is in the cd761bb52 section above).
     the shoal and reaches MissionPhase 3, but HenryPT dies at 1841.97 s and `MiniSub` fails. Both a and b launch 4-6
     depth charges with `depth_detonations=0 contact_detonations=0`. Waiting on gunnery53.
   - LOMP06's 20,3 and USN01's 20,3 are new losses; USN15 and USNOS wait on the ships lane.
+- **BSM01 won: `config/win_orders/bsm01_l69_b1_d.txt`** (cc9-lua69, main ec0df436c, reference env): EndMission 809.93 s
+  reference / 929.90 s under 20,3, MissionStatus=true, MissionPhase 4, guard logged; MiniSub dies at 679.86 / 645.22 s
+  (`luaMiniSubHit` fires: hit listener 00988510 on HenryPT's charges), HenryPT survives (no commandhelpers.lua:5991
+  error). The plan follows gunnery53's lane (SHIP_AI_OPEN_ITEMS 296.3): p6_b1_a's legs to (1915,-3084), then
+  `6900 takehelm HenryPT 1.0 1400 -2980` (the z -2980 lane past the x 1300-1620 shoal), `7300 takehelm HenryPT 1.0
+  -430 -2990` (the sub's west point near 432 s), `8500 attack HenryPT MiniSub repeat 3` (pursuit), and a depth-charge
+  press every 40 frames from 7600 to 26000. Variant c (the attack from (900,-2980) at 7400) has no end. The lead/cc13
+  6950 leg plans a / b (`local\l69_b1_a|b.txt`) stay superseded. Logs `cc9-lua52\local\l69r_b1d_main_{ref,j3}.log`.
+- **USN15** on ec0df436c: `s45_u15_l2` fails at 1127.02 s; the cc13 timing fix a (Fuso block moved to frame 20000,
+  `local\l69_u15_a.txt`) fails at 1122.02 s and b (a with the battleships held until 20000) at 1382.27 s. On this
+  main **Yamashiro no longer dies** (999.28 s before) and kills the battleships at 1.4-2.7 km, after Fubuki-class
+  torpedoes (cat 7, 2.5-4 km) take Maryland / California first. USN15 needs a Yamashiro-first re-plan with torpedo
+  avoidance; it stays open.
+- JM06 completes at 1457.30 s with the squadron step-tail flips (physics23, main ac7bc90b6); BSM09 d1 unchanged.
