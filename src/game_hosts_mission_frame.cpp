@@ -3889,7 +3889,9 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 || words[1] == "depthcharge" || words[1] == "fire" || words[1] == "order"
             || words[1] == "torpedo" || words[1] == "input" || words[1] == "aim"
             || words[1] == "releasegun");
-        // Packet cc13-releasegun: `<frame> releasegun <unit...>`.
+        // Packet cc13-releasegun: `<frame> releasegun <unit...>`. One line opens
+        // the map for the rest of the run; a second line only logs
+        // `map close-requested` (the close arm 0068B4E9 is not hosted).
         const bool releasegun_ok = verb_ok && words[1] == "releasegun" && words.size() >= 3;
         // `<frame> input <action> [hold <frames>]`.
         const bool input_ok = verb_ok && words[1] == "input"

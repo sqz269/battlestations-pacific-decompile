@@ -207,13 +207,33 @@ order `<frame> releasegun <unit>` drives that input. It sits behind `kHarnessRel
    - 0077C470 builds session message 4Bh: +24h the mask, +28h the slot game+18ECh, +2Ch take 0.
    - The 4Bh arm sets each held role back to 8, and the device walk 0095AC1D hands the guns back to the bot.
 6. **No re-take while the map is up.**
-   - 005484F0 is reached from 46h's update 0064D610, and 004F8906 updates only screens that are requested and applied.
+   - 005484F0 has five callers, one per screen:
+
+     | caller | screen |
+     |---|---|
+     | 00519D29 | 25h |
+     | 0052128F | 2Fh |
+     | 0064D66D | 46h (its update 0064D610) |
+     | 0065265B | 47h |
+     | 0067C7D9 | 4Ah |
+
+   - None of those screens is in the level-2 set, and level 1 is occluded. 004F8906 updates only screens that are
+     requested and applied, so no caller runs while the map is up.
    - 27h's 0067BB50, the captain-role take, is also out of the set.
 7. **Closing the map** (C1h again) runs 0068B470's other arm:
    - 004F85D0(0) at 0068B4E9, 004D8AE0 at 0068B4F7, and 0068AA40 at 0068B507;
    - 46h and 2Eh enter again, and 00549260 re-takes the group.
 
-Mask 1FEh is roles 1..8, so the helm (mask 2) is released as well. While the map is up, the ship is driven by the AI.
+Mask 1FEh is roles 1..8, so the helm role (role 1, mask 2) also goes back to 8. Readers of the role-1 slot (`+1B0h`)
+see an AI holder, for example 00936EC5..00936ED4 in docs/CC13_BSM01END.md.
+
+The unit's `+184h` stays 1, in both the image and the host. 0078021C tests `[msg+24h]&1` before it clears `+184h` and
+calls 0080E290, and bit 0 of 1FEh is clear. The host's steering readers key on `+184h`:
+- `player_flag_0184` in the cruise step;
+- the formation test;
+- `leader_player_184`.
+
+Whether role 1 alone hands ship steering to the AI is **not traced**. Do not assume that it does.
 A plan cannot keep `takehelm` and drop only the guns this way.
 
 The other candidates do not do this:
@@ -226,6 +246,8 @@ The other candidates do not do this:
 `<frame> releasegun <unit>` is in `game_hosts_mission_frame.cpp`.
 - It refuses any unit but the controlled one, `[00E188D8]`.
 - It arms the HUD, then holds C1h for one frame through the `input` line's action record.
+- One line opens the map for the rest of the run. A second line only logs `map close-requested`, because the close arm
+  is not hosted.
 
 Only an armed HUD runs the following host wiring. A plan without the line runs as OFF.
 
