@@ -3579,6 +3579,8 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     host.global_subsystems->weather() ? 1 : 0, owners.traffic_loaded,
                     owners.panel_loaded, owners.weather_loaded, owners.load_failures,
                     owners.last_error.empty() ? "" : " last_error=", owners.last_error.c_str());
+                host.log.notef("global subsystems contents: %s",
+                    host.global_subsystems->describe_contents().c_str());
             } else {
                 if constexpr (kWarningMessageBankCc15Bound) load_warning_message_bank_009870a0(host);
                 if constexpr (bsp::cc13_powerup::kPowerupGrantBound) load_powerup_classes_cc13(host);

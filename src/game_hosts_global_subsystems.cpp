@@ -17,6 +17,7 @@
 
 #include <windows.h>
 
+#include <cstdio>
 #include <exception>
 #include <new>
 #include <stdexcept>
@@ -255,6 +256,30 @@ VoicePanelState* GameGlobalSubsystemsHost::panel() noexcept { return impl_->pane
 WeatherConfig* GameGlobalSubsystemsHost::weather() noexcept { return impl_->weather_21c4; }
 const GlobalSubsystemsSummary& GameGlobalSubsystemsHost::summary() const noexcept {
     return impl_->summary;
+}
+
+std::string GameGlobalSubsystemsHost::describe_contents() const {
+    const Impl& m = *impl_;
+    char text[512];
+    const auto size_of = [](const auto& map) { return map ? map->size() : std::size_t{0}; };
+    std::snprintf(text, sizeof text,
+        "traffic soldiers=%zu vehicles=%zu; panel characters=%zu default_pause=%.3f; "
+        "warnings tables=%d; weather start_day_time=%.3f morning=%.3f..%.3f "
+        "evening=%.3f..%.3f recon_modifiers=%zu view_mode_amps=%zu weather_amps=%zu",
+        m.traffic_21d0 ? size_of(m.traffic_21d0->soldiers_40) : 0u,
+        m.traffic_21d0 ? size_of(m.traffic_21d0->vehicles_4c) : 0u,
+        m.panel_21e4 ? m.panel_21e4->characters_04.size() : 0u,
+        m.panel_21e4 ? static_cast<double>(m.panel_21e4->default_pause_30) : 0.0,
+        m.warnings_21e0 && m.warnings_21e0->tables_108 ? 1 : 0,
+        m.weather_21c4 ? static_cast<double>(m.weather_21c4->start_day_time_04) : 0.0,
+        m.weather_21c4 ? static_cast<double>(m.weather_21c4->morning_start_08) : 0.0,
+        m.weather_21c4 ? static_cast<double>(m.weather_21c4->morning_end_0c) : 0.0,
+        m.weather_21c4 ? static_cast<double>(m.weather_21c4->evening_start_10) : 0.0,
+        m.weather_21c4 ? static_cast<double>(m.weather_21c4->evening_end_14) : 0.0,
+        m.weather_21c4 ? size_of(m.weather_21c4->weather_recon_modifiers_38) : 0u,
+        m.weather_21c4 ? size_of(m.weather_21c4->view_mode_amp_multipliers_5c) : 0u,
+        m.weather_21c4 ? size_of(m.weather_21c4->weather_amp_multipliers_68) : 0u);
+    return text;
 }
 
 }  // namespace bsp::game

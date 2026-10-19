@@ -55,6 +55,8 @@ public:
     VoicePanelState* panel() noexcept;
     WeatherConfig* weather() noexcept;
     const GlobalSubsystemsSummary& summary() const noexcept;
+    // What the loaders left in the owners, for the load log line.
+    std::string describe_contents() const;
 
 private:
     struct Impl;
