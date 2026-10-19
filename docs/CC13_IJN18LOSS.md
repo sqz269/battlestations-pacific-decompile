@@ -364,6 +364,33 @@ here:
 With |throttle| > 0.1, the per-step re-take puts the ship back in the helm arm after each of these, unless the map-up
 gate below is ON.
 
+**Built (packet `cc13-helmmapgate`):** `kHelmPrepareMapUpGateCc13Bound` in `include/bsp/game_hosts_hud_world.hpp`,
+OFF. A static_assert requires its parent `kHarnessReleaseGunMapBound` to be ON.
+
+0064B870 has one caller, 0064D656, which is inside screen 46h's update 0064D610 (`bsp.py callers`). 46h is a level-1
+screen. 4Ch's +8h (005A8EF0) is opaque, so 004F7620 requests no level-1 screen, and 004F8906 updates only the screens
+that are requested. 46h has also exited through 0064A490. So the transfer at 0064B97A and the issue at 0064BB12 do not
+run while the map is up.
+
+When 0068AC30 opens the map, the HUD host now calls `set_helm_screen_occluded_by_map(true)` on the units host. When
+ON, the units host then skips `player_helm_prepare_0064b870` and the controlled unit's `player_helm_issue_0064b870`.
+OFF runs both as before.
+
+The summary line `helm map-up gate bound=.. map_up=.. prepares=.. skipped=.. issues=.. skipped=..` counts the steps
+in both settings. Closing the map is not hosted, so the gate stays closed for the rest of the run.
+
+The ring is not stranded:
+- **Both switches ON (the image).** The issue is skipped, so the only ring writer for that ship is 009F3F80. blk+3F5h
+  is cleared by every re-plan pre-pass and never set again, because the helm arm cannot return without a re-take. So
+  009F3F80 writes the latched pair, re-sent by `cc13-helmlatch`, on every step.
+- **This gate ON without the latch.** 009F3F80 still writes every step, but from whatever the control block last
+  held. That is not the image's pair. Flip the two together.
+- **`--order` harness standing order.** Its refill (`issue_into_ring` before the helm call) is not gated. It is a
+  harness-only path.
+
+27h's 0067BB50, the captain-role take, is also outside the level-2 set. The host calls it every step under
+`kRoleScreenFixedStepCall`. It takes and releases mask 1 only and never sets `+184h`, so this gate leaves it alone.
+
 ### Gunnery while the map is up (packet `cc13-gunfire`)
 
 **Artillery, AA, flak and depth-charge guns acquire targets and fire. Torpedo tubes never fire.**

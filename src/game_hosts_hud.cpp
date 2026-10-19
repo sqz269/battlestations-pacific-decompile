@@ -1671,6 +1671,10 @@ void GameHudHost::Impl::back_out_one_overlay_level_0068b470() {
     menu.publish_level2_input_contexts_004d8ae0(kLevel2Contexts, 4);
     done("InGameInterface::set_level2_input_contexts", 0x004d8ae0u);
     release_gun_map_up = true;
+    // Packet cc13-helmmapgate: 46h, whose update 0064D610 runs 0064B870, is now
+    // occluded. The units host counts the helm calls this skips, and skips them
+    // only under kHelmPrepareMapUpGateCc13Bound.
+    if (units != nullptr) units->set_helm_screen_occluded_by_map(true);
     done("InGameInterface::restore_hud_screen_set", 0x0068ac30u);
     log_map_state("open");
     log.note("releasegun: C1h opened the map: level 2 {4Ch 39h 44h 29h 49h}, contexts "

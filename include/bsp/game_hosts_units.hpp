@@ -936,6 +936,9 @@ public:
     // cc13-helmlatch, for 009E1170's latched arm (009E1207 / 009E1237).
     float unit_ring_confirmed_throttle_0994(std::size_t index) const;
     float unit_ring_confirmed_rudder_0998(std::size_t index) const;
+    // Packet cc13-helmmapgate: the HUD host reports that the map (4Ch) occludes
+    // screen 46h, the only caller of 0064B870 (kHelmPrepareMapUpGateCc13Bound).
+    void set_helm_screen_occluded_by_map(bool occluded);
     // The divisor 009da268 loads from [[blk+3fch]+538h]+524h. Packet
     // ship_ai_class_field_0524 found its producer: 00828f20 derives it as
     // 0.5 * MaxRotAngle (class+4f8h) / MaxRotAngleChangeRatio (class+4fch), and
