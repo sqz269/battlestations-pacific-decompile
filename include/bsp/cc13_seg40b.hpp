@@ -88,7 +88,7 @@ void* singleton_01090298_scalar_deleting_destructor_007358c0(Cc13Seg40Host& host
                                                              std::uint32_t flags,
                                                              void** singleton_cell_01090298);
 
-// 00735B40, __thiscall, RET: returns [00E188A8] + 1A0Ch (the game object's member at
+// 00735B40, RET, ECX never read (a vtable slot, so callers pass one): returns [00E188A8] + 1A0Ch (the game object's member at
 // +1A0Ch). Referenced only by the vtable entry at 00CFEAC4, next to 00735B30
 // BSP_Application_IgnoreVfsCallback.
 void* game_member_1a0c_00735b40(void* game_00e188a8) noexcept;
