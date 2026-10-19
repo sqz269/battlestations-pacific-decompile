@@ -471,6 +471,10 @@ struct GameMissionFrameHost::Impl {
         // mover's +384h / +388h reached through the look axes (inject_view_aim).
         bool view_aim{false};
         float aim_yaw{0.0f};
+        // Packet cc13-aimunit: `aim unit <name...> [pitch]`, a per-frame track of
+        // the named unit (inject_view_aim_track); `unit` holds the name.
+        bool aim_track{false};
+        bool aim_track_has_pitch{false};
         float aim_pitch{0.0f};
         // Packet cc9_player_bomb_release: `release <unit> [on <target...>
         // [within <m>] [until <frame>]]`, the plane screen's bomb fire 006082D0.
@@ -3448,7 +3452,10 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         const bool input_ok = verb_ok && words[1] == "input"
             && (words.size() == 3 || (words.size() == 5 && words[3] == "hold"));
         // `<frame> aim <yaw> <pitch>`.
-        const bool aim_ok = verb_ok && words[1] == "aim" && words.size() == 4;
+        // `<frame> aim unit <name...> [pitch]`.
+        const bool aim_unit = verb_ok && words[1] == "aim" && words.size() >= 4
+            && words[2] == "unit";
+        const bool aim_ok = verb_ok && words[1] == "aim" && (aim_unit || words.size() == 4);
         // `<frame> order <base> <slot> <order> [target...]`.
         const bool air_order_ok = verb_ok && words[1] == "order" && words.size() >= 5;
         // `<frame> depthcharge <ship...>`.
@@ -3500,10 +3507,32 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 "<m>] [until <frame>]]` or `<frame> build <shipyard> class <id>` or `<frame> "
                 "fire <ship> group <g> [release]` or `<frame> torpedo <ship> at <target>|release` "
                 "or `<frame> order <base> <slot> <1|2|3> [target]` or `<frame> input "
-                "<action> [hold <frames>]` or `<frame> aim <yaw> <pitch>`", line, path.c_str());
+                "<action> [hold <frames>]` or `<frame> aim <yaw> <pitch>` or `<frame> aim unit <name> "
+                "[pitch]`", line, path.c_str());
             continue;
         }
         order.unit = words[2];
+        if (aim_unit) {
+            // The last word is the pitch (degrees) when it is a number and a name
+            // remains before it; quote a name that ends in a number.
+            char* pe = nullptr;
+            const double p = words.size() >= 5
+                ? std::strtod(words.back().c_str(), &pe) : 0.0;
+            const bool has_pitch = words.size() >= 5 && pe != nullptr && *pe == '\0'
+                && std::isfinite(p);
+            order.unit.clear();
+            for (std::size_t w = 3; w < words.size() - (has_pitch ? 1 : 0); ++w) {
+                if (!order.unit.empty()) order.unit += ' ';
+                order.unit += words[w];
+            }
+            constexpr double kDegToRad = 3.141592653589793 / 180.0;
+            order.view_aim = true;
+            order.aim_track = true;
+            order.aim_track_has_pitch = has_pitch;
+            order.aim_pitch = static_cast<float>(p * kDegToRad);
+            host.helm_orders.push_back(order);
+            continue;
+        }
         if (aim_ok) {
             char* ye = nullptr;
             char* pe = nullptr;
@@ -4033,6 +4062,31 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                     "0x%02X hold %u frame(s) through the action record (00a92aa0 / 00a919f0 / "
                     "00a92370 -> 004c43c0)", accepted ? "applied" : "refused", order.line, due,
                     now, static_cast<unsigned>(order.input_action), order.input_frames);
+                continue;
+            }
+            if (order.aim_track) {
+                // Packet cc13-aimunit: re-aim every frame at the unit's position
+                // through the same look axes, until the next `aim` line.
+                const std::size_t row = harness_target_row(*host.units, order.unit);
+                if (row >= host.units->count()) {
+                    ++host.helm_orders_refused;
+                    host.log.notef("helm order refused: line %d frame %ld (at mission frame %llu) "
+                        "aim unit \"%s\": no such unit; the look keeps its last yaw",
+                        order.line, due, now, order.unit.c_str());
+                    continue;
+                }
+                inject_view_aim_track(row, order.aim_track_has_pitch, order.aim_pitch);
+                ++host.helm_orders_applied;
+                if (order.aim_track_has_pitch) {
+                    host.log.notef("helm order applied: line %d frame %ld (at mission frame %llu) "
+                        "aim unit \"%s\" (row %zu) pitch %.4f rad, yaw tracked every frame through "
+                        "the look axes (0051F050)", order.line, due, now, order.unit.c_str(), row,
+                        static_cast<double>(order.aim_pitch));
+                } else {
+                    host.log.notef("helm order applied: line %d frame %ld (at mission frame %llu) "
+                        "aim unit \"%s\" (row %zu), yaw and pitch tracked every frame through the "
+                        "look axes (0051F050)", order.line, due, now, order.unit.c_str(), row);
+                }
                 continue;
             }
             if (order.view_aim) {
