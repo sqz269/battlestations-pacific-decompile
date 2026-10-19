@@ -99,8 +99,8 @@ Other classes answer `false`, which keeps the count `sound_keys_not_evaluated`:
 | --- | --- | --- |
 | sound banks | 00A83FD0 on [00F8BBE8], FMOD sample loading | `sound_banks_not_loaded`; the record's four references stay null |
 | streamed-dialog probe | [0109CEEC] vtable +0Ch, 00BDD520 | `streamed_probes_not_evaluated`, answers false |
-| voice language | 008D57A0 on [00F88980]: the catalog row's voice_dir, `authentic` with DL_Content_0000062, `english` fallback | the language string the mission frame host was constructed with, logged in the load line |
-| record miss | 00705E00 creates a `<name>` record timed by [[00E198C4]+A4h]+7Ch/+80h | counted as `clip_record_misses`, answers null |
+| voice language | 008D57A0 on [00F88980]: the catalog row's voice_dir, `authentic` with DL_Content_0000062, `english` fallback | the language string the mission frame host was constructed with, logged in the load line; 008D57A0 with `kMessageVoiceLanguageCc15Bound` (cc15-msg2 below) |
+| record miss | 00705E00 creates a `<name>` record timed by [[00E198C4]+A4h]+7Ch/+80h | counted as `clip_record_misses`, answers null; created with `kMessageRecordMissCc15Bound` (cc15-msg2 below) |
 | spoken-language sweep | 004E0FAD: when [004C1E90()]+8h == 2, each other language loads (1) in its block, then unloads (0) in "dummy DO NOT USE" | not taken; the host has no profile-hints singleton |
 | FileBlocks | "Warnings_<language>_<Ally/Jp>" / "Warnings_englishauthentic_..." (00BE0A30) | not built |
 | message filters | [game+5FCh]+1064h..+1088h from the scene's `unittypes` (00468B70) | disabled with empty arrays; the host's scene read does not parse `unittypes` |
@@ -233,3 +233,64 @@ Result: on every row both sequences have the same length. The only mismatched po
 mission warning activate` line, and in it only those two counters differ. No line from another object moves or
 changes its order. Gameplay is identical on all 13 rows. The only other `pair_diff` lines are the heap-dependent
 `clear_37c` table cells (IJN18 Kita2, LOMP10 Kiyoshimo).
+
+## cc15-msg2: record-miss creation and the voice-language folder (2026-10-19)
+
+Two seams from the table above, each behind its own switch in
+`include/bsp/game_hosts_message_manager.hpp`. Both switches are OFF in the commit.
+
+### Record miss, 00705E00 (`kMessageRecordMissCc15Bound`)
+
+The typed body is `resolve_message_record_00705e00` in `src/message_record_resolver.cpp`
+(docs/MESSAGE_RECORD_RESOLVER.md). The host now calls it on a miss instead of answering null.
+What the image does on a miss:
+
+- **Insertion.** 00705C50, operator[] on the record map at manager+4h, inserts a node at the
+  00702300 lower-bound hint. The 40h record comes from 00703FF0, then 007042B0 copies it twice
+  (pair, node). The temporary's +08h and +14h are the caller's uninitialized stack; +08h is
+  overwritten next, so only +14h (the alternate flag) is a host choice: 0, as the existing
+  00705C50 host path already used.
+- **Defaults.** text +00h = the name, sound id +08h = -1, the four references stay null, and the
+  timed-key vector +34h is resized to one key (00704190).
+- **The key.** text = "<" + name + ">" (004261A0 twice), flag +18h = 1, start +10h = 0, and end
+  +14h = len(text) * [+7Ch] + [+80h] on [[00E198C4]+A4h]. No sound-key derivation happens here;
+  00705E00 only builds the display text.
+- **The timing pair.** [[00E198C4]+A4h] is the HUD manager's slot 33h, the narrative screen.
+  005BB130 (005BB80B..005BB901) loads Scripts/datatables/DialogGlobals.lua and stores
+  +7Ch = TempCharWait and +80h = TempWaitBase (GetNumber, FSTP to float). The screen is not
+  hosted, so the manager host runs that file once, at the first miss, the same way (base file
+  through the VFS, the repository's Lua 5.1.1) and keeps the pair. The installation has
+  TempCharWait = 0.04 and TempWaitBase = 1.0. The override files (00BDEF90) are a seam, as for
+  Messages.lua.
+- **Services.** The created record reaches only the current-manager read. `RecordMissPlayback`
+  answers that one and throws on every other VoiceLineHost call.
+
+A created record is logged once, as `message manager record created: "<name>" key=... end=...`.
+Later lookups of the name hit the record. The summary counts `records_created`.
+
+**Pairs.** The runs used the reference env (`rng streams: on` in every log) and the builds
+local\msg2_exe\{base,off,on1}. base is origin/main 7f4f75b85, off is this commit, and on1 is this
+commit with the switch true.
+
+| Pair | pair_diff | Gameplay |
+| --- | --- | --- |
+| USN04 base vs off | exit 0, identical apart from noise | identical |
+| USN04 off vs on1 | exit 0 | identical; USN04 has no miss, so nothing moves |
+| USN01 (usn01_l69_u1_a, completed 380.03 s) off vs on1 | exit 1 | identical: 57 deaths, 3725 hits, 106-row unit table |
+
+USN01 rows that move, every one:
+- The six `record miss` lines become five `record created` lines. The names are
+  `nmy_ship_ship_dest_{4,2,1}_randomplane` and `under_att_dispatcher3`/`4`. The second
+  `under_att_dispatcher3` lookup now hits the created record, so it logs nothing.
+- One line appears before the first created record: `record-miss timing from DialogGlobals.lua:
+  TempCharWait=0.0399999991 TempWaitBase=1`.
+- `summary mission message manager`: records 247 -> 252, clip_records_resolved 38 -> 44,
+  clip_record_misses 6 -> 0.
+
+Ends: `<nmy_ship_ship_dest_4_randomplane>` has 34 characters, so its end is 2.36; dispatcher
+keys have 23 characters, so their end is 1.92.
+
+**Strict order (c).** I ran an index-ordered diff (`difflib` opcodes, hex masked) of every dialog,
+warning, clip, message, voice, subtitle, hint, objective, Lua and script line. It moves only the
+lines above, in place, plus the renderer worker thread id. Every other line keeps its index
+order, on USN04 (6030 lines) and on USN01 (9681 lines).

@@ -104,6 +104,50 @@ private:
     NativeStringStorage& strings_;
 };
 
+// cc15-msg2: the services 00705E00's miss arm reaches through VoiceLineHost. The created
+// record holds no sound references (00A83FD0 is a seam), so only the current-manager
+// read is reached: [[00E198C4]+A4h], the HUD's narrative screen (slot 33h), whose
+// +7Ch / +80h 005BB130 loads from DialogGlobals.lua. The screen itself is not hosted;
+// `screen` carries those two words and nothing else is read from it.
+class RecordMissPlayback final : public VoiceLineHost {
+public:
+    VoicePlaybackManager screen;
+
+    VoicePlaybackManager& current_voice_manager_00e198c4_a4() override { return screen; }
+
+    float mission_clock_00f876a4() override { throw unreached(); }
+    bool sound_completed_vslot_0c(void*) override { throw unreached(); }
+    float sound_duration_00a81860(void*) override { throw unreached(); }
+    void stop_sound_vslot_08(void*, std::uint32_t) override { throw unreached(); }
+    void release_reference(void*) noexcept override {}  // no reference is ever held
+    void stop_auxiliary_vslot_08(void*, std::uint32_t) override { throw unreached(); }
+    void reset_auxiliary_0054d510(void*&, void*) override { throw unreached(); }
+    void set_sound_flag_00a7d120(std::uint32_t) override { throw unreached(); }
+    bool alternate_playing_00a77730() override { throw unreached(); }
+    std::int32_t local_side_18cc_18ec() override { throw unreached(); }
+    std::int32_t speaker_side_54(void*) override { throw unreached(); }
+    bool speaker_kind_vslot_5c(void*, std::uint32_t) override { throw unreached(); }
+    void notify_005a2650(std::uint32_t, void*, std::uint32_t) override { throw unreached(); }
+    VoiceLine* allocate_line_00bf681b(std::uint32_t) override { throw unreached(); }
+    VoiceLineNode& allocate_node_00bf681b(std::uint32_t) override { throw unreached(); }
+    void retain_reference(void*) override { throw unreached(); }
+    std::uint32_t invalid_target_00e188d8() override { throw unreached(); }
+    bool target_valid_00645160(std::uint32_t, bool) override { throw unreached(); }
+    VoiceSubtitleContext& subtitle_context() override { throw unreached(); }
+    VoiceSlotStartContext& slot_start_context() override { throw unreached(); }
+    void log_004254b0(const char*, const char*) override { throw unreached(); }
+    std::array<float, 3> camera_position_00b6db70() override { throw unreached(); }
+    std::array<float, 3> entity_position_00414db0(void*) override { throw unreached(); }
+    double vector_length_0042b2f0(const std::array<float, 3>&) override { throw unreached(); }
+    float global_sound_level_6c() override { throw unreached(); }
+    VoiceFadeBindings& fade_bindings() override { throw unreached(); }
+
+private:
+    static std::logic_error unreached() {
+        return std::logic_error("00705E00 miss arm: a voice service the created record never reaches");
+    }
+};
+
 // One open script: 00B66BD0 owner, 00B6A020 open(1), the run, 00B67980 globals and the
 // 004425C0 reader; 00B669A0 closes it.
 struct ScriptFrame {
@@ -216,6 +260,20 @@ struct GameMessageManagerHost::Impl final : seg::MessageManagerCalls {
             return &found.position->second;
         }
         ++summary.resolve_misses;
+        if constexpr (kMessageRecordMissCc15Bound) {
+            // 00705E00's miss arm, the typed body: 00705C50 inserts a 00703FF0 record at
+            // the hint, then text = name, sound id -1, one timed key with text "<name>",
+            // flag 1, start 0 and end = len * [+7Ch] + [+80h] on the narrative screen.
+            // The 00705C50 temporary's +08h / +14h are the caller's uninitialized stack
+            // in the image; zero here, as lookup_record_00705c50 above does. +08h is then
+            // overwritten with -1, so only +14h (the alternate flag) carries that choice.
+            // 00976B00 passes 0 as the unused second word.
+            MessageRecordResolverContext context{crt_string_storage(), miss_playback(), {}};
+            VoiceClipRecord& record = resolve_message_record_00705e00(records, name, 0, context);
+            if (layout) layout->records_04.size = static_cast<std::uint32_t>(records.size());
+            ++summary.records_created;
+            return &record;
+        }
         return nullptr;
     }
     std::vector<std::string> loaded_map_keys() override {
@@ -230,13 +288,10 @@ struct GameMessageManagerHost::Impl final : seg::MessageManagerCalls {
         loaded_maps.insert(key);
         if (layout) layout->loaded_maps_64.size = static_cast<std::uint32_t>(loaded_maps.size());
     }
-    seg::PropertyVisitor* open_script_reader(const std::string& path) override {
-        // 00706160 runs the path through 00B69D40 in a state of its own. As for
-        // Warnings.lua (009870A0) and decals.lua, the base file is read from the VFS
-        // and run by the repository's Lua 5.1.1; 00BDEF90's override files are not run.
+    // The base file of a script from the VFS (00BDF4C0 / 00BDF310); error on failure.
+    std::string read_script_text(const std::string& path, std::string& error) {
         std::string text;
         std::string resolved = path;
-        std::string error;
         if (!vfs.ready() || !resolve_existing_resource_00bdf4c0_fragment(
                 vfs.context(), vfs.search_registrations(), resolved)) {
             error = "cannot resolve " + path;
@@ -249,6 +304,52 @@ struct GameMessageManagerHost::Impl final : seg::MessageManagerCalls {
                     static_cast<std::size_t>(opened.stream->size_00bef600()));
             }
         }
+        return text;
+    }
+
+    // cc15-msg2: the narrative screen's timing pair for 00705E00's miss arm, loaded once
+    // the way 005BB130 loads it (005BB80B..005BB901): a Lua owner runs
+    // Scripts/datatables/DialogGlobals.lua, and +7Ch = TempCharWait, +80h = TempWaitBase,
+    // each GetNumber FSTP'd to a float. As for Messages.lua, only the base file is run
+    // (00BDEF90's override files are a seam). A global that is not a number reads 0,
+    // which is what lua_tonumber answers.
+    RecordMissPlayback& miss_playback() {
+        if (miss_playback_) return *miss_playback_;
+        auto playback = std::make_unique<RecordMissPlayback>();
+        const char* const path = "Scripts/datatables/DialogGlobals.lua";
+        std::string error;
+        const std::string text = read_script_text(path, error);
+        GuiLua51Host lua;
+        if (error.empty() && !lua.execute_archive(text, error) && error.empty()) {
+            error = "the script did not run";
+        }
+        if (!error.empty()) throw std::runtime_error(std::string("00705E00 miss arm: ") + path + ": " + error);
+        const GuiLuaRef globals = lua.globals();
+        auto number = [&](const char* name) {
+            const GuiLuaRef value = lua.get_by_name(globals, name);
+            const double out = lua.type_of(value) == GuiLuaType::Number ? lua.to_number(value) : 0.0;
+            lua.release(value);
+            return static_cast<float>(out);
+        };
+        playback->screen.per_character_7c = number("TempCharWait");
+        playback->screen.base_80 = number("TempWaitBase");
+        lua.release(globals);
+        summary.char_wait_7c = playback->screen.per_character_7c;
+        summary.wait_base_80 = playback->screen.base_80;
+        log.notef("message manager: record-miss timing from %s: TempCharWait=%.9g TempWaitBase=%.9g "
+            "(005BB130's narrative screen +7Ch/+80h)", path,
+            static_cast<double>(summary.char_wait_7c), static_cast<double>(summary.wait_base_80));
+        miss_playback_ = std::move(playback);
+        return *miss_playback_;
+    }
+    std::unique_ptr<RecordMissPlayback> miss_playback_;
+
+    seg::PropertyVisitor* open_script_reader(const std::string& path) override {
+        // 00706160 runs the path through 00B69D40 in a state of its own. As for
+        // Warnings.lua (009870A0) and decals.lua, the base file is read from the VFS
+        // and run by the repository's Lua 5.1.1; 00BDEF90's override files are not run.
+        std::string error;
+        const std::string text = read_script_text(path, error);
         auto frame = std::make_unique<ScriptFrame>();
         if (error.empty() && !frame->lua.execute_archive(text, error) && error.empty()) {
             error = "the script did not run";
@@ -371,8 +472,15 @@ const VoiceClipRecord* GameMessageManagerHost::resolve_record_00705e00(const std
     if (!impl_->layout) throw std::logic_error("00705E00 before 00707480");
     NativeString key;
     assign_text(key, crt_string_storage(), name);
+    const unsigned long long created = impl_->summary.records_created;
     const VoiceClipRecord* record = impl_->resolve_record_00705e00(key);
     key.release_to(crt_string_storage());
+    if (impl_->summary.records_created != created) {
+        // A name is created once; later lookups of it hit the new record.
+        const VoiceTimedKey& timed = record->timed_keys_34.front();
+        impl_->log.notef("message manager record created: \"%s\" key=\"%s\" end=%.9g (00705E00 miss arm)",
+            name.c_str(), text_of(timed.text_00).c_str(), static_cast<double>(timed.end_14));
+    }
     return record;
 }
 
