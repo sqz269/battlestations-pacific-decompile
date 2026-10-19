@@ -193,7 +193,7 @@ The host has no counterpart: `tail.parked_2fd` is cleared per tick and set only 
 - The tail's parked stop at 009EEF72-009EEFD1 never fires in the host. In the image it fires when `2FDh && record+20h && 340h < min(0.25 * 3CCh, 0.1 * 1F0h)`.
 - 009DA610's reader of `goal.flag_2fd` sees the byte set only from 009EF045.
 
-Separately, the mode-3 skip at 009EE756 is latent: nothing in the host writes mode 3.
+Separately, the mode-3 skip at 009EE756 is **not** latent (corrected in cc13-seg67h). 009ED7E6..009ED7F3 sets `[ESP+4Fh] = (blk+1C4h == 3)`. 009EE756 then jumps to 009EF206 after the 2FDh writes, which skips the output block and the tail. The host writes mode 3 at 009F3375 (`ship_ai_attackmove_approach_step_009f3240`, src/ship_ai_attackmove_substates.cpp:207), reached from `substate_step_vtable_000c` offset 8 (game_hosts_ship_ai.cpp:7505). The host's pick gate lets mode 3 through (`state.astern`, ship_ai_goal_vector.cpp:208), and the host then runs `ship_ai_navigation_arm_009ee671` and the tail for it. An attack-move ship in the approach substate gets the path output and the tail in the host but not in the image. No switch covers this yet.
 
 **(E) NaN semantics of the by-reference helpers.** The image helpers behave as follows:
 - 00415510 is `b > a ? a : b`;
@@ -280,6 +280,23 @@ otherwise                         -> ahead band  {-2.0 [00CE7D7C], 0.98 [00CE665
 **(H) 00D2185C, the bearing maximum.** The image holds 0x40402038 (3.0019664764). `kShipAiContactBearingMax` (ship_ai_clearance_profile.hpp:325) is 3.0019646f, which is 0x40402030, 8 ulp low. The constant is used at ship_ai_clearance_profile.cpp:521 (009E0C96, inside the range that cc13-seg67e audited) and at :641. The fix (ef7cb3fc3) deliberately folds (H) into the (G) switch `kShipAiCommitmentBandQuarterBound` (include/bsp/cc13_ship_ai_commit_band.hpp) because its effect is negligible; there is no sibling switch for (H).
 
 **(I) 009E08EF, the margin's length.** The image reads the own class's Length: 009E089A `[ESI+3FCh]`, 009E08CB `[EDX+538h]`, 009E08EF `FLD [EAX+0A0h]`, times 0.6 [00CEFF98]. The host binds `hull_beam = unit_hull_length_09c8` (game_hosts_ship_ai.cpp:10765, from game_hosts_units.cpp:41818). In the image, unit+9C8h equals class+A0h only on the no-model branch (00811058, `[class+50h] == 0`). With a model it holds `2*max(-box[+30h], box[+3Ch])` (0081100C..0081106E, re-stored at 0081FA45/4D), and ships have models. The host's +9C8h is the labelled no-model substitution (game_hosts_units.cpp:18810), so today it holds the Lua Length and the margin agrees in value; it diverges as soon as +9C8h carries the model box. The fix is to bind `[unit+538h]+A0h`, the class Length the host already carries (UnitHullExtentClassInputs.length_00a0, the slot's motion_class.hull_length).
+
+## Switches (cc13-seg67g/h)
+
+All of these default to OFF, and none is flipped. OFF keeps the previous host behaviour byte for byte. The reach rows come from current-main logs in the cc9-physics1 tree, dated 2026-10-18: p20e_off_jm08.log and p20d_off_usn04.log. No current USN21 log exists, so USN21 is unverified for every switch.
+
+| Note | Switch (header) | Image address | Host site | Reach (current logs) | Predicted effect |
+|---|---|---|---|---|---|
+| G + H | `kShipAiCommitmentBandQuarterBound` (cc13_ship_ai_commit_band.hpp) | 009E110F..009E112E `FMUL [00D7A348]` 0.25; 00D2185C 0x40402038 | ship_ai_clearance_profile.cpp:560; :526 and :654 for H | JM08: 4 of 21 torpedo rows have vector steps (an upper bound; no counter isolates the arm). USN04: no torpedo rows. | Give-way surplus k: ahead band once own/3C4h ≥ 0.25k, instead of always astern. H moves a 2e-6 rad window and is deliberately folded in, so there is no sibling switch. |
+| I | `kShipAiTorpedoMarginClassLengthBound` (ship_ai_seg67_switches_cc13.hpp) | 009E08EF `[[unit+538h]+A0h]` * 0.6 | game_hosts_ship_ai.cpp:10766 | the same torpedo tracks as G | None today: the host's +9C8h is the no-model substitution, which already holds the Lua Length. |
+| C | `kShipAiStationLatchClearBound` | 009EE586..009EE594 | game_hosts_ship_ai.cpp:10927 | USN04: 7 of 18 station rows toggle (arm_runs < limit_steps). JM08: none toggle. | A re-entering station-keeper starts with the 38Ah/388h/389h latches false. |
+| D | `kShipAiParkedByteBeforeTailBound` | 009EE6F1..009EE750 | game_hosts_ship_ai.cpp:10964 | every arm-tail body: JM08 258152 (1526 stops), USN04 43469 (5 stops) | Visible: the parked stop at 009EEF72 can fire, so expect arm_tail_stops to rise. 009DA610 sees 2FDh before the tail. |
+| F | `kShipAiClearanceRefreshSentinelBound` | 009EF94E/009EF96F `[00CE3D64]` 10000.0 | ship_ai_clearance_profile.cpp:119 | every turn-clearance refresh. In JM08 the table's clear_37c column shows 9999.0 for most hulls. | The untouched clearance reads 10000.0, as in the image. This is the JM08 "clear_37c 9999.0" value for any hull whose refresh ran; a hull whose refresh never ran still shows the member default 9999.0 under ON. Danger level is unchanged, because both ratios are past 4.0 for any half-width under 2500. |
+
+Readers of `kShipAiClearanceSentinel`:
+- ship_ai_clearance_profile.cpp:119 is the 009EF96F store, which stands for [00CE3D64]. It is the only site switched.
+- ship_ai_clearance_profile.hpp:108, the `ShipAiClearanceBlock` member default, is the construction value. No seg67 code writes +37Ch before the first refresh (a displacement scan of 009C6000-009F6060 finds only 009EF910's stores and the 009F416E reader on this block), so it does not stand for 00CE3D64 and stays as it is.
+- ship_ai_clearance_profile.hpp:244 is a comment.
 
 ## Left
 

@@ -29,4 +29,15 @@ inline constexpr bool kShipAiStationLatchClearBound = false;
 // goal.flag_2fd). False: the host's previous single write at 009EF045.
 inline constexpr bool kShipAiParkedByteBeforeTailBound = false;
 
+// (F) 009EF94E/009EF96F. Every turn-clearance refresh resets blk+37Ch to
+// [00CE3D64] = 10000.0f (0x461C4000) before its lowerings. The host's
+// kShipAiClearanceSentinel is 9999.0f. Of its readers only this store stands
+// for 00CE3D64; the ShipAiClearanceBlock member default
+// (ship_ai_clearance_profile.hpp:108) is the construction value, which no
+// seg67 code writes, so it stays as it is.
+// True: the refresh stores 10000.0f. False: 9999.0f, as before.
+inline constexpr bool kShipAiClearanceRefreshSentinelBound = false;
+inline constexpr float kShipAiClearanceRefreshSentinel = 0x1.388p+13f; // 10000.0f, 0x461C4000
+static_assert(kShipAiClearanceRefreshSentinel == 10000.0f);
+
 } // namespace bsp

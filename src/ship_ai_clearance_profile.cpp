@@ -11,6 +11,7 @@
 #include <cmath>
 
 #include "bsp/cc13_ship_ai_commit_band.hpp" // kShipAiCommitmentBandQuarterBound
+#include "bsp/ship_ai_seg67_switches_cc13.hpp" // kShipAiClearanceRefreshSentinelBound
 
 #include "bsp/unit_rudder.hpp" // clamped_interpolate_00419010,
                                // wrapped_angle_add_00438aa0,
@@ -115,7 +116,9 @@ void ship_ai_refresh_turn_clearance_009ef910(ShipAiClearanceBlock& blk,
     // 009EF943..009EF96F. The sentinel goes in before anything can lower it.
     blk.refresh_timer_374 = settings.refresh_period_1d4;
     blk.outcome_370 = ShipAiClearanceOutcome::Clear;
-    blk.clearance_37c = kShipAiClearanceSentinel;
+    blk.clearance_37c = kShipAiClearanceRefreshSentinelBound
+        ? kShipAiClearanceRefreshSentinel   // [00CE3D64], 009EF94E/009EF96F
+        : kShipAiClearanceSentinel;
 
     // 009EF977..009EF9A8. Astern, the hull heading is turned through half a
     // circle so the rest of the routine can treat it as a forward heading.
