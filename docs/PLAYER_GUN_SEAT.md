@@ -464,7 +464,13 @@ The image's path is the role take:
     also gets 0072D5B0(0, 0). On a release, 00729F70.
   - `& 20h` / `& 80h` (009540D0 / 00954170) stay with the group 4/5 models.
 - **Binding.** `GameUnitsHost::Impl::role_message_4b_00780162` calls
-  `GameGunneryHost::role_owner_device_walk_0095ac1d` when a holder changed. 00729F70 is
+  `GameGunneryHost::role_owner_device_walk_0095ac1d` once per role in the mask whose holder
+  changed. That covers every 4Bh sender the host routes there.
+- **A HUD-site substitution was tried and dropped** (a69d739a1): it compared holders around the
+  HUD's `role_request_0077c470`. It missed the release when the script moved the player to the
+  ScoutDauntless (SetSelectedUnit at 1823 releases the roles through the units host, not the HUD).
+  Northampton's turrets stayed player-held for the rest of the run: shots 113 to 6, held_ticks
+  48798. The hook must sit at the role take itself. 00729F70 is
   modelled as in step 3 of section 2. 0072D5B0 is a record, because the host picks the ammo per
   shot. A new summary line, `gunnery role owner device walk takes= releases=`, is printed on both
   sides.
