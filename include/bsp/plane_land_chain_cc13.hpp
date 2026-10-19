@@ -1,7 +1,7 @@
 #pragma once
 // Packet cc13-landc: adoption batch C, the land / park / re-takeoff chain. Each
 // switch below is OFF; the host sites are in src/game_hosts_units.cpp.
-// The names are hypotheses, not recovered symbols.
+// The names are hypotheses, not recovered symbols. Summary: docs/CC13_LANDC.md.
 
 namespace bsp {
 

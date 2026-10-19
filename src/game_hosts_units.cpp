@@ -20898,13 +20898,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             slot.plane_death_removed = true;
                             ++host.funnel_kill_destroy_only;
                         }
-                        host.log.notef("plane death mode: unit=%s t=%.2f draw=%.4f mode=%s "
-                            "c10=%.2f (007CA8A0 -> 007BBFA0 -> 007D0B80, packet "
-                            "cc9_plane_death_modes)", slot.row.name.c_str(),
-                            static_cast<double>(host.summary.simulated_seconds),
-                            static_cast<double>(din.draw), bsp::plane_death_mode_name(mode),
-                            static_cast<double>(slot.plane_death_timer_c10));
-                        host.done("Plane::choose_death_mode_007ca8a0", 0x007ca8a0u);
+                        if (destroy_only) {
+                            host.log.notef("plane funnel kill destroy only: unit=%s t=%.2f "
+                                "cause=%d (00926D90 -> 0077D1A0 -> 00926C80, no 007CA8A0, "
+                                "packet cc13-landc)", slot.row.name.c_str(),
+                                static_cast<double>(host.summary.simulated_seconds),
+                                host.kill_cause_by_unit[index]);
+                        } else {
+                            host.log.notef("plane death mode: unit=%s t=%.2f draw=%.4f mode=%s "
+                                "c10=%.2f (007CA8A0 -> 007BBFA0 -> 007D0B80, packet "
+                                "cc9_plane_death_modes)", slot.row.name.c_str(),
+                                static_cast<double>(host.summary.simulated_seconds),
+                                static_cast<double>(din.draw), bsp::plane_death_mode_name(mode),
+                                static_cast<double>(slot.plane_death_timer_c10));
+                            host.done("Plane::choose_death_mode_007ca8a0", 0x007ca8a0u);
+                        }
                         // Packet cc9_pilot_surface_climbout
                         // (docs/PILOT_SURFACE_CLIMBOUT.md). The destroy flush that
                         // sets unit+5Dh dispatches vtable[7Ch], which for a plane
