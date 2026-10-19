@@ -39,6 +39,7 @@
 #include "bsp/native_particle_preparation.hpp"
 #include "bsp/game_native_mission_model.hpp"
 #include "bsp/game_native_mission_command.hpp"
+#include "bsp/game_native_mission_lighting.hpp"
 #include "bsp/native_gui_scene_storage.hpp"
 #include "bsp/native_node_root_propagation.hpp"
 #include "bsp/native_node_scene_attachment.hpp"
@@ -185,6 +186,7 @@ NativeVertexDeclarationLoadingContext application_declaration_loading(
 #include "game_native_mission_command.inc"
 #include "game_native_mission_scene.inc"
 #include "game_native_mission_preload.inc"
+#include "game_native_mission_lighting.inc"
 #include "game_native_mission_ship.inc"
 
 // ---- Harness only (packet cc9_tooling_renderer_init). 00B2AEB0 ignores CreateDevice's HRESULT,

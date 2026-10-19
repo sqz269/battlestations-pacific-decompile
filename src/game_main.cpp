@@ -189,6 +189,14 @@ __declspec(noreturn) void mission_ship_terminate_record() noexcept {
     if (InterlockedExchange(&entered, 1) == 0) {
         CONTEXT context{};
         RtlCaptureContext(&context);
+        if (const auto active = std::current_exception()) {
+            try { std::rethrow_exception(active); }
+            catch (const std::exception& error) {
+                if (g_crash_log) g_crash_log->notef("native mission terminate active exception: %s", error.what());
+            } catch (...) {
+                if (g_crash_log) g_crash_log->note("native mission terminate active exception: non-std exception");
+            }
+        }
         EXCEPTION_RECORD record{};
         record.ExceptionCode = 0xe0425350u; // harness BSP terminate diagnostic
         record.ExceptionFlags = EXCEPTION_NONCONTINUABLE;

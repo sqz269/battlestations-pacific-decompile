@@ -36,6 +36,7 @@ struct MissionShipGraph final {
     std::unique_ptr<MissionCommandGraph> commands;
     std::unique_ptr<MissionRenderResourcesGraph> resources;
     std::unique_ptr<MissionShipSceneGraph> scene;
+    std::unique_ptr<MissionShipLightingGraph> lighting;
 
     MissionShipGraph(GameHostLog& l, DestructionGraph& g, DeviceGraph& d,
         CameraGraph& c, FrameGraph& f, NativeRendererConstructorContext& ctor,
@@ -64,7 +65,8 @@ struct MissionShipGraph final {
             (preload && preload->requires_process_retention()) ||
             (commands && commands->requires_process_retention()) ||
             (resources && resources->requires_process_retention()) ||
-            (scene && scene->requires_process_retention());
+            (scene && scene->requires_process_retention()) ||
+            (lighting && lighting->requires_process_retention());
     }
     void prepare(GameNativeRendererApplication& application, unsigned long generation) {
         check(stage == Stage::prepared, "mission ship preparation cannot replay");
@@ -120,6 +122,9 @@ struct MissionShipGraph final {
             scene->create();
             for (std::size_t i = 0; i != model->drawable_count(); ++i)
                 scene->attach(model->drawable(i), model->drawable_reference(i));
+            lighting = std::make_unique<MissionShipLightingGraph>(log, graph, cameras,
+                owners, raw_strings, static_cast<std::uint8_t>(arguments.word_00));
+            lighting->create_and_bind(scene->raw());
             application.release_shader_cache();
             shader_open = false;
             stage = Stage::ready;
@@ -193,6 +198,7 @@ struct MissionShipGraph final {
         stage = Stage::retiring;
         try {
             preload->retire_before_native_drain();
+            lighting->retire_before_native_drain();
             scene->retire_before_native_drain();
             model->retire_drawables();
             camera->retire_caller_reference();
@@ -203,6 +209,7 @@ struct MissionShipGraph final {
     void after_native_drain() {
         if (stage == Stage::closed) return;
         check(stage == Stage::retired, "mission ship survived native drain");
+        lighting->after_native_drain();
         resources->after_native_drain();
         scene->after_native_drain();
         camera->after_native_drain();
