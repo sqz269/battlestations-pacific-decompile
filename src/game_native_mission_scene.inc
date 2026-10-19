@@ -26,14 +26,14 @@ struct MissionShipSceneGraph {
    // successful no-op or interpret a raw3Ch resource as a logical SceneResource.
    check(target==0xb6ed80 && requested==0 && recursion==0,
        "mission scene admits only the native null-lighting model attachment");
-   auto* reference=dynamic_cast<NativeModelReference*>(&graph.owners.resolve_actual(raw));
-   check(reference && &reference->model_owner().storage.node==raw &&
-       &reference->model_owner().environment.nodes==&graph.environment.nodes &&
-       reference->model_owner().phase==NativeModelOwner::Phase::live &&
+   auto* model_reference=dynamic_cast<NativeModelReference*>(&graph.owners.resolve_actual(raw));
+   check(model_reference && &model_reference->model_owner().storage.node==raw &&
+       &model_reference->model_owner().environment.nodes==&graph.environment.nodes &&
+       model_reference->model_owner().phase==NativeModelOwner::Phase::live &&
        get<U>(raw)==0xd62de8 && graph.model_profile[0x50/4]==target &&
        get<void*>(raw,0x170)==nullptr,
        "mission scene attachment requires its live same-domain model companion");
-   auto& binding=reference->scene_attachment();
+   auto& binding=model_reference->scene_attachment();
    check(binding.attach_scene!=nullptr && binding.scene==nullptr,
        "mission scene model attachment binding is not the native null-scene branch");
    binding.attach_scene(graph.environment.nodes.scenes,binding,nullptr,false);
