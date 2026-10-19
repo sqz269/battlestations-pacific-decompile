@@ -1281,6 +1281,13 @@ bool dive_bomb_manual_passthrough_009c88c4(int rounds_pending_424, bool has_unit
 }
 
 // 009C8920-009C8A8A, task vtable slot +54h.
+// DEFECTIVE, unused (no host caller; the host's profile is in
+// update_dive_bomb_approach). Against the image: 009C8971 and 009C89DD clear
+// +3A9h / +3AAh whenever +38Dh / +38Ch is clear, and that is missing here; the
+// 009C899B draw 00BD2F10(0, 15) is not added to the +398h value; and the
+// follower early return skips the 009C8A1B tail, which runs for every member
+// (the +4B0h max at 009C8A42-8A5E, NaN current -> product, and the +4BCh =
+// 3600.0 re-seed at 009C8A74, then 009C7A80(0.0)). OCEAN_WAVE_FIELD 96.
 DiveBombCruiseProfileResult dive_bomb_cruise_profile_009c8920(
     const DiveBombCruiseProfileInputs& in) noexcept {
     DiveBombCruiseProfileResult out;

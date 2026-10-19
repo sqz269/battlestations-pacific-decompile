@@ -244,6 +244,8 @@ public:
     bool next_advance_runs_mission_frame() const noexcept;
 
     const GameMissionSummary& summary() const noexcept;
+    // Read-only render-capture evidence from the existing simulation owner.
+    float simulated_seconds() const noexcept;
 
     struct Impl;
 

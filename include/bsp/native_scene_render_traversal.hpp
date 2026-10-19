@@ -26,6 +26,10 @@ struct NativeRender20Profiles {
     NativeRender20Profiles(const NativeCameraEnvironment&,
         const NativeModelEnvironment&, const NativeTracelineLifetimeAccess&,
         const NativeModelEnvironment& actual_traceline_model_environment);
+    // Ordinary model-only application composition. No Traceline lifetime is
+    // manufactured: D0C928 remains unsupported in this narrower domain.
+    NativeRender20Profiles(const NativeCameraEnvironment&,
+        const NativeModelEnvironment&);
 };
 
 // Complete B72190[84]. Native ECX scene, stack context, RET4; adds EDX access.

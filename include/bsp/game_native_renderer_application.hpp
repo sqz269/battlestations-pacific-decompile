@@ -42,6 +42,8 @@ struct NativeMeshTextureFieldContext;
 struct NativeMeshLightingConstants;
 struct NativeInstanceGeneratorContext;
 class NativePlatformLoadPublication;
+struct NativeFrameClockPublicationContext;
+struct NativeRenderResourceInitArguments;
 }
 namespace bsp::game {
 struct GameNativeMaterialCompilerOwners;
@@ -53,6 +55,7 @@ class GameVfsHost;
 class GameNativeReadOnlyData;
 class GameNativeLuaServices;
 class GameHostLog;
+class GameInputRuntime;
 // Stable metadata over the original VFS reader and this renderer's existing
 // geometry/cache domains. Borrowing invokes no native field reader. Retain the
 // application through every consumer; entered operations require their own
@@ -170,6 +173,20 @@ public:
     // no Owners, acquisition tracking or retention enforcement. The cached plain
     // context remains stable; every permitted borrow revalidates its identities.
     const NativeInstanceGeneratorContext& borrow_instance_generator_context();
+    // ON-only diagnostic model composition may activate this SAME context.
+    // Borrow only in the ready phase; retain all entered generator/subset
+    // operations and this application through retirement or process retention.
+    // Serialize loading with frames, reset/recreation and native drain. This
+    // does not authorize mutable activation through the metadata-only borrow.
+    NativeInstanceGeneratorContext& mission_instance_generator_context();
+    // Explicit diagnostic composition. OFF leaves native owners, logs and
+    // simulation untouched. The captured startup providers survive raw drain.
+    static bool mission_ship_requested() noexcept;
+    void configure_mission_ship(GameInputRuntime&, const NativeFrameClockPublicationContext&,
+        NativeRenderResourceInitArguments);
+    bool mission_ship_enabled() const noexcept;
+    void prepare_mission_ship();
+    void draw_mission_ship(std::uint64_t mission_frame, float simulated_seconds);
     //73BF80's cache bracket over canonical process cells and this SAME VFS.
     // Keep it alive through material compilation, release before singleton drain.
     // Full preload loop remains separate; these entrypoints perform real I/O.
