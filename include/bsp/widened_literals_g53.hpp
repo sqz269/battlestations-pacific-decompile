@@ -16,6 +16,8 @@
 // True: the host uses the image's qwords. False: the old literals.
 namespace bsp {
 
-inline constexpr bool kShipAiWidenedLiteralsBound = false;
+// ON (cc9-gunnery53): USN01 and USN04 idle pairs on 36e595a1a, reference env, gameplay
+// identical; predict_track_crossing_009d8ce0 (the 009D9044 divide) ran 9429 times on USN01.
+inline constexpr bool kShipAiWidenedLiteralsBound = true;
 
 }  // namespace bsp
