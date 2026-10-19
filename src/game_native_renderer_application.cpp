@@ -417,6 +417,8 @@ struct GameNativeRendererApplication::Impl {
     NativeEffectRecordStorageContext records;
     NativeEffectRegistryDestructionContext effects;
     NativeRenderResourceAccountingTables accounting;
+    // Declared before texture_loading so it outlives the owners' exit check.
+    NativeRendererCacheSkippedRelease cache_skipped_release;
     NativeRendererCacheCleanupContext textures;
     ResourceLoadEventHost* volatile platform_events{};
     NativeVertexDeclarationLoadingContext declaration_loading;
@@ -828,6 +830,11 @@ void GameNativeRendererApplication::configure_mission_ship(GameInputRuntime& inp
         p.entry_cache_publication, input, clock, args);
     p.textures.observation_context = &p.log;
     p.textures.observe_cleanup = &observe_mission_cache_cleanup;
+    // Exact exit allow-list for the error.dds residue the Original leaves
+    // (cc15-rshut; NativeTextureLoadOwners destructor, OCT18B_RENDER_MILESTONE).
+    p.textures.skipped_release = &p.cache_skipped_release;
+    p.texture_loading.owners.allow_original_cache_clear_residue(p.cache_skipped_release, &p.log,
+        [](void* log, const char* line) { static_cast<GameHostLog*>(log)->note(line); });
     p.log.note("native mission ship configured: BSP_NATIVE_MISSION_SHIP=1 (OFF by default)");
 }
 bool GameNativeRendererApplication::mission_ship_enabled() const noexcept {

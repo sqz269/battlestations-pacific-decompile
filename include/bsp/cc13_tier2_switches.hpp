@@ -29,6 +29,6 @@ inline constexpr bool kLineOfFireLandFromMuzzleBound = false;
 // Caveat: the cast rounds the double product a second time, where the x87
 // under 24-bit precision control rounds the exact product once. The two can
 // differ only on a double-rounding tie.
-inline constexpr bool kDiveBombGoawayFloatStoresBound = false;
+inline constexpr bool kDiveBombGoawayFloatStoresBound = true;   // ON: OCEAN_WAVE_FIELD 98 (cc9-physics23)
 
 }  // namespace bsp
