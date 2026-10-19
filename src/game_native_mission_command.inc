@@ -127,6 +127,10 @@ struct MissionCommandGraph {
     check(actual.count_10>=0,"mission batch has a negative entry count");
     entry_counts[i]=static_cast<U>(actual.count_10);
     batch_frames[i].prepare(frame_capacity(actual));
+    if(graph.completed==0)for(auto& record:batch_frames[i].records) {
+     record->pass.observation_context=&graph;
+     record->pass.observe_before_draw=&MissionCommandGraph::observe_first_material_draw;
+    }
    }
    check(graph.execution.actual_synchronization_0108d6dc.mode_00!=0 ||
      entry_counts[0]<=50 || entry_counts[1]<=50,
@@ -166,6 +170,7 @@ struct MissionCommandGraph {
  std::unique_ptr<Record> pending;
  Record* acquiring{};
  bool failed{};
+ bool material_observed{};
  unsigned long generation{};
  std::uint64_t submitted{},completed{};
 
@@ -251,6 +256,71 @@ struct MissionCommandGraph {
  }
  NativeTracelineRenderAccess& render_access() noexcept {return render;}
  bool requires_process_retention() const noexcept {return failed || pending!=nullptr;}
+ static void observe_first_material_draw(void* context,void* pass,void* entry,void* renderer) {
+  auto& self=*static_cast<MissionCommandGraph*>(context);
+  if(self.material_observed)return;
+  self.material_observed=true;
+  auto& output=self.log;
+  void* const section=get<void*>(entry,4);
+  void* const material=get<void*>(section,0x20);
+  const auto count=static_cast<std::int16_t>(get<std::uint16_t>(material,0x34));
+  const U pair_count=get<U>(pass,0x28);
+  const U enabled=get<U>(get<void*>(pass,0x74),0x84);
+  auto* const pairs=get<unsigned char*>(pass,0x24);
+  output.notef("native_mission_command first_draw pass=%p material=%p texture_count=%d pair_count=%u pixel_enabled=%08x",
+      pass,material,static_cast<int>(count),pair_count,enabled);
+  for(U i=0;i<5;++i) {
+   void* const texture=static_cast<int>(i)<count?get<void*>(material,0x10+i*4):nullptr;
+   if(!texture){output.notef("native_mission_command material_texture slot=%u owner=null",i);continue;}
+   const U profile=get<U>(texture);
+   if(profile!=0xd61948) {
+    output.notef("native_mission_command material_texture slot=%u owner=%p profile=%08x unsupported_readback=1",i,texture,profile);
+    continue;
+   }
+   const U length=get<U>(texture,8);
+   const char* const name=get<const char*>(texture,0xc);
+   const int shown=static_cast<int>(length<120?length:120);
+   output.notef("native_mission_command material_texture slot=%u owner=%p profile=%08x COM=%p name_length=%u name=%.*s",
+       i,texture,profile,get<void*>(texture,0x10),length,name?shown:0,name?name:"");
+  }
+  for(U i=0;i<pair_count && i<16;++i)
+   output.notef("native_mission_command pass_pair ordinal=%u selector=%d vertex_sampler=%u pixel_enabled=%u",
+       i,get<std::int32_t>(pairs,i*8),static_cast<U>(get<std::uint8_t>(pairs,i*8+4)),
+       static_cast<U>((enabled>>(i&31))&1));
+  auto* const device=get<IDirect3DDevice9*>(renderer,0x1a10);
+  if(!device){output.note("native_mission_command first_draw device=null");return;}
+  for(DWORD slot=0;slot<6;++slot) {
+   IDirect3DBaseTexture9* texture=nullptr;
+   const HRESULT result=device->GetTexture(slot,&texture);
+   // GetTexture adds one COM credit even when the returned object is already
+   // referenced by the renderer. Balance it on every diagnostic exit/unwind.
+   struct TextureCredit {
+    IDirect3DBaseTexture9* value;
+    ~TextureCredit(){if(value)value->Release();}
+   } credit{texture};
+   DWORD srgb=0;
+   const HRESULT sampler_result=device->GetSamplerState(slot,D3DSAMP_SRGBTEXTURE,&srgb);
+   output.notef("native_mission_command device_sampler slot=%lu srgb_result=%08lx srgb_texture=%lu",
+       slot,static_cast<unsigned long>(sampler_result),srgb);
+   if(FAILED(result) || !texture) {
+    output.notef("native_mission_command device_texture slot=%lu HRESULT=%08lx texture=%p",
+        slot,static_cast<unsigned long>(result),texture);
+    continue;
+   }
+   const auto type=texture->GetType();
+   if(type==D3DRTYPE_TEXTURE) {
+    D3DSURFACE_DESC desc;
+    const HRESULT described=static_cast<IDirect3DTexture9*>(texture)->GetLevelDesc(0,&desc);
+    if(SUCCEEDED(described))
+     output.notef("native_mission_command device_texture slot=%lu HRESULT=%08lx texture=%p type=%u desc=%08lx width=%u height=%u format=%08x",
+         slot,static_cast<unsigned long>(result),texture,static_cast<U>(type),
+         static_cast<unsigned long>(described),desc.Width,desc.Height,static_cast<U>(desc.Format));
+    else output.notef("native_mission_command device_texture slot=%lu HRESULT=%08lx texture=%p type=%u desc=%08lx",
+         slot,static_cast<unsigned long>(result),texture,static_cast<U>(type),static_cast<unsigned long>(described));
+   } else output.notef("native_mission_command device_texture slot=%lu HRESULT=%08lx texture=%p type=%u",
+       slot,static_cast<unsigned long>(result),texture,static_cast<U>(type));
+  }
+ }
  void observe_first_device_constants() {
   if(completed!=0)return;
   // Read-only stock D3D9 observation AFTER native uploads/draws, BEFORE overlay.
