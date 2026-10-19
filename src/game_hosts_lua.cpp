@@ -3280,6 +3280,8 @@ constexpr bool kGenerateObjectRecordOnlyCreatorBound = true;
 // the ones whose authored command the commands host issued.
 unsigned long long g_hidden_spawn_carry_applied = 0;
 unsigned long long g_hidden_spawn_carry_commands = 0;
+// Host-only: carried spawns that took no `thisTable` slot, whose command was dropped.
+unsigned long long g_hidden_spawn_carry_unattached = 0;
 unsigned long long g_generate_object_record_only = 0;
 
 // CORRECTED by packet cc8_spawn_new_route. 00888760 BSP_LuaObject_ReadVector3
@@ -3563,6 +3565,10 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
         log_.notef("  GenerateObject 00944fd0: \"%s\" was created as unit %u but took no "
             "`thisTable` slot, so the script's variable would be an id no binding "
             "resolves", name.c_str(), entity_id);
+        // Packet cc13-hiddencarry, HOST-ONLY: the image has no such exit (its
+        // 009453BB resolve runs regardless), so a carried spawn that ends here
+        // keeps its StartSpeed seed but its command is never issued. Counted.
+        if (carried) ++g_hidden_spawn_carry_unattached;
         return 0;
     }
     entry->spawned = true;
@@ -11932,9 +11938,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.generate_object_every_call, kGenerateObjectEveryCallBound ? 1 : 0);
     log_.notef("summary mission generate object hidden carry bound=%d carried=%zu "
         "applied=%llu commands=%llu (0046DC10 creator 0046DE9A / InitAll 0046DEDD, "
-        "0046AAB0 at 009453BB, packet cc13-hiddencarry)",
+        "0046AAB0 at 009453BB, packet cc13-hiddencarry) unattached_host_only=%llu",
         kSceneHiddenSpawnCarryCc13Bound ? 1 : 0, scene_spawn_pool().carried_count(),
-        g_hidden_spawn_carry_applied, g_hidden_spawn_carry_commands);
+        g_hidden_spawn_carry_applied, g_hidden_spawn_carry_commands,
+        g_hidden_spawn_carry_unattached);
     log_.notef("summary mission script formation leader bound=%d calls=%llu found=%llu "
         "other=%llu (00899AF0 -> 007788D0, packet cc9_get_formation_leader)",
         kLuaFormationLeaderBound ? 1 : 0, summary_.formation_leader_calls,

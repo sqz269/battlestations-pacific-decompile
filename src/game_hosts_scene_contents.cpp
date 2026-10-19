@@ -2814,6 +2814,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         ++owner.summary.held_back_hidden;
         // The stand-in for the scene database's named-object map at sceneDb+18h,
         // which is the only thing 0046D930 looks a name up in.
+        const std::size_t pool_before = scene_spawn_pool().size();
         scene_spawn_pool().add(record);
         // Packet cc13-hiddencarry. The two bag reads the created path makes and
         // this branch skips: 004E6B30's Command/CommandTarget, for the creators
@@ -2821,8 +2822,11 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         // (retain_start_speed, the load path's own reader). Taken for every
         // creator class; create_units' runs_ship_base() gate decides the seed as
         // it does at load. Only stored here; the spawn copies it under the switch.
-        if (const SceneUnitCreatorRow* creator =
-                klass != nullptr ? find_scene_unit_creator(klass->class_id) : nullptr) {
+        // Only when add() inserted: a repeated name keeps the first entry's
+        // record, so its carry must come from the same (first) bag.
+        const bool pool_inserted = scene_spawn_pool().size() != pool_before;
+        if (const SceneUnitCreatorRow* creator = pool_inserted && klass != nullptr
+                ? find_scene_unit_creator(klass->class_id) : nullptr) {
             if (SceneSpawnPoolEntry* held = scene_spawn_pool().find(record.name)) {
                 if (creator->applies_command_property) {
                     const SceneUnitCommand command = scene_unit_command_004e6b30(bag);
