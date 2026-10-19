@@ -20469,3 +20469,26 @@ ships61's c19 plans, but on 77d8a4a9d it survived wave 1.
 - **Verdict.** The ctor seeds are the image's (SHIP_AI 311). The loss is the sensitivity of element-based component
   failures to a sub-metre change in station keeping, not a targeting or reach change, so nothing here is unfaithful.
   The plan needs to keep TroopTrans6 out of wave 1's level-bomb run or accept the loss.
+
+## 316. USN12 l68_u12_e8 drift attribution (cc9-gunnery55, 2026-10-19)
+
+Row `config/win_orders/usn12_l68_u12_e8.txt`, 36000 frames, reference env, fresh pair_exports (logs
+`local\g55_u12<variant>_u12.log`).
+- **Reproduced:** c95d107da completes at 1465.30 s; 46bdfac0a fails at 859.91 s and 86b81e2a8 at 819.92 s.
+- **Current main ad46f7f13 completes at 1560.40 s.** Single reverts on it all complete: wake pair 1500.34, hitq
+  1545.38, astern skip 1395.24, ctor seeds 1495.33. The row is not lost on main.
+- **Fail cause (46bdfac0a).** Haguro torpedoes sink Claxton, Stanley, Thatcher, Denver and Converse at 698..701 s.
+  Cleveland follows at 735.24 s. Columbia, the last cruiser, dies at 858.26 s (Myoko, cat 3), and the mission ends
+  Game Over 1.65 s later. The US death lists differ completely between commits, so the battle is a knife-edge.
+- **First-parent bisect c95d107da..46bdfac0a** (111 commits): 27 c7e7c2358 1465.30, 55 6ade1bf6f 1335.18,
+  83 e4507299f 1395.24, 90 2bc63d449 1395.24, 97 ec8fc67e1 1395.24, 99 2398e56d0 1395.24,
+  **100 76f7d7468 (hitq ON) fails 859.91**, 102 282567f82 fails 859.91, 104 9b5457ae7 fails 859.91.
+  The first bad commit is **76f7d7468**, the flip of kHitDeferredDispatchCc13Bound + kHitDeferredSameStepDrainCc13Bound.
+- **Mechanism.**
+  - Gameplay against 2398e56d0 is identical up to gunnery step 7400 (369.98 s). At step 7500 (374.98 s) there is
+    one more hit (90 -> 91 at equal shots and damage): the deferred drain dispatches one hit in a different step.
+  - The death lists first differ at the 8th death: Dyson at 613.07 s (Agano) instead of Montpelier at 628.07 s.
+  - The only earlier change is the death-row blast attribution (killer_blast 0 -> 1 from the 10.80 s Fortress-10
+    death on). That is the order effect 306.2 predicted, and it moves no state.
+- **Verdict.** This is the hitq flip, already judged faithful (306.2 / 306.6 and cc13 rev2). A one-hit timing change
+  at 375 s cascades through a knife-edge surface battle. Nothing to fix, and main currently wins the row (1560.40 s).
