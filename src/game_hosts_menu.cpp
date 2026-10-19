@@ -2,6 +2,7 @@
 // pump and the main menu. See include/bsp/game_hosts_menu.hpp for the address
 // list and the evidence.
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_scene_contents.hpp"
 
 #include "bsp/frontend_entry.hpp"
 #include "bsp/frontend_managers.hpp"
@@ -16,6 +17,7 @@
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_mission.hpp"
+#include "bsp/game_profile_owner.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/main_menu_screens.hpp"
@@ -217,6 +219,11 @@ struct GameMenuHost::Impl {
     MainMenuPathState path{};
     MainMenuPathStep path_step{MainMenuPathStep::PressStartPoll};
     bool pumped_this_frame{false};
+
+    // --- cc15 lane L2: the profile block game+650h and the hint tracker
+    // [00E198D0]. Declared before the HUD and mission hosts that borrow them.
+    GameProfileOwner profile{log};
+    GameHintTrackerSlot hint_tracker{log, profile};
 
     // --- milestone 2h, the in-mission HUD screens ---------------------------
     std::unique_ptr<GameHudHost> hud;
@@ -507,7 +514,12 @@ public:
 
     // --- the profile block at game+650h -------------------------------------
     void reset_profile_007fdb20() override {
-        owner_.log.unimplemented("PressStartScreen::reset_profile", "007fdb20");
+        if constexpr (kProfileOwnerCc15Bound) {
+            owner_.profile.reset_to_defaults_007fdb20();
+            owner_.log.implemented("PressStartScreen::reset_profile", "007fdb20");
+        } else {
+            owner_.log.unimplemented("PressStartScreen::reset_profile", "007fdb20");
+        }
     }
     void reset_award_tracker_004374f0() override {
         owner_.log.unimplemented("PressStartScreen::reset_award_tracker", "004374f0");
@@ -739,7 +751,13 @@ public:
         owner_.vfs.close_title_fileblock();
     }
     void reset_player_profile() override {
-        owner_.log.unimplemented("TitleInit::reset_player_profile", "007fdb20");
+        if constexpr (kProfileOwnerCc15Bound) {
+            // 004C9AFA: ECX = game+650h. Destroys and re-allocates +64h empty.
+            owner_.profile.reset_to_defaults_007fdb20();
+            owner_.log.implemented("TitleInit::reset_player_profile", "007fdb20");
+        } else {
+            owner_.log.unimplemented("TitleInit::reset_player_profile", "007fdb20");
+        }
     }
     void load_texture_atlas(const char* path) override {
         // 00af0060 on the atlas manager 00f8c26c. The sprite bridge parses the
@@ -1458,6 +1476,17 @@ public:
         // 004e3aa0's first store is game+5D4h = 3.
         owner_.state.value = kGameStateFrontEndInit;
         owner_.log.implemented("FrontEndShell::game_on_init", "004e3ac2");
+        // cc15-ob4 (kSceneDatabaseCc15Bound): 0046F350 at 004E3E60, the scene
+        // database at [00E18680] (docs/CC15_OBJECT_SCENE_DATABASE.md).
+        // Image order: 004E3E60 runs before the tracker's 004E3EFB.
+        if constexpr (kSceneDatabaseCc15Bound) scene_database_create_0046f350(owner_.log);
+        if constexpr (kHintTrackerCc15Bound) {
+            // 004E3EFB: the first 004E1CA0 builds the tracker, then 006921B0
+            // reloads the hint tables on it. The reload is not hosted, so the
+            // definition map +30h stays empty.
+            owner_.hint_tracker.get_004e1ca0();
+            owner_.log.unimplemented("OnInit::reload_hint_tables", "006921b0");
+        }
     }
     void poll_platform_session_events() override {
         owner_.log.unimplemented("FrontEndShell::poll_platform_session_events", "004db290");
@@ -1798,6 +1827,12 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
     impl_->hud = std::make_unique<GameHudHost>(log, *this);
+    if constexpr (kProfileOwnerCc15Bound) {
+        // The profile constructor 007FEE20 runs 007FDB20 at 007FEF9F while
+        // 004DDB90 builds the game, so +64h exists before any title reset.
+        impl_->profile.reset_to_defaults_007fdb20();
+        log.implemented("Game::construct_profile_reset", "007fef9f");
+    }
     if (!menu_select.empty()) {
         impl_->mission = std::make_unique<GameMissionHost>(log, vfs, scripts, frontend,
             locale, std::move(menu_select), mission_frames, profiler, std::move(language),
@@ -1806,6 +1841,7 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
             std::move(order_command), std::move(order_command_target), order_speed,
             order_speed_set);
         impl_->mission->bind_observer_runtime(singletons.observers());
+        impl_->mission->bind_profile(impl_->profile, impl_->hint_tracker);
     }
 }
 

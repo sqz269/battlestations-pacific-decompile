@@ -61,6 +61,7 @@
 #include "bsp/cc13_seg67n_switches.hpp"   // packet cc13-seg67n3 (009FAAD0 per install)
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
+#include "bsp/cc13_release_timer.hpp"            // packet cc13-reltimer (009FA3A0 stubs)
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_squadron_host.hpp"
@@ -1944,6 +1945,9 @@ struct GameUnitSlot {
     int torpedo_aim_timer_fires{0};
     int torpedo_aim_timer_blocked_007bb110{0};
     int torpedo_aim_timer_first_fire_tick{-1};
+    // timer+0Dh, set at 009FA405 (packet cc13-reltimer, written only with
+    // kReleaseTimerNotify0DhBound). The image has no reader.
+    bool torpedo_aim_timer_notify_0d{false};
     // plan+2C0h / +2CCh. docs/PILOT_TASK_HEADING_ARM.md: the arm writes the
     // bearing and mode 2, and a bot state's tick may overwrite the pair. The
     // torpedo aim tick does at 009D1D16 / 009D1D1E.
@@ -33150,21 +33154,45 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.enabled_0c = s_.torpedo_aim_timer_enabled_0c;
                             in.countdown_10 = s_.torpedo_aim_timer;
                             in.step_seconds = d;
-                            // 007BB110 reads the device at unit+DECh. This host
-                            // has no device model, so an aircraft that still
-                            // carries a round stands in for it. SUBSTITUTION.
-                            owner_.log.unimplemented("Unit::can_release_007bb110",
-                                                     "007bb110");
-                            const bsp::OrdnanceKindSet set{s_.ordnance_mask};
-                            in.unit_can_release_007bb110 =
-                                bsp::ordnance_has_torpedo_2bh(set) &&
-                                s_.torpedo_releases < 1;
-                            // 009FA3EA draws between timer+4h and timer+8h,
-                            // both unread on this object. contract.
-                            owner_.log.unimplemented("ReleaseTimer::reseed_bounds",
-                                                     "009fa3ea");
+                            // Packet cc13-reltimer (docs/CC13_RELEASE_TIMER.md):
+                            // the three stubs below each have a switch in
+                            // bsp/cc13_release_timer.hpp, all OFF.
+                            namespace rt = bsp::cc13_release_timer;
+                            if constexpr (rt::kReleaseTimerPredicate007BB110Bound) {
+                                // 007BB110 is consulted only on a strictly
+                                // negative countdown of an enabled timer; the bay
+                                // byte only when channel C neither decides 1.
+                                const bsp::PlaneActuatorChannel& c =
+                                    s_.actuator_block_dec.channel_c;
+                                if (in.enabled_0c && in.countdown_10 - d < 0.0f) {
+                                    const bool bay = c.enabled
+                                        && !(c.value == rt::kReseedHigh_00d7a24c)
+                                        && bay_rack_holds_round_9c3();
+                                    in.unit_can_release_007bb110 =
+                                        rt::unit_can_release_007bb110(c.enabled, c.value, bay);
+                                    owner_.done("Unit::can_release_007bb110", 0x007bb110u);
+                                }
+                            } else {
+                                // 007BB110 reads the device at unit+DECh. This host
+                                // has no device model, so an aircraft that still
+                                // carries a round stands in for it. SUBSTITUTION.
+                                owner_.log.unimplemented("Unit::can_release_007bb110",
+                                                         "007bb110");
+                                const bsp::OrdnanceKindSet set{s_.ordnance_mask};
+                                in.unit_can_release_007bb110 =
+                                    bsp::ordnance_has_torpedo_2bh(set) &&
+                                    s_.torpedo_releases < 1;
+                            }
+                            if constexpr (!rt::kReleaseTimerReseedDrawBound) {
+                                // 009FA3EA draws between timer+4h and timer+8h,
+                                // both unread on this object. contract.
+                                owner_.log.unimplemented("ReleaseTimer::reseed_bounds",
+                                                         "009fa3ea");
+                            }
                             in.reseed_draw = 0.0f;
-                            owner_.log.unimplemented("Unit::slot_byte_9c0", "009fa3fb");
+                            if constexpr (!rt::kReleaseTimerNotify0DhBound) {
+                                owner_.log.unimplemented("Unit::slot_byte_9c0", "009fa3fb");
+                            }
                             in.slot_byte_9c0_clear = false;
                             const bsp::ReleaseTimerResult r =
                                 bsp::release_timer_tick_009fa3a0(in);
@@ -33178,7 +33206,60 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 s_.torpedo_aim_timer_first_fire_tick =
                                     s_.torpedo_aim_ticks;
                             }
-                            owner_.release_ordnance_007bbba0(s_);
+                            owner_.release_ordnance_007bbba0(s_);   // 009FA3D0
+                            if constexpr (rt::kReleaseTimerReseedDrawBound) {
+                                // 009FA3D5-009FA3F1: 00BD2F10(ECX = 1, [timer+4h]
+                                // 0.5f, [timer+8h] 1.0f), FSTP float [ESI+10h],
+                                // after 007BBBA0. The shared stream 1.
+                                if (owner_.gunnery) {
+                                    s_.torpedo_aim_timer =
+                                        owner_.gunnery->death_mode_draw_00bd2f10(
+                                            rt::kReseedStream, owner_.index_of_slot(s_),
+                                            rt::kReseedLow_00ce3800, rt::kReseedHigh_00d7a24c);
+                                    owner_.done("ReleaseTimer::reseed_bounds", 0x009fa3eau);
+                                    owner_.log.notef("release timer reseed: unit=%s t=%.2f "
+                                        "countdown=%.4f (009FA3EA 00BD2F10 stream 1)",
+                                        s_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(s_.torpedo_aim_timer));
+                                } else {
+                                    owner_.record("ReleaseTimer::reseed_bounds", 0x009fa3eau);
+                                }
+                            }
+                            if constexpr (rt::kReleaseTimerNotify0DhBound) {
+                                // 009FA3F4-009FA405: [unit + 9C0h + 8*[00F876B8]]
+                                // is 007CDC70's 007B9140(unit, 0): 1 for kind 17h
+                                // (007B914A), else some rack holds a round (the
+                                // walk of plane_holds_rack_round_007b9140). Live,
+                                // not one step late. No reader of timer+0Dh.
+                                bool holds = bsp::unit_is_kind_of(s_.class_id, 0x17);
+                                for (const PlaneOrdnanceRack& rack : owner_.ordnance_racks(s_)) {
+                                    if (holds) break;
+                                    if (rack.class_id == 0) continue;
+                                    holds = owner_.plane_rack_holds_round(s_, rack);
+                                }
+                                owner_.done("Unit::slot_byte_9c0", 0x009fa3fbu);
+                                if (!holds) {
+                                    s_.torpedo_aim_timer_notify_0d = true;   // 009FA405
+                                    owner_.log.notef("release timer notify: unit=%s "
+                                        "(009FA405, no reader)", s_.row.name.c_str());
+                                }
+                            }
+                        }
+                        // 007CD9A0 as 007CDC70 publishes it at unit+9C3h: the
+                        // first rack whose platform authors UseBayDoor answers
+                        // vtable[210h](2Ah, 0); none answers 0. Live, not one
+                        // step late; host rack order. docs/CC13_RELEASE_TIMER.md.
+                        bool bay_rack_holds_round_9c3() {
+                            const std::vector<PlaneOrdnanceRack>& racks =
+                                owner_.ordnance_racks(s_);
+                            const std::vector<bool> bay =
+                                bsp::cc13_release_timer::bomb_rack_bay_doors(
+                                    owner_.lua, s_.row.type_id);
+                            for (std::size_t i = 0; i < racks.size() && i < bay.size(); ++i) {
+                                if (bay[i]) return owner_.plane_rack_holds_round(s_, racks[i]);
+                            }
+                            return false;
                         }
                         void arm_release_timer_009d2287() override {
                             // 009D2279-009D2287: refuses to re-arm, and leaves

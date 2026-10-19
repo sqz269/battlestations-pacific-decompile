@@ -19864,3 +19864,60 @@ Pairs on aa5aaab54, reference env, 30000 frames:
 | USN13 | 420 -> 426 (refusals 1598 -> 1625) | first moved death is plane `bruh #2.5` at 415 s (killer Maru6 -> Maru17). The last player plane `bruh #4.1` dies at 655.76 s instead of 832.57 s (Heavy AA 01 instead of 02), so "Game Over" comes at 659.96 s instead of 834.92 s; the 8 OFF-only deaths are planes that died after 660 s |
 
 Flipped by mechanism.
+
+## 301. Handoff from cc9-gunnery53 (2026-10-19)
+
+Branch `agent/cc9-gunnery52`, tree `J:\PROG\battlestations-pacific-decompile-cc9-gunnery52`, run
+prefix `g53_`. The head is merged with origin/main; the full build passes.
+
+**Done in this run** (all flipped by mechanism):
+- kRoleOwnerDeviceWalkBound (296.8, PLAYER_GUN_SEAT 7.5) and kGunAimMessageCc15Bound (296.7).
+- kShipAiNavGateClosedArmFinalBound (300 ### 1) and kLineOfFireLandFromMuzzleBound (300 ### 3).
+- kShipAiNavigateAsternSkipBound (300 ### 2; the approach-step audit found no missing store; the
+  flip is e73b7450f). 4c6dcd3ac turned it off by mistake and 3da01d64c reverts that: do not
+  land 4c6dcd3ac without 3da01d64c.
+- kPlayerGunSeatTargetInterceptBound (PLAYER_GUN_SEAT 7.6): 5288f4100, 2910d76cf and the flip
+  5eecdcfd6. The 79h target is AA only: vtable[10Ch] is true only for a flying plane. The marks'
+  gunner range (00548EA9 / [unit+49Ch]) had to be bound too, or 0054900D clears the pick.
+- kNavigatorForceTorpedoBound (UNIT_WEAPON_DEVICES.md): 843efc336. JM06's two sub shots fire in
+  the reference env; JM06 still completes, at 790.93 s instead of 772.93 s. The row went to cc9-lua70.
+
+**Open:**
+1. **A player turret hit on a ship** (PLAYER_GUN_SEAT 7.5).
+   - The group 3 seat ray is the 2300 bullet range, and only a hull hit above y = 0 leads.
+   - USN15 `aim unit Fubuki-class04 -1.0` gives 1768 ship leads and 78 player shots from
+     Mississippi, but 0 hits. Mississippi takes 7330 turn refusals per turret and sinks at 528 s.
+   - Next: a row where a player battleship has a slower target inside 2300 m. Also check why
+     Mississippi's turrets refuse (0085ABA0 arcs, or the camera on Fletcher-class10 versus the
+     muzzles on Mississippi).
+2. **`aim unit` auto pitch** aims at the target's origin, so the hull hit lies at y <= 0 and
+   00957883 drops it. Tell cc13: for ships the auto pitch could aim a few metres up the hull.
+3. **The handle-table substitution.** The 79h target id is the 1-based unit index
+   (game_hosts_hud.cpp `target_id_174`). A real +174h handle needs the entity handle table
+   (00521E30).
+4. **Lost stash.** A cc13 powerup tree's stash was popped into this tree by mistake (refs/stash
+   is shared). Its content is saved in `local\g53_foreign_stash\` and was never committed.
+   Never use git stash.
+
+**The lead's gunnery queue, still open**, in order (copied from the lead's queue file; the
+newest lead message wins):
+1. **kPlaneCrashConstructCooldownCc13Bound** (OFF, main 21437da5e; include/bsp/plane_crash_sweep.hpp
+   plus the gunnery.cpp crash sweep).
+   - An air-spawned plane's first crash-sweep cooldown is 1.0 s (ctor 007CFE78), not 3.0, so its
+     sweep starts about 2 s earlier. Deck launches are unchanged.
+   - No new draws, but more swept segments mean more kTraceSceneDamageDrawBound draws, so pair in
+     both envs on USN21, USNOS and USN04.
+   - cc13-bisect follow-ups are coming: the 5.0 AirField arm, and no re-arm on state-7 re-entry.
+2. **kKamikazeDirectHitCc13Bound** (coming, HIGH, cc13-hitq).
+   - The host never delivers kamikaze direct-hit damage (classDesc+510h). 00819A20 queues it
+     through 00926E80.
+   - Pair on USNOS plus any kamikaze row, in both envs, and judge target damage and deaths.
+     ships60 cross-checks USNOS.
+3. **kHitDeferredDispatchCc13Bound** (coming; ab8aec6aa, in review).
+   - The image queues each hit in the LIFO 00926E80 queue, drained at fixed-step rows 6/14 and
+     00874DB9, newest first; the host dispatches each hit immediately.
+   - Expected movers: kill credit and last_attacker, the blast-before-direct order, the fire
+     timing, the Lua event order, and the hit_effect and breakup draws.
+   - Pair USN04, JM08, USN21 and BSM09 in both envs.
+4. **The turret-hit retry**, once cc13 adjusts the `aim unit` pitch for ships (item 2 of the open
+   list above).
