@@ -137,7 +137,8 @@ first two arms do not decide (the image's short-circuit): the first rack, in hos
 depend only on the class, so they are cached per (Lua host, vehicle class) in
 `src/cc13_release_timer.cpp`. The chunk runs once per class rather than on every refused tick, and
 so overwrites the Lua host's `last_status_`/`last_chunk_` only once per class. A result is cached
-only once the class's `BSPGun.n` is positive, which means the gunnery flatten has run. It static_asserts
+only once BSPGun exists (the class's `BSPGun.n` is positive, so the gunnery flatten has run) and the
+chunk succeeded. A failed load or call answers all-false and is retried on the next refused tick. It static_asserts
 the reseed: with the real test and a zero countdown the timer would fire on every tick.
 
 `kReleaseTimerNotify0DhBound`. In the fire arm, after the draw, `[9C0h] == 0` is evaluated as

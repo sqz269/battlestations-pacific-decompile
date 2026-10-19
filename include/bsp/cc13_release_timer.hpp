@@ -87,7 +87,8 @@ bool unit_can_release_007bb110(bool channel_c_enabled, float channel_c_value,
 // fills at 0096127A; BSPGun's p<i>_key is that k. An entry is false when the
 // platform or the field is absent. SUBSTITUTION, labelled: the image walks the
 // plane's device list (unit+48h), and the host's rack order stands for it.
-// Cached per (Lua host, class) once BSPGun exists, so the chunk runs once.
+// Cached per (Lua host, class) once BSPGun exists and the chunk succeeded, so
+// the chunk runs once per class.
 std::vector<bool> bomb_rack_bay_doors(bsp::game::GameMissionLuaHost& lua, int type_id);
 
 }  // namespace bsp::cc13_release_timer
