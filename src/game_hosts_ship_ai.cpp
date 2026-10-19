@@ -10867,10 +10867,10 @@ public:
         // not run.
         if (ctl_.blk.flag_3a5 && !ctl_.flag_3a6) {
             // 009EDA34 / 009EDA41. blk+3A5h is the "another entity's controller
-            // owns me" byte; its five writers (009D5B90, 009DA0D0, 009DA3B0,
-            // 009DDBC0 and 009DE5B0) are all records here, two of them chain
-            // steps of this same frame, so the byte is never set and this arm
-            // is never entered. The whole span is one record with its address.
+            // owns me" byte; its five writers are 009D5B90, 009DA0D0, 009DA3B0,
+            // 009DDBC0 and 009DE5B0. The arm does run: cc13 found it entered in
+            // USN04, where 7 of 18 rows toggle the byte (relayed by the cc9 lead,
+            // 2026-10-19). An older note here said it was never entered.
             ++row_.station_keeping;
             ++owner_.summary.station_keeping;
             if (!kShipStationKeepingBound) {
