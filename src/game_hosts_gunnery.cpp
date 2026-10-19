@@ -10947,6 +10947,11 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             if constexpr (kPlaneSpinSideBound) {
                 // 007BBCF0: hit+34h != -1 -> unit+800h = [[hit+38h]+4h], before
                 // 008777D0 applies the damage.
+                // Packet cc13-hitq: with kHitDeferredDispatchCc13Bound ON this write
+                // stays here, at the hit, while the image makes it inside OnHit at the
+                // drain (LIFO): with several hits on one plane between drains the image
+                // keeps the oldest hit's kind and this host the newest. RESIDUAL, not
+                // moved (docs/CC13_HIT_DEFERRED_DISPATCH.md).
                 const std::size_t victim = query.hit_unit - 1;
                 if (victim < plane_trace_element_kind.size()
                     && plane_trace_element_kind[victim] >= 0

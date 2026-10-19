@@ -29,6 +29,15 @@ waves (`00875CC0`) and then the fan-out (`00875E0C`), so a hit made in a wave is
 row 6 of the **same** step, after the rest of the waves and fan-out rows 1 to 5; a hit made after
 row 14 waits for row 6 of the next step.
 
+**SUBSTITUTION, the host's step order (correction after review rev3).** The host does not run
+the gunnery pass inside the job waves before the fan-out. `InMissionTickBinding::run_step_subsystems`
+(`src/game_hosts_mission_frame.cpp`) calls `run_subsystems_00875e0c` (the fan-out, rows 1 to 16)
+**first** and `motion_step_00825f20` (the units' step, the gunnery pass inside it) **after** it.
+Every ON push is therefore made after this step's rows 6 and 14 and drains at **row 6 of the next
+fixed step**: one step (0.05 s) later than the image's same-step row 6. The hits pushed on the
+mission's last step are never dispatched; the summary's `left=` counts them. No drain point was
+added for this (lead decision 2026-10-19); the delay is labelled here instead.
+
 ## What the host did (OFF, unchanged)
 
 `GameGunneryHost::Impl::apply_hit` (the `0084BE20` direct hit, called from `run_projectiles`, and
@@ -58,7 +67,9 @@ existing analysis found no `vtable[ECh]` path to `00926E80`, and no hit funnel i
 host's death path, so the hazard is not expected to fire.
 
 ON adds one summary line, `summary mission gunnery deferred hits queued= dispatched=
-refused_at_queue= left=`.
+refused_at_queue= left=`. `left=` is the queue at the report: the last step's pushes, which no
+later row 6 drains (the step-order substitution above), so it is expected to be non-zero in any
+run with hits on its final step.
 
 ## OFF identity
 
@@ -80,7 +91,7 @@ refused_at_queue= left=`.
 
 | container | filled by | read at | cleared, moved or destroyed before the drain? |
 | --- | --- | --- | --- |
-| the queue (`Impl::deferred_hits`) | the three funnels, inside `GameGunneryHost::fixed_step` (job wave 2) | rows 6 and 14 and `00874DB9` | no: the host's hits all come from wave 2, and row 6 of the same step drains them before rows 12 (InitAll), 15 (`009273A0`) and 16 (`00903610`) run. It lives in the gunnery host and is destroyed with it. The image never clears `00F899C0` either (references: push, drain and the static init/atexit pair `00CD3970` / `00CDF4D0`) |
+| the queue (`Impl::deferred_hits`) | the three funnels, inside `GameGunneryHost::fixed_step`, which the host runs in `motion_step_00825f20` after the step's fan-out | the next step's row 6 (then row 14), or `00874DB9` | nothing clears it: it lives in the gunnery host and is destroyed with it, and the image never clears `00F899C0` either (references: push, drain and the static init/atexit pair `00CD3970` / `00CDF4D0`). But because of the step-order substitution, a push waits through the rest of its step and the next step's rows 1 to 5, and when `00874D00` runs first (GenerateObject from Lua) its InitAll at `00874D79` (`run_sentity_init_all_00925f20`) and its session rows run **before** its own drain at `00874DB9`. Nothing between push and drain touches the queue; what can change is the victim and shooter state the dispatch reads (rows below). The last step's pushes are never drained (`left=`) |
 | the victim (`unit_state[victim]`, `unit_identity`) | the unit host | dispatch | indexes are never freed; the funnel bounds check runs again at the dispatch. In the image the subject is a raw pointer freed only on the second `00903610` pass after `00922FD0` marks it (`docs/ENTITY_EVENT_QUEUES.md`, the grace period), so it outlives any push-to-drain interval |
 | a victim killed between push and drain | an earlier node of the same drain (LIFO), or an explicit Kill | dispatch | the image refuses only `+5Eh`/`+5Fh` (`0092673F`, `009239A6`), set by the kill pass `009274CE` and `00922FD0`; a damage death (`0077D1A0` -> destroy list -> `00926390`) sets `+5Dh`/`+60h` only, so the image still dispatches. The host keeps its own gate in the funnel body: `apply_hit` refuses a dead unit outside the wreck window (`kWreckHitDeliveryBound`), `apply_gunless_blast_hit` refuses any dead unit, both as OFF |
 | the shooter (`unit_state[shooter]`, attribution) | the unit host | dispatch | stable index. The image's shot was killed at `0084BE00` before the push and is read by `009239A0`; it stays allocated through the same grace period |
@@ -94,29 +105,36 @@ false) reads `+5Eh`/`+5Fh` clear, so `0092673F` dispatches and the funnel's gate
 
 The drained handlers draw. `ShipHitBinding::random_unit_float` (`Draw::hit_effect`, the fire and
 leak chances of `00826F10`) and the death path's `ship_death_message_00827ab0`
-(`Draw::ship_breakup` at `00827B4D`, `Draw::ship_break_in_two`) move from the gunnery pass to row
-6, after every later draw of the step (the rest of the pass, other units' aim, reload and gunner
-draws), and run newest hit first. The `Draw::hull_damage` draw stays at the hit, in the OFF
+(`Draw::ship_breakup` at `00827B4D`, `Draw::ship_break_in_two`) move from the gunnery pass to the
+**next** step's row 6: after every later draw of their own step (the rest of the pass, other
+units' aim, reload and gunner draws, the rest of the motion step) and after the next step's rows 1
+to 5 too, and they run newest hit first. The image would put them at the same step's row 6; the
+extra step is the step-order substitution. The `Draw::hull_damage` draw stays at the hit, in the OFF
 position. Any pair diff on a run with a hit is therefore RNG-coupled from the first hit onward.
 
 ## Expected movers when ON
 
-* **Death timing**: a unit killed by gunfire dies at row 6 of the same fixed step, not inside the
-  gunnery pass. Readers between the two see it alive at its pre-hit health: the rest of
-  `run_projectiles` (later rounds of the same step reach it as a live target, not a wreck),
+* **Death timing: one step later.** A unit killed by gunfire dies at row 6 of the **next** fixed
+  step (SUBSTITUTION, the host's fan-out-before-motion order; the image's row 6 is in the same
+  step). Readers in between see it alive at its pre-hit health: the rest of `run_projectiles`
+  (later rounds of the same step reach it as a live target, not a wreck),
   `run_plane_crash_sweeps_007c0910`, `run_kamikaze_contacts`, `run_damage_control`, the inferior
-  failure timers, `publish_ai_weapon_facts`, the per-slot motion loop after the gunnery pass, wave
-  3 and fan-out rows 1 to 5. It is the same step, not one step later.
+  failure timers, `publish_ai_weapon_facts`, the per-slot motion loop after the gunnery pass, the
+  Lua proximity triggers after the motion step, the frame work between steps, and the next step's
+  fan-out rows 1 to 5. A hit on the mission's last step never lands.
 * **Kill attribution with several hits in one step**: dispatched newest first, so the hit that
   takes health to zero, `last_attacker`, `lua_kill_attacker` / `lua_kill_slot` and the
   `0077CE60` block end on the oldest hit instead of the newest. A direct hit and its own blast
   (`0084BE20` then `0084BBF9`) swap: the blast records land first, the direct hit last.
 * **In-frame hp/alive readers inside the funnels' callers**: `apply_impact_blast`'s
-  `be_damage_element` and its per-record `took=` / `health=` log, and
-  `kamikaze_detonate_00819a20`'s `kz_blast_damage`, read health right after the call and see no
-  change ON (diagnostics only).
-* **Fires and leaks** start at row 6, so `run_damage_control` first sees them on the next step.
-* **Lua hit events** (`hit_events`) and the death table are filled at row 6, in LIFO order.
+  `be_damage_element` and its per-record `took=` / `health=` log,
+  `kamikaze_detonate_00819a20`'s `kz_blast_damage`, and `plane_crash_impact_0084bc60`'s `dealt`,
+  `pc_blast_damage` and the `plane crash impact: ... dealt= victim_health=` log read health right
+  after the call and see no change ON (diagnostics only).
+* **Fires and leaks** start at the next step's row 6, so `run_damage_control` first sees them two
+  gunnery passes after the hit.
+* **Lua hit events** (`hit_events`) and the death table are filled at the next step's row 6, in
+  LIFO order.
 * **Draw order**, above.
 * Counters: `wreck_hits_reaching` and its two siblings count at the dispatch; a hit the queue
   gate refuses counts in `refused_at_queue` instead.
@@ -127,8 +145,13 @@ Pairs: gunnery53's successor runs USN04, JM08, USN21 and BSM09, both envs. cc13 
 
 * `plane_spin_side_800` (`007BBCF0`, `unit+800h`) is still written by `run_projectiles` before
   the funnel, at the hit; the image writes it inside OnHit at the dispatch, so with several hits
-  on one plane in a step the image keeps the oldest hit's kind and the host the newest.
+  on one plane between drains the image keeps the oldest hit's kind and the host the newest.
+  The write site in `run_projectiles` carries an ON note saying so; it was not moved.
   `notify_plane_hit_007bbcf0` is in the funnel body and does move to the dispatch.
+* **`0084BBCF` is untraced.** In `0084BAD0` the blast skips the push when the gathered record's
+  entity equals `ECX` (`0084BBCF CMP [ESI],ECX` / `JE 0084BBFE`), the source-entity exclusion.
+  Where `ECX` is loaded and what it holds per caller was not traced in this packet; the host's
+  blast gathers keep their own exclusions, unchanged by this switch.
 * The queue gate in `apply_hit` (dead and outside the wreck window: not queued, not drawn) stands
   for the narrowphase's hit-index membership, as the OFF gate does; it is the host's model, not
   a read of the index.
@@ -136,5 +159,7 @@ Pairs: gunnery53's successor runs USN04, JM08, USN21 and BSM09, both envs. cc13 
 * **Adoption note (not changed here)**: the kamikaze direct arm's push at `00819BA7` is the
   delivery of its damage record. The host's `kamikaze_detonate_00819a20` counts the arm and
   records `00915F20`, which is `BSP_MissionScoring_RecordHitDamage` (`00819BBE`, after the push),
-  and never delivers the record, OFF or ON.
+  and never delivers the record, OFF or ON. Taken up separately as packet cc13-kzdirect
+  (`kKamikazeDirectHitCc13Bound`, branch `agent/cc13-kzdirect`, `docs/CC13_KAMIKAZE_DIRECT_HIT.md`),
+  which delivers through the immediate funnel; routing it through this queue is its follow-up.
 * The host has no lock (one thread); the image's `00924990` section is not modelled.
