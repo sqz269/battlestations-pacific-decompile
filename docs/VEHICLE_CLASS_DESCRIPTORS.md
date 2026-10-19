@@ -474,3 +474,50 @@ Pairs on 059231375, same tree, the switch flipped only in the ON export (`local\
 | USN04 | 12000 | 4 | 102 + 21 / 0 | 599 / 34 | 12 -> 34 | exit 0. 5 squadrons (101x5), as OFF |
 
 On every ON run, `script_nil_reads`, `lua_errors` and `later_host_reads` are 0. The switch stays committed false, and re-flipping it is cc9's call.
+
+## Classes a class's devices name, and the purge (cc15-vcp6)
+
+USNOS (`us_osumi`) was run at 4b74dd6b4 with the switch on. That commit predates the 8d203f017 deck fix, which does not cover this case anyway. At 2834.5 s, Betty4's drop-kamikaze release (class 156, the Ohka) found no creator in 006FEC00, because 004E0A9B had purged row 156.
+
+**What marks 156 in the image.** It is resolved inside the Betty class's own 00964790 load, so it is marked whenever class 32 is:
+- 00964790 step 13 calls vtable[8h]. For the plane family that is 007D1F70, which chains to the base reader 00960230.
+- 00960230 resolves every `Platforms[i].Gun[j]` device through 00443090 (009614F9), then `DefaultGun`, or the first gun, at 00961591.
+- 00443090 calls the device's reader at 0044334D ([vt+8h]). That is 007327B0, which 006E01E1 (BombPlatform) and 006EB6D1 (Catapult) also chain to. Its bullet table reader 007313E0 passes each `Bullet[k].Bullet` to 006EA910 at 00731955.
+- 006EA910 builds the bullet by `Type` and runs its reader at 006EACFD ([vt+18h]). Three bullet readers resolve a vehicle class with DL = 1, and they store the descriptor pointer:
+
+| bullet kind | reader | key | site | field |
+|---|---|---|---|---|
+| DummyKamikazePlane | 006FF170 | `KamikazePlaneClass` | 006FF1E5 | +DCh, which 006FEC00 spawns from the cached pointer with no new lookup |
+| DummySubmarine | 00700050 | `SubmarineClass` | 007000C5 | |
+| DummyTarget | 00701060 | `DummyTargetVehicleClass` | 00701115 | |
+
+- The plane reader also resolves `KamikazeBulletClass` (+20Ch) at 007D2BFF.
+
+For the Betty: `VehicleClass[32].Platforms[*].Gun` holds 143. `DeviceClass[143]` is a BombPlatform with `Bullet[1].Bullet = 143`, and `Bullets[143]` is a DummyKamikazePlane with `KamikazePlaneClass = 156`. Its `KamikazeBulletClass = 99` is a Type `Kamikaze` bullet, which resolves no class.
+
+**Census of class-from-a-class-field resolves** (this installation's tables: autoload vehicleclasses.lua, classtables/{realistic,arcade}):
+
+| site | source field | marked pre-purge in the image | host before | host now |
+|---|---|---|---|---|
+| 009648E3 (00964790 step 5), 00833BA0 (ship reader) | `LandingShip` | yes, with the parent | yes (`mark_vehicle_class_row_00964790`) | yes. No row authors it |
+| 00965182 (step 14) | ship `Catapult.LaunchedClass`. Its run-time users are 006EC8E0 MCatapult_Fire and 008141E0 LaunchFromCatapult, both through 007B8A80 | yes | yes (cc15-vcp2) | yes |
+| 006FF1E5 | bullet 143 -> 156 (Ohka). Arcade bullet 170 -> 370 (Funryu) | yes | **no** | yes |
+| 007000C5 | bullet 144 -> 4. The devices are `unitclass_kaiten` 144, and in arcade also 500 (a watermine test launcher) | yes | **no** | yes |
+| 00701115 | bullet 142 -> 790. The device is gunnery target 83 | yes | **no** | yes |
+| 0083326A (ship reader `templates`, LandVehicleclasses) | crew template names | yes | no | no. Every template is a `*_shiptraffic` soldier name, read as a SoldierTypes symbol (contract), so nothing resolves |
+| 0074C9ED (LandingShip reader, `Vehicle` entries' `ClassId`) | cargo | yes | no | no. No row authors `ClassId` |
+| 006C5050 and the other air-ops 007B8A80 users | deck stock and slots | 0046BF70 / 006CADD0 | yes (cc15-vcp5) | yes |
+
+The host now follows the chain in `GameMissionLuaHost::mark_vehicle_class_device_bullets_00960230`, run from every row mark under the switch. It is recursive, so the linked class's own devices are followed too. UNCERTAIN: it reads `KamikazeBulletClass` on any row, while the image reads it only for the plane family. In this installation that key names only `Kamikaze` bullets, so the result is the same.
+
+Pairs on 99785234b, same tree, the switch flipped only in the ON export (`local\vcp6_on`). Env `BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`. Both pair_diffs exit 1 with gameplay, death rows, plane death modes and the unit table identical. In both, the only rows that moved are the vehicle-class lines: the purge and census lines, the +08h vector line, the `marked` summary, and the 0046BF20/0046BF70 status rows. Lua errors and script nil reads are 0.
+
+| mission | orders / frames | purged / kept | marked OFF -> ON | new-chain marks | result ON |
+|---|---|---|---|---|---|
+| USNOS | cc9-ships59 `s59_os_c17`, 60000 | 528 / 105 | 99 -> 105 | `156@006FF1E5` | exit 0. 10 drop-kamikaze releases from 2841.8 s; `Betty5_kz01` spawns with creator 00956240, as OFF; 0 "creator projection is unavailable". Mission fails at 2871.68 s ("Game Over") on both sides |
+| USN21 | `s46_u21_f`, 12000 | 590 / 43 | 36 -> 43 | none | exit 0, as in the cc15-vcp5 pair. 24 squadrons, all with `class_row=found` |
+
+On USNOS, the remaining OTHER-line differences are renderer lost-device frames and presents (`lost_polls` 8 -> 18), which is window noise, not gameplay.
+
+Not censused, and still open: the load-time resolves in 00743450 LandConvoy roster, 006F3660 CommandBuilding garrison, 0084D170 / 0084D560 support sites, plus the three open items listed under step 3 (traffic, PowerupClass, shipyards).
+
