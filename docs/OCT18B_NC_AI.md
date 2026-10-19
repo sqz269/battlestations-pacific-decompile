@@ -52,7 +52,8 @@ not game algorithms.
 
 Validation: all assigned native bodies were exported and inspected; assembly
 confirmed RET cleanup, ECX use and undefined EAX behavior. The four C++ no-ops
-await the integrator's combined Win32 build through `scripts/build.ps1`.
+passed the integrator's combined MSVC Win32 Release build through
+`scripts/build.ps1`, including both existing CTests (2/2).
 No new tests or game runs were requested. This is static reconstruction and
 library classification evidence, not ABI or gameplay validation. Annotation
 uses `ghidra_annotate.py --apply`, preserves existing comments and records prior

@@ -6,8 +6,8 @@
     "reconstructed": 4,
     "library_instantiation_out_of_scope": 17,
     "open": 0,
-    "build_tested": 0,
-    "combined_build_pending": 4
+    "build_tested": 4,
+    "combined_build_pending": 0
   },
   "project": "bsp",
   "project_file": "C:/Users/sqz269/bsp.gpr",
@@ -412,8 +412,8 @@
       "name": "BSP_ContentPackageList_Slot7Noop_00994eb0",
       "source": "src/engine_seg11_35_66_cc13.cpp",
       "header": "include/bsp/engine_seg11_35_66_cc13.hpp",
-      "status": "reconstructed_pending_combined_build",
-      "recon_status": "reconstructed_pending_combined_build",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
       "original_abi": "Member context ECX=list (unused); EAX preserved, no established result; RET",
       "vtables": [
         "00d1d75c"
@@ -422,7 +422,7 @@
       "vtable_pointer_address": "00d1d778",
       "behavior": "RET only; no memory or register writes; no side effects.",
       "cpp_symbol": "bsp::engine_seg11_35_66_cc13::content_list_slot7_noop_00994eb0",
-      "compiled": false,
+      "compiled": true,
       "abi_compatible": false,
       "game_validated": false,
       "uncertainty": "Slot purpose is unknown; void C++ interface does not reproduce incoming EAX preservation or native stack cleanup."
@@ -435,8 +435,8 @@
       "name": "BSP_ContentPackageList_Slot8Noop_00994ec0",
       "source": "src/engine_seg11_35_66_cc13.cpp",
       "header": "include/bsp/engine_seg11_35_66_cc13.hpp",
-      "status": "reconstructed_pending_combined_build",
-      "recon_status": "reconstructed_pending_combined_build",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
       "original_abi": "Member context ECX=list (unused); EAX preserved, no established result; RET",
       "vtables": [
         "00d1d75c"
@@ -445,7 +445,7 @@
       "vtable_pointer_address": "00d1d77c",
       "behavior": "RET only; no memory or register writes; no side effects.",
       "cpp_symbol": "bsp::engine_seg11_35_66_cc13::content_list_slot8_noop_00994ec0",
-      "compiled": false,
+      "compiled": true,
       "abi_compatible": false,
       "game_validated": false,
       "uncertainty": "Slot purpose is unknown; void C++ interface does not reproduce incoming EAX preservation or native stack cleanup."
@@ -458,8 +458,8 @@
       "name": "BSP_ContentPackageList_Slot9Noop_00994ed0",
       "source": "src/engine_seg11_35_66_cc13.cpp",
       "header": "include/bsp/engine_seg11_35_66_cc13.hpp",
-      "status": "reconstructed_pending_combined_build",
-      "recon_status": "reconstructed_pending_combined_build",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
       "original_abi": "Member context ECX=list (unused); EAX preserved, no established result; RET",
       "vtables": [
         "00d1d75c"
@@ -468,7 +468,7 @@
       "vtable_pointer_address": "00d1d780",
       "behavior": "RET only; no memory or register writes; no side effects.",
       "cpp_symbol": "bsp::engine_seg11_35_66_cc13::content_list_slot9_noop_00994ed0",
-      "compiled": false,
+      "compiled": true,
       "abi_compatible": false,
       "game_validated": false,
       "uncertainty": "Slot purpose is unknown; void C++ interface does not reproduce incoming EAX preservation or native stack cleanup."
@@ -481,8 +481,8 @@
       "name": "BSP_ContentPackageList_Slot10Noop_00994ee0",
       "source": "src/engine_seg11_35_66_cc13.cpp",
       "header": "include/bsp/engine_seg11_35_66_cc13.hpp",
-      "status": "reconstructed_pending_combined_build",
-      "recon_status": "reconstructed_pending_combined_build",
+      "status": "reconstructed_build_tested",
+      "recon_status": "reconstructed_build_tested",
       "original_abi": "Member context ECX=list (unused); one ignored stack word; EAX preserved, no established result; RET 4",
       "vtables": [
         "00d1d75c"
@@ -491,7 +491,7 @@
       "vtable_pointer_address": "00d1d784",
       "behavior": "RET 4 only; no memory or register writes; no side effects.",
       "cpp_symbol": "bsp::engine_seg11_35_66_cc13::content_list_slot10_noop_00994ee0",
-      "compiled": false,
+      "compiled": true,
       "abi_compatible": false,
       "game_validated": false,
       "uncertainty": "Slot purpose is unknown; argument semantic type is unknown; void C++ interface does not reproduce incoming EAX preservation or native stack cleanup."
@@ -500,14 +500,16 @@
   "validation": {
     "native_bodies": "exported; decompilation and RET/ECX assembly inspected",
     "class_identity": "bsp.py callers --kind vslot plus existing ContentPackageList constructor/destructor family",
-    "build": "pending integrator combined scripts/build.ps1",
+    "build": "MSVC Win32 Release scripts/build.ps1 passed; existing CTest suite passed",
     "tests": "none added; trivial no-op bodies",
     "annotation": "21/21 applied; previous values captured; existing comments preserved; project saved",
     "exports": "21/21 force-refreshed after annotation and save",
     "assignment": "21 unique rows, exact equality with assigned segment 66 address list",
     "annotation_log": "local/ghidra-annotations-20261019T053216Z.json",
     "report_calls": "verify_report_calls.py: 5 call rows checked, 0 failed",
-    "ledger_scope": "Only 21 assigned address records added to each of naming and reconstruction ledgers; no records replaced"
+    "ledger_scope": "Only 21 assigned address records added to each of naming and reconstruction ledgers; no records replaced",
+    "build_log": "local/nc_combined_build2.log",
+    "game_runs": "none"
   },
   "call_sites": [
     {
