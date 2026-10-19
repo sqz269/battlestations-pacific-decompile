@@ -197,8 +197,9 @@ void effect_flare_read_lua_0086c240(FlareReaderHost& host, void* component, LuaR
 // Part B, sorted by address; each row's bytes are C7 01 <vtable> C3 (tools/cc13_mistag_partb_check.py).
 const VtResetDestructor kVtResetDestructors[kVtResetDestructorCount] = {
     {0x006CFE70, 0x00CE4974}, {0x006D16E0, 0x00CE4974}, {0x006D1760, 0x00CE4974},
+    {0x006D17E0, 0x00CE4974}, {0x006D1860, 0x00CE4974},
     {0x006FBC10, 0x00CF88F8},                             // row 120 (rev4), see the doc
-    {0x006D17E0, 0x00CE4974}, {0x006D1860, 0x00CE4974}, {0x00743D80, 0x00CFF354},
+    {0x00743D80, 0x00CFF354},
     {0x007448F0, 0x00CE4974}, {0x00749AF0, 0x00CE4974}, {0x00749B00, 0x00CE4974},
     {0x0074CEC0, 0x00CE4974}, {0x0074D020, 0x00CE4974}, {0x0074EBF0, 0x00CE4974},
     {0x00759D00, 0x00CE4974}, {0x0075A410, 0x00CE4974}, {0x0075A420, 0x00CE4974},
