@@ -11,6 +11,7 @@ class NativeModelReference;
 class NativeLuaServiceBindings;
 struct NativeInstanceGeometryAccess;
 class NativeRenderGroupModels;
+class NativeTracelineRenderServices;
 }
 namespace bsp::game {
 class GameHostLog;
@@ -38,6 +39,7 @@ public:
     NativeLuaServiceBindings& lua_services() noexcept;
     NativeInstanceGeometryAccess& instance_geometry() noexcept;
     NativeRenderGroupModels& group_models() noexcept;
+    NativeTracelineRenderServices& render_services() noexcept;
     const volatile std::uint32_t* profile(const void* actual_owner) const;
 
     // One retained native-reader/mesh/subset/material load. The path is a VFS

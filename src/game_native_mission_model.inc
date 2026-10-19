@@ -10,6 +10,7 @@
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/native_camera_owner.hpp"
 #include "bsp/native_instance_geometry.hpp"
+#include "bsp/native_traceline_render.hpp"
 #include "bsp/native_render_group_lifetime.hpp"
 #include "bsp/native_resource_node_traversal.hpp"
 #include "bsp/native_resource_reader_owner.hpp"
@@ -105,6 +106,23 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
     std::list<ModelRecord> models;
     std::list<StreamRecord> streams;
     NativeInstanceGeometryAccess instance;
+    struct RenderServices final : NativeTracelineRenderServices {
+        GameNativeMissionModel& facade;
+        explicit RenderServices(GameNativeMissionModel& source) noexcept :facade(source) {}
+        const volatile Word* profile(const void* actual) override {return facade.profile(actual);}
+        const void* call_virtual48(void*,Word) override {
+            throw std::logic_error("mission model reached unsupported native virtual48");
+        }
+        Word call_virtual58(void*,Word,void*,float) override {
+            throw std::logic_error("mission model reached unsupported native virtual58");
+        }
+        void call_virtual20(void*,Word,void*,float,float,Word) override {
+            throw std::logic_error("mission model reached unsupported native virtual20");
+        }
+        void collect_entry_00b1dff0(void*,void*) override {
+            throw std::logic_error("mission model collection requires the ordinary command's actual collector");
+        }
+    } render_profiles;
 
     struct MeshCall {
         // B94710 publishes pair[0] and B944E0 writes pair[1]. Initial zeros are
@@ -133,7 +151,7 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
     void* child{};
     void* opened_stream{};
 
-    Impl(GameHostLog& l, GameNativeRendererApplication& app, GameVfsHost& vfs,
+    Impl(GameNativeMissionModel& facade,GameHostLog& l, GameNativeRendererApplication& app, GameVfsHost& vfs,
         GameNativeReadOnlyData& mapped)
         : log(l), renderer(app), files(vfs), data(mapped), raw(vfs.borrow_raw_services()),
           owners(app.actual_owners()), graphics(app.game_grid_context().graphics),
@@ -158,7 +176,7 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
           instance{instance_models,graphics.streams.geometry,graphics.streams.vertices,
               materials,raw.strings,raw_models.constants.unchanged_00d7a260,
               app.borrow_gui_material_destruction_profile_00d5e520(),this,
-              &prepare_model,&retire_failed_model,&bind_model,&bind_stream} {
+              &prepare_model,&retire_failed_model,&bind_model,&bind_stream},render_profiles(facade) {
         mission_model_detail::require(&fields.metadata.reads == &fields.textures.reads &&
             &fields.textures.owners == &owners && &fields.textures.textures == &app.texture_cache() &&
             &instance_models.nodes == &app.camera_environment().nodes,
@@ -302,7 +320,7 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
 
 GameNativeMissionModel::GameNativeMissionModel(GameHostLog& log,GameNativeRendererApplication& renderer,
     GameVfsHost& files,GameSingletonHost& singletons,GameNativeReadOnlyData& data,GameInputRuntime& input)
-    :impl_(std::make_unique<Impl>(log,renderer,files,data)) {
+    :impl_(std::make_unique<Impl>(*this,log,renderer,files,data)) {
     // Publish the outer retention root before an exported sampler binding can
     // acquire child obligations. An entered construction failure keeps every
     // borrowed environment and operation alive, including half-bound graphs.
@@ -319,6 +337,7 @@ NativeModelEnvironment& GameNativeMissionModel::model_environment() noexcept {re
 NativeLuaServiceBindings& GameNativeMissionModel::lua_services() noexcept {return impl_->renderer.lua_service_binding();}
 NativeInstanceGeometryAccess& GameNativeMissionModel::instance_geometry() noexcept {return impl_->instance;}
 NativeRenderGroupModels& GameNativeMissionModel::group_models() noexcept {return *impl_;}
+NativeTracelineRenderServices& GameNativeMissionModel::render_services() noexcept {return impl_->render_profiles;}
 
 const volatile std::uint32_t* GameNativeMissionModel::profile(const void* actual) const {
     const auto address=mission_model_detail::read<std::uint32_t>(actual);
