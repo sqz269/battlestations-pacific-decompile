@@ -20154,6 +20154,26 @@ forced false), ON = the tree build `local\g54_d_off`, 36000 frames with the curr
   instead of 724.95 s. LOMP06 exits 1 (no breakup; it fails at 672.11 s both ways).
 - No WINS outcome moves in the reference env.
 
+**306.6 measured; NOT flipped (the lead holds it for cc13's double-dispatch verdict).** Both switches ON
+(`local\g54_hq2_on`, 26bbb19a3) against both OFF (`local\g54_d_off`), 9000 frames, no orders.
+- Reference env: every row has left=0 (queued = dispatched: USN21 11, USN04 799, JM08 4308, BSM09 620). The one-step
+  lag of 306.2 is gone: BSM09's opening D3A Val deaths keep t = 42.70 s. What remains are the order effects. BSM09
+  has 38 death rows changed, none in time, with killer_gun changes and `D3A Val 3|.-II` going cat 1 -> 5 (blast
+  first). Deaths: USN04 55 -> 54, JM08 13 -> 17, BSM09 46 -> 46. USN21 is identical in the unit table and death
+  rows (damage +0.1).
+- Default env: all four rows move (pair_diff verdict 3). Every run, OFF and ON, exits 0 (EXITCODE=0,
+  exit_code=0), so there is no OFF regression: "exit 3" is pair_diff's verdict, not a game exit.
+- **Smoke residual:** USN21 first_respawn Myoko 110.25 (OFF) -> 110.30 (ON). cc13 resolved it: ON is FAITHFUL. The
+  host's OFF added the flooding water inline, while the image delivers the 9Eh water at the row-9 pump and it acts at
+  N+1. The ON blast line's `took=0.0` was a log quirk (logged at queue time), fixed on main 2bc63d449.
+- **Double dispatch** (cc13 rev4's question: the drain pops back() after the dispatch, so a node pushed during a
+  dispatch would be popped undispatched and the replayed node dispatched again). The path is reachable in the
+  host, because apply_hit clears deferred_replay on entry and queues a hit raised inside a dispatch. But a diagnostic
+  export (44434a773 with both ON, plus an uncommitted log of every push made while a dispatch runs;
+  `local\g54_nested_patch.py`) shows 0 nested pushes in 620 / 799 / 4308 dispatches on BSM09 / USN04 / JM08
+  (`local\g54_nest_*.log`). So it does not occur on these rows. Whether the image's 00926700 has the same pop
+  order is cc13 rev2's question.
+
 ## 307. Sub dive, sub seed and helm release paired (cc9-ships60, 2026-10-19)
 
 Reference-env pairs on 10cd2414c (OFF = the tree build, local\s60_m2_off_bin; ON = pair_export trees local\s60_m2_kd,
@@ -20173,3 +20193,34 @@ with jm06_p12_j6_c1; IJN08 20000 with ijn08_p10_i08_z. Kaiten rows come from `lo
   Haruna -> Kongo), with no unit-state change before then. Flipped ON.
 None of these rows' WINS orders end in the paired window, so no WINS result is claimed here. The USNOS prefix moves
 with each switch, so the c19-c21 notes in 305 need a rerun on the new exe.
+
+## 308. Handoff from cc9-gunnery54 (2026-10-19)
+
+Branch `agent/cc9-gunnery52`, tree `J:\PROG\battlestations-pacific-decompile-cc9-gunnery52`, run prefix `g54_`
+(launcher `local\g54_rows.ps1`: `-Rows name=MISSION:frames:orders -Prefix -Exe [-NoStreams]`). The head is merged with
+origin/main; the full build passes.
+
+**Flipped ON in this run** (each by mechanism, with predictions written first):
+- kPlaneCrashConstructCooldownCc13Bound (303, b09a47caa) and kPlaneCrashLaunchArmCc13Bound (306.5, 1da1ef2f9).
+- kKamikazeDirectHitCc13Bound (306.1, 19f51a261). The pair needs a detonating USNOS plan: `local\g54_os_c17.txt`.
+- kShipBreakInTwoPuffDrawsCc13Bound (306.3, 03a357907; confirmation pairs 9491269d5).
+- The three cc13-kzlatch switches (306.4, 1da1ef2f9). (2) and (3) are UNEXERCISED on USN21 (the mission completes
+  239 s after the kamikazes spawn at 2767.57 s).
+
+**Other commits:** 51a81a155 (merge; section 306 kept beside ships60's 307), ad6fffea4 (pair_diff drops the
+all-zero arc guard census line), 44434a773 (plane_crash_sweep.hpp comment on the unmodelled 007BC5B0 / +520h / +5Ch
+gates), 7b5cd920a (the gunnery host logs `rng streams: on|off (BSP_GUNNERY_RNG_STREAMS)` once at startup).
+
+**Open:**
+1. **hitq** (kHitDeferredDispatchCc13Bound + kHitDeferredSameStepDrainCc13Bound): paired (306.2, 306.6), held OFF
+   by the lead for cc13 rev2's verdict on the image's pop order. When the lead says go: flip both together, with a
+   lease on cc13_hitq_switches.hpp for one commit.
+2. **kz latch (2) and (3)** need a row where a kamikaze squadron's target dies while it lives (Intrepid sinking on
+   USN21 would do it). No such row is known yet.
+3. **The player turret hit** (PLAYER_GUN_SEAT 7.5): time box closed. It needs a row where the camera ship owns the
+   group 3 turrets (on USN15 the camera is on Fletcher-class10 and the muzzles are on Mississippi).
+4. **Coming from cc13:** kTorpedoBotOwnerPlayerGateCc13Bound (008FFF20 exits when the owner's +184h is set). Pair it on
+   a plan that takehelms a DD/CA with torpedoes (USN15 / JM08 / USN01).
+5. **WINS notes passed on:** IJN18 `ijn18_l67_i18_d` does not end in 64000 frames on 97bd59009 (sent to lua70).
+   USN21 with no orders completes at 3006.81 s. LOMP06 `l70_l6_c` fails at 653.11 s (reference env).
+- Never use git stash. src/game_hosts_gunnery.cpp is often leased by cc13: queue, never jump.
