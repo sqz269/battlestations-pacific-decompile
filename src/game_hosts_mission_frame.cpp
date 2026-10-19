@@ -3007,6 +3007,21 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     for (const GameSceneEntityRecord& record : host.scene_contents->entities()) {
                         if (record.class_id != 0x1a || !record.generated) continue;
                         ++convoys;
+                        if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
+                            // cc15-vcp7: 00743891 resolves each member type
+                            // above 0 with 00964790(type, DL=1). For a convoy
+                            // created at load that is InitAll pass A, before
+                            // 004E0A9B, so the miss path marks ID and Got. A
+                            // held-back convoy is not generated here; it is
+                            // first resolved when GenerateObject spawns it.
+                            if (record.land_convoy_keys) {
+                                for (const int type : record.convoy_slots) {
+                                    if (type < 1) continue;                  // 0074379C
+                                    host.lua.mark_scene_vehicle_class_row_00964790(type,
+                                        "00743891");
+                                }
+                            }
+                        }
                         members += host.units->build_land_convoy_roster_00743450(record);
                     }
                     host.log.notef("summary LandConvoy roster convoys=%zu members=%zu "

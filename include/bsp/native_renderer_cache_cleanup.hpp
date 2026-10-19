@@ -37,6 +37,18 @@ struct NativeRendererCacheCleanupObservation {
 using NativeRendererCacheCleanupObserver = void (*)(void*,
     const NativeRendererCacheCleanupObservation&);
 
+// Source-only record (packet cc15-rshut) of B316C0's own skipped release. When
+// the release at B316FC reaches a zero terminal whose B32250/B31DC0 callback
+// removes the last row, B316FE rereads the count and B3170B/B3170F destroy the
+// row below it unreleased. B316C0 records that row's resource and name here and
+// sets b316c0_ran when it returns. NativeTextureLoadOwners reads it at exit.
+struct NativeRendererCacheSkippedRelease {
+    bool b316c0_ran{};
+    std::uint32_t skipped{};
+    void* resource{};
+    char name[96]{};
+};
+
 // Borrow the application's SAME pool, canonical actual-reference owners and
 // current numeric profile tables. No cache/owner/count copy is made. Selected
 // cache tables require slot+10=B31DA0; child tables require their known +0C
@@ -50,6 +62,7 @@ struct NativeRendererCacheCleanupContext {
     const volatile std::uint32_t* texture_cache_vtable_00d5f088;
     void* observation_context{};
     NativeRendererCacheCleanupObserver observe_cleanup{};
+    NativeRendererCacheSkippedRelease* skipped_release{};
 };
 
 // B30410[204], ECX raw0Ch record-array header, stack count, RET4. Full growth

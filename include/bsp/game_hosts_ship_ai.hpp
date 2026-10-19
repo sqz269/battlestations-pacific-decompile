@@ -899,6 +899,14 @@ public:
     // SHIP_AI 162) and true, after which the caller applies AddDamage 0095DA00.
     // True for a unit that is not a capture building.
     bool command_building_hit_gate_006f1f20(std::size_t unit_index, float amount);
+    // Packet cc13-para2: the capture building's instance armour +368h as this
+    // host keeps it (the scene value, then 006F38E0's level writes); read by
+    // 007AB509's paratrooper bleed. False (out untouched) for a unit that is not
+    // one of the capture buildings.
+    bool command_building_armour_0368(std::size_t unit_index, float& out);
+    // Packet cc13-para2: the avoid-zone manager for 007ABB30's 0041B840 call,
+    // which is a non-const query; null before load_avoid_zone_geometry.
+    GameAvoidZoneRuntime* avoid_zone_runtime_mutable() noexcept;
 
     // Packet cc9_big_landing_ship: class+808h for the unit's class, from its
     // VehicleClass row at load (the depth reader's tuning-pair choice). False

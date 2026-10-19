@@ -18,6 +18,7 @@
 #include "bsp/resource_load_events.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <d3dx9tex.h>
+#include <cstdio>
 #include <cstring>
 #include <exception>
 #include <list>
@@ -264,6 +265,30 @@ struct NativeTextureLoadOwners::Impl {
     const volatile std::uint32_t* profile;
     NativeTextureSpecialOwnerContexts* special;
     std::list<std::unique_ptr<Entry>> entries;
+    const NativeRendererCacheSkippedRelease* original_residue{};
+    void* residue_log_context{};
+    NativeTextureLoadOwners::ResidueLogger residue_log{};
+    // The one residue the Original itself leaves (see ~NativeTextureLoadOwners).
+    bool log_allowed_original_residue() const noexcept {
+        static constexpr char kErrorTexture[] = "models/textures/error.dds";
+        const auto* const record = original_residue;
+        if (!record || !residue_log || !record->b316c0_ran || record->skipped != 1u ||
+            entries.size() != 1u || std::strcmp(record->name, kErrorTexture) != 0)
+            return false;
+        const auto& entry = *entries.front();
+        if (entry.raw != record->resource || entry.admitted_profile != 0x00d61948u) return false;
+        std::uint32_t prefix[2]{};
+        SIZE_T copied{};
+        if (ReadProcessMemory(GetCurrentProcess(), entry.raw, prefix, sizeof(prefix), &copied) == FALSE ||
+            copied != sizeof(prefix) || prefix[0] != 0x00d61948u || prefix[1] != 1u)
+            return false;
+        char line[256];
+        std::snprintf(line, sizeof line, "native texture owners: exit residue allowed: row=%s "
+            "identity=%p refcount=%u: original leaks this (B31BD0 acquire_new=1, B316C0 skips release)",
+            record->name, entry.raw, static_cast<unsigned>(prefix[1]));
+        residue_log(residue_log_context, line);
+        return true;
+    }
     NativeTextureSpecialOwnerContexts& require_special() {
         if (!special || !special->profile_00d61870 || !special->profile_00d618b0 ||
             special->profile_00d61870[0] != 0x00bd30e0u ||
@@ -305,15 +330,44 @@ struct NativeTextureLoadOwners::Impl {
 NativeTextureLoadOwners::NativeTextureLoadOwners(GuiNativeGeometryOwners& geometry,
     NativeTexture2DOwnerContext& context, const volatile std::uint32_t* profile,
     NativeTextureSpecialOwnerContexts* special)
-    : impl_(std::make_unique<Impl>(Impl{geometry, context, profile, special, {}})) {
+    : impl_(std::make_unique<Impl>(Impl{geometry, context, profile, special, {}, {}, {}, {}})) {
     const auto& r = geometry.registration();
     if (!r.find || !r.bind || !r.unbind || !profile ||
         profile[0] != 0x00bd30e0u || profile[1] != 0x00b3f590u)
         throw std::invalid_argument("texture companions require the actual canonical registration/terminal");
     if (special) (void)impl_->require_special();
 }
+// Every retained texture companion is a leak and terminates, with exactly one
+// exception that the Original itself leaves (packet cc15-rshut, evidence in
+// docs/OCT18B_RENDER_MILESTONE.md). Renderer destruction runs B316C0 on +1A74.
+// The B316FC release of the last row (noise, whose +67C creator credit is never
+// released) reaches zero. B3F2E0 -> B32250 -> B31DC0 removes that row
+// (B31F9D), then B316FE rereads the count and B3170B/B3170F destroy the row
+// below it unreleased. That row is the error.dds fallback, which B31BD0 loads
+// with acquire_new=1 (B31C0A..B31C13): its row credit plus the +20 credit.
+// B32370 at B335D6 releases +20 and leaves refcount 1. The allow-list accepts
+// only that row, only at refcount 1, only as the single residue, and only
+// after the B316C0 path recorded skipping it. Anything else still terminates.
+// The allowed residue's Source companion is retired here: it is unbound from the
+// canonical registration (whose own destructor requires it empty), and the
+// native texture keeps its refcount 1 as in the Original. No native release.
 NativeTextureLoadOwners::~NativeTextureLoadOwners() {
-    if (!impl_->entries.empty()) std::terminate();
+    auto& s = *impl_;
+    if (s.entries.empty()) return;
+    if (!s.log_allowed_original_residue()) std::terminate();
+    auto& entry = *s.entries.front();
+    const auto& r = s.geometry.registration();
+    if (entry.registered) r.unbind(r.context, entry.raw, entry);
+    s.entries.clear();
+}
+void NativeTextureLoadOwners::allow_original_cache_clear_residue(
+    const NativeRendererCacheSkippedRelease& record, void* log_context, ResidueLogger log) {
+    auto& s = *impl_;
+    if (!log || s.original_residue)
+        throw std::invalid_argument("texture exit residue allow-list binds once with a logger");
+    s.original_residue = &record;
+    s.residue_log_context = log_context;
+    s.residue_log = log;
 }
 NativeTexture2DOwnerContext& NativeTextureLoadOwners::texture_context() noexcept {
     return impl_->context;

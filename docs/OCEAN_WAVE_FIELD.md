@@ -3755,3 +3755,26 @@ The exes are pair_export builds of 2c395b950, which contains 7f9207dc6 and 49430
 - **kDiveBombGoawayFloatStoresBound** (include/bsp/cc13_tier2_switches.hpp; 009C7F00's travel*0.9f, the reload product and ceiling-100 stored as float). Identical on USN01 u1_i, BSM09 d1 and USN21 (pair_diff exit 0), as expected away from the float boundary. Faithful by mechanism: **ON**.
 - The 006082D0 comment fix routed with these (007BC7A0's rocket pass: COMISS 0,[desc+E0h] / JAE 007BC86C skips the attitude gate when E0h <= 0) waits for the next units.cpp commit. Other lanes are queued on that file.
 - WINS: BSM09 d1 re-times 327.04 -> 351.04 s under the seams (sent to cc9-lua70).
+
+## 99. The device walk's shared draw; HANDOFF (cc9-physics23, 2026-10-19)
+
+**kPlaneDeviceWalkSharedDrawBound ON.** With the switch on, the next-rack delay draw takes 00BD2F10 on shared stream 1 in the image's call order. The exes are pair_export builds of 5eab32b9e, which contains 18eaf4acc, so both sides have PerRack ON and the restored issue counters: `local\p23j_off` and `local\p23j_on`. Pairs ran in the reference env and in the default env without BSP_GUNNERY_RNG_STREAMS (`local\p23j_{off,on}_<row>[_def].log`). Every row moves, as a change in draw order must; the per-entity rows are RNG-coupled.
+- BSM09 d1: ref still wins, 351.04 s in both. Default env wins in both, 330.04 -> 516.00 s.
+- USN01 `usn01_p8_u1_i`: no end in either env (ref deaths 37 -> 36; default 30 -> 33, torpedo drops 10 -> 11).
+- USN21 `s46_u21_f`: ref completes 2911.72 -> 2921.72 s, default 2961.76 -> 2956.76 s.
+Faithful by mechanism (the image's draw is the shared generator), so it is flipped. WINS: BSM09 d1 and USN21 re-time slightly (sent to cc9-lua70).
+
+**Merge note.** cff560b45/18eaf4acc set PerRack ON in cc13's header, and my 917c0b57c set it too. The merge at 5eab32b9e kept main's line.
+
+### HANDOFF
+
+The lane is PHYSICS / PLANE FLIGHT, in tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (branch agent/cc9-physics1). Launcher: `local\p23_pair.ps1 -Tag <export dir> -Row <b9|b9n|u04|u21f|os|u1g|u1i|j6> [-EnvMode def]`. ON this session: kLandBlendFloatOpsBound, the three cc13 squadron switches (95), kDiveCruiseProfileGateBound (96, unexercised), PerRack (97), kFollowReleaseSeamsBound and kDiveBombGoawayFloatStoresBound (98), SharedDraw (99). The ConTBD3 stow works on main (94). The USN01 Convoy2 loss is kFollowReleaseArmBound (lua69's bisect); cc13 is auditing it.
+
+Open, from the lead's queue file (scratchpad cc9lead_physics_queue.txt):
+1. 4a kPlaneFlightStateNotifyCc13Bound (land chain, main b47417a6a, include/bsp/plane_land_chain_cc13.hpp). Pair on carrier rows with landings: USN21, USN04, BSM09.
+2. 4b kPlaneRetireOnDestroyedDrawCc13Bound + kPlaneCombatDeathRetireDrawCc13Bound. Wait for kPlaneFunnelKillDestroyOnlyCc13Bound, or pair in the ref env only.
+3. 4c kPlaneGroundStateDeadTailCc13Bound (007CA50F). Check reach first.
+4. 4d kDogfightFireEnvelopeBound + kDogfightFireHoldArmBound (main c8f654aeb, include/bsp/cc13_fire_envelope.hpp). Dogfight rows USN21, BSM09, JM06, in both envs.
+5. Coming: kTaskGunBlockReconstructBound, kMoveToReleaseFollowExitBound, kPlaneFunnelKillDestroyOnlyCc13Bound, the paratroopers on JM08, the 006D2510 airfield gate, and cc13-prop's 009C7F00 goaway-rounding switch.
+6. Text only, in the next units.cpp commit: player_bomb_release_006082d0's comment says the rocket pass applies with E0h > 0. The bytes are 007BC7CD COMISS 0,[desc+E0h] / 007BC7D4 JAE 007BC86C, so the attitude gate is SKIPPED when E0h <= 0. units.cpp had three cc13 waiters when this was written.
+7. Low, unchanged: the 009C8A42 +4B0h NaN max, the 009C4A40 ceiling NaN arm, and section 75's whole-frame item.
