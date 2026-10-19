@@ -494,6 +494,24 @@ The image's path is the role take:
   are identical.
 - **Verdict: flipped ON by mechanism.** The walk is the image's, and an AI that does not fire a
   player-held mount is the game's behaviour.
-- **Gap:** no pair yet shows a player-fired shell. The lead asked cc13 for a camera aim (pitch)
-  input in the scripted-helm tool. A later pair should raise the camera above the turrets'
-  vertical window and hold 0x99.
+- **Gap, now closed for shells:** cc13's `aim` line (SCRIPTED_HELM 18, main 4890e900a) steers
+  the camera.
+  - Check runs on aa5aaab54 (walk ON), USN01, orders `local\g53_aim2_u1.txt`. Each window has an
+    aim, then 0x9D and 0x99 held 300 frames:
+    - 450: `aim -77.3 -0.2`, the bearing from Northampton (6300, -3200) to Convoy1's spawn
+      (-3500, -1000); the ray meets the sea about 10.8 km out;
+    - 850: `aim 77.3 -0.2`;
+    - 1250: `aim -77.3 -0.2` again.
+  - "helm aim reached" logged yaw +/-1.3491 and pitch -0.0035 rad.
+  - trigger_ticks went 0 -> 2234, and the artillery segment query found a point above the sea
+    1197 times.
+  - **Player shells.** The 1800-frame runs `g53_aim3_{noaim,aim}` end inside the hold window, so
+    the turrets fire only for the player. Turret shots went 9/9/8 -> 26/26/24, which is 50 player
+    salvos.
+  - **Hits: none.** The turret hits are 8/7/9 on both sides. Convoy1's first damage is at 134 s,
+    from aircraft.
+  - The full 16000-frame run (`g53_aim2_u1`) has turret shots 111/111/106, against 95/95/90
+    without aim.
+  - Still open: a hit needs an aim held on a moving ship at 10 km, which a fixed yaw does not
+    give. The 79h target id (`target_id_174`) is still a record, so the intercept path does not
+    run either.
