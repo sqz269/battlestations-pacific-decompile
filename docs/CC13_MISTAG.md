@@ -406,10 +406,15 @@ the next stored vtable, part B classes 115 rows game, 9 base and 2 library, and 
   00730C90, 00743D90, 007B3BB0, 009C8D00, 009CD3A0, 009F5290.
 - Open rows the base rule now flags, which stay open: 007512A0, 007512E0, 0094CEB0 (00D24F84 is
   stored only by 00751870 / 00751960 BSP_MetricStringData, telemetry string code), 00842990
-  (00D0B6A0, stored by 0083B5E0 BSP_GameSettings_LoadFromLuaGlobals among STL allocator code)
-  and part C's 007D79F0 (00D06844).
+  (00D0B6A0, stored by 0083B5E0 BSP_GameSettings_LoadFromLuaGlobals among STL allocator code).
+- Part C's 007D79F0 (00D06844) is now recorded (rev2 follow-up). Its vtable is stored by three game
+  functions: 007D7EA0 BSP_PlaneFlightController_Construct, 007D7930
+  BSP_MPlaneBomber_UnregisterFromWorldLists and 007D9360 BSP_PlaneClass_TrialIntegrateAtClimbAngle.
+  That is the evidence shape of the recorded 007B3BB0. Unlike 007B3BB0, it has no recorded
+  out-of-line copy: the only `C7 01 44 68 D0 00 C3` in the image is the undefined chunk 007D79D0. Its
+  only callee is `_free`, so it is rebuilt as the fifth `kVtResetDeletingDestructors` row (below).
 
-## Part C: scalar deleting wrappers (103 rows)
+## Part C: scalar deleting wrappers (104 rows; 007D79F0 added by the rev2 follow-up)
 
 Script: `tools/cc13_mistag_partc_check.py` (output `local/mistag_partC.json`; same input and
 `MANUAL` override as part B). For every wrapper
@@ -439,7 +444,7 @@ Two rows moved here after rev4:
 - `006CDD40` (00CF88F8) was rebuilt until part B's row 120, 006FBC10, recorded its copy. It now
   cites that copy, and its Ghidra name is back to `CG_scalar_deleting_dtor_006cdd40`.
 
-**4 game rows are rebuilt** as `kVtResetDeletingDestructors` with
+**5 rows are rebuilt** as `kVtResetDeletingDestructors` with
 `vt_reset_scalar_deleting_destruct()`. Their vtable store has no recorded copy, and their only
 callee is `_free`, so under the rule there is no routine to cite. This follows batch 1's
 singleton rows, and the lead accepted them as rebuilt. They take provisional names
@@ -448,13 +453,14 @@ singleton rows, and the lead accepted them as rebuilt. They take provisional nam
 | Address | Vtable |
 |---|---|
 | `00735990` | 00CFE9F4 |
+| `007D79F0` | 00D06844 (base; added by the rev2 follow-up) |
 | `00861BA0` | 00D0D314 |
 | `00862750` | 00D0D314 |
 | `008627F0` | 00D0D31C |
 
-The Ghidra rename log for these is `local/ghidra-annotations-20261019T085852Z.json`.
+The Ghidra rename log for the first four is `local/ghidra-annotations-20261019T085852Z.json`; 007D79F0's is listed in its commit.
 
-**Left open (rev4):** each of these four does have an out-of-line `C7 01 <vt> C3` copy in the
+**Left open (rev4):** each of these five does have an out-of-line `C7 01 <vt> C3` copy in the
 image, but every copy is an undefined chunk, not a recorded function, so there is nothing to
 cite yet:
 
@@ -463,9 +469,10 @@ cite yet:
 | 00D0D314 | 00861B80, 00862740 | 00861BA0, 00862750 |
 | 00D0D31C | 00861BD0, 00862790 | 008627F0 |
 | 00CFE9F4 | 00735980 | 00735990 |
+| 00D06844 | 007D79D0 | 007D79F0 |
 
 00CF88F8's other copies, 006CDD30 and 006CE280, are undefined chunks too. If those chunks are
-ever defined and recorded, the four rows can be rebound to cite them.
+ever defined and recorded, the five rows can be rebound to cite them.
 
 **Left unbound.**
 
@@ -476,9 +483,6 @@ Library:
 | `0094CB00` | 00D24FCC | |
 | `0094CB20` | 00D24FEC | |
 | `0094D030` | 00D24F84 | fails the byte check: its call goes to 00A51E70, not `_free` |
-
-Unknown: `007D79F0`, vtable 00D06844.
-
 ## Irregular rows (21, read by hand)
 
 These are the rows the shape classifier put in neither the vt-reset nor the wrapper shape. Each

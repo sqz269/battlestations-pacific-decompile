@@ -63,4 +63,50 @@ inline constexpr bool kLuaBreakShipBound = false;
 // False: the row stays unhandled (UNIMPLEMENTED, no value pushed).
 inline constexpr bool kLuaUnitSetPlayerCommandsEnabledBound = false;
 
+// Part 7b. The units-host side of four natives: the per-slot state and its
+// readers. The Lua runners that call the setters come in a later commit, so
+// until then each switch only selects whether the readers consult the
+// state, and the state keeps its constructor value either way.
+
+// 008A13D0 SetVisibility(entity, visible). A squadron (18h): for i below
+// [+3CCh], member = i <= 4 ? [+3D0h + 4i] : null, then 00951F40(visible) on
+// it, with no null test. Otherwise a kind-5 entity: 00951F40 on itself.
+// 00951F40 attaches (1) or detaches (0) the part +4A4h's spatial node, which
+// is this host's plane_hit_node_detached = !visible.
+// True: GameUnitsHost::set_plane_visible_00951f40 is live for the runner.
+// False: the runner stays unhandled.
+inline constexpr bool kLuaSetVisibilityBound = false;
+
+// 008A0000 SquadronEnableVehicleAvoidance(entity, on). No class test:
+// [+3A4h] = on ? v | 2 : v & 0x000000FD (25 FD 00 00 00, so bits 8-31 clear
+// too). The squadron constructor stores 0FFh (007F2C13). The reader is the
+// pilot gate 009A1959-009A1969: 0099B670 runs when pilot+2E4h bit 2 is set
+// AND (pilot+2FCh, the squadron, is null OR its +3A4h bit 2 is set).
+// True: the host's 009A1951 gate also tests the squadron's sq_avoid_3a4.
+// False: the gate tests +2E4h only, as before (the mask stays 0FFh).
+inline constexpr bool kLuaSquadronEnableVehicleAvoidanceBound = false;
+
+// 0089FAF0 SquadronSetBaseUnsupported(squadron, base). 006CA730 appends the
+// squadron to the base block's std::list at +B4h (base+72Ch for class 45h,
+// else base+1188h). 006C4790 (false for a null squadron or a listed one)
+// reads it at 007F1748 (the RTB home arm), 0099A404 (the land command arm)
+// and 009B3537 (the land validity test), and at 006C564D, which the host
+// does not carry (007C5D21's gear region).
+// True: those three host sites consult the units host's exclusion pairs.
+// False: the list is taken as empty, as before.
+inline constexpr bool kLuaSquadronSetBaseUnsupportedBound = false;
+
+// 008A62A0 SetCheatTurbo(entity, value). A squadron (18h) writes float
+// +340h on members 0..4, stopping at the first null; otherwise a kind-5
+// entity gets +340h itself. The readers:
+//  - 0099D479: dtScale = max(+340h x 0.4, 1). 1/dtScale feeds 0099DEBD (the
+//    heading term), 0099E2D3 (the roll servo) and 0099E604 (the pitch
+//    demand); dt/dtScale overwrites the dt slot that 0099D781 (+2B8h decay)
+//    and the pending term read.
+//  - 009FBB20: lead = max(+340h x 2, 10) and the followed distance scale
+//    max(+340h x 0.4, 1).
+// True: those host sites take the plane's cheat_turbo_340 (0 until set).
+// False: they keep their constants (the value 0).
+inline constexpr bool kLuaSetCheatTurboBound = false;
+
 }  // namespace bsp
