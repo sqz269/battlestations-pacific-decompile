@@ -19836,6 +19836,25 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             if (entity.target_dive_present) {
                 row.submarine_depth_level = entity.target_dive_level;
             }
+            // Packet cc13-subdive (rev-convoy N1), kSubSeedNearestBandCc13Bound:
+            // with neither key found (00853BE2/00853BE6), 00853BEB..00853C70 keep
+            // +1268h unless a band 1..3 is nearer the hull's world Y than |Y|;
+            // each step is one rounded float op. OFF: the stage is skipped (LABELLED).
+            if (bsp::cc13_sub_dive::kSubSeedNearestBandCc13Bound
+                    && !entity.dive_present && !entity.target_dive_present) {
+                const float y = slot->motion.position[1];
+                float best = std::fabs(y);
+                for (int i = 1; i < 4; ++i) {
+                    const float d = std::fabs(static_cast<float>(y - slot->sub_bands[i]));
+                    if (best > d) {
+                        best = d;
+                        row.submarine_depth_level = i;
+                    }
+                }
+                host.log.notef("submarine seed nearest band: unit=%s y=%.2f level=%d "
+                    "(00853BE8..00853C70, packet cc13-subdive)", row.name.c_str(),
+                    static_cast<double>(y), static_cast<int>(row.submarine_depth_level));
+            }
             host.log.notef("submarine depth seed: unit=%s level=%d dive=%d:%d "
                 "target_dive=%d:%d (00853630 stages 1-2, packet "
                 "cc9_submarine_depth_level)", row.name.c_str(),
