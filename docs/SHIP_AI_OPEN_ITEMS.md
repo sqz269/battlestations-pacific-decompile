@@ -19628,8 +19628,17 @@ logs local\g53_dcd_*.log.
   -3160..-3190 grounds: `hull draft contact census: draft=0 hull=HenryPT first_step=7414
   steps=8587`, speed 0 at throttle 1 (the stall cc9-physics6 saw at (1624, -3170)). `attack
   HenryPT MiniSub` (c2/c4/c6) gives four DC launches and no hit.
-- Open: a BSM01 route plan (a channel west of x 1300 that avoids the draft-0 contact, timed to
-  meet MiniSub on its west or north leg). Routed to the lead.
+- Routes c7-c10 (local\g53_b1_c7..c10.txt): a leg along z -2980 passes x 1300 without the
+  draft-0 contact (census count 0 in c10). Henry then slows to about 4 m/s near x 800. MiniSub is
+  not on a fixed track: in c9 (hold at (830, -2990), a press every 40 frames to 26000) it
+  circles back near (750-870, -3130..-3220) at 1200-1294 s, and the closest charge was 151 m
+  (1293.89 s). c10 holds at (800, -3170) on that pass. 265 HenryPT charges drop, and the
+  closest is 268 m (1298.59 s, sub at (658, -3378)): the sub's return leg moves with Henry's
+  position. No luaMiniSubHit and no mission end in c7-c10.
+- Open: reaching luaMiniSubHit needs a pursuit plan that re-targets Henry onto MiniSub's live
+  position (a `takehelm` toward the sub every few hundred frames, or `attack HenryPT MiniSub`
+  started once Henry is west of x 1300 on the z -2980 lane). Fixed hold points do not work.
+  Not a host defect; parked for the lead.
 
 ### 4. 00864880's two draws: the host already matches
 
