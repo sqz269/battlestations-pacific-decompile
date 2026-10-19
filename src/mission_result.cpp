@@ -305,7 +305,7 @@ void commit_mission_record_009205e0(MissionProgress& progress, const std::string
         // The historical copy model: the record replaces the stored one.
         const int play_count = stored.count_284;
         stored = record;
-        stored.count_284 = play_count + 1; // the increment at 00920604
+        stored.count_284 = play_count + 1; // the increment at 009205FE
     }
 
     // totals_1c8[6] is record+1E0h, the total the two maps take.

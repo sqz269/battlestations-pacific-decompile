@@ -165,7 +165,9 @@ constexpr bool kWarningManagerTickBound = true;
 // counted as not evaluated. voice_ready 005B71D0 and 00974070 stay empty, so
 // an accepted warning is Queued and never applied. False: no table, no kill
 // block, and every id is unknown.
-constexpr bool kWarningMessageBankCc15Bound = false;
+// ON (cc9-lua69, 2026-10-18): USN01 pair with steps a, b, hit and 3a, gameplay identical
+// (CC15_WARNING_APPLY_GAP.md closing note).
+constexpr bool kWarningMessageBankCc15Bound = true;
 
 // Packet cc9_construct_world part 2 (docs/CONSTRUCT_WORLD.md section 9). True:
 // the load step construct_world 004DE610 sets the world-active byte
