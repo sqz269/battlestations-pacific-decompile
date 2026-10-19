@@ -30903,8 +30903,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
 
                         // 009C19A1: `CMP byte [unit+0C25h],0` returns early with
-                        // four command writes. A contract: this host has no
-                        // +0C25h and its bot aircraft are never under it.
+                        // four command writes. Not modelled here: the host keeps
+                        // the byte as torpedo_release_pending_c25, but no logged
+                        // unit runs moveto while it is set (docs/CC13_C25H.md).
                         // 009C19E7: with no target the tick takes the 009C1B69
                         // arm instead. Both are the image's own guards.
                         if (unit_.command_target_plus_one == 0) return;
@@ -40261,10 +40262,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     if (pb > tin.pending) tin.pending = pb;
                                 }
                             }
-                            // Both inputs of 0099DAC8's correction - unit+B1Ch
-                            // and the vector at unit+AE0h - have no displacement
-                            // writer anywhere in the image, so the term is taken
-                            // as zero. SUBSTITUTION, labelled.
+                            // 0099DAC8's correction. unit+B1Ch and unit+AE0h have
+                            // no literal-displacement writer, but both are written
+                            // through the controller (unit+AB0h): ctl+6Ch at
+                            // 007D807C and ctl+30h at 007DC7FF-007DC80B
+                            // (docs/CC13_ROW21.md). Zero only with the switch OFF.
                             tin.error_correction = 0.0f;
                             if constexpr (GameUnitsHost::Impl::kPlaneVelocityLowpassBound) {
                                 // 0099DA97-0099DAC8: B1Ch is ctl+6Ch = |ctl+18h| (007D807C),
