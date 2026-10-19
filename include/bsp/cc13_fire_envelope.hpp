@@ -6,20 +6,23 @@
 // leaves out, read from the listing:
 //   A  009FCDBC 007BA760(ECX = own unit): unit+C3Ah or unit+5Dh set skips the
 //      fire arm (src/cc13_seg47.cpp reconstructs the body).
-//   B  009FCDC5 007B96D0 runs only when the envelope holds and A passed, so
+//   B  009FCDC7 007B96D0 runs only when the envelope holds and A passed, so
 //      007DEDB0's 1 s evaluation clock (+80h, advanced by 007E2010) is only
 //      consumed on those ticks.
 //   C  009FCDD3-009FCE01: when 007B96D0 is true and the steer ran this tick
-//      (+49h), +4Ah = 0, the local "steered" flag is cleared, the stick
+//      (+49h), +4Ah = 0 (009FCDE5), the local "steered" flag is cleared (009FCDE9), the stick
 //      vertical gets +0.25 (00D7A348, double) and 009F9FC0 runs again; the
 //      tail then skips the +54h/+58h store (009FCE2D-009FCE44).
 //   D  009FCA06/009FCAC2: with an auto target (+74h) or the strafe point
 //      (+28h > 0) the hold timer +4Ch is set to -1.0 (00D7A260) before the
 //      envelope, so the hold arm never passes a found target.
 //   E  009FCA16-009FCAC0: with no auto target, +28h <= 0 and +4Ch > 0, +28h =
-//      0.1 (00D7A2F0) and the lead point is own position (00427EB0) plus the
-//      squadron leader's ([[unit+9D4h]+3D0h], else the unit) forward axis
-//      +94h..+9Ch times +34h; the hold arm then passes the envelope.
+//      0.1 (00D7A2F0) and the lead point is the squadron leader's position plus
+//      its forward axis +94h..+9Ch times +34h: ECX = [[unit+9D4h]+3D0h], else the
+//      unit (009FCA47-009FCA53), is untouched up to the __thiscall 00427EB0 at
+//      009FCA86. The hold arm then passes the envelope.
+//   Not modelled: the request byte [gun]+2E0h = 1 at 009FCE18; the host's
+//   +48h (fire_48) stands for it and its gunfire step carries it to +BC9h.
 // Precision: the main thread runs x87 at PC24, so every product and sum below
 // rounds to a float mantissa; that is plain float arithmetic. The 53-bit
 // variant (Pc53 = true) is kept for the record.
@@ -106,9 +109,10 @@ inline GunFireEnvelope gun_fire_envelope_009fcb25(const GunFireEnvelopeInputs& i
     const float d = gun_length3_0042b2f0<Pc53>(in.lead_local);
     r.d = d;
     if (!(d > 1.0f)) return r;                                     // 009FCB3D
-    // 009FCB4F: +34h + 200.0 (00CE4D70) stored as a float; 00415550 max.
+    // 009FCB4F: +34h + 200.0 (00CE4D70) stored as a float; 00415550 max(a = +30h,
+// b): a > b ? a : b (FCOMIP/JBE), so b on an unordered compare.
     const float near_far = static_cast<float>(static_cast<double>(in.shoot_distance_34) + 200.0);
-    const float far_limit = in.search_range_30 < near_far ? near_far : in.search_range_30;
+    const float far_limit = in.search_range_30 > near_far ? in.search_range_30 : near_far;
     if (!(far_limit > d)) return r;                                // 009FCB6A
     r.in_range = true;
     const float lat = gun_length2_00414c60<Pc53>(in.lead_local);

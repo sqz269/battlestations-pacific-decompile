@@ -43,7 +43,7 @@ ON: `bsp::unit_gun_fire_blocked_007ba760(plane_death_c3a, state->simulate)`.
 
 ## 3. B: when 007B96D0 is called
 
-`009FCDC5 CALL 007B96D0` runs only after A passes, so only when the envelope
+`009FCDC7 CALL 007B96D0` runs only after A passes, so only when the envelope
 holds and the plane is not blocked. `007B96D0` is
 `unit+C50h != 0 && 007DEDB0(unit+C50h)`. `007DEDB0` consumes its own 1 s
 clock: it returns the cached `+C8h` while `+80h <= +90h`. Otherwise it takes
@@ -75,7 +75,7 @@ by the `+5Eh` test, as in the image.
 `009FCDD3-009FCE01`: when `007B96D0` is true and `+49h` is set (the steer arm
 ran this tick), the tick does the following:
 
-1. `+4Ah = 0` (`009FCDE9`), and the local steered flag `[ESP+13h] = 0`.
+1. `+4Ah = 0` (`009FCDE5`), and the local steered flag is cleared (`009FCDE9`).
 2. `local_20.y += 0.25` (`00D7A348`, a double).
 3. `009F9FC0` again (`009FCDFC`). With `+4Ah` now clear it is undamped.
 
@@ -102,15 +102,24 @@ These two pieces are under the sub-switch `bsp::kDogfightFireHoldArmBound`
 * **E**, `009FCA16-009FCAC0`: with no auto target, `+28h <= 0` and `+4Ch > 0`,
   the tick does the following:
   1. `+28h = 0.1` (`00D7A2F0`).
-  2. The lead point is `00427EB0` (own position) plus `+34h` times the forward
-     axis `+94h..+9Ch` of `[[unit+9D4h]+3D0h]`, the squadron's first plane.
-     With no squadron it is the unit itself.
+  2. The lead point is the leader's position plus `+34h` times the leader's
+     forward axis `+94h..+9Ch`. The leader is `[[unit+9D4h]+3D0h]`, the
+     squadron's first plane, or the unit itself with no squadron.
+     - `009FCA47-009FCA53` load that pointer into ECX.
+     - ECX is untouched until `009FCA86 CALL 00427EB0`. That call is
+       `__thiscall` (`00427EB1 MOV ESI,ECX`), so the position is also the
+       leader's.
   3. The hold arm passes the envelope.
 
-  The host had no target in that case and never fired. ON, the host builds
-  the point from the leader slot's `world[8..10]` (its `pose_row2`), with the
-  leader resolved as `+3D0h[0]`, as `apply_strike_ctl_cruise_cap_009fba9b`
-  does. This is labelled.
+  The host had no target in that case and never fired. With the switch ON,
+  the host builds the point from the leader slot's `world[12..14]` and
+  `world[8..10]`. The leader is resolved as `+3D0h[0]`, as
+  `apply_strike_ctl_cruise_cap_009fba9b` does. When that slot is missing it
+  falls back to the unit itself.
+
+  Labelled: `+94h..+9Ch` is row 2 of the LOCAL matrix (the block at `+74h`),
+  while the host reads the world matrix. The two are equal for a plane with
+  no parent.
 
 ## 6. The envelope, at the main thread's precision
 
@@ -123,7 +132,9 @@ float arithmetic. `gun_fire_envelope_009fcb25<false>` is the PC24 model and
   `sqrt` (`00BF7030`) when the result is above `1e-10` (`00CE3820`), else 0.
   The result is a float.
 * The range test is `d > 1` and `max(+30h, float(+34h + 200.0))  > d`.
-  `00CE4D70` is the double 200.0.
+  `00CE4D70` is the double 200.0. The max is `00415550(a = +30h, b)`. It
+  returns `a > b ? a : b` (`FCOMIP` then `JBE`), so it returns `b` when the
+  compare is unordered. The host matches that.
 * `L = 00414C60` is the 2-D length of the transformed lead. `z` is the
   transformed z.
 * `a = +3Ch`, divided by 1.8 (`00D049A8`, the double of the float 1.8) only
@@ -139,6 +150,10 @@ in the unit frame, so `d` is taken from it, which agrees for a rigid frame.
 
 With the switch ON, both precisions run every tick and
 `fe_pc53_disagree_ticks` counts the ticks where they differ.
+
+Not modelled: on a fire the tick also stores `[gun]+2E0h = 1` (`009FCE18`), the request byte. The
+host does not store that byte. Its `+48h` (`fire_48`) stands for it, and the gunfire step
+(`kPlaneGunfireBound`) carries it on to `+BC9h`.
 
 ## 7. Draws
 
