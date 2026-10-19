@@ -3484,7 +3484,10 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         if (input_ok) {
             char* ae = nullptr;
             char* fe = nullptr;
-            const long a = std::strtol(words[2].c_str(), &ae, 0);   // decimal or 0x hex
+            // Decimal, or hex with a 0x / 0X prefix (never octal: "0153" is 153).
+            const std::string& at = words[2];
+            const bool hex = at.size() > 2 && at[0] == '0' && (at[1] == 'x' || at[1] == 'X');
+            const long a = std::strtol(at.c_str(), &ae, hex ? 16 : 10);
             const long n = words.size() == 5 ? std::strtol(words[4].c_str(), &fe, 10) : 1;
             if (ae == nullptr || *ae != '\0' || a < 0 || a == 0x4E
                 || (words.size() == 5 && (fe == nullptr || *fe != '\0')) || n < 1) {

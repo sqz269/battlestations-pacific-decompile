@@ -1161,13 +1161,14 @@ Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of it
 <frame> input <action> [hold <frames>]
 ```
 
-- **Action.** The action is an input action number, in decimal or `0x` hex, as `scripts\datatables\Inputs.lua` numbers it. Useful ones:
+- **Action.** The action is an input action number, in decimal or in hex with a `0x` prefix, as `scripts\datatables\Inputs.lua` numbers it. A leading zero still reads as decimal, so `0153` is 153. Useful ones:
   - `153` / `0x99`, `IC_GUN_FIRE`;
   - `156` / `0x9C`, `IC_GUNC_AAFLAK` (group 2);
   - `157` / `0x9D`, `IC_GUNC_ARTILLERY` (group 3);
   - `158` / `0x9E`, `IC_GUNC_TORPEDO` (group 4);
   - `159` / `0x9F`, `IC_GUNC_DEPTHCHARGE` (group 5).
   - `0x4E`, press-start, is refused, because `--press-start-frame` owns it.
+  - Any other action is accepted. That includes the frame-control keys (mission step, fast-forward 368, turbo, slow motion, cinematic step), and their readers act on it, so such a line changes the run's timing.
 - **Hold length.** `hold <frames>` defaults to 1 frame. It counts presented frames.
 - **What it does.** `bsp::game::inject_input_action_hold` queues the hold, and `GameMenuHost::frame` takes it at the next frame's input prologue. A record for the action is driven by the same rules as the press-start injection:
   - `00a92aa0` on the first frame, so `004c43c0` reports one rising edge;
@@ -1175,7 +1176,7 @@ Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of it
   - `00a92370` after the last frame, so the release follows on the next frame.
   - Every reader of `GameMenuHost::input_action_pressed / held / released` sees the action, including screen 2Eh's `005484F0`. That screen sets the held and pressed bytes of message 79h from action 99h, takes the group keys 9Ch..9Fh, and routes the message per group entry through `0077C2A0`.
   - A new line for an action still held restarts its count.
-- **What it logs.** One line when the order applies (`helm order applied: ... input 0x99 hold N frame(s)`), and one when the hold starts (`helm input action 0x99 held for N frame(s) from frame F`). Nothing goes to the console.
+- **What it logs.** One line when the order applies (`helm order applied: ... input 0x99 hold N frame(s)`), and one when the hold starts (`helm input action 0x99 held for N frame(s) from frame F`). Both go through the host log, which writes the log file and stdout; harness runs redirect stdout.
 - **Default runs.** With no `input` line, no record exists and every action other than 4Eh answers false, as before.
 - **LABELLED.**
   - The hold starts one frame after its line, at the input prologue, as a real key press would.
