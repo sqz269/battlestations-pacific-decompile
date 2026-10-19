@@ -2573,7 +2573,8 @@ void* const* bullet_class_get_or_create_006ea910(Seg33aHost& host, void** holder
 
 // ---------------------------------------------------------------------------
 // oct18b-nA3: newly defined game bodies, 006E0BE0..006F58D0.
-// Evidence: saved Ghidra exports plus disk listing at 006E7551 (JE 006E765A).
+// Evidence: saved Ghidra exports; 006E7551 JE 006E765A agrees with the disk
+// bytes (Ghidra's 006E7250 body repaired in main 5764ca914).
 // New C++ interfaces, not installed vtable entries. The host calls are real
 // engine/virtual contracts; no game run or native ABI equivalence is claimed.
 // ---------------------------------------------------------------------------
@@ -2723,7 +2724,9 @@ void bomb_platform_fire_message_read_006e4950(Seg33aHost& h, void* m, void* s) {
 
 // 006E7250: ECX bullet, one unused DWORD on stack, RET4. Ghidra's int* return
 // is incidental EAX; callers use the update as void. The matrix-copy and x87
-// branch follow the listing. Disk bytes repair the malformed JE at 006E7551.
+// branch follow the listing. Ghidra's body is 006E7250-006E766E (RET 4 at
+// 006E766C) since main 5764ca914; 006E7551 JE 006E765A decodes there as on
+// disk, and the tail calls are in its callees.
 // Intrusive references and the consumed by-value definition use the existing
 // family contracts. Host exceptions after creation release the result temporary.
 void bullet_update_effects_006e7250(Seg33aHost& h, void* bullet, std::uint32_t) {

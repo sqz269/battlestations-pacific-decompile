@@ -20,6 +20,11 @@ float f32(double v) noexcept { return static_cast<float>(v); }
 
 constexpr int kKillCause = 2;                     // every PUSH 2 before 00926D90 in 007AA000-007AD000
 constexpr std::uint32_t kSoldierHandleBase = 0x00500000u;   // host handles, never a unit index + 1
+// Draw keys (RoundServices::uniform): the round's id and the construct serial,
+// each in its own band above any unit index, so a keyed draw never shares a
+// unit's key. Only the keyed (measurement) mode reads them.
+constexpr std::uint32_t kRoundDrawKeyBase = 0x00F00000u;
+constexpr std::uint32_t kConstructDrawKeyBase = 0x00E00000u;
 
 }  // namespace
 
@@ -61,7 +66,9 @@ public:
     RoundAdapter(RoundWorld& world, Round& round, RoundServices& svc, float now)
         : world_(world), round_(round), svc_(svc), now_(now) {}
 
-    float uniform(int stream, float lo, float hi) override { return svc_.uniform(stream, lo, hi); }
+    float uniform(int stream, float lo, float hi) override {
+        return svc_.uniform(stream, kRoundDrawKeyBase + round_.id, lo, hi);
+    }
     // [[00E188A8]+1FE4h]: the host's session is single player (0).
     int session_mode() const override { return 0; }
     bool session_flag_218c() const override { return false; }
@@ -194,9 +201,12 @@ ParatrooperState RoundWorld::construct(const soldier_traffic_cc13::SoldierGlobal
     if (draw) {
         // 007AB8C0 through the services' draw (stream 1, 007AB94A).
         struct DrawOnly final : public seg46::ParatrooperHost {
-            explicit DrawOnly(RoundServices& v) : svc(v) {}
+            DrawOnly(RoundServices& v, std::uint32_t k) : svc(v), key(k) {}
             RoundServices& svc;
-            float uniform(int stream, float lo, float hi) override { return svc.uniform(stream, lo, hi); }
+            std::uint32_t key;
+            float uniform(int stream, float lo, float hi) override {
+                return svc.uniform(stream, key, lo, hi);
+            }
             int session_mode() const override { return 0; }
             bool session_flag_218c() const override { return false; }
             Vec3 world_position() override { return {}; }
@@ -225,7 +235,7 @@ ParatrooperState RoundWorld::construct(const soldier_traffic_cc13::SoldierGlobal
             void soldier_muzzle_effect(std::uint32_t) override {}
             void send_landing_message_71(const Vec3&) override {}
             bool dropper_from_owner(std::int32_t&) override { return false; }
-        } host(svc);
+        } host(svc, kConstructDrawKeyBase + static_cast<std::uint32_t>(counters_.constructs));
         seg46::construct_007ab8c0(s, g, host);
         ++counters_.construct_draws;
         // 007AC530 (+A0h): the animation handles are host tokens 1..3.
@@ -312,7 +322,7 @@ void RoundWorld::step(float dt, float now, const soldier_traffic_cc13::SoldierGl
         // positive. LABELLED: both are taken as true, and the bound is 1.0 (the
         // "fire2" length is not loaded); only the draw's place in stream 0 matters.
         if (soldier_draw) {
-            svc.uniform(0, 0.0f, 1.0f);
+            svc.uniform(0, kRoundDrawKeyBase + r.id, 0.0f, 1.0f);
             ++counters_.soldier_draws;
         } else {
             svc.record("MParatrooper::soldier_anim_draw_untaken", 0x004b102fu);
