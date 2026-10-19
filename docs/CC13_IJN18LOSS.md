@@ -343,6 +343,30 @@ jumps at 00900087 to 00900985, the exit. So no torpedo leaves a `+184h` ship thr
 **The host diverges on torpedoes.** It runs the same pass, the recon sweep and the holder gate (kPlayerGunSeatBound),
 but its torpedo-bot path has no 00900080 test.
 
-Proposed sub-switch, **not built**: `kTorpedoBotOwnerPlayerGateCc13Bound`, OFF. ON, it skips the torpedo bot's aim and
-trigger when the owning unit's `+184h` is set. The reach is wider than releasegun: every ship a plan has taken with
-`takehelm` has `+184h` = 1. So the host's bot torpedoes on such ships fire today, where the image never fires them.
+The reach is wider than releasegun: every ship a plan has taken with `takehelm` has `+184h` = 1. So the host's bot
+torpedoes on such ships fire today, where the image never fires them.
+
+**Built (packet `cc13-torpgate`):** `kTorpedoBotOwnerPlayerGateCc13Bound` in `src/game_hosts_gunnery.cpp`, OFF.
+docs/GUN_BOT_TICKS.md step 2 at 008FFFCE describes the same exit.
+
+When ON, a torpedo gun whose own unit answers kind 5 (the unit-instance base) and has `+184h` set behaves as follows,
+after the holder gate:
+- The submerged-target drop still runs first, as it does before 00900080.
+- The tick then has no target for the timer, the gates or the intercept.
+- It commands no angles while the bot holds a target. With no target, 008FBCE0's rest arm decides, as in the image,
+  because that arm runs before the walk.
+- The trigger keeps its current state.
+- The think record is not stored.
+
+The summary line `torpedo owner player gate bound=.. ticks=.. exits=..` counts the ticks under the condition with the
+switch either way. Apart from that line, OFF is unchanged.
+
+Data lifetime when ON:
+- **Owner lookup.** The owner is the gun's `unit_index`, which is set when the gun is created, the same owner
+  008FFFB2's arm already assumes. The image walks `+3Ch` up from the gun; a gun's parent is its ship. LABELLED: a gun
+  whose unit is not kind 5 is not gated.
+- **`+184h`.** It is read through `unit_player_controlled_0184`, which is bounds-checked. With
+  `kPlayerRoleBookkeepingBound` it is the 4Bh arm's byte.
+- **Null owner.** The image returns at 0090007D when the walk finds no kind-5 owner. In the host, every gun has an
+  owner slot or the loop skips it.
+- **Dead owner.** The image's walk has no alive test. The host's loop skips the guns of a dead unit before any bot step.
