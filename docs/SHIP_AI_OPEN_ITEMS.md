@@ -20080,3 +20080,22 @@ kamikaze contact: `traced=0`, OFF and ON gameplay identical, so it says nothing.
 430496.2, the 609 death rows, the 307 plane death modes and the mission state are identical. The native table moves only
 by that one record (00926E80, 00470350, 008777D0, 00826F10 +1 each, 008270AD +1); damage smoke respawns 874 -> 879
 follow from it. That is the prediction exactly: a zero-damage hit and direction record.
+
+### 306.3 kShipBreakInTwoPuffDrawsCc13Bound (include/bsp/frontier_wiring_cc13.hpp, packet cc13-frontier)
+
+Evidence checked (disasm-raw): 0092A2A1..0092A315 computes w = Length (+A0h) x 0.2 and n = trunc of w / 10 clamped
+(1.0 at 00D7A24C when below one), and the loop 0092A333..0092A687 makes one 00BD2F10(ECX = 1, -w, w) call per pass at
+0092A34A (`sub [esp+30h], ebx` / `jne 0092A333`); no other 00BD2F10 call is in the body. **Predictions:** this
+installation's breakup classes have Length 180, so w = 36, n = 2 per piece and 4 per breakup. ON, each 98h breakup
+adds 4 stream-1 draws: `break_in_two_draws` goes from 11 to 15 per breakup (USNOS os_k OFF: 98h=2, 22 draws, so 30
+ON). Reference env: only stream-1 consumers after the first breakup move, so the deaths before it are identical.
+Default env: the shared RNG moves everything after the first breakup. Pair: OFF = `local\g54_c_off` (tree build
+97bd59009), ON = `local\g54_pf_on`; USNOS os_k (50000) and IJN18 ijn18_l67_i18_d (64000, 7 breakups on lua70's
+reference), both envs (g54_coff{s,d}_* / g54_pfon{s,d}_*).
+
+**306.3 measured; FLIPPED ON by mechanism.** Reference env: USNOS os_k and IJN18 are both pair_diff exit 1 (gameplay,
+death rows and unit table identical). `puff draws=8` on USNOS (2 breakups) and `=4` on IJN18 (1 breakup), so 4 per
+breakup as predicted. Default env: IJN18 has no breakup and is gameplay identical (`puff draws=0`). USNOS moves through
+the shared RNG from the first breakup on: deaths 96 -> 98, and the failure moves from 939.89 to 974.89 s. Note for
+lua70: IJN18 `ijn18_l67_i18_d` does not reach EndMission in 64000 frames on 97bd59009 in either env (OFF too). Its
+reference ended at 1691.52 s.
