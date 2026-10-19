@@ -80,3 +80,83 @@ is Source metadata composition, not an Original register ABI replacement.
 FH3/SEH, exceptional cleanup parity, concurrent entry and game parity remain
 unproved. `git diff --check` passed. Primary owns the combined Win32 build,
 OFF checks, ON drain and visual validation; this worker performs no run/build.
+
+The later ON15 observer narrowed the final `NativeTextureLoadOwners` guard to
+one named VFS entry, not a runtime render target or cube/volume. Before
+retirement, identity16C83ED8 was admitted asD61948 with actual reference bitsB5
+and the name `models/textures/error.dds`. After raw drain, all other95 entries
+were gone; that identity still matched its canonical metadata and an OS read
+returned profileD61948/reference bits1. Its name buffer was unreadable. These
+are memory snapshots after pool drain, not proof that the allocation remains
+live or that a destructor already ran.
+
+Source audit found no production construction of the separate
+`GameNativeTextureOwnerServices`; the production texture context is the
+DestructionGraph context. The named-base destructor ends with profileCEB130;
+the raw texture-pool return only updates the slab free stack and does not
+rewrite the texture's profile/name/reference cells. No alternate context or
+raw-pool terminal bypass has been established. Cube/volume cleanup is unchanged.
+
+`NativeRendererCacheCleanupContext` now has an optional Source observer,
+defaulting to null. It reports entry/exit ofB316C0, its child release, and
+B32370's fallback+20 release before/after the existing operations. Resource
+prefixes and optional fallback cells are copied with `ReadProcessMemory`;
+even successful reads do not assert liveness. The primary ON host supplies
+the callback. The hook changes no reference operations, row removal, native
+cleanup or guard, and adds zero Native-body credit. Its purpose is to locate
+which of the expected cache-row/fallback credits remains. B316C0 is ECX cache,
+RET; B32370 is ECX texture registry, RET; the callback is a new C++ diagnostic
+interface. Static diff validation passed; combined build/live evidence belongs
+to the primary run.
+
+ON16 (`local/oct18b_render_cache_trace_usn04.log`, primary) proves a
+callback-sensitive cache transition. B316C0 enters with two rows, releases
+noise texture1ACFC6E4 from1 to0, and the callback leaves one row. The loop
+then exits with zero rows without releasing error texture16AA50E0. B32370
+subsequently releases that fallback from2 to1. The sole retained companion
+is therefore explained by the skipped error-row credit; it is not evidence
+of missing cube/volume dispatch or a second texture context.
+
+The original listing was rechecked: immediately after the virtual release
+call atB316FC, B316FE reloads `[ESI+08]`; B31705 reloads data, B31708 computes
+the current count times2Ch, B3170B selects the current last row, B3170F destroys
+its storage, and B31714 decrements the current count. There is no saved row
+count across the callback. Changing that behavior in Source would diverge
+from Original. The outer737F30 listing calls current renderer virtual+0C at
+737F63 and virtual+14 at737F70 before retiring Application+08 references at
+737F80..737FB0. Those earlier native shutdown operations are the next missing
+composition boundary to verify; the existing caller-array retirement alone
+does not establish that protocol. No cache decrement, callback suppression,
+guard relaxation or residual-owner sweep was added.
+
+The exact ON16 before-retirement identity map identifies1ACFC6E4 as
+`effects/noise.dds` with three references, not white. This is the resource
+constructed from literalD5E468 atB14E95 and stored at service+67C. The two
+post658/post65C material consumers acquire it atB12142/B1253C. The native
+resource lifetime does not explicitly release+67C; after those two material
+credits retire, B316C0 consumes its last creator credit and its name callback
+removes the row. The distinct white texture is16AA5188. This correction rules
+out a white+668-specific lifetime explanation while identifying the actual
+resource that causes the observed row transition. It does not justify adding
+a new+67C release or changing the original cache loop.
+
+Final bounded audit: Original registers the renderer duringB32410 (called at
+73DA88), then constructs/publishes the resource service at73DF01, matching
+Source ordering. Renderer destruction stampsD5F0A8 atB32942, callsB316C0 at
+B32BBA andB32370 atB335D6, and only changes to baseD5E628 atB3398A. The active
+table's+6C target isB32250. Texture destruction unconditionally reads the
+renderer publication atB3F330/B3F336 and invokes that slot atB3F347; there is
+no null-publication suppression. Base retirement clearsF8D394 atB26053 after
+the derived cache operations. These checks establish observed Original
+mechanics, not a demonstrated leak in a running Original game: the complete
+Original caller/lifetime contract remains unproved.
+
+The primary's ON16 run reaches the textured installed ship and completes600
+frames/599 presents; its OFF16 comparison has zero differences. The remaining
+late Source C++ guard is the sole retained error-texture companion after the
+noise zero callback removes its row and the native cache loop skips the error
+row's release. The destructor guard remains enabled. No release repair,
+callback suppression, reordered registration, broad early purge or residual
+owner sweep is justified by this audit, and none was added. This packet stops
+at that precise teardown blocker; it does not claim normal ON process exit,
+full Original shutdown parity or Original-game leak validation.
