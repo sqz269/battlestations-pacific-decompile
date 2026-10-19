@@ -10959,6 +10959,13 @@ public:
             } else {
                 owner_.record("ShipAi::navigation_arm_tail", 0x009eeaabu);
             }
+            if (bsp::kShipAiNavGateClosedArmFinalBound) {
+                // 009EE59F JZ 009EF206: 009DE5B0(dt) before AL = [ESP+37h] = 0.
+                if (kShipAiArmFinalWholeBound)
+                    owner_.arm_final_step_009de5b0(index_, ctl_, row_);
+                else if (kShipTorpedoResponseBound || kShipAvoidZoneEscapeBound)
+                    owner_.torpedo_override_009de8f1(index_, ctl_, row_);
+            }
             return false;
         }
         if (bsp::kShipAiParkedByteBeforeTailBound) {

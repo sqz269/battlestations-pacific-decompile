@@ -51,4 +51,14 @@ static_assert(kShipAiClearanceRefreshSentinel == 10000.0f);
 // output block and the tail for mode 3 as for mode 2.
 inline constexpr bool kShipAiNavigateAsternSkipBound = false;
 
+// 009EE59B/009EE59F. When blk+1C4h is neither 2 nor 3 (Rudder or Heading),
+// the path gate JZ 009EF206 still reaches 009EF206: 009DE5B0(dt), then
+// AL = [ESP+37h] = 0. The host's closed-gate return
+// (kShipAiNavTailGateBookkeeping, packet cc9_ship_ai_tails_2) skipped it.
+// A sibling of kShipAiNavTailGateBookkeeping, which only chooses the
+// bookkeeping record.
+// True: the closed gate makes the same arm-final call before returning false.
+// False: it returns without it, as before.
+inline constexpr bool kShipAiNavGateClosedArmFinalBound = false;
+
 } // namespace bsp
