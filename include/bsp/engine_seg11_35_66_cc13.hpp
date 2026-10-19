@@ -413,11 +413,13 @@ struct MessageLoadOptions {
     NativeIntArray ids_1074;
     NativeIntArray ids_1080;
 };
-// 007065E0, __thiscall(ECX = manager, int side), RET 4. Builds the three filters (the first two
+// 007065E0, __thiscall(ECX = manager, int load), RET 4. Builds the three filters (the first two
 // swap their id arrays when the side kind is not 0), sets flags[1], [2] or [3] by side kind (0 ->
-// 1, 1 -> 2, other -> 3), then loads Scripts/datatables/Messages.lua.
+// 1, 1 -> 2, other -> 3), then runs 00706160(load, Scripts/datatables/Messages.lua, flags, -1).
+// The argument is the load flag (cc15-ob1 correction; 004DFB70 passes 1, 0 and 1), not a side:
+// 007066C4 pushes it as 00706160's first argument and 007066C8 pushes the side -1.
 std::array<std::uint8_t, 4> load_messages_007065e0(MessageManagerLayout& manager, const MessageLoadOptions& options,
-                                                    std::int32_t side, MessageManagerCalls& calls);
+                                                    bool load, MessageManagerCalls& calls);
 
 // 00706760, __thiscall(ECX = manager, const NativeString* name, int side), RET 8. Loads a message
 // map once per "name#side" key. See the .cpp for the profile-hints mode 2 language sweep and the
