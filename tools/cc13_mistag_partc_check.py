@@ -1,6 +1,6 @@
 """Part C check (cc13-mistag): the open library-tagged scalar deleting destructor wrappers.
 
-For every scalar_trivial row of local/mistag_vtclass.json this re-reads the disk bytes and
+For every scalar_trivial row of tools/cc13_mistag_candidates.json (the frozen output of tools/cc13_mistag_vtclass.py, taken before any row was recorded) this re-reads the disk bytes and
 requires the whole wrapper shape (31 bytes):
     F6 44 24 04 01        TEST byte [ESP+4], 1
     56                    PUSH ESI
@@ -13,11 +13,12 @@ requires the whole wrapper shape (31 bytes):
     8B C6 5E C2 04 00     MOV EAX, ESI; POP ESI; RET 4
 with vt equal to the scanned vtable. It classes the vtable as part B does, and finds the
 out-of-line copies: every recorded function whose bytes are C7 01 <vt> C3. Refuses the struck
-ranges, 006C5000-006C5FFF and rows that already have a record. Output: local/mistag_partC.json.
+ranges and 006C5000-006C5FFF (recorded rows are kept, so the
+check can be re-run after the records exist). Output: local/mistag_partC.json.
 """
 import json, re, sqlite3, struct, pefile
 
-root = r"J:\PROG\battlestations-pacific-decompile-cc13-seg59"
+root = str(__import__("pathlib").Path(__file__).resolve().parents[1])
 c = sqlite3.connect(root + r"\local\bsp_index.sqlite")
 pe = pefile.PE(json.load(open(root + r"\config\target.json"))['binary'], fast_load=True)
 base = pe.OPTIONAL_HEADER.ImageBase
@@ -35,7 +36,18 @@ def u32(va):
     return struct.unpack_from("<I", img, va - base)[0]
 
 
+# Hand classifications that the slot-name rule gets wrong (rev4): 00D05840 has no RTTI locator
+# ([00D0583C] = 007B45E0 is code) and its slots are __purecall, 007B5920, __purecall, __purecall;
+# 007B5920 is a game deleting destructor (segment 47) that stores 00D05840 itself.
+MANUAL = {0x00D05840: "game"}
+
+
 def vt_class(vt):
+    klass, game, lib = vt_class_slots(vt)
+    return MANUAL.get(vt, klass), game, lib
+
+
+def vt_class_slots(vt):
     game = lib = 0
     for k in range(40):
         s = u32(vt + 4 * k)
@@ -61,7 +73,7 @@ def copies(vt):
     return found
 
 
-rows = json.load(open(root + r"\local\mistag_vtclass.json"))
+rows = json.load(open(root + r"\tools\cc13_mistag_candidates.json"))
 out, bad = [], []
 for sid, a, n, cat, v, *rest in rows:
     if rest[-1] != "scalar_trivial":
@@ -78,11 +90,8 @@ for sid, a, n, cat, v, *rest in rows:
     if any(lo <= A <= hi for lo, hi in STRUCK):
         bad.append((a, "struck", ""))
         continue
-    if info.get(A, (0, 0, 0, None))[3] is not None:
-        bad.append((a, "recorded", info[A][3]))
-        continue
     klass, game, lib = vt_class(vt)
-    out.append({"segment": sid, "address": a, "name": n, "vtable": f"{vt:08x}", "class": klass,
+    out.append({"segment": sid, "address": a, "name": n, "vtable": f"{vt:08x}", "class": klass, "status": info.get(A, (0, 0, 0, None))[3],
                 "game_slots": game, "lib_slots": lib, "copies": copies(vt)})
 json.dump({"rows": out, "refused": bad}, open(root + r"\local\mistag_partC.json", "w"), indent=0)
 by = {}

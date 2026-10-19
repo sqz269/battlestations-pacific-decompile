@@ -94,7 +94,7 @@ no file (docs/UNIT_STATE_MESSAGE.md covers the apply side). Three are rebuilt he
 ## Batch 2, part A: rows the filter dropped (21 rows)
 
 rev-convoy's scan of the 548 filter-dropped rows (`local/mistag_dropped_vt.py`, a copy of its
-mt_dropped_vt.py) and the widened scan `local/mistag_vtscan2.py` (every open library-tagged row
+mt_dropped_vt.py) and the widened scan `tools/cc13_mistag_vtscan.py` (every open library-tagged row
 of the 16 segments; also the `C7 41 d8` and `8D 49` forms) agree on the six VT+JMP destructors.
 
 Rebuilt (out-of-line destructors):
@@ -324,25 +324,37 @@ compare). It tests the slot address for null and raises the count either way.
 
 None of the four remains.
 
-## Part B: vt-reset destructors (118 rows)
+## Part B: vt-reset destructors (119 rows)
 
-Script: `local/mistag_partB_check.py` (output `local/mistag_partB.json`). It is committed with
-its two inputs' generators, `local/mistag_vtscan2.py` and `local/mistag_vtclass.py` (run in that
-order). It starts from the widened scan's vt-reset candidates (`local/mistag_vtclass.json`) and,
-for each one:
+Script: `tools/cc13_mistag_partb_check.py` (output `local/mistag_partB.json`). Its input is
+`tools/cc13_mistag_candidates.json`, the frozen output of `tools/cc13_mistag_vtscan.py` then
+`tools/cc13_mistag_vtclass.py`, taken before any row was recorded. Recorded rows are kept, so the
+check can be re-run now that the records exist. For each vt-reset candidate the script:
 - re-reads the disk bytes and requires `C7 01 <imm32> C3`, with imm32 equal to the scanned
   vtable;
-- refuses the struck ranges, 006C5000-006C5FFF and any row that already has a record;
+- refuses the struck ranges and 006C5000-006C5FFF;
 - classes the vtable from its other slots: game when any slot is a `BSP_` name or a recorded
   non-library name, library when only library names appear, unknown otherwise;
+- applies one hand override (`MANUAL`, below);
 - lists the row's callers from the index.
 
-**118 game rows** are rebuilt as the table `kVtResetDestructors` with `vt_reset_destruct()`,
+**119 game rows** are rebuilt as the table `kVtResetDestructors` with `vt_reset_destruct()`,
 each `__thiscall(ECX = object)`, RET, doing `[object] = vtable`. Under the destructor rule above
 each is a class's out-of-line destructor. Every row has at least one caller. 229 of the 230
-call sites are EH unwind funclets; the one direct call is 0077D7F0
+indexed call sites are EH unwind funclets; the one direct call is 0077D7F0
 BSP_Replication_StepLocalPlayerRecord calling `0075B420`, which destroys its stack message. No
 row is reached from its vtable's slot 0.
+
+A scan of the image for each row's address as an absolute dword (`tools/cc13_mistag_absrefs.py`)
+finds only `0075A5B0`. Four `PUSH` immediates pass it as the eh_vector element destructor (size
+44h, count 64h): at 00760C46 (beside the 0075FE90 constructor), 00760CCD, 0080FD54 and 00816C2E.
+
+**Row 119 is a hand override (rev4).** `007B5910` (`C7 01 40 58 D0 00 C3`) stores 00D05840,
+which the slot-name rule had called library. The vtable has no RTTI locator (`[00D0583C]` =
+007B45E0 is code), and its slots are `__purecall`, 007B5920, `__purecall`, `__purecall`.
+007B5920 is a game deleting destructor in segment 47 that stores 00D05840 itself. The name is
+`BSP_Vt00D05840_Destruct_007b5910`, and the Ghidra rename log is
+`local/ghidra-annotations-20261019T091219Z.json`.
 - **98 rows** store the session message root vtable 00CE4974. They are named
   `BSP_SessionMessageRoot_StoreVtable_<address>`, following the three cc13-seg40b records of the
   same shape (00729090, 007290A0, 007293B0).
@@ -350,15 +362,16 @@ row is reached from its vtable's slot 0.
 - **6 rows** store a vtable each: 00D1FDB8, 00D20838, 00D20E84, 00D21148, 00D21B40, 00CFF354.
 - These 20 rows (the 14 and the 6) are named mechanically `BSP_Vt<vtable>_Destruct_<address>`.
 
-All 118 names are provisional, and each ledger record lists the row's callers. The Ghidra
-renames were made in three batches under the lock. The old names are kept in
+- 007B5910 also takes a mechanical name.
+
+All 119 names are provisional, and each ledger record lists the row's callers. The Ghidra
+renames for the first 118 were made in three batches under the lock. The old names are kept in
 `local/ghidra-annotations-20261019T085020Z.json`, `...T085054Z.json` and `...T085128Z.json`.
 
 **Left unbound** (library vtables, no game slot):
 
 | Address | Vtable |
 |---|---|
-| `007B5910` | 00D05840 |
 | `007512A0` | 00D24F84 |
 | `007512E0` | 00D24F84 |
 | `0094CEB0` | 00D24F84 |
@@ -367,9 +380,10 @@ renames were made in three batches under the lock. The old names are kept in
 
 Unknown (no named slot either way): `00842990`, vtable 00D0B6A0.
 
-## Part C: scalar deleting wrappers (102 rows)
+## Part C: scalar deleting wrappers (103 rows)
 
-Script: `local/mistag_partC_check.py` (output `local/mistag_partC.json`). For every wrapper
+Script: `tools/cc13_mistag_partc_check.py` (output `local/mistag_partC.json`; same input and
+`MANUAL` override as part B). For every wrapper
 candidate it requires the whole 31-byte shape:
 
 ```
@@ -380,7 +394,7 @@ That is a test of flags & 1, the vt-reset destructor inlined as `MOV [ESI], vt`,
 when the bit is set, and `EAX = this`, RET 4. The script requires vt to equal the scanned vtable,
 classes the vtable as part B does, and finds every recorded `C7 01 <vt> C3` copy of the store.
 
-**97 game rows are bound** (`library_instantiation_out_of_scope`, names unchanged). Each cites a
+**98 game rows are bound** (`library_instantiation_out_of_scope`, names unchanged). Each cites a
 recorded out-of-line copy of its vtable store:
 
 | Rows | Vtable |
@@ -388,12 +402,16 @@ recorded out-of-line copy of its vtable store:
 | 74 | 00CE4974 |
 | 14 | 00D056D0 |
 | 2 | 00CFE2B8 |
-| 1 each | 00D056E8, 00D1FDB8, 00D20838, 00D20E84, 00D21148, 00D21B40, 00CFF354 |
+| 1 each | 00D056E8, 00D1FDB8, 00D20838, 00D20E84, 00D21148, 00D21B40, 00CFF354, 00D05840 |
+
+`007B5920` (00D05840) moved from the library list to here after rev4's reclassification; it cites
+part B's row 119, 007B5910.
 
 **5 game rows are rebuilt** as `kVtResetDeletingDestructors` with
 `vt_reset_scalar_deleting_destruct()`. Their vtable store has no recorded copy, and their only
-callee is `_free`, so under the rule there is no routine to cite (as with batch 1's singleton
-rows). They take provisional names `BSP_Vt<vtable>_ScalarDeletingDestruct_<address>`:
+callee is `_free`, so under the rule there is no routine to cite. This follows batch 1's
+singleton rows, and the lead accepted the five as rebuilt. They take provisional names
+`BSP_Vt<vtable>_ScalarDeletingDestruct_<address>`:
 
 | Address | Vtable |
 |---|---|
@@ -411,7 +429,6 @@ Library:
 
 | Address | Vtable | Note |
 |---|---|---|
-| `007B5920` | 00D05840 | |
 | `0094CB00` | 00D24FCC | |
 | `0094CB20` | 00D24FEC | |
 | `0094D030` | 00D24F84 | fails the byte check: its call goes to 00A51E70, not `_free` |
@@ -421,8 +438,8 @@ Unknown: `007D79F0`, vtable 00D06844.
 ## Irregular rows (21, read by hand)
 
 These are the rows the shape classifier put in neither the vt-reset nor the wrapper shape. Each
-was read from the disk bytes (`local/mistag_irr_probe.py` finds the vtable slots and every
-recorded store of each vtable; `local/mistag_irr_oneline.py` prints the listings side by side).
+was read from the disk bytes (`tools/cc13_mistag_irr_probe.py` finds the vtable slots and every
+recorded store of each vtable; `tools/cc13_mistag_oneline.py` prints the listings side by side).
 
 **Bound: 14 scalar deleting destructors.** Each inlined body was compared instruction by
 instruction with the recorded out-of-line destructor it cites.

@@ -35,21 +35,21 @@ std::uint32_t trivial_getter_result(std::uint32_t address) noexcept;
 
 inline constexpr std::uint32_t kSingletonBaseVtable = 0x00CE3818;
 
-// Part B: 118 out-of-line destructors of the one-instruction shape `MOV [ECX], vtable; RET`
-// (C7 01 imm32 C3), __thiscall(ECX = object), RET. Checked by local/mistag_partB_check.py.
+// Part B: 119 out-of-line destructors of the one-instruction shape `MOV [ECX], vtable; RET`
+// (C7 01 imm32 C3), __thiscall(ECX = object), RET. Checked by tools/cc13_mistag_partb_check.py.
 // 98 store the session message root vtable 00CE4974, 14 store 00D056D0.
 struct VtResetDestructor {
     std::uint32_t address;
     std::uint32_t vtable;
 };
-inline constexpr std::size_t kVtResetDestructorCount = 118;
+inline constexpr std::size_t kVtResetDestructorCount = 119;
 extern const VtResetDestructor kVtResetDestructors[kVtResetDestructorCount];
 // Runs the row at `address` on `object` ([object] = its vtable); false when `address` is not a row.
 bool vt_reset_destruct(std::uint32_t address, void* object) noexcept;
 
 // Part C: five scalar deleting destructors of the same inlined shape whose vtable store has no
 // recorded out-of-line copy (rebuilt under the rule; the other 97 are bound). Bytes checked by
-// local/mistag_partC_check.py; __thiscall(ECX = object, flags), RET 4, EAX = object.
+// tools/cc13_mistag_partc_check.py; __thiscall(ECX = object, flags), RET 4, EAX = object.
 inline constexpr std::size_t kVtResetDeletingDestructorCount = 5;
 extern const VtResetDestructor kVtResetDeletingDestructors[kVtResetDeletingDestructorCount];
 

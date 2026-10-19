@@ -1,6 +1,6 @@
 import json, re, sqlite3, struct, collections, pefile
 from capstone import CS_ARCH_X86, CS_MODE_32, Cs
-root = r"J:\PROG\battlestations-pacific-decompile-cc13-seg59"
+root = str(__import__("pathlib").Path(__file__).resolve().parents[1])
 c = sqlite3.connect(root + r"\local\bsp_index.sqlite")
 pe = pefile.PE(json.load(open(root + r"\config\target.json"))['binary'], fast_load=True)
 base = pe.OPTIONAL_HEADER.ImageBase; img = pe.get_memory_mapped_image()

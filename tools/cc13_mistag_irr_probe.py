@@ -1,7 +1,7 @@
 """Probe for the 21 irregular rows: which vtable slots hold each row, which recorded functions
 store each vtable (C7 xx <vt>), and whether the five 00D03720 rows are byte-identical (rel32 masked)."""
 import json, sqlite3, struct, pefile
-root = r"J:\PROG\battlestations-pacific-decompile-cc13-seg59"
+root = str(__import__("pathlib").Path(__file__).resolve().parents[1])
 c = sqlite3.connect(root + r"\local\bsp_index.sqlite")
 pe = pefile.PE(json.load(open(root + r"\config\target.json"))['binary'], fast_load=True)
 base = pe.OPTIONAL_HEADER.ImageBase; img = pe.get_memory_mapped_image()

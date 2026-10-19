@@ -8,7 +8,7 @@ game-class vtable forms read from the disk bytes:
   within the first 32 bytes.
 Prints rows not already reconstructed or bound in this tree's index."""
 import json, re, sqlite3, struct
-root = r"J:\PROG\battlestations-pacific-decompile-cc13-seg59"
+root = str(__import__("pathlib").Path(__file__).resolve().parents[1])
 c = sqlite3.connect(root + r"\local\bsp_index.sqlite")
 import pefile
 pe = pefile.PE(json.load(open(root + r"\config\target.json"))['binary'], fast_load=True)

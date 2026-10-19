@@ -1,15 +1,16 @@
 """Part B check (cc13-mistag): the open library-tagged `MOV [ECX], imm32; RET` rows.
 
-For every vt-reset row of local/mistag_vtclass.json this re-reads the disk bytes and requires
+For every vt-reset row of tools/cc13_mistag_candidates.json (the frozen output of tools/cc13_mistag_vtclass.py, taken before any row was recorded) this re-reads the disk bytes and requires
 C7 01 <imm32> C3 with imm32 equal to the vtable the scan recorded. It classes the vtable
-game / lib / unknown from its other slots (the rule of local/mistag_vtclass.py), looks up the
+game / lib / unknown from its other slots (the rule of tools/cc13_mistag_vtclass.py, plus MANUAL), looks up the
 vtable's slot 0 and records whether that slot-0 routine reaches the row (E8/E9 rel32 to it within
 its first 64 bytes), and lists the row's callers from the index. It refuses rows in the struck
-ranges and 006C5000-006C5FFF. Output: local/mistag_partB.json, and a summary on stdout.
+ranges and 006C5000-006C5FFF (recorded rows are kept, so the
+check can be re-run after the records exist). Output: local/mistag_partB.json, and a summary on stdout.
 """
 import json, re, sqlite3, struct, sys, pefile
 
-root = r"J:\PROG\battlestations-pacific-decompile-cc13-seg59"
+root = str(__import__("pathlib").Path(__file__).resolve().parents[1])
 c = sqlite3.connect(root + r"\local\bsp_index.sqlite")
 pe = pefile.PE(json.load(open(root + r"\config\target.json"))['binary'], fast_load=True)
 base = pe.OPTIONAL_HEADER.ImageBase
@@ -26,7 +27,18 @@ def u32(va):
     return struct.unpack_from("<I", img, va - base)[0]
 
 
+# Hand classifications that the slot-name rule gets wrong (rev4): 00D05840 has no RTTI locator
+# ([00D0583C] = 007B45E0 is code) and its slots are __purecall, 007B5920, __purecall, __purecall;
+# 007B5920 is a game deleting destructor (segment 47) that stores 00D05840 itself.
+MANUAL = {0x00D05840: "game"}
+
+
 def vt_class(vt):
+    klass, game, lib = vt_class_slots(vt)
+    return MANUAL.get(vt, klass), game, lib
+
+
+def vt_class_slots(vt):
     game = lib = 0
     for k in range(40):
         s = u32(vt + 4 * k)
@@ -49,7 +61,7 @@ def reaches(src, dst):
     return False
 
 
-rows = json.load(open(root + r"\local\mistag_vtclass.json"))
+rows = json.load(open(root + r"\tools\cc13_mistag_candidates.json"))
 out, bad = [], []
 for sid, a, n, cat, v, *_ in rows:
     A, vt = int(a, 16), int(v, 16)
@@ -63,15 +75,12 @@ for sid, a, n, cat, v, *_ in rows:
     if any(lo <= A <= hi for lo, hi in STRUCK):
         bad.append((a, "struck", ""))
         continue
-    if info.get(A, (0, 0, 0, None))[3] is not None:
-        bad.append((a, "recorded", info[A][3]))
-        continue
     klass, game, lib = vt_class(vt)
     slot0 = u32(vt)
     callers = [f"{x:08x}" for (x,) in c.execute(
         "select distinct caller from calls where callee = ? order by caller", (A,))]
     out.append({"segment": sid, "address": a, "name": n, "tag": cat, "vtable": f"{vt:08x}",
-                "class": klass, "game_slots": game, "lib_slots": lib, "slot0": f"{slot0:08x}",
+                "class": klass, "status": info.get(A, (0, 0, 0, None))[3], "game_slots": game, "lib_slots": lib, "slot0": f"{slot0:08x}",
                 "slot0_reaches": reaches(slot0, A), "callers": callers})
 json.dump({"rows": out, "refused": bad}, open(root + r"\local\mistag_partB.json", "w"), indent=0)
 by = {}
