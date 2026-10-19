@@ -15,6 +15,7 @@ ranges are also excluded.
 | Switch (include/bsp/cc13_tier2_switches.hpp) | Address | Host site | Reach | Effect ON |
 | --- | --- | --- | --- | --- |
 | `kLineOfFireLandFromMuzzleBound` (OFF) | 0072CDD0 | game_hosts_gunnery.cpp `line_of_fire_blocked_0072cdd0` | land queries for the line of fire: JM08 4721, USN04 1080, USN21 11892; 0 land hits on all three | The land segment starts at the unraised muzzle |
+| `kDiveBombGoawayFloatStoresBound` (OFF) | 009C7F00 | dive_bomb_task.cpp `dive_bomb_goaway_complete_009c7f00`, called from game_hosts_units.cpp (dive-bomb goaway state) | dive-bomb task: JM08 39 aircraft, 23 releases; USN21 219 aircraft, 13 releases; USN04 29 aircraft, 0 releases | The term and ceiling - 100 are rounded to float where the image stores them |
 
 ### 0072CDD0: the land query starts at the muzzle
 
@@ -113,7 +114,10 @@ ranges are also excluded.
   - The image stores the term (009C7F16, 009C7F7D) and ceiling - 100 (009C7FB8) as floats. The
     host keeps them in double.
   - Under the main thread's 24-bit precision control, that is a difference of at most 1 ULP at
-    a compare. Precision only.
+    a compare.
+  - The lead asked for a switch anyway, because cc9 is chasing goaway completion and the
+    project models 24-bit precision. It is `kDiveBombGoawayFloatStoresBound` (OFF; see
+    Switches). There is no ON-only lookup and no draw.
 - **009D0160 / 009D1360 / 009D1500, torpedo run times.** This is an URGENT category, reported to
   the lead.
   - The added zero-divide guards never fire on live data:
@@ -121,3 +125,4 @@ ranges are also excluded.
     - the decel_distance guard's arm needs dd > leg >= 0;
     - 009D1500's divisor is a release distance, never 0 with the shipped tuning.
   - The x87 quotient note is moot under the 24-bit precision control.
+  - The lead agreed: verified-equivalent on live data, no switch.

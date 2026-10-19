@@ -18,4 +18,17 @@ namespace bsp {
 // refusal persists.
 inline constexpr bool kLineOfFireLandFromMuzzleBound = false;
 
+// 009C7F00, the dive-bomb goaway completion test. The image stores three values
+// to float: the term (+20h * 0.9 qword [00D7A390]) at 009C7F16, the reload arm's
+// second 0.9 product at 009C7F7D, and ceiling - 100.0 (qword [00D7A220]) at
+// 009C7FB8. The compares (009C7F8D, 009C7FC2) read those floats back.
+// ON: dive_bomb_goaway_complete_009c7f00 rounds each value to float where the
+// image stores it. OFF: the host keeps all three in double.
+// Difference: at most 1 ULP at a compare, which moves goaway completion by at
+// most one tick at a rounding boundary.
+// Caveat: the cast rounds the double product a second time, where the x87
+// under 24-bit precision control rounds the exact product once. The two can
+// differ only on a double-rounding tie.
+inline constexpr bool kDiveBombGoawayFloatStoresBound = false;
+
 }  // namespace bsp
