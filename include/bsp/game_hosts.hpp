@@ -60,6 +60,7 @@ struct NativeFrameClockPublicationContext;
 class NativeOnlineSigninCalls;
 class XLiveLibrary;
 struct NativeOnlineManagerStorage;
+struct NativeLoadingQueueOwnerStorage;
 struct WindowClosePromptCalls;
 }
 
@@ -434,6 +435,13 @@ public:
     // Bind only the actual retained confirmation-screen owner. Its callback
     // dispatcher must route 004BBC50 here while this frame host remains alive.
     void bind_window_close_prompt(WindowClosePromptCalls* prompt) noexcept { close_prompt_ = prompt; }
+    // The application manager and E18D4C cells 004FDE20 reads; used only
+    // with kLoadingQueueCc15Bound.
+    void bind_loading_queue(void* volatile& manager_01090aa0,
+        NativeLoadingQueueOwnerStorage* volatile& queue_00e18d4c) noexcept {
+        loading_queue_manager_ = &manager_01090aa0;
+        loading_queue_publication_ = &queue_00e18d4c;
+    }
     bool dispatch_window_close_callback(std::uint32_t callback, std::int32_t response) noexcept;
 
     // Global exit byte 00e1ae75, set by the close policy at 004ca2f0.
@@ -456,6 +464,8 @@ private:
     GameVfsHost& vfs_;
     NativeOnlineManagerStorage* volatile& online_;
     WindowClosePromptCalls* close_prompt_{};
+    void* volatile* loading_queue_manager_{};
+    NativeLoadingQueueOwnerStorage* volatile* loading_queue_publication_{};
     unsigned long long frame_index_{};
     bool global_exit_{};
 };

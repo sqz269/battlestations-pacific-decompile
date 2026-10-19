@@ -54,6 +54,7 @@
 #include "bsp/game_hosts_init_tail.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_singletons.hpp"
+#include "bsp/native_loading_queue_owner.hpp"
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_pending_entity_runtime.hpp"
 #include "bsp/game_hosts_mission.hpp"
@@ -1183,6 +1184,15 @@ void GameFrameHost::tick_vfs_providers() {
 }
 
 void GameFrameHost::update_loading_queue() {
+    if constexpr (kLoadingQueueCc15Bound) {
+        if (loading_queue_manager_ != nullptr && loading_queue_publication_ != nullptr) {
+            // 00737A50: ECX = 004FDE20(), then 00509190.
+            update_native_loading_queue_00509190(get_native_loading_queue_owner_004fde20(
+                *loading_queue_manager_, *loading_queue_publication_));
+            log_.implemented("ApplicationFrameHost::update_loading_queue", "004fde20");
+            return;
+        }
+    }
     log_.unimplemented("ApplicationFrameHost::update_loading_queue", "004fde20");
 }
 
@@ -2812,6 +2822,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
 
     frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), *platform_, *loop_, game_state_, profiler_,
         menu_, *vfs_, settings_process_->online_00f8abe8());
+    frame_host_->bind_loading_queue(singletons_->manager_publication_01090aa0(),
+        singletons_->loading_queue_publication_00e18d4c());
     std::function<void(IDirect3DDevice9&)> capture;
     if (!options_.screenshot_path.empty()) {
         GameFrontendHost* frontend_host = frontend_;
