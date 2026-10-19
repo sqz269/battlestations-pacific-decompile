@@ -167,3 +167,61 @@ pair's defaults.
 - **Constant widths.** No header constant was added; the 1000.0f comes from the existing
   `ShipAiNavBlockSteeringDefaults` (`MOVSS` from `00CE3804`).
 - **Builds.** Built OFF and ON (ctest 2/2 each), committed OFF.
+
+## 7. The mode-3 name (packet cc13-astern3a6)
+
+The host calls blk+1C4h = 3 `ShipAiSteeringMode::NavigateAstern`, and the switch is
+`kShipAiNavigateAsternSkipBound`. That name is a misnomer. The provisional hypothesis is
+**NavigateCallerSteered**: the caller publishes a path goal and then steers the ship itself.
+
+### Writers
+
+A disp32 scan of 009D0000..00A00000 for stores to +1C4h finds two stores of 3:
+- `009DE2D2 MOV [ESI+1C4h],3` in 009DE280. 009DE280's only caller is `009E7FB8` in 009E7FA0, and
+  009E7FA0 has no rel32 or absolute reference, so this writer is not live.
+- `009F3375 MOV [ESI+1C4h],EBP` in 009F3240. Here `009F3330 MOV EBP,3`, and ESI = blk from
+  `009F32F7 LEA ESI,[ECX+8]`. 009F3240 is reached from vtable `00D219A0` and is the attackmove
+  approach sub-state step. This is the live writer.
+
+The other stores to +1C4h write 0, 1, 2 or a register:
+- 009DE050 / 009DE1B0 / 009DFF40 / 009DFFB0 / 009E0040;
+- the restore 009DA0D0;
+- the land and kamikaze steps 009E1950 / 009E2020.
+
+Their register sources were not traced.
+
+### What both writers do
+
+Both writers run the same sequence:
+1. Call 009DE050(goal, keep = 1, final = 0).
+2. Zero 368h/360h unless the mode is already 3.
+3. Set 1D8h = heading, wrapped by 00605070.
+4. Set 1CCh = 0 (direction Stopped).
+5. Set 1C4h = 3.
+6. Set 250h/2B8h = throttle.
+
+009ED6B0 then latches mode 3 at 009ED7E6 and skips its own output block and tail at 009EE756
+(section 1 and the switch comment).
+
+So in mode 3, the heading and throttle are the caller's. The ahead/astern flip that gave this mode
+its name is the 364h escape outcome (section 2), not a property of the mode.
+
+### Applied
+
+Names are unchanged in Ghidra and in the ledger:
+- `BSP_ShipAi_SetNavigationGoalWithPenalty` 009DE280;
+- `BSP_ShipAi_AttackMoveApproachSubStateStep` 009F3240.
+
+Both records gained appended evidence (`ledger add-name --append-evidence`). `ghidra_annotate.py`
+re-applied their plate comments, saving the prior plates to `local/`.
+
+Interior labels were added under the write lock with `tools/ghidra_label_interior.py`
+(`reports/cc13_astern3a6_labels.json`):
+- `BSP_ShipAi_EnterNavigateCallerSteered_009de2d2`;
+- `BSP_ShipAi_EnterNavigateCallerSteered_009f3375`.
+
+Neither function had any labels before. The project is saved.
+
+The C++ enum value and the switch keep their names, because cc9 flips the switch by name. Both now
+carry a comment that names the hypothesis. The log string `navigate_astern` is unchanged, so logs
+stay comparable.

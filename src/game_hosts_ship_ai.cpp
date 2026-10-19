@@ -1599,7 +1599,9 @@ struct GameShipAiHost::Impl {
         // blk+3A5h. It is written by the 009DA3B0 copy and never read. The
         // live byte is blk.flag_3a5 (set at 009DA3F7 below, cleared by 009ED753
         // and 009F145E), and every image reader of blk+3A5h is modelled on that
-        // (docs/CC13_NAVSEEDS2.md section 7).
+        // (docs/CC13_NAVSEEDS2.md section 7). Packet cc13-astern3a6: likewise
+        // station_request.suppress is a dead copy of blk+3A6h; the live byte is
+        // flag_3a6 above (009DA400 store, read at 009EDA3A and 009EF0B1).
         bsp::ShipAiStationRequest station_request{};
         // Packet cc9_ship_ai_tails: the saved blocks blk+1F4h..+220h and
         // +3A8h..+3C2h (009DDBC0 writes, 009DA0D0 reads), held as the host
@@ -1619,7 +1621,8 @@ struct GameShipAiHost::Impl {
             float plan_length_1f0{0.0f};
             // station.enable (+3C1h) is a dead copy: never read. The saved
             // blk+3A5h is flag_3a5 below (009DDC15/009DDC1B save, 009DA125/
-            // 009DA12B restore).
+            // 009DA12B restore). Likewise station.suppress (+3C2h) is dead; the
+            // saved blk+3A6h is flag_3a6 (009DDC21/009DDC28, 009DA131/009DA138).
             bsp::ShipAiStationRequest station{};                           // +3A8h..
             float speed_scale_39c{0.0f};
             bool flag_3a5{false};

@@ -68,6 +68,10 @@ static_assert(kShipAiClearanceRefreshSentinel == 0x1.388p+13f);    // 0x461C4000
 // ESMP08 Iowa 1848/1848; USN02, USN15 and IJN18 attack forces. The l69 base has
 // none. With only this switch OFF, LOMP10 completes at 1072.47 s. Whatever
 // steers mode-3 units in the image is unhosted; re-flip once cc13 binds it.
+// Name note (packet cc13-astern3a6): "NavigateAstern" is a misnomer kept here
+// because cc9 flips this switch by name. Mode 3 is the caller-steered navigate
+// the attackmove approach step enters (provisional NavigateCallerSteered; see
+// ShipAiSteeringMode in ship_ai_states.hpp and docs/CC13_MODE3STEER.md).
 inline constexpr bool kShipAiNavigateAsternSkipBound = false;
 
 // 009EE59B/009EE59F. When blk+1C4h is neither 2 nor 3 (Rudder or Heading),

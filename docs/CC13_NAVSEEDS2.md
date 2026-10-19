@@ -273,3 +273,40 @@ Scope:
 - The +3A5h/+3C1h/+3ADh/+3C9h scans covered only the ship AI band.
 - The sibling +3A6h (`station_request.suppress` against `Controller::flag_3a6`) looks like the same
   pattern, but it was not scanned.
+
+## 8. The 3A6h/3C2h dead copies (packet cc13-astern3a6)
+
+3A6h follows the same pattern as section 7:
+- blk+3A6h is `Controller::flag_3a6` (live) and `station_request.suppress`, which the 009DA3B0 copy
+  writes.
+- blk+3C2h is `Snapshot.flag_3a6` (live) and `Snapshot.station.suppress`.
+
+Nothing in `src/` reads either `.suppress` copy. The only reads of `.suppress` are of the 009E1610
+stack request.
+
+### Image scan
+
+A disp32 scan of 009D0000..00A00000 looked for +3A6h, +3C2h, and brain+3AEh/+3CAh. Every hit maps
+onto `flag_3a6`:
+
+| address | function | access | host model |
+|---|---|---|---|
+| 009DA400 | 009DA3B0 publish | write | `ctl_.flag_3a6 = request.suppress` |
+| 009DA138 | 009DA0D0 restore | write from +3C2h (read at 009DA131) | `ctl_.flag_3a6 = s.flag_3a6` |
+| 009DDC21 | 009DDBC0 save | read, stored to +3C2h at 009DDC28 | `s.flag_3a6 = ctl_.flag_3a6` |
+| 009EDA3A | 009ED6B0 station-keeping arm | read | the `blk.flag_3a5 && !flag_3a6` gate |
+| 009EF0B1 | 009ED6B0 arm tail | read | `tail.leader_snapshot_3a6`, copied from `ctl_.flag_3a6` before the tail |
+
+There were no brain+3AEh or +3CAh hits.
+
+Positive controls:
+- The disp scan finds the known 009DA400 store.
+- The reference scan, over every section for rel32 E8/E9 and absolute dwords, finds 009DA3B0 called
+  from 009E18B6 (rechecked in section 7).
+
+### Result
+
+The `.suppress` copies are labelled in place, as in section 7, with comments only. OFF behaviour and
+output are unchanged.
+
+Scope: the scan covered only the ship AI band.
