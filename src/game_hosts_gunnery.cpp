@@ -16007,7 +16007,7 @@ bool GameGunneryHost::damage_smoke_tick_008227e0(std::size_t unit_index, float d
     // 008227AD: an unsigned compare; the grow appends {null effect, 0.0}.
     // LABELLED (host guard): wanted > 0 drops the image's NaN arm, where _ftol(NaN) gives
     // 80000000h, the signed min keeps it and the unsigned compare makes it a huge resize.
-    if (wanted > 0 &&static_cast<std::size_t>(wanted) > us.smoke_timers.size()) {
+    if (wanted > 0 && static_cast<std::size_t>(wanted) > us.smoke_timers.size()) {
         if (us.smoke_timers.empty()) ++host.smoke_units;
         host.smoke_slots_grown += static_cast<std::size_t>(wanted) - us.smoke_timers.size();
         us.smoke_timers.resize(static_cast<std::size_t>(wanted), 0.0f);
