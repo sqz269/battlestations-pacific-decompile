@@ -62,14 +62,17 @@ Verdict: the notify is a dead store in this image. Wiring it changes no behaviou
 ```
 
 It refuses only while the bay channel is enabled, not exactly at 1.0f, and the step-record byte
-`9C3h` is set. `007CDC70` publishes `9C3h` from `007CD9A0`: the first rack child whose platform
-record (`[[plane+538h]+94h][child+38Ch]`) has `+0Dh` (`UseBayDoor`, `0096127A`) set answers its
-`vtable[210h](2Ah, 0)`, "this bay rack holds a round". So: no release while a bay-door rack is
-loaded and the bay is not fully open. It does not test the ordnance kind or a release count.
+`9C3h` is set. `007CDC70` publishes `9C3h` from `007CD9A0`, which walks the plane's children and
+stops at the FIRST `IsKindOf(25h)` child whose platform record (`[[plane+538h]+94h][child+38Ch]`)
+has `+0Dh` (`UseBayDoor`, `0096127A`) set. The answer is that one child's `vtable[210h](2Ah, 0)`,
+whether or not it is loaded; a later bay-door rack is never asked, and with no such child the
+answer is 0. So no release happens while the first bay-door rack holds a round and the bay is not
+fully open. It does not test the ordnance kind or a release count.
 
-`docs/TORPEDO_FIRST_RELEASE.md` says "the device at unit+DECh enabled, its +64h not 1.0, and the
-per-slot byte clear"; that conjunction is the REFUSAL condition with its last term inverted. The
-code there (`src/cc13_seg47.cpp` `unit_can_release_ordnance_007bb110`) is right.
+`docs/TORPEDO_FIRST_RELEASE.md` said "the device at unit+DECh enabled, its +64h not 1.0, and the
+per-slot byte clear". That conjunction is the REFUSAL condition with its last term inverted, and
+this packet corrected it there. The code (`src/cc13_seg47.cpp` `unit_can_release_ordnance_007bb110`)
+was already right.
 
 A second or later release: the image allows it. `007BBBA0` does nothing but open the bay (only
 when `9C3h` is set) and raise `unit+C20h`, so the timer fires again each time the reseeded countdown
@@ -130,7 +133,11 @@ channel_c.enabled, channel_c.value, bay)` replaces the substitution. `bay` is co
 first two arms do not decide (the image's short-circuit): the first rack, in host rack order, whose
 `bomb_rack_bay_doors` entry is set answers `plane_rack_holds_round`; no such rack answers 0.
 `bomb_rack_bay_doors` runs a Lua chunk over `VehicleClass[type].BSPGun` p1..pn reading
-`Platforms[p<i>_key].UseBayDoor == true`, then keeps the rows `ordnance_racks` keeps. It static_asserts
+`Platforms[p<i>_key].UseBayDoor == true`, then keeps the rows `ordnance_racks` keeps. The flags
+depend only on the class, so they are cached per (Lua host, vehicle class) in
+`src/cc13_release_timer.cpp`. The chunk runs once per class rather than on every refused tick, and
+so overwrites the Lua host's `last_status_`/`last_chunk_` only once per class. A result is cached
+only once the class's `BSPGun.n` is positive, which means the gunnery flatten has run. It static_asserts
 the reseed: with the real test and a zero countdown the timer would fire on every tick.
 
 `kReleaseTimerNotify0DhBound`. In the fire arm, after the draw, `[9C0h] == 0` is evaluated as

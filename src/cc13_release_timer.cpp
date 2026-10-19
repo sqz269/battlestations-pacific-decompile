@@ -4,7 +4,9 @@
 #include "bsp/gunnery_tables.hpp"
 
 #include <cstdio>
+#include <map>
 #include <string>
+#include <utility>
 
 // Packet cc13-reltimer. docs/CC13_RELEASE_TIMER.md.
 
@@ -22,6 +24,15 @@ bool unit_can_release_007bb110(bool channel_c_enabled, float channel_c_value,
 }
 
 std::vector<bool> bomb_rack_bay_doors(bsp::game::GameMissionLuaHost& lua, int type_id) {
+    // The flags are a property of the class, so they are read once per (Lua
+    // host, class): the chunk below then runs once per class instead of on
+    // every refused tick, and touches the host's last_status_/last_chunk_ only
+    // that once. Cached only once BSPGun exists (n > 0), i.e. after the
+    // gunnery flatten; the host is single-threaded here.
+    static std::map<std::pair<const void*, int>, std::vector<bool>> cache;
+    const std::pair<const void*, int> cache_key{&lua, type_id};
+    if (const auto it = cache.find(cache_key); it != cache.end()) return it->second;
+
     std::vector<bool> out;
     // One character per flattened BSPGun row p1..pn: '1' when
     // Platforms[p<i>_key].UseBayDoor is the boolean true (0096127A reads it
@@ -65,6 +76,7 @@ std::vector<bool> bomb_rack_bay_doors(bsp::game::GameMissionLuaHost& lua, int ty
         const std::size_t i = static_cast<std::size_t>(p - 1);
         out.push_back(i < flags.size() && flags[i] == '1');
     }
+    if (platforms > 0) cache.emplace(cache_key, out);
     return out;
 }
 
