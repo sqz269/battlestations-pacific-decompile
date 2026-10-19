@@ -145,12 +145,17 @@ inline constexpr bool kPlaneFunnelKillDestroyOnlyCc13Bound = false;
 // Packet cc13-killx. The cause cannot separate a cause-1 funnel kill from a
 // gunfire death, in the image either: 008AC5C0 Lua Kill(x) passes 1 (008AC71B:
 // the optional boolean makes it 2) to 00926D90 (008AC756, or 007ED3A3 per
-// squadron member), as does the depth kill 007CE3A7, while a gunfire death
-// never writes +70h (007D12FC calls vtable[70h](1) itself), whose constructor
-// value the host takes as 1. What differs is the path: 00926D90 against
-// SetHealth. The host therefore tags every unit killed through a 00926D90
-// stand-in (note_kill_cause: kill_unit_00926d90's note_kill_cause_00926e02 and
-// the direct retreat / stock-return / ship-exit notes). The three host sites
+// squadron member), as do the depth kill 007CE3A7 and the impact message 0CAh
+// (007BBA10: 007BBA7F / 007BBAED), while SetHealth's chain reaches 00926D90
+// only in 007D0B80's explosion arm (007D0CFD, +70h = 1), after 007CA8A0 drew
+// the mode; its other arms destroy through 007D12FC's vtable[70h](1) and leave
+// +70h at its constructor value, which the host takes as 1. What differs is
+// the path: a 00926D90 Kill without SetHealth, against SetHealth. The host
+// therefore tags every unit killed through a 00926D90 stand-in (note_kill_cause:
+// kill_unit_00926d90's note_kill_cause_00926e02, the gunnery host's plane
+// crash impact for 007BBA7F / 007BBAED, and the direct retreat / stock-return
+// / ship-exit notes). The explosion arm is the death block's own mode (no
+// separate host kill), so it stays untagged. The three host sites
 // that call kill_unit_00926d90 for a direct vtable[70h](1) are not tagged: the
 // water powerlost stand-ins for 007CB8DC and 007CBE02 (007BBFA0 -> 007D0B80 ->
 // 007D12FC) and the submarine drowning (008553A1). 007EF078 (the hangar member
