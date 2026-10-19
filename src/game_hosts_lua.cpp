@@ -28,6 +28,7 @@
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/gameplay_seg41_cc13.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/land_convoy_dead_cc13.hpp"  // packet cc13-dead
 #include "bsp/ship_ai_attackmove_substates.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_unit_get_attack_target
 #include "bsp/entity_orders.hpp"     // packet cc9_unit_get_attack_target
@@ -9372,6 +9373,55 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
         row != nullptr ? row->name.c_str() : "?", cause, victims.size());
     log_.implemented("MissionLuaNative::Kill", "008ac5c0");
     return 0;
+}
+
+// Packet cc13-dead. 00929800 on a LandConvoy marker (include/bsp/land_convoy_dead_cc13.hpp
+// has the chain from 00926D90). SUBSTITUTIONS (labelled): the convoy is found as the
+// first findable pending node of class 1Ah with that name (the host's convoys are keyed
+// by name, so the lookup is first-wins: two convoys sharing a name resolve to the
+// earlier node, where the image follows its own pointer); the own-slot test (`Ptr` is the marker id, as the 00928A00 seed writes it)
+// stands for 00929800's +178h test. OMITTED (labelled): 009298DB's think call and the
+// 00928300 think-list drops, for a marker with a think registration (+1D8h).
+bool GameMissionLuaHost::publish_land_convoy_dead_00929800(const std::string& convoy, int cause) {
+    if constexpr (!bsp::game::kLandConvoyDeadWired) {
+        static_cast<void>(convoy);
+        static_cast<void>(cause);
+        return false;
+    } else {
+        if (state_ == nullptr) return false;
+        int id = 0;
+        for (const PendingEntity& node : pending_entities_) {
+            if (node.marker_class_id != 0x1a || !node.findable || node.name != convoy) continue;
+            id = node.entity_id;
+            break;
+        }
+        if (id <= 0 || !push_resolved_entity_by_id(state_, id)) {
+            log_.notef("  LandConvoy \"%s\": 00929800 found no self table, Dead not written "
+                "(packet cc13-dead)", convoy.c_str());
+            return false;
+        }
+        lua_getfield(state_, -1, "Ptr");
+        const bool own_slot = lua_touserdata(state_, -1)
+            == reinterpret_cast<void*>(static_cast<std::uintptr_t>(id));
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        if (own_slot) {
+            // 00E0CF04[+70h] (009298C2): none, harm, soft, sell, exitzone, landed, editor.
+            static const char* const kKillReasons[] = {
+                "none", "harm", "soft", "sell", "exitzone", "landed", "editor"};
+            // SUBSTITUTION (labelled): the image indexes the table unchecked; an
+            // out-of-range cause (none reaches here: 007422A0 passes 2) reads "harm".
+            const char* const reason = (cause >= 0 && cause < 7) ? kKillReasons[cause] : "harm";
+            lua_pushboolean(state_, 1);
+            lua_setfield(state_, -2, "Dead");                 // 00929896
+            ::lua_pushstring(state_, reason);
+            lua_setfield(state_, -2, "KillReason");           // 009298C2
+            log_.notef("  LandConvoy \"%s\": marker id %d Dead=true KillReason=%s (00929800 "
+                "via 0077D270 -> 00929B60, packet cc13-dead)", convoy.c_str(), id, reason);
+            log_.implemented("MissionEntity::on_killed_lua_00929800", "00929800");
+        }
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        return own_slot;
+    }
 }
 
 int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument_count) {
