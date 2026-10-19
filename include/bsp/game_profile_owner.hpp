@@ -28,7 +28,7 @@ class GameVfsHost;
 // unimplemented, map_flag_visible = true, mission_result's own progress_).
 // On: the profile owner is reset where the image resets it and the map-flag
 // and mission-record rows read and write its MissionProgress.
-inline constexpr bool kProfileOwnerCc15Bound = false;
+inline constexpr bool kProfileOwnerCc15Bound = true;
 // Off: 0068EA00 and 00690CD0 stay unimplemented. On: the tracker is
 // built by the first 004E1CA0 call, OnInit's 006921B0 loads the definitions
 // map +30h from HintSystemMessages.lua, and the rows run on it.
