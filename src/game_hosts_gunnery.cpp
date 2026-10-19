@@ -14467,6 +14467,28 @@ void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uin
     }
 }
 
+// Packet cc13-frontier (bsp/frontier_wiring_cc13.hpp, kHelmReleaseGunsToRestCc13Bound).
+// 0080E290, __fastcall(ECX = unit): over the unit's device chain (+48h, next +44h),
+// 0085AD00 on each device answering IsKindOf(22h). 0085AD00 (0085AD00-0085AD7A): when
+// the platform row's horizontal rest (+94h) equals FLT_MAX (FUCOMIP against double
+// 00D7A278, `test ah,44h; jnp`), it returns. Otherwise it calls 0085ABA0(+94h, +90h).
+// The host's guns of the unit stand in for the device chain (in gun order; each call
+// touches only its own gun), and rest_authored / rest_horz / rest_vert are that row.
+// 0085ABA0's AL and its accepted mark are discarded, as 0085AD6A..0085AD73 discard them.
+void GameGunneryHost::aim_unit_turning_guns_to_rest_0080e290(std::size_t unit) {
+    Impl& h = *impl_;
+    for (GameGunRow& gun : h.guns) {
+        if (gun.unit_index != unit || !gun_answers_turning_22h(gun.category)) continue;
+        if (!gun.rest_authored) continue;                              // 0085AD56 JNP
+        const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
+        float accepted_mark = 0.0f;
+        bsp::gun_set_target_angles_0085aba0(gun.angles, arcs, gun.speeds,
+            gun.rest_horz, gun.rest_vert, accepted_mark);              // 0085AD6A
+        h.done("TurningGun::aim_to_rest_angles_0085ad00", 0x0085ad00u);
+    }
+    h.done("Unit::aim_turning_guns_to_rest_0080e290", 0x0080e290u);
+}
+
 void GameGunneryHost::attach_00864bd0() {
     Impl& host = *impl_;
     host.build_rank_table();
