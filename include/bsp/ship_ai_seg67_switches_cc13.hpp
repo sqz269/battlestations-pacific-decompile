@@ -183,6 +183,6 @@ inline constexpr bool kShipAiClearance364SyncCc13Bound = true;  // ON with the c
 // re-send writes the control block. OFF writes only the controller's latch pair
 // (read by nothing else) and the summary counts. kHelmPrepareMapUpGateCc13Bound
 // (bsp/game_hosts_hud_world.hpp) requires this switch.
-inline constexpr bool kCruiseLatchedPlayerArmCc13Bound = false;
+inline constexpr bool kCruiseLatchedPlayerArmCc13Bound = true;  // ON (cc9-lua70, 2026-10-19): IJN18 l70_i18_r trial, ref EndMission 1685.52 s (Zao 163 cat-6 shots / 111 hits vs 0); see WINS_TABLE
 
 } // namespace bsp

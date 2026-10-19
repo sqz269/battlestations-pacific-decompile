@@ -238,7 +238,7 @@ inline constexpr bool kHudWeaponGroupEnterExitBound = true;
 // 46h's exit 0064A490 releases the weapon group (005470C0) and roles 1..8
 // (0077C470(unit, 1FEh, 0)). Everything here waits for the first such line,
 // so a plan without one runs as OFF. OFF: the line is refused.
-inline constexpr bool kHarnessReleaseGunMapBound = false;
+inline constexpr bool kHarnessReleaseGunMapBound = true;  // ON (cc9-lua70, 2026-10-19): IJN18 l70_i18_r trial, ref EndMission 1685.52 s (Zao 163 cat-6 shots / 111 hits vs 0); see WINS_TABLE
 
 // Packet cc13-helmmapgate (docs/CC13_IJN18LOSS.md section 7). 0064B870, the helm
 // transfer and lever issue, has one caller: 0064D656, inside screen 46h's update
@@ -248,7 +248,7 @@ inline constexpr bool kHarnessReleaseGunMapBound = false;
 // release_gun_map_up), the units host skips player_helm_prepare_0064b870 and
 // player_helm_issue_0064b870. OFF: both run every fixed step, as before. Either
 // way the skipped calls are counted in the summary.
-inline constexpr bool kHelmPrepareMapUpGateCc13Bound = false;
+inline constexpr bool kHelmPrepareMapUpGateCc13Bound = true;  // ON (cc9-lua70, 2026-10-19): IJN18 l70_i18_r trial, ref EndMission 1685.52 s (Zao 163 cat-6 shots / 111 hits vs 0); see WINS_TABLE
 static_assert(!kHelmPrepareMapUpGateCc13Bound || kHarnessReleaseGunMapBound,
     "kHelmPrepareMapUpGateCc13Bound needs kHarnessReleaseGunMapBound: only that path opens the map");
 static_assert(!kHelmPrepareMapUpGateCc13Bound || bsp::kCruiseLatchedPlayerArmCc13Bound,
