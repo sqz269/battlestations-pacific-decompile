@@ -164,6 +164,7 @@
 #include "bsp/world_construct.hpp"
 #include "bsp/plane_class_fields.hpp"
 #include "bsp/cc13_jm08_switches.hpp"
+#include "bsp/cc13_torp_goaway.hpp"           // packet cc13-goaway (009D0D90 draws, 00901610)
 #include "bsp/follow_release_seams_cc13.hpp"
 
 #include <cfloat>
@@ -13505,6 +13506,38 @@ void GameUnitsHost::load_gameplay_settings_0083b5e0() {
     // Idempotent: a second call re-runs the scripts and rewrites the block with
     // the same values.
     host.lua.load_plane_globals_007e2a20();
+    // Packet cc13-goaway: 00901610 load_robot_config, which the image runs once
+    // per process from 004DC6A0 (recorded, not run, by the mission frame). Here
+    // it runs through the mission host's VFS script reader on its own Lua owner,
+    // before any unit exists, and keeps the PilotBot rows ([00F8A30C]) for the
+    // goaway enter's 009D0EA3 draw. A second call answers already_loaded.
+    if constexpr (bsp::cc13_torp_goaway::kPilotBotConfigLoadBound) {
+        bsp::cc13_torp_goaway::MissionScriptFiles files(host.lua);
+        const bsp::cc13_torp_goaway::PilotBotLoadResult robots =
+            bsp::cc13_torp_goaway::load_pilot_bot_config_00901610(files);
+        if (!robots.already_loaded) {
+            if (robots.loaded) {
+                host.done("RobotConfig::load_00901610", 0x00901610u);
+            } else {
+                host.record("RobotConfig::load_00901610", 0x00901610u);
+            }
+            const auto* rows = bsp::cc13_torp_goaway::loaded_pilot_bot_rows();
+            auto pair = [rows](int i, int k) {
+                if (rows == nullptr) return 0.0;
+                const bsp::PilotBotParameters& row = (*rows)[static_cast<std::size_t>(i)];
+                return static_cast<double>(k == 1 ? row.torp_flik_flak_time_1_01c
+                                                  : row.torp_flik_flak_time_2_020);
+            };
+            host.log.notef("pilot bot config (00901610, packet cc13-goaway): loaded=%d "
+                "script reads=%zu misses=%zu error=%s; TorpFlikFlakTime by level "
+                "Stun %.3g,%.3g SPNormal %.3g,%.3g SPVeteran %.3g,%.3g MPNormal %.3g,%.3g "
+                "MPVeteran %.3g,%.3g Elite %.3g,%.3g",
+                robots.loaded ? 1 : 0, robots.script_reads, robots.script_misses,
+                robots.error.empty() ? "-" : robots.error.c_str(),
+                pair(0, 1), pair(0, 2), pair(1, 1), pair(1, 2), pair(2, 1), pair(2, 2),
+                pair(3, 1), pair(3, 2), pair(4, 1), pair(4, 2), pair(5, 1), pair(5, 2));
+        }
+    }
     if (host.rudder_curve_loaded) return;
     // 0083b5e0's head: run Scripts\datatables\ShipGlobals.lua and take the
     // `ShipGlobals` global. Then the fragment 0083ce56..0083d10d, which is what
@@ -23476,6 +23509,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // every draw, as random_between already does.
                                 gin.distance_jitter =
                                     bsp::torpedo_goaway::kDistanceJitterLo;
+                                // Packet cc13-goaway: 009D0E2C's draw, the
+                                // first of the enter's three on stream 1.
+                                if constexpr (bsp::cc13_torp_goaway::distance_jitter_draw_on()) {
+                                    if (owner_.gunnery) {
+                                        gin.distance_jitter =
+                                            owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                                owner_.index_of_slot(slot_),
+                                                bsp::torpedo_goaway::kDistanceJitterLo,
+                                                bsp::torpedo_goaway::kDistanceJitterHi);
+                                    }
+                                }
                                 gin.side_bit = (slot_.torpedo_goaway_enters & 1) != 0;
                                 const bsp::TorpedoGoAwayState g =
                                     bsp::torpedo_goaway_enter_009d0d90(gin);
@@ -23542,6 +23586,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // every draw.
                                 gt.climb_jitter =
                                     bsp::torpedo_goaway_tick::kClimbJitterLo;
+                                // Packet cc13-goaway: the draw itself, on
+                                // stream 1, taken only on the ordnance leg
+                                // (009D0E4A JZ skips it for a spent bomber).
+                                if constexpr (bsp::cc13_torp_goaway::climb_jitter_draw_on()) {
+                                    if (owner_.gunnery && gt.has_ordnance_132) {
+                                        gt.climb_jitter =
+                                            owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                                owner_.index_of_slot(slot_),
+                                                bsp::torpedo_goaway_tick::kClimbJitterLo,
+                                                bsp::torpedo_goaway_tick::kClimbJitterHi);
+                                    }
+                                }
                                 // UniformFloatRange(row+10h, row+14h) at
                                 // 009D0EA3. row+10h and row+14h are
                                 // TorpFlikFlakTime 1 and 2 in
@@ -23553,10 +23609,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // manoeuvre window therefore opens on the first
                                 // tick the aircraft is above +20h instead of
                                 // after the authored delay.
-                                owner_.log.unimplemented(
-                                    "PilotBotParameters::TorpFlikFlakTime",
-                                    "00997c68");
-                                gt.window_delay_draw = 0.0f;
+                                // Packet cc13-goaway: with the PilotBot rows
+                                // loaded (00901610, kPilotBotConfigLoadBound)
+                                // the row is levels[bot+34h], as 009F9D22
+                                // captures it, and the draw is taken on stream 1.
+                                const bsp::PilotBotParameters* flik_row = nullptr;
+                                if constexpr (bsp::cc13_torp_goaway::window_delay_draw_on()) {
+                                    if (owner_.gunnery) {
+                                        flik_row = bsp::cc13_torp_goaway::pilot_bot_row(
+                                            kSkillLevelBound ? slot_.pilot_skill_index : 1);
+                                    }
+                                }
+                                if (flik_row != nullptr) {
+                                    owner_.log.implemented(
+                                        "PilotBotParameters::TorpFlikFlakTime",
+                                        "00997c68");
+                                    gt.window_delay_draw =
+                                        owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                            owner_.index_of_slot(slot_),
+                                            flik_row->torp_flik_flak_time_1_01c,
+                                            flik_row->torp_flik_flak_time_2_020);
+                                } else {
+                                    owner_.log.unimplemented(
+                                        "PilotBotParameters::TorpFlikFlakTime",
+                                        "00997c68");
+                                    gt.window_delay_draw = 0.0f;
+                                }
                                 bsp::torpedo_goaway_enter_tail_009d0e3a(
                                     gt, slot_.torpedo_goaway_runtime);
                                 slot_.torpedo_goaway_runtime
