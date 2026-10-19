@@ -148,7 +148,9 @@ inline constexpr bool kPlaneFunnelKillDestroyOnlyCc13Bound = false;
 // squadron member), as do the depth kill 007CE3A7 and the impact message 0CAh
 // (007BBA10: 007BBA7F / 007BBAED), while SetHealth's chain reaches 00926D90
 // only in 007D0B80's explosion arm (007D0CFD, +70h = 1), after 007CA8A0 drew
-// the mode; its other arms destroy through 007D12FC's vtable[70h](1) and leave
+// the mode; that arm then falls into 007D12FC (007D0D02 sets +C10h, 007D0D12
+// JMPs there), whose vtable[70h](1) is skipped once +5Dh is raised (007D1305).
+// Its other arms destroy through 007D12FC's vtable[70h](1) and leave
 // +70h at its constructor value, which the host takes as 1. What differs is
 // the path: a 00926D90 Kill without SetHealth, against SetHealth. The host
 // therefore tags every unit killed through a 00926D90 stand-in (note_kill_cause:
