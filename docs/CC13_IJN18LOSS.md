@@ -174,3 +174,105 @@ There are two options for cc9:
 - add group fire orders to these plans. Player-seat shells must aim correctly first, because cc9 notes "0085ABA0
   refuses";
 - have the harness release the gunner role after the select. That is a labelled harness input, not image behaviour.
+
+## 7. Releasing the gun seat: the map toggle (packet `cc13-releasegun`)
+
+**The player gives up the gun seat by opening the map, and the role stays released while the map is up.** The plan
+order `<frame> releasegun <unit>` drives that input. It sits behind `kHarnessReleaseGunMapBound`, which is OFF.
+
+### The image path
+
+1. **Input.** 0068C1F0 tests C1h at 0068C64C. C1h is `IC_MAP_TOGGLE = 193` in this installation's `Inputs.lua`.
+   - The test sits inside the arm for interfaces other than 29h and 2Bh-2Dh.
+   - Its gates: no left Alt (`GetKeyState(A4h)`), the screen 3Bh bytes +81h/+82h clear, and the screen 45h bytes
+     +156h/+157h clear.
+   - 0068B470 is then reached at 0068C6B1.
+2. **0068B470.**
+   - The level-3 collapse (0068B4A8..0068B4C6) runs only with 00E18D1C non-empty.
+   - 0051E8E0 runs at 0068B4CE.
+   - When map slot 4Ch is not up (`[this+54h]+4h` clear), the routine continues into 0068AC30.
+3. **0068AC30.**
+   - 00E08880 is EnableMap, which is 1 in single player.
+   - 0068AB30 runs at 0068AC50. It pushes 20h only on interface 31h or 32h.
+   - The selection is copied at 0068AC63 and 0068AC73.
+   - 004F85D0 at 0068AC79 publishes level-2 screens `{4Ch 39h 44h 29h 49h}`.
+   - 004D8AE0 at 0068AC8E publishes level-2 contexts `{0Eh 14h 0Ch 11h}`. Its tail at 004D8B46 is `PUSH 2; CALL 004D6410`.
+4. **Occlusion.** 4Ch's vtable +8h is 005A8EF0, `MOV AL,1; RET`. 004F7620 walks levels 5 down to 1 and raises the
+   floor at the first opaque screen, so no level-1 screen is requested.
+   - Of the 25h set, 27h, 4Dh, 45h, 46h, 26h, 2Eh, 35h and 50h exit.
+   - 44h, 29h and 49h stay up, because they are in level 2.
+5. **46h's exit, 0064A490** (vtable 00CF7978 +1Ch).
+   - It calls 005470C0, which runs `0077C470(unit, group mask, 0)` for each entry.
+   - When +1Ch (the unit 0064DA40 stored) is set, it also runs `0077C470(+1Ch, 1FEh, 0)`.
+   - 0077C470 builds session message 4Bh: +24h the mask, +28h the slot game+18ECh, +2Ch take 0.
+   - The 4Bh arm sets each held role back to 8, and the device walk 0095AC1D hands the guns back to the bot.
+6. **No re-take while the map is up.**
+   - 005484F0 has five callers, one per screen:
+
+     | caller | screen |
+     |---|---|
+     | 00519D29 | 25h |
+     | 0052128F | 2Fh |
+     | 0064D66D | 46h (its update 0064D610) |
+     | 0065265B | 47h |
+     | 0067C7D9 | 4Ah |
+
+   - None of those screens is in the level-2 set, and level 1 is occluded. 004F8906 updates only screens that are
+     requested and applied, so no caller runs while the map is up.
+   - 27h's 0067BB50, the captain-role take, is also out of the set.
+7. **Closing the map** (C1h again) runs 0068B470's other arm:
+   - 004F85D0(0) at 0068B4E9, 004D8AE0 at 0068B4F7, and 0068AA40 at 0068B507;
+   - 46h and 2Eh enter again, and 00549260 re-takes the group.
+
+Mask 1FEh is roles 1..8, so the helm role (role 1, mask 2) also goes back to 8. Readers of the role-1 slot (`+1B0h`)
+see an AI holder, for example 00936EC5..00936ED4 in docs/CC13_BSM01END.md.
+
+The unit's `+184h` stays 1, in both the image and the host. 0078021C tests `[msg+24h]&1` before it clears `+184h` and
+calls 0080E290, and bit 0 of 1FEh is clear. The host's steering readers key on `+184h`:
+- `player_flag_0184` in the cruise step;
+- the formation test;
+- `leader_player_184`.
+
+Whether role 1 alone hands ship steering to the AI is **not traced**. Do not assume that it does.
+A plan cannot keep `takehelm` and drop only the guns this way.
+
+The other candidates do not do this:
+- The group keys 9Ch-9Fh and the 9Bh cycle cannot choose "no group". 00548410 steps only between available groups.
+- The free camera (5Ah, 29h with set `{2Bh}`) exits 46h too, but it is a camera mode.
+- The binoculars 0067C0A0 and the periscope 006506E0 belong to the torpedo boat and the submarine.
+
+### The harness order
+
+`<frame> releasegun <unit>` is in `game_hosts_mission_frame.cpp`.
+- It refuses any unit but the controlled one, `[00E188D8]`.
+- It arms the HUD, then holds C1h for one frame through the `input` line's action record.
+- One line opens the map for the rest of the run. A second line only logs `map close-requested`, because the close arm
+  is not hosted.
+
+Only an armed HUD runs the following host wiring. A plan without the line runs as OFF.
+
+| Image | Host |
+|---|---|
+| left-Alt test | `HudUpdateBinding::modifier_key_allows_back_out` answers "not held" (LABELLED: no keyboard) |
+| 0068B470 open arm and 0068AC30 | `GameHudHost::Impl::back_out_one_overlay_level_0068b470` |
+| 004F85D0, 004D8AE0 | `GameMenuHost::publish_level2_screen_set_004f85d0`, `publish_level2_input_contexts_004d8ae0` |
+| 005A8EF0 | `MenuSetBindings::screen_occludes_lower_levels` answers true for 4Ch |
+| 0064A490 | `GameHudHost::exit_ship_view_screen_0064a490`, from the pump's exit for slot 46h |
+
+Records only:
+- the close arm, 0068B4E9..0068B507;
+- 0051E8E0, 0068AB30, and the selection copy;
+- the screen 4Ch and 39h enter, update and exit virtuals.
+
+Map state log lines, which need no switch:
+- `map open t=<hud update frame> unit=<ship-view unit>` is written when 0068AC30 publishes level 2.
+- `map close-requested (not hosted, map stays open) ...` is written for a second C1h.
+- The 46h exit adds `releasegun: screen 46h exit 0064A490 released the weapon group and roles 1..8 (1FEh)`.
+
+The host's map changes state only on this path. With the switch OFF, or in a plan without the line, none of these lines
+appears.
+
+In the image, a later `select` re-applies 25h. Its 0064DA40 re-binds 2Eh, which re-takes the group, but 46h stays
+occluded while 4Ch is up. The host does not change that path.
+
+Status: reconstructed and build-tested, OFF. The switch was also built ON. No game run.

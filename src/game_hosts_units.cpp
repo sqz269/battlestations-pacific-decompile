@@ -12223,7 +12223,7 @@ public:
         ++slot_.sub_trace_counter;
         if ((slot_.sub_trace_counter % 200u) != 1u) return;
         owner_.log.notef("submarine depth trace: unit=%s step=%llu level=%d y=%.2f vy=%.3f "
-            "sink=%.3f pitch=%.4f rate=%.3f dir=%d air=%.3f need=%d clear=%.2f front=%.3f rear=%.3f clamps=%llu bound=%d (packet cc9_submarine_dive)",
+            "sink=%.3f pitch=%.4f rate=%.3f dir=%d air=%.3f need=%d clear=%.2f front=%.3f rear=%.3f clamps=%llu bound=%d x=%.1f z=%.1f (packet cc9_submarine_dive)",
             slot_.row.name.c_str(), slot_.sub_trace_counter,
             static_cast<int>(slot_.row.submarine_depth_level),
             static_cast<double>(slot_.motion.position[1]),
@@ -12234,7 +12234,9 @@ public:
             slot_.sub_air.need_air ? 1 : 0, static_cast<double>(slot_.sub_scan.clearance),
             static_cast<double>(slot_.sub_scan.front_rate),
             static_cast<double>(slot_.sub_scan.rear_rate), slot_.sub_clamp_steps,
-            kSubmarineDiveBound ? 1 : 0);
+            kSubmarineDiveBound ? 1 : 0,
+            static_cast<double>(slot_.motion.position[0]),
+            static_cast<double>(slot_.motion.position[2]));
     }
 
     // 00937622, 00937440's last call. 009329C0 is slot 0 of the controller vtable
