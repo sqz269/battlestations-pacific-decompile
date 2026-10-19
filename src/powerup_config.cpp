@@ -427,13 +427,19 @@ void load_powerup_config_008ecec0(PowerupConfigOwner& owner,
         path.value.assign_0041e870(context.strings, "Scripts/datatables/PowerupClasses.lua");
         (void)scripts.run_file(state.storage_lua_38(), path.value.data(), false);
     }
+    load_powerup_config_tables_008ecec0(owner, *state.storage_lua_38(), context);
+    state.close_storage_archive_00b65e80();
+}
+
+void load_powerup_config_tables_008ecec0(PowerupConfigOwner& owner, lua_State& state,
+    PowerupConfigContext& context) {
     {
     GroupStrings group_names{context.strings, {}};
     const char* const group_texts[] = {"A*", "S*", "T*", "  "};
     for (std::size_t index = 0; index != 4; ++index)
         group_names.values[index].assign_0041e870(context.strings, group_texts[index]);
     {
-        GuiLua51Host lua(*state.storage_lua_38());
+        GuiLua51Host lua(state);
         OwnedRef globals{lua, lua.globals()};
         OwnedRef table{lua, lua.get_by_name(globals.value, "PowerupClasses")};
         lua.release(globals.value); globals.value = {};
@@ -482,7 +488,6 @@ void load_powerup_config_008ecec0(PowerupConfigOwner& owner,
         }
     } // reader refs then table ref, before four group strings and Lua close
     }
-    state.close_storage_archive_00b65e80();
 }
 
 void release_powerup_configuration_storage(PowerupConfigOwner& owner,

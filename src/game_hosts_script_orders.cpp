@@ -37,6 +37,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/camera_decomposition.hpp"  // packet cc9_lua_camera_state
 #include "bsp/mission_camera.hpp"        // packet cc9_lua_camera_state
 #include "bsp/mission_lua_host.hpp"
+#include "bsp/cc13_powerup.hpp"  // packet cc13-powerup
 // Packet cc8_ship_follow: 00779D50's transcription and the ship-base kind.
 #include "bsp/ship_ai_states.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_usn02_deruyter_fire
@@ -412,6 +413,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc13-fix21: jm10.lua:1764 (luaJM10SaveMissionData, both copies).
     // Handled only with kLuaGetSubmarineAirSupplyBound.
     {"GetSubmarineAirSupply", 0x008938e0u},
+    // Packet cc13-powerup: handled only with bsp::cc13_powerup::kPowerupGrantBound.
+    {"AddPowerup", 0x008ee410u},
+    {"PreparePowerup", 0x008ea610u},
+    {"GetAvailablePowerups", 0x008eb350u},
 };
 
 // The id the first script entity takes. The created scene instances number from 1
@@ -681,6 +686,11 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         return kPilotMoveToBound && bsp::kPilotMoveToTaskBound;
     }
     if (std::strcmp(binding->name, "PilotMoveOnPath") == 0) return kPilotMoveOnPathBound;
+    if (std::strcmp(binding->name, "AddPowerup") == 0 ||
+        std::strcmp(binding->name, "PreparePowerup") == 0 ||
+        std::strcmp(binding->name, "GetAvailablePowerups") == 0) {
+        return bsp::cc13_powerup::kPowerupGrantBound;
+    }
     if (std::strcmp(binding->name, "SetFireTarget") == 0) return kScriptFireTargetBound;
     if (std::strcmp(binding->name, "TorpedoEnable") == 0) return kShipDirectorEnablesBound;
     if (std::strcmp(binding->name, "ArtilleryEnable") == 0) return kLuaArtilleryEnableBound;
@@ -4635,6 +4645,24 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         } else {
             ++get_rotation_unresolved_;
             results = 0;
+        }
+    } else if (std::strcmp(binding->name, "AddPowerup") == 0 ||
+               std::strcmp(binding->name, "PreparePowerup") == 0 ||
+               std::strcmp(binding->name, "GetAvailablePowerups") == 0) {
+        // Packet cc13-powerup: 008EE410, 008EA610 and 008EB350 (src/cc13_powerup.cpp).
+        // handles() refuses the rows while kPowerupGrantBound is off. Without a
+        // loaded registry (the global_subsystems step failed) there is no manager
+        // to run them against, and the row stays an unimplemented record.
+        bsp::cc13_powerup::PowerupRuntime& powerups = bsp::cc13_powerup::powerup_runtime();
+        if (state_ == nullptr || powerups.host == nullptr) {
+            log_.unimplemented(method, address);
+            results = 0;
+        } else if (std::strcmp(binding->name, "AddPowerup") == 0) {
+            results = bsp::cc13_powerup::lua_add_powerup_008ee410(powerups, state_);
+        } else if (std::strcmp(binding->name, "PreparePowerup") == 0) {
+            results = bsp::cc13_powerup::lua_prepare_powerup_008ea610(powerups, state_);
+        } else {
+            results = bsp::cc13_powerup::lua_get_available_powerups_008eb350(powerups, state_);
         }
     } else if (std::strcmp(binding->name, "GetCapturePercentage") == 0) {
         // 0089B840: 00888AA0 on argument 0, 006F1F90 on that entity with no class
