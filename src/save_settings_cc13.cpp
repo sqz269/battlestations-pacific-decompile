@@ -250,6 +250,16 @@ void read_entity_id_registries_006ad470(ArchiveSectionReader& reader,
     reader.end_section();
 }
 
+void write_entity_id_registries_006ad4d0(ArchiveSectionReader& writer,
+    const std::function<void(int table_index)>& save_table) {
+    writer.begin_section(0,kRegistry0);
+    save_table(0);
+    writer.end_section();
+    writer.begin_section(0,kRegistry1);
+    save_table(1);
+    writer.end_section();
+}
+
 void finish_mission_load_006b5960(lua_State* L, MissionLuaFunctionNames& names,
                                   const MissionLuaEntityHooks& entities,
                                   const MissionLoadFinishHooks& hooks) {

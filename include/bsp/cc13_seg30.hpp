@@ -17,6 +17,8 @@
 
 #include <cstddef>
 #include <cstdint>
+#include "bsp/native_command_target_resolve.hpp"
+namespace bsp::airfield_marker_seg31_32_argon { struct Seg31_32Host; }
 
 namespace bsp::cc13_seg30 {
 
@@ -284,6 +286,59 @@ struct Seg30Host {
 // ---------------------------------------------------------------------------
 // Segment 30: air-ops block.
 // ---------------------------------------------------------------------------
+// Oct18b-nA2: new normal-body calls; separate interface leaves existing
+// Seg30Host implementations unchanged. No concrete adapter/game wiring added.
+struct AirFieldLeafHost : Seg30Host {
+    virtual void air_ops_reset_slots_006bd360(void*) = 0;
+    virtual void unit_party_race_00951f30(void*,std::uint32_t,std::uint32_t,std::uint32_t*) = 0;
+    virtual void child_party_race_2c(void*,std::uint32_t,std::uint32_t,std::uint32_t*) = 0;
+    virtual void entity_float_0042ed80(void*,float) = 0;
+    virtual void child_float_f4(void*,float) = 0;
+    virtual bool native_string_equals_00425850(const void*,const char*) = 0;
+    virtual bool unit_set_failure_00953da0(void*,void*,std::uint32_t) = 0;
+    virtual bool unit_query_failure_00953e60(void*,void*,std::uint32_t,std::uint8_t*) = 0;
+    virtual bool unit_clear_failure_00953ea0(void*,void*,std::uint32_t) = 0;
+    virtual void route_message_0077c2a0(void*,void*,std::uint32_t,std::uint32_t) = 0;
+    virtual void command_registry_find_0077a020(void*) = 0;
+    virtual const void* command_from_ordinal_0077a050(void*) = 0;
+    virtual const void* image_address(std::uint32_t) = 0;
+    virtual void director_set_target_00835860(void*,std::uint32_t,std::uint32_t) = 0;
+};
+// Names below are hypotheses. Original ABI and complete-body evidence:
+// 006BF1B0 ECX=block,index/RET4; checked list+40h, node payload+8, or zero.
+void* air_ops_holder_at_006bf1b0(Seg30Host&,void*,std::uint32_t);
+// 006C0020 ECX=archive,key(kind,value),object/RET0C; slot+0Ch receives key
+// and by-value {4,object}. 006CE290 ECX=observer,flags/RET4,EAX=identity,
+// stamps CF88F8, free only bit0. 006CFE10 ECX=site,RET; [+B8]+1188 or0.
+void archive_write_object_006c0020(Seg30Host&,void*,ArchiveArg,void*);
+void* observer_scalar_delete_006ce290(Seg30Host&,void*,std::uint32_t);
+void* mothership_site_air_ops_006cfe10(void*) noexcept;
+// 006D0C60 ECX=self+72Ch ->006BD360, RET. 006D1D50 RET4; 006D1E90 and
+// 006D1EA0 RET; 006D1ED0 AL=0 RET4. 006D1FB0 EAX=[ECX+C4h], RET.
+void air_field_reset_slots_006d0c60(AirFieldLeafHost&,void*);
+void air_field_ignore_006d1d50(std::uint32_t) noexcept;
+void unit_empty_hook_006d1e90() noexcept;
+bool unit_false_hook_006d1ed0(std::uint32_t) noexcept;
+std::uint32_t unit_class_006d1fb0(void*) noexcept;
+// 006D2070 ECX=self,3 args/RET0C: *arg3=0Fh, base00951F30, then child
+// slot+2Ch over12-byte records at+830/+834; reload end after every call.
+void air_field_party_race_006d2070(AirFieldLeafHost&,void*,std::uint32_t,std::uint32_t,std::uint32_t*);
+// 006D2210/23D0 ECX=self,NativeString*,value/RET8,AL success. Literal
+// RunwayFailure/HangarFailure build72/74 or73/75, route7/flags0; else base.
+// 006D2350 adds byte*out/RET0C, reads +748/+749 on match; else base953E60.
+bool air_field_set_failure_006d2210(AirFieldLeafHost&,void*,void*,std::uint32_t);
+bool air_field_clear_failure_006d23d0(AirFieldLeafHost&,void*,void*,std::uint32_t);
+bool air_field_query_failure_006d2350(AirFieldLeafHost&,void*,void*,std::uint32_t,std::uint8_t*);
+// 006D2850 ECX=self,message/RET4. Registry call, copy24h..3Bh BEFORE
+// ordinal lookups; resolve local target through00521EA0, director=self+8C8h.
+void air_field_target_order_006d2850(AirFieldLeafHost&,void*,void*,const NativeCommandTargetHandleTables&);
+// 006D3EB0 ECX=self,float/RET4: base0042ED80, then child+F4h; reload end.
+void air_field_forward_float_006d3eb0(AirFieldLeafHost&,void*,float);
+// 006D60B0 ECX=self,peer/RET4. Stack148h AIRFIELD_CREATE, source+7AC's
+// B0/B4 floats or0; send779FC0, destruct6D4420 on normal/EH exit. New C++
+// interface uses the existing message family; no native EH/binary ABI proof.
+void air_field_send_create_006d60b0(Seg30Host&,
+    airfield_marker_seg31_32_argon::Seg31_32Host&,void*,std::uint32_t);
 void buffered_callback_owner_destruct_006beec0(Seg30Host& host, void* self);
 void air_ops_block_read_traffic_table_006bef30(Seg30Host& host, void* block, void* lua);
 int air_ops_total_plane_count_006bf350(Seg30Host& host, void* block);

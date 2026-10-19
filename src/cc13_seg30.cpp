@@ -2,10 +2,138 @@
 // docs/CC13_SEG30.md for evidence. Names are hypotheses, not recovered symbols.
 
 #include "bsp/cc13_seg30.hpp"
+#include "bsp/airfield_marker_seg31_32_argon.hpp"
+#include <cstring>
 
 #include <utility>
 
 namespace bsp::cc13_seg30 {
+void* air_ops_holder_at_006bf1b0(Seg30Host& host,void* block,std::uint32_t index) {
+    void* node=ptr(ptr(block,0x44),0);
+    void* const list=reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(block)+0x40u);
+    std::uint32_t i=0;
+    for (;;) {
+        void* const head=ptr(list,4);
+        if (!list) host.invalid_iterator_00bf6713();
+        if (node==head || index==i) break;
+        if (!list) host.invalid_iterator_00bf6713();
+        if (node==ptr(list,4)) host.invalid_iterator_00bf6713();
+        node=ptr(node,0); ++i;
+    }
+    void* const head=ptr(list,4);
+    if (!list) host.invalid_iterator_00bf6713();
+    if (node==head) return nullptr;
+    if (!list) host.invalid_iterator_00bf6713();
+    if (node==ptr(list,4)) host.invalid_iterator_00bf6713();
+    return ptr(node,8);
+}
+void archive_write_object_006c0020(Seg30Host& host,void* archive,ArchiveArg key,void* object) {
+    host.archive_write_0c(archive,key,{4,reinterpret_cast<std::uintptr_t>(object)});
+}
+void* observer_scalar_delete_006ce290(Seg30Host& host,void* self,std::uint32_t flags) {
+    at<std::uint32_t>(self,0)=0x00cf88f8;
+    if (flags&1) host.free_00bf65ac(self);
+    return self;
+}
+void* mothership_site_air_ops_006cfe10(void* self) noexcept {
+    void* const owner=ptr(self,0xb8);
+    return owner ? add(owner,0x1188) : nullptr;
+}
+void air_field_reset_slots_006d0c60(AirFieldLeafHost& host,void* self) {
+    host.air_ops_reset_slots_006bd360(add(self,0x72c));
+}
+void air_field_ignore_006d1d50(std::uint32_t) noexcept {}
+void unit_empty_hook_006d1e90() noexcept {}
+bool unit_false_hook_006d1ed0(std::uint32_t) noexcept { return false; }
+std::uint32_t unit_class_006d1fb0(void* self) noexcept { return at<std::uint32_t>(self,0xc4); }
+void air_field_party_race_006d2070(AirFieldLeafHost& host,void* self,
+    std::uint32_t a,std::uint32_t b,std::uint32_t* kind) {
+    *kind=0xf;
+    host.unit_party_race_00951f30(self,a,b,kind);
+    auto* item=static_cast<std::uint8_t*>(ptr(self,0x830));
+    auto* end=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(item)+
+        static_cast<std::uint32_t>(at<std::uint32_t>(self,0x834)*12u));
+    while (item!=end) {
+        host.child_party_race_2c(ptr(item,0),a,b,kind);
+        const auto count=at<std::uint32_t>(self,0x834);
+        void* const base=ptr(self,0x830);
+        item=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(item)+12u);
+        end=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(base)+count*12u);
+    }
+}
+namespace {
+bool runway_failure_name(void* name) {
+    const char* const text=at<const char*>(name,4);
+    return text && _stricmp(text,"RunwayFailure")==0;
+}
+bool route_air_field_failure(AirFieldLeafHost& host,void* self,void* name,bool clear) {
+    alignas(4) std::uint8_t message[0x24];
+    if (runway_failure_name(name)) {
+        if (clear) airbase_clear_runway_failure_construct_006d1720(host,message);
+        else airbase_set_runway_failure_construct_006d16a0(host,message);
+    } else if (host.native_string_equals_00425850(name,"HangarFailure")) {
+        if (clear) airbase_clear_hangar_failure_construct_006d1820(host,message);
+        else airbase_set_hangar_failure_construct_006d17a0(host,message);
+    } else return false;
+    host.route_message_0077c2a0(self,message,7,0);
+    return true;
+}
+}
+bool air_field_set_failure_006d2210(AirFieldLeafHost& host,void* self,void* name,std::uint32_t value) {
+    if (route_air_field_failure(host,self,name,false)) return true;
+    return host.unit_set_failure_00953da0(self,name,value);
+}
+bool air_field_clear_failure_006d23d0(AirFieldLeafHost& host,void* self,void* name,std::uint32_t value) {
+    if (route_air_field_failure(host,self,name,true)) return true;
+    return host.unit_clear_failure_00953ea0(self,name,value);
+}
+bool air_field_query_failure_006d2350(AirFieldLeafHost& host,void* self,void* name,
+    std::uint32_t value,std::uint8_t* out) {
+    if (runway_failure_name(name)) { *out=at<std::uint8_t>(self,0x748); return true; }
+    if (host.native_string_equals_00425850(name,"HangarFailure")) {
+        *out=at<std::uint8_t>(self,0x749); return true;
+    }
+    return host.unit_query_failure_00953e60(self,name,value,out);
+}
+void air_field_target_order_006d2850(AirFieldLeafHost& host,void* self,void* message,
+    const NativeCommandTargetHandleTables& tables) {
+    host.command_registry_find_0077a020(message);
+    alignas(4) std::uint8_t target[0x18];
+    std::memcpy(target,add(message,0x24),sizeof target);
+    if (host.command_from_ordinal_0077a050(message)==host.image_address(0x00e08ef8)) {
+        const auto object=resolve_native_command_target_00521ea0(target,tables);
+        host.director_set_target_00835860(ptr(self,0x8c8),object,1);
+        return;
+    }
+    if (host.command_from_ordinal_0077a050(message)==host.image_address(0x00e08f00) ||
+        host.command_from_ordinal_0077a050(message)==host.image_address(0x00e08f08))
+        host.director_set_target_00835860(ptr(self,0x8c8),0,1);
+}
+void air_field_forward_float_006d3eb0(AirFieldLeafHost& host,void* self,float value) {
+    host.entity_float_0042ed80(self,value);
+    auto* item=static_cast<std::uint8_t*>(ptr(self,0x830));
+    auto* end=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(item)+
+        static_cast<std::uint32_t>(at<std::uint32_t>(self,0x834)*12u));
+    while (item!=end) {
+        host.child_float_f4(ptr(item,0),value);
+        const auto count=at<std::uint32_t>(self,0x834);
+        void* const base=ptr(self,0x830);
+        item=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(item)+12u);
+        end=reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(base)+count*12u);
+    }
+}
+void air_field_send_create_006d60b0(Seg30Host& host,
+    airfield_marker_seg31_32_argon::Seg31_32Host& message_host,void* self,std::uint32_t peer) {
+    void* const source=ptr(self,0x7ac);
+    const float b=source ? at<float>(source,0xb4) : 0.0f;
+    const float a=source ? at<float>(source,0xb0) : 0.0f;
+    alignas(4) std::uint8_t storage[0x148];
+    using namespace airfield_marker_seg31_32_argon;
+    void* const message=session_message_airfield_create_construct_006d4c70(message_host,storage,self,a,b);
+    try { host.entity_send_message_to_peer_00779fc0(self,peer,message); }
+    catch (...) { session_message_airfield_create_destruct_006d4420(message_host,storage); throw; }
+    session_message_airfield_create_destruct_006d4420(message_host,storage);
+}
 
 namespace {
 
