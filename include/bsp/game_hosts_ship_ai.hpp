@@ -277,6 +277,14 @@ struct GameShipAiRow {
     std::uint32_t brain_target{0};           // brain+0B20h
     std::string brain_target_name;           // the created instance it resolves to
     std::string command_descriptor;          // what 0071EB60 answered with
+    // Packet cc13-posgoal, log only (read by the goal table print alone): the
+    // brain target's world x/z at the last capture, and the motion step of the
+    // last 009F156B..009F1584 goal rewrite.
+    bool brain_target_live_valid{false};
+    float brain_target_live_x{0.0f};
+    float brain_target_live_z{0.0f};
+    bool goal_rewrite_seen{false};
+    unsigned long long goal_rewrite_step{0};
     unsigned long long path_plan_refreshes{0};  // 009ED3E0 call sites
     unsigned long long corridor_group_widths{0};  // 009ED3E0 head: widths from the group
     unsigned long long path_plan_seeds{0};   // 009E3780 calls that rebuilt the graph

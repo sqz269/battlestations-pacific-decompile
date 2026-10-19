@@ -10418,6 +10418,9 @@ public:
         if (result.goal_rewritten) {
             ++row_.goal_refreshes;
             ++owner_.summary.goal_refreshes;
+            // Packet cc13-posgoal, log only: the step the ship ai step line prints.
+            row_.goal_rewrite_seen = true;
+            row_.goal_rewrite_step = owner_.units.summary().motion_steps;
         }
         // Packet cc8_ship_ai_goal_vector_visibility: the gate the ring scan
         // stops at, counted where 009F1420 leaves it.
@@ -10428,10 +10431,20 @@ public:
         row_.brain_goal_z = ctl_.goal_vector.goal_z_0b34;
         row_.brain_target = ctl_.goal_vector.raw_target_0b20;
         row_.brain_target_name.clear();
+        row_.brain_target_live_valid = false;
         if (ctl_.goal_vector.raw_target_0b20 != 0u) {
-            const GameUnitRow* target = owner_.units.unit_row(
-                static_cast<std::size_t>(ctl_.goal_vector.raw_target_0b20 - 1u));
+            const std::size_t target_index =
+                static_cast<std::size_t>(ctl_.goal_vector.raw_target_0b20 - 1u);
+            const GameUnitRow* target = owner_.units.unit_row(target_index);
             if (target != nullptr) row_.brain_target_name = target->name;
+            // Packet cc13-posgoal, log only: the target's live position now.
+            if (target_index < owner_.units.count()) {
+                float tx = 0.0f, ty = 0.0f, tz = 0.0f;
+                owner_.units.unit_position_00fc(target_index, tx, ty, tz);
+                row_.brain_target_live_valid = true;
+                row_.brain_target_live_x = tx;
+                row_.brain_target_live_z = tz;
+            }
         }
         {
             // The descriptor as it stands on this sub-tick, not as it stood on
@@ -14376,9 +14389,15 @@ void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long lon
         // blk+324h this step, 0 = none (Controller::blk.last_writer_324, log
         // only, reset at the head of controller_step's per-unit loop), also
         // kept out of the change test so the set of emitted lines is unchanged.
-        host.log.notef("  ship ai step %llu  %s hull=%8.4f w324=%08lX", step_index, line,
+        // Packet cc13-posgoal: pos= is the unit's world x/z (unit_position_00fc,
+        // a const read), log only and outside the change test as well.
+        float px = 0.0f, py = 0.0f, pz = 0.0f;
+        host.units.unit_position_00fc(index, px, py, pz);
+        host.log.notef("  ship ai step %llu  %s hull=%8.4f w324=%08lX pos=(%.1f,%.1f)",
+                       step_index, line,
                        static_cast<double>(host.units.unit_heading_radians(index)),
-                       static_cast<unsigned long>(host.controllers[index].blk.last_writer_324));
+                       static_cast<unsigned long>(host.controllers[index].blk.last_writer_324),
+                       static_cast<double>(px), static_cast<double>(pz));
     }
 }
 
@@ -14584,15 +14603,28 @@ void GameShipAiHost::report() {
     // Milestone 2p: the goal vector, one row per unit whose brain pre-pass ran,
     // so the (0,0) of milestone 2o can be compared against what the command
     // actually asks for.
-    host.log.notef("  %-20s %-10s %8s %8s %11s %11s %-16s %s", "unit", "state", "prepass",
-        "refresh", "goal_x", "goal_z", "target", "0071eb60 descriptor");
+    host.log.notef("  %-20s %-10s %8s %8s %11s %11s %-16s %s target_pos rewrite_step", "unit",
+        "state", "prepass", "refresh", "goal_x", "goal_z", "target", "0071eb60 descriptor");
     for (const GameShipAiRow& row : host.rows) {
         if (row.goal_prepasses == 0) continue;
-        host.log.notef("  %-20s %-10s %8llu %8llu %11.1f %11.1f %-16s %s", row.unit.c_str(),
+        // Packet cc13-posgoal: the target's live x/z at the last capture and the
+        // step of the last goal rewrite, `-` when absent; log only.
+        char target_pos[48] = "-";
+        if (row.brain_target != 0u && row.brain_target_live_valid) {
+            std::snprintf(target_pos, sizeof(target_pos), "(%.1f,%.1f)",
+                static_cast<double>(row.brain_target_live_x),
+                static_cast<double>(row.brain_target_live_z));
+        }
+        char rewrite_step[24] = "-";
+        if (row.goal_rewrite_seen) {
+            std::snprintf(rewrite_step, sizeof(rewrite_step), "%llu", row.goal_rewrite_step);
+        }
+        host.log.notef("  %-20s %-10s %8llu %8llu %11.1f %11.1f %-16s %s target_pos=%s "
+            "rewrite_step=%s", row.unit.c_str(),
             row.state.c_str(), row.goal_prepasses, row.goal_refreshes,
             static_cast<double>(row.brain_goal_x), static_cast<double>(row.brain_goal_z),
             row.brain_target_name.empty() ? "-" : row.brain_target_name.c_str(),
-            row.command_descriptor.c_str());
+            row.command_descriptor.c_str(), target_pos, rewrite_step);
         if (row.brain_goal_x != 0.0f || row.brain_goal_z != 0.0f) {
             ++host.summary.units_with_nonzero_goal;
         }
