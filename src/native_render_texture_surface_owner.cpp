@@ -52,7 +52,7 @@ void release_at_zero(void* owner,NativeRenderTextureSurfaceOwnerContext& c) {
         delete_native_surface_00b3f5b0(*static_cast<NativeSurfaceOwnerStorage*>(owner),1,owners(c).surfaces);
         return;
     }
-    if(terminal==0x00b3f590) { delete_native_texture_2d_00b3f590(owner,1,owners(c));return; }
+    if(terminal==0x00b3f590) { delete_native_texture_2d_after_zero(owner,1,owners(c));return; }
     __assume(0);
 }
 struct BaseCleanup {

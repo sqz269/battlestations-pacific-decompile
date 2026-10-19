@@ -5,6 +5,7 @@
 #include "bsp/native_renderer_device_recreation_actual.hpp"
 #include "bsp/native_render_resources_surfaces.hpp"
 #include "bsp/native_cube_texture_owner_array_reserve.hpp"
+#include "bsp/native_texture_loading_cache.hpp"
 #include <atomic>
 #include <cstring>
 #include <exception>
@@ -284,6 +285,9 @@ void* create_native_runtime_texture_2d_00b2a070(void* renderer,
         void* const current=static_cast<IDirect3DTexture9* volatile&>(a.com_output);(void)method<ComWord>(current,8)(current);
         const auto exit_mode=c.synchronization.mode_00;a.unwind_state=-1;
         if(exit_mode!=0)leave_native_renderer_optional_guard_00b33b00(a.guard.renderer_04,word(&a.guard),c.synchronization);
-        a.phase=NativeRuntimeTextureCreationAcquired::Phase::complete;return a.owner;
+        a.phase=NativeRuntimeTextureCreationAcquired::Phase::complete;
+        if(a.owner && c.canonical_owners)
+            c.canonical_owners->register_completed_runtime_creator(a,c.construction);
+        return a.owner;
 }
 } // namespace bsp

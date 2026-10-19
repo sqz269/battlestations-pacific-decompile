@@ -397,3 +397,10 @@ float ocean_live_field_water_height_0078cf20(float x, float z) {
 }
 
 }  // namespace bsp
+
+namespace bsp {
+__declspec(naked) void ocean_default_slot4_00b96e60() { __asm { ret } }
+__declspec(naked) void ocean_default_slot5_00b96e70() { __asm { ret } }
+__declspec(naked) void ocean_default_slot6_00b96e80() { __asm { ret } }
+__declspec(naked) void ocean_default_slot7_00b96e90() { __asm { ret } }
+} // namespace bsp

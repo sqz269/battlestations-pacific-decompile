@@ -65,6 +65,10 @@ struct MissionShipCameraGraph final {
         set_system_fog_underwater_color_00b84c70(*fog, water);
         for (std::uint32_t i = 0; i != 4; ++i)
             set_system_fog_directional_color_00b84fa0(*fog, directional, i);
+        // Explicit clear-air diagnostic: the shader's distance/height maximum
+        // densities are +68/+78. Keep the native nonzero range denominators.
+        set_system_fog_scalar_68_00b84d00(*fog, 0u);
+        set_system_fog_scalar_78_00b84d40(*fog, 0u);
         set_system_fog_camera_owner_00b71940(owner->frame.fog_184, fog);
         release_system_fog_owner(*fog); // camera owns the remaining native ref
 
@@ -99,8 +103,8 @@ struct MissionShipCameraGraph final {
     void fit_ship(const CameraAxis& center, float radius) {
         check(owner && !caller_released && std::isfinite(radius) && radius > 0.0f,
             "mission fixed camera requires a finite installed ship sphere");
-        const CameraAxis eye{center[0] + radius * 2.7f,
-            center[1] + radius * 1.1f, center[2] - radius * 1.3f};
+        const CameraAxis eye{center[0] + radius * 1.9f,
+            center[1] + radius * 0.8f, center[2] - radius * 0.9f};
         set_camera_look_at_00b700e0(owner->camera, eye, center, owner->pose,
             environment.crt, environment.viewport.one_bits_00d7a24c);
         (void)get_native_camera_view_projection_00b70490(raw);

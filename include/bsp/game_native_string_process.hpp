@@ -23,6 +23,12 @@ public:
     // Source admission policy, not Native storage. Claim once while quiescent;
     // never reset, including after drain or host replacement. No owner is made.
     bool claim_particle_manager_domain() noexcept;
+    // Sole loader-zero Application publication. The genuine BEA810/BEA8B0
+    // providers publish/clear it; borrowing this cell starts no owner.
+    void* volatile& application_00e1ae90() noexcept;
+    // Source admission only: one Application graph for this process, even
+    // after normal retirement. Never reset or use as a native reference count.
+    bool claim_application_domain() noexcept;
     NativeStringPoolStorage* volatile& pool_01090aa8() noexcept { return pool_; }
     volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }
     NativeStringRawPoolContext& raw_context() noexcept { return raw_; }
@@ -66,6 +72,10 @@ private:
     // Append after every established field, even when this uses tail padding.
     // Never alias a property, query, clone or library fallback authority.
     const char enum_empty_00e186ed_{};
+    // Append after all established process authorities. The Application graph
+    // uses the SAME manager_ authority, not another private singleton manager.
+    void* volatile application_00e1ae90_{};
+    bool application_domain_claimed_{};
 };
 
 // Intentionally retained through process termination. No C++ exit destructor

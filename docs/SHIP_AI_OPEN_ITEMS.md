@@ -19750,3 +19750,48 @@ re-time the TT5 route from the frame where CB2 turns. Jitter (20,3) loses all si
   with the call at 00748455, and the body call is at 00748932);
 - NaN-only lows: the rudder clamp 009DA28C..2AB passes NaN where the host sends -1, and the ring slew 009F4C4E never
   writes NaN.
+
+## 298. The break-in-two draws, kShipBreakInTwoDrawsBound (cc9-ships60, 2026-10-18)
+
+The 98h receiver 00814520 tail-jumps to 00935D30 BSP_UnitController_BreakInTwo (docs/CC13_SEGMIX.md). The host
+records the 98h send in `ship_death_message_00827ab0` and stops there (`host.breakup_parts` has no implementer), so
+it skips the 11 stream-1 draws the two pieces take. The listing has exactly 11 `CALL 00BD2F10` in the body, all with
+ECX = 1: the front at 00936328, 00936388, 009363A5 (sx, sy, sz = U(-1, 1), [00D7A260] = -1.0 and FLD1), 009363ED
+and 00936460 (U(0, 1.5), [00CE380C] = 1.5) and 009364AE (U(10, 20), [00CE38B8] = 10.0, [00CE3930] = 20.0); the back
+at 009366B2..009367E8, the same without sx. The piece offsets only pose the wreck halves (presentation) and are not
+modelled.
+
+Bound OFF as `kShipBreakInTwoDrawsBound` (game_hosts_gunnery.cpp, beside `kShipDeathMessageBound`): at the host's
+98h send it takes the 11 draws in image order on `Draw::ship_break_in_two` (key unit, 0 front / 1 back), and the
+ship death summary gains `break_in_two_draws=`. Uncertainty: the image delivers 98h through the message manager,
+and the host assumes same-tick delivery, as it already does for 9Ah.
+
+Predictions: in the reference env (`BSP_GUNNERY_RNG_STREAMS=1`) the draws are on their own key, so a pair is
+gameplay identical, with `break_in_two_draws = 11 * 98h`. In the default env every draw on the shared stream after
+the first 98h moves, so the pair moves (exit 3) from the first breakup on, when the row has one.
+
+## 299. The NaN arms of the rudder clamp and the ring slews, kShipAiRingNanArmsBound (cc9-ships60, 2026-10-18)
+
+Two NaN-only lows from 297, both in ship_ai_throttle_ring.cpp, bound OFF together as `kShipAiRingNanArmsBound`
+(ship_ai_throttle_ring.hpp):
+- 009DA250's clamp. 009DA28C loads -1.0 ([00D7A260]), 009DA292 FCOMIP ST0(-1), ST1(raw) and JBE 009DA2A2: an
+  unordered compare sets CF and ZF, so a NaN raw takes the keep arm; 009DA2A8 COMISS raw, [00D7A24C] JBE also keeps
+  it. The image passes NaN; the host's `kShipAiRudderLow <= raw` sent -1.
+- The slews 009F4C0E/009F4C86. After 009F4C4E FCOMI ST0(step), ST1(|previous - desired|) the JBE at 009F4C52 takes
+  the stepping arm on an unordered compare, and 009F4C6A FCOMPI ST0(desired), ST2(previous) JBE 009F4C72 takes FSUBP,
+  so a NaN desired gives previous - step. The host's `step <= |d|` returned the NaN desired value.
+Read with `disasm-raw 009F4C10 --length 120` and `ghidra disasm 009DA250`.
+
+Predictions: no row is known to feed a NaN here, so pairs are gameplay identical (exit 0 or 1). A moved pair means a
+NaN reached the rudder or a ring value, which would be a finding of its own.
+
+**Result, flipped ON.** Reference-env pairs on f4d92c331: USN04 20000 (`s60_naoff_u04` / `s60_naon_u04`) and JM08 24000
+(`s60_naoff_j08` / `s60_naon_j08`, mission end at 20401 frames) are identical, pair_diff exit 0, as predicted. The
+change is draw-order neutral, so no default-env pair.
+
+**Result, flipped ON.** USNOS 36000 pairs on 8ae424ab9 with the c17 orders, as predicted:
+- reference env (`s60_bdoff_os` / `s60_bdon_os`): exit 1, gameplay identical; one 98h (`break_in_two_draws 0 -> 11`)
+  and the one new native row `ShipDeath::break_in_two_draws_00935d30`.
+- default env (`s60_bdoffd_os` / `s60_bdond_os`): exit 3. The first 257 deaths are identical, through the first 98h
+  (Cargo1 at 1354.95 s); the first moved death is the next one (Airfield1_sqn39, 1357.55 -> 1357.60 s). After that
+  the shared stream is offset, so later breakups differ (Convoy2 1416.66 broke in OFF only; Cargo5 and Cargo6 in ON).
