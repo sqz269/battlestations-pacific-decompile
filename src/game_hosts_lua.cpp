@@ -578,6 +578,8 @@ int binding_trampoline(lua_State* state) {
     const bool has_fired_row = kLuaHasFiredBound && dispatch_row.address == 0x008be7e0u;
     const bool water_load_row = kLuaAddWaterLoadBound && dispatch_row.address == 0x00893380u;
     const bool break_ship_row = kLuaBreakShipBound && dispatch_row.address == 0x008914f0u;
+    const bool player_commands_row = kLuaUnitSetPlayerCommandsEnabledBound
+        && dispatch_row.address == 0x008a6c30u;
     // Packet cc9_lua_submarine_on_surface.
     const bool sub_surface_row = kLuaGetSubmarineOnSurfaceBound
         && dispatch_row.address == 0x008942c0u;
@@ -717,7 +719,7 @@ int binding_trampoline(lua_State* state) {
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
-        || has_fired_row || water_load_row || break_ship_row
+        || has_fired_row || water_load_row || break_ship_row || player_commands_row
         || sub_surface_row
         || force_gunner_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
@@ -977,6 +979,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (break_ship_row) {
         if (!host->error_replay()) host->run_break_ship_008914f0(state, argc);
+        return 0;
+    }
+    if (player_commands_row) {
+        if (!host->error_replay()) host->run_unit_set_player_commands_enabled_008a6c30(state, argc);
         return 0;
     }
     if (class_changed_row && !host->error_replay()) {
@@ -7594,6 +7600,58 @@ int GameMissionLuaHost::run_break_ship_008914f0(lua_State* state, int argument_c
     return 0;
 }
 
+// Packet cc13-luawire, under kLuaUnitSetPlayerCommandsEnabledBound. 008A6C30
+// UnitSetPlayerCommandsEnabled(unit, mask), checked against the listing
+// (src/cc13_left55_seg56a.cpp lua_unit_set_player_commands_enabled): argument 0 through
+// 00888AA0, its director vtable[114h] (fetched before the integer), argument 1 as an
+// integer, then 0071DD30(director, mask), which builds message 5Ah sub-kind 2 and routes
+// it with flags 7 (0077C2A0) to [director+34h]; 0071C1E0's arm 2 stores the mask at
+// director+1CCh. Returns no value. No RNG.
+// Readers in the image: 0071C060 (BSP_Unit_DirectorFlagsAllow; its 16 callers are the
+// HUD unit pick screen 00527260 / 00526720 and the order screen 005F9840 / 005FB080)
+// and the network snapshot 00721280; 0071BD30 and the getter 00720E10 have no
+// references. No host code reads the store, so ON changes nothing but the record line
+// and this host's map.
+// SUBSTITUTIONS (labelled):
+//  * the director is a units-host slot, as HasFired's: the unit itself, or for a plane
+//    (kind 0Fh) its registry squadron slot;
+//  * the message is applied at the call, not on its routed delivery;
+//  * a unit with no slot or no director is counted and skipped, where the image would
+//    send through a null director.
+int GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30(lua_State* state,
+    int argument_count) {
+    ++summary_.player_commands_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const std::int32_t mask = argument_count >= 2
+        ? static_cast<std::int32_t>(::lua_tointeger(state, 2)) : 0;
+    std::size_t director = static_cast<std::size_t>(-1);
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        const std::size_t index = static_cast<std::size_t>(id - 1);
+        director = index;
+        if (units->unit_is_kind_of(index, bsp::kClassTestPlane)) {
+            const bsp::PlaneSquadronHostRecord* record =
+                bsp::plane_squadron_registry().find_by_member_unit(index);
+            director = record != nullptr && record->squadron_unit != bsp::kPlaneSquadronNoUnit
+                ? record->squadron_unit : static_cast<std::size_t>(-1);
+        }
+    }
+    if (director == static_cast<std::size_t>(-1)) {
+        ++summary_.player_commands_unresolved;
+        log_.notef("  UnitSetPlayerCommandsEnabled 008a6c30: entity id %d has no director "
+            "slot (packet cc13-luawire)", id);
+        return 0;
+    }
+    director_player_commands_1cc_[director] = mask;   // 0071C1E0 arm 2: director+1CCh
+    ++summary_.player_commands_stored;
+    const GameUnitRow* row = units->unit_row(director);
+    log_.notef("  UnitSetPlayerCommandsEnabled 008a6c30: director \"%s\" +1CCh = 0x%X "
+        "(packet cc13-luawire)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<unsigned>(mask));
+    log_.implemented("MissionLuaNative::UnitSetPlayerCommandsEnabled", "008a6c30");
+    return 0;
+}
+
 // Packet cc9_set_air_base_slot_count. 008963E0 SetAirBaseSlotCount(entity, n): argument 0
 // through 00888AA0, BSP_AirOps_GetBlock, argument 1 as an integer, then 006C7E20(n) on the
 // block. 006C7E20 appends default records while [block+50h] < n (006C7E73 JAE, loop back
@@ -11508,6 +11566,12 @@ void GameMissionLuaHost::report_mission_script_state() {
             "packet cc13-luawire)", summary_.break_ship_calls, summary_.break_ship_broken,
             summary_.break_ship_no_halves, summary_.break_ship_unresolved,
             summary_.break_ship_puff_draws);
+    }
+    if constexpr (kLuaUnitSetPlayerCommandsEnabledBound) {
+        log_.notef("summary mission script player commands calls=%llu stored=%llu "
+            "unresolved=%llu (008A6C30 -> 0071DD30 -> director+1CCh, no host reader, packet "
+            "cc13-luawire)", summary_.player_commands_calls, summary_.player_commands_stored,
+            summary_.player_commands_unresolved);
     }
     log_.notef("summary mission script submarine on surface bound=%d calls=%llu true=%llu "
         "unseeded=%llu unresolved=%llu (008942C0 -> 00852820, packet "

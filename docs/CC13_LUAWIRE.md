@@ -11,6 +11,7 @@ switch is ON. Status: reconstructed and build-tested; not game-validated. The pa
 | `kLuaHasFiredBound` | `008BE7E0` HasFired | `run_has_fired_008be7e0` | `src/unit_weapons.cpp` `lua_has_fired_008be7e0` (fixed by this packet) |
 | `kLuaAddWaterLoadBound` | `00893380` AddWaterLoad | `run_add_water_load_00893380` | `src/cc13_left55_seg56a.cpp` `lua_add_water_load` (unchanged, matches) |
 | `kLuaBreakShipBound` | `008914F0` BreakShip | `run_break_ship_008914f0` | `src/options_seg56_cc13.cpp` `lua_break_ship` (unchanged, matches) |
+| `kLuaUnitSetPlayerCommandsEnabledBound` | `008A6C30` UnitSetPlayerCommandsEnabled | `run_unit_set_player_commands_enabled_008a6c30` | `src/cc13_left55_seg56a.cpp` `lua_unit_set_player_commands_enabled` (unchanged, matches) |
 
 ## HasFired, 008BE7E0
 
@@ -107,10 +108,45 @@ SUBSTITUTIONS:
 - The kill uses the Lua `Kill` runner's funnel (`kill_unit_00926d90(unit, 1)`): the stored
   cause is 1 (harm), and the ship death message is skipped (`explicit_kill_cause` is not 0).
 
+## UnitSetPlayerCommandsEnabled, 008A6C30 (part 7a)
+
+Arguments: an entity (`00888AA0`), whose director (`vtable[114h]`) is fetched before the
+integer mask is read. No value is pushed.
+
+`0071DD30(director, mask)` builds message 5Ah with sub-kind 2 and routes it with flags 7
+(`0077C2A0`) to `[director+34h]`. Arm 2 of `0071C1E0` then stores the mask at
+`director+1CCh`.
+
+Readers of `+1CCh` in the image:
+- `0071C060` `BSP_Unit_DirectorFlagsAllow`. Its 16 callers are all HUD: the unit pick screen
+  `00527260` / `00526720`, `005F9840` `BSP_HudOrder_CanAttackMove`, `005FB080` (the order
+  screen idle) and the undefined chunk at `005F9620`.
+- `00721280`, the network snapshot, which copies the mask.
+
+`0071BD30` and the getter `00720E10` have no references, so no AI or simulation code reads
+the mask.
+
+The runner stores the mask in a per-director map, which no host code reads, and records the
+call.
+
+SUBSTITUTIONS:
+- The director is a units-host slot, as for HasFired.
+- The message is applied at the call rather than on delivery.
+- A unit with no director is counted and skipped. The image would send through a null
+  director.
+
 ## Predicted ON effect on the WINS missions
 
-Only BSM01, BSM09 and JM06 call these natives; JM08, USN04, USN21, USN01, IJN08, USN15, USNOS
-and LOMP06 do not.
+Only BSM01, BSM09 and JM06 call HasFired, AddWaterLoad or BreakShip; JM08, USN04, USN21,
+USN01, IJN08, USN15, USNOS and LOMP06 do not.
+
+UnitSetPlayerCommandsEnabled is called in three missions:
+- BSM01 `bsm_01:1797` (Henry, `PCF_NONE`);
+- BSM09 `bsm_09:262` (Donald);
+- USN04 `usn/usn_19_coralus.lua:460` and `:1947` (Lex and Town, `PCF_NONE+PCF_TARGET`).
+
+ON is identical in all three, apart from the record line and the `+1CCh` store, because no
+host code reads the mask.
 
 - **BSM01, HasFired** (`bsm_01:813`):
   - The call is `HasFired(Henry, "DEPTHCHARGE", GameTime())`. It becomes true at Henry's

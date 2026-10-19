@@ -1194,6 +1194,9 @@ struct GameMissionLuaSummary {
     unsigned long long break_ship_no_halves{0};
     unsigned long long break_ship_unresolved{0};
     unsigned long long break_ship_puff_draws{0};   // 0092A240's 00BD2F10 draws
+    unsigned long long player_commands_calls{0};      // 008A6C30, packet cc13-luawire
+    unsigned long long player_commands_stored{0};
+    unsigned long long player_commands_unresolved{0};
     unsigned long long sub_surface_calls{0};
     unsigned long long sub_surface_true{0};
     unsigned long long sub_surface_unseeded{0};
@@ -1873,6 +1876,7 @@ public:
     int run_has_fired_008be7e0(lua_State* state, int argument_count);
     int run_add_water_load_00893380(lua_State* state, int argument_count);
     int run_break_ship_008914f0(lua_State* state, int argument_count);
+    int run_unit_set_player_commands_enabled_008a6c30(lua_State* state, int argument_count);
     // Packet cc9_lua_submarine_on_surface, under kLuaGetSubmarineOnSurfaceBound.
     int run_get_submarine_on_surface_008942c0(lua_State* state, int argument_count);
     // Packet cc13_natives1, under kLuaTrulyDeadBound.
@@ -2306,6 +2310,11 @@ private:
     // Packet cc13-luawire (kLuaBreakShipBound): units whose controller halves
     // +370h / +374h a BreakShip's 00935D30 cleared.
     std::set<std::size_t> break_ship_cleared_;
+    // Packet cc13-luawire: director+1CCh, the player-command mask 0071C1E0 stores from
+    // UnitSetPlayerCommandsEnabled's message 5Ah, keyed by the director's units-host
+    // slot. No host code reads it: the image's readers are the HUD (0071C060's callers)
+    // and the network snapshot 00721280.
+    std::map<std::size_t, std::int32_t> director_player_commands_1cc_;
     float spawn_attempt_delay_{0.0f};
     bool spawn_attempt_delay_read_{false};
     unsigned spawn_requeue_logged_{0};

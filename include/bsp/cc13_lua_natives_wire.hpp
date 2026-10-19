@@ -51,4 +51,14 @@ inline constexpr bool kLuaAddWaterLoadBound = false;
 // False: the row stays unhandled (UNIMPLEMENTED, no value pushed).
 inline constexpr bool kLuaBreakShipBound = false;
 
+// 008A6C30 UnitSetPlayerCommandsEnabled(unit, mask). Argument 0 through 00888AA0,
+// its director vtable[114h], argument 1 as an integer, then 0071DD30: message 5Ah
+// sub-kind 2, routed with flags 7, which 0071C1E0 stores at director+1CCh. The
+// readers are the HUD's 0071C060 and the network snapshot 00721280, so nothing
+// in the simulation changes. Returns no value.
+// True: GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30 stores
+// the mask in the host's per-director map (no host reader) and records it.
+// False: the row stays unhandled (UNIMPLEMENTED, no value pushed).
+inline constexpr bool kLuaUnitSetPlayerCommandsEnabledBound = false;
+
 }  // namespace bsp
