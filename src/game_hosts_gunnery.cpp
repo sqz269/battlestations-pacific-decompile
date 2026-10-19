@@ -716,7 +716,7 @@ constexpr bool kDualPurposeSecondAmmoBound = true;
 //    shell again, so category_ranges[6] stops at 1500 where the image has
 //    2000/2400. Moves the unit gunnery pass (00863A34) and fly_to_obstacles
 //    (009FD6B1), both live: docs/CC13_FLAK2.md, packet cc13-flak2.
-constexpr bool kFlakSecondAmmoRangeCc13Bound = false;
+constexpr bool kFlakSecondAmmoRangeCc13Bound = true;
 //  * kSecondAmmoArcDropKeyCc13Bound: build_guns writes second_ammo_by_gun at
 //    guns.size() before the arc guard can drop the gun, so a dropped gun's
 //    Bullet[2] lands on the NEXT pushed gun's index (dp_air_ammo,

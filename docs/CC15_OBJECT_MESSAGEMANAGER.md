@@ -172,3 +172,48 @@ row. 1b1426acd drops the extra call.
 
 The switch stays OFF in this commit. Turning it ON is the lead's call; the pairs
 above are the evidence.
+
+## Flipped ON (cc15-flip, base 0bc136293, 2026-10-19)
+
+OFF = 0bc136293, ON = the same tree with the switch true. Both run through tools/run_game.ps1 in the
+reference env, `BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`, and every log has `rng streams: on`.
+The runs are USN04 (`--frames 5000 --mission-frames 4800`) and the 12 wins rows (`--stop-after-end
+40`).
+
+- **Gameplay.** `pair_diff` reports gameplay identical on all 13 rows. The end, the clock, the death
+  rows, the unit table and the guard line match. Ends: USN01 completed 1079.93 s, USN02 failed
+  330.04 s, USN12 failed 859.91 s, PRCP01 completed 814.92 s, USN21 completed 2941.74 s, ESMP08
+  completed 1274.27 s, LOMP10 completed 1303.70 s, JM06 completed 898.90 s, BSM09 EndMission
+  282.05 s, BSM01 EndMission 812.93 s, LOMP06 failed 668.11 s, IJN18 no end.
+- **Moved rows, every row.** These are the Pairs rows above: the three MessageManager native rows,
+  `load_warning_bank` going concrete, the mission load line (18 -> 19 concrete, 25 -> 24 records), the
+  `loaded Messages.lua` line (records=247, voice_probe_misses=494) and the new `summary mission
+  message manager` line. In the `summary mission warning activate` line only
+  `records_not_evaluated` (USN04 5 -> 0, USN01 117 -> 0) and `sound_keys_not_evaluated` move to 0.
+  `activations`, `draws` and `clips` do not change.
+- **Record-miss and unmatched-key lines (new, diagnostic).** Each names a record that the installed
+  Messages.lua does not have. Natively, 00705E00 creates such a record (the record-miss seam):
+  - The rebuilt texts `nmy_dd_` / `nmy_ca_` / `nmy_bb_` / `nmy_ship_ship_dest_*`, as in the USN01
+    case above.
+  - `under_att_5_randomship` and `under_att_dispatcher3`: the file has only `_1`..`_4` and
+    `dispatcher`/`dispatcher2`.
+  - `powerup_gain_dispatcher`: absent from the file.
+- **(a) Dialog, voice, warning and Lua timing.** I ran an ordered diff of every line matching voice,
+  warning, clip, message, dialog, tutorial, hint, subtitle, speech, popup, objective, Lua or script,
+  with hex masked and times kept. It moves only the lines above, plus three noise lines: the
+  renderer thread id, the masked `ShipAiSectorScan::clip_arc_zones` counter, and `summary mission
+  load finished` with its concrete count. No `dialog message`, `dialog callback`, subtitle or
+  objective line moves or changes its time.
+- **(b) cc9's `dialog_message_timing`** (game_hosts_script_orders.cpp:7082) reads
+  `scripts/datatables/messagemaps/<map>.lua` and `sound/messages/authentic/streamed_dialogs/*.fsb`
+  itself. It does not touch the manager. Its `dialog message <name> voice=... clip=... key_end=...`
+  lines are identical in content and order OFF and ON on every row, from 4 lines (LOMP06, USN12) to 35
+  (PRCP01).
+- **(c) Voice-language seam.** The `englishauthentic` probes only set a record's streamed and
+  alternate flags. Their readers are `construct_voice_slot_00702cc0` and `start_voice_clip_005b9050`
+  (voice_slot_start.cpp). No game host calls either one, and no ON log has a 005B9050, 00702CC0,
+  005B71D0 or 00974070 row.
+- **Save untouched.** Every file under `Documents\Battlestations-Pacific` has the same SHA-256, size
+  and mtime before and after the runs.
+- **Other lines.** The ring-scan `clear_37c` lines (SHIP_AI_OPEN_ITEMS 140), as in the earlier
+  flips.
