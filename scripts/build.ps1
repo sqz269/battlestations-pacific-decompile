@@ -19,13 +19,39 @@ $generator = switch (($vsVersion -split '\.')[0]) {
 }
 $buildPath = Join-Path $repoRoot 'build\win32'
 $startupRegistry = Join-Path $repoRoot 'cmake\startup.cmake'
-& $cmakeExe -S $repoRoot -B $buildPath -G $generator -A Win32 "-DCMAKE_GENERATOR_INSTANCE=$vsPath" "-DCMAKE_PROJECT_INCLUDE=$startupRegistry"
-if ($LASTEXITCODE) { throw 'CMake configure failed.' }
-if ($Diagnostic) {
-    & $cmakeExe --build $buildPath --config $Configuration --parallel -- /v:diag /nodeReuse:false
-} else {
-    & $cmakeExe --build $buildPath --config $Configuration --parallel
+
+# Machine-wide build slots. Every worktree builds through this script; with BSP_BUILD_SLOTS set it admits
+# at most that many builds at once and the rest wait here. Unset or 0 means no limit (the default since
+# 2026-10-18, by the user's choice). A slot is an exclusively opened file under ~/.bsp; the handle closes
+# when this process exits, so a killed build frees its slot.
+# MSBuild gets 4 nodes: there are only a handful of targets, and cl /MP (CMakeLists.txt) does the fan-out.
+$slotCount = if ($env:BSP_BUILD_SLOTS) { [int]$env:BSP_BUILD_SLOTS } else { 0 }
+$slotDir = Join-Path $env:USERPROFILE '.bsp'
+New-Item -ItemType Directory -Force -Path $slotDir | Out-Null
+$slot = $null
+$announced = $false
+while ($slotCount -gt 0 -and -not $slot) {
+    for ($i = 0; $i -lt $slotCount -and -not $slot; $i++) {
+        try {
+            $slot = [System.IO.File]::Open((Join-Path $slotDir "build.slot$i.lock"), 'OpenOrCreate', 'ReadWrite', 'None')
+        } catch [System.IO.IOException] { }
+    }
+    if (-not $slot) {
+        if (-not $announced) { Write-Host "waiting for one of $slotCount build slots ($slotDir\build.slot*.lock)"; $announced = $true }
+        Start-Sleep -Seconds 5
+    }
 }
-if ($LASTEXITCODE) { throw 'C++ build failed.' }
+try {
+    & $cmakeExe -S $repoRoot -B $buildPath -G $generator -A Win32 "-DCMAKE_GENERATOR_INSTANCE=$vsPath" "-DCMAKE_PROJECT_INCLUDE=$startupRegistry"
+    if ($LASTEXITCODE) { throw 'CMake configure failed.' }
+    if ($Diagnostic) {
+        & $cmakeExe --build $buildPath --config $Configuration --parallel 4 -- /v:diag /nodeReuse:false
+    } else {
+        & $cmakeExe --build $buildPath --config $Configuration --parallel 4
+    }
+    if ($LASTEXITCODE) { throw 'C++ build failed.' }
+} finally {
+    if ($slot) { $slot.Dispose() }
+}
 & $ctestExe --test-dir $buildPath -C $Configuration --output-on-failure
 if ($LASTEXITCODE) { throw 'Tests failed.' }

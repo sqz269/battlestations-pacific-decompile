@@ -597,3 +597,20 @@ docs/SCRIPTED_HELM.md section 11.
   selected: in a group of `select X` / `attack X T` pairs only the last selected unit's repeat takes effect
   (SHIP_AI 214, USN15 variant c). `select` takes a single word unless the name is double-quoted
   (`select "West Virginia"`).
+
+## 11. Build slots and compiler parallelism (packet `cc16_build_parallelism`)
+
+- **Slots.** `scripts/build.ps1` has no build limit by default (user, 2026-10-18). With `BSP_BUILD_SLOTS=N` set it admits at most N builds on the machine at once. A slot is an
+  exclusively opened `~/.bsp/build.slot<N>.lock`. Later builds print `waiting for one of 3 build slots` and
+  wait. The handle closes when the script exits, so a killed build frees its slot without cleanup.
+  ctest runs after the slot is released.
+- **Why.** On 2026-10-17 four simultaneous builds and seven game runs caused an interrupt storm. Each build
+  had started about 32 MSBuild nodes but compiled with a single `cl.exe`.
+- **Parallelism inside a build.**
+  - `CMakeLists.txt` adds `/MP${BSP_CL_MP}` (default 10), so cl compiles a target's sources in parallel.
+    `bsp_core` holds most of them and was compiled one file at a time before.
+  - MSBuild is capped at 4 nodes (`--parallel 4`).
+  - `/MP` changes scheduling only, not the object code.
+- **Call build.ps1, not `cmake --build` directly.** A direct call bypasses the slots.
+
+- **Game run slots.** `tools/run_game.ps1` has 14 slots by default (was 6), pinned to the even cores 2-28.

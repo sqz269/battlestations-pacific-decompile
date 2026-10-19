@@ -17888,3 +17888,291 @@ Callers: the carrier launch skill (game_hosts_lua.cpp, passes the squadron node'
 (game_hosts_script_orders.cpp) and the capture-garrison skill (game_hosts_ship_ai.cpp, ships). Prediction: ON identical
 wherever every call names a squadron's fused slot or a ship; a script SetSkillLevel on a member plane now leaves its
 siblings alone (their skill index, read by the gun bots and the dive approach, stays at its own value).
+
+### 5ij.1 Pairs and flip: `kSkillLevelSquadronFanOutBound` **ON** (cc9-lua67, 2026-10-18)
+
+Export `local\l67_sk_on` (5c0c1e452 with the switch, 9B021010E983) against `local\l67_rt` (fcb6c6fa5; the only other
+difference is kLuaForceFireDepthChargeBound, which neither row calls). USN04 no orders 9000 fr, reference: 8 squadron
+fan-outs (007ECF80) and 21 single-unit sets (006D1EB0), pair_diff 1, gameplay identical. BSM09 `bsm09_l65_b9_c` 20,3:
+20 / 10, pair_diff 1, identical, EndMission 327.04 s with the guard both ways. Both arms live and no row has a script
+SetSkillLevel on a member plane, so nothing moves. Flipped ON.
+
+### 5ii.1 `kLuaClearForcedReconLevelBound` and `kLuaSetCrewLevelBound` **ON** (unexercised, cc9-lua67, 2026-10-18)
+
+Flipped as faithful bindings with the bodies re-checked (5ii): no WINS row reaches either native (JM06's only
+ClearForcedReconLevel call is commented out; SetCrewLevel runs only in chg / multi / the commandhelpers cheat paths).
+
+## 5ik. cc13 fix20: `kLuaPlayBinkMovieBound` and `kLuaScoringSetMissionCompletedBound` **ON** (cc9-lua67, 2026-10-18)
+
+Export `local\l67_br_on` (fcb6c6fa5 with both switches, 7D430F3F03E7) against `local\l67_rt`; logs
+`local\l67r_<row>_<rt|br_on>_<env>.log`.
+
+- **BSM09 `bsm09_l65_b9_c` 20,3** (pair_diff 3, deaths identical 49 = 49, every death row and plane mode identical):
+  luaMissionCompletedNew sets `Scoring_SetMissionCompleted` slot 0 `0 -> 1`, +10h = 331.029 s, then
+  `PlayBinkMovie("campaigns/BSM/m0902.bik", "", true)` replaces the result object (+8h = -200.0, debrief 1) and runs
+  EndScene 004D7970 (commit, request 10h); the teardown hands the movie to 004F8A20 and leaves state 0Dh for 11h.
+  The only moved numbers (shots 19622 -> 19418, plane water contacts, Yorktown distance) are the 40 s of post-end
+  play the OFF run keeps and the ON run no longer has. **Completion now comes from the movie path**: the run leaves
+  the mission at 331 s the way `--mission-complete-frame` does; `summary mission end` still reports the script's
+  EndMission at 327.04 s, and the exec guard logged its sus_prog.exe refusal both ways.
+- **USN02 `usn02_s36_u2_p7`** (reference; a loss on this base): pair_diff 1, gameplay identical. The failure path sets
+  the record `0 -> 0` (`Scoring_SetMissionCompleted(false)`); usn_2_java.lua's luaMissionFailedNew passes no movie.
+- **IJN08 `ijn08_p10_i08_z`** (reference; no end on this base in 100000 frames): pair_diff 1, identical, no call.
+- **JM06 `jm06_p12_j6_c1`** (reference; no end): pair_diff 1, identical, no call.
+
+Mechanism as predicted (CC13_FIX20): nothing moves before the end; an end movie with debrief ends the scene. Flipped ON.
+A one-argument mid-mission clip (bsm_01 :2299, bsm_10 :1520, ...) was not exercised by these rows.
+
+### 5ii.2 fix13 / fix14 natives **ON** (unexercised, cc9-lua67, 2026-10-18)
+
+`kLuaGetCommandBuildingLevelBound`, `kLuaSetCommandBuildingOwnerPlayerBound`, `kLuaGetShipMaxSpeedBound` and
+`kLuaGetDirectionBound` flipped as faithful bindings with no reaching row (5ii): JM05 fails at 321.05 s before the
+RadarStation turns Japanese; SetCommandBuildingOwnerPlayer is Cheat_PhaseShift only; GetShipMaxSpeed's PRCP caller
+(JM14, prcpjm12.lua:1138 PreparePhase4) is not reached in 60000 frames with no orders (pair_diff 1) and its usn_02
+callers are in a scene no menu id loads; GetDirection's jm01 callers need the JM01 tree row. Bodies re-read:
+0089B7CF 00888AA0 / 0089B7E6 [ESI+770h] / 0089B7F1 PushInteger; 00890CC8 0080FC30 / 00890CD2 FSTP float /
+PushFloat; 008A7DD4 the stale test (+C8h, 00414DB0) and 008A7DF2 EDX = entity+ECh (the forward row) into 0088BA30.
+Predicted when reached: JM05's luaJM5CheckObjectives stops raising after the capture; JM01's luaJM1GetFlakPos
+completes its loop, which changes the number of script `random()` draws (image-faithful).
+
+## 5il. Handoff (cc9-lua67, 2026-10-18)
+
+Done in this lane run, all on agent/cc9-lua52 and reported to the lead:
+
+- Flips:
+  - `kLuaForceFireDepthChargeBound` (5ii).
+  - `kLuaClearForcedReconLevelBound` and `kLuaSetCrewLevelBound` (5ii).
+  - cc13 fix13/fix14: GetCommandBuildingLevel, SetCommandBuildingOwnerPlayer, GetShipMaxSpeed and GetDirection
+    (5ii.2).
+  - `kSkillLevelSquadronFanOutBound` (5ij).
+  - cc13 fix20: `kLuaPlayBinkMovieBound` and `kLuaScoringSetMissionCompletedBound` (5ik).
+- WINS: the re-time on fcb6c6fa5 and the re-plans on aa5f342e6 are in docs/WINS_TABLE.md. LOMP06, JM06 and IJN18
+  have new row plans.
+
+Open, in priority order:
+
+1. **WINS rows still lost** (WINS_TABLE "Re-plans on aa5f342e6"):
+   - JM08: HQ capture by LandingShips from 984 s with every plan.
+   - USN02: Houston is held in attackmove by the AutoTarget override (a ships-lane question raised through the
+     lead).
+   - USN15: Fuso sinks the battle line (a gunnery question).
+   - IJN08: lost on the reference seed.
+   - USN12: lost under 20,3.
+   - BSM09: lost on the reference seed.
+   - BSM01: no end.
+   The run queue is `cc9-lua52\local\l67_queue.ps1`, which reads `local\l67_jobs.txt` and `local\l67_rows.txt`.
+   It runs at most 2 games, 65 s apart, through `l67_runs.ps1`. It was stopped at handoff (`local\l67_stop`
+   exists), so delete that file to restart it. w_i08 and j8f (cur exe, ref env) were still running at handoff,
+   and a j8m10 already handed to `l67_runs.ps1` may also start. Read their `local\l67r_<row>_cur_ref.log` before
+   re-queuing.
+2. **goaway/C20h (item 7)**:
+   - No WINS-row plane ends with C20h > 0.
+   - On USNOS (l65_os_c1), two dive bombers end in aimglide with C20h=1 and C25h=1.
+   - Intrepid_sqn22|.-II shows issues=1, guard_blocked=1224, ammo=2, and may be dead (c3a death guard).
+   - Inconclusive. The host 007BBBA0 still lacks the +9C3h guard.
+3. **cc13-skipped natives** (docs/CC13_FIX_5.md section 10 and the 5ii notes): SquadronSetTravelSpeed 008A0630,
+   SquadronSetHomeBase 0089E220, PutRelTo 008AA560 and SetRace 008A8720. Their bodies are modelled in
+   src/cc13_left55_seg56{a,b}.cpp but none is hosted.
+   - SquadronSetTravelSpeed needs a +3A0h/+3ACh/+388h/+38Fh quadruple on the squadron. Today every +3A0h reader
+     uses class TravelSpeed x NewTravelSpeedMul (src/game_hosts_units.cpp near 8606 and 9137). Adopt it next to
+     `set_squadron_travel_alt_0089f550` (18496), honouring the lock and timer as the alt readers do (25109, 31659,
+     33727, 35021).
+   - Before any pair, find each binary +3A0h reader's lock handling in Ghidra.
+   - Callers in this installation: COTP usn_01 and PRCPUS usn_12_indochina. These are not WINS rows, so pairs need
+     ad hoc rows.
+
+## 5im. SquadronSetTravelSpeed 008A0630 (cc9-lua68, 2026-10-18, packet l68_travel_speed)
+
+`kLuaSquadronSetTravelSpeedBound` (include/bsp/game_hosts_units.hpp) is committed OFF with this section.
+
+**The native.** 008A0630 `SquadronSetTravelSpeed(squadron, speed[, force])`:
+- argument 1 goes through 00B66270 and is stored as a float (FSTP 008A076C);
+- argument 2 goes through 00B66250 only when 00B663F0 counts exactly 3 arguments;
+- then four stores: 008A07E2 +388h = [00CE3800] (0.5), 008A07F0 +38Fh = force, 008A07FA +3A0h = speed, 008A0802
+  +3ACh = 1.
+
+Body: src/cc13_left55_seg56a.cpp `lua_squadron_set_travel_speed`. It is the fourth timer / freeze / value / lock
+quadruple. The squadron tick 007F3BAA counts the four countdowns +37Ch..+388h down while their freeze bytes
++38Ch..+38Fh are clear (docs/TICK_ELEMENT_OVERRIDES.md).
+
+**Who else writes +3A0h** (byte scan of the disp32 forms over 007C0000-009CFFFF; MOVSS, FLD/FSTP, MOV and SIB forms
+checked):
+- 007ED590 SquadronRestoreTravelSpeed's body and 007F1FE0 (order begin): +388h = 0.5, +3A0h = class
+  [squadron+35Ch]+190h, +3ACh = 1, +38Fh = 0.
+- 007ED5D0 RefreshTravelSpeed: unless +38Fh, when +388h < 0 and +3ACh is clear, +3A0h = the class value; then +3ACh
+  = 0. Its only caller is BSP_PilotBot_Tick 0099AEA3. That call runs only when the bot's head task before 0099A4C0
+  (EDI, 0099AE6C) differs from the one after (EBX, 0099AE92), and only when plane+9D4h is set.
+
+**Readers of +3A0h:**
+- 009C185C (moveto desired speed, 009C1850);
+- 009C23BE (moveto target speed, 009C23B0);
+- 009BC909 (move-on-path tick);
+- 009C97E4 (retreat moveto tick).
+
+The host used the class value at all four. Two more host sites, 009C204C and the depth-charge class block, read
+desc+190h directly and are unchanged.
+
+**So a script speed without `force` lasts until the second head-task change of any member** that comes at least
+0.5 s after the call. The first change only clears the lock. With `force` it lasts until 007ED590 or 007F1FE0
+rewrites it. No shipped mission passes `force`.
+
+**Host (switch ON):**
+- `GameScriptOrdersHost` routes the row to `GameUnitsHost::set_squadron_travel_speed_008a0630`, which stores the
+  quadruple on the squadron's slot; the countdown is held as its expiry clock, as for the alt blocks.
+- The four readers take `squadron_speed_3a0_live`.
+- Each plane's think compares a head-task signature (the installed task kinds and the command target) with the
+  one from its previous think, and on a change runs `refresh_travel_speed_007ed5d0`. A revert logs
+  `squadron travel speed: <squadron> back to the class value`.
+
+**LABELLED differences:**
+- the change is seen at the member's next think, at most one think interval (0.09 s) late;
+- a new task of the same kind against the same target is not seen as a change;
+- 007ED590 (SquadronRestoreTravelSpeed, no shipped caller) and 007F1FE0 are not hosted.
+
+**Callers in this installation** (none passes `force`):
+- bsm_09 323 KMH(200) for each LexKillerGang squadron, right after `PilotSetTarget(squad, Lexington)`;
+- bsm_04 1417/1418/1434;
+- bsm_10 348;
+- ESMP 01/02 and LOMP 03 at 65.28;
+- LOMP 08 1019 and LOMP 11 288;
+- the COTP/PRCP scripts at 40-100.
+
+**Predictions for the pair:**
+- BSM09: the LexKillerGang squadrons fly their approach to Lexington at 55.6 m/s instead of TravelSpeed x 1.6
+  until the second task change of a member. Their attacks on Lexington come later, so Lexington's sinking moves.
+- Rows with no caller are identical: USN01, USN02, LOMP06, LOMP10, USN12, PRCP01, IJN08 and JM08 do not call it.
+  Correction: USN01's script does call it (usn_01 1225 and 1412, the bomber and fighter refresh), but the WIN plan
+  never reaches either line. Across the 03d3df7f8 re-time logs the only WINS row that counts a call is BSM09 (5).
+
+## 5in. SquadronSetTravelSpeed pairs and flip (cc9-lua68, 2026-10-18)
+
+Exports `cc9-lua52\local\l68_ts_off` and `l68_ts_on` (both ac6536f82, the second with the switch true), reference
+env; logs `cc9-lua52\local\l68r_<b9s|w_b9|b4|l3>_ts_<off|on>_ref.log`.
+
+| Mission | OFF | ON | what moved |
+|---|---|---|---|
+| BSM09 (`l65_b9_c`) | failed 222.06 s | failed 222.06 s | 5 LexKillerGang D3A sets at 55.6 m/s; reverts 22.40-27.30 s; D3A deaths up to 3 s apart, shots 11724 -> 11624. Lexington still sinks at 154.80 s, Yorktown at 218.86 s |
+| BSM04 (no plan) | failed 84.05 s | failed 90.05 s | Wildcat and B-17 at 41.7 m/s, Donald at 50 m/s; Wildcat reverts 38.80 s, Donald 60.70 s, B-17 keeps it; first hit 74.85 -> 82.00 s, Donald killed 84.00 -> 89.80 s |
+| LOMP03 (no plan) | no end | no end | eight Kate / Val / Zero squadrons at 65.3 m/s; first hit 160.76 -> 165.01 s; 61 deaths both, all retimed |
+
+- Every moved number traces to the stored speeds: each ON log has one `SquadronSetTravelSpeed:` line per script call
+  and a `back to the class value` line per revert, and the moved deaths are of the slowed squadrons or of the units
+  they engage.
+- The BSM09 prediction was wrong in one part: the reverts come about 20 s after the call, long before the attacks,
+  so Lexington's sinking does not move.
+- **Flipped**: `kLuaSquadronSetTravelSpeedBound = true` by mechanism. No winning WINS row reaches the native, and the
+  switch changes nothing until a script stores a speed.
+
+## 5io. PutRelTo 008AA560 (cc9-lua68, 2026-10-18, packet l68_putrelto)
+
+`kPutRelToBound` (include/bsp/game_hosts_script_orders.hpp) is committed OFF with this section.
+
+**The native** 008AA560 `PutRelTo(unit, ref, rel[, heading])`, from the listing:
+- arguments 0 and 1 go through 00888AA0, argument 2 through 00888760 as a Vector3;
+- ref's world matrix (+0CCh, 16 dwords) is copied after 00414DB0 refreshes it, and 004142E0 transforms rel as a
+  row-vector affine point (x*row0 + y*row1 + z*row2 + translation) into the copy's translation;
+- 008AA764-008AA787: when the unit answers IsKindOf(6) and not IsKindOf(8), the point's y is 0;
+- vtable[114h] (0080E150, the weapon director getter) and, for IsKindOf(2), 007788B0 run with results unused;
+- vtable[120h] (00819840: 009585B0 SetWorldMatrix, 0092D620, 00818EA0) takes the copied matrix, so the unit gets
+  ref's rotation and the new point. Unlike vtable[118h] (008193A0) it neither refuses a formation follower nor
+  snaps a leader's group;
+- with exactly four arguments (008AA7CF) argument 3 * 00CE3D28 / 00CE3D20 goes to vtable[11Ch] (008196B0);
+- vtable[0D8h], then for an occupant owner (00778890, the group's leader) every other member through
+  vtable[118h](&00F87574) and vtable[0D8h] (008AA851-008AA897). No result.
+
+**Host (switch ON):** `GameUnitsHost::put_rel_to_00819840` computes the point in 004142E0's add order in float
+arithmetic, copies ref's rotation rows and the point into the unit's motion state, publishes the pose and refills the
+wake ring; the script orders host then applies the heading and the leader's `relocate_formation_members_00819672`.
+LABELLED: only a ship (IsKindOf 6) is posed, as for 008196B0; the controller sync is the motion state itself; float
+arithmetic stands in for the main thread's 24-bit x87 precision.
+
+**Callers that a WIN row reaches:** PRCP01 (PRCPUS usn_03_battle_of_santa_cruz.lua 1268, 2 calls in the 03d3df7f8
+re-time): each live Junyo-group ship goes to (250 idx, 0, 250 idx) in Chikuma's frame, then joins Chikuma's
+formation. Prediction: the Junyo group starts phase 2 beside Chikuma instead of where it was, so PRCP01's later
+deaths move.
+
+## 5ip. PutRelTo pair and flip (cc9-lua68, 2026-10-18)
+
+Exports `cc9-lua52\local\l68_prt_off` / `l68_prt_on` (7d83becdd, the second with `kPutRelToBound` true); PRCP01 with
+`prcp01_p9_p01_k`; logs `cc9-lua52\local\l68r_w_p01_prt_<off|on>_<ref|j3>.log`.
+
+| Seed | OFF | ON |
+|---|---|---|
+| reference | completed 718.05 s, 134 deaths | completed 647.47 s, 99 deaths |
+| 20,3 | completed 729.50 s | completed 884.91 s |
+
+- The ON reference logs both calls: Kuroshio to (-59.6, 0, 1728.3) and Hayashio to (-246.9, 0, 1428.5), 250 and
+  500 m along each axis of Chikuma's frame (the two points are 353.6 m apart, 250 x sqrt 2), with y = 0.
+- The first hit is 120.90 s on both sides; the deaths move after the two destroyers start phase 2 beside Chikuma.
+- Every completion logs the guard.
+- **Flipped**: `kPutRelToBound = true` by mechanism. PRCP01 still completes on both seeds.
+
+## 5iq. Handoff (cc9-lua68, 2026-10-18, at about 75% context)
+
+Lane: LUA/PLANES, WINS keeper. Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (agent/cc9-lua52).
+
+**Landed on the branch this run:**
+- bbd6e7c79 USN02 `usn02_l68_u2_a`, 763f1fdf3 USN12 `usn12_l68_u12_e8` (WINS rows);
+- ac6536f82 SquadronSetTravelSpeed OFF, be691fb5b ON (5im, 5in);
+- 7d83becdd PutRelTo OFF, 345d6957c ON (5io, 5ip);
+- the WINS_TABLE "Re-time on 03d3df7f8" entry.
+
+**Open, in the lead's order:**
+- IJN08 reference: the z plan never takes the HQ; a / b (`local\l68_i08_gen.py`) add nothing because Kinugasa and
+  Furutaka are dead before 36500. A next plan has to keep a cruiser alive for CB3 or get Maru2's craft out before
+  3715 s (WINS_TABLE note).
+- JM08: the 8 craft from USTroopTransport 01 (unit 353) launch at about 790 s and land 1037-1075 s; they must die
+  before they land. AP01 launch-priority and torpedo plans (q1-q3, r1, r2) fail at 1222-1285 s.
+- USN15 (ships59's Fuso verdict), BSM09 reference (physics20's kHelmPlaneMovetoBound), BSM01, USNOS (ships59's plan).
+- Low priority not done: LastBanto (needs the unit+2B0h record the host lacks; the readers only pick the
+  failure-camera entity), SquadronSetHomeBase, SetRace (no WINS row reaches either in the 03d3df7f8 logs), and the
+  HUD natives DisplayUnitHP / HideUnitHP / BlackBars (presentation only; DisplayScores / HideScoreDisplay are already
+  on main).
+
+**Tools** (all `local\l68_*`): `l68_runs.ps1` (row table, `-Jobs row:variant:env`), `l68_queue.ps1` (file-driven
+queue over `l68_jobs.txt`; `l68_hold` pauses it, `l68_stop` ends it), `l68_addjob.ps1 [-Front]`, `l68_sum.py
+[pattern]`, `l68_scan.py <log> [regex] [--text Name]`, `l68_rows.txt` (extra rows). Variant `<v>` runs
+`local\l68_<v>\build\win32\Release\bsp_game.exe`.
+
+**Queue for cc9-lua69** (the lead's messages that arrived after the WINS entry above; in the lead's order):
+1. USN01 win check: cc9-gunnery52 saw `usn01_p8_u1_i` not complete in 30000 frames on a8d54817d. The lua68
+   re-time completed USN01 at 405.02 / 415.02 s on 03d3df7f8 with the row's plan (`l65_u1_g`, `l68_runs.ps1` row
+   `w_u01`); check which plan file gunnery52 ran, then run the row once on current main and bisect only if it fails.
+2. BSM09: `cc9-lua52\local\l67_b9_d1.txt` completes with kHelmPlaneMovetoBound ON (physics20: EndMission 408.02 s,
+   log `cc9-physics1\local\p20b_helm_bsm09d1.log`, stopped before the guard line). Commit it as
+   `config/win_orders/bsm09_l68_b9_d1.txt`, run reference and 20,3 with a longer `--stop-after-end`, confirm the
+   guard line, update the BSM09 row.
+3. kVehicleClassPreloadCc15Bound flip: confirming pair on BSM09 with b9_d1 (OFF vs ON, same main); cc15 saw 617 rows
+   purged, EndMission 411.02 s, 0 script_nil_reads / lua_errors. Leave kVehicleClassMovieStopPurgeCc15Bound OFF.
+4. kMissionRecordMergeBound flip: USN01 OFF vs ON (ON log has the `MissionRecord::commit_009205e0` dump line); fix
+   the OFF-branch comment "the increment at 00920604" to 009205FE in the same commit.
+5. HUD ship-screen apply-unit flip (kHudShipScreenApplyUnitBound + Lua + Widgets sub-switches), USN01 all OFF vs
+   all ON; keep the class+70h = row type_id caveat in the doc.
+6. JM08: cc13 showed the HQ dies to US naval gunfire (Missouri 16" 5605 HP, 5" 2125, Helena 1503, LST 427), sent by
+   prcpjm08.lua CheckAP1..6 `NavigatorAttackMove(..., HQ)` at 771 / 926, and audited it as faithful. Re-plan so the
+   CheckAP ships stay off Headquarter 01 (two tries at most); otherwise record JM08 as a faithful loss with log
+   `cc9-lua52\local\l68r_j8r2_m1_ref.log`.
+7. USN04 Blackout re-arm loop (usn_19_coralus.lua 569-586 re-calls Blackout every 2.5 s, resetting 005B9BA0's 3 s
+   countdown): verify the whole native path for a re-arm refusal before calling it a script knife edge.
+8. IJN08 reference (above), and the power-up item (check AddPowerup reach first).
+Main moved many times after 03d3df7f8 (physics, gunnery, SETCMD quantisation pending): re-time every row on one
+current main and note the base sha per row.
+
+## 5ir. Switch flips on main 011d651dc (cc9-lua69, 2026-10-18)
+
+Pairs are same-main (011d651dc), reference env, OFF = the tree build, ON = `tools/pair_export.py` exports
+`local\l69_<v>`; logs `cc9-lua52\local\l69r_<row>_<main|v>_ref.log`.
+
+| switch(es) | row | pair_diff | ON-only evidence |
+| --- | --- | --- | --- |
+| `kVehicleClassPreloadCc15Bound` (`l69_vc`) | BSM09 `bsm09_l68_b9_d1`, EndMission 327.04 s both sides | 1, gameplay identical | 617 rows purged, script_nil_reads 0, lua_errors 0 |
+| `kHudShipScreenApplyUnitBound` + `...LuaBound` + `...WidgetsBound` (`l69_hud`) | USN01 `usn01_l65_u1_g` (no end on this main) | 1, gameplay identical | 0064AE20 concrete; 00818300 / 0059CB90 / 0064B023 recorded once each; HUD sprite quads only |
+| `kWarningMessageBankCc15Bound` (`l69_wb`) | USN01 `usn01_l65_u1_g` | 1, gameplay identical | Warnings.lua table, 445 hit and 5 kill reports queued |
+
+All three flipped ON. Caveat kept for the HUD Lua sub-switch: the VehicleClass row is keyed by class+70h taken as the
+row's type_id, inferred and not traced. `kMissionRecordMergeBound` is not paired on USN01, because USN01 does not end
+on this main and never reaches the 009205E0 commit; its pair runs on BSM09 d1 instead.
+
+**`kMissionRecordMergeBound` ON** (`l69_mr`, BSM09 `bsm09_l68_b9_d1`, EndMission 327.04 s both sides): pair_diff exit 1,
+gameplay identical (49 death rows, 90-row unit table). ON only: `MissionRecord::commit_009205e0 key=BSM09 count_284=1
+completed_00=1 ...`. The OFF-branch comment in src/mission_result.cpp now names the ADD at 009205FE (was 00920604).

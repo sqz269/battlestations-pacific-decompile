@@ -662,6 +662,18 @@ struct GameSceneContentsHost::Impl {
     // 00f8a09c, the deduplicated preload census, and 00f8a0b0, the stock queue.
     std::vector<std::int32_t> preload_census;
     std::vector<std::int32_t> stock_queue;
+    // cc15-vcp1 (kVehicleClassPreloadCc15Bound): the scene database's +08h
+    // vector, destroyed by 00468C90 at 004D54A4 before the passes.
+    std::vector<std::int32_t> scene_class_vector;
+    std::size_t scene_vector_gate_pushes{0};
+    std::size_t scene_vector_stock_pushes{0};
+    std::size_t scene_stock_queue_appends{0};
+    // cc15-wC1 (kSceneClassPreloadAliasesCc15Bound): the alias list at
+    // 010904E4, filled by 004D4720 and rewritten by 00BB5AC0.
+    std::vector<std::string> class_preload_aliases;
+    std::size_t class_alias_plane_marks{0};
+    std::size_t class_alias_enemy{0};
+    std::size_t class_alias_own{0};
     GameSceneContentsSummary summary;
     std::vector<GameSceneEntityRecord> entities;
     // 007F4580's per-wing loop makes its planes while the squadron is being
@@ -904,6 +916,228 @@ private:
 };
 
 // ---------------------------------------------------------------------------
+// cc15-vcp1 (kVehicleClassPreloadCc15Bound): the scene database's +08h vector
+// ---------------------------------------------------------------------------
+//
+// A typed restatement of seg6_cc13.cpp's 0046BE90 / 0046BF20 / 0046BF70 over
+// this host's property bags. The cc13 bodies take the image's 008F2260 bag
+// records, which this process does not build. The property's +0Ch word is the
+// value this host resolves: an enum symbol through the library, or an integer.
+
+int scene_stock_int(GameSceneContentsHost::Impl& owner, const ScenePropertyBlock& bag,
+    const char* key) {
+    const SceneEnumProperty e = scene_enum_property(bag, key);
+    if (e.present) {
+        int value = 0;
+        return owner.library.resolve_symbol(e.table, e.symbol, value) ? value : 0;
+    }
+    const SceneProperty* property = bag.find(key);
+    if (property == nullptr || property->values.empty()) return 0;
+    std::int32_t value = 0;
+    if (scene_scan_int(property->values.back(), value)) return value;
+    // `Hidden` is a byte the loader stores as 1 for an authored true.
+    return equal_insensitive(property->values.back(), "true") ? 1 : 0;
+}
+
+const ScenePropertyBlock* scene_stock_sub_bag(const ScenePropertyBlock& bag,
+    const std::string& key) {
+    for (const auto& block : bag.blocks) {
+        if (equal_insensitive(block.first, key)) return &block.second;
+    }
+    return nullptr;
+}
+
+// 0046BE90: 2ACh is ignored, and so is a value whose scene class name
+// (00468660) is "SpawnPoint" (00CE56B8, 00425850). Anything else is appended.
+bool scene_stock_register_0046be90(GameSceneContentsHost::Impl& owner, int value) {
+    if (value == 0x2ac) return false;
+    const SceneEntityClassRow* klass = find_scene_entity_class_by_id(value);
+    if (klass != nullptr && klass->name != nullptr
+        && std::strcmp(klass->name, "SpawnPoint") == 0) return false;
+    owner.scene_class_vector.push_back(value);
+    return true;
+}
+
+// 0095C4D0: the stock-queue append. Its de-duplication is
+// VehicleClassPreloadBinding::push_stock_queue's.
+void scene_stock_queue_0095c4d0(GameSceneContentsHost::Impl& owner, int value) {
+    VehicleClassPreloadBinding(owner).push_stock_queue(value);
+    ++owner.scene_stock_queue_appends;
+}
+
+// route_counted_stock (0046C07A..0046C0D8, 0046C11F..0046C180).
+void scene_stock_route_counted(GameSceneContentsHost::Impl& owner,
+    const ScenePropertyBlock& bag, const std::string& key) {
+    const ScenePropertyBlock* sub = scene_stock_sub_bag(bag, key);
+    if (sub == nullptr) return;
+    const int type = scene_stock_int(owner, *sub, "Type");
+    if (scene_stock_int(owner, *sub, "Count") == 0) return;
+    if (scene_stock_int(owner, bag, "Hidden") == 0) {
+        scene_stock_queue_0095c4d0(owner, type);
+    } else if (scene_stock_register_0046be90(owner, type)) {
+        ++owner.scene_vector_stock_pushes;
+    }
+}
+
+// queue_list_stock (0046C329..0046C3A4, 0046C3C3..0046C439). The host's mode
+// is never 4 (single player).
+int scene_stock_queue_list(GameSceneContentsHost::Impl& owner,
+    const ScenePropertyBlock* list, int index) {
+    if (list == nullptr) return index;
+    for (;; ++index) {
+        char key[32];
+        std::snprintf(key, sizeof key, "Stock %d", index);
+        const ScenePropertyBlock* sub = scene_stock_sub_bag(*list, key);
+        if (sub == nullptr) return index;
+        if (scene_stock_int(owner, *sub, "Count") == 0) continue;
+        scene_stock_queue_0095c4d0(owner, scene_stock_int(owner, *sub, "Type"));
+    }
+}
+
+// 0046BF70.
+void scene_stock_lists_0046bf70(GameSceneContentsHost::Impl& owner,
+    const ScenePropertyBlock& bag, const std::string& class_name) {
+    if (equal_insensitive(class_name, "AirField") || class_name == "MotherShipGen") {
+        for (int i = 1; i <= 12; ++i) {
+            char key[32];
+            std::snprintf(key, sizeof key, "PlaneStock %d", i);
+            scene_stock_route_counted(owner, bag, key);
+        }
+        const int slots = scene_stock_int(owner, bag, "NumSlots");
+        for (int i = 0; i < slots; ++i) {
+            char key[32];
+            std::snprintf(key, sizeof key, "Slot %d", i + 1);
+            scene_stock_route_counted(owner, bag, key);
+        }
+    }
+    if (equal_insensitive(class_name, "Shipyard")) {
+        for (int i = 1; i <= 20; ++i) {
+            char key[32];
+            std::snprintf(key, sizeof key, "Stock %d", i);
+            const ScenePropertyBlock* sub = scene_stock_sub_bag(bag, key);
+            if (sub == nullptr) continue;
+            const int type = scene_stock_int(owner, *sub, "Type");
+            if (type <= 0) continue;
+            if (scene_stock_int(owner, bag, "Hidden") == 0) {
+                scene_stock_queue_0095c4d0(owner, type);
+            } else if (scene_stock_register_0046be90(owner, type)) {
+                ++owner.scene_vector_stock_pushes;
+            }
+        }
+    }
+    if (!equal_insensitive(class_name, "SpawnPoint")) return;
+    const int next = scene_stock_queue_list(owner, scene_stock_sub_bag(bag, "JapanList"), 1);
+    scene_stock_queue_list(owner, scene_stock_sub_bag(bag, "AlliedList"), next);
+}
+
+// ---------------------------------------------------------------------------
+// cc15-wC1 (kSceneClassPreloadAliasesCc15Bound): 004D4720 / 0095C1C0 / 00BB5AC0
+// ---------------------------------------------------------------------------
+//
+// Typed restatements of cc13_sweepA2.cpp's 004D4720, cc13_seg62.cpp's 0095C1C0
+// and the 00BB5AC0 body (ledger BSP_Scene_ResolvePreloadAliases), over the
+// census at 00F8A09C (Impl::preload_census), the registry singleton 00437F50
+// (Impl::vehicle_registry) and this process's VFS. The cc13 bodies take raw
+// image storage (pooled strings, the 10h list nodes) this host does not build.
+
+// 0095BAB0, __fastcall(ECX = class index), AL. The local slot [game+18ECh] is 0
+// in single player, so the [0,8) gate passes; the party is slot 0's +28h, which
+// local_player_party() publishes. The image grows the rows to index+1 first.
+// UNCERTAIN: a party outside 0..2 would read the next row's byte in the image;
+// here it reads as unmarked.
+bool scene_class_is_enemy_0095bab0(GameSceneContentsHost::Impl& owner, std::int32_t index) {
+    auto& rows = owner.vehicle_registry.party_required;
+    if (index < 0) return true;
+    if (static_cast<std::size_t>(index) >= rows.size()) {
+        rows.resize(static_cast<std::size_t>(index) + 1);   // 004359E0
+    }
+    const int party = local_player_party();
+    if (party < 0 || party >= kVehicleClassPartyStride) return true;
+    return rows[static_cast<std::size_t>(index)][static_cast<std::size_t>(party)] == 0;
+}
+
+// 0095C1C0, __fastcall(ECX = out string, EDX = class id), EAX = out. The entry
+// e = registry+10h+id*4; out = "Class_" (00D1A95C); Type of VehicleClass[e]
+// (00B662B0, an absent row reads as no data). For ReconPlane (_stricmp) and
+// SmallReconPlane, LargeReconPlane, Fighter, DiveBomber, TorpedoBomber,
+// Kamikaze, LevelBomber (00425850, case-insensitive): Race (00B66380, default
+// 0) picks party 1 for race 1 or 4, else 0; byte [row(registry+10h+e*4)][party]
+// = 1, and "enemy_" (00D1A954) or "own_" (00D1A94C) by 0095BAB0(e) is
+// appended. Every path appends e in decimal (004CACA0).
+std::string scene_class_preload_alias_0095c1c0(GameSceneContentsHost::Impl& owner,
+    std::int32_t class_id) {
+    VehicleClassPreloadBinding map(owner);
+    const std::int32_t entry = map.map_class_index(class_id);
+    std::string out = "Class_";
+    std::string type;
+    if (owner.lua != nullptr) {
+        const GameVehicleClassRow row = owner.lua->read_vehicle_class_row(static_cast<int>(entry));
+        if (row.found) type = row.type;
+    }
+    static const char* const kPlaneTypes[] = {"ReconPlane", "SmallReconPlane",
+        "LargeReconPlane", "Fighter", "DiveBomber", "TorpedoBomber", "Kamikaze",
+        "LevelBomber"};
+    bool plane = false;
+    for (const char* name : kPlaneTypes) {
+        if (!type.empty() && equal_insensitive(type, name)) {
+            plane = true;
+            break;
+        }
+    }
+    if (plane) {
+        const int race = owner.lua != nullptr
+            ? owner.lua->read_vehicle_class_integer(static_cast<int>(entry), "Race", nullptr, 0)
+            : 0;
+        const std::size_t party = (race == 1 || race == 4) ? 1 : 0;
+        const std::int32_t slot = map.map_class_index(entry);
+        if (slot >= 0) {
+            auto& rows = owner.vehicle_registry.party_required;
+            if (static_cast<std::size_t>(slot) >= rows.size()) {
+                rows.resize(static_cast<std::size_t>(slot) + 1);   // 004359E0
+            }
+            rows[static_cast<std::size_t>(slot)][party] = 1;
+            ++owner.class_alias_plane_marks;
+        }
+        if (scene_class_is_enemy_0095bab0(owner, entry)) {
+            out += "enemy_";
+            ++owner.class_alias_enemy;
+        } else {
+            out += "own_";
+            ++owner.class_alias_own;
+        }
+    }
+    out += std::to_string(entry);
+    return out;
+}
+
+// 004D4720, __thiscall(ECX = 010904E4), RET. 004D05E0 clears the list, then
+// each census index in order is aliased and linked before the sentinel. The
+// checked-iterator reports (00BF6713) cannot fire over a well-formed vector.
+void scene_build_class_preload_aliases_004d4720(GameSceneContentsHost::Impl& owner) {
+    owner.class_preload_aliases.clear();
+    for (std::int32_t class_id : owner.preload_census) {
+        owner.class_preload_aliases.push_back(scene_class_preload_alias_0095c1c0(owner, class_id));
+    }
+}
+
+// 00BB5AC0, void(void). Each entry: 00BB5670 appends ".mpak" unless the first
+// case-sensitive ".mpak" sits at size-5 (Win32 size_t arithmetic, so a 4-byte
+// name with no match compares npos with size-5 = FFFFFFFFh and is copied
+// unchanged, as in the image), then 00BDF4C0 resolves it and the result is
+// stored back. UNCERTAIN: 00BDF4C0's output for a name with no file is the
+// native runtime's; this host keeps whatever resolve_existing leaves.
+std::size_t scene_resolve_preload_aliases_00bb5ac0(GameSceneContentsHost::Impl& owner) {
+    std::size_t resolved = 0;
+    for (std::string& alias : owner.class_preload_aliases) {
+        std::string name = alias;
+        if (name.find(".mpak") != name.size() - 5) name += ".mpak";
+        if (owner.vfs.resolve_existing(name)) ++resolved;
+        alias = name;
+    }
+    return resolved;
+}
+
+// ---------------------------------------------------------------------------
 // 0046c550's remaining services
 // ---------------------------------------------------------------------------
 
@@ -935,10 +1169,23 @@ public:
     }
     void register_multiplayer_stock(const ScenePropertyBlock& properties,
         const std::string& class_name) override {
-        static_cast<void>(properties);
-        static_cast<void>(class_name);
         ++stock_walks_;
-        owner_.log.unimplemented("SceneGate::register_multiplayer_stock", "0046bf20");
+        if constexpr (kVehicleClassPreloadCc15Bound) {
+            // 0046BF20: a `Type` property, and the class name's id
+            // (00469690) is not 47h (Path).
+            const SceneEntityClassRow* klass = find_scene_entity_class_by_name(class_name);
+            if (properties.find(kSceneUnitTypeKey) != nullptr
+                && (klass == nullptr || klass->class_id != 0x47)
+                && scene_stock_register_0046be90(owner_,
+                       scene_stock_int(owner_, properties, kSceneUnitTypeKey))) {
+                ++owner_.scene_vector_gate_pushes;
+            }
+            owner_.log.implemented("SceneGate::register_multiplayer_stock", "0046bf20");
+        } else {
+            static_cast<void>(properties);
+            static_cast<void>(class_name);
+            owner_.log.unimplemented("SceneGate::register_multiplayer_stock", "0046bf20");
+        }
     }
 
     std::size_t deferred_records() const noexcept { return deferred_records_; }
@@ -977,6 +1224,15 @@ public:
         // is handed the executable's own descriptor token.
         owner_.log.unimplemented("SceneUnit::vehicle_class_descriptor", "00964790");
         if (type_id < 0) return nullptr;
+        if constexpr (kVehicleClassPreloadCc15Bound) {
+            // cc15-vcp2: the descriptor itself stays a token, but 00964790's
+            // miss path marks the row's ID and Got here, at instantiate, for the
+            // creators 004F0520..004F10B0 and 004F0AD0 (004F0B3C).
+            if (owner_.lua != nullptr) {
+                owner_.lua->mark_scene_vehicle_class_row_00964790(static_cast<int>(
+                    VehicleClassPreloadBinding(owner_).map_class_index(type_id)), "004F0520+");
+            }
+        }
         descriptor_token_ = static_cast<std::uintptr_t>(type_id) + 1u;
         return reinterpret_cast<void*>(descriptor_token_);
     }
@@ -1833,7 +2089,12 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                     "0095c640");
             }
         }
-        owner.log.unimplemented("SceneContents::register_multiplayer_stock", "0046bf70");
+        if constexpr (kVehicleClassPreloadCc15Bound) {
+            scene_stock_lists_0046bf70(owner, bag, entity.class_name);
+            owner.log.implemented("SceneContents::register_multiplayer_stock", "0046bf70");
+        } else {
+            owner.log.unimplemented("SceneContents::register_multiplayer_stock", "0046bf70");
+        }
 
         ++tally.registration_bodies;
         ++owner.summary.registration_bodies;
@@ -2219,13 +2480,25 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         // reading half resolves the symbol under kSceneDeckTypeEnumBound; the
         // resolver below scans it, and a token that is not a number resolves to
         // zero. Unbound, every authored symbol scans to zero. contract.
+        // cc15-vcp2 (kVehicleClassPreloadCc15Bound): 00964790's miss path marks
+        // the row's ID and Got here as well, because this is the created path,
+        // before 004E0A9B.
         bsp::AirOpsDeck deck = bsp::air_ops_load_from_scene_006cadd0(authored,
-            [](const std::string& type, void*) -> std::uint32_t {
+            [](const std::string& type, void* context) -> std::uint32_t {
                 std::int32_t parsed = 0;
                 if (!scene_scan_int(type, parsed) || parsed < 0) return 0u;
+                if constexpr (kVehicleClassPreloadCc15Bound) {
+                    auto& host = *static_cast<GameSceneContentsHost::Impl*>(context);
+                    if (host.lua != nullptr) {
+                        host.lua->mark_scene_vehicle_class_row_00964790(static_cast<int>(
+                            VehicleClassPreloadBinding(host).map_class_index(parsed)), "007B8A80");
+                    }
+                } else {
+                    static_cast<void>(context);
+                }
                 return static_cast<std::uint32_t>(parsed);
             },
-            nullptr);
+            &owner);
         // 00895E4B tests the class through vtable+5Ch against 45h. This process
         // has no vtable to ask, and the scene class id is the same distinction.
         deck.is_airfield = klass->class_id == bsp::kAirOpsSceneClassIdAirfield;
@@ -2582,10 +2855,31 @@ public:
         owner_.log.unimplemented("SceneContents::destroy_scene_database_pending", "004697b0");
     }
     void build_class_preload_aliases() override {
-        owner_.log.unimplemented("SceneContents::build_class_preload_aliases", "004d4720");
+        // 004D54F3. cc15-wC1: see kSceneClassPreloadAliasesCc15Bound.
+        if constexpr (kSceneClassPreloadAliasesCc15Bound) {
+            scene_build_class_preload_aliases_004d4720(owner_);
+            owner_.log.implemented("SceneContents::build_class_preload_aliases", "004d4720");
+        } else {
+            owner_.log.unimplemented("SceneContents::build_class_preload_aliases", "004d4720");
+        }
     }
     void resolve_preload_aliases() override {
-        owner_.log.unimplemented("SceneContents::resolve_preload_aliases", "00bb5ac0");
+        // 004D54F8, the last step before pass 3.
+        if constexpr (kSceneClassPreloadAliasesCc15Bound) {
+            const std::size_t resolved = scene_resolve_preload_aliases_00bb5ac0(owner_);
+            owner_.log.implemented("SceneContents::resolve_preload_aliases", "00bb5ac0");
+            owner_.log.notef("scene class preload aliases: census=%zu aliases=%zu "
+                "plane_marks=%zu enemy=%zu own=%zu resolved=%zu first=%s last=%s "
+                "(004d4720/0095c1c0/00bb5ac0)", owner_.preload_census.size(),
+                owner_.class_preload_aliases.size(), owner_.class_alias_plane_marks,
+                owner_.class_alias_enemy, owner_.class_alias_own, resolved,
+                owner_.class_preload_aliases.empty() ? "-"
+                    : owner_.class_preload_aliases.front().c_str(),
+                owner_.class_preload_aliases.empty() ? "-"
+                    : owner_.class_preload_aliases.back().c_str());
+        } else {
+            owner_.log.unimplemented("SceneContents::resolve_preload_aliases", "00bb5ac0");
+        }
     }
     EntityHandle create_multi_score() override {
         owner_.log.unimplemented("SceneContents::create_multi_score", "00780db0");
@@ -2616,9 +2910,41 @@ void SceneContentsBinding::read_scene_file(const std::string& path,
     const std::string& override_name, SceneContentsPass pass) {
     const SceneFilePass file_pass = pass == SceneContentsPass::Registration
         ? SceneFilePass::Registration : SceneFilePass::Instantiate;
+    if constexpr (kVehicleClassPreloadCc15Bound) {
+        // 00468C90 at 004D54A4 destroys the +08h vector before the passes.
+        if (pass == SceneContentsPass::Registration) {
+            owner_.scene_class_vector.clear();
+            owner_.scene_vector_gate_pushes = 0;
+            owner_.scene_vector_stock_pushes = 0;
+            owner_.scene_stock_queue_appends = 0;
+        }
+    }
     SceneReaderBinding reader(owner_, file_pass, mode_);
     const SceneFileReadResult result = run_scene_file_reader_0046df00(reader, path,
         override_name, file_pass);
+    if constexpr (kVehicleClassPreloadCc15Bound) {
+        // 0046EBE6's counters (game+1910h..192Ch) run after both reads; this
+        // host has none of them. 0046EC6B skips the reader when the last
+        // argument is 1 (the registration call), so only the instantiate read
+        // resolves the vector: 0046EC77..0046ECA7 call 00964790(id, 1) per id,
+        // and on a miss that writes the row's ID and Got (0096490C, 00964959).
+        if (pass == SceneContentsPass::Instantiate) {
+            std::size_t marked = 0;
+            if (owner_.lua != nullptr) {
+                VehicleClassPreloadBinding map(owner_);
+                for (const std::int32_t id : owner_.scene_class_vector) {
+                    owner_.lua->mark_scene_vehicle_class_row_00964790(
+                        static_cast<int>(map.map_class_index(id)), "0046EC77");
+                    ++marked;
+                }
+            }
+            owner_.log.notef("scene database +08h vector: %zu ids (gate 0046BF20 %zu, "
+                "stock lists 0046BF70 %zu), stock queue appends %zu, resolved at 0046EC77 %zu "
+                "(kVehicleClassPreloadCc15Bound)", owner_.scene_class_vector.size(),
+                owner_.scene_vector_gate_pushes, owner_.scene_vector_stock_pushes,
+                owner_.scene_stock_queue_appends, marked);
+        }
+    }
     if (pass == SceneContentsPass::Registration) {
         owner_.summary.registration_entities = result.entities_visited;
         owner_.log.implemented("SceneContents::read_scene_file_registration", "0046df00");

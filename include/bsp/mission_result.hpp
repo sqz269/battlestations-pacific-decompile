@@ -191,9 +191,29 @@ MissionCompletionPollDecision mission_completion_poll_004d7ea0(
 // GGame::EndScene, 004d7970, and the commit 009205e0
 // ---------------------------------------------------------------------------
 
-// 009205e0. Copies the record into the profile's per-mission map, bumps the
-// play counter, and then either keeps the best total (single player) or adds it
-// (multiplayer). `record_total` is record+1E0h, the last of totals_1c8.
+// Packet cc13-wire3, granted by cc9 2026-10-18. 009205e0 does not copy the
+// record: 00594A70(key) -> stored, then 0091A080(ECX = stored, push record) at
+// 009205F9 MERGES it, then ADD [stored+284h],1 at 009205FE. True: the commit
+// runs merge_mission_score_record_0091a080, a field-wise merge over the host
+// struct that follows cc13_seg59b's score_record_merge_0091a080 (src/
+// cc13_seg59b.cpp) and lists the image fields this struct lacks. False: the
+// historical `stored = record` with the play count kept. The host's
+// MissionProgress (GameMissionResultHost::progress_, game+6B4h) is memory only:
+// no profile writer reads it.
+// ON (cc9-lua69, 2026-10-18): BSM09 bsm09_l68_b9_d1 pair, gameplay identical; the ON
+// log has the commit_009205e0 dump (key=BSM09 count_284=1). SQUADRON_LAND_TASK 5ir.
+inline constexpr bool kMissionRecordMergeBound = true;
+
+// 0091A080 over the host struct, __thiscall(ECX = destination, source) RET 4 in
+// the image. See mission_result.cpp for the per-field evidence and the image
+// fields not modelled.
+void merge_mission_score_record_0091a080(MissionScoreRecord& destination,
+                                         const MissionScoreRecord& source);
+
+// 009205e0. Merges (kMissionRecordMergeBound) or copies the record into the
+// profile's per-mission map, bumps the play counter, and then either keeps the
+// best total (single player) or adds it (multiplayer). `record_total` is
+// record+1E0h, the last of totals_1c8.
 // `multiplayer_accumulates` is the 00f8a2fc vtable+198h query AND the byte at
 // [00f8a2fc]+4Dh; nothing is written when it is false in a multiplayer session.
 void commit_mission_record_009205e0(MissionProgress& progress, const std::string& mission_key,

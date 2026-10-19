@@ -459,6 +459,63 @@ inline constexpr bool kEngineMovieEntryBound = true;
 // three TypeB_Jake subs no script names; USNOS identical.
 inline constexpr bool kEngineMovieStopRosterBound = true;
 
+// Packet cc15-vcp1, step 1 of cc9's vehicle-class purge plan. True: the scene
+// database's +08h vector (0046BE90's push_back) is built during the scene
+// passes. Its writers are the gate's 0046BF20 (a `Type` value whose entity class
+// is not 47h) and 0046BF70's stock lists, where a counted sub-bag goes to the
+// vector when the bag's `Hidden` is set and to the 0095C4D0 stock queue
+// otherwise. At the end of the instantiate read (0046EC77..0046ECA7, skipped
+// when the call's last argument is 1, which is the registration call at
+// 004D54DE), every id is resolved with 00964790(id, 1), which marks the
+// row's ID and Got. The host marks those rows with
+// GameMissionLuaHost::mark_vehicle_class_row_00964790.
+//
+// LOG ONLY: at 004E0A9B and at 0045F6C1 (both call 0095CA70) the host counts
+// the VehicleClass rows whose Got is not true, which are the rows 0095CA70
+// would nil. Nothing is purged. The DeviceClass (004423A0) and Bullets
+// (006E9C50) purges are skipped, because the host keeps no Got marks for
+// those tables.
+//
+// UNCERTAIN: the 0046BE50 / 0046EBE6 counters (game+1910h..192Ch) have no
+// host state and are taken as zero.
+//
+// Step 2 (cc15-vcp2): the same miss-path mark is also made at the other
+// load-time callers of 00964790 whose host equivalents are reached:
+// - the air-ops deck resolver 007B8A80, on the created path;
+// - PrepareClass 008C92BE, per argument;
+// - the scene-unit creator seam, 004F0520..004F10B0 and 004F0AD0;
+// - 00964790's own ship Catapult.LaunchedClass recursion, 00965182.
+// With the switch on, USN01, USN04 and JM08 read no would-nil row after
+// 004E0A9B. docs/VEHICLE_CLASS_DESCRIPTORS.md has the census.
+//
+// Step 3 (cc15-vcp3): at 004E0A9B, 0095CA70's purge itself runs. Each
+// collected row gets "VehicleClass[%d]=nil" (00D1A964), run as a Lua chunk the
+// way 006B8AD0 runs it. The site 0045F6C1 stays a census until
+// kVehicleClassMovieStopPurgeCc15Bound.
+//
+// False: 0046BF20 and 0046BF70 stay records, as before.
+// ON (cc9-lua69, 2026-10-18): BSM09 bsm09_l68_b9_d1 pair, gameplay identical,
+// 617 rows purged, script_nil_reads 0, lua_errors 0 (VEHICLE_CLASS_DESCRIPTORS.md).
+inline constexpr bool kVehicleClassPreloadCc15Bound = true;
+
+// cc15-vcp3: with kVehicleClassPreloadCc15Bound, also purge at the movie stop
+// 0045F6C1. That runs mid-mission and can nil rows that were first read after
+// load, so it stays off until a census exists for a mission that takes the
+// movie-stop path (cc9).
+inline constexpr bool kVehicleClassMovieStopPurgeCc15Bound = false;
+
+// Packet cc15-wC1 (docs/CC15_SCENE_CONTENTS_WIRING.md). 004D4DF0's step between
+// scene-file passes 2 and 3: 004D4720 (ECX = 010904E4) turns each class index
+// the Registration pass's 0095C640 collected into 00F8A09C into a "Class_"
+// alias through 0095C1C0 and links it into the list at 010904E4+4, then
+// 00BB5AC0 rewrites every list entry through 00BB5670 (".mpak" suffix) and
+// 00BDF4C0 (VFS resolve). Typed restatements over this host's preload census,
+// vehicle-class registry and VFS. The only image readers of the list are those
+// two routines (xrefs 010904E4 / 010904E8), so the list has no consumer here
+// either; 0095C1C0's party-row marks land in VehicleClassRegistry::
+// party_required, which no host path reads. False: both stay records.
+inline constexpr bool kSceneClassPreloadAliasesCc15Bound = false;
+
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 3. Two admits the stop does not remove:
 // a `Hidden` entity goes through 0046C550 with the last argument 1 (0046D60F) and
 // is registered for GenerateObject, never created, so 0046B730 has nothing to

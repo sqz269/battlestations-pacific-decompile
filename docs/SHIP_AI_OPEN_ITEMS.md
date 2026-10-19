@@ -19428,3 +19428,140 @@ A first attempt was killed from outside at frame about 110000 (`local\s59_b_c17_
 had completed early (d32c 542 m at 95000 and 154 m at 105000), so the route clears the grounding. A relaunch was
 also killed, at 45 MB. Predictions: HQ2 allied at about 7000 s, HQ1 at about 7600 s, Haku2 dead after about 6600 s
 if the cruisers reach it. A win needs `Mission.ReinDead` and `Mission.BaseCapped` before frame 175000.
+
+## 295. Gunnery / ship-AI draws queue (cc9-gunnery52, 2026-10-18)
+
+Branch agent/cc9-gunnery52 on origin/main a8d54817d. Commits: fba7c0e90, d3bc814e1 (switches OFF),
+030f1ad8b, 839c4bacd (flips). Full ./scripts/build.ps1 passes. Pairs ran in the reference env
+(BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1) and, for item 1, also in the default env, all at
+30000 mission frames with `--stop-after-end 40`. Logs are in the tree's local\g52_*.log; the
+launcher is local\g52_rows.ps1. No run completed a mission, so no exec-guard line was expected.
+
+### 1. kShipAiBrainConstructionDrawsBound (game_hosts_ship_ai.cpp): ON
+
+Bytes checked. 009F39C0 calls 009F1160 (009F39E5), then 009E8450 (009F3AB2), then 009E4F90
+(009F3AC3), with no branch between them. Inside 009E8450, 009E5CA0 calls 009E5530 (009E5CD6).
+009E5530's first loop does 60 passes: [ESP+1Ch] = 3Bh, then SUB 1 / JNS back to 009E5550. Each
+pass draws 00BD2F10(ECX = 1, 0.0, 2.0 [00CE3958]) at 009E55A1 and stores it with FSTP to
+[ESI+20h] = slot+48h, without negation; the slot stride is 4Ch from the state's +4h.
+009E84F8 draws -U(0, 1) (FCHS 009E84FD) into state+1500h (009E8509). 009E5061 draws -U(0, 1)
+into parent+CCh (ECX = EBX+1 = 1). The vtable calls in these bodies (00D2171C[1] = 009DB590 and
+00D218F0[1] = 007B3DB0) are bare RETs, and 00411E20 makes no draw.
+
+When ON, seed_brain_draws_009f1160 makes these 62 draws after its seven, for every ship and in
+this order. The ring is built eagerly and the jitters go into jitter_48. The +1500h draw goes
+into selector.countdown_1500 and the +CCh draw into sub_attack.countdown_cc. The old
+submarine-only +CCh draw remains as the OFF path, and its comment ("no other brain reaches
+sub_attack") is corrected. The counter line is "ship ai brain construction draws".
+
+Pairs on fba7c0e90. Counts: USN01 868 = 14 x 62, USN04 1116 = 18 x 62.
+- Reference env: USN04 is gameplay identical. USN01 moved: deaths 36 -> 37, hits 4988 -> 5008,
+  ConSBD2 also dies, and Convoy5 (the only convoy sunk) goes down at 184.56 s instead of 185.26 s.
+- Default env: USN01 moved with deaths 32 -> 32, and USN04 moved with deaths 55 -> 54. Both are
+  coupled through the shared stream.
+
+Flipped by mechanism. Notes:
+- The jitters and +1500h are overwritten at the first approach enter (009F3220 re-seed) and by
+  009E86C0, so this change mainly shifts the stream.
+- src/ship_ai_attackmove_substates.cpp:125 still says that jitter_48 is "not modelled". The
+  value now comes from the caller when the switch is ON. The comment is stale, and the file
+  belongs to the ships lane.
+
+### 2. kTailGunnerClearReleaseBound (game_hosts_gunnery.cpp): ON
+
+The three ClearFireTarget overrides were checked: 008FE7A0 (gun at +5Ch), 008FEA60 (+68h) and
+008FDBA0 (+68h). Each runs 0072BD50, then calls gun->vt[1E8h](0) when the slot is 8 or
+00927F10 reports AI-held.
+
+The key fact: each of the three thinks exits without a 1E8h send when vt[44h]() (its target) is
+null. The exits are AAGunner 009029BB -> 009030AA, TailGunner 008FFAFE -> 008FFF17 (past the
+008FEF40 call at 008FFF12), and AAFlak 00903158 -> 00903416. So in the image the release is the
+only thing that switches a trigger off after the target goes.
+
+The host's AAGunner and AAFlak tests rebuild want_fire every tick from have_target, which a clear
+empties. They therefore already behave like the release, and the host needs no change for them.
+The TailGunner did need one: the host ran 008FEF40 without a target and held act_58 through the
+0.3 s off-delay.
+
+When ON:
+- Each tail gunner keeps a gun trigger. Its think sets the trigger from +58h (008FEFC2).
+- The release clears the trigger. Releases come from a clear, a retarget (006DF170 vt[30h]), or
+  the think's own dead-target drop (008FFA75 vt[38h] = 008FEA40 -> 006DF170 -> 008FEA60).
+- A think with no target leaves +58h, +59h, +5Ch and the trigger as they were.
+
+cc13's clear_fire_target_then_release (src/cc13_seg59b.cpp) was not used, because the host has no
+bot object for it to drive.
+
+Pairs on d3bc814e1, reference env:
+- USN01: deaths identical, hits 4988 -> 4991, 8798 sends, 11 drops of a trigger that was on.
+- USN04: gameplay identical, 1435 sends, 3 drops.
+
+Flipped by mechanism.
+
+### 3. kGunAimMessageCc15Bound: left OFF, firing unexercised
+
+The 79h copy is exercised. On the USN04 idle pair (export of 839c4bacd, local\g52_ga_*_u4f.log)
+it made 8497 round trips; every yaw and pitch changed, by at most 1.97e-6 and 6.91e-6 rad. Gameplay
+was identical.
+
+No harness row fires the player's guns through this path:
+- The HUD builds the message (hud_weapon_group_screen.cpp:316) with held = input_held(99h). The
+  menu host can inject only the press-start action (GameMenuHost::input_action_held).
+- The helm `fire <ship> group <g>` line binds only groups 4 and 5, and it applies its own
+  GunAimMessage79 directly, skipping queue_gun_aim_79. Groups 2 and 3 are refused with "only
+  group 5 (depth charges) is bound".
+
+Recorded as unexercised. Exercising it needs a harness way to hold action 99h (shared tooling: ask
+the lead first) or a group-2/3 helm binding that goes through route_fire_message_0077c2a0.
+
+### 4. Host ids against 13-bit handles: census, no change
+
+There are two id spaces:
+- Units travel as index + 1 in SceneCommandTarget::object_id (uint16, the entity's +174h). These
+  fit while there are fewer than 8191 units.
+- Scene markers use their own ids: 50000 + n at load time (kSceneMarkerIdBase), 90000 + n for
+  GenerateObject convoys (kGeneratedSceneMarkerIdBase), and script entities from 100000.
+
+Sites where a marker id meets a narrow field:
+- Guarded (cc15): the 88h MT_COMMAND copy (game_hosts_commands.cpp ~1697), the 92h set-command
+  copy (~2210, counted as setcmd_id_cut), and the 79h target id (12 bits). The 79h id is always 0
+  here anyway, because target_id_174 is a record that returns 0.
+- Unguarded, a real truncation: game_hosts_script_orders.cpp:3327 writes `object_id =
+  static_cast<std::uint16_t>(marker->id)` for MoveOnPath. Generated markers (90000 and up) wrap
+  modulo 65536 (90000 -> 24464). GameUnitsHost::scene_marker_position(id) then finds nothing, and
+  might even find a different marker. This affects only paths that put a GenerateObject convoy
+  marker into a command target. Load-time markers (50000-65535) survive the uint16 store, and lose
+  bits only in the session copies, which are already guarded.
+- Not live: the other 13- and 12-bit encoders in the cc13 bodies (00721100/007211B0 descriptor
+  index 13 bits, 006F4220 ids 12 bits, 00656320 word 12 bits) have no host caller. The host writes
+  no save game, and Lua receives ids as numbers.
+
+Proposal (not implemented): allocate marker ids in the image's handle space. Continue the unit
+handle table after the units (index + 1 for units, then count + 1 + n for load-time and generated
+markers), and keep every id below 8192 so that it survives the 13-bit copies and the uint16 field.
+Then drop the cc15 "kept as posted" guards, and the scene_marker_positions lookup keys on the
+handle. The 100000 script-entity range would need the same mapping wherever a script entity
+becomes a command target.
+
+### 5. kLandConvoyBodiesBound (include/bsp/land_convoy_wiring_cc13.hpp): ON
+
+Flipped as f8f524b1f. Reference-env pairs on 011d651dc, idle: PRCP08 at 30000 frames and JM05 at
+36000. Both are gameplay identical (local\g52_lc_{off,on}_{p8,j5}.log).
+
+What ran:
+- 007420B0 bound every convoy.
+- On JM05 the one member of RadarStationLandConvoy 01 died. 007422A0 took the live count to
+  zero, and in the same flush 00926D90 ran with cause 2 and then 00742180. ON stops placing the
+  dead member; OFF kept placing it.
+
+Not reached by these rows:
+- the PRCP08 Train member kills (TrainKilled);
+- JM05's Event5Convoy (GenerateObject plus `Convoy.Dead`);
+- Lua Kill on a convoy (00742210).
+
+A row that sinks or kills those still needs a pair.
+### Open
+
+- USN01 `usn01_p8_u1_i` does not complete at 30000 mission frames on a8d54817d, with either switch
+  OFF or ON (Mission.EndMission is never true; only Convoy5 sinks). cc9-lua68 has been told.
+- The generated-marker uint16 wrap above.

@@ -3,11 +3,17 @@ project(bsp_reconstruction VERSION 0.1.0 LANGUAGES C CXX)
 if(NOT WIN32 OR NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
   message(FATAL_ERROR "Use MSVC targeting Win32 (scripts/build.ps1). The original is x86.")
 endif()
+# Compile each target's files in parallel. Without /MP, cl takes a project's sources one at a time, and
+# bsp_core holds most of them. The count is capped so that the up to three builds scripts/build.ps1
+# admits at once stay near the machine's 32 cores. /MP changes scheduling only, not the object code.
+set(BSP_CL_MP 10 CACHE STRING "cl /MP process count per target")
+add_compile_options(/MP${BSP_CL_MP})
 include(cmake/lua.cmake)
 include(cmake/zlib.cmake)
 include(cmake/d3dx.cmake)
 add_library(bsp_core STATIC src/math.cpp src/render_sort.cpp src/random.cpp src/random_threads.cpp src/platform_loop.cpp src/win32_event.cpp src/d3d9_startup.cpp src/d3d9_texture.cpp src/texture_atlas.cpp src/texture_atlas_lookup.cpp src/gui_texture.cpp src/gui_geometry.cpp src/shader_source.cpp src/shader_lua.cpp src/material_constants.cpp src/camera_projection.cpp src/camera_inverse.cpp src/camera_multiply.cpp src/camera_affine.cpp src/camera_transform.cpp src/d3d9_states.cpp src/d3d9_resources.cpp src/d3d9_buffers.cpp src/vertex_declaration.cpp src/d3d9_vertex_layout.cpp)
 target_include_directories(bsp_core PUBLIC include)
+target_sources(bsp_core PRIVATE src/oct18_tail_a.cpp)
 target_sources(bsp_core PRIVATE src/shader_reflection.cpp)
 target_sources(bsp_core PRIVATE src/material_samplers.cpp)
 target_sources(bsp_core PRIVATE src/native_material_pass_states.cpp)
@@ -221,6 +227,24 @@ target_sources(bsp_core PRIVATE src/material_parameter_bindings.cpp src/effect_c
 target_sources(bsp_core PRIVATE src/win32_window.cpp)
 target_compile_features(bsp_core PUBLIC cxx_std_17)
 target_compile_options(bsp_core PRIVATE /W4 /WX /fp:strict)
+# Precompiled standard headers (C++ only) for the two big targets. Only headers that add no unqualified
+# overloads are listed: <cmath>, <cstdlib> and <algorithm> stay out so a file without them still resolves
+# abs/min/max/sqrt as it did. With it, .text is not byte-identical: 99 of ~28,000 functions change size
+# (inlining and COMDAT choice; floating point is SSE2 /fp:strict, so results do not depend on it), and a
+# USN04 run is identical to the non-PCH build under pair_diff (exit 0). Clean build 2.55 -> 1.9 min.
+# Configure with -DBSP_PCH=OFF to compare against a build without it.
+option(BSP_PCH "precompiled standard headers for bsp_core and bsp_game" ON)
+set(BSP_PCH_HEADERS <cstring> <cstddef> <cstdint> <cstdio> <new> <exception> <stdexcept> <utility> <limits>
+    <type_traits> <array> <string> <vector> <map> <memory>)
+list(TRANSFORM BSP_PCH_HEADERS REPLACE "^(.*)$" "$<$<COMPILE_LANGUAGE:CXX>:\\1>")
+if(BSP_PCH)
+  target_precompile_headers(bsp_core PRIVATE ${BSP_PCH_HEADERS})
+  cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_precompile_headers bsp_game PRIVATE ${BSP_PCH_HEADERS})
+endif()
+# The precompiled CRT headers come before a file's own `#define _CRT_SECURE_NO_WARNINGS`, so define it
+# (empty, as the files do, which avoids C4005) for both targets. It only silences C4996.
+target_compile_definitions(bsp_core PRIVATE _CRT_SECURE_NO_WARNINGS=)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_compile_definitions bsp_game PRIVATE _CRT_SECURE_NO_WARNINGS=)
 target_link_libraries(bsp_core PUBLIC user32 d3d9 PRIVATE bsp_lua511 bsp_d3dx_headers bsp_zlib121)
 add_executable(bsp_d3d9_probe src/d3d9_probe.cpp src/d3d9_shader_probe.cpp src/d3d9_atlas_probe.cpp src/d3d9_material_probe.cpp)
 target_sources(bsp_d3d9_probe PRIVATE src/d3d9_alpha_probe.cpp)
@@ -360,3 +384,5 @@ target_sources(bsp_core PRIVATE src/native_return_one_byte.cpp)
 target_sources(bsp_core PRIVATE src/native_tick_subnode_requeue.cpp)
 target_sources(bsp_core PRIVATE src/native_mlandfort_kind.cpp)
 target_sources(bsp_core PRIVATE src/native_mcommandbuilding_kind.cpp)
+
+target_sources(bsp_core PRIVATE src/oct18_tail_d.cpp)

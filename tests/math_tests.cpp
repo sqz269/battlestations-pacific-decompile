@@ -1954,6 +1954,24 @@ int main() {
     }
 
     {
+        // 0091A080, the merge 009205E0 runs (kMissionRecordMergeBound): two
+        // commits sum +1E0h and keep the max +4, where the copy model keeps
+        // only the second record's values (OFF would give 50 and 1).
+        bsp::MissionScoreRecord a{};
+        a.mission_completed_00 = 1;
+        a.ranking_04 = 3;
+        a.totals_1c8[6] = 100;
+        bsp::MissionScoreRecord b = a;
+        b.ranking_04 = 1;
+        b.totals_1c8[6] = 50;
+        bsp::MissionScoreRecord stored{};
+        bsp::merge_mission_score_record_0091a080(stored, a);
+        bsp::merge_mission_score_record_0091a080(stored, b);
+        check(stored.totals_1c8[6] == 150 && stored.ranking_04 == 3,
+            "two 0091A080 merges sum the +1E0h total and keep the larger +4 ranking");
+    }
+
+    {
         // docs/UNIT_STATE_MESSAGE.md. The packet's conclusion rests on one
         // interaction: a MT_SHIP_SYNC back-fill (00812FA0) writes ring slots only,
         // and unit+980h/+984h move solely through the rate-limited step inside

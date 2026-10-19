@@ -1,0 +1,15 @@
+[
+  {
+    "address": "00759120",
+    "name": "mothership_bind_model_00759120",
+    "source": "src/oct18_tail_a.cpp",
+    "status": "reconstructed_build_tested",
+    "original_abi": "ECX class; RET; final FLD32/FSTP32 copies818h->80Ch; ordinary source cleanup,not FH3",
+    "abi_compatible": false,
+    "game_validated": false,
+    "documentation": "docs/OCT18_TAIL_A.md",
+    "evidence": "Whole ordinary saved body/assembly reviewed; JMP targets verified from disk bytes. Compose existing checked DWORD erase, game placement/model/codec targets and pooled/SBO string helpers. Required original call services explicit. Valid original storage/current canonical heap domain; no original FH3/private-stack/fault/concurrency/binaryABI/gameplay claim. docs/OCT18_TAIL_A.md.",
+    "ghidra_name": "BSP_MotherShipClass_BindModelData_Provisional",
+    "append_name_evidence": "oct18-tA: mothership_bind_model_00759120 ordinary source implementation in src/oct18_tail_a.cpp. Complete body/assembly reviewed; original ABI, services and source projection limits in docs/OCT18_TAIL_A.md. No host switch or game validation."
+  }
+]

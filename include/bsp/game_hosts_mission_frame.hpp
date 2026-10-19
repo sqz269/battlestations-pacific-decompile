@@ -48,6 +48,13 @@ void game_warning_report_torpedo_00977690(std::size_t unit);
 // 00977820(this, entity): a 30 s per-entity cooldown on 00975D00's record, then a
 // point effect (this+190h) parented to entity+4A4h.
 void game_warning_torpedo_effect_00977820(std::size_t unit);
+// Packet cc15-wB4: 00988510's default hit warning, 009895D8..00989992, for one
+// hit that passed the channel's +168h rate limit, after its listener passes.
+// `victim` and `shooter` are zero-based unit indices; `attacker_player_index`
+// is the shot's [src+1Ch] (-1 with no ordnance). Behind
+// kWarningMessageBankCc15Bound; a no-op before a mission frame host exists.
+void game_warning_report_hit_00989604(std::size_t victim, std::size_t shooter,
+    int attacker_player_index);
 // Packet cc9_loss_report_entry (docs/UNIT_DEATH_ROUTE.md, docs/LOSS_WARNING.md).
 // 009813A0 on [00F8A0C4](this, entity): the loss report. Only its guard is run:
 // side +54h < 2 as a SIGNED compare (009813C9 CMP EAX,2 / JGE 00981658), then

@@ -255,9 +255,9 @@ float torpedo_reset_run_time_009d0160(const TorpedoApproachState& s, float fall_
     return total < 0.0f ? 0.0f : total;
 }
 
-float torpedo_engage_range_009d4ac4(float current_8c, float attack_dist_tuning,
+float torpedo_engage_range_009d4b63(float current_8c, float attack_dist_tuning,
                                     float speed_ratio_41c) noexcept {
-    // 009D4AC4-009D4AD8: FMUL the tuning row by the speed ratio at task+41Ch,
+    // 009D4B63-009D4BA7: FMUL the tuning row by the speed ratio at task+41Ch,
     // then keep whichever of that and task+484h is larger.
     const float scaled = attack_dist_tuning * speed_ratio_41c;
     return scaled < current_8c ? current_8c : scaled;
@@ -481,9 +481,10 @@ TorpedoApproachUpdateResult torpedo_approach_update_009d3420(
                     kTorpedoOverLandHeight_00ce38b8) {
                 state.over_land_a9 = 1;  // 009D36BC
             }
-            // 009D36CA: with unit+C50h set, 007DF360 decides it outright.
-            state.over_land_a9 =
-                host.target_reachable_007df360(target_point) ? 1 : state.over_land_a9;
+            // 009D36CA-009D36F3: with unit+C50h set, 007DF360's AL overwrites
+            // it outright (a 0 clears a terrain 1).
+            const int screened = host.target_reachable_007df360(target_point);
+            if (screened >= 0) state.over_land_a9 = screened != 0 ? 1 : 0;
         }
     }
     out.replanned = replan;

@@ -1,0 +1,7678 @@
+{
+  "function": "00768530",
+  "source": "src/oct18_tail_a.cpp",
+  "body_sha256": "f026559defeeea77eae2c8e5b1f1936c1dbc2075329423e62d73f5634266e7c4",
+  "body_range": [
+    "00768530",
+    "0076a298"
+  ],
+  "jump_table": [
+    "0076a298",
+    233
+  ],
+  "allocated_tag_paths": 214,
+  "direct_getter_tag_paths": 9,
+  "default_tag_paths": 10,
+  "physical_case_entries": 215,
+  "exception_states": [
+    {
+      "state": 0,
+      "previous": -1,
+      "handler": "00c88e40",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 1,
+      "previous": -1,
+      "handler": "00c88e4b",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 2,
+      "previous": -1,
+      "handler": "00c88e56",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 3,
+      "previous": -1,
+      "handler": "00c88e61",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 4,
+      "previous": -1,
+      "handler": "00c88e6c",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 5,
+      "previous": -1,
+      "handler": "00c88e77",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 6,
+      "previous": -1,
+      "handler": "00c88e82",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 7,
+      "previous": -1,
+      "handler": "00c88e8d",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 8,
+      "previous": -1,
+      "handler": "00c88e98",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 9,
+      "previous": -1,
+      "handler": "00c88ea3",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 10,
+      "previous": -1,
+      "handler": "00c88eae",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 11,
+      "previous": -1,
+      "handler": "00c88eb9",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 12,
+      "previous": -1,
+      "handler": "00c88ec4",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 13,
+      "previous": -1,
+      "handler": "00c88ecf",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 14,
+      "previous": -1,
+      "handler": "00c88eda",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 15,
+      "previous": -1,
+      "handler": "00c88ee5",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 16,
+      "previous": -1,
+      "handler": "00c88ef0",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 17,
+      "previous": -1,
+      "handler": "00c88efb",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 18,
+      "previous": -1,
+      "handler": "00c88f06",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 19,
+      "previous": -1,
+      "handler": "00c88f11",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 20,
+      "previous": -1,
+      "handler": "00c88f1c",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    },
+    {
+      "state": 21,
+      "previous": -1,
+      "handler": "00c88f27",
+      "allocation_ebp_offset": -16,
+      "free": "00bf65ac"
+    }
+  ],
+  "routes": [
+    {
+      "tag": 1,
+      "entry": "00768580",
+      "size": 24,
+      "calls": [
+        {
+          "address": "0075b860",
+          "arguments": [
+            "1"
+          ],
+          "site": "00768592"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768580: push 0x18",
+        "00768582: call 0xbf681b",
+        "00768587: add esp, 4",
+        "0076858a: test eax, eax",
+        "0076858c: je 0x76859e",
+        "0076858e: push 1",
+        "00768590: mov ecx, eax",
+        "00768592: call 0x75b860",
+        "00768597: mov esi, eax",
+        "00768599: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 2,
+      "entry": "00768740",
+      "size": 24,
+      "calls": [
+        {
+          "address": "0075b860",
+          "arguments": [
+            "2"
+          ],
+          "site": "00768756"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768740: push 0x18",
+        "00768742: call 0xbf681b",
+        "00768747: add esp, 4",
+        "0076874a: test eax, eax",
+        "0076874c: je 0x76859e",
+        "00768752: push 2",
+        "00768754: mov ecx, eax",
+        "00768756: call 0x75b860",
+        "0076875b: mov esi, eax",
+        "0076875d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 3,
+      "entry": "00768762",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075ce80",
+          "arguments": [],
+          "site": "00768776"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768762: push 0x24",
+        "00768764: call 0xbf681b",
+        "00768769: add esp, 4",
+        "0076876c: test eax, eax",
+        "0076876e: je 0x76859e",
+        "00768774: mov ecx, eax",
+        "00768776: call 0x75ce80",
+        "0076877b: mov esi, eax",
+        "0076877d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 4,
+      "entry": "00768782",
+      "size": 192,
+      "calls": [
+        {
+          "address": "0075d5d0",
+          "arguments": [],
+          "site": "00768799"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768782: push 0xc0",
+        "00768787: call 0xbf681b",
+        "0076878c: add esp, 4",
+        "0076878f: test eax, eax",
+        "00768791: je 0x76859e",
+        "00768797: mov ecx, eax",
+        "00768799: call 0x75d5d0",
+        "0076879e: mov esi, eax",
+        "007687a0: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 5,
+      "entry": "007687c5",
+      "size": 136,
+      "calls": [
+        {
+          "address": "0075d010",
+          "arguments": [],
+          "site": "007687dc"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007687c5: push 0x88",
+        "007687ca: call 0xbf681b",
+        "007687cf: add esp, 4",
+        "007687d2: test eax, eax",
+        "007687d4: je 0x76859e",
+        "007687da: mov ecx, eax",
+        "007687dc: call 0x75d010",
+        "007687e1: mov esi, eax",
+        "007687e3: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 6,
+      "entry": "007687a5",
+      "size": 28,
+      "calls": [
+        {
+          "address": "0075d990",
+          "arguments": [],
+          "site": "007687b9"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007687a5: push 0x1c",
+        "007687a7: call 0xbf681b",
+        "007687ac: add esp, 4",
+        "007687af: test eax, eax",
+        "007687b1: je 0x76859e",
+        "007687b7: mov ecx, eax",
+        "007687b9: call 0x75d990",
+        "007687be: mov esi, eax",
+        "007687c0: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 7,
+      "entry": "007687e8",
+      "size": 24,
+      "calls": [
+        {
+          "address": "0075e940",
+          "arguments": [],
+          "site": "007687fc"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007687e8: push 0x18",
+        "007687ea: call 0xbf681b",
+        "007687ef: add esp, 4",
+        "007687f2: test eax, eax",
+        "007687f4: je 0x76859e",
+        "007687fa: mov ecx, eax",
+        "007687fc: call 0x75e940",
+        "00768801: mov esi, eax",
+        "00768803: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 8,
+      "entry": "00768808",
+      "size": 44,
+      "calls": [
+        {
+          "address": "00765e10",
+          "arguments": [],
+          "site": "0076881c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768808: push 0x2c",
+        "0076880a: call 0xbf681b",
+        "0076880f: add esp, 4",
+        "00768812: test eax, eax",
+        "00768814: je 0x76859e",
+        "0076881a: mov ecx, eax",
+        "0076881c: call 0x765e10",
+        "00768821: mov esi, eax",
+        "00768823: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 9,
+      "entry": "00768848",
+      "size": 48,
+      "calls": [
+        {
+          "address": "007661d0",
+          "arguments": [],
+          "site": "0076885c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768848: push 0x30",
+        "0076884a: call 0xbf681b",
+        "0076884f: add esp, 4",
+        "00768852: test eax, eax",
+        "00768854: je 0x76859e",
+        "0076885a: mov ecx, eax",
+        "0076885c: call 0x7661d0",
+        "00768861: mov esi, eax",
+        "00768863: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 10,
+      "entry": "00768828",
+      "size": 24,
+      "calls": [
+        {
+          "address": "0075e540",
+          "arguments": [],
+          "site": "0076883c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768828: push 0x18",
+        "0076882a: call 0xbf681b",
+        "0076882f: add esp, 4",
+        "00768832: test eax, eax",
+        "00768834: je 0x76859e",
+        "0076883a: mov ecx, eax",
+        "0076883c: call 0x75e540",
+        "00768841: mov esi, eax",
+        "00768843: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 11,
+      "entry": "00768868",
+      "size": 28,
+      "calls": [
+        {
+          "address": "0075e630",
+          "arguments": [],
+          "site": "0076887c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768868: push 0x1c",
+        "0076886a: call 0xbf681b",
+        "0076886f: add esp, 4",
+        "00768872: test eax, eax",
+        "00768874: je 0x76859e",
+        "0076887a: mov ecx, eax",
+        "0076887c: call 0x75e630",
+        "00768881: mov esi, eax",
+        "00768883: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 12,
+      "entry": "007688a8",
+      "size": 24,
+      "calls": [
+        {
+          "address": "004b5fb0",
+          "arguments": [],
+          "site": "007688bc"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007688a8: push 0x18",
+        "007688aa: call 0xbf681b",
+        "007688af: add esp, 4",
+        "007688b2: test eax, eax",
+        "007688b4: je 0x76859e",
+        "007688ba: mov ecx, eax",
+        "007688bc: call 0x4b5fb0",
+        "007688c1: mov esi, eax",
+        "007688c3: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 13,
+      "entry": "00768888",
+      "size": 28,
+      "calls": [
+        {
+          "address": "0075d4b0",
+          "arguments": [],
+          "site": "0076889c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768888: push 0x1c",
+        "0076888a: call 0xbf681b",
+        "0076888f: add esp, 4",
+        "00768892: test eax, eax",
+        "00768894: je 0x76859e",
+        "0076889a: mov ecx, eax",
+        "0076889c: call 0x75d4b0",
+        "007688a1: mov esi, eax",
+        "007688a3: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 14,
+      "entry": "007688c8",
+      "size": 28,
+      "calls": [
+        {
+          "address": "0075d2e0",
+          "arguments": [
+            "0"
+          ],
+          "site": "007688de"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007688c8: push 0x1c",
+        "007688ca: call 0xbf681b",
+        "007688cf: add esp, 4",
+        "007688d2: test eax, eax",
+        "007688d4: je 0x76859e",
+        "007688da: push 0",
+        "007688dc: mov ecx, eax",
+        "007688de: call 0x75d2e0",
+        "007688e3: mov esi, eax",
+        "007688e5: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 15,
+      "entry": "007688ea",
+      "size": 28,
+      "calls": [
+        {
+          "address": "0075caa0",
+          "arguments": [],
+          "site": "007688fe"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007688ea: push 0x1c",
+        "007688ec: call 0xbf681b",
+        "007688f1: add esp, 4",
+        "007688f4: test eax, eax",
+        "007688f6: je 0x76859e",
+        "007688fc: mov ecx, eax",
+        "007688fe: call 0x75caa0",
+        "00768903: mov esi, eax",
+        "00768905: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 16,
+      "entry": "0076890a",
+      "size": 120,
+      "calls": [
+        {
+          "address": "0075cbc0",
+          "arguments": [],
+          "site": "0076891e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076890a: push 0x78",
+        "0076890c: call 0xbf681b",
+        "00768911: add esp, 4",
+        "00768914: test eax, eax",
+        "00768916: je 0x76859e",
+        "0076891c: mov ecx, eax",
+        "0076891e: call 0x75cbc0",
+        "00768923: mov esi, eax",
+        "00768925: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 17,
+      "entry": "0076892a",
+      "size": 24,
+      "calls": [
+        {
+          "address": "0075d3f0",
+          "arguments": [],
+          "site": "0076893e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076892a: push 0x18",
+        "0076892c: call 0xbf681b",
+        "00768931: add esp, 4",
+        "00768934: test eax, eax",
+        "00768936: je 0x76859e",
+        "0076893c: mov ecx, eax",
+        "0076893e: call 0x75d3f0",
+        "00768943: mov esi, eax",
+        "00768945: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 18,
+      "entry": "0076894a",
+      "size": 24,
+      "calls": [
+        {
+          "address": "0075e740",
+          "arguments": [],
+          "site": "0076895e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076894a: push 0x18",
+        "0076894c: call 0xbf681b",
+        "00768951: add esp, 4",
+        "00768954: test eax, eax",
+        "00768956: je 0x76859e",
+        "0076895c: mov ecx, eax",
+        "0076895e: call 0x75e740",
+        "00768963: mov esi, eax",
+        "00768965: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 19,
+      "entry": "0076896a",
+      "size": 28,
+      "calls": [
+        {
+          "address": "004b6050",
+          "arguments": [],
+          "site": "0076897e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076896a: push 0x1c",
+        "0076896c: call 0xbf681b",
+        "00768971: add esp, 4",
+        "00768974: test eax, eax",
+        "00768976: je 0x76859e",
+        "0076897c: mov ecx, eax",
+        "0076897e: call 0x4b6050",
+        "00768983: mov esi, eax",
+        "00768985: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 20,
+      "entry": "0076898a",
+      "size": 28,
+      "calls": [
+        {
+          "address": "0075e830",
+          "arguments": [],
+          "site": "0076899e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076898a: push 0x1c",
+        "0076898c: call 0xbf681b",
+        "00768991: add esp, 4",
+        "00768994: test eax, eax",
+        "00768996: je 0x76859e",
+        "0076899c: mov ecx, eax",
+        "0076899e: call 0x75e830",
+        "007689a3: mov esi, eax",
+        "007689a5: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 21,
+      "entry": "007689aa",
+      "size": 400,
+      "calls": [
+        {
+          "address": "00764340",
+          "arguments": [],
+          "site": "007689c1"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007689aa: push 0x190",
+        "007689af: call 0xbf681b",
+        "007689b4: add esp, 4",
+        "007689b7: test eax, eax",
+        "007689b9: je 0x76859e",
+        "007689bf: mov ecx, eax",
+        "007689c1: call 0x764340",
+        "007689c6: mov esi, eax",
+        "007689c8: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 22,
+      "entry": "007689cd",
+      "size": 312,
+      "calls": [
+        {
+          "address": "007643e0",
+          "arguments": [],
+          "site": "007689e4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007689cd: push 0x138",
+        "007689d2: call 0xbf681b",
+        "007689d7: add esp, 4",
+        "007689da: test eax, eax",
+        "007689dc: je 0x76859e",
+        "007689e2: mov ecx, eax",
+        "007689e4: call 0x7643e0",
+        "007689e9: mov esi, eax",
+        "007689eb: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 23,
+      "entry": "007689f0",
+      "size": 80,
+      "calls": [
+        {
+          "address": "0075e000",
+          "arguments": [],
+          "site": "00768a04"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007689f0: push 0x50",
+        "007689f2: call 0xbf681b",
+        "007689f7: add esp, 4",
+        "007689fa: test eax, eax",
+        "007689fc: je 0x76859e",
+        "00768a02: mov ecx, eax",
+        "00768a04: call 0x75e000",
+        "00768a09: mov esi, eax",
+        "00768a0b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 24,
+      "entry": "00768a10",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00766060",
+          "arguments": [],
+          "site": "00768a24"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768a10: push 0x24",
+        "00768a12: call 0xbf681b",
+        "00768a17: add esp, 4",
+        "00768a1a: test eax, eax",
+        "00768a1c: je 0x76859e",
+        "00768a22: mov ecx, eax",
+        "00768a24: call 0x766060",
+        "00768a29: mov esi, eax",
+        "00768a2b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 25,
+      "entry": "00768a30",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075daa0",
+          "arguments": [
+            "0x19"
+          ],
+          "site": "00768a46"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768a30: push 0x20",
+        "00768a32: call 0xbf681b",
+        "00768a37: add esp, 4",
+        "00768a3a: test eax, eax",
+        "00768a3c: je 0x76859e",
+        "00768a42: push 0x19",
+        "00768a44: mov ecx, eax",
+        "00768a46: call 0x75daa0",
+        "00768a4b: mov esi, eax",
+        "00768a4d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 26,
+      "entry": "00768a52",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075db70",
+          "arguments": [],
+          "site": "00768a66"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768a52: push 0x20",
+        "00768a54: call 0xbf681b",
+        "00768a59: add esp, 4",
+        "00768a5c: test eax, eax",
+        "00768a5e: je 0x76859e",
+        "00768a64: mov ecx, eax",
+        "00768a66: call 0x75db70",
+        "00768a6b: mov esi, eax",
+        "00768a6d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 27,
+      "entry": "00768a72",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075dc20",
+          "arguments": [],
+          "site": "00768a86"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768a72: push 0x20",
+        "00768a74: call 0xbf681b",
+        "00768a79: add esp, 4",
+        "00768a7c: test eax, eax",
+        "00768a7e: je 0x76859e",
+        "00768a84: mov ecx, eax",
+        "00768a86: call 0x75dc20",
+        "00768a8b: mov esi, eax",
+        "00768a8d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 28,
+      "entry": "00768a92",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075dcd0",
+          "arguments": [],
+          "site": "00768aa6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768a92: push 0x20",
+        "00768a94: call 0xbf681b",
+        "00768a99: add esp, 4",
+        "00768a9c: test eax, eax",
+        "00768a9e: je 0x76859e",
+        "00768aa4: mov ecx, eax",
+        "00768aa6: call 0x75dcd0",
+        "00768aab: mov esi, eax",
+        "00768aad: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 29,
+      "entry": "00768ab2",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075ded0",
+          "arguments": [],
+          "site": "00768ac6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768ab2: push 0x20",
+        "00768ab4: call 0xbf681b",
+        "00768ab9: add esp, 4",
+        "00768abc: test eax, eax",
+        "00768abe: je 0x76859e",
+        "00768ac4: mov ecx, eax",
+        "00768ac6: call 0x75ded0",
+        "00768acb: mov esi, eax",
+        "00768acd: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 30,
+      "entry": "00768ad2",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075e140",
+          "arguments": [],
+          "site": "00768ae6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768ad2: push 0x20",
+        "00768ad4: call 0xbf681b",
+        "00768ad9: add esp, 4",
+        "00768adc: test eax, eax",
+        "00768ade: je 0x76859e",
+        "00768ae4: mov ecx, eax",
+        "00768ae6: call 0x75e140",
+        "00768aeb: mov esi, eax",
+        "00768aed: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 31,
+      "entry": "00768af2",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075e270",
+          "arguments": [],
+          "site": "00768b06"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768af2: push 0x20",
+        "00768af4: call 0xbf681b",
+        "00768af9: add esp, 4",
+        "00768afc: test eax, eax",
+        "00768afe: je 0x76859e",
+        "00768b04: mov ecx, eax",
+        "00768b06: call 0x75e270",
+        "00768b0b: mov esi, eax",
+        "00768b0d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 32,
+      "entry": "00768b12",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075e3a0",
+          "arguments": [],
+          "site": "00768b26"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768b12: push 0x20",
+        "00768b14: call 0xbf681b",
+        "00768b19: add esp, 4",
+        "00768b1c: test eax, eax",
+        "00768b1e: je 0x76859e",
+        "00768b24: mov ecx, eax",
+        "00768b26: call 0x75e3a0",
+        "00768b2b: mov esi, eax",
+        "00768b2d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 33,
+      "entry": "00768b32",
+      "size": 64,
+      "calls": [
+        {
+          "address": "00765bd0",
+          "arguments": [],
+          "site": "00768b46"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768b32: push 0x40",
+        "00768b34: call 0xbf681b",
+        "00768b39: add esp, 4",
+        "00768b3c: test eax, eax",
+        "00768b3e: je 0x76859e",
+        "00768b44: mov ecx, eax",
+        "00768b46: call 0x765bd0",
+        "00768b4b: mov esi, eax",
+        "00768b4d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 34,
+      "entry": "00768b52",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00765d20",
+          "arguments": [],
+          "site": "00768b66"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768b52: push 0x20",
+        "00768b54: call 0xbf681b",
+        "00768b59: add esp, 4",
+        "00768b5c: test eax, eax",
+        "00768b5e: je 0x76859e",
+        "00768b64: mov ecx, eax",
+        "00768b66: call 0x765d20",
+        "00768b6b: mov esi, eax",
+        "00768b6d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 35,
+      "entry": "00768b72",
+      "size": 84,
+      "calls": [
+        {
+          "address": "0052aef0",
+          "arguments": [],
+          "site": "00768b86"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768b72: push 0x54",
+        "00768b74: call 0xbf681b",
+        "00768b79: add esp, 4",
+        "00768b7c: test eax, eax",
+        "00768b7e: je 0x76859e",
+        "00768b84: mov ecx, eax",
+        "00768b86: call 0x52aef0",
+        "00768b8b: mov esi, eax",
+        "00768b8d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 36,
+      "entry": "00768b92",
+      "size": 40,
+      "calls": [
+        {
+          "address": "00764670",
+          "arguments": [],
+          "site": "00768ba6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768b92: push 0x28",
+        "00768b94: call 0xbf681b",
+        "00768b99: add esp, 4",
+        "00768b9c: test eax, eax",
+        "00768b9e: je 0x76859e",
+        "00768ba4: mov ecx, eax",
+        "00768ba6: call 0x764670",
+        "00768bab: mov esi, eax",
+        "00768bad: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 37,
+      "entry": "00768bd2",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075dd80",
+          "arguments": [],
+          "site": "00768be6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768bd2: push 0x24",
+        "00768bd4: call 0xbf681b",
+        "00768bd9: add esp, 4",
+        "00768bdc: test eax, eax",
+        "00768bde: je 0x76859e",
+        "00768be4: mov ecx, eax",
+        "00768be6: call 0x75dd80",
+        "00768beb: mov esi, eax",
+        "00768bed: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 38,
+      "entry": "00768bf2",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075f670",
+          "arguments": [],
+          "site": "00768c06"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768bf2: push 0x20",
+        "00768bf4: call 0xbf681b",
+        "00768bf9: add esp, 4",
+        "00768bfc: test eax, eax",
+        "00768bfe: je 0x76859e",
+        "00768c04: mov ecx, eax",
+        "00768c06: call 0x75f670",
+        "00768c0b: mov esi, eax",
+        "00768c0d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 39,
+      "entry": "00768c12",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075f780",
+          "arguments": [],
+          "site": "00768c26"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c12: push 0x20",
+        "00768c14: call 0xbf681b",
+        "00768c19: add esp, 4",
+        "00768c1c: test eax, eax",
+        "00768c1e: je 0x76859e",
+        "00768c24: mov ecx, eax",
+        "00768c26: call 0x75f780",
+        "00768c2b: mov esi, eax",
+        "00768c2d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 40,
+      "entry": "00768c32",
+      "size": 48,
+      "calls": [
+        {
+          "address": "0075f890",
+          "arguments": [],
+          "site": "00768c46"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c32: push 0x30",
+        "00768c34: call 0xbf681b",
+        "00768c39: add esp, 4",
+        "00768c3c: test eax, eax",
+        "00768c3e: je 0x76859e",
+        "00768c44: mov ecx, eax",
+        "00768c46: call 0x75f890",
+        "00768c4b: mov esi, eax",
+        "00768c4d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 41,
+      "entry": "007685a7",
+      "size": 48,
+      "calls": [
+        {
+          "address": "007673b0",
+          "arguments": [],
+          "site": "007685c3"
+        }
+      ],
+      "unwind_state": 0,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007685a7: push 0x30",
+        "007685a9: call 0xbf681b",
+        "007685ae: add esp, 4",
+        "007685b1: mov dword ptr [esp + 0xc], eax",
+        "007685b5: test eax, eax",
+        "007685b7: mov dword ptr [esp + 0x18], 0",
+        "007685bf: je 0x7685d7",
+        "007685c1: mov ecx, eax",
+        "007685c3: call 0x7673b0",
+        "007685c8: mov dword ptr [esp + 0x18], 0xffffffff",
+        "007685d0: mov esi, eax",
+        "007685d2: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 42,
+      "entry": "007685e8",
+      "size": 28,
+      "calls": [
+        {
+          "address": "0075ea30",
+          "arguments": [],
+          "site": "007685f8"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007685e8: push 0x1c",
+        "007685ea: call 0xbf681b",
+        "007685ef: add esp, 4",
+        "007685f2: test eax, eax",
+        "007685f4: je 0x76859e",
+        "007685f6: mov ecx, eax",
+        "007685f8: call 0x75ea30",
+        "007685fd: mov esi, eax",
+        "007685ff: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 43,
+      "entry": "00768604",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075eb40",
+          "arguments": [],
+          "site": "00768614"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768604: push 0x20",
+        "00768606: call 0xbf681b",
+        "0076860b: add esp, 4",
+        "0076860e: test eax, eax",
+        "00768610: je 0x76859e",
+        "00768612: mov ecx, eax",
+        "00768614: call 0x75eb40",
+        "00768619: mov esi, eax",
+        "0076861b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 44,
+      "entry": "00768620",
+      "size": 44,
+      "calls": [
+        {
+          "address": "007663f0",
+          "arguments": [],
+          "site": "00768634"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768620: push 0x2c",
+        "00768622: call 0xbf681b",
+        "00768627: add esp, 4",
+        "0076862a: test eax, eax",
+        "0076862c: je 0x76859e",
+        "00768632: mov ecx, eax",
+        "00768634: call 0x7663f0",
+        "00768639: mov esi, eax",
+        "0076863b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 45,
+      "entry": "00768640",
+      "size": 28,
+      "calls": [
+        {
+          "address": "0075ecb0",
+          "arguments": [],
+          "site": "00768654"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768640: push 0x1c",
+        "00768642: call 0xbf681b",
+        "00768647: add esp, 4",
+        "0076864a: test eax, eax",
+        "0076864c: je 0x76859e",
+        "00768652: mov ecx, eax",
+        "00768654: call 0x75ecb0",
+        "00768659: mov esi, eax",
+        "0076865b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 46,
+      "entry": "00768660",
+      "size": 48,
+      "calls": [
+        {
+          "address": "0075edf0",
+          "arguments": [],
+          "site": "00768674"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768660: push 0x30",
+        "00768662: call 0xbf681b",
+        "00768667: add esp, 4",
+        "0076866a: test eax, eax",
+        "0076866c: je 0x76859e",
+        "00768672: mov ecx, eax",
+        "00768674: call 0x75edf0",
+        "00768679: mov esi, eax",
+        "0076867b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 47,
+      "entry": "00768680",
+      "size": 40,
+      "calls": [
+        {
+          "address": "0075f000",
+          "arguments": [],
+          "site": "00768694"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768680: push 0x28",
+        "00768682: call 0xbf681b",
+        "00768687: add esp, 4",
+        "0076868a: test eax, eax",
+        "0076868c: je 0x76859e",
+        "00768692: mov ecx, eax",
+        "00768694: call 0x75f000",
+        "00768699: mov esi, eax",
+        "0076869b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 48,
+      "entry": "007686a0",
+      "size": 48,
+      "calls": [
+        {
+          "address": "0075f1a0",
+          "arguments": [],
+          "site": "007686b4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007686a0: push 0x30",
+        "007686a2: call 0xbf681b",
+        "007686a7: add esp, 4",
+        "007686aa: test eax, eax",
+        "007686ac: je 0x76859e",
+        "007686b2: mov ecx, eax",
+        "007686b4: call 0x75f1a0",
+        "007686b9: mov esi, eax",
+        "007686bb: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 49,
+      "entry": "007686c0",
+      "size": 44,
+      "calls": [
+        {
+          "address": "0075f350",
+          "arguments": [],
+          "site": "007686d4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007686c0: push 0x2c",
+        "007686c2: call 0xbf681b",
+        "007686c7: add esp, 4",
+        "007686ca: test eax, eax",
+        "007686cc: je 0x76859e",
+        "007686d2: mov ecx, eax",
+        "007686d4: call 0x75f350",
+        "007686d9: mov esi, eax",
+        "007686db: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 50,
+      "entry": "007686e0",
+      "size": 28,
+      "calls": [
+        {
+          "address": "0075f540",
+          "arguments": [],
+          "site": "007686f4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007686e0: push 0x1c",
+        "007686e2: call 0xbf681b",
+        "007686e7: add esp, 4",
+        "007686ea: test eax, eax",
+        "007686ec: je 0x76859e",
+        "007686f2: mov ecx, eax",
+        "007686f4: call 0x75f540",
+        "007686f9: mov esi, eax",
+        "007686fb: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 51,
+      "entry": "00768720",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075b2a0",
+          "arguments": [],
+          "site": "00768734"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768720: push 0x20",
+        "00768722: call 0xbf681b",
+        "00768727: add esp, 4",
+        "0076872a: test eax, eax",
+        "0076872c: je 0x76859e",
+        "00768732: mov ecx, eax",
+        "00768734: call 0x75b2a0",
+        "00768739: mov esi, eax",
+        "0076873b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 52,
+      "entry": "00768700",
+      "size": 28,
+      "calls": [
+        {
+          "address": "0075e4d0",
+          "arguments": [],
+          "site": "00768714"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768700: push 0x1c",
+        "00768702: call 0xbf681b",
+        "00768707: add esp, 4",
+        "0076870a: test eax, eax",
+        "0076870c: je 0x76859e",
+        "00768712: mov ecx, eax",
+        "00768714: call 0x75e4d0",
+        "00768719: mov esi, eax",
+        "0076871b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 53,
+      "entry": "00768c52",
+      "size": null,
+      "calls": [
+        {
+          "address": "00733720",
+          "arguments": [],
+          "site": "00768c52"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c52: call 0x733720",
+        "00768c57: mov esi, eax",
+        "00768c59: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 54,
+      "entry": "0076a277",
+      "size": null,
+      "calls": [],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "dword ptr [esp + 0xc]",
+      "trace": [
+        "0076a277: mov esi, dword ptr [esp + 0xc]"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 55,
+      "entry": "00768c5e",
+      "size": null,
+      "calls": [
+        {
+          "address": "008e1530",
+          "arguments": [],
+          "site": "00768c5e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c5e: call 0x8e1530",
+        "00768c63: mov esi, eax",
+        "00768c65: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 56,
+      "entry": "00768c5e",
+      "size": null,
+      "calls": [
+        {
+          "address": "008e1530",
+          "arguments": [],
+          "site": "00768c5e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c5e: call 0x8e1530",
+        "00768c63: mov esi, eax",
+        "00768c65: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 57,
+      "entry": "00768c5e",
+      "size": null,
+      "calls": [
+        {
+          "address": "008e1530",
+          "arguments": [],
+          "site": "00768c5e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c5e: call 0x8e1530",
+        "00768c63: mov esi, eax",
+        "00768c65: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 58,
+      "entry": "00768c5e",
+      "size": null,
+      "calls": [
+        {
+          "address": "008e1530",
+          "arguments": [],
+          "site": "00768c5e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c5e: call 0x8e1530",
+        "00768c63: mov esi, eax",
+        "00768c65: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 59,
+      "entry": "00768c5e",
+      "size": null,
+      "calls": [
+        {
+          "address": "008e1530",
+          "arguments": [],
+          "site": "00768c5e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c5e: call 0x8e1530",
+        "00768c63: mov esi, eax",
+        "00768c65: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 60,
+      "entry": "00768c5e",
+      "size": null,
+      "calls": [
+        {
+          "address": "008e1530",
+          "arguments": [],
+          "site": "00768c5e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c5e: call 0x8e1530",
+        "00768c63: mov esi, eax",
+        "00768c65: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 61,
+      "entry": "00768c5e",
+      "size": null,
+      "calls": [
+        {
+          "address": "008e1530",
+          "arguments": [],
+          "site": "00768c5e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c5e: call 0x8e1530",
+        "00768c63: mov esi, eax",
+        "00768c65: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 62,
+      "entry": "00768c5e",
+      "size": null,
+      "calls": [
+        {
+          "address": "008e1530",
+          "arguments": [],
+          "site": "00768c5e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c5e: call 0x8e1530",
+        "00768c63: mov esi, eax",
+        "00768c65: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 63,
+      "entry": "00768c6a",
+      "size": 48,
+      "calls": [
+        {
+          "address": "00763720",
+          "arguments": [],
+          "site": "00768c7e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c6a: push 0x30",
+        "00768c6c: call 0xbf681b",
+        "00768c71: add esp, 4",
+        "00768c74: test eax, eax",
+        "00768c76: je 0x76859e",
+        "00768c7c: mov ecx, eax",
+        "00768c7e: call 0x763720",
+        "00768c83: mov esi, eax",
+        "00768c85: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 64,
+      "entry": "00768c8a",
+      "size": 48,
+      "calls": [
+        {
+          "address": "00763930",
+          "arguments": [],
+          "site": "00768c9e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768c8a: push 0x30",
+        "00768c8c: call 0xbf681b",
+        "00768c91: add esp, 4",
+        "00768c94: test eax, eax",
+        "00768c96: je 0x76859e",
+        "00768c9c: mov ecx, eax",
+        "00768c9e: call 0x763930",
+        "00768ca3: mov esi, eax",
+        "00768ca5: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 65,
+      "entry": "00768caa",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075b130",
+          "arguments": [],
+          "site": "00768cbe"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768caa: push 0x20",
+        "00768cac: call 0xbf681b",
+        "00768cb1: add esp, 4",
+        "00768cb4: test eax, eax",
+        "00768cb6: je 0x76859e",
+        "00768cbc: mov ecx, eax",
+        "00768cbe: call 0x75b130",
+        "00768cc3: mov esi, eax",
+        "00768cc5: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 66,
+      "entry": "00768cca",
+      "size": 92,
+      "calls": [
+        {
+          "address": "00766d00",
+          "arguments": [],
+          "site": "00768cea"
+        }
+      ],
+      "unwind_state": 1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768cca: push 0x5c",
+        "00768ccc: call 0xbf681b",
+        "00768cd1: add esp, 4",
+        "00768cd4: mov dword ptr [esp + 0xc], eax",
+        "00768cd8: test eax, eax",
+        "00768cda: mov dword ptr [esp + 0x18], 1",
+        "00768ce2: je 0x7685d7",
+        "00768ce8: mov ecx, eax",
+        "00768cea: call 0x766d00",
+        "00768cef: mov dword ptr [esp + 0x18], 0xffffffff",
+        "00768cf7: mov esi, eax",
+        "00768cf9: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 67,
+      "entry": "00768cfe",
+      "size": 48,
+      "calls": [
+        {
+          "address": "00765760",
+          "arguments": [],
+          "site": "00768d12"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768cfe: push 0x30",
+        "00768d00: call 0xbf681b",
+        "00768d05: add esp, 4",
+        "00768d08: test eax, eax",
+        "00768d0a: je 0x76859e",
+        "00768d10: mov ecx, eax",
+        "00768d12: call 0x765760",
+        "00768d17: mov esi, eax",
+        "00768d19: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 68,
+      "entry": "00768d1e",
+      "size": 68,
+      "calls": [
+        {
+          "address": "00765850",
+          "arguments": [],
+          "site": "00768d32"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768d1e: push 0x44",
+        "00768d20: call 0xbf681b",
+        "00768d25: add esp, 4",
+        "00768d28: test eax, eax",
+        "00768d2a: je 0x76859e",
+        "00768d30: mov ecx, eax",
+        "00768d32: call 0x765850",
+        "00768d37: mov esi, eax",
+        "00768d39: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 69,
+      "entry": "00768d3e",
+      "size": 56,
+      "calls": [
+        {
+          "address": "00767570",
+          "arguments": [],
+          "site": "00768d5e"
+        }
+      ],
+      "unwind_state": 2,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768d3e: push 0x38",
+        "00768d40: call 0xbf681b",
+        "00768d45: add esp, 4",
+        "00768d48: mov dword ptr [esp + 0xc], eax",
+        "00768d4c: test eax, eax",
+        "00768d4e: mov dword ptr [esp + 0x18], 2",
+        "00768d56: je 0x7685d7",
+        "00768d5c: mov ecx, eax",
+        "00768d5e: call 0x767570",
+        "00768d63: mov dword ptr [esp + 0x18], 0xffffffff",
+        "00768d6b: mov esi, eax",
+        "00768d6d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 70,
+      "entry": "0076a277",
+      "size": null,
+      "calls": [],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "dword ptr [esp + 0xc]",
+      "trace": [
+        "0076a277: mov esi, dword ptr [esp + 0xc]"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 71,
+      "entry": "0076a277",
+      "size": null,
+      "calls": [],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "dword ptr [esp + 0xc]",
+      "trace": [
+        "0076a277: mov esi, dword ptr [esp + 0xc]"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 72,
+      "entry": "0076a277",
+      "size": null,
+      "calls": [],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "dword ptr [esp + 0xc]",
+      "trace": [
+        "0076a277: mov esi, dword ptr [esp + 0xc]"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 73,
+      "entry": "0076a277",
+      "size": null,
+      "calls": [],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "dword ptr [esp + 0xc]",
+      "trace": [
+        "0076a277: mov esi, dword ptr [esp + 0xc]"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 74,
+      "entry": "0076a277",
+      "size": null,
+      "calls": [],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "dword ptr [esp + 0xc]",
+      "trace": [
+        "0076a277: mov esi, dword ptr [esp + 0xc]"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 75,
+      "entry": "00768d72",
+      "size": 52,
+      "calls": [
+        {
+          "address": "00759e40",
+          "arguments": [],
+          "site": "00768d86"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768d72: push 0x34",
+        "00768d74: call 0xbf681b",
+        "00768d79: add esp, 4",
+        "00768d7c: test eax, eax",
+        "00768d7e: je 0x76859e",
+        "00768d84: mov ecx, eax",
+        "00768d86: call 0x759e40",
+        "00768d8b: mov esi, eax",
+        "00768d8d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 76,
+      "entry": "00768d92",
+      "size": 40,
+      "calls": [
+        {
+          "address": "00759ec0",
+          "arguments": [],
+          "site": "00768da6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768d92: push 0x28",
+        "00768d94: call 0xbf681b",
+        "00768d99: add esp, 4",
+        "00768d9c: test eax, eax",
+        "00768d9e: je 0x76859e",
+        "00768da4: mov ecx, eax",
+        "00768da6: call 0x759ec0",
+        "00768dab: mov esi, eax",
+        "00768dad: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 77,
+      "entry": "00768bb2",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00759f40",
+          "arguments": [],
+          "site": "00768bc6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768bb2: push 0x20",
+        "00768bb4: call 0xbf681b",
+        "00768bb9: add esp, 4",
+        "00768bbc: test eax, eax",
+        "00768bbe: je 0x76859e",
+        "00768bc4: mov ecx, eax",
+        "00768bc6: call 0x759f40",
+        "00768bcb: mov esi, eax",
+        "00768bcd: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 78,
+      "entry": "00768db2",
+      "size": 40,
+      "calls": [
+        {
+          "address": "0075bd50",
+          "arguments": [],
+          "site": "00768dc6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768db2: push 0x28",
+        "00768db4: call 0xbf681b",
+        "00768db9: add esp, 4",
+        "00768dbc: test eax, eax",
+        "00768dbe: je 0x76859e",
+        "00768dc4: mov ecx, eax",
+        "00768dc6: call 0x75bd50",
+        "00768dcb: mov esi, eax",
+        "00768dcd: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 79,
+      "entry": "00768dd2",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075a030",
+          "arguments": [],
+          "site": "00768de6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768dd2: push 0x24",
+        "00768dd4: call 0xbf681b",
+        "00768dd9: add esp, 4",
+        "00768ddc: test eax, eax",
+        "00768dde: je 0x76859e",
+        "00768de4: mov ecx, eax",
+        "00768de6: call 0x75a030",
+        "00768deb: mov esi, eax",
+        "00768ded: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 80,
+      "entry": "00768df2",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075a0b0",
+          "arguments": [],
+          "site": "00768e06"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768df2: push 0x24",
+        "00768df4: call 0xbf681b",
+        "00768df9: add esp, 4",
+        "00768dfc: test eax, eax",
+        "00768dfe: je 0x76859e",
+        "00768e04: mov ecx, eax",
+        "00768e06: call 0x75a0b0",
+        "00768e0b: mov esi, eax",
+        "00768e0d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 81,
+      "entry": "00768e12",
+      "size": 32,
+      "calls": [
+        {
+          "address": "005f9660",
+          "arguments": [],
+          "site": "00768e26"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768e12: push 0x20",
+        "00768e14: call 0xbf681b",
+        "00768e19: add esp, 4",
+        "00768e1c: test eax, eax",
+        "00768e1e: je 0x76859e",
+        "00768e24: mov ecx, eax",
+        "00768e26: call 0x5f9660",
+        "00768e2b: mov esi, eax",
+        "00768e2d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 82,
+      "entry": "00769dd0",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075a3b0",
+          "arguments": [],
+          "site": "00769de4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769dd0: push 0x24",
+        "00769dd2: call 0xbf681b",
+        "00769dd7: add esp, 4",
+        "00769dda: test eax, eax",
+        "00769ddc: je 0x76859e",
+        "00769de2: mov ecx, eax",
+        "00769de4: call 0x75a3b0",
+        "00769de9: mov esi, eax",
+        "00769deb: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 83,
+      "entry": "00769df0",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075c9a0",
+          "arguments": [],
+          "site": "00769e04"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769df0: push 0x24",
+        "00769df2: call 0xbf681b",
+        "00769df7: add esp, 4",
+        "00769dfa: test eax, eax",
+        "00769dfc: je 0x76859e",
+        "00769e02: mov ecx, eax",
+        "00769e04: call 0x75c9a0",
+        "00769e09: mov esi, eax",
+        "00769e0b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 84,
+      "entry": "00769e10",
+      "size": 44,
+      "calls": [
+        {
+          "address": "00765a20",
+          "arguments": [],
+          "site": "00769e24"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769e10: push 0x2c",
+        "00769e12: call 0xbf681b",
+        "00769e17: add esp, 4",
+        "00769e1a: test eax, eax",
+        "00769e1c: je 0x76859e",
+        "00769e22: mov ecx, eax",
+        "00769e24: call 0x765a20",
+        "00769e29: mov esi, eax",
+        "00769e2b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 85,
+      "entry": "00768e52",
+      "size": 56,
+      "calls": [
+        {
+          "address": "0075c020",
+          "arguments": [],
+          "site": "00768e66"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768e52: push 0x38",
+        "00768e54: call 0xbf681b",
+        "00768e59: add esp, 4",
+        "00768e5c: test eax, eax",
+        "00768e5e: je 0x76859e",
+        "00768e64: mov ecx, eax",
+        "00768e66: call 0x75c020",
+        "00768e6b: mov esi, eax",
+        "00768e6d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 86,
+      "entry": "00768e32",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075a470",
+          "arguments": [],
+          "site": "00768e46"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768e32: push 0x24",
+        "00768e34: call 0xbf681b",
+        "00768e39: add esp, 4",
+        "00768e3c: test eax, eax",
+        "00768e3e: je 0x76859e",
+        "00768e44: mov ecx, eax",
+        "00768e46: call 0x75a470",
+        "00768e4b: mov esi, eax",
+        "00768e4d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 87,
+      "entry": "00769c90",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00521f30",
+          "arguments": [],
+          "site": "00769ca4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769c90: push 0x20",
+        "00769c92: call 0xbf681b",
+        "00769c97: add esp, 4",
+        "00769c9a: test eax, eax",
+        "00769c9c: je 0x76859e",
+        "00769ca2: mov ecx, eax",
+        "00769ca4: call 0x521f30",
+        "00769ca9: mov esi, eax",
+        "00769cab: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 88,
+      "entry": "00769cb0",
+      "size": 60,
+      "calls": [
+        {
+          "address": "00764c80",
+          "arguments": [],
+          "site": "00769cc4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769cb0: push 0x3c",
+        "00769cb2: call 0xbf681b",
+        "00769cb7: add esp, 4",
+        "00769cba: test eax, eax",
+        "00769cbc: je 0x76859e",
+        "00769cc2: mov ecx, eax",
+        "00769cc4: call 0x764c80",
+        "00769cc9: mov esi, eax",
+        "00769ccb: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 89,
+      "entry": "0076a277",
+      "size": null,
+      "calls": [],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "dword ptr [esp + 0xc]",
+      "trace": [
+        "0076a277: mov esi, dword ptr [esp + 0xc]"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 90,
+      "entry": "00769cd0",
+      "size": 40,
+      "calls": [
+        {
+          "address": "0075af60",
+          "arguments": [],
+          "site": "00769ce4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769cd0: push 0x28",
+        "00769cd2: call 0xbf681b",
+        "00769cd7: add esp, 4",
+        "00769cda: test eax, eax",
+        "00769cdc: je 0x76859e",
+        "00769ce2: mov ecx, eax",
+        "00769ce4: call 0x75af60",
+        "00769ce9: mov esi, eax",
+        "00769ceb: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 91,
+      "entry": "00769cf0",
+      "size": 44,
+      "calls": [
+        {
+          "address": "0075af90",
+          "arguments": [],
+          "site": "00769d04"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769cf0: push 0x2c",
+        "00769cf2: call 0xbf681b",
+        "00769cf7: add esp, 4",
+        "00769cfa: test eax, eax",
+        "00769cfc: je 0x76859e",
+        "00769d02: mov ecx, eax",
+        "00769d04: call 0x75af90",
+        "00769d09: mov esi, eax",
+        "00769d0b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 92,
+      "entry": "00769d10",
+      "size": 60,
+      "calls": [
+        {
+          "address": "00764f90",
+          "arguments": [],
+          "site": "00769d24"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769d10: push 0x3c",
+        "00769d12: call 0xbf681b",
+        "00769d17: add esp, 4",
+        "00769d1a: test eax, eax",
+        "00769d1c: je 0x76859e",
+        "00769d22: mov ecx, eax",
+        "00769d24: call 0x764f90",
+        "00769d29: mov esi, eax",
+        "00769d2b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 93,
+      "entry": "00769d30",
+      "size": 40,
+      "calls": [
+        {
+          "address": "0075b030",
+          "arguments": [],
+          "site": "00769d44"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769d30: push 0x28",
+        "00769d32: call 0xbf681b",
+        "00769d37: add esp, 4",
+        "00769d3a: test eax, eax",
+        "00769d3c: je 0x76859e",
+        "00769d42: mov ecx, eax",
+        "00769d44: call 0x75b030",
+        "00769d49: mov esi, eax",
+        "00769d4b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 94,
+      "entry": "00769d50",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075b060",
+          "arguments": [],
+          "site": "00769d64"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769d50: push 0x24",
+        "00769d52: call 0xbf681b",
+        "00769d57: add esp, 4",
+        "00769d5a: test eax, eax",
+        "00769d5c: je 0x76859e",
+        "00769d62: mov ecx, eax",
+        "00769d64: call 0x75b060",
+        "00769d69: mov esi, eax",
+        "00769d6b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 95,
+      "entry": "00769d70",
+      "size": 48,
+      "calls": [
+        {
+          "address": "0075b100",
+          "arguments": [],
+          "site": "00769d84"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769d70: push 0x30",
+        "00769d72: call 0xbf681b",
+        "00769d77: add esp, 4",
+        "00769d7a: test eax, eax",
+        "00769d7c: je 0x76859e",
+        "00769d82: mov ecx, eax",
+        "00769d84: call 0x75b100",
+        "00769d89: mov esi, eax",
+        "00769d8b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 96,
+      "entry": "00769d90",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075b0d0",
+          "arguments": [],
+          "site": "00769da4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769d90: push 0x24",
+        "00769d92: call 0xbf681b",
+        "00769d97: add esp, 4",
+        "00769d9a: test eax, eax",
+        "00769d9c: je 0x76859e",
+        "00769da2: mov ecx, eax",
+        "00769da4: call 0x75b0d0",
+        "00769da9: mov esi, eax",
+        "00769dab: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 97,
+      "entry": "00769db0",
+      "size": 40,
+      "calls": [
+        {
+          "address": "0075a290",
+          "arguments": [],
+          "site": "00769dc4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769db0: push 0x28",
+        "00769db2: call 0xbf681b",
+        "00769db7: add esp, 4",
+        "00769dba: test eax, eax",
+        "00769dbc: je 0x76859e",
+        "00769dc2: mov ecx, eax",
+        "00769dc4: call 0x75a290",
+        "00769dc9: mov esi, eax",
+        "00769dcb: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 98,
+      "entry": "0076a277",
+      "size": null,
+      "calls": [],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "dword ptr [esp + 0xc]",
+      "trace": [
+        "0076a277: mov esi, dword ptr [esp + 0xc]"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 99,
+      "entry": "00768e72",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075c380",
+          "arguments": [],
+          "site": "00768e86"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768e72: push 0x24",
+        "00768e74: call 0xbf681b",
+        "00768e79: add esp, 4",
+        "00768e7c: test eax, eax",
+        "00768e7e: je 0x76859e",
+        "00768e84: mov ecx, eax",
+        "00768e86: call 0x75c380",
+        "00768e8b: mov esi, eax",
+        "00768e8d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 100,
+      "entry": "00768e92",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075c450",
+          "arguments": [],
+          "site": "00768ea6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768e92: push 0x24",
+        "00768e94: call 0xbf681b",
+        "00768e99: add esp, 4",
+        "00768e9c: test eax, eax",
+        "00768e9e: je 0x76859e",
+        "00768ea4: mov ecx, eax",
+        "00768ea6: call 0x75c450",
+        "00768eab: mov esi, eax",
+        "00768ead: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 101,
+      "entry": "00768eb2",
+      "size": 40,
+      "calls": [
+        {
+          "address": "0075a150",
+          "arguments": [],
+          "site": "00768ec6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768eb2: push 0x28",
+        "00768eb4: call 0xbf681b",
+        "00768eb9: add esp, 4",
+        "00768ebc: test eax, eax",
+        "00768ebe: je 0x76859e",
+        "00768ec4: mov ecx, eax",
+        "00768ec6: call 0x75a150",
+        "00768ecb: mov esi, eax",
+        "00768ecd: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 102,
+      "entry": "00768ed2",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075c570",
+          "arguments": [],
+          "site": "00768ee6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768ed2: push 0x24",
+        "00768ed4: call 0xbf681b",
+        "00768ed9: add esp, 4",
+        "00768edc: test eax, eax",
+        "00768ede: je 0x76859e",
+        "00768ee4: mov ecx, eax",
+        "00768ee6: call 0x75c570",
+        "00768eeb: mov esi, eax",
+        "00768eed: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 103,
+      "entry": "00768ef2",
+      "size": 40,
+      "calls": [
+        {
+          "address": "0075a1f0",
+          "arguments": [],
+          "site": "00768f06"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768ef2: push 0x28",
+        "00768ef4: call 0xbf681b",
+        "00768ef9: add esp, 4",
+        "00768efc: test eax, eax",
+        "00768efe: je 0x76859e",
+        "00768f04: mov ecx, eax",
+        "00768f06: call 0x75a1f0",
+        "00768f0b: mov esi, eax",
+        "00768f0d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 104,
+      "entry": "00768f12",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00728f20",
+          "arguments": [],
+          "site": "00768f26"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768f12: push 0x24",
+        "00768f14: call 0xbf681b",
+        "00768f19: add esp, 4",
+        "00768f1c: test eax, eax",
+        "00768f1e: je 0x76859e",
+        "00768f24: mov ecx, eax",
+        "00768f26: call 0x728f20",
+        "00768f2b: mov esi, eax",
+        "00768f2d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 105,
+      "entry": "00768f32",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00728fa0",
+          "arguments": [],
+          "site": "00768f46"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768f32: push 0x24",
+        "00768f34: call 0xbf681b",
+        "00768f39: add esp, 4",
+        "00768f3c: test eax, eax",
+        "00768f3e: je 0x76859e",
+        "00768f44: mov ecx, eax",
+        "00768f46: call 0x728fa0",
+        "00768f4b: mov esi, eax",
+        "00768f4d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 106,
+      "entry": "00768f52",
+      "size": 56,
+      "calls": [
+        {
+          "address": "00761710",
+          "arguments": [],
+          "site": "00768f66"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768f52: push 0x38",
+        "00768f54: call 0xbf681b",
+        "00768f59: add esp, 4",
+        "00768f5c: test eax, eax",
+        "00768f5e: je 0x76859e",
+        "00768f64: mov ecx, eax",
+        "00768f66: call 0x761710",
+        "00768f6b: mov esi, eax",
+        "00768f6d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 107,
+      "entry": "00768f72",
+      "size": 36,
+      "calls": [
+        {
+          "address": "007618e0",
+          "arguments": [],
+          "site": "00768f86"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768f72: push 0x24",
+        "00768f74: call 0xbf681b",
+        "00768f79: add esp, 4",
+        "00768f7c: test eax, eax",
+        "00768f7e: je 0x76859e",
+        "00768f84: mov ecx, eax",
+        "00768f86: call 0x7618e0",
+        "00768f8b: mov esi, eax",
+        "00768f8d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 108,
+      "entry": "00768f92",
+      "size": 36,
+      "calls": [
+        {
+          "address": "007619b0",
+          "arguments": [],
+          "site": "00768fa6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768f92: push 0x24",
+        "00768f94: call 0xbf681b",
+        "00768f99: add esp, 4",
+        "00768f9c: test eax, eax",
+        "00768f9e: je 0x76859e",
+        "00768fa4: mov ecx, eax",
+        "00768fa6: call 0x7619b0",
+        "00768fab: mov esi, eax",
+        "00768fad: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 109,
+      "entry": "00768fb2",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00761a80",
+          "arguments": [],
+          "site": "00768fc6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768fb2: push 0x24",
+        "00768fb4: call 0xbf681b",
+        "00768fb9: add esp, 4",
+        "00768fbc: test eax, eax",
+        "00768fbe: je 0x76859e",
+        "00768fc4: mov ecx, eax",
+        "00768fc6: call 0x761a80",
+        "00768fcb: mov esi, eax",
+        "00768fcd: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 110,
+      "entry": "00768fd2",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00761b50",
+          "arguments": [],
+          "site": "00768fe6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768fd2: push 0x24",
+        "00768fd4: call 0xbf681b",
+        "00768fd9: add esp, 4",
+        "00768fdc: test eax, eax",
+        "00768fde: je 0x76859e",
+        "00768fe4: mov ecx, eax",
+        "00768fe6: call 0x761b50",
+        "00768feb: mov esi, eax",
+        "00768fed: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 111,
+      "entry": "00768ff2",
+      "size": 56,
+      "calls": [
+        {
+          "address": "00761c20",
+          "arguments": [],
+          "site": "00769006"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00768ff2: push 0x38",
+        "00768ff4: call 0xbf681b",
+        "00768ff9: add esp, 4",
+        "00768ffc: test eax, eax",
+        "00768ffe: je 0x76859e",
+        "00769004: mov ecx, eax",
+        "00769006: call 0x761c20",
+        "0076900b: mov esi, eax",
+        "0076900d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 112,
+      "entry": "00769012",
+      "size": 44,
+      "calls": [
+        {
+          "address": "00761d90",
+          "arguments": [],
+          "site": "00769026"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769012: push 0x2c",
+        "00769014: call 0xbf681b",
+        "00769019: add esp, 4",
+        "0076901c: test eax, eax",
+        "0076901e: je 0x76859e",
+        "00769024: mov ecx, eax",
+        "00769026: call 0x761d90",
+        "0076902b: mov esi, eax",
+        "0076902d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 113,
+      "entry": "00769032",
+      "size": 44,
+      "calls": [
+        {
+          "address": "00763b40",
+          "arguments": [],
+          "site": "00769046"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769032: push 0x2c",
+        "00769034: call 0xbf681b",
+        "00769039: add esp, 4",
+        "0076903c: test eax, eax",
+        "0076903e: je 0x76859e",
+        "00769044: mov ecx, eax",
+        "00769046: call 0x763b40",
+        "0076904b: mov esi, eax",
+        "0076904d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 114,
+      "entry": "00769052",
+      "size": 36,
+      "calls": [
+        {
+          "address": "006d16a0",
+          "arguments": [],
+          "site": "00769066"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769052: push 0x24",
+        "00769054: call 0xbf681b",
+        "00769059: add esp, 4",
+        "0076905c: test eax, eax",
+        "0076905e: je 0x76859e",
+        "00769064: mov ecx, eax",
+        "00769066: call 0x6d16a0",
+        "0076906b: mov esi, eax",
+        "0076906d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 115,
+      "entry": "00769072",
+      "size": 36,
+      "calls": [
+        {
+          "address": "006d1720",
+          "arguments": [],
+          "site": "00769086"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769072: push 0x24",
+        "00769074: call 0xbf681b",
+        "00769079: add esp, 4",
+        "0076907c: test eax, eax",
+        "0076907e: je 0x76859e",
+        "00769084: mov ecx, eax",
+        "00769086: call 0x6d1720",
+        "0076908b: mov esi, eax",
+        "0076908d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 116,
+      "entry": "00769092",
+      "size": 36,
+      "calls": [
+        {
+          "address": "006d17a0",
+          "arguments": [],
+          "site": "007690a6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769092: push 0x24",
+        "00769094: call 0xbf681b",
+        "00769099: add esp, 4",
+        "0076909c: test eax, eax",
+        "0076909e: je 0x76859e",
+        "007690a4: mov ecx, eax",
+        "007690a6: call 0x6d17a0",
+        "007690ab: mov esi, eax",
+        "007690ad: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 117,
+      "entry": "007690b2",
+      "size": 36,
+      "calls": [
+        {
+          "address": "006d1820",
+          "arguments": [],
+          "site": "007690c6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007690b2: push 0x24",
+        "007690b4: call 0xbf681b",
+        "007690b9: add esp, 4",
+        "007690bc: test eax, eax",
+        "007690be: je 0x76859e",
+        "007690c4: mov ecx, eax",
+        "007690c6: call 0x6d1820",
+        "007690cb: mov esi, eax",
+        "007690cd: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 118,
+      "entry": "007690d2",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075a2e0",
+          "arguments": [],
+          "site": "007690e6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007690d2: push 0x24",
+        "007690d4: call 0xbf681b",
+        "007690d9: add esp, 4",
+        "007690dc: test eax, eax",
+        "007690de: je 0x76859e",
+        "007690e4: mov ecx, eax",
+        "007690e6: call 0x75a2e0",
+        "007690eb: mov esi, eax",
+        "007690ed: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 119,
+      "entry": "007690f2",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075a330",
+          "arguments": [],
+          "site": "00769106"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007690f2: push 0x24",
+        "007690f4: call 0xbf681b",
+        "007690f9: add esp, 4",
+        "007690fc: test eax, eax",
+        "007690fe: je 0x76859e",
+        "00769104: mov ecx, eax",
+        "00769106: call 0x75a330",
+        "0076910b: mov esi, eax",
+        "0076910d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 120,
+      "entry": "00769112",
+      "size": 48,
+      "calls": [
+        {
+          "address": "0075a380",
+          "arguments": [],
+          "site": "00769126"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769112: push 0x30",
+        "00769114: call 0xbf681b",
+        "00769119: add esp, 4",
+        "0076911c: test eax, eax",
+        "0076911e: je 0x76859e",
+        "00769124: mov ecx, eax",
+        "00769126: call 0x75a380",
+        "0076912b: mov esi, eax",
+        "0076912d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 121,
+      "entry": "00769132",
+      "size": 60,
+      "calls": [
+        {
+          "address": "0075ff60",
+          "arguments": [],
+          "site": "00769146"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769132: push 0x3c",
+        "00769134: call 0xbf681b",
+        "00769139: add esp, 4",
+        "0076913c: test eax, eax",
+        "0076913e: je 0x76859e",
+        "00769144: mov ecx, eax",
+        "00769146: call 0x75ff60",
+        "0076914b: mov esi, eax",
+        "0076914d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 122,
+      "entry": "00769152",
+      "size": 36,
+      "calls": [
+        {
+          "address": "007604c0",
+          "arguments": [],
+          "site": "00769166"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769152: push 0x24",
+        "00769154: call 0xbf681b",
+        "00769159: add esp, 4",
+        "0076915c: test eax, eax",
+        "0076915e: je 0x76859e",
+        "00769164: mov ecx, eax",
+        "00769166: call 0x7604c0",
+        "0076916b: mov esi, eax",
+        "0076916d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 123,
+      "entry": "00769172",
+      "size": 36,
+      "calls": [
+        {
+          "address": "007601a0",
+          "arguments": [],
+          "site": "00769186"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769172: push 0x24",
+        "00769174: call 0xbf681b",
+        "00769179: add esp, 4",
+        "0076917c: test eax, eax",
+        "0076917e: je 0x76859e",
+        "00769184: mov ecx, eax",
+        "00769186: call 0x7601a0",
+        "0076918b: mov esi, eax",
+        "0076918d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 124,
+      "entry": "00769192",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00760200",
+          "arguments": [],
+          "site": "007691a6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769192: push 0x24",
+        "00769194: call 0xbf681b",
+        "00769199: add esp, 4",
+        "0076919c: test eax, eax",
+        "0076919e: je 0x76859e",
+        "007691a4: mov ecx, eax",
+        "007691a6: call 0x760200",
+        "007691ab: mov esi, eax",
+        "007691ad: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 125,
+      "entry": "00769052",
+      "size": 36,
+      "calls": [
+        {
+          "address": "006d16a0",
+          "arguments": [],
+          "site": "00769066"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769052: push 0x24",
+        "00769054: call 0xbf681b",
+        "00769059: add esp, 4",
+        "0076905c: test eax, eax",
+        "0076905e: je 0x76859e",
+        "00769064: mov ecx, eax",
+        "00769066: call 0x6d16a0",
+        "0076906b: mov esi, eax",
+        "0076906d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 126,
+      "entry": "00769072",
+      "size": 36,
+      "calls": [
+        {
+          "address": "006d1720",
+          "arguments": [],
+          "site": "00769086"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769072: push 0x24",
+        "00769074: call 0xbf681b",
+        "00769079: add esp, 4",
+        "0076907c: test eax, eax",
+        "0076907e: je 0x76859e",
+        "00769084: mov ecx, eax",
+        "00769086: call 0x6d1720",
+        "0076908b: mov esi, eax",
+        "0076908d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 127,
+      "entry": "007691b2",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00760260",
+          "arguments": [],
+          "site": "007691c6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007691b2: push 0x20",
+        "007691b4: call 0xbf681b",
+        "007691b9: add esp, 4",
+        "007691bc: test eax, eax",
+        "007691be: je 0x76859e",
+        "007691c4: mov ecx, eax",
+        "007691c6: call 0x760260",
+        "007691cb: mov esi, eax",
+        "007691cd: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 128,
+      "entry": "007691d2",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00760390",
+          "arguments": [],
+          "site": "007691e6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007691d2: push 0x20",
+        "007691d4: call 0xbf681b",
+        "007691d9: add esp, 4",
+        "007691dc: test eax, eax",
+        "007691de: je 0x76859e",
+        "007691e4: mov ecx, eax",
+        "007691e6: call 0x760390",
+        "007691eb: mov esi, eax",
+        "007691ed: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 129,
+      "entry": "007691f2",
+      "size": 48,
+      "calls": [
+        {
+          "address": "00763140",
+          "arguments": [],
+          "site": "00769206"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007691f2: push 0x30",
+        "007691f4: call 0xbf681b",
+        "007691f9: add esp, 4",
+        "007691fc: test eax, eax",
+        "007691fe: je 0x76859e",
+        "00769204: mov ecx, eax",
+        "00769206: call 0x763140",
+        "0076920b: mov esi, eax",
+        "0076920d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 130,
+      "entry": "00769212",
+      "size": 48,
+      "calls": [
+        {
+          "address": "00763320",
+          "arguments": [],
+          "site": "00769226"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769212: push 0x30",
+        "00769214: call 0xbf681b",
+        "00769219: add esp, 4",
+        "0076921c: test eax, eax",
+        "0076921e: je 0x76859e",
+        "00769224: mov ecx, eax",
+        "00769226: call 0x763320",
+        "0076922b: mov esi, eax",
+        "0076922d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 131,
+      "entry": "00769232",
+      "size": 40,
+      "calls": [
+        {
+          "address": "007631a0",
+          "arguments": [],
+          "site": "00769246"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769232: push 0x28",
+        "00769234: call 0xbf681b",
+        "00769239: add esp, 4",
+        "0076923c: test eax, eax",
+        "0076923e: je 0x76859e",
+        "00769244: mov ecx, eax",
+        "00769246: call 0x7631a0",
+        "0076924b: mov esi, eax",
+        "0076924d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 132,
+      "entry": "00769252",
+      "size": 56,
+      "calls": [
+        {
+          "address": "00763380",
+          "arguments": [],
+          "site": "00769266"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769252: push 0x38",
+        "00769254: call 0xbf681b",
+        "00769259: add esp, 4",
+        "0076925c: test eax, eax",
+        "0076925e: je 0x76859e",
+        "00769264: mov ecx, eax",
+        "00769266: call 0x763380",
+        "0076926b: mov esi, eax",
+        "0076926d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 133,
+      "entry": "00769272",
+      "size": 40,
+      "calls": [
+        {
+          "address": "007633e0",
+          "arguments": [],
+          "site": "00769286"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769272: push 0x28",
+        "00769274: call 0xbf681b",
+        "00769279: add esp, 4",
+        "0076927c: test eax, eax",
+        "0076927e: je 0x76859e",
+        "00769284: mov ecx, eax",
+        "00769286: call 0x7633e0",
+        "0076928b: mov esi, eax",
+        "0076928d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 134,
+      "entry": "00769292",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00763440",
+          "arguments": [],
+          "site": "007692a6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769292: push 0x24",
+        "00769294: call 0xbf681b",
+        "00769299: add esp, 4",
+        "0076929c: test eax, eax",
+        "0076929e: je 0x76859e",
+        "007692a4: mov ecx, eax",
+        "007692a6: call 0x763440",
+        "007692ab: mov esi, eax",
+        "007692ad: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 135,
+      "entry": "007692b2",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00763500",
+          "arguments": [],
+          "site": "007692c6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007692b2: push 0x24",
+        "007692b4: call 0xbf681b",
+        "007692b9: add esp, 4",
+        "007692bc: test eax, eax",
+        "007692be: je 0x76859e",
+        "007692c4: mov ecx, eax",
+        "007692c6: call 0x763500",
+        "007692cb: mov esi, eax",
+        "007692cd: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 136,
+      "entry": "007692d2",
+      "size": 40,
+      "calls": [
+        {
+          "address": "007634a0",
+          "arguments": [],
+          "site": "007692e6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007692d2: push 0x28",
+        "007692d4: call 0xbf681b",
+        "007692d9: add esp, 4",
+        "007692dc: test eax, eax",
+        "007692de: je 0x76859e",
+        "007692e4: mov ecx, eax",
+        "007692e6: call 0x7634a0",
+        "007692eb: mov esi, eax",
+        "007692ed: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 137,
+      "entry": "007692f2",
+      "size": 36,
+      "calls": [
+        {
+          "address": "006bc3e0",
+          "arguments": [],
+          "site": "00769306"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007692f2: push 0x24",
+        "007692f4: call 0xbf681b",
+        "007692f9: add esp, 4",
+        "007692fc: test eax, eax",
+        "007692fe: je 0x76859e",
+        "00769304: mov ecx, eax",
+        "00769306: call 0x6bc3e0",
+        "0076930b: mov esi, eax",
+        "0076930d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 138,
+      "entry": "00769312",
+      "size": 300,
+      "calls": [
+        {
+          "address": "0080e2c0",
+          "arguments": [],
+          "site": "00769335"
+        }
+      ],
+      "unwind_state": 3,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769312: push 0x12c",
+        "00769317: call 0xbf681b",
+        "0076931c: add esp, 4",
+        "0076931f: mov dword ptr [esp + 0xc], eax",
+        "00769323: test eax, eax",
+        "00769325: mov dword ptr [esp + 0x18], 3",
+        "0076932d: je 0x7685d7",
+        "00769333: mov ecx, eax",
+        "00769335: call 0x80e2c0",
+        "0076933a: mov dword ptr [esp + 0x18], 0xffffffff",
+        "00769342: mov esi, eax",
+        "00769344: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 139,
+      "entry": "00769349",
+      "size": 340,
+      "calls": [
+        {
+          "address": "00766ef0",
+          "arguments": [],
+          "site": "0076936c"
+        }
+      ],
+      "unwind_state": 4,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769349: push 0x154",
+        "0076934e: call 0xbf681b",
+        "00769353: add esp, 4",
+        "00769356: mov dword ptr [esp + 0xc], eax",
+        "0076935a: test eax, eax",
+        "0076935c: mov dword ptr [esp + 0x18], 4",
+        "00769364: je 0x7685d7",
+        "0076936a: mov ecx, eax",
+        "0076936c: call 0x766ef0",
+        "00769371: mov dword ptr [esp + 0x18], 0xffffffff",
+        "00769379: mov esi, eax",
+        "0076937b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 140,
+      "entry": "00769380",
+      "size": 76,
+      "calls": [
+        {
+          "address": "0075a630",
+          "arguments": [],
+          "site": "00769394"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769380: push 0x4c",
+        "00769382: call 0xbf681b",
+        "00769387: add esp, 4",
+        "0076938a: test eax, eax",
+        "0076938c: je 0x76859e",
+        "00769392: mov ecx, eax",
+        "00769394: call 0x75a630",
+        "00769399: mov esi, eax",
+        "0076939b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 141,
+      "entry": "007693a0",
+      "size": 6836,
+      "calls": [
+        {
+          "address": "00760c10",
+          "arguments": [],
+          "site": "007693c3"
+        }
+      ],
+      "unwind_state": 5,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007693a0: push 0x1ab4",
+        "007693a5: call 0xbf681b",
+        "007693aa: add esp, 4",
+        "007693ad: mov dword ptr [esp + 0xc], eax",
+        "007693b1: test eax, eax",
+        "007693b3: mov dword ptr [esp + 0x18], 5",
+        "007693bb: je 0x7685d7",
+        "007693c1: mov ecx, eax",
+        "007693c3: call 0x760c10",
+        "007693c8: mov dword ptr [esp + 0x18], 0xffffffff",
+        "007693d0: mov esi, eax",
+        "007693d2: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 142,
+      "entry": "007693d7",
+      "size": 60,
+      "calls": [
+        {
+          "address": "0075a690",
+          "arguments": [],
+          "site": "007693eb"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007693d7: push 0x3c",
+        "007693d9: call 0xbf681b",
+        "007693de: add esp, 4",
+        "007693e1: test eax, eax",
+        "007693e3: je 0x76859e",
+        "007693e9: mov ecx, eax",
+        "007693eb: call 0x75a690",
+        "007693f0: mov esi, eax",
+        "007693f2: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 143,
+      "entry": "0076943a",
+      "size": 36,
+      "calls": [
+        {
+          "address": "007623d0",
+          "arguments": [],
+          "site": "0076944e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076943a: push 0x24",
+        "0076943c: call 0xbf681b",
+        "00769441: add esp, 4",
+        "00769444: test eax, eax",
+        "00769446: je 0x76859e",
+        "0076944c: mov ecx, eax",
+        "0076944e: call 0x7623d0",
+        "00769453: mov esi, eax",
+        "00769455: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 144,
+      "entry": "0076945a",
+      "size": 44,
+      "calls": [
+        {
+          "address": "00761f60",
+          "arguments": [],
+          "site": "0076946e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076945a: push 0x2c",
+        "0076945c: call 0xbf681b",
+        "00769461: add esp, 4",
+        "00769464: test eax, eax",
+        "00769466: je 0x76859e",
+        "0076946c: mov ecx, eax",
+        "0076946e: call 0x761f60",
+        "00769473: mov esi, eax",
+        "00769475: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 145,
+      "entry": "0076947a",
+      "size": 28,
+      "calls": [
+        {
+          "address": "00762190",
+          "arguments": [],
+          "site": "0076948e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076947a: push 0x1c",
+        "0076947c: call 0xbf681b",
+        "00769481: add esp, 4",
+        "00769484: test eax, eax",
+        "00769486: je 0x76859e",
+        "0076948c: mov ecx, eax",
+        "0076948e: call 0x762190",
+        "00769493: mov esi, eax",
+        "00769495: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 146,
+      "entry": "007693f7",
+      "size": 232,
+      "calls": [
+        {
+          "address": "00762130",
+          "arguments": [],
+          "site": "0076940e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007693f7: push 0xe8",
+        "007693fc: call 0xbf681b",
+        "00769401: add esp, 4",
+        "00769404: test eax, eax",
+        "00769406: je 0x76859e",
+        "0076940c: mov ecx, eax",
+        "0076940e: call 0x762130",
+        "00769413: mov esi, eax",
+        "00769415: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 147,
+      "entry": "0076941a",
+      "size": 40,
+      "calls": [
+        {
+          "address": "00762220",
+          "arguments": [],
+          "site": "0076942e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076941a: push 0x28",
+        "0076941c: call 0xbf681b",
+        "00769421: add esp, 4",
+        "00769424: test eax, eax",
+        "00769426: je 0x76859e",
+        "0076942c: mov ecx, eax",
+        "0076942e: call 0x762220",
+        "00769433: mov esi, eax",
+        "00769435: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 148,
+      "entry": "0076949a",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0064a820",
+          "arguments": [],
+          "site": "007694ae"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076949a: push 0x20",
+        "0076949c: call 0xbf681b",
+        "007694a1: add esp, 4",
+        "007694a4: test eax, eax",
+        "007694a6: je 0x76859e",
+        "007694ac: mov ecx, eax",
+        "007694ae: call 0x64a820",
+        "007694b3: mov esi, eax",
+        "007694b5: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 149,
+      "entry": "007694ba",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00760e90",
+          "arguments": [],
+          "site": "007694ce"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007694ba: push 0x20",
+        "007694bc: call 0xbf681b",
+        "007694c1: add esp, 4",
+        "007694c4: test eax, eax",
+        "007694c6: je 0x76859e",
+        "007694cc: mov ecx, eax",
+        "007694ce: call 0x760e90",
+        "007694d3: mov esi, eax",
+        "007694d5: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 150,
+      "entry": "007694da",
+      "size": 36,
+      "calls": [
+        {
+          "address": "007611d0",
+          "arguments": [],
+          "site": "007694ee"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007694da: push 0x24",
+        "007694dc: call 0xbf681b",
+        "007694e1: add esp, 4",
+        "007694e4: test eax, eax",
+        "007694e6: je 0x76859e",
+        "007694ec: mov ecx, eax",
+        "007694ee: call 0x7611d0",
+        "007694f3: mov esi, eax",
+        "007694f5: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 151,
+      "entry": "007694fa",
+      "size": 56,
+      "calls": [
+        {
+          "address": "0075bb30",
+          "arguments": [],
+          "site": "0076950e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007694fa: push 0x38",
+        "007694fc: call 0xbf681b",
+        "00769501: add esp, 4",
+        "00769504: test eax, eax",
+        "00769506: je 0x76859e",
+        "0076950c: mov ecx, eax",
+        "0076950e: call 0x75bb30",
+        "00769513: mov esi, eax",
+        "00769515: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 152,
+      "entry": "0076951a",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00761310",
+          "arguments": [],
+          "site": "0076952e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076951a: push 0x20",
+        "0076951c: call 0xbf681b",
+        "00769521: add esp, 4",
+        "00769524: test eax, eax",
+        "00769526: je 0x76859e",
+        "0076952c: mov ecx, eax",
+        "0076952e: call 0x761310",
+        "00769533: mov esi, eax",
+        "00769535: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 153,
+      "entry": "0076953a",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00761450",
+          "arguments": [],
+          "site": "0076954e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076953a: push 0x24",
+        "0076953c: call 0xbf681b",
+        "00769541: add esp, 4",
+        "00769544: test eax, eax",
+        "00769546: je 0x76859e",
+        "0076954c: mov ecx, eax",
+        "0076954e: call 0x761450",
+        "00769553: mov esi, eax",
+        "00769555: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 154,
+      "entry": "0076955a",
+      "size": 32,
+      "calls": [
+        {
+          "address": "007613b0",
+          "arguments": [],
+          "site": "0076956e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076955a: push 0x20",
+        "0076955c: call 0xbf681b",
+        "00769561: add esp, 4",
+        "00769564: test eax, eax",
+        "00769566: je 0x76859e",
+        "0076956c: mov ecx, eax",
+        "0076956e: call 0x7613b0",
+        "00769573: mov esi, eax",
+        "00769575: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 155,
+      "entry": "0076957a",
+      "size": 44,
+      "calls": [
+        {
+          "address": "00761590",
+          "arguments": [],
+          "site": "0076958e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076957a: push 0x2c",
+        "0076957c: call 0xbf681b",
+        "00769581: add esp, 4",
+        "00769584: test eax, eax",
+        "00769586: je 0x76859e",
+        "0076958c: mov ecx, eax",
+        "0076958e: call 0x761590",
+        "00769593: mov esi, eax",
+        "00769595: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 156,
+      "entry": "0076959a",
+      "size": 32,
+      "calls": [
+        {
+          "address": "007645b0",
+          "arguments": [],
+          "site": "007695ae"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076959a: push 0x20",
+        "0076959c: call 0xbf681b",
+        "007695a1: add esp, 4",
+        "007695a4: test eax, eax",
+        "007695a6: je 0x76859e",
+        "007695ac: mov ecx, eax",
+        "007695ae: call 0x7645b0",
+        "007695b3: mov esi, eax",
+        "007695b5: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 157,
+      "entry": "007695ba",
+      "size": 48,
+      "calls": [
+        {
+          "address": "00760fd0",
+          "arguments": [],
+          "site": "007695ce"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007695ba: push 0x30",
+        "007695bc: call 0xbf681b",
+        "007695c1: add esp, 4",
+        "007695c4: test eax, eax",
+        "007695c6: je 0x76859e",
+        "007695cc: mov ecx, eax",
+        "007695ce: call 0x760fd0",
+        "007695d3: mov esi, eax",
+        "007695d5: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 158,
+      "entry": "007695da",
+      "size": 40,
+      "calls": [
+        {
+          "address": "007608e0",
+          "arguments": [],
+          "site": "007695ee"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007695da: push 0x28",
+        "007695dc: call 0xbf681b",
+        "007695e1: add esp, 4",
+        "007695e4: test eax, eax",
+        "007695e6: je 0x76859e",
+        "007695ec: mov ecx, eax",
+        "007695ee: call 0x7608e0",
+        "007695f3: mov esi, eax",
+        "007695f5: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 159,
+      "entry": "007695fa",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00760a50",
+          "arguments": [],
+          "site": "0076960e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007695fa: push 0x20",
+        "007695fc: call 0xbf681b",
+        "00769601: add esp, 4",
+        "00769604: test eax, eax",
+        "00769606: je 0x76859e",
+        "0076960c: mov ecx, eax",
+        "0076960e: call 0x760a50",
+        "00769613: mov esi, eax",
+        "00769615: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 160,
+      "entry": "0076961a",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00760b70",
+          "arguments": [],
+          "site": "0076962e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076961a: push 0x20",
+        "0076961c: call 0xbf681b",
+        "00769621: add esp, 4",
+        "00769624: test eax, eax",
+        "00769626: je 0x76859e",
+        "0076962c: mov ecx, eax",
+        "0076962e: call 0x760b70",
+        "00769633: mov esi, eax",
+        "00769635: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 161,
+      "entry": "0076963a",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075ade0",
+          "arguments": [],
+          "site": "0076964e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076963a: push 0x24",
+        "0076963c: call 0xbf681b",
+        "00769641: add esp, 4",
+        "00769644: test eax, eax",
+        "00769646: je 0x76859e",
+        "0076964c: mov ecx, eax",
+        "0076964e: call 0x75ade0",
+        "00769653: mov esi, eax",
+        "00769655: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 162,
+      "entry": "0076965a",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075ae10",
+          "arguments": [],
+          "site": "0076966e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076965a: push 0x24",
+        "0076965c: call 0xbf681b",
+        "00769661: add esp, 4",
+        "00769664: test eax, eax",
+        "00769666: je 0x76859e",
+        "0076966c: mov ecx, eax",
+        "0076966e: call 0x75ae10",
+        "00769673: mov esi, eax",
+        "00769675: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 163,
+      "entry": "0076967a",
+      "size": 328,
+      "calls": [
+        {
+          "address": "007679d0",
+          "arguments": [],
+          "site": "0076969d"
+        }
+      ],
+      "unwind_state": 6,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076967a: push 0x148",
+        "0076967f: call 0xbf681b",
+        "00769684: add esp, 4",
+        "00769687: mov dword ptr [esp + 0xc], eax",
+        "0076968b: test eax, eax",
+        "0076968d: mov dword ptr [esp + 0x18], 6",
+        "00769695: je 0x7685d7",
+        "0076969b: mov ecx, eax",
+        "0076969d: call 0x7679d0",
+        "007696a2: mov dword ptr [esp + 0x18], 0xffffffff",
+        "007696aa: mov esi, eax",
+        "007696ac: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 164,
+      "entry": "007696b1",
+      "size": 308,
+      "calls": [
+        {
+          "address": "00759920",
+          "arguments": [],
+          "site": "007696d4"
+        }
+      ],
+      "unwind_state": 7,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007696b1: push 0x134",
+        "007696b6: call 0xbf681b",
+        "007696bb: add esp, 4",
+        "007696be: mov dword ptr [esp + 0xc], eax",
+        "007696c2: test eax, eax",
+        "007696c4: mov dword ptr [esp + 0x18], 7",
+        "007696cc: je 0x7685d7",
+        "007696d2: mov ecx, eax",
+        "007696d4: call 0x759920",
+        "007696d9: mov dword ptr [esp + 0x18], 0xffffffff",
+        "007696e1: mov esi, eax",
+        "007696e3: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 165,
+      "entry": "007696e8",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075af00",
+          "arguments": [],
+          "site": "007696fc"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007696e8: push 0x20",
+        "007696ea: call 0xbf681b",
+        "007696ef: add esp, 4",
+        "007696f2: test eax, eax",
+        "007696f4: je 0x76859e",
+        "007696fa: mov ecx, eax",
+        "007696fc: call 0x75af00",
+        "00769701: mov esi, eax",
+        "00769703: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 166,
+      "entry": "00769708",
+      "size": 28,
+      "calls": [
+        {
+          "address": "00749aa0",
+          "arguments": [],
+          "site": "0076971c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769708: push 0x1c",
+        "0076970a: call 0xbf681b",
+        "0076970f: add esp, 4",
+        "00769712: test eax, eax",
+        "00769714: je 0x76859e",
+        "0076971a: mov ecx, eax",
+        "0076971c: call 0x749aa0",
+        "00769721: mov esi, eax",
+        "00769723: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 167,
+      "entry": "00769728",
+      "size": 40,
+      "calls": [
+        {
+          "address": "00763cb0",
+          "arguments": [],
+          "site": "0076973c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769728: push 0x28",
+        "0076972a: call 0xbf681b",
+        "0076972f: add esp, 4",
+        "00769732: test eax, eax",
+        "00769734: je 0x76859e",
+        "0076973a: mov ecx, eax",
+        "0076973c: call 0x763cb0",
+        "00769741: mov esi, eax",
+        "00769743: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 168,
+      "entry": "00769748",
+      "size": 40,
+      "calls": [
+        {
+          "address": "00763d10",
+          "arguments": [],
+          "site": "0076975c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769748: push 0x28",
+        "0076974a: call 0xbf681b",
+        "0076974f: add esp, 4",
+        "00769752: test eax, eax",
+        "00769754: je 0x76859e",
+        "0076975a: mov ecx, eax",
+        "0076975c: call 0x763d10",
+        "00769761: mov esi, eax",
+        "00769763: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 169,
+      "entry": "00769768",
+      "size": 40,
+      "calls": [
+        {
+          "address": "00763d70",
+          "arguments": [],
+          "site": "0076977c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769768: push 0x28",
+        "0076976a: call 0xbf681b",
+        "0076976f: add esp, 4",
+        "00769772: test eax, eax",
+        "00769774: je 0x76859e",
+        "0076977a: mov ecx, eax",
+        "0076977c: call 0x763d70",
+        "00769781: mov esi, eax",
+        "00769783: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 170,
+      "entry": "00769788",
+      "size": 44,
+      "calls": [
+        {
+          "address": "00763dd0",
+          "arguments": [],
+          "site": "0076979c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769788: push 0x2c",
+        "0076978a: call 0xbf681b",
+        "0076978f: add esp, 4",
+        "00769792: test eax, eax",
+        "00769794: je 0x76859e",
+        "0076979a: mov ecx, eax",
+        "0076979c: call 0x763dd0",
+        "007697a1: mov esi, eax",
+        "007697a3: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 171,
+      "entry": "007697a8",
+      "size": 292,
+      "calls": [
+        {
+          "address": "00766f60",
+          "arguments": [],
+          "site": "007697c9"
+        }
+      ],
+      "unwind_state": 8,
+      "stamp": "00cfde1c",
+      "result_register": "edx",
+      "trace": [
+        "007697a8: push 0x124",
+        "007697ad: call 0xbf681b",
+        "007697b2: mov edx, eax",
+        "007697b4: add esp, 4",
+        "007697b7: mov dword ptr [esp + 0xc], edx",
+        "007697bb: test edx, edx",
+        "007697bd: mov dword ptr [esp + 0x18], 8",
+        "007697c5: je 0x7697e3",
+        "007697c7: mov ecx, edx",
+        "007697c9: call 0x766f60",
+        "007697ce: mov dword ptr [edx], 0xcfde1c",
+        "007697d4: mov dword ptr [esp + 0x18], 0xffffffff",
+        "007697dc: mov esi, edx",
+        "007697de: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 172,
+      "entry": "007697f4",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075a550",
+          "arguments": [],
+          "site": "00769808"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007697f4: push 0x24",
+        "007697f6: call 0xbf681b",
+        "007697fb: add esp, 4",
+        "007697fe: test eax, eax",
+        "00769800: je 0x76859e",
+        "00769806: mov ecx, eax",
+        "00769808: call 0x75a550",
+        "0076980d: mov esi, eax",
+        "0076980f: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 173,
+      "entry": "00769814",
+      "size": 36,
+      "calls": [
+        {
+          "address": "006e3940",
+          "arguments": [
+            "0"
+          ],
+          "site": "0076982a"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769814: push 0x24",
+        "00769816: call 0xbf681b",
+        "0076981b: add esp, 4",
+        "0076981e: test eax, eax",
+        "00769820: je 0x76859e",
+        "00769826: push 0",
+        "00769828: mov ecx, eax",
+        "0076982a: call 0x6e3940",
+        "0076982f: mov esi, eax",
+        "00769831: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 174,
+      "entry": "00769856",
+      "size": 68,
+      "calls": [
+        {
+          "address": "0075fe90",
+          "arguments": [],
+          "site": "0076986a"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769856: push 0x44",
+        "00769858: call 0xbf681b",
+        "0076985d: add esp, 4",
+        "00769860: test eax, eax",
+        "00769862: je 0x76859e",
+        "00769868: mov ecx, eax",
+        "0076986a: call 0x75fe90",
+        "0076986f: mov esi, eax",
+        "00769871: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 175,
+      "entry": "00769836",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075a580",
+          "arguments": [],
+          "site": "0076984a"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769836: push 0x24",
+        "00769838: call 0xbf681b",
+        "0076983d: add esp, 4",
+        "00769840: test eax, eax",
+        "00769842: je 0x76859e",
+        "00769848: mov ecx, eax",
+        "0076984a: call 0x75a580",
+        "0076984f: mov esi, eax",
+        "00769851: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 176,
+      "entry": "00769876",
+      "size": 64,
+      "calls": [
+        {
+          "address": "0075a5c0",
+          "arguments": [],
+          "site": "0076988a"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769876: push 0x40",
+        "00769878: call 0xbf681b",
+        "0076987d: add esp, 4",
+        "00769880: test eax, eax",
+        "00769882: je 0x76859e",
+        "00769888: mov ecx, eax",
+        "0076988a: call 0x75a5c0",
+        "0076988f: mov esi, eax",
+        "00769891: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 177,
+      "entry": "00769896",
+      "size": 84,
+      "calls": [
+        {
+          "address": "00763600",
+          "arguments": [],
+          "site": "007698aa"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769896: push 0x54",
+        "00769898: call 0xbf681b",
+        "0076989d: add esp, 4",
+        "007698a0: test eax, eax",
+        "007698a2: je 0x76859e",
+        "007698a8: mov ecx, eax",
+        "007698aa: call 0x763600",
+        "007698af: mov esi, eax",
+        "007698b1: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 178,
+      "entry": "007698b6",
+      "size": 36,
+      "calls": [
+        {
+          "address": "006e3a60",
+          "arguments": [
+            "-1"
+          ],
+          "site": "007698cc"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007698b6: push 0x24",
+        "007698b8: call 0xbf681b",
+        "007698bd: add esp, 4",
+        "007698c0: test eax, eax",
+        "007698c2: je 0x76859e",
+        "007698c8: push -1",
+        "007698ca: mov ecx, eax",
+        "007698cc: call 0x6e3a60",
+        "007698d1: mov esi, eax",
+        "007698d3: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 179,
+      "entry": "007698d8",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00763660",
+          "arguments": [],
+          "site": "007698ec"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007698d8: push 0x20",
+        "007698da: call 0xbf681b",
+        "007698df: add esp, 4",
+        "007698e2: test eax, eax",
+        "007698e4: je 0x76859e",
+        "007698ea: mov ecx, eax",
+        "007698ec: call 0x763660",
+        "007698f1: mov esi, eax",
+        "007698f3: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 180,
+      "entry": "007698f8",
+      "size": 40,
+      "calls": [
+        {
+          "address": "007636c0",
+          "arguments": [],
+          "site": "0076990c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "007698f8: push 0x28",
+        "007698fa: call 0xbf681b",
+        "007698ff: add esp, 4",
+        "00769902: test eax, eax",
+        "00769904: je 0x76859e",
+        "0076990a: mov ecx, eax",
+        "0076990c: call 0x7636c0",
+        "00769911: mov esi, eax",
+        "00769913: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 181,
+      "entry": "00769918",
+      "size": 28,
+      "calls": [
+        {
+          "address": "007648b0",
+          "arguments": [],
+          "site": "0076992c"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769918: push 0x1c",
+        "0076991a: call 0xbf681b",
+        "0076991f: add esp, 4",
+        "00769922: test eax, eax",
+        "00769924: je 0x76859e",
+        "0076992a: mov ecx, eax",
+        "0076992c: call 0x7648b0",
+        "00769931: mov esi, eax",
+        "00769933: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 182,
+      "entry": "00769938",
+      "size": 288,
+      "calls": [
+        {
+          "address": "00766f60",
+          "arguments": [],
+          "site": "0076995d"
+        }
+      ],
+      "unwind_state": 9,
+      "stamp": "00cf9324",
+      "result_register": "edx",
+      "trace": [
+        "00769938: push 0x120",
+        "0076993d: call 0xbf681b",
+        "00769942: mov edx, eax",
+        "00769944: add esp, 4",
+        "00769947: mov dword ptr [esp + 0xc], edx",
+        "0076994b: test edx, edx",
+        "0076994d: mov dword ptr [esp + 0x18], 9",
+        "00769955: je 0x7697e3",
+        "0076995b: mov ecx, edx",
+        "0076995d: call 0x766f60",
+        "00769962: mov dword ptr [edx], 0xcf9324",
+        "00769968: mov dword ptr [esp + 0x18], 0xffffffff",
+        "00769970: mov esi, edx",
+        "00769972: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 183,
+      "entry": "00769977",
+      "size": 296,
+      "calls": [
+        {
+          "address": "00766f60",
+          "arguments": [],
+          "site": "0076999c"
+        }
+      ],
+      "unwind_state": 10,
+      "stamp": "00cfbc28",
+      "result_register": "edx",
+      "trace": [
+        "00769977: push 0x128",
+        "0076997c: call 0xbf681b",
+        "00769981: mov edx, eax",
+        "00769983: add esp, 4",
+        "00769986: mov dword ptr [esp + 0xc], edx",
+        "0076998a: test edx, edx",
+        "0076998c: mov dword ptr [esp + 0x18], 0xa",
+        "00769994: je 0x7697e3",
+        "0076999a: mov ecx, edx",
+        "0076999c: call 0x766f60",
+        "007699a1: mov dword ptr [edx], 0xcfbc28",
+        "007699a7: mov dword ptr [esp + 0x18], 0xffffffff",
+        "007699af: mov esi, edx",
+        "007699b1: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 184,
+      "entry": "007699b6",
+      "size": 300,
+      "calls": [
+        {
+          "address": "00766f60",
+          "arguments": [],
+          "site": "007699db"
+        }
+      ],
+      "unwind_state": 11,
+      "stamp": "00d037bc",
+      "result_register": "edx",
+      "trace": [
+        "007699b6: push 0x12c",
+        "007699bb: call 0xbf681b",
+        "007699c0: mov edx, eax",
+        "007699c2: add esp, 4",
+        "007699c5: mov dword ptr [esp + 0xc], edx",
+        "007699c9: test edx, edx",
+        "007699cb: mov dword ptr [esp + 0x18], 0xb",
+        "007699d3: je 0x7697e3",
+        "007699d9: mov ecx, edx",
+        "007699db: call 0x766f60",
+        "007699e0: mov dword ptr [edx], 0xd037bc",
+        "007699e6: mov dword ptr [esp + 0x18], 0xffffffff",
+        "007699ee: mov esi, edx",
+        "007699f0: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 185,
+      "entry": "007699f5",
+      "size": 300,
+      "calls": [
+        {
+          "address": "00766f60",
+          "arguments": [],
+          "site": "00769a1a"
+        }
+      ],
+      "unwind_state": 12,
+      "stamp": "00d037e0",
+      "result_register": "edx",
+      "trace": [
+        "007699f5: push 0x12c",
+        "007699fa: call 0xbf681b",
+        "007699ff: mov edx, eax",
+        "00769a01: add esp, 4",
+        "00769a04: mov dword ptr [esp + 0xc], edx",
+        "00769a08: test edx, edx",
+        "00769a0a: mov dword ptr [esp + 0x18], 0xc",
+        "00769a12: je 0x7697e3",
+        "00769a18: mov ecx, edx",
+        "00769a1a: call 0x766f60",
+        "00769a1f: mov dword ptr [edx], 0xd037e0",
+        "00769a25: mov dword ptr [esp + 0x18], 0xffffffff",
+        "00769a2d: mov esi, edx",
+        "00769a2f: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 186,
+      "entry": "00769a34",
+      "size": 60,
+      "calls": [
+        {
+          "address": "0075a4d0",
+          "arguments": [],
+          "site": "00769a48"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769a34: push 0x3c",
+        "00769a36: call 0xbf681b",
+        "00769a3b: add esp, 4",
+        "00769a3e: test eax, eax",
+        "00769a40: je 0x76859e",
+        "00769a46: mov ecx, eax",
+        "00769a48: call 0x75a4d0",
+        "00769a4d: mov esi, eax",
+        "00769a4f: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 187,
+      "entry": "00769a54",
+      "size": 296,
+      "calls": [
+        {
+          "address": "007edb80",
+          "arguments": [],
+          "site": "00769a77"
+        }
+      ],
+      "unwind_state": 13,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769a54: push 0x128",
+        "00769a59: call 0xbf681b",
+        "00769a5e: add esp, 4",
+        "00769a61: mov dword ptr [esp + 0xc], eax",
+        "00769a65: test eax, eax",
+        "00769a67: mov dword ptr [esp + 0x18], 0xd",
+        "00769a6f: je 0x7685d7",
+        "00769a75: mov ecx, eax",
+        "00769a77: call 0x7edb80",
+        "00769a7c: mov dword ptr [esp + 0x18], 0xffffffff",
+        "00769a84: mov esi, eax",
+        "00769a86: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 188,
+      "entry": "00769a8b",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075ad30",
+          "arguments": [],
+          "site": "00769a9f"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769a8b: push 0x24",
+        "00769a8d: call 0xbf681b",
+        "00769a92: add esp, 4",
+        "00769a95: test eax, eax",
+        "00769a97: je 0x76859e",
+        "00769a9d: mov ecx, eax",
+        "00769a9f: call 0x75ad30",
+        "00769aa4: mov esi, eax",
+        "00769aa6: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 189,
+      "entry": "0076a277",
+      "size": null,
+      "calls": [],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "dword ptr [esp + 0xc]",
+      "trace": [
+        "0076a277: mov esi, dword ptr [esp + 0xc]"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 190,
+      "entry": "00769aab",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075ad60",
+          "arguments": [],
+          "site": "00769abf"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769aab: push 0x20",
+        "00769aad: call 0xbf681b",
+        "00769ab2: add esp, 4",
+        "00769ab5: test eax, eax",
+        "00769ab7: je 0x76859e",
+        "00769abd: mov ecx, eax",
+        "00769abf: call 0x75ad60",
+        "00769ac4: mov esi, eax",
+        "00769ac6: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 191,
+      "entry": "00769acb",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075b220",
+          "arguments": [],
+          "site": "00769adf"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769acb: push 0x24",
+        "00769acd: call 0xbf681b",
+        "00769ad2: add esp, 4",
+        "00769ad5: test eax, eax",
+        "00769ad7: je 0x76859e",
+        "00769add: mov ecx, eax",
+        "00769adf: call 0x75b220",
+        "00769ae4: mov esi, eax",
+        "00769ae6: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 192,
+      "entry": "00769aeb",
+      "size": 304,
+      "calls": [
+        {
+          "address": "00766f60",
+          "arguments": [],
+          "site": "00769b10"
+        }
+      ],
+      "unwind_state": 14,
+      "stamp": "00d0379c",
+      "result_register": "edx",
+      "trace": [
+        "00769aeb: push 0x130",
+        "00769af0: call 0xbf681b",
+        "00769af5: mov edx, eax",
+        "00769af7: add esp, 4",
+        "00769afa: mov dword ptr [esp + 0xc], edx",
+        "00769afe: test edx, edx",
+        "00769b00: mov dword ptr [esp + 0x18], 0xe",
+        "00769b08: je 0x7697e3",
+        "00769b0e: mov ecx, edx",
+        "00769b10: call 0x766f60",
+        "00769b15: mov dword ptr [edx], 0xd0379c",
+        "00769b1b: mov dword ptr [esp + 0x18], 0xffffffff",
+        "00769b23: mov esi, edx",
+        "00769b25: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 193,
+      "entry": "00769b2a",
+      "size": 176,
+      "calls": [
+        {
+          "address": "0075aab0",
+          "arguments": [],
+          "site": "00769b41"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769b2a: push 0xb0",
+        "00769b2f: call 0xbf681b",
+        "00769b34: add esp, 4",
+        "00769b37: test eax, eax",
+        "00769b39: je 0x76859e",
+        "00769b3f: mov ecx, eax",
+        "00769b41: call 0x75aab0",
+        "00769b46: mov esi, eax",
+        "00769b48: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 194,
+      "entry": "00769b4d",
+      "size": 540,
+      "calls": [
+        {
+          "address": "007626e0",
+          "arguments": [],
+          "site": "00769b64"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769b4d: push 0x21c",
+        "00769b52: call 0xbf681b",
+        "00769b57: add esp, 4",
+        "00769b5a: test eax, eax",
+        "00769b5c: je 0x76859e",
+        "00769b62: mov ecx, eax",
+        "00769b64: call 0x7626e0",
+        "00769b69: mov esi, eax",
+        "00769b6b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 195,
+      "entry": "00769b70",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00762880",
+          "arguments": [],
+          "site": "00769b84"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769b70: push 0x24",
+        "00769b72: call 0xbf681b",
+        "00769b77: add esp, 4",
+        "00769b7a: test eax, eax",
+        "00769b7c: je 0x76859e",
+        "00769b82: mov ecx, eax",
+        "00769b84: call 0x762880",
+        "00769b89: mov esi, eax",
+        "00769b8b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 196,
+      "entry": "00769b90",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00605270",
+          "arguments": [],
+          "site": "00769ba4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769b90: push 0x20",
+        "00769b92: call 0xbf681b",
+        "00769b97: add esp, 4",
+        "00769b9a: test eax, eax",
+        "00769b9c: je 0x76859e",
+        "00769ba2: mov ecx, eax",
+        "00769ba4: call 0x605270",
+        "00769ba9: mov esi, eax",
+        "00769bab: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 197,
+      "entry": "00769bd0",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00762a60",
+          "arguments": [],
+          "site": "00769be4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769bd0: push 0x20",
+        "00769bd2: call 0xbf681b",
+        "00769bd7: add esp, 4",
+        "00769bda: test eax, eax",
+        "00769bdc: je 0x76859e",
+        "00769be2: mov ecx, eax",
+        "00769be4: call 0x762a60",
+        "00769be9: mov esi, eax",
+        "00769beb: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 198,
+      "entry": "00769bb0",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00762a00",
+          "arguments": [],
+          "site": "00769bc4"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769bb0: push 0x24",
+        "00769bb2: call 0xbf681b",
+        "00769bb7: add esp, 4",
+        "00769bba: test eax, eax",
+        "00769bbc: je 0x76859e",
+        "00769bc2: mov ecx, eax",
+        "00769bc4: call 0x762a00",
+        "00769bc9: mov esi, eax",
+        "00769bcb: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 199,
+      "entry": "00769bf0",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00762b20",
+          "arguments": [],
+          "site": "00769c04"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769bf0: push 0x24",
+        "00769bf2: call 0xbf681b",
+        "00769bf7: add esp, 4",
+        "00769bfa: test eax, eax",
+        "00769bfc: je 0x76859e",
+        "00769c02: mov ecx, eax",
+        "00769c04: call 0x762b20",
+        "00769c09: mov esi, eax",
+        "00769c0b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 200,
+      "entry": "00769c10",
+      "size": 44,
+      "calls": [
+        {
+          "address": "00762c80",
+          "arguments": [],
+          "site": "00769c24"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769c10: push 0x2c",
+        "00769c12: call 0xbf681b",
+        "00769c17: add esp, 4",
+        "00769c1a: test eax, eax",
+        "00769c1c: je 0x76859e",
+        "00769c22: mov ecx, eax",
+        "00769c24: call 0x762c80",
+        "00769c29: mov esi, eax",
+        "00769c2b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 201,
+      "entry": "00769c30",
+      "size": 60,
+      "calls": [
+        {
+          "address": "0075ab40",
+          "arguments": [],
+          "site": "00769c44"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769c30: push 0x3c",
+        "00769c32: call 0xbf681b",
+        "00769c37: add esp, 4",
+        "00769c3a: test eax, eax",
+        "00769c3c: je 0x76859e",
+        "00769c42: mov ecx, eax",
+        "00769c44: call 0x75ab40",
+        "00769c49: mov esi, eax",
+        "00769c4b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 202,
+      "entry": "00769c50",
+      "size": 60,
+      "calls": [
+        {
+          "address": "0075abe0",
+          "arguments": [],
+          "site": "00769c64"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769c50: push 0x3c",
+        "00769c52: call 0xbf681b",
+        "00769c57: add esp, 4",
+        "00769c5a: test eax, eax",
+        "00769c5c: je 0x76859e",
+        "00769c62: mov ecx, eax",
+        "00769c64: call 0x75abe0",
+        "00769c69: mov esi, eax",
+        "00769c6b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 203,
+      "entry": "0076a277",
+      "size": null,
+      "calls": [],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "dword ptr [esp + 0xc]",
+      "trace": [
+        "0076a277: mov esi, dword ptr [esp + 0xc]"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 204,
+      "entry": "00769c70",
+      "size": 40,
+      "calls": [
+        {
+          "address": "0075ac50",
+          "arguments": [],
+          "site": "00769c84"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769c70: push 0x28",
+        "00769c72: call 0xbf681b",
+        "00769c77: add esp, 4",
+        "00769c7a: test eax, eax",
+        "00769c7c: je 0x76859e",
+        "00769c82: mov ecx, eax",
+        "00769c84: call 0x75ac50",
+        "00769c89: mov esi, eax",
+        "00769c8b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 205,
+      "entry": "00769e30",
+      "size": 272,
+      "calls": [
+        {
+          "address": "00766f60",
+          "arguments": [],
+          "site": "00769e55"
+        }
+      ],
+      "unwind_state": 15,
+      "stamp": "00cffd18",
+      "result_register": "edx",
+      "trace": [
+        "00769e30: push 0x110",
+        "00769e35: call 0xbf681b",
+        "00769e3a: mov edx, eax",
+        "00769e3c: add esp, 4",
+        "00769e3f: mov dword ptr [esp + 0xc], edx",
+        "00769e43: test edx, edx",
+        "00769e45: mov dword ptr [esp + 0x18], 0xf",
+        "00769e4d: je 0x7697e3",
+        "00769e53: mov ecx, edx",
+        "00769e55: call 0x766f60",
+        "00769e5a: mov dword ptr [edx], 0xcffd18",
+        "00769e60: mov dword ptr [esp + 0x18], 0xffffffff",
+        "00769e68: mov esi, edx",
+        "00769e6a: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 206,
+      "entry": "00769e6f",
+      "size": 28,
+      "calls": [
+        {
+          "address": "0075aea0",
+          "arguments": [],
+          "site": "00769e83"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769e6f: push 0x1c",
+        "00769e71: call 0xbf681b",
+        "00769e76: add esp, 4",
+        "00769e79: test eax, eax",
+        "00769e7b: je 0x76859e",
+        "00769e81: mov ecx, eax",
+        "00769e83: call 0x75aea0",
+        "00769e88: mov esi, eax",
+        "00769e8a: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 207,
+      "entry": "00769e8f",
+      "size": 308,
+      "calls": [
+        {
+          "address": "00766f60",
+          "arguments": [],
+          "site": "00769eb4"
+        }
+      ],
+      "unwind_state": 16,
+      "stamp": "00cff2bc",
+      "result_register": "edx",
+      "trace": [
+        "00769e8f: push 0x134",
+        "00769e94: call 0xbf681b",
+        "00769e99: mov edx, eax",
+        "00769e9b: add esp, 4",
+        "00769e9e: mov dword ptr [esp + 0xc], edx",
+        "00769ea2: test edx, edx",
+        "00769ea4: mov dword ptr [esp + 0x18], 0x10",
+        "00769eac: je 0x7697e3",
+        "00769eb2: mov ecx, edx",
+        "00769eb4: call 0x766f60",
+        "00769eb9: mov dword ptr [edx], 0xcff2bc",
+        "00769ebf: mov dword ptr [esp + 0x18], 0xffffffff",
+        "00769ec7: mov esi, edx",
+        "00769ec9: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 208,
+      "entry": "00769ece",
+      "size": 280,
+      "calls": [
+        {
+          "address": "00767a70",
+          "arguments": [],
+          "site": "00769ef1"
+        }
+      ],
+      "unwind_state": 17,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769ece: push 0x118",
+        "00769ed3: call 0xbf681b",
+        "00769ed8: add esp, 4",
+        "00769edb: mov dword ptr [esp + 0xc], eax",
+        "00769edf: test eax, eax",
+        "00769ee1: mov dword ptr [esp + 0x18], 0x11",
+        "00769ee9: je 0x7685d7",
+        "00769eef: mov ecx, eax",
+        "00769ef1: call 0x767a70",
+        "00769ef6: mov dword ptr [esp + 0x18], 0xffffffff",
+        "00769efe: mov esi, eax",
+        "00769f00: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 209,
+      "entry": "00769f05",
+      "size": 44,
+      "calls": [
+        {
+          "address": "0075aed0",
+          "arguments": [],
+          "site": "00769f19"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769f05: push 0x2c",
+        "00769f07: call 0xbf681b",
+        "00769f0c: add esp, 4",
+        "00769f0f: test eax, eax",
+        "00769f11: je 0x76859e",
+        "00769f17: mov ecx, eax",
+        "00769f19: call 0x75aed0",
+        "00769f1e: mov esi, eax",
+        "00769f20: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 210,
+      "entry": "00769f25",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075fc80",
+          "arguments": [],
+          "site": "00769f39"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769f25: push 0x20",
+        "00769f27: call 0xbf681b",
+        "00769f2c: add esp, 4",
+        "00769f2f: test eax, eax",
+        "00769f31: je 0x76859e",
+        "00769f37: mov ecx, eax",
+        "00769f39: call 0x75fc80",
+        "00769f3e: mov esi, eax",
+        "00769f40: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 211,
+      "entry": "00769f45",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00764220",
+          "arguments": [],
+          "site": "00769f59"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769f45: push 0x24",
+        "00769f47: call 0xbf681b",
+        "00769f4c: add esp, 4",
+        "00769f4f: test eax, eax",
+        "00769f51: je 0x76859e",
+        "00769f57: mov ecx, eax",
+        "00769f59: call 0x764220",
+        "00769f5e: mov esi, eax",
+        "00769f60: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 212,
+      "entry": "00769f65",
+      "size": 36,
+      "calls": [
+        {
+          "address": "00764280",
+          "arguments": [],
+          "site": "00769f79"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769f65: push 0x24",
+        "00769f67: call 0xbf681b",
+        "00769f6c: add esp, 4",
+        "00769f6f: test eax, eax",
+        "00769f71: je 0x76859e",
+        "00769f77: mov ecx, eax",
+        "00769f79: call 0x764280",
+        "00769f7e: mov esi, eax",
+        "00769f80: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 213,
+      "entry": "00769f85",
+      "size": 40,
+      "calls": [
+        {
+          "address": "007642e0",
+          "arguments": [],
+          "site": "00769f99"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769f85: push 0x28",
+        "00769f87: call 0xbf681b",
+        "00769f8c: add esp, 4",
+        "00769f8f: test eax, eax",
+        "00769f91: je 0x76859e",
+        "00769f97: mov ecx, eax",
+        "00769f99: call 0x7642e0",
+        "00769f9e: mov esi, eax",
+        "00769fa0: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 214,
+      "entry": "00769fa5",
+      "size": 40,
+      "calls": [
+        {
+          "address": "00766660",
+          "arguments": [],
+          "site": "00769fb9"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769fa5: push 0x28",
+        "00769fa7: call 0xbf681b",
+        "00769fac: add esp, 4",
+        "00769faf: test eax, eax",
+        "00769fb1: je 0x76859e",
+        "00769fb7: mov ecx, eax",
+        "00769fb9: call 0x766660",
+        "00769fbe: mov esi, eax",
+        "00769fc0: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 215,
+      "entry": "00769fc5",
+      "size": 28,
+      "calls": [
+        {
+          "address": "00764490",
+          "arguments": [],
+          "site": "00769fd9"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769fc5: push 0x1c",
+        "00769fc7: call 0xbf681b",
+        "00769fcc: add esp, 4",
+        "00769fcf: test eax, eax",
+        "00769fd1: je 0x76859e",
+        "00769fd7: mov ecx, eax",
+        "00769fd9: call 0x764490",
+        "00769fde: mov esi, eax",
+        "00769fe0: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 216,
+      "entry": "00769fe5",
+      "size": 288,
+      "calls": [
+        {
+          "address": "007676c0",
+          "arguments": [],
+          "site": "0076a008"
+        }
+      ],
+      "unwind_state": 18,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "00769fe5: push 0x120",
+        "00769fea: call 0xbf681b",
+        "00769fef: add esp, 4",
+        "00769ff2: mov dword ptr [esp + 0xc], eax",
+        "00769ff6: test eax, eax",
+        "00769ff8: mov dword ptr [esp + 0x18], 0x12",
+        "0076a000: je 0x7685d7",
+        "0076a006: mov ecx, eax",
+        "0076a008: call 0x7676c0",
+        "0076a00d: mov dword ptr [esp + 0x18], 0xffffffff",
+        "0076a015: mov esi, eax",
+        "0076a017: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 217,
+      "entry": "0076a01c",
+      "size": 48,
+      "calls": [
+        {
+          "address": "0075a840",
+          "arguments": [],
+          "site": "0076a030"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a01c: push 0x30",
+        "0076a01e: call 0xbf681b",
+        "0076a023: add esp, 4",
+        "0076a026: test eax, eax",
+        "0076a028: je 0x76859e",
+        "0076a02e: mov ecx, eax",
+        "0076a030: call 0x75a840",
+        "0076a035: mov esi, eax",
+        "0076a037: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 218,
+      "entry": "0076a03c",
+      "size": 44,
+      "calls": [
+        {
+          "address": "0075a8b0",
+          "arguments": [],
+          "site": "0076a050"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a03c: push 0x2c",
+        "0076a03e: call 0xbf681b",
+        "0076a043: add esp, 4",
+        "0076a046: test eax, eax",
+        "0076a048: je 0x76859e",
+        "0076a04e: mov ecx, eax",
+        "0076a050: call 0x75a8b0",
+        "0076a055: mov esi, eax",
+        "0076a057: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 219,
+      "entry": "0076a05c",
+      "size": 48,
+      "calls": [
+        {
+          "address": "0075a920",
+          "arguments": [],
+          "site": "0076a070"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a05c: push 0x30",
+        "0076a05e: call 0xbf681b",
+        "0076a063: add esp, 4",
+        "0076a066: test eax, eax",
+        "0076a068: je 0x76859e",
+        "0076a06e: mov ecx, eax",
+        "0076a070: call 0x75a920",
+        "0076a075: mov esi, eax",
+        "0076a077: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 220,
+      "entry": "0076a07c",
+      "size": 36,
+      "calls": [
+        {
+          "address": "0075a990",
+          "arguments": [],
+          "site": "0076a090"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a07c: push 0x24",
+        "0076a07e: call 0xbf681b",
+        "0076a083: add esp, 4",
+        "0076a086: test eax, eax",
+        "0076a088: je 0x76859e",
+        "0076a08e: mov ecx, eax",
+        "0076a090: call 0x75a990",
+        "0076a095: mov esi, eax",
+        "0076a097: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 221,
+      "entry": "0076a09c",
+      "size": 32,
+      "calls": [
+        {
+          "address": "0075fb00",
+          "arguments": [],
+          "site": "0076a0b0"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a09c: push 0x20",
+        "0076a09e: call 0xbf681b",
+        "0076a0a3: add esp, 4",
+        "0076a0a6: test eax, eax",
+        "0076a0a8: je 0x76859e",
+        "0076a0ae: mov ecx, eax",
+        "0076a0b0: call 0x75fb00",
+        "0076a0b5: mov esi, eax",
+        "0076a0b7: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 222,
+      "entry": "0076a0bc",
+      "size": 536,
+      "calls": [
+        {
+          "address": "0075fb70",
+          "arguments": [],
+          "site": "0076a0d3"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a0bc: push 0x218",
+        "0076a0c1: call 0xbf681b",
+        "0076a0c6: add esp, 4",
+        "0076a0c9: test eax, eax",
+        "0076a0cb: je 0x76859e",
+        "0076a0d1: mov ecx, eax",
+        "0076a0d3: call 0x75fb70",
+        "0076a0d8: mov esi, eax",
+        "0076a0da: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 223,
+      "entry": "0076a0df",
+      "size": 272,
+      "calls": [
+        {
+          "address": "00766f60",
+          "arguments": [],
+          "site": "0076a104"
+        }
+      ],
+      "unwind_state": 19,
+      "stamp": "00d03804",
+      "result_register": "edx",
+      "trace": [
+        "0076a0df: push 0x110",
+        "0076a0e4: call 0xbf681b",
+        "0076a0e9: mov edx, eax",
+        "0076a0eb: add esp, 4",
+        "0076a0ee: mov dword ptr [esp + 0xc], edx",
+        "0076a0f2: test edx, edx",
+        "0076a0f4: mov dword ptr [esp + 0x18], 0x13",
+        "0076a0fc: je 0x7697e3",
+        "0076a102: mov ecx, edx",
+        "0076a104: call 0x766f60",
+        "0076a109: mov dword ptr [edx], 0xd03804",
+        "0076a10f: mov dword ptr [esp + 0x18], 0xffffffff",
+        "0076a117: mov esi, edx",
+        "0076a119: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 224,
+      "entry": "0076a11e",
+      "size": 48,
+      "calls": [
+        {
+          "address": "007683c0",
+          "arguments": [],
+          "site": "0076a13e"
+        }
+      ],
+      "unwind_state": 20,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a11e: push 0x30",
+        "0076a120: call 0xbf681b",
+        "0076a125: add esp, 4",
+        "0076a128: mov dword ptr [esp + 0xc], eax",
+        "0076a12c: test eax, eax",
+        "0076a12e: mov dword ptr [esp + 0x18], 0x14",
+        "0076a136: je 0x7685d7",
+        "0076a13c: mov ecx, eax",
+        "0076a13e: call 0x7683c0",
+        "0076a143: mov dword ptr [esp + 0x18], 0xffffffff",
+        "0076a14b: mov esi, eax",
+        "0076a14d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 225,
+      "entry": "0076a152",
+      "size": 44,
+      "calls": [
+        {
+          "address": "00765940",
+          "arguments": [],
+          "site": "0076a166"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a152: push 0x2c",
+        "0076a154: call 0xbf681b",
+        "0076a159: add esp, 4",
+        "0076a15c: test eax, eax",
+        "0076a15e: je 0x76859e",
+        "0076a164: mov ecx, eax",
+        "0076a166: call 0x765940",
+        "0076a16b: mov esi, eax",
+        "0076a16d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 226,
+      "entry": "0076a172",
+      "size": 40,
+      "calls": [
+        {
+          "address": "00765490",
+          "arguments": [],
+          "site": "0076a186"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a172: push 0x28",
+        "0076a174: call 0xbf681b",
+        "0076a179: add esp, 4",
+        "0076a17c: test eax, eax",
+        "0076a17e: je 0x76859e",
+        "0076a184: mov ecx, eax",
+        "0076a186: call 0x765490",
+        "0076a18b: mov esi, eax",
+        "0076a18d: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 227,
+      "entry": "0076a192",
+      "size": 40,
+      "calls": [
+        {
+          "address": "0075c680",
+          "arguments": [],
+          "site": "0076a1a6"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a192: push 0x28",
+        "0076a194: call 0xbf681b",
+        "0076a199: add esp, 4",
+        "0076a19c: test eax, eax",
+        "0076a19e: je 0x76859e",
+        "0076a1a4: mov ecx, eax",
+        "0076a1a6: call 0x75c680",
+        "0076a1ab: mov esi, eax",
+        "0076a1ad: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 228,
+      "entry": "0076a1b2",
+      "size": 40,
+      "calls": [
+        {
+          "address": "007666c0",
+          "arguments": [],
+          "site": "0076a1d2"
+        }
+      ],
+      "unwind_state": 21,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a1b2: push 0x28",
+        "0076a1b4: call 0xbf681b",
+        "0076a1b9: add esp, 4",
+        "0076a1bc: mov dword ptr [esp + 0xc], eax",
+        "0076a1c0: test eax, eax",
+        "0076a1c2: mov dword ptr [esp + 0x18], 0x15",
+        "0076a1ca: je 0x7685d7",
+        "0076a1d0: mov ecx, eax",
+        "0076a1d2: call 0x7666c0",
+        "0076a1d7: mov dword ptr [esp + 0x18], 0xffffffff",
+        "0076a1df: mov esi, eax",
+        "0076a1e1: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 229,
+      "entry": "0076a1e6",
+      "size": 28,
+      "calls": [
+        {
+          "address": "00760680",
+          "arguments": [],
+          "site": "0076a1fa"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a1e6: push 0x1c",
+        "0076a1e8: call 0xbf681b",
+        "0076a1ed: add esp, 4",
+        "0076a1f0: test eax, eax",
+        "0076a1f2: je 0x76859e",
+        "0076a1f8: mov ecx, eax",
+        "0076a1fa: call 0x760680",
+        "0076a1ff: mov esi, eax",
+        "0076a201: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 230,
+      "entry": "0076a203",
+      "size": 28,
+      "calls": [
+        {
+          "address": "007607b0",
+          "arguments": [],
+          "site": "0076a217"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a203: push 0x1c",
+        "0076a205: call 0xbf681b",
+        "0076a20a: add esp, 4",
+        "0076a20d: test eax, eax",
+        "0076a20f: je 0x76859e",
+        "0076a215: mov ecx, eax",
+        "0076a217: call 0x7607b0",
+        "0076a21c: mov esi, eax",
+        "0076a21e: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 231,
+      "entry": "0076a220",
+      "size": 32,
+      "calls": [
+        {
+          "address": "00765610",
+          "arguments": [],
+          "site": "0076a234"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a220: push 0x20",
+        "0076a222: call 0xbf681b",
+        "0076a227: add esp, 4",
+        "0076a22a: test eax, eax",
+        "0076a22c: je 0x76859e",
+        "0076a232: mov ecx, eax",
+        "0076a234: call 0x765610",
+        "0076a239: mov esi, eax",
+        "0076a23b: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 232,
+      "entry": "0076a23d",
+      "size": 40,
+      "calls": [
+        {
+          "address": "0075f9d0",
+          "arguments": [],
+          "site": "0076a251"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a23d: push 0x28",
+        "0076a23f: call 0xbf681b",
+        "0076a244: add esp, 4",
+        "0076a247: test eax, eax",
+        "0076a249: je 0x76859e",
+        "0076a24f: mov ecx, eax",
+        "0076a251: call 0x75f9d0",
+        "0076a256: mov esi, eax",
+        "0076a258: jmp 0x76a27b"
+      ],
+      "errors": []
+    },
+    {
+      "tag": 233,
+      "entry": "0076a25a",
+      "size": 32,
+      "calls": [
+        {
+          "address": "007665d0",
+          "arguments": [],
+          "site": "0076a26e"
+        }
+      ],
+      "unwind_state": -1,
+      "stamp": "00000000",
+      "result_register": "eax",
+      "trace": [
+        "0076a25a: push 0x20",
+        "0076a25c: call 0xbf681b",
+        "0076a261: add esp, 4",
+        "0076a264: test eax, eax",
+        "0076a266: je 0x76859e",
+        "0076a26c: mov ecx, eax",
+        "0076a26e: call 0x7665d0",
+        "0076a273: mov esi, eax",
+        "0076a275: jmp 0x76a27b"
+      ],
+      "errors": []
+    }
+  ],
+  "steps": [
+    {
+      "address": "00768592",
+      "native": "0075b860",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007685c3",
+      "native": "007673b0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007685f8",
+      "native": "0075ea30",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768614",
+      "native": "0075eb40",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768634",
+      "native": "007663f0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768654",
+      "native": "0075ecb0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768674",
+      "native": "0075edf0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768694",
+      "native": "0075f000",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007686b4",
+      "native": "0075f1a0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007686d4",
+      "native": "0075f350",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007686f4",
+      "native": "0075f540",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768714",
+      "native": "0075e4d0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768734",
+      "native": "0075b2a0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768756",
+      "native": "0075b860",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768776",
+      "native": "0075ce80",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768799",
+      "native": "0075d5d0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007687b9",
+      "native": "0075d990",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007687dc",
+      "native": "0075d010",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007687fc",
+      "native": "0075e940",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076881c",
+      "native": "00765e10",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076883c",
+      "native": "0075e540",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076885c",
+      "native": "007661d0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076887c",
+      "native": "0075e630",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076889c",
+      "native": "0075d4b0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007688bc",
+      "native": "004b5fb0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007688de",
+      "native": "0075d2e0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007688fe",
+      "native": "0075caa0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076891e",
+      "native": "0075cbc0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076893e",
+      "native": "0075d3f0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076895e",
+      "native": "0075e740",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076897e",
+      "native": "004b6050",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076899e",
+      "native": "0075e830",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007689c1",
+      "native": "00764340",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007689e4",
+      "native": "007643e0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768a04",
+      "native": "0075e000",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768a24",
+      "native": "00766060",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768a46",
+      "native": "0075daa0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768a66",
+      "native": "0075db70",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768a86",
+      "native": "0075dc20",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768aa6",
+      "native": "0075dcd0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768ac6",
+      "native": "0075ded0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768ae6",
+      "native": "0075e140",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768b06",
+      "native": "0075e270",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768b26",
+      "native": "0075e3a0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768b46",
+      "native": "00765bd0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768b66",
+      "native": "00765d20",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768b86",
+      "native": "0052aef0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768ba6",
+      "native": "00764670",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768bc6",
+      "native": "00759f40",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768be6",
+      "native": "0075dd80",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768c06",
+      "native": "0075f670",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768c26",
+      "native": "0075f780",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768c46",
+      "native": "0075f890",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768c52",
+      "native": "00733720",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768c5e",
+      "native": "008e1530",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768c7e",
+      "native": "00763720",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768c9e",
+      "native": "00763930",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768cbe",
+      "native": "0075b130",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768cea",
+      "native": "00766d00",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768d12",
+      "native": "00765760",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768d32",
+      "native": "00765850",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768d5e",
+      "native": "00767570",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768d86",
+      "native": "00759e40",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768da6",
+      "native": "00759ec0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768dc6",
+      "native": "0075bd50",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768de6",
+      "native": "0075a030",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768e06",
+      "native": "0075a0b0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768e26",
+      "native": "005f9660",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768e46",
+      "native": "0075a470",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768e66",
+      "native": "0075c020",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768e86",
+      "native": "0075c380",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768ea6",
+      "native": "0075c450",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768ec6",
+      "native": "0075a150",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768ee6",
+      "native": "0075c570",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768f06",
+      "native": "0075a1f0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768f26",
+      "native": "00728f20",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768f46",
+      "native": "00728fa0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768f66",
+      "native": "00761710",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768f86",
+      "native": "007618e0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768fa6",
+      "native": "007619b0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768fc6",
+      "native": "00761a80",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00768fe6",
+      "native": "00761b50",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769006",
+      "native": "00761c20",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769026",
+      "native": "00761d90",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769046",
+      "native": "00763b40",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769066",
+      "native": "006d16a0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769086",
+      "native": "006d1720",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007690a6",
+      "native": "006d17a0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007690c6",
+      "native": "006d1820",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007690e6",
+      "native": "0075a2e0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769106",
+      "native": "0075a330",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769126",
+      "native": "0075a380",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769146",
+      "native": "0075ff60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769166",
+      "native": "007604c0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769186",
+      "native": "007601a0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007691a6",
+      "native": "00760200",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007691c6",
+      "native": "00760260",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007691e6",
+      "native": "00760390",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769206",
+      "native": "00763140",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769226",
+      "native": "00763320",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769246",
+      "native": "007631a0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769266",
+      "native": "00763380",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769286",
+      "native": "007633e0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007692a6",
+      "native": "00763440",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007692c6",
+      "native": "00763500",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007692e6",
+      "native": "007634a0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769306",
+      "native": "006bc3e0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769335",
+      "native": "0080e2c0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076936c",
+      "native": "00766ef0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769394",
+      "native": "0075a630",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007693c3",
+      "native": "00760c10",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007693eb",
+      "native": "0075a690",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076940e",
+      "native": "00762130",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076942e",
+      "native": "00762220",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076944e",
+      "native": "007623d0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076946e",
+      "native": "00761f60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076948e",
+      "native": "00762190",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007694ae",
+      "native": "0064a820",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007694ce",
+      "native": "00760e90",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007694ee",
+      "native": "007611d0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076950e",
+      "native": "0075bb30",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076952e",
+      "native": "00761310",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076954e",
+      "native": "00761450",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076956e",
+      "native": "007613b0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076958e",
+      "native": "00761590",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007695ae",
+      "native": "007645b0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007695ce",
+      "native": "00760fd0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007695ee",
+      "native": "007608e0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076960e",
+      "native": "00760a50",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076962e",
+      "native": "00760b70",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076964e",
+      "native": "0075ade0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076966e",
+      "native": "0075ae10",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076969d",
+      "native": "007679d0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007696d4",
+      "native": "00759920",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007696fc",
+      "native": "0075af00",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076971c",
+      "native": "00749aa0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076973c",
+      "native": "00763cb0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076975c",
+      "native": "00763d10",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076977c",
+      "native": "00763d70",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076979c",
+      "native": "00763dd0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007697c9",
+      "native": "00766f60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769808",
+      "native": "0075a550",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076982a",
+      "native": "006e3940",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076984a",
+      "native": "0075a580",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076986a",
+      "native": "0075fe90",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076988a",
+      "native": "0075a5c0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007698aa",
+      "native": "00763600",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007698cc",
+      "native": "006e3a60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007698ec",
+      "native": "00763660",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076990c",
+      "native": "007636c0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076992c",
+      "native": "007648b0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076995d",
+      "native": "00766f60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076999c",
+      "native": "00766f60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "007699db",
+      "native": "00766f60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769a1a",
+      "native": "00766f60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769a48",
+      "native": "0075a4d0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769a77",
+      "native": "007edb80",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769a9f",
+      "native": "0075ad30",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769abf",
+      "native": "0075ad60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769adf",
+      "native": "0075b220",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769b10",
+      "native": "00766f60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769b41",
+      "native": "0075aab0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769b64",
+      "native": "007626e0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769b84",
+      "native": "00762880",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769ba4",
+      "native": "00605270",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769bc4",
+      "native": "00762a00",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769be4",
+      "native": "00762a60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769c04",
+      "native": "00762b20",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769c24",
+      "native": "00762c80",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769c44",
+      "native": "0075ab40",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769c64",
+      "native": "0075abe0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769c84",
+      "native": "0075ac50",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769ca4",
+      "native": "00521f30",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769cc4",
+      "native": "00764c80",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769ce4",
+      "native": "0075af60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769d04",
+      "native": "0075af90",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769d24",
+      "native": "00764f90",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769d44",
+      "native": "0075b030",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769d64",
+      "native": "0075b060",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769d84",
+      "native": "0075b100",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769da4",
+      "native": "0075b0d0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769dc4",
+      "native": "0075a290",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769de4",
+      "native": "0075a3b0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769e04",
+      "native": "0075c9a0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769e24",
+      "native": "00765a20",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769e55",
+      "native": "00766f60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769e83",
+      "native": "0075aea0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769eb4",
+      "native": "00766f60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769ef1",
+      "native": "00767a70",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769f19",
+      "native": "0075aed0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769f39",
+      "native": "0075fc80",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769f59",
+      "native": "00764220",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769f79",
+      "native": "00764280",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769f99",
+      "native": "007642e0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769fb9",
+      "native": "00766660",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "00769fd9",
+      "native": "00764490",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a008",
+      "native": "007676c0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a030",
+      "native": "0075a840",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a050",
+      "native": "0075a8b0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a070",
+      "native": "0075a920",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a090",
+      "native": "0075a990",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a0b0",
+      "native": "0075fb00",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a0d3",
+      "native": "0075fb70",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a104",
+      "native": "00766f60",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a13e",
+      "native": "007683c0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a166",
+      "native": "00765940",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a186",
+      "native": "00765490",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a1a6",
+      "native": "0075c680",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a1d2",
+      "native": "007666c0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a1fa",
+      "native": "00760680",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a217",
+      "native": "007607b0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a234",
+      "native": "00765610",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a251",
+      "native": "0075f9d0",
+      "function": "00768530",
+      "kind": "direct"
+    },
+    {
+      "address": "0076a26e",
+      "native": "007665d0",
+      "function": "00768530",
+      "kind": "direct"
+    }
+  ],
+  "note": "Required callees are bindings, not reconstructed constructor bodies. Unsupported tags consume the explicit native entryESP-10h stack preimage. Allocator-null paths select null; read-slot8 dispatch is unconditional. No receive wiring, original FH3/SEH/private-frame/binaryABI or networking/game claim.",
+  "ghidra_body_ownership": {
+    "actual_ranges": [
+      [
+        "00768530",
+        "0076857f"
+      ],
+      [
+        "0076a277",
+        "0076a297"
+      ]
+    ],
+    "owned_bytes": 113,
+    "raw_case_call_sites_without_function": 214,
+    "verify_report_calls": "214 checked, 214 failed: no containing Ghidra function",
+    "repair": "tools/ghidra_scripts/RepairOct18FactoryBody.java prepared; not executed or validated",
+    "blocker": "run_script_inline RPC refused: Script execution disabled. GHIDRA_MCP_ALLOW_SCRIPTS gate is off. Shared server configuration was not changed."
+  }
+}

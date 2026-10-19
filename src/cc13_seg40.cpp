@@ -664,17 +664,17 @@ void cc13_seg40_narrative_entry_destruct_00733dc0(void* entry, Cc13Seg40Host& ho
 
 // 00735080 BSP_MissionNarrative_Destruct, __thiscall(ECX = narrative), EH
 // frame 00C85E56. Bytes 00735080-007350E9: vtable 00CFE9C0; 00733F00(ECX =
-// +38h); 00733E70(ECX = +10h); 00734CE0(ECX = narrative); _free (00BF65AC) of
-// [+4h] and [+4h] = 0 (the bytes read +4h; the pseudocode's param_1[2] is
-// wrong).
+// +38h); 00733E70(ECX = +10h); ADD ESI,4 at 007350C0, then 00734CE0(ECX =
+// narrative+4); _free (00BF65AC) of [narrative+8h] and [narrative+8h] = 0
+// (007350D2..007350E2, [ESI+4] with ESI = narrative+4).
 void cc13_seg40_mission_narrative_destruct_00735080(void* narrative, Cc13Seg40Host& host) {
     auto* base = static_cast<std::uint8_t*>(narrative);
     at<std::uint32_t>(narrative, 0) = 0x00CFE9C0u;
     cc13_seg40_narrative_callback_holder_destruct_00733f00(base + 0x38, host);
     cc13_seg40_countdown_callback_holder_destruct_00733e70(base + 0x10, host);
-    host.narrative_list_clear_00734ce0(narrative);
-    host.crt_free_00bf65ac(at<void*>(narrative, 4));
-    at<void*>(narrative, 4) = nullptr;
+    host.narrative_list_clear_00734ce0(base + 4);
+    host.crt_free_00bf65ac(at<void*>(narrative, 8));
+    at<void*>(narrative, 8) = nullptr;
 }
 
 // 00731270 BSP_TorpedoShotCommand_Read, __thiscall(ECX = command, reader*),

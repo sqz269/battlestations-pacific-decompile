@@ -23,6 +23,7 @@
 #include "bsp/gui_text.hpp"
 #include "bsp/locale_tables.hpp"
 #include "bsp/locale_text_lookup.hpp"
+#include "bsp/cc13_seg87.hpp"
 
 #include <array>
 #include <atomic>
@@ -39,6 +40,17 @@
 #include <vector>
 
 namespace bsp::game {
+
+namespace {
+// Packet cc15-wB2: the geometry update's uppercase pass (00aba8d0 at 00aba90d)
+// runs cc13_seg87.cpp's 00a9ec30 over the host's copy of the text, instead of the
+// host's own loop over 00a9eba0. 00a9ec30 is __thiscall(ECX locale manager,
+// stack string*) RET 4 and maps each code unit through 00a9eba0 with the length
+// and data reloaded per unit; the host loop does the same, so ON is expected to
+// change nothing. Uncertainty: the native string's capacity word and the
+// terminator are not part of the view, and 00a9ec30 reads neither.
+inline constexpr bool kTextUppercaseCc15Bound = false;
+} // namespace
 
 static_assert(sizeof(void*) == 4 && sizeof(int) == 4,
     "Text's explicit owning-UCRT Source profile targets MSVC Win32");
@@ -360,8 +372,15 @@ private:
         if (owned_ == nullptr || !owned_->descriptor.uppercase_only) return text;
         run_.uppercased = true;
         std::u16string out = text;
-        for (char16_t& unit : out) {
-            unit = locale_uppercase_00a9eba0(owner_.locale, owner_.runtime, unit);
+        if constexpr (kTextUppercaseCc15Bound) {
+            // The copy's length and buffer stand for the native wide string's
+            // +0h / +4h; 00a9ec30 rewrites the units in place.
+            NativeWideStringHeader view{static_cast<std::uint32_t>(out.size()), out.data()};
+            uppercase_native_wide_string_00a9ec30(owner_.locale, owner_.runtime, view);
+        } else {
+            for (char16_t& unit : out) {
+                unit = locale_uppercase_00a9eba0(owner_.locale, owner_.runtime, unit);
+            }
         }
         owner_.log.implemented("GuiText::uppercase_text", "00a9ec30");
         return out;

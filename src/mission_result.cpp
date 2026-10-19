@@ -179,15 +179,134 @@ MissionCompletionPollDecision mission_completion_poll_004d7ea0(
 // GGame::EndScene and the commit
 // ---------------------------------------------------------------------------
 
+namespace {
+
+template <typename Map>
+void add_counters(Map& destination, const Map& source)
+{
+    for (const auto& [key, value] : source) {
+        destination[key] += value;
+    }
+}
+
+template <typename Outer>
+void add_counter_pairs(Outer& destination, const Outer& source)
+{
+    for (const auto& [key, inner] : source) {
+        add_counters(destination[key], inner);
+    }
+}
+
+} // namespace
+
+// 0091A080 (listing 0091A080..0091B2B1), following cc13_seg59b's
+// score_record_merge_0091a080 field by field. Offsets are the image's.
+// Image fields the host struct lacks, NOT MODELLED (the destination keeps
+// nothing for them and the source's values are dropped): +18Ch (summed when
+// src+0 != 0), and the ints +178h, +17Ch, +180h, +184h, +188h (summed at the
+// tail). checkpoint_counters_168 (+168h..+174h), checkpoint_pending_24c,
+// used_slot_250 and count_284 are not touched by the image; the destination
+// keeps its own. The inlined 00BF6713 iterator checks have no host analogue.
+void merge_mission_score_record_0091a080(MissionScoreRecord& destination,
+                                         const MissionScoreRecord& source)
+{
+    // 0091A080..: i = src+8. Both tests are signed (JGE skips). The image does
+    // not bound i; an index outside 0..2 would touch neighbouring fields and is
+    // not modelled.
+    const int i = source.difficulty_08;
+    if (i >= 0 && i < 3
+        && destination.completed_by_difficulty_26c[i] < source.mission_completed_00
+        && destination.scores_by_difficulty_278[i] < source.totals_1c8[6]) {
+        destination.scores_by_difficulty_278[i] = source.totals_1c8[6];  // +278h <- src+1E0h
+        destination.completed_by_difficulty_26c[i] = source.mission_completed_00;  // +26Ch <- src+0
+    }
+    if (source.mission_completed_00 != 0) {
+        destination.ranking_04 = std::max(destination.ranking_04, source.ranking_04);  // +4, JL
+        destination.winner_mode_194 = static_cast<int>(
+            static_cast<std::uint32_t>(destination.winner_mode_194)
+            | static_cast<std::uint32_t>(source.winner_mode_194));  // +194h OR
+        // +18Ch += src+18Ch: not modelled (see above).
+    }
+    destination.mission_completed_00 += source.mission_completed_00;  // +0 summed
+    destination.difficulty_08 = source.difficulty_08;                  // +8 overwritten
+    destination.play_time_0c = source.play_time_0c + destination.play_time_0c;  // FLD src, FADD dst
+    destination.completion_time_10 = source.completion_time_10 + destination.completion_time_10;
+
+    // String-keyed int maps (005070C0). The image folds the +24h, +3Ch, +30h
+    // and +48h sources ALL into dst+24h (ECX = dst+24h at 0091A257, 0091A2D7,
+    // 0091A357), in that order; an image quirk, kept. dst+30h/+3Ch/+48h are
+    // therefore never merged into.
+    auto& maps = destination.score_maps;
+    const auto& from = source.score_maps;
+    const auto at = [](auto& array, MissionScoreMap map) -> auto& {
+        return array[static_cast<std::size_t>(map)];
+    };
+    using M = MissionScoreMap;
+    add_counters(at(maps, M::Mission), at(from, M::Mission));             // +18h
+    add_counters(at(maps, M::Action), at(from, M::Action));               // +24h
+    add_counters(at(maps, M::Action), at(from, M::Plane));                // +3Ch -> +24h
+    add_counters(at(maps, M::Action), at(from, M::Ship));                 // +30h -> +24h
+    add_counters(at(maps, M::Action), at(from, M::Command));              // +48h -> +24h
+    add_counters(at(maps, M::MissionMedals), at(from, M::MissionMedals)); // +54h
+    add_counters(at(maps, M::ActionMedals), at(from, M::ActionMedals));   // +60h
+
+    // Three-level trees, leaf ints summed: +B4h, +C0h (0062C170 / 0062BB60 /
+    // 00625900), then +9Ch, +A8h (00915610 / 00911890 / 00625900).
+    const auto add_triples = [](MissionEnumCounterTriples& to,
+                                const MissionEnumCounterTriples& add) {
+        for (const auto& [key, inner] : add) {
+            add_counter_pairs(to[key], inner);
+        }
+    };
+    add_triples(destination.player_kills_b4, source.player_kills_b4);
+    add_triples(destination.party_kills_c0, source.party_kills_c0);
+    add_triples(destination.player_damages_9c, source.player_damages_9c);
+    add_triples(destination.party_damages_a8, source.party_damages_a8);
+    // 0091AAFD..0091AB90: +114h int -> float (0090E740), *slot = src + *slot.
+    for (const auto& [key, value] : source.unit_usage_114) {
+        float& slot = destination.unit_usage_114[key];
+        slot = value + slot;
+    }
+    add_counters(destination.unit_suicide_d8, source.unit_suicide_d8);          // 0091AB92, +D8h
+    add_counter_pairs(destination.unit_remaining_cc, source.unit_remaining_cc); // 0091AC12, +CCh
+
+    destination.map_usage_14 = source.map_usage_14 + destination.map_usage_14;  // +14h
+    // Ints +1C8h..+1E8h summed: the seven totals, then +1E4h and +1E8h.
+    for (std::size_t k = 0; k < destination.totals_1c8.size(); ++k) {
+        destination.totals_1c8[k] += source.totals_1c8[k];
+    }
+    destination.allied_party_1e4 += source.allied_party_1e4;
+    destination.japanese_party_1e8 += source.japanese_party_1e8;
+
+    add_counters(destination.losses_1ec[0], source.losses_1ec[0]);  // +1ECh
+    add_counters(destination.losses_1ec[1], source.losses_1ec[1]);  // +1F8h
+
+    // 0091AEDF..0091B268: 00625F50 on each of +204h..+240h, [result+8] +=
+    // node+1Ch, i.e. the pair's int. Uncertain: whether 00625F50 copies the
+    // source's name into a new entry; here a new entry's name stays empty.
+    for (std::size_t k = 0; k < destination.objectives_204.size(); ++k) {
+        for (const auto& [key, value] : source.objectives_204[k]) {
+            destination.objectives_204[k][key].value += value.value;
+        }
+    }
+    // The tail adds +178h, +17Ch, +180h, +188h, +184h: not modelled (see above).
+}
+
 void commit_mission_record_009205e0(MissionProgress& progress, const std::string& mission_key,
                                     const MissionScoreRecord& record,
                                     std::uint32_t local_player_mode,
                                     bool multiplayer_accumulates)
 {
     MissionScoreRecord& stored = mission_record_00594a70(progress, mission_key);
-    const int play_count = stored.count_284; // 0091a080 overwrites the record
-    stored = record;
-    stored.count_284 = play_count + 1; // the increment at 00920604
+    if constexpr (kMissionRecordMergeBound) {
+        merge_mission_score_record_0091a080(stored, record); // CALL 0091A080 at 009205F9
+        stored.count_284 += 1;                               // ADD [stored+284h],1 at 009205FE
+    } else {
+        // The historical copy model: the record replaces the stored one.
+        const int play_count = stored.count_284;
+        stored = record;
+        stored.count_284 = play_count + 1; // the increment at 009205FE
+    }
 
     // totals_1c8[6] is record+1E0h, the total the two maps take.
     const int total = record.totals_1c8[6];

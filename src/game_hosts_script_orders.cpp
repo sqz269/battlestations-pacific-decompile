@@ -276,6 +276,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc13-fix17: jm10.lua:1862, jm12.lua:1783 and LOMP 08_lightning_strike
     // .lua:392. Handled only with kLuaSetSubmarineAirSupplyBound.
     {"SetSubmarineAirSupply", 0x00893a60u},
+    // Packet l68_travel_speed: bsm_09_battle_of_the_coral_sea.lua (the
+    // LexKillerGang, KMH(200)), BSM04, BSM10, LOMP03/08/11, ESMP01/02, USN11 and
+    // JM12. Handled only with kLuaSquadronSetTravelSpeedBound.
+    {"SquadronSetTravelSpeed", 0x008a0630u},
     // Packet cc9_ship_set_torpedo_stock: bsm_01_stationed_at_pearl.lua:1790 and
     // the COTP-IJN spawn tables call it. Handled only with
     // kShipSetTorpedoStockBound.
@@ -305,6 +309,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // the PT boats and rescue craft onto their path points. Handled only with
     // kPutToBound.
     {"PutTo", 0x008a9f90u},
+    // Packet l68_putrelto: handled only with kPutRelToBound.
+    {"PutRelTo", 0x008aa560u},
     // Packet cc9_get_squadron_planes: bsm_04_vengance_at_luzon.lua:1717 and
     // 1720 (luaIntroMovieA). Handled only with kGetSquadronPlanesBound.
     {"GetSquadronPlanes", 0x0089cc50u},
@@ -684,6 +690,9 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "SetSubmarineAirSupply") == 0) {
         return kLuaSetSubmarineAirSupplyBound;
     }
+    if (std::strcmp(binding->name, "SquadronSetTravelSpeed") == 0) {
+        return kLuaSquadronSetTravelSpeedBound;
+    }
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
     if (std::strcmp(binding->name, "ReloadTorpedoes") == 0) return kReloadTorpedoesBound;
     if (std::strcmp(binding->name, "FillPathPoints") == 0) return kFillPathPointsBound;
@@ -691,6 +700,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         return kScoringPlayerShotDownBound;
     }
     if (std::strcmp(binding->name, "PutTo") == 0) return kPutToBound;
+    if (std::strcmp(binding->name, "PutRelTo") == 0) return kPutRelToBound;
     if (std::strcmp(binding->name, "GetSquadronPlanes") == 0) return kGetSquadronPlanesBound;
     if (std::strcmp(binding->name, "GetSubmarineDepthLevel") == 0) {
         return kSubmarineDepthLevelBound;
@@ -1895,6 +1905,52 @@ namespace {
 int (*g_class_default_arm_reader)(int vehicle_class) = nullptr;
 // kPlayerLaunchScreenCursorBound retired: the cursor key's state-5 path (0067A565) is not the targeted launch (docs/SHIP_AI_OPEN_ITEMS.md 212).
 }  // namespace
+
+// Packet p20_squadron_helm (docs/OCEAN_WAVE_FIELD.md section 79). The player's
+// moveto 005F9B20 orders [00E188D8] through 0077D600 with 00E08F68, the class
+// kPilotOrderClassMoveTo; on a squadron the command lands on the squadron's
+// director and each member's bot (0099A4C0 on the change, then 0099A170) builds
+// a kind-7 moveto task on a position descriptor. The host's member command rows
+// and the install at delivery are the standing fan-out substitution, as in the
+// air-ops order's moveto above (006CCDA0 kMoveToSelf). LABELLED: no 00645060
+// select or 0064B870 / 00780214 role transfer runs; the harness's order stands
+// for a player who selected the squadron.
+int GameScriptOrdersHost::player_plane_moveto(std::size_t unit_index, float x, float z) {
+    if (unit_index >= units_.count()) return -1;
+    const bsp::PlaneSquadronHostRecord* record =
+        bsp::plane_squadron_registry().find_by_member_unit(unit_index);
+    if (record == nullptr) return -1;
+    float lx = 0.0f, ly = 0.0f, lz = 0.0f;
+    units_.unit_position_00fc(unit_index, lx, ly, lz);
+    bsp::SceneCommandTarget here;
+    here.kind = 0;
+    here.position_valid = 1;
+    here.position[0] = x;
+    here.position[1] = ly;
+    here.position[2] = z;
+    const std::string saved_source = delivery_source_;
+    delivery_source_ = "player:helm moveto 005F9B20";
+    int planes = 0;
+    for (const std::size_t m : record->member_units) {
+        if (m == bsp::kPlaneSquadronNoUnit || m >= units_.count()) continue;
+        if (!units_.unit_alive_and_visible(m)) continue;
+        void* const handle = reinterpret_cast<void*>(static_cast<std::uintptr_t>(m + 1u));
+        entity_issue_command(handle, bsp::kPilotOrderClassMoveTo, here, 1);
+        ++planes;
+        after_order_delivery([this, m, here]() {
+            ScriptOrderAttackCommandHost bot_host(units_, log_, bsp::kPilotOrderClassMoveTo, 0u);
+            const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+                static_cast<std::uint32_t>(m + 1u), bot_host);
+            if (task == 0u) return;
+            units_.store_unit_attack_command_class(m, bsp::kPilotOrderClassMoveTo);
+            units_.store_unit_moveto_range(m, 0.0f);
+            units_.store_unit_moveto_target(m, ~static_cast<std::size_t>(0));
+            units_.store_unit_moveto_point(m, here.position);
+        });
+    }
+    delivery_source_ = saved_source;
+    return planes;
+}
 
 std::size_t harness_target_row(const GameUnitsHost& units, const std::string& name) {
     std::size_t first = units.count();
@@ -4057,6 +4113,44 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             static_cast<double>(pos[0]), static_cast<double>(pos[1]),
             static_cast<double>(pos[2]), placed ? 1 : 0);
         results = 0;
+    } else if (std::strcmp(binding->name, "PutRelTo") == 0) {
+        // 008AA560, packet l68_putrelto: arguments 0 and 1 through 00888AA0,
+        // argument 2 through 00888760 as a Vector3. vtable[114h] (0080E150, the
+        // weapon director) and 007788B0 (when IsKindOf(2)) run with their results
+        // unused; vtable[120h] (00819840) takes argument 1's rotation and the
+        // transformed point (put_rel_to_00819840). With exactly four arguments
+        // (008AA7CF) argument 3 * 00CE3D28 / 00CE3D20 goes to vtable[11Ch]. Then
+        // vtable[0D8h] (no host counterpart) and, for an occupant owner (00778890,
+        // the group's leader), every other member through vtable[118h](&00F87574).
+        // No result.
+        void* entity = entity_from_argument(0);
+        void* ref = entity_from_argument(1);
+        float rel[3] = {0.0f, 0.0f, 0.0f};
+        const bool have_rel = argument_vector3(2, rel);
+        const std::size_t index = index_of(entity);
+        const std::size_t ref_index = index_of(ref);
+        bool placed = false;
+        if (entity != nullptr && ref != nullptr && have_rel && index < units_.count() &&
+            ref_index < units_.count()) {
+            placed = units_.put_rel_to_00819840(index, ref_index, rel);
+            if (argument_count_ == 4) {
+                units_.set_heading_008196b0(index, put_to_heading_radians(get_number(3)));
+            }
+            const std::int32_t group = units_.unit_formation_group_0284(index);
+            if (group >= 0 && units_.formation_leader_0014(group) == index) {
+                units_.relocate_formation_members_00819672(index);   // 008AA851
+            }
+        }
+        float pos[3] = {0.0f, 0.0f, 0.0f};
+        if (index < units_.count()) units_.unit_position_00fc(index, pos[0], pos[1], pos[2]);
+        log_.notef("  PutRelTo: %s rel to %s (%.1f, %.1f, %.1f) placed=%d at (%.1f, %.1f, %.1f) "
+            "(008AA560 -> 00819840, packet l68_putrelto)",
+            index < units_.count() ? name_of(entity).c_str() : "?",
+            ref_index < units_.count() ? name_of(ref).c_str() : "?",
+            static_cast<double>(rel[0]), static_cast<double>(rel[1]), static_cast<double>(rel[2]),
+            placed ? 1 : 0, static_cast<double>(pos[0]), static_cast<double>(pos[1]),
+            static_cast<double>(pos[2]));
+        results = 0;
     } else if (std::strcmp(binding->name, "PutFormationTo") == 0) {
         // 008AA260, packet cc13-fix5 (docs/CC13_FIX_5.md section 9): argument 0
         // through 00888D20 (the Ptr field), argument 1 as a Vector3; with exactly
@@ -4241,6 +4335,21 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             const bool stored = units_.set_submarine_air_00893a60(row.unit_index, air);
             log_.notef("  SetSubmarineAirSupply: %s air=%.3f stored=%d (00893A60 -> +127Ch)",
                 row.unit.c_str(), static_cast<double>(air), stored ? 1 : 0);
+        }
+    } else if (std::strcmp(binding->name, "SquadronSetTravelSpeed") == 0) {
+        // Packet l68_travel_speed. 008A0630: argument 0 through 00888AA0, argument 1
+        // through 00B66270 rounded to float (008A076C), argument 2 through 00B66250
+        // only when exactly three arguments are passed (008A07BA), else false. No
+        // class or null test before the four stores; a unit with no squadron slot
+        // stores nothing here. No result.
+        const float speed = argument_number(1);
+        const bool force = argument_count_ == 3 && argument_boolean(2);
+        if (subject != nullptr && row.unit_index < units_.count()) {
+            const bool stored =
+                units_.set_squadron_travel_speed_008a0630(row.unit_index, speed, force);
+            log_.notef("  SquadronSetTravelSpeed: %s speed=%.3f force=%d stored=%d "
+                "(008A0630 -> +388h/+38Fh/+3A0h/+3ACh)", row.unit.c_str(),
+                static_cast<double>(speed), force ? 1 : 0, stored ? 1 : 0);
         }
     } else if (std::strcmp(binding->name, "ReloadTorpedoes") == 0) {
         // 008C3CE0: 008C3DE0 00888AA0 resolves argument 0 (a second argument is

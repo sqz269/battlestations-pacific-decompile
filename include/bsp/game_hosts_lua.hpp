@@ -445,7 +445,7 @@ inline constexpr bool kLuaGetEntitySpeedBound = false;  // OFF: committed unpair
 // run_clear_forced_recon_level_008aab90 through bsp::clear_forced_recon_level_00803b50
 // for the slot and its squadron members. False: the row stays UNIMPLEMENTED and the
 // forced table keeps the pair.
-inline constexpr bool kLuaClearForcedReconLevelBound = false;  // OFF: committed unpaired
+inline constexpr bool kLuaClearForcedReconLevelBound = true;  // ON-unexercised, body checked (SQUADRON_LAND_TASK 5ii)
 // Packet cc13-fix18 (docs/CC13_FIX18.md section 6). 00894F20 SetCrewLevel(entity, level),
 // no result: 00895022 00888AA0 argument 0, 00895053 00B66290 argument 1, 0089506C
 // 006E6210(ECX = level), 0089507C entity->vtable[128h](skill) with no null test. 006E6210
@@ -453,7 +453,7 @@ inline constexpr bool kLuaClearForcedReconLevelBound = false;  // OFF: committed
 // 2 -> 2, 3 -> 5 and anything else -> 1. True: run_set_crew_level_00894f20 writes the
 // skill index of the unit (006D1EB0) or of each member of a squadron (007ECF80) through
 // GameUnitsHost::set_unit_skill_index_006d1eb0. False: UNIMPLEMENTED.
-inline constexpr bool kLuaSetCrewLevelBound = false;  // OFF: committed unpaired
+inline constexpr bool kLuaSetCrewLevelBound = true;  // ON-unexercised, body checked (SQUADRON_LAND_TASK 5ii)
 // Packet cc13-fix10 (docs/CC13_FIX10.md; cc9 grant 2026-10-17). 008C9730
 // AddProximityTrigger(entity, name, callback, target, range) makes a 60h trigger
 // (007505C0 / 0074FEE0: target descriptor +44h from 0088A810, +5Ch = range * range)
@@ -1346,6 +1346,18 @@ public:
     // `Type = E ShipClasses : <symbol>` resolved to, which is the same number
     // the installed table indexes its rows by.
     GameVehicleClassRow read_vehicle_class_row(int index);
+    // cc15-vcp1 (kVehicleClassPreloadCc15Bound): the scene database's
+    // 0046EC77 resolve, which marks the row the way 00964790's miss path does.
+    // `site` names the image caller this mark stands in for; the census
+    // reports it.
+    void mark_scene_vehicle_class_row_00964790(int class_index, const char* site) {
+        mark_vehicle_class_row_00964790(class_index, site);
+    }
+    // cc15-vcp1: what 0095CA70 at `site` (004E0A9B or 0045F6C1) would nil,
+    // the VehicleClass rows whose Got is not true. Later reads of those rows
+    // through the read_vehicle_class_* readers are counted for the summary
+    // line. cc15-vcp3: with `purge`, the rows are nil'd as 0095CA70 does.
+    void census_vehicle_class_purge_0095ca70(const char* site, bool purge = false);
 
     // Milestone 2m. One integer field of `VehicleClass[index]`, optionally one
     // level down, for the two reads 0095c640 makes that the row above does not
@@ -1824,6 +1836,12 @@ public:
     // Row 15 (009273A0) of the fixed-step fan-out: each queued unit's notice runs
     // 0074FFE0 on every trigger whose entity target it is.
     void target_gone_drain_009273a0();
+    // Packet cc13-dead, under kLandConvoyDeadWired (include/bsp/land_convoy_dead_cc13.hpp):
+    // 00929800 on the LandConvoy marker named `convoy`, reached through 0077D270 ->
+    // 00929B60 when the convoy's destroy is flushed: `Dead` = true and `KillReason` =
+    // 00E0CF04[cause] on its self table. False when no convoy marker of that name
+    // has an own self table (00929800 returns when +178h is clear).
+    bool publish_land_convoy_dead_00929800(const std::string& convoy, int cause);
     // Packet cc9_unit_get_attack_target, under kLuaUnitGetAttackTargetBound.
     int run_unit_get_attack_target_008a6de0(lua_State* state, int argument_count);
     // Packet cc9_squadron_set_speed, under kLuaSquadronSetSpeedBound.
@@ -2228,7 +2246,25 @@ private:
     // Packet s54_class_id (kVehicleClassRowIdBound): the class rows 00964790's
     // miss path has written `ID` / `Got` on, once each (its cache stands in).
     std::set<int> vehicle_class_rows_marked_;
-    void mark_vehicle_class_row_00964790(int class_index);
+    void mark_vehicle_class_row_00964790(int class_index, const char* site = nullptr);
+    // cc15-vcp1: the rows the last census found unmarked, with the reads
+    // of each that came after it.
+    std::map<int, std::size_t> vehicle_class_would_nil_;
+    // cc15-vcp2: the first marking site of each row (nullptr is a lazy mark).
+    std::map<int, const char*> vehicle_class_mark_site_;
+    std::size_t vehicle_class_censuses_{0};
+    std::size_t vehicle_class_rows_would_nil_{0};
+    std::size_t vehicle_class_later_reads_{0};
+    void note_vehicle_class_read(int index);
+    // cc15-vcp3, harness diagnostic: the purged rows, and the script reads of
+    // those keys seen through an __index hook on VehicleClass. Also the Lua
+    // errors the run logged (note_error).
+    std::size_t vehicle_class_purged_{0};
+    std::size_t vehicle_class_purge_failures_{0};
+    std::size_t vehicle_class_script_nil_reads_{0};
+    std::map<int, std::size_t> vehicle_class_script_nil_rows_;
+    std::size_t lua_errors_total_{0};
+    static int vehicle_class_nil_index_hook(lua_State* state);
     bool init_active_00f899a5_{false};
     bool error_replay_{false};
     bool avoid_all_ship_collision_{};

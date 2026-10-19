@@ -799,3 +799,117 @@ mechanism is in the cd761bb52 section above).
     at 413.22 s by depth at (1465, -3007) and never hits MiniSub, whose hit listener (luaMiniSubHit) is the scripted
     kill; on 654daf00e the charge hit at 461 s. physics-lane plan: routed to the lead.
   - **PRCP01 20,3**: no end at 30000 frames (physics-lane plan `p9_p01_k`): routed to the lead.
+- **Re-time on fcb6c6fa5** (cc9-lua67, 2026-10-18; main after lua66's SetDeadMeat / PutTo / DepthChargeTask / issue
+  draw flips, physics17's four air switches / GenerateObject / band floor, ships57's SHIP_AI 274-283 and cc13 fix10-21,
+  all OFF switches of fix13-20 still OFF). Export `cc9-lua52\local\l67_rt` (1F0D9DD17135), reference env,
+  `--stop-after-end 40`; logs `cc9-lua52\local\l67r_<row>_rt_<ref|j3>.log` with manifests, summary `local\l67_sum.py`,
+  queue `local\l67_runs.ps1` / `l67_queue.ps1` (at most two runs, 65 s apart). "Was" is the fe9811ba8 re-time above.
+
+  | Row (plan) | frames | reference | 20,3 | was (ref / 20,3) |
+  |---|---|---|---|---|
+  | USN01 `l65_u1_g` | 26000 | completed 405.02 s | completed 415.02 s | 435.02 / 390.03 |
+  | JM08 `l65_j8_p2` | 110000 | **failed 1259.15 s** (HQ) | **failed 1165.06 s** (HQ) | 2688.20 / no end |
+  | LOMP06 `l64_l6_a` | 16000 | **failed 635.12 s** (Narwhal sunk) | completed 346.84 s | 345.84 / 354.84 |
+  | LOMP06 **`l67_l6_b`** (new) | 16000 | completed 269.86 s | completed 269.86 s | - |
+  | USN02 `s36_u2_p7` | 16000 | **failed 195.06 s** | **failed 634.97 s** | 200.06 / 200.06 |
+  | LOMP10 `p3_l10_b` | 36000 | completed 987.43 s | completed 991.43 s | 1073.47 / 1293.69 |
+  | USN12 `g45_u12_e7` | 36000 | completed 1395.24 s | **no end** | 1680.51 / 1670.50 |
+  | BSM01 `p6_b1_a` | 40000 | no end | no end | no end / no end |
+  | PRCP01 `p9_p01_k` | 30000 | completed 921.85 s | completed 854.86 s | 540.39 / no end |
+  | JM06 `p12_j6_c1` | 120000 | **no end** | **no end** | 1967.79 / 2256.08 |
+  | IJN08 `p10_i08_z` | 100000 | **no end** | completed 3076.88 s | 3006.81 / 3026.83 |
+  | IJN18 `s46_i18_a` | 64000 | **failed 2035.86 s** (Game Over) | **failed 789.93 s** | EndMission 2152.97 / 2306.12 |
+  | BSM09 `l65_b9_c` | 36000 | **failed 183.06 s** (Donald) | EndMission 327.04 s, guard | 483.01 / 360.04 |
+  | ESMP08 `p12_e8_rb` | 140000 | completed 1367.41 s | completed 1372.41 s | 3876.81 / 3634.62 |
+  | USN15 `s45_u15_l2` | 90000 | **failed 1257.15 s** (Game Over) | **failed 1297.19 s** | row record: EndMission |
+
+  Every completion and every winning EndMission logged the guard. Notes:
+  - **USN02** (both seeds): the AutoTarget override (SHIP_AI 274, `override 0071e7f0`) puts Houston into `attackmove`
+    after every kill, so `540 moveto Houston EscapePoint` never holds; phase 2 starts at 148 s with Houston 3.5 km out
+    and Exeter is torpedoed (Ushio, 190.31 s) before Houston arrives. Tried (`cc9-lua52\local\l67_u2_<v>.txt`): a, the
+    moveto every 5 s (Houston stays in attackmove); c, g, h, j, k, the player takes Houston's helm at 2000-4000
+    (torpedoed by Nachi 160-232 s); d, from 540 (torpedoed by Minegumo 62 s); i, Houston selected plus moveto: no
+    loss in 800 s but Houston never reaches EscapePoint. Whether a player moveto should pre-empt the override is with
+    the ships lane; no plan yet.
+  - **LOMP06 `lomp06_l67_l6_b`**: the reference seed's Narwhal fires 8 torpedoes at Sado Maru from 455 s and misses,
+    then Kitakami sinks it. b attacks Kinjosan Maru instead of Toba Maru at 3800-5800 and completes at 269.86 s on both
+    seeds (guard); c (Sado Maru there) fails 628.12 s.
+  - **BSM09 reference**: Zuikaku_sqn03 and Shokaku_sqn04 pick Donald (118.00 / 134.60 s, free attack override) and kill
+    it at 181.71 s (primary 3, Game Over). The helm `moveto` does not steer a plane squadron (Donald keeps its scene
+    moveto), and F4F launches at the fighters are refused (deck slots full, or the target hidden, 0043F080). 20,3 wins.
+  - **BSM01**: as on fe9811ba8 (no end); the lead's SetDeadMeat note applies.
+  - **ESMP08** now completes 2500 s earlier on both seeds.
+- **Re-plans on aa5f342e6** (cc9-lua67, 2026-10-18; the re-time base plus this lane's fix13/14/17/18/20 and skill
+  fan-out flips). Export `cc9-lua52\local\l67_cur` (CF275C1FB94F), logs `local\l67r_<variant>_cur_<env>.log`. The
+  committed alternative plans per lost row, reference seed first:
+  - **JM06: the row is now `config/win_orders/jm06_s45_j6_k.txt`** (cc9-ships45's k): completed 676.96 s (reference),
+    790.93 s (20,3), 733.94 s (20,5), guard on all three. m and n1 also complete (676.96 / 790.93 s); a4 and s do
+    not end; c1 still does not end on this exe. c1's cause: phase 3 (primary 2, `CVHitByPlayer`) starts at 705 s,
+    I-400 #2.1 torpedoes Lexington-class 01 from 463 s and sinks it at 2294 s, and PlayerSub 01 is at (2144, -489)
+    rather than c1's station when the 34001 torpedo lines fire, so no player hit ever lands and the phase never ends.
+  - **USN15**: g46_u15_tl fails 1522.41 s, g50_u15_nn 1727.61 s (Game Over). On l2 Fuso alone sinks California,
+    Pennsylvania, West Virginia and two Fletchers between 1122 and 1252 s (killer_cat 4 at 230-844 m): a gunnery
+    question before any re-plan.
+  - **IJN08 reference**: z does not capture the HQ (primary 4 `AK`: Mission.HQTable[1] Japanese) in 100000 frames;
+    p9_i08_w fails 1124.97 s, s49_i08_i11 1480.32 s, s48_i08_h5 does not end. 20,3 still completes with z.
+  - **USN12 20,3**: e7, g44_u12_d and s38_u12_p2 do not end at 36000 frames (d fails the reference at 869.91 s).
+  - **IJN18: the row is now `config/win_orders/ijn18_l67_i18_d.txt`**: EndMission 1911.74 s (reference),
+    2011.84 s (20,3), both after `Crush` (primary 3, every USNShips unit dead), the same end form as s46_i18_a's
+    old win (EndScene not reached, so no guard line is expected). Why a moved: on this exe Zao, the selected unit,
+    drifts from 3.2 to 9.5 km of PhaseOneGoTo between 475 and 1355 s, so phase 1 ends at 1844 s instead of 353 s
+    and every JapShips unit is dead by 2035.86 s. d takes Zao's helm to PhaseOneGoTo at full throttle (phase 1 at
+    333 s) and from frame 7000 sends Zao, Kita2, Asa1 and Asa4 `moveto PhaseTwoGoTo repeat 20` (luaPh2MovieEnd
+    selects a random survivor; the same lines for Kita1, Asa2 and Asa3 are refused because 00645060 rejects
+    them). Phase 2 ends on its 540 s timer at 873 s. Without the phase-2 moves (b: takehelm only; c: moveto repeat 20) every JapShips unit dies in phase
+    2: failed 710.95 s and 884.91 s (their orders are in `cc9-lua52\local`).
+  - **JM08** still fails on HQ capture with every committed plan on this exe: e 1202.10 s, w1 1312.20 s,
+    r12 1130.03 s (plus p2 1259.15 s on fcb6c6fa5, before this lane's flips). LandingShip units reach
+    `Headquarter 01` from 984 s. Not re-planned here; it needs the landing force sunk before 980 s.
+- **Re-time on 03d3df7f8** (cc9-lua68, 2026-10-18; main after the lua67 re-plans, ships57's SHIP_AI flips and cc13
+  seg67A). Export `cc9-lua52\local\l68_m1` (9F2B57BCAA24), reference env, `--stop-after-end 40`; logs
+  `cc9-lua52\local\l68r_<row>_m1_<ref|j3>.log`, summary `local\l68_sum.py`, queue `local\l68_queue.ps1` /
+  `l68_runs.ps1` (at most two runs, 65 s apart). "Was" is the fcb6c6fa5 / aa5f342e6 rows above.
+
+  | Row (plan) | frames | reference | 20,3 | was (ref / 20,3) |
+  |---|---|---|---|---|
+  | USN01 `l65_u1_g` | 26000 | completed 405.02 s | completed 415.02 s | 405.02 / 415.02 |
+  | LOMP06 `l67_l6_b` | 16000 | completed 269.86 s | completed 269.86 s | 269.86 / 269.86 |
+  | PRCP01 `p9_p01_k` | 30000 | completed 647.37 s | completed 920.45 s | 921.85 / 854.86 |
+  | LOMP10 `p3_l10_b` | 36000 | completed 987.43 s | completed 991.43 s | 987.43 / 991.43 |
+  | JM06 `s45_j6_k` | 120000 | completed 676.96 s | completed 790.93 s | 676.96 / 790.93 |
+  | ESMP08 `p12_e8_rb` | 140000 | completed 1367.41 s | completed 1372.41 s | 1367.41 / 1372.41 |
+  | IJN18 `l67_i18_d` | 64000 | EndMission 1676.51 s (Crush) | EndMission 1841.67 s (Crush) | 1911.74 / 2011.84 |
+  | USN12 `g45_u12_e7` | 36000 | completed 1395.24 s | **no end** | 1395.24 / no end |
+  | USN12 **`l68_u12_e8`** (new) | 36000 | completed 1395.24 s | completed 1500.34 s | - |
+  | USN02 `s36_u2_p7` | 16000 | **failed 195.06 s** | - | 195.06 / 634.97 |
+  | USN02 **`l68_u2_a`** (new) | 16000 | completed 475.01 s | completed 460.01 s | - |
+  | IJN08 `p10_i08_z` | 100000 | **no end** | completed 3076.88 s | no end / 3076.88 |
+  | JM08 `l65_j8_p2` | 110000 | **failed 1259.15 s** (HQ) | - | 1259.15 / 1165.06 |
+  | BSM09 `l65_b9_c` | 36000 | **failed 183.06 s** (Donald) | - | 183.06 / EndMission 327.04 |
+  | USN15 `s45_u15_l2` | 90000 | **failed 1257.15 s** | - | 1257.15 / 1297.19 |
+  | BSM01 `p6_b1_a` | 40000 | no end | - | no end / no end |
+
+  Every completion logged the guard ("refused a mission script's process launch"); the IJN18 EndMission wins log it
+  too on this exe. Notes:
+  - **USN02: the row is now `config/win_orders/usn02_l68_u2_a.txt`.** The player stays on Houston and re-issues
+    `moveto Houston EscapePoint` every 200 frames from 540 to 5140, sends Exeter to (1000, -5450) at 4400, and at 5300 takes Houston's helm (`takehelm Houston
+    1.0 EscapePoint stop 200`, a role-1 take that exempts Houston from SHIP_AI 274). b and c (the take at 6000 /
+    7000) complete at 495.00 / 505.00 s (reference); the orders are in `cc9-lua52\local\l68_u2_<v>.txt`.
+  - **USN12: the row is now `config/win_orders/usn12_l68_u12_e8.txt`**: e7 with every MontGrp moveto to (4500, 2500)
+    sent to (7600, 7000) instead. e7 has no end under 20,3; e8 completes on both seeds, and its reference time is
+    e7's.
+  - **IJN08 reference**: on z, Maru1 dies at 1384 s to US_Airfield_03's squadrons, Maru2's landing craft launch
+    only at 3715 s, and `Shipyard Entity CB3` never dies, so the HQ is not taken in 100000 frames. Two re-plans
+    (`cc9-lua52\local\l68_i08_gen.py`, through physics9's planner): a sends Aoba, Kinugasa and Furutaka onto CB3 /
+    US_Shipyard_03 from 36500, b also releases the Marus at 46000. Neither ends: Kinugasa (830 s) and Furutaka
+    (1355 s) are dead before 36500, Aoba alone takes US_Shipyard_03 at 2390 s instead of 2900 s and CB3 survives;
+    on b all 14 LandingShip units die together at 3343.64 s. IJN08's reference stays open.
+  - **JM08**: USTroopTransport 01 (unit 353) launches 8 landing craft at about 790 s near (600, -700); they land at
+    1037-1075 s and take the HQ (Party 2, the failure). CheckInvasion starts the invasion at once. Five re-plans fail
+    at 1222-1285 s: q1 / q2 / q3 put AP01 first in the launch order from 12000 / 8000 / 10000, r1 / r2 send torpedoes
+    at AP01 (`cc9-lua52\local\l68_j8_<v>.txt`). AP01 dies too late or not at all; the craft have to die before they
+    land. JM08 stays open.
+  - **BSM09** on be691fb5b's base (SquadronSetTravelSpeed ON, SQUADRON_LAND_TASK 5in) fails at 222.06 s instead
+    of 183.06 s with the same plan: main moved it, not the travel speed (the OFF side of that pair fails at 222.06 s
+    too).
+  - USN15, BSM09's reference, BSM01 and USNOS wait on the ships and physics lanes as the lead's queue says.

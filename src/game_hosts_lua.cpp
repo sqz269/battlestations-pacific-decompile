@@ -28,6 +28,7 @@
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/gameplay_seg41_cc13.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/land_convoy_dead_cc13.hpp"  // packet cc13-dead
 #include "bsp/ship_ai_attackmove_substates.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_unit_get_attack_target
 #include "bsp/entity_orders.hpp"     // packet cc9_unit_get_attack_target
@@ -737,6 +738,20 @@ int binding_trampoline(lua_State* state) {
     // recover the error message, must not count a second time.
     if (!host->error_replay()) {
         host->note_native_call(static_cast<std::size_t>(row), argc, handled);
+        if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
+            // cc15-vcp2: PrepareClass 008C8F70 (unrouted, see the orders
+            // table) ends each argument with 00964790(arg, DL=1) at 008C92BE,
+            // whose miss path marks the row's ID and Got. Only that mark is
+            // modelled here; the race/party half (resolve_global_integer) stays
+            // unbound. The registry map is the identity in this host.
+            if (dispatch_row.address == 0x008c8f70u) {
+                for (int index = 1; index <= argc; ++index) {
+                    if (lua_type(state, index) != LUA_TNUMBER) continue;
+                    host->mark_scene_vehicle_class_row_00964790(
+                        static_cast<int>(lua_tointeger(state, index)), "008C92BE");
+                }
+            }
+        }
         // Milestone 2l. Which created instance a binding was called on, read
         // off argument 1 when it is an entity table. The `ID` field is the one
         // 00928a00 seeds, so this is the same identity the native carries.
@@ -1287,6 +1302,7 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
     GameVehicleClassRow row;
     row.index = index;
     if (state_ == nullptr || index < 0) return row;
+    note_vehicle_class_read(index);   // cc15-vcp1 census
     const int top = ::lua_gettop(state_);
     ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
     if (::lua_type(state_, -1) == LUA_TTABLE) {
@@ -2853,6 +2869,7 @@ void GameMissionLuaHost::note_error(const std::string& message) {
     // Harness diagnostic, not image behaviour: the summary keeps only the first
     // error, so a later error raised inside a listener or delayed callback was
     // silent. Log each one, capped so a per-frame failure cannot flood the log.
+    if (!message.empty()) ++lua_errors_total_;   // cc15-vcp3 summary
     static int logged = 0;
     if (!message.empty() && logged < 50) {
         ++logged;
@@ -4334,9 +4351,10 @@ void GameMissionLuaHost::attach_wing_member_tables(std::size_t units_before,
     }
 }
 
-void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index) {
+void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index, const char* site) {
     if (!kVehicleClassRowIdBound || state_ == nullptr || class_index < 0) return;
     if (!vehicle_class_rows_marked_.insert(class_index).second) return;   // the cache hit
+    vehicle_class_mark_site_.emplace(class_index, site);
     const int base = ::lua_gettop(state_);
     lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
     if (lua_istable(state_, -1)) {
@@ -4374,6 +4392,125 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index) {
         }
     }
     ::lua_settop(state_, base);
+    if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
+        // cc15-vcp2: 00964790 step 14 (00965182). A ship descriptor
+        // (vtable[18h](6)) whose +0C0h, Catapult.LaunchedClass (009604AC,
+        // -1 when Catapult is not a table), is not -1 resolves that class
+        // too, with DL = 1. UNCERTAIN: the ship test is read as the eight
+        // ship-sized branches of the 22-way Type match, Destroyer to
+        // MotherShip.
+        static constexpr const char* kShipTypes[] = {"Destroyer", "Cruiser", "LandingShip",
+            "Cargo", "BattleShip", "Submarine", "TorpedoBoat", "MotherShip"};
+        const std::string type = read_vehicle_class_string(class_index, "Type");
+        bool ship = false;
+        for (const char* name : kShipTypes) ship = ship || type == name;
+        if (ship) {
+            const int launched = read_vehicle_class_integer(class_index, "Catapult",
+                "LaunchedClass", -1);
+            if (launched != -1) mark_vehicle_class_row_00964790(launched, "00965182");
+        }
+    }
+}
+
+int GameMissionLuaHost::vehicle_class_nil_index_hook(lua_State* state) {
+    // cc15-vcp3, harness diagnostic, not image behaviour: __index on
+    // VehicleClass runs only for an absent key, and it returns nothing, which
+    // is the nil a plain table gives. Only purged keys are counted.
+    auto* host = static_cast<GameMissionLuaHost*>(lua_touserdata(state, lua_upvalueindex(1)));
+    if (host != nullptr && lua_type(state, 2) == LUA_TNUMBER) {
+        const auto row = host->vehicle_class_script_nil_rows_.find(
+            static_cast<int>(lua_tointeger(state, 2)));
+        if (row != host->vehicle_class_script_nil_rows_.end()) {
+            ++row->second;
+            ++host->vehicle_class_script_nil_reads_;
+        }
+    }
+    return 0;
+}
+
+void GameMissionLuaHost::census_vehicle_class_purge_0095ca70(const char* site, bool purge) {
+    // 0095CA70 walks VehicleClass with 00B67080 / 00B67190 and collects every
+    // key whose value's Got (00CE452C) fails 00B66000, then runs
+    // "VehicleClass[%d]=nil" (00D1A964) for each. This census only counts.
+    // UNCERTAIN: 00B66000 is read here as "is the boolean true".
+    if (state_ == nullptr) return;
+    const int base = ::lua_gettop(state_);
+    std::size_t rows = 0;
+    std::size_t would_nil = 0;
+    std::string kept;
+    vehicle_class_would_nil_.clear();
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushnil(state_);
+        while (::lua_next(state_, -2) != 0) {
+            ++rows;
+            bool got = false;
+            if (::lua_type(state_, -1) == LUA_TTABLE) {
+                ::lua_getfield(state_, -1, "Got");
+                got = ::lua_type(state_, -1) == LUA_TBOOLEAN && ::lua_toboolean(state_, -1) != 0;
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+            }
+            const int index = ::lua_type(state_, -2) == LUA_TNUMBER
+                ? static_cast<int>(::lua_tointeger(state_, -2)) : -1;
+            if (got) {
+                // cc15-vcp2: the site of a scene-time mark; a bare index is a
+                // lazy host mark.
+                const auto marker = vehicle_class_mark_site_.find(index);
+                const char* at = marker != vehicle_class_mark_site_.end() ? marker->second : nullptr;
+                if (kept.size() < 900) {
+                    kept += " " + std::to_string(index) + (at != nullptr ? std::string("@") + at : "");
+                }
+            } else {
+                ++would_nil;
+                vehicle_class_would_nil_.emplace(index, 0);
+            }
+            ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        }
+    }
+    ::lua_settop(state_, base);
+    ++vehicle_class_censuses_;
+    vehicle_class_rows_would_nil_ = would_nil;
+    log_.notef("vehicle class purge census at %s (0095CA70, %s): rows=%zu would_nil=%zu "
+        "kept=%zu:%s", site, purge ? "PURGED" : "log only", rows, would_nil,
+        rows - would_nil, kept.c_str());
+    if (!purge) return;
+    // cc15-vcp3: 0095CA70's second loop. Each index is formatted with
+    // "VehicleClass[%d]=nil" (00D1A964) into a 2Ah-byte buffer and run by the
+    // Lua machine (006B8AD0(buffer, 0, 0, 2)): a chunk, not a raw store.
+    for (const auto& [index, reads] : vehicle_class_would_nil_) {
+        static_cast<void>(reads);
+        char chunk[0x2a];
+        std::snprintf(chunk, sizeof chunk, "VehicleClass[%d]=nil", index);
+        if (::luaL_loadbuffer(state_, chunk, std::strlen(chunk), chunk) != 0
+            || ::lua_pcall(state_, 0, 0, 0) != 0) {
+            ++vehicle_class_purge_failures_;
+            ::lua_settop(state_, base);
+            continue;
+        }
+        ++vehicle_class_purged_;
+        vehicle_class_script_nil_rows_.emplace(index, 0);
+    }
+    // The harness hook that counts later script reads of the purged keys.
+    // A table that already has a metatable is left alone.
+    lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (lua_istable(state_, -1) && !lua_getmetatable(state_, -1)) {
+        lua_createtable(state_, 0, 1);
+        lua_pushlightuserdata(state_, this);
+        lua_pushcclosure(state_, &GameMissionLuaHost::vehicle_class_nil_index_hook, 1);
+        lua_setfield(state_, -2, "__index");
+        lua_setmetatable(state_, -2);
+    }
+    ::lua_settop(state_, base);
+    log_.notef("vehicle class purge at %s: purged=%zu failures=%zu (VehicleClass[%%d]=nil, "
+        "00D1A964 through 006B8AD0)", site, vehicle_class_purged_, vehicle_class_purge_failures_);
+}
+
+void GameMissionLuaHost::note_vehicle_class_read(int index) {
+    if (vehicle_class_censuses_ == 0) return;
+    const auto row = vehicle_class_would_nil_.find(index);
+    if (row == vehicle_class_would_nil_.end()) return;
+    ++row->second;
+    ++vehicle_class_later_reads_;
 }
 
 bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,    const std::string& name, int class_index, bool seed_class, bool findable) {
@@ -8455,6 +8592,10 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             }
             ::lua_settop(state_, top);
         }
+        // Packet cc15-wB4: 009895D8..00989992, the default hit warning, inside the
+        // arm past the +168h rate limit (00988969 JBE 009889AF) and after both
+        // listener passes (00988F5D, 0098952A). Behind kWarningMessageBankCc15Bound.
+        game_warning_report_hit_00989604(hit.victim, hit.shooter, hit.attacker_player_index);
     }
 }
 
@@ -9130,6 +9271,46 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
     const int id = air_ops_entity_id(state);
     if (units == nullptr || units->gunnery() == nullptr || id <= 0
         || static_cast<std::size_t>(id) > units->count()) {
+        if constexpr (bsp::game::kLandConvoyBodiesBound) {
+            // Packet cc13-convoy: 008AC740 IsKindOf 1Ah -> 008AC74E 00742210(flag), then
+            // 008AC753 JMPs past 008AC756's 00926D90. A LandConvoy is a scene marker
+            // here (no units-host slot); it is named as run_land_convoy_native names it.
+            // SUBSTITUTION (labelled): "a convoy roster of that name exists" stands for
+            // the IsKindOf 1Ah test.
+            std::string name;
+            if (::lua_type(state, 1) == LUA_TTABLE) {
+                lua_getfield(state, 1, "Name");
+                if (const char* text = ::lua_tostring(state, -1)) name = text;
+                ::lua_settop(state, ::lua_gettop(state) - 1);
+            }
+            if (name.empty() && id > 0) {
+                if (const PendingEntity* node = find_pending(id)) name = node->name;
+            }
+            // 008AC748 CMP ESI,EBP / SETNE: EBP is 0 (008AC5E3 XOR EBP,EBP, not written
+            // again before 008AC796) and the cause is 1 or 2, so the flag is always true
+            // and 00742210 kills every member with cause 2, whatever `hard` was.
+            const bool vector_hard = cause != 0;
+            std::vector<GameUnitsHost::LandConvoyVictim> victims;
+            if (units != nullptr && units->gunnery() != nullptr && !name.empty()
+                && units->land_convoy_kill_member_vector_00742210(name, vector_hard, victims)) {
+                GameGunneryHost& gunnery = *units->gunnery();
+                for (const GameUnitsHost::LandConvoyVictim& victim : victims) {
+                    if (gunnery.unit_dead(victim.unit)) {
+                        ++summary_.kill_already_dead;    // 00926D90 returns on +5Fh
+                        continue;
+                    }
+                    if constexpr (kKillListenerHarmOnlyBound) lua_kill_cause_[victim.unit] = victim.cause;
+                    gunnery.kill_unit_00926d90(victim.unit, victim.cause);
+                    if constexpr (kLuaProximityTriggersBound) target_gone_00925c40(victim.unit);
+                    ++summary_.kill_units;
+                }
+                log_.notef("  Kill 008ac5c0: LandConvoy \"%s\" Lua cause=%d, members=%zu through "
+                    "00742210 with cause 2, the convoy not killed (packet cc13-convoy)", name.c_str(),
+                    cause, victims.size());
+                log_.implemented("MissionLuaNative::Kill", "008ac5c0");
+                return 0;
+            }
+        }
         // Packet cc9_lua_kill_script_entity: a script entity's `Ptr` is its
         // GameScriptEntity; 008AC756's 00926D90 runs on it through the script
         // orders host (Dead set, think lists dropped, self table rebuilt).
@@ -9167,7 +9348,9 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
     }
     // 008AC740: a LandConvoy (1Ah) kills its vector through 00742210.
     // SUBSTITUTION (labelled): the host keeps no convoy member vector, so the
-    // convoy's own slot stands for it.
+    // convoy's own slot stands for it. A LandConvoy has no units-host slot (it is
+    // a scene marker), so it never reaches here; under kLandConvoyBodiesBound the
+    // no-slot arm above runs 00742210 on its roster (packet cc13-convoy).
     if (victims.empty()) victims.push_back(index);   // 008AC756, 00926D90
     const GameUnitRow* row = units->unit_row(index);
     for (std::size_t unit : victims) {
@@ -9190,6 +9373,58 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
         row != nullptr ? row->name.c_str() : "?", cause, victims.size());
     log_.implemented("MissionLuaNative::Kill", "008ac5c0");
     return 0;
+}
+
+// Packet cc13-dead. 00929800 on a LandConvoy marker (include/bsp/land_convoy_dead_cc13.hpp
+// has the chain from 00926D90). SUBSTITUTIONS (labelled): the convoy is found as the
+// first findable pending node of class 1Ah with that name (the host's convoys are keyed
+// by name). Both the units host's convoy lives and this marker lookup are
+// first-wins by name, so two convoys sharing a name can pair the wrong objects
+// if the roster build order differs from the pending order; the image follows
+// its own pointer. The own-slot test (`Ptr` is the marker id, as the 00928A00 seed writes it)
+// stands for 00929800's +178h test. OMITTED (labelled): 009298DB's think call and the
+// 00928300 think-list drops, for a marker with a think registration (+1D8h).
+bool GameMissionLuaHost::publish_land_convoy_dead_00929800(const std::string& convoy, int cause) {
+    if constexpr (!bsp::game::kLandConvoyDeadWired) {
+        static_cast<void>(convoy);
+        static_cast<void>(cause);
+        return false;
+    } else {
+        if (state_ == nullptr) return false;
+        int id = 0;
+        for (const PendingEntity& node : pending_entities_) {
+            if (node.marker_class_id != 0x1a || !node.findable || node.name != convoy) continue;
+            id = node.entity_id;
+            break;
+        }
+        if (id <= 0 || !push_resolved_entity_by_id(state_, id)) {
+            log_.notef("  LandConvoy \"%s\": 00929800 found no self table, Dead not written "
+                "(packet cc13-dead)", convoy.c_str());
+            return false;
+        }
+        lua_getfield(state_, -1, "Ptr");
+        const bool own_slot = lua_touserdata(state_, -1)
+            == reinterpret_cast<void*>(static_cast<std::uintptr_t>(id));
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        if (own_slot) {
+            // 00E0CF04[+70h] (009298C2): none, harm, soft, sell, exitzone, landed, editor.
+            static const char* const kKillReasons[] = {
+                "none", "harm", "soft", "sell", "exitzone", "landed", "editor"};
+            // SUBSTITUTION (labelled): the image indexes the table unchecked and
+            // reads past it for an out-of-range cause; here such a cause reads
+            // "harm" (none reaches here: 007422A0 passes 2).
+            const char* const reason = (cause >= 0 && cause < 7) ? kKillReasons[cause] : "harm";
+            lua_pushboolean(state_, 1);
+            lua_setfield(state_, -2, "Dead");                 // 00929896
+            ::lua_pushstring(state_, reason);
+            lua_setfield(state_, -2, "KillReason");           // 009298C2
+            log_.notef("  LandConvoy \"%s\": marker id %d Dead=true KillReason=%s (00929800 "
+                "via 0077D270 -> 00929B60, packet cc13-dead)", convoy.c_str(), id, reason);
+            log_.implemented("MissionEntity::on_killed_lua_00929800", "00929800");
+        }
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        return own_slot;
+    }
 }
 
 int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument_count) {
@@ -9303,6 +9538,7 @@ int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument
 int GameMissionLuaHost::read_vehicle_class_integer(int index, const char* key,
     const char* nested_key, int fallback) {
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    note_vehicle_class_read(index);   // cc15-vcp1 census
     const int top = ::lua_gettop(state_);
     int value = fallback;
     ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
@@ -9395,6 +9631,7 @@ float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
     // the result; this reader does not, because the Lua field is the modifier
     // and class+B8h is its square.
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    note_vehicle_class_read(index);   // cc15-vcp1 census
     const int top = ::lua_gettop(state_);
     float value = fallback;
     ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
@@ -9722,6 +9959,7 @@ std::string GameMissionLuaHost::read_vehicle_class_string(int index, const char*
     // The VehicleClass companion of read_device_class_string.
     std::string value;
     if (state_ == nullptr || index < 0 || key == nullptr) return value;
+    note_vehicle_class_read(index);   // cc15-vcp1 census
     const int top = ::lua_gettop(state_);
     ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
     if (::lua_type(state_, -1) == LUA_TTABLE) {
@@ -10703,6 +10941,28 @@ void GameMissionLuaHost::report_mission_script_state() {
     if constexpr (kVehicleClassRowIdBound) {
         log_.notef("summary mission vehicle class rows marked=%zu (00964790 ID/Got, "
             "009648EC..00964959, packet s54_class_id)", summary_.class_rows_marked);
+    }
+    if (vehicle_class_censuses_ != 0) {
+        std::string read_rows;
+        for (const auto& [index, reads] : vehicle_class_would_nil_) {
+            if (reads != 0 && read_rows.size() < 900) {
+                read_rows += " " + std::to_string(index) + "x" + std::to_string(reads);
+            }
+        }
+        log_.notef("summary vehicle class purge census (0095CA70, log only, cc15-vcp1): "
+            "censuses=%zu rows_would_nil=%zu later_host_reads=%zu per_class:%s",
+            vehicle_class_censuses_, vehicle_class_rows_would_nil_,
+            vehicle_class_later_reads_, read_rows.c_str());
+        std::string script_rows;
+        for (const auto& [index, reads] : vehicle_class_script_nil_rows_) {
+            if (reads != 0 && script_rows.size() < 900) {
+                script_rows += " " + std::to_string(index) + "x" + std::to_string(reads);
+            }
+        }
+        log_.notef("summary vehicle class purge (cc15-vcp3): purged=%zu failures=%zu "
+            "script_nil_reads=%zu lua_errors=%zu per_class:%s", vehicle_class_purged_,
+            vehicle_class_purge_failures_, vehicle_class_script_nil_reads_, lua_errors_total_,
+            script_rows.c_str());
     }
     log_.notef("summary mission script listeners bound=%d adds=%llu removes=%llu queries=%llu "
         "registered=%zu kill_deaths=%llu kill_fires=%llu attacker_filtered=%llu (008C6760 / "

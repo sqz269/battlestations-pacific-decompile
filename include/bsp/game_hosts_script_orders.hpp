@@ -218,6 +218,14 @@ inline constexpr bool kScoringPlayerShotDownBound = true;
 // function, unread), is recorded and not applied. False: the native stays an
 // unimplemented record.
 inline constexpr bool kPutToBound = true;
+// Packet l68_putrelto (docs/SQUADRON_LAND_TASK.md section 5io). True: PutRelTo
+// (008AA560) poses argument 0 at argument 2 in argument 1's frame with argument
+// 1's rotation (GameUnitsHost::put_rel_to_00819840, vtable[120h] 00819840), turns
+// it by an exactly-fourth argument through vtable[11Ch] (008196B0), and a group
+// leader re-places its members (008AA851..008AA897). False: the native stays an
+// unimplemented record. Callers on the WIN rows: PRCP01 (PRCPUS
+// usn_03_battle_of_santa_cruz.lua 1268, the Junyo group beside Chikuma).
+inline constexpr bool kPutRelToBound = true;  // ON: PRCP01 pair, SQUADRON_LAND_TASK 5ip
 // Packet cc9_squadron_member_placement (docs/SQUADRON_MEMBER_PLACEMENT.md). On a
 // PlaneSquadron, PutTo's vtable[118h] is 007F2E20: the base position set 00489760,
 // then 007F2920 (007F2E8F), which puts every member but the leader on its 007F23A0
@@ -525,14 +533,16 @@ inline constexpr bool kLuaCapturePercentageFabsBound = true;   // ON: SQUADRON_L
 // a CommandBuilding before the records are built. False: an unimplemented record
 // that pushes nothing, so JM05's `GetCommandBuildingLevel(...) >= 2`
 // (PRCPIJN/jm05.lua:2779) raises once the RadarStation is Japanese.
-inline constexpr bool kLuaGetCommandBuildingLevelBound = false;
+// ON-unexercised, body checked (cc9-lua67, SQUADRON_LAND_TASK 5ii.2).
+inline constexpr bool kLuaGetCommandBuildingLevelBound = true;
 // Packet cc13-fix13. True: `SetCommandBuildingOwnerPlayer(entity, player)` 008A8D90
 // delivers D3h(player, byte 1) to a CommandBuilding (vtable[5Ch](1Ch) true), which
 // 006F4D10 applies as the capture flip to the player slot's party, without the
 // loss announcements (GameShipAiHost::command_building_set_owner_player_006f4d10).
 // False: an unimplemented record; the building keeps its party. JM05's three calls
 // (PRCPIJN/jm05.lua:1262/1263/1283) sit under `this.Cheat_PhaseShift` only.
-inline constexpr bool kLuaSetCommandBuildingOwnerPlayerBound = false;
+// ON-unexercised, body checked (cc9-lua67, SQUADRON_LAND_TASK 5ii.2).
+inline constexpr bool kLuaSetCommandBuildingOwnerPlayerBound = true;
 // Packet cc13-fix14b (docs/CC13_FIX14.md). True: `GetShipMaxSpeed(entity)` 00890BB0
 // pushes 0080FC30(entity) as a float (00890CAF 00888AA0, no null or class test;
 // 00890CC8 0080FC30, 00890CD2 FSTP dword, 00890CD5 00B66480 PushFloat; one result).
@@ -541,7 +551,8 @@ inline constexpr bool kLuaSetCommandBuildingOwnerPlayerBound = false;
 // GameUnitsHost::throttle_ceiling_inputs, unscaled (the same substitution the
 // ship-AI host makes). False: an unimplemented record that pushes nothing, so
 // usn_02's `SetShipMaxSpeed(unit, GetShipMaxSpeed(unit)*1.5)` raises.
-inline constexpr bool kLuaGetShipMaxSpeedBound = false;
+// ON-unexercised, body checked (cc9-lua67, SQUADRON_LAND_TASK 5ii.2).
+inline constexpr bool kLuaGetShipMaxSpeedBound = true;
 // Packet cc13-fix14b. True: `GetDirection(entity)` 008A7CB0 pushes the entity's
 // world forward row (008A7DEC LEA EAX,[ESI+0CCh]; 008A7DF2 LEA EDX,[EAX+20h], i.e.
 // +ECh..+F4h) as 0088BA30's {x, y, z} table, after the 00414DB0 refresh when
@@ -549,7 +560,8 @@ inline constexpr bool kLuaGetShipMaxSpeedBound = false;
 // slot from GameUnitsHost::unit_pose's forward row; a scene marker or an entity
 // with no slot pushes nothing and records UNIMPLEMENTED. False: an unimplemented
 // record that pushes nothing (jm01 / jm02 index the result and raise).
-inline constexpr bool kLuaGetDirectionBound = false;
+// ON-unexercised, body checked (cc9-lua67, SQUADRON_LAND_TASK 5ii.2).
+inline constexpr bool kLuaGetDirectionBound = true;
 // Packet cc13-fix16 (docs/CC13_FIX16.md): six bomb-release natives, each its own
 // switch, all committed OFF. False leaves the native an unimplemented record that
 // pushes nothing, as before.
@@ -873,6 +885,10 @@ public:
     // Packet cc9_air_ops_held_slot_orders: the entry above.
     PlayerAirOpsOrderResult player_air_ops_order(const std::string& base, int slot_number,
         int order, const std::string& target);
+    // Packet p20_squadron_helm: the harness's helm `moveto` on a plane of a squadron.
+    // Returns the members the moveto was issued to, or -1 when the unit is no
+    // squadron member (the caller keeps the ship path).
+    int player_plane_moveto(std::size_t unit_index, float x, float z);
     void queue_auto_attack_target_007f15f0(std::uint32_t squadron_entity,
                                            std::uint32_t target_plus_one);    unsigned long long air_ops_slot_ticks() const noexcept { return air_ops_ticks_; }
     unsigned long long air_ops_slot_refills() const noexcept { return air_ops_refills_; }

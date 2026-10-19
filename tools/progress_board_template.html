@@ -247,7 +247,7 @@ tr.hidden { display: none; }
   <section class="panel">
     <div class="section-head">
       <h2>Categories</h2>
-      <p>Pool is the game code count, after library, telemetry, template and compiler-generated code is excluded. Done counts a ledger record or an address-named C++ body. The last column splits done functions between the Codex and Claude harnesses.</p>
+      <p>Pool is the game code count, after library, telemetry, template and compiler-generated code is excluded, and after game bodies nothing in the image references (no non-funclet caller, no absolute dword) unless they were reconstructed anyway. Done counts a ledger record or an address-named C++ body. The last column splits done functions between the Codex and Claude harnesses.</p>
     </div>
     <div class="table-wrap"><table id="cat-table"></table></div>
   </section>
@@ -300,7 +300,7 @@ tr.hidden { display: none; }
     ['Reviewed names', fmt(K.names), `<b>+${fmt(K.names24)}</b> in the last 24 h`],
     ['Fragments', fmt(K.fragments), 'partial routines, counted apart'],
     ['Game code remaining', fmt(K.target - K.game_done), `${fmt(K.pool_remaining)} in partition segments, the rest outside them`],
-    ['Excluded as non-game', fmt(K.excluded), 'CRT, STL, Lua, zlib, telemetry, generated'],
+    ['Excluded as non-game', fmt(K.excluded), `CRT, STL, Lua, zlib, telemetry, generated; plus ${fmt(K.unreferenced)} unreferenced game bodies that can never run`],
   ].map(([l, v, s]) => `<div class="kpi"><div class="label">${l}</div><div class="value">${v}</div><div class="sub">${s}</div></div>`).join('');
 
   // ---- address map
