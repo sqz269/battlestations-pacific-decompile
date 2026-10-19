@@ -527,6 +527,19 @@ constexpr bool kTorpedoBotAttackRangeBound = true;
 //    the first targeted tick evaluates. OFF: every fixed step evaluates.
 constexpr bool kTorpedoBotThinkTimerBound = true;   // ON: GUNNERY 245
 constexpr float kTorpedoBotThinkPeriod = 0.2f;   // 00CE54A0
+//  * kTorpedoBotOwnerPlayerGateCc13Bound: packet cc13-torpgate
+//    (docs/CC13_IJN18LOSS.md section 7, "Gunnery while the map is up"). After the
+//    holder gate (0090003B), 008FFF20 walks the gun's parents to the first
+//    IsKindOf(5) owner (00900048..00900067, vtable[5Ch] at 0090005C) and, when
+//    that owner's +184h is set (00900080), jumps at 00900087 to 00900985. So a
+//    ship the player took with role 1 launches no bot torpedo; the timer, the
+//    gates, the intercept, 0085ABA0 and the trigger all keep their last state.
+//    ON: a torpedo gun of such an owner commands no angles while its bot holds
+//    a target, keeps its trigger, and leaves its think record alone. LABELLED:
+//    the owner is the gun's own unit (gun.unit_index), as at 008FFFB2; a gun
+//    whose unit is not kind 5 is not gated. OFF: as before. The tick count
+//    under the condition is logged with the switch either way.
+constexpr bool kTorpedoBotOwnerPlayerGateCc13Bound = false;
 //  * kTorpedoBotStaleFlagBound: packet g42_ver23 (docs/CC13_VER_23.md D2), only
 //    under kTorpedoBotAttackRangeBound. 00903580 recomputes bot+68h BEFORE it
 //    stores the new bot+6Ch (0090358D, 00903592), so a flag change keeps the old
@@ -2500,6 +2513,9 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, TorpedoThink> torpedo_think_by_gun;
     unsigned long long torpedo_angle_err_evaluations{0};   // kTorpedoAngleErrPerEvaluationBound
     unsigned long long torpedo_think_holds{0}, torpedo_think_evals{0};
+    // kTorpedoBotOwnerPlayerGateCc13Bound: torpedo-gun ticks whose kind-5 owner
+    // has +184h set (counted with the switch either way), and the exits taken.
+    unsigned long long torpedo_owner_player_ticks{0}, torpedo_owner_player_exits{0};
     unsigned long long torpedo_ready_reload_refusals{0};   // kTorpedoBotCanFireReloadBound
     unsigned long long torpedo_zone_tests{0}, torpedo_zone_holds{0};  // kTorpedoLaunchZoneBound
     double torpedo_attack_range_sum{0.0};
@@ -8188,6 +8204,18 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             have_target = false;
             ++seat_held_ticks;
         }
+        // kTorpedoBotOwnerPlayerGateCc13Bound: 008FFF20's owner test at 00900080,
+        // past the holder gate (a player seat leaves at 0090003B first).
+        bool torpedo_owner_exit = false;
+        if (gun.category == bsp::kUnitGunneryTorpedoCategory && !player_seat
+            && units.unit_is_kind_of(owner_unit, 5)
+            && units.unit_player_controlled_0184(owner_unit)) {
+            ++torpedo_owner_player_ticks;
+            if constexpr (kTorpedoBotOwnerPlayerGateCc13Bound) {
+                torpedo_owner_exit = true;
+                ++torpedo_owner_player_exits;
+            }
+        }
 
         float right[3], up[3], forward[3], origin[3];
         unit_pose(owner_unit, right, up, forward, origin);
@@ -8302,6 +8330,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     ++torpedo_submerged_drops;
                 }
             }
+            // kTorpedoBotOwnerPlayerGateCc13Bound: the submerged drop (008FFFB2..
+            // 0090002A) runs before the owner test; past it the bot does nothing.
+            if (torpedo_owner_exit) have_target = false;
             // kTorpedoBotThinkTimer: 009000DD..009000F6 thinkTimeLeft -= dt (stored
             // to float); still > 0 returns at 00900985 with the trigger and the
             // commanded heading untouched; otherwise 00900101 reloads 0.2f.
@@ -8843,6 +8874,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             }
         }
+        if (torpedo_owner_exit && bot_has_target) {
+            // kTorpedoBotOwnerPlayerGateCc13Bound: 00900087 -> 00900985, no
+            // 0085ABA0; with no target 008FBCE0's rest arm above still decides.
+            command_angles = false;
+        }
         if (torpedo_think_hold) {
             // 00900985: no 0085ABA0 this tick (009003DD is past the timer), so the
             // gun keeps turning toward the last command; the trigger is restored below.
@@ -9172,6 +9208,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
         }
         if (kTorpedoBotThinkTimerBound && !torpedo_think_hold && !player_seat
+            && !torpedo_owner_exit
             && gun.category == bsp::kUnitGunneryTorpedoCategory && torpedo_gun) {
             // An evaluating tick (or one the timer never reached): what the
             // trigger and the gyro run line hold until the next evaluation.
@@ -9297,6 +9334,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             want_fire = gun.seat_trigger;
             if (want_fire) ++seat_trigger_ticks;
         }
+        // kTorpedoBotOwnerPlayerGateCc13Bound: 00900985 leaves vtable[1E8h] alone,
+        // so the request keeps its current state.
+        if (torpedo_owner_exit) want_fire = gun.fire.fire_requested;
 
         FireRequestBinding fire_host(*this, g);
         const bool before = gun.fire.fire_requested;
@@ -17386,6 +17426,10 @@ void GameGunneryHost::report() {
             "(008FFF20 009000DD..00900101, packet g44_torpedo_think)",
             kTorpedoBotThinkTimerBound ? 1 : 0, host.torpedo_think_evals,
             host.torpedo_think_holds);
+        host.log.notef("summary mission gunnery torpedo owner player gate bound=%d ticks=%llu "
+            "exits=%llu (008FFF20 00900080 owner +184h -> 00900985, packet cc13-torpgate)",
+            kTorpedoBotOwnerPlayerGateCc13Bound ? 1 : 0, host.torpedo_owner_player_ticks,
+            host.torpedo_owner_player_exits);
         host.log.notef("summary mission gunnery torpedo ready reload refusals=%llu bound=%d "
             "(0090042F vtable[1D0h](1) -> 0085A830 -> 00729A80(1), packet g47_torpedo_canfire)",
             host.torpedo_ready_reload_refusals, kTorpedoBotCanFireReloadBound ? 1 : 0);
