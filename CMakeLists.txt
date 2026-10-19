@@ -386,3 +386,6 @@ target_sources(bsp_core PRIVATE src/native_mlandfort_kind.cpp)
 target_sources(bsp_core PRIVATE src/native_mcommandbuilding_kind.cpp)
 
 target_sources(bsp_core PRIVATE src/oct18_tail_d.cpp)
+target_sources(bsp_core PRIVATE src/oct18b_nc_high.cpp)
+target_sources(bsp_core PRIVATE src/oct18b_nc_mid.cpp)
+target_sources(bsp_core PRIVATE src/oct18b_nc_low.cpp)

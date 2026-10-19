@@ -104,7 +104,7 @@ void release_at_zero(void* owner, NativeRendererCacheClearContext& context) {
         (void)delete_native_logical_vertex_stream_00b4bf10(owner, 1,
             context.actual_vertex.actual_logical_owner); return;
     case 0x00b3f590:
-        (void)delete_native_texture_2d_00b3f590(owner, 1,
+        (void)delete_native_texture_2d_after_zero(owner, 1,
             context.actual_texture.actual_texture_2d_owner); return;
     case 0x00b3f410:
         (void)delete_native_cube_texture_00b3f410(owner, 1,

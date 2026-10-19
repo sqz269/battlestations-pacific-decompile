@@ -15,6 +15,8 @@ struct NativeVfsDateRouteContext;
 struct NativeStoredStreamConversionContext;
 struct ResourceLoadEventHost;
 struct NativeTextureCacheContext;
+struct NativeRuntimeTextureCreationAcquired;
+struct NativeRuntimeTextureConstructionContext;
 
 // The integrator's concrete holder owns ONE actual BDF4C0 acquired operation.
 // It must not borrow a shared scratch acquired slot. The factory only creates
@@ -111,6 +113,13 @@ public:
     NativeTextureLoadOwners(const NativeTextureLoadOwners&) = delete;
     NativeTextureLoadOwners& operator=(const NativeTextureLoadOwners&) = delete;
     void register_completed_creator(NativeTextureLoadAcquired&);
+    // SAME genuine D61948 terminal/registry for B2A070 runtime creators. Requires
+    // completed factory and B3F7B0 frames, matching original raw-slot/owner and
+    // this exact texture context with canonical zero dispatch enabled. Metadata
+    // only: no VFS acquisition impersonation, native retain or constructor call.
+    // Caller retains the operation/provider graph on admission failure.
+    void register_completed_runtime_creator(NativeRuntimeTextureCreationAcquired&,
+        const NativeRuntimeTextureConstructionContext&);
     NativeTexture2DOwnerContext& texture_context() noexcept;
     NativeTextureSpecialOwnerContexts& special_contexts();
 private:

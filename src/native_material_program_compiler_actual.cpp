@@ -7,6 +7,7 @@
 #include <cstring>
 #include <exception>
 #include <stdexcept>
+#include <string>
 #include <windows.h>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -224,6 +225,24 @@ void cached_shader(Frame& a, bool pixel) {
     site(a, pixel ? 0x00b3bd66 : 0x00b3b7fb);
     auto* row = find_native_shader_binary_cache_record_00b34890(c.actual_cache_0108d6ec,
         &a.names[joined].name, c.source_mode_0108d6f1, lookup);
+    if (!row) {
+        // The Original later dereferences row+08. Missing compiled data is
+        // outside this Source caller's admitted provider domain. Reject it
+        // here while the exact query and one-shot lookup are still live;
+        // do not clean/replay the frame, reset the native cursor, synthesize
+        // a row, or return a successful/null compiled pass to the parent.
+        const auto& name = a.names[joined].name;
+        const std::string key = name.data() ? std::string(name.data(), name.length()) : "<null>";
+        std::string cache_state = " cache=null";
+        if (lookup.cache)
+            cache_state = " records=" + std::to_string(read<U>(lookup.cache, 4)) +
+                " cursor=" + std::to_string(read<U>(lookup.cache));
+        throw std::runtime_error(std::string("native shader binary cache miss: stage=") +
+            (pixel ? "pixel" : "vertex") + " key=" + key + cache_state +
+            " examined=" + std::to_string(lookup.completed_rows) +
+            " load_variants=" + std::to_string(c.load_variants_0108d6f0) +
+            " source_mode=" + std::to_string(c.source_mode_0108d6f1));
+    }
     if (pixel) {
         a.sampler_entry.cached_path = true;
         a.sampler_entry.cache = lookup.cache;
