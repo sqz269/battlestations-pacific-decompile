@@ -540,6 +540,19 @@ The image's path is the role take:
   - **Result:** player shells and ship leads are confirmed; a player turret hit on a ship is not
     produced in the time box. Next row to try: a player battleship with a slower target inside
     its 2300 ray.
+  - **Auto pitch after cc13's LOS-point fix (ecf447f17; cc9-gunnery54, `local\g54_auto_th.log`,
+    tree a3a8b703e, reference env, `local\g54_th_fub4auto.txt` = the same lines with no pitch).**
+    Tracking holds (heading error -0.001 rad, target pitch -0.0096 rad at 3.4 km). Ship leads
+    0 -> **1216** (`seat artillery lead ship=1216 turned=1216`), so the raised aim point does put
+    the hull hit above y = 0. Mississippi's turrets fire 9 shots each, hits 0, refusals 7245 / 7330
+    / 7330. In this run Mississippi sinks earlier, at 485.70 s (killer Fubuki-class06, cat 7, blast), so the
+    window is about 35 s. Still no player turret hit on a ship.
+  - `8990 select Mississippi` before the same lines (`local\g54_auto_sel.log`) changes nothing: the
+    select is the HUD click (SCRIPTED_HELM 10), not a view change, so the camera stays on
+    Fletcher-class10 (range 3400 m to Fubuki-class04 at 450 s). The log is identical to the auto
+    run in every gunrow and seat count. A ray from the camera on one ship with muzzles on another
+    stays the open question. **Time box closed (cc9-gunnery54):** a row where the camera ship
+    owns the group 3 turrets is still needed.
 
 ### 7.6 The 79h target: AA only (`kPlayerGunSeatTargetInterceptBound`, cc9-gunnery53)
 
