@@ -6829,7 +6829,7 @@ struct GameUnitsHost::Impl {
     // 009C8A74 re-seed of task+4BCh = 3600.0. True: both, on the profile call.
     // False: the dive host never resets an expired script altitude, never clears
     // +3A9h, and carries only the 009C3FD2 seed.
-    static constexpr bool kDiveCruiseProfileGateBound = false;
+    static constexpr bool kDiveCruiseProfileGateBound = true;   // ON: OCEAN_WAVE_FIELD 96 (unexercised)
     unsigned long long dive_profile_travel_alt_resets{0};
     unsigned long long dive_profile_clock_reseeds{0};
     static float land_blend_2b4(float a, float w, float b) {
