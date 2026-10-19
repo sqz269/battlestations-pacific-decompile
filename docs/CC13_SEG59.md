@@ -27,6 +27,14 @@ and the pilot bot. Code is in include/bsp/cc13_seg59.hpp and src/cc13_seg59.cpp 
   - The scalar deleting destructors 008EF080, 008F4170, 008F4D70, 008F4DA0, 0090D340 and 0091D760
     wrap destructors that have their own records (008EF030, 008F4160, 008F4D50, 008F4D60, 0090D2F0,
     0091CCD0). The ones with vtable stores inline those destructors' bodies.
+  - Why those six are bound while 008F4160, 008F4D50, 008F4D60 and 0091CCD0 are rebuilt: the
+    rebuilt rows are the out-of-line class destructors themselves, the one copy every caller and
+    unwind funclet reaches, while each bound wrapper only repeats that body inline in front of
+    an optional _free; rebuilding the copy would duplicate the same steps, so its record cites
+    the out-of-line row instead.
+  - 008F7D00, 008F8500 and 008FB4B0 are single JMPs into game code (00BD3050, 00695870,
+    00439000). Their status is `existing_recorded_thunk`, not a library binding, and 008F7D00 /
+    008FB4B0 carry `thunk_` names instead of their targets' names (cc13-census9).
 
 ## Routines
 
@@ -83,6 +91,46 @@ Destructor `0091CCD0`, in order:
 4. +1440h and +1434h: `00911B30`, then free and zero as above.
 5. +1428h: `0058AE10`, then free and zero.
 6. `00BF7C6E(+4h, 284h, 8, 00593570)`.
+
+## Ghidra names replaced
+
+`local/ghidra-annotations-20261019T072917Z.json` (the annotate log of the apply run) keeps the
+old names: 00904C40 CG_vector_deleting_dtor_00904c40, 008F4160 CG_adjustor_thunk_008f4160,
+008F4D50 CG_adjustor_thunk_008f4d50, 008F4D60 CG_adjustor_thunk_008f4d60, 0091D640
+CG_array_ctor_helper_0091d640, 0091CCD0 CG_vector_deleting_dtor_0091ccd0.
+
+## Torpedo-bot audit notes (008FFF20 against game_hosts_gunnery.cpp)
+
+Fresh read of 008FFF20..0090044A from the bytes. No URGENT mismatch. The notes below are the
+places where the image does something the host does not model, or where a gate is inert.
+
+- **008FFF4B, same-side target drop.** `00521EA0(ECX = bot+38h)` resolves the target. The target
+  is kept only when it exists, its +5Dh byte is clear, the gun (bot+50h) has a parent (+3Ch)
+  whose +5Dh is clear, and `00803510(ECX = parent+54h, EDX = target+54h)` returns non-zero;
+  otherwise `bot->vtable[38h](0)` clears it (008FFF8A). The host has no 00803510 check, so a
+  target that test rejects stays targeted in the host. Not tied to a live mission path by the
+  audit; no RNG.
+- **0090010E, the shallow gate.** After the 00900101 store of [00CE54A0] to bot+5Ch, the image
+  calls `008527E0(ECX = bot+64h)` and bails on false, but only when bot+64h is non-zero.
+  Census of writers of bot+64h: the class vtable 00D182B0 (20 slots) and its constructor
+  008FF260 (the only function holding the vtable immediate) were scanned for stores to
+  [reg+64h] (`local/census9_b64.py`). The only writer is 008FF310
+  BSP_GunBot_AttachTorpedoClass: bot+58h = bot+50h (the payload), bot+5Ch = 0.0f, then bot+64h =
+  payload when `payload->vtable[5Ch](8)` (IsKindOf 8) is true (008FF33F), else 0 (008FF34A).
+  The gun-class IsKindOf ids are 24h/22h/20h/1Eh/4/2/1 plus [this+C4h], never 8, so bot+64h
+  stays 0 for every gun payload and the gate never runs. Scope: writers outside the class's own
+  vtable and constructor were not scanned (a whole-image [reg+64h] census is unbounded).
+- **00900080, the unit+184h gate.** gun = bot+50h; when gun+1ACh (the seat) is not 8,
+  `00927F10(seat)` must return true. Then the walk from the gun up the +3Ch parents stops at the
+  first object answering IsKindOf(5), the unit (none: return at 00900069), and the tick bails
+  (00900985) when the unit's +184h byte is set. unit+184h is set only by an accepted player
+  role-1 take (00780214; packet cc9_player_role_bookkeeping, `kPlayerRoleBookkeepingBound` in
+  game_hosts_units.cpp). The audit's reading is that for seats other than 8 the 00927F10 role
+  check already covers the player-held case, so the +184h byte adds a case only for a seat-8
+  gun on a unit whose role 1 the player has taken. That reading of 00927F10 was not re-proved
+  here.
+- Also noted: WaterTravelSpeed 0 falls back to the muzzle speed (a labelled host substitution),
+  and the result of 008FE140 (009000D8) is discarded. 0090044A..0090097B was not re-read.
 
 ## Uncertainty
 
