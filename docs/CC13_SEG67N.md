@@ -98,7 +98,7 @@ meaning is unread.
 ## Batch B: twins, hosted rows and compiler bodies (ledger-only)
 
 Twins of `009A2B90` (`close_to_ship_target_record_009a2b90`, src/cc13_seg67a.cpp), slot +0Ch,
-`__thiscall(ECX = task, out)`, RET 4, EAX = out. Each body is the same 53-byte sequence
+`__thiscall(ECX = task, out)`, RET 4, EAX = out. Each body is the same 55-byte sequence (`RET 4` at +34h; 009A2B90-009A2BC6)
 `MOV EAX,[ECX+3F8h]; MOV EAX,[EAX]; ADD ECX,3F8h; SUB ESP,0Ch; LEA EDX,[ESP]; PUSH EDX; CALL EAX`,
 then FLD/FSTP copies of the returned point into out+0/+4/+8 with byte out+0Ch = 1:
 `009A5F10` (depthcharge), `009AE990` (dropkamikaze), `009AF5D0` (kamikaze), `009B36F0` (land),
