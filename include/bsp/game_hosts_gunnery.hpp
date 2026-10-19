@@ -1152,6 +1152,17 @@ public:
     // the projectile flight with its sweep, impact, hit record and kill credit.
     void fixed_step(float step_seconds);
 
+    // Packet cc13-hitq (bsp/cc13_hitq_switches.hpp): the deferred hit queue
+    // 00F899C0 the drain 00926700 walks. Empty unless
+    // kHitDeferredDispatchCc13Bound. The count is [00F899C8]; back() is
+    // head[+4h] (00926714 / 0092675B), an opaque node with the victim index the
+    // drain's subject is (record+0h), or null when empty; the dispatch is
+    // 00926750's 009239A0 call; the pop removes whatever head[+4h] is now.
+    std::size_t deferred_hit_count() const noexcept;
+    const void* deferred_hit_back(std::size_t& victim) const noexcept;
+    void dispatch_deferred_hit_009239a0(const void* node);
+    void pop_deferred_hit_back();
+
     const std::vector<GameGunRow>& guns() const noexcept;
     // Packet cc8_ship_ai_firepower_inputs: the gun indices 00956C20 put in one
     // unit's category list, in insertion order. The ship AI's firepower host
