@@ -11327,6 +11327,28 @@ public:
         ++owner_.summary.clearance_refreshes;
         if (clearance.node_hits != 0) ++row_.clearance_node_hits;
         row_.clearance_37c = ctl_.clearance.clearance_37c;
+        // Packet cc13-blk370, log only (BSP_SHIP_ESCAPE_TRACE=<unit name>): what a
+        // refresh that stored 2 or 3 at 009EFFA5 / 009EFFB8 decided on. The host
+        // has no zone identity for 009D57E0's answer, so zone is always -1.
+        const auto& diag = ctl_.clearance.diag;
+        const auto outcome = ctl_.clearance.outcome_370;
+        if (diag.refreshed && (outcome == bsp::ShipAiClearanceOutcome::BlockedMoving
+                               || outcome == bsp::ShipAiClearanceOutcome::BlockedStopped)
+            && ship_escape_trace_unit(owner_.rows[index_].unit)) {
+            const char* hit_unit = "-";
+            if (diag.hit_index >= 0) {
+                const std::size_t unit = NeighbourList::store(
+                    const_cast<bsp::ShipAiObstacleNode&>(clearance.node(diag.hit_index))).unit;
+                if (unit < owner_.rows.size()) hit_unit = owner_.rows[unit].unit.c_str();
+            }
+            owner_.log.notef("  ship clearance block step=%llu unit=%s 370=%d hit=%d "
+                "hit_unit=%s hit_speed=%.3f static_hit=%d zone=-1 herr=%.4f 324=%.4f "
+                "(009EF910 at 009EFFA5/009EFFB8; packet cc13-blk370)",
+                owner_.steps, owner_.rows[index_].unit.c_str(), static_cast<int>(outcome),
+                diag.hit_index, hit_unit, static_cast<double>(diag.hit_speed),
+                diag.static_hit ? 1 : 0, static_cast<double>(diag.heading_error),
+                static_cast<double>(ctl_.clearance.heading_target_324));
+        }
     }
     void tail_009da8d0(float seconds) override {
         if constexpr (!kShipAiWarningTimerBound) {
