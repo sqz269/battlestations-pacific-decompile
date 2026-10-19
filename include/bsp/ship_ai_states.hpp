@@ -91,6 +91,13 @@ enum class ShipAiSteeringMode : int {
     Rudder = 0,
     Heading = 1,
     Navigate = 2,
+    // Packet cc13-astern3a6: the name is a misnomer kept for the switches that
+    // test it. Provisional hypothesis NavigateCallerSteered: the only mode-3
+    // writers are 009DE2D2 (009DE280, reached only from the unreferenced
+    // wrapper 009E7FA0) and 009F3375 (009F3240, the attackmove approach step,
+    // the live one). Each calls 009DE050 for the goal, sets 1D8h (heading) and
+    // 250h/2B8h (throttle) itself and 1CCh = 0, and 009ED6B0 then skips its own
+    // output block (009EE756). Astern is only one escape outcome.
     NavigateAstern = 3,
 };
 

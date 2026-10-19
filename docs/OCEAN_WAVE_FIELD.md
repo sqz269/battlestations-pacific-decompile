@@ -3812,3 +3812,29 @@ Exports of main 677ee345f: `local\p24b_off`, `local\p24g1` (kFollowSightSearchBo
 - kFollowSightSearchBound (009C211D-009C232A): reached on BSM09 only (98 searches, 96 found, 283 held ticks); BSM09 ends earlier (ref 348.04 -> 327.04 s, def 462.01 -> 408.02 s). USN01, USN21 and BSM01 have 0 searches and are identical.
 - kDiveHitClockBound (009C4AA4 reads the carried approach+C4h): USN01 dive releases 7 -> 5, USN21 ref 11 -> 15 (same completion), BSM09 and USN21 default identical.
 - kDiveBombMoveToOriginBound (009C18C0 origin separation, 009F9E40 heading): USN01 7 -> 5, BSM09 ref ends 348.04 -> 327.04 s (dive releases 3 -> 6), default still ends 462.01 s; USN21 completes in both envs (default 2891.70 -> 2856.66 s).
+## 103. cc13's bay opener and the real 007BB110 (cc9-physics24, 2026-10-19)
+
+Exports of 3df710613 (reseed ON, main d4258a897): `local\p24q0`, `local\p24q1` (kReleaseBayOpenCc13Bound), `local\p24q2` (that plus kReleaseTimerPredicate007BB110Bound). Rows BSM09 d1, USN01 u1i, USN21 s46_u21_f, both envs. At this base BSM09 ends at 282.05 s (ref) / 405.02 s (default) and USN01 u1i completes at 1150.00 s / 1004.88 s.
+- Bay opener alone: gameplay identical on every row in both envs.
+- Predicate over it: identical on BSM09 and USN01 (timer_blocked_007BB110 = 0); USN21 ref identical, USN21 default moves (2 blocks, drops 6 -> 3, completes 2911.72 -> 2921.72 s). The section-101 deadlock is gone.
+Both flipped ON by mechanism. kReleaseTimerNotify0DhBound (log only) is left OFF.
+## 104. cc13's land chain and the funnel kill (cc9-physics24, 2026-10-19)
+
+**First pairs** (exports of 19dcd5aba / c01bcb8fb, ref env unless noted): kPlaneFlightStateNotifyCc13Bound alone was gameplay identical on BSM09, USN04 and USN21 (162 / 45 / 1440 notifies). kPlaneGroundStateDeadTailCc13Bound is unreached (skips = 0 on BSM09, USN04, USN21). kPlaneFunnelKillDestroyOnlyCc13Bound (`local\p24k1` vs `local\p24n_off`) moves BSM09, USN04 and USN21 slightly through cause-2 removals (12 D3A at 42.75 s on BSM09, movieval on USN04, JakeTmpl on USN21); BSM09 still ends (ref 351.04 s, default 444.02 -> 408.02 s), USN21 completes in both envs. Over FunnelKill, kPlaneRetireOnDestroyedDrawCc13Bound (`p24k2`) is identical everywhere (destroy_draws = 0, unreached) and kPlaneCombatDeathRetireDrawCc13Bound (`p24k3`, 48 / 58 / 560 draws) is identical in the ref env and moves the default env slightly with every win kept.
+
+**Re-pair after cc13's lift-off fold (7f45a702a)**, exports of 59c0ae06b: `local\p24r0` (OFF), `local\p24r1` (the notify alone), `local\p24r2` (all five). The notify alone stays gameplay identical on BSM09 (194 / 263 notifies), USN04 (60) and USN21 (1920) in both envs. All five together: BSM09 ref identical end (285.05 s); USN21 completes in both envs (ref 2906.71 -> 2901.71 s, default 2916.72 -> 2921.72 s); USN04 moves (no end either side). **BSM09 default env is LOST**: Game Over at 141.05 s, because the player's Donald collides with a D3A Val in a crash sweep at 140.95 s (no damage; the stream-0 draw order moved the dogfight). RNG-coupled in the default env; the reference env keeps the win.
+
+All five are flipped ON by mechanism (cc13's listing reconstruction; the lead's rule that a faithful fix flips even if a win is lost).
+
+**4f paratroopers stay OFF (unreached).** Exports of 677ee345f, `local\p24s1` (kLevelBombParatrooperDropBound), `p24s2` (plus its draw), `p24s3` (plus kParatrooperRoundBound). The C47 squadrons spawn only at about 1318 s, and every JM08 plan we have loses the HQ before any C47 releases: l65_j8_p2 OFF fails at 1676.56 s in a 3000 s run, and option (1) ON brings the failure to 1476.36 s (the C47s now fly the attack and draw AA off the B-25/B-17). drops = 0 on l65_j8_p2, s45_j8_m10, p6_j8_f, l64_j8_e and stock JM08 (stock spawns no C47). S2 and S3 are identical over S1. JM13 has no paratrooper units. 4f needs a JM08 plan that holds the HQ past about 1500 s.
+## 105. HANDOFF (cc9-physics24, 2026-10-19)
+
+Lane PHYSICS / PLANE FLIGHT, tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (branch agent/cc9-physics1). Launcher `local\p24_pair.ps1 -Tag <export dir> -Row <b9|b9n|u04|u21f|os|u1g|u1i|j6|b1|j8|j8L|j8n|j8m|j8f|j8e|j13> [-EnvMode def]`; `b1` is now bsm01_l69_b1_d. Commits this session: fbdcdc7fc (006082D0 comment), fb31ab760 (4d envelope + hold arm, 4e gun block + burst reset; section 100), 3df710613 (release timer reseed; 101), 96ed1be14 (4g FollowSightSearch, DiveHitClock, DiveBombMoveToOrigin; 102), e0e95ccdd (bay opener + 007BB110 predicate; 103), 282567f82 (land chain 4a/4b/4c + funnel kill; 104).
+
+Open (from the lead's queue file, cc9lead_physics_queue.txt):
+1. 4f paratroopers: unreached; needs a JM08 plan that holds the HQ past ~1500 s (C47s spawn at ~1318 s). Pair option (1) first, then the round and its three draw sub-switches, both envs; send capture evidence to the ships lane.
+2. kReleaseTimerNotify0DhBound (log only) left OFF; kPlaneFunnelKillPathTagCc13Bound (new, OFF) not paired.
+3. Coming per the queue: the +68h commanded-direction steer gate (009FCCA4; USNOS/BSM09/BSM01), the torpedo-goaway entry and tick (4 stream-1 draws, both envs), 007C17D0 NotifyTakeoffStart and SlowTakeoff +AA0h, the level-bomb CanFire 00729A80 (only if live), kAirOpsLaunchFlagAirborneBound (CHG06 only, low), the 006D2510 airfield gate.
+4. WINS: BSM01 bsm01_l69_b1_d has no end within 1200 s from 19dcd5aba on (sent to cc9-lua70). BSM09 default env is lost at 141.05 s after 282567f82 (RNG-coupled collision); USN01 u1i default lost its completion after 3df710613.
+5. Low, unchanged: the 009C8A42 +4B0h NaN max, the 009C4A40 ceiling NaN arm, and section 75's whole-frame item.
+Disk: the 3000 s JM08 logs (*_j8L.log, over 1 GB each) were deleted after reading; do not keep long JM08 logs.

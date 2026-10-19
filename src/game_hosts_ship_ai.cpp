@@ -105,6 +105,7 @@
 #include "bsp/vehicle_class.hpp"
 #include "bsp/weapon_director.hpp"
 #include "bsp/ship_ai_seg67_switches_cc13.hpp"
+#include "bsp/cc13_heading_wrap.hpp"
 
 namespace bsp::game {
 
@@ -1475,6 +1476,9 @@ struct GameShipAiHost::Impl {
     unsigned long long sector_blocker_binds{}, sector_blocker_stale{};
     unsigned long long avoidance_queries{}, avoidance_refills{}, avoidance_clears{};
     unsigned long long avoidance_role_reads{}, avoidance_role_unavailable{};
+    // Packet cc13-helmlatch: latched-arm latches and re-sends, and helm-arm
+    // sentinel stores (log only).
+    unsigned long long cruise_latches{}, cruise_latch_resends{}, cruise_latch_sentinels{};
     std::int32_t session_mode{};
 
     // One controller per created unit. `ai` in docs/SHIP_AI_STATES.md is the
@@ -1501,6 +1505,11 @@ struct GameShipAiHost::Impl {
         // and its vtable[4] (a bare RET) is called. Packet cc9_initial_cruise_state.
         std::uint32_t active_state_ai_offset{kShipAiInitialCruiseStateBound ? 0x0BC8u : 0u};
         std::uint32_t active_state_command{kShipAiInitialCruiseStateBound ? 0x00E08F70u : 0u};
+        // Packet cc13-helmlatch: the cruise state's latched pair, brain+0B78h
+        // (+8h, throttle) and brain+0B7Ch (+0Ch, rudder). 009F3A22/009F3A27
+        // store -99.0f (00CF5BFC) when the brain is constructed.
+        float cruise_latch_throttle_b78{-99.0f};
+        float cruise_latch_rudder_b7c{-99.0f};
         bsp::NativeHandle fire_target{0};       // director+238h as this process holds it
         bool fire_target_locked{false};         // director+23Ch (packet cc9_usn02_deruyter_fire)
         std::string sample;                     // the last line log_sample emitted
@@ -1587,6 +1596,13 @@ struct GameShipAiHost::Impl {
         bool flag_3a6{false};
         // Packet cc9_station_keeping: blk+38Ch..+3A6h as 009DA3B0 stores them,
         // and the arm's three bytes blk+388h / +389h / +38Ah.
+        // Packet cc13-deadcopy: station_request.enable is a dead host copy of
+        // blk+3A5h. It is written by the 009DA3B0 copy and never read. The
+        // live byte is blk.flag_3a5 (set at 009DA3F7 below, cleared by 009ED753
+        // and 009F145E), and every image reader of blk+3A5h is modelled on that
+        // (docs/CC13_NAVSEEDS2.md section 7). Packet cc13-astern3a6: likewise
+        // station_request.suppress is a dead copy of blk+3A6h; the live byte is
+        // flag_3a6 above (009DA400 store, read at 009EDA3A and 009EF0B1).
         bsp::ShipAiStationRequest station_request{};
         // Packet cc9_ship_ai_tails: the saved blocks blk+1F4h..+220h and
         // +3A8h..+3C2h (009DDBC0 writes, 009DA0D0 reads), held as the host
@@ -1604,6 +1620,10 @@ struct GameShipAiHost::Impl {
             float planned_x_1e8{0.0f};
             float planned_z_1ec{0.0f};
             float plan_length_1f0{0.0f};
+            // station.enable (+3C1h) is a dead copy: never read. The saved
+            // blk+3A5h is flag_3a5 below (009DDC15/009DDC1B save, 009DA125/
+            // 009DA12B restore). Likewise station.suppress (+3C2h) is dead; the
+            // saved blk+3A6h is flag_3a6 (009DDC21/009DDC28, 009DA131/009DA138).
             bsp::ShipAiStationRequest station{};                           // +3A8h..
             float speed_scale_39c{0.0f};
             bool flag_3a5{false};
@@ -3097,6 +3117,14 @@ public:
     }
     void after_heading_stored_00605070(float heading) override {
         owner_.count_heading_wrap_store(heading);
+        if constexpr (bsp::kShipAiHeadingStoreWrapCc13Bound) {
+            // Packet cc13-wrap605: 00605070 with ECX = &blk+1D8h, in place. The
+            // callers pass this ctl_'s blk, and heading is the value just stored.
+            ctl_.blk.desired_heading =
+                bsp::ship_ai_firepower_wrap_angle_00605070(ctl_.blk.desired_heading);
+            owner_.done("ShipAiControls::after_heading_stored", 0x00605070u);
+            return;
+        }
         owner_.record("ShipAiControls::after_heading_stored", 0x00605070u);
     }
 
@@ -3178,6 +3206,14 @@ public:
     }
     void after_heading_stored_00605070(float heading) override {
         owner_.count_heading_wrap_store(heading);
+        if constexpr (bsp::kShipAiHeadingStoreWrapCc13Bound) {
+            // Packet cc13-wrap605: 00605070 with ECX = &blk+1D8h, in place. The
+            // callers pass this ctl_'s blk, and heading is the value just stored.
+            ctl_.blk.desired_heading =
+                bsp::ship_ai_firepower_wrap_angle_00605070(ctl_.blk.desired_heading);
+            owner_.done("ShipAiControls::after_heading_stored", 0x00605070u);
+            return;
+        }
         owner_.record("ShipAiControls::after_heading_stored", 0x00605070u);
     }
 
@@ -7182,8 +7218,18 @@ public:
     }
     void wrap_brain_heading_00605070() override {
         // 009F3360, 00605070 on brain+1E0h in place. The reconstruction of that
-        // wrap is bsp::wrap_angle_00605070 where it exists; the field it wraps
-        // has no reader in this process, so the call is recorded.
+        // wrap is bsp::ship_ai_firepower_wrap_angle_00605070. brain+1E0h is
+        // blk+1D8h (desired_heading), and it does have a reader: 009ED947
+        // copies it to 324h in modes 1 and 3. 00605070 leaves (-pi, pi] alone,
+        // and the cc9_heading_wrap_census summary counts the stores outside it
+        // (JM08 p20e_off: 0 of 57068). Packet cc13-wrap605: applied only under
+        // kShipAiHeadingStoreWrapCc13Bound; OFF it is recorded, not applied.
+        if constexpr (bsp::kShipAiHeadingStoreWrapCc13Bound) {
+            ctl_.blk.desired_heading =
+                bsp::ship_ai_firepower_wrap_angle_00605070(ctl_.blk.desired_heading);
+            owner_.done("ShipAiApproach::wrap_brain_heading", 0x00605070u);
+            return;
+        }
         owner_.record("ShipAiApproach::wrap_brain_heading", 0x00605070u);
     }
     void set_brain_replan_01d4(int value) override {
@@ -10397,6 +10443,7 @@ public:
                 apply_ai_drive();
                 return;
             }
+            cruise_latched_and_helm_arms(inputs, setters);
             // Request fields are shared even when the selected player/helm
             // drive remainder is still partial. Commands records that boundary.
             ++owner_.summary.state_steps_recorded;
@@ -10614,6 +10661,40 @@ public:
     // four states of this mission now form their own pair.
     void apply_ai_drive() {
         // Milestone 2r: nothing. The switch is retired; see set_ai_drive.
+    }
+
+    // Packet cc13-helmlatch: the cruise state's +8h/+0Ch in 009E1170's two
+    // player arms (kCruiseLatchedPlayerArmCc13Bound). The arm choice is
+    // 009E11A5's, from the same inputs the request store used.
+    void cruise_latched_and_helm_arms(const bsp::ShipAiCruiseAvoidanceInputs& inputs,
+                                      bsp::ShipAiSetterHost& setters) {
+        const bsp::ShipAiCruiseAvoidanceArm arm = bsp::ship_ai_cruise_step_arm_009e11a5(inputs);
+        if (arm == bsp::ShipAiCruiseAvoidanceArm::HelmHeldByPlayer) {
+            // 009E13FF..009E140C: -99.0f (00CF5BFC) into +0Ch, then +8h.
+            ctl_.cruise_latch_rudder_b7c = -99.0f;
+            ctl_.cruise_latch_throttle_b78 = -99.0f;
+            ++owner_.cruise_latch_sentinels;
+            return;
+        }
+        if (arm != bsp::ShipAiCruiseAvoidanceArm::UnitPlayerFlag) return;
+        // 009E11CE / 009E11F9: COMISS [00CE6848] = -10.0f against +8h, JBE past
+        // the latch, so a NaN +8h does not latch.
+        if (-10.0f > ctl_.cruise_latch_throttle_b78) {
+            ctl_.cruise_latch_throttle_b78 = owner_.units.unit_ring_confirmed_throttle_0994(index_);
+            // 009E121F, unit vtable[5Ch](0Eh): a kind-0Eh unit latches rudder 0.
+            ctl_.cruise_latch_rudder_b7c = owner_.units.unit_is_kind_of(index_, 0x0E)
+                ? 0.0f : owner_.units.unit_ring_confirmed_rudder_0998(index_);
+            ++owner_.cruise_latches;
+        }
+        ++owner_.cruise_latch_resends;
+        if constexpr (bsp::kCruiseLatchedPlayerArmCc13Bound) {
+            bsp::ship_ai_set_desired_steering_009dffb0(ctl_.blk, ctl_.cruise_latch_rudder_b7c,
+                setters);                                                  // 009E1249
+            owner_.done("CruiseState::latched_set_desired_steering", 0x009e1249u);
+            bsp::ship_ai_set_desired_throttle_009dbf90(ctl_.blk,
+                ctl_.cruise_latch_throttle_b78);                           // 009E1257
+            owner_.done("CruiseState::latched_set_desired_throttle", 0x009e1257u);
+        }
     }
 
     float state_interval_vtable28() override {
@@ -11164,6 +11245,11 @@ public:
         ctl_.clearance.category_3f0 = ctl_.avoidance.side_filter_3f8;
         ctl_.clearance.avoidance_enabled_3f4 = ctl_.avoidance.flag_3fc;
         ctl_.clearance.static_zone_present_a3c = ctl_.avoid_search->list(0).head != nullptr;
+        if constexpr (bsp::kShipAiClearance364SyncCc13Bound) {
+            // 009EFFDC / 009EFFEC read [ESI+364h] with ESI = blk (009EF91B),
+            // the same byte the escape flips; 009EF910 never writes it.
+            ctl_.clearance.committed_ahead_364 = ctl_.blk.yaw_rate_subtracts_364;
+        }
         ClearanceBinding clearance(owner_, index_);
         // Packet cc13-ver7 (D5): blk+374h is one field. The -1.0f stores the
         // block names direction_value_374 (009D526F, 009ED867, 009ED8B5,
@@ -12300,6 +12386,24 @@ bool register_ship_ai_unit(GameShipAiHost::Impl& host, std::size_t index,
         ctl.nav.look_ahead_max_3c8 = ctl.nav_block.turn_circle_full_3c8;
         ctl.nav.look_ahead_340 = ctl.nav_block.look_ahead_340;
         ctl.nav.turn_window_3d0 = ctl.nav_block.yaw_rate_3d0;
+        if constexpr (bsp::kShipAiCruiseDistanceSeedBound) {
+            // 009E43A4 / 009E43CC: 009DFCB0 on blk+1C4h. 009DFD49 loads
+            // 1000.0f ([00CE3804]) and 009DFEA8 stores it at blk+3E0h, the
+            // distance 009ED918 copies to 32Ch; nothing else writes it. This
+            // build also runs for controllers created after load
+            // (register_generated_units), so they are seeded too.
+            ctl.blk.cruise_distance_3e0
+                = bsp::ship_ai_nav_block_steering_defaults_009dfcb0().cruise_distance_3e0;
+        }
+        if constexpr (bsp::kShipAiNavBlockCtorSeedsCc13Bound) {
+            // Packet cc13-navseeds2: the rest of 009DFCB0's seeds that have
+            // live readers (see the switch for the evidence).
+            ctl.blk.yaw_rate_subtracts_364 = true;      // 009DFDB7
+            ctl.obstacle.stall_time_384 = -1.0f;        // 009DFD79
+            ctl.blk.direction_counter_384 = 1;          // no direction-change zero yet
+            ctl.blk.clamp_354 = -1.0f;                  // 009DFD71
+            ctl.throttle_profile.hold_354 = -1.0f;      // the same blk+354h
+        }
         const auto request = bsp::ship_ai_avoidance_request_constructed_009e468b();
         ctl.avoidance = request.request;
         ctl.blk.early_out_3f5 = request.early_out_3f5;
@@ -14243,6 +14347,10 @@ void GameShipAiHost::report() {
         host.avoidance_queries, host.avoidance_refills, host.avoidance_clears);
     host.log.notef("ship avoidance cruise owners: reads=%llu unavailable=%llu",
         host.avoidance_role_reads, host.avoidance_role_unavailable);
+    host.log.notef("summary ship cruise latched player arm bound=%d latches=%llu resends=%llu "
+        "helm_sentinels=%llu (009E11CE..009E1262, 009E1407/009E140C, packet cc13-helmlatch)",
+        bsp::kCruiseLatchedPlayerArmCc13Bound ? 1 : 0, host.cruise_latches,
+        host.cruise_latch_resends, host.cruise_latch_sentinels);
     host.log.notef("native ship pre-step: updates=%llu; pose=cache-valid; "
         "model=absent; class-depth=loaded; width=loaded; full009e0270=bound",
         host.hull_geometry_updates);

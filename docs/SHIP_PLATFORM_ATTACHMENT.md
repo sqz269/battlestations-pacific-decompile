@@ -41,9 +41,47 @@ is corrected (section 3).
 5. **gun+FCh.** The line-of-fire test and `CanFire`'s "muzzle below y = 1.0" rule read gun+FCh.
    That is the gun entity's world translation (00427EB0 refreshes it through 00414DB0). So it is
    the mount's world position, not the ship's centre.
-   - **Not read:** the store that puts a turning gun's entity at its platform. The setup writes
-     no gun+74h for turning guns. The value is taken as the platform frame's origin carried by
-     the ship pose, on the evidence of the bomb-rack class and the device model root.
+   - **The store, read (packet cc13-turretpos, 2026-10-19).** `BSP_Gun_SetupFromDescriptor`
+     calls 0072DD20 a third time at 0072ECE7. It copies the returned 16 floats into the gun
+     entity's local matrix gun+74h..+B0h (0072ECEC..0072ED6E), clears the world-valid byte
+     gun+C8h and the inverse-valid byte gun+10Ch (0072ED79 / 0072ED80), and invalidates the
+     children through 0042ED50 (0072ED74..0072ED9C).
+     - Every model path joins this store at 0072ECE0: the no-note exits 0072E9F6, 0072EA22,
+       0072EA41 and 0072EAB3, the 0072EBE4 jump and the fall-through after 0072ECDB.
+     - Only 0072E948 skips it. That jump is taken when the world's byte [[gun+30h]+4A4h] is
+       0. In a normal game 009037F0 stores 1 there (docs/CONSTRUCT_WORLD.md).
+   - **The reading.** 00414DB0 composes world = local gun+74h x parent [gun+3Ch]+CCh. So gun+FCh
+     (the translation row of gun+CCh) is the slot origin p0 carried by the parent's world:
+     `T_parent + p0.x * row0 + p0.y * row1 + p0.z * row2`.
+     - [gun+3Ch] is the unit: it carries the +5Dh dead byte (CC13_SEG59) and the hull's frame
+       (docs/AA_FIRE_WINDOW_MOUNT.md 2).
+     - So gun+FCh equals the host's `gun_muzzle_point`, `origin + right * p0.x + up * p0.y +
+       forward * p0.z`.
+     - There is no barrel length or pivot height in it. The model root gun+3BCh takes the same
+       frame under the same parent (0072E99C / 0072E9BD, 0072ECBA / 0072ECDB). The barrel and
+       base nodes (gun+3CCh, item 4) sit below that root and feed only the shot origin, not
+       gun+FCh.
+     - The frame's rows may carry a scale (CB4's forward is (0, 0, 1.16)). That moves the
+       children, not gun+FCh.
+   - **One exception: a gun whose parent is a shipyard.** 0072DD20's arm 0072DD6C..0072DE2B
+     runs when [gun+3Ch] answers IsKindOf(46h) (MShipyard) and its parent answers 44h
+     (Landscape).
+     - It composes the frame with the parent's world (0072DDCE).
+     - It REPLACES the world y with `max(0, 0087FA50(landscape, x, z))`, the terrain height at
+       the mount's x and z clamped at the sea (0072DDEB..0072DE0E).
+     - It re-expresses the result in the parent's local through the inverse 00414E10
+       (0072DE14..0072DE2B).
+     - So a shipyard gun's gun+FCh sits on the ground. Its slot height is discarded.
+     - The host keeps the slot height for it. CanFire's `y < 1.0` refusal and the
+       line-of-fire start (docs/CC13_LOFLAND.md 2) both read this point.
+     - No shipyard gun appears in the current-main `land mount` lines (cc9-lua52 l70r logs:
+       bunkers, AA, coastal guns, HQs, CB2 / CB4, Fortress). Those lines print one gun per
+       class, so this does not prove there are none. No sub-switch is proposed until a mission
+       with a shipyard gun is found.
+     - Closed 2026-10-19: VehicleClass[205] and [648] are the only classes with Type "Shipyard",
+       and both have empty Platforms, so the 0072DD6C arm cannot run in this installation.
+   - **Not scanned:** later writers of gun+74h. Turning guns rotate their model nodes (00859550,
+     item 4), not the entity.
 
 **What the host now builds** (`kShipPlatformAttachmentBound`):
 - **Source.** `VehicleClass[type].Mesh` (new Lua-host accessor `read_vehicle_class_string`),

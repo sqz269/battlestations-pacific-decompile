@@ -15,7 +15,7 @@ namespace bsp {
 //    SelectControlledUnitBinding::release_unit_nodes.
 // ON: both sites run GameGunneryHost::aim_unit_turning_guns_to_rest_0080e290 on that
 // unit's guns. OFF: both sites only record the call, as before.
-inline constexpr bool kHelmReleaseGunsToRestCc13Bound = false;
+inline constexpr bool kHelmReleaseGunsToRestCc13Bound = true;  // ON: IJN08/USNOS pairs move from the gun rests (SHIP_AI 307)
 
 // 0092A240 BSP_TickableEntityAttachFires, called by 00935D30 BreakInTwo on the front
 // piece (00936905) and then the back piece (0093697F), after its eleven stream-1 draws.
@@ -25,6 +25,6 @@ inline constexpr bool kHelmReleaseGunsToRestCc13Bound = false;
 // static_asserted there). ON: the gunnery host's 98h breakup takes those draws after
 // the eleven. OFF: it does not, as before (4 draws per breakup short of the image for
 // this installation's breakup classes, which have DeathEfx 138 and Length 180).
-inline constexpr bool kShipBreakInTwoPuffDrawsCc13Bound = false;
+inline constexpr bool kShipBreakInTwoPuffDrawsCc13Bound = true;  // ON: USNOS/IJN18 pairs (docs/SHIP_AI_OPEN_ITEMS.md 306.3)
 
 }  // namespace bsp

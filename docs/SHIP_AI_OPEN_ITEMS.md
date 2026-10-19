@@ -20032,3 +20032,227 @@ What a winning plan needs on the current exe:
 - Yamato must die (FinalTrgs), and so must the Funryu Bettys, which are added to FinalTrgs.
 Hold re-plans until cc13's Kaiten depth/contact and kamikaze direct-hit switches are paired, because each flip
 reshuffles the prefix.
+
+## 306. Kamikaze direct record and deferred hit dispatch paired (cc9-gunnery54, 2026-10-19)
+
+### 306.1 kKamikazeDirectHitCc13Bound (include/bsp/cc13_kamikaze_direct.hpp, packet cc13-kzdirect)
+
+Evidence checked: 00470350 BSP_HitRecord_SetShot stores the shooter at +4h and then `CALL [vtable+54h]` /
+`FSTP [ESI+14h]` (00470360..00470365), and 0042B8D0 is `FLDZ; RET`, so the direct record's +14h damage ends 0.
+**Predictions (before the pair):** reference env only (no draws). Per traced detonation on USNOS: ship hit records +1,
+hits taken +1, damage +0; deaths, death rows and the mission end unchanged. Pair: OFF = `local\g54_b_off` (tree build
+a3a8b703e, cool9dc ON), ON = `local\g54_kz_on`; USNOS 50000 frames with usnos_s45_os_k, logs g54_boffs_os / g54_kzons_os.
+
+### 306.2 kHitDeferredDispatchCc13Bound (include/bsp/cc13_hitq_switches.hpp, packet cc13-hitq)
+
+LABELLED SUBSTITUTION (from the packet): ON drains the pushes at row 6 of the NEXT step, 0.05 s later than the
+image, and the last step's hits show in left=. **Predictions:** in-step readers see pre-hit health; kill credit
+and last_attacker go to the oldest hit of a step; a blast lands before its direct hit; fires reach damage control a
+step later; Lua hit events and death rows come in reverse order within a step; hit_effect and breakup draws move to
+row 6. Totals (hit records, damage) should hold in the reference env apart from the one-step timing; deaths may
+move by a step. Pair: OFF = `local\g54_b_off`, ON = `local\g54_hq_on`; USN04, JM08, USN21 and BSM09, 9000 frames,
+no orders, both envs (g54_boff{s,d}_* / g54_hqon{s,d}_*).
+
+**306.2 measured; NOT flipped (the lead's call: the drain point is a labelled substitution).** Every row moves in
+both envs (pair_diff exit 3), and the one-step drain delay explains the first-order effect:
+
+| row (ref env) | queued / dispatched / left ON | deaths OFF -> ON | hit records OFF -> ON | damage OFF -> ON |
+|---|---|---|---|---|
+| USN21 | 11 / 11 / 0 | 1 -> 1 (death rows identical) | identical | 3593.7 -> 3593.8 |
+| USN04 | 863 / 863 / 0 | 58 -> 57 | 882 -> 847 | 13985.7 -> 13948.9 |
+| JM08 | 4269 / 4267 / 2 | 13 -> 15 | 4315 -> 4266 | 17126.0 -> 16929.0 |
+| BSM09 | 770 / 770 / 0 | 46 -> 47 | 851 -> 766 | 12011.0 -> 13112.3 |
+
+- **Timing:** BSM09's opening D3A Val deaths all move from 42.70 to 42.75 s, exactly one step: the host drains at
+  row 6 of the NEXT step, 0.05 s later than the image. That one-step lag then moves positions and aim, so the
+  larger rows diverge (USN04 hull hits 709 -> 641, JM08 Ki-43 Oscar 01 death 128.30 -> 174.36 s).
+- **Order:** kill credit moves as predicted where hits land in one step (BSM09 `D3A Val 1|.-III` killer Jenkins ->
+  Cleveland). USN21, with 11 hits and no same-step overlap, is the clean case: unit table and death rows identical.
+- Default env: USN04, JM08, USN21 and BSM09 all exit 3 (BSM09 deaths 46 -> 48, JM08 15 -> 14).
+- **Verdict:** the mechanism matches the image apart from the labelled drain point, so it is NOT flipped. Re-pair
+  once cc13 drains at row 6 of the same step; until then, the one-step lag hides the order effect.
+
+**306.1 measured; FLIPPED ON by mechanism.** The usnos_s45_os_k pair (50000 frames) fails at 999.88 s before any
+kamikaze contact: `traced=0`, OFF and ON gameplay identical, so it says nothing. Re-paired on lua70's detonating plan,
+`local\g54_os_c17.txt` (a copy of cc9-ships44\local\s59_os_c17.txt), 60000 frames, reference env
+(`g54_boffs_c17` / `g54_kzons_c17`). The boat `unit #2.2` detonates on Gear8 at 955.99 s in both runs; ON logs
+`kamikaze direct arm traced=1 missed=0`. pair_diff: hit records 10870 -> 10871 and Gear8 hits 9 -> 10. Damage
+430496.2, the 609 death rows, the 307 plane death modes and the mission state are identical. The native table moves only
+by that one record (00926E80, 00470350, 008777D0, 00826F10 +1 each, 008270AD +1); damage smoke respawns 874 -> 879
+follow from it. That is the prediction exactly: a zero-damage hit and direction record.
+
+### 306.3 kShipBreakInTwoPuffDrawsCc13Bound (include/bsp/frontier_wiring_cc13.hpp, packet cc13-frontier)
+
+Evidence checked (disasm-raw): 0092A2A1..0092A315 computes w = Length (+A0h) x 0.2 and n = trunc of w / 10 clamped
+(1.0 at 00D7A24C when below one), and the loop 0092A333..0092A687 makes one 00BD2F10(ECX = 1, -w, w) call per pass at
+0092A34A (`sub [esp+30h], ebx` / `jne 0092A333`); no other 00BD2F10 call is in the body. **Predictions:** this
+installation's breakup classes have Length 180, so w = 36, n = 2 per piece and 4 per breakup. ON, each 98h breakup
+adds 4 stream-1 draws: `break_in_two_draws` goes from 11 to 15 per breakup (USNOS os_k OFF: 98h=2, 22 draws, so 30
+ON). Reference env: only stream-1 consumers after the first breakup move, so the deaths before it are identical.
+Default env: the shared RNG moves everything after the first breakup. Pair: OFF = `local\g54_c_off` (tree build
+97bd59009), ON = `local\g54_pf_on`; USNOS os_k (50000) and IJN18 ijn18_l67_i18_d (64000, 7 breakups on lua70's
+reference), both envs (g54_coff{s,d}_* / g54_pfon{s,d}_*).
+
+**306.3 measured; FLIPPED ON by mechanism.** Reference env: USNOS os_k and IJN18 are both pair_diff exit 1 (gameplay,
+death rows and unit table identical). `puff draws=8` on USNOS (2 breakups) and `=4` on IJN18 (1 breakup), so 4 per
+breakup as predicted. Default env: IJN18 has no breakup and is gameplay identical (`puff draws=0`). USNOS moves through
+the shared RNG from the first breakup on: deaths 96 -> 98, and the failure moves from 939.89 to 974.89 s. Note for
+lua70: IJN18 `ijn18_l67_i18_d` does not reach EndMission in 64000 frames on 97bd59009 in either env (OFF too). Its
+reference ended at 1691.52 s.
+
+### 306.4 cc13-kzlatch: kKamikazeRackRoundLatchCc13Bound, kKamikazeDeadTargetRetestCc13Bound, kRtbHeadC24PilotFiresCc13Bound
+
+include/bsp/cc13_kz_latch.hpp, docs/CC13_KZ_LATCH.md. 007B914A answers 1 for any IsKindOf(17h) member before a rack is
+read, so 009F81E9 skips the spent latch for a squadron with a live kamikaze. **Predictions (the lead's queue, before
+the pair), USN21, reference env:** (1) alone: `spent ordnance rtb latches=31 ends=30 issues=30` -> 16/15/15,
+`returntobase null=16` -> 1, `land task REFUSED` 75 -> 0, no task change. (1)+(2): a kamikaze squadron whose target
+dies gets its command ended and re-issued; the kamikazes should keep attacking Intrepid. (1)+(2)+(3): the RTB
+resolve reads the head's +C24h; a moveto-self is possible if Intrepid is released while a kamikaze squadron lives.
+OFF = `local\g54_d_off` (tree build 26bbb19a3), ON = `local\g54_kl1`, `g54_kl12`, `g54_kl123` (pair_export).
+
+### 306.5 kPlaneCrashLaunchArmCc13Bound (plane_crash_sweep.hpp, cc13 follow-up to 303)
+
+**Predictions:** +9DCh = 1.0 at first sight, then 3.0 at each launch-spot placement (5.0 for an AirField owner), and
+no re-arm on a return to state 7. Kamikaze-class planes only, no RNG: reference-env pairs on USN21, USN04 and USNOS
+move only the sweep's cooldown and plane_steps counts unless a re-arm changes an impact. ON = `local\g54_la_on`.
+
+### 306.6 kHitDeferredSameStepDrainCc13Bound with kHitDeferredDispatchCc13Bound (cc13-hitq2)
+
+ON runs one more 00926700 drain right after the host's motion step, so pushes drain in the same step as the image's
+row 6. **Predictions:** the 306.2 one-step lag goes away. BSM09's opening Val deaths stay at 42.70 s, and the
+remaining moves are the order effects only (oldest-hit kill credit, blast before direct, reverse Lua and death-row
+order within a step). USN21 first (expected identical or near), then USN04, JM08 and BSM09, both envs.
+ON = `local\g54_hq2_on` (both switches), OFF = `local\g54_d_off`.
+
+**306.4 measured; all three FLIPPED ON.** The kamikazes spawn at 2767.57 s, so 9000 frames is vacuous (latches=1 both
+ways). Re-run at 64000 frames, no orders, reference env (`g54_doffs_L21` vs `g54_kl1s_L21`, `g54_kl12s_L21`,
+`g54_kl123s_L21`). USN21 completes at 3006.81 s in every run ("Center force is retreating! - Mission Complete!").
+- (1) alone: pair_diff exit 1. Death rows (139) and unit table (198) identical. `spent ordnance rtb` latches/ends/
+  issues 16 -> 1, `returntobase null` 16 -> 1, site keys computed 90 -> 0, `land task refused` 76 -> 1 (the 15
+  Kamikaze1-15 rows of 5 placements each are gone). `squadron free attack` ticks 14631 -> 62074 (stops.refused
+  0 -> 38875): the 15 kamikaze squadrons stay on their attack instead of latching. That is the predicted 15 fewer
+  latches and 75 fewer refusals. The absolute numbers differ from the census (31/30/30) because this head's OFF
+  already has 16.
+- (1)+(2) and (1)+(2)+(3): identical to (1) alone in every compared line. `squadron retest dead_targets=0`: no
+  kamikaze target dies before the mission completes 239 s after the spawn, and the only RTB resolve left is
+  JakeTmpl (not a kamikaze head). So (2) and (3) are UNEXERCISED here. The kamikazes do not go home. Flipped with
+  (1) because the pairing order needs them together and nothing regresses; a row where Intrepid sinks while a
+  kamikaze squadron lives is still needed to see (2) and (3) act.
+
+**306.5 measured; FLIPPED ON.** Reference env, all three rows pair_diff exit 1 with the sweep line unchanged:
+USN21 construct arms 6 -> 6 with launch spot arms 0 (also 134 and 0 on the 64000-frame run); USN04 construct arms
+51 -> 66 with launch spot arms 15; USNOS os_k 63 -> 75 with launch spot arms 12; airfield=0 everywhere. Deck-launched
+planes now take 1.0 at first sight and then 3.0 at placement, so their first swept step is unchanged, as predicted.
+The 5.0 AirField arm is not reached on these rows.
+
+**306.3 addendum: confirmation pairs on the lead's rows.** OFF = `local\g54_pf_off` (26bbb19a3 with the puff switch
+forced false), ON = the tree build `local\g54_d_off`, 36000 frames with the current WINS orders (IJN08
+`ijn08_s49_i08_i11`, JM06 `jm06_l70_j6_n`, LOMP06 `lomp06_l70_l6_c`).
+- Reference env: all three exit 1 (gameplay identical). Puff draws are 4 / 12 / 4. Outcomes are unchanged:
+  IJN08 has no end in 36000 frames, JM06 completes at 1658.49 s, LOMP06 fails at 653.11 s (OFF too).
+- Default env: IJN08 exits 3 (8 puff draws). JM06 exits 3: deaths 22 -> 21, and it still completes, at 805.93 s
+  instead of 724.95 s. LOMP06 exits 1 (no breakup; it fails at 672.11 s both ways).
+- No WINS outcome moves in the reference env.
+
+**306.6 measured; NOT flipped (the lead holds it for cc13's double-dispatch verdict).** Both switches ON
+(`local\g54_hq2_on`, 26bbb19a3) against both OFF (`local\g54_d_off`), 9000 frames, no orders.
+- Reference env: every row has left=0 (queued = dispatched: USN21 11, USN04 799, JM08 4308, BSM09 620). The one-step
+  lag of 306.2 is gone: BSM09's opening D3A Val deaths keep t = 42.70 s. What remains are the order effects. BSM09
+  has 38 death rows changed, none in time, with killer_gun changes and `D3A Val 3|.-II` going cat 1 -> 5 (blast
+  first). Deaths: USN04 55 -> 54, JM08 13 -> 17, BSM09 46 -> 46. USN21 is identical in the unit table and death
+  rows (damage +0.1).
+- Default env: all four rows move (pair_diff verdict 3). Every run, OFF and ON, exits 0 (EXITCODE=0,
+  exit_code=0), so there is no OFF regression: "exit 3" is pair_diff's verdict, not a game exit.
+- **Smoke residual:** USN21 first_respawn Myoko 110.25 (OFF) -> 110.30 (ON). cc13 resolved it: ON is FAITHFUL. The
+  host's OFF added the flooding water inline, while the image delivers the 9Eh water at the row-9 pump and it acts at
+  N+1. The ON blast line's `took=0.0` was a log quirk (logged at queue time), fixed on main 2bc63d449.
+- **Double dispatch** (cc13 rev4's question: the drain pops back() after the dispatch, so a node pushed during a
+  dispatch would be popped undispatched and the replayed node dispatched again). The path is reachable in the
+  host, because apply_hit clears deferred_replay on entry and queues a hit raised inside a dispatch. But a diagnostic
+  export (44434a773 with both ON, plus an uncommitted log of every push made while a dispatch runs;
+  `local\g54_nested_patch.py`) shows 0 nested pushes in 620 / 799 / 4308 dispatches on BSM09 / USN04 / JM08
+  (`local\g54_nest_*.log`). So it does not occur on these rows. Whether the image's 00926700 has the same pop
+  order is cc13 rev2's question.
+
+## 307. Sub dive, sub seed and helm release paired (cc9-ships60, 2026-10-19)
+
+Reference-env pairs on 10cd2414c (OFF = the tree build, local\s60_m2_off_bin; ON = pair_export trees local\s60_m2_kd,
+_sb, _kdsb, _hr). Rows: USNOS 60000 frames with local\s60_os_c19.txt; BSM01 20000 with bsm01_l69_b1_d; JM06 20000
+with jm06_p12_j6_c1; IJN08 20000 with ijn08_p10_i08_z. Kaiten rows come from `local\s60_kaiten.py`.
+
+- **kCc13SubDiveKamikazeBound** (USNOS exit 3). The OFF run matches cc13's count: of the 12 Kaitens (#3.1-3.6 and
+  #6.1-6.6), 5 are shot (NH x2, Portland2, DM1 x2) and 7 drown. ON, all 12 drown with no killer: the first wave
+  together at 161.21 s, the second at 1102.45 s, and there are no gunfire kills, as predicted. Flipped ON.
+- **kSubSeedNearestBandCc13Bound** (USNOS exit 3; BSM01 and JM06 exit 1, gameplay identical). Seeds: the 12 Kaitens go
+  0 -> 1 (y -2.8 to -4.4), JM06 I-400 #2.1 goes 0 -> 2 (y -49.43), and USNOS **Gato goes 0 -> 2** (y -30.00; the
+  lead's note said 1). Alone, it has 1 Kaiten shot (NH) and 11 drowning. Together with SubDiveKamikaze (kdsb) it
+  gives the same 12 drownings as kd alone. Flipped ON.
+- **kHelmReleaseGunsToRestCc13Bound** (IJN08 and USNOS exit 3). In IJN08, 0080E290 runs 386 times: the HUD release
+  site (194) and the kind-6 role release (192) go from unimplemented to concrete. The first moved death is an AA kill
+  at 662.26 -> 662.31 s (Jap_Airfield_sqn10). After it, killers and kill times shift through gun aim (for example
+  Haruna -> Kongo), with no unit-state change before then. Flipped ON.
+None of these rows' WINS orders end in the paired window, so no WINS result is claimed here. The USNOS prefix moves
+with each switch, so the c19-c21 notes in 305 need a rerun on the new exe.
+
+## 308. Handoff from cc9-gunnery54 (2026-10-19)
+
+Branch `agent/cc9-gunnery52`, tree `J:\PROG\battlestations-pacific-decompile-cc9-gunnery52`, run prefix `g54_`
+(launcher `local\g54_rows.ps1`: `-Rows name=MISSION:frames:orders -Prefix -Exe [-NoStreams]`). The head is merged with
+origin/main; the full build passes.
+
+**Flipped ON in this run** (each by mechanism, with predictions written first):
+- kPlaneCrashConstructCooldownCc13Bound (303, b09a47caa) and kPlaneCrashLaunchArmCc13Bound (306.5, 1da1ef2f9).
+- kKamikazeDirectHitCc13Bound (306.1, 19f51a261). The pair needs a detonating USNOS plan: `local\g54_os_c17.txt`.
+- kShipBreakInTwoPuffDrawsCc13Bound (306.3, 03a357907; confirmation pairs 9491269d5).
+- The three cc13-kzlatch switches (306.4, 1da1ef2f9). (2) and (3) are UNEXERCISED on USN21 (the mission completes
+  239 s after the kamikazes spawn at 2767.57 s).
+
+**Other commits:** 51a81a155 (merge; section 306 kept beside ships60's 307), ad6fffea4 (pair_diff drops the
+all-zero arc guard census line), 44434a773 (plane_crash_sweep.hpp comment on the unmodelled 007BC5B0 / +520h / +5Ch
+gates), 7b5cd920a (the gunnery host logs `rng streams: on|off (BSP_GUNNERY_RNG_STREAMS)` once at startup).
+
+**Open:**
+1. **hitq** (kHitDeferredDispatchCc13Bound + kHitDeferredSameStepDrainCc13Bound): paired (306.2, 306.6), held OFF
+   by the lead for cc13 rev2's verdict on the image's pop order. When the lead says go: flip both together, with a
+   lease on cc13_hitq_switches.hpp for one commit.
+2. **kz latch (2) and (3)** need a row where a kamikaze squadron's target dies while it lives (Intrepid sinking on
+   USN21 would do it). No such row is known yet.
+3. **The player turret hit** (PLAYER_GUN_SEAT 7.5): time box closed. It needs a row where the camera ship owns the
+   group 3 turrets (on USN15 the camera is on Fletcher-class10 and the muzzles are on Mississippi).
+4. **Coming from cc13:** kTorpedoBotOwnerPlayerGateCc13Bound (008FFF20 exits when the owner's +184h is set). Pair it on
+   a plan that takehelms a DD/CA with torpedoes (USN15 / JM08 / USN01).
+5. **WINS notes passed on:** IJN18 `ijn18_l67_i18_d` does not end in 64000 frames on 97bd59009 (sent to lua70).
+   USN21 with no orders completes at 3006.81 s. LOMP06 `l70_l6_c` fails at 653.11 s (reference env).
+- Never use git stash. src/game_hosts_gunnery.cpp is often leased by cc13: queue, never jump.
+
+**308 update: hitq FLIPPED ON.** Both kHitDeferredDispatchCc13Bound and kHitDeferredSameStepDrainCc13Bound, on the lead's GO. The basis is 306.2 / 306.6, the 0/0/0 nested-push check, cc13 rev2's verdict that the 00926700 pop order is faithful (it re-reads head->prev after the dispatch), and cc13's finding that the smoke residual is faithful (water acts at N+1). Open item 1 of 308 is closed.
+
+## 309. cc9-ships60 handoff (2026-10-19)
+
+**Landed on agent/cc9-ships44** (each flip fully built and paired in the reference env):
+- 298 `kShipBreakInTwoDrawsBound` ON (the 11 00935D30 piece draws). 299 `kShipAiRingNanArmsBound` ON.
+- 302 cc13's seg67 ship batch, all seven switches ON. gunnery53 did two of them (300).
+- 304 `kDeadLeaderDirectorStateCopyBound` and `kWakeDecomposeSegmentProjectionBound` ON.
+- 307 `kCc13SubDiveKamikazeBound`, `kSubSeedNearestBandCc13Bound` and `kHelmReleaseGunsToRestCc13Bound` ON.
+- Comment fixes: the fort citations in hull_terrain_contact.hpp, and the station-keeping "never entered" note in
+  game_hosts_ship_ai.cpp.
+
+**USNOS, open (305).** On 77d8a4a9d (every switch above ON), c19 (`s60_q_c19`, reference) failed at 2741.55 s:
+- wave-2 planes sank TT5 (519.90 s) and TT4 (547.24 s);
+- Airfield1 squadrons sank TT1 (1930 s) and the reserve TT6 (2737.95 s);
+- the blockade sank TT3;
+- Enterprise's own gun sank TT2 (2665.83 s).
+The jitter twin was stopped. Every plan since c17 fails on the airfield squadrons: us_osumi.lua runs
+luaAirfieldManager per JapAirfields member while `not unit.Dead`, aimed at live Mission.Troops, so no hideout is
+safe while the airfields live. The next plan should therefore:
+1. Kill the airfields early. Find all JapAirfields members (us_osumi.lua near line 678) and their land-master
+   sections. Airfield1 = "Hangar, Large, 08 01" at (-3621.8, 3321.1). Strike them with free decks: remove squadrons
+   from the early air_mass lists so a 339 strike is accepted (c21's were all "no such slot"). Loui1/Loui2 gunfire
+   is the other route, since the airfield is near HQ1.
+2. Keep the transports away from our own carriers' flak. Midway (c20) and Enterprise (q_c19) each sank one.
+3. Then reuse c19's TT6 legs (local\s60_osmk.py TT6_ROUTE), find what re-neutralizes HQ2 after its capture (s60_b_c19
+   on 913bac450), and kill Yamato and the Funryu Bettys for ReinDead.
+Scripts: local\s60_osmk.py (variants c18a-c21), local\s60_rows.ps1 (launcher, -Jitter, -ExtraEnv),
+local\s59_sum.py, local\s60_firstdiv.py (first diverging line per regex), local\s60_kaiten.py.
+
+**Still open from earlier handoffs:** the Fuso USN15 close-range gunnery question (297).

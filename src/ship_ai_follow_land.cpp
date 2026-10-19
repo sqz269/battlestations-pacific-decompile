@@ -125,8 +125,8 @@ void ship_ai_publish_station_request_009da3b0(const ShipAiStationRequest& reques
     blk_038c.unused_10 = request.unused_10;        // 009DA3DA, blk+39Ch
     blk_038c.radius = request.radius;              // 009DA3E3, blk+3A0h
     blk_038c.making_way = request.making_way;      // 009DA3ED, blk+3A4h
-    blk_038c.enable = request.enable;              // 009DA3F7, blk+3A5h
-    blk_038c.suppress = request.suppress;          // 009DA400, blk+3A6h
+    blk_038c.enable = request.enable;              // 009DA3F7, blk+3A5h (host reads ShipAiControlBlock::flag_3a5, not this copy)
+    blk_038c.suppress = request.suppress;          // 009DA400, blk+3A6h (host reads Controller::flag_3a6, not this copy)
 }
 
 void ship_ai_follow_step_009e1610(ShipAiFollowState& state, ShipAiFollowStepHost& host) {

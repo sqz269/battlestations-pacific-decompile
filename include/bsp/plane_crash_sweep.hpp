@@ -59,6 +59,10 @@
 namespace bsp {
 
 inline constexpr bool kPlaneCrashSweepBound = true;  // ON: USN19/USN18/USNOS pairs (docs/SQUADRON_LAND_TASK.md 5gc)
+// UNMODELLED image gates (cc13 reltimer; none changes a healthy AI plane): the 007BC5B0
+// invincibility arm (+150h > 0 skips the sweep), the plane+520h check and the +5Ch check.
+// USN04's killer="-" death of Yorktown-class01_sqn05 at 230.71 s is a faithful mid-air
+// collision with Zero #7.2 through this sweep (007C0910).
 
 // 00CE3854 (float 3.0): 007C5F60's unit+9DCh for a launch spot (007C605D). With
 // kPlaneCrashLaunchArmCc13Bound off, LABELLED: the host arms 3.0 for every base,
@@ -91,7 +95,7 @@ inline constexpr bool kPlaneCrashConstructCooldownCc13Bound = true;  // ON: USN2
 // does not re-arm. It replaces the arming of kPlaneCrashConstructCooldownCc13Bound,
 // whose 1.0f and per-plane state it shares, so it needs that switch.
 // False: the arming above.
-inline constexpr bool kPlaneCrashLaunchArmCc13Bound = false;
+inline constexpr bool kPlaneCrashLaunchArmCc13Bound = true;  // ON: USN21/USN04/USNOS pairs (docs/SHIP_AI_OPEN_ITEMS.md 306.5)
 static_assert(!kPlaneCrashLaunchArmCc13Bound || kPlaneCrashConstructCooldownCc13Bound,
               "kPlaneCrashLaunchArmCc13Bound needs kPlaneCrashConstructCooldownCc13Bound");
 
