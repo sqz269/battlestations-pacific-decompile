@@ -62,7 +62,8 @@ inline constexpr bool kShipAiNavigateAsternSkipBound = false;
 // 009EE59B/009EE59F. When blk+1C4h is neither 2 nor 3 (Rudder or Heading),
 // the path gate JZ 009EF206 still reaches 009EF206: 009DE5B0(dt), then
 // AL = [ESP+37h] = 0. The host's closed-gate return
-// (kShipAiNavTailGateBookkeeping, packet cc9_ship_ai_tails_2) skipped it.
+// (game_hosts_ship_ai.cpp:10956) skipped it under either value of
+// kShipAiNavTailGateBookkeeping (packet cc9_ship_ai_tails_2).
 // A sibling of kShipAiNavTailGateBookkeeping, which only chooses the
 // bookkeeping record.
 // True: the closed gate makes the same arm-final call before returning false.
