@@ -96,6 +96,7 @@
 #include "bsp/plane_release_ver_cc13.hpp"
 #include "bsp/seg59_ship_lead_s54.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/cc13_damage_smoke.hpp"   // packet cc13-smokepc24 (00822770 PC24 slot count)
 
 namespace bsp::game {
 namespace {
@@ -13882,7 +13883,10 @@ void GameGunneryHost::Impl::ship_death_message_00827ab0(std::size_t victim) {
         //  * the view node is taken as set (it is set in any rendered mission);
         //  * the host's kill came before this 98h (as for the eleven above), so the
         //    puffs follow the kill here instead of preceding it;
-        //  * the puffs use the piece's ship_break_in_two key under the stream option.
+        //  * the puffs use the piece's ship_break_in_two key under the stream option;
+        //  * a VehicleClass row nil'd by 0095CA70 (kVehicleClassPreloadCc15Bound) reads as
+        //    not found, so the puffs are skipped, while the image still draws from the C++
+        //    class object's +55Ch.
         if constexpr (bsp::kShipBreakInTwoPuffDrawsCc13Bound) {
             const int type_id = unit_state[victim].row.type_id;
             const GameVehicleClassRow cls = lua.read_vehicle_class_row(type_id);
@@ -15975,10 +15979,18 @@ bool GameGunneryHost::damage_smoke_tick_008227e0(std::size_t unit_index, float d
     }
     const float damage = 1.0f - health;
     // 00822774..00822791: (+2Ch + 1) * arg through _ftol (truncation), capped at +2Ch.
-    int wanted = static_cast<int>(static_cast<double>(max_number + 1) * damage);
+    // Packet cc13-smokepc24: ON rounds the product to float first (PC24), as the image does.
+    static_assert(!bsp::cc13_damage_smoke::kDamageSmokeSlotCountPc24Cc13Bound
+                      || kDamageSmokeDrawsBound,
+                  "the PC24 slot count is a sub-switch of kDamageSmokeDrawsBound");
+    int wanted = bsp::cc13_damage_smoke::kDamageSmokeSlotCountPc24Cc13Bound
+        ? bsp::cc13_damage_smoke::damage_smoke_slot_product_pc24_00822770(max_number, damage)
+        : static_cast<int>(static_cast<double>(max_number + 1) * damage);
     if (!(wanted < max_number)) wanted = max_number;
     // 008227AD: an unsigned compare; the grow appends {null effect, 0.0}.
-    if (wanted > 0 && static_cast<std::size_t>(wanted) > us.smoke_timers.size()) {
+    // LABELLED (host guard): wanted > 0 drops the image's NaN arm, where _ftol(NaN) gives
+    // 80000000h, the signed min keeps it and the unsigned compare makes it a huge resize.
+    if (wanted > 0 &&static_cast<std::size_t>(wanted) > us.smoke_timers.size()) {
         if (us.smoke_timers.empty()) ++host.smoke_units;
         host.smoke_slots_grown += static_cast<std::size_t>(wanted) - us.smoke_timers.size();
         us.smoke_timers.resize(static_cast<std::size_t>(wanted), 0.0f);

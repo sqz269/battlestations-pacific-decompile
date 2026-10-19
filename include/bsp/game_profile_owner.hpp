@@ -22,14 +22,16 @@
 namespace bsp::game {
 
 class GameHostLog;
+class GameVfsHost;
 
 // Off: the host keeps the earlier stand-ins (TitleInit/PressStart reset
 // unimplemented, map_flag_visible = true, mission_result's own progress_).
 // On: the profile owner is reset where the image resets it and the map-flag
 // and mission-record rows read and write its MissionProgress.
 inline constexpr bool kProfileOwnerCc15Bound = false;
-// Off: 0068EA00 and 00690CD0 stay unimplemented. On: the tracker is built by
-// the first 004E1CA0 call and both rows run on it.
+// Off: 0068EA00 and 00690CD0 stay unimplemented. On: the tracker is
+// built by the first 004E1CA0 call, OnInit's 006921B0 loads the definitions
+// map +30h from HintSystemMessages.lua, and the rows run on it.
 inline constexpr bool kHintTrackerCc15Bound = false;
 
 // The profile block GGame holds inline at game+650h. Natively the profile
@@ -81,6 +83,23 @@ public:
     void clear_hint_queue_0068ea00();
     // 00690CD0 __fastcall(tracker), RET, through hint_tracker_rebuild_history_00690cd0.
     void rebuild_history_00690cd0();
+    // 006921B0 __fastcall(tracker), RET, through hint_tracker_reload_006921b0:
+    // a private Lua state opened with mask 1 runs HintSystemMessages.lua (with
+    // the VFS overrides, 00B69D40), and the five sub-tables go through
+    // hint_tracker_load_definitions_0068f030 into +30h.
+    void reload_hint_tables_006921b0(GameVfsHost& vfs);
+
+    // Counts from the last reload, for the run log.
+    struct ReloadSummary {
+        bool script_called{false};     // a chunk of the script ran
+        std::size_t entries{0};        // sub-table entries the loader visited
+        std::size_t replaced{0};       // entries whose id was already in +30h
+        std::size_t other_category{0}; // definitions with +50h set (OTHER.*)
+        std::size_t hidden{0};
+        std::size_t critical{0};
+        std::size_t mission_specific{0};
+    };
+    const ReloadSummary& reload_summary() const noexcept { return reload_summary_; }
 
     std::size_t definition_count() const noexcept { return definitions_30_.size(); }
     std::size_t history94_count() const noexcept { return history_94_.size(); }
@@ -118,6 +137,9 @@ private:
     HintHistory history_7c_;
     HintHistory history_88_;
     HintHistory history_94_;
+    ReloadSummary reload_summary_{};
+
+    friend class HintTablesReload;
 };
 
 // [00E198D0] and its getter 004E1CA0: new(A0h) + 004E18E0 on the first call,
