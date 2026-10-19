@@ -19565,3 +19565,46 @@ A row that sinks or kills those still needs a pair.
 - USN01 `usn01_p8_u1_i` does not complete at 30000 mission frames on a8d54817d, with either switch
   OFF or ON (Mission.EndMission is never true; only Convoy5 sinks). cc9-lua68 has been told.
 - The generated-marker uint16 wrap above.
+
+## 296. Gunnery / ship-AI queue, continued (cc9-gunnery53, 2026-10-18)
+
+Tree agent/cc9-gunnery52 (reused), on origin/main with d6c0c5ccd. Pairs in the reference env
+(BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1), `--stop-after-end 40`; launcher local\g53_rows.ps1,
+logs local\g53_*.log.
+
+### 1. kLandConvoyDeadBound: a host lookup bug fixed (1bd64b076), then ON
+
+Bytes re-checked: 00929800 calls 00B673A0 with key 00CF829C "Dead" (00929896), then reads
+00E0CF04[[ESI+70h]] (009298C5) for "KillReason" 00D19494; entry 2 is 00D0E354 "soft". 0077D3CA
+calls 00929B60. 00743450 calls 0077E830 unconditionally at 0074347E, and 0077E830 calls 00928A00,
+so every load-time LandConvoy has a self table (MISSION_ENTITY_LUA_ATTACH table).
+
+First ON pair (export of d1de4a0da, local\g53_dd_{off,on}_j5.log): gameplay identical, but the ON
+log says `00929800 found no self table, Dead not written` for JM05's RadarStationLandConvoy 01.
+**Mechanism failure in the host:** publish_land_convoy_dead_00929800 looked the convoy up in
+pending_entities_, which InitAll's 00926335 clears, so after load it could never find a convoy.
+1bd64b076 looks it up in scene_entity_ids_ (the FindEntity name index the attach fills). No OFF
+change.
+
+Second pair (export of 1bd64b076, local\g53_dd2_{off,on}_j5.log, JM05 idle, 36000-frame cap, the
+mission fails at 306.05 s in both): GAMEPLAY identical; ON logs `marker id 50016 Dead=true
+KillReason=soft` at the member's death (69 s), and the 00929800 count moves 6922 -> 6923. Flipped by
+mechanism.
+
+Reach: JM05's script never reads RadarStationLandConvoy 01, so the write is not gameplay-visible on
+this row. The visible reader is event 5 (`Convoy.Dead`, jm05.lua 4369, and the same event's
+Kill(convoy) at 3686/4378, whose member kills should reach the same zero-count path; not run). On current main the event manager
+picks event 1 (sub hunt, Countdown at 222.06 s) first, and Shokaku sinks at 305.85 s. Plan
+attempt local\g53_j5_a.txt (both IJN carriers run east to 18000) moved the loss to 450.01 s, still
+on event 1. Older builds picked event 5 first (GenerateObject "Event5Convoy" -> marker 90000 at
+216.06 s, e.g. cc9-lua52\local\l54_P0_j5.log), so a JM05 plan that both keeps the carriers alive
+past ~620 s and gets event 5 is the open reach. PRCP08 (usn_12_Indochina.lua) never reads
+Train.Dead; it listens for the engine's kill only.
+
+### 2. MoveOnPath marker id wrap (d1de4a0da)
+
+game_hosts_script_orders.cpp issue_shipyard_moveonpath_008454b4 stored `uint16(marker->id)` in
+the +174h stand-in. It now posts 0 (with a log line) for an id above 0xFFFF instead of wrapping.
+Only GenerateObject LandConvoy markers (90000 + n) exceed 0xFFFF, and the path lookup there is by
+an authored Path name, so no current row takes the new arm: build-only, no pair. The id-space
+proposal of 295.4 is still open.

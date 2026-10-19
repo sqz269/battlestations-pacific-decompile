@@ -45,7 +45,7 @@
 
 namespace bsp::game {
 
-inline constexpr bool kLandConvoyDeadBound = false;
+inline constexpr bool kLandConvoyDeadBound = true;  // flipped by cc9-gunnery53 (SHIP_AI_OPEN_ITEMS 296)
 inline constexpr bool kLandConvoyDeadWired = kLandConvoyBodiesBound && kLandConvoyDeadBound;
 
 }  // namespace bsp::game
