@@ -40,6 +40,7 @@
 #include "bsp/game_native_mission_model.hpp"
 #include "bsp/game_native_mission_command.hpp"
 #include "bsp/game_native_mission_lighting.hpp"
+#include "bsp/game_native_mission_factories.hpp"
 #include "bsp/native_gui_scene_storage.hpp"
 #include "bsp/native_node_root_propagation.hpp"
 #include "bsp/native_node_scene_attachment.hpp"
@@ -985,3 +986,4 @@ void GameNativeRendererApplication::after_native_drain() {
 }
 } // namespace bsp::game
 #include "game_native_mission_model.inc"
+#include "game_native_mission_factories.inc"
