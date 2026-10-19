@@ -38,7 +38,11 @@ namespace bsp::cc13_release_timer {
 // is per-thread and clock-seeded (docs/CC13_RNG_STREAM_CENSUS.md), so its
 // sequence is not reproducible. The switch is separate because the host draw
 // shifts the host's shared stream.
-inline constexpr bool kReleaseTimerReseedDrawBound = false;
+// cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 101). Pairs
+// local\p24n_off vs local\p24h1 (main c01bcb8fb), both envs: every row moves;
+// BSM09 and USN21 still end; USN01 u1i loses its default-env completion
+// (RNG-coupled, no end in the ref env on either side).
+inline constexpr bool kReleaseTimerReseedDrawBound = true;
 
 // 009FA3C3-009FA3CC: 007BB110 BSP_Unit_CanReleaseOrdnance(ECX = unit). True:
 // the host evaluates 007BB110 itself (unit_can_release_007bb110 below) from
