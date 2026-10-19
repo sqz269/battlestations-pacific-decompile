@@ -32,11 +32,11 @@ stay unbound by the lead's ruling.
 **Rule (the same as docs/CC13_SEG59.md).** A class's out-of-line destructor is rebuilt, including
 the two-instruction form `MOV [ECX], vtable; JMP base` (seg59's 008F4160 / 008F4D50 / 008F4D60;
 here 00743E30, 0074CC90, 0093CC80, 007AC950, 0094CAD0). A scalar or vector deleting destructor is
-compiler-generated and bound; its record cites the out-of-line destructor whose body it repeats
-inline. Where that out-of-line copy is not a defined function (00CFEA98's 007378A0 and 00D005C0's
-007504E0 are unreferenced undefined chunks), the record cites the routine the inlined body calls,
-which does all the work after the vtable store. A pure single-JMP with no store is a thunk record
-(`existing_recorded_thunk`).
+bound, citing the out-of-line copy when it has a record; otherwise cite the called routine, or
+rebuild when there is none. (Here 00CFEA98's 007378A0 and 00D005C0's 007504E0 are unreferenced
+undefined chunks, so 007378B0 and 00750520 cite the routine their inlined body calls.) A pure
+single-JMP with no store is a thunk record (`existing_recorded_thunk`). docs/CC13_MISTAG.md
+uses the same wording.
 
 ## Reconstructed
 

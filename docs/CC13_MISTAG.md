@@ -33,13 +33,18 @@ Scripts `local/mistag_filter2.py` and the tightening pass recorded in `local/mis
 | 61 | 8 |
 | 46 | 2 |
 
-All 47 are game code. Blind spot left: a game body whose only game callees are named like element
-callbacks, and that touches no global and no string, is still not flagged.
+Each of the 47 read by hand turned out to be game code. The filter is not complete: rev-convoy's
+spot check of the rows it dropped found game destructors with no global, string or game call
+(batch 2 below), and the widened vtable scan finds more of that kind. What no scan here covers:
+a game body that stores no vtable, touches no global or string, and whose game callees are all
+named like element callbacks.
 
-## This batch (38 rows)
+**Destructor rule (the same wording as docs/CC13_CENSUS9.md).** A class's out-of-line destructor
+is rebuilt, including the form `MOV [ECX], vtable; JMP base`. A scalar or vector deleting
+destructor is bound, citing the out-of-line copy when it has a record; otherwise cite the called
+routine, or rebuild when there is none.
 
-Destructor rule as in docs/CC13_CENSUS9.md: deleting wrappers are bound when their inlined body
-has an out-of-line copy with a record; otherwise rebuilt.
+## Batch 1 (38 rows)
 
 - **23 getters**, `MOV EAX, imm32; RET`, each the target of one .rdata vtable slot: type names
   (`Torpedo`, `WaterMine`, `Paratrooper`, `MLandFort`, the seven 00951xxx `M*` unit classes),
@@ -84,6 +89,31 @@ no file (docs/UNIT_STATE_MESSAGE.md covers the apply side). Three are rebuilt he
   per-holder counter reaches 3*phase+1 or the state's +0Fh is set), then MT_SHIP_GUNS_SYNC for
   phase 1..4, or for phase <= 0 when the state's +18h or +19h is set (phase 0 scans the gun
   parts for damage first). The state's +19h takes the damage result and +18h takes phase > 0.
+
+## Batch 2, part A: rows the filter dropped (21 rows)
+
+rev-convoy's scan of the 548 filter-dropped rows (`local/mistag_dropped_vt.py`, a copy of its
+mt_dropped_vt.py) and the widened scan `local/mistag_vtscan2.py` (every open library-tagged row
+of the 16 segments; also the `C7 41 d8` and `8D 49` forms) agree on the six VT+JMP destructors.
+
+Rebuilt (out-of-line destructors):
+
+| Address | Name | Body |
+|---|---|---|
+| `00728B80` | BSP_SessionMessage_GUN_CREATE_Destruct | 00CFDE1C; JMP 007668E0 |
+| `00858150` | BSP_EffectInstanceBase_Destruct | 00D0C88C, +8h 00D0C888; JMP 00BD30F0 |
+| `009A1BF0` | BSP_BotApproachCloseToShip_Destruct | 00D1F470; ECX+2Ch; JMP 0064A610 |
+| `009BE2B0` | BSP_BotApproachMoveTo_Destruct | 00D209CC; ECX+30h; JMP 0042BCA0 |
+| `007B1BD0` | BSP_PathComponent_Destruct_007b1bd0 | 00D053D8; JMP 007B1A80 |
+| `007B1BE0` | BSP_PathComponent_Destruct_007b1be0 | byte-identical copy of 007B1BD0 |
+
+Bound, each scalar deleting destructor with the out-of-line copy it inlines: `00729020` (inlines
+00728B80), `007B2220` and `007B2920` (inline 007B1BD0), `00858220`, `00873060` and `00873420`
+(inline 00858150), `009A1C70` (inlines 009A1BF0), `009BE2E0` (inlines 009BE2B0), `006D2EE0`
+(inlines 006D1460), `007B3450` (inlines 007B3400), `007B3E40` (inlines 007B3E20), `00862630`
+(inlines 00861B30). Three whose out-of-line copy is an undefined chunk cite the routine their
+body reaches: `00729510` (chunk 00727B50; 004704B0 on +4h), `0085EB60` (chunk 0085EA70;
+006E2A20), `00865CB0` (chunk 00865B50; the pool pair 00419CC0 / 00BD1510).
 
 ## Left open (4 rows)
 

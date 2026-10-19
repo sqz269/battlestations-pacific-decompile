@@ -82,6 +82,24 @@ public:
         std::uint32_t dtor) = 0;
 };
 
+// --- Out-of-line MOV vtable; JMP base destructors (batch 2; rev-convoy's dropped-row scan) ---
+// Each __thiscall(ECX = object), the JMP target's RET.
+class MistagDtorHost {
+public:
+    virtual ~MistagDtorHost() = default;
+    virtual void net_entity_create_message_destruct_007668e0(void* message) = 0;
+    virtual void ref_counted_destroy_base_00bd30f0(void* object) = 0;
+    virtual void observed_owner_base_destroy_0064a610(void* observed) = 0;   // ECX = object+2Ch
+    virtual void target_observer_destruct_0042bca0(void* observer) = 0;      // ECX = object+30h
+    virtual void point3_ptr_array_destruct_007b1a80(void* array) = 0;
+};
+void gun_create_message_destruct_00728b80(MistagDtorHost& host, void* message);      // 00CFDE1C
+void effect_instance_base_destruct_00858150(MistagDtorHost& host, void* instance);   // 00D0C88C, +8h 00D0C888
+void bot_approach_close_to_ship_destruct_009a1bf0(MistagDtorHost& host, void* block); // 00D1F470
+void bot_approach_move_to_destruct_009be2b0(MistagDtorHost& host, void* block);       // 00D209CC
+void path_component_destruct_007b1bd0(MistagDtorHost& host, void* component);         // 00D053D8
+void path_component_destruct_007b1be0(MistagDtorHost& host, void* component);         // 00D053D8
+
 // 0099A880, __thiscall(ECX = memory), RET, EAX = bot: BSP_PilotBot_Construct.
 void* pilot_bot_construct_0099a880(MistagHost& host, void* bot);
 // 0099BE30, __thiscall(ECX = plan, base), RET 4, EAX = plan: the pilot plan block embedded at

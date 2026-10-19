@@ -110,6 +110,45 @@ void point3_ptr_array_destruct_007b1a80(MistagHost& host, void* array) {
     at<std::uint32_t>(array, 0x10) = 0;
 }
 
+// 00728B80..00728B8A: GUN_CREATE message (constructor 0072A1D0, sender 0072B640).
+void gun_create_message_destruct_00728b80(MistagDtorHost& host, void* message) {
+    at<std::uint32_t>(message, 0) = 0x00CFDE1C;
+    host.net_entity_create_message_destruct_007668e0(message);
+}
+
+// 00858150..00858161: the effect-instance base shared by the trace-line, waterdrops, light and
+// splash instances (their destructors store the same pair); +8h is the second subobject.
+void effect_instance_base_destruct_00858150(MistagDtorHost& host, void* instance) {
+    at<std::uint32_t>(instance, 0) = 0x00D0C88C;
+    at<std::uint32_t>(instance, 8) = 0x00D0C888;
+    host.ref_counted_destroy_base_00bd30f0(instance);
+}
+
+// 009A1BF0..009A1BFD: BotApproachCloseToShip block (constructor 009A1D60); ADD ECX,2Ch then
+// JMP 0064A610 on the observed-owner member.
+void bot_approach_close_to_ship_destruct_009a1bf0(MistagDtorHost& host, void* block) {
+    at<std::uint32_t>(block, 0) = 0x00D1F470;
+    host.observed_owner_base_destroy_0064a610(static_cast<std::uint8_t*>(block) + 0x2C);
+}
+
+// 009BE2B0..009BE2BD: BotApproachMoveTo block (constructor 009C1C30); ADD ECX,30h then
+// JMP 0042BCA0 on the target-observer member.
+void bot_approach_move_to_destruct_009be2b0(MistagDtorHost& host, void* block) {
+    at<std::uint32_t>(block, 0) = 0x00D209CC;
+    host.target_observer_destruct_0042bca0(static_cast<std::uint8_t*>(block) + 0x30);
+}
+
+// 007B1BD0..007B1BDA and 007B1BE0..007B1BEA: two byte-identical copies, the path component
+// (constructor 007B28C0) over its Point3PtrArray base 007B1A80.
+void path_component_destruct_007b1bd0(MistagDtorHost& host, void* component) {
+    at<std::uint32_t>(component, 0) = 0x00D053D8;
+    host.point3_ptr_array_destruct_007b1a80(component);
+}
+void path_component_destruct_007b1be0(MistagDtorHost& host, void* component) {
+    at<std::uint32_t>(component, 0) = 0x00D053D8;
+    host.point3_ptr_array_destruct_007b1a80(component);
+}
+
 // 0099A880..0099A934. Float constants read from the image: 00E0E2EC = 0.24f (3E75C28Fh, a .data
 // dword with no writer in the index), 00CF8B3C = 256.0f, 00D7A260 = -1.0f.
 void* pilot_bot_construct_0099a880(MistagHost& host, void* bot) {
