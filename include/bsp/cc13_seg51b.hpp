@@ -131,8 +131,10 @@ void gun_camos_write_entry_0081ba80(Seg51bHost& host, std::int32_t index, const 
 // 2*cap+2.
 void refptr_array_push_back_0081c1f0(Seg51bHost& host, Object array, const Object* ref);
 
-// 0081C550 BSP_UnitInstance_ToggleDeckVisuals, __fastcall(ECX = unit), plain RET. Virtual; no
-// direct caller.
+// 0081C550 BSP_UnitInstance_ToggleDeckVisuals, __fastcall(ECX = unit), plain RET. Unreferenced:
+// no direct call, no absolute dword and no vtable slot. Uncertain purpose: on airfields +749h is
+// HangarFailure (cc13_seg30.hpp), so this may be the hangar-failure visual rather than "deck
+// visuals".
 void unit_instance_toggle_deck_visuals_0081c550(Seg51bHost& host, Object unit);
 
 } // namespace bsp::cc13_seg51b
