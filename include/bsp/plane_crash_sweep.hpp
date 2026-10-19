@@ -64,6 +64,8 @@ inline constexpr bool kPlaneCrashSweepBound = true;  // ON: USN19/USN18/USNOS pa
 // for a kind-45h base; LABELLED: the host arms 3.0 for both). The host arms it
 // on a plane's first free-flight step.
 inline constexpr float kPlaneCrashLaunchCooldown = 3.0f;
+// 00CE3850 (float 5.0): the same store for a kind-45h (AirField) base, 007C60EA.
+inline constexpr float kPlaneCrashAirfieldLaunchCooldown = 5.0f;
 
 // 00D7A24C (float 1.0): 007CFD20's unit+9DCh (007CFE78). A plane that is never
 // placed on a launch spot keeps it, so an air-spawned plane's first 1.0 s of
