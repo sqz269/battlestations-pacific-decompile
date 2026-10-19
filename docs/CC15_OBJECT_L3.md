@@ -57,3 +57,48 @@ frontend) remain host-interface bodies.
   or the 005092E0 stop on menu screens could call it first. That would change the queue's registration slot, and
   therefore its drain order. Within this host, RunFrame is the first caller.
 - The event is deleted through `delete_native_event_owner_00bd19b0` directly, not through slot 0 of its table.
+
+## Native application object (rank 12), `kApplicationCc15Bound`
+
+**Evidence.**
+- 00737970 (RET, ECX receiver) calls BEA970 and BEA810. These register the receiver in the singleton manager and
+  publish E1AE90. It then stores CFEAB0 at +0, zero at +08/+0C/+10/+14, 0 at +19/+1A and 1 at +18.
+- WinMain constructs this 1Ch object on its stack at 008F8496. At 008F8444, after 00737F30, it retires the object
+  through 007379A0. 007379A0 runs resize(0) on the +08 vector, frees the vector, then calls BEA990/BEA8B0, which
+  unregister through BCFCA0 and clear E1AE90. All of that happens before the 008F8449 manager drain.
+
+**Lifetime as wired.**
+- `GameStartupHost::application_construct` claims the process Application domain and calls
+  `construct_native_application_00737970` on a 1Ch DWORD array owned by the startup host. That array stands in for
+  WinMain's stack frame. The call borrows the 01090AA0 manager cell and the 00E1AE90 cell.
+- `application_destruct` calls `retire_native_application_007379a0`. The array services there are
+  `singleton_lifetime_allocate` and `singleton_lifetime_free`, the same pair the renderer uses for 00BF55BE and
+  00BF6989.
+
+These are the existing explicit-context Source APIs, not the native ECX ABI.
+
+**Pairs (USN04).**
+- OFF (6fd894f70) vs baseline: exit 0.
+- ON vs OFF: exit 1, gameplay identical. The native table has no status or count changes. The moved lines are:
+  - `native application constructed: storage=X e1ae90=X`;
+  - `native application retired: e1ae90=null`;
+  - drained `registered_slots` 43 -> 44. BCFCA0 clears the Application's slot but keeps the vector length, so the
+    count is expected.
+
+**Rows wired.** None. The frontier listed 0 unlocks, and `application_construct` was already counted as
+implemented.
+
+**Uncertainties and incompatibilities.**
+- The frame loop still reads the host's `ApplicationFrameState` projection, not native +18/+19/+1A. Those native
+  bytes are written once by the constructor and never read.
+- With the switch ON, the diagnostic `BSP_NATIVE_MISSION_SHIP=1` preload (`game_native_mission_preload.inc`) fails
+  loudly ("Application domain was already claimed"). That preload builds its own Application. In the image, 0073BF80
+  preloads onto WinMain's Application, so making the preload borrow this object is an open item.
+- The +05..07 and +1B bytes are zero here. In the image they are stack garbage that no store touches.
+
+## Native VFS manager pump (rank 13): already native, no change
+
+`GameFrameHost::tick_vfs_providers` -> `GameVfsHost::pump_pending` -> `GameNativeVfsRuntime::pump_pending` already
+calls `pump_native_vfs_pending_00bdb0b0` on the live 0109CEEC VFS publication, reloaded just before the call as
+737B79 does. The VFS manager is the native one that the VFS runtime builds. Adding another pump would call
+00BDB0B0 twice per frame, which duplicates the existing pump. Following the brief, nothing was changed.
