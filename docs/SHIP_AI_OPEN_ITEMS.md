@@ -19991,7 +19991,7 @@ process-wide): USN21 one extra Jake death, USN04 deaths 62 -> 56, USNOS deaths 1
 
 Flipped ON in include/bsp/plane_crash_sweep.hpp (cc13-cool9dc-c's queued follow-ups, the 5.0 AirField arm and the state-7 re-arm, are still open there).
 
-## 303. Formation pair: kDeadLeaderDirectorStateCopyBound and kWakeDecomposeSegmentProjectionBound (cc9-ships60, 2026-10-19)
+## 304. Formation pair: kDeadLeaderDirectorStateCopyBound and kWakeDecomposeSegmentProjectionBound (cc9-ships60, 2026-10-19)
 
 cc13's two formation switches (include/bsp/cc13_jm08_switches.hpp; main 7cc8b4df1 and earlier), each paired alone in
 the reference env on 633532638 (OFF = the tree build, ON = pair_export trees local\s60_dl_on / s60_wk_on): USN04 20000

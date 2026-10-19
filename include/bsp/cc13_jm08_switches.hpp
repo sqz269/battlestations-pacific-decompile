@@ -90,7 +90,7 @@ inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = false;
 // 0077C980 / 0077CA60 queue it, and runs at the pump like the image's; every other
 // Lua leave stays synchronous.
 // False:the successor keeps its own queue, as before. No 00BD2F10 draw.
-inline constexpr bool kDeadLeaderDirectorStateCopyBound = true;  // ON: JM08 San Francisco takes Nevada's attackmove at 527.49 s (SHIP_AI 303)
+inline constexpr bool kDeadLeaderDirectorStateCopyBound = true;  // ON: JM08 San Francisco takes Nevada's attackmove at 527.49 s (SHIP_AI 304)
 
 // The image phase a host kill site stands for, as far as the 77h / 5Dh order
 // goes (see kDeadLeaderDirectorStateCopyBound). Only a death between the pump
@@ -156,6 +156,6 @@ enum class DeadLeaderDeathPhase {
 // The across convention (0070D290's left normal from the base at `along`) is
 // unchanged. Main-thread x87 (24-bit PC) is modelled as float ops in the image's
 // order. No 00BD2F10 draw.
-inline constexpr bool kWakeDecomposeSegmentProjectionBound = true;  // ON: JM08/USN04 followers move from step 10 (SHIP_AI 303)
+inline constexpr bool kWakeDecomposeSegmentProjectionBound = true;  // ON: JM08/USN04 followers move from step 10 (SHIP_AI 304)
 
 }  // namespace bsp
