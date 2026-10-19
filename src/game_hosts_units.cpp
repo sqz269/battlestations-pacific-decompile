@@ -2977,8 +2977,19 @@ struct GameUnitsHost::Impl {
     // step later; nothing clears it (slots are never freed).
     std::vector<std::uint8_t> funnel_path_tag_by_unit;
     // Raised by the host sites that call kill_unit_00926d90 for a direct
-    // vtable[70h](1), which is not 00926D90.
+    // vtable[70h](1), which is not 00926D90; only through FunnelPathTagSuppressScope.
     bool funnel_path_tag_suppressed = false;
+    struct FunnelPathTagSuppressScope {
+        bool& flag;
+        bool previous;
+        explicit FunnelPathTagSuppressScope(Impl& host)
+            : flag(host.funnel_path_tag_suppressed), previous(host.funnel_path_tag_suppressed) {
+            flag = true;
+        }
+        ~FunnelPathTagSuppressScope() { flag = previous; }
+        FunnelPathTagSuppressScope(const FunnelPathTagSuppressScope&) = delete;
+        FunnelPathTagSuppressScope& operator=(const FunnelPathTagSuppressScope&) = delete;
+    };
     unsigned long long land_retired_invalid{0};
     unsigned long long land_retired_own_target_ok{0};   // packet cc9_land_command_own_target
     // Packet cc9_unit_yaw_rate_forward_speed: the accessor's calls and non-zero answers.
@@ -11860,9 +11871,8 @@ public:
             slot_.sub_drowned = true;
             // Packet cc13-killx: a direct vtable[70h](1), not 00926D90, so no
             // funnel path tag.
-            owner_.funnel_path_tag_suppressed = true;
+            const GameUnitsHost::Impl::FunnelPathTagSuppressScope no_tag(owner_);
             owner_.gunnery->kill_unit_00926d90(slot_.process_index, 1);
-            owner_.funnel_path_tag_suppressed = false;
             owner_.log.notef("submarine air: unit=%s drowned (vtable[70h](1), packet "
                 "cc9_submarine_air)", slot_.row.name.c_str());
         }
@@ -16925,7 +16935,13 @@ void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char
     p.plane_taxi_queue_910 = false;
     p.plane_landed_904 = false;
     p.plane_airborne_908 = (prev == 4 || prev == 3) ? 0.0f : 3600.0f;
-    record("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
+    // 007C71C3: 007C11E0(0) after the +900h..+908h stores (007C7183..007C71BB).
+    // Packet cc13-frontier: covered by the same switch as the other notify sites.
+    if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+        flight_state_notify_007c11e0(p);
+    } else {
+        record("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
+    }
     ++base_launch_liftoffs;
     log.notef("base launch lift-off: %s %d -> 7 at %.2f s (%s) y=%.2f |v|=%.2f "
         "(007CC1B3 -> C6h -> 007C6F50 -> C3h 7 -> 007C7110; packet cc9_base_launch_liftoff)",
@@ -22433,9 +22449,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         // Packet cc13-killx: 007D12FC's vtable[70h](1),
                                         // not 00926D90, so no funnel path tag (the
                                         // powerlost mode stays the death block's).
-                                        owner_.funnel_path_tag_suppressed = true;
+                                        const GameUnitsHost::Impl::FunnelPathTagSuppressScope no_tag(owner_);
                                         gun_host->kill_unit_00926d90(self_index, 1);
-                                        owner_.funnel_path_tag_suppressed = false;
                                     }
                                 }
                                 // 007CB92C: 7, 4 and 5 all go to 6. The
@@ -40508,9 +40523,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         static_cast<double>(depth));
                                     // Packet cc13-killx: 007D12FC's vtable[70h](1),
                                     // not 00926D90, so no funnel path tag.
-                                    owner_.funnel_path_tag_suppressed = true;
+                                    const GameUnitsHost::Impl::FunnelPathTagSuppressScope no_tag(owner_);
                                     gh->kill_unit_00926d90(self, 1);
-                                    owner_.funnel_path_tag_suppressed = false;
                                 }
                             }
                             if (++unit_.plane_water_powerlost == 1) {
