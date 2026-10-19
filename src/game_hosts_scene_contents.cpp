@@ -12,6 +12,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/cruise_speed_setting.hpp"
+#include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/scene_traffic_groups.hpp"
 #include "bsp/mission_scene_contents.hpp"
 #include "bsp/mission_scene_load.hpp"
@@ -930,6 +931,15 @@ private:
 
 int scene_stock_int(GameSceneContentsHost::Impl& owner, const ScenePropertyBlock& bag,
     const char* key) {
+    // cc15-vcp7: scene_enum_property reports any property as present, so an
+    // `I` value (`Count = I -1`, `NumSlots`) went to the symbol lookup and read
+    // 0. Every SpawnPoint stock and deck count was skipped as uncounted.
+    if (const SceneProperty* authored = bag.find(key);
+        authored != nullptr && equal_insensitive(authored->type_letter, "I")
+        && !authored->values.empty()) {
+        std::int32_t value = 0;
+        if (scene_scan_int(authored->values.back(), value)) return value;
+    }
     const SceneEnumProperty e = scene_enum_property(bag, key);
     if (e.present) {
         int value = 0;
@@ -1003,7 +1013,20 @@ int scene_stock_queue_list(GameSceneContentsHost::Impl& owner,
         const ScenePropertyBlock* sub = scene_stock_sub_bag(*list, key);
         if (sub == nullptr) return index;
         if (scene_stock_int(owner, *sub, "Count") == 0) continue;
-        scene_stock_queue_0095c4d0(owner, scene_stock_int(owner, *sub, "Type"));
+        const int type = scene_stock_int(owner, *sub, "Type");
+        scene_stock_queue_0095c4d0(owner, type);
+        // cc15-vcp7: the SpawnPoint's InitAll pass B (0084D170, vtable
+        // 00CEA218 +A0h) walks the same JapanList / AlliedList "Stock %d" run,
+        // with the index carried across, and resolves each counted Type with
+        // 00964790(type, DL=1) at 0084D304 / 0084D41E when the effective game
+        // mode is not 4. That runs at load, before 004E0A9B, so the miss path
+        // marks ID and Got. CONTRACT: the mark sits on this registration walk
+        // rather than on an instantiated SpawnPoint; no SpawnPoint in this
+        // installation is Hidden.
+        if (owner.lua != nullptr) {
+            owner.lua->mark_scene_vehicle_class_row_00964790(static_cast<int>(
+                VehicleClassPreloadBinding(owner).map_class_index(type)), "0084D304");
+        }
     }
 }
 
@@ -2784,7 +2807,18 @@ public:
     }
     std::string derive_short_name(const std::string& scene_path) override {
         owner_.log.implemented("SceneContents::derive_short_name", "004cd7f0");
-        return derive_scene_short_name(scene_path);
+        if constexpr (kSceneShortNameCc15Bound) {
+            // 004D4E74 PUSH 1: the append arm, over the host's own mode fields.
+            const bsp::cc13_sys::ShortNameModeFields mode{
+                static_cast<std::uint8_t>(owner_.mode_forced ? 1 : 0),
+                owner_.raw_game_mode, owner_.multiplayer ? 1 : 0};
+            std::string name = bsp::cc13_sys::derive_scene_short_name_004cd7f0(scene_path, true, mode);
+            owner_.log.notef("scene short name 004cd7f0: %s (mode 614=%d 61c=%d 1fe4=%d)",
+                name.c_str(), mode.mode_614, mode.byte_61c, mode.field_1fe4);
+            return name;
+        } else {
+            return derive_scene_short_name(scene_path);
+        }
     }
     void open_file_block(const std::string& label) override {
         owner_.summary.block_name = label;

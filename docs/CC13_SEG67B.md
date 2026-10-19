@@ -1117,3 +1117,12 @@ No new body. One ledger-only row: **009CE2C0** (009CE2C0-009CF6F7, 1,332 instruc
 | 009CC8F0 | twin of `bot_task_rocket_debug_draw_007b7290` (cc13_seg53U.cpp) | instruction-equal; only the colour statics differ |
 | 009D4FE0 | `raise_unit_load_latch_009d4fb0` (unit_orders.cpp) and the inlined copies (game_hosts_units.cpp ~2341) | matches (same law, +1034h) |
 | 009CE2C0 | `run_takeoff_run_step_009ce2c0` (game_hosts_units.cpp ~34634) | matches; keyed stand-in draw; last-bit precision only |
+
+## Packet cc13-seg67b (adoption triage Tier 3 row B), 2026-10-19
+
+Verify fragment and adoption note; the full reading is in docs/CC13_SEG67B_ITEM4.md.
+
+| Address | Host | Verdict |
+| --- | --- | --- |
+| 009B7C90 | `level_bomb_approach_update_009b7c90` (plane_level_bomb_task.cpp) | **adoption note**: the 007B9500 (31h MParatrooper, renamed `BSP_WeaponController_HasParatrooperOrdnance`) arm. (a) +CEh also counts a 31h load (009B7CBF-009B7CF7); (b) the 31h impact point is 007BCCF0(unit) + v x +A8h with no +A4h (009B7D7D-009B7E1F). Reached in JM08 (PRCPJM08.lua luaBomberWaveSpawned3: C-47 class 136 with 31h racks gets PilotSetTarget on the command building, and the host sends the wingmen to goaway with ord=0). |
+| 009A76E0 | `dogfight_aim_tick_009a76e0` and its kAim wrapper | mismatch wired: plan+2B0h = 1 at 009A7932, `kSeg67bDogfightAimSpeedCorrOffBound` (OFF) |

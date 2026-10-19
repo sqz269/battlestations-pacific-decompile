@@ -89,7 +89,9 @@ void world_destruct_00904c40(Seg59Host& host, void* world) {
     host.crt_free_00bf65ac(at<void*>(world, kWorldListHead));
     at<void*>(world, kWorldListHead) = nullptr;                     // 00904E21
 
-    // 00904E2B: the 97 raw headers at +18h; 00904E33: the parent header at +0Ch.
+    // 00904E2B: the 97 raw headers at +18h; 00904E33: the parent header at +0Ch. The image
+    // passes the element destructor 004C2D30 as the fourth argument; the host seam fixes it
+    // and does not take it.
     host.eh_vector_destructor_iterator_00bf7c6e(add(world, kWorldHeaderArray),
                                                 kWorldHeaderArrayStride, kWorldHeaderArrayCount);
     host.parent_list_clear_raw_header_storage_004bf8e0(add(world, kWorldParentList));
