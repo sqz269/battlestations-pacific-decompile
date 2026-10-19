@@ -2019,6 +2019,11 @@ struct InjectedViewAim {
     bool active{false};
     float yaw{0.0f};
     float pitch{0.0f};
+    // `aim unit`: the tracked row and its optional fixed pitch.
+    bool tracking{false};
+    std::size_t track_unit{0};
+    bool track_has_pitch{false};
+    float track_pitch{0.0f};
 };
 InjectedViewAim& injected_view_aim_state() {
     static InjectedViewAim aim;
@@ -2031,7 +2036,28 @@ void inject_view_aim(float yaw, float pitch) {
     aim.active = true;
     aim.yaw = yaw;
     aim.pitch = pitch;
+    aim.tracking = false;   // the next `aim` line ends an `aim unit` track
 }
+
+void inject_view_aim_track(std::size_t unit, bool has_pitch, float pitch) {
+    InjectedViewAim& aim = injected_view_aim_state();
+    aim.active = false;
+    aim.tracking = true;
+    aim.track_unit = unit;
+    aim.track_has_pitch = has_pitch;
+    aim.track_pitch = pitch;
+}
+
+bool injected_view_aim_track(std::size_t& unit, bool& has_pitch, float& pitch) {
+    const InjectedViewAim& aim = injected_view_aim_state();
+    if (!aim.tracking) return false;
+    unit = aim.track_unit;
+    has_pitch = aim.track_has_pitch;
+    pitch = aim.track_pitch;
+    return true;
+}
+
+void clear_injected_view_aim_track() { injected_view_aim_state().tracking = false; }
 
 bool injected_view_aim(float& yaw, float& pitch) {
     const InjectedViewAim& aim = injected_view_aim_state();
