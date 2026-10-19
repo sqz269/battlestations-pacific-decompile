@@ -251,5 +251,13 @@ void inject_view_aim(float yaw, float pitch);
 // The pending target, if any.
 bool injected_view_aim(float& yaw, float& pitch);
 void clear_injected_view_aim();
+// Packet cc13-aimunit: `aim unit <name> [pitch]`. From the line's frame until
+// the next `aim` line, the HUD re-aims the look every frame at unit row `unit`'s
+// current position. The pitch is fixed when `has_pitch`, or else aimed at the
+// unit's origin. A plain inject_view_aim ends the track.
+void inject_view_aim_track(std::size_t unit, bool has_pitch, float pitch);
+// The active track, if any.
+bool injected_view_aim_track(std::size_t& unit, bool& has_pitch, float& pitch);
+void clear_injected_view_aim_track();
 
 }  // namespace bsp::game

@@ -1,7 +1,7 @@
 #pragma once
 // Packet cc13-landc: adoption batch C, the land / park / re-takeoff chain. Each
 // switch below is OFF; the host sites are in src/game_hosts_units.cpp.
-// The names are hypotheses, not recovered symbols.
+// The names are hypotheses, not recovered symbols. Summary: docs/CC13_LANDC.md.
 
 namespace bsp {
 
@@ -11,6 +11,10 @@ namespace bsp {
 // 007C5F60 (state 2 on the launch spot) and 007CA3F0 (through 007C1430,
 // 4 or 5). Every one of them PUSHes 0 (007C16E8, 007CC7DE, 007CC853,
 // 007CB72F, 007C6278, and 007C14B4 with EBX = 0).
+// Left to the per-step poll on purpose: 007C16F0's call (007C176F PUSH 0 /
+// 007C1771 CALL 007C11E0, 4 -> 5). From 4 to 5 the a/b targets do not change
+// (both are 1 in 4 and in 5), 5 takes neither the zeroing nor +C0Ch, and
+// 007BC550's enable arm runs only with +5Ch clear, which a state-4 plane is not.
 // Body 007C11E0-007C1429, immediate == 0, with s = +900h after the store:
 //   a = !(s == 6 || (s == 7 && !(5.0f >= +908h)))  (007C11E9-007C1208; JC, so a
 //       NaN +908h gives a = 0)
@@ -57,6 +61,18 @@ namespace bsp {
 // ON can leave moving_any set for good (no reader found). If the notify comes
 // before the first per-step poll, the wing target snaps from the notify's state
 // rather than the poll's, one step earlier.
+// NOT FULLY MODELLED: 00922F30 (enable) and 00922F80 (disable) are carried only
+// as +5Ch (state->active / row.active) and the hit node. In the image both
+// return at once when +5Eh is set (00922F33 / 00922F83) or +5Ch already has the
+// target value; both dispatch vtable[68h] / [6Ch] (0077D500 / 0077D580), which
+// build message 52h and send it through 0077C7B0 (a no-op in single player);
+// and both recurse over the child list (+48h first child, +44h next sibling,
+// 00922F51-00922F6E / 00922FB4-00922FB9). The host does not test +5Eh. 007CA3F0
+// runs 007C1430 (and so this notify) before its +5Dh test at 007CA4D8, so with
+// kPlaneGroundStateDeadTailCc13Bound either way it can reach the enable arm on
+// a flushed plane (+5Dh set). The image also enables it there while +5Eh is
+// clear; with +5Eh set the image returns and the host would still set
+// active / row.active and re-attach the hit node.
 // False: the sites record 007C11E0 and the poll sets the wing target one fixed
 // step later, as before.
 inline constexpr bool kPlaneFlightStateNotifyCc13Bound = false;
@@ -99,5 +115,31 @@ inline constexpr bool kPlaneCombatDeathRetireDrawCc13Bound = false;
 // True: ground_state_from_locked_007ca3f0 returns there for such a plane.
 // False: the tail runs for it, as before.
 inline constexpr bool kPlaneGroundStateDeadTailCc13Bound = false;
+
+// A plane killed through 00926D90 BSP_MissionEntity_Kill: the retreat leave-map
+// Kill(4) (007F3418 PUSH 4 / CALL 00926D90, and 007F31A0's other members) and
+// any other funnel kill. 00926D90 sets +5Fh, stores the cause at +70h
+// (00926E02) and dispatches through vtable[70h] (argument 1) to 0077D1A0 for a
+// plane (00D19D28+70h = 00D19D98). 0077D1A0 builds message 4Eh only with
+// [00E0AF20] set and game+1FE4h 0 or 1 (0077D1BB-0077D236; not modelled, as in
+// the gunnery host's destroy_unit_0077d1a0), then 00926C80 Destroy (0077D243).
+// No SetHealth, so no 007CA8A0: no stream-1 mode draw (007CA914), no 007BBFA0 timer or 007BC3C7
+// delay draw, no 007D0B80 flags (C39h/C36h/C3Ah). The destroy flush then
+// dispatches 007BCAA0: 007BCABB's stream-0 DeadEngineFireDelay draw and the
+// 007F3970 squadron removal.
+// The host's death-mode block takes every gunnery-dead plane not already
+// removed, so today a retreat plane draws a mode (logged as "plane death mode",
+// e.g. explosion_delayed with its stream-0 delay draw) one step after the Kill.
+// The test is the host's kill cause: every cause other than 1 is stored only by
+// a 00926D90 caller (note_kill_cause: the retreat arms 4, the stock return 5,
+// the ship exit 4, the gunnery funnel's normalized Lua / ship AI causes).
+// True: for such a plane the block skips the mode draw and the mode, does not
+// set C3Ah, keeps the +60h / +5Dh flush and the squadron removal, takes the
+// 007BCABB draw (whatever kPlaneCombatDeathRetireDrawCc13Bound says) and
+// removes the plane. LABELLED: the draw lands one step after the Kill (the
+// block's step), not at that step's 009273A0 flush. A cause-1 funnel kill (Lua
+// Kill(x), 007CE3A7) cannot be told from a gunfire death and keeps the mode.
+// False: the mode is drawn, as before.
+inline constexpr bool kPlaneFunnelKillDestroyOnlyCc13Bound = false;
 
 }  // namespace bsp

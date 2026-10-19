@@ -930,6 +930,15 @@ private:
 
 int scene_stock_int(GameSceneContentsHost::Impl& owner, const ScenePropertyBlock& bag,
     const char* key) {
+    // cc15-vcp7: scene_enum_property reports any property as present, so an
+    // `I` value (`Count = I -1`, `NumSlots`) went to the symbol lookup and read
+    // 0. Every SpawnPoint stock and deck count was skipped as uncounted.
+    if (const SceneProperty* authored = bag.find(key);
+        authored != nullptr && equal_insensitive(authored->type_letter, "I")
+        && !authored->values.empty()) {
+        std::int32_t value = 0;
+        if (scene_scan_int(authored->values.back(), value)) return value;
+    }
     const SceneEnumProperty e = scene_enum_property(bag, key);
     if (e.present) {
         int value = 0;
@@ -1003,7 +1012,20 @@ int scene_stock_queue_list(GameSceneContentsHost::Impl& owner,
         const ScenePropertyBlock* sub = scene_stock_sub_bag(*list, key);
         if (sub == nullptr) return index;
         if (scene_stock_int(owner, *sub, "Count") == 0) continue;
-        scene_stock_queue_0095c4d0(owner, scene_stock_int(owner, *sub, "Type"));
+        const int type = scene_stock_int(owner, *sub, "Type");
+        scene_stock_queue_0095c4d0(owner, type);
+        // cc15-vcp7: the SpawnPoint's InitAll pass B (0084D170, vtable
+        // 00CEA218 +A0h) walks the same JapanList / AlliedList "Stock %d" run,
+        // with the index carried across, and resolves each counted Type with
+        // 00964790(type, DL=1) at 0084D304 / 0084D41E when the effective game
+        // mode is not 4. That runs at load, before 004E0A9B, so the miss path
+        // marks ID and Got. CONTRACT: the mark sits on this registration walk
+        // rather than on an instantiated SpawnPoint; no SpawnPoint in this
+        // installation is Hidden.
+        if (owner.lua != nullptr) {
+            owner.lua->mark_scene_vehicle_class_row_00964790(static_cast<int>(
+                VehicleClassPreloadBinding(owner).map_class_index(type)), "0084D304");
+        }
     }
 }
 
