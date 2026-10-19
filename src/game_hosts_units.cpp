@@ -85,6 +85,7 @@
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/squadron_free_attack.hpp"            // packet p15_free_attack_tick
+#include "bsp/squadron_stophead_cc13.hpp"          // packet cc13-stophead
 #include "bsp/director_target_gate.hpp"
 #include "bsp/plane_squadron_entity.hpp"
 #include "bsp/world_map_bounds.hpp"
@@ -17631,6 +17632,61 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
     if (d.stop != bsp::FreeAttackStop::kOverrideSent || d.target >= h.slots.size()) return;
     if (d.clear_then_moveto_self) ++h.free_attack_moveto_self;
     ++h.free_attack_sends;
+    if constexpr (kSquadronStopHeadMoveToSelfBound) {
+        if (d.clear_then_moveto_self) {
+            // Packet cc13-stophead (include/bsp/squadron_stophead_cc13.hpp). The
+            // `stop` head: 009F85ED 0071D880 (every slot), 009F8615 0071ECF0(moveto
+            // 00E08F68 to the squadron's own position), then 009F8631 0071D980.
+            // SUBSTITUTION (labelled): the clear and the moveto take the entity-order
+            // hop (flags 1: 00816E30's 0081733E clear, then 0071ECF0), and the
+            // host's synchronous 0071D980 runs as that chain's after-delivery, so
+            // the image's post order clear, moveto, override holds in the drain.
+            // The position is the arena's 00427EB0 (the leader's).
+            bsp::SceneCommandTarget here{};
+            here.kind = 0;
+            here.position_valid = 1;
+            for (int k = 0; k < 3; ++k) here.position[k] = in.squadron_position[k];
+            Impl::FreeAttack* const record = &fa;
+            const std::uint32_t command = d.command;
+            const std::size_t target = d.target;
+            const bool target_squadron = d.target_squadron;
+            std::size_t deferred = 0;
+            for (const std::size_t m : alive) {
+                issue_script_command(m, 0x00E08F68u, here, 1,
+                    "009F8615 free-attack moveto-self", "(own position)");
+                std::function<void()> send = [this, record, m, command, target, target_squadron]() {
+                    Impl& host = *impl_;
+                    if (m >= host.slots.size() || target >= host.slots.size()) return;
+                    // 009F8631: 0071D980 -> 00721B7C -> 0071E7F0 on this member's director.
+                    if (!host.commands.send_override_command_0071d980(m, command,
+                            static_cast<std::uint32_t>(target + 1u))) return;
+                    GameUnitSlot& u = *host.slots[m];
+                    // 0099A4C0: the head's moveto task answers 0 under the override and goes.
+                    u.moveto_task_installed = false;
+                    u.moveto_state = GameUnitSlot::MoveToTaskState::kNone;
+                    u.moveto_arrived_454 = false;
+                    u.command_target_plus_one = target + 1u;
+                    if (script_orders_install_command_task_0099a170(m, command, target) != 0u)
+                        ++host.free_attack_tasks;
+                    if (record->override_command != command || record->override_target != target + 1u)
+                        ++host.free_attack_installed;
+                    record->override_command = command;
+                    record->override_target = target + 1u;
+                    record->override_squadron = target_squadron;
+                    record->head_command = 0x00E08F68u;
+                };
+                if (commands.after_last_issue_delivery(send)) ++deferred;
+                else send();
+            }
+            h.log.notef("free attack: squadron \"%s\" stop head: moveto own position, then "
+                "override %08X on %s%s for %zu member(s), %zu after the moveto's delivery at "
+                "%.2f s (009F85ED / 009F8615 / 009F8631, packet cc13-stophead)", sq.name.c_str(),
+                d.command, h.slots[d.target]->row.name.c_str(),
+                d.target_squadron ? " (squadron)" : "", alive.size(), deferred,
+                static_cast<double>(now));
+            return;
+        }
+    }
     std::size_t installed = 0;
     for (const std::size_t m : alive) {
         // 0071D980 -> 00721B7C -> 0071E7F0 on this member's director.
