@@ -208,7 +208,11 @@ private:
         std::size_t calls{0};
         std::size_t shown{0};
         std::size_t queued{0};
+        std::size_t hidden{0};      // became active without a show
+        std::size_t refused{0};     // a seen-list or cooldown gate refused it
+        std::string first_refusal;
     };
+    void note_refused(const std::string& name, const char* reason);
     std::map<std::string, TriggerCount> trigger_counts_;
     std::string triggering_;   // the name of the TriggerHint call in progress
 

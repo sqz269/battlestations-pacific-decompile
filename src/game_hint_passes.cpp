@@ -253,12 +253,33 @@ double GameHintTracker::mission_seconds() const {
 }
 
 void GameHintTracker::trigger_hint_00690fd0(const std::string& name, bool forced) {
-    ++trigger_counts_[name].calls;
+    TriggerCount& count = trigger_counts_[name];
+    ++count.calls;
+    const std::size_t shown_before = count.shown;
+    const std::string active_before = state_.active_60;
     const std::string outer = triggering_;
     triggering_ = name;
     hint_tracker_trigger_00690fd0(state_, *this, name, forced);
     triggering_ = outer;
+    // A hidden definition becomes the active hint without 0054E020.
+    if (count.shown == shown_before && !name.empty() && equals_ci(state_.active_60, name)
+        && state_.active_60 != active_before) {
+        ++count.hidden;
+        log_.notef("hint hidden t=%.2f %s", mission_seconds(), name.c_str());
+    }
     log_.implemented("HintTracker::trigger_hint", "00690fd0");
+}
+
+// Run log only: a TriggerHint gate that refused the call in progress. The
+// first refusal per name and reason is logged with its time, the rest counted.
+void GameHintTracker::note_refused(const std::string& name, const char* reason) {
+    if (name.empty() || !equals_ci(triggering_, name)) return;
+    TriggerCount& count = trigger_counts_[triggering_];
+    ++count.refused;
+    if (count.first_refusal.empty()) {
+        count.first_refusal = reason;
+        log_.notef("hint refused t=%.2f %s (%s)", mission_seconds(), name.c_str(), reason);
+    }
 }
 
 void GameHintTracker::finish_active_0068e420() {
@@ -275,13 +296,20 @@ bool GameHintTracker::has_been_shown_cc15_0068e600(const std::string& name) {
 }
 
 bool GameHintTracker::profile_has_seen_cc15_007f8e00(const std::string& name) {
-    return contains_ci(profile_.profile().string_list_08, name);
+    const bool seen = contains_ci(profile_.profile().string_list_08, name);
+    if (seen) note_refused(name, "profile seen, Unique");
+    return seen;
 }
 
-// 007FAE20 appends a copy to the profile's list (AllSeenHints). The host keeps
-// it in memory only: nothing in this process writes a profile back.
+// 007FAE20 removes the name case-insensitively (005FE8B0) and appends a copy
+// to the profile's list (AllSeenHints). The host keeps it in memory only:
+// nothing in this process writes a profile back.
 void GameHintTracker::profile_mark_seen_cc15_007fae20(const std::string& name) {
-    profile_.profile().string_list_08.push_back(name);
+    std::vector<std::string>& seen = profile_.profile().string_list_08;
+    seen.erase(std::remove_if(seen.begin(), seen.end(),
+                   [&name](const std::string& entry) { return equals_ci(entry, name); }),
+               seen.end());
+    seen.push_back(name);
     log_.notef("hint profile seen += %s t=%.2f (in memory only)", name.c_str(), mission_seconds());
 }
 
@@ -301,7 +329,9 @@ void GameHintTracker::queue_push_back_0068eb90(const std::string& name) {
 }
 
 bool GameHintTracker::mission_seen_contains_48(const std::string& name) {
-    return contains_ci(mission_seen_48_, name);
+    const bool seen = contains_ci(mission_seen_48_, name);
+    if (seen) note_refused(name, "mission seen, MissionUnique");
+    return seen;
 }
 
 void GameHintTracker::touch_recent_0068ea70(const std::string& name) {
@@ -313,7 +343,9 @@ void GameHintTracker::touch_recent_0068ea70(const std::string& name) {
 }
 
 bool GameHintTracker::cooldown_contains_0068e4c0(const std::string& name) {
-    return cooldowns_3c_.find(name) != cooldowns_3c_.end();
+    const bool cooling = cooldowns_3c_.find(name) != cooldowns_3c_.end();
+    if (cooling) note_refused(name, "cooldown");
+    return cooling;
 }
 
 void GameHintTracker::cooldown_set_00444be0(const std::string& name, float seconds) {
@@ -563,8 +595,10 @@ void GameHintTracker::report() const {
                mission_seen_48_.size(), profile_.profile().string_list_08.size(),
                state_.active_60.empty() ? "-" : state_.active_60.c_str());
     for (const auto& [name, count] : trigger_counts_) {
-        log_.notef("  hint trigger %-24s calls=%zu shown=%zu queued=%zu",
-                   name.empty() ? "\"\"" : name.c_str(), count.calls, count.shown, count.queued);
+        log_.notef("  hint trigger %-24s calls=%zu shown=%zu hidden=%zu queued=%zu refused=%zu%s%s",
+                   name.empty() ? "\"\"" : name.c_str(), count.calls, count.shown, count.hidden,
+                   count.queued, count.refused, count.first_refusal.empty() ? "" : " first=",
+                   count.first_refusal.c_str());
     }
 }
 
