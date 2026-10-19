@@ -28,6 +28,7 @@
 
 struct IGameExplorer;
 
+#include <cstddef>
 #include <cstdio>
 #include <functional>
 #include <memory>
@@ -640,6 +641,11 @@ struct GameRunSummary {
 
 // StartupHost for 008f81f0 plus everything the milestone runs inside
 // application_initialize (0073d410) and application_shutdown (00737f30).
+// cc15-ob3: WinMain's 1Ch stack Application. 008F8496 constructs it through
+// 00737970 (BEA970/BEA810 register it and publish E1AE90); 008F8444 retires it
+// through 007379A0 before the 008F8449 manager drain.
+inline constexpr bool kApplicationCc15Bound = false;
+
 class GameStartupHost final : public StartupHost {
 public:
     GameStartupHost(GameHostLog& log, HINSTANCE instance, const GameExecutableOptions& options,
@@ -800,6 +806,10 @@ private:
     std::string window_class_name_;
     GameRunSummary summary_;
     bool constructed_{};
+    // The native 1Ch Application storage (kApplicationCc15Bound). Its +18..+1A
+    // bytes are not the frame loop's: frame_state_ stays the host projection.
+    std::uint32_t native_application_[7]{}; // 1Ch, DWORD aligned
+    bool native_application_live_{};
     // Source caller ownership state; this is not the native FH3 state number.
     enum class AllocationStatsPhase : std::uint8_t {
         unattempted, allocating, allocation_failed, skipped,
