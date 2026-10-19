@@ -18176,3 +18176,16 @@ on this main and never reaches the 009205E0 commit; its pair runs on BSM09 d1 in
 **`kMissionRecordMergeBound` ON** (`l69_mr`, BSM09 `bsm09_l68_b9_d1`, EndMission 327.04 s both sides): pair_diff exit 1,
 gameplay identical (49 death rows, 90-row unit table). ON only: `MissionRecord::commit_009205e0 key=BSM09 count_284=1
 completed_00=1 ...`. The OFF-branch comment in src/mission_result.cpp now names the ADD at 009205FE (was 00920604).
+
+## 5is. JM06 power-ups: what the grant reaches (cc9-lua69, 2026-10-18, read-only)
+
+JM06.lua (this installation, 2024-07-13) calls `luaJM6AddPowerup("automatic_reloader")` and
+`("improved_ship_manoeuvreability")` at :864-865, after primary 1. Each wraps `AddPowerup({classID=..., useLimit=1})`.
+- In the host, `MissionLuaNative::AddPowerup [008ee410]` is UNIMPLEMENTED with calls=2 (`local\l68r_w_j6_m1_ref.log`).
+  The reconstruction `lua_binding_add_powerup_008ee410` lives in src/powerup_seg58_argon.cpp, which the harness must not
+  call, so a binding needs a non-argon body first.
+- The image's one-argument form grants to the local player (`008EDDC0([game+18ECh], table)`, docs/GAMEPLAY_MODIFIERS.md).
+  The only AI consumer is the party brain's engagement pass 00A179E0, which lists ready items for brain+20h (its party
+  slot) through 008EA0C0. The host records it (`AiParties::party_brain_plan_tail`, src/game_hosts_ai.cpp) and the JM06 log
+  never reaches it. Whether the human's slot has an enabled AI brain in single player is still unread, so the use of a
+  granted item is UNDETERMINED. No WINS row moves either way: the host grants nothing.
