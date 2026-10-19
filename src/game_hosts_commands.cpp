@@ -151,8 +151,11 @@ constexpr bool kSetCommandMessageCc13Bound = true;
 constexpr bool kCommandMessageCc13Bound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
-// this executable already reports for the same field.
-constexpr int kSessionModeSinglePlayer = 1;
+// this executable already reports for the same field: 0 (1 is the session host,
+// 2 the client). docs/CC13_SESSION_MODE_AUDIT.md: every use here tests == 2,
+// != 2 or {0, 1}, so 0 and the earlier 1 take the same arm. The byte 00E0C978
+// (005E2F99..005E2FAB), which is SET to 1 in single player, is a different global.
+constexpr int kSessionModeSinglePlayer = 0;
 
 // The three command objects whose apply takes 00816e30's movement fall-through:
 // the test at 00816f5e..00816f7a is false for them, so 00816f7c..00817330 does
