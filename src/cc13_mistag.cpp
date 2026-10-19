@@ -210,6 +210,66 @@ void game_settings_destruct_0083b120(SettingsDtorHost& host, void* settings) {
     at<std::uint32_t>(s, 0x000) = 0x00CE3818;
 }
 
+// 007D03A0..007D05B3, in listing order. The SEH frame's state bytes (7 down to -1) only track
+// which members remain for unwinding.
+void plane_unit_instance_destruct_007d03a0(PlaneDtorHost& host, void* plane) {
+    void* const p = plane;
+    auto* const b = static_cast<std::uint8_t*>(p);
+    at<std::uint32_t>(p, 0x000) = 0x00D05F20;
+    at<std::uint32_t>(p, 0x010) = 0x00D05F08;
+    at<std::uint32_t>(p, 0x024) = 0x00D05F00;
+    at<std::uint32_t>(p, 0x170) = 0x00D05EFC;
+    at<std::uint32_t>(p, 0x1E4) = 0x00D05EF4;
+    at<std::uint32_t>(p, 0x310) = 0x00D05EDC;
+    at<std::uint32_t>(p, 0x38C) = 0x00D05ED8;
+    at<std::uint32_t>(p, 0x72C) = 0x00D06130;
+    // 007D0407: the physics body handle.
+    if (at<std::uint32_t>(p, 0x804) != 0) {
+        host.queue_body_release_00c34f70(at<std::uint32_t>(p, 0x804));
+        at<std::uint32_t>(p, 0x804) = 0;
+    }
+    if (void* const slot = at<void*>(p, 0xE80)) {
+        host.plane_effect_slot_destruct_007e2550(slot);
+        host.free_00bf65ac(slot);
+        at<void*>(p, 0xE80) = nullptr;
+    }
+    if (void* const object = at<void*>(p, 0xAA4)) {
+        host.ref_release(object);
+        at<void*>(p, 0xAA4) = nullptr;
+    }
+    // 007D0476..007D04B9: four arrays of four owned pointers (+D9Ch + 10h*k) with signed counts
+    // at +DDCh + 4*k; each count is decremented in place to 0, freeing from the top. The image
+    // indexes as [EDI + 4*(count + 367h + 4k)] (EBP = FFFFF58Bh - EDI + ESI).
+    for (std::size_t k = 0; k < 4; ++k) {
+        auto& count = at<std::int32_t>(p, 0xDDC + 4 * k);
+        while (count > 0) {
+            --count;
+            host.free_00bf65ac(at<void*>(p, 0xD9C + 0x10 * k + 4 * static_cast<std::size_t>(count)));
+        }
+    }
+    host.plane_fx_component_destruct_007ec490(b + 0xC98);
+    host.owned_ptr_holder_destruct_007d7a10(b + 0xAB0);
+    // The four 10h-byte wing-tip records at +A5Ch (docs/CC13_BIG47A.md), 007C3680 each.
+    host.eh_vector_destruct_00bf7c6e(b + 0xA5C, 0x10, 4, 0x007C3680);
+    // Vectors {allocator, first, last, end} at +A4Ch then +A3Ch; the range destroy and the free
+    // run only when first is set, the triple is zeroed either way.
+    for (std::size_t off : {0xA4Cu, 0xA3Cu}) {
+        void* const v = b + off;
+        if (at<void*>(v, 4) != nullptr) {
+            host.destroy_range_007cd430(v, p, at<void*>(v, 4), at<void*>(v, 8));
+            host.free_00bf65ac(at<void*>(v, 4));
+        }
+        at<std::uint32_t>(v, 4) = 0;
+        at<std::uint32_t>(v, 8) = 0;
+        at<std::uint32_t>(v, 0xC) = 0;
+    }
+    // 007D0566: resize to 0, then free the buffer pointer at +A30h with no null test.
+    host.live_effect_references_resize_004c9550(b + 0xA30, 0);
+    host.free_00bf6989(at<void*>(p, 0xA30));
+    host.projectile_shot_destruct_006e25a0(b + 0x72C);
+    host.unit_game_object_destruct_00959940(p);
+}
+
 // 0099A880..0099A934. Float constants read from the image: 00E0E2EC = 0.24f (3E75C28Fh, a .data
 // dword with no writer in the index), 00CF8B3C = 256.0f, 00D7A260 = -1.0f.
 void* pilot_bot_construct_0099a880(MistagHost& host, void* bot) {

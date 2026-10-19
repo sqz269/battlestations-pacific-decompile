@@ -124,6 +124,38 @@ public:
 // 0083B120, __thiscall(ECX = settings), RET. Only caller the scalar deleting destructor 00424C20.
 void game_settings_destruct_0083b120(SettingsDtorHost& host, void* settings);
 
+// --- 007D03A0: the plane unit-instance destructor (batch 2, big four #2) ---
+class PlaneDtorHost {
+public:
+    virtual ~PlaneDtorHost() = default;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void free_00bf6989(void* block) = 0;                 // thunk to _free
+    // 00C34F70, __thiscall(ECX = [[00E188A8]+18h], body), RET 4: queue the physics body's release.
+    virtual void queue_body_release_00c34f70(std::uint32_t body) = 0;
+    // 007E2550, __thiscall(ECX = slot): the effect slot owned at +E80h (freed after).
+    virtual void plane_effect_slot_destruct_007e2550(void* slot) = 0;
+    // [CE2220] InterlockedDecrement(&object->count_4); 0 -> object->vtable[0]() (no argument).
+    virtual void ref_release(void* object) = 0;
+    // 007EC490, __thiscall(ECX = plane+C98h): BSP_PlaneFxComponent_Destruct.
+    virtual void plane_fx_component_destruct_007ec490(void* block) = 0;
+    // 007D7A10, __thiscall(ECX = plane+AB0h): the flight controller holder.
+    virtual void owned_ptr_holder_destruct_007d7a10(void* holder) = 0;
+    // 00BF7C6E eh_vector_destructor_iterator(first, size, count, dtor).
+    virtual void eh_vector_destruct_00bf7c6e(void* first, std::uint32_t size, std::uint32_t count,
+        std::uint32_t dtor) = 0;
+    // 007CD430: element-range destroy, ECX = first, EDX = last, stack (vector, owner), RET 8.
+    virtual void destroy_range_007cd430(void* vector, void* owner, void* first, void* last) = 0;
+    // 004C9550, __thiscall(ECX = plane+A30h, 0), RET 4: BSP_LiveEffectReferences_Resize.
+    virtual void live_effect_references_resize_004c9550(void* refs, std::uint32_t size) = 0;
+    // 006E25A0, __thiscall(ECX = plane+72Ch): the embedded device (vtable 00D06130).
+    virtual void projectile_shot_destruct_006e25a0(void* device) = 0;
+    // 00959940, __thiscall(ECX = plane): BSP_UnitGameObject_Destruct, the base.
+    virtual void unit_game_object_destruct_00959940(void* unit) = 0;
+};
+// 007D03A0, __thiscall(ECX = plane), RET (no flags). Out-of-line destructor of the plane unit
+// instance, primary vtable 00D05F20; reached from 17 deleting destructors and chunks.
+void plane_unit_instance_destruct_007d03a0(PlaneDtorHost& host, void* plane);
+
 // 0099A880, __thiscall(ECX = memory), RET, EAX = bot: BSP_PilotBot_Construct.
 void* pilot_bot_construct_0099a880(MistagHost& host, void* bot);
 // 0099BE30, __thiscall(ECX = plan, base), RET 4, EAX = plan: the pilot plan block embedded at

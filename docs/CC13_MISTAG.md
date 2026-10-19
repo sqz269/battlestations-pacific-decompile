@@ -136,12 +136,48 @@ has a body. In listing order:
 8. RefPtrs +3A8h then +3A4h, each nulled only when it was set.
 9. Free +1E0h (triple zeroed); `[00F8753C] = 0`; base vtable 00CE3818.
 
-## Left open (3 rows)
+### 007D03A0 BSP_PlaneUnitInstance_Destruct
+
+`plane_unit_instance_destruct_007d03a0`, `__thiscall(ECX = plane)`, RET (no flags argument). The
+plane unit instance's out-of-line destructor. It is reached from nine scalar deleting destructors
+(0074E4C0, 0074E520, 007D1D10, 007D7830, 007DDAC0, 0084CA30, 009534E0, 00953570, 00953600) and
+from eight undefined 5-byte `JMP 007D03A0` chunks (0074E2C0, 0074E350, 007D77A0, 007DDA30,
+0084C9A0, 00951BE0, 00951CC0, 00951DA0).
+
+Rule-1: no body in `src/` (lookup, docs-for, git grep by address, by name and by the member
+calls). The cc9 units host does not model the plane as bytes, but where it cites these offsets
+they agree:
+- `src/game_hosts_units.cpp` cites the physics body sync at +804h, the controller at `unit+AB0h`
+  (007D7DA0, 007D99C0, 007D83D0) and the +C98h sub-block (007DDEA0, 007EB380).
+- docs/CC13_BIG47A.md has the four 10h wing-tip records at `plane+A5Ch` and the checked vector at
+  `plane+A4Ch` (first A50h, last A54h).
+- docs/CC13_GPR_48.md has the effect slot at `unit+E80h`.
+- The device at `unit+72Ch` is embedded (docs/BOT_TASK_STATES.md, `LEA ECX,[EAX+72Ch]`), which
+  matches the in-place call to 006E25A0.
+
+In listing order:
+
+1. Vtables 00D05F20, +10h 00D05F08, +24h 00D05F00, +170h 00D05EFC, +1E4h 00D05EF4, +310h
+   00D05EDC, +38Ch 00D05ED8, +72Ch 00D06130.
+2. +804h, when set: `00C34F70(ECX = [[00E188A8]+18h], body)`, then nulled.
+3. +E80h, when set: 007E2550 on it, free, null.
+4. +AA4h, when set: RefPtr release (InterlockedDecrement on +4h; zero calls vtable[0] with no
+   argument), null.
+5. Four arrays of four owned pointers at +D9Ch + 10h*k. Their signed counts are at +DDCh + 4*k,
+   and each count is decremented in place to 0, freeing from the top. The image forms the address
+   as `[EDI + 4*(count + 367h + 4k)]` with EBP = FFFFF58Bh - EDI + ESI.
+6. `007EC490(+C98h)`, then `007D7A10(+AB0h)`.
+7. `00BF7C6E(+A5Ch, 10h, 4, 007C3680)`.
+8. The vectors +A4Ch and then +A3Ch. When first is set: `007CD430(ECX = first, EDX = last;
+   vector, plane)` (RET 8), then free. The triple is zeroed either way.
+9. `004C9550(+A30h, 0)`, then `00BF6989([+A30h])` with no null test.
+10. `006E25A0(+72Ch)`, then 00959940 BSP_UnitGameObject_Destruct on the plane.
+
+## Left open (2 rows)
 
 | Address | Size | What |
 |---|---|---|
 | `007CFD20` | 1573 | BSP_PlaneUnitInstance_Construct (no host body; see above) |
-| `007D03A0` | 532 | plane unit-instance destructor, vtable 00D05F20 (tagged CG_vector_deleting_dtor) |
 | `0086C240` | 2763 | the Flare effect component's Lua reader (docs/GAMEPLAY_EFFECT_COMPONENTS.md row Flare) |
 
 ## Uncertainty
