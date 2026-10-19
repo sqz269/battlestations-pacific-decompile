@@ -41,10 +41,10 @@ inline constexpr bool kDogfightFireEnvelopeBound = false;
 // Sub-switch, read only with the main switch ON: D and E, the hold timer arm.
 inline constexpr bool kDogfightFireHoldArmBound = false;
 
-inline constexpr float kGunReaimVerticalStep_00d7a348 = 0.25f;  // double 0.25
-inline constexpr float kGunHoldSearchArm_00d7a2f0 = 0.1f;       // float 0.1
-inline constexpr double kGunLengthCutoff_00ce3820 = 1e-10;       // double
-inline constexpr double kGunDontShootDivisor_00d049a8 = static_cast<double>(1.8f);
+inline constexpr double kGunReaimVerticalStep_00d7a348 = 0.25;  // 00D7A348 double 0.25 (FADD double)
+inline constexpr float kGunHoldSearchArm_00d7a2f0 = 0.1f;       // 00D7A2F0 float 0.1
+inline constexpr double kGunLengthCutoff_00ce3820 = 1e-10;       // 00CE3820 double 1e-10
+inline constexpr double kGunDontShootDivisor_00d049a8 = 1.7999999523162842;  // 00D049A8 double 3FFCCCCCC0000000 (float 1.8 widened)
 
 // 007BA760, __thiscall(unit), body 007BA760-007BA778: CMP [ECX+C3Ah],0 /
 // JNZ -> 1; CMP [ECX+5Dh],0 / JNZ -> 1; else 0.
