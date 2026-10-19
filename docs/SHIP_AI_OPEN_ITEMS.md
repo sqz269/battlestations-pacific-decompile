@@ -19608,3 +19608,104 @@ the +174h stand-in. It now posts 0 (with a log line) for an id above 0xFFFF inst
 Only GenerateObject LandConvoy markers (90000 + n) exceed 0xFFFF, and the path lookup there is by
 an authored Path name, so no current row takes the new arm: build-only, no pair. The id-space
 proposal of 295.4 is still open.
+
+### 3. BSM01 "HenryPT DCs enter water but never detonate": not a host DC defect
+
+Diagnostic export of d1de4a0da (local\g53_dcdiag, a log line at each in-water DC's water entry
+and landscape impact with the submarines' positions; not committed). Plans local\g53_b1_c1..c6.txt,
+logs local\g53_dcd_*.log.
+- Every in-water DC ends as a landscape impact (fate 1) at the seabed (-21 to -55 m) before its
+  fuse depth: the near-vertical step's LINE meets the cell's quad through the unclipped 00ADEB80
+  test (SCENE_CONTENTS_HOSTS 30, GUNNERY 2026-10-06). That exit still runs the class blast
+  (0084BE32, range 50 m); the summary's contact/depth detonation counters just do not count it.
+- In the reference run (p6_b1_a) all six DCs came from the generated AI "PT" boats, not HenryPT.
+  One blast reached MiniSub (dist 36.4 m, took 0: invincible), but the script's hit listener
+  (bsm_01_stationed_at_pearl.lua 2008) filters attacker = {Mission.Henry}, so luaMiniSubHit never
+  fires. Faithful.
+- HenryPT's own charges (`depthcharge HenryPT` presses, c1/c3/c5) drop, but never near MiniSub.
+  On current main MiniSub spawns at 267 s at (800, -30, -3200) and runs west to (-430, -3000) by
+  432 s, then north ((-330, -2390) at 492 s). Every westward Henry leg past x 1300-1620 at z
+  -3160..-3190 grounds: `hull draft contact census: draft=0 hull=HenryPT first_step=7414
+  steps=8587`, speed 0 at throttle 1 (the stall cc9-physics6 saw at (1624, -3170)). `attack
+  HenryPT MiniSub` (c2/c4/c6) gives four DC launches and no hit.
+- Routes c7-c10 (local\g53_b1_c7..c10.txt): a leg along z -2980 passes x 1300 without the
+  draft-0 contact (census count 0 in c10). Henry then slows to about 4 m/s near x 800. MiniSub is
+  not on a fixed track: in c9 (hold at (830, -2990), a press every 40 frames to 26000) it
+  circles back near (750-870, -3130..-3220) at 1200-1294 s, and the closest charge was 151 m
+  (1293.89 s). c10 holds at (800, -3170) on that pass. 265 HenryPT charges drop, and the
+  closest is 268 m (1298.59 s, sub at (658, -3378)): the sub's return leg moves with Henry's
+  position. No luaMiniSubHit and no mission end in c7-c10.
+- Open: reaching luaMiniSubHit needs a pursuit plan that re-targets Henry onto MiniSub's live
+  position (a `takehelm` toward the sub every few hundred frames, or `attack HenryPT MiniSub`
+  started once Henry is west of x 1300 on the z -2980 lane). Fixed hold points do not work.
+  Not a host defect; parked for the lead.
+
+### 4. 00864880's two draws: the host already matches
+
+docs/OCT18_GUNNERY_TARGET_RECOVERY.md: radius at 00864A12 (U(cap * row+14h, cap)), then bearing at
+00864A31 (U(0, [00CE3D9C] = 2*pi as a float)), both stream 1, and a zero-width radius still
+draws. The host's engagement_00864880 (game_hosts_gunnery.cpp) takes exactly these two draws in
+this order, with cap = min(row max error, row range_mul * distance) and no early-out before the
+first draw; `draw` never skips a zero-width range. No change.
+
+### 5. Widened-literal sweep (gunnery / ship-AI share): kShipAiWidenedLiteralsBound ON
+
+`python tools/const_width_sweep.py --all --load-sites`: A-WRONG 0, B 0. The gunnery A-harmless
+rows (bot_fire_target, gun_aiming, gun_bot_remainder, gun_bot_ticks) are float declarations of
+m64 qwords that are themselves widened floats (low 29 bits zero): bit-equal, nothing to fix.
+The tool reads only `inline constexpr` header lines, so the same comparison was run over the
+.cpp declarations (local\g53_cpp_width.py): five ship-AI constants whose qword is a widened
+float while the host wrote a different double, every load m64 (36e595a1a, header
+include/bsp/widened_literals_g53.hpp has the table): 00CE3828/00CE3D18/00CE3D28 in
+ship_ai_bearing_rating.cpp (00605070), 00D049A8 (FDIV 009D9044; the host had the next float
+up, 1.8000000476837158 for 1.7999999523162842) and 00D7A358 (009EF7EF / 009EF7FF) in
+ship_ai_neighbour_clips.cpp. Pairs on 36e595a1a, reference env, USN01 and USN04 idle at 30000
+frames: gameplay and summary lines identical (local\g53_wl_{off,on}_u{1,4}.log;
+predict_track_crossing_009d8ce0 ran 9429 times on USN01). Flipped by mechanism (c19194d0d).
+Outside this lane the sweep also shows two HUD constants (hud_updates.hpp kHudRootRowGap,
+kHudRootCircleYOffset) declared float against true-double m64 qwords.
+
+### 6. Comment fix
+
+ship_ai_attackmove_substates.cpp: the jitter_48 note now says the caller takes the 009E55A1
+draw (22e41560e).
+
+## 297. cc9-ships59 handoff (2026-10-18)
+
+**Landed this session** (agent/cc9-ships44; each flip fully built and paired in the reference env unless noted):
+- 290: USNOS friendly fire between Loui1 and Loui2 is faithful (no side filter in the image's shell path; no line-of-fire gate on kinds 2-4).
+- 291 `kDirectorQueueCc13BodiesBound` ON. 292 `kSceneTrafficBlockBound` ON. 293 `kShipFormationSpeedCeilingRowBound` ON.
+- 294 `kReconRecordsSurviveSpawnBound` ON (docs/RECON_SENSOR_PASS.md "Records survive a spawn").
+- 662d8bc7d: the ship ai sample's `heading=` column (blk+1D8h, written only by 009E0040) is renamed `desired_1d8=`, and
+  `hull=` prints `unit_heading_radians`. hull is kept out of the change test. Log only.
+- bbea13229 `kSetCommandMessageCc13Bound` (sm1) ON and 7d6b27b65 `kCommandMessageCc13Bound` (sm2) ON. USN01 3200: exit 1,
+  gameplay identical; 103 / 51 round trips, 10 sub-mm moveto quantisations, 3 cut ids restored (s59_sm_off_u01,
+  s59_sm1_on_u01, s59_sm2_on_u01 manifests).
+- f157685d6 `kSceneBrowserGroupsBound` ON. USN01 3200 has an empty block. JM05 600 (PRCPIJN ijn_05) has 33 entries,
+  ok=1. Both exit 1.
+- c995c8975 OFF, then 1fe919dc4 ON: `kTraceSceneDamageDrawBound`, the 0084C19F stream-1 draw on every sweepable
+  0084BF00 segment, which the host skipped. USN04 20000: reference env exit 1, gameplay identical, 1133300 draws.
+  Default env exit 3, as predicted. Reference-env WINS rows do not move.
+
+**USNOS re-plan, open (section 294).** The best run is `s59_b_c15` / `s59_b_c16` (reference env). The blockade, both
+battleships and Haku1/3/4 sank, and TT5 allied CB2 at 4400 s. HQ1 and HQ2 were left neutral, and Haku2 was never hit
+(the decks were spent). c17 (`local\s59_os_c17.txt`, made by `local\s59_osmk.py c17`) routes TT5 back along its own
+inbound track to HQ2 and then HQ1, and turns Loui1/NH/Portland4/Gear9/Gear15 on Haku2 once both battleships are
+dead. The three attempts:
+- the first was killed from outside at frame about 110000 (the route legs worked);
+- the second was killed at 45 MB;
+- the third (on main 4b74dd6b4) died at 2834.5 s. The first BettyOhka release threw "unit observer creator projection
+  is unavailable: unit=Betty4_kz01 creator=00000000" (game_hosts_units.cpp:18434). On 310ac5a0b the same release
+  resolved creator 00956240. This blocker was sent to the lead. It kills every run that reaches an Ohka release.
+The next step, once the Ohka creator is fixed: re-run c17 for 175000 frames in the reference env. Its prefix is no
+longer a c15 replay on the new main, so check that TT5 is alive and has allied CB2 before frame 89000. If it has not,
+re-time the TT5 route from the frame where CB2 turns. Jitter (20,3) loses all six transports to the blockade before
+2800 s, so a jitter-robust plan needs the transports held away from the blockade until it is dead. Scripts:
+`local\s59_sum.py` (outcome summary), `local\s59_capt.py <log> <HQ>` (capture runs), `local\s59_grep.py`.
+
+**Not taken (still open from the lead's messages):**
+- the Fuso USN15 close-range gunnery question;
+- the 00935D30 break-in-two draws (`host.breakup_parts` unimplemented; citations to fix: the reserve push is at 00748444
+  with the call at 00748455, and the body call is at 00748932);
+- NaN-only lows: the rudder clamp 009DA28C..2AB passes NaN where the host sends -1, and the ring slew 009F4C4E never
+  writes NaN.

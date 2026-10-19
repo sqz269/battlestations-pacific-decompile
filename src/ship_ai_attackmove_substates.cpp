@@ -122,7 +122,10 @@ ShipAiAttackMoveRingSlot ship_ai_attackmove_ring_slot_009e5530(int index,
     slot.dir_z_14 = std::sin(heading); // 009E572E, 009E574A
 
     slot.reset_44 = kAttackMoveRingScoreReset; // 009E55B1
-    slot.jitter_48 = 0.0f;                     // 009E55A1, a random draw, not modelled
+    // 009E55A1's U(0, 2.0) draw (00CE3958) is taken by the caller, which overwrites
+    // this zero: game_hosts_ship_ai.cpp at construction (kShipAiBrainConstructionDrawsBound,
+    // SHIP_AI_OPEN_ITEMS 295.1) and at the 009F3220 approach re-seed.
+    slot.jitter_48 = 0.0f;                     // 009E55A1
     return slot;
 }
 
