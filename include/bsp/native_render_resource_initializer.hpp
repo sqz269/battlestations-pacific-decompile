@@ -56,7 +56,6 @@ private:
         NativeRenderResourceInitializerContext&, NativeRenderResourceInitialization&);
     Phase phase_{Phase::fresh};
     std::uint32_t active_stage_{};
-    bool children_closed_{};
     NativeRenderResourceInitEntryState entry_;
     NativeRenderResourceInitContinuationState continuation_;
     NativeRenderResourceInitPostState post_;
@@ -68,6 +67,7 @@ private:
     NativeRenderResourceInitPost65cState post65c_;
     NativeRenderResourceInitPost664State post664_;
     NativeRenderResourceInitTailState tail_;
+    bool children_closed_{};
 };
 
 // Compose the established normal fragments [B107F0,B13010), or return via the

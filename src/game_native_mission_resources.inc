@@ -98,7 +98,7 @@ struct MissionRenderResourcesGraph {
        literal(g,0xd5e40c),literal(g,0xd61ff4)},
    bright{post20,r.holders,parameters,literal(g,0xd62138),{literal(g,0xd62124),
        literal(g,0xd62110),literal(g,0xd5e3f0),literal(g,0xd5e3c0),literal(g,0xd5e3b0)}},
-   bloom{{r.holders,*reinterpret_cast<const volatile float*>(g.profiles(0xce3978)),
+   bloom{{r.holders,g.profiles(0xd61948),*reinterpret_cast<const volatile float*>(g.profiles(0xce3978)),
        *reinterpret_cast<const volatile double*>(g.profiles(0xd7a280))},post20,parameters,
        literal(g,0xd62180),literal(g,0xd62164),literal(g,0xd5e40c),
        literal(g,0xd61fac),literal(g,0xd62170)},
