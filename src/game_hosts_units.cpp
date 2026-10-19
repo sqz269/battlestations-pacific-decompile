@@ -17552,6 +17552,10 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             // and has left the map ends (0071E430(current, 1) at 009F83A8).
             const std::size_t t = over_target - 1u;
             bool end = false;
+            // SUBSTITUTION, labelled: "the target is the squadron this host's own
+            // override named" (fa.override_squadron with the same target) stands for
+            // 00523560's squadron test on the resolved object. A squadron target the
+            // host did not send itself takes the plane arm below.
             if (fa.override_squadron && over_target == fa.override_target) {
                 // 00523560: the target is a squadron. vt+174h, its command, must be
                 // retreat (009F8347); then every member at +3D0h (count +3CCh) is
@@ -17591,6 +17595,11 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
                     static_cast<double>(now));
             }
         }
+        // After an end above, the image falls through (009F83AD) with EBP still the
+        // old current, and re-reads slot 0 (009F83C4) and the +18Ch descriptor
+        // (009F83DE) from the block. LABELLED: the host keeps current, its class and
+        // target_live as the image does, re-reads slot 0, but keeps over / over_target
+        // from before the end (stale for the rest of this tick when an end ran).
         bool fire = false, move = false;
         script_orders_squadron_permissions_3c3d(sq, fire, move);
         if (current != 0u && !early_arm && category_12                         // 009F83B7..009F83BF
@@ -18200,11 +18209,37 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
     if constexpr (kSquadronGeneralStepTailBound) {
         // Packet cc13-steptail (include/bsp/squadron_step_tail_cc13.hpp): 0084E010's
         // tail for every squadron the spent_rtb path above does not hold.
+        // Runs only past this function's early return, so only while
+        // kSquadronSpentOrdnanceRtbBound is true (or the census is set).
         const bool device_reload = kLuaDeviceReloadEnabledBound && lua_device_reload_enabled_00e17bf2();
         for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
+            // Membership, 0071F290's gates ahead of its vt[7Ch] call (0071F39E), held
+            // the way 009F8470's host call above is: a live member and a flight leader.
+            bool any_alive = false;
+            for (const std::size_t m : sq.member_units) {
+                if (m != bsp::kPlaneSquadronNoUnit && m < h.slots.size() && !gun->unit_dead(m)) {
+                    any_alive = true;
+                    break;
+                }
+            }
+            if (!any_alive) continue;
             const std::size_t leader = sq.flight_leader();
             if (leader == bsp::kPlaneSquadronNoUnit || leader >= h.slots.size()) continue;
-            if (gun->unit_dead(leader)) continue;                              // +3D0h
+            // 0071F29F..0071F2C1: the owner entity's +5Ch set, +5Dh / +60h / +5Eh clear.
+            // LABELLED: the host's squadron entity is the fused wing 0 (sq.squadron_unit),
+            // so a wing 0 still in the hangar (007BC550 cleared its +5Ch) holds the tail
+            // through take-off. 0071F378 ([[00E188A8]+1FE4h] != 2) always passes here:
+            // session_mode() answers 1, single player.
+            if (sq.squadron_unit >= h.slots.size()) continue;
+            {
+                const GameUnitSlot& s = *h.slots[sq.squadron_unit];
+                const bool live = s.state != nullptr && s.state->active != 0 &&
+                                  s.state->simulate == 0 && s.scene_destroyed_005e == 0 &&
+                                  s.scene_pending_destroy_0060 == 0;
+                if (!live) continue;
+            }
+            // PROXY: 0084E043 tests +3D0h for null, not for death.
+            if (gun->unit_dead(leader)) continue;
             const auto rtb_it = h.spent_rtb.find(sq.name);
             if (rtb_it != h.spent_rtb.end()) {
                 const Impl::SpentOrdnanceRtb& st = rtb_it->second;
@@ -18220,6 +18255,10 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                     && head_target.object_id == guard.head_target.object_id
                     && std::memcmp(head_target.position, guard.head_target.position,
                                    sizeof head_target.position) == 0;
+                // LABELLED: the squadron-unit issue is taken to become the leader's
+                // slot 0, the spent_rtb path's established proxy. After it completes
+                // the image re-issues (0071ECF0 re-arms the stage); the host stays at
+                // stage 2.
                 const bool own_moveto = head == 0x00E08F68u && head_target.kind == 1
                     && head_target.object_id == static_cast<std::uint16_t>(sq.squadron_unit + 1);
                 if (same_head || own_moveto) continue;
@@ -18267,6 +18306,8 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 ++h.step_tail_movetos;
             }
             if (rtb != 0) ++h.step_tail_rtbs;
+            // LABELLED: set even when placed == 0 (the issue was refused), so the
+            // host never retries this head; the image retries every step.
             guard.issued = true;
             guard.head = head;
             guard.head_target = head_target;
