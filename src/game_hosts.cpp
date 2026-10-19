@@ -683,6 +683,19 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 error = "--instance-tag needs 1 to 32 characters from [A-Za-z0-9_-]";
                 return false;
             }
+        } else if (std::strcmp(argument, "--difficulty") == 0) {
+            if (index + 1 >= argc) {
+                error = "--difficulty needs a level from 0 to 3";
+                return false;
+            }
+            const char* const text = argv[++index];
+            char* end = nullptr;
+            const long level = std::strtol(text, &end, 10);
+            if (end == text || *end != '\0' || level < 0 || level > 3) {
+                error = "--difficulty needs a level from 0 to 3";
+                return false;
+            }
+            difficulty = static_cast<int>(level);
         } else if (std::strcmp(argument, "--helm-orders") == 0) {
             // Packet cc9_scripted_helm_orders: a file of timed player orders.
             if (index + 1 >= argc) {
@@ -2783,6 +2796,12 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // Packet cc9_scripted_helm_orders, --helm-orders <file>, the same way.
     if (!options_.helm_orders_path.empty() && menu_->mission() != nullptr) {
         menu_->mission()->set_helm_orders(options_.helm_orders_path);
+    }
+    // Packet cc13-torpranges, --difficulty <0..3>, the same way: game+6B0h.
+    if (options_.difficulty >= 0 && menu_->mission() != nullptr) {
+        menu_->mission()->set_chosen_difficulty(options_.difficulty);
+        log_.notef("--difficulty %d: chosen difficulty game+6B0h = %d (default 1)",
+            options_.difficulty, options_.difficulty);
     }
     // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>, the same way.
     if (!options_.ai_drive_unit.empty() && menu_->mission() != nullptr) {

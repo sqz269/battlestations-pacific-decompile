@@ -161,6 +161,22 @@ feeds `chosen_difficulty()`. The flag is a separate commit. No switch was built 
 This packet changes only the log record at the 009D0484 site: `unimplemented` becomes `done`.
 That is log text only; no behaviour changes.
 
+## The --difficulty flag (harness option)
+
+`bsp_game --difficulty N` (N from 0 to 3) sets the player's chosen difficulty, game+6B0h.
+- **The path.** `GameMissionHost::set_chosen_difficulty` makes `chosen_difficulty()` return N.
+  On the briefing start path, 0058BF26 in src/mission_briefing_start.cpp copies that into
+  game+6ACh when the record's forcedDifficultyLevel is 3, as 0058BF58 does in the image. A
+  record that forces 0, 1 or 2 keeps its own value. GetDifficulty then returns game+6ACh.
+- **Bad values.** A value outside 0..3, a non-number or a missing value exits 2 with
+  `--difficulty needs a level from 0 to 3`.
+- **The log.** When the flag is set, startup logs one line:
+  `--difficulty N: chosen difficulty game+6B0h = N (default 1)`.
+- **Without the flag,** `chosen_difficulty()` still returns 1 and nothing else changes.
+- **N = 3.** The image never stores 3 in game+6ACh: 3 is only the record's "ask the player"
+  value. 3 is accepted as the brief asked, but it is outside the image's single-player range.
+- **Use 0** to play the rows the way this installation's saved profile does.
+
 ## Status
 
 - Row 15: reconstructed under an OFF switch and build-tested. Not game-validated.

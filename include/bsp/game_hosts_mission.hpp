@@ -220,6 +220,8 @@ public:
     void set_ai_drive(std::string unit, float throttle, float rudder);
     // Packet cc9_scripted_helm_orders: --helm-orders <file>.
     void set_helm_orders(std::string path);
+    // Packet cc13-torpranges: --difficulty <0..3>, game+6B0h (chosen_difficulty).
+    void set_chosen_difficulty(std::int32_t value);
 
     // True when --menu-select named a mission, so the run drives the path.
     bool requested() const noexcept;

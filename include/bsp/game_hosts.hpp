@@ -263,6 +263,12 @@ struct GameExecutableOptions {
     // goes to the named unit through the player's moveto command form (005F9B20
     // -> 0077D600), with no HUD, selection or camera. Empty means no change.
     std::string helm_orders_path;
+    // Packet cc13-torpranges, --difficulty <0..3>. A HARNESS OPTION: the
+    // player's chosen difficulty, game+6B0h (the profile's SelectedDifficulty),
+    // which 0058BF58 copies into game+6ACh when the mission record's
+    // forcedDifficultyLevel is 3. -1 (absent) keeps the profile-reset 1.
+    // This installation's saved profile holds 0 (docs/CC13_TORPRANGES.md).
+    int difficulty{-1};
     // Milestone 2o: --ai-drive <name>=<throttle>,<rudder>. A LABELLED
     // DIAGNOSTIC STAND-IN, engaged on --order-frame like the player order.
     // Eight of the nine ship AI state steps have no reconstructed body, so on
