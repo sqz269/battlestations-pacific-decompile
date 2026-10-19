@@ -26,6 +26,6 @@ namespace bsp {
 // (the same float) matches 00605070's arms: wrap when x <= -pi
 // (00605091 FCOMIP / JB) or x > pi (006050A8 FCOMI / JBE).
 // No parent switch: the three hooks run on the OFF path already.
-inline constexpr bool kShipAiHeadingStoreWrapCc13Bound = false;
+inline constexpr bool kShipAiHeadingStoreWrapCc13Bound = true;  // ON: docs/SHIP_AI_OPEN_ITEMS.md 311 (JM06 j6k/j6n, IJN18 pairs)
 
 }  // namespace bsp

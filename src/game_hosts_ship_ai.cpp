@@ -7240,9 +7240,9 @@ public:
             ctl_.blk.desired_heading =
                 bsp::ship_ai_firepower_wrap_angle_00605070(ctl_.blk.desired_heading);
             owner_.done("ShipAiApproach::wrap_brain_heading", 0x00605070u);
-            return;
+        } else {
+            owner_.record("ShipAiApproach::wrap_brain_heading", 0x00605070u);
         }
-        owner_.record("ShipAiApproach::wrap_brain_heading", 0x00605070u);
     }
     void set_brain_replan_01d4(int value) override {
         ctl_.blk.requested_direction = static_cast<bsp::ShipAiThrottleDirection>(value);

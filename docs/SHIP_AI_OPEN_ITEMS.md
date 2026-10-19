@@ -20299,3 +20299,25 @@ moves (not totals) decide. A mechanism failure would show as a heading reader th
 Pair: OFF = tree build dc2c8c9e9, ON = `local\g55_hw_on` (pair_export, same commit); JM06 jm06_s45_j6_k and
 jm06_l70_j6_n (120000 frames, stop 40 s after the end), IJN18 ijn18_l67_i18_d (64000 frames); reference env
 (`g55_hwoff_*` / `g55_hwon_*`).
+
+**311.1 measured; FLIPPED ON by mechanism.** pair_diff exit 3 on all three rows; every move is a rounding cascade.
+- **First moves.** IJN18: the first moved values are the logged `desired_1d8` of the stopped Gear3 / Gear6 at
+  ship-AI step 40, -3.1416 OFF and +3.1416 ON (00605070 maps -pi to +pi). Rudder, throttle and the hull heading are
+  unchanged. Gameplay first moves at 390..395 s (shots 1820 -> 1821).
+- JM06 j6k: the controlled Yamato first moves at 501.95 s by 0.001 m/s of forward speed (11.413 -> 11.414). The
+  rudder (-1) and the position are unchanged. The gunnery census first moves at 539.94 s (damage 48075.4 -> 48076.0).
+  j6n is the same plan up to there and first moves at the same steps.
+- **No mechanism failure.** In the first moved lines no reader sees a different angle class: no turn the long way and
+  no rudder sign change.
+
+| row | OFF | ON | deaths | changed death rows |
+|---|---|---|---|---|
+| JM06 j6k | completed 898.90 s | completed 889.91 s | 20 / 20 | 3 (Fletcher-class 01/02, PBY times and killers) |
+| JM06 j6n (WINS) | completed 808.93 s | completed 811.93 s | 22 / 22 | 5 |
+| IJN18 l67_i18_d | no end in 64000 | no end in 64000 | 48 / 48 | 1 (Asa1 nearest 1342 -> 1340) |
+
+- **Census.** j6k out_of_range 3160 -> 2980 (cascade), IJN18 1141 both ways.
+- **Build fix in the flip commit.** ON failed to compile: C4702, unreachable code after the early return in
+  `ShipAiApproach::wrap_brain_heading_00605070` (src/game_hosts_ship_ai.cpp). The flip commit turns it into if/else,
+  and the ON export was built with that same edit.
+- Wins: the JM06 j6n row still completes (+3.00 s). IJN18 does not end either way.
