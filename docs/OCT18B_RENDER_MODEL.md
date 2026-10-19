@@ -26,8 +26,8 @@ Integration order:
 4. Call `load_installed_ship("models/ships/us/fletcher.mmod")`. The loader itself
    activates the same Lua binding during synchronous shader descriptor reads.
 5. Attach every `drawable(i)` to the primary's retained raw scene. The ordinary
-   command provider borrows `instance_geometry()`, `group_models()` and
-   `profile(actual)` and submits those actual B75030 objects.
+   command provider borrows `instance_geometry()`, `group_models()`,
+   `render_services()` and submits those actual B75030 objects.
 6. Release the shader binary cache after all normal acquisitions finish.
 7. Retire ordinary commands and scene roots, call `retire_drawables()`, drain
    native renderer/singletons, then `after_native_renderer_drain()`.
@@ -93,6 +93,35 @@ This identifies a real installed ship candidate; no graphics/game run was starte
 by this worker.
 The packet requires the integrator's Win32 build and real USN04 ordinary-command
 draw/capture evidence before claiming visible textured-ship completion.
+
+The ship contains 445 Subset payloads, all naming `ship.mshd`, resolved by the
+native cache to `shaderfx/ship/ship.shfx`. Its first sampler is ShipMap, an ordinary
+source0/Index0 reference. The current compiler already has the genuine sampler
+entry-word producer; it is not necessary to invent an entry capture callback.
+`prepare_sampler_entry_release` executes the single actual cached-pixel COM
+release through the qualified x86 layout, and `finish_sampler_entry_release`
+checks the later canonical count/slot operations before granting knowledge.
+`final_states` then publishes that invocation's captured word into the fresh
+shared root/mode scope before B3C018. The original B3BFD7..B3C024 assembly and
+B5F9C8 constructor save were rechecked with `bsp.py show --asm`.
+
+Read-only inspection on this turn found the installed SysWOW64 D3D9, NTDLL and
+Kernel32 PE metadata exactly matching `native_sampler_entry_word_profile_20261015.inc`:
+D3D9 timestamp3F41597F/size179000h, NTDLL C96C22CB/1C0000h, Kernel32
+01212B3C/F0000h. All eleven recorded current-provider code spans, 672 bytes,
+also match their installed DLL disk bytes exactly. This qualifies the disk
+candidate, not the loaded imports/vtables/device/counters: the existing runtime
+guard still checks those before publication. Source compiler mode, changed
+providers or unsupported release paths retain unknown knowledge and fail at the
+actual consumption boundary. See [the existing entry-word evidence](NATIVE_SAMPLER_ENTRY_WORD_CC12.md).
+
+Healthy canonical references do not make `requires_process_retention()` true;
+interrupted native/host acquisition or retirement does. The destructor separately
+retains any graph lacking post-drain closure. Each drawable records its exact
+companion; terminal retirement marks that record before the native slot may be
+reused. An added scene-association retained reference is a separate real +04
+credit and must be decremented through the actual owner after raw-root detach.
+Virtual18 consumes the original logical creator only once, guarded by byte+44.
 
 No native body was newly reconstructed or renamed by this packet. Existing
 reconstructed source bodies and their ledger evidence are reused unchanged.
