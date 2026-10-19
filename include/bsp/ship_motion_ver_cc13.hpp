@@ -10,6 +10,16 @@
 
 namespace bsp {
 
+// 00810010 ECX owner, EAX=[owner+4F8h], RET. Meaning of this word remains provisional.
+std::uint32_t ship_motion_word_4f8_00810010(const void*) noexcept;
+// 00815590 ECX two floats, stack writer, RET4: writer slot0C receives
+// key {0,"thrust"}/{0,"toTurn"}, tagged value {2,float}, in that order.
+struct ShipMotionFloatArchiveCalls {
+    virtual ~ShipMotionFloatArchiveCalls() = default;
+    virtual void write_float_slot0c(void* writer, const char* key, float value) = 0;
+};
+void ship_motion_write_controls_00815590(const float* controls, void* writer, ShipMotionFloatArchiveCalls&);
+
 // ---------------------------------------------------------------------------
 // Settings this installation feeds the motion tail (00424C40 singleton), read from
 // scripts/datatables/shipglobals.lua on disk. The host passes 1.0 / 0 / 0 for the
