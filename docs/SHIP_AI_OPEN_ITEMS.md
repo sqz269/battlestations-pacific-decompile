@@ -20443,3 +20443,29 @@ attempt failed:
 - c23 added class-810 fighters from all five decks on waves 1 and 2. The fighters launch, but TT6 still sinks at
   exactly 241.96 s and the strikes lose their slots. It failed at 1805.64 s.
 - Next plan: move TT6 out of wave 1's reach before 118 s, then budget the 4 slots per deck.
+
+## 315. USNOS TroopTrans6 attribution (cc9-gunnery55, 2026-10-19)
+
+The question: on current main, TroopTrans6 sinks at 241.96 s (killer plane #1.4|.-III, first damage 118.45 s) in
+ships61's c19 plans, but on 77d8a4a9d it survived wave 1.
+- **Method.** One pair_export of main 872adeff3 per reverted flip, plus 77d8a4a9d. USNOS `s61_os_c19` (copy
+  `local\g55_os_c19.txt`), 7000 frames, reference env, logs `local\g55_tt<variant>_os.log`.
+- **TroopTrans6 at 350 s:** main dies; 77d8a4a9d alive; nav seeds (05cb6f1bc, all four) reverted alive; hitq reverted,
+  heading wrap reverted, hidden carry reverted and every goaway / moveto flip of 86b81e2a8 / 39ac16569 / 3ca24854e
+  reverted all die at 241.91-241.96 s.
+- **05cb6f1bc split:** kSinkLeakDrawStreamCc13Bound, kShipAiCruiseDistanceSeedBound and
+  kShipAiClearance364SyncCc13Bound reverted singly all die. **kShipAiNavBlockCtorSeedsCc13Bound reverted alone:
+  alive** (health 1150 of 4000 at 350 s).
+- **Mechanism (position cascade, not targeting).** Both runs install the same script-ordered level-bomb task
+  plane #1.4 -> TroopTrans6 at 40.20 s, and both log the same 57 hits on TroopTrans6.
+  - TroopTrans6 follows its leader. Its ship-AI d32c differs from the first AI step (step 10: 2085.52 with the seeds
+    reverted, 2085.45 on main). The gap grows to 0.76 m by step 80.
+  - The bomb impacts then cover a different number of the ship's damage elements (`impact blast bullet=78 ...
+    entries=` 8/8/9/10 reverted against 7/9/8 on main). Which component failures follow changes with them.
+  - Main gets EngineJam at 159.86 s and **Explosion at 165.16 s**, which takes about 780 health between two logged
+    bomb hits (2992.0 -> 2210.6) with no hit line. Fire follows at 166.16 s (health 1474). The ship burns to death:
+    `damage control death TroopTrans6 t=241.96 water_total=0 fire_total=2114`.
+  - With the seeds reverted, the only failure is Fire at 166.51 s (health 2246), and the ship survives.
+- **Verdict.** The ctor seeds are the image's (SHIP_AI 311). The loss is the sensitivity of element-based component
+  failures to a sub-metre change in station keeping, not a targeting or reach change, so nothing here is unfaithful.
+  The plan needs to keep TroopTrans6 out of wave 1's level-bomb run or accept the loss.
