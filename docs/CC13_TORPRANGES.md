@@ -116,7 +116,8 @@ its rest height. LIVE, but small. It was routed to the lead when found.
   position. That callback was not read.
 
 The flip is cc9's call. The expected effect is a lift of up to about 1.3 m in the torpedo glide
-base in USN21. USN01 lifts at most 0.2 m.
+base in USN21. USN01 lifts at most 0.2 m. The 500 m cap absorbs that lift throughout the moveto, so
+the commanded altitude does not move (docs/CC13_MVSPEED.md, "The glide").
 
 ## Row 18: 009D0484, the run profile row
 

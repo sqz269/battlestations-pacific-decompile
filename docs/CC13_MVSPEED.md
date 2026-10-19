@@ -109,11 +109,11 @@ when the wingmen value is below k (a lagging wing).
   speed commands. In USN21 there are 1407 lines, all with commanded = 500.0, at a minimum range
   of 7765.3. USN01 logs none.
 - **The end of moveto, by inference.** The glide leaves the 500 m cap only when (range - low) is
-  under about 1375, which is (500 - base) / 0.36:
+  under (500 - base) / (t × gain):
   - base is 5 to 6 m on every glide census line;
-  - 0.36 is the attackrun lines' scale 0.5 × gain 0.7265;
-  - the glide census prints the same gain, 0.727, but not the scale. So 0.36 is an assumption
-    for moveto.
+  - the census's `t` is the 009FBA50 scale (`cin.scale = t`), 1.600 on every line, and the gain
+    is 0.727, so the slope is about 1.16 and the cap lifts only below range - low ≈ 425;
+  - even at the scale's floor of 0.4 the threshold is about 1700.
   At attackrun entry (descent n=1), range - low is at least 2353 in USN21 and
   2715 in USN01. The range only shrinks on the way in, so the glide stays capped through the
   whole moveto.
