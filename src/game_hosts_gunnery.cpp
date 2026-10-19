@@ -18,8 +18,10 @@
 #include "bsp/cc13_tier2_switches.hpp"
 #include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (the 31h release)
 #include "bsp/structured_hierarchy.hpp"
+#include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq (the deferred hit queue)
 
 #include <array>
+#include <deque>
 #include <limits>
 #include <functional>
 #include <map>
@@ -3537,6 +3539,37 @@ struct GameGunneryHost::Impl {
     // segment query returned, set by run_projectiles around apply_hit only.
     int impact_shape_kind{0x0A};
     int impact_hull_segment{-1};
+    // Packet cc13-hitq (kHitDeferredDispatchCc13Bound): the deferred hit queue,
+    // the std::list at 00F899C0. One node per 00926E80 push: the record as the
+    // funnel built it, with the damage draw already made (00470350 runs before
+    // the push) and the part array copied, as 00925050 copies it, and the
+    // direction 00926F48 writes to node+5Ch. back() is head[+4h], the node the
+    // producer linked last (00926F12, 00926714). The deque is created on the
+    // first push, so OFF never allocates; a deque keeps the node a dispatch is
+    // reading in place if that dispatch pushes another.
+    struct DeferredHit {
+        bool gunless{false};       // apply_gunless_blast_hit (a shot-0 record)
+        std::size_t shooter{0};
+        std::size_t gun_row{0};
+        std::size_t victim{0};     // record+0h, the drain's subject
+        float point[3]{};
+        float direction[3]{};      // node+5Ch..+64h
+        bool has_blast{false};
+        bsp::HitRecord record{};
+        std::vector<bsp::HitPartEntry> parts;   // record+3Ch / +40h, copied
+        int team_id{-1};
+        int round_bullet_class{-1};
+        int impact_shape_kind{0x0A};
+        int impact_hull_segment{-1};
+        float hull_damage_draw{0.0f};           // record+14h, drawn at the push
+    };
+    std::unique_ptr<std::deque<DeferredHit>> deferred_hits;
+    const DeferredHit* deferred_replay{nullptr};   // the node 009239A0 is running
+    unsigned long long deferred_hits_queued{0};
+    unsigned long long deferred_hits_dispatched{0};
+    unsigned long long deferred_hits_refused_at_queue{0};
+    void queue_deferred_hit(DeferredHit&& node);
+    void dispatch_deferred_hit(const DeferredHit& node);
     // kPlaneSpinSideBound: the element kind the last plane mesh trace of a unit
     // found (-1 for none), and unit+800h per unit (-1 from 007CFDB4).
     std::vector<int> plane_trace_element_kind;
@@ -11712,11 +11745,101 @@ private:
 
 }  // namespace
 
+// Packet cc13-hitq, kHitDeferredDispatchCc13Bound only (nothing reaches these
+// two OFF). 00926E80: append at head[+4h] under the 00924990 lock (one thread
+// here, so no lock), copy the record and the direction. The write-only byte
+// 00E18684 and the discarded shot->vtable[5Ch](29h) at 00926F65 have no effect
+// to carry.
+void GameGunneryHost::Impl::queue_deferred_hit(DeferredHit&& node) {
+    if (deferred_hits == nullptr) deferred_hits = std::make_unique<std::deque<DeferredHit>>();
+    deferred_hits->push_back(std::move(node));
+    ++deferred_hits_queued;
+    ++summary.queued_hits;
+    done("Projectile::queue_hit_00926e80", 0x00926e80u);
+}
+
+// 00926750 -> 009239A0 for one node: the funnel runs again with the state it
+// had at the push (the round's class and the impact element), on the node's
+// own copy of the record and its part array.
+void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
+    const int saved_class = round_bullet_class;
+    const int saved_kind = impact_shape_kind;
+    const int saved_segment = impact_hull_segment;
+    round_bullet_class = node.round_bullet_class;
+    impact_shape_kind = node.impact_shape_kind;
+    impact_hull_segment = node.impact_hull_segment;
+    bsp::HitRecord record = node.record;
+    record.part_hits = node.parts.empty() ? nullptr : node.parts.data();
+    record.part_hit_count = static_cast<int>(node.parts.size());
+    ++deferred_hits_dispatched;
+    deferred_replay = &node;
+    if (node.gunless) {
+        apply_gunless_blast_hit(node.shooter, node.victim, node.point, record);
+    } else {
+        apply_hit(node.shooter, node.gun_row, node.victim, node.point, node.direction,
+            node.has_blast ? &record : nullptr, node.team_id);
+    }
+    deferred_replay = nullptr;
+    round_bullet_class = saved_class;
+    impact_shape_kind = saved_kind;
+    impact_hull_segment = saved_segment;
+}
+
 void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     std::size_t victim, const float point[3], const float direction[3],
     const bsp::HitRecord* blast_record, int team_id) {
     if (victim >= unit_state.size() || shooter >= unit_state.size()) return;
     UnitState& target = unit_state[victim];
+    // Packet cc13-hitq. ON, a call from a funnel is 00926E80 (0084BE20 for the
+    // direct hit, 0084BBF9 for each blast record): draw the record's damage and
+    // queue it. The drain calls back in with deferred_replay set, and the rest
+    // of this body is 009239A0 for that node. Taking the pointer here means a
+    // hit raised from inside the dispatch queues again, as a push from a
+    // vtable[ECh] handler would.
+    const DeferredHit* replay = nullptr;
+    if constexpr (kHitDeferredDispatchCc13Bound) {
+        replay = deferred_replay;
+        deferred_replay = nullptr;
+        if (replay == nullptr) {
+            // The narrowphase finds only what is in the hit index: a wreck past
+            // its window (below) is neither drawn nor queued.
+            if (target.dead && (!kWreckHitDeliveryBound || !wreck_in_hit_window(victim))) {
+                ++deferred_hits_refused_at_queue;
+                return;
+            }
+            DeferredHit node;
+            node.shooter = shooter;
+            node.gun_row = gun_row;
+            node.victim = victim;
+            for (int i = 0; i < 3; ++i) {
+                node.point[i] = point[i];
+                node.direction[i] = direction[i];
+            }
+            node.has_blast = blast_record != nullptr;
+            if (blast_record != nullptr) {
+                node.record = *blast_record;
+                if (blast_record->part_hits != nullptr && blast_record->part_hit_count > 0) {
+                    node.parts.assign(blast_record->part_hits,
+                        blast_record->part_hits + blast_record->part_hit_count);
+                }
+            }
+            node.team_id = team_id;
+            node.round_bullet_class = round_bullet_class;
+            node.impact_shape_kind = impact_shape_kind;
+            node.impact_hull_segment = impact_hull_segment;
+            // 00470350 SetShot before the push: the same draw, at the same
+            // point in the shared stream, as the OFF body makes below.
+            const int queued_class
+                = round_bullet_class >= 0 ? round_bullet_class : guns[gun_row].bullet_class;
+            const GameBulletClassRow* queued_weapon = bullet(queued_class);
+            node.hull_damage_draw = draw(Draw::hull_damage, gun_row, victim,
+                queued_weapon != nullptr ? queued_weapon->damage_min : 0.0f,
+                queued_weapon != nullptr ? queued_weapon->damage_max : 0.0f);
+            queue_deferred_hit(std::move(node));
+            return;
+        }
+    }
+    static_cast<void>(replay);
     if (target.dead) {
         ++wreck_hits_reaching;
         if constexpr (!kWreckHitDeliveryBound) {
@@ -11756,9 +11879,12 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     const GameBulletClassRow* weapon = bullet(priced_class);
 
     // 00926E80 queues the record, 009239A0 dispatches it: the entity gates, the
-    // OnHit delivery and the attribution listener.
-    ++summary.queued_hits;
-    done("Projectile::queue_hit_00926e80", 0x00926e80u);
+    // OnHit delivery and the attribution listener. ON, the push was counted in
+    // queue_deferred_hit.
+    if constexpr (!kHitDeferredDispatchCc13Bound) {
+        ++summary.queued_hits;
+        done("Projectile::queue_hit_00926e80", 0x00926e80u);
+    }
 
     // 00470350 HitRecord::SetShot: record+14h = shot->vtable[54h](), which is
     // 006E7C60, a uniform draw between the weapon class's DamageMin (+ACh) and
@@ -11767,7 +11893,11 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     bsp::HitRecord hit;
     const float low = weapon != nullptr ? weapon->damage_min : 0.0f;
     const float high = weapon != nullptr ? weapon->damage_max : 0.0f;
-    hit.hull_damage_base = draw(Draw::hull_damage, gun_row, victim, low, high);
+    if constexpr (kHitDeferredDispatchCc13Bound) {
+        hit.hull_damage_base = replay->hull_damage_draw;   // drawn at the push
+    } else {
+        hit.hull_damage_base = draw(Draw::hull_damage, gun_row, victim, low, high);
+    }
     hit.part_damage_base = 0.0f;
     hit.falloff_range = 0.0f;
     hit.ignore_falloff = false;
@@ -12129,8 +12259,34 @@ void GameGunneryHost::Impl::apply_gunless_blast_hit(std::size_t source, std::siz
     if (victim >= unit_state.size() || source >= unit_state.size()) return;
     UnitState& target = unit_state[victim];
     if (target.dead) return;
-    ++summary.queued_hits;
-    done("Projectile::queue_hit_00926e80", 0x00926e80u);
+    // Packet cc13-hitq. ON, a call from a funnel is 0084BBF9's 00926E80 push
+    // (shot 0, so no damage draw); the drain calls back in with deferred_replay
+    // set and the rest is 009239A0 for that node. The dead test above runs
+    // again at the dispatch.
+    if constexpr (kHitDeferredDispatchCc13Bound) {
+        const DeferredHit* replay = deferred_replay;
+        deferred_replay = nullptr;
+        if (replay == nullptr) {
+            DeferredHit node;
+            node.gunless = true;
+            node.shooter = source;
+            node.victim = victim;
+            for (int i = 0; i < 3; ++i) node.point[i] = point[i];
+            node.direction[0] = 0.0f;   // the direction the dispatch below passes
+            node.direction[1] = 1.0f;
+            node.direction[2] = 0.0f;
+            node.has_blast = true;
+            node.record = record;
+            if (record.part_hits != nullptr && record.part_hit_count > 0) {
+                node.parts.assign(record.part_hits, record.part_hits + record.part_hit_count);
+            }
+            queue_deferred_hit(std::move(node));
+            return;
+        }
+    } else {
+        ++summary.queued_hits;
+        done("Projectile::queue_hit_00926e80", 0x00926e80u);
+    }
     bsp::HitRecord hit = record;
     bsp::ShipHitRecordView view;
     view.segment_kind = 0x0A;
@@ -15299,6 +15455,28 @@ const std::vector<GameGunRow>& GameGunneryHost::guns() const noexcept {
     return impl_->guns;
 }
 
+// Packet cc13-hitq: the queue's four operations for the drain 00926700.
+std::size_t GameGunneryHost::deferred_hit_count() const noexcept {
+    return impl_->deferred_hits != nullptr ? impl_->deferred_hits->size() : 0;
+}
+
+const void* GameGunneryHost::deferred_hit_back(std::size_t& victim) const noexcept {
+    if (impl_->deferred_hits == nullptr || impl_->deferred_hits->empty()) return nullptr;
+    const Impl::DeferredHit& node = impl_->deferred_hits->back();
+    victim = node.victim;
+    return &node;
+}
+
+void GameGunneryHost::dispatch_deferred_hit_009239a0(const void* node) {
+    if (node == nullptr) return;
+    impl_->dispatch_deferred_hit(*static_cast<const Impl::DeferredHit*>(node));
+}
+
+void GameGunneryHost::pop_deferred_hit_back() {
+    if (impl_->deferred_hits == nullptr || impl_->deferred_hits->empty()) return;
+    impl_->deferred_hits->pop_back();
+}
+
 bool GameGunneryHost::unit_dead(std::size_t unit_index) const noexcept {
     if (unit_index >= impl_->unit_state.size()) return false;
     const Impl::UnitState& state = impl_->unit_state[unit_index];
@@ -17003,6 +17181,13 @@ void GameGunneryHost::report() {
         "seed=%d bearing=%d (CC13_VER_21 D2/D1)", host.ranging_velocity_seeds,
         host.ranging_bearing_turns_dropped, kRangingSeedVelocityBound ? 1 : 0,
         kRangingBearingFixedBound ? 1 : 0);
+        if constexpr (kHitDeferredDispatchCc13Bound) {
+            host.log.notef("summary mission gunnery deferred hits queued=%llu dispatched=%llu "
+                "refused_at_queue=%llu left=%zu (00926E80 / 00926700, packet cc13-hitq)",
+                host.deferred_hits_queued, host.deferred_hits_dispatched,
+                host.deferred_hits_refused_at_queue,
+                host.deferred_hits != nullptr ? host.deferred_hits->size() : std::size_t{0});
+        }
         host.log.notef("summary mission gunnery wreck hits bound=%d reaching=%llu delivered=%llu "
             "past_window=%llu shapes_offered=%llu (009239A0 / 00826F10, packet "
             "cc9_wreck_hit_delivery)", kWreckHitDeliveryBound ? 1 : 0,
