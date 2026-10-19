@@ -100,4 +100,31 @@ inline constexpr bool kPlaneCombatDeathRetireDrawCc13Bound = false;
 // False: the tail runs for it, as before.
 inline constexpr bool kPlaneGroundStateDeadTailCc13Bound = false;
 
+// A plane killed through 00926D90 BSP_MissionEntity_Kill: the retreat leave-map
+// Kill(4) (007F3418 PUSH 4 / CALL 00926D90, and 007F31A0's other members) and
+// any other funnel kill. 00926D90 sets +5Fh, stores the cause at +70h
+// (00926E02) and calls vtable[70h](1), which for a plane is 0077D1A0
+// (00D19D28+70h = 00D19D98); 0077D1A0 builds message 4Eh only with [00E0AF20]
+// set and game+1FE4h 0 or 1 (0077D1BB-0077D236; not modelled, as in the
+// gunnery host's destroy_unit_0077d1a0) and calls 00926C80 Destroy (0077D243).
+// No SetHealth, so no
+// 007CA8A0: no stream-1 mode draw (007CA914), no 007BBFA0 timer or 007BC3C7
+// delay draw, no 007D0B80 flags (C39h/C36h/C3Ah). The destroy flush then
+// dispatches 007BCAA0: 007BCABB's stream-0 DeadEngineFireDelay draw and the
+// 007F3970 squadron removal.
+// The host's death-mode block takes every gunnery-dead plane not already
+// removed, so today a retreat plane draws a mode (logged as "plane death mode",
+// e.g. explosion_delayed with its stream-0 delay draw) one step after the Kill.
+// The test is the host's kill cause: every cause other than 1 is stored only by
+// a 00926D90 caller (note_kill_cause: the retreat arms 4, the stock return 5,
+// the ship exit 4, the gunnery funnel's normalized Lua / ship AI causes).
+// True: for such a plane the block skips the mode draw and the mode, does not
+// set C3Ah, keeps the +60h / +5Dh flush and the squadron removal, takes the
+// 007BCABB draw (whatever kPlaneCombatDeathRetireDrawCc13Bound says) and
+// removes the plane. LABELLED: the draw lands one step after the Kill (the
+// block's step), not at that step's 009273A0 flush. A cause-1 funnel kill (Lua
+// Kill(x), 007CE3A7) cannot be told from a gunfire death and keeps the mode.
+// False: the mode is drawn, as before.
+inline constexpr bool kPlaneFunnelKillDestroyOnlyCc13Bound = false;
+
 }  // namespace bsp
