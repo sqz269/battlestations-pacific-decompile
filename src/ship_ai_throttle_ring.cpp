@@ -96,7 +96,7 @@ float ship_ai_rudder_from_heading_error_009da250(ShipAiThrottleDirection latched
     const float raw = -heading_error / authority;
 
     float demand = kShipAiRudderLow;
-    if (kShipAiRudderLow <= raw) {
+    if (kShipAiRingNanArmsBound ? !(kShipAiRudderLow > raw) : kShipAiRudderLow <= raw) {
         demand = raw;
         if (kShipAiRudderHigh < raw) {
             demand = kShipAiRudderHigh;
@@ -183,6 +183,10 @@ ShipClassAiDerivedMotion ship_class_ai_derived_motion_00828f20(
 // `step <= |previous - desired|` (009F4C4E FCOMI, JBE at 009F4C52), so a
 // desired value already within one step passes through untouched.
 float ship_ai_slew_toward_ring_009f4c0e(float previous, float desired, float step) noexcept {
+    if constexpr (kShipAiRingNanArmsBound) {
+        if (step > std::fabs(previous - desired)) return desired;
+        return (desired > previous) ? previous + step : previous - step;
+    }
     if (step <= std::fabs(previous - desired)) {
         return (desired <= previous) ? previous - step : previous + step;
     }

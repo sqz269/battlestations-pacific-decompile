@@ -913,3 +913,82 @@ mechanism is in the cd761bb52 section above).
     of 183.06 s with the same plan: main moved it, not the travel speed (the OFF side of that pair fails at 222.06 s
     too).
   - USN15, BSM09's reference, BSM01 and USNOS wait on the ships and physics lanes as the lead's queue says.
+- **Re-time on 4b74dd6b4 / 011d651dc** (cc9-lua69, 2026-10-18; main after the lua69 flips, physics20's
+  kFollowReleaseArmBound / kHelmPlaneMovetoBound and the d6c0c5ccd console fix). Tree build of `agent/cc9-lua52`;
+  reference env, `--stop-after-end 40`; logs `cc9-lua52\local\l69r_<row>_main_<ref|j3>.log`, summary
+  `local\l69_sum.py <glob>`, runner `local\l69_runs.ps1` (rows in `local\l69_rows.txt`). Base per row in the last
+  column; "was" is the 03d3df7f8 re-time above.
+
+  | Row (plan) | frames | reference | 20,3 | base | was (ref / 20,3) |
+  |---|---|---|---|---|---|
+  | USN01 `l65_u1_g` | 26000 | **no end** | - | 011d651dc | 405.02 / 415.02 |
+  | USN01 **`l69_u1_a`** (new) | 26000 | completed 420.02 s | **failed 1160.01 s** (Trans) | 4b74dd6b4 | - |
+  | LOMP06 `l67_l6_b` | 16000 | completed 411.82 s | **failed 443.17 s** | 4b74dd6b4 | 269.86 / 269.86 |
+  | PRCP01 `p9_p01_k` | 30000 | completed 649.86 s | completed 797.38 s | 4b74dd6b4 | 647.37 / 920.45 |
+  | LOMP10 `p3_l10_b` | 36000 | completed 981.43 s | completed 1343.74 s | 4b74dd6b4 | 987.43 / 991.43 |
+  | JM06 `s45_j6_k` | 120000 | completed 730.95 s | completed 691.95 s | 4b74dd6b4 | 676.96 / 790.93 |
+  | ESMP08 `p12_e8_rb` | 140000 | completed 1379.37 s | completed 1367.41 s | 4b74dd6b4 | 1367.41 / 1372.41 |
+  | IJN18 `l67_i18_d` | 64000 | EndMission 1691.52 s | EndMission 1651.49 s | 4b74dd6b4 | 1676.51 / 1841.67 |
+  | USN12 `l68_u12_e8` | 36000 | completed 1435.27 s | completed 1525.36 s | 4b74dd6b4 | 1395.24 / 1500.34 |
+  | USN02 `l68_u2_a` | 16000 | completed 475.01 s | completed 475.01 s | 4b74dd6b4 | 475.01 / 460.01 |
+  | BSM09 **`l68_b9_d1`** (new) | 36000 | EndMission 327.04 s, all objectives | EndMission 327.04 s | 011d651dc | failed / - |
+  | IJN08 `p10_i08_z` | 100000 | **failed 1129.98 s** (Game Over) | **no end** | 011d651dc / 4b74dd6b4 | no end / 3076.88 |
+  | JM08 `l65_j8_p2` | 110000 | **failed 1140.04 s** (HQ) | - | 011d651dc | 1259.15 / - |
+  | JM08 `l69_j8_h` (local) | 110000 | **no end**, HQ holds | **no end**, HQ holds | 4b74dd6b4 | - |
+  | BSM01 `p6_b1_a` | 40000 | no end | - | 011d651dc | no end / - |
+
+  Every completion logged the guard; BSM09 and IJN18 EndMission runs log it too. Notes:
+  - **USN01: `l65_u1_g` is lost to the faithful kFollowReleaseArmBound flip** (physics20, 9f2d1cea3). Bisect over the
+    first-parent merges 03d3df7f8..011d651dc, exports with d6c0c5ccd applied (`local\l69_bs<i>`): 03d3df7f8 completes
+    405.02 s, merge 2 (50c83d892, the p20 flip) and every later point have no end, and current main with only
+    `kFollowReleaseArmBound=false` (`local\l69_fr0`) completes 370.03 s. With the switch ON, ConTBD2's wingmen are shot
+    down instead of stowing and Convoy2 (killed by ConTBD2 at 198.71 s before) survives, so the 231 s phase switch, the
+    ConTBD Kill and the Nell waves never come. **The row is now `config/win_orders/usn01_l69_u1_a.txt`**: g plus every
+    Con squadron re-targeted on Convoy2 at frames 4250-4261. Reference only: under 20,3 Convoy3 survives instead, and
+    the Convoy2|Convoy3 lists (b, d, e in `local\l69_u1_<v>.txt`) kill Convoy2 too late for the "Trans" objective.
+  - **BSM09: the row is `config/win_orders/bsm09_l68_b9_d1.txt`** (lua67's d1: Donald held NW, `10 moveto Donald
+    -2400 3200 repeat 30`), winning with kHelmPlaneMovetoBound ON on both seeds.
+  - **JM08**: the HQ loss on p2 / r2 is the cc13-audited naval gunfire (Missouri never dies; the escorts' AA destroys
+    the Hosho Kates before release, tries d / e / f). Try 2, `local\l69_j8_h.txt` (`l69_j8_add.py` puts Missouri at the
+    top of every airfield launch group, the Hosho classes take Missouri first from 6000, every destroyer torpedo is aimed
+    at Missouri), sinks Missouri at 397.83 s (ref) / 569 s (20,3) and Nevada at 603 / 640 s. No craft lands
+    (`bleed_total=0`) and the HQ is never neutralized, so **the loss is not forced**. With Missouri dead before
+    StartInvasion the landing force idles; LSM 02, LST 01 and LST 02 (ref) or LSM 02 alone (20,3) survive 5500 s, so
+    primary 1 never completes and there is no end. h2 (those three first from 16000) is identical to h. JM08 stays open
+    on the last landships.
+  - **IJN08** z reference now loses both Marus (Maru2 at 689.86 s to Jap_Airfield_sqn10, Maru1 at 1126.17 s to
+    US_Airfield_03_sqn22), Game Over. The one re-plan, h (`local\l69_i08_h.txt`: the Marus held at z = -14000 from 7100,
+    the first frame they exist, to 56100), loses them sooner (Game Over 724.95 / 684.96 s). The IJN08 reference stays open.
+  - **BSM01**: lead/cc13 plan a (`local\l69_b1_a.txt`, `6950 takehelm HenryPT 0.6 1500 -2990`) keeps HenryPT clear of
+    the shoal and reaches MissionPhase 3, but HenryPT dies at 1841.97 s and `MiniSub` fails. Both a and b launch 4-6
+    depth charges with `depth_detonations=0 contact_detonations=0`. Waiting on gunnery53.
+  - LOMP06's 20,3 and USN01's 20,3 are new losses; USN15 and USNOS wait on the ships lane.
+- **BSM01 won: `config/win_orders/bsm01_l69_b1_d.txt`** (cc9-lua69, main ec0df436c, reference env): EndMission 809.93 s
+  reference / 929.90 s under 20,3, MissionStatus=true, MissionPhase 4, guard logged; MiniSub dies at 679.86 / 645.22 s
+  (`luaMiniSubHit` fires: hit listener 00988510 on HenryPT's charges), HenryPT survives (no commandhelpers.lua:5991
+  error). The plan follows gunnery53's lane (SHIP_AI_OPEN_ITEMS 296.3): p6_b1_a's legs to (1915,-3084), then
+  `6900 takehelm HenryPT 1.0 1400 -2980` (the z -2980 lane past the x 1300-1620 shoal), `7300 takehelm HenryPT 1.0
+  -430 -2990` (the sub's west point near 432 s), `8500 attack HenryPT MiniSub repeat 3` (pursuit), and a depth-charge
+  press every 40 frames from 7600 to 26000. Variant c (the attack from (900,-2980) at 7400) has no end. The lead/cc13
+  6950 leg plans a / b (`local\l69_b1_a|b.txt`) stay superseded. Logs `cc9-lua52\local\l69r_b1d_main_{ref,j3}.log`.
+- **USN15** on ec0df436c: `s45_u15_l2` fails at 1127.02 s; the cc13 timing fix a (Fuso block moved to frame 20000,
+  `local\l69_u15_a.txt`) fails at 1122.02 s and b (a with the battleships held until 20000) at 1382.27 s. On this
+  main **Yamashiro no longer dies** (999.28 s before) and kills the battleships at 1.4-2.7 km, after Fubuki-class
+  torpedoes (cat 7, 2.5-4 km) take Maryland / California first. USN15 needs a Yamashiro-first re-plan with torpedo
+  avoidance; it stays open.
+- JM06 completes at 1457.30 s with the squadron step-tail flips (physics23, main ac7bc90b6); BSM09 d1 unchanged.
+- **JM08 h3** (`cc9-lua52\local\l69_j8_h3.txt`: h plus `l69_j8_add.py` lines putting LST 02, LST 01 and LSM 02 at
+  the top of every launch group from frame 20000; main ec0df436c): on the reference seed **all 11 landships die by
+  1290 s, with Missouri at 592 s and Nevada at 603 s**. primary 1 and 2 complete, "Run" plays, and all three bomber
+  waves spawn. The HQ then falls to the phase-2 waves at 1674.10 s (failed 1674.56 s; 15 phase-2 planes shot down).
+  Under 20,3 there is no end: Missouri dies at 569 s, but LSM 01-02 and LST 01-03 survive. JM08 is now a phase-2
+  air-defence problem. It is not a forced loss: the cc13 naval-gunfire audit no longer applies once Missouri dies
+  before StartInvasion.
+- **USN01 cause, refined by cc9-physics23** (`cc9-physics1\local\p23g_old_u1g.log`, 03d3df7f8): the old 198.71 s
+  Convoy2 kill was a STRAY torpedo. ConTBD2|.-III was ordered at Convoy4, missed it by 180.7 m, and ran 58.8 m past
+  Convoy2. Its release came from the aim lead gate, which was true for 2 ticks only. On current main the same plane gets
+  lead=0, never releases, and dies at 181.3 s to Convoy3 AA. The bisect names the kFollowReleaseArmBound merge, but the
+  mechanism is a knife-edge in the aim geometry, not a broken switch, so the row stays re-planned (`usn01_l69_u1_a`).
+- Open rows at the lua69 handoff: JM08 (open no-end; h3 reaches phase 2 on ref; the lead routed the idle-LST question
+  to cc13), IJN08 reference, USN15 (Yamashiro-first re-plan), USNOS (ships60), USN01 / LOMP06 under 20,3. The
+  kVehicleClassPreloadCc15Bound re-flip is on HOLD (cc15: Ohka class 156; pairs listed in SQUADRON_LAND_TASK 5it).

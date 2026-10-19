@@ -614,3 +614,37 @@ docs/SCRIPTED_HELM.md section 11.
 - **Call build.ps1, not `cmake --build` directly.** A direct call bypasses the slots.
 
 - **Game run slots.** `tools/run_game.ps1` has 14 slots by default (was 6), pinned to the even cores 2-28.
+
+## 12. The call graph index: per-site edges, kinds and undefined code (packet `cc16-callgraph`)
+
+`tools/callgraph_sweep.py` (run by `bsp.py index` when its outputs are older than the snapshot) writes
+`callgraph_edges.json` beside the older `callgraph.json`, which it still writes byte-for-byte as before.
+`bsp.py index` loads it into the `edges(caller, callee, site, kind, detail)` table, with `funclet_parent`,
+`ranges` (each function's swept stop) and `undefined` (code Ghidra never defined). The old `calls` table is
+unchanged for older readers.
+
+| kind | meaning |
+|---|---|
+| `call` / `tailjmp` | direct call; direct jmp or jcc that leaves the function's range. `site` is the instruction |
+| `addr_taken` | an immediate operand naming a function start (callbacks, thread entries, vtable stores) |
+| `data_ptr` | an aligned dword in `.rdata`/`.data` naming a function start; no caller, `site` is the slot |
+| `eh` | parent function to its EH funclets, through the prologue's `push __ehhandler` and the FuncInfo record (97.8% of funclets) |
+| `vslot` / `vcall?` / `lua` | vtable slots, candidate virtual dispatch and Lua C bindings, from `tools/callgraph_indirect.py` (docs/CALLGRAPH_INDIRECT.md) |
+
+- **Undefined code.** About 31,000 code chunks sit between snapshot functions. Nearly all of them are
+  16-aligned whole functions that follow a `ret` and its int3 pad, and only about 850 are referenced at all.
+  - Each chunk is its own caller in `edges`.
+  - `bsp.py undefined [--direct]` lists the referenced chunks, and `lookup` on an address inside one says so.
+  - The previous byte scans credited these chunks' calls to the function before them, which made 86 rows
+    look "ready" in `wire_readiness.py`.
+- **Queries.**
+  - `callers` and `callees` resolve mid-function addresses and fold EH funclets into their parent.
+  - They print one row per function and kind, or one per site with `--sites`.
+  - They take `--kind`, `--depth N`, `--unbuilt`, `--unwired`, `--status` and `--path-from-host`.
+    The last three read `local/output/wire_readiness.json`.
+- **Consumers.** Both `progress_board.referenced_functions` and `wire_readiness.py` now read the table in place
+  of their own unaligned byte scans; `wire_readiness.py --byte-scan` keeps the old scan for comparison.
+  - **Progress board.** The live set is a superset of the old one apart from 2 byte coincidences.
+    It gained 446 functions that only undefined code calls, and remaining went from 19 to 26.
+  - **wire_readiness.py.** Ready went from 1857 to 1771, because the old scan's misattributed callers are gone.
+  - `vcall?` candidates never make a body live.

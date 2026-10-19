@@ -19628,8 +19628,17 @@ logs local\g53_dcd_*.log.
   -3160..-3190 grounds: `hull draft contact census: draft=0 hull=HenryPT first_step=7414
   steps=8587`, speed 0 at throttle 1 (the stall cc9-physics6 saw at (1624, -3170)). `attack
   HenryPT MiniSub` (c2/c4/c6) gives four DC launches and no hit.
-- Open: a BSM01 route plan (a channel west of x 1300 that avoids the draft-0 contact, timed to
-  meet MiniSub on its west or north leg). Routed to the lead.
+- Routes c7-c10 (local\g53_b1_c7..c10.txt): a leg along z -2980 passes x 1300 without the
+  draft-0 contact (census count 0 in c10). Henry then slows to about 4 m/s near x 800. MiniSub is
+  not on a fixed track: in c9 (hold at (830, -2990), a press every 40 frames to 26000) it
+  circles back near (750-870, -3130..-3220) at 1200-1294 s, and the closest charge was 151 m
+  (1293.89 s). c10 holds at (800, -3170) on that pass. 265 HenryPT charges drop, and the
+  closest is 268 m (1298.59 s, sub at (658, -3378)): the sub's return leg moves with Henry's
+  position. No luaMiniSubHit and no mission end in c7-c10.
+- Open: reaching luaMiniSubHit needs a pursuit plan that re-targets Henry onto MiniSub's live
+  position (a `takehelm` toward the sub every few hundred frames, or `attack HenryPT MiniSub`
+  started once Henry is west of x 1300 on the z -2980 lane). Fixed hold points do not work.
+  Not a host defect; parked for the lead.
 
 ### 4. 00864880's two draws: the host already matches
 
@@ -19660,3 +19669,127 @@ kHudRootCircleYOffset) declared float against true-double m64 qwords.
 
 ship_ai_attackmove_substates.cpp: the jitter_48 note now says the caller takes the 009E55A1
 draw (22e41560e).
+
+### 7. kGunAimMessageCc15Bound: ON (e9a17b4db)
+
+The pair is on USN01 (b8dcae593, reference env). Northampton's artillery was fired through the
+harness `input` line (SCRIPTED_HELM 17): `0x9D`, then `0x99` held 300 frames, at mission frames
+500, 900 and 1300.
+- Screen 2Eh is up from about mission frame 410 to 1823. At 1823 the script hands the player the
+  ScoutDauntless, and set 22h has no 2Eh. Inputs after 1823 never reach the HUD.
+- There were 1298 79h round trips, all group 3. Only the quantised angles moved (yaw on 1218,
+  pitch on all; max 1.7e-5 / 6.9e-6 rad).
+- 99h reached 00959F72: the 0095A05B record ran 2700 times on both sides.
+- Gameplay, death rows, the unit table and the native table are identical. Flipped by mechanism.
+  This was the input tool's first game validation.
+
+### 8. The player's artillery seat: kRoleOwnerDeviceWalkBound (OFF)
+
+**0095A05B is multiplayer-only.** Its flag `[ESP+12h]` needs `game+1FE4h == 1` (hosted) and
+`+218Ch == 0`. Its flag `[ESP+13h]` needs a unit held by a non-AI slot that is not the local
+player. Single player is `game+1FE4h = 0`. `[unit+1BCh]` is role 4, not role 3.
+
+**The single-player seat** comes from the role take:
+1. Screen 2Eh's group-3 role request sends 4Bh with mask 10h.
+2. In 00780120's loop, a changed holder (00780393) runs 007803A8 0077FE80.
+3. Its default 0078002F calls `vtable[164h]`, which is 00821E80; its 4Bh arm forces 0095ABE0.
+4. 0095AC1D: mask 10h runs 00954000, which hands Function 2/3/4/6 to the slot. Mask 4 or 8 runs
+   00953F60, a release.
+
+This host never ran that walk, so the artillery stayed AI-held (held_ticks 0).
+- Binding: `GameGunneryHost::role_owner_device_walk_0095ac1d`, called from
+  `role_message_4b_00780162`. Details are in docs/PLAYER_GUN_SEAT.md 7.5, which also corrects
+  7.2's "single-player 1".
+- Preview pair on USN01, same orders, working tree:
+  - takes 8 (Northampton's 3 turrets, Dunlap's 5 Function 6 mounts), held_ticks 0 to 5661;
+  - no player shells, because the HUD camera aims 10 degrees down at the sea and every 0085ABA0
+    refuses;
+  - Northampton's turret shots 335 to 280, and hits 925 to 812;
+  - deaths identical.
+- Open: a pair with player shells needs a camera aim input that the harness lacks. The flip waits
+  on the lead.
+
+## 297. cc9-ships59 handoff (2026-10-18)
+
+**Landed this session** (agent/cc9-ships44; each flip fully built and paired in the reference env unless noted):
+- 290: USNOS friendly fire between Loui1 and Loui2 is faithful (no side filter in the image's shell path; no line-of-fire gate on kinds 2-4).
+- 291 `kDirectorQueueCc13BodiesBound` ON. 292 `kSceneTrafficBlockBound` ON. 293 `kShipFormationSpeedCeilingRowBound` ON.
+- 294 `kReconRecordsSurviveSpawnBound` ON (docs/RECON_SENSOR_PASS.md "Records survive a spawn").
+- 662d8bc7d: the ship ai sample's `heading=` column (blk+1D8h, written only by 009E0040) is renamed `desired_1d8=`, and
+  `hull=` prints `unit_heading_radians`. hull is kept out of the change test. Log only.
+- bbea13229 `kSetCommandMessageCc13Bound` (sm1) ON and 7d6b27b65 `kCommandMessageCc13Bound` (sm2) ON. USN01 3200: exit 1,
+  gameplay identical; 103 / 51 round trips, 10 sub-mm moveto quantisations, 3 cut ids restored (s59_sm_off_u01,
+  s59_sm1_on_u01, s59_sm2_on_u01 manifests).
+- f157685d6 `kSceneBrowserGroupsBound` ON. USN01 3200 has an empty block. JM05 600 (PRCPIJN ijn_05) has 33 entries,
+  ok=1. Both exit 1.
+- c995c8975 OFF, then 1fe919dc4 ON: `kTraceSceneDamageDrawBound`, the 0084C19F stream-1 draw on every sweepable
+  0084BF00 segment, which the host skipped. USN04 20000: reference env exit 1, gameplay identical, 1133300 draws.
+  Default env exit 3, as predicted. Reference-env WINS rows do not move.
+
+**USNOS re-plan, open (section 294).** The best run is `s59_b_c15` / `s59_b_c16` (reference env). The blockade, both
+battleships and Haku1/3/4 sank, and TT5 allied CB2 at 4400 s. HQ1 and HQ2 were left neutral, and Haku2 was never hit
+(the decks were spent). c17 (`local\s59_os_c17.txt`, made by `local\s59_osmk.py c17`) routes TT5 back along its own
+inbound track to HQ2 and then HQ1, and turns Loui1/NH/Portland4/Gear9/Gear15 on Haku2 once both battleships are
+dead. The three attempts:
+- the first was killed from outside at frame about 110000 (the route legs worked);
+- the second was killed at 45 MB;
+- the third (on main 4b74dd6b4) died at 2834.5 s. The first BettyOhka release threw "unit observer creator projection
+  is unavailable: unit=Betty4_kz01 creator=00000000" (game_hosts_units.cpp:18434). On 310ac5a0b the same release
+  resolved creator 00956240. This blocker was sent to the lead. It kills every run that reaches an Ohka release.
+The next step, once the Ohka creator is fixed: re-run c17 for 175000 frames in the reference env. Its prefix is no
+longer a c15 replay on the new main, so check that TT5 is alive and has allied CB2 before frame 89000. If it has not,
+re-time the TT5 route from the frame where CB2 turns. Jitter (20,3) loses all six transports to the blockade before
+2800 s, so a jitter-robust plan needs the transports held away from the blockade until it is dead. Scripts:
+`local\s59_sum.py` (outcome summary), `local\s59_capt.py <log> <HQ>` (capture runs), `local\s59_grep.py`.
+
+**Not taken (still open from the lead's messages):**
+- the Fuso USN15 close-range gunnery question;
+- the 00935D30 break-in-two draws (`host.breakup_parts` unimplemented; citations to fix: the reserve push is at 00748444
+  with the call at 00748455, and the body call is at 00748932);
+- NaN-only lows: the rudder clamp 009DA28C..2AB passes NaN where the host sends -1, and the ring slew 009F4C4E never
+  writes NaN.
+
+## 298. The break-in-two draws, kShipBreakInTwoDrawsBound (cc9-ships60, 2026-10-18)
+
+The 98h receiver 00814520 tail-jumps to 00935D30 BSP_UnitController_BreakInTwo (docs/CC13_SEGMIX.md). The host
+records the 98h send in `ship_death_message_00827ab0` and stops there (`host.breakup_parts` has no implementer), so
+it skips the 11 stream-1 draws the two pieces take. The listing has exactly 11 `CALL 00BD2F10` in the body, all with
+ECX = 1: the front at 00936328, 00936388, 009363A5 (sx, sy, sz = U(-1, 1), [00D7A260] = -1.0 and FLD1), 009363ED
+and 00936460 (U(0, 1.5), [00CE380C] = 1.5) and 009364AE (U(10, 20), [00CE38B8] = 10.0, [00CE3930] = 20.0); the back
+at 009366B2..009367E8, the same without sx. The piece offsets only pose the wreck halves (presentation) and are not
+modelled.
+
+Bound OFF as `kShipBreakInTwoDrawsBound` (game_hosts_gunnery.cpp, beside `kShipDeathMessageBound`): at the host's
+98h send it takes the 11 draws in image order on `Draw::ship_break_in_two` (key unit, 0 front / 1 back), and the
+ship death summary gains `break_in_two_draws=`. Uncertainty: the image delivers 98h through the message manager,
+and the host assumes same-tick delivery, as it already does for 9Ah.
+
+Predictions: in the reference env (`BSP_GUNNERY_RNG_STREAMS=1`) the draws are on their own key, so a pair is
+gameplay identical, with `break_in_two_draws = 11 * 98h`. In the default env every draw on the shared stream after
+the first 98h moves, so the pair moves (exit 3) from the first breakup on, when the row has one.
+
+## 299. The NaN arms of the rudder clamp and the ring slews, kShipAiRingNanArmsBound (cc9-ships60, 2026-10-18)
+
+Two NaN-only lows from 297, both in ship_ai_throttle_ring.cpp, bound OFF together as `kShipAiRingNanArmsBound`
+(ship_ai_throttle_ring.hpp):
+- 009DA250's clamp. 009DA28C loads -1.0 ([00D7A260]), 009DA292 FCOMIP ST0(-1), ST1(raw) and JBE 009DA2A2: an
+  unordered compare sets CF and ZF, so a NaN raw takes the keep arm; 009DA2A8 COMISS raw, [00D7A24C] JBE also keeps
+  it. The image passes NaN; the host's `kShipAiRudderLow <= raw` sent -1.
+- The slews 009F4C0E/009F4C86. After 009F4C4E FCOMI ST0(step), ST1(|previous - desired|) the JBE at 009F4C52 takes
+  the stepping arm on an unordered compare, and 009F4C6A FCOMPI ST0(desired), ST2(previous) JBE 009F4C72 takes FSUBP,
+  so a NaN desired gives previous - step. The host's `step <= |d|` returned the NaN desired value.
+Read with `disasm-raw 009F4C10 --length 120` and `ghidra disasm 009DA250`.
+
+Predictions: no row is known to feed a NaN here, so pairs are gameplay identical (exit 0 or 1). A moved pair means a
+NaN reached the rudder or a ring value, which would be a finding of its own.
+
+**Result, flipped ON.** Reference-env pairs on f4d92c331: USN04 20000 (`s60_naoff_u04` / `s60_naon_u04`) and JM08 24000
+(`s60_naoff_j08` / `s60_naon_j08`, mission end at 20401 frames) are identical, pair_diff exit 0, as predicted. The
+change is draw-order neutral, so no default-env pair.
+
+**Result, flipped ON.** USNOS 36000 pairs on 8ae424ab9 with the c17 orders, as predicted:
+- reference env (`s60_bdoff_os` / `s60_bdon_os`): exit 1, gameplay identical; one 98h (`break_in_two_draws 0 -> 11`)
+  and the one new native row `ShipDeath::break_in_two_draws_00935d30`.
+- default env (`s60_bdoffd_os` / `s60_bdond_os`): exit 3. The first 257 deaths are identical, through the first 98h
+  (Cargo1 at 1354.95 s); the first moved death is the next one (Airfield1_sqn39, 1357.55 -> 1357.60 s). After that
+  the shared stream is offset, so later breakups differ (Convoy2 1416.66 broke in OFF only; Cargo5 and Cargo6 in ON).

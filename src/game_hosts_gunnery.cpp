@@ -1594,6 +1594,17 @@ constexpr bool kOverrideHpHealthZeroBound = true;  // ON: faithful, no reach (SH
 //    health-zero kill. False: no message and no draw. Packet cc9_ship_death_message.
 constexpr bool kShipDeathMessageBound = true;  // ON: USN02, JM08 pairs identical (SHIP_AI 239)
 constexpr float kWreckChanceInstalled = 0.3f;
+//  * kShipBreakInTwoDrawsBound (cc9-ships60, SHIP_AI 298): the 98h receiver 00814520
+//    tail-jumps to 00935D30 BSP_UnitController_BreakInTwo, whose two pieces take 11
+//    stream-1 draws (00BD2F10, ECX = 1). Front, 00936328..009364AE: sx, sy, sz =
+//    U(-1, 1) ([00D7A260], 1.0), then U(0, 1.5) ([00CE380C]) twice and U(10, 20)
+//    ([00CE38B8], [00CE3930]). Back, 009366B2..009367E8: the same without sx. The
+//    piece offsets are presentation and are not modelled; only the draws are taken,
+//    in image order, at the host's 98h send (the image delivers 98h through the
+//    message manager; same-tick delivery is the host's assumption, as for 9Ah).
+//    False: the 98h is recorded and draws nothing, so a default-env run's shared
+//    stream stays 11 behind the image per breakup.
+constexpr bool kShipBreakInTwoDrawsBound = true;  // ON: USNOS 36000 pairs (SHIP_AI 298)
 //  * kPlaneBlastElementEntriesBound: a burst's distance to a PLANE is taken per
 //    GeomMesh element, as kBlastElementEntriesBound does for a ship. The image's
 //    sphere test for the plane's unit-part shape is 0070F720, which ends in
@@ -2376,6 +2387,7 @@ struct GameGunneryHost::Impl {
         reload = 31,          // 0072D579, the full re-arm's ReloadTime draw, stream 1, key (gun, 0)
         auto_target_phase = kDrawKeyCollisionFixBound ? 32u : 30u, // 009F6A8F, -U(0, 1) into the auto-target think countdown, stream 1, key (unit, 0)
         trace_scene_damage = 33, // 0084C19F, U(+ACh, +B0h) for 00428420, stream 1, key (shot serial | plane, 0)
+        ship_break_in_two = 34, // 00935D30's 11 piece-offset draws, stream 1, key (unit, 0 front | 1 back)
     };
     unsigned long long next_projectile_serial{0};
     unsigned long long trace_scene_draws{0};   // kTraceSceneDamageDrawBound
@@ -2941,6 +2953,9 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_returns{0};
     unsigned long long seat_held_ticks{0};
     unsigned long long seat_trigger_ticks{0};
+    // cc9-gunnery53, kRoleOwnerDeviceWalkBound (0095AC1D).
+    unsigned long long seat_role_takes{0};
+    unsigned long long seat_role_releases{0};
     // Packet cc9_player_gun_seat_segment_query.
     unsigned long long seat_segment_casts{0};
     unsigned long long seat_segment_hits{0};
@@ -4150,7 +4165,7 @@ struct GameGunneryHost::Impl {
     void ship_death_message_00827ab0(std::size_t victim);
     struct ShipDeathCounts {
         unsigned long long messages_9a{0}, kamikaze_removals{0}, no_breakup_nodes{0};
-        unsigned long long breakup_draws{0}, breakups_98{0};
+        unsigned long long breakup_draws{0}, breakups_98{0}, break_in_two_draws{0};
     } ship_death;
     unsigned long long override_hp_kills{0};
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
@@ -13474,6 +13489,18 @@ void GameGunneryHost::Impl::ship_death_message_00827ab0(std::size_t victim) {
         "packet cc9_ship_death_message)", unit_state[victim].row.name.c_str(),
         static_cast<double>(roll), static_cast<double>(clock_seconds));
     record("ShipDeath::breakup_message_98_00761310", 0x00761310u);
+    if constexpr (kShipBreakInTwoDrawsBound) {
+        // 00935D30: front sx, sy, sz, a, b, d; back sy, sz, a, b, d.
+        for (std::size_t piece = 0; piece < 2; ++piece) {
+            for (int sign = piece == 0 ? 0 : 1; sign < 3; ++sign)
+                (void)draw(Draw::ship_break_in_two, victim, piece, -1.0f, 1.0f);
+            (void)draw(Draw::ship_break_in_two, victim, piece, 0.0f, 1.5f);
+            (void)draw(Draw::ship_break_in_two, victim, piece, 0.0f, 1.5f);
+            (void)draw(Draw::ship_break_in_two, victim, piece, 10.0f, 20.0f);
+            ship_death.break_in_two_draws += piece == 0 ? 6u : 5u;
+        }
+        done("ShipDeath::break_in_two_draws_00935d30", 0x00935d30u);
+    }
 }
 
 // Packet cc9_land_master_damage. 006D5220 and 00849F70 call 00744A20 on each listed
@@ -14219,6 +14246,63 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
 void GameGunneryHost::apply_gun_aim_message_00959c20(std::size_t unit_index,
                                                      const GunAimMessage79& message) {
     impl_->apply_gun_aim_message(unit_index, message);
+}
+
+// cc9-gunnery53 (SHIP_AI_OPEN_ITEMS 296.8): 0095AC1D's device walks, reached
+// from 00780120's holder-change call (007803A8 0077FE80 -> 0078002F
+// vtable[164h] -> 00821EEA -> 0095ABE0). The first matching mask test wins.
+// IsKindOf(20h) is every row here; the Function is GameGunRow::category.
+void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uint32_t mask,
+                                                      std::int32_t slot, bool take) {
+    if constexpr (!kRoleOwnerDeviceWalkBound) {
+        static_cast<void>(unit);
+        static_cast<void>(mask);
+        static_cast<void>(slot);
+        static_cast<void>(take);
+        return;
+    } else {
+        Impl& h = *impl_;
+        const bool walk_156 = (mask & 0x04u) != 0 || mask == 0x08u;   // 0095AC5D, 0095AC62
+        const bool walk_2346 = !walk_156 && (mask & 0x10u) != 0;      // 0095AC67
+        if (!walk_156 && !walk_2346) return;   // 20h / 80h: the group 4/5 models
+        auto in_156 = [](int k) { return k == 1 || k == 5 || k == 6; };
+        auto in_2346 = [](int k) { return k == 2 || k == 3 || k == 4 || k == 6; };
+        // 00729F70: vtable[154h](0, 8), vtable[1E8h](0), 00728000.
+        auto release = [&](GameGunRow& gun) {
+            gun.seat_1ac = 8;
+            gun.seat_trigger = false;
+            gun.target_unit = 0;
+            gun.target_name.clear();
+            ++h.seat_role_releases;
+        };
+        if (walk_156) {
+            if (take) return;                                  // 00953F64: a release only
+            // 00953F74: [unit+1BCh] (role 4) against msg+28h.
+            std::int32_t role4 = 8;
+            if (!h.units.unit_current_role_slot(unit, 4, role4)) role4 = 8;
+            const bool same_slot = role4 == slot;
+            for (GameGunRow& gun : h.guns) {
+                if (gun.unit_index != unit || !in_156(gun.category)) continue;
+                if (same_slot && in_2346(gun.category)) continue;   // 00953FAD
+                release(gun);
+            }
+            h.done("PlayerGunSeat::role_owner_walk_156", 0x00953f60u);
+            return;
+        }
+        for (GameGunRow& gun : h.guns) {                       // 00954000
+            if (gun.unit_index != unit || !in_2346(gun.category)) continue;
+            if (!take) {
+                release(gun);
+                continue;
+            }
+            gun.seat_1ac = slot;                               // 00954056 vtable[154h](0, slot)
+            ++h.seat_role_takes;
+            // 0095406D: 0072D5B0(0, 0). The host picks the ammo per shot
+            // (kFlakSecondAmmoCadenceBound), so the mode select is a record.
+            if (gun.category == 6) h.record("PlayerGunSeat::role_take_fire_mode", 0x0072d5b0u);
+        }
+        h.done("PlayerGunSeat::role_owner_walk_2346", 0x00954000u);
+    }
 }
 
 void GameGunneryHost::attach_00864bd0() {
@@ -16472,6 +16556,9 @@ void GameGunneryHost::report() {
             "packet cc9_player_gun_seat)", host.seat_messages, host.seat_handovers,
             host.seat_returns, host.seat_held_ticks, host.seat_trigger_ticks,
             kPlayerGunSeatBound ? 1 : 0);
+        host.log.notef("summary mission gunnery role owner device walk takes=%llu releases=%llu "
+            "bound=%d (0095AC1D: 00954000 / 00953F60, cc9-gunnery53)", host.seat_role_takes,
+            host.seat_role_releases, kRoleOwnerDeviceWalkBound ? 1 : 0);
         host.log.notef("summary mission gunnery player seat groups 0..5=%llu/%llu/%llu/%llu/%llu/%llu "
             "artillery guns=%llu unsolved=%llu hits=%llu turns=%llu refusals=%llu bound=%d "
             "(00959F72, packet cc9_player_gun_seat_artillery)",
@@ -16779,9 +16866,11 @@ void GameGunneryHost::report() {
             const Impl::ShipDeathCounts& d = host.ship_death;
             host.log.notef("summary mission gunnery ship death message 9Ah=%llu "
                 "kamikaze_removals=%llu no_breakup_nodes=%llu breakup_draws=%llu 98h=%llu "
+                "break_in_two_draws=%llu "
                 "bound=%d; OverrideHP kills=%llu bound=%d (00827A90, 008C1930, packets "
                 "cc9_ship_death_message, cc9_override_hp_health_zero)", d.messages_9a,
                 d.kamikaze_removals, d.no_breakup_nodes, d.breakup_draws, d.breakups_98,
+                d.break_in_two_draws,
                 kShipDeathMessageBound ? 1 : 0, host.override_hp_kills,
                 kOverrideHpHealthZeroBound ? 1 : 0);
         }
