@@ -26,11 +26,23 @@ namespace bsp::cc13_devwalk {
 // eligible rack decides (a plane with bombs and rockets is decided by its first rack, not by
 // the plane-wide ordnance mask); a rocket (33h) rack is fired and raises unit+C25h but issues no
 // release orders (007C0EEB). False: the plane-wide mask decides, as before.
-inline constexpr bool kPlaneDeviceWalkPerRackBound = true;   // ON: OCEAN_WAVE_FIELD 97 (cc9-physics23)
+// With this switch ON, the values of the switches it bypasses are ignored: the walk replaces
+// the bodies kPlaneLevelBombTaskBound's level branch, kLevelBomberIssueTailBound,
+// kPlaneDeviceWalkBound, kReleaseIssueStageBound / kReleaseIssueStageValsBound and
+// kRackBulletKindBound shape inside run_release_order_issue_007c0d90 (the level-bomber rack
+// tick still follows lb_level_bomber_racks()).
+// Single-class bombers are not moved by the per-rack decision itself, but an issue tick that
+// meets a busy rack (vt+1FCh, dropBombs still set) now skips it and fires the next, faithful
+// to 007C0DEB, where the mask path fired nothing new; that can move them.
+inline constexpr bool kPlaneDeviceWalkPerRackBound = true;   // ON: OCEAN_WAVE_FIELD 97 (main cff560b45), physics23 pairs
 
-// The draw sub-switch. True: the level bomber's next-rack delay draw (007C0E67-007C0E88) is
-// taken from the shared stream-1 generator (GameGunneryHost::death_mode_draw_00bd2f10(1, ...)),
-// in the image's call order. False: the units host's own release sequence, as before.
+// The draw sub-switch. True: the issue path's stream-1 draws are taken from the shared
+// stream-1 generator (GameGunneryHost::death_mode_draw_00bd2f10(1, ...)), in the image's call
+// order: the level bomber's next-rack delay draws (007C0E67-007C0E88), then the next-issue
+// interval C28h (007CEA9A-007CEABE, under kReleaseIssueIntervalDrawBound). These are the
+// only 00BD2F10 calls on the path (007CEA8D 007C0D90 through 007EEF30 and 006E3550, direct
+// calls to depth 6; descriptor vtable calls are not followed). False: the units host's own
+// release sequence (`#lbrk` and `#issue` keys), as before.
 inline constexpr bool kPlaneDeviceWalkSharedDrawBound = false;
 
 // 007C0E67 [00CE3860] and [00CE6448], the U(lo, hi) bounds of the next-rack delay draw.
@@ -75,6 +87,7 @@ struct DeviceWalkResult {
     bool issue_orders{false};      // 007C0F01 007EEF30
     int last_fired_class{0};       // EDI at 007C0EE0
     int draws{0};                  // 007C0E88 calls
+    float delay_after{0.0f};       // [ESP+0Ch] at 007C0ED9, after the last draw
 };
 
 // The walk. `level_bomber` is the owner's IsKindOf(10h); `draw()` returns one U(lo, hi) draw
@@ -106,6 +119,7 @@ DeviceWalkResult device_walk_007c0d90(const std::vector<DeviceWalkRack>& racks,
         f.target_point = r.bullet_class == kOrdnanceParatrooper;
         out.fired.push_back(f);
     }
+    out.delay_after = delay;
     if (!out.found) return out;   // 007C0EDE
     out.raise_c25 = true;
     out.issue_orders = out.last_fired_class != kOrdnanceRocket;

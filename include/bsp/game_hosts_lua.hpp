@@ -2247,6 +2247,7 @@ private:
     // miss path has written `ID` / `Got` on, once each (its cache stands in).
     std::set<int> vehicle_class_rows_marked_;
     void mark_vehicle_class_row_00964790(int class_index, const char* site = nullptr);
+    void mark_vehicle_class_device_bullets_00960230(int class_index);
     // cc15-vcp1: the rows the last census found unmarked, with the reads
     // of each that came after it.
     std::map<int, std::size_t> vehicle_class_would_nil_;

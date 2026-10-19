@@ -119,3 +119,60 @@ D onward must associate rendered models with mission unit identities/poses,
 compose the main scene/multipass B156C0/D5E13C path and exposure/tone mapping,
 and then submit terrain, ocean, sky and particles. The fixed diagnostic ship
 is the A-C milestone rather than a reconstructed whole mission renderer.
+
+## cc15-rshut: the ON shutdown residue is the Original's own cache-clear order
+
+Packet cc15-rshut re-derived the release order of the ON-only `error.dds`
+residue from the listing and found no Source divergence to fix. No code
+changed; the guard stays enabled and the ON process still exits `C0000409`.
+
+Original order, all from disk bytes:
+
+- Renderer destruction `B32920` clears `+1A60` (`B31630`) and `+1A98`
+  (`B31750`), then the texture registry `+1A74` with `B316C0` at `B32BBA`.
+  Much later it calls `B32370` at `B335D6`, which releases the fallback
+  `+1A74+20` and then reruns `B316C0` on the emptied registry.
+- `B316C0` always works on the current last row. It subtracts that row's size,
+  then calls registry vfn `+10` (`B31DA0`: an `InterlockedDecrement` that calls
+  vfn 0 at zero) on `row+28`. It then rereads the count at `B316FE` and destroys
+  the storage of row `count-1` (`B3170B`/`B3170F`) without releasing it.
+- At zero, the 2D texture destructor `B3F2E0` always calls renderer slot `+6C`
+  (`B32250`, at `B3F347`) through `F8D394`. That reaches `B31DC0` on `+1A74`,
+  which swaps the last row into the matching slot (`B30510`), destroys the last
+  row (`B31F9D`) and decrements the count.
+- So when a released row reaches zero, the row below it is destroyed without
+  any release. The reread count is the Original's own logic, not a Source
+  artifact.
+
+Who owns which credit:
+
+- A cold load through `B319B0` calls `B30B40` with `acquire_new=0`. The caller
+  then borrows the row's only credit; a later cache hit adds a credit
+  (`B31D80`).
+- `B14E95` stores `noise.dds` (literal `D5E468`) at service `+67C`. The service
+  destructor releases `+668` (`black.tga`, `B14FB7`) but no Original
+  instruction ever releases `+67C`. A displacement scan finds only loads at
+  `B12142`, `B1253C` and `B16C3F`/`B16C95` (size queries).
+- `B0F6E0` releases the two post materials `+658` and `+65C` that hold noise.
+  The service registers after the renderer (`B0F020` versus `B25F40`), and
+  singleton shutdown is LIFO, so the service dies first. Noise reaches
+  `B316C0` with only its leaked creator credit.
+- The fallback initializer `B31BD0` loads `error.tga` with `acquire_new=1`
+  (`B31C0A..B31C13`), giving it the row credit plus the `+20` credit, 2 in
+  total. It runs on the first cache miss, so `error.dds` is row 0. Swap-removal
+  never moves rows 0 or 1, so with these loads the rows at `B316C0` entry are
+  `[error, noise]`.
+- Result in the Original with this load set: noise goes 1 to 0, its callback
+  removes row 1, and `B316C0` destroys row 0 unreleased. `B32370` then takes
+  `error.dds` from 2 to 1, which is exactly the ON16 trace. Which row ends up
+  skipped depends on how many single-credit (leaked) rows are left at
+  `B316C0`. A full Original session may have a different set; this was not run
+  or observed.
+
+Missing release, wrong order, wrong owner and a doubled reference were each
+ruled out against the listing above. The Source cache loop, callback, removal,
+load credits, the service's `+67C` omission and the LIFO drain order all match
+it. The remaining choices belong to the lead: keep ON's `C0000409`, or decide
+whether `NativeTextureLoadOwners`' empty-at-exit invariant should allow
+residues the Original itself leaves. No suppression, forced release or early
+purge was added.
