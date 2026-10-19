@@ -19845,7 +19845,7 @@ On the skip path, the host still runs the 009EE671..009EE6CB prelude (A90h..A9Ch
 makes in the approach.
 - Nevada on ON JM08: rudder -0.358, throttle 1.000, desired 1D8h 0.9425. The ship steers on the approach's heading.
 
-**ON** by mechanism. JM08 loses its HQ-capture failure and becomes a no-end: the landing ships
+**ON** by mechanism; the flip landed on main in e73b7450f. JM08 loses its HQ-capture failure and becomes a no-end: the landing ships
 spawn at about 937 s and die to the HQ guns and AA trucks after 1128 s, so CheckHQ never sees
 CommandBuilding.Party == 2. The JM08 row change went to cc9-lua70.
 
