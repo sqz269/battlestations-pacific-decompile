@@ -4,11 +4,14 @@
   "program": "/battlestationspacific.exe",
   "project": "C:/Users/sqz269/bsp.gpr",
   "validation": {
-    "build": "Win32 scripts/build.ps1 passed and existing CTest 2/2 passed; dedicated src/oct18b_nB_mid.cpp awaits parent registration and merged build; final signature refinements require incremental build.",
+    "build": "First existing-family Win32 build/CTest2/2 passed. Parent merged build required for dedicated6 and completed007EFBA0; registration004004606 references all4 worker extensions, so not cherry-picked locally.",
     "call_sites": "tools/verify_report_calls.py: 111 call rows checked, 0 failed",
     "game_run": "not requested or run",
     "abi": "source interfaces, not drop-in binary replacements",
-    "ghidra": "62 reviewed names/comments applied and project saved; affected exports force-refreshed; prior annotations local/ghidra-annotations-20261019T055221Z.json"
+    "ghidra": "62 reviewed names/comments applied and project saved; affected exports force-refreshed; prior annotations local/ghidra-annotations-20261019T055221Z.json",
+    "pending_annotation": [
+      "007efba0"
+    ]
   },
   "family_exceptions": [
     {
@@ -943,7 +946,8 @@
       "source": "docs/OCT18B_NB_MID.md",
       "evidence": "Pointer-array polyline/line minimum distance. ECX=array, origin at [entry ESP+4], direction at [entry ESP+8], ST0 return, RET8. Requires full x87 spill/NaN ordering recovery and the EDX/ECX plus stack contracts at calls 0046F440, 0046F940 and 00470150; decompiler hides those receivers. Same family: path_movcam_seg46_argon.hpp PointLineDistanceHost / point3_ptr_array_nearest_point_to_line_007aeec0. No stub added; continuing bounded recovery.",
       "dispatch_body_bytes": 986,
-      "original_abi": "ECX=pointer array, stack origin pointer then direction pointer; ST0=float-spilled distance; RET8."
+      "original_abi": "ECX=pointer array, stack origin pointer then direction pointer; ST0=float-spilled distance; RET8.",
+      "continuation_owner": "agent/oct18b-nB-low; exact address/family file leases released and next queued worker notified"
     },
     {
       "address": "007b0b90",
@@ -1634,12 +1638,23 @@
           "function": "007efba0"
         }
       ],
-      "name": "BSP_Deferred_007efba0",
-      "status": "deferred_contract_recovery",
-      "source": "docs/OCT18B_NB_MID.md",
-      "evidence": "PlaneSquadronGen command permission predicate, ECX=squadron, command string and nullable target on stack, AL boolean, RET8. Requires command constants and call/receiver contracts for 0060C5B0(class+35Ch), 006BF050(target ECX, DL=1), 007EEC50, 007ED7E0/007ED8D0, plus exact party and vslot168 order. Same family: plane_squadron_entity.hpp. No stub added; continuing bounded recovery.",
+      "name": "plane_squadron_command_allowed_007efba0",
+      "status": "reconstructed_source_interfaces",
+      "source": "src/plane_squadron_entity.cpp",
+      "evidence": "Complete 259-instruction control-flow read. ECX=squadron, stack command/nullable target, AL boolean, RET8. Preserves blocked+3B0h, base may-follow, vslot168, all command comparisons and early-outs in original order. Raw Win32 field reads stay at their native points. Reuses existing 0060C5B0 class-field predicate and 007ED7E0/007ED8D0 squadron ordnance loops; required other native/vslot boundaries are explicit. No host wiring or game run.",
       "dispatch_body_bytes": 769,
-      "original_abi": "ECX=squadron; stack command cstring then nullable target; AL boolean result; RET8."
+      "original_abi": "ECX=squadron; stack command cstring then nullable target; AL boolean result; RET8.",
+      "ghidra_name": "BSP_plane_squadron_command_allowed_007efba0",
+      "command_literals": {
+        "00cfb54c": "moveto",
+        "00cf8b00": "cleartarget",
+        "00cfb614": "land",
+        "00cf8b0c": "settarget",
+        "00cfb4d0": "strafe",
+        "00d08950": "bomb",
+        "00cfb414": "torpedo",
+        "00cfb50c": "dogfight"
+      }
     },
     {
       "address": "007f2290",
@@ -1699,8 +1714,8 @@
     }
   ],
   "counts": {
-    "deferred_contract_recovery": 2,
+    "deferred_contract_recovery": 1,
     "library_instantiation_out_of_scope": 3,
-    "reconstructed_source_interfaces": 59
+    "reconstructed_source_interfaces": 60
   }
 }
