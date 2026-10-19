@@ -556,6 +556,13 @@ public:
     // -> 008358d0 -> 0071e6c0 and, when the pushed command becomes current,
     // 00835c70's own arm. Nothing here writes an order ring.
     void issue_authored_commands();
+    // One slot of issue_authored_commands; false when the slot authored no
+    // command or the command path produced no row.
+    bool issue_authored_command_at(std::size_t index);
+    // Packet cc13-hiddencarry: the authored command of the slot a GenerateObject
+    // spawn just made (the first slot at or past `first_index` named `name`), as
+    // 00944FD0's 0046AAB0 at 009453BB resolves the record 004E6B30 queued.
+    bool issue_generated_authored_command(std::size_t first_index, const std::string& name);
 
     // --order <command name>: the same path, issued to the controlled unit on
     // --order-frame. Returns false when no unit is bound.
