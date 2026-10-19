@@ -34,8 +34,8 @@ the two-instruction form `MOV [ECX], vtable; JMP base` (seg59's 008F4160 / 008F4
 here 00743E30, 0074CC90, 0093CC80, 007AC950, 0094CAD0). A scalar or vector deleting destructor is
 compiler-generated and bound; its record cites the out-of-line destructor whose body it repeats
 inline. Where that out-of-line copy is not a defined function (00CFEA98's 007378A0 and 00D005C0's
-007504E0 are undefined chunks), the record cites the routine the inlined body calls, which does
-all the work after the vtable store. A pure single-JMP with no store is a thunk record
+007504E0 are unreferenced undefined chunks), the record cites the routine the inlined body calls,
+which does all the work after the vtable store. A pure single-JMP with no store is a thunk record
 (`existing_recorded_thunk`).
 
 ## Reconstructed
@@ -57,16 +57,20 @@ all the work after the vtable store. A pure single-JMP with no store is a thunk 
 
 ## Bound with a citation
 
-Deleting destructors: `0081ACF0` (out of line 00818100), `006D37A0` (006D3770), `007378B0`
-(007378A0 undefined; calls 00736F70), `007416B0` (00741180), `00743E60` (00743E30), `0074CCC0`
-(0074CC90), `00750520` (007504E0 undefined; calls 0074FC40), `008139E0` (0080E380), `0093CC90`
-(0093CC80), `0094E2A0` (TOrderedMap vector deleting destructor over 0094CA40 / 0094CAD0, iostdnet
-allocators 00A51E70 / 00A51EB0), `007AC980`, `007B0ED0`, `007B1050` (007AC950), `007B2D30`
-(007B2CF0 BSP_OwnedPointsPathSource_FreePoints).
+Deleting destructors, each with the out-of-line destructor whose body it inlines:
+`0081ACF0` (inlines 00818100), `006D37A0` (inlines 006D3770), `007378B0` (inlines the
+unreferenced undefined chunk 007378A0; both end in 00736F70), `007416B0` (inlines
+00741180), `00743E60` (inlines 00743E30), `0074CCC0` (inlines 0074CC90), `00750520` (inlines the
+unreferenced undefined chunk 007504E0; both end in 0074FC40), `008139E0` (inlines
+0080E380), `0093CC90` (inlines 0093CC80), `0094E2A0` (TOrderedMap vector deleting destructor;
+inlines 0094CAD0, iostdnet allocators 00A51E70 / 00A51EB0), `007AC980`, `007B0ED0`, `007B1050`
+(each inlines 007AC950), `007B2D30` (inlines 007B2CF0 BSP_OwnedPointsPathSource_FreePoints).
+"Unreferenced" means no rel32 CALL/JMP/Jcc and no absolute dword anywhere in the image names the
+chunk's address.
 
 Thunks (`existing_recorded_thunk`): `00749780` (JMP 0080E380, renamed
 thunk_BSP_SessionMessage_SHIP_CREATE_Destruct; it had shared its target's name), `00943F70`
-(JMP 00943BB0).
+(JMP 00943BB0; Ghidra had FUN_00943f70, renamed thunk_STL_List_Tidy_00943BB0 under the lock, log local/ghidra-annotations-20261019T081012Z.json).
 
 ## Uncertainty
 
