@@ -139,3 +139,24 @@ removes the row. The distinct white texture is16AA5188. This correction rules
 out a white+668-specific lifetime explanation while identifying the actual
 resource that causes the observed row transition. It does not justify adding
 a new+67C release or changing the original cache loop.
+
+Final bounded audit: Original registers the renderer duringB32410 (called at
+73DA88), then constructs/publishes the resource service at73DF01, matching
+Source ordering. Renderer destruction stampsD5F0A8 atB32942, callsB316C0 at
+B32BBA andB32370 atB335D6, and only changes to baseD5E628 atB3398A. The active
+table's+6C target isB32250. Texture destruction unconditionally reads the
+renderer publication atB3F330/B3F336 and invokes that slot atB3F347; there is
+no null-publication suppression. Base retirement clearsF8D394 atB26053 after
+the derived cache operations. These checks establish observed Original
+mechanics, not a demonstrated leak in a running Original game: the complete
+Original caller/lifetime contract remains unproved.
+
+The primary's ON16 run reaches the textured installed ship and completes600
+frames/599 presents; its OFF16 comparison has zero differences. The remaining
+late Source C++ guard is the sole retained error-texture companion after the
+noise zero callback removes its row and the native cache loop skips the error
+row's release. The destructor guard remains enabled. No release repair,
+callback suppression, reordered registration, broad early purge or residual
+owner sweep is justified by this audit, and none was added. This packet stops
+at that precise teardown blocker; it does not claim normal ON process exit,
+full Original shutdown parity or Original-game leak validation.
