@@ -47,4 +47,20 @@ inline constexpr bool kPlaneFlightStateNotifyCc13Bound = false;
 // False: the retired plane draws nothing, as before.
 inline constexpr bool kPlaneRetireOnDestroyedDrawCc13Bound = false;
 
+// The same 007BCABB draw for a plane that dies through the death message
+// chain (00877B90 SetHealth -> 007CA8A0 -> 007BBFA0 -> 007D0B80, whose tail
+// 007D12FC calls vtable[70h](1)): the destroy flush that follows dispatches
+// 007BCAA0. Stream-0 order per plane: 007BC3C7 (ExplosionExplosionDelay, only
+// for a delayed explosion), then 007BCABB. Stream 1 (007CA914's mode draw,
+// 007BC1F2, the 007CAAD0 debris draws) is untouched.
+// True: the host's death-mode block (the plane's first step after the gunnery
+// death) takes the draw right after its own flush. The image flushes at
+// 009273A0 after every unit's motion, so with two planes dying in one step
+// the shared stream-0 order is A delay, A 007BCABB, B delay, B 007BCABB here
+// against A delay, B delay, A 007BCABB, B 007BCABB in the image; under
+// BSP_GUNNERY_RNG_STREAMS=1 each plane has its own stream-0 key and the per-
+// plane order is the image's.
+// False: no draw, as before.
+inline constexpr bool kPlaneCombatDeathRetireDrawCc13Bound = false;
+
 }  // namespace bsp

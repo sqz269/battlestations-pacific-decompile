@@ -3084,6 +3084,26 @@ struct GameUnitsHost::Impl {
     unsigned long long stock_return_site_leaves{0}, stock_return_destroys{0};
     // Packet cc13-landc.
     unsigned long long flight_state_notifies{0}, stock_return_destroy_draws{0};
+    unsigned long long combat_death_destroy_draws{0};
+    // planepartclasses.lua DeadEngineFireDelay, which 004A9BD0 stores at
+    // [00E18718] / [00E18714] (004AA9BD / 004AAA57); read once per host.
+    bool dead_engine_fire_delay_read{false};
+    float dead_engine_fire_delay[2]{3.0f, 5.0f};
+    // The destroy flush's vtable[7Ch] for a plane is 007BCAA0 (00D19D28+7Ch);
+    // its first act is 00BD2F10(ECX = 0, [00E18718], [00E18714]) at 007BCABB,
+    // stored at +C14h (no host field: nothing the host runs reads it). Takes
+    // that stream-0 draw through the gunnery host; false without one.
+    bool plane_on_destroyed_draw_007bcabb(std::size_t index) {
+        if (gunnery == nullptr) return false;
+        if (!dead_engine_fire_delay_read) {
+            dead_engine_fire_delay_read = true;
+            lua.read_global_number_pair("DeadEngineFireDelay", dead_engine_fire_delay[0],
+                dead_engine_fire_delay[1]);
+        }
+        gunnery->death_mode_draw_00bd2f10(0, index, dead_engine_fire_delay[0],
+            dead_engine_fire_delay[1]);
+        return true;
+    }
     unsigned long long stock_return_queue_erases{0}, stock_return_queue_misses{0};
     unsigned long long squadron_kill_queue_kills{0}, squadron_kill_queue_erases{0};
     unsigned long long land_retire_leader_calls{0}, land_retire_queue_erases{0};
@@ -16497,21 +16517,7 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
     p.plane_death_removed = true;
     if (gunnery != nullptr) gunnery->kill_unit_00926d90(p.process_index, 5);
     if constexpr (bsp::kPlaneRetireOnDestroyedDrawCc13Bound) {
-        // Packet cc13-landc: the destroy flush's vtable[7Ch] 007BCAA0, whose first
-        // act is 00BD2F10(ECX = 0, [00E18718], [00E18714]) at 007BCABB into +C14h
-        // (no host field; nothing reads it on a retired plane). The pair is
-        // planepartclasses.lua's DeadEngineFireDelay {3.0, 5.0}, which 004A9BD0
-        // stores at 004AA9BD / 004AAA57.
-        static bool fire_delay_read = false;
-        static float fire_delay[2] = {3.0f, 5.0f};
-        if (!fire_delay_read) {
-            fire_delay_read = true;
-            lua.read_global_number_pair("DeadEngineFireDelay", fire_delay[0], fire_delay[1]);
-        }
-        if (gunnery != nullptr) {
-            gunnery->death_mode_draw_00bd2f10(0, p.process_index, fire_delay[0], fire_delay[1]);
-            ++stock_return_destroy_draws;
-        }
+        if (plane_on_destroyed_draw_007bcabb(p.process_index)) ++stock_return_destroy_draws;
     }
     if constexpr (kStockReturnDestroyBytesBound) {
         // 00926D90 Kill: +5Fh = 1 (00926DF3); +60h clear, so vtable[70h] 0077D1A0
@@ -20806,6 +20812,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 slot.scene_pending_destroy_0060 = 1;   // 00926CD5
                                 slot.state->simulate = 1;              // 0092639B
                                 host.done("MissionEntity::on_destroyed_00926390", 0x00926390u);
+                            }
+                        }
+                        // Packet cc13-landc (kPlaneCombatDeathRetireDrawCc13Bound): the
+                        // flush that sets +5Dh dispatches vtable[7Ch] 007BCAA0, whose
+                        // 007BCABB stream-0 draw follows 007CA914 (stream 1) and
+                        // 007BC3C7 (stream 0, delayed explosions only) above. The image
+                        // flushes at 009273A0, after the step's motion; this host's
+                        // flush is taken here (as the +5Dh store above), so across two
+                        // planes dying in one step the stream-0 order interleaves.
+                        if constexpr (bsp::kPlaneCombatDeathRetireDrawCc13Bound) {
+                            if (host.plane_on_destroyed_draw_007bcabb(index)) {
+                                ++host.combat_death_destroy_draws;
                             }
                         }
                         host.log.notef("plane death mode: unit=%s t=%.2f draw=%.4f mode=%s "
@@ -42595,6 +42613,9 @@ void GameUnitsHost::report() {
         "007C5F60 / 007C1430; 007BCABB, packet cc13-landc)",
         bsp::kPlaneFlightStateNotifyCc13Bound ? 1 : 0, host.flight_state_notifies,
         bsp::kPlaneRetireOnDestroyedDrawCc13Bound ? 1 : 0, host.stock_return_destroy_draws);
+    host.log.notef("summary plane combat death draw bound=%d draws=%llu (007BCABB after "
+        "the death flush, packet cc13-landc)",
+        bsp::kPlaneCombatDeathRetireDrawCc13Bound ? 1 : 0, host.combat_death_destroy_draws);
     host.log.notef("summary stock return queue erase bound=%d erases=%llu misses=%llu "
         "(006C59A4 -> 006BF7F0, packet cc9_stock_return_queue_erase)",
         Impl::kStockReturnQueueEraseBound ? 1 : 0, host.stock_return_queue_erases,
