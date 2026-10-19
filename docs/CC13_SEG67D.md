@@ -211,12 +211,79 @@ So NaN gives b, b and a. These host copies differ on NaN only:
 
 `ai_target_weights.cpp:430/435` have the right form. airfield_taxi.cpp:12's max is also NaN-wrong; it is outside this range.
 
+## Second follow-on audit, continued (cc13-seg67f): 009EF910, 009EB660, 009E04E0
+
+This is verify only, from disk bytes. The ledger records are `cc13_seg67f_check_turn_clearance_009ef910`, `cc13_seg67f_check_sector_scan_009eb660`, `cc13_seg67f_check_throttle_head_009e04e0` and `cc13_seg67f_check_throttle_tail_009e1080`.
+
+- **009EF910-009F00F1 (ship_ai_refresh_turn_clearance_009ef910): one constant is wrong.**
+  - Matching (constants read from disk):
+    - the timer, period and outcome reset;
+    - the astern flip and the deadband 0.0349066 [00D0C26C];
+    - have_work and the three 009EC770 categories;
+    - the sweep geometry, the pending tests, the static test and the hit loop;
+    - the measure loop, the outcome 2/3 split at 2.0 [00CE3958], and the committed byte;
+    - the hold 3.0 [00CE3854], raised only;
+    - the fade: `00778890 || ([unit+738h] && [+54h] == 00E08F80)`, which the host binding (game_hosts_ship_ai.cpp:8876) evaluates as leader || moveonpath;
+    - `00419010(1, 1, 2.0, 0, 330h / 00811A30(1.0))` with the arguments in this order;
+    - the gate (+214h committed, else +218h) with JBE.
+  - Labelled difference: the host's 0..2 category range check, where the binary indexes `[ESP+EAX+14h]` without one.
+- **009EB660-009EC275 (ship_ai_sector_scan.cpp), apart from 009EBEDB which was already audited: faithful except on NaN.**
+  - Matching:
+    - the margin;
+    - the line probe (origin ±lateral·port, direction ±forward with the -0.0 [00D7A208] negate);
+    - the avoid-zone segment (004158E0(probe, far, &hit), then the length to the hit);
+    - the line loop: 009D8160 break, 009D80C0 skip, 009DD540 by pointer with a restore on `range <= reach`. 009DD540 writes the range only when it returns true.
+    - the arc: beams from vtable+50h ±pi/2, the arc length `min(2r, braking+margin)`, all four kind/sign arms of side, reference bearing, half angle sign and add/subtract sweep;
+    - 00415970(centre, r, ref+half, &swept);
+    - the arc loop: owner and owner+5Eh skip, 009DD010(centre, r, ref, &swept), and `|swept-ref|*r > reach`;
+    - the blocker lifetime (+194h + 1.0, raise only) and 009D84E0(&out, &hull, reference, +88h, &take_max);
+    - the pass side 1/2 and the bearing (atan2, pi/2 − x, fold);
+    - the zone arm: the 009DC2E0 query is {hull, dir, 5.0, 5.0, braking+margin, out, A38h}. The `PUSH EDX` at 009EC0AE comes before the two 5.0 stores, so +18h keeps the range. Both arms of the arm match.
+    - the bias `00419010(10, 0, 150, 8°, |hit−hull|)`, added if take_max, else subtracted.
+  - NaN only:
+    - 009EB99F: a NaN 2r keeps 2r (JBE); the host gives the limit.
+    - 009EB9E1/009EBB9B: COMISS lateral,0 / JB sends a NaN lateral to the negative arm; the host's `!(lateral < 0)` sends it to the positive one.
+- **009E04E0-009E0B52 (ship_ai_build_throttle_profile_009e04e0, head): one constant is wrong.**
+  - Matching:
+    - the 34Ch/350h clear, and the 354h countdown (JB, NaN skips);
+    - the track expiry (`0 > life`, JA), +64h, the +60h/+48h source test, the +488h/+10h JB skip and 009DA1D0;
+    - the heading error, lateral side, acos clamp, gap `(1 − |arc|) * 00811A30(0.75)` and width 9CCh + 20.0;
+    - the side-dot retire;
+    - the horizon `((|side| − 9CCh/1.5) / |sin| − +4h)` floored at 0 with the +0Ch JBE skip, and `00415550(1.0, d/+18h)`;
+    - the along and margin (class+A0h * 0.6 + |+0h/sin| + 10);
+    - both speed roots with ±0.5, −2, 4 and their compare arms;
+    - the high and low divided by 3C4h, and the axis −2 JBE.
+    - own_speed = 0092D730(unit+1018h) and acceleration = class+504h match the binding at game_hosts_ship_ai.cpp:10762-10763.
+  - Labelled difference: the host's `continue` on a false 009DC060 return (009E0631 ignores the return). It is unreachable in both, because 009DC060 returns false only when +64h is set or both sources are null, and 009E05E5/009E05EF have already destroyed those tracks.
+  - NaN only:
+    - 009E06C6/009E06DA: a NaN error reaches 00BF9940 (acos), where the host gives pi.
+    - 009E0767/009E0778: a NaN |error| takes the steer-only arm, where the host bands.
+    - 009E099F/009E0AB6: a NaN discriminant runs the square root, where the host returns the average.
+  - Host uses hull_beam = unit+9C8h for the image's class+A0h (both the class length; equality not proven).
+- **009E1080-009E1167 (commit tail): wrong factor, torpedo response, reported URGENT.** See (G).
+
+### Adoption notes
+
+**(F) 009EF96F, sentinel 10000.0.** The image stores 37Ch = [00CE3D64] = 10000.0f (0x461C4000). `kShipAiClearanceSentinel` (ship_ai_clearance_profile.hpp:48) is 9999.0f, and its comment says 9999. The effect is small: it shows for measured distances in [9999, 10000) and for a danger ratio near 4.0 only when the half-width exceeds 2500.
+
+**(G) 009E110F-009E112E, the no-band commit threshold (torpedo response).**
+
+```
+diff = give_way - stand_on
+FILD diff; FMUL qword [00D7A348] = 0.25
+ratio < diff*0.25 (JB, NaN too)  -> astern band {-0.48 [00D21858], 2.0 [00CE3958]}
+otherwise                         -> ahead band  {-2.0 [00CE7D7C], 0.98 [00CE6650]}, cost 10
+```
+
+`ship_ai_commitment_band_009e10a9` (ship_ai_clearance_profile.cpp:556) multiplies by 4.0f, so its threshold is 16 times the image's. With one give-way surplus the host needs a ratio of 4.0, which own/3C4h never reaches, so it always takes the astern band; the image takes the ahead band from 0.25. The banded arm at 009E10F2 (snapped >= 0 → ahead, JB) matches.
+
+**(H) 00D2185C, the bearing maximum.** The image holds 0x40402038 (3.0019664764). `kShipAiContactBearingMax` (ship_ai_clearance_profile.hpp:325) is 3.0019646f, which is 0x40402030, 8 ulp low. The constant is used at ship_ai_clearance_profile.cpp:521 (009E0C96, inside the range that cc13-seg67e audited) and at :641.
+
 ## Left
 
 - **Not re-audited op by op (cc13-seg67e/f):**
-  - the rest of 009EB660 and 009EF910;
-  - 009E04E0 outside 009E0B52-009E107E;
-  - 009E04E0 009E0FBD's delete body.
+  - 009E04E0 009E0FBD's delete body;
+  - the xmm0 = 0 loop invariant at 009E05DB, which every back edge must restore. It was spot-checked, not proven: the avoidance step 009E0C7C-009E0FB8 makes callee invocations between the 009E0C9D/009E0E4F zeroing and the back edges.
 - **Original list of partial projections (cc13-seg67d):**
   - 009E04E0;
   - 009E5530 (attack-move ring);
