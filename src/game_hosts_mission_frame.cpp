@@ -23,6 +23,7 @@
 #include <stdexcept>
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq2
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/game_hosts_hud.hpp"
@@ -1653,6 +1654,18 @@ public:
                 // (labelled): once per step after this host's motion step. Packet
                 // cc13-fix19: the same walk runs the squad-ordnance triggers (007504F0).
                 owner_.lua.run_proximity_triggers_008759b0(step);
+            }
+            if constexpr (bsp::kHitDeferredSameStepDrainCc13Bound) {
+                // Packet cc13-hitq2: the image's row 6 (00875E44, 00926700) runs after
+                // the job waves that push (the gunnery pass and the wave-2 trigger walk)
+                // and drains them in the same step. This host ran its fan-out before
+                // the motion step, so the same drain runs again here, after the pushes.
+                // SUBSTITUTION (labelled): fan-out rows 1..5 (physics world, buoyancy,
+                // spatial refresh, callbacks) ran before the pushes, not between the
+                // pushes and this drain.
+                if (owner_.step_subsystems != nullptr) {
+                    owner_.step_subsystems->drain_deferred_entity_events_00926700();
+                }
             }
             if (hull_attitude_trace_interval() != 0u
                 && (owner_.units->summary().motion_steps % hull_attitude_trace_interval()) == 0u) {
