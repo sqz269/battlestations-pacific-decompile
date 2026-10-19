@@ -197,6 +197,7 @@ struct MissionShipGraph final {
         stage = Stage::failed;
     }
     void retire_before_native_drain() {
+        if (stage == Stage::closed) return;
         if (stage == Stage::prepared) { stage = Stage::closed; return; }
         check(stage == Stage::ready && !requires_process_retention(),
             "incomplete mission ship graph cannot be retired");
