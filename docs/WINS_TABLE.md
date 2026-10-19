@@ -1018,3 +1018,18 @@ airfield launches in a frame window), `l70_stockuse.py` (planes launched per bas
   fighter classes are out of stock from frame 31894. Under 20,3 i and j still lose no landship after LSM 02 (no end).
 - **USN01 20,3** on ab2062aec: `l69_u1_a` fails 1160.01 s (Game Over); Convoy2/3/5 survive, ConTBD2 dies to Convoy2's
   AA at 190.96 s before its release. **IJN08** reference `p10_i08_z` still fails 1129.98 s.
+- **USN15 re-plan** (plans `local\l70_u15_<v>.txt`, built by `l70_u15_gen.py` / `l70_u15_gen2.py` from l69 a). The win
+  needs Fuso, Yamashiro, Nachi and Ashigara dead (usn_15 lua:388-392, 862). Main-gun kills land only at 1-2.5 km
+  (killer_cat 4); HE blasts do nothing against Yamashiro's armour 130. On this seed Yamashiro heads for JapanGoTo
+  (0, 12000), Fuso for JapanEdgeMove1 and the CA groups for the edges.
+  - c (a plus the advance and right groups pulled back to the battleship hold at 210): Nachi, Ashigara and Yamashiro
+    (1409 s) die; Fuso lives; Game Over 1462.35 s. d (c plus an escort-first block at 14000): 1237.13 s.
+  - **e** (c with the hold moved north to (0, 9000) and a's Fuso block moved to 30000): **Nachi 596 s, Yamashiro
+    1349 s and Fuso 1855 s die on the reference seed**, Tennessee and Mississippi survive, no end: Ashigara passes the
+    northern hold and runs aground at (-11021, 7213) at 1815 s. g (every ship on Ashigara at 38000) stalls at 3.5-5 km
+    (attackmove at half throttle); h (moveto (-9300, 7900) first) grounds Tennessee at (-6209, 7904) behind the shoal.
+  - i / j (part of the force left at the old hold on the Ashigara lane: two BBs, or Columbia, Denver and four
+    Fletchers) kill Ashigara on both seeds (743-869 s), but the Fubuki screens' torpedoes (cat 7, 2.2-7.7 km) then
+    sink most battleships, and Yamashiro or Fuso survives (i: 1602.49 s ref / 1427.32 s 20,3; j: 1422.31 s ref / no
+    end on 20,3). Under 20,3 g fails 1912.79 s. USN15 stays open; the next lever is the torpedo screens
+    (Fubuki-class09..12 with Ashigara, 06..08 with Yamashiro).

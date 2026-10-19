@@ -523,6 +523,17 @@ inline constexpr bool kVehicleClassMovieStopPurgeCc15Bound = false;
 // party_required, which no host path reads. False: both stay records.
 inline constexpr bool kSceneClassPreloadAliasesCc15Bound = false;
 
+// Packet cc15-wf1 (docs/CC15_WIRE_FRONTIER.md). 004D4E80 calls 004CD7F0
+// BSP_Scene_DeriveShortName with ECX = out, EDX = game+90Ch and a pushed 1, so
+// the "2_" block name carries the 00E08240 mode suffix. True: the derive step
+// runs engine_seg4_6_9_cc13.cpp's derive_scene_short_name_004cd7f0 over this
+// host's own game+61Ch / +614h / +1FE4h (mode_forced, raw_game_mode,
+// multiplayer, which 004dfb70's caller already passes in). False: the shared
+// derive_scene_short_name with the campaign stand-in mode (raw 8, not forced,
+// no session). Both give "SOLO" on a single-player load, so ON is expected to
+// move nothing but the evidence line.
+inline constexpr bool kSceneShortNameCc15Bound = false;
+
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 3. Two admits the stop does not remove:
 // a `Hidden` entity goes through 0046C550 with the last argument 1 (0046D60F) and
 // is registered for GenerateObject, never created, so 0046B730 has nothing to
