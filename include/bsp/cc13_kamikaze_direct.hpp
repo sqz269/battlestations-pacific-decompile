@@ -19,7 +19,10 @@
 //   00819B46..00819B96  +14h = classDesc+510h, +18h..+20h = unit+FCh,
 //                       +24h = +518h, +28h = +514h;
 //   00819B9C            00470350 SetShot(unit): +4h = unit and +14h =
-//                       unit->vtable[54h]() = 0042B8D0 FLDZ, so +14h ends 0;
+//                       unit->vtable[54h]() = 0042B8D0 FLDZ, so +14h ends 0
+//                       (vtables 00CF90B0, 00CFA778, 00CFB738, 00CFC3D0,
+//                       00CFFA30, 00D01630, 00D09678, 00D0BF80, 00D0C648;
+//                       all also have +58h 0042B8E0 and +108h 0042BB30);
 //   00819BA7            00926E80(record, EDX = offset), the delivery;
 //   00819BBE            00915F20 BSP_MissionScoring_RecordHitDamage(target,
 //                       &record).
@@ -28,7 +31,7 @@
 
 namespace bsp {
 
-inline constexpr bool kKamikazeDirectHitCc13Bound = true;  // ON: USNOS c17 pair (docs/SHIP_AI_OPEN_ITEMS.md 304.1)
+inline constexpr bool kKamikazeDirectHitCc13Bound = true;  // ON: USNOS c17 pair (docs/SHIP_AI_OPEN_ITEMS.md 306.1)
 
 // 00CE47A0, FLD qword at 00819AB5: 1000.0.
 inline constexpr double kKamikazeDirectTraceScale = 1000.0;

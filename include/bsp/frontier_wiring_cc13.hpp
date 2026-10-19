@@ -17,4 +17,14 @@ namespace bsp {
 // unit's guns. OFF: both sites only record the call, as before.
 inline constexpr bool kHelmReleaseGunsToRestCc13Bound = false;
 
+// 0092A240 BSP_TickableEntityAttachFires, called by 00935D30 BreakInTwo on the front
+// piece (00936905) and then the back piece (0093697F), after its eleven stream-1 draws.
+// When the class has a DeathEfx handle (+55Ch), each piece takes n = trunc(clamp(
+// float(float(Length x 0.2) / 10.0), 1, 2)) draws of 00BD2F10(1, -w, w), with
+// w = float(Length x 0.2). A sub-switch of kShipBreakInTwoDrawsBound (gunnery host,
+// static_asserted there). ON: the gunnery host's 98h breakup takes those draws after
+// the eleven. OFF: it does not, as before (4 draws per breakup short of the image for
+// this installation's breakup classes, which have DeathEfx 138 and Length 180).
+inline constexpr bool kShipBreakInTwoPuffDrawsCc13Bound = false;
+
 }  // namespace bsp

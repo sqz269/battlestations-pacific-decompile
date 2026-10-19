@@ -179,8 +179,8 @@ void effect_flare_read_lua_0086c240(FlareReaderHost& host, void* component, LuaR
         }
         // 0086CC19..0086CC47: push_back, growing to max(2 * capacity, 1) when full.
         if (at<std::uint32_t>(vector, 4) == at<std::uint32_t>(vector, 8)) {
-            const std::uint32_t doubled = at<std::uint32_t>(vector, 8) * 2;
-            host.dword_vector_reserve_0086a280(vector, static_cast<std::int32_t>(doubled) > 1 ? doubled : 1);
+            const auto doubled = static_cast<std::int32_t>(at<std::uint32_t>(vector, 8) * 2);
+            host.dword_vector_reserve_0086a280(vector, doubled > 1 ? doubled : 1);
         }
         // The slot address is tested for null before the store (0086CC41); the count rises anyway.
         if (void** const slot = at<void**>(vector, 0) + at<std::uint32_t>(vector, 4)) *slot = e;
@@ -261,10 +261,11 @@ void* landfort_create_message_field_110_00743e50(void* message) noexcept {
     return static_cast<std::uint8_t*>(message) + 0x110;
 }
 
-// Part C: F6 44 24 04 01 56 8B F1 C7 06 <vtable> 74 09 56 E8 <00BF65AC> 83 C4 04 8B C6 5E C2 04 00.
+// Part C, sorted by address: F6 44 24 04 01 56 8B F1 C7 06 <vtable> 74 09 56 E8 <00BF65AC> 83 C4 04
+// 8B C6 5E C2 04 00. 007D79F0 was added by the rev2 follow-up (a base vtable, see the doc).
 const VtResetDestructor kVtResetDeletingDestructors[kVtResetDeletingDestructorCount] = {
-    {0x00735990, 0x00CFE9F4}, {0x00861BA0, 0x00D0D314}, {0x00862750, 0x00D0D314},
-    {0x008627F0, 0x00D0D31C},
+    {0x00735990, 0x00CFE9F4}, {0x007D79F0, 0x00D06844}, {0x00861BA0, 0x00D0D314},
+    {0x00862750, 0x00D0D314}, {0x008627F0, 0x00D0D31C},
 };
 
 void* vt_reset_scalar_deleting_destruct(MistagHost& host, std::uint32_t address, void* object,

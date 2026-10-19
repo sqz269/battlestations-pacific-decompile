@@ -88,6 +88,7 @@
 #include "bsp/shipyard_production.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/flak_ver_cc13.hpp"
+#include "bsp/frontier_wiring_cc13.hpp"   // packet cc13-frontier
 #include "bsp/aa_pick_ver_cc13.hpp"
 #include "bsp/gameplay_seg53_cc13.hpp"
 #include "bsp/ship_torpedo_ver_cc13.hpp"
@@ -95,6 +96,7 @@
 #include "bsp/plane_release_ver_cc13.hpp"
 #include "bsp/seg59_ship_lead_s54.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/cc13_damage_smoke.hpp"   // packet cc13-smokepc24 (00822770 PC24 slot count)
 
 namespace bsp::game {
 namespace {
@@ -694,6 +696,13 @@ constexpr bool kGunInterceptBound = true;
 //    device's Bullet[2]) and so through its AAFlakBot. The host had loaded only
 //    Bullet[1] and read the pair of entries as two barrels.
 constexpr bool kDualPurposeSecondAmmoBound = true;
+//  * kFlakSecondAmmoRangeCc13Bound: 00956DCB..00956DD6 offers a Function 6 gun's
+//    SECOND ammunition record's +60h ([[[rec+74h]+7Ch]+60h], Bullet[2]) to the
+//    category 6 range at unit+448h. Off, the rebuild binding passes the first
+//    shell again, so category_ranges[6] stops at 1500 where the image has
+//    2000/2400. Moves the unit gunnery pass (00863A34) and fly_to_obstacles
+//    (009FD6B1), both live: docs/CC13_FLAK2.md, packet cc13-flak2.
+constexpr bool kFlakSecondAmmoRangeCc13Bound = false;
 //  * kAaGunnerErrorBound: the AAGunnerBot's commanded vertical, when negative, is
 //    halved before 0085ABA0 (00902F62..00902F76, [00D7A280] = 0.5). Only this
 //    step of 00902920's error model is bound; the swinging error pair
@@ -1610,6 +1619,8 @@ constexpr float kWreckChanceInstalled = 0.3f;
 //    False: the 98h is recorded and draws nothing, so a default-env run's shared
 //    stream stays 11 behind the image per breakup.
 constexpr bool kShipBreakInTwoDrawsBound = true;  // ON: USNOS 36000 pairs (SHIP_AI 298)
+static_assert(!bsp::kShipBreakInTwoPuffDrawsCc13Bound || kShipBreakInTwoDrawsBound,
+              "0092A240's puff draws follow 00935D30's eleven; the sub-switch needs them");
 //  * kPlaneBlastElementEntriesBound: a burst's distance to a PLANE is taken per
 //    GeomMesh element, as kBlastElementEntriesBound does for a ship. The image's
 //    sphere test for the plane's unit-part shape is 0070F720, which ends in
@@ -4182,6 +4193,7 @@ struct GameGunneryHost::Impl {
         float cooldown_9dc{0.0f};   // unit+9DCh stand-in
         bool armed_9dc{false};      // kPlaneCrashConstructCooldownCc13Bound
         bool grounded_9dc{false};   // seen off free flight before the first arm
+        std::uint32_t launch_serial_9dc{0};  // units' 007C5F60 count last taken
     };
     std::vector<PlaneCrashPrev> crash_prev;
     std::vector<GameBulletClassRow> crash_bullets;   // read on first use, by id
@@ -4191,6 +4203,7 @@ struct GameGunneryHost::Impl {
     unsigned long long pc_hits_21{0}, pc_hits_98{0}, pc_hits_99{0}, pc_hits_other{0};
     unsigned long long pc_logged{0}, pc_cooldown_steps{0};
     unsigned long long pc_construct_cooldown_arms{0};
+    unsigned long long pc_launch_spot_arms{0}, pc_launch_spot_airfield_arms{0};
     double pc_blast_damage{0.0};
     // DIAGNOSTIC: the closest any live kamikaze bow came to a hostile hull box.
     float kz_min_gap{-1.0f};
@@ -4235,6 +4248,7 @@ struct GameGunneryHost::Impl {
     struct ShipDeathCounts {
         unsigned long long messages_9a{0}, kamikaze_removals{0}, no_breakup_nodes{0};
         unsigned long long breakup_draws{0}, breakups_98{0}, break_in_two_draws{0};
+        unsigned long long break_in_two_puff_draws{0};   // kShipBreakInTwoPuffDrawsCc13Bound
     } ship_death;
     unsigned long long override_hp_kills{0};
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
@@ -5915,6 +5929,16 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 out.weapon_function = gun.category;
                 out.max_range = gun.max_range;  // 00731020
                 out.flak_alternate_range = gun.max_range;
+                if constexpr (kFlakSecondAmmoRangeCc13Bound) {
+                    // 00956DCB: ammunition record 1's bullet +60h, the derived
+                    // range SecondAmmo::max_range carries. A gun without a
+                    // Bullet[2] keeps the first shell (the image reads past
+                    // its record array there; no mission uses such a mount).
+                    const auto second = owner.second_ammo_by_gun.find(slot);
+                    if (second != owner.second_ammo_by_gun.end()) {
+                        out.flak_alternate_range = second->second.max_range;
+                    }
+                }
                 const GameBulletClassRow* b = owner.bullet(gun.bullet_class);
                 out.has_blast = b != nullptr && b->blast_range > 0.0f;
                 out.blast_inner = b != nullptr ? b->blast_range : 0.0f;
@@ -12710,9 +12734,31 @@ void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
         prev.valid = airborne;
         // 007C091C..007C092D / 007C0C43: the cooldown unit+9DCh, decremented by
         // the step. LABELLED stand-in for 007C5F60's launch-spot stores (3.0 s,
-        // 00CE3854): armed on the first free-flight step, because a host plane is
-        // in state 7 while still on its deck.
-        if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
+        // 00CE3854): armed on every entry to free flight. "Grounded" (any step
+        // off free flight) relies on the deck placement setting +900h = 2
+        // (place_on_launch_spot_007c5f60 in the units host); a host plane is
+        // created in state 7.
+        if constexpr (bsp::kPlaneCrashLaunchArmCc13Bound) {
+            // Packet cc13-cool9dc-b: only 007CFD20 (1.0f, 007CFE78) and 007C5F60
+            // (3.0 at 007C605D, 5.0 for an AirField base at 007C60EA) write +9DCh,
+            // so the constructor value is taken at first sight and the units
+            // host's placement store each time its count moves; a return to
+            // state 7 does not re-arm.
+            std::uint32_t arms = 0;
+            float placed = 0.0f;
+            const bool have_arm = units.plane_launch_spot_arm_9dc(i, arms, placed);
+            if (!prev.armed_9dc) {
+                prev.cooldown_9dc = bsp::kPlaneCrashConstructCooldown;
+                prev.armed_9dc = true;
+                ++pc_construct_cooldown_arms;
+            }
+            if (have_arm && arms != prev.launch_serial_9dc) {
+                prev.cooldown_9dc = placed;
+                prev.launch_serial_9dc = arms;
+                ++pc_launch_spot_arms;
+                if (placed == bsp::kPlaneCrashAirfieldLaunchCooldown) ++pc_launch_spot_airfield_arms;
+            }
+        } else if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
             // Packet cc13-cool9dc: a plane in free flight on every step seen so far
             // never went through 007C5F60, so it still holds 007CFE78's 1.0f.
             if (!airborne) prev.grounded_9dc = true;
@@ -13839,6 +13885,47 @@ void GameGunneryHost::Impl::ship_death_message_00827ab0(std::size_t victim) {
             ship_death.break_in_two_draws += piece == 0 ? 6u : 5u;
         }
         done("ShipDeath::break_in_two_draws_00935d30", 0x00935d30u);
+        // Packet cc13-frontier (bsp/frontier_wiring_cc13.hpp). 00935D30 then calls 0092A240
+        // on the front piece (00936905) and the back piece (0093697F), before its kill
+        // (00926D90 at 00936C45). 0092A240: when the piece class's DeathEfx handle
+        // [[piece+348h]+55Ch] (0092A273) and the game view node [[00E188A8]+19FCh]
+        // (0092A294) are non-null, w = float(Length +A0h x 0.2 [00CE6648]) (0092A2AD),
+        // p = float(w / 10.0 [00CE3DC0]) (0092A2CB), clamped to 1 ([00D7A24C]) and 2
+        // ([00CE3958], 0092A6A8); n = the low dword of FISTP qword p (0092A307), and
+        // 0092A315 JBE skips the loop when it is 0, which a NaN's 80000000_00000000 gives.
+        // Each puff draws 00BD2F10(1, [00D7A208] -0.0f - w, w) (0092A34A).
+        // SUBSTITUTIONS (LABELLED, as in GameMissionLuaHost::run_break_ship_008914f0):
+        //  * both pieces' class is the victim's VehicleClass row; a non-zero `DeathEfx`
+        //    id stands for a resolved +55Ch handle (00831B62 also requires an integer);
+        //  * the view node is taken as set (it is set in any rendered mission);
+        //  * the host's kill came before this 98h (as for the eleven above), so the
+        //    puffs follow the kill here instead of preceding it;
+        //  * the puffs use the piece's ship_break_in_two key under the stream option;
+        //  * a VehicleClass row nil'd by 0095CA70 (kVehicleClassPreloadCc15Bound) reads as
+        //    not found, so the puffs are skipped, while the image still draws from the C++
+        //    class object's +55Ch.
+        if constexpr (bsp::kShipBreakInTwoPuffDrawsCc13Bound) {
+            const int type_id = unit_state[victim].row.type_id;
+            const GameVehicleClassRow cls = lua.read_vehicle_class_row(type_id);
+            const int death_efx = lua.read_vehicle_class_integer(type_id, "DeathEfx", nullptr, 0);
+            if (cls.found && death_efx != 0) {
+                const float w = static_cast<float>(static_cast<double>(cls.length) * 0.2);
+                float puffs = static_cast<float>(static_cast<double>(w) / 10.0);
+                if (1.0f > puffs) {
+                    puffs = 1.0f;
+                } else if (puffs > 2.0f) {
+                    puffs = 2.0f;
+                }
+                const int n = puffs == puffs ? static_cast<int>(puffs) : 0;
+                for (std::size_t piece = 0; piece < 2; ++piece) {
+                    for (int puff = 0; puff < n; ++puff) {
+                        (void)draw(Draw::ship_break_in_two, victim, piece, -0.0f - w, w);
+                        ++ship_death.break_in_two_puff_draws;
+                    }
+                }
+                done("ShipDeath::attach_fires_puff_draws_0092a240", 0x0092a240u);
+            }
+        }
     }
 }
 
@@ -14749,7 +14836,11 @@ void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uin
 
 // Packet cc13-frontier (bsp/frontier_wiring_cc13.hpp, kHelmReleaseGunsToRestCc13Bound).
 // 0080E290, __fastcall(ECX = unit): over the unit's device chain (+48h, next +44h),
-// 0085AD00 on each device answering IsKindOf(22h). 0085AD00 (0085AD00-0085AD7A): when
+// 0085AD00 on each device answering IsKindOf(22h). 0085AD00 (0085AD00-0085AD7A) first
+// has a grow arm (0085AD1E..0085AD29): when the gun's row index +38Ch is >= the count of
+// the class's platform rows ([[gun+3F0h]+538h]+94h, count at +4), 005471B0 resizes that
+// vector to index + 1. The host's rows are complete from the class read, so the arm has
+// no host effect and is not modelled (LABELLED). Then, when
 // the platform row's horizontal rest (+94h) equals FLT_MAX (FUCOMIP against double
 // 00D7A278, `test ah,44h; jnp`), it returns. Otherwise it calls 0085ABA0(+94h, +90h).
 // The host's guns of the unit stand in for the device chain (in gun order; each call
@@ -15905,9 +15996,17 @@ bool GameGunneryHost::damage_smoke_tick_008227e0(std::size_t unit_index, float d
     }
     const float damage = 1.0f - health;
     // 00822774..00822791: (+2Ch + 1) * arg through _ftol (truncation), capped at +2Ch.
-    int wanted = static_cast<int>(static_cast<double>(max_number + 1) * damage);
+    // Packet cc13-smokepc24: ON rounds the product to float first (PC24), as the image does.
+    static_assert(!bsp::cc13_damage_smoke::kDamageSmokeSlotCountPc24Cc13Bound
+                      || kDamageSmokeDrawsBound,
+                  "the PC24 slot count is a sub-switch of kDamageSmokeDrawsBound");
+    int wanted = bsp::cc13_damage_smoke::kDamageSmokeSlotCountPc24Cc13Bound
+        ? bsp::cc13_damage_smoke::damage_smoke_slot_product_pc24_00822770(max_number, damage)
+        : static_cast<int>(static_cast<double>(max_number + 1) * damage);
     if (!(wanted < max_number)) wanted = max_number;
     // 008227AD: an unsigned compare; the grow appends {null effect, 0.0}.
+    // LABELLED (host guard): wanted > 0 drops the image's NaN arm, where _ftol(NaN) gives
+    // 80000000h, the signed min keeps it and the unsigned compare makes it a huge resize.
     if (wanted > 0 && static_cast<std::size_t>(wanted) > us.smoke_timers.size()) {
         if (us.smoke_timers.empty()) ++host.smoke_units;
         host.smoke_slots_grown += static_cast<std::size_t>(wanted) - us.smoke_timers.size();
@@ -17405,6 +17504,10 @@ void GameGunneryHost::report() {
                 d.break_in_two_draws,
                 kShipDeathMessageBound ? 1 : 0, host.override_hp_kills,
                 kOverrideHpHealthZeroBound ? 1 : 0);
+            if constexpr (bsp::kShipBreakInTwoPuffDrawsCc13Bound) {
+                host.log.notef("summary mission gunnery ship break in two puff draws=%llu "
+                    "(00935D30 -> 0092A240, packet cc13-frontier)", d.break_in_two_puff_draws);
+            }
         }
         {
             const Impl::LandMasterCounts& c = host.land_master;
@@ -17954,6 +18057,11 @@ void GameGunneryHost::report() {
     if constexpr (bsp::kPlaneCrashConstructCooldownCc13Bound) {
         host.log.notef("summary mission gunnery plane crash construct cooldown arms=%llu "
             "(007CFE78 1.0f, packet cc13-cool9dc)", host.pc_construct_cooldown_arms);
+    }
+    if constexpr (bsp::kPlaneCrashLaunchArmCc13Bound) {
+        host.log.notef("summary mission gunnery plane crash launch spot arms=%llu airfield=%llu "
+            "(007C605D 3.0 / 007C60EA 5.0, packet cc13-cool9dc-b)",
+            host.pc_launch_spot_arms, host.pc_launch_spot_airfield_arms);
     }
     host.log.notef("summary mission gunnery ground target origin aims=%llu bound=%d "
         "(006DF520 with 0042D810, packet cc9_ground_target_aim_point)",

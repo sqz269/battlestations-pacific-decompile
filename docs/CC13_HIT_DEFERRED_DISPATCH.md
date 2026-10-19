@@ -36,7 +36,87 @@ the gunnery pass inside the job waves before the fan-out. `InMissionTickBinding:
 Every ON push is therefore made after this step's rows 6 and 14 and drains at **row 6 of the next
 fixed step**: one step (0.05 s) later than the image's same-step row 6. The hits pushed on the
 mission's last step are never dispatched; the summary's `left=` counts them. No drain point was
-added for this (lead decision 2026-10-19); the delay is labelled here instead.
+added for this (lead decision 2026-10-19); the delay is labelled here instead. Packet cc13-hitq2
+adds that drain point under its own sub-switch; see the next section. With the sub-switch OFF,
+everything in this paragraph and in the sections below still holds.
+
+## The same-step drain (kHitDeferredSameStepDrainCc13Bound, packet cc13-hitq2)
+
+Requested by cc9 on 2026-10-19. The sub-switch `bsp::kHitDeferredSameStepDrainCc13Bound` is in
+`include/bsp/cc13_hitq_switches.hpp` and is **OFF**. A `static_assert` requires
+`kHitDeferredDispatchCc13Bound` whenever it is ON. Status: build-tested, not game-validated.
+
+**What runs between a push and the image's row 6.** Per fixed step, `00875BB0` runs the job waves
+inline (the group walk from `00875CAA`, the host's `run_job_waves_00875cc0`), then the fan-out
+rows inline from `00875E0C` (row 1 is the physics-world call there). The gunnery pass and
+the wave-2 trigger walk (`00875B90` -> `008759B0`) are wave sub-nodes. So after a push the image
+runs:
+- the rest of the waves;
+- fan-out rows 1 to 5: `00C5C540` physics world, `004462D0` buoyancy, `0098BDB0` spatial refresh,
+  `00874DE0` callbacks;
+- row 6, the drain.
+
+Rows 7 to 16 follow in the same step: the Lua calls, the think list, the session pump, InitAll,
+row 14 (the second drain, empty of wave pushes), `009273A0` and `00903610`.
+
+**The host's step** (`in_mission_subsystem_tick.cpp` driver):
+1. `run_step_job_waves` (the job waves, land convoys, deck tick);
+2. `run_step_subsystems`, which runs, in order:
+   - the fan-out rows 1 to 16;
+   - the Lua target-gone drain;
+   - `motion_step_00825f20` (ship AI, the AI pass, `GameGunneryHost::fixed_step` with every push,
+     the per-slot motion loop);
+   - the proximity/squad-ordnance trigger walk;
+   - read-only diagnostics.
+
+**Candidate (a), built.** With the sub-switch ON, `run_step_subsystems` calls
+`GameStepSubsystemsHost::drain_deferred_entity_events_00926700` once more. The call goes right
+after the trigger walk and before the diagnostics: the first point after every push of the step,
+as the image's row 6 is. It is the same drain and binding the rows use, and only the call site is
+new. The fan-out's own row 6 and row 14 calls stay as they are (they now usually find the queue
+empty), and so does `00874DB9`. Candidate (b), moving the fan-out after the motion step, was not
+built: it changes the OFF order and needs cc9's sign-off.
+
+**Order (a) gives, versus the image.**
+
+| | image | host with (a) |
+| --- | --- | --- |
+| push | wave 2 of step N | `motion_step` of step N |
+| between push and drain | rest of the waves, then rows 1 to 5 of step N | rest of the motion step, the trigger walk |
+| drain | row 6 of step N | the new call, end of step N |
+| after the drain, same step | rows 7 to 16 of step N | the read-only diagnostics |
+| next | step N+1 waves | step N+1 waves, then rows 1 to 16 |
+
+Residue, labelled:
+- **Rows 1 to 5.** They ran before the pushes in step N, not between the pushes and the drain.
+  That is the host's existing fan-out-before-motion order, unchanged here.
+- **Rows 7 to 16 after a death.** A death at the drain reaches them in step N+1, not step N. That
+  covers the destroy-list delivery and `kSunkShipFlushBound` at row 15, the expiry counter at row
+  16, InitAll and the Lua target-gone drain. The image runs them later in the same step.
+- **Pushes from the fan-out itself** (rows 7 to 13; none are known in this host) would still drain
+  at row 14 as before.
+- `left=` is 0 at the end of a run, except for pushes made after the last step's motion step.
+
+**RNG (00BD2F10).** The drained handlers' draws (`Draw::hit_effect`, `Draw::ship_breakup`,
+`Draw::ship_break_in_two`) land at the end of step N:
+- after the rest of the gunnery pass, the per-slot motion loop and the trigger walk of step N;
+- before step N+1's waves and its rows 1 to 5.
+
+That is where the image puts them relative to step N+1. Draws in step N's rows 7 to 13 now come
+before the drained draws instead of after them. In this host those rows draw only through the Lua
+calls, the think list and the session pump. With the sub-switch OFF the drained draws come after
+step N+1's rows 1 to 5, as the section below says.
+
+**Expected movers, sub-switch ON (against the hitq ON baseline):**
+- death and damage land one step earlier, in the same step as the hit;
+- `left=` drops to 0 or near it;
+- `GameStepSubsystemsSummary::deferred_event_passes` gains one per step;
+- RNG-coupled differences from the first hit onward.
+
+Against OFF, the hitq movers below hold with "next step" read as "end of the same step":
+- in-step readers after the pushes (the rest of the gunnery pass and the per-slot motion loop)
+  still see pre-hit health;
+- kill attribution and draw order are still LIFO.
 
 ## What the host did (OFF, unchanged)
 
@@ -131,8 +211,8 @@ position. Any pair diff on a run with a hit is therefore RNG-coupled from the fi
   `kamikaze_detonate_00819a20`'s `kz_blast_damage`, and `plane_crash_impact_0084bc60`'s `dealt`,
   `pc_blast_damage` and the `plane crash impact: ... dealt= victim_health=` log read health right
   after the call and see no change ON (diagnostics only).
-* **Fires and leaks** start at the next step's row 6, so `run_damage_control` first sees them two
-  gunnery passes after the hit.
+* **Fires and leaks** start at the next step's row 6, so `run_damage_control` first sees them in the
+  next gunnery pass.
 * **Lua hit events** (`hit_events`) and the death table are filled at the next step's row 6, in
   LIFO order.
 * **Draw order**, above.
