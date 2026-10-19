@@ -19,6 +19,17 @@ struct GameNativeProceduralFactorySourceInputs {
     const NativeProceduralFactoryTableFrame& retirement;
 };
 
+// Borrow an independently owned, proved native scratch producer. Unlike the
+// value-input route above, this route does not eagerly read dormant cells.
+// The caller proves that every reached native read follows its native write,
+// including failure cleanup, and enforces any branch-domain restrictions of
+// that proof. Keep all frame objects/cells alive through after_parent_drain().
+// This does not admit unknown preimages to a reached full-DWORD read.
+struct GameNativeProceduralFactoryBorrowedFrames {
+    const NativeProceduralFactoryTablePublicationFrame& setup;
+    const NativeProceduralFactoryTableFrame& retirement;
+};
+
 // Concrete BBCB40/BBC900 setup and BBC5D0 retirement over one designated,
 // caller-owned Source publication cell. The cell and all VFS/singleton/data
 // owners outlive this object, residual failures, and the complete parent drain.
@@ -31,6 +42,9 @@ public:
     GameNativeProceduralFactoryApplication(GameVfsHost&, GameSingletonHost&,
         GameNativeReadOnlyData&, void* volatile& actual_publication_01090900,
         const GameNativeProceduralFactorySourceInputs&);
+    GameNativeProceduralFactoryApplication(GameVfsHost&, GameSingletonHost&,
+        GameNativeReadOnlyData&, void* volatile& actual_publication_01090900,
+        const GameNativeProceduralFactoryBorrowedFrames&);
     ~GameNativeProceduralFactoryApplication() noexcept;
     GameNativeProceduralFactoryApplication(const GameNativeProceduralFactoryApplication&) = delete;
     GameNativeProceduralFactoryApplication& operator=(const GameNativeProceduralFactoryApplication&) = delete;
