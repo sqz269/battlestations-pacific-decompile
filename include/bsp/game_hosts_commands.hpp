@@ -647,6 +647,11 @@ public:
     // what 0071E4C0 reads whatever the mode). False on an index out of range.
     bool director_slot_target(std::size_t unit_index, int slot_index,
         bsp::SceneCommandTarget& out) const;
+    // Packet cc13-steptail: what 0084E010's tail reads off the block. The primary
+    // stage (+48h), the override stage (+50h) and 0071BE60's filled-slot count.
+    int director_stage_0048(std::size_t unit_index) const;
+    int director_override_stage_0050(std::size_t unit_index) const;
+    int director_command_count_0071be60(std::size_t unit_index) const;
     // Packet cc9_ship_natives_3: slot 0's command object and its target's object
     // id, the pair the ship-AI controller update keys director+44h (the queue
     // head's accepted byte, written by 00835C70) on. 0 when there is no head.

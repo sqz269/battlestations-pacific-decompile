@@ -4111,6 +4111,24 @@ bool GameCommandsHost::director_slot_target(std::size_t unit_index, int slot_ind
     return true;
 }
 
+int GameCommandsHost::director_stage_0048(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0;
+    return host.directors[unit_index].stage;
+}
+
+int GameCommandsHost::director_override_stage_0050(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0;
+    return host.directors[unit_index].override_stage;
+}
+
+int GameCommandsHost::director_command_count_0071be60(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0;
+    return host.command_count(host.directors[unit_index]);
+}
+
 std::uint64_t GameCommandsHost::director_head_key(std::size_t unit_index) const {
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return 0u;

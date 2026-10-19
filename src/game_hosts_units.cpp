@@ -87,6 +87,7 @@
 #include "bsp/squadron_free_attack.hpp"            // packet p15_free_attack_tick
 #include "bsp/squadron_stophead_cc13.hpp"          // packet cc13-stophead
 #include "bsp/squadron_leash_cc13.hpp"             // packet cc13-leash
+#include "bsp/squadron_step_tail_cc13.hpp"         // packet cc13-steptail
 #include "bsp/director_update_arms.hpp"            // packet cc13-leash: 0080DC70
 #include "bsp/director_target_gate.hpp"
 #include "bsp/plane_squadron_entity.hpp"
@@ -2827,6 +2828,15 @@ struct GameUnitsHost::Impl {
     };
     unsigned long long moveto_self_issues{0}, moveto_self_placed{0};
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
+    // Packet cc13-steptail (kSquadronGeneralStepTailBound): the head the general
+    // tail last issued on, so it issues once per head.
+    struct StepTailGuard {
+        bool issued{false};
+        std::uint32_t head{0};
+        bsp::SceneCommandTarget head_target{};
+    };
+    std::map<std::string, StepTailGuard> step_tail_guard;
+    unsigned long long step_tail_movetos{0}, step_tail_rtbs{0};
     // Packet p15_free_attack_tick (docs/OCEAN_WAVE_FIELD.md section 57). True: each
     // squadron runs 009F8470's own part every step after 009F8160 / 009F7C90 (cc13's
     // reconstruction over src/squadron_free_attack.cpp's arena): a pick sends the
@@ -18123,6 +18133,86 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 "b4=%d b5=%d placed=%zu) (0084E595, packet cc9_l57_moveto_self)", sq.name.c_str(),
                 static_cast<double>(now), st.latch_3c ? 1 : 0, st.ended ? 1 : 0,
                 st.ended_stage2_command, plan.b4 ? 1 : 0, plan.b5 ? 1 : 0, placed);
+        }
+    }
+    if constexpr (kSquadronGeneralStepTailBound) {
+        // Packet cc13-steptail (include/bsp/squadron_step_tail_cc13.hpp): 0084E010's
+        // tail for every squadron the spent_rtb path above does not hold.
+        const bool device_reload = kLuaDeviceReloadEnabledBound && lua_device_reload_enabled_00e17bf2();
+        for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
+            const std::size_t leader = sq.flight_leader();
+            if (leader == bsp::kPlaneSquadronNoUnit || leader >= h.slots.size()) continue;
+            if (gun->unit_dead(leader)) continue;                              // +3D0h
+            const auto rtb_it = h.spent_rtb.find(sq.name);
+            if (rtb_it != h.spent_rtb.end()) {
+                const Impl::SpentOrdnanceRtb& st = rtb_it->second;
+                if (st.latch_3c || st.ended || st.ended_stage2_command != 0 || st.moveto_self) continue;
+            }
+            const std::uint32_t head = h.commands.director_slot_command(leader, 0);
+            bsp::SceneCommandTarget head_target{};
+            h.commands.director_slot_target(leader, 0, head_target);
+            Impl::StepTailGuard& guard = h.step_tail_guard[sq.name];
+            if (guard.issued) {
+                const bool same_head = head == guard.head
+                    && head_target.kind == guard.head_target.kind
+                    && head_target.object_id == guard.head_target.object_id
+                    && std::memcmp(head_target.position, guard.head_target.position,
+                                   sizeof head_target.position) == 0;
+                const bool own_moveto = head == 0x00E08F68u && head_target.kind == 1
+                    && head_target.object_id == static_cast<std::uint16_t>(sq.squadron_unit + 1);
+                if (same_head || own_moveto) continue;
+                guard.issued = false;
+            }
+            const int filled = h.commands.director_command_count_0071be60(leader);
+            const int stage = h.commands.director_stage_0048(leader);
+            const bsp::EntityOrderCommandClass* klass =
+                bsp::entity_order_command_class_by_address(head);
+            bsp::SquadronStepTailInputs in;
+            in.stage_48 = stage;
+            in.override_stage_50 = h.commands.director_override_stage_0050(leader);
+            in.filled_slots_71be60 = filled;
+            in.latch_3c = false;
+            in.command_54 = head;
+            in.command_category_0c = klass != nullptr ? klass->category : 0;
+            in.head_arm = head == 0u && filled == 0;                          // 0084E047-0084E05C
+            in.reload_enabled_369 = true;
+            in.device_reload_e17bf2 = device_reload;
+            in.flag_368 = false;
+            const bsp::SquadronStepTailPlan plan = bsp::squadron_step_tail_plan_0084e4b1(in);
+            std::size_t rtb = 0;
+            bool moveto = false;
+            if (plan.outcome == bsp::SquadronStepTailOutcome::kResolve) {
+                rtb = issue_return_to_base_007f16d0(leader, "0084E552 step tail resolve");
+                if (rtb == 0) moveto = bsp::squadron_step_moveto_self_0084e595(filled, stage);  // 0084E55B
+            } else if (plan.outcome == bsp::SquadronStepTailOutcome::kMoveToSelfIfRoom) {
+                moveto = bsp::squadron_step_moveto_self_0084e595(filled, stage);
+            }
+            if (rtb == 0 && !moveto) continue;
+            std::size_t placed = 0;
+            if (moveto && sq.squadron_unit < h.slots.size() && !gun->unit_dead(sq.squadron_unit)) {
+                // 0084E5A8-0084E5C6, as the spent_rtb path issues it.
+                bsp::SceneCommandTarget target;
+                target.kind = 1;
+                target.position_valid = 0;
+                target.object_id = static_cast<std::uint16_t>(sq.squadron_unit + 1);
+                target.object = const_cast<void*>(unit_identity(sq.squadron_unit));
+                target.position[0] = target.position[1] = target.position[2] = 0.0f;
+                target.trailing = 0.0f;
+                if (issue_script_command(sq.squadron_unit, 0x00E08F68u, target, 1,
+                        "0084E595 step tail moveto-self",
+                        h.slots[sq.squadron_unit]->row.name) != nullptr)
+                    ++placed;
+                ++h.step_tail_movetos;
+            }
+            if (rtb != 0) ++h.step_tail_rtbs;
+            guard.issued = true;
+            guard.head = head;
+            guard.head_target = head_target;
+            h.log.notef("squadron step tail: \"%s\" at %.2f s head %08X stage %d slots %d "
+                "b4=%d b5=%d -> %s (rtb placed %zu, moveto placed %zu) (0084E4B1..0084E5C6, "
+                "packet cc13-steptail)", sq.name.c_str(), static_cast<double>(now), head, stage,
+                filled, plan.b4 ? 1 : 0, plan.b5 ? 1 : 0,
+                rtb != 0 ? "007F16D0 resolve" : "0084E595 moveto-self", rtb, placed);
         }
     }
 }
