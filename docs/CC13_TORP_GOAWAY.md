@@ -181,8 +181,8 @@ with a torpedo goaway indirectly through the shared stream.
 
 Before this packet the host handed the tick fixed values every tick (`kWindowJitterLo` = 3 and 0),
 so it took no draw. A value at the call cannot fix that, because the image draws only on a re-seed.
-So `TorpedoGoAwayTickInputs` gains `reseed_draws`: when set, `torpedo_goaway_tick_009d0f10` calls
-`window_jitter_009d0fd7()` and then `window_delay_009d1000()` inside the re-seed branch, in the
+So `TorpedoGoAwayTickInputs` gains `reseed_draws`: when set, `torpedo_goaway_tick_009d0f10` asks
+the hook for `window_jitter_009d0fd7()` and then `window_delay_009d1000()` inside the re-seed branch, in the
 image's order; null keeps the old inputs. The host passes a binding only when a tick sub-switch is
 on. Each method draws when its own sub-switch is on and otherwise returns the OFF value.
 

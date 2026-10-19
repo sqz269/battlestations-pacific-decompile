@@ -33902,6 +33902,42 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::torpedo_goaway_tick::kWindowJitterLo;
                         // The same TorpFlikFlakTime hole the enter reports.
                         in.window_delay_draw = 0.0f;
+                        // Packet cc13-goaway: the re-seed's two stream-1 draws,
+                        // 009D0FD7 then 009D1000, taken inside the re-seed branch
+                        // only. Each falls back to the value above when its
+                        // sub-switch is off (or the row / gunnery host is absent).
+                        struct ReseedDraws final
+                            : bsp::TorpedoGoAwayTickInputs::ReseedDraws {
+                            GameUnitsHost::Impl& host;
+                            GameUnitSlot& slot;
+                            ReseedDraws(GameUnitsHost::Impl& h, GameUnitSlot& s)
+                                : host(h), slot(s) {}
+                            float window_jitter_009d0fd7() override {
+                                if (bsp::cc13_torp_goaway::tick_jitter_draw_on() && host.gunnery) {
+                                    return host.gunnery->death_mode_draw_00bd2f10(1,
+                                        host.index_of_slot(slot),
+                                        bsp::torpedo_goaway_tick::kWindowJitterLo,
+                                        bsp::torpedo_goaway_tick::kWindowJitterHi);
+                                }
+                                return bsp::torpedo_goaway_tick::kWindowJitterLo;
+                            }
+                            float window_delay_009d1000() override {
+                                const bsp::PilotBotParameters* row = nullptr;
+                                if (bsp::cc13_torp_goaway::tick_delay_draw_on() && host.gunnery) {
+                                    row = bsp::cc13_torp_goaway::pilot_bot_row(
+                                        kSkillLevelBound ? slot.pilot_skill_index : 1);
+                                }
+                                if (row == nullptr) return 0.0f;
+                                return host.gunnery->death_mode_draw_00bd2f10(1,
+                                    host.index_of_slot(slot),
+                                    row->torp_flik_flak_time_1_01c,
+                                    row->torp_flik_flak_time_2_020);
+                            }
+                        } reseed_draws(owner_, unit_);
+                        if constexpr (bsp::cc13_torp_goaway::tick_jitter_draw_on()
+                                      || bsp::cc13_torp_goaway::tick_delay_draw_on()) {
+                            in.reseed_draws = &reseed_draws;
+                        }
 
                         const bsp::TorpedoGoAwayTickResult r =
                             bsp::torpedo_goaway_tick_009d0f10(g, in, dt);
