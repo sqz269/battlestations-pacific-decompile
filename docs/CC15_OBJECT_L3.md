@@ -94,6 +94,8 @@ implemented.
 - With the switch ON, the diagnostic `BSP_NATIVE_MISSION_SHIP=1` preload (`game_native_mission_preload.inc`) fails
   loudly ("Application domain was already claimed"). That preload builds its own Application. In the image, 0073BF80
   preloads onto WinMain's Application, so making the preload borrow this object is an open item.
+  `kApplicationCc15Bound` stays OFF until this clash is resolved (coordinator, 2026-10-19). It is excluded from
+  the cc15 flip series.
 - The +05..07 and +1B bytes are zero here. In the image they are stack garbage that no store touches.
 
 ## Native VFS manager pump (rank 13): already native, no change

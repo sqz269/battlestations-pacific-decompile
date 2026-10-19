@@ -58,13 +58,37 @@ Log evidence, from cc9-lua52 `local\l64_j8_e_on_j5.log` (menu JM08, 2026-10-17, 
 
 The run ended about 484 ticks after the spawn. No plane reached the target, and `releases=0`.
 
+First ON pair (cc9 physics24, exports of 677ee345f; logs in cc9-physics1 `local\`, ON `p24s3_j8.log`, OFF
+`p24b_off_j8.log`). The task does reach JM08, but nothing dropped there:
+
+- Object 154 is Headquarter 01 and resolves. Every C47 `PilotSetTarget` line reads `target_object_id=154
+  target_valid=0 pos=(0,0,0)` in both runs (:1444352), and so do the B-17s'. `target_valid` is the target's
+  `position_valid`, which is 0 for any object target (`game_hosts_script_orders.cpp` PilotSetTarget log); the
+  task then installs on it (:1444703 `level-bomb task 009B9030 kind 4 installed C47 #4.1 -> Headquarter 01`).
+- The C47s reach aim (:1509080 `moveto -> LevelBomb/aim t=1367.76 d=4322.5 alt=1283.2 ... ord=1`) but never
+  release: `aim=1085 releases=0 drops=0 min_miss=20102.8` (:1833811), with min_miss between 11.7 and 24.9 km for every
+  armed C47, and `summary paratrooper rounds ... drops=0 landed=0 ... damage_calls=0` (:1833696). The cause was
+  the host binding of 007BCCF0. It read the world velocity where the image reads the forward row (+94h), which put
+  the point about 30 km ahead. It was fixed in packet cc13-parafix; that pair predates the fix.
+- JM08 HQ knife edge: ON fails at 1476.36 s, "Mission Failed - The HQ has been destroyed!" (:1817903). That is not
+  paratroopers, since none dropped. After the C47 spawn every hit on Headquarter 01 in both runs is an `impact blast` of
+  bullet 71 or 72 from the US ships ordered `fire=Headquarter 01` (Auilick, Macomb, Missouri, Helena, Gleaves, the
+  LSTs and LSMs): OFF 10 x 71 and 115 x 72, ending at `health=62.4` of about 5950 (OFF :1936953); ON 10 x 71
+  and 125 x 72, ending at 4.5 (ON :1818126). OFF survives by 62 HP, so any ON change that moves the shared stream or
+  the AI (here, C47s circling in aim instead of leaving) can flip the outcome. Judge a JM08 "HQ destroyed" against
+  this margin before blaming paratroopers.
+- Menu JM13 in that harness runs `universe/Scenes/missions/COTP-IJN/ijn_16_ambushed_at_wake_island.scn ->
+  Scripts/missions/COTP-IJN\JM16.lua` (`p24s1_j13.log:765`). `COTP-IJN/jm16.lua` spawns no class 136/186, so
+  paratrooper=0 there is expected. The JM13 rows of the table above are the `ijn_13` / `prcpijn_13` scenes, which
+  this menu id does not load.
+
 ## What the switch models
 
 | Image | Host (game_hosts_units.cpp) |
 | --- | --- |
 | 009B7CBF-009B7CF7 +CEh also counts 007B9500 (31h) | `lb_approach_update_009b7c90`: `in.has_paratroopers = lb_holds_paratroopers_007b9500()` |
 | 009B7D7D-009B7E1F impact = 007BCCF0(unit) + v x +A8h (no +A4h); 009B7EC8 y = aim y | the same function, after `level_bomb_approach_update_009b7c90` |
-| 007BCCF0 t = f(y / 2.8); p + v x t; y = 0078CF20 sea, raised to any higher 0087FA50 Landscape height | `paratrooper_release_point_007bccf0` (host binding; the raw-memory reconstruction is `cc13_seg47.cpp`) |
+| 007BCCF0 t = f(y / 2.8) (2.8 = double [00D05A38]); p + fwd x t, fwd = the forward row +94h..+9Ch (row 2 of the +74h local matrix, a unit vector; 007BCD4D/007BCD61/007BCD6D), not a velocity; y = 0078CF20 sea, raised to any higher 0087FA50 Landscape height | `paratrooper_release_point_007bccf0` (host binding; the raw-memory reconstruction is `cc13_seg47.cpp`) |
 | 007C0E98-007C0EC9: 007C0D90 calls 006E3F90 for a fired 31h rack, passing the point that 007BCCF0 returns and the velocity from vtable[34h] | `run_level_bomber_issue_007c0e67` and the devwalk path `run_device_walk_per_rack_007c0d90` call `lb_para_set_target_point_006e3f90` -> `gameplay_seg46_cc13::set_target_point_006e3f90` |
 | 006E541F-006E5515 landing = (U(-50,50) + px, py, U(-50,50) + pz), x first, stream 0; point += f(v x toRepeatTime) | `lb_para_drop_target_006e541f` -> `gameplay_seg46_cc13::paratrooper_drop_target_006e541f`, with `ParatrooperRackBinding::uniform` as 00BD2F10 |
 | 006E55E7 flag cleared when ammo <= 0 | `gameplay_seg46_cc13::paratrooper_drop_clear_006e55e7` after the host's decrement |
@@ -210,7 +234,8 @@ LABELLED substitutions:
 
 - The C-47 wingmen no longer drop to goaway on install: +CEh = 1 while a 31h rack holds a round. The squadron then
   flies the level-bomb states toward Headquarter 01: moveto/follow, attackrun, aim, release.
-- The aim state steers on the 007BCCF0 point, the ground under the plane projected along its velocity, plus v x +A8h.
+- The aim state steers on the 007BCCF0 point, the ground y / 2.8 ahead along the plane's forward row (about 458 m
+  at 1283 m), plus v x +A8h.
   It does not use the bomb's ballistic point.
 - At release, each 31h rack gets its target point. Each rack tick drop decrements the rack (`rack_drops` and
   `lb_rack_drops` rise) and logs a `paratrooper drop target` line, but nothing spawns. There are no troops, no capture, and no damage to
