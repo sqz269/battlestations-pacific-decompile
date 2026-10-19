@@ -10804,9 +10804,11 @@ class ParaServices final : public bsp::cc13_paratrooper::RoundServices {
 public:
     using Vec3 = bsp::gameplay_seg46_cc13::Vec3;
     explicit ParaServices(GameUnitsHost::Impl& owner) : owner_(owner) {}
-    float uniform(int stream, float lo, float hi) override {
+    // `key` (the round's or the hang's band, bsp::cc13_paratrooper) is read only
+    // under BSP_GUNNERY_RNG_STREAMS=1; the default mode ignores it.
+    float uniform(int stream, std::uint32_t key, float lo, float hi) override {
         if (!owner_.gunnery) return lo;
-        return owner_.gunnery->death_mode_draw_00bd2f10(stream, 0, lo, hi);
+        return owner_.gunnery->death_mode_draw_00bd2f10(stream, key, lo, hi);
     }
     float ground_height_00903860(const Vec3& p) override {
         const float point[3] = {p.x, p.y, p.z};
