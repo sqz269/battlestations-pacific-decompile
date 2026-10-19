@@ -28,7 +28,9 @@ are not drop-in binary replacements. Some field meanings, class identities and
 tail-dispatch signatures remain provisional. No host wiring or game runs were
 performed.
 
-Source and metadata integration includes 8b32c7d7d, 9a6a9756e,
-391212bcd, 29cb30230, 6816249a4, 90756baf, and 212041d56.
-The source batch was published on main at ce72bb3a. The generated board
-reports **538 remaining** at this lane snapshot (4f0b3f8f9).
+Source and metadata integration includes `8b32c7d7d`, `9a6a9756e`,
+`391212bcd`, `29cb30230`, `6816249a4`, `e90756baf`, and `212041d56`.
+The source batch was published on main at `ace72bb3a`. The closing report
+is `55f21b908`; the final concurrent main merge is `b7b496fa2`.
+
+The regenerated board reports **538 remaining** at snapshot `b7b496fa2`.
