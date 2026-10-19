@@ -308,8 +308,88 @@ The host agrees that the ship is not AI-steered:
 - `cruise_avoidance_inputs` tests the role-1 slot and then `+184h`.
 - With `+184h` set, `cruise_step` records 009E11E8 and returns.
 
-It differs in one way. The host does not re-send the latched pair, so whatever the harness helm route (takehelm or
-moveto) was doing keeps steering. The image freezes on the pair it latched.
+It differs in two ways:
+- The host does not re-send the latched pair. 009F3F80 then drives the ring from whatever the control block last held.
+  The image freezes on the pair it latched.
+- The host re-takes role 1 every fixed step: `player_helm_prepare_0064b870` runs 0064B97A's transfer. The image's
+  0064B870 is screen 46h's update, and that does not run while the map is up (below). So a takehelm ship with
+  |throttle| > 0.1 is back in the helm arm within one step.
+
+**Built (packet `cc13-helmlatch`):** `kCruiseLatchedPlayerArmCc13Bound` in `src/game_hosts_ship_ai.cpp`, OFF.
+
+The harness writes `+994h`/`+998h` in one place only. `player_helm_issue_0064b870` issues the levers into the ring
+once per fixed step through `issue_into_ring` (00816A40), but only while the local player holds role 1 (00927F30).
+The ring tick 00813020 then copies the live pair into `ring.confirmed_param_a/b` on an authoritative slot (00813144,
+00813152).
+
+moveto does not reach this pair while `+184h` is set, because 009F3DF3 forces cruise. The AI reaches the ring only
+through 009F3F80 (0080E170/0080E190), and only while blk+3F5h is clear.
+
+A ship that holds role 1 never reaches the latched arm. `cruise_avoidance_inputs` sees role 1 as neither 8 nor
+AI-held, which is the helm arm, and it returns before `+184h` is read.
+
+The cruise state is brain+0B70h, so its `+8h`/`+0Ch` is brain+0B78h/+0B7Ch. The host keeps them per controller, in
+both switch settings:
+- **Initial value.** 009F3A22/009F3A27 store -99.0f (00CF5BFC) in the brain constructor. A ship's first latched
+  tick therefore latches even with no helm arm before it.
+- **Helm arm.** -99.0f goes into `+0Ch` and then `+8h` (009E1407, 009E140C).
+- **Latched arm.** While `+8h` < -10.0f (00CE6848, COMISS at 009E11F9; a NaN does not latch), `+8h` takes `+994h`
+  (009E1207). `+0Ch` takes `+998h` (009E1237), or 0 for a kind-0Eh unit (vtable[5Ch] at 009E121F).
+- **Re-send, ON only.** Every re-plan sends `+0Ch` through 009DFFB0 (009E1249) and `+8h` through 009DBF90
+  (009E1257), so the control block carries the latched pair.
+- **blk+3F5h.** The re-plan pre-pass clears it at 009F1B8C, and the latched arm never sets it. 009F3F80 therefore
+  writes the re-sent pair into the ring. The helm arm's own 3F5h = 1 (009E13DC) makes 009F3F80 return early, which
+  leaves the ring to the HUD.
+
+The summary line `cruise latched player arm bound=.. latches=.. resends=.. helm_sentinels=..` counts the arm in both
+settings. OFF changes nothing else.
+
+Data lifetime when ON:
+- **`+994h`/`+998h`.** They are read through `unit_ring_confirmed_*`, which is bounds-checked. At the first latched
+  tick they hold the last order the helm issued, because the helm arm's 3F5h kept 009F3F80 out of the ring.
+- **Latch state.** It lives in the controller and nothing else writes it. LABELLED: a controller is built once per
+  unit and never rebuilt.
+- **Dead unit.** 009F50E0 returns before any state step when its unit test at 009F50E4 or its flag tests at 009F50F2
+  and 009F50FC fail. The latch adds no lookup beyond that controller's own unit.
+- **Role reads.** When `cruise_avoidance_inputs` cannot read the roles, the step is skipped before either arm runs.
+- **Not hosted:** the helm arm's 009DFFB0 on the live `+998h`, its blk+1C8h..+1D8h stores, and 00835AC0. brain+0B38h
+  = 1 (009E11F2, shared with the other arms) is also not hosted.
+
+Other routes to the latched arm. Each releases role 1 while `+184h` stays set (mask bit 0 clear), and none is built
+here:
+- `releasegun`, through 1FEh (0064A490);
+- the harness `attack` order on the controlled unit, through 0077C470(unit, 2, 0) at 005FAB38;
+- a script SetRoleAvailable(EROLF_PILOT, 8) while the helm is held, where 00927D20 releases bit 2 only.
+
+With |throttle| > 0.1, the per-step re-take puts the ship back in the helm arm after each of these, unless the map-up
+gate below is ON.
+
+**Built (packet `cc13-helmmapgate`):** `kHelmPrepareMapUpGateCc13Bound` in `include/bsp/game_hosts_hud_world.hpp`,
+OFF. A static_assert requires its parent `kHarnessReleaseGunMapBound` to be ON.
+
+0064B870 has one caller, 0064D656, which is inside screen 46h's update 0064D610 (`bsp.py callers`). 46h is a level-1
+screen. 4Ch's +8h (005A8EF0) is opaque, so 004F7620 requests no level-1 screen, and 004F8906 updates only the screens
+that are requested. 46h has also exited through 0064A490. So the transfer at 0064B97A and the issue at 0064BB12 do not
+run while the map is up.
+
+When 0068AC30 opens the map, the HUD host now calls `set_helm_screen_occluded_by_map(true)` on the units host. When
+ON, the units host then skips `player_helm_prepare_0064b870` and the controlled unit's `player_helm_issue_0064b870`.
+OFF runs both as before.
+
+The summary line `helm map-up gate bound=.. map_up=.. prepares=.. skipped=.. issues=.. skipped=..` counts the steps
+in both settings. Closing the map is not hosted, so the gate stays closed for the rest of the run.
+
+The ring is not stranded:
+- **Both switches ON (the image).** The issue is skipped, so the only ring writer for that ship is 009F3F80. blk+3F5h
+  is cleared by every re-plan pre-pass and never set again, because the helm arm cannot return without a re-take. So
+  009F3F80 writes the latched pair, re-sent by `cc13-helmlatch`, on every step.
+- **This gate ON without the latch.** 009F3F80 still writes every step, but from whatever the control block last
+  held. That is not the image's pair. Flip the two together.
+- **`--order` harness standing order.** Its refill (`issue_into_ring` before the helm call) is not gated. It is a
+  harness-only path.
+
+27h's 0067BB50, the captain-role take, is also outside the level-2 set. The host calls it every step under
+`kRoleScreenFixedStepCall`. It takes and releases mask 1 only and never sets `+184h`, so this gate leaves it alone.
 
 ### Gunnery while the map is up (packet `cc13-gunfire`)
 

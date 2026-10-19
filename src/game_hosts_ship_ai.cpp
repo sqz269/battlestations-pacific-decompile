@@ -255,6 +255,18 @@ inline constexpr bool kShipTurnRadiusTorpedoBoatExempt = true;
 // False: the walk is recorded, the list stays empty and the gate answers false.
 // Landed ON after the USN04 4500 and E2 9000 pairs (docs/SHIP_TORPEDO_RESPONSE.md section 5).
 inline constexpr bool kShipTorpedoResponseBound = true;
+// Packet cc13-helmlatch (docs/CC13_IJN18LOSS.md section 7). 009E1170's latched
+// arm 009E11CE..009E1262 runs when +184h is set and role 1 is 8 or AI-held (the
+// map-up case). While the cruise state's +8h is below -10.0f (00CE6848, COMISS
+// at 009E11F9), it latches +8h = unit+994h (009E1207) and +0Ch = unit+998h
+// (009E1237), or 0 for a kind-0Eh unit (009E121F). On every re-plan it re-sends
+// +0Ch through 009DFFB0 (009E1249) and +8h through 009DBF90 (009E1257). The helm
+// arm stores -99.0f (00CF5BFC) into both at 009E1407/009E140C, so a later fall
+// to the latched arm latches again; the brain constructor stores the same -99.0f
+// at 009F3A22/009F3A27. The latch state is tracked in both settings. ON: the
+// re-send writes the control block. OFF: nothing is written, and only the
+// summary counts change.
+inline constexpr bool kCruiseLatchedPlayerArmCc13Bound = false;
 // Packet cc9_ship_torpedo_response, secondary. 0082E850 multiplies class+520h by
 // settings+438h (2.0) at every call site. True: the follow step's two sites
 // (009E16F0 station latch, 009E1790 back-off), the path follower's (009E3EAE)
@@ -1475,6 +1487,9 @@ struct GameShipAiHost::Impl {
     unsigned long long sector_blocker_binds{}, sector_blocker_stale{};
     unsigned long long avoidance_queries{}, avoidance_refills{}, avoidance_clears{};
     unsigned long long avoidance_role_reads{}, avoidance_role_unavailable{};
+    // Packet cc13-helmlatch: latched-arm latches and re-sends, and helm-arm
+    // sentinel stores (log only).
+    unsigned long long cruise_latches{}, cruise_latch_resends{}, cruise_latch_sentinels{};
     std::int32_t session_mode{};
 
     // One controller per created unit. `ai` in docs/SHIP_AI_STATES.md is the
@@ -1501,6 +1516,11 @@ struct GameShipAiHost::Impl {
         // and its vtable[4] (a bare RET) is called. Packet cc9_initial_cruise_state.
         std::uint32_t active_state_ai_offset{kShipAiInitialCruiseStateBound ? 0x0BC8u : 0u};
         std::uint32_t active_state_command{kShipAiInitialCruiseStateBound ? 0x00E08F70u : 0u};
+        // Packet cc13-helmlatch: the cruise state's latched pair, brain+0B78h
+        // (+8h, throttle) and brain+0B7Ch (+0Ch, rudder). 009F3A22/009F3A27
+        // store -99.0f (00CF5BFC) when the brain is constructed.
+        float cruise_latch_throttle_b78{-99.0f};
+        float cruise_latch_rudder_b7c{-99.0f};
         bsp::NativeHandle fire_target{0};       // director+238h as this process holds it
         bool fire_target_locked{false};         // director+23Ch (packet cc9_usn02_deruyter_fire)
         std::string sample;                     // the last line log_sample emitted
@@ -10402,6 +10422,7 @@ public:
                 apply_ai_drive();
                 return;
             }
+            cruise_latched_and_helm_arms(inputs, setters);
             // Request fields are shared even when the selected player/helm
             // drive remainder is still partial. Commands records that boundary.
             ++owner_.summary.state_steps_recorded;
@@ -10619,6 +10640,40 @@ public:
     // four states of this mission now form their own pair.
     void apply_ai_drive() {
         // Milestone 2r: nothing. The switch is retired; see set_ai_drive.
+    }
+
+    // Packet cc13-helmlatch: the cruise state's +8h/+0Ch in 009E1170's two
+    // player arms (kCruiseLatchedPlayerArmCc13Bound). The arm choice is
+    // 009E11A5's, from the same inputs the request store used.
+    void cruise_latched_and_helm_arms(const bsp::ShipAiCruiseAvoidanceInputs& inputs,
+                                      bsp::ShipAiSetterHost& setters) {
+        const bsp::ShipAiCruiseAvoidanceArm arm = bsp::ship_ai_cruise_step_arm_009e11a5(inputs);
+        if (arm == bsp::ShipAiCruiseAvoidanceArm::HelmHeldByPlayer) {
+            // 009E13FF..009E140C: -99.0f (00CF5BFC) into +0Ch, then +8h.
+            ctl_.cruise_latch_rudder_b7c = -99.0f;
+            ctl_.cruise_latch_throttle_b78 = -99.0f;
+            ++owner_.cruise_latch_sentinels;
+            return;
+        }
+        if (arm != bsp::ShipAiCruiseAvoidanceArm::UnitPlayerFlag) return;
+        // 009E11CE / 009E11F9: COMISS [00CE6848] = -10.0f against +8h, JBE past
+        // the latch, so a NaN +8h does not latch.
+        if (-10.0f > ctl_.cruise_latch_throttle_b78) {
+            ctl_.cruise_latch_throttle_b78 = owner_.units.unit_ring_confirmed_throttle_0994(index_);
+            // 009E121F, unit vtable[5Ch](0Eh): a kind-0Eh unit latches rudder 0.
+            ctl_.cruise_latch_rudder_b7c = owner_.units.unit_is_kind_of(index_, 0x0E)
+                ? 0.0f : owner_.units.unit_ring_confirmed_rudder_0998(index_);
+            ++owner_.cruise_latches;
+        }
+        ++owner_.cruise_latch_resends;
+        if constexpr (kCruiseLatchedPlayerArmCc13Bound) {
+            bsp::ship_ai_set_desired_steering_009dffb0(ctl_.blk, ctl_.cruise_latch_rudder_b7c,
+                setters);                                                  // 009E1249
+            owner_.done("CruiseState::latched_set_desired_steering", 0x009e1249u);
+            bsp::ship_ai_set_desired_throttle_009dbf90(ctl_.blk,
+                ctl_.cruise_latch_throttle_b78);                           // 009E1257
+            owner_.done("CruiseState::latched_set_desired_throttle", 0x009e1257u);
+        }
     }
 
     float state_interval_vtable28() override {
@@ -14271,6 +14326,10 @@ void GameShipAiHost::report() {
         host.avoidance_queries, host.avoidance_refills, host.avoidance_clears);
     host.log.notef("ship avoidance cruise owners: reads=%llu unavailable=%llu",
         host.avoidance_role_reads, host.avoidance_role_unavailable);
+    host.log.notef("summary ship cruise latched player arm bound=%d latches=%llu resends=%llu "
+        "helm_sentinels=%llu (009E11CE..009E1262, 009E1407/009E140C, packet cc13-helmlatch)",
+        kCruiseLatchedPlayerArmCc13Bound ? 1 : 0, host.cruise_latches,
+        host.cruise_latch_resends, host.cruise_latch_sentinels);
     host.log.notef("native ship pre-step: updates=%llu; pose=cache-valid; "
         "model=absent; class-depth=loaded; width=loaded; full009e0270=bound",
         host.hull_geometry_updates);
