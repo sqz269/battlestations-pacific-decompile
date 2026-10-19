@@ -523,3 +523,32 @@ Object* action_list_find_before_004564e0(Seg5Host& host, Object track, Object* o
 float camera_track_fov_at_0045a5a0(Seg5Host& host, Object track, float time);
 
 } // namespace bsp::cc13_seg5
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::cc13_seg5 {
+// 00453580/004542B0: ECX action, RET. +1D4h is a captured camera-node pointer;
+// the semantic purpose is provisional (caller 0045DD70 is not reconstructed).
+void movie_action_clear_camera_node_00453580(Object action) noexcept;
+void movie_action_capture_camera_node_004542b0(Seg5Host& host, Object action);
+struct TrackTimeIterator { Object container; Object node; };
+static_assert(sizeof(TrackTimeIterator) == 8);
+struct TrackTimeSearchHost {
+    virtual ~TrackTimeSearchHost() = default;
+    virtual void invalid_parameter_00bf6713() = 0;
+};
+// ECX track, stack result/time, RET 8, EAX=result. Returns the LAST list
+// entry whose activation time is greater than time, or the final entry if none.
+TrackTimeIterator* entity_track_find_time_00455a80(Object track, TrackTimeIterator* out, float time,
+                                                  TrackTimeSearchHost& host);
+struct VehicleLaunchReadHost {
+    virtual ~VehicleLaunchReadHost() = default;
+    virtual void read_extended_header_0075b4c0(Object message, Object stream) = 0;
+    virtual void read_boolean_00428d70(Object cursor, Object out) = 0;
+    virtual void read_numeric_float_004293f0(Object cursor, Object out, std::uint32_t mode,
+                                             std::uint32_t signed_mode, float maximum,
+                                             std::uint32_t bits) = 0;
+};
+// ECX message, stack stream, RET 4. Vtable 00CE53AC slot 2, message 7Bh.
+void vehicle_launch_message_read_00464810(Object message, Object stream, VehicleLaunchReadHost& host);
+}

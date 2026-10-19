@@ -178,3 +178,14 @@ void native_string_at_8_destroy_storage_0043bae0(Raw owner, Seg2Host& host);
 void native_string_at_8_destroy_storage_0043d090(Raw owner, Seg2Host& host);
 
 }  // namespace bsp::profile_seg2_cc13
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::profile_seg2_cc13 {
+// 0043B2C0, ECX scope, flags on stack, RET 4, EAX = original scope.
+struct ScopedByteOverrideDeleteHost : Seg2Host {
+    virtual void free_00bf65ac(void* block) = 0;
+};
+Raw scoped_byte_override_scalar_delete_0043b2c0(Raw scope, std::uint32_t flags,
+                                                ScopedByteOverrideDeleteHost& host);
+}
