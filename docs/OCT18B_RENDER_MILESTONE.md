@@ -97,7 +97,11 @@ The actual ON process exits `C0000409` through the harness terminate handler,
 despite the earlier normal-loop summary. The final dump is
 `local/oct18b_render_final_main_on_usn04.dmp`.
 
-Both required checks pass in the final MSVC Win32 build (11.48 seconds).
+Both required checks pass in the runtime-evidence MSVC Win32 build (11.48 seconds),
+and again after the final Main integration (46.33 seconds;
+`local/oct18b_render_publication_build.log`). Runtime artifacts remain pinned to
+the stated main control plus this lane's render changes; later Main integration
+does not alter the mission renderer/host entry files.
 `local/oct18b_render_final_main_on_evidence.json` summarizes the 561 completed
 ordinary command frames, all with 139 returned B24010 calls and empty queues.
 
