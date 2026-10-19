@@ -17,7 +17,8 @@ Status:
 
 ## 1. The seeds
 
-009DFCB0 is `__fastcall` with ECX = blk+1C4h, called from the nav block ctor at 009E43A4 / 009E43CC.
+009DFCB0 is `__fastcall` with ECX = blk+1C4h. Its one rel32 caller is 009E43CC, in the nav block
+ctor 009E4330.
 A store at [ECX+n] lands at blk+1C4h+n.
 
 | blk | image store | value | host field (default) | switch |
@@ -37,6 +38,12 @@ The image writes 364h in only three places:
 
 The two setters that also write it, 009D51F0 and 009D5240, have no rel32 or absolute references, so
 they are dead.
+
+That claim was re-scanned for rev2's nit (b):
+- The scan covers every section, looking for E8/E9 rel32 and absolute dwords. It found no hits for
+  either address.
+- As a positive control, the same scan finds 009EF910's caller 009F4D87 and 009DFCB0's caller
+  009E43CC.
 
 The readers are:
 - 009ED9D1 in 009ED6B0. When 364h is set, heading_target_324 comes from 00438B10 (subtract);
@@ -97,6 +104,27 @@ There is a separate, pre-existing split, which this switch does not change:
 
 Routing that raise to `throttle_profile.hold_354` / `blk.clamp_354` is a behaviour change with its own
 reach. It should be its own switch and pair, not part of a seed fix.
+
+### 364h in the clearance refresh (rev2 nit a)
+
+009EF910 reads blk+364h directly. The prologue sets ESI = ECX = blk at 009EF91B, ESI is not rewritten
+before the reads, and the function stores nothing to +364h. The reads are:
+- 009EFFDC `CMP byte [ESI+364h],BL` / `SETE`, which gives "committed" = !364h in steering mode 1;
+- 009EFFEC `MOV BL,[ESI+364h]`, which gives "committed" = 364h in mode 2.
+
+The host models this at `ship_ai_clearance_profile.cpp:286/288` with
+`ShipAiClearanceBlock::committed_ahead_364`. Nothing in `src/` writes that field, so it stays false.
+The host's copy-in before the call (`game_hosts_ship_ai.cpp`, beside the 324h/330h/35Ch/3F0h/3F4h/
+A3Ch/374h copies) does not include 364h. With the seeds ON, the block and the clearance copy
+therefore disagree from step 0. Even with the seeds OFF, they disagree after any escape sets 364h.
+
+The second OFF switch, `kShipAiClearance364SyncCc13Bound`, copies `blk.yaw_rate_subtracts_364` into
+`clearance.committed_ahead_364` just before each 009EF910 call.
+- Since the image reads the block byte live and 009EF910 never writes it, a copy at call entry is
+  faithful in time.
+- It is separate from the seed switch because it also mirrors later escape flips, so it changes
+  behaviour on its own.
+- It needs its own pair, plus one with the seeds ON.
 
 ## 2. ON data lifetime
 
@@ -179,6 +207,10 @@ and no host reader, so it is a later item.
     (009DF2D0), and the ring slot (009E6640, 009E76D0).
 
   It is outside the 009DDBC0 save ranges. Listed as no-reader; no host field was added.
+
+  Scope (rev2 nit c): the `+3DCh` scan covered the whole image, 00401000..00CA0000. The
+  `+3E4h`/`+218h` alias scans and their base attribution covered only the ship AI band
+  009D0000..00A00000. A blk reader outside that band through another base was not ruled out.
 - **300h:** this is the plan pair's +DCh (section 4), not a 009DFCB0 store. hitq agrees.
 
 ## 6. Uncertainty

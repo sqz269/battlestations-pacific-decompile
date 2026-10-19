@@ -11169,6 +11169,11 @@ public:
         ctl_.clearance.category_3f0 = ctl_.avoidance.side_filter_3f8;
         ctl_.clearance.avoidance_enabled_3f4 = ctl_.avoidance.flag_3fc;
         ctl_.clearance.static_zone_present_a3c = ctl_.avoid_search->list(0).head != nullptr;
+        if constexpr (bsp::kShipAiClearance364SyncCc13Bound) {
+            // 009EFFDC / 009EFFEC read [ESI+364h] with ESI = blk (009EF91B),
+            // the same byte the escape flips; 009EF910 never writes it.
+            ctl_.clearance.committed_ahead_364 = ctl_.blk.yaw_rate_subtracts_364;
+        }
         ClearanceBinding clearance(owner_, index_);
         // Packet cc13-ver7 (D5): blk+374h is one field. The -1.0f stores the
         // block names direction_value_374 (009D526F, 009ED867, 009ED8B5,

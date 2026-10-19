@@ -153,4 +153,17 @@ inline constexpr bool kShipAiCruiseDistanceSeedBound = false;
 // is seeded here.
 inline constexpr bool kShipAiNavBlockCtorSeedsCc13Bound = false;
 
+// Packet cc13-navseeds2 (rev2 nit a). 009EF910 (ESI = ECX = blk at 009EF91B)
+// reads blk+364h live at 009EFFDC (steering mode 1: committed = !364h) and
+// 009EFFEC (mode 2: committed = 364h), and never writes it. The host models
+// that read with ShipAiClearanceBlock::committed_ahead_364, which nothing in
+// src/ writes, so it stays false while blk.yaw_rate_subtracts_364 is seeded
+// (kShipAiNavBlockCtorSeedsCc13Bound) or flipped by the escape. ON copies the
+// block's value in beside the other 009EF910 inputs, just before each call.
+// Separate from the seed switch because it also mirrors later escape flips,
+// so it changes behaviour on its own. Reach: every ship whose clearance
+// refresh runs in steering mode 1 or 2; needs its own pair (and one with the
+// seeds ON).
+inline constexpr bool kShipAiClearance364SyncCc13Bound = false;
+
 } // namespace bsp
