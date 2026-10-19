@@ -2928,7 +2928,21 @@ struct GameUnitsHost::Impl {
     void note_kill_cause(std::size_t unit, int cause) {
         if (kill_cause_by_unit.size() <= unit) kill_cause_by_unit.resize(unit + 1, 1);
         kill_cause_by_unit[unit] = cause;
+        // Packet cc13-killx (kPlaneFunnelKillPathTagCc13Bound): every caller here
+        // stands for a 00926D90 Kill, except a site that raised
+        // funnel_path_tag_suppressed around its kill_unit_00926d90 call.
+        if (!funnel_path_tag_suppressed) {
+            if (funnel_path_tag_by_unit.size() <= unit) funnel_path_tag_by_unit.resize(unit + 1, 0);
+            funnel_path_tag_by_unit[unit] = 1;
+        }
     }
+    // Packet cc13-killx: the unit died through a 00926D90 stand-in (not SetHealth).
+    // Grown per slot index at the kill, read by the plane death-mode block one
+    // step later; nothing clears it (slots are never freed).
+    std::vector<std::uint8_t> funnel_path_tag_by_unit;
+    // Raised by the host sites that call kill_unit_00926d90 for a direct
+    // vtable[70h](1), which is not 00926D90.
+    bool funnel_path_tag_suppressed = false;
     unsigned long long land_retired_invalid{0};
     unsigned long long land_retired_own_target_ok{0};   // packet cc9_land_command_own_target
     // Packet cc9_unit_yaw_rate_forward_speed: the accessor's calls and non-zero answers.
@@ -11709,7 +11723,11 @@ public:
         if (air.drowned && !slot_.sub_drowned && owner_.gunnery != nullptr) {
             // 008553A1..008553B8: vtable[70h](1), 0077D1A0 -> 00926C80.
             slot_.sub_drowned = true;
+            // Packet cc13-killx: a direct vtable[70h](1), not 00926D90, so no
+            // funnel path tag.
+            owner_.funnel_path_tag_suppressed = true;
             owner_.gunnery->kill_unit_00926d90(slot_.process_index, 1);
+            owner_.funnel_path_tag_suppressed = false;
             owner_.log.notef("submarine air: unit=%s drowned (vtable[70h](1), packet "
                 "cc9_submarine_air)", slot_.row.name.c_str());
         }
@@ -21113,9 +21131,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Packet cc13-landc (kPlaneFunnelKillDestroyOnlyCc13Bound): a
                         // 00926D90 Kill (a cause other than 1) reaches 0077D1A0 Destroy
                         // without SetHealth, so 007CA8A0 never runs for it.
+                        // Packet cc13-killx (kPlaneFunnelKillPathTagCc13Bound): the
+                        // test is the 00926D90 path tag, for every cause, so a
+                        // cause-1 Lua Kill(x) or 007CE3A7 depth kill is included.
                         const bool destroy_only = bsp::kPlaneFunnelKillDestroyOnlyCc13Bound
-                            && index < host.kill_cause_by_unit.size()
-                            && host.kill_cause_by_unit[index] != 1;
+                            && (bsp::kPlaneFunnelKillPathTagCc13Bound
+                                ? index < host.funnel_path_tag_by_unit.size()
+                                    && host.funnel_path_tag_by_unit[index] != 0
+                                : index < host.kill_cause_by_unit.size()
+                                    && host.kill_cause_by_unit[index] != 1);
                         bsp::PlaneDeathModeInputs din;
                         din.health_370 = 0.0f;
                         // 007CA914: 00BD2F10(ECX = 1, 0.0, 1.0), the shared stream.
@@ -22222,7 +22246,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                             static_cast<double>(unit_.motion.position[1]),
                                             static_cast<double>(min_water_spd),
                                             static_cast<double>(unit_.motion.pose_row1[1]));
+                                        // Packet cc13-killx: 007D12FC's vtable[70h](1),
+                                        // not 00926D90, so no funnel path tag (the
+                                        // powerlost mode stays the death block's).
+                                        owner_.funnel_path_tag_suppressed = true;
                                         gun_host->kill_unit_00926d90(self_index, 1);
+                                        owner_.funnel_path_tag_suppressed = false;
                                     }
                                 }
                                 // 007CB92C: 7, 4 and 5 all go to 6. The
@@ -39990,7 +40019,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         unit_.row.name.c_str(),
                                         static_cast<double>(owner_.summary.simulated_seconds),
                                         static_cast<double>(depth));
+                                    // Packet cc13-killx: 007D12FC's vtable[70h](1),
+                                    // not 00926D90, so no funnel path tag.
+                                    owner_.funnel_path_tag_suppressed = true;
                                     gh->kill_unit_00926d90(self, 1);
+                                    owner_.funnel_path_tag_suppressed = false;
                                 }
                             }
                             if (++unit_.plane_water_powerlost == 1) {
