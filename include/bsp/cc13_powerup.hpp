@@ -90,22 +90,31 @@ struct PowerupRuntime {
     // +14Ch + slot*0Ch: each slot's runtime map keys (the class pointer, compared
     // as an unsigned dword as 00617030 does), in key order. The active slot's
     // values are host->active_slot_records(), index-aligned with these keys;
-    // other slots keep theirs in other_records.
+    // other slots keep theirs in other_records. Keys, values and the notify gate
+    // share one lifetime: the published host's. Its frame builds the runtime at
+    // load (empty, as the image's new manager is) and destroys it before it goes
+    // (destroy_powerup_manager_004d2d84), so a later frame never sees these keys.
     std::array<std::vector<std::uintptr_t>, kPowerupPlayerSlots> record_keys{};
     std::array<std::vector<PowerUpSlot>, kPowerupPlayerSlots> other_records{};
     PowerupCounts counts{};
     std::string load_error{};
 };
 
-// The process's manager (the image's is one object for the process too).
+// The [00F88C30] slot. The image's manager lives from one mission load to the
+// next world teardown; this object holds whichever manager is current.
 PowerupRuntime& powerup_runtime();
 
 // 004DC6A0's 008EDC60 + 008ECEC0 for the registry only: constructs the owner and
 // walks PowerupClasses after `script_text` ran in a fresh Lua state. The faction
-// is [[game+18CCh+4*[game+18ECh]]+28h]. Returns false (error set) when the text
-// fails. Publishes `host` with the owner.
+// is [[game+18CCh+4*[game+18ECh]]+28h]. Publishes `host` with the owner. Returns
+// false (error set, manager and host cleared) when the text or the walk fails.
+// The runtime must be empty (destroyed by the previous frame).
 bool load_powerup_classes_004dc6a0(PowerupRuntime& runtime, PowerupManagerHost& host,
     std::string_view script_text, std::int32_t selected_player_faction);
+
+// 004D2BB0's manager release (004D2D84..004D2D96): deletes the manager and
+// empties the inventories, keys and other slots' records; clears the host.
+void destroy_powerup_manager_004d2d84(PowerupRuntime& runtime);
 
 // 008E6CB0: the class named `name`, or null.
 const PowerupClassConfig* find_powerup_class_008e6cb0(PowerupRuntime& runtime,

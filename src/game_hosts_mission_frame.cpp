@@ -265,11 +265,17 @@ struct GameMissionFrameHost::Impl {
         // Not in release_units: the scene load calls that before the scripts run,
         // and the result object lives for the whole mission.
         lua.attach_mission_result(nullptr);
-        // Packet cc13-powerup: the registry outlives this frame host; its link
-        // back here does not.
-        bsp::cc13_powerup::PowerupRuntime& powerups = bsp::cc13_powerup::powerup_runtime();
-        if (powerup_binding != nullptr && powerups.host == powerup_binding.get()) {
-            powerups.host = nullptr;
+        // Packet cc13-powerup: 004D2BB0 deletes the manager at 004D2D84..004D2D96,
+        // and the next load builds a new one. The runtime's keys go with the
+        // frame's world, which holds the active slot's record values.
+        if constexpr (bsp::cc13_powerup::kPowerupGrantBound) {
+            if (powerup_binding != nullptr) {
+                bsp::cc13_powerup::PowerupRuntime& powerups =
+                    bsp::cc13_powerup::powerup_runtime();
+                if (powerups.host == powerup_binding.get()) {
+                    bsp::cc13_powerup::destroy_powerup_manager_004d2d84(powerups);
+                }
+            }
         }
     }
 
@@ -1223,14 +1229,10 @@ private:
 
 // Packet cc13-powerup: 004DC6A0's 008EDC60 + 008ECEC0, the registry part, with
 // Scripts/datatables/PowerupClasses.lua read out of the VFS as the warning table
-// is. Runs once per process (004DC6A0 does).
+// is. Runs at every load, as 004DC6A0 does from 004DFB70; the previous frame's
+// ~Impl has already destroyed the previous manager.
 void load_powerup_classes_cc13(GameMissionFrameHost::Impl& host) {
     bsp::cc13_powerup::PowerupRuntime& runtime = bsp::cc13_powerup::powerup_runtime();
-    if (runtime.manager != nullptr) {
-        host.powerup_binding = std::make_unique<PowerupManagerBinding>(host);
-        runtime.host = host.powerup_binding.get();
-        return;
-    }
     std::string text;
     std::string error;
     std::string resolved = "Scripts/datatables/PowerupClasses.lua";
@@ -1256,7 +1258,6 @@ void load_powerup_classes_cc13(GameMissionFrameHost::Impl& host) {
             runtime.counts.texture_requests);
     } else {
         if (error.empty()) error = runtime.load_error;
-        runtime.host = nullptr;
         host.record("PowerUps::load_classes", 0x008ecec0u);
         host.log.notef("power-up classes not loaded: %s (packet cc13-powerup)", error.c_str());
     }

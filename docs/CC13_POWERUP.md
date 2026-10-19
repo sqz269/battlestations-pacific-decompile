@@ -94,6 +94,27 @@ activate's shape (`0097F490`: the head, `008EC460`, `00979B50`, `00976B00`).
 - `PowerupManagerBinding` answers the manager's outside reads. `PowerupWarningReportBinding`
   queues the warning through `report_warning_009763e0` as the torpedo report does.
 - `GameScriptOrdersHost` routes the three rows to `src/cc13_powerup.cpp` when the switch is on.
+- The frame's `~Impl` destroys the manager it published (`destroy_powerup_manager_004d2d84`) only
+  when the switch is on and the runtime's host is its own binding.
+
+**Adoption note (existing argon reconstructions).** `src/powerup_seg58_argon.cpp` already holds
+reconstructions of these bodies: `lua_binding_add_powerup_008ee410`,
+`power_up_manager_grant_item_008eddc0`, `powerup_item_load_lua_008e7820`, `fun_008e6cb0`,
+`lua_binding_prepare_powerup_008ea610`, `power_up_manager_prepare_from_lua_008e9fd0`,
+`lua_binding_get_available_powerups_008eb350`, `power_up_manager_build_available_names_table_008eab00`
+and `power_up_manager_list_ready_items_008ea0c0`. They are written against the raw `Seg58Host`
+form: the manager is a byte image addressed by offset, lists and maps are native node chains
+reached through host allocator and STL-instantiation hooks, and Lua is reached through raw
+`lua_*` address hooks. Nothing in the running game constructs a `Seg58Host` or the raw manager
+image, and the frame's warning manager, world clock and `PowerUpManagerState` are typed host
+objects. So the binding here repeats those bodies' control flow over typed containers
+(`std::list` items, sorted key/value vectors for `00617030`) and the host's Lua 5.1 state, and
+calls the existing typed loaders (`construct_powerup_config_008edc60`,
+`load_powerup_config_tables_008ecec0`, `release_powerup_configuration_storage`) rather than the
+argon copies. The bodies here were written from the listing (the addresses in the bodies table);
+the argon `008EDDC0` was spot-checked against them for the grant order (gate `00E0C978`, append,
+`008E7820`, `pup_gain` through `009789A0`, the `[00E198C4]` screen, then the hint) and agrees. The
+argon file stays the raw-image record; this file is the typed copy the game can run.
 
 **SUBSTITUTIONS and host facts (labelled in the code):**
 - Class textures: the atlas lookup misses and the renderer load answers null (96 requests counted
@@ -113,10 +134,10 @@ activate's shape (`0097F490`: the head, `008EC460`, `00979B50`, `00976B00`).
 
 | lookup | container | filled by | cleared or moved before the read? |
 | --- | --- | --- | --- |
-| `008E6CB0` in AddPowerup / PreparePowerup | `owner.descriptors_14` (the class map) | `load_powerup_classes_cc13` at the global_subsystems load step, before any mission Lua runs (004DC6A0 then the mission script) | no. Only `008EDAD0` (teardown) frees it in the image; the host never frees it. A second mission in the same process reuses it and republishes the binding |
-| `008EA0C0`'s walk, `008EB110`'s last item | `PowerupRuntime::inventories[slot]` (`manager+20h + slot*0Ch`) | `008EDDC0` only (AddPowerup) | not in these runs. The image removes items through `008E87C0` (a use spending the last charge, or message 67 op 2) and `008E8A30` (a destroyed command-building binding); none is reached without a use. The host keeps the list for the process |
-| `00617030` in `008EA0C0`, `008EB110`'s walk | slot 0: `world.power_ups.player_slots` (the existing `PowerUpManagerState`) with the keys in `PowerupRuntime::record_keys[0]`; other slots: `PowerupRuntime::other_records` | `008EA0C0` (inserts the zeroed record); nothing else writes it in these runs (`008E4B00`, the use's stamp, is not reached) | no. `008EB110` only latches byte +0h in place and never erases; nothing clears the vector |
-| `008EB110`'s gate | `world.power_ups.player_notify_enabled` | `008EDDC0`, set from the active slot's inventory size after each append | no |
+| `008E6CB0` in AddPowerup / PreparePowerup | `owner.descriptors_14` (the class map) | `load_powerup_classes_cc13` at each load's global_subsystems step, before any mission Lua runs (004DC6A0 then the mission script) | not before the read. The frame's `~Impl` frees it (`destroy_powerup_manager_004d2d84`, the image's `004D2BB0` release at `004D2D84..004D2D96`), and the next load builds a new one, as `004DC6A0` does at `004DC882..004DC8A9`. A failed run or walk frees it at once and the natives stay records |
+| `008EA0C0`'s walk, `008EB110`'s last item | `PowerupRuntime::inventories[slot]` (`manager+20h + slot*0Ch`) | `008EDDC0` only (AddPowerup) | not within a mission. The image removes items only through `008E87C0` (a use spending the last charge, or message 67 op 2) and `008E8A30` (a destroyed command-building binding), neither reached without a use. Between missions the whole manager goes (above), so the host clears the lists with it |
+| `00617030` in `008EA0C0`, `008EB110`'s walk | slot 0: `world.power_ups.player_slots` (the existing `PowerUpManagerState`) with the keys in `PowerupRuntime::record_keys[0]`; other slots: `PowerupRuntime::other_records` | `008EA0C0` (inserts the zeroed record); nothing else writes it in these runs (`008E4B00`, the use's stamp, is not reached; no other code writes `player_slots`) | not within a mission: `008EB110` only latches byte +0h in place and never erases. The values live in the frame's world and the keys in the runtime; both start empty at a load (a new frame host, `game_hosts_mission.cpp` `frame_host.reset()` before the new one; a new runtime) and the old frame's `~Impl` clears the keys before the next load, so they stay index-aligned |
+| `008EB110`'s gate | `world.power_ups.player_notify_enabled` | `008EDDC0`, set from the active slot's inventory size after each append | no. It starts false in the new world, matching the new manager's empty inventory |
 | `009789A0`'s report | the warning manager's pending queue and the +108h table (existing, `kWarningMessageBankCc15Bound`) | existing loaders | existing behaviour |
 
 ## Expected ON effect in JM06
@@ -149,7 +170,7 @@ Gameplay identical (no use, no category list, no shared draw). Log changes:
   were not read; JM06 passes a table with a number.
 - The image's slot-record order is by the class pointer value; the host's class pointers differ,
   so two records may be walked in the other order. Both reports carry the same arguments.
-- Inventories persist for the process; whether the image clears them at a mission load was not
-  read (the harness runs one mission per process).
-- `docs/GAMEPLAY_MODIFIERS.md` line 32 writes the two-argument form as `008EDDC0(int arg1, arg0)`;
-  the listing gives the slot from argument 0 and the table from argument 1.
+- Resolved: the image does not carry inventories across missions. `004DFB70` calls `004DC6A0`
+  once per load (`004DFEBB`), which allocates and constructs a new manager; the only other writer
+  of `[00F88C30]` is `004D2BB0`, whose instructions `004D2D84..004D2D96` delete it through vtable slot 0
+  (`008EDAD0`) and stores 0. The host mirrors that pair per frame host.

@@ -188,30 +188,36 @@ PowerupRuntime& powerup_runtime() {
 
 bool load_powerup_classes_004dc6a0(PowerupRuntime& runtime, PowerupManagerHost& host,
     std::string_view script_text, std::int32_t selected_player_faction) {
-    // 004DC6A0: operator_new(1C4h), 008EDC60 (publishes 00F88C30), then 008ECEC0.
-    // The allocator words are the uninitialised bytes the constructor leaves;
-    // zero is a host choice. The owner lives for the process, as the image's
-    // does (its destructor 008EDAD0 runs only at teardown).
+    // 004DC6A0: operator_new(1C4h) at 004DC882, 008EDC60 at 004DC899 (publishes
+    // 00F88C30), then 008ECEC0. The allocator words are the uninitialised bytes
+    // the constructor leaves; zero is a host choice. Every mission load builds a
+    // new manager: 004DFB70 calls 004DC6A0 once per load, and 004D2BB0 deletes the
+    // previous one first (destroy_powerup_manager_004d2d84). So each load starts
+    // with empty inventories and empty +14Ch maps.
     static const PowerupOwnerAllocationWords allocation{};
     auto* owner = new PowerupConfigOwner(allocation);
     construct_powerup_config_008edc60(*owner, runtime.manager);
     runtime.host = &host;
+    // A failed run or walk leaves the image with a manager whose registry is
+    // partly filled. The host does not publish one: it releases the owner, and
+    // the natives stay unimplemented records for this load.
+    const auto fail = [&](std::string message) {
+        runtime.load_error = std::move(message);
+        destroy_powerup_manager_004d2d84(runtime);
+        return false;
+    };
 
     // 008ECEC0 opens a fresh state (mask 4) and runs the file; the text sets
     // only globals from constructors and arithmetic, so a bare state runs it the
     // same way.
     std::unique_ptr<lua_State, decltype(&lua_close)> state(luaL_newstate(), &lua_close);
-    if (!state) {
-        runtime.load_error = "cannot open a Lua state";
-        return false;
-    }
+    if (!state) return fail("cannot open a Lua state");
     int status = luaL_loadbuffer(state.get(), script_text.data(), script_text.size(),
         "@Scripts/datatables/PowerupClasses.lua");
     if (status == 0) status = lua_pcall(state.get(), 0, 0, 0);
     if (status != 0) {
         const char* message = lua_tostring(state.get(), -1);
-        runtime.load_error = message != nullptr ? message : "PowerupClasses.lua failed";
-        return false;
+        return fail(message != nullptr ? message : "PowerupClasses.lua failed");
     }
     ClassLoadHost load_host(selected_player_faction, runtime.counts.texture_requests);
     // Same CRT conversion source as the game host's (C27B7C's __get_sse2_info).
@@ -224,11 +230,40 @@ bool load_powerup_classes_004dc6a0(PowerupRuntime& runtime, PowerupManagerHost& 
     try {
         load_powerup_config_tables_008ecec0(*owner, *state, context);
     } catch (const std::exception& failure) {
-        runtime.load_error = failure.what();
-        return false;
+        return fail(failure.what());
     }
     runtime.counts.class_records = owner->descriptors_14 ? owner->descriptors_14->size() : 0u;
     return true;
+}
+
+void destroy_powerup_manager_004d2d84(PowerupRuntime& runtime) {
+    // 004D2D84..004D2D96 in 004D2BB0: when [00F88C30] is set, its vtable slot 0
+    // (008EDAD0) with 1, then [00F88C30] = 0. The registry goes through
+    // release_powerup_configuration_storage; the inventories and +14Ch maps are
+    // the runtime's, cleared with it, so the next load's keys, the frame's
+    // record values and its notify gate all start empty together.
+    if (runtime.manager != nullptr) {
+        PowerupConfigOwner* owner = runtime.manager;
+        // The release reaches no texture (every load answered null) and no
+        // faction read.
+        unsigned long long unused_requests = 0;
+        ClassLoadHost release_host(0, unused_requests);
+        const bool sse2 = IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+        static const PowerupDescriptorAllocationWords descriptor_scratch{};
+        static const std::array<std::uint32_t, 2> texture_size_words{};
+        PowerupConfigContext context{crt_string_storage(), release_host, sse2,
+            descriptor_scratch, texture_size_words};
+        runtime.manager = nullptr;
+        release_powerup_configuration_storage(*owner, context);
+        delete owner;
+    }
+    runtime.host = nullptr;
+    for (std::size_t slot = 0; slot < kPowerupPlayerSlots; ++slot) {
+        runtime.inventories[slot].clear();
+        runtime.record_keys[slot].clear();
+        runtime.other_records[slot].clear();
+    }
+    runtime.counts = PowerupCounts{};
 }
 
 const PowerupClassConfig* find_powerup_class_008e6cb0(PowerupRuntime& runtime,
