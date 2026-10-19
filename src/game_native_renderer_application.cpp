@@ -190,6 +190,28 @@ NativeVertexDeclarationLoadingContext application_declaration_loading(
 #include "game_native_mission_lighting.inc"
 #include "game_native_mission_ship.inc"
 
+// Read-only Source diagnostics for the opt-in graph. Raw memory snapshots do
+// not assert that a retained companion's native allocation is still alive.
+void observe_mission_texture_owners(GameHostLog& log, NativeTextureLoadOwners& owners,
+    const char* phase) {
+    struct Context { GameHostLog& log; const char* phase; } context{log, phase};
+    log.notef("native mission texture owners: phase=%s retained=%u", phase,
+        static_cast<unsigned>(owners.retained_entry_count()));
+    owners.observe_retained_entries(&context,
+        [](void* opaque, const NativeTextureLoadOwnerObservation& value) {
+            auto& output = *static_cast<Context*>(opaque);
+            output.log.notef("native mission texture owner: phase=%s identity=%p admitted=%08x "
+                "runtime=%u registered=%u canonical_match=%u prefix_read=%u name_read=%u "
+                "raw_snapshot_profile=%08x raw_snapshot_reference_bits=%08x name=%.*s",
+                output.phase, value.identity, value.admitted_profile,
+                static_cast<unsigned>(value.runtime_creator), static_cast<unsigned>(value.registered),
+                static_cast<unsigned>(value.canonical_match), static_cast<unsigned>(value.prefix_read),
+                static_cast<unsigned>(value.name_read), value.snapshot_profile,
+                value.snapshot_reference_bits, static_cast<int>(value.copied_name_bytes),
+                value.snapshot_name);
+        });
+}
+
 // ---- Harness only (packet cc9_tooling_renderer_init). 00B2AEB0 ignores CreateDevice's HRESULT,
 // as the image does, and then reads the device (00B24460, 00B26170). When CreateDevice fails
 // (a locked workstation, a lost display) that read is a null-pointer crash with no cause in the
@@ -960,6 +982,8 @@ bool GameNativeRendererApplication::requires_process_retention() const noexcept 
 void GameNativeRendererApplication::drain_singletons() {
     check(!requires_process_retention(),"incomplete native renderer cannot be drained");
     NativeLuaServiceBindings::Activation activation(impl_->lua_services.binding());
+    if (impl_->mission_ship && impl_->phase != Impl::Phase::drained)
+        observe_mission_texture_owners(impl_->log, impl_->texture_loading.owners, "before_retire");
     if (impl_->mission_ship) impl_->mission_ship->retire_before_native_drain();
     if(impl_->phase==Impl::Phase::ready)impl_->phase=Impl::Phase::draining;
     try { impl_->singletons.shutdown();after_native_drain(); }
@@ -982,6 +1006,8 @@ void GameNativeRendererApplication::after_native_drain() {
     // Effect metadata rechecks this method. Publish completed native drain
     // before entering its closure so that reentry observes that same fact.
     if (p.mission_ship) p.mission_ship->after_native_drain();
+    if (p.mission_ship)
+        observe_mission_texture_owners(p.log, p.texture_loading.owners, "after_drain");
     p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null queue=null worker=joined");
 }
 } // namespace bsp::game
