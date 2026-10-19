@@ -99,9 +99,9 @@ inline constexpr bool dive_countdown_draw_on() noexcept {
 // The rocket enter 007B5F10 (007B5F5B-007B5FAD: [approach+70h] vs tuning+664h
 // Strike/AttackDist * 0.8 qword 00CE3D40, JA) has no switch: the host runs no
 // rocket task (RocketTaskHost has no implementer), so there is nothing to bind.
-inline constexpr bool kDiveGoawayTargetExtentCc13Bound = false;
+inline constexpr bool kDiveGoawayTargetExtentCc13Bound = true;
 inline constexpr bool kTorpGoawayTargetExtentCc13Bound = false;
-inline constexpr bool kLevelGoawayTargetExtentCc13Bound = false;
+inline constexpr bool kLevelGoawayTargetExtentCc13Bound = true;
 
 inline constexpr bool distance_jitter_draw_on() noexcept {
     return kTorpGoawayEnterDrawsBound && kTorpGoawayDistanceJitterDrawBound;
