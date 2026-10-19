@@ -7025,6 +7025,31 @@ struct GameUnitsHost::Impl {
     // of position. Before: 007C47F0 alone, the leader always at LevelFlight x
     // StallSpd.
     static constexpr bool kMovetoSpeedBlendBound = true;
+    // Packet cc13-mvspeed (census row 20, docs/CC13_MVSPEED.md). 009C18C0 forms
+    // its separation at 009C18EC-009C1984 from the moveto TARGET'S ORIGIN
+    // ([state+2Ch]+FCh/+104h less the unit's), in float at PC24: dx, dz and
+    // d2 = dx*dx + dz*dz each FSTP float, d2 above double 1e-10 (00CE3820) or
+    // 0, then 00BF7030's square root, FSTP float; 0 when +2Ch is null. It then
+    // calls the speed slot 009C1850(sep) at 009C198A before any early return,
+    // and passes the same sep to the glide (009C1A71 denominator, 009C1B01
+    // rangeHigh). True: every 009C1850 site forms sep that way, and the torpedo
+    // tick (which used approach+90h, the range to the 009FADA0 hull aim point,
+    // and returned before the speed write when it was not positive) takes the
+    // origin sep for the speed and the glide and writes the speed first. The
+    // dive site keeps its own switch, kDiveBombMoveToOriginBound, for the
+    // choice of point. False: the double-precision sep and the old torpedo tick.
+    static constexpr bool kMovetoSpeedShapingCc13Bound = false;   // OFF: new
+    static_assert(!kMovetoSpeedShapingCc13Bound || kMovetoSpeedBlendBound,
+                  "the 009C1850 sep fix shapes the bound 009BECD0 blend");
+    // 009C18EC-009C1984, the moveto tick's planar separation (see above).
+    static float moveto_sep_009c18ec(const GameUnitSlot& unit, const GameUnitSlot* target) noexcept {
+        if (target == nullptr) return 0.0f;                    // 009C18D0/009C18D6
+        const float dx = target->motion.position[0] - unit.motion.position[0];   // 009C1936
+        const float dz = target->motion.position[2] - unit.motion.position[2];   // 009C1944
+        const float d2 = dx * dx + dz * dz;                    // 009C1958 FSTP float
+        if (!(static_cast<double>(d2) > 1e-10)) return 0.0f;   // 009C196A JBE
+        return std::sqrt(d2);                                  // 009C196C, 009C1971
+    }
     // Packet cc9_gunfire_avoidance (docs/ATTACKER_EVASION.md section 5): the
     // firing list (007C74A0/007C75A0 on lastGunState +C35h), 009A17D0's gunfire
     // arm (0099EC40 with its timers and exemptions, bands through 0099B790)
@@ -9480,6 +9505,9 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         last_blend_b_ = bot_desired_speed_007c47f0(unit);
         last_blend_wingmen_ = sq != nullptr ? wingmen : 1.0f;
         last_blend_near_ = sq != nullptr && sep < w1;
+        last_blend_w1_ = w1;
+        last_blend_w2_ = w2;
+        last_blend_has_sq_ = sq != nullptr;
         return bsp::dogfight_moveto_speed_009becd0(travel_scaled,
             bot_desired_speed_007c47f0(unit), sep, w1, w2, sq != nullptr, wingmen);
     }
@@ -9540,6 +9568,12 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // a (squadron+3A0h stand-in), b (007C47F0), 007EF2C0 and sep < WaitDist1.
     float last_blend_a_{0.0f}, last_blend_b_{0.0f}, last_blend_wingmen_{1.0f};
     bool last_blend_near_{false};
+    // DIAGNOSTIC, packet cc13-mvspeed (ON only): the last call's wait
+    // distances and squadron test, and the torpedo sites' old-versus-new sep.
+    float last_blend_w1_{3000.0f}, last_blend_w2_{5000.0f};
+    bool last_blend_has_sq_{false};
+    unsigned long long mvs_n{0}, mvs_speed_changed{0}, mvs_no_range{0};
+    double mvs_dsep_sum{0.0}, mvs_dsep_max{0.0}, mvs_dspeed_max{0.0};
     unsigned long long lhs_n{0}, lhs_floor{0}, lhs_wait{0}, lhs_near{0};
     unsigned long long lhs_slow{0}, lhs_slow_floor{0}, lhs_sep300{0};
     double lhs_a_sum{0.0}, lhs_b_sum{0.0}, lhs_want_sum{0.0}, lhs_wingmen_sum{0.0};
@@ -27395,6 +27429,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const double d2 = dx * dx + dz * dz;
                             sep = d2 > 1e-10 ? static_cast<float>(std::sqrt(d2)) : 0.0f;
                         }
+                        if constexpr (GameUnitsHost::Impl::kMovetoSpeedShapingCc13Bound) {
+                            sep = GameUnitsHost::Impl::moveto_sep_009c18ec(unit_, t);
+                        }
                         st_speed(GameUnitsHost::Impl::kMovetoSpeedBlendBound
                                      ? owner_.moveto_speed_009c1850(unit_, sep)
                                      : owner_.bot_desired_speed_007c47f0(unit_));
@@ -28258,6 +28295,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                               unit_.motion.position[2];
                             const double d2 = dx * dx + dz * dz;
                             sep = d2 > 1e-10 ? static_cast<float>(std::sqrt(d2)) : 0.0f;
+                        }
+                        if constexpr (GameUnitsHost::Impl::kMovetoSpeedShapingCc13Bound) {
+                            sep = GameUnitsHost::Impl::moveto_sep_009c18ec(unit_, t);
                         }
                         st_speed(GameUnitsHost::Impl::kMovetoSpeedBlendBound
                                      ? owner_.moveto_speed_009c1850(unit_, sep)
@@ -29381,6 +29421,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                               unit_.motion.position[2];
                             const double d2 = dx * dx + dz * dz;
                             sep = d2 > 1e-10 ? static_cast<float>(std::sqrt(d2)) : 0.0f;
+                        }
+                        if constexpr (GameUnitsHost::Impl::kMovetoSpeedShapingCc13Bound) {
+                            sep = GameUnitsHost::Impl::moveto_sep_009c18ec(unit_, t);
                         }
                         st_speed(GameUnitsHost::Impl::kMovetoSpeedBlendBound
                                      ? owner_.moveto_speed_009c1850(unit_, sep)
@@ -30835,6 +30878,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.motion.position[2];
                             const double d2 = dx * dx + dz * dz;
                             sep = d2 > 1e-10 ? static_cast<float>(std::sqrt(d2)) : 0.0f;
+                            if constexpr (GameUnitsHost::Impl::kMovetoSpeedShapingCc13Bound) {
+                                sep = GameUnitsHost::Impl::moveto_sep_009c18ec(unit_, origin_tgt);
+                            }
                         }
                         // 009C198A-009C1999: the +1Ch speed slot is called with
                         // the separation UNCONDITIONALLY, before either early
@@ -34279,8 +34325,43 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Step 1: the planar separation. approach+90h already
                         // carries it, which is what 009C196C's square root
                         // produces and holds in EBX to the 009FBA50 call.
-                        const float distance = ap.range_90;
-                        if (!(distance > 0.0f)) return;
+                        float distance = ap.range_90;
+                        if constexpr (GameUnitsHost::Impl::kMovetoSpeedShapingCc13Bound) {
+                            // Packet cc13-mvspeed: 009C18EC-009C1984 measure to the
+                            // moveto target's origin (the task target, 009D2E55 ->
+                            // 009C2AC0), and 009C198A writes the speed before any
+                            // early return. The same sep feeds the glide below.
+                            const GameUnitSlot* tgt = nullptr;
+                            if (unit_.torpedo_task_target_plus_one != 0 &&
+                                unit_.torpedo_task_target_plus_one - 1 < owner_.slots.size()) {
+                                tgt = owner_.slots[unit_.torpedo_task_target_plus_one - 1].get();
+                            }
+                            const float old_range = ap.range_90;
+                            distance = GameUnitsHost::Impl::moveto_sep_009c18ec(unit_, tgt);
+                            unit_.plane_desired_speed_2b4 = owner_.moveto_speed_009c1850(unit_, distance);
+                            unit_.plane_trg_speed_corr_off_2b0 = 0;   // 009C18A0
+                            unit_.plane_air_brake_mode_2d8 = 1;       // 009C18A7
+                            ++unit_.plane_speed_commands;
+                            owner_.done("BotStateMoveTo::set_desired_speed", 0x009c1850u);
+                            // DIAGNOSTIC: what the old sep would have produced.
+                            const float old_speed = bsp::dogfight_moveto_speed_009becd0(
+                                owner_.last_blend_a_, owner_.last_blend_b_, old_range,
+                                owner_.last_blend_w1_, owner_.last_blend_w2_,
+                                owner_.last_blend_has_sq_, owner_.last_blend_wingmen_);
+                            const double dsep = std::fabs(static_cast<double>(distance) - old_range);
+                            const double dspeed = std::fabs(static_cast<double>(unit_.plane_desired_speed_2b4) -
+                                                            old_speed);
+                            ++owner_.mvs_n;
+                            owner_.mvs_dsep_sum += dsep;
+                            if (dsep > owner_.mvs_dsep_max) owner_.mvs_dsep_max = dsep;
+                            if (dspeed > 0.0) ++owner_.mvs_speed_changed;
+                            if (dspeed > owner_.mvs_dspeed_max) owner_.mvs_dspeed_max = dspeed;
+                            if (!(old_range > 0.0f)) ++owner_.mvs_no_range;
+                            // 009C19EB: no target, no glide.
+                            if (tgt == nullptr) return;
+                        } else {
+                            if (!(distance > 0.0f)) return;
+                        }
 
                         // Step 2, 009C1850 BSP_BotStateMoveTo_SetDesiredSpeed.
                         // 009C189A writes cmd+2B4h, 009C18A0 clears the byte
@@ -34294,14 +34375,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // distance and is still unread, so what remains
                         // substituted is the shaping, not the speed.
                         // docs/BOT_SPEED_CLASS_ROWS.md.
-                        unit_.plane_desired_speed_2b4 =
-                            GameUnitsHost::Impl::kMovetoSpeedBlendBound
-                                ? owner_.moveto_speed_009c1850(unit_, distance)
-                                : owner_.bot_desired_speed_007c47f0(unit_);
-                        unit_.plane_trg_speed_corr_off_2b0 = 0;   // 009C18A0
-                        unit_.plane_air_brake_mode_2d8 = 1;
-                        ++unit_.plane_speed_commands;
-                        owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
+                        if constexpr (!GameUnitsHost::Impl::kMovetoSpeedShapingCc13Bound) {
+                            unit_.plane_desired_speed_2b4 =
+                                GameUnitsHost::Impl::kMovetoSpeedBlendBound
+                                    ? owner_.moveto_speed_009c1850(unit_, distance)
+                                    : owner_.bot_desired_speed_007c47f0(unit_);
+                            unit_.plane_trg_speed_corr_off_2b0 = 0;   // 009C18A0
+                            unit_.plane_air_brake_mode_2d8 = 1;
+                            ++unit_.plane_speed_commands;
+                            owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
+                        }
 
                         // Step 5, the glide slope. 009C1B17 calls 009FBA50 with
                         // base = max(state+34h + targetY, state+30h), rangeLow =
@@ -37185,7 +37268,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const double dx = static_cast<double>(tp[0]) - unit_.motion.position[0];
                         const double dz = static_cast<double>(tp[2]) - unit_.motion.position[2];
                         const double d2 = dx * dx + dz * dz;
-                        const float sep = d2 > 1e-10 ? static_cast<float>(std::sqrt(d2)) : 0.0f;
+                        float sep = d2 > 1e-10 ? static_cast<float>(std::sqrt(d2)) : 0.0f;
+                        if constexpr (GameUnitsHost::Impl::kMovetoSpeedShapingCc13Bound) {
+                            sep = GameUnitsHost::Impl::moveto_sep_009c18ec(unit_, owner_.slots[ti].get());
+                        }
                         // 009C198A: the speed slot 009C1850, unconditional.
                         unit_.plane_desired_speed_2b4 =
                             GameUnitsHost::Impl::kMovetoSpeedBlendBound
@@ -44652,6 +44738,13 @@ void GameUnitsHost::report() {
                 host.fes_member_v_sum / n, host.fes_leader_v_sum / n, host.fes_member_max_sum / n,
                 host.fes_leader_max_sum / n, host.fes_leader_want_sum / n, host.fes_thr_member_sum / n,
                 host.fes_thr_leader_sum / n, host.fes_member_full, host.fes_leader_full);
+        }
+        if (host.mvs_n != 0) {
+            host.log.notef("summary torpedo moveto sep n=%llu mean_dsep=%.2f max_dsep=%.2f "
+                "speed_changed=%llu max_dspeed=%.4f old_range_not_positive=%llu (009C18EC origin "
+                "sep against approach+90h, packet cc13-mvspeed diagnostic)", host.mvs_n,
+                host.mvs_dsep_sum / static_cast<double>(host.mvs_n), host.mvs_dsep_max,
+                host.mvs_speed_changed, host.mvs_dspeed_max, host.mvs_no_range);
         }
         if (host.lhs_n != 0) {
             const double n = static_cast<double>(host.lhs_n);
