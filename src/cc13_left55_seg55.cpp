@@ -7,6 +7,20 @@
 #include <cstring>
 
 namespace bsp::cc13_left55 {
+
+void owner_clear_byte_290_00888fb0(void* owner) noexcept {
+    static_cast<std::uint8_t*>(owner)[0x290] = 0;
+}
+void* byte_message_9f_construct_00889940(Left55Host& host, void* message, std::uint8_t value) {
+    auto* p = static_cast<std::uint8_t*>(message);
+    host.session_message_base_0075b430(message, 0x9f);
+    *reinterpret_cast<std::uint16_t*>(p + 0x18) = 0;
+    p[0x1a] = 0;
+    p[0x1c] = value;
+    *reinterpret_cast<std::uint32_t*>(p + 4) = 1;
+    *reinterpret_cast<std::uint32_t*>(p) = 0x00d03360;
+    return message;
+}
 namespace {
 
 // The inlined NativeString copy assignment: resize to the source size, then copy when non-empty.

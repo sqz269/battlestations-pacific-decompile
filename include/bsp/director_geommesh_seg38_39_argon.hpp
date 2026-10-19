@@ -135,6 +135,21 @@ struct Seg38_39Host {
 
 // Reconstructed functions (77 total: 0071bc30 through 00728960)
 void triv_body_0071bc30(Seg38_39Host& host, void* self);
+// The empty base of DirectorPathObject, table 00CFD93C. Native ECX receiver;
+// offsets are table byte offsets, and do not imply a recovered class name.
+std::uint8_t __fastcall DirectorPathBase_VSlot04_False_0071bc40(const void* self);
+std::uint32_t __fastcall DirectorPathBase_VSlot08_Zero_0071bc50(const void* self);
+std::uint8_t __fastcall DirectorPathBase_VSlot0C_False_0071bc60(const void* self);
+std::int32_t __fastcall DirectorPathBase_VSlot10_MinusOne_0071bc70(const void* self);
+std::int32_t __fastcall DirectorPathBase_VSlot14_MinusOne_0071bc80(const void* self);
+void __fastcall DirectorPathBase_VSlot18_NoOp_0071bc90(void* self, void* unused_edx, std::uint32_t arg);
+void __fastcall DirectorPathBase_VSlot1C_NoOp_0071bca0(void* self);
+// Exact native tail dispatch: unknown target return/stack signature is preserved.
+void __fastcall WeaponDirector_ForwardSlot18_0071d550(void* self);
+void __fastcall PathFollowParams_Read_0071ea90(void* self, void* unused_edx, void* archive);
+void __fastcall CommandController_VSlot_NoOp_00720f40(void* self, void* unused_edx, std::uint32_t arg);
+void __fastcall CommandControllerStateMessage_Apply_00721970(
+    void* self, void* unused_edx, void* controller);
 void* triv_body_0071bdb0(void* self);
 void triv_body_0071bdc0(void* self, std::uint32_t arg1);
 void triv_body_0071bdd0(void* self, std::uint32_t arg1);
@@ -261,3 +276,15 @@ void bsp_native_vector12_grow_00728610(Seg38_39Host& host, void* self);
 void* bsp_gun_base_construct_00728960(Seg38_39Host& host, void* self, std::uint32_t flag);
 
 }  // namespace bsp::director_geommesh_seg38_39_argon
+
+namespace bsp::cc13_sweepA { struct SweepAHost; }
+namespace bsp::director_geommesh_seg38_39_argon {
+// oct18b-nB: original ECX=gun, float stack argument, RET 4. Calls 00442AE0
+// only while byte +3B8h is zero. Source adds the existing damage host explicitly.
+void gun_apply_damage_if_enabled_00728080(void* gun, float amount, cc13_sweepA::SweepAHost& host);
+// GunBase failure slots 101..103 in 00CFDC58 / 00D0DF70. XOR AL,AL;
+// RET 8 / RET 0Ch / RET 8. Upper EAX and ignored argument types are unknown.
+std::uint8_t gun_failure_slot101_007289b0(void*, std::uint32_t, std::uint32_t) noexcept;
+std::uint8_t gun_failure_slot102_007289c0(void*, std::uint32_t, std::uint32_t, std::uint32_t) noexcept;
+std::uint8_t gun_failure_slot103_007289d0(void*, std::uint32_t, std::uint32_t) noexcept;
+}

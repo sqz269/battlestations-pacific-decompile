@@ -2,6 +2,111 @@
 // carries the listing for every address named here.
 
 #include "bsp/plane_squadron_entity.hpp"
+#include <cmath>
+#include <cstring>
+#include "bsp/cc13_seg48.hpp"
+#include "bsp/cc13_sweepB.hpp"
+
+namespace bsp {
+namespace {
+template<class T> T squadron_gate_read(const void* object, std::size_t offset) {
+    T value;
+    std::memcpy(&value, static_cast<const std::uint8_t*>(object) + offset, sizeof(value));
+    return value;
+}
+}
+bool plane_squadron_command_allowed_007efba0(void* s, const char* command, void* target,
+    PlaneSquadronCommandGateHost& h, Cc13Seg48Host& ordnance) {
+    if (squadron_gate_read<std::uint8_t>(s, 0x3b0)) return false;
+    if (h.entity_may_follow_target_00779d50(s, command, target)) return true;
+    if (!h.supports_command_vslot168(s, command)) return false;
+    const auto equal = [&](const char* literal) { return h.compare_insensitive_00438e10(command, literal) == 0; };
+    const auto relative = [&]() {
+        // The image loads target+54h before squadron+54h on every query.
+        const auto target_party = squadron_gate_read<std::uint32_t>(target, 0x54);
+        const auto self_party = squadron_gate_read<std::uint32_t>(s, 0x54);
+        return h.party_relative_00803510(self_party, target_party);
+    };
+    if (!target) return equal("moveto") || equal("cleartarget");
+    if (equal("land")) {
+        if (cc13_sweepB_field198_is_zero_0060c5b0(squadron_gate_read<void*>(s, 0x35c))) {
+            if (!h.is_kind_vslot5c(target, 6)) return false;
+            return relative() == 0;
+        }
+        if (!h.air_ops_get_block_006bf050(target, 1)) return false;
+        if (relative() != 0) return false;
+        void* cls = squadron_gate_read<void*>(s, 0x35c);
+        if (!squadron_gate_read<std::uint8_t>(cls, 0x160) && !h.is_kind_vslot5c(target, 0x45)) return false;
+        return true;
+    }
+    if (equal("moveto")) {
+        if (h.is_surface_00922dd0(target) && relative() == 0) return true;
+        if (!h.is_airborne_00922b10(target)) return false;
+        void* leader = squadron_gate_read<void*>(s, 0x3d0);
+        return leader && h.uses_small_turn_roll_limit_0047b880(leader);
+    }
+    if (equal("settarget")) return h.choose_attack_command_007eec50(s, target, 1, 1) != 0;
+    if (h.is_surface_00922dd0(target)) {
+        // Keep the repeated moveto comparison: it is present at 007EFD4F.
+        if (relative() == 0 && equal("moveto")) return true;
+        if (squadron_gate_read<std::uint8_t>(target, 0x5d)) return false;
+        if (equal("strafe")) return true;
+        if (equal("bomb") && cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(s, 0, ordnance)) return true;
+        if (!equal("torpedo")) return false;
+        return cc13_seg48_unit_has_torpedo_ordnance_007ed8d0(s, 0, ordnance);
+    }
+    if (h.is_kind_vslot5c(target, 0x1b) || h.is_kind_vslot5c(target, 0x1a) || h.is_kind_vslot5c(target, 0x46)) {
+        if (squadron_gate_read<std::uint8_t>(target, 0x5d)) return false;
+        if (equal("strafe")) return true;
+        return equal("bomb") && cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(s, 0, ordnance);
+    }
+    if (!h.is_kind_vslot5c(target, 0x18)) return false;
+    if (equal("moveto")) return true;
+    void* leader = squadron_gate_read<void*>(s, 0x3d0);
+    if (!leader || h.is_kind_vslot5c(leader, 0x10)) return false;
+    return equal("strafe") || equal("dogfight");
+}
+void* plane_squadron_leader_position_007ed450(const PlaneSquadronEntity& s, void* out,
+                                            void (*slot34)(void*, void*)) {
+    slot34(s.members[0], out); return out;
+}
+const char* plane_squadron_description_007ed480(const PlaneSquadronEntity& s, const char* (*slot28)(void*)) {
+    return s.members[0] ? slot28(s.members[0]) : "empty squadron desc";
+}
+float plane_squadron_leader_float_007ed4d0(const PlaneSquadronEntity& s, double (*slot50)(void*)) {
+    return s.members[0] ? static_cast<float>(slot50(s.members[0])) : 0.0f;
+}
+double plane_squadron_heading_007ee290(const PlaneSquadronEntity& s, double (*slotc8)(void*),
+                                      void (*refresh)(void*), void* squadron,
+                                      const float& world_ec, const float& world_f4) {
+    if (s.members[0]) return slotc8(s.members[0]);
+    refresh(squadron);
+    // Native atan2 register ABI has ST1=y=EC, ST0=x=F4; spills to float.
+    return -static_cast<float>(std::atan2(static_cast<double>(world_ec), static_cast<double>(world_f4)));
+}
+bool plane_squadron_true_007efaa0() noexcept { return true; }
+void plane_squadron_noop_007efab0(std::uint32_t) noexcept {}
+void plane_squadron_noop_007ed000(std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t,
+    std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t) noexcept {}
+void plane_squadron_set_invincible_007f2290(PlaneSquadronEntity& s, float seconds,
+    void (*base)(void*, float), void* native_squadron, void (*member_slotf4)(void*, float)) {
+    base(native_squadron, seconds);
+    for (int i = 0; i < s.live_count; ++i) member_slotf4(s.members[i], seconds);
+}
+void plane_squadron_follow_leader_pose_007f22e0(PlaneSquadronEntity& s, const volatile float& now,
+                                              const volatile double& tolerance, PlaneSquadronPoseHost& h) {
+    if (s.live_count == 0) return;
+    void* leader = s.members[0];
+    if (!h.world_valid_c8(leader)) h.refresh_world_00414db0(leader);
+    h.copy_leader_world_to_local_004134f0(leader);
+    h.invalidate_squadron_c8_10c();
+    for (void* child = h.first_child_48(); child; child = h.next_sibling_44(child))
+        h.invalidate_child_0042ed50(child);
+    const float until = h.invincible_until_308();
+    if (until != 0.0f && static_cast<double>(until) < static_cast<double>(now) + tolerance)
+        for (int i = 0; i < s.live_count; ++i) h.clear_member_2f4(s.members[i]);
+}
+}
 
 namespace bsp {
 

@@ -5,6 +5,12 @@
 
 #include "bsp/gameplay_seg48_cc13.hpp"
 
+namespace bsp::gameplay_seg48_cc13 {
+void engine_step_rpm_noop_007e23b0(float, float) noexcept {}
+void engine_apply_spin_noop_007e23c0(float) noexcept {}
+void engine_blur_blend_noop_007e23d0() noexcept {}
+}
+
 #include "bsp/dive_bomb_task.hpp"  // dive_bomb_interpolate_clamped_00419010
 #include "bsp/plane_wanderer.hpp"   // plane_wanderer_random_direction_00439950
 #include "bsp/unit_motion.hpp"     // unit_step_towards_0042ac60

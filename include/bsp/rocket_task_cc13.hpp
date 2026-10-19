@@ -551,4 +551,11 @@ struct RocketStillValidInputs {
 };
 int rocket_still_valid_007b7200(const RocketStillValidInputs& in) noexcept;
 
+// Newly defined vtable leaves. OnHit's ignored stack word is real (RET4).
+bool rocket_on_hit_007b6d00(RocketTask&, std::uint32_t unused) noexcept;
+int rocket_slot_return9_007b6ce0() noexcept;
+// 007B7270 tail-selects 009BE3E0 with ECX=task+520h only for that exact state;
+// otherwise 0099B720 returns its confirmed constant -1 (FLD[D7A260]; RET).
+double rocket_follow_wait_007b7270(const RocketTask&, double (*follow_wait)(void*), void* follow);
+
 }  // namespace bsp

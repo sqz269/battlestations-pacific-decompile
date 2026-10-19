@@ -23,6 +23,7 @@
 #include <list>
 #include <new>
 #include <stdexcept>
+#include <Windows.h>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native texture loading requires MSVC Win32.
 #endif
@@ -240,9 +241,12 @@ struct NativeTextureLoadOwners::Impl {
     struct Entry final : RenderCommandReference {
         Impl& domain;
         void* raw;
+        std::uint32_t admitted_profile;
+        bool runtime_creator{};
         bool registered{};
         Entry(Impl& d, void* p) : RenderCommandReference(
-            *reinterpret_cast<std::atomic<std::int32_t>*>(plus(p, 4))), domain(d), raw(p) {}
+            *reinterpret_cast<std::atomic<std::int32_t>*>(plus(p, 4))), domain(d), raw(p),
+            admitted_profile(field<std::uint32_t>(p, 0)) {}
         void release_zero_references() noexcept override {
             auto& d = domain;
             const auto& r = d.geometry.registration();
@@ -317,6 +321,45 @@ NativeTexture2DOwnerContext& NativeTextureLoadOwners::texture_context() noexcept
 NativeTextureSpecialOwnerContexts& NativeTextureLoadOwners::special_contexts() {
     return impl_->require_special();
 }
+std::size_t NativeTextureLoadOwners::retained_entry_count() const noexcept {
+    return impl_->entries.size();
+}
+void NativeTextureLoadOwners::observe_retained_entries(
+    void* observer_context, NativeTextureLoadOwnerObserver observer) const {
+    if (!observer) throw std::invalid_argument("texture owner diagnostics require an observer");
+    const auto& s = *impl_;
+    const auto& r = s.geometry.registration();
+    for (const auto& entry : s.entries) {
+        NativeTextureLoadOwnerObservation observation;
+        observation.identity = entry->raw;
+        observation.admitted_profile = entry->admitted_profile;
+        observation.runtime_creator = entry->runtime_creator;
+        observation.registered = entry->registered;
+        observation.canonical_match = r.find(r.context, entry->raw) == entry.get();
+        std::uint32_t prefix[4]{};
+        SIZE_T copied{};
+        observation.prefix_read = ReadProcessMemory(GetCurrentProcess(), entry->raw,
+            prefix, sizeof(prefix), &copied) != FALSE && copied == sizeof(prefix);
+        if (observation.prefix_read) {
+            observation.snapshot_profile = prefix[0];
+            observation.snapshot_reference_bits = prefix[1];
+            observation.snapshot_name_length = prefix[2];
+            observation.snapshot_name_data = reinterpret_cast<void*>(prefix[3]);
+            if ((prefix[0] == 0x00d61948u || prefix[0] == 0x00d61870u || prefix[0] == 0x00d618b0u) &&
+                prefix[2] && prefix[3]) {
+                const SIZE_T requested = prefix[2] < sizeof(observation.snapshot_name) ?
+                    prefix[2] : sizeof(observation.snapshot_name) - 1;
+                copied = 0;
+                observation.name_read = ReadProcessMemory(GetCurrentProcess(),
+                    reinterpret_cast<const void*>(prefix[3]), observation.snapshot_name,
+                    requested, &copied) != FALSE && copied == requested;
+                observation.copied_name_bytes = static_cast<std::uint32_t>(copied);
+                observation.snapshot_name[requested] = '\0';
+            }
+        }
+        observer(observer_context, observation);
+    }
+}
 void NativeTextureLoadOwners::register_completed_creator(NativeTextureLoadAcquired& a) {
     auto& s = *impl_;
     const auto& r = s.geometry.registration();
@@ -352,6 +395,7 @@ void NativeTextureLoadOwners::register_completed_runtime_creator(
     s.require_current_profile(a.owner);
     a.canonical_registration_started = true;
     auto entry = std::make_unique<Impl::Entry>(s, a.owner);
+    entry->runtime_creator = true;
     s.entries.push_back(std::move(entry));
     auto& e = *s.entries.back();
     a.owner_record = &e;

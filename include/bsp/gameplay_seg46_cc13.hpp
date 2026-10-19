@@ -186,6 +186,11 @@ void load_animations_007ac530(ParatrooperState& s, std::uint32_t fall, float fal
 // 007AB230 BSP_MParatrooper_SetLandingPos(point*), __thiscall, RET 4. Also reached
 // through 007AB330 (message 71h, point at msg+20h) and 007AB8A0 (point at ECX+120h).
 void set_landing_pos_007ab230(ParatrooperState& s, const Vec3& point, ParatrooperHost& host);
+// Newly defined message slot; ECX=paratrooper, message stack pointer, RET4.
+// Message 71h consumes its Vec3 at +20h; every other type tails to MBomb.
+bool handle_message_007ab330(ParatrooperState&, const void* message, ParatrooperHost&,
+                            bool (*bomb_base_006e09f0)(const void*, void*), void* context);
+void path_entity_noop_007b0b90(std::uint32_t unused) noexcept;
 
 // 007ABB30 BSP_MParatrooper_AdvanceInAir (+19Ch), __thiscall(dt), RET 4. Chute
 // drag, the base step, then (flying only) the steer toward +47Ch.

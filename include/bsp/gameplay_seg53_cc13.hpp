@@ -58,6 +58,31 @@
 namespace bsp {
 namespace gameplay_seg53_cc13 {
 
+// nB-high: native byte getters (ECX owner -> AL; RET), and the exact empty
+// Unit vtable methods. The one/two argument methods RET4/RET8 respectively.
+std::uint8_t unit_byte_458_008561c0(const void*) noexcept;
+std::uint8_t unit_byte_46c_0085ea20(const void*) noexcept;
+void unit_empty_one_a_00858190(void*, std::uint32_t) noexcept;
+void unit_empty_one_b_008581a0(void*, std::uint32_t) noexcept;
+void unit_empty_two_a_008581c0(void*, std::uint32_t, std::uint32_t) noexcept;
+void unit_empty_one_c_008581d0(void*, std::uint32_t) noexcept;
+void unit_empty_two_b_008581f0(void*, std::uint32_t, std::uint32_t) noexcept;
+void unit_empty_zero_00858210(void*) noexcept;
+
+// 00853230 ECX ship, stack float + word, RET8. Callbacks are the exact
+// unresolved game boundaries, not fabricated replacements. Fields remain in
+// actual Win32 storage; refresh/unregister/callback mutations are observed.
+struct ShipLaunchSelectionCalls {
+    virtual ~ShipLaunchSelectionCalls() = default;
+    virtual void refresh_world_00414db0(void* ship) = 0;
+    virtual void catapult_launch_008141e0(void* ship, float value, std::uint32_t mode) = 0;
+    virtual void unregister_pair_006952a0(void* observer, void* entry) = 0;
+    virtual bool child_is_kind_slot5c(void* child, int kind) = 0;
+    virtual bool child_accepts_slot210(void* child, int code, int mode) = 0;
+    virtual void child_set_slot1f0(void* child, float value) = 0;
+};
+void ship_select_launch_00853230(void* ship, float value, std::uint32_t mode, ShipLaunchSelectionCalls&);
+
 struct Vec3 {
     float x{0.0f};
     float y{0.0f};

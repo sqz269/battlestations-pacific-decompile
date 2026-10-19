@@ -30,6 +30,7 @@ struct MissionShipGraph final {
     // Reverse destruction keeps dependencies until all consumer companions
     // have closed, after their genuine native owners have already retired.
     std::unique_ptr<GameNativeMissionModel> model;
+    std::unique_ptr<GameNativeMissionFactories> factories;
     std::unique_ptr<MissionShipShaderPreloadGraph> preload;
     std::unique_ptr<MissionShipFoliageGraph> foliage;
     std::unique_ptr<MissionShipCameraGraph> camera;
@@ -62,6 +63,7 @@ struct MissionShipGraph final {
     bool requires_process_retention() const noexcept {
         return stage == Stage::preparing || stage == Stage::retiring || stage == Stage::failed ||
             shader_open || (model && model->requires_process_retention()) ||
+            (factories && factories->requires_process_retention()) ||
             (preload && preload->requires_process_retention()) ||
             (commands && commands->requires_process_retention()) ||
             (resources && resources->requires_process_retention()) ||
@@ -79,6 +81,9 @@ struct MissionShipGraph final {
         stage = Stage::preparing;
         try {
             log.note("native mission ship: BSP_NATIVE_MISSION_SHIP=1 prepare installed Fletcher");
+            factories = std::make_unique<GameNativeMissionFactories>(log, files,
+                singletons, graph.profiles.data);
+            factories->create();
             preload = std::make_unique<MissionShipShaderPreloadGraph>(log,
                 singletons.manager_publication_01090aa0(), model->effect_cache(),
                 owners, lua, shader_cache, renderer);
@@ -192,6 +197,7 @@ struct MissionShipGraph final {
         stage = Stage::failed;
     }
     void retire_before_native_drain() {
+        if (stage == Stage::closed) return;
         if (stage == Stage::prepared) { stage = Stage::closed; return; }
         check(stage == Stage::ready && !requires_process_retention(),
             "incomplete mission ship graph cannot be retired");
@@ -203,6 +209,7 @@ struct MissionShipGraph final {
             model->retire_drawables();
             camera->retire_caller_reference();
             foliage->retire_before_native_drain();
+            factories->retire_before_native_drain();
             stage = Stage::retired;
         } catch (...) { stage = Stage::failed; throw; }
     }
@@ -214,6 +221,7 @@ struct MissionShipGraph final {
         scene->after_native_drain();
         camera->after_native_drain();
         preload->after_native_drain();
+        factories->after_native_drain();
         model->after_native_renderer_drain();
         stage = Stage::closed;
         log.notef("native mission ship closed: last_mission_frame=%llu camera=retired scene=retired "

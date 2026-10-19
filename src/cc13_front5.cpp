@@ -5,6 +5,26 @@
 #include <cstring>
 
 namespace bsp::cc13_front5 {
+
+void shipyard_empty_slot95_00846b70(void*, std::uint32_t) noexcept {}
+void shipyard_empty_slot96_00846b80(void*, std::uint32_t) noexcept {}
+const char* shipyard_display_text_00846cc0(const void* owner, const char* empty) noexcept {
+    const auto* p = static_cast<const std::uint8_t*>(owner);
+    if (*reinterpret_cast<const std::uint32_t*>(p + 0x15c) != 0) {
+        const auto result = *reinterpret_cast<const char* const*>(p + 0x160);
+        return result ? result : empty;
+    }
+    const auto* kind = *reinterpret_cast<const std::uint8_t* const*>(p + 0x538);
+    return *reinterpret_cast<const char* const*>(kind + 0x54);
+}
+std::uint8_t owner_byte_2c_0084c550(const void* owner) noexcept {
+    return static_cast<const std::uint8_t*>(owner)[0x2c];
+}
+void owner_restore_visibility_0084f000(void* owner, std::uint32_t, SceneVisibilityResetCalls& calls) {
+    auto* a = *reinterpret_cast<std::uint8_t**>(static_cast<std::uint8_t*>(owner) + 0x19c);
+    auto* b = *reinterpret_cast<std::uint8_t**>(a + 0x160);
+    calls.set_visibility_factor_00b6da70(*reinterpret_cast<void**>(b + 0xc), 1.0f, 0);
+}
 namespace {
 
 // The inlined ~NativeString: 00419CC0 returns the pool, 00BD1510(ECX pool;

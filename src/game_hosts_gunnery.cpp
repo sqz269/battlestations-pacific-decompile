@@ -15,6 +15,7 @@
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/camera_multiply.hpp"
+#include "bsp/cc13_tier2_switches.hpp"
 #include "bsp/structured_hierarchy.hpp"
 
 #include <array>
@@ -3263,7 +3264,10 @@ struct GameGunneryHost::Impl {
             // jumps to 0072CEE5, MOV AL,1: blocked by a Landscape.
             float land_point[3];
             int land_object = -1;
-            const bool land = landscape_segment_hit(from, to, land_point, land_object);
+            // ON (bsp::kLineOfFireLandFromMuzzleBound): 0072CE8E PUSH EBX, the
+            // unraised muzzle, is the land segment's start.
+            const bool land = landscape_segment_hit(
+                bsp::kLineOfFireLandFromMuzzleBound ? muzzle : from, to, land_point, land_object);
             note_land_hit_query(LandHitConsumer::LineOfFire, land);
             if (land) return true;
         }
