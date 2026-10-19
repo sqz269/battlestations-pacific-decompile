@@ -2946,6 +2946,10 @@ void GameStartupHost::application_shutdown() {
     // input/locale/settings owners close later in dependency order at destruction.
     log_.implemented("StartupHost::application_shutdown", "00737f30");
     log_.unimplemented("ApplicationShutdownHost::singleton_teardown", "00737f80");
+    // 00737F72..00737FB0 release the Application's preload rows. Only the
+    // BSP_NATIVE_MISSION_SHIP preload fills them, on the borrowed object.
+    if constexpr (kApplicationCc15Bound)
+        if (native_application_live_ && native_renderer_) native_renderer_->release_application_preload_rows();
     // The sprite bridge owns managed-pool textures created on this device, so it is torn
     // down before the device is released rather than at destruction.
     if (menu_ != nullptr) {

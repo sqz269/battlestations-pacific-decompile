@@ -187,6 +187,9 @@ public:
     bool mission_ship_enabled() const noexcept;
     void prepare_mission_ship();
     void draw_mission_ship(std::uint64_t mission_frame, float simulated_seconds);
+    // 00737F30's 737F80..737FB0 loop over the startup Application's preload rows,
+    // when the mission preload borrowed that object (kApplicationCc15Bound).
+    void release_application_preload_rows();
     //73BF80's cache bracket over canonical process cells and this SAME VFS.
     // Keep it alive through material compilation, release before singleton drain.
     // Full preload loop remains separate; these entrypoints perform real I/O.

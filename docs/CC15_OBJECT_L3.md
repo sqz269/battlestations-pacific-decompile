@@ -110,12 +110,56 @@ implemented.
 **Uncertainties and incompatibilities.**
 - The frame loop still reads the host's `ApplicationFrameState` projection, not native +18/+19/+1A. Those native
   bytes are written once by the constructor and never read.
-- With the switch ON, the diagnostic `BSP_NATIVE_MISSION_SHIP=1` preload (`game_native_mission_preload.inc`) fails
-  loudly ("Application domain was already claimed"). That preload builds its own Application. In the image, 0073BF80
-  preloads onto WinMain's Application, so making the preload borrow this object is an open item.
-  `kApplicationCc15Bound` stays OFF until this clash is resolved (coordinator, 2026-10-19). It is excluded from
-  the cc15 flip series.
+- The `BSP_NATIVE_MISSION_SHIP=1` preload clash is resolved; see the next section. The switch stays OFF until the
+  lead schedules its own flip commit.
 - The +05..07 and +1B bytes are zero here. In the image they are stack garbage that no store touches.
+
+### The mission ship preload borrows the startup Application (cc15-app)
+
+**Evidence.**
+- 0073D410 saves its ECX at 0073D42F/0073D437 and reloads it into EBP at 0073DBCD. At 0073DD09 it passes EBP as ECX
+  to 0073BF80 (call at 0073DD12). So the shader preload fills WinMain's stack Application, not an object of its own.
+- 0073BF80 reads and writes only the +08 pointer vector of that Application: +0C count, +10 capacity, the 00735EC0
+  reserve and +08 data. It appends one row per `FileNames` entry.
+- 00737F30 releases those rows at 00737F72..00737FB0, right after the renderer vtable +0C/+14 calls. Each nonnull row
+  is decremented through CE2220, deleted at zero, then cleared. Later, 008F8444 runs 007379A0 on the same object.
+
+**Change (`97d2974e4`).**
+- With `kApplicationCc15Bound` ON, `MissionShipShaderPreloadGraph::create` neither claims the domain nor constructs.
+  It takes the Application that the startup host's 00737970 published at E1AE90 and requires it to hold an empty
+  vector, then runs 0073BF80 on it.
+- `GameStartupHost::application_shutdown` (00737F30) calls `GameNativeRendererApplication::release_application_preload_rows`
+  at the 00737F80 marker. That call runs the same 737F80..737FB0 release loop on the borrowed rows.
+  `application_destruct` then runs 007379A0, which frees the vector the preload grew.
+- The vector allocator pair is the same `singleton_lifetime_allocate/free` in both owners.
+- The preload's later `retire_before_native_drain` sees its rows already released and skips 007379A0 for a
+  borrowed object.
+- With the switch OFF, the preload still constructs, releases and retires its own Application, as before.
+
+**Remaining difference.** The image preloads during 0073D410. The diagnostic preload still runs at mission-ship
+prepare, so the rows are appended later. The object, the vector and the release/retire order now match the image.
+
+**Runs** (exes in `local/cc15app_{ref,off,on}`; `ref` is origin/main `7f4f75b85`):
+- USN04, ref env, OFF vs ref: pair_diff exit 0. Dialog/message/Lua lines, strict index diff: 678 = 678. The only
+  mismatch is the renderer worker thread id.
+- USN04, ref env, ON vs OFF: pair_diff exit 1, gameplay identical. Native table 1589 rows with no changes, 793 summaries
+  identical, and death, plane-death and unit tables identical. The moved lines are the expected three:
+  `native application constructed`, `native application retired` and `registered_slots` 44 -> 45. The strict
+  sequence diff matches the OFF/ref result (only the worker id).
+- ON with `BSP_NATIVE_MISSION_SHIP=1` (USN04, 600 frames, press-start 30, 181 mission frames at 0.05 s,
+  `--screenshot`) exits 0 and draws the Fletcher at mission frame 180 (`local/cc15app_ship_on_N180.png`):
+
+  ```
+  native application constructed: storage=006C3B14 e1ae90=006C3B14
+  native mission preload borrows the startup Application: storage=006C3B14
+  native mission preload complete: application=006C3B14 entries=179 site=0073c204 cache=closed
+  native mission ship capture landmark: mission_frame=180 simulated_seconds=9.000016 ... models=26
+  native mission preload rows released: application=006C3B14 rows=179
+  native application retired: e1ae90=00000000
+  native mission ship closed: last_mission_frame=181 ...
+  ```
+
+- The save files under Documents\Battlestations-Pacific were identical before and after the runs.
 
 ## Native VFS manager pump (rank 13): already native, no change
 
