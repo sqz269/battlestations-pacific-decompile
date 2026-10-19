@@ -870,4 +870,58 @@ void command_building_globals_load_006f7670(Seg33bHost& host, Object tuning) {
     host.lua_state_close_00b669a0(owner);
 }
 
+// oct18b-nA3: command-building message entries identified by existing
+// band_006b_cc13 type rules: 00CFADBC D3 SETOWNER, 00CFADD0 D4 SETLEVEL,
+// 00CFADE4 D5 UPDATECAPTURE. All codecs: ECX message, cursor/read-stream,
+// RET4. Each reader calls the extended header with the wrapper, then uses
+// wrapper+4 for its raw cursor. New source interfaces, build-only.
+void command_building_set_owner_message_write_006f2520(Seg33bHost& h, Object m, Object c) {
+    h.session_message_write_header_0075b480(m, c);
+    h.bit_write_unsigned_00429070(c, at<std::uint32_t>(m, 0x1C), 6);
+    h.bit_write_boolean_004290b0(c, at<std::uint8_t>(m, 0x20));
+}
+void command_building_set_owner_message_read_006f2550(Seg33bHost& h, Object m, Object s) {
+    h.session_message_read_header_0075b4c0(m, s);
+    h.bit_read_unsigned_00428d10(s + 4, &at<std::uint32_t>(m, 0x1C), 6);
+    h.bit_read_boolean_00428d70(s + 4, &at<std::uint8_t>(m, 0x20));
+}
+void command_building_set_level_message_write_006f25e0(Seg33bHost& h, Object m, Object c) {
+    h.session_message_write_header_0075b480(m, c);
+    h.bit_write_unsigned_00429070(c, at<std::uint32_t>(m, 0x1C), 3);
+    h.bit_write_unsigned_00429070(c, at<std::uint32_t>(m, 0x20), 4);
+}
+void command_building_set_level_message_read_006f2610(Seg33bHost& h, Object m, Object s) {
+    h.session_message_read_header_0075b4c0(m, s);
+    h.bit_read_unsigned_00428d10(s + 4, &at<std::uint32_t>(m, 0x1C), 3);
+    h.bit_read_unsigned_00428d10(s + 4, &at<std::uint32_t>(m, 0x20), 4);
+}
+// D5: signed21 DWORD+20, numeric32 float+1C (FLT_MAX bits7F7FFFFF), unsigned3+24.
+void command_building_capture_message_write_006f26b0(Seg33bHost& h, Object m, Object c) {
+    h.session_message_write_header_0075b480(m, c);
+    h.bit_write_signed_00429090(c, at<std::int32_t>(m, 0x20), 21);
+    h.bit_write_float_004295c0(c, at<float>(m, 0x1C), 0, 1, 3.40282346638528859812e38f, 32);
+    h.bit_write_unsigned_00429070(c, at<std::uint32_t>(m, 0x24), 3);
+}
+void command_building_capture_message_read_006f2700(Seg33bHost& h, Object m, Object s) {
+    h.session_message_read_header_0075b4c0(m, s);
+    h.bit_read_signed_00428d30(s + 4, &at<std::int32_t>(m, 0x20), 21);
+    h.bit_read_float_004293f0(s + 4, &at<float>(m, 0x1C), 0, 1, 3.40282346638528859812e38f, 32);
+    h.bit_read_unsigned_00428d10(s + 4, &at<std::uint32_t>(m, 0x24), 3);
+}
+// 006F2BD0: ECX building, order, RET4. Re-read vector+778 and count+77C
+// every iteration; 64h pad-record stride, child+14h; owner base call last.
+void command_building_apply_fire_target_order_006f2bd0(Seg33bHost& h, Object building, Object order) {
+    for (std::int32_t i = 0; i < at<std::int32_t>(building, 0x77C); ++i) {
+        Object const pads = obj(at<std::uint32_t>(building, 0x778));
+        Object const child = obj(at<std::uint32_t>(pads, static_cast<std::size_t>(i) * 0x64 + 0x14));
+        if (child != nullptr) h.subordinate_apply_order_vt160(child, order);
+    }
+    h.entity_apply_fire_target_order_alt_00744a90(building, order);
+}
+// 006F5840: ECX nullable building, EAX nullable powerup binding+758h, RET.
+// 006F58D0: ECX unread, ST0=[00CE6A04] bits49742400=1000000.0f, RET;
+// the value's domain meaning is not recovered.
+Object command_building_powerup_binding_006f5840(Object building) { return building != nullptr ? building + 0x758 : nullptr; }
+float land_fort_constant_million_006f58d0() noexcept { return 1000000.0f; }
+
 }  // namespace bsp::cc13_seg33b
