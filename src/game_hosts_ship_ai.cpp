@@ -2368,6 +2368,7 @@ struct GameShipAiHost::Impl {
                 units.raise_turn_assist_load_102c(index, escape.load_request);  // 009DE853
                 ctl.blk.heading_target_324 = bsp::wrapped_angle_add_00438aa0(
                     ctl.blk.heading_target_324, escape.turn);                  // 009DE8E7
+                ctl.blk.last_writer_324 = 0x009DE8E7u;
                 ++row.zone_escape_turns;
                 row.zone_escape_max_turn = std::max(row.zone_escape_max_turn,
                                                     std::fabs(escape.turn));
@@ -2387,6 +2388,9 @@ struct GameShipAiHost::Impl {
                 while (turn > 3.141592653589793) turn -= 6.283185307179586;
                 while (turn < -3.141592653589793) turn += 6.283185307179586;
                 ctl.blk.heading_target_324 = o.heading_target;
+                ctl.blk.last_writer_324 =
+                    ctl.blk.direction == bsp::ShipAiThrottleDirection::Astern ? 0x009DE962u
+                                                                              : 0x009DE945u;
                 ++row.torpedo_overrides;
                 row.torpedo_override_max_turn = std::max(row.torpedo_override_max_turn,
                                                          static_cast<float>(std::fabs(turn)));
@@ -2683,6 +2687,7 @@ struct GameShipAiHost::Impl {
         if (!separation.applied) return;
         ctl.blk.heading_target_324 =
             bsp::wrapped_angle_add_00438aa0(ctl.blk.heading_target_324, separation.turn);  // 009DEE01
+        ctl.blk.last_writer_324 = 0x009DEE01u;
         ++row.separation_turns;
         row.separation_max_turn = std::max(row.separation_max_turn,
                                            std::fabs(separation.turn));
@@ -7933,6 +7938,7 @@ public:
         const bsp::ShipAiTrafficPassResult result = bsp::ship_ai_traffic_pass_009ef350(
             in, ctl_.blk.heading_target_324, ctl_.obstacle.published_33c, ctl_.blk.clamp_354,
             host);
+        if (result.wrote) ctl_.blk.last_writer_324 = 0x009EF8EEu;  // cc13-w324, log only
         // Packet cc9_free_bearing_query: a trace of the large turns (INSTRUMENTATION).
         if (result.wrote && std::fabs(result.turn) > 2.0f && owner_.traffic_trace_lines < 40) {
             ++owner_.traffic_trace_lines;
@@ -11040,6 +11046,7 @@ public:
             ctl_.station_close_38a = st.close_38a;
             ctl_.speed_scale_39c = st.throttle_39c;
             ctl_.blk.heading_target_324 = st.heading_target_324;
+            if (st.last_writer_324 != 0u) ctl_.blk.last_writer_324 = st.last_writer_324;
             ctl_.blk.distance_32c = st.distance_32c;
             owner_.done("ShipAi::station_keeping_arm", 0x009eda28u);
             // 009EE57B JMP 009EF206: the arm ends in 009DE5B0 like every other.
@@ -12631,6 +12638,9 @@ void GameShipAiHost::controller_step(float seconds) {
     for (std::size_t index = 0; index < host.controllers.size(); ++index) {
         Impl::Controller& ctl = host.controllers[index];
         GameShipAiRow& row = host.rows[index];
+        // Packet cc13-w324 (log only): ahead of every blk+324h writer of this
+        // step, so w324= names the last store this step and 0 means none.
+        ctl.blk.last_writer_324 = 0u;
         if (!host.units.unit_active(index)) continue;
         if (ctl.generated_non_ship) continue;
         // 008759C4: the tick-node walk skips a sub-node whose +11h is 0. The
@@ -14340,8 +14350,13 @@ void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long lon
         // desired_1d8 is blk+1D8h, which only 009E0040 set_desired_heading writes (movetopos
         // never does), so it is not the hull's heading; hull= is. The hull heading moves every
         // step, so it is kept out of the change test above.
-        host.log.notef("  ship ai step %llu  %s hull=%8.4f", step_index, line,
-                       static_cast<double>(host.units.unit_heading_radians(index)));
+        // Packet cc13-w324: w324= is the image address of the last store to
+        // blk+324h this step, 0 = none (Controller::blk.last_writer_324, log
+        // only, reset at the head of controller_step's per-unit loop), also
+        // kept out of the change test so the set of emitted lines is unchanged.
+        host.log.notef("  ship ai step %llu  %s hull=%8.4f w324=%08lX", step_index, line,
+                       static_cast<double>(host.units.unit_heading_radians(index)),
+                       static_cast<unsigned long>(host.controllers[index].blk.last_writer_324));
     }
 }
 

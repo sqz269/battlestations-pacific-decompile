@@ -391,6 +391,7 @@ ShipAiArmFinalStepResult ship_ai_arm_final_step_009de5b0(
             host.raise_turn_assist_load_009de853(escape.load_request);
             blk.heading_target_324 =
                 wrapped_angle_add_00438aa0(blk.heading_target_324, escape.turn);
+            blk.last_writer_324 = 0x009DE8E7u;
             result.escape_applied = true;
         }
     }
@@ -401,6 +402,9 @@ ShipAiArmFinalStepResult ship_ai_arm_final_step_009de5b0(
         state.avoidance_z_350, blk.direction);
     if (override_result.applied) {
         blk.heading_target_324 = override_result.heading_target;
+        // 009DE945 FST, then 009DE962 FSTP after the astern half turn.
+        blk.last_writer_324 = blk.direction == ShipAiThrottleDirection::Astern ? 0x009DE962u
+                                                                                : 0x009DE945u;
         result.avoidance_override = true;
     }
 
@@ -421,6 +425,7 @@ ShipAiArmFinalStepResult ship_ai_arm_final_step_009de5b0(
             // 009DEDE8..009DEE01.
             blk.heading_target_324 =
                 wrapped_angle_add_00438aa0(blk.heading_target_324, separation.turn);
+            blk.last_writer_324 = 0x009DEE01u;
             result.separation_applied = true;
         }
     }
@@ -493,6 +498,7 @@ ShipAiArmFinalStepResult ship_ai_arm_final_step_009de5b0(
     result.searcher_index = searcher;
     if (host.avoid_zone_free_bearing_009dc2e0(searcher, query, area_key)) {
         blk.heading_target_324 = query.bearing;
+        blk.last_writer_324 = 0x009DF109u;
         result.free_bearing_accepted = true;
     }
     return result;
