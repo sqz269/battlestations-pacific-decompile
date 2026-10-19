@@ -18258,3 +18258,15 @@ Open, in the lead's order:
 
 Watch for: a takehelm/select on a ship whose guns matter silences its first gun group (kRoleOwnerDeviceWalkBound).
 Fire that group with `input` + `aim unit`, or use releasegun once it is ON.
+
+### cc9-lua70 handoff, update
+
+- The releasegun + latch + gate flip is committed on agent/cc9-lua52, with the IJN18 row moved to
+  config/win_orders/ijn18_l70_i18_r.txt. The lead lands it only after the successor's reach check: the gate and latch
+  can move any row that opens the map, so grep run logs for "map open" and pair the WINS rows that show it.
+- HOLD: no WINS re-times and no USN02 re-plans until cc9-bisect1 reports. USN02 `l70_u2_b` is a candidate only. The
+  other candidate is gunnery55's aim plan (cc9-gunnery52\local\g55_u2_aim.txt), or releasegun Houston once the flip is
+  on main.
+- The drift list (cc15, 46bdfac0a) and the pending lane-flip re-times are in WINS_TABLE, section "2026-10-19, later
+  bases".
+- BSM01 j/k/l (local\l70_b1_*.txt) stay parked; they win only in the ref env.

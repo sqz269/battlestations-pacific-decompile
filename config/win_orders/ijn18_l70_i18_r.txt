@@ -1,0 +1,11 @@
+# cc9-lua70 IJN18 r (releasegun trial): l67 d, plus 1500 releasegun Zao. In l70r_as_i18 Zao holds heading -36.0, throttle 1.0, rudder 0.000 from frame 1500 to 6300 under takehelm, so the latched pair keeps it on that course; the release comes before the phase-2 SetSelectedUnit
+890 select Zao
+900 takehelm Zao 1.0 PhaseOneGoTo
+1500 releasegun Zao
+7000 moveto Zao PhaseTwoGoTo repeat 20
+7000 moveto Kita1 PhaseTwoGoTo repeat 20
+7000 moveto Kita2 PhaseTwoGoTo repeat 20
+7000 moveto Asa1 PhaseTwoGoTo repeat 20
+7000 moveto Asa2 PhaseTwoGoTo repeat 20
+7000 moveto Asa3 PhaseTwoGoTo repeat 20
+7000 moveto Asa4 PhaseTwoGoTo repeat 20
