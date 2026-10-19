@@ -7,6 +7,7 @@
 #include "bsp/game_hosts_mission_frame.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/game_profile_load.hpp"
 #include "bsp/game_profile_owner.hpp"
 #include "bsp/mission_map_flag_policy.hpp"
 
@@ -1162,8 +1163,18 @@ public:
     // player's pick. Switch off: the old 0.
     // Packet cc13-torpranges: --difficulty N stands in for a loaded profile's
     // SelectedDifficulty (this installation's saved profile holds 0).
+    // cc15-prof2, kProfileDifficultyCc15Bound: game+6B0h is the game+650h
+    // profile's +60h, which 0058BF52 reads; --difficulty keeps precedence (a
+    // harness rule; the image has no such override). docs/CC15_PROFILE_LOAD.md 7.
     std::int32_t chosen_difficulty() override {
         if (owner_.chosen_difficulty_override >= 0) return owner_.chosen_difficulty_override;
+        if constexpr (kProfileDifficultyCc15Bound && kProfileOwnerCc15Bound) {
+            if (kSkillLevelBound && owner_.profile != nullptr) {
+                const std::int32_t value = owner_.profile->profile().selected_difficulty_60;
+                owner_.log.notef("MissionStart::chosen_difficulty game+6B0h=profile+60h=%d", value);
+                return value;
+            }
+        }
         return kSkillLevelBound ? 1 : 0;
     }
     // game+6ACh, stored at 0058BF37 (the record's own value) or 0058BF58 (the

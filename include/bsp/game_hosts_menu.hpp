@@ -45,6 +45,7 @@ class GameVfsHost;
 class GameScriptHost;
 class GameMissionHost;
 class GameHudHost;
+struct GameProfileSettingsSinks;
 
 // ---------------------------------------------------------------------------
 // The profiler counter pair the application frame brackets itself with
@@ -181,6 +182,9 @@ public:
     const GameMenuSummary& summary() const noexcept;
     // Milestone 2e. Null when --menu-select named nothing.
     GameMissionHost* mission() const noexcept;
+    // cc15-prof2: the live settings and the sinks 008D7A50 / 008D5B50 reach at
+    // the sign-in (kQuickSettingsApplyCc15Bound); copied, members borrowed.
+    void bind_profile_settings_sinks(const GameProfileSettingsSinks& sinks);
     // Milestone 2g: true once the mission's exit path reached request 04h.
     bool mission_exit_finished() const noexcept;
 
