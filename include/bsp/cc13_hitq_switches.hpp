@@ -28,7 +28,7 @@
 
 namespace bsp {
 
-inline constexpr bool kHitDeferredDispatchCc13Bound = false;
+inline constexpr bool kHitDeferredDispatchCc13Bound = true;  // ON: SHIP_AI_OPEN_ITEMS 306.2/306.6, 0 nested pushes, cc13 rev2 pop order faithful
 
 // Packet cc13-hitq2 (cc9 request 2026-10-19). The host runs the fan-out (rows
 // 1..16, with the drains at 00875E44 and 00875EC4) BEFORE its motion step,
@@ -39,7 +39,7 @@ inline constexpr bool kHitDeferredDispatchCc13Bound = false;
 // 00926700 drain right after the host's motion step and its trigger walk:
 // the point that follows the pushes as the image's row 6 does. ON-only; it
 // needs kHitDeferredDispatchCc13Bound. docs/CC13_HIT_DEFERRED_DISPATCH.md.
-inline constexpr bool kHitDeferredSameStepDrainCc13Bound = false;
+inline constexpr bool kHitDeferredSameStepDrainCc13Bound = true;  // ON: SHIP_AI_OPEN_ITEMS 306.2/306.6, 0 nested pushes, cc13 rev2 pop order faithful
 static_assert(!kHitDeferredSameStepDrainCc13Bound || kHitDeferredDispatchCc13Bound,
     "kHitDeferredSameStepDrainCc13Bound drains the queue kHitDeferredDispatchCc13Bound fills");
 

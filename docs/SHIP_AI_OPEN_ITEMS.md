@@ -20224,3 +20224,5 @@ gates), 7b5cd920a (the gunnery host logs `rng streams: on|off (BSP_GUNNERY_RNG_S
 5. **WINS notes passed on:** IJN18 `ijn18_l67_i18_d` does not end in 64000 frames on 97bd59009 (sent to lua70).
    USN21 with no orders completes at 3006.81 s. LOMP06 `l70_l6_c` fails at 653.11 s (reference env).
 - Never use git stash. src/game_hosts_gunnery.cpp is often leased by cc13: queue, never jump.
+
+**308 update: hitq FLIPPED ON.** Both kHitDeferredDispatchCc13Bound and kHitDeferredSameStepDrainCc13Bound, on the lead's GO. The basis is 306.2 / 306.6, the 0/0/0 nested-push check, cc13 rev2's verdict that the 00926700 pop order is faithful (it re-reads head->prev after the dispatch), and cc13's finding that the smoke residual is faithful (water acts at N+1). Open item 1 of 308 is closed.
