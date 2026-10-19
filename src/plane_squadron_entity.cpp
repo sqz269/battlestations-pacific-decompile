@@ -3,8 +3,69 @@
 
 #include "bsp/plane_squadron_entity.hpp"
 #include <cmath>
+#include <cstring>
+#include "bsp/cc13_seg48.hpp"
+#include "bsp/cc13_sweepB.hpp"
 
 namespace bsp {
+namespace {
+template<class T> T squadron_gate_read(const void* object, std::size_t offset) {
+    T value;
+    std::memcpy(&value, static_cast<const std::uint8_t*>(object) + offset, sizeof(value));
+    return value;
+}
+}
+bool plane_squadron_command_allowed_007efba0(void* s, const char* command, void* target,
+    PlaneSquadronCommandGateHost& h, Cc13Seg48Host& ordnance) {
+    if (squadron_gate_read<std::uint8_t>(s, 0x3b0)) return false;
+    if (h.entity_may_follow_target_00779d50(s, command, target)) return true;
+    if (!h.supports_command_vslot168(s, command)) return false;
+    const auto equal = [&](const char* literal) { return h.compare_insensitive_00438e10(command, literal) == 0; };
+    const auto relative = [&]() {
+        // The image loads target+54h before squadron+54h on every query.
+        const auto target_party = squadron_gate_read<std::uint32_t>(target, 0x54);
+        const auto self_party = squadron_gate_read<std::uint32_t>(s, 0x54);
+        return h.party_relative_00803510(self_party, target_party);
+    };
+    if (!target) return equal("moveto") || equal("cleartarget");
+    if (equal("land")) {
+        if (cc13_sweepB_field198_is_zero_0060c5b0(squadron_gate_read<void*>(s, 0x35c))) {
+            if (!h.is_kind_vslot5c(target, 6)) return false;
+            return relative() == 0;
+        }
+        if (!h.air_ops_get_block_006bf050(target, 1)) return false;
+        if (relative() != 0) return false;
+        void* cls = squadron_gate_read<void*>(s, 0x35c);
+        if (!squadron_gate_read<std::uint8_t>(cls, 0x160) && !h.is_kind_vslot5c(target, 0x45)) return false;
+        return true;
+    }
+    if (equal("moveto")) {
+        if (h.is_surface_00922dd0(target) && relative() == 0) return true;
+        if (!h.is_airborne_00922b10(target)) return false;
+        void* leader = squadron_gate_read<void*>(s, 0x3d0);
+        return leader && h.uses_small_turn_roll_limit_0047b880(leader);
+    }
+    if (equal("settarget")) return h.choose_attack_command_007eec50(s, target, 1, 1) != 0;
+    if (h.is_surface_00922dd0(target)) {
+        // Keep the repeated moveto comparison: it is present at 007EFD4F.
+        if (relative() == 0 && equal("moveto")) return true;
+        if (squadron_gate_read<std::uint8_t>(target, 0x5d)) return false;
+        if (equal("strafe")) return true;
+        if (equal("bomb") && cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(s, 0, ordnance)) return true;
+        if (!equal("torpedo")) return false;
+        return cc13_seg48_unit_has_torpedo_ordnance_007ed8d0(s, 0, ordnance);
+    }
+    if (h.is_kind_vslot5c(target, 0x1b) || h.is_kind_vslot5c(target, 0x1a) || h.is_kind_vslot5c(target, 0x46)) {
+        if (squadron_gate_read<std::uint8_t>(target, 0x5d)) return false;
+        if (equal("strafe")) return true;
+        return equal("bomb") && cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(s, 0, ordnance);
+    }
+    if (!h.is_kind_vslot5c(target, 0x18)) return false;
+    if (equal("moveto")) return true;
+    void* leader = squadron_gate_read<void*>(s, 0x3d0);
+    if (!leader || h.is_kind_vslot5c(leader, 0x10)) return false;
+    return equal("strafe") || equal("dogfight");
+}
 void* plane_squadron_leader_position_007ed450(const PlaneSquadronEntity& s, void* out,
                                             void (*slot34)(void*, void*)) {
     slot34(s.members[0], out); return out;

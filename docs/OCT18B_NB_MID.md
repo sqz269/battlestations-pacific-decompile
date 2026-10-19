@@ -1,14 +1,14 @@
 # Oct18b nB middle rows
 
 The exact 64 dispatch rows from `00759090` through `007F22E0` are enumerated in
-`reports/oct18b_nB_mid.json`. The batch supplies 59 source interfaces in the
+`reports/oct18b_nB_mid.json`. The batch supplies 60 source interfaces in the
 existing message, MovCam, movie-camera, path, bot-task, engine, paratrooper,
 player-record and plane-squadron families. Three compiler/reference-counted
 copies are classified `library_instantiation_out_of_scope`. Dispatch byte sizes
 are retained as `dispatch_body_bytes`; the current live listing/prototype is
 the body authority where analysis has since shortened a dispatched extent.
-Two larger game
-bodies remain in bounded contract recovery, with no placeholder implementation.
+The remaining geometry body is in bounded contract recovery with the low worker,
+with no placeholder implementation.
 
 The evidence is the saved Ghidra pseudocode and x86 listing from the existing
 `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`, plus per-row
@@ -38,7 +38,9 @@ to `cc13_seg30.hpp` while `agent/oct18b-nA2:oct18b-nA2-families` owns it;
 `007B9070` cannot be added to `cc13_seg33a.hpp/.cpp` while
 `agent/oct18b-nA3:oct18b-nA3-family` owns them. Both retain explicit existing
 dependency boundaries. The two descriptor identities and session byte/false
-leaves have exact data/vtable references but no stronger recovered class name.
+leaves have exact data references but no stronger recovered class name. A data
+reference or a candidate table alone establishes neither callback/descriptor
+provenance nor class ownership; those names remain provisional.
 
 `0078CFB0` constructs a reference-counted holder from owner+0Ch;
 `007C4330` and `007C4390` copy a reference-counted pointer and three floats under
@@ -53,12 +55,16 @@ direction are stack pointers, result is ST0, RET8. Its remaining work is the ful
 x87 spill/NaN order and the hidden register/stack arguments at geometry calls
 `0046F440`, `0046F940`, `00470150`; the pseudocode omits them.
 
-`007EFBA0` is a PlaneSquadronGen command-permission predicate: ECX squadron,
-command string and nullable target on stack, AL result, RET8. Remaining work is
-command constant identification and receiver/order contracts for `0060C5B0`
-(class+35Ch), `006BF050` (target in ECX, DL=1), `007EEC50`, `007ED7E0/007ED8D0`,
-party tests and virtual slot +168h. The original early-outs are not replaced by
-a broad permission approximation.
+`007EFBA0` is now reconstructed in `plane_squadron_entity`: ECX squadron,
+command string and nullable target on stack, AL result, RET8. The complete
+259-instruction listing identifies moveto, cleartarget, land, settarget, strafe,
+bomb, torpedo and dogfight. It retains the blocked +3B0h test, base predicate,
+virtual +168h command support, every comparison and early-out in image order.
+The land arm uses the existing `0060C5B0` class+198h equality predicate and the
+`006BF050` boundary (target ECX, DL=1). Bomb/torpedo arms reuse the existing
+`007ED7E0/007ED8D0` loops with loadout0. Side/target/leader fields are read at
+their original points; all remaining native/vslot services are required named
+callbacks. No gameplay routing is added.
 
 Validation uses `scripts/build.ps1`, the existing direct-call report checker,
 and diff inspection. No new tests or game runs are requested for this batch.

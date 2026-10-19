@@ -109,6 +109,34 @@ struct PlaneSquadronPoseHost {
 void plane_squadron_follow_leader_pose_007f22e0(PlaneSquadronEntity&, const volatile float& game_time_f876a4,
                                               const volatile double& tolerance_d7a308, PlaneSquadronPoseHost&);
 
+class Cc13Seg48Host;
+// Raw-storage boundary for 00D087C0 slot+16Ch (007EFBA0). It reads genuine
+// Win32 squadron/target fields; do not pass the projected PlaneSquadronEntity
+// value above. All callbacks are required original operations, in image order.
+struct PlaneSquadronCommandGateHost {
+    virtual ~PlaneSquadronCommandGateHost() = default;
+    // 00779D50: ECX=squadron, (command,target) stack, AL; RET8.
+    virtual bool entity_may_follow_target_00779d50(void*, const char*, void*) = 0;
+    // ECX=squadron, command stack, AL; RET4.
+    virtual bool supports_command_vslot168(void*, const char*) = 0;
+    // 00438E10: ECX=command, EDX=literal, EAX strcmp-like result.
+    virtual int compare_insensitive_00438e10(const char*, const char*) = 0;
+    virtual bool is_kind_vslot5c(void*, int kind) = 0;
+    // 006BF050: ECX=target, DL=1; EAX block pointer.
+    virtual void* air_ops_get_block_006bf050(void*, std::uint8_t flag) = 0;
+    // 00803510: ECX=squadron party, EDX=target party, EAX relation.
+    virtual int party_relative_00803510(std::uint32_t, std::uint32_t) = 0;
+    virtual bool is_surface_00922dd0(void*) = 0;
+    virtual bool is_airborne_00922b10(void*) = 0;
+    virtual bool uses_small_turn_roll_limit_0047b880(void* leader) = 0;
+    // ECX=squadron; target,1,1 on stack; EAX token, RET0Ch.
+    virtual std::uint32_t choose_attack_command_007eec50(void*, void*, int, int) = 0;
+};
+// ECX=squadron, command/nullable target on stack; AL bool, RET8. Reuses the
+// existing class-field predicate and squadron ordnance loops, without wiring.
+bool plane_squadron_command_allowed_007efba0(void* native_squadron, const char* command,
+    void* target, PlaneSquadronCommandGateHost&, Cc13Seg48Host& ordnance);
+
 // 007F4735 / 007F4754 / 007F4778. `present` is whether the property bag
 // carried `WingCount` (00CF8840); `authored` is the value at prop+0Ch.
 int plane_squadron_wing_count_007f4754(bool present, int authored) noexcept;
