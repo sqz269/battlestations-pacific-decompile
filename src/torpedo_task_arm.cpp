@@ -251,7 +251,7 @@ TorpedoDoneTickResult torpedo_done_prepare_tick_009d2720(
 // 009D29E0-009D2CF1, the disarmed arm, given a leader (009D29E2 JE skips it
 // when [ctl+3D0h] is null; the caller makes that test). Constants from the PE:
 // 00CE3808 150, 00CE397C 500, 00CE3854 3, 00CE3AE8 300, 00D0C308 3.5 (double),
-// 00CE89D8 2.2, 00CE380C 1.5, 00CE69C8 0.3, 00CE3D48 1.6 (double), 00CF8858
+// 00CE89D8 2.2, 00CE380C 1.5, 00CE69C8 0.3, 00CE3D48 1.6f widened to double (3FF99999A0000000), 00CF8858
 // 80 deg, 00CEC724 30 deg, 00CE3990 10 deg, 00CE3958 2, 00CF87C8 2.5,
 // 00CE77A0 3.5, 00CEC160 1.2 (double), 00D7A370 5 (double), 00D7A24C 1.
 TorpedoDisarmedArmResult torpedo_done_disarmed_arm_009d29e0(
