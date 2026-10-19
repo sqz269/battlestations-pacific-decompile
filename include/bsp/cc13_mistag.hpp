@@ -42,7 +42,24 @@ public:
     virtual void clear_global(std::uint32_t global) = 0;
     // 00BF65AC _free.
     virtual void free_00bf65ac(void* block) = 0;
+    // 00BF6713: the CRT invalid-argument report a checked vector index reaches; no return.
+    [[noreturn]] virtual void invalid_index_00bf6713() = 0;
+    // object->vtable[50h](), __thiscall, ST0 result (stored as float at 00996211).
+    virtual float object_vcall_50_angle(void* object) = 0;
+    // 00438B10(left, right), two stack floats, RET 8, ST0 (bsp::wrapped_angle_subtract_00438b10).
+    virtual float wrapped_angle_subtract_00438b10(float left, float right) = 0;
 };
+
+// 00996200, __thiscall(ECX = condition), RET, EAX = 0/1. Slot 0 of the vtable at 00D1EA30
+// (Ghidra named it Unwind@00996200; it is no funclet: no parent, reached only from the slot).
+// d = wrap([this+1Ch] - [this+18h]->vtable[50h]()); |d| as the image forms it (d when d > 0,
+// else -0.0f - d); returns [this+20h] > |d|.
+std::uint32_t angle_within_tolerance_00996200(MistagHost& host, void* condition);
+
+// 007B1A80, __thiscall(ECX = array), RET: BSP_Point3PtrArray_Destruct. vtable 00D053A4; every
+// element of the std::vector<T*> at +4h (first +8h, last +0Ch) is freed through a checked index
+// and nulled; then the buffer is freed and +8h/+0Ch/+10h zeroed.
+void point3_ptr_array_destruct_007b1a80(MistagHost& host, void* array);
 
 // The singleton scalar deleting destructor shape: [global] = 0, vtable 00CE3818, _free(this)
 // when flags & 1; __thiscall(ECX = object, flags), RET 4, EAX = object.

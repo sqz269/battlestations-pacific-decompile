@@ -80,4 +80,34 @@ void* msar_provider_scalar_deleting_destruct_00737110(MistagHost& host, void* ob
     return object;
 }
 
+// 00996200..00996264. The two FSTP to [esp+4] round to float; the -0.0f at 00D7A208 is read
+// from the image (bytes 00 00 00 80). FCOMIP with JBE: an unordered compare returns 0.
+std::uint32_t angle_within_tolerance_00996200(MistagHost& host, void* condition) {
+    const float current = host.object_vcall_50_angle(at<void*>(condition, 0x18));
+    const float d = host.wrapped_angle_subtract_00438b10(at<float>(condition, 0x1C), current);
+    const float magnitude = d > 0.0f ? d : -0.0f - d;     // 0099622A..00996240
+    return at<float>(condition, 0x20) > magnitude ? 1u : 0u;
+}
+
+// 007B1A80..007B1AFF. The loop re-reads first/last each pass; index i is checked twice as the
+// image does (first == null or i >= size -> 00BF6713) before the element is freed and nulled.
+void point3_ptr_array_destruct_007b1a80(MistagHost& host, void* array) {
+    at<std::uint32_t>(array, 0) = 0x00D053A4;
+    for (std::uint32_t i = 0;; ++i) {
+        auto* const first = at<void**>(array, 8);
+        if (first == nullptr) break;
+        const auto size = static_cast<std::uint32_t>(at<void**>(array, 0xC) - first);
+        if (i >= size) break;
+        void*& element = first[i];
+        if (element != nullptr) {
+            host.free_00bf65ac(element);
+            element = nullptr;
+        }
+    }
+    if (at<void*>(array, 8) != nullptr) host.free_00bf65ac(at<void*>(array, 8));
+    at<std::uint32_t>(array, 0x08) = 0;
+    at<std::uint32_t>(array, 0x0C) = 0;
+    at<std::uint32_t>(array, 0x10) = 0;
+}
+
 }  // namespace bsp::cc13_mistag

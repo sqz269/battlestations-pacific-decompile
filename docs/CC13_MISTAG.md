@@ -54,21 +54,29 @@ has an out-of-line copy with a record; otherwise rebuilt.
   00866280 (00865FB0), 00866300 (00866040), 00869CF0 (00869C50), 0086A400 (0086A200), 006D1930
   (006D0E90), 0093F760 (0093F520).
 
-## Left for the next batch (9 rows)
+## Batch 2 (2 rows)
 
-Each is a real game body that the host only reaches as a hook (no body anywhere in `src/`):
+- **00996200 BSP_AngleToleranceCondition_IsMet** (`angle_within_tolerance_00996200`). Ghidra
+  named it `Unwind@00996200`, but it is no funclet: it has no EH frame, no parent in the index,
+  and its only reference is slot 0 of the vtable at 00D1EA30. It is rebuilt rather than bound
+  as a funclet. d = 00438B10([this+1Ch], [this+18h]->vtable[50h]()); |d| is d when d > 0, else
+  the image's -0.0f at 00D7A208 minus d; the result is [this+20h] > |d|.
+- **007B1A80 BSP_Point3PtrArray_Destruct** (`point3_ptr_array_destruct_007b1a80`). Game code:
+  the class's own out-of-line destructor (vtable 00D053A4), freeing each owned element through
+  a checked index, then the buffer. The `<PathBase>` string the filter saw is in the next
+  routine, 007B1B00 (the dump ran past the end).
+
+## Left open (7 rows)
 
 | Address | Size | What |
 |---|---|---|
-| `007D03A0` | 532 | plane unit-instance destructor (tagged CG_vector_deleting_dtor) |
-| `0083B120` | 560 | a class destructor (vtable 00CE3994), caller 00424C20 |
-| `007CFD20` | 1573 | BSP_PlaneUnitInstance_Construct (hook in cc13_seg47.hpp) |
-| `0086C240` | 2763 | Lua reader of an effect component (`Color`, `Color2`, `Distance`) |
+| `007D03A0` | 532 | plane unit-instance destructor, vtable 00D05F20 (tagged CG_vector_deleting_dtor) |
+| `0083B120` | 560 | gameplay tuning settings destructor, vtable 00CE3994 (include/bsp/gameplay_settings.hpp has no destructor), caller 00424C20 |
+| `0086C240` | 2763 | the Flare effect component's Lua reader (docs/GAMEPLAY_EFFECT_COMPONENTS.md row Flare) |
+| `007CFD20` | 1573 | BSP_PlaneUnitInstance_Construct |
 | `00816B00` | 377 | BSP_UnitInstance_SendShipSyncMessage |
-| `0099A880` | 181 | BSP_PilotBot_Construct (hook in cc13_big47b.cpp) |
-| `0099BE30` | 164 | bot-task embedded constructor (hook in cc13_seg67b.cpp) |
-| `007B1A80` | 134 | BSP_Point3PtrArray_Destruct (hook in cc13_seg47.cpp) |
-| `00996200` | 101 | an `Unwind@`-named vtable slot calling BSP_Math_SubtractWrappedAngle |
+| `0099A880` | 181 | BSP_PilotBot_Construct |
+| `0099BE30` | 164 | bot-task embedded constructor |
 
 ## Uncertainty
 
