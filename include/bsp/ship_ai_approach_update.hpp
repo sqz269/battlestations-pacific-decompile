@@ -32,6 +32,7 @@
 
 #include <cstdint>
 
+#include "bsp/ship_ai_approach_seed_cc13.hpp"
 #include "bsp/ship_ai_attackmove_substates.hpp"
 #include "bsp/ship_ai_bearing_rating.hpp"
 #include "bsp/const_exact_image_bits.hpp"
@@ -119,9 +120,11 @@ struct ShipAiApproachState {
     float commanded_throttle_1210{0.0f}; // nested+1210h = sub+1218h -> brain+1D8h
     float wobble_phase_1214{0.0f};    // nested+1214h, advanced at 009E76E4
     float cleared_1218{0.0f};         // nested+1218h, zeroed at 009E7FD1, no reader
-    float timer_121c{0.0f};           // nested+121Ch, 009F1E1E / 009F20ED
-    float timer_1220{0.0f};           // nested+1220h, 009F1C07
-    float timer_1224{0.0f};           // nested+1224h, 009F1C13
+    // 009E5530 constructs all three at -1.0f (009E5625, 009E5659, 009E5661);
+    // kShipAiApproachTimerSeedBound (bsp/ship_ai_approach_seed_cc13.hpp).
+    float timer_121c{kShipAiApproachTimerSeed}; // nested+121Ch, 009F1E1E / 009F20ED
+    float timer_1220{kShipAiApproachTimerSeed}; // nested+1220h, 009F1C07
+    float timer_1224{kShipAiApproachTimerSeed}; // nested+1224h, 009F1C13
     ShipAiApproachPoint point_1228{}; // nested+1228h..1230h, the approach point
     // BL at 009F1F09 / 009F1F45: this pass displaced the point (frame-local in
     // the image, kept here for the mode latch at 009F1F65).

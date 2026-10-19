@@ -13,6 +13,11 @@
 #include <cstdint>
 #include <string>
 
+namespace bsp::online_seg71_cc13 {
+struct XLiveVoiceCalls;
+struct XenonCalls;
+}
+
 namespace bsp::online_cc13 {
 
 // ---------------------------------------------------------------------------
@@ -1031,4 +1036,33 @@ struct SessionStatsCalls {
 // the local vector is destroyed. (Argument order from the pushes at
 // 00A47E25..00A47E5D.)
 void write_session_stats_00a47b80(void* system, SessionStatsCalls& host);
+
+// 00A47EE0 BSP_XLiveSystem_Construct. Native __thiscall (ECX = 2218h-byte
+// system), no stack arguments, RET, EAX = system. The export's __fastcall
+// spelling does not imply an EDX input (00A47EFB..00A47F02, 00A4831D..2C).
+// New C++ interface; build-only. See docs/OCT18B_MPA.md for listing evidence,
+// exact array strides and the constructor-unwind adapter contract.
+struct XLiveSystemConstructCalls : PlayerListCalls {
+    // STL allocator calls: ECX identifies the owning native list.
+    virtual void* participant_head_004c3180(void* list) = 0;
+    virtual void construct_mask_list_00a46b80(void* list, std::uint32_t zero) = 0;
+    virtual void* stats_head_004c1f50(void* list) = 0;
+    // Original CRT EH iterator: completes each element or destroys the
+    // completed prefix before propagating. Callback values are native code
+    // addresses, not callable pointers in this reconstructed executable.
+    virtual void construct_array_00bf7cd1(void* first, std::uint32_t stride,
+        std::uint32_t count, std::uint32_t constructor, std::uint32_t destructor) = 0;
+    virtual void push_mask_name_00849170(void* vector,
+        const NativeLegacySboStringStorage& text) = 0;
+    virtual const void* xenon_system_manager_00f8abe8() = 0;
+    // Adapter for the outer object's native EH cleanup graph (00CB49F6).
+    // This is not the handler's callable ABI.
+    // state 18h includes all members; the temporary string is already gone.
+    // Must destroy completed members in reverse order and must not throw.
+    virtual void unwind_failed_construction_00cb49f6(void* system,
+        std::int32_t completed_state) noexcept = 0;
+};
+void* system_construct_00a47ee0(void* system, XLiveSystemConstructCalls& host,
+    online_seg71_cc13::XLiveVoiceCalls& voice_calls,
+    online_seg71_cc13::XenonCalls& xenon_calls);
 } // namespace bsp::online_cc13

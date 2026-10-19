@@ -496,7 +496,14 @@ inline constexpr bool kEngineMovieStopRosterBound = true;
 // False: 0046BF20 and 0046BF70 stay records, as before.
 // ON (cc9-lua69, 2026-10-18): BSM09 bsm09_l68_b9_d1 pair, gameplay identical,
 // 617 rows purged, script_nil_reads 0, lua_errors 0 (VEHICLE_CLASS_DESCRIPTORS.md).
-inline constexpr bool kVehicleClassPreloadCc15Bound = true;
+// OFF again (cc9 lead, 2026-10-19): USN21 s46_u21_f crashes at mission frame 6018
+// (cc13-bisect: aafe191a6 bad x2, parent 011d651dc good). The purge runs before
+// the spawn-registered carrier decks (006CADD0 mode 1) are built, so their stock
+// classes 113/38/101 are nil'd. Intrepid's slot-0 launch of class 113 then reaches
+// game_hosts_units.cpp:16610 with a null creator and throws. Keep it OFF until the
+// held-back deck stock is marked before 004E0A9B, or 00964790's re-create-on-miss
+// is modelled.
+inline constexpr bool kVehicleClassPreloadCc15Bound = false;
 
 // cc15-vcp3: with kVehicleClassPreloadCc15Bound, also purge at the movie stop
 // 0045F6C1. That runs mid-mission and can nil rows that were first read after

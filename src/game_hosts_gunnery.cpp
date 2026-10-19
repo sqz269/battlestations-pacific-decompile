@@ -849,6 +849,22 @@ inline constexpr bool kGunneryLiveWaterSurfaceBound = true;
 //    `from > 0` term kept a submerged launch from ever starting its swim.
 //    OFF: the crossing needs from.y > 0, as before. ON by the JM06 / LOMP06 pair (GUNNERY 182).
 inline constexpr bool kSubmergedTorpedoLaunchSwimBound = true;
+//  * kTraceSceneDamageDrawBound (cc9-ships59, from cc13-big1 and the RNG census
+//    0084C19F row). Every 0084BF00 segment that passes the 00D0B9C0 length test
+//    (0084C116 JBE) reaches 0084C184..0084C19F in either medium: U(class +ACh,
+//    +B0h) on stream 1 (MOV ECX,1; CALL 00BD2F10), handed to 00428420, the troop /
+//    scene-prop hit test at 0084C1AA, which the host does not run. The draw comes
+//    before 0084BF00's entity sweep. True: each sweepable shot step and plane-crash
+//    segment takes that one draw and drops it (Draw::trace_scene_damage under
+//    BSP_GUNNERY_RNG_STREAMS=1, key (shot serial or plane, 0)). SUBSTITUTION,
+//    labelled: the host draws U(0, 1), because the value is discarded and the
+//    bounds do not change how far the generator moves. False: no draw, so every shell step
+//    left the shared stream one draw behind the image.
+//    ON by mechanism, USN04 20000 pairs at c995c8975 (local\s59_td_* and
+//    s59_tdd_* .log.manifest.json): reference env exit 1, gameplay identical,
+//    1133300 draws; default env (one shared generator) exit 3, every stream-1
+//    consumer re-drawn (shots 10149 -> 10910, deaths 54 -> 53), as predicted.
+inline constexpr bool kTraceSceneDamageDrawBound = true;
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
@@ -2359,8 +2375,10 @@ struct GameGunneryHost::Impl {
         sink_effects = 30,    // 00933DA0 / 00933BB0, the ShipSystems sink spawners, stream 1, key (unit, 0|1)
         reload = 31,          // 0072D579, the full re-arm's ReloadTime draw, stream 1, key (gun, 0)
         auto_target_phase = kDrawKeyCollisionFixBound ? 32u : 30u, // 009F6A8F, -U(0, 1) into the auto-target think countdown, stream 1, key (unit, 0)
+        trace_scene_damage = 33, // 0084C19F, U(+ACh, +B0h) for 00428420, stream 1, key (shot serial | plane, 0)
     };
     unsigned long long next_projectile_serial{0};
+    unsigned long long trace_scene_draws{0};   // kTraceSceneDamageDrawBound
     static bool rng_streams_enabled() {
         static const bool on = [] {
             char* text = nullptr;
@@ -10781,6 +10799,12 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             continue;
         }
         ++summary.sweeps;
+        if constexpr (kTraceSceneDamageDrawBound) {
+            // 0084C19F: stream 1, before the entity sweep; 00428420 not run.
+            static_cast<void>(draw(Draw::trace_scene_damage,
+                static_cast<std::size_t>(shot.serial), 0, 0.0f, 1.0f));
+            ++trace_scene_draws;
+        }
 
         // 0084BF00 step 2: the entity sweep. The static trace is the water
         // surface, which 0078CF20 answers at height zero for open sea.
@@ -12389,6 +12413,11 @@ void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
             const bsp::TickPoint3 seg_b{to[0], to[1], to[2]};
             if (!bsp::projectile_segment_is_sweepable(seg_a, seg_b)) continue;
             ++pc_segments;
+            if constexpr (kTraceSceneDamageDrawBound) {
+                // 0084C19F on the crash shot's segment trace; key (plane, 1).
+                static_cast<void>(draw(Draw::trace_scene_damage, i, 1, 0.0f, 1.0f));
+                ++trace_scene_draws;
+            }
             std::size_t hit_unit = 0;
             float hit_point[3] = {0.0f, 0.0f, 0.0f};
             bool land = false;
@@ -16769,6 +16798,10 @@ void GameGunneryHost::report() {
         if (kReloadDrawBound) {
             host.log.notef("summary mission gunnery reload draws=%llu (0072D579, packet "
                 "cc9_g51_reload_draw)", host.reload_draws);
+        }
+        if (kTraceSceneDamageDrawBound) {
+            host.log.notef("summary mission gunnery trace scene-damage draws=%llu (0084C19F, "
+                "stream 1, 00428420 not run)", host.trace_scene_draws);
         }
         if (kAaGunnerShipHullPointBound) {
             host.log.notef("summary mission gunnery aa gunner hull_points=%llu (00902BFD -> "
