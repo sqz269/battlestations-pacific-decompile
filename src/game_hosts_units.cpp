@@ -3085,6 +3085,7 @@ struct GameUnitsHost::Impl {
     // Packet cc13-landc.
     unsigned long long flight_state_notifies{0}, stock_return_destroy_draws{0};
     unsigned long long combat_death_destroy_draws{0};
+    unsigned long long ground_state_dead_tail_skips{0};
     // planepartclasses.lua DeadEngineFireDelay, which 004A9BD0 stores at
     // [00E18718] / [00E18714] (004AA9BD / 004AAA57); read once per host.
     bool dead_engine_fire_delay_read{false};
@@ -16236,6 +16237,16 @@ void GameUnitsHost::Impl::ground_state_from_locked_007ca3f0(GameUnitSlot& p, Lan
     p.plane_live_throttle = 0.0f;                                        // 007CA4E7
     p.plane_live_air_brake = 1.0f;                                       // 007CA4EF
     for (float& c : p.plane_live_controls) c = 0.0f;
+    if constexpr (bsp::kPlaneGroundStateDeadTailCc13Bound) {
+        // 007CA4D8 CMP [ESI+5Dh],0 / 007CA50F JNZ 007CA5D5: a flushed plane
+        // (+5Dh, the host's state->simulate) skips the rest, the game+193Ch
+        // clear included.
+        if (unit_torn_down_005d(p.process_index)) {
+            ++ground_state_dead_tail_skips;
+            done("Plane::ground_state_from_locked_007ca3f0", 0x007ca3f0u);
+            return;
+        }
+    }
     if (std::find(d.site_occupants_34.begin(), d.site_occupants_34.end(), p.process_index)
         == d.site_occupants_34.end()) {
         d.site_occupants_34.push_back(p.process_index);                  // 006CED90
@@ -42616,6 +42627,9 @@ void GameUnitsHost::report() {
     host.log.notef("summary plane combat death draw bound=%d draws=%llu (007BCABB after "
         "the death flush, packet cc13-landc)",
         bsp::kPlaneCombatDeathRetireDrawCc13Bound ? 1 : 0, host.combat_death_destroy_draws);
+    host.log.notef("summary plane ground state dead tail bound=%d skips=%llu "
+        "(007CA50F, packet cc13-landc)",
+        bsp::kPlaneGroundStateDeadTailCc13Bound ? 1 : 0, host.ground_state_dead_tail_skips);
     host.log.notef("summary stock return queue erase bound=%d erases=%llu misses=%llu "
         "(006C59A4 -> 006BF7F0, packet cc9_stock_return_queue_erase)",
         Impl::kStockReturnQueueEraseBound ? 1 : 0, host.stock_return_queue_erases,

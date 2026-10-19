@@ -63,4 +63,15 @@ inline constexpr bool kPlaneRetireOnDestroyedDrawCc13Bound = false;
 // False: no draw, as before.
 inline constexpr bool kPlaneCombatDeathRetireDrawCc13Bound = false;
 
+// 007CA3F0 BSP_Plane_EnterGroundStateFromLocked: after 007C1430(4 + flag) and
+// the stores +9F0h = 0, +9F4h = 1.0, +9ECh / +9E4h / +9E8h = 0 (007CA4D3-
+// 007CA507), 007CA4D8 tests the plane's +5Dh and 007CA50F JNZ 007CA5D5 skips
+// the rest: the site occupancy (vtable[24h] 006CED90), the controller
+// +48h..+50h and 007D9C80, the takeoff task 0099A4A0, and the game+193Ch clear.
+// The host's +5Dh is state->simulate, written by the death-flags flush
+// (kPlaneDeathFlagsBound) and the stock-return destroy (kStockReturnDestroyBytesBound).
+// True: ground_state_from_locked_007ca3f0 returns there for such a plane.
+// False: the tail runs for it, as before.
+inline constexpr bool kPlaneGroundStateDeadTailCc13Bound = false;
+
 }  // namespace bsp
