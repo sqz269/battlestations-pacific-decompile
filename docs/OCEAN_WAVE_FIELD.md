@@ -3741,3 +3741,17 @@ kPlaneDeviceWalkPerRackBound (include/bsp/cc13_devwalk.hpp, docs/CC13_DEVWALK.md
 - No rocket (33h) carrier appears on any of these rows (no opportunistic-rocket decision with rocket_platforms > 0), so the rocket arm is unexercised.
 
 Verdict: faithful by mechanism, to be flipped ON. include/bsp/cc13_devwalk.hpp is held by cc13-devwalk2 (the shared-draw follow-up); p23_devwalk_flip is queued behind it.
+
+**97, flip.** kPlaneDeviceWalkPerRackBound is ON (cc13-devwalk2's lease freed and p23_devwalk_flip took the header). kPlaneDeviceWalkSharedDrawBound stays OFF until its pair.
+
+## 98. cc13's follow-release seams and the goaway float stores (cc9-physics23, 2026-10-19)
+
+The exes are pair_export builds of 2c395b950, which contains 7f9207dc6 and 4943076ca: `local\p23i_off`, `local\p23i_seam` (kFollowReleaseSeamsBound) and `local\p23i_gfs` (kDiveBombGoawayFloatStoresBound). Logs are `local\p23i_<build>_<row>.log`.
+- **kFollowReleaseSeamsBound** (include/bsp/follow_release_seams_cc13.hpp; the 009C1FFD/009C2006 C25h||C20h arm in the other host copies of 009C1FD0). Reached on every row: the "follow release arm" applied count goes 29 -> 199 on USN01 `usn01_p8_u1_i`, 63 -> 157 on BSM09 d1 and 27 -> 203 on USN21 `s46_u21_f`. Gameplay MOVED on all three, RNG-coupled.
+  - USN01: torpedo-task releases 4/9 -> 3/8, dive-bomb releases 5 -> 7, no end in both.
+  - BSM09 d1: deaths 49 -> 50, dive releases 9 -> 6, torpedo drops 2 -> 3. It still wins, EndMission 327.04 -> 351.04 s.
+  - USN21: deaths 576 -> 574, dive releases 13 -> 15. It completes at 2916.72 s in both.
+  - No draw (the arm takes no 00BD2F10). Faithful by mechanism: **ON**. cc13's drop-kamikaze gating follow-up is still to come; the header states the host's 009AD1F0 path already calls the base only on the image's arm.
+- **kDiveBombGoawayFloatStoresBound** (include/bsp/cc13_tier2_switches.hpp; 009C7F00's travel*0.9f, the reload product and ceiling-100 stored as float). Identical on USN01 u1_i, BSM09 d1 and USN21 (pair_diff exit 0), as expected away from the float boundary. Faithful by mechanism: **ON**.
+- The 006082D0 comment fix routed with these (007BC7A0's rocket pass: COMISS 0,[desc+E0h] / JAE 007BC86C skips the attitude gate when E0h <= 0) waits for the next units.cpp commit. Other lanes are queued on that file.
+- WINS: BSM09 d1 re-times 327.04 -> 351.04 s under the seams (sent to cc9-lua70).
