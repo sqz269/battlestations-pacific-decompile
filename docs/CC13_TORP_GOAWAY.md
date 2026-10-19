@@ -356,7 +356,7 @@ unchanged by this packet.
 
 ON-only lookup lifetime: `category_ranges` is filled by `GameGunneryHost::Impl::build_guns` when a
 unit's guns are built (`00956C20`'s host binding), and nothing clears it. `unit_rows()` returns a
-fresh copy on every call; the enter reads it once, by value, at the enter. The image re-runs
+reference to a function-static vector rebuilt on every call; see C.5 N1. The image re-runs
 `00956C20` when a unit's weapon set changes; the host does not, so a target that has lost guns keeps
 its build-time ranges. The target slot comes from `owner_.slots`, which owns every unit for the
 mission. No lookup crosses a mission boundary.

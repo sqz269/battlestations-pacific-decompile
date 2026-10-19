@@ -696,6 +696,13 @@ constexpr bool kGunInterceptBound = true;
 //    device's Bullet[2]) and so through its AAFlakBot. The host had loaded only
 //    Bullet[1] and read the pair of entries as two barrels.
 constexpr bool kDualPurposeSecondAmmoBound = true;
+//  * kFlakSecondAmmoRangeCc13Bound: 00956DCB..00956DD6 offers a Function 6 gun's
+//    SECOND ammunition record's +60h ([[[rec+74h]+7Ch]+60h], Bullet[2]) to the
+//    category 6 range at unit+448h. Off, the rebuild binding passes the first
+//    shell again, so category_ranges[6] stops at 1500 where the image has
+//    2000/2400. Moves the unit gunnery pass (00863A34) and fly_to_obstacles
+//    (009FD6B1), both live: docs/CC13_FLAK2.md, packet cc13-flak2.
+constexpr bool kFlakSecondAmmoRangeCc13Bound = false;
 //  * kAaGunnerErrorBound: the AAGunnerBot's commanded vertical, when negative, is
 //    halved before 0085ABA0 (00902F62..00902F76, [00D7A280] = 0.5). Only this
 //    step of 00902920's error model is bound; the swinging error pair
@@ -5922,6 +5929,16 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 out.weapon_function = gun.category;
                 out.max_range = gun.max_range;  // 00731020
                 out.flak_alternate_range = gun.max_range;
+                if constexpr (kFlakSecondAmmoRangeCc13Bound) {
+                    // 00956DCB: ammunition record 1's bullet +60h, the derived
+                    // range SecondAmmo::max_range carries. A gun without a
+                    // Bullet[2] keeps the first shell (the image reads past
+                    // its record array there; no mission uses such a mount).
+                    const auto second = owner.second_ammo_by_gun.find(slot);
+                    if (second != owner.second_ammo_by_gun.end()) {
+                        out.flak_alternate_range = second->second.max_range;
+                    }
+                }
                 const GameBulletClassRow* b = owner.bullet(gun.bullet_class);
                 out.has_blast = b != nullptr && b->blast_range > 0.0f;
                 out.blast_inner = b != nullptr ? b->blast_range : 0.0f;
@@ -15990,7 +16007,7 @@ bool GameGunneryHost::damage_smoke_tick_008227e0(std::size_t unit_index, float d
     // 008227AD: an unsigned compare; the grow appends {null effect, 0.0}.
     // LABELLED (host guard): wanted > 0 drops the image's NaN arm, where _ftol(NaN) gives
     // 80000000h, the signed min keeps it and the unsigned compare makes it a huge resize.
-    if (wanted > 0 &&static_cast<std::size_t>(wanted) > us.smoke_timers.size()) {
+    if (wanted > 0 && static_cast<std::size_t>(wanted) > us.smoke_timers.size()) {
         if (us.smoke_timers.empty()) ++host.smoke_units;
         host.smoke_slots_grown += static_cast<std::size_t>(wanted) - us.smoke_timers.size();
         us.smoke_timers.resize(static_cast<std::size_t>(wanted), 0.0f);
