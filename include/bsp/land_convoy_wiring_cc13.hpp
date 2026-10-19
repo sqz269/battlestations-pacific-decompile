@@ -20,6 +20,13 @@ namespace bsp::game {
 //    +738h kept, the convoy not killed).
 // False: the convoy is a marker with a fixed roster; a member's death touches
 // nothing, and Lua Kill on a convoy kills nobody (no units-host slot).
-inline constexpr bool kLandConvoyBodiesBound = false;
+// ON (2026-10-18, cc9-gunnery52, by mechanism; reference env, 011d651dc):
+// PRCP08 (30000 frames) and JM05 (36000) gameplay identical. Both bind
+// (PRCP08 Train re-skilled 8; JM05 Secondary 4, RadarStation 1); on JM05 the
+// RadarStation convoy's one member dies, 007422A0 takes the count to zero and
+// 00926D90 cause 2 / 00742180 run in the same flush, so the dead member stops
+// being placed (OFF placed it on). Member kills on PRCP08 and Lua Kill on a
+// convoy were not reached by the idle rows. local\g52_lc_*.log.
+inline constexpr bool kLandConvoyBodiesBound = true;
 
 }  // namespace bsp::game
