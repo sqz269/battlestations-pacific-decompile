@@ -79,7 +79,7 @@ ranges are also excluded.
 - **007C9540, set_unit_world_basis.**
   - The image copies the whole matrix to +74h and +674h through 004134F0, so the translation
     row is applied.
-  - Both of its callers pass the unit's own position as the translation:
+  - Both arms of 008A0A10, the host's only call sites, pass the unit's own position as the translation (the image holds 007C9540 in nine vtable slots):
     - In the squadron arm, 008A0D9B..008A0DB7 load each member's +FCh..+104h into
       [ESP+64h]..[ESP+6Ch] before the vtable[88h] call.
     - In the single-entity arm, the host's caller sets m[12..14] to the unit's position
