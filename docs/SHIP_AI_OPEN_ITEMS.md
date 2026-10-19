@@ -20537,3 +20537,67 @@ Scripts: `local\s61_osmk.py` (c22/c23 on top of s60_osmk.py) and `local\s61_rows
 **Other open items:**
 - BSM01 HenryPT's moveto oscillation predates the arcplan pair; bisect1 owns it.
 - Oma3's 009EF8EE traffic-clip excursions are with cc13.
+
+## 319. LOMP06 l70_l6_c attribution (cc9-gunnery55, 2026-10-19)
+
+Row `config/win_orders/lomp06_l70_l6_c.txt`, 16000 frames, reference env, fresh pair_exports (logs
+`local\g55_l6<variant>_l6.log`). Number 317 was left free on origin/main; this section skips it.
+- **Measured:** base 241db740b^ completes at 368.83 s (Narwhal sinks Kongosan Maru at 186.91 s and Sado Maru at
+  363.08 s). 241db740b fails at 613.12 s (Sado lives; Narwhal sunk by Asagiri at 612.67 s). **Current main 279645a8b
+  (= origin/main code) still fails, at 628.12 s:** Narwhal's spreads sink Ryujin, Kongosan and Toba Maru at
+  182-200 s, Sado lives, and Yugiri sinks Narwhal at 627.27 s.
+- **The 241db740b step.** That merge flips five ship-AI switches. Forward singles on its parent:
+  - **kShipAiCommitmentBandQuarterBound alone fails** (613.12 s, the same as 241db740b).
+  - kShipAiTorpedoMarginClassLengthBound, kShipAiStationLatchClearBound, kShipAiParkedByteBeforeTailBound and
+    kShipAiClearanceRefreshSentinelBound each complete at 368.83 s.
+- **Mechanism.** The first divergence from the parent is at ship-AI step 3720 (186 s). Kongosan Maru, under Narwhal's
+  torpedo track, leaves stand-on/give-way with no real band: the host's old threshold `(give_way - stand_on) * 4`
+  sent it astern (throttle -0.562), and the image's `* 0.25` (009E1122, double 0.25 at 00D7A348) keeps it ahead
+  (1.000).
+  - The convoy's evasion then differs, and the later Sado Maru salvo misses.
+  - The flip is the image's constant (cc13-seg67g, flipped in SHIP_AI 302), so it is faithful. The win was carried by
+    the host's 16x threshold.
+- **On main the win does not come back from any single revert.** Each of these still fails between 620.72 and
+  671.11 s, with Sado alive:
+  - the five 241db740b switches singly and all together (628.12 s each);
+  - hitq (626.12 s);
+  - the four nav seeds (671.11 s);
+  - astern skip (621.12 s);
+  - arc-centre plan test (628.12 s);
+  - wake pair (623.12 s);
+  - heading wrap (628.12 s);
+  - commitment band + skip together (621.12 s).
+- **Verdict.** The first loss is faithful (commitment band quarter). On main several faithful flips each move the
+  convoy, and none alone restores the old timeline. **LOMP06 l70_l6_c needs a re-plan** against the image's convoy
+  evasion: aim the Sado Maru attack later, after Kongosan's sinking settles the convoy.
+
+## 320. Handoff from cc9-gunnery55 (2026-10-19)
+
+Branch `agent/cc9-gunnery52`, tree `J:\PROG\battlestations-pacific-decompile-cc9-gunnery52`, run prefix `g55_`. The head
+is merged with origin/main.
+
+**Tools in `local\`:**
+- `g55_rows.ps1`: the reference launch form, `-Rows name=MISSION:frames:orders -Prefix -Exe [-NoStreams]`.
+- `g55_var.ps1`: one pair_export per variant, `-Tag t -Variants @{name="commit[,kX=false,...]"}`, built into
+  `local\g55_<tag>_<name>`.
+- `g55_stepdiff.py`: the first differing line among the lines matching a regex in two logs.
+- `g55_resolve.py`: the SHIP_AI conflict renumber used for 309 -> 310.
+
+**Done in this run:**
+- Flipped ON: kTorpedoBotOwnerPlayerGateCc13Bound (310), kShipAiHeadingStoreWrapCc13Bound (312, with the C4702 fix),
+  kSceneHiddenSpawnCarryCc13Bound (313; the USN21 s46_u21_f win is lost, re-plan routed to lua71).
+- PLAYER_GUN_SEAT 7.5 closed: a player turret kill on USN02 (Houston sinks Yukikaze).
+- Attributions: USNOS TroopTrans6 (315, the ctor seeds, faithful), USN12 (316, hitq, faithful; main wins at
+  1560.40 s), LOMP06 (319, commitment band quarter, faithful; main still fails, re-plan).
+
+**Open:**
+1. **kKamikazeDeadTargetRetestCc13Bound / kRtbHeadC24PilotFiresCc13Bound** are ON but unexercised. No row has a
+   kamikaze target die while kamikazes live: USN18, USN19, USN17 and USNBR were probed at 24000 frames with no
+   orders (dead_targets=0 on all). USN19 writes about 1.3 GB per 24000 frames (FreeAttack lines); delete it after
+   one read.
+2. **kTorpedoBotOwnerPlayerGateCc13Bound:** no pair has yet suppressed a real launch. That needs a row where a
+   taken ship's bot would launch.
+3. **BSM04 hidden carry** (Lexington Stop with StartSpeed 3) needs a plan through phase 1: the idle run fails at
+   108.05 s, before GenerateObject("Lexington").
+4. **LOMP06 l70_l6_c** and **USN21 s46_u21_f** need re-plans (lead / lua71).
+- Never use git stash. src/game_hosts_gunnery.cpp is often leased: queue, never jump.
