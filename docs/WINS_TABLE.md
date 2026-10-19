@@ -1218,3 +1218,24 @@ IJN18 `l70_i18_r` on 86b81e2a8 (`local\l71r_i18_*`):
 The 1685.52 s ref win from d175c1aac does not hold on this main. That base moved without a known cause, so the
 row is listed and not re-timed. The flip still lands as a faithful fix (prepare/issue skipped while 4Ch occludes
 46h), and IJN18 needs a re-plan on the combined re-time base.
+
+### BSM01 re-plan `l71_b1_a` (cc9-lua71, tree build = 86b81e2a8 + the releasegun flip ea5795c31)
+
+On 86b81e2a8 every BSM01 plan has no end. The opening `moveto HenryPT 2580 -1650` dithers at the start: throttle
+swings between -0.5 and 0.8, the rudder flips +-1, and d330 holds at 2440-2510 m through step 5400. Henry therefore
+never comes within 250 m of Phoenix (bsm_01_stationed_at_pearl.lua:797), so luaMoveToPh2 and the phase-3 MiniSub
+spawn never run. On d175c1aac the same moveto closed to 265 m by step 2190. 46bdfac0a still ended at 812.93 s, so
+the cause lies between 46bdfac0a and 86b81e2a8. It is reported to the lead and is not a re-time.
+
+`config/win_orders/bsm01_l71_b1_a.txt` is l70 b1 j with the opening moveto replaced by a takehelm lane along the old
+navigator path (the l70_b1t trajectory):
+- frame 200: (2300,-3230)
+- frame 620: (1900,-3060)
+- frame 1050: (1890,-2860)
+- frame 1200: (2474,-1817)
+- frame 2250: (2570,-1690), stop 30
+
+Results (logs `local\l71r_b1a_main_{ref,j3}.log`):
+- ref: EndMission at 698.95 s. HenryPT kills MiniSub at 596.68 s.
+- 20,3: EndMission at 1359.20 s. MiniSub dies at 1029.13 s.
+- The guard logged its refusal on both runs.
