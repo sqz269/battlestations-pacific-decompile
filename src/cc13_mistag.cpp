@@ -244,6 +244,23 @@ bool vt_reset_destruct(std::uint32_t address, void* object) noexcept {
     return false;
 }
 
+// Part C: F6 44 24 04 01 56 8B F1 C7 06 <vtable> 74 09 56 E8 <00BF65AC> 83 C4 04 8B C6 5E C2 04 00.
+const VtResetDestructor kVtResetDeletingDestructors[kVtResetDeletingDestructorCount] = {
+    {0x006CDD40, 0x00CF88F8}, {0x00735990, 0x00CFE9F4}, {0x00861BA0, 0x00D0D314},
+    {0x00862750, 0x00D0D314}, {0x008627F0, 0x00D0D31C},
+};
+
+void* vt_reset_scalar_deleting_destruct(MistagHost& host, std::uint32_t address, void* object,
+    std::uint32_t flags) {
+    for (const auto& row : kVtResetDeletingDestructors) {
+        if (row.address != address) continue;
+        at<std::uint32_t>(object, 0) = row.vtable;
+        if ((flags & 1) != 0) host.free_00bf65ac(object);
+        return object;
+    }
+    return nullptr;
+}
+
 // Each row read from the disk bytes: B8 imm32 C3. The slot is the only .rdata dword equal to
 // the routine's address (two for 0085EA30).
 const TrivialGetter kTrivialGetters[kTrivialGetterCount] = {

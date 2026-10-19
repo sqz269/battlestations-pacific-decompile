@@ -365,6 +365,59 @@ renames were made in three batches under the lock. The old names are kept in
 
 Unknown (no named slot either way): `00842990`, vtable 00D0B6A0.
 
+## Part C: scalar deleting wrappers (102 rows)
+
+Script: `local/mistag_partC_check.py` (output `local/mistag_partC.json`). For every wrapper
+candidate it requires the whole 31-byte shape:
+
+```
+F6 44 24 04 01  56  8B F1  C7 06 <vt>  74 09  56  E8 <00BF65AC>  83 C4 04  8B C6  5E  C2 04 00
+```
+
+That is a test of flags & 1, the vt-reset destructor inlined as `MOV [ESI], vt`, `_free(this)`
+when the bit is set, and `EAX = this`, RET 4. The script requires vt to equal the scanned vtable,
+classes the vtable as part B does, and finds every recorded `C7 01 <vt> C3` copy of the store.
+
+**97 game rows are bound** (`library_instantiation_out_of_scope`, names unchanged). Each cites a
+recorded out-of-line copy of its vtable store:
+
+| Rows | Vtable |
+|---|---|
+| 74 | 00CE4974 |
+| 14 | 00D056D0 |
+| 2 | 00CFE2B8 |
+| 1 each | 00D056E8, 00D1FDB8, 00D20838, 00D20E84, 00D21148, 00D21B40, 00CFF354 |
+
+**5 game rows are rebuilt** as `kVtResetDeletingDestructors` with
+`vt_reset_scalar_deleting_destruct()`. Their vtable store has no recorded copy, and their only
+callee is `_free`, so under the rule there is no routine to cite (as with batch 1's singleton
+rows). They take provisional names `BSP_Vt<vtable>_ScalarDeletingDestruct_<address>`:
+
+| Address | Vtable |
+|---|---|
+| `006CDD40` | 00CF88F8 |
+| `00735990` | 00CFE9F4 |
+| `00861BA0` | 00D0D314 |
+| `00862750` | 00D0D314 |
+| `008627F0` | 00D0D31C |
+
+The Ghidra rename log for these five is `local/ghidra-annotations-20261019T085852Z.json`.
+
+**Left unbound.**
+
+Library:
+
+| Address | Vtable | Note |
+|---|---|---|
+| `007B5920` | 00D05840 | |
+| `0094CB00` | 00D24FCC | |
+| `0094CB20` | 00D24FEC | |
+| `0094D030` | 00D24F84 | fails the byte check: its call goes to 00A51E70, not `_free` |
+
+Unknown: `007D79F0`, vtable 00D06844.
+
+### Part B rows that fail the byte check
+
 Three scan candidates fail the byte check and are not part B: `009DB550` (`B0 01 C3`, MOV AL,1),
 `006D1420` (`C7 81 F8000000 ...`, a store at +F8h) and `007B0DB0` (`8B 41 08 C3`, a +8h getter).
 

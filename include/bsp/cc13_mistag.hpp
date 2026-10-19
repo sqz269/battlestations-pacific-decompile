@@ -47,6 +47,12 @@ extern const VtResetDestructor kVtResetDestructors[kVtResetDestructorCount];
 // Runs the row at `address` on `object` ([object] = its vtable); false when `address` is not a row.
 bool vt_reset_destruct(std::uint32_t address, void* object) noexcept;
 
+// Part C: five scalar deleting destructors of the same inlined shape whose vtable store has no
+// recorded out-of-line copy (rebuilt under the rule; the other 97 are bound). Bytes checked by
+// local/mistag_partC_check.py; __thiscall(ECX = object, flags), RET 4, EAX = object.
+inline constexpr std::size_t kVtResetDeletingDestructorCount = 5;
+extern const VtResetDestructor kVtResetDeletingDestructors[kVtResetDeletingDestructorCount];
+
 class MistagHost {
 public:
     virtual ~MistagHost() = default;
@@ -265,6 +271,10 @@ void point3_ptr_array_destruct_007b1a80(MistagHost& host, void* array);
 void* singleton_scalar_deleting_destruct_00735880(MistagHost& host, void* object, std::uint32_t flags);
 void* singleton_scalar_deleting_destruct_00735900(MistagHost& host, void* object, std::uint32_t flags);
 void* singleton_scalar_deleting_destruct_00866090(MistagHost& host, void* object, std::uint32_t flags);
+// A kVtResetDeletingDestructors row: [object] = vtable, then _free(object) when flags & 1;
+// nullptr when `address` is not a row.
+void* vt_reset_scalar_deleting_destruct(MistagHost& host, std::uint32_t address, void* object,
+    std::uint32_t flags);
 // 00737110: the same with the singleton base at +4h and vtable 00CFE9F4 at +0h (global 010904F8).
 void* msar_provider_scalar_deleting_destruct_00737110(MistagHost& host, void* object, std::uint32_t flags);
 
