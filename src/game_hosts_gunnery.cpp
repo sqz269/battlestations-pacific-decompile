@@ -539,7 +539,8 @@ constexpr float kTorpedoBotThinkPeriod = 0.2f;   // 00CE54A0
 //    the owner is the gun's own unit (gun.unit_index), as at 008FFFB2; a gun
 //    whose unit is not kind 5 is not gated. OFF: as before. The tick count
 //    under the condition is logged with the switch either way.
-constexpr bool kTorpedoBotOwnerPlayerGateCc13Bound = false;
+//    ON: SHIP_AI 310 (IJN18 Zao, BSM01 HenryPT exits on every tick, gameplay identical).
+constexpr bool kTorpedoBotOwnerPlayerGateCc13Bound = true;
 //  * kTorpedoBotStaleFlagBound: packet g42_ver23 (docs/CC13_VER_23.md D2), only
 //    under kTorpedoBotAttackRangeBound. 00903580 recomputes bot+68h BEFORE it
 //    stores the new bot+6Ch (0090358D, 00903592), so a flag change keeps the old

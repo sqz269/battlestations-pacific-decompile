@@ -24,6 +24,7 @@
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
 #include "bsp/airfield_taxi.hpp"                 // packet cc9_land_park_taxi
 #include "bsp/game_hosts_avoid_zones.hpp"
+#include "bsp/game_hosts_hud_world.hpp"  // kHelmPrepareMapUpGateCc13Bound, packet cc13-helmmapgate
 #include "bsp/band_007a_cc13.hpp"
 #include "bsp/gameplay_seg48_cc13.hpp"
 #include "bsp/plane_flight.hpp"
@@ -7460,6 +7461,12 @@ struct GameUnitsHost::Impl {
     bool helm_route_on{false};
     bool helm_route_arrived{false};
     float helm_route_x{0.0f}, helm_route_z{0.0f};
+    // Packet cc13-helmmapgate: set when the HUD host's map occludes screen 46h.
+    // The counters are fixed steps on which prepare and issue would run with the
+    // map up, and steps on which the gate skipped them.
+    bool helm_screen_occluded_by_map{false};
+    unsigned long long helm_map_up_prepares{0}, helm_map_up_issues{0};
+    unsigned long long helm_map_up_skipped_prepares{0}, helm_map_up_skipped_issues{0};
     void player_helm_prepare_0064b870();
     void set_role_availability_00927d20_impl(std::size_t index, std::uint32_t mask,
                                              std::int32_t value);
@@ -21738,7 +21745,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         if constexpr (Impl::kRoleScreenFixedStepCall) {
             host.role_screen_update_0067bb50();
         }
-        host.player_helm_prepare_0064b870();
+        // Packet cc13-helmmapgate: 0064B870 runs only from 46h's update, which
+        // the map (4Ch) occludes.
+        bool helm_prepare = true;
+        if (host.helm_screen_occluded_by_map) {
+            ++host.helm_map_up_prepares;
+            if constexpr (kHelmPrepareMapUpGateCc13Bound) {
+                helm_prepare = false;
+                ++host.helm_map_up_skipped_prepares;
+            }
+        }
+        if (helm_prepare) host.player_helm_prepare_0064b870();
     }
     if constexpr (bsp::kPlaneSquadronLeaveOnDeathBound) {
         host.squadron_leave_on_death_007bcaa0();
@@ -41730,7 +41747,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         }
         if constexpr (Impl::kPlayerRoleBookkeepingBound) {
             if (host.helm_option_on || host.helm_route_on) {
-                host.player_helm_issue_0064b870(slot);
+                // Packet cc13-helmmapgate, as for the prepare above.
+                bool helm_issue = true;
+                if (host.helm_screen_occluded_by_map && host.controlled_bound
+                    && host.controlled_index == index) {
+                    ++host.helm_map_up_issues;
+                    if constexpr (kHelmPrepareMapUpGateCc13Bound) {
+                        helm_issue = false;
+                        ++host.helm_map_up_skipped_issues;
+                    }
+                }
+                if (helm_issue) host.player_helm_issue_0064b870(slot);
             }
         }
         // Packet cc9_ship_exit_zone: 00825FAC 00953CC0 -> 00953D98 vtable[1D8h] = 00826D70,
@@ -43291,6 +43318,22 @@ float GameUnitsHost::unit_ring_current_rudder(std::size_t index) const {
     const Impl& host = *impl_;
     if (index >= host.slots.size()) return 0.0f;
     return host.slots[index]->ring.current_param_b;
+}
+
+void GameUnitsHost::set_helm_screen_occluded_by_map(bool occluded) {
+    impl_->helm_screen_occluded_by_map = occluded;
+}
+
+float GameUnitsHost::unit_ring_confirmed_throttle_0994(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    return host.slots[index]->ring.confirmed_param_a;
+}
+
+float GameUnitsHost::unit_ring_confirmed_rudder_0998(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    return host.slots[index]->ring.confirmed_param_b;
 }
 
 float GameUnitsHost::unit_yaw_authority_0524(std::size_t index, bool& derived) const {
@@ -46710,6 +46753,13 @@ void GameUnitsHost::report() {
                                 "packet cc9_player_role_bookkeeping)", host.role_takes,
                                 host.role_releases, host.role_refusals, host.role_held_retakes,
                                 host.role_permission_writes);
+                            host.log.notef("summary mission helm map-up gate bound=%d map_up=%d "
+                                "prepares=%llu skipped=%llu issues=%llu skipped=%llu (0064B870 "
+                                "from 46h's 0064D610, occluded by 4Ch; packet cc13-helmmapgate)",
+                                kHelmPrepareMapUpGateCc13Bound ? 1 : 0,
+                                host.helm_screen_occluded_by_map ? 1 : 0,
+                                host.helm_map_up_prepares, host.helm_map_up_skipped_prepares,
+                                host.helm_map_up_issues, host.helm_map_up_skipped_issues);
                             for (const auto& sl : host.slots) {
                                 bool any = sl->role_player_0184;
                                 for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i) {
