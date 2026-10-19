@@ -232,6 +232,8 @@ that very test. The image opens the bay earlier, in two pieces.
   leader) are set and the leader is not this unit, flag = the leader's step byte `9C1h` (channel C
   disabled or at exactly 1.0f; `007CDC70`).
 - `0099B055` reaches `007BB150`: `unit+DF0h` = flag ? `9C3h` : 0.
+- `0099B00C` also stores `unit+DF8h` = mode; that store is not modelled (the opener reads only
+  `DF0h`).
 - Torpedo task (vtable `00D213C8`, slot `+50h` at `00D21418`) = `009D49E0`: in the aim (`task+710h`),
   done (`+618h`), goaway (`+6D8h`), attackrun (`+6B4h`) and prepare (`+740h`) states it answers
   `task+528h ? 2 : 0`; elsewhere 1. `task+528h` is `approach+130h`, the aim-solution byte the aim
@@ -273,16 +275,23 @@ Substitutions, labelled:
 - `9C1h`/`9C3h` are read live from the channel and the racks, not from the previous step record
   (`[00F876B8]`).
 - `mode` is modelled for the torpedo (`009D49E0`) and dive-bomb (`009C8290`) tasks only; a plane
-  with neither installed is left alone (its target is not touched).
+  with neither installed is left alone (its target is not touched). The other tasks whose `+50h`
+  can answer other than 1 are unmodelled mode sources: LevelBomb `009B8450`, Rocket `007B6F90`,
+  CloseToShip `009A2BD0`, DepthCharge `009A5D80` and DropKamikaze `009ADDB0`. That is no regression,
+  because the predicate it serves is read by the torpedo release timer only.
 - The opener runs before the block step in the same fixed step; the image's order between the
   pilot think, the plane tick and the block step is not established.
 
 ON-only lookups (container, filler, clearing):
-- `plane_squadron_registry().find_by_member_unit(index)->member_units[0]` for the leader: filled by
-  the squadron spawns (`game_hosts_script_orders.cpp`, `game_hosts_ai.cpp`), a held wing slot
-  stored as `kPlaneSquadronNoUnit`, cleared with the squadron record; the host does not model
-  `+3D0h` moving to a surviving wingman when the leader dies (uncertainty). A slot that is
-  `kPlaneSquadronNoUnit`, out of range, empty or this unit is ignored.
+- `plane_squadron_registry().find_by_member_unit(index)` for the leader: filled by the squadron
+  spawns (`game_hosts_script_orders.cpp`, `game_hosts_ai.cpp`), a held wing slot stored as
+  `kPlaneSquadronNoUnit`, cleared with the squadron record. When the leader dies, the host does move
+  the next wingman to `+3D0h`: `remove_member_unit_007f3970` erases the seat. The only difference is
+  a window under `kSquadronRemovesDeadBound`. In it, the death path has already cleared the seat to
+  `kPlaneSquadronNoUnit` before the erase, while the image still holds the old pointer. Under that
+  switch the opener therefore takes the first occupied seat (`flight_leader()`), and without it
+  `member_units[0]`. A leader that is `kPlaneSquadronNoUnit`, out of range, empty or this unit is
+  ignored.
 - `bay_rack_holds_round_9c3(s)`: the racks and the cached `bomb_rack_bay_doors` flags (section 6),
   filled at the gunnery flatten, read per call.
 - `torpedo_state`/`dive_bomb_state` and `aim_solution_130`: set at the task install and by the aim

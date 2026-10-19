@@ -3949,12 +3949,17 @@ struct GameUnitsHost::Impl {
         ++bay_open_steps;
         const bool own_9c3 = bay_rack_holds_round_9c3(s);
         // 0099B01C-0099B039: [unit+9D4h]+3D0h, the squadron's first member.
+        // With kSquadronRemovesDeadBound the death path clears a dead leader's
+        // seat to kPlaneSquadronNoUnit before 007F3970's erase moves the next
+        // wingman up; the image keeps the old pointer in that window, so the
+        // first occupied seat (flight_leader()) stands for +3D0h there.
         bool has_leader = false, leader_9c1 = false;
         if (mode == 1) {
             if (const bsp::PlaneSquadronHostRecord* r =
                     bsp::plane_squadron_registry().find_by_member_unit(index)) {
-                const std::size_t m = r->member_units.empty()
-                    ? bsp::kPlaneSquadronNoUnit : r->member_units[0];
+                const std::size_t m = kSquadronRemovesDeadBound ? r->flight_leader()
+                    : r->member_units.empty() ? bsp::kPlaneSquadronNoUnit
+                                              : r->member_units[0];
                 if (m != bsp::kPlaneSquadronNoUnit && m < slots.size() && slots[m]
                     && m != index) {
                     const bsp::PlaneActuatorChannel& lc =
