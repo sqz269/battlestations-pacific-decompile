@@ -404,6 +404,12 @@ def export(args):
     functions = {number(f['address']): f for f in records if not f.get('isExternal')}
     starts = sorted(functions)
     start_set = set(starts)
+    # Code Ghidra never made a function (tools/callgraph_sweep.py lists it under "undefined") can still fill
+    # vtable slots; accept those starts as slot targets too, so a vtable holding one is neither split nor dropped.
+    edges_path = args.output / 'callgraph_edges.json'
+    undefined_starts = {int(k) for k in json.loads(edges_path.read_text()).get('undefined', {})} \
+        if edges_path.exists() else set()
+    slot_targets = start_set | undefined_starts
     snapshot_path = args.output / 'snapshot.json'
     snapshot_raw = snapshot_path.read_bytes() if snapshot_path.exists() else None
     if snapshot_raw:
@@ -424,12 +430,12 @@ def export(args):
                 if value % 4 == 0 and rdata_lo <= value < rdata_lo + len(rdata):
                     anchors.add(value)
     excluded = {(number(r['start']), number(r['end_exclusive'])) for r in initializer_ranges}
-    tables, bases = discover_vtables(image, start_set, anchors, excluded)
+    tables, bases = discover_vtables(image, slot_targets, anchors, excluded)
     slots = collections.defaultdict(set)
     edges = []
     for address, table in sorted(tables.items()):
         for slot, target in enumerate(table['_slots']):
-            if target not in start_set:
+            if target not in slot_targets:
                 continue
             slots[slot].add(target)
             edges.append({'caller': hex(address), 'callee': hex(target), 'site': hex(address + 4 * slot),
@@ -488,7 +494,7 @@ def export(args):
                     if narrowed:
                         allowed = compatible_tables(table_address, tables, bases)
                         candidates = {tables[a]['_slots'][slot] for a in allowed
-                                      if slot < len(tables[a]['_slots']) and tables[a]['_slots'][slot] in start_set}
+                                      if slot < len(tables[a]['_slots']) and tables[a]['_slots'][slot] in slot_targets}
                     if len(candidates) > args.max_candidates:
                         counters['vcall_sites_skipped_fanout'] += 1
                         counters['vcall_edges_skipped_fanout'] += len(candidates)
@@ -544,7 +550,8 @@ def export(args):
             'vtables': len(tables), 'vtables_with_rtti': sum(t['class'] is not None for t in tables.values()),
             'vtables_without_rtti': sum(t['class'] is None for t in tables.values()),
             'vtables_at_visible_store_anchors': sum(a in anchors for a in tables),
-            'vtable_unindexed_executable_slots': sum(s not in start_set for t in tables.values() for s in t['_slots']),
+            'vtable_unindexed_executable_slots': sum(s not in slot_targets for t in tables.values() for s in t['_slots']),
+            'vtable_slots_in_undefined_code': sum(s in undefined_starts for t in tables.values() for s in t['_slots']),
             'non_vtable_pointer_ranges': initializer_ranges,
             'crt_initializer_slots_excluded': sum(image.dword(a) in start_set for lo, hi in excluded for a in range(lo, hi, 4)),
             **dict(counters), 'lua_table_candidates': len(lua_tables),
