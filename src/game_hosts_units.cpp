@@ -42,6 +42,7 @@
 #include "bsp/plane_control_rate.hpp"
 #include "bsp/pilot_plan_slots.hpp"
 #include "bsp/dogfight_task.hpp"
+#include "bsp/cc13_fire_envelope.hpp"           // packet cc13-fire (009FC7C0's envelope)
 #include "bsp/dogfight_ver_cc13.hpp"
 #include "bsp/near_field_probe.hpp"
 #include "bsp/camera_position_modes.hpp"
@@ -1183,6 +1184,10 @@ struct GameUnitSlot {
     float nb_clock_80{1.5f};
     bool nb_busy_c8{false};
     int ff_busy_ticks{0}, ff_checks{0};
+    // Packet cc13-fire (docs/CC13_FIRE_ENVELOPE.md), census under
+    // kDogfightFireEnvelopeBound: 007BA760 blocks on an envelope tick, re-aims
+    // (009FCDFC), hold-ahead points (E) and PC24/53-bit envelope disagreements.
+    int fe_blocked_ticks{0}, fe_reaims{0}, fe_hold_ahead_ticks{0}, fe_pc53_disagree_ticks{0};
     // 009FA248: plan+2D4h = 0 from the fine aim 009F9FC0. 0099E756 then skips
     // the planner's yaw arm 0099E81A. Reset by the planner, as 0099B450 seeds 1.
     bool gl_yaw_mode_2d4_zero{false};
@@ -8663,6 +8668,8 @@ struct GameUnitsHost::Impl {
     }
     void vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt);
     bool friendly_in_line_007b96d0(GameUnitSlot& u, float dt);
+    void friendly_in_line_clock_007e2010(GameUnitSlot& u, float dt);
+    bool friendly_in_line_eval_007dedb0(GameUnitSlot& u);
     void terrain_avoidance_0099f1c0(GameUnitSlot& u, float dt);
     void terrain_avoidance_water_009a1420(GameUnitSlot& u);
     float avoid_surface_height(float x, float z);
@@ -12897,7 +12904,15 @@ void GameUnitsHost::Impl::player_helm_issue_0064b870(GameUnitSlot& slot) {
 // sets +C8h. The +80h clock advances by dt in 007E2010. Its start
 // U(0, 1) + 1.0 is taken at its midpoint 1.5, and the +70h list refresh runs
 // on its own copy of the 3 s +7Ch clock at the think interval. Labelled.
+// Packet cc13-fire: 009FC7C0 calls 007B96D0 only on envelope ticks, while
+// 007E2010 runs every update, so the two halves are split; this keeps the
+// old order for the callers that take both at once.
 bool GameUnitsHost::Impl::friendly_in_line_007b96d0(GameUnitSlot& u, float dt) {
+    friendly_in_line_clock_007e2010(u, dt);
+    return friendly_in_line_eval_007dedb0(u);
+}
+
+void GameUnitsHost::Impl::friendly_in_line_clock_007e2010(GameUnitSlot& u, float dt) {
     const bsp::PlaneNeighbourRadii radii = bsp::plane_neighbour_radii_007e11d0(3.0f);
     const float* p0 = u.world.data() + 12;
     auto dist2 = [&](const GameUnitSlot& o) {
@@ -12938,6 +12953,9 @@ bool GameUnitsHost::Impl::friendly_in_line_007b96d0(GameUnitSlot& u, float dt) {
         u.nb_clock_70 -= 3.0f;
     }
     u.nb_clock_80 += dt;                                             // 007E2010
+}
+
+bool GameUnitsHost::Impl::friendly_in_line_eval_007dedb0(GameUnitSlot& u) {
     if (u.nb_clock_80 <= 1.0f) return u.nb_busy_c8;                  // 007DEDC4
     u.nb_busy_c8 = false;
     u.nb_clock_80 -= 1.0f;
@@ -24443,7 +24461,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         static std::map<const void*, AimTermsState> states;
                         return states[&unit_];
                     }
-                    bool df_fine_aim_009f9fc0(const bsp::DogfightGunInputs& gi) {
+                    // reaim (packet cc13-fire, C): 007B96D0 was true on this
+                    // tick's fire arm, so 009FCDD3-009FCE01 run 009F9FC0 again.
+                    bool df_fine_aim_009f9fc0(const bsp::DogfightGunInputs& gi,
+                                              bool reaim = false) {
                         if (!gi.has_target) return false;
                         const float x = gi.lead_local[0], y = gi.lead_local[1], z = gi.lead_local[2];
                         const float d = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
@@ -24485,10 +24506,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009FA0E0-009FA197: with +4Ah set, each axis is also
                         // capped at 0.35 * t / (Spd / Accel), t the time the error
                         // closes in at its current rate (bsp::gun_aim_damped_cap).
-                        const bool damp = GameUnitsHost::Impl::kFighterAimTermsBound
+                        const bool damp_first = GameUnitsHost::Impl::kFighterAimTermsBound
                             && terms.ran_4a;
+                        bool damp = damp_first;
                         const float dt_now = gi.dt;
-                        auto stick = [damp, dt_now](float e, float prev, float spd, float accel) {
+                        auto stick = [&damp, dt_now](float e, float prev, float spd, float accel) {
                             const float ratio = accel != 0.0f ? spd / accel : 0.0f;
                             const float den = ratio * spd;
                             float m = den != 0.0f ? std::fabs(8.0f * e) / den : 1.0f;
@@ -24513,6 +24535,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                   unit_.plane_class.yaw_accel);
                         unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
                         unit_.gl_yaw_mode_2d4_zero = true;
+                        if (reaim) {
+                            // 009FCDD3-009FCE01: +4Ah = 0 (009FCDE5), so the second
+                            // 009F9FC0 is undamped, on the vertical + 0.25
+                            // (00D7A348); the tail then skips the +54h/+58h store
+                            // and leaves +4Ah clear.
+                            damp = false;
+                            ++unit_.fe_reaims;
+                            const float e_v2 = e_v + bsp::kGunReaimVerticalStep_00d7a348;
+                            unit_.plan_slots[bsp::kPilotSlotPitch].desired =
+                                stick(e_v2, terms.prev[1], unit_.plane_class.pitch_spd,
+                                      unit_.plane_class.pitch_accel);
+                            unit_.plan_slots[bsp::kPilotSlotYaw].desired =
+                                stick(e_h, terms.prev[0], unit_.plane_class.yaw_spd,
+                                      unit_.plane_class.yaw_accel);
+                            return false;
+                        }
                         // 009FCE39 / 009FCE44: the angles 009F9FC0 was given.
                         terms.prev[0] = e_h;
                         terms.prev[1] = e_v;
@@ -24696,6 +24734,92 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.done("PilotBot::opportunistic_rocket_tick", 0x009fd0e0u);
                     }
 
+                    // Packet cc13-fire (docs/CC13_FIRE_ENVELOPE.md), under
+                    // kDogfightFireEnvelopeBound: 009FC7C0 from the clocks to the
+                    // burst clock with the image's envelope and gates, in place of
+                    // bsp::dogfight_gun_tick_009fc7c0. Returns true when 007B96D0
+                    // was true on the fire arm (the re-aim, C).
+                    bool df_fire_envelope_009fc7c0(bsp::DogfightGunInputs& gi, bool auto_target) {
+                        bsp::DogfightGunState& st = unit_.df_gun;
+                        bsp::gun_tick_clocks_009fc7c9(st, gi.dt);
+                        if constexpr (bsp::kDogfightFireHoldArmBound) {
+                            if (auto_target || unit_.st_gun_point_armed_28) {
+                                st.hold_4c = -1.0f;                        // D, 009FCAC2
+                            } else if (st.hold_4c > 0.0f) {
+                                // E, 009FCA3A-009FCAC0: 009FCA47-009FCA53 load ECX =
+                                // [[unit+9D4h]+3D0h], the squadron's first member, or
+                                // the unit with no squadron; ECX is untouched up to the
+                                // __thiscall 00427EB0 at 009FCA86, so the point is the
+                                // LEADER's position plus +34h times its +94h..+9Ch.
+                                // +94h is local row 2 (block +74h); the host reads
+                                // world[8..10], equal for an unparented plane. Labelled.
+                                // The leader is the first listed member, dying or not:
+                                // a leader killed earlier this step stays first until
+                                // remove_member_unit_007f3970 compacts the list, as in
+                                // the image. Slots are never freed in this host, so a
+                                // listed index always names a live object.
+                                const std::size_t self = unit_.process_index;
+                                std::size_t leader = self;
+                                if (const bsp::PlaneSquadronHostRecord* r =
+                                        bsp::plane_squadron_registry().find_by_member_unit(self)) {
+                                    for (const std::size_t m : r->member_units) {
+                                        if (m == bsp::kPlaneSquadronNoUnit ||
+                                            m >= owner_.slots.size()) continue;
+                                        leader = m;
+                                        break;
+                                    }
+                                }
+                                // HOST-ONLY guard, no image equivalent: a null slot
+                                // falls back to the unit itself.
+                                const GameUnitSlot* lp = leader < owner_.slots.size()
+                                    ? owner_.slots[leader].get() : nullptr;
+                                const GameUnitSlot& l = lp != nullptr ? *lp : unit_;
+                                const float s = gi.shoot_distance;
+                                const float p[3] = {l.world[12] + s * l.world[8],
+                                                    l.world[13] + s * l.world[9],
+                                                    l.world[14] + s * l.world[10]};
+                                df_local(p, gi.lead_local);
+                                gi.has_target = true;
+                                ++unit_.fe_hold_ahead_ticks;
+                            }
+                        }
+                        bsp::GunFireEnvelope env;
+                        if (gi.has_target) {
+                            bsp::GunFireEnvelopeInputs ei;
+                            for (int k = 0; k < 3; ++k) ei.lead_local[k] = gi.lead_local[k];
+                            ei.hold_4c = st.hold_4c;
+                            ei.search_range_30 = gi.search_range_30;
+                            ei.shoot_distance_34 = gi.shoot_distance;
+                            ei.lateral_cap_38 = gi.lateral_cap_38;
+                            ei.dont_shoot_3c = gi.dont_shoot_3c;
+                            ei.auto_target_74 = auto_target;
+                            // k08/k0c stay 0: +0Ch is 0 from the constructor
+                            // (009FAB3C), so 2 * +0Ch * +08h * d is 0 whatever +08h is.
+                            env = bsp::gun_fire_envelope_009fcb25<false>(ei);   // PC24
+                            if (bsp::gun_fire_envelope_009fcb25<true>(ei).envelope != env.envelope) {
+                                ++unit_.fe_pc53_disagree_ticks;
+                            }
+                        }
+                        // A, 009FCDBC: 007BA760 on the own unit.
+                        const bool blocked = bsp::unit_gun_fire_blocked_007ba760(
+                            unit_.plane_death_c3a, unit_.state != nullptr && unit_.state->simulate != 0);
+                        gi.unit_disabled = blocked;
+                        bool busy = false;
+                        if (env.envelope) {
+                            if (blocked) {
+                                ++unit_.fe_blocked_ticks;
+                            } else if constexpr (GameUnitsHost::Impl::kFighterFriendlyInLineBound) {
+                                // B, 009FCDC7: 007B96D0 only here.
+                                busy = owner_.friendly_in_line_eval_007dedb0(unit_);
+                                if (busy) ++unit_.ff_busy_ticks;
+                            }
+                        }
+                        gi.finder_busy = busy;
+                        bsp::gun_fire_arm_009fcdb6(st, env.envelope, blocked, busy);
+                        bsp::gun_burst_clock_009fce4f(st, gi.burst_draw, gi.delay_draw);
+                        return busy;
+                    }
+
                     void df_gun_tick_009fc7c0(float dt) {
                         bsp::DogfightGunInputs gi;
                         gi.dt = dt;
@@ -24726,9 +24850,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             tgt = df_finder_007e2090(dt, gi);
                         }
                         const bool was_burst = unit_.df_gun.burst_4b;
+                        // +74h for the envelope's /1.8 and D: the finder's (or the
+                        // task's stand-in) target, before the strafe point below.
+                        const bool auto_target = gi.has_target;
                         if constexpr (GameUnitsHost::Impl::kFighterFriendlyInLineBound) {
-                            gi.finder_busy = owner_.friendly_in_line_007b96d0(unit_, dt);
-                            if (gi.finder_busy) ++unit_.ff_busy_ticks;
+                            if constexpr (bsp::kDogfightFireEnvelopeBound) {
+                                // 007E2010 every tick; 007DEDB0 in the envelope.
+                                owner_.friendly_in_line_clock_007e2010(unit_, dt);
+                            } else {
+                                gi.finder_busy = owner_.friendly_in_line_007b96d0(unit_, dt);
+                                if (gi.finder_busy) ++unit_.ff_busy_ticks;
+                            }
                         }
                         // Packet cc9_strafe_arm, 009FCA2E-009FCAC9: with no auto target
                         // (+74h == 0) and +28h > 0 the tick keeps the lead point +5Ch
@@ -24743,7 +24875,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             strafe_point = true;
                             ++unit_.st_gun_point_ticks;
                         }
-                        bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);
+                        bool reaim = false;
+                        if constexpr (bsp::kDogfightFireEnvelopeBound) {
+                            reaim = df_fire_envelope_009fc7c0(gi, auto_target);
+                        } else {
+                            bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);
+                        }
                         if constexpr (GameUnitsHost::Impl::kDogfightGunBurstDrawBound) {
                             // 009FCE70-009FCED6: each +4Bh edge stores one
                             // 00BD2F10(low, high) on ECX = 1 in +50h, the tick's last
@@ -24760,12 +24897,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         if (strafe_point && unit_.df_gun.fire_48) ++unit_.st_gun_point_fires;
                         if constexpr (GameUnitsHost::Impl::kFighterGunLeadBound) {
-                            const bool ran = df_fine_aim_009f9fc0(gi);
+                            const bool ran = df_fine_aim_009f9fc0(gi, reaim);
                             // 009FCE2D: +4Ah = "the fine aim ran this tick".
-                            // SUBSTITUTION, labelled: the fire branch's re-aim
-                            // (009FCDB6-009FCE01, which clears it at 009FCDE9 and
-                            // adds 0.25 before a second 009F9FC0) is not modelled,
-                            // so the flag is never cleared by it.
+                            // SUBSTITUTION, labelled, with kDogfightFireEnvelopeBound
+                            // OFF: the fire branch's re-aim (009FCDB6-009FCE01,
+                            // which clears it at 009FCDE5 and adds 0.25 before a
+                            // second 009F9FC0) is not modelled, so the flag is
+                            // never cleared by it. ON, reaim carries it.
                             if constexpr (GameUnitsHost::Impl::kFighterAimTermsBound) {
                                 aim_terms_state().ran_4a = ran;
                             }
@@ -44250,6 +44388,12 @@ void GameUnitsHost::report() {
                             host.log.notef("  fighter friendly-in-line %-12s checks=%d busy_ticks=%d "
                                 "friends=%zu (007B96D0 -> 007DEDB0)", slot->row.name.c_str(),
                                 slot->ff_checks, slot->ff_busy_ticks, slot->nb_friend_70.size());
+                        }
+                        if constexpr (bsp::kDogfightFireEnvelopeBound) {
+                            host.log.notef("  fighter fire envelope %-12s blocked=%d reaims=%d "
+                                "hold_ahead=%d pc53_disagree=%d (009FC7C0, cc13-fire)",
+                                slot->row.name.c_str(), slot->fe_blocked_ticks, slot->fe_reaims,
+                                slot->fe_hold_ahead_ticks, slot->fe_pc53_disagree_ticks);
                         }
                         if constexpr (Impl::kFighterAccelTraceEvery > 0) {
                             const int n = slot->ga_acc_n > 0 ? slot->ga_acc_n : 1;
