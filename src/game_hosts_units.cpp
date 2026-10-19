@@ -1894,6 +1894,11 @@ struct GameUnitSlot {
     bool torpedo_issue_gate_open{false};
     // The approach object embedded at task+3F8h.
     bsp::TorpedoApproachState torpedo_approach{};
+    // Packet cc13-torpranges. The torpedo moveto state (task+544h) +30h/+34h/+38h,
+    // stored by 009BDE80 at 009D48CF every arm tick (kTorpedoMoveToRangesBound).
+    float torpedo_moveto_alt_30{0.0f};
+    float torpedo_moveto_alt_34{0.0f};
+    float torpedo_moveto_range_38{0.0f};
     // Packet cc9_aim_error_draw: set once 009C3DA0 / 009D02A0 have written the
     // sub-object; dive approach+C8h, the projtime time error.
     bool aim_error_drawn{false};
@@ -7030,6 +7035,16 @@ struct GameUnitsHost::Impl {
     // that dt = 0 pass at install, so the first replan and 009FADA0's dirty
     // re-pick happen there. False: no pass; the first arm tick replans.
     static constexpr bool kTorpedoCruisePassBound = true;   // ON: OCEAN_WAVE_FIELD 88
+    // Packet cc13-torpranges (census row 15, docs/CC13_TORPRANGES.md). The torpedo
+    // arm stores A = approach+78h + approach+74h into the moveto state's +30h and
+    // +34h and approach+7Ch/+80h (on +134h against 15.0) into +38h (009D48AC-
+    // 009D48CF, 009BDE80). The moveto tick 009C18C0 reads them back as
+    // base = max(+34h + targetY, +30h) (009C19F1-009C1A19, targetY = [state+2Ch]
+    // +100h copied at 009C1905) and rangeLow = +38h (009C1B09). True: the arm
+    // stores the three and the tick reads them, with the target lift. False: the
+    // tick reads the approach fields directly and the base is A, which is low by
+    // targetY whenever the target's origin sits above 0 (USN21: up to +1.3 m).
+    static constexpr bool kTorpedoMoveToRangesBound = false;   // OFF: new
     // Packet p22_moveto_c25 (OCEAN_WAVE_FIELD 89). With [unit+C25h] set (a
     // pending release), the moveto state tick 009C2430 (009C2519-009C2559) and
     // the circle tick 009C26D0 (009C275A-009C2794) store cmd+2BCh = 0.0,
@@ -23458,8 +23473,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         void set_desired_speed(void*, float) override {}
                         void update_approach(void*, float) override {}
                         void refresh_move_to_ranges(void*, float, float, float) override {
-                            // 009BDE80 at 009D48CF. contract: unread body.
-                            record("BotStateMoveTo::refresh_ranges", "009bde80");
+                            // 009BDE80 at 009D48CF: three MOVSS stores into the
+                            // moveto state's +30h/+34h/+38h (009BDE86/91/9C).
+                            if constexpr (!GameUnitsHost::Impl::kTorpedoMoveToRangesBound) {
+                                record("BotStateMoveTo::refresh_ranges", "009bde80");
+                            } else {
+                                const bsp::TorpedoApproachState& ap = slot_.torpedo_approach;
+                                // 009D48AC-009D48C4: FLD +78h, FADD +74h, FSTP float,
+                                // twice (PC24, so one float sum).
+                                const float a = ap.alt_margin_78 + ap.alt_floor_74;
+                                // 009D4874-009D4890: FLD +134h; FLD double 15.0
+                                // (00CF3F20); FCOMIP; JBE takes +7Ch, so +7Ch on
+                                // 15.0 <= +134h or unordered, else +80h.
+                                const bool late = !(15.0 > static_cast<double>(ap.elapsed_134));
+                                slot_.torpedo_moveto_alt_30 = a;
+                                slot_.torpedo_moveto_alt_34 = a;
+                                slot_.torpedo_moveto_range_38 = late ? ap.speed_late_7c : ap.speed_early_80;
+                                owner_.done("BotStateMoveTo::refresh_ranges", 0x009bde80u);
+                            }
                         }
                         bool unit_has_no_follow_target(const void*) override {
                             // 007B8AD0: unit->+9D8h == 0. FED, packet
@@ -32298,8 +32329,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // commands is within a factor of about two of any of
                             // them and the distances within a factor of two.
                             // docs/TORPEDO_RELEASE_GEOMETRY.md.
-                            owner_.log.unimplemented(
-                                "TorpedoApproach::run_profile_record_14h", "009d0484");
+                            // Packet cc13-torpranges: the row IS selected now, by
+                            // pilot_skill_index under kSkillLevelBound (kTorpRows
+                            // below), which equals the image at the harness's
+                            // difficulty 1 (docs/CC13_TORPRANGES.md, row 18).
+                            owner_.done("TorpedoApproach::run_profile_record_14h", 0x009d0484u);
                             // approach+24h. 009F9D30 is
                             // bot_task_speed_ratio(desc+188h MaxSpd,
                             // Pilot/Torpedo/ReferenceSpeed) with a floor of
@@ -34019,9 +34053,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // ALTITUDE approach+74h + approach+78h in both altitude
                         // slots and the release distance approach+7Ch or +80h in
                         // the third, on the approach+134h >= 15.0 switch.
-                        const float base = ap.alt_floor_74 + ap.alt_margin_78;
-                        const float range_low = ap.elapsed_134 >= 15.0f
+                        float base = ap.alt_floor_74 + ap.alt_margin_78;
+                        float range_low = ap.elapsed_134 >= 15.0f
                             ? ap.speed_late_7c : ap.speed_early_80;
+                        if constexpr (GameUnitsHost::Impl::kTorpedoMoveToRangesBound) {
+                            // 009C19F1-009C1A19: FLD +34h, FADD targetY, FSTP;
+                            // FLD +30h; FCOMIP; JBE keeps +34h + targetY, so +30h
+                            // only when it is strictly greater. targetY is the
+                            // moveto target's +100h (009C18FD), the task target
+                            // 009D2E55 passes the 009C2AC0 constructor.
+                            const GameUnitSlot* tgt = nullptr;
+                            if (unit_.torpedo_task_target_plus_one != 0) {
+                                const std::size_t ti = unit_.torpedo_task_target_plus_one - 1;
+                                if (ti < owner_.slots.size()) tgt = owner_.slots[ti].get();
+                            }
+                            // No target: 009C19EB skips the glide; the host has
+                            // a target whenever the task is installed, so the
+                            // lift is left out here rather than the glide.
+                            const float lifted = tgt != nullptr
+                                ? unit_.torpedo_moveto_alt_34 + tgt->motion.position[1]
+                                : unit_.torpedo_moveto_alt_34;
+                            base = unit_.torpedo_moveto_alt_30 > lifted
+                                ? unit_.torpedo_moveto_alt_30 : lifted;
+                            range_low = unit_.torpedo_moveto_range_38;   // 009C1B09
+                        }
                         // 009C1AF3: Interp(0.05, 0.35, 0.4, 1.6, margin/denom),
                         // with margin = max(1400 - unit+100h, 50) and denom the
                         // distance less 1000, clamped into [50, 2000].
