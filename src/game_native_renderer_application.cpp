@@ -212,6 +212,16 @@ void observe_mission_texture_owners(GameHostLog& log, NativeTextureLoadOwners& o
         });
 }
 
+void observe_mission_cache_cleanup(void* context,
+    const NativeRendererCacheCleanupObservation& value) {
+    auto& log = *static_cast<GameHostLog*>(context);
+    log.notef("native mission cache cleanup: function=%08x event=%u cache=%p resource=%p "
+        "count=%u fallback=%p prefix_read=%u raw_snapshot_profile=%08x raw_snapshot_reference_bits=%08x",
+        value.native_function, static_cast<unsigned>(value.event), value.cache, value.resource,
+        value.cache_count, value.fallback, static_cast<unsigned>(value.resource_prefix_read),
+        value.snapshot_profile, value.snapshot_reference_bits);
+}
+
 // ---- Harness only (packet cc9_tooling_renderer_init). 00B2AEB0 ignores CreateDevice's HRESULT,
 // as the image does, and then reads the device (00B24460, 00B26170). When CreateDevice fails
 // (a locked workstation, a lost display) that read is a null-pointer crash with no cause in the
@@ -816,6 +826,8 @@ void GameNativeRendererApplication::configure_mission_ship(GameInputRuntime& inp
         p.declaration_cache, p.section_layouts, p.raw, p.vfs, p.mesh_field_vfs,
         p.singletons, p.owners, p.lua_services.binding(), p.shaders.cache, p.renderer,
         p.entry_cache_publication, input, clock, args);
+    p.textures.observation_context = &p.log;
+    p.textures.observe_cleanup = &observe_mission_cache_cleanup;
     p.log.note("native mission ship configured: BSP_NATIVE_MISSION_SHIP=1 (OFF by default)");
 }
 bool GameNativeRendererApplication::mission_ship_enabled() const noexcept {
