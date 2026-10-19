@@ -17,6 +17,7 @@
 #include "bsp/camera_multiply.hpp"
 #include "bsp/cc13_tier2_switches.hpp"
 #include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (the 31h release)
+#include "bsp/cc13_kamikaze_direct.hpp"   // packet cc13-kzdirect
 #include "bsp/structured_hierarchy.hpp"
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq (the deferred hit queue)
 
@@ -4119,8 +4120,17 @@ struct GameGunneryHost::Impl {
     void run_kamikaze_box_contacts();
     void kamikaze_detonate_00819a20(std::size_t unit, std::size_t target,
         const float contact[3]);
+    // Packet cc13-kzdirect: what a record whose shot is the kamikaze unit itself
+    // (00470350 SetShot(unit) at 00819B9C) changes in the funnel: the shot is
+    // present, the direction is the one 00926E80 copies (EDX at 00819BA1), and
+    // +30h is the traced element's kind. Null for the shot-0 blast records.
+    struct KamikazeDirectShot {
+        float direction[3]{};
+        int segment_kind{0x0A};
+    };
     void apply_gunless_blast_hit(std::size_t source, std::size_t victim,
-        const float point[3], const bsp::HitRecord& record);
+        const float point[3], const bsp::HitRecord& record,
+        const KamikazeDirectShot* unit_shot = nullptr);
     struct KamikazeRow {
         bool read{false};
         float damage_510{0.0f};
@@ -4129,6 +4139,11 @@ struct GameGunneryHost::Impl {
     };
     std::vector<KamikazeRow> kamikaze_rows;
     KamikazeRow& kamikaze_row(std::size_t k);
+    // Packet cc13-kzdirect (bsp::kKamikazeDirectHitCc13Bound): 00819A51..00819BCF.
+    void kamikaze_direct_hit_00819a20(std::size_t unit, std::size_t target,
+        const float contact[3], const float centre[3], const KamikazeRow& kr);
+    unsigned long long kz_direct_traced{0};   // 0098AC20 reported a hit
+    unsigned long long kz_direct_missed{0};   // 00819B2B to 00819BC3
     unsigned long long kz_contacts{0};
     unsigned long long ground_origin_aims{0};   // packet cc9_ground_target_aim_point
     // Packet cc9_artillery_structure_aim: non-ship artillery aims (each tick), those at an
@@ -12227,9 +12242,13 @@ void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::si
     float right[3], up[3], forward[3], centre[3];
     unit_pose(unit, right, up, forward, centre);
     // 00819A51..00819A8E: the direct arm's gates.
-    if (!unit_state[target].dead && kr.damage_510 > 0.0f) {
-        ++kz_direct_arms;
-        record("KamikazeDetonate::direct_hit_00915f20", 0x00915f20u);
+    if constexpr (bsp::kKamikazeDirectHitCc13Bound) {
+        kamikaze_direct_hit_00819a20(unit, target, contact, centre, kr);
+    } else {
+        if (!unit_state[target].dead && kr.damage_510 > 0.0f) {
+            ++kz_direct_arms;
+            record("KamikazeDetonate::direct_hit_00915f20", 0x00915f20u);
+        }
     }
     // 00819BDA..00819C14: the blast arm.
     std::vector<std::size_t> reached;
@@ -12279,13 +12298,112 @@ void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::si
         static_cast<double>(unit_state[target].health));
 }
 
+// Packet cc13-kzdirect, kKamikazeDirectHitCc13Bound only: 00819A51..00819BCF,
+// the direct arm. `contact` is the host's contact point and `centre` the
+// unit's +FCh. Single precision throughout: every x87 value is stored to a
+// float before the next use, and offset * 1000.0 is one rounding either way.
+//
+// SUBSTITUTIONS, labelled:
+//  * 0098AC20 runs through this host's SegmentBinding: the target's hull mesh
+//    or box stands for the shapes at node+D0h, and the node has no children.
+//  * +5Ch / +5Dh / +5Eh / +60h are the unit host's scene bytes; a unit whose
+//    bytes are not modelled is gated by `dead`, as the OFF arm is.
+//  * The record's +18h..+20h (unit+FCh) has no reader in this host: the funnel's
+//    consumer projection bsp::HitRecord does not carry it.
+void GameGunneryHost::Impl::kamikaze_direct_hit_00819a20(std::size_t unit, std::size_t target,
+    const float contact[3], const float centre[3], const KamikazeRow& kr) {
+    if (target >= unit_state.size()) return;   // 00819A3E: a null target
+    bsp::SceneNodeFlags flags;
+    bool pending_060 = false;
+    bool live = false;
+    if (units.unit_scene_node_flags(target, flags)
+        && units.unit_pending_destroy_0060(target, pending_060)) {
+        // 00819A51 +5Ch, 00819A5B +5Dh, 00819A65 +60h, 00819A6F +5Eh.
+        live = flags.active && !flags.torn_down && !pending_060 && !flags.destroyed;
+    } else {
+        live = !unit_state[target].dead;
+    }
+    if (!live) return;
+    if (!(kr.damage_510 > 0.0f)) return;   // 00819A87 COMISS / JBE: unordered skips
+    ++kz_direct_arms;
+
+    // The message vector 008146A0 built (00427C90: contact - 00427EB0(unit)),
+    // and s = it * 1000.0 at 00819AAB..00819AF3.
+    float offset[3];
+    float s[3];
+    for (int i = 0; i < 3; ++i) {
+        offset[i] = contact[i] - centre[i];
+        s[i] = static_cast<float>(static_cast<double>(offset[i]) * bsp::kKamikazeDirectTraceScale);
+    }
+
+    // 00819B00..00819B24: target->vtable[B0h] is 006D1DF0 ([target+360h]) and
+    // pops nothing, so 0098AC20 takes the five pushes: from = unit+FCh, to = s
+    // (a point, not unit+FCh + s), exclude 0, &record, kind 0.
+    const unsigned long long mesh_hits = shell_mesh_hits;
+    const unsigned long long box_hits = narrowphase_box_0085cdb0;
+    SegmentBinding query(*this, static_cast<std::size_t>(-1));
+    bsp::SegmentQueryArgs args;
+    args.from = bsp::HitQueryPoint{centre[0], centre[1], centre[2]};
+    args.to = bsp::HitQueryPoint{s[0], s[1], s[2]};
+    args.exclude_entity = nullptr;
+    args.kind_filter = 0;
+    bsp::HitRecordFill fill;
+    bsp::hit_record_reset_00470470(fill);   // 00819A98
+    bsp::HitQueryPoint to = args.to;
+    const bool traced = bsp::test_entity_0098ac20(query,
+        reinterpret_cast<const void*>(target + 1), args, to, fill);
+    shell_mesh_hits = mesh_hits;              // the summary counts shots only
+    narrowphase_box_0085cdb0 = box_hits;
+    if (!traced) {                            // 00819B2B -> 00819BC3
+        ++kz_direct_missed;
+        return;
+    }
+    ++kz_direct_traced;
+
+    // 00819B31..00819B96, then 00470350 SetShot(unit) at 00819B9C: +4h = unit,
+    // +14h = unit->vtable[54h]() = 0042B8D0 FLDZ for every class whose message
+    // handler reaches 00819A20 (00CF90B0, 00CFA778, 00CFB738, 00CFC3D0,
+    // 00CFFA30, 00D01630, 00D0BF80), which overwrites the +510h store at
+    // 00819B46. weapon_scale is unit->vtable[58h]() = 0042B8E0 FLD1.
+    bsp::HitRecord hit;
+    hit.hull_damage_base = 0.0f;
+    hit.part_damage_base = kr.blast_514;   // +28h, 00819B96
+    hit.falloff_range = kr.range_518;      // +24h, 00819B83
+    hit.ignore_falloff = false;            // +2Ch, 00470470
+    hit.armour_selector = fill.position.y; // +0Ch, the traced point's y
+    hit.hull_segment = kHullElementSegmentBound ? fill.hull_segment : kDirectHitHullSegment;
+    hit.weapon_scale = 1.0f;
+    hit.owner_modifier = 1.0f;             // 008E6430 over an empty modifier list
+    hit.part_hits = nullptr;               // the trace writes no part array
+    hit.part_hit_count = 0;
+    done("Projectile::hit_record_set_shot_00470350", 0x00470350u);
+
+    KamikazeDirectShot shot;
+    for (int i = 0; i < 3; ++i) shot.direction[i] = offset[i];   // EDX = offset, 00819BA1
+    shot.segment_kind = kHullElementSegmentBound ? fill.shape_kind : 0x0A;
+    const float point[3] = {fill.position.x, fill.position.y, fill.position.z};
+    // 00819BA7: 00926E80, delivered here through the immediate funnel.
+    // TODO(cc13-hitq): with kHitDeferredDispatchCc13Bound ON, push it instead.
+    apply_gunless_blast_hit(unit, target, point, hit, &shot);
+    // 00819BBE: 00915F20(target, &record), the scoring record, on a trace hit only.
+    record("KamikazeDetonate::direct_hit_00915f20", 0x00915f20u);
+}
+
 // The tail of apply_hit for a record with no gun and no shot (0084BAD0 with
 // shot 0): the queue, the dispatch 00826F10, the health write and the death.
 // No attribution: with shot 0 the record's +4h is null and 0077CE60's source
 // record does not resolve. The kamikaze stands in as the ShipHitBinding's
 // shooter only for the shooter position.
+//
+// Packet cc13-kzdirect: with `unit_shot` the record's +4h is the kamikaze unit
+// (00819A20's direct record). 00826F10 then sees a shot that is neither a
+// depth charge nor a torpedo (unit classes are not 2Ch / 2Bh descendants,
+// docs/ENTITY_CLASS_IDS.md) and has no weapon (shot->vtable[108h] = 0042BB30,
+// XOR EAX,EAX, for every class that reaches 00819A20), and 0077CE60's damage
+// test reads 0 for it (+14h is 0 and there is no part array), so there is still
+// no attribution.
 void GameGunneryHost::Impl::apply_gunless_blast_hit(std::size_t source, std::size_t victim,
-    const float point[3], const bsp::HitRecord& record) {
+    const float point[3], const bsp::HitRecord& record, const KamikazeDirectShot* unit_shot) {
     if (victim >= unit_state.size() || source >= unit_state.size()) return;
     UnitState& target = unit_state[victim];
     if (target.dead) return;
@@ -12319,15 +12437,16 @@ void GameGunneryHost::Impl::apply_gunless_blast_hit(std::size_t source, std::siz
     }
     bsp::HitRecord hit = record;
     bsp::ShipHitRecordView view;
-    view.segment_kind = 0x0A;
+    view.segment_kind = unit_shot != nullptr ? unit_shot->segment_kind : 0x0A;
     for (int i = 0; i < 3; ++i) view.impact_point[i] = point[i];
-    view.shot_present = false;
+    view.shot_present = unit_shot != nullptr;
     view.shot_is_depth_charge = false;
     view.shot_is_torpedo = false;
     view.weapon_present = false;
     hit_event_fire = 0.0f;
     hit_event_leak = 0.0f;
-    const float direction[3] = {0.0f, 1.0f, 0.0f};
+    const float no_shot_direction[3] = {0.0f, 1.0f, 0.0f};
+    const float* direction = unit_shot != nullptr ? unit_shot->direction : no_shot_direction;
     ShipHitBinding binding(*this, victim, source, nullptr, direction);
     binding.set_hit(hit);
     const float before = target.health;
@@ -17819,6 +17938,11 @@ void GameGunneryHost::report() {
         host.kz_detonations, host.kz_direct_arms, host.kz_blast_records, host.kz_self_records,
         host.kz_blast_damage, static_cast<double>(host.kz_min_gap), host.kz_min_gap_t,
         kKamikazeContactDetonationBound ? 1 : 0);
+    if constexpr (bsp::kKamikazeDirectHitCc13Bound) {
+        host.log.notef("summary mission gunnery kamikaze direct arm traced=%llu missed=%llu "
+            "(0098AC20 at 00819B24, 00926E80 at 00819BA7, packet cc13-kzdirect)",
+            host.kz_direct_traced, host.kz_direct_missed);
+    }
     host.log.notef("summary mission gunnery plane crash sweep plane_steps=%llu segments=%llu "
         "unit_hits=%llu (c21=%llu c98=%llu c99=%llu other=%llu) same_squadron=%llu "
         "land_hits=%llu submerged=%llu surface_cuts=%llu cooldown_steps=%llu impacts=%llu blast_records=%llu "

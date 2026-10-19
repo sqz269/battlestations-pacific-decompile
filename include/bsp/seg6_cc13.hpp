@@ -92,7 +92,8 @@ struct Seg6Host {
     virtual void hidden_record_tree_erase_0046ad10(Object map, Object root) = 0;              // RET 4
     virtual Object hidden_record_map_buy_head_node_00468260(Object map) = 0;
     virtual Object int_set_buy_head_node_004682b0(Object set) = 0;
-    // 0046AC50 __thiscall(set, out pair, const int* key), RET 8.
+    // 0046AC50 __thiscall(set, out pair, const int* key), RET 8. out_pair must
+    // hold 0Ch: {owner, node} iterator, inserted byte, three bytes left untouched.
     virtual void int_set_insert_0046ac50(Object set, Object out_pair, const std::int32_t* key) = 0;
     // 0046B170 / 0046B570 __thiscall(tree, out iterator, first {cont, node}, last {cont, node}), RET 14h.
     virtual void int_set_erase_range_0046b170(Object set, Object out_iterator, Object first_cont,
