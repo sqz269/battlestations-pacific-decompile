@@ -106,6 +106,8 @@
 #include "bsp/weapon_director.hpp"
 #include "bsp/ship_ai_seg67_switches_cc13.hpp"
 #include "bsp/cc13_heading_wrap.hpp"
+#include "bsp/cc13_arc_centre.hpp"
+#include "bsp/cc13_seg67b.hpp"
 
 namespace bsp::game {
 
@@ -1995,6 +1997,14 @@ struct GameShipAiHost::Impl {
         }
         return static_cast<std::int32_t>(best);
     }
+    // Packet cc13-arcplan: 009E46F0's arm census (summary "arc centre plan test").
+    // node18_refusals counts path-arm calls with record+18h = 0, which the host
+    // refuses OFF and the image never tests.
+    unsigned long long arc_centre_calls{0};
+    unsigned long long arc_centre_plan_live_cursor0{0};
+    unsigned long long arc_centre_command_arm{0};
+    unsigned long long arc_centre_path_arm{0};
+    unsigned long long arc_centre_node18_refusals{0};
     // Packet cc9_heading_wrap_census: 00605070 leaves a value in (-pi, pi] alone.
     void count_heading_wrap_store(float heading) {
         ++summary.heading_wrap_stores;
@@ -8657,7 +8667,15 @@ bool ship_ai_arc_centre_next_point_009e46f0(GameShipAiHost::Impl& owner,
     bsp::ShipAiPathPlanBlock& live = (ctl.plan_front == 0) ? ctl.plan_a : ctl.plan_b;
     float unit_x = 0.0f, unit_y = 0.0f, unit_z = 0.0f;
     owner.units.unit_position_00fc(index, unit_x, unit_y, unit_z);
-    if (live.node_count == 0) {
+    // Packet cc13-arcplan: the image's test is the plan state, not the cursor.
+    // The census below runs in both switch settings.
+    ++owner.arc_centre_calls;
+    const bool image_path_arm = live.search_state != 0;               // 009E46FC
+    if (image_path_arm && live.node_count == 0) ++owner.arc_centre_plan_live_cursor0;
+    const bool path_arm = bsp::kShipAiArcCentrePlanTestCc13Bound
+        ? image_path_arm : live.node_count != 0;
+    if (!path_arm) {
+        ++owner.arc_centre_command_arm;
         // 009E4707's arm: no path plan, so the source is the active command's
         // own target descriptor. 009E4754 0071EB60 on the object
         // [blk+3FCh]->vtable[114h]() returns it; 009E4759 tests descriptor+1h
@@ -8678,6 +8696,13 @@ bool ship_ai_arc_centre_next_point_009e46f0(GameShipAiHost::Impl& owner,
         z = src_z;
         return true;
     }
+    ++owner.arc_centre_path_arm;
+    if constexpr (bsp::kShipAiArcCentrePlanTestCc13Bound) {
+        // 009E47D3..009E47F1: the two side bytes, before 009E3C00 can move the
+        // cursor they walk from.
+        ctl.approach.override_11d4 = bsp::ship_ai_path_any_positive_side_ahead_009d5ae0(live);
+        ctl.approach.override_11d5 = bsp::ship_ai_path_any_negative_side_ahead_009d5b90(live);
+    }
     bsp::ShipAiPathPointRecord record{};
     // 009E47F3..009E480D: the query is the unit's own world x and z, the pair
     // 009F1BC0 handed 009E46F0.
@@ -8687,10 +8712,15 @@ bool ship_ai_arc_centre_next_point_009e46f0(GameShipAiHost::Impl& owner,
     const bsp::ShipAiPathFollowerResult result =
         bsp::ship_ai_path_follower_point_009e3c00(live, record, point);
     static_cast<void>(result);
-    // The image does not test this: it subtracts whatever 009E3C00 left in the
-    // record. Refusing on an unwritten point is a deliberate divergence, since
-    // the alternative here is a bearing computed from a zeroed output field.
-    if (record.node_18 == 0) return false;
+    // The image does not test record+18h: it subtracts whatever 009E3C00 left
+    // in the record, and every 009E3C00 exit writes the point (the pose on the
+    // empty-plan and no-target exits, the published point otherwise). +18h is
+    // only the corner anchor handle (009E4243), 0 on a straight leg. OFF keeps
+    // the old refusal; both settings count it.
+    if (record.node_18 == 0) {
+        ++owner.arc_centre_node18_refusals;
+        if constexpr (!bsp::kShipAiArcCentrePlanTestCc13Bound) return false;
+    }
     x = record.point_x_08;
     z = record.point_z_0c;
     return true;
@@ -15075,6 +15105,12 @@ void GameShipAiHost::report() {
         "max_abs=%.4f (00605070 at 009DFF81 / 009E00FA / 009DFFB0 / 009F3360; packet "
         "cc9_heading_wrap_census)", host.summary.heading_wrap_stores,
         host.summary.heading_wrap_out_of_range, static_cast<double>(host.summary.heading_wrap_max_abs));
+    host.log.notef("summary mission ship ai arc centre plan test bound=%d calls=%llu "
+        "plan_live_cursor0=%llu command_arm=%llu path_arm=%llu node18_refusals=%llu "
+        "(009E46F0 at 009F27C6, 009E46FC; packet cc13-arcplan)",
+        bsp::kShipAiArcCentrePlanTestCc13Bound ? 1 : 0, host.arc_centre_calls,
+        host.arc_centre_plan_live_cursor0, host.arc_centre_command_arm,
+        host.arc_centre_path_arm, host.arc_centre_node18_refusals);
     host.log.notef("summary mission ship ai arm final area key calls=%llu differs=%llu bound=%d "
         "(0070E450 at 009DEEE9 / 009DEFD3; packet cc9_arm_final_area_key)",
         host.summary.arm_final_area_keys, host.summary.arm_final_area_key_differs,
