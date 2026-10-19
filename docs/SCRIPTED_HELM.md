@@ -1183,6 +1183,8 @@ Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of it
   - The action is held at amount 1.0 through no binding or device.
   - Screen 2Eh must be up with the player's ship (`[00E188D8]`) for `005484F0` to build anything. That is the case when the mission's HUD runs.
   - The hold counts down whether or not screen 2Eh is up. An edge that falls on a frame without 2Eh (the map screen, a cutscene, pause, a load) is lost. Time the line for a frame on which the HUD runs.
+  - **The 2Eh window.** Screen 2Eh is registered only while the mission's HUD runs. On USN01 that is frames ~410-1823; the script's SetSelectedUnit takes it down. Any `input` line outside the window reaches no 2Eh reader.
+  - **Lost-input lines.** The run log reports the loss rather than dropping it silently. When the rising edge falls on a frame without 2Eh, the log says `helm input action 0x99 edge on frame F lost: screen 2Eh is not registered`. When a hold ends after any held frames without 2Eh, it says `helm input action 0x99 hold ended on frame F: N held frame(s) without screen 2Eh`. The test is the menu host's screen registry (slot 2Eh) at the frame's input prologue.
   - The injected record is outside the image's input-suppression set (`game+5B0h`, `004e4ec2` / `004e4eee`). An injected key therefore stays held through states that would clear a real one.
 
 **Example.** Select the artillery group, then hold fire for 10 seconds at 0.05 s per frame:
@@ -1190,4 +1192,39 @@ Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of it
 ```
 6000 input 0x9D
 6002 input 0x99 hold 200
+```
+
+## 18. `aim`: the ship camera's look through the mouse axes (packet `cc13-helmaim`)
+
+Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of its own. It moves the player's ship camera to a chosen yaw and pitch, so that the HUD fire path (section 17) aims where the camera looks. On USN01, gunnery53's player artillery seat holds 8 mounts. `0085ABA0` refuses every shot because the bound camera starts 10 degrees down (`kInitialPitch`, `[00CECA08]` = -0.1745 rad), at the sea.
+
+```
+<frame> aim <yaw> <pitch>
+```
+
+- **Units.** Both angles are in degrees and may be signed decimals. They are converted to radians.
+- **What it sets.** The targets are the ShipCaptain mover's `+384h` yaw and `+388h` pitch. The message-79h aim comes from those two fields. `005484F0` → `00954A10` takes the mover's world forward row (`0042D7E0`, `00521370`), and `00432ED0` builds that row from them:
+  - `rot_y(-yaw)`, relative to the ship's heading in mode 0, or absolute in mode 1;
+  - then `rot_x(-pitch)` only while the pitch is below zero (`004331A0`). A pitch of 0 or above leaves the forward row level.
+- **The path.** The line does not poke the fields. It drives the input manager's look axes `[input+4]+1584h` (yaw) and `+15B4h` (pitch), which `0051F050` reads on every ship-view input frame (`0064A400`, from screen 46h's update), as a mouse move does:
+  - `0051F159` adds `step * -1.0 * zoom * axis` to the yaw;
+  - `0051E650` adds `step * 0.5 * zoom * axis` to the pitch, wraps it, and clamps it into `[+3ECh, +3F0h]`, the ShipCamera angle limits.
+  - The harness chooses each axis so that the step lands on the target. The target pitch is first clamped into the same limits.
+  - `0051F050` clamps each axis into [-50, 50], so a long turn on a short frame takes more than one frame.
+- **Persistence.** The aim persists, so it does not need to be held like `hold N`. The target clears once both angles are within 1e-4 rad. Nothing then decays `+384h` / `+388h`: the axes read zero again, and the fields keep their values.
+  - A rebind of the camera (`0064DA40`, which resets yaw and pitch for a new target) undoes the aim.
+  - So does the one-time mode-0-to-1 switch at `00432FC8`, which adds the ship's heading to the yaw.
+  - Write a new `aim` line after either.
+- **When it applies.** Only while screen 46h's ship-view input runs, i.e. the mission HUD with a bound ShipCaptain camera. Outside that, the target stays pending until the view comes back.
+- **What it logs.**
+  - `helm order applied: ... aim yaw Y pitch P rad through the look axes` when the line applies.
+  - `helm aim reached: mover yaw Y pitch P rad (+384h / +388h)` when the camera is there. The pitch reported is the clamped one.
+- **LABELLED.** GlobalConfig+4 still reads 1.0 (as before), and the raise axis `+15E4h` stays zero. The target is process-wide and is not cleared at mission end.
+
+**Example.** Level the camera on the bow, then fire the artillery group for 10 s:
+
+```
+600 aim 0 0
+610 input 0x9D
+612 input 0x99 hold 200
 ```
