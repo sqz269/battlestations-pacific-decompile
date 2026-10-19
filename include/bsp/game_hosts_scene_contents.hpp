@@ -503,7 +503,13 @@ inline constexpr bool kEngineMovieStopRosterBound = true;
 // game_hosts_units.cpp:16610 with a null creator and throws. Keep it OFF until the
 // held-back deck stock is marked before 004E0A9B, or 00964790's re-create-on-miss
 // is modelled.
-inline constexpr bool kVehicleClassPreloadCc15Bound = false;
+// ON again (cc9-lua70, 2026-10-19), after cc15's 8a905274a (device/bullet classes
+// marked recursively) and vcp7 4360598e7 (LandConvoy members, SpawnPoint stocks).
+// Pairs on 853ae51b5, ref env, pair_diff "gameplay identical", exit 0, Lua errors 0:
+// USN21 s46_u21_f completes 2906.71 s both sides (590 purged, failures 0); BSM09 d1
+// ends 351.04 s (617 purged); USNOS s59_os_c17 reaches the Ohka drop (16 releases from
+// 2643.50 s on both); USNOS os_k 969.89 s both. Logs local\l70r_{vu21,vb9,vos17,vos}_*.
+inline constexpr bool kVehicleClassPreloadCc15Bound = true;
 
 // cc15-vcp3: with kVehicleClassPreloadCc15Bound, also purge at the movie stop
 // 0045F6C1. That runs mid-mission and can nil rows that were first read after
