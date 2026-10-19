@@ -43293,6 +43293,18 @@ float GameUnitsHost::unit_ring_current_rudder(std::size_t index) const {
     return host.slots[index]->ring.current_param_b;
 }
 
+float GameUnitsHost::unit_ring_confirmed_throttle_0994(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    return host.slots[index]->ring.confirmed_param_a;
+}
+
+float GameUnitsHost::unit_ring_confirmed_rudder_0998(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    return host.slots[index]->ring.confirmed_param_b;
+}
+
 float GameUnitsHost::unit_yaw_authority_0524(std::size_t index, bool& derived) const {
     derived = false;
     const Impl& host = *impl_;
