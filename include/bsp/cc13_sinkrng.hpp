@@ -19,6 +19,12 @@
 // GameGunneryHost::death_mode_draw_00bd2f10(1, ship, 0, 1), in call order, as
 // every other units-host stream-1 draw routed to gunnery is.
 //
+// A MODELLING CHOICE, not a fidelity fix: the image's slot-0 stream 1 also carries
+// the plane-AI and gunnery draws of the fixed-step jobs the main thread wins in
+// the job race (00E0B6CE = 1), so the sink draws advance both sequences there.
+// The host splits that stream into H-G and H-U; either placement misses one.
+// The count is exact: 0074F4DD fixes [manager+14h] at 6.
+//
 // OFF is identical: the ON-only call is behind `if constexpr`. Not yet
 // game-validated.
 
