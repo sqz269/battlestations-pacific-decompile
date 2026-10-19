@@ -127,7 +127,49 @@ Rows that move from OFF to ON, the same in both missions:
   playerunit_section=5) are the same. The warning path now runs on the owner's state
   and tables, with the same contents and results.
 
-The switch stays OFF in this tree. Turning it ON is the lead's call; the pairs
+## Flipped ON (cc15-flip, base b6c83028d, 2026-10-19)
+
+OFF = b6c83028d, ON = the same tree with the switch true. Both run through tools/run_game.ps1 in the
+reference env, `BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`, and every log has `rng streams: on`.
+The runs are USN04 (`--frames 5000 --mission-frames 4800`) and the 12 wins rows (`--stop-after-end
+40`).
+
+- **Gameplay.** `pair_diff` reports gameplay identical on all 13 rows. The end, the clock, the death
+  rows, the unit table, the guard line and every summary line match. Ends: USN01 completed 435.02 s,
+  USN02 failed 155.05 s, USN12 failed 819.92 s, PRCP01 completed 1069.67 s, USN21 completed
+  2881.69 s, ESMP08 completed 1329.32 s, LOMP10 completed 1050.45 s, JM06 completed 778.93 s, BSM09
+  EndMission 285.05 s, LOMP06 failed 621.12 s, IJN18 failed 485.01 s, BSM01 no end.
+- **Moved rows, every row.** These are the Pairs rows above: seven `GlobalSubsystems::*` native rows,
+  `global subsystems built` (failures=0), `global subsystems contents` and the four teardown lines.
+  Nothing else moved, apart from the ring-scan `clear_37c` lines of SHIP_AI_OPEN_ITEMS 140 (JM06,
+  LOMP10).
+- **(a) Warnings, in order.** I ran a strict index-by-index diff, with hex masked and the new owner
+  lines dropped, of every activation, draw, clip, warning, powerup, weather, teardown, message,
+  dialog, hint, objective, Lua and script line. Each row has exactly six mismatched positions, all
+  one swap. ON loads `PowerUps::load_classes` before `WarningManager::load_message_tables`, which is
+  004DC6A0's order (power-up 004DC899 before warnings 004DC8CF). OFF loads them the other way round.
+  The six positions are the two host rows, the two loaded lines and the two native-table rows. Every
+  later line is identical, in order and content. Warnings.lua loads once per run on both sides
+  (`warning table ... messages=122 entity=36 playerunit_section=5`, one line).
+- **Reset between missions.** It is not exercised: each run loads one mission. In the code, the
+  build step keeps one `GameGlobalSubsystemsHost`. `build_warnings` builds a new warning owner and
+  the step clears `warning_tables_loaded` before the fragment reloads it.
+- **(b) Teardown.** The four lines come after `ApplicationShutdownHost::singleton_teardown`, in the
+  order +21D0, +21C4, +21E0, +21E4, and are followed by `MessageManager::destruct` and the normal
+  exit (EXITCODE=0 on every run). Counts of `logic_error`, `exception`, `threw`, `terminate` and
+  `abort` lines are equal OFF and ON on every row; none is new. The host destroys the MessageManager
+  after the four owners, while the image destroys +21DCh between +21C4h and +21E0h. These are
+  separate hosts with no shared state at teardown.
+- **(c) Weather.** `GameGlobalSubsystemsHost::weather()`, `traffic()` and `panel()` are read only
+  by the `built` and `contents` log lines (game_hosts_mission_frame.cpp). Only `warnings()` feeds
+  the mission frame, so start_day_time 12 and morning 4..8 change no lighting and no clock.
+- **(d) Power-ups.** cc13's path still runs; it is called from inside the step, between panel and
+  warnings. All powerup lines are identical in count and content, and the only reorder is the swap
+  in (a).
+- **Save untouched.** Every file under `Documents\Battlestations-Pacific` has the same SHA-256, size
+  and mtime before and after the runs.
+
+(cc15-ob1, before the flip above:) The switch stays OFF in this tree. Turning it ON is the lead's call; the pairs
 above are the evidence. With both this switch and `kMessageManagerCc15Bound` on, the
 two owners are independent: the MessageManager reads the entity escape map
 through `warning_tables()`, which is the owner's +11Ch then, as 0097B5E0 reads
