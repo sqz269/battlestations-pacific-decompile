@@ -635,6 +635,16 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
 }
 
 // 009C7F00-009C7FD6, the goaway completion rule, read whole.
+// Precision (kDiveBombGoawayFloatStoresBound): every double product below is
+// exact. Its factors are a float (travel +20h, or the stored term) and the qword
+// 00D7A390, whose value is float(0.9) (24 significant bits); 24 x 24 bits fits
+// in a double's 53. So the static_cast<float> is the only rounding, the same
+// one the image's FSTP float makes (under 24-bit precision control the FMUL
+// result is already float-rounded and the FSTP is exact). ceiling - 100.0 is
+// likewise exact in double before its cast.
+// 009C7F3C JBE (recorded, no switch): ST0 = ctl+398h, ST1 = the sum; JBE takes
+// +398h when +398h <= sum OR unordered. The host's `<=` takes the sum on NaN;
+// only a NaN input differs.
 bool dive_bomb_goaway_complete_009c7f00(
     const DiveBombGoAwayCompleteInputs& in) noexcept {
     // 009C7F03-009C7F16: the distance term.

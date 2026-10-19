@@ -108,7 +108,7 @@ ranges are also excluded.
     throttle, and the leg manager drops it. Its unit+390h is not expected to be read again. That
     last point is a hypothesis; no reader census was run.
 - **00827B90, the failure effects.** Stale. `failure_name_is` (game_hosts_gunnery.cpp) already
-  compares case-insensitively (cc13 backfill G3, 7a0386564).
+  compares case-insensitively (cc13 backfill G3, 771b6a3a0; 7a0386564 only added callers).
 - **009C7F00, goaway complete.** This is an URGENT category, reported to the lead.
   - The logic matches.
   - The image stores the term (009C7F16, 009C7F7D) and ceiling - 100 (009C7FB8) as floats. The
@@ -118,6 +118,11 @@ ranges are also excluded.
   - The lead asked for a switch anyway, because cc9 is chasing goaway completion and the
     project models 24-bit precision. It is `kDiveBombGoawayFloatStoresBound` (OFF; see
     Switches). There is no ON-only lookup and no draw.
+  - The host's double products are exact: each multiplies a float by the qword 00D7A390,
+    whose value is float(0.9). So the switch's cast is the image's single rounding.
+  - Recorded, no switch: the ceiling pick at 009C7F3C is a JBE with ST0 = ctl+398h and
+    ST1 = the sum, so the image takes +398h when the compare is unordered. The host's
+    `cruise_altitude_398 <= sum` takes the sum. They differ only on a NaN input.
 - **009D0160 / 009D1360 / 009D1500, torpedo run times.** This is an URGENT category, reported to
   the lead.
   - The added zero-divide guards never fire on live data:
