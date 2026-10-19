@@ -11169,6 +11169,11 @@ public:
         ctl_.clearance.category_3f0 = ctl_.avoidance.side_filter_3f8;
         ctl_.clearance.avoidance_enabled_3f4 = ctl_.avoidance.flag_3fc;
         ctl_.clearance.static_zone_present_a3c = ctl_.avoid_search->list(0).head != nullptr;
+        if constexpr (bsp::kShipAiClearance364SyncCc13Bound) {
+            // 009EFFDC / 009EFFEC read [ESI+364h] with ESI = blk (009EF91B),
+            // the same byte the escape flips; 009EF910 never writes it.
+            ctl_.clearance.committed_ahead_364 = ctl_.blk.yaw_rate_subtracts_364;
+        }
         ClearanceBinding clearance(owner_, index_);
         // Packet cc13-ver7 (D5): blk+374h is one field. The -1.0f stores the
         // block names direction_value_374 (009D526F, 009ED867, 009ED8B5,
@@ -12313,6 +12318,15 @@ bool register_ship_ai_unit(GameShipAiHost::Impl& host, std::size_t index,
             // (register_generated_units), so they are seeded too.
             ctl.blk.cruise_distance_3e0
                 = bsp::ship_ai_nav_block_steering_defaults_009dfcb0().cruise_distance_3e0;
+        }
+        if constexpr (bsp::kShipAiNavBlockCtorSeedsCc13Bound) {
+            // Packet cc13-navseeds2: the rest of 009DFCB0's seeds that have
+            // live readers (see the switch for the evidence).
+            ctl.blk.yaw_rate_subtracts_364 = true;      // 009DFDB7
+            ctl.obstacle.stall_time_384 = -1.0f;        // 009DFD79
+            ctl.blk.direction_counter_384 = 1;          // no direction-change zero yet
+            ctl.blk.clamp_354 = -1.0f;                  // 009DFD71
+            ctl.throttle_profile.hold_354 = -1.0f;      // the same blk+354h
         }
         const auto request = bsp::ship_ai_avoidance_request_constructed_009e468b();
         ctl.avoidance = request.request;

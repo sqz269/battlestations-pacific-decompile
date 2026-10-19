@@ -37,15 +37,17 @@ wire1's correction. The switch is `kShipAiCruiseDistanceSeedBound` in
 **32Ch = 0 keeps the flip going through four readers.** These feed the escape its
 blocked/escape inputs:
 - **`009F0100`'s neighbour clear.** At `009F06D4..009F06EC` it compares a neighbour's distance
-  with own 32Ch plus the neighbour record's `[EDI+48h]` (`009F06D4 FLD [ESI+32Ch]`,
-  `009F06DA FADD [EDI+48h]`, rechecked), and clears the neighbours beyond that.
-  - The publish stores a ship's 32Ch at record `+40h` (`009F4D4D` / `009F4D55`) and its 330h at
-    `+48h` (`009F4D5B` / `009F4D62`), both rechecked.
-  - So the threshold is about own 32Ch + the neighbour's 330h. That is at least 2000 even when the
-    neighbour's 32Ch is 0, so it is not a fixed 100.
-  - This is **inferred from the stores**: EDI at `009F06DA` is not proven to be the same record
-    type the publish writes.
-  - With own 32Ch = 0, the clear radius shrinks by own cruise distance (1000 under the seed), so
+  with own 32Ch plus `[EDI+48h]` (`009F06D4 FLD [ESI+32Ch]`, `009F06DA FADD [EDI+48h]`), and
+  clears the neighbours beyond that.
+  - EDI there is the settings record: `009F02BF CALL 00424C40` (GameSettings), `009F02CF MOV EDI,EAX`,
+    `009F02E6 ADD EDI,180h`, saved at `009F02FD` and restored at `009F09DC` before the back edge.
+    Only the behind arm repoints EDI at the node (`009F07C6`). So `[EDI+48h]` is settings+1C8h,
+    ShipAvoidance.NearbyShip_NextCornerReachDistAddOn (default 100), and the threshold is
+    own 32Ch + 100 (wire1, docs/CC13_DRIVE32C.md §3).
+  - Withdrawn: an earlier revision inferred `[EDI+48h]` was the neighbour's published 330h, from
+    the 009F3F80 publish (`009F4D5B` / `009F4D62`). That publish uses a different EDI (the traffic
+    slot); the matching offset is a coincidence (180h + 48h = 1C8h).
+  - With own 32Ch = 0, every neighbour more than 100 ahead is cleared; the seed widens that to 1100, so
     fewer neighbours stay in the pass and traffic logic. wire1 ties this to no pass side being
     posted.
 - **The arm-final query range.** It starts at `009DE61D` (`FLD [ESI+32Ch]`, rechecked); wire1

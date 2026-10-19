@@ -27,6 +27,7 @@
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_message_manager.hpp"
@@ -499,6 +500,7 @@ struct GameMissionFrameHost::Impl {
         float throttle{0.0f};      // takehelm
         float repeat_seconds{0.0f};  // moveto ... repeat N
         bool select{false};        // packet cc9_player_order_capture_row
+        bool release_gun{false};   // packet cc13-releasegun
         bool attack{false};        // packet cc9_player_attack_row
         bool squadron_target{false};   // packet cc9_player_squadron_target
         bool launch{false};        // packet cc9_helm_orders_launch
@@ -3885,7 +3887,12 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 || words[1] == "attack" || words[1] == "target" || words[1] == "launch"
                 || words[1] == "release" || words[1] == "build"
                 || words[1] == "depthcharge" || words[1] == "fire" || words[1] == "order"
-            || words[1] == "torpedo" || words[1] == "input" || words[1] == "aim");
+            || words[1] == "torpedo" || words[1] == "input" || words[1] == "aim"
+            || words[1] == "releasegun");
+        // Packet cc13-releasegun: `<frame> releasegun <unit...>`. One line opens
+        // the map for the rest of the run; a second line only logs
+        // `map close-requested` (the close arm 0068B4E9 is not hosted).
+        const bool releasegun_ok = verb_ok && words[1] == "releasegun" && words.size() >= 3;
         // `<frame> input <action> [hold <frames>]`.
         const bool input_ok = verb_ok && words[1] == "input"
             && (words.size() == 3 || (words.size() == 5 && words[3] == "hold"));
@@ -3936,6 +3943,7 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 : words[1] == "torpedo" ? !torpedo_ok
                 : words[1] == "input" ? !input_ok
                 : words[1] == "aim" ? !aim_ok
+                : words[1] == "releasegun" ? !releasegun_ok
                 : words[1] == "order" ? !air_order_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
@@ -3946,7 +3954,7 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 "fire <ship> group <g> [release]` or `<frame> torpedo <ship> at <target>|release` "
                 "or `<frame> order <base> <slot> <1|2|3> [target]` or `<frame> input "
                 "<action> [hold <frames>]` or `<frame> aim <yaw> <pitch>` or `<frame> aim unit <name> "
-                "[pitch]`", line, path.c_str());
+                "[pitch]` or `<frame> releasegun <unit>`", line, path.c_str());
             continue;
         }
         order.unit = words[2];
@@ -4096,6 +4104,16 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         }
         if (select_ok) {
             order.select = true;
+            host.helm_orders.push_back(order);
+            continue;
+        }
+        if (releasegun_ok) {
+            order.release_gun = true;
+            order.unit.clear();
+            for (std::size_t w = 2; w < words.size(); ++w) {
+                if (!order.unit.empty()) order.unit += ' ';
+                order.unit += words[w];
+            }
             host.helm_orders.push_back(order);
             continue;
         }
@@ -4573,6 +4591,38 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) select "
                     "%s%s through 0064A00E -> 00645060 -> 00645600 -> 20h", accepted
                     ? "applied" : "refused", order.line, due, now, order.unit.c_str(), why);
+                continue;
+            }
+            if (order.release_gun) {
+                // Packet cc13-releasegun (kHarnessReleaseGunMapBound). The player
+                // opens the map with C1h (IC_MAP_TOGGLE): 0068C1F0 reads the edge
+                // at 0068C64C and 0068B470 -> 0068AC30 publishes the level-2 set,
+                // whose opaque 4Ch exits screen 46h; 0064A490 releases the group
+                // (005470C0) and roles 1..8 of the ship-view unit. LABELLED: the
+                // press is the helm `input` line's held action record, and the
+                // line arms the host's 0068B470 / 4Ch / 0064A490 wiring.
+                const std::size_t idx = harness_target_row(*host.units, order.unit);
+                bool reached = false;
+                bool accepted = false;
+                const char* why = "";
+                if (!kHarnessReleaseGunMapBound) {
+                    why = " (kHarnessReleaseGunMapBound is OFF)";
+                } else if (idx >= host.units->count()) {
+                    why = " (no created unit has that name)";
+                } else if (!host.units->controlled_bound()
+                           || host.units->controlled_index() != idx) {
+                    why = " (not the controlled unit [00E188D8], whose ship view 46h holds it)";
+                } else if (!bsp::game::hud_arm_release_gun_map_toggle(reached)) {
+                    why = " (no HUD is attached)";
+                } else {
+                    accepted = inject_input_action_hold(0xC1, 1);
+                    if (!accepted) why = " (the action record refused C1h)";
+                }
+                if (accepted) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
+                    "releasegun %s%s: input C1h through 0068C64C -> 0068B470 -> 0068AC30",
+                    accepted ? "applied" : "refused", order.line, due, now,
+                    order.unit.c_str(), why);
                 continue;
             }
             if (order.fire_group) {

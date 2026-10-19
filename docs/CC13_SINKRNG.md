@@ -20,9 +20,11 @@ gap that docs/CC13_LEAK92.md section 5 flagged, and it was revised after rev4's 
     on the main thread.
   - The host splits image stream 1 into a gunnery generator (H-G) and a plane-AI generator (H-U).
     So the six draws can perturb only one of the two.
-- **H-G is the better approximation (settled with rev4).** Neither generator is exact, because
-  the host splits one image stream in two. The difference is in which draws are guaranteed to
-  share slot 0 with the sink draws:
+- **ON is the closer model (call order: the sink's deterministic slot-0 co-tenants are on H-G).
+  The flip is chaos-only and low priority. cc9: flip it in a batch that already resets
+  shared-mode baselines; do not spend a dedicated pair on it.** Neither generator is exact,
+  because the host splits one image stream in two. The difference is in which draws are
+  guaranteed to share slot 0 with the sink draws:
   - *Always on slot 0:* the sink draws, the row 6/14 hit-effect draws, the break-up draw
     `00827B4D` and the movie reseeds. All of them run in the main-thread fan-out or on the main
     thread. Every one of them is on H-G in the host.
@@ -32,6 +34,8 @@ gap that docs/CC13_LEAK92.md section 5 flagged, and it was revised after rev4's 
   - So H-G holds every guaranteed partner, while H-U holds only race-dependent ones. ON
     (`kSinkLeakDrawStreamCc13Bound`) moves the six draws to H-G. The H-G/H-U split itself
     remains a labelled substitution.
+  - Keeping the draws on H-U by "convention" does not hold either: `death_mode_draw_00bd2f10`
+    already routes units-host stream-1 draws to H-G, the torpedo goaway jitter among them.
 - **The gunnery stream.** The image's gunnery draws are stream 1 and H-G models stream 1
   (section 1). Only the projectile-construction draw `006E7B97` is stream 0, and the host does not
   take it. rev4 has withdrawn its "gunnery is stream 0" note.
@@ -79,7 +83,7 @@ and models stream 1. H-S0 is the host's stream-0 model.
 - Which consumers sit inside wave virtuals was not traced per site (census open item 2).
 - So yes: in the image the sink draws do advance the plane-AI sequence, but only for the jobs
   the main thread claims. The draws the sink always shares slot 0 with are the fan-out and
-  main-thread draws, and those are on H-G. That is why H-G is the better approximation.
+  main-thread draws, and those are on H-G. That is why ON is the closer model.
 - A faithful model would merge H-G and H-U into one stream-1 generator. That would move every
   pair at once, and the job race would still make it inexact. Neither the switch nor the OFF
   state claims to be that model.
@@ -88,22 +92,16 @@ and models stream 1. H-S0 is the host's stream-0 model.
 
 - **OFF:** `ship_wreck_sink_block_00824fe5` draws `release_altitude_draw_00bd2f10(s.row.name +
   "#leak", 0, 1)` six times, on H-U. No change.
-- **ON:** the six draws are `gunnery->death_mode_draw_00bd2f10(1, s.process_index, 0, 1)`.
-  - On the default path that is H-G in call order. It is the same entry the units host uses for
-    its other draws routed to H-G.
-  - Under `BSP_GUNNERY_RNG_STREAMS=1` the key is `(Draw::death_mode, ship)`. **That key is
-    shared with other draws on the same ship:**
-    - Lua `BreakShip` draws on it at `game_hosts_lua.cpp:7591`-`7594` and `:7609`;
-    - Lua `SetDeadMeat` (`008AC94B`) draws on it at `game_hosts_lua.cpp:9897` (described at
-      `:9866`).
-
-    So in streams mode with the switch ON, a ship that gets one of those calls and also sinks
-    shares one keyed stream between the two, and the order decides the values. The six draws
-    are not isolated per ship in that case. With the switch OFF they use their own
-    "`<name>#leak`" key on H-U and are isolated. A separate `Draw` purpose for the leak would
-    restore isolation. It needs a new `GameGunneryHost` entry, which means `game_hosts_gunnery.cpp`,
-    its header and `game_hosts_units.cpp`. It is left as an option for when the gunnery host's
-    lease queue clears (packet cc13-sinkrng2).
+- **ON:** the six draws are `gunnery->sink_leak_draw_0074eca5(s.process_index, 0, 1)`
+  (packet cc13-sinkfix).
+  - On the default path that is H-G in call order: `Impl::draw` returns
+    `random_range_00bd2f10` before it looks at the purpose. That is the same call the earlier ON
+    (`death_mode_draw_00bd2f10(1, ...)`) made, so ON-shared is unchanged by cc13-sinkfix.
+  - Under `BSP_GUNNERY_RNG_STREAMS=1` the key is `(Draw::sink_leak, ship)`, a purpose of its
+    own (35). The earlier ON key `(Draw::death_mode, ship)` was shared with Lua `BreakShip`
+    (`game_hosts_lua.cpp:7591`-`7594`, `:7609`) and `SetDeadMeat` (`008AC94B`,
+    `game_hosts_lua.cpp:9897`) draws on the same ship. The new key is not, so each ship's six
+    draws are isolated, as they are OFF on the `<name>#leak` H-U key.
   - With no gunnery host the draws fall back to H-U, as OFF. In a mission a gunnery host is
     always present.
 - **Lifetime.** ON adds no state. The gunnery host lives until `~GameUnitsHost` resets it, and
@@ -116,6 +114,10 @@ and models stream 1. H-S0 is the host's stream-0 model.
 
 The log set is the frozen list `reports/cc13_sink_logs.txt` (471 logs; see docs/CC13_LEAK92.md
 section 4), produced by `python tools/cc13_sink_log_scan.py scan reports/cc13_sink_logs.txt`.
+Each line of the list is "path, size, mtime" (tab-separated, mtime in UTC), and `scan` prints
+"WARNING changed since freeze" for any log whose size or mtime no longer matches, then a final
+`changed_since_freeze` count. All 471 were stamped 2026-10-19 with no log modified after the
+12:30Z cutoff; the re-scan reports `changed_since_freeze 0`.
 Columns:
 - *shared*: logs without the "per-consumer random streams ON" summary;
 - *live*: shared logs with a wreck death and plane activity after it (plane death rows, val rack
@@ -148,16 +150,21 @@ Columns:
 
 - Missions that post no 92h are not listed. There the switch changes nothing.
 - **Most of the table runs in streams mode:** 77 of the 364 listed logs are shared. In the rest,
-  ON moves only the six values (and, through the shared key, any `BreakShip` or `SetDeadMeat`
-  draw on the same ship; section 2).
+  ON changes the six values directly, and from there whatever the sink physics feeds (section 5).
+- **cc9's current re-pairs run in streams mode.** The evidence is the manifests: all 22 of the 22
+  `s60_m1*` / `s60_m2*` `*.log.manifest.json` files in cc9-ships44 (rechecked 2026-10-19) carry
+  `"BSP_GUNNERY_RNG_STREAMS": "1"` in their env. No startup line prints the mode, so the manifest
+  env is the record of it. As a cross-check, the "per-consumer random streams ON" summary was
+  read in `s60_m2off_j06.log` before that log was removed; only its `.done`, launch file and
+  manifest remain. cc9-physics1's `p23j` pairs run both modes (the `*_def` logs are shared).
 - JM06's first sink at 0.05 s is a death on the first step with no damage (`first_damage=-1.00`),
   for example `Gato-class Submarine 01` in `p17htd_jm06w.log`. It is a wreck that is instant at
   load, not one that sank in combat.
 - First sinks fall at 117 s (BSM01), about 155 s (BSM09), 0.05 s (JM06),
   71-450 s (JM08), about 162 s (USN01), 149-165 s (USN21) and 22-30 s (USNOS). Nothing before
   the first sink moves.
-- In streams mode (every log not counted as shared), both generators are keyed, and the switch
-  changes only the six values.
+- In streams mode (every log not counted as shared), both generators are keyed, and no other
+  key's draws move. The six values still change, with the consequences in section 5.
 - The *live* column is a proxy: the host has no H-U draw counter.
 
 ## 4. The draw count: `[manager+14h]` against a fixed six
@@ -173,6 +180,8 @@ Columns:
   class in this installation gets six: the count is a constant, not data.
 - The host draws only when `leak_ready`, which is set after its `0074F490` model. No wreck in
   the `p24*` and `g54*` logs of the frozen set reports `leaks bound=1 built=0`.
+- **Scope of that finding.** "Only `0074F4DD` writes `+14h`" rests on these three bodies
+  (`0074F490`, `0074E7B0`, `0074EDC0`), not on a program-wide displacement or block-copy scan.
 - **Not live.** No switch is built.
 
 ## 5. Expected movers with the switch ON
@@ -184,9 +193,10 @@ Columns:
   - The leak draw values change, so the rates, the sink trajectory and the kill-depth time move
     slightly.
   - Divergence starts at the first sink, with the per-mission counts in section 3.
-- **Streams mode:** only the six values change, plus any `BreakShip` or `SetDeadMeat` draw on
-  the same ship that shares the `(death_mode, ship)` key (section 2). Through the rates, the sink physics changes, and
-  through the wreck pose so does any shell-on-wreck hit (docs/CC13_LEAK92.md section 4).
+- **Streams mode:** no other key's draws move, but the six values change. Through the rates
+  the sink physics changes (trajectory, kill-depth time). Through the wreck pose, so does any
+  shell-on-wreck hit (docs/CC13_LEAK92.md section 4). Anything downstream of those events can
+  then move too.
 - **Draw totals:** unchanged at six per sink. They move from H-U to H-G.
 - **Log:** no new line.
 
@@ -194,5 +204,6 @@ Columns:
 
 - The job race decides, per step and per element, whether a pilot-bot or gunnery draw shares
   slot 0 with the sink draws. Its outcome is not modelled anywhere in the host.
-- The streams-mode key reuses the `death_mode` purpose label.
+- The `Draw::sink_leak` key is a host measurement construct, like every streams-mode key. The
+  image has one stream-1 sequence per thread slot.
 - The no-unbuilt-wreck check covered the `p24*` and `g54*` logs of the frozen set, not all 471.

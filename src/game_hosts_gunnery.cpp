@@ -527,6 +527,19 @@ constexpr bool kTorpedoBotAttackRangeBound = true;
 //    the first targeted tick evaluates. OFF: every fixed step evaluates.
 constexpr bool kTorpedoBotThinkTimerBound = true;   // ON: GUNNERY 245
 constexpr float kTorpedoBotThinkPeriod = 0.2f;   // 00CE54A0
+//  * kTorpedoBotOwnerPlayerGateCc13Bound: packet cc13-torpgate
+//    (docs/CC13_IJN18LOSS.md section 7, "Gunnery while the map is up"). After the
+//    holder gate (0090003B), 008FFF20 walks the gun's parents to the first
+//    IsKindOf(5) owner (00900048..00900067, vtable[5Ch] at 0090005C) and, when
+//    that owner's +184h is set (00900080), jumps at 00900087 to 00900985. So a
+//    ship the player took with role 1 launches no bot torpedo; the timer, the
+//    gates, the intercept, 0085ABA0 and the trigger all keep their last state.
+//    ON: a torpedo gun of such an owner commands no angles while its bot holds
+//    a target, keeps its trigger, and leaves its think record alone. LABELLED:
+//    the owner is the gun's own unit (gun.unit_index), as at 008FFFB2; a gun
+//    whose unit is not kind 5 is not gated. OFF: as before. The tick count
+//    under the condition is logged with the switch either way.
+constexpr bool kTorpedoBotOwnerPlayerGateCc13Bound = false;
 //  * kTorpedoBotStaleFlagBound: packet g42_ver23 (docs/CC13_VER_23.md D2), only
 //    under kTorpedoBotAttackRangeBound. 00903580 recomputes bot+68h BEFORE it
 //    stores the new bot+6Ch (0090358D, 00903592), so a flag change keeps the old
@@ -2413,6 +2426,7 @@ struct GameGunneryHost::Impl {
         auto_target_phase = kDrawKeyCollisionFixBound ? 32u : 30u, // 009F6A8F, -U(0, 1) into the auto-target think countdown, stream 1, key (unit, 0)
         trace_scene_damage = 33, // 0084C19F, U(+ACh, +B0h) for 00428420, stream 1, key (shot serial | plane, 0)
         ship_break_in_two = 34, // 00935D30's 11 piece-offset draws, stream 1, key (unit, 0 front | 1 back)
+        sink_leak = 35,       // 0074ECA5, 0074EC50's per-leak U(0, 1), stream 1, key (ship, 0)
     };
     unsigned long long next_projectile_serial{0};
     unsigned long long trace_scene_draws{0};   // kTraceSceneDamageDrawBound
@@ -2499,6 +2513,9 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, TorpedoThink> torpedo_think_by_gun;
     unsigned long long torpedo_angle_err_evaluations{0};   // kTorpedoAngleErrPerEvaluationBound
     unsigned long long torpedo_think_holds{0}, torpedo_think_evals{0};
+    // kTorpedoBotOwnerPlayerGateCc13Bound: torpedo-gun ticks whose kind-5 owner
+    // has +184h set (counted with the switch either way), and the exits taken.
+    unsigned long long torpedo_owner_player_ticks{0}, torpedo_owner_player_exits{0};
     unsigned long long torpedo_ready_reload_refusals{0};   // kTorpedoBotCanFireReloadBound
     unsigned long long torpedo_zone_tests{0}, torpedo_zone_holds{0};  // kTorpedoLaunchZoneBound
     double torpedo_attack_range_sum{0.0};
@@ -3603,12 +3620,21 @@ struct GameGunneryHost::Impl {
         int impact_shape_kind{0x0A};
         int impact_hull_segment{-1};
         float hull_damage_draw{0.0f};           // record+14h, drawn at the push
+        // Host-only (packet cc13-tooklog): queued by blast_radial_damage with
+        // element entries, so its dispatch adds to be_damage_element.
+        bool blast_element{false};
     };
     std::unique_ptr<std::deque<DeferredHit>> deferred_hits;
     const DeferredHit* deferred_replay{nullptr};   // the node 009239A0 is running
     unsigned long long deferred_hits_queued{0};
     unsigned long long deferred_hits_dispatched{0};
     unsigned long long deferred_hits_refused_at_queue{0};
+    // Host-only check (packet cc13-tooklog): the node the last dispatch ran, set as
+    // it returns and cleared by the pop, and the drain pops whose back() was
+    // another node (a nested push the dispatch made). Log-only; the pop itself is
+    // unchanged.
+    const DeferredHit* deferred_last_dispatched{nullptr};
+    unsigned long long deferred_nested_pops{0};
     void queue_deferred_hit(DeferredHit&& node);
     void dispatch_deferred_hit(const DeferredHit& node);
     // kPlaneSpinSideBound: the element kind the last plane mesh trace of a unit
@@ -8184,6 +8210,18 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             have_target = false;
             ++seat_held_ticks;
         }
+        // kTorpedoBotOwnerPlayerGateCc13Bound: 008FFF20's owner test at 00900080,
+        // past the holder gate (a player seat leaves at 0090003B first).
+        bool torpedo_owner_exit = false;
+        if (gun.category == bsp::kUnitGunneryTorpedoCategory && !player_seat
+            && units.unit_is_kind_of(owner_unit, 5)
+            && units.unit_player_controlled_0184(owner_unit)) {
+            ++torpedo_owner_player_ticks;
+            if constexpr (kTorpedoBotOwnerPlayerGateCc13Bound) {
+                torpedo_owner_exit = true;
+                ++torpedo_owner_player_exits;
+            }
+        }
 
         float right[3], up[3], forward[3], origin[3];
         unit_pose(owner_unit, right, up, forward, origin);
@@ -8298,6 +8336,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     ++torpedo_submerged_drops;
                 }
             }
+            // kTorpedoBotOwnerPlayerGateCc13Bound: the submerged drop (008FFFB2..
+            // 0090002A) runs before the owner test; past it the bot does nothing.
+            if (torpedo_owner_exit) have_target = false;
             // kTorpedoBotThinkTimer: 009000DD..009000F6 thinkTimeLeft -= dt (stored
             // to float); still > 0 returns at 00900985 with the trigger and the
             // commanded heading untouched; otherwise 00900101 reloads 0.2f.
@@ -8839,6 +8880,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             }
         }
+        if (torpedo_owner_exit && bot_has_target) {
+            // kTorpedoBotOwnerPlayerGateCc13Bound: 00900087 -> 00900985, no
+            // 0085ABA0; with no target 008FBCE0's rest arm above still decides.
+            command_angles = false;
+        }
         if (torpedo_think_hold) {
             // 00900985: no 0085ABA0 this tick (009003DD is past the timer), so the
             // gun keeps turning toward the last command; the trigger is restored below.
@@ -9168,6 +9214,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
         }
         if (kTorpedoBotThinkTimerBound && !torpedo_think_hold && !player_seat
+            && !torpedo_owner_exit
             && gun.category == bsp::kUnitGunneryTorpedoCategory && torpedo_gun) {
             // An evaluating tick (or one the timer never reached): what the
             // trigger and the gyro run line hold until the next evaluation.
@@ -9293,6 +9340,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             want_fire = gun.seat_trigger;
             if (want_fire) ++seat_trigger_ticks;
         }
+        // kTorpedoBotOwnerPlayerGateCc13Bound: 00900985 leaves vtable[1E8h] alone,
+        // so the request keeps its current state.
+        if (torpedo_owner_exit) want_fire = gun.fire.fire_requested;
 
         FireRequestBinding fire_host(*this, g);
         const bool before = gun.fire.fire_requested;
@@ -11864,6 +11914,8 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     record.part_hit_count = static_cast<int>(node.parts.size());
     ++deferred_hits_dispatched;
     deferred_replay = &node;
+    const bool victim_known = node.victim < unit_state.size();
+    const float before = victim_known ? unit_state[node.victim].health : 0.0f;
     if (node.gunless) {
         apply_gunless_blast_hit(node.shooter, node.victim, node.point, record);
     } else {
@@ -11871,9 +11923,20 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
             node.has_blast ? &record : nullptr, node.team_id);
     }
     deferred_replay = nullptr;
+    if (victim_known) {
+        // Packet cc13-tooklog: the damage the queued hit did. This fires for every
+        // deferred node (direct, blast and gunless), not only the blast pushes
+        // that log took=queued.
+        const float after = unit_state[node.victim].health;
+        if (node.blast_element) be_damage_element += before - after;
+        log.notef("  deferred hit dispatch bullet=%d on %s took=%.1f health=%.1f",
+            node.round_bullet_class, unit_name_or_index(node.victim + 1).c_str(),
+            static_cast<double>(before - after), static_cast<double>(after));
+    }
     round_bullet_class = saved_class;
     impact_shape_kind = saved_kind;
     impact_hull_segment = saved_segment;
+    deferred_last_dispatched = &node;
 }
 
 void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
@@ -13168,22 +13231,48 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         }
 
         const float before = state.health;
+        const unsigned long long queued_before = deferred_hits_queued;
         apply_hit(shooter, gun_row, i, point, direction, &blast, team_id);
-        if (!element_entries.empty()) be_damage_element += before - unit_state[i].health;
+        if constexpr (kHitDeferredDispatchCc13Bound) {
+            // Packet cc13-tooklog: a queued hit has not moved health yet; its
+            // dispatch adds the element damage instead.
+            if (deferred_hits_queued != queued_before) {
+                deferred_hits->back().blast_element = !element_entries.empty();
+            } else if (!element_entries.empty()) {
+                be_damage_element += before - unit_state[i].health;
+            }
+        } else {
+            if (!element_entries.empty()) be_damage_element += before - unit_state[i].health;
+        }
         float nearest = distance;
         for (const bsp::HitPartEntry& e : element_entries) {
             if (&e == &element_entries.front() || e.distance < nearest) nearest = e.distance;
         }
-        log.notef("  impact blast bullet=%d on %s dist=%.1f entries=%zu nearest=%.1f base=%.1f "
-            "range=%.1f armour=%.1f took=%.1f health=%.1f",
-            gun.bullet_class,
-            unit_name_or_index(i + 1).c_str(), static_cast<double>(distance),
-            element_entries.size(), static_cast<double>(nearest),
-            static_cast<double>(damage),
-            static_cast<double>(weapon->blast_range),
-            static_cast<double>(state.armour),
-            static_cast<double>(before - unit_state[i].health),
-            static_cast<double>(unit_state[i].health));
+        if constexpr (kHitDeferredDispatchCc13Bound) {
+            // Packet cc13-tooklog: ON, apply_hit only queued the hit, so health has
+            // not moved yet; dispatch_deferred_hit logs what it took. A hit the
+            // queue refused (no push) took nothing.
+            log.notef("  impact blast bullet=%d on %s dist=%.1f entries=%zu nearest=%.1f "
+                "base=%.1f range=%.1f armour=%.1f took=%s",
+                gun.bullet_class,
+                unit_name_or_index(i + 1).c_str(), static_cast<double>(distance),
+                element_entries.size(), static_cast<double>(nearest),
+                static_cast<double>(damage),
+                static_cast<double>(weapon->blast_range),
+                static_cast<double>(state.armour),
+                deferred_hits_queued != queued_before ? "queued" : "refused");
+        } else {
+            log.notef("  impact blast bullet=%d on %s dist=%.1f entries=%zu nearest=%.1f base=%.1f "
+                "range=%.1f armour=%.1f took=%.1f health=%.1f",
+                gun.bullet_class,
+                unit_name_or_index(i + 1).c_str(), static_cast<double>(distance),
+                element_entries.size(), static_cast<double>(nearest),
+                static_cast<double>(damage),
+                static_cast<double>(weapon->blast_range),
+                static_cast<double>(state.armour),
+                static_cast<double>(before - unit_state[i].health),
+                static_cast<double>(unit_state[i].health));
+        }
     }
     done("Projectile::blast_radial_damage_0084bad0", 0x0084bad0u);
 }
@@ -14146,7 +14235,12 @@ void GameGunneryHost::Impl::land_section_destroyed_00747170(std::size_t section)
 
 GameGunneryHost::GameGunneryHost(GameHostLog& log, GameUnitsHost& units,
     GameMissionLuaHost& lua)
-    : impl_(std::make_unique<Impl>(log, units, lua)) {}
+    : impl_(std::make_unique<Impl>(log, units, lua)) {
+    // Log only: the first evaluation of the (process-constant) stream switch, so a
+    // log proves which env it ran in. No seed variable exists to report.
+    log.notef("rng streams: %s (BSP_GUNNERY_RNG_STREAMS)",
+        Impl::rng_streams_enabled() ? "on" : "off");
+}
 
 GameGunneryHost::~GameGunneryHost() = default;
 
@@ -15903,6 +15997,16 @@ void GameGunneryHost::dispatch_deferred_hit_009239a0(const void* node) {
 
 void GameGunneryHost::pop_deferred_hit_back() {
     if (impl_->deferred_hits == nullptr || impl_->deferred_hits->empty()) return;
+    // Packet cc13-tooklog, log-only: 0092675B re-reads head[+4h] after the
+    // dispatch, so a node the dispatch pushed is the one popped here. A node the
+    // drain did not dispatch (00926735's gate) leaves the marker null: no check.
+    if (impl_->deferred_last_dispatched != nullptr
+        && &impl_->deferred_hits->back() != impl_->deferred_last_dispatched) {
+        ++impl_->deferred_nested_pops;
+        impl_->log.notef("  deferred hit drain popped a nested node (queue=%zu)",
+            impl_->deferred_hits->size());
+    }
+    impl_->deferred_last_dispatched = nullptr;
     impl_->deferred_hits->pop_back();
 }
 
@@ -16165,6 +16269,13 @@ void GameGunneryHost::submarine_wake_draws_008546df(std::size_t unit_index, floa
 int GameGunneryHost::plane_spin_side_800(std::size_t unit_index) const {
     if (!kPlaneSpinSideBound || unit_index >= impl_->plane_spin_side_800.size()) return -1;
     return impl_->plane_spin_side_800[unit_index];
+}
+
+float GameGunneryHost::sink_leak_draw_0074eca5(std::size_t ship_index, float low,
+    float high) {
+    // 0074ECA5, ECX = 1. Shared generator: random_range_00bd2f10, exactly the
+    // call death_mode_draw_00bd2f10(1, ...) makes there.
+    return impl_->draw(Impl::Draw::sink_leak, ship_index, 0, low, high);
 }
 
 float GameGunneryHost::death_mode_draw_00bd2f10(int stream, std::size_t unit_index,
@@ -17337,6 +17448,10 @@ void GameGunneryHost::report() {
             "(008FFF20 009000DD..00900101, packet g44_torpedo_think)",
             kTorpedoBotThinkTimerBound ? 1 : 0, host.torpedo_think_evals,
             host.torpedo_think_holds);
+        host.log.notef("summary mission gunnery torpedo owner player gate bound=%d ticks=%llu "
+            "exits=%llu (008FFF20 00900080 owner +184h -> 00900985, packet cc13-torpgate)",
+            kTorpedoBotOwnerPlayerGateCc13Bound ? 1 : 0, host.torpedo_owner_player_ticks,
+            host.torpedo_owner_player_exits);
         host.log.notef("summary mission gunnery torpedo ready reload refusals=%llu bound=%d "
             "(0090042F vtable[1D0h](1) -> 0085A830 -> 00729A80(1), packet g47_torpedo_canfire)",
             host.torpedo_ready_reload_refusals, kTorpedoBotCanFireReloadBound ? 1 : 0);
@@ -17645,9 +17760,10 @@ void GameGunneryHost::report() {
         kRangingBearingFixedBound ? 1 : 0);
         if constexpr (kHitDeferredDispatchCc13Bound) {
             host.log.notef("summary mission gunnery deferred hits queued=%llu dispatched=%llu "
-                "refused_at_queue=%llu left=%zu (00926E80 / 00926700, packet cc13-hitq)",
+                "refused_at_queue=%llu nested_pops=%llu left=%zu (00926E80 / 00926700, "
+                "packet cc13-hitq)",
                 host.deferred_hits_queued, host.deferred_hits_dispatched,
-                host.deferred_hits_refused_at_queue,
+                host.deferred_hits_refused_at_queue, host.deferred_nested_pops,
                 host.deferred_hits != nullptr ? host.deferred_hits->size() : std::size_t{0});
         }
         host.log.notef("summary mission gunnery wreck hits bound=%d reaching=%llu delivered=%llu "
