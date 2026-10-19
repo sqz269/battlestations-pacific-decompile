@@ -6,6 +6,18 @@
 
 namespace bsp {
 namespace {
+// Packet cc13-cachebounds. LABELLED DEVIATION from the image, OFF by default.
+// The image never writes the searcher caches' four bounds (+4h..+10h of each
+// record at blk+0A24h/+0A44h/+0A64h) before the first 009D7050 refill reads
+// them as the old extent: 009F3F3E operator new(2268h) (00BF681B, the CRT heap,
+// no zero fill), and 009E4330 stores only +0A3Ch/+0A40h/+0A38h/+0A24h per record
+// (009E4401..009E4449). So the image's first refill sees heap leftovers, and the
+// host copies that on purpose (docs/AVOIDANCE_REFILL_DETERMINISM.md, SHIP_AI 140).
+// ON zeroes the bounds right after the allocation, which is what the image reads
+// on a block carved from fresh OS pages. It makes runs independent of host heap
+// layout, but it is not the image's behaviour on a reused block.
+constexpr bool kSearcherCacheBoundsInitCc13Bound = false;
+
 // Layout check only: never construct this aggregate, because its existing
 // members have semantic default initializers that overwrite native raw bounds.
 struct SearchRecord {
@@ -50,6 +62,14 @@ ShipAiSearchStorage::ShipAiSearchStorage(const AvoidZoneAllocationAccess& alloca
     // free callbacks; no allocation fallback, zero fill or exception swallowing.
     backing_ = static_cast<unsigned char*>(allocation_.allocate_record_00bf681b(
         allocation_.context, static_cast<std::uint32_t>(storage_bytes)));
+    if constexpr (kSearcherCacheBoundsInitCc13Bound) {
+        // Deviation (see the switch): the four bound floats of each record, as
+        // zero bytes.
+        for (std::size_t i = 0; i < kShipAiAvoidZoneSearcherCount; ++i) {
+            std::memset(backing_ + first_record + i * sizeof(SearchRecord) + 4, 0,
+                        sizeof(initial_bounds_[i]));
+        }
+    }
     for (std::size_t i = 0; i < kShipAiAvoidZoneSearcherCount; ++i) {
         std::memcpy(initial_bounds_[i].data(), backing_ + first_record
             + i * sizeof(SearchRecord) + 4, sizeof(initial_bounds_[i]));
