@@ -32,6 +32,12 @@ constexpr std::uint32_t mutable_mask=(1u<<19)|(1u<<20);
 // The former four-band CRT fixture mask rejected game_main's expanded graph
 // before a child could start (see NATIVE_GRAPHICS_POOL_PROCESS_R65.md).
 constexpr std::uint32_t canonical_ro_mask=0x38f;
+// ON-only ordinary installed-model commands also require original D2 data.
+// Admit exactly these two RO plans; writable roles/pages remain the same.
+constexpr std::uint32_t mission_ro_mask=canonical_ro_mask|(1u<<4);
+bool is_canonical_ro_mask(std::uint32_t mask) noexcept {
+    return mask==canonical_ro_mask || mask==mission_ro_mask;
+}
 constexpr std::array<DWORD,3> mutable_pages{0x00e15000,0x00e16000,0x0109e000};
 constexpr DWORD handoff_magic=0x48534442; // BDSH, source protocol only
 constexpr DWORD handoff_version_v1=1;
@@ -67,7 +73,7 @@ DWORD plan_version(GameNativeDataPlan plan) noexcept {
 }
 std::uint32_t plan_mask(std::uint32_t ro_mask,GameNativeDataPlan plan) {
     if (plan==GameNativeDataPlan::CanonicalCrtV2) {
-        if (ro_mask!=canonical_ro_mask)
+        if (!is_canonical_ro_mask(ro_mask))
             throw std::invalid_argument("Canonical CRT plan requires the exact game RO bands");
         return ro_mask|mutable_mask;
     }
@@ -214,7 +220,7 @@ void GameNativeDataReservation::transfer_to(std::array<void*,19>& destination,
 void GameNativeDataReservation::transfer_ro_subset(std::array<void*,19>& destination,
     std::uint32_t expected_mask) {
     if (!handoff_view_ || plan_!=GameNativeDataPlan::CanonicalCrtV2 ||
-        expected_mask!=canonical_ro_mask || mask_!=(expected_mask|mutable_mask))
+        !is_canonical_ro_mask(expected_mask) || mask_!=(expected_mask|mutable_mask))
         throw std::invalid_argument("Canonical RO subset does not match the handoff");
     for (std::size_t i=0;i<ro_band_count;++i) {
         const bool selected=(expected_mask & (1u<<i))!=0;

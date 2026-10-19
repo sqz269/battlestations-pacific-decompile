@@ -180,6 +180,9 @@ void unit_instance_toggle_deck_visuals_0081c550(Seg51bHost& host, Object unit) {
         if (field<Object>(vector, 4) > end) {
             host.invalid_parameter_00bf6713();
         }
+        // 0081C5A6 (TEST EDI,EDI / CMP EDI,EDI: the iterators' container is +660h for both)
+        // and 0081C5BB (TEST EDI,EDI: EDI = unit+660h is non-null) are checked-iterator
+        // container tests that never fail, so they are not modelled.
         if (it == end) {
             break;
         }

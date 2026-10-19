@@ -28,6 +28,7 @@ The range has 659 function rows. They break down as follows:
 - **ABI:** `__thiscall(ECX = blk+1C4h)`, returns EAX = this, plain RET at 009DFEB4.
 - **Caller:** the sole caller is 009E4330, at 009E43CC.
 - **Earlier coverage:** the existing fragment `ship_ai_nav_block_steering_defaults_009dfcb0` covered only the +200h..+220h window.
+- **Two records, two sources:** 009DFCB0 now has two records and two C++ sources: the cc9 window projection in `ship_ai_nav_block_ctor.cpp` and this whole body. Eventually the cc9 projection should derive from the whole body rather than keep its own copy of the nine values.
 
 `cc13_seg67d_nav_block_seed_defaults_009dfcb0` writes every store in image order. The nine window values match the existing fragment.
 
@@ -85,14 +86,17 @@ The range has 659 function rows. They break down as follows:
   - approach+A4h = 3;
   - [approach+1Ch]+40h;
   - +8Ch is log-only.
+- **Note for cc9 (comment only, no behaviour change):** the `torpedo_task_arm.cpp:254` comment says "00CE3D48 1.6 (double)". The bytes hold 1.6f widened, which is 1.600000023841858. I did not edit the file, because it belongs to cc9.
 
 **009C8920, dive-bomb cruise profile.** The live path is the inline in `game_hosts_units.cpp`:
 
-- Blocks 2 (+398h, the U(0,15) draw) and 3 (+39Ch = 9999), the +4B0h max and +4BCh match the image.
+- Blocks 2 (+398h, the U(0,15) draw) and 3 (+39Ch = 9999) match the image.
+- +4B0h: the image computes `cur > prod ? cur : prod` (009C8A42-009C8A50), so a NaN cur gives prod. The host (~4736) keeps a NaN cur. This is probably unreachable, but it is not a match.
+- +4BCh does **not** match. The image re-seeds +4BCh = 3600.0f [00CFDEB0] at 009C8A74 on every profile call. The host carries only the 009C3FD2 seed; units.cpp:28400-28402 labels this.
 - +41Ch is taken as 1.0 (labelled).
 - The draw stream is per name.
 
-> **Adoption note (block 1, 009C894F-009C8971).** In the image, `if (!+38Dh) { if (+380h < 0 && !+3A9h) { +394h = tuning+4C0h; +3ADh = 1; } +3A9h = 0; }`.
+> **Adoption note (block 1, 009C894F-009C8971).** In the image, `if (!+38Dh) { if (+380h < 0 && !+3A9h) { +394h = tuning+4C0h; +3ADh = 1; } +3A9h = 0; }`. The +3A9h clear sits inside the !+38Dh test.
 >
 > The dive task's host does not do this:
 > - its +394h comes from `strike_ctl_cruising_alt_394`;
@@ -101,9 +105,75 @@ The range has 659 function rows. They break down as follows:
 >
 > The moveto and level-bomb profiles do implement the gate. This is live only with SquadronSetTravelAlt on a dive squadron. The standalone `dive_bomb_cruise_profile_009c8920` (`dive_bomb_task.cpp`) is still the defective, unused copy.
 
+## Follow-on audit (cc13-seg67e): partial host projections
+
+This audit is verify-only. Every check was made against disk bytes. Fragment records are named
+`cc13_seg67e_check_*`.
+
+| Address | Span | Verdict |
+|---|---|---|
+| 009F1420 | 009F158A-009F1BB8 | Faithful. **No torpedo mismatch.** |
+| 009E04E0 | 009E0B52-009E107E | Ordered arms are faithful. Four NaN arms differ (note B). |
+| 009E5530 | whole body | The ring and its 60 stream-1 draws are faithful. The three timer seeds do not match (note A). |
+| 009EC770 | whole body | Faithful. |
+| 009ED3E0 | 009ED3E0-009ED4E4 | Faithful. |
+| 009EB660 | 009EBEDB | The ver7 D2 issue is resolved: `kShipAiSectorBlockerBound` is ON. |
+| 009ED6B0 | 009ED708 | The ver7 D3 issue is resolved: `kShipAiTurnLeadResetBound` is ON. Five wired fragments cover the whole body. |
+| 009EF910 | 009EF91D | The ver7 D5 issue is resolved: `kShipAiClearanceTimerSharedBound` is ON. All six -1.0f writers are shared. |
+
+### 009F1420 tail
+
+**Timers.** Both timers have the same form: c + (p - e) when due, otherwise c - e. JB is taken on NaN.
+
+**Torpedo walk.** The image computes:
+- the horizon as float(row+20h + row+14h + float(B44h + 3.0));
+- the hull term as float(len × 0.6)²;
+- the skip filters: vslot 38h/2Ch, byte +5Dh, and owner = self;
+- the three admission tests, in order:
+  1. hull > dist² (JBE on NaN);
+  2. reach² > dist²;
+  3. dot > 0.
+
+`ship_ai_torpedo_admits` matches every arm. The only difference is precision: the host rounds dx² + dz² once in double, while the image rounds each product at 24 bits. This differs by at most 1 ulp, at the boundaries.
+
+**Other spans:**
+- 009F1A44..009F1B39 is a cache refresh of world transforms. It holds no gameplay state.
+- 009DB8F0 never reads its float argument, so calling it without one is equivalent.
+- The 009F1B7B avoidance request matches.
+
+### Adoption notes
+
+**(A) 009E5530.** The constructor seeds nested+121Ch, +1220h and +1224h to -1.0f [00D7A260] (009E5625, 009E5659, 009E5661).
+
+`ShipAiApproachState` defaults all three to 0.0f (`ship_ai_approach_update.hpp:122-124`). On the first approach enter, 009F1BC0 runs with 0 s (009F31BD):
+
+| Field | Image (seed -1.0f) | Host (seed 0.0f) |
+|---|---|---|
+| +121Ch | 0 > t is true, so the retarget reset runs | false |
+| +1220h | own curve refill runs | false, with `kShipAiOwnCurveRefillGateBound` ON |
+| +1224h | target curve refill runs | false |
+
+In the host, each of these first fires one pass later. The fix is to default the three fields to -1.0f.
+
+**(B) 009E0C7C step, NaN arms only.**
+
+| Site | Image on NaN | Host on NaN |
+|---|---|---|
+| 009E0C8A | NaN \|e\| takes the inner arm | wide arm |
+| 009E0D07 / 009E0EA4 | NaN e gives gap+lateral | gap-lateral |
+| 009E0CA2 / 009E0E54 | NaN lateral gives the normal | -normal |
+| 009E0BB9 | NaN gives stand-on | give-way |
+
+None of these is reachable while headings and positions are finite.
+
 ## Left
 
-- **Partial projections in the range that stay partial:**
+- **Not re-audited op by op in cc13-seg67e:**
+  - the five fragments of 009ED6B0;
+  - the rest of 009EB660 and 009EF910;
+  - 009E04E0 outside 009E0B52-009E107E;
+  - 009E04E0 009E0FBD's delete body.
+- **Original list of partial projections (cc13-seg67d):**
   - 009E04E0;
   - 009E5530 (attack-move ring);
   - 009EC770;
