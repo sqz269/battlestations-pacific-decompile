@@ -62,6 +62,7 @@ namespace bsp { struct HullContactEvent; }
 namespace bsp { struct PlaneSquadronHostRecord; }
 
 #include "bsp/pilot_command_path.hpp"
+#include "bsp/cc13_jm08_switches.hpp"   // packet cc13-jm08
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/hit_narrowphase.hpp"
@@ -1158,6 +1159,12 @@ public:
     // Packet cc9_dead_member_group_removal: 0077BD70(unit, null) on a destroyed
     // unit, once. No effect for a unit in no group.
     void leave_group_on_destroy_0077bd70(std::size_t index);
+    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): the 0071C150 part of
+    // 0077BD70 for a dying leader, run from the kill in the image's order:
+    // BeforePump in place, HitDrainAfterPump posted to the loopback ahead of the
+    // kill's 5Dh. leave_group_on_destroy_0077bd70 then skips its own. Unmapped
+    // does nothing (leave_group keeps it).
+    void leader_death_handover_at_kill(std::size_t index, bsp::DeadLeaderDeathPhase phase);
     // Packet cc9_live_hull_leak (docs/UNIT_MESSAGE_ARMS.md, "90h, bound"): the
     // 90h message's receiver 008221A7 -> 0074F440 -> 0074F090 on the unit's
     // leak manager. `count` is msg+1Ch, the sender's trunc(clamp(damage / 10,

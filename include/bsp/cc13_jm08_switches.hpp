@@ -41,33 +41,77 @@ inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = false;
 // successor exists (0071C163), leave_group_on_destroy_0077bd70 runs
 // GameCommandsHost::copy_director_state_00720450(successor, unit) BEFORE the
 // SetLeader (0077BDDE..0077BE02 -> 0071C150 -> 00836680 -> 00720450), so the new
-// leader inherits the dead leader's queue. PARTIAL: copied are the mode (+30h),
-// the ten slots and descriptors (+54h..+16Bh), the override cleared (0071E610
-// through clear_override_in_place, then +188h..+1A0h zeroed), the stage pairs
-// reset (+44h/+48h, +50h; +4Ch has no host field) and the slot-0 path object
-// (the host carries no other). NOT copied:
+// leader inherits the dead leader's queue. Copied, across three hosts:
+// - commands host (copy_director_state_00720450): the mode (+30h), the ten slots
+//   and descriptors (+54h..+16Bh), the override cleared (0071E610 through
+//   clear_override_in_place, then +188h..+1A0h zeroed), the stage pairs reset
+//   (+44h/+48h, +50h) and the slot-0 path object;
+// - gunnery host (copy_director_allow_bytes_00720450): +3Ch/+3Dh raw;
+// - ship-AI host (copy_fire_target_00836680): 00836680's tail, 00836240 on dst
+//   when src vtable[48h](2) (00836790) and src+23Ch.
+// Still NOT modelled:
 // - +16Ch..+184h, the record 00720850 saves the cleared slot 0 into (0072093A..
-//   00720986). No host field. Census (packet cc13-jm08, every [reg+disp32] for
-//   disp 16Ch..187h and, for the +1Ch subobject, 150h..16Bh, undefined chunks
-//   included, checked against every slot of vtables 00CFDA40 / 00D09F58 /
-//   00D0BD98): its only readers are 00720450 itself and 0084DB50 (vtable
-//   00D0BD98 slot 6Ch, the PLANE squadron block: +16Ch == `land` 00E08FA0 ->
-//   007EFB60). No ship-director reader, so leaving it out changes no ship.
-// - +3Ch/+3Dh, allowFire/allowMove: the gunnery host's director_allow_fire_3c /
-//   _move_3d, settable only through the fire stance. Identity in JM08, where
-//   every ship in the scene is FreeFire.
-// - 00836240 StoreFireTarget (00836680, when src vtable[48h](2) and src+23Ch):
-//   ship-AI host. The host logged fire=- for Missouri.
+//   00720986). No host field. Census (packet cc13-jm08, fragment at 00720450):
+//   its only readers are 00720450 itself and 0084DB50 (vtable 00D0BD98 slot 6Ch,
+//   the PLANE squadron block), so leaving it out changes no ship.
+// - +4Ch, the override pair's byte: no host field.
+// - Slots 1..9's path objects (0071FD10 per slot): the host carries slot 0's only.
 // - The `land` -> `attackmove` 00E08F78 rewrite for a kind-6 owner (0072058A..
 //   00720607): needs 0071DB90's world list; a `land` is copied as is and counted
 //   (director_copy_land_kept).
-// Ordering, LABELLED: in the image the 77h leave is posted by 0077D1A0 at the
-// kill and the successor's 5Dh slot-0 clear by 0071DDB0 at the destroy flush, both
-// through 0077C2A0, so the copy is delivered first and the clear then ends the
-// inherited head. This host runs the copy at its flush and posts the 5Dh from the
-// gunnery kill; whether that 5Dh drains before the flush decides which head it ends.
+// Ordering. Image: 0077D1A0 posts the 77h at the kill through 0077C2A0 ->
+// 0076E520 (appended to session+24Ch; 0076C600 drains it FIFO in the pump,
+// 00778542 / 00875E91). A think-phase death (damage control: 00825F20 from the
+// entity think 00875E64) is copied at that step's pump, so the destroy flush's
+// 0071DDB0 (00875EC9) finds the successor no longer observing the dead leader and
+// posts it no 5Dh: the inherited head survives. A death in the post-pump hit drain
+// (00875EC4) leaves both the 77h and the successor's 5Dh for the next pump, copy
+// first, so the 5Dh ends the inherited head. Host: every kill runs after the
+// fan-out and posts the 5Dh at once, which drains at the next pump before this
+// copy at the next flush, so the head always survives (one step late; the extra
+// 00720850(0) on the successor's old head runs 00835BF0(1) first). Right for a
+// think-phase death such as JM08's Missouri, wrong for a post-pump hit death.
 // False: the successor keeps its own queue, as before. No 00BD2F10 draw.
 inline constexpr bool kDeadLeaderDirectorStateCopyBound = false;
+
+// The image phase a host kill site stands for, as far as the 77h / 5Dh order
+// goes (see kDeadLeaderDirectorStateCopyBound). Only a death between the pump
+// (row 9, 00875E91) and the flush (row 15, 00875EC9) ends the inherited head; in
+// practice the second hit drain, row 14 (00926700 at 00875EC4), whose records
+// were pushed in rows 7..13 (the pump's message arms among them).
+//
+// Host kill sites (src/game_hosts_gunnery.cpp), mapped:
+// | host site                              | phase             | image evidence                                  |
+// |----------------------------------------|-------------------|-------------------------------------------------|
+// | run_damage_control water/fire death    | BeforePump        | 00825F20 -> 00826B84 -> 008160B0 -> 0093CA20 -> |
+// |                                        |                   | 0093C120/0093C210; 00825F20 is tick-vtable slot |
+// |                                        |                   | +8h (00CF9068 ...), which the job waves call    |
+// |                                        |                   | (wave 3 00874FED..00874FF6 CALL [vt+8]); the    |
+// |                                        |                   | waves 00875CC0..00875DFC precede the fan-out    |
+// | apply_hit / apply_impact_blast from    | BeforePump        | 0084BC60 / 0084BAD0 push (00926E80) from the    |
+// | run_projectiles                        |                   | projectile ticks 006E6490 / 0070C370 / 006E1300 |
+// |                                        |                   | (tick slot +8h, a wave) via 0084C430 -> 0084BF00|
+// |                                        |                   | drained at row 6 (00875E44)                     |
+// | plane_crash_impact_0084bc60 (blast and | BeforePump        | 0084BC60 from 007C0910 from 007CE040, the plane |
+// | the plane's own Kill)                  |                   | tick element's slot +8h (00D05EDC and derived)  |
+// | kamikaze_detonate_00819a20 blast       | HitDrainAfterPump | message 70h (0080FF30, built at 00814647 /      |
+// |                                        |                   | 008146AB in 008145B0 from the contact 009377E0) |
+// |                                        |                   | routed 0077C2A0 flags 7 -> 0076E520 -> drained  |
+// |                                        |                   | by 0076C600 in the pump; 00821E80 case 70h at   |
+// |                                        |                   | 0082218D -> 00819A20 pushes 00819BA7 / 0084BBF9,|
+// |                                        |                   | drained at row 14                               |
+// Unmapped (the flush-time copy; same end state as BeforePump, a step later):
+// the explosion death in run_damage_control (0081B630, its ticker unread);
+// land_master_add_damage_0095da00 and the airfield yard kill (00747170, the vt+7Ch
+// wreck handler, a flush-phase kill, which keeps the head anyway); script damage
+// (apply_script_damage_0095da00); every kill_unit_00926d90 / destroy_unit_0077d1a0
+// caller outside the gunnery host (Lua and message-driven kills can come from a
+// row-9 or row-15 callback).
+enum class DeadLeaderDeathPhase {
+    Unmapped,           // not traced: leave_group runs the copy at the flush
+    BeforePump,         // copied at the next pump, before the flush's 0071DDB0
+    HitDrainAfterPump,  // 77h and the successor's 5Dh both wait for the next pump
+};
 
 // True: ship_ai_wake_decompose_00811180 (src/ship_ai_wake_trail.cpp) returns the
 // image's along-track distance. 00811180 picks the segment through the nearest

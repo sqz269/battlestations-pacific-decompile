@@ -2301,6 +2301,11 @@ struct GameUnitSlot {
     // unit+284h, the unit group pointer 0070EF38 writes before any test, as an
     // index into Impl::formation_groups. -1 is a null pointer.
     std::int32_t formation_group{-1};
+    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound): the 0071C150 handover
+    // already ran or was posted from this unit's kill, so its 0077BD70 must not
+    // run it again. Set only by leader_death_handover_at_kill, cleared by
+    // leave_group_on_destroy_0077bd70; slots are appended and never reused.
+    bool director_handover_done{false};
     bsp::UnitHullExtents hull_extents{};
     float class_width_00a4{};
     bsp::ShipClassFields fields{};
@@ -3236,6 +3241,23 @@ struct GameUnitsHost::Impl {
     bool unit_torn_down_005d(std::size_t index) const {
         return index < slots.size() && slots[index]->state != nullptr
             && slots[index]->state->simulate != 0;
+    }
+    // Packet cc13-jm08 (kDeadLeaderDirectorStateCopyBound). 0077BDDE..0077BE02:
+    // the leaving unit's director (vtable[114h]) gets vtable[5Ch](successor) =
+    // 0071C150, which runs only while the unit still leads (00778890 at
+    // 0071C156) and a successor exists (0071C163): the successor's director
+    // vtable[4Ch] = 00836680 copies it (00720450, then the fire-target tail).
+    // Three hosts hold that director. True when it copied.
+    bool director_handover_0071c150(std::size_t index, std::size_t successor) {
+        if (index >= slots.size() || successor >= slots.size()) return false;
+        const std::int32_t g = slots[index]->formation_group;
+        if (g < 0 || static_cast<std::size_t>(g) >= formation_groups.size()
+            || formation_groups[static_cast<std::size_t>(g)].leader != index) return false;
+        if (!commands.copy_director_state_00720450(successor, index)) return false;
+        if (gunnery != nullptr) gunnery->copy_director_allow_bytes_00720450(successor, index);
+        if (ship_ai != nullptr) ship_ai->copy_fire_target_00836680(successor, index);
+        done("WeaponDirector::leader_handover_0071c150", 0x0071c150u);
+        return true;
     }
     // 0070D8D0(group, exclude), read whole. A follower's exclude answers the
     // current leader; with no exclude, no leader or the leader excluded (and a
@@ -40330,8 +40352,17 @@ void GameUnitsHost::leave_group_on_destroy_0077bd70(std::size_t index) {
     // 0077BDA5..: the successor, asked twice when it answers the unit itself.
     std::size_t successor = host.group_successor_0070d8d0(fg, index);
     if (successor == index) successor = host.group_successor_0070d8d0(fg, index);
-    // vtable[114h]->vtable[5Ch](successor): the unit's director is told. Unread.
+    // vtable[114h]->vtable[5Ch](successor): the unit's director is told.
     host.record("UnitGroup::leave_director_notice_vtable114", 0x0077bde4u);
+    if constexpr (kDeadLeaderDirectorStateCopyBound) {
+        // 0071C150, before the SetLeader below. A kill that already ran or
+        // posted it (leader_death_handover_at_kill) is not repeated.
+        if (slot.director_handover_done) {
+            slot.director_handover_done = false;
+        } else if (successor != none && fg.leader == index) {
+            host.director_handover_0071c150(index, successor);
+        }
+    }
     // 0077BE0x: 0070D0C0 SetLeader(ship(successor), ship(unit)) when it differs.
     if (successor != none && fg.leader != successor) {
         const std::size_t new_leader = host.ship_unit(successor) ? successor : none;
@@ -40396,6 +40427,47 @@ void GameUnitsHost::leave_group_on_destroy_0077bd70(std::size_t index) {
         leader_before < host.slots.size() ? host.slots[leader_before]->row.name.c_str() : "-",
         fg.leader < host.slots.size() ? host.slots[fg.leader]->row.name.c_str() : "-",
         fg.members.size(), fg.column);
+}
+
+void GameUnitsHost::leader_death_handover_at_kill(std::size_t index,
+                                                  bsp::DeadLeaderDeathPhase phase) {
+    // Packet cc13-jm08. The image delivers 0077D1A0's 77h (and so 0071C150) at
+    // the first pump after the kill, through the FIFO 0076E520 / 0076C600; this
+    // host's leave runs at the flush instead. Called by the gunnery kill BEFORE
+    // its 0071DDB0 delivery, so the successor's 5Dh lands where the image's does
+    // (kDeadLeaderDirectorStateCopyBound has the phase table).
+    if constexpr (!kDeadLeaderDirectorStateCopyBound) {
+        static_cast<void>(index);
+        static_cast<void>(phase);
+    } else {
+        Impl& host = *impl_;
+        if (index >= host.slots.size() || phase == bsp::DeadLeaderDeathPhase::Unmapped) return;
+        GameUnitSlot& slot = *host.slots[index];
+        if (slot.formation_group < 0 || slot.director_handover_done) return;
+        const auto run = [&host, index]() {
+            const std::int32_t g = host.slots[index]->formation_group;
+            if (g < 0 || static_cast<std::size_t>(g) >= host.formation_groups.size()) return;
+            Impl::FormationGroup& fg = host.formation_groups[static_cast<std::size_t>(g)];
+            // 0077BDA5..0077BDDC: the successor, asked twice when it answers the unit.
+            std::size_t successor = host.group_successor_0070d8d0(fg, index);
+            if (successor == index) successor = host.group_successor_0070d8d0(fg, index);
+            const bool copied = successor != static_cast<std::size_t>(-1)
+                && host.director_handover_0071c150(index, successor);
+            host.log.notef("leader handover: %s -> %s t=%.2f copied=%d (0071C150 at the "
+                "image's pump, packet cc13-jm08)", host.slots[index]->row.name.c_str(),
+                successor < host.slots.size() ? host.slots[successor]->row.name.c_str() : "-",
+                static_cast<double>(host.summary.simulated_seconds), copied ? 1 : 0);
+        };
+        slot.director_handover_done = true;
+        if (phase == bsp::DeadLeaderDeathPhase::BeforePump) {
+            // The pump copies before the flush's 0071DDB0: no 5Dh for the successor.
+            run();
+            return;
+        }
+        // HitDrainAfterPump: the 77h waits for the next pump, queued ahead of the
+        // successor's 5Dh that 0071DDB0 posts at this kill.
+        if (!host.commands.post_loopback_callback(index, run)) slot.director_handover_done = false;
+    }
 }
 
 bool GameUnitsHost::unit_is_formation_follower_007788b0(std::size_t index) const noexcept {
