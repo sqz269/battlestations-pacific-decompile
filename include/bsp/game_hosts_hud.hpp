@@ -212,6 +212,9 @@ public:
     bool release_gun_armed() const noexcept;
     void arm_release_gun_map_toggle() noexcept;
     void exit_ship_view_screen_0064a490();
+    // Packet cc13-relgaps gap 2: screen 4Ch's update 005B45C0, only its
+    // 005B4673..005B46B3 helm release.
+    void update_map_screen_005b45c0();
 
     // One summary line for the run log.
     void report();
