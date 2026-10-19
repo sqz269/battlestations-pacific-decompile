@@ -98,6 +98,21 @@ current census is the `summary mission ship ai heading wrap` line in cc9-lua52's
 - **Zero out of range:** u02a, u04, u12e8, u15e, u1s, vb9, w_e8, w_l10, w_p01 and w_u15. ON is
   identical there.
 
+**Census bound (packet cc13-wrapnits).** Review nit N4 suspected the census compare was off at
++float(pi): it assumed `00605070` uses the double pi 3.14159265358979, which is below the float
+literal `3.14159265f` (3.14159274). The bytes show otherwise.
+- `00CE3D18` is `00000060FB2109C0` and `00CE3D28` is `00000060FB210940`, that is -/+3.1415927410125732.
+  These are float pi widened to double. `00CE3828` (2pi) is likewise 6.2831854820251465.
+- `00605070` stores the fmod result as a float and reloads it. It then wraps when x <= -pi
+  (`0060508B FLD [00CE3D18]`, `00605091 FCOMIP`, `00605093 JB` past the +2pi arm) or when x > pi
+  (`006050A0 FLD [00CE3D28]`, `006050A8 FCOMI`, `006050AC JBE` past the -2pi arm).
+- `count_heading_wrap_store` tests `heading > 3.14159265f || heading <= -3.14159265f` on that same
+  float value, so its arms match the image exactly.
+
+So a store of exactly +float(pi) is left alone by both the image and the census. The zero rows, and
+the -pi rows b1d and w_i08, need no correction, and the census numbers above stand. No code was
+changed for N4.
+
 The superseded 2026-09-28 census (cc9-ships9) had found only JM06, with 79 of 2595 stores.
 
 **Recommendation.** Thousands of stores move on j6k and hundreds on w_i18. Run a dedicated pair

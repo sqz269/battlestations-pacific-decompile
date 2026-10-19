@@ -173,6 +173,39 @@ random streams ON` line.
   at c95d107da. The env matches cc9's l70 'ref' runner and its manifests. On 4cc9872bc, where the ref
   env also gave 285.05 s, the same exe without `BSP_GUNNERY_RNG_STREAMS` ends at 429.02 s.
 
+### Flipped ON: `kHintTrackerCc15Bound` (cc15-flip, base 46bdfac0a, 2026-10-19)
+
+`kProfileOwnerCc15Bound` and `kProfileLoadCc15Bound` are already on, so the tracker now gets the real
+save's 38 seen hints. OFF = 46bdfac0a, ON = the same tree with this switch true. Both run through
+tools/run_game.ps1 with `BSP_DEATH_TABLE=1 BSP_GUNNERY_RNG_STREAMS=1`, and every log has both
+`rng streams: on` and the `per-consumer random streams ON` summary line.
+
+- **Tracker rows** (identical on all 13 rows): `+ HintTracker::construct 004e18e0` and `+
+  HintTracker::reload_hint_tables 006921b0` (concrete, 1 call each). `MissionPlay::flush_award_tracker
+  00690cd0` and `SetPendingScene::notify_award_tracker 0068ea00` go from unimplemented to concrete,
+  1 call each. One new note: `hint tracker: 006921b0 ... entries=405 definitions=405 ... history94=13`.
+  History +94h is no longer empty: it holds 13 Type keys, built from the seen names whose definition
+  is not missionspecific. The summary line counts keys, not names.
+- **USN04** (`--frames 5000 --mission-frames 4800`): gameplay identical, and only the rows above
+  moved.
+- **Wins set** (`--stop-after-end 40`): `pair_diff` reports gameplay identical on all 12 rows. The
+  end, the clock, the death rows, the unit table, every summary line and the guard line match per
+  row. On this base: USN01 completed 1079.93 s, USN02 failed 330.04 s, USN12 failed 859.91 s, PRCP01
+  completed 814.92 s, USN21 completed 2941.74 s, ESMP08 completed 1274.27 s, LOMP10 completed
+  1303.70 s, JM06 completed 898.90 s, BSM09 EndMission 282.05 s, BSM01 EndMission 812.93 s, LOMP06
+  failed 668.11 s, IJN18 no end.
+- **Dialogs, messages and Lua timing.** I made an ordered diff, with hex masked, of every line
+  matching message, dialog, tutorial, hint, subtitle, speech, popup, objective, Lua or script, with
+  its time. On every row it differs only by the five tracker lines above and the renderer worker's
+  thread id. No dialog, message, objective or Lua line moved or changed its time. The per-frame
+  trigger passes still do not run on the tracker (section 5 open items), so the loaded history
+  cannot suppress a hint yet.
+- **Other moved lines.** These are ring-scan `clear_37c` lines only (SHIP_AI_OPEN_ITEMS 140, the
+  heap-dependent value): IJN18 Kita2 and Oma7, JM06 Lexington-class 01, and LOMP10 Kasumi.
+- **Save untouched.** Every file under `Documents\Battlestations-Pacific` has the same SHA-256, size
+  and mtime before and after the runs (player 58E93D77..., quick 54E3F992..., valid E3B0C442...,
+  options.txt FF5CF395...).
+
 ## 4. Uncertainties and open items
 
 - The real profile load (and so the saved `AllSeenHints` and mission scores) is out of scope.
