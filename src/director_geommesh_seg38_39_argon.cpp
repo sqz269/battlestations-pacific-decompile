@@ -1,4 +1,5 @@
 #include "bsp/director_geommesh_seg38_39_argon.hpp"
+#include "bsp/cc13_sweepA.hpp"
 
 #include <cstring>
 
@@ -1587,3 +1588,14 @@ void* bsp_gun_base_construct_00728960(Seg38_39Host& host, void* self, std::uint3
 }
 
 }  // namespace bsp::director_geommesh_seg38_39_argon
+
+namespace bsp::director_geommesh_seg38_39_argon {
+void gun_apply_damage_if_enabled_00728080(void* gun, float amount, cc13_sweepA::SweepAHost& host) {
+    auto* bytes = static_cast<std::uint8_t*>(gun);
+    if (bytes[0x3b8] == 0)
+        cc13_sweepA::device_apply_scaled_damage_00442ae0({bytes}, amount, host);
+}
+std::uint8_t gun_failure_slot101_007289b0(void*, std::uint32_t, std::uint32_t) noexcept { return 0; }
+std::uint8_t gun_failure_slot102_007289c0(void*, std::uint32_t, std::uint32_t, std::uint32_t) noexcept { return 0; }
+std::uint8_t gun_failure_slot103_007289d0(void*, std::uint32_t, std::uint32_t) noexcept { return 0; }
+}
