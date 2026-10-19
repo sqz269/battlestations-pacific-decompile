@@ -86,6 +86,8 @@ These confirm that the reader reports zero where cc9's pair_diff says gameplay i
    - This is the one row that looks like a crash or retire, not combat. It is worth one look: the tail issues
      0084E595 moveto-self loiter orders, and a loitering squadron at low altitude could meet terrain. That is a
      hypothesis, not read.
+   - Resolved in `docs/CC13_STEPTAILDEATH.md`: the death is a mid-air collision during a dogfight (007C0910 ->
+     0084BF00 -> 007BBA10 Kill(1)). The image does the same, and the step tail's part is indirect. It is not terrain.
 3. **cc9's `s56` note on `kAutoTargetOverrideBound` lists half the flip.**
    - OFF-only deaths: Lexington (875.86 s, Shima2), Gear13, Gear15 (Ada3) and Shimotsuke (NH). These four do not
      happen ON, because Ada3, Zao3 and Shima1 now die early.
