@@ -261,3 +261,15 @@ void bsp_native_vector12_grow_00728610(Seg38_39Host& host, void* self);
 void* bsp_gun_base_construct_00728960(Seg38_39Host& host, void* self, std::uint32_t flag);
 
 }  // namespace bsp::director_geommesh_seg38_39_argon
+
+namespace bsp::cc13_sweepA { struct SweepAHost; }
+namespace bsp::director_geommesh_seg38_39_argon {
+// oct18b-nB: original ECX=gun, float stack argument, RET 4. Calls 00442AE0
+// only while byte +3B8h is zero. Source adds the existing damage host explicitly.
+void gun_apply_damage_if_enabled_00728080(void* gun, float amount, cc13_sweepA::SweepAHost& host);
+// GunBase failure slots 101..103 in 00CFDC58 / 00D0DF70. XOR AL,AL;
+// RET 8 / RET 0Ch / RET 8. Upper EAX and ignored argument types are unknown.
+std::uint8_t gun_failure_slot101_007289b0(void*, std::uint32_t, std::uint32_t) noexcept;
+std::uint8_t gun_failure_slot102_007289c0(void*, std::uint32_t, std::uint32_t, std::uint32_t) noexcept;
+std::uint8_t gun_failure_slot103_007289d0(void*, std::uint32_t, std::uint32_t) noexcept;
+}
