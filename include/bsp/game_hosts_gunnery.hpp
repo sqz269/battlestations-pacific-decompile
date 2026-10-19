@@ -1118,6 +1118,10 @@ public:
     // message whose holder changed; kRoleOwnerDeviceWalkBound.
     void role_owner_device_walk_0095ac1d(std::size_t unit_index, std::uint32_t mask,
                                          std::int32_t slot, bool take);
+    // 0080E290: 0085AD00 on each of the unit's turning guns (IsKindOf 22h), which
+    // commands an authored rest pair through 0085ABA0. Packet cc13-frontier; the
+    // callers run it only under kHelmReleaseGunsToRestCc13Bound.
+    void aim_unit_turning_guns_to_rest_0080e290(std::size_t unit_index);
 
     // One fixed simulation step: the gunnery pass 00864FE0, the aim ticks and
     // the trigger latch, 0072D130's 0ADh send with BSP_Gun_Fire behind it, and
