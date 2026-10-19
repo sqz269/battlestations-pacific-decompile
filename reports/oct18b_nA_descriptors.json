@@ -1,0 +1,1151 @@
+{
+  "packet": "oct18b-nA-descriptors",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/entity_orders.cpp",
+  "proof": "Export and assembly review; build-only C++ interfaces, no binary ABI or game validation.",
+  "validation": "Win32 Release scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2), build-only",
+  "rows": [
+    {
+      "address": "006f8020",
+      "name": "BSP_EntityOrderCommand_SetTarget_Category_006f8020",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_one_006f8020",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. SetTarget descriptor 00cfb3a4, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb3a4",
+      "slot": 3,
+      "command": "SetTarget",
+      "assembly": "006f8020: MOV EAX,0x1 \n006f8025: RET",
+      "original_annotation": {
+        "address": "006f8020",
+        "function_name": "FUN_006f8020"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8040",
+      "name": "BSP_EntityOrderCommand_SetTarget_RequiresTarget_006f8040",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. SetTarget descriptor 00cfb3a4, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb3a4",
+      "slot": 2,
+      "command": "SetTarget",
+      "assembly": "006f8040: MOV AL,0x1 \n006f8042: RET",
+      "original_annotation": {
+        "address": "006f8040",
+        "function_name": "FUN_006f8040"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f80c0",
+      "name": "BSP_EntityOrderCommand_ClearTarget_Category_006f80c0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. ClearTarget descriptor 00cfb3b8, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb3b8",
+      "slot": 3,
+      "command": "ClearTarget",
+      "assembly": "006f80c0: XOR EAX,EAX \n006f80c2: RET",
+      "original_annotation": {
+        "address": "006f80c0",
+        "function_name": "FUN_006f80c0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f80e0",
+      "name": "BSP_EntityOrderCommand_ClearTarget_RequiresTarget_006f80e0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_false_006f80e0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. ClearTarget descriptor 00cfb3b8, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: XOR AL,AL ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb3b8",
+      "slot": 2,
+      "command": "ClearTarget",
+      "assembly": "006f80e0: XOR AL,AL \n006f80e2: RET",
+      "original_annotation": {
+        "address": "006f80e0",
+        "function_name": "FUN_006f80e0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8160",
+      "name": "BSP_EntityOrderCommand_ClearOrders_Category_006f8160",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. ClearOrders descriptor 00cfb3cc, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb3cc",
+      "slot": 3,
+      "command": "ClearOrders",
+      "assembly": "006f8160: XOR EAX,EAX \n006f8162: RET",
+      "original_annotation": {
+        "address": "006f8160",
+        "function_name": "FUN_006f8160"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8180",
+      "name": "BSP_EntityOrderCommand_ClearOrders_RequiresTarget_006f8180",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_false_006f80e0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. ClearOrders descriptor 00cfb3cc, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: XOR AL,AL ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb3cc",
+      "slot": 2,
+      "command": "ClearOrders",
+      "assembly": "006f8180: XOR AL,AL \n006f8182: RET",
+      "original_annotation": {
+        "address": "006f8180",
+        "function_name": "FUN_006f8180"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8200",
+      "name": "BSP_EntityOrderCommand_Artillery_Category_006f8200",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_one_006f8020",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Artillery descriptor 00cfb3e0, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb3e0",
+      "slot": 3,
+      "command": "Artillery",
+      "assembly": "006f8200: MOV EAX,0x1 \n006f8205: RET",
+      "original_annotation": {
+        "address": "006f8200",
+        "function_name": "FUN_006f8200"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8210",
+      "name": "BSP_EntityOrderCommand_Artillery_Slot10_006f8210",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Artillery descriptor 00cfb3e0, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb3e0",
+      "slot": 4,
+      "command": "Artillery",
+      "assembly": "006f8210: XOR EAX,EAX \n006f8212: RET",
+      "original_annotation": {
+        "address": "006f8210",
+        "function_name": "FUN_006f8210"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8220",
+      "name": "BSP_EntityOrderCommand_Artillery_RequiresTarget_006f8220",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Artillery descriptor 00cfb3e0, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb3e0",
+      "slot": 2,
+      "command": "Artillery",
+      "assembly": "006f8220: MOV AL,0x1 \n006f8222: RET",
+      "original_annotation": {
+        "address": "006f8220",
+        "function_name": "FUN_006f8220"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f82a0",
+      "name": "BSP_EntityOrderCommand_Torpedo_Category_006f82a0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_two_006f82a0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Torpedo descriptor 00cfb400, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x2 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb400",
+      "slot": 3,
+      "command": "Torpedo",
+      "assembly": "006f82a0: MOV EAX,0x2 \n006f82a5: RET",
+      "original_annotation": {
+        "address": "006f82a0",
+        "function_name": "FUN_006f82a0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f82b0",
+      "name": "BSP_EntityOrderCommand_Torpedo_Slot10_006f82b0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Torpedo descriptor 00cfb400, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb400",
+      "slot": 4,
+      "command": "Torpedo",
+      "assembly": "006f82b0: XOR EAX,EAX \n006f82b2: RET",
+      "original_annotation": {
+        "address": "006f82b0",
+        "function_name": "FUN_006f82b0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f82c0",
+      "name": "BSP_EntityOrderCommand_Torpedo_RequiresTarget_006f82c0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Torpedo descriptor 00cfb400, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb400",
+      "slot": 2,
+      "command": "Torpedo",
+      "assembly": "006f82c0: MOV AL,0x1 \n006f82c2: RET",
+      "original_annotation": {
+        "address": "006f82c0",
+        "function_name": "FUN_006f82c0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8340",
+      "name": "BSP_EntityOrderCommand_DiveBomb_Category_006f8340",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_two_006f82a0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. DiveBomb descriptor 00cfb41c, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x2 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb41c",
+      "slot": 3,
+      "command": "DiveBomb",
+      "assembly": "006f8340: MOV EAX,0x2 \n006f8345: RET",
+      "original_annotation": {
+        "address": "006f8340",
+        "function_name": "FUN_006f8340"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8350",
+      "name": "BSP_EntityOrderCommand_DiveBomb_Slot10_006f8350",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. DiveBomb descriptor 00cfb41c, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb41c",
+      "slot": 4,
+      "command": "DiveBomb",
+      "assembly": "006f8350: XOR EAX,EAX \n006f8352: RET",
+      "original_annotation": {
+        "address": "006f8350",
+        "function_name": "FUN_006f8350"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8360",
+      "name": "BSP_EntityOrderCommand_DiveBomb_RequiresTarget_006f8360",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. DiveBomb descriptor 00cfb41c, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb41c",
+      "slot": 2,
+      "command": "DiveBomb",
+      "assembly": "006f8360: MOV AL,0x1 \n006f8362: RET",
+      "original_annotation": {
+        "address": "006f8360",
+        "function_name": "FUN_006f8360"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f83e0",
+      "name": "BSP_EntityOrderCommand_LevelBomb_Category_006f83e0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_two_006f82a0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. LevelBomb descriptor 00cfb43c, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x2 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb43c",
+      "slot": 3,
+      "command": "LevelBomb",
+      "assembly": "006f83e0: MOV EAX,0x2 \n006f83e5: RET",
+      "original_annotation": {
+        "address": "006f83e0",
+        "function_name": "FUN_006f83e0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f83f0",
+      "name": "BSP_EntityOrderCommand_LevelBomb_Slot10_006f83f0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. LevelBomb descriptor 00cfb43c, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb43c",
+      "slot": 4,
+      "command": "LevelBomb",
+      "assembly": "006f83f0: XOR EAX,EAX \n006f83f2: RET",
+      "original_annotation": {
+        "address": "006f83f0",
+        "function_name": "FUN_006f83f0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8400",
+      "name": "BSP_EntityOrderCommand_LevelBomb_RequiresTarget_006f8400",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. LevelBomb descriptor 00cfb43c, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb43c",
+      "slot": 2,
+      "command": "LevelBomb",
+      "assembly": "006f8400: MOV AL,0x1 \n006f8402: RET",
+      "original_annotation": {
+        "address": "006f8400",
+        "function_name": "FUN_006f8400"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8480",
+      "name": "BSP_EntityOrderCommand_DropKamikaze_Category_006f8480",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_two_006f82a0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. DropKamikaze descriptor 00cfb45c, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x2 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb45c",
+      "slot": 3,
+      "command": "DropKamikaze",
+      "assembly": "006f8480: MOV EAX,0x2 \n006f8485: RET",
+      "original_annotation": {
+        "address": "006f8480",
+        "function_name": "FUN_006f8480"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8490",
+      "name": "BSP_EntityOrderCommand_DropKamikaze_Slot10_006f8490",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. DropKamikaze descriptor 00cfb45c, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb45c",
+      "slot": 4,
+      "command": "DropKamikaze",
+      "assembly": "006f8490: XOR EAX,EAX \n006f8492: RET",
+      "original_annotation": {
+        "address": "006f8490",
+        "function_name": "FUN_006f8490"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f84a0",
+      "name": "BSP_EntityOrderCommand_DropKamikaze_RequiresTarget_006f84a0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. DropKamikaze descriptor 00cfb45c, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb45c",
+      "slot": 2,
+      "command": "DropKamikaze",
+      "assembly": "006f84a0: MOV AL,0x1 \n006f84a2: RET",
+      "original_annotation": {
+        "address": "006f84a0",
+        "function_name": "FUN_006f84a0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8520",
+      "name": "BSP_EntityOrderCommand_DepthCharge_Category_006f8520",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_two_006f82a0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. DepthCharge descriptor 00cfb480, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x2 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb480",
+      "slot": 3,
+      "command": "DepthCharge",
+      "assembly": "006f8520: MOV EAX,0x2 \n006f8525: RET",
+      "original_annotation": {
+        "address": "006f8520",
+        "function_name": "FUN_006f8520"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8530",
+      "name": "BSP_EntityOrderCommand_DepthCharge_Slot10_006f8530",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. DepthCharge descriptor 00cfb480, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb480",
+      "slot": 4,
+      "command": "DepthCharge",
+      "assembly": "006f8530: XOR EAX,EAX \n006f8532: RET",
+      "original_annotation": {
+        "address": "006f8530",
+        "function_name": "FUN_006f8530"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8540",
+      "name": "BSP_EntityOrderCommand_DepthCharge_RequiresTarget_006f8540",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. DepthCharge descriptor 00cfb480, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb480",
+      "slot": 2,
+      "command": "DepthCharge",
+      "assembly": "006f8540: MOV AL,0x1 \n006f8542: RET",
+      "original_annotation": {
+        "address": "006f8540",
+        "function_name": "FUN_006f8540"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f85c0",
+      "name": "BSP_EntityOrderCommand_Rocket_Category_006f85c0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_two_006f82a0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Rocket descriptor 00cfb4a0, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x2 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb4a0",
+      "slot": 3,
+      "command": "Rocket",
+      "assembly": "006f85c0: MOV EAX,0x2 \n006f85c5: RET",
+      "original_annotation": {
+        "address": "006f85c0",
+        "function_name": "FUN_006f85c0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f85d0",
+      "name": "BSP_EntityOrderCommand_Rocket_Slot10_006f85d0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Rocket descriptor 00cfb4a0, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb4a0",
+      "slot": 4,
+      "command": "Rocket",
+      "assembly": "006f85d0: XOR EAX,EAX \n006f85d2: RET",
+      "original_annotation": {
+        "address": "006f85d0",
+        "function_name": "FUN_006f85d0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f85e0",
+      "name": "BSP_EntityOrderCommand_Rocket_RequiresTarget_006f85e0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Rocket descriptor 00cfb4a0, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb4a0",
+      "slot": 2,
+      "command": "Rocket",
+      "assembly": "006f85e0: MOV AL,0x1 \n006f85e2: RET",
+      "original_annotation": {
+        "address": "006f85e0",
+        "function_name": "FUN_006f85e0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8660",
+      "name": "BSP_EntityOrderCommand_Strafe_Category_006f8660",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_one_006f8020",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Strafe descriptor 00cfb4bc, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb4bc",
+      "slot": 3,
+      "command": "Strafe",
+      "assembly": "006f8660: MOV EAX,0x1 \n006f8665: RET",
+      "original_annotation": {
+        "address": "006f8660",
+        "function_name": "FUN_006f8660"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8670",
+      "name": "BSP_EntityOrderCommand_Strafe_Slot10_006f8670",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Strafe descriptor 00cfb4bc, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb4bc",
+      "slot": 4,
+      "command": "Strafe",
+      "assembly": "006f8670: XOR EAX,EAX \n006f8672: RET",
+      "original_annotation": {
+        "address": "006f8670",
+        "function_name": "FUN_006f8670"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8680",
+      "name": "BSP_EntityOrderCommand_Strafe_RequiresTarget_006f8680",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Strafe descriptor 00cfb4bc, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb4bc",
+      "slot": 2,
+      "command": "Strafe",
+      "assembly": "006f8680: MOV AL,0x1 \n006f8682: RET",
+      "original_annotation": {
+        "address": "006f8680",
+        "function_name": "FUN_006f8680"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8700",
+      "name": "BSP_EntityOrderCommand_Kamikaze_Category_006f8700",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_two_006f82a0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Kamikaze descriptor 00cfb4d8, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x2 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb4d8",
+      "slot": 3,
+      "command": "Kamikaze",
+      "assembly": "006f8700: MOV EAX,0x2 \n006f8705: RET",
+      "original_annotation": {
+        "address": "006f8700",
+        "function_name": "FUN_006f8700"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8710",
+      "name": "BSP_EntityOrderCommand_Kamikaze_Slot10_006f8710",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Kamikaze descriptor 00cfb4d8, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb4d8",
+      "slot": 4,
+      "command": "Kamikaze",
+      "assembly": "006f8710: XOR EAX,EAX \n006f8712: RET",
+      "original_annotation": {
+        "address": "006f8710",
+        "function_name": "FUN_006f8710"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8720",
+      "name": "BSP_EntityOrderCommand_Kamikaze_RequiresTarget_006f8720",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Kamikaze descriptor 00cfb4d8, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb4d8",
+      "slot": 2,
+      "command": "Kamikaze",
+      "assembly": "006f8720: MOV AL,0x1 \n006f8722: RET",
+      "original_annotation": {
+        "address": "006f8720",
+        "function_name": "FUN_006f8720"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f87a0",
+      "name": "BSP_EntityOrderCommand_Dogfight_Category_006f87a0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_one_006f8020",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Dogfight descriptor 00cfb4f8, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb4f8",
+      "slot": 3,
+      "command": "Dogfight",
+      "assembly": "006f87a0: MOV EAX,0x1 \n006f87a5: RET",
+      "original_annotation": {
+        "address": "006f87a0",
+        "function_name": "FUN_006f87a0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f87b0",
+      "name": "BSP_EntityOrderCommand_Dogfight_Slot10_006f87b0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Dogfight descriptor 00cfb4f8, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb4f8",
+      "slot": 4,
+      "command": "Dogfight",
+      "assembly": "006f87b0: XOR EAX,EAX \n006f87b2: RET",
+      "original_annotation": {
+        "address": "006f87b0",
+        "function_name": "FUN_006f87b0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f87c0",
+      "name": "BSP_EntityOrderCommand_Dogfight_RequiresTarget_006f87c0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Dogfight descriptor 00cfb4f8, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb4f8",
+      "slot": 2,
+      "command": "Dogfight",
+      "assembly": "006f87c0: MOV AL,0x1 \n006f87c2: RET",
+      "original_annotation": {
+        "address": "006f87c0",
+        "function_name": "FUN_006f87c0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8840",
+      "name": "BSP_EntityOrderCommand_Follow_Category_006f8840",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_three_006f8840",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Follow descriptor 00cfb518, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x3 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb518",
+      "slot": 3,
+      "command": "Follow",
+      "assembly": "006f8840: MOV EAX,0x3 \n006f8845: RET",
+      "original_annotation": {
+        "address": "006f8840",
+        "function_name": "FUN_006f8840"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8850",
+      "name": "BSP_EntityOrderCommand_Follow_Slot10_006f8850",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Follow descriptor 00cfb518, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb518",
+      "slot": 4,
+      "command": "Follow",
+      "assembly": "006f8850: XOR EAX,EAX \n006f8852: RET",
+      "original_annotation": {
+        "address": "006f8850",
+        "function_name": "FUN_006f8850"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8860",
+      "name": "BSP_EntityOrderCommand_Follow_RequiresTarget_006f8860",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Follow descriptor 00cfb518, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb518",
+      "slot": 2,
+      "command": "Follow",
+      "assembly": "006f8860: MOV AL,0x1 \n006f8862: RET",
+      "original_annotation": {
+        "address": "006f8860",
+        "function_name": "FUN_006f8860"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8930",
+      "name": "BSP_EntityOrderCommand_MoveTo_Category_006f8930",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_three_006f8840",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. MoveTo descriptor 00cfb534, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x3 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb534",
+      "slot": 3,
+      "command": "MoveTo",
+      "assembly": "006f8930: MOV EAX,0x3 \n006f8935: RET",
+      "original_annotation": {
+        "address": "006f8930",
+        "function_name": "FUN_006f8930"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8940",
+      "name": "BSP_EntityOrderCommand_MoveTo_RequiresTarget_006f8940",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. MoveTo descriptor 00cfb534, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb534",
+      "slot": 2,
+      "command": "MoveTo",
+      "assembly": "006f8940: MOV AL,0x1 \n006f8942: RET",
+      "original_annotation": {
+        "address": "006f8940",
+        "function_name": "FUN_006f8940"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8950",
+      "name": "BSP_EntityOrderCommand_MoveTo_Slot10_006f8950",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. MoveTo descriptor 00cfb534, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb534",
+      "slot": 4,
+      "command": "MoveTo",
+      "assembly": "006f8950: XOR EAX,EAX \n006f8952: RET",
+      "original_annotation": {
+        "address": "006f8950",
+        "function_name": "FUN_006f8950"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8960",
+      "name": "BSP_EntityOrderCommand_MoveTo_DefaultWords_006f8960",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_moveto_defaults_006f8960",
+      "original_abi": "Virtual method; ECX ignored; destination at ESP+4; RET 4; EAX retains destination.",
+      "evidence": "Hypothesis, not recovered symbol. MoveTo descriptor 00cfb534, slot +14h; Virtual method; ECX ignored; destination at ESP+4; RET 4; EAX retains destination. Listing 006F8960-006F89C7: bit 0 at 00E19A8C gates initialization of 00E19A7C..00E19A88 to 0,0,3F800000,3F800000; 00D7A24C bytes verified 00 00 80 3F. Copies current words with original load/store order. Shared state is explicit in C++ interface. Rectangle interpretation provisional; no process globals or host wiring added. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 104,
+      "vtable": "00cfb534",
+      "slot": 5,
+      "command": "MoveTo",
+      "assembly": "006f8960: MOV EAX,0x1 \n006f8965: TEST byte ptr [0x00e19a8c],AL \n006f896b: JNZ 0x006f899e \n006f896d: XORPS XMM0,XMM0 \n006f8970: OR dword ptr [0x00e19a8c],EAX \n006f8976: MOVSS dword ptr [0x00e19a7c],XMM0 \n006f897e: MOVSS dword ptr [0x00e19a80],XMM0 \n006f8986: MOVSS XMM0,dword ptr [0x00d7a24c] \n006f898e: MOVSS dword ptr [0x00e19a84],XMM0 \n006f8996: MOVSS dword ptr [0x00e19a88],XMM0 \n006f899e: MOV EAX,dword ptr [ESP + 0x4] \n006f89a2: MOV ECX,dword ptr [0x00e19a7c] \n006f89a8: MOV EDX,dword ptr [0x00e19a80] \n006f89ae: MOV dword ptr [EAX],ECX \n006f89b0: MOV ECX,dword ptr [0x00e19a84] \n006f89b6: MOV dword ptr [EAX + 0x4],EDX \n006f89b9: MOV EDX,dword ptr [0x00e19a88] \n006f89bf: MOV dword ptr [EAX + 0x8],ECX \n006f89c2: MOV dword ptr [EAX + 0xc],EDX \n006f89c5: RET 0x4",
+      "original_annotation": {
+        "address": "006f8960",
+        "function_name": "FUN_006f8960"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8a40",
+      "name": "BSP_EntityOrderCommand_Cruise_Category_006f8a40",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_three_006f8840",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Cruise descriptor 00cfb554, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x3 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb554",
+      "slot": 3,
+      "command": "Cruise",
+      "assembly": "006f8a40: MOV EAX,0x3 \n006f8a45: RET",
+      "original_annotation": {
+        "address": "006f8a40",
+        "function_name": "FUN_006f8a40"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8a50",
+      "name": "BSP_EntityOrderCommand_Cruise_RequiresTarget_006f8a50",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_false_006f80e0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Cruise descriptor 00cfb554, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: XOR AL,AL ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb554",
+      "slot": 2,
+      "command": "Cruise",
+      "assembly": "006f8a50: XOR AL,AL \n006f8a52: RET",
+      "original_annotation": {
+        "address": "006f8a50",
+        "function_name": "FUN_006f8a50"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8a60",
+      "name": "BSP_EntityOrderCommand_Cruise_Slot10_006f8a60",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Cruise descriptor 00cfb554, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb554",
+      "slot": 4,
+      "command": "Cruise",
+      "assembly": "006f8a60: XOR EAX,EAX \n006f8a62: RET",
+      "original_annotation": {
+        "address": "006f8a60",
+        "function_name": "FUN_006f8a60"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8ae0",
+      "name": "BSP_EntityOrderCommand_Tutorial_Category_006f8ae0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_three_006f8840",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Tutorial descriptor 00cfb570, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x3 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb570",
+      "slot": 3,
+      "command": "Tutorial",
+      "assembly": "006f8ae0: MOV EAX,0x3 \n006f8ae5: RET",
+      "original_annotation": {
+        "address": "006f8ae0",
+        "function_name": "FUN_006f8ae0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8af0",
+      "name": "BSP_EntityOrderCommand_Tutorial_RequiresTarget_006f8af0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_false_006f80e0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Tutorial descriptor 00cfb570, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: XOR AL,AL ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb570",
+      "slot": 2,
+      "command": "Tutorial",
+      "assembly": "006f8af0: XOR AL,AL \n006f8af2: RET",
+      "original_annotation": {
+        "address": "006f8af0",
+        "function_name": "FUN_006f8af0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8b00",
+      "name": "BSP_EntityOrderCommand_Tutorial_Slot10_006f8b00",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Tutorial descriptor 00cfb570, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb570",
+      "slot": 4,
+      "command": "Tutorial",
+      "assembly": "006f8b00: XOR EAX,EAX \n006f8b02: RET",
+      "original_annotation": {
+        "address": "006f8b00",
+        "function_name": "FUN_006f8b00"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8b70",
+      "name": "BSP_EntityOrderCommand_AttackMove_Category_006f8b70",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_two_006f82a0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. AttackMove descriptor 00cfb590, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x2 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb590",
+      "slot": 3,
+      "command": "AttackMove",
+      "assembly": "006f8b70: MOV EAX,0x2 \n006f8b75: RET",
+      "original_annotation": {
+        "address": "006f8b70",
+        "function_name": "FUN_006f8b70"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8b80",
+      "name": "BSP_EntityOrderCommand_AttackMove_RequiresTarget_006f8b80",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. AttackMove descriptor 00cfb590, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb590",
+      "slot": 2,
+      "command": "AttackMove",
+      "assembly": "006f8b80: MOV AL,0x1 \n006f8b82: RET",
+      "original_annotation": {
+        "address": "006f8b80",
+        "function_name": "FUN_006f8b80"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8c10",
+      "name": "BSP_EntityOrderCommand_Stop_RequiresTarget_006f8c10",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_false_006f80e0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Stop descriptor 00cfb5a4, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: XOR AL,AL ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb5a4",
+      "slot": 2,
+      "command": "Stop",
+      "assembly": "006f8c10: XOR AL,AL \n006f8c12: RET",
+      "original_annotation": {
+        "address": "006f8c10",
+        "function_name": "FUN_006f8c10"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8ca0",
+      "name": "BSP_EntityOrderCommand_Retreat_RequiresTarget_006f8ca0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_false_006f80e0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Retreat descriptor 00cfb5c0, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: XOR AL,AL ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb5c0",
+      "slot": 2,
+      "command": "Retreat",
+      "assembly": "006f8ca0: XOR AL,AL \n006f8ca2: RET",
+      "original_annotation": {
+        "address": "006f8ca0",
+        "function_name": "FUN_006f8ca0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8d30",
+      "name": "BSP_EntityOrderCommand_ReturnToBase_RequiresTarget_006f8d30",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_false_006f80e0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. ReturnToBase descriptor 00cfb5dc, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: XOR AL,AL ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb5dc",
+      "slot": 2,
+      "command": "ReturnToBase",
+      "assembly": "006f8d30: XOR AL,AL \n006f8d32: RET",
+      "original_annotation": {
+        "address": "006f8d30",
+        "function_name": "FUN_006f8d30"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8dc0",
+      "name": "BSP_EntityOrderCommand_Land_Category_006f8dc0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_three_006f8840",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Land descriptor 00cfb600, slot +0Ch; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: MOV EAX,0x3 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 6,
+      "vtable": "00cfb600",
+      "slot": 3,
+      "command": "Land",
+      "assembly": "006f8dc0: MOV EAX,0x3 \n006f8dc5: RET",
+      "original_annotation": {
+        "address": "006f8dc0",
+        "function_name": "FUN_006f8dc0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8dd0",
+      "name": "BSP_EntityOrderCommand_Land_RequiresTarget_006f8dd0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_predicate_true_006f8040",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; AL-only result.",
+      "evidence": "Hypothesis, not recovered symbol. Land descriptor 00cfb600, slot +08h; Virtual method; ECX ignored; no stack arguments; RET; AL-only result. Whole listing: MOV AL,0x1 ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb600",
+      "slot": 2,
+      "command": "Land",
+      "assembly": "006f8dd0: MOV AL,0x1 \n006f8dd2: RET",
+      "original_annotation": {
+        "address": "006f8dd0",
+        "function_name": "FUN_006f8dd0"
+      },
+      "annotation_status": "applied"
+    },
+    {
+      "address": "006f8de0",
+      "name": "BSP_EntityOrderCommand_Land_Slot10_006f8de0",
+      "source": "src/entity_orders.cpp",
+      "status": "reconstructed_build_verified",
+      "implementation": "entity_order_command_dword_zero_006f80c0",
+      "original_abi": "Virtual method; ECX ignored; no stack arguments; RET; EAX dword result.",
+      "evidence": "Hypothesis, not recovered symbol. Land descriptor 00cfb600, slot +10h; Virtual method; ECX ignored; no stack arguments; RET; EAX dword result. Whole listing: XOR EAX,EAX ; RET. Exact whole-body twins share one representative C++ implementation; distinct original entry addresses remain recorded. Category/target naming follows existing kEntityOrderCommandClasses; slot +10h semantics unknown. Export verified bsp project /battlestationspacific.exe. ",
+      "report": "reports/oct18b_nA_descriptors.json",
+      "body_bytes": 3,
+      "vtable": "00cfb600",
+      "slot": 4,
+      "command": "Land",
+      "assembly": "006f8de0: XOR EAX,EAX \n006f8de2: RET",
+      "original_annotation": {
+        "address": "006f8de0",
+        "function_name": "FUN_006f8de0"
+      },
+      "annotation_status": "applied"
+    }
+  ],
+  "annotation_save": "saved bsp project; original names and preserved comments recorded per row"
+}

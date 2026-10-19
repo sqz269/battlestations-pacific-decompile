@@ -52,7 +52,7 @@ void release_at_zero(void* captured, NativeRendererTextureBindingContext& contex
     // Complete BD30E0 rereads the owner's current profile before slot+04.
     const auto terminal = word(current_texture_table(captured, context.actual_profiles), 4);
     if (terminal == 0x00b3f590) {
-        delete_native_texture_2d_00b3f590(captured, 1, context.actual_texture_2d_owner);
+        delete_native_texture_2d_after_zero(captured, 1, context.actual_texture_2d_owner);
         return;
     }
     if (terminal == 0x00b3f410) {

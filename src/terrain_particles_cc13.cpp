@@ -2774,3 +2774,79 @@ void bush_group_initialise_00ae2450(void* group, void* stream, std::uint32_t cou
 }
 
 } // namespace bsp::cc13_terrain
+
+namespace bsp::cc13_terrain {
+namespace {
+float nc_percentage(float numerator, float denominator) {
+    const double hundred = 100.0; // verified qword 00D7A220
+    float value;
+    __asm {
+        fld numerator
+        fdiv denominator
+        fmul hundred
+        fstp value
+    }
+    return value;
+}
+void nc_add_percentage(void* destination, const void* name, float percentage, TerrainHost& host) {
+    struct StringHeader { std::uint32_t length; void* chars; } copy{0, nullptr};
+    host.native_string_assign_0041dd40(&copy, rd<const void*>(name, 4), rd<std::uint32_t>(name, 0));
+    std::uint32_t word;
+    std::memcpy(&word, &percentage, sizeof word);
+    named_list_array_add_under_name_00aff290(destination, &copy,
+        reinterpret_cast<void*>(static_cast<std::uintptr_t>(word)), host);
+}
+} // namespace
+void emitter_set_collect_percentages_00afd860(void* set, void* destination, TerrainHost& host) {
+    for (std::int32_t i = 0; i < rd<std::int32_t>(set, 0x14); ++i) {
+        const auto index = rd<const std::uint8_t*>(set, 4)[i];
+        const auto* record = rd<const std::uint8_t*>(set, 0xc) + index * 0x108u;
+        const void* definition = rd<const void*>(record, 0xa0);
+        if (rd<std::uint8_t>(definition, 0x7c)) {
+            const float value = nc_percentage(rd<float>(record, 0x34), rd<float>(record, 0x38));
+            nc_add_percentage(destination, static_cast<const std::uint8_t*>(definition) + 8, value, host);
+        }
+    }
+}
+void particle_group_collect_percentages_00b05210(void* group, void* destination, TerrainHost& host) {
+    for (std::int32_t i = 0; i < rd<std::int32_t>(group, 0x1c); ++i) {
+        const auto index = rd<const std::uint16_t*>(group, 0xc)[i * 4];
+        const auto* record = rd<const std::uint8_t*>(group, 0x14) + index * 0x6cu;
+        const float value = nc_percentage(rd<float>(record, 0x40), rd<float>(record, 0x44));
+        const auto* definition = rd<const std::uint8_t*>(record, 0x64);
+        nc_add_percentage(destination, definition + 8, value, host);
+    }
+}
+void named_list_array_clear_00aff410(void* array, TerrainHost& host) {
+    named_list_array_resize_00aff210(array, 0, host);
+}
+void emitter_collect_percentages_00aff580(void* emitter, void* destination, TerrainHost& host) {
+    if (void* group = rd<void*>(emitter, 0x10))
+        particle_group_collect_percentages_00b05210(group, destination, host);
+}
+std::uint32_t renderer_sum_resource_words_00b23d40(void* renderer, ResourceWord slot0c) {
+    auto* item = rd<std::uint8_t*>(renderer, 0x1a78);
+    const auto end = reinterpret_cast<std::uintptr_t>(item)
+        + rd<std::uint32_t>(renderer, 0x1a7c) * 0x2cu;
+    std::uint32_t result = 0;
+    while (reinterpret_cast<std::uintptr_t>(item) != end) {
+        result += slot0c(rd<void*>(item, 0x28));
+        item += 0x2c;
+    }
+    return result;
+}
+__declspec(naked) void texture_tail_slot3c_00b33ea0() {
+    __asm {
+        mov eax, [ecx]
+        mov edx, [eax + 0x3c]
+        jmp edx
+    }
+}
+__declspec(naked) void texture_tail_slot40_00b33eb0() {
+    __asm {
+        mov eax, [ecx]
+        mov edx, [eax + 0x40]
+        jmp edx
+    }
+}
+} // namespace bsp::cc13_terrain

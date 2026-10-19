@@ -273,7 +273,7 @@ struct Seg33aHost {
     // 0075B430, __thiscall(message, type), RET 4: the session-message base constructor.
     virtual void session_message_construct_base_0075b430(void* message, std::uint32_t type) = 0;
     // 0072D830, __thiscall(gun, message), RET 4: the gun's network-message handler.
-    virtual void gun_handle_network_message_0072d830(void* gun, void* message) = 0;
+    virtual bool gun_handle_network_message_0072d830(void* gun, void* message) = 0;
     // 00472520 (TRIV body), __fastcall(object /*ECX*/) -> EAX.
     virtual void* trivial_getter_00472520(void* object) = 0;
     // 0042D2E0, (ECX matrix, EDX float* x, float* y, float* z), RET 8.
@@ -459,6 +459,30 @@ struct Seg33aHost {
     virtual bool gun_can_fire_vt1d0(void* gun, std::int32_t flag) = 0;
     // Bullet class slot 18h (const LuaObject* entry), RET 4: read the class fields.
     virtual void bullet_class_read_lua_vt18(void* cls, void* entry) = 0;
+
+    // oct18b-nA3: additional contracts recovered from the segment 33 bodies.
+    // 0075B480/0075B4C0: ECX message, cursor/read-stream on stack, RET 4.
+    virtual void session_message_write_header_0075b480(void* message, void* cursor) = 0;
+    virtual void session_message_read_header_0075b4c0(void* message, void* stream) = 0;
+    // Bit helpers: ECX raw cursor; DWORD value/output and width, RET 8.
+    virtual void bit_cursor_write_unsigned_00429070(void* cursor, std::uint32_t value, std::int32_t bits) = 0;
+    virtual void bit_cursor_read_unsigned_00428d10(void* cursor, std::uint32_t* out, std::int32_t bits) = 0;
+    virtual void bit_cursor_write_signed_00429090(void* cursor, std::int32_t value, std::int32_t bits) = 0;
+    virtual void bit_cursor_read_signed_00428d30(void* cursor, std::int32_t* out, std::int32_t bits) = 0;
+    // Numeric float: ECX cursor, value/output, zero, signed, scale, width; RET 14h.
+    virtual void bit_cursor_write_float_004295c0(void* cursor, float value, std::int32_t zero,
+                                                std::int32_t is_signed, float scale, std::int32_t bits) = 0;
+    virtual void bit_cursor_read_float_004293f0(void* cursor, float* out, std::int32_t zero,
+                                               std::int32_t is_signed, float scale, std::int32_t bits) = 0;
+    // Gun slot 1C4h(skill), RET 4; 00CF96A8+1C4h -> 00727E70 SetBotSkill.
+    virtual void gun_set_bot_skill_vt1c4(void* gun, std::int32_t skill) = 0;
+    // Entity-pose slot 38h(), ST0; used by 006E7250 for effect+54h.
+    virtual float entity_pose_scale_vt38(void* entity) = 0;
+    // Catapult slot 1F0h(message), RET 4; base 0072D830 returns AL.
+    virtual void catapult_apply_fire_message_vt1f0(void* catapult, void* message) = 0;
+    // 0072B2D0: ECX gun, float timestep, RET 4; 006EC240: ECX catapult, RET.
+    virtual void gun_update_barrel_recoil_0072b2d0(void* gun, float timestep) = 0;
+    virtual void catapult_pose_launching_plane_006ec240(void* catapult) = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -750,6 +774,38 @@ inline constexpr const char* kRocketTypeName = "Rocket";                        
 inline constexpr const char* kWaterMineTypeName = "WaterMine";                   // 00CEA74C
 void* const* bullet_class_get_or_create_006ea910(Seg33aHost& host, void** holder, std::int32_t id);
 
+// oct18b-nA3 additions. Names are hypotheses; new source interfaces, build-only.
+void kill_bullet_message_write_006e0be0(Seg33aHost&, void* message, void* cursor);
+void kill_bullet_message_read_006e0c50(Seg33aHost&, void* message, void* stream);
+float projectile_shot_speed_006e2490(void* shot);
+float projectile_shot_class_bc_006e2510(void* shot);
+float projectile_shot_class_c0_006e2520(void* shot);
+float projectile_shot_class_c4_006e2530(void* shot);
+float projectile_shot_weapon_scale_006e2540(void* shot);
+void gun_fire_message_write_006e39b0(Seg33aHost&, void* message, void* cursor);
+void gun_fire_message_read_006e39e0(Seg33aHost&, void* message, void* stream);
+void bomb_platform_reload_message_write_006e3ad0(Seg33aHost&, void* message, void* cursor);
+void bomb_platform_reload_message_read_006e3b00(Seg33aHost&, void* message, void* stream);
+void multi_bomb_generate_message_write_006e3ba0(Seg33aHost&, void* message, void* cursor);
+void rack_set_bot_skill_forward_006e3d90(Seg33aHost&, void* rack, std::int32_t skill);
+void* rack_owner_006e3db0(void* rack);
+void bomb_platform_fire_message_write_006e48a0(Seg33aHost&, void* message, void* cursor);
+void bomb_platform_fire_message_read_006e4950(Seg33aHost&, void* message, void* stream);
+void bullet_update_effects_006e7250(Seg33aHost&, void* bullet, std::uint32_t unused_timestep_bits);
+bool bullet_always_true_006e7c50() noexcept;
+float bullet_weapon_scale_006e7c90(void* bullet);
+float* bullet_velocity_006e7ca0(void* bullet, float* out);
+// Null create ignores seven stack DWORDs, RET 1Ch; auxiliary ignores one, RET 4.
+void* bullet_class_unavailable_create_006ea230(void* cls, std::uint32_t, std::uint32_t, std::uint32_t,
+                                             std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t) noexcept;
+void* bullet_class_unavailable_aux_006ea240(void* cls, std::uint32_t) noexcept;
+void vehicle_launched_message_read_006eba50(Seg33aHost&, void* message, void* stream);
+void plane_takeoff_message_write_006ebb10(Seg33aHost&, void* message, void* cursor);
+void plane_takeoff_message_read_006ebb40(Seg33aHost&, void* message, void* stream);
+void catapult_fire_message_write_006ebc10(Seg33aHost&, void* message, void* cursor);
+void catapult_fire_message_read_006ebc60(Seg33aHost&, void* message, void* stream);
+bool catapult_handle_message_006ec0d0(Seg33aHost&, void* catapult, void* message);
+void catapult_update_pose_006ec620(Seg33aHost&, void* catapult, float timestep);
 }  // namespace bsp::cc13_seg33a
 
 #endif

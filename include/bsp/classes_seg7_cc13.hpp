@@ -284,3 +284,42 @@ Object soldier_fake_effect_construct_00487770(Seg7Host& host, Object row, Object
 Object soldier_type_construct_0048dc40(Seg7Host& host, Object type, Object klass, Object lua);
 
 } // namespace bsp::cc13_seg7
+
+// oct18b-nA1: newly defined, assembly-reviewed leaves; build-only interfaces.
+
+namespace bsp::cc13_seg7 {
+struct SceneDetachHost {
+    virtual ~SceneDetachHost() = default;
+    virtual float time_00f876a4() = 0;
+    virtual void attach_114(Object entity, Object owner) = 0;
+};
+// ECX runtime; stack entity; RET 4 (tail vcall +114h with owner=0).
+void scene_runtime_detach_00480b70(Object runtime, Object entity, SceneDetachHost& host);
+struct SceneDisableHost {
+    virtual ~SceneDisableHost() = default;
+    virtual void enable_00922f30(Object entity, std::uint32_t enabled) = 0;
+};
+void scene_disable_if_byte5c_clear_00480be0(Object entity, SceneDisableHost& host);
+// Raw-layout Path reference name. ECX reference, RET, EAX string. Empty
+// name literal is 00E186ED; descriptive class association is provisional.
+const char* path_reference_name_004871e0(Object reference) noexcept;
+struct SoldierGlobalsDeleteHost {
+    virtual ~SoldierGlobalsDeleteHost() = default;
+    virtual void set_global_00f87544(Object value) = 0;
+    virtual void free_00bf65ac(void* value) = 0;
+};
+Object soldier_globals_scalar_delete_00484770(Object object, std::uint32_t flags,
+                                               SoldierGlobalsDeleteHost& host);
+struct UnitPathViewHost {
+    virtual ~UnitPathViewHost() = default;
+    virtual Object game_00e188a8() = 0;
+    virtual void refresh_pose_00414db0(Object entity) = 0;
+    virtual bool unit_predicate_0080e3d0(Object unit) = 0;
+    virtual bool aabb_in_view_004b48e0(Object game, const float bounds[6]) = 0;
+    // ECX input Vec4, stack out/Mat4, RET 8. Returned vector may alias out.
+    virtual float* transform_00b62d10(const float input[4], float out[4], const float* matrix) = 0;
+};
+// ECX unit-path runtime (vtable 00CE6A08 slot 3), RET, AL bool. Four local
+// points are runtime+150h..17Fh; opacity is +1Ch; unit pointer +14Ch.
+bool unit_path_in_view_00480c60(Object runtime, UnitPathViewHost& host);
+}

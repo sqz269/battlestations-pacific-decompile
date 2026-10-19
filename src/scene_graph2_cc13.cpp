@@ -1980,3 +1980,147 @@ template std::uint32_t& step_iterator<std::uint32_t>(std::uint32_t&, const std::
 template SceneNode* checked_cast<SceneNode>(SceneNode*, std::uint32_t, const std::function<bool(SceneNode&, std::uint32_t)>&);
 
 }  // namespace bsp::cc13_scene2
+
+namespace bsp::cc13_scene2 {
+namespace {
+template<class T> T& nc_field(void* p, std::size_t offset) {
+    return *reinterpret_cast<T*>(static_cast<std::uint8_t*>(p) + offset);
+}
+float nc_x87_add(float left, float right) {
+    float result;
+    __asm {
+        fld right
+        fadd left
+        fstp result
+    }
+    return result;
+}
+float nc_x87_subtract(float left, float right) {
+    float result;
+    __asm {
+        fld left
+        fsub right
+        fstp result
+    }
+    return result;
+}
+float nc_x87_scale(float left, float scalar) {
+    float result;
+    __asm {
+        fld left
+        fmul scalar
+        fstp result
+    }
+    return result;
+}
+float nc_x87_copy(float value) {
+    float result;
+    __asm {
+        fld value
+        fstp result
+    }
+    return result;
+}
+} // namespace
+
+float* matrix_scale_00b6d440(const float* left, float* output, float scale) {
+    for (int i = 0; i != 16; ++i) output[i] = nc_x87_scale(left[i], scale);
+    return output;
+}
+float* matrix_add_00b6d630(const float* left, float* output, const float* right) {
+    for (int i = 0; i != 16; ++i) output[i] = nc_x87_add(left[i], right[i]);
+    return output;
+}
+float* matrix_subtract_00b6d6d0(const float* left, float* output, const float* right) {
+    for (int i = 0; i != 16; ++i) output[i] = nc_x87_subtract(left[i], right[i]);
+    return output;
+}
+float* vector4_add_00b50020(const float* left, float* output, const float* right) {
+    for (int i = 0; i != 4; ++i) output[i] = nc_x87_add(left[i], right[i]);
+    return output;
+}
+float* matrix_blend_00b6de40(float* output, const float* base,
+    const float* target, const float* weight) {
+    // The listing spills all three intermediate matrices, rather than keeping
+    // base + (target-base)*weight in extended precision.
+    const float amount = *weight;
+    float difference[16], scaled[16], result[16];
+    matrix_subtract_00b6d6d0(target, difference, base);
+    matrix_scale_00b6d440(difference, scaled, amount);
+    matrix_add_00b6d630(base, result, scaled);
+    for (int i = 0; i != 16; ++i) output[i] = result[i];
+    return output;
+}
+void invalidate_world_subtree_00b6da00(void* node) {
+    const auto flags = nc_field<std::uint32_t>(node, 0x5c);
+    if (!(flags & 2u)) return;
+    nc_field<std::uint32_t>(node, 0x138) &= 0xffffffcfu;
+    nc_field<std::uint32_t>(node, 0x5c) = flags & 0xfffffff5u;
+    for (void* child = nc_field<void*>(node, 0x34); child;
+         child = nc_field<void*>(child, 0x3c))
+        invalidate_world_subtree_00b6da00(child);
+}
+void blend_animation_subtree_00b6e240(void* node, std::uint32_t animation,
+    float time, float weight, std::uint32_t recurse, NodeBlendCalls& calls,
+    BlendScratch scratch) {
+    float* sampled = scratch(node);
+    void* animator = nc_field<void*>(node, 0x130);
+    if (animator && calls.sample_slot18(animator, sampled, animation, time)) {
+        // 00B6E281..2F5 writes identity, then copies it TO sampled (+4Ch).
+        for (int i = 0; i != 16; ++i) sampled[i] = (i % 5 == 0) ? 1.0f : 0.0f;
+    }
+    float result[16];
+    matrix_blend_00b6de40(result, &nc_field<float>(node, 0xb0), sampled, &weight);
+    calls.set_matrix_slot38(node, result);
+    if (nc_field<std::uint8_t>(node, 0x134) && (recurse & 0xffu))
+        for (void* child = nc_field<void*>(node, 0x34); child;
+             child = nc_field<void*>(child, 0x3c))
+            blend_animation_subtree_00b6e240(child, animation, time, weight, recurse, calls, scratch);
+}
+void camera_set_position_direction_00b70320(void* camera, const float* position,
+    const float* direction, CameraAimCalls& calls) {
+    nc_field<std::uint32_t>(camera, 0x2f0) &= 0xfffffe4bu;
+    calls.set_position_slot2c(camera, position);
+    for (int i = 0; i != 3; ++i)
+        nc_field<float>(camera, 0x1ac + i * 4) = nc_x87_copy(direction[i]);
+    float target[3];
+    for (int i = 0; i != 3; ++i)
+        target[i] = nc_x87_add(position[i], nc_field<float>(camera, 0x1ac + i * 4));
+    for (int i = 0; i != 3; ++i)
+        nc_field<float>(camera, 0x1a0 + i * 4) = nc_x87_copy(target[i]);
+    const float up[3]{0.0f, 1.0f, 0.0f};
+    float look_storage[16], look[16], inverse_storage[16], inverse[16];
+    const float* built = calls.build_look_at_00b63f10(look_storage,
+        &nc_field<float>(camera, 0x1a0), position, up);
+    for (int i = 0; i != 16; ++i) look[i] = nc_x87_copy(built[i]);
+    const float* inverted = calls.invert_00b63b30(inverse_storage, look);
+    for (int i = 0; i != 16; ++i) inverse[i] = nc_x87_copy(inverted[i]);
+    calls.set_matrix_slot34(camera, inverse);
+}
+void collect_typed_subtree_00b85430(void* array, void* node, std::uint32_t type,
+    CollectNodeCalls& calls) {
+    if (calls.is_type_slot0c(node, type)) {
+        if (nc_field<std::int32_t>(array, 4) == nc_field<std::int32_t>(array, 8)) {
+            const auto doubled = nc_field<std::uint32_t>(array, 8) * 2u;
+            calls.reserve_0059e5e0(array, static_cast<std::int32_t>(doubled) > 1
+                ? static_cast<std::int32_t>(doubled) : 1);
+        }
+        const auto slot = reinterpret_cast<std::uintptr_t>(nc_field<void*>(array, 0))
+            + nc_field<std::uint32_t>(array, 4) * 4u;
+        if (slot) *reinterpret_cast<void**>(slot) = node;
+        ++nc_field<std::uint32_t>(array, 4);
+    }
+    for (void* child = nc_field<void*>(node, 0x34); child;
+         child = nc_field<void*>(child, 0x3c))
+        collect_typed_subtree_00b85430(array, child, type, calls);
+}
+std::uint32_t mesh_resource_owner_00b930a0() noexcept { return 0x00e130a8u; }
+std::uint32_t skin_mesh_resource_owner_00b931a0() noexcept { return 0x00e130acu; }
+std::uint32_t bone_mesh_resource_owner_00b932a0() noexcept { return 0x00e130b0u; }
+void* bone_mesh_resource_create_00b93250(BoneResourceFactory create_00b931f0) {
+    return create_00b931f0(0x00e130b0u);
+}
+void* object_field8c_00ba70b0(void* object) noexcept {
+    return reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(object) + 0x8cu);
+}
+} // namespace bsp::cc13_scene2

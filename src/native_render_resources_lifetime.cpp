@@ -93,7 +93,7 @@ void terminal(void* captured,NativeRenderResourcesLifetimeContext& c,
             case 0x00b4e410u:
                 delete_native_render_texture_surface_owner_00b4e410(captured,1,domain.holders);return;
             case 0x00b3f590u:
-                delete_native_texture_2d_00b3f590(captured,1,domain.holders.textures.construction.owners);return;
+                delete_native_texture_2d_after_zero(captured,1,domain.holders.textures.construction.owners);return;
             default:throw std::logic_error("unsupported refreshed render-resource direct deleting slot");
             }
         }

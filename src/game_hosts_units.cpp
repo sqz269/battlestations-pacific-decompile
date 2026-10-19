@@ -65,6 +65,7 @@
 #include "bsp/ship_nav_ver_cc13.hpp"           // packet cc9_ship_exit_zone (00826D70)
 #include "bsp/command_execution.hpp"           // packet cc9_ship_exit_zone (command classes)
 #include "bsp/plane_level_bomb_task.hpp"      // packet cc9_plane_level_bomb_task
+#include "bsp/cc13_devwalk.hpp"               // packet cc13-devwalk (007C0D90 per rack)
 #include "bsp/squadron_spent_ordnance.hpp"    // packet cc9_squadron_spent_ordnance_rtb
 #include "bsp/scene_record_side_blocks.hpp"
 #include "bsp/plane_follow_law.hpp"
@@ -27164,6 +27165,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.lb_rack_dropping.assign(n, 0);
                         }
                     }
+                    // cc13-devwalk: the next-rack delay draw at 007C0E67-007C0E88,
+                    // 00BD2F10(ECX = 1, [00CE3860] 0.9f, [00CE6448] 1.1f). With
+                    // bsp::cc13_devwalk::kPlaneDeviceWalkSharedDrawBound it comes from the
+                    // shared stream 1 in call order; otherwise from the host's own release
+                    // sequence, as before.
+                    float rack_delay_draw_007c0e88() {
+                        if constexpr (bsp::cc13_devwalk::kPlaneDeviceWalkSharedDrawBound) {
+                            if (owner_.gunnery) {
+                                return owner_.gunnery->death_mode_draw_00bd2f10(1,
+                                    owner_.index_of_slot(unit_),
+                                    bsp::cc13_devwalk::kRackDelayDrawLow,
+                                    bsp::cc13_devwalk::kRackDelayDrawHigh);
+                            }
+                        }
+                        return lb_draw("rk", bsp::level_bomb::kRackDelayLow,
+                                       bsp::level_bomb::kRackDelayHigh);
+                    }
                     void run_level_bomber_issue_007c0e67() {
                         lb_rack_state_seed();
                         float delay = 0.0f;
@@ -27175,9 +27193,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.lb_rack_dropping[i] = 1;
                             ++fired;
                             // 007C0E88-007C0EA0.
-                            delay += lb_draw("rk", bsp::level_bomb::kRackDelayLow,
-                                             bsp::level_bomb::kRackDelayHigh) *
-                                     unit_.plane_bomb_delay_1f4;
+                            delay += rack_delay_draw_007c0e88() * unit_.plane_bomb_delay_1f4;
                         }
                         ++unit_.lb_rack_issues;
                         unit_.lb_rack_fired += fired;
@@ -31774,7 +31790,97 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.done("PlaneStep::height_rate_9b8_007ce92a", 0x007ce92au);
                     }
 
+                    // cc13-devwalk: 007C0D90 per rack, in the image's order
+                    // (bsp::cc13_devwalk::kPlaneDeviceWalkPerRackBound,
+                    // docs/CC13_DEVWALK.md). The racks are the census's BombPlatform
+                    // racks in platform order; MultiBombPlatform racks are not in the
+                    // list (LABELLED, as in the census). The first eligible rack decides
+                    // the single arm; a level bomber's plain racks each fire with the
+                    // delay so far. A fire lands on the rack tick that will run it: the
+                    // per-rack level-bomber tick when lb_level_bomber_racks() holds,
+                    // else the single-rack tick (one active rack; a second fire there is
+                    // recorded only). A rocket (33h) rack's fire is recorded only: its
+                    // rounds belong to the opportunistic-rocket path (LABELLED). The
+                    // paratrooper target point 006E3F90 is recorded, not modelled.
+                    void run_device_walk_per_rack_007c0d90() {
+                        namespace dw = bsp::cc13_devwalk;
+                        plane_rack_census();
+                        lb_rack_state_seed();
+                        const bool level = bsp::unit_is_kind_of(unit_.class_id, 0x10);
+                        const bool lb_tick = bsp::kPlaneLevelBombTaskBound && lb_level_bomber_racks();
+                        const std::size_t n = std::min({unit_.rack_bullet_class_per_rack.size(),
+                                                        unit_.rack_ammo_per_rack.size(),
+                                                        unit_.lb_rack_dropping.size()});
+                        std::vector<dw::DeviceWalkRack> racks(n);
+                        for (std::size_t i = 0; i < n; ++i) {
+                            racks[i].bullet_class = unit_.rack_bullet_class_per_rack[i];
+                            racks[i].holds_round = unit_.rack_ammo_per_rack[i] > 0;
+                            // vt+1FCh, the rack's dropBombs: whichever tick runs it.
+                            racks[i].busy = lb_tick
+                                ? unit_.lb_rack_dropping[i] != 0
+                                : (unit_.rack_dropping &&
+                                   (unit_.rack_active < 0 || unit_.rack_active == static_cast<int>(i)));
+                        }
+                        owner_.done("Plane::droppable_device_walk", 0x007c0d90u);
+                        const dw::DeviceWalkResult w = dw::device_walk_007c0d90(
+                            racks, level, unit_.plane_bomb_delay_1f4,
+                            [this] { return rack_delay_draw_007c0e88(); });
+                        if (!w.found) {                                   // 007C0EDE
+                            if (!lb_tick) unit_.torpedo_issue_gate_open = false;
+                            return;
+                        }
+                        bool single_set = false;
+                        int lb_fired = 0;
+                        for (const dw::DeviceWalkFire& f : w.fired) {
+                            // 007C0E17 vt+1F0h = 006E3550: toRepeatTime += delay, dropBombs = 1.
+                            if (racks[f.rack].bullet_class == dw::kOrdnanceRocket) {
+                                owner_.record("Plane::device_walk_rocket_rack_fire", 0x007c0e17u);
+                                continue;
+                            }
+                            if (f.target_point)
+                                owner_.record("Plane::paratrooper_target_point_006e3f90", 0x006e3f90u);
+                            if (lb_tick) {
+                                unit_.lb_rack_to_repeat[f.rack] += f.delay;
+                                unit_.lb_rack_dropping[f.rack] = 1;
+                                ++lb_fired;
+                            } else if (!single_set) {
+                                single_set = true;
+                                if (unit_.rack_single_fired < unit_.rack_single_count)
+                                    ++unit_.rack_single_fired;
+                                unit_.rack_dropping = true;
+                                unit_.rack_episode_drops = 0;   // GUNNERY 137 diagnostic
+                                unit_.rack_active = static_cast<int>(f.rack);
+                            } else {
+                                owner_.record("Plane::device_walk_second_single_fire", 0x007c0e17u);
+                            }
+                        }
+                        if (lb_tick) {
+                            ++unit_.lb_rack_issues;
+                            unit_.lb_rack_fired += lb_fired;
+                        }
+                        ++unit_.torpedo_orders_issue_ticks;
+                        unit_.torpedo_release_pending_c25 = true;         // 007C0EE2
+                        if (!w.issue_orders) return;                      // 007C0EEB, a rocket last
+                        TorpedoReleaseOrderBinding binding(owner_, unit_);
+                        binding.force_walk_result(true);
+                        const bsp::ReleaseOrderIssueResult r =
+                            bsp::torpedo_issue_release_orders_007c0d90(binding);
+                        if (lb_tick) {
+                            ++unit_.lb_issue_tail_calls;
+                            unit_.lb_issue_tail_raised += r.units_raised;
+                            if (!r.gate_passed) ++unit_.lb_issue_tail_gate_refused;
+                        } else {
+                            unit_.torpedo_issue_gate_open = r.gate_passed;
+                            unit_.torpedo_orders_issued += r.units_raised;
+                            unit_.torpedo_leader_block_raised += r.leader_block_raised;
+                        }
+                    }
+
                     void run_release_order_issue_007c0d90() {
+                        if constexpr (bsp::cc13_devwalk::kPlaneDeviceWalkPerRackBound) {
+                            run_device_walk_per_rack_007c0d90();
+                            return;
+                        }
                         if constexpr (bsp::kPlaneLevelBombTaskBound) {
                             if (lb_level_bomber_racks()) {
                                 const int fired_before = unit_.lb_rack_fired;
