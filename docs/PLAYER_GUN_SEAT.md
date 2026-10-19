@@ -517,6 +517,29 @@ The image's path is the role take:
     run either. Section 7.6 shows that the target id cannot help the turrets.
   - The 1197 artillery "hits" are not the ship lead: `seat artillery lead ship=0 other=0`. The
     camera ray crossed land and never a unit, so 009578C3 never ran.
+- **The ray limit (cc9-gunnery53, with `aim unit`, SCRIPTED_HELM 18.1).**
+  - The seat ray of 00957740 is `t = [[dev+3F8h]+34h]+60h` long, 2300 for Northampton's 8-inch,
+    unless the sea cut is shorter. A ship is led (009578C3) only when that segment hits its hull
+    above y = 0 (00957883..00957898).
+  - USN01 `450 aim unit Convoy1`: tracking is exact (heading error 0), but Convoy1 is 10.19 km
+    away. At about 2.2 km the ray meets a terrain ridge (land points y 23.5..27.7), at the
+    waterline pitch and at -0.085 and -0.06 deg. So ship leads stay 0; no hull hit is possible
+    in that window in the image either.
+- **USN15, the surface fight.** The player's view is Fletcher-class10, and the group 3 seat
+  routes to Mississippi's turrets. Fubuki-class04 closes from 3.4 to 1.9 km between 450 and
+  533 s (`local\g53_th_fub4*.txt`: 9000 `aim unit Fubuki-class04 [pitch]`, 9010 0x9D, 9012 0x99
+  hold 1700).
+  - Auto pitch (the target's origin): the hull hit lies at y <= 0, which the y > 0 test drops,
+    so ship leads = 0.
+  - Pitch -1.0 deg: **009578C3 ship leads 1768 (all turned)**. Mississippi's player-fired shots
+    go 0 -> 78, against the idle run (`local\g53_th2_idle.log` / `local\g53_th3_p10.log`).
+  - Pitch -1.2 deg: ship leads 0 (the ray meets the sea first).
+  - **Hits: 0.** Mississippi's turrets log 7330 turn refusals each, and the ship sinks to a
+    Fubuki-class11 torpedo at 528.39 s, so the window is about 80 s. Its lead runs from its own
+    muzzles toward a destroyer the camera tracks from Fletcher-class10.
+  - **Result:** player shells and ship leads are confirmed; a player turret hit on a ship is not
+    produced in the time box. Next row to try: a player battleship with a slower target inside
+    its 2300 ray.
 
 ### 7.6 The 79h target: AA only (`kPlayerGunSeatTargetInterceptBound`, cc9-gunnery53)
 

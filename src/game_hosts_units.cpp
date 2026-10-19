@@ -17,6 +17,7 @@
 #include "bsp/avoid_zone_draft_bodies.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
+#include "bsp/cc13_sub_dive.hpp"    // packet cc13-subdive
 #include "bsp/unit_motion.hpp"      // unit_step_towards_0042ac60, packet cc9_periscope_out
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
 #include "bsp/airfield_taxi.hpp"                 // packet cc9_land_park_taxi
@@ -58,9 +59,11 @@
 #include "bsp/torpedo_goaway_tick.hpp"
 #include "bsp/plane_fly_to_solver.hpp"
 #include "bsp/cc13_seg68.hpp"
+#include "bsp/cc13_steer_gate.hpp"           // packet cc13-steergate (009FABE0, 009FCCA0)
 #include "bsp/cc13_seg67n_switches.hpp"   // packet cc13-seg67n3 (009FAAD0 per install)
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
+#include "bsp/cc13_release_timer.hpp"            // packet cc13-reltimer (009FA3A0 stubs)
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_squadron_host.hpp"
@@ -483,6 +486,10 @@ struct GameUnitSlot {
     // Packet cc9_submarine_dive: the submarine's depth state (00853630 seeds
     // it; 00936DC0 steps it). bands are +1200h..+120Ch.
     bool sub_dive_ready{false};
+    // Packet cc13-subdive: the class test of 00853630 stage 1 and 008528B0
+    // (class+510h KamikazeDamage or +514h KamikazeBlastDamage above 0), read
+    // once at the seed under kCc13SubDiveKamikazeBound; false otherwise.
+    bool sub_kamikaze_class{false};
     float sub_bands[4]{0.0f, -20.0f, -40.0f, -80.0f};
     float sub_up_speed{1.2f};
     float sub_down_speed{1.2f};
@@ -1234,6 +1241,16 @@ struct GameUnitSlot {
     int tg_cone_ticks{0};       // census: gun ticks with a non-zero cone
     int tg_steer_ticks{0};      // census: fine-aim steers outside dogfight
     float gun_cone_40{0.0f};    // (approach+1Ch)+40h outside dogfight, this think
+    // Packet cc13-steergate (bsp::kBotCommandedDirection68Bound): (approach+1Ch)+68h..+70h,
+    // the direction 009FABE0 stores after the cone; zeroed with the cone (009FCE5A-009FCE64).
+    // All zero reads as "no state wrote it", and the gate then takes the forward (009FC857).
+    float gun_direction_68[3]{0.0f, 0.0f, 0.0f};
+    std::uint32_t sg_site_68{0};   // the 009FABE0 call that wrote it (census key)
+    int sg_direction_writes{0};    // census: stores
+    int sg_heading_fallbacks{0};   // census: 009A1A20 with plan+2CCh != 2 (0099D0A0 arm)
+    int sg_gate_dir_ticks{0};      // census: gates measured against a stored direction
+    int sg_flip_to_pass{0};        // census: stored direction passes, forward would not
+    int sg_flip_to_block{0};       // census: forward would pass, stored direction does not
     int pg_trigger_rises{0};
     int df_head_on_ticks{0};
     int pc_air_brake_overrides{0};
@@ -1945,6 +1962,9 @@ struct GameUnitSlot {
     int torpedo_aim_timer_fires{0};
     int torpedo_aim_timer_blocked_007bb110{0};
     int torpedo_aim_timer_first_fire_tick{-1};
+    // timer+0Dh, set at 009FA405 (packet cc13-reltimer, written only with
+    // kReleaseTimerNotify0DhBound). The image has no reader.
+    bool torpedo_aim_timer_notify_0d{false};
     // plan+2C0h / +2CCh. docs/PILOT_TASK_HEADING_ARM.md: the arm writes the
     // bearing and mode 2, and a bot state's tick may overwrite the pair. The
     // torpedo aim tick does at 009D1D16 / 009D1D1E.
@@ -2944,7 +2964,21 @@ struct GameUnitsHost::Impl {
     void note_kill_cause(std::size_t unit, int cause) {
         if (kill_cause_by_unit.size() <= unit) kill_cause_by_unit.resize(unit + 1, 1);
         kill_cause_by_unit[unit] = cause;
+        // Packet cc13-killx (kPlaneFunnelKillPathTagCc13Bound): every caller here
+        // stands for a 00926D90 Kill, except a site that raised
+        // funnel_path_tag_suppressed around its kill_unit_00926d90 call.
+        if (!funnel_path_tag_suppressed) {
+            if (funnel_path_tag_by_unit.size() <= unit) funnel_path_tag_by_unit.resize(unit + 1, 0);
+            funnel_path_tag_by_unit[unit] = 1;
+        }
     }
+    // Packet cc13-killx: the unit died through a 00926D90 stand-in (not SetHealth).
+    // Grown per slot index at the kill, read by the plane death-mode block one
+    // step later; nothing clears it (slots are never freed).
+    std::vector<std::uint8_t> funnel_path_tag_by_unit;
+    // Raised by the host sites that call kill_unit_00926d90 for a direct
+    // vtable[70h](1), which is not 00926D90.
+    bool funnel_path_tag_suppressed = false;
     unsigned long long land_retired_invalid{0};
     unsigned long long land_retired_own_target_ok{0};   // packet cc9_land_command_own_target
     // Packet cc9_unit_yaw_rate_forward_speed: the accessor's calls and non-zero answers.
@@ -8649,6 +8683,73 @@ struct GameUnitsHost::Impl {
             default: return g.pilot_auto_strafe_angle_angle_strafe;
         }
     }
+    // Packet cc13-steergate (docs/CC13_STEER_GATE.md). 0099B630
+    // BSP_PilotCommand_GetPitchTargetOrLive, __thiscall(cmd), ST0, plain RET:
+    // cmd+2D0h != 0 ? cmd+2BCh : (cmd+2F0h)->+C64h.
+    static float commanded_pitch_0099b630(const GameUnitSlot& u) {
+        return u.plan_state.pitch_mode_2d0 != 0 ? u.plan_state.pitch_target_2bc
+                                                 : u.plane_pitch_angle_c64;
+    }
+    // 009A1A20 BSP_BotTask_CommandedHeading, __fastcall(ECX = cmd), ST0: cmd+2CCh == 2
+    // ? cmd+2C0h : 00438AA0(unit->vtable[50h]() (the heading, unit+C6Ch),
+    // 0099D0A0(cmd, unit+C68h)). The 0099D0A0 inputs are the ones the planner's roll
+    // arm passes at 0099E0C1 (pilot_plan_roll), with the raw bank as the argument and
+    // the class's own TurnRoll (0099D19E class+25Ch; the leader's +260h is the
+    // planner's choice at 0099DF9A, not 0099D0A0's). plan+2F0h is never null here.
+    float commanded_heading_009a1a20(GameUnitSlot& u) const {
+        if (u.plan_heading_mode_2cc == 2) return u.plan_heading_2c0;
+        ++u.sg_heading_fallbacks;
+        bsp::PilotHeadingDiffInputs in;
+        in.bank_request = u.plane_bank_angle_c68;
+        in.pitch_angle = u.plane_pitch_angle_c64;
+        in.pitch_command = u.plan_slots[bsp::kPilotSlotPitch].active != 0
+                               ? u.plan_slots[bsp::kPilotSlotPitch].desired
+                               : u.plan_slots[bsp::kPilotSlotPitch].current;
+        in.unit_is_null = false;
+        in.caps_rate_at_one = bsp::unit_is_kind_of(u.class_id, 0x10) ||
+                              bsp::unit_is_kind_of(u.class_id, 0x16);
+        in.roll_spd = u.plane_class.roll_spd;
+        in.pitch_spd = u.plane_class.pitch_spd;
+        in.yaw_spd = u.plane_class.yaw_spd;
+        in.slide_ratio = u.plane_class.slide_ratio;
+        in.roll_accel = u.plane_class.roll_accel;
+        in.turn_roll_spd = u.plane_class_turn_roll_spd;
+        in.turn_roll = u.plane_class_turn_roll;
+        if (lua.plane_globals_loaded()) {
+            const bsp::GameTuningBlock& g = lua.plane_globals();
+            in.hdg_diff_calc_limit_1 = g.pilot_general_hdg_diff_calc_limit_1;
+            in.hdg_diff_calc_limit_2 = g.pilot_general_hdg_diff_calc_limit_2;
+            in.hdg_diff_calc_min_pitch = g.pilot_general_hdg_diff_calc_min_pitch;
+            in.hdg_diff_calc_min_roll = g.pilot_general_hdg_diff_calc_min_roll;
+        }
+        return bsp::wrapped_angle_add_00438aa0(u.plane_heading_c6c,
+                                               bsp::pilot_heading_diff_0099d0a0(in));
+    }
+    // 009FABE0(ECX = [approach+1Ch], heading, pitch) at the call `site`.
+    struct SteerGateSiteCensus {
+        int writes{0}, gate_ticks{0}, to_pass{0}, to_block{0};
+    };
+    std::map<std::uint32_t, SteerGateSiteCensus> steer_gate_sites_;
+    void gun_direction_009fabe0(GameUnitSlot& u, std::uint32_t site, float heading,
+                                float pitch) {
+        if constexpr (bsp::kBotCommandedDirection68Bound) {
+            const std::array<float, 3> d = bsp::bot_commanded_direction_009fabe0(heading, pitch);
+            u.gun_direction_68[0] = d[0];
+            u.gun_direction_68[1] = d[1];
+            u.gun_direction_68[2] = d[2];
+            u.sg_site_68 = site;
+            ++u.sg_direction_writes;
+            ++steer_gate_sites_[site].writes;
+        }
+    }
+    // The common shape: 009FABE0(009A1A20(cmd), 0099B630(cmd)); the image calls
+    // 0099B630 first, and neither has a side effect.
+    void gun_direction_from_plan_009fabe0(GameUnitSlot& u, std::uint32_t site) {
+        if constexpr (bsp::kBotCommandedDirection68Bound) {
+            const float pitch = commanded_pitch_0099b630(u);
+            gun_direction_009fabe0(u, site, commanded_heading_009a1a20(u), pitch);
+        }
+    }
     bool pilot_fires_flattened{false};
     void ensure_pilot_fires_flattened() {
         if (pilot_fires_flattened) return;
@@ -10267,6 +10368,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             // 009BFD2B-009BFD36: the fly-to arm's cone = Angle_MoveTo.
             unit.gun_cone_40 = strafe_cone_tuning(0x670);
         }
+        gun_direction_from_plan_009fabe0(unit, 0x009bfd59u);   // 009BFD3B-009BFD59
 
         {
             // DIAGNOSTIC (cc9_follow_error_split): commanded minus own speed.
@@ -11586,6 +11688,10 @@ public:
         band.commanded = static_cast<bsp::SubmarineDepthBand>(level < 0 ? 0 : (level > 3 ? 3 : level));
         band.dead = dead;
         band.need_air = kSubmarineAirBound && slot_.sub_air.need_air;  // +1281h
+        // 00936E5C..00936E80: the same class test exempts a kamikaze boat from
+        // the surfacing override (packet cc13-subdive; OFF false, LABELLED).
+        band.kamikaze_class = bsp::cc13_sub_dive::kCc13SubDiveKamikazeBound
+            && slot_.sub_kamikaze_class;
         in.effective = bsp::submarine_effective_depth_band_00936dc0(band);
         // 00936EA3..00936F06: the clamp needs the bot's owner helm slot (role 1,
         // [[unit+740h]+50h]+1B0h) to be 8 or AI-held (00927F10). SUBSTITUTION,
@@ -11752,7 +11858,11 @@ public:
         if (air.drowned && !slot_.sub_drowned && owner_.gunnery != nullptr) {
             // 008553A1..008553B8: vtable[70h](1), 0077D1A0 -> 00926C80.
             slot_.sub_drowned = true;
+            // Packet cc13-killx: a direct vtable[70h](1), not 00926D90, so no
+            // funnel path tag.
+            owner_.funnel_path_tag_suppressed = true;
             owner_.gunnery->kill_unit_00926d90(slot_.process_index, 1);
+            owner_.funnel_path_tag_suppressed = false;
             owner_.log.notef("submarine air: unit=%s drowned (vtable[70h](1), packet "
                 "cc9_submarine_air)", slot_.row.name.c_str());
         }
@@ -19490,11 +19600,12 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
 
         // Packet cc9_submarine_depth_level: 00853630, the submarine's slot
         // 0A0h override, picks unit+1268h after 00822C20. Stage 1: 1 for a
-        // kamikaze class, else 0 (LABELLED false here, see GameUnitRow).
+        // kamikaze class, else 0 (the class read is packet cc13-subdive's
+        // kCc13SubDiveKamikazeBound; OFF it reads false, LABELLED).
         // Stage 2, a kind-1 holder (every host unit is scene-sourced): `Dive`
         // then `TargetDive`, each only when found. The hull move to
-        // bands[level] that `Dive` also makes (00853B44..00853B84) is not
-        // applied: the host hull keeps its authored Y.
+        // bands[level] that `Dive` also makes (00853B44..00853B84) is
+        // kSubmarineDiveTeleportBound below.
         if (bsp::unit_is_kind_of(slot->class_id, 0x08)) {
             row.submarine_depth_seeded = true;
             // Packet cc9_submarine_dive: the band table (00853A90..00853AC5), the
@@ -19534,7 +19645,16 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                     static_cast<double>(slot->sub_air_rates.reload_time),
                     kSubmarineDiveBound ? 1 : 0);
             }
-            row.submarine_depth_level = 0;
+            // Stage 1 (00853A31..00853A81): +1268h = 1 for a kamikaze class, else 0;
+            // two JA tests after COMISS with 0.0, so NaN reads false. Packet
+            // cc13-subdive: the class read runs under kCc13SubDiveKamikazeBound;
+            // OFF the test reads false (LABELLED).
+            if constexpr (bsp::cc13_sub_dive::kCc13SubDiveKamikazeBound) {
+                slot->sub_kamikaze_class =
+                    host.lua.read_vehicle_class_number(row.type_id, "KamikazeDamage", 0.0f) > 0.0f
+                    || host.lua.read_vehicle_class_number(row.type_id, "KamikazeBlastDamage", 0.0f) > 0.0f;
+            }
+            row.submarine_depth_level = slot->sub_kamikaze_class ? 1 : 0;
             if (entity.dive_present) row.submarine_depth_level = entity.dive_level;
             // Packet cc9_submarine_dive_teleport. 00853B3E stores the level, 00853B44
             // loads bands[level] and 00853B55 writes it to the local Y at +A8h (X and
@@ -20134,16 +20254,23 @@ bool GameUnitsHost::set_plane_forward_speed_007d9e80(std::size_t unit_index, flo
 // 1 when class+510h or +514h is above 0 (008528E5..00852908), then, only when
 // +1268h differs (0085290D JE), store it (0085291E) and post session message A2h
 // with the level through 0077C7B0 (00852915..00852956).
-// SUBSTITUTIONS (labelled): the kamikaze test reads false, as in the seed; the A2h
-// message is not posted, and the dive it leads to (the hull move to bands[level])
-// is not modelled, so only the level the getter 00894100 reads changes.
+// The hull move to bands[level] is not this function's: the dive controller
+// 00936DC0 reads +1268h every tick (run_submarine_dive_00936dc0,
+// kSubmarineDiveBound). Packet cc13-subdive (include/bsp/cc13_sub_dive.hpp,
+// docs/CC13_SUB_DIVE.md): kCc13SubDiveKamikazeBound takes the class test from
+// the slot (read at the seed), OFF it reads false (LABELLED). The A2h post stays
+// a record: its 0077C7B0 gate (game+1FE4h == 1, 0077C7B6..0077C7C0) delivers
+// nothing in single player, and the handler 00852C60 only re-calls 008528B0 on a
+// remote peer.
 bool GameUnitsHost::set_submarine_depth_level_008528b0(std::size_t unit_index, int requested) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size()) return false;
+    const GameUnitSlot& slot = *host.slots[unit_index];
     GameUnitRow& row = host.slots[unit_index]->row;
     if (!row.submarine_depth_seeded) return false;
+    const bool kamikaze = bsp::cc13_sub_dive::kCc13SubDiveKamikazeBound && slot.sub_kamikaze_class;
     const int level = static_cast<int>(
-        bsp::submarine_clamp_depth_command_008528b0(requested, false));
+        bsp::submarine_clamp_depth_command_008528b0(requested, kamikaze));
     host.done("SubmarineUnit::set_depth_level", 0x008528b0u);
     if (row.submarine_depth_level == level) return false;
     row.submarine_depth_level = level;
@@ -21188,9 +21315,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Packet cc13-landc (kPlaneFunnelKillDestroyOnlyCc13Bound): a
                         // 00926D90 Kill (a cause other than 1) reaches 0077D1A0 Destroy
                         // without SetHealth, so 007CA8A0 never runs for it.
+                        // Packet cc13-killx (kPlaneFunnelKillPathTagCc13Bound): the
+                        // test is the 00926D90 path tag, for every cause, so a
+                        // cause-1 Lua Kill(x) or 007CE3A7 depth kill is included.
                         const bool destroy_only = bsp::kPlaneFunnelKillDestroyOnlyCc13Bound
-                            && index < host.kill_cause_by_unit.size()
-                            && host.kill_cause_by_unit[index] != 1;
+                            && (bsp::kPlaneFunnelKillPathTagCc13Bound
+                                ? index < host.funnel_path_tag_by_unit.size()
+                                    && host.funnel_path_tag_by_unit[index] != 0
+                                : index < host.kill_cause_by_unit.size()
+                                    && host.kill_cause_by_unit[index] != 1);
                         bsp::PlaneDeathModeInputs din;
                         din.health_370 = 0.0f;
                         // 007CA914: 00BD2F10(ECX = 1, 0.0, 1.0), the shared stream.
@@ -22297,7 +22430,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                             static_cast<double>(unit_.motion.position[1]),
                                             static_cast<double>(min_water_spd),
                                             static_cast<double>(unit_.motion.pose_row1[1]));
+                                        // Packet cc13-killx: 007D12FC's vtable[70h](1),
+                                        // not 00926D90, so no funnel path tag (the
+                                        // powerlost mode stays the death block's).
+                                        owner_.funnel_path_tag_suppressed = true;
                                         gun_host->kill_unit_00926d90(self_index, 1);
+                                        owner_.funnel_path_tag_suppressed = false;
                                     }
                                 }
                                 // 007CB92C: 7, 4 and 5 all go to 6. The
@@ -24902,8 +25040,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                     // 009FCCA0-009FCDB2 and 009F9FC0, the fine aim: when
                     // 1 - (lead dir . +68h) < +40h and +4Ch <= 0, with +68h the
-                    // unit's forward row (009FC857, +68h is reset to 0 each tick
-                    // at 009FCE64 and the dogfight task never writes it) and +40h
+                    // direction a state stored through 009FABE0 this think, else the
+                    // unit's forward row (009FC857; +68h is reset to 0 each tick at
+                    // 009FCE64; docs/CC13_STEER_GATE.md, the dogfight attackrun
+                    // 009A747C writes it too, under a cone this host does not deliver) and +40h
                     // the aim state's Angle_Strafe (0 elsewhere). Angles
                     // (x / d, y / d) of the lead in the unit frame; 009F9FC0 per
                     // axis: sign(e) * min(|8 e| / (Spd * Spd / Accel), 1, damp),
@@ -24941,12 +25081,52 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             strafe = owner_.lua.plane_globals().pilot_auto_strafe_angle_angle_strafe;
                         }
                         // Outside dogfight, the state's cone (kTaskGunConeBound).
-                        // SUBSTITUTION, labelled: the gate compares the lead with
-                        // the unit's forward, not with 009FABE0's +68h direction.
+                        // SUBSTITUTION, labelled, while kSteerGateCommandedDirectionBound
+                        // is off: the gate compares the lead with the unit's forward,
+                        // not with 009FABE0's +68h direction.
                         const bool task_cone = GameUnitsHost::Impl::kTaskGunConeBound &&
                             !unit_.dogfight_task_installed;
                         if (task_cone) strafe = unit_.gun_cone_40;
-                        const float cone = 1.0f - z / d;
+                        float cone = 1.0f - z / d;
+                        // kSteerGateCommandedDirectionBound (packet cc13-steergate): a state
+                        // stored +68h this think (not all zero, 009FC829-009FC855), so the
+                        // gate measures the lead against it. SUBSTITUTION, labelled: the
+                        // host keeps the lead in the unit frame, so the world delta is
+                        // rebuilt through the rows df_local projected on (009FCAE5-009FCB09
+                        // subtract the unit position in world space); u = delta / d per
+                        // component (009FCB70-009FCB92, FSTP float).
+                        // With kBotCommandedDirection68Bound alone the store is inert and
+                        // only the census below runs: it counts the verdicts the
+                        // direction would change, on the forward-gated trajectory.
+                        if constexpr (bsp::kBotCommandedDirection68Bound) {
+                            const float* dir = unit_.gun_direction_68;
+                            if (dir[0] != 0.0f || dir[1] != 0.0f || dir[2] != 0.0f) {
+                                const float* m = unit_.world.data();
+                                double w[3] = {0.0, 0.0, 0.0};
+                                for (int r = 0; r < 3; ++r) {
+                                    const float* row = m + 4 * r;
+                                    const double n = std::sqrt(
+                                        static_cast<double>(row[0]) * row[0] +
+                                        static_cast<double>(row[1]) * row[1] +
+                                        static_cast<double>(row[2]) * row[2]);
+                                    const double s = static_cast<double>(gi.lead_local[r]) /
+                                                     (n > 0 ? n : 1);
+                                    for (int k = 0; k < 3; ++k) w[k] += s * row[k];
+                                }
+                                const float u[3] = {static_cast<float>(w[0]) / d,
+                                                    static_cast<float>(w[1]) / d,
+                                                    static_cast<float>(w[2]) / d};
+                                const float cone_dir = bsp::steer_gate_one_minus_cos_009fcb96(dir, u);
+                                const bool pass_fwd = strafe > cone;
+                                const bool pass_dir = strafe > cone_dir;
+                                auto& site = owner_.steer_gate_sites_[unit_.sg_site_68];
+                                ++unit_.sg_gate_dir_ticks;
+                                ++site.gate_ticks;
+                                if (pass_dir && !pass_fwd) { ++unit_.sg_flip_to_pass; ++site.to_pass; }
+                                if (pass_fwd && !pass_dir) { ++unit_.sg_flip_to_block; ++site.to_block; }
+                                if constexpr (bsp::kSteerGateCommandedDirectionBound) cone = cone_dir;
+                            }
+                        }
                         if (!(strafe > cone)) return false;              // 009FCCAB
                         if (unit_.df_gun.hold_4c > 0.0f) return false;   // 009FCCB4
                         if (task_cone) ++unit_.tg_steer_ticks;
@@ -26660,6 +26840,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             tp[0], tp[2], unit_.motion.position[0], unit_.motion.position[2]);
                         unit_.plan_heading_2c0_written = true;
                         unit_.plan_heading_mode_2cc = 2;
+                        // 009C1B38-009C1B5B: the image steers (009C1B1C) before the cone.
+                        owner_.gun_direction_from_plan_009fabe0(unit_, 0x009c1b5bu);
                     }
                     // 009FBA50 -> 009FB800 as the dive-bomb moveto tick runs them
                     // (no squadron limit, class+518h = tan(DropAngle)).
@@ -26779,8 +26961,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_state.pitch_target_2bc = pitch;
                         unit_.plan_state.pitch_mode_2d0 = 2;
                         unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x678);   // 009CAC42
-                        // LABELLED: 009FABE0 (the gun's desired direction +68h) is not
-                        // carried; the host's gun gate reads the unit's forward.
+                        // 009CAC45-009CAC62: 009FABE0(h, 0099B630(cmd)); h is plan+2C0h
+                        // with mode 2 (009CAB09), so the plan form gives the same value.
+                        // kBotCommandedDirection68Bound; off, nothing is stored.
+                        owner_.gun_direction_from_plan_009fabe0(unit_, 0x009cac62u);
                     }
                     // 009CB1B0 (009CB1B0-009CB4E3), the aim tick.
                     void st_aim_tick_009cb1b0() {
@@ -26841,6 +27025,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // fires on it when its own search finds no aircraft.
                         for (int i = 0; i < 3; ++i) unit_.st_gun_point_5c[i] = p[i];
                         unit_.st_gun_point_armed_28 = true;
+                        // 009CB4C7-009CB4E0: 009FABE0(009A1A20(cmd), [ESP+14h]), the
+                        // pitch stored at 009CB2A2 (the atan2 above).
+                        if constexpr (bsp::kBotCommandedDirection68Bound) {
+                            owner_.gun_direction_009fabe0(unit_, 0x009cb4e0u,
+                                owner_.commanded_heading_009a1a20(unit_), pitch);
+                        }
                     }
                     // 009CBB30 (009CBB30-009CBE6B), the goaway tick.
                     void st_goaway_tick_009cbb30(float dt) {
@@ -26900,6 +27090,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x674);   // 009CBE3F
+                        // 009CBE46-009CBE5B: 009FABE0(009A1A20(cmd), state+20h). The
+                        // tick leaves plan+2CCh = 1, so 009A1A20 takes its 0099D0A0 arm.
+                        if constexpr (bsp::kBotCommandedDirection68Bound) {
+                            owner_.gun_direction_009fabe0(unit_, 0x009cbe5bu,
+                                owner_.commanded_heading_009a1a20(unit_), unit_.st_ga_pitch_20);
+                        }
                     }
                     // 009CADB0 (009CADB0-009CB091), the attackrun tick.
                     void st_attackrun_tick_009cadb0(float dt) {
@@ -26944,6 +27140,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
                         unit_.plane_air_brake_mode_2d8 = 0;
                         unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);   // 009CB062
+                        owner_.gun_direction_from_plan_009fabe0(unit_, 0x009cb085u);   // 009CB06D-009CB085
                     }
                     // Packet cc9_plane_level_bomb_task (bsp::kPlaneLevelBombTaskBound,
                     // committed OFF): the levelbomb task, kind 4. 009B9030 ->
@@ -27491,6 +27688,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 tp[0], tp[2], unit_.motion.position[0], unit_.motion.position[2]);
                             unit_.plan_heading_2c0_written = true;
                             unit_.plan_heading_mode_2cc = 2;
+                            // 009C1B38-009C1B5B (the image steers at 009C1B1C, before).
+                            owner_.gun_direction_from_plan_009fabe0(unit_, 0x009c1b5bu);
                         }
                         // 009B6D4F-009B6DAA: the current speed as a fraction.
                         const float lf = owner_.bot_desired_speed_007c47f0(unit_);
@@ -27818,7 +28017,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
                             unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x674);   // 009B5973
                         }
-                        owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                        // 009B5976-009B5993: 009FABE0(heading, 0099B630(cmd)).
+                        if constexpr (bsp::kBotCommandedDirection68Bound) {
+                            owner_.gun_direction_009fabe0(unit_, 0x009b5993u, heading,
+                                GameUnitsHost::Impl::commanded_pitch_0099b630(unit_));
+                            owner_.done("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                        } else {
+                            owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                        }
                         owner_.done("BotStateLevelBombGoAway::tick", 0x009b5760u);
                     }
                     void lb_retire(const char* why) {
@@ -29387,7 +29593,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     u.plan_state.pitch_mode_2d0 = 2;
                                 }
                                 if (c.writes_cone_40) u.gun_cone_40 = c.cone_40;
-                                // 009FABE0 (the gun direction): not carried, as strafe.
+                                // 009FABE0 (the gun direction): attackrun 009A38E6-009A38FC
+                                // (009A1A20, 0099B630), goaway 009A3EFB-009A3F14 (a second
+                                // 009A3CF0, 0099B630). kBotCommandedDirection68Bound.
+                                if constexpr (bsp::kBotCommandedDirection68Bound) {
+                                    if (c.calls_gun_direction_009fabe0) {
+                                        const float pitch =
+                                            GameUnitsHost::Impl::commanded_pitch_0099b630(u);
+                                        a.owner_.gun_direction_009fabe0(u,
+                                            c.gun_heading_from_plan ? 0x009a38fcu : 0x009a3f14u,
+                                            c.gun_heading_from_plan
+                                                ? a.owner_.commanded_heading_009a1a20(u)
+                                                : c.gun_heading,
+                                            pitch);
+                                    }
+                                }
                             }
                             void release_ordnance_007bbba0() override {
                                 a.owner_.release_ordnance_007bbba0(a.unit_);
@@ -30133,6 +30353,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         } else {
                             owner_.record("BotStateMoveTo::steer_to_point", 0x009f9e40u);
                         }
+                        // 009C1B38-009C1B5B (the image steers at 009C1B1C, before the cone).
+                        owner_.gun_direction_from_plan_009fabe0(unit_, 0x009c1b5bu);
                         if ((unit_.db_moveto_tick_ticks % 200) == 1) {
                             owner_.log.notef("  db moveto %-12s n=%d range=%.1f "
                                 "base=%.1f low=%.1f scale=%.3f gain=%.3f "
@@ -30376,6 +30598,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009C4443-009C444E: cone = Angle_MoveTo.
                             unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
                         }
+                        owner_.gun_direction_from_plan_009fabe0(unit_, 0x009c4471u);   // 009C4451-009C4471
                     }
 
                     // 009C44F0, the turndown tick, vtable 00D20C84 slot +Ch.
@@ -30559,9 +30782,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // normalised (cos, tan(pitch), sin) of the compass heading
                         // to (approach+1Ch)+68h..70h. 0099B630 returns cmd+2BCh
                         // while cmd+2D0h is set (it is, 009C4BE8). This host models
-                        // no approach+1Ch object; kTaskGunConeBound delivers the cone.
+                        // no approach+1Ch object; kTaskGunConeBound delivers the cone,
+                        // and kBotCommandedDirection68Bound the direction (gun+68h).
                         if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
                             unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x674);
+                        }
+                        if constexpr (bsp::kBotCommandedDirection68Bound) {
+                            owner_.gun_direction_009fabe0(unit_, 0x009c4e58u, gt.heading_1c,
+                                GameUnitsHost::Impl::commanded_pitch_0099b630(unit_));
                         }
                     }
 
@@ -32170,6 +32398,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     static_cast<double>(
                                         std::atan(acmd.scale * acmd.class_gain) * 57.2957795));
                             }
+                            // 009D0AE2-009D0B02, after the cone store: 009FABE0(009A1A20,
+                            // 0099B630) on every path of 009D07B0, as the cone.
+                            owner_.gun_direction_from_plan_009fabe0(unit_, 0x009d0b02u);
                         }
                         // The flag is deliberately NOT cleared when the task
                         // leaves aim. plan+2C0h is a persistent plan field, and
@@ -33228,21 +33459,45 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.enabled_0c = s_.torpedo_aim_timer_enabled_0c;
                             in.countdown_10 = s_.torpedo_aim_timer;
                             in.step_seconds = d;
-                            // 007BB110 reads the device at unit+DECh. This host
-                            // has no device model, so an aircraft that still
-                            // carries a round stands in for it. SUBSTITUTION.
-                            owner_.log.unimplemented("Unit::can_release_007bb110",
-                                                     "007bb110");
-                            const bsp::OrdnanceKindSet set{s_.ordnance_mask};
-                            in.unit_can_release_007bb110 =
-                                bsp::ordnance_has_torpedo_2bh(set) &&
-                                s_.torpedo_releases < 1;
-                            // 009FA3EA draws between timer+4h and timer+8h,
-                            // both unread on this object. contract.
-                            owner_.log.unimplemented("ReleaseTimer::reseed_bounds",
-                                                     "009fa3ea");
+                            // Packet cc13-reltimer (docs/CC13_RELEASE_TIMER.md):
+                            // the three stubs below each have a switch in
+                            // bsp/cc13_release_timer.hpp, all OFF.
+                            namespace rt = bsp::cc13_release_timer;
+                            if constexpr (rt::kReleaseTimerPredicate007BB110Bound) {
+                                // 007BB110 is consulted only on a strictly
+                                // negative countdown of an enabled timer; the bay
+                                // byte only when channel C neither decides 1.
+                                const bsp::PlaneActuatorChannel& c =
+                                    s_.actuator_block_dec.channel_c;
+                                if (in.enabled_0c && in.countdown_10 - d < 0.0f) {
+                                    const bool bay = c.enabled
+                                        && !(c.value == rt::kReseedHigh_00d7a24c)
+                                        && bay_rack_holds_round_9c3();
+                                    in.unit_can_release_007bb110 =
+                                        rt::unit_can_release_007bb110(c.enabled, c.value, bay);
+                                    owner_.done("Unit::can_release_007bb110", 0x007bb110u);
+                                }
+                            } else {
+                                // 007BB110 reads the device at unit+DECh. This host
+                                // has no device model, so an aircraft that still
+                                // carries a round stands in for it. SUBSTITUTION.
+                                owner_.log.unimplemented("Unit::can_release_007bb110",
+                                                         "007bb110");
+                                const bsp::OrdnanceKindSet set{s_.ordnance_mask};
+                                in.unit_can_release_007bb110 =
+                                    bsp::ordnance_has_torpedo_2bh(set) &&
+                                    s_.torpedo_releases < 1;
+                            }
+                            if constexpr (!rt::kReleaseTimerReseedDrawBound) {
+                                // 009FA3EA draws between timer+4h and timer+8h,
+                                // both unread on this object. contract.
+                                owner_.log.unimplemented("ReleaseTimer::reseed_bounds",
+                                                         "009fa3ea");
+                            }
                             in.reseed_draw = 0.0f;
-                            owner_.log.unimplemented("Unit::slot_byte_9c0", "009fa3fb");
+                            if constexpr (!rt::kReleaseTimerNotify0DhBound) {
+                                owner_.log.unimplemented("Unit::slot_byte_9c0", "009fa3fb");
+                            }
                             in.slot_byte_9c0_clear = false;
                             const bsp::ReleaseTimerResult r =
                                 bsp::release_timer_tick_009fa3a0(in);
@@ -33256,7 +33511,60 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 s_.torpedo_aim_timer_first_fire_tick =
                                     s_.torpedo_aim_ticks;
                             }
-                            owner_.release_ordnance_007bbba0(s_);
+                            owner_.release_ordnance_007bbba0(s_);   // 009FA3D0
+                            if constexpr (rt::kReleaseTimerReseedDrawBound) {
+                                // 009FA3D5-009FA3F1: 00BD2F10(ECX = 1, [timer+4h]
+                                // 0.5f, [timer+8h] 1.0f), FSTP float [ESI+10h],
+                                // after 007BBBA0. The shared stream 1.
+                                if (owner_.gunnery) {
+                                    s_.torpedo_aim_timer =
+                                        owner_.gunnery->death_mode_draw_00bd2f10(
+                                            rt::kReseedStream, owner_.index_of_slot(s_),
+                                            rt::kReseedLow_00ce3800, rt::kReseedHigh_00d7a24c);
+                                    owner_.done("ReleaseTimer::reseed_bounds", 0x009fa3eau);
+                                    owner_.log.notef("release timer reseed: unit=%s t=%.2f "
+                                        "countdown=%.4f (009FA3EA 00BD2F10 stream 1)",
+                                        s_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(s_.torpedo_aim_timer));
+                                } else {
+                                    owner_.record("ReleaseTimer::reseed_bounds", 0x009fa3eau);
+                                }
+                            }
+                            if constexpr (rt::kReleaseTimerNotify0DhBound) {
+                                // 009FA3F4-009FA405: [unit + 9C0h + 8*[00F876B8]]
+                                // is 007CDC70's 007B9140(unit, 0): 1 for kind 17h
+                                // (007B914A), else some rack holds a round (the
+                                // walk of plane_holds_rack_round_007b9140). Live,
+                                // not one step late. No reader of timer+0Dh.
+                                bool holds = bsp::unit_is_kind_of(s_.class_id, 0x17);
+                                for (const PlaneOrdnanceRack& rack : owner_.ordnance_racks(s_)) {
+                                    if (holds) break;
+                                    if (rack.class_id == 0) continue;
+                                    holds = owner_.plane_rack_holds_round(s_, rack);
+                                }
+                                owner_.done("Unit::slot_byte_9c0", 0x009fa3fbu);
+                                if (!holds) {
+                                    s_.torpedo_aim_timer_notify_0d = true;   // 009FA405
+                                    owner_.log.notef("release timer notify: unit=%s "
+                                        "(009FA405, no reader)", s_.row.name.c_str());
+                                }
+                            }
+                        }
+                        // 007CD9A0 as 007CDC70 publishes it at unit+9C3h: the
+                        // first rack whose platform authors UseBayDoor answers
+                        // vtable[210h](2Ah, 0); none answers 0. Live, not one
+                        // step late; host rack order. docs/CC13_RELEASE_TIMER.md.
+                        bool bay_rack_holds_round_9c3() {
+                            const std::vector<PlaneOrdnanceRack>& racks =
+                                owner_.ordnance_racks(s_);
+                            const std::vector<bool> bay =
+                                bsp::cc13_release_timer::bomb_rack_bay_doors(
+                                    owner_.lua, s_.row.type_id);
+                            for (std::size_t i = 0; i < racks.size() && i < bay.size(); ++i) {
+                                if (bay[i]) return owner_.plane_rack_holds_round(s_, racks[i]);
+                            }
+                            return false;
                         }
                         void arm_release_timer_009d2287() override {
                             // 009D2279-009D2287: refuses to re-arm, and leaves
@@ -33443,6 +33751,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.done("BotStateMoveTo::heading", 0x009c1b23u);
                             }
                         }
+                        // 009C1B38-009C1B5B (the image steers at 009C1B1C, before the cone).
+                        owner_.gun_direction_from_plan_009fabe0(unit_, 0x009c1b5bu);
                         if ((unit_.plane_speed_commands % 50) == 1) {
                             owner_.log.notef("  torpedo %-12s glide census n=%d "
                                 "range=%.1f base=%.2f low=%.1f t=%.3f gain=%.3f "
@@ -33645,6 +33955,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.log.unimplemented(
                                 "BotStateTorpedoGoAway::climb_altitude_1c",
                                 "009d0e7f");
+                        }
+                        // 009D112F-009D114A (arms 1 and 2): 009FABE0(state+18h,
+                        // [approach+8]+1ECh); 009D11CA-009D11E4 (arm 3): 009FABE0(
+                        // state+18h, 0099B630(cmd)), after that arm's 009FB800.
+                        if constexpr (bsp::kBotCommandedDirection68Bound) {
+                            if (r.arm == 1 || r.arm == 2) {
+                                owner_.gun_direction_009fabe0(unit_, 0x009d114au, g.heading_18,
+                                                              unit_.plane_climb_angle_1ec);
+                            } else if (r.arm == 3) {
+                                owner_.gun_direction_009fabe0(unit_, 0x009d11e4u, g.heading_18,
+                                    GameUnitsHost::Impl::commanded_pitch_0099b630(unit_));
+                            }
                         }
 
                         // cmd+2C0h / cmd+2CCh, the pair 0099D300's yaw arm reads.
@@ -36261,6 +36583,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_heading_2c0_written = true;
                         unit_.plan_heading_mode_2cc = 2;
                         owner_.done("BotStateMoveTo::steer_to_point", 0x009f9e40u);
+                        // 009C1B38-009C1B5B (the image steers at 009C1B1C, before the cone).
+                        owner_.gun_direction_from_plan_009fabe0(unit_, 0x009c1b5bu);
                     }
 
                     // follow (land): 009C2980 built at 009B2EE4; tick 009C1FD0.
@@ -37133,7 +37457,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_heading_mode_2cc = 2;
                             if constexpr (GameUnitsHost::Impl::kTaskGunConeBound)
                                 unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
-                            owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                            // 009C9855-009C9872: 009FABE0(the heading just stored, 0099B630).
+                            if constexpr (bsp::kBotCommandedDirection68Bound) {
+                                owner_.gun_direction_009fabe0(unit_, 0x009c9872u, s.heading_2c0,
+                                    GameUnitsHost::Impl::commanded_pitch_0099b630(unit_));
+                                owner_.done("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                            } else {
+                                owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                            }
                             owner_.done("BotStateRetreatMoveTo::tick", 0x009c9310u);
                             break;
                         }
@@ -37154,7 +37485,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_heading_mode_2cc = 2;
                             if constexpr (GameUnitsHost::Impl::kTaskGunConeBound)
                                 unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x66C);
-                            owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                            // Enter 009C992D-009C993D: 009FABE0(009A1A20, 0099B630); leave
+                            // 009C9A3B-009C9A56: 009FABE0(the heading just stored, 0099B630).
+                            if constexpr (bsp::kBotCommandedDirection68Bound) {
+                                if (enter) {
+                                    owner_.gun_direction_from_plan_009fabe0(unit_, 0x009c993du);
+                                } else {
+                                    owner_.gun_direction_009fabe0(unit_, 0x009c9a56u,
+                                        unit_.plan_heading_2c0,
+                                        GameUnitsHost::Impl::commanded_pitch_0099b630(unit_));
+                                }
+                                owner_.done("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                            } else {
+                                owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                            }
                             owner_.done(enter ? "BotStateRetreatEnterZone::tick"
                                               : "BotStateRetreatLeave::tick",
                                         enter ? 0x009c98c0u : 0x009c9990u);
@@ -37937,7 +38281,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009C1B2D: (approach+1Ch)+40h = Angle_MoveTo (tuning+670h).
                             unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
                         }
-                        owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                        if constexpr (bsp::kBotCommandedDirection68Bound) {
+                            owner_.gun_direction_from_plan_009fabe0(unit_, 0x009c285fu);
+                            owner_.done("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                        } else {
+                            owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                        }
                         owner_.done("BotStateMoveToCircle::tick", 0x009c26d0u);
                     }
 
@@ -38014,7 +38363,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009C1B2D: (approach+1Ch)+40h = Angle_MoveTo (tuning+670h).
                             unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
                         }
-                        owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                        if constexpr (bsp::kBotCommandedDirection68Bound) {
+                            owner_.gun_direction_from_plan_009fabe0(unit_, 0x009c25adu);
+                            owner_.done("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                        } else {
+                            owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                        }
                         owner_.done("BotStateMoveToTask::tick", 0x009c2430u);
                     }
 
@@ -38324,6 +38678,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                                 // 009FCE69: the tail zeroes the cone every tick.
                                 unit_.gun_cone_40 = 0.0f;
+                                if constexpr (bsp::kBotCommandedDirection68Bound) {
+                                    // 009FCE5A-009FCE64: and the direction (+70h, +6Ch, +68h).
+                                    unit_.gun_direction_68[0] = 0.0f;
+                                    unit_.gun_direction_68[1] = 0.0f;
+                                    unit_.gun_direction_68[2] = 0.0f;
+                                }
                                 unit_.st_gun_point_armed_28 = false;   // 009FCE4F: +28h = -1.0
                             }
 
@@ -40110,7 +40470,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         unit_.row.name.c_str(),
                                         static_cast<double>(owner_.summary.simulated_seconds),
                                         static_cast<double>(depth));
+                                    // Packet cc13-killx: 007D12FC's vtable[70h](1),
+                                    // not 00926D90, so no funnel path tag.
+                                    owner_.funnel_path_tag_suppressed = true;
                                     gh->kill_unit_00926d90(self, 1);
+                                    owner_.funnel_path_tag_suppressed = false;
                                 }
                             }
                             if (++unit_.plane_water_powerlost == 1) {
@@ -45276,6 +45640,34 @@ void GameUnitsHost::report() {
                             "steer_ticks=%d untasked_planes=%d untasked_ticks=%d "
                             "(packet cc9_task_gun_cones)", cone_ticks, steer_ticks,
                             untasked_planes, untasked);
+                        if constexpr (bsp::kBotCommandedDirection68Bound) {
+                            // Packet cc13-steergate: gun+68h stores and the gate verdicts
+                            // that differ from the forward's (to_pass / to_block).
+                            int writes = 0, fallbacks = 0, gates = 0, to_pass = 0, to_block = 0;
+                            for (const auto& slot : host.slots) {
+                                writes += slot->sg_direction_writes;
+                                fallbacks += slot->sg_heading_fallbacks;
+                                gates += slot->sg_gate_dir_ticks;
+                                to_pass += slot->sg_flip_to_pass;
+                                to_block += slot->sg_flip_to_block;
+                                if (slot->sg_flip_to_pass + slot->sg_flip_to_block == 0) continue;
+                                host.log.notef("  steer gate %-12s writes=%d gates=%d to_pass=%d "
+                                    "to_block=%d steer_ticks=%d", slot->row.name.c_str(),
+                                    slot->sg_direction_writes, slot->sg_gate_dir_ticks,
+                                    slot->sg_flip_to_pass, slot->sg_flip_to_block,
+                                    slot->tg_steer_ticks);
+                            }
+                            for (const auto& [site, c] : host.steer_gate_sites_) {
+                                host.log.notef("  steer gate site %08X writes=%d gates=%d "
+                                    "to_pass=%d to_block=%d", site, c.writes, c.gate_ticks,
+                                    c.to_pass, c.to_block);
+                            }
+                            host.log.notef("summary mission steer gate: direction_writes=%d "
+                                "heading_fallbacks=%d direction_gates=%d to_pass=%d to_block=%d "
+                                "gate_reads_direction=%d (009FABE0 -> gun+68h, 009FCCA0; packet "
+                                "cc13-steergate)", writes, fallbacks, gates, to_pass, to_block,
+                                bsp::kSteerGateCommandedDirectionBound ? 1 : 0);
+                        }
                     }
                     int bursts = 0, fire_ticks = 0;
                     for (const auto& slot : host.slots) {
