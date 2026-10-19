@@ -18,6 +18,7 @@
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
 #include "bsp/cc13_sub_dive.hpp"    // packet cc13-subdive
+#include "bsp/cc13_sinkrng.hpp"     // packet cc13-sinkrng
 #include "bsp/cc13_leak92.hpp"      // packet cc13-leak92
 #include "bsp/unit_motion.hpp"      // unit_step_towards_0042ac60, packet cc9_periscope_out
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
@@ -34,6 +35,7 @@
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/camera_path_sampler.hpp"      // packet cc9_land_convoy_movement
 #include "bsp/return_to_base.hpp"           // packet cc9_squadron_land_task
+#include "bsp/cc13_kz_latch.hpp"            // packet cc13-kzlatch
 #include "bsp/land_and_structures.hpp"      // packet cc9_land_convoy_movement
 #include "bsp/cc15_land_convoy.hpp"         // packet cc13-convoy
 #include "bsp/land_convoy_dead_cc13.hpp"    // packet cc13-dead
@@ -3796,10 +3798,19 @@ struct GameUnitsHost::Impl {
         // 0074EC50: with lobby mode [00E188A8]+1FE4h != 2 (single player), each
         // leak draws U(0, 1) from 00BD2F10 (ECX = 1). SUBSTITUTION, labelled: the
         // draws come from this host's keyed release stream, one key per ship.
+        // Packet cc13-sinkrng: with kSinkLeakDrawStreamCc13Bound they come from the
+        // gunnery generator, the host's main-thread stream 1 (0074ECA5, row 15).
         float draws[6]{};
         float sum_draws = 0.0f;
         for (std::size_t i = 0; i < s.leaks.size(); ++i) {
-            const float r = release_altitude_draw_00bd2f10(s.row.name + "#leak", 0.0f, 1.0f);
+            float r = 0.0f;
+            if constexpr (bsp::kSinkLeakDrawStreamCc13Bound) {
+                r = gunnery != nullptr
+                    ? gunnery->death_mode_draw_00bd2f10(1, s.process_index, 0.0f, 1.0f)
+                    : release_altitude_draw_00bd2f10(s.row.name + "#leak", 0.0f, 1.0f);
+            } else {
+                r = release_altitude_draw_00bd2f10(s.row.name + "#leak", 0.0f, 1.0f);
+            }
             sum_draws = r + sum_draws;                    // 0074ECBD
             draws[i] = r + s.leaks[i].water;              // 0074ECC5
         }
@@ -6416,7 +6427,9 @@ struct GameUnitsHost::Impl {
     // steers at the sighted point (009BF0FD-009BF295) and a held timer makes
     // 009FC7C0 fire on any target in range. False: the sight stays inactive
     // and the hold timer is left alone.
-    static constexpr bool kFollowSightSearchBound = false;
+    // cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 102); reached on
+    // BSM09 only (98 searches), which still wins earlier; other rows identical.
+    static constexpr bool kFollowSightSearchBound = true;
     unsigned long long follow_turbo_steps{0};
     // Packet cc13-fix89 U2 (docs/CC13_FIX89.md, CC13_VERIFY15 U2): the boost
     // request plan+2E4h (the kamikaze states 009AC74C / 009ACD66) reaches cmd+14h
@@ -6533,7 +6546,9 @@ struct GameUnitsHost::Impl {
     // and steers at that origin (009C1B1C). True: the dive-bomb moveto tick feeds
     // that separation to 009C1850 and the glide, and heads with 009F9E40's law.
     // False: db_planar_bc and db_bearing_c0 stand in.
-    static constexpr bool kDiveBombMoveToOriginBound = false;
+    // cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 102); moves
+    // USN01/BSM09/USN21 dive releases, every win holds in both envs.
+    static constexpr bool kDiveBombMoveToOriginBound = true;
     // Packet cc9_landing_descent_2 (docs/SQUADRON_LAND_TASK.md section 5o): the
     // timed direction hold dyn+B4h/+C0h. The land steer's arm 009B1B1C-009B1C79
     // and land/abort's clear 009B0A3B through 007C07A0; the core law's commit
@@ -6779,7 +6794,9 @@ struct GameUnitsHost::Impl {
     // Packet cc9_dive_hit_clock: 009C4AA4 reads the carried approach+C4h instead
     // of the 3600.0 floor, so a hit (009C7900) arms the forced goaway re-roll for
     // one second. OFF until paired with the hit notice's caller.
-    static constexpr bool kDiveHitClockBound = false;
+    // cc9-physics24 2026-10-19: ON by mechanism (OCEAN_WAVE_FIELD 102); moves
+    // USN01/USN21 dive releases, BSM09 identical, every win holds.
+    static constexpr bool kDiveHitClockBound = true;
     // ON: paired in 5ar.1, every death table identical. The airfield park <->
     // abort loop is NOT the image's (SQUADRON_LAND_TASK 5bp): the image pushes a
     // takeoff task at the first ground abort (0099B0BE), and the host's loopers
@@ -14828,7 +14845,8 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
     in.min_water_spd_198 = cls.min_water_spd;
     in.head_present = true;
     in.head_is_kamikaze_17 = bsp::unit_is_kind_of(slots[head]->class_id, 0x17);
-    in.head_c24 = false;
+    in.head_c24 = bsp::cc13_kz_latch::kRtbHeadC24PilotFiresCc13Bound
+        && slots[head]->plane_pilot_fires_c24;   // 007F171A, packet cc13-kzlatch
     // sq+369h ReloadEnabled: 007F1FE0 from the scene bag over the constructor's 1
     // (007F2D09); no scene in this installation authors it, so the substitution
     // shared with the other +369h readers (cc13-gpr38b).
@@ -14940,6 +14958,10 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
         }
     } else {
         note += " no-zones";
+    }
+    // Packet cc13-kzlatch, ON only: the retreat arm's 004C7730 result.
+    if constexpr (bsp::cc13_kz_latch::kRtbHeadC24PilotFiresCc13Bound) {
+        if (zones != nullptr) note += in.zone_found ? " zone-hit" : " zone-miss";
     }
     const bsp::ReturnToBaseResult r = bsp::resolve_return_to_base_007f16d0(in);
     const int arm = static_cast<int>(r.arm);
@@ -19161,7 +19183,10 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
         if (!st.latch_3c && bsp::spent_ordnance_command_class_009f8160(command)) {
             bool any = false;
             for (const std::size_t m : alive) {
-                if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+                // 007B914A: an IsKindOf(17h) member answers 007B9140 before its racks
+                // (packet cc13-kzlatch, docs/CC13_KZ_LATCH.md).
+                if ((bsp::cc13_kz_latch::kKamikazeRackRoundLatchCc13Bound && unit_is_kind_of(m, 0x17))
+                        || plane_holds_rack_round_007b9140(m)) { any = true; break; }
             }
             if (reload_open && !any && !unit_is_kind_of(leader, 0x13)) {
                 st.latch_3c = true;
@@ -19192,7 +19217,10 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                     && unit_is_kind_of(leader, 0x13)) {
                 bool any = false;
                 for (const std::size_t m : alive) {
-                    if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+                    // 007B914A: an IsKindOf(17h) member answers 007B9140 before its racks
+                    // (packet cc13-kzlatch, docs/CC13_KZ_LATCH.md).
+                    if ((bsp::cc13_kz_latch::kKamikazeRackRoundLatchCc13Bound && unit_is_kind_of(m, 0x17))
+                            || plane_holds_rack_round_007b9140(m)) { any = true; break; }
                 }
                 if (!any) {
                     st.fighter_ended_command = command;
@@ -19223,7 +19251,10 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
         if (census && !st.latch_3c && command != st.census_unlatched_class) {
             bool any = false;
             for (const std::size_t m : alive) {
-                if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+                // 007B914A: an IsKindOf(17h) member answers 007B9140 before its racks
+                // (packet cc13-kzlatch, docs/CC13_KZ_LATCH.md).
+                if ((bsp::cc13_kz_latch::kKamikazeRackRoundLatchCc13Bound && unit_is_kind_of(m, 0x17))
+                        || plane_holds_rack_round_007b9140(m)) { any = true; break; }
             }
             if (!any) {
                 st.census_unlatched_class = command;
@@ -19250,7 +19281,10 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
             const std::size_t t = h.slots[leader]->command_target_plus_one;
             bool any = false;
             for (const std::size_t m : alive) {
-                if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+                // 007B914A: an IsKindOf(17h) member answers 007B9140 before its racks
+                // (packet cc13-kzlatch, docs/CC13_KZ_LATCH.md).
+                if ((bsp::cc13_kz_latch::kKamikazeDeadTargetRetestCc13Bound && unit_is_kind_of(m, 0x17))
+                        || plane_holds_rack_round_007b9140(m)) { any = true; break; }
             }
             if (any && t != 0 && t != st.retest_target && gun->unit_dead(t - 1)) {
                 st.retest_target = t;
