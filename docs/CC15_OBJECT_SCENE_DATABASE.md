@@ -113,12 +113,12 @@ All USN04, `--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-f
     USN21 crash), so its purge lines are absent from both runs. Its census reads
     `scene_class_row_by_name` like the other sites.
 
-## Flipped ON (cc15-flip, base f10dce645, 2026-10-19)
+## Flipped ON (cc15-flip, merged base 4cc9872bc = origin/main 2e21536b2 + the flip, 2026-10-19)
 
-OFF = the base build, ON = the base with the switch true, run through tools/run_game.ps1 with
-`BSP_DEATH_TABLE=1`.
+OFF = the merged base built with the switch false, ON = the same tree with it true, run through
+tools/run_game.ps1 with `BSP_DEATH_TABLE=1`.
 
-- **USN04** (the pair above): gameplay identical. Deaths 53, hits 703, damage 13165.2, 81 units; main
+- **USN04** (the pair above): gameplay identical. Deaths 56, hits 730, damage 12958.6, 84 units; main
   moved these since the earlier pair, on both sides. The moved rows are exactly the earlier list,
   with nothing new.
 - **Wins set** (ref env `BSP_GUNNERY_RNG_STREAMS=1`, `--stop-after-end 40`): `pair_diff` reports
@@ -127,28 +127,31 @@ OFF = the base build, ON = the base with the switch true, run through tools/run_
 
   | Row | Orders | End (OFF = ON) |
   |---|---|---|
-  | USN01 | usn01_l69_u1_a | completed 400.03 s |
-  | USN02 | usn02_l68_u2_a | completed 495.00 s |
-  | USN12 | usn12_l68_u12_e8 | completed 1465.30 s |
-  | PRCP01 | prcp01_p9_p01_k | completed 883.26 s |
+  | USN01 | usn01_l69_u1_a | completed 1200.05 s |
+  | USN02 | usn02_l68_u2_a | failed 380.03 s (Game Over) |
+  | USN12 | usn12_l68_u12_e8 | completed 1335.18 s |
+  | PRCP01 | prcp01_p9_p01_k | completed 1010.23 s |
   | USN21 | s46_u21_f | completed 2906.71 s |
-  | BSM09 | bsm09_l68_b9_d1 | EndMission (nil) 408.02 s |
-  | LOMP06 | lomp06_l70_l6_c | failed 613.12 s |
-  | ESMP08 | esmp08_p12_e8_rb | failed 2525.49 s |
+  | ESMP08 | esmp08_p12_e8_rb | completed 1454.44 s |
+  | BSM09 | bsm09_l68_b9_d1 | EndMission (nil) 285.05 s |
+  | LOMP06 | lomp06_l70_l6_c | failed 657.11 s |
   | LOMP10 | lomp10_p3_l10_b | no end |
   | BSM01 | bsm01_l69_b1_d | no end |
   | IJN18 | ijn18_l67_i18_d | no end |
   | JM06 | jm06_s45_j6_k | no end |
 
+- Not caused by the flip (both sides alike): on this main, USN02, LOMP06, LOMP10, BSM01, IJN18 and
+  JM06 lose the wins docs/WINS_TABLE.md records for these order files.
 - These rows moved beyond the USN04 list, and each is explained:
   - MovieCamPos 004E9AE0 and MovieCamLookat 004E9C10 creators run on JM06 and BSM09. They use the
     same shared body, and the class lines read `image` in place of `record`.
   - The `scene named entity` note prints once per named NavPoint, MovieCamPos and MovieCamLookat.
-  - LOMP10's ring-scan `clear_37c` differs for two followers, Kashi (5444.4 -> 10000.0) and Kasumi
-    (FLT_MAX -> 10000.0). The ShipAiSectorScan and ShipAiClearance counters that pair_diff already
-    masks move with it. This is the heap-dependent searcher-bounds value of SHIP_AI_OPEN_ITEMS 140:
-    the image has no initialiser, the field is diagnostic only, and the pair_diff mask covers only
-    the sentinel values.
+  - The ring-scan `clear_37c` of a unit that does not scan can move. On BSM01, one PT reads
+    FLT_MAX -> 12672.0. On the earlier f10dce645 pair, LOMP10's followers moved: Kashi 5444.4 ->
+    10000.0 and Kasumi FLT_MAX -> 10000.0. The ShipAiSectorScan and ShipAiClearance counters that
+    pair_diff already masks move with it. This is the heap-dependent searcher-bounds value of
+    SHIP_AI_OPEN_ITEMS 140: the image has no initialiser, the field is diagnostic only, and the
+    pair_diff mask covers only the sentinel values.
 
 ## Open items
 
