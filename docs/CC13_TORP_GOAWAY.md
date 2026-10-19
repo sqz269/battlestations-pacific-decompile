@@ -190,6 +190,16 @@ Switches (all false), under the enter's parent `kTorpGoawayEnterDrawsBound`: `kT
 (`009D0FD7`), `kTorpGoawayTickDelayDrawBound` (`009D1000`, which also needs
 `kPilotBotConfigLoadBound`). The delay reads the same row as the enter's `009D0EA3`.
 
+Two caveats from rev4:
+- **A failed load.** The delay method needs the PilotBot rows loaded. When
+  `load_pilot_bot_config_00901610` failed, or the row index is outside 0..5, it returns 0 without
+  drawing. The stream is then one draw short on every re-seed, against the image's two. The ON log
+  line of the load (A.4) says whether the rows loaded.
+- **Row index timing. UNCERTAIN, as for the enter (A.4).** The image reads the row as
+  `[[state+4]+14h]`, the pointer it captured when it built the approach (`009F9D22`). The host reads
+  `pilot_skill_index` at the tick. The two differ only if a writer of bot+34h (`009565A0`,
+  `007B8AE0`) runs in between.
+
 x87: `009D1014`-`009D101A` adds the float delay draw to the float `+34h` and stores a float. That is
 one float add, the same at 24 and 53 bits, and `delay + state.window_length_34` matches it.
 `009D101D`-`009D1025` (`+30h` = -(`+34h` x 0.5)) is unchanged code.
@@ -287,7 +297,20 @@ host's float arithmetic exactly. At 53 bits, the draw's `ST0` would carry more t
 into the `FMUL`/`FADD`. The host's draw returns a float, so it can differ by 1 float ulp there. Modelled
 at 24 bits; 53 recorded.
 
-### C.3 The target term, `kDiveGoawayTargetExtentCc13Bound` (dive and torpedo enters)
+### C.3 The target term, one OFF switch per enter (dive, torpedo, level; rocket unhosted)
+
+The four enters that call `007B5BE0`, re-read from the bytes. Each tests the target for non-null
+and `vtable[5Ch](5)` first. The bases and multipliers differ:
+
+| enter | target | base the term competes with | compare | after | switch |
+| --- | --- | --- | --- | --- | --- |
+| dive `009C4950` | `[approach+48h]` (`009C499C`) | `2 * approach+B4h` (`009C4990 FLD`, `FADD ST0,ST0`) | `009C49D0 JBE`: equal takes the term | `* U(1, 1.25)`, `* 1.5` when ctl+369h and `[00E17BF2]` | `kDiveGoawayTargetExtentCc13Bound` |
+| torpedo `009D0D90` | `[approach+CCh]` (`009D0DC9`) | SafeDist `tuning+438h` (`009D0DD1`), 700 in planeglobals.lua:612 | `009D0E07 JA`: base kept only if strictly larger | `* U(1, 1.15)` | `kTorpGoawayTargetExtentCc13Bound` |
+| level `009B5680` | `[approach+48h]` (`009B56B9`) | SafeDist `tuning+450h` (`009B56BE`), 1000 in planeglobals.lua:535 | `009B56F4 JA` | `min(.., 3500)` (`009B5702`-`009B571B`: qword `00D046A0`, float `00D04698`), then `* U(1.05 [00CE780C], 1.2 [00CE3814])` (`009B5746`, ECX = 1) and `* approach+24h` | `kLevelGoawayTargetExtentCc13Bound` |
+| rocket `007B5F10` | `[approach+70h]` (`007B5F6A`) | `tuning+664h` Strike/AttackDist (1800, planeglobals.lua:603) `* 0.8` (qword `00CE3D40`) = 1440 | `007B5F9F JA` | `* U(1, 1.1)` (`00CE6448`) | none: the host runs no rocket task (`RocketTaskHost` has no implementer), so there is nothing to bind |
+
+The level row's draw is the host's existing `lb_draw("ga18", kGoAwayJitterLow, kGoAwayJitterHigh)`,
+unchanged by this packet.
 
 - **Dive enter.** `009C499C`-`009C49E0`: when `[approach+48h]` (the latched target) is non-null and
   its `vtable[5Ch](5)` answers true, the code calls `007B5BE0` on it and takes
@@ -295,6 +318,10 @@ at 24 bits; 53 recorded.
   result.
 - **Torpedo enter.** `009D0DC9`-`009D0E0F` has the same arm on `[approach+CCh]` against SafeDist
   (`JA` keeps SafeDist only when it is strictly larger).
+- **Level enter.** `009B56B6`-`009B5702`, the same arm on `[approach+48h]` against SafeDist. Its
+  host target is the latched `lb_target_plus_one` (the level task's own copy of the command target,
+  `009B9030`'s install). `level_bomb_goaway_standoff_base` already had the arm and the cap; the
+  switch only feeds it.
 - **The kind test.** Kind 5 is "a unit" (docs/UNIT_KIND_QUERY.md: every ship, plane, land vehicle,
   fort, command building, airfield and shipyard), so any unit target passes.
 - **`007B5BE0` is not a physical extent.** It computes `m = (+448h > +444h) ? +448h : +444h`
@@ -304,11 +331,22 @@ at 24 bits; 53 recorded.
   (docs/TORPEDO_AIM_LEAD.md). So the standoff grows to clear the target's longest AA reach. The
   Ghidra name "GetLargestExtent" and earlier "half-extent" readings (docs/CC13_VERIFY8.md L4) are
   wrong about what it measures.
-- **Host binding.** The target is `command_target_plus_one`, the same substitution the dive
-  heading (`goaway_turn_heading_009c47d0`) and the torpedo run-in latch already use. Every host slot
-  is a unit, so the kind test is true whenever there is a target. The ranges come from the gunnery
-  host's `GameGunneryUnitRow::category_ranges[1/5/6]`, the same source `fly_to_obstacles_009fd63c`
-  reads. The image's comparison order is kept, so a NaN takes the image's arm.
+- **Host binding.** For the dive and the torpedo, the target is `command_target_plus_one`, the same
+  substitution the dive heading (`goaway_turn_heading_009c47d0`) and the torpedo run-in latch
+  already use. For the level, it is `lb_target_plus_one`. Every host slot is a unit, so the kind test
+  is true whenever there is a target. The ranges come from the gunnery host's
+  `GameGunneryUnitRow::category_ranges[1/5/6]`, the same source `fly_to_obstacles_009fd63c` reads.
+  The image's comparison order is kept, so a NaN takes the image's arm.
+- **What the ranges are.** Each value is `00956D63`'s longest ammunition-record range in the
+  category (`00731020`), including a category 6 flak gun's second ammunition. So the bullet-class
+  ranges the gunnery host logs ("bullet class N Type=... range=R (first used by / second ammunition
+  of category C)") are exactly the candidate values.
+- **The measurement.** `GameUnitsHost::Impl::goaway_target_term` runs at all three enters whether
+  or not a switch is on. It touches only per-slot counters, which are new and log-only. The exit
+  summary prints one line per slot that entered goaway:
+  `goaway target term <dive|torpedo|level> <name>: enters= targets= moved= aa_max= base=lo..hi`.
+  `moved` counts the enters where the term exceeded the base. This is the per-mission measurement
+  the pairs should read. It is a new line in OFF runs too, but no behaviour moves.
 
 ON-only lookup lifetime: `category_ranges` is filled by `GameGunneryHost::Impl::build_guns` when a
 unit's guns are built (`00956C20`'s host binding), and nothing clears it. `unit_rows()` returns a
@@ -319,15 +357,40 @@ mission. No lookup crosses a mission boundary.
 
 ### C.4 Reach and movers
 
-| | dive enters (`009C49FC` + target term) | dive re-rolls (2 draws each) | torpedo enters (target term) |
-| --- | --- | --- | --- |
-| USN21 | 4 | 0 | 0 |
-| USN01 | 3 | 0 | 3 |
-| USNOS | 9 | 3 | 0 |
-| JM08 | 0 | 0 | 9 |
-| USN04, BSM09, BSM01, IJN08, USN15, LOMP06, JM06 | 0 | 0 | 0 |
+The table below covers the census's eleven WINS logs (docs/CC13_STUB_CENSUS.md section 1, read
+with `local/goaway_aa_survey.py`). The enter counts are summed per-slot summaries:
+- dive: `divebomb ... goaway turn 009C4DAD: enters=`;
+- torpedo: `torpedo ... goaway 009D0D90/009D3150: enters=`;
+- level: the `-> LevelBomb/goaway` transitions.
 
-The dive columns are from cc13-frontier's current-main logs (6.5). The torpedo column is A.7.
+"AA max" is the largest category 1 / 5 / 6 ammunition range any unit in the mission carries. It
+is an upper bound on the term, because a target's value is that maximum over its own guns only.
+
+| log | dive enters | dive re-rolls | torpedo enters | level enters | AA max cat 1 / 5 / 6 | term upper bound | vs dive `2*B4` | vs torpedo 700 | vs level 1000 (cap 3500) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| JM08 | 0 | 0 | 0 | 0 | 1600 / - / 2400 | 2400 | - | - | - |
+| USN04 | 0 | 0 | 0 | 0 | 1600 / - / 2000 | 2000 | - | - | - |
+| USN21 | 4 | 0 | 2 | 0 | 1600 / 2000 / 3300 | 3300 | can move | can move | - |
+| USN01 | 0 | 0 | 5 | 0 | 1600 / 2000 / 2400 | 2400 | - | can move | - |
+| BSM09 | 0 | 0 | 0 | 0 | 1600 / 2000 / 2000 | 2000 | - | - | - |
+| BSM01 | 0 | 0 | 0 | 0 | 1600 / 2000 / 2000 | 2000 | - | - | - |
+| IJN08 | 0 | 0 | 0 | 144 | 1600 / 2000 / 2400 | 2400 | - | - | can move (targets Maru1, Maru2) |
+| USN15 | 0 | 0 | 0 | 0 | 1600 / 2000 / 2000 | 2000 | - | - | - |
+| USNOS | 9 | 3 | 0 | 82 | 1600 / 2000 / 3150 | 3150 | can move | - | can move |
+| LOMP06 | 0 | 0 | 0 | 0 | 1600 / 2000 / 2000 | 2000 | - | - | - |
+| JM06 | 0 | 0 | 0 | 0 | 1600 / - / 3300 | 3300 | - | - | - |
+
+Notes on the table:
+- **Bases.** The dive base is `2 * approach+B4h` before the jitter and the 1.5. The logged final
+  standoffs are 1749-2080 in USN21 and 1634-2045 in USNOS, so the base is at most about 2080. Every
+  WINS mission carries category 1 ammunition at 1600 and flak at 2000 or more, above all three bases
+  wherever the target mounts it.
+- **What "can move" means.** The term would move the standoff when the target carries such guns.
+  Whether it does is per target. The new `goaway target term` line (C.3) gives `moved` and `aa_max`
+  per slot. physics24's pairs will measure it there.
+- **Counts differ from other logs.** These census logs are older builds than the ones A.7 (torpedo:
+  JM08 9, USN01 3) and cc13-frontier 6.5 (dive: USN21 4, USN01 3, USNOS 9) used, so the counts
+  differ by mission.
 
 Movers with the draws ON:
 - the dive standoff `+20h` (up to x1.25), which is `009C7F00`'s completion distance, so how long
@@ -336,12 +399,14 @@ Movers with the draws ON:
   altitude scale), so when the evasive bank comes.
 
 Every draw also advances the shared stream 1, so other stream-1 consumers in those three missions
-shift (memory: AA kill deltas are RNG-coupled).
+shift, AA kill counts among them.
 
-The target term moves the standoff only when the target's longest AA range exceeds the base:
-`2 * approach+B4h` for the dive, SafeDist for the torpedo. No current log prints those ranges, so
-how often that happens is not measured here. It is the larger potential mover: a flak range of
-several km would multiply the goaway distance.
+Movers with a target-term switch ON: the goaway standoff of that enter type. For the dive it is
+`+20h`, `009C7F00`'s completion distance. For the torpedo it is `+24h`. For the level it is `+18h`,
+capped at 3500. The standoff rises up to the target's AA reach, at most 3300 in these missions,
+against bases of 700 to about 2080. This is the larger potential mover: goaway lasts longer and ends
+further out, which changes the AA exposure and the time before the next attack. The rocket enter
+cannot move, because no rocket task is hosted.
 
 ## Uncertainties
 

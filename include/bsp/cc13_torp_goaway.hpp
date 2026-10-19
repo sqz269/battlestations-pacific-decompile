@@ -86,14 +86,22 @@ inline constexpr bool dive_countdown_draw_on() noexcept {
     return kDiveGoawayDrawsCc13Bound && kDiveGoawayCountdownDrawBound;
 }
 
-// 007B5BE0 BSP_UnitInstance_GetLargestExtent on the goaway target, in both
-// enters: dive 009C49A5-009C49E0 (approach+48h) and torpedo 009D0DDF-009D0E0F
-// (approach+CCh), each when the target is non-null and answers
-// vtable[5Ch](5) (kind 5 = any unit). Despite the name it is
-// max(max(+448h, +444h), +434h) = the longest category 6 / 5 / 1 gun range
-// (00956C20's unit+430h + cat*4; LIGHTARTILLERYFLAK / FLAK / AAMACHINEGUN), so
-// the standoff grows to clear the target's AA envelope. OFF: no target term.
+// 007B5BE0 BSP_UnitInstance_GetLargestExtent on the goaway target, when it is
+// non-null and answers vtable[5Ch](5) (kind 5 = any unit). Despite the name it
+// is max(max(+448h, +444h), +434h) = the longest category 6 / 5 / 1 ammunition
+// range (00956D63 into unit+430h + cat*4; LIGHTARTILLERYFLAK / FLAK /
+// AAMACHINEGUN), so the standoff grows to clear the target's AA envelope.
+// One switch per enter (OFF: no target term; the host still logs the term):
+//   dive    009C499C-009C49E0  [approach+48h] vs 2 * approach+B4h, JBE (equal -> term)
+//   torpedo 009D0DC9-009D0E0F  [approach+CCh] vs SafeDist tuning+438h, JA
+//   level   009B56B6-009B5702  [approach+48h] vs SafeDist tuning+450h, JA, then
+//                              min(.., 3500) (qword 00D046A0 / float 00D04698)
+// The rocket enter 007B5F10 (007B5F5B-007B5FAD: [approach+70h] vs tuning+664h
+// Strike/AttackDist * 0.8 qword 00CE3D40, JA) has no switch: the host runs no
+// rocket task (RocketTaskHost has no implementer), so there is nothing to bind.
 inline constexpr bool kDiveGoawayTargetExtentCc13Bound = false;
+inline constexpr bool kTorpGoawayTargetExtentCc13Bound = false;
+inline constexpr bool kLevelGoawayTargetExtentCc13Bound = false;
 
 inline constexpr bool distance_jitter_draw_on() noexcept {
     return kTorpGoawayEnterDrawsBound && kTorpGoawayDistanceJitterDrawBound;
