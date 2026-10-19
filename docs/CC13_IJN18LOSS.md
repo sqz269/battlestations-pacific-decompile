@@ -276,3 +276,73 @@ In the image, a later `select` re-applies 25h. Its 0064DA40 re-binds 2Eh, which 
 occluded while 4Ch is up. The host does not change that path.
 
 Status: reconstructed and build-tested, OFF. The switch was also built ON. No game run.
+
+### Steering while the map is up (packet `cc13-helmsteer`)
+
+**Steering and throttle stay player-held: the last helm order is kept, and the AI does not steer.**
+
+1. **The AI cannot change state.** 009F3DD0 fetches the director's command (0071BE40 at 009F3DE6) and tests `+184h` at
+   009F3DF3. With it set, 009F3DFC substitutes cruise 00E08F70 (switched through 009F3D00 at 009F3E1B). No moveto,
+   attack or follow state runs.
+2. **Cruise 009E1170 tests the role-1 slot first.**
+   - It loads `[[unit+740h]+50h]+1B0h` at 009E119F; the host notes `+50h` is the ship itself (008FBC95).
+   - When the slot is not 8 (009E11A5) and 00927F10 at 009E11AD says it is not AI-held, the helm arm 009E13B4 runs.
+   - The helm arm steers from the live `+998h` (009E1417, then 009DFFB0 at 009E1423) and stores -99.0f (00CF5BFC) at
+     009E1407 and 009E140C.
+3. **With the map up**, role 1 is 8, so the code falls through to the `+184h` test at 009E11C2. `+184h` is 1, so the
+   latched arm 009E11CE..009E1262 runs.
+   - The latch fires only while state+8 is below -10.0f (00CE6848, COMISS at 009E11F9). Because of the -99 marker,
+     that is only the first tick after the helm arm.
+   - That tick copies throttle `+994h` (009E1207) and rudder `+998h` (009E1237). A kind-0Eh unit gets rudder 0
+     (009E121F).
+   - Every later re-plan tick re-sends the same pair (009DFFB0 at 009E1249, 009DBF90 at 009E1257).
+   - A ship with a non-zero rudder at the release keeps circling.
+4. **The AI arm needs `+184h` clear.** That arm is 009E1265 (008356F0 at 009E126B, 00521E70 at 009E12E4, 009E0040 at
+   009E1367).
+5. **`+184h` stays 1.** The 4Bh arm sets it only on a take (007801F8) with mask&2 (007801FE) that 0059BBD0 accepts
+   (0078020B), at 00780214. It clears it only on a release with mask&1 while role 0 is the player's (0078021C), at
+   00780235. 1FEh leaves bit 0 clear.
+
+The host agrees that the ship is not AI-steered:
+- 009F3DF3 and 009F5E06 read `unit_player_controlled_0184`.
+- `cruise_avoidance_inputs` tests the role-1 slot and then `+184h`.
+- With `+184h` set, `cruise_step` records 009E11E8 and returns.
+
+It differs in one way. The host does not re-send the latched pair, so whatever the harness helm route (takehelm or
+moveto) was doing keeps steering. The image freezes on the pair it latched.
+
+### Gunnery while the map is up (packet `cc13-gunfire`)
+
+**Artillery, AA, flak and depth-charge guns acquire targets and fire. Torpedo tubes never fire.**
+
+The director's once-a-second think 009F5DA0 is skipped: its `+184h` test at 009F5E06 jumps past the scan. The guns do
+not need it. The per-gun target comes from the unit gunnery pass 00864FE0:
+- It reads the side contact list `008053C0(unit+54h)+DE8h` at 00865201.
+- It filters candidates through 00863990 (00865237), 00862440 (00865248) and 00864D90 (0086525D).
+- It adds the director's fire and command targets (0071EBF0 at 0086549C, 00521EA0 at 008654A3) and tries them first.
+  A target the director held before the release is therefore preferred while it lasts.
+- It hands each gun its target through 00727F10 at 00865833, or clears it through 00728000 at 0086586C.
+
+The pass reads neither `+184h` nor any role. Its only fire gate is allowFire (`director+3Ch`, read by the bridge
+008624C0 at 008624F4); that byte is not traced to player control.
+
+Each bot tick gates on the gun's own holder `[bot+50h]+1ACh`, which the device walk returns to 8 on the release:
+
+| bot | holder test | other gate |
+|---|---|---|
+| ArtilleryGunnerBot 006DF520 | +1ACh at 006DF56B, 00927F10 at 006DF577 | needs a target through vtable[40h] at 006DF595 |
+| TailGunnerBot 008FFA20 | +1ACh at 008FFA8D, 00927F10 at 008FFA99 | `+221h` at 008FFAD5 |
+| AAGunnerBot 00902920 | 00927F10 at 00902999 | — |
+| AAFlakBot 009030C0 | 00927F10 at 00903136 | — |
+| DepthChargeBot 008FC080 | 00927F10 at 008FC11E | — |
+| TorpedoBot 008FFF20 | 00927F10 at 0090003B | `+184h` gate, below |
+
+TorpedoBot also walks to the owning kind-5 unit (vtable[5Ch] at 0090005C) and tests its `+184h` at 00900080. A set byte
+jumps at 00900087 to 00900985, the exit. So no torpedo leaves a `+184h` ship through its bot, whoever holds the tube.
+
+**The host diverges on torpedoes.** It runs the same pass, the recon sweep and the holder gate (kPlayerGunSeatBound),
+but its torpedo-bot path has no 00900080 test.
+
+Proposed sub-switch, **not built**: `kTorpedoBotOwnerPlayerGateCc13Bound`, OFF. ON, it skips the torpedo bot's aim and
+trigger when the owning unit's `+184h` is set. The reach is wider than releasegun: every ship a plan has taken with
+`takehelm` has `+184h` = 1. So the host's bot torpedoes on such ships fire today, where the image never fires them.
