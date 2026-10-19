@@ -126,27 +126,80 @@ Readers of `+1CCh` in the image:
 `0071BD30` and the getter `00720E10` have no references, so no AI or simulation code reads
 the mask.
 
+The director constructor `00720180` seeds `+1CCh = 1FFh` (`007202F3`): every command is
+enabled until a script narrows it. So any future host reader of this map must:
+- take 0x1FF for a director with no entry;
+- clear the map when a scene loads.
+
 The runner stores the mask in a per-director map, which no host code reads, and records the
 call.
 
 SUBSTITUTIONS:
-- The director is a units-host slot, as for HasFired.
+- The director is a units-host slot: the unit itself, or for a plane (kind 0Fh) its registry
+  squadron slot. Unlike HasFired's runner, there is no kind-02h test before that mapping,
+  because `008A6C30` has no class test. The entity goes straight to `vtable[114h]`.
 - The message is applied at the call rather than on delivery.
 - A unit with no director is counted and skipped. The image would send through a null
   director.
 
 ## Predicted ON effect on the WINS missions
 
-Only BSM01, BSM09 and JM06 call HasFired, AddWaterLoad or BreakShip; JM08, USN04, USN21,
+Only BSM01, BSM09 and JM06 call HasFired, AddWaterLoad or BreakShip. JM08, USN04, USN21,
 USN01, IJN08, USN15, USNOS and LOMP06 do not.
 
-UnitSetPlayerCommandsEnabled is called in three missions:
-- BSM01 `bsm_01:1797` (Henry, `PCF_NONE`);
-- BSM09 `bsm_09:262` (Donald);
-- USN04 `usn/usn_19_coralus.lua:460` and `:1947` (Lex and Town, `PCF_NONE+PCF_TARGET`).
+The WIN rows' scripts are as follows (`docs/CC13_WIN_READINESS.md`, `docs/CC13_VERIFY16.md`):
 
-ON is identical in all three, apart from the record line and the `+1CCh` store, because no
-host code reads the mask.
+| Row | Script |
+| --- | --- |
+| USN01 | `usn/usn_1_marshall.lua` |
+| USN04 | `usn/usn_19_coralus.lua` |
+| USN21 | `usn/usn_sibuyan.lua` |
+| USNOS | `COTP-USN/us_osumi.lua` |
+| USN15 | `COTP-USN/PRCPUS/usn_15_battle_of_surigao_strait.lua` |
+| JM06 | `COTP-IJN/PRCPIJN/jm06.lua` |
+| JM08 | `COTP-IJN/PRCPIJN/prcpjm08.lua` |
+| IJN08 | `ijn/ijn_8_north_sol.lua` |
+| LOMP06 | `usn/LOMP/06_crucial_cargo.lua` |
+
+The `COTP-USN` USN01/USN03 and similar scripts in the census below are different missions,
+not these rows.
+
+**UnitSetPlayerCommandsEnabled reach.** A grep of this installation's `scripts` finds 79 lines
+in 34 files:
+- 15 are commented out: the seven `traininggrounds` scripts (`PCF_RETREAT`), plus
+  `prcp_13_iwojima:1133`, `usn_13_battle_of_iwo_jima:1133` (both copies),
+  `usn_03_battle_of_santa_cruz:1373` (both copies), `PRCPUS/prcp_14_okinawa:1499`,
+  `PRCPUS/usn_14_battle_of_okinawa:1499` and `PRCPUS/usn_09_leyte:657`.
+- 64 are live calls in 26 files.
+
+Live calls, WIN rows marked **WIN**:
+
+| Script | Lines | Unit and mask |
+| --- | --- | --- |
+| **WIN BSM01** `bsm/bsm_01_stationed_at_pearl.lua` | 1797 | Henry, `PCF_NONE` |
+| **WIN BSM09** `bsm/bsm_09_battle_of_the_coral_sea.lua` | 262 | Donald (a squadron), `PCF_MOVE+PCF_TARGET+PCF_JOIN_LEAVE+PCF_CHANGE_FORMATION+PCF_ORDERS+PCF_REPAIR` |
+| **WIN USN04** `usn/usn_19_coralus.lua` | 460, 1947 | Lex and Town, `PCF_NONE+PCF_TARGET` |
+| BSM04 `bsm/bsm_04_vengance_at_luzon.lua` | 921 | Lex, `PCF_NONE` |
+| JM02 `COTP-IJN/jm02.lua` / `ijn/JM/jm02.lua` | 3404, 3406 / 3408, 3410 | `Mission.PlayerBetty`, `PCF_ALL` then `PCF_NONE`. A plane, so the squadron-slot arm is reached |
+| JM04 `COTP-IJN/jm04.lua` / `ijn/JM/jm04.lua` | 164-166, 2248, 2474, 2476 / 164-166, 2241, 2467, 2469 | PlayerUnit, Shoho and a loop unit, with masks from `PCF_NONE` to `PCF_ALL` (6 calls each) |
+| JM04 PRCP `COTP-IJN/PRCPIJN/jm04.lua` and `prcpjm04.lua` | 323, 505, 509 | Shoho, Shokaku, Zuikaku, `PCF_NONE+PCF_TARGET` |
+| JM10 `COTP-IJN/PRCPIJN/jm10.lua` | 1227 | a loop unit, `PCF_NONE` |
+| JM15 `COTP-IJN/PRCPIJN/jm15.lua` | 727, 729 | PlayerUnit, `PCF_ALL` / `PCF_NONE` |
+| USN01 (COTP) `COTP-USN/PRCPUS/usn_01_battle_of_eastern_solomons.lua`, `prcp_01_eastern.lua` | 835, 1068 / 839, 1075 | Saratoga, Enterprise, `PCF_NONE+PCF_TARGET` |
+| USN03 `COTP-USN/usn_03_battle_of_santa_cruz.lua` and the `PRCPUS` copy | 534, 1357, 1434, 1452, 1456, 1504 (each) | Enterprise, South Dakota and loop units |
+| USN07 `COTP-USN/PRCPUS/usn_07_invasion_of_tarawa.lua` / `prcp_07_tarawa.lua` | 559, 562 / 547, 550 | CV26, CV27, `PCF_NONE` |
+| USN09 `COTP-USN/usn_09_leyte.lua` | 580 | Atlanta, `PCF_NONE+PCF_TARGET` |
+| USN13 `COTP-USN/usn_13_battle_of_iwo_jima.lua`, `PRCPUS/` copy, `COTP-USN/prcp_13_iwojima.lua` | 925, 1282 | loop units, `PCF_NONE+PCF_TARGET` |
+| USN18 (PRCP Iwo Jima) `COTP-USN/PRCPUS/prcp_13_iwojima.lua` | 548, 1376 | loop units, `PCF_NONE+PCF_TARGET` |
+| USN14 / USN19 `COTP-USN/PRCPUS/usn_14_battle_of_okinawa.lua`, `prcp_14_okinawa.lua` | 770, 1496 | loop units, `PCF_NONE+PCF_TARGET` then `PCF_ALL` |
+| LOMP09 `usn/LOMP/09_samar.lua` | 363 | a loop unit, `PCF_NONE+PCF_TARGET` |
+
+Of the WIN rows, only BSM01, BSM09 and USN04 call it. USN01's row script
+(`usn_1_marshall.lua`) does not; the calls under the USN01 name are the different COTP
+mission. JM06, JM08, IJN08, USN15, USN21, USNOS and LOMP06 do not call it either.
+
+ON is identical in every mission, apart from the record line and the `+1CCh` store, because
+no host code reads the mask.
 
 - **BSM01, HasFired** (`bsm_01:813`):
   - The call is `HasFired(Henry, "DEPTHCHARGE", GameTime())`. It becomes true at Henry's

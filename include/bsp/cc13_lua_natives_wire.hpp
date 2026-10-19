@@ -55,7 +55,9 @@ inline constexpr bool kLuaBreakShipBound = false;
 // its director vtable[114h], argument 1 as an integer, then 0071DD30: message 5Ah
 // sub-kind 2, routed with flags 7, which 0071C1E0 stores at director+1CCh. The
 // readers are the HUD's 0071C060 and the network snapshot 00721280, so nothing
-// in the simulation changes. Returns no value.
+// in the simulation changes. Returns no value. The director constructor seeds
+// +1CCh = 1FFh (007202F3), so any future reader must default an absent entry to
+// 0x1FF and clear the map per scene. There is no class test before vtable[114h].
 // True: GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30 stores
 // the mask in the host's per-director map (no host reader) and records it.
 // False: the row stays unhandled (UNIMPLEMENTED, no value pushed).
