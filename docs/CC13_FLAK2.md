@@ -115,22 +115,23 @@ N1 is not met.
 - "dp guns" are category 6 guns whose second shell outranges the first. "assigns" is their OFF
   `assigns` total. The count does not check `2v0 > 0`, which `dp_air_ammo` also requires before
   a gun's slot test takes the second range. `dp_air_rounds` and the fly-to `rebuilds` come from the mission summaries.
-- Logs (physics24/23h OFF sets, cc9-physics1 `local\`, except IJN08 from cc9-lua52):
-  - p24_off_j8, p24_off_u04, p24_off_u21f, p24_off_u1i, p24_off_b1, p24_off_b9 and p24_off_j6;
-  - p23h_off_os;
-  - l70r_w_i08_main_ref.
+- Logs: each row names two (cc9-physics1 `local\`, except IJN08 from cc9-lua52). The first
+  feeds the gunrow columns (units, ranges, dp guns and their assigns): the `_def` logs print no
+  `gunrow` lines, so those columns use the plain run of the same p24 set. The second feeds the
+  `dp_air_rounds` and fly-to `rebuilds` columns, from that log's mission summaries. The two are
+  different runs where they differ, so read the columns as one set each, not as one run.
 
-| mission | units whose c6 moves (side 0 / 1) | c6 host -> image | units whose AA reach moves | dp guns (OFF assigns) | OFF dp_air_rounds | fly-to goaway rebuilds torp / dive | flip moves |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| JM08 | 38 (21 / 17) | 1500 -> 2000 x37, -> 2400 x1 | 38: Missouri, Nevada, USTroopTransport, San Francisco, Helena, Hosho, Fubuki ... | 107 (8304) | 2525 | 23 / 163 | AA gunnery, fly-to; goaway term when flipped |
-| USN04 | 16 (16 / 0) | 1500 -> 2000 x16 | 15: Fletcher-, Northampton-, York-class | 83 (471) | 297 | 0 / 0 | AA gunnery only (the US ships' flak against the Japanese strike) |
-| USN21 | 49 (28 / 21) | 1500 -> 2000 x49 | 45: Haruna, Kongo, Nagato, Myoko, Iowa, NJ, Miami ... | 234 (4639) | 4340 | 0 / 2 | AA gunnery, fly-to (2 dive rebuilds); goaway term (the census set's Haruna dive) when flipped |
-| USN01 | 6 (5 / 0, plus CB2 on side 2) | 1500 -> 2000 x5; CB2 1500 -> 2400 | 6: Blue, Dunlap, McCall, Ralph, Salt Lake City, CB2 | 28 (59) | 24 | 50 / 105 | AA gunnery (small); fly-to only where CB2 (side 2, the coastal battery) is within 2500 of a US flyer's lead point. The flyers' target Katori is 2000 / 2000, not a mover. |
-| BSM01 | 7 (7 / 0) | 1500 -> 2000 x7 | 7: Nevada, Oklahoma, Phoenix, Medusa, Sacramento, Tautog, Whitney | 29 (4944) | 3441 | 191 / 0 | AA gunnery; fly-to (Japanese torpedo flyers near Nevada and Oklahoma); goaway term (35 census Oklahoma dives) when flipped |
-| BSM09 | 9 (4 / 5) | 1500 -> 2000 x9 | 8: Cleveland, Fletcher, Jenkins, Shokaku, Zuikaku, Akebono, Asagiri, Ushio | 42 (656) | 766 | 0 / 0 | AA gunnery only |
-| JM06 | 14 (12 / 2) | 1500 -> 2000 x14 | 14: Fletcher-class, Narwhal-class, USTroopTransport, Placeholder #3 | 44 (330) | 46 | 0 / 0 | AA gunnery only |
-| IJN08 | 61 (40 / 21) | 1500 -> 2000 x60, -> 2400 x1 | 61: Maru, Kongo, Haruna, Hiei, Kirishima, Aoba, Kako, Zuiho, Heavy AA ... | 216 (1154) | 579 | 0 / 72 | AA gunnery, fly-to (dive); goaway term (level bombers on the Marus) when flipped |
-| USNOS | 64 (32 / 32) | 1500 -> 2000 x57, -> 2400 x3, 2300 -> 3150 x4 | 58: TroopTrans, Midway, HQ, Zao, Aki, Ada, Shima, Convoy, Cargo ... | 257 (4420) | 1167 | 0 / 196 | AA gunnery, fly-to (dive; the targets are hangars but movers stand within 2100 of the lead points); goaway term (level bombers on TroopTrans) when flipped |
+| mission | units whose c6 moves (side 0 / 1) | c6 host -> image | units whose AA reach moves | dp guns (OFF assigns) | OFF dp_air_rounds | fly-to goaway rebuilds torp / dive | flip moves | logs: gunrow columns; dp_air_rounds and fly-to |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| JM08 | 38 (21 / 17) | 1500 -> 2000 x37, -> 2400 x1 | 38: Missouri, Nevada, USTroopTransport, San Francisco, Helena, Hosho, Fubuki ... | 107 (8304) | 2525 | 23 / 163 | AA gunnery, fly-to; goaway term when flipped | p24_off_j8; p24_off_j8_def |
+| USN04 | 16 (16 / 0) | 1500 -> 2000 x16 | 15: Fletcher-, Northampton-, York-class | 83 (471) | 297 | 0 / 0 | AA gunnery only (the US ships' flak against the Japanese strike) | p24_off_u04; p24_off_u04 |
+| USN21 | 49 (28 / 21) | 1500 -> 2000 x49 | 45: Haruna, Kongo, Nagato, Myoko, Iowa, NJ, Miami ... | 234 (4639) | 4340 | 0 / 2 | AA gunnery, fly-to (2 dive rebuilds); goaway term (the census set's Haruna dive) when flipped | p24_off_u21f; p24_off_u21f_def |
+| USN01 | 6 (5 / 0, plus CB2 on side 2) | 1500 -> 2000 x5; CB2 1500 -> 2400 | 6: Blue, Dunlap, McCall, Ralph, Salt Lake City, CB2 | 28 (59) | 24 | 50 / 105 | AA gunnery (small); fly-to only where CB2 (side 2, the coastal battery) is within 2500 of a US flyer's lead point. The flyers' target Katori is 2000 / 2000, not a mover. | p24_off_u1i; p24_off_u1i |
+| BSM01 | 7 (7 / 0) | 1500 -> 2000 x7 | 7: Nevada, Oklahoma, Phoenix, Medusa, Sacramento, Tautog, Whitney | 29 (4944) | 3441 | 191 / 0 | AA gunnery; fly-to (Japanese torpedo flyers near Nevada and Oklahoma); goaway term (35 census Oklahoma dives) when flipped | p24_off_b1; p24_off_b1_def |
+| BSM09 | 9 (4 / 5) | 1500 -> 2000 x9 | 8: Cleveland, Fletcher, Jenkins, Shokaku, Zuikaku, Akebono, Asagiri, Ushio | 42 (656) | 766 | 0 / 0 | AA gunnery only | p24_off_b9; p24_off_b9_def |
+| JM06 | 14 (12 / 2) | 1500 -> 2000 x14 | 14: Fletcher-class, Narwhal-class, USTroopTransport, Placeholder #3 | 44 (330) | 46 | 0 / 0 | AA gunnery only | p24_off_j6; p24_off_j6_def |
+| IJN08 | 61 (40 / 21) | 1500 -> 2000 x60, -> 2400 x1 | 61: Maru, Kongo, Haruna, Hiei, Kirishima, Aoba, Kako, Zuiho, Heavy AA ... | 216 (1154) | 579 | 0 / 72 | AA gunnery, fly-to (dive); goaway term (level bombers on the Marus) when flipped | l70r_w_i08_main_ref; l70r_w_i08_main_ref |
+| USNOS | 64 (32 / 32) | 1500 -> 2000 x57, -> 2400 x3, 2300 -> 3150 x4 | 58: TroopTrans, Midway, HQ, Zao, Aki, Ada, Shima, Convoy, Cargo ... | 257 (4420) | 1167 | 0 / 196 | AA gunnery, fly-to (dive; the targets are hangars but movers stand within 2100 of the lead points); goaway term (level bombers on TroopTrans) when flipped | p23h_off_os; p23h_off_os |
 
 **Reading the table.**
 - **The flip is a mover in every mission of the set.** Each one has category 6 dual-purpose guns
@@ -174,6 +175,42 @@ N1 is not met.
   copied from `UnitState` right after the rebuild, so both copies carry the ON value for the
   unit's life. `fly_to_obstacles_009fd63c` and the goaway helper read the copy through
   `unit_rows()`, which rebuilds the vector on each call but copies the same stored ranges.
+
+**The stale key (rev2 nit b, packet cc13-flak2b).** `build_guns` writes
+`second_ammo_by_gun[guns.size()]` while it reads Bullet[2]. That happens before the arc guard,
+`if (gun.arcs.size() <= 1 && windows > 0 && traverses) continue;`, which skips
+`guns.push_back`. A dropped gun's entry therefore stays under the index the NEXT pushed gun
+takes. That gun may be on the same unit or on the next one built. If that gun has its own
+Bullet[2], the stale entry is overwritten. If not, the stale entry is read as its second shell by:
+- `dp_air_ammo` (category 6 against planes: reload, muzzle speed, range and the flak tick);
+- `unit_gun_range_sq_049c`;
+- with `kFlakSecondAmmoRangeCc13Bound` ON, the rebuild's flak alternate.
+
+**Does any mission hit the guard? Not on this installation's data.**
+- **Method** (`local/flak2b_arcs.py`): replay the host's seed `[-kGunArcBoundLimit, +kGunArcBoundLimit]`
+  and `gun_add_authored_arc_007f6b10` / `gun_split_insert_arc_007f5a10` over every platform. That
+  covers 3675 platforms with a `Gun[1]` in 307 VehicleClass rows, with `DEG(n)` evaluated.
+- **Platforms that traverse:** 3474 author a non-zero window, and every one of them ends with at
+  least 2 arcs.
+- **Platforms left with one arc:** the 201 with a single arc are exactly the 201 whose windows are
+  all zero. Those are the BOMBPLATFORM case, kept by `traverses == false`.
+- **What would trip the guard:** an authored window that replaces the seed whole, a full
+  `[-180, 180]` traverse within the half-degree epsilon, or one the containment search refuses.
+  No platform authors either.
+- **Result:** zero drops, so zero stale keys, in every mission. `dp_air_ammo` is unaffected today.
+
+**What the commit adds.**
+- **Fix:** `kSecondAmmoArcDropKeyCc13Bound` (false) erases the entry the dropped gun wrote. The
+  fix belongs to the host's bookkeeping and has no image site. It cannot be unswitched, because
+  where the guard does fire it changes `dp_air_ammo`'s answer.
+- **Log-only counters:** they always run and are printed as
+  `summary mission gunnery arc guard drops= second_keys= stale_inherited= cat6= erase=`:
+  - `drops`: guns the guard dropped;
+  - `second_keys`: drops that had already written a key;
+  - `stale_inherited`: pushed guns that found a key they did not write;
+  - `cat6`: the subset of `stale_inherited` in category 6, where `dp_air_ammo` reads the key.
+- **Expected values:** all zero on the next pair runs, which would confirm the replay. A non-zero
+  value means modded data or a later arc change.
 
 ## Uncertainties
 
