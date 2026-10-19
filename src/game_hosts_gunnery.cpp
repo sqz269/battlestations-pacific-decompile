@@ -3629,6 +3629,12 @@ struct GameGunneryHost::Impl {
     unsigned long long deferred_hits_queued{0};
     unsigned long long deferred_hits_dispatched{0};
     unsigned long long deferred_hits_refused_at_queue{0};
+    // Host-only check (packet cc13-tooklog): the node the last dispatch ran, set as
+    // it returns and cleared by the pop, and the drain pops whose back() was
+    // another node (a nested push the dispatch made). Log-only; the pop itself is
+    // unchanged.
+    const DeferredHit* deferred_last_dispatched{nullptr};
+    unsigned long long deferred_nested_pops{0};
     void queue_deferred_hit(DeferredHit&& node);
     void dispatch_deferred_hit(const DeferredHit& node);
     // kPlaneSpinSideBound: the element kind the last plane mesh trace of a unit
@@ -11930,6 +11936,7 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     round_bullet_class = saved_class;
     impact_shape_kind = saved_kind;
     impact_hull_segment = saved_segment;
+    deferred_last_dispatched = &node;
 }
 
 void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
@@ -15985,6 +15992,16 @@ void GameGunneryHost::dispatch_deferred_hit_009239a0(const void* node) {
 
 void GameGunneryHost::pop_deferred_hit_back() {
     if (impl_->deferred_hits == nullptr || impl_->deferred_hits->empty()) return;
+    // Packet cc13-tooklog, log-only: 0092675B re-reads head[+4h] after the
+    // dispatch, so a node the dispatch pushed is the one popped here. A node the
+    // drain did not dispatch (00926735's gate) leaves the marker null: no check.
+    if (impl_->deferred_last_dispatched != nullptr
+        && &impl_->deferred_hits->back() != impl_->deferred_last_dispatched) {
+        ++impl_->deferred_nested_pops;
+        impl_->log.notef("  deferred hit drain popped a nested node (queue=%zu)",
+            impl_->deferred_hits->size());
+    }
+    impl_->deferred_last_dispatched = nullptr;
     impl_->deferred_hits->pop_back();
 }
 
@@ -17738,9 +17755,10 @@ void GameGunneryHost::report() {
         kRangingBearingFixedBound ? 1 : 0);
         if constexpr (kHitDeferredDispatchCc13Bound) {
             host.log.notef("summary mission gunnery deferred hits queued=%llu dispatched=%llu "
-                "refused_at_queue=%llu left=%zu (00926E80 / 00926700, packet cc13-hitq)",
+                "refused_at_queue=%llu nested_pops=%llu left=%zu (00926E80 / 00926700, "
+                "packet cc13-hitq)",
                 host.deferred_hits_queued, host.deferred_hits_dispatched,
-                host.deferred_hits_refused_at_queue,
+                host.deferred_hits_refused_at_queue, host.deferred_nested_pops,
                 host.deferred_hits != nullptr ? host.deferred_hits->size() : std::size_t{0});
         }
         host.log.notef("summary mission gunnery wreck hits bound=%d reaching=%llu delivered=%llu "
