@@ -1594,6 +1594,17 @@ constexpr bool kOverrideHpHealthZeroBound = true;  // ON: faithful, no reach (SH
 //    health-zero kill. False: no message and no draw. Packet cc9_ship_death_message.
 constexpr bool kShipDeathMessageBound = true;  // ON: USN02, JM08 pairs identical (SHIP_AI 239)
 constexpr float kWreckChanceInstalled = 0.3f;
+//  * kShipBreakInTwoDrawsBound (cc9-ships60, SHIP_AI 298): the 98h receiver 00814520
+//    tail-jumps to 00935D30 BSP_UnitController_BreakInTwo, whose two pieces take 11
+//    stream-1 draws (00BD2F10, ECX = 1). Front, 00936328..009364AE: sx, sy, sz =
+//    U(-1, 1) ([00D7A260], 1.0), then U(0, 1.5) ([00CE380C]) twice and U(10, 20)
+//    ([00CE38B8], [00CE3930]). Back, 009366B2..009367E8: the same without sx. The
+//    piece offsets are presentation and are not modelled; only the draws are taken,
+//    in image order, at the host's 98h send (the image delivers 98h through the
+//    message manager; same-tick delivery is the host's assumption, as for 9Ah).
+//    False: the 98h is recorded and draws nothing, so a default-env run's shared
+//    stream stays 11 behind the image per breakup.
+constexpr bool kShipBreakInTwoDrawsBound = false;
 //  * kPlaneBlastElementEntriesBound: a burst's distance to a PLANE is taken per
 //    GeomMesh element, as kBlastElementEntriesBound does for a ship. The image's
 //    sphere test for the plane's unit-part shape is 0070F720, which ends in
@@ -2376,6 +2387,7 @@ struct GameGunneryHost::Impl {
         reload = 31,          // 0072D579, the full re-arm's ReloadTime draw, stream 1, key (gun, 0)
         auto_target_phase = kDrawKeyCollisionFixBound ? 32u : 30u, // 009F6A8F, -U(0, 1) into the auto-target think countdown, stream 1, key (unit, 0)
         trace_scene_damage = 33, // 0084C19F, U(+ACh, +B0h) for 00428420, stream 1, key (shot serial | plane, 0)
+        ship_break_in_two = 34, // 00935D30's 11 piece-offset draws, stream 1, key (unit, 0 front | 1 back)
     };
     unsigned long long next_projectile_serial{0};
     unsigned long long trace_scene_draws{0};   // kTraceSceneDamageDrawBound
@@ -4150,7 +4162,7 @@ struct GameGunneryHost::Impl {
     void ship_death_message_00827ab0(std::size_t victim);
     struct ShipDeathCounts {
         unsigned long long messages_9a{0}, kamikaze_removals{0}, no_breakup_nodes{0};
-        unsigned long long breakup_draws{0}, breakups_98{0};
+        unsigned long long breakup_draws{0}, breakups_98{0}, break_in_two_draws{0};
     } ship_death;
     unsigned long long override_hp_kills{0};
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
@@ -13474,6 +13486,18 @@ void GameGunneryHost::Impl::ship_death_message_00827ab0(std::size_t victim) {
         "packet cc9_ship_death_message)", unit_state[victim].row.name.c_str(),
         static_cast<double>(roll), static_cast<double>(clock_seconds));
     record("ShipDeath::breakup_message_98_00761310", 0x00761310u);
+    if constexpr (kShipBreakInTwoDrawsBound) {
+        // 00935D30: front sx, sy, sz, a, b, d; back sy, sz, a, b, d.
+        for (std::size_t piece = 0; piece < 2; ++piece) {
+            for (int sign = piece == 0 ? 0 : 1; sign < 3; ++sign)
+                (void)draw(Draw::ship_break_in_two, victim, piece, -1.0f, 1.0f);
+            (void)draw(Draw::ship_break_in_two, victim, piece, 0.0f, 1.5f);
+            (void)draw(Draw::ship_break_in_two, victim, piece, 0.0f, 1.5f);
+            (void)draw(Draw::ship_break_in_two, victim, piece, 10.0f, 20.0f);
+            ship_death.break_in_two_draws += piece == 0 ? 6u : 5u;
+        }
+        done("ShipDeath::break_in_two_draws_00935d30", 0x00935d30u);
+    }
 }
 
 // Packet cc9_land_master_damage. 006D5220 and 00849F70 call 00744A20 on each listed
@@ -16779,9 +16803,11 @@ void GameGunneryHost::report() {
             const Impl::ShipDeathCounts& d = host.ship_death;
             host.log.notef("summary mission gunnery ship death message 9Ah=%llu "
                 "kamikaze_removals=%llu no_breakup_nodes=%llu breakup_draws=%llu 98h=%llu "
+                "break_in_two_draws=%llu "
                 "bound=%d; OverrideHP kills=%llu bound=%d (00827A90, 008C1930, packets "
                 "cc9_ship_death_message, cc9_override_hp_health_zero)", d.messages_9a,
                 d.kamikaze_removals, d.no_breakup_nodes, d.breakup_draws, d.breakups_98,
+                d.break_in_two_draws,
                 kShipDeathMessageBound ? 1 : 0, host.override_hp_kills,
                 kOverrideHpHealthZeroBound ? 1 : 0);
         }

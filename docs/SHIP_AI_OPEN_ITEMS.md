@@ -19709,3 +19709,22 @@ re-time the TT5 route from the frame where CB2 turns. Jitter (20,3) loses all si
   with the call at 00748455, and the body call is at 00748932);
 - NaN-only lows: the rudder clamp 009DA28C..2AB passes NaN where the host sends -1, and the ring slew 009F4C4E never
   writes NaN.
+
+## 298. The break-in-two draws, kShipBreakInTwoDrawsBound (cc9-ships60, 2026-10-18)
+
+The 98h receiver 00814520 tail-jumps to 00935D30 BSP_UnitController_BreakInTwo (docs/CC13_SEGMIX.md). The host
+records the 98h send in `ship_death_message_00827ab0` and stops there (`host.breakup_parts` has no implementer), so
+it skips the 11 stream-1 draws the two pieces take. The listing has exactly 11 `CALL 00BD2F10` in the body, all with
+ECX = 1: the front at 00936328, 00936388, 009363A5 (sx, sy, sz = U(-1, 1), [00D7A260] = -1.0 and FLD1), 009363ED
+and 00936460 (U(0, 1.5), [00CE380C] = 1.5) and 009364AE (U(10, 20), [00CE38B8] = 10.0, [00CE3930] = 20.0); the back
+at 009366B2..009367E8, the same without sx. The piece offsets only pose the wreck halves (presentation) and are not
+modelled.
+
+Bound OFF as `kShipBreakInTwoDrawsBound` (game_hosts_gunnery.cpp, beside `kShipDeathMessageBound`): at the host's
+98h send it takes the 11 draws in image order on `Draw::ship_break_in_two` (key unit, 0 front / 1 back), and the
+ship death summary gains `break_in_two_draws=`. Uncertainty: the image delivers 98h through the message manager,
+and the host assumes same-tick delivery, as it already does for 9Ah.
+
+Predictions: in the reference env (`BSP_GUNNERY_RNG_STREAMS=1`) the draws are on their own key, so a pair is
+gameplay identical, with `break_in_two_draws = 11 * 98h`. In the default env every draw on the shared stream after
+the first 98h moves, so the pair moves (exit 3) from the first breakup on, when the row has one.
