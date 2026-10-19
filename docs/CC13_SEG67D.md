@@ -243,14 +243,14 @@ This is verify only, from disk bytes. The ledger records are `cc13_seg67f_check_
   - NaN only:
     - 009EB99F: a NaN 2r keeps 2r (JBE); the host gives the limit.
     - 009EB9E1/009EBB9B: COMISS lateral,0 / JB sends a NaN lateral to the negative arm; the host's `!(lateral < 0)` sends it to the positive one.
-- **009E04E0-009E0B52 (ship_ai_build_throttle_profile_009e04e0, head): one constant is wrong.**
+- **009E04E0-009E0B52 (ship_ai_build_throttle_profile_009e04e0, head): one constant is wrong (H) and the margin reads the wrong length (I).**
   - Matching:
     - the 34Ch/350h clear, and the 354h countdown (JB, NaN skips);
     - the track expiry (`0 > life`, JA), +64h, the +60h/+48h source test, the +488h/+10h JB skip and 009DA1D0;
     - the heading error, lateral side, acos clamp, gap `(1 − |arc|) * 00811A30(0.75)` and width 9CCh + 20.0;
     - the side-dot retire;
     - the horizon `((|side| − 9CCh/1.5) / |sin| − +4h)` floored at 0 with the +0Ch JBE skip, and `00415550(1.0, d/+18h)`;
-    - the along and margin (class+A0h * 0.6 + |+0h/sin| + 10);
+    - the along, and the margin's `|+0h/sin| + 10` terms (its length term is mismatch (I));
     - both speed roots with ±0.5, −2, 4 and their compare arms;
     - the high and low divided by 3C4h, and the axis −2 JBE.
     - own_speed = 0092D730(unit+1018h) and acceleration = class+504h match the binding at game_hosts_ship_ai.cpp:10762-10763.
@@ -259,7 +259,7 @@ This is verify only, from disk bytes. The ledger records are `cc13_seg67f_check_
     - 009E06C6/009E06DA: a NaN error reaches 00BF9940 (acos), where the host gives pi.
     - 009E0767/009E0778: a NaN |error| takes the steer-only arm, where the host bands.
     - 009E099F/009E0AB6: a NaN discriminant runs the square root, where the host returns the average.
-  - Host uses hull_beam = unit+9C8h for the image's class+A0h (both the class length; equality not proven).
+  - The xmm0 = 0 invariant at 009E05DB holds on every loop back edge (proven in the seg67f review).
 - **009E1080-009E1167 (commit tail): wrong factor, torpedo response, reported URGENT.** See (G).
 
 ### Adoption notes
@@ -277,13 +277,14 @@ otherwise                         -> ahead band  {-2.0 [00CE7D7C], 0.98 [00CE665
 
 `ship_ai_commitment_band_009e10a9` (ship_ai_clearance_profile.cpp:556) multiplies by 4.0f, so its threshold is 16 times the image's. With one give-way surplus the host needs a ratio of 4.0, which own/3C4h never reaches, so it always takes the astern band; the image takes the ahead band from 0.25. The banded arm at 009E10F2 (snapped >= 0 → ahead, JB) matches.
 
-**(H) 00D2185C, the bearing maximum.** The image holds 0x40402038 (3.0019664764). `kShipAiContactBearingMax` (ship_ai_clearance_profile.hpp:325) is 3.0019646f, which is 0x40402030, 8 ulp low. The constant is used at ship_ai_clearance_profile.cpp:521 (009E0C96, inside the range that cc13-seg67e audited) and at :641.
+**(H) 00D2185C, the bearing maximum.** The image holds 0x40402038 (3.0019664764). `kShipAiContactBearingMax` (ship_ai_clearance_profile.hpp:325) is 3.0019646f, which is 0x40402030, 8 ulp low. The constant is used at ship_ai_clearance_profile.cpp:521 (009E0C96, inside the range that cc13-seg67e audited) and at :641. The fix (ef7cb3fc3) deliberately folds (H) into the (G) switch `kShipAiCommitmentBandQuarterBound` (include/bsp/cc13_ship_ai_commit_band.hpp) because its effect is negligible; there is no sibling switch for (H).
+
+**(I) 009E08EF, the margin's length.** The image reads the own class's Length: 009E089A `[ESI+3FCh]`, 009E08CB `[EDX+538h]`, 009E08EF `FLD [EAX+0A0h]`, times 0.6 [00CEFF98]. The host binds `hull_beam = unit_hull_length_09c8` (game_hosts_ship_ai.cpp:10765, from game_hosts_units.cpp:41818). In the image, unit+9C8h equals class+A0h only on the no-model branch (00811058, `[class+50h] == 0`). With a model it holds `2*max(-box[+30h], box[+3Ch])` (0081100C..0081106E, re-stored at 0081FA45/4D), and ships have models. The host's +9C8h is the labelled no-model substitution (game_hosts_units.cpp:18810), so today it holds the Lua Length and the margin agrees in value; it diverges as soon as +9C8h carries the model box. The fix is to bind `[unit+538h]+A0h`, the class Length the host already carries (UnitHullExtentClassInputs.length_00a0, the slot's motion_class.hull_length).
 
 ## Left
 
 - **Not re-audited op by op (cc13-seg67e/f):**
-  - 009E04E0 009E0FBD's delete body;
-  - the xmm0 = 0 loop invariant at 009E05DB, which every back edge must restore. It was spot-checked, not proven: the avoidance step 009E0C7C-009E0FB8 makes callee invocations between the 009E0C9D/009E0E4F zeroing and the back edges.
+  - 009E04E0 009E0FBD's delete body.
 - **Original list of partial projections (cc13-seg67d):**
   - 009E04E0;
   - 009E5530 (attack-move ring);
