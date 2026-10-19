@@ -261,11 +261,66 @@ EDI holds -1 from 007CFD69 to the end, and EBX holds 0. In listing order:
 - `include/bsp/pilot_controls.hpp` says the pilot command block is "zero-initialised ... at
   007CFEB8-007CFED6". Its throttle +A08h is set to 1.0f at 007CFED6.
 
-## Left open (1 row)
+### 0086C240 BSP_EffectFlare_ReadLua
 
-| Address | Size | What |
+`effect_flare_read_lua_0086c240`, `__thiscall(ECX = component; row)`, RET 4
+(0086C240..0086CD08). It is slot 14h of the Flare component vtable 00D0D614
+(docs/GAMEPLAY_EFFECT_COMPONENTS.md), and was tagged CG_array_ctor_helper.
+
+Rule-1: no file in `src/` has the body. src/gameplay_effect_scalar_components.cpp reads seven
+other components, and its dispatcher sends Flare to the remaining services. The rebuild uses its
+own host, and nothing is wired into that dispatcher.
+
+**No property descriptors.** There is no `{2,&field}`/`{0,"name"}` table for this class. The
+keys are C-string immediates, and a byte scan of the image (`local/mistag_flare_refs.py`) finds
+each of ElementTable, FarPlaneClip, ScaleBlow, ScalePower and TextureName%d referenced only from
+this body. The names below are those keys. "X" and "Y" are the one-character strings 00CE9A38
+and 00CE9A34.
+
+**The component.**
+- First the base reader, 00868BF0.
+- ElementTable is looked up once and held to the end.
+- `FarPlaneClip` (boolean, default true) goes to +20h, and `Lifetime` (number, default 0.0f) to
+  +24h.
+- The `{data, count, capacity}` vector of element pointers at +28h is resized to 0 (0086AA10).
+- ElementTable is then iterated (00B67080, 00B67190, 00B66420).
+
+**Each entry** becomes an `operator new(60h)` record. 00BF7CD1 constructs its two 8-byte
+NativeString headers at +48h (ctor 00415270, dtor 0041DD20); the record is used without a null
+test. Fields, in listing order:
+
+| Key | Record field | Read |
 |---|---|---|
-| `0086C240` | 2763 | the Flare effect component's Lua reader (docs/GAMEPLAY_EFFECT_COMPONENTS.md row Flare) |
+| `Scale` X / Y | +8h / +0Ch | GetNumber, no default; looked up Y first, read X first |
+| `Rotation` | +10h | GetNumber |
+| `Color` | +18h | 00B67F10 packed BGRA |
+| `Color2` | +1Ch | packed BGRA; a copy of +18h when nil |
+| `TextureName1`, `TextureName2` (`"TextureName%d"`, i + 1) | +48h, +50h | String; for i = 0 a nil name falls back to `TextureName` (00B67690 assign); a name still nil assigns "" (00CE3A0C) |
+| `State` | +0h | case-blind (`__stricmp`): WORLDSPACE 0, SCREENSPACE 1, FOREGROUNDSPRITE 2; anything else leaves +0h as allocated |
+| `Distance` | +14h | GetNumber, read only for SCREENSPACE |
+| `ScaleBlow` | +4h | boolean, default false |
+| `ScaleSpeed` X / Y | +24h / +28h | when a table: number or 0.0f each; otherwise both 0.0f |
+| `ScaleDamp` X / Y | +2Ch / +30h | the same |
+| `ScaleMul` X / Y | +3Ch / +40h | the same |
+| `ScalePower` | +44h | number, default 0.0f |
+
+The record's +20h, +34h, +38h and +58h..+5Fh are never written.
+
+**How the names are stored.** Each texture name is assigned inline into its `{length, data}`
+header, using pool blocks of length + 1 bytes (00419CC0 with 00BD1120 / 00BD1510):
+- A new length allocates and terminates the new block, then returns the old one.
+- Length 0 returns the old block and zeroes the header.
+- The copy is header-length bytes, made whenever data is set.
+
+State is copied into a local NativeString through 0041DD40. There is no null test on the Lua
+string. The local's block is returned after the push_back.
+
+**Appending.** The push_back grows a full vector to max(2 * capacity, 1) (0086A280; signed
+compare). It tests the slot address for null and raises the count either way.
+
+## Left open
+
+None of the four remains.
 
 ## Uncertainty
 

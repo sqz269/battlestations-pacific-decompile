@@ -184,6 +184,49 @@ public:
 void* plane_unit_instance_construct_007cfd20(PlaneCtorHost& host, void* plane, std::uint32_t arg,
     std::uint32_t cls);
 
+// --- 0086C240: the Flare effect component's Lua reader (batch 2, big four #4) ---
+// A LuaRef is an owned LuaObject temporary (the image's stack LuaObjects); release() is
+// 00B67700 BSP_LuaObject_Destruct.
+using LuaRef = void*;
+class FlareReaderHost {
+public:
+    virtual ~FlareReaderHost() = default;
+    // 00868BF0, __thiscall(ECX = component; row), RET 4: BSP_EffectComponent_ReadLuaBase.
+    virtual void read_lua_base_00868bf0(void* component, LuaRef row) = 0;
+    virtual LuaRef construct_00b65f50() = 0;                                  // an unbound object
+    virtual LuaRef get_by_name_00b67800(LuaRef table, const char* key) = 0;
+    virtual void release_00b67700(LuaRef object) = 0;
+    virtual void assign_00b67690(LuaRef target, LuaRef source) = 0;
+    virtual bool is_nil_00b65fb0(LuaRef object) = 0;
+    virtual bool is_table_00b661b0(LuaRef object) = 0;
+    virtual float get_number_00b66270(LuaRef object) = 0;                     // ST0
+    virtual const char* get_string_00b662b0(LuaRef object) = 0;
+    virtual bool get_boolean_or_default_00b662f0(LuaRef object, bool fallback) = 0;
+    virtual float get_float_or_default_00b66330(LuaRef object, float fallback) = 0;
+    // 00B67F10(ECX = object, out*), EAX = out: BSP_LuaObject_ReadPackedBgra; returns *out.
+    virtual std::uint32_t read_packed_bgra_00b67f10(LuaRef object) = 0;
+    // 00B67080 / 00B67190(ECX = table; key, value) and 00B66420(ECX = table; value).
+    virtual void iterate_first_00b67080(LuaRef table, LuaRef key, LuaRef value) = 0;
+    virtual void iterate_next_00b67190(LuaRef table, LuaRef key, LuaRef value) = 0;
+    virtual bool is_unbound_00b66420(LuaRef table, LuaRef value) = 0;
+    virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
+    virtual void eh_vector_construct_00bf7cd1(void* first, std::uint32_t size, std::uint32_t count,
+        std::uint32_t ctor, std::uint32_t dtor) = 0;
+    // [00419CC0 BSP_SizedStoragePool_GetSingleton] then 00BD1120(size, 1) / 00BD1510(block, size, 1).
+    virtual void* pool_allocate_00bd1120(std::uint32_t size) = 0;
+    virtual void pool_return_00bd1510(void* block, std::uint32_t size) = 0;
+    // 0041DD40, __thiscall(ECX = string header {length, data}; length, 1), RET 8.
+    virtual void native_string_resize_0041dd40(void* header, std::uint32_t length) = 0;
+    // 0086AA10 / 0086A280, __thiscall(ECX = component+28h; n), RET 4: the {data, count, capacity}
+    // vector of element pointers.
+    virtual void dword_vector_resize_zero_fill_0086aa10(void* vector, std::uint32_t size) = 0;
+    virtual void dword_vector_reserve_0086a280(void* vector, std::uint32_t capacity) = 0;
+};
+// 0086C240, __thiscall(ECX = component; row), RET 4: BSP_EffectFlare_ReadLua. Slot 14h of the
+// Flare component vtable 00D0D614 (docs/GAMEPLAY_EFFECT_COMPONENTS.md). Each ElementTable entry
+// becomes a 60h-byte element record appended to the component's +28h vector.
+void effect_flare_read_lua_0086c240(FlareReaderHost& host, void* component, LuaRef row);
+
 // 0099A880, __thiscall(ECX = memory), RET, EAX = bot: BSP_PilotBot_Construct.
 void* pilot_bot_construct_0099a880(MistagHost& host, void* bot);
 // 0099BE30, __thiscall(ECX = plan, base), RET 4, EAX = plan: the pilot plan block embedded at

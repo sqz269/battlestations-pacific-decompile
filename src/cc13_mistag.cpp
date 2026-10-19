@@ -1,6 +1,7 @@
 // Library-tagged game rows, packet cc13-mistag (marker cc13_mistag). docs/CC13_MISTAG.md.
 #include "bsp/cc13_mistag.hpp"
 
+#include <cstdio>
 #include <cstring>
 
 namespace bsp::cc13_mistag {
@@ -19,7 +20,176 @@ void* singleton_scalar_deleting(MistagHost& host, void* object, std::uint32_t fl
     return object;
 }
 
+// The inline NativeString assign of 0086C5EC..0086C696 on a {length, data} header (the pool
+// block holds length + 1 bytes). A new length reallocates and terminates; the copy is
+// header-length bytes whenever data is set.
+void flare_assign_name(FlareReaderHost& host, void* header, const char* text) {
+    const std::uint32_t length = text != nullptr ? static_cast<std::uint32_t>(std::strlen(text)) : 0;
+    auto& have = at<std::uint32_t>(header, 0);
+    auto& data = at<char*>(header, 4);
+    if (length != have) {
+        if (length == 0) {
+            if (data != nullptr) host.pool_return_00bd1510(data, have + 1);
+            data = nullptr;
+            have = 0;
+        } else {
+            auto* const block = static_cast<char*>(host.pool_allocate_00bd1120(length + 1));
+            if (data != nullptr) host.pool_return_00bd1510(data, have + 1);
+            data = block;
+            have = length;
+            block[length] = 0;
+        }
+    }
+    if (data != nullptr) std::memcpy(data, text, have);
+}
+
+// ScaleSpeed / ScaleDamp / ScaleMul: when the key is a table, its X and Y (default 0.0f) go to
+// +off and +off+4; otherwise both are 0.0f. The image looks up Y first and reads X first.
+void flare_xy_pair(FlareReaderHost& host, LuaRef value, void* element, std::size_t off, const char* key) {
+    const LuaRef probe = host.get_by_name_00b67800(value, key);
+    const bool table = host.is_table_00b661b0(probe);
+    host.release_00b67700(probe);
+    if (!table) {
+        at<float>(element, off) = 0.0f;
+        at<float>(element, off + 4) = 0.0f;
+        return;
+    }
+    const LuaRef outer_y = host.get_by_name_00b67800(value, key);
+    const LuaRef y = host.get_by_name_00b67800(outer_y, "Y");
+    const LuaRef outer_x = host.get_by_name_00b67800(value, key);
+    const LuaRef x = host.get_by_name_00b67800(outer_x, "X");
+    const float fx = host.get_float_or_default_00b66330(x, 0.0f);
+    const float fy = host.get_float_or_default_00b66330(y, 0.0f);
+    at<float>(element, off) = fx;
+    at<float>(element, off + 4) = fy;
+    host.release_00b67700(x);
+    host.release_00b67700(outer_x);
+    host.release_00b67700(y);
+    host.release_00b67700(outer_y);
+}
+
 }  // namespace
+
+// 0086C240..0086CD08. Element record (operator new 60h; only these fields are written, the rest
+// keep the allocator's bytes): +0h mode (WORLDSPACE 0, SCREENSPACE 1, FOREGROUNDSPRITE 2; left
+// as allocated for any other State), +4h ScaleBlow, +8h/+0Ch Scale X/Y, +10h Rotation, +14h
+// Distance (SCREENSPACE only), +18h Color, +1Ch Color2 (Color when nil), +24h/+28h ScaleSpeed,
+// +2Ch/+30h ScaleDamp, +3Ch/+40h ScaleMul, +44h ScalePower, +48h/+50h the two texture names.
+void effect_flare_read_lua_0086c240(FlareReaderHost& host, void* component, LuaRef row) {
+    host.read_lua_base_00868bf0(component, row);
+    const LuaRef elements = host.get_by_name_00b67800(row, "ElementTable");
+    {
+        const LuaRef clip = host.get_by_name_00b67800(row, "FarPlaneClip");
+        at<std::uint8_t>(component, 0x20) = host.get_boolean_or_default_00b662f0(clip, true) ? 1 : 0;
+        host.release_00b67700(clip);
+    }
+    const LuaRef key = host.construct_00b65f50();
+    const LuaRef value = host.construct_00b65f50();
+    {
+        const LuaRef lifetime = host.get_by_name_00b67800(row, "Lifetime");
+        at<float>(component, 0x24) = host.get_float_or_default_00b66330(lifetime, 0.0f);
+        host.release_00b67700(lifetime);
+    }
+    void* const vector = static_cast<std::uint8_t*>(component) + 0x28;
+    host.dword_vector_resize_zero_fill_0086aa10(vector, 0);
+    host.iterate_first_00b67080(elements, key, value);
+    while (!host.is_unbound_00b66420(elements, value)) {
+        void* const e = host.operator_new_00bf681b(0x60);   // no null path: the stores follow
+        host.eh_vector_construct_00bf7cd1(static_cast<std::uint8_t*>(e) + 0x48, 8, 2,
+            0x00415270, 0x0041DD20);
+        {
+            const LuaRef outer_y = host.get_by_name_00b67800(value, "Scale");
+            const LuaRef y = host.get_by_name_00b67800(outer_y, "Y");
+            const LuaRef outer_x = host.get_by_name_00b67800(value, "Scale");
+            const LuaRef x = host.get_by_name_00b67800(outer_x, "X");
+            const float fx = host.get_number_00b66270(x);
+            const float fy = host.get_number_00b66270(y);
+            at<float>(e, 0x08) = fx;
+            at<float>(e, 0x0C) = fy;
+            host.release_00b67700(x);
+            host.release_00b67700(outer_x);
+            host.release_00b67700(y);
+            host.release_00b67700(outer_y);
+        }
+        {
+            const LuaRef rotation = host.get_by_name_00b67800(value, "Rotation");
+            at<float>(e, 0x10) = host.get_number_00b66270(rotation);
+            host.release_00b67700(rotation);
+            const LuaRef color = host.get_by_name_00b67800(value, "Color");
+            at<std::uint32_t>(e, 0x18) = host.read_packed_bgra_00b67f10(color);
+            host.release_00b67700(color);
+        }
+        const LuaRef color2 = host.get_by_name_00b67800(value, "Color2");   // held to the end
+        at<std::uint32_t>(e, 0x1C) = host.is_nil_00b65fb0(color2)
+            ? at<std::uint32_t>(e, 0x18) : host.read_packed_bgra_00b67f10(color2);
+        // 0086C54E..0086C6B3: TextureName1 (TextureName when nil) and TextureName2; a nil name
+        // assigns "" (0086C754, the image's empty string 00CE3A0C).
+        for (std::int32_t i = 0; i < 2; ++i) {
+            char name[0x40];
+            std::snprintf(name, sizeof name, "TextureName%d", i + 1);
+            const LuaRef texture = host.get_by_name_00b67800(value, name);
+            if (host.is_nil_00b65fb0(texture) && i == 0) {
+                const LuaRef plain = host.get_by_name_00b67800(value, "TextureName");
+                host.assign_00b67690(texture, plain);
+                host.release_00b67700(plain);
+            }
+            void* const header = static_cast<std::uint8_t*>(e) + 0x48 + 8 * static_cast<std::size_t>(i);
+            flare_assign_name(host, header, host.is_nil_00b65fb0(texture) ? ""
+                : host.get_string_00b662b0(texture));
+            host.release_00b67700(texture);
+        }
+        // 0086C6B9..0086C80F: State into a local NativeString (no null test on the string),
+        // compared case-blind when its buffer is set.
+        alignas(4) std::uint8_t state[8] = {};
+        {
+            const LuaRef state_ref = host.get_by_name_00b67800(value, "State");
+            const char* const text = host.get_string_00b662b0(state_ref);
+            host.native_string_resize_0041dd40(state, static_cast<std::uint32_t>(std::strlen(text)));
+            if (char* const data = at<char*>(state, 4))
+                std::memcpy(data, text, at<std::uint32_t>(state, 0) + 1);
+            host.release_00b67700(state_ref);
+        }
+        if (const char* const mode = at<char*>(state, 4)) {
+            if (_stricmp(mode, "WORLDSPACE") == 0) {
+                at<std::uint32_t>(e, 0x00) = 0;
+            } else if (_stricmp(mode, "SCREENSPACE") == 0) {
+                at<std::uint32_t>(e, 0x00) = 1;
+                const LuaRef distance = host.get_by_name_00b67800(value, "Distance");
+                at<float>(e, 0x14) = host.get_number_00b66270(distance);
+                host.release_00b67700(distance);
+            } else if (_stricmp(mode, "FOREGROUNDSPRITE") == 0) {
+                at<std::uint32_t>(e, 0x00) = 2;
+            }
+        }
+        {
+            const LuaRef blow = host.get_by_name_00b67800(value, "ScaleBlow");
+            at<std::uint8_t>(e, 0x04) = host.get_boolean_or_default_00b662f0(blow, false) ? 1 : 0;
+            host.release_00b67700(blow);
+        }
+        flare_xy_pair(host, value, e, 0x24, "ScaleSpeed");
+        flare_xy_pair(host, value, e, 0x2C, "ScaleDamp");
+        flare_xy_pair(host, value, e, 0x3C, "ScaleMul");
+        {
+            const LuaRef power = host.get_by_name_00b67800(value, "ScalePower");
+            at<float>(e, 0x44) = host.get_float_or_default_00b66330(power, 0.0f);
+            host.release_00b67700(power);
+        }
+        // 0086CC19..0086CC47: push_back, growing to max(2 * capacity, 1) when full.
+        if (at<std::uint32_t>(vector, 4) == at<std::uint32_t>(vector, 8)) {
+            const std::uint32_t doubled = at<std::uint32_t>(vector, 8) * 2;
+            host.dword_vector_reserve_0086a280(vector, static_cast<std::int32_t>(doubled) > 1 ? doubled : 1);
+        }
+        // The slot address is tested for null before the store (0086CC41); the count rises anyway.
+        if (void** const slot = at<void**>(vector, 0) + at<std::uint32_t>(vector, 4)) *slot = e;
+        at<std::uint32_t>(vector, 4) += 1;
+        if (void* const data = at<void*>(state, 4)) host.pool_return_00bd1510(data, at<std::uint32_t>(state, 0) + 1);
+        host.release_00b67700(color2);
+        host.iterate_next_00b67190(elements, key, value);
+    }
+    host.release_00b67700(value);
+    host.release_00b67700(key);
+    host.release_00b67700(elements);
+}
 
 // Each row read from the disk bytes: B8 imm32 C3. The slot is the only .rdata dword equal to
 // the routine's address (two for 0085EA30).
