@@ -13710,6 +13710,22 @@ void GameShipAiHost::store_fire_target_00836240(std::size_t unit, std::size_t ta
     ++impl_->script_fire_target_sets;
     impl_->done("WeaponDirector::store_fire_target", 0x00836240u);
 }
+bool GameShipAiHost::copy_fire_target_00836680(std::size_t dst, std::size_t src) {
+    // Packet cc13-jm08 (00836680 lies in the struck range: wiring only). After
+    // 00720450 at 00836689: 0083668E..00836697 src vtable[48h](2) = 00836790,
+    // which answers 1 for 0, 2 and 3; 0083669D +23Ch tested; 008366B2 vtable[2Ch]
+    // = 008364E0 returns +238h; 008366BC 00836240 on dst, force = the +23Ch byte.
+    // Both directors are ship directors here (vtable 00D09F58).
+    if (dst >= impl_->controllers.size() || src >= impl_->controllers.size()
+        || dst >= impl_->rows.size()) return false;
+    const auto& from = impl_->controllers[src];
+    if (impl_->controllers[dst].generated_non_ship || from.generated_non_ship) return false;
+    if (!from.fire_target_locked) return false;
+    impl_->store_fire_target(impl_->controllers[dst], impl_->rows[dst],
+        static_cast<std::size_t>(from.fire_target), true);
+    impl_->done("WeaponDirector::copy_fire_target", 0x00836680u);
+    return true;
+}
 bool GameShipAiHost::store_fire_permission_00836210(std::size_t unit, bool allow_fire) {
     // 00836210: +3Ch = allowFire (the gunnery host keeps it); only when fire is
     // forbidden and +238h is non-null: 006952A0 at 0083622B, +238h = 0 at 00836230.

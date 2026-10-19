@@ -259,5 +259,7 @@ void inject_view_aim_track(std::size_t unit, bool has_pitch, float pitch);
 // The active track, if any.
 bool injected_view_aim_track(std::size_t& unit, bool& has_pitch, float& pitch);
 void clear_injected_view_aim_track();
+// Bumped by every inject_view_aim_track, so the HUD can tell a new track apart.
+unsigned injected_view_aim_track_serial();
 
 }  // namespace bsp::game

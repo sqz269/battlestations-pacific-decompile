@@ -3778,3 +3778,22 @@ Open, from the lead's queue file (scratchpad cc9lead_physics_queue.txt):
 5. Coming: kTaskGunBlockReconstructBound, kMoveToReleaseFollowExitBound, kPlaneFunnelKillDestroyOnlyCc13Bound, the paratroopers on JM08, the 006D2510 airfield gate, and cc13-prop's 009C7F00 goaway-rounding switch.
 6. Text only, in the next units.cpp commit: player_bomb_release_006082d0's comment says the rocket pass applies with E0h > 0. The bytes are 007BC7CD COMISS 0,[desc+E0h] / 007BC7D4 JAE 007BC86C, so the attitude gate is SKIPPED when E0h <= 0. units.cpp had three cc13 waiters when this was written.
 7. Low, unchanged: the 009C8A42 +4B0h NaN max, the 009C4A40 ceiling NaN arm, and section 75's whole-frame item.
+
+## 100. cc13's dogfight fire envelope and the per-task gun block (cc9-physics24, 2026-10-19)
+
+All exports are pair_export builds of 19dcd5aba (contains d6c0c5ccd): `local\p24_off`, `local\p24d_on` (kDogfightFireEnvelopeBound), `local\p24h_on` (that plus kDogfightFireHoldArmBound), `local\p24e_on` (kTaskGunBlockReconstructBound), `local\p24f_on` (that plus kTaskGunBlockBurstTimerResetBound, which static_asserts the first). Launcher `local\p24_pair.ps1` (p23's rows plus `b1` = BSM01 bsm01_l50_b1_a, `j8` = JM08 jm08_l65_j8_p2). Logs `local\<tag>_<row>[_def].log`; `_def` is the default env without BSP_GUNNERY_RNG_STREAMS.
+
+**kDogfightFireEnvelopeBound ON, kDogfightFireHoldArmBound ON.** No direct draws; the burst edges reuse "#dfgb", so both envs were paired.
+- BSM09 d1: ref still ends, 351.04 -> 348.04 s (hits 1454 -> 1384, dive releases 6 -> 3); default still ends, 516.00 -> 462.01 s (deaths 75 -> 71).
+- USN21 s46_u21_f: completes at the same time in both envs (2906.71 / 2891.70 s); shots 89620 -> 84812 (ref). Per entity the player's leader F6F_1 dies instead of F6F_2 (ref), RNG-coupled.
+- BSM01 l50_b1_a and JM08 l65_j8_p2: neither side ends within 1200/1500 s in the ref env (the BSM01 row did not reproduce its 767.94 s win at 19dcd5aba OFF either). JM08 default env: OFF no end, ON fails at 1088.99 s ("The HQ has been destroyed!"), default-env RNG coupling on a row that is not a win.
+- JM06 s45_j6_k: identical in both envs (no bursts there, as CC13_FIRE_ENVELOPE section 8 says).
+- Hold arm (p24d_on vs p24h_on): identical on BSM09, BSM01, JM08 and USN21 in both envs; hold_ahead = 0 everywhere, so D/E is unexercised. JM08 shows re-aims (C) of 6 to 16 per fighter.
+Faithful by mechanism (the listing's envelope and gates); flipped. No WINS row is lost.
+
+**kTaskGunBlockReconstructBound ON, kTaskGunBlockBurstTimerResetBound ON.**
+- Reconstruct (p24_off vs p24e_on): BSM09 ref moves (deaths 50 -> 49, shots 14149 -> 13846, still ends 351.04 s); default still ends, 516.00 -> 459.01 s. USN01 u1i (77 resets) and USN21 (1089 resets) are gameplay identical in the ref env.
+- Burst timer reset (p24e_on vs p24f_on): gameplay identical on USN01 u1i, BSM09 and USN21 in both envs.
+Faithful by mechanism; flipped.
+
+The two flips were paired separately against the same OFF; the combined state is checked by the post-flip confirmation runs below.

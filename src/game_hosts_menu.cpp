@@ -2024,6 +2024,7 @@ struct InjectedViewAim {
     std::size_t track_unit{0};
     bool track_has_pitch{false};
     float track_pitch{0.0f};
+    unsigned track_serial{0};   // bumped by every `aim unit` line
 };
 InjectedViewAim& injected_view_aim_state() {
     static InjectedViewAim aim;
@@ -2046,7 +2047,10 @@ void inject_view_aim_track(std::size_t unit, bool has_pitch, float pitch) {
     aim.track_unit = unit;
     aim.track_has_pitch = has_pitch;
     aim.track_pitch = pitch;
+    ++aim.track_serial;
 }
+
+unsigned injected_view_aim_track_serial() { return injected_view_aim_state().track_serial; }
 
 bool injected_view_aim_track(std::size_t& unit, bool& has_pitch, float& pitch) {
     const InjectedViewAim& aim = injected_view_aim_state();

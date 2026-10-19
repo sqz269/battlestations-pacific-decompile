@@ -4070,9 +4070,18 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 const std::size_t row = harness_target_row(*host.units, order.unit);
                 if (row >= host.units->count()) {
                     ++host.helm_orders_refused;
-                    host.log.notef("helm order refused: line %d frame %ld (at mission frame %llu) "
-                        "aim unit \"%s\": no such unit; the look keeps its last yaw",
-                        order.line, due, now, order.unit.c_str());
+                    std::size_t earlier = 0;
+                    bool earlier_pitch = false;
+                    float earlier_pitch_value = 0.0f;
+                    if (injected_view_aim_track(earlier, earlier_pitch, earlier_pitch_value)) {
+                        host.log.notef("helm order refused: line %d frame %ld (at mission frame "
+                            "%llu) aim unit \"%s\": no such unit; the earlier track (row %zu) "
+                            "keeps steering", order.line, due, now, order.unit.c_str(), earlier);
+                    } else {
+                        host.log.notef("helm order refused: line %d frame %ld (at mission frame "
+                            "%llu) aim unit \"%s\": no such unit; the look keeps its last aim",
+                            order.line, due, now, order.unit.c_str());
+                    }
                     continue;
                 }
                 inject_view_aim_track(row, order.aim_track_has_pitch, order.aim_pitch);
