@@ -23,6 +23,7 @@ FontRegistryStartup::~FontRegistryStartup() {
     // Actual resources borrow these exact descriptors. Their producer must
     // retire them and clear the associations before descriptor destruction.
     for (const auto& font : fonts_) if (font->native_resources) std::terminate();
+    if (native_image_lookup_) std::terminate();
     // 00ac374a/00ac3762: destroy font owners in forward list order. Each font's
     // existing destructor clears glyphs, then GFX and alpha references.
     for (auto& font : fonts_) font.reset();
@@ -31,12 +32,47 @@ FontRegistryStartup::~FontRegistryStartup() {
 
 const FontRegistryOwnedFont* FontRegistryStartup::find_font_00ac3570(
     const std::string& name) const noexcept {
+    if (native_image_lookup_selected_) {
+        if (!native_image_lookup_ || !native_image_lookup_->native_registry_image()) return nullptr;
+        // Read-only eight-byte NativeString input header. The lookup reads the
+        // actual list and Font+0C name cells; this adapter owns no native string.
+        struct NameHeader8 { std::uint32_t length; const char* data; };
+        static_assert(sizeof(NameHeader8) == 8);
+        const NameHeader8 incoming{static_cast<std::uint32_t>(name.size()), name.c_str()};
+        const auto* selected = native_image_lookup_->find_native_font_00ac3570(&incoming);
+        if (!selected) return nullptr;
+        for (const auto& font : fonts_)
+            if (&font->descriptor == &selected->descriptor()) return font.get();
+        return nullptr;
+    }
     for (const auto& font : fonts_) {
         if (font->descriptor.name.size() == name.size() &&
             (name.empty() || _stricmp(font->descriptor.name.c_str(), name.c_str()) == 0))
             return font.get();
     }
     return nullptr;
+}
+
+void FontRegistryStartup::use_native_image_lookup_00ac3570(NativeFontResourceOwners& owners) {
+    if (native_image_lookup_selected_ || !owners.native_registry_image())
+        throw std::logic_error("Native font lookup requires a fresh complete image registry");
+    for (const auto& font : fonts_) {
+        if (!font->native_resources || &owners.resolve(&font->descriptor) != font->native_resources)
+            throw std::logic_error("Native font lookup requires the same complete custody bindings");
+    }
+    native_image_lookup_ = &owners;
+    native_image_lookup_selected_ = true;
+}
+
+void FontRegistryStartup::clear_retired_image_lookup(const NativeFontResourceOwners& owners) {
+    if (!native_image_lookup_selected_) return; // Fresh, never-loaded application.
+    if (native_image_lookup_ != &owners || owners.native_registry_image())
+        throw std::logic_error("Native font lookup cleanup requires its retired image registry");
+    for (const auto& font : fonts_)
+        if (font->native_resources)
+            throw std::logic_error("Native font lookup cleanup requires retired custody bindings");
+    native_image_lookup_ = nullptr;
+    // Keep the selected arm after retirement: never fall back to host names.
 }
 
 bool FontRegistryStartup::load_lua_descriptors_00ac3910(VfsLuaScriptFiles& files,

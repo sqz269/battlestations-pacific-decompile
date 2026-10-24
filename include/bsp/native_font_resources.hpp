@@ -42,8 +42,11 @@ public:
     // effects, so a throwing constructor remains observable in its operation.
     static void construct_image_00ad55c0(const FontDescriptor&, NativeRenderActualOwners&,
         game::GameNativeStringProcess&, std::unique_ptr<NativeFontResources>& retained_owner);
-    void populate_image_00ad4c30_fragment(MemoryStream&, const std::string& root,
-        const std::string& language_path, void*& gfx_reference, void*& alpha_reference);
+    // Original saves these after GFX and before alpha production.
+    void save_image_paths_00ad4c30_fragment(const std::string& root,
+        const std::string& language_path);
+    void populate_image_00ad4c30_fragment(MemoryStream&,
+        void*& gfx_reference, void*& alpha_reference);
     // Call only after retiring the DAT stream, matching AD5079 before AD508F.
     void finish_image_00ad4c30_fragment(void*& gfx_reference, void*& alpha_reference);
     ~NativeFontResources() noexcept;
@@ -89,7 +92,7 @@ private:
     Image* image_{};
     game::GameNativeStringProcess* image_strings_{};
     void* pending_image_glyph_{}; // Retained only if native insertion throws.
-    bool image_population_started_{}, image_dat_complete_{};
+    bool image_paths_saved_{}, image_population_started_{}, image_dat_complete_{};
     enum class Phase { preparing, live, destroying, destroyed };
     Phase phase_{Phase::preparing};
 };
@@ -101,10 +104,33 @@ private:
 // must outlive Text font pointers. No mutation/removal during active calls.
 class NativeFontResourceOwners final {
 public:
+    NativeFontResourceOwners() = default;
+    ~NativeFontResourceOwners() noexcept;
+    NativeFontResourceOwners(const NativeFontResourceOwners&) = delete;
+    NativeFontResourceOwners& operator=(const NativeFontResourceOwners&) = delete;
     NativeFontResources& publish(std::unique_ptr<NativeFontResources>&);
     NativeFontResources& resolve(const FontDescriptor* current_font) const;
     NativeFontResources& resolve_image(const void* current_font_image) const;
+    // Optional ON authority: actual10h registry header,0Ch circular list and
+    // the SAME existing AC Font allocations. Custody metadata owns no name
+    // copy and supplies no name lookup. Construct once inside retained startup;
+    // append each constructed Font BEFORE AD4C30, then seal only after every
+    // load completes. Failure retains the partial graph; no destructor replay.
+    void construct_image_registry_00ac3690();
+    NativeFontResources& adopt_image_before_load_00ac3910(
+        std::unique_ptr<NativeFontResources>&);
+    void complete_image_registry();
+    void* native_registry_image() const noexcept;
+    // AC3570 normal path: traverse native list order and compare current
+    // Font+0C/+10 string header against the supplied live8B name header.
+    // Source current CRT _stricmp boundary, not Original CRT/private-frame ABI.
+    NativeFontResources* find_native_font_00ac3570(const void* name_header8) const;
+    // AC36F0 terminal order: each actual Font once, then nodes/sentinel, base
+    // identity and enclosing Source storage. No F8BF44 publication is invented.
+    void retire_image_registry_00ac36f0();
 private:
     std::vector<std::unique_ptr<NativeFontResources>> fonts_;
+    struct ImageRegistry;
+    ImageRegistry* image_registry_{};
 };
 } // namespace bsp

@@ -116,12 +116,21 @@ struct GameNativeFontApplication::Impl {
         operations.push_back(std::move(frame)); // Stable frame BEFORE native effects.
         try {
             validate_domain();
+            if (native_images) {
+                op.phase = GameNativeFontLoadPhase::adoption;
+                op.native_site = 0x00ad55c0;
+                NativeFontResources::construct_image_00ad55c0(descriptor,
+                    grid.graphics.streams.geometry.actual_owners(), game_native_string_process(), op.unpublished);
+                op.native_site = 0x00ac3ba3;
+                op.published = &fonts.adopt_image_before_load_00ac3910(op.unpublished);
+            }
             op.phase = GameNativeFontLoadPhase::gfx;
             op.native_site = 0x00ad4cd0;
             op.gfx = load_image(op.gfx_name, op.gfx_name_live, op.gfx_path, op.gfx_cache);
             op.gfx_result = op.gfx;
             destroy_native_string_header_0041dd20(&op.gfx_name, raw.strings);
             op.gfx_name_live = false;
+            if (native_images) op.published->save_image_paths_00ad4c30_fragment(root, language);
             op.phase = GameNativeFontLoadPhase::alpha;
             op.native_site = descriptor.alpha_texture.empty() ? 0x00ad4e6e : 0x00ad4e29;
             op.alpha = load_image(op.alpha_name, op.alpha_name_live, op.alpha_path, op.alpha_cache);
@@ -136,12 +145,7 @@ struct GameNativeFontApplication::Impl {
             op.phase = GameNativeFontLoadPhase::decode;
             op.native_site = 0x00ad4f3a;
             if (native_images) {
-                op.native_site = 0x00ad55c0;
-                NativeFontResources::construct_image_00ad55c0(descriptor,
-                    grid.graphics.streams.geometry.actual_owners(), game_native_string_process(), op.unpublished);
-                op.native_site = 0x00ad4f3a;
-                op.unpublished->populate_image_00ad4c30_fragment(
-                    *source.stream, root, language, op.gfx, op.alpha);
+                op.published->populate_image_00ad4c30_fragment(*source.stream, op.gfx, op.alpha);
             } else {
                 op.decoded = std::make_unique<FontData>();
                 if (!decode_font_data_00ad4c30_fragment(*source.stream, descriptor.scale_ratio, *op.decoded, error))
@@ -155,10 +159,10 @@ struct GameNativeFontApplication::Impl {
             if (native_images) {
                 op.phase = GameNativeFontLoadPhase::adoption;
                 op.native_site = 0x00ad508f;
-                op.unpublished->finish_image_00ad4c30_fragment(op.gfx, op.alpha);
+                op.published->finish_image_00ad4c30_fragment(op.gfx, op.alpha);
             }
             op.phase = GameNativeFontLoadPhase::publication;
-            op.published = &fonts.publish(op.unpublished);
+            if (!native_images) op.published = &fonts.publish(op.unpublished);
             output = op.published;
             op.phase = GameNativeFontLoadPhase::complete;
             log.notef("native font %s glyphs=%zu gfx=%p profile=%08x alpha=%p profile=%08x",
@@ -193,6 +197,7 @@ void GameNativeFontApplication::load_descriptors_00ac3910(VfsLuaScriptFiles& fil
     app.validate_domain();
     app.phase = Impl::Phase::loading;
     try {
+        if (app.native_images) app.fonts.construct_image_registry_00ac3690();
         std::string error;
         const FontRegistryNativeResourceLoader loader = [&](const FontDescriptor& font,
             const std::string& prefix, const std::string& extra,
@@ -201,6 +206,10 @@ void GameNativeFontApplication::load_descriptors_00ac3910(VfsLuaScriptFiles& fil
         };
         if (!app.registry.load_lua_native_descriptors_00ac3910(files, globals, loader,
                 root, descriptor, language, error)) throw std::runtime_error(error);
+        if (app.native_images) {
+            app.fonts.complete_image_registry();
+            app.registry.use_native_image_lookup_00ac3570(app.fonts);
+        }
         app.phase = Impl::Phase::ready;
         app.log.implemented("NativeFontRegistry::initial_resources", "00ad4c30");
     } catch (...) {
@@ -217,7 +226,8 @@ NativeFontResourceOwners& GameNativeFontApplication::native_fonts() {
 void GameNativeFontApplication::bind_text_factory(GuiTextRuntimeFactory& factory) {
     auto& app = *impl_;
     require(ready() && app.fonts_exported && &factory.native_font_resources() == &app.fonts &&
-        factory.native_font_registry() == &app.registry &&
+        (app.native_images ? factory.native_font_registry_image() == app.fonts.native_registry_image()
+            : factory.native_font_registry() == &app.registry) &&
         (!app.text_factory || app.text_factory == &factory) && factory.retained_allocation_count() == 0,
         "Native font borrowers require the same registry, resources and empty canonical Text factory before construction");
     app.text_factory = &factory;
@@ -232,12 +242,14 @@ void GameNativeFontApplication::retire_fonts() {
     app.validate_domain();
     app.phase = Impl::Phase::retiring;
     try {
+        if (app.native_images) app.fonts.retire_image_registry_00ac36f0();
         for (auto& record : app.operations) {
             require(record->phase == GameNativeFontLoadPhase::complete && record->published,
                 "Native font retirement requires completed canonical productions");
-            record->published->destroy_00ad53a0_fragment();
+            if (!app.native_images) record->published->destroy_00ad53a0_fragment();
             app.registry.clear_retired_native_binding(*record->descriptor, *record->published);
         }
+        if (app.native_images) app.registry.clear_retired_image_lookup(app.fonts);
         app.phase = Impl::Phase::retired;
     } catch (...) {
         app.failed = std::current_exception();

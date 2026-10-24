@@ -47,6 +47,22 @@ struct FontImageNode {
     std::uint8_t color, nil;
     std::uint8_t padding[2];
 };
+struct FontRegistryImageNode {
+    FontRegistryImageNode* next;
+    FontRegistryImageNode* previous;
+    void* font;
+};
+struct FontRegistryImageStorage {
+    std::uint32_t native_vtable_00;
+    std::uint32_t allocator_04;
+    FontRegistryImageNode* head_08;
+    std::uint32_t count_0c;
+};
+static_assert(sizeof(FontRegistryImageNode) == 0x0c);
+static_assert(offsetof(FontRegistryImageNode, font) == 8);
+static_assert(sizeof(FontRegistryImageStorage) == 0x10);
+static_assert(offsetof(FontRegistryImageStorage, head_08) == 8);
+static_assert(offsetof(FontRegistryImageStorage, count_0c) == 0x0c);
 static_assert(sizeof(FontImageNode) == 0x18);
 static_assert(offsetof(FontImageNode, payload) == 0x10);
 std::uint16_t image_scaled_word(std::int32_t input, float scale) noexcept {
@@ -121,22 +137,28 @@ void NativeFontResources::construct_image_00ad55c0(
     construct_native_font_storage_00ad55c0(result->image_, arguments, strings);
 }
 
-void NativeFontResources::populate_image_00ad4c30_fragment(MemoryStream& stream,
-    const std::string& root, const std::string& language, void*& gfx, void*& alpha) {
-    if (!image_ || phase_ != Phase::preparing || image_population_started_ || &gfx == &alpha ||
-        image_->count_08 || !stream.has_backing() || !stream.fully_initialized())
-        throw std::invalid_argument("native Font image population requires a fresh image and complete DAT");
-    image_population_started_ = true;
-    require_actual_reference(gfx, actual_owners_);
-    require_actual_reference(alpha, actual_owners_);
-    if (gfx && gfx == alpha && actual_owners_.resolve_actual(gfx).reference_count.load() < 2)
-        throw std::invalid_argument("aliased Font images require two transferred references");
+void NativeFontResources::save_image_paths_00ad4c30_fragment(
+    const std::string& root, const std::string& language) {
+    if (!image_ || phase_ != Phase::preparing || image_paths_saved_)
+        throw std::logic_error("native Font paths require one fresh constructed image");
+    image_paths_saved_ = true; // Entered failure is retained, not replayed.
     auto& strings = image_strings_->raw_context();
     image_->root_38.assign_0041e870(strings, root.c_str());
     image_->language_40.assign_0041e870(strings, language.c_str());
     image_->data_20.assign_0041e870(strings, descriptor_.data_file.c_str());
     image_->gfx_30.assign_0041e870(strings, descriptor_.gfx_file.c_str());
     image_->alpha_28.assign_0041e870(strings, descriptor_.alpha_texture.c_str());
+}
+void NativeFontResources::populate_image_00ad4c30_fragment(MemoryStream& stream,
+    void*& gfx, void*& alpha) {
+    if (!image_ || phase_ != Phase::preparing || !image_paths_saved_ || image_population_started_ ||
+        &gfx == &alpha || image_->count_08 || !stream.has_backing() || !stream.fully_initialized())
+        throw std::invalid_argument("native Font image population requires a fresh image and complete DAT");
+    image_population_started_ = true;
+    require_actual_reference(gfx, actual_owners_);
+    require_actual_reference(alpha, actual_owners_);
+    if (gfx && gfx == alpha && actual_owners_.resolve_actual(gfx).reference_count.load() < 2)
+        throw std::invalid_argument("aliased Font images require two transferred references");
     const auto position = stream.position_00bef580();
     const auto size = stream.size_00bef600();
     if (position < 0 || position > size || size - position < 6)
@@ -328,7 +350,7 @@ void NativeFontResources::destroy_00ad53a0_fragment() {
 }
 
 NativeFontResources& NativeFontResourceOwners::publish(std::unique_ptr<NativeFontResources>& font) {
-    if (!font || font->phase_ != NativeFontResources::Phase::live)
+    if (image_registry_ || !font || font->image_ || font->phase_ != NativeFontResources::Phase::live)
         throw std::invalid_argument("cannot publish a null or retired actual font resource owner");
     for (const auto& current : fonts_)
         if (&current->descriptor() == &font->descriptor())
@@ -353,5 +375,136 @@ NativeFontResources& NativeFontResourceOwners::resolve_image(const void* image) 
             return *current;
         }
     throw std::logic_error("current Text Font image has no canonical resource owner");
+}
+
+// Source custody metadata, not another native registry/header/count/name map.
+// The raw header/list is the only lookup authority in the selected arm.
+struct NativeFontResourceOwners::ImageRegistry {
+    enum class Phase { constructing, building, ready, retiring, retired };
+    FontRegistryImageStorage* image{};
+    FontRegistryImageNode* pending_node{}; // Retain an entered failed allocation.
+    Phase phase{Phase::constructing};
+};
+NativeFontResourceOwners::~NativeFontResourceOwners() noexcept {
+    if (image_registry_) {
+        // Failed native graphs belong to the application's retained process
+        // failure path. Never turn C++ destruction into native rollback.
+        if (image_registry_->phase != ImageRegistry::Phase::retired) std::terminate();
+        delete image_registry_;
+    }
+}
+void NativeFontResourceOwners::construct_image_registry_00ac3690() {
+    if (image_registry_ || !fonts_.empty())
+        throw std::logic_error("native Font registry requires fresh empty custody");
+    image_registry_ = new ImageRegistry; // Retained BEFORE raw constructor effects.
+    auto& state = *image_registry_;
+    state.image = new (singleton_lifetime_allocate(
+        {SingletonAllocationKind::object, 0x10u, sizeof(FontRegistryImageStorage)})) FontRegistryImageStorage{};
+    // AC36BB identity precedes AC36C1 sentinel allocation and publication.
+    state.image->native_vtable_00 = 0x00d5ca84u;
+    auto* head = new (singleton_lifetime_allocate(
+        {SingletonAllocationKind::object, 0x0cu, sizeof(FontRegistryImageNode)})) FontRegistryImageNode;
+    state.pending_node = head;
+    head->next = head; // AC3400: only next/previous, no sentinel payload store.
+    head->previous = head;
+    state.image->head_08 = head;
+    state.image->count_0c = 0;
+    state.pending_node = nullptr;
+    state.phase = ImageRegistry::Phase::building;
+}
+NativeFontResources& NativeFontResourceOwners::adopt_image_before_load_00ac3910(
+    std::unique_ptr<NativeFontResources>& font) {
+    if (!image_registry_ || image_registry_->phase != ImageRegistry::Phase::building ||
+        !font || !font->image_ || font->phase_ != NativeFontResources::Phase::preparing)
+        throw std::logic_error("native registry append requires a constructed, unloaded Font image");
+    for (const auto& current : fonts_)
+        if (&current->descriptor() == &font->descriptor())
+            throw std::logic_error("Font descriptor already has canonical image custody");
+    auto& owned = *font;
+    fonts_.push_back(std::move(font)); // C++ custody BEFORE node allocation/failure.
+    auto& state = *image_registry_;
+    auto* head = state.image->head_08;
+    auto* node = new (singleton_lifetime_allocate(
+        {SingletonAllocationKind::object, 0x0cu, sizeof(FontRegistryImageNode)})) FontRegistryImageNode;
+    state.pending_node = node;
+    node->next = head; // AC3490 operand/value stores, then AC37F0 size guard.
+    node->previous = head->previous;
+    node->font = owned.image_;
+    if (0x3fffffffu - state.image->count_0c < 1u)
+        throw std::length_error("list<T> too long"); // Qualified Source CRT transport.
+    ++state.image->count_0c;
+    head->previous = node; // AC3BB5, before the previous-next store at AC3BCC.
+    node->previous->next = node;
+    state.pending_node = nullptr;
+    return owned;
+}
+void NativeFontResourceOwners::complete_image_registry() {
+    if (!image_registry_ || image_registry_->phase != ImageRegistry::Phase::building ||
+        image_registry_->pending_node)
+        throw std::logic_error("native Font registry completion requires one completed build");
+    for (const auto& current : fonts_)
+        if (!current->image_ || !current->live())
+            throw std::logic_error("native Font registry cannot publish an incomplete Font");
+    image_registry_->phase = ImageRegistry::Phase::ready;
+}
+void* NativeFontResourceOwners::native_registry_image() const noexcept {
+    return image_registry_ && image_registry_->phase == ImageRegistry::Phase::ready
+        ? image_registry_->image : nullptr;
+}
+NativeFontResources* NativeFontResourceOwners::find_native_font_00ac3570(const void* incoming) const {
+    if (!native_registry_image() || !incoming)
+        throw std::logic_error("native Font name lookup requires a ready same-owner registry and name header");
+    auto* registry = image_registry_->image;
+    auto* node = registry->head_08->next;
+    for (;;) {
+        if (node == registry->head_08) return nullptr;
+        // The node value IS the same constructed Font, never a descriptor cast.
+        auto* image = static_cast<NativeFontResources::Image*>(node->font);
+        std::uint32_t incoming_length;
+        std::memcpy(&incoming_length, incoming, sizeof(incoming_length));
+        if (incoming_length == image->name_0c.length()) {
+            bool equal = incoming_length == 0;
+            if (!equal) {
+                const char* incoming_data;
+                std::memcpy(&incoming_data, static_cast<const std::byte*>(incoming) + 4, sizeof(incoming_data));
+                equal = _stricmp(incoming_data, image->name_0c.data()) == 0;
+            }
+            if (equal) return &resolve_image(node->font); // Identity -> custody only.
+        }
+        node = node->next;
+    }
+}
+void NativeFontResourceOwners::retire_image_registry_00ac36f0() {
+    if (!image_registry_) {
+        if (!fonts_.empty()) throw std::logic_error("native registry retirement has no image authority");
+        return; // Fresh application that never entered its registry getter/load.
+    }
+    auto& state = *image_registry_;
+    if (state.phase != ImageRegistry::Phase::ready || state.pending_node)
+        throw std::logic_error("native Font registry cannot replay incomplete or completed retirement");
+    state.phase = ImageRegistry::Phase::retiring;
+    auto* registry = state.image;
+    registry->native_vtable_00 = 0x00d5ca84u;
+    for (auto* node = registry->head_08->next; node != registry->head_08; node = node->next)
+        // The resource owner already combines AD53A0 and its caller's outer
+        // Font free. Do NOT free/decrement that same image a second time here.
+        resolve_image(node->font).destroy_00ad53a0_fragment();
+    auto* head = registry->head_08;
+    auto* node = head->next;
+    head->next = head;
+    head->previous = head;
+    registry->count_0c = 0;
+    while (node != head) {
+        auto* next = node->next;
+        singleton_lifetime_free(node);
+        node = next;
+    }
+    singleton_lifetime_free(head);
+    registry->head_08 = nullptr;
+    // Borrowed Source profile has no fake F8BF44 publication to clear.
+    registry->native_vtable_00 = 0x00ce3818u;
+    singleton_lifetime_free(registry);
+    state.image = nullptr;
+    state.phase = ImageRegistry::Phase::retired;
 }
 } // namespace bsp

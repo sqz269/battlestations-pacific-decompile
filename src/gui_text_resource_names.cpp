@@ -19,14 +19,26 @@ GuiTextFontRegistryAccess GuiTextFontRegistryAccess::borrowed_existing(
     FontRegistryStartup& existing) noexcept {
     return GuiTextFontRegistryAccess(&existing, nullptr, nullptr);
 }
+GuiTextFontRegistryAccess GuiTextFontRegistryAccess::borrowed_native_images(
+    NativeFontResourceOwners& images) noexcept {
+    GuiTextFontRegistryAccess result(nullptr, nullptr, nullptr);
+    result.native_images_ = &images;
+    return result;
+}
 
 FontRegistryStartup* GuiTextFontRegistryAccess::get() const {
+    if (native_images_)
+        throw std::logic_error("image Font registry has no descriptor-name lookup authority");
     if (existing_) return existing_;
     return get_font_registry_007371d0(*publication_, *lifetime_);
 }
 
 FontRegistryStartup* GuiTextFontRegistryAccess::existing_registry() const noexcept {
+    if (native_images_) return nullptr;
     return existing_ ? existing_ : *publication_;
+}
+void* GuiTextFontRegistryAccess::existing_native_registry_image() const noexcept {
+    return native_images_ ? native_images_->native_registry_image() : nullptr;
 }
 
 GuiTextFontNameServices::GuiTextFontNameServices(GuiTextResourceNameServices& names_in,
@@ -95,17 +107,32 @@ bool set_gui_text_font_name_00ab8c30(GuiTextLifetime& lifetime,
     if (&text.font_name != &name) text.font_name = name;
     // Getter callbacks see the changed name. The subsequent lookup reads the
     // LIVE stored member, not the earlier source argument or compatibility copy.
-    auto* registry = services.registry.get();
-    require(registry != nullptr, "Text font lookup requires its actual registry owner");
-    const auto* found = registry->find_font_00ac3570(text.font_name);
-    if (found) {
-        const auto& actual = services.fonts.resolve(&found->descriptor);
-        require(&actual.descriptor() == &found->descriptor &&
+    const FontDescriptor* selected = nullptr;
+    if (auto* images = services.registry.native_image_owners()) {
+        require(images == &services.fonts,
+            "Text image lookup requires the SAME canonical native registry custody");
+        struct Header { std::uint32_t length; const char* data; };
+        static_assert(sizeof(Header) == 8);
+        const Header incoming{static_cast<std::uint32_t>(text.font_name.size()), text.font_name.c_str()};
+        // ONLY the actual list/native Font+0C name selects an image. Resolving
+        // that exact image to its descriptor supplies old Text companion
+        // identity; no descriptor name is inspected or substituted.
+        if (auto* actual = images->find_native_font_00ac3570(&incoming))
+            selected = &actual->descriptor();
+    } else {
+        auto* registry = services.registry.get();
+        require(registry != nullptr, "Text font lookup requires its actual registry owner");
+        const auto* found = registry->find_font_00ac3570(text.font_name);
+        selected = found ? &found->descriptor : nullptr;
+    }
+    if (selected) {
+        const auto& actual = services.fonts.resolve(selected);
+        require(&actual.descriptor() == selected &&
             &actual.actual_owners() == &services.names.actual_owners,
             "Text font lookup must resolve the same actual font and image owner domain");
     }
     //AB8C86 publishes borrowed font BEFORE reading its live+1C scalar.
-    text.font = found ? &found->descriptor : nullptr;
+    text.font = selected;
     if (text.font) {
         const auto& alpha = services.fonts.resolve(text.font).alpha_texture_scale_1c();
         std::memcpy(&text.alpha_texture_scale, &alpha, sizeof(float));

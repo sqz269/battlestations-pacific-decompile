@@ -20,12 +20,17 @@ public:
     static GuiTextFontRegistryAccess published_singleton(
         FontRegistryStartup*& actual_publication, SingletonLifetimeManager& real_lifetime) noexcept;
     static GuiTextFontRegistryAccess borrowed_existing(FontRegistryStartup&) noexcept;
+    // ON profile: selects the actual10h registry/list and Font+0C native names.
+    // The owner collection is custody/identity resolution, not a name map.
+    static GuiTextFontRegistryAccess borrowed_native_images(NativeFontResourceOwners&) noexcept;
     FontRegistryStartup* get() const;
     // Metadata only: return the borrowed owner or READ the current legacy cell.
     // Never invoke the lazy getter, allocate, publish, register or lock. A null
     // legacy cell remains null. Referents/cell must stay live and access must
     // be externally serialized; this does not freeze a mutable publication.
     FontRegistryStartup* existing_registry() const noexcept;
+    NativeFontResourceOwners* native_image_owners() const noexcept { return native_images_; }
+    void* existing_native_registry_image() const noexcept;
 
 private:
     GuiTextFontRegistryAccess(FontRegistryStartup*, FontRegistryStartup**,
@@ -33,6 +38,7 @@ private:
     FontRegistryStartup* existing_;
     FontRegistryStartup** publication_;
     SingletonLifetimeManager* lifetime_;
+    NativeFontResourceOwners* native_images_{};
 };
 
 struct GuiTextFontNameServices {

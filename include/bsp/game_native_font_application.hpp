@@ -76,7 +76,8 @@ public:
     GameNativeFontApplication& operator=(const GameNativeFontApplication&) = delete;
 
     // Select only while fresh. Default remains the established typed arm.
-    // Both arms use the same registry lookup and actual renderer/VFS owners.
+    // ON additionally owns the native10h registry/list and native-name lookup;
+    // both arms share the actual renderer/VFS owners and descriptor custody.
     void enable_native_font_images();
 
     void load_descriptors_00ac3910(VfsLuaScriptFiles&, const LuaRuntimeGlobals&,
@@ -85,8 +86,8 @@ public:
     // Export only after complete initial production. Before any Text factory
     // creates a borrower, bind that SAME factory below; no unrelated empty
     // factory can authorize retirement of this resource collection. Binding
-    // also requires the factory's current font lookup registry to be this SAME
-    // stable registry; this metadata check never invokes a lazy getter. Keep
+    // also requires the factory's current font lookup authority to be this SAME
+    // typed registry (OFF) or native registry image (ON), without a lazy getter. Keep
     // its owner/cell alive and the lookup association valid through retirement.
     NativeFontResourceOwners& native_fonts();
     void bind_text_factory(GuiTextRuntimeFactory&);
