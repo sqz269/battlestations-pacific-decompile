@@ -110,8 +110,10 @@ body past the registration was not read. `Connection_Group`, `players_Text`, `mo
 
 SEH handler 00C73E69, vtables `00CF1BF4`/`00CF1BE0`/`00CF1BC0`, no animation block. Slot `+00h` is
 005D2F40 (`mov eax,1Dh; ret`). The EH vector constructor iterator builds **two** 10h-byte elements
-at `+30h` with constructor 004324A0, then 00450540 pushes the pooled labels `globals.yes` and
-`globals.no`: a two-button confirm dialog. Register 005D2440 binds the GUI page `_MultiError` into
+at `+30h` and `+40h` with constructor 004322C0 and destructor 004324A0 (push order; corrected by
+cc13-pool09fix). Then 00450540 pushes ten pooled labels: `globals.yes`, `globals.no`,
+`globals.accept`, `globals.marketplace_pc` and `globals.back` into `+30h`, and the matching
+`globals.dialog_*` keys into `+40h` (body: `src/pool_pool19_cc13.cpp`). Register 005D2440 binds the GUI page `_MultiError` into
 `+10h` and clears `+54h`.
 
 This address carried the automatic tag `cg_array_ctor_helper` with a rename suggestion. That tag is
