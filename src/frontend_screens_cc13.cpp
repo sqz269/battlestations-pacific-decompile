@@ -1,6 +1,7 @@
 // Frontend and HUD menu screen reconstructions, packet cc13-fe1 (docs/CC13_FE_1.md).
 #include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/band_0085_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/options_menu_screens.hpp"
 
 #include <cstdio>
@@ -1253,9 +1254,12 @@ void voice_observer_destruct_005b8070(void* observer, VoiceObserverHost& host) {
 
 void hud_map_animate_zoom_0059ab10(void* screen, float dt) noexcept {
     const bool closing = read_field<std::uint8_t>(screen, 0x88) != 0;
-    const double step = static_cast<double>(dt) * 1.5;  // FMUL qword 00CE3D78
+    // cc13-fixture8: main thread (005B45E6 in the HUD map update), so the FMUL and the
+    // FADD/FSUBP each round to 24 bits.
+    const double step = cc13x87::x87_mul24(dt, 1.5);  // FMUL qword 00CE3D78
     const double zoom = read_field<float>(screen, 0x84);
-    write_field(screen, 0x84, static_cast<float>(closing ? step + zoom : zoom - step));
+    write_field(screen, 0x84, static_cast<float>(closing ? cc13x87::x87_add24(step, zoom)     // 0059AB24
+                                                         : cc13x87::x87_sub24(zoom, step)));  // 0059AB3C
     if (!closing && 0.0f > read_field<float>(screen, 0x84)) write_field(screen, 0x84, 0.0f);
     if (closing && read_field<float>(screen, 0x84) > 1.0f) write_field(screen, 0x84, 1.0f);
     if (!closing && read_field<float>(screen, 0x84) == 0.0f) write_field<std::uint8_t>(screen, 0x88, 1);

@@ -40,6 +40,14 @@
 #include "bsp/render_fx_cc13.hpp"
 #include "bsp/oct18b_nc_mid.hpp"
 #include "bsp/game_dynamics_list.hpp"
+#include "bsp/cc13_left55.hpp"
+#include "bsp/cc13_seg33a.hpp"
+#include "bsp/cc13_seg62.hpp"
+#include "bsp/cc13_sweepA.hpp"
+#include "bsp/engine_seg1_cc13.hpp"
+#include "bsp/engine_seg43_45_cc13.hpp"
+#include "bsp/frontend_screens_cc13.hpp"
+#include "bsp/particle_emitters_cc13.hpp"
 #include "cc13_leaf_reference.hpp"
 #include <float.h>
 #include <array>
@@ -47,6 +55,7 @@
 #include <limits>
 #include <cstdio>
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <stdexcept>
@@ -838,15 +847,29 @@ template<class Open> void run_fixture3(Open open) {
     }
 }
 
+// cc13-fixture8: defined at the end of the file.
+template<class Open> void run_fixture8(Open open);
+
 }  // namespace
 
 int main() {
     unsigned control{};
     _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
     load_image();
-    static Case cases[200]{};
+    // cc13-fixture8: each fixture pass adds cases here, so overflow is a hard failure rather
+    // than a silent write past the end.
+    constexpr int kMaxCases = 512;
+    static Case cases[kMaxCases]{};
     int count = 0;
-    auto open = [&](const char* name) -> Case& { cases[count].name = name; return cases[count++]; };
+    auto open = [&](const char* name) -> Case& {
+        if (count >= kMaxCases) {
+            std::printf("too many cc13 leaf cases (limit %d): raise kMaxCases\n", kMaxCases);
+            std::fflush(stdout);
+            std::exit(1);
+        }
+        cases[count].name = name;
+        return cases[count++];
+    };
 
     {   // 00BB9F40 table fill, then 00BBA030 over that table.
         using namespace bsp::band0090;
@@ -1083,6 +1106,13 @@ int main() {
         run_fixture2([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
         run_fixture3([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
     }
+    // cc13-fixture8: the same two passes over its own input stream.
+    for (const unsigned pc : {static_cast<unsigned>(_PC_53), static_cast<unsigned>(_PC_24)}) {
+        _controlfp_s(&control, pc | _RC_NEAR, _MCW_PC | _MCW_RC);
+        state = 0x5eed0f08u;
+        const std::string tag = pc == _PC_53 ? " @53" : " @24";
+        run_fixture8([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
+    }
     _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
     // cc13-fixture2 cases carry a precision suffix. The pass that decides is the precision of
     // the thread the image runs the routine on (docs/CC13_FPU_PRECISION.md): 24-bit for the
@@ -1133,3 +1163,226 @@ int main() {
     std::cout << count << " cc13 leaf cases; " << failures << " with mismatches\n";
     return failures ? 1 : 0;
 }
+
+namespace {
+#pragma warning(push)
+#pragma warning(disable : 4100 4459 4189)
+// cc13-fixture8 (docs/CC13_FIXTURE_PASS_8.md): small main-thread float leaves. Runs once per
+// precision control; the caller resets the generator so both passes see the same inputs.
+template<class Open> void run_fixture8(Open open) {
+    using bsp::cc13_seg62::Object;
+    auto fbits = [](float v) { std::uint32_t u; std::memcpy(&u, &v, 4); return u; };
+    auto put = [](unsigned char* base, unsigned off, auto v) { std::memcpy(base + off, &v, sizeof(v)); };
+    auto get_f = [](const unsigned char* base, unsigned off) { float v; std::memcpy(&v, base + off, 4); return v; };
+    {   auto& c = open("00809DE0 rocket aim lift");
+        auto native = at<float (__fastcall*)(void*)>(cc13_leaf_00809de0);
+        for (int i = 0; i < 2000; ++i) {
+            alignas(4) unsigned char cls[0xe4]{};
+            const float e0 = edge_or(-20, 20);
+            put(cls, 0xe0, e0);
+            const float a = native(cls), b = bsp::rocket_aim_lift_00809de0(e0);
+            if (nan_only_diff(&a, &b, 1)) { c.check_nan_only(); continue; }
+            check_note(c, same(a, b), "e0=%a %a / %a", e0, a, b);
+        }
+    }
+    {   // 007B5390: [approach+D4h] is the 00809E10 record; +9Ch takes the clamped flight time.
+        auto& c = open("007B5390 rocket projtime");
+        static float launch = 0;
+        struct Launcher { static float __fastcall speed(void*, void*) { return launch; } };
+        void* vtable[16]{};
+        vtable[0x38 / 4] = reinterpret_cast<void*>(&Launcher::speed);
+        void* object[1] = {vtable};
+        alignas(4) unsigned char rocket[0xe0]{}, record[0x320]{}, approach[0xd8]{};
+        void* object_pointer = object; void* rocket_pointer = rocket; void* record_pointer = record;
+        std::memcpy(record + 0x3c, &object_pointer, 4);
+        std::memcpy(record + 0x314, &rocket_pointer, 4);
+        std::memcpy(approach + 0xd4, &record_pointer, 4);
+        auto flight = at<float (__fastcall*)(void*, int, float)>(cc13_leaf_00809e10);
+        auto native = at<void (__fastcall*)(void*, int, float)>(cc13_leaf_007b5390);
+        for (int i = 0; i < 2000; ++i) {
+            launch = edge_or(0, 300);
+            put(rocket, 0xd8, edge_or(launch - 60, 400));
+            put(rocket, 0xdc, edge_or(1, 120));
+            const float range = edge_or(-500, 9000);
+            put(approach, 0x9c, 7.0f);
+            native(approach, 0, range);
+            const float a = get_f(approach, 0x9c);
+            const float b = bsp::rocket_projtime_007b5390(flight(record, 0, range));
+            if (nan_only_diff(&a, &b, 1)) { c.check_nan_only(); continue; }
+            check_note(c, same(a, b), "range=%a %a / %a", range, a, b);
+        }
+    }
+    {   auto& c = open("00791640 orbit input track tick");
+        auto native = at<void (__fastcall*)(void*, int, float)>(cc13_leaf_00791640);
+        for (int i = 0; i < 2000; ++i) {
+            alignas(4) unsigned char raw[0x2c]{};
+            const float d = edge_or(-400, 400);
+            put(raw, 0x18, d);
+            put(raw, 0x1c, 123.0f);
+            native(raw, 0, 0.0f);
+            bsp::cc13cam::OrbitInputModifier m;
+            m.distance_18 = d;
+            m.distance_rate_1c = 123.0f;
+            bsp::cc13cam::orbit_input_track_tick_00791640(m);
+            const float a = get_f(raw, 0x1c), b = m.distance_rate_1c;
+            check_note(c, same(a, b), "d=%a %a / %a", d, a, b);
+        }
+    }
+    {   auto& c = open("0059AB10 HUD map animate zoom");
+        auto native = at<void (__fastcall*)(void*, int, float)>(cc13_leaf_0059ab10);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) unsigned char s1[0x90]{}, s2[0x90]{};
+            const float zoom = i % 7 == 0 ? (i % 2 ? 1.0f : 0.0f) : edge_or(-0.5f, 1.5f);
+            const float dt = i % 11 == 0 ? 0.0f : edge_or(0, 0.2f);
+            const std::uint8_t closing = static_cast<std::uint8_t>(next() & 1);
+            put(s1, 0x84, zoom); put(s1, 0x88, closing);
+            std::memcpy(s2, s1, sizeof(s1));
+            native(s1, 0, dt);
+            bsp::cc13_fe1::hud_map_animate_zoom_0059ab10(s2, dt);
+            const float a = get_f(s1, 0x84), b = get_f(s2, 0x84);
+            if (s1[0x88] == s2[0x88] && nan_only_diff(&a, &b, 1)) { c.check_nan_only(); continue; }
+            check_note(c, std::memcmp(s1, s2, sizeof(s1)) == 0, "zoom=%a dt=%a closing=%d %a / %a",
+                       zoom, dt, closing, a, b);
+        }
+    }
+    {   auto& c = open("00790460 MovCam snapshot tracked fields");
+        auto native = at<void (__fastcall*)(void*)>(cc13_leaf_00790460);
+        static const unsigned from[8] = {0x224, 0x228, 0x22c, 0x254, 0x258, 0x2f0, 0x278, 0x2f8};
+        for (int i = 0; i < 1000; ++i) {
+            alignas(4) static unsigned char cam[0x390];
+            for (unsigned k = 0; k < sizeof(cam); k += 4) put(cam, k, edge_or(-1e4f, 1e4f));
+            bsp::cc13cam2::MovCamTrackedSnapshot in;
+            in.from_224 = {fbits(get_f(cam, 0x224)), fbits(get_f(cam, 0x228)), fbits(get_f(cam, 0x22c))};
+            in.from_254 = fbits(get_f(cam, 0x254)); in.from_258 = fbits(get_f(cam, 0x258));
+            in.from_2f0 = fbits(get_f(cam, 0x2f0)); in.from_278 = fbits(get_f(cam, 0x278));
+            in.from_2f8 = fbits(get_f(cam, 0x2f8));
+            std::array<std::uint32_t, 8> out{};
+            bsp::cc13cam2::movcam_snapshot_00790460(out, in);
+            native(cam);
+            bool ok = true;
+            for (int k = 0; k < 8; ++k) ok = ok && fbits(get_f(cam, 0x370 + 4 * k)) == out[k];
+            static_cast<void>(from);
+            check_note(c, ok, "case %d", i);
+        }
+    }
+    {   auto& c = open("00414130 lerp");
+        auto native = at<float (__fastcall*)(const float*, const float*, const float*)>(cc13_leaf_00414130);
+        for (int i = 0; i < 3000; ++i) {
+            const float a = edge_or(-100, 100), b = edge_or(-100, 100), t = edge_or(-0.5f, 1.5f);
+            const float o1 = native(&a, &b, &t);
+            const float o2 = bsp::engine_seg1_cc13::math_lerp_00414130(&a, &b, &t);
+            if (nan_only_diff(&o1, &o2, 1)) { c.check_nan_only(); continue; }
+            check_note(c, same(o1, o2), "a=%a b=%a t=%a %a / %a", a, b, t, o1, o2);
+        }
+    }
+    {   auto& c = open("009C6220 clamp symmetric");
+        auto native = at<float (__fastcall*)(const float*, const float*)>(cc13_leaf_009c6220);
+        for (int i = 0; i < 3000; ++i) {
+            const float a = edge_or(-50, 50), b = edge_or(-50, 50);
+            const float o1 = native(&a, &b), o2 = bsp::math_clamp_symmetric_009c6220(&a, &b);
+            check_note(c, same(o1, o2), "a=%a b=%a %a / %a", a, b, o1, o2);
+        }
+    }
+    {   auto& c = open("0088A0C0 scored median of three");
+        auto native = at<void (__fastcall*)(bsp::cc13_left55::ScoredEntry*, bsp::cc13_left55::ScoredEntry*,
+                                            bsp::cc13_left55::ScoredEntry*)>(cc13_leaf_0088a0c0);
+        for (int i = 0; i < 3000; ++i) {
+            bsp::cc13_left55::ScoredEntry e1[3], e2[3];
+            for (int k = 0; k < 3; ++k) e1[k] = {next(), i % 9 == 0 ? static_cast<float>(next() % 3) : edge_or(-10, 10)};
+            std::memcpy(e2, e1, sizeof(e1));
+            native(&e1[0], &e1[1], &e1[2]);
+            bsp::cc13_left55::scored_med3_0088a0c0(&e2[0], &e2[1], &e2[2]);
+            check_note(c, std::memcmp(e1, e2, sizeof(e1)) == 0, "case %d", i);
+        }
+    }
+    {   auto& c = open("0098A710 node bounds");
+        auto native = at<void (__fastcall*)(void*, int, float*, float*)>(cc13_leaf_0098a710);
+        for (int i = 0; i < 1000; ++i) {
+            alignas(4) unsigned char node[0x124]{};
+            for (unsigned k = 0x10c; k < 0x124; k += 4) put(node, k, edge_or(-1e4f, 1e4f));
+            float mn1[3], mx1[3], mn2[3], mx2[3];
+            native(node, 0, mn1, mx1);
+            bsp::cc13_seg62::node_bounds_0098a710(static_cast<Object>(node), mn2, mx2);
+            check_note(c, std::memcmp(mn1, mn2, 12) == 0 && std::memcmp(mx1, mx2, 12) == 0, "case %d", i);
+        }
+    }
+    {   auto& c = open("00638B20 HUD marker endpoints");
+        auto native = at<void (__fastcall*)(void*, int, float*, float*)>(cc13_leaf_00638b20);
+        for (int i = 0; i < 1000; ++i) {
+            float a[3], b[3];
+            for (int k = 0; k < 3; ++k) { a[k] = edge_or(-1e4f, 1e4f); b[k] = edge_or(-1e4f, 1e4f); }
+            alignas(4) unsigned char marker[0x28]{};
+            const float* pa = a; const float* pb = b;
+            std::memcpy(marker + 0x20, &pa, 4); std::memcpy(marker + 0x24, &pb, 4);
+            float oa1[3], ob1[3], oa2[3], ob2[3];
+            native(marker, 0, oa1, ob1);
+            bsp::ingame_gui_cc13::hud_marker_endpoints_00638b20(bsp::ingame_gui_cc13::Raw{marker}, oa2, ob2);
+            check_note(c, std::memcmp(oa1, oa2, 12) == 0 && std::memcmp(ob1, ob2, 12) == 0, "case %d", i);
+        }
+    }
+    {   auto& c = open("0042C450 camera clamp zoom");
+        auto native = at<void (__fastcall*)(void*, int, float)>(cc13_leaf_0042c450);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) unsigned char m1[0x1c8]{}, m2[0x1c8]{};
+            const float cur = edge_or(-10, 100), high = edge_or(0, 100), low = edge_or(-10, 100);
+            put(m1, 0x1c0, cur); put(m1, 0x1c4, high);
+            std::memcpy(m2, m1, sizeof(m1));
+            native(m1, 0, low);
+            bsp::cc13_sweepA::camera_clamp_zoom_0042c450(bsp::cc13_sweepA::Raw{m2}, low);
+            check_note(c, std::memcmp(m1, m2, sizeof(m1)) == 0, "cur=%a high=%a low=%a", cur, high, low);
+        }
+    }
+    {   auto& c = open("007B5BE0 unit largest extent");
+        auto native = at<float (__fastcall*)(void*)>(cc13_leaf_007b5be0);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) unsigned char unit[0x44c]{};
+            for (unsigned off : {0x434u, 0x444u, 0x448u}) put(unit, off, edge_or(0, 5000));
+            const float a = native(unit), b = bsp::cc13_seg47::unit_largest_extent_007b5be0(bsp::cc13_seg47::Raw{unit});
+            check_note(c, same(a, b), "%a / %a", a, b);
+        }
+    }
+    {   auto& c = open("006EB870 ratio |+DCh| / +8Ch");
+        auto native = at<float (__fastcall*)(void*)>(cc13_leaf_006eb870);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) unsigned char cls[0xe0]{};
+            put(cls, 0x8c, edge_or(-10, 100)); put(cls, 0xdc, edge_or(-1000, 1000));
+            const float a = native(cls), b = bsp::cc13_seg33a::ratio_abs_dc_over_8c_006eb870(cls);
+            if (nan_only_diff(&a, &b, 1)) { c.check_nan_only(); continue; }
+            check_note(c, same(a, b), "dc=%a 8c=%a %a / %a", get_f(cls, 0xdc), get_f(cls, 0x8c), a, b);
+        }
+    }
+    {   auto& c = open("009B93F0 tight turn slot 68h");
+        auto native = at<float (__fastcall*)(void*)>(cc13_leaf_009b93f0);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) unsigned char inner[0x1b0]{}, task[0x2fc]{};
+            void* p = inner;
+            std::memcpy(task + 0x2f8, &p, 4);
+            put(inner, 0x1ac, edge_or(-100, 100));
+            const float a = native(task), b = bsp::bot_task_tight_turn_slot68_009b93f0(task);
+            if (nan_only_diff(&a, &b, 1)) { c.check_nan_only(); continue; }
+            check_note(c, same(a, b), "v=%a %a / %a", get_f(inner, 0x1ac), a, b);
+        }
+    }
+    {   auto& c = open("00B0A3F0 tracer bounding sphere");
+        auto native = at<float* (__stdcall*)(float*, const void*, int)>(cc13_leaf_00b0a3f0);
+        for (int i = 0; i < 1000; ++i) {
+            float state[3], s1[4] = {1, 2, 3, 4}, s2[4] = {1, 2, 3, 4};
+            for (float& v : state) v = edge_or(-1e4f, 1e4f);
+            const float* r1 = native(s1, state, 0);
+            const float* r2 = bsp::particle_emitters::tracer_bounding_sphere_00b0a3f0(s2, state);
+            check_note(c, r1 == s1 && r2 == s2 && std::memcmp(s1, s2, 16) == 0, "case %d", i);
+        }
+    }
+    {   auto& c = open("006EA530 torpedo class scaled +E4h");
+        auto native = at<float (__fastcall*)(void*)>(cc13_leaf_006ea530);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) unsigned char cls[0xe8]{};
+            put(cls, 0xe4, edge_or(-1000, 1000));
+            const float a = native(cls), b = bsp::cc13_seg33a::torpedo_class_scaled_e4_006ea530(cls);
+            if (nan_only_diff(&a, &b, 1)) { c.check_nan_only(); continue; }
+            check_note(c, same(a, b), "v=%a %a / %a", get_f(cls, 0xe4), a, b);
+        }
+    }
+}
+#pragma warning(pop)
+}  // namespace
