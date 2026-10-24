@@ -18270,3 +18270,42 @@ Fire that group with `input` + `aim unit`, or use releasegun once it is ON.
 - The drift list (cc15, 46bdfac0a) and the pending lane-flip re-times are in WINS_TABLE, section "2026-10-19, later
   bases".
 - BSM01 j/k/l (local\l70_b1_*.txt) stay parked; they win only in the ref env.
+## cc9-lua71 handoff (2026-10-24, at about 72% context)
+
+Tree J:\PROG\battlestations-pacific-decompile-cc9-lua52 (agent/cc9-lua52), head ac93c856f. The plan drafts, launcher and
+logs named below are in that tree's `local\` (untracked); copy them out before the tree is removed.
+
+Done on this lane:
+- Reach check for the releasegun + latch + gate flip, then the flip itself (ea5795c31, landed).
+- Eight Lua native switches ON (728260ae5, landed); the `handled` census line in src/game_hosts_lua.cpp.
+- ac93c856f, NOT YET LANDED: kLuaUnitFreeFireBound and kHitListenerAttackTypeSubKindCc13Bound ON plus the WINS_TABLE
+  section "2026-10-24, two Lua flips and the USN02 / IJN18 re-plans". FreeFire is faithful-identity (no pair reached it);
+  atkkind moves ESMP07 by one dialog listener fire, gameplay identical.
+- 1617469fa (BSM01 takehelm opening) reverted; its WINS section relabelled diagnostic.
+
+Launcher: `local\l71_runs.ps1` (jobs "row:variant:env[:tag]", rows from `local\l71_rows.txt`), summarizer
+`python local\l71_q.py 'local\l71r_<tag>*.log'`. Count only logs with no "present failed".
+
+Open queue:
+1. USN02, solved for ref and 20,3 by `local\l71_u2_ec2.txt` (ref completed 225.06 s, 20,3 completed 235.06 s, guard line
+   logged, helm_moveto_unselected=0, helm_role_forced=0). The default env fails at 75.05 s. Waiting on the lead: commit it
+   as config/win_orders/usn02_l71_u2_ec2.txt now, or with the re-time. Key points: takehelm Houston at 25 and 530
+   toward (-1000,-9000) clears Minegumo's 38.5 s spread; the escape legs are takehelm lines, not moveto.
+2. IJN18. `local\l71_i18_s.txt` and `_t.txt` win ref (EndMission 1521.36 s and 1561.40 s) but lose 20,3 (Game Over
+   560.99 s / 671.96 s). The ref wins hinge on Kita1 surviving into phase 3. u, s2, s3, v and w all fail. Finding sent to
+   the lead for cc13: after `1500 releasegun Zao`, later `select Zao` + `takehelm Zao` lines are "applied" but do not
+   steer (v and w, opposite headings, are byte-identical; only the frame-900 helm transfer line appears). Until that is
+   answered, a 20,3 plan must win on the course Zao holds at frame 1500, or must not release Zao's gun at all.
+3. Combined WINS re-time, held until helm1's kShipViewPreviousUnitReleaseCc13Bound flip and cc15's hint HUD-gate flip
+   land. It includes: the 0x4A dismiss copies `local\l71_l6_v2_h.txt` (LOMP06 g56_l6_v2 + `20 input 0x4A`) and
+   `local\l71_u21_c2_h.txt` (USN21 g56_c2 + `20 input 0x4A`); the SCRIPTED_HELM.md line "unattended runs without 0x4A keep
+   critical hints up all mission"; the LOMP06 row swap to g56_l6_v2; physics25's row moves (5481a7ca5, 39ac16569,
+   3ca24854e, 052fd3356, 7207dcf49); the USN12 attribution (all four flips, knife-edge); USN21 c2 recorded untested
+   (present failed); the USN02 attribution (65f9e86ef, 070630984, 76f7d7468).
+4. Parked: USN15 fresh strategy (torpedo evasion is faithful); BSM01 (bisect1/cc13, unattributed change in
+   5481a7ca5..39ac16569); IJN08 (bisect2, unexplained drift); LOMP08 crashes 0xC0000374 at load on both sides.
+5. Later: fold the duplicated spawn_request_id_matches (LNK4006).
+
+Plan rules carried over: `select` (or takehelm) before every moveto; a helmed ship ignores moveto, so steer it with a
+new takehelm line; takehelm never selects; a row is non-provisional only with helm_moveto_unselected=0 and
+helm_role_forced=0; absolute --helm-orders paths; --difficulty 1.

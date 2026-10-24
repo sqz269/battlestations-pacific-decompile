@@ -133,7 +133,7 @@ inline constexpr bool kScriptedOrderNatives2Bound = true;
 // same vt[114h] director route with the stance literal of 0071BF70 (2) or
 // 0071BF20 (1) in place of 0071BED0's 0. False leaves both unimplemented
 // records, as before, and every hold stays permanent.
-inline constexpr bool kLuaUnitFreeFireBound = false;
+inline constexpr bool kLuaUnitFreeFireBound = true;  // ON (cc9-lua71, 2026-10-24): faithful; unreached on USN01/USN10/USN04/USN03/PRCP01/BSM04 pairs (identical); see WINS_TABLE
 // Packet cc9_l66_putto: PutTo 008AA131-008AA14D and PutFormationTo 008AA3CA turn a
 // Lua degree value into vtable[11Ch]'s radians: FMUL [00CE3D28] (pi as a float,
 // 400921FB60000000), FDIV [00CE3D20] (180.0), FSTP float. LABELLED: modelled with

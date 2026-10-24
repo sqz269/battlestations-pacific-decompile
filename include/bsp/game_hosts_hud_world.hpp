@@ -265,7 +265,7 @@ static_assert(!kHelmPrepareMapUpGateCc13Bound || bsp::kCruiseLatchedPlayerArmCc1
 // OFF: the slot-4Ch update falls through to the pump's default record.
 // The only plan that opens the map (ijn18_l70_i18_r) never closes it, so ON
 // releases the helm on every update for the rest of that run.
-inline constexpr bool kMapScreenHelmReleaseCc13Bound = false;
+inline constexpr bool kMapScreenHelmReleaseCc13Bound = true;  // ON (cc9-helm1, 2026-10-23): IJN18 l70_i18_r pair gameplay identical; the arm never fires on that plan (role 1 not player-held)
 static_assert(!kMapScreenHelmReleaseCc13Bound || kHarnessReleaseGunMapBound,
     "kMapScreenHelmReleaseCc13Bound needs kHarnessReleaseGunMapBound: only that path opens the map");
 static_assert(!kMapScreenHelmReleaseCc13Bound || kHelmPrepareMapUpGateCc13Bound,
@@ -281,7 +281,7 @@ static_assert(!kMapScreenHelmReleaseCc13Bound || kHelmPrepareMapUpGateCc13Bound,
 // same one. ON: the host's bind sends that release to the previously stored
 // ship-view unit, after the 005470C0 group release and before the 00549260
 // re-take. OFF: no release, as before.
-inline constexpr bool kShipViewPreviousUnitReleaseCc13Bound = false;
+inline constexpr bool kShipViewPreviousUnitReleaseCc13Bound = true;  // ON (cc9-helm1, 2026-10-23): 12-row pairs on 802e1d8b9 gameplay identical; the bind re-takes the released roles
 static_assert(!kShipViewPreviousUnitReleaseCc13Bound || kMissionCameraBound,
     "kShipViewPreviousUnitReleaseCc13Bound needs kMissionCameraBound: the release sits in the "
     "host's 0064DA40 bind");
@@ -292,7 +292,7 @@ static_assert(!kShipViewPreviousUnitReleaseCc13Bound || kMissionCameraBound,
 // releases roles 0..8. Role 0 clears +184h and, for a ship, runs 0080E290
 // (0078021C..00780244). ON: the movie binding sends that release through the
 // units host's 4Bh message. OFF: recorded only, as before.
-inline constexpr bool kMovieEngageRoleReleaseCc13Bound = false;
+inline constexpr bool kMovieEngageRoleReleaseCc13Bound = true;  // ON (cc9-helm1, 2026-10-23): same-commit pairs on 802e1d8b9, every end unchanged on 8 reached rows; see commit
 
 // Packet cc9_hud_camera_team_lists (docs/HUD_CAMERA_TEAM_LISTS.md). ON answers
 // 004B4B00 exactly for the minimap (005C154E) and the markers screen: the

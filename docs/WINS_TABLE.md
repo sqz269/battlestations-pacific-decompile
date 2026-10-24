@@ -1274,3 +1274,58 @@ BSM01 `l71_b1_a` does not hold on 872adeff3 (no end in either env). MiniSub come
 reference seed; on d175c1aac it rested at (-212,-2388). Under 20,3 it is still moving submerged near (2053,-1864) at
 the end. Henry's depth charges never hit it, and the hits that do land (bullet 43, from other ships) do not satisfy
 the listener, which requires attacker = Henry. The row needs a re-plan on the combined re-time base.
+
+## 2026-10-24, two Lua flips and the USN02 / IJN18 re-plans (cc9-lua71, keeper)
+
+Pairs were taken on 802e1d8b9. OFF is the tree build; ON is a same-commit export (`local\l71_ff2`, `local\l71_ak`).
+The env is ref unless stated. Logs are `cc9-lua52\local\l71r_q<row>_{main,ff2,ak}_<env>.log`, all free of "present failed".
+
+**kLuaUnitFreeFireBound ON.** pair_diff says identical (exit 0) on every row below, and UnitFreeFire is never called in
+any of them:
+- USN01 `l69_u1_a`, completed 410.02 s.
+- The USN10, USN04 and USN03 idle runs. These menus load usn_05 (COTP), usn_19_coralus and LOMP 02_holding_ceylon, not
+  the scripts that make the calls.
+- PRCP01 `p9_p01_k` in ref (completed 715.45 s) and 20,3 (completed 1094.79 s). The calls at :938 and :1447 are not
+  reached.
+- BSM04 idle, Game Over at 108.05 s.
+
+LOMP08, which does call UnitFreeFire, crashes at load on both sides with exit 0xC0000374, so it has no pair. The flip
+is faithful (CC13_VER_12) and unreached on the WINS rows.
+
+**kHitListenerAttackTypeSubKindCc13Bound ON.**
+- JM06 `l70_j6_n`: gameplay identical, completed 1922.75 s, attack_type_subkind_differs=0.
+- JM04 (PRCPJM04) and BSM06: identical, with no hit events on those listeners.
+- ESMP07 idle: the OFF run logs attack_type_subkind_differs=42 and the ON run logs 1. With the switch ON, the
+  07_surigao.lua:523 listener fires once more (fires 1 -> 2), which plays one extra dialog and removes the listener.
+  Gameplay is identical and there is no end on either side.
+
+**USN02 re-plan `l71_u2_ec2`** (local plan, not committed yet). It is l70 u2 b with these changes:
+- Houston is selected at frame 20 and taken by takehelm at frame 25, heading for (-1000,-9000). The transfer logs
+  +184h=1. Minegumo launches at 38.5 s, which is frame 770.
+- Houston is taken again at 530, after the script's own select at about frame 523.
+- The EscapePoint legs at 1340 and 4415 are takehelm lines.
+- Exeter is handled by select / moveto / reselect at 4395-4410.
+- The post-end lines at 5295 and 5300 are dropped.
+
+Results:
+- ref: completed 225.06 s.
+- 20,3: completed 235.06 s.
+- Both runs log the guard and show helm_moveto_unselected=0 and helm_role_forced=0.
+- Default env: Game Over at 75.05 s.
+
+Attribution for the base loss (bisect1): 65f9e86ef Wake ON, 070630984 skip OFF and 76f7d7468 hitq ON. On the
+current base Houston is also torpedoed at 53.30 s unless it is helmed before Minegumo's launch. cc13 found that the
+autotarget think (009F5DA0) overrides a moveto that was not taken by takehelm.
+
+**IJN18** (logs l71r_qi18{s,t,u,s2,s3}):
+- s (Zao re-taken toward PhaseTwoGoTo at 7000) and t (escorts ordered once first): ref EndMission at 1521.36 s and
+  1561.40 s, guard logged; 20,3 Game Over at 560.99 s and 671.96 s.
+- u fails in both envs.
+- s2 and s3 (Zao turned south at 5000 or 6000) fail the ref too.
+
+Phase 2 ends at the nav point OR when the 540 s countdown runs out (ijn_18_solomons.lua luaPh2MovieEnd). The US force
+spawns at z 6500-7000 at step about 6520. The ref wins depend on Kita1 living into phase 3 (it dies at 1115 s on ref,
+371 s under 20,3). The row stays open.
+
+Attribution for IJN18's drift since d175c1aac: moved by the 05cb6f1bc..86b81e2a8 flips; per-flip attribution not
+measured.
