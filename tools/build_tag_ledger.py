@@ -52,6 +52,46 @@ def sanitize(name, limit=64):
     return name + PROVISIONAL if provisional else name
 
 
+EH_VECTOR_DTOR_ITERATOR = '00bf7c6e'
+CTOR_ITERATORS = ('00403560', '00453ed0', '00bf7cd1', '00bf9a96')   # vector / copy / eh variants
+ARRAY_CTOR_HELPER_MAX_INSTRUCTIONS = 20
+
+
+def has_shape(category, lines):
+    """The compiler-generated shape the category's name claims, read from the exported listing.
+
+    The inventory lists tagged anything that CALLED an iterator, so real class destructors and
+    constructors were named CG_vector_deleting_dtor / CG_array_ctor_helper (cc13-cgretag census:
+    none of the 38 / 15 still so named had the shape). A deleting destructor tests its flag
+    argument: bit 1 (delete) for scalar, bit 2 (array) for vector, and the vector form calls the
+    eh vector destructor iterator; an array ctor helper is a short body around a ctor iterator.
+    """
+    def test(bit):
+        return any(re.search(rf'\bTEST\b.*,0x{bit}\s*$', line) for line in lines)
+
+    def calls(*targets):
+        return any(re.search(rf'\bCALL 0x{t}\b', line) for line in lines for t in targets)
+
+    if category == 'cg_scalar_deleting_dtor':
+        return test(1)
+    if category == 'cg_vector_deleting_dtor':
+        return test(2) and calls(EH_VECTOR_DTOR_ITERATOR)
+    if category == 'cg_array_ctor_helper':
+        return len(lines) <= ARRAY_CTOR_HELPER_MAX_INSTRUCTIONS and calls(*CTOR_ITERATORS)
+    return True
+
+
+SHAPE_CATEGORIES = ('cg_scalar_deleting_dtor', 'cg_vector_deleting_dtor', 'cg_array_ctor_helper')
+
+
+def shape_ok(category, address, exports):
+    """False when a CG_ shape category lacks its shape, or its listing is not exported."""
+    if category not in SHAPE_CATEGORIES:
+        return True
+    listing = exports / address / 'assembly.txt'
+    return listing.exists() and has_shape(category, listing.read_text().splitlines())
+
+
 def in_range(a, start, end):
     return int(start, 16) <= int(a, 16) < int(end, 16)
 
@@ -96,12 +136,16 @@ def main():
 
     claimed = {}
     entries = []
-    skipped = {'not_fun': 0, 'thunk': 0, 'reviewed': 0, 'duplicate': 0, 'no_function': 0}
+    skipped = {'not_fun': 0, 'thunk': 0, 'reviewed': 0, 'duplicate': 0, 'no_function': 0, 'no_shape': 0}
+    exports = __import__('workspace').exports_dir() / 'functions'
 
     def claim(address, name, category, confidence, evidence, source, create=False, action='rename'):
         address = addr(address)
         if address in claimed:
             skipped['duplicate'] += 1
+            return
+        if not shape_ok(category, address, exports):
+            skipped['no_shape'] += 1
             return
         if address in reviewed:
             skipped['reviewed'] += 1
@@ -207,8 +251,8 @@ def main():
     mech = [
         ('throw_sites', 'stl_throw_site', 'STL_xlen_throw', 'high', 'pushes one of the six Dinkumware STL throw strings (precision ~1.0)'),
         ('deleting_dtors', 'cg_scalar_deleting_dtor', 'CG_scalar_deleting_dtor', 'high', 'calls operator delete, tests [esp+4|8]&1, ret 4 (scalar deleting destructor shape)'),
-        ('vector_deleting_dtors', 'cg_vector_deleting_dtor', 'CG_vector_deleting_dtor', 'high', 'calls eh_vector_destructor_iterator'),
-        ('array_ctor_helpers', 'cg_array_ctor_helper', 'CG_array_ctor_helper', 'high', 'calls vector/eh_vector_constructor_iterator'),
+        ('vector_deleting_dtors', 'cg_vector_deleting_dtor', 'CG_vector_deleting_dtor', 'high', 'tests its flag &2 and calls eh_vector_destructor_iterator 00bf7c6e (vector deleting destructor shape)'),
+        ('array_ctor_helpers', 'cg_array_ctor_helper', 'CG_array_ctor_helper', 'high', 'body <= 20 instructions around a vector/eh_vector constructor iterator call'),
         ('adjustor_thunks', 'cg_adjustor_thunk', 'CG_adjustor_thunk', 'high', 'this-adjustor / vcall thunk shape'),
         ('static_dtor_stubs', 'cg_static_dtor_stub', 'CG_static_dtor_stub', 'high', 'atexit-registered static destructor stub'),
         ('scl_callers_le96', 'stl_instantiation', 'STL_inst', 'high', 'calls _invalid_parameter_noinfo 00bf6713 (_SECURE_SCL hook) and body <= 96 bytes (precision ~0.95)'),
@@ -231,8 +275,10 @@ def main():
     # while the reviewed name is still the tag's name.
     def review_pass_row(address, row):
         return bool(row.get('name')) and reviewed_names.get(address) == row['name']
+    # A kept CG_ shape row must still have its shape, so the old iterator-caller tags do not return.
     kept = [row for address, row in existing_tags.items()
-            if address not in derived and (address not in reviewed or review_pass_row(address, row))]
+            if address not in derived and (address not in reviewed or review_pass_row(address, row))
+            and shape_ok(row['category'], address, exports)]
     entries.extend(kept)
     entries.sort(key=lambda e: int(e['address'], 16))
     shards, evidence_ids = write_tags(entries)
