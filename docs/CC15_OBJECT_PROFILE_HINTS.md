@@ -419,7 +419,7 @@ Exes:
 - `hon`: 77cc21b65 as committed.
 - `off2`: the 50aec32e6 base, run 2026-10-19 and USN21 again on 2026-10-23.
 
-Rows: USN04 plus the 12 wins rows, plans as in section 7. Every run ended with exit_code=0 and its
+Rows: USN04 plus the 12 wins rows, plans as in section 6 except `usn02_l70_u2_b`, `lomp06_g56_l6_v2`, `jm06_l70_j6_n` and `ijn18_l70_i18_r`. Every run ended with exit_code=0 and its
 `rng streams: on` line.
 
 - **OFF identity (off2 vs hoff):** gameplay identical and strict ordered diff 0 on 12 rows. On
