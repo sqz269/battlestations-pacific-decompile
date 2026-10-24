@@ -43362,10 +43362,14 @@ bool GameUnitsHost::helm_route_take(std::size_t index, float throttle, float x, 
         host.helm_rudder = 0.0f;
         host.helm_route_x = x;
         host.helm_route_z = z;
+        // Packet cc13-mapback (log only): map_up is the state
+        // kHelmPrepareMapUpGateCc13Bound tests; while it is 1 the take waits.
         host.log.notef("helm route taken: \"%s\" throttle %.3f toward (%.1f, %.1f); role 1 "
-            "through 0077C470(unit, 2, 1) at the next step, then the helm every step",
+            "through 0077C470(unit, 2, 1) at the next step, then the helm every step "
+            "map_up=%d",
             host.slots[index]->row.name.c_str(), static_cast<double>(throttle),
-            static_cast<double>(x), static_cast<double>(z));
+            static_cast<double>(x), static_cast<double>(z),
+            host.helm_screen_occluded_by_map ? 1 : 0);
         return true;
     }
 }
@@ -43476,6 +43480,10 @@ float GameUnitsHost::unit_ring_current_rudder(std::size_t index) const {
 
 void GameUnitsHost::set_helm_screen_occluded_by_map(bool occluded) {
     impl_->helm_screen_occluded_by_map = occluded;
+}
+
+bool GameUnitsHost::helm_screen_occluded_by_map() const noexcept {
+    return impl_->helm_screen_occluded_by_map;
 }
 
 float GameUnitsHost::unit_ring_confirmed_throttle_0994(std::size_t index) const {
