@@ -514,6 +514,13 @@ void parse_movie_keyframe(lua_State* state, int table, bsp::MovieKeyframeInput& 
         lua_getfield(state, table, key);
         if (bsp::kMovieKeyframeModifierBound && std::string(key) == "event") {
             if (lua_type(state, -1) == LUA_TTABLE) in.event = movie_lua_value(state, -1, 2);
+        } else if (std::string(key) == "finishscript") {
+            // Packet cc13-finscr: always kept (007A1F76 IsString), so the OFF log can
+            // name it; OFF still counts the key as unsupported.
+            if (lua_type(state, -1) == LUA_TSTRING) in.finishscript = std::string(lua_tostring(state, -1));
+            if constexpr (!kMovieCameraFinishScriptCc13Bound) {
+                if (!lua_isnil(state, -1)) in.unsupported_keys.push_back(key);
+            }
         } else if (!lua_isnil(state, -1)) {
             in.unsupported_keys.push_back(key);
         }
