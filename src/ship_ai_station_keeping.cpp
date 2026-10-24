@@ -1,6 +1,7 @@
 #include "bsp/ship_ai_station_keeping.hpp"
 
 #include "bsp/ship_ai_seg67_switches_cc13.hpp"
+#include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/unit_rudder.hpp"
 
 #include <cmath>
@@ -58,9 +59,10 @@ float clamp_00415620(float v, float lo, float hi) noexcept {
 }
 
 float min_00415510(float a, float b) noexcept { return (b > a) ? a : b; }
+template <bool NanArms>
 float max_00415550(float a, float b) noexcept {
     // 00415565 FCOMIP a,b / JBE: a only when a > b (ordered), else b.
-    if constexpr (kShipAiStationKeepingNanArmsCc13Bound) {
+    if constexpr (NanArms) {
         return (a > b) ? a : b;
     } else {
         return (b > a) ? b : a;
@@ -69,8 +71,9 @@ float max_00415550(float a, float b) noexcept {
 
 // The four side picks (009EE11D, 009EE23A, 009EE37B, 009EE49F): COMISS
 // across, 0 / JC, taken for across < 0 and for an unordered compare.
+template <bool NanArms>
 bool across_below_zero(float across) noexcept {
-    if constexpr (kShipAiStationKeepingNanArmsCc13Bound) {
+    if constexpr (NanArms) {
         return !(across >= 0.0f);
     } else {
         return 0.0f > across;
@@ -83,9 +86,10 @@ float safe_acos_007789d0(float x) noexcept {
     return static_cast<float>(std::acos(static_cast<double>(x)));  // 00BF9940
 }
 
-} // namespace
-
-ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
+// The arm, with the two cc13 switches as parameters so the reach counters
+// can evaluate the other settings on a copy of the state.
+template <bool NanArms, bool Pc24>
+ShipAiStationKeepingTrace station_keeping_arm(
     const ShipAiStationRequest& request, const ShipAiStationKeepingInputs& in,
     ShipAiStationKeepingState& s) noexcept {
     ShipAiStationKeepingTrace t{};
@@ -95,7 +99,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     // round to float at PC24; 0.5 is exact, so the double constant is 0.5f.
     const double ref = in.reference_speed_3c4;
     const float ref_f = in.reference_speed_3c4;
-    const float braking = kShipAiStationKeepingPc24Cc13Bound
+    const float braking = Pc24
         ? (ref_f * (ref_f / in.retardation_508)) * kHalfF
         : static_cast<float>((ref * (ref / static_cast<double>(in.retardation_508))) * kHalf);
     t.braking = braking;
@@ -109,7 +113,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     const float neg_dir_z = static_cast<float>(-dir_z);
     float along;
     float across;
-    if constexpr (kShipAiStationKeepingPc24Cc13Bound) {
+    if constexpr (Pc24) {
         // 009EDAC2..009EDAF8: dz*dir_z and dx*dir_x round, then their sum
         // (009EDAE0 FADDP); -dir_z is stored at 009EDAEA, dx*(-dir_z) and
         // dir_x*dz round, then their sum (009EDAF6 FADDP).
@@ -156,11 +160,11 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     // ON: 009EDBE3 FSUBRP / 009EDBFB FADDP round before the FDIV [D7A390]. The
     // doubles 0.10000000149011612 and 0.8999999761581421 are exactly 0.1f and 0.9f.
     if (static_cast<double>(ratio) > kDeadband) {
-        v = kShipAiStationKeepingPc24Cc13Bound
+        v = Pc24
             ? (ratio - kDeadbandF) / kDeadbandSpanF
             : static_cast<float>((static_cast<double>(ratio) - kDeadband) / kDeadbandSpan);
     } else if (kNegDeadband > static_cast<double>(ratio)) {
-        v = kShipAiStationKeepingPc24Cc13Bound
+        v = Pc24
             ? (ratio + kDeadbandF) / kDeadbandSpanF
             : static_cast<float>((static_cast<double>(ratio) + kDeadband) / kDeadbandSpan);
     } else {
@@ -171,10 +175,10 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     // ON: 009EDC20 FMUL, 009EDC36 FADD ST0,ST0 and 009EDC3E FADD round in turn.
     const double vb = static_cast<double>(v) * braking;
     const float vb_f = v * braking;
-    const float target_along = kShipAiStationKeepingPc24Cc13Bound
+    const float target_along = Pc24
         ? (vb_f + vb_f) + along
         : static_cast<float>(vb + vb + static_cast<double>(along));
-    const float length_floor = max_00415550(kLengthFloor, in.unit_length_9c8);
+    const float length_floor = max_00415550<NanArms>(kLengthFloor, in.unit_length_9c8);
 
     // 009EDC4B..009EDDB3: blk+388h, whether the heading error is inside the
     // 80 / 100 degree cone that matches the side of the station.
@@ -194,7 +198,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     }
     // ON: 009EDD9B FMUL [CE3D28] and 009EDDA1 FDIV [CE3D20] each round at
     // PC24 before the FCOMIP; the doubles are exactly kPiF and 180.0f.
-    const double rad = kShipAiStationKeepingPc24Cc13Bound
+    const double rad = Pc24
         ? static_cast<double>((degrees * kPiF) / kDegPerHalfTurnF)
         : static_cast<double>(degrees) * kPi / kDegPerHalfTurn;
     s.aligned_388 = inside_cone_true ? (rad > static_cast<double>(abs_herr))
@@ -204,7 +208,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     const float abs_across = fabs_bits(across);
     const float width = in.unit_width_9cc;
     // ON: 009EDE0E FDIVR (width / 3.0) rounds before 009EDE13 FSUBP.
-    const float excess = kShipAiStationKeepingPc24Cc13Bound
+    const float excess = Pc24
         ? abs_across - (width / kThreeF)
         : static_cast<float>(static_cast<double>(abs_across) -
                              static_cast<double>(width) / kThree);
@@ -215,7 +219,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
         const float r = static_cast<float>(static_cast<double>(excess) - min_00415510(part, wide));
         if (in.turn_radius > r) {
             // ON: 009EDE78 FSUBRP (turn - r) rounds before 009EDE7A FDIVP.
-            const float q = kShipAiStationKeepingPc24Cc13Bound
+            const float q = Pc24
                 ? (in.turn_radius - r) / in.turn_radius
                 : static_cast<float>(
                       (static_cast<double>(in.turn_radius) - r) / in.turn_radius);
@@ -238,7 +242,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     if (s.close_38a) {
         // ON: 009EDF4E FMUL [D7A2B0] rounds at PC24 before the FCOMIP.
         close = kFifteenDegrees > abs_herr &&
-                (kShipAiStationKeepingPc24Cc13Bound
+                (Pc24
                      ? static_cast<double>(width * kThreeF)
                      : static_cast<double>(width) * kThree) > static_cast<double>(abs_across);
     } else {
@@ -257,12 +261,12 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     // ON: 009EE015 FSUBRP / 009EE029 FADDP, then FDIV braking, then FADDP base,
     // each rounding in turn.
     if (along > band) {
-        s.throttle_39c = kShipAiStationKeepingPc24Cc13Bound
+        s.throttle_39c = Pc24
             ? base + ((along - band) / braking)
             : static_cast<float>(
                   static_cast<double>(base) + (static_cast<double>(along) - band) / braking);
     } else if (-static_cast<double>(band) > static_cast<double>(along)) {
-        s.throttle_39c = kShipAiStationKeepingPc24Cc13Bound
+        s.throttle_39c = Pc24
             ? base + ((along + band) / braking)
             : static_cast<float>(
                   static_cast<double>(base) + (static_cast<double>(along) + band) / braking);
@@ -295,7 +299,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
                 if (kFifteenDegrees > abs_herr) s.reversing_389 = true;
                 return t;
             }
-            s.heading_target_324 = across_below_zero(across)                  // 009EE110
+            s.heading_target_324 = across_below_zero<NanArms>(across)                  // 009EE110
                 ? wrapped_angle_add_00438aa0(request.heading, steer)
                 : wrapped_angle_subtract_00438b10(request.heading, steer);
             s.last_writer_324 = 0x009EE142u;
@@ -318,7 +322,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
             if (kFifteenDegrees > abs_herr) s.reversing_389 = false;
             return t;
         }
-        s.heading_target_324 = across_below_zero(across)                      // 009EE22D
+        s.heading_target_324 = across_below_zero<NanArms>(across)                      // 009EE22D
             ? wrapped_angle_subtract_00438b10(request.heading, steer)
             : wrapped_angle_add_00438aa0(request.heading, steer);
         s.last_writer_324 = 0x009EE25Fu;
@@ -345,7 +349,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
             if (kFifteenDegrees > abs_herr) s.reversing_389 = true;
             return t;
         }
-        s.heading_target_324 = across_below_zero(across)                      // 009EE36E
+        s.heading_target_324 = across_below_zero<NanArms>(across)                      // 009EE36E
             ? wrapped_angle_subtract_00438b10(reversed, steer)
             : wrapped_angle_add_00438aa0(reversed, steer);
         s.last_writer_324 = 0x009EE3A2u;
@@ -368,7 +372,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
         if (kFifteenDegrees > abs_herr) s.reversing_389 = false;
         return t;
     }
-    s.heading_target_324 = across_below_zero(across)                          // 009EE492
+    s.heading_target_324 = across_below_zero<NanArms>(across)                          // 009EE492
         ? wrapped_angle_add_00438aa0(reversed, steer)
         : wrapped_angle_subtract_00438b10(reversed, steer);
     s.last_writer_324 = 0x009EE4C6u;
@@ -382,6 +386,41 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     } else {
         clamp_cos(0.5f, 1.25f);
     }
+    return t;
+}
+
+bool same_state(const ShipAiStationKeepingState& a, const ShipAiStationKeepingState& b) noexcept {
+    return a.direction_35c == b.direction_35c &&
+           ship_ai_reach_same_bits(a.timer_360, b.timer_360) &&
+           ship_ai_reach_same_bits(a.direction_value_374, b.direction_value_374) &&
+           a.direction_counter_384 == b.direction_counter_384 &&
+           a.aligned_388 == b.aligned_388 && a.reversing_389 == b.reversing_389 &&
+           a.close_38a == b.close_38a &&
+           ship_ai_reach_same_bits(a.throttle_39c, b.throttle_39c) &&
+           ship_ai_reach_same_bits(a.heading_target_324, b.heading_target_324) &&
+           ship_ai_reach_same_bits(a.distance_32c, b.distance_32c) &&
+           a.last_writer_324 == b.last_writer_324;
+}
+
+} // namespace
+
+ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
+    const ShipAiStationRequest& request, const ShipAiStationKeepingInputs& in,
+    ShipAiStationKeepingState& s) noexcept {
+    constexpr bool kNan = kShipAiStationKeepingNanArmsCc13Bound;
+    constexpr bool kPc24 = kShipAiStationKeepingPc24Cc13Bound;
+    // Reach (packet cc9-sweep2): run each switch's other setting on a copy of
+    // the incoming state and count the calls whose state comes out different.
+    ShipAiStationKeepingState flip_nan = s;
+    ShipAiStationKeepingState flip_pc24 = s;
+    station_keeping_arm<!kNan, kPc24>(request, in, flip_nan);
+    station_keeping_arm<kNan, !kPc24>(request, in, flip_pc24);
+    const ShipAiStationKeepingTrace t = station_keeping_arm<kNan, kPc24>(request, in, s);
+    ShipAiSwitchReach& reach = ship_ai_switch_reach();
+    ++reach.station_calls;
+    if (std::isnan(in.unit_length_9c8) || std::isnan(t.across)) ++reach.station_nan_operands;
+    if (!same_state(s, flip_nan)) ++reach.station_nan_differs;
+    if (!same_state(s, flip_pc24)) ++reach.station_pc24_differs;
     return t;
 }
 
