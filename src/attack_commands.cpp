@@ -36,9 +36,9 @@ constexpr AttackCommandEffects kRows[kAttackCommandRowCount] = {
      kOrderIconAttack, 0x04, 0x009a6970u, 0x009a5db0u, 0x48c},
     // strafe: 007EEB94, factory 009CD300, getter 009CC3D0, test 009CC850.
     // 009CC898-009CC8AA: the test compares +44Ch, or +468h when +44Ch is 0;
-    // with both 0 it answers valid. The row carries the first offset only.
+    // with both 0 it answers valid. cc13-D6: the row carries both offsets.
     {kAttackCmdStrafe, 1, kOrdnanceKindNone, false, false, -1, -1, -1, -1,
-     kOrderIconAttack, 0x54, 0x009cd300u, 0x009cc850u, 0x44c},
+     kOrderIconAttack, 0x54, 0x009cd300u, 0x009cc850u, 0x44c, 0x468},
     // rocket: 007EEA20, factory 007B7FD0, getter 007B6CD0, test 007B7200.
     {kAttackCmdRocket, 2, kOrdnanceKindRocket, true, false,
      -1, -1, -1, kKindBombExcluded,

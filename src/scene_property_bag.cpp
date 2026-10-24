@@ -76,6 +76,11 @@ const char* scene_property_type_letter(ScenePropertyType type) noexcept {
     return "";
 }
 
+// 008F1960 __thiscall(ECX = reference, NativeString* out), RET 4: a jump table on
+// [ECX+8] (008F19FC, eight arms, each 0041E350(out, letter)); kinds above 7 return
+// without touching *out. cc13-D6, intended: the host returns the letter instead of
+// assigning a NativeString (host ABI), the table decodes to exactly the cases below,
+// and the "R" fallback is unreachable because every caller passes an enum value 0..7.
 const char* scene_reference_kind_letter(SceneReferenceKind kind) noexcept {
     switch (kind) {
         case SceneReferenceKind::Any: return "R";                   // 00CE60EC
