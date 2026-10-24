@@ -324,6 +324,16 @@ PlaneFollowPhaseA plane_follow_phase_a_009c0251(
 // GameUnitsHost -> plane_follow_geometry_009bfee0 (009C1448 turn circle),
 // both into circle_tangent_points_004f4840.
 inline constexpr bool kCircleTangentUnorderedCc13Bound = false;
+// 004F3810 runs on the main thread at x87 PC24 (docs/CC13_FPU_PRECISION.md):
+// every FMUL/FADD/FSUB/FDIV rounds to 24 bits.  True: the four chains round
+// per op -- d2 = dx*dx + dz*dz (004F3846..004F384A), p = (r*r)/d
+// (004F38BD..004F38BF), d*d - r*r under the sqrt (004F38CA..004F38CE) and
+// h = (t*r)/d (004F38E9..004F38EE); every operand is a float (ST copies or
+// float ptr), so float(double op) is each op's 24-bit rounding.  False: each
+// chain evaluated in double and rounded once.  The single-op stores (u, m, b
+// and 004F4430's m +/- b) already round per op.  Same live paths as the
+// unordered switch above; pair separately.  Packet cc13-pc24a.
+inline constexpr bool kCircleTangentPc24Cc13Bound = false;
 bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
                                     float out0[2], float out1[2]) noexcept;
 
