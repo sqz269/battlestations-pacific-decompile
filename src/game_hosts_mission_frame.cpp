@@ -3718,6 +3718,10 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                                 "slots=%d published=%d entries=%zu (00807A50)",
                                 kReconLoadForceRefreshCc13Bound ? 1 : 0, rc.slots,
                                 rc.published, rc.entries);
+                            if (host.script_orders != nullptr) {
+                                host.script_orders->note_recon_load_entries(rc.entries,
+                                    kReconLoadForceRefreshCc13Bound);
+                            }
                         }
                         host.world_host->build_local_player_unit_lists_004c3cb0();
                         host.done("SceneLoad::unit_lists_004c3cb0", 0x004e05a9u);
