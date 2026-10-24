@@ -592,6 +592,10 @@ struct GameUnitSlot {
     // Packet cc9_torpedo_run_pitch_profile: the measured angle the last pitch
     // demand used (diagnostic).
     float diag_held_pitch{0.0f};
+    // Packet cc13-ratetracebank (diagnostic): pilot+2BCh as the task arm left
+    // it (before 009FC7C0, the rocket and 009A17D0) and as 0099D300 entered.
+    float diag_pt2bc_task{0.0f};
+    float diag_pt2bc_think{0.0f};
     float plane_bank_angle_c68{0.0f};
     float plane_heading_c6c{0.0f};
     float plane_class_turn_roll_spd{0.0f};   // desc+1C8h TurnRollSpd
@@ -39777,6 +39781,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // arm here and no gun tick; the non-dogfight states' cones
                             // (Angle_MoveTo, Angle_GoAway at +40h) are not delivered,
                             // so the fine-aim steer never runs outside dogfight.
+                            unit_.diag_pt2bc_task = unit_.plan_state.pitch_target_2bc;
                             if constexpr (GameUnitsHost::Impl::kTaskGunControllerAllTasksBound) {
                                 const bool has_task = unit_.torpedo_task_installed ||
                                     (bsp::kStrafeTaskBound && unit_.strafe_task_installed) ||
@@ -39822,6 +39827,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.plan_band_bank_264 = 0.0f;
                             }
                             unit_.plane_think_dt = elapsed;   // 0099D300's argument
+                            unit_.diag_pt2bc_think = unit_.plan_state.pitch_target_2bc;
                             if constexpr (GameUnitsHost::Impl::kFighterLowTraceDiag) {
                                 if (unit_.dogfight_task_installed && !unit_.plane_death_c3a &&
                                     unit_.motion.position[1] < 400.0f) {
@@ -41241,7 +41247,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(w[1]) * w[1] + static_cast<double>(w[2]) * w[2]);
                             owner_.log.notef("plane rate trace %s step=%.3f stick=(%.3f %.3f %.3f) "
                                 "target=(%.4f %.4f %.4f) w=(%.4f %.4f %.4f) |w|=%.2f deg/s "
-                                "pitch=%.4f held=%.4f pt2bc=%.4f mode=%d y=%.1f cmd_alt=%.1f",
+                                "pitch=%.4f held=%.4f pt2bc=%.4f mode=%d y=%.1f cmd_alt=%.1f "
+                                "bank=%.4f pt_task=%.4f pt_think=%.4f pslot=%.4f/%d t=%.2f",
                                 unit_.row.name.c_str(), static_cast<double>(step),
                                 static_cast<double>(unit_.plane_latched_controls[0]),
                                 static_cast<double>(unit_.plane_latched_controls[1]),
@@ -41256,7 +41263,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(unit_.plan_state.pitch_target_2bc),
                                 unit_.plan_state.pitch_mode_2d0,
                                 static_cast<double>(unit_.motion.position[1]),
-                                static_cast<double>(unit_.plane_commanded_altitude));
+                                static_cast<double>(unit_.plane_commanded_altitude),
+                                static_cast<double>(unit_.plane_bank_angle_c68),
+                                static_cast<double>(unit_.diag_pt2bc_task),
+                                static_cast<double>(unit_.diag_pt2bc_think),
+                                static_cast<double>(unit_.plan_slots[bsp::kPilotSlotPitch].desired),
+                                unit_.plan_slots[bsp::kPilotSlotPitch].active,
+                                static_cast<double>(owner_.summary.simulated_seconds));
                         }
                         if constexpr (GameUnitsHost::Impl::kPlaneControlRateLawBound) {
                             // The free-flight arm (controller mode 0, flag 1) is
