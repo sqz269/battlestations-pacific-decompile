@@ -4027,3 +4027,30 @@ the paratrooper path is still unreached.**
 - The S6 run was cancelled because S1 was identical.
 - Next: find what spawns JM08's US air wave (the mission script; LST 01 dies at 1275.27 s to the HQ's guns, which may change
   the phase), then re-pair S1 and S6.
+
+
+## 116. CHG06 re-pair with the party switch ON; PRCP01 re-plan (cc9-physics26, 2026-10-24)
+
+**CHG06 with kLaunchedSquadronPartyCc13Bound ON on both sides.** This is a temporary build because cc9-party1's
+flip is not on main yet; the lead asked for it. Exports of 50b1127e3: `local\p26c_poff` (party ON, airborne switches
+OFF) and `local\p26c_pair` (party ON, airborne switches ON).
+- The airborne arm is still reached: 4 "airborne launch for Hermes" lines ON, 0 OFF.
+- Both sides fail at 986.88 s and log one commandhelpers.lua: line.
+- pair_diff gives 3, but only through distances. Deaths (51), hits (1132), shots (130) and damage match, and the
+  death rows are identical. The unit table moves only nearest distances (about 15 m). The natives show
+  place_members_007f2920 and initial_command_007f4e9e (4 calls each) taking the place of begin_flying_007c7110
+  (12 calls), as the flag arm predicts.
+- So the section 115 shot drop (13164 -> 130) came from the party switch's effect on the OFF baseline, not from the
+  airborne arm. The flip stands.
+
+**PRCP01 re-plan `p26_p01_a`** (`local\p26_p01_a.txt`, built by `local\p26_mkp01.py`).
+- The plan is p9_p01_k with every Enterprise strike on Junyo at frame >= 5700 retargeted to Zuiho.
+- Why: with the attack-target flip, Junyo dies at about 283 s, so those launches were refused. Zuiho's squadrons,
+  now on the command arm, sank Enterprise at 1038.39 s.
+- Results on the tree build of 50b1127e3:
+  - ref: completed 833.02 s (`main_p01a`).
+  - 20,3: completed 726.70 s (`main_p01a_j203`).
+  - Both log the exec guard, and neither has "present failed".
+- On the same build, p9_p01_k still fails at 1038.39 s. Adding Wildcat CAP launches gives a result identical to
+  `a` (b); CAP alone fails (c).
+- The plan was sent to cc9-lua72 (WINS keeper; it holds config/win_orders) to commit as the row.
