@@ -186,6 +186,9 @@ def commits_with_patches(*paths):
 
 
 NO_BODY_STATUSES = {'metadata_only_no_function_body_verified_oct24'}
+OUT_OF_SCOPE_STATUSES = {'library_instantiation_out_of_scope', 'compiler_generated_out_of_scope',
+                         'out_of_scope_vendor_library', 'standard_library_reuse',
+                         'vendor_lua_out_of_scope', 'vendor_stl_out_of_scope'}
 
 
 def reconstruction_has_body(status):
@@ -308,7 +311,7 @@ def build(now=None):
     funcs = {}
     out_of_scope = set()
     for a, name, seg, tag, rk, rn, ln, rs in db.execute('select address, name, segment, tag_category, recon_kind, recon_name, ledger_name, recon_status from functions'):
-        if rs == 'library_instantiation_out_of_scope':
+        if rs in OUT_OF_SCOPE_STATUSES:
             out_of_scope.add(a)
         if not name.startswith(FUNCLET):
             funcs[a] = (seg, tag, rk, ln, name, rn)

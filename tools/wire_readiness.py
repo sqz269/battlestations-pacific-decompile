@@ -66,13 +66,15 @@ for a, name, seg, tag, ln, ev, thunk in db.execute('select address, name, segmen
         lib_named.add(a)
 starts = sorted(funcs)
 recon = {}
+recon_candidates = []
 excluded_recon = collections.Counter()
 out_of_scope = set()
 for a, kind, name, src, status in db.execute('select address, kind, name, source, status from recon'):
-    if status == 'library_instantiation_out_of_scope':
+    if status in pb.OUT_OF_SCOPE_STATUSES:
         out_of_scope.add(a)
     if kind == 'function' and pb.reconstruction_has_body(status):
         recon.setdefault(a, (name, src))
+        recon_candidates.append((a, name, src))
     elif kind == 'function':
         excluded_recon[status] += 1
 game = {a: (not v[0].startswith(pb.FUNCLET + pb.LIBRARY_NAME_PREFIXES))
@@ -179,7 +181,7 @@ DEF_RE = re.compile(r'^[ \t]*(?:template\s*<[^>{;]*>\s*)?(?:__declspec\([^\n)]*\
                     r'(?:[\w:<>,\*&~ \t]+?[ \t\*&])?'
                     r'((?:(?:\w+(?:<[^;{}\n]*>)?)::)*(~?\w+))[ \t]*'
                     r'\(([^;{}()]*(?:\([^;{}()]*\)[^;{}()]*)*)\)[ \t]*(?:const[ \t]*)?(?:noexcept[ \t]*)?'
-                    r'(?:override[ \t]*)?(?:->[^{;]*)?\s*\{', re.M)
+                    r'(?:override[ \t]*)?(?:->[^{;]*)?(?::[^;{]+)?\s*\{', re.M)
 ADDR_HEAD = re.compile(r'^\s*(?://+|/?\*+)\s*(?:Address:?\s*)?(?:0x)?([0-9A-Fa-f]{8})\b|Address:\s*(?:0x)?([0-9A-Fa-f]{8})\b')
 COMMENT_LINE = re.compile(r'^\s*(//|/\*|\*)')
 strip_comments = lambda t: re.sub(r'//[^\n]*|/\*.*?\*/', ' ', t, flags=re.S)
@@ -193,7 +195,7 @@ for p, t in srcs.items():
     lines = None
     for m in DEF_RE.finditer(t):
         simple = m.group(2)
-        if simple in KEYWORDS or simple.startswith('~'):
+        if simple in KEYWORDS:
             continue
         defs_in[p].append((simple, m.group(1))); def_files[simple].add(p); def_count[p][simple] += 1
         if lines is None:
@@ -240,12 +242,12 @@ for s in def_files:
         suffixed_defs[int(SUFFIX.search(s).group(1), 16)].add(s)
 ident_via = {}
 plain_idents = set()
-for a, (nm, src) in recon.items():
+for a, nm, src in recon_candidates:
     if ident_by_addr.get(a):
         continue
     sp = ROOT / src if src else None
     parts = [x.strip().split('::')[-1].split('(')[0].strip() for x in re.split(r'\s*/\s*|,\s*', nm or '') if x.strip()]
-    parts = [x for x in parts if re.fullmatch(r'[A-Za-z_]\w*', x)]
+    parts = [x for x in parts if re.fullmatch(r'~?[A-Za-z_]\w*', x)]
     ok = lambda s: not (SUFFIX.search(s) and int(SUFFIX.search(s).group(1), 16) != a)
     hit = [s for s in parts if sp in def_files.get(s, ()) and ok(s)]
     via = 'name'
@@ -277,6 +279,7 @@ for a, (nm, src) in recon.items():
         via = 'suffix_body'
     if hit:
         ident_by_addr[a].update(hit); ident_via[a] = via
+        recon[a] = (nm, src)
         plain_idents.update(s for s in hit if not SUFFIX.search(s))
 # Explicit mappings carry reviewable address-to-body evidence without modifying busy source files.
 # A metadata row, prototype or table accessor is insufficient: each named implementation must have a body.
@@ -296,7 +299,7 @@ for path in sorted((ROOT / 'config').glob('wire_identifiers*.json')):
         known = {simple for simple, qualified in defs_in.get(sp, ())}
         if not set(names) <= known:
             raise ValueError(f'{path}: missing C++ body for {a:08x}: {set(names) - known}')
-        if any(SUFFIX.search(s) and int(SUFFIX.search(s).group(1), 16) != a for s in names):
+        if any(SUFFIX.search(s) and int(SUFFIX.search(s).group(1), 16) != a for s in names) and not record.get('shared_implementation'):
             raise ValueError(f'{path}: another address suffix for {a:08x}')
         explicit_mappings[a] = record
         if a not in recon or ident_by_addr.get(a):

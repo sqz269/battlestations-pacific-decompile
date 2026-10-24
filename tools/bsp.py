@@ -1236,6 +1236,9 @@ def ledger_write(args):
                     sys.exit(f'missing field {key}')
             record['address'] = ledger.norm(record['address'])
             record['kind'] = 'function' if args.ledger_command == 'add-function' else 'fragment'
+        keys = [(r['address'], r['kind'], r['name']) for r in records]
+        if len(keys) != len(set(keys)):
+            sys.exit('duplicate reconstruction key in batch')
         # Validate the entire batch and its leases before the first ledger mutation.
         coordination.check_writable([r['address'] for r in records], force=args.force)
         recon = ledger.load_reconstruction()

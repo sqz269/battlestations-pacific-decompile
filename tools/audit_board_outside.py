@@ -47,13 +47,15 @@ def audit(index, cache):
                  if not r['name'].startswith(board.FUNCLET)}
     starts = set(functions)
     source = source_history(starts, cache)
-    ledger = {r[0] for r in db.execute("select address from recon where kind='function'")}
-    union = source | ledger
+    records = list(db.execute("select address,status from recon where kind='function'"))
+    ledger = {a for a, status in records if board.reconstruction_has_body(status)}
+    audited_no_body = {a for a, status in records if not board.reconstruction_has_body(status)} - ledger
+    union = (source | ledger) - audited_no_body
     referenced = board.referenced_functions(db, starts)
     game = {a for a, r in functions.items()
             if board.is_game(a, r['tag_category'])
             and not r['name'].startswith(board.LIBRARY_NAME_PREFIXES)
-            and r['recon_status'] != 'library_instantiation_out_of_scope'}
+            and r['recon_status'] not in board.OUT_OF_SCOPE_STATUSES}
     target = game & (referenced | union)
     edge_counts = collections.defaultdict(collections.Counter)
     for r in db.execute('select callee, kind, count(*) from edges group by callee, kind'):
@@ -65,6 +67,7 @@ def audit(index, cache):
                     tag=r['tag_category'], status=r['recon_status'], source=r['recon_source'],
                     kind=r['recon_kind'], disposition=disposition(r),
                     historical_source_credit=address in source,
+                    effective_source_credit=address in source and address not in audited_no_body,
                     function_ledger_credit=address in ledger,
                     board_referenced=address in referenced,
                     raw_edge_counts=dict(edge_counts[address]))

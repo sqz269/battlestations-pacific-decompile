@@ -38,7 +38,8 @@ credit to either report. This makes gaps visible without deleting provenance.
 editing busy source files. Each record cites source evidence and must name a
 real C++ body in its implementation source. The resolver rejects missing
 bodies, missing evidence, duplicate addresses and a symbol suffixed with a
-different original address. Shared semantic algorithms retain the original
+different original address unless the mapping explicitly records verified
+`shared_implementation` evidence. Shared semantic algorithms retain the original
 record's ABI/layout qualifications; a table accessor alone is not a body.
 
 Work in progress: pool and outside audits, identifier mappings and final
