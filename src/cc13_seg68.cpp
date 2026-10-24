@@ -320,22 +320,33 @@ int ai_attack_class_weight_009f9770(SquadronAutoTargetHost& host, const Squadron
 }
 
 float filter_score_target_009f7ba0(SquadronAutoTargetHost& host, const SquadronAutoTarget& self,
-                                   SquadronFilter filter, Handle target)
+                                   SquadronFilter filter, Handle target,
+                                   SquadronCandidateTrace* trace)
 {
-    if (target == 0) return 0.0f;                              // 009F7BAD
+    // Packet cc13-fapick: `trace` only records which return was taken.
+    auto note = [trace](SquadronCandidateNote n) {
+        if (trace != nullptr) trace->note = n;
+        return 0.0f;
+    };
+    if (target == 0) return note(SquadronCandidateNote::NotUnitOrSquadron);   // 009F7BAD
     if (!host.is_kind_of_5c(target, 5)) {                      // 009F7BB8
-        if (!host.is_kind_of_5c(target, 0x18)) return 0.0f;   // 009F7BC7
+        if (!host.is_kind_of_5c(target, 0x18))                 // 009F7BC7
+            return note(SquadronCandidateNote::NotUnitOrSquadron);
         target = host.u32(target, 0x3d0);                      // 009F7BD5, the leader
-        if (target == 0) return 0.0f;
+        if (target == 0) return note(SquadronCandidateNote::NotUnitOrSquadron);
     }
-    if (!filter_accept_slotc(host, self, filter, target)) return 0.0f;   // vtable[0Ch]
+    if (!filter_accept_slotc(host, self, filter, target))      // vtable[0Ch]
+        return note(filter == SquadronFilter::At1C ? SquadronCandidateNote::GuardOut
+                                                   : SquadronCandidateNote::Slot140Blocks);
     // 009F7BF5..009F7C08: 00804350(ECX = [[filter+4]+8]+3D0h, EDX = target, 0FFh).
     const Handle own_leader = host.u32(self.squadron_08, 0x3d0);
-    if (!host.sensors_detect_unit_00804350(own_leader, target, 0xff)) return 0.0f;
+    if (!host.sensors_detect_unit_00804350(own_leader, target, 0xff))
+        return note(SquadronCandidateNote::NoDetect);
     // vtable[10h]() then vtable[14h](target, it): the AttackLists rank.
     const bool slot10 = filter_slot10(filter);
     const int weight = ai_attack_class_weight_009f9770(host, self, target, slot10 ? 1u : 0u);
-    if (weight == 0) return 0.0f;                              // 009F7C2B
+    if (weight == 0) return note(SquadronCandidateNote::NoRank);   // 009F7C2B
+    if (trace != nullptr) trace->rank = weight;
     // vtable[18h](target), FSTP float; 00415550(&1.0f, &d) answers 1.0 when
     // 1.0 > d, else d (a NaN d is kept).
     const float d = filter_distance_slot18(host, self, filter, target);
@@ -346,11 +357,11 @@ float filter_score_target_009f7ba0(SquadronAutoTargetHost& host, const SquadronA
 }
 
 float filter_score_slot8(SquadronAutoTargetHost& host, const SquadronAutoTarget& self,
-                         SquadronFilter filter, Handle target)
+                         SquadronFilter filter, Handle target, SquadronCandidateTrace* trace)
 {
     // Slot +8h: 009F7BA0 in A and C, 009F7080 (FLDZ) in B.
     if (filter == SquadronFilter::At14) return filter_default_score_009f6b10();
-    return filter_score_target_009f7ba0(host, self, filter, target);
+    return filter_score_target_009f7ba0(host, self, filter, target, trace);
 }
 
 Handle unit_resolve_kind0f_owner_009f7b80(SquadronAutoTargetHost& host, Handle unit)
@@ -360,27 +371,38 @@ Handle unit_resolve_kind0f_owner_009f7b80(SquadronAutoTargetHost& host, Handle u
 }
 
 bool selector_candidate_allowed_009f7480(SquadronAutoTargetHost& host,
-                                         const SquadronSelector& selector, Handle entity)
+                                         const SquadronSelector& selector, Handle entity,
+                                         SquadronCandidateTrace* trace)
 {
-    if (host.is_kind_of_5c(entity, 0x0f)) return false;                  // 009F7491
+    // Packet cc13-fapick: `trace` only records which return was taken.
+    auto drop = [trace](SquadronCandidateNote n) {
+        if (trace != nullptr) trace->note = n;
+        return false;
+    };
+    if (host.is_kind_of_5c(entity, 0x0f)) return drop(SquadronCandidateNote::SinglePlane);   // 009F7491
     if (host.is_kind_of_5c(entity, 6)) {                                 // 009F74A7
         refresh_if_stale(host, entity);
         // 009F74BD: 0071C4F0(ECX = [00E188A8], entity+FCh).
         if (host.point_outside_map_0071c4f0(host.ggame_00e188a8(), entity + 0xfc) &&
             host.command_blocks_auto_action_00811f50(entity, 0))
-            return false;
+            return drop(SquadronCandidateNote::OutsideMapBlocked);
     }
     if (host.is_kind_of_5c(entity, 0x18) &&                              // 009F74E9
         host.squadron_outside_map_detached_007ee8b0(entity))
-        return false;
-    if (entity_slot_140_blocks(host, entity)) return false;              // 009F74FA
+        return drop(SquadronCandidateNote::SquadronDetached);
+    if (entity_slot_140_blocks(host, entity))                            // 009F74FA
+        return drop(SquadronCandidateNote::Slot140Blocks);
     if (host.is_kind_of_5c(entity, 0x1b)) {                              // 009F752D
         const Handle inner = host.entity_vt140(entity);
-        if (host.is_kind_of_5c(inner, 0x46) || host.is_kind_of_5c(inner, 0x45)) return false;
+        if (host.is_kind_of_5c(inner, 0x46) || host.is_kind_of_5c(inner, 0x45))
+            return drop(SquadronCandidateNote::Kind1bCarrier);
     }
     // 009F7567: [selector+4] null accepts; else filter->vtable[0Ch](entity).
     // The selector's filter is never null in this model.
-    return filter_accept_slotc(host, *selector.owner_00, selector.filter_04, entity);
+    if (!filter_accept_slotc(host, *selector.owner_00, selector.filter_04, entity))
+        return drop(selector.filter_04 == SquadronFilter::At1C ? SquadronCandidateNote::GuardOut
+                                                               : SquadronCandidateNote::Slot140Blocks);
+    return true;
 }
 
 void selector_pick_best_009f7810(SquadronAutoTargetHost& host, SquadronSelector& selector,
@@ -398,9 +420,20 @@ void selector_pick_best_009f7810(SquadronAutoTargetHost& host, SquadronSelector&
     for (Handle node = host.u32(slot, 0xde8); node != 0; node = host.u32(node, 4)) {
         const Handle entity = host.u32(host.u32(node, 8), 4);
         if (entity == 0) continue;
-        if (!selector_candidate_allowed_009f7480(host, selector, entity)) continue;
-        if (entity_slot_140_blocks(host, entity)) continue;              // 009F7876..009F7899
-        const float score = filter_score_slot8(host, owner, selector.filter_04, entity);
+        // Packet cc13-fapick: the trace is filled by the same calls, then reported.
+        SquadronCandidateTrace trace;
+        if (!selector_candidate_allowed_009f7480(host, selector, entity, &trace)) {
+            host.trace_candidate_009f7810(entity, trace);
+            continue;
+        }
+        if (entity_slot_140_blocks(host, entity)) {                      // 009F7876..009F7899
+            trace.note = SquadronCandidateNote::Slot140Blocks;
+            host.trace_candidate_009f7810(entity, trace);
+            continue;
+        }
+        const float score = filter_score_slot8(host, owner, selector.filter_04, entity, &trace);
+        trace.score = score;
+        host.trace_candidate_009f7810(entity, trace);
         // 009F78B2 FCOMPI ST0 = score, ST1 = best / JBE: strictly greater wins.
         if (score > best_score) {
             best_score = score;

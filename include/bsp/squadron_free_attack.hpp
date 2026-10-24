@@ -92,7 +92,20 @@ struct SquadronFreeAttackInput {
     float guard_dist_594{0.0f};
     // The enemy contact chain.
     std::vector<FreeAttackContact> contacts;
+    // Packet cc13-fapick, log-only: collect 009F7810's per-candidate notes.
+    bool trace_candidates{false};
 };
+
+// Packet cc13-fapick: one recon-list entity as 009F7810's loop left it. `note`
+// is cc13_seg68::SquadronCandidateNote; free_attack_candidate_note_name names it.
+struct FreeAttackCandidateTrace {
+    std::size_t unit{kFreeAttackNoUnit};
+    bool squadron{false};
+    int note{0};
+    int rank{0};
+    float score{0.0f};
+};
+const char* free_attack_candidate_note_name(int note) noexcept;
 
 // How far a tick got, for the census.
 enum class FreeAttackStop {
@@ -115,6 +128,7 @@ struct SquadronFreeAttackDecision {
     std::size_t candidates{0};                     // contacts the selector scored
     std::uint32_t command{0};                      // 009F6D60's class
     bool clear_then_moveto_self{false};            // 009F85EB..009F8615
+    std::vector<FreeAttackCandidateTrace> traces;  // cc13-fapick, with in.trace_candidates
 };
 
 // 009F8470 after its 009F8160 / 009F7C90 calls (the host runs those itself).

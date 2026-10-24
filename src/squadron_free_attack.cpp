@@ -256,6 +256,17 @@ public:
     void raise_override_stage_0071d9e0(Handle, int stage) override {
         if (stage == 2) out_.raise_override_stage_2 = true;
     }
+    // Packet cc13-fapick, log-only: a copy of what 009F7810's loop computed.
+    void trace_candidate_009f7810(Handle entity, const cc13_seg68::SquadronCandidateTrace& t) override {
+        if (!in_.trace_candidates) return;
+        FreeAttackCandidateTrace row;
+        row.unit = entity_unit(entity);
+        row.squadron = squadron_unit_.count(entity) != 0;
+        row.note = static_cast<int>(t.note);
+        row.rank = t.rank;
+        row.score = t.score;
+        out_.traces.push_back(row);
+    }
 
     // Packet cc13-leash: the override descriptor (director+18Ch in the image; its
     // own 18h block here, since the arena's director is 80h).
@@ -323,6 +334,23 @@ private:
 };
 
 }  // namespace
+
+const char* free_attack_candidate_note_name(int note) noexcept {
+    using N = cc13_seg68::SquadronCandidateNote;
+    switch (static_cast<N>(note)) {
+    case N::Scored: return "scored";
+    case N::SinglePlane: return "single_plane";
+    case N::OutsideMapBlocked: return "outside_map";
+    case N::SquadronDetached: return "detached";
+    case N::Slot140Blocks: return "untouchable";
+    case N::Kind1bCarrier: return "kind1b_carrier";
+    case N::GuardOut: return "guard_out";
+    case N::NotUnitOrSquadron: return "not_unit_or_squadron";
+    case N::NoDetect: return "no_detect";
+    case N::NoRank: return "not_in_list";
+    }
+    return "?";
+}
 
 SquadronFreeAttackDecision squadron_free_attack_tick_009f8470(
     const SquadronFreeAttackInput& in, SquadronFreeAttackWorld& world) {
