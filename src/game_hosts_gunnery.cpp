@@ -1279,7 +1279,7 @@ constexpr bool kGunBotRetargetReleaseBound = true;
 //    records 4988 -> 4991 (sends 8798, drops 11); USN04 gameplay identical
 //    (sends 1435, drops 3). local\g52_tg_*.log, d3bc814e1.
 constexpr bool kTailGunnerClearReleaseBound = true;
-//  * kTailGunnerRelationTestCc13Bound: packet cc13-gunnergates (cc13-bsm6strip).
+//  * kGunBotNotAllyDropCc13Bound: packet cc13-gunnergates (cc13-bsm6strip).
 //    008FFA20 (TailGunnerBot) keeps its target only while the target is
 //    present, target+5Dh is clear, bot+50h (the gun) and its parent [+3Ch] are
 //    present with parent+5Dh clear, and 00803510(ECX = gun+54h, EDX = target+54h)
@@ -1292,11 +1292,18 @@ constexpr bool kTailGunnerClearReleaseBound = true;
 //    validity drop tests dead || !unit_alive_and_visible (+5Ch active, +5Dh),
 //    with no relation term. ON: the drop also takes a same-party target.
 //    SUBSTITUTION (labelled): gun+54h is read as the owner's +54h side (gun+54h
-//    is copied from [gun+3F0h]+54h, cc13_front5.cpp). The +5Ch test is kept.
-//    OFF: counted only (relation_cleared).
-constexpr bool kTailGunnerRelationTestCc13Bound = false;
-static_assert(!kTailGunnerRelationTestCc13Bound || kTailGunnerClearReleaseBound,
-    "kTailGunnerRelationTestCc13Bound drops through 008FFA75's vtable[38h](0), the release "
+//    is copied from [gun+3F0h]+54h, cc13_front5.cpp). The known divergence
+//    case is SetParty (008A8930 -> vtable[2Ch] 00951F30 -> 00928F50): its
+//    00923B80 stores +54h/+58h (00923B92) and walks the children (+48h first,
+//    +44h next), calling each child's vtable[2Ch] unless it answers
+//    IsKindOf(*arg3) (00923BA4..00923BBE), so a gun follows its owner unless
+//    it is of the filtered class (PROVISIONAL: arg3 not read). The +5Ch test
+//    is kept. relation_cleared counts once per acquisition in both arms: the
+//    first tick of a same-party hold per gun and target (ON drops on that
+//    tick). OFF: counted only.
+constexpr bool kGunBotNotAllyDropCc13Bound = false;
+static_assert(!kGunBotNotAllyDropCc13Bound || kTailGunnerClearReleaseBound,
+    "kGunBotNotAllyDropCc13Bound drops through 008FFA75's vtable[38h](0), the release "
     "kTailGunnerClearReleaseBound transcribes");
 //  * kShipAaEnableGateCc13Bound: packet cc13-gunnergates. 008FFAB8..008FFAE7
 //    (TailGunnerBot only; the byte +221h test has no other site in .text):
@@ -1309,9 +1316,10 @@ static_assert(!kTailGunnerRelationTestCc13Bound || kTailGunnerClearReleaseBound,
 //    the TailGunnerBot only to a gun with a kind-0Fh ancestor (00922E90), so
 //    the owner is a plane and the gate is not reached in the image. A ship's
 //    AAEnable acts upstream, through director+221h in the stance
-//    (kShipDirectorEnablesBound) and the 009F2E0F query byte. ON: the gate as
-//    the image orders it (expected to block nothing). OFF: counted only
-//    (aa_enable_blocked).
+//    (kShipDirectorEnablesBound) and the 009F2E0F query byte. ON IS A NO-OP BY
+//    CONSTRUCTION: the arm needs a ship-kind AND a plane-kind owner, which
+//    never holds, mirroring the image's unreachable 008FFAB8. Do not pair it.
+//    OFF: counted only (aa_enable_blocked, always 0).
 constexpr bool kShipAaEnableGateCc13Bound = false;
 static_assert(!kShipAaEnableGateCc13Bound || kShipDirectorEnablesBound,
     "kShipAaEnableGateCc13Bound reads the AAEnable byte from the scene director entry "
@@ -3095,6 +3103,10 @@ struct GameGunneryHost::Impl {
     unsigned long long aa_enable_blocked{0};
     unsigned long long aa_disabled_ship_targets{0};
     std::vector<unsigned char> aa_enable_clear_logged;
+    std::vector<std::size_t> relation_held_target;   // per gun: target + 1 of a same-party hold
+    unsigned long long aa_enable_cache_step{0};
+    std::vector<unsigned long long> aa_enable_cache_stamp;   // per unit
+    std::vector<const SceneDirectorEnables*> aa_enable_cache_entry;
     unsigned long long seat_trigger_ticks{0};
     // cc9-gunnery53, kRoleOwnerDeviceWalkBound (0095AC1D).
     unsigned long long seat_role_takes{0};
@@ -8274,7 +8286,24 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (u.torpedo_cooldown_6fc > 0.0f) u.torpedo_cooldown_6fc -= dt;
         }
     }
+    // Packet cc13-gunnergates: the owner's scene director entry, looked up by
+    // name at most once per owner per step. Re-read every step, so an AAEnable
+    // (0089C740) or a table clear between steps is seen; neither runs inside
+    // this loop.
+    ++aa_enable_cache_step;
+    auto owner_director_enables = [&](std::size_t u) -> const SceneDirectorEnables* {
+        if (aa_enable_cache_stamp.size() < unit_state.size()) {
+            aa_enable_cache_stamp.resize(unit_state.size(), 0);
+            aa_enable_cache_entry.resize(unit_state.size(), nullptr);
+        }
+        if (aa_enable_cache_stamp[u] != aa_enable_cache_step) {
+            aa_enable_cache_stamp[u] = aa_enable_cache_step;
+            aa_enable_cache_entry[u] = scene_director_enables_find(unit_state[u].row.name);
+        }
+        return aa_enable_cache_entry[u];
+    };
     for (std::size_t g = 0; g < guns.size(); ++g) {
+        if (relation_held_target.size() < guns.size()) relation_held_target.resize(guns.size(), 0);
         GameGunRow& gun = guns[g];
         const std::size_t owner_unit = gun.unit_index;
         if (owner_unit >= unit_state.size()) continue;
@@ -8318,16 +8347,21 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         bool have_target = false;
         bool torpedo_think_hold = false;   // kTorpedoBotThinkTimerBound
         std::size_t target = 0;
+        std::size_t same_party_hold = 0;   // target + 1 while held with a same party
         if (gun.target_unit != 0 && gun.target_unit - 1 < unit_state.size()) {
             target = gun.target_unit - 1;
             const bool host_drop = unit_state[target].dead || !units.unit_alive_and_visible(target);
-            // kTailGunnerRelationTestCc13Bound: 008FFA58 00803510(gun+54h,
-            // target+54h) == 0, a same-party target.
+            // kGunBotNotAllyDropCc13Bound: 008FFA58 00803510(gun+54h,
+            // target+54h) == 0, a same-party target. Counted on the first tick
+            // of a hold per gun and target, so OFF compares with ON's one drop.
             const bool same_party = bsp::scoring_relative_party_00803510(
                 units.unit_side_0054(owner_unit), units.unit_side_0054(target)) == 0;
-            if (!host_drop && same_party) ++relation_cleared;
+            if (!host_drop && same_party) {
+                same_party_hold = target + 1;
+                if (relation_held_target[g] != same_party_hold) ++relation_cleared;
+            }
             bool drop = host_drop;
-            if constexpr (kTailGunnerRelationTestCc13Bound) {
+            if constexpr (kGunBotNotAllyDropCc13Bound) {
                 drop = host_drop || same_party;
             }
             if (drop) {
@@ -8345,6 +8379,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 have_target = true;
             }
         }
+        relation_held_target[g] = same_party_hold;
         // Packet cc9_player_gun_seat: the side gate 008FFA99 (and 00902999,
         // 00903136, 0090003B) runs a bot only while [gun+1ACh] is 8 or an AI
         // slot. A gun the player's seat holds gets no bot target, angle or
@@ -8361,12 +8396,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         // the TailGunnerBot (a kind-1 gun under a plane). The director is
         // [gun+3F0h]->vtable[114h](), non-null only for a ship owner; its +221h
         // is the AAEnable byte the scene director entry holds.
-        if (have_target && gun.category == 1
-            && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindShipBase)) {
-            const SceneDirectorEnables* e
-                = scene_director_enables_find(unit_state[owner_unit].row.name);
-            if (e != nullptr && !e->anti_air
-                && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase)) {
+        // A ship-kind AND plane-kind owner never holds, so the lookup is never made.
+        const bool aa_class_gun = gun.category == 1 || gun.category == 5 || gun.category == 6;
+        const bool ship_owner = aa_class_gun
+            && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindShipBase);
+        if (have_target && gun.category == 1 && ship_owner
+            && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase)) {
+            const SceneDirectorEnables* e = owner_director_enables(owner_unit);
+            if (e != nullptr && !e->anti_air) {
                 ++aa_enable_blocked;
                 if constexpr (kShipAaEnableGateCc13Bound) {
                     gun.target_unit = 0;                        // 008FFAE7 vtable[38h](0)
@@ -8378,10 +8415,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         // Log-only: a ship's AA-class gun (kinds 1, 5, 6) holding a target while
         // that ship's AAEnable byte is clear, which the upstream director gate
         // should not let happen; and the first clear AAEnable seen per ship.
-        if ((gun.category == 1 || gun.category == 5 || gun.category == 6)
-            && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindShipBase)) {
-            const SceneDirectorEnables* e
-                = scene_director_enables_find(unit_state[owner_unit].row.name);
+        if (ship_owner) {
+            const SceneDirectorEnables* e = owner_director_enables(owner_unit);
             if (e != nullptr && !e->anti_air) {
                 if (have_target) ++aa_disabled_ship_targets;
                 if (aa_enable_clear_logged.size() < unit_state.size()) {
@@ -17656,7 +17691,7 @@ void GameGunneryHost::report() {
             host.seat_messages, host.seat_handovers,
             host.seat_returns, host.seat_held_ticks, host.seat_trigger_ticks,
             kPlayerGunSeatBound ? 1 : 0, host.relation_cleared,
-            kTailGunnerRelationTestCc13Bound ? 1 : 0, host.aa_enable_blocked,
+            kGunBotNotAllyDropCc13Bound ? 1 : 0, host.aa_enable_blocked,
             kShipAaEnableGateCc13Bound ? 1 : 0, host.aa_disabled_ship_targets);
         host.log.notef("summary mission gunnery role owner device walk takes=%llu releases=%llu "
             "bound=%d (0095AC1D: 00954000 / 00953F60, cc9-gunnery53)", host.seat_role_takes,
