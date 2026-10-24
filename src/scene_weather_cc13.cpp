@@ -1,6 +1,7 @@
 #include "bsp/scene_weather_cc13.hpp"
 
 #include <cmath>
+#include <limits>
 #include <cstring>
 #include <stdexcept>
 
@@ -903,8 +904,10 @@ void linearize_rgb_004e5c00(float* rgb) noexcept {
         if (c < 0.0f) {
             c = -0.0f - c;
         }
-        rgb[i] = static_cast<float>(std::exp2(static_cast<double>(kLinearizeExponent) *
-                                              std::log2(static_cast<double>(c))));
+        // cc13-fixture2 (fixture-found): an infinite exponent product makes FRNDINT/FSUB form
+        // inf - inf, so F2XM1/FSCALE return the default NaN instead of inf or 0.
+        const double y = static_cast<double>(kLinearizeExponent) * std::log2(static_cast<double>(c));
+        rgb[i] = std::isinf(y) ? -std::numeric_limits<float>::quiet_NaN() : static_cast<float>(std::exp2(y));
     }
 }
 

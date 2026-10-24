@@ -162,7 +162,8 @@ double bezier_00b75580(float p0, float p1, float p2, float p3, float s) {
     const float b = f(3.0 * (static_cast<double>(p2) - p1) - c);
     const float a = f(((static_cast<double>(p3) - p0) - c) - b);
     const float s3 = f(static_cast<double>(s2) * s);
-    return static_cast<double>(s) * c + (static_cast<double>(b) * s2 + static_cast<double>(a) * s3) + p0;
+    // cc13-fixture2 (fixture-found): 00B755F7 FSTP DWORD / FLD rounds the result to float.
+    return f(static_cast<double>(s) * c + (static_cast<double>(b) * s2 + static_cast<double>(a) * s3) + p0);
 }
 
 float bezier_solve_00b75610(float& lo, float& hi, float p0, float p1, float p2, float p3,

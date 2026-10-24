@@ -1,6 +1,7 @@
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 
 #include <cmath>
+#include <limits>
 #include <cstdio>
 #include <cstring>
 #include <vector>
@@ -597,7 +598,10 @@ void lens_flare_pow_response_00452b00(float k_1c, float x, float& out_04, float&
     if (!(x == 0.0f)) {                                                           // 00452B17..00452B24
         float magnitude = x;
         if (0.0f > x) magnitude = -0.0f - x;                                      // 00452B26..00452B37
-        result = static_cast<float>(std::exp2(static_cast<double>(k_1c) * std::log2(static_cast<double>(magnitude))));
+        // cc13-fixture2 (fixture-found): an infinite k * log2|x| gives inf - inf after FRNDINT, so
+        // the image stores the default NaN.
+        const double y = static_cast<double>(k_1c) * std::log2(static_cast<double>(magnitude));
+        result = std::isinf(y) ? -std::numeric_limits<float>::quiet_NaN() : static_cast<float>(std::exp2(y));
     }
     out_04 = result;                                                              // 00452B61
     out_08 = result;

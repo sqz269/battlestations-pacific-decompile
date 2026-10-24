@@ -6,6 +6,7 @@
 
 #include <cctype>
 #include <cmath>
+#include <limits>
 #include <stdexcept>
 
 namespace bsp::cc13fx {
@@ -17,6 +18,15 @@ double unsigned_extent(std::uint32_t v) { return static_cast<double>(v); }
 
 float f(double v) { return static_cast<float>(v); }
 
+// FSIN / FCOS (cc13-fixture2): the instruction leaves an operand of magnitude 2^63 or more
+// unchanged (C2 set, no reduction), turns an infinity into the default NaN and passes a NaN
+// through; inside the range the CRT value rounded to float matches the image's FSTP.
+double x87_trig_unreduced(double x) {
+    if (std::isinf(x)) return -std::numeric_limits<double>::quiet_NaN();
+    return x;
+}
+double x87_sin(double x) { return std::fabs(x) < 0x1p63 ? std::sin(x) : x87_trig_unreduced(x); }
+double x87_cos(double x) { return std::fabs(x) < 0x1p63 ? std::cos(x) : x87_trig_unreduced(x); }
 // CE3828: the double 6.2831854820251465, i.e. (double)(float)(2*pi).
 constexpr double kTwoPi = 6.2831854820251465;
 constexpr float kNegZero = -0.0f;  // D7A208
@@ -194,36 +204,42 @@ void orthonormalize_rows(float m[16]) {
 
 void compose_euler_scale_translation(float out[16], const float t[3], const float euler[3],
     const float scale[3]) {
-    const float s2 = f(std::sin(static_cast<double>(euler[2])));
-    const float s1 = f(std::sin(static_cast<double>(euler[1])));
-    const float s0 = f(std::sin(static_cast<double>(euler[0])));
-    const float c2 = f(std::cos(static_cast<double>(euler[2])));
-    const float c1 = f(std::cos(static_cast<double>(euler[1])));
-    const float c0 = f(std::cos(static_cast<double>(euler[0])));
-    const double S1 = s1, S2 = s2, S0 = s0, C0 = c0, C1 = c1, C2 = c2;
+    const float s2 = f(x87_sin(euler[2]));
+    const float s1 = f(x87_sin(euler[1]));
+    const float s0 = f(x87_sin(euler[0]));
+    const float c2 = f(x87_cos(euler[2]));
+    const float c1 = f(x87_cos(euler[1]));
+    const float c0 = f(x87_cos(euler[0]));
+    using D = double;
+    // cc13-fixture2 (fixture-found): the image stores four pair products to float first
+    // (00B6450F c2*c0, 00B64520 -c2*s0, 00B64530 s2*s0, 00B6453A -s2*c0) and three more
+    // before their scale multiply (00B64569 c1*s2, 00B645C2 c1*c2, 00B645EE c1*s0,
+    // 00B64610 c1*c0); the rest stays on the x87 stack.
+    const float c2c0 = f(D(c2) * c0), nc2s0 = f(-D(c2) * s0), s2s0 = f(D(s2) * s0), ns2c0 = f(-D(s2) * c0);
     out[3] = 0.0f;
-    out[0] = f(scale[0] * (C2 * C0 - S1 * S2 * S0));
-    out[1] = f(C1 * S2 * scale[0]);
-    out[2] = f((S1 * -S2 * C0 + S0 * -C2) * scale[0]);
+    out[0] = f((D(c2c0) - D(s1) * s2s0) * scale[0]);
+    out[1] = f(D(f(D(c1) * s2)) * scale[0]);
+    out[2] = f((D(s1) * ns2c0 + nc2s0) * scale[0]);
     out[7] = 0.0f;
-    out[4] = f(scale[1] * (S1 * S0 * -C2 + -S2 * C0));
+    out[4] = f((D(s1) * nc2s0 + ns2c0) * scale[1]);
     out[11] = 0.0f;
     out[15] = 1.0f;
-    out[5] = f(C1 * C2 * scale[1]);
-    out[6] = f((S2 * S0 - S1 * C2 * C0) * scale[1]);
-    out[8] = f(scale[2] * C1 * S0);
-    out[9] = f(scale[2] * S1);
-    out[10] = f(scale[2] * C1 * C0);
+    out[5] = f(D(f(D(c1) * c2)) * scale[1]);
+    out[6] = f((D(s2s0) - D(s1) * c2c0) * scale[1]);
+    out[8] = f(D(f(D(c1) * s0)) * scale[2]);
+    out[9] = f(D(s1) * scale[2]);
+    out[10] = f(D(scale[2]) * f(D(c1) * c0));
     out[12] = t[0];
     out[13] = t[1];
     out[14] = t[2];
 }
 
 void frustum_planes(float planes[24], float vertical, float horizontal, float near_d, float far_d) {
-    const float ch = f(std::cos(static_cast<double>(horizontal)));
-    const float sh = f(std::sin(static_cast<double>(horizontal)));
-    const float cv = f(std::cos(static_cast<double>(vertical)));
-    const float sv = f(std::sin(static_cast<double>(vertical)));
+    const float ch = f(x87_cos(horizontal));
+    const float sh = f(x87_sin(horizontal));
+    const float cv = f(x87_cos(vertical));
+    const float sv = f(x87_sin(vertical));
+
     const float p[24] = {
         ch, 0.0f, sh, 0.0f,
         kNegZero - ch, 0.0f, sh, 0.0f,

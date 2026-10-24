@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <initializer_list>
+#include <limits>
 
 // Segment 6 reconstructions. See include/bsp/seg6_cc13.hpp for the layout
 // conventions and docs/CC13_SEG6.md for the per-function evidence.
@@ -165,13 +166,23 @@ Object movie_timed_record_construct_00465a40(Seg6Host& host, Object item, float 
 // products are exact in double; a three-factor product may differ by a double
 // rounding). Element [9] is SUBSS of sin(a) from the float -0.0 at 00D7A208.
 // FSIN/FCOS lose accuracy for |x| beyond about 2^63; std::sin does not.
+namespace {
+// FSIN / FCOS (cc13-fixture2): an operand of magnitude 2^63 or more is left unchanged (C2 set,
+// no reduction), an infinity becomes the default NaN, a NaN passes through.
+double x87_trig_unreduced(double x) {
+    if (std::isinf(x)) return -std::numeric_limits<double>::quiet_NaN();
+    return x;
+}
+double x87_sin(double x) { return std::fabs(x) < 0x1p63 ? std::sin(x) : x87_trig_unreduced(x); }
+double x87_cos(double x) { return std::fabs(x) < 0x1p63 ? std::cos(x) : x87_trig_unreduced(x); }
+}  // namespace
 void matrix_set_rotation_from_euler_00467050(float* m, float a, float b, float c) {
-    const float sa = static_cast<float>(std::sin(static_cast<double>(a)));
-    const float ca = static_cast<float>(std::cos(static_cast<double>(a)));
-    const float sb = static_cast<float>(std::sin(static_cast<double>(b)));
-    const float cb = static_cast<float>(std::cos(static_cast<double>(b)));
-    const float sc = static_cast<float>(std::sin(static_cast<double>(c)));
-    const float cc = static_cast<float>(std::cos(static_cast<double>(c)));
+    const float sa = static_cast<float>(x87_sin(a));
+    const float ca = static_cast<float>(x87_cos(a));
+    const float sb = static_cast<float>(x87_sin(b));
+    const float cb = static_cast<float>(x87_cos(b));
+    const float sc = static_cast<float>(x87_sin(c));
+    const float cc = static_cast<float>(x87_cos(c));
     const double dsa = sa, dca = ca, dsb = sb, dcb = cb, dsc = sc, dcc = cc;
     m[9] = -0.0f - sa;                                               // 00467096..004670AA
     m[0] = static_cast<float>(dsb * dsc * dsa + dcb * dcc);

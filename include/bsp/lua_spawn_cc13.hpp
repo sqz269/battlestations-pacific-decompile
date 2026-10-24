@@ -166,7 +166,8 @@ SpawnRingPoints spawn_ring_draw_00941fa0(SpawnPlacementHost& host, const float o
 
 // 00941AA0, __fastcall(ECX start, EDX unit dir, center*, radius, t0*, t1*), RET 10h.
 // Projects center onto the line; refuses when the squared miss distance is not
-// below radius^2 (00941BCC FCOMI / JC); otherwise t0,1 = proj -/+ sqrt(r^2 - d^2).
+// below radius^2 (00941BCC FCOMI / JB; an unordered NaN compare intersects);
+// otherwise t0,1 = proj -/+ sqrt(r^2 - d^2). The sums run x, y, z on the x87 stack.
 bool spawn_ray_sphere_00941aa0(const float start[3], const float dir[3],
                                const float center[3], float radius, float& t0,
                                float& t1) noexcept;
