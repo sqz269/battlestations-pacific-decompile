@@ -2,6 +2,7 @@
 #include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
+#include <cstddef>
 #include <limits>
 #include <cstring>
 #include <stdexcept>
@@ -118,7 +119,9 @@ void linearize_if(bool linearize, Rgba& colour) {
     }
 }
 
-// 004E5D20 (scale_rgba_004e5d20 below) on an Rgba.
+// 004E5D20 (scale_rgba_004e5d20 below) on an Rgba, which it reads as float[4].
+static_assert(sizeof(Rgba) == 16 && offsetof(Rgba, r) == 0 && offsetof(Rgba, g) == 4 &&
+              offsetof(Rgba, b) == 8 && offsetof(Rgba, a) == 12);
 void scale_rgba(Rgba& colour, float l) {
     scale_rgba_004e5d20(&colour.r, l);
 }
