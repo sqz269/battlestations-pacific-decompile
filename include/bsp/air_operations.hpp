@@ -687,9 +687,22 @@ void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index, bool flag) 
 // 006BF230(class).available, block+58h - 006BD3F0), counted with the slot's class
 // and +8h cleared, and the class restored. Returns the slots returned.
 // SUBSTITUTION (labelled): 006C5950 rewrites +10h from class+134h; this keeps the
-// slot's own +10h. The replication (006BD520 / 0077C7B0) is not carried.
+// slot's own +10h unless kAirOpsReturnSlotClassArmCc13Bound is set and the host
+// installed the class+134h reader. The replication (006BD520 / 0077C7B0) is not
+// carried.
 std::size_t air_ops_return_squadron_slot_006c5950(AirOpsDeck& deck,
                                                   std::uint32_t squadron) noexcept;
+
+// Packet cc13-D2 (defect row 006C5950). True: a returned slot with a class
+// takes +10h = class+134h (DefaultEquipment, 006C5AD9), as the image does. That
+// value comes from the reader below. False: the slot keeps its own +10h, which
+// differs only after a non-default loadout. The ON arm needs the host to
+// install the reader before the flip; without a reader it keeps +10h as OFF.
+inline constexpr bool kAirOpsReturnSlotClassArmCc13Bound = false;
+// The class's +134h. Not a native structure; installed by the host that knows
+// the classes (game_hosts_script_orders.hpp has the same reader for 006C0F00).
+using AirOpsClassDefaultArm = std::int32_t (*)(std::uint32_t vehicle_class, void* context);
+void set_air_ops_class_default_arm_reader(AirOpsClassDefaultArm reader, void* context) noexcept;
 std::size_t air_ops_release_squadron_slot_006c65b0(AirOpsDeck& deck,
                                                    std::uint32_t squadron) noexcept;
 
@@ -730,14 +743,27 @@ std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squ
                                              std::uint32_t vehicle_class,
                                              std::int32_t plane_count) noexcept;
 
+// Packet cc13-D2 (defect row 006C56D0). True: the image's walk and fill.
+// - Walk: break at the slot already holding the squadron, and use only a free
+//   candidate (state 6/1, +4h = the queued class, +8h = the squadron's live
+//   +3CCh at this call) seen before it. The holder itself is never re-chosen.
+// - Fill: 006C0F00 with the queued class and count, standing in for
+//   [squadron+3D0h]+538h and +3C8h (labelled).
+// False: the holder is chosen, the count is compared with the queued count,
+// and there are two plain stores. For a squadron this deck just launched, ON
+// leaves its own slot untouched (OFF rewrites it to the values it already
+// has) and can bind an earlier idle slot of the same class and count to it.
+inline constexpr bool kAirOpsArriveSquadronWalkCc13Bound = false;
+
 // 006C58A0, sub-update 1 of 006CDC70 and the only one before the game-state
 // gate. Returns how many entries it placed.
 std::size_t air_ops_drain_assign_queue_006c58a0(AirOpsDeck& deck);
 
 // 006C56D0, the other end: a squadron coming back to the deck. It walks the
-// slots for the one whose +28h is that squadron and otherwise takes a free slot,
-// where free is state 1 OR state 6 and the class and count match the squadron's
-// own +35Ch and +3CCh. It leaves the slot at state 1 with the timer pair, calls
+// slots, stopping at the one whose +28h is that squadron, and takes the first
+// free slot seen before that point (CORRECTED, cc13-D2: never the holder
+// itself; see kAirOpsArriveSquadronWalkCc13Bound). Free means state 1 OR state 6,
+// with the class and count matching the squadron's own +35Ch and +3CCh. It leaves the slot at state 1 with the timer pair, calls
 // 006C0F00 to reassign the class and count, and ends at state 3.
 //
 // That pairing is what gives state 6 a meaning: 006CADD0 mode 1 writes it for a
