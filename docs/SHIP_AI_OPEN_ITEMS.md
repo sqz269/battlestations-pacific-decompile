@@ -20826,7 +20826,16 @@ mention kamikaze: PRCP02, PRCP06, PRCP07, USN11 and USN18, all fully identical (
 kamikaze_squadron_drops=0 OFF and ON. Only PRCP06 spawns kamikaze planes (96, luaKamikazeSpawned) before it fails at
 634.97 s, so the reach is thin. No WINS row has kamikaze squadrons. The USN19 (Okinawa) pair had not finished at
 flip time: after 2.5 h, each run had a log over 2 GB. If it finishes, the results are in
-local\pt1_{off,on}_kk_u19.log.
+local\pt1_{off,on}_kk_u19.log. Later I stopped the USN19 pair (still running after more than 3 h) and deleted its
+logs, so for this switch USN19 is inconclusive.
+
+**kSpawnNewSquadronPartyCc13Bound flipped ON** (cc9-party1, 2026-10-24), which closes open item 2 above. The pairs
+are OFF and ON on 0e53ff179. ESMP01 (stock, 60000 frames) has spawn_squadron_party_nodes=7 and wing_nodes=14 on
+both sides. Its commandhelpers.lua:330 failures go from 94 to 0, and the run is gameplay identical with the same
+end (failed 291.55 s). USN19 (stock, capped at 20000 frames because its log reaches 1.9 GB) has 69/171 nodes,
+no Lua errors on either side, and is gameplay identical. The WINS rows whose scripts call SpawnNew are IJN18
+ia5, BSM01, BSM04 h1_f, USN12, JM06, JM08 s63_v3, ESMP08, PRCP01 p26_a, LOMP06 and USNOS. All are gameplay
+identical with the same end, with node counts up to 89/178 (BSM01).
 
 ## 324. BSM03/04/05/06 plans, seat-artillery flips; handoff (cc9-helm1, 2026-10-24)
 
@@ -20902,3 +20911,20 @@ Open: one plan for all three envs (none found; each env's opener plays out diffe
 20,3 plan. A 20,3 attempt would follow the default recipe: sweep `T:` openers in 20,3 at
 36000-50000 frames, pick one that kills the wings and Yamashiro without failing, then tune a
 tail on that prefix. Logs: cc9-gunnery52\local\g57_r13_mb.log, g57_r20_jc.log, g57_v6_*.log.
+
+## 326. Handoff (cc9-party1, 2026-10-24)
+
+On main (b70a10873), five cc13 switches are now ON: kLaunchedSquadronPartyCc13Bound, kGunBotNotAllyDropCc13Bound,
+kPlaneOwnBaseHitFilterBound, kKamikazeSameSquadronShotDropCc13Bound and kSpawnNewSquadronPartyCc13Bound. Section 323
+has the pairs and their mechanisms. Open:
+- **IJN30 airfields** (section 323, item 1, routed to cc13): "AirField 01" and "AirField 02" die at 12.05 s and
+  91.60 s with no damage, and the stock run now ends in Game Over at 95.05 s. Who kills an undamaged airfield is
+  untraced.
+- **Thin reach.** relation_cleared, own-base shot_drops/crash_drops and kamikaze_squadron_drops are 0 in every row
+  paired. The switches are faithful but no row exercises them yet. A row that does would show a count > 0 OFF.
+- **USN19** is very slow: at 20000 frames its log reaches 1.9 GB. Its kamikaze pair is inconclusive (I stopped it
+  after more than 3 h). If you need it, cap it at about 20000 frames.
+
+Tools in J:\PROG\battlestations-pacific-decompile-cc9-party1\local\: pt1_rows.ps1 (launcher, staggered 30 s),
+pt1_sum2.ps1 (per-row census, end and pair_diff, with free OFF/ON prefixes and a census regex). A row whose launch
+file is empty is still waiting for a free slot.
