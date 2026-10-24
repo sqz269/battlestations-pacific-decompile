@@ -1,6 +1,18 @@
 #include "bsp/render_fx_cc13.hpp"
 
 #include "bsp/post_effects_cc13.hpp"
+#include "bsp/native_logical_index_owner.hpp"
+#include "bsp/native_logical_vertex_pool_return.hpp"
+#include "bsp/native_vertex_declaration_owner.hpp"
+#include "bsp/render_sprites_cc13.hpp"
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <Windows.h>
 
 #include <cmath>
 #include <cstring>
@@ -315,6 +327,8 @@ void tree_destruct(TreeHeader& tree, const TreeEraseRangeFn& erase_range) {
 //     owner offset of the CRITICAL_SECTION pointer (entered, depth word at cs+18h
 //     incremented and decremented around the read).
 //   kForward: a single call to the routine named in the note with the same arguments.
+//   The kGetDword/kGetByte/kSetDword/kRecordAt/kConstructEmptyPair/kLockedGet*/kNoOp/
+//   kReturnZero/kReturnConstant/kForward rows are now functions (after routine_row_count).
 namespace {
 constexpr RoutineRow kRows[] = {
 // BEGIN ROWS
@@ -465,9 +479,6 @@ constexpr RoutineRow kRows[] = {
     {0x00B40910U, Shape::kInlineAt, 0x4, 0x0, "TMPL_InlineArray_At4_Unreferenced_00b40910"},
     {0x00B40940U, Shape::kInlineAt, 0x4, 0x0, "TMPL_InlineArray_At4_Unreferenced_00b40940"},
     {0x00B47940U, Shape::kInlineAt, 0xC, 0x0, "TMPL_InlineArray_At12_Unreferenced_00b47940"},
-    {0x00B405D0U, Shape::kRecordAt, 0x10, 0x4, "Float4Block_At_Unreferenced"},
-    {0x00B40050U, Shape::kRecordAt, 0x40, 0x144, "ShaderEffect_GetPassRecord"},
-    {0x00B47C80U, Shape::kRecordAt, 0x14, 0xC, "VertexDeclaration_ElementAt_Unreferenced"},
     {0x00B345A0U, Shape::kConstructEmpty, 0x0, 0x0, "TMPL_PodArray_Construct_Unreferenced_00b345a0"},
     {0x00B345C0U, Shape::kConstructEmpty, 0x0, 0x0, "TMPL_PodArray_Construct_Unreferenced_00b345c0"},
     {0x00B345F0U, Shape::kConstructEmpty, 0x0, 0x0, "TMPL_PodArray_Construct_Unreferenced_00b345f0"},
@@ -488,8 +499,6 @@ constexpr RoutineRow kRows[] = {
     {0x00B49070U, Shape::kConstructEmpty, 0x0, 0x0, "TMPL_PodArray_Construct_Unreferenced_00b49070"},
     {0x00B490B0U, Shape::kConstructEmpty, 0x0, 0x0, "TMPL_PodArray_Construct_Unreferenced_00b490b0"},
     {0x00B49650U, Shape::kConstructEmpty, 0x0, 0x0, "TMPL_PodArray_Construct_Unreferenced_00b49650"},
-    {0x00B34D60U, Shape::kConstructEmptyPair, 0x0, 0x0, "PooledString_ConstructEmpty_Unreferenced"},
-    {0x00B4EC30U, Shape::kConstructEmptyPair, 0x0, 0x0, "PodPair_ZeroInit"},
     {0x00B30210U, Shape::kPopBackDestroy, 0x2C, 0x0, "NativeDeclarationRecordArray_PopBack_Unreferenced"},
     {0x00B30230U, Shape::kPopBackDestroy, 0x2C, 0x0, "RenderResourceRecordArray_PopBack_Unreferenced"},
     {0x00B30250U, Shape::kPopBackDestroy, 0x2C, 0x0, "MaterialEffectCacheEntryArray_PopBack_Unreferenced"},
@@ -600,32 +609,6 @@ constexpr RoutineRow kRows[] = {
     {0x00B2F630U, Shape::kTreeDestruct, 0x0, 0x0, "HardwareLayoutTree_Destruct_Unreferenced_00b2f630"},
     {0x00B2F800U, Shape::kTreeDestruct, 0x0, 0x0, "HardwareLayoutTree_Destruct_Unreferenced_00b2f800"},
     {0x00B2F8A0U, Shape::kTreeDestruct, 0x0, 0x0, "HardwareLayoutTree_Destruct_Unreferenced_00b2f8a0"},
-    {0x00B3CD30U, Shape::kGetDword, 0x24, 0x0, "D3D9Surface_GetSampleCount"},
-    {0x00B3CF70U, Shape::kGetDword, 0x24, 0x0, "CubeTexture_GetReportedWidth"},
-    {0x00B3CF80U, Shape::kGetDword, 0x28, 0x0, "CubeTexture_GetReportedHeight"},
-    {0x00B48CC0U, Shape::kGetDword, 0x60, 0x0, "D3D9LogicalVertexStream_GetFlags"},
-    {0x00B48D80U, Shape::kGetDword, 0x10, 0x0, "D3D9LogicalIndexStream_GetFlags"},
-    {0x00B48D90U, Shape::kGetDword, 0x14, 0x0, "D3D9LogicalIndexStream_GetCount"},
-    {0x00B48DA0U, Shape::kGetDword, 0x18, 0x0, "D3D9LogicalIndexStream_GetFormat"},
-    {0x00B3CE20U, Shape::kSetDword, 0x24, 0x0, "D3D9Surface_SetSampleCount"},
-    {0x00B3FF70U, Shape::kGetByte, 0x74, 0x0, "NativeShaderReflectionOwner_GetByte74_Unreferenced"},
-    {0x00B400B0U, Shape::kGetByte, 0x13C, 0x0, "MaterialEffect_GetByte13C_Unreferenced"},
-    {0x00B5DF90U, Shape::kLockedGetDword, 0x40, 0x48, "LockedObject_GetField40"},
-    {0x00B5DFC0U, Shape::kLockedGetDword, 0x3C, 0x48, "LockedObject_GetField3C"},
-    {0x00B5DFF0U, Shape::kLockedGetByte, 0x44, 0x4C, "LockedObject_GetByte44"},
-    {0x00B5E020U, Shape::kLockedGetByte, 0x45, 0x4C, "LockedObject_GetByte45"},
-    {0x00B4B480U, Shape::kNoOp, 0x0, 0x0, "PhysicalIndexBuffer_NoOpSlot10"},
-    {0x00B4B520U, Shape::kNoOp, 0x0, 0x0, "PhysicalVertexBuffer_NoOpSlot10"},
-    {0x00B4EC40U, Shape::kNoOp, 0x0, 0x0, "PostEffectOwner_NoOpSlot0C"},
-    {0x00B54CC0U, Shape::kNoOp, 0x0, 0x0, "BloomOwner_NoOpSlot0C"},
-    {0x00B3CE40U, Shape::kReturnZero, 0x0, 0x0, "D3D9Texture2D_GetKind"},
-    {0x00B47C00U, Shape::kForward, 0x0, 0x0, "VertexDeclarationPool_ReturnRawSlotUnwind"},
-    {0x00B47C10U, Shape::kForward, 0x0, 0x0, "HardwareLayout_ReturnRawSlot_Unreferenced"},
-    {0x00B49960U, Shape::kForward, 0x0, 0x0, "LogicalVertexPool_ReturnSlotUnwind"},
-    {0x00B49970U, Shape::kForward, 0x0, 0x0, "LogicalIndexStreamPool_ReturnSlotUnwind"},
-    {0x00B488D0U, Shape::kForward, 0x0, 0x0, "HardwareLayoutPool_AllocateRawSlotStub_Unreferenced"},
-    {0x00B3CF60U, Shape::kReturnConstant, 0x0, 0x1, "CubeTexture_GetKind"},
-    {0x00B3D080U, Shape::kReturnConstant, 0x0, 0x2, "VolumeTexture_GetKind"},
 // END ROWS
 };
 } // namespace
@@ -637,6 +620,150 @@ const RoutineRow* find_routine_row(std::uint32_t address) noexcept {
 }
 
 std::size_t routine_row_count() noexcept { return sizeof(kRows) / sizeof(kRows[0]); }
+
+// ===========================================================================
+// Packet cc13-rendershapes: the former kGetDword, kGetByte, kSetDword, kRecordAt,
+// kConstructEmptyPair, kLockedGet*, kNoOp, kReturnZero, kReturnConstant and kForward rows,
+// one function per address. Each body was re-read from the disk bytes (Capstone).
+
+namespace {
+std::uint32_t dword_at(const std::uint8_t* self, std::uint32_t offset) {
+    std::uint32_t v;
+    std::memcpy(&v, self + offset, 4);
+    return v;
+}
+std::uint8_t* pointer_at(const std::uint8_t* self, std::uint32_t offset) {
+    std::uint8_t* p;
+    std::memcpy(&p, self + offset, 4);
+    return p;
+}
+// The lock object: a CRITICAL_SECTION (18h bytes) followed by the depth dword at +18h.
+CRITICAL_SECTION* locked_enter(const std::uint8_t* self, std::uint32_t lock_offset) {
+    auto* const lock = pointer_at(self, lock_offset);
+    EnterCriticalSection(reinterpret_cast<CRITICAL_SECTION*>(lock));
+    std::uint32_t depth;
+    std::memcpy(&depth, lock + 0x18, 4);
+    ++depth;
+    std::memcpy(lock + 0x18, &depth, 4);
+    return reinterpret_cast<CRITICAL_SECTION*>(lock);
+}
+void locked_leave(const std::uint8_t* self, std::uint32_t lock_offset) {
+    // The image reloads the lock pointer from the owner after the read.
+    auto* const lock = pointer_at(self, lock_offset);
+    std::uint32_t depth;
+    std::memcpy(&depth, lock + 0x18, 4);
+    --depth;
+    std::memcpy(lock + 0x18, &depth, 4);
+    LeaveCriticalSection(reinterpret_cast<CRITICAL_SECTION*>(lock));
+}
+} // namespace
+
+// 00B405D0: MOV EAX,[ESP+4]; SHL EAX,4; LEA EAX,[EAX+ECX+4]; RET 4.
+std::uint8_t* float4_block_at_00b405d0(std::uint8_t* self, std::uint32_t index) {
+    return self + static_cast<std::uint32_t>((index << 4) + 4u);
+}
+// 00B40050: MOV EAX,[ESP+4]; SHL EAX,6; LEA EAX,[EAX+ECX+144h]; RET 4.
+std::uint8_t* shader_effect_pass_record_00b40050(std::uint8_t* self, std::uint32_t index) {
+    return self + static_cast<std::uint32_t>((index << 6) + 0x144u);
+}
+// 00B47C80: MOV EAX,[ESP+4]; MOV ECX,[ECX+0Ch]; LEA EAX,[EAX+EAX*4]; LEA EAX,[ECX+EAX*4];
+// RET 4. The element array's base pointer is at +0Ch; elements are 14h bytes.
+std::uint8_t* vertex_declaration_element_at_00b47c80(const std::uint8_t* self,
+                                                     std::uint32_t index) {
+    return pointer_at(self, 0x0c) + static_cast<std::uint32_t>(index * 0x14u);
+}
+
+// 00B34D60 and 00B4EC30 (identical): MOV EAX,ECX; MOV [EAX],0; MOV [EAX+4],0; RET.
+void* pooled_string_construct_empty_00b34d60(void* self) {
+    std::memset(self, 0, 8);
+    return self;
+}
+void* pod_pair_zero_init_00b4ec30(void* self) {
+    std::memset(self, 0, 8);
+    return self;
+}
+
+// MOV EAX,[ECX+offset]; RET.
+std::uint32_t d3d9_surface_sample_count_00b3cd30(const std::uint8_t* self) { return dword_at(self, 0x24); }
+std::uint32_t cube_texture_reported_width_00b3cf70(const std::uint8_t* self) { return dword_at(self, 0x24); }
+std::uint32_t cube_texture_reported_height_00b3cf80(const std::uint8_t* self) { return dword_at(self, 0x28); }
+std::uint32_t logical_vertex_stream_flags_00b48cc0(const std::uint8_t* self) { return dword_at(self, 0x60); }
+std::uint32_t logical_index_stream_flags_00b48d80(const std::uint8_t* self) { return dword_at(self, 0x10); }
+std::uint32_t logical_index_stream_count_00b48d90(const std::uint8_t* self) { return dword_at(self, 0x14); }
+std::uint32_t logical_index_stream_format_00b48da0(const std::uint8_t* self) { return dword_at(self, 0x18); }
+// 00B3CE20: MOV EAX,[ESP+4]; MOV [ECX+24h],EAX; RET 4.
+void d3d9_surface_set_sample_count_00b3ce20(std::uint8_t* self, std::uint32_t value) {
+    std::memcpy(self + 0x24, &value, 4);
+}
+
+// 00B3FF70: MOVZX EAX,BYTE [ECX+74h]; RET.
+std::uint8_t shader_reflection_owner_byte74_00b3ff70(const std::uint8_t* self) { return self[0x74]; }
+// 00B400B0: MOV AL,[ECX+13Ch]; RET.
+std::uint8_t material_effect_byte13c_00b400b0(const std::uint8_t* self) { return self[0x13c]; }
+
+// 00B5DF90 / 00B5DFC0: EDI = [ESI+48h]; CALL [00CE2218] EnterCriticalSection(EDI);
+// ADD [EDI+18h],1; EDI = [ESI+40h] / [ESI+3Ch]; ESI = [ESI+48h]; ADD [ESI+18h],-1;
+// CALL [00CE2210] LeaveCriticalSection(ESI); EAX = EDI; RET.
+std::uint32_t locked_object_field40_00b5df90(const std::uint8_t* self) {
+    locked_enter(self, 0x48);
+    const std::uint32_t value = dword_at(self, 0x40);
+    locked_leave(self, 0x48);
+    return value;
+}
+std::uint32_t locked_object_field3c_00b5dfc0(const std::uint8_t* self) {
+    locked_enter(self, 0x48);
+    const std::uint32_t value = dword_at(self, 0x3c);
+    locked_leave(self, 0x48);
+    return value;
+}
+// 00B5DFF0 / 00B5E020: the same over the lock at +4Ch, BL = [ESI+44h] / [ESI+45h],
+// AL = BL after the leave.
+std::uint8_t locked_object_byte44_00b5dff0(const std::uint8_t* self) {
+    locked_enter(self, 0x4c);
+    const std::uint8_t value = self[0x44];
+    locked_leave(self, 0x4c);
+    return value;
+}
+std::uint8_t locked_object_byte45_00b5e020(const std::uint8_t* self) {
+    locked_enter(self, 0x4c);
+    const std::uint8_t value = self[0x45];
+    locked_leave(self, 0x4c);
+    return value;
+}
+
+// C3: RET.
+void physical_index_buffer_noop_slot10_00b4b480(void*) {}
+void physical_vertex_buffer_noop_slot10_00b4b520(void*) {}
+void post_effect_owner_noop_slot0c_00b4ec40(void*) {}
+void bloom_owner_noop_slot0c_00b54cc0(void*) {}
+
+// 00B3CE40 XOR EAX,EAX; 00B3CF60 MOV EAX,1; 00B3D080 MOV EAX,2; each RET.
+std::uint32_t d3d9_texture2d_kind_00b3ce40(const void*) { return 0; }
+std::uint32_t cube_texture_kind_00b3cf60(const void*) { return 1; }
+std::uint32_t volume_texture_kind_00b3d080(const void*) { return 2; }
+
+// 00B47C00: PUSH ECX; MOV ECX,0108FD38; CALL 00B47950; RET.
+void vertex_declaration_pool_return_raw_slot_unwind_00b47c00(void* pool_0108fd38, void* self) {
+    return_native_vertex_declaration_slot_00b47950(pool_0108fd38, self);
+}
+// 00B49960: PUSH ECX; MOV ECX,0108FE18; CALL 00B49570; RET.
+void logical_vertex_pool_return_slot_unwind_00b49960(void* pool_0108fe18, void* self) {
+    return_native_logical_vertex_pool_slot_00b49570(pool_0108fe18, self);
+}
+// 00B49970: PUSH ECX; MOV ECX,0108FE50; CALL 00B495E0; RET.
+void logical_index_stream_pool_return_slot_unwind_00b49970(void* pool_0108fe50, void* self) {
+    return_native_logical_index_slot_00b495e0(pool_0108fe50, self);
+}
+// 00B47C10: PUSH ECX; MOV ECX,0108FD70; CALL 00B479C0; RET.
+void hardware_layout_return_raw_slot_00b47c10(std::uint8_t* pool_0108fd70, void* self,
+                                              cc13_render_sprites::SlabPoolHost& host) {
+    cc13_render_sprites::return_layout_slot_00b479c0(pool_0108fd70, self, host);
+}
+// 00B488D0: MOV ECX,0108FD70; JMP 00B48780.
+void* hardware_layout_pool_allocate_raw_slot_stub_00b488d0(
+    std::uint8_t* pool_0108fd70, cc13_render_sprites::SlabPoolHost& host) {
+    return cc13_render_sprites::allocate_layout_slot_00b48780(pool_0108fd70, host);
+}
 
 // ===========================================================================
 // Segment 84/85 bodies.
