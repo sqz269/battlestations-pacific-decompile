@@ -415,6 +415,29 @@ struct GameCommandsHost::Impl {
     // this process because 00822b70's only call site here passes the literal 0.
     std::vector<bsp::CruiseSpeedSetting> navigator_params;
     std::vector<GameCommandRow> rows;
+    // Packet cc13-rowsdet, log-only. A ChainState can hold a raw GameCommandRow*
+    // into `rows` across a call that re-enters this host; a push that reallocates
+    // there leaves the pointer naming freed storage. Each window snapshots the
+    // storage before the call and compares after it, before the pointer is used.
+    struct RowsWatch {
+        const GameCommandRow* data{nullptr};
+        std::size_t capacity{0};
+        std::size_t row{kNoLoopbackRow};
+        bool held{false};
+    };
+    unsigned long long rows_realloc_during_issue{0};
+    unsigned long long units_resync_during_issue{0};
+    int issue_window_depth{0};
+    RowsWatch watch_rows(const GameCommandRow* held) const noexcept {
+        RowsWatch watch;
+        watch.data = rows.data();
+        watch.capacity = rows.capacity();
+        watch.held = held != nullptr && !rows.empty()
+            && held >= rows.data() && held < rows.data() + rows.size();
+        if (watch.held) watch.row = static_cast<std::size_t>(held - rows.data());
+        return watch;
+    }
+    void check_rows(const char* site, const RowsWatch& watch);
     bsp::SceneCommandRegistry registry;
     // Milestone 2q: the `command` event channel's subscriptions, the list
     // 0097C8A0 builds for every `command` event block 0097E360 parses. That
@@ -1455,9 +1478,11 @@ private:
 void SceneResolveBinding::issue_command(void* owner, void* command,
     const bsp::SceneCommandTarget& target, int flags) {
     EntityIssueBinding issue(chain_);
+    const GameCommandsHost::Impl::RowsWatch rows_watch = chain_.owner.watch_rows(chain_.row);
     const bsp::EntityOrderIssueResult result
         = bsp::entity_issue_command_0077d600(issue, owner, command, target, flags);
     chain_.owner.done("SceneCommand::issue_command", 0x0077d600u);
+    chain_.owner.check_rows("SceneResolveBinding::issue_command", rows_watch);
     if (chain_.row != nullptr) {
         chain_.row->issued = true;
         chain_.row->ai_group_notified = result.ai_group_notified;
@@ -1828,6 +1853,17 @@ void GameCommandsHost::set_unit_formation(std::size_t index, bool follower,
 
 void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
     Impl& host = *impl_;
+    // Packet cc13-rowsdet, log-only: a ChainState in flight holds &units[i] and
+    // &directors[i]; the rows below are move-assigned in place (and the table can
+    // shrink), so a re-registration inside an issue or delivery is reported.
+    if (host.issue_window_depth > 0) {
+        ++host.units_resync_during_issue;
+        if (host.units_resync_during_issue <= 32) {
+            host.log.notef("command units resync during issue depth=%d units=%zu->%zu "
+                "clock=%.2f", host.issue_window_depth, host.units.size(), units.size(),
+                static_cast<double>(host.life_clock));
+        }
+    }
     // Packet cc9_ai_retask, docs/AI_RETASK.md. unit+284h, the group 007788B0 and
     // 007788D0 read, is per-unit state that creating ANOTHER unit does not touch
     // in the image. The rows arriving here carry the defaults, so a re-registration
@@ -2000,8 +2036,12 @@ const GameCommandRow* GameCommandsHost::issue(std::size_t unit_index,
             chain.row = &host.rows[stored];
             chain.finish_pending = true;
             host.last_issue_list = nullptr;
+            const Impl::RowsWatch rows_watch = host.watch_rows(chain.row);
+            ++host.issue_window_depth;
             resolve.issue_command(&host.units[unit_index], resolution.command->identity,
                 resolution.target, 1);
+            --host.issue_window_depth;
+            host.check_rows("GameCommandsHost::issue", rows_watch);
             host.last_issue_list = chain.command_list;
             host.last_issue_index = chain.command_index;
             resolve.clear_queue();
@@ -2109,6 +2149,18 @@ void finish_issue_in_place(GameCommandsHost::Impl& host, ChainState& chain) {
 // Packet cc9_set_command_queue_delay: 0076E520 and 0076C600
 // ---------------------------------------------------------------------------
 
+// Packet cc13-rowsdet: one line per detection (capped), the count in the summary.
+void GameCommandsHost::Impl::check_rows(const char* site, const RowsWatch& watch) {
+    if (!watch.held) return;
+    if (rows.data() == watch.data && rows.capacity() == watch.capacity) return;
+    ++rows_realloc_during_issue;
+    if (rows_realloc_during_issue <= 32) {
+        log.notef("command rows realloc during issue site=%s cap=%zu->%zu row=%zu clock=%.2f",
+            site, watch.capacity, rows.capacity(), watch.row,
+            static_cast<double>(life_clock));
+    }
+}
+
 std::size_t GameCommandsHost::Impl::post_loopback(LoopbackMessage message) {
     message.posted_before_drain = loopback_drain_serial;
     // Env-gated: BSP_LOOPBACK_TRACE=<n> prints the first n posts with the drain
@@ -2189,6 +2241,8 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
     chain.finish_pending = message.finish;
     chain.script_issue = message.script_issue;
     chain.after_delivery = message.after_delivery;
+    const RowsWatch rows_watch = watch_rows(chain.row);
+    ++issue_window_depth;
     switch (message.kind) {
     case LoopbackKind::Command: {
         bsp::EntityOrderMessage delivered = message.command;
@@ -2273,6 +2327,8 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
         // after_delivery below, at this entry's turn in the drain.
         break;
     }
+    --issue_window_depth;
+    check_rows("GameCommandsHost::deliver_loopback", rows_watch);
     if (chain.finish_pending) finish_issue_in_place(*this, chain);
     if (chain.after_delivery) {
         // Still held: this delivery ended the chain (no post took it on).
@@ -2489,9 +2545,13 @@ const GameCommandRow* GameCommandsHost::issue_command_object(std::size_t unit_in
         chain.finish_pending = true;
         chain.script_issue = true;
         host.last_issue_list = nullptr;
+        const Impl::RowsWatch rows_watch = host.watch_rows(chain.row);
+        ++host.issue_window_depth;
         resolve.issue_command(&host.units[unit_index],
             reinterpret_cast<void*>(static_cast<std::uintptr_t>(command_object)), target,
             flags);
+        --host.issue_window_depth;
+        host.check_rows("GameCommandsHost::issue_command_object", rows_watch);
         host.last_issue_list = chain.command_list;
         host.last_issue_index = chain.command_index;
         ++host.summary.script_issues;
@@ -4462,6 +4522,9 @@ void GameCommandsHost::report() {
         host.summary.loopback_setcmd_posts, host.summary.loopback_clear_posts,
         host.summary.loopback_delivered_in_place, host.summary.loopback_delivered_nested,
         host.summary.loopback_delivered_queued, host.summary.loopback_drains);
+    host.log.notef("summary command rows realloc during issue=%llu units resync during "
+        "issue=%llu (packet cc13-rowsdet, log-only)", host.rows_realloc_during_issue,
+        host.units_resync_during_issue);
     host.log.notef("summary mission director setcmd message bound=%d round_trips=%llu "
         "command_changed=%llu target_changed=%llu object_dropped=%llu id_cut_restored=%llu "
         "(cc15-sm1, 0071C830 / 0071C930 / 00764F90 / 0071CA30)", kSetCommandMessageCc13Bound ? 1 : 0,
