@@ -1510,5 +1510,21 @@
   "open": [
     "Parent integration/build review of the two helper overloads and all changed source files.",
     "No live-game, fixture, worker-PC53 or binary-ABI admission proof."
-  ]
+  ],
+  "integrator_validation": {
+    "command": "./scripts/build.ps1",
+    "source_checked_commit": "8878f94b9c106c4a13fc11d785fba29a8e13693f",
+    "build_log": "local/build-poolB-fix-publish2.log",
+    "msvc": "Win32 Release",
+    "build_passed": true,
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "game_runs": 0,
+    "host_wiring_added": false,
+    "binary_abi_validated": false,
+    "native_differential_tested": false
+  },
+  "aggregate_fix_report": "reports/oct24_poolB_fixes.json"
 }

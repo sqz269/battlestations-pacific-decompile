@@ -2679,5 +2679,21 @@
     "source": "src/water_weather_cc13.cpp",
     "symbol": "sky_box_rotation_radians_00bbf1a0",
     "finding": "Existing double multiplication/division chain is outside the assigned/new35 set and was reported to the primary without modifying that body."
-  }
+  },
+  "integrator_validation": {
+    "command": "./scripts/build.ps1",
+    "source_checked_commit": "8878f94b9c106c4a13fc11d785fba29a8e13693f",
+    "build_log": "local/build-poolB-fix-publish2.log",
+    "msvc": "Win32 Release",
+    "build_passed": true,
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "game_runs": 0,
+    "host_wiring_added": false,
+    "binary_abi_validated": false,
+    "native_differential_tested": false
+  },
+  "aggregate_fix_report": "reports/oct24_poolB_fixes.json"
 }
