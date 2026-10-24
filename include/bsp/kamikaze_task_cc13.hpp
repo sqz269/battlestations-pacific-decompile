@@ -26,6 +26,16 @@
 
 namespace bsp {
 
+// cc13-D1 OFF switch. These functions run on live host paths
+// (game_hosts_units.cpp, packet cc9_lua52_kamikaze_wiring), so the faithful
+// change waits behind a switch that cc9 pairs and flips.
+//
+// The main thread's x87 runs at 24-bit precision, so every step of 009AC0B0's
+// and 009ADE00's distance sums and of 009AE9D0's two distances rounds to
+// float. True: per-step float rounding. False: double intermediates rounded
+// at the stores, as before.
+inline constexpr bool kKamikazeX87FloatCc13Bound = false;
+
 // ---------------------------------------------------------------------------
 // Shared pieces
 // ---------------------------------------------------------------------------
@@ -270,16 +280,21 @@ struct KamikazeRuleInputs {
 // the rule; a change runs the old state's vtable[8] and the new one's vtable[4].
 KamikazeState kamikaze_rule_009af310(const KamikazeRuleInputs& in) noexcept;
 
-// 009AF480 (task vtable +54h), the altitude half. The base 0099B660 is empty.
-// The channel bytes are those of bot_tasks.hpp's PilotAltitudeChannel. The
-// caller then runs 009AB850 (keys "4c", "50"), 009AF0A0 with dt = 0 and
-// 0099EBB0 (abandon if stale).
+// 009AF480 (task vtable +54h), the altitude half. The base 0099B660 is a bare
+// RET. The channel bytes are those of bot_tasks.hpp's PilotAltitudeChannel. The
+// image then runs 009AB850 (keys "4c", "50"), 009AF0A0 with dt = 0 and
+// tail-JMPs 0099B740 (abandon if stale); kamikaze_task_cruise_profile_009af480
+// below is that whole body.
 struct KamikazeAltitudeWrite {
     bool writes_cruise_394 = false;    // ctl+394h = task+424h (profile.cruising_alt_2c)
     float cruise_394 = 0.0f;
     bool writes_second_398 = false;    // ctl+398h = task+430h (profile.attack_alt_38)
     float second_398 = 0.0f;
     bool dirty_3ad = false;
+    // An unlocked channel always clears its one-shot byte afterwards
+    // (009AF4B7 +3A9h, 009AF4E0 +3AAh; 009AEA1C/009AEA52 in 009AE9D0).
+    bool clears_one_shot_3a9 = false;
+    bool clears_one_shot_3aa = false;
 };
 struct KamikazeAltitudeChannels {
     bool cruise_locked_38d = false;   float cruise_current_380 = 0.0f;  bool cruise_one_shot_3a9 = false;
@@ -365,6 +380,30 @@ struct KamikazeArmResult {
 // the current state's vtable[0Ch](dt), task+2E4h = task+450h.
 KamikazeArmResult kamikaze_task_arm_009af510(KamikazeTask& task, KamikazeTaskHost& host,
                                              KamikazeRandom& rng, float dt);
+
+// The slot +54h cruise profiles as whole bodies (cc13-D1). Not wired: the live
+// host runs its own once-at-install substitution of both.
+struct KamikazeCruiseProfileHost {
+    virtual ~KamikazeCruiseProfileHost() = default;
+    virtual KamikazeAltitudeChannels altitude_channels() = 0;   // ctl+37Ch..+3AAh
+    // ctl+394h / +398h, +3ADh = 1 and the +3A9h / +3AAh clears, as `w` says.
+    virtual void apply_altitude_write(const KamikazeAltitudeWrite& w) = 0;
+    virtual float ctl_alt_cruise_394() = 0;
+    virtual float ctl_alt_second_398() = 0;
+    virtual void abandon_if_stale_0099b740() = 0;               // the tail JMP
+};
+struct KamikazeCruiseProfileTaskHost : KamikazeCruiseProfileHost {
+    // 009AF0A0's inputs for `dt`: the host runs 009FADA0 on ap.ref (and the
+    // gun-block clear) and returns aim_point as the 009FADA0 point; the caller
+    // applies 009ABA30.
+    virtual KamikazeUpdateInputs approach_update_inputs_009af0a0(KamikazeApproach& ap,
+                                                                 float dt) = 0;
+};
+// 009AF480-009AF505: 0099B660 (a bare RET), the two altitude channels, 009AB850,
+// 009AF0A0(0), JMP 0099B740.
+void kamikaze_task_cruise_profile_009af480(KamikazeTask& task,
+                                           KamikazeCruiseProfileTaskHost& host,
+                                           KamikazeRandom& rng);
 
 // ---------------------------------------------------------------------------
 // The drop-kamikaze task (kind 5): the Ohka/Funryu carriers
@@ -614,6 +653,21 @@ struct DropKamikazeTaskHost {
 // 009ADBF0 after the base and the approach (the host built `task.ap.ref`).
 void drop_kamikaze_task_construct_009adbf0(DropKamikazeTask& task, DropKamikazeTaskHost& host,
                                            const DropKamikazeSeedInputs& seed);
+
+struct DropKamikazeCruiseProfileHost : KamikazeCruiseProfileHost {
+    virtual bool flight_leader_007b8ad0() = 0;
+    virtual float rocket_cruising_alt_45c() = 0;   // tuning+45Ch
+    virtual float rocket_drop_dist_460() = 0;      // tuning+460h
+    // 009ADE00's inputs for `dt`, after the host's 009FADA0 on ap.ref.
+    virtual DropKamikazeUpdateInputs approach_update_inputs_009ade00(DropKamikazeApproach& ap,
+                                                                     float dt) = 0;
+};
+// 009AE9D0-009AEAD4 as a whole body (cc13-D1, not wired): 0099B660 (a bare
+// RET), 007B8AD0, the leader's two channels from tuning+45Ch, the "ac" draw and
+// the two distances, 009ADE00(0), JMP 0099B740.
+void drop_kamikaze_task_cruise_profile_009ae9d0(DropKamikazeTask& task,
+                                                DropKamikazeCruiseProfileHost& host,
+                                                KamikazeRandom& rng);
 
 struct DropKamikazeArmResult {
     DropKamikazeState before = DropKamikazeState::kNone;
