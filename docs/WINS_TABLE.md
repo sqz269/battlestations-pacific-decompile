@@ -1218,3 +1218,59 @@ IJN18 `l70_i18_r` on 86b81e2a8 (`local\l71r_i18_*`):
 The 1685.52 s ref win from d175c1aac does not hold on this main. That base moved without a known cause, so the
 row is listed and not re-timed. The flip still lands as a faithful fix (prepare/issue skipped while 4Ch occludes
 46h), and IJN18 needs a re-plan on the combined re-time base.
+
+### BSM01 diagnostic `l71_b1_a` (cc9-lua71, tree build = 86b81e2a8 + the releasegun flip ea5795c31; NOT a row, reverted)
+
+On 86b81e2a8 every BSM01 plan has no end. The opening `moveto HenryPT 2580 -1650` dithers at the start: throttle
+swings between -0.5 and 0.8, the rudder flips +-1, and d330 holds at 2440-2510 m through step 5400. Henry therefore
+never comes within 250 m of Phoenix (bsm_01_stationed_at_pearl.lua:797), so luaMoveToPh2 and the phase-3 MiniSub
+spawn never run. On d175c1aac the same moveto closed to 265 m by step 2190. 46bdfac0a still ended at 812.93 s, so
+the cause lies between 46bdfac0a and 86b81e2a8. Lead attribution: regressed by an unattributed change in
+5481a7ca5..39ac16569 (not physics25's torp term), bisect pending; cc13 is also tracing HenryPT's traffic clip (009EF8EE).
+
+`local\l71_b1_a_kept.txt` (cc9-lua52 tree; the row commit 1617469fa was reverted) is l70 b1 j with the opening moveto replaced by a takehelm lane along the old
+navigator path (the l70_b1t trajectory):
+- frame 200: (2300,-3230)
+- frame 620: (1900,-3060)
+- frame 1050: (1890,-2860)
+- frame 1200: (2474,-1817)
+- frame 2250: (2570,-1690), stop 30
+
+Results (logs `local\l71r_b1a_main_{ref,j3}.log`):
+- ref: EndMission at 698.95 s. HenryPT kills MiniSub at 596.68 s.
+- 20,3: EndMission at 1359.20 s. MiniSub dies at 1029.13 s.
+- The guard logged its refusal on both runs.
+
+### Lua native flips (cc13-luawire, cc9-lua71): eight switches ON
+
+Same-commit pairs on agent/cc9-lua52 342fc37a5 (origin/main 872adeff3 + ea5795c31). OFF is the tree build; ON is
+export `local\l71_xa` (HasFired, AddWaterLoad, BreakShip, UnitSetPlayerCommandsEnabled) or `local\l71_xb`
+(SetVisibility, SquadronEnableVehicleAvoidance, SquadronSetBaseUnsupported, SetCheatTurbo). Logs are
+`local\l71r_<row>x_{main,xa,xb}_{ref,j3}.log`.
+
+| Pair | verdict | end OFF -> ON |
+| --- | --- | --- |
+| BSM01 `l71_b1_a`, set A, ref / 20,3 | identical / identical | no end / no end |
+| JM06 `l70_j6_n`, set A, ref | moved | completed 823.92 -> 1883.71 s |
+| JM06 `l70_j6_n`, set A, 20,3 | moved | completed 850.92 -> 790.93 s |
+| BSM09 `l68_b9_d1`, set A, ref | identical | EndMission 405.02 s |
+| BSM09 `l68_b9_d1`, set B, ref / 20,3 | moved / moved | EndMission 405.02 / 408.02 s, unchanged |
+| USN01 `l69_u1_a`, set B, ref | identical | completed 410.02 s |
+
+- JM06 moves through BreakShip only. jm06.lua `luaJM6BreakShips` breaks the ambush target 9 s after the ambush
+  movie. In the ON run US Tanker 02 dies at 331.09 s by BreakShip, where OFF had it torpedoed by PlayerSub 01 at
+  359.59 s. The rest cascades from there (PlayerSub 01 is later lost). The mechanism is the script's own call, so
+  the flip goes in.
+- In BSM09, set B carries out what the script wrote: Val squadrons have avoidance off, Val 5 is hidden, cheat turbo
+  calls are made, and Donald is listed on both carriers. Plane death times shift by about 0.05 s and the end is
+  unchanged.
+- In USN01 none of the four natives is called (every summary shows calls=0), and the run is identical.
+- The census in game_hosts_lua.cpp now lists the four 7b rows as handled. Before, it printed UNIMPLEMENTED for them
+  even with the switches ON, although their runners ran.
+- An earlier set of ref pairs used OFF logs from 86b81e2a8 against ON exports of an older base. Its USN01 "moved"
+  verdict came from that base mismatch and is void.
+
+BSM01 `l71_b1_a` does not hold on 872adeff3 (no end in either env). MiniSub comes to rest at (-254.7,-2489.9) on the
+reference seed; on d175c1aac it rested at (-212,-2388). Under 20,3 it is still moving submerged near (2053,-1864) at
+the end. Henry's depth charges never hit it, and the hits that do land (bullet 43, from other ships) do not satisfy
+the listener, which requires attacker = Henry. The row needs a re-plan on the combined re-time base.

@@ -22,7 +22,7 @@ namespace bsp {
 // that sub-type (SUBSTITUTION, labelled there: dual-purpose second ammunition
 // and rack drops are not covered).
 // False: the row stays unhandled (UNIMPLEMENTED, no value pushed).
-inline constexpr bool kLuaHasFiredBound = false;
+inline constexpr bool kLuaHasFiredBound = true;  // ON (cc9-lua71, 2026-10-19): BSM01 108 calls, gameplay identical; see WINS_TABLE
 
 // 00893380 AddWaterLoad(unit, side, amount). The hull-local point
 // (+-Width/2 by side parity, 0, +Length/2 / 0 / -Length/2 by side < 2 / < 4 /
@@ -34,7 +34,7 @@ inline constexpr bool kLuaHasFiredBound = false;
 // and count to GameUnitsHost::add_leak_0074f440, the host's 90h receiver (its
 // own kLiveHullLeakBound / kLiveHullRepairBound still apply).
 // False: the row stays unhandled (UNIMPLEMENTED, no value pushed).
-inline constexpr bool kLuaAddWaterLoadBound = false;
+inline constexpr bool kLuaAddWaterLoadBound = true;  // ON (cc9-lua71, 2026-10-19): BSM09 6 Lexington loads, gameplay identical; see WINS_TABLE
 
 // 008914F0 BreakShip(unit). Argument 0 through 00888AA0, then, when the unit's
 // controller ([unit+1018h], 0080E490) has both halves (+370h by 0092BEA0 and
@@ -49,7 +49,7 @@ inline constexpr bool kLuaAddWaterLoadBound = false;
 // stream-1 draws and 0092A240's puff draws (GameGunneryHost::
 // death_mode_draw_00bd2f10) and kills through the 00926D90 funnel with cause 1.
 // False: the row stays unhandled (UNIMPLEMENTED, no value pushed).
-inline constexpr bool kLuaBreakShipBound = false;
+inline constexpr bool kLuaBreakShipBound = true;  // ON (cc9-lua71, 2026-10-19): JM06 ambush breaks US Tanker 02 at 331.09 s (jm06.lua luaJM6BreakShips), row moves, still completes; see WINS_TABLE
 
 // 008A6C30 UnitSetPlayerCommandsEnabled(unit, mask). Argument 0 through 00888AA0,
 // its director vtable[114h], argument 1 as an integer, then 0071DD30: message 5Ah
@@ -61,7 +61,7 @@ inline constexpr bool kLuaBreakShipBound = false;
 // True: GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30 stores
 // the mask in the host's per-director map (no host reader) and records it.
 // False: the row stays unhandled (UNIMPLEMENTED, no value pushed).
-inline constexpr bool kLuaUnitSetPlayerCommandsEnabledBound = false;
+inline constexpr bool kLuaUnitSetPlayerCommandsEnabledBound = true;  // ON (cc9-lua71, 2026-10-19): BSM01/BSM09, no simulation reader, identical; see WINS_TABLE
 
 // Part 7b. Four natives. Each switch selects both the Lua runner (the row is
 // handled) and the units-host readers of the state it writes. OFF, the row
@@ -76,7 +76,7 @@ inline constexpr bool kLuaUnitSetPlayerCommandsEnabledBound = false;
 // GameUnitsHost::set_plane_visible_00951f40 per member (at most five; the
 // image's null sixth member, a crash there, is GUARDED and logged).
 // False: the row stays unhandled (UNIMPLEMENTED, no value pushed).
-inline constexpr bool kLuaSetVisibilityBound = false;
+inline constexpr bool kLuaSetVisibilityBound = true;  // ON (cc9-lua71, 2026-10-19): BSM09 D3A Val 5, row moves, same end; see WINS_TABLE
 
 // 008A0000 SquadronEnableVehicleAvoidance(entity, on). No class test:
 // [+3A4h] = on ? v | 2 : v & 0x000000FD (25 FD 00 00 00, so bits 8-31 clear
@@ -88,7 +88,7 @@ inline constexpr bool kLuaSetVisibilityBound = false;
 // True: run_squadron_enable_vehicle_avoidance_008a0000 writes the slot's
 // sq_avoid_3a4 and the host's 009A1951 gate also tests the squadron's bit 2.
 // False: the row stays unhandled and the gate tests +2E4h only.
-inline constexpr bool kLuaSquadronEnableVehicleAvoidanceBound = false;
+inline constexpr bool kLuaSquadronEnableVehicleAvoidanceBound = true;  // ON (cc9-lua71, 2026-10-19): BSM09 five Val squadrons off, row moves, same end; see WINS_TABLE
 
 // 0089FAF0 SquadronSetBaseUnsupported(squadron, base). 006CA730 appends the
 // squadron to the base block's std::list at +B4h (base+72Ch for class 45h,
@@ -99,7 +99,7 @@ inline constexpr bool kLuaSquadronEnableVehicleAvoidanceBound = false;
 // True: run_squadron_set_base_unsupported_0089faf0 adds the (deck, squadron)
 // pair and those three host sites consult the pairs.
 // False: the row stays unhandled and the list is taken as empty.
-inline constexpr bool kLuaSquadronSetBaseUnsupportedBound = false;
+inline constexpr bool kLuaSquadronSetBaseUnsupportedBound = true;  // ON (cc9-lua71, 2026-10-19): BSM09 Donald on both carriers; USN01 identical; see WINS_TABLE
 
 // 008A62A0 SetCheatTurbo(entity, value). A squadron (18h) writes float
 // +340h on members 0..4, stopping at the first null; otherwise a kind-5
@@ -114,6 +114,6 @@ inline constexpr bool kLuaSquadronSetBaseUnsupportedBound = false;
 // True: run_set_cheat_turbo_008a62a0 stores it and those host sites take the
 // plane's cheat_turbo_340 (0 until set).
 // False: the row stays unhandled and the sites keep their constants (0).
-inline constexpr bool kLuaSetCheatTurboBound = false;
+inline constexpr bool kLuaSetCheatTurboBound = true;  // ON (cc9-lua71, 2026-10-19): BSM09 16 calls, row moves, same end; see WINS_TABLE
 
 }  // namespace bsp
