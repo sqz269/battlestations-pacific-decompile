@@ -5162,13 +5162,16 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                     && pilot_permission != 9 && pilot_permission != 0;
                 if (taken) ++host.helm_orders_applied; else ++host.helm_orders_refused;
                 if (role_forced) ++host.helm_role_forced;
+                // Packet cc13-mapback (log only): map_up is the state
+                // kHelmPrepareMapUpGateCc13Bound tests (the map occludes 46h).
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
-                    "takehelm %s throttle %.3f %s(%.1f, %.1f) stop %.1f%s", taken ? "applied"
-                    : "refused", order.line, order.frame, now, order.unit.c_str(),
-                    static_cast<double>(order.throttle),
+                    "takehelm %s throttle %.3f %s(%.1f, %.1f) stop %.1f%s map_up=%d",
+                    taken ? "applied" : "refused", order.line, order.frame, now,
+                    order.unit.c_str(), static_cast<double>(order.throttle),
                     order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
                     static_cast<double>(x), static_cast<double>(z),
-                    static_cast<double>(order.stop_radius), role_forced ? " role_forced=1" : "");
+                    static_cast<double>(order.stop_radius), role_forced ? " role_forced=1" : "",
+                    host.units->helm_screen_occluded_by_map() ? 1 : 0);
                 // Packet cc9_player_order_capture_row: a later takehelm replaces
                 // the pending stop, as a new helm order replaces the route.
                 if (taken) {
