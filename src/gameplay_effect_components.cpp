@@ -13,6 +13,32 @@
 #include <new>
 
 namespace bsp {
+// Evidence: 0086E5A0 body and native vector-destructor order. Original
+// __thiscall ECX=flare/RET0. No incoming flag test: this is a class body.
+// Address-named callees remain external; C++ is not a binary/FH3 replacement.
+void destruct_effect_flare_0086e5a0(void* flare, EffectFlareDestructionHost& host) {
+    auto* bytes = static_cast<unsigned char*>(flare);
+    auto word_at = [&](std::size_t offset) -> std::uint32_t& {
+        return *reinterpret_cast<std::uint32_t*>(bytes + offset);
+    };
+    word_at(0) = 0x00D0D614;
+    for (std::uint32_t i = 0; i < word_at(0x2C); ++i) {
+        auto* array = reinterpret_cast<void**>(word_at(0x28));
+        if (void* item = array[i]) {
+            auto* item_bytes = static_cast<unsigned char*>(item);
+            host.string_destruct_0041dd20(item_bytes + 0x50);
+            host.string_destruct_0041dd20(item_bytes + 0x48);
+            host.free_00bf65ac(item);
+        }
+    }
+    host.resize_words_0086aa10(bytes + 0x28, 0);
+    host.free_00bf6989(reinterpret_cast<void*>(word_at(0x28)));
+    word_at(0) = 0x00D0D570;
+    if (word_at(0x0C) != 0)
+        host.return_string_00419cc0_00bd1510(
+            reinterpret_cast<void*>(word_at(0x0C)), word_at(8) + 1);
+    host.refcounted_base_00bd30f0(flare);
+}
 namespace {
 template<class T> void store(void* owner, std::size_t offset, T value) noexcept {
     std::memcpy(static_cast<unsigned char*>(owner) + offset, &value, sizeof value);

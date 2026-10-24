@@ -1,6 +1,22 @@
 #include "bsp/bot_tasks.hpp"
+#include <cstring>
 
 namespace bsp {
+// Evidence: complete 007B4030..007B40B4 listing; original __thiscall ECX=task,
+// RET 0. Not a deleting wrapper: no incoming flag test. External destructor
+// bodies remain explicit calls; C++ exception unwinding is not native FH3 proof.
+void bot_task_destruct_base_007b4030(void* task, BotTaskDestructionHost& host) {
+    auto* bytes = static_cast<unsigned char*>(task);
+    const std::uint32_t task_vptr = 0x00D05708, holder_vptr = 0x00D05704;
+    std::memcpy(bytes, &task_vptr, 4);
+    host.observer_destruct_007b3f70(bytes + 0x38C);
+    std::memcpy(bytes + 0x30C, &holder_vptr, 4);
+    void* state;
+    std::memcpy(&state, bytes + 0x310, sizeof state);
+    if (state) host.state_slot_08(state);
+    for (int i = 2; i >= 0; --i)
+        host.plan_element_destruct_007b3ba0(bytes + 4 + i * 0xC8);
+}
 std::uint32_t bot_task_zero_007b40d0() noexcept { return 0; }
 bool bot_task_false_007b4110(std::uint32_t) noexcept { return false; }
 void bot_task_clear_point_valid_007b4170(BotTaskPointResult& out) noexcept { out.valid = false; }

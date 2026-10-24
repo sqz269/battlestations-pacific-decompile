@@ -394,6 +394,15 @@ struct FortArchiveHost {
 };
 void land_fort_serialize_007455f0(std::uint8_t* fort, ArchiveWriter& archive, FortArchiveHost& host);
 
+struct LandingShipArchiveHost {
+    virtual ~LandingShipArchiveHost() = default;
+    virtual void ship_describe_state_00818340(std::uint8_t* ship, ArchiveWriter& archive) = 0;
+};
+// 0074A1F0, ECX = ship, archive on stack, RET 4. Complete normal body;
+// archive tags/pointer payloads retain their native 32-bit representation.
+void landing_ship_serialize_0074a1f0(std::uint8_t* ship, ArchiveWriter& archive,
+                                    LandingShipArchiveHost& host);
+
 // 00745FA0, __thiscall(ECX fort, index, anchor) RET 8: effect definition
 // class+154h[index] (checked against class+150h's {first +4, last +8}),
 // passed by value (AddRef) to 008687C0(ECX &out, EDX parent +4A4h, definition,

@@ -1,0 +1,81 @@
+{
+  "packet": "oct24-poolB-primary",
+  "validation": {
+    "build": "pending",
+    "runtime": "not run"
+  },
+  "routines": [
+    {
+      "address": "0074a1f0",
+      "name": "landing_ship_serialize_0074a1f0",
+      "status": "reconstructed_body_build_pending",
+      "evidence": "Ship base serializer, eight exact scalar tags, anchor-only vector and matrix pointer payloads, and end-section call. Listing 0074A1F0..0074A40F.",
+      "abi": "__thiscall ECX=ship; archive stack; RET4",
+      "uncertainty": "Descriptive names and explicit C++ interfaces; no native ABI, FH3 or runtime equivalence claim.",
+      "source": "src/cc13_seg41_land.cpp"
+    },
+    {
+      "address": "007b4030",
+      "name": "bot_task_destruct_base_007b4030",
+      "status": "reconstructed_body_build_pending",
+      "evidence": "Full listing 007B4030..007B40B4: vptr stores, observer +38C destructor, optional state +310 slot8, reverse 3xC8h plan destruction; no incoming delete flag.",
+      "abi": "__thiscall ECX=task; RET0",
+      "uncertainty": "Descriptive names and explicit C++ interfaces; no native ABI, FH3 or runtime equivalence claim.",
+      "source": "src/bot_tasks.cpp"
+    },
+    {
+      "address": "007cfd00",
+      "name": "plane_class_is_kind_of_007cfd00",
+      "status": "reconstructed_body_build_pending",
+      "evidence": "Complete listing 007CFD00..007CFD1D: kind 15/5/4 predicate.",
+      "abi": "ECX unused; class id stack; EAX bool; RET4",
+      "uncertainty": "Descriptive names and explicit C++ interfaces; no native ABI, FH3 or runtime equivalence claim.",
+      "source": "include/bsp/local_player_unit_lists.hpp"
+    },
+    {
+      "address": "007f9020",
+      "name": "copy_construct_profile_bonus_record_007f9020",
+      "status": "reconstructed_body_build_pending",
+      "evidence": "Full exported body: THREE pooled string headers +0/+8/+10 and scalar +18; explicit completed-member cleanup. Earlier two-string prose is incorrect.",
+      "abi": "__thiscall ECX=dest; source stack; EAX=dest; RET4",
+      "uncertainty": "Descriptive names and explicit C++ interfaces; no native ABI, FH3 or runtime equivalence claim.",
+      "source": "src/native_game_profile_lifetime.cpp"
+    },
+    {
+      "address": "00801db0",
+      "name": "BSP_RainModel_ScalarDeletingDestructor",
+      "status": "compiler_generated_out_of_scope",
+      "evidence": "00801DB3 calls 00801B70; 00801DB8 TEST byte [ESP+8],1; conditional 008007A0 pool return; 00801DCD RET4. Incoming flag bit mask 1 proves compiler-generated scalar deleting wrapper.",
+      "abi": "__thiscall ECX=this; flags stack; EAX=this; RET4",
+      "uncertainty": "Descriptive names and explicit C++ interfaces; no native ABI, FH3 or runtime equivalence claim.",
+      "source": "exports/bsp/functions/00801db0/assembly.txt"
+    },
+    {
+      "address": "0086e5a0",
+      "name": "destruct_effect_flare_0086e5a0",
+      "status": "reconstructed_body_build_pending",
+      "evidence": "Full 0086E5A0..0086E668 normal body: reverse two strings +48/+50 per entry, entry free, vector +28 resize/free, base vptr and string release, refcounted base. No delete flag.",
+      "abi": "__thiscall ECX=flare; RET0",
+      "uncertainty": "Descriptive names and explicit C++ interfaces; no native ABI, FH3 or runtime equivalence claim.",
+      "source": "src/gameplay_effect_components.cpp"
+    },
+    {
+      "address": "008f02b0",
+      "name": "scene_property_decl_is_enum_letter_008f02b0",
+      "status": "reconstructed_body_build_pending",
+      "evidence": "Complete listing 008F02B0..008F02D0: nonnull +118 pointer and _stricmp E == 0.",
+      "abi": "ECX=decl; RET0; AL bool",
+      "uncertainty": "Descriptive names and explicit C++ interfaces; no native ABI, FH3 or runtime equivalence claim.",
+      "source": "src/scene_property_bag.cpp"
+    },
+    {
+      "address": "008f02e0",
+      "name": "scene_property_decl_is_lua_s_letter_008f02e0",
+      "status": "reconstructed_body_build_pending",
+      "evidence": "Complete listing 008F02E0..008F0300: nonnull +118 pointer and _stricmp LUA_S == 0.",
+      "abi": "ECX=decl; RET0; AL bool",
+      "uncertainty": "Descriptive names and explicit C++ interfaces; no native ABI, FH3 or runtime equivalence claim.",
+      "source": "src/scene_property_bag.cpp"
+    }
+  ]
+}

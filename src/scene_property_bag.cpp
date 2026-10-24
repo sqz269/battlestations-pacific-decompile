@@ -9,6 +9,15 @@
 #include <limits>
 
 namespace bsp {
+// Evidence: both complete listings, null guard then CRT _stricmp and SETZ AL.
+// CRT binding retains the active locale. This source API takes the +118h field
+// value rather than the original ECX layout and is not a native ABI replacement.
+bool scene_property_decl_is_enum_letter_008f02b0(const char* letter) noexcept {
+    return letter != nullptr && _stricmp(letter, "E") == 0;
+}
+bool scene_property_decl_is_lua_s_letter_008f02e0(const char* letter) noexcept {
+    return letter != nullptr && _stricmp(letter, "LUA_S") == 0;
+}
 namespace {
 
 bool equals_no_case(const std::string& a, const std::string& b) noexcept {
