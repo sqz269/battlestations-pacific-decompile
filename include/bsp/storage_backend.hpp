@@ -22,34 +22,6 @@ struct PcStorageLuaHost {
     virtual void close_storage_archive_00b65e80() noexcept = 0;
 };
 
-// Exact normal-path PC file leaves, separate from the checked backend below.
-// A projection of manager +08h/+20h/+534h; name is NativeString::data (+4h).
-// Native null root/name data means the empty string. The native domain requires
-// kind < 3 and a formatted path fitting the 256-byte local buffer.
-struct PcStorageNativeFileState {
-    std::int32_t state_08{};
-    std::uint8_t error_20{};
-    const char* root_534{};
-};
-struct PcStorageNativeFileMemory {
-    virtual ~PcStorageNativeFileMemory() = default;
-    // Native allocation/free bindings. Their internals are outside these leaves.
-    virtual void* call_00bf55be(std::uint32_t bytes) = 0;
-    virtual void call_00bf6989(void* bytes) = 0;
-};
-// 00BEA9E0/00BEAA70, ECX = manager (unused by the second), RET, AL result.
-bool pc_storage_state_is_zero_or_one_00bea9e0(const PcStorageNativeFileState&) noexcept;
-bool pc_storage_capability_true_00beaa70() noexcept;
-// 00BEAB50: ECX = manager; name*; RET 4. Return from CreateDirectoryA is ignored.
-void pc_storage_create_slot_directory_00beab50(PcStorageNativeFileState&, const char* name);
-// 00BEABA0/00BEACB0: ECX = manager; name*,kind,buffer[-out],size[-out]; RET 10h.
-// Read preserves the original low-DWORD size, ignored short-read count, and the
-// open handle on GetFileSizeEx failure. No native layout/ABI claim is made.
-void pc_storage_read_file_00beaba0(PcStorageNativeFileState&, const char* name,
-    std::uint32_t kind, void*& buffer, std::uint32_t& size, PcStorageNativeFileMemory&);
-void pc_storage_write_file_00beacb0(PcStorageNativeFileState&, const char* name,
-    std::uint32_t kind, const void* buffer, std::uint32_t size);
-
 // Concrete Win32 filesystem, block decoding, Lua execution, and PC vtable+44
 // projection. Native object/vtable are 0x540 bytes/00d68c10; this is not their
 // layout or ABI. Root is the already initialized Documents/Battlestations-
@@ -86,6 +58,14 @@ public:
     void update_00beb9b0();
 
 private:
+    // Canonical PC leaves extracted from this backend's existing implementation.
+    // Typed checked projections; see the source for native ABI and domain limits.
+    bool state_is_zero_or_one_00bea9e0() const noexcept;
+    static bool capability_true_00beaa70() noexcept;
+    void create_slot_directory_00beab50(std::string_view name);
+    std::vector<std::uint8_t> read_file_00beaba0(std::string_view name, std::uint32_t kind);
+    void write_file_00beacb0(std::string_view name, std::uint32_t kind,
+        const void* bytes, std::uint32_t size);
     std::string path(std::string_view name, const char* leaf = nullptr) const;
     bool file_exists(std::string_view name, const char* leaf) const;
     void clear_marker(std::string_view name);
