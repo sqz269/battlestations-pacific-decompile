@@ -111,9 +111,12 @@ public:
     // the unit's pads on this building, then 006AC490(unit) on the pad if non-null.
     void assign_006f2fb0(int building, int unit, int pad);
 
-    // 006AC490, __thiscall(pad)(unit), RET 4, body 006AC490-006AC4C3, complete:
+    // 006AC490, __thiscall(pad)(unit), RET 4, body 006AC490-006AC4C3. The image:
     // no-op when unchanged; else unregister the old occupant's observer pair
-    // (006952A0), store, register the new one (00694A60).
+    // (006952A0), store, register the new one (00694A60). SUBSTITUTION, labelled:
+    // this host body is index-only. It stores the occupant index and makes no
+    // observer unregister/register calls. The faithful whole body is
+    // building_pad_set_occupant_006ac490 (src/pool_pool23_cc13.cpp, unwired).
     void set_occupant_006ac490(int pad, int unit);
 
     // The observer pair's effect when the occupant goes away: the handle at
