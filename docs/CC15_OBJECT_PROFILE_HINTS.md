@@ -408,6 +408,37 @@ without a show.
 Save safety: the four files under Documents\Battlestations-Pacific (options.txt, save\0\player,
 quick, valid) have identical SHA-256, size and mtime before the first run and after the last.
 
+### Joint flip pairs (64163508f + 77cc21b65, ref env, 2026-10-23)
+
+64163508f turns `kHintTriggerPassesCc15Bound` and `kHudHintsSecondsLeftBound` on together.
+77cc21b65 makes 0068C526 (`screen_34_query`) read the tracker's screen 34h through
+`hints_seconds_left_0054d3c0_cc15()`, instead of the HUD host's zeroed copy.
+
+Exes:
+- `hoff`: 77cc21b65 with both switches off.
+- `hon`: 77cc21b65 as committed.
+- `off2`: the 50aec32e6 base, run 2026-10-19 and USN21 again on 2026-10-23.
+
+Rows: USN04 plus the 12 wins rows, plans as in section 6 except `usn02_l70_u2_b`, `lomp06_g56_l6_v2`, `jm06_l70_j6_n` and `ijn18_l70_i18_r`. Every run ended with exit_code=0 and its
+`rng streams: on` line.
+
+- **OFF identity (off2 vs hoff):** gameplay identical and strict ordered diff 0 on 12 rows. On
+  USN21, off2 rerun today vs a hoff repeat is identical. USN21 varies run to run (below).
+- **ON vs OFF (hoff vs hon):** on the 12 rows other than USN21, gameplay and the mission end are
+  identical, and the strict ordered diff of hint, dialog, message, objective and Lua timing lines is
+  0. No dialog is re-timed. The ON-only lines are the tracker's own.
+- **USN21:** moves, but repeat runs of the same exe move too (hoff vs its repeat: deaths 515 / 514,
+  shots 131757 / 130772).
+  - The only deterministic USN21 effect seen is the section 6 one: BASICSUB holds game+634h, so
+    OnMove skips the warning manager.
+  - The size of its gameplay effect needs repeated runs per side.
+- **0068C526:** with 77cc21b65 the query reads the shown hint's seconds left. It feeds only the
+  in-mission interface update's fallback branch (no controlled unit, no spectating, no camera flag
+  66h). On2 vs hon is identical on USN21, so the change does not reach a moved row there.
+
+Save files: the four files under Documents\Battlestations-Pacific have identical SHA-256, size and
+mtime before the first run and after the last (2026-10-23).
+
 ### The hint pause game+620h (static trace, 2026-10-19)
 
 Method: a byte scan of every executable section for the displacement 620h. Each hit was decoded
@@ -458,3 +489,73 @@ unless one of those updates is found to issue orders.
 - Decide the LOMP06/USN21 critical-hint behaviour for unattended runs. Natively the hint waits for
   action 4Ah. Here it stays active and suppresses every later hint of the mission.
 - Align `kHudHintsSecondsLeftBound` (0068C526) with this screen.
+
+## 7. The HUD gate on game+620h (packet cc15-hint2-gate, 2026-10-23)
+
+Switch `kHintPauseHudGateCc15Bound` (`include/bsp/game_hint_passes.hpp`), committed **OFF**
+(9809f7532 + 639d32eab, on origin/main 8028144c8).
+
+**What ON does.** `game_hud_suppressed` answers `game_hint_pause_620_cc15()` in two bindings: the HUD
+root 44h (00649860; 0064987D `JNZ 00649FB3`, `game_hosts_hud.cpp`) and the markers 4Dh (006435D0;
+00643605, `game_hosts_hud_world.cpp`). That function returns the flag 004D94F0 last stored on the
+tracker's screen 34h, so both updates stop while a critical hint is up. The pause menu's +61Fh is
+still not modelled.
+
+**Not gated:** the other three 620h readers of section 6 (pilot 00519BB0, map icon 005ADDA0,
+Support Manager 4Eh 00675C40). The host does not run them, so no support launch can be suppressed
+yet.
+
+**The plan input that dismisses a hint** is `<frame> input 0x4A`, in the `input <action>
+[hold <frames>]` syntax. Plans write the action number; there is no name. 0x4A is
+`kHudHintsConfirmAction`, the confirm record +DE0h. The hints screen tests it through 00535EE0
+(0054EB9E). In the host it reaches `GameMenuHost::input_action_pressed` through the injected action
+records.
+
+### Pairs (ref env, 2026-10-23)
+
+| Builds | Exe | Commit and switches |
+| --- | --- | --- |
+| main | `gm` | origin/main 8028144c8 |
+| gate OFF | `goff` | 639d32eab as committed |
+| A | `ga` | triggers ON, gate OFF (not committed) |
+| B | `gb` | triggers ON, gate ON (not committed) |
+
+Rows: USN04 plus the 12 wins rows. The plans are those named in section 6, except four:
+`usn02_l70_u2_b`, `lomp06_g56_l6_v2`, `jm06_l70_j6_n` and `ijn18_l70_i18_r`. Every run ended with
+exit_code=0 and its `rng streams: on` line.
+
+Four runs stopped at the startup error box 008F83C5 in the slot queue and were rerun: gm IJN18,
+gm USN04, goff USN01 and ga IJN18.
+
+- **main vs gate OFF:** gameplay identical on all 13 rows. The strict ordered diff is 0, and
+  pair_diff exits 0 on 12 rows (exit 1 on BSM01, outside gameplay).
+- **A vs B (the gate):** gameplay identical, mission end identical and strict diff 0 on 12 rows,
+  all except USN21.
+
+Two missions keep a hint up: BASICSUB, critical, shown at t=0.10 and never dismissed.
+
+- **LOMP06 (`g56_l6_v2`):** completed 330.84 s on both. Gameplay is identical. The HUD root body
+  runs once instead of 3428 times, and markers `gui_extent` falls from 61695 calls to 9.
+- **USN21 (`s46_u21_f`, 80000 frames):** **gameplay MOVED**. There is no end on either side.
+  - Deaths 516 -> 514, hit records 9176 -> 9644, hull hits 2448 -> 2476, shots 130430 -> 130772.
+  - The first changed death row is at about 2285 s. The first ordered-event difference is the ship
+    exit-zone countdowns at about 2338 s.
+  - The intended rows: `mission markers: frames 79276 -> 1`, and the HUD root body stops.
+  - GuiText work rises about 20-fold (`find_font` 8192 -> 158882).
+  - Entity commands rise 750 -> 752, and script `after-row-9 order` applied 22 -> 24.
+  - Helm orders: all 321 identical, in order.
+  - **USN21 is not deterministic run to run on this machine (2026-10-23), so this move is not
+    attributable to the gate.** Repeat runs of the same exe give different gameplay:
+    - ga vs ga (repeat): deaths 516 / 514, shots 130430 / 127936.
+    - hoff vs hoff (repeat; the joint-flip pairs in section 6): deaths 515 / 514, shots 131757 / 130772.
+    - off2 run on 2026-10-19 vs 2026-10-23: moved.
+  - Meanwhile gb and its repeat match, off2 and its second repeat match, and the code-identical
+    OFF pair off2-repeat vs hoff-repeat matches. The outcomes fall into a few clusters (shots
+    127936, 130430, 130772, 131757).
+  - The two gated bodies are display-only through their host interfaces, and the markers
+    `refresh_pose` is a no-op. The cause of the variance has not been found; candidates are the
+    process-wide RNG, heap order, or thread timing.
+  - USN21 needs several repeats per side, compared as distributions, before any USN21 claim. That
+    includes the section 6 joint-flip USN21 move.
+- **Hint that shows but does not stall:** JM06 shows PUM1STGET at 321.05 s, not pausing, and it
+  finishes.

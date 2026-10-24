@@ -18309,3 +18309,7 @@ Open queue:
 Plan rules carried over: `select` (or takehelm) before every moveto; a helmed ship ignores moveto, so steer it with a
 new takehelm line; takehelm never selects; a row is non-provisional only with helm_moveto_unselected=0 and
 helm_role_forced=0; absolute --helm-orders paths; --difficulty 1.
+6. From helm1 (after this handoff): kMovieCameraFinishScriptCc13Bound (9616b139a on agent/cc9-helm1, not yet on main)
+   moves NO WINS row. Non-WINS moves for the re-time notes: BSM03 stock (intro hands over to Kane, same Game Over
+   381.03 s), BSM06 stock (no end -> Game Over 962.89 s in phase 2), BSM04 g56_b4_e (Tiger movie at 174.11 s, B-17s spawn,
+   same Game Over 204.06 s); JM04 and JM15 stock unchanged. Logs: cc9-helm1\local\h1r_<b3|b4|b6|jm4|jm15>_{main,s5}_ref.log.

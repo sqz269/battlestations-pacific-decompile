@@ -42433,7 +42433,15 @@ bool GameUnitsHost::plane_launch_spot_arm_9dc(std::size_t index, std::uint32_t& 
 // is under 2.0 (00CE3958), with a holder +BF4h and +C18h > 0, drops the hit
 // when the entity is the holder's base owner ([[+BF4h]+4]+7Ch); then
 // +C18h = 5. Otherwise (0084C251) +C18h > 0 and (+72Ch)->vtable[38h] (free
-// flight, +900h == 7) count it down by one.
+// flight: 0074E210 BSP_PlaneControlMode_IsFreeFlight, `cmp [ecx+1D4h],7`, and
+// +72Ch + 1D4h = +900h, so +900h == 7) count it down by one.
+// PROVISIONAL: [[+BF4h]+4]+7Ch is taken as landing_decks[+BF4h - 1].owner, the
+// same holder -> block -> owner substitution the stock return uses
+// ([[[plane+BF4h]+4]+7Ch]+174h, packet cc9_stowed_plane_stock_return).
+// LABELLED: a landscape hit (hit with hit_unit == -1 here; hit_unit 0 on the
+// projectile sweep) is treated as an entity present, so it takes the hit arm
+// and never counts down. That matches the image only if 0098B370 returns a
+// non-null hit entity for land, which is not shown.
 int GameUnitsHost::plane_own_base_hit_filter_0084c213(std::size_t shooter, bool hit,
                                                       std::size_t hit_unit) noexcept {
     if (shooter >= impl_->slots.size() || !impl_->slots[shooter]) return 0;

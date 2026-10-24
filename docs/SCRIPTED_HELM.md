@@ -1178,6 +1178,7 @@ Worker cc13-wire1, 2026-10-19. This is a harness line with no image switch of it
   - A new line for an action still held restarts its count.
 - **What it logs.** One line when the order applies (`helm order applied: ... input 0x99 hold N frame(s)`), and one when the hold starts (`helm input action 0x99 held for N frame(s) from frame F`). Both go through the host log, which writes the log file and stdout; harness runs redirect stdout.
 - **Default runs.** With no `input` line, no record exists and every action other than 4Eh answers false, as before.
+- **Critical hints (`input 0x4A`).** Since the hint flips (kHintTriggerPassesCc15Bound, kHintPauseHudGateCc15Bound), an unattended run without 0x4A keeps a critical hint up all mission. LOMP06, USN21 and IJN08 raise one at t=0.10 s (`hint pause t=0.10 1`). `20 input 0x4A` drops it at 1.05 s, and a second one goes up in the same frame and stays. game+620h parks GUI screens and, with the gate ON, the HUD root 44h and markers 4Dh updates. It does not stop the simulation, so the WINS rows end the same with or without the line (docs/WINS_TABLE.md, 2026-10-24 hint flip).
 - **LABELLED.**
   - The hold starts one frame after its line, at the input prologue, as a real key press would.
   - The action is held at amount 1.0 through no binding or device.

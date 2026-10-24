@@ -3987,3 +3987,112 @@ level bomber, and no switch is needed.**
   through slot 224h (006E55FA), so this is the host's ammo test.
 - **Uncertainty.** A destroyed-failure message aimed at a plane's rack would set +3B8h. No plane-side sender was
   checked.
+
+
+## 115. Airborne launch ON (CHG06); JM08 plan h holds the HQ but spawns no C47 (cc9-physics26, 2026-10-24)
+
+The exports are of 997fe5044 (main after 04cc91447, where cc15 turns on kChallengeGroupPageCc15Bound): `local\p26b_off`,
+`local\p26b_air` (kAirOpsLaunchFlagAirborneBound + kAirOpsLaunchFlagAltitudeDrawBound), `local\p26b_s1`
+(kLevelBombParatrooperDropBound) and `local\p26b_s6` (all six paratrooper switches). The env is ref and no log has
+"present failed".
+
+**kAirOpsLaunchFlagAirborneBound and kAirOpsLaunchFlagAltitudeDrawBound are ON (reached).** `--menu-select CHG06` now
+loads chg_6_forcez.lua, whose forcedDifficultyLevel 2 overrides the pin.
+- ON logs four "airborne launch for Hermes (006C5050 flag arm, State 7)" lines. They come from
+  LaunchAirBaseSlot(AlliedCV, 1..4, true), with y = Ceiling + draw = 1631.91, 1602.52, 1723.02, and so on. OFF logs
+  none.
+- Both runs fail at 986.88 s ("You have failed to destroy the battleships!", Prince of Wales). Each logs one
+  commandhelpers.lua:330 line, the same on both sides.
+- pair_diff gives 3 (moved). Deaths go 56 -> 51, shots 13164 -> 130 and hull hits 692 -> 9.
+- The cause: OFF, the Hermes squadrons start on the deck and fly over the airfield, so AirField's Heavy AA 01-03 fire
+  (14-16 shots each) and the airfield buildings die. ON, they start airborne at the carrier's x/z and never come
+  within 5 km of that AA (nearest 101 -> 5295 m). That is the mechanism the image's flag arm describes, so both
+  switches flip.
+- `tools/off_switch_on_build.py` gives exit 0, and the full build passes.
+- WINS: LaunchAirBaseSlot is called 0 times in every WINS log checked, so no row can move:
+  - lua72's l72r_*_{m,main}_ref (b1, b9, e8, i08, i18, j6, l10, l6, p01, u01, u02, u12, u21);
+  - this session's p26_off_w*;
+  - USN15 l71r_u15i.
+
+**JM08 plan h (ships62 `s62_j8_h`, copy `local\p26_s62_j8_h.txt`; 72000 frames) on 997fe5044: the HQ holds, but
+the paratrooper path is still unreached.**
+- OFF (`local\p26b_off_j8h`) and S1 (`local\p26b_s1_j8h`) have no end through 3600 s; the HQ never falls. They are
+  gameplay identical (exit 1).
+- No C47 spawns, and neither does any US bomber. The only plane types created are:
+  - Japanese: MainAirFieldEntity 01 (types 152, 154, 166 and 167), Hosho (162), Gekko, Ki-43 and the H6Ks;
+  - three Wildcats (133).
+- `summary mission capture paratroopers adds=0` and `units_with ... paratrooper=0` on both sides.
+- The plan's own "C47 .." targets are refused with "no unit". The run therefore does not contain the ~1318 s US air
+  wave that physics24's runs saw (section 104).
+- The S6 run was cancelled because S1 was identical.
+- Next: find what spawns JM08's US air wave (the mission script; LST 01 dies at 1275.27 s to the HQ's guns, which may change
+  the phase), then re-pair S1 and S6.
+
+
+## 116. CHG06 re-pair with the party switch ON; PRCP01 re-plan (cc9-physics26, 2026-10-24)
+
+**CHG06 with kLaunchedSquadronPartyCc13Bound ON on both sides.** This is a temporary build because cc9-party1's
+flip is not on main yet; the lead asked for it. Exports of 50b1127e3: `local\p26c_poff` (party ON, airborne switches
+OFF) and `local\p26c_pair` (party ON, airborne switches ON).
+- The airborne arm is still reached: 4 "airborne launch for Hermes" lines ON, 0 OFF.
+- Both sides fail at 986.88 s and log one commandhelpers.lua: line.
+- pair_diff gives 3, but only through distances. Deaths (51), hits (1132), shots (130) and damage match, and the
+  death rows are identical. The unit table moves only nearest distances (about 15 m). The natives show
+  place_members_007f2920 and initial_command_007f4e9e (4 calls each) taking the place of begin_flying_007c7110
+  (12 calls), as the flag arm predicts.
+- So the section 115 shot drop (13164 -> 130) came from the party switch's effect on the OFF baseline, not from the
+  airborne arm. The flip stands.
+
+**PRCP01 re-plan `p26_p01_a`** (`local\p26_p01_a.txt`, built by `local\p26_mkp01.py`).
+- The plan is p9_p01_k with every Enterprise strike on Junyo at frame >= 5700 retargeted to Zuiho.
+- Why: with the attack-target flip, Junyo dies at about 283 s, so those launches were refused. Zuiho's squadrons,
+  now on the command arm, sank Enterprise at 1038.39 s.
+- Results on the tree build of 50b1127e3:
+  - ref: completed 833.02 s (`main_p01a`).
+  - 20,3: completed 726.70 s (`main_p01a_j203`).
+  - Both log the exec guard, and neither has "present failed".
+- On the same build, p9_p01_k still fails at 1038.39 s. Adding Wildcat CAP launches gives a result identical to
+  `a` (b); CAP alone fails (c).
+- The plan was sent to cc9-lua72 (WINS keeper; it holds config/win_orders) to commit as the row.
+
+
+## 117. Why JM08 plan h never spawns the C47s (cc9-physics26, 2026-10-24)
+
+The script is `scripts/missions/COTP-IJN/PRCPIJN/prcpjm08.lua` (this installation, mtime 2024-08-26). The scene
+prcpijn_08_defend_guadalcanal.scn names it, through the record+928h StageScript slot.
+
+**Trigger chain (Lua only, no doubtful native).**
+1. luaIntroMovieEnd starts CheckCompletion (line 635).
+2. CheckCompletion (790) polls `luaObj_GetSuccess("primary",2) and luaObj_GetSuccess("primary",1)` every second.
+   - Primary 2 is set by CheckPrim2 (747) when Missouri is dead.
+   - Primary 1 is set by CheckPrim1 (727) when `Mission.LandShips` has no live member. LandShips is eleven ships
+     (519-529): USTroopTransport 01-06, LST 01-03 and LSM 01-02.
+3. When both are set, it moves the invasion force to RetreatPoint and starts the "Run" dialog (332), whose last step
+   calls FadeIn (999).
+4. FadeIn runs PreparePhase2 (1005) after 5 s, which starts luaBomberWave1 (B-17s, WingCount 3-5).
+5. Each wave calls the next with luaDelay(..., 180): luaBomberWave2 (B-25s, 1080), then luaBomberWave3 (C-47s,
+   1183, `Mission.C47Count`).
+
+So the C-47s (the paratroopers) arrive about 365 s after the last LandShip and Missouri are both dead. Phase 2 has
+no timer or HQ path.
+
+**Plan h on main 4ada4aa61 (rebuilt tree, ref env, 72000 frames, `local\main_j8h`):** no end, and no present
+failures. The guard line is absent because there is no completion.
+- Missouri dies at 414.12 s. LandShips deaths:
+  - USTroopTransport 06 at 499.65 s, 05 at 630.27, 04 at 699.55, 01 at 760.94 and 02 at 805.58;
+  - LSM 01 at 666.96 s and LST 03 at 687.11;
+  - LST 02 at 1129.63 s (AA truck 05), LST 01 at 1275.27 (Headquarter 01) and LSM 02 at 1391.78 (AA truck 06).
+- **USTroopTransport 03 never dies.** From about step 22320 it sits stopped at (1636.6, -646.8) in attackmove,
+  firing at Headquarter 01. It took 157 hits; its health is 1722.4 at the last hit (3977.4 at the first).
+- Primary 1 is therefore never set, CheckCompletion never fires, and no B-17, B-25 or C-47 is ever spawned.
+- Why nothing finishes it:
+  - Every Japanese surface ship is dead by 876.31 s (the Gyoraitei, Fubuki 714.20 s, Isokaze 759.59 s).
+  - Hosho sinks at 471.06 s.
+  - MainAirFieldEntity 01 runs out of bombers: class 166/167 refuse with "no stock of the class" from frame 12902
+    (645 s).
+  - After that, the 43 applied orders on USTroopTransport 03 are fighter launches and order-3 retargets (classes
+    152/154), which do not sink it.
+- Fix (plan side): sink USTroopTransport 03 while bomber stock remains. For example, keep one class 166/167
+  squadron in reserve for it, or put it first in the generator's target list.
+  - Only then can phase 2 and the C-47s, and therefore the paratrooper switches, be reached.
+  - ships62's generator is `local\s62_j8mk.py` (cc9-ships44).
