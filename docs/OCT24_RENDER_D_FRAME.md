@@ -134,6 +134,57 @@ still explicitly leaves `D5E13C` unadmitted and stops at `00B1645B` before its
 post draw or `00B164B8` before gather. The multipass blocker is therefore present
 in this checkout, rather than inferred only from the older survey.
 
+## Sequential GUI command handoff
+
+The follow-up adds two methods to the existing private `MissionCommandGraph`:
+
+```cpp
+void submit_scene_with_label(void* scene, void* camera, void* targets,
+    void* actual8b_label);
+void retire_executed_command_before_overlay();
+```
+
+The label-aware method borrows the address of the original eight-byte
+`NativeString` argument header. The header's data belongs to the same canonical
+string pool as `submission.strings`. It passes that exact address to
+`submit_native_scene_00b1f4d0`; the adapter does not copy, relabel, clear or destroy
+it. The native body still performs its own evidenced command-name copy and
+consumes the argument's buffer on normal and exceptional exit, leaving the
+header unchanged. The caller must not destroy it after native entry. If a
+pre-entry validation or command-acquisition check fails, consumption has not
+started and the caller retains its original cleanup responsibility. Existing
+`submit_scene` keeps its internally constructed `"Mission ship"` label.
+
+Both methods use the same `pending` record, acquisition observation, submission
+frame and already-bound `queue_frame`. There is one retained command companion
+at a time, with multiple successful sequential commands permitted inside one
+actual BeginScene/Present. The explicit retirement method requires a nonnull
+pending command and delegates to `complete_frame`: ready/executed, no failed
+state, empty native queue/context, and retired context/batch owners are all
+required before resetting the companion. It performs no EndScene or Present.
+The existing completion counter is a command ordinal when two commands are
+issued in a device frame, despite its historical `frame=` log field.
+
+The primary lane enforces `overlay_window_open` and at most one GUI submission
+per actual begin epoch. After successful ship execution it retires that
+companion, submits the GUI's real scene/camera/targets and original label,
+executes the GUI command, then lets normal native end-frame complete the GUI
+companion. The bridge overlay/capture follows both native commands. Failures
+retain the same graph and propagate; a second graph must not be constructed,
+because it would replace the shared frame's execution-context/frame bindings.
+
+The existing pure pass-context getter is
+`bsp::cc13_front4::render_service_word_1d4_00b0d0d0(Raw service)` from
+`cc13_front4.hpp/.cpp`, where `Raw` aliases `bsp::cc13_sweepA::Raw`. It reads one
+Win32 dword at `service+0x1D4`, with no host calls or mutation. Original ABI:
+`__thiscall(ECX=service)`, no stack args, plain `RET`, EAX result. The GUI adapter
+must read the current actual `00F8D39C` publication and convert that returned
+word through `uintptr_t` to the targets/pass-context pointer. `+0x1CC` belongs
+to the different `00B0D1C0` getter and is not interchangeable. This is a source
+API, not a newly recovered binary-compatible call interface.
+The service pointer must be live and nonnull; the getter supplies no guard.
+Forward its returned value unchanged, including a null targets pointer.
+
 ## Validation boundary
 
 Source review and `git diff --check` cover this packet. No new tests, standalone
