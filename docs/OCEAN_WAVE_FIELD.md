@@ -4096,3 +4096,58 @@ failures. The guard line is absent because there is no completion.
   squadron in reserve for it, or put it first in the generator's target list.
   - Only then can phase 2 and the C-47s, and therefore the paratrooper switches, be reached.
   - ships62's generator is `local\s62_j8mk.py` (cc9-ships44).
+
+
+## 118. USNOS: the loss is Enterprise torpedoed by the Takao group; plan `p26_os_a` holds to 1675 s; carrier final approaches float at ~80 m (cc9-physics26, 2026-10-24)
+
+The script is `scripts/missions/COTP-USN/us_osumi.lua` (this installation, mtime 2024-10-29).
+
+**Lose condition.**
+- luaCheckObjectives (955) calls luaMissionFailed while primary 1 is active and either all six TroopTrans1-6 are
+  dead or `Mission.BigE` (Enterprise) is dead.
+- luaMissionFailedNew(Mission.JapHQs[1], "Game Over") only uses HQ1 as the camera entity, so `entity="HQ1"` in our
+  summaries does not mean HQ1 fell.
+- At the start of phase 2, luaMoveToPh2 (1619) sends `NavigatorAttackMove(Mission.InitTakao[1], Mission.BigE)`. That
+  is the Takao1 group: Takao1 plus Shima4-7, in formation on Takao1.
+- Primary 1 is completed only in luaReinTime (1735). luaReinTime runs either at the end of the 900 s blockade
+  countdown (luaBlockadeMovieEnd) or once the blockade is cleared (luaReinFadeOut).
+- The win needs all of:
+  - all three JapHQs captured (troops within 1500 m of a neutral HQ);
+  - the reinforcement's FinalTrgs killed (primary 5, ReinDead);
+  - then the nuke sequence.
+
+**The 1099.95 s loss** (`p25i_off_osL` on 802e1d8b9, and again `local\main_osL` on main 14ae38b93, l65_os_c1):
+- Enterprise dies at 1095.79 s, first damage at 1080.88 s. The killer is Shima4, by torpedo (cat 7) from 2.29 km.
+- l65_os_c1 parks Enterprise at (12500, -4000) from frame 300, and the Takao group closes on it from the
+  north-west at about 14 m/s.
+
+Variants (`local\p26_mkos.py`, all on the tree build of 14ae38b93, ref, 36000 frames):
+
+| Plan | Change | End |
+| --- | --- | --- |
+| `p26_os_a` | Enterprise moveto (13500,-9000) at frame 15000 and (15000,-13000) at 19000 | failed 1675.51 s (Enterprise torpedoed by Shima7 at 1672.51 s) |
+| `p26_os_b` | Enterprise 331/339 strikes on Takao1/Shima4/Shima5 every 600 frames from 14000 | failed 1099.95 s (Takao1 dies 1094.04 s; Shima4 still torpedoes at 1080.88 s) |
+| `p26_os_c` | a + b | failed 1585.42 s (Shima7 at 1581.07 s) |
+
+`p26_os_a` meets goal 1: HQ1 is held, and the run goes past 1600 s.
+
+**The carriers still land nothing, and the cause is now visible.**
+- In `main_osa`, Enterprise_sqn01, 02 and 37 queue at Enterprise at 1400.19-1401.19 s.
+- Enterprise is stopped at (14995, -12993) by about step 32000.
+- All three squadrons are alive and still queued at 1672.56 s. When Enterprise dies they re-queue on Reprisal and
+  Lexington.
+- Deck summary for Enterprise: queue=3, records=3, releases=0, landed=0, modes 3=2210.
+- The heads do fly finals: Enterprise_sqn02 enters 5D8 at 1528.32 s and 1619.90 s, and Enterprise_sqn01 at
+  1554.94 s.
+- Every one of those finals ends in the abort state (64C -> 5B8 at 1543.33 s, 1571.16 s and 1635.52 s).
+- The pattern (Enterprise_sqn01, `land final trace` / `land final flight`, 1555-1566 s):
+  - throttle 0, brake 0.197, and speed falls from 98 to 33 m/s (q 3.1 -> 1.04);
+  - the commanded pitch steepens from -0.22 to -0.55, but the live pitch rises from -0.24 to +0.03;
+  - vy goes to about 0 at Y about 80 m;
+  - the first abort trace is at local (x -0.4, y 77.1, z -204.2): 77 m above the deck, 204 m behind it.
+- Enterprise_sqn02's aborts look the same (y 77.9 at z -206.5).
+- The heads stop descending once they are slow, about 80 m above the deck. This is the airfield "float" of
+  SQUADRON_LAND_TASK.md 5n/5o, but on a deck. Airfield3 does land planes in the same run (inserts=2, found=492).
+- Next: find why the live pitch fails to follow `cmd` below q of about 1.5 on the carrier final. Candidates are the
+  5o direction-hold steer with a deck target, a stall or altitude protection, or the deck-height reference. Read
+  game_hosts_units.cpp around 36540-36640 and the 009B1F1D begin steer. Pair any fix on `p26_os_a`.
