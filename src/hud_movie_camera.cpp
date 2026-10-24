@@ -282,6 +282,8 @@ bool step_007911e0(MovieKeyframe& k, HudMovieCamera& camera) {
         begin_00791020(k, camera);
     }
     k.zoom_c8 = k.zoom_c4;                             // 0079126D
+    // 00791275..00791295, the modifier's slot +8: `ret 8` in both vtables (goaround
+    // 00D04C8C -> 0078E810, default 00D04CC0 -> 0078E820), so skipping it is exact.
     if (k.state_f8 == 1 && camera.clock_3b0 >= k.blend_f4 + k.start_f0) {   // 00791297..007912B6
         // 007912B8..007912E0, packet cc13-finscr: a non-empty +FCh and a clear
         // camera +390h (BL, 0079121D) call 00887E50. Recorded here; the caller

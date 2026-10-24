@@ -105,7 +105,8 @@ struct MovieTrack {
 
 struct HudMovieCamera {
     // +390h, 007911E0's finishscript gate (0079121D, through [key+4]+74h). The
-    // constructor's 0079D179 stores 0; no other writer is known.
+    // constructor's 0079D179 stores 0; the prompt skip 0096D58D (0096D540, input
+    // action 3 on a pending prompt) sets 1, which this host never reaches.
     bool finish_suppress_390{false};
     bool running_391{false};  // set by 00798C80's first step (its +221h on the +170h sub-object)
     // Packet cc13-finscr: the finishscripts 007912E0 would call during the last
