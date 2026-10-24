@@ -280,22 +280,49 @@ struct PlaneAdvanceInputs {
     float level_axis[3] = {0.0f, 0.0f, 0.0f};  // ctl+80h
     // 007DA211's attached branch.
     bool attached = false;  // ctl+FCh == 1 && unit+BF4h && unit+3Ch
+    float attach_height_offset = 0.0f;  // classDesc+1FCh (007DA30A)
 };
+
+// 007DA2C7..007DA331, the attached branch's calls. The unit is attached to a
+// parent node (unit+3Ch) and an air-ops holder (unit+BF4h), i.e. a deck.
+struct PlaneAttachedClampHost {
+    virtual ~PlaneAttachedClampHost() = default;
+    // 007DA2C7: parent+C8h, the world-matrix-valid byte; when clear, 00414DB0
+    // BSP_EntityPose_RefreshWorld on the parent.
+    virtual bool parent_world_valid_c8() = 0;
+    virtual void refresh_parent_world_00414db0() = 0;
+    // 007DA2E6: 00414D10(ECX = out, EDX = point; parent+CCh) RET 4.
+    virtual void transform_point_by_parent_00414d10(float out[3], const float point[3]) = 0;
+    // 007DA2FE: 006BC530(ECX = [unit+BF4h]; point, float* out) RET 8. The out
+    // slot is written unconditionally (006BC56E).
+    virtual void deck_height_at_006bc530(const float point[3], float* height) = 0;
+    // 007DA331: 007D7D70 BSP_PlaneDyn_SetGroundContactUp, ECX = [ctl+10h].
+    virtual void set_ground_contact_up_007d7d70() = 0;
+};
+
+// 00D7A358, the double form of 0.01f (bytes 00000040 E17A843F): the margin
+// above the attach height.
+inline constexpr float kPlaneAttachHeightMargin = 0.01f;
 
 struct PlaneAdvanceOutput {
     AdvanceMatrix live_pose{};  // what lands in unit+74h
     bool rotation_applied = false;  // 0085E4D0 did not take its 0085E871 exit
     bool levelling_applied = false;
-    // True when 007DA211's attached branch would have run. That branch is NOT
-    // modelled: see the doc's coverage table.
+    // True when 007DA211's attached branch would have run but no
+    // PlaneAttachedClampHost was supplied, so the clamp did not run.
     bool attached_branch_unmodelled = false;
+    // The attached branch ran and lifted the position (0 > clearance).
+    bool attached_lifted = false;
 };
 
 // 007D8230, __thiscall(ctl, float step), RET 4. Position only.
 PlaneAdvanceOutput translate_only_007d8230(const PlaneAdvanceInputs& in);
 
 // 007D9F60, __thiscall(ctl, float step), RET 4. Rotation then position.
+// `attached` runs the attached branch when in.attached is set; without it the
+// branch is flagged as unmodelled instead.
 PlaneAdvanceOutput rotate_and_translate_007d9f60(const PlaneAdvanceInputs& in,
-                                                 AdvanceMatrixOps& ops);
+                                                 AdvanceMatrixOps& ops,
+                                                 PlaneAttachedClampHost* attached = nullptr);
 
 }  // namespace bsp

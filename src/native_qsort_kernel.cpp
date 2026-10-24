@@ -169,4 +169,25 @@ void sort_valid_native_bytes_00bfc350(void* actual_base, std::uint32_t count,
     }
 }
 
+// 00BFC350 _qsort, cdecl(base, num, width, comp), plain RET. The validation arms
+// read from the listing (cc13-P4): 00BFC35E TEST EBX,EBX (base) / JNZ; 00BFC36A
+// TEST ESI,ESI (num) / JZ -> both pass; else 00BFC36E _errno, MOV [EAX],16h,
+// 00BFC383 _invalid_parameter(0,0,0,0,0), RET (00BFC393). 00BFC39C TEST EBP,EBP
+// (width) / JBE and 00BFC3A0 CMP comp,0 / JNZ; else the same errno/_invalid_parameter
+// pair and RET (00BFC3D0). From 00BFC3D1 (CMP ESI,2 / JC) the kernel above.
+// _invalid_parameter does not return in this image (its handler is the encoded
+// null, so it takes __invoke_watson); the return after it is the listing's.
+void qsort_00bfc350(NativeQsortCrtHost& crt, void* base, std::uint32_t count,
+    std::uint32_t width, NativeQsortCompare compare) {
+    if (base == nullptr && count != 0) {
+        *crt.errno_slot_00bffb8b() = 0x16;
+        crt.invalid_parameter_00bf66ef();
+    } else if (width == 0 || compare == nullptr) {
+        *crt.errno_slot_00bffb8b() = 0x16;
+        crt.invalid_parameter_00bf66ef();
+    } else {
+        sort_valid_native_bytes_00bfc350(base, count, width, compare);
+    }
+}
+
 } // namespace bsp

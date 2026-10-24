@@ -1,6 +1,6 @@
 // The LuaObject API the datatable loaders share. See docs/LUA_OBJECT_API.md.
 // Addresses: 00b65f50, 00b660a0, 00b66420, 00b669a0, 00b66bd0, 00b67080,
-//            00b67190, 00b67700, 00b67800, 00b67980.
+//            00b67190, 00b67700, 00b67800, 00b67980, 00b6a390.
 
 #include "bsp/lua_object.hpp"
 #include "bsp/native_lua_objects.hpp"

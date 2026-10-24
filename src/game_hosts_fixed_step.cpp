@@ -550,6 +550,12 @@ void GameFixedStepHost::set_body_damping_00c37de0(std::uint32_t body, float damp
     log_.unimplemented("DynamicsBuoyancy::set_body_damping", "00c37de0");
 }
 
+void GameFixedStepHost::set_body_damping_00c37e00(std::uint32_t body, float damping) {
+    static_cast<void>(body);
+    static_cast<void>(damping);
+    log_.unimplemented("DynamicsBuoyancy::set_body_damping_second", "00c37e00");
+}
+
 void GameFixedStepHost::report() {
     log_.notef("summary fixed step body steps=%llu fanout_sites=%llu concrete=%llu "
         "records=%llu gate_closed_steps=%llu gated_sites_skipped=%llu",

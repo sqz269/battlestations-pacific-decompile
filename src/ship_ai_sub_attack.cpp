@@ -31,7 +31,15 @@ bool relative_bearing(ShipAiSubAttackHost& host, float heading, float& relative)
     const std::array<float, 3> target = host.target_position();
     const float dx = f(static_cast<double>(target[0]) - self[0]);
     const float dz = f(static_cast<double>(target[2]) - self[2]);
-    const float d2 = f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    float d2 = 0.0f;
+    if constexpr (kShipAiFireStepPc24Cc13Bound) {
+        // 009EA063 FMULP / 009EA065 FMUL ST0 / 009EA067 FADDP (and the 009EA141,
+        // 009EA216 copies), each at PC24.
+        d2 = f(static_cast<double>(f(static_cast<double>(dx) * dx))
+               + f(static_cast<double>(dz) * dz));
+    } else {
+        d2 = f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    }
     if (!(d2 > 1.0f)) return false;
     const float bearing = heading_angle_00414eb0({dx, dz});
     relative = wrapped_angle_subtract_00438b10(heading, bearing);
@@ -60,7 +68,16 @@ float ship_ai_sub_attack_range_009e4a60(ShipAiSubAttackHost& host) {
     const std::array<float, 3> target = host.target_position();
     const float dx = f(static_cast<double>(target[0]) - self[0]);       // 009E4AAB
     const float dz = f(static_cast<double>(target[2]) - self[2]);       // 009E4ABC
-    const float d2 = f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    float d2 = 0.0f;
+    if constexpr (kShipAiFireStepPc24Cc13Bound) {
+        // 009E4AC8 FMUL ST0 / 009E4ACC FMULP ST2 / 009E4ACE FADDP, each at PC24.
+        d2 = f(static_cast<double>(f(static_cast<double>(dx) * dx))
+               + f(static_cast<double>(dz) * dz));
+    } else {
+        d2 = f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    }
+    // The half-length steps below are already per op: x * 0.5 is exact, so
+    // the double subtract rounded once to float is the 24-bit FSUBP result.
     float distance = 0.0f;                                              // 009E4AF7..4AFC
     if (static_cast<double>(d2) > kSubAttackRangeEpsilonSq) {
         distance = f(std::sqrt(static_cast<double>(d2)));               // 009E4AE4 CRT sqrt
@@ -279,8 +296,11 @@ float ship_ai_sub_attack_fire_step_009e9eb0(ShipAiSubAttackFire& fire, float dt,
         float relative = 0.0f;
         if (fire.close_40 != 0.0f) {
             // 009E9FB6..009EA0B7: close in, the firing end more than 135 degrees off.
-            if (static_cast<double>(swap)
-                > static_cast<double>(fire.swap_period_60) * kSubAttackSwapFraction) {
+            double swap_limit = static_cast<double>(fire.swap_period_60) * kSubAttackSwapFraction;
+            if constexpr (kShipAiFireStepPc24Cc13Bound) {
+                swap_limit = f(swap_limit);  // 009E9FB9 FMUL rounds to 24 bits in ST0
+            }
+            if (static_cast<double>(swap) > swap_limit) {
                 float heading = host.self_heading_vtable50();           // 009E9FD8
                 if (!fire.fore_30) heading = wrapped_angle_add_00438aa0(heading, kPi);
                 if (relative_bearing(host, heading, relative)
@@ -341,8 +361,14 @@ float ship_ai_sub_attack_fire_step_009e9eb0(ShipAiSubAttackFire& fire, float dt,
     const std::array<float, 3> velocity = host.target_velocity_vtable34();  // 009EA352
     if (static_cast<double>(range) > static_cast<double>(kSubAttackCloseEnter)) {  // 009EA36B
         const float water = host.tubes_min_water_speed_0aec();          // 009EA371, +0AECh
-        float lead = f((static_cast<double>(range) - static_cast<double>(kSubAttackCloseEnter))
-                       / static_cast<double>(water));                   // 009EA376..9EA386
+        float lead = 0.0f;                                              // 009EA376..9EA386
+        if constexpr (kShipAiFireStepPc24Cc13Bound) {
+            const float over = f(static_cast<double>(range) - kSubAttackCloseEnter);  // FSUB
+            lead = f(static_cast<double>(over) / static_cast<double>(water));         // FDIV
+        } else {
+            lead = f((static_cast<double>(range) - static_cast<double>(kSubAttackCloseEnter))
+                     / static_cast<double>(water));
+        }
         if (!(kSubAttackMaxLead > lead)) lead = kSubAttackMaxLead;      // 009EA394 JBE
         const float lead_x = f(static_cast<double>(velocity[0]) * lead);
         const float lead_z = f(static_cast<double>(lead) * velocity[2]);
@@ -367,9 +393,19 @@ float ship_ai_sub_attack_fire_step_009e9eb0(ShipAiSubAttackFire& fire, float dt,
 
     // 009EA525..009EA5B8: less the target's closing rate over our MaxSpeed.
     const std::array<float, 3> velocity2 = host.target_velocity_vtable34();  // 009EA53B
-    const float closing = f((static_cast<double>(velocity2[0]) * unit[0]
-                             + static_cast<double>(unit[1]) * 0.0)
-                            + static_cast<double>(velocity2[2]) * unit[2]);
+    float closing = 0.0f;
+    if constexpr (kShipAiFireStepPc24Cc13Bound) {
+        // 009EA541 FMUL, 009EA54E FMUL double 0.0, 009EA560 FADDP, 009EA566 FMUL,
+        // 009EA56A FADDP: five ops, each rounded at PC24.
+        const float x = f(static_cast<double>(velocity2[0]) * unit[0]);
+        const float y = f(static_cast<double>(unit[1]) * 0.0);
+        const float z = f(static_cast<double>(velocity2[2]) * unit[2]);
+        closing = f(static_cast<double>(f(static_cast<double>(x) + y)) + z);
+    } else {
+        closing = f((static_cast<double>(velocity2[0]) * unit[0]
+                     + static_cast<double>(unit[1]) * 0.0)
+                    + static_cast<double>(velocity2[2]) * unit[2]);
+    }
     float ratio = f(-static_cast<double>(closing)
                     / static_cast<double>(host.self_class_max_speed_0500()));
     if (kSubAttackRatioLow > ratio) {
@@ -395,12 +431,21 @@ float ship_ai_sub_attack_fire_step_009e9eb0(ShipAiSubAttackFire& fire, float dt,
     if (static_cast<double>(magnitude) > kSubAttackBigError) {
         const double s = speed;
         const double t = band;
+        // 009EA6F8 / 009EA700 FSUBR and 009EA70D / 009EA715 FADD: the edge is
+        // left in ST0 for FCOMIP, rounded to 24 bits at PC24.
+        auto edge = [](double value) {
+            if constexpr (kShipAiFireStepPc24Cc13Bound) {
+                return static_cast<double>(f(value));
+            } else {
+                return value;
+            }
+        };
         if (fire.fore_30) {
-            reverse = speed > 0.0f ? t > kSubAttackBandSlack - s
-                                   : kSubAttackBandNudge - s > t;
+            reverse = speed > 0.0f ? t > edge(kSubAttackBandSlack - s)
+                                   : edge(kSubAttackBandNudge - s) > t;
         } else {
-            reverse = speed > 0.0f ? s + kSubAttackBandNudge > t
-                                   : t > s + kSubAttackBandSlack;
+            reverse = speed > 0.0f ? edge(s + kSubAttackBandNudge) > t
+                                   : t > edge(s + kSubAttackBandSlack);
         }
     }
     if (reverse) {

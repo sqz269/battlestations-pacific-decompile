@@ -339,8 +339,9 @@ struct LoadingElementHost {
     // 004C9CCD, [00E198C4]+D4h non-null: an element already there is reused and
     // neither allocated nor initialised again.
     virtual bool loading_element_present() = 0;
-    // 004C9CD7 operator new(34h) then 004C9CED 00636D90; a null allocation
-    // stores null and skips the init (004C9CF4).
+    // 004C9CD7 operator new(34h) then 004C9CED 00636D90. 004C9CF4 stores null
+    // for a null allocation, but the image's init still calls through it, and
+    // operator new throws instead; false is a host-side failure only.
     virtual bool create_loading_element_00636d90() = 0;
     // 004C9D11, vtable +10h, __thiscall with no stack argument. GUI contract.
     virtual void loading_element_init_00636f30() = 0;
@@ -354,5 +355,57 @@ struct LoadingElementHost {
 bool run_apply_in_game_interface_load_arm_004c9ccd(std::int32_t session_mode,
                                                    bool suppress_flag_218c,
                                                    LoadingElementHost& host);
+
+// The whole of 004C9CA0 over raw native memory: the load arm above (through a
+// raw LoadingElementHost adapter), its network tail 004C9D3B..004C9D53, the
+// entry arm 004C9D6B..004C9E2C and the entry arm's network tail
+// 004C9E42..004C9E9D. game is ECX; [00E198C4] is re-read at every use as in
+// the image. Every call is a hook. Not modelled: the two EH states (0 around
+// 00636D90 frees the 34h block on a throw; 1 releases the path string).
+struct ApplyInGameInterfaceHost {
+    virtual ~ApplyInGameInterfaceHost() = default;
+    virtual void* hud_manager_00e198c4() = 0;    // [00E198C4]
+    virtual void* game_global_00e188a8() = 0;    // [00E188A8] (004C9E0B, 004C9E24)
+    virtual void* atlas_manager_00f8c26c() = 0;  // [00F8C26C]
+    // 00BF681B operator new, cdecl; throws rather than returning null.
+    virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
+    // 00636D90 BSP_HudSceneInitScreen_Construct, ECX = storage, EAX = storage.
+    virtual void* construct_loading_element_00636d90(void* storage) = 0;
+    // __thiscall virtual call with no stack argument / with one.
+    virtual void virtual_call_0(void* object, std::uint32_t slot_offset) = 0;
+    virtual void virtual_call_1(void* object, std::uint32_t slot_offset, std::uint32_t argument) = 0;
+    // 00425D10 getter (no argument), then 00530630(ECX = screen; byte) RET 4,
+    // which stores the byte at screen+3Ch.
+    virtual void* menu_command_screen_00425d10() = 0;
+    virtual void menu_command_screen_set_3c_00530630(void* screen, std::uint8_t value) = 0;
+    // 004BEC00 getter (cdecl, no argument), then 00A933F0(ECX; index, level) RET 8.
+    virtual void* input_manager_004bec00() = 0;
+    virtual void input_set_context_level_00a933f0(void* input, std::uint32_t index, std::uint32_t level) = 0;
+    // 004F83B0 BSP_FrontEndScreen_CommitVisibility, ECX = element.
+    virtual void front_end_screen_commit_visibility_004f83b0(void* element) = 0;
+    // 0041E870 NativeString from a C string, ECX = header {length, data}, RET 4.
+    virtual void native_string_construct_0041e870(void* header, const char* text) = 0;
+    // 00AEFA30 BSP_TextureAtlas_Unload, ECX = atlas manager; name header, RET 4.
+    virtual void texture_atlas_unload_00aefa30(void* atlas_manager, void* name) = 0;
+    // 00419CC0 then 00BD1510 ReturnBlock(ECX = pool; data, size, 1) RET 0Ch.
+    virtual void* sized_pool_00419cc0() = 0;
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t size,
+                                                  std::uint32_t flag) = 0;
+    // 004C1AC0 getter (no argument), then 00518250(ECX = frame; set, commit).
+    virtual void* front_end_frame_004c1ac0() = 0;
+    virtual void front_end_frame_select_layout_set_00518250(void* frame, std::uint32_t set,
+                                                            std::uint32_t commit) = 0;
+    // 007F8D60(ECX = game+650h; game+2198h) -> AL, game = [00E188A8].
+    virtual bool profile_records_check_007f8d60(void* records, void* argument) = 0;
+    // 008053C0 BSP_Recon_EnsureSlot, ECX = index -> EAX slot (stored at +30h).
+    virtual void* recon_ensure_slot_008053c0(std::int32_t index) = 0;
+    // 008073C0 BSP_Recon_RebuildSlotLists, ECX = slot.
+    virtual void recon_rebuild_slot_lists_008073c0(void* slot) = 0;
+    // 004C3CB0 BSP_Game_BuildLocalPlayerUnitLists, ECX = game.
+    virtual void game_build_local_player_unit_lists_004c3cb0(void* game) = 0;
+    // 006485A0 BSP_InGameHudRoot_ForceSelectUnit, ECX = [[00E198C4]+40h].
+    virtual void hud_root_force_select_unit_006485a0(void* root) = 0;
+};
+void apply_in_game_interface_004c9ca0(void* game, bool loading, ApplyInGameInterfaceHost& host);
 
 }  // namespace bsp

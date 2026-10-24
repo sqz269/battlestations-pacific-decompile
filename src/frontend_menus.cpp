@@ -367,18 +367,51 @@ MinimapIconEntry construct_minimap_icon_entry_005bd590(HudUnitRef unit, MinimapI
 HudUnitRef select_nearby_capture_point_005bd420(const std::array<float, 3>& controlled_position,
     const std::vector<CapturePointCandidate>& points) {
     for (const CapturePointCandidate& point : points) {
+        // 005BD4A0..005BD4CC: FSUB, each difference stored to a float.
         const float dx = controlled_position[0] - point.position[0];
         const float dy = controlled_position[1] - point.position[1];
         const float dz = controlled_position[2] - point.position[2];
-        // 005BD4D0..005BD516.
+        // 005BD4D0..005BD516 at the main thread's 24-bit precision control: FILD +7C4h
+        // stored to a float; dx*dx, dy*dy, (dy*dy + dx*dx), dz*dz and the sum each round
+        // to float, the sum is stored (005BD4FC), then r*r is stored (005BD50A).
         const float radius = static_cast<float>(point.radius_7c4);
-        const float sum = static_cast<float>(
-            (static_cast<double>(dx) * dx + static_cast<double>(dy) * dy) +
-            static_cast<double>(dz) * dz);
-        const float radius_squared = static_cast<float>(static_cast<double>(radius) * radius);
+        const float sum = (dy * dy + dx * dx) + dz * dz;
+        const float radius_squared = radius * radius;
+        // 005BD514 FCOMIP / JA: only "above" skips, so an unordered sum falls through.
         if (!(sum > radius_squared) && point.side_54 == 2) return point.point;
     }
     return {};
+}
+
+// 005BD420 BSP_HudMinimapScreen_SelectNearbyCapturePoint, __fastcall(ECX = screen),
+// plain RET (005BD532 / 005BD543). Listing read whole (87 instructions):
+// 005BD426 +F4h = 0; 005BD430..005BD449 controlled unit [00E188D8] null or not
+// IsKindOf(6) -> return; 005BD44F..005BD463 empty list -> return; per node
+// (005BD471): the point's pose refresh (005BD474..005BD47F) then the controlled
+// unit's (005BD48A..005BD495, re-read from [00E188D8]); the distance test as in
+// select_nearby_capture_point_005bd420 above; a hit stores node+8h at +F4h
+// (005BD533..005BD537) and returns; next node+4h (005BD520). EH: none.
+// Not wired into any live screen.
+void update_nearby_capture_point_005bd420(CapturePointSelectHost& host) {
+    host.set_selected_capture_point_f4(HudUnitRef{});
+    const HudUnitRef controlled = host.controlled_unit_00e188d8();
+    if (!controlled || !host.unit_is_kind_5c(controlled, 0x06)) return;
+    for (const HudUnitRef point : host.capture_point_list_16c()) {
+        host.refresh_pose_if_stale_00414db0(point);
+        const HudUnitRef unit = host.controlled_unit_00e188d8();
+        host.refresh_pose_if_stale_00414db0(unit);
+        CapturePointCandidate candidate;
+        candidate.point = point;
+        candidate.position = host.unit_position_fc(point);
+        candidate.radius_7c4 = host.capture_radius_7c4(point);
+        candidate.side_54 = host.unit_side_54(point);
+        const HudUnitRef hit = select_nearby_capture_point_005bd420(
+            host.unit_position_fc(unit), std::vector<CapturePointCandidate>{candidate});
+        if (hit) {
+            host.set_selected_capture_point_f4(hit);
+            return;
+        }
+    }
 }
 
 bool advance_campaign_selection_005c3de0(MissionTreeScreenState& state,

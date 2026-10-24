@@ -1,0 +1,1408 @@
+{
+  "packet": "oct24-poolB-fix-primary",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "00951220",
+      "source": "src/scene_traffic_groups.cpp",
+      "symbols": [
+        "create_traffic_record_00951220"
+      ],
+      "precision": {
+        "native_instructions_scanned": 51,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\scene_traffic_groups.cpp:179:    // an absent key where 00951220 wrote -1.",
+          "src\\scene_traffic_groups.cpp:240:    // Parsed, passed to 00951220 as argument 1, and never read there: the",
+          "src\\scene_traffic_groups.cpp:617:// 00951220: assembly 0095123C/58/D3 establishes allocation, construction and",
+          "src\\scene_traffic_groups.cpp:620:std::uint8_t* create_traffic_record_00951220(TrafficRecordCreateHost& host, void* vector,",
+          "include\\bsp\\scene_traffic_groups.hpp:28:// The traffic record (4Ch bytes), 00951220 defaults + 0049CF80 application.",
+          "include\\bsp\\scene_traffic_groups.hpp:49:// The constructor defaults 00951220 writes. 0049CF80 reloads the same three",
+          "include\\bsp\\scene_traffic_groups.hpp:206:// 009514B0, 009512F0, 00951220, 00951160 and 004A5620.",
+          "include\\bsp\\scene_traffic_groups.hpp:219:    // 00951220: operator new(4Ch), the constructor defaults, and the",
+          "include\\bsp\\scene_traffic_groups.hpp:377:// Native image path for 00951220. __thiscall(ECX=record vector, ignored name,",
+          "include\\bsp\\scene_traffic_groups.hpp:388:std::uint8_t* create_traffic_record_00951220(TrafficRecordCreateHost&, void* vector,"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/scene_traffic_groups.cpp"
+      }
+    },
+    {
+      "address": "00951aa0",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_recon_plane_class_00951aa0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:45:    {0x00951AA0, \"ReconPlane\", 0x007D1E50, 0x00D19BF4, 0x00D19BF0, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:567:    {\"ReconPlane\", 0x60C, PreloadAlloc::pool_00470b80, 0x00951AA0, 0, 0, false},       // 0096439B",
+          "src\\scene_unit_creators.cpp:77:    {\"ReconPlane\", 0x60c, 0x00951aa0, 0x12, 0},",
+          "include\\bsp\\vehicle_class.hpp:318:std::uint8_t* construct_recon_plane_class_00951aa0(VehicleClassConstructorHost&, std::uint8_t*);",
+          "src\\vehicle_class.cpp:53:     0x00951AA0, 0x00D19BF4, 0x008091D0, 0, 0x12},",
+          "src\\vehicle_class.cpp:269:// 00951AA0: ECX=this, no stack args, EAX=this, RET. CALL 007D1E50 then",
+          "src\\vehicle_class.cpp:272:std::uint8_t* construct_recon_plane_class_00951aa0(VehicleClassConstructorHost& host, std::uint8_t* self) {"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00951af0",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_fighter_class_00951af0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:46:    {0x00951AF0, \"Fighter\", 0x007D1E50, 0x00D19C30, 0x00D19C2C, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:568:    {\"Fighter\", 0x60C, PreloadAlloc::pool_00470b80, 0x00951AF0, 0, 0, false},          // 009643D7",
+          "src\\scene_unit_creators.cpp:80:    {\"Fighter\", 0x60c, 0x00951af0, 0x15, 28},",
+          "src\\vehicle_class.cpp:59:     0x00951AF0, 0x00D19C30, 0x007DDAE0, 28, 0x15},",
+          "src\\vehicle_class.cpp:279:// 00951AF0: same ECX/RET ABI. Listing 00951AF3..00951B08 proves this complete",
+          "src\\vehicle_class.cpp:281:std::uint8_t* construct_fighter_class_00951af0(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:319:std::uint8_t* construct_fighter_class_00951af0(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00951b40",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_dive_bomber_class_00951b40"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:47:    {0x00951B40, \"DiveBomber\", 0x007D1E50, 0x00D19C70, 0x00D19C6C, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:569:    {\"DiveBomber\", 0x60C, PreloadAlloc::pool_00470b80, 0x00951B40, 0, 0, false},       // 00964413",
+          "src\\scene_unit_creators.cpp:81:    {\"DiveBomber\", 0x60c, 0x00951b40, 0x16, 9},",
+          "include\\bsp\\vehicle_class.hpp:320:std::uint8_t* construct_dive_bomber_class_00951b40(VehicleClassConstructorHost&, std::uint8_t*);",
+          "src\\vehicle_class.cpp:61:     0x00951B40, 0x00D19C70, 0x00956390, 9, 0x16},",
+          "src\\vehicle_class.cpp:288:// 00951B40: ECX=this, EAX=this, RET; assembly 00951B43..00951B58.",
+          "src\\vehicle_class.cpp:290:std::uint8_t* construct_dive_bomber_class_00951b40(VehicleClassConstructorHost& host, std::uint8_t* self) {"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00951b60",
+      "source": "src/unit_instance_layout.cpp",
+      "symbols": [
+        "construct_dive_bomber_unit_00951b60"
+      ],
+      "precision": {
+        "native_instructions_scanned": 19,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:121:    {0x00951B60, \"MPlaneDiveBomber\",",
+          "src\\gameplay_seg61_62_cc13.cpp:446:    case 0x00956390: return 0x00951B60;",
+          "include\\bsp\\gameplay_seg61_62_cc13.hpp:335:// memset 0 (00BF79F0), the instance constructor (00951D20 / 00951B60 / 00951C40)",
+          "src\\unit_instance_layout.cpp:210:    {\"DiveBomber\", 0x00d19c70, 0x00956390, 0x0e94, 0x00951b60, false},",
+          "src\\unit_instance_layout.cpp:247:// 00951B60, full normal-path body. __thiscall ECX=this, stack arg, EAX=this,",
+          "src\\unit_instance_layout.cpp:250:std::uint8_t* construct_dive_bomber_unit_00951b60(PlaneUnitConstructorHost& host, std::uint8_t* self, std::uint32_t arg) {",
+          "include\\bsp\\unit_instance_layout.hpp:342:std::uint8_t* construct_dive_bomber_unit_00951b60(PlaneUnitConstructorHost&, std::uint8_t*, std::uint32_t);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/unit_instance_layout.cpp"
+      }
+    },
+    {
+      "address": "00951c20",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_torpedo_bomber_class_00951c20"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:48:    {0x00951C20, \"TorpedoBomber\", 0x007D1E50, 0x00D19F4C, 0x00D19F48, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:570:    {\"TorpedoBomber\", 0x60C, PreloadAlloc::pool_00470b80, 0x00951C20, 0, 0, false},    // 0096444F",
+          "src\\scene_unit_creators.cpp:82:    {\"TorpedoBomber\", 0x60c, 0x00951c20, 0x17, 9},",
+          "src\\vehicle_class.cpp:63:     0x00951C20, 0x00D19F4C, 0x009564E0, 9, 0x17},",
+          "src\\vehicle_class.cpp:297:// 00951C20: ECX=this, EAX=this, RET; assembly 00951C23..00951C38.",
+          "src\\vehicle_class.cpp:299:std::uint8_t* construct_torpedo_bomber_class_00951c20(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:321:std::uint8_t* construct_torpedo_bomber_class_00951c20(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00951c40",
+      "source": "src/unit_instance_layout.cpp",
+      "symbols": [
+        "construct_torpedo_bomber_unit_00951c40"
+      ],
+      "precision": {
+        "native_instructions_scanned": 19,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:125:    {0x00951C40, \"MPlaneTorpedoBomber\",",
+          "src\\gameplay_seg61_62_cc13.cpp:447:    case 0x009564E0: return 0x00951C40;",
+          "include\\bsp\\gameplay_seg61_62_cc13.hpp:335:// memset 0 (00BF79F0), the instance constructor (00951D20 / 00951B60 / 00951C40)",
+          "src\\unit_instance_layout.cpp:265:// 00951C40: same __thiscall/RET 4 ABI (00951CAC), complete sequence at",
+          "src\\unit_instance_layout.cpp:267:std::uint8_t* construct_torpedo_bomber_unit_00951c40(PlaneUnitConstructorHost& host, std::uint8_t* self, std::uint32_t arg) {",
+          "include\\bsp\\unit_instance_layout.hpp:343:std::uint8_t* construct_torpedo_bomber_unit_00951c40(PlaneUnitConstructorHost&, std::uint8_t*, std::uint32_t);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/unit_instance_layout.cpp"
+      }
+    },
+    {
+      "address": "00951d00",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_kamikaze_class_00951d00"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:49:    {0x00951D00, \"Kamikaze\", 0x007D1E50, 0x00D1A224, 0x00D1A220, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:571:    {\"Kamikaze\", 0x60C, PreloadAlloc::pool_00470b80, 0x00951D00, 0, 0, false},         // 0096448B",
+          "src\\scene_unit_creators.cpp:83:    {\"Kamikaze\", 0x60c, 0x00951d00, 0x18, 6},",
+          "src\\vehicle_class.cpp:65:     0x00951D00, 0x00D1A224, 0x00956240, 6, 0x18},",
+          "src\\vehicle_class.cpp:306:// 00951D00: ECX=this, EAX=this, RET; assembly 00951D03..00951D18.",
+          "src\\vehicle_class.cpp:308:std::uint8_t* construct_kamikaze_class_00951d00(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:322:std::uint8_t* construct_kamikaze_class_00951d00(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00951d20",
+      "source": "src/unit_instance_layout.cpp",
+      "symbols": [
+        "construct_kamikaze_unit_00951d20"
+      ],
+      "precision": {
+        "native_instructions_scanned": 19,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:129:    {0x00951D20, \"MPlaneKamikaze\",",
+          "src\\gameplay_seg61_62_cc13.cpp:445:    case 0x00956240: return 0x00951D20;  // 0095628E",
+          "include\\bsp\\gameplay_seg61_62_cc13.hpp:335:// memset 0 (00BF79F0), the instance constructor (00951D20 / 00951B60 / 00951C40)",
+          "src\\unit_instance_layout.cpp:282:// 00951D20: same __thiscall/RET 4 ABI (00951D8C), complete sequence at",
+          "src\\unit_instance_layout.cpp:284:std::uint8_t* construct_kamikaze_unit_00951d20(PlaneUnitConstructorHost& host, std::uint8_t* self, std::uint32_t arg) {",
+          "include\\bsp\\unit_instance_layout.hpp:344:std::uint8_t* construct_kamikaze_unit_00951d20(PlaneUnitConstructorHost&, std::uint8_t*, std::uint32_t);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/unit_instance_layout.cpp"
+      }
+    },
+    {
+      "address": "00951de0",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_level_bomber_class_00951de0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:50:    {0x00951DE0, \"LevelBomber\", 0x007D1E50, 0x00D1A4F8, 0x00D1A4F4, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:572:    {\"Bomber\", 0x60C, PreloadAlloc::pool_00470b80, 0x00951DE0, 0, 0, false},           // 009644C7",
+          "include\\bsp\\vehicle_class.hpp:324:std::uint8_t* construct_level_bomber_class_00951de0(VehicleClassConstructorHost&, std::uint8_t*);",
+          "src\\scene_unit_creators.cpp:84:    {\"LevelBomber\", 0x60c, 0x00951de0, 0x19, 11},",
+          "src\\vehicle_class.cpp:67:     0x00951DE0, 0x00D1A4F8, 0x007D7850, 11, 0x19},",
+          "src\\vehicle_class.cpp:315:// 00951DE0: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:317:std::uint8_t* construct_level_bomber_class_00951de0(VehicleClassConstructorHost& host, std::uint8_t* self) {"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00951e30",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_command_building_class_00951e30"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:51:    {0x00951E30, \"CommandBuilding\", 0x00749180, 0x00D1A538, 0x00D1A534, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:577:    {\"CommandBuilding\", 0x1AC, PreloadAlloc::pool_00470b80, 0x00951E30, 0, 0, false},  // 009645E5",
+          "src\\scene_unit_creators.cpp:89:    {\"CommandBuilding\", 0x1ac, 0x00951e30, 0x1e, 7},",
+          "src\\vehicle_class.cpp:77:     0x00951E30, 0x00D1A538, 0x006F5C10, 7, 0x1E},",
+          "src\\vehicle_class.cpp:324:// 00951E30: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:326:std::uint8_t* construct_command_building_class_00951e30(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:325:std::uint8_t* construct_command_building_class_00951e30(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "009536e0",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_small_recon_plane_class_009536e0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "include\\bsp\\dive_bomb_task.hpp:1212:// BSP_ReconPlaneClass_IsKindOf and the two recon constructors at 009536E0 and",
+          "src\\gameplay_seg61_62_cc13.cpp:52:    {0x009536E0, \"SmallReconPlane\", 0x007D1E50, 0x00D1A5A8, 0x00D1A5A4, {}, 0},",
+          "src\\scene_unit_creators.cpp:78:    {\"SmallReconPlane\", 0x60c, 0x009536e0, 0x13, 5},",
+          "src\\vehicle_class.cpp:55:     0x009536E0, 0x00D1A5A8, 0x0084CA50, 5, 0x13},",
+          "src\\vehicle_class.cpp:333:// 009536E0: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:335:std::uint8_t* construct_small_recon_plane_class_009536e0(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:326:std::uint8_t* construct_small_recon_plane_class_009536e0(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00953720",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "small_recon_plane_class_name_00953720"
+      ],
+      "precision": {
+        "native_instructions_scanned": 2,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:136:    {0x00953720, 0x00D1A5D4, \"MSmallReconPlane\"},",
+          "src\\vehicle_class.cpp:369:// 00953720: MOV EAX,00d1a5d4; RET. No arguments or this use.",
+          "src\\vehicle_class.cpp:371:const char* small_recon_plane_class_name_00953720() noexcept { return \"MSmallReconPlane\"; }",
+          "include\\bsp\\vehicle_class.hpp:330:const char* small_recon_plane_class_name_00953720() noexcept;"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00953770",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_large_recon_plane_class_00953770"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "include\\bsp\\dive_bomb_task.hpp:1213:// 00953770. So the fly-over skips its roll-in geometry for RECON aircraft, and",
+          "src\\gameplay_seg61_62_cc13.cpp:53:    {0x00953770, \"LargeReconPlane\", 0x007D1E50, 0x00D1A5EC, 0x00D1A5E8, {}, 0},",
+          "src\\scene_unit_creators.cpp:79:    {\"LargeReconPlane\", 0x60c, 0x00953770, 0x14, 4},",
+          "src\\vehicle_class.cpp:57:     0x00953770, 0x00D1A5EC, 0x0074E540, 4, 0x14},",
+          "src\\vehicle_class.cpp:342:// 00953770: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:344:std::uint8_t* construct_large_recon_plane_class_00953770(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:327:std::uint8_t* construct_large_recon_plane_class_00953770(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "009537b0",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "large_recon_plane_class_name_009537b0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 2,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:137:    {0x009537B0, 0x00D1A618, \"MLargeReconPlane\"},",
+          "src\\vehicle_class.cpp:373:// 009537B0: MOV EAX,00d1a618; RET. No arguments or this use.",
+          "src\\vehicle_class.cpp:375:const char* large_recon_plane_class_name_009537b0() noexcept { return \"MLargeReconPlane\"; }",
+          "include\\bsp\\vehicle_class.hpp:331:const char* large_recon_plane_class_name_009537b0() noexcept;"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00959940",
+      "source": "src/unit_destructor_levels.cpp",
+      "symbols": [
+        "destruct_unit_game_object_00959940"
+      ],
+      "precision": {
+        "native_instructions_scanned": 200,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\cc13_mistag.cpp:658:    host.unit_game_object_destruct_00959940(p);",
+          "src\\cc13_seg30.cpp:1269:// +830h freed (00BF6989); then 006CA410 on the +72Ch block and 00959940 on the unit.",
+          "src\\cc13_seg30.cpp:1283:    host.unit_game_object_destruct_00959940(airfield);",
+          "src\\cc13_seg41_land.cpp:426:    host.unit_base_destruct_00959940(fort);         // 00745BBC",
+          "src\\cc13_seg41_land.cpp:1103:    host.unit_base_destruct_00959940(vehicle);",
+          "include\\bsp\\cc13_mistag.hpp:170:    // 00959940, __thiscall(ECX = plane): BSP_UnitGameObject_Destruct, the base.",
+          "include\\bsp\\cc13_mistag.hpp:171:    virtual void unit_game_object_destruct_00959940(void* unit) = 0;",
+          "src\\cc13_seg52U.cpp:150:    host.unit_game_object_destruct_00959940(shipyard);                     // 00846B20",
+          "include\\bsp\\cc13_seg30.hpp:272:    virtual void unit_game_object_destruct_00959940(void* unit) = 0;              // ECX",
+          "src\\cc13_seg62.cpp:440:// the nodes only. Callers 00956C20, 00957080, 00959940.",
+          "include\\bsp\\cc13_seg41_land.hpp:290:    virtual void unit_base_destruct_00959940(std::uint8_t* unit) = 0;",
+          "include\\bsp\\cc13_seg41_land.hpp:675:    virtual void unit_base_destruct_00959940(std::uint8_t* unit) = 0;",
+          "include\\bsp\\cc13_seg41_land.hpp:755:// (00BF6989), 00959940.",
+          "include\\bsp\\cc13_seg41_land_null_host.hpp:132:    void unit_base_destruct_00959940(std::uint8_t*) override {",
+          "include\\bsp\\cc13_seg41_land_null_host.hpp:133:        unreached(\"unit_base_destruct_00959940\", 0x00959940u);",
+          "include\\bsp\\cc13_seg52U.hpp:110:    // 00959940 BSP_UnitGameObject_Destruct, __fastcall(ECX = object).",
+          "include\\bsp\\cc13_seg52U.hpp:111:    virtual void unit_game_object_destruct_00959940(void* object) = 0;",
+          "src\\unit_destructor_levels.cpp:128:    // ----- Level 4, 00959940 -----------------------------------------------",
+          "src\\unit_destructor_levels.cpp:408:// 00959940: ECX=this, no explicit arguments, RET 00959BE4. Full normal-path",
+          "src\\unit_destructor_levels.cpp:413:void destruct_unit_game_object_00959940(UnitGameObjectDestructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\unit_destructor_levels.hpp:14://   level 4  00959940            00D1A698, seven vptrs",
+          "include\\bsp\\unit_destructor_levels.hpp:47:    unit_game_object = 4,    // 00959940",
+          "include\\bsp\\unit_destructor_levels.hpp:88:    // Level 4, 00959940",
+          "include\\bsp\\unit_destructor_levels.hpp:263:// Concrete level-4 body, 00959940: __thiscall ECX=this, plain RET at 00959BE4.",
+          "include\\bsp\\unit_destructor_levels.hpp:285:void destruct_unit_game_object_00959940(UnitGameObjectDestructorHost&, std::uint8_t* self);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/unit_destructor_levels.cpp"
+      }
+    },
+    {
+      "address": "0095cc90",
+      "source": "src/unit_instance_layout.cpp",
+      "symbols": [
+        "construct_unit_game_object_0095cc90"
+      ],
+      "precision": {
+        "native_instructions_scanned": 126,
+        "native_x87_operations": [
+          {
+            "pc": "0095ce74",
+            "opcode": "FLD"
+          },
+          {
+            "pc": "0095ce82",
+            "opcode": "FSTP"
+          },
+          {
+            "pc": "0095ce88",
+            "opcode": "FLD"
+          },
+          {
+            "pc": "0095ce92",
+            "opcode": "FSTP"
+          },
+          {
+            "pc": "0095ce9a",
+            "opcode": "FLD"
+          },
+          {
+            "pc": "0095cea0",
+            "opcode": "FSTP"
+          },
+          {
+            "pc": "0095ceb6",
+            "opcode": "FLD"
+          },
+          {
+            "pc": "0095cedc",
+            "opcode": "FSTP"
+          },
+          {
+            "pc": "0095cee2",
+            "opcode": "FLD"
+          },
+          {
+            "pc": "0095cef0",
+            "opcode": "FSTP"
+          },
+          {
+            "pc": "0095cef6",
+            "opcode": "FLD"
+          },
+          {
+            "pc": "0095cefc",
+            "opcode": "FSTP"
+          }
+        ],
+        "disposition": "load_store_only_no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\cc13_mistag.cpp:482:    host.unit_game_object_construct_0095cc90(p, arg, cls);",
+          "src\\cc13_seg41_land.cpp:400:    host.unit_base_construct_0095cc90(fort, row, 0);  // 00745967",
+          "src\\cc13_seg41_land.cpp:1061:    host.unit_base_construct_0095cc90(vehicle, row, 0);",
+          "include\\bsp\\cc13_mistag.hpp:182:    // 0095CC90, __thiscall(ECX = plane; arg, cls), RET 8: BSP_UnitGameObject_Construct.",
+          "include\\bsp\\cc13_mistag.hpp:183:    virtual void unit_game_object_construct_0095cc90(void* plane, std::uint32_t arg, std::uint32_t cls) = 0;",
+          "src\\cc13_seg52b.cpp:517:// SEH frame 00C93FF4. 0095CC90(flag, 0); +72Ch = 00CF85D4; the vptrs +0 00D0B770, +10h",
+          "src\\cc13_seg52b.cpp:523:    host.unit_game_object_construct_0095cc90(shipyard, flag, 0);   // 008480A2",
+          "include\\bsp\\cc13_seg41_land.hpp:281:    // 0095CC90, __thiscall(ECX unit, row, 0) RET 8: the unit game-object base.",
+          "include\\bsp\\cc13_seg41_land.hpp:282:    virtual void unit_base_construct_0095cc90(std::uint8_t* unit, std::uint32_t row, std::uint32_t zero) = 0;",
+          "include\\bsp\\cc13_seg41_land.hpp:674:    virtual void unit_base_construct_0095cc90(std::uint8_t* unit, std::uint32_t row, std::uint32_t zero) = 0;",
+          "include\\bsp\\cc13_seg41_land_null_host.hpp:129:    void unit_base_construct_0095cc90(std::uint8_t*, std::uint32_t, std::uint32_t) override {",
+          "include\\bsp\\cc13_seg41_land_null_host.hpp:130:        unreached(\"unit_base_construct_0095cc90\", 0x0095cc90u);",
+          "include\\bsp\\cc13_seg52b.hpp:117:    // 0095CC90 BSP_UnitGameObject_Construct, __thiscall(ECX = unit; flag, 0), RET 8.",
+          "include\\bsp\\cc13_seg52b.hpp:118:    virtual void unit_game_object_construct_0095cc90(Object unit, std::uint32_t flag,",
+          "src\\cc13_sweepC.cpp:480:// 0095CC90(flag, 0) builds the unit base; 006CAC00(airfield) builds the block at +72Ch; the eight",
+          "src\\cc13_sweepC.cpp:486:    host.unit_game_object_construct_0095cc90(airfield, flag, 0u);",
+          "include\\bsp\\cc13_sweepC.hpp:144:    // 0095CC90, __thiscall(ECX = unit, flag, 0), RET 8: the unit game-object base constructor.",
+          "include\\bsp\\cc13_sweepC.hpp:145:    virtual void unit_game_object_construct_0095cc90(void* unit, std::uint32_t flag,",
+          "src\\dummy_depth_seg34_argon.cpp:1341:    fn_at<void*(__thiscall*)(void*, void*, std::uint32_t)>(0x0095cc90)(self, arg0, 0u);",
+          "include\\bsp\\land_and_structures.hpp:24:// Five of the six stop at the level-4 base (0095CC90, class id 05), whose own",
+          "src\\tick_element_overrides.cpp:45:    {\"UnitGameObject (level 4)\", 0x0095cc90, 0x00d1a654, 0x310, 0, 5,",
+          "src\\unit_instance_layout.cpp:85:        // Level 4, 0095CC90: +538h takes the constructor's third argument,",
+          "src\\unit_instance_layout.cpp:299:// 0095CC90: ordinary constructor, not an array helper. __thiscall ECX=this,",
+          "src\\unit_instance_layout.cpp:303:std::uint8_t* construct_unit_game_object_0095cc90(UnitGameObjectConstructorHost& host,",
+          "include\\bsp\\unit_instance_layout.hpp:5:// 0095cc90, 0087b670, 0077eed0, 00928630, 00925ce0, 009553d0, 00928860,",
+          "include\\bsp\\unit_instance_layout.hpp:48:    {0x0095cc90, 0x0081ed6a, 5}, // +538h class reference cleared, two arrays",
+          "include\\bsp\\unit_instance_layout.hpp:346:// 0095CC90 __thiscall(ECX=this, flag, vehicleClass), EAX=this, RET 8.",
+          "include\\bsp\\unit_instance_layout.hpp:358:std::uint8_t* construct_unit_game_object_0095cc90(UnitGameObjectConstructorHost&,"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/unit_instance_layout.cpp"
+      }
+    },
+    {
+      "address": "0095fee0",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_airfield_class_0095fee0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:54:    {0x0095FEE0, \"AirField\", 0x00749050, 0x00D1A9A0, 0x00D1A99C, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:573:    {\"AirField\", 0x140, PreloadAlloc::pool_00470b80, 0x0095FEE0, 0, 0, false},         // 00964503",
+          "src\\scene_unit_creators.cpp:85:    {\"AirField\", 0x140, 0x0095fee0, 0x1a, 2},",
+          "include\\bsp\\vehicle_class.hpp:328:std::uint8_t* construct_airfield_class_0095fee0(VehicleClassConstructorHost&, std::uint8_t*);",
+          "src\\vehicle_class.cpp:69:     0x0095FEE0, 0x00D1A9A0, 0x006D3110, 2, 0x1A},",
+          "src\\vehicle_class.cpp:351:// 0095FEE0: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:353:std::uint8_t* construct_airfield_class_0095fee0(VehicleClassConstructorHost& host, std::uint8_t* self) {"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "0095ff50",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_shipyard_class_0095ff50"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:55:    {0x0095FF50, \"Shipyard\", 0x00749050, 0x00D1A9DC, 0x00D1A9D8, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:574:    {\"Shipyard\", 0x138, PreloadAlloc::pool_00470b80, 0x0095FF50, 0, 0, false},         // 0096453F",
+          "src\\scene_unit_creators.cpp:86:    {\"Shipyard\", 0x138, 0x0095ff50, 0x1b, 2},",
+          "src\\vehicle_class.cpp:71:     0x0095FF50, 0x00D1A9DC, 0x00848380, 2, 0x1B},",
+          "src\\vehicle_class.cpp:360:// 0095FF50: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:362:std::uint8_t* construct_shipyard_class_0095ff50(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:329:std::uint8_t* construct_shipyard_class_0095ff50(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "0095ffc0",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_land_vehicle_class_0095ffc0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 14,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:57:    {0x0095FFC0, \"LandVehicle\", 0x00749050, 0x00D1AA18, 0x00D1AA14,",
+          "src\\gameplay_seg61_62_cc13.cpp:575:    {\"LandVehicle\", 0x150, PreloadAlloc::pool_00470b80, 0x0095FFC0, 0, 0, false},      // 0096457B",
+          "src\\scene_unit_creators.cpp:87:    {\"LandVehicle\", 0x150, 0x0095ffc0, 0x1c, 21},",
+          "src\\vehicle_class.cpp:73:     0x0095FFC0, 0x00D1AA18, 0x0074DF10, 21, 0x1C},",
+          "src\\vehicle_class.cpp:377:// 0095FFC0: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:380:std::uint8_t* construct_land_vehicle_class_0095ffc0(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:333:std::uint8_t* construct_land_vehicle_class_0095ffc0(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00960050",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_dummy_target_class_00960050"
+      ],
+      "precision": {
+        "native_instructions_scanned": 9,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:59:    {0x00960050, \"DummyTargetVehicle\", 0x00749050, 0x00D1AA58, 0x00D1AA54, {0x140}, 1},",
+          "src\\pool_pool09_cc13.cpp:209:// in 00960050 BSP_VehicleClass_ConstructDummyTarget. That constructor also",
+          "src\\scene_unit_creators.cpp:90:    {\"DummyTargetVehicle\", 0x144, 0x00960050, 0x1f, 1},",
+          "src\\vehicle_class.cpp:81:     0x00960050, 0x00D1AA58, 0x00749150, 1, 0x1F},",
+          "src\\vehicle_class.cpp:392:// 00960050: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:395:std::uint8_t* construct_dummy_target_class_00960050(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:334:std::uint8_t* construct_dummy_target_class_00960050(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00963380",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_ship_class_base_00963380"
+      ],
+      "precision": {
+        "native_instructions_scanned": 106,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:60:    {0x00963B20, \"Destroyer\", 0x00963380, 0x00D1ACF8, 0x00D1ACF4, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:61:    {0x00963BA0, \"Cruiser\", 0x00963380, 0x00D1AD38, 0x00D1AD34, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:62:    {0x00963C20, \"LandingShip\", 0x00963380, 0x00D1AD78, 0x00D1AD74, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:63:    {0x00963CB0, \"Cargo\", 0x00963380, 0x00D1ADBC, 0x00D1ADB8, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:64:    {0x00963D30, \"BattleShip\", 0x00963380, 0x00D1ADF8, 0x00D1ADF4, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:65:    {0x00963DB0, \"Submarine\", 0x00963380, 0x00D1AE38, 0x00D1AE34, {0x80C}, 1},",
+          "src\\gameplay_seg61_62_cc13.cpp:66:    {0x00963E40, \"TorpedoBoat\", 0x00963380, 0x00D1AE78, 0x00D1AE74, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:67:    {0x00963EC0, \"MotherShip\", 0x00963380, 0x00D1AEBC, 0x00D1AEB8, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:560:    {\"Destroyer\", 0x808, PreloadAlloc::crt_new_memset, 0x00963380, 0x00D1ACF8, 0x00D1ACF4, true},   // 0096414A",
+          "src\\gameplay_seg61_62_cc13.cpp:561:    {\"Cruiser\", 0x80C, PreloadAlloc::crt_new_memset, 0x00963380, 0x00D1AD38, 0x00D1AD34, true},     // 009641AC",
+          "src\\gameplay_seg61_62_cc13.cpp:562:    {\"Cargo\", 0x80C, PreloadAlloc::crt_new_memset, 0x00963380, 0x00D1ADBC, 0x00D1ADB8, true},       // 00964207",
+          "src\\gameplay_seg61_62_cc13.cpp:563:    {\"BattleShip\", 0x80C, PreloadAlloc::crt_new_memset, 0x00963380, 0x00D1ADF8, 0x00D1ADF4, true},  // 00964266",
+          "include\\bsp\\gameplay_seg61_62_cc13.hpp:61:    std::uint32_t base_ctor;        // 007D1E50 plane, 00963380 ship, 00749050 vehicle,",
+          "include\\bsp\\gameplay_seg61_62_cc13.hpp:449:// The four ship arms inline 00963380 plus the two vtable stores; the rest call the",
+          "include\\bsp\\gameplay_seg61_62_cc13.hpp:462:    std::uint32_t ctor;         // the constructor called (00963380 for the inlined ship arms)",
+          "src\\scene_unit_creators.cpp:69:    {\"Destroyer\", 0x808, 0x00963380, 0x0a, 31},",
+          "include\\bsp\\ship_ai_throttle_ring.hpp:124:// 00D1ACC4 (00963380 installs that vtable at 009633C0; 00828F20 is the value at",
+          "include\\bsp\\ship_ai_throttle_ring.hpp:148:    // left; 00963380 does not clear either of them.",
+          "src\\vehicle_class.cpp:407:    host.call_00963380(self);",
+          "src\\vehicle_class.cpp:417:    host.call_00963380(self);",
+          "src\\vehicle_class.cpp:427:    host.call_00963380(self);",
+          "src\\vehicle_class.cpp:437:    host.call_00963380(self);",
+          "src\\vehicle_class.cpp:448:    host.call_00963380(self);",
+          "src\\vehicle_class.cpp:458:    host.call_00963380(self);",
+          "src\\vehicle_class.cpp:464:// 00963380: ECX=this, EAX=this, RET 009635B3. Assembly 009633A0/CD fixes",
+          "src\\vehicle_class.cpp:467:std::uint8_t* construct_ship_class_base_00963380(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:13://            00963380 (ship base), 00437F50 (registry singleton), 00437BD0",
+          "include\\bsp\\vehicle_class.hpp:31:    ShipBase = 6,           // no leaf returns it; 00963380's class",
+          "include\\bsp\\vehicle_class.hpp:152:// 00963380 runs an eh_vector_constructor_iterator over 14h elements of 30h bytes",
+          "include\\bsp\\vehicle_class.hpp:313:    virtual void call_00963380(std::uint8_t* self) = 0; // ship base; explicit native boundary",
+          "include\\bsp\\vehicle_class.hpp:342:// 00963380: ECX=this, EAX=this, RET; normal path over explicit base/CRT calls.",
+          "include\\bsp\\vehicle_class.hpp:344:std::uint8_t* construct_ship_class_base_00963380(VehicleClassConstructorHost&, std::uint8_t*);",
+          "include\\bsp\\vehicle_class_lua_load.hpp:218:// The ship base 00963380 is 0804h bytes, so every offset below is the leaf's own"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00963c20",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_landing_ship_class_00963c20"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:62:    {0x00963C20, \"LandingShip\", 0x00963380, 0x00D1AD78, 0x00D1AD74, {}, 0},",
+          "src\\scene_unit_creators.cpp:71:    {\"LandingShip\", 0x81c, 0x00963c20, 0x0c, 6},",
+          "src\\vehicle_class.cpp:41:     0x00963C20, 0x00D1AD78, 0x0074BE00, 6, 0x0C},",
+          "src\\vehicle_class.cpp:403:// 00963C20: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:406:std::uint8_t* construct_landing_ship_class_00963c20(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:335:std::uint8_t* construct_landing_ship_class_00963c20(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00963cb0",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_cargo_class_00963cb0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:63:    {0x00963CB0, \"Cargo\", 0x00963380, 0x00D1ADBC, 0x00D1ADB8, {}, 0},",
+          "src\\scene_unit_creators.cpp:72:    {\"Cargo\", 0x80c, 0x00963cb0, 0x0d, 13},",
+          "src\\vehicle_class.cpp:43:     0x00963CB0, 0x00D1ADBC, 0x006EB290, 13, 0x0D},",
+          "src\\vehicle_class.cpp:413:// 00963CB0: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:416:std::uint8_t* construct_cargo_class_00963cb0(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:336:std::uint8_t* construct_cargo_class_00963cb0(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00963d30",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_battleship_class_00963d30"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:64:    {0x00963D30, \"BattleShip\", 0x00963380, 0x00D1ADF8, 0x00D1ADF4, {}, 0},",
+          "src\\scene_unit_creators.cpp:73:    {\"BattleShip\", 0x80c, 0x00963d30, 0x0e, 39},",
+          "src\\vehicle_class.cpp:45:     0x00963D30, 0x00D1ADF8, 0x006DFEF0, 39, 0x0E},",
+          "src\\vehicle_class.cpp:423:// 00963D30: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:426:std::uint8_t* construct_battleship_class_00963d30(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:337:std::uint8_t* construct_battleship_class_00963d30(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00963db0",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_submarine_class_00963db0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 9,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:65:    {0x00963DB0, \"Submarine\", 0x00963380, 0x00D1AE38, 0x00D1AE34, {0x80C}, 1},",
+          "src\\gameplay_seg61_62_cc13.cpp:564:    {\"Submarine\", 0x840, PreloadAlloc::crt_new_memset, 0x00963DB0, 0, 0, false},       // 009642C5",
+          "src\\scene_unit_creators.cpp:74:    {\"Submarine\", 0x840, 0x00963db0, 0x0f, 9},",
+          "src\\vehicle_class.cpp:47:     0x00963DB0, 0x00D1AE38, 0x008531A0, 9, 0x0F},",
+          "src\\vehicle_class.cpp:433:// 00963DB0: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:436:std::uint8_t* construct_submarine_class_00963db0(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:338:std::uint8_t* construct_submarine_class_00963db0(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00963e00",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "submarine_class_name_00963e00"
+      ],
+      "precision": {
+        "native_instructions_scanned": 2,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:138:    {0x00963E00, 0x00D1AE68, \"MSubmarine\"},",
+          "src\\vehicle_class.cpp:487:// 00963E00: MOV EAX,00D1AE68; RET. Full literal-return body; portable string",
+          "src\\vehicle_class.cpp:489:const char* submarine_class_name_00963e00() noexcept { return \"MSubmarine\"; }",
+          "include\\bsp\\vehicle_class.hpp:345:const char* submarine_class_name_00963e00() noexcept;"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00963e40",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_torpedo_boat_class_00963e40"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:66:    {0x00963E40, \"TorpedoBoat\", 0x00963380, 0x00D1AE78, 0x00D1AE74, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:565:    {\"TorpedoBoat\", 0x814, PreloadAlloc::crt_new_memset, 0x00963E40, 0, 0, false},     // 00964312",
+          "include\\bsp\\vehicle_class.hpp:339:std::uint8_t* construct_torpedo_boat_class_00963e40(VehicleClassConstructorHost&, std::uint8_t*);",
+          "src\\scene_unit_creators.cpp:75:    {\"TorpedoBoat\", 0x814, 0x00963e40, 0x10, 3},",
+          "src\\vehicle_class.cpp:49:     0x00963E40, 0x00D1AE78, 0x00857E20, 3, 0x10},",
+          "src\\vehicle_class.cpp:444:// 00963E40: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:447:std::uint8_t* construct_torpedo_boat_class_00963e40(VehicleClassConstructorHost& host, std::uint8_t* self) {"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00963ec0",
+      "source": "src/vehicle_class.cpp",
+      "symbols": [
+        "construct_mothership_class_00963ec0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 8,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\gameplay_seg61_62_cc13.cpp:67:    {0x00963EC0, \"MotherShip\", 0x00963380, 0x00D1AEBC, 0x00D1AEB8, {}, 0},",
+          "src\\gameplay_seg61_62_cc13.cpp:566:    {\"MotherShip\", 0x870, PreloadAlloc::pool_00470b80, 0x00963EC0, 0, 0, false},       // 0096435F",
+          "src\\scene_unit_creators.cpp:76:    {\"MotherShip\", 0x870, 0x00963ec0, 0x11, 18},",
+          "src\\vehicle_class.cpp:51:     0x00963EC0, 0x00D1AEBC, 0x00758D30, 18, 0x11},",
+          "src\\vehicle_class.cpp:454:// 00963EC0: complete body from its decompiled.c and assembly.txt exports.",
+          "src\\vehicle_class.cpp:457:std::uint8_t* construct_mothership_class_00963ec0(VehicleClassConstructorHost& host, std::uint8_t* self) {",
+          "include\\bsp\\vehicle_class.hpp:340:std::uint8_t* construct_mothership_class_00963ec0(VehicleClassConstructorHost&, std::uint8_t*);"
+        ],
+        "duplicate_removed": false,
+        "removed_symbols": [],
+        "canonical_symbol": null,
+        "class_search_ref": "src/vehicle_class.cpp"
+      }
+    },
+    {
+      "address": "00bea9e0",
+      "source": "src/storage_backend.cpp",
+      "symbols": [
+        "bsp::PcStorageBackend::state_is_zero_or_one_00bea9e0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 9,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "include\\bsp\\storage_backend.hpp:63:    bool state_is_zero_or_one_00bea9e0() const noexcept;",
+          "src\\storage_backend.cpp:97:// 00BEA9E0: __thiscall ECX=manager, no stack args, RET, AL result.",
+          "src\\storage_backend.cpp:98:bool PcStorageBackend::state_is_zero_or_one_00bea9e0() const noexcept {",
+          "src\\storage_backend.cpp:284:        if (state_is_zero_or_one_00bea9e0()) {",
+          "src\\storage_backend.cpp:317:        if (state_is_zero_or_one_00bea9e0()) {"
+        ],
+        "duplicate_removed": true,
+        "removed_symbols": [
+          "pc_storage_state_is_zero_or_one_00bea9e0"
+        ],
+        "canonical_symbol": "bsp::PcStorageBackend::state_is_zero_or_one_00bea9e0",
+        "class_search_ref": "src/storage_backend.cpp"
+      }
+    },
+    {
+      "address": "00beaa70",
+      "source": "src/storage_backend.cpp",
+      "symbols": [
+        "bsp::PcStorageBackend::capability_true_00beaa70"
+      ],
+      "precision": {
+        "native_instructions_scanned": 2,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\storage_backend.cpp:102:// 00BEAA70: MOV AL,1; RET; ECX and upper EAX are unused/unspecified.",
+          "src\\storage_backend.cpp:103:bool PcStorageBackend::capability_true_00beaa70() noexcept { return true; }",
+          "src\\storage_backend.cpp:155:    ready_21_ = capability_true_00beaa70();",
+          "src\\storage_backend.cpp:275:        ready_21_ = capability_true_00beaa70();",
+          "include\\bsp\\storage_backend.hpp:64:    static bool capability_true_00beaa70() noexcept;"
+        ],
+        "duplicate_removed": true,
+        "removed_symbols": [
+          "pc_storage_capability_true_00beaa70"
+        ],
+        "canonical_symbol": "bsp::PcStorageBackend::capability_true_00beaa70",
+        "class_search_ref": "src/storage_backend.cpp"
+      }
+    },
+    {
+      "address": "00beab50",
+      "source": "src/storage_backend.cpp",
+      "symbols": [
+        "bsp::PcStorageBackend::create_slot_directory_00beab50"
+      ],
+      "precision": {
+        "native_instructions_scanned": 23,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "include\\bsp\\storage_backend.hpp:65:    void create_slot_directory_00beab50(std::string_view name);",
+          "src\\storage_backend.cpp:105:// 00BEAB50: __thiscall ECX=manager, NativeString* name, RET4. The existing",
+          "src\\storage_backend.cpp:107:void PcStorageBackend::create_slot_directory_00beab50(std::string_view name) {",
+          "src\\storage_backend.cpp:286:                create_slot_directory_00beab50(write_name_500_);"
+        ],
+        "duplicate_removed": true,
+        "removed_symbols": [
+          "pc_storage_create_slot_directory_00beab50"
+        ],
+        "canonical_symbol": "bsp::PcStorageBackend::create_slot_directory_00beab50",
+        "class_search_ref": "src/storage_backend.cpp"
+      }
+    },
+    {
+      "address": "00beaba0",
+      "source": "src/storage_backend.cpp",
+      "symbols": [
+        "bsp::PcStorageBackend::read_file_00beaba0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 86,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\storage_backend.cpp:111:// 00BEABA0: __thiscall ECX=manager; name*,kind,buffer-out**,size-out*; RET10h.",
+          "src\\storage_backend.cpp:115:std::vector<std::uint8_t> PcStorageBackend::read_file_00beaba0(",
+          "src\\storage_backend.cpp:232:    auto bytes = read_file_00beaba0(read_name_24_, read_kind_2c_);",
+          "include\\bsp\\storage_backend.hpp:66:    std::vector<std::uint8_t> read_file_00beaba0(std::string_view name, std::uint32_t kind);"
+        ],
+        "duplicate_removed": true,
+        "removed_symbols": [
+          "pc_storage_read_file_00beaba0"
+        ],
+        "canonical_symbol": "bsp::PcStorageBackend::read_file_00beaba0",
+        "class_search_ref": "src/storage_backend.cpp"
+      }
+    },
+    {
+      "address": "00beacb0",
+      "source": "src/storage_backend.cpp",
+      "symbols": [
+        "bsp::PcStorageBackend::write_file_00beacb0"
+      ],
+      "precision": {
+        "native_instructions_scanned": 56,
+        "native_x87_operations": [],
+        "disposition": "no_arithmetic_chain",
+        "pc24_fix": false,
+        "evidence": "Full exported listing contains no x87 arithmetic operations. Float loads/stores remain explicit native host boundaries where present; the source uses integer stores/copies or Win32 I/O, with no floating arithmetic."
+      },
+      "duplicate_audit": {
+        "address_search": [
+          "src\\storage_backend.cpp:133:// 00BEACB0: __thiscall ECX=manager; name*,kind,buffer*,size; RET10h.",
+          "src\\storage_backend.cpp:135:void PcStorageBackend::write_file_00beacb0(std::string_view name, std::uint32_t kind,",
+          "src\\storage_backend.cpp:254:    write_file_00beacb0(write_name_500_, write_kind_508_,",
+          "include\\bsp\\storage_backend.hpp:67:    void write_file_00beacb0(std::string_view name, std::uint32_t kind,"
+        ],
+        "duplicate_removed": true,
+        "removed_symbols": [
+          "pc_storage_write_file_00beacb0"
+        ],
+        "canonical_symbol": "bsp::PcStorageBackend::write_file_00beacb0",
+        "class_search_ref": "src/storage_backend.cpp"
+      }
+    }
+  ],
+  "pc24_fixes": [],
+  "duplicates_removed": [
+    "00bea9e0",
+    "00beaa70",
+    "00beab50",
+    "00beaba0",
+    "00beacb0"
+  ],
+  "existing_source_commit": "22f875a60",
+  "storage_qualifications": [
+    "Existing path rejects a formatted path >=256 bytes and invalid kind.",
+    "Existing read rejects >DWORD file sizes and short reads and closes size-failure handles; image truncates size, ignores successful short counts and leaks that failure handle.",
+    "Checked std::vector allocation remains the existing qualified storage substitution; raw failure-side-effect equivalence is not claimed."
+  ],
+  "validation": {
+    "build": "pending combined integrator build",
+    "game_runs": 0,
+    "host_wiring": false,
+    "binary_abi_validated": false
+  },
+  "class_searches": {
+    "src/scene_traffic_groups.cpp": {
+      "class_pattern": "TrafficRecord|traffic_record",
+      "class_search_files": [
+        "src\\cc13_gamerows.cpp",
+        "src\\cc13_left61_seg61.cpp",
+        "src\\cc13_left8b_seg8.cpp",
+        "include\\bsp\\cc13_gamerows.hpp",
+        "src\\cc13_left8_seg8.cpp",
+        "include\\bsp\\cc13_left61.hpp",
+        "include\\bsp\\cc13_left8_seg8.hpp",
+        "src\\cc13_seg52.cpp",
+        "include\\bsp\\cc13_seg52.hpp",
+        "src\\game_hosts_scene_contents.cpp",
+        "src\\game_hosts_ship_ai.cpp",
+        "include\\bsp\\oct18_tail_a.hpp",
+        "src\\oct18_tail_a.cpp",
+        "include\\bsp\\scene_traffic_groups.hpp",
+        "include\\bsp\\ship_ai_approach_update.hpp",
+        "src\\scene_traffic_groups.cpp",
+        "src\\ship_ai_approach_update.cpp"
+      ],
+      "comparison": "Existing typed defaults/property applier does not allocate, construct and append a record. The old host declares00951220 as a boundary; the address-named body supplies that boundary, including null append. No second whole entry body."
+    },
+    "src/vehicle_class.cpp": {
+      "class_pattern": "VehicleClass|ClassDescriptorCtorRow|class_descriptor",
+      "class_search_files": [
+        "include\\bsp\\air_operations.hpp",
+        "src\\ai_target_weights.cpp",
+        "include\\bsp\\ai_planners.hpp",
+        "include\\bsp\\ai_target_weights.hpp",
+        "src\\band_0071_cc13.cpp",
+        "include\\bsp\\band_0080_cc13.hpp",
+        "src\\cc13_big1.cpp",
+        "include\\bsp\\cc13_big1.hpp",
+        "include\\bsp\\cc13_big53.hpp",
+        "src\\cc13_front7.cpp",
+        "include\\bsp\\cc13_front4.hpp",
+        "src\\cc13_left55_seg56c.cpp",
+        "src\\cc13_release_timer.cpp",
+        "include\\bsp\\cc13_large61.hpp",
+        "include\\bsp\\cc13_left61.hpp",
+        "include\\bsp\\cc13_release_timer.hpp",
+        "include\\bsp\\cc13_seg29U.hpp",
+        "include\\bsp\\cc13_seg33b.hpp",
+        "src\\cc13_seg62.cpp",
+        "include\\bsp\\cc13_seg47b.hpp",
+        "include\\bsp\\cc13_seg48.hpp",
+        "include\\bsp\\cc13_seg52.hpp",
+        "include\\bsp\\cc13_seg53.hpp",
+        "include\\bsp\\cc13_seg62.hpp",
+        "src\\cc13_sweepA4.cpp",
+        "include\\bsp\\cc13_sub_dive.hpp",
+        "src\\cc15_seg73_41_61.cpp",
+        "include\\bsp\\cc13_sweepA2.hpp",
+        "include\\bsp\\cc13_sweepA4.hpp",
+        "include\\bsp\\cc13_sweepA3.hpp",
+        "include\\bsp\\cc13_sweepB8.hpp",
+        "include\\bsp\\cc13_sweepC2.hpp",
+        "include\\bsp\\cc13_x87c.hpp",
+        "include\\bsp\\cc15_seg48.hpp",
+        "src\\dummy_depth_seg34_argon.cpp",
+        "include\\bsp\\dummy_depth_seg34_argon.hpp",
+        "src\\engine_seg49_64_78_cc13.cpp",
+        "src\\engine_seg4_6_9_cc13.cpp",
+        "include\\bsp\\engine_seg49_64_78_cc13.hpp",
+        "include\\bsp\\engine_seg4_6_9_cc13.hpp",
+        "src\\frontend_seg12_17_cc13.cpp",
+        "src\\frontend_seg16_24_28_cc13.cpp",
+        "src\\frontend_seg20_cc13.cpp",
+        "include\\bsp\\frontend_seg12_17_cc13.hpp",
+        "include\\bsp\\frontend_seg16_24_28_cc13.hpp",
+        "src\\gameplay_seg34_cc13.cpp",
+        "include\\bsp\\gameplay_seg34_cc13.hpp",
+        "src\\gameplay_seg61_62_cc13.cpp",
+        "include\\bsp\\gameplay_seg61_62_cc13.hpp",
+        "src\\game_hosts_ai.cpp",
+        "src\\game_hosts_gunnery.cpp",
+        "src\\game_hosts_hud.cpp",
+        "src\\game_hosts_lua.cpp",
+        "include\\bsp\\game_hosts_fixed_step.hpp",
+        "src\\game_hosts_mission_frame.cpp",
+        "include\\bsp\\game_hosts_gunnery.hpp",
+        "src\\game_hosts_scene_contents.cpp",
+        "src\\game_hosts_ship_ai.cpp",
+        "include\\bsp\\game_hosts_lua.hpp",
+        "src\\game_hosts_units.cpp",
+        "include\\bsp\\game_hosts_scene_contents.hpp",
+        "include\\bsp\\game_hosts_ship_ai.hpp",
+        "include\\bsp\\game_hosts_trajectory.hpp",
+        "include\\bsp\\game_hosts_units.hpp",
+        "src\\game_native_mission_ship.inc",
+        "src\\game_native_mission_units.cpp",
+        "include\\bsp\\gun_bot_remainder.hpp",
+        "src\\ingame_gui_cc13.cpp",
+        "include\\bsp\\ingame_gui.hpp",
+        "include\\bsp\\ingame_gui_cc13.hpp",
+        "src\\lua_binding_ai.cpp",
+        "src\\lua_binding_core.cpp",
+        "include\\bsp\\local_player_unit_lists.hpp",
+        "include\\bsp\\lua_binding_ai.hpp",
+        "include\\bsp\\lua_binding_core.hpp",
+        "include\\bsp\\main_menu_command_listener.hpp",
+        "src\\main_menu_vehicle_unlock.cpp",
+        "include\\bsp\\menu_screens_2.hpp",
+        "src\\mission_script_probe.cpp",
+        "include\\bsp\\mission_lua_bindings.hpp",
+        "src\\native_unit_class_lua.cpp",
+        "src\\native_unit_health_parts.cpp",
+        "src\\native_vehicle_class_activation.cpp",
+        "include\\bsp\\native_unit_class_lua.hpp",
+        "include\\bsp\\native_vehicle_class_base_constructor.hpp",
+        "include\\bsp\\native_vehicle_class_activation.hpp",
+        "src\\objectives_seg57_argon.cpp",
+        "src\\plane_class_fields.cpp",
+        "src\\pool_pool08_cc13.cpp",
+        "src\\pool_pool09_cc13.cpp",
+        "src\\pool_pool11_cc13.cpp",
+        "src\\profile_seg2_cc13.cpp",
+        "src\\recon_slot_lists.cpp",
+        "include\\bsp\\plane_class_fields.hpp",
+        "include\\bsp\\plane_squadron.hpp",
+        "src\\return_to_base.cpp",
+        "src\\scene_class_registry.cpp",
+        "src\\scene_file.cpp",
+        "src\\scene_traffic_groups.cpp",
+        "src\\scene_unit_creators.cpp",
+        "include\\bsp\\pool_pool09_cc13.hpp",
+        "include\\bsp\\pool_pool11_cc13.hpp",
+        "include\\bsp\\pool_pool13_cc13.hpp",
+        "src\\shipyard_production.cpp",
+        "include\\bsp\\recon_slot_lists.hpp",
+        "src\\ship_ai_neighbour_admission.cpp",
+        "include\\bsp\\return_to_base.hpp",
+        "include\\bsp\\scene_class_registry.hpp",
+        "include\\bsp\\scene_traffic_groups.hpp",
+        "include\\bsp\\scene_unit_creators.hpp",
+        "src\\ship_class_fields.cpp",
+        "src\\ship_motion_probe.cpp",
+        "include\\bsp\\seg27_cc13.hpp",
+        "include\\bsp\\seg6_cc13.hpp",
+        "include\\bsp\\sensor_tables.hpp",
+        "include\\bsp\\ship_ai_throttle_ring.hpp",
+        "include\\bsp\\ship_class_fields.hpp",
+        "include\\bsp\\ship_buoyancy_elements.hpp",
+        "src\\unit_damage.cpp",
+        "src\\unit_death_sink.cpp",
+        "src\\unit_hit_path.cpp",
+        "src\\unit_world_registration.cpp",
+        "src\\vehicle_class.cpp",
+        "src\\vehicle_class_fields.cpp",
+        "src\\vehicle_class_lua_load.cpp",
+        "include\\bsp\\unit_damage.hpp",
+        "include\\bsp\\unit_death_sink.hpp",
+        "include\\bsp\\unit_hit_path.hpp",
+        "include\\bsp\\unit_hull_extents.hpp",
+        "include\\bsp\\unit_instance_layout.hpp",
+        "include\\bsp\\unit_parts.hpp",
+        "include\\bsp\\unit_world_registration.hpp",
+        "include\\bsp\\vehicle_class.hpp",
+        "include\\bsp\\vehicle_class_fields.hpp",
+        "include\\bsp\\vehicle_class_lua_load.hpp"
+      ],
+      "comparison": "gameplay_seg61_62_cc13 constructor/getter rows are metadata; vehicle resolution delegates construction to a host and does not execute the base-call/store sequence. No second standalone body for this address."
+    },
+    "src/unit_instance_layout.cpp": {
+      "class_pattern": "PlaneInstanceCtorRow|UnitGameObject|PlaneUnitConstructor|unit_instance",
+      "class_search_files": [
+        "include\\bsp\\cc13_mistag.hpp",
+        "src\\cc13_mistag.cpp",
+        "include\\bsp\\cc13_seg30.hpp",
+        "include\\bsp\\cc13_seg33a.hpp",
+        "src\\cc13_seg30_seg50.cpp",
+        "include\\bsp\\cc13_seg41b.hpp",
+        "src\\cc13_seg33a.cpp",
+        "include\\bsp\\cc13_seg41_land.hpp",
+        "include\\bsp\\cc13_seg47.hpp",
+        "include\\bsp\\cc13_seg47b.hpp",
+        "include\\bsp\\cc13_seg48.hpp",
+        "src\\cc13_seg41b.cpp",
+        "include\\bsp\\cc13_seg49.hpp",
+        "src\\cc13_seg41_land.cpp",
+        "include\\bsp\\cc13_seg51b.hpp",
+        "src\\cc13_seg47.cpp",
+        "include\\bsp\\cc13_seg52.hpp",
+        "src\\cc13_seg47b.cpp",
+        "include\\bsp\\cc13_seg52b.hpp",
+        "src\\cc13_seg48.cpp",
+        "include\\bsp\\cc13_seg52U.hpp",
+        "src\\cc13_seg49.cpp",
+        "src\\cc13_seg51b.cpp",
+        "src\\cc13_seg52.cpp",
+        "include\\bsp\\cc13_seg62.hpp",
+        "src\\cc13_seg62.cpp",
+        "include\\bsp\\cc13_segmix.hpp",
+        "include\\bsp\\cc13_small2.hpp",
+        "src\\cc13_segmix.cpp",
+        "src\\cc13_small2.cpp",
+        "include\\bsp\\cc15_seg48.hpp",
+        "src\\cc15_seg48.cpp",
+        "include\\bsp\\controlled_unit.hpp",
+        "src\\controlled_unit.cpp",
+        "include\\bsp\\director_geommesh_seg38_39_argon.hpp",
+        "src\\director_geommesh_seg38_39_argon.cpp",
+        "include\\bsp\\entity_class_ids.hpp",
+        "include\\bsp\\entity_local_matrix.hpp",
+        "include\\bsp\\entity_mission_seg60_argon.hpp",
+        "src\\entity_mission_seg60_argon.cpp",
+        "src\\frontend_screens_cc13.cpp",
+        "include\\bsp\\frontend_screens_cc13.hpp",
+        "src\\gameplay_seg61_62_cc13.cpp",
+        "src\\game_hosts_hud.cpp",
+        "include\\bsp\\gameplay_seg61_62_cc13.hpp",
+        "src\\game_hosts_ship_ai.cpp",
+        "src\\game_hosts_units.cpp",
+        "src\\game_hosts_world.cpp",
+        "include\\bsp\\game_hosts_lua.hpp",
+        "src\\landscape_lua_seg55_argon.cpp",
+        "include\\bsp\\landscape_lua_seg55_argon.hpp",
+        "include\\bsp\\local_player_unit_lists.hpp",
+        "include\\bsp\\pool_pool01_cc13.hpp",
+        "include\\bsp\\pool_pool08_cc13.hpp",
+        "include\\bsp\\pool_pool13_cc13.hpp",
+        "include\\bsp\\profile_seg2_cc13.hpp",
+        "include\\bsp\\recon_slot_lists.hpp",
+        "include\\bsp\\ship_motion.hpp",
+        "include\\bsp\\sim_damage_seg54_argon.hpp",
+        "src\\pool_pool01_cc13.cpp",
+        "src\\pool_pool08_cc13.cpp",
+        "src\\profile_seg2_cc13.cpp",
+        "src\\sim_damage_seg54_argon.cpp",
+        "include\\bsp\\unit_damage.hpp",
+        "include\\bsp\\unit_destructor_levels.hpp",
+        "include\\bsp\\unit_instance_layout.hpp",
+        "include\\bsp\\unit_instance.hpp",
+        "include\\bsp\\unit_instance_step11.hpp",
+        "include\\bsp\\unit_instance_subobjects.hpp",
+        "include\\bsp\\unit_motion.hpp",
+        "include\\bsp\\unit_timers.hpp",
+        "include\\bsp\\unit_water_anchors.hpp",
+        "include\\bsp\\world_deferred_destroy.hpp",
+        "src\\tick_element_overrides.cpp",
+        "include\\bsp\\world_entity_update.hpp",
+        "src\\unit_controller.cpp",
+        "src\\unit_destructor_levels.cpp",
+        "src\\unit_instance_layout.cpp",
+        "src\\unit_instance.cpp",
+        "src\\unit_instance_subobjects.cpp",
+        "src\\unit_instance_step11.cpp",
+        "src\\unit_world_registration.cpp"
+      ],
+      "comparison": "Existing plane-instance records and layout facts are metadata. They do not execute the base constructor, vptr stores and tag writes. Address-named constructor is the only whole entry body."
+    },
+    "src/unit_destructor_levels.cpp": {
+      "class_pattern": "UnitDestructor|UnitReleaseHost|unit_release",
+      "class_search_files": [
+        "src\\cc13_seg62.cpp",
+        "include\\bsp\\cc13_seg62.hpp",
+        "src\\mp_seg43_cc13.cpp",
+        "include\\bsp\\mp_seg43_cc13.hpp",
+        "include\\bsp\\unit_destructor_levels.hpp",
+        "src\\unit_destructor_levels.cpp"
+      ],
+      "comparison": "run_unit_release_0081f3a0 is a different entry and a precomputed higher-level release plan. Its level4 steps use frozen snapshot state and do not supply an independently callable00959940 raw-image destructor with live reloads. No duplicate standalone00959940 body."
+    },
+    "src/storage_backend.cpp": {
+      "class_pattern": "PcStorageBackend|PcStorageNativeFile",
+      "class_search_files": [
+        "src\\game_profile_load.cpp",
+        "src\\pc_profile_io.cpp",
+        "include\\bsp\\options_hardware_cc13.hpp",
+        "include\\bsp\\pc_profile_io.hpp",
+        "include\\bsp\\pc_profile_manager.hpp",
+        "src\\storage_backend.cpp",
+        "include\\bsp\\storage_backend.hpp"
+      ],
+      "comparison": "Existing backend22f875a60 already performs the predicate, capability, directory creation and raw file I/O. Extracted that existing code into address-named members and removed the unwired free-function copies. Checked host-domain qualifications remain explicit."
+    }
+  },
+  "integrator_validation": {
+    "command": "./scripts/build.ps1",
+    "source_checked_commit": "8878f94b9c106c4a13fc11d785fba29a8e13693f",
+    "build_log": "local/build-poolB-fix-publish2.log",
+    "msvc": "Win32 Release",
+    "build_passed": true,
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "game_runs": 0,
+    "host_wiring_added": false,
+    "binary_abi_validated": false,
+    "native_differential_tested": false
+  },
+  "aggregate_fix_report": "reports/oct24_poolB_fixes.json"
+}

@@ -49,6 +49,17 @@ inline constexpr double kSubAttackHalf = 0.5;                 // 00D7A280 (doubl
 // Packet cc9_sub_attack_own_half; docs/SHIP_AI_OPEN_ITEMS.md section 242.
 // ON by the JM06 pair: fire switch 3-4 s earlier, min range ~50 m lower (243).
 inline constexpr bool kSubAttackOwnHalfLengthBound = true;
+// 009E9EB0 runs on the main thread at x87 PC24 (docs/CC13_FPU_PRECISION.md), so
+// every FMUL/FADD/FSUB/FDIV rounds to 24 bits. True: the five multi-op chains
+// round per op -- 009E9FB6 FMUL double 0.6 kept in ST0 for FCOMIP; 009EA061 /
+// 009EA141 / 009EA216 dx*dx + dz*dz; 009EA376 (range - 50.0) / water; 009EA53D
+// v.x*u.x + u.y*0.0 + v.z*u.z; 009EA6F8..009EA715 the band edge (C -/+ speed)
+// left in ST0 for FCOMIP; and the live callee 009E4A60's d2 at
+// 009E4AC8..009E4ACE (ship_ai_sub_attack_range_009e4a60). Every operand is a float or a float-valued double, so
+// float(double op) is the 24-bit rounding of each op. False: the earlier host,
+// which evaluates each chain in double and rounds once (or not at all).
+// Packet cc13-pc24a.
+inline constexpr bool kShipAiFireStepPc24Cc13Bound = false;
 inline constexpr float kSubAttackDefaultTargetLength = 100.0f;// 00CE3D08, 009E9D37
 inline constexpr float kSubAttackNoTubeRange = 500.0f;        // 00CE397C, 009E9D80
 inline constexpr float kSubAttackReadyHorizon = 10.0f;        // 00CE38B8 -> fire+5Ch, 009EABFC

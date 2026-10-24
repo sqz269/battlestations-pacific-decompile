@@ -8,6 +8,7 @@
 // listing reads and call a host for every native call site.
 
 #include "bsp/ship_ai_goal_vector.hpp"
+#include "bsp/ship_ai_seg67_switches_cc13.hpp" // kShipAiNavigationNanArmsCc13Bound
 
 #include <cmath>
 
@@ -233,7 +234,11 @@ ShipAiPathPickResult ship_ai_pick_path_point_009ee580(const ShipAiPathPickState&
     float low = kShipAiPathPublishLowFloor;
     if (record.direction_1c == 1) {
         const float width = host.path_width_2f4_08();
-        if (low < width) {
+        // 009EE62B 00415550(&low, &width): FCOMIP low,width / JBE returns the
+        // width unless low > width, so a NaN width wins. The OFF arm keeps the
+        // floor on NaN.
+        const bool take_width = kShipAiNavigationNanArmsCc13Bound ? !(low > width) : (low < width);
+        if (take_width) {
             low = width;
         }
     }

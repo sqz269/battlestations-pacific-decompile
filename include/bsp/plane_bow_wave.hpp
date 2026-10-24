@@ -41,6 +41,15 @@ struct PlaneBowWaveMarkerHost {
 void bind_plane_bow_wave_points_007d4812(PlaneBowWaveDefinition* records,
     std::size_t count, PlaneBowWaveMarkerHost& host);
 
+// The complete 007D3E60 binder permits marker callbacks and a returning CRT
+// handler to replace the descriptor's vector. Reload the current bounds at
+// the loop head, then check/reload the destination after each marker lookup.
+struct PlaneBowWaveLiveBindingHost : PlaneBowWaveMarkerHost {
+    virtual std::size_t current_wave_count() = 0;
+    virtual PlaneBowWaveDefinition& checked_wave_record(std::size_t index) = 0;
+};
+void bind_plane_bow_wave_points_007d4812(PlaneBowWaveLiveBindingHost& host);
+
 struct PlaneBowWaveEffectHost {
     virtual ~PlaneBowWaveEffectHost() = default;
     // 007d59c8 -> 00868420: native ECX=return-handle slot,

@@ -1,0 +1,1325 @@
+{
+  "packet": "oct24-poolB-fix-early",
+  "date": "2026-10-24",
+  "audit_base": "a36fbcb9561d50e389b63701cc5c367fecf05908",
+  "scope": {
+    "assigned_body_count": 24,
+    "assigned_addresses": [
+      "007482b0",
+      "00749210",
+      "0074a1f0",
+      "0074af50",
+      "0074d4a0",
+      "00758fe0",
+      "0077e380",
+      "0077eed0",
+      "007cfd00",
+      "007f9020",
+      "008050e0",
+      "00805240",
+      "00805d90",
+      "00808cb0",
+      "00810f60",
+      "008160b0",
+      "008b01b0",
+      "008d1a10",
+      "008d1ab0",
+      "008d1b80",
+      "008f02b0",
+      "008f02e0",
+      "008ff040",
+      "00922dd0"
+    ],
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_with": [
+      "python tools/bsp.py brief",
+      "python tools/bsp.py ghidra count",
+      "python tools/bsp.py ghidra ensure --status",
+      "python tools/bsp.py ghidra proto 0074af50 00922c80"
+    ],
+    "evidence_type": "Saved native instruction listings and current source; live target verification is read-only. No Ghidra mutation, game execution or host wiring."
+  },
+  "summary": {
+    "native_arithmetic_bodies": 2,
+    "float_transfer_only_bodies": 3,
+    "no_native_floating_instruction_bodies": 19,
+    "pc24_assigned_body_fixes": 1,
+    "pc24_existing_partial_projection_fixes": 2,
+    "additional_called_helper_semantic_fixes": 1,
+    "duplicate_complete_bodies_removed": 0,
+    "renames": 0,
+    "ledger_supersession_required": false
+  },
+  "precision_contract": {
+    "reference": "docs/CC13_FPU_PRECISION.md",
+    "idiom": "pc24(double operation) returns static_cast<float>; one narrowing after each native arithmetic instruction, retained under /fp:strict.",
+    "reused_from": [
+      "src/cc13_bigB1.cpp:32",
+      "src/shadow_cascades_cc13.cpp:82"
+    ],
+    "retained_paths": "All raw landing-ship callback calls and captured pointer/selected-slot read ordering are retained. Older partial projections remain separate APIs; no unsafe shared adapter was introduced.",
+    "limits": "This closes wider C++ intermediate chains for the main-thread PC24 value model. Worker PC53, x87 extended exponent/status/exception details and binary ABI/game validation are not claimed.",
+    "unrelated_existing_helper_scope": {
+      "symbol": "squared_distance",
+      "source": "src/building_pads.cpp:18",
+      "callers": [
+        "BuildingPadModel::pick_006f2e60 at src/building_pads.cpp:73",
+        "BuildingPadModel::nearest_pad_xz_006f3af0 at src/building_pads.cpp:253"
+      ],
+      "finding": "This older helper retains a double chain and rounds once. Neither assigned landing_ship_update_0074af50 nor the corrected ramp-latch/ramp-unload partials calls it. It is outside this exact24-body precision audit and is not claimed corrected.",
+      "assigned_unload_boundary": "0074B228 remains an explicit host.call_006ac370 boundary; the raw update does not compose either pad-model caller or squared_distance. No game-host adapter/wiring was added.",
+      "composed_helper_recheck": "0074AF50 composes only pc24 and integer/pointer/access helpers; both ramp partials compose only pc24. The assigned hull initializer reuses00810FAF inline x87;00922DD0 reuses the separately audited00922C80 body. Other assigned local helpers contain integer/pointer/refcount/string/table operations or float transfers, as recorded per row."
+    }
+  },
+  "additional_fixes": [
+    {
+      "address": "0074afcc",
+      "source": "src/building_pads.cpp",
+      "coverage": "Partial latch projection0074AFCC..0074B0AC, not another complete0074AF50 body.",
+      "change": "Round clock-1 before subtracting dt; compare rounded thresholds. Existing one-operation timer subtraction remains explicitly narrowed. Preserve the0074B065 FLDZ/0074B067 FCOMIP/0074B06B JC unordered skip with !(timer <= 0), so an infinity-minus-infinity timer cannot open the ramp.",
+      "additional_evidence_sites": [
+        "0074B065 FLDZ",
+        "0074B067 FCOMIP ST0,ST1",
+        "0074B06B JC0074B0B0"
+      ]
+    },
+    {
+      "address": "0074b109",
+      "source": "src/building_pads.cpp",
+      "coverage": "Partial ramp flag/rotation projection0074B109..0074B329.",
+      "change": "Round division before addition/subtraction, execute the division only in the native taken branch, and take the native completion arm for unordered at0074B133."
+    },
+    {
+      "address": "00922c80",
+      "source": "src/entity_mission_seg60_argon.cpp",
+      "coverage": "Existing local full-body helper called by assigned00922DD0.",
+      "change": "Replace <= rejection with negated ordered-positive comparisons to match JBE on unordered at00922D08 and00922D84. The sole double0.25 multiplication/narrowing is unchanged.",
+      "evidence_sites": [
+        "00922CF2 FCHS",
+        "00922CF4 FMUL double[00D7A348]",
+        "00922CFA FSTP float",
+        "00922D08 JBE",
+        "00922D84 JBE"
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "address": "007482b0",
+      "cpp_symbols": [
+        "land_fort_init_scene_and_create_static_body_007482b0"
+      ],
+      "source": "src/land_and_structures.cpp",
+      "source_definitions": [
+        "src/land_and_structures.cpp:325"
+      ],
+      "original_abi": "__thiscall ECX=fort; RET0",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/007482b0/assembly.txt",
+        "assembly_line_count": 438,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "land_scene_at/land_scene_pointer, checked_back and vector loops use integer/pointer storage; float words only initialize constants. Matrix/physics calls remain explicit external boundaries."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 007482b0 include src",
+        "address_match_count": 19,
+        "class_search": "rg -n -i \"LandFort|land_fort|MLandFort\" include src",
+        "class_match_count": 332,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "src/cc13_seg33b_command_building.cpp: command-building initialization calls the007482B0 host boundary; it does not supply a second body."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "00749210",
+      "cpp_symbols": [
+        "read_structure_class_fields_00749210"
+      ],
+      "source": "src/vehicle_class_fields.cpp",
+      "source_definitions": [
+        "src/vehicle_class_fields.cpp:43"
+      ],
+      "original_abi": "__thiscall ECX=descriptor; stack Lua row; RET4",
+      "classification": "float_transfer_only",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/00749210/assembly.txt",
+        "assembly_line_count": 370,
+        "x87_instruction_count": 7,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [
+          "007494c3: FSTP float ptr [ESI + 0x164] ",
+          "007494f3: FSTP float ptr [ESI + 0x168] ",
+          "00749523: FSTP float ptr [ESI + 0x16c] ",
+          "0074964b: FSTP float ptr [ESI + 0x170] ",
+          "0074970e: FLDZ ",
+          "00749711: FSTP float ptr [ESP] ",
+          "00749723: FSTP float ptr [ESI + 0x138] "
+        ],
+        "helper_review": "LeafLuaRef/LeafEffectRef/replace_leaf_effect use reference and pointer operations. number lambda receives float from explicit Lua-number host boundary and stores it; no local numerical chain."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 00749210 include src",
+        "address_match_count": 30,
+        "class_search": "rg -n -i \"StructureClass|structure_class\" include src",
+        "class_match_count": 6,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "src/vehicle_class_fields.cpp: descriptor-driven class-property model is a qualified table/value model; the raw leaf body is the only complete00749210 implementation."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "0074a1f0",
+      "cpp_symbols": [
+        "landing_ship_serialize_0074a1f0"
+      ],
+      "source": "src/cc13_seg41_land.cpp",
+      "source_definitions": [
+        "src/cc13_seg41_land.cpp:558"
+      ],
+      "original_abi": "__thiscall ECX=ship; stack archive; RET4",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/0074a1f0/assembly.txt",
+        "assembly_line_count": 153,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "at and archive calls forward scalar bits and addresses; no local arithmetic helper."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 0074a1f0 include src",
+        "address_match_count": 6,
+        "class_search": "rg -n -i \"LandingShip|landing_ship|MLandingShip\" include src",
+        "class_match_count": 489,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "src/cc13_seg41_land.cpp:00818340 ship base serialization and other landing-ship lifetime functions have different native addresses."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "0074af50",
+      "cpp_symbols": [
+        "landing_ship_update_0074af50"
+      ],
+      "source": "src/building_pads.cpp",
+      "source_definitions": [
+        "src/building_pads.cpp:286"
+      ],
+      "original_abi": "__thiscall ECX=ship; stack float dt; RET4",
+      "classification": "native_arithmetic",
+      "action": "pc24_chain_fixed",
+      "evidence": {
+        "assembly": "exports/bsp/functions/0074af50/assembly.txt",
+        "assembly_line_count": 420,
+        "x87_instruction_count": 80,
+        "x87_arithmetic_sites": [
+          "0074afda: FSUB ST1,ST0 ",
+          "0074afe5: FSUBP ST3,ST0 ",
+          "0074b01a: FSUBRP ST2,ST0 ",
+          "0074b053: FSUBR float ptr [ESP + 0x14] ",
+          "0074b140: FDIV float ptr [ESI + 0x1190] ",
+          "0074b14b: FADD float ptr [ESP + 0x14] ",
+          "0074b1c8: FMUL ST1 ",
+          "0074b1d3: FMUL ST1 ",
+          "0074b1d9: FMUL float ptr [EAX + 0x8] ",
+          "0074b1ed: FADD float ptr [ESP + 0x14] ",
+          "0074b1fd: FADD float ptr [ESP + 0x20] ",
+          "0074b208: FADD float ptr [ESP + 0x14] ",
+          "0074b30b: FDIV float ptr [ESI + 0x1190] ",
+          "0074b311: FSUBP ",
+          "0074b454: FSUB float ptr [EBX + 0x44] ",
+          "0074b45f: FMUL float ptr [ESI + 0x11a4] ",
+          "0074b465: FADD float ptr [ECX + EBX*0x1 + 0x44] "
+        ],
+        "sse_arithmetic_sites": [
+          "0074b4d6: SUBSS XMM0,dword ptr [EDX] "
+        ],
+        "transfer_sites": [],
+        "helper_review": "pc24 is the established double-operation -> explicit float narrowing idiom. byte/word/value/pointer/checked/count helpers add no floating operations. External vector and matrix hosts remain boundaries; no adapter was added. The two older partial ramp APIs are separate projections of this native body and were corrected consistently."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 0074af50 include src",
+        "address_match_count": 14,
+        "class_search": "rg -n -i \"LandingShip|landing_ship|MLandingShip\" include src",
+        "class_match_count": 489,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "landing_ship_ramp_latch_0074afcc covers0074AFCC..0074B0AC only.",
+          "landing_ship_ramp_unload_0074b109 covers0074B109..0074B329 flags/rotation only.",
+          "The raw body additionally contains all gates, warning calls, bow unload, Lua publication, ramp matrices and final debug getter. Partial APIs are retained, not second whole-body credit."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit. Main-thread PC24 is modeled; worker-thread PC53 behavior is not newly established."
+    },
+    {
+      "address": "0074d4a0",
+      "cpp_symbols": [
+        "read_wreckable_class_fields_0074d4a0"
+      ],
+      "source": "src/vehicle_class_fields.cpp",
+      "source_definitions": [
+        "src/vehicle_class_fields.cpp:104"
+      ],
+      "original_abi": "__thiscall ECX=descriptor; stack Lua row; RET4",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/0074d4a0/assembly.txt",
+        "assembly_line_count": 191,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "LeafLuaRef/LeafEffectRef/replace_leaf_effect and counted native-string lifetime helpers use integer/pointer operations; no local floating arithmetic."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 0074d4a0 include src",
+        "address_match_count": 10,
+        "class_search": "rg -n -i \"WreckableClass|wreckable_class\" include src",
+        "class_match_count": 2,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "Address and class matches are declarations, calls, fields, data or distinct native entries; no second complete body was found."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "00758fe0",
+      "cpp_symbols": [
+        "mothership_detach_from_world_lists_00758fe0"
+      ],
+      "source": "src/cc13_seg41_land.cpp",
+      "source_definitions": [
+        "src/cc13_seg41_land.cpp:871"
+      ],
+      "original_abi": "__thiscall ECX=ship; RET0",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/00758fe0/assembly.txt",
+        "assembly_line_count": 20,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "at and the list traversal use only pointers; the base detach and list erase remain external calls."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 00758fe0 include src",
+        "address_match_count": 4,
+        "class_search": "rg -n -i \"MotherShip|mothership\" include src",
+        "class_match_count": 331,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "Address and class matches are declarations, calls, fields, data or distinct native entries; no second complete body was found."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "0077e380",
+      "cpp_symbols": [
+        "destruct_native_unit_owner_entity_0077e380"
+      ],
+      "source": "src/native_unit_owner_entity.cpp",
+      "source_definitions": [
+        "src/native_unit_owner_entity.cpp:533"
+      ],
+      "original_abi": "__thiscall ECX=entity; RET0",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/0077e380/assembly.txt",
+        "assembly_line_count": 67,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "restore profiles, withdraw global matches, destroy lists and recon-record observer teardown use integer/pointer operations; no local floating arithmetic."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 0077e380 include src",
+        "address_match_count": 30,
+        "class_search": "rg -n -i \"UnitOwnerEntity|unit_owner_entity\" include src",
+        "class_match_count": 39,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "src/unit_destructor_levels.cpp: shared release-plan projection has l2 steps, not this raw storage/profile/session/list implementation; it is not a second complete native body."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "0077eed0",
+      "cpp_symbols": [
+        "construct_native_unit_owner_entity_0077eed0"
+      ],
+      "source": "src/native_unit_owner_entity.cpp",
+      "source_definitions": [
+        "src/native_unit_owner_entity.cpp:510"
+      ],
+      "original_abi": "__thiscall ECX=entity; stack full flag; RET4; EAX=entity",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/0077eed0/assembly.txt",
+        "assembly_line_count": 97,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "recon-record construction, first/second list constructors and peer-tail helpers use integer/pointer operations. The MOVSS initial word is deliberately copied as uint32 bits, not arithmetically converted."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 0077eed0 include src",
+        "address_match_count": 34,
+        "class_search": "rg -n -i \"UnitOwnerEntity|unit_owner_entity\" include src",
+        "class_match_count": 39,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "Address and class matches are declarations, calls, fields, data or distinct native entries; no second complete body was found."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "007cfd00",
+      "cpp_symbols": [
+        "plane_class_is_kind_of_007cfd00"
+      ],
+      "source": "include/bsp/local_player_unit_lists.hpp",
+      "source_definitions": [
+        "include/bsp/local_player_unit_lists.hpp:10"
+      ],
+      "original_abi": "ECX unused; stack class id; RET4; EAX boolean",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/007cfd00/assembly.txt",
+        "assembly_line_count": 11,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "Inline integer comparisons only; the existing local-player ancestry table is data, not a second body."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 007cfd00 include src",
+        "address_match_count": 4,
+        "class_search": "rg -n -i \"PlaneClass|plane_class\" include src",
+        "class_match_count": 381,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "Address and class matches are declarations, calls, fields, data or distinct native entries; no second complete body was found."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "007f9020",
+      "cpp_symbols": [
+        "copy_construct_profile_bonus_record_007f9020"
+      ],
+      "source": "src/native_game_profile_lifetime.cpp",
+      "source_definitions": [
+        "src/native_game_profile_lifetime.cpp:111"
+      ],
+      "original_abi": "__thiscall ECX=uninitialized destination; stack source; RET4; EAX=destination",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/007f9020/assembly.txt",
+        "assembly_line_count": 87,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "Existing native-string resize/destroy helpers and memcpy operate on byte counts and pointers. Related007F8B40 is value construction, and0061F4A0 is assignment, not this copy constructor."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 007f9020 include src",
+        "address_match_count": 4,
+        "class_search": "rg -n -i \"ProfileBonus|profile_bonus\" include src",
+        "class_match_count": 10,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "construct_profile_bonus_record_007f8b40 is value construction at another native address.",
+          "profile_bonus_record_assign_0061f4a0 assigns already-live strings; it is not copy construction."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "008050e0",
+      "cpp_symbols": [
+        "construct_recon_slot_008050e0"
+      ],
+      "source": "src/recon_slot_lists.cpp",
+      "source_definitions": [
+        "src/recon_slot_lists.cpp:17"
+      ],
+      "original_abi": "__thiscall ECX=slot; stack index; RET4; EAX=slot",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/008050e0/assembly.txt",
+        "assembly_line_count": 81,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "Raw accessors and constexpr list-offset loops use integer/pointer operations. The clock is a uint32 bit copy."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 008050e0 include src",
+        "address_match_count": 8,
+        "class_search": "rg -n -i \"ReconSlot|recon_slot\" include src",
+        "class_match_count": 131,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "src/cc13_seg49.cpp: recon_detection_construct_00805a70 constructs a different embedded record, not the12A0h slot."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "00805240",
+      "cpp_symbols": [
+        "destruct_recon_slot_00805240"
+      ],
+      "source": "src/recon_slot_lists.cpp",
+      "source_definitions": [
+        "src/recon_slot_lists.cpp:42"
+      ],
+      "original_abi": "__thiscall ECX=slot; RET0; does not free slot allocation",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/00805240/assembly.txt",
+        "assembly_line_count": 93,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "Existing recon_list_clear/recon_list_destroy_payloads and native observer teardown use pointer/integer operations; no floating calculation in local dispatch."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 00805240 include src",
+        "address_match_count": 5,
+        "class_search": "rg -n -i \"ReconSlot|recon_slot\" include src",
+        "class_match_count": 131,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "src/cc13_seg49.cpp: recon_detection_record_destruct_00804300 and recon_destroy_all_slots_008034e0 have different addresses and coverage."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "00805d90",
+      "cpp_symbols": [
+        "publish_recon_relation_categories_00805d90"
+      ],
+      "source": "src/recon_slot_lists.cpp",
+      "source_definitions": [
+        "src/recon_slot_lists.cpp:66"
+      ],
+      "original_abi": "ECX unused; stack instance/triple/unused; RET0Ch",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/00805d90/assembly.txt",
+        "assembly_line_count": 123,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "recon_publish_excludes_class uses an integer membership table. push_recon_named_table/pop_recon_table_scope use Lua stack, string-key and raw-table operations; no floating chain."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 00805d90 include src",
+        "address_match_count": 10,
+        "class_search": "rg -n -i \"ReconRelation|recon_relation|relation_categories\" include src",
+        "class_match_count": 76,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "src/recon_slot_lists.cpp: existing category helpers provide exclusions/mapping and table-scope services, not a second complete publication body."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "00808cb0",
+      "cpp_symbols": [
+        "construct_sensor_class_table_00808cb0"
+      ],
+      "source": "src/sensor_tables.cpp",
+      "source_definitions": [
+        "src/sensor_tables.cpp:23"
+      ],
+      "original_abi": "__thiscall ECX=fresh record; RET0; EAX=this",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/00808cb0/assembly.txt",
+        "assembly_line_count": 26,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "Default vector construction and two native base-word assignments add no numerical operations. Existing sensor loaders/builders model008082A0, not this constructor."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 00808cb0 include src",
+        "address_match_count": 7,
+        "class_search": "rg -n -i \"SensorClassTable|sensor_class_table\" include src",
+        "class_match_count": 26,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "src/sensor_table_data.cpp: build_sensor_class_table_008082a0 applies a loader/data model; it is not the constructor."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "00810f60",
+      "cpp_symbols": [
+        "initialize_unit_director_and_hull_00810f60"
+      ],
+      "source": "src/unit_hull_extents.cpp",
+      "source_definitions": [
+        "src/unit_hull_extents.cpp:11"
+      ],
+      "original_abi": "__thiscall ECX=unit; RET0",
+      "classification": "native_arithmetic",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/00810f60/assembly.txt",
+        "assembly_line_count": 100,
+        "x87_instruction_count": 29,
+        "x87_arithmetic_sites": [
+          "0081100c: FMUL ST1 ",
+          "00811040: FMUL float ptr [ESP + 0x8] ",
+          "00811052: FMUL float ptr [ESP + 0x8] "
+        ],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "Called produce_unit_hull_extents_00810faf is existing inline x87 assembly: negative minimum spills, FCOMIP selection and double2 kept on stack for the width/length multiplication. No wider C++ chain was introduced."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 00810f60 include src",
+        "address_match_count": 11,
+        "class_search": "rg -n -i \"UnitHull|unit_hull|director_and_hull\" include src",
+        "class_match_count": 91,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "produce_unit_hull_extents_00810faf is the reused extent-only fragment00810FAF..00811073; raw body owns the director prefix and resource-kind notification tail."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit. Main-thread PC24 is modeled; worker-thread PC53 behavior is not newly established."
+    },
+    {
+      "address": "008160b0",
+      "cpp_symbols": [
+        "tick_unit_repair_task_008160b0"
+      ],
+      "source": "src/unit_fire_flooding.cpp",
+      "source_definitions": [
+        "src/unit_fire_flooding.cpp:13"
+      ],
+      "original_abi": "__thiscall ECX=unit; stack float dt; RET4",
+      "classification": "float_transfer_only",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/008160b0/assembly.txt",
+        "assembly_line_count": 17,
+        "x87_instruction_count": 2,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [
+          "008160d7: FLD float ptr [ESP + 0x4] ",
+          "008160e2: FSTP float ptr [ESP] "
+        ],
+        "helper_review": "The taken branch explicitly FLD/FSTPs dt in inline assembly before the external repair-task call; no local arithmetic helper."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 008160b0 include src",
+        "address_match_count": 9,
+        "class_search": "rg -n -i \"UnitRepair|unit_repair|repair_task\" include src",
+        "class_match_count": 37,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "Address and class matches are declarations, calls, fields, data or distinct native entries; no second complete body was found."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "008b01b0",
+      "cpp_symbols": [
+        "lua_game_end_scene_008b01b0"
+      ],
+      "source": "src/engine_seg56_cc13.cpp",
+      "source_definitions": [
+        "src/engine_seg56_cc13.cpp:20"
+      ],
+      "original_abi": "No stack arguments; RET0; EAX=Lua result count zero",
+      "classification": "float_transfer_only",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/008b01b0/assembly.txt",
+        "assembly_line_count": 215,
+        "x87_instruction_count": 4,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [
+          "008b02eb: FLDZ ",
+          "008b02ef: FSTP float ptr [ESP] ",
+          "008b03bd: FLDZ ",
+          "008b03c1: FSTP float ptr [ESP] "
+        ],
+        "helper_review": "Temporary counted-string lifetime helpers and prompt/control branches use integer/pointer state. Both float prompt arguments are FLDZ/FSTP transfers, not arithmetic."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 008b01b0 include src",
+        "address_match_count": 13,
+        "class_search": "rg -n -i \"LuaGame|lua_game|end_scene\" include src",
+        "class_match_count": 106,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "src/cc13_left55_seg56b.cpp: training-ground end-scene008B0470 differs from008B01B0.",
+          "src/game_hosts_script_orders.cpp records the Lua request; it is not a second native body."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "008d1a10",
+      "cpp_symbols": [
+        "construct_perf_timing_registry_008d1a10"
+      ],
+      "source": "src/engine_seg56_cc13.cpp",
+      "source_definitions": [
+        "src/engine_seg56_cc13.cpp:81"
+      ],
+      "original_abi": "__thiscall ECX=this; RET0; EAX=this",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/008d1a10/assembly.txt",
+        "assembly_line_count": 44,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "perf_raw/perf_bytes/perf_empty_head use integer/pointer storage; tree allocation remains external."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 008d1a10 include src",
+        "address_match_count": 5,
+        "class_search": "rg -n -i \"PerfTimingRegistry|perf_timing_registry\" include src",
+        "class_match_count": 17,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "Address and class matches are declarations, calls, fields, data or distinct native entries; no second complete body was found."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "008d1ab0",
+      "cpp_symbols": [
+        "destruct_perf_timing_registry_008d1ab0"
+      ],
+      "source": "src/engine_seg56_cc13.cpp",
+      "source_definitions": [
+        "src/engine_seg56_cc13.cpp:94"
+      ],
+      "original_abi": "__thiscall ECX=this; RET0",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/008d1ab0/assembly.txt",
+        "assembly_line_count": 57,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "perf_raw/perf_bytes and range erasure calls use integer/pointer state; no numerical helper."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 008d1ab0 include src",
+        "address_match_count": 4,
+        "class_search": "rg -n -i \"PerfTimingRegistry|perf_timing_registry\" include src",
+        "class_match_count": 17,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "Address and class matches are declarations, calls, fields, data or distinct native entries; no second complete body was found."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "008d1b80",
+      "cpp_symbols": [
+        "get_perf_timing_registry_008d1b80"
+      ],
+      "source": "src/engine_seg56_cc13.cpp",
+      "source_definitions": [
+        "src/engine_seg56_cc13.cpp:117"
+      ],
+      "original_abi": "No arguments; RET0; EAX=singleton slot",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/008d1b80/assembly.txt",
+        "assembly_line_count": 51,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "Guard changes only integer recursion count and Win32 lock state; called constructor008D1A10 and perf_empty_head are arithmetic-free."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 008d1b80 include src",
+        "address_match_count": 4,
+        "class_search": "rg -n -i \"PerfTimingRegistry|perf_timing_registry\" include src",
+        "class_match_count": 17,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "Address and class matches are declarations, calls, fields, data or distinct native entries; no second complete body was found."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "008f02b0",
+      "cpp_symbols": [
+        "scene_property_decl_is_enum_letter_008f02b0"
+      ],
+      "source": "src/scene_property_bag.cpp",
+      "source_definitions": [
+        "src/scene_property_bag.cpp:15"
+      ],
+      "original_abi": "__thiscall ECX=declaration; RET0; AL boolean",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/008f02b0/assembly.txt",
+        "assembly_line_count": 12,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "Null guard plus the existing CRT _stricmp binding; no numerical helper."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 008f02b0 include src",
+        "address_match_count": 4,
+        "class_search": "rg -n -i \"ScenePropertyDecl|scene_property_decl\" include src",
+        "class_match_count": 4,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "Address and class matches are declarations, calls, fields, data or distinct native entries; no second complete body was found."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "008f02e0",
+      "cpp_symbols": [
+        "scene_property_decl_is_lua_s_letter_008f02e0"
+      ],
+      "source": "src/scene_property_bag.cpp",
+      "source_definitions": [
+        "src/scene_property_bag.cpp:18"
+      ],
+      "original_abi": "__thiscall ECX=declaration; RET0; AL boolean",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/008f02e0/assembly.txt",
+        "assembly_line_count": 12,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "Null guard plus the existing CRT _stricmp binding; no numerical helper."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 008f02e0 include src",
+        "address_match_count": 4,
+        "class_search": "rg -n -i \"ScenePropertyDecl|scene_property_decl\" include src",
+        "class_match_count": 4,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "Address and class matches are declarations, calls, fields, data or distinct native entries; no second complete body was found."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "008ff040",
+      "cpp_symbols": [
+        "attach_ballistic_gun_bot_008ff040"
+      ],
+      "source": "src/gun_bot_ticks.cpp",
+      "source_definitions": [
+        "src/gun_bot_ticks.cpp:15"
+      ],
+      "original_abi": "__thiscall ECX=bot; stack unit; RET4",
+      "classification": "no_native_floating_instructions",
+      "action": "audited_no_change",
+      "evidence": {
+        "assembly": "exports/bsp/functions/008ff040/assembly.txt",
+        "assembly_line_count": 11,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "Base attach and error-roll remain explicit host boundaries; the only in-body copy is four raw bytes. No called C++ numerical helper."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 008ff040 include src",
+        "address_match_count": 5,
+        "class_search": "rg -n -i \"BallisticGunBot|ballistic_gun_bot\" include src",
+        "class_match_count": 2,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "Address and class matches are declarations, calls, fields, data or distinct native entries; no second complete body was found."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    },
+    {
+      "address": "00922dd0",
+      "cpp_symbols": [
+        "entity_is_surface_target_00922dd0"
+      ],
+      "source": "include/bsp/entity_mission_seg60_argon.hpp",
+      "source_definitions": [
+        "include/bsp/entity_mission_seg60_argon.hpp:364"
+      ],
+      "original_abi": "ECX=entity; XOR DL,DL; tail JMP00922C80; RET0/AL result inherited",
+      "classification": "no_native_floating_instructions",
+      "action": "existing_helper_unordered_guards_fixed",
+      "evidence": {
+        "assembly": "exports/bsp/functions/00922dd0/assembly.txt",
+        "assembly_line_count": 2,
+        "x87_instruction_count": 0,
+        "x87_arithmetic_sites": [],
+        "sse_arithmetic_sites": [],
+        "transfer_sites": [],
+        "helper_review": "Called00922C80 has one FCHS/FMUL(double0.25)/FSTP chain and is already narrowed after that sole operation. The cast helpers only perform pointer/kind checks. Its JBE unordered guards were corrected separately; the multiply was left unchanged."
+      },
+      "duplicate_review": {
+        "address_search": "rg -n -i 00922dd0 include src",
+        "address_match_count": 5,
+        "class_search": "rg -n -i \"SurfaceTarget|surface_target\" include src",
+        "class_match_count": 50,
+        "complete_body_definitions_found": 1,
+        "duplicate_complete_body_found": false,
+        "related_implementations_compared": [
+          "surface_target_thunk_00922dc0 passes allow_far1 at a different native entry.",
+          "include/bsp/attack_target_classify.hpp supplies partial EntityTargetFacts value projections of00922C80, not the zero-DL tail thunk or callback/raw-storage body."
+        ]
+      },
+      "uncertainty": "New C++ interfaces and explicit native-call boundaries remain; original register/stack ABI, FH3/FP status identity and live-game behavior are not established by this audit."
+    }
+  ],
+  "existing_call_sites": [
+    {
+      "address": "0074af76",
+      "native": "008255b0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b080",
+      "native": "0074a420",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b089",
+      "native": "00749aa0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b0a0",
+      "native": "0077c2a0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b104",
+      "native": "00977da0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b15a",
+      "native": "006f22b0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b1a2",
+      "native": "0042d7e0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b1b9",
+      "native": "00414260",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b1e0",
+      "native": "00427eb0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b228",
+      "native": "006ac370",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b243",
+      "native": "00476b90",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b24a",
+      "native": "0071ad50",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b25d",
+      "native": "00b6da70",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b262",
+      "native": "004c1570",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b26f",
+      "native": "00411eb0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b288",
+      "native": "0041e870",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b29b",
+      "native": "00927b40",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b2b1",
+      "native": "00b673a0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b2c1",
+      "native": "00b67700",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b2d2",
+      "native": "0041dd20",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b2d9",
+      "native": "0074ad90",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b2e9",
+      "native": "00411ee0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b31e",
+      "native": "006f22f0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b3a6",
+      "native": "00bf6713",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b3dc",
+      "native": "00bf6713",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b410",
+      "native": "00bf6713",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b446",
+      "native": "00bf6713",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b492",
+      "native": "00bf6713",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b4c5",
+      "native": "00bf6713",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b4f3",
+      "native": "00b64640",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b4fd",
+      "native": "004134f0",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b51b",
+      "native": "00413920",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "0074b54b",
+      "native": "0051f460",
+      "function": "0074af50",
+      "kind": "call",
+      "note": "Existing direct boundary retained; no call target added or changed."
+    },
+    {
+      "address": "00922dd2",
+      "native": "00922c80",
+      "function": "00922dd0",
+      "kind": "tail_jump",
+      "note": "Existing local full-body helper reused by zero-DL thunk."
+    }
+  ],
+  "validation": {
+    "diff_check": "passed",
+    "source_definition_check": "24 exact assigned symbols each have one definition in their manifest source.",
+    "focused_expression_witnesses": {
+      "count": 7,
+      "kind": "Four finite numerical chain witnesses plus three unordered-branch witnesses, evaluated with explicit IEEE float32 narrowing/comparisons. This is source-expression evidence, not a compiled/native runtime differential.",
+      "cases": [
+        {
+          "expression": "last_contact > (clock - 1) - dt",
+          "inputs": {
+            "clock": 4096.0,
+            "dt": 9.999999747378752e-05,
+            "last_contact": 4095.0
+          },
+          "old_threshold": 4094.9999000000025,
+          "pc24_threshold": 4095.0,
+          "old_result": true,
+          "pc24_result": false
+        },
+        {
+          "expression": "ramp opening",
+          "inputs": {
+            "dt": 9.999999747378752e-05,
+            "duration": 0.0010000000474974513,
+            "fraction": 0.20000000298023224
+          },
+          "old_value": 0.29999998211860657,
+          "old_bits": "3e999999",
+          "pc24_value": 0.30000001192092896,
+          "pc24_bits": "3e99999a"
+        },
+        {
+          "expression": "ramp closing",
+          "inputs": {
+            "dt": 9.999999747378752e-05,
+            "duration": 0.0010000000474974513,
+            "fraction": 0.10000000149011612
+          },
+          "old_value": 8.76607320066114e-09,
+          "old_bits": "32169999",
+          "pc24_value": 7.450580596923828e-09,
+          "pc24_bits": "32000000"
+        },
+        {
+          "expression": "ramp angle (to - from) * fraction + from",
+          "inputs": {
+            "start": 9.999999747378752e-05,
+            "stop": 0.0010000000474974513,
+            "fraction": 0.4000000059604645
+          },
+          "old_value": 0.0004600000102072954,
+          "old_bits": "39f12c28",
+          "pc24_value": 0.0004600000393111259,
+          "pc24_bits": "39f12c29"
+        },
+        {
+          "expression": "ramp completion arm at 0074B133",
+          "inputs": {
+            "fraction": "NaN"
+          },
+          "old_result": false,
+          "pc24_ordered_result": true,
+          "native_jbe_result": true
+        },
+        {
+          "expression": "surface target rejection at 00922D08/00922D84",
+          "inputs": {
+            "position_y": "NaN",
+            "threshold": 0.0
+          },
+          "old_reject": false,
+          "fixed_reject": true,
+          "native_jbe_reject": true
+        },
+        {
+          "expression": "partial ramp-latch unordered timer at0074B067/0074B06B",
+          "inputs": {
+            "clock": 100.0,
+            "last_contact": 100.0,
+            "timer_before": "+infinity",
+            "dt": "+infinity"
+          },
+          "computed_timer": "NaN",
+          "old_skip": false,
+          "fixed_skip": true,
+          "native_jc_skip": true
+        }
+      ]
+    },
+    "call_site_verification": "passed: python tools/verify_report_calls.py reports/oct24_poolB_fix_early.json; 34 call rows checked,0 failed",
+    "combined_msvc_win32_build": "Deferred to primary integrator as assigned; not independently run by this worker.",
+    "new_committed_tests": 0,
+    "game_validation": "not run"
+  },
+  "changed_source_hashes": {
+    "src/building_pads.cpp": "60c87da8dd9c51edad2540b6e102ca6ea5ab48c4fba64859dfe0f27a20256088",
+    "include/bsp/building_pads.hpp": "ad3318742472f4fc54233a5b02f253ce755edf423308720f51791663961828ab",
+    "src/entity_mission_seg60_argon.cpp": "222742617805ffd123c707e411fb6a0ac4c85cc0dd126c724e08a45dad15d9f6"
+  },
+  "integrator_validation": {
+    "command": "./scripts/build.ps1",
+    "source_checked_commit": "8878f94b9c106c4a13fc11d785fba29a8e13693f",
+    "build_log": "local/build-poolB-fix-publish2.log",
+    "msvc": "Win32 Release",
+    "build_passed": true,
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "game_runs": 0,
+    "host_wiring_added": false,
+    "binary_abi_validated": false,
+    "native_differential_tested": false
+  },
+  "aggregate_fix_report": "reports/oct24_poolB_fixes.json"
+}
