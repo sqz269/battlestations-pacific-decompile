@@ -77,7 +77,7 @@ This is an owned source composition with genuine image layout and storage.
 It does not claim the original calling convention, private CRT heap, register
 or FH3/SEH/fault ABI, identical partial-failure timing, pool allocator binary
 identity, native FontRegistry image, reload `00AD51D0`, or game/visual proof.
-Raw Font `+00` and padding begin with an admitted zero preimage; DAT extent and
+Raw Font `+00`, `+16..17` and `+49..4B` begin with an admitted zero preimage; DAT extent and
 required-fallback checks are explicit Source input-domain guards. GFX/alpha
 production still occurs through the established application sequence; this is
 not an assertion of whole-loader instruction/callback scheduling equivalence.

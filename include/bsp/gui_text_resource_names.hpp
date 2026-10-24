@@ -61,7 +61,7 @@ void set_gui_text_shader_name_00ab8e70(GuiTextLifetime&, const std::string&,
 // Native length/current CRT equality early-out; changed path stores font_name,
 // invokes the selected registry access and stable owned-descriptor lookup,
 // validates the SAME actual font-resource association, publishes borrowed font,
-// then stores current descriptor alpha_texture_scale(+1C), or LIVE D7A24C for
+// then stores the selected Font owner's live alpha scale(+1C), or LIVE D7A24C for
 // a genuine lookup miss. Only then captures/releases/clears actual shader.
 // Does not reload geometry or copy scale_ratio(+18). Returned bool is a C++
 // convenience (changed name), not a recovered native return-value contract.
@@ -81,5 +81,5 @@ bool set_gui_text_font_name_00ab8c30(GuiTextLifetime&, const std::string&,
 // Profile access, publication changes and owner retirement are externally
 // serialized; the legacy cell is live state, not an immutable registry promise.
 // FontRegistryStartup's compatibility vector/resources are
-// never substituted for its stable descriptor or the actual FontData/images.
+// never substituted for its stable descriptor or the actual typed/image Font.
 } // namespace bsp

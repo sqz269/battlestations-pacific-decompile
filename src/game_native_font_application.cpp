@@ -62,7 +62,6 @@ struct GameNativeFontApplication::Impl {
             &current.opens == &raw.opens && &current.conversion == &raw.conversion &&
             &current.actual_vfs_publication_0109ceec == &raw.actual_vfs_publication_0109ceec &&
             &cache.strings == &raw.strings && &grid.strings == &raw.strings &&
-            (!native_images || &raw.strings == &game_native_string_process().raw_context()) &&
             &cache.textures.strings == &raw.strings && &cache.textures.streams == &raw.bindings &&
             &cache.textures.opens == &raw.opens && &cache.textures.conversion == &raw.conversion &&
             static_cast<const volatile void*>(&cache.textures.current_vfs_0109ceec) ==
@@ -75,6 +74,19 @@ struct GameNativeFontApplication::Impl {
             "Native font production requires the same ready renderer, VFS, strings and actual owners");
         require_gui_text_native_renderer_domain(grid.graphics, renderer.publication_00f8d394(),
             raw.strings, grid.graphics.streams.geometry.actual_owners());
+        if (native_images) {
+            // VFS owns an adapter over these cells; adapter object identity is
+            // not the lifetime domain. The raw constructor uses this SAME
+            // process's publications and current small-return gate.
+            auto& source_strings = vfs.raw_strings();
+            auto& image_strings = game_native_string_process().raw_context();
+            require(&source_strings.actual_published_01090aa8 == &image_strings.actual_published_01090aa8 &&
+                &source_strings.actual_small_returns_disabled_01090aa4 ==
+                    &image_strings.actual_small_returns_disabled_01090aa4 &&
+                &source_strings.actual_manager_publication_01090aa0 ==
+                    &image_strings.actual_manager_publication_01090aa0,
+                "Native Font image requires the same actual string-pool process cells");
+        }
     }
     void* load_image(NativeString& name, bool& name_live, const std::string& path,
         NativeTextureCacheAcquired& acquired) {
