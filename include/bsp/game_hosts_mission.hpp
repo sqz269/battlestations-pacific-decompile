@@ -72,7 +72,7 @@ inline constexpr bool kMissionStartTemporaryReleaseCc15Bound = false;
 // 005922F0 starts the mission straight from the list. That arm builds no
 // mission-detail page (0058C092 rejects group 0). True: a page-8 selection
 // takes that arm. False: the walk stops after the mission list, as before.
-inline constexpr bool kChallengeGroupPageCc15Bound = false;
+inline constexpr bool kChallengeGroupPageCc15Bound = true;
 
 // One class token of the selected mission's `.scn`, as the reconstructed
 // reader counted it. `registered` is bsp::scene_entity_class_is_registered.
