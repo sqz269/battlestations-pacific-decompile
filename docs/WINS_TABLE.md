@@ -1436,6 +1436,7 @@ Frames: BSM03/04/05 24000, BSM06 44000, IJN18 100000, USN15 104000; otherwise as
 | BSM06 `h1_i` (new) | completed 1518.36 s | **failed 1164.01 s** | completed 1254.10 s | |
 | BSM06 `h1_j` (new) | completed 1518.36 s | completed 1263.11 s | **no end** (2200 s) | |
 | USN15 `g57_mb` (new, lost) | **failed 3444.28 s** | **failed 1572.46 s** | **failed 1457.35 s** | see below |
+| JM08 `s63_v3` (new; ships63's base e3cdbd967) | completed 4246.98 s | **no end** | **failed 1911.79 s** | ref only, knife-edge |
 
 - Every completion and every winning EndMission (MissionStatus=true) logs the guard. helm_role_forced=0 on every run.
   helm_moveto_unselected=0 everywhere except BSM09 d1.
@@ -1462,11 +1463,13 @@ Frames: BSM03/04/05 24000, BSM06 44000, IJN18 100000, USN15 104000; otherwise as
   - kMovieEngageRoleReleaseCc13Bound ON alone: failed 55.05 s.
   - Each of the other three ON alone: completed 225.06 s.
   - So the cause is the movie-engage release (e7871ab3e, faithful). g4 stands.
-- **Moves since 34daf632e**:
-  - BSM01 ref 815.92 -> 821.92 s and BSM09 ref 429.02 -> 414.02 s: physics26 measured these on atktgt (997fe5044).
+- **Moves since 34daf632e**, all "moved in 34daf632e..515837c10, cause: not the fix":
+  - BSM01 ref 815.92 -> 821.92 s and BSM09 ref 429.02 -> 414.02 s: atktgt (997fe5044), measured by physics26.
   - BSM01 20,3 (887.91 s -> no end), BSM01 default (failed 1563.40 -> 1875.70 s) and BSM09 default
-    (429.02 -> 405.02 s) also moved within 34daf632e..3364b40a5. That range holds atktgt, the seat-artillery flips,
+    (429.02 -> 405.02 s) moved within 34daf632e..3364b40a5. That range holds atktgt, the seat-artillery flips,
     the airborne launch, hint2 and the party flip. Per-flip attribution is not measured.
+  - PRCP01 p9_p01_k: lost to atktgt (physics26; recon1 also sees failed 1038.39 s on cd0ecf3ee). The row is now
+    p26_p01_a.
 - **bisect2's PilotMoveTo fix (9f45384fc) moves no WINS row.** Pairs of 3364b40a5 (the fix's parent on main) vs
   515837c10, all pair_diff "gameplay identical":
   - PRCP01 in all three envs.
@@ -1474,6 +1477,16 @@ Frames: BSM03/04/05 24000, BSM06 44000, IJN18 100000, USN15 104000; otherwise as
   - BSM01 20,3 and default.
   - USN15 ref.
   - JM06 and ESMP08 end as on 34daf632e.
-- **USN15 `g57_mb`** (cc9-gunnery57: EndMission 3734.57 s ref on its base) is lost on 515837c10. It is identical on
-  3364b40a5. Ashigara, Nachi and Mogami die at 504 s, 735 s and 845 s, but Yamashiro survives, and the run fails at
-  3444.28 s. The row goes back to gunnery57 for a re-check on 515837c10.
+- **USN15 `g57_mb`** is lost on 515837c10.
+  - cc9-gunnery57 timed it on 9a3179122 (agent/cc9-gunnery52, not an ancestor of main): ref EndMission 3734.57 s
+    twice; default failed 1657.54 s; 20,3 failed 1572.46 s.
+  - On 515837c10 the ref fails at 3444.28 s, and 3364b40a5 gives the same, so the cause is not the fix. Ashigara,
+    Nachi and Mogami die at 504 s, 735 s and 845 s, but Yamashiro survives.
+  - The move lies in 9a3179122..3364b40a5. That range holds 32 code commits, among them the seat-artillery flips
+    322d3f8fa, the party flip 4131eba6f, the airborne launch 691b19de2 and the gate flip. Per-flip attribution is
+    not measured, and the row goes back to gunnery57.
+- **JM08 `s63_v3`** (cc9-ships63, `config/win_orders/jm08_s63_v3.txt`, committed by ships63) was timed by ships63 on
+  e3cdbd967 at 110000 frames and is not re-timed here.
+  - ref: completed 4246.98 s, a knife-edge (the HQ bottoms at 9 hp).
+  - 20,3: no end.
+  - default: failed 1911.79 s ("The HQ has been destroyed!").
