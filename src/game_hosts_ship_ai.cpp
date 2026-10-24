@@ -6345,17 +6345,19 @@ public:
         PadZones zones(owner_);
         if (bsp::refresh_pad_line_006ac5d0(*p, layer, zones)) ++s.landing_pad_line_casts;
         // 009F21F6..009F220F: 006AC5D0(pad)(&out, &unit+0FCh, layer, 200.0f).
-        const bsp::ShipAiFollowLandXZ point = bsp::ship_ai_land_pad_approach_point_006ac5d0(
+        const bsp::ShipAiLandPadPoint point = bsp::ship_ai_land_pad_approach_point_xyz_006ac5d0(
             p->line, bsp::ShipAiFollowLandXZ{p->facing_x, p->facing_z},
             bsp::ShipAiFollowLandXZ{unit_pos[0], unit_pos[2]}, 200.0f);
-        // 009F2214..009F2228; y is taken as 0.0f (SUBSTITUTION, labelled: the
-        // per-call arm's out+4 store was not re-read).
-        ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{point.x, 0.0f, point.z};
+        // 009F2214..009F2228 store all three floats. OFF takes y as 0.0f (SUBSTITUTION,
+        // labelled); kPadApproachPointImageCc13Bound ON takes the arm's out+4,
+        // [+210h] +/- 0.0, which 009F225B..009F2261 then reads back for the distance.
+        const float point_y = bsp::kPadApproachPointImageCc13Bound ? point.y : 0.0f;
+        ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{point.x, point_y, point.z};
         ++s.landing_mode3_points;
         if (p->line.origin_y_210 != 0.0f) ++s.landing_mode3_y_differs;   // sw1 reach
         // 009F2247..009F2293: |point - unit+0FCh| through 0042B2F0.
         const double dx = static_cast<double>(point.x) - unit_pos[0];
-        const double dy = 0.0 - static_cast<double>(unit_pos[1]);
+        const double dy = static_cast<double>(point_y) - static_cast<double>(unit_pos[1]);
         const double dz = static_cast<double>(point.z) - unit_pos[2];
         const float d = static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
         // 009F22A5..009F22E7: reach = max(00811A30(unit, 1.0) * 2.5, 300.0f).
