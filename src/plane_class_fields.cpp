@@ -4,9 +4,16 @@
 #include "bsp/plane_class_fields.hpp"
 
 #include <cstring>
+#include <array>
+#include <cmath>
 
 namespace bsp {
 namespace {
+
+template <class T>
+T& plane_model_at(void* base, std::size_t offset) {
+    return *reinterpret_cast<T*>(static_cast<std::uint8_t*>(base) + offset);
+}
 
 using Kind = VehicleClassValueKind;
 
@@ -525,6 +532,258 @@ const PlaneClassKeyCount kPlaneClassUnconsumedPaths[] = {
 
 std::size_t plane_class_unconsumed_path_count() noexcept {
     return sizeof(kPlaneClassUnconsumedPaths) / sizeof(kPlaneClassUnconsumedPaths[0]);
+}
+
+// 007D3E60..007D5889, complete ordinary body. Native ECX descriptor / RET;
+// the FH3 frame and unwind actions are excluded. All 1632 disassembled
+// instructions and both LEA alignment gaps were reviewed. The three DC-form
+// FMULs at 007D4630/007D57DC/007D5850 were decoded from their bytes.
+// CRT sqrt/atan2/fmod are qualified stock substitutions, not game-body credit.
+// Float store points are explicit; x87 bit/environment and binary ABI
+// equivalence remain unproved. In particular, +4FCh is never incremented here.
+void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,
+    const PlaneClassModelConstants& k, PlaneClassModelHost& host) {
+    host.call_0095f500(descriptor);                                    // 007D3E81
+    alignas(4) std::uint8_t name[0x1C];
+    const auto reset_name = [&]() {
+        plane_model_at<std::uint32_t>(name, 0x18) = 15;
+        plane_model_at<std::uint32_t>(name, 0x14) = 0;
+        name[4] = 0;
+    };
+    const auto with_name = [&](const char* text, std::uint32_t length, auto&& consume) {
+        reset_name();
+        host.call_00408720(name, text, length);
+        auto result = consume(name);
+        if (plane_model_at<std::uint32_t>(name, 0x18) > 15)
+            host.call_00bf65ac(plane_model_at<void*>(name, 4));
+        reset_name();
+        return result;
+    };
+    const auto contains = [&](const char* text, std::uint32_t length, std::uint32_t index) {
+        return with_name(text, length, [&](const void* key) {
+            return host.call_00717f20(plane_model_at<void*>(descriptor, 0x50), key, index);
+        });
+    };
+    const auto find = [&](const char* text, std::uint32_t length, std::uint32_t index) {
+        return with_name(text, length, [&](const void* key) {
+            return host.call_00718000(plane_model_at<void*>(descriptor, 0x50), key, index);
+        });
+    };
+    const auto lookup = [&](const char* text, std::uint32_t length, std::uint32_t index) {
+        return with_name(text, length, [&](const void* key) {
+            return host.call_00718870(plane_model_at<void*>(descriptor, 0x50), key, index);
+        });
+    };
+    const auto point_count = [](void* group) {
+        const auto bytes = static_cast<std::int32_t>(plane_model_at<std::uint32_t>(group, 0x4C)
+            - plane_model_at<std::uint32_t>(group, 0x48));
+        return bytes / 12;
+    };
+    const auto point = [&](void* group, std::uint32_t index) {
+        if (plane_model_at<std::uint32_t>(group, 0x48) == 0
+            || index >= static_cast<std::uint32_t>(point_count(group))) host.invalid_parameter_00bf6713();
+        // Returning handlers may replace current begin before the three loads.
+        const float* p = reinterpret_cast<const float*>(static_cast<std::uintptr_t>(
+            plane_model_at<std::uint32_t>(group, 0x48)) + index * 12u);
+        return std::array<float, 3>{p[0], p[1], p[2]};
+    };
+    const auto difference = [](const auto& a, const auto& b) {
+        return std::array<float, 3>{a[0] - b[0], a[1] - b[1], a[2] - b[2]};
+    };
+    const auto cross_ba = [](const auto& a, const auto& b) {
+        return std::array<float, 3>{
+            static_cast<float>(static_cast<double>(a[2]) * b[1] - static_cast<double>(a[1]) * b[2]),
+            static_cast<float>(static_cast<double>(a[0]) * b[2] - static_cast<double>(b[0]) * a[2]),
+            static_cast<float>(static_cast<double>(b[0]) * a[1] - static_cast<double>(a[0]) * b[1])};
+    };
+    const auto identity = [](float* matrix) {
+        for (std::size_t i = 0; i != 16; ++i) matrix[i] = 0.0f;
+        for (std::size_t i : {0u, 5u, 10u, 15u}) matrix[i] = 1.0f;
+    };
+    const auto copy3 = [](float* out, const auto& in) { for (std::size_t i = 0; i != 3; ++i) out[i] = in[i]; };
+    const auto sight_matrix = [&]() {
+        return reinterpret_cast<float*>(descriptor + 0x27Cu
+            + plane_model_at<std::uint32_t>(descriptor, 0x4FC) * 0x40u);
+    };
+    if (std::uint8_t* group = lookup("cockpitview", 11, 0)) {           // 007D3EB9
+        float scratch[3];
+        const float* p = host.call_00484270(group, scratch, 0);          // 007D3EF7
+        for (std::size_t i = 0; i != 3; ++i) plane_model_at<float>(descriptor, 0x244 + i * 4) = p[i];
+    }
+    for (std::uint32_t index = 0; contains("sight", 5, index); ++index) {
+        std::uint8_t* group = find("sight", 5, index);
+        if (plane_model_at<void*>(group, 0x48) == nullptr || point_count(group) <= 2) continue;
+        identity(sight_matrix());
+        const auto translation = point(group, 0);
+        copy3(sight_matrix() + 12, translation);
+        const auto origin_z = point(group, 0);
+        const auto end_z = point(group, 2);
+        const auto z = difference(end_z, origin_z);
+        copy3(sight_matrix() + 8, z);
+        const auto origin_a = point(group, 0);
+        const auto end_a = point(group, 1);
+        const auto a = difference(end_a, origin_a);
+        const auto origin_b = point(group, 0);
+        const auto end_b = point(group, 2);
+        const auto b = difference(end_b, origin_b);
+        float cross[3];
+        const float* y = host.call_004f9b30(cross, b.data(), a.data());   // 007D435B
+        for (std::size_t i = 0; i != 3; ++i) sight_matrix()[4 + i] = y[i];
+        host.call_0085dc80(sight_matrix());                            // 007D439C
+    }
+    if (lookup("groundpoint", 11, 0) != nullptr) {                    // 007D43C9
+        std::array<std::array<float, 3>, 3> points;
+        for (std::uint32_t i = 0; i != 3; ++i) points[i] = point(find("groundpoint", 11, i), 0);
+        const auto a = difference(points[1], points[0]);
+        const auto b = difference(points[2], points[0]);
+        auto normal = cross_ba(a, b);
+        const float sy = static_cast<float>(static_cast<double>(normal[1]) * normal[1]);
+        const float sx = static_cast<float>(static_cast<double>(normal[0]) * normal[0]);
+        const float sz = static_cast<float>(static_cast<double>(normal[2]) * normal[2]);
+        const float squared = static_cast<float>(static_cast<double>(sy) + sx + sz);
+        const float magnitude = static_cast<float>(std::sqrt(static_cast<double>(squared))); // 007D45B8
+        const float inverse = magnitude > 0.0f ? 1.0f / magnitude : 0.0f;
+        for (float& component : normal) component *= inverse;
+        if (normal[1] < 0.0f) for (float& component : normal)
+            component = static_cast<float>(component * k.minus_one_00d7a250); // DC CA at 007D4630
+        const float angle = static_cast<float>(std::atan2(static_cast<double>(normal[2]), normal[1])); // 007D4654
+        float folded = static_cast<float>(std::fmod(static_cast<double>(angle), k.period_00ce3828)); // 007D466F
+        if (k.lower_angle_00ce3d18 >= folded) folded = static_cast<float>(folded + k.period_00ce3828);
+        else if (folded > k.upper_angle_00ce3d28) folded = static_cast<float>(folded - k.period_00ce3828);
+        plane_model_at<float>(descriptor, 0x200) = folded;
+        plane_model_at<std::uint8_t>(descriptor, 0x1F8) = 1;
+        const float dot = static_cast<float>(static_cast<double>(normal[0]) * points[0][0]
+            + static_cast<double>(normal[1]) * points[0][1] + static_cast<double>(points[0][2]) * normal[2]);
+        const float negative_dot = -dot;
+        plane_model_at<float>(descriptor, 0x1FC) = negative_dot / normal[1];
+    }
+    std::uint8_t* model = plane_model_at<std::uint8_t*>(descriptor, 0x50);
+    plane_model_at<float>(descriptor, 0x158) = static_cast<float>((static_cast<double>(
+        plane_model_at<float>(model, 0x3C)) + plane_model_at<float>(model, 0x30)) * 0.5);
+    host.call_00725b40(descriptor + 0x148, plane_model_at<std::uint32_t>(descriptor, 0x140)); // 007D4740
+    for (std::int32_t index = 0; index < plane_model_at<std::int32_t>(descriptor, 0x140); ++index) {
+        (void)with_name("enginefire", 10, [&](const void* key) {
+            std::uint8_t* group = host.call_00718000(plane_model_at<void*>(descriptor, 0x50), key,
+                                                   static_cast<std::uint32_t>(index)); // 007D4787
+            const auto p = point(group, 0);
+            host.call_004215d0(descriptor + 0x148, p.data());           // 007D47DF, before name cleanup
+            return 0;
+        });
+    }
+    std::uint32_t wave_index = 0, wave_offset = 0;
+    for (;;) {
+        const std::uint32_t begin = plane_model_at<std::uint32_t>(descriptor, 0x554);
+        if (begin == 0) break;
+        const auto count = static_cast<std::uint32_t>(static_cast<std::int32_t>(
+            plane_model_at<std::uint32_t>(descriptor, 0x558) - begin) >> 4);
+        if (wave_index >= count) break;
+        const auto p = point(find("wave", 4, wave_index + 1), 0);
+        const std::uint32_t current_begin = plane_model_at<std::uint32_t>(descriptor, 0x554);
+        const auto current_count = current_begin == 0 ? 0u : static_cast<std::uint32_t>(static_cast<std::int32_t>(
+            plane_model_at<std::uint32_t>(descriptor, 0x558) - current_begin) >> 4);
+        if (current_begin == 0 || wave_index >= current_count) host.invalid_parameter_00bf6713(); // 007D4915
+        float* out = reinterpret_cast<float*>(static_cast<std::uintptr_t>(
+            plane_model_at<std::uint32_t>(descriptor, 0x554)) + wave_offset + 4u);
+        copy3(out, p);
+        ++wave_index;
+        wave_offset += 0x10;
+    }
+    const auto build_frame = [&](std::uint8_t* group, float* matrix) {
+        identity(matrix);
+        const auto translation = point(group, 0);
+        copy3(matrix + 12, translation);
+        const auto origin_z = point(group, 0);
+        const auto end_z = point(group, 2);
+        copy3(matrix + 8, difference(end_z, origin_z));
+        const auto origin_a = point(group, 0);
+        const auto end_a = point(group, 1);
+        const auto a = difference(end_a, origin_a);
+        const auto origin_b = point(group, 0);
+        const auto end_b = point(group, 2);
+        copy3(matrix + 4, cross_ba(a, difference(end_b, origin_b)));
+        host.call_0085dc80(matrix);
+    };
+    for (std::uint32_t index = 1; contains("shell", 5, index); ++index) {
+        std::uint8_t* group = find("shell", 5, index);
+        float matrix[16];
+        build_frame(group, matrix);                                    // 007D4E11
+        if (plane_model_at<std::uint32_t>(descriptor, 0x23C) == plane_model_at<std::uint32_t>(descriptor, 0x240)) {
+            auto capacity = static_cast<std::int32_t>(plane_model_at<std::uint32_t>(descriptor, 0x240) * 2u);
+            if (capacity < 2) capacity = 1;
+            host.call_007bd600(descriptor + 0x238, capacity);           // 007D4E39
+        }
+        const std::uint32_t target = plane_model_at<std::uint32_t>(descriptor, 0x238)
+            + plane_model_at<std::uint32_t>(descriptor, 0x23C) * 0x40u;
+        if (target != 0) std::memcpy(reinterpret_cast<void*>(static_cast<std::uintptr_t>(target)), matrix, 0x40);
+        ++plane_model_at<std::uint32_t>(descriptor, 0x23C);
+    }
+    std::uint32_t jet_offset = 0;
+    for (std::int32_t index = 0; index < plane_model_at<std::int32_t>(descriptor, 0x254); ++index) {
+        std::uint8_t* group = find("jet", 3, static_cast<std::uint32_t>(index) + 1);
+        float matrix[16];
+        build_frame(group, matrix);                                    // 007D52A4
+        float* out = reinterpret_cast<float*>(static_cast<std::uintptr_t>(
+            plane_model_at<std::uint32_t>(descriptor, 0x250)) + jet_offset + 4u);
+        for (std::size_t i = 0; i != 16; ++i) out[i] = matrix[i];
+        jet_offset += 0x44;
+    }
+    const bool has_tip_effect = plane_model_at<void*>(descriptor, 0x5A4) != nullptr;
+    plane_model_at<std::uint32_t>(descriptor, 0x5A0) = 0;
+    if (has_tip_effect) {
+        for (std::uint32_t index = 1; contains("wingtip", 7, index); ++index) {
+            std::uint8_t* group = find("wingtip", 7, index);
+            alignas(4) std::uint8_t record[0x10];
+            plane_model_at<void*>(record, 0) = nullptr;
+            void* effect = plane_model_at<void*>(descriptor, 0x5A4);
+            if (effect != nullptr) {
+                plane_model_at<void*>(record, 0) = effect;
+                (void)host.interlocked_increment(&plane_model_at<std::int32_t>(effect, 4)); // IAT 00CE221C
+            }
+            const auto p = point(group, 0);
+            for (std::size_t i = 0; i != 3; ++i) plane_model_at<float>(record, 4 + i * 4) = p[i];
+            host.call_007d1d30(descriptor + 0x560, record);              // 007D550D
+            effect = plane_model_at<void*>(record, 0);
+            if (effect != nullptr) {
+                if (host.interlocked_decrement(&plane_model_at<std::int32_t>(effect, 4)) == 0)
+                    host.vcall_00_release(effect);                     // 007D5539
+                plane_model_at<void*>(record, 0) = nullptr;
+            }
+        }
+        for (std::uint32_t index = 1; contains("contrail", 8, index); ++index) {
+            std::uint8_t* group = find("contrail", 8, index);
+            const std::uint32_t count = plane_model_at<std::uint32_t>(descriptor, 0x5A0);
+            float* out = reinterpret_cast<float*>(descriptor + 0x570u + count * 12u);
+            plane_model_at<std::uint32_t>(descriptor, 0x5A0) = count + 1;
+            float scratch[3];
+            const float* p = host.call_00484270(group, scratch, 0);      // 007D5649
+            for (std::size_t i = 0; i != 3; ++i) out[i] = p[i];
+        }
+    }
+    if (contains("collipos", 8, 0)) {
+        for (std::uint32_t index = 0; contains("collipos", 8, index); ++index) {
+            const auto p = with_name("collipos", 8, [&](const void* key) {
+                std::uint8_t* group = host.call_00718000(plane_model_at<void*>(descriptor, 0x50), key, index); // 007D576B
+                std::array<float, 3> out;
+                (void)host.call_00484270(group, out.data(), 0);          // 007D5772, before name cleanup
+                return out;
+            });
+            host.call_004215d0(descriptor + 0x5B8, p.data());           // 007D57A0, after name cleanup
+        }
+    } else {
+        model = plane_model_at<std::uint8_t*>(descriptor, 0x50);        // captured through all four appends
+        const float width = plane_model_at<float>(model, 0x34) - plane_model_at<float>(model, 0x28);
+        float p[3] = {0.0f, static_cast<float>(plane_model_at<float>(model, 0x38) * k.bound_scale_00d04310),
+                     static_cast<float>(k.bound_scale_00d04310 * plane_model_at<float>(model, 0x30))};
+        host.call_004215d0(descriptor + 0x5B8, p);                      // 007D57EB; DC C9 at 007D57DC
+        p[0] = static_cast<float>(-static_cast<double>(width) * k.side_scale_00cf5e58); p[1] = p[2] = 0.0f;
+        host.call_004215d0(descriptor + 0x5B8, p);                      // 007D5816
+        p[0] = static_cast<float>(width * k.side_scale_00cf5e58); p[1] = p[2] = 0.0f;
+        host.call_004215d0(descriptor + 0x5B8, p);                      // 007D583F
+        p[0] = 0.0f;
+        p[1] = static_cast<float>(plane_model_at<float>(model, 0x2C) * k.bound_scale_00d04310);
+        p[2] = static_cast<float>(k.bound_scale_00d04310 * plane_model_at<float>(model, 0x3C));
+        host.call_004215d0(descriptor + 0x5B8, p);                      // 007D586C; DC C9 at 007D5850
+    }
 }
 
 }  // namespace bsp
