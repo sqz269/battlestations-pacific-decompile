@@ -47,16 +47,18 @@ struct GameNativeFontLoadOperation final {
 // Genuine normal initial-load producer over the SAME renderer/VFS/string/
 // canonical-resource domain. Native64's observed B319B0 path loads GFX then
 // alpha (flags0), then read-existing DAT goes through the real VFS and the
-// proven scalar decoder. Adopt transfers the sole decoded allocation and both
-// returned raw image references into NativeFontResources without AddRef or
-// another metric/glyph map. Registry descriptors remain stable across appends.
+// proven scalar decoder, or selected direct native-image DAT population. Both
+// arms transfer the two returned raw image references into the same canonical
+// NativeFontResources without AddRef or a second live metric/glyph map.
+// Registry descriptors remain stable across appends as name-lookup metadata.
 //
 // AD4C30 native ABI: ECX font, five string arguments, RET14h. This source
 // composition implements successful final population/ownership; its DAT
-// whole-file transport, typed tree/string allocation and failure timing are
-// not the original per-field stream/SEH/pool ABI. AD51D0 destructive reload is
-// unsupported. AD53A0 uses existing typed payload/GFX/alpha retirement; the
-// native string/tree/sentinel tail remains outside that owner projection.
+// whole-file transport and failure timing are not the original per-field
+// stream/SEH/private-heap ABI. The optional image arm uses genuine raw Font
+// constructor/tree providers and native pooled strings; its complete normal
+// retirement includes strings/nodes/sentinel. Typed mode retains the existing
+// partial retirement. AD51D0 destructive reload remains unsupported.
 // Evidence: FONT_RESOURCE_OWNERSHIP.md, NATIVE_FONT_RESOURCES.md,
 // GUI_TEXT_NATIVE_RENDERER.md and GAME_NATIVE_FONT_APPLICATION.md.
 //
@@ -72,6 +74,10 @@ public:
     ~GameNativeFontApplication() noexcept;
     GameNativeFontApplication(const GameNativeFontApplication&) = delete;
     GameNativeFontApplication& operator=(const GameNativeFontApplication&) = delete;
+
+    // Select only while fresh. Default remains the established typed arm.
+    // Both arms use the same registry lookup and actual renderer/VFS owners.
+    void enable_native_font_images();
 
     void load_descriptors_00ac3910(VfsLuaScriptFiles&, const LuaRuntimeGlobals&,
         const std::string& root, const std::string& descriptor,

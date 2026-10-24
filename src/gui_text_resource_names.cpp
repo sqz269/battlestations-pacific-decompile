@@ -107,7 +107,8 @@ bool set_gui_text_font_name_00ab8c30(GuiTextLifetime& lifetime,
     //AB8C86 publishes borrowed font BEFORE reading its live+1C scalar.
     text.font = found ? &found->descriptor : nullptr;
     if (text.font) {
-        std::memcpy(&text.alpha_texture_scale, &text.font->alpha_texture_scale, sizeof(float));
+        const auto& alpha = services.fonts.resolve(text.font).alpha_texture_scale_1c();
+        std::memcpy(&text.alpha_texture_scale, &alpha, sizeof(float));
     } else {
         const float one = services.one_00d7a24c;
         std::memcpy(&text.alpha_texture_scale, &one, sizeof(float));

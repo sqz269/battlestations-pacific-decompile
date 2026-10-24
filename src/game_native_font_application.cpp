@@ -3,6 +3,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_string_process.hpp"
 #include "bsp/gui_text_runtime_factory.hpp"
 #include "bsp/native_game_grid.hpp"
 #include "bsp/native_string_pool_storage.hpp"
@@ -42,6 +43,7 @@ struct GameNativeFontApplication::Impl {
     std::vector<std::unique_ptr<GameNativeFontLoadOperation>> operations;
     GuiTextRuntimeFactory* text_factory{}; // SAME canonical borrower only.
     bool fonts_exported{};
+    bool native_images{};
     Phase phase{Phase::fresh};
     std::exception_ptr failed;
 
@@ -60,6 +62,7 @@ struct GameNativeFontApplication::Impl {
             &current.opens == &raw.opens && &current.conversion == &raw.conversion &&
             &current.actual_vfs_publication_0109ceec == &raw.actual_vfs_publication_0109ceec &&
             &cache.strings == &raw.strings && &grid.strings == &raw.strings &&
+            (!native_images || &raw.strings == &game_native_string_process().raw_context()) &&
             &cache.textures.strings == &raw.strings && &cache.textures.streams == &raw.bindings &&
             &cache.textures.opens == &raw.opens && &cache.textures.conversion == &raw.conversion &&
             static_cast<const volatile void*>(&cache.textures.current_vfs_0109ceec) ==
@@ -120,20 +123,34 @@ struct GameNativeFontApplication::Impl {
                 "Native font DAT could not be read completely through the actual VFS");
             op.phase = GameNativeFontLoadPhase::decode;
             op.native_site = 0x00ad4f3a;
-            op.decoded = std::make_unique<FontData>();
-            if (!decode_font_data_00ad4c30_fragment(*source.stream, descriptor.scale_ratio, *op.decoded, error))
-                throw std::runtime_error(error);
+            if (native_images) {
+                op.native_site = 0x00ad55c0;
+                NativeFontResources::construct_image_00ad55c0(descriptor,
+                    grid.graphics.streams.geometry.actual_owners(), game_native_string_process(), op.unpublished);
+                op.native_site = 0x00ad4f3a;
+                op.unpublished->populate_image_00ad4c30_fragment(
+                    *source.stream, root, language, op.gfx, op.alpha);
+            } else {
+                op.decoded = std::make_unique<FontData>();
+                if (!decode_font_data_00ad4c30_fragment(*source.stream, descriptor.scale_ratio, *op.decoded, error))
+                    throw std::runtime_error(error);
+                op.phase = GameNativeFontLoadPhase::adoption;
+                op.native_site = 0x00ad50cb;
+                op.unpublished = NativeFontResources::adopt_00ad4c30_fragment(descriptor,
+                    op.decoded, op.gfx, op.alpha, grid.graphics.streams.geometry.actual_owners());
+            }
             source.stream.reset();
-            op.phase = GameNativeFontLoadPhase::adoption;
-            op.native_site = 0x00ad50cb;
-            op.unpublished = NativeFontResources::adopt_00ad4c30_fragment(descriptor,
-                op.decoded, op.gfx, op.alpha, grid.graphics.streams.geometry.actual_owners());
+            if (native_images) {
+                op.phase = GameNativeFontLoadPhase::adoption;
+                op.native_site = 0x00ad508f;
+                op.unpublished->finish_image_00ad4c30_fragment(op.gfx, op.alpha);
+            }
             op.phase = GameNativeFontLoadPhase::publication;
             op.published = &fonts.publish(op.unpublished);
             output = op.published;
             op.phase = GameNativeFontLoadPhase::complete;
             log.notef("native font %s glyphs=%zu gfx=%p profile=%08x alpha=%p profile=%08x",
-                descriptor.name.c_str(), op.published->data().glyphs.size(), op.gfx_result,
+                descriptor.name.c_str(), op.published->glyph_count(), op.gfx_result,
                 image_profile(op.gfx_result), op.alpha_result, image_profile(op.alpha_result));
             return true;
         } catch (...) {
@@ -149,6 +166,11 @@ GameNativeFontApplication::GameNativeFontApplication(GameHostLog& log,
     : impl_(std::make_unique<Impl>(log, renderer, vfs, registry)) {}
 GameNativeFontApplication::~GameNativeFontApplication() noexcept {
     if (requires_process_retention()) std::terminate();
+}
+void GameNativeFontApplication::enable_native_font_images() {
+    require(impl_->phase == Impl::Phase::fresh && impl_->operations.empty(),
+        "Native Font image selection requires fresh startup");
+    impl_->native_images = true;
 }
 void GameNativeFontApplication::load_descriptors_00ac3910(VfsLuaScriptFiles& files,
     const LuaRuntimeGlobals& globals, const std::string& root,

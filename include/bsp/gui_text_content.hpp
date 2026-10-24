@@ -111,6 +111,9 @@ struct GuiTextContentEnvironment {
     GuiTextContentComparison comparison;
     GuiTextBufferServices& buffers;
     GuiTextContentCalls& calls;
+    // Optional same canonical font domain. Image Fonts read their live +48;
+    // old standalone typed callers retain descriptor-only behavior.
+    NativeFontResourceOwners* fonts{};
 };
 
 enum class GuiTextContentBranch {

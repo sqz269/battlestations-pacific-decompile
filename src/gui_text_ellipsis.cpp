@@ -1,4 +1,5 @@
 #include "bsp/gui_text_ellipsis.hpp"
+#include "bsp/native_font_resources.hpp"
 
 #include <limits>
 #include <stdexcept>
@@ -66,8 +67,24 @@ std::uint16_t change_width(std::uint16_t current, std::uint16_t advance,
 }
 } // namespace
 
-std::u16string ellipsize_gui_text_00ab8f00(const GuiTextWidget& widget,
-    const FontData& font, const LocaleTables& locale,
+namespace {
+const FontGlyphData& ellipsis_glyph(const FontData& font, std::uint16_t key) noexcept {
+    return select_font_glyph_00ad4480(font, key);
+}
+const FontGlyphData& ellipsis_glyph(const NativeFontResources& font, std::uint16_t key) noexcept {
+    return font.glyph(key);
+}
+bool ellipsis_uppercase(const FontData&, const GuiTextWidget& widget) noexcept {
+    return widget.font->uppercase_only;
+}
+bool ellipsis_uppercase(const NativeFontResources& font, const GuiTextWidget& widget) {
+    if (&font.descriptor() != widget.font)
+        throw std::logic_error("Text ellipsis requires its same canonical Font");
+    return font.uppercase_only_48();
+}
+template<class Font>
+std::u16string ellipsize(const GuiTextWidget& widget,
+    const Font& font, const LocaleTables& locale,
     LocaleTextRuntimeHost& locale_runtime, std::u16string_view source,
     float normalized_width) {
     auto target = target_width(normalized_width); // Before copy/locale callbacks.
@@ -77,7 +94,7 @@ std::u16string ellipsize_gui_text_00ab8f00(const GuiTextWidget& widget,
     std::u16string output(source);
     if (!widget.font)
         throw std::invalid_argument("Text ellipsis requires the widget's resolved font");
-    if (widget.font->uppercase_only) {
+    if (ellipsis_uppercase(font, widget)) {
         //00A9EC30 uses the same existing locale mapping for every code unit.
         for (auto& unit : output)
             unit = locale_uppercase_00a9eba0(locale, locale_runtime, unit);
@@ -86,15 +103,15 @@ std::u16string ellipsize_gui_text_00ab8f00(const GuiTextWidget& widget,
         throw std::invalid_argument("Text ellipsis uppercase mapping produced an embedded NUL");
     std::uint16_t measured = 0;
     for (const auto unit : output) {
-        const auto& glyph = select_font_glyph_00ad4480(font, unit);
+        const auto& glyph = ellipsis_glyph(font, unit);
         measured = change_width(measured, glyph.scaled_field_12, widget.font_scale, false);
     }
     if (measured <= target) return output;
-    const auto& dot = select_font_glyph_00ad4480(font, u'.');
+    const auto& dot = ellipsis_glyph(font, u'.');
     target = change_width(target, dot.scaled_field_12, widget.font_scale, true, true);
     auto retained = output.size();
     while (retained != 0 && measured > target) {
-        const auto& glyph = select_font_glyph_00ad4480(font, output[retained - 1]);
+        const auto& glyph = ellipsis_glyph(font, output[retained - 1]);
         --retained;
         measured = change_width(measured, glyph.scaled_field_12, widget.font_scale, true);
     }
@@ -103,6 +120,17 @@ std::u16string ellipsize_gui_text_00ab8f00(const GuiTextWidget& widget,
     output.resize(retained);
     output += u"...";
     return output;
+}
+} // namespace
+std::u16string ellipsize_gui_text_00ab8f00(const GuiTextWidget& widget,
+    const FontData& font, const LocaleTables& locale,
+    LocaleTextRuntimeHost& locale_runtime, std::u16string_view source, float width) {
+    return ellipsize(widget, font, locale, locale_runtime, source, width);
+}
+std::u16string ellipsize_gui_text_00ab8f00(const GuiTextWidget& widget,
+    const NativeFontResources& font, const LocaleTables& locale,
+    LocaleTextRuntimeHost& locale_runtime, std::u16string_view source, float width) {
+    return ellipsize(widget, font, locale, locale_runtime, source, width);
 }
 
 std::optional<std::u16string> prepare_gui_text_ellipsis_00abb000_fragment(

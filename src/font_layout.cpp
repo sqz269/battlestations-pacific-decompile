@@ -1,4 +1,5 @@
 #include "bsp/font_layout.hpp"
+#include "bsp/native_font_resources.hpp"
 #include <cstring>
 #include <limits>
 #include <utility>
@@ -130,7 +131,17 @@ bool aligned_origin(std::uint32_t width, float measured_width,
 }
 }
 
-bool build_font_single_line_00ab9fd0_fragment(const FontData& font,
+namespace {
+std::uint16_t layout_height(const FontData& font) noexcept { return font.scaled_height; }
+std::uint16_t layout_height(const NativeFontResources& font) noexcept { return font.scaled_height_14(); }
+const FontGlyphData& layout_glyph(const FontData& font, std::uint16_t key) noexcept {
+    return select_font_glyph_00ad4480(font, key);
+}
+const FontGlyphData& layout_glyph(const NativeFontResources& font, std::uint16_t key) noexcept {
+    return font.glyph(key);
+}
+template<class Font>
+bool single_line(const Font& font,
     std::u16string_view transformed_text, const FontSingleLineParameters& parameters,
     FontSingleLineLayout& output, std::string& error) {
     error.clear();
@@ -146,14 +157,14 @@ bool build_font_single_line_00ab9fd0_fragment(const FontData& font,
     }
 
     FontSingleLineLayout candidate;
-    candidate.height = font.scaled_height;
+    candidate.height = layout_height(font);
     if (!container_width(parameters.normalized_width, candidate.container_width)) {
         error = "Single-line container width is outside the signed 64-bit conversion domain.";
         return false;
     }
     for (std::size_t i = 0; i < count; ++i) {
         const auto key = static_cast<std::uint16_t>(transformed_text[i]);
-        const auto& glyph = select_font_glyph_00ad4480(font, key);
+        const auto& glyph = layout_glyph(font, key);
         if (!add_advance(candidate.measured_width, glyph.scaled_field_12,
             parameters.width_scale, candidate.measured_width)) {
             error = "Single-line measured advance exceeds the finite float domain.";
@@ -169,7 +180,7 @@ bool build_font_single_line_00ab9fd0_fragment(const FontData& font,
     candidate.placements.reserve(count);
     for (std::size_t i = 0; i < count; ++i) {
         const auto key = static_cast<std::uint16_t>(transformed_text[i]);
-        const auto& glyph = select_font_glyph_00ad4480(font, key);
+        const auto& glyph = layout_glyph(font, key);
         candidate.placements.push_back({key, candidate.final_x, 0.0f});
         if (!add_advance(candidate.final_x, glyph.scaled_field_12,
             parameters.width_scale, candidate.final_x)) {
@@ -179,5 +190,16 @@ bool build_font_single_line_00ab9fd0_fragment(const FontData& font,
     }
     output = std::move(candidate);
     return true;
+}
+}
+bool build_font_single_line_00ab9fd0_fragment(const FontData& font,
+    std::u16string_view text, const FontSingleLineParameters& parameters,
+    FontSingleLineLayout& output, std::string& error) {
+    return single_line(font, text, parameters, output, error);
+}
+bool build_font_single_line_00ab9fd0_fragment(const NativeFontResources& font,
+    std::u16string_view text, const FontSingleLineParameters& parameters,
+    FontSingleLineLayout& output, std::string& error) {
+    return single_line(font, text, parameters, output, error);
 }
 }

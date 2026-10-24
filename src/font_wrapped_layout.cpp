@@ -1,4 +1,5 @@
 #include "bsp/font_wrapped_layout.hpp"
+#include "bsp/native_font_resources.hpp"
 #include <cstring>
 #include <utility>
 
@@ -263,7 +264,17 @@ bool vertical_metrics(float minimum, float maximum, float container_height,
 }
 }
 
-bool build_font_wrapped_00aba270_fragment(const FontData& font,
+namespace {
+std::uint16_t layout_height(const FontData& font) noexcept { return font.scaled_height; }
+std::uint16_t layout_height(const NativeFontResources& font) noexcept { return font.scaled_height_14(); }
+const FontGlyphData& layout_glyph(const FontData& font, std::uint16_t key) noexcept {
+    return select_font_glyph_00ad4480(font, key);
+}
+const FontGlyphData& layout_glyph(const NativeFontResources& font, std::uint16_t key) noexcept {
+    return font.glyph(key);
+}
+template<class Font>
+bool wrapped(const Font& font,
     std::u16string_view transformed_text, const FontWrappedParameters& p,
     FontWrappedLayout& output, std::string& error) {
     error.clear();
@@ -292,16 +303,16 @@ bool build_font_wrapped_00aba270_fragment(const FontData& font,
     };
 
     FontWrappedLayout candidate;
-    candidate.height = font.scaled_height;
-    const std::int32_t signed_height = font.scaled_height < 0x8000u
-        ? static_cast<std::int32_t>(font.scaled_height)
-        : static_cast<std::int32_t>(font.scaled_height) - 0x10000;
+    candidate.height = layout_height(font);
+    const std::int32_t signed_height = candidate.height < 0x8000u
+        ? static_cast<std::int32_t>(candidate.height)
+        : static_cast<std::int32_t>(candidate.height) - 0x10000;
     const float height = static_cast<float>(signed_height); //00aba284/00aba294.
     if (!convert_container(p.normalized_width, candidate.container_width)) {
         error = "Wrapped container width is outside the signed 64-bit conversion domain.";
         return false;
     }
-    const auto space_advance = select_font_glyph_00ad4480(font, 0x20).scaled_field_12;
+    const auto space_advance = layout_glyph(font, 0x20).scaled_field_12;
     candidate.placements.reserve(count);
     float y = 0.0f, minimum_y = 10000000000.0f, maximum_y = -10000000000.0f;
     std::size_t cursor = 0;
@@ -326,7 +337,7 @@ bool build_font_wrapped_00aba270_fragment(const FontData& font,
         bool only_spaces = true;
         while (code_unit(scan) != 0 && code_unit(scan) != 0x0a) {
             const auto key = code_unit(scan);
-            const auto advance = select_font_glyph_00ad4480(font, key).scaled_field_12;
+            const auto advance = layout_glyph(font, key).scaled_field_12;
             float next_width;
             const auto step = scan_advance(scan_width, p.width_scale, advance,
                 candidate.container_width, next_width);
@@ -415,7 +426,7 @@ bool build_font_wrapped_00aba270_fragment(const FontData& font,
             if (!greater_than(maximum_y, bottom)) maximum_y = bottom;
             for (; cursor != next; ++cursor) {
                 const auto key = code_unit(cursor);
-                const auto advance = select_font_glyph_00ad4480(font, key).scaled_field_12;
+                const auto advance = layout_glyph(font, key).scaled_field_12;
                 candidate.placements.push_back({key, x, y});
                 if (!advance_emission(x, line.emitted_width, advance, key == 0x20,
                     p.width_scale, space_step, x, line.emitted_width)) {
@@ -444,6 +455,17 @@ bool build_font_wrapped_00aba270_fragment(const FontData& font,
     }
     output = std::move(candidate);
     return true;
+}
+}
+bool build_font_wrapped_00aba270_fragment(const FontData& font,
+    std::u16string_view text, const FontWrappedParameters& parameters,
+    FontWrappedLayout& output, std::string& error) {
+    return wrapped(font, text, parameters, output, error);
+}
+bool build_font_wrapped_00aba270_fragment(const NativeFontResources& font,
+    std::u16string_view text, const FontWrappedParameters& parameters,
+    FontWrappedLayout& output, std::string& error) {
+    return wrapped(font, text, parameters, output, error);
 }
 
 bool apply_font_wrapped_vertical_offset_00aba860_fragment(float normalized_y,

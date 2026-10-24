@@ -7,6 +7,7 @@
 #include <optional>
 
 namespace bsp {
+class NativeFontResources;
 
 // Semantic normal-path00AB8F00: native ECX Text, destination/source UTF16
 // wrappers and float width on stack, EAX destination, RET0Ch. Copies and
@@ -24,6 +25,11 @@ namespace bsp {
 // Names are hypotheses; see docs/GUI_TEXT_ELLIPSIS.md.
 std::u16string ellipsize_gui_text_00ab8f00(const GuiTextWidget& widget,
     const FontData& font, const LocaleTables& locale,
+    LocaleTextRuntimeHost& locale_runtime, std::u16string_view source,
+    float normalized_width);
+// Same arithmetic/string path with live image-owned glyphs and uppercase+48.
+std::u16string ellipsize_gui_text_00ab8f00(const GuiTextWidget& widget,
+    const NativeFontResources& font, const LocaleTables& locale,
     LocaleTextRuntimeHost& locale_runtime, std::u16string_view source,
     float normalized_width);
 
