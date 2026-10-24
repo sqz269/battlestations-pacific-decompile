@@ -15,6 +15,8 @@
 #include "bsp/band_0076_cc13.hpp"
 #include "bsp/band_0080_cc13.hpp"
 #include "bsp/band_0090_cc13.hpp"
+#include "bsp/frontend_seg12_17_cc13.hpp"
+#include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/rocket_task_cc13.hpp"
 #include "cc13_leaf_reference.hpp"
 #include <float.h>
@@ -64,13 +66,79 @@ struct Case {
     void check(bool ok) { ++runs; if (!ok) ++failures; }
 };
 
+// cc13-trivialslots: hosts that record the object a tail-jump or adjustor thunk hands on.
+#pragma warning(push)
+#pragma warning(disable : 4100 4459)
+struct RecordingHudServices final : bsp::ingame_gui_cc13::HudScreenServices {
+    using Raw = bsp::ingame_gui_cc13::Raw;
+    void* seen = nullptr;
+    void front_end_screen_construct_004f7180(Raw screen) override {}
+    void front_end_screen_destruct_004f71a0(Raw screen) override {}
+    void front_end_screen_register_004f71d0(Raw screen) override { seen = screen.p; }
+    void front_end_screen_commit_visibility_004f83b0(Raw screen) override {}
+    void screen_virtual_14(Raw screen) override {}
+    void* gui_load_page_00aa5840(std::string_view name) override { return {}; }
+    void gui_remove_and_destroy_page_00aa31f0(void* page) override {}
+    void* gui_find_child_00aa7e00(void* parent, std::string_view name) override { return {}; }
+    void widget_set_visible_34(void* widget, bool visible) override {}
+    void widget_set_focus_60(void* widget, bool focus) override {}
+    void widget_set_colour_50(void* widget, const float rgba[4]) override {}
+    void widget_get_colour_54(void* widget, float rgba[4]) override {}
+    void widget_set_float_4c(void* widget, float value) override {}
+    void object_delete_04(void* object) override {}
+    void listbox_set_listener_00a9ac40(void* listbox, void* listener) override {}
+    void push_page_slot_004d6790(void* vector, void** slot) override {}
+    void observer_register_00694a60(void* observer, void* observed) override {}
+    void observer_unregister_006952a0(void* observer, void* observed) override {}
+    bool observer_is_registered_00694af0(void* observer, void* observed) override { return {}; }
+    bool action_edge_or_repeat_004d92b0(int action) override { return {}; }
+    std::int32_t session_mode() override { return {}; }
+};
+struct RecordingFe3Host final : bsp::cc13_fe3::Fe3Host {
+    using Raw = bsp::ingame_gui_cc13::Raw;
+    void* seen = nullptr;
+    void free_00bf65ac(void* block) override {}
+    void free_00bf6989(void* block) override {}
+    void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) override {}
+    void front_end_screen_construct_004f7180(Raw screen) override {}
+    void front_end_screen_register_004f71d0(Raw screen) override {}
+    void object_delete(void* object) override {}
+    void widget_virtual_48(void* widget, const float xy[2]) override {}
+    void gui_set_state_texture_uv_00ab2690(void* widget, std::uint32_t state, std::uint32_t texture, const void* uv) override {}
+    void gui_text_set_localised_00abbe50(void* text, const char* key, std::uint32_t flag) override {}
+    void scroller_recapture_006833f0(void* scroller) override { seen = scroller; }
+    std::int32_t listbox_selected_index_00a9c920(void* listbox) override { return {}; }
+    void movie_player_stop_004f8ac0() override {}
+    void game_cancel_leaderboard_read_004bc7f0() override {}
+    void clear_frame_singleton_00e18d80() override {}
+    const char* global_config_c8_name() override { return {}; }
+    const char* empty_string_00e19476() override { return {}; }
+    void input_settings_reload_006aa2d0() override {}
+    void settings_save_to_profile_008d6c00() override {}
+    void* control_binding_screen_00e198b8() override { return {}; }
+    void* library_find_entry_by_name_004fbf70(void* atlas, const char* name) override { return {}; }
+    void loading_job_pointers_resize_004fb4b0(void* vector, std::uint32_t size) override {}
+    void award_index_list_destroy_00487110(void* list) override {}
+    void library_entry_destruct_004fd1d0(void* entry) override {}
+    void ref_ptr_array_resize_00504960(void* vector, std::uint32_t size) override {}
+    void loading_queue_destroy_00509fd0(void* queue) override {}
+    void iterator_next(std::uint32_t routine, void* iterator) override {}
+    void* tree_allocate_head(std::uint32_t routine, void* tree) override { return {}; }
+    void tree_destroy_subtree(std::uint32_t routine, void* tree, void* node) override {}
+    void string_vector_range_destroy_0055a3a0(void* first, void* last, void* extra1, void* extra2) override {}
+    void control_binding_refresh_page_0055e3a0(Raw screen, std::uint32_t argument) override {}
+    void control_binding_load_selected_preset_0055f710(void* screen) override {}
+};
+
+#pragma warning(pop)
+
 }  // namespace
 
 int main() {
     unsigned control{};
     _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
     load_image();
-    Case cases[24]{};
+    Case cases[32]{};
     int count = 0;
     auto open = [&](const char* name) -> Case& { cases[count].name = name; return cases[count++]; };
 
@@ -270,6 +338,35 @@ int main() {
             movcam_angle_windows_clamp_0078feb0(w, ra, rb);
             cl.check(same(na, ra) && same(nb, rb));
         }
+    }
+    {   // cc13-trivialslots: one trivial vtable slot per kind against its original bytes.
+        using namespace bsp::ingame_gui_cc13;
+        std::uint8_t object[0x100]{};
+        auto& ri = open("00626710 ReturnInt");
+        ri.check(at<std::int32_t (__fastcall*)(void*)>(cc13_leaf_00626710)(object) ==
+                 rewards_screen_get_screen_id_00626710(Raw{object}));
+        auto& rb = open("00636DD0 ReturnByte");
+        rb.check(at<std::uint8_t (__fastcall*)(void*)>(cc13_leaf_00636dd0)(object) ==
+                 (hud_scene_init_screen_occludes_lower_levels_00636dd0(Raw{object}) ? 1 : 0));
+        auto& em = open("0067AF30 Empty RET 8");
+        // Smoke check only: both run and return, and the object is untouched. The RET 8
+        // itself rests on the disk bytes (C2 08 00) and the audit hash, not on this case.
+        auto empty = at<void (__fastcall*)(void*, int, std::uint32_t, std::uint32_t)>(cc13_leaf_0067af30);
+        empty(object, 0, 1, 2);
+        hud_tactical_sheet_screen_on_listbox_selection_changed_no_op_0067af30(Raw{object});
+        bool untouched = true;
+        for (const std::uint8_t b : object) untouched = untouched && b == 0;
+        em.check(untouched);
+        auto& tj = open("0067B3F0 TailJump");
+        RecordingHudServices hud;
+        void* native = at<void* (__fastcall*)(void*)>(cc13_leaf_0067b3f0)(object);
+        hud_common_overlay_screen_register_0067b3f0(Raw{object}, hud);
+        tj.check(native == object && hud.seen == native);
+        auto& ad = open("00509D70 Adjustor ADD ECX,64h");
+        RecordingFe3Host fe3;
+        void* adjusted = at<void* (__fastcall*)(void*)>(cc13_leaf_00509d70)(object);
+        bsp::cc13_fe3::tactical_library_widget_listener_current1c_00509d70(Raw{object}, fe3);
+        ad.check(adjusted == object + 0x64 && fe3.seen == adjusted);
     }
     int failures = 0;
     for (int i = 0; i < count; ++i) {

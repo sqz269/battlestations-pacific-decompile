@@ -45,7 +45,16 @@ CODE = {
     0x78e2b0: 0xb3,   # movie camera angle windows contain
     0x78feb0: 0x1f2,  # movie camera angle windows clamp (calls 00438B10)
     0x438b10: 0x6e,   # BSP_Math_SubtractWrappedAngle (callee of 0078FEB0)
+    # cc13-trivialslots: one trivial vtable slot per kind.
+    0x626710: 0x6,    # ReturnInt: MOV EAX,4; RET (rewards screen id)
+    0x636dd0: 0x3,    # ReturnByte: MOV AL,1; RET (scene-init occludes lower levels)
+    0x67af30: 0x3,    # Empty: RET 8 (tactical sheet listbox selection changed)
+    0x509d70: 0x8,    # Adjustor: ADD ECX,64h; JMP 006833F0 (stubbed)
+    0x67b3f0: 0x5,    # TailJump: JMP 004F71D0 (stubbed)
 }
+# Tail-jump targets replaced by MOV EAX,ECX; RET, so a fixture reads the ECX a thunk passes on.
+TAIL_STUBS = (0x6833f0, 0x4f71d0)
+TAIL_STUB = bytes([0x8b, 0xc1, 0xc3])
 # Data ranges: address -> length. Bytes past a section's raw data are loader zero-fill.
 DATA = {
     0xd0d098: 8, 0xd7a24c: 4, 0xd7a268: 8, 0xd7a280: 8, 0xce3820: 8, 0xd7a328: 8,
@@ -90,6 +99,11 @@ def main():
         payload.append(0xcc)
     offsets[SQRT] = len(payload)
     payload.extend(SQRT_STUB)
+    for stub in TAIL_STUBS:
+        while len(payload) % 16:
+            payload.append(0xcc)
+        offsets[stub] = len(payload)
+        payload.extend(TAIL_STUB)
 
     def relocate(target):
         for start, length in DATA.items():
@@ -105,8 +119,13 @@ def main():
     for address, length in CODE.items():
         end = address
         here = offsets[address] - address
+        tail = False
         for ins in md.disasm(bytes(payload[offsets[address]:offsets[address] + length]), address):
-            if ins.mnemonic == 'call' and ins.operands[0].type == X86_OP_IMM:
+            if ins.mnemonic == 'jmp' and ins.operands[0].type == X86_OP_IMM \
+                    and ins.operands[0].imm in TAIL_STUBS:
+                patches.append((here + ins.address + ins.imm_offset, offsets[ins.operands[0].imm], True))
+                tail = ins.address + ins.size == address + length
+            elif ins.mnemonic == 'call' and ins.operands[0].type == X86_OP_IMM:
                 target = ins.operands[0].imm
                 if target != SQRT and target not in CODE:
                     raise RuntimeError(f'{address:08x}: call to unlisted {target:08x}')
@@ -123,7 +142,7 @@ def main():
                         assert ins.imm_size == 4
                         patches.append((here + ins.address + ins.imm_offset, relocate(op.imm), False))
             end = ins.address + ins.size
-        if end != address + length or payload[offsets[address] + length - 3] not in (0xc2, 0xc3) \
+        if end != address + length or not tail and payload[offsets[address] + length - 3] not in (0xc2, 0xc3) \
                 and payload[offsets[address] + length - 1] != 0xc3:
             raise RuntimeError(f'{address:08x}: disassembly ends at {end:08x}, not at a RET')
 

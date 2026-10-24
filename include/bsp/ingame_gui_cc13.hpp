@@ -1316,6 +1316,111 @@ std::int32_t rewards_collect_vehicle_unlocks_00622360(Raw s, Raw id, bool count_
 inline constexpr std::uint32_t kPlayerRankKeys = 0x00E08E00;
 void rewards_fill_rank_page_0062a970(Raw s, Fe10GuiHost& host);
 
+// ---------------------------------------------------------------------------
+// Packet cc13-trivialslots: one ordinary function per kTrivialSlots row, re-read from
+// the disk bytes (local generator, rows checked against the image). `Raw` is the
+// ECX object; stack arguments the body never reads are noted in the ABI and not
+// passed. Adjustor and tail-jump rows appear only where the target is an existing
+// declaration; the descriptive table above stays as documentation.
+// ---------------------------------------------------------------------------
+// 00626710 MOV EAX,4h; RET (B8 04 00 00 00 C3; next byte CC). BSP_RewardsScreen_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 4, RET.
+std::int32_t rewards_screen_get_screen_id_00626710(Raw) noexcept;
+// 00636DC0 MOV EAX,5Ah; RET (B8 5A 00 00 00 C3; next byte CC).
+// BSP_HudSceneInitScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 90, RET.
+std::int32_t hud_scene_init_screen_get_screen_id_00636dc0(Raw) noexcept;
+// 00636DD0 MOV AL,1; RET (B0 01 C3; next byte CC). BSP_HudSceneInitScreen_OccludesLowerLevels.
+// Original ABI: __thiscall(ECX = this) -> AL = 1, RET.
+bool hud_scene_init_screen_occludes_lower_levels_00636dd0(Raw) noexcept;
+// 00636DE0 MOV AL,1; RET (B0 01 C3; next byte CC). BSP_HudSceneInitScreen_IsSelfManaged.
+// Original ABI: __thiscall(ECX = this) -> AL = 1, RET.
+bool hud_scene_init_screen_is_self_managed_00636de0(Raw) noexcept;
+// 006375F0 RET 4 (C2 04 00; next byte CC). BSP_HudMarkersScreen_Listener04NoOp. Original ABI:
+// __thiscall(ECX = this, 1 stack dword unread), RET 4.
+void hud_markers_screen_listener04no_op_006375f0(Raw) noexcept;
+// 006405E0 MOV EAX,4Dh; RET (B8 4D 00 00 00 C3; next byte CC).
+// BSP_HudMarkersScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 77, RET.
+std::int32_t hud_markers_screen_get_screen_id_006405e0(Raw) noexcept;
+// 00643DC0 MOV EAX,43h; RET (B8 43 00 00 00 C3; next byte CC).
+// BSP_HudSpectatorScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 67, RET.
+std::int32_t hud_spectator_screen_get_screen_id_00643dc0(Raw) noexcept;
+// 00643DD0 MOV AL,1; RET (B0 01 C3; next byte CC). BSP_HudSpectatorScreen_IsSelfManaged.
+// Original ABI: __thiscall(ECX = this) -> AL = 1, RET.
+bool hud_spectator_screen_is_self_managed_00643dd0(Raw) noexcept;
+// 00643DE0 RET (C3; next byte CC). BSP_HudSpectatorScreen_Exit. Original ABI: __thiscall(ECX =
+// this), RET.
+void hud_spectator_screen_exit_00643de0(Raw) noexcept;
+// 00643DF0 RET 4 (C2 04 00; next byte CC). BSP_HudSpectatorScreen_Update. Original ABI:
+// __thiscall(ECX = this, 1 stack dword unread), RET 4.
+void hud_spectator_screen_update_00643df0(Raw) noexcept;
+// 00647FE0 MOV EAX,44h; RET (B8 44 00 00 00 C3; next byte CC).
+// BSP_InGameHudRootScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 68, RET.
+std::int32_t in_game_hud_root_screen_get_screen_id_00647fe0(Raw) noexcept;
+// 0064B860 MOV EAX,45h; RET (B8 45 00 00 00 C3; next byte CC).
+// BSP_HudShipStatusScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 69, RET.
+std::int32_t hud_ship_status_screen_get_screen_id_0064b860(Raw) noexcept;
+// 00650160 MOV EAX,48h; RET (B8 48 00 00 00 C3; next byte CC).
+// BSP_HudSubmarineScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 72, RET.
+std::int32_t hud_submarine_screen_get_screen_id_00650160(Raw) noexcept;
+// 00650190 RET (C3; next byte CC). BSP_HudSubmarineScreen_Enter. Original ABI: __thiscall(ECX =
+// this), RET.
+void hud_submarine_screen_enter_00650190(Raw) noexcept;
+// 00650AC0 MOV EAX,47h; RET (B8 47 00 00 00 C3; next byte CC).
+// BSP_HudPeriscopeScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 71, RET.
+std::int32_t hud_periscope_screen_get_screen_id_00650ac0(Raw) noexcept;
+// 006730F0 MOV EAX,4Eh; RET (B8 4E 00 00 00 C3; next byte CC).
+// BSP_HudSupportManagerScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 78,
+// RET.
+std::int32_t hud_support_manager_screen_get_screen_id_006730f0(Raw) noexcept;
+// 0067AF30 RET 8 (C2 08 00; next byte CC).
+// BSP_HudTacticalSheetScreen_OnListboxSelectionChangedNoOp. Original ABI: __thiscall(ECX =
+// this, 2 stack dwords unread), RET 8.
+void hud_tactical_sheet_screen_on_listbox_selection_changed_no_op_0067af30(Raw) noexcept;
+// 0067AF60 MOV EAX,54h; RET (B8 54 00 00 00 C3; next byte CC).
+// BSP_HudTacticalSheetScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 84,
+// RET.
+std::int32_t hud_tactical_sheet_screen_get_screen_id_0067af60(Raw) noexcept;
+// 0067B320 MOV EAX,28h; RET (B8 28 00 00 00 C3; next byte CC). BSP_HudCursorScreen_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 40, RET.
+std::int32_t hud_cursor_screen_get_screen_id_0067b320(Raw) noexcept;
+// 0067B330 RET (C3; next byte CC). BSP_HudCursorScreen_Exit. Original ABI: __thiscall(ECX =
+// this), RET.
+void hud_cursor_screen_exit_0067b330(Raw) noexcept;
+// 0067B3F0 JMP 004F71D0 (E9 DB BD E7 FF; next byte CC). BSP_HudCommonOverlayScreen_Register.
+// Original ABI: __thiscall(ECX = this), the target's RET; tail call to 004F71D0
+// (HudScreenServices::front_end_screen_register_004f71d0).
+void hud_common_overlay_screen_register_0067b3f0(Raw self, HudScreenServices& host);
+// 0067B400 RET (C3; next byte CC). BSP_HudCommonOverlayScreen_Enter. Original ABI:
+// __thiscall(ECX = this), RET.
+void hud_common_overlay_screen_enter_0067b400(Raw) noexcept;
+// 0067B410 RET (C3; next byte CC). BSP_HudCommonOverlayScreen_Exit. Original ABI:
+// __thiscall(ECX = this), RET.
+void hud_common_overlay_screen_exit_0067b410(Raw) noexcept;
+// 0067BE50 MOV EAX,49h; RET (B8 49 00 00 00 C3; next byte CC).
+// BSP_HudFollowScreen49_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 73, RET.
+std::int32_t hud_follow_screen49_get_screen_id_0067be50(Raw) noexcept;
+// 0067BE60 RET 4 (C2 04 00; next byte CC). BSP_HudFollowScreen49_CollectChildren. Original ABI:
+// __thiscall(ECX = this, 1 stack dword unread), RET 4.
+void hud_follow_screen49_collect_children_0067be60(Raw) noexcept;
+// 0067BEA0 RET (C3; next byte CC). BSP_HudFollowScreen49_BindLayout. Original ABI:
+// __thiscall(ECX = this), RET.
+void hud_follow_screen49_bind_layout_0067bea0(Raw) noexcept;
+// 0067BEB0 RET (C3; next byte CC). BSP_HudFollowScreen49_Enter. Original ABI: __thiscall(ECX =
+// this), RET.
+void hud_follow_screen49_enter_0067beb0(Raw) noexcept;
+// 0067C860 MOV EAX,5Ch; RET (B8 5C 00 00 00 C3; next byte CC).
+// BSP_PressStartScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 92, RET.
+std::int32_t press_start_screen_get_screen_id_0067c860(Raw) noexcept;
+// 0067D9F0 RET 8 (C2 08 00; next byte CC). BSP_UnitLibraryScreen_OnListboxSelectionChangedNoOp.
+// Original ABI: __thiscall(ECX = this, 2 stack dwords unread), RET 8.
+void unit_library_screen_on_listbox_selection_changed_no_op_0067d9f0(Raw) noexcept;
+// 0067DA00 RET 4 (C2 04 00; next byte CC). BSP_UnitLibraryWidgetListener_Current00NoOp.
+// Original ABI: __thiscall(ECX = this, 1 stack dword unread), RET 4.
+void unit_library_widget_listener_current00no_op_0067da00(Raw) noexcept;
+// 0067F050 MOV EAX,5h; RET (B8 05 00 00 00 C3; next byte CC).
+// BSP_UnitLibraryScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 5, RET.
+std::int32_t unit_library_screen_get_screen_id_0067f050(Raw) noexcept;
+
 } // namespace bsp::ingame_gui_cc13
 
 #endif

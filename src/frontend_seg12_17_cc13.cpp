@@ -5418,4 +5418,22 @@ void library_preview_on_model_loaded_005072c0(Raw screen, void* resource, Raw jo
         host.scene_node_set_visibility_00b6da70(outer, 1.0f, 0);
 }
 
+// Packet cc13-trivialslots: the kTrivialSlots bodies; evidence and ABI per routine
+// are in the header.
+void gui_widget_listener_empty1c_004fa170(Raw) noexcept {}
+std::int32_t tactical_library_screen_get_screen_id_00509d60(Raw) noexcept { return 0xB; }
+void tactical_library_widget_listener_current1c_00509d70(Raw self, Fe3Host& host) {
+    host.scroller_recapture_006833f0(self.p + 0x64);
+}
+std::int32_t in_game_screen23_get_screen_id_00517680(Raw) noexcept { return 0x23; }
+void in_game_screen23_collect_children_00517690(Raw) noexcept {}
+void in_game_screen23_update_005178a0(Raw) noexcept {}
+std::int32_t front_end_frame_get_screen_id_00517d30(Raw) noexcept { return 0xC; }
+bool front_end_frame_is_self_managed_00517d40(Raw) noexcept { return true; }
+std::int32_t hud_bomber_screen_get_screen_id_00519450(Raw) noexcept { return 0x25; }
+std::int32_t control_binding_screen_screen_id_00555800(Raw) noexcept { return 0xF; }
+void leaderboards_screen_on_listbox_activate_no_op_005610d0(Raw) noexcept {}
+std::int32_t leaderboards_screen_get_screen_id_005633f0(Raw) noexcept { return 0xA; }
+std::int32_t hud_limbo_screen_get_screen_id_00565d60(Raw) noexcept { return 0x32; }
+
 } // namespace bsp::cc13_fe3
