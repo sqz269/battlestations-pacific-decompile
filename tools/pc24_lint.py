@@ -4,7 +4,8 @@ The main thread runs the image's x87 at 24-bit precision control, so every FADD/
 rounds to float. C++ that evaluates two or more of those operations in double and rounds once
 (or compares the unrounded double) can differ from the image. This lint finds such chains.
 
-  python tools/pc24_lint.py --diff origin/main..HEAD     statements the diff added or changed
+  python tools/pc24_lint.py --diff origin/main...HEAD    statements HEAD added or changed since the
+                                                         merge-base (BASE..TIP means the same)
   python tools/pc24_lint.py --staged                     the index against HEAD
   python tools/pc24_lint.py src/foo.cpp [...]            every statement in the files
 
@@ -722,7 +723,11 @@ def added_lines(diff_args, path):
 def main(argv):
     ap = argparse.ArgumentParser(description='Flag new un-narrowed multi-op double chains in x87 bodies (PC24).')
     ap.add_argument('files', nargs='*', help='source files: every statement is checked')
-    ap.add_argument('--diff', metavar='BASE..TIP', help='statements this range added or changed (BASE alone means BASE..HEAD)')
+    ap.add_argument('--diff', metavar='BASE...TIP',
+                    help='statements TIP added or changed since merge-base(BASE, TIP); BASE..TIP means the same, '
+                         'BASE alone means BASE...HEAD')
+    ap.add_argument('--no-merge-base', action='store_true',
+                    help='diff BASE itself against TIP (a literal two-dot range)')
     ap.add_argument('--staged', action='store_true', help='statements the index adds against HEAD')
     ap.add_argument('--include-off', action='store_true', help='also check the OFF arms of k...Bound switches')
     ap.add_argument('--show-allowed', action='store_true', help='list statements carrying a pc24-lint allow marker')
@@ -743,13 +748,18 @@ def main(argv):
             rel = os.path.relpath(p, ROOT).replace('\\', '/')
             targets.append((rel, p.read_text(encoding='utf-8', errors='replace'), None, None))
     else:
-        if args.staged:
-            base_rev, diff_args, tip_spec = 'HEAD', ['--cached'], ':'
-        else:
-            base_rev, _, tip = args.diff.partition('..')
-            tip = tip or 'HEAD'
-            diff_args, tip_spec = [base_rev, tip], tip + ':'
         try:
+            if args.staged:
+                base_rev, diff_args, tip_spec = 'HEAD', ['--cached'], ':'
+            else:
+                # BASE...TIP and BASE..TIP both diff from merge-base(BASE, TIP): on a branch behind
+                # BASE the literal two-dot range would lint BASE's newer changes, reversed.
+                spec = args.diff
+                base_rev, _, tip = spec.partition('...') if '...' in spec else spec.partition('..')
+                tip = tip or 'HEAD'
+                if not args.no_merge_base:
+                    base_rev = git('merge-base', base_rev, tip).strip()
+                diff_args, tip_spec = [base_rev, tip], tip + ':'
             names = git('diff', '--name-only', '--diff-filter=AM', '--no-color', *diff_args).split()
         except RuntimeError as e:
             sys.stderr.write(f'pc24_lint.py: {e}\n')
