@@ -347,8 +347,19 @@ same base with the switch true). Both ran through the pinned launcher (`local\pr
     moves only one or two `clear_37c` ring-scan cells, or, in USN21, the free-bearing corner
     counts and one `target` value. That is the known searcher-cache heap noise (section 6): the two
     binaries differ only in this constant, which changes the code layout.
-  - ESMP08, IJN18, USN01 and USN02: not yet paired. Their 2026-10-23 reruns failed at FMOD startup
-    (create_result 78), the disconnected-session failure.
+  - ESMP08, USN01 and USN02: exit 0, with an identical sequence. These were rerun on 2026-10-23
+    after the session reconnected; the earlier attempts failed at FMOD startup (create_result 78)
+    while the session was disconnected.
+  - IJN18 (same rerun): exit 1, gameplay identical, with an identical sequence. One `clear_37c`
+    cell moved (Convoy5, `~` to 10000.0), the same heap noise.
+  - Every rerun log carries "rng streams: on", and every manifest records
+    `{"value":"1","source":"pin"}`.
+- Old OFF build (`local\bin_off`, da68a2635) through the new launcher on USN04 ref, against the same
+  build's run through the old launcher: exit 1, gameplay identical. The only extra line is the pin note
+  `--difficulty 1: chosen difficulty game+6B0h = 1 (default 1)`, and the strict sequence is identical
+  (678 lines).
+- Save files under Documents\Battlestations-Pacific: the SHA-256, size and mtime of every file and
+  directory are identical before and after the reruns, and match the 2026-10-19 record.
 - Unpinned sample (`BSP_DIFFICULTY_PIN=off`, flip, USN04): the manifest records
   `{"value":"unpinned","source":"BSP_DIFFICULTY_PIN"}`, and the log shows profile+60h = 0 and game+6ACh = 0.
 
