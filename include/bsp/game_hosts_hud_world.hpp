@@ -292,7 +292,7 @@ static_assert(!kShipViewPreviousUnitReleaseCc13Bound || kMissionCameraBound,
 // releases roles 0..8. Role 0 clears +184h and, for a ship, runs 0080E290
 // (0078021C..00780244). ON: the movie binding sends that release through the
 // units host's 4Bh message. OFF: recorded only, as before.
-inline constexpr bool kMovieEngageRoleReleaseCc13Bound = false;
+inline constexpr bool kMovieEngageRoleReleaseCc13Bound = true;  // ON (cc9-helm1, 2026-10-23): same-commit pairs on 802e1d8b9, every end unchanged on 8 reached rows; see commit
 
 // Packet cc9_hud_camera_team_lists (docs/HUD_CAMERA_TEAM_LISTS.md). ON answers
 // 004B4B00 exactly for the minimap (005C154E) and the markers screen: the
