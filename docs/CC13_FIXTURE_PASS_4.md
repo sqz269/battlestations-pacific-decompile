@@ -42,13 +42,15 @@ The counts are for the edge-value input set.
 | 00B950B0 ocean FFT32 columns | unreferenced, ocean family | 200/200 | 0/200 | remodelled, promoted |
 | 00B65710 plane set classify AABB | main (004B48E0 via 00B71590) | 4000/4000 | 4000/4000 | fixture-found fix, promoted |
 | 0042C090 random wander evaluate | main (cockpit camera 00434810) | 4000/4000 | 3999/4000 | remodelled, promoted |
-| 006F9EE0 convex object box | resource load (006FAF00) | 6000/6000 | 6000/6000 | promoted (exact at both precisions) |
+| 006F9EE0 convex object box | resource load (006FAE89 in 006FAD70 ReadPayload, from 006FAF00) | 6000/6000 | 6000/6000 | promoted (exact at both precisions) |
 | 00B999F0 plane / segment intersection | main (ocean projector 00B9AE00) | 3999/4000 (+1 NaN-only) | 3140/4000 | remodelled, NaN-only, not promoted |
 | 00709EF0 flag cloth wind and springs | main (008E2560 via 0070AA70) | 397/400 (+3 NaN-only) | 120/400 | fixture-found fix, NaN-only, not promoted |
 | 0070A450 flag cloth integrate | main (008E2560 via 0070AA70) | 398/400 (+2 NaN-only) | 398/400 (+2) | unchanged, NaN-only, not promoted |
 
 The ocean FFT has no reference in the image. Under the pass 2 rule it is judged at 24-bit, as
 the ocean family it belongs to is: the wave field update 00BA0090 runs on the main thread.
+Both entries are one C++ routine: the columns entry 00B950B0 is the same `ocean_fft32` called
+with the column stride (32), the rows entry 00B94E90 with stride 1.
 
 ### Pinned counts
 
