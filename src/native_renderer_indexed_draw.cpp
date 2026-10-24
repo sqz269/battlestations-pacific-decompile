@@ -72,13 +72,55 @@ Word current_vertex_count(const void* logical, NativeRendererIndexedDrawContext&
 }
 using DrawIndexedPrimitive = std::int32_t (__stdcall*)(void*, Word,
     std::int32_t, Word, Word, Word, Word);
+thread_local NativeRendererIndexedDrawObserver indexed_draw_observer = nullptr;
+thread_local void* indexed_draw_observer_userdata = nullptr;
 } // namespace
+
+NativeRendererIndexedDrawObserverScope::NativeRendererIndexedDrawObserverScope(
+    NativeRendererIndexedDrawObserver observer, void* userdata) noexcept
+    : previous_observer_(indexed_draw_observer),
+      previous_userdata_(indexed_draw_observer_userdata) {
+    indexed_draw_observer = observer;
+    indexed_draw_observer_userdata = userdata;
+}
+
+NativeRendererIndexedDrawObserverScope::~NativeRendererIndexedDrawObserverScope() noexcept {
+    indexed_draw_observer = previous_observer_;
+    indexed_draw_observer_userdata = previous_userdata_;
+}
 
 void draw_native_renderer_indexed_00b24010(void* renderer,
     Word primitive_type, Word minimum_vertex, Word vertex_count,
     Word start_index, Word primitive_count, NativeRendererIndexedDrawContext& context) {
-    if (word(renderer, 0x1d90) != 0) return;
-    if (byte(renderer, 0x1d8a) != 0) return;
+    const auto observer = indexed_draw_observer;
+    auto* const observer_userdata = indexed_draw_observer_userdata;
+    NativeRendererIndexedDrawObservation observation;
+    if (observer) {
+        observation.actual_renderer = renderer;
+        observation.primitive_type = primitive_type;
+        observation.minimum_vertex = minimum_vertex;
+        observation.vertex_count = vertex_count;
+        observation.start_index = start_index;
+        observation.primitive_count = primitive_count;
+    }
+    const auto observe = [&](NativeRendererIndexedDrawTerminal terminal) noexcept {
+        if (observer) {
+            observation.terminal = terminal;
+            observer(observation, observer_userdata);
+        }
+    };
+    const Word inhibit = word(renderer, 0x1d90);
+    if (observer) observation.inhibit = inhibit;
+    if (inhibit != 0) {
+        observe(NativeRendererIndexedDrawTerminal::skippedInhibited);
+        return;
+    }
+    const auto lost = byte(renderer, 0x1d8a);
+    if (observer) observation.lost = lost;
+    if (lost != 0) {
+        observe(NativeRendererIndexedDrawTerminal::skippedLost);
+        return;
+    }
     (void)native_viewport_size_address_00b1f740(pointer(word(renderer, 0x1904)));
 
     auto& globals = context.actual_synchronization_0108d6dc;
@@ -103,25 +145,44 @@ void draw_native_renderer_indexed_00b24010(void* renderer,
     GuardCleanup cleanup{guard, globals}; // Native TEST before B2407D EH arm.
     if (have_vertices == 0 || primitive_count == 0) {
         finish_guard(cleanup, saved_renderer, captured_mode);
+        observe(NativeRendererIndexedDrawTerminal::skippedEmpty);
         return;
     }
     if (auto* const logical = pointer(word(renderer, 0x1774))) {
         const Word count = current_vertex_count(logical, context);
+        if (observer) {
+            observation.logical_stream = logical;
+            observation.logical_count = count;
+        }
         if (vertex_count > count) {
             const auto* const current_logical = pointer(word(renderer, 0x1774));
-            if (word(current_logical, 0x54) == 0x40000001u) {
+            const Word tag = word(current_logical, 0x54);
+            if (observer) {
+                observation.logical_stream = current_logical;
+                observation.logical_tag = tag;
+            }
+            if (tag == 0x40000001u) {
                 finish_guard(cleanup, saved_renderer, globals.mode_00);
+                observe(NativeRendererIndexedDrawTerminal::skippedStreamCount);
                 return;
             }
+        } else if (observer) {
+            observation.logical_tag = word(logical, 0x54);
         }
     }
     auto* const device = pointer(word(renderer, 0x1a10));
     const auto* const table = pointer(word(device, 0));
     const auto base_vertex = static_cast<std::int32_t>(word(renderer, 0x17bc));
     const auto call = reinterpret_cast<DrawIndexedPrimitive>(word(table, 0x148));
-    (void)call(device, primitive_type, base_vertex, minimum_vertex,
+    const auto result = call(device, primitive_type, base_vertex, minimum_vertex,
         vertex_count, start_index, primitive_count);
+    if (observer) {
+        observation.actual_device = device;
+        observation.base_vertex = base_vertex;
+        observation.returned_hresult = result;
+    }
     finish_guard(cleanup, saved_renderer, globals.mode_00);
+    observe(NativeRendererIndexedDrawTerminal::deviceCalled);
 }
 
 } // namespace bsp
