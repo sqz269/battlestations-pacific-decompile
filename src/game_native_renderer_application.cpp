@@ -238,8 +238,10 @@ void observe_mission_cache_cleanup(void* context,
 // log. The host runs 00B2AEB0 under a guard that takes only an access violation with the device
 // slot +1A10 still null; anything else still reaches the crash record. On that failure it logs
 // one line with the HRESULT of a retry, the adapter, the requested mode and the display and
-// session facts, and ends the process with exit code 4. A successful startup runs exactly as
-// before: the guard adds an SEH frame and nothing else.
+// session facts, and ends the process with exit code 4, unless the retry succeeded and one
+// re-entry of 00B2AEB0 creates the device (packet cc9_renderer_init_recover, create_device).
+// A successful startup runs exactly as before: the guard adds an SEH frame and a two-field
+// read of the state cache, and nothing else.
 int device_startup_guard_filter(unsigned long code,void* renderer) noexcept {
     return code==EXCEPTION_ACCESS_VIOLATION && get<void*>(renderer,0x1a10)==nullptr
         ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH;
@@ -276,14 +278,40 @@ bool logonui_running() noexcept {
     CloseHandle(snap);
     return found;
 }
-[[noreturn]] void report_renderer_init_failure(GameHostLog& log,void* renderer) noexcept {
-    char desktop_before[64];input_desktop_name(desktop_before);
-    const bool logonui_before=logonui_running();
+struct RendererInitFailureFacts {
+    char desktop_before[64];
+    bool logonui_before=false;
+    HRESULT retry=E_POINTER;
+    char adapter[512]="(no IDirect3D9)";
+};
+// Harness only (packet cc9_renderer_init_recover). The guarded fault is the first device read,
+// 00B24460's SetRenderState(0xA1) at the end of 00B2AEB0's CreateDevice block. Before that
+// read it marks the state cached (valid byte +E1, value +398), so a re-entry would find the
+// cache equal and never set the state on the new device. The host snapshots both before the
+// first attempt and restores them before the re-entry. Nothing else between CreateDevice and
+// that read has an effect a re-entry would not repeat identically, except timeBeginPeriod(1),
+// which is counted and so is left one period ahead (the resolution is 1 ms either way).
+struct DeviceStartupCacheSnapshot {
+    unsigned char valid;
+    U value;
+};
+DeviceStartupCacheSnapshot snapshot_device_startup_cache(const void* renderer) noexcept {
+    return {get<unsigned char>(renderer,0x40+0xa1),get<U>(renderer,0x114+0xa1*4)};
+}
+void restore_device_startup_cache(void* renderer,const DeviceStartupCacheSnapshot& value) noexcept {
+    auto* const base=static_cast<unsigned char*>(renderer);
+    std::memcpy(base+0x40+0xa1,&value.valid,sizeof value.valid);
+    std::memcpy(base+0x114+0xa1*4,&value.value,sizeof value.value);
+}
+void probe_device_after_failure(GameHostLog& log,void* renderer,
+    RendererInitFailureFacts& facts) noexcept {
+    input_desktop_name(facts.desktop_before);
+    facts.logonui_before=logonui_running();
     auto* const d3d=get<IDirect3D9*>(renderer,0x1990);
     D3DPRESENT_PARAMETERS requested=*static_cast<const D3DPRESENT_PARAMETERS*>(
         static_cast<void*>(static_cast<unsigned char*>(renderer)+0x1a28));
-    HRESULT retry=E_POINTER;
-    char adapter[512]="(no IDirect3D9)";
+    HRESULT& retry=facts.retry;
+    char (&adapter)[512]=facts.adapter;
     // Harness only (packet cc9_display_required), not the original executable's behaviour.
     // ES_DISPLAY_REQUIRED (game_main.cpp) keeps a lit display on but is not relied on to
     // light a display that is already off. On this failure path only, one zero-delta mouse
@@ -309,6 +337,11 @@ bool logonui_running() noexcept {
             std::snprintf(adapter,sizeof(adapter),"%s",id.Description);
         else std::snprintf(adapter,sizeof(adapter),"(GetAdapterIdentifier failed)");
     }
+}
+[[noreturn]] void report_renderer_init_failure(GameHostLog& log,void* renderer,
+    const RendererInitFailureFacts& facts,const char* recovery) noexcept {
+    const D3DPRESENT_PARAMETERS requested=*static_cast<const D3DPRESENT_PARAMETERS*>(
+        static_cast<void*>(static_cast<unsigned char*>(renderer)+0x1a28));
     DEVMODEA mode{};mode.dmSize=sizeof(mode);
     const bool have_mode=EnumDisplaySettingsA(nullptr,ENUM_CURRENT_SETTINGS,&mode)!=FALSE;
     DWORD session=0;ProcessIdToSessionId(GetCurrentProcessId(),&session);
@@ -317,17 +350,18 @@ bool logonui_running() noexcept {
     log.notef("harness renderer init failed: the device is null after 00b2aeb0's CreateDevice; "
         "retry hr=0x%08lx%s adapter=\"%s\" requested=%ux%u format=%u windowed=%d interval=0x%lx "
         "display=%lux%lu@%luHz session=%lu console_session=%lu remote=%d "
-        "input_desktop=%s/%s logonui=%d/%d (at the failure / after the retry); "
+        "input_desktop=%s/%s logonui=%d/%d (at the failure / after the retry); recovery=%s; "
         "exiting with code 4",
-        static_cast<unsigned long>(retry),SUCCEEDED(retry) ? " (the retry succeeded: transient)" : "",
-        adapter,requested.BackBufferWidth,requested.BackBufferHeight,
+        static_cast<unsigned long>(facts.retry),
+        SUCCEEDED(facts.retry) ? " (the retry succeeded: transient)" : "",
+        facts.adapter,requested.BackBufferWidth,requested.BackBufferHeight,
         static_cast<unsigned>(requested.BackBufferFormat),requested.Windowed ? 1 : 0,
         static_cast<unsigned long>(requested.PresentationInterval),
         have_mode ? mode.dmPelsWidth : 0ul,have_mode ? mode.dmPelsHeight : 0ul,
         have_mode ? mode.dmDisplayFrequency : 0ul,static_cast<unsigned long>(session),
         static_cast<unsigned long>(WTSGetActiveConsoleSessionId()),
-        GetSystemMetrics(SM_REMOTESESSION) ? 1 : 0,desktop_before,desktop_after,
-        logonui_before ? 1 : 0,logonui_after ? 1 : 0);
+        GetSystemMetrics(SM_REMOTESESSION) ? 1 : 0,facts.desktop_before,desktop_after,
+        facts.logonui_before ? 1 : 0,logonui_after ? 1 : 0,recovery);
     TerminateProcess(GetCurrentProcess(),4);
     for(;;) {}
 }
@@ -1043,8 +1077,28 @@ void GameNativeRendererApplication::create_device(const RendererInitRequest& req
             static_cast<U>(request.width),static_cast<U>(request.height),request.constant_15,
             request.constant_1,request.option,request.constant_4b,request.color_depth_selector,request.constant_0};
         NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
-        if(!guarded_device_startup(p.renderer,slots,p.devices.startup))
-            report_renderer_init_failure(p.log,p.renderer);
+        const DeviceStartupCacheSnapshot cache=snapshot_device_startup_cache(p.renderer);
+        if(!guarded_device_startup(p.renderer,slots,p.devices.startup)) {
+            // Harness only (packet cc9_renderer_init_recover): the fault is inside 00B2AEB0,
+            // before any device-dependent startup outside it, so when the diagnostic retry
+            // shows the display is back, 00B2AEB0 runs once more and the run continues. A
+            // set renderer guard mode would leave 00B24460's guard entered, so it is not retried.
+            RendererInitFailureFacts facts;
+            probe_device_after_failure(p.log,p.renderer,facts);
+            const char* recovery="not attempted (the diagnostic retry failed)";
+            if(SUCCEEDED(facts.retry) && p.devices.startup.default_surfaces.synchronization.mode_00!=0)
+                recovery="not attempted (renderer guard mode set)";
+            else if(SUCCEEDED(facts.retry)) {
+                restore_device_startup_cache(p.renderer,cache);
+                if(guarded_device_startup(p.renderer,slots,p.devices.startup)) {
+                    recovery=nullptr;
+                    p.log.notef("harness renderer init recovered after display nudge: diagnostic "
+                        "retry hr=0x%08lx, 00b2aeb0 re-entered once and created device=%p (harness only)",
+                        static_cast<unsigned long>(facts.retry),get<void*>(p.renderer,0x1a10));
+                } else recovery="failed (the device is null after the re-entered 00b2aeb0)";
+            }
+            if(recovery) report_renderer_init_failure(p.log,p.renderer,facts,recovery);
+        }
         p.retained_device=get<IDirect3DDevice9*>(p.renderer,0x1a10);
         check(p.retained_device && get<void*>(p.renderer,0x197c) && get<void*>(p.renderer,0x198c),"native default surfaces missing");
         p.retained_device->AddRef();p.phase=Impl::Phase::ready;
