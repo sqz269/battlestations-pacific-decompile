@@ -136,7 +136,12 @@ inline constexpr bool kGeneratedWingPartyBound = true;  // ON: identity pairs (s
 // descriptor that kGeneratedWingPartyBound models, so it is a parent as well.
 // Not covered: the kamikaze squadron, whose 006FED18 bag also carries `Party`
 // but which is not built through create_squadron.
-inline constexpr bool kLaunchedSquadronPartyCc13Bound = false;
+// ON since packet pt1_lsqparty_flip (cc9-party1, SHIP_AI_OPEN_ITEMS section
+// 323): CHG06's 324 luaForceZMission_think failures at commandhelpers.lua:330
+// go to 0 and its think runs on (end unchanged); IJN29 and IJN30 likewise stop
+// aborting their think at luaCheckMusic (IJN30 now reaches its Game Over at
+// 95.05 s). Every WINS row is gameplay identical.
+inline constexpr bool kLaunchedSquadronPartyCc13Bound = true;
 static_assert(!kLaunchedSquadronPartyCc13Bound || kGeneratedEntityPartyBound,
               "kLaunchedSquadronPartyCc13Bound uses the generated-entity party write");
 static_assert(!kLaunchedSquadronPartyCc13Bound || kGeneratedWingPartyBound,
