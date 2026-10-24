@@ -204,11 +204,12 @@ std::size_t plane_squadron_broadcast_to_members_007ecf80(
     // 007ECF86 CMP [EBX+3CCh],ESI / 007ECF8C JLE: nothing to do at zero.
     if (visit == nullptr || squadron.live_count <= 0) return 0;
     std::size_t reached = 0;
-    const int live = squadron.live_count < static_cast<int>(kPlaneSquadronMaxWings)
-        ? squadron.live_count : static_cast<int>(kPlaneSquadronMaxWings);
     // 007ECFA0..007ECFB9: EDI walks &members[0] upwards, ESI counts against
-    // +3CCh re-read every iteration.
-    for (int i = 0; i < live; ++i) {
+    // +3CCh re-read every iteration, so a member's +128h handler that changes
+    // the count is seen on the next pass (packet D4; the count was read once).
+    // The null skip and the wing-maximum cap are added guards.
+    for (int i = 0; i < squadron.live_count && i < static_cast<int>(kPlaneSquadronMaxWings);
+         ++i) {
         void* member = squadron.members[static_cast<std::size_t>(i)];
         if (member == nullptr) continue;
         visit(member, context);
