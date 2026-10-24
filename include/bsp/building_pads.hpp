@@ -265,7 +265,9 @@ struct LandingShipUpdateHost {
     virtual void call_004134f0(float* out16, const float* source16) = 0;
     virtual float* call_00413920(const float* left16, float* out16,
                                const float* right16) = 0;
-    virtual void vcall_38(void* node, const float* matrix16) = 0;
+    // 0074B506 captures the node's slot address before matrix multiplication;
+    // 0074B524 loads this selected target after the external multiply returns.
+    virtual void vcall_38(void* node, const float* matrix16, std::uint32_t native_target) = 0;
     virtual void call_0051f460() = 0;
     [[noreturn]] virtual void invalid_iterator_00bf6713() = 0;
 };

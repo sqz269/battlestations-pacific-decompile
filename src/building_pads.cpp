@@ -392,9 +392,10 @@ void landing_ship_update_0074af50(std::uint8_t* ship, float dt,
             float rotation[16], copied[16], combined[16];
             const float* built = host.call_00b64640(rotation, &negative_angle); // 0074B4F3
             host.call_004134f0(copied, built);                         // 0074B4FD
+            std::uint8_t* selected_slot = pointer(node, 0) + 0x38;     // 0074B506/0074B518
             const float* matrix = host.call_00413920(copied, combined,
                 reinterpret_cast<const float*>(record + 4));          // 0074B51B
-            host.vcall_38(node, matrix);                               // 0074B527
+            host.vcall_38(node, matrix, word(selected_slot, 0));        // 0074B524/0074B527
         }
     }
     if (byte(globals.game_00e188a8, 0x19C4) == 0) host.call_0051f460();  // 0074B54B
