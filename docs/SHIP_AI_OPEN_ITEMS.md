@@ -20666,7 +20666,10 @@ guard's sus_prog.exe refusal where the mission completes. Every plan has `helm_m
 - **What the mission needs** (this installation's `COTP-USN\PRCPUS\usn_15_battle_of_surigao_strait.lua`):
   - Win: Fuso, Yamashiro, Nachi and Ashigara all die (:388-392, :862).
   - Fail: every US ship dies, or a spotted IJN ship comes within 3 km of JapanGoTo (0, 12000) (:847-858).
-  - Only US torpedoes hurt the battleships (GUNNERY_OPEN_ITEMS 269.1 item 4; `took=0.0` on every shell).
+  - Torpedoes are the lever against the battleships. Per GUNNERY_OPEN_ITEMS 266.1 (read from the image), shell
+    blasts are max(0, BlastDamage - armour 130), which is 0 for every US gun. A direct hit does (DamageMin..Max -
+    armour), about 100-120 for 14in and 150-170 for 16in, against about 90000 HP. 269.1 item 4's "took=0.0 on every
+    shell" is the blast rows only.
 - **Old plans on 1e09f61b9** (ref, 90000 frames):
 
   | Plan | Result | Notes |
