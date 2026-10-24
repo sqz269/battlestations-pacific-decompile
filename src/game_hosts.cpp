@@ -1933,7 +1933,15 @@ void GameStartupHost::close_native_shadow_after_drain() noexcept {
     }
 }
 
+void GameStartupHost::exit_if_native_gui_resources_retained() noexcept {
+    if (!frontend_ || !frontend_->native_gui_resources_require_process_retention()) return;
+    try { log_.note("native GUI resource graph remains live; retaining frontend/renderer/VFS owners until process exit"); log_.close(); }
+    catch (...) { std::fputs("bsp_game: native GUI resources require process retention\n", stderr); }
+    std::_Exit(1);
+}
+
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_gui_resources_retained();
     exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
@@ -2752,6 +2760,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // page scripts. Evidence: docs/APP_INIT_FONTS_GUI.md.
     frontend_ = new GameFrontendHost(log_, *vfs_, *scripts_, *fonts_, *device_->device(),
         platform_->widescreen, gui_sse2_conversion());
+    frontend_->bind_native_gui_resources(*native_renderer_);
     frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
         settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));
     initialize_native_gui_render();
@@ -3092,6 +3101,11 @@ void GameStartupHost::application_shutdown() {
     }
     delete menu_;
     menu_ = nullptr;
+    // End native widget borrowers before retiring the manager's texture
+    // credits. The same Text factory still survives Font retirement/drain.
+    retire_native_gui_text_before_fonts();
+    try { if (frontend_) frontend_->retire_native_gui_resources(); }
+    catch (...) { exit_if_native_gui_resources_retained(); std::_Exit(1); }
     delete frontend_;
     frontend_ = nullptr;
     retire_native_fonts_before_drain();
@@ -3124,6 +3138,7 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_native_gui_resources_retained();
     exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();

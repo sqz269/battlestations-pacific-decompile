@@ -43,17 +43,18 @@ resource is never inserted in the bridge's `IDirect3DTexture9*` ownership vector
 
 ## Integration contract
 
-Add `src/game_native_gui_resource_application.cpp` to `bsp_game`. After creating
-the frontend, before `run_font_and_gui_startup_0073bae0`, call
-`frontend->bind_native_gui_resources(renderer)`; this returns immediately while
+`src/game_native_gui_resource_application.cpp` is compiled into `bsp_game`.
+After creating the frontend, before `run_font_and_gui_startup_0073bae0`, startup
+calls `frontend->bind_native_gui_resources(renderer)`; this returns immediately while
 the runtime switch is OFF, before touching the renderer/VFS. ON binding
 requires an unconstructed, empty frontend manager. Only the two initial entries
 are admitted, in whiteGui then transparent order. This does not support reload,
 transparent replacement from an existing nonnull initial slot, or the native
 GUI manager destructor.
 
-Before renderer drain, end all users of the manager texture fields, then call
-`frontend->retire_native_gui_resources()`. It clears the two borrowing manager
+Normal shutdown ends menu borrowers, retires native Text, then calls
+`frontend->retire_native_gui_resources()` before deleting the frontend and
+retiring Fonts. It clears the two borrowing manager
 slots and calls `release_native_render_actual_owner` once per returned nonnull
 reference, retaining its decrement/terminal observation in the same frame.
 Ownership is marked consumed before entering any terminal callback;
@@ -63,6 +64,8 @@ string pool, operation records and canonical owners on any interrupted native
 load/retirement. `native_gui_resources_require_process_retention()` exposes this
 obligation; it is also true during a healthy run while owned references remain.
 The component destructor rejects destruction with outstanding retained work.
+Exceptional host destruction and shared-drain entry retain any still-live
+resource graph before cleaning any provider; no exceptional rollback is claimed.
 
 OFF preserves the existing host texture loader and UNIMPLEMENTED log entry.
 ON replaces only the two manager texture acquisitions and that log entry. Page,

@@ -13,7 +13,7 @@ deliverables. Input remains outside this lane and blocks button dispatch.
 | Step | Runtime selection | Current evidence |
 | --- | --- | --- |
 | 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Visible native Text in USN04; ON game exit0/gameplay identical; OFF pair_diff exit0 |
-| 2. Initial GUI texture resources | `BSP_NATIVE_GUI_RESOURCES=1` | Worker built; integration/runtime pending |
+| 2. Initial GUI texture resources | `BSP_NATIVE_GUI_RESOURCES=1` | Startup/retirement wired; Win32 Release +2/2 checks passed; OFF/ON pending |
 | 3. Per-widget Model and page cGroup ownership | `BSP_NATIVE_GUI_NODES=1` planned | Canonical Model composition built; cGroup worker built, integration/ON pending |
 | 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` proposed | Exact 18-class audit in `OCT24_GUI_PAGES.md`; actual Screen manager/page ownership and ten factory arms remain blockers |
 

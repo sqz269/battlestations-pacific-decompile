@@ -751,6 +751,7 @@ private:
     void prepare_native_gui_text_resources();
     void draw_native_gui_text_mission_overlay();
     void exit_if_native_gui_text_incomplete() noexcept;
+    void exit_if_native_gui_resources_retained() noexcept;
     void retire_native_gui_text_before_fonts() noexcept;
     void close_native_gui_text_after_drain() noexcept;
     void close_native_shadow_after_drain() noexcept;
