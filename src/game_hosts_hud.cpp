@@ -3596,8 +3596,11 @@ public:
         // cc15-hint2-gate: 0064987D CMP byte [EAX+620h],0 / JNZ 00649FB3 skips
         // the whole update while a critical hint is shown.
         owner_.record("HudRootScreen::game_pause_bytes", 0x00649863u);
-        if constexpr (kHintPauseHudGateCc15Bound) return game_hint_pause_620_cc15();
-        return false;
+        if constexpr (kHintPauseHudGateCc15Bound) {
+            return game_hint_pause_620_cc15();
+        } else {
+            return false;
+        }
     }
     bool platform_row_inset() override {
         // SUBSTITUTION: platform 0109CF04+0Dh (the widescreen byte) does not
