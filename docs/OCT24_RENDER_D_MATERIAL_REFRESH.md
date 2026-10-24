@@ -96,15 +96,20 @@ path is supplied here.
 ## Borrowed scene reflection parameter
 
 `publish_reflection_cubemap()` reads the current borrowed root's
-`g_Environment.ReflCubemap` explicit `S` property. The bounded provider requires
-one nonempty decoded string and fails on absent/unsupported source instead of
-inventing a name. It retains no root/property pointer, unit state, or successful
-string cache. `004EE450` / existing `scene_weather_cc13.cpp:389` copies the
+`g_Environment.ReflCubemap` explicit `S` property. A present property must contain
+one decoded string; wrong type/count fails. Missing `g_Environment`/`ReflCubemap`
+or an explicitly empty string uses the existing Source `SceneSkyFields` empty
+reflection default. This is that Source record contract; the raw record
+constructor was not newly audited in this packet. The helper retains no
+root/property pointer, unit state, or successful string cache.
+`004EE450` / existing `scene_weather_cc13.cpp:389` conditionally copies the
 authored string to `+B98`; when the current original `F88A0C` flag is nonzero,
 it prefixes **the entire string** with `HDR_`, without basename or path rewrite.
 The caller supplies that same captured flag (`init_args.word00`, settings `+8C`)
-as `hdr`. The full original scene helper also prefixes an empty field; this
-bounded source adapter instead reports an absent/empty authored provider.
+as `hdr`. This prefix remains unconditional for an empty/missing field, so the
+published default is empty with HDR off or `HDR_` with HDR on. The original
+`B1B830` publication and subsequent refresh still run, clearing stale prior
+mission Lua values rather than silently preserving them or inventing a cubemap.
 
 The current inspected USN04 source names `RCS_usn_05_GuadalCa.dds`, yielding
 `HDR_RCS_usn_05_GuadalCa.dds` under that flag. The installed
@@ -123,9 +128,10 @@ original value-before-key header reads and `B674C0` Lua string-field body.
 header data pointer. Repository inspection found no canonical producer, so the
 existing process-owned `GameNativeLuaGlobalsProcess` now owns that sole mutable
 zero byte and exposes `empty_string_0108ff2c()`. It is never reset, aliased to
-`F8D438`/`CE3A0C`, or read from unprovided raw-image BSS. Both actual headers in
-this bounded publication are nonempty, but the full native context remains
-properly bound. The process owner survives native CRT callbacks.
+`F8D438`/`CE3A0C`, or read from unprovided raw-image BSS. The key is nonempty;
+an empty value uses this exact fallback byte in the original Lua setter. The
+zero-length native string copy is skipped, so no null pointer is passed to
+`std::memcpy`. The process owner survives native CRT callbacks.
 
 Primary must complete model loads and publish the borrowed scene parameter
 before whole-registry refresh and submission. Publishing the parameter

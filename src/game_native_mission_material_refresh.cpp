@@ -30,11 +30,13 @@ std::string reflection_name(const ScenePropertyBlock& root, bool hdr) {
         if (block.first == "g_Environment") { environment = &block.second; break; }
     }
     const auto* property = environment ? environment->find("ReflCubemap") : nullptr;
-    if (!property || property->type_letter != "S" || property->values.size() != 1
-        || property->values.front().empty())
-        throw std::logic_error("ReflectionCubeMap requires authored g_Environment.ReflCubemap string");
+    if (property && (property->type_letter != "S" || property->values.size() != 1))
+        throw std::logic_error("Authored g_Environment.ReflCubemap must be one string");
+    // Existing Source SceneSkyFields starts empty. Missing/empty reflection
+    // still publishes that default, clearing any previous mission's Lua value.
+    const std::string name = property ? property->values.front() : std::string{};
     // 4EE450 prefixes the ENTIRE authored string, with no path/basename rewrite.
-    return hdr ? "HDR_" + property->values.front() : property->values.front();
+    return hdr ? "HDR_" + name : name;
 }
 }
 
@@ -86,7 +88,7 @@ struct GameNativeMissionMaterialRefresh::Impl {
             current->value_live = true;
             current->value.resize_0041dd40(context.cache.strings,
                 static_cast<std::uint32_t>(name.size()), false);
-            std::memcpy(current->value.data(), name.data(), name.size());
+            if (!name.empty()) std::memcpy(current->value.data(), name.data(), name.size());
             NativeSamplerParameterWriteContext write_context{
                 game_native_lua_globals_process().empty_string_0108ff2c(), current->operation};
             NativeLuaServiceBindings::Activation activation(application.lua_service_binding());
