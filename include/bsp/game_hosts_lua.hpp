@@ -668,7 +668,7 @@ inline constexpr bool kLuaHitRateLimitBound = true;  // ON: identity pairs (docs
 // shot, which is moot because every host hit carries a class.
 // summary listener_hit_attack_type_subkind_differs counts candidate disagreements per
 // listener evaluation (before the damage test, second pass included), not changed fires.
-inline constexpr bool kHitListenerAttackTypeSubKindCc13Bound = false;
+inline constexpr bool kHitListenerAttackTypeSubKindCc13Bound = true;  // ON (cc9-lua71, 2026-10-24): ESMP07 one extra listener fire (dialog), gameplay identical; JM06/JM04/BSM06 identical; see WINS_TABLE
 static_assert(!kHitListenerAttackTypeSubKindCc13Bound
                   || (kLuaListenersBound && kLuaHitListenersBound),
               "the attackType sub-kind test lives in the hit listener dispatch");
