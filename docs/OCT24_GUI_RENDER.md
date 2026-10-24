@@ -13,7 +13,7 @@ are recorded below. Input remains outside this lane and blocks button dispatch.
 
 | Step | Runtime selection | Current evidence |
 | --- | --- | --- |
-| 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Startup/shared-frame wiring built; existing 2/2 checks passed; ON pending |
+| 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Real HAL call S_OK and normal retirement; camera correction/native registry integration and visible capture pending |
 | 2. Initial GUI texture resources | `BSP_NATIVE_GUI_RESOURCES=1` | Worker built; integration/runtime pending |
 | 3. Per-widget Model and page cGroup ownership | `BSP_NATIVE_GUI_NODES=1` planned | Canonical Model composition built; cGroup worker built, integration/ON pending |
 | 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` proposed | Exact 18-class audit in `OCT24_GUI_PAGES.md`; actual Screen manager/page ownership and ten factory arms remain blockers |
@@ -38,8 +38,9 @@ The explicit bring-up text is a standalone, non-localized literal. It is not a
 page, and no projected page is copied into a second owner. Context substitution
 requires the application's current Lua context and is rejected for this literal
 bring-up rather than choosing another page's VM. This is not button/input work.
-Its explicit diagnostic position is (0.05, 0.10, -10000), inside the native GUI
-camera's depth volume; that content choice is not a recovered widget default.
+Its explicit diagnostic position is (0.05, 0.10, 0), inside the corrected native
+GUI camera's depth volume; X/Y are authored bring-up content, while Z=0 is the
+normal widget plane.
 
 The GUI pass owns one actual 24h scene and one actual 45Ch pooled camera.
 AA3E00's existing camera placement, AA2020 orthographic setup and native label
@@ -69,8 +70,10 @@ only in the mission's open shader-cache bracket.
 
 The Font arm reuses AD55C0 construction, AD4540 unsigned-WORD lookup, AD4AA0
 native tree insertion, and the established native tree/string cleanup. In image
-mode there is no live `FontData` map. Stable typed descriptor/name metadata
-selects the same image owner; see `OCT24_GUI_FONT.md` for the exact image offsets
+mode there is no live `FontData` map. AC3570 selection walks the actual 10h
+registry's circular list and reads each Font image's native name cells. Stable
+descriptor identity maps the selected image back to custody metadata; descriptor
+names do not select the native Font. See `OCT24_GUI_FONT.md` for exact offsets
 and ABI limits. Both native Text and the remaining sprite bridge read that
 owner's live glyph records and height. The bridge retains its previous draw
 ownership until Step 4 explicitly replaces one page.
@@ -141,7 +144,27 @@ The subsequent merge of main `0b56eb178` includes the native whole-material
 texture refresh after model loading, which also covers these earlier GUI effect
 creations; the combined build and probe are still pending.
 `step1_effect_merged_build.log` now records the combined Win32 Release build and
-both existing checks passing. The next native probe remains pending.
+both existing checks passing.
+
+Probes3--5 exit0 with 599 Presents and normal retirement after 561 GUI passes.
+The frozen clean final control is `da031b4f3`, Win32 Release and 2/2 existing
+checks passing, under `baseline/final_da031b4f3/`. Probe4's `pair_diff` is literal
+exit1 with identical gameplay, all 21 unit rows and all 706 summary lines; the
+differences are the two native GUI method rows and renderer/GUI diagnostics.
+The actual indexed-draw observer confirms 156 vertices/78 triangles, S_OK,
+correct HAL buffers, bound shaders/font textures, full viewport and the same
+1280x720 backbuffer target. Probe5 records the actual shader bytecode, constants,
+declaration, first four vertices and six indices under `shader_trace/`.
+
+These observations do not yet prove visible Text. Native-frame captures have
+`_N001`, `_N060`, `_N180` suffixes; the unsuffixed image is the earlier control,
+and must not be attributed to an ON run. The actual `_N180` shows the native
+ship. The original AA3E00 assembly establishes eyeZ=-10000 and targetZ=0;
+the retained helper had reversed them, mirroring Text's X direction/winding.
+The caller mapping and diagnostic's former Z=-10000 are corrected together;
+the native CCW culling state is retained. Active Font property lookup now uses
+the native registry-list authority instead of host descriptor-name selection.
+The combined visible capture and final wired OFF identity remain pending.
 
 Final screenshots belong under this tree's `local/gui_render/` and must be
 copied to the cc16-progress tree before this worktree is removed.

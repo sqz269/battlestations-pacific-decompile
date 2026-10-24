@@ -100,13 +100,13 @@ template<class T> void trace_gui_shader(GameHostLog& log, T* shader, const char*
 void trace_gui_constants(GameHostLog& log, IDirect3DDevice9* device, const std::string& directory) {
     if (directory.empty()) return;
     std::array<float, 256 * 4> vertex{};
-    std::array<float, 32 * 4> pixel{};
+    std::array<float, 224 * 4> pixel{};
     const HRESULT vs = device->GetVertexShaderConstantF(0, vertex.data(), 256);
-    const HRESULT ps = device->GetPixelShaderConstantF(0, pixel.data(), 32);
+    const HRESULT ps = device->GetPixelShaderConstantF(0, pixel.data(), 224);
     std::ofstream output(directory + "/gui_first_constants.txt");
     if (SUCCEEDED(vs)) for (unsigned i = 0; i < 256; ++i)
         output << "VS " << i << ' ' << vertex[i*4] << ' ' << vertex[i*4+1] << ' ' << vertex[i*4+2] << ' ' << vertex[i*4+3] << '\n';
-    if (SUCCEEDED(ps)) for (unsigned i = 0; i < 32; ++i)
+    if (SUCCEEDED(ps)) for (unsigned i = 0; i < 224; ++i)
         output << "PS " << i << ' ' << pixel[i*4] << ' ' << pixel[i*4+1] << ' ' << pixel[i*4+2] << ' ' << pixel[i*4+3] << '\n';
     log.notef("native_GUI_trace constants VS=%08lx PS=%08lx path=%s/gui_first_constants.txt",
         static_cast<unsigned long>(vs), static_cast<unsigned long>(ps), directory.c_str());
@@ -382,7 +382,7 @@ struct GameNativeGuiRenderApplication::Impl {
         text = std::make_unique<GameNativeTextApplication>(log, renderer,
             GameNativeTextApplicationBindings{nodes->widgets(), nodes->parenting(),
                 game_native_gui_text_process().pool_00f8bdf0(), materials, parameters, *style,
-                font_resources, GuiTextFontRegistryAccess::borrowed_existing(fonts.registry()),
+                font_resources, GuiTextFontRegistryAccess::borrowed_native_images(font_resources),
                 locale.tables(), locale_calls, source_ucrt_text_content_comparison(), nullptr,
                 source_ucrt_text_name_comparer(), sse2,
                 *static_cast<void* const volatile*>(renderer.borrow_platform_publication_0109cf04().identity()),
@@ -411,7 +411,7 @@ struct GameNativeGuiRenderApplication::Impl {
             {"Multiline", GuiValue(false)}, {"Visible", GuiValue(true)},
             // Explicit diagnostic placement inside AA3E00's 1..19984 depth
             // volume. This is authored bring-up content, not a native default.
-            {"Pos", GuiValue(vector_table({0.05, 0.10, -10000.0}))},
+            {"Pos", GuiValue(vector_table({0.05, 0.10, 0.0}))},
             {"Size", GuiValue(vector_table({0.9, 0.08}))},
             {"Color", GuiValue(vector_table({1.0, 1.0, 1.0, 1.0}))}};
         auto layout = std::make_unique<GuiLayoutWidget>();
