@@ -409,6 +409,11 @@ GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base(GuiLayoutWidget& layout) {
 }
 NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
     NativeNodeBinding** publication) {
+    if (environment_.models.raw_name_services) {
+        if (environment_.models.actual_names)
+            throw std::logic_error("GUI Model name mode must be selected before construction");
+        return create_model(name, environment_.models.raw_name_services->temporary_names, publication);
+    }
     // Construction and retirement already select actual_names when bound.
     // The temporary must use that SAME storage, rather than demanding a
     // semantic pool from a runtime whose names belong to the raw VFS domain.
@@ -420,6 +425,9 @@ NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
 NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
     NativeStringStorage& strings, NativeNodeBinding** publication) {
     auto& environment = environment_.models;
+    if (environment.raw_name_services && (environment.actual_names ||
+        &environment.raw_name_services->temporary_names != &strings))
+        throw std::logic_error("raw GUI Model requires its same born-raw temporary string domain");
     auto record = std::make_unique<ModelRecord>();
     void* slot = environment.pool_01090054.allocate_raw_slot_00b74d00();
     if (!slot) {
@@ -519,6 +527,9 @@ void GuiWidgetOwnerRuntime::create_tracked_auxiliary_model(NativeNodeBinding*& p
     auto& environment = environment_.models;
     if (environment.actual_names && environment.actual_names != &strings)
         throw std::logic_error("auxiliary temporary and Model names require the same actual string domain");
+    if (environment.raw_name_services && (environment.actual_names ||
+        &environment.raw_name_services->temporary_names != &strings))
+        throw std::logic_error("raw auxiliary Model requires its same born-raw temporary string domain");
 
     bool inserted = false;
     bool native_constructed = false;
