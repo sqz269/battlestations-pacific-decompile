@@ -7176,6 +7176,17 @@ struct GameUnitsHost::Impl {
     // base term only on heading mode 2. Draws at their midpoints, as every
     // other dogfight draw in this host.
     static constexpr bool kDogfightManeuverBodyBound = true;
+    // Packet cc13-D5 (spot-check gap rows). 009A85B0 (009A85DF-009A8607): when the
+    // target's published byte [T + 9C0h + 8*[00F876B8]] is set (its own 007B9140(T, 0),
+    // published by 007CDC70; read live here, as kReleaseTimerNotify0DhBound does), the
+    // plane must answer 007B9140(plane, 0) too, else the threat test is false
+    // (009A86DF). True: that clause. False: skipped, as before.
+    static constexpr bool kDfThreatOrdnanceClauseCc13Bound = false;
+    // Packet cc13-D5. The cone arm 009A8682-009A86C6 at 24-bit precision:
+    // ShootDistance x 1.5 (FMUL qword 00CE3D78) is rounded before the FCOMIP,
+    // x / z and y / z are FSTP'd as floats, and 0042B2F0 forms (x*x + y*y) + z*z
+    // per op in float. True: those roundings. False: the 53-bit double chain.
+    static constexpr bool kDfThreatConePc24Cc13Bound = false;
     static constexpr bool kDogfightAvoidBodiesBound = true;
     static constexpr bool kDogfightAvoidPickBound = true;
     // Packet cc13-dogfight1 (docs/CC13_DOGFIGHT_DRAWS.md): three of those draws
@@ -25500,13 +25511,49 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     bool df_threat_009a85b0(bool want_cone) {
                         const GameUnitSlot* t = df_target_slot();
                         if (t == nullptr || !df_pilot_targets_us(*t)) return false;
-                        if (!want_cone) return true;
-                        float v[3];
-                        GameUnitsHost::Impl::follow_to_body(*t, unit_.motion.position, false, v);
-                        if (!(v[2] > 10.0f)) return false;                          // 009A8671
-                        if (!(unit_.df_row.aim_shoot_distance * 1.5 > v[2])) return false;
-                        const double a = v[0] / v[2], b = v[1] / v[2];
-                        return std::sqrt(a * a + b * b) < 1.0;                      // 009A86C6
+                        bool threatened = true;
+                        if constexpr (GameUnitsHost::Impl::kDfThreatOrdnanceClauseCc13Bound) {
+                            // 009A85EF: the target's published 007B9140(T, 0); 009A8600:
+                            // the plane's own. Both: kind 17h, or some rack holds a round.
+                            if (df_can_drop_007b9140(*t) && !df_can_drop_007b9140(unit_)) {
+                                threatened = false;                                 // 009A8607
+                            }
+                        }
+                        if (threatened && want_cone) {
+                            float v[3];
+                            GameUnitsHost::Impl::follow_to_body(*t, unit_.motion.position, false, v);
+                            if (!(v[2] > 10.0f)) {                                  // 009A8671
+                                threatened = false;
+                            } else if constexpr (GameUnitsHost::Impl::kDfThreatConePc24Cc13Bound) {
+                                const float limit = static_cast<float>(
+                                    static_cast<double>(unit_.df_row.aim_shoot_distance) * 1.5);
+                                if (!(limit > v[2])) {                              // 009A8698
+                                    threatened = false;
+                                } else {
+                                    const float ab[3] = {v[0] / v[2], v[1] / v[2], 0.0f};
+                                    threatened = bsp::gun_length3_0042b2f0<false>(ab) < 1.0f;
+                                }
+                            } else {
+                                if (!(unit_.df_row.aim_shoot_distance * 1.5 > v[2])) {
+                                    threatened = false;
+                                } else {
+                                    const double a = v[0] / v[2], b = v[1] / v[2];
+                                    threatened = std::sqrt(a * a + b * b) < 1.0;    // 009A86C6
+                                }
+                            }
+                        }
+                        return threatened;
+                    }
+                    // 007B9140(unit, 0): 1 for kind 17h (007B914A), else the first rack
+                    // that holds a round (the walk of plane_holds_rack_round_007b9140).
+                    bool df_can_drop_007b9140(const GameUnitSlot& s) {
+                        if (bsp::unit_is_kind_of(s.class_id, 0x17)) return true;
+                        GameUnitSlot& m = const_cast<GameUnitSlot&>(s);   // the rack list is a lazy cache
+                        for (const PlaneOrdnanceRack& rack : owner_.ordnance_racks(m)) {
+                            if (rack.class_id == 0) continue;
+                            if (owner_.plane_rack_holds_round(s, rack)) return true;
+                        }
+                        return false;
                     }
                     // A dogfight state-enter draw: 00BD2F10(lo, hi) on the unit's keyed
                     // stream under kDogfightEnterDrawsBound, else the midpoint.
