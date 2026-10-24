@@ -7,6 +7,7 @@
 #include "bsp/dive_bomb_task.hpp"
 
 #include "bsp/cc13_tier2_switches.hpp"
+#include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/unit_rudder.hpp"
 
 #include <cmath>
@@ -320,6 +321,9 @@ float dive_bomb_interpolate_clamped_00419010(float x0, float y0, float x1, float
         return lo;
     }
     // 004190A9 FCOMIP v,hi / JBE 004190BC: v when v <= hi or unordered (ON).
+    // sw3 reach: the arms differ only when v or hi is NaN.
+    plane_task_reach_count(g_plane_task_reach_sw3.interp_hi,
+        plane_task_reach_bits_differ((v > hi) ? hi : v, (v <= hi) ? v : hi));
     if constexpr (kInterpClamped00419010NanCc13Bound) {
         return (v > hi) ? hi : v;
     } else {
@@ -723,9 +727,11 @@ bool dive_bomb_goaway_complete_009c7f00(
     }
     // 009C7F23-009C7F46: the ceiling, the smaller of the two.
     const float sum = in.begin_altitude_ac + in.aim_point_height_50;
-    const float ceiling = kDiveBombNanComparesCc13Bound
-        ? (!(in.cruise_altitude_398 > sum) ? in.cruise_altitude_398 : sum)
-        : ((in.cruise_altitude_398 <= sum) ? in.cruise_altitude_398 : sum);
+    const float ceiling_on = !(in.cruise_altitude_398 > sum) ? in.cruise_altitude_398 : sum;
+    const float ceiling_off = (in.cruise_altitude_398 <= sum) ? in.cruise_altitude_398 : sum;
+    plane_task_reach_count(g_plane_task_reach_sw3.dive_ceiling,
+                           plane_task_reach_bits_differ(ceiling_on, ceiling_off));   // sw3 reach
+    const float ceiling = kDiveBombNanComparesCc13Bound ? ceiling_on : ceiling_off;
     // 009C7F8D `76` JBE: the range has to have opened past the term.
     if (!(static_cast<double>(in.planar_distance_bc) > term)) {
         return false;
@@ -1494,6 +1500,8 @@ bool dive_bomb_should_break_off_009c8a90(const DiveBombBreakOffInputs& in) noexc
         result = false;
     } else {
         const float p = in.safe_distance * in.speed_ratio_41c;
+        plane_task_reach_count(g_plane_task_reach_sw3.dive_breakoff,
+            !(p > in.distance_to_target) != (p <= in.distance_to_target));   // sw3 reach
         if constexpr (kDiveBombNanComparesCc13Bound) {
             result = !(p > in.distance_to_target);
         } else {
