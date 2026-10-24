@@ -24,6 +24,7 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hint_passes.hpp"
+#include "bsp/plane_follow_law.hpp"
 #include "bsp/game_profile_owner.hpp"
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq2
 #include "bsp/game_observer_runtime.hpp"
@@ -5491,6 +5492,9 @@ void GameMissionFrameHost::report(long requested_frames) {
             "construct_world 004de610 is a load record", scene.created,
             host.frames.entities_updated, host.frames.unit_motion_ticks);
     }
+    host.log.notef("summary mission circle tangent unordered (004F4840, sw1 reach): bound=%d "
+        "calls=%llu nan_r=%llu", bsp::circle_tangent_reach().bound ? 1 : 0,
+        bsp::circle_tangent_reach().calls, bsp::circle_tangent_reach().nan_r);
     host.log.notef("summary mission world active_byte_bound=%d active=%d traffic_walks=%llu "
         "(packet cc9_construct_world, [game+19CCh]+4ACh)", kWorldActiveByteBound ? 1 : 0,
         host.world.world_gate.enabled ? 1 : 0, host.frames.traffic_walks);

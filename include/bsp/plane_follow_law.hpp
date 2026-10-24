@@ -324,6 +324,14 @@ PlaneFollowPhaseA plane_follow_phase_a_009c0251(
 // GameUnitsHost -> plane_follow_geometry_009bfee0 (009C1448 turn circle),
 // both into circle_tangent_points_004f4840.
 inline constexpr bool kCircleTangentUnorderedCc13Bound = false;
+// Reach counter for kCircleTangentUnorderedCc13Bound (log only, sw1): calls to
+// 004F4840 and those with a NaN r, where ON proceeds and OFF declines.
+struct CircleTangentReach {
+    bool bound{false};
+    unsigned long long calls{0};
+    unsigned long long nan_r{0};
+};
+const CircleTangentReach& circle_tangent_reach() noexcept;
 // 004F3810 runs on the main thread at x87 PC24 (docs/CC13_FPU_PRECISION.md):
 // every FMUL/FADD/FSUB/FDIV rounds to 24 bits.  True: the four chains round
 // per op -- d2 = dx*dx + dz*dz (004F3846..004F384A), p = (r*r)/d

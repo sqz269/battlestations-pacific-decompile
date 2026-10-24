@@ -6352,6 +6352,7 @@ public:
         // per-call arm's out+4 store was not re-read).
         ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{point.x, 0.0f, point.z};
         ++s.landing_mode3_points;
+        if (p->line.origin_y_210 != 0.0f) ++s.landing_mode3_y_differs;   // sw1 reach
         // 009F2247..009F2293: |point - unit+0FCh| through 0042B2F0.
         const double dx = static_cast<double>(point.x) - unit_pos[0];
         const double dy = 0.0 - static_cast<double>(unit_pos[1]);
@@ -14958,6 +14959,11 @@ void GameShipAiHost::report() {
         host.summary.landing_pad_line_casts, host.summary.landing_mode3_in_reach,
         host.summary.landing_begins, host.summary.landing_mode4_points,
         bsp::kShipAiApproachLandingModesBound ? 1 : 0);
+    host.log.notef("summary mission ship ai pad approach point image (006AC5D0, sw1 reach): "
+        "bound=%d calls=%llu corridor_differs=%llu holdoff_differs=%llu mode3_y_differs=%llu",
+        bsp::pad_approach_reach().bound ? 1 : 0, bsp::pad_approach_reach().calls,
+        bsp::pad_approach_reach().corridor_differs, bsp::pad_approach_reach().holdoff_differs,
+        host.summary.landing_mode3_y_differs);
     host.log.notef("summary mission ship ai landing requests 94h=%llu begun=%llu held=%llu "
         "no_site=%llu no_pad=%llu (0074A4C0, packet cc9_startlanding_94h)",
         host.summary.landing_requests_94h, host.summary.landing_requests_begun,

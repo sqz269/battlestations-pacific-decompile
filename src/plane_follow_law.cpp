@@ -379,6 +379,10 @@ PlaneFollowPhaseA plane_follow_phase_a_009c0251(
     return out;
 }
 
+static CircleTangentReach g_circle_tangent_reach{kCircleTangentUnorderedCc13Bound};
+
+const CircleTangentReach& circle_tangent_reach() noexcept { return g_circle_tangent_reach; }
+
 bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
                                     float out0[2], float out1[2]) noexcept {
     const float dx = q[0] - c[0];                                         // 004F3826
@@ -394,6 +398,8 @@ bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
     }
     const float d = static_cast<double>(d2) > 1e-10                       // 00CE3820
         ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
+    ++g_circle_tangent_reach.calls;
+    if (std::isnan(r)) ++g_circle_tangent_reach.nan_r;   // ON proceeds where OFF declines
     bool proceed = r < d;                                                 // 004F3887
     if constexpr (kCircleTangentUnorderedCc13Bound) {
         proceed = r < d || std::isnan(r);                                 // JC on unordered
