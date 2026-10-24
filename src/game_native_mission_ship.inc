@@ -47,6 +47,7 @@ struct MissionShipGraph final {
     std::unique_ptr<GameNativeMissionModel> model;
     std::unique_ptr<GameNativeMissionDevices> devices_visual;
     std::unique_ptr<GameNativeMissionFrameJobs> frame_jobs;
+    std::unique_ptr<GameNativeMissionMaterialRefresh> material_refresh;
     std::unique_ptr<GameNativeMissionFactories> factories;
     std::unique_ptr<MissionShipShaderPreloadGraph> preload;
     std::unique_ptr<MissionShipFoliageGraph> foliage;
@@ -106,6 +107,7 @@ struct MissionShipGraph final {
             (preload && preload->requires_process_retention()) ||
             (commands && commands->requires_process_retention()) ||
             (frame_jobs && frame_jobs->requires_process_retention()) ||
+            (material_refresh && material_refresh->requires_process_retention()) ||
             (resources && resources->requires_process_retention()) ||
             (scene && scene->requires_process_retention()) ||
             (lighting && lighting->requires_process_retention());
@@ -175,8 +177,10 @@ struct MissionShipGraph final {
             bound_units = source.units;
             bound_lua = source.lua;
             GameNativeMissionUnits units(source, files);
+            material_refresh = std::make_unique<GameNativeMissionMaterialRefresh>(application, graph.profiles.data);
             if (all_units) devices_visual = std::make_unique<GameNativeMissionDevices>(log, *source.units);
             load_new_unit_models(units);
+            material_refresh->refresh_after_model_load();
             check(model->drawable_count() != 0, "mission has no installed unit drawables");
             update_live_poses(0);
             fit_camera();
@@ -208,7 +212,8 @@ struct MissionShipGraph final {
         const auto count = units.count();
         check(count >= inspected_units, "mission unit indices lost their append-only owner");
         const auto first = model->drawable_count();
-        const auto selected = bound_units->controlled_bound() ? bound_units->controlled_index() : std::size_t{0};
+        const auto selected = diagnostic_view_unit.value_or(bound_units->controlled_bound()
+            ? bound_units->controlled_index() : std::size_t{0});
         for (std::size_t i = inspected_units; i != count; ++i) {
             if (!all_units && i != selected) continue;
             GameNativeMissionUnitDescriptor descriptor;
@@ -258,6 +263,7 @@ struct MissionShipGraph final {
                     census.gun_rows, census.physical_platforms, census.visible_instances);
             }
             if (load_new_unit_models(units) != 0) {
+                material_refresh->refresh_after_model_load();
                 update_live_poses(0);
                 fit_camera();
             }
