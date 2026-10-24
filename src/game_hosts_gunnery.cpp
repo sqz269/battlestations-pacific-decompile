@@ -1007,6 +1007,16 @@ constexpr bool kLandPlatformAttachmentBound = true;
 //    since nothing static stands between ships at sea. OFF: always clear.
 //    docs/SHIP_PLATFORM_ATTACHMENT.md.
 constexpr bool kAaLineOfFireBound = true;
+//  * kPlaneOwnBaseHitFilterBound: packet cc13-bsm6strip. 0084BF00's own-base
+//    filter (0084C213-0084C278) on both of the host's 0084BF00 callers (the
+//    projectile sweep and the plane crash sweep): a shot owned by a squadron plane
+//    with +908h < 2.0, a holder +BF4h and +C18h > 0 that hits the holder's base
+//    owner ([[+BF4h]+4]+7Ch) does not impact (the round flies on) and sets
+//    +C18h = 5; with no hit, +C18h > 0 counts down while the plane is in free
+//    flight (GameUnitsHost::plane_own_base_hit_filter_0084c213). It drops hits on
+//    the base unit only, never on another plane. OFF: every hit is taken (the
+//    filter still runs for the census; +C18h has no other reader).
+constexpr bool kPlaneOwnBaseHitFilterBound = false;
 //  * kAaLineOfFireExpiryDrawBound: packet cc9_g35_friendly_fire. On a cache miss
 //    0072F6E0 draws U([00CE74F8] = 0.8, [00CE3814] = 1.2) from 00BD2F10 on stream
 //    ECX=1 (0072F76D) and stores it, times [GlobalConfig+8Ch], as the record's
@@ -2472,6 +2482,11 @@ struct GameGunneryHost::Impl {
     };
     unsigned long long next_projectile_serial{0};
     unsigned long long trace_scene_draws{0};   // kTraceSceneDamageDrawBound
+    // kPlaneOwnBaseHitFilterBound, per caller (0 = the projectile sweep, 1 = the
+    // plane crash sweep): hits the filter answers "drop" for (dropped only when
+    // ON) and its miss-arm countdowns. The filter runs with the switch either
+    // way: its only state is +C18h, which nothing else in the host reads.
+    unsigned long long own_base_drops[2]{0, 0}, own_base_countdowns[2]{0, 0};
     static bool rng_streams_enabled() {
         static const bool on = [] {
             char* text = nullptr;
@@ -11082,8 +11097,24 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
         args.exclude_entity = reinterpret_cast<const void*>(shot.owner_unit);
         bsp::HitRecordFill record;
         bsp::hit_record_reset_00470470(record);
-        const bool hit = bsp::query_segment_0098add0(query, args, record);
+        bool hit = bsp::query_segment_0098add0(query, args, record);
         done("Projectile::sweep_entities_0098add0", 0x0098add0u);
+        {
+            // 0084C213-0084C278, kPlaneOwnBaseHitFilterBound. A dropped hit
+            // skips 0084BC60 (0084C2BB), so the round flies on.
+            const std::size_t hu = hit && query.hit_unit != 0 && query.hit_landscape == 0
+                ? query.hit_unit - 1 : static_cast<std::size_t>(-1);
+            const int ob = units.plane_own_base_hit_filter_0084c213(
+                shot.owner_unit - 1, hit, hu);
+            if (ob == 1) {
+                ++own_base_drops[0];
+                if constexpr (kPlaneOwnBaseHitFilterBound) {
+                    hit = false;
+                }
+            } else if (ob == 2) {
+                ++own_base_countdowns[0];
+            }
+        }
         if constexpr (kLandscapeSpatialAttachBound) {
             note_land_hit_query(LandHitConsumer::Projectile, hit && query.hit_landscape != 0);
         }
@@ -12981,6 +13012,21 @@ void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
             bool land = false;
             const bool hit = query_segment_units_impl(*this, from, to, i + 1, hit_unit,
                 hit_point, &land);
+            {
+                // 0084C213-0084C278, kPlaneOwnBaseHitFilterBound (a land hit is a
+                // hit entity that is not a unit). A dropped hit moves to the next
+                // point, as the Kamikaze drop below does.
+                const int ob = units.plane_own_base_hit_filter_0084c213(i, hit || land,
+                    hit ? hit_unit - 1 : static_cast<std::size_t>(-1));
+                if (ob == 1) {
+                    ++own_base_drops[1];
+                    if constexpr (kPlaneOwnBaseHitFilterBound) {
+                        continue;
+                    }
+                } else if (ob == 2) {
+                    ++own_base_countdowns[1];
+                }
+            }
             if (!hit) {
                 if (land) ++pc_land_hits;
                 continue;
@@ -17871,6 +17917,11 @@ void GameGunneryHost::report() {
             host.log.notef("summary mission gunnery trace scene-damage draws=%llu (0084C19F, "
                 "stream 1, 00428420 not run)", host.trace_scene_draws);
         }
+        host.log.notef("summary mission gunnery own-base filter bound=%d (0084C213-0084C278, "
+            "packet cc13-bsm6strip) shot_drops=%llu shot_countdowns=%llu crash_drops=%llu "
+            "crash_countdowns=%llu", kPlaneOwnBaseHitFilterBound ? 1 : 0,
+            host.own_base_drops[0], host.own_base_countdowns[0], host.own_base_drops[1],
+            host.own_base_countdowns[1]);
         if (kAaGunnerShipHullPointBound) {
             host.log.notef("summary mission gunnery aa gunner hull_points=%llu (00902BFD -> "
                 "00816650, packet cc9_g51_aa_hull_point)", host.aa_gunner_hull_points);
