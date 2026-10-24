@@ -308,6 +308,8 @@ VehicleClassResolveResult resolve_vehicle_class_00964790(VehicleClassHost& host,
 // Descriptive names are hypotheses; base semantics remain at the host boundary.
 struct VehicleClassConstructorHost {
     virtual ~VehicleClassConstructorHost() = default;
+    virtual void call_00749180(std::uint8_t* self) = 0; // contract unread
+    virtual void call_00749050(std::uint8_t* self) = 0; // contract unread
     virtual void call_007d1e50(std::uint8_t* self) = 0; // plane base; contract unread
 };
 std::uint8_t* construct_recon_plane_class_00951aa0(VehicleClassConstructorHost&, std::uint8_t*);
@@ -315,5 +317,14 @@ std::uint8_t* construct_fighter_class_00951af0(VehicleClassConstructorHost&, std
 std::uint8_t* construct_dive_bomber_class_00951b40(VehicleClassConstructorHost&, std::uint8_t*);
 std::uint8_t* construct_torpedo_bomber_class_00951c20(VehicleClassConstructorHost&, std::uint8_t*);
 std::uint8_t* construct_kamikaze_class_00951d00(VehicleClassConstructorHost&, std::uint8_t*);
+
+std::uint8_t* construct_level_bomber_class_00951de0(VehicleClassConstructorHost&, std::uint8_t*);
+std::uint8_t* construct_command_building_class_00951e30(VehicleClassConstructorHost&, std::uint8_t*);
+std::uint8_t* construct_small_recon_plane_class_009536e0(VehicleClassConstructorHost&, std::uint8_t*);
+std::uint8_t* construct_large_recon_plane_class_00953770(VehicleClassConstructorHost&, std::uint8_t*);
+std::uint8_t* construct_airfield_class_0095fee0(VehicleClassConstructorHost&, std::uint8_t*);
+std::uint8_t* construct_shipyard_class_0095ff50(VehicleClassConstructorHost&, std::uint8_t*);
+const char* small_recon_plane_class_name_00953720() noexcept;
+const char* large_recon_plane_class_name_009537b0() noexcept;
 
 } // namespace bsp
