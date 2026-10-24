@@ -5436,4 +5436,81 @@ void leaderboards_screen_on_listbox_activate_no_op_005610d0(Raw) noexcept {}
 std::int32_t leaderboards_screen_get_screen_id_005633f0(Raw) noexcept { return 0xA; }
 std::int32_t hud_limbo_screen_get_screen_id_00565d60(Raw) noexcept { return 0x32; }
 
+// --- packet cc13-tailtargets: tactical library class destructor -------------
+
+namespace {
+
+// The image's ref-counted member release; the member is cleared only when it was set.
+void release_ref_member(Raw s, std::size_t off, Fe3LibraryDestroyHost& host) {
+    void* const object = s.ptr(off);
+    if (object == nullptr) return;
+    if (host.interlocked_decrement(static_cast<std::uint8_t*>(object) + 4) == 0) host.ref_counted_destroy(object);
+    s.ptr(off) = nullptr;
+}
+
+void clear_vector_fields(Raw vector) {
+    vector.ptr(4) = nullptr;
+    vector.ptr(8) = nullptr;
+    vector.ptr(0xC) = nullptr;
+}
+
+// A vector of trivially destroyed elements: free first when set, then zero.
+void plain_vector_tidy(Raw vector, Fe3LibraryDestroyHost& host) {
+    if (vector.ptr(4) != nullptr) host.free_00bf65ac(vector.ptr(4));
+    clear_vector_fields(vector);
+}
+
+} // namespace
+
+void library_screen_destroy_0050af20(Raw s, Fe3LibraryDestroyHost& host) {
+    s.at<std::uint32_t>(0x0) = 0x00CEB9B4;
+    s.at<std::uint32_t>(0x8) = 0x00CEB9B0;
+    s.at<std::uint32_t>(0x64) = 0x00CEB99C;
+    s.at<std::uint32_t>(0x68) = 0x00CEB97C;
+    for (std::size_t off : {0x6C, 0x78, 0x70, 0x74}) release_ref_member(s, off, host);
+    host.renderer_virtual_124();
+    host.render_resources_reset_remap_textures_00b0feb0();
+    for (std::size_t off : {0x4DC, 0x4E0, 0x4E4}) host.gui_remove_page_00aa31f0(s.ptr(off));
+    release_ref_member(s, 0x4BC, host);
+    if (s.ptr(0x4B8) != nullptr) {
+        host.object_delete_04(s.ptr(0x4B8));
+        s.ptr(0x4B8) = nullptr;
+    }
+    host.library_preview_clear_rotors_0050a950(s);
+    s.at<float>(0x80) = 100.0f;  // 00CE3D08
+    s.at<float>(0x7C) = 100.0f;
+    if (void* const entry = s.ptr(0x5B0)) {
+        host.library_entry_destruct_004fd1d0(entry);
+        host.free_00bf65ac(entry);
+        s.ptr(0x5B0) = nullptr;
+    }
+    host.ref_ptr_array_resize_00504960(s.p + 0x5C4, 0);
+    host.free_00bf6989(s.ptr(0x5C4));
+    plain_vector_tidy(Raw{s.p + 0x4A0}, host);
+    plain_vector_tidy(Raw{s.p + 0x490}, host);
+    Raw strings{s.p + 0x47C};  // the stack words are the vector and the screen
+    if (strings.ptr(4) != nullptr) {
+        host.native_string_range_destroy_00432050(strings.ptr(4), strings.ptr(8), strings.p, s.p);
+        host.free_00bf65ac(strings.ptr(4));
+    }
+    clear_vector_fields(strings);
+    for (std::size_t off : {0x46C, 0x45C}) {
+        Raw records{s.p + off};
+        if (records.ptr(4) != nullptr) {
+            host.record_2c_destroy_range_005052b0(records.ptr(4), records.ptr(8));
+            host.free_00bf65ac(records.ptr(4));
+        }
+        clear_vector_fields(records);
+    }
+    host.entry_vector_tidy_00505e60(s.p + 0x444);
+    plain_vector_tidy(Raw{s.p + 0x424}, host);
+    for (std::size_t off : {0x414, 0x404, 0x3F4, 0x3E4, 0x3D4, 0x3C4}) host.entry_vector_tidy_00505e60(s.p + off);
+    host.eh_vector_destruct_00bf7c6e(s.p + 0x358, 8, 0xD, 0x0041DD20);
+    host.eh_vector_destruct_00bf7c6e(s.p + 0x340, 8, 3, 0x0041DD20);
+    host.eh_vector_destruct_00bf7c6e(s.p + 0x318, 8, 5, 0x0041DD20);
+    s.at<std::uint32_t>(0x64) = 0x00CEB0FC;
+    host.simple_3d_scene_destruct_0093cc80(s.p + 0x8);
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
 } // namespace bsp::cc13_fe3

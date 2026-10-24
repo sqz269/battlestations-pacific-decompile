@@ -1424,7 +1424,7 @@ Frames: BSM03/04/05 24000, BSM06 44000, IJN18 100000, USN15 104000; otherwise as
 | LOMP10 `p3_l10_b` | completed 751.49 s | completed 803.48 s | completed 767.49 s | |
 | JM06 `l70_j6_n` | completed 1922.75 s | completed 790.93 s | completed 1670.50 s | |
 | ESMP08 `p12_e8_rb` | completed 1284.28 s | completed 1237.28 s | completed 1199.19 s | |
-| BSM09 `l68_b9_d1` | EndMission 414.02 s | EndMission 405.02 s | EndMission 405.02 s | provisional (unselected 15-16) |
+| BSM09 `l68_b9_d1` | EndMission 414.02 s | EndMission 405.02 s | EndMission 405.02 s | provisional (unselected 15-16); a nil end: MissionStatus=true but MissionCompleteRan=nil and EndScene not reached, so luaMissionComplete never runs |
 | LOMP06 `g56_l6_v2` | completed 330.84 s | completed 323.89 s | completed 267.86 s | |
 | BSM01 `s62_b1_h` | EndMission 821.92 s | **no end** (phase 3) | **failed 1875.70 s** | |
 | USN21 `g56_c2` | completed 2966.77 s (x3) | completed 2881.69 s | completed 2901.71 s | |

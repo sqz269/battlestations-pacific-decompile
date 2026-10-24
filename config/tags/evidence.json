@@ -823,5 +823,6 @@
  "cc15stlA_game": "cc15-stlA: not a template copy. Game code that inlines checked-iterator hooks to _invalid_parameter_noinfo (game field offsets, game callees or host call sites); the stl_probable bookmark (e0029 / st1_scl97) was a false positive. Name is a provisional hypothesis",
  "cc15stlA_game_kept": "cc15-stlA: not a template copy; the function already carries a reviewed game name, kept. The stl_probable bookmark was a false positive",
  "cc15stlA_listalgo": "cc15-stlA shape: VC9 std::list member algorithm (unique/merge with a length+__stricmp predicate) or std::remove/remove_copy over checked dword iterators",
- "cc15stlA_wstring": "cc15-stlA shape: VC9 basic_string<wchar_t>::assign(const wchar_t*, size) with SSO capacity 7, aliasing branch, _Grow and _memcpy_s"
+ "cc15stlA_wstring": "cc15-stlA shape: VC9 basic_string<wchar_t>::assign(const wchar_t*, size) with SSO capacity 7, aliasing branch, _Grow and _memcpy_s",
+ "cc13cgretag_listsort": "cc13-cgretag shape: VC9 std::list::sort (_Binlist idiom): size>1 test on [this+8], a local array of 26 (0x1A) 12-byte lists built by the eh vector constructor iterator, merge loop bounded by 0x19 (25 bins), array torn down by 00BF7C6E. Was tagged cg_vector_deleting_dtor from the iterator call; library, stays bound."
 }

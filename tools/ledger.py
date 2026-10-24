@@ -134,25 +134,43 @@ def load_tags():
 
 
 def write_tags(entries):
-    """Replace the generated tag shards wholesale (evidence strings deduplicated into evidence.json)."""
+    """Replace the generated tag shards wholesale (evidence strings deduplicated into evidence.json).
+
+    Ids already in evidence.json are kept (an entry's own `evidence_id` wins when it still names the same text),
+    so an edit to a few rows rewrites only their shards."""
     TAGS_DIR.mkdir(parents=True, exist_ok=True)
     for old in TAGS_DIR.glob('*.jsonl'):
         old.unlink()
-    ids = {}
+    by_id = json.loads(TAG_EVIDENCE.read_text(encoding='utf-8')) if TAG_EVIDENCE.exists() else {}
+    by_text = {}
+    for eid, text in by_id.items():
+        by_text.setdefault(text, eid)
+    next_id = max((int(eid[1:]) for eid in by_id if eid[1:].isdigit()), default=0)
+    used = set()
     grouped = {}
     for e in sorted(entries, key=lambda r: int(r['address'], 16)):
         text = e.get('evidence', '')
-        if text not in ids:
-            ids[text] = f'e{len(ids) + 1:04d}'
+        eid = e.get('evidence_id')
+        if not text and eid is not None and eid not in by_id:
+            pass  # hand-written rows with no evidence keep their (dangling or empty) id
+        elif by_id.get(eid) != text:
+            eid = by_text.get(text)
+            if eid is None:
+                next_id += 1
+                eid = f'e{next_id:04d}'
+                by_id[eid] = by_text[text] = text
+        if eid in by_id:
+            used.add(eid)
         row = {k: v for k, v in e.items() if k != 'evidence'}
         row['address'] = norm(row['address'])
-        row['evidence_id'] = ids[text]
+        row['evidence_id'] = eid
         grouped.setdefault(band(row['address']), []).append(row)
     for name, rows in grouped.items():
         _write_shard(TAGS_DIR / f'{name}.jsonl', rows)
-    TAG_EVIDENCE.write_text(json.dumps({v: k for k, v in ids.items()}, indent=1, ensure_ascii=False) + '\n',
+    # existing ids stay (even unused ones, so nothing that cites them breaks); new ids are appended
+    TAG_EVIDENCE.write_text(json.dumps(by_id, indent=1, ensure_ascii=False) + '\n',
                             encoding='utf-8', newline='\n')
-    return len(grouped), len(ids)
+    return len(grouped), len(used)
 
 
 def migrate(prune=True):
