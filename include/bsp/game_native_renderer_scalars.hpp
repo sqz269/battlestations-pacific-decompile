@@ -12,7 +12,8 @@ using GameNativeRendererSectionImport = void (__stdcall*)(void*);
 
 // Canonical source owner for the loader-zero renderer scalar domain researched
 // at 0108D4BC,0108D4C0,0108D6DC,0108D6E4,0108D6E8,0108DAF8 and0108DAFC.
-// Also retains the shadow publication00F8BBF0 and real Windows import cells.
+// Also retains the shadow publication00F8BBF0, material nil-string00F8D438,
+// and real Windows import cells.
 // This object does not create or publish the actual renderer at00F8D394.
 class GameNativeRendererScalarProcess final {
 public:
@@ -31,6 +32,10 @@ public:
     // One loader-zero publication for the actual2Ch shadow owner. Borrowing
     // never constructs, clears or resets it across application instances.
     void* volatile& shadow_target_publication_00f8bbf0() noexcept;
+    // B1BC70's nil arm reads this loader-zero mutable C-string storage.
+    // No writer is established. Borrow its current bytes, never a private
+    // const-empty substitute or NativeString header; this accessor resets none.
+    const char* material_texture_nil_00f8d438() const noexcept;
     GameNativeRendererSectionImport volatile& enter_iat_00ce2218() noexcept;
     GameNativeRendererSectionImport volatile& leave_iat_00ce2210() noexcept;
     // Raw DWORD bits used by the renderer worker's MOVSS/FSUB schedule. This is
@@ -57,6 +62,7 @@ private:
     std::uint32_t texture_tracking_counter_0108daf8_{};
     std::uint32_t surface_tracking_counter_0108dafc_{};
     void* volatile shadow_target_publication_00f8bbf0_{};
+    char material_texture_nil_00f8d438_{};
     GameNativeRendererSectionImport volatile enter_iat_00ce2218_;
     GameNativeRendererSectionImport volatile leave_iat_00ce2210_;
     std::uint32_t instance_generator_binding_serial_0108fd30_{};
