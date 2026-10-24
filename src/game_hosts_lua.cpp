@@ -7519,6 +7519,22 @@ void GameMissionLuaHost::on_entity_killed_00928c80(std::size_t unit_index) {
             ::lua_pushlightuserdata(state, nullptr);
             ::lua_setfield(state, -2, "Ptr");
             ++summary_.truly_dead_ptr_nulled;
+            if constexpr (kLuaLastPositionOnKilledBound) {
+                // 00928D49..00928E7E: self.LastPosition = {x = +FCh, y = +100h, z = +104h}.
+                float right[3], up[3], forward[3], at[3] = {0.0f, 0.0f, 0.0f};
+                if (units_hooks_ != nullptr) {
+                    units_hooks_->unit_pose(unit_index, right, up, forward, at);
+                }
+                ::lua_newtable(state);
+                ::lua_pushnumber(state, at[0]);
+                ::lua_setfield(state, -2, "x");
+                ::lua_pushnumber(state, at[1]);
+                ::lua_setfield(state, -2, "y");
+                ::lua_pushnumber(state, at[2]);
+                ::lua_setfield(state, -2, "z");
+                ::lua_setfield(state, -2, "LastPosition");
+                ++summary_.last_position_written;
+            }
         }
         ::lua_settop(state, top);
     }
@@ -12202,6 +12218,9 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.untouchable_cleared, summary_.untouchable_is_calls, summary_.untouchable_is_true);
     log_.notef("summary mission truly dead ptr_nulled=%llu bound=%d (00928C80, packet "
         "p16_truly_dead)", summary_.truly_dead_ptr_nulled, kLuaTrulyDeadOnKilledBound ? 1 : 0);
+    log_.notef("summary mission last position written=%llu bound=%d (00928D49..00928E7E, packet "
+        "cc9-recon1-lastpos)", summary_.last_position_written,
+        kLuaLastPositionOnKilledBound ? 1 : 0);
     log_.notef("summary mission generate object calls=%llu repeat=%llu respawned_dead=%llu "
         "every_call=%llu bound=%d (00944FD0, packet p16_lua_natives)", summary_.generate_object_calls,
         summary_.generate_object_repeat, summary_.generate_object_respawned,
