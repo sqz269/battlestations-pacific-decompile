@@ -12,6 +12,20 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 # application composes their mandatory ownership and current-dispatch providers.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE
   src/native_gui_icon_delayed_loads.cpp
+  src/native_gui_icon_storage.cpp
+  src/native_gui_icon_identity.cpp
+  src/native_gui_text_field_storage.cpp
+  src/native_gui_grid_storage.cpp
+  src/native_gui_grid_identity.cpp
+  src/native_gui_anim_icon_storage.cpp
+  src/native_gui_anim_icon_identity.cpp
+  src/native_gui_curve_storage.cpp
+  src/native_gui_curve_identity.cpp
+  src/native_gui_text_shader_storage.cpp
+  src/native_gui_page_properties.cpp
+  src/native_gui_model_storage.cpp
+  src/native_gui_model_identity.cpp
+  src/native_gui_widget_property_children.cpp
   src/native_gui_line_storage.cpp
   src/native_gui_line_identity.cpp
   src/native_gui_page_properties_continuation.cpp
@@ -307,7 +321,8 @@ if(BUILD_TESTING)
   if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/local/cc13_leaf_reference.hpp")
     # cc13 leaf reconstructions against their original bytes (tools/verify_cc13_leaf_reference.py).
     add_executable(bsp_cc13_leaf_fixture_tests tests/cc13_leaf_fixture_tests.cpp src/band_0040_cc13.cpp
-                   src/band_0045_cc13.cpp src/band_0067_cc13.cpp src/band_0090_cc13.cpp)
+                   src/band_0045_cc13.cpp src/band_0067_cc13.cpp src/band_0090_cc13.cpp
+                   src/band_0060_cc13.cpp)  # band_0060: ingame_gui_cc13 (cc13-trivialslots cases)
     target_include_directories(bsp_cc13_leaf_fixture_tests PRIVATE local)
     target_link_libraries(bsp_cc13_leaf_fixture_tests PRIVATE bsp_core)
     target_compile_options(bsp_cc13_leaf_fixture_tests PRIVATE /W4 /WX /fp:strict)

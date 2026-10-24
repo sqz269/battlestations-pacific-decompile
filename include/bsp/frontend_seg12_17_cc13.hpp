@@ -2910,4 +2910,95 @@ struct Fe11PreviewModelLoadedHost : Fe8LuaHost {
 void library_preview_on_model_loaded_005072c0(Raw screen, void* resource, Raw job,
     Fe11PreviewModelLoadedHost& host);
 
+// ---------------------------------------------------------------------------
+// Packet cc13-trivialslots: one ordinary function per kTrivialSlots row, re-read from
+// the disk bytes (local generator, rows checked against the image). `Raw` is the
+// ECX object; stack arguments the body never reads are noted in the ABI and not
+// passed. Adjustor and tail-jump rows appear only where the target is an existing
+// declaration; the descriptive table above stays as documentation.
+// ---------------------------------------------------------------------------
+// 004FA170 RET (C3; next byte CC). BSP_GuiWidgetListener_Empty1C. Original ABI: __thiscall(ECX
+// = this), RET.
+void gui_widget_listener_empty1c_004fa170(Raw) noexcept;
+// 00509D60 MOV EAX,0Bh; RET (B8 0B 00 00 00 C3; next byte CC).
+// BSP_TacticalLibraryScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 11, RET.
+std::int32_t tactical_library_screen_get_screen_id_00509d60(Raw) noexcept;
+// 00509D70 ADD ECX,64h; JMP 006833F0 (83 C1 64 E9 78 96 17 00; next byte CC).
+// BSP_TacticalLibraryWidgetListener_Current1C. Original ABI: __thiscall(ECX = this), the
+// target's RET; ECX adjusted, tail call to 006833F0 (Fe3Host::scroller_recapture_006833f0).
+void tactical_library_widget_listener_current1c_00509d70(Raw self, Fe3Host& host);
+// 00517680 MOV EAX,23h; RET (B8 23 00 00 00 C3; next byte CC). BSP_InGameScreen23_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 35, RET.
+std::int32_t in_game_screen23_get_screen_id_00517680(Raw) noexcept;
+// 00517690 RET 4 (C2 04 00; next byte CC). BSP_InGameScreen23_CollectChildren. Original ABI:
+// __thiscall(ECX = this, 1 stack dword unread), RET 4.
+void in_game_screen23_collect_children_00517690(Raw) noexcept;
+// 005178A0 RET 4 (C2 04 00; next byte CC). BSP_InGameScreen23_Update. Original ABI:
+// __thiscall(ECX = this, 1 stack dword unread), RET 4.
+void in_game_screen23_update_005178a0(Raw) noexcept;
+// 00517D30 MOV EAX,0Ch; RET (B8 0C 00 00 00 C3; next byte CC). BSP_FrontEndFrame_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 12, RET.
+std::int32_t front_end_frame_get_screen_id_00517d30(Raw) noexcept;
+// 00517D40 MOV AL,1; RET (B0 01 C3; next byte CC). BSP_FrontEndFrame_IsSelfManaged. Original
+// ABI: __thiscall(ECX = this) -> AL = 1, RET.
+bool front_end_frame_is_self_managed_00517d40(Raw) noexcept;
+// 00519450 MOV EAX,25h; RET (B8 25 00 00 00 C3; next byte CC). BSP_HudBomberScreen_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 37, RET.
+std::int32_t hud_bomber_screen_get_screen_id_00519450(Raw) noexcept;
+// 00555800 MOV EAX,0Fh; RET (B8 0F 00 00 00 C3; next byte CC).
+// BSP_ControlBindingScreen_ScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 15, RET.
+std::int32_t control_binding_screen_screen_id_00555800(Raw) noexcept;
+// 005610D0 RET 8 (C2 08 00; next byte CC). BSP_LeaderboardsScreen_OnListboxActivateNoOp.
+// Original ABI: __thiscall(ECX = this, 2 stack dwords unread), RET 8.
+void leaderboards_screen_on_listbox_activate_no_op_005610d0(Raw) noexcept;
+// 005633F0 MOV EAX,0Ah; RET (B8 0A 00 00 00 C3; next byte CC).
+// BSP_LeaderboardsScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 10, RET.
+std::int32_t leaderboards_screen_get_screen_id_005633f0(Raw) noexcept;
+// 00565D60 MOV EAX,32h; RET (B8 32 00 00 00 C3; next byte CC). BSP_HudLimboScreen_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 50, RET.
+std::int32_t hud_limbo_screen_get_screen_id_00565d60(Raw) noexcept;
+
+// ---------------------------------------------------------------------------
+// Packet cc13-tailtargets: the tactical library screen's class destructor (the routine the
+// scalar deleting destructor 0050D8E0 calls).
+// ---------------------------------------------------------------------------
+struct Fe3LibraryDestroyHost {
+    virtual ~Fe3LibraryDestroyHost() = default;
+    virtual std::int32_t interlocked_decrement(void* count) = 0;                        // [00CE2220]
+    virtual void ref_counted_destroy(void* object) = 0;                                 // vtable +0, ECX only
+    virtual void object_delete_04(void* object) = 0;                                    // vtable +4h(1)
+    virtual void renderer_virtual_124() = 0;                                            // [00F8D394] vtable +124h
+    virtual void render_resources_reset_remap_textures_00b0feb0() = 0;                  // ECX = [00F8D39C]
+    virtual void gui_remove_page_00aa31f0(void* page) = 0;                              // ECX = 004C12B0()
+    virtual void library_preview_clear_rotors_0050a950(Raw screen) = 0;
+    virtual void library_entry_destruct_004fd1d0(void* entry) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void free_00bf6989(void* block) = 0;
+    virtual void ref_ptr_array_resize_00504960(void* array, std::uint32_t size) = 0;
+    // 00432050 / 005052B0: ECX = first, EDX = last, two unread stack words (vector, screen), RET 8.
+    virtual void native_string_range_destroy_00432050(void* first, void* last, void* extra1, void* extra2) = 0;
+    virtual void record_2c_destroy_range_005052b0(void* first, void* last) = 0;
+    // 00BF7C6E `eh vector destructor iterator`(first, size, count, dtor).
+    virtual void eh_vector_destruct_00bf7c6e(void* first, std::uint32_t size, std::uint32_t count,
+        std::uint32_t dtor) = 0;
+    // 00505E60 STL_Vector_TidyDestroy (library instantiation, bound), ECX = vector {allocator,
+    // first, last, end}: 004FD1D0 on each 6Ch entry, first freed (00BF65AC), fields zeroed.
+    virtual void entry_vector_tidy_00505e60(void* vector) = 0;
+    virtual void simple_3d_scene_destruct_0093cc80(void* scene) = 0;                    // ECX = screen +8h
+    virtual void front_end_screen_destruct_004f71a0(Raw screen) = 0;
+};
+
+// 0050AF20 (Ghidra CG_vector_deleting_dtor_0050af20), __thiscall(ECX = screen), RET; SEH
+// 00C69B52, states 13h..2, 0, -1. Vtables +0h 00CEB9B4, +8h 00CEB9B0, +64h 00CEB99C, +68h
+// 00CEB97C. Ref-counted members +6Ch, +78h, +70h, +74h released (count +4h, vtable +0 at zero;
+// cleared when set). [00F8D394] vtable +124h(); 00B0FEB0 on [00F8D39C]. Pages +4DCh, +4E0h,
+// +4E4h removed. +4BCh released; +4B8h deleted (vtable +4h(1)) and cleared. 0050A950. +80h =
+// +7Ch = 100.0f (00CE3D08). +5B0h: 004FD1D0, free (00BF65AC), cleared. +5C4h: 00504960(0), then
+// its data freed (00BF6989). Plain vectors +4A0h, +490h freed and zeroed. String vector +47Ch
+// (00432050), 2Ch-record vectors +46Ch, +45Ch (005052B0): range destroyed, freed, zeroed.
+// 00505E60 on +444h; plain vector +424h; 00505E60 on +414h, +404h, +3F4h, +3E4h, +3D4h,
+// +3C4h. Native string arrays (00BF7C6E, 8, n, 0041DD20) +358h [0Dh], +340h [3], +318h [5].
+// +64h = 00CEB0FC; 0093CC80 on +8h; 004F71A0.
+void library_screen_destroy_0050af20(Raw s, Fe3LibraryDestroyHost& host);
+
 } // namespace bsp::cc13_fe3

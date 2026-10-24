@@ -185,8 +185,7 @@ def commits_with_patches(*paths):
         yield int(parts[1]), harness_of(parts[4]), parts[2], parts[3], body.splitlines()
 
 
-NO_BODY_STATUSES = {'metadata_only_no_function_body_verified_oct24',
-                    'incomplete_or_unverified_body_credit_withdrawn_oct24'}
+from ledger import NO_BODY_STATUSES
 OUT_OF_SCOPE_STATUSES = {'library_instantiation_out_of_scope', 'compiler_generated_out_of_scope',
                          'out_of_scope_vendor_library', 'standard_library_reuse',
                          'vendor_lua_out_of_scope', 'vendor_stl_out_of_scope',

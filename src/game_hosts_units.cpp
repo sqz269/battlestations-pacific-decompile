@@ -596,6 +596,13 @@ struct GameUnitSlot {
     // it (before 009FC7C0, the rocket and 009A17D0) and as 0099D300 entered.
     float diag_pt2bc_task{0.0f};
     float diag_pt2bc_think{0.0f};
+    // Packet cc13-ratetraceband (diagnostic): cmd[1] after 0099BC00, before the
+    // 0099BF30 band repair, and the avoidance counters as 009A17D0 was entered.
+    float diag_cmd1_pre{0.0f};
+    int diag_va_plane_ticks0{0};
+    int diag_va_ship_ticks0{0};
+    int diag_tr_bands0{0};
+    int diag_ga_flagged_ticks0{0};
     float plane_bank_angle_c68{0.0f};
     float plane_heading_c6c{0.0f};
     float plane_class_turn_roll_spd{0.0f};   // desc+1C8h TurnRollSpd
@@ -12801,6 +12808,22 @@ float GameUnitsHost::Impl::avoid_surface_height(float x, float z) {
     }
 }
 
+// Packet cc9_plane_body_rate_check: the one plane BSP_PLANE_RATE_TRACE names
+// (empty when unset). Diagnostic only.
+static const std::string& plane_rate_trace_name() {
+    static const std::string value = [] {
+        char* text = nullptr;
+        std::size_t length = 0;
+        std::string v;
+        if (_dupenv_s(&text, &length, "BSP_PLANE_RATE_TRACE") == 0 && text != nullptr) {
+            v = text;
+        }
+        std::free(text);
+        return v;
+    }();
+    return value;
+}
+
 // 0099B670 -> 007DF4F0 (__thiscall(neighbours = unit+C50h, pilot), RET 4,
 // body 007DF4F0-007E073E), for one plane per think. The unit+C50h object is
 // built for AI planes not of the local player's party (007D621F), which
@@ -12927,6 +12950,19 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
                 ga_insert_0099b790(u, 1, ylo, yhi);                 // 007DFDC4, pilot+CCh
                 ++u.va_bands;
                 plane_hit = true;
+                if (!plane_rate_trace_name().empty() && u.row.name == plane_rate_trace_name()) {
+                    // Packet cc13-ratetraceband: diagnostic, env-gated.
+                    log.notef("plane rate band %s t=%.2f branch=aircraft_007dfdc4 other=%s "
+                        "class=%d mode900=%d lp=(%.1f %.1f %.1f) d=%.1f rr=%.1f t_ca=%.2f "
+                        "w=%.3f band=(%.4f %.4f)",
+                        u.row.name.c_str(), static_cast<double>(summary.simulated_seconds),
+                        o.row.name.c_str(), static_cast<int>(o.class_id), o.plane_control_mode_900,
+                        static_cast<double>(lp[0]), static_cast<double>(lp[1]),
+                        static_cast<double>(lp[2]), static_cast<double>(d),
+                        static_cast<double>(rr), static_cast<double>(t),
+                        static_cast<double>(w), static_cast<double>(ylo),
+                        static_cast<double>(yhi));
+                }
             }
             // 007DFDD3-007DFE7F: both bands reach into the central +/-0.3
             // ([00D06888]/[00CE69C8]), closing under 35 ([00CE4D90]), ahead,
@@ -13021,6 +13057,19 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
             ga_insert_0099b790(u, 1, ylo, yhi);                       // 007E0706
             ++u.va_bands;
             ship_hit = true;
+            if (!plane_rate_trace_name().empty() && u.row.name == plane_rate_trace_name()) {
+                // Packet cc13-ratetraceband: diagnostic, env-gated.
+                log.notef("plane rate band %s t=%.2f branch=ship_007e0706 other=%s "
+                    "class=%d mode900=%d l=(%.1f %.1f %.1f) gap=%.1f tc=%.2f h9b4=%.1f "
+                    "box_h=%.1f band=(%.4f %.4f)",
+                    u.row.name.c_str(), static_cast<double>(summary.simulated_seconds),
+                    o.row.name.c_str(), static_cast<int>(o.class_id), o.plane_control_mode_900,
+                    static_cast<double>(l[0]), static_cast<double>(l[1]),
+                    static_cast<double>(l[2]), static_cast<double>(gap),
+                    static_cast<double>(tc), static_cast<double>(h9b4),
+                    static_cast<double>(b.mx[1] - b.mn[1]), static_cast<double>(ylo),
+                    static_cast<double>(yhi));
+            }
         }
     }
     if (plane_hit) ++u.va_plane_ticks;
@@ -39819,6 +39868,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                             if constexpr (GameUnitsHost::Impl::kPilotAvoidanceUpdateBound) {
                                 // 009A17D0, before 0099D300.
+                                unit_.diag_va_plane_ticks0 = unit_.va_plane_ticks;
+                                unit_.diag_va_ship_ticks0 = unit_.va_ship_ticks;
+                                unit_.diag_tr_bands0 = unit_.tr_bands;
+                                unit_.diag_ga_flagged_ticks0 = unit_.ga_flagged_ticks;
                                 owner_.gunfire_avoidance_009a17d0(unit_, elapsed);
                             }
                             if constexpr (kBandShaperPlan264Bound) {
@@ -39931,6 +39984,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::pilot_evaluate_plan_slots_0099bc00(
                                 unit_.plan_slots, unit_.pilot_command_block,
                                 bsp::kPilotSlewRate, elapsed);
+                            unit_.diag_cmd1_pre = unit_.pilot_command_block[bsp::kPilotCmdPitch];
                             if constexpr (GameUnitsHost::Impl::kPilotAvoidanceUpdateBound) {
                                 owner_.gunfire_repair_0099bf30(unit_);   // 0099BF30
                             }
@@ -41230,25 +41284,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // its latched stick, the three targets and the body rates
                         // (ctl+48h/+4Ch/+50h) with |w| in degrees per second, the
                         // magnitude 00901C20 gates at |w|^2 > 0.001.
-                        static const std::string rate_trace = [] {
-                            char* text = nullptr;
-                            std::size_t length = 0;
-                            std::string value;
-                            if (_dupenv_s(&text, &length, "BSP_PLANE_RATE_TRACE") == 0 &&
-                                text != nullptr) {
-                                value = text;
-                            }
-                            std::free(text);
-                            return value;
-                        }();
+                        const std::string& rate_trace = plane_rate_trace_name();
                         if (!rate_trace.empty() && unit_.row.name == rate_trace) {
                             const float* w = unit_.plane_body_angular;
                             const double mag = std::sqrt(static_cast<double>(w[0]) * w[0] +
                                 static_cast<double>(w[1]) * w[1] + static_cast<double>(w[2]) * w[2]);
+                            // Packet cc13-ratetraceband: the pitch band set (pilot+CCh)
+                            // and the first pair 0099B940 would find cmd1_pre in.
+                            float band_lo = 0.0f, band_hi = 0.0f;
+                            int band_at = -1;
+                            for (int i = 0; i < unit_.ga_band_n[1] && band_at < 0; ++i) {
+                                const float blo = unit_.ga_band[1][i][0], bhi = unit_.ga_band[1][i][1];
+                                if (unit_.diag_cmd1_pre > blo && bhi > unit_.diag_cmd1_pre) {
+                                    band_at = i;
+                                    band_lo = blo;
+                                    band_hi = bhi;
+                                }
+                            }
                             owner_.log.notef("plane rate trace %s step=%.3f stick=(%.3f %.3f %.3f) "
                                 "target=(%.4f %.4f %.4f) w=(%.4f %.4f %.4f) |w|=%.2f deg/s "
                                 "pitch=%.4f held=%.4f pt2bc=%.4f mode=%d y=%.1f cmd_alt=%.1f "
-                                "bank=%.4f pt_task=%.4f pt_think=%.4f pslot=%.4f/%d t=%.2f",
+                                "bank=%.4f pt_task=%.4f pt_think=%.4f pslot=%.4f/%d t=%.2f "
+                                "cmd1_pre=%.4f pbands=%d pband=%d(%.4f %.4f) "
+                                "d_va_plane=%d d_va_ship=%d d_tr_bands=%d d_ga_flag=%d",
                                 unit_.row.name.c_str(), static_cast<double>(step),
                                 static_cast<double>(unit_.plane_latched_controls[0]),
                                 static_cast<double>(unit_.plane_latched_controls[1]),
@@ -41269,7 +41327,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(unit_.diag_pt2bc_think),
                                 static_cast<double>(unit_.plan_slots[bsp::kPilotSlotPitch].desired),
                                 unit_.plan_slots[bsp::kPilotSlotPitch].active,
-                                static_cast<double>(owner_.summary.simulated_seconds));
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                static_cast<double>(unit_.diag_cmd1_pre),
+                                unit_.ga_band_n[1], band_at,
+                                static_cast<double>(band_lo), static_cast<double>(band_hi),
+                                unit_.va_plane_ticks - unit_.diag_va_plane_ticks0,
+                                unit_.va_ship_ticks - unit_.diag_va_ship_ticks0,
+                                unit_.tr_bands - unit_.diag_tr_bands0,
+                                unit_.ga_flagged_ticks - unit_.diag_ga_flagged_ticks0);
                         }
                         if constexpr (GameUnitsHost::Impl::kPlaneControlRateLawBound) {
                             // The free-flight arm (controller mode 0, flag 1) is

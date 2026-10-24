@@ -20869,3 +20869,45 @@ cc9-lua72 before its commit. All runs: guard logged, unselected=0, role_forced=0
 
 Open: BSM03/05 robustness in 20,3/default; BSM06 one plan for all three envs (108 stock is
 the limit). Logs: cc9-helm1\local\h1r_<row>_main_<env>.log; plans in local\h1_b*_*.txt.
+
+## 325. USN15 wins in ref and in default; handoff (cc9-gunnery57, 2026-10-24)
+
+Two plans, one per env. Both are legal (pf=0, helm_moveto_unselected=0, helm_role_forced=0), end
+through Mission.EndMission ("summary mission end: nil") with the guard's sus_prog.exe refusal,
+and reproduce exactly on a rerun.
+
+| Plan | Env | Frames | Result |
+| --- | --- | --- | --- |
+| `config/win_orders/usn15_g57_mb.txt` (3364b40a5 on main) | ref | 104000 | Fuso dies 3734.57 s, win |
+| same | default | | fails 1657.54 s |
+| same | 20,3 | | fails 1572.46 s |
+| `config/win_orders/usn15_g57_jc_def.txt` (f307a34a8) | default | 100000 | Fuso dies 1957.83 s, win |
+| same | ref | | fails 1732.61 s |
+| same | 20,3 | | fails 1757.64 s |
+
+How they were found (scripts in cc9-gunnery52\local\, g57_ prefix):
+- `g57_gen.py` writes whole plans and serializes every (select, order) pair onto its own frame,
+  which keeps uns=0. The `T:` family (two fronts) is the opener of both wins: west BBs attack
+  Yamashiro, east BBs + CAs attack key [Yamashiro, Nachi, Fuso], a destroyer torpedo reserve.
+- `g57_tail.py <base> <cut_frame> <tail_cfg> <out>` keeps the base lines before the cut (the run is
+  identical up to the cut, "prefix freezing") and appends a generated tail. Tune the ending on a
+  fixed opener this way; every opener change reshuffles the whole battle.
+- `g57_safe.ps1` launches rows 30 s apart and relaunches a renderer-init death once after 60 s.
+  When the display is asleep every start dies (even the retry); a 400-frame smoke run wakes it.
+
+Mission facts that decided the plans:
+- Fail: any spotted IJN ship within 3 km of JapanGoTo (0,12000), checked every 5 s, or all
+  USShips dead. Unspotted IJN parked at JapanGoTo do not fail the mission, but cannot be attacked.
+- Hold spots west of x≈-6000 at z≈11400 are outside the zone: F25-F28 died there with
+  KillReason=exitzone. CLs at (-6500..-4900, 11000) are safe.
+- Shropshire carries torpedoes (b62, 1369 per hit on an IJN BB); the ref win's last 3 hits came
+  from it. US torpedo presses at a moving BB beyond ~1.5 km mostly miss.
+- After Yamashiro dies in ref, Fuso runs to EdgeMove1 and parks near (6400-6800, 10400) from
+  ~3000 s; the ref endgame stages the four CLs south (6000,6500), then attacks the parked Fuso.
+- Margins are thin: of 7 ref endgames on the same prefix 3 win (mb, na, nb); of 8 default hunt
+  tails 1 wins (jc). Losers leave Fuso at 2400-9900 HP when the last US ship dies.
+
+Open: one plan for all three envs (none found; each env's opener plays out differently), and a
+20,3 plan. A 20,3 attempt would follow the default recipe: sweep `T:` openers in 20,3 at
+36000-50000 frames, pick one that kills the wings and Yamashiro without failing, then tune a
+tail on that prefix. Logs: cc9-gunnery52\local\g57_r13_mb.log, g57_r20_jc.log, g57_v6_*.log.

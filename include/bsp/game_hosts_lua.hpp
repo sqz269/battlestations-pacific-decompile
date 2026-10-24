@@ -256,7 +256,11 @@ inline constexpr bool kReconPublishBound = true;  // ON: pairs held (docs/RECON_
 // 004E0546 rebuild and its 004E059B rebuild of the local slot are one host pass
 // (no time passes between them). False: the first publication is the first
 // frame's, after luaInit.
-inline constexpr bool kReconLoadForceRefreshCc13Bound = false;
+// ON (cc9-recon1, pairs on cd0ecf3ee): IJN30 luaInit SetParty 1 -> 15, the
+// hangars survive; ESMP05 and IJN28 luaInit/think Lua errors gone; BSM01
+// s62_b1_h loses its EndMission (JapFighterTrgGang filled); other WINS rows
+// gameplay identical.
+inline constexpr bool kReconLoadForceRefreshCc13Bound = true;
 static_assert(!kReconLoadForceRefreshCc13Bound || kReconPublishBound,
               "kReconLoadForceRefreshCc13Bound publishes through 00806B10");
 
