@@ -5,6 +5,9 @@
 #include <stdexcept>
 
 namespace bsp {
+GeneratedModelNodeLifetime& NativeRenderGroupModels::resolve_actual_model_node(void* actual) {
+    return resolve_actual_model(actual);
+}
 namespace {
 void return_name(SizedStoragePool& strings, char* data, std::uint32_t size) {
     strings.release_00bd1510(data, size);
@@ -55,8 +58,8 @@ private:
 void release_model_then_clear(void*& field, NativeRenderGroupModels& models) {
     void* const captured = field;
     if (!captured) return;
-    auto& reference = models.resolve_actual_model(captured);
-    if (&reference.model_owner().storage.node != captured)
+    auto& reference = models.resolve_actual_model_node(captured);
+    if (reference.transform().raw_node_key() != reinterpret_cast<std::uintptr_t>(captured))
         throw std::invalid_argument("group model companion must borrow the actual captured raw prefix");
     unlink_and_release_render_model_00b6dfa0(reference);
     // The model and its reference companion may both have been retired. Only
