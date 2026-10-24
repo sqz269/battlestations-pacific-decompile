@@ -241,17 +241,23 @@
     },
     {
       "address": "00b6a390",
-      "name": "LuaObject_WriteLuaSourceText",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::lua_object_write_lua_source_text_00b6a390",
+      "outcome": "reconstructed",
+      "coverage": "complete normal value/host-effect projection",
+      "source": "src/lua_object.cpp",
+      "original_abi": "ECX actual14h LuaObject; stream,NativeString* name,sort DWORD,signed indent DWORD,append-CRLF byte,flatten byte on stack; RET18h, AL1",
+      "evidence": "Complete normal value/actual-Lua-object algorithm from all1002 export lines and register/conversion listing. Actual tracked Lua stack objects, original first/next/lookups/releases; primitive formatting and raw quoting; sort integer keys before case-insensitive string keys through mandatory native sort bindings; float32-before-integer conversion; unsupported unsorted key empty spelling; signed indentation; original flattened sorted output has no per-entry separator. Native Lua, sorting and CRT are dependencies, not rebuilt library credit.",
+      "uncertainty": "Finite acyclic stable object/interpreter domain. Native pool/STL allocation, FH3, nonlocal Lua errors and hardware/allocator faults excluded; no original binary ABI or game validation. Earlier vendor_luaplus_probable_out_of_scope metadata was explicitly uncertain. No vendor version or matching source established; current primary LuaPlus DumpObject has different arguments, filtering and sorting. Vendor provenance remains unresolved."
     },
     {
       "address": "00bbf8a0",
-      "name": "SkyBox_Construct",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::water_weather_cc13::sky_box_construct_00bbf8a0",
+      "outcome": "reconstructed",
+      "coverage": "complete normal value/host-effect projection",
+      "source": "src/water_weather_cc13.cpp",
+      "original_abi": "ECX raw destination130h; source,atmosphere,NativeString* name on stack; RET0Ch, EAX destination",
+      "evidence": "Complete normal raw-storage/host-call algorithm from all445 export lines and register-sensitive portions of772-insn listing. Exact selective stores/no-op Vec4 constructors retain unwritten cTextureSize.z/w; source/resource refcounts; model/node capture before setter; three texture loads and unsigned x87 dimension conversion; exact reciprocal float spills and DC C9 ST1-destination zero products atBBFCFB; separate nested geometry reset and captured-node geometry iteration; repeated element/material lookup and six shader parameter plus texture-slot calls. CE4970 radius raw501502F9 bits.",
+      "uncertainty": "Valid raw model/resource/node/material/texture identities and native slot0 domain. Native string/pool/STL allocation, FH3 unwinding, unmasked FP/hardware faults and original binary ABI excluded. Full Win32 build pending primary; no game/ABI proof."
     },
     {
       "address": "00bea9e0",
@@ -532,6 +538,396 @@
       "native": "007ed500",
       "containing_function": "00a2f6f0",
       "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6a5cd",
+      "native": "0043bdf0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6ab34",
+      "native": "00623170",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6a51d",
+      "native": "00a675a0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6aa0c",
+      "native": "00a675a0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b63c",
+      "native": "00a675a0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6a5b8",
+      "native": "00a67770",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6aac3",
+      "native": "00a67770",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6ba40",
+      "native": "00a67770",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6a548",
+      "native": "00a677e0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6a679",
+      "native": "00a67810",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6aa38",
+      "native": "00a67810",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b6a3",
+      "native": "00a67810",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6ad15",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6af3b",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b213",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b3ed",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b51d",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b543",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6bae3",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6bb0f",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6a9e0",
+      "native": "00b67080",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b603",
+      "native": "00b67080",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6aaf8",
+      "native": "00b67190",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6ba29",
+      "native": "00b67190",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6acd0",
+      "native": "00b677e0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6aef3",
+      "native": "00b677e0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b1cb",
+      "native": "00b68100",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b3a2",
+      "native": "00b68100",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6bc3a",
+      "native": "00b68550",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6ab69",
+      "native": "00b69f50",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6acee",
+      "native": "00b6a390",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6af14",
+      "native": "00b6a390",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b1eb",
+      "native": "00b6a390",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b3c5",
+      "native": "00b6a390",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6b8e9",
+      "native": "00b6a390",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6aad0",
+      "native": "00bf7420",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00b6ba4d",
+      "native": "00bf7420",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbf9b0",
+      "native": "004c1400",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc024b",
+      "native": "00b189f0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc0005",
+      "native": "00b18ac0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc0086",
+      "native": "00b18ac0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc0107",
+      "native": "00b18ac0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc0188",
+      "native": "00b18ac0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc0209",
+      "native": "00b18ac0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbff79",
+      "native": "00b18b20",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbfe65",
+      "native": "00b33e40",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbfa28",
+      "native": "00b6d890",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbfe25",
+      "native": "00b72650",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbfe38",
+      "native": "00b72b40",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc027c",
+      "native": "00b72b40",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbfda9",
+      "native": "00b72b50",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbfe4e",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbff62",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbffe3",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc0071",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc00f2",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc0173",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc01f4",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc0238",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbfda2",
+      "native": "00b74640",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbfe1e",
+      "native": "00b74640",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbfe2d",
+      "native": "00b74640",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbfdb6",
+      "native": "00b74650",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bc0298",
+      "native": "00b74650",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00bbf9bc",
+      "native": "00b80d70",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments"
     }
   ],
   "format_call_evidence": [
@@ -545,5 +941,49 @@
       "format": "%.3f%s",
       "cleanup": "00A2D164 ADD ESP,14h (five DWORDs)"
     }
-  ]
+  ],
+  "outcome_counts": {
+    "reconstructed": 27,
+    "existing_reconstructed": 3
+  },
+  "packet_completion": "All30 assigned rows reviewed:27 new normal bodies,3 existing upstream bodies;0 open blockers",
+  "batches": [
+    {
+      "packet": "oct24-poolB-tail-1/8",
+      "commit": "95e316c82",
+      "rows": 17,
+      "coverage": "12 AI command type leaves and5 PC storage leaves"
+    },
+    {
+      "packet": "oct24-poolB-tail-2/4/5/6",
+      "commit": "20a776237",
+      "rows": 8,
+      "coverage": "5 new parser/GUI/network bodies;3 verified existing upstream CG bodies"
+    },
+    {
+      "packet": "oct24-poolB-tail-3",
+      "commit": "e075ac0d0",
+      "rows": 3,
+      "coverage": "AI group debug text, members overlay and describe"
+    },
+    {
+      "packet": "oct24-poolB-tail-7",
+      "commit": "Commit containing this final report revision",
+      "rows": 2,
+      "coverage": "Lua source writer and SkyBox constructor"
+    }
+  ],
+  "lua_vendor_provenance": {
+    "outcome": "Not established; prior probable attribution retained as uncertainty, not a library classification",
+    "local_evidence": "Existing reconstruction metadata and docs/CC13_SEG87.md / docs/CC13_SWEEPC.md describe a LuaPlus-style wrapper layer, but do not identify a matching source/version",
+    "primary_source": "https://raw.githubusercontent.com/jjensen/luaplus51-all/master/Src/LuaPlus/LuaState_DumpObject.cpp",
+    "comparison": "Current upstream LuaState::DumpObject has flags/max-depth parameters, nil filtering and different sorting; this comparison does not establish exact vendor provenance for00B6A390",
+    "library_dependencies": "Native Lua API, native STL sorts and existing CRT conversion remain bindings or existing qualified substitutions; no new library routine bodies credited"
+  },
+  "verification": {
+    "report_calls": "Checked with tools/verify_report_calls.py",
+    "x87": "SkyBox00BBFCFB DC C9 ST1,ST0 verified by x87_dc_form_scan.py and live bytes; group ratio FMUL qword verified in listing",
+    "build": "Delegated to primary integrated MSVC Win32 build; no worker build claimed",
+    "tests": "No new tests or native probes; no game run or host wiring"
+  }
 }

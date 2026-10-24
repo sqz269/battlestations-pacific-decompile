@@ -22,8 +22,39 @@
 
 #include <cstdint>
 #include <string>
+#include <string_view>
+#include <vector>
 
 namespace bsp {
+
+struct NativeLuaObjectStorage;
+struct LuaSourceWriterServices {
+    virtual ~LuaSourceWriterServices() = default;
+    // Native stream vtable+5Ch receives a temporary NativeString*, flags0.
+    // Text is borrowed only for this call, as native immediately frees it.
+    virtual void stream_vslot_5c(void* stream, std::string_view text, std::uint32_t flags) = 0;
+    // Existing 0043BDF0 formatter; bind its private/current CRT domain explicitly.
+    virtual std::string call_0043bdf0(float value) = 0;
+    // STL bodies remain bindings, including unstable tie order and the native
+    // case-insensitive string comparator. No default sort is silently supplied.
+    virtual void sort_integers_00623170(std::vector<std::int32_t>& values) = 0;
+    virtual void sort_strings_00b69f50(std::vector<std::string>& values) = 0;
+};
+// 00B6A390: native ECX actual14h LuaObject; stream,name*,sort DWORD,indent
+// signed DWORD,append-CRLF byte,flatten byte on stack; RET18h, AL=1.
+// Complete normal value/actual-Lua-object algorithm. Uses actual tracked stack
+// objects and existing first/next/lookups/releases; never registry GuiLuaRef.
+// Vendor provenance remains unproved: the prior LuaPlus attribution was
+// probable, and current primary LuaPlus DumpObject has a different contract.
+// Strings/vectors substitute native pool/STL storage. Raw string quoting,
+// float32-before-key-conversion, sorted integer-before-string order and native
+// flattened output's missing per-entry separators are retained. Cyclic tables,
+// Lua errors/nonlocal transfers, allocator faults and native FH3 are outside the
+// normal source domain; objects/interpreter must remain stable during callbacks.
+bool lua_object_write_lua_source_text_00b6a390(NativeLuaObjectStorage& object,
+    void* stream, std::string_view name, std::uint8_t sort, std::int32_t indent,
+    std::uint8_t append_crlf, std::uint8_t flatten, const bool& crt_sse2_conversion,
+    LuaSourceWriterServices&);
 
 // ---------------------------------------------------------------------------
 // The 14h LuaObject, from the default constructor 00b65f50
