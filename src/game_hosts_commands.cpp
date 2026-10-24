@@ -438,6 +438,10 @@ struct GameCommandsHost::Impl {
         return watch;
     }
     void check_rows(const char* site, const RowsWatch& watch);
+    // Before a push: a full vector reallocates, and a held row inside an open
+    // window is written after it, possibly before any check_rows runs.
+    unsigned long long rows_realloc_pending{0};
+    void note_rows_push(const char* site);
     bsp::SceneCommandRegistry registry;
     // Milestone 2q: the `command` event channel's subscriptions, the list
     // 0097C8A0 builds for every `command` event block 0097E360 parses. That
@@ -1479,8 +1483,10 @@ void SceneResolveBinding::issue_command(void* owner, void* command,
     const bsp::SceneCommandTarget& target, int flags) {
     EntityIssueBinding issue(chain_);
     const GameCommandsHost::Impl::RowsWatch rows_watch = chain_.owner.watch_rows(chain_.row);
+    ++chain_.owner.issue_window_depth;
     const bsp::EntityOrderIssueResult result
         = bsp::entity_issue_command_0077d600(issue, owner, command, target, flags);
+    --chain_.owner.issue_window_depth;
     chain_.owner.done("SceneCommand::issue_command", 0x0077d600u);
     chain_.owner.check_rows("SceneResolveBinding::issue_command", rows_watch);
     if (chain_.row != nullptr) {
@@ -2031,6 +2037,7 @@ const GameCommandRow* GameCommandsHost::issue(std::size_t unit_index,
             // Packet cc9_set_command_queue_delay. The chain continues at the
             // drain, so its row is stored now and addressed by index; what the
             // caller copies from it on return is the post, not the push.
+            host.note_rows_push("GameCommandsHost::issue");
             host.rows.push_back(row);
             const std::size_t stored = host.rows.size() - 1;
             chain.row = &host.rows[stored];
@@ -2128,6 +2135,7 @@ void finish_issue_tail(GameCommandsHost::Impl& host, ChainState& chain,
 const GameCommandRow* finish_issue(GameCommandsHost::Impl& host, ChainState& chain,
     GameCommandRow& row, const bsp::UnitOrderRing& ring) {
     finish_issue_tail(host, chain, row, ring);
+    host.note_rows_push("finish_issue");
     host.rows.push_back(row);
     host.summary.command_name = row.command;
     return &host.rows.back();
@@ -2158,6 +2166,15 @@ void GameCommandsHost::Impl::check_rows(const char* site, const RowsWatch& watch
         log.notef("command rows realloc during issue site=%s cap=%zu->%zu row=%zu clock=%.2f",
             site, watch.capacity, rows.capacity(), watch.row,
             static_cast<double>(life_clock));
+    }
+}
+
+void GameCommandsHost::Impl::note_rows_push(const char* site) {
+    if (issue_window_depth <= 0 || rows.size() != rows.capacity()) return;
+    ++rows_realloc_pending;
+    if (rows_realloc_pending <= 32) {
+        log.notef("command rows realloc pending site=%s depth=%d cap=%zu clock=%.2f",
+            site, issue_window_depth, rows.capacity(), static_cast<double>(life_clock));
     }
 }
 
@@ -2539,6 +2556,7 @@ const GameCommandRow* GameCommandsHost::issue_command_object(std::size_t unit_in
     SceneResolveBinding resolve(chain);
     if (kSetCommandQueueDelayBound) {
         // Packet cc9_set_command_queue_delay, as in issue().
+        host.note_rows_push("GameCommandsHost::issue_command_object");
         host.rows.push_back(row);
         const std::size_t stored = host.rows.size() - 1;
         chain.row = &host.rows[stored];
@@ -3506,6 +3524,7 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
         if (kSetCommandQueueDelayBound && chain.setcmd_post < host.loopback.size()) {
             // Packet cc9_set_command_queue_delay. 0071ED81 queued the SETCMD for
             // row 9, so the push and the finish tail happen at its delivery.
+            host.note_rows_push("GameCommandsHost::director_step_00836920");
             host.rows.push_back(row);
             Impl::LoopbackMessage& posted = host.loopback[chain.setcmd_post];
             posted.row = host.rows.size() - 1;
@@ -4391,6 +4410,10 @@ const GameCommandsSummary& GameCommandsHost::summary() const noexcept {
 
 void GameCommandsHost::report() {
     Impl& host = *impl_;
+    // Packet cc13-rowsdet, log-only: printed even when no row was issued.
+    host.log.notef("summary command rows realloc during issue=%llu pending=%llu units resync "
+        "during issue=%llu (packet cc13-rowsdet, log-only)", host.rows_realloc_during_issue,
+        host.rows_realloc_pending, host.units_resync_during_issue);
     if (host.rows.empty()) return;
     host.log.notef("  %-20s %-11s %-20s %4s %4s %5s %5s %5s %9s %9s %9s", "unit", "command",
         "source", "ord", "cat", "issue", "slot", "curr", "latch", "steer", "thrust");
@@ -4522,9 +4545,6 @@ void GameCommandsHost::report() {
         host.summary.loopback_setcmd_posts, host.summary.loopback_clear_posts,
         host.summary.loopback_delivered_in_place, host.summary.loopback_delivered_nested,
         host.summary.loopback_delivered_queued, host.summary.loopback_drains);
-    host.log.notef("summary command rows realloc during issue=%llu units resync during "
-        "issue=%llu (packet cc13-rowsdet, log-only)", host.rows_realloc_during_issue,
-        host.units_resync_during_issue);
     host.log.notef("summary mission director setcmd message bound=%d round_trips=%llu "
         "command_changed=%llu target_changed=%llu object_dropped=%llu id_cut_restored=%llu "
         "(cc15-sm1, 0071C830 / 0071C930 / 00764F90 / 0071CA30)", kSetCommandMessageCc13Bound ? 1 : 0,
@@ -4612,6 +4632,7 @@ bool GameCommandsHost::issue_follow_command_00720cd0(std::size_t unit_index,
     const bool pushed = binding.director_set_command(bsp::kCommandFollow, target);  // 00720D6E
     row.issued = pushed;
     row.slot_pushed = pushed;
+    host.note_rows_push("GameCommandsHost::issue_follow_command_00720cd0");
     host.rows.push_back(row);
     host.log.notef("  follow issued (00720CD0, source join 0077F940): \"%s\" -> \"%s\" "
         "pushed=%d", row.unit.c_str(), row.target_token.c_str(), pushed ? 1 : 0);
