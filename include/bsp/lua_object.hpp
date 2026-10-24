@@ -1,7 +1,8 @@
 #pragma once
 // The LuaObject API the datatable loaders share. See docs/LUA_OBJECT_API.md.
 // Addresses: 00b65f50, 00b660a0, 00b66420, 00b669a0, 00b66bd0, 00b67080,
-//            00b67190, 00b67700, 00b67800, 00b67980, 00b69d40, 00b6a020.
+//            00b67190, 00b67700, 00b67800, 00b67980, 00b69d40, 00b6a020,
+//            00b6a390.
 //
 // Correction from docs/NATIVE_SHADER_STATE_READER.md: this is the older host
 // projection. Actual native word00 points to a4C8h owner, kind2/index08 denotes

@@ -24,9 +24,18 @@ The registry's layer record, the `.nav` grammar and the layer selection `0041DF4
   degrees), which calls `00423960(10)`: n = 10, half extent 12000 (`[00CE3968]`), cell
   24000 / 10 (`[00CE3960]`), scale 2.0 (`[00CE3958]`), and a grid zeroed by `memset`
   (`004239C7`). Slope +14h is tan(10°) through `00412E20`.
-- `004248A0` (reached from `004D5251` when the scene's `.nav` opened at `004D5232`) appends the
-  file's layers without clearing. **Host divergence:** each scene load starts from the
-  constructor's state. Every measured run loads one mission per process.
+- `004248A0` (reached from `004D5251` when the scene's `.nav` opened at `004D5232`) first
+  clears the list: `004248C1` calls `0041DED0`, which deletes layers from the front until the
+  count at +0Ch is 0, the constructor's default included. It then appends the file's layers
+  (`004239E0` per layer at `0042492F`). **Corrected (cc13-navdoc, 2026-10-24):** this line
+  earlier said the file's layers were appended without clearing. The host's
+  `GameAvoidZoneRegistry::load_scene_layers` clears too, so there is no divergence here.
+- `004239E0` reads one layer in this order: the name (stream vtable+60h), half extent +4h
+  (float, `00423A24`), n +8h (int, `00423A32`), cell +0Ch (`00423A40`), scale +10h
+  (`00423A4E`), slope +14h (`00423A5C`), then n·n bytes into the vector at +18h (`004219A0` at
+  `00423A6D`; data pointer +1Ch). This installation's `us_osumi.nav` parses to exactly its
+  172939 bytes this way: three layers, each half extent 12000, n 240, cell 100, scale 2.00218,
+  slopes 0.1763 / 0.3640 / 2.7475.
 - The consumers fetch the singleton at `007F1D93`/`007F1DB2` (the squadron's layer selection),
   `007F5239`/`007F5255` (no Ghidra function; contract unread) and `00880CEE` (the reset
   `00423AF0`, not bound).
@@ -44,6 +53,29 @@ The registry's layer record, the `.nav` grammar and the layer selection `0041DF4
 - The result is a bilinear blend with float roundings at `0041BCBB` (a = h00 + fu·(h10 − h00)),
   `0041BCD1` (b = h01 + fu·(h11 − h01)), the fractions `0041BC69`/`0041BCE9`, and the result
   `0041BCF5`.
+
+**Positions outside the grid are clamped, not skipped** (cc13-navdoc, 2026-10-24, disk listing).
+- `00417FA0` has no early return and no compare against the half extent. For u:
+  - COMISS 0.0 > u at `00417FBE`, and if so u = 0.0 at `00417FE0`;
+  - otherwise FCOMIP u > n − 2.0 at `00417FED`, and if so u = n − 2.0 at `00417FF3`;
+  - the result is stored at `00417FF9`.
+- v uses the same pair: `00418005` → `00418014`, then `00418029` → `0041802F`, stored at
+  `00418035`. Both exits (`0041801E`, `0041803C`) return the clamped cell.
+- `0041BC20` calls it at `0041BC40` and truncates at `0041BC49`/`0041BC4F`. It then makes the four
+  `0041BAE0` fetches (`0041BC6D`, `0041BC7A`, `0041BC8A`, `0041BC97`) and returns at
+  `0041BD00`, with no other branch.
+- `0041BAE0` clamps ix and iz again to [0, n − 1] (`0041BAE4`-`0041BB0C`). Its trap
+  `00BF6713` (`0041BB25`) fires only for an empty vector or an index past its size.
+- So any x or z beyond ±half extent reads the edge column or row, and a point beyond a corner
+  reads the corner cell, with fraction 0 on each clamped axis.
+- A NaN coordinate fails both compares and stays NaN. CVTTSS2SI turns it into 80000000h, and
+  `0041BAE0` clamps that to 0.
+- The host's `avoid_zone_world_to_cell_00417fa0` and `avoid_zone_cell_height_0041bae0`
+  (`src/game_hosts_avoid_zones.cpp`) clamp the same way, in the same order.
+- Example: USNOS p26_os_a parked Enterprise at (14995, −12993), outside the grid. Layer 2 there
+  reads cell (238, 0) = byte 43 × 2.00218 = 86.09 m in the image as in the host. The planes'
+  ~96 m float over that spot is the image's behaviour (86.09 plus the 10 m floor on sa in
+  `0099F1C0`).
 
 ## Who samples which layer
 

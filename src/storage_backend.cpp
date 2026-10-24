@@ -70,77 +70,6 @@ bool decode_blocks(std::vector<std::uint8_t>& bytes) {
 }
 } // namespace
 
-// 00BEA9E0: MOV EAX,[ECX+8]; accept zero or one, otherwise XOR EAX,EAX; RET.
-// Complete leaf; native ECX manager projection and return ABI are in the header.
-bool pc_storage_state_is_zero_or_one_00bea9e0(const PcStorageNativeFileState& state) noexcept {
-    return state.state_08 == 0 || state.state_08 == 1;
-}
-
-// 00BEAA70: MOV AL,1; RET. EAX's upper bits are unspecified in the native body.
-bool pc_storage_capability_true_00beaa70() noexcept { return true; }
-
-// 00BEAB50, __thiscall ECX manager, RET 4. Complete normal body. The fixed
-// local path capacity and unchecked sprintf are original preconditions.
-void pc_storage_create_slot_directory_00beab50(PcStorageNativeFileState& state,
-                                              const char* name) {
-    char path_buffer[256];
-    std::sprintf(path_buffer, "%s\\%s", state.root_534 ? state.root_534 : "",
-                 name ? name : "");
-    CreateDirectoryA(path_buffer, nullptr);
-}
-
-// 00BEABA0, __thiscall ECX manager, RET 10h. Complete normal body from
-// 00BEABA0..00BEACA2. Preserve the original failure side effects: size remains
-// unchanged on open/size failure; error is only set, never cleared; the valid
-// file handle is not closed when GetFileSizeEx fails. File size high bits and
-// ReadFile's byte count are ignored. Allocator internals remain bound calls.
-void pc_storage_read_file_00beaba0(PcStorageNativeFileState& state, const char* name,
-    std::uint32_t kind, void*& buffer, std::uint32_t& size, PcStorageNativeFileMemory& memory) {
-    char path_buffer[256];
-    std::sprintf(path_buffer, "%s\\%s\\%s", state.root_534 ? state.root_534 : "",
-                 name ? name : "", kinds[kind]);
-    HANDLE file = CreateFileA(path_buffer, GENERIC_READ, FILE_SHARE_READ, nullptr,
-                              OPEN_EXISTING, 0, nullptr);
-    if (file != INVALID_HANDLE_VALUE) {
-        LARGE_INTEGER file_size;
-        if (GetFileSizeEx(file, &file_size)) {
-            size = file_size.LowPart;
-            buffer = memory.call_00bf55be(size); // native CALL at 00BEAC2E
-            DWORD transferred = 0;
-            const BOOL read_ok = ReadFile(file, buffer, size, &transferred, nullptr);
-            CloseHandle(file);
-            if (!read_ok) {
-                state.error_20 = 1;
-                if (buffer) {
-                    memory.call_00bf6989(buffer); // native CALL at 00BEAC72
-                    buffer = nullptr;
-                }
-            }
-            return;
-        }
-    }
-    state.error_20 = 1;
-    buffer = nullptr;
-}
-
-// 00BEACB0, __thiscall ECX manager, RET 10h. Complete normal body; Win32
-// BOOL controls the error byte and the transferred byte count is ignored.
-void pc_storage_write_file_00beacb0(PcStorageNativeFileState& state, const char* name,
-    std::uint32_t kind, const void* buffer, std::uint32_t size) {
-    char path_buffer[256];
-    std::sprintf(path_buffer, "%s\\%s\\%s", state.root_534 ? state.root_534 : "",
-                 name ? name : "", kinds[kind]);
-    HANDLE file = CreateFileA(path_buffer, GENERIC_WRITE, FILE_SHARE_WRITE, nullptr,
-                              CREATE_ALWAYS, 0, nullptr);
-    if (file != INVALID_HANDLE_VALUE) {
-        DWORD transferred;
-        const BOOL write_ok = WriteFile(file, buffer, size, &transferred, nullptr);
-        CloseHandle(file);
-        if (write_ok) return;
-    }
-    state.error_20 = 1;
-}
-
 PcStorageBackend::PcStorageBackend(std::string root, NativeStringStorage& strings,
     PcStorageLuaHost& lua, ArchiveCompressionState& compression)
     : root_(std::move(root)), strings_(strings), lua_(lua), compression_(compression) {}
@@ -163,6 +92,56 @@ std::string PcStorageBackend::path(std::string_view name, const char* leaf) cons
         throw std::length_error("native storage path exceeds its 256-byte buffer");
     return result;
 }
+// These members extract the PC leaf bodies already in this backend before
+// oct24-poolB (22f875a60). Keep one implementation, used by the existing owner.
+// 00BEA9E0: __thiscall ECX=manager, no stack args, RET, AL result.
+bool PcStorageBackend::state_is_zero_or_one_00bea9e0() const noexcept {
+    return operation_.state_08 == 0 || operation_.state_08 == 1;
+}
+
+// 00BEAA70: MOV AL,1; RET; ECX and upper EAX are unused/unspecified.
+bool PcStorageBackend::capability_true_00beaa70() noexcept { return true; }
+
+// 00BEAB50: __thiscall ECX=manager, NativeString* name, RET4. The existing
+// checked path projection rejects overlong paths; CreateDirectory's BOOL is ignored.
+void PcStorageBackend::create_slot_directory_00beab50(std::string_view name) {
+    CreateDirectoryA(path(name).c_str(), nullptr);
+}
+
+// 00BEABA0: __thiscall ECX=manager; name*,kind,buffer-out**,size-out*; RET10h.
+// Existing checked projection: retain RAII close on size failure, reject >DWORD
+// sizes, and reject short successful reads. Those differ from the image's
+// leaked handle / low-DWORD size / ignored count. This is not an exact native ABI.
+std::vector<std::uint8_t> PcStorageBackend::read_file_00beaba0(
+    std::string_view name, std::uint32_t kind) {
+    std::vector<std::uint8_t> bytes;
+    File file{CreateFileA(path(name, kind_name(kind)).c_str(),
+        GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr)};
+    LARGE_INTEGER size{};
+    if (file.handle == INVALID_HANDLE_VALUE || !GetFileSizeEx(file.handle, &size) ||
+        size.QuadPart < 0 || size.QuadPart > std::numeric_limits<DWORD>::max()) {
+        error_20_ = true;
+    } else {
+        bytes.resize(static_cast<std::size_t>(size.QuadPart));
+        DWORD received{};
+        if (!ReadFile(file.handle, bytes.data(), static_cast<DWORD>(bytes.size()),
+            &received, nullptr) || received != bytes.size()) error_20_ = true;
+    }
+    return bytes;
+}
+
+// 00BEACB0: __thiscall ECX=manager; name*,kind,buffer*,size; RET10h.
+// Existing checked path projection; the native API-BOOL-only write check is kept.
+void PcStorageBackend::write_file_00beacb0(std::string_view name, std::uint32_t kind,
+    const void* bytes, std::uint32_t size) {
+    File file{CreateFileA(path(name, kind_name(kind)).c_str(),
+        GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, CREATE_ALWAYS, 0, nullptr)};
+    DWORD written{};
+    if (file.handle == INVALID_HANDLE_VALUE || !WriteFile(file.handle,
+        bytes, size, &written, nullptr)) error_20_ = true;
+    // Native checks the API BOOL only, not the byte count.
+}
+
 bool PcStorageBackend::file_exists(std::string_view name, const char* leaf) const {
     File file{CreateFileA(path(name, leaf).c_str(), GENERIC_READ, FILE_SHARE_READ,
         nullptr, OPEN_EXISTING, 0, nullptr)};
@@ -173,7 +152,7 @@ bool PcStorageBackend::storage_query_1c(std::string_view name, std::uint32_t kin
     return file_exists(name, "valid") && file_exists(name, kind_name(kind));
 }
 void PcStorageBackend::reset_storage_operation_00bd3450() noexcept {
-    ready_21_ = true; // PC virtual+08 is literal true00beaa70.
+    ready_21_ = capability_true_00beaa70();
     operation_.state_08 = error_20_ ? 1 : 0;
     // No operation-code, error or prompt clearing occurs in this routine.
 }
@@ -250,21 +229,7 @@ void PcStorageBackend::open_read_archive_00bd3470() {
 }
 void PcStorageBackend::read_archive_00bd3ec0() {
     error_20_ = false;
-    std::vector<std::uint8_t> bytes;
-    {
-        File file{CreateFileA(path(read_name_24_, kind_name(read_kind_2c_)).c_str(),
-            GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr)};
-        LARGE_INTEGER size{};
-        if (file.handle == INVALID_HANDLE_VALUE || !GetFileSizeEx(file.handle, &size) ||
-            size.QuadPart < 0 || size.QuadPart > std::numeric_limits<DWORD>::max()) {
-            error_20_ = true;
-        } else {
-            bytes.resize(static_cast<std::size_t>(size.QuadPart));
-            DWORD received{};
-            if (!ReadFile(file.handle, bytes.data(), static_cast<DWORD>(bytes.size()),
-                &received, nullptr) || received != bytes.size()) error_20_ = true;
-        }
-    }
+    auto bytes = read_file_00beaba0(read_name_24_, read_kind_2c_);
     if (bytes.size() < 6) error_20_ = true;
     if (!error_20_ && !plain_archive(bytes) && !decode_blocks(bytes)) error_20_ = true;
     if (error_20_) { free_and_clear_storage_buffer_30(); return; }
@@ -286,15 +251,8 @@ void PcStorageBackend::write_archive_00bd37b0() {
     error_20_ = false;
     if (compression_.used_520 > compression_.buffer_50c.size())
         throw std::logic_error("storage write buffer shorter than native byte count");
-    {
-        File file{CreateFileA(path(write_name_500_, kind_name(write_kind_508_)).c_str(),
-            GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, CREATE_ALWAYS, 0, nullptr)};
-        DWORD written{};
-        if (file.handle == INVALID_HANDLE_VALUE || !WriteFile(file.handle,
-            compression_.buffer_50c.data(), compression_.used_520, &written, nullptr))
-            error_20_ = true;
-        // Native checks the API BOOL only, not the byte count.
-    }
+    write_file_00beacb0(write_name_500_, write_kind_508_,
+        compression_.buffer_50c.data(), compression_.used_520);
     if (!error_20_) abandon_write_00bd3500();
 }
 void PcStorageBackend::prompt_00bd4140(const char* key, bool yes_no, bool accept) {
@@ -314,7 +272,7 @@ void PcStorageBackend::complete(std::int32_t state) noexcept {
 }
 void PcStorageBackend::update_00beb9b0() {
     if (operation_code_04_ == 1) {
-        ready_21_ = true; // PC slot+08 is the recovered literal-true leaf00beaa70.
+        ready_21_ = capability_true_00beaa70();
         complete(0);
     } else if (operation_code_04_ == 2) {
         read_archive_00bd3ec0();
@@ -323,9 +281,9 @@ void PcStorageBackend::update_00beb9b0() {
         complete(error_20_ ? 1 : 0);
     } else if (operation_code_04_ == 3 || operation_code_04_ == 4) {
         const bool two_files = operation_code_04_ == 3;
-        if (operation_.state_08 == 0 || operation_.state_08 == 1) {
+        if (state_is_zero_or_one_00bea9e0()) {
             if (two_files) {
-                CreateDirectoryA(path(write_name_500_).c_str(), nullptr);
+                create_slot_directory_00beab50(write_name_500_);
                 if (!error_20_) clear_marker(write_name_500_);
                 if (error_20_) {
                     prompt_00bd4140("globals.savefailed", false, true);
@@ -356,7 +314,7 @@ void PcStorageBackend::update_00beb9b0() {
             }
         }
     } else if (operation_code_04_ == 5) {
-        if (operation_.state_08 == 0 || operation_.state_08 == 1) {
+        if (state_is_zero_or_one_00bea9e0()) {
             prompt_00bd4140("globals.deleteslot", true, false);
             operation_.state_08 = 3;
         } else if (operation_.state_08 == 3) {

@@ -230,9 +230,9 @@ bool landing_ship_ramp_latch_0074afcc(BuildingPadModel::Lander& lander, bool gro
 // JBE) with +118Ah and +118Bh clear sets +118Bh (0074B18F) and, through 0074AD90,
 // +118Ch, and returns true; r < 1.0 stores min(float(dt / +1190h + r), 1)
 // (006F22B0 with ECX = 1 at 0074B146). Ramp up and r > 0.0 [00D7A218]: max(float(r -
-// dt / +1190h), 0) (006F22F0, ECX = 0 at 0074B309). x87 intermediates are extended
-// precision; here double, rounded once to float as the FSTP does. With dt 0.05 the
-// ramp needs 41 steps, so the unload comes 2.05 s after the latch frame.
+// dt / +1190h), 0) (006F22F0, ECX = 0 at 0074B309). Main-thread PC24 rounds
+// the division before the addition/subtraction; the helper preserves both.
+// With dt 0.05 the ramp needs 41 steps, so the unload comes 2.05 s after the latch frame.
 // Coverage: the flags and the rotation. Not modelled: the bow point handed to
 // 006AC370 (the pad's troop paths), the `soldiers` note node of a small ship, the
 // ramp-bone poses (presentation), and the `shipLanded` event 00986820 (a record in
@@ -242,9 +242,10 @@ bool landing_ship_ramp_unload_0074b109(BuildingPadModel::Lander& lander, float d
 
 // Complete ordinary body of 0074AF50..0074B567, native ECX = MLandingShip,
 // one stack float dt, RET 4. This raw-storage interface is separate from the
-// partial BuildingPadModel projections above. Calls retain their addresses;
-// the native FH3 frame/unwind funclets and x87 extended precision are not an
-// ABI claim. No game/host wiring is supplied.
+// partial BuildingPadModel projections above. Calls retain their addresses.
+// Main-thread x87 PC24 rounding is explicit in native operation order. The
+// native FH3 frame/unwind funclets, worker-thread PC53 arithmetic and native
+// exception/status identity remain unproven. No game/host wiring is supplied.
 struct LandingShipUpdateGlobals {
     std::uint8_t* const& game_00e188a8;
     void* const& warning_manager_00f8a0c4;

@@ -421,6 +421,8 @@ void cc13_seg48_plane_sound_set_for_each_slot18_007de760(void* set, std::uint32_
 // (plane+C98h), one stack float dt, RET 4 at 007EBF01; no native EH frame.
 // Image constants remain explicit inputs at their original widths/addresses.
 // This interface does not alter the older Cc13Seg48Host implementations.
+// Main-thread PC24 arithmetic depends on the project's /fp:strict setting;
+// native image doubles are rounded only after each x87 operation.
 struct PlaneFxStepGlobals {
     std::uint8_t* const& game_00e188a8;
     std::uint8_t* const& sound_00f8bbd8;
