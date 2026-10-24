@@ -1249,10 +1249,18 @@ def ledger_write(args):
                 sys.exit(f"{record['address']} {record['kind']} {record['name']} already recorded; pass --replace to supersede it. Existing record:\n{json.dumps(existing)}")
         for record in records:
             previous = ledger.upsert(ledger.RECON_DIR, record, key=ledger.RECON_KEY)
+            # --replace also supersedes a no-body placeholder (e.g. name "kTrivialSlots") at the same address and kind
+            placeholders = []
+            if args.replace and record['status'] not in ledger.NO_BODY_STATUSES:
+                placeholders = ledger.drop(ledger.RECON_DIR, record['address'],
+                                           lambda r: r.get('kind') == record['kind'] and r.get('name') != record['name']
+                                           and r.get('status') in ledger.NO_BODY_STATUSES)
             if len(records) == 1:
                 print(f"{record['address']} {record['kind']} {record['name']}")
                 if previous:
                     print(f"replaced (previous record stays in git history): {json.dumps(previous)}")
+            for placeholder in placeholders:
+                print(f"dropped no-body placeholder (stays in git history): {placeholder['address']} {placeholder.get('name')}")
         if len(records) != 1:
             print(f"recorded {len(records)} {args.ledger_command} records; previous values stay in git history")
 

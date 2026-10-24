@@ -25,6 +25,9 @@ LEGACY_RECON = ROOT / 'config/reconstruction.json'
 LEGACY_TAGS = ROOT / 'config/ghidra_tags.json'
 # Several fragments may share a routine address, so reconstruction records are keyed by name too.
 RECON_KEY = ('address', 'kind', 'name')
+# Audited placeholders that give no body credit; a real body record for the same address supersedes them.
+NO_BODY_STATUSES = {'metadata_only_no_function_body_verified_oct24',
+                    'incomplete_or_unverified_body_credit_withdrawn_oct24'}
 
 
 def norm(address):
@@ -70,6 +73,20 @@ def upsert(directory, record, key=('address',)):
     kept = [r for r in existing if tuple(r.get(k) for k in key) != ident]
     _write_shard(path, kept + [record])
     return previous
+
+
+def drop(directory, address, predicate):
+    """Remove the records at address that match predicate from its band shard; returns the removed records."""
+    address = norm(address)
+    path = directory / f"{band(address)}.jsonl"
+    if not path.exists():
+        return []
+    with path.open(encoding='utf-8') as handle:
+        existing = [json.loads(line) for line in handle if line.strip()]
+    removed = [r for r in existing if r['address'] == address and predicate(r)]
+    if removed:
+        _write_shard(path, [r for r in existing if r not in removed])
+    return removed
 
 
 def _merge(shards, legacy, key=('address',)):
