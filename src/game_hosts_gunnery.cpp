@@ -7927,6 +7927,28 @@ bool GameGunneryHost::recon_enemy_contacts(int side, std::vector<std::size_t>& u
     return true;
 }
 
+float GameGunneryHost::recon_nearest_observer_distance(int side, std::size_t target) const {
+    // The observer admission of recon_sensor_pass.cpp (008068C2), over the same
+    // pass host; every call it makes here is a read.
+    GunneryReconSensorPassHost host(*impl_);
+    const std::size_t count = host.unit_count();
+    if (target >= count) return -1.0f;
+    float tx = 0.0f, tz = 0.0f;
+    host.unit_world_xz(target, tx, tz);
+    float best = -1.0f;
+    for (std::size_t i = 0; i < count; ++i) {
+        if (!host.unit_present(i) || host.unit_side(i) != side) continue;
+        if (!host.unit_is_observer_class(i)) continue;
+        std::size_t rows = 0;
+        if (host.unit_sensor_rows(i, rows) == nullptr || rows == 0) continue;
+        float ox = 0.0f, oz = 0.0f;
+        host.unit_world_xz(i, ox, oz);
+        const float d = std::sqrt((tx - ox) * (tx - ox) + (tz - oz) * (tz - oz));
+        if (best < 0.0f || d < best) best = d;
+    }
+    return best;
+}
+
 bool GameGunneryHost::recon_triple_units(int side, int triple,
     std::vector<std::size_t>& out) const {
     out.clear();

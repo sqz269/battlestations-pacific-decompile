@@ -90,6 +90,8 @@ struct MovieKeyframe {
     std::shared_ptr<cc13cam::GoAroundModifier> modifier_e4;
     // +ECh, the keyframe event 0078E540 stores and 0078E630 deletes once fired.
     std::optional<cc13cam::KeyframeEvent> event_ec;
+    // +FCh, `finishscript` (007A0EB0, camera key or named postype). Packet cc13-finscr.
+    std::string finish_script_fc;
 };
 
 // One track, 84h bytes at camera+414h (look-at) or camera+498h (camera).
@@ -102,7 +104,15 @@ struct MovieTrack {
 };
 
 struct HudMovieCamera {
+    // +390h, 007911E0's finishscript gate (0079121D, through [key+4]+74h). The
+    // constructor's 0079D179 stores 0; the prompt skip 0096D58D (0096D540, input
+    // action 3 on a pending prompt) sets 1, which this host never reaches.
+    bool finish_suppress_390{false};
     bool running_391{false};  // set by 00798C80's first step (its +221h on the +170h sub-object)
+    // Packet cc13-finscr: the finishscripts 007912E0 would call during the last
+    // 0079A3B0, in call order (target track, then camera track, list order). The
+    // caller drains it.
+    std::vector<std::string> finish_due;
     float clock_3b0{0.0f};
     std::array<float, 3> look_384{};
     MovieTrack target_414;
@@ -168,6 +178,9 @@ struct MovieKeyframeInput {
     // kMovieKeyframeModifierBound; OFF lists both keys in unsupported_keys.
     std::optional<cc13cam::ModifierLuaValue> modifier;
     std::optional<cc13cam::ModifierLuaValue> event;
+    // `finishscript` when it is a string (007A1F31 get, 007A1F76 00B660A0 IsString,
+    // 007A1F8F store to +FCh). Packet cc13-finscr.
+    std::optional<std::string> finishscript;
     std::vector<std::string> unsupported_keys;
 };
 

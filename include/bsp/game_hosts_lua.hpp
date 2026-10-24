@@ -668,7 +668,7 @@ inline constexpr bool kLuaHitRateLimitBound = true;  // ON: identity pairs (docs
 // shot, which is moot because every host hit carries a class.
 // summary listener_hit_attack_type_subkind_differs counts candidate disagreements per
 // listener evaluation (before the damage test, second pass included), not changed fires.
-inline constexpr bool kHitListenerAttackTypeSubKindCc13Bound = false;
+inline constexpr bool kHitListenerAttackTypeSubKindCc13Bound = true;  // ON (cc9-lua71, 2026-10-24): ESMP07 one extra listener fire (dialog), gameplay identical; JM06/JM04/BSM06 identical; see WINS_TABLE
 static_assert(!kHitListenerAttackTypeSubKindCc13Bound
                   || (kLuaListenersBound && kLuaHitListenersBound),
               "the attackType sub-kind test lives in the hit listener dispatch");
@@ -1192,6 +1192,7 @@ struct GameMissionLuaSummary {
     unsigned long long attack_target_pushed{0};
     unsigned long long attack_target_nil{0};
     unsigned long long attack_target_unresolved{0};
+    unsigned long long attack_target_squadron_standin{0};   // packet cc13-atkfix
     unsigned long long squadron_speed_calls{0};
     unsigned long long squadron_speed_planes{0};
     unsigned long long squadron_speed_unresolved{0};
@@ -2283,7 +2284,14 @@ public:
     void attach_extra_fixed_step(GameExtraFixedStepRunner* runner) noexcept {
         extra_fixed_step_ = runner;
     }
+    // Packet cc13-baystale: bsp::cc13_release_timer::bomb_rack_bay_doors's
+    // per-class flags. The host is rebuilt at every mission load
+    // (game_hosts_mission.cpp), so this cache lives exactly one mission.
+    std::map<int, std::vector<bool>>& bomb_rack_bay_doors_cache() noexcept {
+        return bomb_rack_bay_doors_cache_;
+    }
 private:
+    std::map<int, std::vector<bool>> bomb_rack_bay_doors_cache_;
     // Packet cc9_sentity_init_all. A node of 00F899D0: the entity and what pass
     // A hands 00928A00. A deque, because pass A appends while the walk holds
     // pointers to earlier nodes.

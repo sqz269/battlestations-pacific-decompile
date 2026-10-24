@@ -276,14 +276,22 @@ float weight_00795c10(MovieKeyframe& k, const HudMovieCamera& camera, float dt,
 }
 
 // 007911E0, step(track): false while the keyframe has not started.
-bool step_007911e0(MovieKeyframe& k, const HudMovieCamera& camera) {
+bool step_007911e0(MovieKeyframe& k, HudMovieCamera& camera) {
     if (k.state_f8 == 0) {
         if (k.start_f0 > camera.clock_3b0) return false;
         begin_00791020(k, camera);
     }
     k.zoom_c8 = k.zoom_c4;                             // 0079126D
-    if (k.state_f8 == 1 && camera.clock_3b0 >= k.blend_f4 + k.start_f0) {
-        k.state_f8 = 2;                                // 007912E5 (finishscript: none)
+    // 00791275..00791295, the modifier's slot +8: `ret 8` in both vtables (goaround
+    // 00D04C8C -> 0078E810, default 00D04CC0 -> 0078E820), so skipping it is exact.
+    if (k.state_f8 == 1 && camera.clock_3b0 >= k.blend_f4 + k.start_f0) {   // 00791297..007912B6
+        // 007912B8..007912E0, packet cc13-finscr: a non-empty +FCh and a clear
+        // camera +390h (BL, 0079121D) call 00887E50. Recorded here; the caller
+        // runs or logs it (kMovieCameraFinishScriptCc13Bound).
+        if (!k.finish_script_fc.empty() && !camera.finish_suppress_390) {
+            camera.finish_due.push_back(k.finish_script_fc);
+        }
+        k.state_f8 = 2;                                // 007912E5
     }
     return true;
 }
@@ -291,7 +299,7 @@ bool step_007911e0(MovieKeyframe& k, const HudMovieCamera& camera) {
 bool is_cut(const MovieKeyframe& k) { return k.has_position_27 && 0.0f >= k.blend_f4; }
 
 // 00798130, evaluate(track).
-void evaluate_00798130(MovieTrack& track, const HudMovieCamera& camera,
+void evaluate_00798130(MovieTrack& track, HudMovieCamera& camera,
                        MovieCameraParentHost& host) {
     const float clock = camera.clock_3b0;
     float span = std::min(track.window_78, clock);     // 00798160
@@ -521,6 +529,9 @@ void parse_007a0eb0(MovieKeyframe& k, HudMovieCamera& camera, const MovieKeyfram
     if (in.smoothtime) k.smooth_cc = *in.smoothtime;
     // 007A1F94..007A22EE: the event, for a camera key or a named postype; it
     // watches the keyframe's parent (+1Ch) and replaces any earlier one.
+    // 007A1F31..007A1F8F, packet cc13-finscr: `finishscript` for a camera key or
+    // a named postype (007A1F65 / 007A1F6B), a string only (007A1F76).
+    if (in.finishscript && (k.camera_28 || named)) k.finish_script_fc = *in.finishscript;
     if (kMovieKeyframeModifierBound && in.event) {
         cc13cam::KeyframeEvent ev;
         const std::size_t parent = k.parent_1c == kMovieNoParent ? 0 : k.parent_1c + 1;
@@ -614,6 +625,7 @@ void movie_camera_store_step_draw_00798cd9(HudMovieCamera& camera, float dt,
 
 bool movie_camera_update_0079a3b0(HudMovieCamera& camera, MovieCameraParentHost& host,
                                   float dt, std::array<float, 16>& world, float& fov) {
+    camera.finish_due.clear();                           // packet cc13-finscr, per update
     if (camera.running_391) {                            // 0079A3C3
         camera.clock_3b0 = dt + camera.clock_3b0;
     } else {

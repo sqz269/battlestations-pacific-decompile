@@ -3001,7 +3001,10 @@ struct GameUnitsHost::Impl {
         std::uint32_t head_command{0};       // slot 0 when it was sent
         int last_stop{-1};
         std::size_t last_target{0};
-        bool first_pick_logged{false};       // packet cc13-fapick, log-only
+        // Packets cc13-fapick / cc13-fapick3, log-only: pick lines printed (cap 8)
+        // and the last printed pick, (unit + 1) * 2 + squadron.
+        int pick_lines{0};
+        std::size_t last_printed_pick{0};
     };
     std::map<std::string, FreeAttack> free_attack;
     unsigned long long free_attack_ticks{0}, free_attack_stops[8]{}, free_attack_sends{0},
@@ -18859,11 +18862,18 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
                 // so the same tick leaves at 009F849F for 009F8640, and the next
                 // tick clears the pick at 009F8487 before any read
                 // (squadron_leash_cc13.hpp).
+                // Packet cc13-fapick3, log-only: the distance 009F7FE0 measured, from
+                // the same point it read (the entity's, else descriptor+8h, else 0).
+                float lx = 0.0f, ly = 0.0f, lz = 0.0f;
+                if (g.entity) unit_position_00fc(g.unit, lx, ly, lz);
+                else if (g.position_valid) { lx = g.position[0]; lz = g.position[2]; }
+                const float ldx = lx - gin.path_point[0], ldz = lz - gin.path_point[2];
                 h.log.notef("free attack: squadron \"%s\" leash at %.2f s: %08X on %s outside "
                     "%.0f m of the head point, override ended (009F83AD..009F83F5, packet "
-                    "cc13-leash)", sq.name.c_str(), static_cast<double>(now), current,
+                    "cc13-leash) dist=%.0f", sq.name.c_str(), static_cast<double>(now), current,
                     h.slots[over_target - 1u]->row.name.c_str(),
-                    static_cast<double>(gin.guard_dist_594 * kSquadronLeashGuardScale));
+                    static_cast<double>(gin.guard_dist_594 * kSquadronLeashGuardScale),
+                    std::sqrt(static_cast<double>(ldx) * ldx + static_cast<double>(ldz) * ldz));
             }
         }
     }
@@ -18972,7 +18982,8 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
         for (std::size_t i = 0; i < units.size(); ++i)
             in.contacts.push_back({units[i], squadron_record[i]});
     }
-    in.trace_candidates = !fa.first_pick_logged;   // packet cc13-fapick, log-only
+    constexpr int kPickLineCap = 8;   // packet cc13-fapick3
+    in.trace_candidates = fa.pick_lines < kPickLineCap;   // packet cc13-fapick, log-only
 
     FreeAttackWorld world(*this, h, *gun);
     const bsp::SquadronFreeAttackDecision d = bsp::squadron_free_attack_tick_009f8470(in, world);
@@ -18991,17 +19002,38 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             d.target_squadron ? " (squadron)" : "", d.command,
             apply ? "applied" : "census only");
     }
-    if (!fa.first_pick_logged && d.target < h.slots.size()) {
-        // Packet cc13-fapick, log-only and always on: once per squadron name, at the
-        // first tick that leaves a target (the 0071D980 override send's, else the
-        // selector's +08h pick when 0071DF70, the same-target or the air-target test
-        // stopped the send). Until then every tick traces (one vector per tick, no
-        // output). The line lists every recon contact 009F7810 visited and the return it left by, then
-        // the enemy squadrons the recon list (+DE8h) did not offer. Reads only: the
-        // traces are copies of what the loop already computed (no predicate is run
-        // again), and the not_in_recon scan reads the registry, unit_dead and the
-        // recon pass's published level (ReconSensorPassState::level, const).
-        fa.first_pick_logged = true;
+    const std::size_t pick_key = d.target < h.slots.size()
+        ? (d.target + 1u) * 2u + (d.target_squadron ? 1u : 0u) : 0u;
+    if (pick_key != 0u && fa.pick_lines < kPickLineCap
+            && (fa.pick_lines == 0 || pick_key != fa.last_printed_pick)) {
+        // Packets cc13-fapick / cc13-fapick3, log-only and always on: per squadron
+        // name, at the first tick that leaves a target (the 0071D980 override
+        // send's, else the selector's +08h pick when 0071DF70, the same-target or
+        // the air-target test stopped the send), reason=first, then again whenever
+        // the target differs from the last PRINTED one, reason=change, up to 8
+        // lines. Until the cap every tick traces (one vector of contacts per tick,
+        // printed or not). The line lists every recon contact 009F7810 visited and
+        // the return it left by, then the enemy squadrons the recon list (+DE8h)
+        // did not offer. Reads only: the traces are copies of what the loop already
+        // computed (no predicate is run again); the rest are position reads, the
+        // registry, unit_dead, the recon pass's published level and its observer
+        // admission (recon_nearest_observer_distance).
+        const char* const reason = fa.pick_lines == 0 ? "first" : "change";
+        ++fa.pick_lines;
+        fa.last_printed_pick = pick_key;
+        float own_x = 0.0f, own_y = 0.0f, own_z = 0.0f;
+        unit_position_00fc(leader, own_x, own_y, own_z);
+        const auto distances = [&](std::size_t unit, double& d_own, double& d_head) {
+            float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+            unit_position_00fc(unit, ux, uy, uz);
+            const double ox = ux - own_x, oz = uz - own_z;
+            d_own = std::sqrt(ox * ox + oz * oz);
+            d_head = -1.0;
+            if (in.path_point_valid) {
+                const double hx = ux - in.path_point[0], hz = uz - in.path_point[2];
+                d_head = std::sqrt(hx * hx + hz * hz);
+            }
+        };
         const auto& records = bsp::plane_squadron_registry().records();
         const auto owner_of = [&](std::size_t unit) -> const bsp::PlaneSquadronHostRecord* {
             for (const bsp::PlaneSquadronHostRecord& r : records) {
@@ -19036,11 +19068,15 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             const int guard_in = n == N::GuardOut || n == N::LeaderGuardOut ? 0
                 : (scored || n == N::NoDetect) ? 1 : -1;
             const int detect = n == N::NoDetect ? 0 : scored ? 1 : -1;
-            std::snprintf(buf, sizeof buf, " [%s kind=%s %s rank=%d guard_in=%d detect=%d score=%.3f]",
+            // t.unit is the tested unit: an 18h entry's is the arena's +3D0h leader.
+            double d_own = 0.0, d_head = 0.0;
+            distances(t.unit, d_own, d_head);
+            std::snprintf(buf, sizeof buf, " [%s kind=%s %s rank=%d guard_in=%d detect=%d score=%.3f"
+                " d=%.0f head_d=%.0f]",
                 unit_name(t.unit, t.squadron), t.squadron ? "18h" : "unit",
                 filter_b && n == N::Scored ? "scored_b" : bsp::free_attack_candidate_note_name(t.note),
                 t.rank, guard_in, detect,
-                static_cast<double>(t.score));
+                static_cast<double>(t.score), d_own, d_head);
             list += buf;
             ++shown;
         }
@@ -19059,7 +19095,10 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             const std::size_t their_lead = r.flight_leader();
             const int level = recon.side_covered(in.party_54) && their_lead < h.slots.size()
                 ? static_cast<int>(recon.level(in.party_54, their_lead)) : -1;
-            std::snprintf(buf, sizeof buf, " [%s not_in_recon level=%d]", r.name.c_str(), level);
+            const float min_obs = their_lead < h.slots.size()
+                ? gun->recon_nearest_observer_distance(in.party_54, their_lead) : -1.0f;
+            std::snprintf(buf, sizeof buf, " [%s not_in_recon level=%d min_obs_d=%.0f]",
+                r.name.c_str(), level, static_cast<double>(min_obs));
             list += buf;
             ++shown;
         }
@@ -19068,9 +19107,9 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             list += buf;
         }
         // GameHostLog::notef truncates at 1024 bytes; 24 entries do not fit.
-        std::snprintf(buf, sizeof buf, "free attack first pick: squadron=\"%s\" t=%.2f filter=%d "
-            "contacts=%zu traced=%zu pick=%s%s score=%.3f",
-            sq.name.c_str(), static_cast<double>(now), static_cast<int>(d.filter),
+        std::snprintf(buf, sizeof buf, "free attack first pick: squadron=\"%s\" reason=%s t=%.2f "
+            "filter=%d contacts=%zu traced=%zu pick=%s%s score=%.3f",
+            sq.name.c_str(), reason, static_cast<double>(now), static_cast<int>(d.filter),
             in.contacts.size(), d.traces.size(), unit_name(d.target, d.target_squadron),
             d.target_squadron ? " (squadron)" : "", static_cast<double>(pick_score));
         h.log.note((buf + list).c_str());

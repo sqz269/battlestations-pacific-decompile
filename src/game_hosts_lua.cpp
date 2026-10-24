@@ -514,6 +514,13 @@ void parse_movie_keyframe(lua_State* state, int table, bsp::MovieKeyframeInput& 
         lua_getfield(state, table, key);
         if (bsp::kMovieKeyframeModifierBound && std::string(key) == "event") {
             if (lua_type(state, -1) == LUA_TTABLE) in.event = movie_lua_value(state, -1, 2);
+        } else if (std::string(key) == "finishscript") {
+            // Packet cc13-finscr: always kept (007A1F76 IsString), so the OFF log can
+            // name it; OFF still counts the key as unsupported.
+            if (lua_type(state, -1) == LUA_TSTRING) in.finishscript = std::string(lua_tostring(state, -1));
+            if constexpr (!kMovieCameraFinishScriptCc13Bound) {
+                if (!lua_isnil(state, -1)) in.unsupported_keys.push_back(key);
+            }
         } else if (!lua_isnil(state, -1)) {
             in.unsupported_keys.push_back(key);
         }
@@ -7129,6 +7136,11 @@ int GameMissionLuaHost::run_set_ship_speed_00890d30(lua_State* state, int argume
     return 0;
 }
 
+namespace {
+// Defined with the part 7b helpers below.
+const bsp::PlaneSquadronHostRecord* luawire_squadron_record(std::size_t index);
+}  // namespace
+
 // Packet cc9_unit_get_attack_target. 008A6DE0 UnitGetAttackTarget(entity): argument 0
 // through 00888AA0, the director from the entity's vtable[114h] (008A6EF8), then:
 //   director->vtable[48h](2) (008A6F0D) true  -> director->vtable[2Ch]() (008A6F1A), which
@@ -7167,10 +7179,24 @@ int GameMissionLuaHost::run_unit_get_attack_target_008a6de0(lua_State* state,
     }
     const char* arm = "command";
     bool fire_arm = ship_row != nullptr;
+    // Packet cc13-atkfix: the slot is a squadron registry record's fused slot,
+    // the host's stand-in for a PlaneSquadronGen entity. Counted always, so a
+    // pair can see the ON arm's input whichever way the switch is set.
+    const bool squadron_standin = luawire_squadron_record(index) != nullptr;
+    if (squadron_standin) ++summary_.attack_target_squadron_standin;
     if constexpr (kUnitGetAttackTargetDirectorKindCc13Bound) {
         // A squadron's director is the block 00D0BD98, whose +48h 0084D8F0 is
         // false for 2, so the image takes the command arm whatever row exists.
-        if (units->unit_is_kind_of(index, 0x18)) fire_arm = false;
+        // SUBSTITUTION, labelled (packet cc13-atkfix): the host has no squadron
+        // slot. A squadron's Lua entity resolves to its wing-0 plane's slot,
+        // which is kind 0Fh, never 18h, so the record test stands in for the
+        // image's IsKindOf(18h). Wing planes 1.. and lone planes have no record
+        // naming their slot and keep the fire arm, as a plane's director does.
+        if (units->unit_is_kind_of(index, 0x18)) {
+            fire_arm = false;
+        } else if (squadron_standin) {
+            fire_arm = false;
+        }
     }
     if (fire_arm) {
         // director->vtable[48h](2) true: the fire target, director+238h.
@@ -11972,10 +11998,11 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.support_manager_enable_unresolved);
     log_.notef("summary mission script attack target bound=%d calls=%llu fire_arm=%llu "
         "command_arm=%llu pushed=%llu nil=%llu unresolved=%llu (008A6DE0, packet "
-        "cc9_unit_get_attack_target)", kLuaUnitGetAttackTargetBound ? 1 : 0,
+        "cc9_unit_get_attack_target) squadron_standin=%llu", kLuaUnitGetAttackTargetBound ? 1 : 0,
         summary_.attack_target_calls, summary_.attack_target_fire_arm,
         summary_.attack_target_command_arm, summary_.attack_target_pushed,
-        summary_.attack_target_nil, summary_.attack_target_unresolved);
+        summary_.attack_target_nil, summary_.attack_target_unresolved,
+        summary_.attack_target_squadron_standin);
     log_.notef("summary mission script squadron speed bound=%d calls=%llu planes=%llu "
         "unresolved=%llu (0089F780 -> 0074E1E0 -> 007D9E80, packet cc9_squadron_set_speed)",
         kLuaSquadronSetSpeedBound ? 1 : 0, summary_.squadron_speed_calls,
