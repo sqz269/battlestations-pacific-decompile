@@ -50,8 +50,8 @@ inline constexpr double kSubAttackHalf = 0.5;                 // 00D7A280 (doubl
 // ON by the JM06 pair: fire switch 3-4 s earlier, min range ~50 m lower (243).
 inline constexpr bool kSubAttackOwnHalfLengthBound = true;
 // 009E9EB0 runs on the main thread at x87 PC24 (docs/CC13_FPU_PRECISION.md), so
-// every FMUL/FADD/FSUB/FDIV rounds to 24 bits. True: the five multi-op chains
-// round per op -- 009E9FB6 FMUL double 0.6 kept in ST0 for FCOMIP; 009EA061 /
+// every FMUL/FADD/FSUB/FDIV rounds to 24 bits. True: the seven multi-op sites
+// round per op -- 009E9FB9 FMUL double 0.6 kept in ST0 for FCOMIP; 009EA061 /
 // 009EA141 / 009EA216 dx*dx + dz*dz; 009EA376 (range - 50.0) / water; 009EA53D
 // v.x*u.x + u.y*0.0 + v.z*u.z; 009EA6F8..009EA715 the band edge (C -/+ speed)
 // left in ST0 for FCOMIP; and the live callee 009E4A60's d2 at

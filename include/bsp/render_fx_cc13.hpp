@@ -668,7 +668,11 @@ void material_effect_apply_generator_modes_00b45330(std::uint8_t* effect, const 
 // 00B478B0: {-1, 11h (D3DDECLTYPE_UNUSED), 0, 0Eh, -1}. 00B478E0: type size from the
 // dword table 00D61CC0[type].
 void vertex_element_construct_unused_00b478b0(std::uint32_t element[5]) noexcept;
-// 00B478E0: the type size from the .rdata dword table 00D61CC0 (18 entries, read from the\n// PE: FLOAT1..4 = 4/8/12/16, D3DCOLOR/UBYTE4/SHORT2 = 4, SHORT4 8, UBYTE4N/SHORT2N 4,\n// SHORT4N 8, USHORT2N 4, USHORT4N 8, UDEC3/DEC3N/FLOAT16_2 4, FLOAT16_4 8, UNUSED 4).\nstd::uint32_t vertex_element_type_size_00b478e0(const std::uint32_t element[5]) noexcept;\n// 00B49170: (format & F000h) == 1000h.
+// 00B478E0: the type size from the .rdata dword table 00D61CC0 (18 entries, read from the
+// PE: FLOAT1..4 = 4/8/12/16, D3DCOLOR/UBYTE4/SHORT2 = 4, SHORT4 8, UBYTE4N/SHORT2N 4,
+// SHORT4N 8, USHORT2N 4, USHORT4N 8, UDEC3/DEC3N/FLOAT16_2 4, FLOAT16_4 8, UNUSED 4).
+std::uint32_t vertex_element_type_size_00b478e0(const std::uint32_t element[5]) noexcept;
+// 00B49170: (format & F000h) == 1000h.
 bool d3d_format_is_kind_1000_00b49170(std::uint32_t format) noexcept;
 
 // Hardware layout record quads (4 x 0Ch records + count at +30h). 00B48430 constructs

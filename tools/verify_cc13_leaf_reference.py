@@ -51,6 +51,55 @@ CODE = {
     0x67af30: 0x3,    # Empty: RET 8 (tactical sheet listbox selection changed)
     0x509d70: 0x8,    # Adjustor: ADD ECX,64h; JMP 006833F0 (stubbed)
     0x67b3f0: 0x5,    # TailJump: JMP 004F71D0 (stubbed)
+    # cc13-fixture2: x87 / trig / sqrt / table leaves.
+    0xb64470: 0x1c2,  # matrix from euler, scale, translation (FSIN/FCOS)
+    0x467050: 0xd7,   # matrix rotation from euler (FSIN/FCOS)
+    0x4e5c00: 0x11d,  # linearize rgb gamma 2.2 (FYL2X / F2XM1)
+    0xb8c520: 0x173,  # color32 scale (FISTP)
+    0xb65560: 0xf5,   # frustum planes from angles (FSIN/FCOS)
+    0x452b00: 0x71,   # lens flare pow response (FYL2X / F2XM1)
+    0xaed820: 0x6f,   # terrain float layer quantize to byte (chop FISTP)
+    0x9064d0: 0x1d,   # score table map usage points (FISTP)
+    0xb8b940: 0x32,   # truncate float to field +20h (chop FISTP qword)
+    0xafb7f0: 0x247,  # ballistic max height (sqrt)
+    0xafba40: 0x245,  # ballistic min height (sqrt)
+    0x428090: 0x19f,  # segment intersects sphere (sqrt)
+    0x941aa0: 0x17d,  # spawn ray / sphere (sqrt)
+    0x9d7780: 0x1a5,  # oriented rect distance to point (sqrt)
+    0x9d7930: 0x1b5,  # oriented rect 2 distance to point (sqrt)
+    0x46f7b0: 0x184,  # project point onto plane (sqrt)
+    0x46f550: 0x180,  # closest point on line (sqrt)
+    0x46f6d0: 0xd7,   # distance along axis (sqrt)
+    0x793730: 0xd0,   # vec3 scale to length (sqrt)
+    0x793800: 0xb8,   # vec2 scale to length (sqrt)
+    0x7bb4c0: 0xb1,   # triangle vertex distance sum (sqrt)
+    0xa8b860: 0xc8,   # 2D line intersection
+    0xb75580: 0x83,   # bezier
+    0xb75520: 0x57,   # hermite basis
+    0xbbf280: 0xe6,   # rgba lerp
+    0x4f3da0: 0x138,  # 2D triangle contains point
+    0xc37860: 0x125,  # 2D barycentric (register ABI)
+    0xb478e0: 0xb,    # vertex element type size (table 00D61CC0)
+    0xadfa90: 0x62,   # terrain u8 block set sample (chop FISTP)
+    0xadc580: 0x66,   # terrain u16 block set sample (chop FISTP)
+    0xb62dd0: 0x67,   # 2x2 invert in place
+    0xb62a10: 0xb3,   # ortho off-centre LH
+    # cc13-fixture3: Dyn and geometry leaves.
+    0xc38810: 0x15c,  # cylinder shape support, double (slot 3; sqrt)
+    0xc47aa0: 0x1f8,  # box shape support, float (slot 2)
+    0xc38470: 0x13b,  # box shape support, double (slot 3)
+    0xc412d0: 0x277,  # segment / box slab entry (register ABI)
+    0xc313a0: 0x34e,  # polygon clip x at least (register ABI)
+    0xc30d10: 0x349,  # polygon clip y at least (register ABI)
+    0xc31060: 0x338,  # polygon clip x at most (register ABI)
+    0xc309d0: 0x333,  # polygon clip y at most (register ABI)
+    0xc34cf0: 0x272,  # expand node 3x4 matrices to 4x4 (register ABI)
+    0xc37f60: 0xcd,   # body add force at point
+    0xc43ea0: 0x15c,  # interpolate body transform
+    # cc13-fixture8: small main-thread float leaves.
+    0x809de0: 0x23, 0x7b5390: 0x6d, 0x791640: 0x71, 0x59ab10: 0xad, 0x790460: 0x61, 0x414130: 0x25,
+    0x9c6220: 0x47, 0x88a0c0: 0x6d, 0x98a710: 0x3f, 0x638b20: 0x31, 0x42c450: 0x62, 0x7b5be0: 0x3a,
+    0x6eb870: 0x53, 0x9b93f0: 0x21, 0xb0a3f0: 0x28, 0x6ea530: 0x15,
 }
 # Tail-jump targets replaced by MOV EAX,ECX; RET, so a fixture reads the ECX a thunk passes on.
 TAIL_STUBS = (0x6833f0, 0x4f71d0)
@@ -62,6 +111,16 @@ DATA = {
     0xe08890: 4, 0xe08894: 4,      # map offsets (the fixture overwrites them)
     0x1090500: 0x400,              # CRC-32 table (BSS)
     0xf88c50: 0x400,               # scene text escape buffer (BSS)
+    # cc13-fixture2 constants (floats and doubles read by the routines above).
+    0xd7a208: 8, 0xce89d8: 8, 0xce4b48: 8, 0xcedd44: 8, 0xd7a260: 8, 0xce42d0: 8,
+    0xce6628: 8, 0xd19660: 8, 0xd7a218: 8, 0xd7a308: 8, 0xd7a288: 8, 0xd7a2b0: 8,
+    0xce6658: 8,
+    0xd61cc0: 0x48,                # vertex element type sizes (18 dwords)
+    # cc13-fixture3 constants: the double -1.0 at 00D7A250 and the double 1e-7 at 00D7A298.
+    0xd7a250: 8, 0xd7a298: 8,
+    # cc13-fixture8: constants read by the routines above.
+    0xd045f0: 8, 0xce3850: 4, 0xce3ae8: 4, 0xce3d78: 8, 0xd7a210: 8, 0xcf9058: 8,
+    0xce7630: 8, 0xce38c8: 4, 0xce3d08: 4, 0xd7a278: 8,
 }
 SQRT = 0xbf7030
 SQRT_STUB = bytes([0xd9, 0xfa, 0xc3])

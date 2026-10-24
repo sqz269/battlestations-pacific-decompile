@@ -171,6 +171,8 @@ private:
     GuiTextRuntimeCopyOperation(GuiTextRuntimeFactory&, GuiWidgetOwner&,
         GuiTextRuntimeImplementation&, std::unique_ptr<GuiLayoutWidget>&,
         const GuiWidgetBaseCopyPreimage&, GuiTextRuntimeCopyServices);
+    // 00ABB2C0 whole body on this operation's slot; see the .cpp comment.
+    GuiTextCopyPhase copy_construct_00abb2c0();
     void finish_admission();
     void release_source_borrow() noexcept;
     GuiTextRuntimeFactory& factory_;
