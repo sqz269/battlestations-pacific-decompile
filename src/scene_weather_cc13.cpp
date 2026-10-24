@@ -1,4 +1,5 @@
 #include "bsp/scene_weather_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 #include <limits>
@@ -905,9 +906,11 @@ void linearize_rgb_004e5c00(float* rgb) noexcept {
             c = -0.0f - c;
         }
         // cc13-fixture2 (fixture-found): an infinite exponent product makes FRNDINT/FSUB form
-        // inf - inf, so F2XM1/FSCALE return the default NaN instead of inf or 0.
-        const double y = static_cast<double>(kLinearizeExponent) * std::log2(static_cast<double>(c));
-        rgb[i] = std::isinf(y) ? -std::numeric_limits<float>::quiet_NaN() : static_cast<float>(std::exp2(y));
+        // inf - inf, so F2XM1/FSCALE return the default NaN instead of inf or 0. Follow-up: the
+        // callers include the frontend tactical library (00502480, 00504130) on the main
+        // thread, so the tail's FSUB and FADDP round to 24 bits (cc13x87::x87_pow2_tail24).
+        const double y = cc13x87::x87_fyl2x(kLinearizeExponent, c);
+        rgb[i] = static_cast<float>(cc13x87::x87_pow2_tail24(y));
     }
 }
 

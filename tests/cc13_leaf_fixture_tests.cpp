@@ -293,8 +293,10 @@ template<class Open> void run_fixture2(Open open) {
             float o1[16], o2[16];
             for (int k = 0; k < 16; ++k) o1[k] = o2[k] = -3.0f;
             ortho(o1, 0, l, r, b, tp, zn, zf);
-            ortho_off_center_lh(o2, l, r, b, tp, zn, zf);
-            orth.check(std::memcmp(o1, o2, sizeof(o1)) == 0);
+            ortho_off_center_lh_pc24(o2, l, r, b, tp, zn, zf);
+            const int k = first_diff(o1, o2, 16);
+            check_note(orth, k < 0, "l=%a r=%a b=%a t=%a n=%a f=%a [%d] %a / %a", l, r, b, tp, zn, zf, k,
+                       k < 0 ? 0.0 : o1[k], k < 0 ? 0.0 : o2[k]);
         }
     }
     {
@@ -534,7 +536,8 @@ template<class Open> void run_fixture2(Open open) {
             const float p0 = edge_or(-20, 20), p1 = edge_or(-20, 20), p2 = edge_or(-20, 20), p3 = edge_or(-20, 20),
                         s = i < 101 ? static_cast<float>(i) / 100.0f : edge_or(-0.5f, 1.5f);
             const double n1 = bezier(p0, p1, p2, p3, s), n2 = bezier_00b75580(p0, p1, p2, p3, s);
-            check_note(bz, same(n1, n2), "p=%a,%a,%a,%a s=%a: %a / %a", p0, p1, p2, p3, s, n1, n2);
+            if (!same(n1, n2) && std::isnan(n1) && std::isnan(n2)) bz.check_nan_only();
+            else check_note(bz, same(n1, n2), "p=%a,%a,%a,%a s=%a: %a / %a", p0, p1, p2, p3, s, n1, n2);
             HermiteBasis h1{};
             native_hermite(cc13_leaf_00b75520, s, &h1.p1, &h1.p0, &h1.t1, &h1.t0);
             const HermiteBasis h2 = hermite_basis_00b75520(s);
@@ -835,32 +838,46 @@ int main() {
         run_fixture2([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
     }
     _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
-    // cc13-fixture2 cases carry a precision suffix. A routine's reconstruction models one
-    // precision control: 24-bit for the three listed here, 53-bit otherwise; only that pass
-    // decides. Known findings (documented in docs/CC13_FIXTURE_PASS_2.md) are reported and
-    // do not fail the run; NaN sign/payload-only differences are counted apart.
-    static const char* const primary24[] = {"009D7780", "009D7930", "004F3DA0"};
-    static const char* const known[][2] = {
-        {"004F3DA0", "float intermediates overflow where the x87 stack does not"},
+    // cc13-fixture2 cases carry a precision suffix. The pass that decides is the precision of
+    // the thread the image runs the routine on (docs/CC13_FPU_PRECISION.md): 24-bit for the
+    // main thread, 53-bit only for routines reached from worker threads alone (listed here).
+    // The documented findings of docs/CC13_FIXTURE_PASS_2.md are pinned: a deciding pass fails
+    // when its mismatch or NaN sign/payload-only count differs from the pinned one (0 for an
+    // unlisted routine), so a new mismatch or a fixed one both show up.
+    static const char* const primary53[] = {"00C37860"};
+    struct Pinned { const char* address; int failures; int nan_only; const char* finding; };
+    static const Pinned pinned[] = {
+        {"004F3DA0", 57, 0, "float intermediates overflow where the x87 stack does not"},
+        {"00B64470", 0, 7, "NaN sign/payload only"},
+        {"00B62DD0", 0, 54, "NaN sign/payload only"},
+        {"00941AA0", 0, 10, "NaN sign/payload only"},
+        {"00A8B860", 0, 1, "NaN sign/payload only"},
+        {"00B75580", 0, 1, "NaN sign/payload only"},
     };
     int failures = 0;
     for (int i = 0; i < count; ++i) {
         const std::string& name = cases[i].name;
         const bool at24 = name.size() > 4 && name.compare(name.size() - 4, 4, " @24") == 0;
         const bool tagged = at24 || (name.size() > 4 && name.compare(name.size() - 4, 4, " @53") == 0);
-        bool wants24 = false;
-        for (const char* p : primary24) wants24 = wants24 || name.compare(0, 8, p) == 0;
-        const bool primary = !tagged || at24 == wants24;
-        const char* finding = nullptr;
-        for (const auto& k : known) if (name.compare(0, 8, k[0]) == 0) finding = k[1];
+        bool wants53 = false;
+        for (const char* p : primary53) wants53 = wants53 || name.compare(0, 8, p) == 0;
+        const bool primary = !tagged || at24 != wants53;
+        // The pinned counts are for the default input set; without edge values every
+        // deciding pass must match outright.
+        static const bool edges = GetEnvironmentVariableA("BSP_FIXTURE_NO_EDGES", nullptr, 0) == 0;
+        const Pinned* pin = nullptr;
+        for (const auto& k : pinned) if (edges && name.compare(0, 8, k.address) == 0) pin = &k;
+        const int want_failures = primary && pin ? pin->failures : 0;
+        const int want_nan_only = primary && pin ? pin->nan_only : 0;
+        const bool off = primary && (cases[i].failures != want_failures || cases[i].nan_only != want_nan_only);
         std::cout << name << ": " << cases[i].runs - cases[i].failures - cases[i].nan_only << '/' << cases[i].runs;
         if (cases[i].nan_only) std::cout << " (+" << cases[i].nan_only << " NaN sign/payload only)";
-        if (!cases[i].failures) std::cout << " match";
+        if (!cases[i].failures && !off) std::cout << " match";
         else if (!primary) std::cout << " mismatch (other precision, informational)";
-        else if (finding) std::cout << " MISMATCH (known finding: " << finding << ')';
-        else std::cout << " MISMATCH";
+        else if (!off) std::cout << " MISMATCH (pinned finding: " << pin->finding << ')';
+        else std::cout << " MISMATCH (expected " << want_failures << " mismatches, " << want_nan_only << " NaN-only)";
         std::cout << (primary && tagged ? " [primary]\n" : "\n");
-        failures += cases[i].failures != 0 && primary && !finding;
+        failures += off;
     }
     std::cout << count << " cc13 leaf cases; " << failures << " with mismatches\n";
     return failures ? 1 : 0;

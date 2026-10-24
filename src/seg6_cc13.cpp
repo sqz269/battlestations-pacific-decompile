@@ -1,4 +1,5 @@
 #include "bsp/seg6_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 #include <initializer_list>
@@ -162,38 +163,31 @@ Object movie_timed_record_construct_00465a40(Seg6Host& host, Object item, float 
 
 // 00467050, __thiscall(float* matrix, a, b, c), RET 0Ch. Each FSIN/FCOS result
 // is stored to a float local first; the products then run on the x87 stack and
-// are rounded to float at each FSTP. Here they run in double (two-factor
-// products are exact in double; a three-factor product may differ by a double
-// rounding). Element [9] is SUBSS of sin(a) from the float -0.0 at 00D7A208.
-// FSIN/FCOS lose accuracy for |x| beyond about 2^63; std::sin does not.
-namespace {
-// FSIN / FCOS (cc13-fixture2): an operand of magnitude 2^63 or more is left unchanged (C2 set,
-// no reduction), an infinity becomes the default NaN, a NaN passes through.
-double x87_trig_unreduced(double x) {
-    if (std::isinf(x)) return -std::numeric_limits<double>::quiet_NaN();
-    return x;
-}
-double x87_sin(double x) { return std::fabs(x) < 0x1p63 ? std::sin(x) : x87_trig_unreduced(x); }
-double x87_cos(double x) { return std::fabs(x) < 0x1p63 ? std::cos(x) : x87_trig_unreduced(x); }
-}  // namespace
+// are rounded to float at each FSTP. Element [9] is SUBSS of sin(a) from the
+// float -0.0 at 00D7A208. cc13-fixture2 follow-up: the callers (HUD free camera
+// 00540390, scene database 0046DC10, plane control init 007BDF50 and others) run
+// on the main thread at 24-bit precision control, so each operation rounds to a
+// 24-bit significand (x87_*24), in listing order: sc*sa first (00467090..9E),
+// then times sb (004670BF) or cb (004670D8). FSIN/FCOS: see cc13_x87_model.hpp.
 void matrix_set_rotation_from_euler_00467050(float* m, float a, float b, float c) {
+    using namespace cc13x87;
     const float sa = static_cast<float>(x87_sin(a));
     const float ca = static_cast<float>(x87_cos(a));
     const float sb = static_cast<float>(x87_sin(b));
     const float cb = static_cast<float>(x87_cos(b));
     const float sc = static_cast<float>(x87_sin(c));
     const float cc = static_cast<float>(x87_cos(c));
-    const double dsa = sa, dca = ca, dsb = sb, dcb = cb, dsc = sc, dcc = cc;
     m[9] = -0.0f - sa;                                               // 00467096..004670AA
-    m[0] = static_cast<float>(dsb * dsc * dsa + dcb * dcc);
-    m[1] = static_cast<float>(dca * dsc);
-    m[2] = static_cast<float>(dcb * dsc * dsa - dcc * dsb);
-    const double cc_sa = dcc * dsa;                                  // 004670EA FST double
-    m[4] = static_cast<float>(cc_sa * dsb - dsc * dcb);
-    m[5] = static_cast<float>(dca * dcc);
-    m[6] = static_cast<float>(dcb * cc_sa + dsb * dsc);
-    m[8] = static_cast<float>(dca * dsb);
-    m[10] = static_cast<float>(dca * dcb);
+    const double sc_sa = x87_mul24(sc, sa);                          // 0046709E
+    m[0] = static_cast<float>(x87_add24(x87_mul24(cc, cb), x87_mul24(sb, sc_sa)));
+    m[1] = static_cast<float>(x87_mul24(sc, ca));
+    m[2] = static_cast<float>(x87_sub24(x87_mul24(sc_sa, cb), x87_mul24(cc, sb)));
+    const double cc_sa = x87_mul24(cc, sa);                          // 004670EA FST double
+    m[4] = static_cast<float>(x87_sub24(x87_mul24(cc_sa, sb), x87_mul24(sc, cb)));
+    m[5] = static_cast<float>(x87_mul24(cc, ca));
+    m[6] = static_cast<float>(x87_add24(x87_mul24(sc, sb), x87_mul24(cb, cc_sa)));
+    m[8] = static_cast<float>(x87_mul24(sb, ca));
+    m[10] = static_cast<float>(x87_mul24(ca, cb));
 }
 
 // 00468560, __thiscall(descriptor, const float pos[3], float extra), RET 8,

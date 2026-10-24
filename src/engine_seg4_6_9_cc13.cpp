@@ -1,4 +1,5 @@
 #include "bsp/engine_seg4_6_9_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 #include <limits>
@@ -322,6 +323,13 @@ float dot3(const F3& x, const F3& y) {
                + static_cast<double>(x[2]) * y[2]);
 }
 
+// The same dot product with each FMUL/FADD rounded to 24 significand bits, for routines that
+// run on the main thread (cc13-fixture2 follow-up; cc13_x87_model.hpp).
+float dot3_24(const F3& x, const F3& y) {
+    using namespace cc13x87;
+    return f32(x87_add24(x87_add24(x87_mul24(x[0], y[0]), x87_mul24(x[1], y[1])), x87_mul24(x[2], y[2])));
+}
+
 F3 scale3(const F3& v, float s) { return {v[0] * s, v[1] * s, v[2] * s}; }
 
 F3 add3(const F3& a, const F3& b) { return {a[0] + b[0], a[1] + b[1], a[2] + b[2]}; }
@@ -331,21 +339,25 @@ float inverse_or_zero(float s) { return s > 0.0f ? 1.0f / s : 0.0f; }
 
 } // namespace
 
+// cc13-fixture2 follow-up: 0046F550 (called by 0046F940), 0046F6D0 and 0046F7B0 (no
+// reference in the image; scene geometry helpers) are modelled at the main thread's 24-bit
+// precision control: the dot products use dot3_24. Every other step is a float store, and
+// the length is the x87 inline-asm copy, which follows the running precision.
 F3 closest_point_on_line_0046f550(const F3& point, const F3& line_point, const F3& dir, float& distance) {
     const F3 w = sub3(point, line_point);                 // 0046F576..0046F5B8
-    const float t = dot3(dir, w);                         // 0046F5D0..0046F5EC
+    const float t = dot3_24(dir, w);                      // 0046F5D0..0046F5EC
     const F3 out = add3(line_point, scale3(dir, t));      // 0046F5F0..0046F649
     distance = force_event_vector_length_0042b2f0(sub3(point, out)); // inline copy 0046F64C..0046F6CD
     return out;
 }
 
 float distance_along_axis_0046f6d0(const F3& point, const F3& origin, const F3& dir) {
-    const float t = dot3(dir, sub3(point, origin));       // 0046F6D3..0046F729
+    const float t = dot3_24(dir, sub3(point, origin));    // 0046F6D3..0046F729
     return force_event_vector_length_0042b2f0(scale3(dir, t)); // inline copy 0046F747..0046F7A4
 }
 
 F3 project_onto_plane_0046f7b0(const F3& point, const F3& plane_point, const F3& normal, float& distance) {
-    const float t = dot3(normal, sub3(point, plane_point)); // 0046F7B7..0046F84C
+    const float t = dot3_24(normal, sub3(point, plane_point)); // 0046F7B7..0046F84C
     const F3 out = sub3(point, scale3(normal, t));          // 0046F850..0046F8A9
     distance = force_event_vector_length_0042b2f0(sub3(out, plane_point)); // 0046F8AC..0046F931
     return out;
@@ -599,9 +611,10 @@ void lens_flare_pow_response_00452b00(float k_1c, float x, float& out_04, float&
         float magnitude = x;
         if (0.0f > x) magnitude = -0.0f - x;                                      // 00452B26..00452B37
         // cc13-fixture2 (fixture-found): an infinite k * log2|x| gives inf - inf after FRNDINT, so
-        // the image stores the default NaN.
-        const double y = static_cast<double>(k_1c) * std::log2(static_cast<double>(magnitude));
-        result = std::isinf(y) ? -std::numeric_limits<float>::quiet_NaN() : static_cast<float>(std::exp2(y));
+        // the image stores the default NaN. Follow-up: the caller (006515B0 HUD unit view) runs
+        // on the main thread, so the tail's FSUB and FADDP round to 24 bits.
+        const double y = cc13x87::x87_fyl2x(k_1c, magnitude);
+        result = static_cast<float>(cc13x87::x87_pow2_tail24(y));
     }
     out_04 = result;                                                              // 00452B61
     out_08 = result;
@@ -610,13 +623,15 @@ void lens_flare_pow_response_00452b00(float k_1c, float x, float& out_04, float&
 namespace {
 
 // FYL2X/FRNDINT/F2XM1/FSCALE on |v| with exponent e, stored float; 0 for v == 0.
-// cc13-fixture2 follow-up: the same sequence as 00452B00, so an infinite e * log2|v| gives
-// inf - inf after FRNDINT and the default NaN, as fixture-found there (not fixture-tested here).
+// cc13-fixture2 follow-up: the same sequence as 00452B00 (00452FB7, 00453068), so an infinite
+// e * log2|v| gives inf - inf after FRNDINT and the default NaN, and the callers of 00452BD0 (HUD
+// binoculars raise, call at 0051F00C; HUD unit view, call at 006515F9) run on the main thread, so the tail rounds to 24 bits.
+// Not fixture-tested here.
 float x87_power_response(float v, double e) {
     if (v == 0.0f) return 0.0f;
     const float magnitude = 0.0f > v ? -0.0f - v : v;
-    const double y = e * std::log2(static_cast<double>(magnitude));
-    return std::isinf(y) ? -std::numeric_limits<float>::quiet_NaN() : static_cast<float>(std::exp2(y));
+    const double y = cc13x87::x87_fyl2x(e, magnitude);
+    return static_cast<float>(cc13x87::x87_pow2_tail24(y));
 }
 
 } // namespace

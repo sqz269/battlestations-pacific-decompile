@@ -3,6 +3,7 @@
 // Nothing here invents a global or stubs an unresolved call: the three world calls are
 // SpawnPlacementHost methods the caller supplies.
 
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/lua_spawn_cc13.hpp"
 
 #include <array>
@@ -84,17 +85,18 @@ bool spawn_ray_sphere_00941aa0(const float start[3], const float dir[3],
                                const float center[3], float radius, float& t0,
                                float& t1) noexcept {
     // cc13-fixture2 (fixture-found): every named value is an FSTP to float and the sums between
-    // the stores stay on the x87 stack (double here, the 53-bit control word): the projection
-    // sums x, y, then z (00941B18..00941B33) and the squared miss sums x, y, then z
-    // (00941B9A..00941BB6).
-    using D = double;
+    // the stores stay on the x87 stack: the projection sums x, y, then z (00941B18..00941B33)
+    // and the squared miss sums x, y, then z (00941B9A..00941BB6). Follow-up: the caller
+    // (00941C20, Lua spawn placement) runs on the main thread at 24-bit precision control, so
+    // each operation rounds to 24 significand bits (x87_*24).
+    using namespace cc13x87;
     const float d0 = center[0] - start[0], d1 = center[1] - start[1], d2 = center[2] - start[2];
-    const float proj = to_float((D(dir[0]) * d0 + D(dir[1]) * d1) + D(dir[2]) * d2);
-    const float dx = (start[0] + to_float(D(proj) * dir[0])) - center[0];
-    const float dy = (start[1] + to_float(D(dir[1]) * proj)) - center[1];
-    const float dz = (start[2] + to_float(D(proj) * dir[2])) - center[2];
-    const float miss2 = to_float((D(dx) * dx + D(dy) * dy) + D(dz) * dz);
-    const float radius2 = to_float(D(radius) * radius);
+    const float proj = to_float(x87_add24(x87_add24(x87_mul24(dir[0], d0), x87_mul24(dir[1], d1)), x87_mul24(dir[2], d2)));
+    const float dx = (start[0] + to_float(x87_mul24(proj, dir[0]))) - center[0];
+    const float dy = (start[1] + to_float(x87_mul24(dir[1], proj))) - center[1];
+    const float dz = (start[2] + to_float(x87_mul24(proj, dir[2]))) - center[2];
+    const float miss2 = to_float(x87_add24(x87_add24(x87_mul24(dx, dx), x87_mul24(dy, dy)), x87_mul24(dz, dz)));
+    const float radius2 = to_float(x87_mul24(radius, radius));
     // 00941BCC FCOMI miss2, radius2 / JB: a smaller miss intersects, and so does an unordered
     // (NaN) compare.
     if (miss2 >= radius2) return false;
