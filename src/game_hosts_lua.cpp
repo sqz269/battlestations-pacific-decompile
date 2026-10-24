@@ -3188,6 +3188,28 @@ bool GameMissionLuaHost::stationary_class_exists(const std::string& name) {
     return found;
 }
 
+std::string GameMissionLuaHost::read_stationary_class_string(const std::string& name,
+    const char* key) {
+    std::string value;
+    if (state_ == nullptr || name.empty() || key == nullptr) return value;
+    const int top = ::lua_gettop(state_);
+    // The same 00851CB0 StationaryClass/type-name lookup as the existing
+    // presence reader above, followed by the installed field itself.
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "StationaryClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, name.c_str());
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TSTRING) {
+                const char* text = lua_tolstring(state_, -1, nullptr);
+                if (text != nullptr) value = text;
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 int GameMissionLuaHost::run_is_ready_to_send_planes_00895d20(lua_State* state,
     int argument_count) {
     static_cast<void>(argument_count);
