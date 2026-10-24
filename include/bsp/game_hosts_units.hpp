@@ -450,9 +450,12 @@ inline constexpr bool kSubmarinePeriscopeOutBound = true;  // ON: pairs held (do
 // clamp, no bounds write.
 inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06 spread miss recorded (docs/SUBMARINE_MODEL.md section 14)
 // Packet cc13-D5. The scan's speed is 00855498 CALL 0092D730: (v.y * row2.y +
-// v.x * row2.x) + v.z * row2.z, each FMUL and FADDP rounded to 24 bits on the
-// main thread (0092D74E-0092D763), then FSTP float. True: per-op float in that
-// order. False: the double chain rounded once.
+// v.x * row2.x) + v.z * row2.z (0092D74E-0092D763), then FSTP float. Modelled at
+// 24 bits, each FMUL and FADDP rounded, the main thread's precision; UNCERTAIN: if
+// the scan runs on a fixed-step pool worker (53-bit), the double chain is right.
+// SUBSTITUTION, labelled: motion.linear_velocity and motion.pose_row2 stand in for
+// the image's 00C31F40 (velocity) and 00C32000 (matrix) on [unit+D08h]+2Ch.
+// True: per-op float in that order. False: the double chain rounded once.
 inline constexpr bool kSubmarineSeabedSpeedPc24Cc13Bound = false;
 
 // Packet cc9_submarine_dive_teleport (docs/SUBMARINE_MODEL.md section 15). True: a

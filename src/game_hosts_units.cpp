@@ -6964,6 +6964,14 @@ struct GameUnitsHost::Impl {
     // task and the level-bomb prepare's exit (009B84A0). True: both stores. False:
     // recorded only, as before.
     static constexpr bool kFollowExitClearsBound = true;
+    // Packet D5 (cc13): OFF until cc9 pairs it. 009C3374-009C3396: on a state change
+    // the moveto task's rule calls the old state's vtable+8 (exit), stores task+310h,
+    // then the new state's vtable+4 (enter). Only follow (00D20AB8) has a non-stub exit,
+    // 009BDE40; moveto 00D20A80 and circle 00D20A9C have 007B3DC0 (RET). ON: a follow ->
+    // moveto/circle change (a wingman promoted to leader) runs follow_exit_009bde40.
+    // OFF: no exit call, as before. The follow enter (009BED80) stays with the follow
+    // tick's entry detection.
+    static constexpr bool kMoveToFollowExitCc13Bound = false;
     // Packet p20_strafe_horizontal (section 80). 009CAD27-009CAD58: dx and dz are FSTP'd
     // to floats (009CAD30, 009CAD3E) and d2 = (dx dx + 0 0) + dz dz is stored as a float
     // (009CAD58), main-thread 24-bit per op. True: float per op. False: double dx, dz.
@@ -7183,13 +7191,21 @@ struct GameUnitsHost::Impl {
     // target's published byte [T + 9C0h + 8*[00F876B8]] is set (its own 007B9140(T, 0),
     // published by 007CDC70; read live here, as kReleaseTimerNotify0DhBound does), the
     // plane must answer 007B9140(plane, 0) too, else the threat test is false
-    // (009A86DF). True: that clause. False: skipped, as before.
+    // (009A86DF). True: that clause. False: skipped, as before. SUBSTITUTION, labelled:
+    // the image reads the byte 007CDC70 published for the step slot [00F876B8]; True
+    // computes 007B9140(T, 0) live at the call, which can differ when T's racks change
+    // within the step.
     static constexpr bool kDfThreatOrdnanceClauseCc13Bound = false;
     // Packet cc13-D5. The cone arm 009A8682-009A86C6 at 24-bit precision:
     // ShootDistance x 1.5 (FMUL qword 00CE3D78) is rounded before the FCOMIP,
     // x / z and y / z are FSTP'd as floats, and 0042B2F0 forms (x*x + y*y) + z*z
     // per op in float. True: those roundings. False: the 53-bit double chain.
     static constexpr bool kDfThreatConePc24Cc13Bound = false;
+    // Packet cc13-D5. 009B4D00's spacing distances, own_d (009B4FE4-009B5054) and each
+    // peer's (009B50EE-009B5154): dx and dz FSTP'd as floats, d2 = (dx*dx + 0) + dz*dz
+    // per op in float, sqrt (00BF7030) only above 1e-10 (00CE3820), else 0; as 0042B2F0
+    // with y = 0. True: gun_length3_0042b2f0<false>. False: the 53-bit double sqrt.
+    static constexpr bool kLevelBombSpacingDistPc24Cc13Bound = false;
     static constexpr bool kDogfightAvoidBodiesBound = true;
     static constexpr bool kDogfightAvoidPickBound = true;
     // Packet cc13-dogfight1 (docs/CC13_DOGFIGHT_DRAWS.md): three of those draws
@@ -25536,6 +25552,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if constexpr (GameUnitsHost::Impl::kDfThreatOrdnanceClauseCc13Bound) {
                             // 009A85EF: the target's published 007B9140(T, 0); 009A8600:
                             // the plane's own. Both: kind 17h, or some rack holds a round.
+                            // SUBSTITUTION, labelled: T's is computed live, not read from
+                            // the step slot [00F876B8] 007CDC70 published.
                             if (df_can_drop_007b9140(*t) && !df_can_drop_007b9140(unit_)) {
                                 threatened = false;                                 // 009A8607
                             }
@@ -28720,9 +28738,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const std::size_t own_ld = own->flight_leader();
                         if (own_ld == bsp::kPlaneSquadronNoUnit || own_ld >= owner_.slots.size()) return {};
                         const float* op = owner_.slots[own_ld]->motion.position;
-                        const float own_d = static_cast<float>(std::sqrt(
-                            static_cast<double>(unit_.lb_aim[0] - op[0]) * (unit_.lb_aim[0] - op[0]) +
-                            static_cast<double>(unit_.lb_aim[2] - op[2]) * (unit_.lb_aim[2] - op[2])));
+                        float own_d = 0.0f;
+                        if constexpr (GameUnitsHost::Impl::kLevelBombSpacingDistPc24Cc13Bound) {
+                            // 009B4FE4-009B5054: float dx, dz; 0042B2F0's chain.
+                            const float v[3] = {unit_.lb_aim[0] - op[0], 0.0f,
+                                                unit_.lb_aim[2] - op[2]};
+                            own_d = bsp::gun_length3_0042b2f0<false>(v);
+                        } else {
+                            own_d = static_cast<float>(std::sqrt(
+                                static_cast<double>(unit_.lb_aim[0] - op[0]) * (unit_.lb_aim[0] - op[0]) +
+                                static_cast<double>(unit_.lb_aim[2] - op[2]) * (unit_.lb_aim[2] - op[2])));
+                        }
                         unsigned own_id = 0;
                         std::vector<bsp::LevelBombPeer> list;
                         const auto& recs = reg.records();
@@ -28751,9 +28777,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (!(tz * tz + tx * tx + 0.0f < bsp::level_bomb::kPeerTargetRadiusSq)) continue;
                             const float* lp = l.motion.position;
                             bsp::LevelBombPeer peer;
-                            peer.distance = static_cast<float>(std::sqrt(
-                                static_cast<double>(unit_.lb_aim[0] - lp[0]) * (unit_.lb_aim[0] - lp[0]) +
-                                static_cast<double>(unit_.lb_aim[2] - lp[2]) * (unit_.lb_aim[2] - lp[2])));
+                            if constexpr (GameUnitsHost::Impl::kLevelBombSpacingDistPc24Cc13Bound) {
+                                // 009B50EE-009B5154: the same chain on the peer leader.
+                                const float v[3] = {unit_.lb_aim[0] - lp[0], 0.0f,
+                                                    unit_.lb_aim[2] - lp[2]};
+                                peer.distance = bsp::gun_length3_0042b2f0<false>(v);
+                            } else {
+                                peer.distance = static_cast<float>(std::sqrt(
+                                    static_cast<double>(unit_.lb_aim[0] - lp[0]) * (unit_.lb_aim[0] - lp[0]) +
+                                    static_cast<double>(unit_.lb_aim[2] - lp[2]) * (unit_.lb_aim[2] - lp[2])));
+                            }
                             peer.id = static_cast<unsigned>(r);
                             list.push_back(peer);
                         }
@@ -39104,6 +39137,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.log.notef("  moveto task %s: state %d -> %d (009C3310)",
                                     unit_.row.name.c_str(), static_cast<int>(unit_.moveto_state),
                                     static_cast<int>(next));
+                                // 009C3387: the old state's exit (non-stub only for follow).
+                                if constexpr (GameUnitsHost::Impl::kMoveToFollowExitCc13Bound) {
+                                    if (unit_.moveto_state ==
+                                        GameUnitSlot::MoveToTaskState::kFollow) {
+                                        owner_.follow_exit_009bde40(unit_);
+                                    }
+                                }
                                 unit_.moveto_state = next;
                             }
                         } else {
