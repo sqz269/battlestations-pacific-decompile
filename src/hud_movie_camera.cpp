@@ -86,9 +86,14 @@ void begin_00791020(MovieKeyframe& k, const HudMovieCamera& camera) {
         k.zoom_c4 = camera.fov_410 / k.fov_divisor_c0 * k.zoom_c4;
     }
     k.zoom_c8 = k.zoom_c4;
+    // 00791098..007910BF: the modifier's slot +18h (camera, t) is 0078E700,
+    // `ret 8`, in the goaround table (00D04C8C), the only modifier built here.
     if (!k.use_current_d8) return;
     k.parent_attached_24 = false;                    // 007910D6
     k.transform_2c = 0;                              // 007910DA
+    if constexpr (kMovieBeginDropsModifierCc13Bound) {
+        k.modifier_e4.reset();                       // 007910E3..007910EB
+    }
     const float* pos = camera.matrix_528.data() + 12;   // +558h
     if (k.camera_28) {
         for (int i = 0; i < 3; ++i) {
@@ -608,6 +613,10 @@ bool movie_camera_fixed_step_00798c80(HudMovieCamera& camera, float dt) noexcept
     if (camera.running_391) return false;
     if (!(dt > 0.0f)) return false;                      // 00798C93 COMISS 0.0
     camera.running_391 = true;                           // 00798CA6
+    // 00798CBE..00798CCB, after the caller's two reseeds: the step count and
+    // dt sum restart (cc13-P1; neither has a reader, see the header).
+    camera.steps_408 = 0;
+    camera.step_seconds_40c = 0.0f;
     return true;
 }
 
@@ -631,7 +640,12 @@ bool movie_camera_update_0079a3b0(HudMovieCamera& camera, MovieCameraParentHost&
     } else {
         camera.clock_3b0 = 0.0f;
     }
-    if (camera.camera_498.keys.empty() || camera.target_414.keys.empty()) return false;
+    if (camera.camera_498.keys.empty() || camera.target_414.keys.empty()) {
+        if constexpr (kMovieUpdateEmptyTrackClockCc13Bound) {
+            camera.clock_3b0 = 0.0f;                     // 0079BBD5
+        }
+        return false;
+    }
     evaluate_00798130(camera.target_414, camera, host);  // 0079B2A8
     camera.look_384 = camera.target_414.pos_04;
     evaluate_00798130(camera.camera_498, camera, host);  // 0079B2D7
