@@ -8,6 +8,10 @@ namespace {
 float magnitude(float v) noexcept { return v < 0.0f ? -v : v; }  // AND 7FFFFFFFh
 }  // namespace
 
+// Packet D5: OFF until cc9 pairs it. ON subtracts the image's 00CE3D10 constant
+// (0.20000000298023224) in the flyabove slot, where OFF uses the double 0.2.
+inline constexpr bool kNearFieldFlyoverSubtrahendCc13Bound = false;
+
 NearFieldProbeResult near_field_probe_007f0280(const float extents[3], const float weights[3],
                                                int self_index_9d0,
                                                const NearFieldCandidate* candidates,
@@ -76,7 +80,15 @@ void near_field_flyover_extents_009c6aa3(bool flyabove_18, float out[3]) noexcep
 float near_field_flyover_slot_009c6b75(const NearFieldProbeResult& r, bool flyabove_18) noexcept {
     if (!(magnitude(r.out_a[0]) > 0.05)) return 0.0f;  // 009C6B61-009C6B75
     float v = static_cast<float>(-r.out_a[2] * r.out_b[0] * r.out_b[1] * 1.2000000476837158);
-    if (flyabove_18) v = static_cast<float>(v - 0.2);  // 009C6BBE, 00CE3D10
+    if (flyabove_18) {
+        // 009C6BBE FSUB qword [00CE3D10] = 0.20000000298023224 (the float 0.2 widened), not
+        // the double 0.2. ON subtracts the image's constant; OFF keeps 0.2 (packet D5).
+        if constexpr (kNearFieldFlyoverSubtrahendCc13Bound) {
+            v = static_cast<float>(v - 0.20000000298023224);
+        } else {
+            v = static_cast<float>(v - 0.2);
+        }
+    }
     return v;
 }
 
