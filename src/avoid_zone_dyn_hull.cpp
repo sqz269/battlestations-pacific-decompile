@@ -333,33 +333,26 @@ void degenerate_box(std::vector<V>& p,V center,V extent,bool strict) {
     p={{lo.x,lo.y,lo.z},{hi.x,lo.y,lo.z},{hi.x,hi.y,lo.z},{lo.x,hi.y,lo.z},
        {lo.x,lo.y,hi.z},{hi.x,lo.y,hi.z},{hi.x,hi.y,hi.z},{lo.x,hi.y,hi.z}};
 }
-// 00C35E80: normalize, retain the farther near-duplicate, native box fallback.
+// 00C35E80 as 00C5DAE0 calls it: packed XYZ, epsilon 0.001, a scale output.
+// The whole body is dyn_hull_cleanup_points_00c35e80 below.
 std::vector<V> cleanup_00c35e80(const V* input,std::uint32_t count,V& scale) {
-    std::vector<V> p(input,input+count);
-    V lo,hi;bounds(p,lo,hi);
-    V extent=sub(hi,lo),center=add(mul(extent,0.5f),lo);
-    scale={1,1,1};
-    if(extent.x<0.000001f || extent.y<0.000001f || extent.z<0.000001f || count<3) {
-        degenerate_box(p,center,extent,true);return p;
-    }
-    scale=extent;
-    const V inverse{fdiv(1,extent.x),fdiv(1,extent.y),fdiv(1,extent.z)};
-    center={fmul(center.x,inverse.x),fmul(center.y,inverse.y),fmul(center.z,inverse.z)};
-    std::vector<V> clean;clean.reserve(p.size());
-    for(V v:p) {
-        v={fmul(v.x,inverse.x),fmul(v.y,inverse.y),fmul(v.z,inverse.z)};
-        auto duplicate=std::find_if(clean.begin(),clean.end(),[&](V old) {
-            return std::fabs(fsub(old.x,v.x))<0.001f && std::fabs(fsub(old.y,v.y))<0.001f &&
-                   std::fabs(fsub(old.z,v.z))<0.001f;
-        });
-        if(duplicate==clean.end()) clean.push_back(v);
-        else if(dot(sub(*duplicate,center),sub(*duplicate,center))<dot(sub(v,center),sub(v,center)))
-            *duplicate=v;
-    }
-    bounds(clean,lo,hi);extent=sub(hi,lo);
-    if(extent.x<0.000001f || extent.y<0.000001f || extent.z<0.000001f || clean.size()<3)
-        degenerate_box(clean,add(mul(extent,0.5f),lo),extent,false);
+    std::vector<V> clean(count>8?count:8);
+    std::uint32_t kept=0;
+    dyn_hull_cleanup_points_00c35e80(clean.data(),count,input,sizeof(V),&kept,0.001f,&scale);
+    clean.resize(kept);
     return clean;
+}
+// One axis of the bounds loops 00C35F23-00C35F5D and 00C362AB-00C362E5:
+// min > v takes v, then v > max takes v (FCOMIP / JBE, so a NaN is skipped).
+void widen(float v,float& lo,float& hi) {
+    if(lo>v) lo=v;
+    if(v>hi) hi=v;
+}
+// The two inline box tails, 00C3655F-00C36711 (strict) and 00C36368-00C36509.
+void cleanup_box_00c35e80(V* out,V center,V extent,bool strict) {
+    std::vector<V> box;
+    degenerate_box(box,center,extent,strict);
+    std::copy(box.begin(),box.end(),out);
 }
 void* allocate(const AvoidZoneDynHullMemory& memory,std::size_t bytes) {
     if(!memory.allocate || !memory.release) throw std::invalid_argument("Dyn hull allocator required");
@@ -388,6 +381,74 @@ void reserve_adjacency(AvoidZoneDynHullData& data,std::uint32_t count,const Avoi
     release(m,data.adjacency);data.adjacency=next;data.adjacency_capacity=count;
 }
 } // namespace
+
+bool dyn_hull_cleanup_points_00c35e80(V* out,std::uint32_t count,const void* source,
+                                      std::uint32_t stride,std::uint32_t* count_out,
+                                      float epsilon,V* scale_out) {
+    constexpr float tiny=0.000001f;                    // [00D7A288]
+    *count_out=0;                                       // 00C35E94
+    if(scale_out) *scale_out={1.0f,1.0f,1.0f};          // 00C35E9C-00C35EAD, [00D7A24C]
+    // 00C35EB2-00C35F64: bounds of the strided source, from +-FLT_MAX.
+    const auto* bytes=static_cast<const unsigned char*>(source);
+    V lo{FLT_MAX,FLT_MAX,FLT_MAX},hi{-FLT_MAX,-FLT_MAX,-FLT_MAX};
+    for(std::uint32_t i=0;i<count;++i) {
+        V v;std::memcpy(&v,bytes+static_cast<std::size_t>(i)*stride,sizeof v);
+        widen(v.x,lo.x,hi.x);widen(v.y,lo.y,hi.y);widen(v.z,lo.z,hi.z);
+    }
+    // 00C35F66-00C35FED: extent = max - min, center = min + 0.5 * extent (the
+    // 0.5 product, through DC C9 at 00C35FC5, is exact).
+    V extent=sub(hi,lo);
+    V center=add(mul(extent,0.5f),lo);
+    // 00C35FF1-00C3600F: tiny > extent on any axis, or fewer than three points.
+    if(tiny>extent.x || tiny>extent.y || tiny>extent.z || count<3) {
+        cleanup_box_00c35e80(out,center,extent,true);
+        *count_out=8;                                   // 00C3663A
+        return true;                                    // AL = 1 on every path
+    }
+    // 00C36015-00C3606A: with a scale output, store the extent there and work in
+    // the unit box: 1 / extent (FDIVRP / FDIVP) and the center scaled by it.
+    V inverse{};
+    if(scale_out) {
+        *scale_out=extent;
+        inverse={fdiv(1.0f,extent.x),fdiv(1.0f,extent.y),fdiv(1.0f,extent.z)};
+        center={fmul(inverse.x,center.x),fmul(inverse.y,center.y),fmul(inverse.z,center.z)};
+    }
+    // 00C36072-00C36260: per source point, scaled when there is a scale output.
+    // The first kept point within epsilon on all three axes (|kept - v| < epsilon,
+    // FCOMI / JBE) is replaced when v lies farther from the center; otherwise v
+    // is appended and the count published at once (00C36259).
+    for(std::uint32_t i=0;i<count;++i) {
+        V v;std::memcpy(&v,bytes+static_cast<std::size_t>(i)*stride,sizeof v);
+        if(scale_out) v={fmul(v.x,inverse.x),fmul(v.y,inverse.y),fmul(v.z,inverse.z)};
+        const std::uint32_t kept=*count_out;
+        std::uint32_t j=0;
+        for(;j<kept;++j) {
+            const V old=out[j];
+            if(epsilon>std::fabs(fsub(old.x,v.x)) && epsilon>std::fabs(fsub(old.y,v.y)) &&
+               epsilon>std::fabs(fsub(old.z,v.z))) break;
+        }
+        if(j==kept) {
+            out[kept]=v;
+            *count_out=kept+1;
+        } else {
+            // 00C36187-00C3622C: (dx^2 + dy^2) + dz^2 of each, rounded to float.
+            const V moved=sub(v,center),held=sub(out[j],center);
+            if(dot(moved,moved)>dot(held,held)) out[j]=v;
+        }
+    }
+    // 00C3626A-00C36351: the bounds again over the kept points; a full box or
+    // three or more points returns as is.
+    lo={FLT_MAX,FLT_MAX,FLT_MAX};hi={-FLT_MAX,-FLT_MAX,-FLT_MAX};
+    for(std::uint32_t j=0;j<*count_out;++j) {
+        widen(out[j].x,lo.x,hi.x);widen(out[j].y,lo.y,hi.y);widen(out[j].z,lo.z,hi.z);
+    }
+    extent=sub(hi,lo);
+    if(!(tiny>extent.x || tiny>extent.y || tiny>extent.z || *count_out<3)) return true;
+    // 00C36368-00C36509: the box around the kept points, the >= tiny smallest axis.
+    cleanup_box_00c35e80(out,add(mul(extent,0.5f),lo),extent,false);
+    *count_out=8;                                       // 00C364FD
+    return true;
+}
 
 bool avoid_zone_dyn_hull_triangles_00c5dae0(const V* points,std::uint32_t count,
                                           AvoidZoneDynHullTriangles& output) {
