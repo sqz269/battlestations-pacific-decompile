@@ -99,3 +99,11 @@ Ghidra prints both `D8 C8+i` (ST0 = ST0*ST(i)) and `DC C8+i` (ST(i) = ST(i)*ST0)
 its p-code and pseudocode are right, only the listing text is ambiguous. Before transcribing a
 listing `FMUL STi`, run `python tools/x87_dc_form_scan.py --range <lo>-<hi> --context 12`, or read
 the pseudocode. Three reconstructions (four sites) got this wrong (docs/CC13_X87_DC_FORM_AUDIT.md).
+
+## 12. Run the PC24 lint on any change to an x87 image body
+
+The main thread runs the x87 at 24-bit precision, so every FADD/FSUB/FMUL/FDIV rounds to float;
+a C++ chain of two or more double ops rounded once can differ. Required before reporting any
+change that touches a body whose image function does x87 arithmetic:
+`python tools/pc24_lint.py --diff origin/main..HEAD` (or `--staged`, or file paths). It exits 1
+on a new un-narrowed chain; fix it per op, or justify it with `// pc24-lint: allow <reason>`.
