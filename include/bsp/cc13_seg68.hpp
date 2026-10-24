@@ -106,6 +106,8 @@ struct PathPoint {
     bool valid{false};
 };
 
+struct SquadronCandidateTrace;   // packet cc13-fapick, defined below
+
 struct SquadronAutoTargetHost {
     virtual ~SquadronAutoTargetHost() = default;
     // Native reads.
@@ -147,6 +149,32 @@ struct SquadronAutoTargetHost {
     virtual void send_override_command_0071d980(Handle director, Handle command,
                                                 Handle target) = 0;
     virtual void raise_override_stage_0071d9e0(Handle director, int stage) = 0;
+    // Packet cc13-fapick, log-only: 009F7810 reports each recon-list entity once,
+    // with where it dropped or its score. Not an image call; the default does nothing.
+    virtual void trace_candidate_009f7810(Handle entity, const SquadronCandidateTrace& trace) {
+        static_cast<void>(entity);
+        static_cast<void>(trace);
+    }
+};
+
+// Packet cc13-fapick: where 009F7810's loop left a candidate. The fields are
+// written as the existing predicates answer; nothing is evaluated for them.
+enum class SquadronCandidateNote {
+    Scored,             // reached 009F78B2
+    SinglePlane,        // 009F7491 IsKindOf(0Fh)
+    OutsideMapBlocked,  // 009F74BD outside the map and 00811F50(0)
+    SquadronDetached,   // 009F74E9 007EE8B0
+    Slot140Blocks,      // 009F74FA / 009F7876 / 009F7010 [vtable[140h]()]+1D4h
+    Kind1bCarrier,      // 009F752D inner 46h/45h
+    GuardOut,           // filter C 009F7F40 (in 009F7480 or 009F7BA0)
+    NotUnitOrSquadron,  // 009F7BB8/009F7BC7 neither 5 nor 18h (or no leader)
+    NoDetect,           // 009F7BF5 00804350 false
+    NoRank,             // 009F7C2B weight 0 (not in the chosen AttackLists vector)
+};
+struct SquadronCandidateTrace {
+    SquadronCandidateNote note{SquadronCandidateNote::Scored};
+    int rank{0};
+    float score{0.0f};
 };
 
 struct SquadronAutoTarget;
@@ -199,7 +227,8 @@ Handle squadron_choose_attack_command_009f6d60(SquadronAutoTargetHost& host,
 bool filter_enabled_slot4(SquadronFilter filter) noexcept;   // 009F6C10 / 009F7070
 bool filter_slot10(SquadronFilter filter) noexcept;          // 009F70E0 / 009F7090 / 009F7270
 float filter_score_slot8(SquadronAutoTargetHost& host, const SquadronAutoTarget& self,
-                         SquadronFilter filter, Handle target);
+                         SquadronFilter filter, Handle target,
+                         SquadronCandidateTrace* trace = nullptr);
 bool filter_accept_slotc(SquadronAutoTargetHost& host, const SquadronAutoTarget& self,
                          SquadronFilter filter, Handle target);
 float filter_distance_slot18(SquadronAutoTargetHost& host, const SquadronAutoTarget& self,
@@ -223,7 +252,8 @@ bool filter_c_accept_guard_circle_009f7f40(SquadronAutoTargetHost& host,
                                            const SquadronAutoTarget& self, Handle target);
 // 009F7BA0 __thiscall(filter, target) RET 4.
 float filter_score_target_009f7ba0(SquadronAutoTargetHost& host, const SquadronAutoTarget& self,
-                                   SquadronFilter filter, Handle target);
+                                   SquadronFilter filter, Handle target,
+                                   SquadronCandidateTrace* trace = nullptr);
 // 009F9770 __thiscall(filter, target, arg) RET 8.
 int ai_attack_class_weight_009f9770(SquadronAutoTargetHost& host, const SquadronAutoTarget& self,
                                     Handle target, std::uint32_t arg);
@@ -238,7 +268,8 @@ Handle auto_target_ref_inner_owner_009f6af0(SquadronAutoTargetHost& host, Handle
 
 // 009F7480 __thiscall(selector, entity) RET 4.
 bool selector_candidate_allowed_009f7480(SquadronAutoTargetHost& host,
-                                         const SquadronSelector& selector, Handle entity);
+                                         const SquadronSelector& selector, Handle entity,
+                                         SquadronCandidateTrace* trace = nullptr);
 // 009F7810 __thiscall(selector, float dt) RET 4 (dt unused).
 void selector_pick_best_009f7810(SquadronAutoTargetHost& host, SquadronSelector& selector,
                                  float dt);

@@ -105,6 +105,7 @@
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/squadron_free_attack.hpp"            // packet p15_free_attack_tick
+#include "bsp/recon_sensor_pass.hpp"               // packet cc13-fapick
 #include "bsp/squadron_stophead_cc13.hpp"          // packet cc13-stophead
 #include "bsp/squadron_leash_cc13.hpp"             // packet cc13-leash
 #include "bsp/squadron_step_tail_cc13.hpp"         // packet cc13-steptail
@@ -3000,6 +3001,7 @@ struct GameUnitsHost::Impl {
         std::uint32_t head_command{0};       // slot 0 when it was sent
         int last_stop{-1};
         std::size_t last_target{0};
+        bool first_pick_logged{false};       // packet cc13-fapick, log-only
     };
     std::map<std::string, FreeAttack> free_attack;
     unsigned long long free_attack_ticks{0}, free_attack_stops[8]{}, free_attack_sends{0},
@@ -18970,6 +18972,7 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
         for (std::size_t i = 0; i < units.size(); ++i)
             in.contacts.push_back({units[i], squadron_record[i]});
     }
+    in.trace_candidates = !fa.first_pick_logged;   // packet cc13-fapick, log-only
 
     FreeAttackWorld world(*this, h, *gun);
     const bsp::SquadronFreeAttackDecision d = bsp::squadron_free_attack_tick_009f8470(in, world);
@@ -18987,6 +18990,82 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             d.target < h.slots.size() ? h.slots[d.target]->row.name.c_str() : "-",
             d.target_squadron ? " (squadron)" : "", d.command,
             apply ? "applied" : "census only");
+    }
+    if (!fa.first_pick_logged && d.target < h.slots.size()) {
+        // Packet cc13-fapick, log-only and always on: once per squadron, at its first
+        // pick, every recon contact 009F7810 visited and the return it left by, then
+        // the enemy squadrons the recon list (+DE8h) did not offer. Reads only: the
+        // traces are copies of what the loop already computed (no predicate is run
+        // again), and the not_in_recon scan reads the registry, unit_dead and the
+        // recon pass's published level (ReconSensorPassState::level, const).
+        fa.first_pick_logged = true;
+        const auto& records = bsp::plane_squadron_registry().records();
+        const auto owner_of = [&](std::size_t unit) -> const bsp::PlaneSquadronHostRecord* {
+            for (const bsp::PlaneSquadronHostRecord& r : records) {
+                if (r.squadron_unit == unit) return &r;
+                for (const std::size_t m : r.member_units) if (m == unit) return &r;
+            }
+            return nullptr;
+        };
+        const auto unit_name = [&](std::size_t unit, bool squadron) -> const char* {
+            if (squadron) {
+                if (const bsp::PlaneSquadronHostRecord* r = owner_of(unit)) return r->name.c_str();
+            }
+            return unit < h.slots.size() ? h.slots[unit]->row.name.c_str() : "?";
+        };
+        float pick_score = 0.0f;
+        for (const bsp::FreeAttackCandidateTrace& t : d.traces)
+            if (t.unit == d.target && t.squadron == d.target_squadron) pick_score = t.score;
+        constexpr std::size_t kCap = 24;
+        std::size_t shown = 0, hidden = 0;
+        std::string list;
+        char buf[256];
+        for (const bsp::FreeAttackCandidateTrace& t : d.traces) {
+            if (shown == kCap) { ++hidden; continue; }
+            // 009F7480 and 009F7876 drop before 009F7BA0's guard test; 009F7BA0
+            // runs filter accept (the guard circle in C), then 00804350, then the rank.
+            using N = bsp::cc13_seg68::SquadronCandidateNote;
+            const N n = static_cast<N>(t.note);
+            const bool scored = n == N::Scored || n == N::NoRank;
+            const int guard_in = n == N::GuardOut ? 0 : (scored || n == N::NoDetect) ? 1 : -1;
+            const int detect = n == N::NoDetect ? 0 : scored ? 1 : -1;
+            std::snprintf(buf, sizeof buf, " [%s kind=%s %s rank=%d guard_in=%d detect=%d score=%.3f]",
+                unit_name(t.unit, t.squadron), t.squadron ? "18h" : "unit",
+                bsp::free_attack_candidate_note_name(t.note), t.rank, guard_in, detect,
+                static_cast<double>(t.score));
+            list += buf;
+            ++shown;
+        }
+        const bsp::ReconSensorPassState& recon = gun->recon_sensor_pass_state();
+        for (const bsp::PlaneSquadronHostRecord& r : records) {
+            if (r.party == in.party_54 || r.party < 0) continue;
+            bool live = false, offered = false;
+            for (const std::size_t m : r.member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit || m >= h.slots.size() || gun->unit_dead(m)) continue;
+                live = true;
+                for (const bsp::FreeAttackContact& c : in.contacts) if (c.unit == m) offered = true;
+            }
+            for (const bsp::FreeAttackContact& c : in.contacts) if (c.unit == r.squadron_unit) offered = true;
+            if (!live || offered) continue;
+            if (shown == kCap) { ++hidden; continue; }
+            const std::size_t their_lead = r.flight_leader();
+            const int level = recon.side_covered(in.party_54) && their_lead < h.slots.size()
+                ? static_cast<int>(recon.level(in.party_54, their_lead)) : -1;
+            std::snprintf(buf, sizeof buf, " [%s not_in_recon level=%d]", r.name.c_str(), level);
+            list += buf;
+            ++shown;
+        }
+        if (hidden != 0) {
+            std::snprintf(buf, sizeof buf, " (+%zu more)", hidden);
+            list += buf;
+        }
+        // GameHostLog::notef truncates at 1024 bytes; 24 entries do not fit.
+        std::snprintf(buf, sizeof buf, "free attack first pick: squadron=\"%s\" t=%.2f filter=%d "
+            "contacts=%zu traced=%zu pick=%s%s score=%.3f",
+            sq.name.c_str(), static_cast<double>(now), static_cast<int>(d.filter),
+            in.contacts.size(), d.traces.size(), unit_name(d.target, d.target_squadron),
+            d.target_squadron ? " (squadron)" : "", static_cast<double>(pick_score));
+        h.log.note((buf + list).c_str());
     }
     if (!apply) return;
     if (d.raise_override_stage_2) {
