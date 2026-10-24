@@ -1916,7 +1916,7 @@ class FixedStepBinding final : public bsp::FixedStepHost {
 public:
     explicit FixedStepBinding(GameMissionFrameHost::Impl& owner) : owner_(owner) {}
     void advance_step_countdown_008079b0(float) override {
-        owner_.record("FixedStep::advance_countdown", 0x008079b0u);
+        owner_.record("Recon::service_periodic_refresh", 0x008079b0u);
     }
     void run_step_job_waves(std::uint8_t run_pass) override {
         // Milestone 2g: the three waves over the five 68h groups at 00f876c0.
