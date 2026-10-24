@@ -3268,6 +3268,10 @@ struct GameGunneryHost::Impl {
         int sub_type{-1};
     };
     std::map<std::size_t, SecondAmmo> second_ammo_by_gun;
+    // Packet cc13-firstshotlog, DIAGNOSTIC only: by gun index, |aim - muzzle| from
+    // the group 3 seat drain's last solve (apply_gun_aim_message_group3), printed
+    // on the first-shot line for a player-held gun.
+    std::map<std::size_t, float> seat_aim_range_by_gun;
     // Packet cc13-flak2b, log only: guns the build_guns arc guard dropped, those
     // that had already written a Bullet[2] key, and pushed guns that found a key
     // they did not write (all, and category 6 where dp_air_ammo reads it).
@@ -9839,13 +9843,28 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (target < unit_state.size()) unit_aim_point(target, aim);
             const float span[3] = {aim[0] - muzzle[0], aim[1] - muzzle[1],
                 aim[2] - muzzle[2]};
+            // Packet cc13-firstshotlog: "range" above is to unit_state[target], and
+            // target stays 0 when the gun has no target (a player-held gun), so
+            // target_valid says whether it means anything. seat_aim_range is the
+            // seat drain's |aim - muzzle| for a player-held gun; "na" when the gun
+            // is not player-held or no group 3 solve has stored one.
+            char seat_range[32] = "na";
+            if (player_seat) {
+                const auto seat_it = seat_aim_range_by_gun.find(g);
+                if (seat_it != seat_aim_range_by_gun.end()) {
+                    std::snprintf(seat_range, sizeof seat_range, "%.0f",
+                        static_cast<double>(seat_it->second));
+                }
+            }
             log.notef("gunnery: first shot at t=%.2f s, %s platform %d (%s, bullet %d) at "
-                "%s, range %.0f m, horz %.1f deg, vert %.1f deg",
+                "%s, range %.0f m, horz %.1f deg, vert %.1f deg target_valid=%d "
+                "seat_aim_range=%s",
                 static_cast<double>(clock_seconds), gun.unit_name.c_str(),
                 gun.platform_key, gun.function.c_str(), gun.bullet_class,
                 gun.target_name.c_str(), static_cast<double>(length3(span)),
                 static_cast<double>(gun.angles.horz * 57.2957795f),
-                static_cast<double>(gun.angles.vert * 57.2957795f));
+                static_cast<double>(gun.angles.vert * 57.2957795f),
+                gun.target_unit != 0 ? 1 : 0, seat_range);
         }
         done("Gun::fire_00730160", 0x00730160u);
         done("Gun::next_ready_barrel_007298d0", 0x007298d0u);
@@ -15237,6 +15256,7 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
         if (!arc.solved) ++seat_artillery_unsolved;
         const float d[3] = {aim[0] - muzzle[0], aim[1] - muzzle[1], aim[2] - muzzle[2]};
         const float len = length3(d);
+        seat_aim_range_by_gun[g] = len;   // DIAGNOSTIC, packet cc13-firstshotlog
         if (len <= 0.0f) continue;
         const float direct = std::atan2(d[1], std::sqrt(d[0] * d[0] + d[2] * d[2]));
         const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
