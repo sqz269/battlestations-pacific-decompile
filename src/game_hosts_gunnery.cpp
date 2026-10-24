@@ -3049,10 +3049,11 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_artillery_guns{0};      // accepted guns, every message
     unsigned long long seat_artillery_unsolved{0};  // 00955630 returned false
     unsigned long long seat_artillery_hits{0};      // 00957740 took the segment hit
-    // Packet cc13-seatspeed (log only): player-held artillery-class solves
-    // whose class +50h speed differs from the authored V0, and player-held
+    // Packet cc13-seatspeed (log only): player-held messages on an
+    // artillery-class gun whose class +50h speed differs from the authored V0
+    // (each message, whether or not the solve's answer would change), and held
     // triggers 0085ABA0's refusal clears (0095A0F8), in either setting.
-    unsigned long long seat_solve_speed_differs{0};
+    unsigned long long seat_solve_speed_differs_messages{0};
     unsigned long long seat_trigger_refused{0};
     // kSeatArtilleryLeadBound: the 009578C3 lead taken on a ship (00902290) and
     // on any other entity (00901C20), how many of the ship leads turned
@@ -15002,7 +15003,7 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
         q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
         const bool class_speed = kArtilleryClassSpeedBound && gun.artillery_class;
         if (!seat_ai && class_speed && gun.class_speed != gun.muzzle_speed) {
-            ++seat_solve_speed_differs;
+            ++seat_solve_speed_differs_messages;
         }
         if constexpr (kSeatArtilleryClassSpeedCc13Bound) {
             q.muzzle_speed = class_speed ? gun.class_speed : gun.muzzle_speed;
@@ -15039,13 +15040,17 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
                 && std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.horz, horz)) <= band;
             const bool trigger = m.held_34 && arc.solved && within;
             // 0085ABA0's answer for this pair, on a copy: the gun's own target
-            // pair is still set by the deferred call above.
-            bsp::GunTurningAngles probe = gun.angles;
-            float probe_mark = 0.0f;
-            const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
-            const bool accepted = bsp::gun_set_target_angles_0085aba0(probe, arcs, gun.speeds,
-                horz, vert, probe_mark);
-            if (trigger && !accepted) ++seat_trigger_refused;
+            // pair is still set by the deferred call above. Probed only for a
+            // held trigger; otherwise the trigger is false in both settings.
+            bool accepted = true;
+            if (trigger) {
+                bsp::GunTurningAngles probe = gun.angles;
+                float probe_mark = 0.0f;
+                const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
+                accepted = bsp::gun_set_target_angles_0085aba0(probe, arcs, gun.speeds,
+                    horz, vert, probe_mark);
+                if (!accepted) ++seat_trigger_refused;
+            }
             if constexpr (kSeatArtilleryTriggerRefusalCc13Bound) {
                 gun.seat_trigger = trigger && accepted;
             } else {
@@ -17516,13 +17521,13 @@ void GameGunneryHost::report() {
             host.seat_role_releases, kRoleOwnerDeviceWalkBound ? 1 : 0);
         host.log.notef("summary mission gunnery player seat groups 0..5=%llu/%llu/%llu/%llu/%llu/%llu "
             "artillery guns=%llu unsolved=%llu hits=%llu turns=%llu refusals=%llu bound=%d "
-            "(00959F72, packet cc9_player_gun_seat_artillery) seat_solve_speed_differs=%llu "
+            "(00959F72, packet cc9_player_gun_seat_artillery) seat_solve_speed_differs_messages=%llu "
             "seat_trigger_refused=%llu",
             host.seat_group_messages[0], host.seat_group_messages[1], host.seat_group_messages[2],
             host.seat_group_messages[3], host.seat_group_messages[4], host.seat_group_messages[5],
             host.seat_artillery_guns, host.seat_artillery_unsolved, host.seat_artillery_hits,
             host.seat_artillery_turns, host.seat_artillery_refusals,
-            kPlayerGunSeatArtilleryBound ? 1 : 0, host.seat_solve_speed_differs,
+            kPlayerGunSeatArtilleryBound ? 1 : 0, host.seat_solve_speed_differs_messages,
             host.seat_trigger_refused);
         if constexpr (kSeatArtilleryLeadBound) {
             host.log.notef("summary mission gunnery seat artillery lead ship=%llu turned=%llu "
