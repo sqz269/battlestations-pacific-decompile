@@ -251,5 +251,43 @@ guard. The fix runs original whole-registry `B24DD0`/`B19000` after model-load
 batches, using the same renderer/Lua/cache owners and canonical literal storage.
 The original getter and exit guard remain unchanged. The complete run finishes
 with only the previously established error-texture residue at refcount1.
-See [material refresh evidence](OCT24_RENDER_D_MATERIAL_REFRESH.md). Borrowing
-and publishing the real scene reflection setting is a separate follow-up.
+See [material refresh evidence](OCT24_RENDER_D_MATERIAL_REFRESH.md). Authored
+scene publication and the subsequent validation follow below.
+
+### Authored reflection and complete census
+
+The scene header is borrowed directly from the existing mission host's
+`scene_contents->root_properties()`. It is never reparsed or cached in a second
+render-world structure. `4EE450`'s HDR filename rule and `B1B830` publish its
+`g_Environment.ReflCubemap` to the same native renderer Lua owner before
+`B24DD0`. For USN04 this loads the installed
+`effects/hdr_rcs_usn_05_guadalca.dds` as an actual `D61870` cube texture.
+
+`local/render_D/d2_reflection.exe`, SHA-256
+`fd511bc55c9159ac7e41794efd93136fd1ea7c8a57e118b300c4e68233a0b1e4`,
+is built from source through `23922d4d8`; `d2_reflection_build.log` passes both
+existing CTests. Three matching USN04 runs exit **0**:
+
+| Run log | Switches | Result |
+| --- | --- | --- |
+| `d2_final_off_usn04.log` | All mission render switches unset | `d2_final_off_pair.json`: pair_diff0 against the clean185e1bf5d control |
+| `d2_final_all_on_usn04.log` | SHIP, FRAME, UNITS and all five no-op switches1 | 1790 drawables, 599 presents; real native jobs/cubemap; clean drain |
+| `d2_final_val_on_usn04.log` | SHIP, FRAME, VIEW_UNIT18; UNITS0 | Genuine Val matrix palette/exterior, 599 presents; clean drain |
+
+All runs use the same screenshot argument. `d2_final_all_pair.json` and
+`d2_final_val_pair.json` match **all21 unit rows,706 summaries and1392 native
+rows**, with no added/removed/changed gameplay census entries, statuses or call
+counts. Their raw comparisons return1 only for the expected rendering
+diagnostics; OS pretranslation jitter remains separately recognized noise.
+The first-command snapshot in the complete run records synchronization mode0,
+nonnull actual frame/descriptor, **31 workers**, remaining0 and active0. Native
+singleton shutdown joins workers, removes the real cube texture, closes every
+model companion, and leaves only the established error-texture residue1.
+
+Screenshots at mission frames1/60/180 are retained as
+`d2_final_all_N001.png`/`_N060.png`/`_N180.png` and
+`d2_final_val_N001.png`/`_N060.png`/`_N180.png`. The final Val capture was visually
+checked for its complete textured exterior, cockpit and wings; the full-scene
+capture was checked for the controlled ship and mounted models. These captures
+demonstrate this Source/native-body composition, without retail camera,
+lighting, animation or terrain/ocean visual-parity claims.
