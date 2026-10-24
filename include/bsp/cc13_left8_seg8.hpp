@@ -357,8 +357,8 @@ Object traffic_cell_member_00498790(Left8Host& host, Object tree, std::uint32_t 
 void traffic_visible_cells_00498c40(Left8Host& host, Object tree, Object slot, const float* box);
 Object temp_anim_construct_00498d60(Left8Host& host, Object object, Object parent, const void* class_name,
                                     const float* matrix);
-Object marker_construct_00498e60(Left8Host& host, Object marker, Object parent, Object observed);
-Object marker_create_00498f80(Left8Host& host, Object owner, Object observed);
+Object plane_debris_spawner_construct_00498e60(Left8Host& host, Object spawner, Object parent, Object observed);
+Object plane_debris_spawner_create_00498f80(Left8Host& host, Object owner, Object observed);
 
 // TempAddAnim / RemoveTempAddedStuff.
 void temp_add_anim_0049dc00(Left8Host& host, Object manager, LuaObject* table);
@@ -378,7 +378,7 @@ void ship_idle_group_destruct_004a6580(Left8Host& host, Object group);
 void landing_lane_destruct_004a67c0(Left8Host& host, Object lane);
 
 // Destructors.
-void marker_destruct_0049a580(Left8Host& host, Object marker);
+void plane_debris_spawner_destruct_0049a580(Left8Host& host, Object spawner);
 void record4c_owner_destruct_0049c6e0(Left8Host& host, Object owner);
 void traffic_tree_destruct_0049d540(Left8Host& host, Object tree);
 
