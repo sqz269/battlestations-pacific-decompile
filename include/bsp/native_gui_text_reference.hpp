@@ -49,6 +49,11 @@ public:
     // rediscover fields, read a dead count, retry, or operate on a recycled slot.
     void* storage() const noexcept { return identity_; }
 
+    // Metadata-only borrow of this SAME completed93/canonical122 service graph.
+    // This grants no new native lifetime/count credit. Field operations still
+    // require bound phase, live backing and the caller's serialized lifetime.
+    const NativeGuiTextReferenceContext& storage_context() const noexcept { return context_; }
+
     // Actual already-zero entry. Reuses wholeBD30E0/current04/real118; does not
     // decrement again. Source noexcept policy terminates on any entered error.
     void release_zero_references() noexcept override;

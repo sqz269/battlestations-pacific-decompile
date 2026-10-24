@@ -3186,6 +3186,40 @@ void unit_library_load_unit_model_00680db0(Raw screen, Fe5Host& host) {
     host.lua_release_00b67700(classes);
     host.file_block_end();
 }
+// Packet cc13-trivialslots: the kTrivialSlots bodies; evidence and ABI per routine
+// are in the header.
+std::int32_t hud_warning_screen_get_screen_id_00682140(Raw) noexcept { return 0x50; }
+void multi_menu_deactivate_thunk_00687320(Raw self, Fe5Host& host) {
+    host.front_end_manager_deactivate_00683aa0(self);
+}
+void attract_screen_virtual04no_op_00689bd0(Raw) noexcept {}
+std::int32_t hud_screen_slot24_get_screen_id_0068a320(Raw) noexcept { return 0x24; }
+std::int32_t hud_screen_slot46_get_screen_id_0068a400(Raw) noexcept { return 0x46; }
+void hud_screen_slot46_collect_children_no_op_0068a410(Raw) noexcept {}
+std::int32_t hud_screen_slot2f_get_screen_id_0068a4e0(Raw) noexcept { return 0x2F; }
+std::int32_t hud_binoculars_overlay_screen_get_screen_id_0068a5d0(Raw) noexcept { return 0x4A; }
+void hud_binoculars_overlay_screen_collect_children_no_op_0068a5e0(Raw) noexcept {}
+std::int32_t hud_common_overlay_screen_get_screen_id_0068a8f0(Raw) noexcept { return 0x27; }
+void observer_endpoint_no_op08_006935b0(Raw) noexcept {}
+std::int32_t hud_plane_effects_screen_get_screen_id_00606220(Raw) noexcept { return 0x3F; }
+void hud_plane_effects_screen_collect_children_no_op_00606230(Raw) noexcept {}
+std::int32_t hud_plane_screen_get_screen_id_00606a80(Raw) noexcept { return 0x3E; }
+std::int32_t hud_screen_slot40_get_screen_id_0060c6b0(Raw) noexcept { return 0x40; }
+void hud_screen_slot40_register_0060c750(Raw self, Fe5Host& host) {
+    host.front_end_screen_register_004f71d0(self);
+}
+void hud_screen_slot40_update_no_op_0060c760(Raw) noexcept {}
+void hud_screen_slot40_enter_no_op_0060c770(Raw) noexcept {}
+std::int32_t plane_spawn_camera_slot130_return_zero_0060c960(Raw) noexcept { return 0; }
+std::int32_t hud_plane_spawn_screen_get_screen_id_0060cb20(Raw) noexcept { return 0x41; }
+std::int32_t hud_screen2e_get_screen_id_00547370(Raw) noexcept { return 0x2E; }
+void main_menu_command_owner_listener_no_op1c_00549590(Raw) noexcept {}
+std::int32_t hud_hints_screen_get_screen_id_0054d660(Raw) noexcept { return 0x34; }
+bool hud_hints_screen_virtual04true_0054d670(Raw) noexcept { return true; }
+std::int32_t hud_idle_camera_screen_get_screen_id_0054ecf0(Raw) noexcept { return 0x2C; }
+void control_binding_screen_exit_00551b90(Raw) noexcept {}
+void control_binding_screen_listener_no_op1c_00551bb0(Raw) noexcept {}
+
 // @impl-end
 
 }  // namespace bsp::cc13_fe5

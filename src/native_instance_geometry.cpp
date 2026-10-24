@@ -50,10 +50,15 @@ void* create_native_instance_geometry_00b4c8d0(const NativeString& name,
     require(!acquired.model_owner && !acquired.model_reference && !acquired.mesh &&
         !acquired.stream && !acquired.material && !acquired.section,
         "instance geometry requires an empty acquired record");
+    const bool same_model_names = a.models.raw_name_services
+        ? !a.models.actual_names &&
+          &a.models.raw_name_services->temporary_names == &a.strings &&
+          a.models.nodes.uses_raw_name_pool()
+        : a.models.actual_names == &a.strings;
     require(a.prepare_model && a.retire_failed_model && a.bind_completed_model &&
         a.bind_completed_stream && &a.models.retained_owners==&owners &&
         &a.streams.actual_owners==&owners && &a.materials.retained_owners==&owners &&
-        a.models.actual_names==&a.strings && &a.materials.parameter_names==&a.strings &&
+        same_model_names && &a.materials.parameter_names==&a.strings &&
         &a.models.constants.unchanged_00d7a260==&a.unchanged_00d7a260,
         "instance geometry requires the same actual owner, string and sentinel domains");
 

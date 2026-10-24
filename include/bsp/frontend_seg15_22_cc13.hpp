@@ -24,6 +24,10 @@
 #include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/main_menu_command_bar.hpp"
 
+namespace bsp::segs_13_15_22_44_cc13 {
+struct SegBHost;  // 00527D40 tail target host (segs_13_15_22_44_cc13.hpp)
+}
+
 namespace bsp::frontend_seg15_22_cc13 {
 
 using bsp::ingame_gui_cc13::Raw;
@@ -1160,6 +1164,90 @@ inline constexpr float kCounterRowStart = 0.07000000029802322f;         // 00CED
 inline constexpr float kCounterRowStartManager = 0.38499999046325684f;  // 00CED068
 inline constexpr float kCounterRowStartManagerWide = 0.23000000417232513f;  // 00CED06C
 void hud_counters_relayout_00529a30(Raw s, Fe10Host& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-trivialslots: one ordinary function per kTrivialSlots row, re-read from
+// the disk bytes (local generator, rows checked against the image). `Raw` is the
+// ECX object; stack arguments the body never reads are noted in the ABI and not
+// passed. Adjustor and tail-jump rows appear only where the target is an existing
+// declaration; the descriptive table above stays as documentation.
+// ---------------------------------------------------------------------------
+// 00527D30 MOV EAX,0Eh; RET (B8 0E 00 00 00 C3; next byte CC).
+// BSP_ControlLayoutScreen_ScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 14, RET.
+std::int32_t control_layout_screen_screen_id_00527d30(Raw) noexcept;
+// 00527D40 SUB ECX,8h; JMP 00527E40 (83 E9 08 E9 F8 00 00 00; next byte CC).
+// BSP_ControlLayoutScreen_Destroy_Adjustor8. Original ABI: __thiscall(ECX = this, flags), the
+// target's RET; ECX adjusted, tail call to 00527E40
+// (segs_13_15_22_44_cc13::control_layout_scalar_delete_00527e40).
+Raw control_layout_screen_destroy_adjustor8_00527d40(Raw self, std::uint32_t flags, segs_13_15_22_44_cc13::SegBHost& host);
+// 00528C60 RET (C3; next byte CC). BSP_HudCountersScreen_BindLayout. Original ABI:
+// __thiscall(ECX = this), RET.
+void hud_counters_screen_bind_layout_00528c60(Raw) noexcept;
+// 0052B060 MOV EAX,51h; RET (B8 51 00 00 00 C3; next byte CC).
+// BSP_HudCountersScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 81, RET.
+std::int32_t hud_counters_screen_get_screen_id_0052b060(Raw) noexcept;
+// 0052B070 MOV AL,1; RET (B0 01 C3; next byte CC). BSP_HudCountersScreen_IsSelfManaged.
+// Original ABI: __thiscall(ECX = this) -> AL = 1, RET.
+bool hud_counters_screen_is_self_managed_0052b070(Raw) noexcept;
+// 0052FD60 MOV EAX,8h; RET (B8 08 00 00 00 C3; next byte CC). BSP_CreditsScreen_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 8, RET.
+std::int32_t credits_screen_get_screen_id_0052fd60(Raw) noexcept;
+// 00530640 RET 8 (C2 08 00; next byte CC). BSP_MenuPromptScreen_OnListboxSelectionChangedNoOp.
+// Original ABI: __thiscall(ECX = this, 2 stack dwords unread), RET 8.
+void menu_prompt_screen_on_listbox_selection_changed_no_op_00530640(Raw) noexcept;
+// 00532310 MOV EAX,55h; RET (B8 55 00 00 00 C3; next byte CC).
+// BSP_MenuPromptScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 85, RET.
+std::int32_t menu_prompt_screen_get_screen_id_00532310(Raw) noexcept;
+// 00532320 MOV AL,1; RET (B0 01 C3; next byte CC). BSP_MenuPromptScreen_IsSelfManaged. Original
+// ABI: __thiscall(ECX = this) -> AL = 1, RET.
+bool menu_prompt_screen_is_self_managed_00532320(Raw) noexcept;
+// 00533B30 RET 8 (C2 08 00; next byte CC). BSP_HudFormationScreen_OnListboxActivateNoOp.
+// Original ABI: __thiscall(ECX = this, 2 stack dwords unread), RET 8.
+void hud_formation_screen_on_listbox_activate_no_op_00533b30(Raw) noexcept;
+// 00538CD0 MOV EAX,2Ah; RET (B8 2A 00 00 00 C3; next byte CC).
+// BSP_HudFormationScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 42, RET.
+std::int32_t hud_formation_screen_get_screen_id_00538cd0(Raw) noexcept;
+// 00538CE0 MOV AL,1; RET (B0 01 C3; next byte CC). BSP_HudFormationScreen_OccludesLowerLevels.
+// Original ABI: __thiscall(ECX = this) -> AL = 1, RET.
+bool hud_formation_screen_occludes_lower_levels_00538ce0(Raw) noexcept;
+// 0053BA50 MOV EAX,57h; RET (B8 57 00 00 00 C3; next byte CC).
+// BSP_FrameStatsScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 87, RET.
+std::int32_t frame_stats_screen_get_screen_id_0053ba50(Raw) noexcept;
+// 0053BA60 MOV AL,1; RET (B0 01 C3; next byte CC). BSP_FrameStatsScreen_IsSelfManaged. Original
+// ABI: __thiscall(ECX = this) -> AL = 1, RET.
+bool frame_stats_screen_is_self_managed_0053ba60(Raw) noexcept;
+// 0053BA90 RET (C3; next byte CC). BSP_FrameStatsScreen_Exit. Original ABI: __thiscall(ECX =
+// this), RET.
+void frame_stats_screen_exit_0053ba90(Raw) noexcept;
+// 0053D280 RET (C3; next byte CC). BSP_HudFreeCameraScreen_Exit. Original ABI: __thiscall(ECX =
+// this), RET.
+void hud_free_camera_screen_exit_0053d280(Raw) noexcept;
+// 0053FF00 JMP 0053F250 (E9 4B F3 FF FF; next byte CC). TMPL_Rec30Vector_Tidy_0053ff00.
+// Original ABI: __thiscall(ECX = this), the target's RET; tail call to 0053F250
+// (Seg15Host::effect_vector_tidy_0053f250).
+void rec30vector_tidy_0053ff00(Raw self, Seg15Host& host);
+// 00540360 MOV EAX,2Bh; RET (B8 2B 00 00 00 C3; next byte CC).
+// BSP_HudFreeCameraScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 43, RET.
+std::int32_t hud_free_camera_screen_get_screen_id_00540360(Raw) noexcept;
+// 005CE5B0 MOV EAX,36h; RET (B8 36 00 00 00 C3; next byte CC).
+// BSP_HudMovieCameraDebugScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 54,
+// RET.
+std::int32_t hud_movie_camera_debug_screen_get_screen_id_005ce5b0(Raw) noexcept;
+// 005CE740 RET (C3; next byte CC). BSP_MultiChatScreen_EnterNoOp. Original ABI: __thiscall(ECX
+// = this), RET.
+void multi_chat_screen_enter_no_op_005ce740(Raw) noexcept;
+// 005CFE40 MOV EAX,15h; RET (B8 15 00 00 00 C3; next byte CC). BSP_MultiChatScreen_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 21, RET.
+std::int32_t multi_chat_screen_get_screen_id_005cfe40(Raw) noexcept;
+// 005CFE50 MOV AL,1; RET (B0 01 C3; next byte CC). BSP_MultiChatScreen_IsSelfManaged. Original
+// ABI: __thiscall(ECX = this) -> AL = 1, RET.
+bool multi_chat_screen_is_self_managed_005cfe50(Raw) noexcept;
+// 005D2F40 MOV EAX,1Dh; RET (B8 1D 00 00 00 C3; next byte CC).
+// BSP_MultiErrorScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 29, RET.
+std::int32_t multi_error_screen_get_screen_id_005d2f40(Raw) noexcept;
+// 005D3580 MOV EAX,19h; RET (B8 19 00 00 00 C3; next byte CC).
+// BSP_HudPauseMultiScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 25, RET.
+std::int32_t hud_pause_multi_screen_get_screen_id_005d3580(Raw) noexcept;
 
 }  // namespace bsp::frontend_seg15_22_cc13
 

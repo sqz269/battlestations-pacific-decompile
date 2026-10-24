@@ -24,6 +24,15 @@ struct NativeModelConstants {
     const volatile std::uint32_t& negative_zero_00d7a208;
     const volatile std::uint32_t& unchanged_00d7a260;
 };
+// Configure before the first Model in this SAME environment. Raw Model/node
+// construction and cleanup use nodes' existing raw name pool. The borrowed
+// adapter is only for existing source callers' NativeString temporaries; it
+// must address that SAME actual pool/publication/manager domain. No new pool,
+// string owner, Model environment or exception transport is created.
+struct NativeModelRawNameServices {
+    const NativeNodeRawConstants& constants;
+    NativeStringStorage& temporary_names;
+};
 struct NativeModelEnvironment {
     NativeModelPool& pool_01090054;
     NativeNodeDestructionRuntime& nodes;
@@ -38,6 +47,10 @@ struct NativeModelEnvironment {
     // names. Null retains the older semantic pool interface for existing users.
     // This borrowed binding must remain stable through node destruction.
     NativeStringStorage* actual_names = nullptr;
+    // Optional born-raw source route. Requires actual_names==nullptr and an
+    // immutable raw node runtime. Keep services and their references stable
+    // through every Model lifetime; never switch a live environment's mode.
+    const NativeModelRawNameServices* raw_name_services = nullptr;
 };
 
 class NativeModelOwner final {
