@@ -200,7 +200,7 @@ constexpr bool kSubmarineWakeDrawsBound = true;
 // False: the dead unit stays controlled (before). Nothing in the image reselects
 // without player input (00565D80 needs input E1h/8Ch-8Fh), so neither arm ends a
 // mission.
-constexpr bool kUnitDeathLimboPushCc13Bound = false;
+constexpr bool kUnitDeathLimboPushCc13Bound = true;  // ON (cc9-helm1, 2026-10-23): pairs on 802e1d8b9, six controlled-death rows, every end unchanged, no plan line refused
 static_assert(!kUnitDeathLimboPushCc13Bound || kUnitDeathRouteBound,
               "the limbo arm runs inside the 00959450 death route");
 // Packet cc9_cb_gunfire_gate (docs/GUNNERY_OPEN_ITEMS.md 125): a hit's AddDamage is
