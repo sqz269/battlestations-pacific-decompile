@@ -298,16 +298,25 @@ std::uint32_t plane_set_classify_point(const PlaneRow* rows, int count, const fl
 }
 
 std::uint32_t plane_set_classify_aabb(const PlaneRow* rows, int count, const float box[6]) {
-    auto mag = [](float v) { return v <= 0.0f ? kNegZero - v : v; };
+    // cc13-fixture4: main-thread precision (24-bit). 00B6572F..00B657C1 store each sum and
+    // difference to float, then halve it by the double [00D7A280] into a float slot.
+    float centre[3], half[3];
+    for (int k = 0; k < 3; ++k) {
+        centre[k] = static_cast<float>(mul24(static_cast<float>(add24(box[k], box[k + 3])), 0.5));
+        half[k] = static_cast<float>(mul24(static_cast<float>(sub24(box[k + 3], box[k])), 0.5));
+    }
+    // COMISS v, 0 / JBE: zero, negative and NaN take -0.0f - v ([00D7A208]).
+    auto mag = [](float v) { return v > 0.0f ? v : kNegZero - v; };
     for (int i = 0; i < count; ++i) {
         const PlaneRow& q = rows[i];
-        const double center = static_cast<double>(q.c) * (static_cast<double>(box[2]) + box[5]) * 0.5 +
-            static_cast<double>(q.a) * (static_cast<double>(box[0]) + box[3]) * 0.5 +
-            static_cast<double>(q.b) * (static_cast<double>(box[1]) + box[4]) * 0.5;
-        const double radius = static_cast<double>(mag(q.c)) * 0.5 * (static_cast<double>(box[5]) - box[2]) +
-            static_cast<double>(mag(q.a)) * (static_cast<double>(box[3]) - box[0]) * 0.5 +
-            static_cast<double>(mag(q.b)) * (static_cast<double>(box[4]) - box[1]) * 0.5;
-        if (center - q.d < -radius) return kPlaneSetOutside;
+        // 00B65847..00B65864: (b cy + a cx) + c cz on the stack, FSTP float, minus d, FSTP float.
+        const float dot = static_cast<float>(add24(add24(mul24(q.b, centre[1]), mul24(q.a, centre[0])),
+                                                   mul24(q.c, centre[2])));
+        const float dist = static_cast<float>(sub24(dot, q.d));
+        // 00B6586C..00B65886: (|b| hy + |a| hx) + |c| hz, FSTP float.
+        const float radius = static_cast<float>(add24(add24(mul24(mag(q.b), half[1]), mul24(mag(q.a), half[0])),
+                                                      mul24(mag(q.c), half[2])));
+        if (-radius > dist) return kPlaneSetOutside;  // FCHS / FCOMIP / JA: NaN continues
     }
     return kPlaneSetInside;
 }

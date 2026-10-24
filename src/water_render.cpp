@@ -6,6 +6,7 @@
 // docs/CC13_WATER_RENDER.md.
 
 #include "bsp/water_render.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <array>
 #include <cmath>
@@ -119,13 +120,22 @@ OceanWaveScale ocean_wave_scale_00ba0b32(float height_scale_b8, float spectrum_c
 }
 
 Float3 plane_intersect_segment_00b999f0(const Float4& plane, const Float3& a, const Float3& b) {
-    // The native spills n.a, (n.a - d), n.b and the ratio to float slots.
-    const float da = a.x * plane.x + a.y * plane.y + a.z * plane.z;
-    const float sa = da - plane.w;
-    const float db = b.x * plane.x + b.y * plane.y + b.z * plane.z;
-    const float sb = db - plane.w;
-    const float t = sa / (sa - sb);
-    return {a.x + t * (b.x - a.x), a.y + t * (b.y - a.y), a.z + t * (b.z - a.z)};
+    // cc13-fixture4: main-thread precision (24-bit control, extended exponent), each x87
+    // operation rounded once and each FSTP float a cast. The native spills n.a (00B99A6A),
+    // n.a - d (00B99A7C), the differences b - a, n.b (00B99AD4), n.b - d, the ratio
+    // (00B99AEC) and the three t (b - a) products to float slots; sa - sb stays on the stack.
+    using cc13x87::x87_add24; using cc13x87::x87_sub24; using cc13x87::x87_mul24; using cc13x87::x87_div24;
+    const auto fstp = [](double v) { return static_cast<float>(v); };
+    const float da = fstp(x87_add24(x87_add24(x87_mul24(a.x, plane.x), x87_mul24(a.y, plane.y)),
+                                 x87_mul24(a.z, plane.z)));
+    const float sa = fstp(x87_sub24(da, plane.w));
+    const float dx = fstp(x87_sub24(b.x, a.x)), dy = fstp(x87_sub24(b.y, a.y)), dz = fstp(x87_sub24(b.z, a.z));
+    const float db = fstp(x87_add24(x87_add24(x87_mul24(b.y, plane.y), x87_mul24(b.x, plane.x)),
+                                 x87_mul24(b.z, plane.z)));
+    const float sb = fstp(x87_sub24(db, plane.w));
+    const float t = fstp(x87_div24(sa, x87_sub24(sa, sb)));
+    const float mx = fstp(x87_mul24(dx, t)), my = fstp(x87_mul24(dy, t)), mz = fstp(x87_mul24(t, dz));
+    return {fstp(x87_add24(a.x, mx)), fstp(x87_add24(a.y, my)), fstp(x87_add24(a.z, mz))};
 }
 
 bool plane_crossing_00b9a8a0(const Float4& plane, const Float3& a, const Float3& b, Float3& out) {

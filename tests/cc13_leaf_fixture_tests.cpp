@@ -849,6 +849,9 @@ template<class Open> void run_fixture3(Open open) {
 
 // cc13-fixture8: defined at the end of the file.
 template<class Open> void run_fixture8(Open open);
+// cc13-fixture4 (docs/CC13_FIXTURE_PASS_4.md); defined at the end of this file.
+void run_fixture4(const std::function<Case&(const char*)>& open);
+bool fixture4_pin(const std::string& name, bool& wants53, int& failures, int& nan_only, const char*& finding);
 
 }  // namespace
 
@@ -1113,6 +1116,13 @@ int main() {
         const std::string tag = pc == _PC_53 ? " @53" : " @24";
         run_fixture8([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
     }
+    // cc13-fixture4: the same two passes over its own input stream.
+    for (const unsigned pc : {static_cast<unsigned>(_PC_53), static_cast<unsigned>(_PC_24)}) {
+        _controlfp_s(&control, pc | _RC_NEAR, _MCW_PC | _MCW_RC);
+        state = 0x5a17c0deu;
+        const std::string tag = pc == _PC_53 ? " @53" : " @24";
+        run_fixture4([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
+    }
     _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
     // cc13-fixture2 cases carry a precision suffix. The pass that decides is the precision of
     // the thread the image runs the routine on (docs/CC13_FPU_PRECISION.md): 24-bit for the
@@ -1142,20 +1152,24 @@ int main() {
         const bool tagged = at24 || (name.size() > 4 && name.compare(name.size() - 4, 4, " @53") == 0);
         bool wants53 = false;
         for (const char* p : primary53) wants53 = wants53 || name.compare(0, 8, p) == 0;
+        int f4_failures = 0, f4_nan_only = 0;
+        const char* f4_finding = nullptr;
+        const bool f4 = fixture4_pin(name, wants53, f4_failures, f4_nan_only, f4_finding);
         const bool primary = !tagged || at24 != wants53;
         // The pinned counts are for the default input set; without edge values every
         // deciding pass must match outright.
         static const bool edges = GetEnvironmentVariableA("BSP_FIXTURE_NO_EDGES", nullptr, 0) == 0;
         const Pinned* pin = nullptr;
         for (const auto& k : pinned) if (edges && name.compare(0, 8, k.address) == 0) pin = &k;
-        const int want_failures = primary && pin ? pin->failures : 0;
-        const int want_nan_only = primary && pin ? pin->nan_only : 0;
+        const char* finding = pin ? pin->finding : f4_finding;
+        const int want_failures = primary && pin ? pin->failures : primary && edges && f4 ? f4_failures : 0;
+        const int want_nan_only = primary && pin ? pin->nan_only : primary && edges && f4 ? f4_nan_only : 0;
         const bool off = primary && (cases[i].failures != want_failures || cases[i].nan_only != want_nan_only);
         std::cout << name << ": " << cases[i].runs - cases[i].failures - cases[i].nan_only << '/' << cases[i].runs;
         if (cases[i].nan_only) std::cout << " (+" << cases[i].nan_only << " NaN sign/payload only)";
         if (!cases[i].failures && !off) std::cout << " match";
         else if (!primary) std::cout << " mismatch (other precision, informational)";
-        else if (!off) std::cout << " MISMATCH (pinned finding: " << pin->finding << ')';
+        else if (!off) std::cout << " MISMATCH (pinned finding: " << finding << ')';
         else std::cout << " MISMATCH (expected " << want_failures << " mismatches, " << want_nan_only << " NaN-only)";
         std::cout << (primary && tagged ? " [primary]\n" : "\n");
         failures += off;
@@ -1385,4 +1399,229 @@ template<class Open> void run_fixture8(Open open) {
     }
 }
 #pragma warning(pop)
+}  // namespace
+
+// ---------------------------------------------------------------------------
+// cc13-fixture4 (docs/CC13_FIXTURE_PASS_4.md): main-thread math leaves. Same method as
+// cc13-fixture2: edge values mixed into the inputs, every case at 53-bit and 24-bit precision
+// control on the same inputs, and the precision of the calling thread decides.
+#include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/pool_pool06_cc13.hpp"
+#include "bsp/segment2_camera_cc13.hpp"
+#include "bsp/water_render.hpp"
+
+namespace {
+// Floats compared bit for bit; a difference only where both sides are NaN counts as NaN-only.
+void fx4_compare(Case& c, const float* native, const float* model, int n, int i) {
+    if (nan_only_diff(native, model, n)) { c.check_nan_only(); return; }
+    const int k = first_diff(native, model, n);
+    check_note(c, k < 0, "i=%d [%d] %a / %a", i, k, k < 0 ? 0.0 : native[k], k < 0 ? 0.0 : model[k]);
+}
+// For the array cases (FFT grid, cloth): one draw in six would poison every output with a NaN or
+// an infinity, so the edge values go into one iteration in four, at one random element.
+void fx4_fill(float* v, int n, float lo, float hi, int i) {
+    for (int k = 0; k < n; ++k) v[k] = uniform(lo, hi);
+    if (i % 4 == 0) v[next() % static_cast<unsigned>(n)] = edge_or(lo, hi);
+}
+}  // namespace
+
+namespace {
+
+void run_fixture4(const std::function<Case&(const char*)>& open) {
+    {   // 00B6D440 / 00B6D630 / 00B6D6D0: ECX = left, stack output and scalar or right, RET 8.
+        using namespace bsp::cc13_scene2;
+        auto& sc = open("00B6D440 matrix scale");
+        auto& ad = open("00B6D630 matrix add");
+        auto& sb = open("00B6D6D0 matrix subtract");
+        auto scale = at<float* (__fastcall*)(const float*, int, float*, float)>(cc13_leaf_00b6d440);
+        auto add = at<float* (__fastcall*)(const float*, int, float*, const float*)>(cc13_leaf_00b6d630);
+        auto sub = at<float* (__fastcall*)(const float*, int, float*, const float*)>(cc13_leaf_00b6d6d0);
+        for (int i = 0; i < 2000; ++i) {
+            float l[16], r[16], o1[16], o2[16];
+            for (int k = 0; k < 16; ++k) { l[k] = edge_or(-100, 100); r[k] = edge_or(-100, 100); }
+            const float s = edge_or(-4, 4);
+            for (int k = 0; k < 16; ++k) o1[k] = o2[k] = 7.0f;
+            const bool r1 = scale(l, 0, o1, s) == o1;
+            const bool r2 = matrix_scale_00b6d440(l, o2, s) == o2;
+            if (r1 && r2) fx4_compare(sc, o1, o2, 16, i); else sc.check(false);
+            add(l, 0, o1, r);
+            matrix_add_00b6d630(l, o2, r);
+            fx4_compare(ad, o1, o2, 16, i);
+            sub(l, 0, o1, r);
+            matrix_subtract_00b6d6d0(l, o2, r);
+            fx4_compare(sb, o1, o2, 16, i);
+        }
+    }
+    {   // 00B917D0: thiscall(node, a, b, c, d), RET 10h; the box is node+17Ch {min, max}.
+        using namespace bsp::cc13_scene2;
+        auto& c = open("00B917D0 quadtree clip range");
+        auto native = at<std::int32_t (__fastcall*)(const void*, int, float, float, float, float)>(cc13_leaf_00b917d0);
+        alignas(16) unsigned char node[0x1a0] = {};
+        for (int i = 0; i < 4000; ++i) {
+            QuadAabb box;
+            for (int k = 0; k < 3; ++k) { box.min[k] = edge_or(-200, 200); box.max[k] = i % 3 ? box.min[k] + uniform(0, 50) : edge_or(-200, 200); }
+            float p[4];
+            for (int k = 0; k < 3; ++k) p[k] = edge_or(-1, 1);
+            p[3] = edge_or(-150, 150);
+            std::memcpy(node + 0x17c, &box, sizeof(box));
+            const std::int32_t n = native(node, 0, p[0], p[1], p[2], p[3]);
+            const std::int32_t m = quadtree_clip_range_00b917d0(box, p[0], p[1], p[2], p[3]);
+            check_note(c, n == m, "i=%d %d / %d", i, n, m);
+        }
+    }
+    {   // 00B94E90 rows / 00B950B0 columns: fastcall(ECX = cells) over a 32x32 complex grid.
+        using namespace bsp::cc13_scene2;
+        auto& rows = open("00B94E90 ocean FFT32 rows");
+        auto& cols = open("00B950B0 ocean FFT32 columns");
+        auto row_fft = at<void (__fastcall*)(float*)>(cc13_leaf_00b94e90);
+        auto col_fft = at<void (__fastcall*)(float*)>(cc13_leaf_00b950b0);
+        static float a[2048], b[2048];
+        for (int i = 0; i < 200; ++i) {
+            fx4_fill(a, 2048, -10, 10, i);
+            std::memcpy(b, a, sizeof(a));
+            row_fft(a);
+            ocean_fft32(b, 1);
+            fx4_compare(rows, a, b, 2048, i);
+            fx4_fill(a, 2048, -10, 10, i);
+            std::memcpy(b, a, sizeof(a));
+            col_fft(a);
+            ocean_fft32(b, 32);
+            fx4_compare(cols, a, b, 2048, i);
+        }
+    }
+    {   // 00B65710: thiscall(set, box[6]), RET 4; rows at set+0 (stride 14h), count at set+140h.
+        using namespace bsp::cc13fx;
+        auto& c = open("00B65710 plane set classify AABB");
+        auto native = at<std::uint32_t (__fastcall*)(const void*, int, const float*)>(cc13_leaf_00b65710);
+        alignas(16) unsigned char set[0x144] = {};
+        for (int i = 0; i < 4000; ++i) {
+            PlaneRow rows[16] = {};
+            const int count = static_cast<int>(next() % 7);
+            for (int r = 0; r < count; ++r) {
+                float n[3] = {edge_or(-1, 1), edge_or(-1, 1), edge_or(-1, 1)};
+                rows[r] = PlaneRow{n[0], n[1], n[2], edge_or(-100, 100), 0};
+            }
+            float box[6];
+            for (int k = 0; k < 3; ++k) { box[k] = edge_or(-100, 100); box[k + 3] = box[k] + edge_or(0, 60); }
+            std::memcpy(set, rows, sizeof(rows));
+            std::memcpy(set + 0x140, &count, 4);
+            const std::uint32_t n = native(set, 0, box);
+            const std::uint32_t m = plane_set_classify_aabb(rows, count, box);
+            check_note(c, n == m, "i=%d %x / %x", i, n, m);
+        }
+    }
+    {   // 00B999F0: thiscall(plane, out, a, b), RET 0Ch, returns out.
+        using namespace bsp::water_render;
+        auto& c = open("00B999F0 plane / segment intersection");
+        auto native = at<float* (__fastcall*)(const float*, int, float*, const float*, const float*)>(cc13_leaf_00b999f0);
+        for (int i = 0; i < 4000; ++i) {
+            Float4 plane{edge_or(-1, 1), edge_or(-1, 1), edge_or(-1, 1), edge_or(-50, 50)};
+            Float3 a{edge_or(-100, 100), edge_or(-100, 100), edge_or(-100, 100)};
+            Float3 b{edge_or(-100, 100), edge_or(-100, 100), edge_or(-100, 100)};
+            if (i % 50 == 0) b = a;  // degenerate segment
+            float o1[3] = {5, 5, 5};
+            const bool ret = native(&plane.x, 0, o1, &a.x, &b.x) == o1;
+            const Float3 m = plane_intersect_segment_00b999f0(plane, a, b);
+            const float o2[3] = {m.x, m.y, m.z};
+            if (ret) fx4_compare(c, o1, o2, 3, i); else c.check(false);
+        }
+    }
+    {   // 0042C090: fastcall(ECX = record), RET.
+        using namespace bsp::seg2_cc13;
+        auto& c = open("0042C090 random wander evaluate");
+        auto native = at<void (__fastcall*)(void*)>(cc13_leaf_0042c090);
+        for (int i = 0; i < 4000; ++i) {
+            RandomWander w1;
+            w1.start_00 = {edge_or(-5, 5), edge_or(-5, 5), edge_or(-5, 5)};
+            w1.target_0c = {edge_or(-5, 5), edge_or(-5, 5), edge_or(-5, 5)};
+            w1.output_18 = {3, 3, 3};
+            w1.elapsed_24 = edge_or(0, 6);
+            w1.period_28 = edge_or(0, 3);
+            w1.life_30 = i % 20 ? edge_or(0, 8) : w1.elapsed_24;
+            RandomWander w2 = w1;
+            native(&w1);
+            random_wander_evaluate_0042c090(w2);
+            fx4_compare(c, reinterpret_cast<const float*>(&w1), reinterpret_cast<const float*>(&w2), 0x48 / 4, i);
+        }
+    }
+    {   // 006F9EE0: thiscall(object, points, count), RET 8; box at object+14h..+2Bh.
+        auto& c = open("006F9EE0 convex object box");
+        auto native = at<void (__fastcall*)(void*, int, const float*, int)>(cc13_leaf_006f9ee0);
+        static float points[3 * 40];
+        for (int i = 0; i < 3000; ++i) {
+            const int count = static_cast<int>(next() % 41) - (i % 100 == 0 ? 3 : 0);
+            for (float& p : points) p = edge_or(-1000, 1000);
+            alignas(16) float object[12];
+            for (float& v : object) v = 9.0f;
+            native(object, 0, points, count);
+            bsp::ConvexObjectBox box;
+            bsp::convex_object_compute_box_006f9ee0(box, points, count);
+            fx4_compare(c, object + 5, box.centre, 3, i);
+            fx4_compare(c, object + 8, box.half_extent, 3, i);
+        }
+    }
+    {   // 00709EF0: thiscall(cloth, positions, velocities), RET 8; 0070A450: thiscall(cloth,
+        // outA, outB, inA, inB, vel, dt), RET 18h.
+        using namespace bsp::engine_seg11_35_66_cc13;
+        auto& wind = open("00709EF0 flag cloth wind and springs");
+        auto& integ = open("0070A450 flag cloth integrate");
+        auto apply = at<void (__fastcall*)(FlagClothLayout*, int, const float*, const float*)>(cc13_leaf_00709ef0);
+        auto integrate = at<void (__fastcall*)(const FlagClothLayout*, int, float*, float*, const float*,
+                                               const float*, const float*, float)>(cc13_leaf_0070a450);
+        constexpr int kMax = 6 * 5;
+        static float pos[kMax * 3], vel[kMax * 3], nrm[kMax * 3], f1[kMax * 3], f2[kMax * 3];
+        static float a1[kMax * 3], a2[kMax * 3], b1[kMax * 3], b2[kMax * 3];
+        for (int i = 0; i < 400; ++i) {
+            FlagClothLayout cloth{};
+            cloth.columns_3c = 2 + static_cast<int>(next() % 5);
+            cloth.rows_40 = 1 + static_cast<int>(next() % 5);
+            cloth.count_04 = cloth.columns_3c * cloth.rows_40;
+            fx4_fill(pos, kMax * 3, -3, 3, i);
+            fx4_fill(vel, kMax * 3, -2, 2, i + 1);
+            fx4_fill(nrm, kMax * 3, -1, 1, i + 2);
+            for (int k = 0; k < kMax * 3; ++k) f1[k] = f2[k] = 11.0f;
+            if (i % 25 == 0) for (int k = 3; k < 6; ++k) pos[k] = pos[k - 3];  // coincident pair
+            for (float& v : cloth.wind_20) v = edge_or(-100, 100);
+            cloth.stiffness_4c = edge_or(0, 50); cloth.damping_50 = edge_or(0, 2);
+            cloth.velocity_drag_54 = edge_or(-1, 0); cloth.gravity_58 = edge_or(-10, 0);
+            cloth.rest_horizontal_5c = edge_or(0, 1); cloth.rest_vertical_60 = edge_or(0, 1);
+            cloth.normals_1c = nrm;
+            FlagClothLayout native_cloth = cloth;
+            native_cloth.forces_18 = f1;
+            cloth.forces_18 = f2;
+            apply(&native_cloth, 0, pos, vel);
+            apply_flag_wind_00709ef0(cloth, pos, vel);
+            fx4_compare(wind, f1, f2, kMax * 3, i);
+            // Integrate from the native forces on both sides.
+            std::memcpy(f2, f1, sizeof(f1));
+            const float dt = edge_or(0, 0.05f);
+            for (int k = 0; k < kMax * 3; ++k) a1[k] = a2[k] = b1[k] = b2[k] = 13.0f;
+            integrate(&native_cloth, 0, a1, b1, pos, vel, vel, dt);
+            integrate_flag_cloth_0070a450(cloth, a2, b2, pos, vel, vel, dt);
+            float o1[kMax * 6], o2[kMax * 6];
+            std::memcpy(o1, a1, sizeof(a1)); std::memcpy(o1 + kMax * 3, b1, sizeof(b1));
+            std::memcpy(o2, a2, sizeof(a2)); std::memcpy(o2 + kMax * 3, b2, sizeof(b2));
+            fx4_compare(integ, o1, o2, kMax * 6, i);
+        }
+    }
+}
+
+// Thread per routine and the pinned findings of the deciding pass (default input set).
+bool fixture4_pin(const std::string& name, bool& wants53, int& failures, int& nan_only, const char*& finding) {
+    struct Pin { const char* address; int failures; int nan_only; const char* finding; };
+    static const char* const worker_only[] = {""};  // none: every fixture4 routine is main-thread
+    static const Pin pins[] = {
+        {"00B999F0", 0, 1, "NaN sign/payload only"},
+        {"00709EF0", 0, 3, "NaN sign/payload only"},
+        {"0070A450", 0, 2, "NaN sign/payload only"},
+    };
+    for (const char* p : worker_only) if (*p && name.compare(0, 8, p) == 0) wants53 = true;
+    for (const auto& k : pins)
+        if (*k.address && name.compare(0, 8, k.address) == 0) {
+            failures = k.failures; nan_only = k.nan_only; finding = k.finding;
+            return true;
+        }
+    return false;
+}
+
 }  // namespace
