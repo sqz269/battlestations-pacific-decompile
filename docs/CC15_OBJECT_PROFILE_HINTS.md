@@ -408,6 +408,37 @@ without a show.
 Save safety: the four files under Documents\Battlestations-Pacific (options.txt, save\0\player,
 quick, valid) have identical SHA-256, size and mtime before the first run and after the last.
 
+### Joint flip pairs (64163508f + 77cc21b65, ref env, 2026-10-23)
+
+64163508f turns `kHintTriggerPassesCc15Bound` and `kHudHintsSecondsLeftBound` on together.
+77cc21b65 makes 0068C526 (`screen_34_query`) read the tracker's screen 34h through
+`hints_seconds_left_0054d3c0_cc15()`, instead of the HUD host's zeroed copy.
+
+Exes:
+- `hoff`: 77cc21b65 with both switches off.
+- `hon`: 77cc21b65 as committed.
+- `off2`: the 50aec32e6 base, run 2026-10-19 and USN21 again on 2026-10-23.
+
+Rows: USN04 plus the 12 wins rows, plans as in section 6 except `usn02_l70_u2_b`, `lomp06_g56_l6_v2`, `jm06_l70_j6_n` and `ijn18_l70_i18_r`. Every run ended with exit_code=0 and its
+`rng streams: on` line.
+
+- **OFF identity (off2 vs hoff):** gameplay identical and strict ordered diff 0 on 12 rows. On
+  USN21, off2 rerun today vs a hoff repeat is identical. USN21 varies run to run (below).
+- **ON vs OFF (hoff vs hon):** on the 12 rows other than USN21, gameplay and the mission end are
+  identical, and the strict ordered diff of hint, dialog, message, objective and Lua timing lines is
+  0. No dialog is re-timed. The ON-only lines are the tracker's own.
+- **USN21:** moves, but repeat runs of the same exe move too (hoff vs its repeat: deaths 515 / 514,
+  shots 131757 / 130772).
+  - The only deterministic USN21 effect seen is the section 6 one: BASICSUB holds game+634h, so
+    OnMove skips the warning manager.
+  - The size of its gameplay effect needs repeated runs per side.
+- **0068C526:** with 77cc21b65 the query reads the shown hint's seconds left. It feeds only the
+  in-mission interface update's fallback branch (no controlled unit, no spectating, no camera flag
+  66h). On2 vs hon is identical on USN21, so the change does not reach a moved row there.
+
+Save files: the four files under Documents\Battlestations-Pacific have identical SHA-256, size and
+mtime before the first run and after the last (2026-10-23).
+
 ### The hint pause game+620h (static trace, 2026-10-19)
 
 Method: a byte scan of every executable section for the displacement 620h. Each hit was decoded

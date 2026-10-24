@@ -689,6 +689,11 @@ public:
             // JNE. Non-zero for |+54h| >= 1.0 and for NaN or |+54h| >= 2^31
             // (80000000h), zero for +54h in (-1, 1).
             owner_.done("InGameInterfaceUpdate::screen_34_query", 0x0054d3c0u);
+            // cc15-hint2: the screen 34h the hint tracker shows and times
+            // (src/game_hint_passes.cpp); the zeroed host copy below only
+            // answers before the tracker exists.
+            std::int32_t seconds_left = 0;
+            if (hints_seconds_left_0054d3c0_cc15(seconds_left)) return seconds_left != 0;
             const bsp::cc13_sweepA::Raw screen{owner_.hints_screen};
             return bsp::cc13_front6::hints_screen_seconds_left_0054d3c0(screen) != 0;
         } else {
