@@ -374,4 +374,91 @@ const char* small_recon_plane_class_name_00953720() noexcept { return "MSmallRec
 // Complete string-return semantics; native literal identity is not a C++ address.
 const char* large_recon_plane_class_name_009537b0() noexcept { return "MLargeReconPlane"; }
 
+// 0095FFC0: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Descriptive name provisional;
+// the base call remains explicit and its semantics remain at the host boundary.
+std::uint8_t* construct_land_vehicle_class_0095ffc0(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00749050(self);
+    write_vehicle_class_u32(self, 0, 0x00d1aa18);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1aa14);
+    write_vehicle_class_u32(self, 0x138, 0);
+    write_vehicle_class_u32(self, 0x140, 0);
+    write_vehicle_class_u32(self, 0x144, 0);
+    write_vehicle_class_u32(self, 0x148, 0);
+    write_vehicle_class_u32(self, 0x14c, 0);
+    return self;
+}
+
+// 00960050: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Descriptive name provisional;
+// the base call remains explicit and its semantics remain at the host boundary.
+std::uint8_t* construct_dummy_target_class_00960050(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00749050(self);
+    write_vehicle_class_u32(self, 0, 0x00d1aa58);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1aa54);
+    write_vehicle_class_u32(self, 0x140, 0);
+    return self;
+}
+
+// 00963C20: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Descriptive name provisional;
+// the base call remains explicit and its semantics remain at the host boundary.
+std::uint8_t* construct_landing_ship_class_00963c20(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00963380(self);
+    write_vehicle_class_u32(self, 0, 0x00d1ad78);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1ad74);
+    return self;
+}
+
+// 00963CB0: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Descriptive name provisional;
+// the base call remains explicit and its semantics remain at the host boundary.
+std::uint8_t* construct_cargo_class_00963cb0(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00963380(self);
+    write_vehicle_class_u32(self, 0, 0x00d1adbc);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1adb8);
+    return self;
+}
+
+// 00963D30: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Descriptive name provisional;
+// the base call remains explicit and its semantics remain at the host boundary.
+std::uint8_t* construct_battleship_class_00963d30(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00963380(self);
+    write_vehicle_class_u32(self, 0, 0x00d1adf8);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1adf4);
+    return self;
+}
+
+// 00963DB0: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Descriptive name provisional;
+// the base call remains explicit and its semantics remain at the host boundary.
+std::uint8_t* construct_submarine_class_00963db0(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00963380(self);
+    write_vehicle_class_u32(self, 0, 0x00d1ae38);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1ae34);
+    write_vehicle_class_u32(self, 0x80c, 0);
+    return self;
+}
+
+// 00963E40: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Descriptive name provisional;
+// the base call remains explicit and its semantics remain at the host boundary.
+std::uint8_t* construct_torpedo_boat_class_00963e40(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00963380(self);
+    write_vehicle_class_u32(self, 0, 0x00d1ae78);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1ae74);
+    return self;
+}
+
+// 00963EC0: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Descriptive name provisional;
+// the base call remains explicit and its semantics remain at the host boundary.
+std::uint8_t* construct_mothership_class_00963ec0(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00963380(self);
+    write_vehicle_class_u32(self, 0, 0x00d1aebc);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1aeb8);
+    return self;
+}
+
 } // namespace bsp
