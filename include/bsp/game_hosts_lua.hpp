@@ -163,7 +163,10 @@ static_assert(!kLaunchedSquadronPartyCc13Bound || kGeneratedWingPartyBound,
 // generated_party as the surface arm does, and the wings follow through
 // kGeneratedWingPartyBound. False: no Party, as before (counted:
 // spawn_squadron_party_nodes, spawn_squadron_wing_nodes).
-inline constexpr bool kSpawnNewSquadronPartyCc13Bound = false;
+// ON by the pair of 2026-10-24 (cc9-party1, SHIP_AI_OPEN_ITEMS 323): ESMP01's
+// 94 commandhelpers.lua:330 failures go to 0 (7 squadron nodes, 14 wing
+// nodes); ESMP01, USN19 and ten WINS rows are gameplay identical.
+inline constexpr bool kSpawnNewSquadronPartyCc13Bound = true;
 static_assert(!kSpawnNewSquadronPartyCc13Bound || kGeneratedEntityPartyBound,
               "kSpawnNewSquadronPartyCc13Bound uses the generated-entity party write");
 static_assert(!kSpawnNewSquadronPartyCc13Bound || kGeneratedWingPartyBound,
