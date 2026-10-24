@@ -73,12 +73,121 @@ def has_shape(category, lines):
         return any(re.search(rf'\bCALL 0x{t}\b', line) for line in lines for t in targets)
 
     if category == 'cg_scalar_deleting_dtor':
-        return test(1)
+        return 1 in flag_bits_tested(lines)
     if category == 'cg_vector_deleting_dtor':
         return test(2) and calls(EH_VECTOR_DTOR_ITERATOR)
     if category == 'cg_array_ctor_helper':
         return len(lines) <= ARRAY_CTOR_HELPER_MAX_INSTRUCTIONS and calls(*CTOR_ITERATORS)
     return True
+
+
+_REG_FAMILY = {r: f for f, regs in {
+    'A': ('EAX', 'AX', 'AL', 'AH'), 'B': ('EBX', 'BX', 'BL', 'BH'), 'C': ('ECX', 'CX', 'CL', 'CH'),
+    'D': ('EDX', 'DX', 'DL', 'DH'), 'SI': ('ESI', 'SI'), 'DI': ('EDI', 'DI'), 'BP': ('EBP', 'BP')}.items() for r in regs}
+
+
+def flag_bits_tested(lines):
+    """The bits a body tests on its incoming flag argument (the first stack argument, [ESP+4] at entry).
+
+    A bit test anywhere in the listing is not enough: 004D9830 tests bits 1 and 2 of a local EH-cleanup
+    byte (cc13-scalarshape). The listing is walked in address order. The frame depth is the bytes the
+    prologue pushes or reserves (register saves, the EH prolog, SUB ESP); later PUSHes are call arguments,
+    dropped at the CALL (a following ADD ESP is the same cleanup) and at RET the frame is restored for
+    the next block. A TEST of [ESP + frame + arguments + 4] (or [EBP + 8] style after MOV EBP,ESP), or of
+    a register loaded from that slot before it is overwritten, counts.
+    """
+    frame, args, ebp_depth, flag_regs, bits = 0, 0, None, set(), set()
+    in_prologue, cleanup, prologue_frame = True, 0, 0
+    imm = re.compile(r'-?0x[0-9a-f]+')
+
+    def slot(operand):
+        m = re.fullmatch(r'(?:byte|dword) ptr \[(ESP|EBP)(?: \+ 0x([0-9a-f]+))?\]', operand.strip())
+        if not m:
+            return False
+        off = int(m.group(2) or '0', 16)
+        if m.group(1) == 'ESP':
+            return off == frame + args + 4
+        return ebp_depth is not None and off == ebp_depth + 4  # EBP = ESP after ebp_depth bytes pushed
+
+    parsed = []
+    for line in lines:
+        text = line.split(':', 1)[1].strip() if ':' in line[:10] else line.strip()
+        op, _, rest = text.partition(' ')
+        operands = [o.strip() for o in rest.split(',')] if rest else []
+        parsed.append((op, operands, operands[0] if operands else ''))
+
+    def saved_register(i, reg):
+        """A PUSH of a callee-saved register is a save, not an argument, when the register is
+        overwritten before the next CALL (00419F30 saves EDI in a loop block, then loads it)."""
+        for op, operands, dest in parsed[i + 1:]:
+            if op == 'CALL' or op.startswith('RET'):
+                return False
+            if dest == reg and op not in ('CMP', 'TEST', 'PUSH'):
+                return True
+        return False
+
+    previous, written = '', set()
+    for i, (op, operands, dest) in enumerate(parsed):
+        if op == 'TEST' and len(operands) == 2 and imm.fullmatch(operands[1]):
+            value = int(operands[1], 16)
+            if slot(dest) or _REG_FAMILY.get(dest) in flag_regs:
+                bits.update(b for b in (1, 2) if value & b)
+            in_prologue = False
+            continue
+        if op == 'MOV' and len(operands) == 2 and dest in _REG_FAMILY and slot(operands[1]):
+            flag_regs.add(_REG_FAMILY[dest])
+            continue
+        if op == 'MOV' and dest == 'EBP' and operands[1:] == ['ESP']:
+            ebp_depth = frame + args
+            continue
+        # prologue saves: callee-saved registers, and the EH prolog's -1, handler and old FS:[0] (EAX)
+        # (a register already written is an argument: 006C23D0 is MOV ESI,ECX; PUSH ESI; CALL)
+        prologue_push = op == 'PUSH' and ((dest in ('EBX', 'ESI', 'EDI', 'EBP') and _REG_FAMILY[dest] not in written)
+                                          or dest == '-0x1'
+                                          or (dest == 'EAX' and 'FS:' in previous)
+                                          or (dest == 'ECX' and parsed[i + 1:i + 2] and parsed[i + 1][0] != 'CALL')  # slot reservation
+                                          or imm.fullmatch(dest) and int(dest, 16) >= 0x00c00000)
+        previous = ','.join(operands)
+        if op == 'PUSH':
+            if (in_prologue and prologue_push) or (dest in ('EBX', 'ESI', 'EDI', 'EBP') and saved_register(i, dest)):
+                frame += 4
+            else:
+                args += 4
+                in_prologue = False
+        elif op == 'POP':
+            if args:
+                args -= 4
+            else:
+                frame -= 4
+            flag_regs.discard(_REG_FAMILY.get(dest))
+        elif op in ('SUB', 'ADD') and dest == 'ESP' and len(operands) == 2 and imm.fullmatch(operands[1]):
+            n = int(operands[1], 16)
+            if op == 'SUB':
+                if in_prologue:
+                    frame += n
+                else:
+                    args += n
+            elif n <= cleanup:
+                cleanup -= n  # cdecl cleanup of arguments already dropped at the CALL
+            elif args >= n:
+                args -= n
+            else:
+                frame -= n - args
+                args = 0
+        elif op == 'CALL':
+            args, cleanup, in_prologue = 0, cleanup + args, False
+            flag_regs.discard('A'); flag_regs.discard('C'); flag_regs.discard('D')
+        elif op.startswith('RET'):
+            frame, args, cleanup = prologue_frame, 0, 0
+        elif dest in _REG_FAMILY and op not in ('CMP', 'TEST', 'PUSH'):
+            flag_regs.discard(_REG_FAMILY[dest])
+        if dest in _REG_FAMILY and op not in ('CMP', 'TEST', 'PUSH'):
+            written.add(_REG_FAMILY[dest])
+        if op not in ('PUSH', 'MOV', 'SUB', 'LEA', 'XOR') and not op.startswith('RET'):
+            in_prologue = False
+        if in_prologue:
+            prologue_frame = frame
+    return bits
 
 
 SHAPE_CATEGORIES = ('cg_scalar_deleting_dtor', 'cg_vector_deleting_dtor', 'cg_array_ctor_helper')
