@@ -105,5 +105,7 @@ the pseudocode. Three reconstructions (four sites) got this wrong (docs/CC13_X87
 The main thread runs the x87 at 24-bit precision, so every FADD/FSUB/FMUL/FDIV rounds to float;
 a C++ chain of two or more double ops rounded once can differ. Required before reporting any
 change that touches a body whose image function does x87 arithmetic:
-`python tools/pc24_lint.py --diff origin/main..HEAD` (or `--staged`, or file paths). It exits 1
+`python tools/pc24_lint.py --diff origin/main...HEAD` (or `--staged`, or file paths). The range
+diffs from the merge-base, so a branch behind main is not charged with main's newer edits
+(`--no-merge-base` gives a literal two-dot range). It exits 1
 on a new un-narrowed chain; fix it per op, or justify it with `// pc24-lint: allow <reason>`.
