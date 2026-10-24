@@ -516,7 +516,7 @@ Two missions keep a hint up: BASICSUB, critical, shown at t=0.10 and never dismi
   - **USN21 is not deterministic run to run on this machine (2026-10-23), so this move is not
     attributable to the gate.** Repeat runs of the same exe give different gameplay:
     - ga vs ga (repeat): deaths 516 / 514, shots 130430 / 127936.
-    - hoff vs hoff (repeat; section 8): deaths 515 / 514, shots 131757 / 130772.
+    - hoff vs hoff (repeat; the joint-flip pairs in section 6): deaths 515 / 514, shots 131757 / 130772.
     - off2 run on 2026-10-19 vs 2026-10-23: moved.
   - Meanwhile gb and its repeat match, off2 and its second repeat match, and the code-identical
     OFF pair off2-repeat vs hoff-repeat matches. The outcomes fall into a few clusters (shots
