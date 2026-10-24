@@ -26,7 +26,8 @@ public:
     // Read borrowed g_Environment.ReflCubemap, apply original whole-string
     // HDR_ prefix when requested, and publish ReflectionCubeMap via B1B830.
     // No root/property/string cache survives a successful call. Invoke before
-    // refresh_after_model_load(); missing/unsupported providers fail explicitly.
+    // refresh_after_model_load(); missing/empty fields use the Source default;
+    // unsupported schema fails explicitly.
     void publish_reflection_cubemap(const ScenePropertyBlock&, bool hdr);
 
     // Fresh persistent native operation per call, published before entry.

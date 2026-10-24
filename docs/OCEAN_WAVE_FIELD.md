@@ -4216,3 +4216,33 @@ Open items:
 Plans and logs are in this tree's local\: `p26_os_a/b/c.txt`, `p26_p01_a.txt`, `main_osa.log`, `main_osL.log`.
 
 Lease `p26-doc119` (this doc) is released with this section.
+
+## 120. `kCarrierSiteHasFreeRunwayCc13Bound` (006D0530) is unreached on six carrier rows (cc9-physics27, 2026-10-24)
+
+The switch (cc13 44b94b4b9, OFF) makes a carrier deck's mode-4 landing spacing wait for a free runway: 006D0530
+answers false while an occupant of site+34h lies less than Pilot/Landing/MinFreeRunwayLength along the deck
+(006BCC90 z). `planeglobals.lua:631` (this installation) sets that length to 12 m. The answer is evaluated in both
+modes, and ` site_busy=N` counts the passes where it would zero the spacing: tp < 0.25 FDT, the site not late
+(now - site+40h >= 0.4 FDT) and the deck not free.
+
+Pairs on 44b94b4b9: OFF is the tree build, ON is `local\p27_fr` (`pair_export --flip
+kCarrierSiteHasFreeRunwayCc13Bound=true`). Ref env (`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`), launcher
+`local\p27_pair.ps1`.
+
+| Row (plan) | Carrier decks with mode-4 passes (m4 / site passes / landed) | site_busy | pair_diff |
+| --- | --- | --- | --- |
+| USN01 (`usn01_l69_u1_a`) | Enterprise 77 / 77 / 0 | 0 | gameplay identical; completed 370.03 s, guard logged |
+| BSM01 (`bsm01_s62_b1_h`) | Akagi 806/291/275, Kaga 1664/711/470, Hiryu 1778/776/548, Soryu 1090/402/343, Zuikaku 1147/446/394, Shokaku 1619/636/491 | 0 | gameplay identical; EndMission 821.92 s, guard logged |
+| BSM04 (`l72w_bsm04_h1_f`) | Lexington 673 / 370 / 195 | 0 | gameplay identical; completed 941.89 s |
+| USNOS (`p26_os_a`) | Enterprise 152 / 142 / 0 | 0 | gameplay identical; failed 1675.51 s (as section 118) |
+| ESMP08 (`esmp08_p12_e8_rb`, OFF only) | Zuiho 116/80/36, Chitose 313/128/147 | 0 | - ; completed 1284.28 s |
+| IJN18 (`l71_i18_s`, OFF only) | Bogue1-4: no mode-4 passes (l71r's Bogue3 landings did not recur) | 0 | - ; EndMission 1791.62 s |
+
+Verdict: **unreached**. Over about 3,700 carrier site passes, with 2,900 planes landed on carrier decks, no pass
+found a deck occupant inside the 12 m free-runway margin while the site was not late. The switch stays OFF, recorded
+as unreached; flipping it changes nothing on these rows. A plausible reason (not shown): a plane that touches down is
+inside the margin only during the first 0.4 FDT after its touchdown, when the site is late anyway and the spacing is
+zeroed by the other term.
+
+Note: `local\main_osa.log` is now this pair's OFF run. physics26's log of the same name (sections 118-119) was
+copied first to `local\p26_main_osa.log`.
