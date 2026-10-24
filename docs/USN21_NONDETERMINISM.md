@@ -170,3 +170,115 @@ independent candidate: a dead-slot write would also show up first as a steering 
 
 The lead dropped this step: cc9's bisect2 lane runs the fixed and unfixed builds five times each, so
 those results are recorded there, not here.
+
+## 5. Load and stall discriminator (cc15-nondet2)
+
+Packet cc15-nondet2, 2026-10-24.
+
+Setup:
+- Exe: the kept ga exe, sha256 3cd35037eed8. Each run used its own copy, local/hint2_exe/gA1..gC2.
+- Args: the s46_u21_f row, 80000 frames, in the ref env. Every log has its "rng streams: on" line.
+- Driver: local/nondet2_arm.ps1. It reads the run's slot and core from run_game.ps1's runner line,
+  then:
+  - starts the hog, `pwsh -Command while(1){}`, with ProcessorAffinity set to that core. It measured
+    about 81% of the core.
+  - for arm C, sets every bsp_game process of the run to BelowNormal.
+  - kills the hog when the run exits.
+- At most two of these runs were alive at once.
+- The machine ran 14 of 14 slots with other lanes' runs throughout, and was at 100% CPU for part of
+  it. "No added load" therefore still means a fully loaded host.
+
+| run | arm | slot / core | start-end UTC | shots | deaths | hits | end t |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| gA1 | A control | slot8 c18 | 12:55-13:42 | 130772 | 514 | 9644 | 4002.73 |
+| gA2 | A control | slot3 c8 | 13:42-14:20 | 130772 | 514 | 9644 | 4002.73 |
+| gA3 | A control | slot3 c8 | 15:43-17:06 | 130772 | 514 | 9644 | 4002.73 |
+| gB1 | B hog | slot13 c28 | 12:31-13:19 | 130772 | 514 | 9644 | 4002.73 |
+| gB2 | B hog | slot12 c26 | 13:28-14:17 | 130772 | 514 | 9644 | 4002.73 |
+| gB3 | B hog | slot3 c8 | 14:20-15:42 | 130772 | 514 | 9644 | 4002.73 |
+| gC1 | C BelowNormal + hog | slot1 c4 | 14:17-18:17 | 130772 | 514 | 9644 | 4002.73 |
+| gC2 | D BelowNormal + duty hog | slot12 c26 | 17:36-19:33 | **130396** | **517** | **9239** | 4002.73 |
+
+All end at step 80000 with no mission end. Notes on the arms:
+
+- **Arm C starves rather than stalls.** The game's main thread has base priority 7 (AboveNormal in
+  the BelowNormal class) and the hog's is 8. With both pinned to one core, the game ran only on the
+  scheduler's starvation boost: 88 s of CPU in its first 58 minutes, where a normal run uses about
+  2700 s.
+- **gC1 does not cover the divergence window under starvation.** I removed its hog after 244 s of
+  game CPU, about the first 5% to 9% of the mission. It then finished at BelowNormal alone. It
+  starved through startup and the early mission only, so it says nothing about the step 37000-46000
+  window where the USN21 pairs diverge.
+- **Arm D replaced C for the second run.** Since full starvation can't finish, gC2 used a
+  duty-cycled hog at Normal priority: 200 ms busy, then 200 ms asleep, measured 47% of the core. The
+  BelowNormal game therefore lost the core for about 200 ms of every 400 ms for the whole run.
+- **No gC3.** The user set C:\Users\sqz269\.bsp\DRAIN at 18:12 UTC ("drain requested by user via
+  cc16"), so it was never launched.
+
+Strict comparisons against gA1 with local/nondet_first.py:
+
+- **gA2, gA3, gB1, gB2, gB3 and gC1:** no gameplay line differs. The only differences are the
+  startup `fmod_calls` count (line 99), the end-of-mission avoidance and free-bearing refill/empty
+  counters, and the `pretranslate` call count. Unlike the earlier off2 rerun/off2r pair, there isn't
+  even a transient steering-target wobble.
+- **gC2 deviates:** 130396 / 517 / 9239, the same outcome as the earlier on2 and hon runs.
+  - The first diverging line is 563951, `ship ai step 45340 SantaFe state=follow mode=navigate`.
+    `target=` is 2.3251 vs 2.3221 and `throttle=` is 1.241 vs 1.242.
+  - The step 45330 line and every earlier line match.
+  - The difference grows over the following steps while the rudder stays saturated, and the runs
+    then separate.
+
+Conclusion:
+- A bursty stall on the game's core is enough to move USN21 off the 130772 outcome.
+- A constant 81% hog at equal priority, and an early-only starvation, are not.
+- Six control and hog runs, plus cc9's four, all gave 130772. So 130772 is the normal outcome, and
+  the earlier spread came from runs that were stalled the same way, under heavy load.
+
+What the first diverging value goes through:
+- It is again the steering target and throttle of a ship in follow/navigate. That is the main-thread
+  fixed-step ship AI, fed by the avoidance and free-bearing search; position and hull heading still
+  match on that line.
+- The fixed-step job waves are not on worker threads in this build. Log line 3490 says
+  "fixed-step job waves: actual groups at 00f876c0 and their shared native frame-job owner are not
+  attached", so they run inline. The original's 24-bit vs 53-bit job-claiming race
+  (docs/CC13_FPU_PRECISION.md) is therefore not the path.
+- The only per-run-varying state the logs show is the heap-dependent searcher cache. Its end
+  counters differ in every run, including the matching ones.
+- A timing-dependent heap layout, from other threads allocating during a stall, would explain why
+  stalls change the outcome. That is consistent with these runs but not proven by them.
+
+Wall-clock reads in src. The mission step's time does not come from the clock:
+
+- `GameMissionFrameHost::run_mission_frame_004e4a40` (src/game_hosts_mission_frame.cpp:4534)
+  replaces the frame delta with `--mission-frame-seconds` (0.05).
+- Frame jitter (src/game_hosts_mission.cpp:2181) is armed only by BSP_FRAME_JITTER, which is unset.
+- `scale_frame_delta_004c6e30`'s clamps (src/game_frame_control.cpp:143, 162) act on that fixed
+  delta, so they are constant.
+
+The QueryPerformanceCounter, timeGetTime and GetTickCount reads are all outside the step:
+
+| read | where | what it does |
+| --- | --- | --- |
+| update/initialize/sample frame clock | src/frame_clock.cpp:88-143 | frame clock; its delta is overridden in-mission |
+| `query_performance_counter_00be3240` | src/engine_services_cc13.cpp:285 | no caller in src |
+| `measure_cpu_clock_0098c940` | src/engine_seg11_35_66_cc13.cpp:1482 | startup hardware info |
+| `GameFrameProfiler::query_performance_counter` | src/game_hosts_menu.cpp:118 | profiler only |
+| `wait_for_mapping` | src/game_native_data_bootstrap.cpp:432 | GetTickCount64 startup handshake timeout |
+| XLive clock sample | src/xlive_manager_runtime.cpp | XLive |
+| d3d9_probe, physical_pending_reads_probe | | probes |
+
+Thread pools that exist in the build:
+
+- the frame-job pool (src/native_frame_job_lifetime.cpp:99), with workers at
+  THREAD_PRIORITY_HIGHEST;
+- the Dyn task manager (src/dyn_task_manager.cpp:90), which has a LIFO dequeue and is typed for
+  avoid-zone hull memory;
+- the renderer control worker and the XLive IPC thread.
+
+Neither pool's worker count, nor whether either runs during the mission step, is logged. The Dyn
+task manager is the one worker path whose types connect to the avoidance search, so it is the first
+place to look for a stall-sensitive input. That pointer is unverified.
+
+Save directory: the same SHA-256, size and mtime before (local/nondet2_save_before.txt) and after
+(local/nondet2_save_after.txt) the runs. After the last run, Get-Process/CIM showed no hog, no
+driver and no bsp_game of this tree left.
