@@ -116,6 +116,10 @@ CODE = {
     0x815440: 0xd1,   # build unit order record
     0x7b9620: 0x98,   # plane altitude sink predicate
     0x727c30: 0xf9,   # index of readiest barrel
+    # cc13-fixture8: small main-thread float leaves.
+    0x809de0: 0x23, 0x7b5390: 0x6d, 0x791640: 0x71, 0x59ab10: 0xad, 0x790460: 0x61, 0x414130: 0x25,
+    0x9c6220: 0x47, 0x88a0c0: 0x6d, 0x98a710: 0x3f, 0x638b20: 0x31, 0x42c450: 0x62, 0x7b5be0: 0x3a,
+    0x6eb870: 0x53, 0x9b93f0: 0x21, 0xb0a3f0: 0x28, 0x6ea530: 0x15,
 }
 # Tail-jump targets replaced by MOV EAX,ECX; RET, so a fixture reads the ECX a thunk passes on.
 TAIL_STUBS = (0x6833f0, 0x4f71d0)
@@ -134,12 +138,16 @@ DATA = {
     0xd61cc0: 0x48,                # vertex element type sizes (18 dwords)
     # cc13-fixture3 constants: the double -1.0 at 00D7A250 and the double 1e-7 at 00D7A298.
     0xd7a250: 8, 0xd7a298: 8,
-    # cc13-fixture5 constants (00D7A264 lies inside the 00D7A260 range above).
-    0xce65d0: 8, 0xd7a358: 8, 0xd045f0: 8, 0xce3938: 8, 0xce3d68: 8, 0xce3d70: 8,
+    # cc13-fixture5 constants (00D7A264 lies inside the 00D7A260 range above;
+    # 00D045F0 is in the fixture8 block).
+    0xce65d0: 8, 0xd7a358: 8, 0xce3938: 8, 0xce3d68: 8, 0xce3d70: 8,
     0xce4798: 8, 0xce4790: 8, 0xcf48a0: 8, 0xd03dd0: 8, 0xd20330: 8, 0xd7a258: 8,
     0xce3d40: 8, 0xce3dc0: 8,
     0xd7a238: 4, 0xce3800: 4, 0xce3804: 4, 0xce4788: 4, 0xce398c: 4, 0xce3958: 4,
     0xce7d7c: 4, 0xce38b8: 4, 0xce3854: 4,
+    # cc13-fixture8: constants read by the routines above.
+    0xd045f0: 8, 0xce3850: 4, 0xce3ae8: 4, 0xce3d78: 8, 0xd7a210: 8, 0xcf9058: 8,
+    0xce7630: 8, 0xce38c8: 4, 0xce3d08: 4, 0xd7a278: 8,
 }
 SQRT = 0xbf7030
 SQRT_STUB = bytes([0xd9, 0xfa, 0xc3])
