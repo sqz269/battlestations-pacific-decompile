@@ -310,10 +310,9 @@ int lua_binding_spawn_new_id_remove(LuaBindingArgumentReader& args, LuaBindingSp
 // 0085DC80) and the mapping from the staged floats to the record's scalar block were not.
 int lua_binding_spawn_new(LuaBindingSpawnHost& host, const std::string& request_id);
 
-// The case-insensitive id match both queue methods use, as a rule: sizes first, then a
-// case-insensitive comparison, with two empty ids equal and an empty id never equal to a
-// non-empty one (00945900..0094593x, the same shape in 00945B10..00945B4x).
-bool spawn_request_id_matches(const std::string& queued, const std::string& wanted) noexcept;
+// The case-insensitive id match both queue methods use (00945900..0094593x, the same shape in
+// 00945B10..00945B4x) is bsp::spawn_request_id_matches in include/bsp/lua_spawn_new.hpp:
+// sizes first, two empty ids equal, then an ASCII case fold for 00BF7FBF __stricmp.
 
 } // namespace bsp
 
