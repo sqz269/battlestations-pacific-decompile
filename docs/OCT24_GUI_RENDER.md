@@ -326,5 +326,36 @@ Input is out of scope and remains the blocker for button dispatch after visual
 Page bring-up. Step4 is incomplete; no native Page ON run or screenshot is
 claimed by this prerequisite batch.
 
+#### Final prerequisite regression check
+
+Candidate source `4e28ec0c9657f545ba360a96e7cc9c6a7af526b6` is frozen under
+`local/gui_render/step4_source_final/`; `source.json` records clean source and
+full binary hashes. The subsequent merge `2c0775cdf` adds only published WINS
+plans/documentation; no compiled source or build configuration changes. The
+refreshed clean origin/main control is `561d57228c29f2164c8813f9880f66daf3750cc4`,
+frozen under `baseline/step4_561d57228/`. Candidate and control Release builds
+pass both existing checks; no new tests are added.
+
+* `usn04_origin_step4_final.log`, `usn04_step4_source_off_final.log`, and
+  `usn04_step4_source_cumulative_on_final.log` all exit0, with599 presents.
+  Launcher manifests preserve exact arguments, flags, slots and binary hashes.
+* `step4_source_off_pair.json`: literal pair_diff exit0, all21 unit rows,
+  all1392 native rows and all706 summaries identical. Only existing
+  pretranslate-count noise remains; no comparison rules are changed.
+* `step4_source_on_pair.json`: cumulative delivered Steps1--3 ON, game exit0,
+  gameplay and all21 unit rows identical. Literal pair_diff exit1 reflects the
+  two native Text/Model rows, concrete renderer64 resource method, expected
+  bridge texture ownership14->13 and native renderer diagnostics. It is not a
+  Page ON test. Trace and native full-unit rendering remain OFF.
+* `usn04_control_step4_prerequisites_N180.png` was visually inspected: visible
+  white native Text above the actual mission ship. The actual cGroup contains
+  the SAME Text Model;561 Text submissions retire normally, followed by Group
+  scene unlink/return and initial GUI resource-reference retirement.
+
+The final N001/N060/N180 and OFF PNGs, logs/manifests, source provenance,
+comparison JSON and build logs are copied with SHA-256 verification into the
+coordinator tree's `local/gui_render/oct24_gui_source_prerequisites/`. Prior
+accepted Step1/2/3 evidence remains in its corresponding copied directories.
+
 Final screenshots belong under this tree's `local/gui_render/` and are copied
 to the cc16-progress tree before this worktree is removed.
