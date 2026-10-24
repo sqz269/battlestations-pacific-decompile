@@ -23,12 +23,16 @@
 #include "bsp/native_cockpit_helper_construction.hpp"
 #include "bsp/native_gui_scene_storage.hpp"
 #include "bsp/native_material_parameters.hpp"
+#include "bsp/native_mesh_owner.hpp"
+#include "bsp/native_mesh_section.hpp"
 #include "bsp/native_node_scene_attachment.hpp"
 #include "bsp/native_node_root_propagation.hpp"
 #include "bsp/native_shader_binary_cache.hpp"
 #include "bsp/native_weak_owner.hpp"
 #include "bsp/post_effects_cc13.hpp"
 #include "bsp/system_fog_owner.hpp"
+#include "bsp/native_renderer_indexed_draw.hpp"
+#include <d3d9.h>
 #include <cstring>
 #include <cstdlib>
 #include <cwctype>
@@ -53,6 +57,95 @@ template<class T> T read(const void* value, std::size_t offset = 0) {
     T result;
     std::memcpy(&result, static_cast<const std::byte*>(value) + offset, sizeof result);
     return result;
+}
+bool gui_trace_requested() noexcept {
+    char value[2]{};
+    return GetEnvironmentVariableA("BSP_NATIVE_GUI_TRACE", value, sizeof value) == 1 && value[0] == '1';
+}
+template<class T> struct DiagnosticComCredit {
+    T* value{};
+    ~DiagnosticComCredit() { if (value) value->Release(); }
+};
+// Stock Get* observations only. Every temporary COM credit is balanced; this
+// does not bind a replacement target, shader, stream, texture or render state.
+void trace_gui_device(GameHostLog& log, void* actual_device) {
+    auto* device = static_cast<IDirect3DDevice9*>(actual_device);
+    DiagnosticComCredit<IDirect3DSurface9> target, back;
+    const HRESULT rt = device->GetRenderTarget(0, &target.value);
+    const HRESULT bb = device->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &back.value);
+    D3DSURFACE_DESC desc{};
+    const HRESULT described = target.value ? target.value->GetDesc(&desc) : E_POINTER;
+    D3DVIEWPORT9 viewport{};
+    const HRESULT vp = device->GetViewport(&viewport);
+    log.notef("native_GUI_trace target=%p back=%p getRT=%08lx getBack=%08lx desc=%08lx size=%ux%u format=%08x viewport_result=%08lx viewport=%lu,%lu,%lu,%lu,%g,%g",
+        target.value, back.value, static_cast<unsigned long>(rt), static_cast<unsigned long>(bb),
+        static_cast<unsigned long>(described), desc.Width, desc.Height, static_cast<unsigned>(desc.Format),
+        static_cast<unsigned long>(vp), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ);
+    DiagnosticComCredit<IDirect3DVertexBuffer9> vertices;
+    DiagnosticComCredit<IDirect3DIndexBuffer9> indices;
+    UINT offset{}, stride{};
+    const HRESULT vb = device->GetStreamSource(0, &vertices.value, &offset, &stride);
+    const HRESULT ib = device->GetIndices(&indices.value);
+    D3DVERTEXBUFFER_DESC vertex_desc{};
+    D3DINDEXBUFFER_DESC index_desc{};
+    const HRESULT vd = vertices.value ? vertices.value->GetDesc(&vertex_desc) : E_POINTER;
+    const HRESULT id = indices.value ? indices.value->GetDesc(&index_desc) : E_POINTER;
+    log.notef("native_GUI_trace VB=%p HRESULT=%08lx offset=%u stride=%u desc=%08lx bytes=%u usage=%08lx pool=%u IB=%p HRESULT=%08lx desc=%08lx bytes=%u format=%08x",
+        vertices.value, static_cast<unsigned long>(vb), offset, stride, static_cast<unsigned long>(vd), vertex_desc.Size,
+        vertex_desc.Usage, static_cast<unsigned>(vertex_desc.Pool), indices.value, static_cast<unsigned long>(ib),
+        static_cast<unsigned long>(id), index_desc.Size, static_cast<unsigned>(index_desc.Format));
+    DiagnosticComCredit<IDirect3DVertexShader9> vertex_shader;
+    DiagnosticComCredit<IDirect3DPixelShader9> pixel_shader;
+    DiagnosticComCredit<IDirect3DVertexDeclaration9> declaration;
+    DWORD fvf{};
+    const HRESULT vs = device->GetVertexShader(&vertex_shader.value);
+    const HRESULT ps = device->GetPixelShader(&pixel_shader.value);
+    const HRESULT decl = device->GetVertexDeclaration(&declaration.value);
+    const HRESULT fvfr = device->GetFVF(&fvf);
+    log.notef("native_GUI_trace VS=%p HRESULT=%08lx PS=%p HRESULT=%08lx declaration=%p HRESULT=%08lx FVF=%08lx HRESULT=%08lx",
+        vertex_shader.value, static_cast<unsigned long>(vs), pixel_shader.value, static_cast<unsigned long>(ps),
+        declaration.value, static_cast<unsigned long>(decl), fvf, static_cast<unsigned long>(fvfr));
+    const std::pair<D3DRENDERSTATETYPE, const char*> states[] = {
+        {D3DRS_COLORWRITEENABLE, "colorwrite"}, {D3DRS_ZENABLE, "z"}, {D3DRS_ZWRITEENABLE, "zwrite"},
+        {D3DRS_ZFUNC, "zfunc"}, {D3DRS_CULLMODE, "cull"}, {D3DRS_ALPHATESTENABLE, "alphatest"},
+        {D3DRS_ALPHABLENDENABLE, "alphablend"}, {D3DRS_SRCBLEND, "srcblend"}, {D3DRS_DESTBLEND, "destblend"},
+        {D3DRS_SCISSORTESTENABLE, "scissor"}};
+    for (const auto& state : states) {
+        DWORD value{};
+        const HRESULT result = device->GetRenderState(state.first, &value);
+        log.notef("native_GUI_trace state=%s value=%08lx HRESULT=%08lx", state.second, value, static_cast<unsigned long>(result));
+    }
+    for (DWORD slot = 0; slot != 2; ++slot) {
+        DiagnosticComCredit<IDirect3DBaseTexture9> texture;
+        const HRESULT result = device->GetTexture(slot, &texture.value);
+        D3DSURFACE_DESC texture_desc{};
+        const HRESULT texture_result = texture.value && texture.value->GetType() == D3DRTYPE_TEXTURE ?
+            static_cast<IDirect3DTexture9*>(texture.value)->GetLevelDesc(0, &texture_desc) : E_POINTER;
+        log.notef("native_GUI_trace texture=%lu COM=%p HRESULT=%08lx desc=%08lx size=%ux%u format=%08x", slot,
+            texture.value, static_cast<unsigned long>(result), static_cast<unsigned long>(texture_result),
+            texture_desc.Width, texture_desc.Height, static_cast<unsigned>(texture_desc.Format));
+    }
+}
+void trace_gui_indexed_draw(const NativeRendererIndexedDrawObservation& draw, void* context) noexcept {
+    try {
+        auto& log = *static_cast<GameHostLog*>(context);
+        const char* terminal = "unknown";
+        switch (draw.terminal) {
+        case NativeRendererIndexedDrawTerminal::skippedInhibited: terminal = "inhibited"; break;
+        case NativeRendererIndexedDrawTerminal::skippedLost: terminal = "lost"; break;
+        case NativeRendererIndexedDrawTerminal::skippedEmpty: terminal = "empty"; break;
+        case NativeRendererIndexedDrawTerminal::skippedStreamCount: terminal = "stream_count"; break;
+        case NativeRendererIndexedDrawTerminal::deviceCalled: terminal = "device_called"; break;
+        }
+        log.notef("native_GUI_trace draw terminal=%s renderer=%p inhibit=%u lost=%u primitive=%u base=%d minimum=%u vertices=%u start=%u primitives=%u logical=%p count=%u tag=%08x device=%p HRESULT=%08x",
+            terminal, draw.actual_renderer, draw.inhibit, static_cast<unsigned>(draw.lost), draw.primitive_type,
+            draw.base_vertex, draw.minimum_vertex, draw.vertex_count, draw.start_index, draw.primitive_count,
+            draw.logical_stream, draw.logical_count, draw.logical_tag, draw.actual_device, static_cast<unsigned>(draw.returned_hresult));
+        if (draw.terminal == NativeRendererIndexedDrawTerminal::deviceCalled)
+            trace_gui_device(log, draw.actual_device);
+    } catch (...) {
+        // Diagnostic logging cannot change the original ignored-HRESULT path.
+    }
 }
 std::shared_ptr<const GuiTable> vector_table(std::initializer_list<double> values) {
     auto result = std::make_shared<GuiTable>();
@@ -259,6 +352,22 @@ struct GameNativeGuiRenderApplication::Impl {
         nodes->widgets().loaded78(widget->layout());
         require(text->submit_source(*widget, "Battlestations Pacific - native GuiText", false) ==
             GameNativeTextStatus::complete, "native Text bring-up retained an incomplete glyph child");
+        if (gui_trace_requested()) {
+            void* mesh_raw = gui_model_geometry_00b74640(widget->model_reference()->model_owner().storage.model, 0);
+            auto* mesh = dynamic_cast<NativeMeshReference*>(&renderer.actual_owners().resolve_actual(mesh_raw));
+            require(mesh && &mesh->storage() == mesh_raw && mesh->storage().draw_sections_54.count_04 > 0,
+                "native GUI trace requires the actual Text mesh");
+            void* section_raw = gui_geometry_element_00b732c0(mesh_raw, 0);
+            auto* section = dynamic_cast<NativeMeshSectionReference*>(&renderer.actual_owners().resolve_actual(section_raw));
+            require(section && &section->storage() == section_raw, "native GUI trace requires the actual Text section");
+            const auto& raw_section = section->storage();
+            void* stream = mesh->storage().vertex_stream_count_7c > 0 ? mesh->storage().vertex_streams_64[0] : nullptr;
+            log.notef("native_GUI_trace built mesh=%p section=%p primitive=%u minimum=%u vertices=%u start=%u primitives=%u VB=%p IB=%p stream_tag=%08x stream_count=%u material=%p clip=%u",
+                mesh_raw, section_raw, raw_section.primitive_08, raw_section.range_words_0c[0], raw_section.range_words_0c[1],
+                raw_section.range_words_0c[2], raw_section.range_words_0c[3], stream, mesh->storage().index_stream_60,
+                stream ? read<Word>(stream, 0x54) : 0, stream ? read<Word>(stream, 0x64) : 0,
+                raw_section.material_20, static_cast<unsigned>(widget->extra_fields().clip_enabled_e8));
+        }
     }
     static void retire_camera(void* context, NativeCameraReference& reference) noexcept {
         auto& app = *static_cast<Impl*>(context);
@@ -432,6 +541,8 @@ void GameNativeGuiRenderApplication::submit_mission_frame(GameNativeGuiQueue& qu
     p.phase = Impl::Phase::submitting;
     try {
         Impl::Pass pass(p, queue);
+        NativeRendererIndexedDrawObserverScope trace(p.frames == 0 && gui_trace_requested() ?
+            &trace_gui_indexed_draw : nullptr, &p.log);
         submit_gui_pass_00aa3e00(p.scene_raw, p.camera_raw, pass);
         ++p.frames; p.phase = Impl::Phase::ready;
     } catch (...) { p.fail(); throw; }
