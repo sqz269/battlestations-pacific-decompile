@@ -20707,3 +20707,53 @@ guard's sus_prog.exe refusal where the mission completes. Every plan has `helm_m
   the run is queued, not failed.
 - A run that logs "present failed" (RDP session) can still complete, but it does not count. One such run (b2)
   crashed in `set_native_renderer_render_state_00b24460+0xd5`.
+
+## 322. BSM01 re-plan landed; JM08 stock budget; handoff (cc9-ships62, 2026-10-23)
+
+**BSM01, landed** (f49fcf438, `config/win_orders/bsm01_s62_b1_h.txt`, sent to lua71 for WINS_TABLE). Main 802e1d8b9:
+- Ref env: EndMission 815.92 s (`cc9-ships44\local\s62_nh_b1h.log`). HenryPT's gunfire hits the MiniSub at frame 9819.
+- `BSP_FRAME_JITTER=20,3`: EndMission 887.91 s (`local\s62_nhj_b1h.log`), from a depth-charge hit.
+- Both logs show the guard refusal, helm_moveto_unselected=0 and no "present failed". The plan is takehelm only.
+
+Why lua71's `l71_b1_a` stopped winning:
+- **The MiniSub surfaces and grounds.** In the ref env it grounds at (-254.7,-2489.9) from 486 s (`local\s62_a_b1a.log`).
+  The depth trace shows clear=1.20 and pos frozen with throttle 1. In 20,3 the grounding point depends on HenryPT's
+  track: (-383.7,-3292.4), (-198,-2363) or (-95,-2175). HenryPT parked 119 m off, so no charge reached the sub
+  (hit listener fires=0).
+- **The z~-2950 lane is crowded.** The 6900/7300 legs cross panic traffic and moored ships. The hull pair contact
+  census for 20,3 (`local\s62_dj_b1d.log`) gives California (moored at (1089,-2912)) 1022 steps, Neosho 990 and
+  Raleigh 791. HenryPT crawls at 1-2 m/s with throttle 1.
+- **Not every lane through open water is safe.** A southern lane through (1300,-3200) beached HenryPT at
+  (1446,-3279) with no hull contact (`s62_nfj_b1f.log`).
+- **How the working lane was found.** `local\s62_water.py` maps the cells any ship visited in several BSM01 logs and
+  BFS's a lane between two points. The depth-0/5 avoid-zone polygons (`local\s62_zones.py`) don't cover the trouble
+  spots. Plan generator: `local\s62_b1mk.py`.
+
+**JM08, open** (queue item 2). Script `local\s62_j8mk.py` (ships61's generator plus g/h/i). Runs are ref env, 72000
+frames, on 802e1d8b9.
+- **Airfield stock.** "MainAirFieldEntity 01" starts with 152x30 (Gekko), 154x30 (Ki-43 Oscar), 166x9 and 167x9. Every
+  variant spends all of it by about frame 26600, and the shipyard builds no more Gyoraitei after 16000 ("no idle
+  entry").
+- **f** (ships61's last plan): TT01 parks at (-18,-304) and TT03 at (1538,-562), and both live to the end. No end.
+  g (extra slot-1 152 strikes on TT01/03) is identical, because the slot is always busy or out of stock.
+- **h** (`s62_jh_j8.log`): f with airfield lines on Grayson (and on Nevada after frame 9000) retargeted to TT01/TT03.
+  - All 11 landships die by 1436.33 s (TT01 at 830 s to Gyoraitei #Y9; TT03 at 1436 s after 7 Oscar strikes), and
+    the Missouri dies at 475 s. Primaries 1 and 2 complete.
+  - The row then **fails at 1673.56 s: "HQ has been destroyed".** HQ health falls from 16.8k to 3.5k between 1080 and
+    1237 s, under bullets 13/15 from the landing ships (LST 01/02 die to the HQ itself at 571/1271 m) and the
+    destroyers that target it. It repairs to about 1.9k.
+  - The B-17s spawn at frame 29131, 20 s after the last landship, and their bombs (bullet 72, about 4.2k) finish
+    the HQ. The plan's many B-17 launch lines are refused: no stock, or the slot is busy.
+- **i** (`s62_ji_j8.log`): h with the TT03 lines held to frame 30000. This backfires: all 10 Oscar launches go to
+  Helena, TT03 and TT04 live, no end.
+- **Next.** Budget the 20 strike launches explicitly instead of retargeting by pattern. Options:
+  - Kill the LSTs and LSMs before they reach the HQ (about 1000 s), so the HQ keeps more than 5k health.
+  - Or let the last landship die later; the HQ repairs about 7 hp/s.
+  - Or keep 2-3 Oscar launches for the B-17s.
+  - Then phase 2: the C-47 wave decides the result.
+
+**USNOS** (queue item 3): untouched; SHIP_AI 314/315 still describe it. When you re-plan it, steer controlled ships
+with takehelm; a moveto is overridden by the autotarget think once a second, and a moveto after takehelm ends at once.
+
+**Run notes:** an empty `s62_launch_*.txt` means the run is queued for a slot. A run that logs "present failed" does
+not count; four such runs on 2026-10-23 crashed at bsp_game+3f6965 after the session switched to RDP.
