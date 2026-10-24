@@ -7,13 +7,12 @@ FrontEndFrame, or in-mission interface manager is instantiated by this work.
 
 ## Acceptance status
 
-This is an implementation work log. No native GUI draw or OFF/ON identity is
-claimed until its run manifests, literal `pair_diff` exit codes, and screenshots
-are recorded below. Input remains outside this lane and blocks button dispatch.
+Step 1 passes the bounded USN04 fixture below. Later steps remain separate
+deliverables. Input remains outside this lane and blocks button dispatch.
 
 | Step | Runtime selection | Current evidence |
 | --- | --- | --- |
-| 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Real HAL call S_OK and normal retirement; camera correction/native registry integration and visible capture pending |
+| 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Visible native Text in USN04; ON game exit0/gameplay identical; OFF pair_diff exit0 |
 | 2. Initial GUI texture resources | `BSP_NATIVE_GUI_RESOURCES=1` | Worker built; integration/runtime pending |
 | 3. Per-widget Model and page cGroup ownership | `BSP_NATIVE_GUI_NODES=1` planned | Canonical Model composition built; cGroup worker built, integration/ON pending |
 | 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` proposed | Exact 18-class audit in `OCT24_GUI_PAGES.md`; actual Screen manager/page ownership and ten factory arms remain blockers |
@@ -124,8 +123,9 @@ existing CTests passing. That OFF proof predates the final startup/frame wiring.
 `step1_wired_build_retry.log` records the wired Win32 Release build and 2/2
 existing checks passing; CMake permanently compiles both GUI application TUs.
 The first wired build caught use of a C++20 expression in this C++17 target;
-the adapter now uses ordinary overload substitution. Final wired OFF/ON runs
-remain pending. These build and earlier OFF observations do not establish an ON
+the adapter subsequently used ordinary overload substitution; the final shared
+renderer API is now a direct call. Final wired OFF/ON results are below.
+These build and earlier OFF observations do not establish an ON
 draw, pixel correctness, complete raw widget ABI, or page bring-up.
 
 The first wired ON probe (`usn04_text_on_probe1.log`, source `848a7988e`) ran on
@@ -164,7 +164,37 @@ the retained helper had reversed them, mirroring Text's X direction/winding.
 The caller mapping and diagnostic's former Z=-10000 are corrected together;
 the native CCW culling state is retained. Active Font property lookup now uses
 the native registry-list authority instead of host descriptor-name selection.
-The combined visible capture and final wired OFF identity remain pending.
+### Final Step 1 capture
+
+Source `aefe9318a297bc12e21cf6bba578e9d8c7fa5971`, clean tree, is frozen under
+`local/gui_render/step1_final/`; its executable SHA-256 is
+`bd119933b24e638dfc2e5db499885b70d7e1f891a342ccdf20cc7e276ca13b9a`.
+`step1_camera_registry_build.log` records Win32 Release and both existing checks
+passing. `usn04_text_on_final.log` and its manifest record game exit0, 599
+Presents, visible native Text above the controlled ship and normal retirement
+after 561 submissions. `step1_final/usn04_text_N180.png` is the inspected native
+capture. The native-frame suffix is essential to identify the actual run image.
+
+Flags are SHIP=1, FRAME=1, GUI_TEXT=1, UNITS=0 and GUI_TRACE=0. There is no
+diagnostic draw substitute. The label is built through the original GuiText
+layout/glyph services, actual logical/physical HAL buffers, material/effect,
+scene traversal and indexed draw on renderD's same mission frame.
+`step1_text_on_final_pair.json` is literal exit1: gameplay, all 21 unit rows and
+all 706 summaries are identical to clean `da031b4f3`; only native GUI method
+rows/renderer diagnostics differ.
+
+`usn04_text_off_final.log` uses the same frozen candidate executable with all
+native mission/GUI selections OFF and the clean control's exact arguments.
+It exits0; `step1_text_off_final_pair.json` is literal **pair_diff exit0**:
+1392 native rows, 706 summaries and all gameplay/unit rows agree; no other
+masked log differences remain. `step1_final/usn04_off.png` is its capture.
+No comparison noise rule or log filter is changed. Final images, source/hash
+record, run manifests/logs and pair results are copied to the coordinator's
+`local/gui_render/oct24_gui_step1/` before any worktree removal.
+
+This proves the standalone Text path and normal lifetime in this fixture. It
+does not prove a full raw Text/Font-registry singleton ABI, page replacement,
+GUI manager bring-up, input dispatch, device recreation or game-update stability.
 
 Final screenshots belong under this tree's `local/gui_render/` and must be
 copied to the cc16-progress tree before this worktree is removed.
