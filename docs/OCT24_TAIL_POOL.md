@@ -87,8 +87,16 @@ reconstruction credit.
 - `python tools/verify_report_calls.py local/output/oct24_pool_calls.json`:
   eight direct CALL rows checked, zero failures.
 - The changed translation unit compiled through `scripts/build.ps1` to
-  `build/win32/bsp_core.dir/Release/cc15_dyn_live.obj` (14,506 bytes). Full
-  Win32 build/existing CTests and final board recount remain pending.
+  `build/win32/bsp_core.dir/Release/cc15_dyn_live.obj` (14,506 bytes).
+- Full `scripts/build.ps1` passed: MSVC Win32 Release built, then 3/3 existing
+  CTests passed (`reconstructed_math`, `native_math_differential`, `tool_tests`).
+  Log: `local/output/oct24_pool_build.log`; total CTest time 360.69 seconds.
+- Board recount against this branch at `33045c9a4`, using the same board code
+  with its history ref set to `HEAD`: target remains 20,726, game_done rises
+  from 20,714 to 20,718, and pool_remaining falls from 12 to 8. Data:
+  `local/output/oct24_pool_after.json`. These four additions supply exactly
+  the four independent lifecycle bodies; the eight classified rows keep
+  their prior credit.
 - Lifecycle evidence is source/listing/build evidence. The existing registered
   suites do not provide a focused lifecycle execution or differential claim.
 - Naming evidence was appended with `bsp.py ledger add-name`, then applied via
