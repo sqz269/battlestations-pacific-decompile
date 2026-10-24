@@ -265,7 +265,7 @@ static_assert(!kHelmPrepareMapUpGateCc13Bound || bsp::kCruiseLatchedPlayerArmCc1
 // OFF: the slot-4Ch update falls through to the pump's default record.
 // The only plan that opens the map (ijn18_l70_i18_r) never closes it, so ON
 // releases the helm on every update for the rest of that run.
-inline constexpr bool kMapScreenHelmReleaseCc13Bound = false;
+inline constexpr bool kMapScreenHelmReleaseCc13Bound = true;  // ON (cc9-helm1, 2026-10-23): IJN18 l70_i18_r pair gameplay identical; the arm never fires on that plan (role 1 not player-held)
 static_assert(!kMapScreenHelmReleaseCc13Bound || kHarnessReleaseGunMapBound,
     "kMapScreenHelmReleaseCc13Bound needs kHarnessReleaseGunMapBound: only that path opens the map");
 static_assert(!kMapScreenHelmReleaseCc13Bound || kHelmPrepareMapUpGateCc13Bound,
