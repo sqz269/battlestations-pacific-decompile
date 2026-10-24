@@ -22976,8 +22976,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     if (static_cast<double>(b2) > 1.0e-10) {
                                         const float sp = std::sqrt(b2);
                                         if (sp > 3.0f) {
-                                            b[1] = static_cast<float>(static_cast<double>(b[1]) -
-                                                static_cast<double>(sp) * 0.10000000149011612);
+                                            if constexpr (bsp::kPlaneFlightX87Cc13Bound) {
+                                                // 007D8D6D FMUL rounds sp * 0.1 to float, then FSUBP.
+                                                const float drop = static_cast<float>(
+                                                    static_cast<double>(sp) * 0.10000000149011612);
+                                                b[1] = static_cast<float>(static_cast<double>(b[1]) -
+                                                    static_cast<double>(drop));
+                                            } else {
+                                                b[1] = static_cast<float>(static_cast<double>(b[1]) -
+                                                    static_cast<double>(sp) * 0.10000000149011612);
+                                            }
                                             const float l = std::sqrt(b[0] * b[0] + b[1] * b[1] + b[2] * b[2]);
                                             const float li = l > 0.0f ? 1.0f / l : 0.0f;
                                             for (int i = 0; i < 3; ++i) {

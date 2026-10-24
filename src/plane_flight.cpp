@@ -338,7 +338,14 @@ PlaneDynAccumulators accumulate_free_flight_007db680(const PlaneFreeFlightState&
     const float speed_squared = wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2];
     // 007DBA67 compares against the double 1e-10 (00CE3820); 007DBA92 against
     // 0.001f (00D7A23C). Either failure skips straight to the damping block.
-    if (speed_squared > 1.0e-10f) {
+    // kPlaneFlightX87Cc13Bound: 007DBA67 FCOMI against the double 1e-10.
+    bool above_cutoff;
+    if constexpr (kPlaneFlightX87Cc13Bound) {
+        above_cutoff = static_cast<double>(speed_squared) > 1.0e-10;
+    } else {
+        above_cutoff = speed_squared > 1.0e-10f;
+    }
+    if (above_cutoff) {
         const float speed = std::sqrt(speed_squared);  // 007DBA7B 00BF7030
         if (speed > 0.001f) {
             const float n[3] = {wv[0] / speed, wv[1] / speed, wv[2] / speed};
@@ -486,6 +493,22 @@ PlaneBodyAcceleration fold_world_into_body_007d8470(const PlaneDynAccumulators& 
     return result;
 }
 
+PlaneBodyAcceleration fold_world_into_body_007d8470(PlaneDynAccumulators& acc,
+                                                    const float world_to_body[9]) {
+    const PlaneBodyAcceleration result =
+        fold_world_into_body_007d8470(static_cast<const PlaneDynAccumulators&>(acc),
+                                      world_to_body);
+    if constexpr (kPlaneResist40DeadbandCc13Bound) {
+        // 007D85A0-007D85E7: |dyn+40h..48h| < 0.001f (00D7A23C) zeroes; JBE keeps equality.
+        for (int i = 0; i < 3; ++i) {
+            const float v = acc.body_resist_40[i];
+            const float magnitude = v < 0.0f ? -v : v;
+            if (0.001f > magnitude) acc.body_resist_40[i] = 0.0f;
+        }
+    }
+    return result;
+}
+
 float free_flight_world_up_acceleration(const PlaneFreeFlightState& state,
                                         const PlaneFreeFlightClass& cls,
                                         const PlaneFreeFlightTuning& tuning, float step,
@@ -544,8 +567,15 @@ float commit_direction_hold_007dc6c5(float seconds, bool owner_present, bool hol
 PlaneGroundBand ground_band_007dbeb3(const PlaneGroundBandInputs& in) noexcept {
     PlaneGroundBand out;
     // 007DBEB3-007DBEC7: 0.6 (00CEFF98, a widened float) - throttle * 26.0 (00D06880).
-    const float open = static_cast<float>(0.6000000238418579 -
-        static_cast<double>(in.latched_throttle) * 26.0);
+    float open;
+    if constexpr (kPlaneFlightX87Cc13Bound) {
+        // 007DBEBB FMUL rounds the product to float (24-bit x87), 007DBEC1 FSUBR again.
+        const float scaled = static_cast<float>(static_cast<double>(in.latched_throttle) * 26.0);
+        open = static_cast<float>(0.6000000238418579 - static_cast<double>(scaled));
+    } else {
+        open = static_cast<float>(0.6000000238418579 -
+            static_cast<double>(in.latched_throttle) * 26.0);
+    }
     // 007DBECB-007DBEE8: the larger of the latched air brake and that.
     const float brake_in = in.latched_air_brake > open ? in.latched_air_brake : open;
     out.brake = in.wheel_brake * brake_in;                          // 007DBEF6-007DBF0C
