@@ -7,13 +7,13 @@ FrontEndFrame, or in-mission interface manager is instantiated by this work.
 
 ## Acceptance status
 
-Step 1 passes the bounded USN04 fixture below. Later steps remain separate
+Steps 1--2 pass the bounded USN04 fixtures below. Later steps remain separate
 deliverables. Input remains outside this lane and blocks button dispatch.
 
 | Step | Runtime selection | Current evidence |
 | --- | --- | --- |
 | 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Visible native Text in USN04; ON game exit0/gameplay identical; OFF pair_diff exit0 |
-| 2. Initial GUI texture resources | `BSP_NATIVE_GUI_RESOURCES=1` | Startup/retirement wired; Win32 Release +2/2 checks passed; OFF/ON pending |
+| 2. Initial GUI texture resources | `BSP_NATIVE_GUI_RESOURCES=1` | ON game exit0/native texture retirement/gameplay identical; OFF pair_diff exit0 |
 | 3. Per-widget Model and page cGroup ownership | `BSP_NATIVE_GUI_NODES=1` planned | Canonical Model composition built; cGroup worker built, integration/ON pending |
 | 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` proposed | Exact 18-class audit in `OCT24_GUI_PAGES.md`; actual Screen manager/page ownership and ten factory arms remain blockers |
 
@@ -195,6 +195,37 @@ record, run manifests/logs and pair results are copied to the coordinator's
 This proves the standalone Text path and normal lifetime in this fixture. It
 does not prove a full raw Text/Font-registry singleton ABI, page replacement,
 GUI manager bring-up, input dispatch, device recreation or game-update stability.
+
+### Step 2: native initial texture entries
+
+Source `7868f79262d9232f4f792904042fd0dc3a7029ac` is frozen under
+`step2_final/` (executable SHA-256
+`29b5eaf50adc326930e21bb67454ab0986f11366703e8a9e94156c51d5af61d0`).
+`step2_build.log` records Win32 Release and 2/2 existing checks passing.
+The fresh clean-main control is `2dc6801ff`, built with 2/2 checks and run
+through `usn04_origin_step2.log`; its source/hash record is under
+`baseline/step2_2dc6801ff/`.
+
+`usn04_resources_off_final.log` exits0 and `step2_off_pair.json` is literal
+**pair_diff exit0** against that clean control. `usn04_resources_on_final.log`
+uses SHIP/FRAME/GUI_TEXT/GUI_RESOURCES=1, UNITS/GUI_TRACE=0; it exits0 with
+native Text still visible (`step2_final/usn04_native_N180.png`).
+`step2_on_pair.json` is literal exit1 with identical gameplay and all 21 unit
+rows. The native texture method changes UNIMPLEMENTED -> concrete, calls2.
+One GUI summary changes: bridge-owned texture count14 ->13, because the native
+texture credit is not inserted into the bridge's separate COM ownership list.
+
+The original whiteGui VFS guard rejects the installed path, preserving null
+manager+28; this matches the earlier recorded installation behavior. The
+transparent entry at+2C resolves and returns the actual renderer64/B319B0
+texture reference. Do not substitute another texture for that optional null.
+Normal shutdown logs Text retirement before native GUI texture-credit
+retirement, then deletes frontend, retires Fonts and drains the same renderer.
+The exception gate retains any outstanding graph before provider cleanup.
+This does not implement the GUI manager destructor or activate a page.
+See `OCT24_GUI_RESOURCES.md` for credit and original-ABI boundaries. Final
+images/manifests/logs/pairs/hash record are copied to the coordinator's
+`local/gui_render/oct24_gui_step2/`.
 
 Final screenshots belong under this tree's `local/gui_render/` and must be
 copied to the cc16-progress tree before this worktree is removed.
