@@ -382,11 +382,17 @@ UnitDeathDecision unit_death_00959450(const UnitDeathInputs& inputs) noexcept
         decision.raises_limbo_notice_byte = !inputs.limbo_notice_byte_fd;
         return decision;
     }
+    // 009595A4..009595B8: when idle, PushInterfaceRequest(34h, 0). Its store of the
+    // pending pair makes 009595C3..009595D1's re-test fail the idle comparison, so
+    // the [00e198c4] vtable +10h at 009595DD runs as well (packet cc13-limbo2). The
+    // exception is 004CC460's refusal (004CC478 [00E19894] set and 004CC48A
+    // 00683E90(34h) true), which leaves the front end idle and skips the +10h.
+    // SUBSTITUTION: the refusal is not an input here, so the push is taken as
+    // accepted. When not idle, only the +10h runs.
     if (inputs.front_end_idle) {
         decision.pushes_limbo_interface = true; // PushInterfaceRequest(34h, 0)
-    } else {
-        decision.retargets_front_end = true; // [00e198c4] vtable +10h
     }
+    decision.retargets_front_end = true; // [00e198c4] vtable +10h
     return decision;
 }
 

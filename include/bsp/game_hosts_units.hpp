@@ -1149,6 +1149,11 @@ public:
     // squadron's current flight leader, for such a node; the unit count when
     // it is not a squadron node or no member is alive.
     std::size_t squadron_list_24_leader(std::size_t entry_unit) const;
+    // Packet cc13-limbo2: [plane+9D4h]+3CCh, the live member count of the
+    // squadron `plane` is a member of (the same live_count() the plane
+    // bindings' controlled_unit_count answers). -1 when no registry record
+    // holds `plane` as a member (plane+9D4h null, or already removed).
+    int plane_squadron_live_count_3cc(std::size_t plane) const;
     // The unit index at `position` of the class-`class_id` list, or the unit
     // count when the position is past the end. The order is 00484540's own:
     // appended at the tail, walked from the head.
