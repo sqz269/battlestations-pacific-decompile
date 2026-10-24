@@ -166,10 +166,11 @@ enum class SquadronCandidateNote {
     SquadronDetached,   // 009F74E9 007EE8B0
     Slot140Blocks,      // 009F74FA / 009F7876 / 009F7010 [vtable[140h]()]+1D4h
     Kind1bCarrier,      // 009F752D inner 46h/45h
-    GuardOut,           // filter C 009F7F40 (in 009F7480 or 009F7BA0)
+    GuardOut,           // filter C 009F7F40 on the entity, in 009F7480
     NotUnitOrSquadron,  // 009F7BB8/009F7BC7 neither 5 nor 18h (or no leader)
     NoDetect,           // 009F7BF5 00804350 false
     NoRank,             // 009F7C2B weight 0 (not in the chosen AttackLists vector)
+    LeaderGuardOut,     // filter C 009F7F40 on the unit (a squadron: its leader), in 009F7BA0
 };
 struct SquadronCandidateTrace {
     SquadronCandidateNote note{SquadronCandidateNote::Scored};

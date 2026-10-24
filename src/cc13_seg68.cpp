@@ -336,7 +336,7 @@ float filter_score_target_009f7ba0(SquadronAutoTargetHost& host, const SquadronA
         if (target == 0) return note(SquadronCandidateNote::NotUnitOrSquadron);
     }
     if (!filter_accept_slotc(host, self, filter, target))      // vtable[0Ch]
-        return note(filter == SquadronFilter::At1C ? SquadronCandidateNote::GuardOut
+        return note(filter == SquadronFilter::At1C ? SquadronCandidateNote::LeaderGuardOut
                                                    : SquadronCandidateNote::Slot140Blocks);
     // 009F7BF5..009F7C08: 00804350(ECX = [[filter+4]+8]+3D0h, EDX = target, 0FFh).
     const Handle own_leader = host.u32(self.squadron_08, 0x3d0);
