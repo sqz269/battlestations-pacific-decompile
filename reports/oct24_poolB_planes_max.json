@@ -20,6 +20,7 @@
       "status": "reconstructed_complete_ordinary_body_build_pending",
       "evidence": "Entire 420-instruction saved listing plus pseudocode. Callees inspected before their raw call boundaries were declared. Both clamp helpers are lowered from their inspected comparisons. The +1198/+119C vector uses six checked reads per record, 4Ch stride; current angle +44 is overwritten in the original order.",
       "uncertainty": "Descriptive name is a hypothesis. Native FH3 registration/unwind funclets are excluded; the complete ordinary body includes all normal cleanup calls. Float stores are explicit; portable C++ double temporaries are not proof of x87 extended precision or binary ABI equivalence. All external calls require a supplied host.",
+      "callback_dispatch": "0074B506/0074B518 captures the node slot address before 00413920; 0074B524 loads the selected target afterwards. The host receives that native target explicitly.",
       "correction": {
         "was": "BSP_LandingShip_Update metadata_only_no_function_body_verified_oct24 in game_hosts_script_orders.cpp",
         "is": "Complete ordinary raw-storage body in canonical building_pads family",
@@ -40,10 +41,24 @@
         "is": "Complete ordinary raw-storage body; dt is the stack float, load is the clamped acceleration map, +70h is the wanted/running multiplier",
         "evidence": "007EB7CC/007EBA25 use [ESP+B0h] dt; 007EBAB5 uses +34h for rpm, 007EBAD9 uses stored normalized load, 007EBA83 writes the separate multiplier; holders step at +48h/+74h/+A0h/+CCh"
       }
+    },
+    {
+      "address": "007482b0",
+      "name": "land_fort_init_scene_and_create_static_body_007482b0",
+      "source": "src/land_and_structures.cpp",
+      "coverage": "complete ordinary body 007482B0-00748986",
+      "original_abi": "ECX fort, no stack arguments, RET at 00748986; native FH3 frame/unwind excluded",
+      "status": "reconstructed_complete_ordinary_body_build_pending",
+      "evidence": "All 438 listing instructions reviewed. Kind-1 DamageLevel/groups/skill/gunnery and kind-2 byte copy, node matrix/parent attachment, reserve(30), five checked shape-back operations, body pointer-array growth, current world pose, static body publication and both normal frees are retained. The 84h body and 48h shape layouts agree with the inspected existing producers in ship_hull_body.hpp, cc13_sweepA4.hpp and cc13_seg52b.cpp. The skill virtual slot address is captured before 00927A80 and its selected target loaded afterwards.",
+      "uncertainty": "New unwired C++ interface, no binary ABI or native FH3 exception-cleanup claim. The original reserve size and shape-pointer publication order are retained; this does not invent stability when more than 30 shapes relocate the descriptor vector. STL, CRT and Dyn calls are bindings with no vendor-library body credit.",
+      "correction": {
+        "was": "BSP_LandFort_InitSceneAndCreateStaticBody incomplete_or_unverified_body_credit_withdrawn_oct24 in game_hosts_units.cpp; decompiler omits normal shape writes and final shape-vector free",
+        "is": "Complete ordinary raw-storage body in canonical land_and_structures family",
+        "evidence": "007486DD/00748723/00748764/007487A9 write the checked last shape; 00748959 frees the body pointer array, 0074896A frees shape storage, 00748986 RET"
+      }
     }
   ],
   "open": [
-    {"address": "007482b0", "status": "evidence review in progress"},
     {"address": "007d3e60", "status": "evidence review in progress"},
     {"address": "007f4ba0", "status": "evidence review in progress"}
   ],
@@ -110,6 +125,47 @@
     {"function": "007eb380", "address": "007ebeb3", "native": "007de490"},
     {"function": "007eb380", "address": "007ebec6", "native": "007de490"},
     {"function": "007eb380", "address": "007ebedc", "native": "007de490"},
-    {"function": "007eb380", "address": "007ebef2", "native": "007de490"}
+    {"function": "007eb380", "address": "007ebef2", "native": "007de490"},
+    {"function": "007482b0", "address": "007482d5", "native": "00955420"},
+    {"function": "007482b0", "address": "00748312", "native": "0048e9f0"},
+    {"function": "007482b0", "address": "00748326", "native": "008f2260"},
+    {"function": "007482b0", "address": "00748349", "native": "00710bb0"},
+    {"function": "007482b0", "address": "00748383", "native": "00927a80"},
+    {"function": "007482b0", "address": "007483a7", "native": "00bf681b"},
+    {"function": "007482b0", "address": "007483c4", "native": "00864580"},
+    {"function": "007482b0", "address": "0074842f", "native": "00b6e680"},
+    {"function": "007482b0", "address": "00748455", "native": "00747cc0", "library_binding": true},
+    {"function": "007482b0", "address": "00748576", "native": "00bf6713"},
+    {"function": "007482b0", "address": "00748587", "native": "00476b90"},
+    {"function": "007482b0", "address": "00748599", "native": "00bf6713"},
+    {"function": "007482b0", "address": "007485a9", "native": "00bf6713"},
+    {"function": "007482b0", "address": "007485bf", "native": "00bf6713"},
+    {"function": "007482b0", "address": "007485d0", "native": "00bf6713"},
+    {"function": "007482b0", "address": "00748692", "native": "00748150", "library_binding": true},
+    {"function": "007482b0", "address": "007486a3", "native": "00bf6713"},
+    {"function": "007482b0", "address": "007486c3", "native": "00bf6713"},
+    {"function": "007482b0", "address": "007486d0", "native": "00bf6713"},
+    {"function": "007482b0", "address": "007486ee", "native": "00bf6713"},
+    {"function": "007482b0", "address": "0074870e", "native": "00bf6713"},
+    {"function": "007482b0", "address": "0074871b", "native": "00bf6713"},
+    {"function": "007482b0", "address": "00748732", "native": "00bf6713"},
+    {"function": "007482b0", "address": "00748752", "native": "00bf6713"},
+    {"function": "007482b0", "address": "0074875f", "native": "00bf6713"},
+    {"function": "007482b0", "address": "00748777", "native": "00bf6713"},
+    {"function": "007482b0", "address": "00748797", "native": "00bf6713"},
+    {"function": "007482b0", "address": "007487a4", "native": "00bf6713"},
+    {"function": "007482b0", "address": "007487bc", "native": "00bf6713"},
+    {"function": "007482b0", "address": "007487dc", "native": "00bf6713"},
+    {"function": "007482b0", "address": "007487e9", "native": "00bf6713"},
+    {"function": "007482b0", "address": "0074880e", "native": "00bf55be"},
+    {"function": "007482b0", "address": "00748850", "native": "00bf6989"},
+    {"function": "007482b0", "address": "0074888b", "native": "00bf6713"},
+    {"function": "007482b0", "address": "007488c8", "native": "00414db0"},
+    {"function": "007482b0", "address": "007488e5", "native": "00413920"},
+    {"function": "007482b0", "address": "007488f8", "native": "004134f0"},
+    {"function": "007482b0", "address": "00748910", "native": "00c336c0", "library_binding": true},
+    {"function": "007482b0", "address": "00748932", "native": "00c5d580", "library_binding": true},
+    {"function": "007482b0", "address": "00748959", "native": "00bf6989"},
+    {"function": "007482b0", "address": "0074896a", "native": "00bf65ac"}
   ]
 }
