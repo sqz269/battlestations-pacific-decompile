@@ -52,8 +52,9 @@ dispatch; original executable code is never called.
    Text, the existing widget runtime allocates and constructs its actual Model,
    binds it through AA6720, and invokes current74. The returned owner's
    `model_reference()` and `node_binding()` borrow that canonical model; both
-   must be nonnull. No parent, properties, current78 or scene insertion is
-   invented by this API.
+   must be nonnull. For Text, current74 is AB7700: it captures that live Model,
+   constructs/associates real B73B60/B73D70 geometry through B75170, then updates
+   position. No parent, properties, current78 or scene insertion is invented.
 3. Existing Text properties/content/buffers and renderer submission operate on
    that same owner. `retain_widget(owner)` can supply a genuine alias token to
    `GuiMaterialBindingServices`: its `get()` is exactly `&owner`, while its
@@ -64,11 +65,13 @@ dispatch; original executable code is never called.
    `GameNativeTextApplication::retire_owned_text`. That application's original
    child transport owns AB8EE0 flags1 and the factory's AB75A0 pool return. A
    second transport is invalid because Text verifies its original child-call
-   identity. Never discard the transferred wrapper or substitute `retire_tree`
-   for this pooled Text path. Drain any retained render references before
+   identity. Never discard the transferred wrapper. This standalone contract
+   selects the original flags1 caller; the existing separate host-tree
+   retirement route is not invoked here. Drain retained render references before
    destroying node metadata, renderer metadata or the CRT pools.
 
-The later page loader can prepare its exact cGuiLayer factory/flag and call
+The later page loader can call the existing
+`GuiTypeDispatchFactory::prepare_script_page(root, exact_screen_flag)` and then
 `create_plain_page_root_00aa5840_fragment` with its own fresh Screen layout.
 The existing `GuiNativeScene` then owns one actual cGroup and binds that same
 root widget. This does not construct a native page/cGuiLayer allocation or
@@ -91,6 +94,7 @@ limits remain in force.
 | 00B75030 | ECX actual Model, stack 8-byte name header, EAX same Model, RET4. Actual model size 184h over the B6F5A0 prefix. |
 | 00B6F5A0 | ECX actual node, stack name header, EAX same node, RET4. Existing canonical storage/scene/reference companions are reused. |
 | 00AA6720 | Binds the real node to this widget and clears node+138 low two bits. |
+| 00AB7700 | Text current74 captures its same main Model, creates/associates real geometry, then reloads the current node for its position update. |
 | 00B8F450 / 00B8F310 | Static 010902F4 thunk / canonical pool allocation. Group allocation is 18Ch; slab DWORD +188h is preserved. |
 | 00B8F5E0 | ECX actual Group, stack name header, EAX same Group, RET4. Constructor covers 188h, with group attachment fields in the same allocation. |
 | 00B6E680 | ECX child, stack requested parent, RET4. Existing actual hierarchy/scene/backlink dispatch; no substitute hierarchy. |
@@ -109,10 +113,13 @@ no Ghidra symbols/comments or reconstruction ledgers changed.
 
 ## Validation and limits
 
-The node translation unit is registered temporarily in the worker's local
-`startup.cmake` for `scripts/build.ps1`; that CMake edit is restored before
-delivery. The primary integrator owns permanent build registration and runtime
-switches. Build result is recorded in the delivery report.
+`scripts/build.ps1` passed for MSVC Win32 Release with the new node translation
+unit compiled into `bsp_game.exe`. Both existing CTest targets passed:
+`reconstructed_math` (2.30s) and `tool_tests` (169.23s); total 171.61s.
+The translation unit was registered temporarily in the worker's local
+`startup.cmake`, then that CMake edit was restored. The primary integrator owns
+permanent build registration and runtime switches. The ignored build log is
+`local/oct24-gui-nodes-build.log`.
 
 No new tests, game runs, OFF/ON comparison, screenshot, draw proof, original
 widget binary-ABI proof or game validation is claimed by this worker. The typed

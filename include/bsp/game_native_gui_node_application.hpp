@@ -47,8 +47,8 @@ public:
     // Pure ownership transfer after idle/token validation. Pass the sole result
     // immediately to GameNativeTextApplication::retire_owned_text: that SAME
     // application's child transport performs AB8EE0 flags1 and AB75A0. The
-    // caller retains both graphs on failure; ordinary retire_tree is unsuitable
-    // for this Text's native pool allocation. Do not drop the returned wrapper.
+    // caller retains both graphs on failure. This contract selects the original
+    // flags1 caller, rather than host-tree retirement. Do not drop the wrapper.
     std::unique_ptr<GuiLayoutWidget> take_standalone_for_retirement(GuiWidgetOwner&);
 
     // Later page-loader prerequisite only. The caller still owns the page/root
