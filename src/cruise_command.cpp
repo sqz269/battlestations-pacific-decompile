@@ -8,6 +8,7 @@
 #include "bsp/cruise_command.hpp"
 
 #include <cmath>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -588,8 +589,12 @@ void unit_apply_entity_command_whole_00816e30(UnitEntityCommandHost& host,
             // 00817243..00817329: a position becomes a fresh NavPoint at that
             // position, and the descriptor is rebuilt to target it.
             void* block = host.allocate_zeroed_00470b80(kEntityCommandNavPointSize);
-            const std::uint32_t nav = block != nullptr
-                ? host.nav_point_construct_004e5980(block, 0) : 0u;
+            if (block == nullptr) {
+                // 0081725F skips the constructor and leaves ESI = 0, so 0081727C
+                // MOV EDX,[ESI] faults. Stop rather than reproduce it.
+                throw std::logic_error("00816E30: 00470B80 returned null (the image faults at 0081727C)");
+            }
+            const std::uint32_t nav = host.nav_point_construct_004e5980(block, 0);
             float identity[16] = {};
             identity[0] = identity[5] = identity[10] = identity[15] = 1.0f; // [00D7A24C]
             host.entity_vcall98(nav, 0, host.game_scene_19cc(), identity);  // 008172FF
