@@ -120,6 +120,7 @@ public:
     void bind_registry(HintScreenRegistry* registry) noexcept { registry_ = registry; }
     // [00E198C4]+A8h, the hints screen 34h. Owned here, pumped by the menu host.
     GameHintsScreen& hints_screen_34();
+    const GameHintsScreen* hints_screen_34_if_built() const noexcept { return screen_34_.get(); }
     // 00690FD0 __thiscall(tracker, NativeString* name, char forced), RET 8.
     void trigger_hint_00690fd0(const std::string& name, bool forced);
     // 0068E5B0 (copy of +60h), 0068E420 (+60h := ""), 0068E600, 004D05E0 on
