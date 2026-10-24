@@ -29,6 +29,7 @@
 #include <vector>
 
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/game_native_mission_units.hpp"
 
 namespace bsp {
 class SessionParticipantPools;
@@ -254,6 +255,8 @@ public:
     const GameMissionLoadRunSummary& load_summary() const noexcept;
     const GameMissionEntrySummary& entry_summary() const noexcept;
     const GameMissionFrameRunSummary& frame_summary() const noexcept;
+    // Pure access to existing owners; this does not create or update units.
+    GameNativeMissionUnitSource native_render_unit_source() const noexcept;
     // Milestone 2h: what the two scene-file passes of 004d4df0 did. Null when
     // the load has not reached that row.
     const GameSceneContentsSummary* scene_contents_summary() const noexcept;

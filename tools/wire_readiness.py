@@ -33,7 +33,7 @@ Approximations (say so when quoting numbers):
 - "stand_in_hosts" lists the host files whose text mentions the address: usually a record/unimplemented row
   the body would replace, sometimes only a comment.
 """
-import argparse, bisect, collections, json, re, sqlite3, struct, sys
+import argparse, bisect, collections, hashlib, json, re, sqlite3, struct, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,13 +66,15 @@ for a, name, seg, tag, ln, ev, thunk in db.execute('select address, name, segmen
         lib_named.add(a)
 starts = sorted(funcs)
 recon = {}
+recon_candidates = []
 excluded_recon = collections.Counter()
 out_of_scope = set()
 for a, kind, name, src, status in db.execute('select address, kind, name, source, status from recon'):
-    if status == 'library_instantiation_out_of_scope':
+    if status in pb.OUT_OF_SCOPE_STATUSES:
         out_of_scope.add(a)
     if kind == 'function' and pb.reconstruction_has_body(status):
         recon.setdefault(a, (name, src))
+        recon_candidates.append((a, name, src))
     elif kind == 'function':
         excluded_recon[status] += 1
 game = {a: (not v[0].startswith(pb.FUNCLET + pb.LIBRARY_NAME_PREFIXES))
@@ -179,7 +181,7 @@ DEF_RE = re.compile(r'^[ \t]*(?:template\s*<[^>{;]*>\s*)?(?:__declspec\([^\n)]*\
                     r'(?:[\w:<>,\*&~ \t]+?[ \t\*&])?'
                     r'((?:(?:\w+(?:<[^;{}\n]*>)?)::)*(~?\w+))[ \t]*'
                     r'\(([^;{}()]*(?:\([^;{}()]*\)[^;{}()]*)*)\)[ \t]*(?:const[ \t]*)?(?:noexcept[ \t]*)?'
-                    r'(?:override[ \t]*)?(?:->[^{;]*)?\s*\{', re.M)
+                    r'(?:override[ \t]*)?(?:->[^{;]*)?(?:\s*:[^;{]+)?\s*\{', re.M)
 ADDR_HEAD = re.compile(r'^\s*(?://+|/?\*+)\s*(?:Address:?\s*)?(?:0x)?([0-9A-Fa-f]{8})\b|Address:\s*(?:0x)?([0-9A-Fa-f]{8})\b')
 COMMENT_LINE = re.compile(r'^\s*(//|/\*|\*)')
 strip_comments = lambda t: re.sub(r'//[^\n]*|/\*.*?\*/', ' ', t, flags=re.S)
@@ -193,7 +195,7 @@ for p, t in srcs.items():
     lines = None
     for m in DEF_RE.finditer(t):
         simple = m.group(2)
-        if simple in KEYWORDS or simple.startswith('~'):
+        if simple in KEYWORDS:
             continue
         defs_in[p].append((simple, m.group(1))); def_files[simple].add(p); def_count[p][simple] += 1
         if lines is None:
@@ -240,12 +242,12 @@ for s in def_files:
         suffixed_defs[int(SUFFIX.search(s).group(1), 16)].add(s)
 ident_via = {}
 plain_idents = set()
-for a, (nm, src) in recon.items():
+for a, nm, src in recon_candidates:
     if ident_by_addr.get(a):
         continue
     sp = ROOT / src if src else None
     parts = [x.strip().split('::')[-1].split('(')[0].strip() for x in re.split(r'\s*/\s*|,\s*', nm or '') if x.strip()]
-    parts = [x for x in parts if re.fullmatch(r'[A-Za-z_]\w*', x)]
+    parts = [x for x in parts if re.fullmatch(r'~?[A-Za-z_]\w*', x)]
     ok = lambda s: not (SUFFIX.search(s) and int(SUFFIX.search(s).group(1), 16) != a)
     hit = [s for s in parts if sp in def_files.get(s, ()) and ok(s)]
     via = 'name'
@@ -277,6 +279,7 @@ for a, (nm, src) in recon.items():
         via = 'suffix_body'
     if hit:
         ident_by_addr[a].update(hit); ident_via[a] = via
+        recon[a] = (nm, src)
         plain_idents.update(s for s in hit if not SUFFIX.search(s))
 # Explicit mappings carry reviewable address-to-body evidence without modifying busy source files.
 # A metadata row, prototype or table accessor is insufficient: each named implementation must have a body.
@@ -296,7 +299,7 @@ for path in sorted((ROOT / 'config').glob('wire_identifiers*.json')):
         known = {simple for simple, qualified in defs_in.get(sp, ())}
         if not set(names) <= known:
             raise ValueError(f'{path}: missing C++ body for {a:08x}: {set(names) - known}')
-        if any(SUFFIX.search(s) and int(SUFFIX.search(s).group(1), 16) != a for s in names):
+        if any(SUFFIX.search(s) and int(SUFFIX.search(s).group(1), 16) != a for s in names) and not record.get('shared_implementation'):
             raise ValueError(f'{path}: another address suffix for {a:08x}')
         explicit_mappings[a] = record
         if a not in recon or ident_by_addr.get(a):
@@ -352,6 +355,11 @@ def wired(a):
     for ident in ident_by_addr.get(a, ()):
         users = [f for f in defined_in.get(ident, ()) if f in reach and f.suffix == '.cpp']
         defs = owner_files.get(ident, set())
+        if ident in plain_idents and len(def_files.get(ident, ())) > 1:
+            # Common method names (dispatch, initialize, release...) must not borrow a
+            # use from an unrelated class/file. Ambiguous plain names only count locally.
+            implementation = ROOT / ident_sources.get(a, recon[a][1]) if recon[a][1] else None
+            users = [f for f in users if f == implementation]
         for f in users:
             if f not in defs:
                 return True
@@ -365,7 +373,14 @@ def wired(a):
 
 def host_own(a):
     # the host defines its own function at this address (a stand-in or an independent host version)
-    return any(f in host_files for ident in ident_by_addr.get(a, ()) for f in owner_files.get(ident, ()))
+    for ident in ident_by_addr.get(a, ()):
+        files = owner_files.get(ident, ())
+        if ident in plain_idents and len(def_files.get(ident, ())) > 1:
+            implementation = ROOT / ident_sources.get(a, recon[a][1]) if recon[a][1] else None
+            files = [f for f in files if f == implementation]
+        if any(f in host_files for f in files):
+            return True
+    return False
 
 
 # ---- ABI class of a ready row, from its definition's parameter list
@@ -443,7 +458,17 @@ for r in rows:
     by_cat[r['category']][r['state']] += 1
 out = ROOT / 'local/output/wire_readiness.json'
 out.parent.mkdir(parents=True, exist_ok=True)
-json.dump(dict(summary=dict(counts), excluded_recon=dict(excluded_recon),
+source_hashes = [(p.relative_to(ROOT).as_posix(), hashlib.sha256(t.encode()).hexdigest())
+                 for p, t in sorted(srcs.items())]
+inputs = dict(head=pb.git('rev-parse', 'HEAD').strip(),
+              index_built_utc=(db.execute("select value from meta where key='built_utc'").fetchone() or ['?'])[0],
+              source_text_sha256=hashlib.sha256(json.dumps(source_hashes).encode()).hexdigest(),
+              map_text_sha256=hashlib.sha256(mp.encode()).hexdigest(),
+              tool_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+              scope_tool_sha256=hashlib.sha256((ROOT / 'tools/progress_board.py').read_bytes()).hexdigest(),
+              identifier_manifests={p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                                    for p in sorted((ROOT / 'config').glob('wire_identifiers*.json'))})
+json.dump(dict(summary=dict(counts), inputs=inputs, excluded_recon=dict(excluded_recon),
                ready_abi=dict(abi_counts), by_category={k: dict(v) for k, v in by_cat.items()},
                edges=dict(ghidra=ghidra_edges, rel32_added=scan_edges, address_taken_funcs=len(address_taken)),
                reachable_files=len(reach), roots=len(roots), rows=sorted(rows, key=lambda r: (r['state'], r['category'], r['address']))),

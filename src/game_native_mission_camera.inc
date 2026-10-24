@@ -102,13 +102,15 @@ struct MissionShipCameraGraph final {
     }
     void fit_ship(const CameraAxis& center, float radius) {
         check(owner && !caller_released && std::isfinite(radius) && radius > 0.0f,
-            "mission fixed camera requires a finite installed ship sphere");
+            "mission diagnostic camera requires a finite installed model sphere");
         const CameraAxis eye{center[0] + radius * 1.9f,
             center[1] + radius * 0.8f, center[2] - radius * 0.9f};
         set_camera_look_at_00b700e0(owner->camera, eye, center, owner->pose,
             environment.crt, environment.viewport.one_bits_00d7a24c);
+        const float far_range = radius * 5.0f + 1000.0f;
+        set_camera_far_00b6fc10(owner->projection, far_range < 10000.0f ? 10000.0f : far_range);
         (void)get_native_camera_view_projection_00b70490(raw);
-        log.notef("native mission ship fixed camera fit: center=%.6f,%.6f,%.6f radius=%.6f "
+        log.notef("native mission diagnostic camera fit: center=%.6f,%.6f,%.6f radius=%.6f "
             "eye=%.6f,%.6f,%.6f", center[0], center[1], center[2], radius,
             eye[0], eye[1], eye[2]);
     }

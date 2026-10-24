@@ -1228,22 +1228,33 @@ def ledger_write(args):
         elif previous:
             print(f"replaced (previous record stays in git history): {json.dumps(previous)}")
     elif args.ledger_command in ('add-function', 'add-fragment'):
-        record = json.loads(args.json)
-        for key in ('address', 'name', 'source', 'status'):
-            if key not in record:
-                sys.exit(f'missing field {key}')
-        record['address'] = ledger.norm(record['address'])
-        coordination.check_writable([record['address']], force=args.force)
-        record['kind'] = 'function' if args.ledger_command == 'add-function' else 'fragment'
+        data = json.loads(Path(args.json_file).read_text(encoding='utf-8')) if getattr(args, 'json_file', None) else json.loads(args.json)
+        records = data if isinstance(data, list) else [data]
+        for record in records:
+            for key in ('address', 'name', 'source', 'status'):
+                if key not in record:
+                    sys.exit(f'missing field {key}')
+            record['address'] = ledger.norm(record['address'])
+            record['kind'] = 'function' if args.ledger_command == 'add-function' else 'fragment'
+        keys = [(r['address'], r['kind'], r['name']) for r in records]
+        if len(keys) != len(set(keys)):
+            sys.exit('duplicate reconstruction key in batch')
+        # Validate the entire batch and its leases before the first ledger mutation.
+        coordination.check_writable([r['address'] for r in records], force=args.force)
         recon = ledger.load_reconstruction()
-        pool = recon['fragments'] if record['kind'] == 'fragment' else recon['functions']
-        existing = next((r for r in pool if r['address'] == record['address'] and r.get('name') == record['name']), None)
-        if existing and not args.replace:
-            sys.exit(f"{record['address']} {record['kind']} {record['name']} already recorded; pass --replace to supersede it. Existing record:\n{json.dumps(existing)}")
-        previous = ledger.upsert(ledger.RECON_DIR, record, key=ledger.RECON_KEY)
-        print(f"{record['address']} {record['kind']} {record['name']}")
-        if previous:
-            print(f"replaced (previous record stays in git history): {json.dumps(previous)}")
+        for record in records:
+            pool = recon['fragments'] if record['kind'] == 'fragment' else recon['functions']
+            existing = next((r for r in pool if r['address'] == record['address'] and r.get('name') == record['name']), None)
+            if existing and not args.replace:
+                sys.exit(f"{record['address']} {record['kind']} {record['name']} already recorded; pass --replace to supersede it. Existing record:\n{json.dumps(existing)}")
+        for record in records:
+            previous = ledger.upsert(ledger.RECON_DIR, record, key=ledger.RECON_KEY)
+            if len(records) == 1:
+                print(f"{record['address']} {record['kind']} {record['name']}")
+                if previous:
+                    print(f"replaced (previous record stays in git history): {json.dumps(previous)}")
+        if len(records) != 1:
+            print(f"recorded {len(records)} {args.ledger_command} records; previous values stay in git history")
 
 
 # ---------------------------------------------------------------- coordination
@@ -1725,8 +1736,8 @@ def main():
     q = ls.add_parser('add-name'); q.add_argument('address'); q.add_argument('name'); q.add_argument('--evidence', required=True)
     q.add_argument('--force', action='store_true', help='ignore another owner\'s lease'); q.add_argument('--replace', action='store_true', help='supersede an existing record')
     q.add_argument('--append-evidence', action='store_true', help='flag: keep the existing record and append the --evidence text to its evidence (the name is updated if it differs)')
-    q = ls.add_parser('add-function'); q.add_argument('--json', required=True); q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
-    q = ls.add_parser('add-fragment'); q.add_argument('--json', required=True); q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
+    q = ls.add_parser('add-function'); g = q.add_mutually_exclusive_group(required=True); g.add_argument('--json'); g.add_argument('--json-file'); q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
+    q = ls.add_parser('add-fragment'); g = q.add_mutually_exclusive_group(required=True); g.add_argument('--json'); g.add_argument('--json-file'); q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
     p.set_defaults(func=ledger_cmd)
     args = parser.parse_args()
     with output_budget(argv=sys.argv[1:], full=getattr(args, 'full', False)):

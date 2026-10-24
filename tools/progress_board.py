@@ -185,7 +185,12 @@ def commits_with_patches(*paths):
         yield int(parts[1]), harness_of(parts[4]), parts[2], parts[3], body.splitlines()
 
 
-NO_BODY_STATUSES = {'metadata_only_no_function_body_verified_oct24'}
+NO_BODY_STATUSES = {'metadata_only_no_function_body_verified_oct24',
+                    'incomplete_or_unverified_body_credit_withdrawn_oct24'}
+OUT_OF_SCOPE_STATUSES = {'library_instantiation_out_of_scope', 'compiler_generated_out_of_scope',
+                         'out_of_scope_vendor_library', 'standard_library_reuse',
+                         'vendor_lua_out_of_scope', 'vendor_stl_out_of_scope',
+                         'non_callable_continuation_out_of_scope'}
 
 
 def reconstruction_has_body(status):
@@ -308,7 +313,7 @@ def build(now=None):
     funcs = {}
     out_of_scope = set()
     for a, name, seg, tag, rk, rn, ln, rs in db.execute('select address, name, segment, tag_category, recon_kind, recon_name, ledger_name, recon_status from functions'):
-        if rs == 'library_instantiation_out_of_scope':
+        if rs in OUT_OF_SCOPE_STATUSES:
             out_of_scope.add(a)
         if not name.startswith(FUNCLET):
             funcs[a] = (seg, tag, rk, ln, name, rn)
@@ -439,11 +444,14 @@ def build(now=None):
 
 
 def main():
+    global MAIN
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('--out', default=str(ROOT / 'local/progress_board.html'))
     ap.add_argument('--json', help='also write the data as JSON')
     ap.add_argument('--no-index', action='store_true', help='do not run bsp.py index --if-stale first')
+    ap.add_argument('--history-ref', default=MAIN, help='freeze history to a commit/ref for a reproducible audit')
     args = ap.parse_args()
+    MAIN = args.history_ref
     git('fetch', '-q', 'origin', 'main')
     if subprocess.run(['git', 'merge-base', '--is-ancestor', MAIN, 'HEAD'], cwd=ROOT).returncode:
         print(f'note: this tree does not contain {MAIN}; the index (and recon states) lag the history', file=sys.stderr)

@@ -3647,25 +3647,16 @@ struct GameGunneryHost::Impl {
         out[1] = origin[1] + state.hull_height;
         out[2] = origin[2];
     }
-    // Packet cc9_muzzle_offsets (docs/MUZZLE_OFFSETS.md): 00730160's shot origin,
-    // TransformAffinePoint(class+98h[barrel], [gun+3CCh] world) with the node pose
-    // 00859550 writes. False when the gun has no mount, no loaded offsets or no
-    // usable node chain; the caller then keeps the mount point, which is the
-    // image's own empty-list fallback (00730899, the root translation).
-    bool gun_barrel_muzzle_world_00730762(const GameGunRow& gun, int barrel,
+    // Shared pure hierarchy calculation for firing and the render-only seam.
+    // The original firing path supplies its existing parent pose arrays; the
+    // visual reader obtains fresh arrays from units.unit_pose. No cache,
+    // counter or last-shot diagnostic is written by this calculation.
+    bool device_hierarchy_node_world(const GameGunRow& gun, const DeviceFirePoints& fp,
+        int pick,
         const float right[3], const float up[3], const float forward[3],
-        const float origin[3], float out[3]) {
-        if (!kMuzzleOffsetsBound || !kShipPlatformAttachmentBound || !gun.mount_known) {
-            return false;
-        }
-        const auto found = fire_points_by_device.find(gun.device_class);
-        if (found == fire_points_by_device.end()) return false;
-        const DeviceFirePoints& fp = found->second;
-        if (!fp.loaded || fp.list.offsets.empty() || fp.nodes.empty()) return false;
+        const float origin[3], bsp::CameraMatrix& world) const {
         const std::size_t count = fp.nodes.size();
         const bool have_barrel = fp.barrel_node > 0;
-        // 0072EE65..0072EE8F: barrel, then base, then the model's first node.
-        const int pick = have_barrel ? fp.barrel_node : (fp.base_node > 0 ? fp.base_node : 0);
         // The root's local is the platform frame (0072E9A1), a translation.
         bsp::CameraMatrix root_local{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
             0.0f, 0.0f, 1.0f, 0.0f, gun.mount_local[0], gun.mount_local[1],
@@ -3694,7 +3685,7 @@ struct GameGunneryHost::Impl {
             if (parent >= count) return false;
             at = static_cast<int>(parent);
         }
-        bsp::CameraMatrix world{};
+        world = {};
         bsp::multiply_camera_matrices_00413920(world, root_local, ship);
         for (auto it = chain.rbegin(); it != chain.rend(); ++it) {
             const int node = *it;
@@ -3710,6 +3701,29 @@ struct GameGunneryHost::Impl {
             bsp::multiply_camera_matrices_00413920(next, local, world);
             world = next;
         }
+        return true;
+    }
+    // Packet cc9_muzzle_offsets (docs/MUZZLE_OFFSETS.md): 00730160's shot origin,
+    // TransformAffinePoint(class+98h[barrel], [gun+3CCh] world) with the node pose
+    // 00859550 writes. False when the gun has no mount, no loaded offsets or no
+    // usable node chain; the caller then keeps the mount point, which is the
+    // image's own empty-list fallback (00730899, the root translation).
+    bool gun_barrel_muzzle_world_00730762(const GameGunRow& gun, int barrel,
+        const float right[3], const float up[3], const float forward[3],
+        const float origin[3], float out[3]) {
+        if (!kMuzzleOffsetsBound || !kShipPlatformAttachmentBound || !gun.mount_known) {
+            return false;
+        }
+        const auto found = fire_points_by_device.find(gun.device_class);
+        if (found == fire_points_by_device.end()) return false;
+        const DeviceFirePoints& fp = found->second;
+        if (!fp.loaded || fp.list.offsets.empty() || fp.nodes.empty()) return false;
+        const bool have_barrel = fp.barrel_node > 0;
+        // 0072EE65..0072EE8F: barrel, then base, then the model's first node.
+        const int pick = have_barrel ? fp.barrel_node : (fp.base_node > 0 ? fp.base_node : 0);
+        bsp::CameraMatrix world{};
+        if (!device_hierarchy_node_world(gun, fp, pick, right, up, forward, origin, world))
+            return false;
         bsp::GunMuzzleMount mount;
         mount.node_world = world;
         mount.muzzle_offsets = fp.list.offsets;
@@ -16406,6 +16420,42 @@ const GameBulletClassRow* GameGunneryHost::bullet_class_row(int id) const noexce
 
 const std::vector<GameGunRow>& GameGunneryHost::guns() const noexcept {
     return impl_->guns;
+}
+
+bool GameGunneryHost::device_visual_metadata(std::size_t gun_index,
+    GameDeviceVisualMetadata& out) const noexcept {
+    out = {};
+    if (gun_index >= impl_->guns.size()) return false;
+    const GameGunRow& gun = impl_->guns[gun_index];
+    out.unit_index = gun.unit_index;
+    out.platform_key = gun.platform_key;
+    out.device_class = gun.device_class;
+    out.mount_known = gun.mount_known;
+    const auto found = impl_->fire_points_by_device.find(gun.device_class);
+    if (found != impl_->fire_points_by_device.end()) {
+        out.mesh = &found->second.mesh;
+        out.hierarchy_items = found->second.nodes.size();
+        out.source_loaded = found->second.loaded;
+    }
+    return true;
+}
+
+bool GameGunneryHost::device_visual_node_world(std::size_t gun_index,
+    std::size_t hierarchy_item, bsp::CameraMatrix& out) const {
+    if (gun_index >= impl_->guns.size()
+        || hierarchy_item > static_cast<std::size_t>(std::numeric_limits<int>::max()))
+        return false;
+    const GameGunRow& gun = impl_->guns[gun_index];
+    if (!kMuzzleOffsetsBound || !kShipPlatformAttachmentBound || !gun.mount_known)
+        return false;
+    const auto found = impl_->fire_points_by_device.find(gun.device_class);
+    if (found == impl_->fire_points_by_device.end()) return false;
+    const Impl::DeviceFirePoints& fp = found->second;
+    if (!fp.loaded || fp.nodes.empty() || hierarchy_item >= fp.nodes.size()) return false;
+    float right[3], up[3], forward[3], origin[3];
+    if (!impl_->units.unit_pose(gun.unit_index, right, up, forward, origin)) return false;
+    return impl_->device_hierarchy_node_world(gun, fp, static_cast<int>(hierarchy_item),
+        right, up, forward, origin, out);
 }
 
 // Packet cc13-hitq: the queue's four operations for the drain 00926700.

@@ -3233,6 +3233,10 @@ const GameMissionEntrySummary& GameMissionFrameHost::entry_summary() const noexc
 const GameMissionFrameRunSummary& GameMissionFrameHost::frame_summary() const noexcept {
     return impl_->frames;
 }
+GameNativeMissionUnitSource GameMissionFrameHost::native_render_unit_source() const noexcept {
+    return {impl_->units.get(), &impl_->lua,
+        impl_->scene_contents ? &impl_->scene_contents->root_properties() : nullptr};
+}
 
 const GameSceneContentsSummary* GameMissionFrameHost::scene_contents_summary()
     const noexcept {

@@ -133,8 +133,9 @@ struct MissionCommandGraph {
     }
    }
    check(graph.execution.actual_synchronization_0108d6dc.mode_00!=0 ||
-     entry_counts[0]<=50 || entry_counts[1]<=50,
-     "mission single-model batches require the established serial preparation branch");
+     entry_counts[0]<=50 || entry_counts[1]<=50 ||
+     (graph.execution.jobs && graph.execution.preparation_dispatch),
+     "mission parallel batches require the canonical native preparation-job binding");
    ready=true;
   }
  };
@@ -155,7 +156,9 @@ struct MissionCommandGraph {
  NativeInstanceGeometryAcquired acquired_geometry;
  NativeInstanceCollectionAccess collection;
  CollectingServices services;
- NativeRender20Profiles render20;
+ const NativeCameraEnvironment& render_camera_environment;
+ const NativeMatrixIndexedModelEnvironment& render_matrix_environment;
+ std::unique_ptr<NativeRender20Profiles> render20;
  NativeTracelineRenderAccess render;
  NativeInstanceGroupUploadAccess upload;
  NativeRenderSceneSubmissionContext submission;
@@ -170,14 +173,17 @@ struct MissionCommandGraph {
  std::unique_ptr<Record> pending;
  Record* acquiring{};
  bool failed{};
+ GameNativeMissionFrameJobs* frame_jobs{};
  bool material_observed{};
+ bool preparation_observed{};
  unsigned long generation{};
  std::uint64_t submitted{},completed{};
 
  MissionCommandGraph(GameHostLog& output,FrameGraph& f,DestructionGraph& g,DeviceGraph& d,
   CameraGraph& cameras,NativeRendererConstructorContext& c,GameVfsHost& files,
   GameSingletonHost& host,NativeStringRawPoolContext& raw,ActualNativeStringPoolStorage& strings,
-  void* volatile& service,void* const volatile& cache,GameNativeMissionCommandProviders borrowed)
+  void* volatile& service,void* const volatile& cache,GameNativeMissionCommandProviders borrowed,
+  const NativeMatrixIndexedModelEnvironment& matrix_models,const NativeGroupEnvironment* gui_groups)
   :owners(*this,given_owners(borrowed)),batches(*this),associations(*this),
    log(output),frames(f),profiles(g.profiles),
    providers(borrowed),globals(MissionRenderGlobals::process()),batch_lifetime(files.native_owners().batches()),
@@ -198,14 +204,15 @@ struct MissionCommandGraph {
     reinterpret_cast<const char*>(g.profiles(0xd21d00)),
     reinterpret_cast<const char*>(g.profiles(0xd5e5e4)),&allocate,&acquired_geometry},
    services(collection,borrowed.render_services),
-   render20{cameras.environment,providers.geometry.models},
+   render_camera_environment(cameras.environment),render_matrix_environment(matrix_models),
+   render20(std::make_unique<NativeRender20Profiles>(cameras.environment,matrix_models.base,gui_groups,&matrix_models)),
    render{&frustum.length_access,&frustum,&mapping,nullptr,nullptr,&services,
     reinterpret_cast<const volatile float*>(g.profiles(0xd7a208)),
     reinterpret_cast<const volatile float*>(g.profiles(0xd7a218)),
     reinterpret_cast<const volatile float*>(g.profiles(0xd7a24c)),
     reinterpret_cast<const volatile float*>(g.profiles(0xd7a238)),
     reinterpret_cast<const volatile double*>(g.profiles(0xce4b48)),
-    reinterpret_cast<const volatile double*>(g.profiles(0xd7a280)),&cache,nullptr,&render20},
+    reinterpret_cast<const volatile double*>(g.profiles(0xd7a280)),&cache,nullptr,render20.get()},
    upload{render,g.scenes,*reinterpret_cast<const volatile float*>(g.profiles(0xce3800)),
     *reinterpret_cast<const volatile float*>(g.profiles(0xce3978))},
    submission{command_lifetime,associations,upload,raw},indexed{g.sync,g.profiles(0xd61d6c)},
@@ -349,6 +356,7 @@ struct MissionCommandGraph {
   if(SUCCEEDED(ps))record("PS",pixel);
  }
  void observe_failed_frame() {
+  if(frame_jobs)frame_jobs->observe_interrupted();
   failed=true;
   if(!pending) {log.note("native_mission_command frame_failed retained=1 pending=0");return;}
   pending->failed=true;
@@ -372,7 +380,7 @@ struct MissionCommandGraph {
   }
  }
  NativeRenderCommandQueueStorage& begin_submission() {
-  check(!failed && !pending,"mission permits one retained ordinary command per frame");
+  check(!failed && !pending,"mission permits one retained ordinary command at a time");
   check(execution.actual_service_00f8d39c && providers.clock.actual_clock_01090ab0 &&
     providers.foliage_manager_00f8c274 && providers.foliage_00f8c210,
     "mission command requires live service/clock/foliage providers");
@@ -397,6 +405,24 @@ struct MissionCommandGraph {
   acquiring=nullptr;failed=true;pending->failed=true;
   log.note("native_mission_command submission_failed retained=1");
  }
+ void bind_preparation_jobs(GameNativeMissionFrameJobs& jobs) {
+  check(!failed && !pending && submitted==0 && !frame_jobs && !execution.jobs && !execution.preparation_dispatch,
+      "mission preparation jobs must bind once before native command submission");
+  execution.jobs=&jobs.publication();
+  execution.preparation_dispatch=&jobs.preparation_dispatch();
+  frame_jobs=&jobs;
+ }
+ void bind_gui_groups(const NativeGroupEnvironment* groups) {
+  check(!failed && !pending && submitted==0 && completed==0 && frames.queue &&
+      frames.queue->commands_14.count_04==0 && frames.queue->control_20==0 && queue_frame.used==0,
+      "GUI render profiles must bind before the first command submission");
+  auto next=std::make_unique<NativeRender20Profiles>(render_camera_environment,
+      render_matrix_environment.base,groups,&render_matrix_environment);
+  // No native traversal or command can hold the old configuration. Publish
+  // only after complete construction; a failed allocation preserves it.
+  render.render20_profiles=next.get();
+  render20=std::move(next);
+ }
  void submit_drawable(void* scene,void* camera,void* targets,void* drawable) {
   auto& queue=begin_submission();
   try {
@@ -420,6 +446,24 @@ struct MissionCommandGraph {
    fail_submission();throw;
   }
  }
+ void submit_scene_with_label(void* scene,void* camera,void* targets,void* actual8b_label,
+     bool& label_entered_native) {
+  check(scene!=nullptr,"mission scene submission requires an actual native scene");
+  check(actual8b_label!=nullptr,"mission scene submission requires its original eight-byte label header");
+  auto& queue=begin_submission();
+  try {
+   // Borrow the ORIGINAL by-value argument header, using the same string pool
+   // as submission.strings. B1F4D0 consumes its buffer on success or failure;
+   // do not copy, relabel, zero or destroy that argument here or in the caller
+   // after entry. A pre-entry check/acquisition failure has not consumed it.
+   label_entered_native=true;
+   submit_native_scene_00b1f4d0(queue,scene,camera,targets,actual8b_label,
+     submission,pending->submission);
+   finish_submission(queue,"B1F4D0");
+  } catch(...) {
+   fail_submission();throw;
+  }
+ }
  void execute_before_overlay() {
   check(pending && pending->ready && !pending->executed && !failed,
     "mission ordinary command execution is one-shot before overlay");
@@ -433,6 +477,16 @@ struct MissionCommandGraph {
    pending->executed=true;
    check(frames.queue->commands_14.count_04==0 && !frames.queue->context_30 && pending->retired(),
      "mission queue execution did not retire native command owners");
+   if(frame_jobs && !preparation_observed) {
+    const auto& jobs=frame_jobs->publication();
+    const auto* const owner=jobs.actual_frame_0109cf08;
+    log.notef("native mission preparation snapshot: mode=%u frame=%p descriptor=%p workers=%d remaining=%d active=%d",
+     execution.actual_synchronization_0108d6dc.mode_00,owner,jobs.actual_preparation_00f8d444,
+     owner?owner->pool_04.worker_count_14:0,
+     owner?owner->pool_04.remaining_20.load(std::memory_order_relaxed):0,
+     owner?owner->pool_04.dispatch_active_18.load(std::memory_order_relaxed):0);
+    preparation_observed=true;
+   }
    U indexed_calls=0,primitive_calls=0,returned=0;
    for(auto& batch:pending->batch_frames) for(const auto& record:batch.records) {
     if(record->pass.draw_terminal==0xb24010) ++indexed_calls;
@@ -466,6 +520,13 @@ struct MissionCommandGraph {
   } catch(...) {
    failed=true;pending->failed=true;log.note("native_mission_command execution_failed retained=1");throw;
   }
+ }
+ // Complete only the successful command companion, not the device frame.
+ // The same bound queue_frame object is reset for a later sequential command
+ // inside the current BeginScene/Present bracket. Never create another graph.
+ void retire_executed_command_before_overlay() {
+  check(pending!=nullptr,"mission overlay handoff requires an executed pending command");
+  complete_frame();
  }
 };
 

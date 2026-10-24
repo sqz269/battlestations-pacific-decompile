@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "identifiers": [
+    {
+      "address": "0x0090c790",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_get_slot_keyed_score"
+      ],
+      "evidence": "src/scoring_bindings.cpp:124 executable model body; docs/SCORING_BINDING_TABLE.md:80-84 selects MissionScoreMap::Mission at record+18h. Body returns host score-map find for the selected slot/key; native record offsets are labels rather than offsets into the C++ projection. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::Mission"
+      }
+    },
+    {
+      "address": "0x0090c800",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_get_slot_keyed_score"
+      ],
+      "evidence": "src/scoring_bindings.cpp:124 executable model body; docs/SCORING_BINDING_TABLE.md:80-84 selects MissionScoreMap::Action at record+24h. Body returns host score-map find for the selected slot/key; native record offsets are labels rather than offsets into the C++ projection. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::Action"
+      }
+    },
+    {
+      "address": "0x0090c870",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_get_slot_keyed_score"
+      ],
+      "evidence": "src/scoring_bindings.cpp:124 executable model body; docs/SCORING_BINDING_TABLE.md:80-84 selects MissionScoreMap::Ship at record+30h. Body returns host score-map find for the selected slot/key; native record offsets are labels rather than offsets into the C++ projection. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::Ship"
+      }
+    },
+    {
+      "address": "0x0090c8e0",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_get_slot_keyed_score"
+      ],
+      "evidence": "src/scoring_bindings.cpp:124 executable model body; docs/SCORING_BINDING_TABLE.md:80-84 selects MissionScoreMap::Plane at record+3Ch. Body returns host score-map find for the selected slot/key; native record offsets are labels rather than offsets into the C++ projection. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::Plane"
+      }
+    },
+    {
+      "address": "0x0090c950",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_get_slot_keyed_score"
+      ],
+      "evidence": "src/scoring_bindings.cpp:124 executable model body; docs/SCORING_BINDING_TABLE.md:80-84 selects MissionScoreMap::Command at record+48h. Body returns host score-map find for the selected slot/key; native record offsets are labels rather than offsets into the C++ projection. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::Command"
+      }
+    },
+    {
+      "address": "0x0090f170",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_set_slot_keyed_score"
+      ],
+      "evidence": "src/scoring_bindings.cpp:91 executable model body; docs/SCORING_BINDING_TABLE.md:82-84 selects MissionScoreMap::Ship plain setter; implementation invalidates the front-end cache, obtains that slot/key entry and stores the value. Mission-only scaling branch is not selected. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::Ship"
+      }
+    },
+    {
+      "address": "0x0090f1d0",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_set_slot_keyed_score"
+      ],
+      "evidence": "src/scoring_bindings.cpp:91 executable model body; docs/SCORING_BINDING_TABLE.md:82-84 selects MissionScoreMap::Plane plain setter; implementation invalidates the front-end cache, obtains that slot/key entry and stores the value. Mission-only scaling branch is not selected. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::Plane"
+      }
+    },
+    {
+      "address": "0x0090f230",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_set_slot_keyed_score"
+      ],
+      "evidence": "src/scoring_bindings.cpp:91 executable model body; docs/SCORING_BINDING_TABLE.md:82-84 selects MissionScoreMap::Command plain setter; implementation invalidates the front-end cache, obtains that slot/key entry and stores the value. Mission-only scaling branch is not selected. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::Command"
+      }
+    },
+    {
+      "address": "0x0090f1a0",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_add_slot_keyed_score"
+      ],
+      "evidence": "src/scoring_bindings.cpp:103 executable model body; docs/SCORING_BINDING_TABLE.md:82-84 selects MissionScoreMap::Ship plain adder; implementation invalidates the front-end cache and adds delta to that slot/key entry. Mission-only scaling branch is not selected. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::Ship"
+      }
+    },
+    {
+      "address": "0x0090f200",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_add_slot_keyed_score"
+      ],
+      "evidence": "src/scoring_bindings.cpp:103 executable model body; docs/SCORING_BINDING_TABLE.md:82-84 selects MissionScoreMap::Plane plain adder; implementation invalidates the front-end cache and adds delta to that slot/key entry. Mission-only scaling branch is not selected. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::Plane"
+      }
+    },
+    {
+      "address": "0x0090f260",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_add_slot_keyed_score"
+      ],
+      "evidence": "src/scoring_bindings.cpp:103 executable model body; docs/SCORING_BINDING_TABLE.md:82-84 selects MissionScoreMap::Command plain adder; implementation invalidates the front-end cache and adds delta to that slot/key entry. Mission-only scaling branch is not selected. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::Command"
+      }
+    },
+    {
+      "address": "0x0090f290",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "scoring_set_slot_medal"
+      ],
+      "evidence": "src/scoring_bindings.cpp:115 executable model body; docs/SCORING_BINDING_TABLE.md:86 and source:118-121 select ActionMedals at record+60h. Body stores boolean0/1 in slot/key entry and deliberately leaves the front-end cache byte alone. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::ActionMedals"
+      }
+    },
+    {
+      "address": "0x008bb530",
+      "source": "src/scoring_bindings.cpp",
+      "identifiers": [
+        "lua_binding_scoring_set_medal_008b97f0"
+      ],
+      "evidence": "src/scoring_bindings.cpp:206 executable model body; docs/SCORING_BINDING_TABLE.md and include/bsp/scoring_bindings.hpp identify the ActionMedal twin of008B97F0. Shared Variant-A argument selection defaults an omitted grant argument to true and calls scoring_set_slot_medal with ActionMedals; source returns binding result count0. Existing model limitations remain; no native ABI equivalence or game validation is claimed.",
+      "model_parameters": {
+        "map": "MissionScoreMap::ActionMedals"
+      },
+      "shared_implementation": true
+    },
+    {
+      "address": "0x008a9730",
+      "source": "src/engine_seg56_cc13.cpp",
+      "identifiers": [
+        "lua_effect"
+      ],
+      "evidence": "src/engine_seg56_cc13.cpp:1298 executable model body; Header:780-786 identifies Effect argument/entity/position branches,byte9,optional at-most0.2f prerun and pointer-table result. Body executes that semantic flow through explicit effect/argument services; discarded native argument-test returns and raw object representation remain abstracted. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x008bfa70",
+      "source": "src/engine_seg56_cc13.cpp",
+      "identifiers": [
+        "lua_movcam_set_pos_rot_zoom"
+      ],
+      "evidence": "src/engine_seg56_cc13.cpp:1111 executable model body; Header:628-636 identifies vectors arg0/arg1 and zoom arg2,ensure target,set position/rotation,ensure target again,set zoom; body preserves that call order and returns0. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x008c89d0",
+      "source": "src/engine_seg56_cc13.cpp",
+      "identifiers": [
+        "make_hack_input_press"
+      ],
+      "evidence": "src/engine_seg56_cc13.cpp:1462 executable model body; Header:896-907 identifies native14h press record; body assigns duration,start_time=clock+delay,name and false flag,returning the typed record. Original this/stack/string layout is not reproduced. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x008cb730",
+      "source": "src/engine_seg56_cc13.cpp",
+      "identifiers": [
+        "lua_get_act_dialog_ids"
+      ],
+      "evidence": "src/engine_seg56_cc13.cpp:783 executable model body; Header:464-469 identifies active dialog ID array result with1-based native table indexing. Body passes active IDs to the result-writer array contract and returns result count1; table representation is host-owned. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x008da100",
+      "source": "src/engine_seg56_cc13.cpp",
+      "identifiers": [
+        "nav_point_sentity_init"
+      ],
+      "evidence": "src/engine_seg56_cc13.cpp:1574 executable model body; Header:960-967 identifies009277E0 inherited race/activation followed by party dword+58h=0; body executes both operations in order. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x008dacd0",
+      "source": "src/engine_seg56_cc13.cpp",
+      "identifiers": [
+        "objective_entry_is_revealed"
+      ],
+      "evidence": "src/engine_seg56_cc13.cpp:1631 executable model body; Header:999-1011 identifies true without entity,valid local-side0..7,selected party-row dword+4/+8 based on row byte+10,then value>1. Body evaluates supplied decoded view; gathering raw manager/entity rows remains a host-view contract. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x008dad30",
+      "source": "src/engine_seg56_cc13.cpp",
+      "identifiers": [
+        "objective_entry_position"
+      ],
+      "evidence": "src/engine_seg56_cc13.cpp:1643 executable model body; Header associates008DAD30 with entity vtable+C4 position when present,else stored position. Body implements that branch using typed entity/position services. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x008dad80",
+      "source": "src/engine_seg56_cc13.cpp",
+      "identifiers": [
+        "objective_session_message_header"
+      ],
+      "evidence": "src/engine_seg56_cc13.cpp:1579 executable model body; Header:968-974 identifies native0075B430(id) base construction then+4=1 and vtable00D16024. Existing body models only the latter header fields and returns them; native base/id construction remains outside this header projection. Mapping identifies the existing model and does not upgrade its scope. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x008db990",
+      "source": "src/engine_seg56_cc13.cpp",
+      "identifiers": [
+        "objective_entry_select_entity_or_pos_key"
+      ],
+      "evidence": "src/engine_seg56_cc13.cpp:1656 executable model body; Header identifies property reader vtable+14 predicate selecting entity versus pos key through vtable+10. Body performs that selection and returns0; provisional descriptive interpretation is retained. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00b5b8e0",
+      "source": "src/post_effects_cc13.cpp",
+      "identifiers": [
+        "find_named_index"
+      ],
+      "evidence": "src/post_effects_cc13.cpp:409 executable model body; Header:334-342 identifies equal-length case-insensitive name search over20h native records and miss37h. Body scans typed records,compares unsigned-char lowercase bytes and returns selected value or0x37. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00b8c3a0",
+      "source": "src/post_effects_cc13.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "src/post_effects_cc13.cpp:449 executable model body; Header:352-359 identifies480-byte flare allocator free at00B8C3A0. MitBlockPool::free pushes slot index on selected block stack,increments count and updates current by unsigned minimum. This is a slot-order-only semantic model: it does not model native slab memory,raw pointer decoding,allocator-list registration or locking; caller owns locking. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00b8d700",
+      "source": "src/post_effects_cc13.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "src/post_effects_cc13.cpp:424 executable model body; Header:352-370 identifies480-byte flare allocator allocate at00B8D700. MitBlockPool::allocate appends/init32-slot stack when current=-1,pops stack[--count],then selects first later non-full block when exhausted. Slot-order-only model; native memory/registration/locking remain outside and caller owns locking. Existing model limitations remain; no native ABI equivalence or game validation is claimed."
+    }
+  ]
+}

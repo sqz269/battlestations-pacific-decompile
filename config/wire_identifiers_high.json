@@ -1,0 +1,1407 @@
+{
+ "schema_version": 1,
+ "identifiers": [
+  {
+   "address": "006d1e50",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "gun_artillery_kind_005459b0"
+   ],
+   "evidence": "Reviewed006D1E50 predicate is membership in{2,3,4,6}; source1123-1126 implements that same host predicate behind the existing artillery-kind switch. Distinct original helper shares this semantic predicate; switch qualification retained. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00809cb0",
+   "source": "src/projectile_kinds.cpp",
+   "identifiers": [
+    "load_rocket_class_fields"
+   ],
+   "evidence": "Source class descriptor row37 maps Rocket reader00809CB0; executable load_rocket_class_fields at260 reads that subclass after its parent. Header299 grouped four readers; do not assign all addresses to the first declared torpedo reader. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00829cd0",
+   "source": "src/cc13_seg52b.cpp",
+   "identifiers": [
+    "ship_indexed_point_array_push_back_0082a590"
+   ],
+   "evidence": "Existing reconstruction notes verify byte-identical body to0082A590 with same00829180 callee; executable source95 implements the shared push-back. Original Ghidra extent overreach remains qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "0082a550",
+   "source": "src/engine_seg4_6_9_cc13.cpp",
+   "identifiers": [
+    "pod_pointer_array_push_back_00467f60"
+   ],
+   "evidence": "Existing reviewed record verifies identical body to00467F60 with same004674F0 callee; source539 implements shared scalar pointer push-back. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "0082d040",
+   "source": "src/ship_buoyancy_elements.cpp",
+   "identifiers": [
+    "ship_buoyancy_build_list_0082d4ca"
+   ],
+   "evidence": "Existing record specifically verifies0082D4CA..0082D690 station sampling, argument order, fields and24-bit precision against this executable list-builder. This is a partial full0082D040 projection: AABB and vector lifetime regions remain unread, not promoted. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00835940",
+   "source": "src/weapon_director.cpp",
+   "identifiers": [
+    "director_command_message_0071da50"
+   ],
+   "evidence": "Existing evidence expressly identifies director_command_message_0071da50 as typed sub-kind/value model, here selector7. Actual source91 supplies that message model. It omits native base/zero stores/0077C2A0 routing, so keep existing_host_substitution_labelled and all those boundaries. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "008359c0",
+   "source": "src/weapon_director.cpp",
+   "identifiers": [
+    "director_command_message_0071da50"
+   ],
+   "evidence": "Existing evidence expressly identifies director_command_message_0071da50 as typed sub-kind/value model, here selector8. Actual source91 supplies that message model. It omits native base/zero stores/0077C2A0 routing, so keep existing_host_substitution_labelled and all those boundaries. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00835a40",
+   "source": "src/weapon_director.cpp",
+   "identifiers": [
+    "director_command_message_0071da50"
+   ],
+   "evidence": "Existing evidence expressly identifies director_command_message_0071da50 as typed sub-kind/value model, here selector9. Actual source91 supplies that message model. It omits native base/zero stores/0077C2A0 routing, so keep existing_host_substitution_labelled and all those boundaries. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "0088c750",
+   "source": "src/options_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_bann_support_manager"
+   ],
+   "evidence": "include/bsp/options_seg56_cc13.hpp:315-317 explicitly associates 0088c750 with declaration lua_bann_support_manager; body src/options_seg56_cc13.cpp:74. Original ABI/layout qualifications remain in ledger. Header: // BannSupportmanager 0088C750 / PermitSupportmanager 0088C8E0: 00A38DA0(1 / 0); when the // session mode game+1FE4h is 1, the D7h message with the same flag. Returns 0 values. int lua_bann_support_manager(ImageAccess& image, Seg56Host& host);"
+  },
+  {
+   "address": "0088d2b0",
+   "source": "src/options_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_set_bpc_soda_squad_merete_hack"
+   ],
+   "evidence": "include/bsp/options_seg56_cc13.hpp:329-330 explicitly associates 0088d2b0 with declaration lua_set_bpc_soda_squad_merete_hack; body src/options_seg56_cc13.cpp:113. Original ABI/layout qualifications remain in ledger. Header: // SetBPCsodaSquadMereteHack 0088D2B0: 006529D0(panel, integer arg0). int lua_set_bpc_soda_squad_merete_hack(LuaArgs& args, ImageAccess& image, Seg56Host& host);"
+  },
+  {
+   "address": "00890340",
+   "source": "src/options_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_set_plane_gears"
+   ],
+   "evidence": "include/bsp/options_seg56_cc13.hpp:362-365 explicitly associates 00890340 with declaration lua_set_plane_gears; body src/options_seg56_cc13.cpp:191. Original ABI/layout qualifications remain in ledger. Header: // SetPlaneGears 00890340 / ForcePlaneGears 00890840: for every slot below the squadron's // count +3CCh (re-read each pass) 007B8CE0(slot <= 4 ? [+3D0h + 4*slot] : null, integer arg1, // 0 / 1). int lua_set_plane_gears(LuaArgs& args, ImageAccess& image, Seg56Host& host);"
+  },
+  {
+   "address": "00898c60",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_message"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:868-869 explicitly associates 00898c60 with declaration lua_message; body src/engine_seg56_cc13.cpp:1432. Original ABI/layout qualifications remain in ledger. Header: // Message 00898C60: entity arg0 (00888AA0, read before the holder is built), then the publish. int lua_message(LuaArgs& args, NarrativeHost& host);"
+  },
+  {
+   "address": "008a2bc0",
+   "source": "src/lua_binding_navigator.cpp",
+   "identifiers": [
+    "lua_binding_navigator_move_to"
+   ],
+   "evidence": "include/bsp/lua_binding_navigator.hpp:427-429 explicitly associates 008a2bc0 with declaration lua_binding_navigator_move_to; body src/lua_binding_navigator.cpp:226. Original ABI/layout qualifications remain in ledger. Header: // 008A2F20 NavigatorMoveToRange, and byte-identically 008A2BC0 NavigatorMoveToPos and // 008A2D70 NavigatorDirectMoveToRange: issue kCommandObjectMoveTo. int lua_binding_navigator_move_to(LuaCommandTargetSource& targets,"
+  },
+  {
+   "address": "008a3cd0",
+   "source": "src/lua_binding_navigator.cpp",
+   "identifiers": [
+    "lua_binding_navigator_set_torpedo_evasion"
+   ],
+   "evidence": "Source158 selects avoidance sub-kind7 and delegates executable argument/route body set_navigator_avoidance_flag at49; header398-412 ties original008A3CD0 to director+738h and00835940. Host delivery/ABI limits retained. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "008afbd0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_enable_input"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:306-307 explicitly associates 008afbd0 with declaration lua_enable_input; body src/engine_seg56_cc13.cpp:413. Original ABI/layout qualifications remain in ledger. Header: // EnableInput 008AFBD0: context 1Eh level = enable ? 0 : 5 ((-(b != 0) & ~4) + 5). int lua_enable_input(LuaArgs& args, InterfaceHost& host);"
+  },
+  {
+   "address": "008afd50",
+   "source": "src/options_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_pause"
+   ],
+   "evidence": "include/bsp/options_seg56_cc13.hpp:445-445 explicitly associates 008afd50 with declaration lua_pause; body src/options_seg56_cc13.cpp:568. Original ABI/layout qualifications remain in ledger. Header: int lua_pause(LuaArgs& args, ImageAccess& image, Seg56Host& host);                             // 008AFD50"
+  },
+  {
+   "address": "008b0c10",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_mission_narrative_post"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:864-867 explicitly associates 008b0c10 with declaration lua_mission_narrative_post; body src/engine_seg56_cc13.cpp:1420. Original ABI/layout qualifications remain in ledger. Header: // MissionNarrative 008B0C10 / Urgent 008B0E10 / Override 008B1010: text = variant 0's string, // passed by pointer; callback = variant 1's string copied when there are at least two // arguments, else empty; extras = variants 2..n when there are at least three (CMP 3 / JL). int lua_mission_narrative_post(std::uint32_t entry_point, LuaArgs& args, NarrativeHost& host);"
+  },
+  {
+   "address": "008b0e10",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_mission_narrative_post"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:864-867 explicitly associates 008b0e10 with declaration lua_mission_narrative_post; body src/engine_seg56_cc13.cpp:1420. Original ABI/layout qualifications remain in ledger. Header: // MissionNarrative 008B0C10 / Urgent 008B0E10 / Override 008B1010: text = variant 0's string, // passed by pointer; callback = variant 1's string copied when there are at least two // arguments, else empty; extras = variants 2..n when there are at least three (CMP 3 / JL). int lua_mission_narrative_post(std::uint32_t entry_point, LuaArgs& args, NarrativeHost& host);"
+  },
+  {
+   "address": "008b1010",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_mission_narrative_post"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:864-867 explicitly associates 008b1010 with declaration lua_mission_narrative_post; body src/engine_seg56_cc13.cpp:1420. Original ABI/layout qualifications remain in ledger. Header: // MissionNarrative 008B0C10 / Urgent 008B0E10 / Override 008B1010: text = variant 0's string, // passed by pointer; callback = variant 1's string copied when there are at least two // arguments, else empty; extras = variants 2..n when there are at least three (CMP 3 / JL). int lua_mission_narrative_post(std::uint32_t entry_point, LuaArgs& args, NarrativeHost& host);"
+  },
+  {
+   "address": "008b2ad0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_force_3d_visibility"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:455-458 explicitly associates 008b2ad0 with declaration lua_force_3d_visibility; body src/engine_seg56_cc13.cpp:744. Original ABI/layout qualifications remain in ledger. Header: // Force3dVisibility 008B2AD0: one argument stores the boolean in 00F87152; otherwise the // entity from arg0 gets byte +2F0h = boolean arg1 when it is non-null, and 00F87152 is // rewritten with its own value. int lua_force_3d_visibility(LuaArgs& args, Force3dVisibilityByte& g, PresentationHost& host);"
+  },
+  {
+   "address": "008b2cc0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_hand_mode_targeted"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:615-615 explicitly associates 008b2cc0 with declaration lua_movcam_hand_mode_targeted; body src/engine_seg56_cc13.cpp:940. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_hand_mode_targeted(LuaArgs& args, MovCamModeHost& host);   // 008B2CC0"
+  },
+  {
+   "address": "008b2fe0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_hand_mode_deck"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:616-616 explicitly associates 008b2fe0 with declaration lua_movcam_hand_mode_deck; body src/engine_seg56_cc13.cpp:959. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_hand_mode_deck(LuaArgs& args, MovCamModeHost& host);       // 008B2FE0"
+  },
+  {
+   "address": "008b3270",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_hand_mode_overview"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:617-617 explicitly associates 008b3270 with declaration lua_movcam_hand_mode_overview; body src/engine_seg56_cc13.cpp:973. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_hand_mode_overview(LuaArgs& args, MovCamModeHost& host);   // 008B3270"
+  },
+  {
+   "address": "008b3740",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_ref_pos"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:618-618 explicitly associates 008b3740 with declaration lua_movcam_ref_pos; body src/engine_seg56_cc13.cpp:982. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_ref_pos(LuaArgs& args, MovCamModeHost& host);              // 008B3740"
+  },
+  {
+   "address": "008b3c70",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_ref_pos_polar"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:619-619 explicitly associates 008b3c70 with declaration lua_movcam_ref_pos_polar; body src/engine_seg56_cc13.cpp:992. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_ref_pos_polar(LuaArgs& args, MovCamModeHost& host);        // 008B3C70"
+  },
+  {
+   "address": "008b4270",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_ref_pos_radius"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:620-620 explicitly associates 008b4270 with declaration lua_movcam_ref_pos_radius; body src/engine_seg56_cc13.cpp:1007. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_ref_pos_radius(LuaArgs& args, MovCamModeHost& host);       // 008B4270"
+  },
+  {
+   "address": "008b47e0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_path_walk"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:621-621 explicitly associates 008b47e0 with declaration lua_movcam_path_walk; body src/engine_seg56_cc13.cpp:1020. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_path_walk(LuaArgs& args, MovCamModeHost& host);            // 008B47E0"
+  },
+  {
+   "address": "008b52f0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_viktor_mode"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:622-622 explicitly associates 008b52f0 with declaration lua_movcam_viktor_mode; body src/engine_seg56_cc13.cpp:1038. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_viktor_mode(LuaArgs& args, MovCamModeHost& host);          // 008B52F0"
+  },
+  {
+   "address": "008b5870",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_tompi_mode_weak"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:623-623 explicitly associates 008b5870 with declaration lua_movcam_tompi_mode_weak; body src/engine_seg56_cc13.cpp:1050. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_tompi_mode_weak(LuaArgs& args, MovCamModeHost& host);      // 008B5870"
+  },
+  {
+   "address": "008b5df0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_tompi_mode"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:624-624 explicitly associates 008b5df0 with declaration lua_movcam_tompi_mode; body src/engine_seg56_cc13.cpp:1062. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_tompi_mode(LuaArgs& args, MovCamModeHost& host);           // 008B5DF0"
+  },
+  {
+   "address": "008b60c0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_set_secondary_target"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:625-625 explicitly associates 008b60c0 with declaration lua_movcam_set_secondary_target; body src/engine_seg56_cc13.cpp:1073. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_set_secondary_target(LuaArgs& args, MovCamModeHost& host); // 008B60C0"
+  },
+  {
+   "address": "008b65c0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_set_zoom"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:227-227 explicitly associates 008b65c0 with declaration lua_movcam_set_zoom; body src/engine_seg56_cc13.cpp:221. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_set_zoom(LuaArgs& args, CameraHost& host);              // 008B65C0"
+  },
+  {
+   "address": "008b6740",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_add_interpolator"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:626-626 explicitly associates 008b6740 with declaration lua_movcam_add_interpolator; body src/engine_seg56_cc13.cpp:1082. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_add_interpolator(LuaArgs& args, MovCamModeHost& host);     // 008B6740"
+  },
+  {
+   "address": "008b6ad0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_pick_snitt_deck_position"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:627-627 explicitly associates 008b6ad0 with declaration lua_movcam_pick_snitt_deck_position; body src/engine_seg56_cc13.cpp:1102. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_pick_snitt_deck_position(LuaArgs& args, MovCamModeHost& host); // 008B6AD0"
+  },
+  {
+   "address": "008b6d20",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_set_speed_limits"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:228-228 explicitly associates 008b6d20 with declaration lua_movcam_set_speed_limits; body src/engine_seg56_cc13.cpp:229. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_set_speed_limits(LuaArgs& args, CameraHost& host);      // 008B6D20"
+  },
+  {
+   "address": "008b6ed0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_reset_speed_limits"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:229-229 explicitly associates 008b6ed0 with declaration lua_movcam_reset_speed_limits; body src/engine_seg56_cc13.cpp:237. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_reset_speed_limits(CameraHost& host);                   // 008B6ED0"
+  },
+  {
+   "address": "008b7010",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_set_accel_time"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:230-230 explicitly associates 008b7010 with declaration lua_movcam_set_accel_time; body src/engine_seg56_cc13.cpp:243. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_set_accel_time(LuaArgs& args, CameraHost& host);        // 008B7010"
+  },
+  {
+   "address": "008b7180",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_reset_accel_time"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:231-231 explicitly associates 008b7180 with declaration lua_movcam_reset_accel_time; body src/engine_seg56_cc13.cpp:249. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_reset_accel_time(CameraHost& host);                     // 008B7180"
+  },
+  {
+   "address": "008b72c0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_set_deviation_factor"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:232-232 explicitly associates 008b72c0 with declaration lua_movcam_set_deviation_factor; body src/engine_seg56_cc13.cpp:255. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_set_deviation_factor(LuaArgs& args, CameraHost& host);  // 008B72C0"
+  },
+  {
+   "address": "008b7460",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_reset_deviation_factor"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:233-233 explicitly associates 008b7460 with declaration lua_movcam_reset_deviation_factor; body src/engine_seg56_cc13.cpp:265. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_reset_deviation_factor(CameraHost& host);               // 008B7460"
+  },
+  {
+   "address": "008b75a0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_set_overview_height"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:234-234 explicitly associates 008b75a0 with declaration lua_movcam_set_overview_height; body src/engine_seg56_cc13.cpp:271. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_set_overview_height(LuaArgs& args, CameraHost& host);   // 008B75A0"
+  },
+  {
+   "address": "008b7710",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_reset_overview_height"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:235-235 explicitly associates 008b7710 with declaration lua_movcam_reset_overview_height; body src/engine_seg56_cc13.cpp:277. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_reset_overview_height(CameraHost& host);                // 008B7710"
+  },
+  {
+   "address": "008b7850",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_new_add_positions"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:236-236 explicitly associates 008b7850 with declaration lua_movcam_new_add_positions; body src/engine_seg56_cc13.cpp:283. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_new_add_positions(LuaArgs& args, CameraHost& host);     // 008B7850"
+  },
+  {
+   "address": "008b79f0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_new_add_position"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:237-237 explicitly associates 008b79f0 with declaration lua_movcam_new_add_position; body src/engine_seg56_cc13.cpp:290. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_new_add_position(LuaArgs& args, CameraHost& host);      // 008B79F0"
+  },
+  {
+   "address": "008b7ba0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_movcam_new_set_fov"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:238-238 explicitly associates 008b7ba0 with declaration lua_movcam_new_set_fov; body src/engine_seg56_cc13.cpp:299. Original ABI/layout qualifications remain in ledger. Header: int lua_movcam_new_set_fov(LuaArgs& args, CameraHost& host);           // 008B7BA0"
+  },
+  {
+   "address": "008ba0f0",
+   "source": "src/scoring_bindings.cpp",
+   "identifiers": [
+    "lua_binding_scoring_set_keyed_score_variant_b"
+   ],
+   "evidence": "include/bsp/scoring_bindings.hpp:193-194 explicitly associates 008ba0f0 with declaration lua_binding_scoring_set_keyed_score_variant_b; body src/scoring_bindings.cpp:221. Original ABI/layout qualifications remain in ledger. Header: // 008b9a30 / 008ba0f0 / 008ba7b0 / 008bae70 and their Add twins. Variant B. int lua_binding_scoring_set_keyed_score_variant_b(LuaBindingArgumentReader& args,"
+  },
+  {
+   "address": "008ba350",
+   "source": "src/scoring_bindings.cpp",
+   "identifiers": [
+    "lua_binding_scoring_get_keyed_score_variant_a"
+   ],
+   "evidence": "include/bsp/scoring_bindings.hpp:201-202 explicitly associates 008ba350 with declaration lua_binding_scoring_get_keyed_score_variant_a; body src/scoring_bindings.cpp:239. Original ABI/layout qualifications remain in ledger. Header: // 008b9c90 / 008ba350 / 008baa10 / 008bb0d0. Variant A. int lua_binding_scoring_get_keyed_score_variant_a(LuaBindingArgumentReader& args,"
+  },
+  {
+   "address": "008ba7b0",
+   "source": "src/scoring_bindings.cpp",
+   "identifiers": [
+    "lua_binding_scoring_set_keyed_score_variant_b"
+   ],
+   "evidence": "include/bsp/scoring_bindings.hpp:193-194 explicitly associates 008ba7b0 with declaration lua_binding_scoring_set_keyed_score_variant_b; body src/scoring_bindings.cpp:221. Original ABI/layout qualifications remain in ledger. Header: // 008b9a30 / 008ba0f0 / 008ba7b0 / 008bae70 and their Add twins. Variant B. int lua_binding_scoring_set_keyed_score_variant_b(LuaBindingArgumentReader& args,"
+  },
+  {
+   "address": "008baa10",
+   "source": "src/scoring_bindings.cpp",
+   "identifiers": [
+    "lua_binding_scoring_get_keyed_score_variant_a"
+   ],
+   "evidence": "include/bsp/scoring_bindings.hpp:201-202 explicitly associates 008baa10 with declaration lua_binding_scoring_get_keyed_score_variant_a; body src/scoring_bindings.cpp:239. Original ABI/layout qualifications remain in ledger. Header: // 008b9c90 / 008ba350 / 008baa10 / 008bb0d0. Variant A. int lua_binding_scoring_get_keyed_score_variant_a(LuaBindingArgumentReader& args,"
+  },
+  {
+   "address": "008bae70",
+   "source": "src/scoring_bindings.cpp",
+   "identifiers": [
+    "lua_binding_scoring_set_keyed_score_variant_b"
+   ],
+   "evidence": "include/bsp/scoring_bindings.hpp:193-194 explicitly associates 008bae70 with declaration lua_binding_scoring_set_keyed_score_variant_b; body src/scoring_bindings.cpp:221. Original ABI/layout qualifications remain in ledger. Header: // 008b9a30 / 008ba0f0 / 008ba7b0 / 008bae70 and their Add twins. Variant B. int lua_binding_scoring_set_keyed_score_variant_b(LuaBindingArgumentReader& args,"
+  },
+  {
+   "address": "008bb0d0",
+   "source": "src/scoring_bindings.cpp",
+   "identifiers": [
+    "lua_binding_scoring_get_keyed_score_variant_a"
+   ],
+   "evidence": "include/bsp/scoring_bindings.hpp:201-202 explicitly associates 008bb0d0 with declaration lua_binding_scoring_get_keyed_score_variant_a; body src/scoring_bindings.cpp:239. Original ABI/layout qualifications remain in ledger. Header: // 008b9c90 / 008ba350 / 008baa10 / 008bb0d0. Variant A. int lua_binding_scoring_get_keyed_score_variant_a(LuaBindingArgumentReader& args,"
+  },
+  {
+   "address": "008c5360",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_empty_binding"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:92-95 explicitly associates 008c5360 with declaration lua_empty_binding; body src/engine_seg56_cc13.cpp:59. Original ABI/layout qualifications remain in ledger. Header: // The four `T*` bindings and Loading_Progress open the frame and close it: no argument is // read and nothing is called. TompiAction 008C5360, TSetCamMode 008C5490, TAddCamPos 008C55C0, // TAddLookatPos 008C56F0, Loading_Progress 008C76C0. int lua_empty_binding() noexcept;"
+  },
+  {
+   "address": "008c5490",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_empty_binding"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:92-95 explicitly associates 008c5490 with declaration lua_empty_binding; body src/engine_seg56_cc13.cpp:59. Original ABI/layout qualifications remain in ledger. Header: // The four `T*` bindings and Loading_Progress open the frame and close it: no argument is // read and nothing is called. TompiAction 008C5360, TSetCamMode 008C5490, TAddCamPos 008C55C0, // TAddLookatPos 008C56F0, Loading_Progress 008C76C0. int lua_empty_binding() noexcept;"
+  },
+  {
+   "address": "008c55c0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_empty_binding"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:92-95 explicitly associates 008c55c0 with declaration lua_empty_binding; body src/engine_seg56_cc13.cpp:59. Original ABI/layout qualifications remain in ledger. Header: // The four `T*` bindings and Loading_Progress open the frame and close it: no argument is // read and nothing is called. TompiAction 008C5360, TSetCamMode 008C5490, TAddCamPos 008C55C0, // TAddLookatPos 008C56F0, Loading_Progress 008C76C0. int lua_empty_binding() noexcept;"
+  },
+  {
+   "address": "008c56f0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_empty_binding"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:92-95 explicitly associates 008c56f0 with declaration lua_empty_binding; body src/engine_seg56_cc13.cpp:59. Original ABI/layout qualifications remain in ledger. Header: // The four `T*` bindings and Loading_Progress open the frame and close it: no argument is // read and nothing is called. TompiAction 008C5360, TSetCamMode 008C5490, TAddCamPos 008C55C0, // TAddLookatPos 008C56F0, Loading_Progress 008C76C0. int lua_empty_binding() noexcept;"
+  },
+  {
+   "address": "008c5820",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_mpak"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:137-138 explicitly associates 008c5820 with declaration lua_mpak; body src/engine_seg56_cc13.cpp:116. Original ABI/layout qualifications remain in ledger. Header: // Mpak 008C5820: enter the file block named by string arg0. int lua_mpak(LuaArgs& args, ToolingHost& host);"
+  },
+  {
+   "address": "008c76c0",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_empty_binding"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:92-95 explicitly associates 008c76c0 with declaration lua_empty_binding; body src/engine_seg56_cc13.cpp:59. Original ABI/layout qualifications remain in ledger. Header: // The four `T*` bindings and Loading_Progress open the frame and close it: no argument is // read and nothing is called. TompiAction 008C5360, TSetCamMode 008C5490, TAddCamPos 008C55C0, // TAddLookatPos 008C56F0, Loading_Progress 008C76C0. int lua_empty_binding() noexcept;"
+  },
+  {
+   "address": "008c7d20",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_region"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:120-121 explicitly associates 008c7d20 with declaration lua_region; body src/engine_seg56_cc13.cpp:83. Original ABI/layout qualifications remain in ledger. Header: // Region 008C7D20: push the user geography region string (00439100) through 00B66710. int lua_region(LuaResults& results, ToolingHost& host);"
+  },
+  {
+   "address": "008c7e10",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "lua_dprintf"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:114-116 explicitly associates 008c7e10 with declaration lua_dprintf; body src/engine_seg56_cc13.cpp:64. Original ABI/layout qualifications remain in ledger. Header: // dprintf 008C7E10: log \"[tick: %d, time: %.3f] %s\" (00D1532C) with game+648h, the float // clock 00F876A4 widened to double, and string arg0. int lua_dprintf(LuaArgs& args, ToolingHost& host);"
+  },
+  {
+   "address": "008da970",
+   "source": "src/engine_seg56_cc13.cpp",
+   "identifiers": [
+    "static_color_black"
+   ],
+   "evidence": "include/bsp/engine_seg56_cc13.hpp:988-990 explicitly associates 008da970 with declaration static_color_black; body src/engine_seg56_cc13.cpp:1603. Original ABI/layout qualifications remain in ledger. Header: // 008DA920 / 008DA970: lazily initialised static colours, guard bit 1 of 00F88BD4 / 00F88BE8. // Black (0,0,0,1) lives at 00F88BC4, red (1,0,0,1) at 00F88BD8. 1.0 is the float 00D7A24C. Rgba static_color_black() noexcept;"
+  },
+  {
+   "address": "008eea80",
+   "source": "src/native_scene_property_hash_iterator.cpp",
+   "identifiers": [
+    "next_native_scene_property_hash_008eeb60"
+   ],
+   "evidence": "Reviewed ledger describes same64-bucket iterator-next algorithm: node+0Ch then scan table+8+i*4, i<40h. Source42-85 implements precisely that shared algorithm. docs/CC13_SEG59B.md; distinct original entry, shared semantic body. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "008ef360",
+   "source": "src/native_scene_property_record_type9_four_byte_array_storage.cpp",
+   "identifiers": [
+    "construct_native_scene_property_record_type9_four_byte_array_storage_008ef360"
+   ],
+   "evidence": "include/bsp/native_scene_property_record_type9_four_byte_array_storage.hpp:14-43 explicitly associates 008ef360 with declaration construct_native_scene_property_record_type9_four_byte_array_storage_008ef360; body src/native_scene_property_record_type9_four_byte_array_storage.cpp:28. Original ABI/layout qualifications remain in ledger. Header: // Whole [008EF360,008EF3D4): 116 bytes, 36 instructions, both branches. // Descriptive names are hypotheses. This API constructs raw storage. // Supply fresh/unowned writable 56-byte root storage and a stable readable // span of exactly 4*element_count bytes, with element_count in [1,3FFFFFFF]. // Root, input and active call frame must be disjoint and nonwrapping. Require // DF clear for current CRT. Elements are opaque bits with no numeric semantics. // ECX=root; incoming EDX unused; stack +4/+8/+C contain count/data/full flags. // Native DWORD additions double count twice: the first precedes phase/tag // stores, the second follows them, and then CMP reads only the low flag byte. // No new"
+  },
+  {
+   "address": "008ef650",
+   "source": "src/native_scene_property_hash_iterator.cpp",
+   "identifiers": [
+    "begin_native_scene_property_hash_008eeb10"
+   ],
+   "evidence": "Reviewed name evidence explicitly says same body as008EEB10, separate copy. Source8-38 implements64-bucket begin. docs/CC13_SEG59B.md. Shared semantic body. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "008f1960",
+   "source": "src/scene_property_bag.cpp",
+   "identifiers": [
+    "scene_reference_kind_letter"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:152 explicitly names scene_reference_kind_letter; source70-82 implements all eight reference-kind letters. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "008f6fc0",
+   "source": "src/scene_traffic_groups.cpp",
+   "identifiers": [
+    "load_prop_library"
+   ],
+   "evidence": "Source592-614 explicitly folds the per-extension008F6FC0 work into load_prop_library: enumerate_library_files(folder,extension), per-file load/error accumulation, for enums then props. Executable combined semantic projection; no separate arbitrary-extension entry or original native ABI is exposed. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "008f7db0",
+   "source": "src/game_hosts.cpp",
+   "identifiers": [
+    "resolve_language"
+   ],
+   "evidence": "GameStartupHost::resolve_language source2122 onward implements options-file-first, registry-LCID fallback and original language selection. The prior source winmain_startup.cpp only called an abstract host provider; this is its concrete implementation. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "008fb750",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "construct_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:29,80-81 names construct_descriptor for the base/derived robot constructor rows; src/robot_config.cpp:707-718 reproduces base vtable, duplicate name at +8, derived vtable with the per-type instantiation at828-839. Shared allocation/constructor model, not original calling convention."
+  },
+  {
+   "address": "008fc570",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "delete_robot_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:30,82 names delete_robot_descriptor for these robot destructor rows; src/robot_config.cpp:788-806 resets base vtable, releases/nulls name, conditionally releases block by flags. Shared semantic model, preserve ledger ABI qualifications."
+  },
+  {
+   "address": "008fc660",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "construct_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:29,80-81 names construct_descriptor for the base/derived robot constructor rows; src/robot_config.cpp:707-718 reproduces base vtable, duplicate name at +8, derived vtable with the per-type instantiation at828-839. Shared allocation/constructor model, not original calling convention."
+  },
+  {
+   "address": "008fc680",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "delete_robot_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:30,82 names delete_robot_descriptor for these robot destructor rows; src/robot_config.cpp:788-806 resets base vtable, releases/nulls name, conditionally releases block by flags. Shared semantic model, preserve ledger ABI qualifications."
+  },
+  {
+   "address": "008fc6b0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "construct_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:29,80-81 names construct_descriptor for the base/derived robot constructor rows; src/robot_config.cpp:707-718 reproduces base vtable, duplicate name at +8, derived vtable with the per-type instantiation at828-839. Shared allocation/constructor model, not original calling convention."
+  },
+  {
+   "address": "008fc9c0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "delete_robot_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:30,82 names delete_robot_descriptor for these robot destructor rows; src/robot_config.cpp:788-806 resets base vtable, releases/nulls name, conditionally releases block by flags. Shared semantic model, preserve ledger ABI qualifications."
+  },
+  {
+   "address": "008fc9f0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "construct_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:29,80-81 names construct_descriptor for the base/derived robot constructor rows; src/robot_config.cpp:707-718 reproduces base vtable, duplicate name at +8, derived vtable with the per-type instantiation at828-839. Shared allocation/constructor model, not original calling convention."
+  },
+  {
+   "address": "008fcd10",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "delete_robot_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:30,82 names delete_robot_descriptor for these robot destructor rows; src/robot_config.cpp:788-806 resets base vtable, releases/nulls name, conditionally releases block by flags. Shared semantic model, preserve ledger ABI qualifications."
+  },
+  {
+   "address": "008fcd40",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "construct_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:29,80-81 names construct_descriptor for the base/derived robot constructor rows; src/robot_config.cpp:707-718 reproduces base vtable, duplicate name at +8, derived vtable with the per-type instantiation at828-839. Shared allocation/constructor model, not original calling convention."
+  },
+  {
+   "address": "008fcee0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "delete_robot_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:30,82 names delete_robot_descriptor for these robot destructor rows; src/robot_config.cpp:788-806 resets base vtable, releases/nulls name, conditionally releases block by flags. Shared semantic model, preserve ledger ABI qualifications."
+  },
+  {
+   "address": "008fcf10",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "construct_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:29,80-81 names construct_descriptor for the base/derived robot constructor rows; src/robot_config.cpp:707-718 reproduces base vtable, duplicate name at +8, derived vtable with the per-type instantiation at828-839. Shared allocation/constructor model, not original calling convention."
+  },
+  {
+   "address": "008fd320",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "delete_robot_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:30,82 names delete_robot_descriptor for these robot destructor rows; src/robot_config.cpp:788-806 resets base vtable, releases/nulls name, conditionally releases block by flags. Shared semantic model, preserve ledger ABI qualifications."
+  },
+  {
+   "address": "008fd350",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "construct_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:29,80-81 names construct_descriptor for the base/derived robot constructor rows; src/robot_config.cpp:707-718 reproduces base vtable, duplicate name at +8, derived vtable with the per-type instantiation at828-839. Shared allocation/constructor model, not original calling convention."
+  },
+  {
+   "address": "008fd5f0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "delete_robot_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:30,82 names delete_robot_descriptor for these robot destructor rows; src/robot_config.cpp:788-806 resets base vtable, releases/nulls name, conditionally releases block by flags. Shared semantic model, preserve ledger ABI qualifications."
+  },
+  {
+   "address": "008fd620",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "construct_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:29,80-81 names construct_descriptor for the base/derived robot constructor rows; src/robot_config.cpp:707-718 reproduces base vtable, duplicate name at +8, derived vtable with the per-type instantiation at828-839. Shared allocation/constructor model, not original calling convention."
+  },
+  {
+   "address": "008fd830",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "delete_robot_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:30,82 names delete_robot_descriptor for these robot destructor rows; src/robot_config.cpp:788-806 resets base vtable, releases/nulls name, conditionally releases block by flags. Shared semantic model, preserve ledger ABI qualifications."
+  },
+  {
+   "address": "008fd860",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "construct_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:29,80-81 names construct_descriptor for the base/derived robot constructor rows; src/robot_config.cpp:707-718 reproduces base vtable, duplicate name at +8, derived vtable with the per-type instantiation at828-839. Shared allocation/constructor model, not original calling convention."
+  },
+  {
+   "address": "008fdac0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "delete_robot_descriptor"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:30,82 names delete_robot_descriptor for these robot destructor rows; src/robot_config.cpp:788-806 resets base vtable, releases/nulls name, conditionally releases block by flags. Shared semantic model, preserve ledger ABI qualifications."
+  },
+  {
+   "address": "00900c60",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900c80",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900ca0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900cc0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900ce0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900d00",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900d20",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900d40",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "0092bec0",
+   "source": "src/submarine_model.cpp",
+   "identifiers": [
+    "submarine_step_periscope_repair_00854650"
+   ],
+   "evidence": "Source268-280 includes the periscope repair completion deadline store. Existing evidence explicitly says only deadline is modelled; physical body/node callback calls are omitted. This identifies that partial host projection, not a full native routine. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "009ff3a0",
+   "source": "src/ai_target_weights.cpp",
+   "identifiers": [
+    "ai_plane_loadout_arm"
+   ],
+   "evidence": "Source454 onward, especially556-560, implements the documented min(ammo,LevelbombParams[2]) then CVTTSS2SI-style int cast inline. Complete scalar expression is folded into the loadout arm; no standalone native calling interface is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00a0fc90",
+   "source": "src/ai_command_object.cpp",
+   "identifiers": [
+    "ai_command_notification_is_discarded"
+   ],
+   "evidence": "include/bsp/ai_command_object.hpp:84-88 explicitly associates 00a0fc90 with declaration ai_command_notification_is_discarded; body src/ai_command_object.cpp:22. Original ABI/layout qualifications remain in ledger. Header: // vt+24h is 00A0FC90 (`RET 8`) in every one of the sixteen vtables between // 00D22968 and 00D22C68, so no class acts on a member notification. This // closes docs/AI_GROUP_THINK.md's \"whether any class in the block overrides // the slot was not settled\". bool ai_command_notification_is_discarded(AiCommandType type) noexcept;"
+  },
+  {
+   "address": "00a152e0",
+   "source": "src/ai_command_tick.cpp",
+   "identifiers": [
+    "ai_command_tick_vt000c"
+   ],
+   "evidence": "Source228 dispatcher CautiousAttack arm306 onward executes the actual cautious approach/follower/formation rules behind the existing switches. This is the named branch, not an address table; preserve omitted domains in the existing host model. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00a31c60",
+   "source": "src/unit_kind_query.cpp",
+   "identifiers": [
+    "unit_kind_body_answers"
+   ],
+   "evidence": "Source181 identifies class4Bh native body; source291 onward implements owning-chain comparisons plus dynamic class-id equality using its decoded accept list. Not merely unit_kind_body_for_class metadata lookup. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00a7a460",
+   "source": "src/fmod_configuration_library.cpp",
+   "identifiers": [
+    "memory_get_stats"
+   ],
+   "evidence": "Source448-451 is FmodConfigurationLibrary::memory_get_stats; reviewed original only calls FMOD_Memory_GetStats into discarded locals (no failure/report). Concrete callers supply the locals; preserve adapter/transport limits. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00aa7190",
+   "source": "src/gui_widget_frame_runtime.cpp",
+   "identifiers": [
+    "dispatch_current68"
+   ],
+   "evidence": "GuiWidgetFrameRuntime::dispatch_current68 source302 executes the current68 pointer bubbling/fresh listener/backend/button ordering. Whole normal AA7190 caller evidence is docs/GUI_POINTER_LISTENER_RUNTIME.md and existing reconstruction record; seven admitted base profiles, separate Listbox branch. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ac0280",
+   "source": "src/gui_section_runtime.cpp",
+   "identifiers": [
+    "properties_bound"
+   ],
+   "evidence": "Existing record explicitly names GuiSectionRuntimeImplementation::properties_bound; actual source1302 onward executes the bound property/lifetime operations. docs/GUI_SECTION_TEXTURE_OWNERSHIP.md, reports/gui_section_texture_ownership.json. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ac3fb0",
+   "source": "include/bsp/gui_widgets_cc13.hpp",
+   "identifiers": [
+    "gui_widget_virtual_noop"
+   ],
+   "evidence": "Header420-422 explicitly pairs00AC7C90 and00AC3FB0 with the executable inline empty virtual body. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ac9900",
+   "source": "include/bsp/hud_widgets.hpp",
+   "identifiers": [
+    "gui_read_properties"
+   ],
+   "evidence": "Header359/370 defines executable visitor-based gui_read_properties, instantiated with kGuiGridProperties identified by the ledger/header schema. This executes the semantic property iteration; retain the existing modelled-layout limits rather than assigning the schema accessor. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ac9950",
+   "source": "include/bsp/hud_widgets.hpp",
+   "identifiers": [
+    "gui_describe_properties"
+   ],
+   "evidence": "Header359/370 defines executable visitor-based gui_describe_properties, instantiated with kGuiGridProperties identified by the ledger/header schema. This executes the semantic property iteration; retain the existing modelled-layout limits rather than assigning the schema accessor. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00acd800",
+   "source": "include/bsp/hud_widgets.hpp",
+   "identifiers": [
+    "gui_describe_properties"
+   ],
+   "evidence": "Header359/370 defines executable visitor-based gui_describe_properties, instantiated with kGuiSoundProperties identified by the ledger/header schema. This executes the semantic property iteration; retain the existing modelled-layout limits rather than assigning the schema accessor. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00acf120",
+   "source": "src/gui_type_dispatch.cpp",
+   "identifiers": [
+    "set_size58"
+   ],
+   "evidence": "GuiFrameBoxTypeImplementation::set_size58 source153 performs base58, fresh current state/records, sequential size copies and current88 rebuild. Other class overloads share the simple name; file-granular readiness retains this limitation. reports/orch5_menu_size_dispatch.json. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ad3430",
+   "source": "include/bsp/hud_widgets.hpp",
+   "identifiers": [
+    "gui_read_properties"
+   ],
+   "evidence": "Header359/370 defines executable visitor-based gui_read_properties, instantiated with kGuiAnimIconProperties identified by the ledger/header schema. This executes the semantic property iteration; retain the existing modelled-layout limits rather than assigning the schema accessor. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ad3550",
+   "source": "include/bsp/hud_widgets.hpp",
+   "identifiers": [
+    "gui_describe_properties"
+   ],
+   "evidence": "Header359/370 defines executable visitor-based gui_describe_properties, instantiated with kGuiAnimIconProperties identified by the ledger/header schema. This executes the semantic property iteration; retain the existing modelled-layout limits rather than assigning the schema accessor. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00b000a0",
+   "source": "src/native_particle_parameter_runtime_loading.cpp",
+   "identifiers": [
+    "append_segment"
+   ],
+   "evidence": "Source371-386 implements accumulated integral, captured/current byte count and ordered payload copies; original00b000a0 is the hermite branch, called with matching selector at435/448. Existing strict fixture/x87 qualifications retained. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00b00120",
+   "source": "src/native_particle_parameter_runtime_loading.cpp",
+   "identifiers": [
+    "append_segment"
+   ],
+   "evidence": "Source371-386 implements accumulated integral, captured/current byte count and ordered payload copies; original00b00120 is the linear branch, called with matching selector at435/448. Existing strict fixture/x87 qualifications retained. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00b55f00",
+   "source": "src/post_effects_cc13.cpp",
+   "identifiers": [
+    "read_mshd_caps"
+   ],
+   "evidence": "include/bsp/post_effects_cc13.hpp:324-324 explicitly associates 00b55f00 with declaration read_mshd_caps; body src/post_effects_cc13.cpp:285. Original ABI/layout qualifications remain in ledger. Header: MshdCaps read_mshd_caps(const MshdTable& caps);                                       // 00B55F00"
+  },
+  {
+   "address": "00b59e70",
+   "source": "src/post_effects_cc13.cpp",
+   "identifiers": [
+    "read_mshd_constants"
+   ],
+   "evidence": "include/bsp/post_effects_cc13.hpp:325-325 explicitly associates 00b59e70 with declaration read_mshd_constants; body src/post_effects_cc13.cpp:296. Original ABI/layout qualifications remain in ledger. Header: ShaderConstantList read_mshd_constants(const MshdTable& list, const ShaderConstantLookup&);  // 00B59E70"
+  },
+  {
+   "address": "00b5a1f0",
+   "source": "src/post_effects_cc13.cpp",
+   "identifiers": [
+    "read_mshd_layer"
+   ],
+   "evidence": "include/bsp/post_effects_cc13.hpp:326-326 explicitly associates 00b5a1f0 with declaration read_mshd_layer; body src/post_effects_cc13.cpp:327. Original ABI/layout qualifications remain in ledger. Header: MshdLayer read_mshd_layer(const MshdTable& layer, const MshdLayerHooks&);              // 00B5A1F0"
+  },
+  {
+   "address": "00b5adf0",
+   "source": "src/post_effects_cc13.cpp",
+   "identifiers": [
+    "read_mshd_render_mode"
+   ],
+   "evidence": "include/bsp/post_effects_cc13.hpp:327-327 explicitly associates 00b5adf0 with declaration read_mshd_render_mode; body src/post_effects_cc13.cpp:368. Original ABI/layout qualifications remain in ledger. Header: MshdRenderMode read_mshd_render_mode(const MshdTable& mode, const MshdLayerHooks&);    // 00B5ADF0"
+  },
+  {
+   "address": "00b5aff0",
+   "source": "src/post_effects_cc13.cpp",
+   "identifiers": [
+    "read_mshd_version"
+   ],
+   "evidence": "include/bsp/post_effects_cc13.hpp:328-328 explicitly associates 00b5aff0 with declaration read_mshd_version; body src/post_effects_cc13.cpp:377. Original ABI/layout qualifications remain in ledger. Header: MshdVersion read_mshd_version(const MshdTable& version, const MshdLayerHooks&);        // 00B5AFF0"
+  },
+  {
+   "address": "00b5b240",
+   "source": "src/post_effects_cc13.cpp",
+   "identifiers": [
+    "read_mshd_lod_phase"
+   ],
+   "evidence": "include/bsp/post_effects_cc13.hpp:329-329 explicitly associates 00b5b240 with declaration read_mshd_lod_phase; body src/post_effects_cc13.cpp:387. Original ABI/layout qualifications remain in ledger. Header: MshdLodPhase read_mshd_lod_phase(const MshdTable& phase, const MshdLayerHooks&);       // 00B5B240"
+  },
+  {
+   "address": "00b6f090",
+   "source": "src/native_point_light_links.cpp",
+   "identifiers": [
+    "erase_first"
+   ],
+   "evidence": "Template source49 implements first-match erase with swap-last over the actual array; source164/166 calls it for real point-light/node backlinks. Existing physical-storage fixture proof and ABI limitations retained. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00b6f150",
+   "source": "src/native_gui_text_model_clone.cpp",
+   "identifiers": [
+    "copy_native_gui_text_model_base_00b6f150_fragment"
+   ],
+   "evidence": "Actual source65 onward is the explicitly partial clone-base projection, invoking point-light links and copying admitted fields. Preserve partial_projection status and excluded full clone/storage domains; mapping does not promote coverage. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00b762b0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_minimum"
+   ],
+   "evidence": "Shared template tree_minimum is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b76360",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_maximum"
+   ],
+   "evidence": "Shared template tree_maximum is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b763f0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "checked_cast"
+   ],
+   "evidence": "Shared template checked_cast is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b776d0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b776f0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b77a60",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "array_destroy"
+   ],
+   "evidence": "Shared template array_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b77a80",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b77de0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b77df0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "array_destroy"
+   ],
+   "evidence": "Shared template array_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b77e10",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_initialize_empty"
+   ],
+   "evidence": "Shared template tree_initialize_empty is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b78390",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "array_destroy"
+   ],
+   "evidence": "Shared template array_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b783b0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_initialize_empty"
+   ],
+   "evidence": "Shared template tree_initialize_empty is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b783e0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_find_uint_key"
+   ],
+   "evidence": "Shared template tree_find_uint_key is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b79710",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_clear"
+   ],
+   "evidence": "Shared template tree_clear is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b79990",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_destroy"
+   ],
+   "evidence": "Shared template tree_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b799d0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_destroy"
+   ],
+   "evidence": "Shared template tree_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b79a10",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_destroy"
+   ],
+   "evidence": "Shared template tree_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b79a50",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_initialize_empty"
+   ],
+   "evidence": "Shared template tree_initialize_empty is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7d8b0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7d8c0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7d900",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7d910",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7ded0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7dee0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7df20",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7df30",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "step_iterator"
+   ],
+   "evidence": "Shared template step_iterator is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7e440",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "array_destroy"
+   ],
+   "evidence": "Shared template array_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7e600",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "array_destroy"
+   ],
+   "evidence": "Shared template array_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7e6c0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_initialize_empty"
+   ],
+   "evidence": "Shared template tree_initialize_empty is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7e700",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_initialize_empty"
+   ],
+   "evidence": "Shared template tree_initialize_empty is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7e820",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_initialize_empty"
+   ],
+   "evidence": "Shared template tree_initialize_empty is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b7e850",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_initialize_empty"
+   ],
+   "evidence": "Shared template tree_initialize_empty is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b80170",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_clear"
+   ],
+   "evidence": "Shared template tree_clear is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b804d0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_clear"
+   ],
+   "evidence": "Shared template tree_clear is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b806b0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "array_destroy"
+   ],
+   "evidence": "Shared template array_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b80bc0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_destroy"
+   ],
+   "evidence": "Shared template tree_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b80c00",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_destroy"
+   ],
+   "evidence": "Shared template tree_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b80d90",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_destroy"
+   ],
+   "evidence": "Shared template tree_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b80dd0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "tree_destroy"
+   ],
+   "evidence": "Shared template tree_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b8a570",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "array_destroy"
+   ],
+   "evidence": "Shared template array_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b8b980",
+   "source": "src/post_effects_cc13.cpp",
+   "identifiers": [
+    "disc_fan_indices"
+   ],
+   "evidence": "include/bsp/post_effects_cc13.hpp:432-434 explicitly associates 00b8b980 with declaration disc_fan_indices; body src/post_effects_cc13.cpp:518. Original ABI/layout qualifications remain in ledger. Header: // Index pattern of the disc fan written by 00B8B980 (centre vertex 0, rim // vertices 1..n): triangle i = (0, i+1, (i+1) % n + 1), 16-bit indices. void disc_fan_indices(std::uint32_t rim_count, std::vector<std::uint16_t>& out);"
+  },
+  {
+   "address": "00b8d660",
+   "source": "src/post_effects_cc13.cpp",
+   "identifiers": [
+    "trim"
+   ],
+   "evidence": "include/bsp/post_effects_cc13.hpp:375-380 explicitly associates 00b8d660 with declaration trim; body src/post_effects_cc13.cpp:456. Original ABI/layout qualifications remain in ledger. Header:     // trim: every block whose count is 32 is released and replaced by the last     // block (whose slots are renumbered), re-examining the same index; then     // current = the first block with a free slot, else -1. In 00B8D660 the     // body after CALL _free (00B8D686..00B8D6BF) is missing from the Ghidra     // listing because the call is treated as no-return.     void trim();"
+  },
+  {
+   "address": "00b90e40",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "array_destroy"
+   ],
+   "evidence": "Shared template array_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b915c0",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "array_destroy"
+   ],
+   "evidence": "Shared template array_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b92e50",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "array_destroy"
+   ],
+   "evidence": "Shared template array_destroy is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00b93600",
+   "source": "include/bsp/scene_graph2_cc13.hpp",
+   "identifiers": [
+    "checked_cast"
+   ],
+   "evidence": "Shared template checked_cast is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00bd3590",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "complete"
+   ],
+   "evidence": "PcStorageBackend::complete, source:239, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00bda2c0",
+   "source": "src/native_vfs_name_resolution.cpp",
+   "identifiers": [
+    "upper_bound"
+   ],
+   "evidence": "Actual-storage implementation source:172; local helper has the reviewed long ledger name shortened in C++. Its in-body native site addresses, ordered string/tree/provider operations and existing complete_source record establish the association. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00bdb1e0",
+   "source": "src/native_vfs_name_resolution.cpp",
+   "identifiers": [
+    "find_group"
+   ],
+   "evidence": "Actual-storage implementation source:231; local helper has the reviewed long ledger name shortened in C++. Its in-body native site addresses, ordered string/tree/provider operations and existing complete_source record establish the association. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00bdc680",
+   "source": "src/native_vfs_name_resolution.cpp",
+   "identifiers": [
+    "try_constructed"
+   ],
+   "evidence": "Actual-storage implementation source:119; local helper has the reviewed long ledger name shortened in C++. Its in-body native site addresses, ordered string/tree/provider operations and existing complete_source record establish the association. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00bddaa0",
+   "source": "src/native_vfs_name_resolution.cpp",
+   "identifiers": [
+    "try_extension_prefixes"
+   ],
+   "evidence": "Actual-storage implementation source:190; local helper has the reviewed long ledger name shortened in C++. Its in-body native site addresses, ordered string/tree/provider operations and existing complete_source record establish the association. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00bead60",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "delete_slot"
+   ],
+   "evidence": "PcStorageBackend::delete_slot, source:156, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00beaf00",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "clear_marker"
+   ],
+   "evidence": "PcStorageBackend::clear_marker, source:137, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00beaf70",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "stamp_marker"
+   ],
+   "evidence": "PcStorageBackend::stamp_marker, source:141, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00beb1c0",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "file_exists"
+   ],
+   "evidence": "PcStorageBackend::file_exists, source:94, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00beb1e0",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "storage_query_1c"
+   ],
+   "evidence": "PcStorageBackend::storage_query_1c, source:99, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  }
+ ]
+}

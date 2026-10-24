@@ -32,6 +32,28 @@ struct DynLiveCrt {
 // count 0109ED54 = +2Ch, capacity 0109ED58 = +30h, first free page 0109ED5C = +34h).
 using MitPoolAllocator = cc13_dyn2::MitPoolAllocator36x128;
 
+// Lifecycle bodies at 00407590/00407690 and 0040F910/0040FA10. The original
+// functions use absolute globals and take no arguments; constructors return the
+// global in EAX, all four use plain RET, and ESI/EDI are preserved. These C++
+// interfaces take actual pool and shared 00E188B4 head storage instead. The
+// concrete/base vtable words remain image identities, not callable host vptrs.
+// C++ allocation exceptions unwind table, lock, then registry links. Original
+// FH3/SEH transport and binary ABI are not supplied. docs/OCT24_TAIL_POOL.md.
+struct MitPoolLifecycleCrt {
+    void* (*operator_new_00bf55be)(std::uint32_t bytes);
+    void (*delete_00bf65ac)(void* page);
+    void (*free_00bf6989)(void* table);
+};
+
+MitPoolAllocator* pool36_construct_00407590(MitPoolAllocator& pool,
+    void*& allocator_registry_head_00e188b4, const MitPoolLifecycleCrt& crt);
+void pool36_destroy_global_00407690(MitPoolAllocator& pool,
+    void*& allocator_registry_head_00e188b4, const MitPoolLifecycleCrt& crt);
+MitPoolAllocator* pool20_construct_0040f910(MitPoolAllocator& pool,
+    void*& allocator_registry_head_00e188b4, const MitPoolLifecycleCrt& crt);
+void pool20_destroy_global_0040fa10(MitPoolAllocator& pool,
+    void*& allocator_registry_head_00e188b4, const MitPoolLifecycleCrt& crt);
+
 // <36,128>: 28h-byte slots (page index at slot+24h), 1504h-byte pages, free stack at page+1400h,
 // depth at page+1500h. <20,128>: 18h-byte slots (page index at slot+14h), D04h-byte pages, free
 // stack at page+C00h, depth at page+D00h.
