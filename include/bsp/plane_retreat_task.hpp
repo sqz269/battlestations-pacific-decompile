@@ -59,6 +59,7 @@ inline constexpr bool kPlaneRetreatTaskBound = true;   // ON: SQUADRON_LAND_TASK
 // - The moveto stay test (009CA048 COMISS 0,timer / JA): a NaN timer stays.
 // - 009C9310: its five 00419010 calls use the per-op float form, and the
 //   distance square is formed in float and tested as stored. NaN gives 0.
+// - 009C9EA0: the same distance square in float, tested as stored.
 // False: the double chains and ordered compares used before. Changes only
 // ulp, NaN and zero-length cases.
 inline constexpr bool kRetreatX87FaithfulCc13Bound = false;

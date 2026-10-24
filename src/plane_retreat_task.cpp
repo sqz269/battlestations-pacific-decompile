@@ -259,8 +259,20 @@ bool retreat_inside_enter_zone_009c9ea0(const RetreatApproach& approach, float x
     float turn_circle_radius) noexcept {
     const float dx = to_float(static_cast<double>(x) - approach.enter_point_50[0]);
     const float dz = to_float(static_cast<double>(z) - approach.enter_point_50[1]);
-    const double sq = static_cast<double>(dx) * dx + static_cast<double>(dz) * dz;
-    const float d = sq <= kRetreatTinySquare ? 0.0f : to_float(std::sqrt(sq));
+    // 009C9EE8-009C9EF8: dx*dx, dz*dz and their sum (FADDP) with no store between,
+    // so at PC24 (kRetreatX87FaithfulCc13Bound) each rounds to float; 009C9F06
+    // FCOMI tests the stored float sum against 1e-10 [00CE3820], JBE (also on
+    // NaN) to 0. 009C9F3C FCOMIP R,d / JBE: a NaN distance answers false.
+    float d;
+    if constexpr (kRetreatX87FaithfulCc13Bound) {
+        const float xx = dx * dx;
+        const float zz = dz * dz;
+        const float sq = zz + xx;
+        d = !(static_cast<double>(sq) > kRetreatTinySquare) ? 0.0f : std::sqrt(sq);
+    } else {
+        const double sq = static_cast<double>(dx) * dx + static_cast<double>(dz) * dz;
+        d = sq <= kRetreatTinySquare ? 0.0f : to_float(std::sqrt(sq));
+    }
     return d < turn_circle_radius;
 }
 
