@@ -189,6 +189,21 @@ public:
     bool mission_ship_enabled() const noexcept;
     void prepare_mission_ship();
     void draw_mission_ship(std::uint64_t mission_frame, float simulated_seconds);
+    // Original 004C6C30/004CA440/004CA1F0 phase composition over this SAME
+    // frame. False means the route is disabled and no frame was claimed.
+    bool run_mission_render_frame(std::uint64_t mission_frame, float simulated_seconds,
+        std::uint32_t clear_color, const std::function<bool()>& after_begin,
+        const std::function<void()>& overlay_and_capture, NativeRendererPresentObservation&);
+    // One startup borrower, invoked after render resources initialize while
+    // the existing mission shader-cache bracket is open. No second cache.
+    void register_mission_prepare_callback(void*, void (*)(void*));
+    // Borrow only inside the native frame's post-world overlay callback.
+    // Submit at most once per actual begin; the original eight-byte label is
+    // consumed by B1F4D0, including its own exceptional cleanup path.
+    void* mission_overlay_queue();
+    void* mission_overlay_pass_context();
+    void submit_mission_overlay_scene(void* queue, void* scene, void* camera,
+        void* targets, void* actual8b_label);
     // 00737F30's 737F80..737FB0 loop over the startup Application's preload rows,
     // when the mission preload borrowed that object (kApplicationCc15Bound).
     void release_application_preload_rows();

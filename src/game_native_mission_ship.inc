@@ -26,6 +26,12 @@ struct MissionShipGraph final {
     NativeRenderResourceInitArguments arguments;
     std::function<GameNativeMissionUnitSource()> unit_source;
     const GameUnitsHost* bound_units{}; // Identity only; reborrow from mission before every use.
+    NativeMissionFrameSwitches frame_switches;
+    NativeMissionFrameCoordinator frame_coordinator;
+    GameRenderFrameState frame_state;
+    void* prepare_context{};
+    void (*prepare_callback)(void*){};
+    bool overlay_window_open{}, overlay_submitted{};
     Stage stage{Stage::prepared};
     bool shader_open{};
     std::uint64_t last_mission_frame{};
@@ -57,6 +63,10 @@ struct MissionShipGraph final {
           lua(binding), shader_cache(shaders), renderer(current_renderer), entry_cache(cache),
           input(in), clock(time), arguments(args), unit_source(std::move(units)) {
         check(static_cast<bool>(unit_source), "mission rendering requires its existing simulation owner");
+        frame_switches = native_mission_frame_switches_from_environment(true);
+        frame_state.game_state = static_cast<std::uint32_t>(GameStateId::kInMission);
+        frame_state.interface_manager_present = true;
+        frame_state.interface_level = 1;
     }
     ~MissionShipGraph() {
         if (stage != Stage::prepared && stage != Stage::closed) std::terminate();
@@ -122,6 +132,7 @@ struct MissionShipGraph final {
                 *reinterpret_cast<void* const volatile*>(devices.platform_publication.identity()),
                 lua, shader_cache, arguments);
             (void)resources->construct_and_initialize();
+            if (prepare_callback) prepare_callback(prepare_context);
             const auto source = unit_source();
             check(static_cast<bool>(source), "mission rendering requires loaded simulation units");
             bound_units = source.units;
@@ -214,7 +225,7 @@ struct MissionShipGraph final {
         }
         camera->fit_ship(center, radius);
     }
-    void draw(std::uint64_t mission_frame, float simulated_seconds, unsigned long generation) {
+    void update_view(std::uint64_t mission_frame, unsigned long generation) {
         check(stage == Stage::ready, "mission ship draw requires completed preparation");
         try {
             commands->before_device_generation(generation);
@@ -222,7 +233,16 @@ struct MissionShipGraph final {
             camera->update_viewport();
             resources->prepare_screen_matrix();
             last_mission_frame = mission_frame;
-            commands->submit_scene(scene->raw(), camera->raw, nullptr);
+        } catch (...) { stage = Stage::failed; throw; }
+    }
+    void submit_scene() {
+        check(stage == Stage::ready, "mission submission requires its completed view update");
+        try { commands->submit_scene(scene->raw(), camera->raw, nullptr); }
+        catch (...) { stage = Stage::failed; throw; }
+    }
+    void execute_scene(std::uint64_t mission_frame, float simulated_seconds) {
+        check(stage == Stage::ready, "mission execution requires completed scene submission");
+        try {
             commands->execute_before_overlay();
             if (mission_frame == 1 || mission_frame == 60 || mission_frame == 180)
                 log.notef("native mission ship capture landmark: mission_frame=%llu simulated_seconds=%.6f "
@@ -230,6 +250,11 @@ struct MissionShipGraph final {
                     static_cast<double>(simulated_seconds), scene->raw(), camera->raw,
                     model->drawable_count());
         } catch (...) { stage = Stage::failed; throw; }
+    }
+    void draw(std::uint64_t mission_frame, float simulated_seconds, unsigned long generation) {
+        update_view(mission_frame, generation);
+        submit_scene();
+        execute_scene(mission_frame, simulated_seconds);
     }
     void complete_frame() {
         if (commands) commands->complete_frame();

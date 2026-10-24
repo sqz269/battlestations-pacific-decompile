@@ -97,7 +97,9 @@ def main():
                         default=board.ROOT / 'local/output/oct24_source_history.json')
     parser.add_argument('--out', type=Path, default=board.ROOT / 'local/output/oct24_outside_audit.json')
     parser.add_argument('--board', type=Path, help='assert the baseline target/outside/unreferenced counts')
+    parser.add_argument('--history-ref', default=board.MAIN, help='same frozen history ref used by progress_board')
     args = parser.parse_args()
+    board.MAIN = args.history_ref
     result = audit(args.index, args.source_cache)
     if args.board:
         expected = json.loads(args.board.read_text(encoding='utf-8'))['kpi']

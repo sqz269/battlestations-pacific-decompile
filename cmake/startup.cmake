@@ -2387,3 +2387,4 @@ cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placeme
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/cc13_gamerows.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_hint_passes.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_native_mission_units.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_native_mission_frame.cpp)

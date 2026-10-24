@@ -108,3 +108,42 @@ The integrated D1 executable `local/render_D/d1_integrated.exe` SHA-256 is
 `d1_integrated_off_pair.json`: **exit 0**, again all 21 unit rows, 706 summaries
 and 1392 native rows/statuses/counts identical. These are separate from the
 earlier pinned ON proof above.
+
+## D3: native frame phase/order
+
+`BSP_NATIVE_MISSION_FRAME=1` additionally selects the existing
+`004C6C30 -> 004CA440 -> 004CA1F0` begin/render/finish bodies. The same renderer
+and queue perform clear, native camera update, scene traversal/sort/submission,
+command execution, diagnostic overlay/capture, and EndScene/Present. The actual
+game render phase survives a retained queue; a claimed failure cannot fall
+through into a second frame. No second command graph or BeginScene is created.
+The shared device bridge still retires foreign sprite textures on recreation.
+
+Each default-OFF switch `BSP_NATIVE_MISSION_TERRAIN`, `_OCEAN`, `_WEATHER`,
+`_POST`, and `_TONEMAP` is an explicit no-op with a once-only blocker report,
+including when requested. [Frame evidence](OCT24_RENDER_D_FRAME.md) identifies
+the missing native owners and the unavailable HUD/audio/shadow/profiler and
+cleanup callbacks. These boundaries do not claim recovered multipass ordering.
+Terrain is closer than ocean by its retained geometry contracts, but neither
+has the complete providers needed for a real optional pass in this step.
+
+A startup borrower can prepare native GUI resources inside the existing cache
+bracket. Its later overlay borrows the current queue and original `00B0D0D0`
+service `+1D4` context, retires the completed world command companion, and submits
+one original eight-byte label through the same `B1F4D0` graph. The renderer does
+not own a second GUI pipeline. This seam is provided for the separate GUI lane;
+the D3 capture still uses the existing sprite overlay.
+
+`local/render_D/d3_frame.exe` SHA-256 is
+`b86f47544fae2f657a37509e99d8a35ad5bfb1734c743ca459f4d567b30745af`.
+`d3_build.log` records both existing tests passing. Under the same USN04 arguments
+as D1, `d3_off_usn04.log` versus the clean `origin_current_usn04.log` gives
+`d3_off_pair.json`: **pair_diff exit 0**. The run with master, frame and all five
+no-op switches ON (`d3_on_usn04.log`) exits **0**, completes 599 presents, and
+records all five blockers. `d3_on_pair.json` reports identical gameplay, all 21
+unit rows, all 706 summaries and all 1392 native rows/statuses/counts. Its raw
+exit 1 consists of render/capture diagnostics; no new masks were introduced.
+The unmodified ON captures `d3_N001.png`, `d3_N060.png`, `d3_N180.png` are retained
+under `local/render_D`. The first was visually inspected and retains D1's textured
+live Sims and existing black sprite panels. This does not establish retail
+lighting, mission-camera parity, or real terrain/ocean/post rendering.

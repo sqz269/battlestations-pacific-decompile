@@ -444,11 +444,14 @@ def build(now=None):
 
 
 def main():
+    global MAIN
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('--out', default=str(ROOT / 'local/progress_board.html'))
     ap.add_argument('--json', help='also write the data as JSON')
     ap.add_argument('--no-index', action='store_true', help='do not run bsp.py index --if-stale first')
+    ap.add_argument('--history-ref', default=MAIN, help='freeze history to a commit/ref for a reproducible audit')
     args = ap.parse_args()
+    MAIN = args.history_ref
     git('fetch', '-q', 'origin', 'main')
     if subprocess.run(['git', 'merge-base', '--is-ancestor', MAIN, 'HEAD'], cwd=ROOT).returncode:
         print(f'note: this tree does not contain {MAIN}; the index (and recon states) lag the history', file=sys.stderr)
