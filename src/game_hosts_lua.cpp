@@ -4458,6 +4458,7 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
             }
             if (launched != nullptr && launched->party >= 0) {
                 ++summary_.launched_party_nodes;
+                node->launched_record = true;   // log only: counts its wing
                 if constexpr (kLaunchedSquadronPartyCc13Bound) {
                     node->party = launched->party;
                     node->launched_party = true;
@@ -4959,11 +4960,15 @@ public:
                 plane.class_index = node.class_index;
                 // Packet cc9_generated_wing_party: 007F491A, the squadron's
                 // descriptor in the plane's +C0h.
-                if (kGeneratedWingPartyBound && node.generated_party) {
+                // Packet cc13-lsqparty2: the same 007F491A copy for a launched
+                // squadron (launched_party is only set with its switch on).
+                if (kGeneratedWingPartyBound && (node.generated_party || node.launched_party)) {
                     plane.party = node.party;
                     plane.race = node.race;
-                    plane.generated_party = true;
+                    plane.generated_party = node.generated_party;
+                    plane.launched_party = node.launched_party;
                 }
+                if (node.launched_record) ++host_.summary_.launched_wing_nodes;
                 ++host_.summary_.init_all_wing_marked;
             }
             return;   // the wing append below is retired
@@ -4998,11 +5003,15 @@ public:
             plane.squadron_id = leader;  // 007F4B49 MOV [EBX+9D4h],ESI
             // Packet cc9_generated_wing_party: 007F491A, the squadron's
             // descriptor in the plane's +C0h.
-            if (kGeneratedWingPartyBound && node.generated_party) {
+            // Packet cc13-lsqparty2: the same 007F491A copy for a launched
+            // squadron (launched_party is only set with its switch on).
+            if (kGeneratedWingPartyBound && (node.generated_party || node.launched_party)) {
                 plane.party = node.party;
                 plane.race = node.race;
-                plane.generated_party = true;
+                plane.generated_party = node.generated_party;
+                plane.launched_party = node.launched_party;
             }
+            if (node.launched_record) ++host_.summary_.launched_wing_nodes;
             host_.pending_entities_.push_back(std::move(plane));  // `node` stays valid
             ++host_.summary_.init_all_wing_appended;
         }
@@ -11767,9 +11776,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.init_all_squadron_ids);
     log_.notef("summary mission script generated entity party (packet "
         "cc9_generated_entity_party, 00944FD0 -> 00928A00): bound=%d nodes=%llu writes=%llu "
-        "launched_party_nodes=%llu",
+        "launched_party_nodes=%llu launched_wing_nodes=%llu",
         kGeneratedEntityPartyBound ? 1 : 0, summary_.generated_party_nodes,
-        summary_.generated_party_writes, summary_.launched_party_nodes);
+        summary_.generated_party_writes, summary_.launched_party_nodes,
+        summary_.launched_wing_nodes);
     log_.notef("summary SEntity::InitAll pass E bound=%d released=%llu",
         kSEntityInitPassEReleaseBound ? 1 : 0, summary_.init_all_holders_released);
     log_.notef("summary SEntity::InitAll pending dedup bound=%d skipped_pending=%llu "

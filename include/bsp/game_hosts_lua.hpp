@@ -131,10 +131,16 @@ inline constexpr bool kGeneratedWingPartyBound = true;  // ON: identity pairs (s
 // squadron's pending node takes the air-ops record's party and pass A writes
 // thisTable[key].Party; while false the slot has none, and
 // commandhelpers.lua:330 indexes recon[nil] once the squadron is selected
-// (CHG06, cc13-chgrecon).
+// (CHG06, cc13-chgrecon). Packet cc13-lsqparty2: the wing planes take the
+// squadron's party too, through the same 007F491A copy of the squadron's
+// descriptor that kGeneratedWingPartyBound models, so it is a parent as well.
+// Not covered: the kamikaze squadron, whose 006FED18 bag also carries `Party`
+// but which is not built through create_squadron.
 inline constexpr bool kLaunchedSquadronPartyCc13Bound = false;
 static_assert(!kLaunchedSquadronPartyCc13Bound || kGeneratedEntityPartyBound,
               "kLaunchedSquadronPartyCc13Bound uses the generated-entity party write");
+static_assert(!kLaunchedSquadronPartyCc13Bound || kGeneratedWingPartyBound,
+              "kLaunchedSquadronPartyCc13Bound uses the generated wing party copy");
 
 inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 8)
 
@@ -1325,6 +1331,7 @@ struct GameMissionLuaSummary {
     unsigned long long generated_party_nodes{0};
     unsigned long long generated_party_writes{0};
     unsigned long long launched_party_nodes{0};   // packet cc13-lsqparty
+    unsigned long long launched_wing_nodes{0};    // packet cc13-lsqparty2
     // 0094C480 / 00949750 / 0094C490. docs/LUA_SPAWN_NEW_HOST.md.
     unsigned long long spawn_new_calls{0};       // tables the binding accepted
     unsigned long long spawn_new_rejected{0};    // argument 1 was not a table
@@ -2339,6 +2346,9 @@ private:
         // Packet cc13-lsqparty: an air-ops launched squadron that carries its
         // record's party (006C5050's bag `Party`).
         bool launched_party{false};
+        // Log only, set whatever the switch: the node is an air-ops launched
+        // squadron with a record party (counts its wing planes).
+        bool launched_record{false};
         std::size_t units_before{0};
         // The unit count right after this squadron's creator returned: its wing
         // is [units_before, units_end). A later creation before InitAll (the
