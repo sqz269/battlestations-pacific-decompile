@@ -3,14 +3,6 @@
 #include <array>
 
 namespace bsp {
-struct BotTaskDestructionHost {
-    virtual ~BotTaskDestructionHost() = default;
-    virtual void observer_destruct_007b3f70(void* member) = 0;
-    virtual void state_slot_08(void* state) = 0;
-    virtual void plan_element_destruct_007b3ba0(void* element) = 0;
-};
-// 007B4030: ECX=task, plain RET. Three C8h plan elements, reverse teardown.
-void bot_task_destruct_base_007b4030(void* task, BotTaskDestructionHost& host);
 // Shared bot-task leaves: 00D05708/other task vtables slots 4, 3, 22.
 std::uint32_t bot_task_zero_007b40d0() noexcept;
 bool bot_task_false_007b4110(std::uint32_t unused) noexcept;

@@ -4,17 +4,6 @@
 #include "bsp/gui_lua_runtime.hpp"
 
 namespace bsp {
-struct EffectFlareDestructionHost {
-    virtual ~EffectFlareDestructionHost() = default;
-    virtual void string_destruct_0041dd20(void* header) = 0;
-    virtual void free_00bf65ac(void* memory) = 0;
-    virtual void free_00bf6989(void* memory) = 0;
-    virtual void resize_words_0086aa10(void* vector, std::uint32_t count) = 0;
-    virtual void return_string_00419cc0_00bd1510(void* data, std::uint32_t bytes) = 0;
-    virtual void refcounted_base_00bd30f0(void* component) = 0;
-};
-// 0086E5A0: ECX=flare, plain RET; full normal teardown, no flag argument.
-void destruct_effect_flare_0086e5a0(void* flare, EffectFlareDestructionHost& host);
 // Actual raw storage, including padding and fields not initialized by the
 // native constructor. Caller must supply the indicated allocation extent.
 // These functions return the allocation base; Tracer's component is base+80h.
