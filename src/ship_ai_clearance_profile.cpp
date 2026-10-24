@@ -12,6 +12,7 @@
 
 #include "bsp/cc13_ship_ai_commit_band.hpp" // kShipAiCommitmentBandQuarterBound
 #include "bsp/ship_ai_seg67_switches_cc13.hpp" // kShipAiClearanceRefreshSentinelBound
+#include "bsp/ship_ai_switch_reach.hpp"
 
 #include "bsp/unit_rudder.hpp" // clamped_interpolate_00419010,
                                // wrapped_angle_add_00438aa0,
@@ -402,6 +403,7 @@ ShipAiContactHorizon ship_ai_contact_horizon_009e07d1(float lateral,
 // switch on only an ordered negative discriminant returns the average and a
 // NaN one runs the square root.
 static bool discriminant_returns_average(float discriminant) noexcept {
+    ship_ai_reach_note_nan(ship_ai_switch_reach().throttle_nan_operands, discriminant);
     if constexpr (kShipAiThrottleProfileNanArmsCc13Bound) {
         return 0.0f > discriminant;
     } else {
@@ -412,6 +414,7 @@ static bool discriminant_returns_average(float discriminant) noexcept {
 // 009E0CA2 / 009E0E54: COMISS lateral, 0 / JC to the left-normal arm, taken for
 // lateral < 0 and, with the NaN switch on, for an unordered compare.
 static bool lateral_picks_normal(float lateral_side) noexcept {
+    ship_ai_reach_note_nan(ship_ai_switch_reach().throttle_nan_operands, lateral_side);
     if constexpr (kShipAiThrottleProfileNanArmsCc13Bound) {
         return !(lateral_side >= 0.0f);
     } else {
@@ -529,6 +532,8 @@ ShipAiContactBandOutcome ship_ai_apply_contact_band_009e0b37(ShipAiThrottleProfi
     // 009E0BB9 FCOMIP / JBE.
     const float stand_on_edge = (window.low + 0.5f) * -2.0f;
     const float give_way_edge = window.high - 1.0f;
+    ship_ai_reach_note_nan(ship_ai_switch_reach().throttle_nan_operands,
+                           stand_on_edge - give_way_edge);
     if (kShipAiThrottleProfileNanArmsCc13Bound ? !(stand_on_edge > give_way_edge)
                                                : (stand_on_edge <= give_way_edge)) {
         counts.stand_on_74 += 1;
@@ -550,6 +555,7 @@ ShipAiAvoidanceStep ship_ai_contact_avoidance_step_009e0c7c(float heading_error,
     // prefers.
     const ShipAiAvoidanceStep normal{-dir_z, dir_x};
     const float magnitude = std::fabs(heading_error);
+    ship_ai_reach_note_nan(ship_ai_switch_reach().throttle_nan_operands, heading_error);
 
     // 009E0C86. Past a quarter turn the bearing arms run; inside it the arm at
     // 009E0E42 runs. Both have the same shape, with opposite signs on the
@@ -672,6 +678,7 @@ void ship_ai_build_throttle_profile_009e04e0(ShipAiThrottleProfileBlock& blk,
         // -1.0) is the arc-cosine pattern; the routine feeds it the heading error
         // rather than a cosine.
         float arc = 0.0f;
+        ship_ai_reach_note_nan(ship_ai_switch_reach().throttle_nan_operands, heading_error);
         if (!(heading_error > 1.0f)) {
             if constexpr (kShipAiThrottleProfileNanArmsCc13Bound) {
                 // 009E06DA: only an ordered error below -1 gives pi.
