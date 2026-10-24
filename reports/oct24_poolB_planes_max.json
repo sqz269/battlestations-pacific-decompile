@@ -1,0 +1,71 @@
+{
+  "packet": "oct24-poolB-plane-max-1",
+  "scope": "Five assigned poolB ordinary bodies; build only, no game or host wiring",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "verification": {
+    "build": "pending parent integration build",
+    "new_tests": false,
+    "native_abi": false,
+    "native_fh3": false,
+    "game_validated": false
+  },
+  "routines": [
+    {
+      "address": "0074af50",
+      "name": "landing_ship_update_0074af50",
+      "source": "src/building_pads.cpp",
+      "coverage": "complete ordinary body 0074AF50-0074B567",
+      "original_abi": "ECX ship, stack float dt, RET 4 at 0074B565",
+      "status": "reconstructed_complete_ordinary_body_build_pending",
+      "evidence": "Entire 420-instruction saved listing plus pseudocode. Callees inspected before their raw call boundaries were declared. Both clamp helpers are lowered from their inspected comparisons. The +1198/+119C vector uses six checked reads per record, 4Ch stride; current angle +44 is overwritten in the original order.",
+      "uncertainty": "Descriptive name is a hypothesis. Native FH3 registration/unwind funclets are excluded; the complete ordinary body includes all normal cleanup calls. Float stores are explicit; portable C++ double temporaries are not proof of x87 extended precision or binary ABI equivalence. All external calls require a supplied host.",
+      "correction": {
+        "was": "BSP_LandingShip_Update metadata_only_no_function_body_verified_oct24 in game_hosts_script_orders.cpp",
+        "is": "Complete ordinary raw-storage body in canonical building_pads family",
+        "evidence": "Explicit body and address-suffixed API; 0074B565 RET 4; no call to a replacement whole-function host stub"
+      }
+    }
+  ],
+  "open": [
+    {"address": "007482b0", "status": "evidence review in progress"},
+    {"address": "007d3e60", "status": "evidence review in progress"},
+    {"address": "007eb380", "status": "evidence review in progress"},
+    {"address": "007f4ba0", "status": "evidence review in progress"}
+  ],
+  "call_sites": [
+    {"function": "0074af50", "address": "0074af76", "native": "008255b0"},
+    {"function": "0074af50", "address": "0074b080", "native": "0074a420"},
+    {"function": "0074af50", "address": "0074b089", "native": "00749aa0"},
+    {"function": "0074af50", "address": "0074b0a0", "native": "0077c2a0"},
+    {"function": "0074af50", "address": "0074b104", "native": "00977da0"},
+    {"function": "0074af50", "address": "0074b15a", "native": "006f22b0", "lowered": true},
+    {"function": "0074af50", "address": "0074b1a2", "native": "0042d7e0"},
+    {"function": "0074af50", "address": "0074b1b9", "native": "00414260"},
+    {"function": "0074af50", "address": "0074b1e0", "native": "00427eb0"},
+    {"function": "0074af50", "address": "0074b228", "native": "006ac370"},
+    {"function": "0074af50", "address": "0074b243", "native": "00476b90"},
+    {"function": "0074af50", "address": "0074b24a", "native": "0071ad50"},
+    {"function": "0074af50", "address": "0074b25d", "native": "00b6da70"},
+    {"function": "0074af50", "address": "0074b262", "native": "004c1570"},
+    {"function": "0074af50", "address": "0074b26f", "native": "00411eb0"},
+    {"function": "0074af50", "address": "0074b288", "native": "0041e870"},
+    {"function": "0074af50", "address": "0074b29b", "native": "00927b40"},
+    {"function": "0074af50", "address": "0074b2b1", "native": "00b673a0"},
+    {"function": "0074af50", "address": "0074b2c1", "native": "00b67700"},
+    {"function": "0074af50", "address": "0074b2d2", "native": "0041dd20"},
+    {"function": "0074af50", "address": "0074b2d9", "native": "0074ad90"},
+    {"function": "0074af50", "address": "0074b2e9", "native": "00411ee0"},
+    {"function": "0074af50", "address": "0074b31e", "native": "006f22f0", "lowered": true},
+    {"function": "0074af50", "address": "0074b3a6", "native": "00bf6713"},
+    {"function": "0074af50", "address": "0074b3dc", "native": "00bf6713"},
+    {"function": "0074af50", "address": "0074b410", "native": "00bf6713"},
+    {"function": "0074af50", "address": "0074b446", "native": "00bf6713"},
+    {"function": "0074af50", "address": "0074b492", "native": "00bf6713"},
+    {"function": "0074af50", "address": "0074b4c5", "native": "00bf6713"},
+    {"function": "0074af50", "address": "0074b4f3", "native": "00b64640"},
+    {"function": "0074af50", "address": "0074b4fd", "native": "004134f0"},
+    {"function": "0074af50", "address": "0074b51b", "native": "00413920"},
+    {"function": "0074af50", "address": "0074b54b", "native": "0051f460"}
+  ]
+}

@@ -223,4 +223,55 @@ bool landing_ship_ramp_latch_0074afcc(BuildingPadModel::Lander& lander, bool gro
 // are the caller's.
 bool landing_ship_ramp_unload_0074b109(BuildingPadModel::Lander& lander, float dt);
 
+// Complete ordinary body of 0074AF50..0074B567, native ECX = MLandingShip,
+// one stack float dt, RET 4. This raw-storage interface is separate from the
+// partial BuildingPadModel projections above. Calls retain their addresses;
+// the native FH3 frame/unwind funclets and x87 extended precision are not an
+// ABI claim. No game/host wiring is supplied.
+struct LandingShipUpdateGlobals {
+    std::uint8_t* const& game_00e188a8;
+    void* const& warning_manager_00f8a0c4;
+    const float& time_00f876a4;
+};
+
+struct LandingShipUpdateHost {
+    virtual ~LandingShipUpdateHost() = default;
+    virtual void call_008255b0(void* ship, float dt) = 0;
+    virtual void call_0074a420(void* ship) = 0;
+    virtual void* call_00749aa0(void* message) = 0;
+    virtual void call_0077c2a0(void* sender, void* message, std::uint32_t flags,
+                             std::uint32_t peer) = 0;
+    virtual bool vcall_240(void* ship) = 0;
+    virtual void* vcall_174(void* ship) = 0;
+    virtual bool vcall_08(void* object) = 0;
+    virtual void call_00977da0(void* manager, void* subject, void* range_ship) = 0;
+    virtual const float* call_0042d7e0(void* ship) = 0;
+    virtual float* call_00414260(const float* vector, float* out, float scale) = 0;
+    virtual const float* call_00427eb0(void* ship) = 0;
+    virtual void call_006ac370(void* pad, const float* position) = 0;
+    virtual void* call_00476b90(void* ship) = 0;
+    virtual void* call_0071ad50(void* model, const char* note) = 0;
+    virtual void call_00b6da70(void* node, float value, std::uint8_t recurse) = 0;
+    virtual void* call_004c1570() = 0;
+    virtual void call_00411eb0(void* guard, void* critical_section) = 0;
+    virtual void call_0041e870(void* string8, const char* text) = 0;
+    virtual void* call_00927b40(void* ship, void* lua_object20) = 0;
+    virtual void call_00b673a0(void* lua_object20, const void* string8, bool value) = 0;
+    virtual void call_00b67700(void* lua_object20) = 0;
+    virtual void call_0041dd20(void* string8) = 0;
+    virtual void call_0074ad90(void* ship) = 0;
+    virtual void call_00411ee0(void* guard) = 0;
+    virtual float* call_00b64640(float* out16, const float* angle) = 0;
+    virtual void call_004134f0(float* out16, const float* source16) = 0;
+    virtual float* call_00413920(const float* left16, float* out16,
+                               const float* right16) = 0;
+    virtual void vcall_38(void* node, const float* matrix16) = 0;
+    virtual void call_0051f460() = 0;
+    [[noreturn]] virtual void invalid_iterator_00bf6713() = 0;
+};
+
+void landing_ship_update_0074af50(std::uint8_t* ship, float dt,
+                                const LandingShipUpdateGlobals& globals,
+                                LandingShipUpdateHost& host);
+
 }  // namespace bsp
