@@ -113,6 +113,13 @@ constexpr bool kLuaObjectFieldSettersCc13Bound = false;
 // existing 0..5 gate (game_hosts_units.cpp:20406, older than this switch) keeps 1.
 constexpr bool kShipyardLaunchSkillCc13Bound = false;
 
+// Packet cc13-D3: SpawnNew 00949750 has no argument type test. A non-table argument
+// goes to 00B67800 (lua_gettable 00A67C20), which raises for nil, number or boolean
+// and reads nil fields from a string. OFF keeps the host's refusal (counted in
+// spawn_new_rejected). Live: MissionLuaNative SpawnNew 0094C480 ->
+// GameMissionLuaHost::run_spawn_new_00949750.
+constexpr bool kSpawnNewNonTableArgumentCc13Bound = false;
+
 // Packet cc13-atktgt: UnitGetAttackTarget 008A6DE0's arm by director kind. The
 // image asks director->vtable[48h](2) (008A6F0D). A squadron's director is the
 // block 00D0BD98 that 007F5009 stores at +348h, whose +48h is 0084D8F0, true only
@@ -3802,7 +3809,17 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
     // The Lua-visible argument is one table; anything else is the arm that
     // reads twelve absent fields and queues a record nothing can satisfy, so it
     // is refused here rather than queued forever.
-    if (argument_count < 1 || ::lua_type(state, 1) != LUA_TTABLE) {
+    // kSpawnNewNonTableArgumentCc13Bound (cc13-D3, OFF): the image does not test the
+    // type. Its field reads are 00B67800 BSP_LuaObject_GetByName, whose lua_gettable
+    // (00A67C20) raises "attempt to index a <type> value" for a nil, number or boolean
+    // argument and reads nil fields through the string metatable for a string, which
+    // then queues the absent-field record. ON drops the refusal so the host's own
+    // lua_getfield reads do the same; OFF keeps the refusal.
+    if (argument_count < 1 && !kSpawnNewNonTableArgumentCc13Bound) {
+        ++summary_.spawn_new_rejected;
+        return 0;
+    }
+    if (::lua_type(state, 1) != LUA_TTABLE && !kSpawnNewNonTableArgumentCc13Bound) {
         ++summary_.spawn_new_rejected;
         return 0;
     }

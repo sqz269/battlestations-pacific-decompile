@@ -1196,6 +1196,10 @@ void session_browser_build_rows_005789c0(const SessionBrowserState& filters, Ses
     }
     // 00578E83..00578ECB: std::sort (introsort 00574A50, insertion 005738C0, threshold 32) with
     // the key functor; ties keep no particular order, so std::sort stands in for it.
+// Documented deviation (cc13-D3): 00574A50 / 005738C0 are the VC8 std::sort
+// instantiation (library code, bound not built: library_instantiation_out_of_scope);
+// the toolchain's std::sort may order equal-key rows differently. Only the display
+// order of sessions with equal sort keys can differ.
     const auto key = static_cast<SessionSortKey>(screen.sort_key_2b0);
     std::sort(screen.records_2a0.begin(), screen.records_2a0.end(),
         [key](const SessionJoinRecord& a, const SessionJoinRecord& b) { return session_record_less_0056a870(key, a, b); });
@@ -2284,6 +2288,11 @@ void tactical_library_carousel_step_00516010(TacticalLibraryCarouselState& scree
 void tactical_library_apply_nose_art_005161c0(std::uint32_t selector_index, TacticalLibraryNoseArtHost& host) {
     if (selector_index >= host.nose_art_count_448()) {                   // 005161C7..005161F4
         host.invalid_parameter_00bf6713();
+        // Not a deviation (cc13-D3): the listing falls through after the call, but
+        // 00BF6713 -> 00BF66EF _invalid_parameter never returns in this image. Its
+        // handler [0109DD64] has one writer, 00BF65B1 from __init_pointers (00BFBE10),
+        // which stores the encoded null (00C04FD5), so 00BF66EF decodes 0 and takes
+        // __invoke_watson. The fall-through code is unreachable.
         return;
     }
     const std::uint32_t value = host.nose_art_value_48(selector_index);

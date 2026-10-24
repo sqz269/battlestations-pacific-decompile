@@ -6237,6 +6237,9 @@ struct GameUnitsHost::Impl {
         // (007BC7BA-007BC7D4: ordnance 33h, then 007BC7CD COMISS 0,[desc+E0h] /
         // 007BC7D4 JAE 007BC86C) SKIPS the gate and returns 1 when +E0h <= 0; a
         // NaN +E0h falls through to the gate. It does not apply to a bomb.
+        // Documented deviation (cc13-D3): the rocket arm is not modelled; it is
+        // unreachable here, because the bomb test above (ordnance_has_general_bomb_2ah,
+        // whose exclusion list holds 33h) already refuses such a plane (cc13-tier2).
         if (pitch > -0.87266463f) {
             float limit = 1.3962635f - std::fabs(pitch);
             if (limit < 0.0f) limit = 0.0f;
@@ -42608,6 +42611,13 @@ void GameUnitsHost::store_unit_moveto_point(std::size_t index,
     impl_->slots[index]->moveto_point[2] = world[2];
 }
 
+// Documented deviation (cc13-D3): 007C9540 -> 004134F0 copies the whole 4x4 to +74h
+// and +674h (translation included), clears +C8h / +10Ch, invalidates the child chain
+// (0042ED50) and re-syncs (plane+310h) vtable[0Ch]. This takes the three rotation
+// rows and republishes the pose (the +310h re-sync folded in). The dropped
+// translation is unobservable: every caller passes the unit's own position (the
+// squadron arm loads each member's +FCh..+104h at 008A0D9B..008A0DB7; the
+// single-entity caller sets m[12..14] to the position).
 bool GameUnitsHost::set_unit_world_basis_007c9540(std::size_t index, const float right[3],
     const float up[3], const float forward[3]) noexcept {
     if (index >= impl_->slots.size()) return false;

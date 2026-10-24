@@ -134,6 +134,11 @@ float torpedo_engagement_eta_009d3c93(const TorpedoApproachState& s,
 // steering delta in radians and why the 600.0 at 00D20198 is not a speed. The
 // name is kept because it is load bearing across three files; renaming it is a
 // follow-up. docs/TORPEDO_RUN_PROFILE.md has the producer.
+// Documented deviations (cc13-D3): the image has no speed == 0 guard (x87 division
+// by zero gives +inf, then the 600 arm); the selected release distance is nonzero
+// with the shipped tuning, so the guard never fires. The quotient is FSTP'd to a
+// float at 009D1542 in the image too; only the 600 arm returns the x87 value, whose
+// ops round to 24 bits on the main thread, against the double-then-float here.
 float torpedo_time_to_target_009d1500(const TorpedoApproachState& s) noexcept {
     const float speed = torpedo_commanded_speed_009d3c99(
         s.elapsed_134, s.speed_late_7c, s.speed_early_80);
@@ -151,6 +156,12 @@ float torpedo_time_to_target_009d1500(const TorpedoApproachState& s) noexcept {
     return t;
 }
 
+// Documented deviations (cc13-D3), shared by 009D1360 and 009D0160: the image has no
+// zero-divide guards (run == 0 gives an infinite quotient, dd == 0 a NaN); the guards
+// here never fire on reachable data: the run speed is 51.44 on every logged 009D1360
+// call (JM08, USN04, USN21), and the dd-divide arm needs dd > leg >= 0, so dd > 0.
+// The +98h store is the caller's (the result is returned), as is the unit's
+// fall-time / speed input (passed in instead of 007BCC80 / vslot +38h / 007BCFA0).
 TorpedoRunTimeResult torpedo_run_time_009d1360(const TorpedoApproachState& s,
                                                const TorpedoRunTimeInputs& in) noexcept {
     TorpedoRunTimeResult out;
@@ -222,6 +233,8 @@ float torpedo_reset_far_leg_009d0625(float near_7c, float far_80, float draw) no
     return static_cast<float>(static_cast<double>(far_80) - draw * gap);
 }
 
+// Documented deviations (cc13-D3): see 009D1360 above (the same unreachable run == 0
+// guard; dd > L >= 0 in the dd-divide arm); the +98h store is the caller's.
 float torpedo_reset_run_time_009d0160(const TorpedoApproachState& s, float fall_time,
                                       float run_speed) noexcept {
     const double speed = s.closing_speed_bias_70;
