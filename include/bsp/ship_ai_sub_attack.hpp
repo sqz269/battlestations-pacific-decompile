@@ -54,7 +54,8 @@ inline constexpr bool kSubAttackOwnHalfLengthBound = true;
 // round per op -- 009E9FB6 FMUL double 0.6 kept in ST0 for FCOMIP; 009EA061 /
 // 009EA141 / 009EA216 dx*dx + dz*dz; 009EA376 (range - 50.0) / water; 009EA53D
 // v.x*u.x + u.y*0.0 + v.z*u.z; 009EA6F8..009EA715 the band edge (C -/+ speed)
-// left in ST0 for FCOMIP. Every operand is a float or a float-valued double, so
+// left in ST0 for FCOMIP; and the live callee 009E4A60's d2 at
+// 009E4AC8..009E4ACE (ship_ai_sub_attack_range_009e4a60). Every operand is a float or a float-valued double, so
 // float(double op) is the 24-bit rounding of each op. False: the earlier host,
 // which evaluates each chain in double and rounds once (or not at all).
 // Packet cc13-pc24a.

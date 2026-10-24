@@ -68,7 +68,16 @@ float ship_ai_sub_attack_range_009e4a60(ShipAiSubAttackHost& host) {
     const std::array<float, 3> target = host.target_position();
     const float dx = f(static_cast<double>(target[0]) - self[0]);       // 009E4AAB
     const float dz = f(static_cast<double>(target[2]) - self[2]);       // 009E4ABC
-    const float d2 = f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    float d2 = 0.0f;
+    if constexpr (kShipAiFireStepPc24Cc13Bound) {
+        // 009E4AC8 FMUL ST0 / 009E4ACC FMULP ST2 / 009E4ACE FADDP, each at PC24.
+        d2 = f(static_cast<double>(f(static_cast<double>(dx) * dx))
+               + f(static_cast<double>(dz) * dz));
+    } else {
+        d2 = f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    }
+    // The half-length steps below are already per op: x * 0.5 is exact, so
+    // the double subtract rounded once to float is the 24-bit FSUBP result.
     float distance = 0.0f;                                              // 009E4AF7..4AFC
     if (static_cast<double>(d2) > kSubAttackRangeEpsilonSq) {
         distance = f(std::sqrt(static_cast<double>(d2)));               // 009E4AE4 CRT sqrt
