@@ -15,7 +15,8 @@ Approximations (say so when quoting numbers):
   identifier references, other than as its own definition. Behind-a-switch uses count as wired.
 - A recon record without an _xxxxxxxx-suffixed name gets its identifier from its source file (the name, a
   heading address comment, a snake-case form of a BSP_<Class>_<Method> ledger name), from the map, or from a
-  body suffixed with its address anywhere; rows' "ident_via" says which. Rows still without one (table-driven
+  body suffixed with its address anywhere, or a verified config/wire_identifiers*.json entry; rows'
+  "ident_via" says which. Rows still without one (table-driven
   shapes, bodies folded into another function, records whose source file no longer has the address) stay
   unknown_no_identifier.
 - Callers/callees come from the Ghidra call table plus rel32 CALL/JMP to exact function starts; functions whose
@@ -65,10 +66,17 @@ for a, name, seg, tag, ln, ev, thunk in db.execute('select address, name, segmen
         lib_named.add(a)
 starts = sorted(funcs)
 recon = {}
-for a, kind, name, src in db.execute('select address, kind, name, source from recon'):
-    if kind == 'function':
+excluded_recon = collections.Counter()
+out_of_scope = set()
+for a, kind, name, src, status in db.execute('select address, kind, name, source, status from recon'):
+    if status == 'library_instantiation_out_of_scope':
+        out_of_scope.add(a)
+    if kind == 'function' and pb.reconstruction_has_body(status):
         recon.setdefault(a, (name, src))
-game = {a: (not v[0].startswith(pb.FUNCLET)) and pb.is_game(a, v[2]) for a, v in funcs.items()}
+    elif kind == 'function':
+        excluded_recon[status] += 1
+game = {a: (not v[0].startswith(pb.FUNCLET + pb.LIBRARY_NAME_PREFIXES))
+           and pb.is_game(a, v[2]) and a not in out_of_scope for a, v in funcs.items()}
 
 seg_rows = db.execute('select id, start, keywords from segments').fetchall()
 seg_cat = {sid: pb.category_for(st, [k.strip() for k in (kw or '').split(',') if k.strip()][:8]) for sid, st, kw in seg_rows}
@@ -167,7 +175,9 @@ for a, (nm, src) in recon.items():  # identifiers named in source records that t
 # elsewhere could be any of them; uses are counted in code with comments stripped.
 KEYWORDS = {'if', 'for', 'while', 'switch', 'catch', 'return', 'sizeof', 'else', 'do', 'case', 'static_assert',
             'decltype', 'alignof', 'defined', 'noexcept', 'operator', 'throw', 'new', 'delete'}
-DEF_RE = re.compile(r'^[ \t]*(?:template\s*<[^>{;]*>\s*)?(?:[\w:<>,\*&~ \t]+?[ \t\*&])?((?:\w+::)*(~?\w+))[ \t]*'
+DEF_RE = re.compile(r'^[ \t]*(?:template\s*<[^>{;]*>\s*)?(?:__declspec\([^\n)]*\)\s*)?'
+                    r'(?:[\w:<>,\*&~ \t]+?[ \t\*&])?'
+                    r'((?:(?:\w+(?:<[^;{}\n]*>)?)::)*(~?\w+))[ \t]*'
                     r'\(([^;{}()]*(?:\([^;{}()]*\)[^;{}()]*)*)\)[ \t]*(?:const[ \t]*)?(?:noexcept[ \t]*)?'
                     r'(?:override[ \t]*)?(?:->[^{;]*)?\s*\{', re.M)
 ADDR_HEAD = re.compile(r'^\s*(?://+|/?\*+)\s*(?:Address:?\s*)?(?:0x)?([0-9A-Fa-f]{8})\b|Address:\s*(?:0x)?([0-9A-Fa-f]{8})\b')
@@ -268,6 +278,34 @@ for a, (nm, src) in recon.items():
     if hit:
         ident_by_addr[a].update(hit); ident_via[a] = via
         plain_idents.update(s for s in hit if not SUFFIX.search(s))
+# Explicit mappings carry reviewable address-to-body evidence without modifying busy source files.
+# A metadata row, prototype or table accessor is insufficient: each named implementation must have a body.
+ident_sources, explicit_mappings = {}, {}
+for path in sorted((ROOT / 'config').glob('wire_identifiers*.json')):
+    config = json.loads(path.read_text(encoding='utf-8'))
+    if config.get('schema_version') != 1:
+        raise ValueError(f'{path}: unsupported identifier mapping schema')
+    for record in config['identifiers']:
+        a = int(record['address'], 16)
+        if a in explicit_mappings:
+            raise ValueError(f'{path}: duplicate mapping for {a:08x}')
+        sp = ROOT / record['source']
+        names = record['identifiers']
+        if not names or not record.get('evidence'):
+            raise ValueError(f'{path}: mapping without body/evidence for {a:08x}')
+        known = {simple for simple, qualified in defs_in.get(sp, ())}
+        if not set(names) <= known:
+            raise ValueError(f'{path}: missing C++ body for {a:08x}: {set(names) - known}')
+        if any(SUFFIX.search(s) and int(SUFFIX.search(s).group(1), 16) != a for s in names):
+            raise ValueError(f'{path}: another address suffix for {a:08x}')
+        explicit_mappings[a] = record
+        if a not in recon or ident_by_addr.get(a):
+            continue
+        ident_by_addr[a].update(names)
+        ident_via[a] = 'explicit_map'
+        ident_sources[a] = record['source']
+        plain_idents.update(s for s in names if not SUFFIX.search(s))
+
 DECL_RE = lambda s: re.compile(r'^[ \t]*(?!return\b|else\b|case\b)[\w:<>,\*& \t]*[\w>\*&][ \t]+[\*&]?' + re.escape(s) +
                                r'[ \t]*\([^;{]*\)[ \t]*(?:const[ \t]*)?(?:noexcept[ \t]*)?;', re.M)
 own_uses = {}  # (file, plain ident) -> code mentions that are neither its body nor a prototype
@@ -387,11 +425,14 @@ for a, (name, seg, tag) in funcs.items():
                state=state, callers=len(cr), wired_callers=len(wired_callers), callees=len(gc),
                missing_callees=[f'{c:08x}' for c in missing][:12], library_bound_callees=[f'{c:08x}' for c in bound][:12],
                address_taken=taken, host_has_own=host_own(a))
+    if a in ident_sources:
+        row['implementation_source'] = ident_sources[a]
+        row['identifier_evidence'] = explicit_mappings[a]['evidence']
     if a in ident_via:
         row['ident'], row['ident_via'] = sorted(ident_by_addr[a]), ident_via[a]
     if state == 'ready':
         ident = sorted(ident_by_addr[a])[0] if a in ident_via else row['name'].split('::')[-1]
-        row['abi'], params = abi_class(a, ident, row['source'])
+        row['abi'], params = abi_class(a, ident, ident_sources.get(a, row['source']))
         row['params'] = (params or '')[:120].replace('\n', ' ')
         row['stand_in_hosts'] = sorted(n for n, t in host_text.items() if row['address'] in t)
         abi_counts[row['abi']] += 1
@@ -402,7 +443,8 @@ for r in rows:
     by_cat[r['category']][r['state']] += 1
 out = ROOT / 'local/output/wire_readiness.json'
 out.parent.mkdir(parents=True, exist_ok=True)
-json.dump(dict(summary=dict(counts), ready_abi=dict(abi_counts), by_category={k: dict(v) for k, v in by_cat.items()},
+json.dump(dict(summary=dict(counts), excluded_recon=dict(excluded_recon),
+               ready_abi=dict(abi_counts), by_category={k: dict(v) for k, v in by_cat.items()},
                edges=dict(ghidra=ghidra_edges, rel32_added=scan_edges, address_taken_funcs=len(address_taken)),
                reachable_files=len(reach), roots=len(roots), rows=sorted(rows, key=lambda r: (r['state'], r['category'], r['address']))),
           open(out, 'w'), indent=1)
