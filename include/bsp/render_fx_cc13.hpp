@@ -222,14 +222,13 @@ void tree_destruct(TreeHeader& tree, const TreeEraseRangeFn& erase_range);
 enum class Shape : std::uint8_t {
     kClearViaResize, kDestroyViaResize, kClearCountDown, kDestroyCountDown,
     kReallocateExact, kGrow, kReserveAtLeast, kPushBackGrow, kPushBackViaReserve,
-    kReserveMinOne, kResize, kAt, kAtGrowing, kEnd, kConstructEmpty, kConstructEmptyPair,
+    kReserveMinOne, kResize, kAt, kAtGrowing, kEnd, kConstructEmpty,
     kPopBackDestroy, kFreeData, kFreeDataAndClear, kRemoveAtSwapLast,
     kInlinePush, kInlineEnd, kInlineAt, kCapacityRule,
     kSlabPop, kSlabPush, kSlabHasNoFree, kSlabAllFree, kSlabStamp,
     kRefAssign, kRefRelease, kRefFieldAssign, kRefFieldCopy, kComAssign, kComRelease,
     kComRefCount, kOwnedDelete, kPooledStringRelease, kTreeInitEmpty, kTreeDestruct,
-    kGetDword, kGetByte, kGetFloat, kSetDword, kRecordAt, kLockedGetDword, kLockedGetByte,
-    kNoOp, kReturnZero, kReturnConstant, kForward, kPointerDelete,
+    kGetFloat, kPointerDelete,
 };
 struct RoutineRow {
     std::uint32_t address;
@@ -274,9 +273,8 @@ void d3d9_surface_set_sample_count_00b3ce20(std::uint8_t* self, std::uint32_t va
 std::uint8_t shader_reflection_owner_byte74_00b3ff70(const std::uint8_t* self);
 std::uint8_t material_effect_byte13c_00b400b0(const std::uint8_t* self);
 
-// __thiscall(ECX self), RET. The lock object is the pointer at +48h (dwords) or +4Ch
-// (bytes): a Win32 CRITICAL_SECTION with a depth dword at +18h. EnterCriticalSection, depth
-// +1, read the field, reload the lock pointer, depth -1, LeaveCriticalSection.
+// __thiscall(ECX self), RET. Lock pointer at +48h (dwords) or +4Ch (bytes); listing order
+// in each body below.
 std::uint32_t locked_object_field40_00b5df90(const std::uint8_t* self);
 std::uint32_t locked_object_field3c_00b5dfc0(const std::uint8_t* self);
 std::uint8_t locked_object_byte44_00b5dff0(const std::uint8_t* self);

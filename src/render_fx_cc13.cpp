@@ -321,14 +321,9 @@ void tree_destruct(TreeHeader& tree, const TreeEraseRangeFn& erase_range) {
 //   arrays: element stride (informational for the count-down and resize-only shapes);
 //     kClearCountDown extra = array offset in the owner (00B29230: renderer +1CF4h);
 //     kPushBackViaReserve / kCapacityRule extra = CapacityRule; kResize extra = ResizeFill;
-//     kInlinePush / kInlineEnd extra = count offset; kRecordAt = base + i*stride + extra
-//     (00B47C80 reads the base pointer at +0Ch first).
-//   slabs: slot size.  refs: field offset.  locked getters: field offset, extra = the
-//     owner offset of the CRITICAL_SECTION pointer (entered, depth word at cs+18h
-//     incremented and decremented around the read).
-//   kForward: a single call to the routine named in the note with the same arguments.
-//   The kGetDword/kGetByte/kSetDword/kRecordAt/kConstructEmptyPair/kLockedGet*/kNoOp/
-//   kReturnZero/kReturnConstant/kForward rows are now functions (after routine_row_count).
+//     kInlinePush / kInlineEnd extra = count offset.
+//   slabs: slot size.  refs: field offset.
+//   The former accessor rows are functions after routine_row_count (cc13-rendershapes).
 namespace {
 constexpr RoutineRow kRows[] = {
 // BEGIN ROWS
@@ -622,9 +617,9 @@ const RoutineRow* find_routine_row(std::uint32_t address) noexcept {
 std::size_t routine_row_count() noexcept { return sizeof(kRows) / sizeof(kRows[0]); }
 
 // ===========================================================================
-// Packet cc13-rendershapes: the former kGetDword, kGetByte, kSetDword, kRecordAt,
-// kConstructEmptyPair, kLockedGet*, kNoOp, kReturnZero, kReturnConstant and kForward rows,
-// one function per address. Each body was re-read from the disk bytes (Capstone).
+// Packet cc13-rendershapes: the former accessor rows of kRows (getters, setter, record
+// addressing, pair construction, locked getters, no-ops, constants and forwards), one
+// function per address. Each body was re-read from the disk bytes (Capstone).
 
 namespace {
 std::uint32_t dword_at(const std::uint8_t* self, std::uint32_t offset) {
