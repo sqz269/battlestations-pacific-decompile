@@ -2782,6 +2782,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
                 const auto* mission = menu_ ? menu_->mission() : nullptr;
                 return mission ? mission->native_render_unit_source() : GameNativeMissionUnitSource{};
             });
+        native_renderer_->bind_mission_startup_random(*random_threads_);
     }
     summary_.fonts_loaded = fonts_->registry().fonts().size();
     summary_.font_resource_opens = fonts_->resource_opens();
