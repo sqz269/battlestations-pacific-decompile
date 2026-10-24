@@ -201,16 +201,22 @@ void dummy_target_bullet_class_read_lua_fields_00701060(Pool09Host& host, void* 
     assign_native_string(host, add(cls, 0xA0), add(ptr(cls, 0xE0), 0x38));
 }
 
-// 00700E40: a vehicle class descriptor's Lua reader, slot +8h of the table at
-// 00D1AA58 (no class name string follows it). The ledger called it
-// BSP_DoorClass_ReadLuaFields; the gpr34 packet (include/bsp/
-// gameplay_seg34_cc13.hpp) found OpenTime / SlowingFactor only in the
-// "Parachute target - tutorial" row, and 00700660 reads them from the dummy
-// target vehicle's descriptor, so the name here follows that reading.
-// Evidence: listing 00700E40..00700F65.
+// 00700E40 BSP_DummyTargetVehicleClass_ReadLuaFields (formerly
+// BSP_DoorClass_ReadLuaFields): the dummy target vehicle class descriptor's
+// Lua reader, slot +8h of vtable 00D1AA58 ([00D1AA60] = 00700E40).
+// Evidence: listing 00700E40..00700F65. The only code store of 00D1AA58 is
+// MOV [ESI],00D1AA58 at 00960058 (the dword at 0096005A, found by byte scan)
+// in 00960050 BSP_VehicleClass_ConstructDummyTarget. That constructor also
+// stores 00D1AA54 at +6Ch (0096005E) and clears +140h, the handle this reader
+// fills. The keys agree: OpenTime / SlowingFactor appear only in the
+// "Parachute target - tutorial" row (include/bsp/gameplay_seg34_cc13.hpp),
+// and 00700660 reads them from the dummy target vehicle's descriptor.
 // Original ABI: __thiscall(ECX = descriptor, const LuaObject* row), RET 4, SEH
 // frame (handler 00C83D50). The incoming row argument's stack slot is reused
 // as the acquired handle's out slot after the row pointer is held in EDI.
+// The image passes that slot to 00870CD0 still holding the row pointer; the
+// C++ passes a zeroed local instead. This assumes 00870CD0 stores its out slot
+// without reading the old value.
 // EH states: 0 while the ExplosionEfx temporary lives (00700E7F), 1 while the
 // acquired handle also lives (00700E9D), back to 0 once the handle is
 // released (00700ED9), -1 before the temporary is destroyed (00700F00).
@@ -222,8 +228,7 @@ void dummy_target_bullet_class_read_lua_fields_00701060(Pool09Host& host, void* 
 // way; the temporary is destroyed. "OpenTime" (00CFD1D0) into +138h through
 // 00700330 and "SlowingFactor" (00CFD1C0) into +13Ch through 007003B0, each
 // with a copy of row and no default.
-// Uncertainty: what 00870CD0's third argument (1) selects; that 00D1AA58 is
-// the dummy target vehicle class's table is an inference from the keys.
+// Uncertainty: what 00870CD0's third argument (1) selects.
 void dummy_target_vehicle_class_read_lua_fields_00700e40(Pool09Host& host, void* descriptor, const void* row) {
     host.vehicle_class_read_lua_fields_00960230(descriptor, row);
     LuaObjectStorage temp{};
