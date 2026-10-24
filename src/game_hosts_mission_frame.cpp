@@ -3704,6 +3704,21 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                         } else {
                             host.record("SceneLoad::recon_rebuild_local_slot", 0x004e059bu);
                         }
+                        // Packet cc13-reconload: 004E0546 00807A50's publication of
+                        // the three slots this pass rebuilt (kReconLoadForceRefreshCc13Bound;
+                        // OFF, a dry run counts what it would publish).
+                        {
+                            GameMissionLuaHost::ReconPublishCounts rc;
+                            if constexpr (kReconLoadForceRefreshCc13Bound) {
+                                rc = host.lua.publish_recon_slot_tables_00806b10(true);
+                            } else {
+                                rc = host.lua.publish_recon_slot_tables_00806b10(false);
+                            }
+                            host.log.notef("recon load refresh scene_load_004e0546: bound=%d "
+                                "slots=%d published=%d entries=%zu (00807A50)",
+                                kReconLoadForceRefreshCc13Bound ? 1 : 0, rc.slots,
+                                rc.published, rc.entries);
+                        }
                         host.world_host->build_local_player_unit_lists_004c3cb0();
                         host.done("SceneLoad::unit_lists_004c3cb0", 0x004e05a9u);
                     }
