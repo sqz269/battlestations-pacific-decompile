@@ -93,3 +93,18 @@ The all-model/frame steps are recorded below as they complete. Build/static and
 this bounded runtime evidence do not establish Original ABI, lost-device recovery,
 or retail-render parity. The original exact `error.dds` shutdown-residue exception
 remains unchanged.
+
+### D1 integration refresh
+
+Before publication, `origin/main` was merged and the complete Win32 build/tests
+passed again (`local/render_D/d1_integrated_build.log`). A second clean control
+was built in the isolated `oct24-renderD-reference` tree at
+`3822df776d1ec5b675226d9a023b687f2fd4b9c0`, with a clean source status and both
+existing tests passing. Its frozen `local/render_D/origin_current.exe` SHA-256
+is `27d1df49772ba965709424aed39ae903d49b1f28d960d3ec9793f4c6e418f65f`.
+The integrated D1 executable `local/render_D/d1_integrated.exe` SHA-256 is
+`cce62e2bc675366837e75ec51718628ac97794954a99f7ad60c06f4db4a48ec8`.
+`origin_current_usn04.log` against `d1_integrated_off_usn04.log` produces
+`d1_integrated_off_pair.json`: **exit 0**, again all 21 unit rows, 706 summaries
+and 1392 native rows/statuses/counts identical. These are separate from the
+earlier pinned ON proof above.
