@@ -96,6 +96,26 @@ CODE = {
     0xc34cf0: 0x272,  # expand node 3x4 matrices to 4x4 (register ABI)
     0xc37f60: 0xcd,   # body add force at point
     0xc43ea0: 0x15c,  # interpolate body transform
+    # cc13-fixture5: game-logic float leaves (00438B10, a callee of 009B94E0, is above).
+    0xbd4bf0: 0x131,  # matrix4x4 equals
+    0x9fa510: 0x106,  # world edge overrun
+    0x6fbce0: 0x106,  # elevator platform start travel
+    0x78faf0: 0xdf,   # movie camera approach offset
+    0x78fcf0: 0x76,   # movie camera ease in-out quad
+    0x80e000: 0xed,   # unit AI order slot step
+    0x4f3030: 0x59,   # segment lerp
+    0x4439b0: 0x79,   # time of day hours
+    0x6e2490: 0x4e,   # projectile shot speed
+    0x681f40: 0x7a,   # game near world edge
+    0x59c9b0: 0x7a,   # world point beyond map margin
+    0x4f40c0: 0x68,   # is left turn
+    0x4f2fd0: 0x57,   # circle contains point
+    0x9b94e0: 0xa4,   # split-S roll step (calls 00438B10)
+    0x9b9680: 0xb7,   # maneuver roll completed
+    0x786030: 0xea,   # average peer quality
+    0x815440: 0xd1,   # build unit order record
+    0x7b9620: 0x98,   # plane altitude sink predicate
+    0x727c30: 0xf9,   # index of readiest barrel
     # cc13-fixture8: small main-thread float leaves.
     0x809de0: 0x23, 0x7b5390: 0x6d, 0x791640: 0x71, 0x59ab10: 0xad, 0x790460: 0x61, 0x414130: 0x25,
     0x9c6220: 0x47, 0x88a0c0: 0x6d, 0x98a710: 0x3f, 0x638b20: 0x31, 0x42c450: 0x62, 0x7b5be0: 0x3a,
@@ -113,6 +133,26 @@ CODE = {
     0xb65710: 0x1c1,  # plane set classify AABB
     0xb999f0: 0x14a,  # plane / segment intersection
     0x42c090: 0x114,  # random wander evaluate
+    # cc13-fixture7 (Dyn supports/transforms and main-thread helpers).
+    0xc48080: 0x72,   # sphere support (float)
+    0xc38970: 0x46,   # sphere support (double)
+    0xc377f0: 0x68,   # ccw 2D
+    0xc33650: 0x6c,   # transform 3x4 to 4x4
+    0xc336c0: 0x4d,   # transform from 4x4
+    0xc37f10: 0x25,   # body inertia
+    0x709b60: 0x43,   # vec3 add scaled
+    0x6e0540: 0x47,   # vec3 add scaled (copy)
+    0x59c920: 0x5b,   # world bounds center
+    0x4b4850: 0x5b,   # map box center
+    0x4193e0: 0x55,   # vector3 length squared
+    0x427e30: 0x21,   # vector3 length squared
+    0x4191d0: 0x3a,   # vector2 length squared
+    0xbee140: 0x2f,   # scale vector4
+    0x4e5d20: 0x29,   # rgba scale
+    0xab6bd0: 0x58,   # text height
+    0x7b8140: 0xa3,   # float window set sample and sum
+    0x7ba450: 0x49,   # max3
+    0xab0fe0: 0x51,   # gui colour equal
 }
 # Tail-jump targets replaced by MOV EAX,ECX; RET, so a fixture reads the ECX a thunk passes on.
 TAIL_STUBS = (0x6833f0, 0x4f71d0)
@@ -131,11 +171,19 @@ DATA = {
     0xd61cc0: 0x48,                # vertex element type sizes (18 dwords)
     # cc13-fixture3 constants: the double -1.0 at 00D7A250 and the double 1e-7 at 00D7A298.
     0xd7a250: 8, 0xd7a298: 8,
+    # cc13-fixture5 constants (00D7A264 lies inside the 00D7A260 range above;
+    # 00D045F0 is in the fixture8 block).
+    0xce65d0: 8, 0xd7a358: 8, 0xce3938: 8, 0xce3d68: 8, 0xce3d70: 8,
+    0xce4798: 8, 0xce4790: 8, 0xcf48a0: 8, 0xd03dd0: 8, 0xd20330: 8, 0xd7a258: 8,
+    0xce3d40: 8, 0xce3dc0: 8,
+    0xd7a238: 4, 0xce3800: 4, 0xce3804: 4, 0xce4788: 4, 0xce398c: 4, 0xce3958: 4,
+    0xce7d7c: 4, 0xce38b8: 4, 0xce3854: 4,
     # cc13-fixture8: constants read by the routines above.
     0xd045f0: 8, 0xce3850: 4, 0xce3ae8: 4, 0xce3d78: 8, 0xd7a210: 8, 0xcf9058: 8,
     0xce7630: 8, 0xce38c8: 4, 0xce3d08: 4, 0xd7a278: 8,
     # cc13-fixture4 constants.
     0xd7a244: 4, 0xd7a248: 4, 0xd638e4: 4,  # and 00D7A210, listed by fixture8
+    0xcef1b8: 8,                   # cc13-fixture7: the double 720.0 (00AB6BD0 divisor)
 }
 SQRT = 0xbf7030
 SQRT_STUB = bytes([0xd9, 0xfa, 0xc3])
