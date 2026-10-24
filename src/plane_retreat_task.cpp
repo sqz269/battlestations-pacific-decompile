@@ -6,6 +6,8 @@
 
 #include <cmath>
 
+#include "bsp/dive_bomb_task.hpp"   // the per-op float 00419010 (kRetreatX87FaithfulCc13Bound)
+
 namespace bsp {
 namespace {
 
@@ -31,14 +33,22 @@ float reciprocal_length_00419260(float x, float z) noexcept {
 
 // 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x): the lerp, then the
 // result clamped to [min(y0, y1), max(y0, y1)]; y0 when x0 == x1.
+// At PC24 (00419033-0041905F) the two FSUBs, the FDIVP, the FSUBP, the FMULP and
+// the FADD each round to float. kRetreatX87FaithfulCc13Bound takes the per-op
+// float form (dive_bomb_interpolate_clamped_00419010, same clamp). OFF is the
+// double chain with one rounding, as before.
 float interpolate_clamped_00419010(float x0, float y0, float x1, float y1, float x) noexcept {
-    if (x1 == x0) return y0;
-    const float v = to_float(((static_cast<double>(x) - x0) / (static_cast<double>(x1) - x0)) *
-                             (static_cast<double>(y1) - y0) + y0);
-    const float hi = (y1 < y0) ? y0 : y1;
-    const float lo = (y0 < y1) ? y0 : y1;
-    if (v < lo) return lo;
-    return (v <= hi) ? v : hi;
+    if constexpr (kRetreatX87FaithfulCc13Bound) {
+        return dive_bomb_interpolate_clamped_00419010(x0, y0, x1, y1, x);
+    } else {
+        if (x1 == x0) return y0;
+        const float v = to_float(((static_cast<double>(x) - x0) / (static_cast<double>(x1) - x0)) *
+                                 (static_cast<double>(y1) - y0) + y0);
+        const float hi = (y1 < y0) ? y0 : y1;
+        const float lo = (y0 < y1) ? y0 : y1;
+        if (v < lo) return lo;
+        return (v <= hi) ? v : hi;
+    }
 }
 
 // pi/2 - atan2(z, x) as a float, plus 2 pi when negative (009C979C-009C97B8,
@@ -283,8 +293,19 @@ RetreatMoveToSteer retreat_moveto_steer_009c9310(const RetreatMoveToInputs& in) 
     // 009C9672-009C96E8: the planar distance to the target.
     const float dx = to_float(static_cast<double>(in.target_x) - in.x);
     const float dz = to_float(static_cast<double>(in.target_z) - in.z);
-    const double sq = static_cast<double>(dx) * dx + static_cast<double>(dz) * dz;
-    out.distance = sq <= kRetreatTinySquare ? 0.0f : to_float(std::sqrt(sq));
+    // 009C96AD-009C96BD: dx*dx, dz*dz and their sum (FADDP) with no store between,
+    // so at PC24 (kRetreatX87FaithfulCc13Bound) each rounds to float; the stored
+    // float sum is what FCOMI tests against 1e-10 [00CE3820] at 009C96CB.
+    if constexpr (kRetreatX87FaithfulCc13Bound) {
+        const float xx = dx * dx;
+        const float zz = dz * dz;
+        const float sq = zz + xx;
+        out.distance = !(static_cast<double>(sq) > kRetreatTinySquare) ? 0.0f
+                                                                        : std::sqrt(sq);
+    } else {
+        const double sq = static_cast<double>(dx) * dx + static_cast<double>(dz) * dz;
+        out.distance = sq <= kRetreatTinySquare ? 0.0f : to_float(std::sqrt(sq));
+    }
     out.timer_runs = in.turn_circle_radius > out.distance;   // 009C96FB
     // 009C9716-009C978B.
     const float r = reciprocal_length_00419260(dx, dz);
