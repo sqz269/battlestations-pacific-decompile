@@ -985,5 +985,29 @@
     "x87": "SkyBox00BBFCFB DC C9 ST1,ST0 verified by x87_dc_form_scan.py and live bytes; group ratio FMUL qword verified in listing",
     "build": "Delegated to primary integrated MSVC Win32 build; no worker build claimed",
     "tests": "No new tests or native probes; no game run or host wiring"
+  },
+  "integrator_validation": {
+    "command": "./scripts/build.ps1",
+    "source_checked_commit": "90cec9c85b6e4f52cd851b49cf5f8a273d818e85",
+    "build_log": "local/build-poolB-final.log",
+    "msvc": "Win32 Release",
+    "build_passed": true,
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "game_runs": 0,
+    "host_wiring": false,
+    "binary_abi_validated": false,
+    "scope": "Ordinary source paths; native EH/FH3 and game equivalence remain unvalidated."
+  },
+  "integrator_independent_review": {
+    "addresses": [
+      "00a2f6f0",
+      "00b6a390",
+      "00bbf8a0"
+    ],
+    "result": "No concrete material ordinary-path findings against the saved native listing.",
+    "scope": "AI debug numeric formatting; Lua branch widths and ordering; SkyBox x87 and callback ordering."
   }
 }

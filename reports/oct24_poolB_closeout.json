@@ -1,0 +1,1828 @@
+{
+  "lane": "oct24-poolB",
+  "scope": "Every initially unleased pool row in segments >=40, excluding segment67.",
+  "baseline": {
+    "rows": 106,
+    "pool_remaining": 256,
+    "origin_main": "40c2b0092"
+  },
+  "final_board_snapshot": {
+    "head": "90cec9c85",
+    "generated": "2026-10-24 15:33 UTC"
+  },
+  "result": {
+    "rows": 106,
+    "new_bodies_build_tested": 96,
+    "existing_bodies_verified_or_rebound": 9,
+    "classified": 1,
+    "left_open": 0,
+    "lane_remaining_before": 106,
+    "lane_remaining_after": 0,
+    "pool_remaining_after": 6
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "source_checked_commit": "90cec9c85b6e4f52cd851b49cf5f8a273d818e85",
+    "build_log": "local/build-poolB-final.log",
+    "msvc": "Win32 Release",
+    "existing_tests": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "tests_passed": 2,
+    "report_call_checks": "All six lane evidence reports pass tools/verify_report_calls.py.",
+    "report_call_rows_checked": 468,
+    "report_call_rows_failed": 0,
+    "game_runs": 0,
+    "host_wiring": false,
+    "limitations": "Ordinary source bodies over explicit native call boundaries; some existing value-model storage. Native SEH/FH3, binary ABI and game equivalence are unvalidated."
+  },
+  "publication_tips": [
+    "79e1c177a",
+    "52c37cc79",
+    "90cec9c85"
+  ],
+  "source_commits_on_main": [
+    {
+      "commit": "6fe0906ac17ff672055f99a76451a0d536203387",
+      "subject": "Reconstruct eight poolB lifecycle and property rows"
+    },
+    {
+      "commit": "b002a3d8664c7710236069971cc975cf20388cb5",
+      "subject": "Reconstruct eight poolB unit, registry and Lua bodies"
+    },
+    {
+      "commit": "23467f406ec5f395e619919332f349f5ff670f19",
+      "subject": "Reconstruct structure and wreckable class field readers"
+    },
+    {
+      "commit": "bb89b6ade37d8970b54d4b928dac7311cb911eb9",
+      "subject": "Reconstruct native plane descriptor and unit constructors"
+    },
+    {
+      "commit": "727a9ea4a4e0f3324adeb41fda0c67ba1affb9fd",
+      "subject": "Reconstruct remaining plane and support descriptor leaves"
+    },
+    {
+      "commit": "67a47ccd6777976863a5cb3641470ba33f96c493",
+      "subject": "Reconstruct ship and land descriptor constructor leaves"
+    },
+    {
+      "commit": "f5b2b3d69e70a7e0a1b6e721591f07694ee2c3ff",
+      "subject": "Reconstruct vehicle base lifetimes and traffic record creation"
+    },
+    {
+      "commit": "1fe4cf27d30dd825053f5756a75aaea4c233c532",
+      "subject": "Reconstruct subscription lifecycle bodies for four event types"
+    },
+    {
+      "commit": "329ee8e54cf5d68690ec8e7baa9c637bb2aa7138",
+      "subject": "Reconstruct remaining subscription and sensor lifetime bodies"
+    },
+    {
+      "commit": "567e2350c6989dd09bd3aa0309255731aaecc3d0",
+      "subject": "Reconstruct raw recon-slot lifetime and category publication"
+    },
+    {
+      "commit": "fdab8b2b53e06f97dc5136bdc516882682e2d268",
+      "subject": "Reconstruct owner lifecycle normal schedules and MotherShip detach"
+    },
+    {
+      "commit": "95e316c82df5861021eab8460ee2b13e3507b7d3",
+      "subject": "Reconstruct AI command type and PC storage native leaves"
+    },
+    {
+      "commit": "20a776237d0c5ec508b865b445f417bf5f4cf501",
+      "subject": "Reconstruct AI debug parsers and GUI/network constructors"
+    },
+    {
+      "commit": "e075ac0d0fe8bde4ccd46373aa3cb0fe7771f3ed",
+      "subject": "Reconstruct AI group debug value and host-effect bodies"
+    },
+    {
+      "commit": "c1c57729d8085182d5349d1a1e5dca1cfdb7b27d",
+      "subject": "Reconstruct complete landing ship ordinary update body"
+    },
+    {
+      "commit": "3633c6ffc95f195af5554883de777f6461d9b28c",
+      "subject": "Reconstruct complete plane effects ordinary step"
+    },
+    {
+      "commit": "cea6add8f17dd05016e62c12c48faca6b9b118c8",
+      "subject": "Reconstruct fort scene and static body ordinary initialization"
+    },
+    {
+      "commit": "b053fe0cd26a0425b5b69979a23c6fb024c3b9f4",
+      "subject": "Preserve returning invalid parameter hooks in new land interfaces"
+    },
+    {
+      "commit": "90ca788334cdfd4dd7b1a51c4ade2b169451d7af",
+      "subject": "Reconstruct Lua source writer and SkyBox constructor"
+    },
+    {
+      "commit": "5fbb94f1965e841adbf79db6e5ee33b295de7de5",
+      "subject": "Reconstruct complete plane class model data ordinary binder"
+    },
+    {
+      "commit": "cfb028b0705a2d8aa8268f735f63dd259030b75c",
+      "subject": "Reconstruct complete squadron pass-C ordinary initializer"
+    }
+  ],
+  "left_open": [],
+  "routines": [
+    {
+      "address": "007482b0",
+      "segment": 41,
+      "baseline_name": "BSP_LandFort_InitSceneAndCreateStaticBody",
+      "result": "new_body_build_tested",
+      "ledger_name": "land_fort_init_scene_and_create_static_body_007482b0",
+      "ledger_status": "reconstructed_complete_ordinary_body_build_tested",
+      "source": "src/land_and_structures.cpp",
+      "cpp_symbols": [
+        "land_fort_init_scene_and_create_static_body_007482b0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_planes_max.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00749210",
+      "segment": 41,
+      "baseline_name": "BSP_StructureClass_ReadLuaFields",
+      "result": "new_body_build_tested",
+      "ledger_name": "read_structure_class_fields_00749210",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class_fields.cpp",
+      "cpp_symbols": [
+        "read_structure_class_fields_00749210"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0074a1f0",
+      "segment": 41,
+      "baseline_name": "BSP_LandingShip_Serialize",
+      "result": "new_body_build_tested",
+      "ledger_name": "landing_ship_serialize_0074a1f0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/cc13_seg41_land.cpp",
+      "cpp_symbols": [
+        "landing_ship_serialize_0074a1f0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0074af50",
+      "segment": 41,
+      "baseline_name": "BSP_LandingShip_Update",
+      "result": "new_body_build_tested",
+      "ledger_name": "landing_ship_update_0074af50",
+      "ledger_status": "reconstructed_complete_ordinary_body_build_tested",
+      "source": "src/building_pads.cpp",
+      "cpp_symbols": [
+        "landing_ship_update_0074af50"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_planes_max.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0074d4a0",
+      "segment": 41,
+      "baseline_name": "BSP_WreckableClass_ReadLuaFields",
+      "result": "new_body_build_tested",
+      "ledger_name": "read_wreckable_class_fields_0074d4a0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class_fields.cpp",
+      "cpp_symbols": [
+        "read_wreckable_class_fields_0074d4a0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00758fe0",
+      "segment": 42,
+      "baseline_name": "BSP_MotherShip_DetachFromWorldLists",
+      "result": "new_body_build_tested",
+      "ledger_name": "mothership_detach_from_world_lists_00758fe0",
+      "ledger_status": "reconstructed_normal_body_build_tested",
+      "source": "src/cc13_seg41_land.cpp",
+      "cpp_symbols": [
+        "mothership_detach_from_world_lists_00758fe0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_owner_max.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0077e380",
+      "segment": 43,
+      "baseline_name": "BSP_UnitOwnerEntity_Destruct",
+      "result": "new_body_build_tested",
+      "ledger_name": "destruct_native_unit_owner_entity_0077e380",
+      "ledger_status": "reconstructed_normal_body_build_tested",
+      "source": "src/native_unit_owner_entity.cpp",
+      "cpp_symbols": [
+        "destruct_native_unit_owner_entity_0077e380"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_owner_max.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0077eed0",
+      "segment": 43,
+      "baseline_name": "BSP_UnitOwnerEntity_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_native_unit_owner_entity_0077eed0",
+      "ledger_status": "reconstructed_normal_body_build_tested",
+      "source": "src/native_unit_owner_entity.cpp",
+      "cpp_symbols": [
+        "construct_native_unit_owner_entity_0077eed0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_owner_max.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "007b4030",
+      "segment": 47,
+      "baseline_name": "BSP_BotTask_DestructBase_007b4030",
+      "result": "existing_body_verified_or_rebound",
+      "ledger_name": "BSP_BotTask_DestructBase_007b4030",
+      "ledger_status": "reconstructed_build_tested",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "cpp_symbols": [
+        "bot_task_destruct_base_007b4030"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "007cfd00",
+      "segment": 47,
+      "baseline_name": "BSP_PlaneClass_IsKindOf",
+      "result": "new_body_build_tested",
+      "ledger_name": "plane_class_is_kind_of_007cfd00",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "include/bsp/local_player_unit_lists.hpp",
+      "cpp_symbols": [
+        "plane_class_is_kind_of_007cfd00"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "007d3e60",
+      "segment": 48,
+      "baseline_name": "BSP_PlaneClass_BindModelData_Provisional",
+      "result": "new_body_build_tested",
+      "ledger_name": "plane_class_bind_model_data_007d3e60",
+      "ledger_status": "reconstructed_complete_ordinary_body_build_tested",
+      "source": "src/plane_class_fields.cpp",
+      "cpp_symbols": [
+        "plane_class_bind_model_data_007d3e60"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_planes_max.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "007eb380",
+      "segment": 48,
+      "baseline_name": "BSP_PlaneFxComponent_Step",
+      "result": "new_body_build_tested",
+      "ledger_name": "plane_fx_component_step_007eb380",
+      "ledger_status": "reconstructed_complete_ordinary_body_build_tested",
+      "source": "src/cc13_seg48.cpp",
+      "cpp_symbols": [
+        "plane_fx_component_step_007eb380"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_planes_max.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "007f4ba0",
+      "segment": 48,
+      "baseline_name": "BSP_PlaneSquadron_SEntityInitSlotA4",
+      "result": "new_body_build_tested",
+      "ledger_name": "plane_squadron_sentity_init_007f4ba0",
+      "ledger_status": "reconstructed_complete_ordinary_body_build_tested",
+      "source": "src/plane_squadron_entity.cpp",
+      "cpp_symbols": [
+        "plane_squadron_sentity_init_007f4ba0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_planes_max.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "007f9020",
+      "segment": 49,
+      "baseline_name": "BSP_ProfileBonusRecord_CopyConstruct",
+      "result": "new_body_build_tested",
+      "ledger_name": "copy_construct_profile_bonus_record_007f9020",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/native_game_profile_lifetime.cpp",
+      "cpp_symbols": [
+        "copy_construct_profile_bonus_record_007f9020"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00801db0",
+      "segment": 49,
+      "baseline_name": "BSP_RainModel_ScalarDeletingDestructor",
+      "result": "classified",
+      "ledger_name": "BSP_RainModel_ScalarDeletingDestructor",
+      "ledger_status": "compiler_generated_out_of_scope",
+      "source": "exports/bsp/functions/00801db0/assembly.txt",
+      "cpp_symbols": [],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "008050e0",
+      "segment": 49,
+      "baseline_name": "BSP_Recon_ConstructSlot",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_recon_slot_008050e0",
+      "ledger_status": "reconstructed_normal_flow_build_tested",
+      "source": "src/recon_slot_lists.cpp",
+      "cpp_symbols": [
+        "construct_recon_slot_008050e0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00805240",
+      "segment": 49,
+      "baseline_name": "BSP_Recon_DestroySlot",
+      "result": "new_body_build_tested",
+      "ledger_name": "destruct_recon_slot_00805240",
+      "ledger_status": "reconstructed_normal_flow_build_tested",
+      "source": "src/recon_slot_lists.cpp",
+      "cpp_symbols": [
+        "destruct_recon_slot_00805240"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00805d90",
+      "segment": 49,
+      "baseline_name": "BSP_Recon_PublishRelationCategories",
+      "result": "new_body_build_tested",
+      "ledger_name": "publish_recon_relation_categories_00805d90",
+      "ledger_status": "reconstructed_normal_flow_build_tested",
+      "source": "src/recon_slot_lists.cpp",
+      "cpp_symbols": [
+        "publish_recon_relation_categories_00805d90"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00808230",
+      "segment": 49,
+      "baseline_name": "Unknown_Dtor_00808230",
+      "result": "existing_body_verified_or_rebound",
+      "ledger_name": "Unknown_Dtor_00808230",
+      "ledger_status": "reconstructed_build_tested",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "cpp_symbols": [
+        "unknown_dtor_00808230"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00808cb0",
+      "segment": 49,
+      "baseline_name": "BSP_SensorClassTable_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_sensor_class_table_00808cb0",
+      "ledger_status": "reconstructed_normal_flow_build_tested",
+      "source": "src/sensor_tables.cpp",
+      "cpp_symbols": [
+        "construct_sensor_class_table_00808cb0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00808d20",
+      "segment": 49,
+      "baseline_name": "Unknown_Dtor_00808d20",
+      "result": "existing_body_verified_or_rebound",
+      "ledger_name": "Unknown_Dtor_00808d20",
+      "ledger_status": "reconstructed_build_tested",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "cpp_symbols": [
+        "unknown_dtor_00808d20"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00810f60",
+      "segment": 50,
+      "baseline_name": "BSP_Unit_InitializeDirectorAndHullDimensions",
+      "result": "new_body_build_tested",
+      "ledger_name": "initialize_unit_director_and_hull_00810f60",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/unit_hull_extents.cpp",
+      "cpp_symbols": [
+        "initialize_unit_director_and_hull_00810f60"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "008160b0",
+      "segment": 50,
+      "baseline_name": "BSP_UnitInstance_TickRepairTask",
+      "result": "new_body_build_tested",
+      "ledger_name": "tick_unit_repair_task_008160b0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/unit_fire_flooding.cpp",
+      "cpp_symbols": [
+        "tick_unit_repair_task_008160b0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0086e5a0",
+      "segment": 53,
+      "baseline_name": "BSP_EffectFlare_Destruct_0086e5a0",
+      "result": "existing_body_verified_or_rebound",
+      "ledger_name": "BSP_EffectFlare_Destruct_0086e5a0",
+      "ledger_status": "reconstructed_build_tested",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "cpp_symbols": [
+        "effect_flare_destruct_0086e5a0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "008b01b0",
+      "segment": 56,
+      "baseline_name": "BSP_LuaGame_EndScene",
+      "result": "new_body_build_tested",
+      "ledger_name": "lua_game_end_scene_008b01b0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/engine_seg56_cc13.cpp",
+      "cpp_symbols": [
+        "lua_game_end_scene_008b01b0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "008d1a10",
+      "segment": 56,
+      "baseline_name": "BSP_PerfTimingRegistry_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_perf_timing_registry_008d1a10",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/engine_seg56_cc13.cpp",
+      "cpp_symbols": [
+        "construct_perf_timing_registry_008d1a10"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "008d1ab0",
+      "segment": 56,
+      "baseline_name": "BSP_PerfTimingRegistry_Destruct",
+      "result": "new_body_build_tested",
+      "ledger_name": "destruct_perf_timing_registry_008d1ab0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/engine_seg56_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_perf_timing_registry_008d1ab0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "008d1b80",
+      "segment": 56,
+      "baseline_name": "BSP_PerfTimingRegistry_GetSingleton",
+      "result": "new_body_build_tested",
+      "ledger_name": "get_perf_timing_registry_008d1b80",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/engine_seg56_cc13.cpp",
+      "cpp_symbols": [
+        "get_perf_timing_registry_008d1b80"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "008f02b0",
+      "segment": 59,
+      "baseline_name": "BSP_ScenePropertyDecl_IsEnumLetter",
+      "result": "new_body_build_tested",
+      "ledger_name": "scene_property_decl_is_enum_letter_008f02b0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/scene_property_bag.cpp",
+      "cpp_symbols": [
+        "scene_property_decl_is_enum_letter_008f02b0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "008f02e0",
+      "segment": 59,
+      "baseline_name": "BSP_ScenePropertyDecl_IsLuaSLetter",
+      "result": "new_body_build_tested",
+      "ledger_name": "scene_property_decl_is_lua_s_letter_008f02e0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/scene_property_bag.cpp",
+      "cpp_symbols": [
+        "scene_property_decl_is_lua_s_letter_008f02e0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "008ff040",
+      "segment": 59,
+      "baseline_name": "BSP_GunBot_AttachBallisticClass",
+      "result": "new_body_build_tested",
+      "ledger_name": "attach_ballistic_gun_bot_008ff040",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/gun_bot_ticks.cpp",
+      "cpp_symbols": [
+        "attach_ballistic_gun_bot_008ff040"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00922dd0",
+      "segment": 60,
+      "baseline_name": "BSP_Entity_IsSurfaceTarget",
+      "result": "new_body_build_tested",
+      "ledger_name": "entity_is_surface_target_00922dd0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "include/bsp/entity_mission_seg60_argon.hpp",
+      "cpp_symbols": [
+        "entity_is_surface_target_00922dd0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_primary.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00951220",
+      "segment": 61,
+      "baseline_name": "BSP_TrafficRecordVector_CreateRecord",
+      "result": "new_body_build_tested",
+      "ledger_name": "create_traffic_record_00951220",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/scene_traffic_groups.cpp",
+      "cpp_symbols": [
+        "create_traffic_record_00951220"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00951aa0",
+      "segment": 61,
+      "baseline_name": "BSP_VehicleClass_ConstructReconPlane",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_recon_plane_class_00951aa0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_recon_plane_class_00951aa0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00951af0",
+      "segment": 61,
+      "baseline_name": "BSP_VehicleClass_ConstructFighter",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_fighter_class_00951af0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_fighter_class_00951af0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00951b40",
+      "segment": 61,
+      "baseline_name": "BSP_VehicleClass_ConstructDiveBomber",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_dive_bomber_class_00951b40",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_dive_bomber_class_00951b40"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00951b60",
+      "segment": 61,
+      "baseline_name": "BSP_PlaneDiveBomberUnit_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_dive_bomber_unit_00951b60",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/unit_instance_layout.cpp",
+      "cpp_symbols": [
+        "construct_dive_bomber_unit_00951b60"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00951c20",
+      "segment": 61,
+      "baseline_name": "BSP_VehicleClass_ConstructTorpedoBomber",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_torpedo_bomber_class_00951c20",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_torpedo_bomber_class_00951c20"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00951c40",
+      "segment": 61,
+      "baseline_name": "BSP_PlaneTorpedoBomberUnit_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_torpedo_bomber_unit_00951c40",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/unit_instance_layout.cpp",
+      "cpp_symbols": [
+        "construct_torpedo_bomber_unit_00951c40"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00951d00",
+      "segment": 61,
+      "baseline_name": "BSP_VehicleClass_ConstructKamikaze",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_kamikaze_class_00951d00",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_kamikaze_class_00951d00"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00951d20",
+      "segment": 61,
+      "baseline_name": "BSP_PlaneKamikazeUnit_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_kamikaze_unit_00951d20",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/unit_instance_layout.cpp",
+      "cpp_symbols": [
+        "construct_kamikaze_unit_00951d20"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00951de0",
+      "segment": 61,
+      "baseline_name": "BSP_VehicleClass_ConstructLevelBomber",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_level_bomber_class_00951de0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_level_bomber_class_00951de0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00951e30",
+      "segment": 61,
+      "baseline_name": "BSP_VehicleClass_ConstructCommandBuilding",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_command_building_class_00951e30",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_command_building_class_00951e30"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "009536e0",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructSmallReconPlane",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_small_recon_plane_class_009536e0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_small_recon_plane_class_009536e0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00953720",
+      "segment": 62,
+      "baseline_name": "BSP_SmallReconPlaneClass_GetClassName",
+      "result": "new_body_build_tested",
+      "ledger_name": "small_recon_plane_class_name_00953720",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "small_recon_plane_class_name_00953720"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00953770",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructLargeReconPlane",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_large_recon_plane_class_00953770",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_large_recon_plane_class_00953770"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "009537b0",
+      "segment": 62,
+      "baseline_name": "BSP_LargeReconPlaneClass_GetClassName",
+      "result": "new_body_build_tested",
+      "ledger_name": "large_recon_plane_class_name_009537b0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "large_recon_plane_class_name_009537b0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00959940",
+      "segment": 62,
+      "baseline_name": "BSP_UnitGameObject_Destruct",
+      "result": "new_body_build_tested",
+      "ledger_name": "destruct_unit_game_object_00959940",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/unit_destructor_levels.cpp",
+      "cpp_symbols": [
+        "destruct_unit_game_object_00959940"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0095cc90",
+      "segment": 62,
+      "baseline_name": "BSP_UnitGameObject_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_unit_game_object_0095cc90",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/unit_instance_layout.cpp",
+      "cpp_symbols": [
+        "construct_unit_game_object_0095cc90"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0095fee0",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructAirField",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_airfield_class_0095fee0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_airfield_class_0095fee0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0095ff50",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructShipyard",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_shipyard_class_0095ff50",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_shipyard_class_0095ff50"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0095ffc0",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructLandVehicle",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_land_vehicle_class_0095ffc0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_land_vehicle_class_0095ffc0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00960050",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructDummyTarget",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_dummy_target_class_00960050",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_dummy_target_class_00960050"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00963380",
+      "segment": 62,
+      "baseline_name": "BSP_ShipClass_ConstructBase",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_ship_class_base_00963380",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_ship_class_base_00963380"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00963600",
+      "segment": 62,
+      "baseline_name": "BSP_ShipClass_DestructBase_00963600",
+      "result": "existing_body_verified_or_rebound",
+      "ledger_name": "ship_class_destruct_00963600",
+      "ledger_status": "reconstructed_build_tested",
+      "source": "src/cg_rebuild_a_cc13.cpp",
+      "cpp_symbols": [
+        "ship_class_destruct_00963600"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00963c20",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructLandingShip",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_landing_ship_class_00963c20",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_landing_ship_class_00963c20"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00963cb0",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructCargo",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_cargo_class_00963cb0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_cargo_class_00963cb0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00963d30",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructBattleShip",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_battleship_class_00963d30",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_battleship_class_00963d30"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00963db0",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructSubmarine",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_submarine_class_00963db0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_submarine_class_00963db0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00963e00",
+      "segment": 62,
+      "baseline_name": "BSP_SubmarineClass_GetClassName",
+      "result": "new_body_build_tested",
+      "ledger_name": "submarine_class_name_00963e00",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "submarine_class_name_00963e00"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00963e40",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructTorpedoBoat",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_torpedo_boat_class_00963e40",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_torpedo_boat_class_00963e40"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00963ec0",
+      "segment": 62,
+      "baseline_name": "BSP_VehicleClass_ConstructMotherShip",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_mothership_class_00963ec0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/vehicle_class.cpp",
+      "cpp_symbols": [
+        "construct_mothership_class_00963ec0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_vehicle.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0096dcb0",
+      "segment": 64,
+      "baseline_name": "BSP_WarningEventRecord_Destruct",
+      "result": "new_body_build_tested",
+      "ledger_name": "destruct_warning_event_record_0096dcb0",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_warning_event_record_0096dcb0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097a220",
+      "segment": 64,
+      "baseline_name": "BSP_ReconSubscription_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_recon_0097a220",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_recon_0097a220"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097a330",
+      "segment": 64,
+      "baseline_name": "BSP_ReconSubscription_Destruct",
+      "result": "new_body_build_tested",
+      "ledger_name": "destruct_recon_0097a330",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_recon_0097a330"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097a450",
+      "segment": 64,
+      "baseline_name": "BSP_KillSubscription_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_kill_0097a450",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_kill_0097a450"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097a530",
+      "segment": 64,
+      "baseline_name": "BSP_KillSubscription_Destruct",
+      "result": "new_body_build_tested",
+      "ledger_name": "destruct_kill_0097a530",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_kill_0097a530"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097a620",
+      "segment": 64,
+      "baseline_name": "BSP_ExitZoneSubscription_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_exit_zone_0097a620",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_exit_zone_0097a620"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097a6d0",
+      "segment": 64,
+      "baseline_name": "BSP_ExitZoneSubscription_Destruct",
+      "result": "new_body_build_tested",
+      "ledger_name": "destruct_exit_zone_0097a6d0",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_exit_zone_0097a6d0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097a790",
+      "segment": 64,
+      "baseline_name": "BSP_InputSubscription_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_input_0097a790",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_input_0097a790"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097a810",
+      "segment": 64,
+      "baseline_name": "BSP_InputSubscription_Destruct",
+      "result": "new_body_build_tested",
+      "ledger_name": "destruct_input_0097a810",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_input_0097a810"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097a8b0",
+      "segment": 64,
+      "baseline_name": "BSP_SurrenderSubscription_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_surrender_0097a8b0",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_surrender_0097a8b0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097a930",
+      "segment": 64,
+      "baseline_name": "BSP_SurrenderSubscription_Destruct",
+      "result": "new_body_build_tested",
+      "ledger_name": "destruct_surrender_0097a930",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_surrender_0097a930"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097a9d0",
+      "segment": 64,
+      "baseline_name": "BSP_LeakSubscription_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "construct_leak_0097a9d0",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_leak_0097a9d0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "0097aa50",
+      "segment": 64,
+      "baseline_name": "BSP_LeakSubscription_Destruct",
+      "result": "new_body_build_tested",
+      "ledger_name": "destruct_leak_0097aa50",
+      "ledger_status": "reconstructed_value_model_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_leak_0097aa50"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00989a80",
+      "segment": 65,
+      "baseline_name": "BSP_WarningManager_Destruct_00989a80",
+      "result": "existing_body_verified_or_rebound",
+      "ledger_name": "warning_manager_destruct_00989a80",
+      "ledger_status": "reconciled_existing_normal_body_build_tested",
+      "source": "src/cg_rebuild_b_cc13.cpp",
+      "cpp_symbols": [
+        "warning_manager_destruct_00989a80"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_owner_max.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a06840",
+      "segment": 69,
+      "baseline_name": "BSP_AiDebug_ParseClassEquipmentList",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_debug_parse_class_equipment_list_00a06840",
+      "ledger_status": "reconstructed_normal_path_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_debug_parse_class_equipment_list_00a06840"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a072d0",
+      "segment": 69,
+      "baseline_name": "BSP_AiDebug_ParseClassList",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_debug_parse_class_list_00a072d0",
+      "ledger_status": "reconstructed_normal_path_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_debug_parse_class_list_00a072d0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a0fce0",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_NonControl_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_non_control_get_type_00a0fce0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_non_control_get_type_00a0fce0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a0fd30",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_Selling_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_selling_get_type_00a0fd30",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_selling_get_type_00a0fd30"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a0fd80",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_Idle_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_idle_get_type_00a0fd80",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_idle_get_type_00a0fd80"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a0fe90",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_DefendPosition_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_defend_position_get_type_00a0fe90",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_defend_position_get_type_00a0fe90"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a0fef0",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_Retreat_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_retreat_get_type_00a0fef0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_retreat_get_type_00a0fef0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a10270",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_MoveTo_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_move_to_get_type_00a10270",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_move_to_get_type_00a10270"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a10310",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_CautiousMove_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_cautious_move_get_type_00a10310",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_cautious_move_get_type_00a10310"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a103a0",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_RegroupingMove_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_regrouping_move_get_type_00a103a0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_regrouping_move_get_type_00a103a0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a10470",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_PatrolTo_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_patrol_to_get_type_00a10470",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_patrol_to_get_type_00a10470"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a108c0",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_MoveToAttack_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_move_to_attack_get_type_00a108c0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_move_to_attack_get_type_00a108c0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a109f0",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_CautiousAttack_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_cautious_attack_get_type_00a109f0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_cautious_attack_get_type_00a109f0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a10b10",
+      "segment": 69,
+      "baseline_name": "BSP_AiCommand_CloseAttack_GetType",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_command_close_attack_get_type_00a10b10",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_close_attack_get_type_00a10b10"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a2cdd0",
+      "segment": 70,
+      "baseline_name": "BSP_AiDebug_GroupTargetText",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_debug_group_target_text_00a2cdd0",
+      "ledger_status": "reconstructed_normal_value_host_effects_build_tested",
+      "source": "src/ai_group_think.cpp",
+      "cpp_symbols": [
+        "ai_debug_group_target_text_00a2cdd0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a2d580",
+      "segment": 70,
+      "baseline_name": "BSP_AiDebug_GroupMembersOverlay",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_debug_group_members_overlay_00a2d580",
+      "ledger_status": "reconstructed_normal_value_host_effects_build_tested",
+      "source": "src/ai_group_think.cpp",
+      "cpp_symbols": [
+        "ai_debug_group_members_overlay_00a2d580"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a2f6f0",
+      "segment": 70,
+      "baseline_name": "BSP_AiGroup_DescribeDebug",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::ai_group_describe_debug_00a2f6f0",
+      "ledger_status": "reconstructed_normal_value_host_effects_build_tested",
+      "source": "src/ai_group_think.cpp",
+      "cpp_symbols": [
+        "ai_group_describe_debug_00a2f6f0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a33020",
+      "segment": 70,
+      "baseline_name": "Unknown_VtD232C4_Destruct_00a33020",
+      "result": "existing_body_verified_or_rebound",
+      "ledger_name": "Unknown_VtD232C4_Destruct_00a33020",
+      "ledger_status": "reconstructed_build_tested",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "cpp_symbols": [
+        "vt_d232c4_destruct_00a33020"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a37130",
+      "segment": 70,
+      "baseline_name": "Unknown_VtD232C4_Construct_00a37130",
+      "result": "existing_body_verified_or_rebound",
+      "ledger_name": "Unknown_VtD232C4_Construct_00a37130",
+      "ledger_status": "reconstructed_build_tested",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "cpp_symbols": [
+        "vt_d232c4_construct_00a37130"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a3d060",
+      "segment": 71,
+      "baseline_name": "BSP_NetworkConsoleSend_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::construct_native_network_console_00a3d060",
+      "ledger_status": "reconstructed_normal_path_build_tested",
+      "source": "src/native_network_console_runtime.cpp",
+      "cpp_symbols": [
+        "construct_native_network_console_00a3d060"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a475a0",
+      "segment": 72,
+      "baseline_name": "BSP_XLiveSystem_Destruct_00a475a0",
+      "result": "existing_body_verified_or_rebound",
+      "ledger_name": "BSP_XLiveSystem_Destruct_00a475a0",
+      "ledger_status": "reconstructed_build_tested",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "cpp_symbols": [
+        "xlive_system_destruct_00a475a0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00a9df40",
+      "segment": 75,
+      "baseline_name": "BSP_GuiListbox_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::cc13_gui1::gui_listbox_construct_00a9df40",
+      "ledger_status": "reconstructed_normal_path_build_tested",
+      "source": "src/cc13_gui1.cpp",
+      "cpp_symbols": [
+        "gui_listbox_construct_00a9df40"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00abe640",
+      "segment": 78,
+      "baseline_name": "BSP_GuiSection_GetFirstVertexStream",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::cc13_seg49_64_78::gui_section_get_first_vertex_stream_00abe640",
+      "ledger_status": "reconstructed_normal_path_build_tested",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "gui_section_get_first_vertex_stream_00abe640"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00b6a390",
+      "segment": 87,
+      "baseline_name": "BSP_LuaObject_WriteLuaSourceText",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::lua_object_write_lua_source_text_00b6a390",
+      "ledger_status": "reconstructed_normal_value_host_effects_build_tested",
+      "source": "src/lua_object.cpp",
+      "cpp_symbols": [
+        "lua_object_write_lua_source_text_00b6a390"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00bbf8a0",
+      "segment": 94,
+      "baseline_name": "BSP_SkyBox_Construct",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::water_weather_cc13::sky_box_construct_00bbf8a0",
+      "ledger_status": "reconstructed_normal_value_host_effects_build_tested",
+      "source": "src/water_weather_cc13.cpp",
+      "cpp_symbols": [
+        "sky_box_construct_00bbf8a0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00bea9e0",
+      "segment": 97,
+      "baseline_name": "BSP_PcStorage_StateIsZeroOrOne",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::pc_storage_state_is_zero_or_one_00bea9e0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/storage_backend.cpp",
+      "cpp_symbols": [
+        "pc_storage_state_is_zero_or_one_00bea9e0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00beaa70",
+      "segment": 97,
+      "baseline_name": "BSP_PcStorage_CapabilityTrue",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::pc_storage_capability_true_00beaa70",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/storage_backend.cpp",
+      "cpp_symbols": [
+        "pc_storage_capability_true_00beaa70"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00beab50",
+      "segment": 97,
+      "baseline_name": "BSP_PcStorage_CreateSlotDirectory",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::pc_storage_create_slot_directory_00beab50",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/storage_backend.cpp",
+      "cpp_symbols": [
+        "pc_storage_create_slot_directory_00beab50"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00beaba0",
+      "segment": 97,
+      "baseline_name": "BSP_PcStorage_ReadFile",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::pc_storage_read_file_00beaba0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/storage_backend.cpp",
+      "cpp_symbols": [
+        "pc_storage_read_file_00beaba0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    },
+    {
+      "address": "00beacb0",
+      "segment": 97,
+      "baseline_name": "BSP_PcStorage_WriteFile",
+      "result": "new_body_build_tested",
+      "ledger_name": "bsp::pc_storage_write_file_00beacb0",
+      "ledger_status": "reconstructed_body_build_tested",
+      "source": "src/storage_backend.cpp",
+      "cpp_symbols": [
+        "pc_storage_write_file_00beacb0"
+      ],
+      "evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "blocker": null
+    }
+  ]
+}

@@ -278,5 +278,20 @@
       "is": "existing cg_rebuild_b body reviewed and ledger credit reconciled",
       "evidence": "current parent source443..590 and complete exported listing; warning_owner host-storage helper remainspartial"
     }
-  ]
+  ],
+  "integrator_validation": {
+    "command": "./scripts/build.ps1",
+    "source_checked_commit": "90cec9c85b6e4f52cd851b49cf5f8a273d818e85",
+    "build_log": "local/build-poolB-final.log",
+    "msvc": "Win32 Release",
+    "build_passed": true,
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "game_runs": 0,
+    "host_wiring": false,
+    "binary_abi_validated": false,
+    "scope": "Ordinary source paths; native EH/FH3 and game equivalence remain unvalidated."
+  }
 }
