@@ -34,8 +34,10 @@ resolver/cache/native-string operation has address-stable retained storage.
 No native numeric address is executed as a host function pointer.
 
 The component owns exactly each returned caller reference; the frontend's
-existing projected manager fields borrow those identities. B319B0's existing
-cache owns its separate native cache credit. No COM AddRef, substitute image,
+existing projected manager fields borrow those identities. Cache record
+publication/accounting remain the existing loader's work: cold B319B0 passes
+`acquire_new=0`, record copies do not retain, and this binding adds no cache
+credit or assumption that a record alias owns a reference. No COM AddRef, substitute image,
 private cache, second registry, counter or pool is introduced. The native raw
 resource is never inserted in the bridge's `IDirect3DTexture9*` ownership vector.
 
