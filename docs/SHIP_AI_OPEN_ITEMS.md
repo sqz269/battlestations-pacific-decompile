@@ -20601,3 +20601,109 @@ is merged with origin/main.
    108.05 s, before GenerateObject("Lexington").
 4. **LOMP06 l70_l6_c** and **USN21 s46_u21_f** need re-plans (lead / lua71).
 - Never use git stash. src/game_hosts_gunnery.cpp is often leased: queue, never jump.
+
+## 321. Re-plans and handoff from cc9-gunnery56 (2026-10-23)
+
+Branch `agent/cc9-gunnery52`, tree `J:\PROG\battlestations-pacific-decompile-cc9-gunnery52`, run prefix `g56_`.
+Every result below is on a clean console session: each log has no "present failed", exits 0 and logs the exec
+guard's sus_prog.exe refusal where the mission completes. Every plan has `helm_moveto_unselected=0`.
+
+### 321.1 Wins
+
+- **LOMP06 `config/win_orders/lomp06_g56_l6_v2.txt`** (on main). It is l70_l6_c with every order from frame 600
+  to 3400 aimed at Kongosan Maru, then Sado Maru. Section 319's loss came from the faithful commitment-band
+  quarter, which changes the convoy's evasion.
+  - At 16000 frames on 999e17185 it completes at 330.84 s (ref), 323.84 s (20,3) and 267.86 s (default env).
+  - On 802e1d8b9 the ref run still completes at 330.84 s (`local\g56_v2_l6.log`).
+- **USN21 `config/win_orders/usn21_g56_c2.txt`** (on main). It is s46_u21_f plus, every 2400 frames from frame 5096,
+  `select` and `moveto` Intrepid to (-4000, -10000) and Enterprise to (-10000, -10000). Those are their spawn
+  points, so the carried Cruise groups (section 313) stay west of the Center Force.
+  - At 80000 frames on 802e1d8b9 it completes at 2866.67 s (ref), 2886.74 s (20,3) and 2866.67 s (default env)
+    (`local\g56_v2{,j,d}_c2.log`).
+  - `local\g56_u21_c3.txt` (c2 plus `20 input 0x4A`, the hint dismiss) gives the same three times.
+  - One-helm fallbacks, never needed: `local\g56_u21_c4.txt` / `c5.txt` hold one carrier by `takehelm ... stop 300`
+    and give the other carrier one moveto.
+
+### 321.2 BSM04 phase 1 plan; phase 2 is blocked by a host gap
+
+- **Plan `local\g56_b4_e.txt`** (kept local, partial):
+  - `786 select Donald`;
+  - `790 target Donald AirField repeat 10`;
+  - `1700 target Donald Jap #1.1 repeat 5`.
+- **Phase 1 passes with it.** Donald survives, `AddDamage 0088e000: "AirField" amount=9999.0` fires (luaAFHit is the
+  success path), and the AirField dies at 155.90 s. luaExitedDia runs at 166.91 s and luaPh2Blackout at 188.11 s.
+  cc13 confirmed that a squadron's `.Dead` is set when its last member dies, so FortressRed's `published=189.16`
+  is faithful and phase 1 is valid.
+- **Other plans, 6000 frames each:**
+
+  | Plan | Result |
+  | --- | --- |
+  | a: `target` on Jap #1.1, then Jap #2.1 | Game Over 87.05 s |
+  | b: the same, reversed | Game Over 93.05 s |
+  | c: AirField only | the Zeros kill the B-17s; Game Over 126.05 s |
+  | d: AirField, then Jap #2.1 | Game Over 126.05 s |
+  | `--order dogfight:Jap #1.1` | 87.05 s |
+  | `--order dogfight:Jap #2.1` | 138.05 s |
+  | `--order moveto:Jap #1.1` | 108.05 s |
+
+  With the head on the Zeros the leash never trips, but Donald loses a dogfight against ten Zeros.
+- **No-orders fapick3 run** (1e09f61b9, `local\g56_f3_stock.log`):
+  - The first pick at 60.60 s is Jap #1.1 (d=3998, inside 4000).
+  - Jap #2.1 is `no_detect` at d=4503.
+  - At 89.20 s the leash (`dist=3750`) ends the override, and the re-pick goes to Kanikawa Maru (CARGO 2,
+    head_d=559).
+- **Phase 2 stalls (host gap).** luaNextAttackerSpawned plays luaPlayTigerMovie (bsm_04 :1250). Only its
+  MovCamNew `finishscript = "luaTigerMovieRun"` reaches luaTigerSelect, which does `SetSelectedUnit` and
+  `PilotSetTarget` on the Dauntless.
+  - The host reads `finishscript` only into `unsupported_keys` (src/game_hosts_lua.cpp:513).
+  - So the Dauntless circles, AttackPhase never advances, and there is no end through 1500 s
+    (`local\g56_v2l_b4e.log`).
+  - The lead routed the binding to cc13 behind an OFF switch. Pair it on BSM04 with plan e when it lands; then
+    plan phases 2-3 and check Lexington's Stop + StartSpeed 3 (section 313.1).
+
+### 321.3 USN15 (open)
+
+- **What the mission needs** (this installation's `COTP-USN\PRCPUS\usn_15_battle_of_surigao_strait.lua`):
+  - Win: Fuso, Yamashiro, Nachi and Ashigara all die (:388-392, :862).
+  - Fail: every US ship dies, or a spotted IJN ship comes within 3 km of JapanGoTo (0, 12000) (:847-858).
+  - Only US torpedoes hurt the battleships (GUNNERY_OPEN_ITEMS 269.1 item 4; `took=0.0` on every shell).
+- **Old plans on 1e09f61b9** (ref, 90000 frames):
+
+  | Plan | Result | Notes |
+  | --- | --- | --- |
+  | s45_u15_l2 | failed 1091.99 s | unselected=1, so not legal |
+  | g46_u15_tl | failed 1457.35 s | |
+  | g50_u15_nn | failed 1617.50 s | Nachi 779 s, Ashigara 990 s, Yamashiro 25182/90000, Fuso 51181 |
+
+- **Variants of nn** (`local\g56_u15_nn<X>.txt`; summaries from `local\g56_u15sum.ps1`):
+  - **A / C** (battleship holds 5 km west): Ashigara's group torpedoes five battleships at 812-820 s.
+  - **B** (holds at (-4250..-4750, 9500-10500), nn's battleship attack orders kept): the battleships survive
+    Ashigara, and Yamashiro reaches 37568.
+    - nn's `attack Yamashiro` orders then pull the battleships into its guns, and they die 1728-2193 s.
+    - No end in ref, because Yamashiro parks at JapanGoTo but only Boise is left to spot it.
+    - At 20,3, B fails at 1647.53 s.
+  - **D / E** (B without the 24 battleship attack orders): Yamashiro is never torpedoed. E keeps five battleships
+    alive, then Yamashiro reaches JapanGoTo spotted, and the mission fails at 2138.01 s.
+- **Why nn falls short.** Its torpedo rounds (`select F`, `fire F group 4 held`, release 160 frames later) are timed to
+  nn's old geometry. They are refused once the Fletcher is dead.
+  - In nn, 11 of 24 Fletchers are dead by 1000 s and 19 by 1300 s, mostly to Fubuki/Mogami cat-7 torpedoes at 2-9 km.
+  - Only 32 presses are applied in nn, 13 in E and 56 in B.
+- **Next step.**
+  - Keep B/E's battleship holds, which survive Ashigara's group.
+  - Keep the Fletchers out of the screens' torpedo reach until Yamashiro's torpedo window.
+  - Re-time the Yamashiro rounds to its track: it runs north at about 12.5 m/s along x -500..+1800, with
+    `local\g56_track.py` positions; it reaches z 3300 at about 900 s and z 6000 at about 1300 s.
+  - Shoot only from the beam windows (269.1 item 5).
+  - Then move the battleships between Yamashiro and JapanGoTo only once it is nearly dead.
+
+**Tools in `local\`:**
+- `g56_rows.ps1`: the reference launch form, plus `-Extra` for bsp_game options.
+- `g56_track.py`: positions and states from the `ship ai step ... pos=` lines.
+- `g56_u15sum.ps1`: a one-line USN15 summary per log.
+- `g56_mapsym.py`: maps a crash address to `build\win32\bsp_game.map`.
+
+**Notes:**
+- run_game.ps1 waits silently for a free slot when all 14 are taken. An empty `g56_launch_*.txt` with no log means
+  the run is queued, not failed.
+- A run that logs "present failed" (RDP session) can still complete, but it does not count. One such run (b2)
+  crashed in `set_native_renderer_render_state_00b24460+0xd5`.
