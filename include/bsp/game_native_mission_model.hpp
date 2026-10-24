@@ -7,6 +7,7 @@
 
 namespace bsp {
 struct NativeModelEnvironment;
+struct NativeMatrixIndexedModelEnvironment;
 struct NativeMaterialDestructionAccess;
 struct NativeMaterialEffectCacheContext;
 class NativeModelReference;
@@ -39,6 +40,8 @@ public:
     NativeMaterialEffectCacheContext& effect_cache();
     NativeMaterialDestructionAccess& material_lifetime() noexcept;
     NativeModelEnvironment& model_environment() noexcept;
+    // Bind the genuine matrix profile/pool/type domain once before traversal.
+    NativeMatrixIndexedModelEnvironment& matrix_model_environment();
     NativeLuaServiceBindings& lua_services() noexcept;
     NativeInstanceGeometryAccess& instance_geometry() noexcept;
     NativeRenderGroupModels& group_models() noexcept;

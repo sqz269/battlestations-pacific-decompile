@@ -90,8 +90,8 @@ std::vector<std::pair<Word,unsigned char>> read_plane_cockpit_notes(
                     std::string text;
                     require(read_note_text_00718f50_fragment(*entry,text),
                         "plane visibility metadata has an invalid Note");
-                    if(text=="belsocockpit") notes.emplace_back(ordinal,1);
-                    else if(text=="kulsocockpit") notes.emplace_back(ordinal,2);
+                    if(text=="belsocockpit") notes.emplace_back(ordinal,static_cast<unsigned char>(1));
+                    else if(text=="kulsocockpit") notes.emplace_back(ordinal,static_cast<unsigned char>(2));
                 }
                 require(entry->skip_00be9c40() && entry->close(),
                     "plane visibility metadata could not close a resource");
@@ -475,8 +475,7 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
         matrix_states[index]=2;
         return world_matrices[index];
     }
-    void materialize_matrix_drawable(Unit& unit, std::size_t unit_index,
-        std::size_t index, MeshCall& call) {
+    NativeMatrixIndexedModelEnvironment& ensure_matrix_environment() {
         if(!matrix_models) {
             initialize_native_matrix_indexed_model_type_00cd8570(files.native_owners().types(),model_types);
             (void)initialize_matrix_indexed_model_pool_once_00cd8550();
@@ -485,6 +484,11 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
                 mission_model_detail::table(data,0x00d63590,0x5c),
                 native_matrix_indexed_model_type_ids_010903c8()});
         }
+        return *matrix_models;
+    }
+    void materialize_matrix_drawable(Unit& unit, std::size_t unit_index,
+        std::size_t index, MeshCall& call) {
+        (void)ensure_matrix_environment();
         bone_models.emplace_back();auto& record=bone_models.back();record.domain=this;record.unit=&unit;
         record.actual=matrix_models->pool_01090390.allocate_raw_slot_00b90ac0();
         mission_model_detail::require(record.actual!=nullptr,"native matrix-indexed model allocation is null");
@@ -693,6 +697,9 @@ GameNativeMissionModel::~GameNativeMissionModel() noexcept {
 NativeMaterialEffectCacheContext& GameNativeMissionModel::effect_cache() {return impl_->effects->native_effect_cache();}
 NativeMaterialDestructionAccess& GameNativeMissionModel::material_lifetime() noexcept {return impl_->materials;}
 NativeModelEnvironment& GameNativeMissionModel::model_environment() noexcept {return impl_->raw_models;}
+NativeMatrixIndexedModelEnvironment& GameNativeMissionModel::matrix_model_environment() {
+    return impl_->ensure_matrix_environment();
+}
 NativeLuaServiceBindings& GameNativeMissionModel::lua_services() noexcept {return impl_->renderer.lua_service_binding();}
 NativeInstanceGeometryAccess& GameNativeMissionModel::instance_geometry() noexcept {return impl_->instance;}
 NativeRenderGroupModels& GameNativeMissionModel::group_models() noexcept {return *impl_;}
@@ -703,7 +710,7 @@ const volatile std::uint32_t* GameNativeMissionModel::profile(const void* actual
     std::size_t bytes{};
     switch(address) {
     case 0x00d62de8: case 0x00d63590: bytes=0x5c;break;
-    case 0x00d62c88: bytes=0x58;break;
+    case 0x00d62c88: case 0x00d634f8: bytes=0x58;break;
     case 0x00d62cf0: bytes=0x58;break;
     case 0x00d62d60: bytes=0x14;break;
     case 0x00d61d6c: bytes=0x28;break;

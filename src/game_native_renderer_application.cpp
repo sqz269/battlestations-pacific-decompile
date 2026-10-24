@@ -39,6 +39,10 @@
 #include "bsp/native_particle_preparation.hpp"
 #include "bsp/game_native_mission_model.hpp"
 #include "bsp/game_native_mission_frame.hpp"
+#include "bsp/game_native_mission_devices.hpp"
+#include "bsp/game_native_mission_frame_jobs.hpp"
+#include "bsp/native_matrix_indexed_model_owner.hpp"
+#include "bsp/vehicle_class.hpp"
 #include "bsp/cc13_front4.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_native_mission_command.hpp"
@@ -844,13 +848,28 @@ void GameNativeRendererApplication::configure_mission_ship(GameInputRuntime& inp
 bool GameNativeRendererApplication::mission_ship_enabled() const noexcept {
     return impl_->mission_ship != nullptr;
 }
+void GameNativeRendererApplication::bind_mission_startup_random(RandomThreads& random) {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::ready && p.mission_ship &&
+        p.mission_ship->stage == MissionShipGraph::Stage::prepared &&
+        (!p.mission_ship->startup_random || p.mission_ship->startup_random == &random),
+        "mission frame jobs require one retained startup random-thread registry");
+    p.mission_ship->startup_random = &random;
+}
 void GameNativeRendererApplication::prepare_mission_ship() {
     auto& p = *impl_;
     check(p.mission_ship && (p.phase == Impl::Phase::ready ||
         (p.phase == Impl::Phase::rendering && p.mission_ship->frame_switches.enabled &&
             p.mission_ship->frame_state.phase == GameRenderPhase::kRendering)),
         "mission ship preparation requires the configured ready renderer");
-    if (p.mission_ship->stage == MissionShipGraph::Stage::ready) return;
+    if (p.mission_ship->stage == MissionShipGraph::Stage::ready) {
+        // A retained native queue owns the already submitted scene snapshot.
+        // Do not load new models or change that snapshot while resuming it.
+        if (p.phase == Impl::Phase::rendering) return;
+        try { p.mission_ship->refresh_units(); }
+        catch (...) { p.phase = Impl::Phase::failed; throw; }
+        return;
+    }
     try { p.mission_ship->prepare(*this, p.device_generation); }
     catch (...) { p.phase = Impl::Phase::failed; throw; }
 }
@@ -934,6 +953,16 @@ void* GameNativeRendererApplication::mission_overlay_queue() {
     check(p.frames->queue != nullptr, "native mission overlay queue is absent");
     return p.frames->queue;
 }
+void GameNativeRendererApplication::bind_mission_gui_group_environment(const NativeGroupEnvironment* groups) {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::ready && p.mission_ship &&
+        (p.mission_ship->stage == MissionShipGraph::Stage::prepared ||
+            p.mission_ship->stage == MissionShipGraph::Stage::preparing) &&
+        (!p.mission_ship->gui_group_environment || p.mission_ship->gui_group_environment == groups),
+        "native GUI group environment requires one retained pre-submission borrower");
+    if (p.mission_ship->commands) p.mission_ship->commands->bind_gui_groups(groups);
+    p.mission_ship->gui_group_environment = groups;
+}
 void* GameNativeRendererApplication::mission_overlay_pass_context() {
     (void)mission_overlay_queue();
     auto* const service = static_cast<std::uint8_t*>(impl_->frames->service);
@@ -942,7 +971,8 @@ void* GameNativeRendererApplication::mission_overlay_pass_context() {
         cc13_front4::render_service_word_1d4_00b0d0d0(cc13_sweepA::Raw{service})));
 }
 void GameNativeRendererApplication::submit_mission_overlay_scene(void* queue, void* scene,
-    void* camera, void* targets, void* actual8b_label) {
+    void* camera, void* targets, void* actual8b_label, bool& label_entered_native) {
+    label_entered_native = false;
     auto& p = *impl_;
     check(queue == mission_overlay_queue() && targets == mission_overlay_pass_context() &&
         scene && camera && actual8b_label && !p.mission_ship->overlay_submitted,
@@ -951,7 +981,7 @@ void GameNativeRendererApplication::submit_mission_overlay_scene(void* queue, vo
     mission.overlay_submitted = true;
     try {
         mission.commands->retire_executed_command_before_overlay();
-        mission.commands->submit_scene_with_label(scene, camera, targets, actual8b_label);
+        mission.commands->submit_scene_with_label(scene, camera, targets, actual8b_label, label_entered_native);
         mission.commands->execute_before_overlay();
     } catch (...) {
         mission.observe_failed_frame();
@@ -1102,8 +1132,13 @@ const D3DPRESENT_PARAMETERS& GameNativeRendererApplication::presentation() const
 }
 bool GameNativeRendererApplication::requires_process_retention() const noexcept {
     const auto phase=impl_->phase;
+    const auto* operation=impl_->shaders.operation.get();
+    const bool mission_cache=impl_->mission_ship &&
+        impl_->mission_ship->owns_live_shader_cache() && operation &&
+        operation->phase==NativeShaderBinaryCacheOperation::Phase::complete &&
+        !impl_->shaders.released && operation->cache && impl_->shaders.process.cache_0108d6ec()==operation->cache;
     return (phase!=Impl::Phase::prepared && phase!=Impl::Phase::ready && phase!=Impl::Phase::drained)
-        || !impl_->shaders.quiescent() || !impl_->shadow.quiescent()
+        || (!impl_->shaders.quiescent() && !mission_cache) || !impl_->shadow.quiescent()
         || impl_->section_layout_acquisition_pending()
         || (impl_->mission_ship && impl_->mission_ship->requires_process_retention())
         || (impl_->section_layouts.has_live_companions() &&
@@ -1114,7 +1149,7 @@ void GameNativeRendererApplication::drain_singletons() {
     NativeLuaServiceBindings::Activation activation(impl_->lua_services.binding());
     if (impl_->mission_ship && impl_->phase != Impl::Phase::drained)
         observe_mission_texture_owners(impl_->log, impl_->texture_loading.owners, "before_retire");
-    if (impl_->mission_ship) impl_->mission_ship->retire_before_native_drain();
+    if (impl_->mission_ship) impl_->mission_ship->retire_before_native_drain(*this);
     if(impl_->phase==Impl::Phase::ready)impl_->phase=Impl::Phase::draining;
     try { impl_->singletons.shutdown();after_native_drain(); }
     catch(...) {impl_->phase=Impl::Phase::failed;throw;}

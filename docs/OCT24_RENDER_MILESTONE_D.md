@@ -147,3 +147,70 @@ The unmodified ON captures `d3_N001.png`, `d3_N060.png`, `d3_N180.png` are retai
 under `local/render_D`. The first was visually inspected and retains D1's textured
 live Sims and existing black sprite panels. This does not establish retail
 lighting, mission-camera parity, or real terrain/ocean/post rendering.
+
+## D2: all unit and mounted device models
+
+`BSP_NATIVE_MISSION_UNITS=1`, default OFF, selects the complete unit/model
+composition beneath the existing master. With it unset the controlled-unit
+route remains selectable. Both routes borrow current simulation poses; neither
+retains a second pose array. `BSP_NATIVE_MISSION_VIEW_UNIT=<index>` is an optional
+diagnostic focus selector. The default focus is the controlled unit. Each frame
+fits the camera to its current native model spheres through the native camera
+setters, with a minimum 10000-unit far plane. This remains a diagnostic view,
+not a recovered mission-camera controller.
+
+The installed USN04 source loads 18 ships and three Val planes, using nine
+distinct unit assets. Their genuine model instances total 523 drawables. The
+matrix-indexed plane fuselage uses its actual `D63590`/194h owner and ordered
+10-node palette; plain palette nodes and the reused cockpit node borrow the
+same node/string/type/pool domains. Native material parameter30 refreshes stale
+bone world caches before reading `+F0`; no copied palette matrices are added.
+Plane creator defaults hide interior cockpit14 and broken-wing items17/16,
+preserve exterior cockpit10, and survive whole-unit visibility updates. Pose
+animation, rotor blur and damage-part selection are not inferred.
+
+The 406 canonical gun/platform rows produce 379 nonempty physical device models
+and 27 intentionally meshless platforms across 20 device asset strings.
+Articulation reads the same hierarchy calculation used by firing, including
+current unit pose, mount, heading and elevation. It publishes each composed
+matrix directly through `B6DB10`. The shared firing calculation preserves its
+original preconditions, arithmetic, muzzle offsets, counters and diagnostic
+writes. No last-shot pose or live angle copy is used. Runtime unit/gun additions
+extend metadata before BeginScene; changed existing identities are rejected.
+
+All instances use the same native preload/material/mesh path. Repeated assets
+share immutable native meshes while owning distinct actual model nodes. Native
+`B748E0` camera coverage and `B72F80` inclusive serialized LOD-phase selection
+remain responsible for LOD. Scene admission now accepts the actual ordinary and
+matrix model prefixes through their shared lifetime interface, with canonical
+node/scene registries, actual `+04` count and genuine profile checks.
+
+The one existing shader cache stays open for incremental material loading.
+Only a ready graph with completed creation and the identical live cache owner
+is admitted; it is released once before native singleton shutdown. Later roots
+temporarily detach only the genuine outer scene's lighting credit, insert roots
+through `B6D890`, then restore that credit. No raw3Ch scene is cast as a logical
+scene or replaced with a successful stub.
+
+The larger scene reaches both native batch counts above50. The original
+`B1D950` preparation-job branch therefore uses the actual `4C1130` frame owner,
+`B0FFB0` preparation descriptor, `BE3020` enqueue and `BE3150` dispatch. Its one
+canonical publication/scope set borrows the startup's existing RandomThreads and
+the same queue preparation/deletion domains. Native worker count, scheduling,
+synchronization mode and manager-owned stop/join are preserved. There is no
+serial replacement. See [job binding](OCT24_RENDER_D_FRAME_JOBS.md),
+[device source](OCT24_RENDER_D_DEVICES.md), and
+[matrix lifetime](OCT24_RENDER_D_BONE_OWNER.md).
+
+Initial probes are retained separately: `d2_probe_usn04.log` stopped at a strict
+raw-versus-instance model interface mismatch before drawing; that binding was
+corrected. `d2_profile_usn04.log` loaded all models (1790 drawables, 3719 unique
+asset sections), then reached batches3714/115 and stopped at the old serial-only
+guard. These failed runs are not census or visual proof. The subsequent native
+job binding and final runtime evidence are recorded below.
+
+The shared GUI submission API now reports `label_entered_native`. It is false
+through all prefix checks and becomes true immediately before `B1F4D0` assumes
+ownership, so the GUI borrower can release its label on a pre-entry failure.
+Optional group profiles bind before the first submission, through the same
+render access and canonical camera/model/matrix domains.

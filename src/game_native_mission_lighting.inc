@@ -18,7 +18,7 @@ struct MissionLightingGlobals {
 };
 
 struct MissionShipLightingGraph {
- enum class Phase { prepared, creating, ready, retiring, retired, closed, failed };
+ enum class Phase { prepared, creating, ready, roots_detached, retiring, retired, closed, failed };
  struct NoShadow final : SystemShadowOwnerResolver {
   SystemShadowMapOwner* resolve_shadow(void* actual) override {
    check(actual==nullptr,"mission directional light requires its native null shadow");
@@ -202,8 +202,27 @@ struct MissionShipLightingGraph {
        outer,resource,get<void*>(resource,0x10),sun,unsigned(captured_scale_ambient));
   } catch(...) {phase=Phase::failed;throw;}
  }
+ void begin_root_attachment() {
+  check(phase==Phase::ready && get<void*>(outer,0x1c)==resource &&
+      resource_reference->reference_count.load()==2,
+      "mission root insertion requires its genuine live lighting credits");
+  phase=Phase::roots_detached;
+  set_native_gui_scene_resource_00b723f0(outer,null_resource,scene_fields);
+  check(get<void*>(outer,0x1c)==nullptr && resource_reference->reference_count.load()==1,
+      "mission root insertion did not preserve the lighting creator");
+ }
+ void end_root_attachment() {
+  check(phase==Phase::roots_detached && get<void*>(outer,0x1c)==nullptr &&
+      resource_reference->reference_count.load()==1,
+      "mission root insertion lost its lighting creator");
+  set_native_gui_scene_resource_00b723f0(outer,published_resource,scene_fields);
+  check(get<void*>(outer,0x1c)==resource && resource_reference->reference_count.load()==2,
+      "mission root insertion failed to restore native lighting");
+  phase=Phase::ready;
+ }
  bool requires_process_retention() const noexcept {
-  return phase==Phase::creating || phase==Phase::retiring || phase==Phase::failed;
+  return phase==Phase::creating || phase==Phase::roots_detached ||
+      phase==Phase::retiring || phase==Phase::failed;
  }
  void retire_before_native_drain() {
   if(phase==Phase::prepared){phase=Phase::closed;return;}
