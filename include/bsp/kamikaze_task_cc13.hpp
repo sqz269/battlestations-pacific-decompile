@@ -26,16 +26,10 @@
 
 namespace bsp {
 
-// cc13-D1 OFF switches. These functions run on live host paths
-// (game_hosts_units.cpp, packet cc9_lua52_kamikaze_wiring), so each faithful
+// cc13-D1 OFF switch. These functions run on live host paths
+// (game_hosts_units.cpp, packet cc9_lua52_kamikaze_wiring), so the faithful
 // change waits behind a switch that cc9 pairs and flips.
 //
-// 009ABF60 tail-jumps to 009FA260, the pick (009AC09E), so the gotowards
-// enter 009AC160 ends with the pick. True: kamikaze_enter calls
-// KamikazeTaskHost::pick_target_ref_009fa260 right after 009AC160 (the host
-// must override that hook; its default is a no-op). False: the pick waits for
-// the host's next 009FADA0, which re-picks on the dirty byte.
-inline constexpr bool kKamikazeAimPickCc13Bound = false;
 // The main thread's x87 runs at 24-bit precision, so every step of 009AC0B0's
 // and 009ADE00's distance sums and of 009AE9D0's two distances rounds to
 // float. True: per-step float rounding. False: double intermediates rounded
@@ -369,8 +363,6 @@ struct KamikazeTaskHost {
     // The plan sink.
     virtual void apply_plan(const KamikazePlanCommand& c) = 0;
     virtual void clear_gun_block_34_38() = 0;
-    // 009FA260 on ap.ref, the tail of 009ABF60 (kKamikazeAimPickCc13Bound only).
-    virtual void pick_target_ref_009fa260(ApproachTargetRefState& ref) { (void)ref; }
 };
 
 // 009AEEF0 after the base and the approach: seeds the approach and enters the

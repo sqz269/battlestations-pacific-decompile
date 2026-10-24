@@ -157,10 +157,13 @@ void kamikaze_aim_error_009abf60(KamikazeApproach& ap, const KamikazeRobotRow& r
     s.weight_6c = row.magazine_weight_88;
     s.weight_70 = row.fueltank_weight_8c;
     // 009AC092: 009FA380(sub, (dh, 0, dv)): bias = it, dirty = 1. 009AC09E then
-    // tail-jumps to 009FA260, the pick. This function has no host, so the
-    // gotowards enter in kamikaze_enter makes that call under
-    // kKamikazeAimPickCc13Bound (cc13-D1); OFF, the host's next 009FADA0
-    // re-picks on the dirty byte.
+    // tail-jumps to 009FA260, the pick. Not made here (cc13-D1 follow-up,
+    // blocked): KzHost (game_hosts_units.cpp) has no hook to pick at enter time,
+    // and kz_install_009af720 calls 009AC160 directly. The pick happens one call
+    // later instead: the host's next 009FADA0 (kz_target_point) copies the
+    // dirty ref into the unit's hull aim ref and marks it dirty, and
+    // aim_point_009fada0 -> hull_aim_world_point runs
+    // approach_target_ref_pick_009fa260 on that dirty byte.
     s.bias_34 = {dh, 0.0f, dv};
 }
 
@@ -517,9 +520,6 @@ void kamikaze_enter(KamikazeTask& task, KamikazeTaskHost& host, KamikazeRandom& 
         kamikaze_gotowards_enter_009ac160(task.gotowards, task.ap, host.robot_row(),
                                           host.ctl_alt_cruise_394(), host.ctl_alt_second_398(),
                                           rng);
-        if constexpr (kKamikazeAimPickCc13Bound) {
-            host.pick_target_ref_009fa260(task.ap.ref);   // 009AC09E JMP 009FA260
-        }
     } else if (s == KamikazeState::kAim) {
         kamikaze_aim_enter_009ac8d0(task.aim, host.roll_c68());
     } else if (is_formation(s)) {
@@ -556,7 +556,9 @@ KamikazeArmResult kamikaze_task_arm_009af510(KamikazeTask& task, KamikazeTaskHos
     // 009AF521: the approach update. Documented deviation (cc13-D1): 009FADA0
     // and the gun-block clear are 009AF0A0's own first calls in the image
     // (clear, then 009FADA0); they are hoisted here, 009FADA0 first, which the
-    // live host cannot observe (its clear_gun_block_34_38 is empty).
+    // live host cannot observe (its clear_gun_block_34_38 is empty). Entering
+    // gotowards here runs 009AC160 -> 009ABF60 without their 009FA260 tail pick;
+    // the host picks at the next 009FADA0 instead (blocked, see 009ABF60).
     std::array<float, 3> ref_point{};
     const bool has_target = host.update_target_ref_009fada0(ap.ref, dt, ref_point);
     r.has_target = has_target;
