@@ -1436,7 +1436,7 @@ Frames: BSM03/04/05 24000, BSM06 44000, IJN18 100000, USN15 104000; otherwise as
 | BSM06 `h1_i` (new) | completed 1518.36 s | **failed 1164.01 s** | completed 1254.10 s | |
 | BSM06 `h1_j` (new) | completed 1518.36 s | completed 1263.11 s | **no end** (2200 s) | |
 | USN15 `g57_mb` (new, lost) | **failed 3444.28 s** | **failed 1572.46 s** | **failed 1457.35 s** | see below |
-| JM08 `s63_v3` (new; ships63's base e3cdbd967) | completed 4246.98 s | **no end** | **failed 1911.79 s** | ref only, knife-edge |
+| JM08 `s63_j8_v3` (new; ships63's base e3cdbd967) | completed 4246.98 s | **no end** | **failed 1911.79 s** | ref only, knife-edge |
 
 - Every completion and every winning EndMission (MissionStatus=true) logs the guard. helm_role_forced=0 on every run.
   helm_moveto_unselected=0 everywhere except BSM09 d1.
@@ -1485,8 +1485,14 @@ Frames: BSM03/04/05 24000, BSM06 44000, IJN18 100000, USN15 104000; otherwise as
   - The move lies in 9a3179122..3364b40a5. That range holds 32 code commits, among them the seat-artillery flips
     322d3f8fa, the party flip 4131eba6f, the airborne launch 691b19de2 and the gate flip. Per-flip attribution is
     not measured, and the row goes back to gunnery57.
-- **JM08 `s63_v3`** (cc9-ships63, `config/win_orders/jm08_s63_v3.txt`, committed by ships63) was timed by ships63 on
-  e3cdbd967 at 110000 frames and is not re-timed here.
+- **JM08 `s63_j8_v3`** (cc9-ships63's plan, made by its generator `local\s63_j8mk.py` v3) is committed here as
+  `config/win_orders/jm08_s63_j8_v3.txt`. That file is a byte copy of `cc9-ships44\local\s63_j8_v3.txt`: 10.3 MB,
+  205322 lines. ships63 timed it on e3cdbd967 at 110000 frames; it is not re-timed here.
+  - The plan keeps ships62's h phase 1, then drops the Oscar (154) lines from 14000 and the bomber (166/167) lines
+    from 6000.
+  - Bombers go back onto the landships from 20000; LST 03 dies at 1189.8 s.
+  - Phase-2 cover lines run from 20000, with Gekko (152) ahead of Oscar.
+  - Held slots are re-ordered (order 1, then order 3) onto SBD #3.3-3.6 at 27820 and onto C47 #4.1-4.5 at 31420.
   - ref: completed 4246.98 s, a knife-edge (the HQ bottoms at 9 hp).
   - 20,3: no end.
   - default: failed 1911.79 s ("The HQ has been destroyed!").
