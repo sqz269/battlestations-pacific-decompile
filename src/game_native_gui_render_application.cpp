@@ -14,6 +14,7 @@
 #include "bsp/game_native_text_application.hpp"
 #include "bsp/game_hosts_text.hpp"
 #include "bsp/font_registry_startup.hpp"
+#include "bsp/camera_configuration.hpp"
 #include "bsp/gui_material_binding.hpp"
 #include "bsp/gui_widget_clip_refresh.hpp"
 #include "bsp/native_camera_reference.hpp"
@@ -128,8 +129,9 @@ struct GameNativeGuiRenderApplication::Impl {
         void invoke_child(Word target, void* actual, Word requested, Word recursion) override {
             require(target == 0x00b6ed80 && !requested && !recursion,
                 "native Text scene requires the genuine null-lighting Model attachment");
-            auto* reference = dynamic_cast<NativeModelReference*>(&app.renderer.actual_owners().resolve_actual(actual));
-            require(reference && reference == app.widget->model_reference() &&
+            auto* reference = app.widget->model_reference();
+            require(reference && &reference->model_owner().storage.node == actual &&
+                reference->model_owner().phase == NativeModelOwner::Phase::live &&
                 &reference->model_owner().environment.nodes == &app.nodes->models().nodes,
                 "native Text scene lost its same canonical Model");
             auto& attachment = reference->scene_attachment();
@@ -212,7 +214,9 @@ struct GameNativeGuiRenderApplication::Impl {
         properties = std::make_shared<GuiTable>();
         properties->named = {{"Font", GuiValue(font.descriptor.name)},
             {"Multiline", GuiValue(false)}, {"Visible", GuiValue(true)},
-            {"Pos", GuiValue(vector_table({0.05, 0.10, 0.0}))},
+            // Explicit diagnostic placement inside AA3E00's 1..19984 depth
+            // volume. This is authored bring-up content, not a native default.
+            {"Pos", GuiValue(vector_table({0.05, 0.10, -10000.0}))},
             {"Size", GuiValue(vector_table({0.9, 0.08}))},
             {"Color", GuiValue(vector_table({1.0, 1.0, 1.0, 1.0}))}};
         auto layout = std::make_unique<GuiLayoutWidget>();

@@ -38,6 +38,8 @@ The explicit bring-up text is a standalone, non-localized literal. It is not a
 page, and no projected page is copied into a second owner. Context substitution
 requires the application's current Lua context and is rejected for this literal
 bring-up rather than choosing another page's VM. This is not button/input work.
+Its explicit diagnostic position is (0.05, 0.10, -10000), inside the native GUI
+camera's depth volume; that content choice is not a recovered widget default.
 
 The GUI pass owns one actual 24h scene and one actual 45Ch pooled camera.
 AA3E00's existing camera placement, AA2020 orthographic setup and native label
