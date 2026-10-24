@@ -230,15 +230,11 @@ void director_issue_command_0071ecf0(CruiseCommandHost& host,
     host.route_set_command_message(command, target, 1);                     // 0071ED6C
 }
 
-// 00721A40's 5Ch arm, 00721AEE..00721B87, RET 4.
-// Coverage: partial. The 5Ah, 5Bh, 5Dh, 5Eh, 5Fh and 60h arms of the same
-// routine are read in the doc but not projected here.
-void gameunit_apply_set_command_00721a40(CruiseCommandHost& host,
-                                         int session_mode,
-                                         std::uint8_t message_flag) noexcept {
-    if (!host.message_is_category(kGameUnitSetCommandMessageType)) {        // 00721AEE
-        return;
-    }
+namespace {
+
+// 00721AFC..00721B87, the 5Ch arm after its category test.
+void apply_set_command_arm(CruiseCommandHost& host, int session_mode,
+                           std::uint8_t message_flag) noexcept {
     if (session_mode == 2) {                                                // 00721B01
         const SceneCommandTarget probe = host.message_target_descriptor();  // 00721B11
         if (probe.kind != 0) {                                              // 00721B16
@@ -257,6 +253,87 @@ void gameunit_apply_set_command_00721a40(CruiseCommandHost& host,
     const SceneCommandTarget target = host.message_target_descriptor();     // 00721B6C
     const std::uint32_t command = host.message_command_object();            // 00721B74
     host.director_queue_command(command, target);                           // 00721B7C
+}
+
+} // namespace
+
+// 00721A40's 5Ch arm, 00721AEE..00721B87, RET 4. The whole routine is
+// gameunit_apply_message_00721a40 below; the live hosts call this arm alone.
+void gameunit_apply_set_command_00721a40(CruiseCommandHost& host,
+                                         int session_mode,
+                                         std::uint8_t message_flag) noexcept {
+    if (!host.message_is_category(kGameUnitSetCommandMessageType)) {        // 00721AEE
+        return;
+    }
+    apply_set_command_arm(host, session_mode, message_flag);
+}
+
+// 00721A40 BSP_WeaponDirector_ApplyGameUnitMessage (216 insns), cc13-wb1.
+// ABI: __thiscall(ECX = holder, [holder] = director; message), RET 4 at every
+// exit; EDI = holder, ESI = message. No EH frame. The category tests are the
+// message's vtable[0Ch] in the order 5Ah, 5Bh, 5Ch, 5Dh, 5Eh, 60h, 5Fh; the
+// first that answers runs and returns.
+// Uncertainty: the director, endpoint, entity and message are host handles,
+// not the Win32 objects; not wired; not ABI-compatible.
+void gameunit_apply_message_00721a40(GameUnitMessageHost& host, int session_mode) {
+    // 00721A46..00721A71: no director, no endpoint, no subject entity, or the
+    // entity's +5Eh byte set: nothing runs.
+    if (!host.director_present() || !host.director_endpoint_present()) {
+        return;
+    }
+    const std::uint32_t entity = host.director_endpoint_entity_vcall13c();
+    if (entity == 0 || host.entity_byte_5e(entity) != 0) {
+        return;
+    }
+    if (host.message_is_category(kGameUnitDirectorMessageType)) {          // 00721A85
+        host.director_receive_message_vcall38();                            // 00721A93
+        return;
+    }
+    if (host.message_is_category(kGameUnitPathCommandMessageType)) {       // 00721AA7
+        // 00721AAD..00721ADB: the float 0.0 pushed at 00721AB6 is 00465080's
+        // second argument; 00720FA0 takes none.
+        const std::uint32_t subject = host.message_resolve_entity_at_field20_00720fa0();
+        const SceneCommandTarget target = host.command_target_from_entity_00465080(subject, 0.0f);
+        host.director_set_command(kGameUnitPathCommandObject, target);      // 00721AD3 vtable[60h]
+        host.director_set_path_follow_mode_0071c1b0();                      // 00721ADB
+        return;
+    }
+    if (host.message_is_category(kGameUnitSetCommandMessageType)) {        // 00721AF2
+        apply_set_command_arm(host, session_mode, host.message_byte(0x20)); // 00721B36 flag
+        return;
+    }
+    if (host.message_is_category(kGameUnitClearCommandMessageType)) {      // 00721B93
+        if (host.message_byte(0x20) != 0) {                                 // 00721B99
+            const std::int32_t index = host.message_int32(0x24);            // 00721BA1
+            if (index < 0) {
+                host.director_clear_all_command_slots_00720ca0();           // 00721BA8
+            } else {
+                host.director_clear_primary_command_00720850(index);        // 00721BB7
+            }
+        } else {
+            host.director_clear_override_command_0071e610();                // 00721BC5
+        }
+        return;
+    }
+    if (host.message_is_category(kGameUnitFireTargetMessageType)) {        // 00721BDC
+        // 00721BE2 pushes byte +23h before 00720FE0 (no stack argument), so it
+        // is 00836240's second argument.
+        const std::uint8_t flag = host.message_byte(0x23);
+        host.director_store_fire_target_00836240(
+            host.message_resolve_target_entity_00720fe0(), flag);           // 00721BF1
+        return;
+    }
+    if (host.message_is_category(kGameUnitDirectorWordMessageType)) {      // 00721C08
+        host.director_call_0071c0b0(host.message_int32(0x20));              // 00721C14
+        return;
+    }
+    if (host.message_is_category(kGameUnitUserPathPointMessageType)) {     // 00721C2B
+        if (host.message_byte(0x2c) != 0) {                                 // 00721C31
+            host.director_add_user_path_point_007207c0();                   // 00721C3D
+        } else {
+            host.director_clear_user_path_points_0071f5d0();                // 00721C4B
+        }
+    }
 }
 
 // 008358D0, __thiscall(director)(command, target), RET 8 at 0083593A.

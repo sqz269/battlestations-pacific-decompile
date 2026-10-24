@@ -414,6 +414,64 @@ void gameunit_apply_set_command_00721a40(CruiseCommandHost& host,
                                          int session_mode,
                                          std::uint8_t message_flag) noexcept;
 
+// ---------------------------------------------------------------------------
+// 00721A40 as a whole body (cc13-wb1)
+// ---------------------------------------------------------------------------
+// __thiscall(ECX = holder whose +0 is the weapon director; message), RET 4,
+// body 00721A40..00721C56 (INT3 padding from 00721C57). Every call the image
+// makes is a host method named for its target; `session_mode` is
+// [00E188A8]+1FE4h as for the 5Ch arm. Not wired: the live hosts call the 5Ch
+// arm above directly.
+inline constexpr std::uint8_t kGameUnitDirectorMessageType = 0x5a;
+inline constexpr std::uint8_t kGameUnitPathCommandMessageType = 0x5b;
+inline constexpr std::uint8_t kGameUnitFireTargetMessageType = 0x5e;
+inline constexpr std::uint8_t kGameUnitUserPathPointMessageType = 0x5f;
+inline constexpr std::uint8_t kGameUnitDirectorWordMessageType = 0x60;
+// 00721ACE pushes this command object for the 5Bh arm's director vtable[60h].
+inline constexpr std::uint32_t kGameUnitPathCommandObject = 0x00e08f80u;
+
+struct GameUnitMessageHost : CruiseCommandHost {
+    // 00721A46..00721A55: the director at holder+0 and its endpoint at +34h.
+    virtual bool director_present() = 0;
+    virtual bool director_endpoint_present() = 0;
+    // 00721A5B..00721A63: endpoint vtable[13Ch], the subject entity or 0.
+    virtual std::uint32_t director_endpoint_entity_vcall13c() = 0;
+    // 00721A6D: entity byte +5Eh.
+    virtual std::uint8_t entity_byte_5e(std::uint32_t entity) = 0;
+    // Message fields read in place: byte +20h, +23h, +2Ch; dword +20h, +24h.
+    virtual std::uint8_t message_byte(std::uint32_t offset) = 0;
+    virtual std::int32_t message_int32(std::uint32_t offset) = 0;
+    // 00721A93: director vtable[38h](message).
+    virtual void director_receive_message_vcall38() = 0;
+    // 00720FA0 BSP_GameUnitMessage_ResolveEntityAtField20, __thiscall(message), RET.
+    virtual std::uint32_t message_resolve_entity_at_field20_00720fa0() = 0;
+    // 00465080 BSP_CommandTarget_FromEntity, __thiscall(out)(entity, float), RET 8.
+    virtual SceneCommandTarget command_target_from_entity_00465080(std::uint32_t entity,
+        float value) = 0;
+    // 0071C1B0 BSP_WeaponDirector_SetPathFollowMode, __thiscall(director)(&message+24h), RET 4.
+    virtual void director_set_path_follow_mode_0071c1b0() = 0;
+    // 00720CA0 BSP_WeaponDirector_ClearAllCommandSlots, __fastcall(director).
+    virtual void director_clear_all_command_slots_00720ca0() = 0;
+    // 00720850 BSP_WeaponDirector_InternalClearPrimaryCommand, __thiscall(director)(index), RET 4.
+    virtual void director_clear_primary_command_00720850(std::int32_t index) = 0;
+    // 0071E610 BSP_WeaponDirector_ClearOverrideCommand, __fastcall(director).
+    virtual void director_clear_override_command_0071e610() = 0;
+    // 00720FE0 BSP_SessionMessage_ResolveTargetEntity, __fastcall(message), EAX.
+    virtual std::uint32_t message_resolve_target_entity_00720fe0() = 0;
+    // 00836240 BSP_WeaponDirector_StoreFireTarget, __thiscall(director)(entity, byte), RET 8.
+    virtual void director_store_fire_target_00836240(std::uint32_t entity,
+        std::uint8_t flag) = 0;
+    // 0071C0B0, adjustor thunk into the director, __thiscall(director)(dword), RET 4.
+    virtual void director_call_0071c0b0(std::int32_t value) = 0;
+    // 007207C0 BSP_WeaponDirector_ApplyAddUserPathPoint, __thiscall(director)(&message+20h), RET 4.
+    virtual void director_add_user_path_point_007207c0() = 0;
+    // 0071F5D0 BSP_WeaponDirector_ClearUserPathPoints, __fastcall(director).
+    virtual void director_clear_user_path_points_0071f5d0() = 0;
+};
+
+// 00721A40 BSP_WeaponDirector_ApplyGameUnitMessage, the whole body.
+void gameunit_apply_message_00721a40(GameUnitMessageHost& host, int session_mode);
+
 // 008358D0, __thiscall(director)(command, target), RET 8, returns whether the
 // push happened. Complete, 008358D0-0083593C.
 // The descriptor is taken by reference because 00836040, reached through
