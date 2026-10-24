@@ -34,7 +34,8 @@ bool hints_seconds_left_0054d3c0_cc15(std::int32_t& seconds_left) noexcept;
 // hint pause 004D94F0 last stored, so a critical hint stops them as the image
 // does. Nothing else reads 620h in the host: the pilot 00519BB0, map icon
 // 005ADDA0 and Support Manager 4Eh 00675C40 updates are not run.
-inline constexpr bool kHintPauseHudGateCc15Bound = false;
+// ON (cc9-lua72): every WINS row is gameplay identical with it (docs/WINS_TABLE.md).
+inline constexpr bool kHintPauseHudGateCc15Bound = true;
 // game+620h as 004D94F0 last stored it on the process's tracker [00E198D0];
 // false before the tracker or its screen 34h exists.
 bool game_hint_pause_620_cc15() noexcept;

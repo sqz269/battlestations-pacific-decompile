@@ -1329,3 +1329,80 @@ spawns at z 6500-7000 at step about 6520. The ref wins depend on Kita1 living in
 
 Attribution for IJN18's drift since d175c1aac: moved by the 05cb6f1bc..86b81e2a8 flips; per-flip attribution not
 measured.
+
+## 2026-10-24, hint flip and combined re-time (cc9-lua72, keeper)
+
+Base: agent/cc9-lua52 = origin/main 34daf632e + agent/cc15-hint2 (64163508f, 77cc21b65: kHintTriggerPassesCc15Bound and
+kHudHintsSecondsLeftBound ON) + agent/cc15-hint2-gate (9809f7532, 639d32eab) + the kHintPauseHudGateCc15Bound flip.
+Builds in the cc9-lua52 tree's `local\`: `l72_m` = 34daf632e, the tree build at 204a6959f (hint2 ON, gate OFF), `l72_g`
+= 204a6959f with the gate ON (the flip's build), `l72_p` = 802e1d8b9. Logs `local\l72r_<row>_<m|main|g|p>_<ref|j3|sh>.log`
+(launcher `l72_runs.ps1`, rows `l72_rows.txt`, summarizer `l72_q.py`). Every log is free of "present failed" and shows
+"rng streams: on" in ref and 20,3. Frames as in the l71 rows (JM06 120000, ESMP08 140000, IJN08 100000, USN21 80000).
+
+**The hint pair.** pair_diff says gameplay identical (exit 0 or 1) on every row with a ref pair: 34daf632e vs hint2
+(gate OFF) vs hint2 + gate ON for ESMP08, JM06, LOMP10, USN12, BSM01, USN21, IJN08 and USN02. LOMP06, USN21 and IJN08
+raise a critical hint at t=0.10 s (`hint pause t=0.10 1`); no other row raises one. game+620h parks GUI screens and
+leaves the simulation alone, and with the gate ON it also skips the HUD root 44h and markers 4Dh updates. No plan
+stalls on it. lua71's dismiss copies (`local\l71_l6_v2_h.txt`, `local\l71_u21_c2_h.txt`, `20 input 0x4A`) give the same
+end in all three envs: the 0x4A press drops the first hint at 1.05 s, and a second critical hint goes up in the same
+frame and stays. No plan needs the dismiss line, so the rows keep their files. The pre-flip compile check
+(off_switch_on_build.py) exits 0 and the full build passes.
+
+**Re-time on the flip build** (ref = BSP_GUNNERY_RNG_STREAMS=1, 20,3 = plus BSP_FRAME_JITTER=20,3, default = no env;
+BSP_DEATH_TABLE=1 throughout). "802e" is the same plan's ref end on 802e1d8b9.
+
+| Row (plan) | ref | 20,3 | default | 802e ref | notes |
+| --- | --- | --- | --- | --- | --- |
+| USN01 `l69_u1_a` | completed 370.03 s | completed 425.02 s | completed 455.01 s | 410.02 s | moved (A) |
+| USN02 `l72_u2_g4` (new) | completed 245.06 s | **failed 130.05 s** | completed 230.06 s | - | re-plan, see below |
+| USN12 `l68_u12_e8` | completed 1560.40 s | **failed 1290.13 s** | completed 1620.46 s | 1560.40 s | knife-edge in 20,3 |
+| PRCP01 `p9_p01_k` | completed 1024.52 s | completed 817.77 s | completed 540.14 s | 715.45 s | moved (A) |
+| LOMP10 `p3_l10_b` | completed 751.49 s | completed 803.48 s | completed 767.49 s | 751.49 s | |
+| JM06 `l70_j6_n` | completed 1922.75 s | completed 790.93 s | completed 1670.50 s | 1922.75 s | see below |
+| ESMP08 `p12_e8_rb` | completed 1284.28 s | completed 1237.28 s | completed 1199.19 s | 1337.38 s | moved (A) |
+| BSM09 `l68_b9_d1` | EndMission 429.02 s | EndMission 405.02 s | EndMission 429.02 s | 405.02 s | moved (A); provisional |
+| LOMP06 `g56_l6_v2` | completed 330.84 s | completed 323.89 s | completed 267.86 s | 330.84 s (gunnery56) | |
+| BSM01 `s62_b1_h` | EndMission 815.92 s | EndMission 887.91 s | **failed 1563.40 s** | 815.92 s (ships62) | default: luaMissionFailed |
+| USN21 `g56_c2` | completed 2966.77 s | completed 2881.69 s | completed 2901.71 s | 2866.67 s | moved (A) |
+| IJN18 `l70_i18_r` | **failed 653.96 s** | **failed 665.96 s** | EndMission 1585.42 s | failed 653.96 s | lost; default provisional |
+| IJN08 `p10_i08_z` | **no end** (100000 frames) | completed 3036.84 s | completed 2991.79 s | no end | drift, bisect2 |
+
+- Every completion and every winning EndMission (MissionStatus=true) logs the guard. Every row has
+  helm_role_forced=0. helm_moveto_unselected is 0 everywhere except BSM09 d1 (15-16, so the row is provisional) and
+  IJN18 (38 in ref and 20,3, 173 in default, so the default-env EndMission is provisional too).
+- **(A)** Moved between 802e1d8b9 and 34daf632e. The code commits in that range are helm1's four flips (e7871ab3e
+  MovieEngageRoleRelease, 7d5285bb2 MapScreenHelmRelease, 06d9d1440 ShipViewPreviousUnitRelease, c398eafe9
+  UnitDeathLimboPush, merged at a7a80cd70), physics25's steer gate 4b308a58d and lua71's ac93c856f (FreeFire,
+  atkkind), plus cc13 OFF and log-only commits. Per-flip attribution is not measured. The hint flips move nothing.
+- **JM06** is not a drift. 1922.75 s is frame 38455, so a 24000-frame run cannot reach the end; at 120000 frames it
+  completes at 1922.75 s on 802e1d8b9, on 34daf632e and on the flip build.
+- **USN12** gained its ref win back (failed 819.92 s on 86b81e2a8; SHIP_AI 316 attributes that loss to the hitq flip).
+  It holds on 802e1d8b9 and here. The 20,3 loss is the knife-edge noted before.
+- **LOMP10** moved 1050.45 -> 751.49 s between 86b81e2a8 and 802e1d8b9 (that range's flip batch) and is stable since.
+- **IJN08** ref has no end on 802e1d8b9 either; it stays listed for cc9-bisect2. The 20,3 and default completions are
+  new observations, not a re-time of the row.
+
+**USN02.** `l71_u2_ec2` (ref 225.06 s on 802e1d8b9) fails at 55.05 s in all three envs on 34daf632e. Mechanism: the
+mission's intro movie engages at frame 81 (`MovCamNew`, 005CD1A0), and with kMovieEngageRoleReleaseCc13Bound
+(e7871ab3e) the engage releases the player's role through 0077C470 / 0080E290. That drops the frame-25 takehelm.
+Houston's AI then drives it north-east toward Minegumo until the script re-selects it at about frame 523, and
+Minegumo's 38.5 s spread sinks it at 53.40 s. A takehelm issued during the movie (90 / 200 / 350, `l72_u2_ec3`/`ec4`)
+is applied but does not steer: the movie camera replaced the ShipCaptain. From frame 530 Houston is at
+(1240,-5690), heading 32 deg. A right turn toward (-1000,-9000) runs into Minegumo's spread, and the old western
+escape crosses the Asagumo/Yukikaze spreads aimed at John2/John3 at 110-130 s. Variants (`local\l72_u2_<v>.txt`):
+
+| plan | 530 leg | later legs | ref | 20,3 |
+| --- | --- | --- | --- | --- |
+| e5, f1-f6 | west | -1000,-9000 or EscapePoint by 1340-1600 | failed 125-150 s | failed (e5 130.05 s) |
+| g4 (row) | -3000,-5000 | 1340 -2500,-7500; 2600 EscapePoint stop 200 | completed 245.06 s | failed 130.05 s |
+| g5 | -3000,-5000 | 1340 -3000,-7000; 2600 EscapePoint | failed 175.06 s | completed 235.06 s |
+| g7 | -3000,-5000 | g4 + 2200 throttle 0.4 | failed 130.05 s | completed 235.06 s |
+| g10 | -3000,-5000 | 1340 -3000,-7000; 2800 EscapePoint | failed 175.06 s | completed 240.06 s |
+| g1, g2, g6, g8, g9 | | | failed 145-175 s | failed 130.05 s where run |
+
+No variant wins both ref and 20,3. g4 wins ref and default, so it is the row (`config/win_orders/usn02_l72_u2_g4.txt`),
+with the 20,3 loss marked. g4's lines are ec2's, with the 530 leg aimed west and the escape run through
+(-2500,-7500). The g3 ref run exited -1 (void, not repeated).
+
+Lead list (drift without a known mechanism): IJN08 ref (bisect2). IJN18 is lost on the releasegun base; the re-plan
+waits on cc13's takehelm-after-releasegun verdict.
