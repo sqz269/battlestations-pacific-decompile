@@ -216,8 +216,6 @@ struct SceneUnitRegistrationResult {
 SceneUnitRegistrationResult register_scene_unit_004e96d0(const SceneUnitRegistrationInputs& inputs,
                                                         VehicleClassRegistry& registry);
 
-// 004E6BC0, the squadron's pass-2 body: no LaunchClassID, no Lua, and the type
-// itself is registered as hidden stock.
 // 004E98F0 (MotherShipGen), 004E9900 (AirField) and 004E9910 (Shipyard), the
 // registration thunks of the three base classes: PUSH ESI / MOV ESI,ECX /
 // CALL 004E96D0 / MOV ECX,ESI / POP ESI / JMP <stock walk>. The same bag goes
@@ -226,6 +224,10 @@ SceneUnitRegistrationResult register_scene_unit_004e96d0(const SceneUnitRegistra
 // 008433C0 for Shipyard (shipyard_register_stock_008433c0,
 // gameplay_seg52_cc13.cpp). The walk is the caller's callable, so this file
 // keeps no link dependency on either.
+// EAX: the thunks return whatever the tail walk leaves in EAX; these functions
+// return 004E96D0's result instead. That is harmless because the only call is
+// the registry entry +8h at 0046D57A (BSP_SceneFile_ReadEntityBlock), which
+// jumps to 0046D5E4 and overwrites EAX with the 008F2260 call without reading it.
 SceneUnitRegistrationResult register_mother_ship_gen_004e98f0(const SceneUnitRegistrationInputs& inputs,
                                                               VehicleClassRegistry& registry,
                                                               const std::function<void()>& plane_stock_006bcf40);
@@ -236,6 +238,8 @@ SceneUnitRegistrationResult register_shipyard_004e9910(const SceneUnitRegistrati
                                                        VehicleClassRegistry& registry,
                                                        const std::function<void()>& shipyard_stock_008433c0);
 
+// 004E6BC0, the squadron's pass-2 body: no LaunchClassID, no Lua, and the type
+// itself is registered as hidden stock.
 SceneUnitRegistrationResult register_plane_squadron_004e6bc0(int type_id, int party,
                                                              VehicleClassRegistry& registry);
 
