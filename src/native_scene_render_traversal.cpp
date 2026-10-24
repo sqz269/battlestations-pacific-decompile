@@ -3,6 +3,7 @@
 #include "bsp/native_camera_cache_getters.hpp"
 #include "bsp/native_group_world_sphere.hpp"
 #include "bsp/native_model_owner.hpp"
+#include "bsp/native_matrix_indexed_model_owner.hpp"
 #include "bsp/native_traceline_lifetime.hpp"
 
 #include <cstddef>
@@ -11,40 +12,48 @@
 
 namespace bsp {
 static_assert(sizeof(void*) == 4);
-static_assert(sizeof(NativeRender20Profiles) == 24);
+static_assert(sizeof(NativeRender20Profiles) == 28);
 static_assert(offsetof(NativeRender20Profiles, node_00d62c88) == 0);
 static_assert(offsetof(NativeRender20Profiles, camera_00d62cf0) == 4);
 static_assert(offsetof(NativeRender20Profiles, model_00d62de8) == 8);
 static_assert(offsetof(NativeRender20Profiles, traceline_00d0c928) == 12);
 static_assert(offsetof(NativeRender20Profiles, group_00d634f8) == 16);
 static_assert(offsetof(NativeRender20Profiles, group_environment) == 20);
+static_assert(offsetof(NativeRender20Profiles, matrix_model_00d63590) == 24);
 static_assert(offsetof(NativeTracelineRenderAccess, zero_00d7a218) == 28);
 static_assert(offsetof(NativeTracelineRenderAccess, clock_current_14) == 52);
 static_assert(offsetof(NativeTracelineRenderAccess, render20_profiles) == 56);
 static_assert(sizeof(NativeTracelineRenderAccess) == 60);
 
 NativeRender20Profiles::NativeRender20Profiles(const NativeCameraEnvironment& camera,
-    const NativeModelEnvironment& model, const NativeGroupEnvironment* group)
+    const NativeModelEnvironment& model, const NativeGroupEnvironment* group,
+    const NativeMatrixIndexedModelEnvironment* matrix)
     : node_00d62c88(camera.vtable_00d62c88),
       camera_00d62cf0(camera.vtable_00d62cf0),
       model_00d62de8(model.vtable_00d62de8), traceline_00d0c928(nullptr),
-      group_00d634f8(group ? group->vtable_00d634f8 : nullptr), group_environment(group) {
+      group_00d634f8(group ? group->vtable_00d634f8 : nullptr), group_environment(group),
+      matrix_model_00d63590(matrix ? matrix->vtable_00d63590 : nullptr) {
     if (!node_00d62c88 || !camera_00d62cf0 || !model_00d62de8 ||
         model.vtable_00d62c88 != node_00d62c88)
         throw std::invalid_argument("ordinary render traversal requires canonical node/camera/model table views");
     if (group && (!group_00d634f8 || group->vtable_00d62c88 != node_00d62c88 ||
         &group->nodes != &model.nodes || &group->nodes != &camera.nodes))
         throw std::invalid_argument("group render traversal requires the same canonical node/table domain");
+    if (matrix && (!matrix_model_00d63590 || &matrix->base != &model ||
+        &matrix->base.nodes != &camera.nodes))
+        throw std::invalid_argument("matrix model render traversal requires the same canonical base/node/table domain");
 }
 
 NativeRender20Profiles::NativeRender20Profiles(const NativeCameraEnvironment& camera,
     const NativeModelEnvironment& model, const NativeTracelineLifetimeAccess& line,
-    const NativeModelEnvironment& line_model, const NativeGroupEnvironment* group)
+    const NativeModelEnvironment& line_model, const NativeGroupEnvironment* group,
+    const NativeMatrixIndexedModelEnvironment* matrix)
     : node_00d62c88(camera.vtable_00d62c88),
       camera_00d62cf0(camera.vtable_00d62cf0),
       model_00d62de8(model.vtable_00d62de8),
       traceline_00d0c928(line.vtable_00d0c928),
-      group_00d634f8(group ? group->vtable_00d634f8 : nullptr), group_environment(group) {
+      group_00d634f8(group ? group->vtable_00d634f8 : nullptr), group_environment(group),
+      matrix_model_00d63590(matrix ? matrix->vtable_00d63590 : nullptr) {
     if (!node_00d62c88 || !camera_00d62cf0 || !model_00d62de8 || !traceline_00d0c928 ||
         model.vtable_00d62c88 != node_00d62c88 ||
         line_model.vtable_00d62c88 != node_00d62c88 ||
@@ -53,6 +62,9 @@ NativeRender20Profiles::NativeRender20Profiles(const NativeCameraEnvironment& ca
     if (group && (!group_00d634f8 || group->vtable_00d62c88 != node_00d62c88 ||
         &group->nodes != &model.nodes || &group->nodes != &camera.nodes))
         throw std::invalid_argument("group render traversal requires the same canonical node/table domain");
+    if (matrix && (!matrix_model_00d63590 || &matrix->base != &model ||
+        &matrix->base.nodes != &camera.nodes))
+        throw std::invalid_argument("matrix model render traversal requires the same canonical base/node/table domain");
 }
 
 __declspec(naked) NativeRender20Body __fastcall select_native_render20_body(
@@ -113,6 +125,8 @@ __declspec(naked) void translate_captured_profile() noexcept {
         je traceline
         cmp eax, 00d634f8h
         je group
+        cmp eax, 00d63590h
+        je matrix_model
     unavailable:
         xor eax, eax
         ret
@@ -130,6 +144,9 @@ __declspec(naked) void translate_captured_profile() noexcept {
         ret
     group:
         mov eax, dword ptr [edx + 10h]
+        ret
+    matrix_model:
+        mov eax, dword ptr [edx + 18h]
         ret
     }
 }

@@ -9,6 +9,7 @@
 namespace bsp {
 struct NativeCameraEnvironment;
 struct NativeModelEnvironment;
+struct NativeMatrixIndexedModelEnvironment;
 struct NativeGroupEnvironment;
 struct NativeTracelineLifetimeAccess;
 
@@ -25,16 +26,21 @@ struct NativeRender20Profiles {
     const volatile std::uint32_t* const traceline_00d0c928;
     const volatile std::uint32_t* const group_00d634f8;
     const NativeGroupEnvironment* const group_environment;
+    // Optional genuine derived model view. Its +20 is the SAME B748E0 body;
+    // the actual owner/pool/palette are supplied by the matrix model domain.
+    const volatile std::uint32_t* const matrix_model_00d63590;
 
     NativeRender20Profiles(const NativeCameraEnvironment&,
         const NativeModelEnvironment&, const NativeTracelineLifetimeAccess&,
         const NativeModelEnvironment& actual_traceline_model_environment,
-        const NativeGroupEnvironment* actual_group_environment = nullptr);
+        const NativeGroupEnvironment* actual_group_environment = nullptr,
+        const NativeMatrixIndexedModelEnvironment* actual_matrix_environment = nullptr);
     // Ordinary model-only application composition. No Traceline lifetime is
     // manufactured: D0C928 remains unsupported in this narrower domain.
     NativeRender20Profiles(const NativeCameraEnvironment&,
         const NativeModelEnvironment&,
-        const NativeGroupEnvironment* actual_group_environment = nullptr);
+        const NativeGroupEnvironment* actual_group_environment = nullptr,
+        const NativeMatrixIndexedModelEnvironment* actual_matrix_environment = nullptr);
 };
 
 // Complete B72190[84]. Native ECX scene, stack context, RET4; adds EDX access.
