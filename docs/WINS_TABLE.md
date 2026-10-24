@@ -1330,7 +1330,7 @@ spawns at z 6500-7000 at step about 6520. The ref wins depend on Kita1 living in
 Attribution for IJN18's drift since d175c1aac: moved by the 05cb6f1bc..86b81e2a8 flips; per-flip attribution not
 measured.
 
-## 2026-10-24, hint flip and combined re-time (cc9-lua72, keeper)
+## 2026-10-24, hint flip and combined re-time as of 34daf632e (cc9-lua72, keeper; superseded by the 515837c10 re-time below)
 
 Base: agent/cc9-lua52 = origin/main 34daf632e + agent/cc15-hint2 (64163508f, 77cc21b65: kHintTriggerPassesCc15Bound and
 kHudHintsSecondsLeftBound ON) + agent/cc15-hint2-gate (9809f7532, 639d32eab) + the kHintPauseHudGateCc15Bound flip.
@@ -1406,3 +1406,74 @@ with the 20,3 loss marked. g4's lines are ec2's, with the 530 leg aimed west and
 
 Lead list (drift without a known mechanism): IJN08 ref (bisect2). IJN18 is lost on the releasegun base; the re-plan
 waits on cc13's takehelm-after-releasegun verdict.
+
+## 2026-10-24, re-time on main 515837c10 (cc9-lua72, keeper)
+
+Base: main 515837c10, which contains the gate flip (1fae686d4), hint2 ON, atktgt ON (997fe5044), the seat-artillery
+flips (cdda1593d), the airborne launch, the party flip and bisect2's PilotMoveTo fix (9f45384fc). The tree build of
+agent/cc9-lua52 is identical to 515837c10. Logs are `cc9-lua52\local\l72r_F<row>_main_<ref|j3|sh>.log`. Every log
+has pf=0 and exit 0. The first launches died at renderer init (hr=0x88760868, exit 4); they were voided and re-run.
+Frames: BSM03/04/05 24000, BSM06 44000, IJN18 100000, USN15 104000; otherwise as in the l71 rows.
+
+| Row (plan) | ref | 20,3 | default | notes |
+| --- | --- | --- | --- | --- |
+| USN01 `l69_u1_a` | completed 370.03 s | completed 425.02 s | completed 455.01 s | |
+| USN02 `l72_u2_g4` | completed 245.06 s | **failed 130.05 s** | completed 230.06 s | lost ec2: e7871ab3e (below) |
+| USN12 `l68_u12_e8` | completed 1560.40 s | **failed 1290.13 s** | completed 1620.46 s | |
+| PRCP01 `p26_p01_a` (new) | completed 833.02 s | completed 726.70 s | completed 755.69 s | p9_p01_k lost to atktgt |
+| LOMP10 `p3_l10_b` | completed 751.49 s | completed 803.48 s | completed 767.49 s | |
+| JM06 `l70_j6_n` | completed 1922.75 s | completed 790.93 s | completed 1670.50 s | |
+| ESMP08 `p12_e8_rb` | completed 1284.28 s | completed 1237.28 s | completed 1199.19 s | |
+| BSM09 `l68_b9_d1` | EndMission 414.02 s | EndMission 405.02 s | EndMission 405.02 s | provisional (unselected 15-16) |
+| LOMP06 `g56_l6_v2` | completed 330.84 s | completed 323.89 s | completed 267.86 s | |
+| BSM01 `s62_b1_h` | EndMission 821.92 s | **no end** (phase 3) | **failed 1875.70 s** | |
+| USN21 `g56_c2` | completed 2966.77 s (x3) | completed 2881.69 s | completed 2901.71 s | |
+| IJN18 `l72_i18_ia5` (new) | EndMission 1410.25 s | no end, faithful soft-lock | EndMission 1550.39 s | |
+| IJN08 `p10_i08_z` | **no end** | **failed 1290.13 s** | **no end** | re-plan needed |
+| BSM03 `h1_x8` (new) | completed 486.00 s | **failed 393.03 s** | **failed 321.05 s** | ref only |
+| BSM04 `h1_f` (new) | completed 941.89 s | completed 671.96 s | completed 671.96 s | all three envs |
+| BSM05 `h1_m3` (new) | completed 417.12 s | **failed 246.06 s** | **failed 327.04 s** | ref only |
+| BSM06 `h1_i` (new) | completed 1518.36 s | **failed 1164.01 s** | completed 1254.10 s | |
+| BSM06 `h1_j` (new) | completed 1518.36 s | completed 1263.11 s | **no end** (2200 s) | |
+| USN15 `g57_mb` (new, lost) | **failed 3444.28 s** | **failed 1572.46 s** | **failed 1457.35 s** | see below |
+
+- Every completion and every winning EndMission (MissionStatus=true) logs the guard. helm_role_forced=0 on every run.
+  helm_moveto_unselected=0 everywhere except BSM09 d1.
+- The BSM03/04/05/06 plans are cc9-helm1's files on agent/cc9-helm1. The runs used copies, `local\l72w_<name>.txt`.
+  BSM04 cites h1_f (wins all three envs; h1_e stays as the older file). BSM06 lists i (ref and default) and j (ref and 20,3).
+- **USN21** ref ran three times on 515837c10 and three times on a101d2917. All six completed at 2966.77 s with 567
+  death rows and identical gameplay, so the nondeterminism in docs/USN21_NONDETERMINISM.md did not reproduce here.
+- **IJN18 ia5** (`config/win_orders/ijn18_l72_i18_ia5.txt`):
+  - The plan is 890 select Zao, 900 takehelm PhaseOneGoTo, 1500 releasegun Zao, 6600 select Zao, `6602 input 0xC1`
+    (closes the map, 1abca8fcb) and 6605 takehelm Zao PhaseTwoGoTo.
+  - The 20,3 no-end is faithful (cc13). ijn_18_solomons.lua has loss tests only in phases 1 and 2; phase 3 has only
+    the win branch. Under 20,3 every Japanese ship is dead by 923.60 s, so the run never ends.
+  - Siblings, ref / 20,3 (`local\l72_i18_*.txt`):
+    - Option (a): ia2 (C1 at 7002) 1570.41 s / failed 539.99 s.
+    - Option (b): ib2 (`7005 moveto Zao PhaseTwoGoTo`) 1791.62 s / failed 560.99 s.
+    - Option (c): ic and ic2 (no releasegun) no end in either env.
+    - ia3, ib3 (Kita1 selected and sent with moveto) are unchanged from ia2 / ib2. ia4 (Kita1 helmed) loses both.
+- **IJN08**: re-plan needed. cc9-bisect2 attributes the ref no-end to 05cb6f1bc, ships61's nav-seed flip of four
+  faithful switches (SHIP_AI 311).
+- **PRCP01** `p26_p01_a` (cc9-physics26) is p9_p01_k with every Enterprise launch at Junyo from frame 5700 retargeted
+  to Zuiho. Junyo dies at about 283 s under atktgt (997fe5044), so p9_p01_k lost Enterprise at 1038.39 s.
+- **USN02** attribution (switch-off builds of a101d2917, ec2, ref):
+  - All four helm1 switches OFF: completed 225.06 s.
+  - kMovieEngageRoleReleaseCc13Bound ON alone: failed 55.05 s.
+  - Each of the other three ON alone: completed 225.06 s.
+  - So the cause is the movie-engage release (e7871ab3e, faithful). g4 stands.
+- **Moves since 34daf632e**:
+  - BSM01 ref 815.92 -> 821.92 s and BSM09 ref 429.02 -> 414.02 s: physics26 measured these on atktgt (997fe5044).
+  - BSM01 20,3 (887.91 s -> no end), BSM01 default (failed 1563.40 -> 1875.70 s) and BSM09 default
+    (429.02 -> 405.02 s) also moved within 34daf632e..3364b40a5. That range holds atktgt, the seat-artillery flips,
+    the airborne launch, hint2 and the party flip. Per-flip attribution is not measured.
+- **bisect2's PilotMoveTo fix (9f45384fc) moves no WINS row.** Pairs of 3364b40a5 (the fix's parent on main) vs
+  515837c10, all pair_diff "gameplay identical":
+  - PRCP01 in all three envs.
+  - BSM09 ref and default.
+  - BSM01 20,3 and default.
+  - USN15 ref.
+  - JM06 and ESMP08 end as on 34daf632e.
+- **USN15 `g57_mb`** (cc9-gunnery57: EndMission 3734.57 s ref on its base) is lost on 515837c10. It is identical on
+  3364b40a5. Ashigara, Nachi and Mogami die at 504 s, 735 s and 845 s, but Yamashiro survives, and the run fails at
+  3444.28 s. The row goes back to gunnery57 for a re-check on 515837c10.

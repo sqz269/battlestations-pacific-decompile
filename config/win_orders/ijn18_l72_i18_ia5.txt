@@ -1,0 +1,7 @@
+# cc9-lua72 IJN18 ia5: ia2 with the Zao select / C1 close / takehelm at 6600
+890 select Zao
+900 takehelm Zao 1.0 PhaseOneGoTo
+1500 releasegun Zao
+6600 select Zao
+6602 input 0xC1
+6605 takehelm Zao 1.0 PhaseTwoGoTo
