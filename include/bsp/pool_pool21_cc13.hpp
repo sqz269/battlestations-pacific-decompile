@@ -103,7 +103,7 @@ public:
 
     // ---- the 58h air-ops slot record (00675C40's [ESP+D0h], EH state 36h) ----
     // 006C1960 (air-ops slot record construct; ledger BSP_SupportManagerItem_Construct):
-// __thiscall(ECX = record; dword), RET 4.
+    // __thiscall(ECX = record; dword), RET 4.
     // 006BC690 BSP_AirOpsSlotRecord_Destruct: __thiscall(ECX = record), RET.
     virtual void air_ops_slot_record_construct_006c1960(void* record, std::uint32_t arg) = 0;
     virtual void air_ops_slot_record_destruct_006bc690(void* record) = 0;

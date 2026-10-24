@@ -1,4 +1,5 @@
 #include "bsp/terrain_particles_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/terrain_render.hpp"
 #include "bsp/camera_affine.hpp"
 #include "bsp/camera_multiply.hpp"
@@ -1915,25 +1916,31 @@ void height_field_destroy_00add1b0(void* field, TerrainHost& host, HeightFieldDe
 }
 
 // ---------------------------------------------------------------------------
-// cc13-terrain2: ballistic extrema. Extended-precision chains are evaluated in double and
-// rounded at each FSTP float.
+// cc13-terrain2: ballistic extrema. Extended-precision chains are rounded at each FSTP float.
+// cc13-fixture2 follow-up: 00AFB7F0 and 00AFBA40 have no reference in the image (rel32 and
+// absolute scans are empty); as particle helpers they are modelled at the main thread's
+// 24-bit precision control, each operation rounded to 24 significand bits in listing order
+// (00AFB80F..27 (4*b)*b - (a*12)*c; 00AFB86E..BF (s - 2b)/(6a) + x0, (-2b - s)/(6a) + x0;
+// 00AFB8E4..FA 6a*u + 2b; 00AFB90C..1A ((a*u + b)*u + c)*u + d).
 
 namespace {
 float ballistic_extremum(const float* curve, const float* other, bool maximum) noexcept {
+    using namespace cc13x87;
     const float a = curve[7], b = curve[8], c = curve[9], d = curve[10], x0 = curve[0];
-    const float disc = static_cast<float>(static_cast<double>(b) * 4.0 * b - static_cast<double>(a) * 12.0 * c);
+    const float disc = static_cast<float>(x87_sub24(x87_mul24(x87_mul24(4.0, b), b), x87_mul24(x87_mul24(a, 12.0), c)));
     const bool fallback = 0.0f > disc || a == 0.0f;
     if (!fallback) {
         const float s = static_cast<float>(std::sqrt(static_cast<double>(disc)));
-        const double six_a = static_cast<double>(a) * 6.0;
-        const float t1 = static_cast<float>((static_cast<double>(s) - static_cast<double>(b) * 2.0) / six_a + x0);
-        const float t2 = static_cast<float>((static_cast<double>(b) * -2.0 - s) / six_a + x0);
+        const double six_a = x87_mul24(a, 6.0);
+        const float t1 = static_cast<float>(x87_add24(x87_div24(x87_sub24(s, x87_mul24(b, 2.0)), six_a), x0));
+        const float t2 = static_cast<float>(x87_add24(x87_div24(x87_sub24(x87_mul24(b, -2.0), s), six_a), x0));
         for (const float t : {t1, t2}) {
             if (!(t > x0) || !(other[0] > t)) continue;
-            const float u = static_cast<float>(static_cast<double>(t) - x0);
-            const double slope = six_a * u + static_cast<double>(b) * 2.0;
+            const float u = static_cast<float>(x87_sub24(t, x0));
+            const double slope = x87_add24(x87_mul24(six_a, u), x87_mul24(b, 2.0));
             if (maximum ? !(0.0 > slope) : !(slope > 0.0)) continue;
-            return static_cast<float>(((static_cast<double>(a) * u + b) * u + c) * u + d);
+            return static_cast<float>(
+                x87_add24(x87_mul24(x87_add24(x87_mul24(x87_add24(x87_mul24(a, u), b), u), c), u), d));
         }
     }
     const float y0 = curve[1], y1 = other[1];

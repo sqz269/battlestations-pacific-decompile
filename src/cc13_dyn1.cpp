@@ -7,6 +7,7 @@
 // stored values match bit for bit when the inputs are finite.
 
 #include "bsp/cc13_dyn1.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/dyn_body_creation.hpp"
 #include "bsp/dyn_profile_scopes.hpp"
 #include "bsp/native_dyn_narrow_phase.hpp"
@@ -73,14 +74,19 @@ void body_add_force_at_point_00c37f60(void* body, const float force[3],
                                       const float point[3]) noexcept {
     const Raw b = raw(body);
     const Raw m = b.deref(0x4);
+    using namespace cc13x87;
+    // Each FADD/FSUB below rounds to a 24-bit significand before its FSTP (x87_*24); a
+    // float sum taken through double can round twice when the exponents are far apart.
+    const auto add = [](float a, float c) { return static_cast<float>(x87_add24(a, c)); };
+    const auto sub = [](float a, float c) { return static_cast<float>(x87_sub24(a, c)); };
     // 00C37F66..00C37F83: M+38h[i] = float(M+38h[i] + force[i]), i = 0, 1, 2.
-    m.at<float>(0x38) = static_cast<float>(static_cast<double>(m.at<float>(0x38)) + force[0]);
-    m.at<float>(0x3c) = static_cast<float>(static_cast<double>(m.at<float>(0x3c)) + force[1]);
-    m.at<float>(0x40) = static_cast<float>(static_cast<double>(m.at<float>(0x40)) + force[2]);
+    m.at<float>(0x38) = add(m.at<float>(0x38), force[0]);
+    m.at<float>(0x3c) = add(m.at<float>(0x3c), force[1]);
+    m.at<float>(0x40) = add(m.at<float>(0x40), force[2]);
     // 00C37F8A..00C37FA8: the lever r = point - B+2Ch, each component stored as float.
-    const float r0 = static_cast<float>(static_cast<double>(point[0]) - b.at<float>(0x2c));
-    const float r1 = static_cast<float>(static_cast<double>(point[1]) - b.at<float>(0x30));
-    const float r2 = static_cast<float>(static_cast<double>(point[2]) - b.at<float>(0x34));
+    const float r0 = sub(point[0], b.at<float>(0x2c));
+    const float r1 = sub(point[1], b.at<float>(0x30));
+    const float r2 = sub(point[2], b.at<float>(0x34));
     // The motion pointer is reloaded at 00C37F9F, after the force stores.
     const Raw m2 = b.deref(0x4);
     // r x force, each component formed in registers and stored as float ([ESP+0Ch..14h]).
@@ -88,17 +94,19 @@ void body_add_force_at_point_00c37f60(void* body, const float force[3],
     // (FSUBRP). The caller 0092B350 is fixed-step slot +8h (wave 3), run by the frame-job
     // pool on the main thread at 24-bit precision control, or on a pool worker at 53 bits
     // (docs/CC13_FPU_PRECISION.md). Modelled at 24 bits, as the main thread and the
-    // single-thread mode run it: each FMULP rounds its product to float before the FSUBRP.
+    // single-thread mode run it: each FMULP and the FSUBRP round to a 24-bit significand
+    // with the stack's exponent range (cc13-fixture3: rounding the products to float and
+    // the difference through double missed the double-rounding and overflow cases).
     // At 53 bits the products would be exact and the difference rounded once.
-    const auto mul = [](float a, float b) {
-        return static_cast<float>(static_cast<double>(a) * b);
+    const auto cross = [](float a, float b, float c, float d) {
+        return static_cast<float>(x87_sub24(x87_mul24(a, b), x87_mul24(c, d)));
     };
-    const float t0 = static_cast<float>(static_cast<double>(mul(r1, force[2])) - mul(r2, force[1]));
-    const float t1 = static_cast<float>(static_cast<double>(mul(force[0], r2)) - mul(r0, force[2]));
-    const float t2 = static_cast<float>(static_cast<double>(mul(force[1], r0)) - mul(r1, force[0]));
-    m2.at<float>(0x44) = static_cast<float>(static_cast<double>(m2.at<float>(0x44)) + t0);
-    m2.at<float>(0x48) = static_cast<float>(static_cast<double>(m2.at<float>(0x48)) + t1);
-    m2.at<float>(0x4c) = static_cast<float>(static_cast<double>(m2.at<float>(0x4c)) + t2);
+    const float t0 = cross(r1, force[2], r2, force[1]);  // 00C37FC6/00C37FD4/00C37FD8
+    const float t1 = cross(force[0], r2, r0, force[2]);  // 00C37FEA/00C37FF1/00C37FF5
+    const float t2 = cross(force[1], r0, r1, force[0]);  // 00C37FFD/00C37FFF/00C38001
+    m2.at<float>(0x44) = add(m2.at<float>(0x44), t0);
+    m2.at<float>(0x48) = add(m2.at<float>(0x48), t1);
+    m2.at<float>(0x4c) = add(m2.at<float>(0x4c), t2);
     b.at<std::uint32_t>(0x50) &= 0xffffffedu;  // the wake: clear bits 1 and 4
 }
 
@@ -847,6 +855,14 @@ bool segment_box_entry_00c412d0(const float start[3], const float box[6], float 
                                 const float end[3]) noexcept {
     // t_lo is the running entry parameter (kept in a register, updated by a float store),
     // t_hi the running exit parameter at [ESP+14h] (starts at the 1.0f at 00D7A24C).
+    // Precision: the only caller is the world ray cast 00C445B0, which no Dyn worker task
+    // reaches, so the routine is modelled at the main thread's 24-bit control
+    // (cc13-fixture3): the FSUB(R)P of plane - start and the FDIV(R)P by d each round to a
+    // 24-bit significand (x87_*24) before the quotient is stored.
+    using namespace cc13x87;
+    const auto slab = [](float plane, float s, float d) {
+        return static_cast<float>(x87_div24(x87_sub24(plane, s), d));
+    };
     float t_lo = 0.0f;
     float t_hi = kOne_00d7a24c;
     for (int i = 0; i < 3; ++i) {
@@ -854,22 +870,20 @@ bool segment_box_entry_00c412d0(const float start[3], const float box[6], float 
         const float e = end[i];
         const float lo = box[i];
         const float hi = box[3 + i];
-        const float d = static_cast<float>(static_cast<double>(e) - s);  // [ESP+18h]
+        const float d = static_cast<float>(x87_sub24(e, s));  // [ESP+18h]
         float t_enter = 0.0f;
         float t_exit;
         if (e > s) {  // FCOMIP e,s; JBE takes the other arm, so unordered goes there
             if (s > hi) return false;  // JA 00C41506
             if (lo > e) return false;  // JA 00C41519
-            if (lo > s) t_enter = static_cast<float>((static_cast<double>(lo) - s) / d);
+            if (lo > s) t_enter = slab(lo, s, d);
             // JBE to the 1.0 arm: e <= hi or unordered.
-            t_exit = (e > hi) ? static_cast<float>((static_cast<double>(hi) - s) / d)
-                              : kOne_00d7a24c;
+            t_exit = (e > hi) ? slab(hi, s, d) : kOne_00d7a24c;
         } else {
             if (e > hi) return false;  // JA 00C41534
             if (lo > s) return false;  // JA 00C41530
-            if (s > hi) t_enter = static_cast<float>((static_cast<double>(hi) - s) / d);
-            t_exit = (lo > e) ? static_cast<float>((static_cast<double>(lo) - s) / d)
-                              : kOne_00d7a24c;
+            if (s > hi) t_enter = slab(hi, s, d);
+            t_exit = (lo > e) ? slab(lo, s, d) : kOne_00d7a24c;
         }
         if (t_enter > t_lo) t_lo = t_enter;  // FCOMIP; JBE keeps the old value
         if (t_hi > t_exit) t_hi = t_exit;
@@ -878,9 +892,9 @@ bool segment_box_entry_00c412d0(const float start[3], const float box[6], float 
     // 00C41464..: d[i] = float(end[i] - start[i]); scaled = float(d[i] * t_lo);
     // out[i] = float(start[i] + scaled).
     for (int i = 0; i < 3; ++i) {
-        const float d = static_cast<float>(static_cast<double>(end[i]) - start[i]);
-        const float scaled = static_cast<float>(static_cast<double>(d) * t_lo);
-        entry_out[i] = static_cast<float>(static_cast<double>(start[i]) + scaled);
+        const float d = static_cast<float>(x87_sub24(end[i], start[i]));
+        const float scaled = static_cast<float>(x87_mul24(d, t_lo));
+        entry_out[i] = static_cast<float>(x87_add24(start[i], scaled));
     }
     return true;
 }

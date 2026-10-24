@@ -1,3 +1,4 @@
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/sound_streaming_cc13.hpp"
 
 #include "bsp/native_camera_plane_transform.hpp"
@@ -342,25 +343,30 @@ void project_shadow_point_00a8ac90(float* inout_xyz, const void* actual_matrix_f
 void intersect_lines_2d_00a8b860(float* out, const float* p0, const float* p1,
     const float* q0, const float* q1) noexcept
 {
-    using D = double;
+    // cc13-fixture2 follow-up: the only caller (00A8B930 shadow trapezoid homography, itself
+    // unreferenced) is render code, so the model follows the main thread's 24-bit precision
+    // control: each FSUB/FMUL/FDIV rounds to 24 significand bits (cc13_x87_model.hpp).
+    using namespace bsp::cc13x87;
     // 00A8B864..00A8B88C: det in one x87 expression, 1/det spilled to float.
-    const D det = (D(p0[0]) - p1[0]) * (D(q0[1]) - q1[1]) - (D(q0[0]) - q1[0]) * (D(p0[1]) - p1[1]);
-    const float inverse = static_cast<float>(1.0 / det);
+    const double det = x87_sub24(x87_mul24(x87_sub24(p0[0], p1[0]), x87_sub24(q0[1], q1[1])),
+                                 x87_mul24(x87_sub24(q0[0], q1[0]), x87_sub24(p0[1], p1[1])));
+    const float inverse = static_cast<float>(x87_div24(1.0, det));
     out[1] = inverse;
     out[0] = inverse;
     // 00A8B899..00A8B8BF: reread after the stores; cross term spilled to float.
     const float p0x = p0[0], p1x = p1[0];
     const float p1y = p1[1], p0y = p0[1];
-    const float cross_p = static_cast<float>(D(p0x) * p1y - D(p0y) * p1x);
+    const float cross_p = static_cast<float>(x87_sub24(x87_mul24(p0x, p1y), x87_mul24(p0y, p1x)));
     // 00A8B8C3..00A8B8E5
     const float q0x = q0[0], q1x = q1[0];
-    const float cross_q = static_cast<float>(D(q0x) * q1[1] - D(q1x) * q0[1]);
+    const float cross_q = static_cast<float>(x87_sub24(x87_mul24(q0x, q1[1]), x87_mul24(q1x, q0[1])));
     // 00A8B8E9..00A8B909: x with the copied endpoints and the x87 inverse.
-    out[0] = static_cast<float>(((D(q0x) - q1x) * cross_p - (D(p0x) - p1x) * cross_q) * inverse);
+    out[0] = static_cast<float>(x87_mul24(
+        x87_sub24(x87_mul24(x87_sub24(q0x, q1x), cross_p), x87_mul24(x87_sub24(p0x, p1x), cross_q)), inverse));
     // 00A8B90B..00A8B922: y rereads the inputs and out[1] after out[0].
-    const D dqy = D(q0[1]) - q1[1];
-    const D dpy = D(p0[1]) - p1[1];
-    out[1] = static_cast<float>((cross_p * dqy - cross_q * dpy) * out[1]);
+    const double dqy = x87_sub24(q0[1], q1[1]);
+    const double dpy = x87_sub24(p0[1], p1[1]);
+    out[1] = static_cast<float>(x87_mul24(x87_sub24(x87_mul24(cross_p, dqy), x87_mul24(cross_q, dpy)), out[1]));
 }
 
 void submit_shadow_cascades_00a8ea20(void* owner, ShadowCascadeSubmitHost& host)

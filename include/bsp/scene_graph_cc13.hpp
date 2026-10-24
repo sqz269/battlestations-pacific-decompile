@@ -55,7 +55,7 @@ float incoming_tangent_00b75a20(const AnimKey& key, const AnimKey* after, const 
 // bisection); 0 for fewer than three keys.
 std::int32_t find_key_00b75c10(const AnimKey* keys, std::int32_t count, float time);
 
-// 00B75580: cubic Bezier in power form for control values p0..p3 at s.
+// 00B75580: cubic Bezier in power form for control values p0..p3 at s, rounded to float.
 double bezier_00b75580(float p0, float p1, float p2, float p3, float s);
 // 00B75610: bisect s in [lo, hi] until |target - bezier(s)| <= 1e-4. The native loop has no
 // iteration limit; this version stops after `max_iterations` (documented deviation).

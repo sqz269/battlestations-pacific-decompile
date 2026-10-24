@@ -50,6 +50,7 @@
 #include "bsp/ship_ai_follow_land.hpp"
 #include "bsp/building_pads.hpp"
 #include "bsp/ship_ai_station_keeping.hpp"
+#include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/ship_ai_torpedo_response.hpp"
 #include "bsp/ship_ai_arm_final_step.hpp"
 #include "bsp/ship_ai_layer_selection.hpp"
@@ -15221,6 +15222,23 @@ void GameShipAiHost::report() {
         "(0070E450 at 009DEEE9 / 009DEFD3; packet cc9_arm_final_area_key)",
         host.summary.arm_final_area_keys, host.summary.arm_final_area_key_differs,
         kShipAiArmFinalAreaKeyBound ? 1 : 0);
+    {
+        bsp::ShipAiSwitchReach& reach = bsp::ship_ai_switch_reach();
+        host.log.notef("summary mission ship ai switch reach station_calls=%llu "
+            "station_nan_operands=%llu station_nan_differs=%llu station_pc24_differs=%llu "
+            "throttle_nan_operands=%llu navigation_nan_operands=%llu fire_pc24_sites=%llu "
+            "fire_pc24_differs=%llu bound=%d%d%d%d%d (009EDA28, 009E04E0, 00415510/00415550/"
+            "00415620/009EE62B, 009E9EB0/009E4A60; packet cc9-sweep2)",
+            reach.station_calls, reach.station_nan_operands, reach.station_nan_differs,
+            reach.station_pc24_differs, reach.throttle_nan_operands,
+            reach.navigation_nan_operands, reach.fire_pc24_sites, reach.fire_pc24_differs,
+            bsp::kShipAiStationKeepingNanArmsCc13Bound ? 1 : 0,
+            bsp::kShipAiStationKeepingPc24Cc13Bound ? 1 : 0,
+            bsp::kShipAiThrottleProfileNanArmsCc13Bound ? 1 : 0,
+            bsp::kShipAiNavigationNanArmsCc13Bound ? 1 : 0,
+            bsp::kShipAiFireStepPc24Cc13Bound ? 1 : 0);
+        reach = bsp::ShipAiSwitchReach{};
+    }
     for (const GameShipAiRow& row : host.rows) {
         if (row.traffic_scans == 0) continue;
         host.log.notef("ship ai traffic setback unit=%s scans=%llu steps=%llu max_setback=%.1f",

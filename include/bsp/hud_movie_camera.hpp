@@ -23,8 +23,11 @@ void movie_camera_fixed_driver_00790390(float& accumulator_53c, bool enabled_634
 //   complete for those keys; `modifier`, `deckpos`, `upvector`,
 //   `relativetotarget`, `event`, `finishscript`, `flyalt` and the `_thennone`
 //   transforms are counted as unsupported and not applied.
-// - 007911E0 step, 00791020 begin, 00795C10 weight, 0078FCF0 ease,
-//   00798130 evaluate: complete apart from modifiers and flyalt.
+// - 00795C10 weight, 0078FCF0 ease: complete (cc13-P1); 007911E0 step complete
+//   with kMovieStepStaleTrackFlagCc13Bound; 00791020
+//   begin complete with kMovieBeginDropsModifierCc13Bound; 00798130 evaluate:
+//   flyalt (007986C3..007987B4) and the type-3 +BCh read (007988A9) are not
+//   modelled.
 // - 00795650 position: keepnone, keepy, keepz and keepall, the ship and plane
 //   wanderer offsets; relativetotarget and the kind-20h sub-object matrix
 //   are unsupported. `terrainavoid` and its clamp 00795B45 are modelled
@@ -59,6 +62,23 @@ inline constexpr std::size_t kMovieNoParent = ~std::size_t{0};
 // `fpscamera` stay unsupported (they need 0079CBD0's game cameras). OFF: both
 // keys are counted as unsupported, as before.
 inline constexpr bool kMovieKeyframeModifierBound = true;   // ON: SQUADRON_LAND_TASK 5fj.1
+
+// Packet cc13-P1. ON: 00791020's +D8h arm deletes the keyframe's modifier
+// (007910CE..007910EB: slot +0 with 1, then +E4h = 0) before it takes the
+// current pose, so a `use current` key never evaluates a `goaround` it parsed.
+// OFF: the modifier survives and 00795C10 keeps evaluating it, as before.
+inline constexpr bool kMovieBeginDropsModifierCc13Bound = false;
+// Packet cc13-P1. ON: 0079A3B0 stores +3B0h = 0.0 when either track is empty
+// (0079A3F8/0079A404 JBE to 0079BBD5 MOVSS [EDI],XMM0; XMM0 is the 0079A3B6
+// XORPS zero on both clock arms), so the clock restarts from 0 for the first
+// keys 007A0770 adds. OFF: the clock keeps the value the running arm gave it.
+inline constexpr bool kMovieUpdateEmptyTrackClockCc13Bound = false;
+// Packet cc13-P1 (rev9 F1). ON: 007911E0 reads BL from [[key+4]+74h]+390h
+// (007911FD..0079122A) before its state-0 call to 00791020 stores key+4, so on
+// the step that begins a key BL is 0 and a cut or blend-0 key that finishes on
+// that same step queues its finish script even with camera+390h set. OFF: the
+// camera flag is tested on every step, as before.
+inline constexpr bool kMovieStepStaleTrackFlagCc13Bound = false;
 
 // 00799B00, 104h bytes. Field comments name the image offset.
 struct MovieKeyframe {
@@ -193,7 +213,8 @@ void movie_camera_seed_007a0860(HudMovieCamera& camera, const std::array<float, 
 int movie_camera_add_position_007a42c0(HudMovieCamera& camera, const MovieKeyframeInput& in,
                                        MovieCameraParentHost& host);
 // 00798C80, the tick element's +8h slot (wave 3). Returns true on the first
-// step with dt > 0, when it latches +391h and reseeds streams 1 and 0.
+// step with dt > 0, when it latches +391h, zeroes +408h/+40Ch and the caller
+// reseeds streams 1 and 0.
 bool movie_camera_fixed_step_00798c80(HudMovieCamera& camera, float dt) noexcept;
 // 00798CD9..00798D36, the else arm of 00798C80 on a step after the latch:
 // +408h += 1, +40Ch += dt, then the 00798D07 draw (the caller's, stream 1,
