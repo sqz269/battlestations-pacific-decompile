@@ -1881,6 +1881,11 @@ public:
     // Packet cc13-smbind: BannSupportmanager / PermitSupportmanager / SupportManagerEnable.
     int run_support_manager_set_banned_0088c750_0088c8e0(bool banned);
     int run_support_manager_enable_0088cbb0(lua_State* state, int argument_count);
+    // The 00F8AB6A ban byte, for the 00A25B90 SpawnGroup gate (00A25BAB) once that spawn
+    // is bound; nothing calls it yet.
+    std::uint8_t support_manager_banned_00f8ab6a() const noexcept {
+        return support_manager_banned_00f8ab6a_;
+    }
     // Packet cc13-fix10, under kLuaProximityTriggersBound.
     int run_add_proximity_trigger_008c9730(lua_State* state, int argument_count);
     int run_remove_trigger_008c5fd0(lua_State* state, int argument_count);
@@ -2173,6 +2178,8 @@ private:
     // Packet cc13-smbind. The byte global 00F8AB6A that 00A38DA0 stores (1 banned, 0
     // permitted), and the panel list at ([00E198C4]+BCh)+1F8h that SupportManagerEnable
     // edits, held as entity ids (unit index + 1). Nothing in this process reads either.
+    // The image resets 00F8AB6A to 0 in InitPartySlots (00A32F77, in 00A32DF0) at each
+    // mission; this host keeps the byte and the list for the GameMissionLuaHost lifetime.
     std::uint8_t support_manager_banned_00f8ab6a_{0};
     std::vector<int> support_panel_disabled_list_1f8_;
     // Packet cc9_lua_listeners: the (channel, id) registry of 00980C10.

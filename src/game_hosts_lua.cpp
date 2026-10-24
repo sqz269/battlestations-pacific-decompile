@@ -9970,9 +9970,11 @@ int GameMissionLuaHost::run_set_crew_level_00894f20(lua_State* state, int argume
 // panel setters and 0068B3F0 are not applied (this process has no support-manager panel);
 // the refill does not run (a single-player campaign mission's effective mode is 8,
 // game_hosts_hud.hpp) and no message is sent (session word 0, single player, as
-// crew_level_skill_006e6210 assumes). Nothing here reads 00F8AB6A: the image's reader
-// 00A25B90 (bsp::planner_quick_spawn_00a25b90) reaches this host only as
-// AiPlanners::quick_spawn_named_group, which records. No RNG.
+// crew_level_skill_006e6210 assumes). LABELLED: the image's reader, the 00A25B90
+// SpawnGroup gate (bsp::planner_quick_spawn_00a25b90; 00A25BAB returns when banned), is
+// not applied, because the host's planner spawn (game_hosts_ai.cpp:3992 ->
+// AiPlanners::quick_spawn_named_group :5941) only records. Whoever binds that spawn reads
+// the byte through support_manager_banned_00f8ab6a(). No RNG.
 int GameMissionLuaHost::run_support_manager_set_banned_0088c750_0088c8e0(bool banned) {
     if (banned) {
         ++summary_.support_manager_bann_calls;
@@ -11963,6 +11965,11 @@ void GameMissionLuaHost::report_mission_script_state() {
             "00E08178, packet cc13-fix18)", summary_.reload_time_mul_calls,
             static_cast<double>(lua_device_reload_time_mul_00e08178()));
     }
+    log_.notef("summary mission script support manager bann=%llu permit=%llu enable=%llu "
+        "unresolved=%llu (0088C750 / 0088C8E0 -> 00A38DA0, 0088CBB0 -> 0065BBA0 / 00665EF0, "
+        "packet cc13-smbind)", summary_.support_manager_bann_calls,
+        summary_.support_manager_permit_calls, summary_.support_manager_enable_calls,
+        summary_.support_manager_enable_unresolved);
     log_.notef("summary mission script attack target bound=%d calls=%llu fire_arm=%llu "
         "command_arm=%llu pushed=%llu nil=%llu unresolved=%llu (008A6DE0, packet "
         "cc9_unit_get_attack_target)", kLuaUnitGetAttackTargetBound ? 1 : 0,
