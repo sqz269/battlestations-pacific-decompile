@@ -1,5 +1,7 @@
 #include "bsp/game_dynamics_list.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+
 namespace bsp {
 namespace {
 
@@ -38,8 +40,15 @@ DynamicsTransform34 interpolate_body_transform_00c43ea0(
 {
     DynamicsTransform34 out{};
     for (int i = 0; i < 12; ++i) {
-        // 00c43eb7..00c43ff5: a + (b - a) * t, twelve times, no clamp on t.
-        out.m[i] = previous.m[i] + (current.m[i] - previous.m[i]) * alpha;
+        // 00c43eb7..00c43ff5: a + (b - a) * t, twelve times, no clamp on t. The FSUBP, FMULP
+        // and FADDP stay on the x87 stack until the FSTP. The callers (00447B80
+        // UpdateFrame, 00929CB0, 0092F930) are main-thread or fixed-step code, so each op
+        // rounds to a 24-bit significand with the stack's exponent range (cc13-fixture3:
+        // plain float overflowed on (b - a) and rounded denormals once where the stack
+        // rounds twice).
+        using namespace cc13x87;
+        out.m[i] = static_cast<float>(x87_add24(
+            previous.m[i], x87_mul24(x87_sub24(current.m[i], previous.m[i]), alpha)));
     }
     return out;
 }

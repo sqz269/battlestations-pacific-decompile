@@ -84,6 +84,18 @@ CODE = {
     0xadc580: 0x66,   # terrain u16 block set sample (chop FISTP)
     0xb62dd0: 0x67,   # 2x2 invert in place
     0xb62a10: 0xb3,   # ortho off-centre LH
+    # cc13-fixture3: Dyn and geometry leaves.
+    0xc38810: 0x15c,  # cylinder shape support, double (slot 3; sqrt)
+    0xc47aa0: 0x1f8,  # box shape support, float (slot 2)
+    0xc38470: 0x13b,  # box shape support, double (slot 3)
+    0xc412d0: 0x277,  # segment / box slab entry (register ABI)
+    0xc313a0: 0x34e,  # polygon clip x at least (register ABI)
+    0xc30d10: 0x349,  # polygon clip y at least (register ABI)
+    0xc31060: 0x338,  # polygon clip x at most (register ABI)
+    0xc309d0: 0x333,  # polygon clip y at most (register ABI)
+    0xc34cf0: 0x272,  # expand node 3x4 matrices to 4x4 (register ABI)
+    0xc37f60: 0xcd,   # body add force at point
+    0xc43ea0: 0x15c,  # interpolate body transform
 }
 # Tail-jump targets replaced by MOV EAX,ECX; RET, so a fixture reads the ECX a thunk passes on.
 TAIL_STUBS = (0x6833f0, 0x4f71d0)
@@ -100,6 +112,8 @@ DATA = {
     0xce6628: 8, 0xd19660: 8, 0xd7a218: 8, 0xd7a308: 8, 0xd7a288: 8, 0xd7a2b0: 8,
     0xce6658: 8,
     0xd61cc0: 0x48,                # vertex element type sizes (18 dwords)
+    # cc13-fixture3 constants: the double -1.0 at 00D7A250 and the double 1e-7 at 00D7A298.
+    0xd7a250: 8, 0xd7a298: 8,
 }
 SQRT = 0xbf7030
 SQRT_STUB = bytes([0xd9, 0xfa, 0xc3])
