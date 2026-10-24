@@ -23,6 +23,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <map>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -270,9 +271,21 @@ struct MissionRecordExtra {
     // +364h..+423h, in kMissionMultiplayerModes order.
     std::array<MissionMapCorners, kMissionMultiplayerModeCount> map_sizes{};
     bool has_unique_multi_settings{false};    // +424h, the presence byte
-    // +42Ch, an ordered container keyed by (mode, parameter).
+    // +42Ch, an ordered container keyed by (mode, parameter). Filled only while
+    // kMissionUniqueMultiSettingsIntegerKeysCc13Bound is off.
     std::vector<std::pair<std::pair<std::string, std::string>, bool>> unique_multi_settings;
+    // +428h..+433h as the image holds it: std::map<int, std::map<int, bool>>
+    // (005C6850 STL_IntTree_Subscript, then 005C49C0 STL_Map_Subscript), keyed by
+    // the MultiLobbySettings row and option indices. Filled only with the switch on.
+    std::map<std::int32_t, std::map<std::int32_t, bool>> unique_multi_settings_by_index;
 };
+
+// cc13-P1, 005C7944..005C7ADF. OFF (live today): the walk keeps the string keys
+// and enters them by name, so the authored tables, whose keys are the integer
+// MultiLobbySettings indices (scripts/datatables/multiglobals.lua), produce
+// nothing. ON: every enumerated key is entered as an integer key (kind 1) and
+// the negated MenuDIS lands in unique_multi_settings_by_index, as in the image.
+inline constexpr bool kMissionUniqueMultiSettingsIntegerKeysCc13Bound = false;
 
 struct MissionRecordData {
     MissionRecord screen{};
@@ -342,6 +355,15 @@ struct MissionTreeLuaView {
 
     // 00BD5F50, capped at kGuiLuaKeyArrayCapacity string keys.
     virtual std::vector<std::string> string_keys() = 0;
+
+    // 00BD5F50 as 005C6A70 consumes it: every key of the current table in
+    // lua_next order, capped at kGuiLuaKeyArrayCapacity, with its tag (0 string,
+    // 1 integer, 2 other number) and, for tag 1, its value.
+    struct TableKey {
+        GuiLuaKeyKind kind{GuiLuaKeyKind::Name};
+        std::int32_t index{0};
+    };
+    virtual std::vector<TableKey> table_keys() = 0;
 };
 
 // ---------------------------------------------------------------------------

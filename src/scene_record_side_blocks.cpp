@@ -7,6 +7,7 @@
 #include "bsp/scene_entity_factory.hpp"
 
 #include <cstdlib>
+#include <cstring>
 
 namespace bsp {
 namespace {
@@ -203,6 +204,240 @@ SceneRecordSlotTable read_scene_record_slot_table_004f1d70(
         table.blocks[index] = read_scene_slot_block_004e82f0(*multiplay, index);
     }
     return table;
+}
+
+// ---------------------------------------------------------------------------
+// 004F1D70 BSP_SceneRecord_ApplyHeaderProperties (567 insns), whole body. cc13-P1.
+// ABI: __fastcall(ECX = property bag, EDX = record; char sound_enabled), RET 4.
+// EBX keeps the bag until 004F21C4 reuses it for the constant 6; from 004F21E5 the
+// bag is reloaded into ESI from the frame. EBP is the record throughout.
+// EH: handler 00C682AB, one state (0 at 004F2252, -1 at 004F2266) covering the
+// stack environment block between 004CB420 and 004C6520; reproduced with a
+// catch-and-rethrow that runs the destructor.
+// Uncertainty: the record and the nodes are read in place in their Win32
+// layout; 004F236D/004F2380 copy two floats through FLD/FSTP, which would quiet
+// a signalling NaN where this plain float copy may not; the IslandCapture copies'
+// consumers are not established.
+// ---------------------------------------------------------------------------
+namespace {
+
+std::uint32_t native_string_length(const std::uint8_t* string) noexcept
+{
+    return *reinterpret_cast<const std::uint32_t*>(string);
+}
+
+char* native_string_data(const std::uint8_t* string) noexcept
+{
+    return *reinterpret_cast<char* const*>(string + 4);
+}
+
+std::uint32_t node_dword(const void* node, std::size_t offset) noexcept
+{
+    return *reinterpret_cast<const std::uint32_t*>(static_cast<const std::uint8_t*>(node) + offset);
+}
+
+void* node_group(const void* node) noexcept
+{
+    return *reinterpret_cast<void* const*>(static_cast<const std::uint8_t*>(node)
+        + kScenePropertyValueOffset);
+}
+
+// The string idiom repeated at 004F1D91, 004F1DED, 004F1E40, 004F1EB8, 004F1F0D,
+// 004F1F60, 004F1FB3, 004F200D and 004F2161: find; when found, take the string
+// value, strlen it (a null text is length 0), 0041DD40(length, 0), and memcpy
+// into the data pointer when it is non-null. An absent key leaves the field.
+bool assign_found_string(SceneHeaderApplyHost& host, void* bag, const char* key,
+    std::uint8_t* field)
+{
+    void* node = host.property_bag_find_008f2260(bag, key);
+    if (node == nullptr) {
+        return false;
+    }
+    const char* text = host.property_string_value_008f0df0(node);
+    const std::uint32_t length = text != nullptr
+        ? static_cast<std::uint32_t>(std::strlen(text)) : 0u;
+    host.native_string_resize_0041dd40(field, length, false);
+    char* data = native_string_data(field);
+    if (data != nullptr && length != 0) {
+        std::memcpy(data, text, length);
+    }
+    return true;
+}
+
+// 004F2064..004F20EE: one NativeString copy. The image skips it when the two
+// fields are the same object, resizes with preserve 1 to the source length and
+// copies the destination's (new) length when the source length is non-zero.
+void copy_native_string(SceneHeaderApplyHost& host, std::uint8_t* destination,
+    const std::uint8_t* source)
+{
+    if (destination == source) {
+        return;
+    }
+    host.native_string_resize_0041dd40(destination, native_string_length(source), true);
+    if (native_string_length(source) != 0) {
+        std::memcpy(native_string_data(destination), native_string_data(source),
+            native_string_length(destination));
+    }
+}
+
+// The group-reader idiom: find; call the reader only when the node exists and its
+// type tag is 6, passing the sub-bag at +0Ch.
+void* found_group(SceneHeaderApplyHost& host, void* bag, const char* key)
+{
+    void* node = host.property_bag_find_008f2260(bag, key);
+    if (node == nullptr || node_dword(node, kScenePropertyTypeOffset) != kScenePropertyTypeGroup) {
+        return nullptr;
+    }
+    return node_group(node);
+}
+
+} // namespace
+
+void scene_record_apply_header_properties_004f1d70(void* bag, std::uint8_t* record,
+    bool sound_enabled, SceneHeaderApplyHost& host)
+{
+    assign_found_string(host, bag, "FileSystemLua", record + kSceneRecordFileSystemLuaOffset);
+    assign_found_string(host, bag, "Title", record + kSceneRecordTitleOffset);
+
+    // 004F1E40..004F1EB3: GameStageScript wins; StageScript is read only when it
+    // is absent, and then through 0041E350 rather than the resize idiom.
+    if (!assign_found_string(host, bag, "GameStageScript",
+            record + kSceneRecordGameStageScriptOffset)) {
+        void* node = host.property_bag_find_008f2260(bag, "StageScript");
+        if (node != nullptr) {
+            host.native_string_assign_0041e350(record + kSceneRecordGameStageScriptOffset,
+                host.property_string_value_008f0df0(node));
+        }
+    }
+
+    assign_found_string(host, bag, "StageScriptDuel", record + kSceneRecordStageScriptDuelOffset);
+    assign_found_string(host, bag, "StageScriptEscort",
+        record + kSceneRecordStageScriptEscortOffset);
+    assign_found_string(host, bag, "StageScriptSiege", record + kSceneRecordStageScriptSiegeOffset);
+    // 00CEA4A4: the authored key is misspelt "Competiton".
+    assign_found_string(host, bag, "StageScriptCompetiton",
+        record + kSceneRecordStageScriptCompetitiveOffset);
+    // 004F200D..004F20EE: only a found IslandCapture script is copied on, +940h to
+    // +938h, then +938h to +930h, then +930h to +928h.
+    if (assign_found_string(host, bag, "StageScriptIslandCapture",
+            record + kSceneRecordStageScriptIslandCaptureOffset)) {
+        copy_native_string(host, record + kSceneRecordIslandCaptureCopy1Offset,
+            record + kSceneRecordStageScriptIslandCaptureOffset);
+        copy_native_string(host, record + kSceneRecordIslandCaptureCopy2Offset,
+            record + kSceneRecordIslandCaptureCopy1Offset);
+        copy_native_string(host, record + kSceneRecordIslandCaptureCopy3Offset,
+            record + kSceneRecordIslandCaptureCopy2Offset);
+    }
+
+    // 004F20EE..004F2113: the +0Ch dword whatever the type tag, else 3.
+    {
+        void* node = host.property_bag_find_008f2260(bag, "DummyAIEnabled");
+        *reinterpret_cast<std::uint32_t*>(record + kSceneRecordDummyAiOffset) = node != nullptr
+            ? node_dword(node, kScenePropertyValueOffset)
+            : static_cast<std::uint32_t>(kSceneDefaultDummyAi);
+    }
+    // 004F2113..004F213D: Contains first, then a second find, else 0.
+    *reinterpret_cast<std::uint32_t*>(record + kSceneRecordCompetitiveModePartyOffset)
+        = host.property_bag_contains_0048e9f0(bag, "CompetitiveModeParty")
+        ? node_dword(host.property_bag_find_008f2260(bag, "CompetitiveModeParty"),
+              kScenePropertyValueOffset)
+        : 0u;
+    {
+        void* node = host.property_bag_find_008f2260(bag, "MaxPlayerNum");   // 004F2136
+        *reinterpret_cast<std::uint32_t*>(record + kSceneRecordMaxPlayerNumOffset) = node != nullptr
+            ? node_dword(node, kScenePropertyValueOffset)
+            : static_cast<std::uint32_t>(kSceneDefaultMaxPlayerNum);
+    }
+    assign_found_string(host, bag, "LocKitPaths", record + kSceneRecordLocKitPathsOffset);
+
+    // 004F21B4..004F21E3: eight slots, ECX = the index, EDX = the sub-bag.
+    if (void* multiplay = found_group(host, bag, kSceneMultiPlayKey)) {
+        for (std::int32_t index = 0; index < static_cast<std::int32_t>(kSceneRecordSideBlockCount);
+             ++index) {
+            host.scene_read_player_slot_004e82f0(index, multiplay, record);
+        }
+    }
+    if (void* ocean = found_group(host, bag, "g_Ocean")) {                  // 004F21E9
+        host.scene_read_water_004eb9b0(ocean, record);
+    }
+    // 004F220A..004F2218: no null or type test.
+    host.idle_camera_load_shot_pairs_00551440(host.property_bag_find_008f2260(bag, "IdleCameraPos"));
+
+    if (void* weather = found_group(host, bag, "g_Weather")) {              // 004F221D
+        host.scene_read_weather_fog_cloud_lights_004eca30(weather, record);
+    } else {
+        // 004F223E..004F2271: a default environment block on the frame, assigned
+        // into +990h and destroyed.
+        alignas(4) std::uint8_t block[kSceneEnvironmentBlockSize];
+        host.scene_environment_block_construct_004cb420(block);
+        try {
+            host.scene_header_assign_004e8bf0(record + kSceneRecordEnvironmentOffset, block);
+        } catch (...) {
+            host.scene_environment_block_destruct_004c6520(block);
+            throw;
+        }
+        host.scene_environment_block_destruct_004c6520(block);
+    }
+
+    {
+        // 004F2276..004F2297: tag 2, a string.
+        void* node = host.property_bag_find_008f2260(bag, "AffterEffects");
+        if (node != nullptr
+            && node_dword(node, kScenePropertyTypeOffset) == kScenePropertyTypeString) {
+            host.scene_header_append_unquoted_names_004f1b60(
+                host.property_string_value_008f0df0(node), record);
+        }
+    }
+    {
+        // 004F229C..004F22C0: the find runs before the sound flag is tested.
+        void* sound = found_group(host, bag, "Sound");
+        if (sound_enabled && sound != nullptr) {
+            host.scene_read_music_ambience_004ed690(sound, record);
+        }
+    }
+    if (void* map = found_group(host, bag, "Map")) {                        // 004F22C5
+        host.map_read_extent_and_apply_004e6c00(map, record);
+    } else {
+        host.game_apply_map_bounds_004d5bd0(host.global_pointer(kSceneGameObjectGlobal));
+    }
+    if (void* environment = found_group(host, bag, "g_Environment")) {      // 004F22F1
+        host.scene_read_sky_lights_004ee450(environment, record);
+    }
+    if (void* terrain = found_group(host, bag, "g_Terrain")) {              // 004F2310
+        host.scene_read_static_shadow_textures_004ee9e0(terrain, record);
+    }
+    if (void* post = found_group(host, bag, "g_PostProcess")) {             // 004F232F
+        host.scene_read_post_effects_004e8510(post, record);
+    }
+    if (void* cloud = found_group(host, bag, "Cloud")) {                    // 004F234E
+        host.scene_load_cloud_areas_004e7220(cloud, record);
+    }
+
+    // 004F236D..004F2386, before the GroundCollision find.
+    *reinterpret_cast<float*>(record + kSceneRecordFloat100cOffset)
+        = *reinterpret_cast<const float*>(record + kSceneRecordFloat1004Offset);
+    *reinterpret_cast<float*>(record + kSceneRecordFloat1010Offset)
+        = *reinterpret_cast<const float*>(record + kSceneRecordFloat1008Offset);
+
+    {
+        // 004F238C..004F239E: tag 3 stores the +0Ch byte; anything else leaves +904h.
+        void* node = host.property_bag_find_008f2260(bag, "GroundCollision");
+        if (node != nullptr && node_dword(node, kScenePropertyTypeOffset) == kScenePropertyTypeBool) {
+            record[kSceneRecordGroundCollisionOffset]
+                = static_cast<const std::uint8_t*>(node)[kScenePropertyValueOffset];
+        }
+    }
+    {
+        // 004F23A4..004F23F0: game+2194h gets the byte, or 1 when absent or not tag 3.
+        void* node = host.property_bag_find_008f2260(bag, "SpectatorEnabled");
+        auto* game = static_cast<std::uint8_t*>(host.global_pointer(kSceneGameObjectGlobal));
+        if (node != nullptr && node_dword(node, kScenePropertyTypeOffset) == kScenePropertyTypeBool) {
+            game[kSceneGameSpectatorEnabledOffset]
+                = static_cast<const std::uint8_t*>(node)[kScenePropertyValueOffset];
+        } else {
+            game[kSceneGameSpectatorEnabledOffset] = 1;
+        }
+    }
 }
 
 std::size_t scene_slot_records_written(std::int32_t max_player_num) noexcept
