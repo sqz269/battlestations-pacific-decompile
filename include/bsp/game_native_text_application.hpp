@@ -99,6 +99,12 @@ public:
     std::unique_ptr<GuiWidgetTypeImplementation> make_type(GuiWidgetOwner&);
     GameNativeTextStatus submit_source(GuiWidgetOwner&, const std::string&, bool localize);
     GameNativeTextStatus submit_utf16(GuiWidgetOwner&, std::u16string_view);
+    // Transfer the SAME standalone layout allocation to this factory's child
+    // deletion transport, then execute native Text scalar4(flags1). Call only
+    // after queued draws and material parameter borrowers have retired. The
+    // transport retains the allocation on an entered failure; no retry or
+    // implicit page-manager retirement is supplied.
+    void retire_owned_text(std::unique_ptr<GuiLayoutWidget>);
     // Only after this SAME saved AB98F0 child tail is actually complete.
     // Existing runtime validation rejects a failed/unsupported child boundary.
     GameNativeTextStatus resume_after_completed_glyph_child(GuiWidgetOwner&);
