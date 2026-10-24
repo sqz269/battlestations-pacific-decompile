@@ -4290,4 +4290,38 @@ the deck-height reference H of 009B1420 for a ship target, physics26's question 
 the plane to it, together with the pitch-authority question in the rate trace. A plan change cannot get a carrier
 landing on USNOS.
 
-Lease `p27-doc121` (this doc) is released with this section.
+**Correction (cc13-osdeck, static).** H is not a floor. It is the glide-slope height at a look-ahead point
+(009B1842-009B1929), measured above the touchdown point T (Enterprise's T is at world y 15.9) and recomputed on every
+steer pass as Z shrinks. The host formula reproduces the logged P = -0.2095 at Z = 832.4 exactly. The command keeps
+steepening because Y stays above H, and the match of the float height with the begin trace's H is coincidental. The
+float is the plane not following the command, and the authority reading above is withdrawn: the rate law follows the
+stick exactly (cc13). The band trace below shows what moves the stick.
+
+**Band trace** (cc13's 69468ba7c, log-only, gated on `BSP_PLANE_RATE_TRACE`; tree fb4798251, `p26_os_a`, ref env;
+kept excerpts `local\p27_band_osa_kept.txt` (Enterprise_sqn01, 1550-1575 s) and `local\p27_bandw_osa_kept.txt`
+(Enterprise_sqn02|.-III, 1536-1545 s), raw logs deleted):
+
+| t (s) | cmd1_pre | band 0 (lo, hi) | stick pitch | pitch | y |
+| --- | --- | --- | --- | --- | --- |
+| 1559.50 | +0.005 | (-5.0, 0.0105) | 0.008 | -0.238 | 120.7 |
+| 1560.00 | -0.005 | (-5.0, 0.1729) | 0.173 | -0.223 | 114.2 |
+| 1561.00 | -0.224 | (-5.0, 0.1630) | 0.165 | -0.131 | 104.8 |
+| 1562.00 | -0.298 | (-5.0, 0.0888) | 0.087 | -0.057 | 100.2 |
+| 1563.00 | -0.369 | (-5.0, 0.0307) | 0.031 | -0.028 | 98.4 |
+| 1565.00 | -0.392 | (-5.0, 0.0099) | 0.008 | -0.012 | 97.0 |
+| 1566.00 | -0.290 | (-5.0, 0.1586) | 0.157 | +0.001 | 95.0 |
+| 1567.00 | +0.012 | none | 0.008 | +0.126 | 92.5 |
+
+- The nose-down command lies inside the one active band (lo -5.0), and the band repair moves the stick to the band's
+  upper edge, which is about level. The plane holds 95-97 m while the latched pitch command steepens to -0.52.
+- Every line in the window reads `d_va_plane=0 d_va_ship=0 d_tr_bands=2 d_ga_flag=0`, and there is no `plane rate
+  band` line between 1539 s and the end of the excerpt. So neither the vehicle-avoidance ship branch (007E0706) nor its
+  aircraft branch (007DFDC4) makes this band. Its producer is the one `d_tr_bands` counts, not identified here.
+- The run's 22 `plane rate band` lines are all earlier: the ship branch on Enterprise at 54.10 s, and the aircraft
+  branch on the squadron's own wingmen at 1533.3-1534.9 s (sqn01|.-III, mode900 7, d down to 15 m) and
+  1538.6-1538.9 s (sqn01|.-II, d about 60 m).
+- The wingman's early abort (sqn02|.-III, 5D8 at 1538.43 s, 5F8 at 1538.83 s, 64C at 1539.43 s at Y of about 200) has
+  no band at entry, and the stick follows cmd1_pre (-0.35, -0.69, -0.71). That abort is the abort test, not the band.
+
+Lease `p27-doc121` (this doc) is released with this section; the correction and the band trace are under
+`p27-doc121b`.
