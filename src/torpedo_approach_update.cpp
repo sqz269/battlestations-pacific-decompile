@@ -263,8 +263,10 @@ float torpedo_reset_run_time_009d0160(const TorpedoApproachState& s, float fall_
         const float lead = v * fall_time;
         // 009D01F2 FADDP, 009D01F6 FSUBR [+7Ch], 009D01FF FSTP: L.
         const float leg = s.speed_late_7c - (lead + dd);
-        float t = fall_time;                              // 009D023F: L < 0
-        if (!(leg < 0.0f)) {
+        // 009D0203..009D020D FLDZ / FLD L / FCOMI ST1 / JB 009D023F: JB is taken for
+        // L < 0 and for unordered, so a NaN L keeps t = fall_time.
+        float t = fall_time;
+        if (leg >= 0.0f) {
             if (dd <= leg) {
                 // 009D0227 FSUBP, 009D022B FDIVRP, 009D022F FSTP; 009D0233 FADDP
                 // fall + dt, 009D0235 FADD the stored quotient.
@@ -291,7 +293,9 @@ float torpedo_reset_run_time_009d0160(const TorpedoApproachState& s, float fall_
         // 009D01E8-009D01FF: L = +7Ch - (lead + dd), stored to a float.
         const float leg = static_cast<float>(
             static_cast<double>(s.speed_late_7c) - (static_cast<double>(lead) + dd));
-        float t = fall_time;                                  // 009D023F: L < 0
+        // 009D023F: L < 0. Pre-existing mismatch kept byte-identical in this arm: a
+        // NaN L takes the arithmetic here, where the image's JB keeps t = fall_time.
+        float t = fall_time;
         if (!(leg < 0.0f)) {
             if (dd <= leg) {
                 // 009D0227-009D0239: fall + dt + (L - dd) / run.
