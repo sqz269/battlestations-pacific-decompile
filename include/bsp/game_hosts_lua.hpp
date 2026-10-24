@@ -654,6 +654,19 @@ inline constexpr bool kLuaIsInBorderZoneBound = true;   // ON: JM06 pair, 82 cal
 // False: every hit is evaluated.
 inline constexpr bool kLuaHitRateLimitBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc13-atkkind. 00988510's attackType box is the C string 00E08E58[kind]
+// (00988B02 MOV EAX,[ESP+80h]; 00988B09 MOV ECX,[EAX*4+00E08E58h]; 00988B10 PUSH ECX,
+// re-boxed for the squadron pass at 009890DC), kind = [[shot+4]+8] (00988674..00988682),
+// the projectile class's sub-type after 006E9968 rewrites 1 -> 2/3 and 4 -> 5/6/7.
+// True: the hit listener's attackType set is matched against that string, the one the
+// host already pushes as the callback's argument 4. False: against the bullet class's
+// Lua `Type`, which over-matches "BULLET"/"ARTILLERY" and never matches MACHINEGUN,
+// AAMACHINEGUN or LIGHT/MEDIUM/HEAVYARTILLERY.
+inline constexpr bool kHitListenerAttackTypeSubKindCc13Bound = false;
+static_assert(!kHitListenerAttackTypeSubKindCc13Bound
+                  || (kLuaListenersBound && kLuaHitListenersBound),
+              "the attackType sub-kind test lives in the hit listener dispatch");
+
 // Packet cc9_device_reload_enabled (docs/LUA_BINDING_MISSION.md, "SetDeviceReloadEnabled,
 // 008C1350"). SetDeviceReloadEnabled(flag) stores lua_toboolean(argument 0) in the global
 // byte 00E17BF2 (008C144F -> 008C1458). The mission load's lobby sync writes the same byte
@@ -1101,6 +1114,7 @@ struct GameMissionLuaSummary {
     unsigned long long listener_hit_events{0};
     unsigned long long listener_hit_fires{0};
     unsigned long long listener_hit_unmodelled{0};
+    unsigned long long listener_hit_attack_type_subkind_differs{0};  // cc13-atkkind, log-only
     unsigned long long listener_hit_second_passes{0};      // kLuaHitSquadronSecondPassBound
     unsigned long long listener_hit_second_pass_fires{0};
     // Packet cc9_lua51_listener_args.

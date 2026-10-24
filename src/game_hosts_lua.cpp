@@ -7440,6 +7440,14 @@ constexpr int kWeaponNameTableCount00e08e58 =
     static_cast<int>(sizeof(kWeaponNameTable00e08e58) / sizeof(kWeaponNameTable00e08e58[0]));
 static_assert(kWeaponNameTableCount00e08e58 == 0x14, "006E8250 walks twenty entries");
 
+// 00988B09 MOV ECX,[EAX*4+00E08E58h] (and 009890DC for the squadron pass): the hit
+// channel's attackType box for an ordnance kind; "" outside the table. Packet
+// cc13-atkkind: shared by the callback's argument 4 and the attackType test.
+const char* hit_attack_type_name_00e08e58(int kind) {
+    return kind >= 0 && kind < kWeaponNameTableCount00e08e58 ? kWeaponNameTable00e08e58[kind]
+                                                             : "";
+}
+
 // 006E8250 (src/cc13_seg33a.cpp weapon_name_index_006e8250) over the table above,
 // whose entries are all non-null and non-empty: a null name matches nothing, any
 // other name by _stricmp (00BF7FBF, case-insensitive); no match answers 0, the same as
@@ -9270,6 +9278,8 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
         }
         const GameBulletClassRow* bullet = gunnery->bullet_class_row(hit.bullet_class);
         const std::string type = bullet != nullptr ? bullet->type : std::string();
+        // Packet cc13-atkkind: the string the callback's argument 4 carries.
+        const std::string subkind = hit_attack_type_name_00e08e58(hit.ordnance_kind);
         std::vector<std::string> callbacks;
         auto evaluate = [&](int shooter) {
         for (const ListenerEntry& entry : listeners_) {
@@ -9279,9 +9289,20 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             };
             if (!holds(entry.entity_ids, victim) || !holds(entry.attacker_ids, shooter)) continue;
             if (!entry.attack_types.empty()) {
-                bool any = false;
+                // Packet cc13-atkkind: both answers are taken, and a disagreement is
+                // counted whichever the switch picks (log-only).
+                bool by_type = false;
+                bool by_subkind = false;
                 for (const std::string& t : entry.attack_types) {
-                    if (listener_key_equal(t, type)) { any = true; break; }
+                    if (listener_key_equal(t, type)) by_type = true;
+                    if (listener_key_equal(t, subkind)) by_subkind = true;
+                }
+                if (by_type != by_subkind) ++summary_.listener_hit_attack_type_subkind_differs;
+                bool any = false;
+                if constexpr (kHitListenerAttackTypeSubKindCc13Bound) {
+                    any = by_subkind;   // 00988B09: 00E08E58[[shot+4]+8]
+                } else {
+                    any = by_type;
                 }
                 if (!any) continue;
             }
@@ -9357,9 +9378,7 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                 if (!push_resolved_entity_by_id(state_, boxed_attacker)) lua_pushnil(state_);
                 // The attack-type name table 00E08E58 (char*[], read from the PE),
                 // indexed by the ordnance kind [[src+4]+8], the event's ordnance_kind.
-                const int kind = hit.ordnance_kind;
-                ::lua_pushstring(state_, kind >= 0 && kind < kWeaponNameTableCount00e08e58
-                    ? kWeaponNameTable00e08e58[kind] : "");
+                ::lua_pushstring(state_, hit_attack_type_name_00e08e58(hit.ordnance_kind));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.attacker_player_index));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.damage));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.fire_caused));
@@ -11788,9 +11807,10 @@ void GameMissionLuaHost::report_mission_script_state() {
             summary_.listener_kill_not_harm, summary_.listener_kill_grace);
     }
     log_.notef("summary mission script hit listeners bound=%d events=%llu fires=%llu "
-        "unmodelled=%llu (00988510, packet cc9_lua_hit_listeners)", kLuaHitListenersBound ? 1 : 0,
+        "unmodelled=%llu (00988510, packet cc9_lua_hit_listeners) attack_type_subkind_differs=%llu",
+        kLuaHitListenersBound ? 1 : 0,
         summary_.listener_hit_events, summary_.listener_hit_fires,
-        summary_.listener_hit_unmodelled);
+        summary_.listener_hit_unmodelled, summary_.listener_hit_attack_type_subkind_differs);
     log_.notef("summary mission script hit second pass bound=%d passes=%llu fired=%llu "
         "(00988510 0098901A..009892E4, plane vtable[140h] 007B97E0 = +9D4h, packet "
         "cc9_lua50_hit_second_pass)", kLuaHitSquadronSecondPassBound ? 1 : 0,
