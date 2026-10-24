@@ -168,7 +168,9 @@ private:
 };
 
 // The zone queries 006AC5D0's cache refresh makes, in the image's argument
-// order (toward, start/from, out).
+// order (start, far point, out): each call pushes the out buffer, then the far
+// point, then the start last. The first cast passes start [E+8h], far [E+20h];
+// the back-cast start [E+8h], far [E+28h]; the run cast start [E+28h], far [E+20h].
 struct PadLineZoneQueries {
     virtual ~PadLineZoneQueries() = default;
     // 004218E0 then 004120D0(layer): the layer's group, 0 for none.
@@ -176,21 +178,23 @@ struct PadLineZoneQueries {
     // 004178F0(group)(point): the first zone containing the point, 0 for none.
     virtual std::uint32_t zone_containing_004178f0(std::uint32_t group,
                                                    float x, float z) = 0;
-    // 0041B4E0(group)(toward, from, out) -> AL.
-    virtual bool group_segment_hit_0041b4e0(std::uint32_t group, const float toward[2],
-                                            const float from[2], float out[2]) = 0;
-    // 00416DD0(zone)(toward, start, out, &edge) -> AL.
-    virtual bool zone_segment_hit_00416dd0(std::uint32_t zone, const float toward[2],
-                                           const float start[2], float out[2]) = 0;
+    // 0041B4E0(group)(start, far, out) -> AL.
+    virtual bool group_segment_hit_0041b4e0(std::uint32_t group, const float start[2],
+                                            const float far_point[2], float out[2]) = 0;
+    // 00416DD0(zone)(start, far, out, &edge) -> AL.
+    virtual bool zone_segment_hit_00416dd0(std::uint32_t zone, const float start[2],
+                                           const float far_point[2], float out[2]) = 0;
     // The image's 4th 00416DD0 argument is a dword out (00416EBB stores an index through it)
     // aimed at 006AC5D0's [B+10h] temporary; 006AC7CA/006AC7FD overwrite that slot before any
     // read, so the value is dead and the interface omits it (intended, not switched).
 
-    // cc13-padfix, called only under kPadApproachPointImageCc13Bound: the image's
-    // `if (byte [pad+0C8h] == 0) 00414DB0(pad)` (006AC60F/006AC620 and 006AC682/006AC68B), which
-    // refreshes the world pose before the cache reads +0FCh..+104h. The host's Pad::position is
-    // the authored world translation and has no stale state, so the default does nothing; a host
-    // that models the pose can override it and update pad.position.
+    // cc13-padfix: a seam that does nothing by default, called only under
+    // kPadApproachPointImageCc13Bound where the image calls 00414DB0(pad) (006AC620, 006AC68B)
+    // to refresh the world pose before the cache reads +0FCh..+104h. The caller's byte
+    // [pad+0C8h] == 0 test is redundant: 00414DB0 makes the same test itself and returns at once
+    // when the byte is set (00414DB6..00414DBD), so an override need not repeat it. The host's
+    // Pad::position is the authored world translation with no stale state; a host that models
+    // the pose can override this and update pad.position.
     virtual void refresh_pad_pose_00414db0(BuildingPadModel::Pad& pad) { (void)pad; }
 };
 

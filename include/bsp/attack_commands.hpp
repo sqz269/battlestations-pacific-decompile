@@ -127,6 +127,9 @@ struct AttackCommandEffects {
     std::uint32_t bot_task_factory;   // 0099A170's call, or 0
     std::uint32_t bot_task_valid_test;// the still-valid predicate, or 0
     std::size_t bot_task_latched_target_offset; // its `this` offset, or 0
+    // The offset the test falls back to when the first one holds 0, or 0 for none
+    // (strafe 009CC898-009CC8AA: +44Ch, else +468h; both 0 answers valid).
+    std::size_t bot_task_latched_target_fallback_offset{0};
 };
 
 // The seventeen rows, plus attackmove because five arms rewrite a class into it

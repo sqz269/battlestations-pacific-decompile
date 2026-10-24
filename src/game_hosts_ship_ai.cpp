@@ -111,6 +111,11 @@
 
 namespace bsp::game {
 
+// cc13-D6. 009E5E00 returns brain+0B20h only when that target answers
+// vtable[5Ch](1Ch) (a CommandBuilding), else 0. False: the host returns +0B20h
+// unchecked, which matches while standoff mode 4 (the only caller, 009E6B85) keeps
+// the kind-1Ch target it latched with. cc9 orders and pairs the flip.
+inline constexpr bool kEngagementTargetKindTestCc13Bound = false;
 // Packet cc9_ship_firepower, docs/SHIP_AI_FIREPOWER.md. True: the eight
 // predicates 0095EB40 asks about a mount answer from the gun rows the gunnery
 // host keeps (barrel timers, arcs, the refined projectile sub-type, the Bullets
@@ -5847,7 +5852,14 @@ public:
     }
     std::uint32_t engagement_target_009e5e00() override {
         owner_.done("ShipAiApproach::engagement_target_009e5e00", 0x009e5e00u);
-        return ctl_.goal_vector.raw_target_0b20;
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        if constexpr (kEngagementTargetKindTestCc13Bound) {
+            // 009E5E05..009E5E26: t answers only when t->vtable[5Ch](1Ch) is true.
+            const bool known = t != 0u && t - 1u < owner_.units.count();
+            return known && owner_.units.unit_is_kind_of(t - 1u, 0x1c) ? t : 0u;
+        } else {
+            return t;
+        }
     }
     std::int32_t target_radius_07c4(std::uint32_t target) override {
         // 009E6B90, FILD [target+7C4h] with no kind test: mode 4 is latched only
@@ -9992,6 +10004,10 @@ public:
         return owner_.class_number(index_, "MaxSpeed");      // 00831903, +500h
     }
     int tubes_ready(bool fore, float horizon) override {
+        // cc13-D6: 009E9910/009E9A50 (and 009E99A0) check the walk with 00BF6713:
+        // first <= last, the same container, and it < last before each read and
+        // each step. A begin..end walk over a vector the loop does not change
+        // passes all of them, so they are not modelled (intended).
         build_tubes_009e97b0();
         int ready = 0;
         for (const std::size_t gun : fore ? ctl_.sub_tubes_fore : ctl_.sub_tubes_aft) {

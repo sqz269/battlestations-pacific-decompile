@@ -7225,6 +7225,11 @@ public:
             && other < owner_.units.count()) {
             // 00727F44 -> 009035A0, 00727F56 -> 00903580 (CC13_VER_23 D1/D2).
             GameGunneryHost::Impl::TorpedoBotRange& tb = owner_.torpedo_bot_range_by_gun[slot];
+            // 009035A7..009035B5 compares 00521EA0(bot+38h) with the target. 006DF170
+            // stores the object pointer itself at bot+3Ch (006DF1C3) and registers an
+            // observer, so the handle resolves to the stored object until it is gone;
+            // a gone object is never passed again. Comparing indices is the same test
+            // (cc13-D6, intended).
             const bool changed = tb.target_plus_one != other + 1;
             tb.target_plus_one = other + 1;
             const float tube_range = row.max_range;
