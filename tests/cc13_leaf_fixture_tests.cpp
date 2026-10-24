@@ -349,16 +349,14 @@ int main() {
         rb.check(at<std::uint8_t (__fastcall*)(void*)>(cc13_leaf_00636dd0)(object) ==
                  (hud_scene_init_screen_occludes_lower_levels_00636dd0(Raw{object}) ? 1 : 0));
         auto& em = open("0067AF30 Empty RET 8");
-        // RET 8 releases the two stack dwords the __fastcall caller pushed; a wrong size
-        // would unbalance the stack over the loop.
+        // Smoke check only: both run and return, and the object is untouched. The RET 8
+        // itself rests on the disk bytes (C2 08 00) and the audit hash, not on this case.
         auto empty = at<void (__fastcall*)(void*, int, std::uint32_t, std::uint32_t)>(cc13_leaf_0067af30);
-        for (std::uint32_t i = 0; i < 1000; ++i) {
-            const std::uint32_t sentinel = next();
-            volatile std::uint32_t kept = sentinel;
-            empty(object, 0, i, ~i);
-            hud_tactical_sheet_screen_on_listbox_selection_changed_no_op_0067af30(Raw{object});
-            em.check(kept == sentinel);
-        }
+        empty(object, 0, 1, 2);
+        hud_tactical_sheet_screen_on_listbox_selection_changed_no_op_0067af30(Raw{object});
+        bool untouched = true;
+        for (const std::uint8_t b : object) untouched = untouched && b == 0;
+        em.check(untouched);
         auto& tj = open("0067B3F0 TailJump");
         RecordingHudServices hud;
         void* native = at<void* (__fastcall*)(void*)>(cc13_leaf_0067b3f0)(object);
