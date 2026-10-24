@@ -2292,11 +2292,13 @@ void GameHudHost::Impl::step_movie_camera(float seconds) {
         // 007912E0 00887E50(ECX = [[00E188A8]+1A08h], 0, &name, 0, 0, -1): `_G[name]()`
         // through the script-orders host's named runner, as the keyframe events.
         // SUBSTITUTION, labelled: run after 00798130's loops instead of inside the
-        // step, in the same order, because the script may destroy this camera.
+        // step, in the same order, because the script may destroy this camera. If
+        // it destroys and rebuilds the camera here, this frame still publishes the
+        // old camera's world and fov (computed above).
         GameScriptOrdersHost* orders = lua != nullptr ? lua->script_orders() : nullptr;
         for (const std::string& name : due) {
             if (orders == nullptr) {
-                record("MovieKeyframe::finishscript", 0x00887e50u);
+                parents.unsupported("MovieKeyframe::finishscript", 0x00887e50u);
             } else {
                 log.notef("movie keyframe finishscript runs \"%s\" at hud update frame %llu "
                     "(007912E0 -> 00887E50, packet cc13-finscr)", name.c_str(), summary.update_frames);

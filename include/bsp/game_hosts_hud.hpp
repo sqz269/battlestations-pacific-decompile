@@ -354,12 +354,18 @@ inline constexpr bool kMovieTerrainAvoidBound = true;
 // keyframe+FCh for a camera key or a named postype). 007911E0 at the end of the
 // blend (state 1, clock >= start + blend, 007912A0..007912B6) calls 00887E50 on
 // [[00E188A8]+1A08h] with (0, &name, 0, 0, -1) at 007912E0 unless the camera's
-// byte +390h is set ([[key+4]+74h], 0079121D; only 0079D179's store of 0 is
-// known), then sets state 2 (007912E5). True: the name is parsed and the call
-// runs through the script-orders host's named 00887E50. SUBSTITUTION, labelled:
-// at the end of the same 0079A3B0 update rather than inside 00798130's key loop,
-// because the script may destroy the camera. False: the key stays unsupported
-// and the pose line notes `finishscript=<name> would_run=1`.
+// byte +390h is set ([[key+4]+74h], 0079121D), then sets state 2 (007912E5).
+// +390h: 0079D179 stores 0; its one setter is input-driven, 0096D58D in
+// BSP_WarningManager_PollPrompt 0096D540 (a pending prompt at [mgr+19Ch] and
+// action 3 pressed, with [game+1ED4h] the movie camera), so skipping a cut-scene
+// with the prompt key suppresses its finishscripts. This host has no writer of
+// +19Ch and no pressed action, so the byte stays 0 here. True: the name is parsed
+// and the call runs through the script-orders host's named 00887E50.
+// SUBSTITUTION, labelled: at the end of the same 0079A3B0 update rather than
+// inside 00798130's key loop, because the script may destroy the camera. A script
+// that destroys and rebuilds the camera in that frame leaves the publish with the
+// old camera's world and fov for that one frame. False: the key stays
+// unsupported and the pose line notes `finishscript=<name> would_run=1`.
 inline constexpr bool kMovieCameraFinishScriptCc13Bound = false;
 static_assert(!kMovieCameraFinishScriptCc13Bound || kMovieMoverBound,
               "finishscript needs the movie camera mover");
