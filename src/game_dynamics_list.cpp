@@ -236,6 +236,38 @@ GameDynamicsFrameResult tick_game_dynamics_frame_00447b80(
     return result;
 }
 
+namespace {
+
+// cc13-P4 (004462d0): ON runs the whole body as the image does it - the water
+// query before the box query, the image's float operation order with no
+// zero-divide guards, and the second damping setter 00c37e00. OFF keeps the
+// earlier projection, which live play has run on (with an empty list).
+constexpr bool kDynamicsBuoyancyWholeBodyCc13Bound = false;
+
+// 0044636a..004463e3: `x > 0 ? x : -0.0f - x` against the -0.0f at 00d7a208.
+float image_magnitude(float x) noexcept
+{
+    return x > 0.0f ? x : -0.0f - x;
+}
+
+} // namespace
+
+float dynamics_submersion_fraction_image_004462d0(
+    const DynamicsVec3& axis, const DynamicsVec3& extent,
+    float center_y, float water_height) noexcept
+{
+    const float y_term = image_magnitude(axis.y) * extent.y; // 004463e3
+    const float x_term = image_magnitude(axis.x) * extent.x; // 004463eb
+    const float z_term = image_magnitude(axis.z) * extent.z; // 004463f5
+    const float half = ((y_term + x_term) + z_term) * 0.5f;  // 004463ff, double 0.5
+    const float bottom = center_y - half;                    // 0044641c
+    const float top = half + center_y;                       // 00446432
+    const float fraction = (water_height - bottom) / (top - bottom); // 00446440
+    if (0.0f > fraction) return 0.0f;  // 0044644c, JBE keeps NaN
+    if (fraction > 1.0f) return 1.0f;  // 00446468, the 1.0f at 00d7a24c
+    return fraction;
+}
+
 std::size_t apply_dynamics_buoyancy_004462d0(
     GameDynamicsState& list, float damping_scale, GameDynamicsBuoyancyHost& host)
 {
@@ -245,24 +277,45 @@ std::size_t apply_dynamics_buoyancy_004462d0(
     for (std::size_t i = 0; i < list.records.size(); ++i) {
         const GameDynamicsRecord& record = list.records[i];
 
-        DynamicsVec3 axis{};
-        DynamicsVec3 center{};
-        host.body_world_transform_00c32000(record.body, axis, center);
-        const DynamicsVec3 extent = host.body_box_extent_00c31f90(record.body);
-        const float water = host.water_height_0078cf20(center.x, center.z);
+        if constexpr (kDynamicsBuoyancyWholeBodyCc13Bound) {
+            // 0044631d 00c32000, 00446340 0078cf20(x, z) from +24h/+2Ch,
+            // 00446355 00c31f90 - water before box.
+            DynamicsVec3 axis{};
+            DynamicsVec3 center{};
+            host.body_world_transform_00c32000(record.body, axis, center);
+            const float water = host.water_height_0078cf20(center.x, center.z);
+            const DynamicsVec3 extent = host.body_box_extent_00c31f90(record.body);
+            const float submersion =
+                dynamics_submersion_fraction_image_004462d0(axis, extent, center.y, water);
+            // 004464a1..004464c4: ((scalar * 10.0) * submersion) / record+1Ch,
+            // each product rounded to float; a zero divisor gives inf or NaN.
+            const float scalar = host.body_buoyancy_scalar_00c31fc0(record.body);
+            const float force = (scalar * 10.0f) * submersion / record.buoyancy_divisor;
+            host.apply_buoyancy_force_00c32050(record.body, force); // {0, force, 0}
+            const float damping = damping_scale * submersion; // 004464d5, 004464f2
+            host.set_body_damping_00c37de0(record.body, damping);
+            host.set_body_damping_00c37e00(record.body, damping);
+        } else {
+            DynamicsVec3 axis{};
+            DynamicsVec3 center{};
+            host.body_world_transform_00c32000(record.body, axis, center);
+            const DynamicsVec3 extent = host.body_box_extent_00c31f90(record.body);
+            const float water = host.water_height_0078cf20(center.x, center.z);
 
-        const float submersion = dynamics_submersion_fraction(axis, extent, center.y, water);
+            const float submersion = dynamics_submersion_fraction(axis, extent, center.y, water);
 
-        const float scalar = host.body_buoyancy_scalar_00c31fc0(record.body);
-        // The divide by record+1Ch is what the fade path manipulates; a zero
-        // divisor would fault natively and no record is produced with one.
-        const float force = record.buoyancy_divisor == 0.0f
-            ? 0.0f
-            : static_cast<float>(
-                  static_cast<double>(scalar) * kDynamicsBuoyancyGravity *
-                  static_cast<double>(submersion) / static_cast<double>(record.buoyancy_divisor));
-        host.apply_buoyancy_force_00c32050(record.body, force);
-        host.set_body_damping_00c37de0(record.body, damping_scale * submersion);
+            const float scalar = host.body_buoyancy_scalar_00c31fc0(record.body);
+            // The divide by record+1Ch is what the fade path manipulates. The
+            // image's x87 divide is masked (inf or NaN, no fault); this arm
+            // substitutes 0.
+            const float force = record.buoyancy_divisor == 0.0f
+                ? 0.0f
+                : static_cast<float>(
+                      static_cast<double>(scalar) * kDynamicsBuoyancyGravity *
+                      static_cast<double>(submersion) / static_cast<double>(record.buoyancy_divisor));
+            host.apply_buoyancy_force_00c32050(record.body, force);
+            host.set_body_damping_00c37de0(record.body, damping_scale * submersion);
+        }
         ++processed;
     }
     return processed;

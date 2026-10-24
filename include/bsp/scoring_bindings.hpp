@@ -140,9 +140,11 @@ struct ScoringBindingHost {
     // valid. Called at 00910465, 009104a5, 0090f0f3 and the rest of the setter family.
     virtual int& score_map_entry(int slot, std::size_t record_offset, const std::string& key) = 0;
 
-    // 004c8b80, std::map::find on the same map. Returns 0 without inserting when the key is
-    // absent (0090c7d6 XOR EAX,EAX). Body not read; named by its effect at the call site.
-    virtual int score_map_find(int slot, std::size_t record_offset, const std::string& key) = 0;
+    // 004c8b80, std::map<NativeString, int>::find on the same map (library code, bound): the
+    // value (node+14h) of the found node, or null for end(). Never inserts. The caller turns
+    // end() into 0 (0090c7d6 / 0090C846 XOR EAX,EAX).
+    virtual const int* score_map_find_004c8b80(int slot, std::size_t record_offset,
+                                               const std::string& key) = 0;
 
     // [manager + slot*284h + 1E4h], the total 008b8ff0 reads inline.
     virtual int slot_total_score(int slot) = 0;

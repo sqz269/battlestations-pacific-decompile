@@ -293,6 +293,7 @@ private:
     float body_buoyancy_scalar_00c31fc0(std::uint32_t body) override;
     void apply_buoyancy_force_00c32050(std::uint32_t body, float force) override;
     void set_body_damping_00c37de0(std::uint32_t body, float damping) override;
+    void set_body_damping_00c37e00(std::uint32_t body, float damping) override;
 
     void record(const char* method, std::uint32_t address);
     void done(const char* method, std::uint32_t address);

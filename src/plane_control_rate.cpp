@@ -8,6 +8,10 @@
 namespace bsp {
 namespace {
 
+// cc13-P4 (007DA710 R3): ON takes the image's multiply order for the yaw-roll
+// coupling. OFF keeps the earlier order, which live play has run on.
+constexpr bool kPlaneYawRollCouplingOrderCc13Bound = false;
+
 // 007DAB79..007DAB8A, and again at 007DAB99 and 007DAD0F: MSVC's fabs here is
 // `-0.0f - x` under a sign test rather than a bit mask, the -0.0f coming from
 // 00D7A208. The two agree on every finite input and on infinities; they differ
@@ -184,7 +188,15 @@ PlaneControlTargets plane_control_targets_007da710(const PlaneControlClass& cls,
         // 007DAA5C..007DAA78, added to the ROLL target - the coupling a
         // coordinated turn needs, and it uses the raw yaw product rather than
         // the mode-scaled one.
-        roll += cls.yaw_roll_ratio * mode_factor_f1 * yaw_raw;
+        // The image multiplies in the other order: 007DAA5C..007DAA6E is
+        // (yaw_raw * f1) * [class+1B4h], each product rounded to the
+        // destination float. The two orders differ in the last place only.
+        if constexpr (kPlaneYawRollCouplingOrderCc13Bound) {
+            const float raw_by_mode = yaw_raw * mode_factor_f1;
+            roll += raw_by_mode * cls.yaw_roll_ratio;
+        } else {
+            roll += cls.yaw_roll_ratio * mode_factor_f1 * yaw_raw;
+        }
     }
     // 007DAA85..007DAA97: negated on the way to its slot, against the -0.0f at
     // 00D7A208. A sign error here turns every aircraft the wrong way while every
