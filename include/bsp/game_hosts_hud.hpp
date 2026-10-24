@@ -376,7 +376,7 @@ static_assert(!kMovieCameraFinishScriptCc13Bound || kMovieMoverBound,
 // host's copy of the screen's +54h (zero: Register 0054D900 stores 0.0f and the
 // host runs none of ShowHint 0054E020, Update 0054E6B0 or Dismiss 0054E610).
 // OFF records the call and answers false.
-inline constexpr bool kHudHintsSecondsLeftBound = false;
+inline constexpr bool kHudHintsSecondsLeftBound = true;
 // Returns the keyframes added, or -1 when no HUD is attached.
 int hud_movie_add_position_007a44d0(const bsp::MovieKeyframeInput& in);
 

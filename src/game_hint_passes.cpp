@@ -243,6 +243,14 @@ void GameHintsScreen::cue_start_00a7e490(std::int32_t, std::string_view, std::st
 // The tracker: TriggerHint and its reads
 // ---------------------------------------------------------------------------
 
+bool hints_seconds_left_0054d3c0_cc15(std::int32_t& seconds_left) noexcept {
+    GameHintTrackerSlot* slot = GameHintTrackerSlot::process_slot();
+    GameHintTracker* tracker = slot != nullptr ? slot->built() : nullptr;
+    if (tracker == nullptr) return false;
+    seconds_left = tracker->hints_screen_34().seconds_left_0054d3c0();
+    return true;
+}
+
 GameHintsScreen& GameHintTracker::hints_screen_34() {
     if (!screen_34_) screen_34_ = std::make_unique<GameHintsScreen>(log_, *this);
     return *screen_34_;
