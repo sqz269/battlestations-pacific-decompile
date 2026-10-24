@@ -1351,6 +1351,21 @@ void* gui_first_vertex_stream(void* widget, GuiLeafHost& host)
     return host.first_vertex_stream(widget);
 }
 
+// 00ABE640..00ABE66E: ECX = section, plain RET, EAX result. Each null/zero
+// branch precedes the next native call. Offset +4Ch is the established widget
+// generated-model field. Callee contracts are retained as address boundaries;
+// this routine claims no additional geometry implementation or binary ABI.
+void* gui_section_get_first_vertex_stream_00abe640(void* section, GuiSectionVertexStreamHost& host)
+{
+    void* model;
+    std::memcpy(&model, static_cast<unsigned char*>(section) + 0x4C, sizeof model);
+    if (!model) return nullptr;
+    void* const geometry = host.call_00b74640(model, 0); // 00ABE64A
+    if (!geometry) return nullptr;
+    if (host.call_00b72b20(geometry) == 0) return nullptr; // 00ABE657
+    return host.call_00b73260(geometry, 0); // 00ABE664
+}
+
 void gui_section_set_size_00abe670(void* section, const float (&size)[2], GuiLeafHost& host)
 {
     host.widget_set_size_00aa7970(section, size);
