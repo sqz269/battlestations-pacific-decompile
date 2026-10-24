@@ -4226,6 +4226,20 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             } else {
                 route_push_squadron(static_cast<int>(entity), record.name,
                     member.type_class_id, units_before);
+                // Packet cc13-spawnsq: 009486BF stores the same 009420A0 bag at
+                // +0C0h on the plane arm too, so pass A gives the squadron its
+                // `Party` (00928A1E) and 007F491A hands it to the wing. Counted
+                // whether or not the switch is on.
+                if (PendingEntity* node = find_pending(static_cast<int>(entity))) {
+                    ++summary_.spawn_squadron_party_nodes;
+                    node->spawn_squadron_record = true;   // log only: counts its wing
+                    if constexpr (kSpawnNewSquadronPartyCc13Bound) {
+                        node->party = request.party;
+                        node->race = member.race > 0 ? member.race
+                                                     : (request.party == 0 ? 2 : 1);
+                        node->generated_party = true;
+                    }
+                }
             }
         } else {
             if (!attach_created_entity_00928a00(static_cast<int>(entity), record.name,
@@ -4969,6 +4983,7 @@ public:
                     plane.launched_party = node.launched_party;
                 }
                 if (node.launched_record) ++host_.summary_.launched_wing_nodes;
+                if (node.spawn_squadron_record) ++host_.summary_.spawn_squadron_wing_nodes;
                 ++host_.summary_.init_all_wing_marked;
             }
             return;   // the wing append below is retired
@@ -5012,6 +5027,7 @@ public:
                 plane.launched_party = node.launched_party;
             }
             if (node.launched_record) ++host_.summary_.launched_wing_nodes;
+            if (node.spawn_squadron_record) ++host_.summary_.spawn_squadron_wing_nodes;
             host_.pending_entities_.push_back(std::move(plane));  // `node` stays valid
             ++host_.summary_.init_all_wing_appended;
         }
@@ -11776,10 +11792,12 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.init_all_squadron_ids);
     log_.notef("summary mission script generated entity party (packet "
         "cc9_generated_entity_party, 00944FD0 -> 00928A00): bound=%d nodes=%llu writes=%llu "
-        "launched_party_nodes=%llu launched_wing_nodes=%llu",
+        "launched_party_nodes=%llu launched_wing_nodes=%llu spawn_squadron_party_nodes=%llu "
+        "spawn_squadron_wing_nodes=%llu spawn_squadron_bound=%d",
         kGeneratedEntityPartyBound ? 1 : 0, summary_.generated_party_nodes,
         summary_.generated_party_writes, summary_.launched_party_nodes,
-        summary_.launched_wing_nodes);
+        summary_.launched_wing_nodes, summary_.spawn_squadron_party_nodes,
+        summary_.spawn_squadron_wing_nodes, kSpawnNewSquadronPartyCc13Bound ? 1 : 0);
     log_.notef("summary SEntity::InitAll pass E bound=%d released=%llu",
         kSEntityInitPassEReleaseBound ? 1 : 0, summary_.init_all_holders_released);
     log_.notef("summary SEntity::InitAll pending dedup bound=%d skipped_pending=%llu "
