@@ -1276,6 +1276,28 @@ constexpr bool kTailGunnerClearReleaseBound = true;
 //    hit point (the ship branch recorded). ON by mechanism: USN10, USNOS a7 and
 //    BSM09 gameplay identical, the ship leads equal the old record counts.
 constexpr bool kSeatArtilleryLeadBound = true;
+//  * kSeatArtilleryClassSpeedCc13Bound: packet cc13-seatspeed (rev4 BSM03).
+//    The seat's arc solve 00955630 (0095A07A..0095A08C) takes FLD
+//    [[[dev+3F8h]+34h]+50h], the class +50h speed that 006E98BC rewrites to
+//    sqrt(9.81 * Range) for an artillery class: the bot's chain at
+//    006DFAAA..006DFAB3. ON: the seat solves with gun.class_speed when
+//    gun.artillery_class, the bot's own predicate (kArtilleryClassSpeedBound
+//    && artillery_class). OFF: the authored V0 (gun.muzzle_speed), as before.
+//    Reach: a player-held artillery seat (group 3) only; needs a pair.
+constexpr bool kSeatArtilleryClassSpeedCc13Bound = false;
+static_assert(!kSeatArtilleryClassSpeedCc13Bound || kArtilleryClassSpeedBound,
+    "kSeatArtilleryClassSpeedCc13Bound needs kArtilleryClassSpeedBound: gun.class_speed is "
+    "that switch's 006E98BC rewrite");
+//  * kSeatArtilleryTriggerRefusalCc13Bound: packet cc13-seatspeed. 0095A0E5
+//    MOV BL,AL keeps the solve result, and 0095A0EF 0085ABA0(horz, vert) /
+//    0095A0F4 TEST AL,AL / 0095A0F8 XOR BL,BL clears it when the call refuses
+//    the pair, so the trigger needs 0085ABA0's acceptance too. Its answer
+//    depends only on the pair, the gun's arcs (007F5FC0) and its two rates,
+//    so the host takes it at the drain itself on a copy of the gun's angles,
+//    the same call the image makes, with no lag. ON: the player-held trigger
+//    is held && solved && within && accepted. OFF: held && solved && within.
+//    Reach: a player-held artillery seat whose pair is outside its arcs.
+constexpr bool kSeatArtilleryTriggerRefusalCc13Bound = false;
 //  * kPlayerWeaponGroupFireBound: packet cc9_player_weapon_group_fire. Message
 //    79h's group 5 arm (0095A441): the player's depth-charge launchers take
 //    the 99h-held byte as their trigger, and GameGunneryHost::
@@ -3027,6 +3049,11 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_artillery_guns{0};      // accepted guns, every message
     unsigned long long seat_artillery_unsolved{0};  // 00955630 returned false
     unsigned long long seat_artillery_hits{0};      // 00957740 took the segment hit
+    // Packet cc13-seatspeed (log only): player-held artillery-class solves
+    // whose class +50h speed differs from the authored V0, and player-held
+    // triggers 0085ABA0's refusal clears (0095A0F8), in either setting.
+    unsigned long long seat_solve_speed_differs{0};
+    unsigned long long seat_trigger_refused{0};
     // kSeatArtilleryLeadBound: the 009578C3 lead taken on a ship (00902290) and
     // on any other entity (00901C20), how many of the ship leads turned
     // (00902290's lead path), and how many used the platform velocity.
@@ -14964,13 +14991,24 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
         // 0095A08C..0095A0AA: 00955630(ECX unit, EDX aim, dev+0FCh, the
         // speed [[dev+3F8h]+34h]+50h, &vert, &horz), in this host's
         // convention: the world-frame solve (mount NULL) turned into the
-        // hull-relative pair as the bot's 006DFAD4 path does.
+        // hull-relative pair as the bot's 006DFAD4 path does. The +50h speed
+        // is the class one, sqrt(9.81 * Range) after 006E98BC for an artillery
+        // class; the host uses it only under kSeatArtilleryClassSpeedCc13Bound
+        // and otherwise the authored V0.
         float muzzle[3];
         gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
         bsp::GunGravityArcQuery q;
         q.aim_point = {aim[0], aim[1], aim[2]};
         q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
-        q.muzzle_speed = gun.muzzle_speed;
+        const bool class_speed = kArtilleryClassSpeedBound && gun.artillery_class;
+        if (!seat_ai && class_speed && gun.class_speed != gun.muzzle_speed) {
+            ++seat_solve_speed_differs;
+        }
+        if constexpr (kSeatArtilleryClassSpeedCc13Bound) {
+            q.muzzle_speed = class_speed ? gun.class_speed : gun.muzzle_speed;
+        } else {
+            q.muzzle_speed = gun.muzzle_speed;
+        }
         q.mount_frame = nullptr;
         const bsp::GunGravityArcSolution arc = bsp::solve_gun_gravity_arc_00955630(q);
         if (!arc.solved) ++seat_artillery_unsolved;
@@ -14990,7 +15028,8 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
         // 0095A0FA..0095A1C2: the trigger, skipped for an AI-held seat (and
         // on a world +1FE4h of 2). A player-held gun takes the pair and fires
         // with +34h when the solve held and both axes are within 2 degrees
-        // (00D0C26C) of it; 0085ABA0's own refusal is not folded in here.
+        // (00D0C26C) of it. 0085ABA0's refusal (0095A0F8 XOR BL,BL) is folded
+        // in under kSeatArtilleryTriggerRefusalCc13Bound.
         if (!seat_ai) {
             gun.seat_horz = horz;
             gun.seat_vert = vert;
@@ -14998,7 +15037,20 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
             const bool within = std::fabs(bsp::wrapped_angle_subtract_00438b10(
                                     gun.angles.vert, vert)) <= band
                 && std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.horz, horz)) <= band;
-            gun.seat_trigger = m.held_34 && arc.solved && within;
+            const bool trigger = m.held_34 && arc.solved && within;
+            // 0085ABA0's answer for this pair, on a copy: the gun's own target
+            // pair is still set by the deferred call above.
+            bsp::GunTurningAngles probe = gun.angles;
+            float probe_mark = 0.0f;
+            const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
+            const bool accepted = bsp::gun_set_target_angles_0085aba0(probe, arcs, gun.speeds,
+                horz, vert, probe_mark);
+            if (trigger && !accepted) ++seat_trigger_refused;
+            if constexpr (kSeatArtilleryTriggerRefusalCc13Bound) {
+                gun.seat_trigger = trigger && accepted;
+            } else {
+                gun.seat_trigger = trigger;
+            }
         }
     }
     done("PlayerGunSeat::artillery_arm_00959f72", 0x00959f72u);
@@ -17464,12 +17516,14 @@ void GameGunneryHost::report() {
             host.seat_role_releases, kRoleOwnerDeviceWalkBound ? 1 : 0);
         host.log.notef("summary mission gunnery player seat groups 0..5=%llu/%llu/%llu/%llu/%llu/%llu "
             "artillery guns=%llu unsolved=%llu hits=%llu turns=%llu refusals=%llu bound=%d "
-            "(00959F72, packet cc9_player_gun_seat_artillery)",
+            "(00959F72, packet cc9_player_gun_seat_artillery) seat_solve_speed_differs=%llu "
+            "seat_trigger_refused=%llu",
             host.seat_group_messages[0], host.seat_group_messages[1], host.seat_group_messages[2],
             host.seat_group_messages[3], host.seat_group_messages[4], host.seat_group_messages[5],
             host.seat_artillery_guns, host.seat_artillery_unsolved, host.seat_artillery_hits,
             host.seat_artillery_turns, host.seat_artillery_refusals,
-            kPlayerGunSeatArtilleryBound ? 1 : 0);
+            kPlayerGunSeatArtilleryBound ? 1 : 0, host.seat_solve_speed_differs,
+            host.seat_trigger_refused);
         if constexpr (kSeatArtilleryLeadBound) {
             host.log.notef("summary mission gunnery seat artillery lead ship=%llu turned=%llu "
                 "other=%llu adds_speed=%llu (009578C3, 00902290 / 00901C20, packet s54_seat_lead)",
