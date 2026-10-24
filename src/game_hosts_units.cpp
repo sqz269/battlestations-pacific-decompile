@@ -13082,8 +13082,20 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
 // band and inserts it into pilot+4h + pass * C8h.
 static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot& u, int pass,
                                         float lo, float hi, float dlo, float dhi, float r,
-                                        float bank_f, float level_flight_speed, float speed) {
-    if (!(lo < hi)) return;                                          // 0099CABC
+                                        float bank_f, float level_flight_speed, float speed,
+                                        bool trace = false) {
+    // DIAGNOSTIC (cc9-physics27, BSP_PLANE_RATE_TRACE): one "plane tr shape" line per
+    // call naming the exit taken; log-only.
+    auto shape_note = [&](const char* exit, bool cov, float mm, float bs, float dn, float ee) {
+        if (!trace) return;
+        host.log.notef("plane tr shape %s t=%.2f pass=%d exit=%s covers=%d m=%.4f base=%.4f "
+            "den=%.2f e=%.4f lo=%.4f hi=%.4f dlo=%.2f dhi=%.2f r=%.2f",
+            u.row.name.c_str(), static_cast<double>(host.summary.simulated_seconds), pass, exit,
+            cov ? 1 : 0, static_cast<double>(mm), static_cast<double>(bs), static_cast<double>(dn),
+            static_cast<double>(ee), static_cast<double>(lo), static_cast<double>(hi),
+            static_cast<double>(dlo), static_cast<double>(dhi), static_cast<double>(r));
+    };
+    if (!(lo < hi)) { shape_note("lo>=hi", false, 0.0f, 0.0f, 0.0f, 0.0f); return; }   // 0099CABC
     // 0099CAD4-0099CB19; x0 is pilot+264h (0099CAF2). 0099D300 stores 0.0 there
     // at 0099EB9D (XORPS 0099EB89) every think; the 0.12 ([00CE81A8]) stored at
     // 0099EB95 goes to pilot+260h. The 0.12 below is the old reading, kept
@@ -13094,7 +13106,7 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
     if (1.0f > g) {
         lo = static_cast<float>((static_cast<double>(lo) - 1.1) * g + 1.1);     // double [00CE3DF0]
         hi = static_cast<float>((static_cast<double>(hi) + 1.1) * g - 1.1);
-        if (!(lo < hi)) return;                                      // 0099CB67
+        if (!(lo < hi)) { shape_note("fade", false, 0.0f, 0.0f, 0.0f, g); return; }   // 0099CB67
     }
     const float ratio = dlo / dhi;                                   // 0099CB6D-0099CBB8
     if (static_cast<double>(ratio) > 1.8) {                          // double [00D049A8]
@@ -13142,11 +13154,12 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
         else r = static_cast<float>(r * 0.7);
     }
     if (range_test) {                                                // 0099CDC9
-        if (dlo > r && dhi > r) return;
+        if (dlo > r && dhi > r) { shape_note("range", covers, m, 0.0f, 0.0f, 0.0f); return; }
         r = static_cast<float>(r * 1.1);
     }
     const float base = covers ? avoid_interp(0.0f, 0.3f, 0.08f, 0.5f, m) : 0.3f;   // [00D05B50] [00CE3800]
     const float den = (200.0 > r) ? r : 200.0f;                      // double [00CE4D70]
+    const float e_trace = dhi / den - base;                          // DIAGNOSTIC copy of e
     if (lo > -1.0f) {                                                // 0099CD96
         const float e = dhi / den - base;                            // dHi for both edges
         if (0.0f > e) {
@@ -13163,9 +13176,10 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
             hi = hi - e * e;
         }
     }
-    if (!(lo < hi)) return;                                          // 0099D016
+    if (!(lo < hi)) { shape_note("final_lo>=hi", covers, m, base, den, e_trace); return; }   // 0099D016
     host.ga_insert_0099b790(u, pass, lo, hi);                        // 0099D025
     ++u.tr_bands;
+    shape_note("inserted", covers, m, base, den, e_trace);
 }
 
 // 009A1420..009A17A1 (0099F1C0's branch A, inside the body 0099F1C0-009A17CB),
@@ -13344,9 +13358,12 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     } else {
         sa = avoid_interp(0.1f, 1.0f, 1.2f, 8.0f, bank_f) * sa;      // [00D7A2F0] [00CE3814] [00CE3918]
     }
+    const float sa_bank_trace = sa;                                  // DIAGNOSTIC
     if (pitch < 0.0f) sa = static_cast<float>(sa - w_width * pitch * 4.0);   // double [00D7A328]
+    const float sa_pitch_trace = sa - sa_bank_trace;                 // DIAGNOSTIC
     const float* p_now = u.world.data() + 12;
     const float h9b4 = p_now[1] - avoid_surface_height(p_now[0], p_now[2]);   // unit+9B4h, labelled
+    const float sa_h_trace = avoid_interp(80.0f, 0.0f, 460.0f, w_width + w_width, h9b4);   // DIAGNOSTIC
     sa = avoid_interp(80.0f, 0.0f, 460.0f, w_width + w_width, h9b4) + sa;     // [00CE5444] [00D1F404]
     const float* fr = u.world.data() + 8;                            // forward row
     const float fwd_speed = v_world[0] * fr[0] + v_world[1] * fr[1] + v_world[2] * fr[2];   // 007D99C0
@@ -13354,8 +13371,23 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     sa = avoid_interp(static_cast<float>(max_spd * 1.4), 0.0f,       // double [00D045F0]
                       static_cast<float>(2.5 * max_spd),             // double [00CE3DE0]
                       static_cast<float>(w_width * 3.0), fwd_speed) + sa;
+    const float sa_speed_trace = avoid_interp(static_cast<float>(max_spd * 1.4), 0.0f,   // DIAGNOSTIC
+                      static_cast<float>(2.5 * max_spd), static_cast<float>(w_width * 3.0), fwd_speed);
     if (!(sa > 10.0f)) sa = 10.0f;                                   // [00CE38B8]
     const double look_d = static_cast<double>(v_look * look_t);      // 0099F470, a double
+
+    // DIAGNOSTIC (cc9-physics27, BSP_PLANE_RATE_TRACE): "plane tr arm" per pass and
+    // "plane tr run" per 0099CAB0 call for the named plane; log-only. The heights
+    // are recomputed here without avoid_surface_height's census counters.
+    const bool tr_trace = !plane_rate_trace_name().empty() && u.row.name == plane_rate_trace_name();
+    auto tr_heights = [&](float x, float z, float& lh, float& sh) {
+        OceanFieldBinding sea(*this);
+        sh = bsp::ocean_water_height_0078cf20(x, z, sea);
+        const GameAvoidZoneRegistry& reg = GameAvoidZoneRegistry::instance();
+        const bsp::TerrainGridLayerRecord* layer = reg.layer(reg.squadron_layer_34c());
+        lh = layer != nullptr ? avoid_zone_sample_0041bc20(*layer, x, z) : 0.0f;
+    };
+    float tr_fy = 0.0f, tr_wa = -1.0f, tr_wb = -1.0f, tr_w = -1.0f;   // DIAGNOSTIC
 
     float p0[3]{}, a[3]{}, mid[3]{}, b[3]{};
     float c0 = 0.1f;
@@ -13373,6 +13405,7 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
             const float m_turn = avoid_interp(-0.15f, 0.0f, 0.2f, 2.5f, -pitch);   // [00CF87CC] [00CE54A0] [00CF87C8]
             const float c = m_turn * sin_b * cos_p * u.plane_class.slide_ratio * u.plane_class.yaw_spd;
             for (int i = 0; i < 3; ++i) f[i] = c * l[i] + f[i];      // 0099F62F's normalize is discarded
+            tr_fy = f[1];                                            // DIAGNOSTIC
             r = static_cast<float>(avoid_interp(0.3f, 0.6f, 1.2f, 1.2f, bank_f) * look_d);   // [00CE69C8] [00CE3D30] [00CE3814]
             for (int i = 0; i < 3; ++i) p0[i] = static_cast<float>(p_now[i] - f[i] * 10.0);   // double [00CE3DC0]
             for (int i = 0; i < 3; ++i) {
@@ -13395,7 +13428,11 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
                 const float wb = avoid_interp(-0.4f, 0.0f, -0.15f, 1.0f, pitch); // [00D1F400]
                 const float w = wb * wa;
                 if (w > 0.0f) f[1] = static_cast<float>((1.0 - w) * f[1]);
+                tr_wa = wa;                                          // DIAGNOSTIC
+                tr_wb = wb;
+                tr_w = w;
             }
+            tr_fy = f[1];                                            // DIAGNOSTIC
             r = static_cast<float>(look_d * 1.1);                    // double [00CE3DF0]
             for (int i = 0; i < 3; ++i) {
                 a[i] = static_cast<float>(r * (f[i] - up[i]) * 0.75) + p0[i];   // double [00CEC9D8]
@@ -13415,6 +13452,61 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
         const float n_f = static_cast<float>(n_steps);
         const float ds = 1.0f / n_f;
         float s = ds > 1.0f ? 1.0f : ds;
+        if (tr_trace) {                                              // DIAGNOSTIC
+            const GameAvoidZoneRegistry& reg = GameAvoidZoneRegistry::instance();
+            const int li = static_cast<int>(reg.squadron_layer_34c());
+            const bsp::TerrainGridLayerRecord* layer = reg.layer(reg.squadron_layer_34c());
+            float lh_pos = 0.0f, sh_pos = 0.0f, lh_p0 = 0.0f, lh_a = 0.0f, lh_m = 0.0f,
+                  lh_b = 0.0f, sh_x = 0.0f;
+            tr_heights(p_now[0], p_now[2], lh_pos, sh_pos);
+            tr_heights(p0[0], p0[2], lh_p0, sh_x);
+            tr_heights(a[0], a[2], lh_a, sh_x);
+            tr_heights(mid[0], mid[2], lh_m, sh_x);
+            tr_heights(b[0], b[2], lh_b, sh_x);
+            log.notef("plane tr arm %s t=%.2f pass=%d pos=(%.1f %.1f %.1f) layer=%d cell=%.1f "
+                "half_ext=%.1f dim=%d layer_h=%.2f sea_h=%.2f h9b4=%.2f pitch=%.4f bank=%.4f "
+                "bank_f=%.4f inv=%d speed=%.2f v_stall=%.2f look_t=%.3f look_d=%.2f r=%.2f "
+                "sa=%.2f sa_parts=(%.2f %.2f %.2f %.2f) max_spd=%.1f width=%.2f fy=%.4f "
+                "wa=%.3f wb=%.3f w=%.3f p0=(%.1f %.1f %.1f|%.2f) a=(%.1f %.1f %.1f|%.2f) "
+                "mid=(%.1f %.1f %.1f|%.2f) b=(%.1f %.1f %.1f|%.2f) c0=%.2f n_steps=%d",
+                u.row.name.c_str(), static_cast<double>(summary.simulated_seconds), pass,
+                static_cast<double>(p_now[0]), static_cast<double>(p_now[1]),
+                static_cast<double>(p_now[2]), li,
+                layer ? static_cast<double>(layer->cell_size) : -1.0,
+                layer ? static_cast<double>(layer->half_extent) : -1.0,
+                layer ? layer->dimension : -1, static_cast<double>(lh_pos),
+                static_cast<double>(sh_pos), static_cast<double>(h9b4),
+                static_cast<double>(pitch), static_cast<double>(bank),
+                static_cast<double>(bank_f), inverted ? 1 : 0, static_cast<double>(speed),
+                static_cast<double>(v_stall), static_cast<double>(look_t), look_d,
+                static_cast<double>(r), static_cast<double>(sa),
+                static_cast<double>(sa_bank_trace), static_cast<double>(sa_pitch_trace),
+                static_cast<double>(sa_h_trace), static_cast<double>(sa_speed_trace),
+                static_cast<double>(max_spd), static_cast<double>(w_width),
+                static_cast<double>(tr_fy), static_cast<double>(tr_wa),
+                static_cast<double>(tr_wb), static_cast<double>(tr_w),
+                static_cast<double>(p0[0]), static_cast<double>(p0[1]), static_cast<double>(p0[2]),
+                static_cast<double>(lh_p0),
+                static_cast<double>(a[0]), static_cast<double>(a[1]), static_cast<double>(a[2]),
+                static_cast<double>(lh_a),
+                static_cast<double>(mid[0]), static_cast<double>(mid[1]), static_cast<double>(mid[2]),
+                static_cast<double>(lh_m),
+                static_cast<double>(b[0]), static_cast<double>(b[1]), static_cast<double>(b[2]),
+                static_cast<double>(lh_b), static_cast<double>(c0), n_steps);
+        }
+        auto run_note = [&](int j, float tt, float ss, const char* site, float lo_, float hi_,
+                            float dlo_, float dhi_, const float x[3], float cc) {   // DIAGNOSTIC
+            if (!tr_trace) return;
+            float lh = 0.0f, sh = 0.0f;
+            tr_heights(x[0], x[2], lh, sh);
+            log.notef("plane tr run %s t=%.2f pass=%d j=%d tt=%.3f s=%.3f site=%s lo=%.4f "
+                "hi=%.4f dlo=%.2f dhi=%.2f smp=(%.1f %.1f %.1f) c=%.2f layer_h=%.2f",
+                u.row.name.c_str(), static_cast<double>(summary.simulated_seconds), pass, j,
+                static_cast<double>(tt), static_cast<double>(ss), site,
+                static_cast<double>(lo_), static_cast<double>(hi_), static_cast<double>(dlo_),
+                static_cast<double>(dhi_), static_cast<double>(x[0]), static_cast<double>(x[1]),
+                static_cast<double>(x[2]), static_cast<double>(cc), static_cast<double>(lh));
+        };
         auto len_from_p0 = [&](const float x[3]) {
             const double dx = static_cast<double>(x[0]) - p0[0];
             const double dy = static_cast<double>(x[1]) - p0[1];
@@ -13468,8 +13560,9 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
                     float x[3];
                     for (int i = 0; i < 3; ++i) x[i] = cme[i] * fx + e1[i];
                     dhi = len_from_p0(x);
+                    run_note(j, t, s, "first_half", lo, hi, dlo, dhi, smp, c);   // DIAGNOSTIC
                     terrain_shape_band_0099cab0(*this, u, pass, lo, hi, dlo, dhi, r, bank_f,
-                                                level_flight, speed);   // 009A0AE0
+                                                level_flight, speed, tr_trace);   // 009A0AE0
                     state = 1;
                 }
                 c_prev = c;
@@ -13501,16 +13594,18 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
                     float x[3];
                     for (int i = 0; i < 3; ++i) x[i] = e2[i] + (1.0f - hi) * (c2[i] - e2[i]);
                     dhi = len_from_p0(x);
+                    run_note(j, t, s, "second_half", lo, hi, dlo, dhi, smp, c);   // DIAGNOSTIC
                     terrain_shape_band_0099cab0(*this, u, pass, lo, hi, dlo, dhi, r, bank_f,
-                                                level_flight, speed);   // 009A1240
+                                                level_flight, speed, tr_trace);   // 009A1240
                     state = 1;
                 }
                 c_prev = c;
             }
             if (blocked) {                                           // 009A1296-009A138E
                 dhi = c0 / (c0 - c) * len_from_p0(smp);
+                run_note(j, t, s, "open_end", lo, 1.1f, dlo, dhi, smp, c);   // DIAGNOSTIC
                 terrain_shape_band_0099cab0(*this, u, pass, lo, 1.1f, dlo, dhi, r, bank_f,
-                                            level_flight, speed);
+                                            level_flight, speed, tr_trace);
             }
             s = s + ds;                                              // 009A13AC
             if (s > 1.0f) s = 1.0f;
