@@ -27,13 +27,13 @@ namespace bsp {
 // True: every hosted 009FABE0 site stores the per-unit gun+68h direction
 // (GameUnitSlot::gun_direction_68), and the gun tick's tail clears it with the cone.
 // False: nothing is stored (the host's long-standing state).
-inline constexpr bool kBotCommandedDirection68Bound = false;
+inline constexpr bool kBotCommandedDirection68Bound = true;
 
 // True: the fine-aim steer gate (009FCB96-009FCCAB) measures the lead against the
 // stored commanded direction when a state wrote one this think, and against the unit's
 // forward otherwise (009FC857). False: it always measures against the forward
 // (SUBSTITUTION, labelled, at df_fine_aim_009f9fc0).
-inline constexpr bool kSteerGateCommandedDirectionBound = false;
+inline constexpr bool kSteerGateCommandedDirectionBound = true;
 
 static_assert(!kSteerGateCommandedDirectionBound || kBotCommandedDirection68Bound,
               "the steer gate reads the direction kBotCommandedDirection68Bound stores");
