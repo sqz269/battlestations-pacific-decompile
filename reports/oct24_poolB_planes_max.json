@@ -1,5 +1,5 @@
 {
-  "packet": "oct24-poolB-plane-max-1",
+  "packet": "oct24-poolB-planes-max",
   "scope": "Five assigned poolB ordinary bodies; build only, no game or host wiring",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
@@ -25,12 +25,26 @@
         "is": "Complete ordinary raw-storage body in canonical building_pads family",
         "evidence": "Explicit body and address-suffixed API; 0074B565 RET 4; no call to a replacement whole-function host stub"
       }
+    },
+    {
+      "address": "007eb380",
+      "name": "plane_fx_component_step_007eb380",
+      "source": "src/cc13_seg48.cpp",
+      "coverage": "complete ordinary body 007EB380-007EBF03",
+      "original_abi": "ECX component = plane+C98h, stack float dt, RET 4 at 007EBF01; no native EH frame",
+      "status": "reconstructed_complete_ordinary_body_build_pending",
+      "evidence": "Complete 833-instruction listing and pseudocode reviewed. The three decompiler unaff/reused-local artifacts were resolved from stack offsets and register provenance. All image constants are explicit original-width/address inputs. Acceleration/load mapping, held controller state, loop activation, child stepping, listener-relative vectors, pitch/pass calculation, wind branches and four final sound-holder calls are present. x87 DC-form scan: zero ambiguous sites.",
+      "uncertainty": "Portable C++ preserves float store points and arithmetic order but does not prove 80-bit x87, exceptional floating environment or native ABI identity. External callees and native constant/string objects require the unwired host/globals interface. CRT sqrt is a qualified stock substitution with no reconstructed game-body credit.",
+      "correction": {
+        "was": "BSP_PlaneFxComponent_Step incomplete_or_unverified_body_credit_withdrawn_oct24 in game_hosts_units.cpp; decompiler reports unaff_retaddr and unaff_EBP",
+        "is": "Complete ordinary raw-storage body; dt is the stack float, load is the clamped acceleration map, +70h is the wanted/running multiplier",
+        "evidence": "007EB7CC/007EBA25 use [ESP+B0h] dt; 007EBAB5 uses +34h for rpm, 007EBAD9 uses stored normalized load, 007EBA83 writes the separate multiplier; holders step at +48h/+74h/+A0h/+CCh"
+      }
     }
   ],
   "open": [
     {"address": "007482b0", "status": "evidence review in progress"},
     {"address": "007d3e60", "status": "evidence review in progress"},
-    {"address": "007eb380", "status": "evidence review in progress"},
     {"address": "007f4ba0", "status": "evidence review in progress"}
   ],
   "call_sites": [
@@ -66,6 +80,36 @@
     {"function": "0074af50", "address": "0074b4f3", "native": "00b64640"},
     {"function": "0074af50", "address": "0074b4fd", "native": "004134f0"},
     {"function": "0074af50", "address": "0074b51b", "native": "00413920"},
-    {"function": "0074af50", "address": "0074b54b", "native": "0051f460"}
+    {"function": "0074af50", "address": "0074b54b", "native": "0051f460"},
+    {"function": "007eb380", "address": "007eb3bc", "native": "0042ac60"},
+    {"function": "007eb380", "address": "007eb4c0", "native": "0042e740"},
+    {"function": "007eb380", "address": "007eb5c8", "native": "00419010"},
+    {"function": "007eb380", "address": "007eb620", "native": "007eb0e0"},
+    {"function": "007eb380", "address": "007eb693", "native": "007e1b30"},
+    {"function": "007eb380", "address": "007eb69a", "native": "007eb0e0"},
+    {"function": "007eb380", "address": "007eb6b4", "native": "007eae30"},
+    {"function": "007eb380", "address": "007eb6bb", "native": "007eb160"},
+    {"function": "007eb380", "address": "007eb742", "native": "00419010"},
+    {"function": "007eb380", "address": "007eb7f8", "native": "00414db0"},
+    {"function": "007eb380", "address": "007eb812", "native": "00413920"},
+    {"function": "007eb380", "address": "007eb823", "native": "004134f0"},
+    {"function": "007eb380", "address": "007eb873", "native": "00414db0"},
+    {"function": "007eb380", "address": "007eb88d", "native": "00413920"},
+    {"function": "007eb380", "address": "007eb89e", "native": "004134f0"},
+    {"function": "007eb380", "address": "007eb8ee", "native": "00b6db70"},
+    {"function": "007eb380", "address": "007eb965", "native": "00bf7030", "qualified_stock_substitution": "std::sqrt"},
+    {"function": "007eb380", "address": "007eb9ef", "native": "00bf7030", "qualified_stock_substitution": "std::sqrt"},
+    {"function": "007eb380", "address": "007ebc1b", "native": "00bf7030", "qualified_stock_substitution": "std::sqrt"},
+    {"function": "007eb380", "address": "007ebd44", "native": "007eae30"},
+    {"function": "007eb380", "address": "007ebdd0", "native": "00419010"},
+    {"function": "007eb380", "address": "007ebdff", "native": "00419010"},
+    {"function": "007eb380", "address": "007ebe10", "native": "007eae30"},
+    {"function": "007eb380", "address": "007ebe4d", "native": "00419010"},
+    {"function": "007eb380", "address": "007ebe7c", "native": "00419010"},
+    {"function": "007eb380", "address": "007ebe8d", "native": "007eae30"},
+    {"function": "007eb380", "address": "007ebeb3", "native": "007de490"},
+    {"function": "007eb380", "address": "007ebec6", "native": "007de490"},
+    {"function": "007eb380", "address": "007ebedc", "native": "007de490"},
+    {"function": "007eb380", "address": "007ebef2", "native": "007de490"}
   ]
 }
