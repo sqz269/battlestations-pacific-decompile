@@ -184,6 +184,106 @@ SceneSlotBlock read_scene_slot_block_004e82f0(const ScenePropertyBlock& multipla
 SceneRecordSlotTable read_scene_record_slot_table_004f1d70(
     const ScenePropertyBlock& scene_root_props);
 
+// ---------------------------------------------------------------------------
+// 004f1d70, the whole applier over the Win32 record (cc13-P1)
+// ---------------------------------------------------------------------------
+//
+// read_scene_record_slot_table_004f1d70 above is the live semantic projection
+// of 004F2113..004F21E3 only (cc9's mission host consumes it). The body below
+// covers the whole listing 004F1D70..004F2404 against the in-process Win32
+// record, the way the image does: every call the image makes is a host method
+// named for its target, the property nodes are read in place (+4h type tag,
+// +0Ch value), and the record is addressed by byte offset. Nothing calls it
+// yet; wiring it in place of the projection is a separate, switched change.
+//
+// ABI: __fastcall(ECX = property bag, EDX = record; char sound_enabled), RET 4.
+// The ledger's older "RET 8" is wrong: both exits are RET 4 (004F23E0, 004F2404).
+
+inline constexpr std::size_t kScenePropertyTypeOffset = 0x4;   // dword type tag
+inline constexpr std::size_t kScenePropertyValueOffset = 0xc;  // dword / byte / sub-bag
+inline constexpr std::uint32_t kScenePropertyTypeString = 2;
+inline constexpr std::uint32_t kScenePropertyTypeBool = 3;
+inline constexpr std::uint32_t kScenePropertyTypeGroup = 6;
+
+// +938h, +930h and +928h receive copies of the IslandCapture script, in that
+// order; which mode reads each copy is not established here.
+inline constexpr std::size_t kSceneRecordIslandCaptureCopy3Offset = 0x928;  // string pair
+inline constexpr std::size_t kSceneRecordIslandCaptureCopy2Offset = 0x930;
+inline constexpr std::size_t kSceneRecordIslandCaptureCopy1Offset = 0x938;
+inline constexpr std::size_t kSceneRecordStageScriptIslandCaptureOffset = 0x940;
+inline constexpr std::size_t kSceneRecordStageScriptDuelOffset = 0x948;
+inline constexpr std::size_t kSceneRecordStageScriptEscortOffset = 0x950;
+inline constexpr std::size_t kSceneRecordStageScriptSiegeOffset = 0x958;
+inline constexpr std::size_t kSceneRecordStageScriptCompetitiveOffset = 0x960;
+inline constexpr std::size_t kSceneRecordGameStageScriptOffset = 0x968;
+inline constexpr std::size_t kSceneRecordLocKitPathsOffset = 0x980;      // string pair
+inline constexpr std::size_t kSceneRecordMaxPlayerNumOffset = 0x988;     // dword, default 8
+inline constexpr std::size_t kSceneRecordEnvironmentOffset = 0x990;      // 004E8BF0 target
+inline constexpr std::size_t kSceneRecordFloat1004Offset = 0x1004;      // float -> +100Ch
+inline constexpr std::size_t kSceneRecordFloat1008Offset = 0x1008;      // float -> +1010h
+inline constexpr std::size_t kSceneRecordFloat100cOffset = 0x100c;
+inline constexpr std::size_t kSceneRecordFloat1010Offset = 0x1010;
+inline constexpr std::size_t kSceneEnvironmentBlockSize = 0x288;         // 004CB420's block
+inline constexpr std::uint32_t kSceneGameObjectGlobal = 0x00e188a8;
+inline constexpr std::size_t kSceneGameSpectatorEnabledOffset = 0x2194;  // byte, default 1
+
+struct SceneHeaderApplyHost {
+    virtual ~SceneHeaderApplyHost() = default;
+
+    // 008F2260 BSP_ScenePropertyBag_Find, __thiscall(ECX = bag; const char* key),
+    // RET 4; EAX = the node or null.
+    virtual void* property_bag_find_008f2260(void* bag, const char* key) = 0;
+    // 0048E9F0 BSP_ScenePropertyBag_Contains, __thiscall(ECX = bag; const char*), RET 4, AL.
+    virtual bool property_bag_contains_0048e9f0(void* bag, const char* key) = 0;
+    // 008F0DF0 BSP_SceneProperty_GetStringValue, __thiscall(ECX = node), EAX = text.
+    virtual const char* property_string_value_008f0df0(void* node) = 0;
+    // 0041DD40 BSP_NativeString_Resize, __thiscall(ECX = {length, data}; uint length,
+    // char preserve), RET 8.
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length,
+        bool preserve) = 0;
+    // 0041E350 BSP_NativeString_AssignCString, __thiscall(ECX = string; const char*), RET 4.
+    virtual void native_string_assign_0041e350(void* string, const char* text) = 0;
+
+    // 004E82F0 BSP_SceneRecord_ReadPlayerSlot, __fastcall(ECX = slot index,
+    // EDX = the MultiPlay sub-bag; record), RET 4.
+    virtual void scene_read_player_slot_004e82f0(std::int32_t index, void* group,
+        std::uint8_t* record) = 0;
+    // The six group readers share __fastcall(ECX = the sub-bag, EDX = record), RET:
+    // 004EB9B0 g_Ocean, 004ECA30 g_Weather, 004ED690 Sound, 004E6C00 Map,
+    // 004EE450 g_Environment, 004EE9E0 g_Terrain, 004E8510 g_PostProcess, 004E7220 Cloud.
+    virtual void scene_read_water_004eb9b0(void* group, std::uint8_t* record) = 0;
+    virtual void scene_read_weather_fog_cloud_lights_004eca30(void* group,
+        std::uint8_t* record) = 0;
+    virtual void scene_read_music_ambience_004ed690(void* group, std::uint8_t* record) = 0;
+    virtual void map_read_extent_and_apply_004e6c00(void* group, std::uint8_t* record) = 0;
+    virtual void scene_read_sky_lights_004ee450(void* group, std::uint8_t* record) = 0;
+    virtual void scene_read_static_shadow_textures_004ee9e0(void* group,
+        std::uint8_t* record) = 0;
+    virtual void scene_read_post_effects_004e8510(void* group, std::uint8_t* record) = 0;
+    virtual void scene_load_cloud_areas_004e7220(void* group, std::uint8_t* record) = 0;
+    // 00551440 BSP_IdleCamera_LoadShotPairs, __fastcall(ECX = node). The image passes
+    // the find result unchecked, null included.
+    virtual void idle_camera_load_shot_pairs_00551440(void* node) = 0;
+    // 004CB420 BSP_SceneEnvironmentBlock_ConstructDefault, __fastcall(ECX = block).
+    virtual void scene_environment_block_construct_004cb420(void* block) = 0;
+    // 004E8BF0 BSP_SceneHeader_Assign, __thiscall(ECX = record+990h; const block*), RET 4.
+    virtual void scene_header_assign_004e8bf0(void* target, const void* source) = 0;
+    // 004C6520 BSP_SceneRecordHeader_Destruct, __fastcall(ECX = block).
+    virtual void scene_environment_block_destruct_004c6520(void* block) = 0;
+    // 004F1B60 BSP_SceneHeader_AppendUnquotedNames, __fastcall(ECX = text, EDX = record).
+    virtual void scene_header_append_unquoted_names_004f1b60(const char* text,
+        std::uint8_t* record) = 0;
+    // 004D5BD0 BSP_Game_ApplyMapBounds, __fastcall(ECX = game).
+    virtual void game_apply_map_bounds_004d5bd0(void* game) = 0;
+    // The pointer stored in the image global dword at `address` ([00E188A8], the game).
+    virtual void* global_pointer(std::uint32_t address) = 0;
+};
+
+// 004F1D70 BSP_SceneRecord_ApplyHeaderProperties as a whole body. `bag` is the
+// header's `properties` bag, `record` the 0x109C scene record.
+void scene_record_apply_header_properties_004f1d70(void* bag, std::uint8_t* record,
+    bool sound_enabled, SceneHeaderApplyHost& host);
+
 // 004c6890's copy loop: it runs record+988h times, not min(count, 8). The
 // eight slot records at game+1008h hold eight entries, so a `MaxPlayerNum`
 // above 8 walks off the end of the array; only when the loop stops at or below

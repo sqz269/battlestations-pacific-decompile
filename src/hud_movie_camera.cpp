@@ -86,9 +86,16 @@ void begin_00791020(MovieKeyframe& k, const HudMovieCamera& camera) {
         k.zoom_c4 = camera.fov_410 / k.fov_divisor_c0 * k.zoom_c4;
     }
     k.zoom_c8 = k.zoom_c4;
+    // 00791098..007910BF: the modifier's slot +18h (camera, t) is 0078E700,
+    // `ret 8`, in the goaround table (00D04C8C), the only modifier built here
+    // today. The type-3 gamecamera table 00D04CC0 has a real slot +18h
+    // (0079CF80); skipping the call stops being exact when that type lands.
     if (!k.use_current_d8) return;
     k.parent_attached_24 = false;                    // 007910D6
     k.transform_2c = 0;                              // 007910DA
+    if constexpr (kMovieBeginDropsModifierCc13Bound) {
+        k.modifier_e4.reset();                       // 007910E3..007910EB
+    }
     const float* pos = camera.matrix_528.data() + 12;   // +558h
     if (k.camera_28) {
         for (int i = 0; i < 3; ++i) {
@@ -268,15 +275,29 @@ float weight_00795c10(MovieKeyframe& k, const HudMovieCamera& camera, float dt,
     const float x = e / b;                             // 00795D0B FSTP
     float s = ease_0078fcf0(x);
     float nl = k.nonlinear_d4;
+    // x lives at [B+0Ch] (00795D0B), and each loop pass overwrites it with the
+    // current s (00795D40..00795D47) before s = ease(s). So the tail at
+    // 00795D6D..00795D7F blends the last pre-ease value, not x. The loop never
+    // runs today: both parsers clamp +D4h to [0, 1] (007A0EB0 against
+    // [00D7A24C]; see parse_007a0eb0) and the default is 0.5, so prev == x on
+    // every live path and this is live-identical.
+    float prev = x;
     while (nl > kOne) {                                // 00795D27..00795D6B
         nl = static_cast<float>(nl - 1.0);             // 00D7A210, FSUB double 1.0
+        prev = s;                                      // 00795D40..00795D47
         s = ease_0078fcf0(s);
     }
-    return static_cast<float>((1.0f - nl) * x + nl * s);
+    return static_cast<float>((1.0f - nl) * prev + nl * s);
 }
 
 // 007911E0, step(track): false while the keyframe has not started.
 bool step_007911e0(MovieKeyframe& k, HudMovieCamera& camera) {
+    // 007911FD..0079122A: BL is taken from [[key+4]+74h]+390h BEFORE the
+    // state-0 begin, and key+4 (the track) is null until 00791020 stores it at
+    // 00791035 (00799B00 leaves it 0; the append 007A0770 does not set it). So
+    // on the step that begins the key BL is false, and only a key that began
+    // on an earlier step sees the camera flag.
+    const bool track_known = k.state_f8 != 0;
     if (k.state_f8 == 0) {
         if (k.start_f0 > camera.clock_3b0) return false;
         begin_00791020(k, camera);
@@ -288,7 +309,13 @@ bool step_007911e0(MovieKeyframe& k, HudMovieCamera& camera) {
         // 007912B8..007912E0, packet cc13-finscr: a non-empty +FCh and a clear
         // camera +390h (BL, 0079121D) call 00887E50. Recorded here; the caller
         // runs or logs it (kMovieCameraFinishScriptCc13Bound).
-        if (!k.finish_script_fc.empty() && !camera.finish_suppress_390) {
+        bool suppressed = camera.finish_suppress_390;
+        if constexpr (kMovieStepStaleTrackFlagCc13Bound) {
+            suppressed = track_known && camera.finish_suppress_390;
+        } else {
+            static_cast<void>(track_known);
+        }
+        if (!k.finish_script_fc.empty() && !suppressed) {
             camera.finish_due.push_back(k.finish_script_fc);
         }
         k.state_f8 = 2;                                // 007912E5
@@ -608,6 +635,10 @@ bool movie_camera_fixed_step_00798c80(HudMovieCamera& camera, float dt) noexcept
     if (camera.running_391) return false;
     if (!(dt > 0.0f)) return false;                      // 00798C93 COMISS 0.0
     camera.running_391 = true;                           // 00798CA6
+    // 00798CBE..00798CCB, after the caller's two reseeds: the step count and
+    // dt sum restart (cc13-P1; neither has a reader, see the header).
+    camera.steps_408 = 0;
+    camera.step_seconds_40c = 0.0f;
     return true;
 }
 
@@ -631,7 +662,12 @@ bool movie_camera_update_0079a3b0(HudMovieCamera& camera, MovieCameraParentHost&
     } else {
         camera.clock_3b0 = 0.0f;
     }
-    if (camera.camera_498.keys.empty() || camera.target_414.keys.empty()) return false;
+    if (camera.camera_498.keys.empty() || camera.target_414.keys.empty()) {
+        if constexpr (kMovieUpdateEmptyTrackClockCc13Bound) {
+            camera.clock_3b0 = 0.0f;                     // 0079BBD5
+        }
+        return false;
+    }
     evaluate_00798130(camera.target_414, camera, host);  // 0079B2A8
     camera.look_384 = camera.target_414.pos_04;
     evaluate_00798130(camera.camera_498, camera, host);  // 0079B2D7
