@@ -177,9 +177,9 @@ struct CgRebuildBHost {
 };
 
 // 00524BA0 __thiscall(ECX = screen), RET: screen 29h (vtable 00CECCF8) body destructor.
-void unit_pick_screen_destruct_00524ba0(void* screen, CgRebuildBHost& host);
+void vt_ceccf8_destruct_00524ba0(void* screen, CgRebuildBHost& host);
 // 00525A90 __thiscall(ECX = screen), RET; EAX = screen: its constructor.
-void* unit_pick_screen_construct_00525a90(void* screen, CgRebuildBHost& host);
+void* vt_ceccf8_construct_00525a90(void* screen, CgRebuildBHost& host);
 // 005B9D40 __thiscall(ECX = screen), RET: HUD narrative screen (vtable 00CF0ED8) body destructor.
 void hud_narrative_screen_destruct_005b9d40(void* screen, CgRebuildBHost& host);
 // 005BA7B0 __thiscall(ECX = screen), RET; EAX = screen: its constructor.

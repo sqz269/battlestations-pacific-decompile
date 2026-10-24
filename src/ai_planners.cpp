@@ -59,6 +59,67 @@ const char* ai_command_type_name(AiCommandType type) noexcept {
     return kCommandTypeNames[id];
 }
 
+// 00A0FCE0: XOR EAX,EAX; RET. Original ABI: command in ECX (unused),
+// __thiscall, no stack arguments. Complete leaf; no interpretation uncertainty.
+AiCommandType ai_command_non_control_get_type_00a0fce0() noexcept {
+    return AiCommandType::NonControl;
+}
+
+// 00A0FD30: MOV EAX,0Eh; RET. Same original ABI as 00A0FCE0.
+AiCommandType ai_command_selling_get_type_00a0fd30() noexcept {
+    return AiCommandType::Selling;
+}
+
+// 00A0FD80: MOV EAX,1; RET. Same original ABI as 00A0FCE0.
+AiCommandType ai_command_idle_get_type_00a0fd80() noexcept {
+    return AiCommandType::Idle;
+}
+
+// 00A0FE90: MOV EAX,0Bh; RET. Same original ABI as 00A0FCE0.
+AiCommandType ai_command_defend_position_get_type_00a0fe90() noexcept {
+    return AiCommandType::DefendPosition;
+}
+
+// 00A0FEF0: MOV EAX,0Dh; RET. Same original ABI as 00A0FCE0.
+AiCommandType ai_command_retreat_get_type_00a0fef0() noexcept {
+    return AiCommandType::Retreat;
+}
+
+// 00A10270: MOV EAX,3; RET. Same original ABI as 00A0FCE0.
+AiCommandType ai_command_move_to_get_type_00a10270() noexcept {
+    return AiCommandType::MoveTo;
+}
+
+// 00A10310: MOV EAX,4; RET. Same original ABI as 00A0FCE0.
+AiCommandType ai_command_cautious_move_get_type_00a10310() noexcept {
+    return AiCommandType::CautiousMove;
+}
+
+// 00A103A0: MOV EAX,5; RET. Same original ABI as 00A0FCE0.
+AiCommandType ai_command_regrouping_move_get_type_00a103a0() noexcept {
+    return AiCommandType::RegroupingMove;
+}
+
+// 00A10470: MOV EAX,0Ch; RET. Same original ABI as 00A0FCE0.
+AiCommandType ai_command_patrol_to_get_type_00a10470() noexcept {
+    return AiCommandType::PatrolTo;
+}
+
+// 00A108C0: MOV EAX,7; RET. Same original ABI as 00A0FCE0.
+AiCommandType ai_command_move_to_attack_get_type_00a108c0() noexcept {
+    return AiCommandType::MoveToAttack;
+}
+
+// 00A109F0: MOV EAX,8; RET. Same original ABI as 00A0FCE0.
+AiCommandType ai_command_cautious_attack_get_type_00a109f0() noexcept {
+    return AiCommandType::CautiousAttack;
+}
+
+// 00A10B10: MOV EAX,9; RET. Same original ABI as 00A0FCE0.
+AiCommandType ai_command_close_attack_get_type_00a10b10() noexcept {
+    return AiCommandType::CloseAttack;
+}
+
 AiCommandType ai_command_family(AiCommandType type) noexcept {
     switch (type) {
     case AiCommandType::MoveTo:
