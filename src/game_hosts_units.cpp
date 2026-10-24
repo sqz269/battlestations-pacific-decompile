@@ -6972,6 +6972,14 @@ struct GameUnitsHost::Impl {
     // OFF: no exit call, as before. The follow enter (009BED80) stays with the follow
     // tick's entry detection.
     static constexpr bool kMoveToFollowExitCc13Bound = false;
+    // Packet cc13-D5. 009B1420's x87 chains at the main thread's 24-bit precision, each
+    // FMUL/FADD/FSUB rounded: the c1 softening (009B1538-009B1550), the asin
+    // denominator (009B1713-009B1728), the glide height H and G and the raise
+    // (009B1842-009B1925), the deck test (009B19BA-009B19D2), the pitch-arm products
+    // lvl x w (009B1A59), spd x 3 (009B1A7C) and length x 1.4 (009B1AA2), and the hold's
+    // lateral -X x 1.25 x u (009B1B76-009B1B82). True: per-op float in the listing's
+    // order. False: the double chains rounded once.
+    static constexpr bool kLandBeginSteerPc24Cc13Bound = false;
     // Packet p20_strafe_horizontal (section 80). 009CAD27-009CAD58: dx and dz are FSTP'd
     // to floats (009CAD30, 009CAD3E) and d2 = (dx dx + 0 0) + dz dz is stored as a float
     // (009CAD58), main-thread 24-bit per op. True: float per op. False: double dx, dz.
@@ -36548,9 +36556,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009B14DB-009B1554: c1 = interp(80, 0.8, 260, 0, A8), softened below 0.8.
                         float c1 = bsp::clamped_interpolate_00419010(80.0f, 0.800000011920929f,
                             260.0f, 0.0f, a8);
+                        constexpr bool kPc24 = GameUnitsHost::Impl::kLandBeginSteerPc24Cc13Bound;
                         if (0.800000011920929 > static_cast<double>(c1)) {
-                            c1 = static_cast<float>((1.0 - (0.800000011920929 - c1) *
-                                0.30000001192092896) * c1);
+                            if constexpr (kPc24) {
+                                // 009B1542-009B154E: FSUB, FMUL 0.3, FSUBRP from 1, FMULP.
+                                const float s = (0.8f - c1) * 0.3f;
+                                c1 = (1.0f - s) * c1;
+                            } else {
+                                c1 = static_cast<float>((1.0 - (0.800000011920929 - c1) *
+                                    0.30000001192092896) * c1);
+                            }
                         }
                         // 009B155A-009B15BC: W = [unit+DF4h]+9Ch+[00F876B8]*1Ch, the pilot
                         // bot's lifetime seconds (bot+80h, copied at 0099B198).
@@ -36596,8 +36611,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 g->pilot_landing_approach_dist, 1.0f,
                                 static_cast<float>(static_cast<double>(g->pilot_landing_pos_behind) *
                                     0.800000011920929), 0.0f, ratio);
-                            const float den = static_cast<float>((1.100000023841858 -
-                                static_cast<double>(i) * 0.5) * class_turn_radius_26c_007db4d0());
+                            float den = 0.0f;
+                            if constexpr (kPc24) {
+                                // 009B1713-009B1722: FMUL 0.5, FSUBR 1.1, FMUL [class+26Ch].
+                                den = (1.1f - i * 0.5f) * class_turn_radius_26c_007db4d0();
+                            } else {
+                                den = static_cast<float>((1.100000023841858 -
+                                    static_cast<double>(i) * 0.5) * class_turn_radius_26c_007db4d0());
+                            }
                             float q = static_cast<float>(static_cast<double>(axn) / den);
                             if (static_cast<double>(q) > 0.949999988079071) q = 0.949999988079071f;
                             corr = static_cast<float>(static_cast<double>(
@@ -36618,19 +36639,36 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const float m = 100.0 > static_cast<double>(half) ? 100.0f : half;
                         const float zm = static_cast<float>(static_cast<double>(Z) - m);
                         float H;
-                        if (static_cast<double>(zm) > 100.0) {
-                            H = static_cast<float>((0.5 + 100.0 * static_cast<double>(t2)) +
-                                (static_cast<double>(zm) - 100.0) * t1);
+                        float G;
+                        if constexpr (kPc24) {
+                            // 009B1890-009B18BC: (0.5 + 100 t2) + (zm - 100) t1, or 0.5 + zm t2,
+                            // each op rounded; 009B18CD-009B18D5: G = (Z - 10) t2.
+                            if (zm > 100.0f) {
+                                H = (0.5f + 100.0f * t2) + (zm - 100.0f) * t1;
+                            } else {
+                                H = 0.5f + zm * t2;
+                            }
+                            G = (Z - 10.0f) * t2;
                         } else {
-                            H = static_cast<float>(0.5 + static_cast<double>(zm) * t2);
+                            if (static_cast<double>(zm) > 100.0) {
+                                H = static_cast<float>((0.5 + 100.0 * static_cast<double>(t2)) +
+                                    (static_cast<double>(zm) - 100.0) * t1);
+                            } else {
+                                H = static_cast<float>(0.5 + static_cast<double>(zm) * t2);
+                            }
+                            G = static_cast<float>((static_cast<double>(Z) - 10.0) * t2);
                         }
-                        const float G = static_cast<float>((static_cast<double>(Z) - 10.0) * t2);
                         // 009B18DB-009B1929: above the lower slope far out, H is raised.
                         if (Z > 20.0f && G > Y) {
                             const float q4 = static_cast<float>(static_cast<double>(Z) * 0.25);
                             const float w = 20.0 > static_cast<double>(q4) ? 20.0f : q4;
-                            H = static_cast<float>(static_cast<double>(H) +
-                                (static_cast<double>(G) - Y) * (static_cast<double>(m) / w));
+                            if constexpr (kPc24) {
+                                // 009B1911-009B1921: m / w, G - Y, the product, + H.
+                                H = (G - Y) * (m / w) + H;
+                            } else {
+                                H = static_cast<float>(static_cast<double>(H) +
+                                    (static_cast<double>(G) - Y) * (static_cast<double>(m) / w));
+                            }
                         }
                         // 009B192F-009B1956: P = -atan2(Y - H, m).
                         const float dyh = static_cast<float>(static_cast<double>(Y) - H);
@@ -36645,18 +36683,36 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         GameUnitsHost::Impl::LandingDeck* dk = owner_.landing_deck_006c0750(
                             unit_.land_deck_plus_one - 1u, unit_.land_site_plus_one - 1u);
                         if (dk != nullptr && g->pilot_landing_approach_dist > Z) {
-                            const double v = (static_cast<double>(owner_.landing_run_length_006ba620(*dk)) *
-                                1.399999976158142 + Z) * t1 + 2.0;
-                            if (static_cast<double>(Y) - 0.5 > v) unit_.land_done_18 = true;
+                            if constexpr (kPc24) {
+                                // 009B19BA-009B19D2: FMUL 1.4, FADD Z, FMUL t1, FADD 2; Y - 0.5.
+                                const float v = (owner_.landing_run_length_006ba620(*dk) * 1.4f + Z) *
+                                    t1 + 2.0f;
+                                if (Y - 0.5f > v) unit_.land_done_18 = true;
+                            } else {
+                                const double v = (static_cast<double>(owner_.landing_run_length_006ba620(*dk)) *
+                                    1.399999976158142 + Z) * t1 + 2.0;
+                                if (static_cast<double>(Y) - 0.5 > v) unit_.land_done_18 = true;
+                            }
                         }
                         // 009B19E2-009B1B22: the pitch arm.
                         const float spd = GameUnitsHost::Impl::leader_live_speed_007b8e60(unit_);  // vtable[38h], labelled
                         const float lvl = owner_.bot_desired_speed_007c47f0(unit_);
-                        const bool fast = static_cast<double>(spd) >
-                            static_cast<double>(lvl) * w_speed;
-                        const bool far_out = static_cast<double>(Z) > static_cast<double>(spd) * 3.0;
-                        const bool high = static_cast<double>(Y) >
-                            static_cast<double>(unit_.motion_class.hull_length) * 1.399999976158142;  // class+A0h
+                        bool fast = false;
+                        bool far_out = false;
+                        bool high = false;
+                        if constexpr (kPc24) {
+                            // 009B1A59, 009B1A7C, 009B1AA2: each product rounded before the
+                            // FCOMIP.
+                            fast = spd > lvl * w_speed;
+                            far_out = Z > spd * 3.0f;
+                            high = Y > unit_.motion_class.hull_length * 1.4f;              // class+A0h
+                        } else {
+                            fast = static_cast<double>(spd) >
+                                static_cast<double>(lvl) * w_speed;
+                            far_out = static_cast<double>(Z) > static_cast<double>(spd) * 3.0;
+                            high = static_cast<double>(Y) >
+                                static_cast<double>(unit_.motion_class.hull_length) * 1.399999976158142;  // class+A0h
+                        }
                         float pitch;
                         int mode;
                         if (!fast && !far_out && !high) {
@@ -36686,8 +36742,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // interp(1.0 -> 0, 4.0 (00CE3D34) -> 1, |X|).
                                 const float u = bsp::clamped_interpolate_00419010(
                                     1.0f, 0.0f, 4.0f, 1.0f, ax);
-                                const float lat = static_cast<float>(
-                                    -static_cast<double>(X) * 1.25 * static_cast<double>(u));
+                                float lat = 0.0f;
+                                if constexpr (kPc24) {
+                                    // 009B1B7A-009B1B82: FCHS, FMUL 1.25, FMULP u.
+                                    lat = (-X * 1.25f) * u;
+                                } else {
+                                    lat = static_cast<float>(
+                                        -static_cast<double>(X) * 1.25 * static_cast<double>(u));
+                                }
                                 // 009B1B88-009B1BAE: fwd = max(Z, 2|X|).
                                 const float two = ax + ax;
                                 const float fwd = Z > two ? Z : two;
