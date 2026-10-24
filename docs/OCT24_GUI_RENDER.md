@@ -13,10 +13,10 @@ are recorded below. Input remains outside this lane and blocks button dispatch.
 
 | Step | Runtime selection | Current evidence |
 | --- | --- | --- |
-| 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Source composition; integration/build/runtime pending |
+| 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Win32 Release + existing 2/2 checks passed; shared frame hooks/ON pending |
 | 2. Initial GUI texture resources | `BSP_NATIVE_GUI_RESOURCES=1` | Worker built; integration/runtime pending |
-| 3. Per-widget Model and page cGroup ownership | Separate page/node bring-up selection pending | Existing bodies composed; worker build pending |
-| 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` planned | Existing runtime/dependency audit underway |
+| 3. Per-widget Model and page cGroup ownership | `BSP_NATIVE_GUI_NODES=1` planned | Canonical Model composition built; cGroup worker built, integration/ON pending |
+| 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` proposed | Exact 18-class audit in `OCT24_GUI_PAGES.md`; actual Screen manager/page ownership and ten factory arms remain blockers |
 
 All runtime selections default OFF. No comparison-tool noise rule is changed.
 USN04 is the deterministic comparison mission; USN21 is excluded from single-pair
@@ -75,5 +75,32 @@ orthographic numerical helper retains its existing double-to-float qualification
 
 ## Run evidence
 
-Pending. Final screenshots belong under this tree's `local/gui_render/` and must
-be copied to the cc16-progress tree before this worktree is removed.
+The frozen clean-origin baseline is commit
+`3822df776d1ec5b675226d9a023b687f2fd4b9c0`, not the older `44b94` label in
+its artifact names. The worktree-add command fetched origin again; the recorded
+`baseline/source.json` is authoritative. Its worktree was clean, Win32 Release
+and both existing checks passed, and its immutable executable is
+`local/gui_render/baseline/origin_44b94b4b9.exe` (SHA-256
+`560C31AC1792BBF574E96C0D325664F939E5CAA26E235E1B183189FDE8480DEE`). The
+same baseline commit was merged into this lane before the GUI OFF build.
+
+USN04 uses `--frames 600 --press-start-frame 30 --menu-select USN04
+--mission-frames 181 --mission-frame-seconds 0.05 --window-resolution 1280x720
+--present-interval vsync --screenshot-mission-frame 180`. The baseline and the
+first GUI OFF run both exited 0. `step1_off_pair.json` reports identical gameplay,
+21 unit rows, and all 1392 native rows; its literal exit 1 is solely the two
+different screenshot paths. An OFF rerun uses the baseline's exact screenshot
+argument, with the original image preserved in `baseline/usn04.png`. That rerun
+also exited 0, and `step1_off_verified_pair.json` reports literal **pair_diff
+exit 0**, no summary/other differences and no native status/count changes. Its
+image is copied to `usn04_off_verified.png`. No log filter or comparison noise
+rule is changed.
+
+The GUI OFF executable and its source/hash record are frozen under
+`local/gui_render/off/`. `step1_off_build.log` records Win32 Release and 2/2
+existing CTests passing. Runtime arms are compiled; Text activation still awaits
+renderD's shared prepare/overlay hooks. These build and OFF observations do not
+establish an ON draw, pixel correctness, complete raw widget ABI, or page bring-up.
+
+Final screenshots belong under this tree's `local/gui_render/` and must be
+copied to the cc16-progress tree before this worktree is removed.
