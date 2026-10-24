@@ -47,6 +47,9 @@ struct NativeGuiWidgetPropertyChildrenAcquired {
     std::uint32_t active_call_site{};
     bool name_live{}, name_cleanup_entered{};
     std::deque<NativeGuiWidgetPropertyChildAcquired> children;
+    NativeGuiWidgetPropertyChildrenAcquired() = default;
+    NativeGuiWidgetPropertyChildrenAcquired(const NativeGuiWidgetPropertyChildrenAcquired&) = delete;
+    NativeGuiWidgetPropertyChildrenAcquired& operator=(const NativeGuiWidgetPropertyChildrenAcquired&) = delete;
     ~NativeGuiWidgetPropertyChildrenAcquired() noexcept;
 };
 

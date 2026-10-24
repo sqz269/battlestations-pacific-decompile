@@ -114,8 +114,7 @@ void body(void* widget, void* visitor, NativeGuiWidgetPropertyScratch& scratch,
             a.name_live = true; // Native EH state1 only AFTER the copy.
             a.name_cleanup_entered = false;
             a.active_call_site = 0x00aaad78;
-            const Word type = native_gui_widget_type_for_key_00aa2490(
-                *static_cast<const NativeString*>(name), c.types);
+            const Word type = native_gui_widget_type_for_key_00aa2490(name, c.types);
             if (type) {
                 a.children.emplace_back(); // Persistent metadata only.
                 auto& child = a.children.back(); child.type = type;

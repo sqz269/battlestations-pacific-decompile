@@ -15,6 +15,12 @@ byte. The same raw AA2490 class-key body selects the type. All derived default
 factories remain mandatory actual AA6560 providers; this source helper does
 not manufacture missing classes, profiles or successful no-op calls.
 
+Independent review caught an invalid C++ lifetime assumption in the first
+suffix implementation: its raw8B scratch name was dereferenced as a
+`NativeString`. The actual-header AA2490/4BCB80 entries now read the SAME raw
+header directly. Existing typed entries forward their already-live header;
+neither placement construction nor a copied owning string is introduced.
+
 The actual01090054 pool allocates188h slots for184h B75030 Models. Existing
 `NativeInstanceGeometryAccess` transactional companion hooks prepare and bind
 the SAME allocation/reference; the existing raw B75030 body consumes the SAME

@@ -95,6 +95,15 @@ struct NativeGuiSceneAcquisitionAcquired {
 void acquire_native_gui_scene_storage_00ac59a0(void* actual_page,
     const NativeGuiSceneAcquisitionFrame&, NativeGuiSceneAcquisitionContext&,
     NativeGuiSceneAcquisitionAcquired&);
+// Same AC59A0 schedule restricted to already-published GUI manager custody.
+// Each of its three reached004C12B0 sites performs that getter's SAME CURRENT
+// F8BC5C nonnull fast arm. Missing publication rejects as host admission, with
+// reached effects retained; it never enters the manager constructor/slow arm.
+// Keep the real publication/context alive and serialize mutation through calls.
+// This is an explicit application domain, not the null getter's Native behavior.
+void acquire_native_gui_scene_storage_warm_manager_00ac59a0(void* actual_page,
+    const NativeGuiSceneAcquisitionFrame&, NativeGuiSceneAcquisitionContext&,
+    NativeGuiSceneAcquisitionAcquired&);
 // Fresh diagnostics required. Native construction-only cleanup states return
 // only their current raw allocation/header, never rollback completed owners or
 // publications. Host metadata admission occurs at disarmed native frontiers;

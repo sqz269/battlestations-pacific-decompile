@@ -39,6 +39,8 @@ private:
     NativeGuiWidgetTypeNameCompare compare_;
     friend std::uint32_t native_gui_widget_type_for_key_00aa2490(
         const NativeString&, const NativeGuiWidgetTypeKeyContext&);
+    friend std::uint32_t native_gui_widget_type_for_key_00aa2490(
+        const void*, const NativeGuiWidgetTypeKeyContext&);
 };
 
 // Same actual key/header and real raw004BCB80; capture data before search and
@@ -46,6 +48,10 @@ private:
 // Valid current inputs only; ordinary Source provider failures propagate, with
 // no new cleanup or native EH/SEH/private-stack/binary-ABI equivalence claim.
 std::uint32_t native_gui_widget_type_for_key_00aa2490(const NativeString&,
+    const NativeGuiWidgetTypeKeyContext&);
+// SAME actual8B header/source body without materializing a NativeString in
+// raw scratch. Data is captured before the raw4BCB80 search, as Original does.
+std::uint32_t native_gui_widget_type_for_key_00aa2490(const void* actual_header8,
     const NativeGuiWidgetTypeKeyContext&);
 
 // A9B790: unused ECX, three stack DWORDs, RET0C. Instruction-equivalent alias

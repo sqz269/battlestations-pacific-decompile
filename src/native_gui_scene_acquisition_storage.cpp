@@ -225,18 +225,28 @@ void unwind(const NativeGuiSceneAcquisitionFrame& f, NativeGuiSceneAcquisitionCo
         ++a.completed_unwind_actions;
     }
 }
-} // namespace
-
-void acquire_native_gui_scene_storage_00ac59a0(void* page,
+void* manager(NativeGuiSceneAcquisitionContext& c, NativeGuiSceneAcquisitionAcquired& a,
+    bool warm_only) {
+    if (!warm_only) return get_native_gui_manager_004c12b0(c.manager);
+    // Exact nonnull fast arm: one CURRENT publication load at EACH native call
+    // site, with no cached manager, allocation, registration or slow-path call.
+    void* const current = c.manager.actual_gui_00f8bc5c;
+    if (!current) {
+        a.failure = NativeGuiSceneAcquisitionAcquired::Failure::host_admission;
+        throw std::logic_error("GUI scene application requires its SAME already-published manager");
+    }
+    return current;
+}
+void acquire_scene(void* page,
     const NativeGuiSceneAcquisitionFrame& f, NativeGuiSceneAcquisitionContext& c,
-    NativeGuiSceneAcquisitionAcquired& a) {
+    NativeGuiSceneAcquisitionAcquired& a, bool warm_only) {
     require_context(f, c, a);
     a.started = true;
     Word mask = 0; // captured EBX; distinct from callback-mutable localF10
     try {
         f.locals[0] = 0;
         call(a, 0x00ac59c5);
-        void* manager = get_native_gui_manager_004c12b0(c.manager);
+        void* manager = bsp::manager(c, a, warm_only);
         call(a, 0x00ac59d3);
         void* found = find_native_gui_camera_store_00aa3280(manager, at(page, 0x108),
             f.find, c.stores.actual_empty_00f8bc60);
@@ -308,7 +318,7 @@ void acquire_native_gui_scene_storage_00ac59a0(void* page,
                 NativeCameraPool::slot_bytes, c.camera.lifetime, f.camera_destroy, a.camera_destroy);
             a.failure = NativeGuiSceneAcquisitionAcquired::Failure::none;
         }
-        call(a, 0x00ac5b32); manager = get_native_gui_manager_004c12b0(c.manager);
+        call(a, 0x00ac5b32); manager = bsp::manager(c, a, warm_only);
         void* current_scene = pointer(read(page, 0xec));
         f.create.descriptor_argument_3c = at(page, 0x108);
         f.create.scene_argument_38 = current_scene; f.create.camera_argument_34 = camera;
@@ -444,7 +454,7 @@ void acquire_native_gui_scene_storage_00ac59a0(void* page,
         const Word priority = read(page, 0x118);
         if (read(page, 0xfc) != priority) {
             write(page, 0xfc, priority); call(a, 0x00ac5ee6);
-            manager = get_native_gui_manager_004c12b0(c.manager);
+            manager = bsp::manager(c, a, warm_only);
             call(a, 0x00ac5eed); register_native_gui_page_00aa52a0(manager, page);
         }
         if (!nonzero_byte(page, 0x74)) {
@@ -471,5 +481,16 @@ void acquire_native_gui_scene_storage_00ac59a0(void* page,
         try { unwind(f, c, a); } catch (...) { std::terminate(); }
         throw;
     }
+}
+} // namespace
+void acquire_native_gui_scene_storage_00ac59a0(void* page,
+    const NativeGuiSceneAcquisitionFrame& f, NativeGuiSceneAcquisitionContext& c,
+    NativeGuiSceneAcquisitionAcquired& a) {
+    acquire_scene(page, f, c, a, false);
+}
+void acquire_native_gui_scene_storage_warm_manager_00ac59a0(void* page,
+    const NativeGuiSceneAcquisitionFrame& f, NativeGuiSceneAcquisitionContext& c,
+    NativeGuiSceneAcquisitionAcquired& a) {
+    acquire_scene(page, f, c, a, true);
 }
 } // namespace bsp

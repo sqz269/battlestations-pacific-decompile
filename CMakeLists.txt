@@ -17,6 +17,12 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
   src/native_gui_text_field_storage.cpp
   src/native_gui_grid_storage.cpp
   src/native_gui_grid_identity.cpp
+  src/native_gui_anim_icon_storage.cpp
+  src/native_gui_anim_icon_identity.cpp
+  src/native_gui_curve_storage.cpp
+  src/native_gui_curve_identity.cpp
+  src/native_gui_text_shader_storage.cpp
+  src/native_gui_page_properties.cpp
   src/native_gui_widget_property_children.cpp
   src/native_gui_line_storage.cpp
   src/native_gui_line_identity.cpp

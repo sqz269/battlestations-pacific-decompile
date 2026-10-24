@@ -359,3 +359,38 @@ accepted Step1/2/3 evidence remains in its corresponding copied directories.
 
 Final screenshots belong under this tree's `local/gui_render/` and are copied
 to the cc16-progress tree before this worktree is removed.
+
+#### Further raw Page prerequisites
+
+The next source batch adds actual Icon/AnimIcon state storage and matching
+canonical identities, Text actual-field/font/shader operations, raw Grid/Curve
+storage, full raw AAA710 child enumeration and the AC4C50 Page property schedule.
+Their focused evidence is in `OCT24_GUI_ICON_STORAGE.md`,
+`OCT24_GUI_ANIM_ICON_STORAGE.md`, `OCT24_GUI_TEXT_STORAGE.md`,
+`OCT24_GUI_TEXT_SHADER_STORAGE.md`, `OCT24_GUI_GRID.md`, `OCT24_GUI_CURVE.md`,
+`OCT24_GUI_RAW_CHILDREN.md` and `OCT24_GUI_PAGE_PROPERTIES.md`.
+
+GUI's SAME Model environment now selects raw name transport before its first
+Model, closing the domain prerequisite for existing full raw Text bodies;
+`OCT24_GUI_RAW_MODEL_NAMES.md` records the source boundary. Independent review
+corrected a raw scratch header being treated as a C++ NativeString object.
+The same actual8B header now reaches raw AA2490/4BCB80 without a second string.
+Icon failures keep their canonical binding and retained graph until process
+disposition. The Page path executes only each manager getter's genuine nonnull
+fast arm and rejects absent publication without constructing A or unwinding
+native graph effects. The unrestricted scene-acquisition entry is preserved.
+
+Normal Win32 Release and both existing checks pass in
+`raw_widget_wave_build.log`, `raw_page_wave_build.log` and
+`raw_page_warm_build.log`; no tests are added. Original names/comments remain,
+with saved preimages in `local/ghidra-annotations-20261024T123855Z.json`.
+This is source/build evidence; no native Page ON runtime is claimed.
+
+`OCT24_GUI_PROGBAR_STORAGE.md` records another unresolved full18 boundary:
+the native Progbar request140 uses the Icon138/13C pool, writes its value at
+the pool's138 slab-index word and its default field at the next slot13C.
+The exact alias/return relationship is established from source/listings;
+no crash/game consequence is claimed. No repaired trailer, larger pool or fake
+production lifetime is introduced. Full18 admission, genuine derived providers,
+the warm cc15 manager and sole Page retirement still block Step4 activation.
+Input remains outside scope and blocks later button dispatch.

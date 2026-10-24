@@ -5,8 +5,12 @@
 #include <Windows.h>
 namespace bsp {
 std::uint32_t reverse_find_native_string_bytes_004bcb80(const NativeString& text,const char* set,std::int32_t start){
-    const char* const data=text.data();if(!data)return 0xffffffffu;
-    const auto count=text.length();if(!count || !set || start<0)return 0xffffffffu;
+    return reverse_find_native_string_bytes_004bcb80(static_cast<const void*>(&text),set,start);
+}
+std::uint32_t reverse_find_native_string_bytes_004bcb80(const void* text,const char* set,std::int32_t start){
+    const auto* header=static_cast<const volatile std::uint32_t*>(text);
+    const char* const data=reinterpret_cast<const char*>(header[1]);if(!data)return 0xffffffffu;
+    const auto count=header[0];if(!count || !set || start<0)return 0xffffffffu;
     auto index=static_cast<std::uint32_t>(start);if(index>=count)index=count-1u;
     const auto set_size=static_cast<std::int32_t>(std::strlen(set));
     const auto begin=reinterpret_cast<std::uintptr_t>(data);auto cursor=begin+index;
