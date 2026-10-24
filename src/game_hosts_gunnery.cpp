@@ -186,15 +186,20 @@ constexpr bool kShipSystemsSinkDrawsBound = true;
 constexpr bool kSubmarineWakeDrawsBound = true;
 // Packet cc13-limbo: the controlled-unit arm of 00959450 BSP_Unit_OnDestroyed
 // past the limbo page. 0095951E compares the victim with 004B4B00; with the
-// world gate set and the front end not in 29h/2Bh/2Ch/2Dh it takes 00565FB0, then
-// 004CC460(34h, 0) when the front end is idle or [00E198C4] vt+10h otherwise; then
-// 009595E4..00959601: unless the victim IsKindOf(0Fh) with [unit+9D4h]+3CCh > 1,
-// `xor ecx,ecx; jmp 004C0890`, which stores null into 00E188D8 (004C0893). True:
-// the 34h push is recorded as the host's other 34h pushers record it (0064734B,
-// ForceSelectUnit) and the controlled unit is cleared through
-// GameUnitsHost::clear_controlled_unit_004c0890. False: the dead unit stays
-// controlled (before). Nothing in the image reselects without player input
-// (00565D80 needs input E1h/8Ch-8Fh), so neither arm ends a mission.
+// world gate set and the front end not in 29h/2Bh/2Ch/2Dh it takes 00565FB0, then,
+// when the front end is idle, 004CC460(34h, 0) at 009595B8; the [00E198C4] vt+10h
+// at 009595DD follows in both arms (after an accepted push the 009595C3..009595D1
+// re-test no longer sees idle; packet cc13-limbo2). Then 009595E4..00959601:
+// unless the victim IsKindOf(0Fh) with [unit+9D4h]+3CCh > 1, `xor ecx,ecx; jmp
+// 004C0890`, which stores null into 00E188D8 (004C0893). 007BCAA0 calls 00959450
+// at 007BCAD9 before 007F3970 removes the plane at 007BCAEB, so the dying plane
+// is still in +3CCh: a plane keeps control only with another live member. True:
+// the 34h push and the vt+10h are recorded as the host's other 34h pushers record
+// theirs (0064734B, ForceSelectUnit), and the controlled unit is cleared through
+// GameUnitsHost::clear_controlled_unit_004c0890 unless that +3CCh test keeps it.
+// False: the dead unit stays controlled (before). Nothing in the image reselects
+// without player input (00565D80 needs input E1h/8Ch-8Fh), so neither arm ends a
+// mission.
 constexpr bool kUnitDeathLimboPushCc13Bound = false;
 static_assert(!kUnitDeathLimboPushCc13Bound || kUnitDeathRouteBound,
               "the limbo arm runs inside the 00959450 death route");
@@ -13903,6 +13908,10 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         // across a kill, so 009595B8's 34h arm is the one taken (PROVISIONAL).
         // Only the cc13-limbo records and counters read the push/retarget pair.
         death.front_end_idle = true;
+        // SUBSTITUTION (packet cc13-limbo2): 0095957E 0068A120, whether screen
+        // 8Ch is shown, is not reached from here either; it is left false, so the
+        // 00959595 notice-byte arm is never taken and the push arm always is.
+        death.limbo_suppressed_0068a120 = false;
         const bsp::UnitDeathDecision decision = bsp::unit_death_00959450(death);
         done("Death::unit_on_destroyed_00959450", 0x00959450u);
         ++death_route_calls;
@@ -13939,21 +13948,28 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         }
         if (death.is_controlled_unit) {
             // Packet cc13-limbo. 0095959E..009595DD: 004CC460(34h, 0) at 009595B8
-            // when the front end is idle, else [00E198C4] vt+10h([+20h], [+38h])
-            // at 009595DD.
+            // when the front end is idle, and [00E198C4] vt+10h([+20h], [+38h])
+            // at 009595DD in both arms (cc13-limbo2: the push's own store fails
+            // the idle re-test at 009595C3..009595D1).
             if (decision.pushes_limbo_interface) ++limbo_push_would;
             if (decision.retargets_front_end) ++limbo_retarget_would;
-            // 009595DF..009595FB: victim vt[5Ch](0Fh), then [unit+9D4h]+3CCh > 1
-            // keeps it. SUBSTITUTION: the squadron's +3CCh count is held inside
-            // the units host with no accessor here, so a plane victim keeps
-            // control (the before behaviour) and is counted; a ship clears.
+            // 009595DF..009595FB: victim vt[5Ch](0Fh), then 009595F4 CMP
+            // [[unit+9D4h]+3CCh],1 / JG keeps it. 00959450 runs at 007BCAD9,
+            // before 007F3970 (007BCAEB) drops +3CCh, so the count still holds
+            // the dying plane. This host removes it in the units destroy flush
+            // (game_hosts_units.cpp, kSquadronRemovesDeadBound), after this kill,
+            // so the live count read here is the image's. -1 (no record holds the
+            // plane) is taken as not > 1: the image would read a null +9D4h here.
             const bool plane = units.unit_is_kind_of(victim, 0x0F);
-            if (plane) {
+            const int squadron_live = plane ? units.plane_squadron_live_count_3cc(victim) : 0;
+            const bool keeps = plane && squadron_live > 1;
+            if (keeps) {
                 ++ctrl_kept_plane;
             } else {
                 ++ctrl_clear_would;
             }
             bool pushed = false;
+            bool retargeted = false;
             bool cleared = false;
             if constexpr (kUnitDeathLimboPushCc13Bound) {
                 if (decision.pushes_limbo_interface) {
@@ -13963,11 +13979,13 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
                     record("Death::push_limbo_34h_004cc460", 0x004cc460u);
                     ++limbo_push_applied;
                     pushed = true;
-                } else if (decision.retargets_front_end) {
+                }
+                if (decision.retargets_front_end) {
                     // No binding for the front-end manager's vt+10h here.
                     record("Death::front_end_retarget_vtable10", 0x009595ddu);
+                    retargeted = true;
                 }
-                if (!plane) {
+                if (!keeps) {
                     // 009595FE XOR ECX,ECX; 00959601 JMP 004C0890: 004C0893
                     // stores null into 00E188D8.
                     units.clear_controlled_unit_004c0890();
@@ -13977,11 +13995,13 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
             } else {
                 record("Death::controlled_limbo_arm_off", 0x00959601u);
             }
-            log.notef("death route controlled unit: victim=%s t=%.2f plane=%d (00959450 "
-                "0095951E) limbo_push=%d ctrl_cleared=%d would_push=%d would_clear=%d "
-                "bound=%d", target.row.name.c_str(), static_cast<double>(clock_seconds),
-                plane ? 1 : 0, pushed ? 1 : 0, cleared ? 1 : 0,
-                decision.pushes_limbo_interface ? 1 : 0, plane ? 0 : 1,
+            log.notef("death route controlled unit: victim=%s t=%.2f plane=%d squadron_3cc=%d "
+                "(00959450 0095951E) limbo_push=%d retarget=%d ctrl_cleared=%d would_push=%d "
+                "would_retarget=%d would_clear=%d bound=%d", target.row.name.c_str(),
+                static_cast<double>(clock_seconds), plane ? 1 : 0, squadron_live,
+                pushed ? 1 : 0, retargeted ? 1 : 0, cleared ? 1 : 0,
+                decision.pushes_limbo_interface ? 1 : 0,
+                decision.retargets_front_end ? 1 : 0, keeps ? 0 : 1,
                 kUnitDeathLimboPushCc13Bound ? 1 : 0);
         }
         if (!decision.reports_alternate) return;   // 0091BDA0 runs only when reported

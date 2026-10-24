@@ -43431,6 +43431,13 @@ std::size_t GameUnitsHost::unit_part_descriptor_count(std::size_t index) const {
     return n > 0 ? static_cast<std::size_t>(n) : 0;
 }
 
+int GameUnitsHost::plane_squadron_live_count_3cc(std::size_t plane) const {
+    // Member ids are slot indices (process_index is the slot's position, 20376).
+    const bsp::PlaneSquadronHostRecord* const sq =
+        bsp::plane_squadron_registry().find_by_member_unit(plane);
+    return sq != nullptr ? sq->live_count() : -1;
+}
+
 std::size_t GameUnitsHost::squadron_list_24_leader(std::size_t entry_unit) const {
     // [squadron+3D0h] for the squadron whose list-24 node is `entry_unit`: the
     // registry record fused with that slot, then its current flight leader.
