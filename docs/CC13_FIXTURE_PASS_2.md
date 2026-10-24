@@ -40,11 +40,12 @@ information only.
 
 ## Results (the deciding precision)
 
-Bit-exact, 26 routines, promoted to `semantic_native_fixture_tested`:
+Bit-exact, 27 routines, promoted to `semantic_native_fixture_tested`:
 
 - 53-bit: 00B65560, 00B8C520, 00B62A10, 00467050, 004E5C00, 00452B00, 0046F7B0, 0046F550,
   0046F6D0, 00AED820, 00AFB7F0, 00AFBA40, 00ADFA90, 00ADC580, 009064D0, 00B8B940, 00793730,
-  00793800, 007BB4C0, 00B75580, 00B75520, 00BBF280, 00C37860 and 00B478E0.
+  00793800, 007BB4C0, 00B75580, 00B75520, 00BBF280, 00C37860, 00B478E0 and 00428090 (the
+  last after the follow-up fix below).
 - 24-bit: 009D7780 and 009D7930.
 
 Bit-exact except where both sides are NaN (only the sign or payload of the NaN differs), not
@@ -58,18 +59,21 @@ promoted:
 | 00A8B860 | 2/3000 |
 
 The image propagates an input NaN's sign and payload, while the SSE code produces or propagates
-a different one.
+a different one. Each row's ledger evidence records its count.
 
-Known findings, not fixed and not promoted:
+Documented deviation, not fixed and not promoted:
 
 | Routine | Mismatching cases |
 | --- | --- |
-| 00428090 | 213/3000 |
 | 004F3DA0 | 57/4000 at 24-bit |
 
-Both reconstructions do their intermediate arithmetic in float, so an operand near 1e30
-overflows to infinity. On the x87 stack the same value is still in range even at 24-bit
-precision, so the boolean result flips. Without edge values both routines match.
+The 24-bit model does its intermediate arithmetic in float, so an operand near 1e30 overflows
+to infinity. On the x87 stack the same value is still in range even at 24-bit precision (the
+exponent stays extended), so the boolean result flips. Without edge values it matches. The
+ledger row records this as an exponent-range deviation in its evidence and uncertainty; the
+fixture keeps reporting it as a known finding.
+
+00428090 had the same finding (213/3000 at 53-bit) before the follow-up fix below.
 
 ## Fixture-found fixes
 
@@ -86,7 +90,16 @@ precision, so the boolean result flips. Without edge values both routines match.
   `x87_cos`.
 - 004E5C00 and 00452B00: an infinite exponent product gives inf - inf after FRNDINT, so the
   image stores the default NaN, not inf or 0. `x87_power_response` in
-  `src/engine_seg4_6_9_cc13.cpp`, used by 00452BD0, has the same sequence. It is not fixed,
-  because 00452BD0 is not in this pass.
+  `src/engine_seg4_6_9_cc13.cpp`, used by 00452BD0 at 00452FB7 and 00453068, has the same
+  FYL2X/FRNDINT/F2XM1/FSCALE sequence and got the same fix in the follow-up. 00452BD0 is
+  unwired (only the unimplemented `cc13_sweepB` host virtual names it) and is not
+  fixture-tested, so its status is unchanged.
+- 00428090 (`segment_intersects_sphere_00428090`, follow-up): the asm keeps every product and
+  sum between the `FSTP DWORD` stores on the x87 stack, so b*b, a*4*c, a+a and both quotients
+  are now held in double. Re-traced orders: a = (dx*dx + dy*dy) + dz*dz,
+  half_b = (dy*fy + dx*fx) + dz*fz, c = ((fx*fx + fy*fy) + fz*fz) - r*r, with q from
+  `_CIsqrt` (00BF7030). Now 3000/3000 at both precisions, and promoted. The function is
+  unwired: `cc13_big1` reaches it only through a host virtual that the null host leaves
+  unreached.
 - `include/bsp/render_fx_cc13.hpp`: the `vertex_element_type_size_00b478e0` declaration was
   inside a comment line that held literal `\n` sequences. It is now split onto real lines.

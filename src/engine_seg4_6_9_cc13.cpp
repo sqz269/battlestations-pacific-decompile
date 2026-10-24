@@ -610,10 +610,13 @@ void lens_flare_pow_response_00452b00(float k_1c, float x, float& out_04, float&
 namespace {
 
 // FYL2X/FRNDINT/F2XM1/FSCALE on |v| with exponent e, stored float; 0 for v == 0.
+// cc13-fixture2 follow-up: the same sequence as 00452B00, so an infinite e * log2|v| gives
+// inf - inf after FRNDINT and the default NaN, as fixture-found there (not fixture-tested here).
 float x87_power_response(float v, double e) {
     if (v == 0.0f) return 0.0f;
     const float magnitude = 0.0f > v ? -0.0f - v : v;
-    return static_cast<float>(std::exp2(e * std::log2(static_cast<double>(magnitude))));
+    const double y = e * std::log2(static_cast<double>(magnitude));
+    return std::isinf(y) ? -std::numeric_limits<float>::quiet_NaN() : static_cast<float>(std::exp2(y));
 }
 
 } // namespace

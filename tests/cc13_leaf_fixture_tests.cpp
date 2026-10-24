@@ -841,7 +841,6 @@ int main() {
     // do not fail the run; NaN sign/payload-only differences are counted apart.
     static const char* const primary24[] = {"009D7780", "009D7930", "004F3DA0"};
     static const char* const known[][2] = {
-        {"00428090", "float intermediates overflow where the x87 stack does not"},
         {"004F3DA0", "float intermediates overflow where the x87 stack does not"},
     };
     int failures = 0;
