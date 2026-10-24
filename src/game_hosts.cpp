@@ -2801,6 +2801,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
                 const auto* mission = menu_ ? menu_->mission() : nullptr;
                 return mission ? mission->native_render_unit_source() : GameNativeMissionUnitSource{};
             });
+        native_renderer_->bind_mission_startup_random(*random_threads_);
     }
     if (native_gui_render_)
         native_renderer_->register_mission_prepare_callback(this, [](void* owner) {
