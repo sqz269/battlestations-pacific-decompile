@@ -362,7 +362,7 @@ void engine_movie_parse_file_004602c0(Raw movie, Raw path, SweepA3Host& host);
 Raw movie_action_type_construct_0045d480(Raw record, Raw name, Raw refer_label, std::uint8_t refer_flag,
                                          Raw num1_label, std::uint8_t num1_flag, Raw num2_label,
                                          std::uint8_t num2_flag, Raw num3_label, std::uint8_t num3_flag,
-                                         Raw enum_options, Raw enum_label, std::uint8_t enum_flag,
+                                         Raw enum_label, Raw enum_options, std::uint8_t enum_flag,
                                          Raw offset_label, std::uint8_t offset_flag, SweepA3Host& host);
 
 // ============================ segment 7 ====================================

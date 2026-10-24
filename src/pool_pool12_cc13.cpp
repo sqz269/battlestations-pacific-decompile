@@ -1,6 +1,8 @@
 // Packet cc13-pool12, segment 29 (see include/bsp/pool_pool12_cc13.hpp). Build-only.
 #include "bsp/pool_pool12_cc13.hpp"
 
+#include <cstring>
+
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error cc13-pool12 reconstruction reads Win32 image storage.
 #endif
@@ -8,6 +10,16 @@
 namespace bsp::pool_pool12_cc13 {
 
 namespace {
+
+// An x87 FLD m32 / FSTP m32 pair: bit-exact except that a signalling NaN is
+// quieted (FLD raises the masked invalid exception and loads the quiet NaN).
+float x87_copy_float(float value) {
+    std::uint32_t bits;
+    std::memcpy(&bits, &value, 4);
+    if ((bits & 0x7F800000u) == 0x7F800000u && (bits & 0x007FFFFFu) != 0) bits |= 0x00400000u;
+    std::memcpy(&value, &bits, 4);
+    return value;
+}
 
 template <class T>
 T& at(void* object, std::size_t off) noexcept {
@@ -191,7 +203,8 @@ void mission_load_resolve_entity_ref_by_number_key_006ae870(LuaObjectImage* pare
 // assembly 006AF2B0..006AF391.
 // out = {0, 0}; unless out is left: resize out to left.length and, when left
 // is non-empty, copy out.length bytes of left's data (no terminator byte);
-// the float is passed through FLD/FSTP (an exact float copy) to 0043BDF0 into
+// the float is passed through FLD/FSTP (bit-exact except that a signalling NaN
+// is quieted; x87_copy_float) to 0043BDF0 into
 // a temporary; when the temporary is non-empty, out grows by its length and
 // its bytes are copied after the old length; the temporary is released.
 // EH states: 0 (out live; the frame also sets a "returned object" flag to 1),
@@ -206,7 +219,8 @@ NativeStringImage* native_string_concat_float_006af2b0(const NativeStringImage* 
         if (left->length != 0) host.crt_memcpy_00bf7680(out->data, left->data, out->length);  // 006AF300
     }
     NativeStringImage temporary;
-    const NativeStringImage* const formatted = host.native_string_from_float_0043bdf0(&temporary, value);  // 006AF320
+    const NativeStringImage* const formatted =
+        host.native_string_from_float_0043bdf0(&temporary, x87_copy_float(value));  // 006AF308..006AF320
     // EH state 1
     const std::uint32_t extra = formatted->length;                   // 006AF327
     if (extra != 0) {

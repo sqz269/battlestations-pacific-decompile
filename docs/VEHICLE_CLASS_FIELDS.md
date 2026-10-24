@@ -33,7 +33,7 @@ first and then reads its family's keys. Every one is `__thiscall(descriptor, Lua
 | `007D1F70` | plane | 77 | `BSP_PlaneClass_ReadLuaFields` |
 | `00749210` | structure / fort | 13 | `BSP_StructureClass_ReadLuaFields` |
 | `0074D4A0` | wreckable | 3 | `BSP_WreckableClass_ReadLuaFields` |
-| `00700E40` | door | 3 | `BSP_DoorClass_ReadLuaFields` |
+| `00700E40` | dummy target vehicle (vtable `00D1AA58`, stored by `00960050` at `00960058`) | 3 | `BSP_DummyTargetVehicleClass_ReadLuaFields` (was `BSP_DoorClass_ReadLuaFields`) |
 | `006D0B80` | runway | 2 | `BSP_RunwayClass_ReadLuaFields` |
 
 Every routine already has a Ghidra function, so `no_ghidra_function` in the report is empty.
