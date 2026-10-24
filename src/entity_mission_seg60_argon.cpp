@@ -99,7 +99,7 @@ std::uint8_t entity_is_surface_target_00922c80(
       const float threshold = static_cast<float>(
           -static_cast<double>(s_raw.at<float>(0x49c)) * host.global_f64(0x00d7a348)
       );
-      if (pos[1] <= threshold) {
+      if (!(pos[1] > threshold)) {  // 00922D08 JBE also rejects unordered.
         return 0;
       }
     }
@@ -125,7 +125,7 @@ std::uint8_t entity_is_surface_target_00922c80(
 
   if (host.vcall_is_kind_of_slot5c(entity, 0x35)) {
     float* pos = host.entity_pose_get_world_position_refreshed_00427eb0(entity);
-    if (static_cast<double>(pos[1]) <= host.global_f64(0x00ce3938)) {
+    if (!(static_cast<double>(pos[1]) > host.global_f64(0x00ce3938))) {  // 00922D84 JBE.
       return 0;
     }
     return 1;

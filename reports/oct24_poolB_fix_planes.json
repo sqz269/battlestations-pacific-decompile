@@ -1,0 +1,1514 @@
+{
+  "packet": "oct24-poolB-fix-planes",
+  "scope": "Three assigned plane bodies: PC24 repair, canonical helper reuse and named squadron offsets; primary owns aggregate fixes.json.",
+  "utc": "2026-10-24T16:02:25.162592+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "target_verification": "config/target.json matches bsp.gpr and /battlestationspacific.exe. bsp.py ghidra proto/count/bytes verified the configured project/program through Client.verify; count 77629 matched snapshot. Saved assembly obtained with bsp.py show --asm, full spilled output inspected with bounded arithmetic/context queries.",
+  "precision_contract": {
+    "reference": "docs/CC13_FPU_PRECISION.md",
+    "idiom": "pc24(double value) returns static_cast<float>(value), matching cc13_bigB1.cpp:32 and cc13_sweepB10.cpp:38. Each operation is separate; genuine double image constants retain their declared width until that operation.",
+    "build_dependency": "CMakeLists.txt:266 uses /fp:strict; the SSE2 /fp:strict intermediate contract is documented at :270. Parent also verified bsp_game /fp:strict in cmake/startup.cmake.",
+    "claim": "Source arithmetic schedule repair, not native floating-environment equivalence."
+  },
+  "routines": [
+    {
+      "address": "007d3e60",
+      "original_symbol": "BSP_PlaneClass_BindModelData_Provisional",
+      "current_symbol": "plane_class_bind_model_data_007d3e60",
+      "source": "src/plane_class_fields.cpp",
+      "original_ledger_status": "reconstructed_complete_ordinary_body_build_tested",
+      "status": "ordinary_body_pc24_reviewed_build_pending",
+      "arithmetic_checked": "Split every multiply/subtract in the three inlined cross products; preserve the ground y-square/x-square/add/z-square/add schedule, dot-product operation order, and model-center add before double-half multiply. Single float subtractions explicitly use the same per-op helper. Normalization, sign changes, folded-angle updates and fallback collision-bound products already contain a single correctly rounded operation under /fp:strict and remain unchanged.",
+      "listing_instruction_count": 1632,
+      "x87_arithmetic": [
+        "007d4176: FSUB float ptr [ESP + 0xe4] ",
+        "007d4188: FSUB float ptr [ESP + 0xe8] ",
+        "007d419a: FSUB float ptr [ESP + 0xec] ",
+        "007d4267: FSUB float ptr [ESP + 0x80] ",
+        "007d4279: FSUB float ptr [ESP + 0x84] ",
+        "007d428b: FSUB float ptr [ESP + 0x88] ",
+        "007d432f: FSUB float ptr [ESP + 0x5c] ",
+        "007d433e: FSUB float ptr [ESP + 0x60] ",
+        "007d4350: FSUB float ptr [ESP + 0x64] ",
+        "007d44d7: FSUBP ST2,ST0 ",
+        "007d44ef: FSUBP ST2,ST0 ",
+        "007d4507: FSUBP ST2,ST0 ",
+        "007d4516: FSUBRP ST3,ST0 ",
+        "007d451e: FSUBR float ptr [ESP + 0xb4] ",
+        "007d4529: FSUBR float ptr [ESP + 0xb8] ",
+        "007d4540: FMULP ST2 ",
+        "007d454e: FMULP ST2 ",
+        "007d4552: FSUBRP ",
+        "007d455e: FMULP ST2 ",
+        "007d4566: FMULP ST4 ",
+        "007d456a: FSUBRP ST3,ST0 ",
+        "007d4572: FMULP ST2 ",
+        "007d4574: FMULP ST2 ",
+        "007d4576: FSUBRP ",
+        "007d458a: FMULP ST2 ",
+        "007d4598: FMULP ST3 ",
+        "007d45a4: FADDP ST2,ST0 ",
+        "007d45a6: FMUL ST0 ",
+        "007d45ac: FADD float ptr [ESP + 0x14] ",
+        "007d45d5: FDIVRP ",
+        "007d45f2: FMULP ST2 ",
+        "007d45fe: FMUL ST1 ",
+        "007d4604: FMUL float ptr [ESP + 0x3c] ",
+        "007d4630: FMUL ST2 ",
+        "007d4638: FMUL ST1 ",
+        "007d463e: FMULP ",
+        "007d468e: FADD double ptr [0x00ce3828] ",
+        "007d46a8: FSUB double ptr [0x00ce3828] ",
+        "007d46c0: FMUL float ptr [ESP + 0x98] ",
+        "007d46e3: FMULP ST2 ",
+        "007d46e7: FADDP ",
+        "007d46f0: FMUL float ptr [ESP + 0x6c] ",
+        "007d46f4: FADDP ",
+        "007d46fe: FCHS ",
+        "007d4704: FDIVR float ptr [ESP + 0x14] ",
+        "007d4730: FADD float ptr [ESP + 0x44] ",
+        "007d4734: FMUL double ptr [0x00d7a280] ",
+        "007d4ba0: FSUB float ptr [ESP + 0x74] ",
+        "007d4baf: FSUB float ptr [ESP + 0x78] ",
+        "007d4bbe: FSUB float ptr [ESP + 0x7c] ",
+        "007d4c95: FSUB float ptr [ESP + 0xf0] ",
+        "007d4caa: FSUB float ptr [ESP + 0xf4] ",
+        "007d4cbf: FSUB float ptr [ESP + 0xf8] ",
+        "007d4d63: FSUB float ptr [ESP + 0x64] ",
+        "007d4d75: FSUB float ptr [ESP + 0x68] ",
+        "007d4d87: FSUB float ptr [ESP + 0x6c] ",
+        "007d4da4: FMULP ST2 ",
+        "007d4db8: FMULP ST2 ",
+        "007d4dbc: FSUBRP ",
+        "007d4dda: FMULP ST2 ",
+        "007d4de5: FMULP ST4 ",
+        "007d4de9: FSUBRP ST3,ST0 ",
+        "007d4df1: FMULP ST2 ",
+        "007d4df3: FMULP ST2 ",
+        "007d4df5: FSUBRP ",
+        "007d506a: FSUB float ptr [ESP + 0x8c] ",
+        "007d5079: FSUB float ptr [ESP + 0x90] ",
+        "007d5088: FSUB float ptr [ESP + 0x94] ",
+        "007d514d: FSUB float ptr [ESP + 0x58] ",
+        "007d515c: FSUB float ptr [ESP + 0x5c] ",
+        "007d516b: FSUB float ptr [ESP + 0x60] ",
+        "007d5206: FSUB float ptr [ESP + 0x80] ",
+        "007d5215: FSUB float ptr [ESP + 0x84] ",
+        "007d5224: FSUB float ptr [ESP + 0x88] ",
+        "007d523b: FMULP ST2 ",
+        "007d5249: FMULP ST2 ",
+        "007d524d: FSUBRP ",
+        "007d5268: FMULP ST2 ",
+        "007d5270: FMULP ST4 ",
+        "007d5274: FSUBRP ST3,ST0 ",
+        "007d5282: FMULP ST2 ",
+        "007d528d: FMULP ST2 ",
+        "007d528f: FSUBRP ",
+        "007d57b6: FSUB float ptr [ESI + 0x28] ",
+        "007d57dc: FMUL ST1 ",
+        "007d57e4: FMUL float ptr [ESI + 0x8] ",
+        "007d57f7: FCHS ",
+        "007d57fd: FMUL double ptr [0x00cf5e58] ",
+        "007d581f: FMUL double ptr [0x00cf5e58] ",
+        "007d5850: FMUL ST1 ",
+        "007d5865: FMUL float ptr [ESI + 0x14] "
+      ],
+      "sse_arithmetic": [],
+      "exact_changed_pc_groups": {
+        "per_operation_cross_products": [
+          "007d4540",
+          "007d454e",
+          "007d4552",
+          "007d455e",
+          "007d4566",
+          "007d456a",
+          "007d4572",
+          "007d4574",
+          "007d4576",
+          "007d4da4",
+          "007d4db8",
+          "007d4dbc",
+          "007d4dda",
+          "007d4de5",
+          "007d4de9",
+          "007d4df1",
+          "007d4df3",
+          "007d4df5",
+          "007d523b",
+          "007d5249",
+          "007d524d",
+          "007d5268",
+          "007d5270",
+          "007d5274",
+          "007d5282",
+          "007d528d",
+          "007d528f"
+        ],
+        "ground_square_sum": [
+          "007d458a",
+          "007d4598",
+          "007d45a4",
+          "007d45a6",
+          "007d45ac"
+        ],
+        "ground_dot": [
+          "007d46c0",
+          "007d46e3",
+          "007d46e7",
+          "007d46f0",
+          "007d46f4"
+        ],
+        "model_center": [
+          "007d4730",
+          "007d4734"
+        ],
+        "already_single_float_subtractions_made_explicit": [
+          "007d4176",
+          "007d4188",
+          "007d419a",
+          "007d4267",
+          "007d4279",
+          "007d428b",
+          "007d432f",
+          "007d433e",
+          "007d4350",
+          "007d44d7",
+          "007d44ef",
+          "007d4507",
+          "007d4516",
+          "007d451e",
+          "007d4529",
+          "007d4ba0",
+          "007d4baf",
+          "007d4bbe",
+          "007d4c95",
+          "007d4caa",
+          "007d4cbf",
+          "007d4d63",
+          "007d4d75",
+          "007d4d87",
+          "007d506a",
+          "007d5079",
+          "007d5088",
+          "007d514d",
+          "007d515c",
+          "007d516b",
+          "007d5206",
+          "007d5215",
+          "007d5224"
+        ]
+      },
+      "duplicate_audit": {
+        "address_query": "007d3e60",
+        "address_matches": [
+          "src\\game_hosts_units.cpp:11028:    // (007D3E60, EBP = the class descriptor from 007D3E7F, never rewritten):",
+          "include\\bsp\\plane_bow_wave.hpp:40:// 007d3e60 (native ECX=descriptor). Rewrites points only, in index order.",
+          "include\\bsp\\plane_bow_wave.hpp:44:// The complete 007D3E60 binder permits marker callbacks and a returning CRT",
+          "include\\bsp\\plane_class_fields.hpp:460:// Complete ordinary model binder 007D3E60..007D5889, native ECX descriptor,",
+          "include\\bsp\\plane_class_fields.hpp:500:void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,",
+          "src\\plane_class_fields.cpp:544:// 007D3E60..007D5889, complete ordinary body. Native ECX descriptor / RET;",
+          "src\\plane_class_fields.cpp:553:void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,"
+        ],
+        "class_query": "PlaneClass_BindModelData|plane_class_bind_model_data|PlaneClassModelHost",
+        "class_matches": [
+          "src\\game_hosts_gunnery.cpp:968://    BSP_PlaneClass_BindModelData) and its guns take the frame through the same",
+          "src\\game_hosts_units.cpp:11027:    // Packet cc9_plane_desc_158. 007D473A, in BSP_PlaneClass_BindModelData_Provisional",
+          "include\\bsp\\plane_class_fields.hpp:474:struct PlaneClassModelHost {",
+          "include\\bsp\\plane_class_fields.hpp:475:    virtual ~PlaneClassModelHost() = default;",
+          "include\\bsp\\plane_class_fields.hpp:500:void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,",
+          "include\\bsp\\plane_class_fields.hpp:501:    const PlaneClassModelConstants& constants, PlaneClassModelHost& host);",
+          "src\\plane_class_fields.cpp:553:void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,",
+          "src\\plane_class_fields.cpp:554:    const PlaneClassModelConstants& k, PlaneClassModelHost& host) {",
+          "src\\plane_class_fields.cpp:697:        PlaneClassModelHost& model_host;",
+          "src\\plane_class_fields.cpp:700:        BowWaveBinding(std::uint8_t* d, PlaneClassModelHost& h,"
+        ],
+        "retained_complete_definitions": [
+          "src\\plane_class_fields.cpp:553:void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,"
+        ],
+        "duplicate_complete_body_found": false,
+        "credit": "Existing complete body retained once; 007D4812 and 007EB4E0 remain interior helper fragments."
+      },
+      "limitations": [
+        "Descriptive symbols are hypotheses; no recovered-symbol claim.",
+        "Main-thread PC24 model only; worker PC53, extended exponent/status/exception behavior and signaling NaNs are not proven.",
+        "No binary ABI, native FH3/unwind or gameplay equivalence proof; no game run or host wiring."
+      ]
+    },
+    {
+      "address": "007eb380",
+      "original_symbol": "BSP_PlaneFxComponent_Step",
+      "current_symbol": "plane_fx_component_step_007eb380",
+      "source": "src/cc13_seg48.cpp",
+      "original_ledger_status": "reconstructed_complete_ordinary_body_build_tested",
+      "status": "ordinary_body_pc24_reviewed_build_pending",
+      "arithmetic_checked": "Split acceleration, clamping limit, load, length sums, distance-rate divisions, pitch, velocity projection, pass window and damage fade at each x87 op. Relative-vector subtractions precede their multiplications, and current distance deltas follow the predicted distance sqrt as in the image. Single float timer/fade/coordinate operations already have PC24 rounding under /fp:strict. The one native SSE SUBSS at 007EBBB1 remains float subtraction.",
+      "listing_instruction_count": 833,
+      "x87_arithmetic": [
+        "007eb3a1: FMUL float ptr [ESP + 0xb8] ",
+        "007eb3d4: FSUB float ptr [ESI + 0x34] ",
+        "007eb3d7: FMUL double ptr [0x00ce3d40] ",
+        "007eb3e6: FMULP ST2 ",
+        "007eb3eb: FADDP ST2,ST0 ",
+        "007eb44e: FSUB ST0,ST1 ",
+        "007eb450: FMUL double ptr [0x00d7a2b0] ",
+        "007eb492: FMULP ST3 ",
+        "007eb496: FADDP ",
+        "007eb49b: FMUL double ptr [0x00d08690] ",
+        "007eb4a1: FADD double ptr [0x00d7a280] ",
+        "007eb4e8: FADD float ptr [ESP + 0xb0] ",
+        "007eb56d: FADD float ptr [ESP + 0xb0] ",
+        "007eb5f2: FADD float ptr [ESP + 0xb0] ",
+        "007eb638: FSUBP ST2,ST0 ",
+        "007eb659: FADD float ptr [ESI + 0x40] ",
+        "007eb747: FSUBR double ptr [ESP + 0x30] ",
+        "007eb76b: FSUB double ptr [0x00d7a210] ",
+        "007eb7a4: FSUB float ptr [EDI] ",
+        "007eb7ad: FSUB float ptr [EDI + 0x4] ",
+        "007eb7b7: FSUB float ptr [EDI + 0x8] ",
+        "007eb7d5: FMULP ST2 ",
+        "007eb7e1: FMUL ST1 ",
+        "007eb7e7: FMUL float ptr [ESP + 0x54] ",
+        "007eb83c: FSUB float ptr [ESP + 0x40] ",
+        "007eb84a: FSUB float ptr [ESP + 0x44] ",
+        "007eb862: FSUB float ptr [ESP + 0x48] ",
+        "007eb915: FSUB float ptr [ESP + 0x40] ",
+        "007eb921: FSUB float ptr [ESP + 0x44] ",
+        "007eb92d: FSUB float ptr [ESP + 0x48] ",
+        "007eb943: FMULP ST2 ",
+        "007eb947: FMULP ST3 ",
+        "007eb94b: FADDP ST2,ST0 ",
+        "007eb94d: FMUL ST0 ",
+        "007eb94f: FADDP ",
+        "007eb987: FSUB float ptr [ESP + 0x40] ",
+        "007eb99b: FSUB float ptr [ESP + 0x44] ",
+        "007eb9af: FSUB float ptr [ESP + 0x48] ",
+        "007eb9cd: FMULP ST2 ",
+        "007eb9d1: FMULP ST3 ",
+        "007eb9d5: FADDP ST2,ST0 ",
+        "007eb9d7: FMUL ST0 ",
+        "007eb9d9: FADDP ",
+        "007eba16: FSUB float ptr [ESP + 0x20] ",
+        "007eba25: FDIV float ptr [ESP + 0xb0] ",
+        "007eba2c: FDIV float ptr [EAX + 0x14] ",
+        "007eba72: FADD double ptr [0x00d7a210] ",
+        "007eba7d: FMUL float ptr [EBX + 0x6b4] ",
+        "007ebae2: FSUB float ptr [ESP + 0x4c] ",
+        "007ebaf8: FSUB float ptr [ESP + 0x54] ",
+        "007ebb04: FSUB float ptr [ESP + 0x58] ",
+        "007ebb22: FMULP ST3 ",
+        "007ebb26: FMULP ST5 ",
+        "007ebb2a: FADDP ST4,ST0 ",
+        "007ebb2e: FMULP ST2 ",
+        "007ebb32: FADDP ",
+        "007ebb46: FMULP ST5 ",
+        "007ebb4c: FMULP ST3 ",
+        "007ebb50: FADDP ST2,ST0 ",
+        "007ebb56: FMULP ST3 ",
+        "007ebb5a: FADDP ST2,ST0 ",
+        "007ebb66: FDIVRP ST2,ST0 ",
+        "007ebb8d: FMUL double ptr [0x00d7a280] ",
+        "007ebb93: FSUBP ",
+        "007ebbf7: FMULP ST2 ",
+        "007ebbfb: FMULP ST3 ",
+        "007ebbff: FADDP ST2,ST0 ",
+        "007ebc01: FMUL ST0 ",
+        "007ebc03: FADDP ",
+        "007ebce3: FDIV float ptr [EDI + 0x188] ",
+        "007ebd03: FADD float ptr [ESI + 0x44] ",
+        "007ebd6d: FADDP ST2,ST0 ",
+        "007ebd7c: FSUBRP ",
+        "007ebd7e: FMUL double ptr [0x00ce3d40] "
+      ],
+      "sse_arithmetic": [
+        "007ebbb1: SUBSS XMM0,dword ptr [ESP + 0x18] "
+      ],
+      "exact_changed_pc_groups": {
+        "acceleration_and_load": [
+          "007eb3d4",
+          "007eb3d7",
+          "007eb3e6",
+          "007eb3eb",
+          "007eb44e",
+          "007eb450",
+          "007eb492",
+          "007eb496",
+          "007eb49b",
+          "007eb4a1"
+        ],
+        "single_subtraction_canonical_casts": [
+          "007eb747",
+          "007eb76b"
+        ],
+        "relative_vector_image_order": [
+          "007eb7a4",
+          "007eb7ad",
+          "007eb7b7",
+          "007eb7d5",
+          "007eb7e1",
+          "007eb7e7"
+        ],
+        "lengths": [
+          "007eb943",
+          "007eb947",
+          "007eb94b",
+          "007eb94d",
+          "007eb94f",
+          "007eb9cd",
+          "007eb9d1",
+          "007eb9d5",
+          "007eb9d7",
+          "007eb9d9",
+          "007ebbf7",
+          "007ebbfb",
+          "007ebbff",
+          "007ebc01",
+          "007ebc03"
+        ],
+        "current_delta_after_predicted_length": [
+          "007eb987",
+          "007eb99b",
+          "007eb9af"
+        ],
+        "rate_and_pitch": [
+          "007eba16",
+          "007eba25",
+          "007eba2c",
+          "007eba72",
+          "007eba7d"
+        ],
+        "projection_square_and_dot": [
+          "007ebb22",
+          "007ebb26",
+          "007ebb2a",
+          "007ebb2e",
+          "007ebb32",
+          "007ebb46",
+          "007ebb4c",
+          "007ebb50",
+          "007ebb56",
+          "007ebb5a"
+        ],
+        "pass_window": [
+          "007ebb8d",
+          "007ebb93"
+        ],
+        "damage_fade": [
+          "007ebd7c",
+          "007ebd7e"
+        ]
+      },
+      "duplicate_audit": {
+        "address_query": "007eb380",
+        "address_matches": [
+          "include\\bsp\\cc13_front3.hpp:119:    // 007EB380 BSP_PlaneFxComponent_Step, __thiscall(ECX = plane+C98h; float), RET 4.",
+          "include\\bsp\\cc13_front3.hpp:120:    virtual void plane_fx_step_007eb380(void* fx, float step) = 0;",
+          "src\\cc13_front3.cpp:253://     007D9C80(ECX = +AB0h), 007DDEA0(ECX = +C98h), 007EB380(ECX = +C98h; 0.0f).",
+          "src\\cc13_front3.cpp:312:            host.plane_fx_step_007eb380(ptr(plane, 0xC98), 0.0f);                // 007C13C5",
+          "include\\bsp\\cc13_seg48.hpp:420:// 007EB380..007EBF03, complete ordinary FX step. Native ECX = component",
+          "include\\bsp\\cc13_seg48.hpp:473:void plane_fx_component_step_007eb380(std::uint8_t* component, float dt,",
+          "src\\cc13_seg48.cpp:1711:// 007EB380..007EBF03: complete ordinary control flow, native ECX component,",
+          "src\\cc13_seg48.cpp:1720:void plane_fx_component_step_007eb380(std::uint8_t* component, float dt,",
+          "include\\bsp\\gameplay_seg48_cc13.hpp:618:// 007EB380 (007EB4E0-007EB505): equal resets the timer; otherwise timer =",
+          "src\\game_hosts_units.cpp:16810:// zeroed (00F87574 taken as the zero vector); 007DDEA0 and 007EB380(0.0f) (the",
+          "src\\game_hosts_units.cpp:16843:        record(\"PlaneFx::step_007eb380\", 0x007eb380u);",
+          "src\\game_hosts_units.cpp:16956:// 007EB380(0) (not carried beyond the zeroing); and in state 0 or 1 it calls",
+          "include\\bsp\\plane_land_chain_cc13.hpp:28://   007D9C80, 007DDEA0 and 007EB380(0.0f) (007C134B-007C13C5)."
+        ],
+        "class_query": "PlaneFxComponent_Step|plane_fx_component_step|PlaneFxStepHost",
+        "class_matches": [
+          "include\\bsp\\cc13_front3.hpp:119:    // 007EB380 BSP_PlaneFxComponent_Step, __thiscall(ECX = plane+C98h; float), RET 4.",
+          "include\\bsp\\cc13_seg48.hpp:449:struct PlaneFxStepHost {",
+          "include\\bsp\\cc13_seg48.hpp:450:    virtual ~PlaneFxStepHost() = default;",
+          "include\\bsp\\cc13_seg48.hpp:473:void plane_fx_component_step_007eb380(std::uint8_t* component, float dt,",
+          "include\\bsp\\cc13_seg48.hpp:474:                                    const PlaneFxStepGlobals& globals, PlaneFxStepHost& host);",
+          "src\\cc13_seg48.cpp:1720:void plane_fx_component_step_007eb380(std::uint8_t* component, float dt,",
+          "src\\cc13_seg48.cpp:1721:                                    const PlaneFxStepGlobals& g, PlaneFxStepHost& host) {"
+        ],
+        "retained_complete_definitions": [
+          "src\\cc13_seg48.cpp:1720:void plane_fx_component_step_007eb380(std::uint8_t* component, float dt,"
+        ],
+        "duplicate_complete_body_found": false,
+        "credit": "Existing complete body retained once; 007D4812 and 007EB4E0 remain interior helper fragments."
+      },
+      "limitations": [
+        "Descriptive symbols are hypotheses; no recovered-symbol claim.",
+        "Main-thread PC24 model only; worker PC53, extended exponent/status/exception behavior and signaling NaNs are not proven.",
+        "No binary ABI, native FH3/unwind or gameplay equivalence proof; no game run or host wiring."
+      ]
+    },
+    {
+      "address": "007f4ba0",
+      "original_symbol": "BSP_PlaneSquadron_SEntityInitSlotA4",
+      "current_symbol": "plane_squadron_sentity_init_007f4ba0",
+      "source": "src/plane_squadron_entity.cpp",
+      "original_ledger_status": "reconstructed_complete_ordinary_body_build_tested",
+      "status": "ordinary_body_pc24_reviewed_build_pending",
+      "arithmetic_checked": "Full listing has no floating-point arithmetic: only FLDZ/FLD/FSTP and MOVSS copies. Preserved the explicit 007F5231/007F5235 float spill and 1.5f 00CE380C value. Replaced native squadron offsets with PlaneSquadronInitOffset constants matching established family names and inspected archive keys; no behavior change.",
+      "listing_instruction_count": 606,
+      "x87_arithmetic": [],
+      "sse_arithmetic": [],
+      "exact_changed_pc_groups": {},
+      "duplicate_audit": {
+        "address_query": "007f4ba0",
+        "address_matches": [
+          "include\\bsp\\air_operations.hpp:849:// registered member slot holds a plane (the image's 007F4BA0 runs after 007F4580",
+          "src\\game_hosts_lua.cpp:4422:        // 007F4BA0 turns it into the attack order (007F15F0 -> 007EEC50).",
+          "src\\game_hosts_lua.cpp:4455:        // (006C5050), which the squadron's 007F4BA0 turns into an attack order.",
+          "src\\game_hosts_lua.cpp:4877://            squadrons 007F4BA0, planes 007C9770 (thisTable.SquadronID, a",
+          "src\\game_hosts_lua.cpp:5096:            // 007F4BA0 issues its initial command at 007F4E9E.",
+          "src\\game_hosts_lua.cpp:7066://    (007F4BE8/007F5438 write it once, in the init slot 007F4BA0).",
+          "src\\game_hosts_lua.cpp:11869:        \"(007F4580 / 007F4BA0 at 0046EB4B, packet cc9_load_time_squadron_hooks)\",",
+          "src\\game_hosts_script_orders.cpp:2288:// launched from an ordered slot carry. 007F4BA0 reads the bag key at 007F4EC0 and",
+          "src\\game_hosts_script_orders.cpp:2333:        // reads the key in pass-C init 007F4BA0, after 007F4580 has made every",
+          "src\\game_hosts_units.cpp:8034:    // squadron pass C (007F4BA0) takes a scene row's `HomeBase` (00CF8820, read",
+          "src\\game_hosts_units.cpp:8904:    // 007F4DB0 (pass C 007F4BA0, skipped when +408h is set).",
+          "include\\bsp\\game_hosts_fixed_step.hpp:137:// the squadron's pass C 007F4BA0. Both entries are counted no-ops today. False:",
+          "include\\bsp\\game_hosts_lua.hpp:76:// slots +9Ch (007F4580, pass A) and +A4h (007F4BA0, pass C). When set, the",
+          "include\\bsp\\game_hosts_script_orders.hpp:694:// squadron's 007F4BA0 issues 007EEC50(target, 1, 1) at 007F15F0. `target` names a",
+          "include\\bsp\\game_hosts_script_orders.hpp:893:    // a squadron launched from an ordered slot carries (007F4BA0 -> 007F15F0),",
+          "include\\bsp\\game_hosts_units.hpp:1254:    // - pass C (007F4BA0 at 007F4E9E): with no current command, a stop",
+          "include\\bsp\\game_hosts_units.hpp:1269:    // RFort's name string, \"\" when empty or absent). Pass C (007F4BA0) reads the",
+          "src\\plane_squadron_entity.cpp:230:// 007F4BA0..007F544F: all 606 listing instructions reviewed, including RET.",
+          "src\\plane_squadron_entity.cpp:235:void plane_squadron_sentity_init_007f4ba0(void* s, PlaneSquadronInitScratch& scratch,",
+          "include\\bsp\\plane_squadron_entity.hpp:202:// Complete ordinary 007F4BA0..007F544F, squadron vtable 00D087C0 +A4h.",
+          "include\\bsp\\plane_squadron_entity.hpp:307:void plane_squadron_sentity_init_007f4ba0(void* native_squadron,",
+          "include\\bsp\\recon_slot_lists.hpp:366://       sets to 13h (007F2DF6) and BSP_PlaneSquadron_SEntityInitSlotA4 007F4BA0"
+        ],
+        "class_query": "PlaneSquadron_SEntityInitSlotA4|plane_squadron_sentity_init|PlaneSquadronInitHost",
+        "class_matches": [
+          "include\\bsp\\plane_squadron_entity.hpp:247:struct PlaneSquadronInitHost {",
+          "include\\bsp\\plane_squadron_entity.hpp:248:    virtual ~PlaneSquadronInitHost() = default;",
+          "include\\bsp\\plane_squadron_entity.hpp:307:void plane_squadron_sentity_init_007f4ba0(void* native_squadron,",
+          "include\\bsp\\plane_squadron_entity.hpp:308:    PlaneSquadronInitScratch&, const PlaneSquadronInitGlobals&, PlaneSquadronInitHost&);",
+          "include\\bsp\\recon_slot_lists.hpp:366://       sets to 13h (007F2DF6) and BSP_PlaneSquadron_SEntityInitSlotA4 007F4BA0",
+          "src\\plane_squadron_entity.cpp:235:void plane_squadron_sentity_init_007f4ba0(void* s, PlaneSquadronInitScratch& scratch,",
+          "src\\plane_squadron_entity.cpp:236:    const PlaneSquadronInitGlobals& g, PlaneSquadronInitHost& h) {"
+        ],
+        "retained_complete_definitions": [
+          "src\\plane_squadron_entity.cpp:235:void plane_squadron_sentity_init_007f4ba0(void* s, PlaneSquadronInitScratch& scratch,"
+        ],
+        "duplicate_complete_body_found": false,
+        "credit": "Existing complete body retained once; 007D4812 and 007EB4E0 remain interior helper fragments."
+      },
+      "limitations": [
+        "Descriptive symbols are hypotheses; no recovered-symbol claim.",
+        "Main-thread PC24 model only; worker PC53, extended exponent/status/exception behavior and signaling NaNs are not proven.",
+        "No binary ABI, native FH3/unwind or gameplay equivalence proof; no game run or host wiring."
+      ]
+    }
+  ],
+  "helper_reuse": [
+    {
+      "address": "007d4812",
+      "name": "bind_plane_bow_wave_points_007d4812",
+      "source": "src/plane_bow_wave.cpp",
+      "caller": "plane_class_bind_model_data_007d3e60",
+      "change": "Both stable-array and new live-container APIs share bind_wave_points. The live adapter preserves current begin/end reads at the loop head, post-marker bounds validation, 007D4915 invalid-parameter callback and begin reload after a returning handler. A fixed records/count call could not preserve callback mutation semantics.",
+      "ledger_before": {
+        "name": "bind_plane_bow_wave_points_007d4812",
+        "parent": "007d3e60",
+        "remaining": "Only BowWaves model-point binding, valid stable records and present nonempty marker preconditions; marker lookup and failures delegated to host.",
+        "status": "reconstructed_win32_build_and_existing_checks_passed",
+        "source": "src/plane_bow_wave.cpp",
+        "native_range": "007d4812..007d4953 (last instruction length 5)",
+        "address": "007d4812",
+        "abi_compatible": false,
+        "kind": "fragment"
+      },
+      "ledger_after": {
+        "name": "bind_plane_bow_wave_points_007d4812",
+        "parent": "007d3e60",
+        "remaining": "Only BowWaves model-point binding. Stable-array API keeps valid stable-record and present-marker preconditions; live-container overload reloads descriptor bounds and validates the destination after marker callbacks, including the returning invalid-parameter handler. Marker lookup and failures remain host boundaries.",
+        "status": "reconstructed_fragment_live_container_reviewed_build_pending",
+        "source": "src/plane_bow_wave.cpp",
+        "native_range": "007d4812..007d4953 (last instruction length 5)",
+        "address": "007d4812",
+        "abi_compatible": false,
+        "kind": "fragment",
+        "evidence": "reports/oct24_poolB_fix_planes.json: 007D3E60 now calls bind_plane_bow_wave_points_007d4812 through PlaneBowWaveLiveBindingHost. Both APIs share one point-binding loop in src/plane_bow_wave.cpp; current bounds are read at the loop head and after marker lookup, and begin is reloaded after returning 00BF6713. Interior fragment only, no duplicate complete-body credit."
+      },
+      "rename": false,
+      "ledger_cli": "ledger add-fragment --json <preserved-record-plus-current-evidence> --replace; no supersedes because the surviving symbol is unchanged."
+    },
+    {
+      "address": "007eb4e0",
+      "name": "timed_flag_debounce_007eb4e0",
+      "source": "src/gameplay_seg48_cc13.cpp",
+      "caller": "plane_fx_component_step_007eb380",
+      "change": "Existing TimedFlag/bool API and raw uint8_t overload share debounce_timed_flag. Raw overload preserves CMP/store of exact AL and +28h bytes; no bool canonicalization. Equality resets timer; otherwise one float add then strict > timeout stores raw state.",
+      "native_pcs": [
+        "007eb4e0",
+        "007eb4e8",
+        "007eb4ff",
+        "007eb505",
+        "007eb51d"
+      ]
+    }
+  ],
+  "squadron_offset_evidence": "Existing PlaneSquadronEntity names plus docs/PLANE_SQUADRON.md bounded field table. bsp.py ghidra bytes 00D089F8 --length 208 confirmed EnableLAutDrop, EQper, isInsideHomeBase, retreatInProgress, pCollectedDamage, collectedDamage, homeBase, psFormation, initialSize and numFollowers saved keys. Unknown EQper semantics are left at the native key name.",
+  "call_sites": [
+    {
+      "function": "007eb380",
+      "address": "007eb3bc",
+      "native": "0042ac60"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb4c0",
+      "native": "0042e740"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb5c8",
+      "native": "00419010"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb620",
+      "native": "007eb0e0"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb693",
+      "native": "007e1b30"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb69a",
+      "native": "007eb0e0"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb6b4",
+      "native": "007eae30"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb6bb",
+      "native": "007eb160"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb742",
+      "native": "00419010"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb7f8",
+      "native": "00414db0"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb812",
+      "native": "00413920"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb823",
+      "native": "004134f0"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb873",
+      "native": "00414db0"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb88d",
+      "native": "00413920"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb89e",
+      "native": "004134f0"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb8ee",
+      "native": "00b6db70"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb965",
+      "native": "00bf7030",
+      "qualified_stock_substitution": "std::sqrt"
+    },
+    {
+      "function": "007eb380",
+      "address": "007eb9ef",
+      "native": "00bf7030",
+      "qualified_stock_substitution": "std::sqrt"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebc1b",
+      "native": "00bf7030",
+      "qualified_stock_substitution": "std::sqrt"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebd44",
+      "native": "007eae30"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebdd0",
+      "native": "00419010"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebdff",
+      "native": "00419010"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebe10",
+      "native": "007eae30"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebe4d",
+      "native": "00419010"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebe7c",
+      "native": "00419010"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebe8d",
+      "native": "007eae30"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebeb3",
+      "native": "007de490"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebec6",
+      "native": "007de490"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebedc",
+      "native": "007de490"
+    },
+    {
+      "function": "007eb380",
+      "address": "007ebef2",
+      "native": "007de490"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d3e81",
+      "native": "0095f500"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d3ea4",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d3eb9",
+      "native": "00718870"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d3ed7",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d3ef7",
+      "native": "00484270"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d3f3b",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d3f54",
+      "native": "00717f20"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d3f74",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d3fa1",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d3fba",
+      "native": "00718000"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d3fd8",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d40a1",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d40f3",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4142",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d41e3",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4232",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d42af",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d42f5",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d435b",
+      "native": "004f9b30"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d439c",
+      "native": "0085dc80"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d43b0",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d43c9",
+      "native": "00718870"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d43e7",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d441f",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4438",
+      "native": "00718000"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4456",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d448c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d45b8",
+      "native": "00bf7030",
+      "qualified_stock_substitution": "std::sqrt"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4654",
+      "native": "00bf701a",
+      "qualified_stock_substitution": "std::atan2"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d466f",
+      "native": "00bf857a",
+      "qualified_stock_substitution": "std::fmod"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4740",
+      "native": "00725b40"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d476e",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4787",
+      "native": "00718000"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d47ac",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d47df",
+      "native": "004215d0"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d47fb",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d485e",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d487e",
+      "native": "00718000"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d489c",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d48d2",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4915",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d497c",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4995",
+      "native": "00717f20"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d49b5",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d49e3",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d49fc",
+      "native": "00718000"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4a1a",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4ae7",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4b36",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4b7c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4c11",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4c60",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4ce6",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4d2c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4e11",
+      "native": "0085dc80"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4e39",
+      "native": "007bd600"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4e9d",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4eb9",
+      "native": "00718000"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4ed7",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4fa8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d4ff7",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5046",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d50d2",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5118",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d518c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d51db",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d52a4",
+      "native": "0085dc80"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d53eb",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5404",
+      "native": "00717f20"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5424",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5451",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d546a",
+      "native": "00718000"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d547d",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d54da",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d550d",
+      "native": "007d1d30"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d556b",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5584",
+      "native": "00717f20"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d55a8",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d55d5",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d55ee",
+      "native": "00718000"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d560d",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5649",
+      "native": "00484270"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5682",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5697",
+      "native": "00717f20"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d56bb",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d56eb",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5700",
+      "native": "00717f20"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d571f",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d574c",
+      "native": "00408720"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d576b",
+      "native": "00718000"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5772",
+      "native": "00484270"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d578d",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d57a0",
+      "native": "004215d0"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d57eb",
+      "native": "004215d0"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d5816",
+      "native": "004215d0"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d583f",
+      "native": "004215d0"
+    },
+    {
+      "function": "007d3e60",
+      "address": "007d586c",
+      "native": "004215d0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4bbd",
+      "native": "0077fad0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4bfa",
+      "native": "007ed260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c19",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c4a",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c5d",
+      "native": "008f0e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c74",
+      "native": "008f0e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c85",
+      "native": "00925a90"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c9a",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4cad",
+      "native": "008f0e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4cc4",
+      "native": "008f0e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4cd6",
+      "native": "00925a90"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4ce2",
+      "native": "006bcd20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4cfa",
+      "native": "007f1c00"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4d0d",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4d44",
+      "native": "007ed1d0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4d57",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4d7d",
+      "native": "0085dc80"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4d99",
+      "native": "0042ed50"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4db0",
+      "native": "007f2920"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4ddd",
+      "native": "007eda90"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e0c",
+      "native": "0071be40"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e50",
+      "native": "00465080"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e68",
+      "native": "00414db0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e87",
+      "native": "007ef8f0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e91",
+      "native": "00468560"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e9e",
+      "native": "0077d600"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4ec5",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4edd",
+      "native": "00521e30"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4ee5",
+      "native": "007f15f0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4ef5",
+      "native": "007ed6e0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4f1e",
+      "native": "009238a0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4f27",
+      "native": "004425c0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4f4e",
+      "native": "00bd8e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4f6d",
+      "native": "00bd8e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4f8a",
+      "native": "00bd5eb0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4fde",
+      "native": "00bd7a20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4fe8",
+      "native": "00bf681b"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5000",
+      "native": "0084d810"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f504d",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f508e",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f50c5",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5142",
+      "native": "006952a0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5152",
+      "native": "00694a60"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5189",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f51c0",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f51f7",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f522c",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5239",
+      "native": "004c17d0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f524a",
+      "native": "0041df40"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5255",
+      "native": "004c17d0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5268",
+      "native": "0041df40"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5296",
+      "native": "0071bdc0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f52da",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f52ea",
+      "native": "007f0dc0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5321",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5358",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5361",
+      "native": "00bd7a20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f537a",
+      "native": "00441210"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f53b6",
+      "native": "00bf681b"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f53dd",
+      "native": "00bf681b"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f53ff",
+      "native": "007f1de0"
+    }
+  ],
+  "verification": {
+    "diff_check": "passed",
+    "native_call_rows": "python tools/verify_report_calls.py reports/oct24_poolB_fix_planes.json: 188 call rows checked, 0 failed",
+    "build": "pending primary combined ./scripts/build.ps1; no separate worker build",
+    "new_tests": false,
+    "game_runs": 0,
+    "binary_abi_validated": false,
+    "ghidra_mutations": false,
+    "changed_pc_membership": "Every changed PC group is contained in that body's complete x87 arithmetic census.",
+    "squadron_offset_equivalence": "Expanding PlaneSquadronInitOffset constants and removing the local using alias gives a text-identical 007F4BA0 function body versus HEAD.",
+    "index": "python tools/bsp.py index --if-stale rebuilt after the fragment ledger change."
+  },
+  "open": [
+    "Parent integration/build review of the two helper overloads and all changed source files.",
+    "No live-game, fixture, worker-PC53 or binary-ABI admission proof."
+  ]
+}

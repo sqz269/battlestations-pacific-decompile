@@ -160,6 +160,11 @@ void ai_debug_group_members_overlay_00a2d580(void* group,
 // implementation is reconstructed. The literal D23138 is TWO percent signs
 // followed by LF; no printf consumes it. Empty groups are outside native's
 // valid domain (it dereferences the first member after its checked-list check).
+// PC24 audit: 00A303B2 is the only arithmetic instruction in this body. The
+// inline x87 multiply retains the caller's control word (main thread PC24;
+// docs/CC13_FPU_PRECISION.md), including the native ratio return in ST0.
+// _ftol2 remains the native conversion binding; do not insert a float spill
+// or a C++ double chain around that register/CRT boundary.
 std::string ai_group_describe_debug_00a2f6f0(void* group,
     const char* const* unit_type_names_00e0b590, const volatile double& scale_00d7a220,
     AiGroupDescribeDebugHost& host) {

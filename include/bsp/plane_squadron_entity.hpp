@@ -208,6 +208,39 @@ std::size_t plane_squadron_broadcast_to_members_007ecf80(
 struct PlaneSquadronInitScratch {
     alignas(4) std::uint8_t bytes[0x50];
 };
+
+// Native offsets used by the raw-storage init interface, named consistently
+// with PlaneSquadronEntity and the saved-field keys in 007F50CF..007F5364.
+// These constants do not claim a C++ object layout or binary ABI.
+struct PlaneSquadronInitOffset {
+    static constexpr std::size_t children = 0x48;
+    static constexpr std::size_t local_transform = 0x74;
+    static constexpr std::size_t state_holder = 0xc0;
+    static constexpr std::size_t world_transform_valid = 0xc8;
+    static constexpr std::size_t world_position = 0xfc;
+    static constexpr std::size_t dependent_pose_valid = 0x10c;
+    static constexpr std::size_t invincibility_seconds = 0x150;
+    static constexpr std::size_t current_command = 0x344;
+    static constexpr std::size_t ai_command_block = 0x348;
+    static constexpr std::size_t avoid_layer_secondary = 0x34c;
+    static constexpr std::size_t avoid_layer_primary = 0x350;
+    static constexpr std::size_t leader_component_id = 0x354; // slot +00h result
+    static constexpr std::size_t retreat_in_progress = 0x361;
+    static constexpr std::size_t attack_mode = 0x370;
+    static constexpr std::size_t eq_per = 0x374; // native saved key "EQper"
+    static constexpr std::size_t automatic_drop_enabled = 0x378;
+    static constexpr std::size_t countdowns = 0x37c;
+    static constexpr std::size_t num_followers = 0x3bc;
+    static constexpr std::size_t wing_count = 0x3c8;
+    static constexpr std::size_t live_count = 0x3cc;
+    static constexpr std::size_t members = 0x3d0;
+    static constexpr std::size_t formation_shape = 0x3e4;
+    static constexpr std::size_t home_base_observer = 0x3f0;
+    static constexpr std::size_t home_base = 0x404;
+    static constexpr std::size_t inside_home_base = 0x408;
+    static constexpr std::size_t collected_damage = 0x40c;
+    static constexpr std::size_t previous_collected_damage = 0x410;
+};
 struct PlaneSquadronInitGlobals {
     std::uint8_t* const& game_00e188a8;
 };
