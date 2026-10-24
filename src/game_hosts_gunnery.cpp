@@ -1023,7 +1023,9 @@ constexpr bool kPlaneOwnBaseHitFilterBound = false;
 //    (vt[5Ch](0Fh), 0084C1EE) whose +9D4h is that squadron, by a bullet class
 //    whose +8 is 11h ("Kamikaze", 0084C1FF), clears the hit flag (0084C211), so
 //    the round flies on. The image runs it before the own-base block (0084C213),
-//    which then sees no hit. The plane crash sweep has always applied it
+//    which does not test the hit flag: its entry gate was decided on the swept
+//    hit, and a squadron mate never matches the base owner, so that block
+//    neither drops nor counts down. The plane crash sweep has always applied it
 //    (pc_same_squadron). OFF: every hit is taken (the test still runs for the
 //    census, kamikaze_squadron_drops).
 constexpr bool kKamikazeSameSquadronShotDropCc13Bound = false;
@@ -4050,9 +4052,11 @@ struct GameGunneryHost::Impl {
     // plane crash sweep: true when a Kamikaze-type (+8 == 11h) round fired by a
     // squadron plane hits a plane of the same squadron (+9D4h). A unit outside
     // every squadron has no +9D4h here, so a null shooter squadron skips the test
-    // (0084C1E4) and a non-member victim never matches; membership stands in for
-    // the image's plane test (vt[5Ch](0Fh), 0084C1EE). PROVISIONAL: "Kamikaze"
-    // is the class type string the host maps from type 11h.
+    // (0084C1E4) and a non-member victim never matches. PROVISIONAL: registry
+    // membership stands in for the image's plane test (vt[5Ch](0Fh): 0084BF3F on
+    // the shooter, 0084C1EE on the victim) and for +9D4h on both; it differs only
+    // if an image plane has +9D4h set that the registry never recorded. Also
+    // PROVISIONAL: "Kamikaze" is the class type string the host maps from 11h.
     static bool kamikaze_same_squadron_0084c1ee(const GameBulletClassRow* weapon,
         std::size_t shooter, std::size_t victim) {
         bool same = false;
@@ -11219,12 +11223,19 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
         bsp::hit_record_reset_00470470(record);
         bool hit = bsp::query_segment_0098add0(query, args, record);
         done("Projectile::sweep_entities_0098add0", 0x0098add0u);
-        if (hit && query.hit_unit != 0 && query.hit_landscape == 0 && shot.owner_unit != 0
+        // The entry gate (0084C1DC/0084C1E6/0084C1EA) is decided on the swept hit,
+        // before the squadron drop, and the own-base block reads that decision.
+        const bool swept_hit = hit;
+        const std::size_t hu = swept_hit && query.hit_unit != 0 && query.hit_landscape == 0
+            ? query.hit_unit - 1 : static_cast<std::size_t>(-1);
+        if (hu != static_cast<std::size_t>(-1) && shot.owner_unit != 0
             && kamikaze_same_squadron_0084c1ee(bullet(shot.bullet_class),
-                shot.owner_unit - 1, query.hit_unit - 1)) {
+                shot.owner_unit - 1, hu)) {
             // 0084C1D8-0084C211, kKamikazeSameSquadronShotDropCc13Bound. The
-            // image clears the hit flag (0084C211) before the own-base block
-            // below (0084C213), so that block sees no hit.
+            // image clears the hit flag (0084C211, xor bl,bl) and falls into
+            // the own-base block (0084C213), which never tests BL: the base
+            // compare fails for a squadron mate, so 0084C27A takes neither the
+            // drop nor the countdown.
             ++kamikaze_squadron_drops;
             if constexpr (kKamikazeSameSquadronShotDropCc13Bound) {
                 hit = false;
@@ -11232,11 +11243,10 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
         }
         {
             // 0084C213-0084C278, kPlaneOwnBaseHitFilterBound. A dropped hit
-            // skips 0084BC60 (0084C2BB), so the round flies on.
-            const std::size_t hu = hit && query.hit_unit != 0 && query.hit_landscape == 0
-                ? query.hit_unit - 1 : static_cast<std::size_t>(-1);
+            // skips 0084BC60 (0084C2BB), so the round flies on. It is given the
+            // swept hit, not the post-drop flag (see above).
             const int ob = units.plane_own_base_hit_filter_0084c213(
-                shot.owner_unit - 1, hit, hu);
+                shot.owner_unit - 1, swept_hit, hu);
             if (ob == 1) {
                 ++own_base_drops[0];
                 if constexpr (kPlaneOwnBaseHitFilterBound) {
