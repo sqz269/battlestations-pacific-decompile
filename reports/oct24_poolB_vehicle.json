@@ -4,7 +4,19 @@
   "validation": {
     "build": "pending primary integrator build",
     "runtime": "not run",
-    "abi": "native input/return/stack cleanup documented; C++ interfaces are not binary drop-ins"
+    "abi": "native input/return/stack cleanup documented; C++ interfaces are not binary drop-ins",
+    "static_write_audits": {
+      "00963380": {
+        "native": 76,
+        "model": 76,
+        "same_order": true
+      },
+      "0095cc90": {
+        "native": 70,
+        "model": 70,
+        "same_width_offset_multiset": true
+      }
+    }
   },
   "routines": [
     {
@@ -592,6 +604,243 @@
           "contract": "unread"
         }
       ]
+    },
+    {
+      "address": "00951220",
+      "name": "create_traffic_record_00951220",
+      "native_name": "BSP_TrafficRecordVector_CreateRecord",
+      "source": "src/scene_traffic_groups.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundaries",
+      "before": {
+        "name": "TrafficRecord defaults (read_traffic_item)",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=record vector; ignored name/path entity stack args; EAX=record or zero; RET 8",
+      "evidence": "Complete ordinary path: allocate4Ch, conditional base construction, exact byte/dword/default writes, append pointer including null allocation result, return record. First name argument never read. Listing confirms RET8 at009512EA. Evidence: exported decompiled.c and assembly.txt, native project verified by live query tools.",
+      "uncertainty": "Explicit native callee boundaries; native SEH unwind/exception cleanup and binary ABI binding not projected",
+      "calls": [
+        {
+          "address": "0095123c",
+          "native": "00bf681b",
+          "containing_function": "00951220",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "00951258",
+          "native": "0049f9b0",
+          "containing_function": "00951220",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "009512d3",
+          "native": "00950fc0",
+          "containing_function": "00951220",
+          "contract": "address_named_native_boundary"
+        }
+      ]
+    },
+    {
+      "address": "00959940",
+      "name": "destruct_unit_game_object_00959940",
+      "native_name": "BSP_UnitGameObject_Destruct",
+      "source": "src/unit_destructor_levels.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundaries",
+      "before": {
+        "status": "no_reconstruction_function_record_in_worker_base_40c2b0092"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; no stack arguments; RET at00959BE4",
+      "evidence": "Complete ordinary path: seven vptr writes, refcount releases, controlled-listener global test, flagged vcalls, main list plus12 gun-category drains, two pooled-string returns, record-array teardown and base destruction. Callee00419CC0 is no-argument lookup; pushes(buffer,length+1,1) belong to00BD1510 RET0Ch. Ordinary game destructor, not generated deleting wrapper. Evidence: exported decompiled.c and assembly.txt, native project verified by live query tools.",
+      "uncertainty": "Explicit native callee boundaries; native SEH unwind/exception cleanup and binary ABI binding not projected",
+      "calls": [
+        {
+          "address": "009599df",
+          "native": "004bca80",
+          "containing_function": "00959940",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "00959a7e",
+          "native": "00bf65ac",
+          "containing_function": "00959940",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "00959ad1",
+          "native": "00bf65ac",
+          "containing_function": "00959940",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "00959b02",
+          "native": "00419cc0",
+          "containing_function": "00959940",
+          "contract": "read_no_arguments"
+        },
+        {
+          "address": "00959b09",
+          "native": "00bd1510",
+          "containing_function": "00959940",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "00959b2a",
+          "native": "00419cc0",
+          "containing_function": "00959940",
+          "contract": "read_no_arguments"
+        },
+        {
+          "address": "00959b31",
+          "native": "00bd1510",
+          "containing_function": "00959940",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "00959b6c",
+          "native": "00bf65ac",
+          "containing_function": "00959940",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "00959b9b",
+          "native": "00bf7c6e",
+          "containing_function": "00959940",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "00959ba6",
+          "native": "00955eb0",
+          "containing_function": "00959940",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "00959bbf",
+          "native": "00bf7c6e",
+          "containing_function": "00959940",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "00959bce",
+          "native": "0087a410",
+          "containing_function": "00959940",
+          "contract": "address_named_native_boundary"
+        }
+      ]
+    },
+    {
+      "address": "0095cc90",
+      "name": "construct_unit_game_object_0095cc90",
+      "native_name": "BSP_UnitGameObject_Construct",
+      "source": "src/unit_instance_layout.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundaries",
+      "before": {
+        "status": "no_reconstruction_function_record_in_worker_base_40c2b0092"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; flag/class stack dwords; EAX=this; RET 8 at0095CF7C",
+      "evidence": "Complete ordinary path: base construction, seven vptrs, both CRT array-construction calls with exact callback addresses, all70 native image writes including byte writes, class reference and globals. Six FLD/FSTP float copies stay explicit host FPU operations; no arithmetic. Ordinary constructor, not compiler array helper. Evidence: exported decompiled.c and assembly.txt, native project verified by live query tools.",
+      "uncertainty": "Explicit native callee boundaries; native SEH unwind/exception cleanup and binary ABI binding not projected",
+      "calls": [
+        {
+          "address": "0095ccb3",
+          "native": "0087b670",
+          "containing_function": "0095cc90",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "0095cd23",
+          "native": "00bf7cd1",
+          "containing_function": "0095cc90",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "0095cd5e",
+          "native": "00bf7cd1",
+          "containing_function": "0095cc90",
+          "contract": "address_named_native_boundary"
+        }
+      ]
+    },
+    {
+      "address": "00963380",
+      "name": "construct_ship_class_base_00963380",
+      "native_name": "BSP_ShipClass_ConstructBase",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundaries",
+      "before": {
+        "status": "no_reconstruction_function_record_in_worker_base_40c2b0092"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET at009635B3",
+      "evidence": "Complete ordinary path: base call, two vptrs, CRT vector construction of20 elements/30h stride at+138h with0095B920/009560F0 callbacks, then76 zero stores in exact listing order. Static audit: native76/model76/matching order; corrects historical79 annotation while preserving it. Ordinary constructor, not compiler array helper. Evidence: exported decompiled.c and assembly.txt, native project verified by live query tools.",
+      "uncertainty": "Explicit native callee boundaries; native SEH unwind/exception cleanup and binary ABI binding not projected",
+      "calls": [
+        {
+          "address": "009633a0",
+          "native": "00749050",
+          "containing_function": "00963380",
+          "contract": "address_named_native_boundary"
+        },
+        {
+          "address": "009633cd",
+          "native": "00bf7cd1",
+          "containing_function": "00963380",
+          "contract": "address_named_native_boundary"
+        }
+      ]
+    },
+    {
+      "address": "00963e00",
+      "name": "submarine_class_name_00963e00",
+      "native_name": "BSP_SubmarineClass_GetClassName",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete",
+      "before": {
+        "name": "kClassNameGetters[MSubmarine]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "no arguments/ECX use; EAX=00D1AE68 literal; RET",
+      "evidence": "Complete MOV EAX,00D1AE68; RET body; recovered literal MSubmarine. C++ literal preserves text but not native pointer identity. Evidence: exported decompiled.c and assembly.txt, native project verified by live query tools.",
+      "uncertainty": "C++ literal pointer identity differs",
+      "calls": []
+    },
+    {
+      "address": "00963600",
+      "name": "ship_class_destruct_00963600",
+      "native_name": "BSP_ShipClass_DestructBase_00963600",
+      "source": "src/cg_rebuild_a_cc13.cpp",
+      "coverage": "complete_normal_path_already_reconstructed_on_origin_main",
+      "before": {
+        "status": "concurrently_integrated_existing_implementation",
+        "name": "ship_class_destruct_00963600"
+      },
+      "after": {
+        "status": "preserved_existing_implementation"
+      },
+      "abi": "__thiscall ECX=this; RET at00963AF1",
+      "evidence": "Reviewed current origin/main (42640ed60) source at src/cg_rebuild_a_cc13.cpp:440 against exported387-instruction body: matching25-step range/ref/array teardown and base0095F1C0; no incoming delete-flag test, therefore ordinary game class destructor. No duplicate body or ledger added.",
+      "uncertainty": "Existing implementation excludes native EH unwinding; primary integrator owns its validation",
+      "calls": []
     }
-  ]
+  ],
+  "counts": {
+    "assigned": 30,
+    "new_native_bodies": 29,
+    "existing_native_body_preserved": 1,
+    "library_classifications": 0,
+    "compiler_classifications": 0,
+    "unresolved": 0
+  }
 }
