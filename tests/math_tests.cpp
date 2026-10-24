@@ -1719,6 +1719,7 @@ int main() {
             std::vector<std::string> read_string_array(std::string_view) override { return {}; }
             std::vector<std::int32_t> read_int_array(std::string_view) override { return {}; }
             std::vector<std::string> string_keys() override { return {}; }
+            std::vector<TableKey> table_keys() override { return {}; }
         };
 
         MapSizeView absent;

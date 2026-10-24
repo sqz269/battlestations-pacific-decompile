@@ -343,15 +343,35 @@ void submarine_run_motion_tick_tail_00855420(SubmarineMotionTickHost& host,
 }
 
 // 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x), the same body
-// src/dive_bomb_task.cpp reconstructs.
+// src/dive_bomb_task.cpp reconstructs. Kept local, not bsp_core's
+// clamped_interpolate_00419010 (src/unit_rudder.cpp, inline x87 at the running
+// thread's precision), so that kSubmarineInterpolatePc24Cc13Bound can pin the
+// main thread's 24-bit per-op float rounding here.
 static float submarine_interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
                                                     float x) noexcept {
     if (x1 == x0) return y0;
-    const float v = static_cast<float>(((static_cast<double>(x) - x0) / (x1 - x0)) * (y1 - y0) + y0);
+    float v;
+    if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+        // 00419033..0041905F: FSUB, FSUBRP, FDIVP, FSUBP, FMULP, FADD, each rounded
+        // to 24 bits: ((x - x0) / (x1 - x0)) * (y1 - y0) + y0.
+        const float dx = x - x0;
+        const float span = x1 - x0;
+        const float t = dx / span;
+        const float dy = y1 - y0;
+        const float scaled = t * dy;
+        v = scaled + y0;
+    } else {
+        v = static_cast<float>(((static_cast<double>(x) - x0) / (x1 - x0)) * (y1 - y0) + y0);
+    }
     const float hi = (y1 < y0) ? y0 : y1;
     const float lo = (y0 < y1) ? y0 : y1;
     if (v < lo) return lo;
-    return (v <= hi) ? v : hi;
+    if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+        // 004190A9 FCOMPI / JBE: unordered takes the jump, so a NaN v is returned.
+        return (v > hi) ? hi : v;
+    } else {
+        return (v <= hi) ? v : hi;
+    }
 }
 
 // 0042AC60 BSP_Math_StepTowards(state, target, maxStep).
@@ -399,15 +419,26 @@ SubmarineDiveResult submarine_dive_step_00936dc0(const SubmarineDiveInputs& in) 
             clamped_v = (-0.05000000074505806 > static_cast<double>(vy)) ? vy : -0.05f;
         }
         // 00936FF9..0093700A: error * gain / clampedV, stored as a float.
-        const float ratio = static_cast<float>(
-            static_cast<double>(error) * in.gain / clamped_v);
+        float ratio;
+        if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+            const float product = error * in.gain;                   // 00936FF9 FMUL
+            ratio = product / clamped_v;                             // 00937006 FDIV
+        } else {
+            ratio = static_cast<float>(static_cast<double>(error) * in.gain / clamped_v);
+        }
         // 0093701C..00937033: 00419010(0.5, 0.0, UpDownStopTime, 1.0, ratio).
         const float curve = submarine_interpolate_clamped_00419010(0.5f, 0.0f, in.stop_time,
                                                                    1.0f, ratio);
         // 00937042..00937065: vy + (candidate - vy) * curve, rounded once.
         const float candidate = (error >= 0.0f) ? up_candidate : down_candidate;
-        rate = static_cast<float>(static_cast<double>(vy)
-            + (static_cast<double>(candidate) - vy) * curve);
+        if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+            const float delta = candidate - vy;                      // 0093705B FSUBP
+            const float step = delta * curve;                        // 00937061 FMULP
+            rate = vy + step;                                        // 00937063 FADDP
+        } else {
+            rate = static_cast<float>(static_cast<double>(vy)
+                + (static_cast<double>(candidate) - vy) * curve);
+        }
     }
     // 00937069..00937107: the seabed-clamp dive-plane writes (gain above 1.0) are
     // made by the caller when it models the clamp; not here.
@@ -438,13 +469,27 @@ SubmarineDiveResult submarine_dive_step_00936dc0(const SubmarineDiveInputs& in) 
 
     // 00937198..009371B5: the forward speed, dot(linear, row2), in the order the
     // listing adds it.
-    const double forward = (static_cast<double>(in.linear[1]) * in.row2[1]
-        + static_cast<double>(in.linear[0]) * in.row2[0])
-        + static_cast<double>(in.linear[2]) * in.row2[2];
-    const float forward_f = static_cast<float>(forward);
-    // 009371C1..009371E1: forward / 0080FC30 / 10.0 * direction, stored as a float.
-    const float pitch_ratio = static_cast<float>(
-        static_cast<double>(forward_f) / in.reference_speed / 10.0 * direction);
+    float forward_f;
+    float pitch_ratio;
+    if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+        const float fy = in.linear[1] * in.row2[1];                  // 009371A0
+        const float fx = in.linear[0] * in.row2[0];                  // 009371A8
+        const float fxy = fy + fx;                                   // 009371AB
+        const float fz = in.linear[2] * in.row2[2];                  // 009371B0
+        forward_f = fxy + fz;                                        // 009371B3
+        // 009371C6 FDIVR, 009371D7 FDIV 10.0, 009371DD FIMUL direction.
+        const float per_ref = forward_f / in.reference_speed;
+        const float tenth = per_ref / 10.0f;
+        pitch_ratio = tenth * static_cast<float>(direction);
+    } else {
+        const double forward = (static_cast<double>(in.linear[1]) * in.row2[1]
+            + static_cast<double>(in.linear[0]) * in.row2[0])
+            + static_cast<double>(in.linear[2]) * in.row2[2];
+        forward_f = static_cast<float>(forward);
+        // 009371C1..009371E1: forward / 0080FC30 / 10.0 * direction, stored as a float.
+        pitch_ratio = static_cast<float>(
+            static_cast<double>(forward_f) / in.reference_speed / 10.0 * direction);
+    }
     // 009371E7..00937223: controller+398h steps toward ratio * -1.5 by at most dt * 0.5.
     const float pitch_target = static_cast<float>(static_cast<double>(pitch_ratio) * -1.5);
     const float max_step = static_cast<float>(static_cast<double>(in.dt) * 0.5);
@@ -452,8 +497,14 @@ SubmarineDiveResult submarine_dive_step_00936dc0(const SubmarineDiveInputs& in) 
 
     // 00937228..0093729B: a = (row2.y + pitch) * (-2.0 * dt); angular -= a * row0.
     const double k4dt = -2.0 * static_cast<double>(in.dt);
-    const float a = static_cast<float>(
-        (static_cast<double>(in.row2[1]) + out.pitch_398) * k4dt);
+    float a;
+    if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+        // 00937244 FADD, 00937251 FMUL; -2.0 * dt is exact.
+        const float tilt = in.row2[1] + out.pitch_398;
+        a = tilt * static_cast<float>(k4dt);
+    } else {
+        a = static_cast<float>((static_cast<double>(in.row2[1]) + out.pitch_398) * k4dt);
+    }
     for (int i = 0; i < 3; ++i) {
         const float term = static_cast<float>(static_cast<double>(in.row0[i]) * a);
         out.angular[i] = static_cast<float>(static_cast<double>(out.angular[i]) - term);
@@ -472,11 +523,23 @@ SubmarineDiveResult submarine_dive_step_00936dc0(const SubmarineDiveInputs& in) 
     const float s = out.sink_1270;
     float next;
     if (s < limit) {
-        next = static_cast<float>(static_cast<double>(s) + static_cast<double>(in.dt) * in.accel);
+        if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+            const float rise = in.dt * in.accel;                     // 00937362 FMULP
+            next = s + rise;                                         // 00937364 FADDP
+        } else {
+            next = static_cast<float>(static_cast<double>(s)
+                + static_cast<double>(in.dt) * in.accel);
+        }
         if (next > limit) next = limit;
     } else {
-        next = static_cast<float>(static_cast<double>(s)
-            - static_cast<double>(in.dt) * in.accel * in.gain);
+        if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+            const float fall = in.dt * in.accel;                     // 0093733C FMULP
+            const float fall_gain = fall * in.gain;                  // 00937342 FMULP
+            next = s - fall_gain;                                    // 00937344 FSUBRP
+        } else {
+            next = static_cast<float>(static_cast<double>(s)
+                - static_cast<double>(in.dt) * in.accel * in.gain);
+        }
         if (limit > next) next = limit;
     }
     out.sink_1270 = next;
@@ -499,8 +562,14 @@ SubmarineScanPoint submarine_scan_point_00855420(int state, float width, float l
     const float w2 = static_cast<float>(static_cast<double>(width) + width);
     const bool ahead = !(speed < 0.0f);  // 00855655 COMISS speed, 0 / JB
     auto along = [&](double k) {
-        const double base = k * speed;
-        return static_cast<float>(ahead ? base + length : base - length);
+        if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+            // 00855664/00855697 FMUL, then FADD or FSUB length, each rounded.
+            const float base = static_cast<float>(k) * speed;
+            return ahead ? base + length : base - length;
+        } else {
+            const double base = k * speed;
+            return static_cast<float>(ahead ? base + length : base - length);
+        }
     };
     switch (state) {
     case 0: p.x = width;   p.z = l6; break;                      // 0085554E
@@ -514,15 +583,37 @@ SubmarineScanPoint submarine_scan_point_00855420(int state, float width, float l
     case 8: p.x = 0.0f;    p.z = -0.0f - length; break;          // 0085560D
     case 9: p.x = -0.0f - w2; p.z = -0.0f - length; break;       // 00855625
     case 10:  // 00855643: 2W * (1 + 1.5*frac + 3*fwd), 9*speed +- L
-        p.x = static_cast<float>((1.0 + 1.5 * frac + 3.0 * fwd) * w2);
+        if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+            // Stack 3.0, 1.0, frac, speed at the 00855547 dispatch.
+            const float scaled_frac = 1.5f * frac;                   // 00855645
+            const float widen = 1.0f + scaled_frac;                  // 0085564B
+            const float side = 3.0f * fwd;                           // 00855651
+            const float sum = widen + side;                          // 00855653 FADDP
+            p.x = sum * w2;                                          // 0085565C
+        } else {
+            p.x = static_cast<float>((1.0 + 1.5 * frac + 3.0 * fwd) * w2);
+        }
         p.z = along(9.0);
         break;
     case 11:  // 00855680: 2W * 3*fwd, 10*speed +- L
-        p.x = static_cast<float>(3.0 * fwd * w2);
+        if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+            const float side = 3.0f * fwd;                           // 0085568B
+            p.x = side * w2;                                         // 0085568F
+        } else {
+            p.x = static_cast<float>(3.0 * fwd * w2);
+        }
         p.z = along(10.0);
         break;
     case 12:  // 008556A9: 2W * (3*fwd - (1 + 1.5*frac)), 9*speed +- L
-        p.x = static_cast<float>((3.0 * fwd - (1.0 + 1.5 * frac)) * w2);
+        if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+            const float side = 3.0f * fwd;                           // 008556A9
+            const float scaled_frac = 1.5f * frac;                   // 008556AF
+            const float widen = 1.0f + scaled_frac;                  // 008556B5
+            const float diff = side - widen;                         // 008556B7 FSUBP
+            p.x = diff * w2;                                         // 0085565C
+        } else {
+            p.x = static_cast<float>((3.0 * fwd - (1.0 + 1.5 * frac)) * w2);
+        }
         p.z = along(9.0);
         break;
     default:  // 008556BB
@@ -535,8 +626,15 @@ SubmarineScanPoint submarine_scan_point_00855420(int state, float width, float l
 float submarine_scan_time_00855420(const SubmarineScanPoint& p, float length,
                                    float speed) noexcept {
     // 008556CD..008556EA: |p| over (x, z), through the float store and sqrt.
-    const float sq = static_cast<float>(static_cast<double>(p.x) * p.x
-        + static_cast<double>(p.z) * p.z);
+    float sq;
+    if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+        const float xx = p.x * p.x;                                  // 008556D5
+        const float zz = p.z * p.z;                                  // 008556D9
+        sq = zz + xx;                                                // 008556DB
+    } else {
+        sq = static_cast<float>(static_cast<double>(p.x) * p.x
+            + static_cast<double>(p.z) * p.z);
+    }
     const float dist = static_cast<float>(std::sqrt(static_cast<double>(sq)));
     const float l6 = static_cast<float>(static_cast<double>(length) * 0.6000000238418579);
     float d = static_cast<float>(static_cast<double>(dist) - l6);           // 008556FF
@@ -559,13 +657,25 @@ void submarine_scan_publish_00855440(SubmarineSeabedScan& scan, float deepest_ba
 void submarine_scan_sample_00855420(SubmarineSeabedScan& scan, float sample,
                                     float class_height, float hull_y, float time) noexcept {
     if (sample == 0.0f) return;            // 008557F8..00855800
-    const float candidate = static_cast<float>(
-        static_cast<double>(sample) + (static_cast<double>(class_height) + 3.0));
+    float candidate;
+    if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+        const float lifted = class_height + 3.0f;                    // 00855812 FADD
+        candidate = lifted + sample;                                 // 00855818 FADDP
+    } else {
+        candidate = static_cast<float>(
+            static_cast<double>(sample) + (static_cast<double>(class_height) + 3.0));
+    }
     if (candidate > scan.clearance_acc) scan.clearance_acc = candidate;     // 00855828
     if (scan.state >= 10) return;                                          // 00855842
     if (!(candidate > hull_y)) return;                                     // 00855851
-    const float rate = static_cast<float>(
-        (static_cast<double>(candidate) - hull_y) / time);                  // 0085585C
+    float rate;
+    if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+        const float rise = candidate - hull_y;                       // 0085585C FSUBRP
+        rate = rise / time;                                          // 0085585E FDIV
+    } else {
+        rate = static_cast<float>(
+            (static_cast<double>(candidate) - hull_y) / time);              // 0085585C
+    }
     const int s = scan.state;
     const bool front = s < 2 || (s >= 4 && s < 7);                         // 00855859..00855870
     float& bucket = front ? scan.front_acc : scan.rear_acc;

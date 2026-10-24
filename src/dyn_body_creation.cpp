@@ -1,4 +1,6 @@
 #include "bsp/dyn_body_creation.hpp"
+#include "bsp/cc13_dyn1.hpp"
+#include "bsp/oct18_tail_d.hpp"
 #include <cfloat>
 #include <cmath>
 #include <cstring>
@@ -331,23 +333,68 @@ void dyn_convex_shape_construct_00c57f50(DynConvexShapeStorage& shape,DynBodySto
     std::memcpy(plus(&shape,0x34),desc.row0,0x30);
     dyn_convex_shape_refresh_bounds_00c57c40(shape);
 }
-void dyn_body_attach_convex_shape_00c5c940(DynBodyStorage& body,
-    const DynShapeDescriptor& desc,const DynBodyCreationContext& context) {
-    if (desc.type!=DynShapeType::kConvexMesh) throw std::invalid_argument("convex shape required");
+// 00C5C940, ECX descriptor, EDX body, plain RET, EAX = shape (EBX). cc13-P1 completed
+// the switch from the listing (00C5C968..00C5CA92, table 00C5CABC):
+//   0 sphere: 00BF681B(214h), 00C585B0 __thiscall(ECX body; shape, desc)
+//   1 box: 00BF681B(21Ch), 00C57B90 __thiscall(ECX body; shape, desc)
+//   2 cylinder: 00BF681B(218h), 00C582E0(EDI desc; shape, body)
+//   4 convex mesh: 00407ED0 pool slot, 00C57F50 (the prior type-4 build)
+//   5 terrain: 00BF681B(230h), 00C58840 __thiscall(ECX body; shape, desc)
+//   3 and > 5: 00C5CA92, no shape, +70h and 00C55FC0 untouched, EBX = 0.
+// Every built shape then takes the old +70h head as its +208h next and the head's
+// +20Ch back link (both copies, 00C5C9D9 and 00C5CA72, are the same code), becomes
+// +70h, and 00C55FC0 runs. All paths finish with 00C50470 when the head read at
+// entry (00C5C963) was null. EH states 0..4 (handler 00CC85A2) free the block when
+// a constructor throws; not reproduced. A null 00BF681B result is not reachable here
+// because `allocate` throws std::bad_alloc; the image would go on with shape 0 and
+// fault on the +208h store when the head is non-null.
+void* dyn_body_attach_shape_00c5c940(DynBodyStorage& body,const void* descriptor,
+    const DynBodyCreationContext& context) {
     void* old=at<void*>(&body,0x70);
-    auto* shape=dyn_convex_shape_allocate_00407ed0(*context.convex_pool,context.memory);
-    dyn_convex_shape_construct_00c57f50(*shape,body,desc,context.convex_shape_vtable);
-    if (old) { at<void*>(shape,0x208)=old; at<void*>(old,0x20c)=shape; }
-    at<void*>(&body,0x70)=shape;
-    dyn_body_recompute_bounds_00c55fc0(body);
+    void* shape=nullptr;
+    switch (static_cast<const DynShapeDescriptor*>(descriptor)->type) {
+    case DynShapeType::kSphere:
+        shape=cc13_dyn1::sphere_shape_construct_00c585b0(&body,allocate(context.memory,0x214),
+            descriptor,context.shape_base_vtable,context.sphere_shape_vtable);
+        break;
+    case DynShapeType::kBox:
+        shape=cc13_dyn1::box_shape_construct_00c57b90(&body,allocate(context.memory,0x21c),
+            descriptor,context.shape_base_vtable,context.box_shape_vtable);
+        break;
+    case DynShapeType::kCylinder:
+        shape=cc13_dyn1::cylinder_shape_construct_00c582e0(descriptor,
+            allocate(context.memory,0x218),&body,context.shape_base_vtable,
+            context.cylinder_shape_vtable);
+        break;
+    case DynShapeType::kConvexMesh: {
+        auto* convex=dyn_convex_shape_allocate_00407ed0(*context.convex_pool,context.memory);
+        dyn_convex_shape_construct_00c57f50(*convex,body,
+            *static_cast<const DynShapeDescriptor*>(descriptor),context.convex_shape_vtable);
+        shape=convex;
+        break;
+    }
+    case DynShapeType::kTerrain:
+        shape=oct18_tail_d::terrain_shape_construct_00c58840(&body,
+            allocate(context.memory,0x230),descriptor);
+        break;
+    default:
+        break;
+    }
+    if (shape) {
+        // 00C5C9D9 / 00C5CA72 re-read +70h after the constructor.
+        if (void* head=at<void*>(&body,0x70)) {
+            at<void*>(shape,0x208)=head; at<void*>(head,0x20c)=shape;
+        }
+        at<void*>(&body,0x70)=shape;
+        dyn_body_recompute_bounds_00c55fc0(body);
+    }
     if (!old) dyn_body_register_broadphase_00c50470(body,
         at<void*>(at<void*>(&body,0),0x444),context.memory);
+    return shape;
 }
-DynBodyStorage* dyn_world_create_convex_body_00c5d580(void* world,const DynBodyDescriptor& desc,
-    const DynShapeDescriptor* const* shapes,std::uint32_t count,const DynBodyCreationContext& context) {
+DynBodyStorage* dyn_world_create_body_00c5d580(void* world,const DynBodyDescriptor& desc,
+    const void* const* shapes,std::uint32_t count,const DynBodyCreationContext& context) {
     if (count!=desc.shape_count) throw std::invalid_argument("shape count mismatch");
-    for (std::uint32_t i=0;i<count;++i)
-        if (shapes[i]->type!=DynShapeType::kConvexMesh) throw std::invalid_argument("convex shape required");
     const bool is_static=(desc.flags&1)!=0;
     auto* body=static_cast<DynBodyStorage*>(take_pool_slot(plus(world,is_static?0x4c:0x170),
         0x88,context.memory));
@@ -355,7 +402,9 @@ DynBodyStorage* dyn_world_create_convex_body_00c5d580(void* world,const DynBodyD
         take_pool_slot(plus(world,0x294),0xc8,context.memory);
     dyn_body_storage_init_00c43ca0(*body,desc);
     at<void*>(body,0)=world;
-    for (std::uint32_t i=0;i<count;++i) dyn_body_attach_convex_shape_00c5c940(*body,*shapes[i],context);
+    // 00C5D8C0..00C5D8E7: each record pointer of the +78h/+7Ch vector, end re-read
+    // per pass (a constructor does not resize it).
+    for (std::uint32_t i=0;i<count;++i) dyn_body_attach_shape_00c5c940(*body,shapes[i],context);
     return body;
 }
 } // namespace bsp
