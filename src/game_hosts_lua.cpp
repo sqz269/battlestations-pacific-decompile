@@ -111,7 +111,19 @@ constexpr bool kLuaObjectFieldSettersCc13Bound = false;
 // 00CF8838 "Skill" (008F3710). OFF keeps the record default 1. A SetSkillLevel
 // value outside 0..5 on the shipyard is stored raw by the image, while the host's
 // existing 0..5 gate (game_hosts_units.cpp:20406, older than this switch) keeps 1.
-constexpr bool kShipyardLaunchSkillCc13Bound = false;
+// ON (cc9-recon1): reached only on JM08 (12 shipyard creates; jm08_l65_j8_p2 pair
+// gameplay identical); no WINS row creates from a shipyard.
+constexpr bool kShipyardLaunchSkillCc13Bound = true;
+
+// Packet cc13-D3: SpawnNew 00949750 has no argument type test. A non-table argument
+// goes to 00B67800 (lua_gettable 00A67C20), which raises for nil, number or boolean
+// and reads nil fields from a string. OFF keeps the host's refusal (counted in
+// spawn_new_rejected). ON also takes the request serial at the image's point,
+// 00949F2B after the field reads, so neither that raise nor the live
+// kSpawnNewMissingClassRaisesBound raise burns a serial; OFF takes it before the
+// reads. Live: MissionLuaNative SpawnNew 0094C480 ->
+// GameMissionLuaHost::run_spawn_new_00949750.
+constexpr bool kSpawnNewNonTableArgumentCc13Bound = false;
 
 // Packet cc13-atktgt: UnitGetAttackTarget 008A6DE0's arm by director kind. The
 // image asks director->vtable[48h](2) (008A6F0D). A squadron's director is the
@@ -3802,14 +3814,30 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
     // The Lua-visible argument is one table; anything else is the arm that
     // reads twelve absent fields and queues a record nothing can satisfy, so it
     // is refused here rather than queued forever.
-    if (argument_count < 1 || ::lua_type(state, 1) != LUA_TTABLE) {
+    // kSpawnNewNonTableArgumentCc13Bound (cc13-D3, OFF): the image does not test the
+    // type. Its field reads are 00B67800 BSP_LuaObject_GetByName, whose lua_gettable
+    // (00A67C20) raises "attempt to index a <type> value" for a nil, number or boolean
+    // argument and reads nil fields through the string metatable for a string, which
+    // then queues the absent-field record. ON drops the refusal so the host's own
+    // lua_getfield reads do the same; OFF keeps the refusal.
+    if (argument_count < 1 && !kSpawnNewNonTableArgumentCc13Bound) {
+        ++summary_.spawn_new_rejected;
+        return 0;
+    }
+    if (::lua_type(state, 1) != LUA_TTABLE && !kSpawnNewNonTableArgumentCc13Bound) {
         ++summary_.spawn_new_rejected;
         return 0;
     }
     ++summary_.spawn_new_calls;
 
     bsp::SpawnNewRequest request;
-    request.serial = bsp::next_spawn_request_serial_00949f2b();
+    // ON takes the serial where the image does (00949F2B, after the last 00B67800
+    // read at 00949E59), so a raise in the reads - the non-table argument at the
+    // first read (00949834) or the missing VehicleClass row (00944210 via 00945C30
+    // at 00949A53) - burns no serial. OFF takes it here, as before.
+    if constexpr (!kSpawnNewNonTableArgumentCc13Bound) {
+        request.serial = bsp::next_spawn_request_serial_00949f2b();
+    }
     request.party = read_member_int(state, 1, "party");
     ::lua_getfield(state, 1, "player");
     request.player = ::lua_toboolean(state, -1) != 0;
@@ -3909,6 +3937,12 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
         ::lua_settop(state, area);
     }
     ::lua_settop(state, ::lua_gettop(state) - 1);
+
+    if constexpr (kSpawnNewNonTableArgumentCc13Bound) {
+        // 00949F2B: argument 1 has been indexed by now, so the reads below
+        // cannot raise and their order against the serial is unobservable.
+        request.serial = bsp::next_spawn_request_serial_00949f2b();
+    }
 
     ::lua_getfield(state, 1, "excludeRadiusOverride");
     if (::lua_type(state, -1) == LUA_TTABLE) {

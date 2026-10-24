@@ -10,6 +10,7 @@
 #include <cmath>
 
 #include "bsp/geometry_helpers.hpp"
+#include "bsp/ship_ai_seg67_switches_cc13.hpp" // kShipAiNavigationNanArmsCc13Bound
 #include "bsp/unit_rudder.hpp"
 #include "bsp/vector_helpers.hpp"
 
@@ -22,14 +23,22 @@ constexpr float kNavPi = 3.1415927410125732421875f;
 // 00415510: __fastcall(const float* a, const float* b) -> float, body
 // 00415510-0041554E. ST0 = b, ST1 = a, FCOMIP b against a, JBE returns b. An
 // unordered compare sets CF and takes the JBE, so a NaN in either operand
-// yields b.
+// yields b. The OFF arm keeps the host's (b <= a), which yields a on NaN.
 float native_min_00415510(float a, float b) noexcept {
-    return (b <= a) ? b : a;
+    if constexpr (kShipAiNavigationNanArmsCc13Bound) {
+        return !(b > a) ? b : a;
+    } else {
+        return (b <= a) ? b : a;
+    }
 }
 
 // 00415550, the mirror: ST0 = a, ST1 = b, FCOMIP a against b, JBE returns b.
 float native_max_00415550(float a, float b) noexcept {
-    return (a <= b) ? b : a;
+    if constexpr (kShipAiNavigationNanArmsCc13Bound) {
+        return !(a > b) ? b : a;
+    } else {
+        return (a <= b) ? b : a;
+    }
 }
 
 // 00415620: __fastcall(const float* a, const float* b, const float* c) -> float,
@@ -40,7 +49,10 @@ float native_clamp_00415620(float a, float low, float high) noexcept {
     if (low > a) {        // 00415635/00415637: FCOMI b,a; JA
         return low;
     }
-    if (a <= high) {      // 0041564B/0041564D: FCOMI a,c; JBE
+    // 0041564B/0041564D: FCOMI a,c; JBE. The OFF arm's (a <= high) yields high
+    // on NaN where the image yields a.
+    const bool keep_a = kShipAiNavigationNanArmsCc13Bound ? !(a > high) : (a <= high);
+    if (keep_a) {
         return a;
     }
     return high;

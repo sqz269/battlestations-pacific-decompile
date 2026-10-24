@@ -17,6 +17,7 @@
 // creator only ever holds the second one.
 #include <array>
 #include <cstdint>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -214,6 +215,28 @@ struct SceneUnitRegistrationResult {
 // at 004E98E0 and the three base classes reach before their own stock walk.
 SceneUnitRegistrationResult register_scene_unit_004e96d0(const SceneUnitRegistrationInputs& inputs,
                                                         VehicleClassRegistry& registry);
+
+// 004E98F0 (MotherShipGen), 004E9900 (AirField) and 004E9910 (Shipyard), the
+// registration thunks of the three base classes: PUSH ESI / MOV ESI,ECX /
+// CALL 004E96D0 / MOV ECX,ESI / POP ESI / JMP <stock walk>. The same bag goes
+// to 004E96D0 and then, by tail jump, to the stock walk: 006BCF40 for the
+// first two (air_ops_register_party_plane_stock_006bcf40, cc13_seg29U.cpp),
+// 008433C0 for Shipyard (shipyard_register_stock_008433c0,
+// gameplay_seg52_cc13.cpp). The walk is the caller's callable, so this file
+// keeps no link dependency on either.
+// EAX: the thunks return whatever the tail walk leaves in EAX; these functions
+// return 004E96D0's result instead. That is harmless because the only call is
+// the registry entry +8h at 0046D57A (BSP_SceneFile_ReadEntityBlock), which
+// jumps to 0046D5E4 and overwrites EAX with the 008F2260 call without reading it.
+SceneUnitRegistrationResult register_mother_ship_gen_004e98f0(const SceneUnitRegistrationInputs& inputs,
+                                                              VehicleClassRegistry& registry,
+                                                              const std::function<void()>& plane_stock_006bcf40);
+SceneUnitRegistrationResult register_air_field_004e9900(const SceneUnitRegistrationInputs& inputs,
+                                                        VehicleClassRegistry& registry,
+                                                        const std::function<void()>& plane_stock_006bcf40);
+SceneUnitRegistrationResult register_shipyard_004e9910(const SceneUnitRegistrationInputs& inputs,
+                                                       VehicleClassRegistry& registry,
+                                                       const std::function<void()>& shipyard_stock_008433c0);
 
 // 004E6BC0, the squadron's pass-2 body: no LaunchClassID, no Lua, and the type
 // itself is registered as hidden stock.

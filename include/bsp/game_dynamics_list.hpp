@@ -241,7 +241,22 @@ struct GameDynamicsBuoyancyHost {
     virtual void apply_buoyancy_force_00c32050(std::uint32_t body, float force) = 0;
     // 00c37de0 and 00c37e00, both with 00e0819c * submersion.
     virtual void set_body_damping_00c37de0(std::uint32_t body, float damping) = 0;
+    // 0044650a, the second damping setter (cc13-P4); reached only when
+    // kDynamicsBuoyancyWholeBodyCc13Bound is ON.
+    virtual void set_body_damping_00c37e00(std::uint32_t body, float damping) = 0;
 };
+
+// 004462d0's submersion as the image computes it (cc13-P4), every operation
+// rounded to float as at the 24-bit precision control: half =
+// ((|+10h|*extent.y + |+04h|*extent.x) + |+1Ch|*extent.z) * 0.5 (004463e3..
+// 00446405, |x| is `x > 0 ? x : -0.0f - x`); bottom = y - half, top = half + y;
+// (water - bottom) / (top - bottom) with no zero guard (an x87 divide by zero
+// is masked: +-inf, or NaN for 0/0); then 0 when 0 > f, 1 when f > 1, else f,
+// so a NaN passes through (0044644a..0044647b). `extent` must be the host's
+// per-component float difference second - first of the 00c31f90 corners.
+float dynamics_submersion_fraction_image_004462d0(
+    const DynamicsVec3& axis, const DynamicsVec3& extent,
+    float center_y, float water_height) noexcept;
 
 // 004462d0, __thiscall void(list, float step), body 004462d0..00446525. Called
 // once per fixed step from 00875e24, never removes anything. `damping_scale` is

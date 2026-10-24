@@ -66,11 +66,20 @@ bool strafe_gotowards_ready_009cc2f0(bool aligned_20, float distance_18,
     return field_188 + field_188 + approach_38 > distance_18;
 }
 
+// 009CCED0-009CD01D, __thiscall(ECX = strafe approach, float dt), RET 4.
+// DOCUMENTED DEVIATION (cc13-D2): the first call 009FADA0(dt) on approach+58h
+// (009CCEE1, the target ref and its aim point) is made by the units host,
+// st_refresh_aim_point, immediately before this, and the kind test 009CA310 and
+// 009CAD00 distance arrive as inputs (both pure reads). DEFECT ROW (OFF-switched,
+// kStrafeX87FaithfulCc13Bound): the climb chain's PC24 rounding and the NaN
+// countdown arm.
 void strafe_approach_update_009cced0(StrafeApproachUpdate& ap, float dt,
                                      const StrafeRangeInputs& in) noexcept {
     ap.elapsed_44 = ap.elapsed_44 + dt;                    // 009CCEE6-009CCEF3
     const float countdown = ap.countdown_d0;
-    if (dt < countdown) {                                  // 009CCF06 FCOMI, JB
+    // 009CCF06 FCOMI dt,c / JC: an unordered compare also decrements (ON).
+    const bool decrement = kStrafeX87FaithfulCc13Bound ? !(dt >= countdown) : dt < countdown;
+    if (decrement) {                                       // 009CCF06 FCOMI, JB
         ap.countdown_d0 = countdown - dt;                  // 009CCF9F
         return;
     }
@@ -82,10 +91,18 @@ void strafe_approach_update_009cced0(StrafeApproachUpdate& ap, float dt,
     // 009CCF58-009CCF86: (unit y - aim y) / approach+30h + 2 * [+8]+188h. The
     // height is spilled as a double (009CCF60 FSTP qword) and the subtraction
     // runs in x87 precision before the float store at 009CCF86.
-    const double climb = (static_cast<double>(in.unit_height_100) - in.aim_height) /
-                         in.glide_tan_30;
-    float threshold = static_cast<float>(
-        climb + (static_cast<double>(in.field_188) + in.field_188));
+    // At PC24 (kStrafeX87FaithfulCc13Bound) the FSUBR, FDIV and both FADDs
+    // each round to float; the OFF arm is the 53-bit (pool-worker) model.
+    float threshold;
+    if constexpr (kStrafeX87FaithfulCc13Bound) {
+        const float climb = (in.unit_height_100 - in.aim_height) / in.glide_tan_30;
+        threshold = climb + (in.field_188 + in.field_188);
+    } else {
+        const double climb = (static_cast<double>(in.unit_height_100) - in.aim_height) /
+                             in.glide_tan_30;
+        threshold = static_cast<float>(
+            climb + (static_cast<double>(in.field_188) + in.field_188));
+    }
     // 009CCF8A-009CCFE3: floored at tuning+658h times 1.0 ([00D7A24C]) or, for
     // a kind 10h/16h plane, 1.4 ([00D06874]).
     const float scale = in.not_bomber_kind ? 1.0f : 1.39999997615814208984375f;
@@ -142,23 +159,64 @@ TightTurnCommand tight_turn_tick_009ba020(bool side_408, float roll_c68, float p
     return c;
 }
 
+// 00996510-009965C5, __fastcall(ECX = condition) -> AL. The caller supplies
+// the point in the body frame (the 004142E0 transform at 00996551 and the pose
+// refresh before it). 00996572 calls 00419260 on (x, z); 00996585-009965B5:
+// rx = x * r and rz = r * z are stored as float, and the answer is |rx| > rz
+// (FCOMIP, JBE false, so a NaN answers false).
+// 00419260 (00419260-004192D4): x*x, z*z and their sum are each stored as
+// float, the root (00BF7030, FSQRT at the caller's precision) is stored as
+// float, and a root equal to 0 returns 0 (FUCOMIP, LAHF/TEST AH,44h/JP), so
+// r*x and r*z are 0 and the answer is false; otherwise 1/root, stored.
+// DEFECT ROW (cc13-D2): the OFF arm takes 1/sqrt of a double sum and tests
+// the sum, which differs from 00419260 only in rounding and at float
+// underflow/overflow of the squares. ABI: not ABI-compatible (plain C++).
 bool point_off_nose_00996510(const float local[3]) noexcept {
-    // BSP_Vector2f_ReciprocalLength over (x, z), then rz < |rx|.
-    const double len2 = static_cast<double>(local[0]) * local[0] +
-                        static_cast<double>(local[2]) * local[2];
-    if (!(len2 > 0.0)) return false;
-    const float rl = static_cast<float>(1.0 / std::sqrt(len2));
-    return rl * local[2] < std::fabs(rl * local[0]);
+    if constexpr (kStrafeX87FaithfulCc13Bound) {
+        const float xx = local[0] * local[0];        // 00419276-00419278
+        const float zz = local[2] * local[2];        // 00419280-00419286
+        const float sum = xx + zz;                   // 0041928A-0041928E
+        const float root = std::sqrt(sum);           // 00419296-0041929B
+        const float r = (root == 0.0f) ? 0.0f : 1.0f / root;  // 004192B3-004192C9
+        const float rx = local[0] * r;               // 00996587-0099658B
+        const float rz = r * local[2];               // 0099658F-00996593
+        return std::fabs(rx) > rz;                   // 009965A5-009965B5
+    } else {
+        // BSP_Vector2f_ReciprocalLength over (x, z), then rz < |rx|.
+        const double len2 = static_cast<double>(local[0]) * local[0] +
+                            static_cast<double>(local[2]) * local[2];
+        if (!(len2 > 0.0)) return false;
+        const float rl = static_cast<float>(1.0 / std::sqrt(len2));
+        return rl * local[2] < std::fabs(rl * local[0]);
+    }
 }
 
+// 00996300-00996385, __fastcall(ECX = condition) -> AL. 0099631A-00996374:
+// dx and dz (point +1Ch/+24h minus plane +FCh/+104h) are each stored as float,
+// d2 = dz*dz + dx*dx is stored as float at 00996365 and reloaded, and the
+// FCOMIP against +28h answers 0 when d2 is below it (JC). The comparison is of
+// the stored float, as here; the audit note that the image compares the x87
+// value was wrong. DEFECT ROW (cc13-D2): the OFF arm forms the squares and sum
+// in double (the 53-bit case); at PC24 each rounds to float.
 bool point_distance_reached_00996300(float plane_x, float plane_z, float point_x,
                                      float point_z, float dist2) noexcept {
-    // 0099631A-00996374: d2 = (point - plane+FCh/+104h) squared, stored float;
-    // FCOMI against +28h: below it answers 0.
     const float dx = point_x - plane_x;
     const float dz = point_z - plane_z;
-    const float d2 = static_cast<float>(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
-    return !(d2 < dist2);
+    float d2;
+    if constexpr (kStrafeX87FaithfulCc13Bound) {
+        const float zz = dz * dz;                    // 0099635D
+        const float xx = dx * dx;                    // 0099635F-00996361
+        d2 = zz + xx;                                // 00996363-00996365
+    } else {
+        d2 = static_cast<float>(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
+    }
+    // 00996370 FCOMIP d2,[+28h] / JC 0099637F (XOR EAX,EAX): an unordered compare
+    // sets CF, so a NaN answers 0 (ON). OFF answers true on NaN.
+    if constexpr (kStrafeX87FaithfulCc13Bound) {
+        return d2 >= dist2;
+    } else {
+        return !(d2 < dist2);
+    }
 }
 
 }  // namespace bsp

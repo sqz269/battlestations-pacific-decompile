@@ -335,6 +335,35 @@ SceneUnitRegistrationResult register_scene_unit_004e96d0(const SceneUnitRegistra
     return out;
 }
 
+// 004E98F0 / 004E9900 / 004E9910: 004E96D0 first, then the stock walk on the
+// same bag (ESI keeps ECX across the call). Nothing else runs in the thunk.
+SceneUnitRegistrationResult register_mother_ship_gen_004e98f0(const SceneUnitRegistrationInputs& inputs,
+                                                              VehicleClassRegistry& registry,
+                                                              const std::function<void()>& plane_stock_006bcf40)
+{
+    const SceneUnitRegistrationResult out = register_scene_unit_004e96d0(inputs, registry);
+    plane_stock_006bcf40();
+    return out;
+}
+
+SceneUnitRegistrationResult register_air_field_004e9900(const SceneUnitRegistrationInputs& inputs,
+                                                        VehicleClassRegistry& registry,
+                                                        const std::function<void()>& plane_stock_006bcf40)
+{
+    const SceneUnitRegistrationResult out = register_scene_unit_004e96d0(inputs, registry);
+    plane_stock_006bcf40();
+    return out;
+}
+
+SceneUnitRegistrationResult register_shipyard_004e9910(const SceneUnitRegistrationInputs& inputs,
+                                                       VehicleClassRegistry& registry,
+                                                       const std::function<void()>& shipyard_stock_008433c0)
+{
+    const SceneUnitRegistrationResult out = register_scene_unit_004e96d0(inputs, registry);
+    shipyard_stock_008433c0();
+    return out;
+}
+
 SceneUnitRegistrationResult register_plane_squadron_004e6bc0(int type_id, int party,
                                                              VehicleClassRegistry& registry)
 {

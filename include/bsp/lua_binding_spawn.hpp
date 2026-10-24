@@ -28,6 +28,7 @@
 #include <vector>
 
 #include "bsp/lua_binding_core.hpp"
+#include "bsp/lua_spawn_cc13.hpp"
 
 namespace bsp {
 
@@ -181,6 +182,8 @@ inline constexpr float kSpawnNewAngleRangeLowMinimum = 10.0f;    // 00CE38B8
 // 00944B32 asks is-nil): when slot 8 is a
 // string or nil it is consumed as the instance name and the boolean is looked for at slot 9,
 // otherwise the boolean is looked for at slot 8.
+// cc13-P1: lua_binding_spawn now reads the slots itself; this record is what it read,
+// filled for the caller's diagnostics.
 struct SpawnBindingArguments {
     std::string class_name;      // slot 0, 00944746 BSP_LuaObject_GetString
     int placement_mode{0};       // slot 1, 009447A0; compared against 1 at 009449E4
@@ -202,9 +205,8 @@ int spawn_flag_slot(int argument_count, bool slot8_is_string_or_nil) noexcept;
 
 // `placement_mode == 1` makes the two angles relative to the origin entity's own heading: the
 // routine refreshes the entity pose, reads the fields at entity+ECh and entity+F4h, derives a
-// yaw through the CRT helper at 00BF701A less the constant 1.5707963267948966 at 00CE3830, and
-// adds that yaw to both angles (00944995..009449E8). The helper was not identified beyond its
-// operand shape, so the yaw derivation is provisional; the addition itself is not.
+// yaw through _CIatan2 00BF701A less 00CE3830 (float pi/2 widened, 1.5707963705062866), and
+// adds that yaw to both angles (009449E4..00944A55): spawn_relative_yaw_00944a2c.
 inline constexpr std::size_t kSpawnOriginEntityHeadingOffsetA = 0xEC;
 inline constexpr std::size_t kSpawnOriginEntityHeadingOffsetB = 0xF4;
 inline constexpr std::size_t kSpawnOriginEntityPositionOffset = 0xFC; // three floats
@@ -222,16 +224,33 @@ struct LuaBindingSpawnHost {
     // 00414DB0 at 0094482D and again at 009449F9 and 00944A11, guarded each time by the byte
     // at entity+C8h (009449EE CMP byte [ESI+C8h],0). Already reconstructed: BSP_EntityPose_RefreshWorld.
     virtual void entity_refresh_world_pose(void* entity) = 0;
-    // 00941FA0 at 00944C44, then 009426D0 at 00944C64, 004BC120 at 00944CC4 and two more
-    // 009426D0 at 00944CEF and 00944D36: the placement search. None of the three bodies was read; they are named by address together because
-    // the routine uses them as one step and discards everything but the resulting position and
-    // the success byte. Contract: unread.
-    virtual bool find_spawn_position(const SpawnBindingArguments& request, float out_position[3]) = 0;
-    // 00942CB0 at 00944EF6, the direct-placement branch taken when the trailing boolean is set
-    // (the compiler lays this block after the common tail, so its address is higher than the
-    // creator call it feeds). It receives the origin, the three spans, the two angles and one
-    // more byte, the result of 00438E10 at 00944EAD comparing a string against a literal. Contract: unread.
-    virtual void place_spawn_directly(const SpawnBindingArguments& request, float out_position[3]) = 0;
+    // The origin entity's raw fields: byte +C8h (world pose current) and the floats +ECh,
+    // +F4h (its world +z row) and +FCh..+104h (its world position).
+    virtual bool entity_byte(void* entity, std::uint32_t offset) = 0;
+    virtual float entity_float(void* entity, std::uint32_t offset) = 0;
+    // 009446A8..009446ED, the function-local static guarded by bit 0 of 00F89B48: test and
+    // set the bit; the first time, 0041E870 builds a scratch NativeString "luakod"
+    // (00D11294) in the class-name slot, [00F89B44] = 0, and the scratch is freed
+    // (00419CC0 / 00BD1510).
+    virtual bool static_guard_test_and_set_00f89b48() = 0;
+    virtual void static_first_call_009446b3() = 0;
+    // 004691B0 at 0094477D, ECX = *(00E18680): the hidden-entity record of the class name
+    // (the empty NativeString data 00F89B40 when absent). Its +10h is the party (00944BF5),
+    // its +0Ch the class the direct branch compares (00944EA5). A null record faults there.
+    virtual void* find_hidden_entity_record_004691b0(const std::string& class_name) = 0;
+    virtual std::int32_t record_party_10(void* record) = 0;
+    virtual std::string record_class_0c(void* record) = 0;
+    // 00888760 at 0094487A: slot 2 as a vector3 (a table of three numbers).
+    virtual void read_vector3_00888760(int index, float out[3]) = 0;
+    // 00B66000 at 00944B82: is the trailing slot a boolean.
+    virtual bool is_boolean_00b66000(int index) = 0;
+    // The world the two placement branches read (lua_spawn_cc13.hpp): GGame+711Ch..+7130h
+    // and the live entity list 009426D0 / 00941D30 walk.
+    virtual SpawnWorldBox world_box_711c() = 0;
+    virtual std::vector<SpawnPlacementEntity> placement_entities() = 0;
+    // 00944E03..00944E69: 004260B0 formats the id, B67910 takes `thisTable` (00CE7494),
+    // B678E0 indexes it with that string and B663D0 pushes the value.
+    virtual void push_this_table_value(const std::string& key) = 0;
     // 004C6BA0 (BSP_Game_SpawnEntityByName) at 00944D8A, __thiscall(*(00E188A8), hidden entity name,
     // instance name, 0): resolves the name in the hidden-entity record map at SceneDatabase+18h
     // (docs/SCENE_RECORD_MAP.md), not a class table. Body read in
@@ -278,17 +297,22 @@ struct LuaBindingSpawnHost {
 // The four routines
 // ---------------------------------------------------------------------------
 
-// 00944680. Creates the object and pushes `thisTable[id]`, the same entity tail
-// docs/LUA_BINDING_ENTITY.md established for nineteen other handlers; this is the twentieth.
-// Returns 1 on success and 1 with nil pushed when the placement search fails (00944F20).
+// 00944680, lua_CFunction __fastcall(ECX = lua_State), EAX = result count. Creates the object
+// and pushes `thisTable[id]`, the same entity tail docs/LUA_BINDING_ENTITY.md established for
+// nineteen other handlers; this is the twentieth. Returns 1 on success and 1 with nil pushed
+// when the placement search fails (00944F20).
 //
-// Coverage: partial. The argument marshalling, the entity tail, the creator call and the
-// serial rule were read; the three placement helpers 00941FA0, 009426D0 and 004BC120 and the
-// direct-placement helper 00942CB0 were not, and are the host's business.
-int lua_binding_spawn(const SpawnBindingArguments& request,
+// Coverage (cc13-P1): the whole body. Slots are read through `args` in the listing's order;
+// the search (00944BFE..00944D60) is spawn_find_position_00944c44 and the direct branch
+// (00944EA5..00944F1B) spawn_place_directly_00942cb0 from lua_spawn_cc13, over `placement`.
+// The LuaStateOwner / call frame (B66C00, B679B0, B669A0) is `args`/`results` themselves and
+// NativeStrings are std::string. `read`, when given, receives what was read.
+int lua_binding_spawn(LuaBindingArgumentReader& args,
                       LuaBindingResultWriter& results,
                       LuaBindingSpawnHost& host,
-                      void** out_object);
+                      SpawnPlacementHost& placement,
+                      void** out_object,
+                      SpawnBindingArguments* read = nullptr);
 
 // 00946380 -> 00945850. Reads one string, scans the list with a case-insensitive compare that
 // short-circuits on the size first (00945922 compares the NativeString sizes before calling

@@ -29,6 +29,10 @@ std::uint32_t next_spawn_request_serial_00949f2b() noexcept {
 
 void reset_spawn_request_serial_for_tests() noexcept { g_spawn_request_serial = 1u; }
 
+// Documented deviation (cc13-D3): 00949530 does operator new(DCh), constructs the
+// request from its fourteen arguments with 00948CC0 (null on allocation failure) and
+// links the node at the list tail. The caller builds the request here and this
+// appends it at the tail of a vector projection: same order, same contents.
 void SpawnRequestQueue::enqueue_00949530(SpawnNewRequest request) {
     requests_.push_back(std::move(request));
 }
@@ -62,6 +66,10 @@ std::size_t SpawnRequestQueue::select_0094c508(
     return 0;
 }
 
+// Documented deviation (cc13-D3): 009439B0 is the std::list erase (checked-iterator
+// tests 00BF6713, head node never erased, unlink, _free, size - 1, returns the next
+// iterator). This erases by index from the vector projection and returns the taken
+// request; the remaining order is the list's.
 SpawnNewRequest SpawnRequestQueue::erase_009439b0(std::size_t index) {
     SpawnNewRequest taken = std::move(requests_[index]);
     requests_.erase(requests_.begin() + static_cast<std::ptrdiff_t>(index));

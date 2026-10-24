@@ -78,6 +78,14 @@ DiveBombState dive_bomb_entry_state_009c8310(const DiveBombEntryInputs& in) noex
 }
 
 // 009C83E0-009C8785, __fastcall(task), RET 4.
+// DOCUMENTED DEVIATION (cc13-D2): the flyabove coin (009C8587-009C85B6:
+// U(0, 1024.0 [00D05B54]) on stream 1, _ftol, >= 200h gives +1, else -1) is
+// the input random_turn_side. The image draws it only on that arm. The units
+// host's read_transition_inputs passes +1, and its write_turn_direction draws
+// the coin on exactly that arm (kDiveTurnSideCoinBound, ON) and flips the sign.
+// The predicates the image calls lazily (break-off +1Ch, 009C7F00, turndown
+// completion) arrive as inputs computed by the caller. They are reads, so
+// computing them every tick has no effect on the rule.
 DiveBombTransitionResult dive_bomb_next_state_009c83e0(
     const DiveBombTransitionInputs& in) noexcept {
     DiveBombTransitionResult out;
@@ -289,10 +297,16 @@ float dive_bomb_interpolate_clamped_00419010(float x0, float y0, float x1, float
     const float v = ((x - x0) / (x1 - x0)) * (y1 - y0) + y0;
     const float hi = (y1 < y0) ? y0 : y1;
     const float lo = (y0 < y1) ? y0 : y1;
+    // 0041908C-00419092 FCOMIP lo,v / JBE: only lo > v clamps; NaN passes on.
     if (v < lo) {
         return lo;
     }
-    return (v <= hi) ? v : hi;
+    // 004190A9 FCOMIP v,hi / JBE 004190BC: v when v <= hi or unordered (ON).
+    if constexpr (kInterpClamped00419010NanCc13Bound) {
+        return (v > hi) ? hi : v;
+    } else {
+        return (v <= hi) ? v : hi;
+    }
 }
 
 // 009C59BA-009C5C9B.
@@ -473,7 +487,13 @@ DiveBombArmResult dive_bomb_arm_drop_009c8200(const DiveBombArmInputs& in) noexc
     return out;
 }
 
-// 009C7800-009C7849, __thiscall(turndown_state, int sign).
+// 009C7800-009C7846, __thiscall(ECX = turndown state, int sign), RET 4.
+// side = 1.0 [00D7A24C], or -1.0 [00D7A260] when sign < 0 (CMP/JL); +18h =
+// U(0.8 [00CE74F8], 1.0) on stream 1 (009C7839) * side, one FMUL stored as
+// float.
+// DOCUMENTED DEVIATION (cc13-D2): the draw is a parameter. The arm 009C8790
+// makes it through DiveBombTaskHost::uniform_between right where 009C83E0
+// would call this, and the +18h store is the host's write_turn_direction.
 float dive_bomb_turn_direction_009c7800(int sign, float magnitude_draw) noexcept {
     const float side = (sign >= 0) ? dive_bomb_constant::kPlusOne
                                    : dive_bomb_constant::kMinusOne;
@@ -643,9 +663,12 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
 // one the image's FSTP float makes (under 24-bit precision control the FMUL
 // result is already float-rounded and the FSTP is exact). ceiling - 100.0 is
 // likewise exact in double before its cast.
-// 009C7F3C JBE (recorded, no switch): ST0 = ctl+398h, ST1 = the sum; JBE takes
-// +398h when +398h <= sum OR unordered. The host's `<=` takes the sum on NaN;
-// only a NaN input differs.
+// 009C7F3C JBE: ST0 = ctl+398h, ST1 = the sum; JBE takes +398h when +398h <=
+// sum OR unordered. The OFF `<=` takes the sum on NaN; only a NaN input differs.
+// DEFECT ROW (cc13-D2): the precision note of the audit is already closed by
+// kDiveBombGoawayFloatStoresBound, which is ON. The NaN ceiling is behind
+// kDiveBombNanComparesCc13Bound. The remaining JBEs (009C7F91, 009C7FC6)
+// already fail on NaN here, as in the image.
 bool dive_bomb_goaway_complete_009c7f00(
     const DiveBombGoAwayCompleteInputs& in) noexcept {
     // 009C7F03-009C7F16: the distance term.
@@ -666,7 +689,9 @@ bool dive_bomb_goaway_complete_009c7f00(
     }
     // 009C7F23-009C7F46: the ceiling, the smaller of the two.
     const float sum = in.begin_altitude_ac + in.aim_point_height_50;
-    const float ceiling = (in.cruise_altitude_398 <= sum) ? in.cruise_altitude_398 : sum;
+    const float ceiling = kDiveBombNanComparesCc13Bound
+        ? (!(in.cruise_altitude_398 > sum) ? in.cruise_altitude_398 : sum)
+        : ((in.cruise_altitude_398 <= sum) ? in.cruise_altitude_398 : sum);
     // 009C7F8D `76` JBE: the range has to have opened past the term.
     if (!(static_cast<double>(in.planar_distance_bc) > term)) {
         return false;
@@ -1302,64 +1327,106 @@ bool dive_bomb_manual_passthrough_009c88c4(int rounds_pending_424, bool has_unit
     }
 }
 
-// 009C8920-009C8A8A, task vtable slot +54h.
-// DEFECTIVE, unused (no host caller; the host's profile is in
-// update_dive_bomb_approach). Against the image: 009C8971 and 009C89DD clear
-// +3A9h / +3AAh whenever +38Dh / +38Ch is clear, and that is missing here; the
-// 009C899B draw 00BD2F10(0, 15) is not added to the +398h value; and the
-// follower early return skips the 009C8A1B tail, which runs for every member
-// (the +4B0h max at 009C8A42-8A5E, NaN current -> product, and the +4BCh =
-// 3600.0 re-seed at 009C8A74, then 009C7A80(0.0)). OCEAN_WAVE_FIELD 96.
+// 009C8920-009C8A8C, task vtable slot +54h, __fastcall(ECX = task), no stack
+// arguments; the tail is JMP 0099B740. ctl = [task+404h], tuning = 0042E740().
+//   009C8926  0099B660(task), the base profile, every call.
+//   009C8931  007B8AD0 leader test; a follower skips to 009C8A1B.
+//   leader:
+//   009C894F  if !ctl+38Dh: (0 > ctl+380h, COMISS/JBE, and !ctl+3A9h) ->
+//             ctl+394h = tuning+4C0h, ctl+3ADh = 1; then ctl+3A9h = 0.
+//   009C899B  d = U(0, 15.0 [00CE5380]) on stream 1, ALWAYS drawn, + tuning+4CCh
+//             (FADD, stored float at 009C89AD).
+//   009C89A6  if !ctl+38Ch: (0 > ctl+37Ch and !ctl+3AAh) -> ctl+398h = d,
+//             ctl+3ADh = 1; then ctl+3AAh = 0.
+//   009C89EF  if !ctl+38Eh: (0 > ctl+384h and !ctl+3ABh) -> ctl+39Ch = 9999.0
+//             [00CE4C04], ctl+3ADh = 1; then ctl+3ABh = 0.
+//   every call:
+//   009C8A20  p = tuning+4C4h * task+41Ch (stored float); 009C8A42 FCOMIP
+//             cur(+4B0h) vs p, JBE: +4B0h = cur when cur > p, else p (a NaN cur
+//             gives p).
+//   009C8A74  task+4BCh = 3600.0 [00CFDEB0].
+//   009C8A7C  009C7A80(approach = task+3F8h, 0.0f, 0), then JMP 0099B740(task).
+// FIXED (cc13-D2; was defect_found): the follower early return skipped the
+// tail; the draw, the one-shot clears, 0099B660, the +4BCh store and the tail
+// were missing; the +398h value lacked the draw; a NaN +4B0h was kept. Pure:
+// the caller makes the draw (in.begin_altitude_draw) when
+// consumed_begin_altitude_draw is set, and the calls the flags name. Unused:
+// no host calls it (the units host's dive profile is inline in
+// update_dive_bomb_approach), so this changes no live behaviour. ABI: not
+// ABI-compatible (plain C++ value interface).
 DiveBombCruiseProfileResult dive_bomb_cruise_profile_009c8920(
     const DiveBombCruiseProfileInputs& in) noexcept {
     DiveBombCruiseProfileResult out;
-    out.attack_distance_4b0 = in.current_attack_distance_4b0;
-    if (!in.unit_lacks_follow_target) {
-        return out;  // step 2: a following aircraft keeps its own profile
+    out.ran_base_0099b660 = true;
+    if (in.unit_lacks_follow_target) {
+        if (!in.overridden_38d) {
+            if (0.0f > in.control_alt_380 && !in.one_shot_3a9) {
+                out.wrote_394 = true;
+                out.altitude_394 = in.cruising_altitude;
+                out.dirty_3ad = true;
+            }
+            out.cleared_3a9 = true;
+        }
+        out.consumed_begin_altitude_draw = true;
+        const float d = in.begin_altitude_draw + in.begin_altitude;   // 009C89A0
+        if (!in.overridden_38c) {
+            if (0.0f > in.control_alt_37c && !in.one_shot_3aa) {
+                out.wrote_398 = true;
+                out.altitude_398 = d;
+                out.dirty_3ad = true;
+            }
+            out.cleared_3aa = true;
+        }
+        if (!in.overridden_38e) {
+            if (0.0f > in.control_alt_384 && !in.one_shot_3ab) {
+                out.wrote_39c = true;
+                out.altitude_39c = dive_bomb_constant::kCruisingAltitudeThird;
+                out.dirty_3ad = true;
+            }
+            out.cleared_3ab = true;
+        }
     }
-    if (!in.overridden_38d && in.control_alt_380 < 0.0f && !in.one_shot_3a9) {
-        out.wrote_394 = true;
-        out.altitude_394 = in.cruising_altitude;
-        out.dirty_3ad = true;
-    }
-    if (!in.overridden_38c && in.control_alt_37c < 0.0f && !in.one_shot_3aa) {
-        out.wrote_398 = true;
-        out.altitude_398 = in.begin_altitude;
-        out.dirty_3ad = true;
-    }
-    // Step 6: divebomb and torpedo only.
-    if (!in.overridden_38e && in.control_alt_384 < 0.0f && !in.one_shot_3ab) {
-        out.wrote_39c = true;
-        out.altitude_39c = dive_bomb_constant::kCruisingAltitudeThird;
-        out.dirty_3ad = true;
-    }
-    // Step 7: the attack-distance clamp.
-    // 009C8A1B-009C8A5E: task+4B0h = max(task+4B0h, tuning+4C4h * task+41Ch).
-    // The divebomb clamp target is +4B0h, not the +43Ch docs/BOT_TASKS.md gives
-    // for the depth charge.
+    // The +4B0h max. The divebomb clamp target is +4B0h, not the +43Ch
+    // docs/BOT_TASKS.md gives for the depth charge.
     const float wanted = in.attack_distance * in.speed_ratio_41c;
-    if (wanted > out.attack_distance_4b0) {
-        out.attack_distance_4b0 = wanted;
-    }
-    // 009C8A7C: the profile ends by running 009C7A80(approach, 0.0f, false).
+    const float current = in.current_attack_distance_4b0;
+    out.attack_distance_4b0 = (current > wanted) ? current : wanted;
+    out.delay_4bc = 3600.0f;
     out.reran_approach_update = true;
+    out.ran_tail_0099b740 = true;
     return out;
 }
 
-// 009C8A90-009C8B9E, task vtable slot +1Ch.
+// 009C8A90-009C8B5D, task vtable slot +1Ch, __fastcall(ECX = task) -> AL.
+//   009C8A96  0099C230 false -> 0.
+//   009C8AA6  no target +440h, or target+5Dh -> 1.
+//   009C8ABE  ctl+369h and [00E17BF2] (reload) -> 0.
+//   009C8ADF  009C7910(+310h) attacking and +4C9h (ordnance) -> 0.
+//   009C8AF1  otherwise the 3-D range |aim (approach vslot 0) - unit| (0042B2F0,
+//             0 for a sum <= 1e-10) against p = tuning+4C8h * +41Ch (009C8B40):
+//             JA (p > range) -> 0, else 1, so a NaN answers 1.
+// FIXED (cc13-D2): the 'not attacking' alternative (attacking_009c7910) was
+// missing. Both callers leave it at its true default, so the live result is
+// unchanged. OFF-SWITCHED (kDiveBombNanComparesCc13Bound): the NaN answer.
 bool dive_bomb_should_break_off_009c8a90(const DiveBombBreakOffInputs& in) noexcept {
+    bool result = false;
     if (!in.base_0099c230) {
-        return false;
-    }
-    if (!in.has_latched_target || in.target_dead_5d) {
-        return true;
-    }
-    if ((!in.control_flag_369 || !in.global_e17bf2) && !in.has_bomb_ordnance_4c9) {
-        if (in.safe_distance * in.speed_ratio_41c <= in.distance_to_target) {
-            return true;
+        result = false;
+    } else if (!in.has_latched_target || in.target_dead_5d) {
+        result = true;
+    } else if (in.control_flag_369 && in.global_e17bf2) {
+        result = false;
+    } else if (in.attacking_009c7910 && in.has_bomb_ordnance_4c9) {
+        result = false;
+    } else {
+        const float p = in.safe_distance * in.speed_ratio_41c;
+        if constexpr (kDiveBombNanComparesCc13Bound) {
+            result = !(p > in.distance_to_target);
+        } else {
+            result = p <= in.distance_to_target;
         }
     }
-    return false;
+    return result;
 }
 
 // 009C8790-009C88D5, the per-tick arm, in the native order.
@@ -1386,6 +1453,14 @@ DiveBombArmTickResult dive_bomb_task_arm_009c8790(DiveBombTaskHost& host,
                                 out.move_to_far, out.move_to_speed);
 
     // Step 4, 009C8834: the transition rule, before the state's own tick.
+    // DOCUMENTED DEVIATION (cc13-D2, row 009C8790): in the image, 009C7800's
+    // magnitude draw happens inside 009C83E0, and on the coin arm after the
+    // coin. Here the magnitude is drawn just after the rule returns. That is the
+    // same point in the tick, because nothing runs between them. The units
+    // host draws the coin lazily inside write_turn_direction
+    // (kDiveTurnSideCoinBound), which runs after the magnitude. The two draws
+    // are on separate keys ("#db_side", "#db_roll"), so the swap is visible
+    // only in the host's unkeyed single-sequence mode.
     const DiveBombTransitionInputs inputs = host.read_transition_inputs(ctx.task);
     const DiveBombTransitionResult trans = dive_bomb_next_state_009c83e0(inputs);
     if (trans.wrote_turn_direction) {

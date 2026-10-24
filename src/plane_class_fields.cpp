@@ -2,6 +2,7 @@
 // for the addresses, the evidence and the state this reached.
 
 #include "bsp/plane_class_fields.hpp"
+#include "bsp/plane_bow_wave.hpp"
 
 #include <cstring>
 #include <array>
@@ -13,6 +14,12 @@ namespace {
 template <class T>
 T& plane_model_at(void* base, std::size_t offset) {
     return *reinterpret_cast<T*>(static_cast<std::uint8_t*>(base) + offset);
+}
+
+// One main-thread x87 arithmetic operation at PC=24. /fp:strict keeps each
+// explicit float conversion; genuine double image constants stay double.
+float pc24(double value) {
+    return static_cast<float>(value);
 }
 
 using Kind = VehicleClassValueKind;
@@ -539,7 +546,9 @@ std::size_t plane_class_unconsumed_path_count() noexcept {
 // instructions and both LEA alignment gaps were reviewed. The three DC-form
 // FMULs at 007D4630/007D57DC/007D5850 were decoded from their bytes.
 // CRT sqrt/atan2/fmod are qualified stock substitutions, not game-body credit.
-// Float store points are explicit; x87 bit/environment and binary ABI
+// Each x87 arithmetic operation rounds at PC24 in image order, using the
+// project's /fp:strict pc24 idiom (docs/CC13_FPU_PRECISION.md). x87
+// bit/environment and binary ABI
 // equivalence remain unproved. In particular, +4FCh is never incremented here.
 void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,
     const PlaneClassModelConstants& k, PlaneClassModelHost& host) {
@@ -588,13 +597,21 @@ void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,
         return std::array<float, 3>{p[0], p[1], p[2]};
     };
     const auto difference = [](const auto& a, const auto& b) {
-        return std::array<float, 3>{a[0] - b[0], a[1] - b[1], a[2] - b[2]};
+        return std::array<float, 3>{pc24(static_cast<double>(a[0]) - b[0]),
+            pc24(static_cast<double>(a[1]) - b[1]), pc24(static_cast<double>(a[2]) - b[2])};
     };
     const auto cross_ba = [](const auto& a, const auto& b) {
-        return std::array<float, 3>{
-            static_cast<float>(static_cast<double>(a[2]) * b[1] - static_cast<double>(a[1]) * b[2]),
-            static_cast<float>(static_cast<double>(a[0]) * b[2] - static_cast<double>(b[0]) * a[2]),
-            static_cast<float>(static_cast<double>(b[0]) * a[1] - static_cast<double>(a[0]) * b[1])};
+        // 007D4540..4576; repeated at 007D4DA4..4DF5/007D523B..528F.
+        const float az_by = pc24(static_cast<double>(a[2]) * b[1]);
+        const float ay_bz = pc24(static_cast<double>(a[1]) * b[2]);
+        const float x = pc24(static_cast<double>(az_by) - ay_bz);
+        const float ax_bz = pc24(static_cast<double>(a[0]) * b[2]);
+        const float bx_az = pc24(static_cast<double>(b[0]) * a[2]);
+        const float y = pc24(static_cast<double>(ax_bz) - bx_az);
+        const float bx_ay = pc24(static_cast<double>(b[0]) * a[1]);
+        const float ax_by = pc24(static_cast<double>(a[0]) * b[1]);
+        const float z = pc24(static_cast<double>(bx_ay) - ax_by);
+        return std::array<float, 3>{x, y, z};
     };
     const auto identity = [](float* matrix) {
         for (std::size_t i = 0; i != 16; ++i) matrix[i] = 0.0f;
@@ -637,10 +654,11 @@ void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,
         const auto a = difference(points[1], points[0]);
         const auto b = difference(points[2], points[0]);
         auto normal = cross_ba(a, b);
-        const float sy = static_cast<float>(static_cast<double>(normal[1]) * normal[1]);
-        const float sx = static_cast<float>(static_cast<double>(normal[0]) * normal[0]);
-        const float sz = static_cast<float>(static_cast<double>(normal[2]) * normal[2]);
-        const float squared = static_cast<float>(static_cast<double>(sy) + sx + sz);
+        const float sy = pc24(static_cast<double>(normal[1]) * normal[1]); // 007D458A
+        const float sx = pc24(static_cast<double>(normal[0]) * normal[0]); // 007D4598
+        const float syx = pc24(static_cast<double>(sy) + sx);             // 007D45A4
+        const float sz = pc24(static_cast<double>(normal[2]) * normal[2]); // 007D45A6
+        const float squared = pc24(static_cast<double>(syx) + sz);        // 007D45AC
         const float magnitude = static_cast<float>(std::sqrt(static_cast<double>(squared))); // 007D45B8
         const float inverse = magnitude > 0.0f ? 1.0f / magnitude : 0.0f;
         for (float& component : normal) component *= inverse;
@@ -652,14 +670,18 @@ void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,
         else if (folded > k.upper_angle_00ce3d28) folded = static_cast<float>(folded - k.period_00ce3828);
         plane_model_at<float>(descriptor, 0x200) = folded;
         plane_model_at<std::uint8_t>(descriptor, 0x1F8) = 1;
-        const float dot = static_cast<float>(static_cast<double>(normal[0]) * points[0][0]
-            + static_cast<double>(normal[1]) * points[0][1] + static_cast<double>(points[0][2]) * normal[2]);
+        const float dot_x = pc24(static_cast<double>(normal[0]) * points[0][0]); // 007D46C0
+        const float dot_y = pc24(static_cast<double>(points[0][1]) * normal[1]); // 007D46E3
+        const float dot_xy = pc24(static_cast<double>(dot_y) + dot_x);         // 007D46E7
+        const float dot_z = pc24(static_cast<double>(points[0][2]) * normal[2]); // 007D46F0
+        const float dot = pc24(static_cast<double>(dot_xy) + dot_z);           // 007D46F4
         const float negative_dot = -dot;
         plane_model_at<float>(descriptor, 0x1FC) = negative_dot / normal[1];
     }
     std::uint8_t* model = plane_model_at<std::uint8_t*>(descriptor, 0x50);
-    plane_model_at<float>(descriptor, 0x158) = static_cast<float>((static_cast<double>(
-        plane_model_at<float>(model, 0x3C)) + plane_model_at<float>(model, 0x30)) * 0.5);
+    const float model_center_sum = pc24(static_cast<double>(plane_model_at<float>(model, 0x3C))
+        + plane_model_at<float>(model, 0x30));                         // 007D4730
+    plane_model_at<float>(descriptor, 0x158) = pc24(static_cast<double>(model_center_sum) * 0.5); // 007D4734
     host.call_00725b40(descriptor + 0x148, plane_model_at<std::uint32_t>(descriptor, 0x140)); // 007D4740
     for (std::int32_t index = 0; index < plane_model_at<std::int32_t>(descriptor, 0x140); ++index) {
         (void)with_name("enginefire", 10, [&](const void* key) {
@@ -670,24 +692,30 @@ void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,
             return 0;
         });
     }
-    std::uint32_t wave_index = 0, wave_offset = 0;
-    for (;;) {
-        const std::uint32_t begin = plane_model_at<std::uint32_t>(descriptor, 0x554);
-        if (begin == 0) break;
-        const auto count = static_cast<std::uint32_t>(static_cast<std::int32_t>(
-            plane_model_at<std::uint32_t>(descriptor, 0x558) - begin) >> 4);
-        if (wave_index >= count) break;
-        const auto p = point(find("wave", 4, wave_index + 1), 0);
-        const std::uint32_t current_begin = plane_model_at<std::uint32_t>(descriptor, 0x554);
-        const auto current_count = current_begin == 0 ? 0u : static_cast<std::uint32_t>(static_cast<std::int32_t>(
-            plane_model_at<std::uint32_t>(descriptor, 0x558) - current_begin) >> 4);
-        if (current_begin == 0 || wave_index >= current_count) host.invalid_parameter_00bf6713(); // 007D4915
-        float* out = reinterpret_cast<float*>(static_cast<std::uintptr_t>(
-            plane_model_at<std::uint32_t>(descriptor, 0x554)) + wave_offset + 4u);
-        copy3(out, p);
-        ++wave_index;
-        wave_offset += 0x10;
-    }
+    struct BowWaveBinding final : PlaneBowWaveLiveBindingHost {
+        std::uint8_t* descriptor;
+        PlaneClassModelHost& model_host;
+        const decltype(find)& find_marker;
+        const decltype(point)& first_point;
+        BowWaveBinding(std::uint8_t* d, PlaneClassModelHost& h,
+                       const decltype(find)& f, const decltype(point)& p)
+            : descriptor(d), model_host(h), find_marker(f), first_point(p) {}
+        std::size_t current_wave_count() override {
+            const auto begin = plane_model_at<std::uint32_t>(descriptor, 0x554);
+            return begin == 0 ? 0u : static_cast<std::uint32_t>(static_cast<std::int32_t>(
+                plane_model_at<std::uint32_t>(descriptor, 0x558) - begin) >> 4);
+        }
+        PlaneBowWavePoint first_model_marker_point(const char* name, std::uint32_t id) override {
+            return first_point(find_marker(name, 4, id), 0);
+        }
+        PlaneBowWaveDefinition& checked_wave_record(std::size_t index) override {
+            if (index >= current_wave_count()) model_host.invalid_parameter_00bf6713(); // 007D4915
+            // A returning handler may replace begin; reload it after the call.
+            const auto begin = plane_model_at<std::uint32_t>(descriptor, 0x554);
+            return *reinterpret_cast<PlaneBowWaveDefinition*>(static_cast<std::uintptr_t>(begin) + index * 0x10u);
+        }
+    } wave_binding(descriptor, host, find, point);
+    bind_plane_bow_wave_points_007d4812(wave_binding);
     const auto build_frame = [&](std::uint8_t* group, float* matrix) {
         identity(matrix);
         const auto translation = point(group, 0);

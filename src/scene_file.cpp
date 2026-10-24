@@ -98,9 +98,23 @@ public:
 
     float read_float()
     {
+        bool ok = false;
+        return read_float(ok);
+    }
+
+    // 008D9B40 BSP_SceneTokenizer_ReadFloat, __thiscall(ECX = tokenizer, bool* ok), RET 4,
+    // ST0 = value. Listing read whole (39 instructions, cc13-P4): 008D9B43..008D9B64
+    // sscanf(peek 008D8A70, "%f" 00CE4334, &value) == 1; 008D9B69 the result byte to
+    // *ok; on success 008D9B6D..008D9B89 copy the current token (+5h) to the previous-
+    // token buffer (+405h) and clear +805h (the consume), FLD value; else 008D9B96
+    // 008D8F70 (the "expected a float" report), FLDZ, *ok = 0. scene_scan_float stands
+    // in for the CRT sscanf "%f" (scene_file's existing projection).
+    float read_float(bool& ok)
+    {
         const SceneToken& t = lexer_.peek();
         float value = 0.0f;
-        if (!scene_scan_float(t.text, value)) {
+        ok = scene_scan_float(t.text, value);
+        if (!ok) {
             record(format_error(t.line, "a float", t.text));
             return 0.0f;
         }
