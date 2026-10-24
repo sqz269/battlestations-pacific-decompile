@@ -1219,15 +1219,16 @@ The 1685.52 s ref win from d175c1aac does not hold on this main. That base moved
 row is listed and not re-timed. The flip still lands as a faithful fix (prepare/issue skipped while 4Ch occludes
 46h), and IJN18 needs a re-plan on the combined re-time base.
 
-### BSM01 re-plan `l71_b1_a` (cc9-lua71, tree build = 86b81e2a8 + the releasegun flip ea5795c31)
+### BSM01 diagnostic `l71_b1_a` (cc9-lua71, tree build = 86b81e2a8 + the releasegun flip ea5795c31; NOT a row, reverted)
 
 On 86b81e2a8 every BSM01 plan has no end. The opening `moveto HenryPT 2580 -1650` dithers at the start: throttle
 swings between -0.5 and 0.8, the rudder flips +-1, and d330 holds at 2440-2510 m through step 5400. Henry therefore
 never comes within 250 m of Phoenix (bsm_01_stationed_at_pearl.lua:797), so luaMoveToPh2 and the phase-3 MiniSub
 spawn never run. On d175c1aac the same moveto closed to 265 m by step 2190. 46bdfac0a still ended at 812.93 s, so
-the cause lies between 46bdfac0a and 86b81e2a8. It is reported to the lead and is not a re-time.
+the cause lies between 46bdfac0a and 86b81e2a8. Lead attribution: regressed by an unattributed change in
+5481a7ca5..39ac16569 (not physics25's torp term), bisect pending; cc13 is also tracing HenryPT's traffic clip (009EF8EE).
 
-`config/win_orders/bsm01_l71_b1_a.txt` is l70 b1 j with the opening moveto replaced by a takehelm lane along the old
+`local\l71_b1_a_kept.txt` (cc9-lua52 tree; the row commit 1617469fa was reverted) is l70 b1 j with the opening moveto replaced by a takehelm lane along the old
 navigator path (the l70_b1t trajectory):
 - frame 200: (2300,-3230)
 - frame 620: (1900,-3060)
