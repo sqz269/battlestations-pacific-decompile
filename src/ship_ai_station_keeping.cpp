@@ -1,5 +1,6 @@
 #include "bsp/ship_ai_station_keeping.hpp"
 
+#include "bsp/ship_ai_seg67_switches_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
 
 #include <cmath>
@@ -47,7 +48,24 @@ float clamp_00415620(float v, float lo, float hi) noexcept {
 }
 
 float min_00415510(float a, float b) noexcept { return (b > a) ? a : b; }
-float max_00415550(float a, float b) noexcept { return (b > a) ? b : a; }
+float max_00415550(float a, float b) noexcept {
+    // 00415565 FCOMIP a,b / JBE: a only when a > b (ordered), else b.
+    if constexpr (kShipAiStationKeepingNanArmsCc13Bound) {
+        return (a > b) ? a : b;
+    } else {
+        return (b > a) ? b : a;
+    }
+}
+
+// The four side picks (009EE11D, 009EE23A, 009EE37B, 009EE49F): COMISS
+// across, 0 / JC, taken for across < 0 and for an unordered compare.
+bool across_below_zero(float across) noexcept {
+    if constexpr (kShipAiStationKeepingNanArmsCc13Bound) {
+        return !(across >= 0.0f);
+    } else {
+        return 0.0f > across;
+    }
+}
 
 float safe_acos_007789d0(float x) noexcept {
     if (x > 1.0f) return 0.0f;                              // 007789D6
@@ -222,7 +240,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
                 if (kFifteenDegrees > abs_herr) s.reversing_389 = true;
                 return t;
             }
-            s.heading_target_324 = (0.0f > across)                  // 009EE110
+            s.heading_target_324 = across_below_zero(across)                  // 009EE110
                 ? wrapped_angle_add_00438aa0(request.heading, steer)
                 : wrapped_angle_subtract_00438b10(request.heading, steer);
             s.last_writer_324 = 0x009EE142u;
@@ -245,7 +263,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
             if (kFifteenDegrees > abs_herr) s.reversing_389 = false;
             return t;
         }
-        s.heading_target_324 = (0.0f > across)                      // 009EE22D
+        s.heading_target_324 = across_below_zero(across)                      // 009EE22D
             ? wrapped_angle_subtract_00438b10(request.heading, steer)
             : wrapped_angle_add_00438aa0(request.heading, steer);
         s.last_writer_324 = 0x009EE25Fu;
@@ -272,7 +290,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
             if (kFifteenDegrees > abs_herr) s.reversing_389 = true;
             return t;
         }
-        s.heading_target_324 = (0.0f > across)                      // 009EE36E
+        s.heading_target_324 = across_below_zero(across)                      // 009EE36E
             ? wrapped_angle_subtract_00438b10(reversed, steer)
             : wrapped_angle_add_00438aa0(reversed, steer);
         s.last_writer_324 = 0x009EE3A2u;
@@ -295,7 +313,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
         if (kFifteenDegrees > abs_herr) s.reversing_389 = false;
         return t;
     }
-    s.heading_target_324 = (0.0f > across)                          // 009EE492
+    s.heading_target_324 = across_below_zero(across)                          // 009EE492
         ? wrapped_angle_add_00438aa0(reversed, steer)
         : wrapped_angle_subtract_00438b10(reversed, steer);
     s.last_writer_324 = 0x009EE4C6u;

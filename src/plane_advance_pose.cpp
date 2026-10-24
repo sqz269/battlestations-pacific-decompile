@@ -399,7 +399,8 @@ PlaneAdvanceOutput translate_only_007d8230(const PlaneAdvanceInputs& in) {
 }
 
 PlaneAdvanceOutput rotate_and_translate_007d9f60(const PlaneAdvanceInputs& in,
-                                                 AdvanceMatrixOps& ops) {
+                                                 AdvanceMatrixOps& ops,
+                                                 PlaneAttachedClampHost* attached) {
     PlaneAdvanceOutput out;
     out.live_pose = in.committed_pose;  // 007D9F6E..007D9F7D
 
@@ -453,10 +454,30 @@ PlaneAdvanceOutput rotate_and_translate_007d9f60(const PlaneAdvanceInputs& in,
     advance_position_007da218(pos, committed, in.linear_velocity, in.external_velocity,
                               in.step);
 
-    // 007DA2B1..007DA2FE. The attached branch re-expresses the position through
-    // the parent's world pose and then clamps it. It was not read; the flag says
-    // so rather than this rule guessing at it.
-    out.attached_branch_unmodelled = in.attached;
+    // 007DA2B1..007DA338. The attached branch (ctl+FCh == 1, unit+BF4h and the
+    // parent unit+3Ch all set; the caller folds the three tests into
+    // in.attached) puts the new position through the parent's world matrix,
+    // asks the deck for its height there and lifts the local y when below.
+    if (in.attached && attached == nullptr) {
+        out.attached_branch_unmodelled = true;
+    } else if (in.attached) {
+        if (!attached->parent_world_valid_c8()) attached->refresh_parent_world_00414db0();
+        float world[3];
+        attached->transform_point_by_parent_00414d10(world, pos);
+        float height = 0.0f;
+        attached->deck_height_at_006bc530(world, &height);
+        // 007DA303..007DA318: FLD h; FLD [desc+1FCh]; FADD qword 0.01; FSUBP
+        // (DE E9, h - sum); stored as a float. 0.01 is a float value, so each
+        // operation rounds to float under either precision control.
+        const float clearance = height - (in.attach_height_offset + kPlaneAttachHeightMargin);
+        // 007DA320..007DA324: FLDZ / FCOMIP / JBE, so NaN does not lift.
+        if (0.0f > clearance) {
+            // 007DA326 FSUBR [ESP+1Ch]: y - clearance.
+            pos[1] = pos[1] - clearance;
+            attached->set_ground_contact_up_007d7d70();
+            out.attached_lifted = true;
+        }
+    }
 
     out.live_pose.m[12] = pos[0];  // 007DA33A..007DA363
     out.live_pose.m[13] = pos[1];

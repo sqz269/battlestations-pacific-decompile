@@ -43,16 +43,24 @@ void reset_gui_timed_entry_base_00ad3990(GuiTimedEntryStorage&) noexcept;
 // belongs to the allocation owner. No pointer here is freed or adopted.
 void destroy_gui_timed_entry_profile(GuiTimedEntryStorage&);
 
+// The whole of AC2FE0 (slot 0 of the alpha profile D5CA74) and AD3A40 (slot 0
+// of the section profile D5D210): ECX entry, flags stack, EAX entry, RET4.
+// The reset above (AC2FE3 through AD3990, AD3A48 inline), then, when flags
+// bit 0 is set, the entry itself goes to BF65AC (_free, cdecl). The free is the
+// caller's hook: the allocation owner decides what releasing the storage means.
+GuiTimedEntryStorage* delete_gui_timed_entry_profile(GuiTimedEntryStorage&, std::uint32_t flags,
+    void (*free_00bf65ac)(void*));
+
 // AC2F40: complete arithmetic and established canonical current54/current4C
 // dispatch; ECX entry, delta stack, AL changed, RET4. Native x87 control state
 // and unordered comparisons are preserved. No default profile callback.
 bool update_gui_timed_entry_alpha_00ac2f40(
     GuiTimedEntryStorage&, GuiWidgetOwner& domain_owner, float delta);
 
-// ABE7B0 PARTIAL: current5C !=17 returns false. Type17 requires the missing
-// canonical Section fields +F4/+F8/+100 and ABE6E0/current7C owner, and throws
-// explicitly. The numeric fragment below covers ABE7CC..ABE84B separately;
-// it does not complete the missing Section consumer or emit geometry.
+// ABE7B0: current5C != 17 (11h) returns false. Type 17 reloads entry+08 and
+// hands the section companion to update_gui_section_timed_owner_00abe7b0
+// (gui_section_runtime.cpp), which reads +F4/+F8/+100, runs the numeric step
+// below (ABE7CC..ABE84B) and calls ABE6E0(candidate, +F8, +100, 1.0).
 bool update_gui_timed_entry_section_00abe7b0(
     GuiTimedEntryStorage&, GuiWidgetOwner& domain_owner, float delta);
 bool approach_gui_timed_entry_section_00abe7b0(const float& current,
