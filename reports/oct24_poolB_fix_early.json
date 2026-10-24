@@ -1305,5 +1305,21 @@
     "src/building_pads.cpp": "60c87da8dd9c51edad2540b6e102ca6ea5ab48c4fba64859dfe0f27a20256088",
     "include/bsp/building_pads.hpp": "ad3318742472f4fc54233a5b02f253ce755edf423308720f51791663961828ab",
     "src/entity_mission_seg60_argon.cpp": "222742617805ffd123c707e411fb6a0ac4c85cc0dd126c724e08a45dad15d9f6"
-  }
+  },
+  "integrator_validation": {
+    "command": "./scripts/build.ps1",
+    "source_checked_commit": "8878f94b9c106c4a13fc11d785fba29a8e13693f",
+    "build_log": "local/build-poolB-fix-publish2.log",
+    "msvc": "Win32 Release",
+    "build_passed": true,
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "game_runs": 0,
+    "host_wiring_added": false,
+    "binary_abi_validated": false,
+    "native_differential_tested": false
+  },
+  "aggregate_fix_report": "reports/oct24_poolB_fixes.json"
 }
