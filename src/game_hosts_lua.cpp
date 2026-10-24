@@ -9251,9 +9251,12 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             // + 1e-4 (00CE3C68) for the kinds 8..0Fh, 12h and 13h.
             // SUBSTITUTIONS (labelled): the kind is the event's ordnance_kind, the
             // fired class's bullet_sub_type (the id space the attack-type name
-            // table 00E08E58 indexes; a kamikaze shooter's forced 11h is not
-            // modelled); the list test at this+1A4h..+1ACh that also shortens the
-            // interval to 1e-4 is not modelled.
+            // table 00E08E58 indexes); the list test at this+1A4h..+1ACh that also
+            // shortens the interval to 1e-4 is not modelled. Neither forced-11h arm
+            // is modelled: 00988604..00988639 (with [[esi+538h]+510h] or +514h > 0.0,
+            // 0098862A stores 11h and 00988639 sets BL = 1) and 0098864D..00988658
+            // (the attacker's vtable[5Ch](17h) true, 00988658 stores 11h). The
+            // null-shot arm 0098869E (kind 0) is moot: every host hit carries a class.
             const auto key = std::make_pair(hit.victim, hit.shooter);
             float& next = hit_rate_limit_[key];
             const float clock = static_cast<float>(spawn_world_clock_);
@@ -9290,7 +9293,10 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             if (!holds(entry.entity_ids, victim) || !holds(entry.attacker_ids, shooter)) continue;
             if (!entry.attack_types.empty()) {
                 // Packet cc13-atkkind: both answers are taken, and a disagreement is
-                // counted whichever the switch picks (log-only).
+                // counted whichever the switch picks (log-only). The count is of
+                // candidate disagreements per listener evaluation, taken before the
+                // damage/device/player/fire/leak tests and on the squadron second pass
+                // too; it is not a count of fires that would change.
                 bool by_type = false;
                 bool by_subkind = false;
                 for (const std::string& t : entry.attack_types) {
@@ -9371,8 +9377,11 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                 // attackerPlayerIndex (00884A00), damage, fire, leak (008849D0).
                 // SUBSTITUTIONS (labelled): the target is the hit unit (the image
                 // boxes hitEntity->vtable[140h](), a plane's squadron); the device is
-                // nil (the host builds no device entities); a kamikaze shooter's
-                // forced attackType index 11h is not modelled.
+                // nil (the host builds no device entities); the two forced
+                // attackType 11h arms are not modelled: 0098862A (BL = 1 at 00988639,
+                // when [[esi+538h]+510h] or +514h > 0.0) and 00988658 (the attacker's
+                // vtable[5Ch](17h) true). 0098869E's kind 0 for a null shot is moot,
+                // since every host hit carries a class.
                 if (!push_resolved_entity_by_id(state_, victim)) lua_pushnil(state_);
                 lua_pushnil(state_);
                 if (!push_resolved_entity_by_id(state_, boxed_attacker)) lua_pushnil(state_);

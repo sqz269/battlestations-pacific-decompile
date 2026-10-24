@@ -661,7 +661,13 @@ inline constexpr bool kLuaHitRateLimitBound = true;  // ON: identity pairs (docs
 // True: the hit listener's attackType set is matched against that string, the one the
 // host already pushes as the callback's argument 4. False: against the bullet class's
 // Lua `Type`, which over-matches "BULLET"/"ARTILLERY" and never matches MACHINEGUN,
-// AAMACHINEGUN or LIGHT/MEDIUM/HEAVYARTILLERY.
+// AAMACHINEGUN or LIGHT/MEDIUM/HEAVYARTILLERY. Not modelled either way: the two
+// arms that force kind 11h (KAMIKAZE) - 0098862A, with BL = 1 at 00988639, when
+// [[esi+538h]+510h] or +514h > 0.0 (00988604..00988625), and 00988658 when the
+// attacker's vtable[5Ch](17h) is true (0098864D) - and 0098869E's kind 0 for a null
+// shot, which is moot because every host hit carries a class.
+// summary listener_hit_attack_type_subkind_differs counts candidate disagreements per
+// listener evaluation (before the damage test, second pass included), not changed fires.
 inline constexpr bool kHitListenerAttackTypeSubKindCc13Bound = false;
 static_assert(!kHitListenerAttackTypeSubKindCc13Bound
                   || (kLuaListenersBound && kLuaHitListenersBound),
