@@ -20826,7 +20826,16 @@ mention kamikaze: PRCP02, PRCP06, PRCP07, USN11 and USN18, all fully identical (
 kamikaze_squadron_drops=0 OFF and ON. Only PRCP06 spawns kamikaze planes (96, luaKamikazeSpawned) before it fails at
 634.97 s, so the reach is thin. No WINS row has kamikaze squadrons. The USN19 (Okinawa) pair had not finished at
 flip time: after 2.5 h, each run had a log over 2 GB. If it finishes, the results are in
-local\pt1_{off,on}_kk_u19.log.
+local\pt1_{off,on}_kk_u19.log. Later I stopped the USN19 pair (still running after more than 3 h) and deleted its
+logs, so for this switch USN19 is inconclusive.
+
+**kSpawnNewSquadronPartyCc13Bound flipped ON** (cc9-party1, 2026-10-24), which closes open item 2 above. The pairs
+are OFF and ON on 0e53ff179. ESMP01 (stock, 60000 frames) has spawn_squadron_party_nodes=7 and wing_nodes=14 on
+both sides. Its commandhelpers.lua:330 failures go from 94 to 0, and the run is gameplay identical with the same
+end (failed 291.55 s). USN19 (stock, capped at 20000 frames because its log reaches 1.9 GB) has 69/171 nodes,
+no Lua errors on either side, and is gameplay identical. The WINS rows whose scripts call SpawnNew are IJN18
+ia5, BSM01, BSM04 h1_f, USN12, JM06, JM08 s63_v3, ESMP08, PRCP01 p26_a, LOMP06 and USNOS. All are gameplay
+identical with the same end, with node counts up to 89/178 (BSM01).
 
 ## 324. BSM03/04/05/06 plans, seat-artillery flips; handoff (cc9-helm1, 2026-10-24)
 
