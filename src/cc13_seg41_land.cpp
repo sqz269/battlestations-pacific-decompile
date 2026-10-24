@@ -843,6 +843,18 @@ void landing_ship_detach_0074bd20(std::uint8_t* ship, LandingShipHost& host) {
     }
 }
 
+void mothership_detach_from_world_lists_00758fe0(std::uint8_t* ship, MotherShipDetachHost& host) {
+    host.unit_instance_detach_mid_lists_006dffc0(ship);             // 00758FE3
+    std::uint8_t* const list = at<std::uint8_t*>(ship, 0x30) + 0x84;
+    for (std::uint8_t* node = at<std::uint8_t*>(list, 4); node != nullptr;
+         node = at<std::uint8_t*>(node, 4)) {
+        if (at<std::uint8_t*>(node, 8) == ship) {
+            host.list_erase_004837d0(list, node);                  // 0075900F
+            return;
+        }
+    }
+}
+
 void landing_ship_destruct_0074bd60(std::uint8_t* ship, LandingShipHost& host) {
     if (void* block = at<void*>(ship, 0x1198); block != nullptr) host.free_00bf65ac(block);
     at<std::uint32_t>(ship, 0x1198) = 0;

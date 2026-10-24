@@ -507,4 +507,52 @@ void destroy_native_unit_owner_recon_record_00804300(
         bytes_at(actual_record, 0x14), actual_observers, stage);
 }
 
+void* construct_native_unit_owner_entity_0077eed0(
+    void* actual_root, std::uint32_t full_flag, NativeObserverLifetime& observers,
+    const volatile std::uint32_t& actual_initial_word_00ce4adc,
+    void* volatile& actual_game_publication_00e188a8,
+    const volatile std::uint8_t& actual_network_byte_00e0af20,
+    void* actual_holder_scratch_preimage,
+    volatile std::uint8_t& actual_dirty_byte_00f87190,
+    NativeUnitOwnerEntityCalls& calls) {
+    calls.game_entity_construct_00928630(actual_root, 1, full_flag); // 0077EEF9
+    at<std::uint32_t>(actual_root, 0x1e4) = 0x00d03d98u;          // 0077EF1C
+    for (std::uint32_t index = 0; index != 3; ++index) {          // 0077EF22
+        construct_native_unit_owner_recon_record_00805a70(
+            bytes_at(actual_root, 0x1e8 + index * 0x34), observers);
+    }
+    construct_native_unit_owner_first_list_0077ef27(actual_root);
+    construct_native_unit_owner_second_list_and_fields_0077efa9(
+        actual_root, actual_initial_word_00ce4adc);
+    finish_native_unit_owner_peer_tail_0077f054(actual_root,
+        actual_game_publication_00e188a8, actual_network_byte_00e0af20,
+        actual_holder_scratch_preimage, actual_dirty_byte_00f87190);
+    return actual_root;                                         // 0077F07C/RET4
+}
+
+void destruct_native_unit_owner_entity_0077e380(
+    void* actual_root, NativeObserverLifetime& observers,
+    const volatile std::uint8_t& actual_network_byte_00e0af20,
+    void* volatile& actual_game_publication_00e188a8,
+    void* actual_global_list_00f87194, NativeUnitOwnerEntityCalls& calls) {
+    restore_native_unit_owner_destructor_profiles_0077e3a0(actual_root);
+    if (actual_network_byte_00e0af20 != 0) {                      // 0077E3C8
+        void* const game = actual_game_publication_00e188a8;     // 0077E3D9
+        if (game != nullptr && at<std::uint32_t>(game, 0x1fe4) == 1) {
+            alignas(4) std::byte message_storage[0x24];
+            void* const message = calls.entity_release_construct_00779780(
+                message_storage, at<std::uint32_t>(actual_root, 0x70)); // 0077E3F3
+            calls.route_message_0077c2a0(actual_root, message, 4, nullptr); // 0077E404
+        }
+    }
+    withdraw_native_unit_owner_global_0077e409(actual_root, actual_global_list_00f87194);
+    calls.observer_member_destruct_006e0860(bytes_at(actual_root, 0x2b0)); // 0077E427
+    destroy_native_unit_owner_lists_0077e42c(actual_root);
+    for (std::uint32_t remaining = 3; remaining != 0; --remaining) { // 0077E46C
+        destroy_native_unit_owner_recon_record_00804300(
+            bytes_at(actual_root, 0x1e8 + (remaining - 1) * 0x34), observers);
+    }
+    calls.game_entity_destruct_009287b0(actual_root);              // 0077E47B
+}
+
 } // namespace bsp
