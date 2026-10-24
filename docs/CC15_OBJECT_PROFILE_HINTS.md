@@ -513,8 +513,18 @@ Two missions keep a hint up: BASICSUB, critical, shown at t=0.10 and never dismi
   - GuiText work rises about 20-fold (`find_font` 8192 -> 158882).
   - Entity commands rise 750 -> 752, and script `after-row-9 order` applied 22 -> 24.
   - Helm orders: all 321 identical, in order.
-  - **Not explained.** The two gated bodies are display-only through their host interfaces, and the
-    markers `refresh_pose` is a no-op. The coupling into combat has not been found. Candidates are
-    the process-wide RNG and the GUI text work. It needs a cc9 dive before the flip.
+  - **USN21 is not deterministic run to run on this machine (2026-10-23), so this move is not
+    attributable to the gate.** Repeat runs of the same exe give different gameplay:
+    - ga vs ga (repeat): deaths 516 / 514, shots 130430 / 127936.
+    - hoff vs hoff (repeat; section 8): deaths 515 / 514, shots 131757 / 130772.
+    - off2 run on 2026-10-19 vs 2026-10-23: moved.
+  - Meanwhile gb and its repeat match, off2 and its second repeat match, and the code-identical
+    OFF pair off2-repeat vs hoff-repeat matches. The outcomes fall into a few clusters (shots
+    127936, 130430, 130772, 131757).
+  - The two gated bodies are display-only through their host interfaces, and the markers
+    `refresh_pose` is a no-op. The cause of the variance has not been found; candidates are the
+    process-wide RNG, heap order, or thread timing.
+  - USN21 needs several repeats per side, compared as distributions, before any USN21 claim. That
+    includes the section 6 joint-flip USN21 move.
 - **Hint that shows but does not stall:** JM06 shows PUM1STGET at 321.05 s, not pausing, and it
   finishes.
