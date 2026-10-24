@@ -48,6 +48,19 @@ namespace bsp {
 // the JM05l / USN02 pairs (5ea.1).
 inline constexpr bool kPlaneRetreatTaskBound = true;   // ON: SQUADRON_LAND_TASK 5ea.1
 
+// Packet cc13-D2 (defect rows 009C8D40, 009C9FB0). True:
+// - 009C8D40: the zone refresh rounds to float at every image store (corner
+//   sums, mid, quarter, to-centre, direction, R * dir, times 3, plus mid).
+//   Every step is stored, so the result is the same at PC24 and PC53.
+// - 00419260 in this file: a zero length returns 0 instead of 1/0. This also
+//   reaches 009C9310.
+// - The countdown (009C9FC8 and 009CA14F, FCOMI dt,c / JC): a NaN takes the
+//   decrement arm.
+// - The moveto stay test (009CA048 COMISS 0,timer / JA): a NaN timer stays.
+// False: the double chains and ordered compares used before. Changes only
+// ulp, NaN and zero-length cases.
+inline constexpr bool kRetreatX87FaithfulCc13Bound = false;
+
 inline constexpr std::uint32_t kRetreatCommandClass = 0x00E08F90u;   // 009C9E20
 inline constexpr float kRetreatAltitudeDrawLow = -50.0f;     // 00CECA0C, 009C91D6
 inline constexpr float kRetreatAltitudeDrawHigh = 100.0f;    // 00CE3D08

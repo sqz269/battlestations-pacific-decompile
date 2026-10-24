@@ -21,6 +21,11 @@ float reciprocal_length_00419260(float x, float z) noexcept {
     const float zz = to_float(static_cast<double>(z) * z);
     const float sum = to_float(static_cast<double>(zz) + xx);
     const float root = to_float(std::sqrt(static_cast<double>(sum)));
+    // 004192B3-004192C2: a root equal to 0 returns 0 (FUCOMIP, LAHF/TEST
+    // AH,44h/JP), not 1/0. Only behind kRetreatX87FaithfulCc13Bound.
+    if constexpr (kRetreatX87FaithfulCc13Bound) {
+        if (root == 0.0f) return 0.0f;
+    }
     return to_float(1.0 / root);
 }
 
@@ -47,6 +52,23 @@ float heading_from_vector(float x, float z) noexcept {
 
 }  // namespace
 
+// 009C8D40-009C8F36, __fastcall(ECX = retreat approach). The pose refresh
+// (009C8D4B-009C8D59) is the caller's. 009C8D70 004C7730(unit+FCh, side
+// [unit+54h], 0, 0) gives the zone at +3Ch. The edge +40h..+4Ch is copied from
+// the zone's +1Ch/+24h/+28h/+30h. Then, each stored as float:
+// - corner sums (((0 + a) + b) + c) + d over +10h/+18h, +1Ch/+24h,
+//   +28h/+30h, +34h/+3Ch (009C8DB2-009C8E32);
+// - quarter = sum * 0.25 [00D7A348];
+// - mid = (+40h + +48h) * 0.5 and 0.5 * (+4Ch + +44h) [00D7A280];
+// - to-centre = quarter - mid, and 00419260 r;
+// - +58h/+5Ch = r * to-centre;
+// - R = class+268h; the enter point +50h/+54h = R * dir * 3.0 [00D7A2B0] + mid.
+// The listing's `FMUL ST1` at 009C8E40/8E6E/8EFB is the DC form (FMUL
+// ST(1),ST0): the FXCH/FSTP that follows stores the product.
+// DEFECT ROW (cc13-D2): the OFF arm runs these chains in double and rounds once.
+// Because every image step is stored, that differs at PC24 and PC53 alike. The
+// ON arm (kRetreatX87FaithfulCc13Bound) rounds at each store. DOCUMENTED: the
+// null-zone return is a host guard (the image dereferences 004C7730's result).
 bool retreat_refresh_zone_009c8d40(RetreatApproach& approach, const BorderZoneSet& zones,
     const std::array<float, 3>& position, std::int32_t side, float turn_circle_radius) {
     const BorderZoneHit hit = closest_border_zone_004c7730(zones, position, side);
@@ -57,20 +79,63 @@ bool retreat_refresh_zone_009c8d40(RetreatApproach& approach, const BorderZoneSe
     approach.edge_40[1] = z.b[2];   // +24h
     approach.edge_40[2] = z.c[0];   // +28h
     approach.edge_40[3] = z.c[2];   // +30h
-    const double mid_x = (static_cast<double>(approach.edge_40[0]) + approach.edge_40[2]) * kRetreatHalf;
-    const double mid_z = kRetreatHalf * (static_cast<double>(approach.edge_40[3]) + approach.edge_40[1]);
-    const float to_x = to_float(((((0.0 + z.a[0]) + z.b[0]) + z.c[0]) + z.d[0]) * kRetreatQuarter - mid_x);
-    const float to_z = to_float(kRetreatQuarter * ((((0.0 + z.a[2]) + z.b[2]) + z.c[2]) + z.d[2]) - mid_z);
-    const float r = reciprocal_length_00419260(to_x, to_z);
-    approach.direction_58[0] = to_float(static_cast<double>(r) * to_x);
-    approach.direction_58[1] = to_float(static_cast<double>(r) * to_z);
-    approach.enter_point_50[0] = to_float(static_cast<double>(turn_circle_radius) *
-        approach.direction_58[0] * kRetreatEnterPointScale + mid_x);
-    approach.enter_point_50[1] = to_float(kRetreatEnterPointScale * turn_circle_radius *
-        approach.direction_58[1] + mid_z);
+    if constexpr (kRetreatX87FaithfulCc13Bound) {
+        float sx = 0.0f + z.a[0];                  // 009C8DB2-009C8DB8
+        float sz = 0.0f + z.a[2];                  // 009C8DBC-009C8DC0
+        sx = z.b[0] + sx;  sz = z.b[2] + sz;       // 009C8DD2-009C8DE6
+        sx = z.c[0] + sx;  sz = z.c[2] + sz;       // 009C8DF8-009C8E0C
+        sx = z.d[0] + sx;  sz = z.d[2] + sz;       // 009C8E1E-009C8E32
+        const float quarter = static_cast<float>(kRetreatQuarter);
+        const float half = static_cast<float>(kRetreatHalf);
+        const float qx = sx * quarter;             // 009C8E40-009C8E44
+        const float qz = quarter * sz;             // 009C8E48-009C8E4C
+        const float ex = approach.edge_40[0] + approach.edge_40[2];  // 009C8E50-009C8E56
+        const float ez = approach.edge_40[3] + approach.edge_40[1];  // 009C8E5A-009C8E60
+        const float mid_x = ex * half;             // 009C8E6E-009C8E72
+        const float mid_z = half * ez;             // 009C8E76-009C8E7A
+        const float to_x = qx - mid_x;             // 009C8E7E-009C8E86
+        const float to_z = qz - mid_z;             // 009C8E8A-009C8E96
+        const float r = reciprocal_length_00419260(to_x, to_z);   // 009C8E9A
+        approach.direction_58[0] = r * to_x;       // 009C8EAF-009C8EB5, +58h
+        approach.direction_58[1] = r * to_z;       // 009C8EB9-009C8EBD, +5Ch
+        const float rx = turn_circle_radius * approach.direction_58[0];  // 009C8EE0-009C8EE6
+        const float rz = turn_circle_radius * approach.direction_58[1];  // 009C8EEA-009C8EED
+        const float three = static_cast<float>(kRetreatEnterPointScale);
+        const float px = rx * three;               // 009C8EFB-009C8EFF
+        const float pz = three * rz;               // 009C8F03-009C8F07
+        approach.enter_point_50[0] = px + mid_x;   // 009C8F0B-009C8F27, +50h
+        approach.enter_point_50[1] = pz + mid_z;   // 009C8F17-009C8F2E, +54h
+    } else {
+        const double mid_x = (static_cast<double>(approach.edge_40[0]) + approach.edge_40[2]) * kRetreatHalf;
+        const double mid_z = kRetreatHalf * (static_cast<double>(approach.edge_40[3]) + approach.edge_40[1]);
+        const float to_x = to_float(((((0.0 + z.a[0]) + z.b[0]) + z.c[0]) + z.d[0]) * kRetreatQuarter - mid_x);
+        const float to_z = to_float(kRetreatQuarter * ((((0.0 + z.a[2]) + z.b[2]) + z.c[2]) + z.d[2]) - mid_z);
+        const float r = reciprocal_length_00419260(to_x, to_z);
+        approach.direction_58[0] = to_float(static_cast<double>(r) * to_x);
+        approach.direction_58[1] = to_float(static_cast<double>(r) * to_z);
+        approach.enter_point_50[0] = to_float(static_cast<double>(turn_circle_radius) *
+            approach.direction_58[0] * kRetreatEnterPointScale + mid_x);
+        approach.enter_point_50[1] = to_float(kRetreatEnterPointScale * turn_circle_radius *
+            approach.direction_58[1] + mid_z);
+    }
     return true;
 }
 
+// 00489C40-00489C90, cdecl-style RET 4 (point*) -> EAX = node+8h. A wrapper:
+// 004C74C0(point, &iterator), then _invalid_parameter_noinfo (00BF6713) for a
+// null list or the end node, then node+8h. 004C74C0 is folded in here. It was
+// re-checked (cc13-D2) against its listing reconstruction
+// world_border_zone_at_point_004c74c0 (src/pool_pool15_cc13.cpp).
+// - Overshoots: d0 = p.z - NW.z, d2 = SE.z - p.z, d1 = p.x - SE.x,
+//   d3 = NW.x - p.x.
+// - Edge: the first of 0, 2, 1, 3 that is > 0 and above its two neighbours.
+// - Walk: remaining = p.x - NW.x (edges 0/2) or NW.z - p.z. Subtract each
+//   record's length and stop when 0 > remaining or at the last node.
+// Each step is one float subtraction, so precision does not matter.
+// DOCUMENTED DEVIATION: nullptr where the image raises the invalid-parameter
+// path (empty list). It is also nullptr where the image takes its garbage edge
+// (a point inside the map; 004C75B6 loads the point pointer as the edge). The
+// callers ask only for a point outside the map (0071C4F0 first).
 const BorderZoneRecord* border_zone_at_point_00489c40(const WorldMapBounds& bounds,
     const BorderZoneSet& zones, const std::array<float, 3>& point) {
     const float north = to_float(static_cast<double>(point[2]) - bounds.north_west[2]);  // +7124h
@@ -128,8 +193,13 @@ void retreat_refresh_target_009c8f40(RetreatApproach& approach, const WorldMapBo
     }
 }
 
+// The countdown head of 009C9FB0 (009C9FB4-009C9FD9, task +560h/+55Ch) and of
+// 009CA130 (009CA135-009CA158, approach +38h/+34h). FCOMI dt,c then JC: dt < c
+// (and, ON, an unordered compare) decrements and stops; otherwise c += period -
+// dt and the rule runs.
 bool retreat_countdown_step(float& countdown, float period, float dt) noexcept {
-    if (dt < countdown) {
+    const bool decrement = kRetreatX87FaithfulCc13Bound ? !(dt >= countdown) : dt < countdown;
+    if (decrement) {
         countdown = to_float(static_cast<double>(countdown) - dt);
         return false;
     }
@@ -141,6 +211,16 @@ float retreat_moveto_timer_009c92f0(float turn_circle_radius, float travel_speed
     return to_float(static_cast<double>(turn_circle_radius) / travel_speed);
 }
 
+// 009C9FB0-009CA08F, __thiscall(ECX = task, float dt), RET 4. The rule after
+// the countdown head: follow (+4C4h) -> moveto (+478h) for a 007B8AD0 leader;
+// moveto -> leave (+4ACh) on +458h, else enter zone (+494h) unless the timer
+// (+478h+18h) is not below 0 and [+478h+4]+61h is clear; enter zone -> leave
+// when 009C9EA0. Each change is 009C9F70 / 007B6EE0 (the caller's enter).
+// DOCUMENTED DEVIATION (cc13-D2): the countdown head is retreat_countdown_step,
+// which the units host runs first (the native is one function), and the
+// 009C9EA0 test is an input the caller computes before the rule (it is pure).
+// DEFECT (OFF-switched): 009CA048 COMISS 0,timer / JA enters the zone only when
+// 0 > timer, so a NaN timer stays; the OFF arm's `>= 0` test leaves on a NaN.
 RetreatState retreat_arm_009c9fb0(const RetreatArmInputs& in) noexcept {
     switch (in.state) {
     case RetreatState::kFollow:
@@ -148,8 +228,15 @@ RetreatState retreat_arm_009c9fb0(const RetreatArmInputs& in) noexcept {
     case RetreatState::kMoveTo:
         if (in.leave_now_60) return RetreatState::kLeave;
         // 009CA02C: stay while the timer is >= 0 and +61h is clear.
-        if ((0.0f < in.moveto_timer || in.moveto_timer == 0.0f) && !in.lined_up_61)
-            return RetreatState::kMoveTo;
+        {
+            bool stay;
+            if constexpr (kRetreatX87FaithfulCc13Bound) {
+                stay = !(0.0f > in.moveto_timer) && !in.lined_up_61;
+            } else {
+                stay = (0.0f < in.moveto_timer || in.moveto_timer == 0.0f) && !in.lined_up_61;
+            }
+            if (stay) return RetreatState::kMoveTo;
+        }
         return RetreatState::kEnterZone;
     case RetreatState::kEnterZone:
         return in.inside_enter_zone ? RetreatState::kLeave : RetreatState::kEnterZone;
@@ -217,6 +304,14 @@ RetreatMoveToSteer retreat_moveto_steer_009c9310(const RetreatMoveToInputs& in) 
     return out;
 }
 
+// 009F9D90-009F9E32, __thiscall(ECX = approach, point*), RET 4. dz = p.z -
+// unit+104h and dx = p.x - unit+FCh, each stored as float. Then atan2(dz, dx)
+// (00BF701A, ST1/ST0), pi/2 [00CE3830] - a and, when 0 > h, + 2pi [00CE3828],
+// each stored as float. That is heading_from_vector exactly; the image result
+// does not depend on PC.
+// DOCUMENTED DEVIATION (cc13-D2): the stores plan+2C0h = heading and
+// plan+2CCh = 2 (009F9E1C/009F9E24) are made by the units host from the
+// return value.
 float retreat_heading_to_point_009f9d90(float x, float z, const float point[2]) noexcept {
     const float dz = to_float(static_cast<double>(point[1]) - z);
     const float dx = to_float(static_cast<double>(point[0]) - x);
