@@ -281,7 +281,7 @@ static_assert(!kMapScreenHelmReleaseCc13Bound || kHelmPrepareMapUpGateCc13Bound,
 // same one. ON: the host's bind sends that release to the previously stored
 // ship-view unit, after the 005470C0 group release and before the 00549260
 // re-take. OFF: no release, as before.
-inline constexpr bool kShipViewPreviousUnitReleaseCc13Bound = false;
+inline constexpr bool kShipViewPreviousUnitReleaseCc13Bound = true;  // ON (cc9-helm1, 2026-10-23): 12-row pairs on 802e1d8b9 gameplay identical; the bind re-takes the released roles
 static_assert(!kShipViewPreviousUnitReleaseCc13Bound || kMissionCameraBound,
     "kShipViewPreviousUnitReleaseCc13Bound needs kMissionCameraBound: the release sits in the "
     "host's 0064DA40 bind");
