@@ -40,6 +40,25 @@
 #include "bsp/render_fx_cc13.hpp"
 #include "bsp/oct18b_nc_mid.hpp"
 #include "bsp/game_dynamics_list.hpp"
+// cc13-fixture5
+#include "bsp/cc13_seg95.hpp"
+#include "bsp/cc13_seg68.hpp"
+#include "bsp/dummy_depth_seg34_argon.hpp"
+#include "bsp/engine_seg43_45_cc13.hpp"
+#include "bsp/hud_movie_camera.hpp"
+#include "bsp/ship_ai_navigation.hpp"
+#include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/cc13_seg33a.hpp"
+#pragma warning(push)
+#pragma warning(disable : 4244)  // kPlaneEffectHandles builds pair<uint16_t, string_view> from int literals
+#include "bsp/frontend_seg16_24_28_cc13.hpp"
+#pragma warning(pop)
+#include "bsp/frontend_screens_cc13.hpp"
+#include "bsp/cc13_sweepA.hpp"
+#include "bsp/unit_rudder.hpp"
+#include "bsp/multiplayer_session_cc13.hpp"
+#include "bsp/unit_order_record.hpp"
+#include "bsp/director_geommesh_seg38_39_argon.hpp"
 #include "bsp/cc13_left55.hpp"
 #include "bsp/cc13_seg33a.hpp"
 #include "bsp/cc13_seg62.hpp"
@@ -851,6 +870,292 @@ template<class Open> void run_fixture3(Open open) {
     }
 }
 
+// cc13-fixture5: game-logic float leaves, each against its original bytes. All of them run
+// on the main thread, so the 24-bit pass decides (docs/CC13_FPU_PRECISION.md).
+template<class Open> void run_fixture5(Open open) {
+    auto pick = [](float lo, float hi) { return edge_or(lo, hi); };
+    {
+        auto& c = open("00BD4BF0 matrix4x4 equals");
+        auto native = at<int (__fastcall*)(const float*, int, const float*)>(cc13_leaf_00bd4bf0);
+        for (int i = 0; i < 3000; ++i) {
+            float a[16], b[16];
+            for (int k = 0; k < 16; ++k) a[k] = b[k] = pick(-10, 10);
+            if (i % 3 == 1) b[next() % 16] = pick(-10, 10);
+            if (i % 3 == 2) { const int k = next() % 16; b[k] = -b[k]; }   // signed zero and NaN cases
+            const bool n1 = native(a, 0, b) != 0, n2 = bsp::cc13_seg95::matrix4x4_equals_00bd4bf0(a, b);
+            check_note(c, n1 == n2, "%d / %d", n1, n2);
+        }
+    }
+    {
+        auto& over = open("009FA510 world edge overrun");
+        auto& near_edge = open("00681F40 game near world edge");
+        auto& beyond = open("0059C9B0 world point beyond map margin");
+        auto overrun = at<float (__fastcall*)(const void*, int, const float*, float)>(cc13_leaf_009fa510);
+        auto near_n = at<int (__fastcall*)(const void*, int, const float*, float)>(cc13_leaf_00681f40);
+        auto beyond_n = at<int (__fastcall*)(const void*, int, const float*, float)>(cc13_leaf_0059c9b0);
+        static std::uint8_t game[0x7140];
+        for (int i = 0; i < 4000; ++i) {
+            bsp::cc13_seg68::WorldEdges e;
+            e.x_min_711c = pick(-2000, -500); e.x_max_7128 = pick(500, 2000);
+            e.z_max_7124 = pick(500, 2000); e.z_min_7130 = pick(-2000, -500);
+            std::memcpy(game + 0x711c, &e.x_min_711c, 4); std::memcpy(game + 0x7128, &e.x_max_7128, 4);
+            std::memcpy(game + 0x7124, &e.z_max_7124, 4); std::memcpy(game + 0x7130, &e.z_min_7130, 4);
+            const float p[3] = {pick(-2500, 2500), pick(-50, 50), pick(-2500, 2500)};
+            const float m = pick(-100, 400);
+            const float r1 = overrun(game, 0, p, m), r2 = bsp::cc13_seg68::ggame_world_edge_overrun_009fa510(e, p, m);
+            if (std::isnan(r1) && std::isnan(r2) && !same(r1, r2)) over.check_nan_only();
+            else check_note(over, same(r1, r2), "p=%a,%a m=%a: %a / %a", p[0], p[2], m, r1, r2);
+            const bool a1 = near_n(game, 0, p, m) != 0;
+            const bool a2 = bsp::cc13_fe5::game_near_world_edge_00681f40(bsp::ingame_gui_cc13::Raw{game}, p, m);
+            check_note(near_edge, a1 == a2, "p=%a,%a m=%a: %d / %d", p[0], p[2], m, a1, a2);
+            const bool b1 = beyond_n(game, 0, p, m) != 0;
+            const bool b2 = bsp::cc13_fe1::world_point_beyond_map_margin_0059c9b0(game, p, m);
+            check_note(beyond, b1 == b2, "p=%a,%a m=%a: %d / %d", p[0], p[2], m, b1, b2);
+        }
+    }
+    {
+        auto& c = open("006FBCE0 elevator platform start travel");
+        auto native = at<void (__fastcall*)(void*, int, std::uint32_t, float)>(cc13_leaf_006fbce0);
+        for (int i = 0; i < 4000; ++i) {
+            alignas(4) std::uint8_t o1[0x50]{}, o2[0x50]{};
+            const float h = pick(-20, 60), m = pick(0, 10), s = pick(0.1f, 20), d = pick(0, 50);
+            std::memcpy(o1 + 0x18, &h, 4); std::memcpy(o1 + 0x1c, &m, 4);
+            std::memcpy(o1 + 0x44, &s, 4); std::memcpy(o1 + 0x48, &d, 4);
+            std::memcpy(o2, o1, sizeof o1);
+            const std::uint8_t down = static_cast<std::uint8_t>(next() & 1);
+            const float t = pick(-5, 30);
+            native(o1, 0, down, t);
+            bsp::dummy_depth_seg34_argon::ElevatorPlatform_StartTravel_006fbce0(o2, down, t);
+            float r1, r2;
+            std::memcpy(&r1, o1 + 0x4c, 4); std::memcpy(&r2, o2 + 0x4c, 4);
+            if (std::isnan(r1) && std::isnan(r2) && !same(r1, r2)) c.check_nan_only();
+            else check_note(c, std::memcmp(o1, o2, sizeof o1) == 0, "h=%a m=%a s=%a d=%a t=%a down=%d: %a / %a",
+                            h, m, s, d, t, down, r1, r2);
+        }
+    }
+    {
+        auto& c = open("0078FAF0 movie camera approach offset");
+        auto native = at<void (__fastcall*)(float*, int, float)>(cc13_leaf_0078faf0);
+        for (int i = 0; i < 4000; ++i) {
+            std::array<float, 3> s1{pick(-50, 50), pick(-50, 50), pick(-100, 100)};
+            if (i % 25 == 0) s1[1] = s1[0];
+            std::array<float, 3> s2 = s1;
+            const float dt = pick(0, 0.2f);
+            native(s1.data(), 0, dt);
+            bsp::cc13cam2::movcam_approach_0078faf0(s2, dt);
+            if (nan_only_diff(s1.data(), s2.data(), 3)) { c.check_nan_only(); continue; }
+            const int k = first_diff(s1.data(), s2.data(), 3);
+            check_note(c, k < 0, "dt=%a [%d] %a / %a", dt, k, k < 0 ? 0.0 : s1[k], k < 0 ? 0.0 : s2[k]);
+        }
+        auto& e = open("0078FCF0 movie camera ease in-out quad");
+        auto ease = at<float (__stdcall*)(float)>(cc13_leaf_0078fcf0);
+        for (int i = 0; i < 4000; ++i) {
+            const float x = i < 64 ? static_cast<float>(i) / 63.0f : pick(-0.5f, 1.5f);
+            const float r1 = ease(x), r2 = bsp::movie_camera_ease_in_out_quad_0078fcf0(x);
+            if (std::isnan(r1) && std::isnan(r2) && !same(r1, r2)) e.check_nan_only();
+            else check_note(e, same(r1, r2), "x=%a: %a / %a", x, r1, r2);
+        }
+    }
+    {
+        auto& c = open("0080E000 unit AI order slot step");
+        auto native = at<void (__fastcall*)(void*, int, float)>(cc13_leaf_0080e000);
+        for (int i = 0; i < 4000; ++i) {
+            alignas(4) std::uint8_t raw[0x40];
+            for (auto& b : raw) b = static_cast<std::uint8_t>(next());
+            const float blend = pick(-50, 50), timer = pick(-0.1f, 0.3f), target = pick(-50, 50);
+            std::memcpy(raw + 0x00, &blend, 4); std::memcpy(raw + 0x04, &timer, 4); std::memcpy(raw + 0x08, &target, 4);
+            for (int off : {0x0c, 0x10, 0x18, 0x1c, 0x28, 0x2c, 0x34, 0x38}) { const float f = pick(-9, 9); std::memcpy(raw + off, &f, 4); }
+            raw[0x14] &= 1; raw[0x30] &= 1;
+            bsp::UnitAiOrderRecord r;
+            auto rd = [&](int off) { float f; std::memcpy(&f, raw + off, 4); return f; };
+            auto sub = [&](int base) {
+                bsp::UnitAiOrderSubRecord s;
+                s.value_00 = rd(base); s.field_04 = rd(base + 4); s.field_08 = rd(base + 8); s.flag_0c = raw[base + 0xc] != 0;
+                s.field_10 = rd(base + 0x10); s.field_14 = rd(base + 0x14);
+                std::memcpy(&s.field_18, raw + base + 0x18, 4);
+                return s;
+            };
+            r.blend_00 = rd(0); r.timer_04 = rd(4); r.sub_a = sub(0x08); r.sub_b = sub(0x24);
+            const float dt = pick(0, 0.2f);
+            std::uint8_t out[0x40];
+            std::memcpy(out, raw, sizeof raw);
+            native(out, 0, dt);
+            bsp::unit_ai_order_slot_step_0080e000(r, dt, true);
+            std::uint8_t mine[0x40];
+            std::memcpy(mine, raw, sizeof raw);
+            auto put = [&](int base, const bsp::UnitAiOrderSubRecord& s) {
+                std::memcpy(mine + base, &s.value_00, 4); std::memcpy(mine + base + 4, &s.field_04, 4);
+                std::memcpy(mine + base + 8, &s.field_08, 4); mine[base + 0xc] = s.flag_0c ? 1 : 0;
+                std::memcpy(mine + base + 0x10, &s.field_10, 4); std::memcpy(mine + base + 0x14, &s.field_14, 4);
+                std::memcpy(mine + base + 0x18, &s.field_18, 4);
+            };
+            std::memcpy(mine, &r.blend_00, 4); std::memcpy(mine + 4, &r.timer_04, 4);
+            put(0x08, r.sub_a); put(0x24, r.sub_b);
+            int k = -1;
+            for (int b = 0; b < 0x40 && k < 0; ++b) if (out[b] != mine[b]) k = b;
+            const bool nan_only = k >= 0 && nan_only_diff(reinterpret_cast<const float*>(out), reinterpret_cast<const float*>(mine), 16);
+            if (nan_only) c.check_nan_only();
+            else { float n0, m0; std::memcpy(&n0, out + (k & ~3), 4); std::memcpy(&m0, mine + (k & ~3), 4); check_note(c, k < 0, "blend=%a timer=%a target=%a dt=%a byte %d differs: %a / %a", blend, timer, target, dt, k, n0, m0); }
+        }
+    }
+    {
+        using namespace bsp::engine_seg11_35_66_cc13;
+        auto& c = open("004F3030 segment lerp");
+        auto native = at<void (__fastcall*)(const float*, int, float*, float)>(cc13_leaf_004f3030);
+        for (int i = 0; i < 4000; ++i) {
+            const float seg[4] = {pick(-100, 100), pick(-100, 100), pick(-100, 100), pick(-100, 100)};
+            const float t = pick(-0.5f, 1.5f);
+            float o1[2] = {7, 7}, o2[2] = {7, 7};
+            native(seg, 0, o1, t);
+            segment_lerp_004f3030(seg, o2, t);
+            if (nan_only_diff(o1, o2, 2)) { c.check_nan_only(); continue; }
+            const int k = first_diff(o1, o2, 2);
+            check_note(c, k < 0, "t=%a [%d] %a / %a", t, k, k < 0 ? 0.0 : o1[k], k < 0 ? 0.0 : o2[k]);
+        }
+        auto& l = open("004F40C0 is left turn");
+        auto left = at<int (__stdcall*)(float, float, float, float, float, float)>(cc13_leaf_004f40c0);
+        for (int i = 0; i < 4000; ++i) {
+            float v[6];
+            for (auto& x : v) x = pick(-100, 100);
+            if (i % 20 == 0) { v[4] = v[0] + (v[2] - v[0]) * 2; v[5] = v[1] + (v[3] - v[1]) * 2; }   // collinear
+            const bool n1 = left(v[0], v[1], v[2], v[3], v[4], v[5]) != 0;
+            const bool n2 = is_left_turn_004f40c0(v[0], v[1], v[2], v[3], v[4], v[5]);
+            check_note(l, n1 == n2, "%a,%a %a,%a %a,%a: %d / %d", v[0], v[1], v[2], v[3], v[4], v[5], n1, n2);
+        }
+    }
+    {
+        auto& c = open("004F2FD0 circle contains point");
+        auto native = at<int (__fastcall*)(const float*, int, const float*)>(cc13_leaf_004f2fd0);
+        for (int i = 0; i < 4000; ++i) {
+            const float circle[3] = {pick(-100, 100), pick(-100, 100), pick(0, 50)};
+            float p[2] = {pick(-150, 150), pick(-150, 150)};
+            if (i % 20 == 0) { p[0] = circle[0] + circle[2]; p[1] = circle[1]; }   // on the rim
+            const bool n1 = native(circle, 0, p) != 0, n2 = bsp::cc13_sweepA::circle2f_contains_point_004f2fd0(circle, p);
+            check_note(c, n1 == n2, "c=%a,%a r=%a p=%a,%a: %d / %d", circle[0], circle[1], circle[2], p[0], p[1], n1, n2);
+        }
+    }
+    {
+        auto& c = open("004439B0 time of day hours");
+        auto native = at<void (__fastcall*)(void*, int, std::int32_t, std::int32_t, std::int32_t, std::int32_t)>(cc13_leaf_004439b0);
+        for (int i = 0; i < 4000; ++i) {
+            auto n = [](int span) { return static_cast<std::int32_t>(next() % (2 * span + 1)) - span; };
+            const std::int32_t h = i % 4 ? n(30) : n(5000), m = i % 4 ? n(70) : n(300000),
+                               s = i % 4 ? n(70) : n(10000000), ms = i % 4 ? n(1000) : n(100000000);
+            alignas(4) std::uint8_t self[8]{};
+            native(self, 0, h, m, s, ms);
+            float r1;
+            std::memcpy(&r1, self + 4, 4);
+            const float r2 = bsp::cc13_band0040::time_of_day_hours_004439b0(h, m, s, ms);
+            check_note(c, same(r1, r2), "%d:%d:%d.%d: %a / %a", h, m, s, ms, r1, r2);
+        }
+    }
+    {
+        auto& c = open("006E2490 projectile shot speed");
+        auto native = at<float (__fastcall*)(void*)>(cc13_leaf_006e2490);
+        for (int i = 0; i < 4000; ++i) {
+            alignas(4) std::uint8_t shot[0x14]{};
+            const float v[3] = {pick(-500, 500), pick(-500, 500), pick(-500, 500)};
+            if (i % 30 == 0) { const float z = 1e-6f; std::memcpy(shot + 8, &z, 4); }
+            else std::memcpy(shot + 8, v, 12);
+            const float r1 = native(shot), r2 = bsp::cc13_seg33a::projectile_shot_speed_006e2490(shot);
+            if (std::isnan(r1) && std::isnan(r2) && !same(r1, r2)) c.check_nan_only();
+            else check_note(c, same(r1, r2), "v=%a,%a,%a: %a / %a", v[0], v[1], v[2], r1, r2);
+        }
+    }
+    {
+        auto& s = open("009B94E0 split-S roll step");
+        auto& r = open("009B9680 maneuver roll completed");
+        auto step = at<void (__fastcall*)(void*, int, std::uint32_t)>(cc13_leaf_009b94e0);
+        auto done = at<std::uint8_t (__fastcall*)(void*)>(cc13_leaf_009b9680);
+        for (int i = 0; i < 4000; ++i) {
+            static std::uint8_t unit[0xc70], desc[0x1c0];
+            alignas(4) std::uint8_t t1[0x404]{}, t2[0x404]{};
+            const float rate = pick(0.1f, 5), span = pick(0.1f, 5), pitch = pick(-3.2f, 3.2f), bank = uniform(-3.2f, 3.2f);  // 00438B10 loops on an infinite angle
+            std::memcpy(desc + 0x1a8, &rate, 4); std::memcpy(desc + 0x1bc, &span, 4);
+            std::memcpy(unit + 0xc64, &pitch, 4); std::memcpy(unit + 0xc68, &bank, 4);
+            void* u = unit; void* d = desc;
+            std::memcpy(t1 + 0x2f4, &u, 4); std::memcpy(t1 + 0x2f8, &d, 4);
+            const float goal = pick(-3.2f, 3.2f);
+            std::memcpy(t1 + 0x400, &goal, 4);
+            std::memcpy(t2, t1, sizeof t1);
+            const std::uint8_t wrap = static_cast<std::uint8_t>(next() & 1);
+            step(t1, 0, wrap);
+            bsp::bot_task_split_s_roll_step_009b94e0(t2, wrap, &bsp::wrapped_angle_subtract_00438b10);
+            float a1, a2;
+            std::memcpy(&a1, t1 + 0x294, 4); std::memcpy(&a2, t2 + 0x294, 4);
+            if (std::isnan(a1) && std::isnan(a2) && !same(a1, a2)) s.check_nan_only();
+            else check_note(s, std::memcmp(t1, t2, sizeof t1) == 0, "pitch=%a bank=%a wrap=%d: %a / %a", pitch, bank, wrap, a1, a2);
+            std::memcpy(t2, t1, sizeof t1);
+            const bool d1 = done(t1) != 0, d2 = bsp::bot_task_maneuver_roll_completed_009b9680(t2);
+            float b1, b2;
+            std::memcpy(&b1, t1 + 0x2a0, 4); std::memcpy(&b2, t2 + 0x2a0, 4);
+            if (d1 == d2 && std::isnan(b1) && std::isnan(b2) && !same(b1, b2)) r.check_nan_only();
+            else check_note(r, d1 == d2 && std::memcmp(t1, t2, sizeof t1) == 0, "goal=%a pitch=%a bank=%a: %d %a / %d %a",
+                            goal, pitch, bank, d1, b1, d2, b2);
+        }
+    }
+    {
+        auto& c = open("00786030 average peer quality");
+        auto native = at<float (__fastcall*)(const void*)>(cc13_leaf_00786030);
+        for (int i = 0; i < 4000; ++i) {
+            alignas(4) std::uint8_t raw[0xe0]{};
+            bsp::mp_cc13::PeerQualityRow rows[8]{};
+            for (int k = 1; k < 8; ++k) {
+                rows[k].present_00 = (next() % 3) ? 0u : next();
+                rows[k].value_0c = pick(-2, 2);
+                std::memcpy(raw + 0x1c * k, &rows[k].present_00, 4);
+                std::memcpy(raw + 0x1c * k + 0xc, &rows[k].value_0c, 4);
+            }
+            const float r1 = native(raw), r2 = bsp::mp_cc13::average_peer_quality_00786030(rows);
+            if (std::isnan(r1) && std::isnan(r2) && !same(r1, r2)) c.check_nan_only();
+            else check_note(c, same(r1, r2), "%a / %a", r1, r2);
+        }
+    }
+    {
+        auto& c = open("00815440 build unit order record");
+        auto native = at<void* (__fastcall*)(void*, int, float, float, std::uint32_t)>(cc13_leaf_00815440);
+        for (int i = 0; i < 4000; ++i) {
+            bsp::UnitOrderRecordStorage s1{}, s2{};
+            for (auto& b : s1) b = static_cast<std::uint8_t>(next());
+            s2 = s1;
+            const float a = pick(-4, 4), b = pick(-4, 4);
+            const std::uint8_t kind = static_cast<std::uint8_t>(next());
+            void* back = native(s1.data(), 0, a, b, kind | 0xabcd0000u);
+            bsp::build_unit_order_record_00815440(s2, a, b, kind);
+            check_note(c, back == s1.data() && s1 == s2, "a=%a b=%a", a, b);
+        }
+    }
+    {
+        auto& c = open("007B9620 plane altitude sink predicate");
+        auto native = at<std::uint8_t (__fastcall*)(void*)>(cc13_leaf_007b9620);
+        for (int i = 0; i < 4000; ++i) {
+            static std::uint8_t plane[0xc70], desc[0x1b0];
+            void* d = desc;
+            std::memcpy(plane + 0x538, &d, 4);
+            const float alt = pick(-50, 400), sink = pick(-30, 10), pitch = pick(-1.6f, 1.6f), stall = pick(10, 100);
+            std::memcpy(plane + 0x9b4, &alt, 4); std::memcpy(plane + 0x9b8, &sink, 4);
+            std::memcpy(plane + 0xc64, &pitch, 4); std::memcpy(desc + 0x1ac, &stall, 4);
+            const bool n1 = native(plane) != 0;
+            const bool n2 = bsp::cc13_seg47::plane_altitude_sink_predicate_007b9620(bsp::cc13_seg47::Raw{plane});
+            check_note(c, n1 == n2, "alt=%a sink=%a pitch=%a stall=%a: %d / %d", alt, sink, pitch, stall, n1, n2);
+        }
+    }
+    {
+        auto& c = open("00727C30 index of readiest barrel");
+        auto native = at<std::int32_t (__fastcall*)(void*)>(cc13_leaf_00727c30);
+        for (int i = 0; i < 4000; ++i) {
+            alignas(4) std::uint8_t gun[0x450]{};
+            float timers[24];
+            const std::int32_t n = static_cast<std::int32_t>(next() % 24);
+            for (int k = 0; k < 24; ++k) timers[k] = (next() % 4) ? pick(-1, 5) : static_cast<float>(next() % 3);
+            float* p = timers;
+            std::memcpy(gun + 0x414, &p, 4); std::memcpy(gun + 0x448, &n, 4);
+            const std::int32_t r1 = native(gun);
+            const std::int32_t r2 = bsp::director_geommesh_seg38_39_argon::bsp_gun_index_of_readiest_barrel_00727c30(gun);
+            check_note(c, r1 == r2, "n=%d: %d / %d", n, r1, r2);
+        }
+    }
+}
 // cc13-fixture8: defined at the end of the file.
 template<class Open> void run_fixture8(Open open);
 
@@ -1109,6 +1414,7 @@ int main() {
         const std::string tag = pc == _PC_53 ? " @53" : " @24";
         run_fixture2([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
         run_fixture3([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
+        run_fixture5([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
     }
     // cc13-fixture8: the same two passes over its own input stream.
     for (const unsigned pc : {static_cast<unsigned>(_PC_53), static_cast<unsigned>(_PC_24)}) {
@@ -1370,6 +1676,13 @@ int main() {
         // cc13-fixture3 (docs/CC13_FIXTURE_PASS_3.md).
         {"00C47AA0", 0, 1, "NaN sign/payload only"},
         {"00C38810", 0, 4, "NaN sign/payload only"},
+        // cc13-fixture5: edge inputs only (FLT_MAX, infinities, denormals); clean without them.
+        {"006FBCE0", 55, 0, "float intermediates overflow where the x87 stack does not"},
+        {"0078FAF0", 4, 1, "float intermediates denormalize where the x87 stack does not"},
+        {"004F3030", 2, 0, "float intermediates denormalize where the x87 stack does not"},
+        {"004F40C0", 34, 0, "float intermediates overflow where the x87 stack does not"},
+        {"004F2FD0", 5, 0, "float intermediates underflow where the x87 stack does not"},
+        {"009B94E0", 40, 0, "float intermediates overflow or denormalize where the x87 stack does not"},
     };
     int failures = 0;
     for (int i = 0; i < count; ++i) {
