@@ -461,4 +461,31 @@ std::uint8_t* construct_mothership_class_00963ec0(VehicleClassConstructorHost& h
     return self;
 }
 
+// 00963380: ECX=this, EAX=this, RET 009635B3. Assembly 009633A0/CD fixes
+// base call and vector construction. All 76 zero stores are listed in native
+// order, including the two MOVSS stores. Native SEH rollback is not projected.
+std::uint8_t* construct_ship_class_base_00963380(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00749050(self);
+    write_vehicle_class_u32(self, 0, 0x00d1acc4);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1acc0);
+    host.call_00bf7cd1(self + 0x138, 0x30, 0x14, 0x0095b920, 0x009560f0);
+    constexpr std::size_t zero_offsets[] = {
+        0x51c, 0x52c, 0x530, 0x534, 0x55c, 0x588, 0x58c, 0x590, 0x5ac,
+        0x630, 0x634, 0x650, 0x654, 0x658, 0x65c, 0x668, 0x66c, 0x670,
+        0x674, 0x678, 0x67c, 0x680, 0x684, 0x688, 0x68c, 0x690, 0x694,
+        0x698, 0x6a4, 0x6a8, 0x6ac, 0x6b0, 0x6c0, 0x6c4, 0x6c8, 0x6d0,
+        0x6d4, 0x6d8, 0x6e0, 0x6e4, 0x6e8, 0x6f0, 0x6f4, 0x6f8, 0x700,
+        0x704, 0x708, 0x710, 0x714, 0x718, 0x7a8, 0x7ac, 0x7b0, 0x7b8,
+        0x7bc, 0x7c0, 0x7c8, 0x7cc, 0x7d0, 0x7d8, 0x7dc, 0x7e0, 0x7e8,
+        0x7ec, 0x7f0, 0x7f8, 0x7fc, 0x800, 0x724, 0x56c, 0x568, 0x564,
+        0x560, 0x570, 0x798, 0x79c
+    };
+    for (const auto offset : zero_offsets) write_vehicle_class_u32(self, offset, 0);
+    return self;
+}
+
+// 00963E00: MOV EAX,00D1AE68; RET. Full literal-return body; portable string
+// storage preserves the recovered bytes but does not preserve native identity.
+const char* submarine_class_name_00963e00() noexcept { return "MSubmarine"; }
+
 } // namespace bsp

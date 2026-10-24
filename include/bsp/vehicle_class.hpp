@@ -311,6 +311,8 @@ struct VehicleClassConstructorHost {
     virtual void call_00749180(std::uint8_t* self) = 0; // contract unread
     virtual void call_00749050(std::uint8_t* self) = 0; // contract unread
     virtual void call_00963380(std::uint8_t* self) = 0; // ship base; explicit native boundary
+    virtual void call_00bf7cd1(std::uint8_t* first, std::uint32_t stride,
+        std::uint32_t count, std::uint32_t constructor, std::uint32_t destructor) = 0;
     virtual void call_007d1e50(std::uint8_t* self) = 0; // plane base; contract unread
 };
 std::uint8_t* construct_recon_plane_class_00951aa0(VehicleClassConstructorHost&, std::uint8_t*);
@@ -336,5 +338,10 @@ std::uint8_t* construct_battleship_class_00963d30(VehicleClassConstructorHost&, 
 std::uint8_t* construct_submarine_class_00963db0(VehicleClassConstructorHost&, std::uint8_t*);
 std::uint8_t* construct_torpedo_boat_class_00963e40(VehicleClassConstructorHost&, std::uint8_t*);
 std::uint8_t* construct_mothership_class_00963ec0(VehicleClassConstructorHost&, std::uint8_t*);
+
+// 00963380: ECX=this, EAX=this, RET; normal path over explicit base/CRT calls.
+// Its SEH unwind entry 00CA9D9D is not part of this portable projection.
+std::uint8_t* construct_ship_class_base_00963380(VehicleClassConstructorHost&, std::uint8_t*);
+const char* submarine_class_name_00963e00() noexcept;
 
 } // namespace bsp

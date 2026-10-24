@@ -374,4 +374,18 @@ PropLibraryLoadResult load_prop_library(const std::string& folder,
 bool load_prop_library_file(const std::string& path, PropLibraryHost& host,
     PropLibraryDocument& document, std::string& error);
 
+// Native image path for 00951220. __thiscall(ECX=record vector, ignored name,
+// path entity), EAX=record or zero, RET 8 at 009512EA. The allocation-failure
+// branch still appends a null pointer. Exports prove the whole ordinary path;
+// native SEH allocation cleanup remains outside this portable interface.
+struct TrafficRecordCreateHost {
+    virtual ~TrafficRecordCreateHost() = default;
+    virtual std::uint8_t* call_00bf681b(std::uint32_t bytes) = 0;
+    virtual void call_0049f9b0(std::uint8_t* record) = 0; // contract unread
+    virtual std::uint32_t read_global_u32(std::uint32_t address) = 0;
+    virtual void call_00950fc0(void* vector, std::uint8_t* const* record) = 0;
+};
+std::uint8_t* create_traffic_record_00951220(TrafficRecordCreateHost&, void* vector,
+    const void* ignored_name, std::uint32_t path_entity);
+
 } // namespace bsp
