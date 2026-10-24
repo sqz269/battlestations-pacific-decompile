@@ -34,11 +34,11 @@ constexpr double kTorpedoScanSlopeStepGrowthImage_00d7a2f8 = 0.01999999955296516
 
 // ON arm of the xz length at 009D3536-009D3563, and of 00414C60 which is the same
 // code: each square and the sum round to 24 bits and the sum is stored to a float
-// (009D353E FSTP), the 1e-10 test reads that float (JBE takes zero), and the
-// 00BF7030 sqrt result is stored to a float.
+// (009D353E FSTP), the 1e-10 test reads that float (JBE takes zero, also on a
+// NaN, which leaves ZF/CF set), and the 00BF7030 sqrt result is stored to a float.
 float length_xz_pc24(float a, float b) noexcept {
     const float d2 = b * b + a * a;
-    if (static_cast<double>(d2) <= kTorpedoRangeEpsilonSquared_00ce3820) return 0.0f;
+    if (!(static_cast<double>(d2) > kTorpedoRangeEpsilonSquared_00ce3820)) return 0.0f;
     return static_cast<float>(std::sqrt(static_cast<double>(d2)));
 }
 
