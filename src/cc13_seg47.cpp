@@ -1174,13 +1174,14 @@ std::int32_t unit_is_gun_of_subtype156_007ba3e0(Seg47Host& host, Raw unit) {
 
 // 007BA450, __fastcall(ECX = const float* a, EDX = const float* b; const float* c),
 // RET 4, ST0. m = (*a < *b or unordered) ? *b : *a; result = (m < *c or
-// unordered) ? *c : m (FCOMI/JB on both).
+// unordered) ? *c : m (FCOMI/JB on both). Equal operands keep the earlier one, so
+// max3(+0, -0, ..) is +0. The selections index a pair: MSVC folds the plain ternary
+// into MAXSS, which keeps the later operand on a tie (cc13-fixture7).
 float max3_007ba450(const float* a, const float* b, const float* c) {
-    const float x = *a;
-    const float y = *b;
-    const float m = !(x >= y) ? y : x;
-    const float z = *c;
-    return !(m >= z) ? z : m;
+    const float ab[2] = {*b, *a};
+    const float m = ab[*a >= *b];
+    const float mc[2] = {*c, m};
+    return mc[m >= *c];
 }
 
 // 007BA600, __thiscall(ECX = plane; const float[3]*), RET 4: +F0h..+F8h = the vector.

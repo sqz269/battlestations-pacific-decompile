@@ -147,10 +147,14 @@ void vector3_subtract_to_00427c90(const float* a, float* out, const float* b) {
 
 // 00427E30. The association is read from the bytes (D9 C1 DE CA D9 C2 DE CB D9
 // C9 DE C2 DC C8 DE C1): (x*x + y*y) + z*z, stored to float. The decompiler
-// prints z*z + x*x + y*y.
+// prints z*z + x*x + y*y. Everything stays on the stack, so on the main thread (24-bit
+// precision control, HUD callers) each operation rounds to 24 bits with the extended
+// exponent and only the final FSTP DWORD rounds to float (cc13-fixture7).
 float vector3_length_squared_00427e30(const float* v) {
-    const float xy = v[0] * v[0] + v[1] * v[1];
-    return xy + v[2] * v[2];
+    using cc13x87::x87_add24;
+    using cc13x87::x87_mul24;
+    const double xy = x87_add24(x87_mul24(v[1], v[1]), x87_mul24(v[0], v[0]));
+    return static_cast<float>(x87_add24(xy, x87_mul24(v[2], v[2])));
 }
 
 float* entity_world_position_refreshed_00427eb0(Raw entity, Left61Host& host) {
