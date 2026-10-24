@@ -1598,3 +1598,23 @@ on every run except BSM09 d1 (15-16, provisional as before).
 - **JM08 `s63_j8_v3`** reproduces ships63's e3cdbd967 numbers in all three envs.
 - **USN21** ref ran twice; both completed at 2966.77 s.
 - **IJN08** stays a re-plan (05cb6f1bc, SHIP_AI 311).
+## 2026-10-24, BSM01 re-plan `l73_b1_m1`, all three envs (cc9-lua73, keeper)
+
+Base: main e3c2cc5b3 (recon flip ON). `l72_b1_k1` fails the default env at 1518.36 s. In that run HenryPT is at
+(2322,-2080) at step 6000 against (2396,-1978) in ref, so it runs about 100 m ahead. It passes the 6900 leg's point
+(1900,-3000) before frame 6900 (it is at (1915,-3088) there), turns west at 7000 from (1847,-3186), and stalls near
+(1630,-3160) from step 7200 at speed ~24. It never reaches the MiniSub and dies to Sacramento at 1518.31 s.
+
+**`config/win_orders/bsm01_l73_b1_m1.txt`** is k1 with the one line `6900 takehelm HenryPT 1.0 1900 -3000 stop 30`
+moved to frame 6750, so the stop catches HenryPT at z~-3000 in the default env too.
+
+| Plan | ref | 20,3 | default |
+| --- | --- | --- | --- |
+| `l73_b1_m1` | EndMission 839.92 s | EndMission 836.92 s | EndMission 905.90 s |
+| sibling m2 (leg at 6800) | **no end** | EndMission 836.92 s | **no end** |
+| sibling m3 (6600 leg to (1900,-3000) stop 30, 6900 leg dropped) | EndMission 794.93 s | **no end** | EndMission 689.96 s |
+
+- Each m1 EndMission logs the guard's refusal; pf=0, helm_moveto_unselected=0, helm_role_forced=0 (non-provisional).
+- Logs `cc9-lua52\local\l73r_b1m<n>_main_<env>.log`; sibling plans `local\l73_b1_m2.txt`, `local\l73_b1_m3.txt`.
+- The BSM01 row moves to `l73_b1_m1`, which wins all three envs. m2 shows the margin is thin: 50 frames later and
+  ref loses.
