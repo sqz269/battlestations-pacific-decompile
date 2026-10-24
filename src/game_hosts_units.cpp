@@ -2246,6 +2246,10 @@ struct GameUnitSlot {
     float plane_path_pitch_c84{0.0f};
     bool plane_death_c3a{false};
     bool plane_death_removed{false};
+    // Packet cc13-limbo3: the squadron's live count (+3CCh, this plane included)
+    // stamped by the stock return just before it clears the member seat; -1
+    // otherwise. Read only by plane_squadron_live_count_3cc.
+    int squadron_live_3cc_at_stock_return{-1};
     bool squadron_left_on_death{false};   // packet cc9_val_squadron_registry
     int db_done_law_ticks{0};             // packet cc9_plane_follow_law
     // Packet cc9_gunfire_avoidance (docs/ATTACKER_EVASION.md section 5): the
@@ -17551,6 +17555,10 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
         }
     }
     if (sq != nullptr) {
+        // Packet cc13-limbo3. The image's 007F1CA0 never calls 007F3970 here, so
+        // at the Kill's flush (00959450 -> 009595F4) +3CCh still counts this
+        // plane. The host clears the seat first; the pre-clear count is kept.
+        p.squadron_live_3cc_at_stock_return = sq->live_count();
         for (std::size_t& member : sq->member_units) {                   // 007F3970
             if (member != p.process_index) continue;
             member = bsp::kPlaneSquadronNoUnit;
@@ -43431,8 +43439,13 @@ std::size_t GameUnitsHost::unit_part_descriptor_count(std::size_t index) const {
     return n > 0 ? static_cast<std::size_t>(n) : 0;
 }
 
-int GameUnitsHost::plane_squadron_live_count_3cc(std::size_t plane) const {
+int GameUnitsHost::plane_squadron_live_count_3cc(std::size_t plane) const noexcept {
     // Member ids are slot indices (process_index is the slot's position, 20376).
+    // A stock-return stamp wins: that path cleared the seat before its Kill.
+    if (plane < impl_->slots.size()) {
+        const int stamped = impl_->slots[plane]->squadron_live_3cc_at_stock_return;
+        if (stamped >= 0) return stamped;
+    }
     const bsp::PlaneSquadronHostRecord* const sq =
         bsp::plane_squadron_registry().find_by_member_unit(plane);
     return sq != nullptr ? sq->live_count() : -1;

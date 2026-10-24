@@ -13956,10 +13956,23 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
             // 009595DF..009595FB: victim vt[5Ch](0Fh), then 009595F4 CMP
             // [[unit+9D4h]+3CCh],1 / JG keeps it. 00959450 runs at 007BCAD9,
             // before 007F3970 (007BCAEB) drops +3CCh, so the count still holds
-            // the dying plane. This host removes it in the units destroy flush
-            // (game_hosts_units.cpp, kSquadronRemovesDeadBound), after this kill,
-            // so the live count read here is the image's. -1 (no record holds the
-            // plane) is taken as not > 1: the image would read a null +9D4h here.
+            // the dying plane. Host paths (packet cc13-limbo3):
+            // * combat death: the units host removes the seat at the next plane
+            //   step (run_world_contact_phase, kSquadronRemovesDeadBound), after
+            //   this kill, so the live count read here still holds the plane;
+            // * stock return (007F1CA0, Kill(plane, 5) at 007F1D57): the image
+            //   never calls 007F3970 there, but the host clears the seat before
+            //   kill_unit_00926d90, so the accessor answers the count it stamped
+            //   just before that clear;
+            // * MISMATCH, not reproduced: the image's 007F3CE7 (TickAdvance) and
+            //   008A2249 (SquadronLandAndKill) call 007F3970 right after the
+            //   queued Kill, so by the flush plane+9D4h is null and a controlled
+            //   plane would fault at 009595F4; the host's SquadronLandAndKill
+            //   (game_hosts_lua.cpp ~10147) keeps its members and reads N here.
+            // The death route runs at the gunnery kill, not at the image's destroy
+            // flush (the cc9_unit_death_route substitution), so the image's count
+            // can be lower when another member died in between. -1 (no record
+            // holds the plane) is taken as not > 1, the image's null +9D4h.
             const bool plane = units.unit_is_kind_of(victim, 0x0F);
             const int squadron_live = plane ? units.plane_squadron_live_count_3cc(victim) : 0;
             const bool keeps = plane && squadron_live > 1;
