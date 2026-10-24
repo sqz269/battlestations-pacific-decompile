@@ -3,6 +3,7 @@
 // docs/CC13_SYS_3.md for the evidence, the original ABIs and what is not claimed.
 
 #include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/oct18_tail_c.hpp"
 
 #include <windows.h>
@@ -1127,35 +1128,52 @@ FishSchoolDescLayout* create_fish_school_00709620(std::int32_t kind, const float
 
 namespace {
 
-// One structural spring of 00709EF0 between points a and b.
+// cc13-fixture4: 00709EF0 runs on the main thread (00709EF0 <- 0070AA70 flag wave update), so
+// precision control is 24-bit: each x87 operation rounds once to 24 bits with the extended
+// exponent, each FSTP float is a cast. The groupings below are the image's stack order.
+using cc13x87::x87_add24;
+using cc13x87::x87_sub24;
+using cc13x87::x87_mul24;
+using cc13x87::x87_div24;
+using cc13x87::x87_sqrt24;
+float fstp(double v) { return static_cast<float>(v); }
+
+// One structural spring of 00709EF0 between points a and b (0070A032..0070A1EE).
 void flag_spring(FlagClothLayout& cloth, const float* positions, const float* velocities, std::int32_t a,
                  std::int32_t b, float rest) {
     const float* pa = positions + a * 3;
     const float* pb = positions + b * 3;
-    const float dx = pb[0] - pa[0];
-    const float dy = pb[1] - pa[1];
-    const float dz = pb[2] - pa[2];
-    const float sq = dz * dz + dy * dy + dx * dx;
-    const float len = static_cast<double>(sq) <= 1e-10 ? 0.0f : static_cast<float>(std::sqrt(static_cast<double>(sq)));
-    const float inv = 1.0f / len;
-    const float ux = inv * dx;
-    const float uy = dy * inv;
-    const float uz = inv * dz;
-    const float fs = (len - rest) * cloth.stiffness_4c;
+    const float dx = fstp(x87_sub24(pb[0], pa[0]));
+    const float dy = fstp(x87_sub24(pb[1], pa[1]));
+    const float dz = fstp(x87_sub24(pb[2], pa[2]));
+    const float sq = fstp(x87_add24(x87_add24(x87_mul24(dx, dx), x87_mul24(dy, dy)), x87_mul24(dz, dz)));
+    // FCOMI sq, [00CE3820] = 1e-10 / JBE: not greater (NaN included) gives 0; the division by
+    // 0 that follows is the image's. 00BF7030 sqrt, stored to float.
+    const float len = !(static_cast<double>(sq) > 1e-10) ? 0.0f : fstp(x87_sqrt24(sq));
+    const float inv = fstp(x87_div24(1.0, len));
+    const float ux = fstp(x87_mul24(dx, inv));
+    const float uy = fstp(x87_mul24(dy, inv));
+    const float uz = fstp(x87_mul24(inv, dz));
+    const float fs = fstp(x87_mul24(x87_sub24(len, rest), cloth.stiffness_4c));
+    const float sx = fstp(x87_mul24(fs, ux)), sy = fstp(x87_mul24(uy, fs)), sz = fstp(x87_mul24(fs, uz));
     const float* va = velocities + a * 3;
     const float* vb = velocities + b * 3;
-    const float fd = ((vb[2] - va[2]) * uz + (vb[1] - va[1]) * uy + (vb[0] - va[0]) * ux) * cloth.damping_50;
-    const float fx = fd * ux + ux * fs;
-    const float fy = uy * fd + uy * fs;
-    const float fz = fd * uz + uz * fs;
+    const float dvx = fstp(x87_sub24(vb[0], va[0]));
+    const float dvy = fstp(x87_sub24(vb[1], va[1]));
+    const float dvz = fstp(x87_sub24(vb[2], va[2]));
+    const float dot = fstp(x87_add24(x87_add24(x87_mul24(dvx, ux), x87_mul24(dvy, uy)), x87_mul24(dvz, uz)));
+    const float fd = fstp(x87_mul24(dot, cloth.damping_50));
+    const float fx = fstp(x87_add24(fstp(x87_mul24(ux, fd)), sx));
+    const float fy = fstp(x87_add24(fstp(x87_mul24(uy, fd)), sy));
+    const float fz = fstp(x87_add24(fstp(x87_mul24(uz, fd)), sz));
     float* fa = cloth.forces_18 + a * 3;
     float* fb = cloth.forces_18 + b * 3;
-    fa[0] = fx + fa[0];
-    fa[1] = fy + fa[1];
-    fa[2] = fz + fa[2];
-    fb[0] = fb[0] - fx;
-    fb[1] = fb[1] - fy;
-    fb[2] = fb[2] - fz;
+    fa[0] = fstp(x87_add24(fx, fa[0]));
+    fa[1] = fstp(x87_add24(fy, fa[1]));
+    fa[2] = fstp(x87_add24(fz, fa[2]));
+    fb[0] = fstp(x87_sub24(fb[0], fx));
+    fb[1] = fstp(x87_sub24(fb[1], fy));
+    fb[2] = fstp(x87_sub24(fb[2], fz));
 }
 
 }  // namespace
@@ -1164,16 +1182,25 @@ void apply_flag_wind_00709ef0(FlagClothLayout& cloth, const float* positions, co
     for (std::int32_t i = 0; i < cloth.count_04; ++i) {
         const float* n = cloth.normals_1c + i * 3;
         float* f = cloth.forces_18 + i * 3;
-        const float s = (n[2] * cloth.wind_20[2] + cloth.wind_20[0] * n[0] + n[1] * cloth.wind_20[1]) /
-                        (n[2] * n[2] + n[0] * n[0] + n[1] * n[1]);
-        f[0] = s * n[0];
-        f[1] = n[1] * s;
-        f[2] = s * n[2];
-        f[1] = cloth.gravity_58 + f[1];
+        const float* w = cloth.wind_20;
+        // 00709F23..00709F60: (ny wy + wx nx) + nz wz and (ny ny + nx nx) + nz nz, each stored
+        // to float, then the quotient stored to float.
+        const float num = fstp(x87_add24(x87_add24(x87_mul24(n[1], w[1]), x87_mul24(w[0], n[0])),
+                                         x87_mul24(n[2], w[2])));
+        const float den = fstp(x87_add24(x87_add24(x87_mul24(n[1], n[1]), x87_mul24(n[0], n[0])),
+                                         x87_mul24(n[2], n[2])));
+        const float s = fstp(x87_div24(num, den));
+        f[0] = fstp(x87_mul24(n[0], s));
+        f[1] = fstp(x87_mul24(n[1], s));
+        f[2] = fstp(x87_mul24(s, n[2]));
+        f[1] = fstp(x87_add24(cloth.gravity_58, f[1]));
         const float* v = velocities + i * 3;
-        f[0] = f[0] + cloth.velocity_drag_54 * v[0];
-        f[1] = v[1] * cloth.velocity_drag_54 + f[1];
-        f[2] = f[2] + cloth.velocity_drag_54 * v[2];
+        const float drag = cloth.velocity_drag_54;
+        const float px = fstp(x87_mul24(v[0], drag)), py = fstp(x87_mul24(v[1], drag)),
+                    pz = fstp(x87_mul24(drag, v[2]));
+        f[0] = fstp(x87_add24(f[0], px));
+        f[1] = fstp(x87_add24(py, f[1]));
+        f[2] = fstp(x87_add24(f[2], pz));
     }
     for (std::int32_t r = 0; r < cloth.rows_40; ++r) {
         for (std::int32_t c = 0; c < cloth.columns_3c - 1; ++c) {
@@ -1188,7 +1215,6 @@ void apply_flag_wind_00709ef0(FlagClothLayout& cloth, const float* positions, co
         }
     }
 }
-
 void integrate_flag_cloth_0070a450(const FlagClothLayout& cloth, float* out_a, float* out_b, const float* in_a,
                                    const float* in_b, const float* vel, float dt) {
     const float* force = cloth.forces_18;

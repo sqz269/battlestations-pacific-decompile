@@ -163,6 +163,8 @@ std::uint32_t plane_set_classify_point(const PlaneRow* rows, int count, const fl
 // 00B65710, __thiscall(set, const float box[6] {min.xyz, max.xyz}), RET 4.
 // With half = 0.5 (double D7A280) and |n| as (n <= 0 ? -0.0f - n : n):
 // AAA when dot(n, (min+max)*half) - d < -dot(|n|, (max-min)*half).
+// cc13-fixture4: modelled at the main thread's 24-bit precision with the image's float
+// spills and sum order (docs/CC13_FIXTURE_PASS_4.md); bit-exact against the original bytes.
 std::uint32_t plane_set_classify_aabb(const PlaneRow* rows, int count, const float box[6]);
 
 // ---------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 // Segment 2 camera movers. See include/bsp/segment2_camera_cc13.hpp and
 // docs/CC13_SEGMENT2_CAMERA_MATH.md.
 #include "bsp/segment2_camera_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include "bsp/camera_decomposition.hpp"
 #include "bsp/dive_bomb_task.hpp"
@@ -334,25 +335,27 @@ void contact_point_list_append_0042b570(ContactPointList& list, const Vec3& poin
 // ---- cc13-camera2 -------------------------------------------------------
 
 void random_wander_evaluate_0042c090(RandomWander& w) noexcept {
-    float t = f32(static_cast<double>(w.elapsed_24) / w.period_28);
+    // cc13-fixture4: main-thread precision (24-bit control, extended exponent). Every
+    // operation is stored to float, so each is one 24-bit rounding then the FSTP; a denormal
+    // result is rounded twice, as on the x87.
+    using cc13x87::x87_add24; using cc13x87::x87_sub24; using cc13x87::x87_mul24; using cc13x87::x87_div24;
+    float t = f32(x87_div24(w.elapsed_24, w.period_28));
     if (!(1.0 > t)) t = 1.0f;   // FCOMI 1.0, t; JBE -> [00D7A24C]
-    const float dx = f32(static_cast<double>(w.start_00.x) - w.target_0c.x);
-    const float dy = f32(static_cast<double>(w.start_00.y) - w.target_0c.y);
-    const float dz = f32(static_cast<double>(w.start_00.z) - w.target_0c.z);
-    const float s = f32(static_cast<double>(t) * t);
-    const float keep = f32(1.0 - s);
-    const float mx = f32(static_cast<double>(dx) * keep), my = f32(static_cast<double>(dy) * keep),
-                mz = f32(static_cast<double>(keep) * dz);
-    w.output_18 = Vec3{f32(static_cast<double>(w.target_0c.x) + mx),
-                       f32(static_cast<double>(w.target_0c.y) + my),
-                       f32(static_cast<double>(w.target_0c.z) + mz)};
-    float u = f32(static_cast<double>(w.elapsed_24) / w.life_30);
+    const float dx = f32(x87_sub24(w.start_00.x, w.target_0c.x));
+    const float dy = f32(x87_sub24(w.start_00.y, w.target_0c.y));
+    const float dz = f32(x87_sub24(w.start_00.z, w.target_0c.z));
+    const float s = f32(x87_mul24(t, t));
+    const float keep = f32(x87_sub24(1.0, s));
+    const float mx = f32(x87_mul24(dx, keep)), my = f32(x87_mul24(dy, keep)), mz = f32(x87_mul24(keep, dz));
+    w.output_18 = Vec3{f32(x87_add24(w.target_0c.x, mx)), f32(x87_add24(w.target_0c.y, my)),
+                       f32(x87_add24(w.target_0c.z, mz))};
+    float u = f32(x87_div24(w.elapsed_24, w.life_30));
     if (!(1.0 > u)) u = 1.0f;
-    const float u2 = f32(static_cast<double>(u) * u);
-    const float envelope = f32(1.0 - u2);
-    w.output_18.x = f32(static_cast<double>(w.output_18.x) * envelope);
-    w.output_18.y = f32(static_cast<double>(envelope) * w.output_18.y);
-    w.output_18.z = f32(static_cast<double>(envelope) * w.output_18.z);
+    const float u2 = f32(x87_mul24(u, u));
+    const float envelope = f32(x87_sub24(1.0, u2));
+    w.output_18.x = f32(x87_mul24(w.output_18.x, envelope));
+    w.output_18.y = f32(x87_mul24(envelope, w.output_18.y));
+    w.output_18.z = f32(x87_mul24(envelope, w.output_18.z));
 }
 
 void random_wander_retarget_0042c1b0(RandomWander& w, WanderRandom& rng) {

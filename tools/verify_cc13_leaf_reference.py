@@ -120,6 +120,19 @@ CODE = {
     0x809de0: 0x23, 0x7b5390: 0x6d, 0x791640: 0x71, 0x59ab10: 0xad, 0x790460: 0x61, 0x414130: 0x25,
     0x9c6220: 0x47, 0x88a0c0: 0x6d, 0x98a710: 0x3f, 0x638b20: 0x31, 0x42c450: 0x62, 0x7b5be0: 0x3a,
     0x6eb870: 0x53, 0x9b93f0: 0x21, 0xb0a3f0: 0x28, 0x6ea530: 0x15,
+    # cc13-fixture4: main-thread math leaves (docs/CC13_FIXTURE_PASS_4.md).
+    0x709ef0: 0x55a,  # flag cloth wind and springs (sqrt)
+    0x70a450: 0x141,  # flag cloth integrate
+    0x6f9ee0: 0x437,  # convex object box
+    0xb917d0: 0x279,  # quadtree node clip range
+    0xb94e90: 0x211,  # ocean FFT32 rows (sqrt)
+    0xb950b0: 0x216,  # ocean FFT32 columns (sqrt)
+    0xb6d440: 0x8b,   # matrix scale
+    0xb6d630: 0x98,   # matrix add
+    0xb6d6d0: 0x98,   # matrix subtract
+    0xb65710: 0x1c1,  # plane set classify AABB
+    0xb999f0: 0x14a,  # plane / segment intersection
+    0x42c090: 0x114,  # random wander evaluate
     # cc13-fixture7 (Dyn supports/transforms and main-thread helpers).
     0xc48080: 0x72,   # sphere support (float)
     0xc38970: 0x46,   # sphere support (double)
@@ -168,6 +181,8 @@ DATA = {
     # cc13-fixture8: constants read by the routines above.
     0xd045f0: 8, 0xce3850: 4, 0xce3ae8: 4, 0xce3d78: 8, 0xd7a210: 8, 0xcf9058: 8,
     0xce7630: 8, 0xce38c8: 4, 0xce3d08: 4, 0xd7a278: 8,
+    # cc13-fixture4 constants.
+    0xd7a244: 4, 0xd7a248: 4, 0xd638e4: 4,  # and 00D7A210, listed by fixture8
     0xcef1b8: 8,                   # cc13-fixture7: the double 720.0 (00AB6BD0 divisor)
 }
 SQRT = 0xbf7030
