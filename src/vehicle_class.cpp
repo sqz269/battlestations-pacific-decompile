@@ -260,4 +260,56 @@ VehicleClassResolveResult resolve_vehicle_class_00964790(VehicleClassHost& host,
     return result;
 }
 
+namespace {
+void write_vehicle_class_u32(std::uint8_t* self, std::size_t offset, std::uint32_t value) {
+    std::memcpy(self + offset, &value, sizeof(value));
+}
+}
+
+// 00951AA0: ECX=this, no stack args, EAX=this, RET. CALL 007D1E50 then
+// MOV [ESI],00D19BF4 / MOV [ESI+6C],00D19BF0. Full normal-path body;
+// base construction is delegated and its semantics remain unread here.
+std::uint8_t* construct_recon_plane_class_00951aa0(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_007d1e50(self);
+    write_vehicle_class_u32(self, 0, 0x00d19bf4);
+    write_vehicle_class_u32(self, 0x6c, 0x00d19bf0);
+    return self;
+}
+
+// 00951AF0: same ECX/RET ABI. Listing 00951AF3..00951B08 proves this complete
+// call/write sequence. Names are hypotheses; native vtables remain image values.
+std::uint8_t* construct_fighter_class_00951af0(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_007d1e50(self);
+    write_vehicle_class_u32(self, 0, 0x00d19c30);
+    write_vehicle_class_u32(self, 0x6c, 0x00d19c2c);
+    return self;
+}
+
+// 00951B40: ECX=this, EAX=this, RET; assembly 00951B43..00951B58.
+// Complete body over the unresolved base constructor boundary.
+std::uint8_t* construct_dive_bomber_class_00951b40(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_007d1e50(self);
+    write_vehicle_class_u32(self, 0, 0x00d19c70);
+    write_vehicle_class_u32(self, 0x6c, 0x00d19c6c);
+    return self;
+}
+
+// 00951C20: ECX=this, EAX=this, RET; assembly 00951C23..00951C38.
+// Complete body over the unresolved base constructor boundary.
+std::uint8_t* construct_torpedo_bomber_class_00951c20(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_007d1e50(self);
+    write_vehicle_class_u32(self, 0, 0x00d19f4c);
+    write_vehicle_class_u32(self, 0x6c, 0x00d19f48);
+    return self;
+}
+
+// 00951D00: ECX=this, EAX=this, RET; assembly 00951D03..00951D18.
+// Complete body over the unresolved base constructor boundary.
+std::uint8_t* construct_kamikaze_class_00951d00(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_007d1e50(self);
+    write_vehicle_class_u32(self, 0, 0x00d1a224);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1a220);
+    return self;
+}
+
 } // namespace bsp
