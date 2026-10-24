@@ -394,3 +394,11 @@ no crash/game consequence is claimed. No repaired trailer, larger pool or fake
 production lifetime is introduced. Full18 admission, genuine derived providers,
 the warm cc15 manager and sole Page retirement still block Step4 activation.
 Input remains outside scope and blocks later button dispatch.
+
+The closed raw tree dispatcher additionally admits optional full canonical
+Text/Icon children in its SAME registry/lifetime context; Step1's prefix-only
+Text identity is excluded. Real current lineage/timed providers remain
+mandatory (`OCT24_GUI_WIDGET_TREE.md`). Raw GUI Model9 now has its true11C/120
+default allocation, placement copy, retirement and canonical+04 identity;
+its copy factory remains unadmitted until genuine partial-loader failure
+custody is supplied (`OCT24_GUI_MODEL_STORAGE.md`). Neither is Page activation.

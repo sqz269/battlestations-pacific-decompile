@@ -188,3 +188,25 @@ claims. Existing resource build proof is separate: `scripts/build.ps1` passed
 with both runtime arms compiled and both existing tests passing. A documentation
 change does not require repeating that build. Primary runtime evidence belongs
 in `OCT24_GUI_RENDER.md` after Step 1 is compiled and exercised.
+
+### Further actual-storage prerequisites
+
+The later source batch closes raw Icon/AnimIcon storage, Text font/state/shader
+operations, Grid and Curve storage, Model9 default allocation/placement copy,
+actual AAA710 child enumeration, AC4C50 Page property composition and optional
+full canonical Text/Icon child retirement. See the individual OCT24_GUI_* docs
+and OCT24_GUI_RENDER.md for exact domains and build/runtime evidence. These
+helpers add no retained factory admissions and do not change the existing
+logical factory's supported18-class contract.
+
+Step4 remains incomplete. Full raw Text content/source/properties and recursive
+glyph delivery, raw Icon property/GPU adoption, other derived providers and
+sole actual Page retirement must be composed. Model9's copy factory requires
+genuine partial-loader failure custody. Progbar's real138/13C Icon-pool trailer
+and adjacent-slot alias remains unclosed; no larger pool or repaired index is
+admitted. The actual warm88h manager must come from cc15 in the SAME focus/
+resource context. The Page adapter now rejects a missing manager before its
+slow construction arm at every reached original getter site. No GUI A or
+higher chain object is instantiated here, no Page has a second owner, and no
+native Page ON screenshot is claimed. Input remains the later button-dispatch
+blocker after visual bring-up.
