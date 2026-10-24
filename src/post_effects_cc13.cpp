@@ -6,6 +6,7 @@
 
 #include <cctype>
 #include <cmath>
+#include <cstring>
 #include <stdexcept>
 
 namespace bsp::cc13fx {
@@ -522,6 +523,58 @@ void disc_fan_indices(std::uint32_t rim_count, std::vector<std::uint16_t>& out) 
         out.push_back(static_cast<std::uint16_t>(i + 1));
         out.push_back(static_cast<std::uint16_t>((i + 1) % rim_count + 1));
     }
+}
+
+namespace {
+
+void put_f32(unsigned char* at, float value) { std::memcpy(at, &value, 4); }
+void put_u32(unsigned char* at, std::uint32_t value) { std::memcpy(at, &value, 4); }
+
+} // namespace
+
+void write_disc_fan_00b8b980(FlareDiscFanHost& host, const float radius_xy[2],
+    std::uint32_t rim_count) {
+    // 00B8B995..00B8B9B3. With the precision control at 24 bits the division
+    // rounds once to float; 2pi at 00CE3828 is exactly 6.2831855f. A 53-bit
+    // control would round the quotient twice (double, then the FSTP float).
+    const float step = static_cast<float>(6.2831853071795862) / static_cast<float>(rim_count);
+    float angle = 0.0f;
+
+    unsigned char* vertex = host.lock_vertex_stream0_00b73260();
+    // 00B8B9CD..00B8BA0B: the centre.
+    put_f32(vertex + 0x00, 0.0f);
+    put_f32(vertex + 0x04, 0.0f);
+    put_f32(vertex + 0x08, 0.0f);
+    put_f32(vertex + 0x0c, 1.0f);
+    put_u32(vertex + 0x10, 0x00ffffffu);
+    vertex += 0x28;
+    // 00B8BA50..00B8BAD7, rim_count times (00B8BA17 skips a zero count).
+    for (std::uint32_t i = 0; i < rim_count; ++i) {
+        // FSIN / FCOS take the float angle; each result is stored to float
+        // before the product (00B8BA56, 00B8BA68).
+        const float sine = static_cast<float>(std::sin(static_cast<double>(angle)));
+        const float cosine = static_cast<float>(std::cos(static_cast<double>(angle)));
+        put_u32(vertex + 0x10, 0x00ffffffu);
+        put_f32(vertex + 0x00, radius_xy[0] * cosine);
+        put_f32(vertex + 0x04, radius_xy[1] * sine);
+        put_f32(vertex + 0x08, 0.999f); // 00D63400, 3F7FBE77h
+        put_f32(vertex + 0x0c, 1.0f);
+        angle = step + angle; // 00B8BAAC..00B8BAC5
+        put_f32(vertex + 0x18, 0.5f); // 00CE3800
+        put_f32(vertex + 0x1c, 0.5f);
+        vertex += 0x28;
+    }
+    host.unlock_vertex_stream0(); // 00B8BADE..00B8BAE5
+
+    // 00B8BAE7..00B8BB3E: triangle i = (0, i+1, (i+1) % n + 1), DIV unsigned.
+    std::uint16_t* index = host.lock_index_buffer_60();
+    for (std::uint32_t i = 0; i < rim_count; ++i) {
+        index[0] = 0;
+        index[1] = static_cast<std::uint16_t>(i + 1);
+        index[2] = static_cast<std::uint16_t>((i + 1) % rim_count + 1);
+        index += 3;
+    }
+    host.unlock_index_buffer_60();
 }
 
 } // namespace bsp::cc13fx
