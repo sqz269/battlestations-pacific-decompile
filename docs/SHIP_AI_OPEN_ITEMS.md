@@ -20816,3 +20816,11 @@ BSM01, ESMP08, USN12, LOMP10, JM06, USNOS, JM08, BSM04, BSM03 and BSM06 (WINS pl
 is gameplay identical (pair_diff 1) with the same end. The census reads shot_drops=0 and crash_drops=0 in every
 run, OFF and ON alike, so in these rows no slow deck plane's round ever hits its own base. The countdowns
 (shot_countdowns up to 18 in PRCP01; crash_countdowns) are equal OFF and ON. Logs: local\pt1_ob_na_<row>.log.
+
+**kKamikazeSameSquadronShotDropCc13Bound flipped ON** (cc9-party1, 2026-10-24). Pairs ran on ff591695a (OFF from
+local\pt1_offff, a pair export with no flip). The rows are stock runs of 40000 frames on the menu ids whose scripts
+mention kamikaze: PRCP02, PRCP06, PRCP07, USN11 and USN18, all fully identical (pair_diff 0) with the same end.
+kamikaze_squadron_drops=0 OFF and ON. Only PRCP06 spawns kamikaze planes (96, luaKamikazeSpawned) before it fails at
+634.97 s, so the reach is thin. No WINS row has kamikaze squadrons. The USN19 (Okinawa) pair had not finished at
+flip time: after 2.5 h, each run had a log over 2 GB. If it finishes, the results are in
+local\pt1_{off,on}_kk_u19.log.

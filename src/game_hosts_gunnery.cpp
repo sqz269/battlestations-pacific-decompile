@@ -1031,7 +1031,10 @@ constexpr bool kPlaneOwnBaseHitFilterBound = true;
 //    neither drops nor counts down. The plane crash sweep has always applied it
 //    (pc_same_squadron). OFF: every hit is taken (the test still runs for the
 //    census, kamikaze_squadron_drops).
-constexpr bool kKamikazeSameSquadronShotDropCc13Bound = false;
+//    ON by the pair of 2026-10-24 (cc9-party1, SHIP_AI_OPEN_ITEMS 323): stock
+//    PRCP02, PRCP06 (96 kamikaze planes), PRCP07, USN11 and USN18 are fully
+//    identical, kamikaze_squadron_drops=0 OFF and ON.
+constexpr bool kKamikazeSameSquadronShotDropCc13Bound = true;
 //  * kAaLineOfFireExpiryDrawBound: packet cc9_g35_friendly_fire. On a cache miss
 //    0072F6E0 draws U([00CE74F8] = 0.8, [00CE3814] = 1.2) from 00BD2F10 on stream
 //    ECX=1 (0072F76D) and stores it, times [GlobalConfig+8Ch], as the record's
