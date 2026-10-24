@@ -42,7 +42,8 @@ inline constexpr bool kQuickSettingsApplyCc15Bound = false;
 // profile, which 0058BF52/0058BF58 copy into game+6ACh. Off: chosen_difficulty()
 // answers --difficulty, else 1. On: --difficulty, else the profile owner's +60h.
 // The user and cc9 schedule this switch; docs/CC15_PROFILE_LOAD.md section 7.
-inline constexpr bool kProfileDifficultyCc15Bound = false;
+// ON (cc15-prof2 flip): the harness launchers pin --difficulty 1 (docs/TOOLING.md).
+inline constexpr bool kProfileDifficultyCc15Bound = true;
 
 struct GameProfileLoadReport {
     bool queried{};            // 0109CECC vtable +1Ch(name, 1): valid and player exist
