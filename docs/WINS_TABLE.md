@@ -1541,3 +1541,80 @@ built one export per flipped switch group in 34daf632e..3364b40a5, with that gro
     ref and 20,3 have no end.
   - k4, the 6900 leg at (1900,-2850): EndMission 818.92 s / EndMission 836.92 s / failed 1875.70 s.
 - The BSM01 row moves to `l72_b1_k1`: ref and 20,3; default lost.
+
+## 2026-10-24, full re-time on main e3c2cc5b3 (cc9-lua73, keeper)
+
+Base: origin/main e3c2cc5b3 (tree build of agent/cc9-lua52, identical to it). Since the 515837c10 re-time it adds
+party1's three gun-hit flips (3b5542cd2 kGunBotNotAllyDropCc13Bound, e356abd44 kPlaneOwnBaseHitFilterBound,
+c3278915d kKamikazeSameSquadronShotDropCc13Bound), recon1's kReconLoadForceRefreshCc13Bound ON (ebc33b017), the
+renderer-init recovery (e2a0f740c, harness only), cc13's render_fx naming, and the Codex native GUI / render-path
+commits. Logs are `cc9-lua52\local\l73r_<row>_main_<ref|j3|sh>.log` (launcher `local\l73_runs.ps1`, rows
+`local\l73_rows.txt`). All runs ran on the console session: pf=0, exit 0, no renderer-init deaths. ref has
+"rng streams: on", 20,3 logs "frame jitter 20% seed 3". helm_role_forced=0 on every run; helm_moveto_unselected=0
+on every run except BSM09 d1 (15-16, provisional as before).
+
+| Row (plan) | ref | 20,3 | default | vs 515837c10 table |
+| --- | --- | --- | --- | --- |
+| USN01 `l69_u1_a` | completed 370.03 s | completed 425.02 s | completed 455.01 s | same |
+| USN02 `l72_u2_g4` | completed 245.06 s | **failed 130.05 s** | completed 230.06 s | same |
+| USN12 `l68_u12_e8` | completed 1560.40 s | **failed 1290.13 s** | completed 1620.46 s | same |
+| PRCP01 `p26_p01_a` | completed 833.02 s | completed 726.70 s | completed 755.69 s | same |
+| LOMP10 `p3_l10_b` | completed 751.49 s | completed 803.48 s | completed 767.49 s | same |
+| JM06 `l70_j6_n` | completed 1922.75 s | completed 790.93 s | completed 1670.50 s | same |
+| ESMP08 `p12_e8_rb` | completed 1284.28 s | completed 1237.28 s | completed 1199.19 s | same |
+| BSM09 `l68_b9_d1` | completed 414.02 s | completed 405.02 s | completed 405.02 s | same; real completions (below) |
+| LOMP06 `g56_l6_v2` | completed 330.84 s | completed 323.89 s | completed 267.86 s | same |
+| BSM01 `l72_b1_k1` | EndMission 827.92 s | EndMission 836.92 s | **failed 1518.36 s** | recon flip (below) |
+| USN21 `g56_c2` | completed 2966.77 s (x2) | completed 2881.69 s | completed 2901.71 s | same |
+| IJN18 `l72_i18_ia5` | EndMission 1410.25 s | no end, faithful soft-lock | EndMission 1550.39 s | same |
+| IJN08 `p10_i08_z` | **no end** | **failed 1290.13 s** | **no end** | same; re-plan needed |
+| BSM03 `h1_x8` | completed 486.00 s | **failed 393.03 s** | **failed 321.05 s** | same; ref only |
+| BSM04 `h1_f` | completed 941.89 s | completed 671.96 s | completed 671.96 s | same; all three envs |
+| BSM05 `h1_m3` | completed 417.12 s | **failed 246.06 s** | **failed 327.04 s** | same; ref only |
+| BSM06 `h1_i` | completed 1518.36 s | **failed 1164.01 s** | completed 1254.10 s | same |
+| BSM06 `h1_j` | completed 1518.36 s | completed 1263.11 s | **no end** | same |
+| USN15 `g57_mb` | **failed 3444.28 s** | **failed 1572.46 s** | **failed 1457.35 s** | same (lost) |
+| USN15 `g57_jc_def` (first main timing) | **failed 1732.61 s** | **failed 1757.64 s** | **failed 1802.68 s** | default lost vs 9a3179122 (below) |
+| JM08 `s63_j8_v3` (first main timing) | completed 4246.98 s | **no end** | **failed 1911.79 s** | same as e3cdbd967; ref only, knife-edge |
+
+- Every completion and every winning EndMission logs the guard's sus_prog.exe refusal; no failed or no-end run does.
+- **No row moved without a known cause.** party1's three gun-hit flips move nothing, as their pairs said. The only
+  moves are the BSM01 recon flip and USN15 `g57_jc_def` default (both below).
+- **BSM01 `l72_b1_k1`** gives exactly what lua72 measured on the recon-ON export `local\l72_rc` (ref 827.92 s, 20,3
+  836.92 s, default failed 1518.36 s), so the move from the 561d57228 numbers (914.90 / 821.92 / failed 1752.58) is
+  recon1's kReconLoadForceRefreshCc13Bound flip (ebc33b017), as its pair predicted. In the default run HenryPT dies
+  at 1518.31 s to Sacramento (killer_cat=6, blast) 2005 m from the MiniSub, which it never reaches, and the script
+  ends in luaMissionFailed (no guard line).
+- **BSM09 "nil at 414.02 s" is a real completion.** The summary prints status=nil because bsm_09_battle_of_the_coral_sea.lua
+  (this installation, mtime 2024-07-13) ends through `Mission.EndMission = true` and luaMissionCompletedNew (line 1510,
+  "Enemy carriers are retreating - Mission Complete", movie campaigns/BSM/m0902.bik). Each BSM09 log shows
+  Scoring_SetMissionCompleted completed=1, the m0902.bik exit movie and the guard's refusal. The failure paths
+  (luaMissionFailed, lines 610/620/696) would run luaMissionFailedNew instead. The table now writes them "completed".
+- **USN15 `g57_jc_def`**: gunnery57 timed it on agent/cc9-gunnery52 at 9a3179122 (manifest of
+  `cc9-gunnery52\local\g57_r20_jc.log`), not on f307a34a8. On main the ref (1732.61 s) and 20,3 (1757.64 s) fails
+  match that branch exe, but the default win (Fuso dies 1957.83 s) became a failure at 1802.68 s. 9a3179122 is not
+  an ancestor of main, and this is the same 9a3179122..main range that lost `g57_mb`'s ref win. Per-flip
+  attribution is not measured: listed for the lead (cc16 rule); not re-timed. USN15 has no winning plan on main.
+- **JM08 `s63_j8_v3`** reproduces ships63's e3cdbd967 numbers in all three envs.
+- **USN21** ref ran twice; both completed at 2966.77 s.
+- **IJN08** stays a re-plan (05cb6f1bc, SHIP_AI 311).
+## 2026-10-24, BSM01 re-plan `l73_b1_m1`, all three envs (cc9-lua73, keeper)
+
+Base: main e3c2cc5b3 (recon flip ON). `l72_b1_k1` fails the default env at 1518.36 s. In that run HenryPT is at
+(2322,-2080) at step 6000 against (2396,-1978) in ref, so it runs about 100 m ahead. It passes the 6900 leg's point
+(1900,-3000) before frame 6900 (it is at (1915,-3088) there), turns west at 7000 from (1847,-3186), and stalls near
+(1630,-3160) from step 7200 at speed ~24. It never reaches the MiniSub and dies to Sacramento at 1518.31 s.
+
+**`config/win_orders/bsm01_l73_b1_m1.txt`** is k1 with the one line `6900 takehelm HenryPT 1.0 1900 -3000 stop 30`
+moved to frame 6750, so the stop catches HenryPT at z~-3000 in the default env too.
+
+| Plan | ref | 20,3 | default |
+| --- | --- | --- | --- |
+| `l73_b1_m1` | EndMission 839.92 s | EndMission 836.92 s | EndMission 905.90 s |
+| sibling m2 (leg at 6800) | **no end** | EndMission 836.92 s | **no end** |
+| sibling m3 (6600 leg to (1900,-3000) stop 30, 6900 leg dropped) | EndMission 794.93 s | **no end** | EndMission 689.96 s |
+
+- Each m1 EndMission logs the guard's refusal; pf=0, helm_moveto_unselected=0, helm_role_forced=0 (non-provisional).
+- Logs `cc9-lua52\local\l73r_b1m<n>_main_<env>.log`; sibling plans `local\l73_b1_m2.txt`, `local\l73_b1_m3.txt`.
+- The BSM01 row moves to `l73_b1_m1`, which wins all three envs. m2 shows the margin is thin: 50 frames later and
+  ref loses.
