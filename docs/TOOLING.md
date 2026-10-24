@@ -13,6 +13,7 @@ or a reconstructed body.
 | crash record | `./tools/run_game.ps1 -Log local\crash_test.log -- ... --crash-test [N]` (the record itself is always on) |
 | `tools/sample_main_thread.py` | `python tools/sample_main_thread.py --log local\X.log` (start it, then the run with the same -Log) |
 | present interval | `./tools/run_game.ps1 ... -- --present-interval <immediate|vsync|native>`; `config/run_game.json` defaults to immediate |
+| difficulty pin | harness runs pin `--difficulty 1` (`tools/run_game.ps1`, `scripts/run.ps1`; a caller's `--difficulty` wins, `BSP_DIFFICULTY_PIN=<n>` or `off`); an unpinned run follows the save's SelectedDifficulty (this install's save holds 0). The manifest's `difficulty` records the value and its source (docs/CC15_PROFILE_LOAD.md section 7) |
 | renderer init failure | automatic: a failed CreateDevice logs `harness renderer init failed: ...` and exits 4 (section 8) |
 
 ## 1. `tools/pair_diff.py`: the same-tree pair comparison

@@ -319,6 +319,39 @@ env on USN04.
   first hit moves from 87.40 s to 90.70 s. Every moved row follows from the script's difficulty-0
   branch.
 
+### Flipped ON with a harness pin (cc15-prof2, approved by -62; cc9 to ack before landing)
+
+The switch is true. Every shared launcher passes `--difficulty 1` unless the caller already passes
+`--difficulty`, so harness runs keep the pre-flip value:
+- `tools/run_game.ps1` adds it after its config defaults. `BSP_DIFFICULTY_PIN=<n>` pins another value,
+  and `BSP_DIFFICULTY_PIN=off` runs unpinned. The manifest gains `"difficulty": {value, source}`, where
+  the source is `pin`, `caller` or `BSP_DIFFICULTY_PIN`.
+- `scripts/run.ps1` applies the same rule.
+- `tools/run_replay.py` sets `BSP_DIFFICULTY_PIN=off` for a manifest that has no `difficulty` field,
+  so an older run replays with its own arguments. A newer manifest already records its
+  `--difficulty` in `game_args`.
+
+No existing argument or parameter was renamed, moved or removed.
+
+The log shows which applied. A pinned run prints the existing
+`--difficulty 1: chosen difficulty game+6B0h = 1 (default 1)`. An unpinned ON run prints
+`MissionStart::chosen_difficulty game+6B0h=profile+60h=0` and then `set_effective_difficulty game+6ACh=0`.
+
+Evidence. Builds: `local\bin_main` (the tree base with the switch false) and `local\bin_flip` (the
+same base with the switch true). Both ran through the pinned launcher (`local\prof2_pin.ps1`).
+- USN04 and BSM09, main vs flip, in the ref env and in the default env: `pair_diff` exit 0, and the
+  strict Lua/dialog/message sequence is identical, on all four pairs.
+- Wins rows, ref env:
+  - PRCP01 and LOMP06: exit 0.
+  - JM06, BSM01, USN12, LOMP10 and USN21: exit 1, gameplay identical, with an identical sequence. Each
+    moves only one or two `clear_37c` ring-scan cells, or, in USN21, the free-bearing corner
+    counts and one `target` value. That is the known searcher-cache heap noise (section 6): the two
+    binaries differ only in this constant, which changes the code layout.
+  - ESMP08, IJN18, USN01 and USN02: not yet paired. Their 2026-10-23 reruns failed at FMOD startup
+    (create_result 78), the disconnected-session failure.
+- Unpinned sample (`BSP_DIFFICULTY_PIN=off`, flip, USN04): the manifest records
+  `{"value":"unpinned","source":"BSP_DIFFICULTY_PIN"}`, and the log shows profile+60h = 0 and game+6ACh = 0.
+
 ## 8. cc15-prof2 save safety
 
 Every file under `Documents\Battlestations-Pacific` was recorded before the first run and after the

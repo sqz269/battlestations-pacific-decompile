@@ -70,6 +70,22 @@ if (Test-Path $runDefaults) {
         if ($windowResolution) { $GameArgs = @('--window-resolution', "$windowResolution") + $GameArgs }
     }
 }
+# Difficulty pin (packet cc15-prof2): kProfileDifficultyCc15Bound makes an unpinned run take the
+# save's SelectedDifficulty (this installation's save holds 0), so every harness run gets
+# --difficulty 1 unless the caller passed --difficulty. BSP_DIFFICULTY_PIN=<n> pins another value;
+# BSP_DIFFICULTY_PIN=off runs unpinned. The manifest's "difficulty" records which one applied.
+$callerDifficulty = @($GameArgs | Where-Object { $_ -eq '--difficulty' -or $_ -like '--difficulty=*' })
+if ($callerDifficulty) {
+    $diffIndex = [Array]::IndexOf($GameArgs, '--difficulty')
+    $diffValue = if ($diffIndex -ge 0 -and $diffIndex + 1 -lt $GameArgs.Count) { $GameArgs[$diffIndex + 1] } else { ($callerDifficulty[0] -split '=', 2)[1] }
+    $difficultyRecord = [ordered]@{ value = "$diffValue"; source = 'caller' }
+} elseif ($env:BSP_DIFFICULTY_PIN -in @('off', 'none', 'unpinned')) {
+    $difficultyRecord = [ordered]@{ value = 'unpinned'; source = 'BSP_DIFFICULTY_PIN' }
+} else {
+    $pin = if ($env:BSP_DIFFICULTY_PIN) { $env:BSP_DIFFICULTY_PIN } else { '1' }
+    $GameArgs = @('--difficulty', "$pin") + $GameArgs
+    $difficultyRecord = [ordered]@{ value = "$pin"; source = 'pin' }
+}
 $owner = if ($env:BSP_AGENT) { $env:BSP_AGENT } else { Split-Path (Get-Location) -Leaf }
 
 $lockDir = Split-Path $Lock -Parent
@@ -177,6 +193,7 @@ function New-RunManifest([string[]]$runArgs) {
         log = $logFull
         launcher = @{ exe = $Exe; game_root = $GameRoot; xlive_dll = $XLiveDll; game_args = @($GameArgs) }
         arguments = @($runArgs)
+        difficulty = $difficultyRecord
         env = $envBsp
         exe = [ordered]@{ path = $exeItem.FullName; size = $exeItem.Length
             mtime_utc = $exeItem.LastWriteTimeUtc.ToString('o')

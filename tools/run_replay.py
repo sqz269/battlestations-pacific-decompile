@@ -82,7 +82,11 @@ def main(argv):
 
     log = args.log or str(Path('local') / ('replay_' + Path(m['log']).name))
     command = ['-Exe', str(exe_path), '-GameRoot', launcher['game_root'], '-XLiveDll', xlive, '-Log', log, '--'] + game_args
-    env = m.get('env', {})
+    env = dict(m.get('env', {}))
+    if 'difficulty' not in m:
+        # A manifest from before the difficulty pin (cc15-prof2) records the run's own game
+        # args with no --difficulty; replay them as they were, without the launcher's pin.
+        env.setdefault('BSP_DIFFICULTY_PIN', 'off')
 
     print(f"# run started {m.get('started_utc')} in {m.get('cwd')}, host {m.get('host', {}).get('head')}"
           f" (dirty={m.get('host', {}).get('dirty')}), exit {m.get('exit_code')}")
