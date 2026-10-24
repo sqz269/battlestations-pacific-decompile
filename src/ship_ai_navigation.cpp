@@ -11,6 +11,7 @@
 
 #include "bsp/geometry_helpers.hpp"
 #include "bsp/ship_ai_seg67_switches_cc13.hpp" // kShipAiNavigationNanArmsCc13Bound
+#include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/vector_helpers.hpp"
 
@@ -25,6 +26,7 @@ constexpr float kNavPi = 3.1415927410125732421875f;
 // unordered compare sets CF and takes the JBE, so a NaN in either operand
 // yields b. The OFF arm keeps the host's (b <= a), which yields a on NaN.
 float native_min_00415510(float a, float b) noexcept {
+    ship_ai_reach_note_nan(ship_ai_switch_reach().navigation_nan_operands, a + b);
     if constexpr (kShipAiNavigationNanArmsCc13Bound) {
         return !(b > a) ? b : a;
     } else {
@@ -34,6 +36,7 @@ float native_min_00415510(float a, float b) noexcept {
 
 // 00415550, the mirror: ST0 = a, ST1 = b, FCOMIP a against b, JBE returns b.
 float native_max_00415550(float a, float b) noexcept {
+    ship_ai_reach_note_nan(ship_ai_switch_reach().navigation_nan_operands, a + b);
     if constexpr (kShipAiNavigationNanArmsCc13Bound) {
         return !(a > b) ? b : a;
     } else {
@@ -51,6 +54,7 @@ float native_clamp_00415620(float a, float low, float high) noexcept {
     }
     // 0041564B/0041564D: FCOMI a,c; JBE. The OFF arm's (a <= high) yields high
     // on NaN where the image yields a.
+    ship_ai_reach_note_nan(ship_ai_switch_reach().navigation_nan_operands, a + high);
     const bool keep_a = kShipAiNavigationNanArmsCc13Bound ? !(a > high) : (a <= high);
     if (keep_a) {
         return a;
