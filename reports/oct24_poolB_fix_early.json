@@ -59,7 +59,18 @@
       "src/shadow_cascades_cc13.cpp:82"
     ],
     "retained_paths": "All raw landing-ship callback calls and captured pointer/selected-slot read ordering are retained. Older partial projections remain separate APIs; no unsafe shared adapter was introduced.",
-    "limits": "This closes wider C++ intermediate chains for the main-thread PC24 value model. Worker PC53, x87 extended exponent/status/exception details and binary ABI/game validation are not claimed."
+    "limits": "This closes wider C++ intermediate chains for the main-thread PC24 value model. Worker PC53, x87 extended exponent/status/exception details and binary ABI/game validation are not claimed.",
+    "unrelated_existing_helper_scope": {
+      "symbol": "squared_distance",
+      "source": "src/building_pads.cpp:18",
+      "callers": [
+        "BuildingPadModel::pick_006f2e60 at src/building_pads.cpp:73",
+        "BuildingPadModel::nearest_pad_xz_006f3af0 at src/building_pads.cpp:253"
+      ],
+      "finding": "This older helper retains a double chain and rounds once. Neither assigned landing_ship_update_0074af50 nor the corrected ramp-latch/ramp-unload partials calls it. It is outside this exact24-body precision audit and is not claimed corrected.",
+      "assigned_unload_boundary": "0074B228 remains an explicit host.call_006ac370 boundary; the raw update does not compose either pad-model caller or squared_distance. No game-host adapter/wiring was added.",
+      "composed_helper_recheck": "0074AF50 composes only pc24 and integer/pointer/access helpers; both ramp partials compose only pc24. The assigned hull initializer reuses00810FAF inline x87;00922DD0 reuses the separately audited00922C80 body. Other assigned local helpers contain integer/pointer/refcount/string/table operations or float transfers, as recorded per row."
+    }
   },
   "additional_fixes": [
     {
