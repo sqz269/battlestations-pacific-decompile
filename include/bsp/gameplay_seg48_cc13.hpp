@@ -365,6 +365,14 @@ struct DamageEffectStep {
     bool flicker_sent{false};        // 007DE760(effect, 0, flicker)
     bool definition_set{false};      // 007E2600 was called
     int set_definition_calls{0};
+    // 007E2600's own calls, in image order per call: a live effect gets
+    // 00867B10 StopChildren and +9h = 1; then with a definition a point effect
+    // is created (008687C0, identity matrix, parent [[+8h]+4A4h]) and replaces
+    // +4h (the old one released when it differs); without one the effect is
+    // released (InterlockedDecrement, vtable +0 at zero) and +4h = 0.
+    int stop_children_calls{0};
+    int effects_created{0};
+    int effects_released{0};
 };
 
 // __thiscall(this, float dt), RET 4. Bytes 007E27B0-007E2994.

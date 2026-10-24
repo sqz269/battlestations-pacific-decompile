@@ -358,9 +358,19 @@ namespace {
 
 void set_definition_007e2600(DamageEffectSwitch& self, DamageEffectStep& step) {
     // 007E2600 stops the live effect and replaces it with one built from the
-    // held definition (none releases it).
-    self.has_effect_4 = self.definition_0 >= 0;
-    self.effect_definition_84 = self.definition_0;
+    // held definition (none releases it). Both callers (007E28CB / 007E293D)
+    // pass the switch itself, so the definition tested is the held +0h.
+    if (self.has_effect_4) ++step.stop_children_calls;  // 007E262F 00867B10, +9h = 1
+    if (self.definition_0 >= 0) {
+        ++step.effects_created;  // 007E26F2 008687C0 from the held +0h; stored at +4h
+        if (self.has_effect_4) ++step.effects_released;  // 007E271F the old one released
+        self.has_effect_4 = true;
+        self.effect_definition_84 = self.definition_0;
+    } else {
+        if (self.has_effect_4) ++step.effects_released;  // 007E2774..007E2788
+        self.has_effect_4 = false;  // 007E2791 +4h = 0
+        self.effect_definition_84 = self.definition_0;
+    }
     step.definition_set = true;
     ++step.set_definition_calls;
 }

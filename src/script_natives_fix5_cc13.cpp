@@ -123,6 +123,10 @@ AirOpsLaunchSlotMessageResult air_ops_launch_slot_message_006ca8e0(
                                             slot_index),
                                 deck.launch_queue.end());
         deck.launch_queue.push_back(slot_index);
+        // 006CA97E 006BF150(slot) publishes the slot: 00696350 on the block's observer list
+        // (+7Ch) and a 006BD520 slot message broadcast by the session owner. BLOCKED (packet D4):
+        // AirOpsDeck has no observer list or session owner; the live caller
+        // (run_launch_air_base_slot_00896750) records it as unimplemented.
         out.queued = true;
     }
     // Both arms read slot+4h / +8h after their own stores; neither store touches them.
