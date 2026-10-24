@@ -20,6 +20,12 @@ Analysis used configured `C:/Users/sqz269/bsp.gpr`, program
 `/battlestationspacific.exe`; live `ghidra proto 00ad55c0` and `ghidra ensure
 --status` confirmed the program. Existing exports, raw providers and ledgers
 were inspected before this change. No Ghidra name/prototype was replaced.
+`ghidra_annotate.py --apply --addresses 00ad4c30` appended the bounded Source
+evidence under the write lock, preserved prior comments and saved the project.
+Prior annotation values are recorded in worker
+`local/ghidra-annotations-20261024T085758Z.json`; the shared `00AD4C30` export
+was refreshed afterward. A narrow reconstruction fragment records this wiring
+without adding game-body or stock STL reconstruction credit.
 
 | Original body | Native interface and relevant evidence | Source composition |
 | --- | --- | --- |
@@ -69,9 +75,14 @@ destructor replay, language reload or recovery API.
 
 ## Validation and limits
 
-Build validation is pending the packet's `scripts/build.ps1` invocation.
-No new tests or game runs were added by this packet. The integrating lane owns
-the OFF/ON USN04 and visual Text evidence.
+`scripts/build.ps1` passed with MSVC Win32 Release, including `bsp_core.lib`,
+the image-layout assertions and `bsp_game.exe`. Both existing CTest checks
+passed: `reconstructed_math` (0.35 s) and `tool_tests` (13.76 s), total 14.15 s.
+The durable worker log is `local/font-image-build.log` (ignored). The initial
+full build exposed a string-adapter pointer-type mismatch; the final build
+compares the underlying three process cells, as verified in VFS/singleton
+source, and passed. No new tests or game runs were added by this packet.
+The integrating lane owns the OFF/ON USN04 and visual Text evidence.
 
 This is an owned source composition with genuine image layout and storage.
 It does not claim the original calling convention, private CRT heap, register
