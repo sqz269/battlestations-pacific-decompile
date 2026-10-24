@@ -86,7 +86,9 @@ void tidy_list(const Raw& s, std::size_t off, CgRebuildBHost& host) {
 // ---------------------------------------------------------------------------
 // 00524BA0 (104 insns), was CG_vector_deleting_dtor_00524ba0; ledger name
 // Unknown_VtCECCF8_Destruct. __thiscall(ECX = screen), RET, no delete flag
-// (00524F90 is the scalar deleting wrapper). Screen 29h, registry slot 41,
+// (00524F90 is the scalar deleting wrapper). C++ name keeps the vtable, as the
+// ledger row does; the class is provisionally screen 29h (the unit pick
+// screen of view_seg14_cc13 / hud_warning_screen), registry slot 41,
 // F0h bytes, constructor 00525A90 (src/ingame_interface.cpp row 0xCC).
 // Evidence: assembly 00524BA0..00524D04 (exports/bsp/functions/00524ba0).
 // Order: the three vtables (00CECCF8 at +0, 00CECCEC at +8, 00CECCD4 at +18h);
@@ -100,7 +102,7 @@ void tidy_list(const Raw& s, std::size_t off, CgRebuildBHost& host) {
 // EH states: 5, 4, 3, 1, 0, -1. The block at +BCh is freed even when its
 // string is empty. Uncertain: the class identity of +C0h..+D4h (00525A10's
 // container) and the element type at +C8h; names are hypotheses.
-void unit_pick_screen_destruct_00524ba0(void* screen, CgRebuildBHost& host) {
+void vt_ceccf8_destruct_00524ba0(void* screen, CgRebuildBHost& host) {
     const Raw s = raw(screen);
     s.at<std::uint32_t>(0x00) = 0x00CECCF8u;                          // 00524BC2
     s.at<std::uint32_t>(0x08) = 0x00CECCECu;                          // 00524BC8
@@ -163,7 +165,7 @@ void unit_pick_screen_destruct_00524ba0(void* screen, CgRebuildBHost& host) {
 // 9 around the two lookups. The out slot of 00A83FD0 is not initialised by the
 // image before the call (the callee writes it); the C++ zeroes it first.
 // Uncertain: the meaning of +3Ch..+48h and of the 18h-byte block at +BCh.
-void* unit_pick_screen_construct_00525a90(void* screen, CgRebuildBHost& host) {
+void* vt_ceccf8_construct_00525a90(void* screen, CgRebuildBHost& host) {
     const Raw s = raw(screen);
     host.front_end_screen_construct_004f7180(screen);                 // 00525AB8
     // EH state 0
@@ -190,8 +192,6 @@ void* unit_pick_screen_construct_00525a90(void* screen, CgRebuildBHost& host) {
         b.at<std::uint8_t>(0x08) = 0;
         b.at<std::uint32_t>(0x10) = 0;
         b.at<std::uint32_t>(0x14) = 0;
-    } else {
-        block = nullptr;
     }
     s.ptr(0xBC) = block;                                              // 00525B2C
     host.container_init_00525a10(s.p + 0xC0);                         // 00525B32
