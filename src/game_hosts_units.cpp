@@ -36895,15 +36895,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         using LS = GameUnitSlot::LandTaskState;
                         if (unit_.land_state == LS::kAbort) return;
                         ++unit_.land_abort_entries;
+                        // DIAGNOSTIC (cc9-physics28): the 009B3770/009B3CF0 inputs that
+                        // chose the abort, read before the enter clears them: the
+                        // state left, the done byte (+18h) and the sequencer's mode
+                        // (+50h) and spacing (+4Ch) from the last 006C54C0 lookup.
+                        const int from_state = static_cast<int>(unit_.land_state);
+                        const bool was_done = unit_.land_done_18;
                         land_switch_state_009b3680(LS::kAbort);
                         unit_.land_done_18 = false;
                         unit_.land_abort_standby_20 = false;
                         unit_.land_abort_park_21 = false;
                         land_set_held_006bcd80(true);
                         owner_.log.notef("  land task %s: enters land/abort at %.2f s "
-                            "height=%.1f (009B0980)", unit_.row.name.c_str(),
+                            "height=%.1f from=%d done=%d mode=%d spacing=%.3f (009B0980)",
+                            unit_.row.name.c_str(),
                             static_cast<double>(owner_.summary.simulated_seconds),
-                            static_cast<double>(unit_.land_geo_8c[1]));
+                            static_cast<double>(unit_.land_geo_8c[1]), from_state,
+                            was_done ? 1 : 0, unit_.land_mode_50,
+                            static_cast<double>(unit_.land_spacing_4c));
                     }
 
                     // 009B09A0 (009B09A0-009B09B6, RET), land/abort's exit: with
