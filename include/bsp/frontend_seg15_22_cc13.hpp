@@ -149,6 +149,12 @@ struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices {
     virtual void wide_string_resize_004c53e0(Raw string, std::uint32_t count) = 0;
     // 00BF65AC: the _free the STL vectors use (the arrays above use 00BF6989).
     virtual void free_00bf65ac(void* block) = 0;
+    // 00BF7C6E `eh vector destructor iterator`(first, size, count, dtor).
+    virtual void eh_vector_destruct_00bf7c6e(void* first, std::uint32_t size, std::uint32_t count,
+        std::uint32_t dtor) = 0;
+    // 00432050, ECX = first, EDX = last, two unread stack words, RET 8: destroy a
+    // native string range.
+    virtual void native_string_range_destroy_00432050(void* first, void* last, void* extra1, void* extra2) = 0;
     // 00530F90, ECX = prompt record: destroy it (strings released).
     virtual void menu_prompt_record_destroy_00530f90(Raw record) = 0;
     // 00532C50, ECX = menu prompt screen: complete the prompt with a result.
@@ -562,7 +568,8 @@ void credits_collect_children_0052fd70(Raw s, void* out, Seg15Host& host);
 void credits_destruct_0052fd80(Raw s, Seg15Host& host);
 
 // ---------------------------------------------------------------------------
-// Menu prompt screen (55h, vtables 00CED3C4 / 00CED3B0 at +8h / 00CED38C at +Ch).
+// Menu prompt screen (55h, vtables 00CED3C4 / 00CED3B0 at +8h / 00CED3AC at +Ch, the
+// 00E18E6C singleton base / 00CED38C at +10h; 005321F0 stores all four).
 // A prompt record is 48h bytes: {NativeString +0, dw +8, dw +Ch, NativeString
 // +10h, byte +18h, dwords +20h..+34h, NativeString +38h, byte +40h, dw +44h}.
 // ---------------------------------------------------------------------------
@@ -579,6 +586,15 @@ void menu_prompt_record_copy_construct_00531c90(Raw dst, Raw src, Seg15Host& hos
 // 00531F80, __fastcall(list): unlink all nodes, destroy each record (00530F90),
 // free the node (00BF65AC).
 void menu_prompt_record_list_clear_00531f80(Raw list, Seg15Host& host);
+// 005321F0 (Ghidra CG_vector_deleting_dtor_005321f0; it is the class destructor that the
+// scalar deleting destructor 00532A00 calls), __thiscall(ECX = screen), RET; SEH 00C6C0EE,
+// states 6..2 then -1. The four vtables; page +14h (004C12B0 / 00AA31F0); the record list
+// +278h (00531F80, head freed with 00BF65AC, +27Ch = 0); the native string vector +268h
+// (004324A0 inlined: 00432050 over [first, last) and free when first is set, then first,
+// last, end = 0); the seven 48h records +60h (00BF7C6E with 00530F90); the two native string
+// vectors +40h (00BF7C6E, 10h, 2, 004324A0); the singleton base at +0Ch (00530CC0 inlined:
+// 00E18E6C = 0, +0Ch = 00CE3818); +8h = 00CEB0FC; 004F71A0.
+void menu_prompt_destroy_005321f0(Raw s, Seg15Host& host);
 void menu_prompt_collect_children_00532350(Raw s, void* out, Seg15Host& host);
 // 005329C0, __thiscall(screen, out), RET 4: +14h, and +18h when that page is visible.
 void menu_prompt_collect_visible_pages_005329c0(Raw s, void* out, Seg15Host& host);
@@ -740,7 +756,7 @@ void multi_chat_on_open_request_005d14b0(Raw listener, Seg15Host& host);
 // 005D11F0, __thiscall(screen, mode), RET 4 (1 lobby, 2 typing, 3 in mission, 4 overlay).
 void multi_chat_set_chat_mode_005d11f0(Raw s, std::int32_t mode, Seg15Host& host);
 
-// Multiplayer error screen (1Dh, vtables 00CF1BF4 / listener 00CF1BC0 at +8h).
+// Multiplayer error screen (1Dh, vtables 00CF1BF4 / 00CF1BE0 at +8h / listener 00CF1BC0 at +Ch).
 // +10h page _MultiError, +14h / +18h texts, +20h..+28h buttons, +50h buttons
 // mode, +54h error code; 00E08898 is the join-failure detail.
 void multi_error_exit_005d1f90(Raw s, Seg15Host& host);
@@ -756,6 +772,11 @@ void multi_error_register_005d2440(Raw s, Seg15Host& host);
 void multi_error_show_message_005d24f0(Raw s, Seg15Host& host);
 // 005D2E70, __thiscall(screen, code), RET 4.
 void multi_error_set_error_code_005d2e70(Raw s, std::int32_t code, Seg15Host& host);
+// 005D2EB0 (Ghidra CG_vector_deleting_dtor_005d2eb0; the class destructor that 005D2F70
+// calls), __thiscall(ECX = screen), RET; SEH 00C73DE5, states 2, 1, -1. The three vtables;
+// page +10h (004C12B0 / 00AA31F0); the two native string vectors +30h (00BF7C6E, 10h, 2,
+// 004324A0); +8h = 00CEB0FC; 004F71A0.
+void multi_error_destroy_005d2eb0(Raw s, Seg15Host& host);
 void multi_error_collect_children_005d2f60(Raw s, void* out, Seg15Host& host);
 
 // Multiplayer pause screen (19h, vtables 00CF1D70 / 00CF1D5C at +8h / 00CF1D3C at +Ch).

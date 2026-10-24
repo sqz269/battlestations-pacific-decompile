@@ -2958,4 +2958,47 @@ std::int32_t leaderboards_screen_get_screen_id_005633f0(Raw) noexcept;
 // Original ABI: __thiscall(ECX = this) -> EAX = 50, RET.
 std::int32_t hud_limbo_screen_get_screen_id_00565d60(Raw) noexcept;
 
+// ---------------------------------------------------------------------------
+// Packet cc13-tailtargets: the tactical library screen's class destructor (the routine the
+// scalar deleting destructor 0050D8E0 calls).
+// ---------------------------------------------------------------------------
+struct Fe3LibraryDestroyHost {
+    virtual ~Fe3LibraryDestroyHost() = default;
+    virtual std::int32_t interlocked_decrement(void* count) = 0;                        // [00CE2220]
+    virtual void ref_counted_destroy(void* object) = 0;                                 // vtable +0, ECX only
+    virtual void object_delete_04(void* object) = 0;                                    // vtable +4h(1)
+    virtual void renderer_virtual_124() = 0;                                            // [00F8D394] vtable +124h
+    virtual void render_resources_reset_remap_textures_00b0feb0() = 0;                  // ECX = [00F8D39C]
+    virtual void gui_remove_page_00aa31f0(void* page) = 0;                              // ECX = 004C12B0()
+    virtual void library_preview_clear_rotors_0050a950(Raw screen) = 0;
+    virtual void library_entry_destruct_004fd1d0(void* entry) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void free_00bf6989(void* block) = 0;
+    virtual void ref_ptr_array_resize_00504960(void* array, std::uint32_t size) = 0;
+    // 00432050 / 005052B0: ECX = first, EDX = last, two unread stack words (vector, screen), RET 8.
+    virtual void native_string_range_destroy_00432050(void* first, void* last, void* extra1, void* extra2) = 0;
+    virtual void record_2c_destroy_range_005052b0(void* first, void* last) = 0;
+    // 00BF7C6E `eh vector destructor iterator`(first, size, count, dtor).
+    virtual void eh_vector_destruct_00bf7c6e(void* first, std::uint32_t size, std::uint32_t count,
+        std::uint32_t dtor) = 0;
+    // 00505E60 STL_Vector_TidyDestroy (library instantiation, bound), ECX = vector {allocator,
+    // first, last, end}: 004FD1D0 on each 6Ch entry, first freed (00BF65AC), fields zeroed.
+    virtual void entry_vector_tidy_00505e60(void* vector) = 0;
+    virtual void simple_3d_scene_destruct_0093cc80(void* scene) = 0;                    // ECX = screen +8h
+    virtual void front_end_screen_destruct_004f71a0(Raw screen) = 0;
+};
+
+// 0050AF20 (Ghidra CG_vector_deleting_dtor_0050af20), __thiscall(ECX = screen), RET; SEH
+// 00C69B52, states 13h..2, 0, -1. Vtables +0h 00CEB9B4, +8h 00CEB9B0, +64h 00CEB99C, +68h
+// 00CEB97C. Ref-counted members +6Ch, +78h, +70h, +74h released (count +4h, vtable +0 at zero;
+// cleared when set). [00F8D394] vtable +124h(); 00B0FEB0 on [00F8D39C]. Pages +4DCh, +4E0h,
+// +4E4h removed. +4BCh released; +4B8h deleted (vtable +4h(1)) and cleared. 0050A950. +80h =
+// +7Ch = 100.0f (00CE3D08). +5B0h: 004FD1D0, free (00BF65AC), cleared. +5C4h: 00504960(0), then
+// its data freed (00BF6989). Plain vectors +4A0h, +490h freed and zeroed. String vector +47Ch
+// (00432050), 2Ch-record vectors +46Ch, +45Ch (005052B0): range destroyed, freed, zeroed.
+// 00505E60 on +444h; plain vector +424h; 00505E60 on +414h, +404h, +3F4h, +3E4h, +3D4h,
+// +3C4h. Native string arrays (00BF7C6E, 8, n, 0041DD20) +358h [0Dh], +340h [3], +318h [5].
+// +64h = 00CEB0FC; 0093CC80 on +8h; 004F71A0.
+void library_screen_destroy_0050af20(Raw s, Fe3LibraryDestroyHost& host);
+
 } // namespace bsp::cc13_fe3
