@@ -74,6 +74,7 @@ void load_sound_slots(void* slots, std::uint32_t first, std::uint32_t end, Pool1
         host.native_string_resize_0041dd40(&name, static_cast<std::uint32_t>(std::strlen(path)), 1);
         if (name.data != nullptr) host.crt_memcpy_00bf7680(name.data, path, name.length + 1);
         void* acquired = nullptr;  // uninitialised in the image; 00A83FD0 writes it
+        // ECX = [00F8BBE8]: the cache pointer stored at that address, not the address.
         void** const got = host.sound_sample_cache_acquire_00a83fd0(host.global_ptr(0x00F8BBE8u), &acquired, &name);
         void* const incoming = *got;
         void* const previous = slot;
@@ -96,7 +97,8 @@ void load_sound_slots(void* slots, std::uint32_t first, std::uint32_t end, Pool1
 }  // namespace
 
 // ---------------------------------------------------------------------------
-// 0054D550 (90 insns), BSP_HudHintsScreen_Destruct. __thiscall(ECX = screen),
+// 0054D550 (91 insns up to the RET at 0054D653, counting the lea ecx,[ecx]
+// pad at 0054D59D), BSP_HudHintsScreen_Destruct. __thiscall(ECX = screen),
 // RET, no delete flag (0054D840 is the scalar deleting wrapper). Evidence:
 // assembly 0054D550..0054D653.
 // vtable 00CEE290; EH state 2; the GUI page +1Ch removed; then for i = 0, 1:
@@ -167,7 +169,8 @@ void* hud_hints_screen_construct_0054d680(void* screen, Pool18Host& host) {
 // (src/cg_rebuild_b_cc13.cpp):
 // base; state 0; +8h = 00CEB0FC; state 1; 00A97260 on +0Ch; +40h = 00CEB110;
 // final vtables 00CEFC5C +0, 00CEFC48 +8, 00CEFC24 +0Ch, 00CEFC04 +40h; ten
-// 12-byte vectors +74h..+10Ch zeroed; state 0Ch: constructor iterator over
+// three-dword vectors on a 10h stride at +74h, +84h, ..., +104h zeroed (the
+// dwords at +70h, +80h, ..., +100h between them are untouched); state 0Ch: constructor iterator over
 // five 10h-byte vectors at +134h (ctor 004214E0, dtor 0041F5D0); state 0Dh:
 // 00683610 on +1D4h; lists +280h, +298h, +2A4h each get a sentinel from
 // 00582280 (+4h) and size 0 (states 0Eh, 0Fh between them); vectors +2D0h,

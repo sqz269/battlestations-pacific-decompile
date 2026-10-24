@@ -22,6 +22,8 @@ struct Pool18Host {
     virtual ~Pool18Host() = default;
 
     // ---- image globals ----
+    // Returns the pointer dword STORED at `address` (a load such as
+    // MOV ECX,[00F8BBE8]), not the address itself.
     virtual void* global_ptr(std::uint32_t address) = 0;
     virtual void global_store_u32(std::uint32_t address, std::uint32_t value) = 0;
     // A dword of a .data table read at run time (the two-entry sound path
