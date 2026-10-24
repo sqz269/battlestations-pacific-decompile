@@ -458,3 +458,63 @@ unless one of those updates is found to issue orders.
 - Decide the LOMP06/USN21 critical-hint behaviour for unattended runs. Natively the hint waits for
   action 4Ah. Here it stays active and suppresses every later hint of the mission.
 - Align `kHudHintsSecondsLeftBound` (0068C526) with this screen.
+
+## 7. The HUD gate on game+620h (packet cc15-hint2-gate, 2026-10-23)
+
+Switch `kHintPauseHudGateCc15Bound` (`include/bsp/game_hint_passes.hpp`), committed **OFF**
+(9809f7532 + 639d32eab, on origin/main 8028144c8).
+
+**What ON does.** `game_hud_suppressed` answers `game_hint_pause_620_cc15()` in two bindings: the HUD
+root 44h (00649860; 0064987D `JNZ 00649FB3`, `game_hosts_hud.cpp`) and the markers 4Dh (006435D0;
+00643605, `game_hosts_hud_world.cpp`). That function returns the flag 004D94F0 last stored on the
+tracker's screen 34h, so both updates stop while a critical hint is up. The pause menu's +61Fh is
+still not modelled.
+
+**Not gated:** the other three 620h readers of section 6 (pilot 00519BB0, map icon 005ADDA0,
+Support Manager 4Eh 00675C40). The host does not run them, so no support launch can be suppressed
+yet.
+
+**The plan input that dismisses a hint** is `<frame> input 0x4A`, in the `input <action>
+[hold <frames>]` syntax. Plans write the action number; there is no name. 0x4A is
+`kHudHintsConfirmAction`, the confirm record +DE0h. The hints screen tests it through 00535EE0
+(0054EB9E). In the host it reaches `GameMenuHost::input_action_pressed` through the injected action
+records.
+
+### Pairs (ref env, 2026-10-23)
+
+| Builds | Exe | Commit and switches |
+| --- | --- | --- |
+| main | `gm` | origin/main 8028144c8 |
+| gate OFF | `goff` | 639d32eab as committed |
+| A | `ga` | triggers ON, gate OFF (not committed) |
+| B | `gb` | triggers ON, gate ON (not committed) |
+
+Rows: USN04 plus the 12 wins rows. The plans are those named in section 6, except four:
+`usn02_l70_u2_b`, `lomp06_g56_l6_v2`, `jm06_l70_j6_n` and `ijn18_l70_i18_r`. Every run ended with
+exit_code=0 and its `rng streams: on` line.
+
+Four runs stopped at the startup error box 008F83C5 in the slot queue and were rerun: gm IJN18,
+gm USN04, goff USN01 and ga IJN18.
+
+- **main vs gate OFF:** gameplay identical on all 13 rows. The strict ordered diff is 0, and
+  pair_diff exits 0 on 12 rows (exit 1 on BSM01, outside gameplay).
+- **A vs B (the gate):** gameplay identical, mission end identical and strict diff 0 on 12 rows,
+  all except USN21.
+
+Two missions keep a hint up: BASICSUB, critical, shown at t=0.10 and never dismissed.
+
+- **LOMP06 (`g56_l6_v2`):** completed 330.84 s on both. Gameplay is identical. The HUD root body
+  runs once instead of 3428 times, and markers `gui_extent` falls from 61695 calls to 9.
+- **USN21 (`s46_u21_f`, 80000 frames):** **gameplay MOVED**. There is no end on either side.
+  - Deaths 516 -> 514, hit records 9176 -> 9644, hull hits 2448 -> 2476, shots 130430 -> 130772.
+  - The first changed death row is at about 2285 s. The first ordered-event difference is the ship
+    exit-zone countdowns at about 2338 s.
+  - The intended rows: `mission markers: frames 79276 -> 1`, and the HUD root body stops.
+  - GuiText work rises about 20-fold (`find_font` 8192 -> 158882).
+  - Entity commands rise 750 -> 752, and script `after-row-9 order` applied 22 -> 24.
+  - Helm orders: all 321 identical, in order.
+  - **Not explained.** The two gated bodies are display-only through their host interfaces, and the
+    markers `refresh_pose` is a no-op. The coupling into combat has not been found. Candidates are
+    the process-wide RNG and the GUI text work. It needs a cc9 dive before the flip.
+- **Hint that shows but does not stall:** JM06 shows PUM1STGET at 321.05 s, not pausing, and it
+  finishes.
