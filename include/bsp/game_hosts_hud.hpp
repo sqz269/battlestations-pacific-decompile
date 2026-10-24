@@ -366,7 +366,7 @@ inline constexpr bool kMovieTerrainAvoidBound = true;
 // that destroys and rebuilds the camera in that frame leaves the publish with the
 // old camera's world and fov for that one frame. False: the key stays
 // unsupported and the pose line notes `finishscript=<name> would_run=1`.
-inline constexpr bool kMovieCameraFinishScriptCc13Bound = false;
+inline constexpr bool kMovieCameraFinishScriptCc13Bound = true;  // ON (cc9-helm1, 2026-10-23): pairs on a7a80cd70; BSM03 intro hands over, BSM06 progresses to phase 2 and ends; see commit
 static_assert(!kMovieCameraFinishScriptCc13Bound || kMovieMoverBound,
               "finishscript needs the movie camera mover");
 // Packet cc13-fix24 (docs/CC13_FIX24.md). The in-mission interface update's

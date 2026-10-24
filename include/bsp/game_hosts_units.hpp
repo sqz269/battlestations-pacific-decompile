@@ -850,6 +850,12 @@ public:
     // and how many times it has run for this plane.
     bool plane_launch_spot_arm_9dc(std::size_t index, std::uint32_t& arms,
                                    float& cooldown) const noexcept;
+    // Packet cc13-bsm6strip: 0084BF00's own-base filter (0084C213-0084C278) on the
+    // shot owner `shooter`. `hit` is true when the sweep hit an entity (a unit or
+    // the landscape); `hit_unit` is its unit index, or size_t(-1) when it is not a unit. Returns 1 when the hit is dropped
+    // (+C18h = 5), 2 when the miss arm counted +C18h down, else 0.
+    int plane_own_base_hit_filter_0084c213(std::size_t shooter, bool hit,
+                                           std::size_t hit_unit) noexcept;
     // Packet cc9_pilot_moveto_task: the moveto order's range, descriptor +14h
     // (008A4708), which the kind-7 task's approach reads.
     void store_unit_moveto_range(std::size_t index, float range) noexcept;
@@ -946,6 +952,8 @@ public:
     // Packet cc13-helmmapgate: the HUD host reports that the map (4Ch) occludes
     // screen 46h, the only caller of 0064B870 (kHelmPrepareMapUpGateCc13Bound).
     void set_helm_screen_occluded_by_map(bool occluded);
+    // Packet cc13-mapback (log only): the state the gate above tests.
+    bool helm_screen_occluded_by_map() const noexcept;
     // The divisor 009da268 loads from [[blk+3fch]+538h]+524h. Packet
     // ship_ai_class_field_0524 found its producer: 00828f20 derives it as
     // 0.5 * MaxRotAngle (class+4f8h) / MaxRotAngleChangeRatio (class+4fch), and

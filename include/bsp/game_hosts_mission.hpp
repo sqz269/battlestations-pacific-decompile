@@ -65,6 +65,15 @@ class GameHintTrackerSlot;
 // stays an unimplemented record.
 inline constexpr bool kMissionStartTemporaryReleaseCc15Bound = false;
 
+// Packet cc15-chg. 00598B60's page-8 arm (00598BCF..00598BEC): when the list
+// published for the selection is page 8 (the "Training grounds" group 0, which
+// holds this installation's CHG challenge rows), the activated row's data
+// (00A9C990 on the list at screen+1B8h) goes into 00E194DC and 00E08878, and
+// 005922F0 starts the mission straight from the list. That arm builds no
+// mission-detail page (0058C092 rejects group 0). True: a page-8 selection
+// takes that arm. False: the walk stops after the mission list, as before.
+inline constexpr bool kChallengeGroupPageCc15Bound = true;
+
 // One class token of the selected mission's `.scn`, as the reconstructed
 // reader counted it. `registered` is bsp::scene_entity_class_is_registered.
 struct GameSceneClassCount {

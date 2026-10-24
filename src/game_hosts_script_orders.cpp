@@ -50,6 +50,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
+#include <list>
 #include <map>
 #include <string>
 
@@ -3828,11 +3829,46 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     // CreateScript runs the named global inside its own body, and that global
     // calls further bindings, so a dispatch can re-enter this function. The three
     // per-call fields are saved and restored rather than cleared at the end.
-    lua_State* const outer_state = state_;
-    const int outer_argument_count = argument_count_;
-    GameScriptOrderRow* const outer_row = row_;
+    // Packet cc13-dispguard: the restore is a guard's destructor, so a C++
+    // exception out of a native also restores the outer values. The row lives
+    // in rows_in_flight_ (a std::list, so its address is stable), not in this
+    // frame. A Lua error is a longjmp (Lua 5.1 is built as C), and under /EHsc
+    // the destructor is not guaranteed to run for it. When it is skipped,
+    // row_, state_ and argument_count_ all stay at the inner dispatch's
+    // values, and its node is not erased, so rows_in_flight_ grows by one per
+    // escaped error. row_ then points at that live heap row, never at a dead
+    // stack frame, and the growth is bounded by the error count: harmless.
+    struct DispatchRestore {
+        GameScriptOrdersHost& host;
+        lua_State* const outer_state;
+        const int outer_argument_count;
+        GameScriptOrderRow* const outer_row;
+        const std::list<GameScriptOrderRow>::iterator in_flight;
+        ~DispatchRestore() {
+            host.row_ = outer_row;
+            host.state_ = outer_state;
+            host.argument_count_ = outer_argument_count;
+            host.rows_in_flight_.erase(in_flight);
+        }
+    };
+    const DispatchRestore restore{*this, state_, argument_count_, row_,
+        rows_in_flight_.emplace(rows_in_flight_.end())};
     state_ = state;
-    machine_state_ = state;
+    // Packet cc13-dispguard: the machine is the main thread only. lua_pushthread
+    // answers 1 for it (no allocation, no GC step); a native run on a coroutine
+    // leaves the kept pointer as it was, so a collected coroutine is never kept.
+    // Evidence that natives run on the main thread: src/ has no lua_newthread
+    // or lua_resume, and none of this installation's 621 .lua files mentions
+    // coroutine or newthread. A later script that does use coroutines makes
+    // the readers see the last main-thread state instead of the coroutine:
+    // an intended safety change, but a behavioural one.
+    if (state == nullptr) {
+        machine_state_ = state;
+    } else {
+        const bool main_thread = lua_pushthread(state) == 1;
+        lua_pop(state, 1);
+        if (main_thread) machine_state_ = state;
+    }
     argument_count_ = argument_count;
     if (!g_lua_callback_trace.installed && lua_callback_trace_enabled()) {
         g_lua_callback_trace.installed = true;
@@ -3843,7 +3879,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     // the last recon pass before the native reads anything.
     if (kReconLevelTableBound) sync_recon_level_tables_0077b0c0();
 
-    GameScriptOrderRow row;
+    GameScriptOrderRow& row = *restore.in_flight;
     row.binding = binding->name;
     row.row_address = binding->row_address;
     row_ = &row;
@@ -4875,9 +4911,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
 
     ++summary_.calls;
     rows_.push_back(row);
-    row_ = outer_row;
-    state_ = outer_state;
-    argument_count_ = outer_argument_count;
+    // `restore` puts row_, state_ and argument_count_ back here, as before.
     return results;
 }
 

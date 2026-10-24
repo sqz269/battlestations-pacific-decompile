@@ -3885,3 +3885,145 @@ All exports are of main 802e1d8b9 at difficulty 1 (the run_game.ps1 pin), refere
 - **kUnitGetAttackTargetDirectorKindCc13Bound stays OFF (unreached as built).** `local\p25i_off` vs `local\p25i_atk`: USN13 (Game Over 290.05 s, 0 calls), USNRM01 (704.95 s), IJN20 (no end) and JM05 (569.98 s) are identical, with the same attack-target summary on both sides (IJN20: 2974 calls, fire 2895, command 79, pushed 0). The ON test `unit_is_kind_of(index, 0x18)` never matches because the host resolves a squadron's Lua entity to its leader plane's slot (e.g. "Airfield1_sqn06" is unit 655, plane type 38), which is not kind-of 0x18. IJN20's airfield level bombers reinstall 28-89 times each with 0 releases, which is the host gap. Routed to cc13 through the lead.
 - **USNOS 1800 s confirm (item 7) did not reach the window.** `local\p25i_off_osL` (l65_os_c1) fails with Game Over at 1099.95 s (HQ1). The carriers land nothing (landed=0; slot_tail_unapplied 0/7/25 on Enterprise/Essex/Intrepid) while Airfield3 lands 362. Intrepid and Essex squadrons queue at 380-523 s, but none touches down. This needs a plan that holds HQ1 past about 1600 s.
 - **Steer gate, flipped ON** (kBotCommandedDirection68Bound plus kSteerGateCommandedDirectionBound; `local\p25j_pred`, `local\p25j_gate`). Prediction mode (store only) is gameplay identical. BSM09 predicts to_pass 42 and to_block 799, and USN01 predicts 0 / 0. With the gate ON, USN01 is identical (completes 1155.00 s; 109 gates, no flips). BSM09 still ends, later (EndMission 405.02 -> 429.02 s; to_pass 33, to_block 247; dive releases 9 -> 3). USNOS moves (to_pass 15, to_block 57) and still fails at 1099.95 s. `tools/off_switch_on_build.py` built both ON cleanly.
+## 113. HANDOFF (cc9-physics25, 2026-10-23)
+
+Lane PHYSICS / PLANE FLIGHT, tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (branch agent/cc9-physics1). The launcher is `local\p25_pair.ps1 -Tag <export dir> -Row <row> [-EnvMode ref|def|j203]`. `j203` is the reference env plus BSP_FRAME_JITTER=20,3. Rows include `u13`, `rm1`, `i20`, `j5`, `j2`, `c6` (CHG06, does not load), `osL` (USNOS 1800 s) and `j8j` (lua70's JM08 j). Helpers: `local\p25_d.ps1 <off> <on>` (short pair_diff), `local\p25_goaway_sum.py <logs>` (goaway target-term totals), `local\p25_atk.ps1 <row>` (attack-target summary, level-bomb installs). run_game.ps1 pins --difficulty 1. Launch with pwsh, not Windows PowerShell 5: under PS5, Get-FileHash fails and no manifest is written.
+
+Commits this session (sections 106-112): 5481a7ca5 (dive/level goaway terms, torpedo moveto ranges, moveto speed shaping), 39ac16569 (torp goaway term, dive goaway draws), 3ca24854e (pilot-bot config load, torp goaway enter/tick draws), 052fd3356 (flak second-ammo range; loan of game_hosts_gunnery.cpp), 8ca49d230 (takeoff notify, +AA0h, slow push), 7207dcf49 (funnel path tag), 6d1051d37 (doc notes), 4b308a58d (steer gate on the commanded direction).
+
+Open:
+1. Paratroopers (4f): blocked. On current main the JM08 HQ falls before the C47 wave (about 1318 s) on l65_j8_p2 and l70_j8_j. This needs a JM08 plan that holds the HQ past 1500 s. Switches: kLevelBombParatrooperDropBound, its draw, kParatrooperRoundBound plus three draw subs.
+2. kUnitGetAttackTargetDirectorKindCc13Bound: unreached as built (section 112). The ON test `unit_is_kind_of(index, 0x18)` fails because the squadron's Lua entity resolves to the leader plane's slot. Routed to cc13; re-pair on IJN20 (airfield bombers reinstall 28-89 times, 0 releases), USN13, USNRM01 and JM05 once it is fixed. IJN08 can't test it until bisect2 explains the phase-1 sub wipe-out (subs dead by 638.82 s on current main; 978-1216 s on cb3192296).
+3. USNOS carrier landings (queue item 7): unconfirmed. l65_os_c1 now fails at 1099.95 s (HQ1) on 802e1d8b9; carriers have landed=0, and Intrepid/Essex squadrons queue at 380-523 s but never touch down. This needs a plan that holds HQ1 past about 1600 s to see Enterprise's approach.
+4. kAirOpsLaunchFlagAirborneBound and kAirOpsLaunchFlagAltitudeDrawBound: OFF. `--menu-select CHG06` never loads the mission (sideMission; "no mission-detail page was built for published group 0"). This needs harness support for challenge missions.
+5. Level-bomb CanFire 00729A80 (CC13_STUB_CENSUS row 7), started. 006E5800-006E581A calls rack->vtable[1D0h](1), i.e. CanFire with checkReload, on rack = ESI-310h; a refusal jumps to 006E58CF. The host (game_hosts_units.cpp, run_level_bomber_rack_tick_006e56f0) records it and tests ammo only. Next steps:
+   - Confirm that the rack class's vtable slot 1D0h is 00729A80.
+   - Find which writers set rack+414h (per-barrel timers), +450h, +478h, +3B8h and +358h in the rack fire path 006E4D50. If the drop never sets them, the gate is ammo-only, which is the host's substitution.
+   - Then bind any live gate behind an OFF switch.
+6. Still OFF in this lane: kReleaseTimerNotify0DhBound (log only). Low priority: the 006D2510 airfield gate, the 009C8A42 +4B0h NaN max, the 009C4A40 ceiling NaN arm, and section 75's whole-frame item.
+7. kMovetoSpeedShapingCc13Bound went ON unexercised (USN21: speed_changed=0). If a later row exercises it, log its "summary torpedo moveto sep" line here.
+8. NOT RUN (lead's order, next in this sequence):
+   (a) The atktgt re-pair on cc13's fix, main 9961fbc7d or later. ON now also takes the command arm for a squadron stand-in (luawire_squadron_record). Rows: IJN20, JM05, USNRM01, USN13. Expect squadron_standin=N > 0 at the end of the attack-target summary; on IJN20, Airfield2_sqn34 arm=command, pushed > 0, and the reinstall loop gone. Flip by the rules if it holds. Run tools/off_switch_on_build.py and a full build before the flip commit.
+   (b) The USNOS queued-squadron trace, from `local\p25i_off_osL.log` (802e1d8b9; Game Over at 1099.95 s). For Intrepid_sqn04 (queued 380.23 s), Intrepid_sqn07 (451.01 s), Intrepid_sqn09 (523.30 s) and Essex_sqn08 (494.90 s), record:
+      - the fate after queueing (death time and killer, or alive at the end);
+      - the mode/state and the distance to the carrier at death or at the end;
+      - the slot or queue position;
+      - whether the carrier was turning, moving or stopped.
+      A squadron that is alive, unhurt and still queued at 1100 s is a landing-gate candidate for cc13.
+   CanFire (item 5) comes after (a) and (b).
+## 114. The attack-target switch goes ON; USNOS queued squadrons; the level-bomb rack CanFire (cc9-physics26, 2026-10-23)
+
+Pairs are same-commit exports of 31e82488d (`local\p26_off`, `local\p26_atk` with
+kUnitGetAttackTargetDirectorKindCc13Bound=true), reference env, difficulty 1, launched by `local\p26_pair.ps1`.
+No log has "present failed"; the session is the console. physics25's "unreached" runs (section 112) were on
+802e1d8b9, which predates cc13's fix 9961fbc7d (not an ancestor), so they did not test the stand-in arm.
+
+**kUnitGetAttackTargetDirectorKindCc13Bound ON (reached, mechanism matches).** The attack-target summary
+(`calls / fire_arm / command_arm / pushed / squadron_standin`), OFF -> ON:
+
+| Row | OFF | ON | pair_diff | End OFF -> ON |
+| --- | --- | --- | --- | --- |
+| IJN20 idle | 2974 / 2895 / 79 / 0 / 2974 | 3817 / 0 / 3817 / 3676 / 3817 | 3 | no end both |
+| JM05 idle | 1039 / 1016 / 23 / 57 / 980 | 924 / 53 / 871 / 900 / 871 | 3 | failed 530.99 -> 471.01 s (Troop Transport 02) |
+| USNRM01 idle | 2722 / 2719 / 3 / 0 / 2722 | 4590 / 0 / 4590 / 3923 / 4590 | 3 | Game Over 849.92 -> 884.91 s |
+| USN13 idle | 0 calls | 0 calls | 0 | Game Over 460.01 s both |
+
+- IJN20: the airfield level bombers no longer reinstall. OFF, every Airfield1/2 bomber reinstalls 28-89 times with
+  0 releases (Airfield2_sqn34 i89/i84/i85, 0 drops). ON, each installs once (i1), and Airfield2_sqn07's wingmen
+  release (II: r1 d12, III: r1 d5). Airfield2_sqn34 is not spawned in the ON run (the airfield's pick order moves),
+  so the "sqn34 arm=command" check is replaced by the whole-row counts above.
+- WINS rows (row orders from cc9-lua52 `local\l72_rows.txt`):
+  - PRCP01 `p9_p01_k`: **lost**. completed 1024.52 s -> failed 1038.39 s (`usn03.obj_p2_fail`, Enterprise sunk); standin 485.
+  - BSM01 `s62_b1_h`: EndMission 815.92 -> 821.92 s (moved, still ends); standin 1831.
+  - BSM09 `l68_b9_d1`: EndMission 429.02 -> 414.02 s (moved, still ends); standin 443.
+  - JM06 `l70_j6_n`: gameplay identical (exit 1), completed 1922.75 s; standin 461.
+  - USN01 `l69_u1_a` (completed 370.03 s) and LOMP06 `g56_l6_v2` (completed 330.84 s): identical, 0 calls.
+  - USN02, LOMP10, USN12, ESMP08, IJN08, USN21, USN15 make 0 calls in lua72's latest logs, and IJN18 logs
+    squadron_standin=0, so the flip cannot move them.
+- The flip is faithful (the image's squadron director always takes the command arm; the record test is the
+  labelled stand-in for IsKindOf(18h)), so it goes ON with PRCP01 lost; PRCP01 needs a re-plan.
+  `tools/off_switch_on_build.py --names kUnitGetAttackTargetDirectorKindCc13Bound` exit 0; full build passes.
+
+**USNOS queued squadrons (static, `local\p25i_off_osL.log`, 802e1d8b9).** Script `local\p26_osq.py`.
+Every carrier squadron that queued died within seconds over the target area, 14-17 km from its carrier. None was
+alive at 1099.95 s, so **there is no landing-gate candidate**.
+
+| Squadron | Queued (n, deck) | Fate | Carrier distance at RTB |
+| --- | --- | --- | --- |
+| Intrepid_sqn04 | 380.23 s (n=0) | II 381.53 s (Heavy AA platform 09), III 385.73 s (HQ2), leader 391.23 s (Shimotsuke) | 17426 m |
+| Intrepid_sqn07 | 451.01 s (n=0) | leader 460.76 s, II/III 462.91 s (all Shimotsuke) | 17134 m |
+| Essex_sqn08 | 494.90 s (n=0) | III 484.06 s and II 490.75 s before the RTB (Zao1); leader 496.65 s (CB2) | 17058 m |
+| Intrepid_sqn09 | 523.30 s (n=0) | II/III 532.29 s, leader 532.44 s (all Shimotsuke) | 16789 m |
+
+- Each was alone in the queue (n=0). `squadron kill` erased its one queue record (00926D90 -> 006C4B30).
+- The leaders were in land-task state 4C4 (cmd_alt 1450) and the wingmen were in follow (500). No touchdown
+  probe got below 1000 m.
+- Intrepid is moving, not turning. Its site x goes 10203.7 (380 s) -> 9496.0 (451 s) -> 8774.9 (523 s) at
+  z about -9990, roughly 10 m/s westward.
+- The later queuers die the same way: Intrepid_sqn11/13/22/30/33 and Essex_sqn31/34. Essex_sqn34 queued at
+  1097.40 s and died at 1102.35 s (HQ1).
+- The carriers' landed=0 is a consequence of flak over Shimotsuke and the HQs, not a landing gate.
+
+**Level-bomb rack CanFire (CC13_STUB_CENSUS row 7): no gate can bite. The host's "has ammo" is exact for a
+level bomber, and no switch is needed.**
+- **The vtable slot.** 006E5800 loads `[rack]+1D0h` with rack = ESI-310h. The two MBombPlatform vtables are
+  00CF96A8 and 00CF9918. Their slot 1D0h (00CF9878, 00CF9AE8) holds 006E3460, which is
+  `Gun_CanFire(1) && this->vtable[210h](2Ah, 0)`. The slot 210h entries are 006E3FE0 (00CF98B8) and 006E45E0
+  (00CF9B28), which ask whether an attached child round answers kind 2Ah. The loadout arm is skipped for arg 0.
+- **The 00729A80 gates for a BOMBPLATFORM rack** (Function 0Ah):
+  - Tests 5-7 are exempt. The artillery set is {2,3,4,6}, torpedo is 7, AA is {1,5,6}.
+  - +358h has no non-zero writer. The constructor zeroes it at 0072E61A.
+  - +3B8h is written only by BSP_Gun_ApplySetDestroyedFailure / ClearDestroyedFailure (0072B5BC, 007280C0) and
+    by GUN_CREATE (0072A1BF).
+  - +450h starts at 0 (0072E8D2 XORPS, stored 0072E8DB). Its only positive writer is BSP_Gun_Fire's tail at
+    00730A08, and a rack's slot 1D8h is 006E4D50, not Gun_Fire.
+  - +478h starts at 0 (Construct 0072E66C). Its only positive writer is SetTriggerHeld 0072D3B8 (slot 1E8h), and
+    the rack overrides slot 1E8h with the empty body 006E3CB0 (00CF9890, 00CF9B00).
+  - The +414h barrel timers start at 0 (0072EE99 FLDZ -> 0072CF00). Only RearmBarrel (from Gun_Fire and
+    SetTorpedoStock) writes a reload. SelectFireMode writes FLT_MAX, and only on a mode change with no round.
+  - The drop 006E4D50 (to RET 0Ch at 006E56ED) writes none of +3B8h/+358h/+414h/+418h/+450h/+478h. It reads
+    +484h at 006E55E7.
+- **Verdict.** CanFire reduces to "the rack has an attached kind-2Ah round". The drop re-attaches the next round
+  through slot 224h (006E55FA), so this is the host's ammo test.
+- **Uncertainty.** A destroyed-failure message aimed at a plane's rack would set +3B8h. No plane-side sender was
+  checked.
+
+
+## 115. Airborne launch ON (CHG06); JM08 plan h holds the HQ but spawns no C47 (cc9-physics26, 2026-10-24)
+
+The exports are of 997fe5044 (main after 04cc91447, where cc15 turns on kChallengeGroupPageCc15Bound): `local\p26b_off`,
+`local\p26b_air` (kAirOpsLaunchFlagAirborneBound + kAirOpsLaunchFlagAltitudeDrawBound), `local\p26b_s1`
+(kLevelBombParatrooperDropBound) and `local\p26b_s6` (all six paratrooper switches). The env is ref and no log has
+"present failed".
+
+**kAirOpsLaunchFlagAirborneBound and kAirOpsLaunchFlagAltitudeDrawBound are ON (reached).** `--menu-select CHG06` now
+loads chg_6_forcez.lua, whose forcedDifficultyLevel 2 overrides the pin.
+- ON logs four "airborne launch for Hermes (006C5050 flag arm, State 7)" lines. They come from
+  LaunchAirBaseSlot(AlliedCV, 1..4, true), with y = Ceiling + draw = 1631.91, 1602.52, 1723.02, and so on. OFF logs
+  none.
+- Both runs fail at 986.88 s ("You have failed to destroy the battleships!", Prince of Wales). Each logs one
+  commandhelpers.lua:330 line, the same on both sides.
+- pair_diff gives 3 (moved). Deaths go 56 -> 51, shots 13164 -> 130 and hull hits 692 -> 9.
+- The cause: OFF, the Hermes squadrons start on the deck and fly over the airfield, so AirField's Heavy AA 01-03 fire
+  (14-16 shots each) and the airfield buildings die. ON, they start airborne at the carrier's x/z and never come
+  within 5 km of that AA (nearest 101 -> 5295 m). That is the mechanism the image's flag arm describes, so both
+  switches flip.
+- `tools/off_switch_on_build.py` gives exit 0, and the full build passes.
+- WINS: LaunchAirBaseSlot is called 0 times in every WINS log checked, so no row can move:
+  - lua72's l72r_*_{m,main}_ref (b1, b9, e8, i08, i18, j6, l10, l6, p01, u01, u02, u12, u21);
+  - this session's p26_off_w*;
+  - USN15 l71r_u15i.
+
+**JM08 plan h (ships62 `s62_j8_h`, copy `local\p26_s62_j8_h.txt`; 72000 frames) on 997fe5044: the HQ holds, but
+the paratrooper path is still unreached.**
+- OFF (`local\p26b_off_j8h`) and S1 (`local\p26b_s1_j8h`) have no end through 3600 s; the HQ never falls. They are
+  gameplay identical (exit 1).
+- No C47 spawns, and neither does any US bomber. The only plane types created are:
+  - Japanese: MainAirFieldEntity 01 (types 152, 154, 166 and 167), Hosho (162), Gekko, Ki-43 and the H6Ks;
+  - three Wildcats (133).
+- `summary mission capture paratroopers adds=0` and `units_with ... paratrooper=0` on both sides.
+- The plan's own "C47 .." targets are refused with "no unit". The run therefore does not contain the ~1318 s US air
+  wave that physics24's runs saw (section 104).
+- The S6 run was cancelled because S1 was identical.
+- Next: find what spawns JM08's US air wave (the mission script; LST 01 dies at 1275.27 s to the HQ's guns, which may change
+  the phase), then re-pair S1 and S6.

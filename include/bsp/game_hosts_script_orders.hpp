@@ -50,6 +50,7 @@
 #include <functional>
 #include <map>
 #include <string>
+#include <list>
 #include <vector>
 
 #include "bsp/building_pads.hpp"
@@ -1459,6 +1460,10 @@ private:
     // never consumed. The host logs it if a call ever reaches it.
     float blackout_configured_duration_{0.0f};
     bool blackout_configured_duration_used_{false};
+    // Packet cc13-dispguard: the rows of the dispatches being run, innermost
+    // last; a std::list so row_ stays valid while nested dispatches add theirs.
+    // Last, so every earlier member keeps its offset.
+    std::list<GameScriptOrderRow> rows_in_flight_;
 };
 
 }  // namespace bsp::game

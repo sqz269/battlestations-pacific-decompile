@@ -2111,6 +2111,25 @@ bool GameMissionHost::advance(float seconds) {
         host.step = GameMissionStep::MissionList;
         return true;
     case GameMissionStep::MissionList:
+        if constexpr (kChallengeGroupPageCc15Bound) {
+            if (host.page == MainMenuPage::TrainingGrounds) {
+                // Packet cc15-chg. 00598BCF: page 8 is 00598B60's training-list
+                // arm. 00598BD4 reads the activated row's data off the list at
+                // screen+1B8h (00A9C990), 00598BE2/00598BE7 store it into
+                // 00E194DC and 00E08878, and 00598BEC calls 005922F0 on the
+                // screen. The row is the published mission, the one
+                // selected_record() reads. No mission-detail page is built, and
+                // screen+5Ch is not cleared the way the campaign arm clears it
+                // at 00599315.
+                host.log.unimplemented("MainMenuScreen::page_dispatch", "00598b60");
+                host.log.notef("training-list arm 00598bcf: page 8 row %u (group %u) goes "
+                    "to 005922f0 with no mission-detail page", host.published_mission,
+                    host.published_group);
+                host.start_briefing_005922f0();
+                host.step = GameMissionStep::BriefingStart;
+                return true;
+            }
+        }
         // 00598B60's campaign arm calls the builder at 00599318. The dispatcher
         // itself is not reconstructed, so the executable reaches the builder the
         // way that arm does and records the dispatcher.

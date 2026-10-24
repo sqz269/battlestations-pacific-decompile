@@ -481,6 +481,12 @@ struct GameUnitSlot {
     unsigned long long ground_liftoff_requests{0};
     float ground_last_brake{0.0f};
     float ground_last_friction{0.0f};
+    // Packet cc13-takeoffdiag, log-only: the last ground-band step's lateral term
+    // and thrust (007DBEB3 / 007DB744), and the takeoff decel log's state.
+    float ground_last_lateral{0.0f};
+    float ground_last_thrust{0.0f};
+    float takeoff_decel_prev_v{-1.0f};
+    std::uint32_t takeoff_decel_lines{0};
     float ground_first_pos[3]{0.0f, 0.0f, 0.0f};
     unsigned long long ground_steer_steps{0};   // cc9_plane_ground_steering
     float ground_steer_last_f2{0.0f};
@@ -3305,6 +3311,10 @@ struct GameUnitsHost::Impl {
     bool carrier_site_permission_006d01c0(LandingDeck& d, const GameUnitSlot& p);
     unsigned long long takeoff_installs{0}, takeoff_parking_refused{0};
     unsigned long long takeoff_done{0}, takeoff_to_slow{0}, takeoff_to_run{0};
+    // Packet cc13-takeoffdiag (log-only): the takeoff decel lines printed, the
+    // planes that printed one, and the lines the caps held back.
+    unsigned long long takeoff_decel_lines{0}, takeoff_decel_planes{0},
+        takeoff_decel_suppressed{0};
     // Packet cc9_takeoff_task_head.
     unsigned long long land_installs_deferred{0}, land_installs_after_takeoff{0};
     // Packet cc9_ground_retakeoff (kGroundRetakeoffBound).
@@ -22621,6 +22631,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ++unit_.ground_band_steps;
                             unit_.ground_last_brake = gb.brake;
                             unit_.ground_last_friction = gb.friction;
+                            unit_.ground_last_lateral = gb.lateral;           // log-only
+                            unit_.ground_last_thrust = state.thrust_accel;    // log-only
                         }
                         const bsp::PlaneBodyAcceleration body =
                             bsp::fold_world_into_body_007d8470(acc, state.world_to_body);
@@ -38344,6 +38356,44 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             else th = tq > 1.0f ? 1.0f : tq;
                             write_hold(th, 0.0f);
                             p.takeoff_run_last_throttle = th;
+                            // Packet cc13-takeoffdiag, LOG-ONLY: a speed drop at full
+                            // latched throttle on the ground. The band terms are the
+                            // last 007DBEB3 step's (stashed in the core law); surf_y is
+                            // pos_y - +BFCh, the 006BC530 runway-plane height the
+                            // probe 007C5AC0 keeps (this host has no 006CF180 ->
+                            // 006CEF80 surface query). Capped 40 per plane, 400 in all.
+                            {
+                                const float pv = p.takeoff_decel_prev_v;
+                                p.takeoff_decel_prev_v = v;
+                                if (pv >= 0.0f && pv > v && p.plane_latched_throttle >= 0.99f
+                                    && p.plane_ground_contact_bf8) {
+                                    if (p.takeoff_decel_lines >= 40u
+                                        || owner_.takeoff_decel_lines >= 400u) {
+                                        ++owner_.takeoff_decel_suppressed;
+                                    } else {
+                                        if (p.takeoff_decel_lines == 0u) ++owner_.takeoff_decel_planes;
+                                        ++p.takeoff_decel_lines;
+                                        ++owner_.takeoff_decel_lines;
+                                        const float py = p.motion.position[1];
+                                        owner_.log.notef("  takeoff decel %s: t=%.2f l.z=%.2f v=%.3f "
+                                            "dv=%.4f thrust_accel=%.3f gb_friction=%.3f gb_brake=%.3f "
+                                            "gb_lateral=%.3f thr=%.3f surf_y=%.3f pos_y=%.3f pitch=%.4f "
+                                            "contact=%d", p.row.name.c_str(),
+                                            static_cast<double>(owner_.summary.simulated_seconds),
+                                            static_cast<double>(lz), static_cast<double>(v),
+                                            static_cast<double>(v - pv),
+                                            static_cast<double>(p.ground_last_thrust),
+                                            static_cast<double>(p.ground_last_friction),
+                                            static_cast<double>(p.ground_last_brake),
+                                            static_cast<double>(p.ground_last_lateral),
+                                            static_cast<double>(p.plane_latched_throttle),
+                                            static_cast<double>(py - p.plane_contact_height_bfc),
+                                            static_cast<double>(py),
+                                            static_cast<double>(p.plane_pitch_angle_c64),
+                                            p.plane_ground_contact_bf8 ? 1 : 0);
+                                    }
+                                }
+                            }
                             if (log_row) {
                                 owner_.log.notef("  takeoff run %s: t=%.2f ALIGNED state=%d l=(%.2f %.2f) "
                                     "e=%.2f err=%.3f a2=%.3f 1c=%.2f thr=%.3f v=%.2f contact=%d "
@@ -42377,6 +42427,45 @@ bool GameUnitsHost::plane_launch_spot_arm_9dc(std::size_t index, std::uint32_t& 
     return true;
 }
 
+// 0084BF00's own-base filter (0084C213-0084C278). EBP is the shot's owner
+// (shot+CCh) when it IsKindOf(0Fh) (0084BF3F-0084BF66), and [ESP+44h] its
+// squadron +9D4h. With a squadron, a hit and a hit entity: a plane whose +908h
+// is under 2.0 (00CE3958), with a holder +BF4h and +C18h > 0, drops the hit
+// when the entity is the holder's base owner ([[+BF4h]+4]+7Ch); then
+// +C18h = 5. Otherwise (0084C251) +C18h > 0 and (+72Ch)->vtable[38h] (free
+// flight: 0074E210 BSP_PlaneControlMode_IsFreeFlight, `cmp [ecx+1D4h],7`, and
+// +72Ch + 1D4h = +900h, so +900h == 7) count it down by one.
+// PROVISIONAL: [[+BF4h]+4]+7Ch is taken as landing_decks[+BF4h - 1].owner, the
+// same holder -> block -> owner substitution the stock return uses
+// ([[[plane+BF4h]+4]+7Ch]+174h, packet cc9_stowed_plane_stock_return).
+// LABELLED: a landscape hit (hit with hit_unit == -1 here; hit_unit 0 on the
+// projectile sweep) is treated as an entity present, so it takes the hit arm
+// and never counts down. That matches the image only if 0098B370 returns a
+// non-null hit entity for land, which is not shown.
+int GameUnitsHost::plane_own_base_hit_filter_0084c213(std::size_t shooter, bool hit,
+                                                      std::size_t hit_unit) noexcept {
+    if (shooter >= impl_->slots.size() || !impl_->slots[shooter]) return 0;
+    GameUnitSlot& s = *impl_->slots[shooter];
+    if (!bsp::unit_is_kind_of(s.class_id, 0x0f)) return 0;
+    const bool squadron =
+        bsp::plane_squadron_registry().find_by_member_unit(shooter) != nullptr;
+    if (squadron && hit) {
+        // 0084C213-0084C24F (a hit entity that is not a unit never matches).
+        if (hit_unit == static_cast<std::size_t>(-1)) return 0;
+        if (!(2.0f > s.plane_airborne_908)) return 0;
+        const std::size_t hi = s.plane_contact_deck_bf4;
+        if (hi == 0 || hi > impl_->landing_decks.size()) return 0;
+        if (s.plane_c18 <= 0) return 0;
+        if (impl_->landing_decks[hi - 1u].owner != hit_unit) return 0;
+        s.plane_c18 = 5;
+        return 1;
+    }
+    // 0084C251-0084C273.
+    if (s.plane_c18 <= 0 || s.plane_control_mode_900 != 7) return 0;
+    --s.plane_c18;
+    return 2;
+}
+
 void GameUnitsHost::store_unit_moveto_range(std::size_t index, float range) noexcept {
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->moveto_range = range;
@@ -43362,10 +43451,17 @@ bool GameUnitsHost::helm_route_take(std::size_t index, float throttle, float x, 
         host.helm_rudder = 0.0f;
         host.helm_route_x = x;
         host.helm_route_z = z;
+        // Packet cc13-mapback (log only): map_up is the state
+        // kHelmPrepareMapUpGateCc13Bound tests. map_up=1 means the take waits:
+        // the prepare (role-1 transfer) is skipped, and so is the issue gate
+        // further down, which also requires this unit to be the controlled
+        // unit (controlled_index == index), as it is here.
         host.log.notef("helm route taken: \"%s\" throttle %.3f toward (%.1f, %.1f); role 1 "
-            "through 0077C470(unit, 2, 1) at the next step, then the helm every step",
+            "through 0077C470(unit, 2, 1) at the next step, then the helm every step "
+            "map_up=%d",
             host.slots[index]->row.name.c_str(), static_cast<double>(throttle),
-            static_cast<double>(x), static_cast<double>(z));
+            static_cast<double>(x), static_cast<double>(z),
+            host.helm_screen_occluded_by_map ? 1 : 0);
         return true;
     }
 }
@@ -43476,6 +43572,10 @@ float GameUnitsHost::unit_ring_current_rudder(std::size_t index) const {
 
 void GameUnitsHost::set_helm_screen_occluded_by_map(bool occluded) {
     impl_->helm_screen_occluded_by_map = occluded;
+}
+
+bool GameUnitsHost::helm_screen_occluded_by_map() const noexcept {
+    return impl_->helm_screen_occluded_by_map;
 }
 
 float GameUnitsHost::unit_ring_confirmed_throttle_0994(std::size_t index) const {
@@ -45233,6 +45333,8 @@ void GameUnitsHost::report() {
             "009CFD70, packet cc9_takeoff_task_bind)", host.takeoff_installs,
             host.takeoff_parking_refused, host.takeoff_to_slow, host.takeoff_to_run,
             host.takeoff_done, host.takeoff_permission_asks, host.takeoff_permission_denied);
+        host.log.notef("summary takeoff decel lines=%llu planes=%llu suppressed=%llu",
+            host.takeoff_decel_lines, host.takeoff_decel_planes, host.takeoff_decel_suppressed);
         if constexpr (kTakeoffTaskHeadBound) {
             host.log.notef("summary takeoff task head: land_deferred=%llu land_after_takeoff=%llu "
                 "(00999F50 / 0099AE89 / 0099A4C0 -> 0099A170, packet cc9_takeoff_task_head)",

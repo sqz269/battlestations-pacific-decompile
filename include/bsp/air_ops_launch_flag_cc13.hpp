@@ -37,7 +37,8 @@ namespace bsp {
 // field: create_units already seeds every plane at class+18Ch TravelSpeed along its
 // nose (labelled: the identity axes stand for the owner's rotation rows, as on
 // the flag-0 path). False: bag_state 1 and the owner-origin height, as before.
-inline constexpr bool kAirOpsLaunchFlagAirborneBound = false;
+// ON since cc9-physics26 (docs/OCEAN_WAVE_FIELD.md section 115, CHG06 pair).
+inline constexpr bool kAirOpsLaunchFlagAirborneBound = true;
 
 // True: the 00BD2F10(stream 1, 100.0f, 300.0f) draw on the shared stream (the
 // gunnery host's stream-1 generator), taken where the image takes it: after the
@@ -45,7 +46,8 @@ inline constexpr bool kAirOpsLaunchFlagAirborneBound = false;
 // float(draw + Ceiling) (24-bit FADD, FSTP float). False: the draw is not taken and
 // is counted. y is Ceiling with NO random offset (SUBSTITUTION, labelled; no
 // midpoint is substituted because the image has no constant there).
-inline constexpr bool kAirOpsLaunchFlagAltitudeDrawBound = false;
+// ON since cc9-physics26 (section 115).
+inline constexpr bool kAirOpsLaunchFlagAltitudeDrawBound = true;
 
 static_assert(!kAirOpsLaunchFlagAltitudeDrawBound || kAirOpsLaunchFlagAirborneBound,
     "the 006C52BA draw belongs to the airborne arm; switch that on first");

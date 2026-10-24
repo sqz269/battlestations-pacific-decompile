@@ -246,6 +246,29 @@ struct GameHudHost::Impl {
     bool unit_request_pending{false};
     bool unit_request_applied{false};
     int unit_interface_id{0};
+    // Packet cc13-mapback: the manager's pending record as 004CC460 last wrote
+    // it, +20h (the id) and +38h (the payload, a unit index; SIZE_MAX for
+    // null). 006840F0 services the record without clearing it, so 0068AA40's
+    // "already the pending payload" test reads the last push.
+    // SUBSTITUTION, labelled (rev2 N1). The tracker assumes that every push
+    // noted here is accepted and that the noted sites are the only writers.
+    // Neither holds in general:
+    //  - 004CC460 refuses when [00E19894] is set and 00683E90(id) is true
+    //    (004CC478..004CC491), leaving +20h/+38h as they were.
+    //  - +38h is a linked weak reference (unlink 006952A0 / link 00694A60,
+    //    004CC4CC..004CC4E2), so a unit's destruction can clear it while this
+    //    index stays stale. That is harmless here: a dead unit fails +5Ch.
+    //  - Pushes the host only records are not noted, e.g. the 34h limbo
+    //    pushes at 0064734B, 006485A0's empty-list arm and cc13-limbo's
+    //    009595B8.
+    int record_pending_id_20{0};
+    std::size_t record_pending_payload_38{static_cast<std::size_t>(-1)};
+    void note_pending_record_004cc460(int id, bool controlled_payload) {
+        record_pending_id_20 = id;
+        record_pending_payload_38 = controlled_payload && units != nullptr
+            && units->controlled_bound() ? units->controlled_index()
+            : static_cast<std::size_t>(-1);
+    }
     // Packet cc9_set_selected_unit: 00647300's calls, acceptances, and the
     // 20h pushes it made (serviced through the same pending/applied pair).
     unsigned long long select_calls{0};
@@ -871,6 +894,7 @@ public:
         // 0068d73a, 004cc460(20h, 0). The pending record it writes is the
         // front-end owner's; the id is what the executable applies.
         owner_.summary.pushed_interface_id = interface_id;
+        owner_.note_pending_record_004cc460(interface_id, false);
         owner_.record("InGameInterface::push_interface_request", 0x004cc460u);
     }
     void hud_root_set_field_1c(std::uint32_t value) override {
@@ -1667,11 +1691,49 @@ void GameHudHost::Impl::back_out_one_overlay_level_0068b470() {
     // host never fills level 3 (level3_screen_count answers 0).
     record("InGameInterface::binoculars_reset", 0x0051e8e0u);   // 0068B4CE
     if (release_gun_map_up) {
-        // 0068B4E9..0068B507: 004F85D0(0), 004D8AE0(game, 0), then 0068AA40
-        // for the controlled vehicle. Not hosted: the line only opens the map.
-        record("InGameInterface::back_out_close_level2", 0x0068b4e9u);
-        log.note("releasegun: C1h with the map up would close it (0068B4E9); not hosted");
-        log_map_state("close-requested (not hosted, map stays open)");
+        // Packet cc13-mapback. 0068B4D3..0068B4DA: [this+54h]+4h set (the map
+        // is up) takes the close arm. HARNESS INPUT, labelled: the C1h press is
+        // a plan's `input 0xC1` line standing in for the player's map toggle.
+        // 0068B4E7/0068B4E9: 004F85D0(0) clears the level-2 screen set.
+        static const int kNone[] = {0};
+        menu.publish_level2_screen_set_004f85d0(kNone, 1);
+        done("InGameInterface::clear_level2_screen_set", 0x0068b4e9u);
+        // 0068B4EE..0068B4F7: 004D8AE0(game, 0) clears the level-2 contexts.
+        menu.publish_level2_input_contexts_004d8ae0(kNone, 1);
+        done("InGameInterface::clear_level2_input_contexts", 0x0068b4f7u);
+        release_gun_map_up = false;
+        // 46h is no longer occluded, so 0064D610 runs 0064B870 again.
+        if (units != nullptr) units->set_helm_screen_occluded_by_map(false);
+        // 0068B4FF..0068B507: 0068AA40(this, 004B4B00()), the controlled
+        // vehicle. Its gates (0068AA44..0068AA7A): not the pending payload
+        // +38h, present, +5Ch set with +5Dh/+60h/+5Eh clear (the units host
+        // answers the four together), pending id +20h not a camera mode; then
+        // 0068AA7F 004CC460(20h, unit).
+        const bool present = units != nullptr && units->controlled_bound();
+        const std::size_t unit = present ? units->controlled_index() : 0;
+        const bool is_pending_payload = present && unit == record_pending_payload_38;
+        bsp::SceneRequestUnitFlags flags{};
+        if (present) {
+            const bool alive = units->unit_alive_and_visible(unit);
+            flags.flag_5c = alive;
+        }
+        const bool push = bsp::scene_request_accepts_unit_0068aa40(present,
+            is_pending_payload, flags, record_pending_id_20);
+        if (push) {
+            unit_request_pending = true;
+            unit_request_applied = false;
+            pending_interface_id = 0;
+            note_pending_record_004cc460(kInterfaceScene3d, true);
+        }
+        done("InGameInterface::request_scene_for_unit", 0x0068aa40u);
+        log_map_state("close");
+        log.notef("releasegun: C1h closed the map (0068B4E9..0068B507, harness input): "
+            "overlay level 2 -> 1, level 2 {} contexts {}; 0068AA40 %s",
+            push ? "pushed 20h with the controlled unit"
+                 : !present ? "skipped (no controlled unit)"
+                 : is_pending_payload ? "skipped (the unit is already the pending payload +38h)"
+                 : !flags.flag_5c ? "skipped (+5Ch/+5Dh/+60h/+5Eh)"
+                 : "skipped (pending id +20h is a camera mode)");
         return;
     }
     // 0068AC30. 00E08880 is EnableMap, 1 in single player
@@ -1779,6 +1841,8 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.unit_interface_id = 0;
     impl.movie_screen = bsp::HudMovieScreenState{};
     impl.pending_interface_id = 0;
+    impl.record_pending_id_20 = 0;
+    impl.record_pending_payload_38 = static_cast<std::size_t>(-1);
     impl.movie = bsp::HudMovieCamera{};
     impl.movie_active = false;
     // The child hosts borrow units and Lua. Their default destructors release
@@ -1802,6 +1866,7 @@ void GameHudHost::request_scene_interface_for_unit_004cc460() {
     // does not own, so the push is recorded and the executable makes it.
     impl.record("InGameInterface::push_interface_request", 0x004cc460u);
     impl.unit_request_pending = true;
+    impl.note_pending_record_004cc460(kInterfaceScene3d, true);
     impl.log.note("interface request 20h pushed with the controlled unit as its payload: "
         "milestone 2h applied the null-payload request Init pushes at 0068d73a, whose arm "
         "publishes only 29h 49h 44h 35h; the same arm with a unit is a classifier");
@@ -2023,6 +2088,7 @@ public:
     void push_interface_request(int interface_id, const void*) override {
         // 005CD1CE 004CC460(2Ch, [00E188D8]); the pending record is replaced.
         owner_.pending_interface_id = interface_id;
+        owner_.note_pending_record_004cc460(interface_id, true);
         ++owner_.movie_pushes;
         owner_.done("MovieInterface::push_interface_2ch", 0x005cd1ceu);
     }
@@ -2435,6 +2501,7 @@ bool GameHudHost::set_selected_unit_00647300(std::size_t unit) {
     impl.unit_request_pending = true;
     impl.unit_request_applied = false;
     impl.pending_interface_id = 0;   // 004CC460 overwrites the one pending record
+    impl.note_pending_record_004cc460(kInterfaceScene3d, true);
     ++impl.select_pushes;
     impl.done("SetSelectedUnit::push_interface_20h", 0x00647077u);
     impl.log.notef("SetSelectedUnit 00647300: \"%s\" accepted by 00645060; 00645600 moved "
@@ -2531,6 +2598,7 @@ public:
         owner_.unit_request_pending = true;
         owner_.unit_request_applied = false;
         owner_.pending_interface_id = 0;
+        owner_.note_pending_record_004cc460(kInterfaceScene3d, true);
         ++owner_.force_selects;
         owner_.done("ForceSelectUnit::push_interface_20h", 0x00647077u);
     }
