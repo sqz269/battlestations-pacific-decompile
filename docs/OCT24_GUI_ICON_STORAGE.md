@@ -103,9 +103,15 @@ through AB2150/F8BDA0 iff bit0. It neither tests nor decrements widget+04.
 `NativeGuiIconReference` separately admits one completely constructed actual
 allocation into the SAME canonical registry, borrowing actual+04 without a
 store/retain. CURRENT0 BD30E0 freshly selects CURRENT4 AB6100(1) at already-zero;
-direct scalar transport has no count gate. Successful or entered-failed scalar
-retirement unbinds the same opaque identity without touching returned payload.
-Flags0 retires payload metadata but leaves physical allocation with the caller.
+direct scalar transport has no count gate. Successful scalar retirement unbinds
+the same opaque identity without touching returned payload. Flags0 retires payload
+metadata but leaves physical allocation with the caller.
+
+Entered failure keeps the SAME canonical binding in a failed phase, including
+uncertain pool-return failures. This preserves raw-graph lookup authority and
+blocks replay, normal metadata destruction and identity reuse without reading
+possibly consumed payload or its count. Retain the failed graph/providers through
+explicit process disposition; no native rule requires a metadata unbind on failure.
 
 ## Remaining authority and verification limits
 

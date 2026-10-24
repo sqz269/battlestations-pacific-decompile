@@ -37,6 +37,7 @@ public:
 
     void* actual_identity() const noexcept { return identity_; }
     bool retired() const noexcept;
+    bool failed() const noexcept;
     NativeGuiWidgetLifetimeContext& lifetime_context() const noexcept { return context_.storage.lifetime; }
     const NativeGuiIconDestroyAcquired& destruction() const noexcept { return destruction_; }
     // Already-observed zero only: genuine CURRENT0 BD30E0 -> CURRENT4 AB6100(1).
@@ -45,11 +46,12 @@ public:
     // Direct native scalar has NO count gate. Borrow stable/disjoint flags;
     // low byte is read only after full dtor. Flags0 retires payload metadata
     // but leaves physical storage with caller; flags1 returns its original slot.
-    // Any entered exception retires/unbinds metadata; preserve the partial raw
-    // graph/providers independently and never retry already-entered native work.
+    // Any entered exception preserves this canonical binding in a failed phase;
+    // no replay, normal metadata destruction or identity reuse. Retain the
+    // partial raw graph/providers through explicit process disposition.
     void* delete_scalar_00ab6100(const volatile std::uint32_t& actual_flags_slot);
 private:
-    enum class Phase { bound, destroying, retired };
+    enum class Phase { bound, destroying, failed, retired };
     void* const identity_;
     NativeGuiIconIdentityContext& context_;
     Phase phase_{Phase::bound};

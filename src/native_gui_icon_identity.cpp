@@ -51,6 +51,7 @@ NativeGuiIconReference::~NativeGuiIconReference() {
     if (phase_ != Phase::retired) std::terminate();
 }
 bool NativeGuiIconReference::retired() const noexcept { return phase_ == Phase::retired; }
+bool NativeGuiIconReference::failed() const noexcept { return phase_ == Phase::failed; }
 void NativeGuiIconReference::retire() noexcept {
     phase_ = Phase::retired;
     // Opaque key only; native payload may already be in the returned pool slot.
@@ -62,7 +63,14 @@ void* NativeGuiIconReference::delete_scalar_00ab6100(const volatile Word& flags)
     phase_ = Phase::destroying;
     void* result;
     try { result = delete_native_gui_icon_00ab6100(identity_, flags, context_.storage, destruction_); }
-    catch (...) { retire(); throw; }
+    catch (...) {
+        phase_ = Phase::failed;
+        destruction_.failed = true;
+        if (!destruction_.failure) destruction_.failure = std::current_exception();
+        // Keep SAME canonical authority without rereading possibly consumed
+        // native storage. The failed binding blocks cleanup, replay and reuse.
+        throw;
+    }
     retire();
     return result;
 }
