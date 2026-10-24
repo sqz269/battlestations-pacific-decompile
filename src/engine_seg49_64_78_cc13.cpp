@@ -51,6 +51,31 @@ void destruct_input_0097a810(InputSubscription& s) {
     std::string{}.swap(s.callback);
 }
 
+//0097A8B0 ECX=this/EAX=this, RET0097A920; empty party filter/callback.
+SurrenderSubscription construct_surrender_0097a8b0() { return {}; }
+//0097A930 ECX=this, RET0097A9C5; party tree then callback storage.
+void destruct_surrender_0097a930(SurrenderSubscription& s) {
+    s.party.values.clear();
+    std::string{}.swap(s.callback);
+}
+//0097A9D0 ECX=this/EAX=this, RET0097AA47. Range vtable alone is written
+// at+1Ch; its two float words are not initialized by the native body.
+LeakSubscription construct_leak_0097a9d0(RangeFilter untouched_duration) {
+    LeakSubscription s;
+    s.duration = untouched_duration;
+    return s;
+}
+//0097AA50 ECX=this, RET0097AAE5; range has no owned storage.
+void destruct_leak_0097aa50(LeakSubscription& s) {
+    s.entity.ids.clear();
+    std::string{}.swap(s.callback);
+}
+//0096DCB0 ECX=this, RET0096DD07; non-null NativeString block is returned
+// to its sized pool, then native base vtable is restored.
+void destruct_warning_event_record_0096dcb0(WarningEventRecord& record) {
+    std::string{}.swap(record.name);
+}
+
 ReconStyleRecord* recon_default_style_008036f0(ReconStyleFallback& state) noexcept {
     if ((state.flags & 1u) == 0) {
         state.flags |= 1u;

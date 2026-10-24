@@ -185,6 +185,12 @@ ExitZoneSubscription construct_exit_zone_0097a620();
 void destruct_exit_zone_0097a6d0(ExitZoneSubscription&);
 InputSubscription construct_input_0097a790();
 void destruct_input_0097a810(InputSubscription&);
+SurrenderSubscription construct_surrender_0097a8b0();
+void destruct_surrender_0097a930(SurrenderSubscription&);
+// Native0097A9D0 leaves duration min/max untouched. Supply the allocation's
+// existing range words explicitly; archive Load later writes their values.
+LeakSubscription construct_leak_0097a9d0(RangeFilter untouched_duration);
+void destruct_leak_0097aa50(LeakSubscription&);
 
 struct RepairSubscription : EventSubscription {     // 2Ch, vtable 00D1B6EC
     EntityIdFilter entity{};                         // +0Ch
@@ -488,6 +494,9 @@ struct WarningEventRecord {
     std::string name{};
 };
 WarningEventRecord construct_warning_event_record_0096dc00(std::string name);
+//0096DCB0 ECX=this, RET0096DD07; release name storage, base vtable00D1AF18.
+// Value model uses std::string storage and has no native vtable field.
+void destruct_warning_event_record_0096dcb0(WarningEventRecord&);
 
 // --- reports ---------------------------------------------------------------------------------------
 
