@@ -1496,3 +1496,48 @@ Frames: BSM03/04/05 24000, BSM06 44000, IJN18 100000, USN15 104000; otherwise as
   - ref: completed 4246.98 s, a knife-edge (the HQ bottoms at 9 hp).
   - 20,3: no end.
   - default: failed 1911.79 s ("The HQ has been destroyed!").
+## 2026-10-24, BSM01 switch split and re-plan `l72_b1_k1` (cc9-lua72, keeper)
+
+**Split.** On 3364b40a5 the BSM01 `s62_b1_h` plan has no end under 20,3 and fails at 1875.70 s in the default env. I
+built one export per flipped switch group in 34daf632e..3364b40a5, with that group alone turned back OFF (logs
+`local\l72r_Fb1_<arm>_<env>.log`).
+- kUnitGetAttackTargetDirectorKindCc13Bound OFF (`xa`): 20,3 EndMission 887.91 s and default failed 1563.40 s. Both are
+  the 34daf632e values.
+- Every other arm stays at no end in 20,3 and failed 1875.70 s in default:
+  - seat artillery ClassSpeed + TriggerRefusal (`xs`)
+  - airborne launch + altitude draw (`xl`)
+  - launched-squadron party (`xp`)
+  - finishscript (`xf`)
+  - challenge-group page (`xc`)
+- hint2 and the gate were already ON in the 34daf632e baseline, so they get no arm.
+- So the move is atktgt (997fe5044), which is faithful and stays ON.
+
+**Mechanism (20,3).** With atktgt OFF vs ON:
+- pair_diff shows units 603 -> 1097 and deaths 279 -> 799, with the squadron stand-in answering 9381
+  UnitGetAttackTarget calls.
+- The larger air battle moves HenryPT's approach. At frame 7000 it is at (1906,-2973) instead of (1943,-2842), and the
+  7000 leg toward (800,-3000) then runs about 90 m further south.
+- At step 7434 HenryPT touches Sacramento (hull pair census). From step 7481 it sits on draft contact 0 at
+  (1370,-3045), aground for the rest of the run, at throttle 1 and about 1 m/s.
+- It never reaches the MiniSub, luaMiniSubHit never fires (listener fires 0), and phase 3 cannot end.
+
+**Re-plan `config/win_orders/bsm01_l72_b1_k1.txt`.** It is s62_b1_h with the one line `7000 takehelm HenryPT 1.0
+800 -3000 stop 30` aimed at (800,-2950).
+
+| Base | ref | 20,3 | default |
+| --- | --- | --- | --- |
+| main 561d57228 (tree build) | EndMission 914.90 s | EndMission 821.92 s | **failed 1752.58 s** |
+| 561d57228 + kReconLoadForceRefreshCc13Bound ON (`local\l72_rc`) | EndMission 827.92 s | EndMission 836.92 s | **failed 1518.36 s** |
+
+- Each winning EndMission has MissionStatus=true and logs the guard. moveto_unselected=0 and role_forced=0.
+- The recon flip is not on main yet. recon1 measured `s62_b1_h` going to no end with it (I see the same: ref no end on
+  `l72_rc`), and k1 keeps winning there. So k1 should stand after that flip lands.
+- In the default env HenryPT dies before the MiniSub is hit: on main to a Japanese plane (Jap #233.1) at 1751.58 s.
+  The script then fails in luaMissionFailed. That loss predates atktgt (1563.40 s on 34daf632e), and no tested
+  variant fixes it.
+- Siblings, ref / 20,3 / default on main (`local\l72_b1_k*.txt`):
+  - k2, leg at (800,-2900): no end / EndMission 836.92 s / no end.
+  - k3, the 6900 leg at (1900,-2900): EndMission 821.92 s / EndMission 623.97 s / default pending. With recon ON its
+    ref and 20,3 have no end.
+  - k4, the 6900 leg at (1900,-2850): EndMission 818.92 s / EndMission 836.92 s / failed 1875.70 s.
+- The BSM01 row moves to `l72_b1_k1`: ref and 20,3; default lost.
