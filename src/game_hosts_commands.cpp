@@ -1673,7 +1673,7 @@ void deliver_entity_command(ChainState& chain_, const bsp::EntityOrderMessage& m
 
 void EntityIssueBinding::route_message(void* entity, const bsp::EntityOrderMessage& message) {
     static_cast<void>(entity);
-    // 0077c2a0 at 0077d7bd. The router reads the default routing flags at
+    // 0077c2a0 at 0077d7d3. The router reads the default routing flags at
     // [00e0af1c], queues a local delivery on session+24ch and 0076c600 drains
     // it; 00780670 then widens the tick window for a category 49h message and
     // 00780120's 58h arm at 00780607 dispatches it to the entity's own

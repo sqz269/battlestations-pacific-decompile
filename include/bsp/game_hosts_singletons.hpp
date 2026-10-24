@@ -21,7 +21,7 @@ class GameHostLog;
 // cc15-ob3: the native loading queue, the lazy 20h E18D4C singleton built by
 // 004FDE20 (ctor 004FDBA0, registered through 00BD0C30) on 00737A50's first
 // RunFrame call, then 00509190 each frame; drained as profile CEB198.
-inline constexpr bool kLoadingQueueCc15Bound = false;
+inline constexpr bool kLoadingQueueCc15Bound = true;
 class GameObserverRuntime;
 class GameNativeVfsRuntime;
 class GameNativeReadOnlyData;

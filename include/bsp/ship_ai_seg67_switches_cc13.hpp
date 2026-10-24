@@ -72,7 +72,7 @@ static_assert(kShipAiClearanceRefreshSentinel == 0x1.388p+13f);    // 0x461C4000
 // because cc9 flips this switch by name. Mode 3 is the caller-steered navigate
 // the attackmove approach step enters (provisional NavigateCallerSteered; see
 // ShipAiSteeringMode in ship_ai_states.hpp and docs/CC13_MODE3STEER.md).
-inline constexpr bool kShipAiNavigateAsternSkipBound = false;
+inline constexpr bool kShipAiNavigateAsternSkipBound = true;  // re-ON with the arc-centre plan test (SHIP_AI 314)
 
 // 009EE59B/009EE59F. When blk+1C4h is neither 2 nor 3 (Rudder or Heading),
 // the path gate JZ 009EF206 still reaches 009EF206: 009DE5B0(dt), then

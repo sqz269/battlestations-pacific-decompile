@@ -21,12 +21,24 @@
 #include <string>
 #include <vector>
 
-namespace bsp { struct VoiceClipRecord; }
+namespace bsp {
+struct LanguageEntry;
+struct VoiceClipRecord;
+}
 
 namespace bsp::game {
 
 class GameHostLog;
 class GameVfsHost;
+
+// cc15-msg2: 00705E00's miss arm. A name absent from the record map gets a new record
+// "<name>" timed by the narrative screen's TempCharWait / TempWaitBase, as the image
+// builds it. OFF: the miss is counted and answers null.
+inline constexpr bool kMessageRecordMissCc15Bound = false;
+// cc15-msg2: 00704590's language is 008D57A0 on the settings block [00F88980] (the
+// catalog row's voice_dir), not the lockit name the host was built with. OFF: the
+// lockit name, as before.
+inline constexpr bool kMessageVoiceLanguageCc15Bound = false;
 
 // What 007065E0 reads besides its argument: the local party's side kind
 // [[game+18CCh+4*[game+18ECh]]+28h] and the scene record block [game+5FCh]+1064h
@@ -54,15 +66,24 @@ struct MessageManagerSummary {
     unsigned long long sound_banks_not_loaded{0};       // 00A83FD0 seam
     unsigned long long streamed_probes_not_evaluated{0};// [0109CEEC] vtable +0Ch seam
     unsigned long long resolve_hits{0};        // 00705E00 found
-    unsigned long long resolve_misses{0};      // 00705E00 miss (seam: null)
+    unsigned long long resolve_misses{0};      // 00705E00 miss
+    unsigned long long records_created{0};     // misses given a "<name>" record (cc15-msg2)
+    float char_wait_7c{0.0f};                  // the timing pair those records used
+    float wait_base_80{0.0f};
     unsigned long long key_tests{0};           // 00702300 tests from 0097B5E0
     unsigned long long key_hits{0};
 };
 
 class GameMessageManagerHost {
 public:
-    // `voice_language` stands in for 008D57A0 on [00F88980] (see the doc).
+    // `voice_language` stands in for 008D57A0 on [00F88980] unless
+    // kMessageVoiceLanguageCc15Bound and the settings are bound (see the doc).
     GameMessageManagerHost(GameHostLog& log, GameVfsHost& vfs, std::string voice_language);
+    // The process-wide inputs 008D57A0 reads: the language table [00F88974] (count
+    // [00F88978]) and the settings block's index [00F88980]+4h. Both are borrowed and
+    // must outlive every manager; the application binds them once after settings load.
+    static void bind_voice_language_settings(const std::vector<LanguageEntry>& catalog,
+        const int& language_index_04);
     ~GameMessageManagerHost();
     GameMessageManagerHost(const GameMessageManagerHost&) = delete;
     GameMessageManagerHost& operator=(const GameMessageManagerHost&) = delete;
@@ -80,10 +101,10 @@ public:
     void load_message_map_00706760(const std::string& name, std::int32_t side);
     void unload_message_map_00706fc0(const std::string& name, std::int32_t side);
 
-    // 00705E00 as 00976B00 calls it: the record for `name`, or null on a miss.
-    // A miss creates a "<name>" record in the image, whose duration reads the voice
-    // manager [[00E198C4]+A4h]+7Ch/+80h; that owner is not hosted, so a miss is
-    // counted and answers null instead (seam).
+    // 00705E00 as 00976B00 calls it: the record for `name`. A miss creates a "<name>"
+    // record in the image, whose duration reads the narrative screen
+    // [[00E198C4]+A4h]+7Ch/+80h. With kMessageRecordMissCc15Bound the host does the
+    // same; without it a miss is counted and answers null.
     const VoiceClipRecord* resolve_record_00705e00(const std::string& name);
     // 0097B5E0's test: 00702300 lower_bound plus the inlined find on the record map.
     bool record_map_contains_00702300(const std::string& key);

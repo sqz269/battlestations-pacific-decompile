@@ -39,6 +39,9 @@ struct ShipAiStationKeepingState {
     float throttle_39c{0.0f};         // blk+39Ch, the request's +10h slot
     float heading_target_324{0.0f};
     float distance_32c{0.0f};
+    // Packet cc13-w324, instrumentation only: the image store of +324h the arm
+    // made, or 0 if it made none.
+    std::uint32_t last_writer_324{0};
 };
 
 // The arm's intermediate values, for diagnostics.

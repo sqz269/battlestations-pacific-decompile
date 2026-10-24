@@ -99,8 +99,8 @@ Other classes answer `false`, which keeps the count `sound_keys_not_evaluated`:
 | --- | --- | --- |
 | sound banks | 00A83FD0 on [00F8BBE8], FMOD sample loading | `sound_banks_not_loaded`; the record's four references stay null |
 | streamed-dialog probe | [0109CEEC] vtable +0Ch, 00BDD520 | `streamed_probes_not_evaluated`, answers false |
-| voice language | 008D57A0 on [00F88980]: the catalog row's voice_dir, `authentic` with DL_Content_0000062, `english` fallback | the language string the mission frame host was constructed with, logged in the load line |
-| record miss | 00705E00 creates a `<name>` record timed by [[00E198C4]+A4h]+7Ch/+80h | counted as `clip_record_misses`, answers null |
+| voice language | 008D57A0 on [00F88980]: the catalog row's voice_dir, `authentic` with DL_Content_0000062, `english` fallback | the language string the mission frame host was constructed with, logged in the load line; 008D57A0 with `kMessageVoiceLanguageCc15Bound` (cc15-msg2 below) |
+| record miss | 00705E00 creates a `<name>` record timed by [[00E198C4]+A4h]+7Ch/+80h | counted as `clip_record_misses`, answers null; created with `kMessageRecordMissCc15Bound` (cc15-msg2 below) |
 | spoken-language sweep | 004E0FAD: when [004C1E90()]+8h == 2, each other language loads (1) in its block, then unloads (0) in "dummy DO NOT USE" | not taken; the host has no profile-hints singleton |
 | FileBlocks | "Warnings_<language>_<Ally/Jp>" / "Warnings_englishauthentic_..." (00BE0A30) | not built |
 | message filters | [game+5FCh]+1064h..+1088h from the scene's `unittypes` (00468B70) | disabled with empty arrays; the host's scene read does not parse `unittypes` |
@@ -217,3 +217,140 @@ The runs are USN04 (`--frames 5000 --mission-frames 4800`) and the 12 wins rows 
   and mtime before and after the runs.
 - **Other lines.** The ring-scan `clear_37c` lines (SHIP_AI_OPEN_ITEMS 140), as in the earlier
   flips.
+
+### Strict order re-check (cc15-flip, base f906d5934, 2026-10-19)
+
+The (a) check above used Compare-Object, which compares multisets and does not prove order. I re-ran it as a
+strict index-by-index diff, comparing `kMessageManagerCc15Bound=false` against main, ref env, on USN04 plus the
+12 wins rows. The diff covers activation, draw, power-up, weather, voice, warning, clip, message, dialog, hint,
+objective and Lua lines, with hex masked.
+
+- I dropped the manager's own lines: `message manager *`, `MessageManager::*`, `load_warning_bank` and `mission
+  load`.
+- I masked `records_not_evaluated` and `sound_keys_not_evaluated` in the per-activation warning lines.
+
+Result: on every row both sequences have the same length. The only mismatched position is the end-of-run `summary
+mission warning activate` line, and in it only those two counters differ. No line from another object moves or
+changes its order. Gameplay is identical on all 13 rows. The only other `pair_diff` lines are the heap-dependent
+`clear_37c` table cells (IJN18 Kita2, LOMP10 Kiyoshimo).
+
+## cc15-msg2: record-miss creation and the voice-language folder (2026-10-19)
+
+Two seams from the table above, each behind its own switch in
+`include/bsp/game_hosts_message_manager.hpp`. Both switches are OFF in the commit.
+
+### Record miss, 00705E00 (`kMessageRecordMissCc15Bound`)
+
+The typed body is `resolve_message_record_00705e00` in `src/message_record_resolver.cpp`
+(docs/MESSAGE_RECORD_RESOLVER.md). The host now calls it on a miss instead of answering null.
+What the image does on a miss:
+
+- **Insertion.** 00705C50, operator[] on the record map at manager+4h, inserts a node at the
+  00702300 lower-bound hint. The 40h record comes from 00703FF0, then 007042B0 copies it twice
+  (pair, node). The temporary's +08h and +14h are the caller's uninitialized stack; +08h is
+  overwritten next, so only +14h (the alternate flag) is a host choice: 0, as the existing
+  00705C50 host path already used.
+- **Defaults.** text +00h = the name, sound id +08h = -1, the four references stay null, and the
+  timed-key vector +34h is resized to one key (00704190).
+- **The key.** text = "<" + name + ">" (004261A0 twice), flag +18h = 1, start +10h = 0, and end
+  +14h = len(text) * [+7Ch] + [+80h] on [[00E198C4]+A4h]. No sound-key derivation happens here;
+  00705E00 only builds the display text.
+- **The timing pair.** [[00E198C4]+A4h] is the HUD manager's slot 33h, the narrative screen.
+  005BB130 (005BB80B..005BB901) loads Scripts/datatables/DialogGlobals.lua and stores
+  +7Ch = TempCharWait and +80h = TempWaitBase (GetNumber, FSTP to float). The screen is not
+  hosted, so the manager host runs that file once, at the first miss, the same way (base file
+  through the VFS, the repository's Lua 5.1.1) and keeps the pair. The installation has
+  TempCharWait = 0.04 and TempWaitBase = 1.0. The override files (00BDEF90) are a seam, as for
+  Messages.lua.
+- **Services.** The created record reaches only the current-manager read. `RecordMissPlayback`
+  answers that one and throws on every other VoiceLineHost call.
+
+A created record is logged once, as `message manager record created: "<name>" key=... end=...`.
+Later lookups of the name hit the record. The summary counts `records_created`.
+
+**Pairs.** The runs used the reference env (`rng streams: on` in every log) and the builds
+local\msg2_exe\{base,off,on1}. base is origin/main 7f4f75b85, off is this commit, and on1 is this
+commit with the switch true.
+
+| Pair | pair_diff | Gameplay |
+| --- | --- | --- |
+| USN04 base vs off | exit 0, identical apart from noise | identical |
+| USN04 off vs on1 | exit 0 | identical; USN04 has no miss, so nothing moves |
+| USN01 (usn01_l69_u1_a, completed 380.03 s) off vs on1 | exit 1 | identical: 57 deaths, 3725 hits, 106-row unit table |
+
+USN01 rows that move, every one:
+- The six `record miss` lines become five `record created` lines. The names are
+  `nmy_ship_ship_dest_{4,2,1}_randomplane` and `under_att_dispatcher3`/`4`. The second
+  `under_att_dispatcher3` lookup now hits the created record, so it logs nothing.
+- One line appears before the first created record: `record-miss timing from DialogGlobals.lua:
+  TempCharWait=0.0399999991 TempWaitBase=1`.
+- `summary mission message manager`: records 247 -> 252, clip_records_resolved 38 -> 44,
+  clip_record_misses 6 -> 0.
+
+Ends: `<nmy_ship_ship_dest_4_randomplane>` has 34 characters, so its end is 2.36; dispatcher
+keys have 23 characters, so their end is 1.92.
+
+**Strict order (c).** I ran an index-ordered diff (`difflib` opcodes, hex masked) of every dialog,
+warning, clip, message, voice, subtitle, hint, objective, Lua and script line. It moves only the
+lines above, in place, plus the renderer worker thread id. Every other line keeps its index
+order, on USN04 (6030 lines) and on USN01 (9681 lines).
+
+### Voice-language folder, 008D57A0 (`kMessageVoiceLanguageCc15Bound`)
+
+00704590 replaces `LANGUAGE` in the four 00E08FCC templates with 008D57A0's answer. That
+function reads globals, not the lockit name:
+
+- `[00F88980]+4h` is the settings block's language index (`GameSettingsBlock::language_index_04`).
+- `[00F88974]` / `[00F88978]` is the language table and its count. 008D7BC0 builds it from the
+  lockit/*.lng descriptors, one 20h row each. Row +10h/+14h is the `voice_dir` string.
+- The answer is "english" when count < index (JL) or the row's voice_dir is empty. It is
+  "authentic" when 007F8890 says the profile owns `DL_Content_0000062`. Otherwise it is the
+  row's voice_dir.
+
+The installation has one descriptor, `lockit/englishauthentic.lng`
+(`lanfile englishauthentic`, `lockit_id FE.opt_englishauthentic`, `voice_dir authentic`).
+options.txt selects it, so the index is 0. Both arms therefore answer `authentic`, the folder name
+under `sound/messages`. The host's `englishauthentic` was the lanfile, the name 008D4870
+answers.
+
+The application binds the live catalog and settings index once, before the menu host is built
+(`GameMessageManagerHost::bind_voice_language_settings`, game_hosts.cpp). With the switch, each
+008D57A0 call runs `cc13_band0085::voice_language_name_008d57a0` on them. Seam: the profile
+content list at game+720h is not hosted (no marketplace enumeration), so ownership is false. With
+this installation's row that does not change the answer. An index the image would read outside
+the table throws. The mission frame host's load line still prints the lockit name
+(`language=englishauthentic`); that file belonged to another lane, so a separate line logs the
+008D57A0 answer.
+
+**Pairs.** The builds are local\msg2_exe\{base2,off2,on2,on12}. base2 is origin/main 080e23452;
+off2 is this commit with both switches OFF; on2 has the voice switch ON; on12 has both ON. All
+runs used the reference env.
+
+| Pair | pair_diff | Gameplay |
+| --- | --- | --- |
+| USN04 base2 vs off2 | exit 0, identical apart from noise | identical |
+| USN04 off2 vs on2 | exit 1 | identical: 53 deaths, 81-row unit table |
+| USN01 off2 vs on2 | exit 1 | identical: completed 380.03 s, 57 deaths, 106-row unit table |
+| USN01 off2 vs on12 | exit 1 | identical; the moved rows are the union of the two switches |
+
+Rows that move (USN04 and USN01 alike):
+- A new line: `008D57A0 voice language "authentic" (settings+4h index 0 of 1 catalog rows; lockit
+  name "englishauthentic")`.
+- The `loaded Messages.lua` line (d):
+  - voice_probe_hits goes 0 -> 230 and voice_probe_misses 494 -> 34. 230 records find their .fsb
+    on the first probe; 17 records miss both the actor path and the plain path.
+  - sound_banks_not_loaded goes 0 -> 230. Each hit now reaches 00A83FD0, which is still a seam
+    and answers null, so every record's four references stay null.
+  - streamed_probes_not_evaluated goes 247 -> 17. Only records with no hit keep the alternate
+    flag +14h = 1 and reach the 007050C0 streamed fallback.
+
+The strict index-order diff moves only those lines, plus the renderer worker thread id.
+
+**What reads the change (d).** A hit only clears the record's alternate flag +14h; the bank
+pointer stays null. The readers of +14h and of the references are `construct_voice_slot_00702cc0`
+and `start_voice_clip_005b9050` (callers 005B91E0, 005B9300, 005BABB0, 005B8810). No `src/game_*`
+file calls any of them, and no log has a 005B9050, 00702CC0, 005B71D0 or 00974070 row. Nothing
+that sets timing reads the flag yet.
+
+**Save untouched.** The four files under Documents\Battlestations-Pacific had the same SHA-256,
+size and mtime before the first run and after the last.

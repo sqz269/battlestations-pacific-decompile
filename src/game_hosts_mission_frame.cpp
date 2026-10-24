@@ -23,6 +23,8 @@
 #include <stdexcept>
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hint_passes.hpp"
+#include "bsp/game_profile_owner.hpp"
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq2
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
@@ -351,6 +353,9 @@ struct GameMissionFrameHost::Impl {
     bsp::AudioSettings audio{};
     bsp::InputBindingDeviceGroups device_groups{};
     std::vector<bsp::HintCooldown> hint_cooldowns{};
+    // cc15-hint2 (kHintTriggerPassesCc15Bound): this frame's reads, bound into
+    // the tracker [00E198D0] while the frame host lives.
+    std::unique_ptr<HintFrameQueries> hint_frame;
     bool main_menu_manager_released{false};   // 00e198ac
     bool cinematic_hidden{false};             // game+634h
     bool cinematic_allow_simulation{false};   // game+635h
@@ -575,6 +580,10 @@ struct GameMissionFrameHost::Impl {
     std::vector<HelmMarker> helm_markers;   // the scene's markers, by name
     unsigned long long helm_orders_applied{0};
     unsigned long long helm_orders_refused{0};
+    // Packet cc13-mvsel (log only): moveto lines issued to a unit that was not
+    // the controlled unit ([00E188D8]) at issue time, which a player cannot do
+    // without the select first (SCRIPTED_HELM 8.2 difference 2).
+    unsigned long long helm_moveto_unselected{0};
     // Packet cc9_player_order_capture_row: the pending `stop R` of the last
     // applied takehelm, checked every step until it fires once.
     bool helm_stop_armed{false};
@@ -1330,6 +1339,151 @@ private:
     WarningObject warning_{};
 };
 
+// ---------------------------------------------------------------------------
+// cc15-hint2 (kHintTriggerPassesCc15Bound): the reads of the seven passes and
+// TriggerHint, docs/CC15_OBJECT_PROFILE_HINTS.md section 6. Every input this
+// process has no owner for is a record with the labelled neutral answer.
+// ---------------------------------------------------------------------------
+
+class HintFrameBinding final : public HintFrameQueries {
+public:
+    explicit HintFrameBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
+
+    int effective_game_mode_004bca50() override {
+        return host_.scene_contents ? host_.scene_contents->summary().effective_game_mode : 0;
+    }
+    // SUBSTITUTION (labelled): the narrative screen 33h is not hosted, so its
+    // +C0h fade is never running.
+    bool narrative_blend_005b5d50() override {
+        host_.record("HintPasses::narrative_blend", 0x005b5d50u);
+        return false;
+    }
+    bool controlled_unit_present_e188d8() override {
+        return host_.units != nullptr && host_.units->controlled_bound();
+    }
+    bool controlled_kind_of_5c(int category) override {
+        return controlled_unit_present_e188d8()
+            && host_.units->unit_is_kind_of(host_.units->controlled_index(), category);
+    }
+    // The +170h interface's slot 0 per class, the table the MessageManager
+    // binding reads; -1 for a class not listed (no hint name matches it).
+    int controlled_type_170() override {
+        if (!controlled_unit_present_e188d8()) return -1;
+        return warning_entity_category_cc15(host_.units->unit_class_id(host_.units->controlled_index()));
+    }
+    int controlled_payload_007edad0() override {
+        host_.record("HintPasses::plane_payload", 0x007edad0u);
+        return 0;
+    }
+    bool controlled_ohka_144() override {
+        host_.record("HintPasses::kamikaze_ohka", 0x00692f40u);
+        return false;
+    }
+    int plane_ordnance_007bca50(bool) override {
+        host_.record("HintPasses::plane_ordnance", 0x007bca50u);
+        return 0;
+    }
+    bool plane_machinegun_c24(bool) override {
+        host_.record("HintPasses::plane_machinegun", 0x006928d0u);
+        return false;
+    }
+    // The repair task unit+A20h is not hosted: no class flag, no water or fire.
+    bool class_repair_d0() override {
+        host_.record("HintPasses::class_repair", 0x00692604u);
+        return false;
+    }
+    float repair_water_34() override {
+        host_.record("HintPasses::repair_water", 0x00939f80u);
+        return 0.0F;
+    }
+    float repair_fire_38() override {
+        host_.record("HintPasses::repair_fire", 0x00939f70u);
+        return 0.0F;
+    }
+    int submarine_state_122c() override {
+        host_.record("HintPasses::submarine_state", 0x0069264cu);
+        return 0;
+    }
+    bool engine_signal_9e5() override {
+        host_.record("HintPasses::engine_signal", 0x0069266au);
+        return false;
+    }
+    void controlled_position_fc(float& x, float& y, float& z) override {
+        x = y = z = 0.0F;
+        if (controlled_unit_present_e188d8()) {
+            host_.units->unit_position_00fc(host_.units->controlled_index(), x, y, z);
+        }
+    }
+    // World list 28 (head +16Ch): the command buildings, +7C4h LandingRange,
+    // +7A0h CaptureRange (both ints natively), +54h the side.
+    void command_building_zones_16c(std::vector<bsp::CaptureZoneSample>& zones) override {
+        zones.clear();
+        if (host_.units == nullptr) return;
+        GameUnitsHost& units = *host_.units;
+        constexpr int kCommandBuildingList = 0x1C;
+        const std::size_t count = units.world_list_size(kCommandBuildingList);
+        for (std::size_t i = 0; i < count; ++i) {
+            const std::size_t unit = units.world_list_entry(kCommandBuildingList, i);
+            if (unit >= units.units().size()) continue;
+            bsp::CaptureZoneSample zone{};
+            units.unit_position_00fc(unit, zone.x, zone.y, zone.z);
+            zone.landing_radius = static_cast<std::int32_t>(units.command_building_landing_range_07c4(unit));
+            zone.capture_radius = static_cast<std::int32_t>(units.command_building_capture_range_07a0(unit));
+            zone.state = units.unit_side_0054(unit);
+            zones.push_back(zone);
+        }
+    }
+    bool local_slot_flag_19() override { return false; }   // single player slot 0
+    // SUBSTITUTION (labelled): the slot record's nation +28h is the local
+    // party (0 allied, 1 japanese).
+    int local_side_nation_28() override { return local_player_party(); }
+    int local_player_slot_18ec() override { return 0; }
+    int weapon_group_44() override {
+        host_.record("HintPasses::weapon_group", 0x006928dbu);
+        return 0;
+    }
+    bool support_manager_available_0066ffa0() override {
+        host_.record("HintPasses::support_manager_available", 0x0066ffa0u);
+        return false;
+    }
+    bool support_manager_free_camera_00652a30() override {
+        host_.record("HintPasses::support_manager_free_camera", 0x00652a30u);
+        return false;
+    }
+    // SUBSTITUTION (labelled): 00F8898C as 008D41C0 sets it (2); this
+    // installation's options.txt has no hints token.
+    std::int32_t hints_setting_00f8898c() override { return 2; }
+    bool pad_prompts_00f88a30() override { return false; }
+    std::int32_t lua_run_string_006b8ad0(const std::string&) override {
+        host_.record("HintPasses::lua_run_string", 0x006b8ad0u);
+        return 0;
+    }
+    bool game_cinematic_hidden_634() override { return host_.cinematic_hidden; }
+    void game_set_cinematic_004cd0f0(bool hide, bool allow_simulation, bool) override {
+        const bsp::CinematicModeFlags flags = bsp::cinematic_flags_004cd0f0(hide, allow_simulation);
+        host_.cinematic_hidden = flags.hud_hidden;
+        host_.cinematic_allow_simulation = flags.simulate_while_hidden;
+        host_.frame_state.cinematic_hidden = flags.hud_hidden;
+        host_.frame_state.cinematic_allow_simulation = flags.simulate_while_hidden;
+        host_.done("HintsScreen::set_cinematic", 0x004cd0f0u);
+    }
+    void record(const char* label, std::uint32_t address) override { host_.record(label, address); }
+    double mission_seconds() override { return static_cast<double>(host_.world_clock); }
+
+private:
+    GameMissionFrameHost::Impl& host_;
+};
+
+// The tracker through 004E1CA0, with this frame's reads bound to it.
+GameHintTracker* hint_tracker_for_frame(GameMissionFrameHost::Impl& host) {
+    GameHintTrackerSlot* slot = GameHintTrackerSlot::process_slot();
+    if (slot == nullptr) return nullptr;
+    if (!host.hint_frame) host.hint_frame = std::make_unique<HintFrameBinding>(host);
+    GameHintTracker& tracker = slot->get_004e1ca0();
+    tracker.bind_frame(host.hint_frame.get());
+    return &tracker;
+}
+
 // Packet cc13-powerup: what the power-up manager (src/cc13_powerup.cpp) reaches
 // in this process. Published with the class registry at the global_subsystems
 // step, as 004DC6A0 publishes 00F88C30.
@@ -1358,11 +1512,24 @@ public:
     }
     // The award tracker 004E1CA0 is not hosted. SUBSTITUTION (labelled): the
     // hint counts as not yet shown, and its trigger is a record.
-    bool hint_has_been_shown_0068e600(const std::string&) override {
+    bool hint_has_been_shown_0068e600(const std::string& name) override {
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (GameHintTracker* tracker = hint_tracker_for_frame(host_)) {
+                host_.done("PowerUps::hint_has_been_shown", 0x0068e600u);
+                return tracker->has_been_shown_0068e600(name);
+            }
+        }
         host_.record("PowerUps::hint_has_been_shown", 0x0068e600u);
         return false;
     }
-    void trigger_hint_00690fd0(const std::string&, std::int32_t) override {
+    void trigger_hint_00690fd0(const std::string& name, std::int32_t forced) override {
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (GameHintTracker* tracker = hint_tracker_for_frame(host_)) {
+                tracker->trigger_hint_00690fd0(name, forced != 0);
+                host_.done("PowerUps::trigger_hint", 0x00690fd0u);
+                return;
+            }
+        }
         host_.record("PowerUps::trigger_hint", 0x00690fd0u);
     }
     // 008E34F0 acts only on a group-1 (air support) class; its vehicle-class
@@ -2414,7 +2581,16 @@ public:
     }
 
     // --- the seven hint passes -------------------------------------------
+    // kHintTriggerPassesCc15Bound: each pass runs on the tracker its own
+    // 004E1CA0 call returns (src/game_hint_passes.cpp).
     void hint_tick_cooldowns_0068ec10(float raw_delta) override {
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (GameHintTracker* tracker = hint_tracker_for_frame(owner_)) {
+                tracker->tick_cooldowns_0068ec10(raw_delta);
+                owner_.done("MissionFrame::hint_tick_cooldowns", 0x0068ec10u);
+                return;
+            }
+        }
         const std::size_t surviving = bsp::tick_hint_cooldowns_0068ec10(
             owner_.hint_cooldowns.empty() ? nullptr : owner_.hint_cooldowns.data(),
             owner_.hint_cooldowns.size(), raw_delta);
@@ -2422,23 +2598,65 @@ public:
         owner_.done("MissionFrame::hint_tick_cooldowns", 0x0068ec10u);
     }
     void hint_drain_queued_00692b00() override {
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (GameHintTracker* tracker = hint_tracker_for_frame(owner_)) {
+                tracker->drain_queued_00692b00();
+                owner_.done("MissionFrame::hint_drain_queued", 0x00692b00u);
+                return;
+            }
+        }
         bsp::QueuedHintDrainInputs inputs{};
         static_cast<void>(bsp::should_drain_queued_hint_00692b00(inputs));
         owner_.done("MissionFrame::hint_drain_queued", 0x00692b00u);
     }
     void hint_unit_class_00692b60() override {
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (GameHintTracker* tracker = hint_tracker_for_frame(owner_)) {
+                tracker->update_unit_class_00692b60();
+                owner_.done("MissionFrame::hint_unit_class", 0x00692b60u);
+                return;
+            }
+        }
         owner_.record("MissionFrame::hint_unit_class", 0x00692b60u);
     }
     void hint_weapon_006926f0() override {
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (GameHintTracker* tracker = hint_tracker_for_frame(owner_)) {
+                tracker->update_weapon_006926f0();
+                owner_.done("MissionFrame::hint_weapon", 0x006926f0u);
+                return;
+            }
+        }
         owner_.record("MissionFrame::hint_weapon", 0x006926f0u);
     }
     void hint_environment_00692580() override {
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (GameHintTracker* tracker = hint_tracker_for_frame(owner_)) {
+                tracker->update_environment_00692580();
+                owner_.done("MissionFrame::hint_environment", 0x00692580u);
+                return;
+            }
+        }
         owner_.record("MissionFrame::hint_environment", 0x00692580u);
     }
     void hint_zone_first_get_00692fd0() override {
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (GameHintTracker* tracker = hint_tracker_for_frame(owner_)) {
+                tracker->update_zone_00692fd0();
+                owner_.done("MissionFrame::hint_zone", 0x00692fd0u);
+                return;
+            }
+        }
         owner_.record("MissionFrame::hint_zone", 0x00692fd0u);
     }
     void hint_strategic_map_00692960() override {
+        if constexpr (kHintTriggerPassesCc15Bound) {
+            if (GameHintTracker* tracker = hint_tracker_for_frame(owner_)) {
+                tracker->update_strategic_map_00692960();
+                owner_.done("MissionFrame::hint_strategic_map", 0x00692960u);
+                return;
+            }
+        }
         owner_.record("MissionFrame::hint_strategic_map", 0x00692960u);
     }
 
@@ -2703,6 +2921,11 @@ GameMissionFrameHost::GameMissionFrameHost(GameHostLog& log, GameVfsHost& vfs,
 
 GameMissionFrameHost::~GameMissionFrameHost() {
     if (g_warning_owner == impl_.get()) g_warning_owner = nullptr;
+    if (impl_->hint_frame) {
+        if (GameHintTrackerSlot* slot = GameHintTrackerSlot::process_slot()) {
+            if (GameHintTracker* tracker = slot->built()) tracker->unbind_frame(impl_->hint_frame.get());
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -4955,9 +5178,11 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
             // therefore never take the player's moveto; the harness refuses it.
             // LABELLED: a selectable unit that is not the controlled one is still
             // ordered without the select (SCRIPTED_HELM 8.2 difference 2).
-            if (unit_index < host.units->count()
-                && !(host.units->controlled_bound()
-                     && host.units->controlled_index() == unit_index)) {
+            // Packet cc13-mvsel: such an order is counted and its line tagged
+            // `unselected=1`; the read is const and selects nothing.
+            const bool unselected = !(host.units->controlled_bound()
+                && host.units->controlled_index() == unit_index);
+            if (unit_index < host.units->count() && unselected) {
                 bool hud_reached = false;
                 const bool selectable =
                     bsp::game::hud_unit_selectable_00645060(unit_index, hud_reached);
@@ -4986,12 +5211,14 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                         order.applied = false;
                     }
                     if (issued) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                    if (issued && unselected) ++host.helm_moveto_unselected;
                     host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
                         "moveto %s %s(%.1f, %.1f) to %d squadron plane(s) (005F9B20 00E08F68 -> "
-                        "0099A170, packet p20_squadron_helm)", issued ? "applied" : "refused",
+                        "0099A170, packet p20_squadron_helm)%s", issued ? "applied" : "refused",
                         order.line, due, now, order.unit.c_str(),
                         order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
-                        static_cast<double>(x), static_cast<double>(z), planes);
+                        static_cast<double>(x), static_cast<double>(z), planes,
+                        issued && unselected ? " unselected=1" : "");
                     continue;
                 }
             }
@@ -5010,12 +5237,14 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 order.applied = false;
             }
             if (issued) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+            if (issued && unselected) ++host.helm_moveto_unselected;
             host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
                 "moveto %s %s(%.1f, %.1f) through the player's moveto form (00E08F68, point "
-                "descriptor, flags 1, 0077D600)", issued ? "applied" : "refused", order.line,
+                "descriptor, flags 1, 0077D600)%s", issued ? "applied" : "refused", order.line,
                 due, now, order.unit.c_str(),
                 order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
-                static_cast<double>(x), static_cast<double>(z));
+                static_cast<double>(x), static_cast<double>(z),
+                issued && unselected ? " unselected=1" : "");
         }
         // Packet cc9_player_order_capture_row: `stop R`, the player pulling the
         // throttle lever back once the helm unit is within R metres (x/z) of its
@@ -5154,6 +5383,11 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
 void GameMissionFrameHost::report(long requested_frames) {
     Impl& host = *impl_;
     host.frames.requested = requested_frames;
+    if constexpr (kHintTriggerPassesCc15Bound) {
+        if (GameHintTrackerSlot* slot = GameHintTrackerSlot::process_slot()) {
+            if (const GameHintTracker* tracker = slot->built()) tracker->report();
+        }
+    }
     const GameMissionExitSummary& exit = host.result->summary();
     // Milestone 2f reported this as unreachable because nothing built a result
     // object. What makes the path reachable is the producer, not the poll:
@@ -5185,6 +5419,13 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.log.notef("summary mission trajectory csv=%s rows=%llu",
             host.trajectory_csv_path.c_str(), host.trajectory_csv.rows());
         host.trajectory_csv.close();
+    }
+    if (!host.helm_orders.empty()) {
+        // Packet cc13-mvsel. No helm summary line existed; this one is printed
+        // only when --helm-orders read a line, so a run without one is unchanged.
+        host.log.notef("summary mission helm orders applied=%llu refused=%llu "
+            "helm_moveto_unselected=%llu", host.helm_orders_applied, host.helm_orders_refused,
+            host.helm_moveto_unselected);
     }
     if (host.scene_contents) {
         // Milestone 2h. The scene contents pass created unit records. The world

@@ -2368,6 +2368,7 @@ struct GameShipAiHost::Impl {
                 units.raise_turn_assist_load_102c(index, escape.load_request);  // 009DE853
                 ctl.blk.heading_target_324 = bsp::wrapped_angle_add_00438aa0(
                     ctl.blk.heading_target_324, escape.turn);                  // 009DE8E7
+                ctl.blk.last_writer_324 = 0x009DE8E7u;
                 ++row.zone_escape_turns;
                 row.zone_escape_max_turn = std::max(row.zone_escape_max_turn,
                                                     std::fabs(escape.turn));
@@ -2387,6 +2388,9 @@ struct GameShipAiHost::Impl {
                 while (turn > 3.141592653589793) turn -= 6.283185307179586;
                 while (turn < -3.141592653589793) turn += 6.283185307179586;
                 ctl.blk.heading_target_324 = o.heading_target;
+                ctl.blk.last_writer_324 =
+                    ctl.blk.direction == bsp::ShipAiThrottleDirection::Astern ? 0x009DE962u
+                                                                              : 0x009DE945u;
                 ++row.torpedo_overrides;
                 row.torpedo_override_max_turn = std::max(row.torpedo_override_max_turn,
                                                          static_cast<float>(std::fabs(turn)));
@@ -2683,6 +2687,7 @@ struct GameShipAiHost::Impl {
         if (!separation.applied) return;
         ctl.blk.heading_target_324 =
             bsp::wrapped_angle_add_00438aa0(ctl.blk.heading_target_324, separation.turn);  // 009DEE01
+        ctl.blk.last_writer_324 = 0x009DEE01u;
         ++row.separation_turns;
         row.separation_max_turn = std::max(row.separation_max_turn,
                                            std::fabs(separation.turn));
@@ -7933,6 +7938,7 @@ public:
         const bsp::ShipAiTrafficPassResult result = bsp::ship_ai_traffic_pass_009ef350(
             in, ctl_.blk.heading_target_324, ctl_.obstacle.published_33c, ctl_.blk.clamp_354,
             host);
+        if (result.wrote) ctl_.blk.last_writer_324 = 0x009EF8EEu;  // cc13-w324, log only
         // Packet cc9_free_bearing_query: a trace of the large turns (INSTRUMENTATION).
         if (result.wrote && std::fabs(result.turn) > 2.0f && owner_.traffic_trace_lines < 40) {
             ++owner_.traffic_trace_lines;
@@ -10412,6 +10418,9 @@ public:
         if (result.goal_rewritten) {
             ++row_.goal_refreshes;
             ++owner_.summary.goal_refreshes;
+            // Packet cc13-posgoal, log only: the step the ship ai step line prints.
+            row_.goal_rewrite_seen = true;
+            row_.goal_rewrite_step = owner_.units.summary().motion_steps;
         }
         // Packet cc8_ship_ai_goal_vector_visibility: the gate the ring scan
         // stops at, counted where 009F1420 leaves it.
@@ -10422,10 +10431,20 @@ public:
         row_.brain_goal_z = ctl_.goal_vector.goal_z_0b34;
         row_.brain_target = ctl_.goal_vector.raw_target_0b20;
         row_.brain_target_name.clear();
+        row_.brain_target_live_valid = false;
         if (ctl_.goal_vector.raw_target_0b20 != 0u) {
-            const GameUnitRow* target = owner_.units.unit_row(
-                static_cast<std::size_t>(ctl_.goal_vector.raw_target_0b20 - 1u));
+            const std::size_t target_index =
+                static_cast<std::size_t>(ctl_.goal_vector.raw_target_0b20 - 1u);
+            const GameUnitRow* target = owner_.units.unit_row(target_index);
             if (target != nullptr) row_.brain_target_name = target->name;
+            // Packet cc13-posgoal, log only: the target's live position now.
+            if (target_index < owner_.units.count()) {
+                float tx = 0.0f, ty = 0.0f, tz = 0.0f;
+                owner_.units.unit_position_00fc(target_index, tx, ty, tz);
+                row_.brain_target_live_valid = true;
+                row_.brain_target_live_x = tx;
+                row_.brain_target_live_z = tz;
+            }
         }
         {
             // The descriptor as it stands on this sub-tick, not as it stood on
@@ -11040,6 +11059,7 @@ public:
             ctl_.station_close_38a = st.close_38a;
             ctl_.speed_scale_39c = st.throttle_39c;
             ctl_.blk.heading_target_324 = st.heading_target_324;
+            if (st.last_writer_324 != 0u) ctl_.blk.last_writer_324 = st.last_writer_324;
             ctl_.blk.distance_32c = st.distance_32c;
             owner_.done("ShipAi::station_keeping_arm", 0x009eda28u);
             // 009EE57B JMP 009EF206: the arm ends in 009DE5B0 like every other.
@@ -11320,6 +11340,28 @@ public:
         ++owner_.summary.clearance_refreshes;
         if (clearance.node_hits != 0) ++row_.clearance_node_hits;
         row_.clearance_37c = ctl_.clearance.clearance_37c;
+        // Packet cc13-blk370, log only (BSP_SHIP_ESCAPE_TRACE=<unit name>): what a
+        // refresh that stored 2 or 3 at 009EFFA5 / 009EFFB8 decided on. The host
+        // has no zone identity for 009D57E0's answer, so zone is always -1.
+        const auto& diag = ctl_.clearance.diag;
+        const auto outcome = ctl_.clearance.outcome_370;
+        if (diag.refreshed && (outcome == bsp::ShipAiClearanceOutcome::BlockedMoving
+                               || outcome == bsp::ShipAiClearanceOutcome::BlockedStopped)
+            && ship_escape_trace_unit(owner_.rows[index_].unit)) {
+            const char* hit_unit = "-";
+            if (diag.hit_index >= 0) {
+                const std::size_t unit = NeighbourList::store(
+                    const_cast<bsp::ShipAiObstacleNode&>(clearance.node(diag.hit_index))).unit;
+                if (unit < owner_.rows.size()) hit_unit = owner_.rows[unit].unit.c_str();
+            }
+            owner_.log.notef("  ship clearance block step=%llu unit=%s 370=%d hit=%d "
+                "hit_unit=%s hit_speed=%.3f static_hit=%d zone=-1 herr=%.4f 324=%.4f "
+                "(009EF910 at 009EFFA5/009EFFB8; packet cc13-blk370)",
+                owner_.steps, owner_.rows[index_].unit.c_str(), static_cast<int>(outcome),
+                diag.hit_index, hit_unit, static_cast<double>(diag.hit_speed),
+                diag.static_hit ? 1 : 0, static_cast<double>(diag.heading_error),
+                static_cast<double>(ctl_.clearance.heading_target_324));
+        }
     }
     void tail_009da8d0(float seconds) override {
         if constexpr (!kShipAiWarningTimerBound) {
@@ -12631,6 +12673,9 @@ void GameShipAiHost::controller_step(float seconds) {
     for (std::size_t index = 0; index < host.controllers.size(); ++index) {
         Impl::Controller& ctl = host.controllers[index];
         GameShipAiRow& row = host.rows[index];
+        // Packet cc13-w324 (log only): ahead of every blk+324h writer of this
+        // step, so w324= names the last store this step and 0 means none.
+        ctl.blk.last_writer_324 = 0u;
         if (!host.units.unit_active(index)) continue;
         if (ctl.generated_non_ship) continue;
         // 008759C4: the tick-node walk skips a sub-node whose +11h is 0. The
@@ -14340,8 +14385,19 @@ void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long lon
         // desired_1d8 is blk+1D8h, which only 009E0040 set_desired_heading writes (movetopos
         // never does), so it is not the hull's heading; hull= is. The hull heading moves every
         // step, so it is kept out of the change test above.
-        host.log.notef("  ship ai step %llu  %s hull=%8.4f", step_index, line,
-                       static_cast<double>(host.units.unit_heading_radians(index)));
+        // Packet cc13-w324: w324= is the image address of the last store to
+        // blk+324h this step, 0 = none (Controller::blk.last_writer_324, log
+        // only, reset at the head of controller_step's per-unit loop), also
+        // kept out of the change test so the set of emitted lines is unchanged.
+        // Packet cc13-posgoal: pos= is the unit's world x/z (unit_position_00fc,
+        // a const read), log only and outside the change test as well.
+        float px = 0.0f, py = 0.0f, pz = 0.0f;
+        host.units.unit_position_00fc(index, px, py, pz);
+        host.log.notef("  ship ai step %llu  %s hull=%8.4f w324=%08lX pos=(%.1f,%.1f)",
+                       step_index, line,
+                       static_cast<double>(host.units.unit_heading_radians(index)),
+                       static_cast<unsigned long>(host.controllers[index].blk.last_writer_324),
+                       static_cast<double>(px), static_cast<double>(pz));
     }
 }
 
@@ -14547,15 +14603,28 @@ void GameShipAiHost::report() {
     // Milestone 2p: the goal vector, one row per unit whose brain pre-pass ran,
     // so the (0,0) of milestone 2o can be compared against what the command
     // actually asks for.
-    host.log.notef("  %-20s %-10s %8s %8s %11s %11s %-16s %s", "unit", "state", "prepass",
-        "refresh", "goal_x", "goal_z", "target", "0071eb60 descriptor");
+    host.log.notef("  %-20s %-10s %8s %8s %11s %11s %-16s %s target_pos rewrite_step", "unit",
+        "state", "prepass", "refresh", "goal_x", "goal_z", "target", "0071eb60 descriptor");
     for (const GameShipAiRow& row : host.rows) {
         if (row.goal_prepasses == 0) continue;
-        host.log.notef("  %-20s %-10s %8llu %8llu %11.1f %11.1f %-16s %s", row.unit.c_str(),
+        // Packet cc13-posgoal: the target's live x/z at the last capture and the
+        // step of the last goal rewrite, `-` when absent; log only.
+        char target_pos[48] = "-";
+        if (row.brain_target != 0u && row.brain_target_live_valid) {
+            std::snprintf(target_pos, sizeof(target_pos), "(%.1f,%.1f)",
+                static_cast<double>(row.brain_target_live_x),
+                static_cast<double>(row.brain_target_live_z));
+        }
+        char rewrite_step[24] = "-";
+        if (row.goal_rewrite_seen) {
+            std::snprintf(rewrite_step, sizeof(rewrite_step), "%llu", row.goal_rewrite_step);
+        }
+        host.log.notef("  %-20s %-10s %8llu %8llu %11.1f %11.1f %-16s %s target_pos=%s "
+            "rewrite_step=%s", row.unit.c_str(),
             row.state.c_str(), row.goal_prepasses, row.goal_refreshes,
             static_cast<double>(row.brain_goal_x), static_cast<double>(row.brain_goal_z),
             row.brain_target_name.empty() ? "-" : row.brain_target_name.c_str(),
-            row.command_descriptor.c_str());
+            row.command_descriptor.c_str(), target_pos, rewrite_step);
         if (row.brain_goal_x != 0.0f || row.brain_goal_z != 0.0f) {
             ++host.summary.units_with_nonzero_goal;
         }

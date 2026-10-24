@@ -53,6 +53,8 @@
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_init_tail.hpp"
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_message_manager.hpp"
+#include "bsp/game_profile_load.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/native_loading_queue_owner.hpp"
 #include "bsp/native_render_service_base.hpp"
@@ -2786,6 +2788,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // override 0067ca80 is what loads FE_initial, so all three title pages are now owned
     // rather than loaded directly as milestone 2b did.
     profiler_ = new GameFrameProfiler(log_, 8);
+    // cc15-msg2: 008D57A0's inputs for the MessageManager, the language table [00F88974]
+    // and the settings index [00F88980]+4h (read only under kMessageVoiceLanguageCc15Bound).
+    GameMessageManagerHost::bind_voice_language_settings(settings_host_->language_catalog(),
+        settings_view_.gameplay.language_index_04);
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, *singletons_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(), options_.menu_select, options_.mission_frames,
         profiler_, summary_.language, options_.mission_complete_frame, options_.order_frame,
@@ -2807,6 +2813,22 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         menu_->mission()->set_chosen_difficulty(options_.difficulty);
         log_.notef("--difficulty %d: chosen difficulty game+6B0h = %d (default 1)",
             options_.difficulty, options_.difficulty);
+    }
+    // cc15-prof2: the live settings and the host state 008D5B50 reaches at the
+    // sign-in (docs/CC15_PROFILE_LOAD.md section 6).
+    if constexpr (kQuickSettingsApplyCc15Bound) {
+        GameProfileSettingsSinks sinks;
+        sinks.settings_00f88980 = &settings_process_->settings();
+        sinks.languages = &settings_host_->language_catalog();
+        sinks.pixel_shader_version_28 = renderer_capabilities_.pixel_shader_version_28;
+        sinks.sound_alternate_00f8bbcc = sound_ ? &sound_->alternate_00f8bbcc : nullptr;
+        if (input_) {
+            GameInputRuntime* input = &input_->core;
+            sinks.set_rumble_enabled_00a94c50 = [input](bool enabled) {
+                input->set_rumble_enabled_00a94c50(enabled);
+            };
+        }
+        menu_->bind_profile_settings_sinks(sinks);
     }
     // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>, the same way.
     if (!options_.ai_drive_unit.empty() && menu_->mission() != nullptr) {
@@ -2946,6 +2968,10 @@ void GameStartupHost::application_shutdown() {
     // input/locale/settings owners close later in dependency order at destruction.
     log_.implemented("StartupHost::application_shutdown", "00737f30");
     log_.unimplemented("ApplicationShutdownHost::singleton_teardown", "00737f80");
+    // 00737F72..00737FB0 release the Application's preload rows. Only the
+    // BSP_NATIVE_MISSION_SHIP preload fills them, on the borrowed object.
+    if constexpr (kApplicationCc15Bound)
+        if (native_application_live_ && native_renderer_) native_renderer_->release_application_preload_rows();
     // The sprite bridge owns managed-pool textures created on this device, so it is torn
     // down before the device is released rather than at destruction.
     if (menu_ != nullptr) {

@@ -23,6 +23,9 @@ namespace bsp::game {
 
 class GameHostLog;
 class GameVfsHost;
+class GameHintsScreen;
+struct HintFrameQueries;
+struct HintScreenRegistry;
 
 // Off: the host keeps the earlier stand-ins (TitleInit/PressStart reset
 // unimplemented, map_flag_visible = true, mission_result's own progress_).
@@ -71,11 +74,14 @@ private:
 
 // The A0h tracker 004E18E0 builds. Each member carries the native offset it
 // stands for (include/bsp/award_trackers.hpp); the containers are C++.
-class GameHintTracker final : public HintStoreHost {
+class GameHintTracker final : public HintStoreHost, public HintTrackerHost {
 public:
     // 004E18E0: every container empty; +4h and +18h are left alone natively
     // (+18h reads as kAwardTrackerNoUnitClass here, as award_trackers.hpp does).
     GameHintTracker(GameHostLog& log, GameProfileOwner& profile);
+    ~GameHintTracker() override;
+    GameHintTracker(const GameHintTracker&) = delete;
+    GameHintTracker& operator=(const GameHintTracker&) = delete;
 
     // 0068EA00 __thiscall(tracker), RET: 004D05E0 empties the list +48h, then
     // 0068E780 pops the deque +68h until its size +78h is 0. The raw body is
@@ -104,6 +110,57 @@ public:
     std::size_t definition_count() const noexcept { return definitions_30_.size(); }
     std::size_t history94_count() const noexcept { return history_94_.size(); }
 
+    // ---- cc15-hint2 (kHintTriggerPassesCc15Bound), src/game_hint_passes.cpp ----
+    // The mission frame binds its reads for as long as it lives; the menu host
+    // binds its registry once. Both may be null (no mission, no registry).
+    void bind_frame(HintFrameQueries* frame) noexcept { frame_ = frame; }
+    void unbind_frame(HintFrameQueries* frame) noexcept {
+        if (frame_ == frame) frame_ = nullptr;
+    }
+    void bind_registry(HintScreenRegistry* registry) noexcept { registry_ = registry; }
+    // [00E198C4]+A8h, the hints screen 34h. Owned here, pumped by the menu host.
+    GameHintsScreen& hints_screen_34();
+    // 00690FD0 __thiscall(tracker, NativeString* name, char forced), RET 8.
+    void trigger_hint_00690fd0(const std::string& name, bool forced);
+    // 0068E5B0 (copy of +60h), 0068E420 (+60h := ""), 0068E600, 004D05E0 on
+    // +48h, and the hints screen's Exit store of +1Ch := "".
+    const std::string& active_hint_60() const noexcept { return state_.active_60; }
+    void finish_active_0068e420();
+    void clear_list_48_004d05e0() { mission_seen_48_.clear(); }
+    void clear_last_timed_1c() { state_.last_timed_1c.clear(); }
+    // The seven passes 004E525E..004E52BA, in OnMove order.
+    void tick_cooldowns_0068ec10(float raw_delta);
+    void drain_queued_00692b00();
+    void update_unit_class_00692b60();
+    void update_weapon_006926f0();
+    void update_environment_00692580();
+    void update_zone_00692fd0();
+    void update_strategic_map_00692960();
+    // The run summary: TriggerHint calls and outcomes per name.
+    void report() const;
+
+    // HintTrackerHost (TriggerHint's reads and writes).
+    std::int32_t hints_setting_00f8898c() override;
+    bool hud_screen_e4_busy() override;
+    void queue_push_back_0068eb90(const std::string& name) override;
+    bool mission_seen_contains_48(const std::string& name) override;
+    void touch_recent_0068ea70(const std::string& name) override;
+    bool cooldown_contains_0068e4c0(const std::string& name) override;
+    void cooldown_set_00444be0(const std::string& name, float seconds) override;
+    bool pad_prompts_00f88a30() override;
+    bool localised_key_exists(const std::string& key) override;
+    std::int32_t local_player_slot_18ec() override;
+    std::int32_t local_side_nation_28() override;
+    std::int32_t hints_seconds_left_0054d3c0() override;
+    void hints_dismiss_0054e610() override;
+    void hints_show_0054e020(bool pausing, const std::string& text, const std::string& title,
+                             std::int32_t seconds) override;
+    std::int32_t lua_run_string_006b8ad0(const std::string& command) override;
+    void diagnostic_lua_result_004254b0(bool failed, const std::string& command) override;
+    bool history94_erase_name(const std::string& key, const std::string& name) override;
+    void history7c_push_back(const std::string& key, const std::string& name) override;
+    void history_assign_single(const std::string& key, const std::string& name) override;
+
     // HintStoreHost.
     const HintDefinition* find_definition_0068e450(const std::string& name) override;
     bool has_been_shown_0068e600(const std::string& name) override;
@@ -122,6 +179,11 @@ public:
     std::vector<std::string> profile_shown_names_65c() override;
 
 private:
+    bool has_been_shown_cc15_0068e600(const std::string& name);
+    bool profile_has_seen_cc15_007f8e00(const std::string& name);
+    void profile_mark_seen_cc15_007fae20(const std::string& name);
+    double mission_seconds() const;
+
     using HintHistory =
         std::map<std::string, std::vector<std::string>, NativeStringCaseInsensitiveLess>;
 
@@ -138,8 +200,24 @@ private:
     HintHistory history_88_;
     HintHistory history_94_;
     ReloadSummary reload_summary_{};
+    // cc15-hint2.
+    HintFrameQueries* frame_{nullptr};
+    HintScreenRegistry* registry_{nullptr};
+    std::unique_ptr<GameHintsScreen> screen_34_;
+    struct TriggerCount {
+        std::size_t calls{0};
+        std::size_t shown{0};
+        std::size_t queued{0};
+        std::size_t hidden{0};      // became active without a show
+        std::size_t refused{0};     // a seen-list or cooldown gate refused it
+        std::string first_refusal;
+    };
+    void note_refused(const std::string& name, const char* reason);
+    std::map<std::string, TriggerCount> trigger_counts_;
+    std::string triggering_;   // the name of the TriggerHint call in progress
 
     friend class HintTablesReload;
+    friend class GameHintsScreen;
 };
 
 // [00E198D0] and its getter 004E1CA0: new(A0h) + 004E18E0 on the first call,
@@ -147,10 +225,15 @@ private:
 // its drain (004E1C80 -> 004E1A50). Here the slot owner destroys it.
 class GameHintTrackerSlot final {
 public:
-    GameHintTrackerSlot(GameHostLog& log, GameProfileOwner& profile)
-        : log_(log), profile_(profile) {}
+    GameHintTrackerSlot(GameHostLog& log, GameProfileOwner& profile);
+    ~GameHintTrackerSlot();
+    GameHintTrackerSlot(const GameHintTrackerSlot&) = delete;
+    GameHintTrackerSlot& operator=(const GameHintTrackerSlot&) = delete;
     GameHintTracker& get_004e1ca0();
     GameHintTracker* built() noexcept { return tracker_.get(); }
+    // The process's one slot, as the global [00E198D0] is reached from any
+    // caller through 004E1CA0; null before the menu host builds it.
+    static GameHintTrackerSlot* process_slot() noexcept;
 
 private:
     GameHostLog& log_;

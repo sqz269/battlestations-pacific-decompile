@@ -1472,6 +1472,18 @@ void GameHudHost::Impl::bind_mission_camera_0064da40() {
         WeaponGroupScreenBinding group_host(*this);
         bsp::weapon_group_screen_release_005470c0(weapon_group, group_host);
     }
+    // 0064DA69..0064DA77: with +1Ch set, 0077C470(+1Ch, 1FEh, 0) releases the
+    // previous unit's roles 1..8 before 0064DAA3 stores the new one (the caller
+    // stores ship_view_unit after this returns). Packet cc13-relgaps gap 3. The
+    // image's +1Ch is cleared by its observer when that entity is deleted; host
+    // slots are never deleted in a mission and ship_view_has_unit lives until the
+    // mission reset, so the guard is the slot bound, as at the 0064A490 exit.
+    if constexpr (kShipViewPreviousUnitReleaseCc13Bound) {
+        if (ship_view_has_unit && ship_view_unit < units->count()) {
+            units->role_request_0077c470(ship_view_unit, 0x1FEu, false);
+            done("HudShipView::release_previous_roles", 0x0077c470u);
+        }
+    }
     // The settings block (00424C40, ShipGlobals["ShipCamera"]) and the class
     // camera keys (00831E0D) come from the live Lua state.
     bool settings_read = false;
@@ -1702,6 +1714,27 @@ void GameHudHost::exit_ship_view_screen_0064a490() {
     impl.done("HudShipView::exit", 0x0064a490u);
     impl.log.notef("releasegun: screen 46h exit 0064A490 released the weapon group%s",
         roles ? " and roles 1..8 (1FEh)" : "; no ship-view unit");
+}
+
+void GameHudHost::update_map_screen_005b45c0() {
+    Impl& impl = *impl_;
+    // 005B4673..005B46B3, every update while the map is up: [00E188D8]'s
+    // vtable[13Ch]() unit, its role-1 holder +1B0h (+1ACh[1]); not 8 (005B468D)
+    // and not AI-held by 00927F10 (005B4695) sends 0077C470(unit, 2, 0).
+    // Stand-ins: "not AI-held" is holder == local slot 0, the units host's
+    // labelled 00927F10 substitution (game_hosts_units.cpp:13466); vtable[13Ch]()
+    // returning the unit itself is checked for a ship only, and the controlled
+    // index (read live on each call) stands for it.
+    std::int32_t holder = 8;
+    const bool release = impl.units != nullptr && impl.units->controlled_bound()
+        && impl.units->unit_current_role_slot(impl.units->controlled_index(), 1, holder)
+        && holder != 8 && holder == 0;
+    if (release) {
+        impl.units->role_request_0077c470(impl.units->controlled_index(), 0x2u, false);
+        impl.done("HudMapScreen::release_helm", 0x0077c470u);
+    }
+    // The rest of 005B45C0 (005B45E6..005B466E, 005B46B8.. the map view) is not hosted.
+    impl.record("HudMapScreen::update", 0x005b45c0u);
 }
 
 void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua) {
@@ -2001,7 +2034,20 @@ public:
         }
     }
     void send_unit_session_message(int) override {
-        owner_.record("MovieInterface::session_message_1ff", 0x0077c470u);
+        // 005CD217..005CD224 0077C470([00E188D8], 1FFh, 0): release roles 0..8 of
+        // the unit just tested at 005CD20E. Packet cc13-relgaps gap 1. The unit is
+        // the controlled index read live here, the same read the caller's 00927F30
+        // test made this call; the engage runs once per movie-screen instance.
+        if constexpr (kMovieEngageRoleReleaseCc13Bound) {
+            if (owner_.units != nullptr && owner_.units->controlled_bound()) {
+                owner_.units->role_request_0077c470(owner_.units->controlled_index(), 0x1FFu, false);
+                owner_.done("MovieInterface::session_message_1ff", 0x0077c470u);
+            } else {
+                owner_.record("MovieInterface::session_message_1ff", 0x0077c470u);
+            }
+        } else {
+            owner_.record("MovieInterface::session_message_1ff", 0x0077c470u);
+        }
     }
 
 private:

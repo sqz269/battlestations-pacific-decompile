@@ -105,6 +105,24 @@ namespace {
 // key with lua_pushlstring, then the value, then lua_settable on the object.
 constexpr bool kLuaObjectFieldSettersCc13Bound = false;
 
+// Packet cc13-yardskill: 00844FC0's launch bag `Skill` is the shipyard's own skill.
+// 0084503C..00845046 call shipyard->vtable[12Ch]() (EDI = the shipyard), which is
+// 006D1EC0 `MOV EAX,[ECX+390h]; RET`, and 00845049..00845055 store it under key
+// 00CF8838 "Skill" (008F3710). OFF keeps the record default 1. A SetSkillLevel
+// value outside 0..5 on the shipyard is stored raw by the image, while the host's
+// existing 0..5 gate (game_hosts_units.cpp:20406, older than this switch) keeps 1.
+constexpr bool kShipyardLaunchSkillCc13Bound = false;
+
+// Packet cc13-atktgt: UnitGetAttackTarget 008A6DE0's arm by director kind. The
+// image asks director->vtable[48h](2) (008A6F0D). A squadron's director is the
+// block 00D0BD98 that 007F5009 stores at +348h, whose +48h is 0084D8F0, true only
+// for 0 and 1, so a squadron always takes the command arm (0071BE40 -> category
+// 1/2 -> 0071EB60 -> 00521EA0) and answers its PilotSetTarget target. OFF: the
+// fire arm whenever the ship AI host has a row for the unit, which it keeps for
+// every unit ("not_ship" included), so a squadron answers nil and
+// luaAirfieldManager re-picks its target on every pass.
+constexpr bool kUnitGetAttackTargetDirectorKindCc13Bound = false;
+
 // The setters' NativeString key: 0041E870 over the CRT-backed storage, released
 // when the call returns.
 struct ScopedNativeKey {
@@ -7135,7 +7153,13 @@ int GameMissionLuaHost::run_unit_get_attack_target_008a6de0(lua_State* state,
         }
     }
     const char* arm = "command";
-    if (ship_row != nullptr) {
+    bool fire_arm = ship_row != nullptr;
+    if constexpr (kUnitGetAttackTargetDirectorKindCc13Bound) {
+        // A squadron's director is the block 00D0BD98, whose +48h 0084D8F0 is
+        // false for 2, so the image takes the command arm whatever row exists.
+        if (units->unit_is_kind_of(index, 0x18)) fire_arm = false;
+    }
+    if (fire_arm) {
         // director->vtable[48h](2) true: the fire target, director+238h.
         arm = "fire";
         ++summary_.attack_target_fire_arm;
@@ -8360,7 +8384,8 @@ int GameMissionLuaHost::run_add_shipyard_stock_00896cc0(lua_State* state, int ar
 // The creation runs the SpawnNew member path (0094879A's InitAll after it).
 // SUBSTITUTIONS (labelled): Party is the shipyard row's; Race follows SpawnNew's
 // default (2 for party 0, else 1) and Skill / OwnerPlayer the record defaults (1, 9),
-// since this process keeps no bag on the shipyard unit; the plane's `State` 6 and
+// since this process keeps no bag on the shipyard unit (with
+// kShipyardLaunchSkillCc13Bound, Skill is the shipyard's own); the plane's `State` 6 and
 // `VelocitySI` 0 and the submarine's `Dive` 0 have no record field, so a plane is
 // made airborne as every created plane here is; the water height is 0, the ocean
 // sampler's level with no wave field over the point; the bag ref at unit+C0h
@@ -8383,10 +8408,12 @@ std::size_t GameMissionLuaHost::create_shipyard_unit_00844fc0(
         return bsp::kShipyardNone;
     }
     int party = -1;
+    std::size_t shipyard_index = bsp::kShipyardNone;
     for (std::size_t i = 0; i < units_hooks_->count(); ++i) {
         const GameUnitRow* row = units_hooks_->unit_row(i);
         if (row != nullptr && row->name == r.shipyard_name) {
             party = row->party;
+            shipyard_index = i;
             break;
         }
     }
@@ -8399,6 +8426,16 @@ std::size_t GameMissionLuaHost::create_shipyard_unit_00844fc0(
     record.party = party;
     record.race = party == 0 ? 2 : 1;
     record.shipyard_launch = true;
+    if constexpr (kShipyardLaunchSkillCc13Bound) {
+        // Packet cc13-yardskill. The image reads the live shipyard (00844FC0 runs on
+        // it), so its +390h is whatever the scene `Skill` or a later SetSkillLevel
+        // left. Here that is the shipyard row's pilot_skill_index, read now, at
+        // create time. A shipyard row that is not found keeps the record default 1.
+        if (shipyard_index != bsp::kShipyardNone) {
+            record.bag_skill = units_hooks_->skill_level(shipyard_index);
+            record.bag_skill_source = "00844FC0";
+        }
+    }
     record.bag_equipment = plane && r.equipment >= 0 ? r.equipment : -1;
     record.created = true;
     for (int i = 0; i < 16; ++i) record.world[i] = r.frame[i];

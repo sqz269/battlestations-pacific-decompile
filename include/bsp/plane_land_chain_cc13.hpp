@@ -173,7 +173,7 @@ inline constexpr bool kPlaneFunnelKillDestroyOnlyCc13Bound = true;
 // True: the destroy-only test is the tag, for every cause (Lua Kill(x) and the
 // depth kill join Kill(4); e.g. JM02's Kill(Mission.PlayerBetty)).
 // False: kPlaneFunnelKillDestroyOnlyCc13Bound's cause != 1 test, as before.
-inline constexpr bool kPlaneFunnelKillPathTagCc13Bound = false;
+inline constexpr bool kPlaneFunnelKillPathTagCc13Bound = true;
 static_assert(!kPlaneFunnelKillPathTagCc13Bound || kPlaneFunnelKillDestroyOnlyCc13Bound,
               "kPlaneFunnelKillPathTagCc13Bound refines kPlaneFunnelKillDestroyOnlyCc13Bound");
 

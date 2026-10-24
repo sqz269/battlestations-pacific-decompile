@@ -134,6 +134,12 @@ struct ShipAiControlBlock {
     float heading_target_324{0.0f}; // +324h
     float distance_32c{0.0f};       // +32Ch
     float distance_330{0.0f};       // +330h
+    // Packet cc13-w324, INSTRUMENTATION ONLY (no image storage, never read by
+    // any computation): the image address of the last store to +324h this
+    // step, 0 = none, printed as w324= at the end of the ship ai step line.
+    // Each host writer of heading_target_324 sets it beside the store, and the
+    // host's controller step resets it to 0 first.
+    std::uint32_t last_writer_324{0};
 };
 
 // 009DBF90: __thiscall(&state->owner)(float), RET 4, body 009DBF90-009DBFD0,

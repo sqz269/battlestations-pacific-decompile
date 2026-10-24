@@ -6,6 +6,7 @@
 
 #include "bsp/game_profile_owner.hpp"
 
+#include "bsp/game_hint_passes.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/lua_script_runtime.hpp"
@@ -72,6 +73,8 @@ void GameProfileOwner::restore_selected_user_controls_008d45d0() {
 
 GameHintTracker::GameHintTracker(GameHostLog& log, GameProfileOwner& profile)
     : log_(log), profile_(profile) {}
+
+GameHintTracker::~GameHintTracker() = default;
 
 void GameHintTracker::clear_hint_queue_0068ea00() {
     mission_seen_48_.clear();   // 004D05E0 on +48h
@@ -319,19 +322,33 @@ const HintDefinition* GameHintTracker::find_definition_0068e450(const std::strin
 }
 
 // The remaining HintStoreHost hooks belong to routines this lane does not wire
-// (00690B20, 00690C30, 0068EE00, 00690FD0); reaching one is recorded.
-bool GameHintTracker::has_been_shown_0068e600(const std::string&) {
-    log_.unimplemented("HintTracker::has_been_shown", "0068e600");
-    return false;
+// (00690B20, 00690C30, 0068EE00); reaching one is recorded. Under
+// kHintTriggerPassesCc15Bound the three TriggerHint and the passes read are
+// the image's (src/game_hint_passes.cpp).
+bool GameHintTracker::has_been_shown_0068e600(const std::string& name) {
+    if constexpr (kHintTriggerPassesCc15Bound) {
+        return has_been_shown_cc15_0068e600(name);
+    } else {
+        log_.unimplemented("HintTracker::has_been_shown", "0068e600");
+        return false;
+    }
 }
 
-bool GameHintTracker::profile_has_seen_007f8e00(const std::string&) {
-    log_.unimplemented("HintTracker::profile_has_seen", "007f8e00");
-    return false;
+bool GameHintTracker::profile_has_seen_007f8e00(const std::string& name) {
+    if constexpr (kHintTriggerPassesCc15Bound) {
+        return profile_has_seen_cc15_007f8e00(name);
+    } else {
+        log_.unimplemented("HintTracker::profile_has_seen", "007f8e00");
+        return false;
+    }
 }
 
-void GameHintTracker::profile_mark_seen_007fae20(const std::string&) {
-    log_.unimplemented("HintTracker::profile_mark_seen", "007fae20");
+void GameHintTracker::profile_mark_seen_007fae20(const std::string& name) {
+    if constexpr (kHintTriggerPassesCc15Bound) {
+        profile_mark_seen_cc15_007fae20(name);
+    } else {
+        log_.unimplemented("HintTracker::profile_mark_seen", "007fae20");
+    }
 }
 
 void GameHintTracker::profile_unmark_007fae60(const std::string&) {
@@ -368,6 +385,21 @@ std::vector<std::string> GameHintTracker::profile_shown_names_65c() {
     // *(game+65Ch) is the head of the profile's list at +08h (+0Ch head).
     return profile_.profile().string_list_08;
 }
+
+namespace {
+GameHintTrackerSlot* g_hint_tracker_slot = nullptr;
+}  // namespace
+
+GameHintTrackerSlot::GameHintTrackerSlot(GameHostLog& log, GameProfileOwner& profile)
+    : log_(log), profile_(profile) {
+    g_hint_tracker_slot = this;
+}
+
+GameHintTrackerSlot::~GameHintTrackerSlot() {
+    if (g_hint_tracker_slot == this) g_hint_tracker_slot = nullptr;
+}
+
+GameHintTrackerSlot* GameHintTrackerSlot::process_slot() noexcept { return g_hint_tracker_slot; }
 
 GameHintTracker& GameHintTrackerSlot::get_004e1ca0() {
     if (!tracker_) {

@@ -218,12 +218,14 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
             if (changed) {                                          // 009EE0C7
                 s.throttle_39c = 0.5f;
                 s.heading_target_324 = request.heading;
+                s.last_writer_324 = 0x009EE0D9u;
                 if (kFifteenDegrees > abs_herr) s.reversing_389 = true;
                 return t;
             }
             s.heading_target_324 = (0.0f > across)                  // 009EE110
                 ? wrapped_angle_add_00438aa0(request.heading, steer)
                 : wrapped_angle_subtract_00438b10(request.heading, steer);
+            s.last_writer_324 = 0x009EE142u;
             if (s.close_38a) {                                      // 009EE4CE
                 if (0.0f > s.throttle_39c) s.throttle_39c = 0.0f;
                 return t;
@@ -238,6 +240,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
         }
         if (changed) {                                              // 009EE1D6
             s.heading_target_324 = request.heading;
+            s.last_writer_324 = 0x009EE1E8u;
             s.throttle_39c = clamp_00415620(s.throttle_39c, -0.5f, -0.25f);
             if (kFifteenDegrees > abs_herr) s.reversing_389 = false;
             return t;
@@ -245,6 +248,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
         s.heading_target_324 = (0.0f > across)                      // 009EE22D
             ? wrapped_angle_subtract_00438b10(request.heading, steer)
             : wrapped_angle_add_00438aa0(request.heading, steer);
+        s.last_writer_324 = 0x009EE25Fu;
         if (s.close_38a) {                                          // 009EE26B
             if (s.throttle_39c > 0.0f) s.throttle_39c = 0.0f;
             return t;
@@ -263,6 +267,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     if (!s.reversing_389) {
         if (changed) {                                              // 009EE31B
             s.heading_target_324 = reversed;
+            s.last_writer_324 = 0x009EE321u;
             s.throttle_39c = -0.5f;
             if (kFifteenDegrees > abs_herr) s.reversing_389 = true;
             return t;
@@ -270,6 +275,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
         s.heading_target_324 = (0.0f > across)                      // 009EE36E
             ? wrapped_angle_subtract_00438b10(reversed, steer)
             : wrapped_angle_add_00438aa0(reversed, steer);
+        s.last_writer_324 = 0x009EE3A2u;
         if (s.close_38a) {
             if (s.throttle_39c > 0.0f) s.throttle_39c = 0.0f;       // 009EE26B
             return t;
@@ -284,6 +290,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     }
     if (changed) {                                                  // 009EE41E
         s.heading_target_324 = reversed;
+        s.last_writer_324 = 0x009EE424u;
         s.throttle_39c = clamp_00415620(s.throttle_39c, 0.5f, 1.0f);
         if (kFifteenDegrees > abs_herr) s.reversing_389 = false;
         return t;
@@ -291,6 +298,7 @@ ShipAiStationKeepingTrace ship_ai_station_keeping_arm_009eda28(
     s.heading_target_324 = (0.0f > across)                          // 009EE492
         ? wrapped_angle_add_00438aa0(reversed, steer)
         : wrapped_angle_subtract_00438b10(reversed, steer);
+    s.last_writer_324 = 0x009EE4C6u;
     if (s.close_38a) {                                              // 009EE4CE
         if (0.0f > s.throttle_39c) s.throttle_39c = 0.0f;
         return t;

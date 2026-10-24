@@ -20399,3 +20399,205 @@ Pair: OFF = tree build 172589750, ON = `local\g55_hc_on` (pair_export, same comm
 - **BSM04 (no orders, 30000 frames): unreached.** The idle run fails at 108.05 s, before the phase that calls
   GenerateObject("Lexington") (bsm_04_vengance_at_luzon.lua:914); carried=11, applied=0. A BSM04 plan through
   phase 1 is needed to see Lexington's Stop + StartSpeed 3.
+
+## 314. Arc-centre plan test + astern skip paired and flipped; USNOS parked (cc9-ships61, 2026-10-19)
+
+**Flip.** `kShipAiArcCentrePlanTestCc13Bound` (docs/CC13_ORBIT.md) and `kShipAiNavigateAsternSkipBound` ON together.
+Reference-env pairs on origin/main f906d5934 ("rng streams: on" in all ten logs): OFF = tree build
+`local\s61_off3_bin` (logs `s61_o3_*`), ON = pair_export `local\s61_ap` (logs `s61_ap_*`).
+`off_switch_on_build.py --names` for the two switches: build.ps1 exit 0 (only a pre-existing LNK4006).
+
+| row | OFF end | ON end | arc-centre summary ON (OFF) | pair_diff |
+|---|---|---|---|---|
+| LOMP10 p3_l10_b | completed 1050.45 s | completed 736.49 s | calls 3959, plan_live_cursor0 3952, command_arm 7, path_arm 3952 (OFF command_arm 5487, path_arm 0) | moved |
+| USN21 u21f | no end | no end | calls 0 both | identical |
+| IJN18 l67_i18_d | failed 485.01 s | failed 530.99 s | calls 16407, path_arm 16329, command_arm 78 (OFF command_arm 18019) | moved |
+| USN04 | no end | no end | calls 0 both | identical |
+| BSM01 l69_b1_d | no end | no end | calls 0 both | identical |
+
+- Ashigara (BSP_SHIP_ESCAPE_TRACE): the heading target tracks the path to CB4. It passes (1643,-943) at run 8000 and
+  (-857,-3660) at 12000, then turns at the goal (-2861,-4039). There is no orbit near the origin, and the row ends
+  314 s earlier.
+- **Oscillation census** (`local\s61_osc.py`; full-rudder sign flips between consecutive step samples):
+  - LOMP10: 9 -> 26 over about 12k samples.
+  - IJN18: 38 -> 131. By state, attackmove/navigate_astern goes 15 -> 54 and follow 13 -> 68, the most for one ship
+    being Oma3 13 in 732 samples and Fletch6 13 in 393.
+  - IJN18 throttle sign flips: 131 -> 28.
+  - These flips are attackmove ships now steering by the path arm and followers behind them. Separation and
+    ring-scan terms (the 11D4h/11D5h readers) now reach those ships; this is not a limit cycle.
+- **BSM01 HenryPT:** its `moveto 2580 -1650` oscillation (92 full-rudder flips in 323 escape-trace rows,
+  d330 2449 -> 2512) is identical OFF and ON. It predates this pair; bisect1 owns it.
+- **Iowa (USN21):** the stop came from the host's Hidden pool dropping Intrepid's Cruise and StartSpeed
+  (usn_sibuyan.scn). Fixed by hiddencarry (`kSceneHiddenSpawnCarryCc13Bound`, gunnery55's pair, section 313).
+
+**USNOS parked** (queue item 3). On 05cb6f1bc, with the plans in `local\s61_osmk.py` / `s61_os_*.txt`, every
+attempt failed:
+- c19 failed at 3156.95 s. TroopTrans6 sank at 241.96 s to wave-1 plane #1.4 (first damage 118.45 s, before its
+  first move at frame 2460). TT5, TT4 and TT2 sank at 516-629 s to wave 2 (#4.4-4.6), and TT3 and TT1 to Haku
+  squadrons.
+- The airfields die without our strikes: Airfield3 at 1870.75 s, the Airfield1 hangar to NH gunfire at 1894.52 s,
+  Airfield2 at 2687.50 s.
+- c22 struck all three airfields 30 frames before each air_mass block. Every airfield strike before frame 39970 was
+  refused "no such slot": each deck has 4 launch slots (0-3) shared by every class, and the frame-2000 Shima
+  strikes hold them until about frame 40000. It failed at 2921.72 s.
+- c23 added class-810 fighters from all five decks on waves 1 and 2. The fighters launch, but TT6 still sinks at
+  exactly 241.96 s and the strikes lose their slots. It failed at 1805.64 s.
+- Next plan: move TT6 out of wave 1's reach before 118 s, then budget the 4 slots per deck.
+
+## 315. USNOS TroopTrans6 attribution (cc9-gunnery55, 2026-10-19)
+
+The question: on current main, TroopTrans6 sinks at 241.96 s (killer plane #1.4|.-III, first damage 118.45 s) in
+ships61's c19 plans, but on 77d8a4a9d it survived wave 1.
+- **Method.** One pair_export of main 872adeff3 per reverted flip, plus 77d8a4a9d. USNOS `s61_os_c19` (copy
+  `local\g55_os_c19.txt`), 7000 frames, reference env, logs `local\g55_tt<variant>_os.log`.
+- **TroopTrans6 at 350 s:** main dies; 77d8a4a9d alive; nav seeds (05cb6f1bc, all four) reverted alive; hitq reverted,
+  heading wrap reverted, hidden carry reverted and every goaway / moveto flip of 86b81e2a8 / 39ac16569 / 3ca24854e
+  reverted all die at 241.91-241.96 s.
+- **05cb6f1bc split:** kSinkLeakDrawStreamCc13Bound, kShipAiCruiseDistanceSeedBound and
+  kShipAiClearance364SyncCc13Bound reverted singly all die. **kShipAiNavBlockCtorSeedsCc13Bound reverted alone:
+  alive** (health 1150 of 4000 at 350 s).
+- **Mechanism (position cascade, not targeting).** Both runs install the same script-ordered level-bomb task
+  plane #1.4 -> TroopTrans6 at 40.20 s, and both log the same 57 hits on TroopTrans6.
+  - TroopTrans6 follows its leader. Its ship-AI d32c differs from the first AI step (step 10: 2085.52 with the seeds
+    reverted, 2085.45 on main). The gap grows to 0.76 m by step 80.
+  - The bomb impacts then cover a different number of the ship's damage elements (`impact blast bullet=78 ...
+    entries=` 8/8/9/10 reverted against 7/9/8 on main). Which component failures follow changes with them.
+  - Main gets EngineJam at 159.86 s and **Explosion at 165.16 s**, which takes about 780 health between two logged
+    bomb hits (2992.0 -> 2210.6) with no hit line. Fire follows at 166.16 s (health 1474). The ship burns to death:
+    `damage control death TroopTrans6 t=241.96 water_total=0 fire_total=2114`.
+  - With the seeds reverted, the only failure is Fire at 166.51 s (health 2246), and the ship survives.
+- **Verdict.** The ctor seeds are the image's (SHIP_AI 311). The loss is the sensitivity of element-based component
+  failures to a sub-metre change in station keeping, not a targeting or reach change, so nothing here is unfaithful.
+  The plan needs to keep TroopTrans6 out of wave 1's level-bomb run or accept the loss.
+
+## 316. USN12 l68_u12_e8 drift attribution (cc9-gunnery55, 2026-10-19)
+
+Row `config/win_orders/usn12_l68_u12_e8.txt`, 36000 frames, reference env, fresh pair_exports (logs
+`local\g55_u12<variant>_u12.log`).
+- **Reproduced:** c95d107da completes at 1465.30 s; 46bdfac0a fails at 859.91 s and 86b81e2a8 at 819.92 s.
+- **Current main ad46f7f13 completes at 1560.40 s.** Single reverts on it all complete: wake pair 1500.34, hitq
+  1545.38, astern skip 1395.24, ctor seeds 1495.33. The row is not lost on main.
+- **Fail cause (46bdfac0a).** Haguro torpedoes sink Claxton, Stanley, Thatcher, Denver and Converse at 698..701 s.
+  Cleveland follows at 735.24 s. Columbia, the last cruiser, dies at 858.26 s (Myoko, cat 3), and the mission ends
+  Game Over 1.65 s later. The US death lists differ completely between commits, so the battle is a knife-edge.
+- **First-parent bisect c95d107da..46bdfac0a** (111 commits): 27 c7e7c2358 1465.30, 55 6ade1bf6f 1335.18,
+  83 e4507299f 1395.24, 90 2bc63d449 1395.24, 97 ec8fc67e1 1395.24, 99 2398e56d0 1395.24,
+  **100 76f7d7468 (hitq ON) fails 859.91**, 102 282567f82 fails 859.91, 104 9b5457ae7 fails 859.91.
+  The first bad commit is **76f7d7468**, the flip of kHitDeferredDispatchCc13Bound + kHitDeferredSameStepDrainCc13Bound.
+- **Mechanism.**
+  - Gameplay against 2398e56d0 is identical up to gunnery step 7400 (369.98 s). At step 7500 (374.98 s) there is
+    one more hit (90 -> 91 at equal shots and damage): the deferred drain dispatches one hit in a different step.
+  - The death lists first differ at the 8th death: Dyson at 613.07 s (Agano) instead of Montpelier at 628.07 s.
+  - The only earlier change is the death-row blast attribution (killer_blast 0 -> 1 from the 10.80 s Fortress-10
+    death on). That is the order effect 306.2 predicted, and it moves no state.
+- **Verdict.** This is the hitq flip, already judged faithful (306.2 / 306.6 and cc13 rev2). A one-hit timing change
+  at 375 s cascades through a knife-edge surface battle. Nothing to fix, and main currently wins the row (1560.40 s).
+
+## 318. cc9-ships61 handoff (2026-10-19)
+
+**Landed** (all on main): SHIP_AI 311 (leak92 ON; 3E0h seed, ctor seeds + 364 sync, sinkleak ON) and 314 (arc-centre
+plan test + astern skip ON). LOMP10 p3_l10_b wins at 736.49 s on the arcplan build.
+
+**Answered for cc13 (w324, main 7f4f75b85, `local\s61_w_i18.log`, script `local\s61_w324.py`):**
+- Oma3 (IJN18): every step row with 324h at least 0.9 rad off 1D8h has w324=009EF8EE, the traffic clip. There are
+  29 such rows, about +1.07 rad off.
+- The separation turn 009DEE01 moves 324h by 0.22 rad at most.
+- Fletch6 never spawned within 20000 frames on that main (`local\s61_w_i18f.log`). IJN18 no longer fails near
+  500 s.
+- `s61_osc.py` counts the rudder DEMAND (blk+1D4h), not physical chatter. Any future census should count the
+  ring slot or smoothed_rudder instead.
+
+**JM08 (queue item 4), open.** The bunker premise is stale. On main 2c04701fd (`local\s61_b_j08.log`) bunker 05
+kills only #Y7 and Patrolboat 01. Helena, San Francisco and Stephen Potter kill the other 11 boats by 540 s, and
+the row fails at 1053.95 s ("HQ has been destroyed").
+- Variants come from `local\s61_j8mk.py` (orders in `local\s61_j8_<v>.txt`). All ran on main 7f4f75b85
+  (`local\s61_cur3_bin`), ref env, logs `local\s61_c_<row>.log`.
+- **d:** every boat order is held for 16000 frames. At frame 400 the boats instead move to y = -2000, about 1350 m
+  north of the bunker.
+  - The boats kill San Francisco and Helena.
+  - Every landing ship and transport dies by 1929 s.
+  - The Missouri survives and the row fails at 2523.39 s ("HQ has been destroyed").
+- **e:** d, plus the airfield's launches on the Missouri before frame 12000 retargeted to Helena.
+  - The Missouri dies at 475 s, to airfield sqn06.
+  - San Francisco, Stephen Potter, LSM 01/02 and LST 01/03 die.
+  - TT01, TT03, TT04 and LST 02 live to 3600 s: no end.
+- **f:** e, plus airfield class-154 strikes cycling those four from frame 14000.
+  - TT04 dies at 1446 s and LST 02 at 1672 s.
+  - Only USTroopTransport 01 and 03 are left: no end.
+  - All but one of the class-154 strikes are refused: 806 "no stock of the class" and 573 "slot not in state 1
+    or 5".
+  - **Next:** strike TT01 and TT03 with class 152 or other stocked classes (the frame-300 TT strikes use slot 1,
+    class 152), or with Fubuki/Isokaze before they die at about 680 s. Once primary 1 and 2 complete, phase 2
+    (the B-17 and C-47 waves) decides the result.
+
+**USNOS (queue item 3), parked.** gunnery55's attribution is in SHIP_AI 315: TT6's loss to the wave-1 level bomber
+#1.4 is faithful. The next plan moves TT6 out of that run before about 110 s and budgets the 4 slots per deck (314).
+Scripts: `local\s61_osmk.py` (c22/c23 on top of s60_osmk.py) and `local\s61_rows.ps1`.
+
+**Other open items:**
+- BSM01 HenryPT's moveto oscillation predates the arcplan pair; bisect1 owns it.
+- Oma3's 009EF8EE traffic-clip excursions are with cc13.
+
+## 319. LOMP06 l70_l6_c attribution (cc9-gunnery55, 2026-10-19)
+
+Row `config/win_orders/lomp06_l70_l6_c.txt`, 16000 frames, reference env, fresh pair_exports (logs
+`local\g55_l6<variant>_l6.log`). Number 317 was left free on origin/main; this section skips it.
+- **Measured:** base 241db740b^ completes at 368.83 s (Narwhal sinks Kongosan Maru at 186.91 s and Sado Maru at
+  363.08 s). 241db740b fails at 613.12 s (Sado lives; Narwhal sunk by Asagiri at 612.67 s). **Current main 279645a8b
+  (= origin/main code) still fails, at 628.12 s:** Narwhal's spreads sink Ryujin, Kongosan and Toba Maru at
+  182-200 s, Sado lives, and Yugiri sinks Narwhal at 627.27 s.
+- **The 241db740b step.** That merge flips five ship-AI switches. Forward singles on its parent:
+  - **kShipAiCommitmentBandQuarterBound alone fails** (613.12 s, the same as 241db740b).
+  - kShipAiTorpedoMarginClassLengthBound, kShipAiStationLatchClearBound, kShipAiParkedByteBeforeTailBound and
+    kShipAiClearanceRefreshSentinelBound each complete at 368.83 s.
+- **Mechanism.** The first divergence from the parent is at ship-AI step 3720 (186 s). Kongosan Maru, under Narwhal's
+  torpedo track, leaves stand-on/give-way with no real band: the host's old threshold `(give_way - stand_on) * 4`
+  sent it astern (throttle -0.562), and the image's `* 0.25` (009E1122, double 0.25 at 00D7A348) keeps it ahead
+  (1.000).
+  - The convoy's evasion then differs, and the later Sado Maru salvo misses.
+  - The flip is the image's constant (cc13-seg67g, flipped in SHIP_AI 302), so it is faithful. The win was carried by
+    the host's 16x threshold.
+- **On main the win does not come back from any single revert.** Each of these still fails between 620.72 and
+  671.11 s, with Sado alive:
+  - the five 241db740b switches singly and all together (628.12 s each);
+  - hitq (626.12 s);
+  - the four nav seeds (671.11 s);
+  - astern skip (621.12 s);
+  - arc-centre plan test (628.12 s);
+  - wake pair (623.12 s);
+  - heading wrap (628.12 s);
+  - commitment band + skip together (621.12 s).
+- **Verdict.** The first loss is faithful (commitment band quarter). On main several faithful flips each move the
+  convoy, and none alone restores the old timeline. **LOMP06 l70_l6_c needs a re-plan** against the image's convoy
+  evasion: aim the Sado Maru attack later, after Kongosan's sinking settles the convoy.
+
+## 320. Handoff from cc9-gunnery55 (2026-10-19)
+
+Branch `agent/cc9-gunnery52`, tree `J:\PROG\battlestations-pacific-decompile-cc9-gunnery52`, run prefix `g55_`. The head
+is merged with origin/main.
+
+**Tools in `local\`:**
+- `g55_rows.ps1`: the reference launch form, `-Rows name=MISSION:frames:orders -Prefix -Exe [-NoStreams]`.
+- `g55_var.ps1`: one pair_export per variant, `-Tag t -Variants @{name="commit[,kX=false,...]"}`, built into
+  `local\g55_<tag>_<name>`.
+- `g55_stepdiff.py`: the first differing line among the lines matching a regex in two logs.
+- `g55_resolve.py`: the SHIP_AI conflict renumber used for 309 -> 310.
+
+**Done in this run:**
+- Flipped ON: kTorpedoBotOwnerPlayerGateCc13Bound (310), kShipAiHeadingStoreWrapCc13Bound (312, with the C4702 fix),
+  kSceneHiddenSpawnCarryCc13Bound (313; the USN21 s46_u21_f win is lost, re-plan routed to lua71).
+- PLAYER_GUN_SEAT 7.5 closed: a player turret kill on USN02 (Houston sinks Yukikaze).
+- Attributions: USNOS TroopTrans6 (315, the ctor seeds, faithful), USN12 (316, hitq, faithful; main wins at
+  1560.40 s), LOMP06 (319, commitment band quarter, faithful; main still fails, re-plan).
+
+**Open:**
+1. **kKamikazeDeadTargetRetestCc13Bound / kRtbHeadC24PilotFiresCc13Bound** are ON but unexercised. No row has a
+   kamikaze target die while kamikazes live: USN18, USN19, USN17 and USNBR were probed at 24000 frames with no
+   orders (dead_targets=0 on all). USN19 writes about 1.3 GB per 24000 frames (FreeAttack lines); delete it after
+   one read.
+2. **kTorpedoBotOwnerPlayerGateCc13Bound:** no pair has yet suppressed a real launch. That needs a row where a
+   taken ship's bot would launch.
+3. **BSM04 hidden carry** (Lexington Stop with StartSpeed 3) needs a plan through phase 1: the idle run fails at
+   108.05 s, before GenerateObject("Lexington").
+4. **LOMP06 l70_l6_c** and **USN21 s46_u21_f** need re-plans (lead / lua71).
+- Never use git stash. src/game_hosts_gunnery.cpp is often leased: queue, never jump.
