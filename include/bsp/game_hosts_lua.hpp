@@ -660,7 +660,9 @@ inline constexpr bool kLuaTrulyDeadOnKilledBound = true;   // ON: JM06 / USN04 p
 // USN21's 14 `pos` nil errors at :10627). True: the host writes the table from
 // the slot's pose translation (unit_pose, +FCh). LABELLED: the 00414DB0 refresh
 // is the host's current pose. False: no LastPosition (nil).
-inline constexpr bool kLuaLastPositionOnKilledBound = false;
+// ON (cc9-recon1, pairs on 064194207): every WINS row gameplay identical; USN21
+// :10627 errors 14 -> 0, luaMissionCompletedNew reaches EndScene.
+inline constexpr bool kLuaLastPositionOnKilledBound = true;
 static_assert(!kLuaLastPositionOnKilledBound || kLuaTrulyDeadOnKilledBound,
               "kLuaLastPositionOnKilledBound writes inside the 00928C80 Lua half");
 
