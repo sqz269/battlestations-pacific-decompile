@@ -4054,3 +4054,45 @@ OFF) and `local\p26c_pair` (party ON, airborne switches ON).
 - On the same build, p9_p01_k still fails at 1038.39 s. Adding Wildcat CAP launches gives a result identical to
   `a` (b); CAP alone fails (c).
 - The plan was sent to cc9-lua72 (WINS keeper; it holds config/win_orders) to commit as the row.
+
+
+## 117. Why JM08 plan h never spawns the C47s (cc9-physics26, 2026-10-24)
+
+The script is `scripts/missions/COTP-IJN/PRCPIJN/prcpjm08.lua` (this installation, mtime 2024-08-26). The scene
+prcpijn_08_defend_guadalcanal.scn names it, through the record+928h StageScript slot.
+
+**Trigger chain (Lua only, no doubtful native).**
+1. luaIntroMovieEnd starts CheckCompletion (line 635).
+2. CheckCompletion (790) polls `luaObj_GetSuccess("primary",2) and luaObj_GetSuccess("primary",1)` every second.
+   - Primary 2 is set by CheckPrim2 (747) when Missouri is dead.
+   - Primary 1 is set by CheckPrim1 (727) when `Mission.LandShips` has no live member. LandShips is eleven ships
+     (519-529): USTroopTransport 01-06, LST 01-03 and LSM 01-02.
+3. When both are set, it moves the invasion force to RetreatPoint and starts the "Run" dialog (332), whose last step
+   calls FadeIn (999).
+4. FadeIn runs PreparePhase2 (1005) after 5 s, which starts luaBomberWave1 (B-17s, WingCount 3-5).
+5. Each wave calls the next with luaDelay(..., 180): luaBomberWave2 (B-25s, 1080), then luaBomberWave3 (C-47s,
+   1183, `Mission.C47Count`).
+
+So the C-47s (the paratroopers) arrive about 365 s after the last LandShip and Missouri are both dead. Phase 2 has
+no timer or HQ path.
+
+**Plan h on main 4ada4aa61 (rebuilt tree, ref env, 72000 frames, `local\main_j8h`):** no end, and no present
+failures. The guard line is absent because there is no completion.
+- Missouri dies at 414.12 s. LandShips deaths:
+  - USTroopTransport 06 at 499.65 s, 05 at 630.27, 04 at 699.55, 01 at 760.94 and 02 at 805.58;
+  - LSM 01 at 666.96 s and LST 03 at 687.11;
+  - LST 02 at 1129.63 s (AA truck 05), LST 01 at 1275.27 (Headquarter 01) and LSM 02 at 1391.78 (AA truck 06).
+- **USTroopTransport 03 never dies.** From about step 22320 it sits stopped at (1636.6, -646.8) in attackmove,
+  firing at Headquarter 01. It took 157 hits; its health is 1722.4 at the last hit (3977.4 at the first).
+- Primary 1 is therefore never set, CheckCompletion never fires, and no B-17, B-25 or C-47 is ever spawned.
+- Why nothing finishes it:
+  - Every Japanese surface ship is dead by 876.31 s (the Gyoraitei, Fubuki 714.20 s, Isokaze 759.59 s).
+  - Hosho sinks at 471.06 s.
+  - MainAirFieldEntity 01 runs out of bombers: class 166/167 refuse with "no stock of the class" from frame 12902
+    (645 s).
+  - After that, the 43 applied orders on USTroopTransport 03 are fighter launches and order-3 retargets (classes
+    152/154), which do not sink it.
+- Fix (plan side): sink USTroopTransport 03 while bomber stock remains. For example, keep one class 166/167
+  squadron in reserve for it, or put it first in the generator's target list.
+  - Only then can phase 2 and the C-47s, and therefore the paratrooper switches, be reached.
+  - ships62's generator is `local\s62_j8mk.py` (cc9-ships44).
