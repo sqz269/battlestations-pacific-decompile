@@ -40,6 +40,17 @@ struct AvoidZoneDynHullMemory {
     void (*release)(void*, void*);
 };
 
+// 00C35E80 CleanupPoints, the whole body. Original ABI: EDX = out (packed XYZ,
+// room for max(count, 8) points); stack count, source, stride in bytes,
+// count_out, epsilon, scale_out (may be null); RET 18h; AL = 1 on every path.
+// Reads source point i only after out[0..i) is written, as the native loop does.
+// With scale_out the kept points are in the unit box (divided by the extent).
+// Fewer than three points or an extent axis under 1e-6, before or after the
+// merge, yields the 8 corners of a box and count 8. Not ABI-compatible.
+bool dyn_hull_cleanup_points_00c35e80(OceanVec3* out, std::uint32_t count,
+    const void* source, std::uint32_t stride, std::uint32_t* count_out,
+    float epsilon, OceanVec3* scale_out);
+
 // Semantic result of 00C5DAE0 flag 1, the flag used by 00C5DDD0. Triangle
 // order and first-encounter vertex compaction follow the recovered algorithm.
 // Finite, representable point domain; exceptional CRT/pool/OOM ABI unresolved.
