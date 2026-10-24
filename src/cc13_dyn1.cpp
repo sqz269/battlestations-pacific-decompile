@@ -427,10 +427,13 @@ void box_shape_support_00c38470(const void* shape, double out[3], const double d
 
 void sphere_shape_support_00c48080(const void* shape, float out[3], const float dir[3],
                                    const float xf[12]) noexcept {
+    // Slot 2 has no call site in the image (only the vtable entry refers to it), so it is
+    // judged at the main thread's 24-bit precision control, as for 00C47AA0: each FMUL and
+    // FADD rounds to 24 bits with the extended exponent before its FSTP (cc13-fixture7).
     const float r = raw(shape).at<float>(0x210);  // FSTP float [ESP]
     float t[3];
-    for (int i = 0; i < 3; ++i) t[i] = static_cast<float>(static_cast<double>(dir[i]) * r);
-    for (int i = 0; i < 3; ++i) out[i] = static_cast<float>(static_cast<double>(xf[9 + i]) + t[i]);
+    for (int i = 0; i < 3; ++i) t[i] = static_cast<float>(cc13x87::x87_mul24(dir[i], r));
+    for (int i = 0; i < 3; ++i) out[i] = static_cast<float>(cc13x87::x87_add24(xf[9 + i], t[i]));
 }
 
 void sphere_shape_support_00c38970(const void* shape, double out[3], const double dir[3],
@@ -575,43 +578,53 @@ void shape_group_assign_00c48050(void* shape, std::uint32_t value, Cc13Dyn1Calls
 
 // -------------------------------------------------------------------- transforms
 
+// A float copied through FLD DWORD / FSTP DWORD: a signalling NaN comes out quiet (bit 22
+// set); every other pattern, denormals included, is unchanged (cc13-fixture7).
+static std::uint32_t fld_fstp_word(std::uint32_t u) noexcept {
+    const bool snan = (u & 0x7f800000u) == 0x7f800000u && (u & 0x007fffffu) != 0 && (u & 0x00400000u) == 0;
+    return snan ? u | 0x00400000u : u;
+}
+
 void transform_expand_3x4_to_4x4_00c33650(const float src[12], float dst[16]) noexcept {
-    // Word copies in the image's store order; the 0 words are integer zero stores.
-    const auto* s = reinterpret_cast<const std::uint32_t*>(src);
+    // FLD/FSTP copies in the image's store order (00C33650..00C336B1); the 0 words are
+    // MOVSS stores of a zeroed XMM0.
+    const std::uint32_t* const s0 = reinterpret_cast<const std::uint32_t*>(src);
+    const auto s = [s0](int k) { return fld_fstp_word(s0[k]); };
     auto* d = reinterpret_cast<std::uint32_t*>(dst);
-    d[0] = s[0];
-    d[1] = s[1];
+    d[0] = s(0);
+    d[1] = s(1);
     d[3] = 0;
-    d[2] = s[2];
-    d[4] = s[3];
-    d[5] = s[4];
-    d[6] = s[5];
+    d[2] = s(2);
+    d[4] = s(3);
+    d[5] = s(4);
+    d[6] = s(5);
     d[7] = 0;
-    d[8] = s[6];
-    d[9] = s[7];
-    d[10] = s[8];
+    d[8] = s(6);
+    d[9] = s(7);
+    d[10] = s(8);
     d[11] = 0;
-    d[12] = s[9];
-    d[13] = s[10];
-    d[14] = s[11];
+    d[12] = s(9);
+    d[13] = s(10);
+    d[14] = s(11);
     dst[15] = kOne_00d7a24c;
 }
 
 void transform_from_4x4_00c336c0(float dst[12], const float src[16]) noexcept {
-    const auto* s = reinterpret_cast<const std::uint32_t*>(src);
+    const std::uint32_t* const s0 = reinterpret_cast<const std::uint32_t*>(src);
+    const auto s = [s0](int k) { return fld_fstp_word(s0[k]); };
     auto* d = reinterpret_cast<std::uint32_t*>(dst);
-    d[0] = s[0];
-    d[1] = s[1];
-    d[2] = s[2];
-    d[3] = s[4];
-    d[4] = s[5];
-    d[5] = s[6];
-    d[6] = s[8];
-    d[7] = s[9];
-    d[8] = s[10];
-    d[9] = s[12];
-    d[10] = s[13];
-    d[11] = s[14];
+    d[0] = s(0);
+    d[1] = s(1);
+    d[2] = s(2);
+    d[3] = s(4);
+    d[4] = s(5);
+    d[5] = s(6);
+    d[6] = s(8);
+    d[7] = s(9);
+    d[8] = s(10);
+    d[9] = s(12);
+    d[10] = s(13);
+    d[11] = s(14);
 }
 
 // --------------------------------------------------------------- convex hull data
@@ -815,12 +828,17 @@ float* object_vec58_00c357d0(void* object) noexcept {
 
 bool ccw_2d_00c377f0(float x0, float y0, float x1, float y1, float x2, float y2) noexcept {
     // Four differences, each stored as float, then the cross in registers; FCOMIP
-    // against 0 and JBE to the 0 return, so an unordered cross returns 0.
-    const float ax = static_cast<float>(static_cast<double>(x1) - x0);
-    const float ay = static_cast<float>(static_cast<double>(y1) - y0);
-    const float bx = static_cast<float>(static_cast<double>(x2) - x0);
-    const float by = static_cast<float>(static_cast<double>(y2) - y0);
-    const double cross = static_cast<double>(by) * ax - static_cast<double>(ay) * bx;
+    // against 0 and JBE to the 0 return, so an unordered cross returns 0. The callers
+    // (00C41190, 00C41230) are reached only from 00C4D5A0, which nothing in the image
+    // references, so this is judged at the main thread's 24-bit precision control: each
+    // FSUB/FMUL rounds to 24 bits with the extended exponent (cc13-fixture7).
+    using cc13x87::x87_mul24;
+    using cc13x87::x87_sub24;
+    const float ax = static_cast<float>(x87_sub24(x1, x0));
+    const float ay = static_cast<float>(x87_sub24(y1, y0));
+    const float bx = static_cast<float>(x87_sub24(x2, x0));
+    const float by = static_cast<float>(x87_sub24(y2, y0));
+    const double cross = x87_sub24(x87_mul24(by, ax), x87_mul24(ay, bx));
     return cross > 0.0;
 }
 

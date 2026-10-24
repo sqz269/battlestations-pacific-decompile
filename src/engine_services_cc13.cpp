@@ -4,6 +4,7 @@
 // bsp/engine_services_cc13.hpp.
 
 #include "bsp/engine_services_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_resource_path.hpp"
@@ -315,12 +316,26 @@ bool scene_type_is_kind_of_00c30230(const std::uint32_t (&types_0109e9c4)[3], st
     return false; // EAX 0109E900: AL 0
 }
 
-void scale_vector4_00bee140(float* out, const float* scalar, const float* v) noexcept {
+// 00BEE141..00BEE16A at 24-bit precision control: FLD/FSTP [ESP] (the scalar), then
+// FMUL/FSTP per lane, each product rounded to 24 bits before the store.
+void scale_vector4_pc24_00bee140(float* out, const float* scalar, const float* v) noexcept {
     const float s = *scalar;
-    out[0] = s * v[0];
-    out[1] = v[1] * s;
-    out[2] = v[2] * s;
-    out[3] = s * v[3];
+    out[0] = static_cast<float>(cc13x87::x87_mul24(s, v[0]));
+    out[1] = static_cast<float>(cc13x87::x87_mul24(v[1], s));
+    out[2] = static_cast<float>(cc13x87::x87_mul24(v[2], s));
+    out[3] = static_cast<float>(cc13x87::x87_mul24(s, v[3]));
+}
+
+void scale_vector4_00bee140(float* out, const float* scalar, const float* v) noexcept {
+    if constexpr (kScaleVector4Pc24Cc13Bound) {
+        scale_vector4_pc24_00bee140(out, scalar, v);
+    } else {
+        const float s = *scalar;
+        out[0] = s * v[0];
+        out[1] = v[1] * s;
+        out[2] = v[2] * s;
+        out[3] = s * v[3];
+    }
 }
 
 // ---------------------------------------------------------------------------------------------------

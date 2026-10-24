@@ -3,6 +3,7 @@
 // See docs/CC13_BAND_0067_0073.md.
 
 #include "bsp/band_0067_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 namespace bsp::band_0067_cc13 {
 
@@ -19,14 +20,18 @@ Vec3 vec3_sub_00709ac0(const Vec3& a, const Vec3& b) noexcept {
 }
 
 void vec3_add_scaled_in_place_00709b60(Vec3& v, const Vec3& d, float s) noexcept {
+    // Main thread, 24-bit precision control (cc13-fixture7): each FMUL/FADD rounds to 24
+    // bits with the extended exponent before the FSTP DWORD, which matters for denormals.
+    using cc13x87::x87_add24;
+    using cc13x87::x87_mul24;
     // 00709B63..00709B7E: the products are stored to float temporaries first.
-    const float px = static_cast<float>(static_cast<double>(d.x) * s);
-    const float py = static_cast<float>(static_cast<double>(d.y) * s);
-    const float pz = static_cast<float>(static_cast<double>(d.z) * s);
+    const float px = static_cast<float>(x87_mul24(d.x, s));
+    const float py = static_cast<float>(x87_mul24(d.y, s));
+    const float pz = static_cast<float>(x87_mul24(d.z, s));
     // 00709B82..00709B9A: FLD/FADD/FSTP per component.
-    v.x = static_cast<float>(static_cast<double>(v.x) + px);
-    v.y = static_cast<float>(static_cast<double>(py) + v.y);
-    v.z = static_cast<float>(static_cast<double>(v.z) + pz);
+    v.x = static_cast<float>(x87_add24(v.x, px));
+    v.y = static_cast<float>(x87_add24(py, v.y));
+    v.z = static_cast<float>(x87_add24(v.z, pz));
 }
 
 Vec3 vec3_add_scaled_00709bb0(const Vec3& a, const Vec3& b, float s) noexcept {
