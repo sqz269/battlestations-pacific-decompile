@@ -62,6 +62,10 @@ process exit. No exceptional continuation or native SEH equivalence is claimed.
 The immutable material destruction table is admitted during ready startup,
 before mission preparation becomes an active retained acquisition, and remains
 borrowed from that same renderer through normal drain.
+Sampler/effect metadata is also composed in that quiescent phase. Its material
+validation retains the admitted canonical table and keeps the existing ready,
+layout and domain checks for every invocation; glyph allocation still occurs
+only in the mission's open shader-cache bracket.
 
 The Font arm reuses AD55C0 construction, AD4540 unsigned-WORD lookup, AD4AA0
 native tree insertion, and the established native tree/string cleanup. In image
@@ -129,6 +133,15 @@ the renderer's acquisition/retention guard is unchanged. Image Fonts loaded,
 but this failed probe proves no native Text draw or normal retirement. The
 replacement build also merges renderD's explicit label-entry API and borrows
 the startup's existing RandomThreads; it adds no random owner or frame graph.
+Probe2 (`69c8546c5`) exposed the same ready-only getter in the effect consumer's
+validation, again before any Present. The effect application now admits its
+immutable table at ready metadata composition and reuses it for validation.
+`step1_effect_view_build.log` records the resulting build/2 checks passing.
+The subsequent merge of main `0b56eb178` includes the native whole-material
+texture refresh after model loading, which also covers these earlier GUI effect
+creations; the combined build and probe are still pending.
+`step1_effect_merged_build.log` now records the combined Win32 Release build and
+both existing checks passing. The next native probe remains pending.
 
 Final screenshots belong under this tree's `local/gui_render/` and must be
 copied to the cc16-progress tree before this worktree is removed.

@@ -41,6 +41,9 @@ public:
     GameNativeGuiRenderApplication(const GameNativeGuiRenderApplication&) = delete;
     GameNativeGuiRenderApplication& operator=(const GameNativeGuiRenderApplication&) = delete;
 
+    // Compose retained effect/sampler metadata while renderer acquisitions are
+    // quiescent, before registering the mission preparation callback.
+    void compose_effect_services_in_ready_renderer();
     // Invoke inside the mission resource preparation's existing B3A600/B3B140
     // bracket. The renderer owns that bracket; this application never opens it.
     void prepare_text_in_open_shader_cache();

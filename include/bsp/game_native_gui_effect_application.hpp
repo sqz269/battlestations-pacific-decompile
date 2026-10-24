@@ -107,6 +107,9 @@ struct GameNativeGuiTextShaderCall final : GuiTextEffectConsumerShaderCall {
 // retention policy on failure; its destructor never performs native rollback.
 class GameNativeGuiEffectApplication final {
 public:
+    // Admit metadata while the renderer is ready with no pending acquisition.
+    // The same immutable material profile then survives native preparation;
+    // acquiring effects/materials still requires the caller's open cache.
     GameNativeGuiEffectApplication(GameHostLog&, GameNativeRendererApplication&,
         GameVfsHost&, GameNativeGuiEffectApplicationBindings);
     ~GameNativeGuiEffectApplication() noexcept;

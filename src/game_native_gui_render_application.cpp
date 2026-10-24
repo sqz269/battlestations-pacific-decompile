@@ -195,12 +195,14 @@ struct GameNativeGuiRenderApplication::Impl {
         nodes->widgets().environment().clip = clip.get();
     }
     void fail() noexcept { failure = std::current_exception(); phase = Phase::failed; }
-    void make_text() {
+    void compose_effect_services() {
         samplers = std::make_unique<GameNativeGuiSamplerApplication>(log, renderer, files,
             singletons, data, GameNativeGuiSamplerApplicationBindings{input,
                 renderer.borrow_platform_publication_0109cf04()});
         effects = std::make_unique<GameNativeGuiEffectApplication>(log, renderer, files,
             samplers->effect_bindings());
+    }
+    void make_text() {
         auto& font_resources = fonts.native_fonts();
         const auto& shadow = globals.shadow_color_00e12fd8();
         const auto& one = cell<float>(data, 0x00d7a24c);
@@ -401,9 +403,21 @@ GameNativeGuiRenderApplication::GameNativeGuiRenderApplication(GameHostLog& log,
 GameNativeGuiRenderApplication::~GameNativeGuiRenderApplication() noexcept {
     if (impl_->phase != Impl::Phase::prepared && impl_->phase != Impl::Phase::closed) std::terminate();
 }
+void GameNativeGuiRenderApplication::compose_effect_services_in_ready_renderer() {
+    auto& p = *impl_;
+    require(p.phase == Impl::Phase::prepared && !p.samplers && !p.effects,
+        "native GUI effect services must be admitted once before mission preparation");
+    p.phase = Impl::Phase::preparing;
+    try {
+        p.compose_effect_services();
+        p.phase = Impl::Phase::prepared;
+        p.log.note("native GUI effect services ready: profile=D5E520 acquisitions=deferred");
+    } catch (...) { p.fail(); throw; }
+}
 void GameNativeGuiRenderApplication::prepare_text_in_open_shader_cache() {
     auto& p = *impl_;
-    require(p.phase == Impl::Phase::prepared && p.renderer.shader_cache_context().actual_cache_0108d6ec,
+    require(p.phase == Impl::Phase::prepared && p.samplers && p.effects &&
+        p.renderer.shader_cache_context().actual_cache_0108d6ec,
         "native GUI Text preparation requires the mission's same open shader cache");
     p.phase = Impl::Phase::preparing;
     try {
@@ -478,6 +492,7 @@ void GameStartupHost::initialize_native_gui_render() {
         input_runtime_ && fonts_ && locale_, "native GUI Text requires the existing ready startup owners");
     native_gui_render_ = std::make_unique<GameNativeGuiRenderApplication>(log_, *native_renderer_,
         *vfs_, *singletons_, *native_data_, *input_runtime_, *fonts_, *locale_, gui_sse2_conversion());
+    native_gui_render_->compose_effect_services_in_ready_renderer();
 }
 void GameStartupHost::prepare_native_gui_text_resources() {
     if (native_gui_render_) native_gui_render_->prepare_text_in_open_shader_cache();
