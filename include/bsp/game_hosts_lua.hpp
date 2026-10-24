@@ -1192,6 +1192,7 @@ struct GameMissionLuaSummary {
     unsigned long long attack_target_pushed{0};
     unsigned long long attack_target_nil{0};
     unsigned long long attack_target_unresolved{0};
+    unsigned long long attack_target_squadron_standin{0};   // packet cc13-atkfix
     unsigned long long squadron_speed_calls{0};
     unsigned long long squadron_speed_planes{0};
     unsigned long long squadron_speed_unresolved{0};
