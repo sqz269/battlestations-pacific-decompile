@@ -545,28 +545,33 @@ Object temp_anim_construct_00498d60(Left8Host& host, Object object, Object paren
     return object;
 }
 
-// 00498E60 __thiscall(marker, parent, observed), RET 8, EAX = marker.
-// 00496920(marker, parent); vtable 00CE6830; +24h..+2Ch = 0; the observer
+// The plane-debris spawner (vtable 00CE6830: slot 0 0049D610 the scalar
+// deleting destructor over 0049A580, slot 1 0049B1F0 the debris tick, slot 2
+// 00480B70). Its only creator is 007D0B80: plane+C4Ch = 00498F80([[00E188A8]
+// +21D0h], plane), then 0049A760(plane+C4Ch) fills the debris records; the
+// observed object is the plane. Named "marker" by cc13-left8 until cc13-m498.
+// 00498E60 __thiscall(spawner, parent, observed), RET 8, EAX = spawner.
+// 00496920(spawner, parent); vtable 00CE6830; +24h..+2Ch = 0; the observer
 // sub-object at +30h: vtable 00CE65E8, +34h..+3Ch = 0, +40h byte = 1, +44h = 0;
 // +4 = 1. When +44h differs from observed: an old target is released with
 // 006952A0(ECX = old, EDX = observer), +44h = observed, and a non-null target
 // is registered with 00694A60(ECX = observed, EDX = observer). +48h = 1, +49h =
 // 0, +4Ch = U(0, (float)([00E186F4] - [00E186F8])) through 00BD2F10 on stream 0
 // (ECX = 0).
-Object marker_construct_00498e60(Left8Host& host, Object marker, Object parent, Object observed) {
-    list_node_construct_00496920(host, marker, parent);
-    at<std::uint32_t>(marker, 0x0) = 0x00ce6830;
-    at<std::uint32_t>(marker, 0x24) = 0;
-    at<std::uint32_t>(marker, 0x28) = 0;
-    at<std::uint32_t>(marker, 0x2c) = 0;
-    Object observer = marker + 0x30;
+Object plane_debris_spawner_construct_00498e60(Left8Host& host, Object spawner, Object parent, Object observed) {
+    list_node_construct_00496920(host, spawner, parent);
+    at<std::uint32_t>(spawner, 0x0) = 0x00ce6830;
+    at<std::uint32_t>(spawner, 0x24) = 0;
+    at<std::uint32_t>(spawner, 0x28) = 0;
+    at<std::uint32_t>(spawner, 0x2c) = 0;
+    Object observer = spawner + 0x30;
     at<std::uint32_t>(observer, 0x4) = 0;
     at<std::uint32_t>(observer, 0x8) = 0;
     at<std::uint32_t>(observer, 0xc) = 0;
     at<Object>(observer, 0x14) = nullptr;
     at<std::uint8_t>(observer, 0x10) = 1;
     at<std::uint32_t>(observer, 0x0) = 0x00ce65e8;
-    at<std::uint32_t>(marker, 0x4) = 1;
+    at<std::uint32_t>(spawner, 0x4) = 1;
     if (at<Object>(observer, 0x14) != observed) {
         if (at<Object>(observer, 0x14) != nullptr) {
             host.observer_unregister_pair_006952a0(at<Object>(observer, 0x14), observer);
@@ -574,19 +579,19 @@ Object marker_construct_00498e60(Left8Host& host, Object marker, Object parent, 
         at<Object>(observer, 0x14) = observed;
         if (observed != nullptr) host.observer_register_pair_00694a60(observed, observer);
     }
-    at<std::uint8_t>(marker, 0x48) = 1;
-    at<std::uint8_t>(marker, 0x49) = 0;
+    at<std::uint8_t>(spawner, 0x48) = 1;
+    at<std::uint8_t>(spawner, 0x49) = 0;
     const float span = static_cast<float>(static_cast<double>(host.global_f32(0x00e186f4)) - host.global_f32(0x00e186f8));
-    at<float>(marker, 0x4c) = host.random_uniform_00bd2f10(0, 0.0f, span);
-    return marker;
+    at<float>(spawner, 0x4c) = host.random_uniform_00bd2f10(0, 0.0f, span);
+    return spawner;
 }
 
 // 00498F80 __thiscall(owner, observed), RET 4, EAX: operator new(50h); on
 // success 00498E60(memory, [owner+8], observed), else 0.
-Object marker_create_00498f80(Left8Host& host, Object owner, Object observed) {
+Object plane_debris_spawner_create_00498f80(Left8Host& host, Object owner, Object observed) {
     Object memory = host.operator_new_00bf681b(0x50);
     if (memory == nullptr) return nullptr;
-    return marker_construct_00498e60(host, memory, at<Object>(owner, 0x8), observed);
+    return plane_debris_spawner_construct_00498e60(host, memory, at<Object>(owner, 0x8), observed);
 }
 
 namespace {
@@ -710,7 +715,7 @@ void free_vector_storage(Left8Host& host, Object v) {
 }
 }  // namespace
 
-// 0049A580 __fastcall(marker), RET: the 00498E60 marker destructor (vtable
+// 0049A580 __fastcall(spawner), RET: the 00498E60 spawner destructor (vtable
 // 00CE6830). When +49h is set the dword [00E186E8] is decremented. The member
 // release loop over the 54h records at +20h; erase(begin, end) with the
 // copy-assign 0047F930 for the (empty) tail; 00495D40(vector, 0) (the image
@@ -719,19 +724,19 @@ void free_vector_storage(Left8Host& host, Object v) {
 // (when set) is released with 006952A0(ECX = target, EDX = observer), then
 // 00695870(observer). The record storage is freed and zeroed and 00489DD0
 // runs the list-node base destructor.
-void marker_destruct_0049a580(Left8Host& host, Object marker) {
-    at<std::uint32_t>(marker, 0x0) = 0x00ce6830;
-    if (at<std::uint8_t>(marker, 0x49) != 0) host.global_add_i32(0x00e186e8, -1);
-    release_record_members(host, marker, 0x54);
-    Object v = marker + 0x20;
+void plane_debris_spawner_destruct_0049a580(Left8Host& host, Object spawner) {
+    at<std::uint32_t>(spawner, 0x0) = 0x00ce6830;
+    if (at<std::uint8_t>(spawner, 0x49) != 0) host.global_add_i32(0x00e186e8, -1);
+    release_record_members(host, spawner, 0x54);
+    Object v = spawner + 0x20;
     erase_all(host, v, 0x54, [&](Object dst, Object src) { host.record54_copy_assign_0047f930(dst, src); });
     host.record54_vector_resize_00495d40(v, 0);
-    Object observer = marker + 0x30;
+    Object observer = spawner + 0x30;
     at<std::uint32_t>(observer, 0x0) = 0x00ce6430;
     if (at<Object>(observer, 0x14) != nullptr) host.observer_unregister_pair_006952a0(at<Object>(observer, 0x14), observer);
     host.callback_owner_destroy_00695870(observer);
     free_vector_storage(host, v);
-    host.list_node_destruct_00489dd0(marker);
+    host.list_node_destruct_00489dd0(spawner);
 }
 
 // 0049C6E0 __fastcall(owner), RET: destructor of the vtable 00CE6850 class.
