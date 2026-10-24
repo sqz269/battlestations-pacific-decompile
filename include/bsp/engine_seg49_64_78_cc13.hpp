@@ -170,6 +170,22 @@ struct LeakSubscription : EventSubscription {       // 28h, vtable 00D1B6CC
     RangeFilter duration{};                          // +1Ch
 };
 using FireSubscription = LeakSubscription;           // 28h, vtable 00D1B6DC, same fields
+
+// Subscription lifecycle bodies. Native ABI: ECX=this, no stack arguments,
+// plain RET; constructors return this in EAX. These value-model constructors
+// return fresh empty filters/callback. Destructors release filters in native
+// reverse order, then callback storage. std::set/std::string are qualified
+// storage substitutions: native sentinels, vtables, pool allocation and EH are
+// not binary-compatible with these existing model types.
+ReconSubscription construct_recon_0097a220();
+void destruct_recon_0097a330(ReconSubscription&);
+KillSubscription construct_kill_0097a450();
+void destruct_kill_0097a530(KillSubscription&);
+ExitZoneSubscription construct_exit_zone_0097a620();
+void destruct_exit_zone_0097a6d0(ExitZoneSubscription&);
+InputSubscription construct_input_0097a790();
+void destruct_input_0097a810(InputSubscription&);
+
 struct RepairSubscription : EventSubscription {     // 2Ch, vtable 00D1B6EC
     EntityIdFilter entity{};                         // +0Ch
     IntFilter repair_setting{};                      // +1Ch
