@@ -24,6 +24,7 @@
 // bsp::UnitOrderRing from unit_state_message.hpp; the command-class table is
 // from entity_orders.hpp. All four are reused, not redeclared.
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 
@@ -493,5 +494,101 @@ void cruise_command_begin_00835c70(CruiseCommandHost& host,
 
 // 009E1170's AI arm, 009E1265..009E13B1.
 CruiseOrderedValues cruise_state_step_009e1170(CruiseCommandHost& host) noexcept;
+
+// ---------------------------------------------------------------------------
+// 00816E30 as a whole body (cc13-wb2)
+// ---------------------------------------------------------------------------
+// The command registry objects 00816E30 compares against, by address. Only
+// cruise (00E08F70), stop (00E08F88) and moveonpath (00E08F80) are named
+// elsewhere; the others are identified by what their arm does.
+inline constexpr std::uint32_t kEntityCommandObject00e08ef8 = 0x00e08ef8u;  // set fire target
+inline constexpr std::uint32_t kEntityCommandObject00e08f00 = 0x00e08f00u;  // fire-target clear, then slot trim
+inline constexpr std::uint32_t kEntityCommandObject00e08f08 = 0x00e08f08u;  // fire-target clear + free fire
+inline constexpr std::uint32_t kEntityCommandObject00e08f10 = 0x00e08f10u;  // -> 00E08F78
+inline constexpr std::uint32_t kEntityCommandObject00e08f60 = 0x00e08f60u;  // join formation
+inline constexpr std::uint32_t kEntityCommandObject00e08f68 = 0x00e08f68u;  // -> moveonpath for a path
+inline constexpr std::uint32_t kEntityCommandObject00e08f78 = 0x00e08f78u;  // NavPoint for a position
+inline constexpr std::uint32_t kEntityCommandObject00e08f80 = 0x00e08f80u;  // moveonpath
+inline constexpr std::uint32_t kEntityCommandObject00e08f88 = 0x00e08f88u;  // stop
+inline constexpr std::uint32_t kEntityCommandObject00e08fa0 = 0x00e08fa0u;  // -> 00E08F78 unless kind 0Ch
+inline constexpr std::uint32_t kEntityCommandObject00e08fb0 = 0x00e08fb0u;  // group release
+inline constexpr std::uint32_t kEntityCommandObject00e08fb8 = 0x00e08fb8u;  // group snapshot
+inline constexpr float kEntityCommandDirectorField40Value = 3.0f;          // [00CE3854]
+inline constexpr std::uint32_t kEntityCommandNavPointSize = 0x1e4;          // 00817243
+
+struct UnitEntityCommandHost : CruiseCommandHost {
+    // 00816EC6 / 00816F18: object vtable[5Ch](kind), IsKindOf.
+    virtual bool object_is_kind_of_vcall5c(std::uint32_t object, int kind) = 0;
+    // 00816FCF: unit vtable[5Ch](0Ch).
+    virtual bool unit_is_kind_of_vcall5c(int kind) = 0;
+    // 0077C8D0 BSP_Entity_RequestJoinFormation, __thiscall(unit)(other), RET 4.
+    virtual void unit_request_join_formation_0077c8d0(std::uint32_t other) = 0;
+    // 0064A8E0 BSP_HudShipScreen45_TriggerUnitPing, ECX = [[00E198C4]+78h].
+    virtual void hud_ship_screen_trigger_ping_0064a8e0() = 0;
+    // 0077C980 BSP_UnitGroup_ReleaseMember, __thiscall(unit)(other), RET 4.
+    virtual void unit_group_release_member_0077c980(std::uint32_t other) = 0;
+    // 0077CA60 BSP_UnitGroup_SnapshotMembers, __thiscall(unit).
+    virtual void unit_group_snapshot_members_0077ca60() = 0;
+    // 007AC9D0 BSP_Entity_PathInterfaceForKind, __fastcall(entity), EAX.
+    virtual std::uint32_t entity_path_interface_007ac9d0(std::uint32_t entity) = 0;
+    // 00835860 BSP_WeaponDirector_SetFireTarget, __thiscall(director)(target, force), RET 8.
+    virtual void director_set_fire_target_00835860(std::uint32_t target, std::uint8_t force) = 0;
+    // 00817031: director float +40h.
+    virtual void director_store_float_40(float value) = 0;
+    // 00817041 / 0081705C: director vtable[2Ch](), the current command target object.
+    virtual std::uint32_t director_current_command_vcall2c() = 0;
+    // 00817081: the override descriptor at director+18Ch (resolved through 00521EA0).
+    virtual SceneCommandTarget director_override_target_18c() = 0;
+    // 0071D9E0 BSP_WeaponDirector_RaiseOverrideStage, __thiscall(director)(stage), RET 4.
+    virtual void director_raise_override_stage_0071d9e0(int stage) = 0;
+    // 0071BE60 BSP_WeaponDirector_FilledSlotCount, __thiscall(director), EAX.
+    virtual int director_filled_slot_count_0071be60() = 0;
+    // 006BC030 BSP_Entity_VKindIs1Or2, __fastcall(ECX = the slot's command object).
+    virtual bool command_kind_is_1_or_2_006bc030(std::uint32_t command) = 0;
+    // 008170F0: the slot's descriptor at director+58h+i*1Ch.
+    virtual SceneCommandTarget director_slot_target(int slot_index) = 0;
+    // 0071D900 BSP_WeaponDirector_SendClearCommandSlot, __thiscall(director)(index), RET 4.
+    virtual void director_send_clear_command_slot_0071d900(int slot_index) = 0;
+    // 0071BFC0 BSP_WeaponDirector_SlotPathObject, __thiscall(director)(index), RET 4.
+    virtual std::uint32_t director_slot_path_object_0071bfc0(int slot_index) = 0;
+    // 00817164 / 00817176 / 00817186: path vtable[8h], [14h], [1Ch].
+    virtual std::uint32_t path_object_vcall8(std::uint32_t path) = 0;
+    virtual int path_object_vcall14(std::uint32_t path) = 0;
+    virtual void path_object_vcall1c(std::uint32_t path) = 0;
+    // 0059CAC0, __fastcall(ECX = the point vector), its size.
+    virtual int point_vector_size_0059cac0(std::uint32_t vector) = 0;
+    // 007788B0 BSP_Unit_IsFormationFollower, __thiscall(unit), AL.
+    virtual bool unit_is_formation_follower_007788b0() = 0;
+    // 0080DC70 BSP_WeaponDirector_AllowsFireAndMove, __thiscall(director), AL.
+    virtual bool director_allows_fire_and_move_0080dc70() = 0;
+    // 0071BF20 BSP_WeaponDirector_FreeFire, __fastcall(director).
+    virtual void director_free_fire_0071bf20() = 0;
+    // 00470B80 BSP_Memory_AllocZeroed, __fastcall(ECX = size).
+    virtual void* allocate_zeroed_00470b80(std::uint32_t size) = 0;
+    // 004E5980 BSP_NavPoint_Construct, __thiscall(block)(int), RET 4, EAX = block.
+    virtual std::uint32_t nav_point_construct_004e5980(void* block, int argument) = 0;
+    // [[00E188A8]+19CCh], the vtable[98h] scene argument.
+    virtual std::uint32_t game_scene_19cc() = 0;
+    // 008172FF: entity vtable[98h](0, scene, &matrix), the matrix the identity.
+    virtual void entity_vcall98(std::uint32_t entity, int argument, std::uint32_t scene,
+        const float (&matrix)[16]) = 0;
+    // 0059BD20 BSP_OptionalVector3_GetOrDefault, __thiscall(descriptor)(out*): the
+    // position when byte +1 is set, else the default vector at 00F87574.
+    virtual std::array<float, 3> optional_vector3_get_or_default_0059bd20(
+        const SceneCommandTarget& target) = 0;
+    // 006E8040 BSP_Entity_SetWorldPositionDirect, __thiscall(entity)(const float*), RET 4.
+    virtual void entity_set_world_position_006e8040(std::uint32_t entity,
+        const std::array<float, 3>& position) = 0;
+    // 00817322: entity dword store.
+    virtual void entity_store_dword(std::uint32_t entity, std::uint32_t offset,
+        std::uint32_t value) = 0;
+    // 00464F70 BSP_CommandTarget_FromEntityVoid, __thiscall(descriptor)(entity, float), RET 8.
+    virtual void command_target_from_entity_00464f70(SceneCommandTarget& target,
+        std::uint32_t entity, float value) = 0;
+};
+
+// 00816E30 BSP_UnitInstance_ApplyEntityCommand, the whole body. Not wired.
+void unit_apply_entity_command_whole_00816e30(UnitEntityCommandHost& host,
+                                              const EntityCommandMessageView& message);
 
 } // namespace bsp
