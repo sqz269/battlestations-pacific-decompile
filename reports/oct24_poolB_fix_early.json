@@ -77,7 +77,12 @@
       "address": "0074afcc",
       "source": "src/building_pads.cpp",
       "coverage": "Partial latch projection0074AFCC..0074B0AC, not another complete0074AF50 body.",
-      "change": "Round clock-1 before subtracting dt; compare rounded thresholds. Existing one-operation timer subtraction remains explicitly narrowed."
+      "change": "Round clock-1 before subtracting dt; compare rounded thresholds. Existing one-operation timer subtraction remains explicitly narrowed. Preserve the0074B065 FLDZ/0074B067 FCOMIP/0074B06B JC unordered skip with !(timer <= 0), so an infinity-minus-infinity timer cannot open the ramp.",
+      "additional_evidence_sites": [
+        "0074B065 FLDZ",
+        "0074B067 FCOMIP ST0,ST1",
+        "0074B06B JC0074B0B0"
+      ]
     },
     {
       "address": "0074b109",
@@ -1206,8 +1211,8 @@
     "diff_check": "passed",
     "source_definition_check": "24 exact assigned symbols each have one definition in their manifest source.",
     "focused_expression_witnesses": {
-      "count": 6,
-      "kind": "Four finite numerical chain witnesses plus two unordered-branch witnesses, evaluated with explicit IEEE float32 narrowing. This is source-expression evidence, not a compiled/native runtime differential.",
+      "count": 7,
+      "kind": "Four finite numerical chain witnesses plus three unordered-branch witnesses, evaluated with explicit IEEE float32 narrowing/comparisons. This is source-expression evidence, not a compiled/native runtime differential.",
       "cases": [
         {
           "expression": "last_contact > (clock - 1) - dt",
@@ -1275,6 +1280,19 @@
           "old_reject": false,
           "fixed_reject": true,
           "native_jbe_reject": true
+        },
+        {
+          "expression": "partial ramp-latch unordered timer at0074B067/0074B06B",
+          "inputs": {
+            "clock": 100.0,
+            "last_contact": 100.0,
+            "timer_before": "+infinity",
+            "dt": "+infinity"
+          },
+          "computed_timer": "NaN",
+          "old_skip": false,
+          "fixed_skip": true,
+          "native_jc_skip": true
         }
       ]
     },
@@ -1284,7 +1302,7 @@
     "game_validation": "not run"
   },
   "changed_source_hashes": {
-    "src/building_pads.cpp": "e6f4823233f1a834cc4ba30e7046dd7ab84b80e21a4836a23e03ec209a8caa3c",
+    "src/building_pads.cpp": "60c87da8dd9c51edad2540b6e102ca6ea5ab48c4fba64859dfe0f27a20256088",
     "include/bsp/building_pads.hpp": "ad3318742472f4fc54233a5b02f253ce755edf423308720f51791663961828ab",
     "src/entity_mission_seg60_argon.cpp": "222742617805ffd123c707e411fb6a0ac4c85cc0dd126c724e08a45dad15d9f6"
   }
