@@ -168,9 +168,12 @@ private:
 };
 
 // The zone queries 006AC5D0's cache refresh makes, in the image's argument
-// order (start, far point, out): each call pushes the out buffer, then the far
-// point, then the start last. The first cast passes start [E+8h], far [E+20h];
-// the back-cast start [E+8h], far [E+28h]; the run cast start [E+28h], far [E+20h].
+// order (toward, start, out), the names avoid_zone_geometry.hpp uses. In the
+// caller's terms: arg1 `toward` is the cast origin, which the walk ends nearest;
+// arg2 `start` is the far point, where the walk and *out start (00416DD0 copies
+// *arg2 into out at 00416DDD/00416DFB; 0041B4E0 forwards both to 004179D0 in the
+// same roles). Arg1/arg2 by cast: the first cast [E+8h]/[E+20h], the back-cast
+// [E+8h]/[E+28h], the run cast [E+28h]/[E+20h].
 struct PadLineZoneQueries {
     virtual ~PadLineZoneQueries() = default;
     // 004218E0 then 004120D0(layer): the layer's group, 0 for none.
@@ -178,12 +181,12 @@ struct PadLineZoneQueries {
     // 004178F0(group)(point): the first zone containing the point, 0 for none.
     virtual std::uint32_t zone_containing_004178f0(std::uint32_t group,
                                                    float x, float z) = 0;
-    // 0041B4E0(group)(start, far, out) -> AL.
-    virtual bool group_segment_hit_0041b4e0(std::uint32_t group, const float start[2],
-                                            const float far_point[2], float out[2]) = 0;
-    // 00416DD0(zone)(start, far, out, &edge) -> AL.
-    virtual bool zone_segment_hit_00416dd0(std::uint32_t zone, const float start[2],
-                                           const float far_point[2], float out[2]) = 0;
+    // 0041B4E0(group)(toward, start, out) -> AL.
+    virtual bool group_segment_hit_0041b4e0(std::uint32_t group, const float toward[2],
+                                            const float start[2], float out[2]) = 0;
+    // 00416DD0(zone)(toward, start, out, &edge) -> AL.
+    virtual bool zone_segment_hit_00416dd0(std::uint32_t zone, const float toward[2],
+                                           const float start[2], float out[2]) = 0;
     // The image's 4th 00416DD0 argument is a dword out (00416EBB stores an index through it)
     // aimed at 006AC5D0's [B+10h] temporary; 006AC7CA/006AC7FD overwrite that slot before any
     // read, so the value is dead and the interface omits it (intended, not switched).
