@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2k: the two in-mission HUD screens that show the world.
 // See include/bsp/game_hosts_hud_world.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud_world.hpp"
+#include "bsp/game_hint_passes.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_frontend.hpp"
@@ -1035,7 +1036,15 @@ public:
         const GameUnitRow* row = owner_.units->unit_row(owner_.units->controlled_index());
         return row != nullptr && row->party >= 0 && row->party <= 7 ? row->party : 0;
     }
-    bool game_hud_suppressed() override { return false; }
+    bool game_hud_suppressed() override {
+        // cc15-hint2-gate: 00643605 CMP byte [ECX+620h],0 returns early while a
+        // critical hint is shown. game+61Fh (the pause menu) is not modelled.
+        if constexpr (kHintPauseHudGateCc15Bound) {
+            return game_hint_pause_620_cc15();
+        } else {
+            return false;
+        }
+    }
     void gui_extent(float& width, float& height) override {
         runtime_.gui_extent(width, height);
     }

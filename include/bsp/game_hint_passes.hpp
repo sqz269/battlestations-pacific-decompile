@@ -29,6 +29,16 @@ inline constexpr bool kHintTriggerPassesCc15Bound = true;
 // tracker or its screen does not exist yet.
 bool hints_seconds_left_0054d3c0_cc15(std::int32_t& seconds_left) noexcept;
 
+// Off: the HUD hosts read game+620h as clear (their old substitution). On:
+// the HUD root 44h (00649860) and markers 4Dh (006435D0) updates read the
+// hint pause 004D94F0 last stored, so a critical hint stops them as the image
+// does. Nothing else reads 620h in the host: the pilot 00519BB0, map icon
+// 005ADDA0 and Support Manager 4Eh 00675C40 updates are not run.
+inline constexpr bool kHintPauseHudGateCc15Bound = false;
+// game+620h as 004D94F0 last stored it on the process's tracker [00E198D0];
+// false before the tracker or its screen 34h exists.
+bool game_hint_pause_620_cc15() noexcept;
+
 // The game-side reads of the passes and TriggerHint. The mission frame host
 // implements it over its units and scene state for as long as it lives.
 struct HintFrameQueries {
@@ -104,6 +114,7 @@ public:
     // 0054D3C0: (int) +54h.
     std::int32_t seconds_left_0054d3c0() const;
     const HudHintsState& state() const noexcept { return state_; }
+    bool hint_paused_620() const noexcept { return hint_paused_; }
 
     // HudHintsHost.
     void register_front_end_screen_004f71d0() override {}

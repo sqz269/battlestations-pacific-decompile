@@ -251,6 +251,13 @@ bool hints_seconds_left_0054d3c0_cc15(std::int32_t& seconds_left) noexcept {
     return true;
 }
 
+bool game_hint_pause_620_cc15() noexcept {
+    GameHintTrackerSlot* slot = GameHintTrackerSlot::process_slot();
+    const GameHintTracker* tracker = slot != nullptr ? slot->built() : nullptr;
+    const GameHintsScreen* screen = tracker != nullptr ? tracker->hints_screen_34_if_built() : nullptr;
+    return screen != nullptr && screen->hint_paused_620();
+}
+
 GameHintsScreen& GameHintTracker::hints_screen_34() {
     if (!screen_34_) screen_34_ = std::make_unique<GameHintsScreen>(log_, *this);
     return *screen_34_;
