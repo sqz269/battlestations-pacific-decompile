@@ -80,6 +80,7 @@ API:
 ```cpp
 GameNativeMissionMaterialRefresh(GameNativeRendererApplication&,
     GameNativeReadOnlyData& same_readonly_data);
+void publish_reflection_cubemap(const ScenePropertyBlock&, bool hdr);
 void refresh_after_model_load();
 bool requires_process_retention() const noexcept;
 ```
@@ -91,6 +92,48 @@ entry. A missing `ReflectionCubeMap` or other scene parameter remains a missing
 scene/environment provider. Falling back to a name that fails real cache
 loading is not evidence of a valid environment texture; no arbitrary cubemap
 path is supplied here.
+
+## Borrowed scene reflection parameter
+
+`publish_reflection_cubemap()` reads the current borrowed root's
+`g_Environment.ReflCubemap` explicit `S` property. The bounded provider requires
+one nonempty decoded string and fails on absent/unsupported source instead of
+inventing a name. It retains no root/property pointer, unit state, or successful
+string cache. `004EE450` / existing `scene_weather_cc13.cpp:389` copies the
+authored string to `+B98`; when the current original `F88A0C` flag is nonzero,
+it prefixes **the entire string** with `HDR_`, without basename or path rewrite.
+The caller supplies that same captured flag (`init_args.word00`, settings `+8C`)
+as `hdr`. The full original scene helper also prefixes an empty field; this
+bounded source adapter instead reports an absent/empty authored provider.
+
+The current inspected USN04 source names `RCS_usn_05_GuadalCa.dds`, yielding
+`HDR_RCS_usn_05_GuadalCa.dds` under that flag. The installed
+`effects/hdr_rcs_usn_05_guadalca.dds` is a 128x128 DDS cubemap with all faces
+(`caps2=FE00`), as independently checked by the model worker. This is scene
+evidence, not a hardcoded texture choice; the helper contains neither name.
+
+The method prepares actual pooled key/value `NativeString` headers, then calls
+the existing `B1B830` setter on the SAME CURRENT `context.current_lua_owner_00f8d434`
+under the app's Lua binding. It publishes a persistent setter operation before
+entry. Normal completion destroys both temporary string headers; failed native
+work and its live headers remain retained. The established setter uses its
+original value-before-key header reads and `B674C0` Lua string-field body.
+
+`B674C0` has another distinct input: loader-zero byte `0108FF2C` for a null
+header data pointer. Repository inspection found no canonical producer, so the
+existing process-owned `GameNativeLuaGlobalsProcess` now owns that sole mutable
+zero byte and exposes `empty_string_0108ff2c()`. It is never reset, aliased to
+`F8D438`/`CE3A0C`, or read from unprovided raw-image BSS. Both actual headers in
+this bounded publication are nonempty, but the full native context remains
+properly bound. The process owner survives native CRT callbacks.
+
+Primary must complete model loads and publish the borrowed scene parameter
+before whole-registry refresh and submission. Publishing the parameter
+does not enable terrain, ocean, weather, or a post-processing pass. The added
+ABI is the established `B1B830` original thiscall ECX complete receiver (Lua
+owner at `+4`), two header stack arguments, `RET8`; Source adds the explicit
+EDX diagnostic/empty-byte context. No direct Lua substitute or texture-slot
+assignment is introduced.
 
 Original addresses/ABI are established by the existing source and exports:
 `B24DD0` ECX renderer/RET; `B19000` ECX effect/RET; `B1BC70` ECX renderer Lua
