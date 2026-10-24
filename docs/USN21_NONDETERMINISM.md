@@ -168,5 +168,5 @@ independent candidate: a dead-slot write would also show up first as a steering 
 
 ## 4. USN21 on the bisect2 fix
 
-This section is pending until the lead sends the bisect2 sha. The plan is four USN21 runs on that
-sha (OFF base, nothing else changed).
+The lead dropped this step: cc9's bisect2 lane runs the fixed and unfixed builds five times each, so
+those results are recorded there, not here.
