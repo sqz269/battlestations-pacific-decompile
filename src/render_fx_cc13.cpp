@@ -1,6 +1,7 @@
 #include "bsp/render_fx_cc13.hpp"
 
 #include "bsp/post_effects_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/native_logical_index_owner.hpp"
 #include "bsp/native_logical_vertex_pool_return.hpp"
 #include "bsp/native_vertex_declaration_owner.hpp"
@@ -1181,9 +1182,10 @@ void float2x4_from_matrix_transposed_00b40400(std::uint32_t out[8], const std::u
         for (int c = 0; c < 4; ++c) out[r * 4 + c] = m[c * 4 + r];
 }
 
+// Each element moves by FLD / FSTP DWORD, which quiets a signalling NaN (cc13-fixture6).
 void float3x4_from_matrix_transposed_00b40440(std::uint32_t out[12], const std::uint32_t m[16]) noexcept {
     for (int r = 0; r < 3; ++r)
-        for (int c = 0; c < 4; ++c) out[r * 4 + c] = m[c * 4 + r];
+        for (int c = 0; c < 4; ++c) out[r * 4 + c] = cc13x87::x87_fld_fstp_bits(m[c * 4 + r]);
 }
 
 void float4_block_set_matrix_rows_00b405e0(std::uint8_t* block, std::int32_t slot, const std::uint32_t m[16],
