@@ -584,6 +584,7 @@ struct GameMissionFrameHost::Impl {
     // the controlled unit ([00E188D8]) at issue time, which a player cannot do
     // without the select first (SCRIPTED_HELM 8.2 difference 2).
     unsigned long long helm_moveto_unselected{0};
+    unsigned long long helm_role_forced{0};   // packet cc13-rolef
     // Packet cc9_player_order_capture_row: the pending `stop R` of the last
     // applied takehelm, checked every step until it fires once.
     bool helm_stop_armed{false};
@@ -5146,16 +5147,28 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
             std::size_t unit_index = harness_target_row(*host.units, order.unit);
             if (order.takehelm) {
                 // Packet cc9_helm_orders_helm_route: the controlled unit's helm.
+                // Packet cc13-rolef (log only): the helm step opens EROLF_PILOT to
+                // PLAYER_ANY (game_hosts_units.cpp, 00927D20(2, 9)) before its role-1
+                // take. A real player cannot open it, so a takehelm is tagged
+                // role_forced=1 when the word it will replace, unit+188h + 1*4, is
+                // neither 9 (PLAYER_ANY) nor the local slot 0 (game+18ECh in single
+                // player), e.g. a script's PLAYER_AI (8). Read before the take.
+                std::int32_t pilot_permission = 9;
+                const bool permission_read = unit_index < host.units->count()
+                    && host.units->unit_role_permission(unit_index, 1, pilot_permission);
                 const bool taken = unit_index < host.units->count()
                     && host.units->helm_route_take(unit_index, order.throttle, x, z);
+                const bool role_forced = taken && permission_read
+                    && pilot_permission != 9 && pilot_permission != 0;
                 if (taken) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                if (role_forced) ++host.helm_role_forced;
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
-                    "takehelm %s throttle %.3f %s(%.1f, %.1f) stop %.1f", taken ? "applied"
+                    "takehelm %s throttle %.3f %s(%.1f, %.1f) stop %.1f%s", taken ? "applied"
                     : "refused", order.line, order.frame, now, order.unit.c_str(),
                     static_cast<double>(order.throttle),
                     order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
                     static_cast<double>(x), static_cast<double>(z),
-                    static_cast<double>(order.stop_radius));
+                    static_cast<double>(order.stop_radius), role_forced ? " role_forced=1" : "");
                 // Packet cc9_player_order_capture_row: a later takehelm replaces
                 // the pending stop, as a new helm order replaces the route.
                 if (taken) {
@@ -5424,8 +5437,8 @@ void GameMissionFrameHost::report(long requested_frames) {
         // Packet cc13-mvsel. No helm summary line existed; this one is printed
         // only when --helm-orders read a line, so a run without one is unchanged.
         host.log.notef("summary mission helm orders applied=%llu refused=%llu "
-            "helm_moveto_unselected=%llu", host.helm_orders_applied, host.helm_orders_refused,
-            host.helm_moveto_unselected);
+            "helm_moveto_unselected=%llu helm_role_forced=%llu", host.helm_orders_applied,
+            host.helm_orders_refused, host.helm_moveto_unselected, host.helm_role_forced);
     }
     if (host.scene_contents) {
         // Milestone 2h. The scene contents pass created unit records. The world
