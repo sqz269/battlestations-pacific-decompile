@@ -350,6 +350,10 @@ void gauge_write_0043b2f0(ShipScreenState::Gauge& gauge, int index, ShipScreenHo
 }
 }  // namespace
 
+// Packet D4: OFF until cc9 pairs it. ON rounds the two gauge products to float before their adds,
+// as the 24-bit x87 does at 0043B3EC and 0043B40C.
+inline constexpr bool kShipScreenGaugeProductRoundCc13Bound = false;
+
 void ship_screen_gauge_0043b370(ShipScreenState::Gauge& gauge, int index, ShipScreenHost& host,
                                 float value, float dt) {
     const float target = ship_screen_gauge_round_004396f0(value);     // 0043B37C
@@ -368,10 +372,25 @@ void ship_screen_gauge_0043b370(ShipScreenState::Gauge& gauge, int index, ShipSc
     } else if (gain > kGaugeRateMax) {
         gain = kGaugeRateMax;                                         // 0043B440
     }
-    float rate = static_cast<float>(static_cast<double>(gain) * gap + gauge.rate_14);
-    rate = static_cast<float>(static_cast<double>(rate) * kGaugeDamping);         // 0043B3FB
-    gauge.rate_14 = rate;                                             // 0043B409
-    const float next = static_cast<float>(static_cast<double>(gain) * rate + gauge.value_10);
+    // 0043B3EC FMUL / 0043B3F0 FADD and 0043B40C FMULP / 0043B40E FADD run back to back on the
+    // x87 stack. The main thread runs the x87 at 24-bit precision, so each FMUL already rounds
+    // to a float significand before its FADD. ON rounds the products; OFF keeps the 53-bit
+    // product (the earlier reading, packet D4).
+    float rate = 0.0f;
+    float next = 0.0f;
+    if constexpr (kShipScreenGaugeProductRoundCc13Bound) {
+        const float gained_gap = static_cast<float>(static_cast<double>(gain) * gap);
+        rate = static_cast<float>(static_cast<double>(gained_gap) + gauge.rate_14);
+        rate = static_cast<float>(static_cast<double>(rate) * kGaugeDamping);     // 0043B3FB
+        gauge.rate_14 = rate;                                         // 0043B409
+        const float step = static_cast<float>(static_cast<double>(gain) * rate);
+        next = static_cast<float>(static_cast<double>(step) + gauge.value_10);
+    } else {
+        rate = static_cast<float>(static_cast<double>(gain) * gap + gauge.rate_14);
+        rate = static_cast<float>(static_cast<double>(rate) * kGaugeDamping);     // 0043B3FB
+        gauge.rate_14 = rate;                                         // 0043B409
+        next = static_cast<float>(static_cast<double>(gain) * rate + gauge.value_10);
+    }
     gauge.value_10 = next;                                            // 0043B419
     gauge_write_0043b2f0(gauge, index, host, next);
     gauge.primed_18 = true;                                           // 0043B424

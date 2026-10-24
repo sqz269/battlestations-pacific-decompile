@@ -359,6 +359,10 @@ std::vector<std::pair<int, std::size_t>>& forced_recon_clears() {
 }
 } // namespace
 
+// 00805CF0 also unregisters the record's observer (+14h, when its target +28h is set:
+// 006952A0, then +28h = 0) and, when the effective level changes, calls the change
+// listener [+2Ch] slot 0 with (+30h, old, new). BLOCKED (packet D4): the host keeps no
+// per-target recon record, observer or listener; this table holds the forced level only.
 void set_forced_recon_level_00805cf0(std::size_t target, int side, int level) {
     // The record's int level: 0 none, 1 blip, 2 identified (bsp::ReconDetectionLevel).
     const ReconDetectionLevel value = level <= 0 ? ReconDetectionLevel::none
