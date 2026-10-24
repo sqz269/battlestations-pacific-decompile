@@ -372,7 +372,7 @@ struct MissionCommandGraph {
   }
  }
  NativeRenderCommandQueueStorage& begin_submission() {
-  check(!failed && !pending,"mission permits one retained ordinary command per frame");
+  check(!failed && !pending,"mission permits one retained ordinary command at a time");
   check(execution.actual_service_00f8d39c && providers.clock.actual_clock_01090ab0 &&
     providers.foliage_manager_00f8c274 && providers.foliage_00f8c210,
     "mission command requires live service/clock/foliage providers");
@@ -414,6 +414,22 @@ struct MissionCommandGraph {
    // B1F4D0 owns this eight-byte argument on both normal and exceptional
    // paths. The consumed header stays unchanged and must not be destroyed.
    submit_native_scene_00b1f4d0(queue,scene,camera,targets,pending->scene_label,
+     submission,pending->submission);
+   finish_submission(queue,"B1F4D0");
+  } catch(...) {
+   fail_submission();throw;
+  }
+ }
+ void submit_scene_with_label(void* scene,void* camera,void* targets,void* actual8b_label) {
+  check(scene!=nullptr,"mission scene submission requires an actual native scene");
+  check(actual8b_label!=nullptr,"mission scene submission requires its original eight-byte label header");
+  auto& queue=begin_submission();
+  try {
+   // Borrow the ORIGINAL by-value argument header, using the same string pool
+   // as submission.strings. B1F4D0 consumes its buffer on success or failure;
+   // do not copy, relabel, zero or destroy that argument here or in the caller
+   // after entry. A pre-entry check/acquisition failure has not consumed it.
+   submit_native_scene_00b1f4d0(queue,scene,camera,targets,actual8b_label,
      submission,pending->submission);
    finish_submission(queue,"B1F4D0");
   } catch(...) {
@@ -466,6 +482,13 @@ struct MissionCommandGraph {
   } catch(...) {
    failed=true;pending->failed=true;log.note("native_mission_command execution_failed retained=1");throw;
   }
+ }
+ // Complete only the successful command companion, not the device frame.
+ // The same bound queue_frame object is reset for a later sequential command
+ // inside the current BeginScene/Present bracket. Never create another graph.
+ void retire_executed_command_before_overlay() {
+  check(pending!=nullptr,"mission overlay handoff requires an executed pending command");
+  complete_frame();
  }
 };
 
