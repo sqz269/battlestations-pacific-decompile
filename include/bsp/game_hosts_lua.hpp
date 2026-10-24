@@ -2284,7 +2284,14 @@ public:
     void attach_extra_fixed_step(GameExtraFixedStepRunner* runner) noexcept {
         extra_fixed_step_ = runner;
     }
+    // Packet cc13-baystale: bsp::cc13_release_timer::bomb_rack_bay_doors's
+    // per-class flags. The host is rebuilt at every mission load
+    // (game_hosts_mission.cpp), so this cache lives exactly one mission.
+    std::map<int, std::vector<bool>>& bomb_rack_bay_doors_cache() noexcept {
+        return bomb_rack_bay_doors_cache_;
+    }
 private:
+    std::map<int, std::vector<bool>> bomb_rack_bay_doors_cache_;
     // Packet cc9_sentity_init_all. A node of 00F899D0: the entity and what pass
     // A hands 00928A00. A deque, because pass A appends while the walk holds
     // pointers to earlier nodes.
