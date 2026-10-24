@@ -292,8 +292,10 @@ public:
 
     std::vector<TableKey> table_keys() override {
         // 00BD5F50 keeps every string, integer and number key in lua_next
-        // order (tags 0, 1, 2), at most kGuiLuaKeyArrayCapacity of them. Only
-        // the record reader's switched UniqueMultiSettings walk calls this.
+        // order (tags 0, 1, 2). The kGuiLuaKeyArrayCapacity stop is a host
+        // guard: 00BD5F50 has no bounds check and would overrun the 250-pair
+        // frame array. Only the record reader's switched UniqueMultiSettings
+        // walk calls this.
         std::vector<TableKey> out;
         if (host_.type_of(stack_.back()) != GuiLuaType::Table) return out;
         GuiLuaRef key{};

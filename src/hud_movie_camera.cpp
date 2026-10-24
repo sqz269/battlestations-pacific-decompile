@@ -275,11 +275,19 @@ float weight_00795c10(MovieKeyframe& k, const HudMovieCamera& camera, float dt,
     const float x = e / b;                             // 00795D0B FSTP
     float s = ease_0078fcf0(x);
     float nl = k.nonlinear_d4;
+    // x lives at [B+0Ch] (00795D0B), and each loop pass overwrites it with the
+    // current s (00795D40..00795D47) before s = ease(s). So the tail at
+    // 00795D6D..00795D7F blends the last pre-ease value, not x. The loop never
+    // runs today: both parsers clamp +D4h to [0, 1] (007A0EB0 against
+    // [00D7A24C]; see parse_007a0eb0) and the default is 0.5, so prev == x on
+    // every live path and this is live-identical.
+    float prev = x;
     while (nl > kOne) {                                // 00795D27..00795D6B
         nl = static_cast<float>(nl - 1.0);             // 00D7A210, FSUB double 1.0
+        prev = s;                                      // 00795D40..00795D47
         s = ease_0078fcf0(s);
     }
-    return static_cast<float>((1.0f - nl) * x + nl * s);
+    return static_cast<float>((1.0f - nl) * prev + nl * s);
 }
 
 // 007911E0, step(track): false while the keyframe has not started.

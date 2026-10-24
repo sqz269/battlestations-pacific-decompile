@@ -357,8 +357,10 @@ struct MissionTreeLuaView {
     virtual std::vector<std::string> string_keys() = 0;
 
     // 00BD5F50 as 005C6A70 consumes it: every key of the current table in
-    // lua_next order, capped at kGuiLuaKeyArrayCapacity, with its tag (0 string,
-    // 1 integer, 2 other number) and, for tag 1, its value.
+    // lua_next order, with its tag (0 string, 1 integer, 2 other number) and,
+    // for tag 1, its value. 00BD5F50 itself has no bounds check and would
+    // write past the 250-pair frame array; the kGuiLuaKeyArrayCapacity cap
+    // in implementations is a host guard, not image behaviour.
     struct TableKey {
         GuiLuaKeyKind kind{GuiLuaKeyKind::Name};
         std::int32_t index{0};
