@@ -2290,9 +2290,11 @@ void tactical_library_apply_nose_art_005161c0(std::uint32_t selector_index, Tact
         host.invalid_parameter_00bf6713();
         // Not a deviation (cc13-D3): the listing falls through after the call, but
         // 00BF6713 -> 00BF66EF _invalid_parameter never returns in this image. Its
-        // handler [0109DD64] has one writer, 00BF65B1 from __init_pointers (00BFBE10),
-        // which stores the encoded null (00C04FD5), so 00BF66EF decodes 0 and takes
-        // __invoke_watson. The fall-through code is unreachable.
+        // handler [0109DD64] has two writers: 00BF65B1 from __init_pointers (00BFBE10),
+        // which stores the encoded null (00C04FD5), and 00BF66D0 inside the setter
+        // _set_invalid_parameter_handler (00BF66B7), which is never referenced. So
+        // 00BF66EF decodes 0 and takes __invoke_watson; the fall-through code is
+        // unreachable.
         return;
     }
     const std::uint32_t value = host.nose_art_value_48(selector_index);

@@ -116,7 +116,10 @@ constexpr bool kShipyardLaunchSkillCc13Bound = false;
 // Packet cc13-D3: SpawnNew 00949750 has no argument type test. A non-table argument
 // goes to 00B67800 (lua_gettable 00A67C20), which raises for nil, number or boolean
 // and reads nil fields from a string. OFF keeps the host's refusal (counted in
-// spawn_new_rejected). Live: MissionLuaNative SpawnNew 0094C480 ->
+// spawn_new_rejected). ON also takes the request serial at the image's point,
+// 00949F2B after the field reads, so neither that raise nor the live
+// kSpawnNewMissingClassRaisesBound raise burns a serial; OFF takes it before the
+// reads. Live: MissionLuaNative SpawnNew 0094C480 ->
 // GameMissionLuaHost::run_spawn_new_00949750.
 constexpr bool kSpawnNewNonTableArgumentCc13Bound = false;
 
@@ -3826,7 +3829,13 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
     ++summary_.spawn_new_calls;
 
     bsp::SpawnNewRequest request;
-    request.serial = bsp::next_spawn_request_serial_00949f2b();
+    // ON takes the serial where the image does (00949F2B, after the last 00B67800
+    // read at 00949E59), so a raise in the reads - the non-table argument at the
+    // first read (00949834) or the missing VehicleClass row (00944210 via 00945C30
+    // at 00949A53) - burns no serial. OFF takes it here, as before.
+    if constexpr (!kSpawnNewNonTableArgumentCc13Bound) {
+        request.serial = bsp::next_spawn_request_serial_00949f2b();
+    }
     request.party = read_member_int(state, 1, "party");
     ::lua_getfield(state, 1, "player");
     request.player = ::lua_toboolean(state, -1) != 0;
@@ -3926,6 +3935,12 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
         ::lua_settop(state, area);
     }
     ::lua_settop(state, ::lua_gettop(state) - 1);
+
+    if constexpr (kSpawnNewNonTableArgumentCc13Bound) {
+        // 00949F2B: argument 1 has been indexed by now, so the reads below
+        // cannot raise and their order against the serial is unobservable.
+        request.serial = bsp::next_spawn_request_serial_00949f2b();
+    }
 
     ::lua_getfield(state, 1, "excludeRadiusOverride");
     if (::lua_type(state, -1) == LUA_TTABLE) {
