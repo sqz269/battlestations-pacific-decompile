@@ -1,0 +1,1757 @@
+{
+  "schema_version": 1,
+  "identifiers": [
+    {
+      "address": "00aa6ca0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiWidgetPoolTraits address 00aa6ca0 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiWidgetPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aa7470",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiWidgetPoolTraits address 00aa7470 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiWidgetPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aa7550",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiWidgetPoolTraits address 00aa7550 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiWidgetPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aa75f0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiWidgetPoolTraits address 00aa75f0 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiWidgetPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aa79a0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiWidgetPoolTraits address 00aa79a0 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiWidgetPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aa7a80",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiWidgetPoolTraits address 00aa7a80 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiWidgetPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aab680",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiButtonPoolTraits address 00aab680 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiButtonPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aab9f0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiButtonPoolTraits address 00aab9f0 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiButtonPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aabab0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiButtonPoolTraits address 00aabab0 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiButtonPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aabe00",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiButtonPoolTraits address 00aabe00 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiButtonPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aabee0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiButtonPoolTraits address 00aabee0 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiButtonPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aabf80",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiButtonPoolTraits address 00aabf80 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiButtonPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aaca00",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiMoviePoolTraits address 00aaca00 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiMoviePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aad040",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiMoviePoolTraits address 00aad040 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiMoviePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aad120",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiMoviePoolTraits address 00aad120 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiMoviePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aad1c0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiMoviePoolTraits address 00aad1c0 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiMoviePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aad5f0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiMoviePoolTraits address 00aad5f0 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiMoviePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aad6d0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiMoviePoolTraits address 00aad6d0 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiMoviePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ab1340",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiIconPoolTraits address 00ab1340 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ab1fd0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiIconPoolTraits address 00ab1fd0 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ab20b0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiIconPoolTraits address 00ab20b0 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ab2150",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiIconPoolTraits address 00ab2150 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ab2850",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiIconPoolTraits address 00ab2850 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ab2930",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiIconPoolTraits address 00ab2930 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abc0a0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiCurvePoolTraits address 00abc0a0 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiCurvePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abc290",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiCurvePoolTraits address 00abc290 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiCurvePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abc370",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiCurvePoolTraits address 00abc370 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiCurvePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abc410",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiCurvePoolTraits address 00abc410 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiCurvePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abc570",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiCurvePoolTraits address 00abc570 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiCurvePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abc650",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiCurvePoolTraits address 00abc650 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiCurvePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abe890",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSectionPoolTraits address 00abe890 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSectionPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abeaa0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSectionPoolTraits address 00abeaa0 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSectionPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abeba0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSectionPoolTraits address 00abeba0 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSectionPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abec40",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSectionPoolTraits address 00abec40 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSectionPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abee60",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSectionPoolTraits address 00abee60 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSectionPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00abef40",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSectionPoolTraits address 00abef40 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSectionPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac1be0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiLinePoolTraits address 00ac1be0 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiLinePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac1db0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiLinePoolTraits address 00ac1db0 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiLinePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac1e90",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiLinePoolTraits address 00ac1e90 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiLinePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac1f30",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiLinePoolTraits address 00ac1f30 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiLinePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac2160",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiLinePoolTraits address 00ac2160 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiLinePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac2240",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiLinePoolTraits address 00ac2240 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiLinePoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac7e40",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiScrollbarPoolTraits address 00ac7e40 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiScrollbarPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac7fe0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiScrollbarPoolTraits address 00ac7fe0 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiScrollbarPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac80a0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiScrollbarPoolTraits address 00ac80a0 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiScrollbarPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac8240",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiScrollbarPoolTraits address 00ac8240 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiScrollbarPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac8320",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiScrollbarPoolTraits address 00ac8320 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiScrollbarPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac83c0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiScrollbarPoolTraits address 00ac83c0 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiScrollbarPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac90f0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiGridPoolTraits address 00ac90f0 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiGridPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac94c0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiGridPoolTraits address 00ac94c0 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiGridPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac95a0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiGridPoolTraits address 00ac95a0 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiGridPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac9640",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiGridPoolTraits address 00ac9640 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiGridPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac9b30",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiGridPoolTraits address 00ac9b30 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiGridPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ac9c10",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiGridPoolTraits address 00ac9c10 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiGridPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acbcf0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiModelPoolTraits address 00acbcf0 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acbf70",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiModelPoolTraits address 00acbf70 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acc050",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiModelPoolTraits address 00acc050 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acc1d0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiModelPoolTraits address 00acc1d0 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acc2b0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiModelPoolTraits address 00acc2b0 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acc350",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiModelPoolTraits address 00acc350 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acd0f0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSoundPoolTraits address 00acd0f0 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSoundPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acd2f0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSoundPoolTraits address 00acd2f0 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSoundPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acd3b0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSoundPoolTraits address 00acd3b0 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSoundPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acd530",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSoundPoolTraits address 00acd530 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSoundPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acd610",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSoundPoolTraits address 00acd610 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSoundPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acd6b0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiSoundPoolTraits address 00acd6b0 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiSoundPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ace230",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiClipBoxPoolTraits address 00ace230 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiClipBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ace3e0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiClipBoxPoolTraits address 00ace3e0 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiClipBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ace4a0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiClipBoxPoolTraits address 00ace4a0 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiClipBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ace750",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiClipBoxPoolTraits address 00ace750 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiClipBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ace830",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiClipBoxPoolTraits address 00ace830 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiClipBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ace8d0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiClipBoxPoolTraits address 00ace8d0 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiClipBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00aced50",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiFrameBoxPoolTraits address 00aced50 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiFrameBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acf490",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiFrameBoxPoolTraits address 00acf490 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiFrameBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acf570",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiFrameBoxPoolTraits address 00acf570 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiFrameBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acf610",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiFrameBoxPoolTraits address 00acf610 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiFrameBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00acff70",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiFrameBoxPoolTraits address 00acff70 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiFrameBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ad0050",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiFrameBoxPoolTraits address 00ad0050 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiFrameBoxPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ad2e40",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiAnimIconPoolTraits address 00ad2e40 to NativeGuiWidgetPool<T>::initialize_slab; src/native_material_pools.cpp defines that member and explicitly instantiates GuiAnimIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ad31f0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiAnimIconPoolTraits address 00ad31f0 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates GuiAnimIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ad32b0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiAnimIconPoolTraits address 00ad32b0 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates GuiAnimIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ad36a0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiAnimIconPoolTraits address 00ad36a0 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates GuiAnimIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ad3780",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiAnimIconPoolTraits address 00ad3780 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates GuiAnimIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ad3820",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/native_gui_widget_pools_cc13.hpp binds GuiAnimIconPoolTraits address 00ad3820 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates GuiAnimIconPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ae12f0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "destroy"
+      ],
+      "evidence": "include/bsp/terrain_bush_pool_cc13.hpp binds BushGroupModelPoolTraits address 00ae12f0 to NativeGuiWidgetPool<T>::destroy; src/native_material_pools.cpp defines that member and explicitly instantiates BushGroupModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ae13d0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/terrain_bush_pool_cc13.hpp binds BushGroupModelPoolTraits address 00ae13d0 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates BushGroupModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ae15d0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "free"
+      ],
+      "evidence": "include/bsp/terrain_bush_pool_cc13.hpp binds BushGroupModelPoolTraits address 00ae15d0 to NativeGuiWidgetPool<T>::free; src/native_material_pools.cpp defines that member and explicitly instantiates BushGroupModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof. Native free thunk loads the trait global then jumps to free; map its existing target semantics, not a new ABI wrapper."
+    },
+    {
+      "address": "00ae16f0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize"
+      ],
+      "evidence": "include/bsp/terrain_bush_pool_cc13.hpp binds BushGroupModelPoolTraits address 00ae16f0 to NativeGuiWidgetPool<T>::initialize; src/native_material_pools.cpp defines that member and explicitly instantiates BushGroupModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ae17d0",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "trim"
+      ],
+      "evidence": "include/bsp/terrain_bush_pool_cc13.hpp binds BushGroupModelPoolTraits address 00ae17d0 to NativeGuiWidgetPool<T>::trim; src/native_material_pools.cpp defines that member and explicitly instantiates BushGroupModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00ae1870",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "allocate"
+      ],
+      "evidence": "include/bsp/terrain_bush_pool_cc13.hpp binds BushGroupModelPoolTraits address 00ae1870 to NativeGuiWidgetPool<T>::allocate; src/native_material_pools.cpp defines that member and explicitly instantiates BushGroupModelPoolTraits, delegating to the existing native-layout engine. Preserve trait constants, canonical storage, allocator-list lifetime and native ABI qualifications; no new runtime wiring proof."
+    },
+    {
+      "address": "00b17440",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "00b17440 is initialize_slab<NativeMaterialPool>: the native-material source documents these slab initializers and defines initialize_slab<Pool> with descending free indices, initial free count, and per-slot slab index. Existing executable algorithm; native-layout Win32 constants retained, no new ABI/game claim."
+    },
+    {
+      "address": "00b17510",
+      "source": "src/native_material_pools.cpp",
+      "identifiers": [
+        "initialize_slab"
+      ],
+      "evidence": "00b17510 is initialize_slab<NativeMaterialParameterPool>: the native-material source documents these slab initializers and defines initialize_slab<Pool> with descending free indices, initial free count, and per-slot slab index. Existing executable algorithm; native-layout Win32 constants retained, no new ABI/game claim."
+    },
+    {
+      "address": "00b27f70",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b27f70 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b27fc0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b27fc0 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b28010",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b28010 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b28050",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b28050 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b28110",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_clear_count_down"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b28110 uses Shape::kClearCountDown, stride_or_offset=0x10, extra=0x0; array_clear_count_down is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b28150",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_clear_count_down"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b28150 uses Shape::kClearCountDown, stride_or_offset=0x14, extra=0x0; array_clear_count_down is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b28190",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_clear_count_down"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b28190 uses Shape::kClearCountDown, stride_or_offset=0x18, extra=0x0; array_clear_count_down is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b281d0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_clear_count_down"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b281d0 uses Shape::kClearCountDown, stride_or_offset=0x28, extra=0x0; array_clear_count_down is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b28350",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b28350 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b29230",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_clear_count_down"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b29230 uses Shape::kClearCountDown, stride_or_offset=0x10, extra=0x1CF4; array_clear_count_down is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b30210",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_pop_back_destroy"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b30210 uses Shape::kPopBackDestroy, stride_or_offset=0x2C, extra=0x0; array_pop_back_destroy is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b30230",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_pop_back_destroy"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b30230 uses Shape::kPopBackDestroy, stride_or_offset=0x2C, extra=0x0; array_pop_back_destroy is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b30250",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_pop_back_destroy"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b30250 uses Shape::kPopBackDestroy, stride_or_offset=0x2C, extra=0x0; array_pop_back_destroy is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b34760",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b34760 uses Shape::kResize, stride_or_offset=0x4, extra=0x1; array_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b34970",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b34970 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x1; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b349b0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b349b0 uses Shape::kPushBackViaReserve, stride_or_offset=0x2, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b34a00",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b34a00 uses Shape::kResize, stride_or_offset=0x4, extra=0x1; array_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b34a50",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b34a50 uses Shape::kResize, stride_or_offset=0x2, extra=0x2; array_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b34bf0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b34bf0 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b34c30",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b34c30 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b34c50",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b34c50 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b34cc0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "pooled_string_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b34cc0 uses Shape::kPooledStringRelease, stride_or_offset=0x14, extra=0x0; pooled_string_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3a6d0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_clear_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3a6d0 uses Shape::kClearViaResize, stride_or_offset=0x0, extra=0x0; array_clear_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3b170",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3b170 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3d160",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_pop_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3d160 uses Shape::kSlabPop, stride_or_offset=0x38, extra=0x0; slab_pop_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3d190",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_push_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3d190 uses Shape::kSlabPush, stride_or_offset=0x38, extra=0x0; slab_push_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3d1d0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_has_no_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3d1d0 uses Shape::kSlabHasNoFree, stride_or_offset=0x38, extra=0x0; slab_has_no_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3d220",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_pop_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3d220 uses Shape::kSlabPop, stride_or_offset=0x54, extra=0x0; slab_pop_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3d250",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_push_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3d250 uses Shape::kSlabPush, stride_or_offset=0x54, extra=0x0; slab_push_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3d290",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_has_no_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3d290 uses Shape::kSlabHasNoFree, stride_or_offset=0x54, extra=0x0; slab_has_no_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3d2e0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_pop_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3d2e0 uses Shape::kSlabPop, stride_or_offset=0x34, extra=0x0; slab_pop_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3d310",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_push_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3d310 uses Shape::kSlabPush, stride_or_offset=0x34, extra=0x0; slab_push_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3d350",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_has_no_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3d350 uses Shape::kSlabHasNoFree, stride_or_offset=0x34, extra=0x0; slab_has_no_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3d420",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "com_reference_count"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3d420 uses Shape::kComRefCount, stride_or_offset=0x0, extra=0x0; com_reference_count is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3e270",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3e270 uses Shape::kPushBackViaReserve, stride_or_offset=0x8, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3e340",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_stamp_index"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3e340 uses Shape::kSlabStamp, stride_or_offset=0x38, extra=0x0; slab_stamp_index is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3e360",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_all_slots_free"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3e360 uses Shape::kSlabAllFree, stride_or_offset=0x38, extra=0x0; slab_all_slots_free is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3e4c0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_stamp_index"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3e4c0 uses Shape::kSlabStamp, stride_or_offset=0x54, extra=0x0; slab_stamp_index is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3e4e0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_all_slots_free"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3e4e0 uses Shape::kSlabAllFree, stride_or_offset=0x54, extra=0x0; slab_all_slots_free is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3e640",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_stamp_index"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3e640 uses Shape::kSlabStamp, stride_or_offset=0x34, extra=0x0; slab_stamp_index is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b3e660",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_all_slots_free"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b3e660 uses Shape::kSlabAllFree, stride_or_offset=0x34, extra=0x0; slab_all_slots_free is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b40220",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_pop_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b40220 uses Shape::kSlabPop, stride_or_offset=0x8C, extra=0x0; slab_pop_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b40250",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_push_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b40250 uses Shape::kSlabPush, stride_or_offset=0x8C, extra=0x0; slab_push_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b40290",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_has_no_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b40290 uses Shape::kSlabHasNoFree, stride_or_offset=0x8C, extra=0x0; slab_has_no_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b40a10",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_stamp_index"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b40a10 uses Shape::kSlabStamp, stride_or_offset=0x8C, extra=0x0; slab_stamp_index is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b40a30",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_all_slots_free"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b40a30 uses Shape::kSlabAllFree, stride_or_offset=0x8C, extra=0x0; slab_all_slots_free is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b41050",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b41050 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x2; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b41350",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b41350 uses Shape::kPushBackViaReserve, stride_or_offset=0x8, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b41390",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_clear_count_down"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b41390 uses Shape::kClearCountDown, stride_or_offset=0x8, extra=0x0; array_clear_count_down is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b413d0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b413d0 uses Shape::kPushBackViaReserve, stride_or_offset=0xC, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b41420",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_clear_count_down"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b41420 uses Shape::kClearCountDown, stride_or_offset=0xC, extra=0x0; array_clear_count_down is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b41460",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b41460 uses Shape::kPushBackViaReserve, stride_or_offset=0xC, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b414b0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_clear_count_down"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b414b0 uses Shape::kClearCountDown, stride_or_offset=0xC, extra=0x0; array_clear_count_down is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b414f0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b414f0 uses Shape::kPushBackViaReserve, stride_or_offset=0x8, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b41540",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_clear_count_down"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b41540 uses Shape::kClearCountDown, stride_or_offset=0x8, extra=0x0; array_clear_count_down is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b41f40",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_count_down"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b41f40 uses Shape::kDestroyCountDown, stride_or_offset=0x8, extra=0x0; array_destroy_count_down is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b44fa0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "pointer_delete_with"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b44fa0 uses Shape::kPointerDelete, stride_or_offset=0x0, extra=0x0; pointer_delete_with is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b476d0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_pop_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b476d0 uses Shape::kSlabPop, stride_or_offset=0xD4, extra=0x0; slab_pop_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b47700",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_push_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b47700 uses Shape::kSlabPush, stride_or_offset=0xD4, extra=0x0; slab_push_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b47740",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_has_no_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b47740 uses Shape::kSlabHasNoFree, stride_or_offset=0xD4, extra=0x0; slab_has_no_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b47790",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_pop_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b47790 uses Shape::kSlabPop, stride_or_offset=0x44, extra=0x0; slab_pop_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b477c0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_push_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b477c0 uses Shape::kSlabPush, stride_or_offset=0x44, extra=0x0; slab_push_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b47800",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_has_no_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b47800 uses Shape::kSlabHasNoFree, stride_or_offset=0x44, extra=0x0; slab_has_no_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b47e80",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_stamp_index"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b47e80 uses Shape::kSlabStamp, stride_or_offset=0xD4, extra=0x0; slab_stamp_index is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b47ea0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_all_slots_free"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b47ea0 uses Shape::kSlabAllFree, stride_or_offset=0xD4, extra=0x0; slab_all_slots_free is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b48000",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_stamp_index"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b48000 uses Shape::kSlabStamp, stride_or_offset=0x44, extra=0x0; slab_stamp_index is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b48020",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_all_slots_free"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b48020 uses Shape::kSlabAllFree, stride_or_offset=0x44, extra=0x0; slab_all_slots_free is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b48e30",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_pop_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b48e30 uses Shape::kSlabPop, stride_or_offset=0x30, extra=0x0; slab_pop_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b48e60",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_push_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b48e60 uses Shape::kSlabPush, stride_or_offset=0x30, extra=0x0; slab_push_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b48ea0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_has_no_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b48ea0 uses Shape::kSlabHasNoFree, stride_or_offset=0x30, extra=0x0; slab_has_no_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b48ef0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_pop_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b48ef0 uses Shape::kSlabPop, stride_or_offset=0x78, extra=0x0; slab_pop_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b48f20",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_push_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b48f20 uses Shape::kSlabPush, stride_or_offset=0x78, extra=0x0; slab_push_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b48f60",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_has_no_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b48f60 uses Shape::kSlabHasNoFree, stride_or_offset=0x78, extra=0x0; slab_has_no_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b48fb0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_pop_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b48fb0 uses Shape::kSlabPop, stride_or_offset=0x28, extra=0x0; slab_pop_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b48fe0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_push_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b48fe0 uses Shape::kSlabPush, stride_or_offset=0x28, extra=0x0; slab_push_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b49020",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_has_no_free_slot"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b49020 uses Shape::kSlabHasNoFree, stride_or_offset=0x28, extra=0x0; slab_has_no_free_slot is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b4a220",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_stamp_index"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b4a220 uses Shape::kSlabStamp, stride_or_offset=0x30, extra=0x0; slab_stamp_index is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b4a240",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_all_slots_free"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b4a240 uses Shape::kSlabAllFree, stride_or_offset=0x30, extra=0x0; slab_all_slots_free is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b4a3a0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_stamp_index"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b4a3a0 uses Shape::kSlabStamp, stride_or_offset=0x78, extra=0x0; slab_stamp_index is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b4a3c0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_all_slots_free"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b4a3c0 uses Shape::kSlabAllFree, stride_or_offset=0x78, extra=0x0; slab_all_slots_free is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b4a520",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_stamp_index"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b4a520 uses Shape::kSlabStamp, stride_or_offset=0x28, extra=0x0; slab_stamp_index is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b4a540",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "slab_all_slots_free"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b4a540 uses Shape::kSlabAllFree, stride_or_offset=0x28, extra=0x0; slab_all_slots_free is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b4a930",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b4a930 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b4b2c0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b4b2c0 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b4ede0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b4ede0 uses Shape::kPushBackViaReserve, stride_or_offset=0x8, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b51c20",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b51c20 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x4; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b520d0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b520d0 uses Shape::kPushBackViaReserve, stride_or_offset=0x24, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b52120",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b52120 uses Shape::kPushBackViaReserve, stride_or_offset=0xC, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b52240",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "ref_slot_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b52240 uses Shape::kRefRelease, stride_or_offset=0x0, extra=0x0; ref_slot_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b52350",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b52350 uses Shape::kPushBackViaReserve, stride_or_offset=0xC, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b555a0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b555a0 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56200",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_reserve_min_one"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56200 uses Shape::kReserveMinOne, stride_or_offset=0x4, extra=0x0; array_reserve_min_one is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56260",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_reserve_min_one"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56260 uses Shape::kReserveMinOne, stride_or_offset=0x4, extra=0x0; array_reserve_min_one is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b562c0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_reserve_min_one"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b562c0 uses Shape::kReserveMinOne, stride_or_offset=0x4, extra=0x0; array_reserve_min_one is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56320",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_reserve_min_one"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56320 uses Shape::kReserveMinOne, stride_or_offset=0x4, extra=0x0; array_reserve_min_one is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56380",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56380 uses Shape::kResize, stride_or_offset=0x4, extra=0x1; array_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b563d0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b563d0 uses Shape::kResize, stride_or_offset=0x4, extra=0x1; array_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56420",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56420 uses Shape::kResize, stride_or_offset=0x4, extra=0x1; array_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56470",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56470 uses Shape::kResize, stride_or_offset=0x4, extra=0x1; array_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56510",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56510 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56550",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56550 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56590",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56590 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b565d0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_push_back_via_reserve"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b565d0 uses Shape::kPushBackViaReserve, stride_or_offset=0x4, extra=0x0; array_push_back_via_reserve is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56950",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56950 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56970",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56970 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56990",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56990 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b569b0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b569b0 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56a00",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "owned_slot_delete"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56a00 uses Shape::kOwnedDelete, stride_or_offset=0x0, extra=0x0; owned_slot_delete is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56af0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "pooled_string_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56af0 uses Shape::kPooledStringRelease, stride_or_offset=0x4, extra=0x0; pooled_string_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56c10",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "pooled_string_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56c10 uses Shape::kPooledStringRelease, stride_or_offset=0x0, extra=0x0; pooled_string_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b56c60",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "owned_slot_delete"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b56c60 uses Shape::kOwnedDelete, stride_or_offset=0x0, extra=0x0; owned_slot_delete is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b57290",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "owned_slot_delete"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b57290 uses Shape::kOwnedDelete, stride_or_offset=0x0, extra=0x0; owned_slot_delete is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b582d0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b582d0 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b583c0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_destroy_via_resize"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b583c0 uses Shape::kDestroyViaResize, stride_or_offset=0x0, extra=0x0; array_destroy_via_resize is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b58490",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "owned_slot_delete"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b58490 uses Shape::kOwnedDelete, stride_or_offset=0x0, extra=0x0; owned_slot_delete is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b5e630",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "com_slot_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b5e630 uses Shape::kComRelease, stride_or_offset=0x0, extra=0x0; com_slot_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b5e650",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "com_reference_count"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b5e650 uses Shape::kComRefCount, stride_or_offset=0x0, extra=0x0; com_reference_count is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b5e6b0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "com_slot_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b5e6b0 uses Shape::kComRelease, stride_or_offset=0x0, extra=0x0; com_slot_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b5e6d0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "com_reference_count"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b5e6d0 uses Shape::kComRefCount, stride_or_offset=0x0, extra=0x0; com_reference_count is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b5ebe0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "ref_slot_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b5ebe0 uses Shape::kRefRelease, stride_or_offset=0x0, extra=0x0; ref_slot_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b5ec10",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "ref_slot_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b5ec10 uses Shape::kRefRelease, stride_or_offset=0x0, extra=0x0; ref_slot_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b5fcf0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "com_slot_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b5fcf0 uses Shape::kComRelease, stride_or_offset=0x0, extra=0x0; com_slot_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b60050",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "com_slot_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b60050 uses Shape::kComRelease, stride_or_offset=0x0, extra=0x0; com_slot_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b60070",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "com_reference_count"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b60070 uses Shape::kComRefCount, stride_or_offset=0x0, extra=0x0; com_reference_count is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b60d10",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "com_slot_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b60d10 uses Shape::kComRelease, stride_or_offset=0x0, extra=0x0; com_slot_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b61da0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "array_free_data"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b61da0 uses Shape::kFreeDataAndClear, stride_or_offset=0x0, extra=0x0; array_free_data is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    },
+    {
+      "address": "00b627c0",
+      "source": "src/render_fx_cc13.cpp",
+      "identifiers": [
+        "ref_slot_release"
+      ],
+      "evidence": "src/render_fx_cc13.cpp RoutineRow 00b627c0 uses Shape::kRefRelease, stride_or_offset=0x4, extra=0x0; ref_slot_release is the existing executable shared algorithm for that shape (include/bsp/render_fx_cc13.hpp). Preserve row parameters and field adjustment. Semantic C++ model; original ABI/allocator and host qualifications remain; no new runtime wiring proof."
+    }
+  ]
+}
