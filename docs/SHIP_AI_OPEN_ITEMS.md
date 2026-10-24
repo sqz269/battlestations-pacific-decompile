@@ -20911,3 +20911,20 @@ Open: one plan for all three envs (none found; each env's opener plays out diffe
 20,3 plan. A 20,3 attempt would follow the default recipe: sweep `T:` openers in 20,3 at
 36000-50000 frames, pick one that kills the wings and Yamashiro without failing, then tune a
 tail on that prefix. Logs: cc9-gunnery52\local\g57_r13_mb.log, g57_r20_jc.log, g57_v6_*.log.
+
+## 326. Handoff (cc9-party1, 2026-10-24)
+
+On main (b70a10873), five cc13 switches are now ON: kLaunchedSquadronPartyCc13Bound, kGunBotNotAllyDropCc13Bound,
+kPlaneOwnBaseHitFilterBound, kKamikazeSameSquadronShotDropCc13Bound and kSpawnNewSquadronPartyCc13Bound. Section 323
+has the pairs and their mechanisms. Open:
+- **IJN30 airfields** (section 323, item 1, routed to cc13): "AirField 01" and "AirField 02" die at 12.05 s and
+  91.60 s with no damage, and the stock run now ends in Game Over at 95.05 s. Who kills an undamaged airfield is
+  untraced.
+- **Thin reach.** relation_cleared, own-base shot_drops/crash_drops and kamikaze_squadron_drops are 0 in every row
+  paired. The switches are faithful but no row exercises them yet. A row that does would show a count > 0 OFF.
+- **USN19** is very slow: at 20000 frames its log reaches 1.9 GB. Its kamikaze pair is inconclusive (I stopped it
+  after more than 3 h). If you need it, cap it at about 20000 frames.
+
+Tools in J:\PROG\battlestations-pacific-decompile-cc9-party1\local\: pt1_rows.ps1 (launcher, staggered 30 s),
+pt1_sum2.ps1 (per-row census, end and pair_diff, with free OFF/ON prefixes and a census regex). A row whose launch
+file is empty is still waiting for a free slot.
