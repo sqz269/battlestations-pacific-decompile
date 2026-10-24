@@ -312,4 +312,66 @@ std::uint8_t* construct_kamikaze_class_00951d00(VehicleClassConstructorHost& hos
     return self;
 }
 
+// 00951DE0: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Base semantics remain unread.
+std::uint8_t* construct_level_bomber_class_00951de0(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_007d1e50(self);
+    write_vehicle_class_u32(self, 0, 0x00d1a4f8);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1a4f4);
+    return self;
+}
+
+// 00951E30: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Base semantics remain unread.
+std::uint8_t* construct_command_building_class_00951e30(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00749180(self);
+    write_vehicle_class_u32(self, 0, 0x00d1a538);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1a534);
+    return self;
+}
+
+// 009536E0: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Base semantics remain unread.
+std::uint8_t* construct_small_recon_plane_class_009536e0(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_007d1e50(self);
+    write_vehicle_class_u32(self, 0, 0x00d1a5a8);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1a5a4);
+    return self;
+}
+
+// 00953770: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Base semantics remain unread.
+std::uint8_t* construct_large_recon_plane_class_00953770(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_007d1e50(self);
+    write_vehicle_class_u32(self, 0, 0x00d1a5ec);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1a5e8);
+    return self;
+}
+
+// 0095FEE0: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Base semantics remain unread.
+std::uint8_t* construct_airfield_class_0095fee0(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00749050(self);
+    write_vehicle_class_u32(self, 0, 0x00d1a9a0);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1a99c);
+    return self;
+}
+
+// 0095FF50: complete body from its decompiled.c and assembly.txt exports.
+// Native __thiscall ECX=this, EAX=this, RET. Base semantics remain unread.
+std::uint8_t* construct_shipyard_class_0095ff50(VehicleClassConstructorHost& host, std::uint8_t* self) {
+    host.call_00749050(self);
+    write_vehicle_class_u32(self, 0, 0x00d1a9dc);
+    write_vehicle_class_u32(self, 0x6c, 0x00d1a9d8);
+    return self;
+}
+
+// 00953720: MOV EAX,00d1a5d4; RET. No arguments or this use.
+// Complete string-return semantics; native literal identity is not a C++ address.
+const char* small_recon_plane_class_name_00953720() noexcept { return "MSmallReconPlane"; }
+
+// 009537B0: MOV EAX,00d1a618; RET. No arguments or this use.
+// Complete string-return semantics; native literal identity is not a C++ address.
+const char* large_recon_plane_class_name_009537b0() noexcept { return "MLargeReconPlane"; }
+
 } // namespace bsp
