@@ -1537,7 +1537,7 @@ built one export per flipped switch group in 34daf632e..3364b40a5, with that gro
   variant fixes it.
 - Siblings, ref / 20,3 / default on main (`local\l72_b1_k*.txt`):
   - k2, leg at (800,-2900): no end / EndMission 836.92 s / no end.
-  - k3, the 6900 leg at (1900,-2900): EndMission 821.92 s / EndMission 623.97 s / default pending. With recon ON its
+  - k3, the 6900 leg at (1900,-2900): EndMission 821.92 s / EndMission 623.97 s / failed 1875.70 s. With recon ON its
     ref and 20,3 have no end.
   - k4, the 6900 leg at (1900,-2850): EndMission 818.92 s / EndMission 836.92 s / failed 1875.70 s.
 - The BSM01 row moves to `l72_b1_k1`: ref and 20,3; default lost.
