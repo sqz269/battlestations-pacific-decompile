@@ -210,7 +210,13 @@ bool point_distance_reached_00996300(float plane_x, float plane_z, float point_x
     } else {
         d2 = static_cast<float>(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
     }
-    return !(d2 < dist2);
+    // 00996370 FCOMIP d2,[+28h] / JC 0099637F (XOR EAX,EAX): an unordered compare
+    // sets CF, so a NaN answers 0 (ON). OFF answers true on NaN.
+    if constexpr (kStrafeX87FaithfulCc13Bound) {
+        return d2 >= dist2;
+    } else {
+        return !(d2 < dist2);
+    }
 }
 
 }  // namespace bsp

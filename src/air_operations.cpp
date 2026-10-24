@@ -507,6 +507,9 @@ std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squ
     // squadron's +35Ch) stands for its first member's class, and the queued
     // count (the launch's WingCount, slot+8h) stands for +3C8h. Both equal the
     // image's values for a squadron this deck launched; neither field was read.
+    // Passing slot.class_field_134 as the class default is safe: the walk only
+    // picks a slot already holding this class, so 006C0F00's class-change arm
+    // (the +4h/+10h writes) is never taken, and the argument is never read.
     if constexpr (kAirOpsArriveSquadronWalkCc13Bound) {
         std::vector<std::int32_t> live(deck.slots.size(), 0);
         for (std::size_t i = 0; i < deck.slots.size(); ++i) {

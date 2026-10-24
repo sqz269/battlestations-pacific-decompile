@@ -297,10 +297,16 @@ float dive_bomb_interpolate_clamped_00419010(float x0, float y0, float x1, float
     const float v = ((x - x0) / (x1 - x0)) * (y1 - y0) + y0;
     const float hi = (y1 < y0) ? y0 : y1;
     const float lo = (y0 < y1) ? y0 : y1;
+    // 0041908C-00419092 FCOMIP lo,v / JBE: only lo > v clamps; NaN passes on.
     if (v < lo) {
         return lo;
     }
-    return (v <= hi) ? v : hi;
+    // 004190A9 FCOMIP v,hi / JBE 004190BC: v when v <= hi or unordered (ON).
+    if constexpr (kInterpClamped00419010NanCc13Bound) {
+        return (v > hi) ? hi : v;
+    } else {
+        return (v <= hi) ? v : hi;
+    }
 }
 
 // 009C59BA-009C5C9B.

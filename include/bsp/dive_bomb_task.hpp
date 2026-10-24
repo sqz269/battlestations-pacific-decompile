@@ -527,6 +527,13 @@ DiveBombAimError dive_bomb_aim_error_009c5c9b(const DiveBombAimErrorInputs& in) 
 
 // 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x), RET 14h. Kept here
 // because both calls above are inside a body with no Ghidra function coverage.
+// Packet cc13-D2 (rev8). True: the hi clamp follows 004190A9 FCOMIP v,hi / JBE
+// 004190BC, so a NaN v is returned unchanged; the lo clamp (0041908C-00419092
+// FCOMIP lo,v / JBE) already passes a NaN on in both arms. False: the
+// `(v <= hi) ? v : hi` used before, which turns a NaN into hi. The helper is
+// shared by the dive-bomb, dogfight and retreat (ON) paths. Changes only NaN
+// cases.
+inline constexpr bool kInterpClamped00419010NanCc13Bound = false;
 float dive_bomb_interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
                                              float x) noexcept;
 struct DiveBombAimDiveReleaseResult {

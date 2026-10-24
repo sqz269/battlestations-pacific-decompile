@@ -26,9 +26,10 @@ float reciprocal_length_00419260(float x, float z) noexcept {
     // 004192B3-004192C2: a root equal to 0 returns 0 (FUCOMIP, LAHF/TEST
     // AH,44h/JP), not 1/0. Only behind kRetreatX87FaithfulCc13Bound.
     if constexpr (kRetreatX87FaithfulCc13Bound) {
-        if (root == 0.0f) return 0.0f;
+        return (root == 0.0f) ? 0.0f : to_float(1.0 / root);
+    } else {
+        return to_float(1.0 / root);
     }
-    return to_float(1.0 / root);
 }
 
 // 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x): the lerp, then the
