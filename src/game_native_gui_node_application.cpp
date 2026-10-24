@@ -80,7 +80,7 @@ struct GameNativeGuiNodeApplication::Impl {
               app.camera_environment().nodes, group_types,
               {app.node_constants().one_00d7a24c, app.node_constants().positive_bound_00ce4970},
               table(data, 0x00d634f8, 0x58), models.vtable_00d62c88, &app.node_constants()},
-          scene(groups), widgets({models, scene, std::move(factory)}) {
+          scene(groups), widgets({models, scene, std::move(factory), nullptr, &app.actual_owners()}) {
         auto& node_strings = models.nodes.require_raw_name_pool();
         auto& vfs_strings = vfs.raw_strings();
         require(&node_strings.actual_published_01090aa8 == &vfs_strings.actual_published_01090aa8 &&

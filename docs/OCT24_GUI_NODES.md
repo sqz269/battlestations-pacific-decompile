@@ -20,6 +20,21 @@ parenting and actual group notification using the same node runtime. Native
 transforms, reference counts, roots, child/sibling links and attachment arrays
 remain their original views over the real allocations.
 
+The node application also supplies that same renderer registry through the
+optional, appended `GuiWidgetOwnerEnvironment.actual_owners` field. Every
+ordinary, tracked shadow/cursor and clone/glyph Model reserves an unavailable
+opaque-key admission before native construction, then publishes its existing
+`NativeModelReference` over the same actual +04 word. The existing terminal
+callback unbinds the saved opaque slot key before erasing its ModelRecord; it
+does not read returned pool storage. Each record retains its exact admitted
+registry through publication and retirement. Null preserves legacy/fixture callers.
+This is required by raw draw-command retain/release, not another Model owner.
+An exception while publishing an already bound reference preserves that live
+reference, record and admission; it does not directly destroy the underlying
+Model or return its slot underneath the reference. Tracked Text frames keep
+their same creator diagnostic before publication. Registry admission adds no
+native instruction, native credit or recovered ABI claim.
+
 Model and Group pool accessors come from `GameNativeResourcePoolProcess` after
 explicit CD7F00/CD8460 startup. They are the already bound 01090054 and 010902F4
 owners under the existing E188B4 allocator list, with their original CRT exits.
@@ -120,6 +135,12 @@ The translation unit was registered temporarily in the worker's local
 `startup.cmake`, then that CMake edit was restored. The primary integrator owns
 permanent build registration and runtime switches. The ignored build log is
 `local/oct24-gui-nodes-build.log`.
+
+The actual-owner registration follow-up also passed `scripts/build.ps1` with
+the node translation unit registered: `reconstructed_math` 0.41s, `tool_tests`
+21.09s, 2/2 passed (21.54s total). Its ignored log is
+`local/oct24-gui-model-registration-build-final.log`. Existing checks do not establish
+an ON game run or fixture proof of the new optional registration route.
 
 No new tests, game runs, OFF/ON comparison, screenshot, draw proof, original
 widget binary-ABI proof or game validation is claimed by this worker. The typed

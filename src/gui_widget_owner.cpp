@@ -70,6 +70,11 @@ void set_gui_element_bounds_00b855b0(void* element, const GuiWidgetBounds& bound
 }
 
 struct GuiWidgetOwnerRuntime::ModelRecord {
+    GuiWidgetOwnerRuntime* runtime{};
+    void* actual_slot{}; // Opaque key survives the actual prefix/pool lifetime.
+    NativeRenderActualOwnerRegistry* registry{}; // SAME domain as its admission.
+    NativeRenderActualOwnerRegistry::BindingAdmission registry_admission;
+    bool registry_published{};
     std::unique_ptr<NativeModelOwner> owner;
     std::unique_ptr<NativeModelReference> reference;
 };
@@ -346,6 +351,10 @@ void GuiWidgetOwner::update40(float seconds) {
 GuiWidgetOwnerRuntime::GuiWidgetOwnerRuntime(GuiWidgetOwnerEnvironment environment)
     : environment_(std::move(environment)) {
     if (!environment_.make_type) throw std::invalid_argument("GUI runtime requires its actual type factory");
+    if (environment_.actual_owners &&
+        static_cast<NativeRenderActualOwners*>(environment_.actual_owners) !=
+            &environment_.models.retained_owners)
+        throw std::invalid_argument("GUI Model registration requires its same actual renderer owner domain");
 }
 GuiWidgetOwnerRuntime::~GuiWidgetOwnerRuntime() {
     //Layouts/queued retained references must be retired by their real owners.
@@ -425,6 +434,7 @@ NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
     try {
         //Reserve the map node before constructing a native live object.
         models_.emplace(slot, nullptr);
+        prepare_model_registration(*record, slot);
         record->owner = std::make_unique<NativeModelOwner>(slot, NativeModelPool::slot_bytes, environment);
         native_name.assign_0041e870(strings, name.c_str());
         construct_native_model_00b75030(*record->owner, native_name);
@@ -437,8 +447,13 @@ NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
         auto& inserted = *models_.at(slot);
         try {
             inserted.reference = std::make_unique<NativeModelReference>(*inserted.owner,
-                NativeModelCompanionDisposal{this, retire_model});
+                NativeModelCompanionDisposal{&inserted, retire_model});
+            publish_model_registration(inserted);
         } catch (...) {
+            // A publication mutex failure leaves the SAME live companion and
+            // prepared registry entry retained. Never directly destroy a Model
+            // after its reference has bound into the native lifetime runtime.
+            if (inserted.reference) throw;
             destroy_native_model_00b750c0(*inserted.owner);
             models_.erase(slot);
             throw;
@@ -453,12 +468,28 @@ NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
         return created_node;
     } catch (...) {
         native_name.release_to(strings);
+        const auto retained = models_.find(slot);
+        if (retained != models_.end() && retained->second && retained->second->reference)
+            throw; // Metadata publication failure is nonreplayable, not native EH.
         if (record && record->owner && record->owner->phase == NativeModelOwner::Phase::live)
             destroy_native_model_00b750c0(*record->owner);
         record.reset();
         models_.erase(slot);
         environment.pool_01090054.return_raw_slot_00b74750(slot);
         throw;
+    }
+}
+void GuiWidgetOwnerRuntime::prepare_model_registration(ModelRecord& record, void* slot) {
+    record.runtime = this;
+    record.actual_slot = slot;
+    record.registry = environment_.actual_owners;
+    if (record.registry)
+        record.registry_admission = record.registry->prepare_binding(slot);
+}
+void GuiWidgetOwnerRuntime::publish_model_registration(ModelRecord& record) {
+    if (record.registry) {
+        record.registry->publish(std::move(record.registry_admission), *record.reference);
+        record.registry_published = true;
     }
 }
 void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
@@ -516,6 +547,7 @@ void GuiWidgetOwnerRuntime::create_tracked_auxiliary_model(NativeNodeBinding*& p
         frame.model_phase = GuiTextSectionModelPhase::metadata;
         models_.emplace(slot, nullptr);
         inserted = true;
+        prepare_model_registration(*record, slot);
         record->owner = std::make_unique<NativeModelOwner>(slot, NativeModelPool::slot_bytes, environment);
         models_.at(slot) = std::move(record);
         auto& retained = *models_.at(slot);
@@ -538,8 +570,9 @@ void GuiWidgetOwnerRuntime::create_tracked_auxiliary_model(NativeNodeBinding*& p
         // here must keep this live ModelRecord and its creator/name visible.
         frame.model_phase = GuiTextSectionModelPhase::reference_registration;
         retained.reference = std::make_unique<NativeModelReference>(*retained.owner,
-            NativeModelCompanionDisposal{this, retire_model});
+            NativeModelCompanionDisposal{&retained, retire_model});
         frame.model_creator = retained.reference.get();
+        publish_model_registration(retained);
         auto* const created_node = &retained.owner->node;
         frame.native_site = cursor_prefix ? 0x00ab898c : 0x00ab85aa;
         publication = created_node;
@@ -594,6 +627,7 @@ NativeModelReference& GuiWidgetOwnerRuntime::create_model_clone_destination_00b7
     try {
         models_.emplace(slot, nullptr);
         inserted = true;
+        prepare_model_registration(*record, slot);
         record->owner = std::make_unique<NativeModelOwner>(slot, NativeModelPool::slot_bytes, environment);
         // B6D800 returns this SAME header only after allocation. B75030's
         // existing native-string copy preserves later callback-driven reloads.
@@ -602,11 +636,13 @@ NativeModelReference& GuiWidgetOwnerRuntime::create_model_clone_destination_00b7
         models_.at(slot) = std::move(record);
         auto& retained = *models_.at(slot);
         retained.reference = std::make_unique<NativeModelReference>(*retained.owner,
-            NativeModelCompanionDisposal{this, retire_model});
+            NativeModelCompanionDisposal{&retained, retire_model});
+        publish_model_registration(retained);
         return *retained.reference;
     } catch (...) {
         auto* active = record.get();
         if (!active && inserted) active = models_.at(slot).get();
+        if (active && active->reference) throw; // Preserve entered registration, as above.
         if (active && active->owner && active->owner->phase == NativeModelOwner::Phase::live)
             destroy_native_model_00b750c0(*active->owner);
         if (inserted) models_.erase(slot);
@@ -616,9 +652,15 @@ NativeModelReference& GuiWidgetOwnerRuntime::create_model_clone_destination_00b7
     }
 }
 void GuiWidgetOwnerRuntime::retire_model(void* context, NativeModelReference& reference) noexcept {
-    auto& runtime = *static_cast<GuiWidgetOwnerRuntime*>(context);
-    void* slot = &reference.model_owner().storage.node;
-    runtime.models_.erase(slot);
+    auto& record = *static_cast<ModelRecord*>(context);
+    auto& runtime = *record.runtime;
+    if (record.reference.get() != &reference) std::terminate();
+    void* const opaque_slot = record.actual_slot;
+    if (record.registry_published)
+        record.registry->unbind(opaque_slot, reference);
+    else
+        record.registry_admission.cancel();
+    runtime.models_.erase(opaque_slot);
 }
 void GuiWidgetOwnerRuntime::require_model_copy_reference(NativeModelReference& reference) const {
     auto& model = reference.model_owner();

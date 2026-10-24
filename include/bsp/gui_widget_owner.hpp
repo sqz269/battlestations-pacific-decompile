@@ -83,6 +83,11 @@ struct GuiWidgetOwnerEnvironment {
     GuiWidgetImplementationFactory make_type;
     // Configure after building the SAME runtime/material service domain.
     GuiWidgetClipRefreshServices* clip{};
+    // Optional renderer identity admission, borrowing the SAME retained-owner
+    // domain as models. Publishes each canonical Model reference over its
+    // actual +04 count, then unbinds its opaque key on terminal retirement.
+    // Null preserves the existing logical/fixture caller domain.
+    NativeRenderActualOwnerRegistry* actual_owners{};
 };
 
 // Reconstructed logical widget owner, not a raw100h ABI replacement. Existing
@@ -284,6 +289,8 @@ private:
         NativeNodeBinding** publication_before_name_release = nullptr);
     NativeNodeBinding* create_model(const std::string&, NativeStringStorage&,
         NativeNodeBinding** publication_before_name_release);
+    void prepare_model_registration(ModelRecord&, void* actual_slot);
+    void publish_model_registration(ModelRecord&);
     void create_tracked_auxiliary_model(NativeNodeBinding*&, NativeStringStorage&,
         GuiTextAuxiliaryModelAcquired&, bool cursor_prefix);
     void stamp_visibility(NativeNodeBinding&, float, bool);
