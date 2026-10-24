@@ -3902,3 +3902,12 @@ Open:
    - Then bind any live gate behind an OFF switch.
 6. Still OFF in this lane: kReleaseTimerNotify0DhBound (log only). Low priority: the 006D2510 airfield gate, the 009C8A42 +4B0h NaN max, the 009C4A40 ceiling NaN arm, and section 75's whole-frame item.
 7. kMovetoSpeedShapingCc13Bound went ON unexercised (USN21: speed_changed=0). If a later row exercises it, log its "summary torpedo moveto sep" line here.
+8. NOT RUN (lead's order, next in this sequence):
+   (a) The atktgt re-pair on cc13's fix, main 9961fbc7d or later. ON now also takes the command arm for a squadron stand-in (luawire_squadron_record). Rows: IJN20, JM05, USNRM01, USN13. Expect squadron_standin=N > 0 at the end of the attack-target summary; on IJN20, Airfield2_sqn34 arm=command, pushed > 0, and the reinstall loop gone. Flip by the rules if it holds. Run tools/off_switch_on_build.py and a full build before the flip commit.
+   (b) The USNOS queued-squadron trace, from `local\p25i_off_osL.log` (802e1d8b9; Game Over at 1099.95 s). For Intrepid_sqn04 (queued 380.23 s), Intrepid_sqn07 (451.01 s), Intrepid_sqn09 (523.30 s) and Essex_sqn08 (494.90 s), record:
+      - the fate after queueing (death time and killer, or alive at the end);
+      - the mode/state and the distance to the carrier at death or at the end;
+      - the slot or queue position;
+      - whether the carrier was turning, moving or stopped.
+      A squadron that is alive, unhurt and still queued at 1100 s is a landing-gate candidate for cc13.
+   CanFire (item 5) comes after (a) and (b).
