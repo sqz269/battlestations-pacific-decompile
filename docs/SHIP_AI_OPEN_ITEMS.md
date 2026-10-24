@@ -20928,3 +20928,34 @@ has the pairs and their mechanisms. Open:
 Tools in J:\PROG\battlestations-pacific-decompile-cc9-party1\local\: pt1_rows.ps1 (launcher, staggered 30 s),
 pt1_sum2.ps1 (per-row census, end and pair_diff, with free OFF/ON prefixes and a census regex). A row whose launch
 file is empty is still waiting for a free slot.
+
+## 327. Recon load refresh and LastPosition flips; Lua error sweep (cc9-recon1, 2026-10-24)
+
+Flipped: kReconLoadForceRefreshCc13Bound (ebc33b017) and kLuaLastPositionOnKilledBound (11d05164d). The pairs and
+mechanisms are in the commit messages. Logs are in J:\PROG\battlestations-pacific-decompile-cc9-recon1\local\
+(`rc1_{off,on}_<row>.log`, `rc1_diff_<row>.txt`). The sweep tool is `local\rc1_errs.py <glob>`: Lua
+`script call ... failed` lines grouped by script:line.
+
+Lua runtime errors left on the recon-ON build, all rows paired:
+
+| Row | Site | Count | Class |
+|---|---|---|---|
+| ESMP04 stock | commandhelpers.lua:1588 via 04_solomon_sea.lua:652 (`luaCheckVictory`) | 1 | script-faithful: in the frame of the completion (872.91 s), every Allied ship within 30 km is dead, so `luaGetShipsAroundCoordinate` returns nil (commandhelpers.lua:457 returns nil for an empty result) and `luaRemoveDeadsFromTable(nil)` fails |
+| IJN18 l70_i18_r | ijn_18_solomons.lua:585 `luaGetDistance3D(GetSelectedUnit(), ...)` | 84 | OPEN, see below |
+| USN21 g56_c2 | commandhelpers.lua:10627 `ent.LastPosition` nil | 14 -> 0 | host gap, fixed by kLuaLastPositionOnKilledBound |
+| IJN28 stock | ijn_28_prelude.lua:1274 `Mission.USNShips` nil | 170 -> 0 | host gap, fixed by the recon load refresh |
+| ESMP05 stock | 05_philippine_sea.lua:204 luaInitMission | 1 -> 0 | host gap, fixed by the recon load refresh |
+
+Open, IJN18 :585: phase 2 selects Kita1 (SetSelectedUnit at about 333 s). When Kita1 dies at 401.18 s, the death
+route clears the controlled unit (004C0890(null)) and records the limbo push 004CC460 and LimboScreen::take_unit
+00565FB0, both unimplemented. GetSelectedUnit (008AB070) then answers nil, and every objective check from 405 s
+errors at :585 until the 653.96 s fail. Static question: does the image's limbo screen (34h) pause the simulation,
+or auto-select a unit when no input arrives? If neither, the errors are faithful for an idle player, and the plan
+should `select` a live ship after a controlled death.
+
+Winnability, stock 120000-frame runs on the recon-ON build (`local\rc1_win_{i23L,i30L}.log`):
+- IJN23: attack waves 1-3 are cleared by the defences alone (countdowns at 669.96, 1680.51 and 3247.04 s). Wave 4 is
+  still alive at 6000 s and the HQs survive. A plan that helps clear wave 4 and then the phase-3 troops or planes
+  looks feasible.
+- IJN30: phase 1 needs both B-29 waves dead. Wave 1 (2 groups of 3 squadrons with 5 wings, 30 planes) loses 18 by
+  774 s, then 12 stay alive to 6000 s, out of AA reach, so wave 2 never spawns. It needs a fighter-intercept plan.
