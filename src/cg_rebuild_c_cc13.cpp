@@ -278,7 +278,8 @@ void* vt_cf7184_construct_006821c0(void* screen, CgRebuildCHost& host) {
 // The page [+70h] goes back through 00AA31F0 on the 004C12B0 manager. Each of the four
 // +40h slots that is set gets vtable[2](0) (CALL [vtbl+8] after PUSH 0) and is then
 // released; the +30h slot is released. The listing's NEG/SBB/TEST 0E19311h is the
-// safe-bool test, i.e. slot != null. Both slots are cleared unconditionally.
+// safe-bool test, i.e. slot != null. The +30h slot is cleared unconditionally (006820D8);
+// the +40h slot only inside its non-null arm (a null slot jumps to 006820B8).
 // ---------------------------------------------------------------------------
 void vt_cf7184_destruct_00682030(void* screen, CgRebuildCHost& host) {
     field<std::uint32_t>(screen, 0) = 0x00CF7184u;
