@@ -1,0 +1,282 @@
+{
+  "packet": "oct24-poolB-owner-max",
+  "scope": "Four exact assigned rows; three normal bodies added and one existing normal body reconciled; build only; no game host wiring",
+  "validation": {
+    "diff_check": "passed",
+    "build": "pending primary integration scripts/build.ps1",
+    "tests": "none added or run, as instructed",
+    "game": "not run",
+    "binary_abi": "not established; Source interfaces explicitly supply original call boundaries",
+    "ghidra_identity": "config project_file C:/Users/sqz269/bsp.gpr; Client.verify checked project bsp, /battlestationspacific.exe, x86:LE:32:default, image base00400000 before live proto/flow/export calls",
+    "call_report": "31 call rows checked, 0 failed",
+    "ghidra_annotations": "Four preserved-name evidence comments applied under write lock; project saved; old values retained in local/ghidra-annotations-20261024T145455Z.json; affected four exports refreshed"
+  },
+  "routines": [
+    {
+      "address": "0077eed0",
+      "symbol": "construct_native_unit_owner_entity_0077eed0",
+      "was": "metadata-only parent body; accepted native fragments did not compose the complete normal schedule",
+      "is": "reconstructed_normal_body_build_pending",
+      "coverage": "complete normal 0077EED0..0077F08D; Native C8A0C8/FH3 constructor unwind excluded",
+      "source": "src/native_unit_owner_entity.cpp",
+      "header": "include/bsp/native_unit_owner_entity.hpp",
+      "original_abi": "ECX=root; one full DWORD flag; RET4 at0077F08B; EAX=root",
+      "evidence": "Full pseudocode and listing reviewed. Calls genuine GameEntity(root,1,fullflag), writes D03D98, constructs three34h recon records, binds owner/index0/1/2, acquires both lists and performs original mixed-width fields, then reads mode2/offline and conditionally appends peer0. Reuses canonical actual-storage fragments. No added game-null guard.",
+      "uncertainty": "BF7CD1 is a qualified sequential Source record loop using the existing observer domain. Supplied base call boundary must implement the real callee. Original constructor exception cleanup, native callable profiles, allocator trace, FH3, binary ABI and gameplay are not claimed.",
+      "blockers": []
+    },
+    {
+      "address": "0077e380",
+      "symbol": "destruct_native_unit_owner_entity_0077e380",
+      "was": "metadata-only parent body; old name evidence described a body cut after0077E43D",
+      "is": "reconstructed_normal_body_build_pending",
+      "coverage": "complete normal 0077E380..0077E490; Native C8A053/FH3 unwind excluded",
+      "source": "src/native_unit_owner_entity.cpp",
+      "header": "include/bsp/native_unit_owner_entity.hpp",
+      "original_abi": "ECX=root; no stack arguments; RET0 at0077E490; class body, no scalar flag or root free",
+      "evidence": "Full pseudocode/listing and live proto/flow reviewed: live body ends0077E490,67 instructions,0 gaps; no new listing mutation was necessary. Restore five profiles, short-circuit E0AF20/game/mode1, build actual24h kind4Fh message from root+70h, route4/0, remove global matches, destroy+2B0, retire both lists, destroy records in reverse, then GameEntity base. Normal body contains no call to message79 destructor; that call belongs to EH cleanup.",
+      "uncertainty": "BF7C6E is a qualified reverse Source loop. Base/message/observer calls remain explicit supplied bindings. EH-only message79 cleanup and other FH3 exceptional paths are not supplied; no binary ABI or game validation.",
+      "blockers": []
+    },
+    {
+      "address": "00758fe0",
+      "symbol": "mothership_detach_from_world_lists_00758fe0",
+      "was": "BSP_MotherShip_DetachFromWorldLists: incomplete_or_unverified_body_credit_withdrawn_oct24, src/game_hosts_units.cpp",
+      "is": "reconstructed_normal_body_build_pending",
+      "coverage": "complete normal 00758FE0..00759015",
+      "source": "src/cc13_seg41_land.cpp",
+      "header": "include/bsp/cc13_seg41_land.hpp",
+      "original_abi": "ECX=ship; no stack arguments; RET0 at0075900D or00759015",
+      "evidence": "Full pseudocode/listing reviewed, including both callee bodies. Call006DFFC0 first, then reload ship+30h, scan head world+88h via node+4h for first payload node+8h equalship, and call004837D0 on list world+84h. Empty/absent lists return; no world-null check or duplicate erasure.",
+      "uncertainty": "Call boundaries preserve original receivers and arguments but Source interface is not a drop-in x86 entry; original storage/fault behavior and gameplay not validated.",
+      "blockers": []
+    },
+    {
+      "address": "00989a80",
+      "symbol": "warning_manager_destruct_00989a80",
+      "was": "metadata-only row despite existing435-instruction source body in current parent tree",
+      "is": "reconciled_existing_normal_body_build_pending",
+      "coverage": "complete normal 00989A80..00989FEA; original EH unwind excluded",
+      "source": "src/cg_rebuild_b_cc13.cpp",
+      "header": "include/bsp/cg_rebuild_b_cc13.hpp",
+      "original_abi": "ECX=manager; no stack arguments; RET0 at00989FEA; class body, no delete flag; wrapper0098A2A0 owns scalar deletion",
+      "evidence": "Reviewed all438 exported listing lines and current parent source. The existing body handles populated list+EC and outermap+F8/innernode+14 using checked{container,node} iterators, scalar-deletes payloads with1 then zeroes them, clears globals, drains/deletes lock+24, retires trees/strings/references in exact order, calls0097A190 on+130 then+11C, destroys19 NativeStrings and final list. Both iterator callee bodies reviewed. Fresh export0097A190 shows inner tree atmember+8 erased/freed/zeroed, then NativeString atmember+0 returned to pool; it is retained as an address-named supplied member binding, not reclassified as a complete vendor-only manager body. Existing warning_owner release helper remains partial and is not substituted.",
+      "uncertainty": "Existing source uses qualified supplied allocation/STL/Win32/callback boundaries. Its EH-state comments do not implement Native FH3 unwind. No binary ABI, exception-path, allocator-trace or gameplay equivalence claimed. This reconciliation adds no duplicate body.",
+      "blockers": []
+    }
+  ],
+  "host_steps": [
+    {
+      "containing": "0077eed0",
+      "address": "0077eef9",
+      "native": "00928630",
+      "contract": "ECX=root;1,fullflag;RET8"
+    },
+    {
+      "containing": "0077eed0",
+      "address": "0077ef22",
+      "native": "00bf7cd1",
+      "contract": "first=root+1E8,stride34h,count3,ctor805A70,dtor804300; qualified Source loop"
+    },
+    {
+      "containing": "0077eed0",
+      "address": "0077ef91",
+      "native": "0077b960",
+      "contract": "first0Ch-list head"
+    },
+    {
+      "containing": "0077eed0",
+      "address": "0077efa9",
+      "native": "0077b940",
+      "contract": "second18h-list head"
+    },
+    {
+      "containing": "0077eed0",
+      "address": "0077f072",
+      "native": "0077eb50",
+      "contract": "ECX=root;peer0;RET4"
+    },
+    {
+      "containing": "0077e380",
+      "address": "0077e3f3",
+      "native": "00779780",
+      "contract": "ECX=actual24h stack buffer;root+70h payload;RET4"
+    },
+    {
+      "containing": "0077e380",
+      "address": "0077e404",
+      "native": "0077c2a0",
+      "contract": "ECX=root;message,4,0;RET0Ch at0077C467"
+    },
+    {
+      "containing": "0077e380",
+      "address": "0077e417",
+      "native": "0077bea0",
+      "contract": "ECX=actualF87194 list;address ofrootvaluecell"
+    },
+    {
+      "containing": "0077e380",
+      "address": "0077e427",
+      "native": "006e0860",
+      "contract": "ECX=root+2B0;RET0"
+    },
+    {
+      "containing": "0077e380",
+      "address": "0077e434",
+      "native": "0077d930",
+      "contract": "ECX=root+2A4;clear ownedholdernodes"
+    },
+    {
+      "containing": "0077e380",
+      "address": "0077e43d",
+      "native": "00bf65ac",
+      "contract": "freeholderhead;ADD ESP4 at0077E442"
+    },
+    {
+      "containing": "0077e380",
+      "address": "0077e452",
+      "native": "0077b980",
+      "contract": "ECX=root+298;tidypeerlist"
+    },
+    {
+      "containing": "0077e380",
+      "address": "0077e46c",
+      "native": "00bf7c6e",
+      "contract": "first=root+1E8,stride34h,count3,dtor804300;qualified reverseSource loop"
+    },
+    {
+      "containing": "0077e380",
+      "address": "0077e47b",
+      "native": "009287b0",
+      "contract": "ECX=root;RET0"
+    },
+    {
+      "containing": "00758fe0",
+      "address": "00758fe3",
+      "native": "006dffc0",
+      "contract": "ECX=ship;RET0"
+    },
+    {
+      "containing": "00758fe0",
+      "address": "0075900f",
+      "native": "004837d0",
+      "contract": "ECX=world+84;actualnode;RET4"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989ab6",
+      "native": "0096bf70",
+      "contract": "clearwaitingqueue"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989bdc",
+      "native": "00966960",
+      "contract": "ECX=checkedinneriterator;RET0"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989bef",
+      "native": "0096a280",
+      "contract": "ECX=checkedouteriterator;RET0"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989c6d",
+      "native": "005a5e40",
+      "contract": "erasetree+1A4"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989d1e",
+      "native": "009735d0",
+      "contract": "erasetree+184"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989d53",
+      "native": "00988440",
+      "contract": "erasetree+168"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989d88",
+      "native": "00971b70",
+      "contract": "erasetree+15C"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989dbd",
+      "native": "00444b10",
+      "contract": "erasetree+150"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989df2",
+      "native": "0058d860",
+      "contract": "erasetree+144"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989e14",
+      "native": "0097a190",
+      "contract": "ECX=manager+130;RET0"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989e24",
+      "native": "0097a190",
+      "contract": "ECX=manager+11C;RET0"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989e6f",
+      "native": "008ec550",
+      "contract": "erasetree+108"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989ea4",
+      "native": "00980270",
+      "contract": "erasetree+F8"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989f75",
+      "native": "00971770",
+      "contract": "erasetree+D4"
+    },
+    {
+      "containing": "00989a80",
+      "address": "00989f9d",
+      "native": "00bf7c6e",
+      "contract": "first=manager+38,stride8,count19,dtor41DD20"
+    }
+  ],
+  "classification": {
+    "new_bodies": [
+      "0077eed0",
+      "0077e380",
+      "00758fe0"
+    ],
+    "existing_body_reconciled": [
+      "00989a80"
+    ],
+    "vendor_or_generated_rows_added": [],
+    "open_assigned_rows": []
+  },
+  "corrections": [
+    {
+      "address": "0077e380",
+      "was": "name evidence reports Ghidra stops0077E441",
+      "is": "live body0077E380..0077E490,67 listedinstructions,0 gaps",
+      "evidence": "Client-verified ghidra proto and flow on2026-10-24; full export reachesRET0077E490; no listing mutation"
+    },
+    {
+      "address": "00989a80",
+      "was": "prior worker handoff treated full body as outstanding",
+      "is": "existing cg_rebuild_b body reviewed and ledger credit reconciled",
+      "evidence": "current parent source443..590 and complete exported listing; warning_owner host-storage helper remainspartial"
+    }
+  ]
+}
