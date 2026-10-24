@@ -6481,6 +6481,20 @@ struct GameUnitsHost::Impl {
     // the request is recorded only, and every plane's throttle is analogue.
     static constexpr bool kKamikazeBoostTurboBound = false;
     unsigned long long boost_turbo_steps_{0};
+    // Packet cc13-PL3: the image's operation order inside the drag 007D9140 and
+    // its coefficient 007C4990. 007C4990-007C4992 forms desc+50Ch as
+    // (Accel / MaxSpd) / MaxSpd (DE FA, DE F9); 007D91D2-007D91EC forms
+    // KB = (1 + AirBrakeDrag * brake) * (k * coef) and 007D928D-007D9295 returns
+    // ((-sgn(v) * v) * v) * KB; 007D924E-007D9266 keeps the speed unless the
+    // floor compares greater, so a NaN on either side keeps the speed. Every
+    // product rounds to float on the 24-bit main thread. False: the host's
+    // Accel / MaxSpd^2, its left-to-right product and its NaN-to-floor max.
+    static constexpr bool kPlaneDragOrderCc13Bound = false;
+    // Packet cc13-PL3: 007DA380's water arm 007DA3D0-007DA53F reads the up value
+    // as the dot ((DCh * 0) + E0h) + (E4h * 0) and gates the throttled arm on
+    // unit+9F0h > 0 (COMISS / JBE, so NaN fails). Finite inputs are identical
+    // either way. False: E0h alone and the helper's !(thr <= 0) gate.
+    static constexpr bool kWaterRateFactorsNanOrderCc13Bound = false;
     // kPlaneDeadMeatRollBound / kPlaneWreckForwardDragBound step counts.
     unsigned long long dead_meat_roll_steps{0};
     unsigned long long dead_meat_spin_steps{0};
@@ -22670,7 +22684,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 0.0f, unit_.plane_max_spd * min_drag_spd_mul,
                                 max_drag_pitch, unit_.plane_max_spd * max_drag_spd_mul,
                                 state.pitch);
-                            float v = world_speed > floor_speed ? world_speed : floor_speed;
+                            float v = 0.0f;
+                            if constexpr (GameUnitsHost::Impl::kPlaneDragOrderCc13Bound) {
+                                // 007D924E-007D9266: FCOMIP floor, speed; JBE keeps the speed.
+                                v = floor_speed > world_speed ? floor_speed : world_speed;
+                            } else {
+                                v = world_speed > floor_speed ? world_speed : floor_speed;
+                            }
                             float closed = 1.0f - unit_.plane_latched_throttle;
                             if (closed < 0.0f) closed = 0.0f;
                             if (closed > 1.0f) closed = 1.0f;
@@ -22682,7 +22702,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 007D926C-007D929B multiplies in -sgn(v), so the
                             // value opposes forward motion.
                             const float sign = v > 0.0f ? 1.0f : (v < 0.0f ? -1.0f : 0.0f);
-                            float d = -sign * v * v * k * coefficient * brake;
+                            float d = 0.0f;
+                            if constexpr (GameUnitsHost::Impl::kPlaneDragOrderCc13Bound) {
+                                // 007C4990: (Accel / MaxSpd) / MaxSpd. 007D91D2-007D91EC
+                                // and 007D928D-007D9295: ((-sgn * v) * v) * (brake * (k * coef)).
+                                const float image_coefficient =
+                                    (unit_.plane_accel / unit_.plane_max_spd) / unit_.plane_max_spd;
+                                const float k_coefficient = k * image_coefficient;
+                                const float kb = brake * k_coefficient;
+                                d = ((-sign * v) * v) * kb;
+                            } else {
+                                d = -sign * v * v * k * coefficient * brake;
+                            }
                             // 007DBB0E / 007DBB23, the two pitch ramps the call
                             // site multiplies in. Both endpoints of the second
                             // are 1.0 for a healthy aircraft, so r2 is 1.0 until
@@ -41235,6 +41266,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ri.max_yaw_control = g.dynamics_water_max_yaw_control;
                                 ri.max_ctrl_angle = g.dynamics_water_max_ctrl_angle;
                                 ri.min_ctrl_angle = g.dynamics_water_min_ctrl_angle;
+                            }
+                            if constexpr (GameUnitsHost::Impl::kWaterRateFactorsNanOrderCc13Bound) {
+                                // 007DA406-007DA423: the up row dotted with (0, 1, 0), the
+                                // first product through the DC-form FMUL ST1,ST0 (DC C9):
+                                // ((DCh * 0) + E0h) + (E4h * 0), so a non-finite row term
+                                // reaches the ramp.
+                                ri.up_y = (unit_.motion.pose_row1[0] * 0.0f + unit_.motion.pose_row1[1])
+                                    + unit_.motion.pose_row1[2] * 0.0f;
+                                // 007DA47C COMISS unit+9F0h, 0.0 then JBE: a NaN throttle
+                                // takes the not-throttled arm, which the helper's
+                                // !(thr <= 0) gate would not; 0.0 selects that arm.
+                                if (!(unit_.plane_live_throttle > 0.0f)) ri.throttle_9f0 = 0.0f;
                             }
                             const bsp::PlaneWaterRateFactors rf = bsp::water_rate_factors_007da3d0(ri);
                             m = rf.out_a;
