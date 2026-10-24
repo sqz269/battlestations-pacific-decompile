@@ -33,9 +33,11 @@
 #include "bsp/system_fog_owner.hpp"
 #include "bsp/native_renderer_indexed_draw.hpp"
 #include <d3d9.h>
+#include <d3dx9shader.h>
 #include <cstring>
 #include <cstdlib>
 #include <cwctype>
+#include <fstream>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -66,6 +68,49 @@ template<class T> struct DiagnosticComCredit {
     T* value{};
     ~DiagnosticComCredit() { if (value) value->Release(); }
 };
+std::string gui_trace_directory() {
+    char directory[MAX_PATH]{};
+    const DWORD length = GetEnvironmentVariableA("BSP_NATIVE_GUI_TRACE_DIR", directory, sizeof directory);
+    return length && length < sizeof directory ? std::string(directory, length) : std::string{};
+}
+template<class T> void trace_gui_shader(GameHostLog& log, T* shader, const char* stage, const std::string& directory) {
+    if (!shader || directory.empty()) return;
+    UINT size{};
+    const HRESULT sized = shader->GetFunction(nullptr, &size);
+    if (FAILED(sized) || !size || size % sizeof(DWORD)) return;
+    std::vector<DWORD> code(size / sizeof(DWORD));
+    const HRESULT copied = shader->GetFunction(code.data(), &size);
+    if (FAILED(copied)) return;
+    const std::string base = directory + "/gui_first_" + stage;
+    std::ofstream binary(base + ".bin", std::ios::binary);
+    binary.write(reinterpret_cast<const char*>(code.data()), size);
+    auto* module = GetModuleHandleW(L"d3dx9_40.dll");
+    decltype(&D3DXDisassembleShader) disassemble{};
+    auto address = module ? GetProcAddress(module, "D3DXDisassembleShader") : nullptr;
+    std::memcpy(&disassemble, &address, sizeof disassemble);
+    DiagnosticComCredit<ID3DXBuffer> assembly;
+    const HRESULT result = disassemble ? disassemble(code.data(), FALSE, nullptr, &assembly.value) : E_POINTER;
+    if (SUCCEEDED(result) && assembly.value) {
+        std::ofstream output(base + ".asm", std::ios::binary);
+        output.write(static_cast<const char*>(assembly.value->GetBufferPointer()), assembly.value->GetBufferSize());
+    }
+    log.notef("native_GUI_trace shader=%s bytes=%u disassemble=%08lx path=%s", stage, size,
+        static_cast<unsigned long>(result), base.c_str());
+}
+void trace_gui_constants(GameHostLog& log, IDirect3DDevice9* device, const std::string& directory) {
+    if (directory.empty()) return;
+    std::array<float, 256 * 4> vertex{};
+    std::array<float, 32 * 4> pixel{};
+    const HRESULT vs = device->GetVertexShaderConstantF(0, vertex.data(), 256);
+    const HRESULT ps = device->GetPixelShaderConstantF(0, pixel.data(), 32);
+    std::ofstream output(directory + "/gui_first_constants.txt");
+    if (SUCCEEDED(vs)) for (unsigned i = 0; i < 256; ++i)
+        output << "VS " << i << ' ' << vertex[i*4] << ' ' << vertex[i*4+1] << ' ' << vertex[i*4+2] << ' ' << vertex[i*4+3] << '\n';
+    if (SUCCEEDED(ps)) for (unsigned i = 0; i < 32; ++i)
+        output << "PS " << i << ' ' << pixel[i*4] << ' ' << pixel[i*4+1] << ' ' << pixel[i*4+2] << ' ' << pixel[i*4+3] << '\n';
+    log.notef("native_GUI_trace constants VS=%08lx PS=%08lx path=%s/gui_first_constants.txt",
+        static_cast<unsigned long>(vs), static_cast<unsigned long>(ps), directory.c_str());
+}
 // Stock Get* observations only. Every temporary COM credit is balanced; this
 // does not bind a replacement target, shader, stream, texture or render state.
 void trace_gui_device(GameHostLog& log, void* actual_device) {
@@ -105,6 +150,40 @@ void trace_gui_device(GameHostLog& log, void* actual_device) {
     log.notef("native_GUI_trace VS=%p HRESULT=%08lx PS=%p HRESULT=%08lx declaration=%p HRESULT=%08lx FVF=%08lx HRESULT=%08lx",
         vertex_shader.value, static_cast<unsigned long>(vs), pixel_shader.value, static_cast<unsigned long>(ps),
         declaration.value, static_cast<unsigned long>(decl), fvf, static_cast<unsigned long>(fvfr));
+    const auto directory = gui_trace_directory();
+    trace_gui_shader(log, vertex_shader.value, "vs", directory);
+    trace_gui_shader(log, pixel_shader.value, "ps", directory);
+    trace_gui_constants(log, device, directory);
+    if (declaration.value) {
+        D3DVERTEXELEMENT9 elements[MAXD3DDECLLENGTH + 1]{};
+        UINT count = MAXD3DDECLLENGTH + 1;
+        const HRESULT result = declaration.value->GetDeclaration(elements, &count);
+        if (SUCCEEDED(result)) for (UINT i = 0; i < count; ++i)
+            log.notef("native_GUI_trace declaration i=%u stream=%u offset=%u type=%u method=%u usage=%u index=%u", i,
+                elements[i].Stream, elements[i].Offset, elements[i].Type, elements[i].Method, elements[i].Usage, elements[i].UsageIndex);
+    }
+    // Read the existing HAL data after the original draw. No replacement
+    // geometry or write lock is used; the original declaration decodes it.
+    if (!directory.empty() && vertices.value && stride && vertex_desc.Size >= offset + stride * 4) {
+        void* data{};
+        const HRESULT result = vertices.value->Lock(offset, stride * 4, &data, D3DLOCK_READONLY);
+        if (SUCCEEDED(result)) {
+            struct Unlock { IDirect3DVertexBuffer9* buffer; ~Unlock() { buffer->Unlock(); } } unlock{vertices.value};
+            std::ofstream output(directory + "/gui_first_vertices.bin", std::ios::binary);
+            output.write(static_cast<const char*>(data), stride * 4);
+        }
+        log.notef("native_GUI_trace vertex_read HRESULT=%08lx", static_cast<unsigned long>(result));
+    }
+    if (!directory.empty() && indices.value && index_desc.Size >= 12) {
+        void* data{};
+        const HRESULT result = indices.value->Lock(0, 12, &data, D3DLOCK_READONLY);
+        if (SUCCEEDED(result)) {
+            struct Unlock { IDirect3DIndexBuffer9* buffer; ~Unlock() { buffer->Unlock(); } } unlock{indices.value};
+            std::ofstream output(directory + "/gui_first_indices.bin", std::ios::binary);
+            output.write(static_cast<const char*>(data), 12);
+        }
+        log.notef("native_GUI_trace index_read HRESULT=%08lx", static_cast<unsigned long>(result));
+    }
     const std::pair<D3DRENDERSTATETYPE, const char*> states[] = {
         {D3DRS_COLORWRITEENABLE, "colorwrite"}, {D3DRS_ZENABLE, "z"}, {D3DRS_ZWRITEENABLE, "zwrite"},
         {D3DRS_ZFUNC, "zfunc"}, {D3DRS_CULLMODE, "cull"}, {D3DRS_ALPHATESTENABLE, "alphatest"},
