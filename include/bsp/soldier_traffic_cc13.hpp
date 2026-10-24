@@ -326,6 +326,27 @@ EntityClipQuery entity_clip_query_0048a010(const EntityClipInputs& in) noexcept;
 bool entity_clip_result_0048a010(const EntityClipInputs& in, const EntityClipQuery& query,
                                  bool box_in_view, EntityClipAction& action) noexcept;
 
+// 0048A010 as a whole body (cc13-D1): every image call goes through the host,
+// in the image's order. `position` is the [ESP+4] argument.
+struct EntityClipHost {
+    virtual ~EntityClipHost() = default;
+    virtual bool camera_present_1ed4() = 0;                 // [[00E188A8]+1ED4h] != 0
+    virtual bool visible_flag_5c() = 0;                     // entity+5Ch
+    // [[entity+178h]+160h]+0Ch non-null -> its vslot +48h, MOVSS [EAX+0Ch].
+    virtual bool model_radius_vslot48(float& radius) = 0;
+    virtual bool camera_pose_valid_c8() = 0;                // camera+C8h
+    virtual void refresh_camera_pose_00414db0() = 0;
+    virtual Vec3 camera_position_fc() = 0;                  // camera+FCh..+104h
+    virtual float fov_aspect_product_00b6fc30() = 0;        // ECX = [game+19FCh]
+    virtual float clip_distance_00485520() = 0;             // SoldierGlobals +0Ch
+    virtual float length_0042b2f0(const Vec3& v) = 0;
+    virtual float clip_bias_17c() = 0;                      // entity+17Ch
+    virtual bool box_in_view_004b48e0(const Vec3& box_min, const Vec3& box_max) = 0;
+    virtual void show_vslot11c() = 0;
+    virtual void hide_vslot118() = 0;
+};
+bool entity_clip_0048a010(const Vec3& position, EntityClipHost& host);
+
 // ---------------------------------------------------------------------------
 // 0048A1E0: member muzzle effect, __thiscall(entity, int variant), RET 4.
 // ---------------------------------------------------------------------------
@@ -356,7 +377,38 @@ struct MuzzleEffectPlan {
 // effect +14h, parent [[entity+178h]+160h]+0Ch, flags (1, 0, 0), stored at entity+180h.
 MuzzleEffectPlan plan_muzzle_effect_0048a1e0(const MuzzleEffectInputs& in) noexcept;
 
-// 0048AEC0 (no reference in the image): U(0,1) < FireChance * dt -> 0048A1E0(0).
+// 0048A1E0 as a whole body (cc13-D1) over host calls, in the image's order.
+struct MuzzleEffectHost {
+    virtual ~MuzzleEffectHost() = default;
+    virtual bool class_fire_point_valid_24() = 0;   // [entity+170h]+24h
+    virtual bool effect_present_180() = 0;          // entity+180h non-null
+    virtual bool effect_finished_00865fe0() = 0;
+    virtual bool effect_flag9() = 0;                // [entity+180h]+9
+    virtual void release_effect_00484620() = 0;     // ECX = &entity+180h, argument 0
+    virtual bool camera_present_1ed4() = 0;
+    virtual bool camera_pose_valid_c8() = 0;
+    virtual void refresh_camera_pose_00414db0() = 0;
+    virtual bool entity_pose_valid_c8() = 0;
+    virtual void refresh_entity_pose_00414db0() = 0;
+    virtual Vec3 entity_position_fc() = 0;
+    virtual Vec3 camera_position_fc() = 0;
+    virtual float fov_aspect_product_00b6fc30() = 0;
+    virtual float fire_efx_clip_distance_00485520() = 0;   // SoldierGlobals +8h
+    virtual float length_0042b2f0(const Vec3& v) = 0;
+    virtual bool is_kind_3a_vslot5c() = 0;
+    virtual Vec3 class_fire_point_18() = 0;          // [entity+170h]+18h..+20h
+    // 0047C2A0 + 004134F0 build M from `euler`; row 3 = `translation`; with
+    // `post_rotate` 0047C2A0 + 0047C210 multiply M by Euler (pi, 0, 0); then
+    // 00440490 copies the class effect +14h, 008687C0(EDX = [[entity+178h]+160h]+0Ch,
+    // &M, 1, 0, 0), 004845D0 stores the result at entity+180h, 00440A30 frees the temp.
+    virtual void create_effect_008687c0(const Vec3& euler, const Vec3& translation,
+                                        bool post_rotate) = 0;
+    virtual void set_new_effect_flag9() = 0;          // 0048A574, when entity+180h is non-null
+};
+void muzzle_effect_0048a1e0(int variant, MuzzleEffectHost& host);
+
+// 0048AEC0 (no reference in the image): U(0,1) < FireChance * dt -> 0048A1E0(0);
+// an unordered compare also calls (JAE skips).
 bool unreferenced_fire_roll_0048aec0(SoldierTrafficRandom& rng, float fire_chance, float dt);
 
 // ---------------------------------------------------------------------------
@@ -377,6 +429,20 @@ struct TrafficViewGateResult {
 };
 
 TrafficViewGateResult traffic_view_gate_0048a650(const TrafficViewGateInputs& in) noexcept;
+
+// 0048A650 as a whole body (cc13-D1) over host calls. 00487470 (the template
+// remap, ECX = runtime) is not reconstructed and stays a host call.
+struct TrafficViewGateHost {
+    virtual ~TrafficViewGateHost() = default;
+    virtual bool box_in_view_004b48e0() = 0;          // (game, runtime+150h)
+    virtual bool anchor_present_168() = 0;
+    virtual std::int32_t anchor_side_54() = 0;        // [runtime+168h]+54h
+    virtual std::int32_t side_16c() = 0;
+    virtual void set_side_16c(std::int32_t side) = 0;
+    virtual bool local_player_slot_28_zero() = 0;     // [game+18CCh + [game+18ECh]*4]+28h == 0
+    virtual void remap_00487470() = 0;
+};
+bool traffic_view_gate_0048a650(TrafficViewGateHost& host);
 
 // ---------------------------------------------------------------------------
 // Member list hosts.
@@ -403,6 +469,10 @@ struct TroopMemberHost {
     // vslot +114h(0), then BSP_MissionEntity_Kill 00926D90(cause 2).
     virtual void release_and_kill_entity(TroopMember& m) = 0;
 };
+
+// 0048AEC0 with its call (cc13-D1): the roll, then host 0048A1E0(member, 0).
+void fire_roll_0048aec0(TroopMember& m, float dt, SoldierTrafficRandom& rng,
+                        TroopMemberHost& host);
 
 struct LandingTroopState {
     LandingTroopView view{};

@@ -106,6 +106,11 @@ ShipyardSlotFill shipyard_complete_slots_00849f70(ShipyardState& state,
 
 int shipyard_add_stock_0084acb0(ShipyardState& state, std::uint32_t class_id, int count,
                                 const std::string& names) {
+    // Documented deviation (cc13-D1): the image matches the record whose class
+    // pointer's +70h (the class index) equals the key; this keys by type id.
+    // The typeId -> classIndex map is the identity except for one remapped pair
+    // (docs/VEHICLE_CLASS_DESCRIPTORS.md); the host carries no class-index map,
+    // so only that pair could diverge.
     if (ShipyardStockRecord* r = stock_of_class(state, class_id)) {
         r->count += count;
         return r->count;
@@ -120,6 +125,12 @@ int shipyard_add_stock_0084acb0(ShipyardState& state, std::uint32_t class_id, in
 
 bool shipyard_choose_class_00844d60(ShipyardState& state, std::size_t entry, bool forward,
                                     const ShipyardClassFacts& facts) {
+    // 00844D60, checked instruction by instruction (cc13-D1). Documented
+    // deviation: the A7h session message (0075B430) and its 0077C7B0
+    // BroadcastMessage are omitted; 0077C7B0 returns unless
+    // [[00E188A8]+1FE4h] == 1, which is 0 in single player, so the broadcast
+    // is a no-op here. The bounds guard and the not-found return are host
+    // glue for cases the image never reaches (it would write past the end).
     if (entry >= state.entries.size()) return false;
     ShipyardEntry& e = state.entries[entry];
     const int size = static_cast<int>(state.stock.size());
@@ -158,6 +169,11 @@ bool shipyard_choose_class_00844d60(ShipyardState& state, std::size_t entry, boo
 
 bool shipyard_cycle_equipment_008436f0(ShipyardState& state, std::size_t entry, bool forward,
                                        const ShipyardClassFacts& facts) {
+    // Documented deviation (cc13-D1): the A8h message (0075B430, vtable
+    // 00CF64EC) and its 0077C7B0 broadcast are omitted, a no-op in single
+    // player (0077C7B0 needs [[00E188A8]+1FE4h] == 1). The class == 0 return
+    // is unreachable from the host, which checks the class first; an
+    // out-of-range entry returns false where the image calls 00BF6713.
     if (entry >= state.entries.size()) return false;
     ShipyardEntry& e = state.entries[entry];
     if (e.class_id == 0u) return false;
@@ -169,6 +185,14 @@ bool shipyard_cycle_equipment_008436f0(ShipyardState& state, std::size_t entry, 
 
 bool shipyard_order_entry_00846d90(ShipyardState& state, std::size_t entry, bool forward,
                                    std::size_t order_target) {
+    // Documented deviation (cc13-D1): this is 00846D90's state/name/cursor
+    // core. The image also moves the observer on entry+48h (006952A0 detach,
+    // 00694A60 attach, node entry+34h), broadcasts A9h (0077C7B0, a no-op in
+    // single player), and ends with the tail: 00844CE0 free hangar ->
+    // 00844FC0(entry), then 00984EB0(ECX=[00F8A0C4], shipyard, class+70h,
+    // 00844610(class+70h)). The caller (game_hosts_gunnery.cpp) composes that
+    // tail; the observer move is not modelled. The empty-names return replaces
+    // the image's null-record fault.
     if (entry >= state.entries.size()) return false;
     ShipyardEntry& e = state.entries[entry];
     ShipyardStockRecord* r = stock_of_class(state, e.class_id);

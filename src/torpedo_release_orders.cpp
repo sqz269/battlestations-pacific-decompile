@@ -56,7 +56,11 @@ int release_order_count_007bcbe0(const ReleaseOrderSetInputs& in) noexcept {
 
 float flight_armed_fraction_007ee7f0(const FlightArmedFractionInputs& in) noexcept {
     // 007EE7F0's loop: total counts the enabled aircraft, armed counts those
-    // with a round left.
+    // with a round left. Documented deviation (cc13-D1): the image first stores
+    // the byte ctl+3ECh = 0 (007EE802) and then ctl+374h = the fraction; this
+    // pure helper returns the fraction and leaves both stores to the host,
+    // which does not carry ctl+3ECh (its meaning is unknown). The null-array
+    // guards are host glue; the image has no arrays to be null.
     float armed = 0.0f;
     float total = 0.0f;
     if (in.unit_enabled_5c == nullptr || in.unit_rounds_007c1f60 == nullptr ||
@@ -131,6 +135,13 @@ ReleaseOrderIssueResult torpedo_issue_release_orders_007c0d90(
     // 007C0D9A-007C0ED3: the walk over the linked list at unit+48h, following
     // +44h. It latches a byte on the stack when it finds a device of class 25h
     // holding bomb-family ordnance whose descriptor answers 2Ch, 2Bh or 33h.
+    // Documented deviation (cc13-D1): this reduced walk omits the vslot +1F0h
+    // call, the 33h early return, the stream-1 U(0.9, 1.1) draw and the 31h
+    // 007BCCF0 target point. It is only the OFF fallback: with
+    // kPlaneDeviceWalkPerRackBound (cc13_devwalk.hpp) ON, the live host
+    // (game_hosts_units.cpp, cc13_devwalk::device_walk_007c0d90) runs the full
+    // walk itself, returns on 33h, and calls this function with a forced walk
+    // result only for the 007C0EE2/007EEF30 tail.
     out.walk_found_device = host.unit_carries_droppable_device_007c0d90();
     if (!out.walk_found_device) return out;   // 007C0EDE JZ past the call
 

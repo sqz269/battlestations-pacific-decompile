@@ -31,8 +31,17 @@ float distance3_009ac0b0(const std::array<float, 3>& p, const std::array<float, 
     const float dx = to_f(static_cast<double>(p[0]) - u[0]);
     const float dy = to_f(static_cast<double>(p[1]) - u[1]);
     const float dz = to_f(static_cast<double>(p[2]) - u[2]);
-    const float d2 = to_f(static_cast<double>(dy) * dy + static_cast<double>(dx) * dx +
-                          static_cast<double>(dz) * dz);
+    float d2;
+    if constexpr (kKamikazeX87FloatCc13Bound) {
+        // 009AC10B-009AC119: dz^2 + (dx^2 + dy^2), each step rounded to float
+        // (24-bit x87 on the main thread).
+        d2 = to_f(static_cast<double>(to_f(static_cast<double>(dz) * dz)) +
+                  to_f(static_cast<double>(to_f(static_cast<double>(dx) * dx)) +
+                       to_f(static_cast<double>(dy) * dy)));
+    } else {
+        d2 = to_f(static_cast<double>(dy) * dy + static_cast<double>(dx) * dx +
+                  static_cast<double>(dz) * dz);
+    }
     if (!(static_cast<double>(d2) > kDistEpsD)) return 0.0f;
     return to_f(std::sqrt(static_cast<double>(d2)));
 }
@@ -108,6 +117,12 @@ void kamikaze_approach_seed_009ab920(KamikazeApproach& ap, const KamikazeSeedInp
     const bool rocket = kamikaze_rocket_like(in.unit_kind_17, in.pilot_fires_c24);
     const KamikazeProfile& p = rocket ? in.rocket_like : in.fighter_like;
     // 009AB95B/009AB96A: tuning+474h or +490h, the variant's ReferenceSpeed, into 009F9CE0.
+    // Documented deviation (cc13-D1): 009F9CE0 divides with no guard (a zero
+    // reference gives +inf); the guard is host glue for unloaded tuning, since
+    // the authored reference and class speeds are positive. 009F9CE0's head
+    // caches (unit, +538h, +9D4h, +DF4h, the robots row, +28h = -1.0), the
+    // vtable 00D1FAF4 and the 009FB200 construct are the host's (KamikazeApproach
+    // models the fields this window reads).
     ap.speed_ratio_24 = (p.reference_speed_44 > 0.0f && in.class_speed_188 > 0.0f)
         ? bot_task_speed_ratio(in.class_speed_188, p.reference_speed_44) : 1.0f;
     // 009AB98D-009AB99E: +48h = +24h * 1200.0 (qword 00D1FAF8); 009AB850 overwrites it.
@@ -142,7 +157,10 @@ void kamikaze_aim_error_009abf60(KamikazeApproach& ap, const KamikazeRobotRow& r
     s.weight_6c = row.magazine_weight_88;
     s.weight_70 = row.fueltank_weight_8c;
     // 009AC092: 009FA380(sub, (dh, 0, dv)): bias = it, dirty = 1. 009AC09E then
-    // tail-jumps to 009FA260, the pick, which the host runs.
+    // tail-jumps to 009FA260, the pick. This function has no host, so the
+    // gotowards enter in kamikaze_enter makes that call under
+    // kKamikazeAimPickCc13Bound (cc13-D1); OFF, the host's next 009FADA0
+    // re-picks on the dirty byte.
     s.bias_34 = {dh, 0.0f, dv};
 }
 
@@ -157,6 +175,11 @@ std::array<float, 3> kamikaze_aim_point_009aba30(const std::array<float, 3>& ref
 
 KamikazeUpdateResult kamikaze_approach_update_009af0a0(KamikazeApproach& ap,
                                                        const KamikazeUpdateInputs& in) {
+    // Documented deviation (cc13-D1): the image clears the gun block
+    // [+1Ch]+34h/+38h and then runs 009FADA0(dt) between the +58h store and
+    // +5Ch; here both are the caller's (kamikaze_task_arm_009af510), 009FADA0
+    // first. The order is unobservable in the live host, whose gun-block clear
+    // is empty; the unit pose refresh is inside the host's position query.
     KamikazeUpdateResult r;
     ap.band_58 = 1;                                  // 009AF0B2
     ap.in_range_5c = ap.rocket_like_5d;              // 009AF0D8-009AF0DB
@@ -433,6 +456,7 @@ KamikazeAltitudeWrite kamikaze_cruise_profile_009af480(const KamikazeApproach& a
                                                        const KamikazeAltitudeChannels& ch) noexcept {
     KamikazeAltitudeWrite w;
     if (!ch.cruise_locked_38d) {
+        w.clears_one_shot_3a9 = true;                                    // 009AF4B7
         PilotAltitudeChannel a{false, ch.cruise_current_380, ch.cruise_one_shot_3a9};
         if (bot_task_altitude_write_applies(a)) {
             w.writes_cruise_394 = true;
@@ -441,6 +465,7 @@ KamikazeAltitudeWrite kamikaze_cruise_profile_009af480(const KamikazeApproach& a
         }
     }
     if (!ch.second_locked_38c) {
+        w.clears_one_shot_3aa = true;                                    // 009AF4E0
         PilotAltitudeChannel a{false, ch.second_current_37c, ch.second_one_shot_3aa};
         if (bot_task_altitude_write_applies(a)) {
             w.writes_second_398 = true;
@@ -449,6 +474,20 @@ KamikazeAltitudeWrite kamikaze_cruise_profile_009af480(const KamikazeApproach& a
         }
     }
     return w;
+}
+
+void kamikaze_task_cruise_profile_009af480(KamikazeTask& task,
+                                           KamikazeCruiseProfileTaskHost& host,
+                                           KamikazeRandom& rng) {
+    // 009AF484: 0099B660, the base, is a bare RET.
+    host.apply_altitude_write(
+        kamikaze_cruise_profile_009af480(task.ap, host.altitude_channels()));  // 009AF489-009AF4E0
+    kamikaze_approach_redraw_009ab850(task.ap, host.ctl_alt_cruise_394(),
+                                      host.ctl_alt_second_398(), rng);        // 009AF4EB
+    KamikazeUpdateInputs ui = host.approach_update_inputs_009af0a0(task.ap, 0.0f);  // 009AF4F8
+    ui.aim_point = kamikaze_aim_point_009aba30(ui.aim_point, task.ap.eta_60);
+    kamikaze_approach_update_009af0a0(task.ap, ui);
+    host.abandon_if_stale_0099b740();                                    // 009AF501 JMP
 }
 
 int kamikaze_command_still_valid(const KamikazeCommandCheck& in,
@@ -478,6 +517,9 @@ void kamikaze_enter(KamikazeTask& task, KamikazeTaskHost& host, KamikazeRandom& 
         kamikaze_gotowards_enter_009ac160(task.gotowards, task.ap, host.robot_row(),
                                           host.ctl_alt_cruise_394(), host.ctl_alt_second_398(),
                                           rng);
+        if constexpr (kKamikazeAimPickCc13Bound) {
+            host.pick_target_ref_009fa260(task.ap.ref);   // 009AC09E JMP 009FA260
+        }
     } else if (s == KamikazeState::kAim) {
         kamikaze_aim_enter_009ac8d0(task.aim, host.roll_c68());
     } else if (is_formation(s)) {
@@ -511,7 +553,10 @@ KamikazeArmResult kamikaze_task_arm_009af510(KamikazeTask& task, KamikazeTaskHos
     KamikazeArmResult r;
     r.before = task.state;
     KamikazeApproach& ap = task.ap;
-    // 009AF521: the approach update.
+    // 009AF521: the approach update. Documented deviation (cc13-D1): 009FADA0
+    // and the gun-block clear are 009AF0A0's own first calls in the image
+    // (clear, then 009FADA0); they are hoisted here, 009FADA0 first, which the
+    // live host cannot observe (its clear_gun_block_34_38 is empty).
     std::array<float, 3> ref_point{};
     const bool has_target = host.update_target_ref_009fada0(ap.ref, dt, ref_point);
     r.has_target = has_target;
@@ -592,6 +637,9 @@ bool drop_kamikaze_in_attack_set_009add40(DropKamikazeState s) noexcept {
 void drop_kamikaze_approach_seed_009abab0(DropKamikazeApproach& ap,
                                           const DropKamikazeSeedInputs& in) {
     // 009ABAD4-009ABAE5: 009F9CE0 with tuning+458h Pilot/LevelBomb/ReferenceSpeed.
+    // Documented deviation (cc13-D1): the zero guard is host glue (009F9CE0 has
+    // none; the authored speeds are positive), and the head caches, vtable
+    // 00D1FB00 and 009FB200 construct are the host's.
     ap.speed_ratio_24 = (in.level_bomb_reference_speed_458 > 0.0f && in.class_speed_188 > 0.0f)
         ? bot_task_speed_ratio(in.class_speed_188, in.level_bomb_reference_speed_458) : 1.0f;
     ap.rounds_pending_2c = 0;                                            // 009ABAFC
@@ -600,7 +648,9 @@ void drop_kamikaze_approach_seed_009abab0(DropKamikazeApproach& ap,
     ap.inside_c0 = false;                                                // 009ABB38
     ap.target_dist_b4 = 99999.0f;                                        // 00D119AC
     // 009ABB23-009ABB78: startDist = +24h * 2000.0 (qword 00CF0DD8); attackDist =
-    // startDist * 1.4 (qword 00D045F0).
+    // startDist * 1.4 (qword 00D045F0). The image keeps one x87 chain, but at
+    // the main thread's 24-bit precision its intermediate is the float startDist,
+    // so taking attackDist from the stored startDist is exact.
     ap.start_dist_ac = to_f(static_cast<double>(ap.speed_ratio_24) * 2000.0);
     ap.attack_dist_b0 = to_f(static_cast<double>(ap.start_dist_ac) * 1.399999976158142);
     ap.target_hdg_b8 = 0.0f;
@@ -614,6 +664,10 @@ void drop_kamikaze_approach_seed_009abab0(DropKamikazeApproach& ap,
 
 void drop_kamikaze_approach_update_009ade00(DropKamikazeApproach& ap,
                                             const DropKamikazeUpdateInputs& in) {
+    // Documented deviation (cc13-D1): 009FADA0(dt) (009ADE0F), the 007B93E0
+    // ordnance query, the 009ABBC0 aim point and the unit/leader pose refreshes
+    // are the caller's (drop_kamikaze_task_arm_009ae8a0 and the host's queries),
+    // made before this runs; none reads what this function writes.
     ap.alt_a8 = in.ctl_alt_second_398;                                   // 009ADE24
     ap.has_ordnance_c1 = in.has_ordnance;                                // 009ADE33
     if (!in.has_target) {                                                // 009ADE2F
@@ -623,7 +677,14 @@ void drop_kamikaze_approach_update_009ade00(DropKamikazeApproach& ap,
     // 009ADE60-009ADEC9: planar distance, 0 at or below 1e-10.
     const float dx = to_f(static_cast<double>(in.aim_point[0]) - in.unit_position[0]);
     const float dz = to_f(static_cast<double>(in.aim_point[2]) - in.unit_position[2]);
-    const float d2 = to_f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    float d2;
+    if constexpr (kKamikazeX87FloatCc13Bound) {
+        // 009ADE81-009ADE89: dx^2 + dz^2, each step rounded to float.
+        d2 = to_f(static_cast<double>(to_f(static_cast<double>(dx) * dx)) +
+                  to_f(static_cast<double>(dz) * dz));
+    } else {
+        d2 = to_f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    }
     const float dist = (static_cast<double>(d2) > kDistEpsD)
         ? to_f(std::sqrt(static_cast<double>(d2))) : 0.0f;
     ap.target_dist_b4 = dist;
@@ -633,6 +694,9 @@ void drop_kamikaze_approach_update_009ade00(DropKamikazeApproach& ap,
         inside = ap.start_dist_ac > dist;                                // 009AE023
     } else if (in.reload_enabled) {
         inside = true;                                                   // 009AE037
+    } else if constexpr (kKamikazeX87FloatCc13Bound) {
+        // 009ADF38-009ADF48: FADD qword 100.0 rounds to float, then JA.
+        inside = to_f(static_cast<double>(ap.start_dist_ac) + 100.0) > dist;
     } else {
         inside = static_cast<double>(ap.start_dist_ac) + 100.0 > dist;   // 009ADF38, qword
     }
@@ -643,8 +707,17 @@ void drop_kamikaze_approach_update_009ade00(DropKamikazeApproach& ap,
     if (in.leader_is_self) return;
     const float lx = to_f(static_cast<double>(in.aim_point[0]) - in.leader_position[0]);
     const float lz = to_f(static_cast<double>(in.aim_point[2]) - in.leader_position[2]);
-    const float l2 = to_f(static_cast<double>(lx) * lx + static_cast<double>(lz) * lz);
-    const bool leader_close = static_cast<double>(ap.attack_dist_b0) * ap.attack_dist_b0 > l2;
+    float l2;
+    bool leader_close;
+    if constexpr (kKamikazeX87FloatCc13Bound) {
+        // 009ADFF1-009AE011: l2 = lz^2 + lx^2 and attack^2, each rounded to float.
+        l2 = to_f(static_cast<double>(to_f(static_cast<double>(lz) * lz)) +
+                  to_f(static_cast<double>(lx) * lx));
+        leader_close = to_f(static_cast<double>(ap.attack_dist_b0) * ap.attack_dist_b0) > l2;
+    } else {
+        l2 = to_f(static_cast<double>(lx) * lx + static_cast<double>(lz) * lz);
+        leader_close = static_cast<double>(ap.attack_dist_b0) * ap.attack_dist_b0 > l2;
+    }
     ap.inside_c0 = ap.inside_c0 && leader_close;
 }
 
@@ -661,15 +734,42 @@ DropKamikazeProfileWrite drop_kamikaze_cruise_profile_009ae9d0(
     }
     // 009AEA82: startDist = U(0.9, 1.2) * ratio * DropDist (tuning+460h);
     // 009AEAB0: attackDist = ratio * 500.0 (qword 00CE3840) + startDist.
+    // 009AEA87-009AEAB8: draw * (ratio * drop), then ratio * 500.0 + startDist.
     const float draw = rng.uniform_00bd2f10("ac", 0.89999998f, 1.20000005f);
     const double ratio = ap.speed_ratio_24;
-    ap.start_dist_ac = to_f(static_cast<double>(draw) * (ratio * rocket_drop_dist_460));
-    ap.attack_dist_b0 = to_f(ratio * 500.0 + ap.start_dist_ac);
+    if constexpr (kKamikazeX87FloatCc13Bound) {
+        // Each step rounds to float (24-bit x87 on the main thread).
+        ap.start_dist_ac = to_f(static_cast<double>(draw) * to_f(ratio * rocket_drop_dist_460));
+        ap.attack_dist_b0 = to_f(static_cast<double>(to_f(ratio * 500.0)) + ap.start_dist_ac);
+    } else {
+        ap.start_dist_ac = to_f(static_cast<double>(draw) * (ratio * rocket_drop_dist_460));
+        ap.attack_dist_b0 = to_f(ratio * 500.0 + ap.start_dist_ac);
+    }
     return w;
+}
+
+void drop_kamikaze_task_cruise_profile_009ae9d0(DropKamikazeTask& task,
+                                                DropKamikazeCruiseProfileHost& host,
+                                                KamikazeRandom& rng) {
+    // 009AE9D5: 0099B660, the base, is a bare RET.
+    const bool leader = host.flight_leader_007b8ad0();                   // 009AE9E0
+    const DropKamikazeProfileWrite w = drop_kamikaze_cruise_profile_009ae9d0(
+        task.ap, leader, host.altitude_channels(), host.rocket_cruising_alt_45c(),
+        host.rocket_drop_dist_460(), rng);
+    // 009AE9E9-009AEA52 run before the draw; the draw touches no channel byte.
+    if (leader) host.apply_altitude_write(w.altitude);
+    drop_kamikaze_approach_update_009ade00(
+        task.ap, host.approach_update_inputs_009ade00(task.ap, 0.0f));  // 009AEAC3
+    host.abandon_if_stale_0099b740();                                    // 009AEACF JMP
 }
 
 void drop_kamikaze_follow_enter_009ad180(DropKamikazeFollowState& st,
                                          float level_flight_speed) noexcept {
+    // The state-field half of 009AD180 (cc13-D1 re-check). drop_enter makes the
+    // rest: 009BED80 (enter_formation_state(kFollow)), then squadron+3E4h = 3 and
+    // 007ED260 (set_squadron_formation_shape_007ed260(3)), then this. The image
+    // stores +A0h/+98h before 009BED80; 009BED80 writes only +84h..+94h and the
+    // squadron, so the order is unobservable.
     st.released_a0 = false;                  // 009AD18C
     st.release_timer_98 = -1.0f;             // 00D7A260
     st.follow_8c = 1.0f;
@@ -958,7 +1058,11 @@ DropKamikazeArmResult drop_kamikaze_task_arm_009ae8a0(DropKamikazeTask& task,
     r.before = task.state;
     DropKamikazeApproach& ap = task.ap;
     ap.avoid_flag_bc = 0xFF;                                             // 009AE8B2
-    // 009AE8BC: the approach update.
+    // 009AE8BC: the approach update. Documented deviation (cc13-D1): 009FADA0,
+    // the ordnance query and the pose refreshes, made inside 009ADE00 in the
+    // image, are host calls made here first; the state functions return plans
+    // that host.apply_plan writes after each returns. Neither order is
+    // observable: the queries read nothing 009ADE00 writes.
     std::array<float, 3> point{};
     const bool has_target = host.update_target_ref_009fada0(ap.ref, dt, point);
     DropKamikazeUpdateInputs ui;
