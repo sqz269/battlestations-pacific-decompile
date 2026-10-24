@@ -3,27 +3,9 @@
 // an unresolved call: every native step is a host method the caller supplies.
 
 #include "bsp/lua_binding_spawn.hpp"
-
-#include <cctype>
+#include "bsp/lua_spawn_new.hpp"
 
 namespace bsp {
-namespace {
-
-// 00BF7FBF __stricmp, applied only after the two sizes already matched.
-bool equal_ignoring_case(const std::string& left, const std::string& right) noexcept
-{
-    for (std::size_t i = 0; i < left.size(); ++i) {
-        const unsigned char a = static_cast<unsigned char>(left[i]);
-        const unsigned char b = static_cast<unsigned char>(right[i]);
-        if (std::tolower(a) != std::tolower(b)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-} // namespace
-
 const char* spawn_new_field_name(SpawnNewField field) noexcept
 {
     switch (field) {
@@ -41,20 +23,6 @@ const char* spawn_new_field_name(SpawnNewField field) noexcept
     case SpawnNewField::LookAt: return "lookAt";
     }
     return "";
-}
-
-bool spawn_request_id_matches(const std::string& queued, const std::string& wanted) noexcept
-{
-    // The native compares the two NativeString sizes first and only calls __stricmp when they
-    // are equal and both non-zero; an empty queued id matches an empty wanted id and nothing
-    // else. The size test alone gives the same answer for the empty cases.
-    if (queued.size() != wanted.size()) {
-        return false;
-    }
-    if (queued.empty()) {
-        return true;
-    }
-    return equal_ignoring_case(queued, wanted);
 }
 
 int spawn_flag_slot(int argument_count, bool slot8_is_string_or_nil) noexcept
