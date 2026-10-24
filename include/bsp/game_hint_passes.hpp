@@ -24,6 +24,11 @@ namespace bsp::game {
 // pumped, and its Update times the shown hint and finishes it.
 inline constexpr bool kHintTriggerPassesCc15Bound = true;
 
+// 0054D3C0 on the process tracker's screen 34h ([00E198C4]+A8h), for the
+// in-mission interface update's 0068C526 query. False (no answer) when the
+// tracker or its screen does not exist yet.
+bool hints_seconds_left_0054d3c0_cc15(std::int32_t& seconds_left) noexcept;
+
 // The game-side reads of the passes and TriggerHint. The mission frame host
 // implements it over its units and scene state for as long as it lives.
 struct HintFrameQueries {
