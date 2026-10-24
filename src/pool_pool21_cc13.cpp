@@ -14,8 +14,9 @@
 // on by FLD/FSTP; the main thread runs with 24-bit precision control, so plain float
 // arithmetic reproduces it. The pulse +1E0h steps by the doubles 0.04f / 0.8f. The 4Bh bar
 // (0067A0A7) keeps points * f[+1ACh] in a double slot after a 24-bit rounding and FDIVRs by
-// the cap; the C++ rounds the product to float, which can differ from the x87 rounding in
-// the last place only through double rounding (53 then 24 bits).
+// the cap. 00946F00 and 00942130 are bound as double, so both the product (rounded to float
+// here) and the FDIVR quotient can double-round (53 then 24 bits) against the x87 24-bit
+// rounding; the result differs by at most the last place.
 // Host overlap: the deck-page launch 0067A4C8..0067A5E6 (006BF310, 006C4780, 00656280,
 // 0077C2A0) is modelled live in src/game_hosts_mission_frame.cpp and
 // include/bsp/air_operations.hpp (docs/AIROPS_LAUNCH_TICK.md); nothing here is wired.
@@ -1000,7 +1001,7 @@ void place_cursor_marker(void* s, void* target, Pool21Host& host) {
 // cursor +2C4h back over +3E8h entries (window +324h); with a 46h-flagged selected unit,
 // walk its slot entries back (+3 mod count) to the next one 006626E0 resolves (+228h) and
 // track +254h; with a 9h/45h-flagged one, walk the air-ops slots to the next out (or state
-// 2 / 5) record through the 58h stack item and track its +28h.
+// 2 / 5) record through the 58h air-ops slot record and track its +28h.
 void handle_prev_on_deck_page(void* s, void* item, Pool21Host& host) {
     if (at<std::uint8_t>(s, 0x2C1) != 0 || at<std::uint8_t>(s, 0x2DC) != 0) return;
     if (at<std::uint32_t>(s, 0x34C) != 0) {
@@ -1433,7 +1434,7 @@ void confirm_if_idle(void* s, Pool21Host& host) {
 constexpr std::size_t kStackScratch = 0x94;
 
 // 0067A4C8..0067A5F3: the primary button on the deck page launches from the selected air-ops
-// slot: the slot record +4Ch[+324h] is copied into the 58h item; a state-5 slot with stock
+// slot: the slot record +4Ch[+324h] is copied into the 58h air-ops slot record; a state-5 slot with stock
 // (006BF310 on the item's class +4h) is filled with min(stock, +2B4h) (006C4780) and a kind-3
 // message (00656280 at [ESP+140h], arg +21Ch, the local player) is routed through the block's
 // +7Ch (0077C2A0, EH 61h). The message gets no destructor call.
@@ -1498,9 +1499,9 @@ void handle_pad_buttons(void* s, void* item, Pool21Host& host) {
 }
 
 // The checked iterator over list +3E0h (head +3E4h) advanced +2C4h times by the postfix
-// 00658FE0 (+2C4h first clamped to +3E8h - 1, unsigned); returns the node after the inlined
-// dereference checks.
-void* walk_deck_slots(void* s, Pool21Host& host) {
+// 00658FE0 (+2C4h first clamped to +3E8h - 1, unsigned); returns the iterator after the
+// inlined dereference checks (its owner is reloaded from [ESP+2Ch] for the later end test).
+CheckedIter walk_deck_slots(void* s, Pool21Host& host) {
     CheckedIter it{static_cast<std::uint8_t*>(s) + 0x3E0, node_next(ptr(s, 0x3E4))};  // [ESP+2Ch]
     if (at<std::uint32_t>(s, 0x2C4) >= at<std::uint32_t>(s, 0x3E8)) at<std::uint32_t>(s, 0x2C4) = at<std::uint32_t>(s, 0x3E8) - 1;
     CheckedIter previous{};  // [ESP+60h]
@@ -1508,7 +1509,7 @@ void* walk_deck_slots(void* s, Pool21Host& host) {
         host.list_iterator_post_increment_00658fe0(&it, &previous, 0);
     if (it.owner == nullptr) host.crt_invalid_parameter_noinfo_00bf6713();
     if (it.node == at<void*>(it.owner, 4)) host.crt_invalid_parameter_noinfo_00bf6713();
-    return it.node;
+    return it;
 }
 
 // The order issued to the tracked unit +220h: command 00E08F08 when its class tag (vtable
@@ -1538,9 +1539,10 @@ void handle_order_slot(void* s, void* item, Pool21Host& host) {
     if (at<std::int32_t>(s, 0x5C) != 0) return;
     if (at<std::uint32_t>(s, 0x34C) != 0) {
         if (at<std::uint32_t>(s, 0x3B4) == 0) return;
-        void* const node = walk_deck_slots(s, host);
+        const CheckedIter walked = walk_deck_slots(s, host);
+        void* const node = walked.node;
         if (at<std::uint8_t>(node, 0x14) == 0) return;
-        if (node == at<void*>(s, 0x3E4)) host.crt_invalid_parameter_noinfo_00bf6713();
+        if (node == at<void*>(walked.owner, 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // [ESP+2Ch] reloaded
         at<void*>(s, 0x220) = ptr(node, 0x18);
         if (ptr(s, 0x220) == nullptr) return;
         if (!host.unit_has_flag_vtable5c(ptr(s, 0x220), 0x18)) return;
@@ -1648,9 +1650,10 @@ void handle_spectate(void* s, void* item, Pool21Host& host) {
     }
     if (page != 0) return;
     if (at<std::uint32_t>(s, 0x34C) != 0 && at<std::uint32_t>(s, 0x3E8) != 0) {
-        void* const node = walk_deck_slots(s, host);
+        const CheckedIter walked = walk_deck_slots(s, host);
+        void* const node = walked.node;
         if (at<std::uint8_t>(node, 0x14) != 0) {
-            if (node == at<void*>(s, 0x3E4)) host.crt_invalid_parameter_noinfo_00bf6713();
+            if (node == at<void*>(walked.owner, 4)) host.crt_invalid_parameter_noinfo_00bf6713();  // [ESP+2Ch] reloaded
             at<void*>(s, 0x220) = ptr(node, 0x18);
         } else {
             at<void*>(s, 0x220) = nullptr;
@@ -1704,7 +1707,7 @@ void hud_support_manager_screen_update_00675c40(void* s, float dt, Pool21Host& h
     sync_record_and_pulse(s, host);
 
     alignas(8) std::uint8_t item[0x58];  // [ESP+D0h], EH state 36h until 0067AF05
-    host.support_item_construct_006c1960(item, 0);
+    host.air_ops_slot_record_construct_006c1960(item, 0);
     check_selected_unit_retired(s, host);
     place_unit_markers(s, host);
     check_current_site_retired(s, host);

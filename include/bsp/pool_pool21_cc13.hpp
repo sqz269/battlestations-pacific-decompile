@@ -76,7 +76,7 @@ public:
     virtual float support_selection_health_00668570(void* screen) = 0;
     // 006723F0 BSP_HudSupportManagerScreen_StepCloseFade, __thiscall(float dt), RET 4.
     virtual void support_step_close_fade_006723f0(void* screen, float dt) = 0;
-    // 00660190 BSP_HudSupportManagerScreen_SelectDeckSlot: __thiscall(the 58h stack item), RET 4.
+    // 00660190 BSP_HudSupportManagerScreen_SelectDeckSlot: __thiscall(the 58h air-ops slot record), RET 4.
     virtual void support_select_deck_slot_00660190(void* screen, void* item) = 0;
     // Sounds, __fastcall, RET: 0065F800 left/right, 0065F170 unavailable, 0065F6B0 unit-to-unit.
     virtual void support_play_left_right_sound_0065f800(void* screen) = 0;
@@ -101,11 +101,12 @@ public:
     virtual void support_build_hangar_loadout_ring_00666dc0(void* screen) = 0;
     virtual void support_highlight_hangar_loadout_00662210(void* screen) = 0;
 
-    // ---- the 58h stack item (00675C40's [ESP+D0h], EH state 36h) ----
-    // 006C1960 BSP_SupportManagerItem_Construct: __thiscall(ECX = item; dword), RET 4.
-    // 006BC690 BSP_AirOpsSlotRecord_Destruct: __thiscall(ECX = item), RET.
-    virtual void support_item_construct_006c1960(void* item, std::uint32_t arg) = 0;
-    virtual void air_ops_slot_record_destruct_006bc690(void* item) = 0;
+    // ---- the 58h air-ops slot record (00675C40's [ESP+D0h], EH state 36h) ----
+    // 006C1960 (air-ops slot record construct; ledger BSP_SupportManagerItem_Construct):
+// __thiscall(ECX = record; dword), RET 4.
+    // 006BC690 BSP_AirOpsSlotRecord_Destruct: __thiscall(ECX = record), RET.
+    virtual void air_ops_slot_record_construct_006c1960(void* record, std::uint32_t arg) = 0;
+    virtual void air_ops_slot_record_destruct_006bc690(void* record) = 0;
 
     // ---- records, widgets, input, points ----
     // 006697A0 BSP_IntListIntRecord_Assign: __thiscall(ECX = destination record; const
