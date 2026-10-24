@@ -7,14 +7,14 @@ FrontEndFrame, or in-mission interface manager is instantiated by this work.
 
 ## Acceptance status
 
-Steps 1--2 pass the bounded USN04 fixtures below. Later steps remain separate
-deliverables. Input remains outside this lane and blocks button dispatch.
+Steps 1--3 pass the bounded USN04 fixtures below. Native pages remain a separate
+deliverable. Input remains outside this lane and blocks button dispatch.
 
 | Step | Runtime selection | Current evidence |
 | --- | --- | --- |
 | 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Visible native Text in USN04; ON game exit0/gameplay identical; OFF pair_diff exit0 |
 | 2. Initial GUI texture resources | `BSP_NATIVE_GUI_RESOURCES=1` | ON game exit0/native texture retirement/gameplay identical; OFF pair_diff exit0 |
-| 3. Per-widget Model and page cGroup ownership | `BSP_NATIVE_GUI_NODES=1` planned | Canonical Model composition built; cGroup worker built, integration/ON pending |
+| 3. Per-widget Model and page cGroup ownership | `BSP_NATIVE_GUI_NODES=1` | Same actual Model under actual cGroup; ON visible/game exit0/normal retirement; OFF pair_diff exit0 |
 | 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` proposed | Exact 18-class audit in `OCT24_GUI_PAGES.md`; actual Screen manager/page ownership and ten factory arms remain blockers |
 
 All runtime selections default OFF. No comparison-tool noise rule is changed.
@@ -226,6 +226,45 @@ This does not implement the GUI manager destructor or activate a page.
 See `OCT24_GUI_RESOURCES.md` for credit and original-ABI boundaries. Final
 images/manifests/logs/pairs/hash record are copied to the coordinator's
 `local/gui_render/oct24_gui_step2/`.
+
+### Step 3: same per-widget Model under an actual cGroup
+
+Source `7e51f1643dc9389adeb2eda5cd8378d5cdf32ec3` is frozen under
+`step3_final/` (executable SHA-256
+`b67c417895c2bc05da975f6dbdf4d3f5ea5acf4de2704c847ae693efeab97061`).
+`step3_build.log` records Win32 Release and 2/2 existing checks passing.
+The clean-main control is `f3c26eea8`, built with 2/2 checks and run through
+`usn04_origin_step3.log`; its source/hash record is under
+`baseline/step3_f3c26eea8/`.
+
+The Text widget owns the same actual 188h Model slot from 01090054/B74EB0,
+with the 184h generated Model body B75030/B6F5A0 and its original scalar retirement.
+NODES=1 adds one actual 18Ch cGroup slot from 010902F4/B8F5E0. The root adapter
+owns that creator credit; Text retains its sole existing Model. The same
+parenting runtime links them, and the actual 24h scene's root list contains
+the Group. This renderer cGroup is distinct from the EC-byte GUI Group widget.
+No second widget Model, page, queue, scene owner or geometry is created.
+
+Group service metadata is composed during ready startup. Its environment is
+bound in the existing mission-preparation callback after mission configuration,
+before any command. B6D890/current50 propagates the scene and B8EF10 traverses
+the genuine child through the same command graph. Commands finish before
+unroot -> detach Text -> retire Group -> retire same Text -> camera/scene.
+Group metadata remains live through renderer drain and closes before nodes.
+Interrupted work retains the full graph. NODES=1 requires TEXT/SHIP/FRAME=1.
+
+`usn04_nodes_on_probe1.log` is the accepted first ON run: all three GUI switches
+and SHIP/FRAME=1, UNITS/GUI_TRACE=0. It exits0, captures native Text above the
+ship (`step3_final/usn04_native_N180.png`), and records 561 submissions plus
+explicit Group/Text/pool retirement before resource and Font retirement.
+`step3_on_pair.json` is literal exit1 with identical gameplay and all 21 unit
+rows; the same expected native/bridge metadata differences as Step2 remain.
+`usn04_nodes_off_final.log` exits0; `step3_off_pair.json` is literal
+**pair_diff exit0** against the clean control, including 1392 native rows,
+706 summaries and no remaining masked differences. The default-OFF direct
+Text route is retained. This does not prove a 124h Page or all 18 raw widget classes.
+Final images/logs/manifests/pairs/hash record are copied to the coordinator's
+`local/gui_render/oct24_gui_step3/`.
 
 Final screenshots belong under this tree's `local/gui_render/` and must be
 copied to the cc16-progress tree before this worktree is removed.

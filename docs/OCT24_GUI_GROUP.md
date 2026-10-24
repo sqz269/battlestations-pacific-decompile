@@ -79,12 +79,15 @@ Both existing CTests passed: reconstructed_math (0.36s), tool_tests (12.69s),
 2/2 overall (13.10s). Evidence is `local/oct24_gui_group_build.log`. These
 checks do not execute the new Group path. No new tests were added.
 
-The new root composition was compiled through a temporary private CMake TU
-admission, restored byte-for-byte before commit. Final registration and the
-default-OFF `BSP_NATIVE_GUI_NODES=1` runtime selector belong to the integrator.
-This packet performs no game launches, no OFF/ON comparisons and no screenshot
-or visual/native ABI/gameplay claims. Runtime group construction, queued draw,
-successful teardown and post-integration behavior remain unverified here.
+The initial root composition was compiled through a temporary private CMake TU
+admission, restored byte-for-byte before that source commit. Main now permanently
+compiles the adapter; the default-OFF `BSP_NATIVE_GUI_NODES=1` selector parents
+the same Text Model under its actual cGroup root. Primary-lane runtime results,
+OFF/ON comparison codes, screenshots and explicit normal retirement are recorded
+in `OCT24_GUI_RENDER.md`. The original source packet itself performed no game
+launches and made no visual/native ABI/gameplay claims. The primary fixture
+establishes Group construction, queued draw and normal teardown in USN04;
+private ABI, device recreation and post-update stability remain unproved.
 
 Both existing Ghidra names were retained and their evidence comments appended
 under `ghidra_annotate.py --apply`'s write lock. The saved project's old comments
