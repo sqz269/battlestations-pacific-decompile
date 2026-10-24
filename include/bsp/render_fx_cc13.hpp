@@ -222,14 +222,13 @@ void tree_destruct(TreeHeader& tree, const TreeEraseRangeFn& erase_range);
 enum class Shape : std::uint8_t {
     kClearViaResize, kDestroyViaResize, kClearCountDown, kDestroyCountDown,
     kReallocateExact, kGrow, kReserveAtLeast, kPushBackGrow, kPushBackViaReserve,
-    kReserveMinOne, kResize, kAt, kAtGrowing, kEnd, kConstructEmpty, kConstructEmptyPair,
+    kReserveMinOne, kResize, kAt, kAtGrowing, kEnd, kConstructEmpty,
     kPopBackDestroy, kFreeData, kFreeDataAndClear, kRemoveAtSwapLast,
     kInlinePush, kInlineEnd, kInlineAt, kCapacityRule,
     kSlabPop, kSlabPush, kSlabHasNoFree, kSlabAllFree, kSlabStamp,
     kRefAssign, kRefRelease, kRefFieldAssign, kRefFieldCopy, kComAssign, kComRelease,
     kComRefCount, kOwnedDelete, kPooledStringRelease, kTreeInitEmpty, kTreeDestruct,
-    kGetDword, kGetByte, kGetFloat, kSetDword, kRecordAt, kLockedGetDword, kLockedGetByte,
-    kNoOp, kReturnZero, kReturnConstant, kForward, kPointerDelete,
+    kGetFloat, kPointerDelete,
 };
 struct RoutineRow {
     std::uint32_t address;
@@ -241,6 +240,71 @@ struct RoutineRow {
 // Returns nullptr when `address` is not a table row.
 const RoutineRow* find_routine_row(std::uint32_t address) noexcept;
 std::size_t routine_row_count() noexcept;
+
+// ---------------------------------------------------------------------------
+// Packet cc13-rendershapes: the leaf accessors that were table rows, one function per
+// address. The object is raw storage at `self` (the image's ECX). Each comment gives the
+// original ABI read from the listing; the C++ signature is the new interface.
+
+// Record addressing, __thiscall(ECX self, index), RET 4, EAX = address. Index arithmetic
+// is 32-bit and wraps as the SHL/LEA forms do.
+std::uint8_t* float4_block_at_00b405d0(std::uint8_t* self, std::uint32_t index);       // self+4+16i
+std::uint8_t* shader_effect_pass_record_00b40050(std::uint8_t* self, std::uint32_t index);  // self+144h+40h*i
+std::uint8_t* vertex_declaration_element_at_00b47c80(const std::uint8_t* self,
+                                                     std::uint32_t index);  // [self+0Ch]+14h*i
+
+// __thiscall(ECX self), RET, EAX = self: dwords +00h and +04h zeroed.
+void* pooled_string_construct_empty_00b34d60(void* self);
+void* pod_pair_zero_init_00b4ec30(void* self);
+
+// __thiscall(ECX self), RET, EAX = the dword at the offset.
+std::uint32_t d3d9_surface_sample_count_00b3cd30(const std::uint8_t* self);      // +24h
+std::uint32_t cube_texture_reported_width_00b3cf70(const std::uint8_t* self);    // +24h
+std::uint32_t cube_texture_reported_height_00b3cf80(const std::uint8_t* self);   // +28h
+std::uint32_t logical_vertex_stream_flags_00b48cc0(const std::uint8_t* self);    // +60h
+std::uint32_t logical_index_stream_flags_00b48d80(const std::uint8_t* self);     // +10h
+std::uint32_t logical_index_stream_count_00b48d90(const std::uint8_t* self);     // +14h
+std::uint32_t logical_index_stream_format_00b48da0(const std::uint8_t* self);    // +18h
+// __thiscall(ECX self, value), RET 4: +24h = value.
+void d3d9_surface_set_sample_count_00b3ce20(std::uint8_t* self, std::uint32_t value);
+
+// __thiscall(ECX self), RET. 00B3FF70 is MOVZX (EAX zero-extended); 00B400B0 is MOV AL,
+// leaving EAX bits 8-31 as they were on entry. Both return the byte in AL.
+std::uint8_t shader_reflection_owner_byte74_00b3ff70(const std::uint8_t* self);
+std::uint8_t material_effect_byte13c_00b400b0(const std::uint8_t* self);
+
+// __thiscall(ECX self), RET. Lock pointer at +48h (dwords) or +4Ch (bytes); listing order
+// in each body below.
+std::uint32_t locked_object_field40_00b5df90(const std::uint8_t* self);
+std::uint32_t locked_object_field3c_00b5dfc0(const std::uint8_t* self);
+std::uint8_t locked_object_byte44_00b5dff0(const std::uint8_t* self);
+std::uint8_t locked_object_byte45_00b5e020(const std::uint8_t* self);
+
+// A bare RET: vtable slots with no stack arguments.
+void physical_index_buffer_noop_slot10_00b4b480(void* self);
+void physical_vertex_buffer_noop_slot10_00b4b520(void* self);
+void post_effect_owner_noop_slot0c_00b4ec40(void* self);
+void bloom_owner_noop_slot0c_00b54cc0(void* self);
+
+// __thiscall(ECX self), RET, EAX = a constant.
+std::uint32_t d3d9_texture2d_kind_00b3ce40(const void* self);   // 0
+std::uint32_t cube_texture_kind_00b3cf60(const void* self);     // 1
+std::uint32_t volume_texture_kind_00b3d080(const void* self);   // 2
+
+// Forwards to a pool routine on an image global (passed in, as the file passes every
+// image global). __thiscall(ECX self), RET: PUSH ECX, MOV ECX pool, CALL the callee,
+// which pops its stack argument (RET 4).
+void vertex_declaration_pool_return_raw_slot_unwind_00b47c00(void* pool_0108fd38, void* self);
+void logical_vertex_pool_return_slot_unwind_00b49960(void* pool_0108fe18, void* self);
+void logical_index_stream_pool_return_slot_unwind_00b49970(void* pool_0108fe50, void* self);
+}  // namespace bsp::cc13_render1
+namespace bsp::cc13_render_sprites { class SlabPoolHost; }
+namespace bsp::cc13_render1 {
+void hardware_layout_return_raw_slot_00b47c10(std::uint8_t* pool_0108fd70, void* self,
+                                              cc13_render_sprites::SlabPoolHost& host);
+// 00B488D0: MOV ECX 0108FD70, JMP 00B48780; the caller's ECX is not read.
+void* hardware_layout_pool_allocate_raw_slot_stub_00b488d0(
+    std::uint8_t* pool_0108fd70, cc13_render_sprites::SlabPoolHost& host);
 
 // ===========================================================================
 // Segment 84/85: renderer object helpers and resource wrappers. Native objects are
