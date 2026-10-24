@@ -3987,3 +3987,43 @@ level bomber, and no switch is needed.**
   through slot 224h (006E55FA), so this is the host's ammo test.
 - **Uncertainty.** A destroyed-failure message aimed at a plane's rack would set +3B8h. No plane-side sender was
   checked.
+
+
+## 115. Airborne launch ON (CHG06); JM08 plan h holds the HQ but spawns no C47 (cc9-physics26, 2026-10-24)
+
+The exports are of 997fe5044 (main after 04cc91447, where cc15 turns on kChallengeGroupPageCc15Bound): `local\p26b_off`,
+`local\p26b_air` (kAirOpsLaunchFlagAirborneBound + kAirOpsLaunchFlagAltitudeDrawBound), `local\p26b_s1`
+(kLevelBombParatrooperDropBound) and `local\p26b_s6` (all six paratrooper switches). The env is ref and no log has
+"present failed".
+
+**kAirOpsLaunchFlagAirborneBound and kAirOpsLaunchFlagAltitudeDrawBound are ON (reached).** `--menu-select CHG06` now
+loads chg_6_forcez.lua, whose forcedDifficultyLevel 2 overrides the pin.
+- ON logs four "airborne launch for Hermes (006C5050 flag arm, State 7)" lines. They come from
+  LaunchAirBaseSlot(AlliedCV, 1..4, true), with y = Ceiling + draw = 1631.91, 1602.52, 1723.02, and so on. OFF logs
+  none.
+- Both runs fail at 986.88 s ("You have failed to destroy the battleships!", Prince of Wales). Each logs one
+  commandhelpers.lua:330 line, the same on both sides.
+- pair_diff gives 3 (moved). Deaths go 56 -> 51, shots 13164 -> 130 and hull hits 692 -> 9.
+- The cause: OFF, the Hermes squadrons start on the deck and fly over the airfield, so AirField's Heavy AA 01-03 fire
+  (14-16 shots each) and the airfield buildings die. ON, they start airborne at the carrier's x/z and never come
+  within 5 km of that AA (nearest 101 -> 5295 m). That is the mechanism the image's flag arm describes, so both
+  switches flip.
+- `tools/off_switch_on_build.py` gives exit 0, and the full build passes.
+- WINS: LaunchAirBaseSlot is called 0 times in every WINS log checked, so no row can move:
+  - lua72's l72r_*_{m,main}_ref (b1, b9, e8, i08, i18, j6, l10, l6, p01, u01, u02, u12, u21);
+  - this session's p26_off_w*;
+  - USN15 l71r_u15i.
+
+**JM08 plan h (ships62 `s62_j8_h`, copy `local\p26_s62_j8_h.txt`; 72000 frames) on 997fe5044: the HQ holds, but
+the paratrooper path is still unreached.**
+- OFF (`local\p26b_off_j8h`) and S1 (`local\p26b_s1_j8h`) have no end through 3600 s; the HQ never falls. They are
+  gameplay identical (exit 1).
+- No C47 spawns, and neither does any US bomber. The only plane types created are:
+  - Japanese: MainAirFieldEntity 01 (types 152, 154, 166 and 167), Hosho (162), Gekko, Ki-43 and the H6Ks;
+  - three Wildcats (133).
+- `summary mission capture paratroopers adds=0` and `units_with ... paratrooper=0` on both sides.
+- The plan's own "C47 .." targets are refused with "no unit". The run therefore does not contain the ~1318 s US air
+  wave that physics24's runs saw (section 104).
+- The S6 run was cancelled because S1 was identical.
+- Next: find what spawns JM08's US air wave (the mission script; LST 01 dies at 1275.27 s to the HQ's guns, which may change
+  the phase), then re-pair S1 and S6.
