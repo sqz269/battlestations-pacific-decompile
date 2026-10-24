@@ -38,6 +38,7 @@
 #include "bsp/native_system_constant_gather.hpp"
 #include "bsp/native_particle_preparation.hpp"
 #include "bsp/game_native_mission_model.hpp"
+#include "bsp/game_hosts_units.hpp"
 #include "bsp/game_native_mission_command.hpp"
 #include "bsp/game_native_mission_lighting.hpp"
 #include "bsp/game_native_mission_factories.hpp"
@@ -818,7 +819,8 @@ bool GameNativeRendererApplication::mission_ship_requested() noexcept {
     return GetEnvironmentVariableA("BSP_NATIVE_MISSION_SHIP", text, sizeof text) == 1 && text[0] == '1';
 }
 void GameNativeRendererApplication::configure_mission_ship(GameInputRuntime& input,
-    const NativeFrameClockPublicationContext& clock, NativeRenderResourceInitArguments args) {
+    const NativeFrameClockPublicationContext& clock, NativeRenderResourceInitArguments args,
+    std::function<GameNativeMissionUnitSource()> units) {
     if (!mission_ship_requested()) return;
     auto& p = *impl_;
     check(p.phase == Impl::Phase::ready && p.borrowed_platform_publication && p.frames && !p.mission_ship,
@@ -827,7 +829,7 @@ void GameNativeRendererApplication::configure_mission_ship(GameInputRuntime& inp
         p.cameras, *p.frames, p.constructor, p.resources, p.texture_loading,
         p.declaration_cache, p.section_layouts, p.raw, p.vfs, p.mesh_field_vfs,
         p.singletons, p.owners, p.lua_services.binding(), p.shaders.cache, p.renderer,
-        p.entry_cache_publication, input, clock, args);
+        p.entry_cache_publication, input, clock, args, std::move(units));
     p.textures.observation_context = &p.log;
     p.textures.observe_cleanup = &observe_mission_cache_cleanup;
     // Exact exit allow-list for the error.dds residue the Original leaves
