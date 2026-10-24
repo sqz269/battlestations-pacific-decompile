@@ -358,6 +358,12 @@ std::uint8_t entity_is_surface_target_00922c80(
     void* entity,
     std::uint8_t allow_far
 );
+// 00922DD0..00922DD6 live listing: XOR DL,DL; JMP00922C80. Original
+// ECX=entity, no stack args, AL result. Callee model supplies the whole body;
+// this explicit interface is not the original register ABI.
+inline std::uint8_t entity_is_surface_target_00922dd0(Seg60Host& host, void* entity) {
+    return entity_is_surface_target_00922c80(host, entity, 0);
+}
 void* scene_property_bag_ref_construct_00922e20(
     Seg60Host& host,
     void* self,

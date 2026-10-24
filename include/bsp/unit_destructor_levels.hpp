@@ -260,4 +260,28 @@ class UnitReleaseHost {
 void run_unit_release_0081f3a0(UnitReleaseHost& host, const UnitReleaseState& state,
                                bool free_flag, std::uint32_t dead_meat_mark);
 
+// Concrete level-4 body, 00959940: __thiscall ECX=this, plain RET at 00959BE4.
+// Full ordinary path from decompiled.c plus listing; native SEH cleanup is not
+// projected. Pointers stored in the image remain 32-bit native address tokens.
+struct UnitGameObjectDestructorHost {
+    virtual ~UnitGameObjectDestructorHost() = default;
+    virtual std::uint32_t read_u32(std::uint32_t address) = 0;
+    virtual void write_u32(std::uint32_t address, std::uint32_t value) = 0;
+    virtual std::uint32_t read_global_u32(std::uint32_t address) = 0;
+    virtual std::int32_t interlocked_decrement_00ce2220(std::uint32_t address) = 0;
+    virtual void invoke_vslot0_noargs(std::uint32_t object) = 0;
+    virtual void invoke_vslot_flag(std::uint32_t object, std::uint32_t byte_offset,
+        std::uint32_t flag) = 0;
+    virtual void call_004bca80(std::uint32_t ecx) = 0; // contract unread; ECX=0
+    virtual void call_00bf65ac(std::uint32_t memory) = 0;
+    virtual std::uint32_t call_00419cc0() = 0; // no arguments; caller pushes belong to next call
+    virtual void call_00bd1510(std::uint32_t pool, std::uint32_t buffer,
+        std::uint32_t bytes, std::uint32_t flag) = 0; // ECX=pool; RET 0Ch
+    virtual void call_00bf7c6e(std::uint8_t* first, std::uint32_t stride,
+        std::uint32_t count, std::uint32_t destructor) = 0;
+    virtual void call_00955eb0(std::uint8_t* header) = 0; // contract unread
+    virtual void call_0087a410(std::uint8_t* self) = 0; // contract unread
+};
+void destruct_unit_game_object_00959940(UnitGameObjectDestructorHost&, std::uint8_t* self);
+
 }  // namespace bsp

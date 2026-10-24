@@ -322,6 +322,13 @@ struct UnitFireFloodingHost {
 void repair_task_update_0093ca20(UnitFireFloodingHost& host, std::uint32_t unit,
                                  RepairTaskState& task, float dt);
 
+struct UnitRepairTickHost {
+    virtual ~UnitRepairTickHost() = default;
+    virtual void repair_task_update_0093ca20(void* task_at_a20, float dt) = 0;
+};
+// 008160B0: ECX=unit, stack float dt, RET4. Complete five-gate wrapper.
+void tick_unit_repair_task_008160b0(void* unit, float dt, UnitRepairTickHost& host);
+
 // 0093C520. Decrements every failure and swap-erases the expired ones; the
 // swapped-in entry is retried on the same pass, as the native loop does.
 void repair_failures_0093c520(UnitFireFloodingHost& host, std::uint32_t unit,

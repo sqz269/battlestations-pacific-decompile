@@ -76,6 +76,164 @@
       "abi": "ECX=decl; RET0; AL bool",
       "uncertainty": "Descriptive names and explicit C++ interfaces; no native ABI, FH3 or runtime equivalence claim.",
       "source": "src/scene_property_bag.cpp"
+    },
+    {
+      "address": "00810f60",
+      "name": "initialize_unit_director_and_hull_00810f60",
+      "source": "src/unit_hull_extents.cpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "ECX=unit; RET0",
+      "evidence": "Full normal body surrounding existing x87 extent fragment: attach Lua self, nullable250h director allocation/constructor, class/model extent branch, kind1 device initialization and kind1/3 game-mode notification.",
+      "uncertainty": "Names provisional; new C++ interface, no native FH3, binary ABI or game-validation claim."
+    },
+    {
+      "address": "008160b0",
+      "name": "tick_unit_repair_task_008160b0",
+      "source": "src/unit_fire_flooding.cpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "ECX=unit; dt stack; RET4",
+      "evidence": "Complete008160B0..008160EA listing: class+D0 and five ordered gates, explicit x87 dt FLD/FSTP only on taken path, call0093CA20 on unit+A20.",
+      "uncertainty": "Names provisional; new C++ interface, no native FH3, binary ABI or game-validation claim."
+    },
+    {
+      "address": "008b01b0",
+      "name": "lua_game_end_scene_008b01b0",
+      "source": "src/engine_seg56_cc13.cpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "No stack args; RET0; EAX0",
+      "evidence": "Full008B01B0..008B0465 normal path: actual native temporary strings and debug flag, commit/mode tests, qualified stock tree membership, exact checkpoint/restart prompt args and navigation calls, alternate end-scene(0).",
+      "uncertainty": "Names provisional; new C++ interface, no native FH3, binary ABI or game-validation claim."
+    },
+    {
+      "address": "008d1a10",
+      "name": "construct_perf_timing_registry_008d1a10",
+      "source": "src/engine_seg56_cc13.cpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "ECX=this; EAX=this; RET0",
+      "evidence": "Complete normal1Ch constructor: vptrD15860, both allocated sentinel heads self-link and color byte19=1, sizes zero; padding remains untouched.",
+      "uncertainty": "Names provisional; new C++ interface, no native FH3, binary ABI or game-validation claim."
+    },
+    {
+      "address": "008d1ab0",
+      "name": "destruct_perf_timing_registry_008d1ab0",
+      "source": "src/engine_seg56_cc13.cpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "ECX=this; RET0",
+      "evidence": "Complete normal timer/count full-range erase and actual current head frees, slots/sizes reset, global singleton clear, singleton-base vptrCE3818.",
+      "uncertainty": "Names provisional; new C++ interface, no native FH3, binary ABI or game-validation claim."
+    },
+    {
+      "address": "008d1b80",
+      "name": "get_perf_timing_registry_008d1b80",
+      "source": "src/engine_seg56_cc13.cpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "No arguments; EAX=slot; RET0",
+      "evidence": "Complete normal008D1B80..008D1C3C: double-check, actual manager+10 Win32 critical section and custom+18 recursion word, nullable1Ch allocation/constructor, publish and register before unlock.",
+      "uncertainty": "Names provisional; new C++ interface, no native FH3, binary ABI or game-validation claim."
+    },
+    {
+      "address": "008ff040",
+      "name": "attach_ballistic_gun_bot_008ff040",
+      "source": "src/gun_bot_ticks.cpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "ECX=bot; unit stack; RET4",
+      "evidence": "Complete008FF040..008FF05B listing: attach008FBC80, current+50 DWORD copied to+68, error roll008FDBE0.",
+      "uncertainty": "Names provisional; new C++ interface, no native FH3, binary ABI or game-validation claim."
+    },
+    {
+      "address": "00922dd0",
+      "name": "entity_is_surface_target_00922dd0",
+      "source": "include/bsp/entity_mission_seg60_argon.hpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "ECX=entity; DL cleared; tail JMP00922C80",
+      "evidence": "Live verified thunk00922DD0..00922DD6: XOR DL,DL then JMP00922C80. Uses existing full callee with allow_far=0.",
+      "uncertainty": "Names provisional; new C++ interface, no native FH3, binary ABI or game-validation claim."
+    },
+    {
+      "address": "00749210",
+      "name": "read_structure_class_fields_00749210",
+      "source": "src/vehicle_class_fields.cpp",
+      "header": "include/bsp/vehicle_class_fields.hpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "__thiscall ECX=descriptor; Lua row stack; RET4",
+      "evidence": "Full normal00749210..00749775 listing: base read; ExplosionEfx; ONLY first SmokeFireEfx item; actual+160 handle fallback for DamageSmokeEfx vector+140; all SecondaryExplosionEfx to vector+150; ordered scalar/boolean/type fields; effect replacement AddRef-before-old-release and temporary release; Lua refs retained/released in body order. Native PUSH1 before GetInteger is the subsequent Acquire flag, not a numeric getter argument. Independent review:0074966F loads EDX=1Bh;0074967B calls00746B90 with explicit default0x1B in Source.",
+      "uncertainty": "Names provisional; Lua handles and supplied services are explicit C++ interfaces, not native FH3, object-layout or binary ABI proof."
+    },
+    {
+      "address": "0074d4a0",
+      "name": "read_wreckable_class_fields_0074d4a0",
+      "source": "src/vehicle_class_fields.cpp",
+      "header": "include/bsp/vehicle_class_fields.hpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "__thiscall ECX=descriptor; Lua row stack; RET4",
+      "evidence": "Full normal0074D4A0..0074D70D listing: base; ExplosionEfx+138; nil-tested Wreck with actual pooled NativeString temporary passed as ECX to004B3F10; nil zeroes+13C; integer-only Smoke updates+14C with refcount traffic. Explicit native dependencies, no host wiring.",
+      "uncertainty": "Names provisional; Lua handles and supplied services are explicit C++ interfaces, not native FH3, object-layout or binary ABI proof."
     }
-  ]
+  ],
+  "call_sites": [
+    {
+      "address": "008160e5",
+      "native": "0093ca20"
+    },
+    {
+      "address": "008ff048",
+      "native": "008fbc80"
+    },
+    {
+      "address": "008ff055",
+      "native": "008fdbe0"
+    },
+    {
+      "address": "008d1bf3",
+      "native": "008d1a10"
+    },
+    {
+      "address": "008d1c14",
+      "native": "00bd0c30"
+    },
+    {
+      "address": "00922dd2",
+      "native": "00922c80",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "007493da",
+      "native": "00b67800"
+    },
+    {
+      "address": "007494a1",
+      "native": "004d9c00"
+    },
+    {
+      "address": "007495f4",
+      "native": "004d9c00"
+    },
+    {
+      "address": "0074d5c9",
+      "native": "0041e870"
+    },
+    {
+      "address": "0074d5d7",
+      "native": "004b3f10"
+    }
+  ],
+  "independent_review": {
+    "agent": "owner_max",
+    "scope": [
+      "00749210",
+      "0074d4a0",
+      "008b01b0"
+    ],
+    "result": "No remaining material normal-path bugs after explicit FakedType EDX fallback0x1B correction. Native endpoint, iterator coverage, field offsets, handle traffic, prompt arguments and temporary lifetimes checked against listing."
+  }
 }

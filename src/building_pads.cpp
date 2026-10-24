@@ -271,4 +271,133 @@ void BuildingPadModel::clear() {
     unloads_.clear();
 }
 
+// 0074AF50..0074B567; ordinary path including every early return, latch,
+// capture warning, one-shot publication, ramp record and final debug getter.
+// Evidence: complete saved listing; the body ends in RET 4 at 0074B565.
+// 006F22B0/006F22F0 were inspected and lowered to their exact comparisons.
+// The native FH3 cleanup states are not reproduced. Arithmetic preserves the
+// float stores; C++ double temporaries do not establish x87 bit equivalence.
+void landing_ship_update_0074af50(std::uint8_t* ship, float dt,
+                                const LandingShipUpdateGlobals& globals,
+                                LandingShipUpdateHost& host) {
+    const auto byte = [](void* object, std::size_t offset) -> std::uint8_t& {
+        return *(static_cast<std::uint8_t*>(object) + offset);
+    };
+    const auto word = [](void* object, std::size_t offset) -> std::uint32_t& {
+        return *reinterpret_cast<std::uint32_t*>(static_cast<std::uint8_t*>(object) + offset);
+    };
+    const auto value = [](void* object, std::size_t offset) -> float& {
+        return *reinterpret_cast<float*>(static_cast<std::uint8_t*>(object) + offset);
+    };
+    const auto pointer = [&](void* object, std::size_t offset) -> std::uint8_t* {
+        return reinterpret_cast<std::uint8_t*>(static_cast<std::uintptr_t>(word(object, offset)));
+    };
+    host.call_008255b0(ship, dt);                                      // 0074AF76
+    if (byte(ship, 0x5C) == 0 || byte(ship, 0x5D) != 0
+        || byte(ship, 0x60) != 0 || byte(ship, 0x5E) != 0) return;
+
+    if (word(globals.game_00e188a8, 0x1FE4) != 2 && word(ship, 0x1200) != 0) {
+        const float previous_contact = value(ship, 0x11A8);
+        const double previous_threshold = static_cast<double>(globals.time_00f876a4) - 1.0 - dt;
+        const bool was_recent = previous_contact > previous_threshold;
+        if (byte(ship, 0x1011) != 0) value(ship, 0x11A8) = globals.time_00f876a4;
+        const bool recent = value(ship, 0x11A8) > static_cast<double>(globals.time_00f876a4) - 1.0;
+        if (recent != was_recent) {
+            value(ship, 0x11AC) = value(ship, 0x11B0);
+        } else if (value(ship, 0x11AC) > 0.0f) {
+            value(ship, 0x11AC) = value(ship, 0x11AC) - dt;
+            if (value(ship, 0x11AC) <= 0.0f && byte(ship, 0x1188) == 0 && recent) {
+                host.call_0074a420(ship);                             // 0074B080
+                alignas(4) std::uint8_t message[0x5C];
+                void* constructed = host.call_00749aa0(message);       // 0074B089
+                host.call_0077c2a0(ship, constructed, 4, 0);            // 0074B0A0
+            }
+        }
+    }
+
+    if (byte(ship, 0x1188) == 0 && word(ship, 0x1200) == 0
+        && host.vcall_240(ship) && host.vcall_174(ship) != nullptr) {
+        void* object = host.vcall_174(ship);                           // 0074B0EC (second call)
+        if (!host.vcall_08(object))
+            host.call_00977da0(globals.warning_manager_00f8a0c4, nullptr, ship); // 0074B104
+    }
+
+    const float old_fraction = value(ship, 0x11A4);
+    if (byte(ship, 0x1188) != 0) {
+        // COMISS 1,fraction / JBE also takes the completion arm for NaN.
+        if (1.0f > old_fraction) {
+            const float candidate = static_cast<float>(static_cast<double>(dt)
+                / value(ship, 0x1190) + old_fraction);
+            value(ship, 0x11A4) = candidate < 1.0f ? candidate : 1.0f;
+        } else if (byte(ship, 0x118A) == 0 && byte(ship, 0x118B) == 0) {
+            byte(ship, 0x118B) = 1;
+            if (word(ship, 0x1200) != 0) {
+                std::uint8_t* descriptor = pointer(ship, 0x538);
+                const float* matrix = host.call_0042d7e0(ship);        // 0074B1A2
+                float scaled[3];
+                const float* result = host.call_00414260(matrix + 8, scaled,
+                                                         value(descriptor, 0xA0)); // 0074B1B9
+                float half[3] = {static_cast<float>(result[0] * 0.5),
+                                 static_cast<float>(result[1] * 0.5),
+                                 static_cast<float>(result[2] * 0.5)};
+                const float* position = host.call_00427eb0(ship);      // 0074B1E0
+                const float unload[3] = {position[0] + half[0], position[1] + half[1],
+                                         position[2] + half[2]};
+                host.call_006ac370(pointer(ship, 0x1200), unload);     // 0074B228
+                if (byte(pointer(ship, 0x538), 0x808) == 0) {
+                    void* model = host.call_00476b90(ship);            // 0074B243
+                    void* node = host.call_0071ad50(model, "soldiers"); // 0074B24A
+                    if (node != nullptr) host.call_00b6da70(node, 0.0f, 0); // 0074B25D
+                }
+            }
+            void* lock_owner = host.call_004c1570();                   // 0074B262
+            alignas(4) std::uint8_t guard[8];
+            alignas(4) std::uint8_t name[8];
+            alignas(4) std::uint8_t lua_object[20];
+            host.call_00411eb0(guard, pointer(lock_owner, 4));          // 0074B26F
+            host.call_0041e870(name, "LandingStarted");               // 0074B288
+            void* self = host.call_00927b40(ship, lua_object);          // 0074B29B
+            host.call_00b673a0(self, name, true);                       // 0074B2B1
+            host.call_00b67700(lua_object);                            // 0074B2C1
+            host.call_0041dd20(name);                                  // 0074B2D2
+            host.call_0074ad90(ship);                                  // 0074B2D9
+            host.call_00411ee0(guard);                                 // 0074B2E9
+        }
+    } else if (old_fraction > 0.0f) {
+        const float candidate = static_cast<float>(static_cast<double>(old_fraction)
+            - static_cast<double>(dt) / value(ship, 0x1190));
+        value(ship, 0x11A4) = 0.0f < candidate ? candidate : 0.0f;
+    }
+
+    if (old_fraction != value(ship, 0x11A4)) {
+        const auto count = [&]() -> std::uint32_t {
+            const auto bytes = static_cast<std::int32_t>(word(ship, 0x119C) - word(ship, 0x1198));
+            return static_cast<std::uint32_t>(bytes / 0x4C);
+        };
+        const auto checked = [&](std::uint32_t index) -> std::uint8_t* {
+            if (word(ship, 0x1198) == 0 || index >= count()) host.invalid_iterator_00bf6713();
+            return pointer(ship, 0x1198) + index * 0x4Cu;
+        };
+        for (std::uint32_t index = 0; word(ship, 0x1198) != 0 && index < count(); ++index) {
+            float* angle = &value(checked(index), 0x44);
+            std::uint8_t* from = checked(index);
+            std::uint8_t* to = checked(index);
+            (void)checked(index);
+            *angle = static_cast<float>((static_cast<double>(value(to, 0x48)) - value(from, 0x44))
+                * value(ship, 0x11A4) + value(pointer(ship, 0x1198) + index * 0x4Cu, 0x44));
+            void* node = pointer(checked(index), 0);
+            (void)checked(index);
+            const float negative_angle = -0.0f - *angle;               // SUBSS 0074B4D6
+            std::uint8_t* record = pointer(ship, 0x1198) + index * 0x4Cu;
+            float rotation[16], copied[16], combined[16];
+            const float* built = host.call_00b64640(rotation, &negative_angle); // 0074B4F3
+            host.call_004134f0(copied, built);                         // 0074B4FD
+            const float* matrix = host.call_00413920(copied, combined,
+                reinterpret_cast<const float*>(record + 4));          // 0074B51B
+            host.vcall_38(node, matrix);                               // 0074B527
+        }
+    }
+    if (byte(globals.game_00e188a8, 0x19C4) == 0) host.call_0051f460();  // 0074B54B
+}
+
 }  // namespace bsp

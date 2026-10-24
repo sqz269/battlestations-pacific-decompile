@@ -11,17 +11,23 @@
   "routines": [
     {
       "address": "00a06840",
-      "name": "AiDebug_ParseClassEquipmentList",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::ai_debug_parse_class_equipment_list_00a06840",
+      "outcome": "reconstructed",
+      "coverage": "complete normal path",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__fastcall ECX input NativeString*, EDX class-id vector*, stack equipment-id vector*, errors NativeString*; RET 8",
+      "evidence": "Full normal value algorithm: exact comma/hyphen split and trim set, atol, class lookup, signed equipment<=class+128h including equality/negative ids, append or exact newline diagnostic. Live delimiter/diagnostic bytes checked.",
+      "uncertainty": "Explicit source interface; native allocator/STL storage and original FH3/SEH/fault behavior are not established."
     },
     {
       "address": "00a072d0",
-      "name": "AiDebug_ParseClassList",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::ai_debug_parse_class_list_00a072d0",
+      "outcome": "reconstructed",
+      "coverage": "complete normal path",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__fastcall ECX input NativeString*, EDX class-id vector*, stack raw-field vector*, errors NativeString*; RET 8",
+      "evidence": "Full normal value algorithm: exact comma split and trim set, atol, class lookup, append ids/raw class+134h values or newline diagnostic; existing caller outputs retained.",
+      "uncertainty": "Explicit source interface; native allocator/STL storage and original FH3/SEH/fault behavior are not established."
     },
     {
       "address": "00a0fce0",
@@ -145,66 +151,93 @@
     },
     {
       "address": "00a2cdd0",
-      "name": "AiDebug_GroupTargetText",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::ai_debug_group_target_text_00a2cdd0",
+      "outcome": "reconstructed",
+      "coverage": "complete normal value/host-effect projection",
+      "source": "src/ai_group_think.cpp",
+      "original_abi": "ECX score-list subobject=group+24h, RET, no native return text",
+      "evidence": "Complete normal value/host-effect algorithm: owner/count guard; header and chosen score/term text; highlight-side-effect calls BEFORE unchosen-limit check; shared guarded yellow/white colours; owner leader world refresh. ACh producer layout read. Source returns the native discarded temporary text.",
+      "uncertainty": "Native pool/STL allocation and invalid checked-container paths/FH3 are excluded. Valid128 records, <=16 terms, terminated labels; no binary ABI/game claim."
     },
     {
       "address": "00a2d580",
-      "name": "AiDebug_GroupMembersOverlay",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::ai_debug_group_members_overlay_00a2d580",
+      "outcome": "reconstructed",
+      "coverage": "complete normal value/host-effect projection",
+      "source": "src/ai_group_think.cpp",
+      "original_abi": "ECX group, RET",
+      "evidence": "Complete normal value/host-effect algorithm: first pass starts after first member; second pass formation/active target resolution; shared guarded grey/green/yellow cells; signed-byte countdown; command vslot1C once/twice or target-text call on group+24h. Assembly proves all three vslot114 calls have no arguments; outstanding pushed vector belongs to later6F7DD0 RET4.",
+      "uncertainty": "Native temporary string/pool/STL and invalid-container/FH3 paths excluded. No invented draw call; original computed positions/text are discarded. No binary ABI/game claim."
     },
     {
       "address": "00a2f6f0",
-      "name": "AiGroup_DescribeDebug",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::ai_group_describe_debug_00a2f6f0",
+      "outcome": "reconstructed",
+      "coverage": "complete normal value/host-effect projection",
+      "source": "src/ai_group_think.cpp",
+      "original_abi": "ECX group, stack output NativeString*, RET4, EAX output header",
+      "evidence": "Complete normal value/host-effect algorithm from full1031-line pseudocode plus register/x87 listing: countdown2; objective members, ordered type counts, leader/player/party/member/autogroup/recon text; optional object prefix/group command; repeated director command and aircraft ordnance suffix. Exact unspilled CALL ReconRatio; FMUL qword D7A220=100; bound BF7420 conversion. Literal D23138 is TWO percent signs and LF, not printf escaping.",
+      "uncertainty": "Requires a valid nonempty native member list, string/type-name tables and supplied ECX/ST0/EAX-compatible entry bridges. Native pool/STL allocation and FH3/SEH/fault paths excluded. CRT conversion remains binding, no library body credit; no binary ABI/game claim."
     },
     {
       "address": "00a33020",
-      "name": "Unknown_VtD232C4_Destruct",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::cg_rebuild_c_cc13::vt_d232c4_destruct_00a33020",
+      "outcome": "existing_reconstructed",
+      "coverage": "complete normal path",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "original_abi": "__thiscall ECX object; RET",
+      "evidence": "Existing upstream8e992f6c8 exact body and current ledger confirmed by bounded exact-address query; entire51-instruction listing read. Not a deleting destructor: no flags bit0 test.",
+      "uncertainty": "Existing build-tested host model; EH unwind and native ABI/game validation remain unproved. No duplicate body or ledger record added."
     },
     {
       "address": "00a37130",
-      "name": "Unknown_VtD232C4_Construct",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::cg_rebuild_c_cc13::vt_d232c4_construct_00a37130",
+      "outcome": "existing_reconstructed",
+      "coverage": "complete normal path",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "original_abi": "__thiscall ECX object; RET; EAX object",
+      "evidence": "Existing upstream8e992f6c8 exact body and ledger confirmed; entire27-instruction listing read. Three10h records+FA8h then A335D0.",
+      "uncertainty": "Existing build-tested host model; EH unwind and native ABI/game validation remain unproved. No duplicate body or ledger record added."
     },
     {
       "address": "00a3d060",
-      "name": "NetworkConsoleSend_Construct",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::construct_native_network_console_00a3d060",
+      "outcome": "reconstructed",
+      "coverage": "complete normal path",
+      "source": "src/native_network_console_runtime.cpp",
+      "original_abi": "__thiscall ECX actual4003F0h storage, EAX same storage, RET",
+      "evidence": "Complete 87-instruction normal constructor: actual base,16x49Ch channels,1000x82Ch/820h queues, selective pointer/scalar stores, two tracked locks, captured CreateThread/SetThreadPriority imports, supplied native send/receive entry bindings. Failure handles remain unchecked.",
+      "uncertainty": "Explicit source interface; native allocator/STL storage and original FH3/SEH/fault behavior are not established."
     },
     {
       "address": "00a475a0",
-      "name": "XLiveSystem_Destruct",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::cg_rebuild_c_cc13::xlive_system_destruct_00a475a0",
+      "outcome": "existing_reconstructed",
+      "coverage": "complete normal path",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "original_abi": "__thiscall ECX system; RET",
+      "evidence": "Existing upstream8e992f6c8 exact body and ledger confirmed; full pseudocode and register-sensitive range destruction listing checked. No delete-flag test; real XLive game destructor with library boundaries.",
+      "uncertainty": "Existing build-tested host model; EH unwind and native ABI/game validation remain unproved. No duplicate body or ledger record added."
     },
     {
       "address": "00a9df40",
-      "name": "GuiListbox_Construct",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::cc13_gui1::gui_listbox_construct_00a9df40",
+      "outcome": "reconstructed",
+      "coverage": "complete normal path",
+      "source": "src/cc13_gui1.cpp",
+      "original_abi": "__thiscall ECX destination, EAX destination, RET",
+      "evidence": "Complete 64-instruction normal constructor: base type11, vtableD5BBF8, two A9B720 sentinels, exact selective DWORD/byte stores, iterator identity, unwritten padding retained.",
+      "uncertainty": "Explicit source interface; native allocator/STL storage and original FH3/SEH/fault behavior are not established."
     },
     {
       "address": "00abe640",
-      "name": "GuiSection_GetFirstVertexStream",
-      "outcome": "open",
-      "coverage": "not yet reviewed",
-      "blocker": "Scheduled in later bounded tail packet"
+      "name": "bsp::cc13_seg49_64_78::gui_section_get_first_vertex_stream_00abe640",
+      "outcome": "reconstructed",
+      "coverage": "complete normal path",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "original_abi": "__thiscall ECX section, RET, EAX stream/null",
+      "evidence": "Complete 21-instruction normal body: +4Ch null check, B74640(0) null check, B72B20 zero check, B73260(0). Unread callee internals remain address-named host bindings.",
+      "uncertainty": "Explicit source interface; native allocator/STL storage and original FH3/SEH/fault behavior are not established."
     },
     {
       "address": "00b6a390",
@@ -283,6 +316,234 @@
       "native": "00bf6989",
       "containing_function": "00beaba0",
       "contract": "unread free binding"
+    },
+    {
+      "address": "00a06c7c",
+      "native": "009653b0",
+      "containing_function": "00a06840",
+      "contract": "class lookup"
+    },
+    {
+      "address": "00a06e3a",
+      "native": "00951f10",
+      "containing_function": "00a06840",
+      "contract": "MOV EAX,[ECX+128h], inlined established leaf"
+    },
+    {
+      "address": "00a075fe",
+      "native": "009653b0",
+      "containing_function": "00a072d0",
+      "contract": "class lookup"
+    },
+    {
+      "address": "00a3d080",
+      "native": "00a3cf00",
+      "containing_function": "00a3d060",
+      "contract": "existing actual base constructor"
+    },
+    {
+      "address": "00a3d0af",
+      "native": "00bf7cd1",
+      "containing_function": "00a3d060",
+      "contract": "16x49Ch callbacks A3CE60/A3A770, existing actual member constructors"
+    },
+    {
+      "address": "00a3d0e6",
+      "native": "00bf7cd1",
+      "containing_function": "00a3d060",
+      "contract": "1000x82Ch callbacks A3A3D0/A3A3E0"
+    },
+    {
+      "address": "00a3d10b",
+      "native": "00bf7cd1",
+      "containing_function": "00a3d060",
+      "contract": "1000x820h callbacks A3A500/A3A520"
+    },
+    {
+      "address": "00a3d135",
+      "native": "00bd1860",
+      "containing_function": "00a3d060",
+      "contract": "existing tracked critical section constructor"
+    },
+    {
+      "address": "00a3d140",
+      "native": "00bd1860",
+      "containing_function": "00a3d060",
+      "contract": "existing tracked critical section constructor"
+    },
+    {
+      "address": "00a9df61",
+      "native": "00aa9390",
+      "containing_function": "00a9df40",
+      "contract": "existing native widget base constructor, type11"
+    },
+    {
+      "address": "00a9df7a",
+      "native": "00a9b720",
+      "containing_function": "00a9df40",
+      "contract": "existing self-linked0Ch sentinel allocator"
+    },
+    {
+      "address": "00a9e036",
+      "native": "00a9b720",
+      "containing_function": "00a9df40",
+      "contract": "existing self-linked0Ch sentinel allocator"
+    },
+    {
+      "address": "00abe64a",
+      "native": "00b74640",
+      "containing_function": "00abe640",
+      "contract": "unread callee internals; native argument0"
+    },
+    {
+      "address": "00abe657",
+      "native": "00b72b20",
+      "containing_function": "00abe640",
+      "contract": "unread callee internals; zero result tested"
+    },
+    {
+      "address": "00abe664",
+      "native": "00b73260",
+      "containing_function": "00abe640",
+      "contract": "unread callee internals; native argument0"
+    },
+    {
+      "address": "00a2cf72",
+      "native": "00a10c20",
+      "containing_function": "00a2cdd0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2cfac",
+      "native": "00a2c050",
+      "containing_function": "00a2cdd0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2cfb4",
+      "native": "00a10c20",
+      "containing_function": "00a2cdd0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2d3d1",
+      "native": "00414db0",
+      "containing_function": "00a2cdd0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2d64f",
+      "native": "00414db0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2d673",
+      "native": "00414db0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2d6c8",
+      "native": "007788b0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2d6f7",
+      "native": "0071eb60",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2d712",
+      "native": "00414db0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2d72a",
+      "native": "0071eb60",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2d731",
+      "native": "006f7dd0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2d82f",
+      "native": "00414db0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2d87d",
+      "native": "00a2cdd0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2f791",
+      "native": "00a2def0",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a2f95d",
+      "native": "00a2e1e0",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a3019b",
+      "native": "00a137d0",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a303ad",
+      "native": "00a2c3d0",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a303b8",
+      "native": "00bf7420",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a30cf2",
+      "native": "0071be40",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a30d0d",
+      "native": "0071be40",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    },
+    {
+      "address": "00a30dc8",
+      "native": "007ed500",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments"
+    }
+  ],
+  "format_call_evidence": [
+    {
+      "address": "00a2d015",
+      "format": "%s%d :  %.3f ",
+      "cleanup": "00A2D021 ADD ESP,18h (six DWORDs)"
+    },
+    {
+      "address": "00a2d15f",
+      "format": "%.3f%s",
+      "cleanup": "00A2D164 ADD ESP,14h (five DWORDs)"
     }
   ]
 }

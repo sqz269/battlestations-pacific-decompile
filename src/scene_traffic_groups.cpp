@@ -3,6 +3,7 @@
 #include <cctype>
 #include <cstdio>
 #include <utility>
+#include <cstring>
 
 // Evidence: docs/SCENE_TRAFFIC_BLOCK.md, docs/SCENE_BROWSER_GROUPS.md,
 // docs/SCENE_PROPERTY_LIBRARY.md. Report: reports/scene_traffic_groups.json.
@@ -611,6 +612,37 @@ PropLibraryLoadResult load_prop_library(const std::string& folder, PropLibraryHo
 
     result.ok = result.error.empty();
     return result;
+}
+
+// 00951220: assembly 0095123C/58/D3 establishes allocation, construction and
+// append; 009512EA RET 8. The first stack argument is never read. Full normal
+// path, including null append. Uncertainty: native EH cleanup is not projected.
+std::uint8_t* create_traffic_record_00951220(TrafficRecordCreateHost& host, void* vector,
+    const void* ignored_name, std::uint32_t path_entity) {
+    (void)ignored_name;
+    std::uint8_t* record = host.call_00bf681b(0x4c);
+    if (record != nullptr) {
+        host.call_0049f9b0(record);
+        const auto store = [record](std::size_t offset, std::uint32_t value) {
+            std::memcpy(record + offset, &value, sizeof(value));
+        };
+        const auto column_gap = host.read_global_u32(0x00ce38b8);
+        const auto speed = host.read_global_u32(0x00ce3850);
+        store(0x1c, column_gap);
+        store(0x18, host.read_global_u32(0x00ce685c));
+        store(0x00, path_entity);
+        store(0x04, 0xffffffff);
+        store(0x08, 0xffffffff);
+        store(0x14, 1);
+        store(0x10, 0);
+        store(0x2c, 0);
+        store(0x30, 0);
+        store(0x24, speed);
+        store(0x28, 0);
+        record[0x0c] = 0;
+    }
+    host.call_00950fc0(vector, &record);
+    return record;
 }
 
 } // namespace bsp

@@ -1,4 +1,6 @@
 #include "bsp/ai_group_think.hpp"
+#include <cstdio>
+#include <cstring>
 
 // Packet cc2_ai_group_think. Read-only analysis; see docs/AI_GROUP_THINK.md for
 // the address evidence behind every rule below.
@@ -12,7 +14,213 @@ constexpr std::uint32_t party_record_offset(int party_slot) noexcept {
     return static_cast<std::uint32_t>(party_slot) * kAiGroupPartyRecordStride;
 }
 
+template<class T> T ai_debug_read(const void* object, std::size_t offset) {
+    T value;
+    std::memcpy(&value, static_cast<const unsigned char*>(object) + offset, sizeof value);
+    return value;
+}
+template<class T> void ai_debug_write(void* object, std::size_t offset, T value) {
+    std::memcpy(static_cast<unsigned char*>(object) + offset, &value, sizeof value);
+}
+void ai_debug_colour(AiGroupDebugColour& colour, std::array<std::uint32_t, 4> words) {
+    if ((colour.flags & 1u) == 0) {
+        colour.flags |= 1u;
+        colour.words = words;
+    }
+}
+void ai_debug_refresh_first(void* group, AiGroupDebugHost& host) {
+    if (ai_debug_read<std::int32_t>(group, 0x5644) == 0) return;
+    void* const head = ai_debug_read<void*>(group, 0x5640);
+    void* const first = ai_debug_read<void*>(head, 0);
+    void* const entity = ai_debug_read<void*>(first, 8);
+    if (ai_debug_read<std::uint8_t>(entity, 0xC8) == 0) host.call_00414db0(entity);
+}
+std::string ai_debug_native_string(const void* header) {
+    const auto length = ai_debug_read<std::uint32_t>(header, 0);
+    if (!length) return {};
+    return std::string(ai_debug_read<const char*>(header, 4), length);
+}
+
 } // namespace
+
+// 00A2CDD0..00A2D43C. Original ECX is the score-list subobject, not the
+// containing group: caller 00A2D87A explicitly LEAs group+24h. Producer
+// 00A2B950 establishes the ACh record layout (values +0, labels +40h/stride6,
+// term count +A0h, chosen +A4h, target group +A8h). Complete normal value and
+// host-effect algorithm from the whole pseudocode and register-sensitive listing.
+// Native temporary text is discarded; this source returns it. Pool allocations,
+// checked-iterator failure paths, FH3 unwinding and binary ABI are not claimed.
+std::string ai_debug_group_target_text_00a2cdd0(void* score_list,
+    AiGroupDebugState& state, AiGroupDebugHost& host) {
+    void* owner = ai_debug_read<void*>(score_list, 0x560C);
+    if (!owner || ai_debug_read<std::int32_t>(owner, 0x5644) == 0) return {};
+    std::string text = " -- " + std::to_string(ai_debug_read<std::int32_t>(owner, 0x5658)) + " --\n";
+    (void)host.call_00a10c20(owner);
+    std::int32_t unchosen = 0;
+    for (std::int32_t i = 0; i < ai_debug_read<std::int32_t>(score_list, 0x5600); ++i) {
+        auto* const record = static_cast<unsigned char*>(score_list) + static_cast<std::size_t>(i) * 0xAC;
+        void* const target = ai_debug_read<void*>(record, 0xA8);
+        const bool chosen = ai_debug_read<std::uint8_t>(record, 0xA4) != 0;
+        const auto mode = ai_debug_read<std::int32_t>(score_list, 0x5608);
+        if (mode != 0 && target && (mode > 1 || chosen)) {
+            host.call_00a2c050();
+            (void)host.call_00a10c20(target);
+        }
+        const auto limit = ai_debug_read<std::int32_t>(score_list, 0x5604);
+        if (limit > 0 && limit <= unchosen) break;
+        if (!chosen) ++unchosen;
+        char buffer[308];
+        const auto id = target ? ai_debug_read<std::int32_t>(target, 0x5658) : 0;
+        std::sprintf(buffer, "%s%d :  %.3f ", chosen ? "* " : "", id,
+                     static_cast<double>(ai_debug_read<float>(record, 0)));
+        std::string row = buffer;
+        const auto terms = ai_debug_read<std::int32_t>(record, 0xA0);
+        if (terms > 1) {
+            row += reinterpret_cast<const char*>(record + 0x40);
+            for (std::int32_t term = 1; term < terms; ++term) {
+                std::sprintf(buffer, "%.3f%s", static_cast<double>(ai_debug_read<float>(record, term * 4)),
+                             reinterpret_cast<const char*>(record + 0x40 + term * 6));
+                row += buffer;
+            }
+        }
+        text += row + "\n";
+    }
+    if (ai_debug_read<std::int32_t>(score_list, 0x5600) == 0)
+        ai_debug_colour(state.yellow_00f8aad4, {state.one_00d7a24c, state.one_00d7a24c, 0, state.one_00d7a24c});
+    else
+        ai_debug_colour(state.white_00f8aa84, {state.one_00d7a24c, state.one_00d7a24c,
+                                            state.one_00d7a24c, state.one_00d7a24c});
+    owner = ai_debug_read<void*>(score_list, 0x560C);
+    ai_debug_refresh_first(owner, host);
+    return text;
+}
+
+// 00A2D580..00A2D8B2, original ECX group, plain RET. Complete normal
+// value/host-effect algorithm. The first pass deliberately starts AFTER the
+// first member. All three vslot+114 calls take no arguments: 00A2D723 pushes
+// an outstanding output vector for the later 006F7DD0 RET4, not for that slot.
+// The native countdown is signed char; the second command call is conditional.
+void ai_debug_group_members_overlay_00a2d580(void* group,
+    AiGroupDebugState& state, AiGroupDebugHost& host) {
+    if (ai_debug_read<std::int32_t>(group, 0x5644) == 0) return;
+    void* head = ai_debug_read<void*>(group, 0x5640);
+    void* first = ai_debug_read<void*>(head, 0);
+    void* node = ai_debug_read<void*>(first, 0);
+    while (node != ai_debug_read<void*>(group, 0x5640)) {
+        ai_debug_colour(state.grey_00f8aa98, {state.half_00ce3800, state.half_00ce3800,
+                                            state.half_00ce3800, state.one_00d7a24c});
+        ai_debug_refresh_first(group, host);
+        void* const entity = ai_debug_read<void*>(node, 8);
+        if (ai_debug_read<std::uint8_t>(entity, 0xC8) == 0) host.call_00414db0(entity);
+        node = ai_debug_read<void*>(node, 0);
+    }
+    head = ai_debug_read<void*>(group, 0x5640);
+    node = ai_debug_read<void*>(head, 0);
+    while (node != ai_debug_read<void*>(group, 0x5640)) {
+        void* const entity = ai_debug_read<void*>(node, 8);
+        if (entity && !host.call_007788b0(entity) && host.entity_vslot_114(entity)) {
+            void* const director = host.entity_vslot_114(entity);
+            const void* const descriptor = host.call_0071eb60(director);
+            if (ai_debug_read<std::uint8_t>(descriptor, 1) != 0 ||
+                ai_debug_read<std::uint8_t>(descriptor, 0) != 0) {
+                if (ai_debug_read<std::uint8_t>(entity, 0xC8) == 0) host.call_00414db0(entity);
+                std::array<float, 3> point;
+                void* const repeated_director = host.entity_vslot_114(entity);
+                const void* const repeated_descriptor = host.call_0071eb60(repeated_director);
+                host.call_006f7dd0(repeated_descriptor, point);
+                ai_debug_colour(state.green_00f8aaac, {0, state.one_00d7a24c, 0, state.one_00d7a24c});
+            }
+        }
+        node = ai_debug_read<void*>(node, 0);
+    }
+    const auto countdown = ai_debug_read<std::int8_t>(group, 0x565C);
+    if (countdown > 0) {
+        ai_debug_write(group, 0x565C, static_cast<std::int8_t>(countdown - 1));
+    } else if (state.mode_00f8a9e0 == 0) {
+        const auto temporary_id = std::to_string(ai_debug_read<std::int32_t>(group, 0x5658));
+        (void)temporary_id; // original integer NativeString is discarded/freed
+        if (ai_debug_read<std::int32_t>(group, 0x5658) != state.selected_id_00f8a9e4) {
+            ai_debug_colour(state.yellow_00f8aad4, {state.one_00d7a24c, state.one_00d7a24c, 0, state.one_00d7a24c});
+            ai_debug_refresh_first(group, host);
+        }
+    }
+    host.command_vslot_1c(ai_debug_read<void*>(group, 0x564C));
+    if (state.mode_00f8a9e0 != 0 && ai_debug_read<std::int8_t>(group, 0x565C) <= 0) {
+        (void)ai_debug_group_target_text_00a2cdd0(static_cast<unsigned char*>(group) + 0x24, state, host);
+        return;
+    }
+    host.command_vslot_1c(ai_debug_read<void*>(group, 0x564C));
+}
+
+// 00A2F6F0..00A30FFF, native ECX group, stack output NativeString*, RET4,
+// EAX output. Complete normal value/host-effect algorithm from the full
+// 1031-line export; pool/checked-STL and FH3 cleanup are storage boundaries.
+// 00A303AD..00A303B8 is CALL ReconRatio; FMUL qword D7A220; CALL _ftol2.
+// Preserve it in x87 between explicit native-register entry bindings. No CRT
+// implementation is reconstructed. The literal D23138 is TWO percent signs
+// followed by LF; no printf consumes it. Empty groups are outside native's
+// valid domain (it dereferences the first member after its checked-list check).
+std::string ai_group_describe_debug_00a2f6f0(void* group,
+    const char* const* unit_type_names_00e0b590, const volatile double& scale_00d7a220,
+    AiGroupDescribeDebugHost& host) {
+    ai_debug_write(group, 0x565C, std::uint8_t{2});
+    const auto objective = host.call_00a2def0(group, ai_debug_read<std::int32_t>(group, 0x5638));
+    std::string objective_text = "objectiveMembers:";
+    if (objective.empty()) objective_text += " -";
+    else for (const void* member : objective)
+        objective_text += " " + ai_debug_native_string(static_cast<const unsigned char*>(member) + 0x154);
+    const auto types = host.call_00a2e1e0(group);
+    std::string type_text = "unitTypes:";
+    if (types.empty()) type_text += " -";
+    else for (const auto& type : types)
+        type_text += std::string(" ") + unit_type_names_00e0b590[type.first] + ":" + std::to_string(type.second);
+
+    std::string prefix;
+    if (void* const object = ai_debug_read<void*>(group, 0x5654))
+        prefix = host.object_vslot_2c(object) + " : ";
+    const bool auto_grouping = ai_debug_read<std::uint8_t>(group, 0x5648) != 0;
+    const auto command_text = host.call_00a137d0(ai_debug_read<void*>(group, 0x564C));
+    void* head = ai_debug_read<void*>(group, 0x5640);
+    void* first = ai_debug_read<void*>(head, 0);
+    void* const leader = ai_debug_read<void*>(first, 8);
+    std::string text = "leader: " + ai_debug_native_string(static_cast<unsigned char*>(leader) + 0x154)
+        + "\nplayer: " + std::to_string(ai_debug_read<std::int32_t>(group, 0x5634))
+        + " (party:" + std::to_string(ai_debug_read<std::int32_t>(group, 0x5638)) + ")\n"
+        + "members: " + std::to_string(ai_debug_read<std::int32_t>(group, 0x5644)) + "\n"
+        + "autoGrouping: " + (auto_grouping ? "on" : "off") + "\nreconRatio: ";
+    void* const ratio_entry = host.recon_ratio_entry_00a2c3d0();
+    void* const truncate_entry = host.truncate_st0_entry_00bf7420();
+    const volatile double* const scale = &scale_00d7a220;
+    std::int32_t percent;
+    __asm {
+        mov ecx, group
+        call ratio_entry
+        mov eax, scale
+        fmul qword ptr [eax]
+        call truncate_entry
+        mov percent, eax
+    }
+    text += std::to_string(percent) + "%%\n" + objective_text + "\n" + type_text
+        + "\n" + prefix + command_text + "\n";
+    head = ai_debug_read<void*>(group, 0x5640);
+    first = ai_debug_read<void*>(head, 0);
+    void* const entity = ai_debug_read<void*>(first, 8);
+    if (entity && host.entity_vslot_114(entity)) {
+        void* const director = host.entity_vslot_114(entity);
+        if (host.call_0071be40(director)) {
+            void* const repeated_director = host.entity_vslot_114(entity);
+            void* const weapon_command = host.call_0071be40(repeated_director);
+            std::string extra = host.weapon_command_vslot_04(weapon_command);
+            if (host.entity_vslot_5c(entity, 0x18)) {
+                const char* const equipment = host.call_007ed500(entity);
+                if (equipment) extra += std::string(", ") + equipment;
+                else extra += ", NoEquip";
+            }
+            text += extra;
+        }
+    }
+    return text;
+}
 
 float ai_defend_resource_percent(const float* table, int difficulty) noexcept {
     // 00A18510: FLD [ECX*4 + 0xF8A8BC]; RET. The native routine indexes without

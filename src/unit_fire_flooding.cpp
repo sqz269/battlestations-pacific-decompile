@@ -7,6 +7,21 @@
 #include "bsp/unit_fire_flooding.hpp"
 
 namespace bsp {
+// Evidence: full 008160B0..008160EA listing. Class+D0 and bytes5C/5D/60/5E
+// are read in native short-circuit order; only the taken path FLD/FSTPs dt.
+// Original __thiscall ECX=unit/RET4; explicit C++ host is not binary ABI proof.
+void tick_unit_repair_task_008160b0(void* unit, float dt, UnitRepairTickHost& host) {
+    auto* bytes = static_cast<unsigned char*>(unit);
+    auto* klass = *reinterpret_cast<unsigned char**>(bytes + 0x538);
+    if (klass[0xD0] && bytes[0x5C] && !bytes[0x5D] && !bytes[0x60] && !bytes[0x5E]) {
+        float forwarded;
+        __asm {
+            fld dt
+            fstp forwarded
+        }
+        host.repair_task_update_0093ca20(bytes + 0xA20, forwarded);
+    }
+}
 namespace {
 
 // The literal format string at 00D196F8, read at 0093CACC.

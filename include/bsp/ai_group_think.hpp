@@ -1,5 +1,9 @@
 #pragma once
 #include <cstdint>
+#include <array>
+#include <string>
+#include <map>
+#include <vector>
 
 // The party-level AI commander's think, reconstructed from the read-only
 // analysis of packet cc2_ai_group_think. docs/AI_GROUP_THINK.md carries the
@@ -14,6 +18,66 @@
 // the brain's eight slots, the AI command objects at group+564Ch, and the
 // party brain's own planning tail 00A179E0 are all unread here.
 namespace bsp {
+
+// Debug-overlay static cells. Colour words preserve the source's raw float
+// bits and guard bit0; other guard bits survive initialization.
+struct AiGroupDebugColour {
+    std::uint32_t flags{};
+    std::array<std::uint32_t, 4> words{};
+};
+struct AiGroupDebugState {
+    std::int32_t mode_00f8a9e0{};
+    std::int32_t selected_id_00f8a9e4{};
+    std::uint32_t half_00ce3800{0x3F000000u};
+    std::uint32_t one_00d7a24c{0x3F800000u};
+    AiGroupDebugColour white_00f8aa84; // guard F8AA94
+    AiGroupDebugColour grey_00f8aa98;  // guard F8AAA8
+    AiGroupDebugColour green_00f8aaac; // guard F8AABC
+    AiGroupDebugColour yellow_00f8aad4;// guard F8AAE4
+};
+struct AiGroupDebugHost {
+    virtual ~AiGroupDebugHost() = default;
+    // Exact native boundaries; address-only names retain unread callee roles.
+    virtual void call_00414db0(void* entity) = 0;
+    virtual const float* call_00a10c20(void* group) = 0;
+    virtual void call_00a2c050() = 0;
+    virtual bool call_007788b0(void* entity) = 0;
+    virtual void* entity_vslot_114(void* entity) = 0;
+    virtual const void* call_0071eb60(void* director) = 0;
+    virtual void call_006f7dd0(const void* descriptor, std::array<float, 3>& out) = 0;
+    virtual void command_vslot_1c(void* command) = 0;
+};
+// 00A2CDD0: native ECX = score-list subobject at group+24h, RET, no returned
+// text. This source interface returns its computed temporary text for inspection.
+// Complete normal value/host-effect algorithm; native pool/STL/SEH mechanics
+// are excluded. Valid 128xACh score storage, term counts <=16, terminated labels,
+// and native Win32 group/entity/list layouts are required.
+std::string ai_debug_group_target_text_00a2cdd0(void* score_list, AiGroupDebugState&, AiGroupDebugHost&);
+// 00A2D580: native ECX = group, RET. Same normal-path projection/domain; no
+// debug draw call is invented (the source only computes/discards text/positions).
+void ai_debug_group_members_overlay_00a2d580(void* group, AiGroupDebugState&, AiGroupDebugHost&);
+
+struct AiGroupDescribeDebugHost : AiGroupDebugHost {
+    virtual std::vector<void*> call_00a2def0(void* group, std::int32_t world_set) = 0;
+    virtual std::map<std::int32_t, std::int32_t> call_00a2e1e0(void* group) = 0;
+    virtual std::string object_vslot_2c(void* object) = 0;
+    virtual std::string call_00a137d0(void* command) = 0;
+    // Explicit register bridges: first takes ECX=group and leaves x87 ST0;
+    // second consumes ST0 and returns integer EAX. The CRT body is a binding.
+    virtual void* recon_ratio_entry_00a2c3d0() = 0;
+    virtual void* truncate_st0_entry_00bf7420() = 0;
+    virtual void* call_0071be40(void* director) = 0;
+    virtual const char* weapon_command_vslot_04(void* command) = 0;
+    virtual bool entity_vslot_5c(void* entity, std::int32_t kind) = 0;
+    virtual const char* call_007ed500(void* entity) = 0;
+};
+// 00A2F6F0: native ECX=group, stack NativeString* out, RET4/EAX out. Complete
+// normal value/host-effect projection. Requires a nonempty valid member list,
+// valid native strings, and native-register-compatible entry bindings above.
+// scale is the live D7A220 double (100.0); retain the unspilled x87 multiply.
+std::string ai_group_describe_debug_00a2f6f0(void* group,
+    const char* const* unit_type_names_00e0b590, const volatile double& scale_00d7a220,
+    AiGroupDescribeDebugHost&);
 
 // ---------------------------------------------------------------------------
 // The group object (00A2DFA0 allocates 5660h at 00A38CAE and 00A2E41A)

@@ -11,6 +11,127 @@
 
 namespace bsp {
 namespace {
+template<class T> T& leaf_field(void* descriptor, std::size_t offset) {
+    return *reinterpret_cast<T*>(static_cast<unsigned char*>(descriptor) + offset);
+}
+struct LeafLuaRef {
+    VehicleClassLeafFieldHost& host;
+    GuiLuaRef value;
+    ~LeafLuaRef() { host.release_00b67700(value); }
+};
+struct LeafEffectRef {
+    VehicleClassLeafFieldHost& host;
+    void* value;
+    ~LeafEffectRef() { if (value) host.release_effect(value); }
+};
+void replace_leaf_effect(void*& slot, void* value, VehicleClassLeafFieldHost& host) {
+    void* previous = slot;
+    if (previous != value) {
+        slot = value;
+        if (value) host.retain_effect(value);
+        if (previous) host.release_effect(previous);
+    }
+}
+}
+
+// 00749210..00749775, listing and decompilation. Original __thiscall,
+// ECX=descriptor, stack row/RET4. SmokeFireEfx uses ONLY the first iterator
+// value (no Next); DamageSmokeEfx appends to+140, fallback is the actual+160
+// handle slot. SecondaryExplosionEfx walks every entry into+150. The PUSH1
+// before GetInteger belongs to following Acquire, not the numeric getter.
+// Names provisional; normal call/refcount/store schedule, no native FH3/ABI proof.
+void read_structure_class_fields_00749210(void* descriptor, const GuiLuaRef& row,
+    VehicleClassLeafFieldHost& host) {
+    host.base_00960230(descriptor, row);
+    auto acquire = [&](const GuiLuaRef& ref) {
+        return LeafEffectRef{host, host.acquire_00870cd0(host.integer_00b66290(ref), 1)};
+    };
+    {
+        LeafLuaRef field{host, host.get_00b67800(row, "ExplosionEfx")};
+        auto effect = acquire(field.value);
+        replace_leaf_effect(leaf_field<void*>(descriptor, 0x13C), effect.value, host);
+    }
+    LeafLuaRef table{host, host.get_00b67800(row, "SmokeFireEfx")};
+    LeafLuaRef key{host, host.unbound_00b65f50()};
+    LeafLuaRef value{host, host.unbound_00b65f50()};
+    host.first_00b67080(table.value, key.value, value.value);
+    if (!host.is_unbound_00b66420(key.value)) {
+        auto effect = acquire(value.value);
+        replace_leaf_effect(leaf_field<void*>(descriptor, 0x160), effect.value, host);
+    }
+    bool integer;
+    { LeafLuaRef field{host, host.get_00b67800(row, "DamageSmokeEfx")};
+      integer = host.is_integer_00b66a60(field.value); }
+    auto* bytes = static_cast<unsigned char*>(descriptor);
+    if (integer) {
+        LeafLuaRef field{host, host.get_00b67800(row, "DamageSmokeEfx")};
+        auto effect = acquire(field.value);
+        host.append_004d9c00(bytes + 0x140, &effect.value);
+    } else host.append_004d9c00(bytes + 0x140,
+        reinterpret_cast<void* const*>(bytes + 0x160));
+    auto number = [&](const char* name, std::size_t offset) {
+        LeafLuaRef field{host, host.get_00b67800(row, name)};
+        leaf_field<float>(descriptor, offset) = host.number_00b66270(field.value);
+    };
+    number("SmokeFireChanceMul", 0x164);
+    number("SmokeFireDurationMin", 0x168);
+    number("SmokeFireDurationMax", 0x16C);
+    { LeafLuaRef field{host, host.get_00b67800(row, "CapturePost")};
+      leaf_field<std::uint8_t>(descriptor, 0x174) = host.boolean_or_00b662f0(field.value, false); }
+    { LeafLuaRef field{host, host.get_00b67800(row, "SecondaryExplosionEfx")};
+      host.assign_00b67690(table.value, field.value); }
+    host.first_00b67080(table.value, key.value, value.value);
+    while (!host.is_unbound_00b66420(key.value)) {
+        { auto effect = acquire(value.value);
+          host.append_004d9c00(bytes + 0x150, &effect.value); }
+        host.next_00b67190(table.value, key.value, value.value);
+    }
+    number("SecondaryExplosionChanceMul", 0x170);
+    { LeafLuaRef field{host, host.get_00b67800(row, "FakedType")};
+      leaf_field<std::uint32_t>(descriptor, 0x178) = host.call_00746b90(field.value, 0x1B); }
+    { LeafLuaRef field{host, host.get_00b67800(row, "MapIcon")};
+      leaf_field<std::int32_t>(descriptor, 0x17C) = host.integer_or_00b66380(field.value, 0); }
+    { LeafLuaRef field{host, host.get_00b67800(row, "Fortress")};
+      leaf_field<std::uint8_t>(descriptor, 0x175) = host.boolean_or_00b662f0(field.value, false); }
+    { LeafLuaRef field{host, host.get_00b67800(row, "DamageModelChangeDelay")};
+      leaf_field<float>(descriptor, 0x138) = host.float_or_00b66330(field.value, 0); }
+}
+
+// 0074D4A0..0074D70D. Original __thiscall ECX=descriptor,row/RET4.
+// Complete normal path: base, unconditional ExplosionEfx; nil-checked Wreck
+// lookup through an actual pooled temporary string; integer-only Smoke update.
+// Numeric Lua/refcount services remain explicit; native unwind/ABI is unproven.
+void read_wreckable_class_fields_0074d4a0(void* descriptor, const GuiLuaRef& row,
+    NativeStringRawPoolContext& strings, VehicleClassLeafFieldHost& host) {
+    host.base_00960230(descriptor, row);
+    {
+        LeafLuaRef field{host, host.get_00b67800(row, "ExplosionEfx")};
+        LeafEffectRef effect{host, host.acquire_00870cd0(host.integer_00b66290(field.value), 1)};
+        replace_leaf_effect(leaf_field<void*>(descriptor, 0x138), effect.value, host);
+    }
+    bool nil;
+    { LeafLuaRef field{host, host.get_00b67800(row, "Wreck")};
+      nil = host.is_nil_00b65fb0(field.value); }
+    if (!nil) {
+        LeafLuaRef field{host, host.get_00b67800(row, "Wreck")};
+        struct String {
+            std::uint32_t header[2];
+            NativeStringRawPoolContext& strings;
+            ~String() { destroy_native_string_header_0041dd20(header, strings); }
+        } text{{0, 0}, strings};
+        construct_native_string_header_0041e870(text.header, strings, host.string_00b662b0(field.value));
+        leaf_field<void*>(descriptor, 0x13C) = host.wreck_004b3f10(text.header);
+    } else leaf_field<void*>(descriptor, 0x13C) = nullptr;
+    bool integer;
+    { LeafLuaRef field{host, host.get_00b67800(row, "Smoke")};
+      integer = host.is_integer_00b66a60(field.value); }
+    if (integer) {
+        LeafLuaRef field{host, host.get_00b67800(row, "Smoke")};
+        LeafEffectRef effect{host, host.acquire_00870cd0(host.integer_00b66290(field.value), 1)};
+        replace_leaf_effect(leaf_field<void*>(descriptor, 0x14C), effect.value, host);
+    }
+}
+namespace {
 
 constexpr std::uint32_t kNo = kVehicleClassFieldNoOffset;
 

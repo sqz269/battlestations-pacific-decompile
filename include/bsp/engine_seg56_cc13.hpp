@@ -28,8 +28,29 @@
 
 #include "bsp/locale_tables.hpp"
 #include "bsp/lua_binding_core.hpp"
+#include "bsp/native_string.hpp"
 
 namespace bsp::cc13_seg56 {
+
+struct EndSceneString { std::uint32_t length{}, data{}; };
+struct EndSceneHost {
+    virtual ~EndSceneHost() = default;
+    // Qualified stock tree-membership binding, ECX=game+650, key=game+2198.
+    virtual bool contains_007f8d60(void* profile, void* key) = 0;
+    virtual void* menu_00425d10() = 0;
+    // NativeString by value is callee-owned, as in the established prompt API.
+    virtual void prompt_00531b00(void* menu, int slot, const EndSceneString* message,
+        int kind, std::uint32_t callback, int context, const EndSceneString* title,
+        float delay, int zero, EndSceneString owned_text, int one) = 0;
+    virtual void focus_first_00530670(void* menu) = 0;
+    virtual void focus_last_00530c20(void* menu) = 0;
+    virtual void end_scene_004d7970(std::uint32_t zero) = 0;
+};
+// 008B01B0, no stack arguments/RET0, EAX=result count0. The Lua state is
+// unused in this body. Actual game/global slots are supplied, never wired.
+int lua_game_end_scene_008b01b0(void* const& game_00e188a8,
+    std::uint32_t& flags_00f882a4, std::uint32_t& debug_00f882a0,
+    NativeStringRawPoolContext& strings, EndSceneHost& host);
 
 struct Vec3 {
     float x{0.0f};
@@ -142,6 +163,27 @@ int lua_mpak(LuaArgs& args, ToolingHost& host);
 // +04h a case-insensitive name -> nesting count map (005070C0 indexes it), +10h a
 // name -> one-byte timer block map (008CFB20 subscripts it). The destructor 008D1AB0 erases
 // both, clears 00F87908 and restores the singleton-base vtable 00CE3818.
+struct PerfTimingRawHost {
+    virtual ~PerfTimingRawHost() = default;
+    virtual void* buy_count_head_0088a520(void* tree) = 0;
+    virtual void* buy_timer_head_005826b0(void* tree) = 0;
+    virtual void erase_timers_0058d860(void* tree, void* output,
+        void* first_owner, void* first, void* last_owner, void* last) = 0;
+    virtual void erase_counts_008cfd30(void* tree, void* output,
+        void* first_owner, void* first, void* last_owner, void* last) = 0;
+    virtual void free_00bf65ac(void* memory) = 0;
+    virtual void* singleton_manager_00415350() = 0;
+    virtual void* allocate_00bf681b(std::size_t bytes) = 0;
+    virtual void register_00bd0c30(void* manager, void* object) = 0;
+};
+// Actual1Ch storage. ECX=this, RET0/EAX=this (constructor); ECX=this,
+// RET0 (destructor); no arguments, RET0/EAX=slot (singleton accessor).
+// Complete normal paths; native FH3 unwinding remains outside this interface.
+void* construct_perf_timing_registry_008d1a10(void* self, PerfTimingRawHost& host);
+void destruct_perf_timing_registry_008d1ab0(void* self, void*& slot_00f87908,
+    PerfTimingRawHost& host);
+void* get_perf_timing_registry_008d1b80(void*& slot_00f87908, PerfTimingRawHost& host);
+
 class PerfTimingRegistry {
 public:
     struct CaseInsensitiveLess {

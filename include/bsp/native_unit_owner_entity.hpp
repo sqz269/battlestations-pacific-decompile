@@ -191,4 +191,54 @@ void* construct_native_unit_owner_recon_record_00805a70(
 void destroy_native_unit_owner_recon_record_00804300(
     void* actual_record, NativeObserverLifetime& actual_observers);
 
+// Supplied, non-stubbed call boundaries for the complete normal owner bodies
+// below. Each name is an address hypothesis. They retain the original receiver
+// and stack arguments; this Source interface itself is not the x86 ABI.
+struct NativeUnitOwnerEntityCalls {
+    virtual ~NativeUnitOwnerEntityCalls() = default;
+    // ECX=root; registry_select, full_flag; RET8, EAX=root.
+    virtual void game_entity_construct_00928630(
+        void* root, std::uint32_t registry_select, std::uint32_t full_flag) = 0;
+    // ECX=root; RET0. Completes the GameEntity and SceneNode retirement.
+    virtual void game_entity_destruct_009287b0(void* root) = 0;
+    // ECX=actual 24h stack message; payload; RET4, EAX=message. Kind4Fh.
+    virtual void* entity_release_construct_00779780(void* message, std::uint32_t payload) = 0;
+    // ECX=sender root; message, flags, optional output pointer; RET0Ch.
+    virtual void route_message_0077c2a0(
+        void* sender, void* message, std::uint32_t flags, void* output) = 0;
+    // ECX=root+2B0h; RET0. Restore CF9348, unregister target+14h, then
+    // destroy its callback owner. This is not a deleting destructor.
+    virtual void observer_member_destruct_006e0860(void* member) = 0;
+};
+
+// Complete normal 0077EED0..0077F08D constructor schedule. Original ABI:
+// ECX=root, one full DWORD flag, RET4, EAX=root. Compose the genuine base,
+// three actual34h recon records, owner/profile/list/physical stages, and the
+// mode2/offline peer0 arm in image order. Required actual allocation/preimage,
+// observer/CRT domains and publication cells are the same as the fragments.
+// The Original BF7CD1 iterator is a qualified sequential Source substitution.
+// Native C8A0C8/FH3 constructor unwind is not supplied: no EH-path or callable
+// native-profile/ABI/gameplay equivalence is claimed by this normal body.
+void* construct_native_unit_owner_entity_0077eed0(
+    void* actual_root, std::uint32_t full_flag, NativeObserverLifetime& observers,
+    const volatile std::uint32_t& actual_initial_word_00ce4adc,
+    void* volatile& actual_game_publication_00e188a8,
+    const volatile std::uint8_t& actual_network_byte_00e0af20,
+    void* actual_holder_scratch_preimage,
+    volatile std::uint8_t& actual_dirty_byte_00f87190,
+    NativeUnitOwnerEntityCalls& calls);
+
+// Complete normal 0077E380..0077E490 body destructor. Original ECX=root,
+// no stack arguments, RET0; it never frees root or interprets a delete flag.
+// Preserve the byte/game/mode1 short-circuit reads, kind4Fh stack message
+// (payload root+70h, route flags4/output0), global removal, observer/lists,
+// reverse recon-record destruction, then genuine GameEntity base teardown.
+// BF7C6E is a qualified reverse Source loop. Native C8A053/FH3 unwind and its
+// EH-only message79 cleanup are not normal calls and remain unimplemented.
+void destruct_native_unit_owner_entity_0077e380(
+    void* actual_root, NativeObserverLifetime& observers,
+    const volatile std::uint8_t& actual_network_byte_00e0af20,
+    void* volatile& actual_game_publication_00e188a8,
+    void* actual_global_list_00f87194, NativeUnitOwnerEntityCalls& calls);
+
 } // namespace bsp
