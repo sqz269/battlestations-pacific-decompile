@@ -1,4 +1,6 @@
 #include "bsp/native_game_profile_lifetime.hpp"
+#include "bsp/native_string.hpp"
+#include <initializer_list>
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_render_resource_record.hpp"
 #include "bsp/native_render_service_vector_cleanup.hpp"
@@ -101,5 +103,32 @@ void destroy_native_game_profile_007fd8a0(void* p,NativeGameProfileLifetimeConte
         aliases=at(p,8);o.unwind_state=-1;o.native_site=0x007fdaf1;calls.profile_call_004d05e0(aliases,c);
         o.native_site=0x007fdafa;calls.free_00bf65ac(pointer(aliases,4));word(aliases,4,0);o.phase=Op::Phase::complete;
     }catch(...){o.phase=Op::Phase::failed;throw;}
+}
+// Evidence: complete 007F9020 export; three resize/copy blocks at +0/+8/+10h,
+// then +18h DWORD. Original __thiscall/RET4. Prior prose said two strings;
+// the body is decisive. Pool/header helpers preserve their actual-storage
+// contracts; native FH3 exception identity remains unproven.
+void* copy_construct_profile_bonus_record_007f9020(void* destination, void* source,
+    NativeStringRawPoolContext& strings) {
+    int completed = 0;
+    try {
+        for (U offset : {0u, 8u, 16u}) {
+            void* target = at(destination, offset);
+            void* input = at(source, offset);
+            word(target, 0, 0); word(target, 4, 0);
+            if (target != input) {
+                resize_native_string_header_0041dd40(target, strings, word(input, 0), true);
+                if (word(input, 0) != 0)
+                    std::memcpy(pointer(target, 4), pointer(input, 4), word(target, 0));
+            }
+            ++completed;
+        }
+        word(destination, 24, word(source, 24));
+    } catch (...) {
+        while (completed != 0)
+            destroy_native_string_header_0041dd20(at(destination, U(--completed) * 8), strings);
+        throw;
+    }
+    return destination;
 }
 } // namespace bsp

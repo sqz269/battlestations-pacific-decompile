@@ -4,6 +4,14 @@
 #include <cstdint>
 #include <vector>
 
+namespace bsp {
+// 007CFD00..007CFD1F listing: ECX unused, class id on stack, RET 4/EAX bool.
+// Descriptor plane-base family; name remains a hypothesis, complete leaf body.
+inline bool plane_class_is_kind_of_007cfd00(std::uint32_t kind) noexcept {
+    return kind == 0x0F || kind == 5 || kind == 4;
+}
+}
+
 #include "bsp/in_mission_subsystem_tick.hpp"
 
 // The eight local-player unit lists at game+1964h..+19B8h, built once per

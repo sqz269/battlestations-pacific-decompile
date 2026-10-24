@@ -1,0 +1,225 @@
+{
+  "packet": "oct24-poolB-subscriptions",
+  "scope": "20 exact assigned rows; build-only reconstruction; no game/host wiring",
+  "validation": {
+    "diff_check": "passed",
+    "build": "pending primary integration build",
+    "game": "not run"
+  },
+  "routines": [
+    {
+      "address": "0097a220",
+      "symbol": "construct_recon_0097a220",
+      "was": "metadata_only_no_function_body_verified_oct24",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: reviewed full pseudocode and ABI listing; empty callback; entity, old-level, new-level, party filters empty; ECX=this, plain RET at 0097a322. Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a322; constructors return this in EAX",
+      "uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "blockers": []
+    },
+    {
+      "address": "0097a330",
+      "symbol": "destruct_recon_0097a330",
+      "was": "metadata_only_no_function_body_verified_oct24",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: reviewed full pseudocode and ABI listing; destroy party, new-level, old-level, entity filters, then callback storage; ECX=this, plain RET at 0097a44d. Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a44d; constructors return this in EAX",
+      "uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "blockers": []
+    },
+    {
+      "address": "0097a450",
+      "symbol": "construct_kill_0097a450",
+      "was": "metadata_only_no_function_body_verified_oct24",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: reviewed full pseudocode and ABI listing; empty callback; entity, last-attacker, last-attacker-player-index filters empty; ECX=this, plain RET at 0097a522. Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a522; constructors return this in EAX",
+      "uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "blockers": []
+    },
+    {
+      "address": "0097a530",
+      "symbol": "destruct_kill_0097a530",
+      "was": "metadata_only_no_function_body_verified_oct24",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: reviewed full pseudocode and ABI listing; destroy last-attacker-player-index, last-attacker, entity filters, then callback storage; ECX=this, plain RET at 0097a61e. Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a61e; constructors return this in EAX",
+      "uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "blockers": []
+    },
+    {
+      "address": "0097a620",
+      "symbol": "construct_exit_zone_0097a620",
+      "was": "metadata_only_no_function_body_verified_oct24",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: reviewed full pseudocode and ABI listing; empty callback; entity and exited filters empty; ECX=this, plain RET at 0097a6c1. Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a6c1; constructors return this in EAX",
+      "uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "blockers": []
+    },
+    {
+      "address": "0097a6d0",
+      "symbol": "destruct_exit_zone_0097a6d0",
+      "was": "metadata_only_no_function_body_verified_oct24",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: reviewed full pseudocode and ABI listing; destroy exited and entity filters, then callback storage; ECX=this, plain RET at 0097a78f. Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a78f; constructors return this in EAX",
+      "uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "blockers": []
+    },
+    {
+      "address": "0097a790",
+      "symbol": "construct_input_0097a790",
+      "was": "metadata_only_no_function_body_verified_oct24",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: reviewed full pseudocode and ABI listing; empty callback; input-id filter empty; ECX=this, plain RET at 0097a800. Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a800; constructors return this in EAX",
+      "uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "blockers": []
+    },
+    {
+      "address": "0097a810",
+      "symbol": "destruct_input_0097a810",
+      "was": "metadata_only_no_function_body_verified_oct24",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: reviewed full pseudocode and ABI listing; destroy input-id filter, then callback storage; ECX=this, plain RET at 0097a8a5. Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a8a5; constructors return this in EAX",
+      "uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "blockers": []
+    },
+    {
+      "address": "0097a8b0",
+      "symbol": "construct_surrender_0097a8b0",
+      "was": "BSP_SurrenderSubscription_Construct",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: full body and ABI listing reviewed; empty callback and party integer filter. ECX=this, no stack arguments; RET0 at0097a920. Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "original_abi": "ECX=this; no stack arguments; RET0 at0097a920",
+      "uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "blockers": []
+    },
+    {
+      "address": "0097a930",
+      "symbol": "destruct_surrender_0097a930",
+      "was": "BSP_SurrenderSubscription_Destruct",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: full body and ABI listing reviewed; release party tree, then callback. ECX=this, no stack arguments; RET0 at0097a9c5. Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "original_abi": "ECX=this; no stack arguments; RET0 at0097a9c5",
+      "uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "blockers": []
+    },
+    {
+      "address": "0097a9d0",
+      "symbol": "construct_leak_0097a9d0",
+      "was": "BSP_LeakSubscription_Construct",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: full body and ABI listing reviewed; empty callback and entity filter; duration min/max preserved from explicit allocation values. ECX=this, no stack arguments; RET0 at0097aa47. Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "original_abi": "ECX=this; no stack arguments; RET0 at0097aa47",
+      "uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "blockers": []
+    },
+    {
+      "address": "0097aa50",
+      "symbol": "destruct_leak_0097aa50",
+      "was": "BSP_LeakSubscription_Destruct",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: full body and ABI listing reviewed; release entity tree, then callback; range owns no storage. ECX=this, no stack arguments; RET0 at0097aae5. Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "original_abi": "ECX=this; no stack arguments; RET0 at0097aae5",
+      "uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "blockers": []
+    },
+    {
+      "address": "0096dcb0",
+      "symbol": "destruct_warning_event_record_0096dcb0",
+      "was": "BSP_WarningEventRecord_Destruct",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "complete value-model lifecycle",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: full body and ABI listing reviewed; release optional name storage then restore base vtable00D1AF18 (vtable absent from existing value model). ECX=this, no stack arguments; RET0 at0096dd07. Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "original_abi": "ECX=this; no stack arguments; RET0 at0096dd07",
+      "uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "blockers": []
+    },
+    {
+      "address": "00808230",
+      "symbol": "destruct_sensor_row_00808230",
+      "was": "Unknown_Dtor_00808230",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "existing upstream raw body retained; duplicate value-model destructor removed",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: full body and ABI listing reviewed; resize GUI list+54h to zero/free, then destroy seven entry lists in reverse order. ECX=this, no stack arguments; RET0 at00808294. Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "original_abi": "ECX=this; no stack arguments; RET0 at00808294",
+      "uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "blockers": [],
+      "status": "existing_body_reconciled"
+    },
+    {
+      "address": "00808d20",
+      "symbol": "destruct_sensor_class_table_00808d20",
+      "was": "Unknown_Dtor_00808d20",
+      "is": "reconstructed_value_model_build_pending",
+      "coverage": "existing upstream raw body retained; duplicate value-model destructor removed",
+      "source": "src/cg_rebuild_c_cc13.cpp",
+      "evidence": "oct24-poolB-subscriptions: full body and ABI listing reviewed; destroy seven60h rows in reverse order then restore base vtable00CEB130 via00BD30F0; reference count left untouched. ECX=this, no stack arguments; RET0 at00808d75. Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "original_abi": "ECX=this; no stack arguments; RET0 at00808d75",
+      "uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "blockers": [],
+      "status": "existing_body_reconciled"
+    }
+  ],
+  "call_evidence": [
+    {
+      "address": "0096dce6",
+      "native": "00419cc0",
+      "containing": "0096dcb0"
+    },
+    {
+      "address": "0096dced",
+      "native": "00bd1510",
+      "containing": "0096dcb0"
+    },
+    {
+      "address": "0080825d",
+      "native": "00807e60",
+      "containing": "00808230"
+    },
+    {
+      "address": "0080827f",
+      "native": "00bf7c6e",
+      "containing": "00808230"
+    },
+    {
+      "address": "00808d52",
+      "native": "00bf7c6e",
+      "containing": "00808d20"
+    },
+    {
+      "address": "00808d61",
+      "native": "00bd30f0",
+      "containing": "00808d20"
+    }
+  ]
+}

@@ -1,0 +1,597 @@
+{
+  "packet": "oct24-poolB-vehicle",
+  "scope": "30 assigned vehicle/traffic rows; independent worker source reconstruction, no host wiring",
+  "validation": {
+    "build": "pending primary integrator build",
+    "runtime": "not run",
+    "abi": "native input/return/stack cleanup documented; C++ interfaces are not binary drop-ins"
+  },
+  "routines": [
+    {
+      "address": "00951aa0",
+      "name": "construct_recon_plane_class_00951aa0",
+      "native_name": "BSP_VehicleClass_ConstructReconPlane",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[ReconPlane]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete normal-path native body reconstructed from exports/bsp/functions/00951aa0/decompiled.c and assembly.txt: ECX=this; no stack arguments; RET; base call followed by +0/+6Ch vptr stores. Descriptive name provisional; base callee remains an explicit address-named host boundary with unread semantics. No runtime or binary ABI claim.",
+      "uncertainty": "base call contract unread; vtable values are native 32-bit image addresses; portable C++ interface only",
+      "calls": [
+        {
+          "address": "00951aa3",
+          "native": "007d1e50",
+          "containing_function": "00951aa0",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00951af0",
+      "name": "construct_fighter_class_00951af0",
+      "native_name": "BSP_VehicleClass_ConstructFighter",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[Fighter]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete normal-path native body reconstructed from exports/bsp/functions/00951af0/decompiled.c and assembly.txt: ECX=this; no stack arguments; RET; base call followed by +0/+6Ch vptr stores. Descriptive name provisional; base callee remains an explicit address-named host boundary with unread semantics. No runtime or binary ABI claim.",
+      "uncertainty": "base call contract unread; vtable values are native 32-bit image addresses; portable C++ interface only",
+      "calls": [
+        {
+          "address": "00951af3",
+          "native": "007d1e50",
+          "containing_function": "00951af0",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00951b40",
+      "name": "construct_dive_bomber_class_00951b40",
+      "native_name": "BSP_VehicleClass_ConstructDiveBomber",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[DiveBomber]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete normal-path native body reconstructed from exports/bsp/functions/00951b40/decompiled.c and assembly.txt: ECX=this; no stack arguments; RET; base call followed by +0/+6Ch vptr stores. Descriptive name provisional; base callee remains an explicit address-named host boundary with unread semantics. No runtime or binary ABI claim.",
+      "uncertainty": "base call contract unread; vtable values are native 32-bit image addresses; portable C++ interface only",
+      "calls": [
+        {
+          "address": "00951b43",
+          "native": "007d1e50",
+          "containing_function": "00951b40",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00951b60",
+      "name": "construct_dive_bomber_unit_00951b60",
+      "native_name": "BSP_PlaneDiveBomberUnit_Construct",
+      "source": "src/unit_instance_layout.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kPlaneInstanceCtors[MPlaneDiveBomber]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET 4",
+      "evidence": "Complete normal-path native body reconstructed from exports/bsp/functions/00951b60/decompiled.c and assembly.txt: ECX=this; one stack dword; RET 4; base call followed by eight vptr stores and +C4h/+AACh stores. Descriptive name provisional; base callee remains an explicit address-named host boundary with unread semantics. No runtime or binary ABI claim.",
+      "uncertainty": "base call contract unread; vtable values are native 32-bit image addresses; portable C++ interface only",
+      "calls": [
+        {
+          "address": "00951b6a",
+          "native": "007cfd20",
+          "containing_function": "00951b60",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00951c20",
+      "name": "construct_torpedo_bomber_class_00951c20",
+      "native_name": "BSP_VehicleClass_ConstructTorpedoBomber",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[TorpedoBomber]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete normal-path native body reconstructed from exports/bsp/functions/00951c20/decompiled.c and assembly.txt: ECX=this; no stack arguments; RET; base call followed by +0/+6Ch vptr stores. Descriptive name provisional; base callee remains an explicit address-named host boundary with unread semantics. No runtime or binary ABI claim.",
+      "uncertainty": "base call contract unread; vtable values are native 32-bit image addresses; portable C++ interface only",
+      "calls": [
+        {
+          "address": "00951c23",
+          "native": "007d1e50",
+          "containing_function": "00951c20",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00951c40",
+      "name": "construct_torpedo_bomber_unit_00951c40",
+      "native_name": "BSP_PlaneTorpedoBomberUnit_Construct",
+      "source": "src/unit_instance_layout.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kPlaneInstanceCtors[MPlaneTorpedoBomber]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET 4",
+      "evidence": "Complete normal-path native body reconstructed from exports/bsp/functions/00951c40/decompiled.c and assembly.txt: ECX=this; one stack dword; RET 4; base call followed by eight vptr stores and +C4h/+AACh stores. Descriptive name provisional; base callee remains an explicit address-named host boundary with unread semantics. No runtime or binary ABI claim.",
+      "uncertainty": "base call contract unread; vtable values are native 32-bit image addresses; portable C++ interface only",
+      "calls": [
+        {
+          "address": "00951c4a",
+          "native": "007cfd20",
+          "containing_function": "00951c40",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00951d00",
+      "name": "construct_kamikaze_class_00951d00",
+      "native_name": "BSP_VehicleClass_ConstructKamikaze",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[Kamikaze]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete normal-path native body reconstructed from exports/bsp/functions/00951d00/decompiled.c and assembly.txt: ECX=this; no stack arguments; RET; base call followed by +0/+6Ch vptr stores. Descriptive name provisional; base callee remains an explicit address-named host boundary with unread semantics. No runtime or binary ABI claim.",
+      "uncertainty": "base call contract unread; vtable values are native 32-bit image addresses; portable C++ interface only",
+      "calls": [
+        {
+          "address": "00951d03",
+          "native": "007d1e50",
+          "containing_function": "00951d00",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00951d20",
+      "name": "construct_kamikaze_unit_00951d20",
+      "native_name": "BSP_PlaneKamikazeUnit_Construct",
+      "source": "src/unit_instance_layout.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kPlaneInstanceCtors[MPlaneKamikaze]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET 4",
+      "evidence": "Complete normal-path native body reconstructed from exports/bsp/functions/00951d20/decompiled.c and assembly.txt: ECX=this; one stack dword; RET 4; base call followed by eight vptr stores and +C4h/+AACh stores. Descriptive name provisional; base callee remains an explicit address-named host boundary with unread semantics. No runtime or binary ABI claim.",
+      "uncertainty": "base call contract unread; vtable values are native 32-bit image addresses; portable C++ interface only",
+      "calls": [
+        {
+          "address": "00951d2a",
+          "native": "007cfd20",
+          "containing_function": "00951d20",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00951de0",
+      "name": "construct_level_bomber_class_00951de0",
+      "native_name": "BSP_VehicleClass_ConstructLevelBomber",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[LevelBomber]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 007d1e50 at 00951de3, stores +0=0x00d1a4f8 and +6Ch=0x00d1a4f4; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Base contract unread; portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base callee contract unread; descriptive name provisional",
+      "calls": [
+        {
+          "address": "00951de3",
+          "native": "007d1e50",
+          "containing_function": "00951de0",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00951e30",
+      "name": "construct_command_building_class_00951e30",
+      "native_name": "BSP_VehicleClass_ConstructCommandBuilding",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[CommandBuilding]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 00749180 at 00951e33, stores +0=0x00d1a538 and +6Ch=0x00d1a534; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Base contract unread; portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base callee contract unread; descriptive name provisional",
+      "calls": [
+        {
+          "address": "00951e33",
+          "native": "00749180",
+          "containing_function": "00951e30",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "009536e0",
+      "name": "construct_small_recon_plane_class_009536e0",
+      "native_name": "BSP_VehicleClass_ConstructSmallReconPlane",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[SmallReconPlane]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 007d1e50 at 009536e3, stores +0=0x00d1a5a8 and +6Ch=0x00d1a5a4; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Base contract unread; portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base callee contract unread; descriptive name provisional",
+      "calls": [
+        {
+          "address": "009536e3",
+          "native": "007d1e50",
+          "containing_function": "009536e0",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00953770",
+      "name": "construct_large_recon_plane_class_00953770",
+      "native_name": "BSP_VehicleClass_ConstructLargeReconPlane",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[LargeReconPlane]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 007d1e50 at 00953773, stores +0=0x00d1a5ec and +6Ch=0x00d1a5e8; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Base contract unread; portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base callee contract unread; descriptive name provisional",
+      "calls": [
+        {
+          "address": "00953773",
+          "native": "007d1e50",
+          "containing_function": "00953770",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "0095fee0",
+      "name": "construct_airfield_class_0095fee0",
+      "native_name": "BSP_VehicleClass_ConstructAirField",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[AirField]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 00749050 at 0095fee3, stores +0=0x00d1a9a0 and +6Ch=0x00d1a99c; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Base contract unread; portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base callee contract unread; descriptive name provisional",
+      "calls": [
+        {
+          "address": "0095fee3",
+          "native": "00749050",
+          "containing_function": "0095fee0",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "0095ff50",
+      "name": "construct_shipyard_class_0095ff50",
+      "native_name": "BSP_VehicleClass_ConstructShipyard",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[Shipyard]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 00749050 at 0095ff53, stores +0=0x00d1a9dc and +6Ch=0x00d1a9d8; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Base contract unread; portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base callee contract unread; descriptive name provisional",
+      "calls": [
+        {
+          "address": "0095ff53",
+          "native": "00749050",
+          "containing_function": "0095ff50",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00953720",
+      "name": "small_recon_plane_class_name_00953720",
+      "native_name": "BSP_SmallReconPlaneClass_GetClassName",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete",
+      "before": {
+        "name": "kClassNameGetters[MSmallReconPlane]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "no inputs; EAX=literal address; RET",
+      "evidence": "Complete MOV EAX,00d1a5d4; RET body read from exported listing, pseudocode returns literal MSmallReconPlane. No arguments or ECX use. C++ literal preserves bytes, not native pointer identity.",
+      "uncertainty": "C++ literal has different pointer identity",
+      "calls": []
+    },
+    {
+      "address": "009537b0",
+      "name": "large_recon_plane_class_name_009537b0",
+      "native_name": "BSP_LargeReconPlaneClass_GetClassName",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete",
+      "before": {
+        "name": "kClassNameGetters[MLargeReconPlane]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "no inputs; EAX=literal address; RET",
+      "evidence": "Complete MOV EAX,00d1a618; RET body read from exported listing, pseudocode returns literal MLargeReconPlane. No arguments or ECX use. C++ literal preserves bytes, not native pointer identity.",
+      "uncertainty": "C++ literal has different pointer identity",
+      "calls": []
+    },
+    {
+      "address": "0095ffc0",
+      "name": "construct_land_vehicle_class_0095ffc0",
+      "native_name": "BSP_VehicleClass_ConstructLandVehicle",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[LandVehicle]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 00749050 at 0095ffc3, stores +0=0x00d1aa18 and +6Ch=0x00d1aa14; zero dwords 0x138,0x140,0x144,0x148,0x14c; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base semantics remain at address-named host boundary; descriptive field meanings provisional",
+      "calls": [
+        {
+          "address": "0095ffc3",
+          "native": "00749050",
+          "containing_function": "0095ffc0",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00960050",
+      "name": "construct_dummy_target_class_00960050",
+      "native_name": "BSP_VehicleClass_ConstructDummyTarget",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[DummyTargetVehicle]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 00749050 at 00960053, stores +0=0x00d1aa58 and +6Ch=0x00d1aa54; zero dwords 0x140; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base semantics remain at address-named host boundary; descriptive field meanings provisional",
+      "calls": [
+        {
+          "address": "00960053",
+          "native": "00749050",
+          "containing_function": "00960050",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00963c20",
+      "name": "construct_landing_ship_class_00963c20",
+      "native_name": "BSP_VehicleClass_ConstructLandingShip",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[LandingShip]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 00963380 at 00963c23, stores +0=0x00d1ad78 and +6Ch=0x00d1ad74; zero dwords none; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base semantics remain at address-named host boundary; descriptive field meanings provisional",
+      "calls": [
+        {
+          "address": "00963c23",
+          "native": "00963380",
+          "containing_function": "00963c20",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00963cb0",
+      "name": "construct_cargo_class_00963cb0",
+      "native_name": "BSP_VehicleClass_ConstructCargo",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[Cargo]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 00963380 at 00963cb3, stores +0=0x00d1adbc and +6Ch=0x00d1adb8; zero dwords none; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base semantics remain at address-named host boundary; descriptive field meanings provisional",
+      "calls": [
+        {
+          "address": "00963cb3",
+          "native": "00963380",
+          "containing_function": "00963cb0",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00963d30",
+      "name": "construct_battleship_class_00963d30",
+      "native_name": "BSP_VehicleClass_ConstructBattleShip",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[BattleShip]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 00963380 at 00963d33, stores +0=0x00d1adf8 and +6Ch=0x00d1adf4; zero dwords none; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base semantics remain at address-named host boundary; descriptive field meanings provisional",
+      "calls": [
+        {
+          "address": "00963d33",
+          "native": "00963380",
+          "containing_function": "00963d30",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00963db0",
+      "name": "construct_submarine_class_00963db0",
+      "native_name": "BSP_VehicleClass_ConstructSubmarine",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[Submarine]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 00963380 at 00963db3, stores +0=0x00d1ae38 and +6Ch=0x00d1ae34; zero dwords 0x80c; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base semantics remain at address-named host boundary; descriptive field meanings provisional",
+      "calls": [
+        {
+          "address": "00963db3",
+          "native": "00963380",
+          "containing_function": "00963db0",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00963e40",
+      "name": "construct_torpedo_boat_class_00963e40",
+      "native_name": "BSP_VehicleClass_ConstructTorpedoBoat",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[TorpedoBoat]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 00963380 at 00963e43, stores +0=0x00d1ae78 and +6Ch=0x00d1ae74; zero dwords none; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base semantics remain at address-named host boundary; descriptive field meanings provisional",
+      "calls": [
+        {
+          "address": "00963e43",
+          "native": "00963380",
+          "containing_function": "00963e40",
+          "contract": "unread"
+        }
+      ]
+    },
+    {
+      "address": "00963ec0",
+      "name": "construct_mothership_class_00963ec0",
+      "native_name": "BSP_VehicleClass_ConstructMotherShip",
+      "source": "src/vehicle_class.cpp",
+      "coverage": "complete_normal_path_over_explicit_native_call_boundary",
+      "before": {
+        "name": "kClassDescriptorCtors[MotherShip]",
+        "status": "metadata_only_no_function_body_verified_oct24"
+      },
+      "after": {
+        "status": "reconstructed_body_build_pending"
+      },
+      "abi": "__thiscall ECX=this; EAX=this; RET",
+      "evidence": "Complete native call/write/return body: CALL 00963380 at 00963ec3, stores +0=0x00d1aebc and +6Ch=0x00d1aeb8; zero dwords none; ECX=this/EAX=this/RET. Read decompiled.c and assembly.txt exports. Portable C++ image interface, no runtime or binary ABI claim.",
+      "uncertainty": "base semantics remain at address-named host boundary; descriptive field meanings provisional",
+      "calls": [
+        {
+          "address": "00963ec3",
+          "native": "00963380",
+          "containing_function": "00963ec0",
+          "contract": "unread"
+        }
+      ]
+    }
+  ]
+}
