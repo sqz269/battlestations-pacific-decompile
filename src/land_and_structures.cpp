@@ -384,11 +384,15 @@ void land_fort_init_scene_and_create_static_body_007482b0(
     std::uint32_t cursor = land_scene_at<std::uint32_t>(scene, 0x50);
     if (cursor > land_scene_at<std::uint32_t>(scene, 0x54)) host.invalid_iterator_00bf6713(); // 00748576
     const auto checked_back = [&]() -> std::uint8_t* {
-        const std::uint32_t begin = land_scene_at<std::uint32_t>(shapes, 4);
-        const std::uint32_t end = land_scene_at<std::uint32_t>(shapes, 8);
-        if (begin > end) host.invalid_iterator_00bf6713();
-        const std::uint32_t back = end - 0x48u;
-        if (back > end || back < begin) host.invalid_iterator_00bf6713();
+        std::uint32_t current_end = land_scene_at<std::uint32_t>(shapes, 8);
+        const std::uint32_t saved_end = current_end; // ESI survives the handler
+        if (land_scene_at<std::uint32_t>(shapes, 4) > current_end) {
+            host.invalid_iterator_00bf6713();
+            current_end = land_scene_at<std::uint32_t>(shapes, 8); // EAX reload only
+        }
+        const std::uint32_t back = saved_end - 0x48u;
+        if (back > current_end || back < land_scene_at<std::uint32_t>(shapes, 4))
+            host.invalid_iterator_00bf6713();
         if (back >= land_scene_at<std::uint32_t>(shapes, 8)) host.invalid_iterator_00bf6713();
         return land_scene_pointer(back);
     };

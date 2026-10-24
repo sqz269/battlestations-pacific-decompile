@@ -269,7 +269,8 @@ struct LandingShipUpdateHost {
     // 0074B524 loads this selected target after the external multiply returns.
     virtual void vcall_38(void* node, const float* matrix16, std::uint32_t native_target) = 0;
     virtual void call_0051f460() = 0;
-    [[noreturn]] virtual void invalid_iterator_00bf6713() = 0;
+    // The CRT handler may return; callers then continue with native reloads.
+    virtual void invalid_iterator_00bf6713() = 0;
 };
 
 void landing_ship_update_0074af50(std::uint8_t* ship, float dt,
