@@ -8,8 +8,10 @@ namespace {
 float magnitude(float v) noexcept { return v < 0.0f ? -v : v; }  // AND 7FFFFFFFh
 }  // namespace
 
-// Packet D5: OFF until cc9 pairs it. ON subtracts the image's 00CE3D10 constant
-// (0.20000000298023224) in the flyabove slot, where OFF uses the double 0.2.
+// Packet D5: OFF until cc9 pairs it. ON takes the flyover slot's two widened-float
+// constants as the image has them: the near test against 00D7A270 =
+// 0.05000000074505806 (009C6B61) and the flyabove subtrahend 00CE3D10 =
+// 0.20000000298023224 (009C6BBE). OFF uses the doubles 0.05 and 0.2.
 inline constexpr bool kNearFieldFlyoverSubtrahendCc13Bound = false;
 
 NearFieldProbeResult near_field_probe_007f0280(const float extents[3], const float weights[3],
@@ -78,7 +80,11 @@ void near_field_flyover_extents_009c6aa3(bool flyabove_18, float out[3]) noexcep
 }
 
 float near_field_flyover_slot_009c6b75(const NearFieldProbeResult& r, bool flyabove_18) noexcept {
-    if (!(magnitude(r.out_a[0]) > 0.05)) return 0.0f;  // 009C6B61-009C6B75
+    // 009C6B61-009C6B75: FCOMIP against qword [00D7A270] = 0.05000000074505806 (the float
+    // 0.05 widened), JBE. ON compares with the image's constant; OFF keeps 0.05.
+    double near_limit = 0.05;
+    if constexpr (kNearFieldFlyoverSubtrahendCc13Bound) near_limit = 0.05000000074505806;
+    if (!(magnitude(r.out_a[0]) > near_limit)) return 0.0f;
     float v = static_cast<float>(-r.out_a[2] * r.out_b[0] * r.out_b[1] * 1.2000000476837158);
     if (flyabove_18) {
         // 009C6BBE FSUB qword [00CE3D10] = 0.20000000298023224 (the float 0.2 widened), not
