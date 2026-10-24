@@ -220,6 +220,18 @@ try {
     "EXITCODE=$code"
     if ($manifest) {
         $manifest.exit_code = $code; $manifest.finished_utc = (Get-Date).ToUniversalTime().ToString('o')
+        # Effective difficulty (packet cc15-chg): game+6ACh as the run's log printed it. 0058BF37
+        # stores the record's forcedDifficultyLevel when it is not 3 (a CHG challenge row holds 2),
+        # and 0058BF58 stores the chosen game+6B0h (the pin) only when it is 3.
+        try {
+            $effLine = Select-String -LiteralPath $logFull -List -Pattern 'MissionStart::set_effective_difficulty game\+6ACh=(-?\d+)'
+            $recLine = Select-String -LiteralPath $logFull -List -Pattern 'side blocks: .* difficulty=(-?\d+)\s*$'
+            if ($effLine -and $manifest.difficulty) {
+                $forced = if ($recLine) { $recLine.Matches[0].Groups[1].Value } else { '' }
+                $manifest.difficulty.effective = $effLine.Matches[0].Groups[1].Value
+                $manifest.difficulty.effective_source = if ($forced -ne '' -and $forced -ne '3') { "record forcedDifficultyLevel $forced" } else { 'chosen game+6B0h' }
+            }
+        } catch { Write-Warning "effective difficulty not recorded: $_" }
         Write-RunManifest $manifest
     }
     # The parent can return while its native-data child is still tearing down
