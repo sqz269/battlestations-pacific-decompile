@@ -31,6 +31,8 @@ def source_history(starts, cache):
 
 def disposition(row):
     status = row['recon_status'] or ''
+    if status == 'incomplete_or_unverified_body_credit_withdrawn_oct24':
+        return 'unverified_or_incomplete_body'
     if status in (METADATA, 'unreferenced_dead_chain_recorded'):
         return 'recorded_only_no_body'
     if status.startswith('partial_'):
