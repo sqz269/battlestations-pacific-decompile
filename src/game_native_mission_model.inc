@@ -27,6 +27,7 @@
 #include "bsp/native_matrix_indexed_model_owner.hpp"
 #include "bsp/gun_fire_points.hpp"
 #include "bsp/structured_hierarchy.hpp"
+#include "bsp/structured_resource.hpp"
 #include "bsp/camera_multiply.hpp"
 #include <algorithm>
 #include <cstring>
@@ -65,6 +66,43 @@ float float_word(const volatile Word& actual) {
     float result;
     std::memcpy(&result, &word, sizeof result);
     return result;
+}
+std::vector<std::pair<Word,unsigned char>> read_plane_cockpit_notes(
+    const std::vector<std::uint8_t>& bytes) {
+    // Source metadata only. Resource ordinal and Note text preserve the
+    // B89E90/71AD50 association; geometry still follows the actual loader.
+    auto stream=std::make_shared<MemoryStream>(
+        memory_stream_from_complete_bytes(bytes.data(),bytes.size()));
+    StructuredReader reader(stream);
+    auto root=reader.read_root_00bea700();
+    require(root && ::_stricmp(root->tag().c_str(),"MMOD")==0 && root->read_control_00be9a40(),
+        "plane visibility metadata requires a complete MMOD root");
+    std::vector<std::pair<Word,unsigned char>> notes;
+    Word ordinal{};
+    while(root->has_remaining_00715bf0()) {
+        auto section=root->read_child_00bea680();
+        require(section!=nullptr,"plane visibility metadata has an invalid root child");
+        if(::_stricmp(section->tag().c_str(),"Resource")==0) {
+            while(section->has_remaining_00715bf0()) {
+                auto entry=section->read_child_00bea680();
+                require(entry!=nullptr,"plane visibility metadata has an invalid resource");
+                if(::_stricmp(entry->tag().c_str(),"Note")==0) {
+                    std::string text;
+                    require(read_note_text_00718f50_fragment(*entry,text),
+                        "plane visibility metadata has an invalid Note");
+                    if(text=="belsocockpit") notes.emplace_back(ordinal,1);
+                    else if(text=="kulsocockpit") notes.emplace_back(ordinal,2);
+                }
+                require(entry->skip_00be9c40() && entry->close(),
+                    "plane visibility metadata could not close a resource");
+                ++ordinal;
+            }
+        } else require(section->skip_00be9c40(),"plane visibility metadata could not skip a root child");
+        require(section->close(),"plane visibility metadata could not close a root child");
+    }
+    require(root->close() && reader.error()==StructuredReaderError::none,
+        "plane visibility metadata reader failed");
+    return notes;
 }
 } // namespace mission_model_detail
 
@@ -173,9 +211,17 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
         bool creator_consumed{}, retired{};
     };
     struct Asset {
+        struct PlaneDefaults {
+            std::optional<std::size_t> inner_cockpit,outer_cockpit;
+            std::vector<std::size_t> broken_wings;
+            std::vector<std::size_t> inherited_hidden;
+            std::vector<unsigned char> visible;
+        };
         std::string name;
         std::vector<std::unique_ptr<MeshCall>> meshes;
         std::vector<HierarchyItem> hierarchy;
+        std::vector<std::pair<Word,unsigned char>> cockpit_notes;
+        std::optional<PlaneDefaults> plane_defaults;
         std::vector<CameraMatrix> world_matrices;
         std::vector<unsigned char> matrix_states;
         std::size_t sections{};
@@ -194,6 +240,7 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
         std::size_t first_drawable{};
         std::size_t drawable_count{};
         bool complete{};
+        bool plane_defaults_configured{};
         std::vector<void*> hierarchy_nodes;
         std::vector<std::pair<std::size_t,void*>> rest_nodes;
         std::vector<RenderCommandReference*> palette_retains;
@@ -501,6 +548,78 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
                 drawable.unit_index,unit.asset->name.c_str(),drawable.actual,names->count_04,unit.rest_nodes.size());
         }
     }
+    const Asset::PlaneDefaults& prepare_plane_defaults(Asset& asset) {
+        if(asset.plane_defaults) return *asset.plane_defaults;
+        const auto& hierarchy=asset.hierarchy;
+        mission_model_detail::require(!hierarchy.empty() && hierarchy[0].parent==0xffffffffu,
+            "plane creator defaults require the original first root hierarchy item");
+        Asset::PlaneDefaults defaults;
+        defaults.visible.assign(hierarchy.size(),1);
+        // B891A0 publishes Note/node pairs in hierarchy/resource order. 71AD50
+        // selects the FIRST exact case-sensitive Note name, not a node label.
+        for(std::size_t item=0;item<hierarchy.size();++item)
+            for(const auto resource:hierarchy[item].resources)
+                for(const auto& note:asset.cockpit_notes) if(note.first==resource) {
+                    if(note.second==1 && !defaults.inner_cockpit) defaults.inner_cockpit=item;
+                    if(note.second==2 && !defaults.outer_cockpit) defaults.outer_cockpit=item;
+                }
+        if(defaults.inner_cockpit) defaults.visible[*defaults.inner_cockpit]=0;
+        if(defaults.outer_cockpit) defaults.visible[*defaults.outer_cockpit]=1;
+        std::vector<std::vector<std::size_t>> children(hierarchy.size());
+        for(std::size_t item=1;item<hierarchy.size();++item) {
+            const auto parent=hierarchy[item].parent;
+            if(parent==0xffffffffu) continue;
+            mission_model_detail::require(parent<hierarchy.size(),
+                "plane visibility hierarchy parent is out of range");
+            children[parent].push_back(item);
+        }
+        // B6E010 prepends each authored child. B6F9A0 walks that native sibling
+        // order, visits descendants before their parent, and excludes the root.
+        std::vector<std::pair<std::size_t,bool>> pending{{0,false}};
+        while(!pending.empty()) {
+            const auto entry=pending.back();pending.pop_back();
+            const auto item=entry.first;
+            if(!entry.second) {
+                pending.emplace_back(item,true);
+                for(const auto child:children[item]) pending.emplace_back(child,false);
+            } else if(item!=0 && std::strstr(hierarchy[item].name.c_str(),"szarny letorik")) {
+                defaults.broken_wings.push_back(item);defaults.visible[item]=0;
+            }
+        }
+        // B6D990 gates/multiplies the parent's factor before child render20.
+        // Actual mission nodes are flattened, so preserve that static gate in
+        // each affected descendant's immutable mask instead of another graph.
+        for(std::size_t item=0;item<hierarchy.size();++item) {
+            auto parent=hierarchy[item].parent;
+            std::size_t depth{};
+            bool inherited=false;
+            while(parent!=0xffffffffu) {
+                mission_model_detail::require(parent<hierarchy.size() && depth++<hierarchy.size(),
+                    "plane visibility hierarchy is invalid or cyclic");
+                if(!defaults.visible[parent]) inherited=true;
+                parent=hierarchy[parent].parent;
+            }
+            if(inherited && defaults.visible[item]) {
+                defaults.visible[item]=0;defaults.inherited_hidden.push_back(item);
+            }
+        }
+        asset.plane_defaults.emplace(std::move(defaults));
+        return *asset.plane_defaults;
+    }
+    void publish_hierarchy_visibility(Unit& unit,std::size_t unit_index,
+        std::size_t item,bool visible) {
+        for(std::size_t at=unit.first_drawable;at<unit.first_drawable+unit.drawable_count;++at) {
+            auto& drawable=drawables.at(at);
+            if(drawable.hierarchy_index!=item) continue;
+            mission_model_detail::require(!drawable.retired && drawable.unit_index==unit_index,
+                "plane default drawable changed identity");
+            set_native_node_visibility_factor_00b6da70(
+                static_cast<NativeNodeStorage*>(drawable.actual),nullptr,visible?1.0f:0.0f,0);
+        }
+        for(const auto& node:unit.rest_nodes) if(node.first==item)
+            set_native_node_visibility_factor_00b6da70(
+                static_cast<NativeNodeStorage*>(node.second),nullptr,visible?1.0f:0.0f,0);
+    }
     void materialize_drawables(Unit& unit, std::size_t unit_index) {
         auto& asset=*unit.asset;
         const auto& hierarchy=asset.hierarchy;
@@ -638,6 +757,7 @@ bool GameNativeMissionModel::load_installed_unit(const std::string& logical_name
             const auto* first=opened.stream->data_00bef610();
             std::vector<std::uint8_t> bytes(first,first+static_cast<std::size_t>(size));
             if(!read_mmod_hierarchy_items(bytes,a.hierarchy,error)) throw std::runtime_error(error);
+            a.cockpit_notes=read_plane_cockpit_notes(bytes);
             a.world_matrices.resize(a.hierarchy.size());a.matrix_states.resize(a.hierarchy.size());
             construct_native_string_header_0041e870(&a.actual_name,p.files.raw_strings(),a.name.c_str());a.name_live=true;
             require(resolve_native_vfs_existing_name_00bdf4c0(p.raw.actual_vfs_publication_0109ceec,
@@ -798,13 +918,41 @@ bool GameNativeMissionModel::set_unit_visible(std::size_t index, bool visible) {
             auto& drawable=p.drawables.at(at);
             mission_model_detail::require(!drawable.retired && drawable.unit_index==index,
                 "mission unit drawable range changed identity");
+            const bool part_visible=!unit.plane_defaults_configured ||
+                unit.asset->plane_defaults->visible.at(drawable.hierarchy_index)!=0;
             set_native_node_visibility_factor_00b6da70(
-                static_cast<NativeNodeStorage*>(drawable.actual),nullptr,visible?1.0f:0.0f,0);
+                static_cast<NativeNodeStorage*>(drawable.actual),nullptr,visible && part_visible?1.0f:0.0f,0);
         }
         return true;
     } catch(...) {
         p.failed=true;p.phase=Impl::Phase::failed;
         p.log.notef("native mission unit visibility failed unit=%zu asset=%s retention=process",
+            index,unit.asset->name.c_str());
+        throw;
+    }
+}
+bool GameNativeMissionModel::configure_plane_default_visibility(std::size_t index) {
+    auto& p=*impl_;
+    const auto found=p.units.find(index);
+    if(found==p.units.end()) return false;
+    auto& unit=*found->second;
+    mission_model_detail::require(p.phase==Impl::Phase::loaded && unit.complete,
+        "plane defaults require a completed loaded unit");
+    if(unit.plane_defaults_configured) return true;
+    try {
+        const auto& defaults=p.prepare_plane_defaults(*unit.asset);
+        unit.plane_defaults_configured=true;
+        if(defaults.inner_cockpit) p.publish_hierarchy_visibility(unit,index,*defaults.inner_cockpit,false);
+        if(defaults.outer_cockpit) p.publish_hierarchy_visibility(unit,index,*defaults.outer_cockpit,true);
+        for(const auto item:defaults.broken_wings) p.publish_hierarchy_visibility(unit,index,item,false);
+        for(const auto item:defaults.inherited_hidden) p.publish_hierarchy_visibility(unit,index,item,false);
+        p.log.notef("native mission plane defaults: unit=%zu asset=%s inner=%u outer=%u broken=%zu path=7D741E/7D745D/7D76D3",
+            index,unit.asset->name.c_str(),defaults.inner_cockpit?1u:0u,defaults.outer_cockpit?1u:0u,
+            defaults.broken_wings.size());
+        return true;
+    } catch(...) {
+        p.failed=true;p.phase=Impl::Phase::failed;
+        p.log.notef("native mission plane defaults failed unit=%zu asset=%s retention=process",
             index,unit.asset->name.c_str());
         throw;
     }

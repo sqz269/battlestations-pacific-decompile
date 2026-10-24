@@ -58,7 +58,8 @@ publishes a cached world matrix directly. The primary scene owner retains
 responsibility for the genuine root attachment at +A4.
 
 `set_unit_visible(unit_index, visible)` calls B6DA70 with factor 1 or 0 and
-recurse=0 for every flattened drawable. The caller rereads authoritative unit
+recurse=0 for every flattened drawable, preserving configured immutable plane
+part defaults described below. The caller rereads authoritative unit
 liveness/visibility each frame; this domain stores no duplicate flag or pose.
 Unknown indices return false from both update APIs. Dead units can remain
 resident and hidden until whole-mission retirement. There is no per-unit
@@ -122,6 +123,52 @@ and runtime checks; this worker ran no build or game. Multi-asset GPU rendering,
 spawn handling, OFF identity, visual parity, Original ABI and game validation
 remain separate integration gates.
 
+## Plane creator visibility defaults
+
+`configure_plane_default_visibility(unit_key)` is an explicit creator adapter;
+the primary calls it only for a true host plane, after model loading and before
+the first live visibility publication. It returns false for an unknown key and
+is idempotent for a configured unit. Asset names do not classify units.
+
+The installed Note payload is read through the existing 718F50 text adapter,
+which truncates at the first NUL. The adapter retains only immutable cockpit
+Note/resource roles and source-item default metadata. B891A0 publishes item/node
+pairs in hierarchy/resource order; 71AD50/71AAE0 return the first whole-length,
+case-sensitive Note match. Thus cockpit roles use attached Note resources, not
+hierarchy labels. Native visibility writes retain this original order:
+
+| Original creator site | Selection | B6DA70 factor/recurse |
+| --- | --- | --- |
+| 7D73BE..7D741E | Note `belsocockpit` | 0 / 0 |
+| 7D73E4..7D745D | Note `kulsocockpit` | 1 / 0 |
+| 7D7661..7D76D3 | B6F9A0 descendants matching `szarny letorik` | 0 / 0 |
+
+B6F9A0's listing starts from root+34, recurses before testing each child, uses
+CRT strstr at B6FA3C, then advances through +3C. It excludes the supplied root.
+B6E010 prepends children at B6E049..B6E064, so the metadata traversal visits
+siblings in reverse authored creation order and descendants before their parent.
+All matched actual visual/palette nodes receive the nonrecursive native setter;
+no source item or actual node is added. Subsequent whole-unit visibility uses
+`host_visible && immutable_item_default`, preventing hidden parts from being
+re-enabled by a frame's liveness gate. No live visibility field is retained.
+For a hidden source parent, B6D990 normally gates descendant render traversal.
+Because the mission nodes are flattened, the immutable mask also incorporates
+hidden authored ancestors, publishing zero to any additional affected actual
+descendants after the creator's three ordered selections. This adds no second
+native graph and no live visibility cache.
+
+For installed D3A_Val, inner cockpit item14/Note63 is hidden, outer cockpit
+item10/Note56 is shown, and broken-wing items17 then16 are hidden. Its root has
+Flags1 and all remaining items Flags0. B89474's Flags bit0 selects the group
+factory, while bit1 controls group bounds; neither is a serialized visibility
+bit. The nine native drawable registrations remain present; three have a hidden
+creator default. Notes such as `visp100-visp8` are not interpreted as hide flags.
+
+This bounded adapter supplies the creator's visibility factors. The separate
+interior-cockpit scale write, rotor-speed blur blending, damage transitions and
+animation are outside it. In particular, 7EC0AF's damaged-rotor initialization
+and 7EC3B0's live rotor blend are not replaced with a guessed permanent choice.
+
 ## Matrix-indexed plane bodies
 
 `MatrixIndexedMesh` uses the same complete B94710/B944E0 actual mesh, subset,
@@ -159,6 +206,13 @@ constant register bank. This is the matrix register+30 branch, separate from
 skinned register+32 and its inverse-bind/optimized storage. D63590's +20/+48/+58
 are the existing B748E0/B6E8C0/6EF890 paths. The primary scene and render20 adapter
 admit the genuine profile without substituting another native table.
+
+The palette's plain nodes need no separate render submission to refresh world
+matrices. Original B426DC tests each selected node's +5C bit2 and B426E4 calls
+B6DB70 when stale, before the first +F0 load at B426E9. The existing native
+constant builder's ensure_world performs that same per-node gate/call immediately
+before its three-row transpose. B6DB10 pose publication therefore suffices;
+no parallel palette matrices or eager direct +F0 writes are introduced.
 
 `drawable_reference` now returns the common RenderCommandReference over actual
 +04; each companion also implements GeneratedModelNodeLifetime. Render-group

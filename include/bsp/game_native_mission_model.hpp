@@ -66,8 +66,14 @@ public:
     // without saving angles or overrides. False means no loaded actual node.
     bool update_hierarchy_transform(std::size_t unit_index, std::size_t hierarchy_item,
         const CameraMatrix& composed_world);
+    // Plane creator defaults only: original cockpit Note roles and broken-wing
+    // descendant-name filter. Call after loading, before live visibility.
+    // The caller supplies true host plane classification. No damage state is
+    // inferred. Idempotent for a configured unit; unknown unit => false.
+    bool configure_plane_default_visibility(std::size_t unit_index);
     // Publish factor 1/0 through B6DA70 for every flattened drawable. No live
-    // visibility/liveness field is copied into this domain. Unknown => false.
+    // visibility/liveness field is copied into this domain. Configured plane
+    // defaults remain masked when visible is true. Unknown => false.
     bool set_unit_visible(std::size_t unit_index, bool visible);
 
     // Compatibility diagnostic: unit zero in an otherwise empty domain.
