@@ -42377,6 +42377,37 @@ bool GameUnitsHost::plane_launch_spot_arm_9dc(std::size_t index, std::uint32_t& 
     return true;
 }
 
+// 0084BF00's own-base filter (0084C213-0084C278). EBP is the shot's owner
+// (shot+CCh) when it IsKindOf(0Fh) (0084BF3F-0084BF66), and [ESP+44h] its
+// squadron +9D4h. With a squadron, a hit and a hit entity: a plane whose +908h
+// is under 2.0 (00CE3958), with a holder +BF4h and +C18h > 0, drops the hit
+// when the entity is the holder's base owner ([[+BF4h]+4]+7Ch); then
+// +C18h = 5. Otherwise (0084C251) +C18h > 0 and (+72Ch)->vtable[38h] (free
+// flight, +900h == 7) count it down by one.
+int GameUnitsHost::plane_own_base_hit_filter_0084c213(std::size_t shooter, bool hit,
+                                                      std::size_t hit_unit) noexcept {
+    if (shooter >= impl_->slots.size() || !impl_->slots[shooter]) return 0;
+    GameUnitSlot& s = *impl_->slots[shooter];
+    if (!bsp::unit_is_kind_of(s.class_id, 0x0f)) return 0;
+    const bool squadron =
+        bsp::plane_squadron_registry().find_by_member_unit(shooter) != nullptr;
+    if (squadron && hit) {
+        // 0084C213-0084C24F (a hit entity that is not a unit never matches).
+        if (hit_unit == static_cast<std::size_t>(-1)) return 0;
+        if (!(2.0f > s.plane_airborne_908)) return 0;
+        const std::size_t hi = s.plane_contact_deck_bf4;
+        if (hi == 0 || hi > impl_->landing_decks.size()) return 0;
+        if (s.plane_c18 <= 0) return 0;
+        if (impl_->landing_decks[hi - 1u].owner != hit_unit) return 0;
+        s.plane_c18 = 5;
+        return 1;
+    }
+    // 0084C251-0084C273.
+    if (s.plane_c18 <= 0 || s.plane_control_mode_900 != 7) return 0;
+    --s.plane_c18;
+    return 2;
+}
+
 void GameUnitsHost::store_unit_moveto_range(std::size_t index, float range) noexcept {
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->moveto_range = range;
