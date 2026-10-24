@@ -331,4 +331,16 @@ extern const UnitClassCreatorRow kUnitClassCreators[kUnitClassCreatorCount];
 // True for the eight ship classes whose instance constructor is 0081ED40.
 bool unit_class_uses_vehicle_base(std::uint32_t instance_ctor) noexcept;
 
+// Concrete leaf plane constructors. Native __thiscall: ECX=this, one stack
+// dword forwarded with a second zero dword to 007CFD20, EAX=this, RET 4.
+// Evidence: exports/bsp/functions/<address>/{decompiled.c,assembly.txt}.
+// Names are hypotheses; callers provide an image of the native unit size.
+struct PlaneUnitConstructorHost {
+    virtual ~PlaneUnitConstructorHost() = default;
+    virtual void call_007cfd20(std::uint8_t* self, std::uint32_t arg, std::uint32_t zero) = 0; // contract unread
+};
+std::uint8_t* construct_dive_bomber_unit_00951b60(PlaneUnitConstructorHost&, std::uint8_t*, std::uint32_t);
+std::uint8_t* construct_torpedo_bomber_unit_00951c40(PlaneUnitConstructorHost&, std::uint8_t*, std::uint32_t);
+std::uint8_t* construct_kamikaze_unit_00951d20(PlaneUnitConstructorHost&, std::uint8_t*, std::uint32_t);
+
 } // namespace bsp

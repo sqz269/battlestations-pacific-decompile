@@ -301,4 +301,19 @@ struct VehicleClassResolveResult {
 VehicleClassResolveResult resolve_vehicle_class_00964790(VehicleClassHost& host,
                                                          std::int32_t type_id, bool read_race);
 
+// Concrete native constructor bodies. ECX is the supplied writable image;
+// every entry below returns that same image in EAX and ends in RET (no stack
+// arguments). Images retain native 32-bit vtable values, not C++ vptrs.
+// Evidence: exports/bsp/functions/<address>/{decompiled.c,assembly.txt}.
+// Descriptive names are hypotheses; base semantics remain at the host boundary.
+struct VehicleClassConstructorHost {
+    virtual ~VehicleClassConstructorHost() = default;
+    virtual void call_007d1e50(std::uint8_t* self) = 0; // plane base; contract unread
+};
+std::uint8_t* construct_recon_plane_class_00951aa0(VehicleClassConstructorHost&, std::uint8_t*);
+std::uint8_t* construct_fighter_class_00951af0(VehicleClassConstructorHost&, std::uint8_t*);
+std::uint8_t* construct_dive_bomber_class_00951b40(VehicleClassConstructorHost&, std::uint8_t*);
+std::uint8_t* construct_torpedo_bomber_class_00951c20(VehicleClassConstructorHost&, std::uint8_t*);
+std::uint8_t* construct_kamikaze_class_00951d00(VehicleClassConstructorHost&, std::uint8_t*);
+
 } // namespace bsp
