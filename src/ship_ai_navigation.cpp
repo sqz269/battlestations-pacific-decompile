@@ -125,37 +125,38 @@ void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds, 
             const float magnitude = -diff;                             // 0080E0C4 FCHS
             record.blend_00 = magnitude > step ? current - step : target;  // 0080E0CF / 0080E0E1
         }
-        return;
-    }
-    // 0080E011/0080E019: COMISS timer, 0 with JC skipping the countdown, so an
-    // ordered timer at or above zero counts down and a negative or NaN timer
-    // does not.
-    if (!(record.timer_04 < 0.0f)) {
-        const float next = record.timer_04 - seconds; // 0080E01E, one float store
-        record.timer_04 = next;                       // 0080E028
-        // 0080E02D/0080E031: FCOMI 0 against the new timer, JBE skips. The
-        // reset therefore runs only on the step that drives it below zero.
-        if (next < 0.0f) {
-            record.sub_a = UnitAiOrderSubRecord{}; // 0080E03D..0080E04F
-            record.sub_b = UnitAiOrderSubRecord{}; // 0080E052..0080E064
-            record.sub_a.field_08 = kUnitAiOrderSubRecordReset; // 0080E042
-            record.sub_b.field_08 = kUnitAiOrderSubRecordReset; // 0080E057
-        }
-    }
-
-    // 0080E069: FMUL against the double 50.0 at 00CE3938, then one float store.
-    const float step = static_cast<float>(static_cast<double>(seconds) * kUnitAiOrderBlendRate);
-    const float target = record.sub_a.value_00; // 0080E072
-    const float current = record.blend_00;      // 0080E079
-    const float diff = target - current;        // 0080E089, stored at 0080E08D
-    // 0080E095/0080E099: FCOMI diff against zero, JC takes the negative arm.
-    if (!(diff < 0.0f)) {
-        // 0080E0A0/0080E0A2: FCOMIP diff against step, JBE snaps.
-        record.blend_00 = (diff <= step) ? target : (current + step); // 0080E0A4, 0080E0B6
     } else {
-        // 0080E0C4 negates the difference before the same compare.
-        const float magnitude = -diff;
-        record.blend_00 = (magnitude <= step) ? target : (current - step); // 0080E0CF, 0080E0E1
+        // OFF: the earlier model, which clears whole sub-records.
+        // 0080E011/0080E019: COMISS timer, 0 with JC skipping the countdown, so an
+        // ordered timer at or above zero counts down and a negative or NaN timer
+        // does not.
+        if (!(record.timer_04 < 0.0f)) {
+            const float next = record.timer_04 - seconds; // 0080E01E, one float store
+            record.timer_04 = next;                       // 0080E028
+            // 0080E02D/0080E031: FCOMI 0 against the new timer, JBE skips. The
+            // reset therefore runs only on the step that drives it below zero.
+            if (next < 0.0f) {
+                record.sub_a = UnitAiOrderSubRecord{}; // 0080E03D..0080E04F
+                record.sub_b = UnitAiOrderSubRecord{}; // 0080E052..0080E064
+                record.sub_a.field_08 = kUnitAiOrderSubRecordReset; // 0080E042
+                record.sub_b.field_08 = kUnitAiOrderSubRecordReset; // 0080E057
+            }
+        }
+
+        // 0080E069: FMUL against the double 50.0 at 00CE3938, then one float store.
+        const float step = static_cast<float>(static_cast<double>(seconds) * kUnitAiOrderBlendRate);
+        const float target = record.sub_a.value_00; // 0080E072
+        const float current = record.blend_00;      // 0080E079
+        const float diff = target - current;        // 0080E089, stored at 0080E08D
+        // 0080E095/0080E099: FCOMI diff against zero, JC takes the negative arm.
+        if (!(diff < 0.0f)) {
+            // 0080E0A0/0080E0A2: FCOMIP diff against step, JBE snaps.
+            record.blend_00 = (diff <= step) ? target : (current + step); // 0080E0A4, 0080E0B6
+        } else {
+            // 0080E0C4 negates the difference before the same compare.
+            const float magnitude = -diff;
+            record.blend_00 = (magnitude <= step) ? target : (current - step); // 0080E0CF, 0080E0E1
+        }
     }
 }
 
