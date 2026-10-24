@@ -4,6 +4,7 @@
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_gui_effect_application.hpp"
+#include "bsp/game_native_gui_group_application.hpp"
 #include "bsp/game_native_gui_sampler_application.hpp"
 #include "bsp/game_native_gui_node_application.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -285,6 +286,7 @@ struct GameNativeGuiRenderApplication::Impl {
     std::unique_ptr<GameNativeGuiSamplerApplication> samplers;
     std::unique_ptr<GameNativeGuiEffectApplication> effects;
     std::unique_ptr<GameNativeTextApplication> text;
+    std::unique_ptr<GameNativeGuiGroupApplication> group;
     std::shared_ptr<GuiTable> properties;
     GuiWidgetOwner* widget{};
 
@@ -315,12 +317,32 @@ struct GameNativeGuiRenderApplication::Impl {
         Impl& app;
         explicit RootDispatch(Impl& value) : app(value) {}
         const volatile Word* resolve_profile(Word profile) const override {
+            if (profile == 0x00d634f8) {
+                require(app.group != nullptr, "native GUI scene has no admitted Group environment");
+                return app.group->groups().vtable_00d634f8;
+            }
             require(profile == 0x00d62de8, "native Text scene requires its actual Model profile");
             return app.nodes->models().vtable_00d62de8;
         }
         void invoke_child(Word target, void* actual, Word requested, Word recursion) override {
             require(target == 0x00b6ed80 && !requested && !recursion,
                 "native Text scene requires the genuine null-lighting Model attachment");
+            if (app.group) {
+                auto& reference = app.group->root();
+                auto& owner = reference.group_owner();
+                if (&owner.storage.node == actual) {
+                    require(owner.phase == NativeGroupOwner::Phase::live &&
+                        &owner.environment == &app.group->groups() &&
+                        &owner.environment.nodes == &app.nodes->models().nodes &&
+                        app.renderer.actual_owners().find(actual) == &reference,
+                        "native GUI scene lost its same canonical Group");
+                    auto& attachment = reference.scene_attachment();
+                    require(attachment.attach_scene && !attachment.scene,
+                        "native GUI Group cannot substitute a logical lighting owner");
+                    attachment.attach_scene(owner.environment.nodes.scenes, attachment, nullptr, false);
+                    return;
+                }
+            }
             auto* reference = app.widget->model_reference();
             require(reference && &reference->model_owner().storage.node == actual &&
                 reference->model_owner().phase == NativeModelOwner::Phase::live &&
@@ -373,6 +395,9 @@ struct GameNativeGuiRenderApplication::Impl {
                 renderer.borrow_platform_publication_0109cf04()});
         effects = std::make_unique<GameNativeGuiEffectApplication>(log, renderer, files,
             samplers->effect_bindings());
+        if (GameNativeGuiRenderApplication::nodes_requested())
+            group = std::make_unique<GameNativeGuiGroupApplication>(log, renderer, files, data,
+                nodes->parenting());
     }
     void make_text() {
         auto& font_resources = fonts.native_fonts();
@@ -491,11 +516,16 @@ struct GameNativeGuiRenderApplication::Impl {
         scene_reference.emplace(scene_raw, scene_identity, scene_destroy_frame, scene_destruction);
         scene_name.release_to(raw.strings);
         scene_name_live = false;
-        // The Text owns its primary Model. B6D890 adds no reference, so unlink
-        // it before Text scalar deletion and before the outer scene's terminal.
+        // B6D890 links only the parentless root, propagating the same scene to
+        // Group children. It adds no reference; unlink before owned retirement.
+        auto* const root = group ? &group->root().group_owner().storage.node :
+            &widget->model_reference()->model_owner().storage.node;
         propagate_native_node_root_storage_00b6d890(
-            &widget->model_reference()->model_owner().storage.node, scene_raw, roots);
+            root, scene_raw, roots);
         root_linked = true;
+        if (group)
+            log.notef("native GUI Group scene root: root=%p text_model=%p scene=%p",
+                root, &widget->model_reference()->model_owner().storage.node, scene_raw);
     }
 
     struct Pass final : GuiRenderOrderHost, GuiOrthoProjectionHost {
@@ -583,6 +613,13 @@ bool GameNativeGuiRenderApplication::text_requested() noexcept {
     }();
     return requested;
 }
+bool GameNativeGuiRenderApplication::nodes_requested() noexcept {
+    static const bool requested = [] {
+        char value[2]{};
+        return GetEnvironmentVariableA("BSP_NATIVE_GUI_NODES", value, sizeof value) == 1 && value[0] == '1';
+    }();
+    return requested;
+}
 GameNativeGuiRenderApplication::GameNativeGuiRenderApplication(GameHostLog& log,
     GameNativeRendererApplication& renderer, GameVfsHost& vfs, GameSingletonHost& singletons,
     GameNativeReadOnlyData& data, GameInputRuntime& input, GameFontHost& fonts,
@@ -609,7 +646,12 @@ void GameNativeGuiRenderApplication::prepare_text_in_open_shader_cache() {
         "native GUI Text preparation requires the mission's same open shader cache");
     p.phase = Impl::Phase::preparing;
     try {
-        p.make_text(); p.make_camera(); p.make_scene(); p.phase = Impl::Phase::ready;
+        // Mission configuration follows ready metadata composition. Bind its
+        // retained Group view now, before this fresh graph's first submission.
+        if (p.group) p.renderer.bind_mission_gui_group_environment(&p.group->groups());
+        p.make_text();
+        if (p.group) p.group->create_root("NativeGuiTextRoot", *p.widget->model_reference());
+        p.make_camera(); p.make_scene(); p.phase = Impl::Phase::ready;
         p.log.notef("native GUI Text ready: text=%p model=%p scene=%p camera=%p glyph_buffers=HAL font=image",
             &p.widget->layout(), &p.widget->model_reference()->model_owner().storage.node, p.scene_raw, p.camera_raw);
     } catch (...) { p.fail(); throw; }
@@ -633,10 +675,16 @@ void GameNativeGuiRenderApplication::retire_before_fonts() {
     require(p.phase == Impl::Phase::ready, "native GUI retirement cannot replay interrupted work");
     p.phase = Impl::Phase::retiring;
     try {
+        auto* const text_model = &p.widget->model_reference()->model_owner().storage.node;
+        auto* const group_root = p.group ? &p.group->root().group_owner().storage.node : nullptr;
         if (p.root_linked) {
             propagate_native_node_root_storage_00b6d890(
-                &p.widget->model_reference()->model_owner().storage.node, nullptr, p.roots);
+                group_root ? group_root : text_model, nullptr, p.roots);
             p.root_linked = false;
+        }
+        if (p.group) {
+            p.group->detach_text();
+            p.group->retire_root();
         }
         p.text->retire_owned_text(p.nodes->take_standalone_for_retirement(*p.widget));
         p.widget = nullptr;
@@ -647,6 +695,9 @@ void GameNativeGuiRenderApplication::retire_before_fonts() {
         p.phase = Impl::Phase::retired;
         p.log.notef("native GUI Text retired: submitted_frames=%llu model=returned camera=returned scene=released",
             static_cast<unsigned long long>(p.frames));
+        if (p.group)
+            p.log.notef("native GUI Group retired: root=%p text_model=%p scene=unlinked text=returned group=returned",
+                group_root, text_model);
     } catch (...) { p.fail(); throw; }
 }
 void GameNativeGuiRenderApplication::after_native_renderer_drain() {
@@ -659,6 +710,7 @@ void GameNativeGuiRenderApplication::after_native_renderer_drain() {
             "native GUI scene did not complete its actual terminal");
     p.effects.reset(); p.text.reset(); p.samplers.reset();
     p.scene_reference.reset(); p.camera_reference.reset(); p.camera.reset();
+    p.group.reset(); // Its environment and parenting borrow outlive native drain.
     p.clip.reset(); p.style.reset(); p.nodes.reset(); p.properties.reset();
     p.phase = Impl::Phase::closed;
 }
@@ -667,11 +719,14 @@ bool GameNativeGuiRenderApplication::requires_process_retention() const noexcept
     const auto& p = *impl_;
     return p.failure || p.phase == Impl::Phase::preparing || p.phase == Impl::Phase::submitting ||
         p.phase == Impl::Phase::retiring || (p.nodes && p.nodes->failure()) ||
-        (p.text && p.text->failure()) || (p.effects && p.effects->failure());
+        (p.text && p.text->failure()) || (p.effects && p.effects->failure()) ||
+        (p.group && p.group->failure());
 }
 std::uint64_t GameNativeGuiRenderApplication::submitted_frames() const noexcept { return impl_->frames; }
 
 void GameStartupHost::initialize_native_gui_render() {
+    require(!GameNativeGuiRenderApplication::nodes_requested() || GameNativeGuiRenderApplication::text_requested(),
+        "BSP_NATIVE_GUI_NODES=1 requires BSP_NATIVE_GUI_TEXT=1");
     if (!GameNativeGuiRenderApplication::text_requested()) return;
     char frame_flag[2]{};
     require(GameNativeRendererApplication::mission_ship_requested() &&

@@ -34,6 +34,9 @@ public:
     // BSP_NATIVE_GUI_TEXT=1; default OFF. Startup also requires the shared
     // BSP_NATIVE_MISSION_SHIP=1 and BSP_NATIVE_MISSION_FRAME=1 routes.
     static bool text_requested() noexcept;
+    // BSP_NATIVE_GUI_NODES=1; default OFF, requires the Text route above.
+    // One actual cGroup becomes the scene root of that SAME Text Model.
+    static bool nodes_requested() noexcept;
     GameNativeGuiRenderApplication(GameHostLog&, GameNativeRendererApplication&,
         GameVfsHost&, GameSingletonHost&, GameNativeReadOnlyData&, GameInputRuntime&,
         GameFontHost&, GameLocaleHost&, const bool& crt_sse2_conversion);
