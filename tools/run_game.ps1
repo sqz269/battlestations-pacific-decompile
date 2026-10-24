@@ -81,6 +81,11 @@ if ($callerDifficulty) {
     $difficultyRecord = [ordered]@{ value = "$diffValue"; source = 'caller' }
 } elseif ($env:BSP_DIFFICULTY_PIN -in @('off', 'none', 'unpinned')) {
     $difficultyRecord = [ordered]@{ value = 'unpinned'; source = 'BSP_DIFFICULTY_PIN' }
+} elseif (-not ([Text.Encoding]::GetEncoding(28591).GetString([IO.File]::ReadAllBytes((Resolve-Path $Exe).Path)).Contains('--difficulty'))) {
+    # Exes older than the option reject it (exit 2 with usage); they also predate the profile
+    # difficulty switch, so an unpinned run already starts at the old default.
+    Write-Host "run_game: $Exe has no --difficulty option (older build); running unpinned"
+    $difficultyRecord = [ordered]@{ value = 'unpinned'; source = 'exe-lacks-option' }
 } else {
     $pin = if ($env:BSP_DIFFICULTY_PIN) { $env:BSP_DIFFICULTY_PIN } else { '1' }
     $GameArgs = @('--difficulty', "$pin") + $GameArgs

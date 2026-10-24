@@ -34,8 +34,10 @@ $launchArguments = @('--game-root', $GameRoot, '--frames', "$Frames", '--log', $
 $launchArguments += $GameArguments
 # Difficulty pin, as tools/run_game.ps1 (packet cc15-prof2): --difficulty 1 unless the caller
 # passed --difficulty; BSP_DIFFICULTY_PIN=<n> pins another value, BSP_DIFFICULTY_PIN=off none.
+# Exes older than the option reject it, so they run unpinned.
 if (-not @($GameArguments | Where-Object { $_ -eq '--difficulty' -or $_ -like '--difficulty=*' }) -and
-    $env:BSP_DIFFICULTY_PIN -notin @('off', 'none', 'unpinned')) {
+    $env:BSP_DIFFICULTY_PIN -notin @('off', 'none', 'unpinned') -and
+    [Text.Encoding]::GetEncoding(28591).GetString([IO.File]::ReadAllBytes($gameExecutable)).Contains('--difficulty')) {
     $launchArguments += @('--difficulty', $(if ($env:BSP_DIFFICULTY_PIN) { $env:BSP_DIFFICULTY_PIN } else { '1' }))
 }
 # A GUI executable can return to PowerShell before it exits. Wait explicitly and
