@@ -333,8 +333,11 @@ void degenerate_box(std::vector<V>& p,V center,V extent,bool strict) {
     p={{lo.x,lo.y,lo.z},{hi.x,lo.y,lo.z},{hi.x,hi.y,lo.z},{lo.x,hi.y,lo.z},
        {lo.x,lo.y,hi.z},{hi.x,lo.y,hi.z},{hi.x,hi.y,hi.z},{lo.x,hi.y,hi.z}};
 }
-// 00C35E80 as 00C5DAE0 calls it: packed XYZ, epsilon 0.001, a scale output.
-// The whole body is dyn_hull_cleanup_points_00c35e80 below.
+// 00C35E80 as 00C5DDD0's descriptor has 00C5DAE0 call it: packed XYZ, epsilon
+// 0.001, a scale output. The whole body is dyn_hull_cleanup_points_00c35e80
+// below, which avoid_zone_dyn_hull_generate_00c5dae0 calls directly. No caller
+// remains; kept for reference because the ledger's cleanup_00c35e80 fragment
+// row (00C35E80) names it.
 std::vector<V> cleanup_00c35e80(const V* input,std::uint32_t count,V& scale) {
     std::vector<V> clean(count>8?count:8);
     std::uint32_t kept=0;
@@ -527,7 +530,8 @@ bool avoid_zone_dyn_hull_triangles_00c5dae0(const V* points,std::uint32_t count,
     output.points=std::move(generated.vertices);
     output.indices=std::move(generated.indices);
     return true;
-}void avoid_zone_dyn_hull_data_00c389c0(AvoidZoneDynHullData& data,
+}
+void avoid_zone_dyn_hull_data_00c389c0(AvoidZoneDynHullData& data,
     const AvoidZoneDynHullTriangles& hull,const AvoidZoneDynHullMemory& m) {
     if(hull.indices.size()%3) throw std::invalid_argument("Dyn hull triangle index count");
     const auto count=static_cast<std::uint32_t>(hull.points.size());
