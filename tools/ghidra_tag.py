@@ -17,7 +17,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from build_tag_ledger import PLATE_CATEGORIES
+from build_tag_ledger import PLATE_CATEGORIES, shape_ok
 from coordination import ghidra_lock
 from ghidra_export import Client, ROOT, write
 from ledger import load_tags
@@ -163,6 +163,13 @@ def main():
     if args.resume:
         done = {r['address'] for r in json.loads((ROOT / args.resume).read_text()) if r['status'] != 'error'}
         entries = [e for e in entries if e['address'] not in done]
+    # A CG_ shape row is applied only while its exported listing has the shape, so the old
+    # iterator-caller rows cannot rename a FUN_ function again (cc13-cgproducer).
+    exports = __import__('workspace').exports_dir() / 'functions'
+    no_shape = [e['address'] for e in entries if not shape_ok(e['category'], e['address'], exports)]
+    if no_shape:
+        print(f'{len(no_shape)} CG_ shape rows skipped (shape absent): {no_shape[:8]}')
+        entries = [e for e in entries if e['address'] not in set(no_shape)]
     if args.limit:
         entries = entries[:args.limit]
     counts = {}
