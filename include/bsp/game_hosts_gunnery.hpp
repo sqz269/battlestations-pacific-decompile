@@ -1036,6 +1036,10 @@ public:
     // own class-bucket record.
     bool recon_enemy_contacts(int side, std::vector<std::size_t>& units,
                               std::vector<bool>& squadron_record) const;
+    // Packet cc13-fapick3, log-only: the 2D distance from `target` to the nearest
+    // unit the sensor pass admits as an observer of `side` (008068C2: present,
+    // IsKindOf(05h), a sensor table), or -1 when there is none. Reads only.
+    float recon_nearest_observer_distance(int side, std::size_t target) const;
     // Packet p15_free_attack_tick: 00804350 BSP_Unit_SensorsDetectUnit,
     // __fastcall(ECX = observer, EDX = target, mask) RET 4, over the same sensor
     // rows, signature and multipliers the recon pass reads.
