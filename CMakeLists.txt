@@ -12,6 +12,12 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 # application composes their mandatory ownership and current-dispatch providers.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE
   src/native_gui_icon_delayed_loads.cpp
+  src/native_gui_icon_storage.cpp
+  src/native_gui_icon_identity.cpp
+  src/native_gui_text_field_storage.cpp
+  src/native_gui_grid_storage.cpp
+  src/native_gui_grid_identity.cpp
+  src/native_gui_widget_property_children.cpp
   src/native_gui_line_storage.cpp
   src/native_gui_line_identity.cpp
   src/native_gui_page_properties_continuation.cpp
