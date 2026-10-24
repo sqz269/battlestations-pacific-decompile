@@ -57,9 +57,14 @@ vertex, declaration, section creator releases in that order.
 
 AC260D's 004C12B0 getter / AC2612 manager+28 load is replaced by one explicit
 `initial_manager_texture_28` source service. The provider must observe the
-completed Step2 operation0 with manager_offset28 and reference_owned, returning
-that exact B319B0 texture identity, while retaining the same resource app.
-The adapter validates D61948, the actual+04 alias and canonical owner domain.
+completed Step2 operation0 with manager_offset28, returning that exact result
+while retaining the same resource app. Nonnull results require reference_owned,
+D61948, the actual+04 alias and canonical owner domain. A legitimate null is
+passed unchanged to B189F0, as the original AC2612..AC261A does without a test.
+The current installed whiteGui guard rejection produces this null; the genuine
+material setter already admits null and adjusts its slot count before identity
+comparison. No substitute texture is selected. This source correction is not
+a native Line runtime claim.
 It constructs no manager and invents no substitute texture/global/publication.
 
 AC2690 stores max(request,4) into actual100 BEFORE the geometry/factory calls.

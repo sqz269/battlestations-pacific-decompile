@@ -306,10 +306,10 @@ void GameNativeGuiLineApplication::Impl::create(Record& record, Operation& opera
     // The original material creator has already been consumed; section owns it.
     at(operation, 0x00ac260d);
     void* texture = binding.initial_manager_texture_28();
-    require(texture && read<Word>(texture) == 0x00d61948 &&
+    require(!texture || (read<Word>(texture) == 0x00d61948 &&
         &geometry.actual_owners().resolve_actual(texture).reference_count == &count(texture) &&
-        count(texture).load() > 0,
-        "native Line requires exact live Step2 manager28 actual texture");
+        count(texture).load() > 0),
+        "native Line requires the exact Step2 manager28 null or live actual texture");
     at(operation, 0x00ac261a);
     set_native_material_texture_00b189f0(material(operation.material), 0, texture, geometry.actual_owners());
     at(operation, 0x00ac2629);

@@ -7,7 +7,7 @@ FrontEndFrame, or in-mission interface manager is instantiated by this work.
 
 ## Acceptance status
 
-Steps 1--3 pass the bounded USN04 fixtures below. Native pages remain a separate
+Steps 1--3 pass the bounded USN04 mission runs below. Native pages remain a separate
 deliverable. Input remains outside this lane and blocks button dispatch.
 
 | Step | Runtime selection | Current evidence |
@@ -15,7 +15,7 @@ deliverable. Input remains outside this lane and blocks button dispatch.
 | 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Visible native Text in USN04; ON game exit0/gameplay identical; OFF pair_diff exit0 |
 | 2. Initial GUI texture resources | `BSP_NATIVE_GUI_RESOURCES=1` | ON game exit0/native texture retirement/gameplay identical; OFF pair_diff exit0 |
 | 3. Per-widget Model and page cGroup ownership | `BSP_NATIVE_GUI_NODES=1` | Same actual Model under actual cGroup; ON visible/game exit0/normal retirement; OFF pair_diff exit0 |
-| 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` proposed | Exact 18-class audit in `OCT24_GUI_PAGES.md`; actual Screen manager/page ownership and ten factory arms remain blockers |
+| 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` proposed | Source prerequisites below are integrated; warm actual Screen manager, raw Icon/Text composition, one Page lifetime and ten factory arms still block ON |
 
 All runtime selections default OFF. No comparison-tool noise rule is changed.
 USN04 is the deterministic comparison mission; USN21 is excluded from single-pair
@@ -266,5 +266,65 @@ Text route is retained. This does not prove a 124h Page or all 18 raw widget cla
 Final images/logs/manifests/pairs/hash record are copied to the coordinator's
 `local/gui_render/oct24_gui_step3/`.
 
-Final screenshots belong under this tree's `local/gui_render/` and must be
-copied to the cc16-progress tree before this worktree is removed.
+### Step 4: integrated source prerequisites, not Page acceptance
+
+The following bounded packets are compiled with `bsp_game`, without activating
+a Page route or adding any GUI-chain object. Existing default-OFF bridge
+ownership is retained. They do not add retained factory arms for the ten
+unsupported classes and must not be described as all18 widget delivery.
+
+* `OCT24_GUI_PAGE_LOOKUP.md`: AA3140 walks the actual88h manager's +14 Page
+  vector, invokes current+7C on actual Pages, compares native8B names, and
+  reloads the chosen vector slot after callbacks. No getter/manager construction.
+* `OCT24_GUI_PAGE_TAIL.md`: AC6806..AC6878 current Page+18, reader+08, same
+  node root propagation, actual reader retirement and same-domain Lua close.
+  Full raw Page property dispatch remains a mandatory genuine provider.
+* `OCT24_GUI_PAGE_AUTHORITY.md`: one existing host Page/tree ownership
+  capability and same-widget aliases; explicitly not an actual124h Page or
+  native terminal transport. It cannot be a second owner beside a raw Page.
+* `OCT24_GUI_ICON.md`, `OCT24_GUI_ICON_LIFETIME.md`, and
+  `OCT24_GUI_ICON_DELAYED.md`: deferred real Icon HAL geometry, exact remaining
+  raw allocation/state/terminal contract, and raw delayed-singleton producer /
+  normal cancellation/drain. The shared deletion arm and same raw Icon state
+  authority are not activated; delayed texture insertion/delivery is absent.
+* `OCT24_GUI_LINE_STORAGE.md` / `OCT24_GUI_LINE.md`: actual104h Line and same
+  +04 companion, raw point-vector operations and deferred native HAL geometry.
+  Manager+28 null is preserved by the material path, without a replacement.
+* `OCT24_GUI_SCROLLBAR_STORAGE.md`: actualFCh Scrollbar, constructors/copy,
+  canonical identity, exact x87 setters and loaded handling. Full AC85A0 raw
+  property traversal and genuine child/layout dispatch remain required.
+* `OCT24_GUI_SOUND.md`: actual108h Sound, default-base copy with empty strings,
+  recovered +2/-2 reference schedule, stop/reload/cleanup ordering and retained
+  failures. Genuine audio companions and current stop providers are required.
+* `OCT24_GUI_BUTTON.md`: actualFCh Button, default-only raw list registration,
+  copy/destruction and canonical identity. Actual process registry/focus producer
+  remains required. This supplies no input or button dispatch.
+* `OCT24_GUI_WIDGET_LIFETIME_DISPATCH.md`: closed actual GUI Group/ClipBox
+  child20/delete04(1), exact native list self-detachment and ClipBox identity
+  retirement. This GUI Group is distinct from Step3's renderer cGroup. Genuine
+  class-query/type-phase and timed-entry providers remain mandatory.
+
+Independent source review found and corrected a Page-stage identity guard:
+the original reader-stage Page pointer must equal the current prefix's Page,
+before the tail borrows raw backing. Sound's copy/reference/stop schedule was
+independently checked against the original listings. Neither review adds live
+Page, native binary ABI, original FH3/SEH or failure-unwind proof.
+
+Every candidate Screen still reaches the actual GUI manager getter during
+AC59A0: AC59C5, AC5B32 and conditionally AC5EE6. GUI sent cc15/coordinator the
+required warm actual88h AA5D70/F8BC5C borrow contract. It must use the same
+native platform/focus, strings, scenes, pools and owner registry through Page
+retirement, reread current publication at each call, and reject null without
+entering 004C12B0's constructor. No such supplied production borrow is active
+in this lane. The same manager's +08 tree/+14 vector, matching store removal,
+current20/04 terminal and sole widget storage authority must be composed before
+replacing the bridge projection. `FE_initial`'s two Icons and Text still need
+full raw state/lifetime composition. The original18-class audit remains in
+`OCT24_GUI_PAGES.md`.
+
+Input is out of scope and remains the blocker for button dispatch after visual
+Page bring-up. Step4 is incomplete; no native Page ON run or screenshot is
+claimed by this prerequisite batch.
+
+Final screenshots belong under this tree's `local/gui_render/` and are copied
+to the cc16-progress tree before this worktree is removed.

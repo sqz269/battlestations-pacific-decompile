@@ -24,8 +24,9 @@ struct GameNativeGuiLineApplicationBindings {
     const volatile float& one_00d7a24c;
     const volatile float& vertical_scale_00e12ff4;
     std::function<GameNativeGuiLineIdentity(GuiWidgetOwner&)> actual_identity;
-    // Observe completed Step2 operation0: manager_offset28, reference_owned,
-    // exact B319B0 result. The caller retains that SAME resource application
+    // Observe completed Step2 operation0: manager_offset28 and exact B319B0
+    // result (including its legitimate guard-rejected null). A nonnull result
+    // has reference_owned. The caller retains that SAME resource application
     // through all Line/material consumers. This explicit source service replaces
     // ONLY AC260D's manager getter/AC2612 slot load; it creates no GUI manager.
     std::function<void*()> initial_manager_texture_28;

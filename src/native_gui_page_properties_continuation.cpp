@@ -28,6 +28,8 @@ void continue_native_gui_page_properties_00ac6806(
     const auto reader_observation = reader_stage.observation();
     if (frame.phase != NativeGuiPagePropertiesContinuation::Phase::fresh ||
         reader_observation.prefix != &prefix || !prefix.actual_page ||
+        reader_observation.actual_page != prefix.actual_page ||
+        reader_observation.phase != NativeGuiPageReaderContinuation::Phase::awaiting_properties ||
         prefix.phase != NativeGuiPageConstructionAcquired::Phase::awaiting_properties_continuation ||
         prefix.continuation != 0x00ac6806u || prefix.native_eh_state != 5)
         throw std::logic_error("GUI Page tail requires its SAME normal AC6806 reader boundary");
