@@ -1,6 +1,10 @@
 // Packet cc13-sys5: segment 56 bindings and helpers. See docs/CC13_SYS_5.md and the header for
 // addresses, ABI and evidence. Comments cite the instruction each statement stands for.
 #include "bsp/engine_seg56_cc13.hpp"
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <windows.h>
+#include <cstring>
 
 #include <cctype>
 #include <cmath>
@@ -9,6 +13,139 @@
 #include <cstring>
 
 namespace bsp::cc13_seg56 {
+// Complete normal 008B01B0..008B0465. Evidence: failed-single-player gates
+// 008B025E..0286, tree receiver/key setup028C..0299, both prompt call stacks,
+// focus calls and end-scene push0 at044B. Names reflect existing prompt API;
+// CRT/tree/GUI dependencies remain explicit and native FH3 is unproven.
+int lua_game_end_scene_008b01b0(void* const& game_global,
+    std::uint32_t& flags, std::uint32_t& debug,
+    NativeStringRawPoolContext& strings, EndSceneHost& host) {
+    struct Temporary {
+        EndSceneString value;
+        NativeStringRawPoolContext& strings;
+        Temporary(const char* text, NativeStringRawPoolContext& context) : strings(context) {
+            construct_native_string_header_0041e870(&value, strings, text);
+        }
+        ~Temporary() { destroy_native_string_header_0041dd20(&value, strings); }
+    };
+    { Temporary failure("luaMW_EndScene failed:", strings); }
+    if ((flags & 1) == 0) {
+        flags |= 1;
+        Temporary tag("luakod", strings);
+        debug = 0;
+    }
+    auto* game = static_cast<unsigned char*>(game_global);
+    auto* commits = *reinterpret_cast<unsigned char**>(game + 0x21A0);
+    const std::uint32_t index = *reinterpret_cast<std::uint32_t*>(commits + 0x1424);
+    if (*reinterpret_cast<std::int32_t*>(commits + index * 0x284u + 4) == 0 &&
+        *reinterpret_cast<std::int32_t*>(game + 0x1FE4) == 0) {
+        const bool checkpoint = host.contains_007f8d60(game + 0x650, game + 0x2198);
+        {
+            Temporary title("", strings);
+            Temporary message(checkpoint ? "globals.restartfromcheckpoint" :
+                "globals.restartmission|.\n|FE_xbox.ingame_quitting|.\n|globals.areyousure", strings);
+            Temporary owned("", strings);
+            void* menu = host.menu_00425d10();
+            EndSceneString transferred = owned.value;
+            owned.value = {};
+            host.prompt_00531b00(menu, checkpoint ? 5 : 4, &message.value,
+                checkpoint ? 4 : 1, 0x0088B360, 0, &title.value, 0.0f, 0, transferred, 1);
+        }
+        void* menu = host.menu_00425d10();
+        if (checkpoint) host.focus_first_00530670(menu);
+        else host.focus_last_00530c20(menu);
+        return 0;
+    }
+    host.end_scene_004d7970(0);
+    return 0;
+}
+
+namespace {
+template<class T> T& perf_raw(void* object, std::size_t offset) {
+    return *reinterpret_cast<T*>(static_cast<unsigned char*>(object) + offset);
+}
+void* perf_bytes(void* object, std::size_t offset) {
+    return static_cast<unsigned char*>(object) + offset;
+}
+void perf_empty_head(void* head) {
+    perf_raw<std::uint8_t>(head, 0x19) = 1;
+    perf_raw<void*>(head, 4) = head;
+    perf_raw<void*>(head, 0) = head;
+    perf_raw<void*>(head, 8) = head;
+}
+}
+
+// 008D1A10 complete normal listing: +4/+10 are tree owners; +8/+14 are
+// their sentinel pointers, +C/+18 sizes. Original ECX=this, EAX=this, RET0.
+// Library allocation/erase remain explicit bindings, not reconstructed credit.
+void* construct_perf_timing_registry_008d1a10(void* self, PerfTimingRawHost& host) {
+    perf_raw<std::uint32_t>(self, 0) = 0x00D15860;
+    perf_raw<void*>(self, 8) = host.buy_count_head_0088a520(perf_bytes(self, 4));
+    perf_empty_head(perf_raw<void*>(self, 8));
+    perf_raw<std::uint32_t>(self, 0xC) = 0;
+    perf_raw<void*>(self, 0x14) = host.buy_timer_head_005826b0(perf_bytes(self, 0x10));
+    perf_empty_head(perf_raw<void*>(self, 0x14));
+    perf_raw<std::uint32_t>(self, 0x18) = 0;
+    return self;
+}
+
+// 008D1AB0 complete normal body: timer range/head, count range/head, global
+// slot clear, base vptr. Original ECX=this/RET0; native FH3 is unproven.
+void destruct_perf_timing_registry_008d1ab0(void* self, void*& slot,
+    PerfTimingRawHost& host) {
+    std::uint32_t output[2];
+    void* tree = perf_bytes(self, 0x10);
+    void* head = perf_raw<void*>(self, 0x14);
+    host.erase_timers_0058d860(tree, output, tree, perf_raw<void*>(head, 0), tree, head);
+    host.free_00bf65ac(perf_raw<void*>(self, 0x14));
+    perf_raw<void*>(self, 0x14) = nullptr;
+    perf_raw<std::uint32_t>(self, 0x18) = 0;
+    tree = perf_bytes(self, 4);
+    head = perf_raw<void*>(self, 8);
+    host.erase_counts_008cfd30(tree, output, tree, perf_raw<void*>(head, 0), tree, head);
+    host.free_00bf65ac(perf_raw<void*>(self, 8));
+    perf_raw<void*>(self, 8) = nullptr;
+    perf_raw<std::uint32_t>(self, 0xC) = 0;
+    slot = nullptr;
+    perf_raw<std::uint32_t>(self, 0) = 0x00CE3818;
+}
+
+// 008D1B80..008D1C3C listing: double check under manager+10 lock, update
+// the lock's custom recursion word+18, allocate1Ch, construct, publish then
+// register (including a null result). Original no arguments, RET0/EAX=slot.
+// Names provisional; explicit raw storage and Win32 imports, no game wiring.
+void* get_perf_timing_registry_008d1b80(void*& slot, PerfTimingRawHost& host) {
+    if (slot == nullptr) {
+        void* manager = host.singleton_manager_00415350();
+        void* lock = perf_raw<void*>(manager, 0x10);
+        if (lock) {
+            EnterCriticalSection(static_cast<CRITICAL_SECTION*>(lock));
+            ++perf_raw<std::uint32_t>(lock, 0x18);
+        }
+        struct Guard {
+            void* lock;
+            ~Guard() {
+                if (lock) {
+                    --perf_raw<std::uint32_t>(lock, 0x18);
+                    LeaveCriticalSection(static_cast<CRITICAL_SECTION*>(lock));
+                }
+            }
+        } guard{lock};
+        if (slot == nullptr) {
+            void* memory = host.allocate_00bf681b(0x1C);
+            try {
+                slot = memory ? construct_perf_timing_registry_008d1a10(memory, host) : nullptr;
+            } catch (...) {
+                host.free_00bf65ac(memory);
+                throw;
+            }
+            manager = host.singleton_manager_00415350();
+            host.register_00bd0c30(manager, slot);
+        }
+    }
+    return slot;
+}
+
 namespace {
 
 std::string format_text(const char* format, ...)
