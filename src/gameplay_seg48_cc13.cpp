@@ -622,15 +622,27 @@ ActuatorAnimResult actuator_block_load_007dea60(ActuatorAnimBlock& block,
     return actuator_block_anim_007de9a0(block, clock_f876a4);  // 007DEB3D
 }
 
-void timed_flag_debounce_007eb4e0(TimedFlag& flag, bool now, float dt) noexcept {
-    if (now == flag.value) {
-        flag.timer = 0.0f;  // 007EB51D
+namespace {
+template<class Value>
+void debounce_timed_flag(Value& value, float& timer, float time_out, Value now, float dt) noexcept {
+    if (now == value) {
+        timer = 0.0f;  // 007EB51D
         return;
     }
-    flag.timer = flag.timer + dt;  // 007EB4E8-007EB4F7
-    if (flag.timer > flag.time_out) {
-        flag.value = now;  // 007EB505
+    timer = timer + dt;  // 007EB4E8-007EB4F7: one float op under /fp:strict
+    if (timer > time_out) {
+        value = now;  // 007EB505
     }
+}
+}
+
+void timed_flag_debounce_007eb4e0(TimedFlag& flag, bool now, float dt) noexcept {
+    debounce_timed_flag(flag.value, flag.timer, flag.time_out, now, dt);
+}
+
+void timed_flag_debounce_007eb4e0(std::uint8_t& value, float& timer, float time_out,
+                                std::uint8_t now, float dt) noexcept {
+    debounce_timed_flag(value, timer, time_out, now, dt);
 }
 
 // ---- cc13-gpr48b: 007D9360 --------------------------------------------------

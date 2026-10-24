@@ -624,6 +624,10 @@ struct TimedFlag {
     float timer{0.0f};     // "timer"
 };
 void timed_flag_debounce_007eb4e0(TimedFlag& flag, bool now, float dt) noexcept;
+// Raw-storage caller: retain the exact AL/value bytes, including noncanonical
+// nonzero values, rather than converting either byte through C++ bool.
+void timed_flag_debounce_007eb4e0(std::uint8_t& value, float& timer, float time_out,
+                                std::uint8_t now, float dt) noexcept;
 
 // The effects component's archive (007E0B80 load / 007E0D20 save), its keys and
 // offsets: "running" +14h (byte), "flying" +24h (TimedFlag), "RPM" +30h,
