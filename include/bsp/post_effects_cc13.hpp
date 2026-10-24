@@ -140,7 +140,12 @@ void frustum_planes(float planes[24], float vertical, float horizontal, float ne
 // m11 = 2/(t-b), m22 = 1/(zf-zn), m30 = (l+r)/(l-r), m31 = (b+t)/(b-t),
 // m32 = zn/(zn-zf), m33 = 1, all else 0. Used by the GUI order pass
 // (include/bsp/gui_render_order.hpp).
+// The image runs it on the main thread at 24-bit precision control:
+// ortho_off_center_lh_pc24 models that per operation and is fixture-tested. The live
+// ortho_off_center_lh keeps the double model while this switch is OFF (cc9 flips it).
+inline constexpr bool kOrthoOffCenterPc24Cc13Bound = false;
 void ortho_off_center_lh(float out[16], float l, float r, float b, float t, float zn, float zf);
+void ortho_off_center_lh_pc24(float out[16], float l, float r, float b, float t, float zn, float zf);
 
 // Plane-set classifiers over the 20-byte rows {a, b, c, d, flags} with the
 // signed count at +140h (BSP_PlaneSet_GetCount 00B65080). Both return 0AAAh or

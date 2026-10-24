@@ -1,4 +1,5 @@
 #include "bsp/scene_graph_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -66,14 +67,19 @@ float wrap_time_00b75450(float time, float start, float end, std::int32_t* cycle
     return wrapped;
 }
 
+// cc13-fixture2 follow-up: 00B75520 and 00B75580 serve the animation-track sampler (00B76CE0,
+// 00B75610, 00B75720) on the main thread, so each operation rounds to 24 significand bits
+// (x87_*24) in listing order: 00B75538..4A (3*s2 - s3) - s3, 00B7555C 1 - p1, 00B75562 s3 - s2,
+// 00B7556E..70 s + (t1 - s2).
 HermiteBasis hermite_basis_00b75520(float s) {
-    const float s2 = f(static_cast<double>(s) * s);
-    const float s3 = f(static_cast<double>(s2) * s);
+    using namespace cc13x87;
+    const float s2 = f(x87_mul24(s, s));
+    const float s3 = f(x87_mul24(s2, s));
     HermiteBasis h{};
-    h.p1 = f(3.0 * s2 - s3 - s3);
-    h.p0 = f(1.0 - h.p1);
-    h.t1 = f(static_cast<double>(s3) - s2);
-    h.t0 = f(s + (static_cast<double>(h.t1) - s2));
+    h.p1 = f(x87_sub24(x87_sub24(x87_mul24(3.0, s2), s3), s3));
+    h.p0 = f(x87_sub24(1.0, h.p1));
+    h.t1 = f(x87_sub24(s3, s2));
+    h.t0 = f(x87_add24(s, x87_sub24(h.t1, s2)));
     return h;
 }
 
@@ -156,13 +162,18 @@ std::int32_t find_key_00b75c10(const AnimKey* keys, std::int32_t count, float ti
     return lo;
 }
 
+// 00B75580 in listing order: c = (p1 - p0)*3 (00B75598..A0), b = 3*(p2 - p1) - c (00B755AC..B8),
+// a = ((p3 - p0) - c) - b (00B755C4..CE), then FMULP/FADDP on the stack at 00B755DA..F5:
+// (s*c + (b*s2 + a*s3)) + p0, each operation rounded to 24 bits (see 00B75520 above).
 double bezier_00b75580(float p0, float p1, float p2, float p3, float s) {
-    const float s2 = f(static_cast<double>(s) * s);
-    const float c = f((static_cast<double>(p1) - p0) * 3.0);
-    const float b = f(3.0 * (static_cast<double>(p2) - p1) - c);
-    const float a = f(((static_cast<double>(p3) - p0) - c) - b);
-    const float s3 = f(static_cast<double>(s2) * s);
-    return static_cast<double>(s) * c + (static_cast<double>(b) * s2 + static_cast<double>(a) * s3) + p0;
+    using namespace cc13x87;
+    const float s2 = f(x87_mul24(s, s));
+    const float c = f(x87_mul24(x87_sub24(p1, p0), 3.0));
+    const float b = f(x87_sub24(x87_mul24(3.0, x87_sub24(p2, p1)), c));
+    const float a = f(x87_sub24(x87_sub24(x87_sub24(p3, p0), c), b));
+    const float s3 = f(x87_mul24(s2, s));
+    // cc13-fixture2 (fixture-found): 00B755F7 FSTP DWORD / FLD rounds the result to float.
+    return f(x87_add24(x87_add24(x87_mul24(s, c), x87_add24(x87_mul24(b, s2), x87_mul24(a, s3))), p0));
 }
 
 float bezier_solve_00b75610(float& lo, float& hi, float p0, float p1, float p2, float p3,

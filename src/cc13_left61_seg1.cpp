@@ -2,6 +2,7 @@
 // include/bsp/cc13_left61.hpp and docs/CC13_LEFT61.md. Each body carries its
 // address, the original ABI and every simplification next to it.
 
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/cc13_left61.hpp"
 
 #include <cmath>
@@ -157,35 +158,42 @@ float* entity_world_position_refreshed_00427eb0(Raw entity, Left61Host& host) {
     return reinterpret_cast<float*>(entity.field(0xfc));
 }
 
-// 00428090. Traced from the bytes (00428090..0042826F): d = end - start and
-// f = start - centre are stored to float; a = (dx*dx + dy*dy) + dz*dz;
-// b = 2 * ((dy*fy + dx*fx) + dz*fz); c = ((fx*fx + fy*fy) + fz*fz) - r*r;
-// disc = b*b - (a * 4.0 (double 00D7A328)) * c, each stored to float. False when
-// 0 > disc; q = sqrt(disc); t1 = (-b - q) / (a + a): false when t1 > 1, true
-// unless 0 > t1; t2 = (q - b) / (a + a): true unless 0 > t2. NaN compares take
-// the "continue" side (JBE) everywhere, as written.
+// 00428090. Traced from the bytes (00428090..0042822C). Only the FSTP dword stores round to
+// float; everything between them stays on the x87 stack. The caller (00428420
+// ProjectileTrace_HitLandingTroops, from 0084BF00 Projectile_TraceSegmentAndImpact) is not
+// worker-only, so the model follows the main thread's 24-bit precision control: each
+// operation rounds to a 24-bit significand with the extended exponent (x87_*24). Stored:
+// d = end - start ([8],[C],[10]), f = start - centre ([14],[18],[1C]);
+// a = (dx*dx + dy*dy) + dz*dz ([0]); half_b = (dy*fy + dx*fx) + dz*fz, then
+// b = half_b + half_b ([4]); c_sum = (fx*fx + fy*fy) + fz*fz, then c = c_sum - r*r;
+// disc = b*b - (a * 4.0 (double 00D7A328)) * c. False when 0 > disc; q = sqrt(disc)
+// through _CIsqrt (00BF7030) stored to float; two_a = a + a stays on the stack;
+// t1 = (-b - q) / two_a stored: false when t1 > 1, true unless 0 > t1 (COMISS);
+// t2 = (q - b) / two_a stored: true unless 0 > t2. NaN compares take the "continue"
+// side (JBE) everywhere, as written.
 bool segment_intersects_sphere_00428090(const float* centre, const float* start, float radius,
                                         const float* end) {
+    using namespace cc13x87;
     const float dx = end[0] - start[0];
     const float dy = end[1] - start[1];
     const float dz = end[2] - start[2];
     const float fx = start[0] - centre[0];
     const float fy = start[1] - centre[1];
     const float fz = start[2] - centre[2];
-    const float a = (dx * dx + dy * dy) + dz * dz;
-    const float half_b = (dy * fy + dx * fx) + dz * fz;
-    const float b = half_b + half_b;
-    const float c_sum = (fx * fx + fy * fy) + fz * fz;
-    const float c = c_sum - radius * radius;
-    const float four_a = static_cast<float>(a * 4.0);
-    const float disc = b * b - four_a * c;
+    const float a = static_cast<float>(x87_add24(x87_add24(x87_mul24(dx, dx), x87_mul24(dy, dy)), x87_mul24(dz, dz)));
+    const float half_b =
+        static_cast<float>(x87_add24(x87_add24(x87_mul24(dy, fy), x87_mul24(dx, fx)), x87_mul24(dz, fz)));
+    const float b = static_cast<float>(x87_add24(half_b, half_b));
+    const float c_sum = static_cast<float>(x87_add24(x87_add24(x87_mul24(fx, fx), x87_mul24(fy, fy)), x87_mul24(fz, fz)));
+    const float c = static_cast<float>(x87_sub24(c_sum, x87_mul24(radius, radius)));
+    const float disc = static_cast<float>(x87_sub24(x87_mul24(b, b), x87_mul24(x87_mul24(a, 4.0), c)));
     if (0.0f > disc) return false;
-    const float q = std::sqrt(disc);
-    const float two_a = a + a;
-    const float t1 = (-b - q) / two_a;
+    const float q = static_cast<float>(std::sqrt(static_cast<double>(disc)));
+    const double two_a = x87_add24(a, a);
+    const float t1 = static_cast<float>(x87_div24(x87_sub24(-static_cast<double>(b), q), two_a));
     if (t1 > 1.0f) return false;
     if (!(0.0f > t1)) return true;
-    const float t2 = (q - b) / two_a;
+    const float t2 = static_cast<float>(x87_div24(x87_sub24(q, b), two_a));
     return !(0.0f > t2);
 }
 
