@@ -20,6 +20,13 @@ static_assert(bsp::sensor_max_value_for_level_0080866b(2) == bsp::kReconDetectio
 // {begin, count, capacity} triples.
 
 namespace bsp {
+SensorClassTable construct_sensor_class_table_00808cb0() {
+    SensorClassTable table;
+    table.native_vtable_00 = 0x00d08fec;
+    table.native_reference_count_04 = 1;
+    return table;
+}
+
 void destruct_sensor_row_00808230(SensorClassTable& table, SensorCategory observer) {
     const auto row = static_cast<std::size_t>(observer);
     std::vector<SensorGuiRangeRing>{}.swap(table.gui_rings[row]);

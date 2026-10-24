@@ -218,6 +218,9 @@ void destruct_sensor_row_00808230(SensorClassTable&, SensorCategory observer);
 //00808D20 ECX=this, RET00808D75: seven rows in reverse order, then base
 // destructor00BD30F0 restores00CEB130. No deleting-destructor flag exists.
 void destruct_sensor_class_table_00808d20(SensorClassTable&);
+//00808CB0 ECX=fresh2A8h record, EAX=this, RET00808D10: refcount1,
+//vtable00D08FEC and seven empty rows. std::vector replaces raw list storage.
+SensorClassTable construct_sensor_class_table_00808cb0();
 
 // ---------------------------------------------------------------------------
 // The loader, 008082A0
