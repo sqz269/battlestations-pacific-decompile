@@ -16,7 +16,6 @@
 
 #include "bsp/pool_pool10_cc13.hpp"
 
-#include <cstring>
 
 namespace bsp::cc13_pool10 {
 namespace {
@@ -48,7 +47,9 @@ struct CreateKind {
 
 Object create_class_entity(Pool10Host& host, Object entity_class, const CreateKind& kind) {
     Object p = host.operator_new_00bf55be(kind.bytes);
-    std::memset(p, 0, kind.bytes);
+    // A host call, not std::memset: memset on a null result would be UB in C++ and could let
+    // the optimiser drop the null test below.
+    host.memset_00bf79f0(p, 0, kind.bytes);
     if (p != nullptr) {
         try {
             host.class_entity_construct_base_00489f30(p);
@@ -174,7 +175,8 @@ Object anim_class_create_entity_00470c90(Pool10Host& host, Object anim_class) {
 // 004728F0 BSP_BulletVisualClass_CreateEntity, Bullets visual class vtable slot +8h,
 // __thiscall(class), RET at 0047298E (43 instructions), EAX = entity. operator new(18Ch),
 // vtables 00CE5B90 / 00CE5B78 / 00CE5B70, class id 39h; after +188h = class it calls
-// 00926BE0(ECX = entity) at 00472977. FuncInfo 00D89A20.
+// 00926BE0(ECX = entity) at 00472977. FuncInfo 00D89A20. Like 0047B9E0 and the +188h store,
+// the 00926BE0 call also runs on the null path (ESI = 0 from 0047295D), as the image does.
 Object bullet_visual_class_create_entity_004728f0(Pool10Host& host, Object bullet_class) {
     Object p = create_class_entity(host, bullet_class, {0x18c, 0x00ce5b90, 0x00ce5b78, 0x00ce5b70, 0x39});
     host.sentity_push_pending_00926be0(p);

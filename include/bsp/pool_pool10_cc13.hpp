@@ -35,6 +35,9 @@ struct Pool10Host {
 
     // Class entities.
     virtual Object operator_new_00bf55be(std::uint32_t bytes) = 0;                         // cdecl
+    // 00BF79F0 memset, cdecl(dst, byte, count); bound because the image calls it on the
+    // unchecked operator-new result, before the null test.
+    virtual void memset_00bf79f0(Object destination, std::int32_t value, std::uint32_t count) = 0;
     virtual void class_entity_construct_base_00489f30(Object entity) = 0;                   // ECX = entity
     virtual void class_entity_set_class_0047b9e0(Object entity, Object entity_class) = 0;    // RET 4
     virtual void sentity_push_pending_00926be0(Object entity) = 0;                           // ECX = entity
