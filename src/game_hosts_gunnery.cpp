@@ -1350,8 +1350,10 @@ constexpr bool kSeatArtilleryLeadBound = true;
 //    006DFAAA..006DFAB3. ON: the seat solves with gun.class_speed when
 //    gun.artillery_class, the bot's own predicate (kArtilleryClassSpeedBound
 //    && artillery_class). OFF: the authored V0 (gun.muzzle_speed), as before.
-//    Reach: a player-held artillery seat (group 3) only; needs a pair.
-constexpr bool kSeatArtilleryClassSpeedCc13Bound = false;
+//    Reach: a player-held artillery seat (group 3) only. ON by mechanism
+//    (cc9-helm1, 92bc2ae66 pairs): BSM03 c2 HUD fire, Kane artillery hits
+//    0 -> 3, same Game Over at 303.05 s; USN02 l70_u2_b same end at 55.05 s.
+constexpr bool kSeatArtilleryClassSpeedCc13Bound = true;
 static_assert(!kSeatArtilleryClassSpeedCc13Bound || kArtilleryClassSpeedBound,
     "kSeatArtilleryClassSpeedCc13Bound needs kArtilleryClassSpeedBound: gun.class_speed is "
     "that switch's 006E98BC rewrite");
@@ -1363,8 +1365,10 @@ static_assert(!kSeatArtilleryClassSpeedCc13Bound || kArtilleryClassSpeedBound,
 //    so the host takes it at the drain itself on a copy of the gun's angles,
 //    the same call the image makes, with no lag. ON: the player-held trigger
 //    is held && solved && within && accepted. OFF: held && solved && within.
-//    Reach: a player-held artillery seat whose pair is outside its arcs.
-constexpr bool kSeatArtilleryTriggerRefusalCc13Bound = false;
+//    Reach: a player-held artillery seat whose pair is outside its arcs. ON
+//    by mechanism (cc9-helm1, 92bc2ae66 pairs): BSM03 c2 Kane artillery shots
+//    75 -> 72, same end at 303.05 s; USN02 l70_u2_b identical (exit 0).
+constexpr bool kSeatArtilleryTriggerRefusalCc13Bound = true;
 //  * kPlayerWeaponGroupFireBound: packet cc9_player_weapon_group_fire. Message
 //    79h's group 5 arm (0095A441): the player's depth-charge launchers take
 //    the 99h-held byte as their trigger, and GameGunneryHost::
