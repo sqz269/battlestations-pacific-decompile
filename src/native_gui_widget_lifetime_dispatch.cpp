@@ -1,5 +1,8 @@
 #include "bsp/native_gui_widget_lifetime_dispatch.hpp"
 #include "bsp/native_gui_widget_child_links.hpp"
+#include "bsp/native_gui_icon_identity.hpp"
+#include "bsp/native_gui_text_reference.hpp"
+#include "bsp/game_native_readonly_data.hpp"
 #include <stdexcept>
 
 namespace bsp {
@@ -26,6 +29,10 @@ NativeGuiWidgetLifetimeDispatch::NativeGuiWidgetLifetimeDispatch(
         "raw GUI lifetime dispatch requires the genuine base query/scene table");
     require_profile(profiles_.group_00d5cb80, 0x00ac73e0u, 0x00ac6f70u);
     require_profile(profiles_.clip_box_00d5d058, 0x00ace620u, 0x00ace0c0u);
+    if (profiles_.text_00d5c6c8)
+        require_profile(profiles_.text_00d5c6c8, 0x00ab8ee0u, 0x00ab83d0u);
+    if (profiles_.icon_00d5c4c0)
+        require_profile(profiles_.icon_00d5c4c0, 0x00ab6100u, 0x00aa1cc0u);
 }
 
 NativeGuiWidgetLifetimeDispatch::BorrowedWidget NativeGuiWidgetLifetimeDispatch::widget(void* actual) {
@@ -42,18 +49,58 @@ NativeGuiWidgetLifetimeDispatch::BorrowedWidget NativeGuiWidgetLifetimeDispatch:
             "raw ClipBox dispatch requires its same canonical identity and lifetime context");
         return {Kind::clip_box, clip_box};
     }
-    throw std::logic_error("raw GUI lifetime dispatch rejects widgets outside Group/ClipBox");
+    if (auto* text = dynamic_cast<NativeGuiTextReference*>(reference)) {
+        // Metadata guard BEFORE any raw borrow/table access. A failed/retiring
+        // Text may already have consumed native payload, including its count.
+        require(text->phase() == NativeGuiTextReference::Phase::bound,
+            "raw Text child dispatch rejects retiring, zero-dispatch, failed or retired metadata");
+        const auto& c = text->storage_context();
+        const auto& a = c.construction;
+        require(profiles_.text_00d5c6c8 && text->storage() == actual && &c.owners == &registry_ &&
+            &c.retirement.base == &context_ && &c.construction_context.lifetime == &context_ &&
+            &c.construction_context.sections == &c.retirement.resources,
+            "raw Text child dispatch requires its SAME canonical full-storage registry and lifetime context");
+        require(a.started && a.complete && a.base_complete && a.derived_complete && a.sections_entered &&
+            !a.exception_cleanup_started && !a.base_lifetime_ended && !a.consumed_cleanup_actions &&
+            a.native_eh_state == 6 && a.destination == actual && a.sections.started && a.sections.complete &&
+            !a.sections.exception_cleanup_started &&
+            a.sections.failure == NativeGuiTextSectionStorageAcquired::Failure::none,
+            "raw Text child dispatch requires its genuine completed93 construction custody");
+        require(profiles_.text_00d5c6c8 == c.data.data_at(0x00d5c6c8u, 9 * sizeof(Word)),
+            "raw Text child dispatch requires the SAME genuine canonical122 Original-VA table alias");
+        return {Kind::text, text};
+    }
+    if (auto* icon = dynamic_cast<NativeGuiIconReference*>(reference)) {
+        require(!icon->retired() && !icon->failed() && !icon->destruction().started &&
+            profiles_.icon_00d5c4c0 && icon->actual_identity() == actual &&
+            &icon->lifetime_context() == &context_,
+            "raw Icon child dispatch requires its SAME bound canonical full-storage identity and context");
+        return {Kind::icon, icon};
+    }
+    throw std::logic_error("raw GUI lifetime dispatch rejects widgets outside its enabled canonical Group/ClipBox/Text/Icon domain");
 }
 void NativeGuiWidgetLifetimeDispatch::require_timed_identity(void* actual) {
     require(actual && !registry_.find(actual),
         "raw GUI timed dispatch cannot substitute a canonical counted owner");
 }
 const volatile Word* NativeGuiWidgetLifetimeDispatch::current_table(void* actual, Word profile) {
-    if (profile == 0x00d5cb80u || profile == 0x00d5d058u) {
+    if (profile == 0x00d5cb80u || profile == 0x00d5d058u ||
+        profile == 0x00d5c6c8u || profile == 0x00d5c4c0u) {
         const auto canonical = widget(actual);
-        require((canonical.kind == Kind::group) == (profile == 0x00d5cb80u),
-            "raw GUI captured profile does not match its canonical widget class");
-        return canonical.kind == Kind::group ? profiles_.group_00d5cb80 : profiles_.clip_box_00d5d058;
+        switch (canonical.kind) {
+        case Kind::group:
+            require(profile == 0x00d5cb80u, "raw Group captured profile does not match its canonical class");
+            return profiles_.group_00d5cb80;
+        case Kind::clip_box:
+            require(profile == 0x00d5d058u, "raw ClipBox captured profile does not match its canonical class");
+            return profiles_.clip_box_00d5d058;
+        case Kind::text:
+            require(profile == 0x00d5c6c8u, "raw Text captured profile does not match its canonical class");
+            return profiles_.text_00d5c6c8;
+        case Kind::icon:
+            require(profile == 0x00d5c4c0u, "raw Icon captured profile does not match its canonical class");
+            return profiles_.icon_00d5c4c0;
+        }
     }
     require_timed_identity(actual);
     const auto* const table = required_.current_timed_table(actual, profile);
@@ -62,7 +109,10 @@ const volatile Word* NativeGuiWidgetLifetimeDispatch::current_table(void* actual
 }
 bool NativeGuiWidgetLifetimeDispatch::call_class_query_0c(void* actual, Word target, Word descriptor) {
     const auto canonical = widget(actual);
-    require(target == (canonical.kind == Kind::group ? 0x00ac6f70u : 0x00ace0c0u),
+    const Word expected = canonical.kind == Kind::group ? 0x00ac6f70u :
+        canonical.kind == Kind::clip_box ? 0x00ace0c0u :
+        canonical.kind == Kind::text ? 0x00ab83d0u : 0x00aa1cc0u;
+    require(target == expected,
         "raw GUI class query has an unsupported captured current target");
     return required_.call_class_query_0c(actual, target, descriptor);
 }
@@ -75,12 +125,23 @@ void NativeGuiWidgetLifetimeDispatch::call_child_delete_04(void* actual, Word ta
     require(flags == 1, "raw GUI child scalar transport requires native flags1");
     const auto canonical = widget(actual);
     const volatile Word actual_flags = flags;
-    if (canonical.kind == Kind::group) {
+    switch (canonical.kind) {
+    case Kind::group:
         require(target == 0x00ac73e0u, "raw Group child has an unsupported captured scalar target");
         static_cast<NativeGuiGroupReference*>(canonical.reference)->delete_scalar_00ac73e0(actual_flags);
-    } else {
+        break;
+    case Kind::clip_box:
         require(target == 0x00ace620u, "raw ClipBox child has an unsupported captured scalar target");
         static_cast<NativeGuiClipBoxReference*>(canonical.reference)->delete_scalar_00ace620(actual_flags);
+        break;
+    case Kind::text:
+        require(target == 0x00ab8ee0u, "raw Text child has an unsupported captured scalar target");
+        static_cast<NativeGuiTextReference*>(canonical.reference)->delete_current_scalar_00ab8ee0(actual_flags);
+        break;
+    case Kind::icon:
+        require(target == 0x00ab6100u, "raw Icon child has an unsupported captured scalar target");
+        static_cast<NativeGuiIconReference*>(canonical.reference)->delete_scalar_00ab6100(actual_flags);
+        break;
     }
     // No child payload/count inspection, link erase or progress fallback here.
 }

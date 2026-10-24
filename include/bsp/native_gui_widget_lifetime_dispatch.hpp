@@ -13,11 +13,12 @@ public:
     // The returned current native table is stable/pure and has at least slot0.
     virtual const volatile std::uint32_t* current_timed_table(void* actual_entry,
         std::uint32_t captured_profile) = 0;
-    // Genuine captured Group AC6F70 / ClipBox ACE0C0 over CURRENT initialized
-    // F8BFD8[3] / F8C174[3] in the SAME native type phase. F8C180 is ClipBox's
-    // name word, not an ID. Preserve descriptor, short-circuit reads and AL.
-    // The existing process supplies Element/Text/Layer only; no Group/ClipBox
-    // type startup is supplied here. No copied IDs or fixed widget-type tags.
+    // Genuine captured Group AC6F70 / ClipBox ACE0C0 / Text AB83D0 / Icon
+    // AA1CC0 over CURRENT initialized F8BFD8[3] / F8C174[3] / F8BE28[3] /
+    // F8BDD8[3] in the SAME native type phase. F8C180 is ClipBox's name word,
+    // not an ID. Preserve descriptor, ordered short-circuit reads and AL.
+    // No type startup, copied IDs, descriptor-equality shortcut, false Icon
+    // answer or fixed widget-type tag substitutes for this genuine provider.
     virtual bool call_class_query_0c(void* actual_widget,
         std::uint32_t captured_target, std::uint32_t descriptor) = 0;
     // Exact CURRENT0(flags1) over that SAME timed allocation and its real
@@ -31,9 +32,14 @@ public:
 struct NativeGuiWidgetLifetimeDispatchProfiles {
     const volatile std::uint32_t* group_00d5cb80; // at least9 DWORDs
     const volatile std::uint32_t* clip_box_00d5d058; // at least9 DWORDs
+    // Optional exact actual tables, at least9 DWORDs. Null keeps each class
+    // outside the closed domain; existing Group/ClipBox callers stay unchanged.
+    const volatile std::uint32_t* text_00d5c6c8{};
+    const volatile std::uint32_t* icon_00d5c4c0{};
 };
 
-// Metadata-only production binding for a CLOSED raw Group/ClipBox hierarchy.
+// Metadata-only production binding for a CLOSED raw Group/ClipBox hierarchy,
+// optionally extended by full canonical raw Text/Icon admissions below.
 // Construct widgets through their existing raw AA9390/AA9520 factories, then
 // separately admit the SAME completed allocation with Group/ClipBoxReference
 // using context(). All reachable widget children/parents must be admitted in
@@ -41,6 +47,14 @@ struct NativeGuiWidgetLifetimeDispatchProfiles {
 // transitive list/timed backing/provider remain caller-retained through calls
 // and failure disposition. Tables/contexts may not be moved or mutated during
 // dispatch. Neither raw links/counts nor registry lookup prove full custody.
+// Text must be the full completed93/canonical122 NativeGuiTextReference,
+// bound phase, SAME registry and retirement.base context; Step1 prefix metadata
+// is excluded. Icon must be its sole full-raw NativeGuiIconReference in bound
+// phase (not retired/failed/destruction-entered), SAME context and registry.
+// No new widget construction, native ownership, provider or type initialization
+// follows from enabling a table. A successful child scalar may dispose its
+// companion; no companion/raw access follows that call. Entered failures remain
+// with their existing canonical failed binding and independent retained graph.
 //
 // This owns only the explicit lifetime context. No widget/node allocation,
 // native count/credit, owner map, layout/field mirror or automatic teardown.
@@ -73,7 +87,7 @@ public:
     void call_timed_delete_00(void*, std::uint32_t captured_target, std::uint32_t flags) override;
     void remove_all_00a9bd50(void* actual_list, const void* pointer_cell) override;
 private:
-    enum class Kind { group, clip_box };
+    enum class Kind { group, clip_box, text, icon };
     struct BorrowedWidget { Kind kind; RenderCommandReference* reference; };
     BorrowedWidget widget(void* actual);
     void require_timed_identity(void* actual);
