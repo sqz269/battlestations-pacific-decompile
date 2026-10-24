@@ -2910,4 +2910,52 @@ struct Fe11PreviewModelLoadedHost : Fe8LuaHost {
 void library_preview_on_model_loaded_005072c0(Raw screen, void* resource, Raw job,
     Fe11PreviewModelLoadedHost& host);
 
+// ---------------------------------------------------------------------------
+// Packet cc13-trivialslots: one ordinary function per kTrivialSlots row, re-read from
+// the disk bytes (local generator, rows checked against the image). `Raw` is the
+// ECX object; stack arguments the body never reads are noted in the ABI and not
+// passed. Adjustor and tail-jump rows appear only where the target is an existing
+// declaration; the descriptive table above stays as documentation.
+// ---------------------------------------------------------------------------
+// 004FA170 RET (C3; next byte CC). BSP_GuiWidgetListener_Empty1C. Original ABI: __thiscall(ECX
+// = this), RET.
+void gui_widget_listener_empty1c_004fa170(Raw) noexcept;
+// 00509D60 MOV EAX,0Bh; RET (B8 0B 00 00 00 C3; next byte CC).
+// BSP_TacticalLibraryScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 11, RET.
+std::int32_t tactical_library_screen_get_screen_id_00509d60(Raw) noexcept;
+// 00509D70 ADD ECX,64h; JMP 006833F0 (83 C1 64 E9 78 96 17 00; next byte CC).
+// BSP_TacticalLibraryWidgetListener_Current1C. Original ABI: __thiscall(ECX = this), the
+// target's RET; ECX adjusted, tail call to 006833F0 (Fe3Host::scroller_recapture_006833f0).
+void tactical_library_widget_listener_current1c_00509d70(Raw self, Fe3Host& host);
+// 00517680 MOV EAX,23h; RET (B8 23 00 00 00 C3; next byte CC). BSP_InGameScreen23_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 35, RET.
+std::int32_t in_game_screen23_get_screen_id_00517680(Raw) noexcept;
+// 00517690 RET 4 (C2 04 00; next byte CC). BSP_InGameScreen23_CollectChildren. Original ABI:
+// __thiscall(ECX = this, 1 stack dword unread), RET 4.
+void in_game_screen23_collect_children_00517690(Raw) noexcept;
+// 005178A0 RET 4 (C2 04 00; next byte CC). BSP_InGameScreen23_Update. Original ABI:
+// __thiscall(ECX = this, 1 stack dword unread), RET 4.
+void in_game_screen23_update_005178a0(Raw) noexcept;
+// 00517D30 MOV EAX,0Ch; RET (B8 0C 00 00 00 C3; next byte CC). BSP_FrontEndFrame_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 12, RET.
+std::int32_t front_end_frame_get_screen_id_00517d30(Raw) noexcept;
+// 00517D40 MOV AL,1; RET (B0 01 C3; next byte CC). BSP_FrontEndFrame_IsSelfManaged. Original
+// ABI: __thiscall(ECX = this) -> AL = 1, RET.
+bool front_end_frame_is_self_managed_00517d40(Raw) noexcept;
+// 00519450 MOV EAX,25h; RET (B8 25 00 00 00 C3; next byte CC). BSP_HudBomberScreen_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 37, RET.
+std::int32_t hud_bomber_screen_get_screen_id_00519450(Raw) noexcept;
+// 00555800 MOV EAX,0Fh; RET (B8 0F 00 00 00 C3; next byte CC).
+// BSP_ControlBindingScreen_ScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 15, RET.
+std::int32_t control_binding_screen_screen_id_00555800(Raw) noexcept;
+// 005610D0 RET 8 (C2 08 00; next byte CC). BSP_LeaderboardsScreen_OnListboxActivateNoOp.
+// Original ABI: __thiscall(ECX = this, 2 stack dwords unread), RET 8.
+void leaderboards_screen_on_listbox_activate_no_op_005610d0(Raw) noexcept;
+// 005633F0 MOV EAX,0Ah; RET (B8 0A 00 00 00 C3; next byte CC).
+// BSP_LeaderboardsScreen_GetScreenId. Original ABI: __thiscall(ECX = this) -> EAX = 10, RET.
+std::int32_t leaderboards_screen_get_screen_id_005633f0(Raw) noexcept;
+// 00565D60 MOV EAX,32h; RET (B8 32 00 00 00 C3; next byte CC). BSP_HudLimboScreen_GetScreenId.
+// Original ABI: __thiscall(ECX = this) -> EAX = 50, RET.
+std::int32_t hud_limbo_screen_get_screen_id_00565d60(Raw) noexcept;
+
 } // namespace bsp::cc13_fe3

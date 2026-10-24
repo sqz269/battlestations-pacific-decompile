@@ -3110,4 +3110,40 @@ void markers_project_part_bounds_006395e0(void* entity, float* min_x, float* min
     }
 }
 
+// Packet cc13-trivialslots: the kTrivialSlots bodies; evidence and ABI per routine
+// are in the header.
+std::int32_t rewards_screen_get_screen_id_00626710(Raw) noexcept { return 4; }
+std::int32_t hud_scene_init_screen_get_screen_id_00636dc0(Raw) noexcept { return 0x5A; }
+bool hud_scene_init_screen_occludes_lower_levels_00636dd0(Raw) noexcept { return true; }
+bool hud_scene_init_screen_is_self_managed_00636de0(Raw) noexcept { return true; }
+void hud_markers_screen_listener04no_op_006375f0(Raw) noexcept {}
+std::int32_t hud_markers_screen_get_screen_id_006405e0(Raw) noexcept { return 0x4D; }
+std::int32_t hud_spectator_screen_get_screen_id_00643dc0(Raw) noexcept { return 0x43; }
+bool hud_spectator_screen_is_self_managed_00643dd0(Raw) noexcept { return true; }
+void hud_spectator_screen_exit_00643de0(Raw) noexcept {}
+void hud_spectator_screen_update_00643df0(Raw) noexcept {}
+std::int32_t in_game_hud_root_screen_get_screen_id_00647fe0(Raw) noexcept { return 0x44; }
+std::int32_t hud_ship_status_screen_get_screen_id_0064b860(Raw) noexcept { return 0x45; }
+std::int32_t hud_submarine_screen_get_screen_id_00650160(Raw) noexcept { return 0x48; }
+void hud_submarine_screen_enter_00650190(Raw) noexcept {}
+std::int32_t hud_periscope_screen_get_screen_id_00650ac0(Raw) noexcept { return 0x47; }
+std::int32_t hud_support_manager_screen_get_screen_id_006730f0(Raw) noexcept { return 0x4E; }
+void hud_tactical_sheet_screen_on_listbox_selection_changed_no_op_0067af30(Raw) noexcept {}
+std::int32_t hud_tactical_sheet_screen_get_screen_id_0067af60(Raw) noexcept { return 0x54; }
+std::int32_t hud_cursor_screen_get_screen_id_0067b320(Raw) noexcept { return 0x28; }
+void hud_cursor_screen_exit_0067b330(Raw) noexcept {}
+void hud_common_overlay_screen_register_0067b3f0(Raw self, HudScreenServices& host) {
+    host.front_end_screen_register_004f71d0(self);
+}
+void hud_common_overlay_screen_enter_0067b400(Raw) noexcept {}
+void hud_common_overlay_screen_exit_0067b410(Raw) noexcept {}
+std::int32_t hud_follow_screen49_get_screen_id_0067be50(Raw) noexcept { return 0x49; }
+void hud_follow_screen49_collect_children_0067be60(Raw) noexcept {}
+void hud_follow_screen49_bind_layout_0067bea0(Raw) noexcept {}
+void hud_follow_screen49_enter_0067beb0(Raw) noexcept {}
+std::int32_t press_start_screen_get_screen_id_0067c860(Raw) noexcept { return 0x5C; }
+void unit_library_screen_on_listbox_selection_changed_no_op_0067d9f0(Raw) noexcept {}
+void unit_library_widget_listener_current00no_op_0067da00(Raw) noexcept {}
+std::int32_t unit_library_screen_get_screen_id_0067f050(Raw) noexcept { return 5; }
+
 } // namespace bsp::ingame_gui_cc13
