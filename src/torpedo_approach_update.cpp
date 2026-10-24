@@ -21,6 +21,18 @@ float abs_009d3766(float v) noexcept { return v < 0.0f ? -v : v; }
 // Live: game_hosts_units.cpp torpedo_time_to_target / torpedo_reset_run_time sites.
 constexpr bool kTorpedoApproachPc24Cc13Bound = false;
 
+// cc13-torphome (rev4): 009D3BB4-009D3BC0 scales the bearing to a sector,
+// trunc(F(F(b * 36.0) / 2pi)), 0..35. OFF truncates the radians unscaled (0..6),
+// so the home sector and the walk start in the wrong place. ON scales, rounds each
+// x87 result to float (main thread, PC24), stores the unclamped sector at +64h as
+// 009D3BC8 does and clamps only the walk's copy.
+// Live: game_hosts_units.cpp update_torpedo_approach_009d3420 ->
+// torpedo_approach_update_009d3420 -> torpedo_home_sector_009d3bc8.
+constexpr bool kTorpedoHomeSectorScaleCc13Bound = false;
+constexpr double kTorpedoHomeSectorScale_00d1fbc8 = 36.0;                 // m64
+// m64, but it holds float(2*pi) widened: 6.2831854820251465, not 2*pi.
+constexpr double kTorpedoHomeSectorTwoPi_00ce3828 = 6.2831854820251465;
+
 }  // namespace
 
 void torpedo_approach_apply_profile_009d3433(TorpedoApproachState& s,
@@ -332,10 +344,31 @@ float torpedo_sector_bearing_009d38a6(int sector) noexcept {
     return bearing;
 }
 
+namespace {
+// 009D3BB4-009D3BC5, the sector before the clamp. FLD the wrapped bearing,
+// FMUL m64 [00D1FBC8] 36.0, FDIVRP (DE F1) by the m64 2*pi [00CE3828] still on
+// the stack at double precision (FLD does not round to the 24-bit control), each
+// result rounded to float as the main thread's PC24 does, then 009D3BC0 CALL
+// 00BF7420 (_ftol2) truncates. 009D3BC8 stores this value, unclamped, at +64h.
+int torpedo_home_sector_raw_009d3bc0(float bearing_target_to_unit) noexcept {
+    const float scaled = static_cast<float>(static_cast<double>(bearing_target_to_unit) *
+                                            kTorpedoHomeSectorScale_00d1fbc8);  // 009D3BB8
+    const float quotient = static_cast<float>(static_cast<double>(scaled) /
+                                              kTorpedoHomeSectorTwoPi_00ce3828);  // 009D3BBE
+    return static_cast<int>(quotient);                                            // 009D3BC0
+}
+}  // namespace
+
 int torpedo_home_sector_009d3bc8(float bearing_target_to_unit) noexcept {
-    // 009D3BAF CALL 00BF7420, the float-to-int truncation, then 009D3BCE
+    // 009D3BC0 CALL 00BF7420, the float-to-int truncation, then 009D3BC5
     // CMP 0x23 clamps to the last sector.
-    int sector = static_cast<int>(bearing_target_to_unit);
+    int sector;
+    if constexpr (kTorpedoHomeSectorScaleCc13Bound) {
+        sector = torpedo_home_sector_raw_009d3bc0(bearing_target_to_unit);
+    } else {
+        // OFF: the radians are truncated without the 36/(2*pi) scale (0..6).
+        sector = static_cast<int>(bearing_target_to_unit);
+    }
     if (sector > kTorpedoSectorCount - 1) sector = kTorpedoSectorCount - 1;
     return sector;
 }
@@ -599,9 +632,18 @@ TorpedoApproachUpdateResult torpedo_approach_update_009d3420(
             // the truncation to a sector index.
             const float bearing_from_target =
                 torpedo_approach_bearing_009d3586(target_xz, unit_xz);
-            state.home_sector_64 = torpedo_home_sector_009d3bc8(bearing_from_target);
+            if constexpr (kTorpedoHomeSectorScaleCc13Bound) {
+                // 009D3BC8 stores the sector before 009D3BCB's clamp; only the
+                // walk below uses the clamped one.
+                state.home_sector_64 = torpedo_home_sector_raw_009d3bc0(bearing_from_target);
+            } else {
+                state.home_sector_64 = torpedo_home_sector_009d3bc8(bearing_from_target);
+            }
             const TorpedoTurnPlan plan = torpedo_turn_plan_009d3bce(
-                state.sector_clear_30, state.sector_clear_count_58, state.home_sector_64);
+                state.sector_clear_30, state.sector_clear_count_58,
+                kTorpedoHomeSectorScaleCc13Bound
+                    ? torpedo_home_sector_009d3bc8(bearing_from_target)
+                    : state.home_sector_64);
             state.turn_offset_5c = plan.turn_offset_5c;   // 009D3C50
             state.forward_gap_68 = plan.forward_gap_68;   // 009D3C53
             state.backward_gap_6c = plan.backward_gap_6c; // 009D3C56
