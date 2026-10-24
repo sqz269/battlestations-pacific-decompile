@@ -3911,3 +3911,79 @@ Open:
       - whether the carrier was turning, moving or stopped.
       A squadron that is alive, unhurt and still queued at 1100 s is a landing-gate candidate for cc13.
    CanFire (item 5) comes after (a) and (b).
+## 114. The attack-target switch goes ON; USNOS queued squadrons; the level-bomb rack CanFire (cc9-physics26, 2026-10-23)
+
+Pairs are same-commit exports of 31e82488d (`local\p26_off`, `local\p26_atk` with
+kUnitGetAttackTargetDirectorKindCc13Bound=true), reference env, difficulty 1, launched by `local\p26_pair.ps1`.
+No log has "present failed"; the session is the console. physics25's "unreached" runs (section 112) were on
+802e1d8b9, which predates cc13's fix 9961fbc7d (not an ancestor), so they did not test the stand-in arm.
+
+**kUnitGetAttackTargetDirectorKindCc13Bound ON (reached, mechanism matches).** The attack-target summary
+(`calls / fire_arm / command_arm / pushed / squadron_standin`), OFF -> ON:
+
+| Row | OFF | ON | pair_diff | End OFF -> ON |
+| --- | --- | --- | --- | --- |
+| IJN20 idle | 2974 / 2895 / 79 / 0 / 2974 | 3817 / 0 / 3817 / 3676 / 3817 | 3 | no end both |
+| JM05 idle | 1039 / 1016 / 23 / 57 / 980 | 924 / 53 / 871 / 900 / 871 | 3 | failed 530.99 -> 471.01 s (Troop Transport 02) |
+| USNRM01 idle | 2722 / 2719 / 3 / 0 / 2722 | 4590 / 0 / 4590 / 3923 / 4590 | 3 | Game Over 849.92 -> 884.91 s |
+| USN13 idle | 0 calls | 0 calls | 0 | Game Over 460.01 s both |
+
+- IJN20: the airfield level bombers no longer reinstall. OFF, every Airfield1/2 bomber reinstalls 28-89 times with
+  0 releases (Airfield2_sqn34 i89/i84/i85, 0 drops). ON, each installs once (i1), and Airfield2_sqn07's wingmen
+  release (II: r1 d12, III: r1 d5). Airfield2_sqn34 is not spawned in the ON run (the airfield's pick order moves),
+  so the "sqn34 arm=command" check is replaced by the whole-row counts above.
+- WINS rows (row orders from cc9-lua52 `local\l72_rows.txt`):
+  - PRCP01 `p9_p01_k`: **lost**. completed 1024.52 s -> failed 1038.39 s (`usn03.obj_p2_fail`, Enterprise sunk); standin 485.
+  - BSM01 `s62_b1_h`: EndMission 815.92 -> 821.92 s (moved, still ends); standin 1831.
+  - BSM09 `l68_b9_d1`: EndMission 429.02 -> 414.02 s (moved, still ends); standin 443.
+  - JM06 `l70_j6_n`: gameplay identical (exit 1), completed 1922.75 s; standin 461.
+  - USN01 `l69_u1_a` (completed 370.03 s) and LOMP06 `g56_l6_v2` (completed 330.84 s): identical, 0 calls.
+  - USN02, LOMP10, USN12, ESMP08, IJN08, USN21, USN15 make 0 calls in lua72's latest logs, and IJN18 logs
+    squadron_standin=0, so the flip cannot move them.
+- The flip is faithful (the image's squadron director always takes the command arm; the record test is the
+  labelled stand-in for IsKindOf(18h)), so it goes ON with PRCP01 lost; PRCP01 needs a re-plan.
+  `tools/off_switch_on_build.py --names kUnitGetAttackTargetDirectorKindCc13Bound` exit 0; full build passes.
+
+**USNOS queued squadrons (static, `local\p25i_off_osL.log`, 802e1d8b9).** Script `local\p26_osq.py`.
+Every carrier squadron that queued died within seconds over the target area, 14-17 km from its carrier. None was
+alive at 1099.95 s, so **there is no landing-gate candidate**.
+
+| Squadron | Queued (n, deck) | Fate | Carrier distance at RTB |
+| --- | --- | --- | --- |
+| Intrepid_sqn04 | 380.23 s (n=0) | II 381.53 s (Heavy AA platform 09), III 385.73 s (HQ2), leader 391.23 s (Shimotsuke) | 17426 m |
+| Intrepid_sqn07 | 451.01 s (n=0) | leader 460.76 s, II/III 462.91 s (all Shimotsuke) | 17134 m |
+| Essex_sqn08 | 494.90 s (n=0) | III 484.06 s and II 490.75 s before the RTB (Zao1); leader 496.65 s (CB2) | 17058 m |
+| Intrepid_sqn09 | 523.30 s (n=0) | II/III 532.29 s, leader 532.44 s (all Shimotsuke) | 16789 m |
+
+- Each was alone in the queue (n=0). `squadron kill` erased its one queue record (00926D90 -> 006C4B30).
+- The leaders were in land-task state 4C4 (cmd_alt 1450) and the wingmen were in follow (500). No touchdown
+  probe got below 1000 m.
+- Intrepid is moving, not turning. Its site x goes 10203.7 (380 s) -> 9496.0 (451 s) -> 8774.9 (523 s) at
+  z about -9990, roughly 10 m/s westward.
+- The later queuers die the same way: Intrepid_sqn11/13/22/30/33 and Essex_sqn31/34. Essex_sqn34 queued at
+  1097.40 s and died at 1102.35 s (HQ1).
+- The carriers' landed=0 is a consequence of flak over Shimotsuke and the HQs, not a landing gate.
+
+**Level-bomb rack CanFire (CC13_STUB_CENSUS row 7): no gate can bite. The host's "has ammo" is exact for a
+level bomber, and no switch is needed.**
+- **The vtable slot.** 006E5800 loads `[rack]+1D0h` with rack = ESI-310h. The two MBombPlatform vtables are
+  00CF96A8 and 00CF9918. Their slot 1D0h (00CF9878, 00CF9AE8) holds 006E3460, which is
+  `Gun_CanFire(1) && this->vtable[210h](2Ah, 0)`. The slot 210h entries are 006E3FE0 (00CF98B8) and 006E45E0
+  (00CF9B28), which ask whether an attached child round answers kind 2Ah. The loadout arm is skipped for arg 0.
+- **The 00729A80 gates for a BOMBPLATFORM rack** (Function 0Ah):
+  - Tests 5-7 are exempt. The artillery set is {2,3,4,6}, torpedo is 7, AA is {1,5,6}.
+  - +358h has no non-zero writer. The constructor zeroes it at 0072E61A.
+  - +3B8h is written only by BSP_Gun_ApplySetDestroyedFailure / ClearDestroyedFailure (0072B5BC, 007280C0) and
+    by GUN_CREATE (0072A1BF).
+  - +450h starts at 0 (0072E8D2 XORPS, stored 0072E8DB). Its only positive writer is BSP_Gun_Fire's tail at
+    00730A08, and a rack's slot 1D8h is 006E4D50, not Gun_Fire.
+  - +478h starts at 0 (Construct 0072E66C). Its only positive writer is SetTriggerHeld 0072D3B8 (slot 1E8h), and
+    the rack overrides slot 1E8h with the empty body 006E3CB0 (00CF9890, 00CF9B00).
+  - The +414h barrel timers start at 0 (0072EE99 FLDZ -> 0072CF00). Only RearmBarrel (from Gun_Fire and
+    SetTorpedoStock) writes a reload. SelectFireMode writes FLT_MAX, and only on a mode change with no round.
+  - The drop 006E4D50 (to RET 0Ch at 006E56ED) writes none of +3B8h/+358h/+414h/+418h/+450h/+478h. It reads
+    +484h at 006E55E7.
+- **Verdict.** CanFire reduces to "the rack has an attached kind-2Ah round". The drop re-attaches the next round
+  through slot 224h (006E55FA), so this is the host's ammo test.
+- **Uncertainty.** A destroyed-failure message aimed at a plane's rack would set +3B8h. No plane-side sender was
+  checked.

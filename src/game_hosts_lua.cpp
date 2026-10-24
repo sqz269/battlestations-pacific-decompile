@@ -121,7 +121,9 @@ constexpr bool kShipyardLaunchSkillCc13Bound = false;
 // fire arm whenever the ship AI host has a row for the unit, which it keeps for
 // every unit ("not_ship" included), so a squadron answers nil and
 // luaAirfieldManager re-picks its target on every pass.
-constexpr bool kUnitGetAttackTargetDirectorKindCc13Bound = false;
+// ON since cc9-physics26 (docs/OCEAN_WAVE_FIELD.md section 114): reached through the
+// squadron stand-in (cc13-atkfix); IJN20's level bombers stop reinstalling.
+constexpr bool kUnitGetAttackTargetDirectorKindCc13Bound = true;
 
 // The setters' NativeString key: 0041E870 over the CRT-backed storage, released
 // when the call returns.
