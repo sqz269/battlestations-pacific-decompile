@@ -16,12 +16,12 @@
     },
     {
       "address": "007b4030",
-      "name": "bot_task_destruct_base_007b4030",
-      "status": "reconstructed_body_build_pending",
-      "evidence": "Full listing 007B4030..007B40B4: vptr stores, observer +38C destructor, optional state +310 slot8, reverse 3xC8h plan destruction; no incoming delete flag.",
+      "name": "BSP_BotTask_DestructBase_007b4030",
+      "status": "existing_body_reconciled",
+      "evidence": "Full listing 007B4030..007B40B4: vptr stores, observer +38C destructor, optional state +310 slot8, reverse 3xC8h plan destruction; no incoming delete flag. Concurrent upstream cc13-cgbuildC 8e992f6c8 supplied the existing body; redundant local addition removed at integration.",
       "abi": "__thiscall ECX=task; RET0",
       "uncertainty": "Descriptive names and explicit C++ interfaces; no native ABI, FH3 or runtime equivalence claim.",
-      "source": "src/bot_tasks.cpp"
+      "source": "src/cg_rebuild_c_cc13.cpp"
     },
     {
       "address": "007cfd00",
@@ -52,12 +52,12 @@
     },
     {
       "address": "0086e5a0",
-      "name": "destruct_effect_flare_0086e5a0",
-      "status": "reconstructed_body_build_pending",
-      "evidence": "Full 0086E5A0..0086E668 normal body: reverse two strings +48/+50 per entry, entry free, vector +28 resize/free, base vptr and string release, refcounted base. No delete flag.",
+      "name": "BSP_EffectFlare_Destruct_0086e5a0",
+      "status": "existing_body_reconciled",
+      "evidence": "Full 0086E5A0..0086E668 normal body: reverse two strings +48/+50 per entry, entry free, vector +28 resize/free, base vptr and string release, refcounted base. No delete flag. Concurrent upstream cc13-cgbuildC 8e992f6c8 supplied the existing body; redundant local addition removed at integration.",
       "abi": "__thiscall ECX=flare; RET0",
       "uncertainty": "Descriptive names and explicit C++ interfaces; no native ABI, FH3 or runtime equivalence claim.",
-      "source": "src/gameplay_effect_components.cpp"
+      "source": "src/cg_rebuild_c_cc13.cpp"
     },
     {
       "address": "008f02b0",
