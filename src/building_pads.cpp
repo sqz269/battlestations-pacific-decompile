@@ -143,7 +143,7 @@ bool landing_ship_ramp_latch_0074afcc(BuildingPadModel::Lander& l, bool ground_1
     if (!(l.ramp_timer_11ac > 0.0f)) return false;                     // 0074B044 COMISS, JBE
     l.ramp_timer_11ac = static_cast<float>(
         static_cast<double>(l.ramp_timer_11ac) - static_cast<double>(dt));  // 0074B053..5F
-    if (0.0f < l.ramp_timer_11ac) return false;                        // 0074B067, JB
+    if (!(l.ramp_timer_11ac <= 0.0f)) return false;                   // 0074B067/6B: JB also skips unordered
     if (l.ramp_down_1188) return false;                                // 0074B06D -> 0074B109
     if (!held_now) return false;                                       // 0074B07A TEST CL,CL
     l.ramp_down_1188 = true;                                           // 0074A420
