@@ -255,7 +255,8 @@
       "identifiers": [
         "copy_matrix_0042c560"
       ],
-      "evidence": "src/save_settings_cc13.cpp:117 complete executable body; include/bsp/save_settings_cc13.hpp:74-76 identifies 0042C560 and cockpit 0042CBE0 as identical 16-DWORD REP MOVSD copies at different source offsets; implementation copies the selected source bits. Verified shared shape, not ABI replacement."
+      "evidence": "src/save_settings_cc13.cpp:117 complete executable body; include/bsp/save_settings_cc13.hpp:74-76 identifies 0042C560 and cockpit 0042CBE0 as identical 16-DWORD REP MOVSD copies at different source offsets; implementation copies the selected source bits. Verified shared shape, not ABI replacement.",
+      "shared_implementation": true
     },
     {
       "address": "0x004e5d20",
@@ -656,6 +657,579 @@
         "construct_movie_action"
       ],
       "evidence": "src/engine_seg4_6_9_cc13.cpp:54 complete executable body; src/engine_seg4_6_9_cc13.cpp:20-51 kMovieActionConstructors row identifies this address/type; this executable semantic model selects that type and initializes MovieAction defaults plus activate_time. As already qualified by the ledger/header, new C++ MovieAction model omits raw vtable/layout writes and does not establish raw ABI equivalence."
+    },
+    {
+      "address": "0x0044c5d0",
+      "source": "src/engine_seg4_6_9_cc13.cpp",
+      "identifiers": [
+        "narrow_string_pair_construct"
+      ],
+      "evidence": "src/engine_seg4_6_9_cc13.cpp:1362 executable body; include/bsp/engine_seg4_6_9_cc13.hpp:886-894 explicitly lists these byte-identical constructors: zero key, resize/copy unless self or empty, then write value+8; function executes that full sequence. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x004713b0",
+      "source": "src/engine_seg4_6_9_cc13.cpp",
+      "identifiers": [
+        "narrow_string_pair_construct"
+      ],
+      "evidence": "src/engine_seg4_6_9_cc13.cpp:1362 executable body; include/bsp/engine_seg4_6_9_cc13.hpp:886-894 explicitly lists these byte-identical constructors: zero key, resize/copy unless self or empty, then write value+8; function executes that full sequence. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x004747f0",
+      "source": "src/engine_seg4_6_9_cc13.cpp",
+      "identifiers": [
+        "narrow_string_pair_construct"
+      ],
+      "evidence": "src/engine_seg4_6_9_cc13.cpp:1362 executable body; include/bsp/engine_seg4_6_9_cc13.hpp:886-894 explicitly lists these byte-identical constructors: zero key, resize/copy unless self or empty, then write value+8; function executes that full sequence. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00478a50",
+      "source": "src/engine_seg4_6_9_cc13.cpp",
+      "identifiers": [
+        "narrow_string_pair_construct"
+      ],
+      "evidence": "src/engine_seg4_6_9_cc13.cpp:1362 executable body; include/bsp/engine_seg4_6_9_cc13.hpp:886-894 explicitly lists these byte-identical constructors: zero key, resize/copy unless self or empty, then write value+8; function executes that full sequence. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00472ff0",
+      "source": "src/engine_seg4_6_9_cc13.cpp",
+      "identifiers": [
+        "construct_sourced_visual_class"
+      ],
+      "evidence": "src/engine_seg4_6_9_cc13.cpp:103 executable body; include/bsp/engine_seg4_6_9_cc13.hpp:95-103 identifies both visual-class constructors; model stores source and source name (empty if null), while raw base/vtable layout remains abstracted as already documented. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x0047a800",
+      "source": "src/engine_seg4_6_9_cc13.cpp",
+      "identifiers": [
+        "construct_sourced_visual_class"
+      ],
+      "evidence": "src/engine_seg4_6_9_cc13.cpp:103 executable body; include/bsp/engine_seg4_6_9_cc13.hpp:95-103 identifies both visual-class constructors; model stores source and source name (empty if null), while raw base/vtable layout remains abstracted as already documented. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00472420",
+      "source": "include/bsp/engine_seg4_6_9_cc13.hpp",
+      "identifiers": [
+        "delete_all_scene_classes"
+      ],
+      "evidence": "include/bsp/engine_seg4_6_9_cc13.hpp:113 executable body; Header:105-115 explicitly identifies the five registry teardown addresses and executes per-entry destruction via unique_ptr reset followed by map clear. Standard map internals remain stock bindings. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00473ce0",
+      "source": "include/bsp/engine_seg4_6_9_cc13.hpp",
+      "identifiers": [
+        "delete_all_scene_classes"
+      ],
+      "evidence": "include/bsp/engine_seg4_6_9_cc13.hpp:113 executable body; Header:105-115 explicitly identifies the five registry teardown addresses and executes per-entry destruction via unique_ptr reset followed by map clear. Standard map internals remain stock bindings. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00475860",
+      "source": "include/bsp/engine_seg4_6_9_cc13.hpp",
+      "identifiers": [
+        "delete_all_scene_classes"
+      ],
+      "evidence": "include/bsp/engine_seg4_6_9_cc13.hpp:113 executable body; Header:105-115 explicitly identifies the five registry teardown addresses and executes per-entry destruction via unique_ptr reset followed by map clear. Standard map internals remain stock bindings. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00479ac0",
+      "source": "include/bsp/engine_seg4_6_9_cc13.hpp",
+      "identifiers": [
+        "delete_all_scene_classes"
+      ],
+      "evidence": "include/bsp/engine_seg4_6_9_cc13.hpp:113 executable body; Header:105-115 explicitly identifies the five registry teardown addresses and executes per-entry destruction via unique_ptr reset followed by map clear. Standard map internals remain stock bindings. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x0047b4e0",
+      "source": "include/bsp/engine_seg4_6_9_cc13.hpp",
+      "identifiers": [
+        "delete_all_scene_classes"
+      ],
+      "evidence": "include/bsp/engine_seg4_6_9_cc13.hpp:113 executable body; Header:105-115 explicitly identifies the five registry teardown addresses and executes per-entry destruction via unique_ptr reset followed by map clear. Standard map internals remain stock bindings. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x004fd350",
+      "source": "src/frontend_seg12_17_cc13.cpp",
+      "identifiers": [
+        "string_vector_destroy"
+      ],
+      "evidence": "src/frontend_seg12_17_cc13.cpp:306 executable body; include/bsp/frontend_seg12_17_cc13.hpp:280-292 gives 004FD350 row (vector+1C,string+10,no prezero); body frees and zeroes vector then returns string storage to sized pool. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00509da0",
+      "source": "src/ingame_gui_cc13.cpp",
+      "identifiers": [
+        "collect_children"
+      ],
+      "evidence": "src/ingame_gui_cc13.cpp:35 executable body; include/bsp/frontend_seg12_17_cc13.hpp:64-70 address-keyed CollectChildrenSlot rows supply ordered child offsets; body pushes every specified page slot through 004D6790, implementing the whole collector operation. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00519d40",
+      "source": "src/ingame_gui_cc13.cpp",
+      "identifiers": [
+        "collect_children"
+      ],
+      "evidence": "src/ingame_gui_cc13.cpp:35 executable body; include/bsp/frontend_seg12_17_cc13.hpp:64-70 address-keyed CollectChildrenSlot rows supply ordered child offsets; body pushes every specified page slot through 004D6790, implementing the whole collector operation. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00558680",
+      "source": "src/ingame_gui_cc13.cpp",
+      "identifiers": [
+        "collect_children"
+      ],
+      "evidence": "src/ingame_gui_cc13.cpp:35 executable body; include/bsp/frontend_seg12_17_cc13.hpp:64-70 address-keyed CollectChildrenSlot rows supply ordered child offsets; body pushes every specified page slot through 004D6790, implementing the whole collector operation. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00563430",
+      "source": "src/ingame_gui_cc13.cpp",
+      "identifiers": [
+        "collect_children"
+      ],
+      "evidence": "src/ingame_gui_cc13.cpp:35 executable body; include/bsp/frontend_seg12_17_cc13.hpp:64-70 address-keyed CollectChildrenSlot rows supply ordered child offsets; body pushes every specified page slot through 004D6790, implementing the whole collector operation. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00565fa0",
+      "source": "src/ingame_gui_cc13.cpp",
+      "identifiers": [
+        "collect_children"
+      ],
+      "evidence": "src/ingame_gui_cc13.cpp:35 executable body; include/bsp/frontend_seg12_17_cc13.hpp:64-70 address-keyed CollectChildrenSlot rows supply ordered child offsets; body pushes every specified page slot through 004D6790, implementing the whole collector operation. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006b7ea0",
+      "source": "src/settings_seg29_cc13.cpp",
+      "identifiers": [
+        "remove"
+      ],
+      "evidence": "src/settings_seg29_cc13.cpp:114 executable body; include/bsp/settings_seg29_cc13.hpp inline address comment on LuaMachine method declaration identifies this exact wrapper; definition calls the corresponding Lua operation (is_string_type compares type==string; pop uses -1-count). New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006b7ec0",
+      "source": "src/settings_seg29_cc13.cpp",
+      "identifiers": [
+        "type"
+      ],
+      "evidence": "src/settings_seg29_cc13.cpp:115 executable body; include/bsp/settings_seg29_cc13.hpp inline address comment on LuaMachine method declaration identifies this exact wrapper; definition calls the corresponding Lua operation (is_string_type compares type==string; pop uses -1-count). New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006b7f60",
+      "source": "src/settings_seg29_cc13.cpp",
+      "identifiers": [
+        "is_string_type"
+      ],
+      "evidence": "src/settings_seg29_cc13.cpp:116 executable body; include/bsp/settings_seg29_cc13.hpp inline address comment on LuaMachine method declaration identifies this exact wrapper; definition calls the corresponding Lua operation (is_string_type compares type==string; pop uses -1-count). New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006b85b0",
+      "source": "src/settings_seg29_cc13.cpp",
+      "identifiers": [
+        "next"
+      ],
+      "evidence": "src/settings_seg29_cc13.cpp:161 executable body; include/bsp/settings_seg29_cc13.hpp inline address comment on LuaMachine method declaration identifies this exact wrapper; definition calls the corresponding Lua operation (is_string_type compares type==string; pop uses -1-count). New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006b85f0",
+      "source": "src/settings_seg29_cc13.cpp",
+      "identifiers": [
+        "pop"
+      ],
+      "evidence": "src/settings_seg29_cc13.cpp:162 executable body; include/bsp/settings_seg29_cc13.hpp inline address comment on LuaMachine method declaration identifies this exact wrapper; definition calls the corresponding Lua operation (is_string_type compares type==string; pop uses -1-count). New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006aedc0",
+      "source": "src/mission_savedata_lua.cpp",
+      "identifiers": [
+        "encode_entity_slot"
+      ],
+      "evidence": "src/mission_savedata_lua.cpp:240 executable body; Source:239 explicitly lists 006AEBF0/006AEDC0/006AEF70 key variants; generic body reads userdata, emits _p_ plus handle or x, and stores the encoded slot. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006aef70",
+      "source": "src/mission_savedata_lua.cpp",
+      "identifiers": [
+        "encode_entity_slot"
+      ],
+      "evidence": "src/mission_savedata_lua.cpp:240 executable body; Source:239 explicitly lists 006AEBF0/006AEDC0/006AEF70 key variants; generic body reads userdata, emits _p_ plus handle or x, and stores the encoded slot. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006b2e90",
+      "source": "src/mission_savedata_lua.cpp",
+      "identifiers": [
+        "encode_function_slot"
+      ],
+      "evidence": "src/mission_savedata_lua.cpp:256 executable body; Source:255 explicitly lists function-reference key variants; generic body reads function pointer, resolves/inserts global name and stores _f_ plus name. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006b2fc0",
+      "source": "src/mission_savedata_lua.cpp",
+      "identifiers": [
+        "encode_function_slot"
+      ],
+      "evidence": "src/mission_savedata_lua.cpp:256 executable body; Source:255 explicitly lists function-reference key variants; generic body reads function pointer, resolves/inserts global name and stores _f_ plus name. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006b3130",
+      "source": "src/mission_savedata_lua.cpp",
+      "identifiers": [
+        "encode_table_tree"
+      ],
+      "evidence": "src/mission_savedata_lua.cpp:427 executable body; include/bsp/mission_savedata_lua.hpp:75-83 explicitly associates integer/float key variants with this recursive encoder; executable wrapper calls full encode_tree implementation. Existing depth guard and key abstractions remain qualified. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006b4cb0",
+      "source": "src/mission_savedata_lua.cpp",
+      "identifiers": [
+        "encode_table_tree"
+      ],
+      "evidence": "src/mission_savedata_lua.cpp:427 executable body; include/bsp/mission_savedata_lua.hpp:75-83 explicitly associates integer/float key variants with this recursive encoder; executable wrapper calls full encode_tree implementation. Existing depth guard and key abstractions remain qualified. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006b0be0",
+      "source": "src/mission_savedata_lua.cpp",
+      "identifiers": [
+        "decode_table_tree"
+      ],
+      "evidence": "src/mission_savedata_lua.cpp:491 executable body; include/bsp/mission_savedata_lua.hpp:97-99 explicitly pairs string and float-key table restore variants; body enters full recursive decode_tree implementation. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006af120",
+      "source": "src/mission_savedata_lua.cpp",
+      "identifiers": [
+        "decode_slot"
+      ],
+      "evidence": "src/mission_savedata_lua.cpp:498 executable body; include/bsp/mission_savedata_lua.hpp:101-105 explicitly associates 006AEA00/006AF120 key variants with this complete _t_/_f_/_p_ decoder. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006ae400",
+      "source": "src/mission_savedata_lua.cpp",
+      "identifiers": [
+        "decode_table_ref"
+      ],
+      "evidence": "src/mission_savedata_lua.cpp:324 executable body; Source:323 explicitly pairs 006ADDC0/006AE400 table-reference key variants; body walks encoded global path and replaces selected slot. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x007f9f70",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "identifiers": [
+        "nose_art_texture_path_007f9cb0"
+      ],
+      "evidence": "src/engine_seg49_64_78_cc13.cpp:1609 executable body; include/bsp/engine_seg49_64_78_cc13.hpp:872 pairs out-argument-return variant with 007F9CB0; semantic body resolves NoseArt.index.Texture and prepends models/Textures/noseart/. New C++ semantic interface; no raw ABI equivalence or game validation is claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x0078d9f0",
+      "source": "src/engine_seg43_45_cc13.cpp",
+      "identifiers": [
+        "ocean_settings_assign_0078d940"
+      ],
+      "evidence": "src/engine_seg43_45_cc13.cpp:245 executable body; include/bsp/engine_seg43_45_cc13.hpp:212 explicitly pairs water-particle/beams assignments; body copies head, self-safe name, words and four blocks. New C++ semantic interface; no raw ABI equivalence or game validation is claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x00791570",
+      "source": "src/cc13_camera_controllers.cpp",
+      "identifiers": [
+        "keyframe_event_check"
+      ],
+      "evidence": "src/cc13_camera_controllers.cpp:605 executable body; Source:608-615 address comments identify switch arms NoParent/NoEntity/Killed/Sunk; body executes fired guard and the selected full predicate using event kind, entity and host state. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00791590",
+      "source": "src/cc13_camera_controllers.cpp",
+      "identifiers": [
+        "keyframe_event_check"
+      ],
+      "evidence": "src/cc13_camera_controllers.cpp:605 executable body; Source:608-615 address comments identify switch arms NoParent/NoEntity/Killed/Sunk; body executes fired guard and the selected full predicate using event kind, entity and host state. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x007915b0",
+      "source": "src/cc13_camera_controllers.cpp",
+      "identifiers": [
+        "keyframe_event_check"
+      ],
+      "evidence": "src/cc13_camera_controllers.cpp:605 executable body; Source:608-615 address comments identify switch arms NoParent/NoEntity/Killed/Sunk; body executes fired guard and the selected full predicate using event kind, entity and host state. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x007915d0",
+      "source": "src/cc13_camera_controllers.cpp",
+      "identifiers": [
+        "keyframe_event_check"
+      ],
+      "evidence": "src/cc13_camera_controllers.cpp:605 executable body; Source:608-615 address comments identify switch arms NoParent/NoEntity/Killed/Sunk; body executes fired guard and the selected full predicate using event kind, entity and host state. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x0079a040",
+      "source": "src/engine_seg43_45_cc13.cpp",
+      "identifiers": [
+        "keyframe_event_construct"
+      ],
+      "evidence": "src/engine_seg43_45_cc13.cpp:729 executable body; include/bsp/engine_seg43_45_cc13.hpp:553-555 gives killed/sunk constructors; model initializes kind,fired,entity and sunk depth -10. Raw vtable/layout writes remain abstracted. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x0079a0e0",
+      "source": "src/engine_seg43_45_cc13.cpp",
+      "identifiers": [
+        "keyframe_event_construct"
+      ],
+      "evidence": "src/engine_seg43_45_cc13.cpp:729 executable body; include/bsp/engine_seg43_45_cc13.hpp:553-555 gives killed/sunk constructors; model initializes kind,fired,entity and sunk depth -10. Raw vtable/layout writes remain abstracted. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00799620",
+      "source": "src/engine_seg43_45_cc13.cpp",
+      "identifiers": [
+        "keyframe_event_set_entity_007995f0"
+      ],
+      "evidence": "src/engine_seg43_45_cc13.cpp:738 executable body; Header:557-559 explicitly lists the three class variants; body skips unchanged entity, unregisters old observer, stores new entity and registers it. New C++ semantic interface; no raw ABI equivalence or game validation is claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x00799650",
+      "source": "src/engine_seg43_45_cc13.cpp",
+      "identifiers": [
+        "keyframe_event_set_entity_007995f0"
+      ],
+      "evidence": "src/engine_seg43_45_cc13.cpp:738 executable body; Header:557-559 explicitly lists the three class variants; body skips unchanged entity, unregisters old observer, stores new entity and registers it. New C++ semantic interface; no raw ABI equivalence or game validation is claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x00799f30",
+      "source": "src/engine_seg43_45_cc13.cpp",
+      "identifiers": [
+        "keyframe_event_destruct_00799fd0"
+      ],
+      "evidence": "src/engine_seg43_45_cc13.cpp:750 executable body; Header:564-566 explicitly lists observer-derived destructor variants; body destructs target observer and releases function name. Raw vtable/sized-pool layout remains abstracted. New C++ semantic interface; no raw ABI equivalence or game validation is claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x0079a070",
+      "source": "src/engine_seg43_45_cc13.cpp",
+      "identifiers": [
+        "keyframe_event_destruct_00799fd0"
+      ],
+      "evidence": "src/engine_seg43_45_cc13.cpp:750 executable body; Header:564-566 explicitly lists observer-derived destructor variants; body destructs target observer and releases function name. Raw vtable/sized-pool layout remains abstracted. New C++ semantic interface; no raw ABI equivalence or game validation is claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x0079a120",
+      "source": "src/engine_seg43_45_cc13.cpp",
+      "identifiers": [
+        "keyframe_event_destruct_00799fd0"
+      ],
+      "evidence": "src/engine_seg43_45_cc13.cpp:750 executable body; Header:564-566 explicitly lists observer-derived destructor variants; body destructs target observer and releases function name. Raw vtable/sized-pool layout remains abstracted. New C++ semantic interface; no raw ABI equivalence or game validation is claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x006dfdc0",
+      "source": "src/recon_slot_lists.cpp",
+      "identifiers": [
+        "recon_publish_category_for_class"
+      ],
+      "evidence": "src/recon_slot_lists.cpp:202 executable body; Source:205-224 identifies each native constant getter on the corresponding class-id switch arm; this executable dispatcher returns exactly that original category. It does not merely retrieve a metadata row. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006eb1d0",
+      "source": "src/recon_slot_lists.cpp",
+      "identifiers": [
+        "recon_publish_category_for_class"
+      ],
+      "evidence": "src/recon_slot_lists.cpp:202 executable body; Source:205-224 identifies each native constant getter on the corresponding class-id switch arm; this executable dispatcher returns exactly that original category. It does not merely retrieve a metadata row. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006f5830",
+      "source": "src/recon_slot_lists.cpp",
+      "identifiers": [
+        "recon_publish_category_for_class"
+      ],
+      "evidence": "src/recon_slot_lists.cpp:202 executable body; Source:205-224 identifies each native constant getter on the corresponding class-id switch arm; this executable dispatcher returns exactly that original category. It does not merely retrieve a metadata row. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006fb370",
+      "source": "src/recon_slot_lists.cpp",
+      "identifiers": [
+        "recon_publish_category_for_class"
+      ],
+      "evidence": "src/recon_slot_lists.cpp:202 executable body; Source:205-224 identifies each native constant getter on the corresponding class-id switch arm; this executable dispatcher returns exactly that original category. It does not merely retrieve a metadata row. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006fe4d0",
+      "source": "src/recon_slot_lists.cpp",
+      "identifiers": [
+        "recon_publish_category_for_class"
+      ],
+      "evidence": "src/recon_slot_lists.cpp:202 executable body; Source:205-224 identifies each native constant getter on the corresponding class-id switch arm; this executable dispatcher returns exactly that original category. It does not merely retrieve a metadata row. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x0074e2b0",
+      "source": "src/recon_slot_lists.cpp",
+      "identifiers": [
+        "recon_publish_category_for_class"
+      ],
+      "evidence": "src/recon_slot_lists.cpp:202 executable body; Source:205-224 identifies each native constant getter on the corresponding class-id switch arm; this executable dispatcher returns exactly that original category. It does not merely retrieve a metadata row. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x0074e340",
+      "source": "src/recon_slot_lists.cpp",
+      "identifiers": [
+        "recon_publish_category_for_class"
+      ],
+      "evidence": "src/recon_slot_lists.cpp:202 executable body; Source:205-224 identifies each native constant getter on the corresponding class-id switch arm; this executable dispatcher returns exactly that original category. It does not merely retrieve a metadata row. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x007581f0",
+      "source": "src/recon_slot_lists.cpp",
+      "identifiers": [
+        "recon_publish_category_for_class"
+      ],
+      "evidence": "src/recon_slot_lists.cpp:202 executable body; Source:205-224 identifies each native constant getter on the corresponding class-id switch arm; this executable dispatcher returns exactly that original category. It does not merely retrieve a metadata row. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006d2780",
+      "source": "src/airfield_taxi.cpp",
+      "identifiers": [
+        "pick_hangar_path_006d2780_006d2640"
+      ],
+      "evidence": "src/airfield_taxi.cpp:21 executable body; Source:21-53 implements entry/exit hangar-path selection, with 006D2780-specific sentinel,max comparison and entry-path selection. Ledger minor-deviation qualification remains in force. New C++ semantic interface; no raw ABI equivalence or game validation is claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x007ed650",
+      "source": "src/air_operations.cpp",
+      "identifiers": [
+        "plane_reload_bomb_platforms_0089f080"
+      ],
+      "evidence": "src/air_operations.cpp:217 executable body; Source:219-225 explicitly states 007ED650 whole body is this loop: reload every plane and set dirty when requested. New C++ semantic interface; no raw ABI equivalence or game validation is claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x007ffec0",
+      "source": "src/race_config.cpp",
+      "identifiers": [
+        "insert_slots"
+      ],
+      "evidence": "src/race_config.cpp:58 executable body; Source:61 and continuation comments identify 007FFEC0 captured-fill pointer insertion; full body preserves capture, allocation/header rereads, shift/fill order and final stores. CRT allocation/move/length errors are bindings, not reconstructed library credit. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00605270",
+      "source": "src/ingame_gui_cc13.cpp",
+      "identifiers": [
+        "session_message_construct"
+      ],
+      "evidence": "src/ingame_gui_cc13.cpp:2341 executable body; include/bsp/frontend_seg16_24_28_cc13.hpp:1265-1275 kSessionMessageC4 explicitly supplies constructor,predicate,write,read,scalar-delete addresses and complete C4 header/field shape; selected function executes that operation. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006052b0",
+      "source": "src/ingame_gui_cc13.cpp",
+      "identifiers": [
+        "session_message_is_type"
+      ],
+      "evidence": "src/ingame_gui_cc13.cpp:2331 executable body; include/bsp/frontend_seg16_24_28_cc13.hpp:1265-1275 kSessionMessageC4 explicitly supplies constructor,predicate,write,read,scalar-delete addresses and complete C4 header/field shape; selected function executes that operation. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x006052e0",
+      "source": "src/ingame_gui_cc13.cpp",
+      "identifiers": [
+        "session_message_write"
+      ],
+      "evidence": "src/ingame_gui_cc13.cpp:2372 executable body; include/bsp/frontend_seg16_24_28_cc13.hpp:1265-1275 kSessionMessageC4 explicitly supplies constructor,predicate,write,read,scalar-delete addresses and complete C4 header/field shape; selected function executes that operation. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x00605320",
+      "source": "src/ingame_gui_cc13.cpp",
+      "identifiers": [
+        "session_message_scalar_delete"
+      ],
+      "evidence": "src/ingame_gui_cc13.cpp:2422 executable body; include/bsp/frontend_seg16_24_28_cc13.hpp:1265-1275 kSessionMessageC4 explicitly supplies constructor,predicate,write,read,scalar-delete addresses and complete C4 header/field shape; selected function executes that operation. New C++ semantic interface; no raw ABI equivalence or game validation is claimed."
+    },
+    {
+      "address": "0x0046a0c0",
+      "source": "src/engine_seg4_6_9_cc13.cpp",
+      "identifiers": [
+        "native_string_pointer_delete_004cc8e0"
+      ],
+      "evidence": "src/engine_seg4_6_9_cc13.cpp:1110 executable body; include/bsp/engine_seg4_6_9_cc13.hpp:997-1000 states004CC8E0 and0046A0C0 have identical bodies differing only in node-pool global. Implementation tests slot, returns sized string storage and node to selected pool, then clears slot. New C++ interface; raw ABI equivalence and game validation are not claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x006fd400",
+      "source": "src/projectile_kinds.cpp",
+      "identifiers": [
+        "load_depth_charge_class_fields"
+      ],
+      "evidence": "src/projectile_kinds.cpp:248 executable body; Source:248-257 reads the full depth-charge class extension after bomb parent, with006FD422 parent-call evidence and WaterSplashEfx; descriptor records006FD400 as this reader. Original key defaults remain explicit. New C++ interface; raw ABI equivalence and game validation are not claimed."
+    },
+    {
+      "address": "0x006fdd70",
+      "source": "src/gun_mount_positions.cpp",
+      "identifiers": [
+        "gun_muzzle_count_0072ab80"
+      ],
+      "evidence": "src/gun_mount_positions.cpp:29 executable body; Source:25-32 explicitly identifies identical006FDD70/0072AB80 bodies and original empty-list/native quotient behavior. This executable body returns1 for empty and supplied decoded count otherwise. New C++ interface; raw ABI equivalence and game validation are not claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x0074e9c0",
+      "source": "src/unit_fire_flooding.cpp",
+      "identifiers": [
+        "leak_zone_sums_0074e8f0"
+      ],
+      "evidence": "src/unit_fire_flooding.cpp:133 executable body; include/bsp/unit_fire_flooding.hpp:215-217 explicitly pairs water/leak array variants0074E8F0 and0074E9C0. Body zeroes six bins and accumulates with native6/count index step; host invalid-input guards are retained. New C++ interface; raw ABI equivalence and game validation are not claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x00749000",
+      "source": "src/cc13_mistag.cpp",
+      "identifiers": [
+        "trivial_getter_result"
+      ],
+      "evidence": "src/cc13_mistag.cpp:310 executable body; Source:299/307 address-keyed kTrivialGetters row stores the exact original MOV EAX literal result, and this dispatcher returns that native value. Unlike a row accessor, its return value implements the whole constant-getter operation. New C++ interface; raw ABI equivalence and game validation are not claimed."
+    },
+    {
+      "address": "0x007ab9f0",
+      "source": "src/cc13_mistag.cpp",
+      "identifiers": [
+        "trivial_getter_result"
+      ],
+      "evidence": "src/cc13_mistag.cpp:310 executable body; Source:299/307 address-keyed kTrivialGetters row stores the exact original MOV EAX literal result, and this dispatcher returns that native value. Unlike a row accessor, its return value implements the whole constant-getter operation. New C++ interface; raw ABI equivalence and game validation are not claimed."
+    },
+    {
+      "address": "0x00509830",
+      "source": "src/frontend_seg12_17_cc13.cpp",
+      "identifiers": [
+        "string_tail_copy"
+      ],
+      "evidence": "src/frontend_seg12_17_cc13.cpp:443 executable body; include/bsp/frontend_seg12_17_cc13.hpp:379-382 kStringTailCopy row assigns this address and tail-copy callee. Body constructs/copies the leading string then invokes the selected tail-copy contract, returning destination. New C++ interface; raw ABI equivalence and game validation are not claimed."
+    },
+    {
+      "address": "0x0050a380",
+      "source": "src/frontend_seg12_17_cc13.cpp",
+      "identifiers": [
+        "string_tail_copy"
+      ],
+      "evidence": "src/frontend_seg12_17_cc13.cpp:443 executable body; include/bsp/frontend_seg12_17_cc13.hpp:379-382 kStringTailCopy row assigns this address and tail-copy callee. Body constructs/copies the leading string then invokes the selected tail-copy contract, returning destination. New C++ interface; raw ABI equivalence and game validation are not claimed."
+    },
+    {
+      "address": "0x005625a0",
+      "source": "src/frontend_seg12_17_cc13.cpp",
+      "identifiers": [
+        "leaderboard_row_copy_00562490"
+      ],
+      "evidence": "src/frontend_seg12_17_cc13.cpp:1830 executable body; include/bsp/frontend_seg12_17_cc13.hpp:1102 explicitly pairs00562490 construct and005625A0 assign variants; shared body with construct=false copies word0, three strings and36-byte tail, then returns destination. New C++ interface; raw ABI equivalence and game validation are not claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x004f8f20",
+      "source": "src/main_menu_runtime_listeners.cpp",
+      "identifiers": [
+        "call_current0c"
+      ],
+      "evidence": "src/main_menu_runtime_listeners.cpp:180 executable body; Source:180-186 overload signature (bool,bool,GuiWidgetOwner&) explicitly identifies CEFC48+C ->004F8F20 as RET0C with no native effects. The host overload performs lifetime/owner validation then no native effects. The same simple identifier has a widget overload; use evidence is limited to the owning source and cannot disambiguate overload calls. New C++ interface; raw ABI equivalence and game validation are not claimed."
+    },
+    {
+      "address": "0x006b7e50",
+      "source": "src/settings_seg29_cc13.cpp",
+      "identifiers": [
+        "~LuaMachine"
+      ],
+      "evidence": "src/settings_seg29_cc13.cpp:102 executable body; include/bsp/settings_seg29_cc13.hpp:39 identifies non-deleting006B7E50; destructor closes state only when owned. Implicit destructor reachability remains conservative. New C++ interface; raw ABI equivalence and game validation are not claimed."
     }
   ]
 }
