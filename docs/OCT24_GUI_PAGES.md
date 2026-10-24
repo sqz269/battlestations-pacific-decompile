@@ -196,8 +196,8 @@ operations, Grid and Curve storage, Model9 default allocation/placement copy,
 actual AAA710 child enumeration, AC4C50 Page property composition and optional
 full canonical Text/Icon child retirement. See the individual OCT24_GUI_* docs
 and OCT24_GUI_RENDER.md for exact domains and build/runtime evidence. These
-helpers add no retained factory admissions and do not change the existing
-logical factory's supported18-class contract.
+helpers add no retained factory admissions and do not expand the existing
+logical factory's admitted type set.
 
 Step4 remains incomplete. Full raw Text content/source/properties and recursive
 glyph delivery, raw Icon property/GPU adoption, other derived providers and
