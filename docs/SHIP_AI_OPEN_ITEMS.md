@@ -20809,3 +20809,10 @@ LOMP10, PRCP01, USN01, USN02, USN12, USN15, USN21, USNOS) plus BSM06 stock. Ever
 (pair_diff 1) with the same end. relation_cleared=0 OFF and ON in every run, so in these rows no bot gun holds a
 same-party target. The BSM06 airfield-squadron case from cc13-bsm6strip does not occur in BSM06 stock at 40000
 frames. Logs: local\pt1_{off,on}_na_<row>.log.
+
+**kPlaneOwnBaseHitFilterBound flipped ON** (cc9-party1, 2026-10-24). The ON build is ff591695a with this switch
+flipped; the OFF baseline is the not-ally OFF logs from the same commit. Rows: USN01, PRCP01, USN21, IJN18, BSM09,
+BSM01, ESMP08, USN12, LOMP10, JM06, USNOS, JM08, BSM04, BSM03 and BSM06 (WINS plans), plus BSM06 stock. Every pair
+is gameplay identical (pair_diff 1) with the same end. The census reads shot_drops=0 and crash_drops=0 in every
+run, OFF and ON alike, so in these rows no slow deck plane's round ever hits its own base. The countdowns
+(shot_countdowns up to 18 in PRCP01; crash_countdowns) are equal OFF and ON. Logs: local\pt1_ob_na_<row>.log.

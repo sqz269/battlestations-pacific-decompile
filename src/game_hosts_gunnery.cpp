@@ -1016,7 +1016,10 @@ constexpr bool kAaLineOfFireBound = true;
 //    flight (GameUnitsHost::plane_own_base_hit_filter_0084c213). It drops hits on
 //    the base unit only, never on another plane. OFF: every hit is taken (the
 //    filter still runs for the census; +C18h has no other reader).
-constexpr bool kPlaneOwnBaseHitFilterBound = false;
+//    ON by the pair of 2026-10-24 (cc9-party1, SHIP_AI_OPEN_ITEMS 323): 15 WINS
+//    rows with launches plus BSM06 stock are gameplay identical, shot_drops=0
+//    and crash_drops=0 OFF and ON.
+constexpr bool kPlaneOwnBaseHitFilterBound = true;
 //  * kKamikazeSameSquadronShotDropCc13Bound: packet cc13-kamisq. 0084BF00's
 //    squadron test (0084C1D8-0084C211) on the projectile sweep: with a shooter
 //    squadron ([owner+9D4h], stored to [esp+44h] at 0084BF6D), a hit on a plane
