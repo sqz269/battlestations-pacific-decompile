@@ -4,6 +4,7 @@
 #include "bsp/band_0076_cc13.hpp"
 
 #include <cmath>
+#include <cstring>
 
 #include "bsp/unit_rudder.hpp"
 
@@ -69,15 +70,49 @@ void peer_rows_disable_probes_00785fc0(PeerRows& rows) noexcept {
 // 0078618C..00786226: the product and the sum are each stored to float;
 // the loop entry test is FCOMPI/JB (unordered skips) and the repeat test is
 // COMISS/JAE (unordered exits); the step is FSUB QWORD [00CF5870].
-int conn_test_probe_step_00786150(float& accum, float quality, float dt) noexcept {
-    const float product = quality * dt;
+namespace {
+template <class Send>
+int conn_test_probe_stream(float& accum, float product, Send&& send) {
     accum = accum + product;
     int sent = 0;
     if (!(accum >= kConnTestProbeThreshold)) return 0;
     do {
         accum = static_cast<float>(static_cast<double>(accum) - kConnTestProbeStep);
+        send();
         ++sent;
     } while (accum >= kConnTestProbeThreshold);
+    return sent;
+}
+
+void put_u32(ConnTestMessage& message, std::size_t offset, std::uint32_t value) noexcept {
+    std::memcpy(message.bytes + offset, &value, sizeof(value));
+}
+} // namespace
+
+int conn_test_probe_step_00786150(float& accum, float quality, float dt) noexcept {
+    const float product = quality * dt;
+    return conn_test_probe_stream(accum, product, [] {});
+}
+
+int conn_test_send_probes_00786150(PeerRow& row, float dt, ConnTestProbeHost& host) {
+    // 0078616B..00786186: probing byte, peer, peer record.
+    if (row.probing == 0 || row.peer == 0 || !host.peer_has_record(row.peer)) return 0;
+    const float product = row.quality * dt; // 0078618C..007861AB, stored as float
+    auto sender = [&](std::uint32_t flag, std::uint16_t size) {
+        return [&row, &host, flag, size] {
+            ConnTestMessage message;
+            host.session_message_construct_base_0075b430(message, kConnTestMessageType);
+            put_u32(message, 0x00, kConnTestMessageVtable);
+            put_u32(message, 0x04, flag);
+            std::memcpy(message.bytes + 0x18, &size, sizeof(size));
+            host.session_send_00783dc0(row.peer, message); // peer re-read per send
+        };
+    };
+    // 007861AF..00786226: +14h, flag 1, 4Bh. 00786228..007862A7: +18h, flag 0, 8Ch.
+    int sent = conn_test_probe_stream(row.probe_accum_large, product,
+                                      sender(1, kConnTestLargeSize));
+    sent += conn_test_probe_stream(row.probe_accum_small, product,
+                                   sender(0, kConnTestSmallSize));
     return sent;
 }
 

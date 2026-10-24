@@ -321,6 +321,24 @@ struct UnitDamageHost {
     virtual std::uint32_t hierarchy_parent(std::uint32_t entity) = 0;
     virtual bool destroy_child_predicate(std::uint32_t child, std::uint32_t parent) = 0; // 00926D0E vtable[78h]
 
+    // 00958A30's subobject branch (+71Ch set). The descriptor reads take the
+    // owner's descriptor ([[entity+71Ch]+538h]) except +174h, which is the
+    // entity's own ([entity+538h], 00958B95).
+    virtual bool entity_failure_latched(std::uint32_t entity) = 0;          // byte +720h
+    virtual std::uint32_t entity_word_358(std::uint32_t entity) = 0;        // +358h, 00958BE7
+    virtual void write_subobject_lockout(std::uint32_t entity, float value) = 0; // +728h
+    virtual int last_damage_state_index_0072ab10(std::uint32_t entity) = 0;
+    virtual void dispatch_damage_state(std::uint32_t entity, int index) = 0;      // vtable[1B4h]
+    virtual bool dispatch_class_flag(std::uint32_t entity, int kind) = 0;         // vtable[204h]
+    // vtable[194h] / vtable[19Ch](NativeString*, 0): the temporary string is
+    // built by 0041E870 from the literal and released through
+    // 00419CC0/00BD1510 after the call (EH states 0 and 1).
+    virtual void dispatch_named_state_194(std::uint32_t entity, const char* name, int arg) = 0;
+    virtual void dispatch_named_state_19c(std::uint32_t entity, const char* name, int arg) = 0;
+    virtual float descriptor_float(std::uint32_t descriptor, std::uint32_t offset) = 0; // +18Ch/+190h/+194h
+    virtual bool descriptor_byte_174(std::uint32_t descriptor) = 0;
+    virtual void dispatch_owner_float_1ac(std::uint32_t owner, float value) = 0;  // owner vtable[1ACh]
+
     // Deferred queues. 00926C80 pushes onto the list at 00F899A8 and 00926D90
     // onto the one at 00F899B4; 009273A0 drains both.
     virtual void queue_pending_destroy(std::uint32_t entity) = 0; // 00926D4E
