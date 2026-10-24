@@ -6,6 +6,7 @@
 
 #include "bsp/game_hosts_script_orders.hpp"
 namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_hosts_mission.cpp
+#include "bsp/game_hosts_lua.hpp"  // kReconLoadForceRefreshCc13Bound (cc13-reconload)
 #include "bsp/strafe_task.hpp"
 #include "bsp/depth_charge_task_cc13.hpp"
 #include "bsp/game_hosts_commands.hpp"
@@ -5346,9 +5347,9 @@ void GameScriptOrdersHost::entity_call_named_009290a0(void* entity,
     if (luainit) --luainit_depth_;
 }
 
-void GameScriptOrdersHost::note_recon_load_entries(std::size_t entries, bool bound) noexcept {
+void GameScriptOrdersHost::note_recon_load_entries(std::size_t entries) noexcept {
     recon_load_entries_ = entries;
-    recon_load_bound_ = bound;
+    recon_load_seen_ = true;
 }
 
 bool GameScriptOrdersHost::push_self_table_slot_008989f6(void* entity) {
@@ -6946,9 +6947,12 @@ void GameScriptOrdersHost::report() {
     // recon publication (00807A50), which precedes luaStageInit, so it is what
     // luaInit sees ON and what it would see OFF (the dry run); S counts SetParty
     // (008A8930) calls while a script entity runs `luaInit` (009290A0).
+    // bound= is the switch itself; load_seen=0 means the scene-load block did
+    // not run (hud, world_host or script_orders null), so K=0 there is no count.
     log_.notef("summary recon load refresh: bound=%d luainit_recon_entries=%zu "
-        "luainit_setparty_calls=%zu", recon_load_bound_ ? 1 : 0,
-        recon_load_entries_, luainit_setparty_calls_);
+        "luainit_setparty_calls=%zu load_seen=%d",
+        kReconLoadForceRefreshCc13Bound ? 1 : 0, recon_load_entries_,
+        luainit_setparty_calls_, recon_load_seen_ ? 1 : 0);
     if (blackout_summary_.arms != 0 || blackout_summary_.updates != 0) {
         log_.notef("summary mission blackout (packet cc_mission_blackout, 008D1340 / "
             "005B9BA0 / 005B9800): arms=%zu updates=%zu completions=%zu callbacks=%zu "
