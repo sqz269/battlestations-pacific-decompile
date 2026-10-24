@@ -477,6 +477,35 @@ ShipAiFollowLandXZ ship_ai_land_pad_approach_point_006ac5d0(const ShipAiLandPadL
                                                             const ShipAiFollowLandXZ& from,
                                                             float half_width);
 
+// cc13-padfix. OFF keeps the host model of 006AC5D0 as it was. ON makes it follow the
+// listing (006AC5D0-006ACB35) in four places:
+//   * refresh_pad_line_006ac5d0 calls PadLineZoneQueries::refresh_pad_pose_00414db0 where the
+//     image calls 00414DB0 when byte [pad+0C8h] is 0: once after the key store (006AC620) and
+//     once after a nonzero group (006AC68B);
+//   * the corridor test leaves only on ordered greater-thans (006AC99D JBE, 006AC9E4 JA,
+//     006AC9F8 JA), so an unordered compare keeps the carrot where OFF takes the hold-off;
+//   * the hold-off distance takes the image's NaN order: [+218h] > half_width ? half_width :
+//     [+218h] (FCOMIP / JBE at 006AC9B3 and 006ACAC4), so an unordered clearance is kept;
+//   * ship_ai_land_pad_approach_point_xyz_006ac5d0 also yields out+4 = [+210h] + 0.0 inside the
+//     corridor and [+210h] - 0.0 outside it (double 00D7A258 at 006ACA98 / 006ACB01).
+// cc9 orders and pairs the flip.
+inline constexpr bool kPadApproachPointImageCc13Bound = false;
+
+// The three floats 006AC5D0 writes to *out (006ACB21, 006ACB28, 006ACB2F).
+struct ShipAiLandPadPoint {
+    float x{0.0f};
+    float y{0.0f};
+    float z{0.0f};
+};
+
+// The per-call arm with the out+4 store: the XZ arm above plus y = line.origin_y_210 +/- 0.0,
+// for a caller that wants the image's y (mode 3, 009F2214..009F2228, stores all three floats;
+// the land step 009E1B0F reads only out+0 and out+8). Not called by a live path yet.
+ShipAiLandPadPoint ship_ai_land_pad_approach_point_xyz_006ac5d0(const ShipAiLandPadLine& line,
+                                                               const ShipAiFollowLandXZ& facing,
+                                                               const ShipAiFollowLandXZ& from,
+                                                               float half_width);
+
 // 009E1E0E..009E1E31: the final arm clamps the ramp result into [-1, +1] with
 // two ordered compares before writing blk+1D0h. The unclamped value still
 // reaches brain+0AF0h at 009E1E48, so the two differ whenever the ramp leaves

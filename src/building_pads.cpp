@@ -183,6 +183,9 @@ bool refresh_pad_line_006ac5d0(BuildingPadModel::Pad& pad, int layer,
     const float fx = pad.facing_x;                             // 006AC260
     const float fz = pad.facing_z;
     line.zone_group_208 = layer;
+    if constexpr (kPadApproachPointImageCc13Bound) {
+        zones.refresh_pad_pose_00414db0(pad);                  // 006AC620
+    }
     line.origin_x_20c = pad.position[0];
     line.origin_y_210 = pad.position[1];
     line.origin_z_214 = pad.position[2];
@@ -190,6 +193,9 @@ bool refresh_pad_line_006ac5d0(BuildingPadModel::Pad& pad, int layer,
     line.ahead_run_21c = 800.0f;                               // 00CE3950
     const std::uint32_t group = zones.group_for_layer_004120d0(layer);
     if (group == 0u) return true;
+    if constexpr (kPadApproachPointImageCc13Bound) {
+        zones.refresh_pad_pose_00414db0(pad);                  // 006AC68B
+    }
     float p[2] = {pad.position[0], pad.position[2]};
     float hit[2] = {0.0f, 0.0f};
     bool struck = false;

@@ -179,6 +179,16 @@ struct PadLineZoneQueries {
     // 00416DD0(zone)(toward, start, out, &edge) -> AL.
     virtual bool zone_segment_hit_00416dd0(std::uint32_t zone, const float toward[2],
                                            const float start[2], float out[2]) = 0;
+    // The image's 4th 00416DD0 argument is a dword out (00416EBB stores an index through it)
+    // aimed at 006AC5D0's [B+10h] temporary; 006AC7CA/006AC7FD overwrite that slot before any
+    // read, so the value is dead and the interface omits it (intended, not switched).
+
+    // cc13-padfix, called only under kPadApproachPointImageCc13Bound: the image's
+    // `if (byte [pad+0C8h] == 0) 00414DB0(pad)` (006AC60F/006AC620 and 006AC682/006AC68B), which
+    // refreshes the world pose before the cache reads +0FCh..+104h. The host's Pad::position is
+    // the authored world translation and has no stale state, so the default does nothing; a host
+    // that models the pose can override it and update pad.position.
+    virtual void refresh_pad_pose_00414db0(BuildingPadModel::Pad& pad) { (void)pad; }
 };
 
 // 006AC5D0's first arm, 006AC5F2..006AC927: on a new layer key the pad's
