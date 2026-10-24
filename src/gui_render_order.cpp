@@ -90,10 +90,10 @@ GuiCameraPlacement gui_camera_placement_00aa3e00(
             : 0.0);
     placement.eye[0] = static_cast<float>(half_x);
     placement.eye[1] = static_cast<float>(half_y);
-    placement.eye[2] = 0.0F;  // 00AA3E79 stores +0.0f
+    placement.eye[2] = kGuiCameraEyeZ; // 00AA3E87 stores eye+8, not target+8.
     placement.target[0] = placement.eye[0];
     placement.target[1] = placement.eye[1];
-    placement.target[2] = kGuiCameraTargetZ;
+    placement.target[2] = 0.0F; // 00AA3E79 stores target+8.
     placement.up[0] = 0.0F;
     placement.up[1] = 1.0F;
     placement.up[2] = 0.0F;
