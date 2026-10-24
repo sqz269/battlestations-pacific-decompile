@@ -117,6 +117,25 @@ inline constexpr bool kGeneratedEntityPartyBound = true;  // ON: identity pairs 
 // squadron; while false they carry none.
 inline constexpr bool kGeneratedWingPartyBound = true;  // ON: identity pairs (section 23.6)
 
+// Packet cc13-lsqparty, committed OFF. An air-ops launch (LaunchSquadron
+// 0089E3C0 -> 006CC690, or the launch tick) builds its squadron through
+// 006C5050, which fills a scene bag whose `Party` is the owner's +54h
+// (docs/AIROPS_LAUNCH_START.md section 3) and hands it to 004F0AD0, the
+// PlaneSquadronGen scene creator. Pass A's attach 00928A00 reads the bag
+// through 00927050 (00928A1E) into +54h, and the Lua table gets it through
+// the 00928F50 mirror (00929046 `Party`). PROVISIONAL, as for
+// kGeneratedEntityPartyBound (section 23.1): the moment of the image's mirror
+// call on this route is unread; it must precede any script read, since the
+// launch's InitAll (0089E613) completes inside the native. The bag has no
+// `Race` key, so no Race is written (labelled). While true, the launched
+// squadron's pending node takes the air-ops record's party and pass A writes
+// thisTable[key].Party; while false the slot has none, and
+// commandhelpers.lua:330 indexes recon[nil] once the squadron is selected
+// (CHG06, cc13-chgrecon).
+inline constexpr bool kLaunchedSquadronPartyCc13Bound = false;
+static_assert(!kLaunchedSquadronPartyCc13Bound || kGeneratedEntityPartyBound,
+              "kLaunchedSquadronPartyCc13Bound uses the generated-entity party write");
+
 inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 8)
 
 // Packet cc9_get_property_class_readers (docs/MISSION_LUA_GETPROPERTY.md 9.6).
@@ -1305,6 +1324,7 @@ struct GameMissionLuaSummary {
     // Packet cc9_generated_entity_party.
     unsigned long long generated_party_nodes{0};
     unsigned long long generated_party_writes{0};
+    unsigned long long launched_party_nodes{0};   // packet cc13-lsqparty
     // 0094C480 / 00949750 / 0094C490. docs/LUA_SPAWN_NEW_HOST.md.
     unsigned long long spawn_new_calls{0};       // tables the binding accepted
     unsigned long long spawn_new_rejected{0};    // argument 1 was not a table
@@ -2316,6 +2336,9 @@ private:
         // Packet cc9_generated_entity_party: a GenerateObject'd node that
         // carries its record's party and race.
         bool generated_party{false};
+        // Packet cc13-lsqparty: an air-ops launched squadron that carries its
+        // record's party (006C5050's bag `Party`).
+        bool launched_party{false};
         std::size_t units_before{0};
         // The unit count right after this squadron's creator returned: its wing
         // is [units_before, units_end). A later creation before InitAll (the
