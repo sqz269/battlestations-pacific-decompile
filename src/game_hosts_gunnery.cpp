@@ -1017,6 +1017,16 @@ constexpr bool kAaLineOfFireBound = true;
 //    the base unit only, never on another plane. OFF: every hit is taken (the
 //    filter still runs for the census; +C18h has no other reader).
 constexpr bool kPlaneOwnBaseHitFilterBound = false;
+//  * kKamikazeSameSquadronShotDropCc13Bound: packet cc13-kamisq. 0084BF00's
+//    squadron test (0084C1D8-0084C211) on the projectile sweep: with a shooter
+//    squadron ([owner+9D4h], stored to [esp+44h] at 0084BF6D), a hit on a plane
+//    (vt[5Ch](0Fh), 0084C1EE) whose +9D4h is that squadron, by a bullet class
+//    whose +8 is 11h ("Kamikaze", 0084C1FF), clears the hit flag (0084C211), so
+//    the round flies on. The image runs it before the own-base block (0084C213),
+//    which then sees no hit. The plane crash sweep has always applied it
+//    (pc_same_squadron). OFF: every hit is taken (the test still runs for the
+//    census, kamikaze_squadron_drops).
+constexpr bool kKamikazeSameSquadronShotDropCc13Bound = false;
 //  * kAaLineOfFireExpiryDrawBound: packet cc9_g35_friendly_fire. On a cache miss
 //    0072F6E0 draws U([00CE74F8] = 0.8, [00CE3814] = 1.2) from 00BD2F10 on stream
 //    ECX=1 (0072F76D) and stores it, times [GlobalConfig+8Ch], as the record's
@@ -3992,6 +4002,23 @@ struct GameGunneryHost::Impl {
         }
         return nullptr;
     }
+    // 0084C1D8-0084C211 (0084BF00 step 6), shared by the projectile sweep and the
+    // plane crash sweep: true when a Kamikaze-type (+8 == 11h) round fired by a
+    // squadron plane hits a plane of the same squadron (+9D4h). A unit outside
+    // every squadron has no +9D4h here, so a null shooter squadron skips the test
+    // (0084C1E4) and a non-member victim never matches; membership stands in for
+    // the image's plane test (vt[5Ch](0Fh), 0084C1EE). PROVISIONAL: "Kamikaze"
+    // is the class type string the host maps from type 11h.
+    static bool kamikaze_same_squadron_0084c1ee(const GameBulletClassRow* weapon,
+        std::size_t shooter, std::size_t victim) {
+        bool same = false;
+        if (weapon != nullptr && weapon->type == "Kamikaze") {
+            const auto* own = bsp::plane_squadron_registry().find_by_member_unit(shooter);
+            same = own != nullptr
+                && own == bsp::plane_squadron_registry().find_by_member_unit(victim);
+        }
+        return same;
+    }
 
     // --- authored data, through the live interpreter ------------------------
     void flatten_class_tables(const std::vector<int>& class_ids);
@@ -4312,6 +4339,7 @@ struct GameGunneryHost::Impl {
     std::vector<GameBulletClassRow> crash_bullets;   // read on first use, by id
     unsigned long long pc_plane_steps{0}, pc_segments{0}, pc_unit_hits{0};
     unsigned long long pc_same_squadron{0}, pc_land_hits{0}, pc_submerged{0};
+    unsigned long long kamikaze_squadron_drops{0};   // projectile sweep, packet cc13-kamisq
     unsigned long long pc_surface_cuts{0}, pc_impacts{0}, pc_blast_records{0};
     unsigned long long pc_hits_21{0}, pc_hits_98{0}, pc_hits_99{0}, pc_hits_other{0};
     unsigned long long pc_logged{0}, pc_cooldown_steps{0};
@@ -11099,6 +11127,17 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
         bsp::hit_record_reset_00470470(record);
         bool hit = bsp::query_segment_0098add0(query, args, record);
         done("Projectile::sweep_entities_0098add0", 0x0098add0u);
+        if (hit && query.hit_unit != 0 && query.hit_landscape == 0 && shot.owner_unit != 0
+            && kamikaze_same_squadron_0084c1ee(bullet(shot.bullet_class),
+                shot.owner_unit - 1, query.hit_unit - 1)) {
+            // 0084C1D8-0084C211, kKamikazeSameSquadronShotDropCc13Bound. The
+            // image clears the hit flag (0084C211) before the own-base block
+            // below (0084C213), so that block sees no hit.
+            ++kamikaze_squadron_drops;
+            if constexpr (kKamikazeSameSquadronShotDropCc13Bound) {
+                hit = false;
+            }
+        }
         {
             // 0084C213-0084C278, kPlaneOwnBaseHitFilterBound. A dropped hit
             // skips 0084BC60 (0084C2BB), so the round flies on.
@@ -13034,13 +13073,9 @@ void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
             const std::size_t victim = hit_unit - 1;
             const GameBulletClassRow* weapon = plane_crash_bullet(st.kamikaze_bullet_class);
             // 0084BF00 step 6: a Kamikaze-type (11h) shot skips its squadron.
-            if (weapon != nullptr && weapon->type == "Kamikaze") {
-                const auto* own =
-                    bsp::plane_squadron_registry().find_by_member_unit(i);
-                if (own != nullptr && own == bsp::plane_squadron_registry().find_by_member_unit(victim)) {
-                    ++pc_same_squadron;
-                    continue;
-                }
+            if (kamikaze_same_squadron_0084c1ee(weapon, i, victim)) {
+                ++pc_same_squadron;
+                continue;
             }
             ++pc_unit_hits;
             switch (st.kamikaze_bullet_class) {
@@ -18427,9 +18462,9 @@ void GameGunneryHost::report() {
         s.fire_messages, s.fire_if_ready, s.can_fire_refusals, s.shots,
         static_cast<double>(s.first_shot_seconds));
     host.log.notef("summary mission gunnery projectiles created=%llu steps=%llu sweeps=%llu "
-        "entity_impacts=%llu water=%llu expired=%llu in_flight=%zu",
+        "entity_impacts=%llu water=%llu expired=%llu in_flight=%zu kamikaze_squadron_drops=%llu",
         s.projectiles, s.projectile_steps, s.sweeps, s.impacts_entity, s.water_crossings,
-        s.expired, host.shots.size());
+        s.expired, host.shots.size(), host.kamikaze_squadron_drops);
     host.log.notef("summary mission gunnery kamikaze contacts=%llu hostile_refused=%llu "
         "detonations=%llu direct_arms=%llu blast_records=%llu self_records=%llu "
         "blast_damage=%.1f min_gap=%.1f at %.2f s bound=%d (009377E0 / 008145B0 / 00819A20, "
