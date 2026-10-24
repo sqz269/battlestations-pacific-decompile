@@ -111,7 +111,9 @@ constexpr bool kLuaObjectFieldSettersCc13Bound = false;
 // 00CF8838 "Skill" (008F3710). OFF keeps the record default 1. A SetSkillLevel
 // value outside 0..5 on the shipyard is stored raw by the image, while the host's
 // existing 0..5 gate (game_hosts_units.cpp:20406, older than this switch) keeps 1.
-constexpr bool kShipyardLaunchSkillCc13Bound = false;
+// ON (cc9-recon1): reached only on JM08 (12 shipyard creates; jm08_l65_j8_p2 pair
+// gameplay identical); no WINS row creates from a shipyard.
+constexpr bool kShipyardLaunchSkillCc13Bound = true;
 
 // Packet cc13-atktgt: UnitGetAttackTarget 008A6DE0's arm by director kind. The
 // image asks director->vtable[48h](2) (008A6F0D). A squadron's director is the
