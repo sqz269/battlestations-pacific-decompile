@@ -1700,6 +1700,10 @@ const GameMissionSummary& GameMissionHost::summary() const noexcept {
 float GameMissionHost::simulated_seconds() const noexcept {
     return impl_->frame_host ? impl_->frame_host->frame_summary().simulated_seconds : 0.0f;
 }
+GameNativeMissionUnitSource GameMissionHost::native_render_unit_source() const noexcept {
+    return impl_->frame_host ? impl_->frame_host->native_render_unit_source()
+                             : GameNativeMissionUnitSource{};
+}
 
 void GameMissionHost::bind_mission_picture_services(const MissionPictureTextureServices& services) {
     if (impl_->tree_load_started || impl_->picture_services)
