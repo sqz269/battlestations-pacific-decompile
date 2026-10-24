@@ -343,7 +343,10 @@ void submarine_run_motion_tick_tail_00855420(SubmarineMotionTickHost& host,
 }
 
 // 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x), the same body
-// src/dive_bomb_task.cpp reconstructs.
+// src/dive_bomb_task.cpp reconstructs. Kept local, not bsp_core's
+// clamped_interpolate_00419010 (src/unit_rudder.cpp, inline x87 at the running
+// thread's precision), so that kSubmarineInterpolatePc24Cc13Bound can pin the
+// main thread's 24-bit per-op float rounding here.
 static float submarine_interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
                                                     float x) noexcept {
     if (x1 == x0) return y0;
@@ -363,7 +366,12 @@ static float submarine_interpolate_clamped_00419010(float x0, float y0, float x1
     const float hi = (y1 < y0) ? y0 : y1;
     const float lo = (y0 < y1) ? y0 : y1;
     if (v < lo) return lo;
-    return (v <= hi) ? v : hi;
+    if constexpr (kSubmarineInterpolatePc24Cc13Bound) {
+        // 004190A9 FCOMPI / JBE: unordered takes the jump, so a NaN v is returned.
+        return (v > hi) ? hi : v;
+    } else {
+        return (v <= hi) ? v : hi;
+    }
 }
 
 // 0042AC60 BSP_Math_StepTowards(state, target, maxStep).
