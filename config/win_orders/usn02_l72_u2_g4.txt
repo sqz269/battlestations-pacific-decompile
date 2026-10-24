@@ -1,0 +1,17 @@
+# cc9-lua72 USN02 g4: ec2 with the 530 helm leg turned west and a wider western escape (the frame-81 movie releases the frame-25 helm, e7871ab3e); legs: 530 takehelm Houston 1.0 -3000 -5000; 1340 takehelm Houston 1.0 -2500 -7500; 2600 takehelm Houston 1.0 EscapePoint stop 200
+20 select Houston
+25 takehelm Houston 1.0 -1000 -9000
+4395 select Exeter
+4400 moveto Exeter 1000 -5450
+4410 select Houston
+560 input 0x9D
+562 aim unit Haguro
+565 input 0x99 hold 3000
+3600 input 0x9D
+3602 aim unit Nachi
+3605 input 0x99 hold 3000
+1195 select Houston
+4415 takehelm Houston 1.0 EscapePoint stop 200
+530 takehelm Houston 1.0 -3000 -5000
+1340 takehelm Houston 1.0 -2500 -7500
+2600 takehelm Houston 1.0 EscapePoint stop 200
