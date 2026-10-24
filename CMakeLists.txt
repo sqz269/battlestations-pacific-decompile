@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.21)
 project(bsp_reconstruction VERSION 0.1.0 LANGUAGES C CXX)
+# Native GUI services are always compiled; their application route is selected
+# at runtime by BSP_NATIVE_GUI_TEXT (default OFF).
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE
+  src/game_native_gui_render_application.cpp
+  src/game_native_gui_node_application.cpp)
 if(NOT WIN32 OR NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
   message(FATAL_ERROR "Use MSVC targeting Win32 (scripts/build.ps1). The original is x86.")
 endif()

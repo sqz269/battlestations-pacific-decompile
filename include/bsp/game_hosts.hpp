@@ -390,6 +390,9 @@ public:
     // Existing executable frontend draw between native begin and end. Full native
     // frontend scene/resource/command composition remains separate work.
     void set_overlay(std::function<void(IDirect3DDevice9&)> overlay);
+    // Runs only inside the shared native mission frame's post-world scope,
+    // before the existing sprite overlay/capture. It cannot claim another frame.
+    void set_native_mission_overlay(std::function<void()> overlay);
     void release();
 
     bool created() const noexcept { return device_ != nullptr; }
@@ -405,6 +408,7 @@ private:
     GameNativeRendererApplication& renderer_;
     IDirect3DDevice9* device_{};
     std::function<void(IDirect3DDevice9&)> overlay_;
+    std::function<void()> native_mission_overlay_;
     std::function<void(IDirect3DDevice9&)> capture_;
     D3DPRESENT_PARAMETERS parameters_{};
     HRESULT creation_result_{E_FAIL};

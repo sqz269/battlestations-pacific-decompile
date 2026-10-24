@@ -13,7 +13,7 @@ are recorded below. Input remains outside this lane and blocks button dispatch.
 
 | Step | Runtime selection | Current evidence |
 | --- | --- | --- |
-| 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Win32 Release + existing 2/2 checks passed; shared frame hooks/ON pending |
+| 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Startup/shared-frame wiring built; existing 2/2 checks passed; ON pending |
 | 2. Initial GUI texture resources | `BSP_NATIVE_GUI_RESOURCES=1` | Worker built; integration/runtime pending |
 | 3. Per-widget Model and page cGroup ownership | `BSP_NATIVE_GUI_NODES=1` planned | Canonical Model composition built; cGroup worker built, integration/ON pending |
 | 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` proposed | Exact 18-class audit in `OCT24_GUI_PAGES.md`; actual Screen manager/page ownership and ten factory arms remain blockers |
@@ -47,6 +47,19 @@ AA3E00's existing camera placement, AA2020 orthographic setup and native label
 existing mission frame. It creates no second queue, clock, BeginScene, EndScene,
 or Present. Font effects must be acquired within renderD's existing open shader
 cache bracket: `ShaderGraph::create()` is deliberately one-shot.
+Startup requires both `BSP_NATIVE_MISSION_SHIP=1` and
+`BSP_NATIVE_MISSION_FRAME=1` when Text is requested; an incomplete selection
+fails explicitly. The GUI adapter borrows the frame's actual queue/context and
+passes AA3E00's consumed label to its overlay API. It owns no frame graph.
+The native callback is separate from the existing sprite callback and runs only
+in the shared mission frame's post-world scope, before sprite drawing/capture.
+Ordinary front-end frames do not submit an unprepared native Text scene.
+
+The adapter accepts both published D3 submission and its newer entry-observation
+overload. The latter reports whether B1F4D0 entered. The older API has an
+explicit unknown ownership state on throw: it retains the failed GUI/frame and
+label until process exit without guessing a free. Normal return confirms label
+consumption. No exceptional continuation or native SEH equivalence is claimed.
 
 The Font arm reuses AD55C0 construction, AD4540 unsigned-WORD lookup, AD4AA0
 native tree insertion, and the established native tree/string cleanup. In image
@@ -98,9 +111,13 @@ rule is changed.
 
 The GUI OFF executable and its source/hash record are frozen under
 `local/gui_render/off/`. `step1_off_build.log` records Win32 Release and 2/2
-existing CTests passing. Runtime arms are compiled; Text activation still awaits
-renderD's shared prepare/overlay hooks. These build and OFF observations do not
-establish an ON draw, pixel correctness, complete raw widget ABI, or page bring-up.
+existing CTests passing. That OFF proof predates the final startup/frame wiring.
+`step1_wired_build_retry.log` records the wired Win32 Release build and 2/2
+existing checks passing; CMake permanently compiles both GUI application TUs.
+The first wired build caught use of a C++20 expression in this C++17 target;
+the adapter now uses ordinary overload substitution. Final wired OFF/ON runs
+remain pending. These build and earlier OFF observations do not establish an ON
+draw, pixel correctness, complete raw widget ABI, or page bring-up.
 
 Final screenshots belong under this tree's `local/gui_render/` and must be
 copied to the cc16-progress tree before this worktree is removed.

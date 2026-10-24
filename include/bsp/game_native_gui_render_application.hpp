@@ -12,6 +12,8 @@ class GameInputRuntime;
 class GameFontHost;
 class GameLocaleHost;
 
+enum class GameNativeGuiLabelTransition { not_entered, entered, unknown };
+
 // The mission's existing command owner supplies the queue and pass context.
 // B1F4D0 consumes the actual eight-byte label argument. This interface adds
 // no queue, BeginScene/EndScene/Present, command owner, or frame clock.
@@ -21,7 +23,7 @@ public:
     virtual void* queue_004c11f0() = 0;
     virtual void* pass_context_00b0d0d0() = 0;
     virtual void submit_scene_00b1f4d0(void* queue, void* scene, void* camera,
-        void* pass_context, void* actual_label) = 0;
+        void* pass_context, void* actual_label, GameNativeGuiLabelTransition&) = 0;
 };
 
 // One optional renderer-side GUI domain. No GUI manager, front-end frame,
@@ -31,7 +33,9 @@ public:
 // Retain this graph through caller retirement and the shared native drain.
 class GameNativeGuiRenderApplication final {
 public:
-    static bool text_requested() noexcept; // BSP_NATIVE_GUI_TEXT=1; default OFF.
+    // BSP_NATIVE_GUI_TEXT=1; default OFF. Startup also requires the shared
+    // BSP_NATIVE_MISSION_SHIP=1 and BSP_NATIVE_MISSION_FRAME=1 routes.
+    static bool text_requested() noexcept;
     GameNativeGuiRenderApplication(GameHostLog&, GameNativeRendererApplication&,
         GameVfsHost&, GameSingletonHost&, GameNativeReadOnlyData&, GameInputRuntime&,
         GameFontHost&, GameLocaleHost&, const bool& crt_sse2_conversion);

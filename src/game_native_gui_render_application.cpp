@@ -70,6 +70,48 @@ struct LiteralTextLocale final : LocaleTextRuntimeHost {
         return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(value)));
     }
 };
+// Every identity comes from the mission frame's existing command graph. The
+// renderer validates the active post-world scope and retires the world command
+// before accepting this one overlay; AA3E00 still supplies the consumed label.
+class MissionGuiQueue final : public GameNativeGuiQueue {
+public:
+    explicit MissionGuiQueue(GameNativeRendererApplication& renderer) : renderer_(renderer) {}
+    void* queue_004c11f0() override { return renderer_.mission_overlay_queue(); }
+    void* pass_context_00b0d0d0() override { return renderer_.mission_overlay_pass_context(); }
+    void submit_scene_00b1f4d0(void* queue, void* scene, void* camera,
+        void* context, void* label, GameNativeGuiLabelTransition& transition) override {
+        submit(renderer_, queue, scene, camera, context, label, transition, 0);
+    }
+private:
+    template<class Renderer> static auto submit(Renderer& renderer, void* queue,
+        void* scene, void* camera, void* context, void* label,
+        GameNativeGuiLabelTransition& transition, int) -> decltype(
+            renderer.submit_mission_overlay_scene(queue, scene, camera, context,
+                label, std::declval<bool&>()), void()) {
+        bool entered{};
+        transition = GameNativeGuiLabelTransition::not_entered;
+        try {
+            renderer.submit_mission_overlay_scene(queue, scene, camera, context, label, entered);
+        } catch (...) {
+            transition = entered ? GameNativeGuiLabelTransition::entered :
+                GameNativeGuiLabelTransition::not_entered;
+            throw;
+        }
+        transition = entered ? GameNativeGuiLabelTransition::entered :
+            GameNativeGuiLabelTransition::not_entered;
+    }
+    template<class Renderer> static void submit(Renderer& renderer, void* queue,
+        void* scene, void* camera, void* context, void* label,
+        GameNativeGuiLabelTransition& transition, long) {
+        // Published D3 did not expose its pre-native ownership transition.
+        // On an exception keep this genuinely unknown; the failed GUI/frame
+        // graph is retained until process exit, with no guessed label free.
+        transition = GameNativeGuiLabelTransition::unknown;
+        renderer.submit_mission_overlay_scene(queue, scene, camera, context, label);
+        transition = GameNativeGuiLabelTransition::entered;
+    }
+    GameNativeRendererApplication& renderer_;
+};
 } // namespace
 
 struct GameNativeGuiRenderApplication::Impl {
@@ -114,7 +156,8 @@ struct GameNativeGuiRenderApplication::Impl {
     NativeString scene_name;
     bool scene_name_live{}, root_linked{};
     NativeString label;
-    bool label_live{};
+    enum class LabelOwnership { empty, owned, unknown };
+    LabelOwnership label_ownership{LabelOwnership::empty};
     NativeRenderActualOwnerReleaseObservation scene_release;
     std::uint64_t frames{};
     Phase phase{Phase::prepared};
@@ -342,17 +385,32 @@ struct GameNativeGuiRenderApplication::Impl {
             set_native_viewport_dimensions_00b1f940(*static_cast<NativeViewportOwner*>(viewport), dimensions.data());
         }
         void set_pass_label_0041e870(std::string_view value) override {
-            require(!app.label_live && value == "X", "native GUI pass label cannot overlap");
-            app.label_live = true; app.label.assign_0041e870(app.raw.strings, "X");
+            require(app.label_ownership == LabelOwnership::empty && value == "X",
+                "native GUI pass label cannot overlap");
+            app.label_ownership = LabelOwnership::owned;
+            app.label.assign_0041e870(app.raw.strings, "X");
         }
         void* render_command_queue_004c11f0() override { return commands.queue_004c11f0(); }
         void* render_pass_context_00b0d0d0() override { return commands.pass_context_00b0d0d0(); }
         void submit_scene_00b1f4d0(void* queue, const void* scene, const void* camera, void* context) override {
-            require(app.label_live, "native GUI submission lost its actual label");
-            // The recovered queue entry consumes the header even on unwind.
-            app.label_live = false;
-            commands.submit_scene_00b1f4d0(queue, const_cast<void*>(scene),
-                const_cast<void*>(camera), context, &app.label);
+            require(app.label_ownership == LabelOwnership::owned,
+                "native GUI submission lost its actual label");
+            // Prefix validation can fail before the consuming native call.
+            // Once entered, B1F4D0 owns cleanup even when it throws.
+            auto transition = GameNativeGuiLabelTransition::not_entered;
+            try {
+                commands.submit_scene_00b1f4d0(queue, const_cast<void*>(scene),
+                    const_cast<void*>(camera), context, &app.label, transition);
+            } catch (...) {
+                if (transition == GameNativeGuiLabelTransition::entered)
+                    app.label_ownership = LabelOwnership::empty;
+                else if (transition == GameNativeGuiLabelTransition::unknown)
+                    app.label_ownership = LabelOwnership::unknown;
+                throw;
+            }
+            require(transition == GameNativeGuiLabelTransition::entered,
+                "native GUI queue did not enter its consuming submission");
+            app.label_ownership = LabelOwnership::empty;
         }
     };
 };
@@ -438,6 +496,11 @@ std::uint64_t GameNativeGuiRenderApplication::submitted_frames() const noexcept 
 
 void GameStartupHost::initialize_native_gui_render() {
     if (!GameNativeGuiRenderApplication::text_requested()) return;
+    char frame_flag[2]{};
+    require(GameNativeRendererApplication::mission_ship_requested() &&
+        GetEnvironmentVariableA("BSP_NATIVE_MISSION_FRAME", frame_flag, sizeof frame_flag) == 1 &&
+        frame_flag[0] == '1',
+        "BSP_NATIVE_GUI_TEXT=1 requires BSP_NATIVE_MISSION_SHIP=1 and BSP_NATIVE_MISSION_FRAME=1");
     require(!native_gui_render_ && native_renderer_ && vfs_ && singletons_ && native_data_ &&
         input_runtime_ && fonts_ && locale_, "native GUI Text requires the existing ready startup owners");
     native_gui_render_ = std::make_unique<GameNativeGuiRenderApplication>(log_, *native_renderer_,
@@ -445,6 +508,13 @@ void GameStartupHost::initialize_native_gui_render() {
 }
 void GameStartupHost::prepare_native_gui_text_resources() {
     if (native_gui_render_) native_gui_render_->prepare_text_in_open_shader_cache();
+}
+void GameStartupHost::draw_native_gui_text_mission_overlay() {
+    if (!native_gui_render_) return;
+    require(native_renderer_ && native_gui_render_->ready(),
+        "native GUI Text requires preparation in the shared mission frame before overlay submission");
+    MissionGuiQueue queue(*native_renderer_);
+    native_gui_render_->submit_mission_frame(queue);
 }
 void GameStartupHost::exit_if_native_gui_text_incomplete() noexcept {
     if (!native_gui_render_ || !native_gui_render_->requires_process_retention()) return;
