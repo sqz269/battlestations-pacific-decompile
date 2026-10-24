@@ -449,6 +449,11 @@ inline constexpr bool kSubmarinePeriscopeOutBound = true;  // ON: pairs held (do
 // -1.0, or the plane curves under the clamp) are written. False: no scan, no
 // clamp, no bounds write.
 inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06 spread miss recorded (docs/SUBMARINE_MODEL.md section 14)
+// Packet cc13-D5. The scan's speed is 00855498 CALL 0092D730: (v.y * row2.y +
+// v.x * row2.x) + v.z * row2.z, each FMUL and FADDP rounded to 24 bits on the
+// main thread (0092D74E-0092D763), then FSTP float. True: per-op float in that
+// order. False: the double chain rounded once.
+inline constexpr bool kSubmarineSeabedSpeedPc24Cc13Bound = false;
 
 // Packet cc9_submarine_dive_teleport (docs/SUBMARINE_MODEL.md section 15). True: a
 // submarine whose scene row authors `Dive` is placed at bands[Dive] at attach
@@ -872,7 +877,11 @@ public:
     // world-matrix setter EntityTurnToEntity's squadron arm calls per member
     // (008A0DD4). Rows 0..2 replace the pose; the position is the member's own
     // (008A0D9B-008A0DBF), so it is left alone. 007C9540 touches no velocity.
-    // False for an index out of range.
+    // False for an index out of range. Its host callers are the two
+    // EntityTurnToEntity arms (game_hosts_script_orders.cpp: the single-unit arm
+    // and the squadron member loop). The image reaches 007C9540 only through
+    // vtable[88h]: nine .rdata vtables hold it (00D000F8 ... 00D1A360, slot +88h
+    // of each), and no direct call names it.
     bool set_unit_world_basis_007c9540(std::size_t index, const float right[3],
         const float up[3], const float forward[3]) noexcept;
     std::uint64_t unit_ordnance(std::size_t index) const noexcept;

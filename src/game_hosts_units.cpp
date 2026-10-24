@@ -12162,10 +12162,20 @@ public:
         (void)dt;
         bsp::SubmarineSeabedScan& scan = slot_.sub_scan;
         bsp::submarine_scan_publish_00855440(scan, slot_.sub_bands[3]);
-        const float speed = static_cast<float>(
-            static_cast<double>(slot_.motion.linear_velocity.y) * slot_.motion.pose_row2[1]
-            + static_cast<double>(slot_.motion.linear_velocity.x) * slot_.motion.pose_row2[0]
-            + static_cast<double>(slot_.motion.linear_velocity.z) * slot_.motion.pose_row2[2]);
+        float speed = 0.0f;
+        if constexpr (kSubmarineSeabedSpeedPc24Cc13Bound) {
+            // 0092D74E-0092D763: FMUL, FMUL, FADDP, FMUL, FADDP, each to 24 bits.
+            const float vy_ry = slot_.motion.linear_velocity.y * slot_.motion.pose_row2[1];
+            const float vx_rx = slot_.motion.linear_velocity.x * slot_.motion.pose_row2[0];
+            const float sum_yx = vy_ry + vx_rx;
+            const float vz_rz = slot_.motion.linear_velocity.z * slot_.motion.pose_row2[2];
+            speed = sum_yx + vz_rz;
+        } else {
+            speed = static_cast<float>(
+                static_cast<double>(slot_.motion.linear_velocity.y) * slot_.motion.pose_row2[1]
+                + static_cast<double>(slot_.motion.linear_velocity.x) * slot_.motion.pose_row2[0]
+                + static_cast<double>(slot_.motion.linear_velocity.z) * slot_.motion.pose_row2[2]);
+        }
         const bsp::SubmarineScanPoint p = bsp::submarine_scan_point_00855420(scan.state,
             slot_.sub_class_width, slot_.sub_class_length, speed,
             slot_.sub_class_max_speed, slot_.ring.current_param_b);
