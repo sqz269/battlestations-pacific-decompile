@@ -2664,15 +2664,19 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
         }
     }
     const std::uint32_t cls = bsp::kPilotOrderClassMoveTo;
-    std::size_t tasks = 0;
+    // The log's task count is the installs made before this binding returns.
+    // The continuation counts into the member, never into this frame: with
+    // kSetCommandQueueDelayBound a direct order's continuation runs at the
+    // session drain, after the return (packet b2-pilotmoveto-fix; the old
+    // pointer to a local here incremented a dead stack slot and corrupted
+    // JM02's GenerateObject record, 0xC0000374).
+    const unsigned long long tasks_before = pilot_move_to_tasks_;
     auto order_one = [&](std::size_t index, void* handle) {
         entity_issue_command(handle, cls, target, 1);
         // Packet cc9_after_row9_continuation: the install follows the delivery
-        // (a queued order's at the drain), as in run_pilot_set_target. `tasks`
-        // counts only the installs made before this binding returns.
-        std::size_t* const now_tasks = last_issue_deferred_ ? nullptr : &tasks;
+        // (a queued order's at the drain), as in run_pilot_set_target.
         after_order_delivery([this, index, cls, target, target_index, target_token,
-                              now_tasks, marker_goal, marker_world]() {
+                              marker_goal, marker_world]() {
             ScriptOrderAttackCommandHost bot_host(units_, log_, cls, target_token);
             const std::uint32_t task = bsp::bot_install_command_task_0099a170(
                 static_cast<std::uint32_t>(index + 1u), bot_host);
@@ -2681,7 +2685,7 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
                 units_.store_unit_moveto_range(index, target.trailing);
                 units_.store_unit_moveto_target(index, target_index);
                 if (marker_goal) units_.store_unit_moveto_point(index, marker_world);
-                if (now_tasks != nullptr) ++*now_tasks;
+                ++pilot_move_to_tasks_;
             }
         });
     };
@@ -2701,7 +2705,8 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
         "(%s -> 0077D600 00E08F68 -> 0099A170 -> 009C3BE0)",
         pilot_move_to_plain_ ? "PilotMoveTo" : "PilotMoveToRange",
         row.unit.empty() ? "(unresolved)" : row.unit.c_str(),
-        static_cast<unsigned>(target_token), static_cast<double>(target.trailing), tasks,
+        static_cast<unsigned>(target_token), static_cast<double>(target.trailing),
+        static_cast<std::size_t>(pilot_move_to_tasks_ - tasks_before),
         pilot_move_to_plain_ ? "008A4150" : "008A4590");
     return 0;  // the binding pushes nothing
 }

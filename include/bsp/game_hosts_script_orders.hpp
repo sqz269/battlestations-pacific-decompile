@@ -1055,6 +1055,9 @@ private:
     // Packet cc9_pilot_move_to: set while PilotMoveTo runs the shared body.
     bool pilot_move_to_plain_{false};
     unsigned long long pilot_move_to_calls_{0};
+    // Packet b2-pilotmoveto-fix: moveto task installs by PilotMoveTo/Range,
+    // counted by the delivery continuation (which may run after the binding).
+    unsigned long long pilot_move_to_tasks_{0};
     unsigned long long pilot_marker_goals_{0};
     // Packet cc9_pilot_move_on_path: set while PilotMoveOnPath runs the body.
     bool pilot_path_no_speed_{false};
