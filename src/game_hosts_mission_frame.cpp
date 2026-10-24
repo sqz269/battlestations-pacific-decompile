@@ -1916,7 +1916,7 @@ class FixedStepBinding final : public bsp::FixedStepHost {
 public:
     explicit FixedStepBinding(GameMissionFrameHost::Impl& owner) : owner_(owner) {}
     void advance_step_countdown_008079b0(float) override {
-        owner_.record("FixedStep::advance_countdown", 0x008079b0u);
+        owner_.record("Recon::service_periodic_refresh", 0x008079b0u);
     }
     void run_step_job_waves(std::uint8_t run_pass) override {
         // Milestone 2g: the three waves over the five 68h groups at 00f876c0.
@@ -3233,6 +3233,10 @@ const GameMissionEntrySummary& GameMissionFrameHost::entry_summary() const noexc
 const GameMissionFrameRunSummary& GameMissionFrameHost::frame_summary() const noexcept {
     return impl_->frames;
 }
+GameNativeMissionUnitSource GameMissionFrameHost::native_render_unit_source() const noexcept {
+    return {impl_->units.get(), &impl_->lua,
+        impl_->scene_contents ? &impl_->scene_contents->root_properties() : nullptr};
+}
 
 const GameSceneContentsSummary* GameMissionFrameHost::scene_contents_summary()
     const noexcept {
@@ -3703,6 +3707,24 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                             host.done("SceneLoad::recon_rebuild_local_slot", 0x004e059bu);
                         } else {
                             host.record("SceneLoad::recon_rebuild_local_slot", 0x004e059bu);
+                        }
+                        // Packet cc13-reconload: 004E0546 00807A50's publication of
+                        // the three slots this pass rebuilt (kReconLoadForceRefreshCc13Bound;
+                        // OFF, a dry run counts what it would publish).
+                        {
+                            GameMissionLuaHost::ReconPublishCounts rc;
+                            if constexpr (kReconLoadForceRefreshCc13Bound) {
+                                rc = host.lua.publish_recon_slot_tables_00806b10(true);
+                            } else {
+                                rc = host.lua.publish_recon_slot_tables_00806b10(false);
+                            }
+                            host.log.notef("recon load refresh scene_load_004e0546: bound=%d "
+                                "slots=%d published=%d entries=%zu (00807A50)",
+                                kReconLoadForceRefreshCc13Bound ? 1 : 0, rc.slots,
+                                rc.published, rc.entries);
+                            if (host.script_orders != nullptr) {
+                                host.script_orders->note_recon_load_entries(rc.entries);
+                            }
                         }
                         host.world_host->build_local_player_unit_lists_004c3cb0();
                         host.done("SceneLoad::unit_lists_004c3cb0", 0x004e05a9u);

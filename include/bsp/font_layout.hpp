@@ -7,6 +7,7 @@
 #include <vector>
 
 namespace bsp {
+class NativeFontResources;
 struct FontSingleLineParameters {
     float normalized_width{}; // Native context+20h; multiplied by double 960.
     float width_scale{1.0f}; // Native context+1D8h, after DAT metric scaling.
@@ -42,6 +43,11 @@ struct FontSingleLineLayout {
 // and trap timing are not an equivalence contract. No native renderer lifetime,
 // material binding or optional child-UI behavior is represented here.
 bool build_font_single_line_00ab9fd0_fragment(const FontData& font,
+    std::u16string_view transformed_text, const FontSingleLineParameters& parameters,
+    FontSingleLineLayout& output, std::string& error);
+// Same arithmetic and output, reading the sole live typed OR native image
+// glyph storage through its canonical resource owner. No metric/map copy.
+bool build_font_single_line_00ab9fd0_fragment(const NativeFontResources& font,
     std::u16string_view transformed_text, const FontSingleLineParameters& parameters,
     FontSingleLineLayout& output, std::string& error);
 }

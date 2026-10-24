@@ -20,12 +20,17 @@ public:
     static GuiTextFontRegistryAccess published_singleton(
         FontRegistryStartup*& actual_publication, SingletonLifetimeManager& real_lifetime) noexcept;
     static GuiTextFontRegistryAccess borrowed_existing(FontRegistryStartup&) noexcept;
+    // ON profile: selects the actual10h registry/list and Font+0C native names.
+    // The owner collection is custody/identity resolution, not a name map.
+    static GuiTextFontRegistryAccess borrowed_native_images(NativeFontResourceOwners&) noexcept;
     FontRegistryStartup* get() const;
     // Metadata only: return the borrowed owner or READ the current legacy cell.
     // Never invoke the lazy getter, allocate, publish, register or lock. A null
     // legacy cell remains null. Referents/cell must stay live and access must
     // be externally serialized; this does not freeze a mutable publication.
     FontRegistryStartup* existing_registry() const noexcept;
+    NativeFontResourceOwners* native_image_owners() const noexcept { return native_images_; }
+    void* existing_native_registry_image() const noexcept;
 
 private:
     GuiTextFontRegistryAccess(FontRegistryStartup*, FontRegistryStartup**,
@@ -33,6 +38,7 @@ private:
     FontRegistryStartup* existing_;
     FontRegistryStartup** publication_;
     SingletonLifetimeManager* lifetime_;
+    NativeFontResourceOwners* native_images_{};
 };
 
 struct GuiTextFontNameServices {
@@ -61,7 +67,7 @@ void set_gui_text_shader_name_00ab8e70(GuiTextLifetime&, const std::string&,
 // Native length/current CRT equality early-out; changed path stores font_name,
 // invokes the selected registry access and stable owned-descriptor lookup,
 // validates the SAME actual font-resource association, publishes borrowed font,
-// then stores current descriptor alpha_texture_scale(+1C), or LIVE D7A24C for
+// then stores the selected Font owner's live alpha scale(+1C), or LIVE D7A24C for
 // a genuine lookup miss. Only then captures/releases/clears actual shader.
 // Does not reload geometry or copy scale_ratio(+18). Returned bool is a C++
 // convenience (changed name), not a recovered native return-value contract.
@@ -81,5 +87,5 @@ bool set_gui_text_font_name_00ab8c30(GuiTextLifetime&, const std::string&,
 // Profile access, publication changes and owner retirement are externally
 // serialized; the legacy cell is live state, not an immutable registry promise.
 // FontRegistryStartup's compatibility vector/resources are
-// never substituted for its stable descriptor or the actual FontData/images.
+// never substituted for its stable descriptor or the actual typed/image Font.
 } // namespace bsp

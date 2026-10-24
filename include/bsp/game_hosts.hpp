@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/game_native_gui_render_application.hpp"
 // Process bindings for the reconstructed startup spine, milestone 1 of bsp_game.exe.
 //
 // Addresses: 008f81f0 WinMain, 0073d410 cSkeletonAppMidway::Init, 00becda0/00becee0 the
@@ -82,6 +83,7 @@ class GameNativeLuaServices;
 class GameNativeRendererApplication;
 class GameNativeShadowTargetApplication;
 class GameNativeGuiEffectProbe;
+class GameNativeGuiRenderApplication;
 class GameLocaleHost;
 class GameFontHost;
 // Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
@@ -388,6 +390,9 @@ public:
     // Existing executable frontend draw between native begin and end. Full native
     // frontend scene/resource/command composition remains separate work.
     void set_overlay(std::function<void(IDirect3DDevice9&)> overlay);
+    // Runs only inside the shared native mission frame's post-world scope,
+    // before the existing sprite overlay/capture. It cannot claim another frame.
+    void set_native_mission_overlay(std::function<void()> overlay);
     void release();
 
     bool created() const noexcept { return device_ != nullptr; }
@@ -403,6 +408,7 @@ private:
     GameNativeRendererApplication& renderer_;
     IDirect3DDevice9* device_{};
     std::function<void(IDirect3DDevice9&)> overlay_;
+    std::function<void()> native_mission_overlay_;
     std::function<void(IDirect3DDevice9&)> capture_;
     D3DPRESENT_PARAMETERS parameters_{};
     HRESULT creation_result_{E_FAIL};
@@ -708,6 +714,7 @@ public:
     const ObjectHandleResolverSlots& object_handle_resolvers() const noexcept { return object_resolvers_; }
     NativeRendererParametersOwner* renderer_parameters() const noexcept { return renderer_parameters_; }
     GameNativeRendererApplication* native_renderer() const noexcept { return native_renderer_.get(); }
+    GameNativeGuiRenderApplication* native_gui_render() const noexcept { return native_gui_render_.get(); }
     // Read-only loan of the SAME mutable Source cell used by construction,
     // renderer loading and native Text configuration. Borrow only while ready.
     void* const volatile& platform_publication_0109cf04() const;
@@ -738,10 +745,20 @@ private:
     void exit_if_native_shadow_incomplete() noexcept;
     void exit_if_native_gui_probe_incomplete() noexcept;
     void close_native_gui_probe_after_drain() noexcept;
+    // Renderer-side Text ownership. Prepare runs only in the existing shared
+    // shader-cache bracket; draw runs in the existing mission overlay scope.
+    void initialize_native_gui_render();
+    void prepare_native_gui_text_resources();
+    void draw_native_gui_text_mission_overlay();
+    void exit_if_native_gui_text_incomplete() noexcept;
+    void exit_if_native_gui_resources_retained() noexcept;
+    void retire_native_gui_text_before_fonts() noexcept;
+    void close_native_gui_text_after_drain() noexcept;
     void close_native_shadow_after_drain() noexcept;
     std::unique_ptr<GameNativeRendererApplication> native_renderer_;
     std::unique_ptr<GameNativeShadowTargetApplication> native_shadow_;
     std::unique_ptr<GameNativeGuiEffectProbe> native_gui_probe_;
+    std::unique_ptr<GameNativeGuiRenderApplication> native_gui_render_;
     std::unique_ptr<GameNativeLuaServices> lua_services_;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;

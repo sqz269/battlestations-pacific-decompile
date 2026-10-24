@@ -7,7 +7,8 @@ struct MissionShipSceneGraph {
  struct Association {
   enum class Phase { prepared, retained, linked, detaching, released };
   void* raw{};
-  NativeModelReference* reference{};
+  RenderCommandReference* reference{};
+  GeneratedModelNodeLifetime* node{};
   Phase phase{Phase::prepared};
   NativeRenderActualOwnerReleaseObservation release;
  };
@@ -15,9 +16,7 @@ struct MissionShipSceneGraph {
   MissionShipSceneGraph& graph;
   explicit RootDispatch(MissionShipSceneGraph& value):graph(value) {}
   const volatile U* resolve_profile(U captured) const override {
-   check(captured==0xd62de8 && graph.model_profile,
-       "mission scene root requires the actual static-model profile");
-   return graph.model_profile;
+   return graph.root_profile(captured);
   }
   void invoke_child(U target,void* raw,U requested,U recursion) override {
    // The actual outer scene's constructor supplies null+1C lighting. B6D890
@@ -26,11 +25,11 @@ struct MissionShipSceneGraph {
    // successful no-op or interpret a raw3Ch resource as a logical SceneResource.
    check(target==0xb6ed80 && requested==0 && recursion==0,
        "mission scene admits only the native null-lighting model attachment");
-   auto* model_reference=dynamic_cast<NativeModelReference*>(&graph.owners.resolve_actual(raw));
-   check(model_reference && &model_reference->model_owner().storage.node==raw &&
-       &model_reference->model_owner().environment.nodes==&graph.environment.nodes &&
-       model_reference->model_owner().phase==NativeModelOwner::Phase::live &&
-       get<U>(raw)==0xd62de8 && graph.model_profile[0x50/4]==target &&
+   auto* model_reference=dynamic_cast<GeneratedModelNodeLifetime*>(&graph.owners.resolve_actual(raw));
+   check(model_reference && model_reference->transform().raw_node_key()==bits(raw) &&
+       graph.environment.nodes.attachments.find_actual_node(bits(raw))==model_reference &&
+       &graph.environment.nodes.scenes.resolve_key(bits(raw))==&model_reference->scene_attachment() &&
+       graph.root_profile(get<U>(raw))[0x50/4]==target &&
        get<void*>(raw,0x170)==nullptr,
        "mission scene attachment requires its live same-domain model companion");
    auto& binding=model_reference->scene_attachment();
@@ -56,7 +55,7 @@ struct MissionShipSceneGraph {
  NativeString name;
  bool name_live{},name_return_started{};
  void* allocation{};
- const volatile U* model_profile{};
+  std::vector<std::pair<U,const volatile U*>> root_profiles;
  std::vector<std::unique_ptr<Association>> associations;
  Phase phase{Phase::prepared};
 
@@ -99,27 +98,39 @@ struct MissionShipSceneGraph {
       "mission scene borrow requires its completed live owner");
   return allocation;
  }
- void attach(void* model,NativeModelReference& actual_reference) {
+ const volatile U* root_profile(U captured) const {
+  check(captured==0xd62de8 || captured==0xd63590,
+      "mission scene root requires a genuine ordinary or matrix-indexed model profile");
+  for(const auto& item:root_profiles)if(item.first==captured)return item.second;
+  throw std::logic_error("mission scene root has no stable captured profile binding");
+ }
+ void attach(void* model,RenderCommandReference& actual_reference,const volatile U* profile) {
   check(phase==Phase::ready && construction.complete && reference && !reference->retired(),
       "mission scene attachment requires a live completed scene");
-  auto& owner=actual_reference.model_owner();
-  check(model && &owner.storage.node==model && owner.phase==NativeModelOwner::Phase::live &&
-      &owner.environment.nodes==&environment.nodes &&
+  auto* node=dynamic_cast<GeneratedModelNodeLifetime*>(&actual_reference);
+  check(model && node && node->transform().raw_node_key()==bits(model) &&
+      environment.nodes.attachments.find_actual_node(bits(model))==node &&
+      &environment.nodes.scenes.resolve_key(bits(model))==&node->scene_attachment() &&
+      &node->scene_attachment().scene==reinterpret_cast<SceneResource**>(static_cast<unsigned char*>(model)+0x170) &&
       &owners.resolve_actual(model)==static_cast<RenderCommandReference*>(&actual_reference) &&
-      &actual_reference.reference_count==&owner.storage.node.references_04 &&
-      get<U>(model)==0xd62de8 && get<void*>(model,0x30)==nullptr &&
+      reinterpret_cast<const void*>(&actual_reference.reference_count)==static_cast<unsigned char*>(model)+4 &&
+      (get<U>(model)==0xd62de8 || get<U>(model)==0xd63590) && profile && profile[0x50/4]==0xb6ed80 &&
+      get<void*>(model,0x30)==nullptr &&
       get<void*>(model,0x34)==nullptr && get<void*>(model,0xa4)==nullptr &&
       get<void*>(model,0x170)==nullptr && get<std::uint8_t>(model,0x44)==0 &&
       get<void*>(allocation,0x1c)==nullptr && actual_reference.reference_count.load()>0,
-      "mission scene requires an unattached live static model with its original creator");
-  check(!model_profile || model_profile==owner.environment.vtable_00d62de8,
-      "mission scene cannot mix actual model profile domains");
+      "mission scene requires an unattached same-domain model with its original creator");
+  bool found_profile=false;
+  for(const auto& item:root_profiles)if(item.first==get<U>(model)) {
+   check(item.second==profile,"mission scene cannot mix actual model profile domains");
+   found_profile=true;
+  }
+  if(!found_profile)root_profiles.emplace_back(get<U>(model),profile);
   for(const auto& item:associations)check(item->raw!=model,"mission scene model cannot attach twice");
   auto item=std::make_unique<Association>();
-  item->raw=model;item->reference=&actual_reference;
+  item->raw=model;item->reference=&actual_reference;item->node=node;
   associations.push_back(std::move(item)); // metadata allocation BEFORE native work
   auto& association=*associations.back();
-  model_profile=owner.environment.vtable_00d62de8;
   phase=Phase::attaching;
   try {
    // B6D890 itself does not retain. This diagnostic association holds one
@@ -144,7 +155,7 @@ struct MissionShipSceneGraph {
     auto& association=**it;
     check(association.phase==Association::Phase::linked &&
         get<void*>(association.raw,0xa4)==allocation &&
-        association.reference->model_owner().phase==NativeModelOwner::Phase::live &&
+        association.node && environment.nodes.attachments.find_actual_node(bits(association.raw))==association.node &&
         association.reference->reference_count.load()>1 &&
         get<std::uint8_t>(association.raw,0x44)==0,
         "mission scene creator must survive its association retirement");

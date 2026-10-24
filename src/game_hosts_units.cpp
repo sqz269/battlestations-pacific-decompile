@@ -592,6 +592,10 @@ struct GameUnitSlot {
     // Packet cc9_torpedo_run_pitch_profile: the measured angle the last pitch
     // demand used (diagnostic).
     float diag_held_pitch{0.0f};
+    // Packet cc13-ratetracebank (diagnostic): pilot+2BCh as the task arm left
+    // it (before 009FC7C0, the rocket and 009A17D0) and as 0099D300 entered.
+    float diag_pt2bc_task{0.0f};
+    float diag_pt2bc_think{0.0f};
     float plane_bank_angle_c68{0.0f};
     float plane_heading_c6c{0.0f};
     float plane_class_turn_roll_spd{0.0f};   // desc+1C8h TurnRollSpd
@@ -3186,6 +3190,7 @@ struct GameUnitsHost::Impl {
         unsigned long long lookups{0}, found{0}, passes{0}, inserts{0}, releases{0};
         unsigned long long hit_passes{0}, outside_passes{0}, spacing_mode4_refused{0};
         unsigned long long spacing_mode4_site{0}, landed_arm_hits{0};
+        unsigned long long spacing_site_busy{0};   // cc13-carrierdeck G2, log-only
         unsigned long long slot_tail_unapplied{0}, mode_counts[5]{0, 0, 0, 0, 0};
     };
     std::vector<LandingDeck> landing_decks;
@@ -3325,6 +3330,7 @@ struct GameUnitsHost::Impl {
     unsigned long long throttle_band_applied{0}, throttle_band_skipped{0};
     unsigned long long takeoff_permission_asks{0}, takeoff_permission_denied{0};
     bool carrier_elevator_blocked_006d02f0(const LandingDeck& d) const;
+    bool carrier_site_has_free_runway_006d0530(const LandingDeck& d) const;
     void carrier_elevator_send_empty_down_006fc640(LandingDeck& d);
     void carrier_elevator_raise_plane_006fc810(LandingDeck& d, GameUnitSlot& p);
     unsigned long long base_launch_lift_down{0}, base_launch_lift_up{0};
@@ -6761,6 +6767,16 @@ struct GameUnitsHost::Impl {
     // the AI host used, and nothing is logged.
     static constexpr bool kSquadronOrdnanceReaderBound = true;  // ON: census held, gameplay identical (docs/SQUADRON_ORDNANCE_STATE.md 4)
     static constexpr bool kLandingSiteSpacingBound = true;  // ON: pair gameplay identical (docs/SQUADRON_LAND_TASK.md 5i)
+    // Packet cc13-carrierdeck (G2). 006C43CB-006C43D3 (reached only when site >=
+    // 0.4 FDT, 006C43C9 JA): the k=0 mode-4 arm's (block+3Ch)->vtable[30h]
+    // is the mother-ship site's 006D0530 BSP_MotherShipSite_HasFreeRunway (vtable
+    // 00CF8A58 +30h) on a carrier deck: false when an occupant of site+34h has
+    // 006BCC90's z below Pilot/Landing/MinFreeRunwayLength (tuning+520h). True: a
+    // carrier deck answers 006D0530. False: true, the airfield's 006CF3F0, as before.
+    static constexpr bool kCarrierSiteHasFreeRunwayCc13Bound = false;
+    static_assert(!kCarrierSiteHasFreeRunwayCc13Bound ||
+        (kLandingSiteSpacingBound && kCarrierLandingDeckBound),
+        "006D0530 needs the site spacing arm and the carrier holder");
     // Packet cc9_p12_queue_compact (docs/OCEAN_WAVE_FIELD.md section 39): 006C77E0,
     // 006CDC70's compaction of the landing records at block+A8h. False: a record
     // stays until its squadron head is released (006C7540), so a dead plane's
@@ -17103,6 +17119,28 @@ bool GameUnitsHost::Impl::carrier_elevator_blocked_006d02f0(const LandingDeck& d
     return false;
 }
 
+// 006D0530 BSP_MotherShipSite_HasFreeRunway (006D0530-, the mother-ship site's
+// vtable[30h], __thiscall(site), RET, AL): for each occupant of site+34h, the
+// third component of 006BCC90 on the carrier's holder ([site+B8h]+1208h) at the
+// occupant's world position (plane+FCh, after 00414DB0); false when
+// tuning+520h (Pilot/Landing/MinFreeRunwayLength) is greater than it (006D05CE
+// FCOMIP / JA, so a NaN z does not fail). LABELLED: the holder is read as the sequencer pass left
+// it, not re-framed here; 006D0530 itself does not re-frame it.
+bool GameUnitsHost::Impl::carrier_site_has_free_runway_006d0530(const LandingDeck& d) const {
+    const float min_free = lua.plane_globals_loaded()
+        ? lua.plane_globals().pilot_landing_min_free_runway_length : 0.0f;
+    bool free_runway = true;
+    for (const std::size_t oi : d.site_occupants_34) {
+        if (oi >= slots.size() || !slots[oi]) continue;
+        const float along = landing_local_006bcc90(d, slots[oi]->motion.position)[2];
+        if (min_free > along) {
+            free_runway = false;
+            break;
+        }
+    }
+    return free_runway;
+}
+
 // 006FC640 BSP_ElevatorPlatform_SendEmptyDown (006FC640-006FC6A7, RET): +50h = 0,
 // +18h = -0.0 - +1Ch; a platform plane is carried, unregistered and dropped;
 // +50h = 2; the platform sound +54h vtable[0Ch](1.0) is not carried.
@@ -18383,9 +18421,18 @@ void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssign
                 static_cast<float>(static_cast<double>(fdt) * 0.75), 0.009999999776482582f,
                 fdt, 1.0f, static_cast<float>(static_cast<double>(site) + tp));
             if (!(static_cast<double>(fdt) * 0.25 <= static_cast<double>(tp))) {
-                const bool site_ready = true;                            // 006CF3F0
-                if (static_cast<double>(fdt) * 0.4000000059604645 > static_cast<double>(site)
-                    || !site_ready) {
+                // Packet cc13-carrierdeck (G2): a carrier deck's site answers
+                // 006D0530; the airfield's 006CF3F0 is RET true. The answer is
+                // evaluated in both modes (const, log-only when OFF).
+                const bool deck_free = !d.mother_ship || carrier_site_has_free_runway_006d0530(d);
+                bool site_ready = true;                                  // 006CF3F0
+                if constexpr (kCarrierSiteHasFreeRunwayCc13Bound) {
+                    site_ready = deck_free;
+                }
+                const bool site_late = static_cast<double>(fdt) * 0.4000000059604645 >
+                    static_cast<double>(site);
+                if (!site_late && !deck_free) ++d.spacing_site_busy;
+                if (site_late || !site_ready) {
                     rec.spacing_8 = 0.0f;
                 }
             }
@@ -36525,9 +36572,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.plan_heading_2c0_written = false;
                                 // 009B201B-009B207A: throttle 0.0; air brake 1.0 when
                                 // approach+30h answers vtable[5Ch](9) (a ship), else
-                                // 0.2 (00CE54A0); +2D8h = 0. SUBSTITUTION, labelled:
-                                // this host refuses mother-ship holders, so the land
-                                // target is never class 9 here and the brake is 0.2.
+                                // 0.2 (00CE54A0); +2D8h = 0. approach+30h is the deck
+                                // owner (land_site_plus_one); with kCarrierLandingDeckBound
+                                // a carrier holder is built, and kCarrierTouchdownBrakeBound
+                                // below gives a class-9 owner the 1.0.
                                 unit_.plan_slots[bsp::kPilotSlotThrottle].desired = 0.0f;
                                 unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
                                 unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = 0.2f;
@@ -36738,8 +36786,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                     // 009B22C0 (009B22C0-009B2C68, __thiscall(park, float dt), RET 4),
                     // land/park's tick, read whole from the listing. The carrier arm
-                    // (approach+30h vtable[5Ch](9)) is not reached: mother-ship holders
-                    // are refused. coverage: the airfield arm complete.
+                    // (approach+30h vtable[5Ch](9)) is the `carrier` flag below
+                    // (packet cc9_carrier_elevator, a built mother-ship holder).
                     // SUBSTITUTIONS, labelled: plane+A4h/+ACh (the parent-relative
                     // position after 007C71E0's re-parent to the airfield) and +94h/
                     // +9Ch (the local forward) are the world position and heading
@@ -39733,6 +39781,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // arm here and no gun tick; the non-dogfight states' cones
                             // (Angle_MoveTo, Angle_GoAway at +40h) are not delivered,
                             // so the fine-aim steer never runs outside dogfight.
+                            unit_.diag_pt2bc_task = unit_.plan_state.pitch_target_2bc;
                             if constexpr (GameUnitsHost::Impl::kTaskGunControllerAllTasksBound) {
                                 const bool has_task = unit_.torpedo_task_installed ||
                                     (bsp::kStrafeTaskBound && unit_.strafe_task_installed) ||
@@ -39778,6 +39827,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.plan_band_bank_264 = 0.0f;
                             }
                             unit_.plane_think_dt = elapsed;   // 0099D300's argument
+                            unit_.diag_pt2bc_think = unit_.plan_state.pitch_target_2bc;
                             if constexpr (GameUnitsHost::Impl::kFighterLowTraceDiag) {
                                 if (unit_.dogfight_task_installed && !unit_.plane_death_c3a &&
                                     unit_.motion.position[1] < 400.0f) {
@@ -41197,7 +41247,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(w[1]) * w[1] + static_cast<double>(w[2]) * w[2]);
                             owner_.log.notef("plane rate trace %s step=%.3f stick=(%.3f %.3f %.3f) "
                                 "target=(%.4f %.4f %.4f) w=(%.4f %.4f %.4f) |w|=%.2f deg/s "
-                                "pitch=%.4f held=%.4f pt2bc=%.4f mode=%d y=%.1f cmd_alt=%.1f",
+                                "pitch=%.4f held=%.4f pt2bc=%.4f mode=%d y=%.1f cmd_alt=%.1f "
+                                "bank=%.4f pt_task=%.4f pt_think=%.4f pslot=%.4f/%d t=%.2f",
                                 unit_.row.name.c_str(), static_cast<double>(step),
                                 static_cast<double>(unit_.plane_latched_controls[0]),
                                 static_cast<double>(unit_.plane_latched_controls[1]),
@@ -41212,7 +41263,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(unit_.plan_state.pitch_target_2bc),
                                 unit_.plan_state.pitch_mode_2d0,
                                 static_cast<double>(unit_.motion.position[1]),
-                                static_cast<double>(unit_.plane_commanded_altitude));
+                                static_cast<double>(unit_.plane_commanded_altitude),
+                                static_cast<double>(unit_.plane_bank_angle_c68),
+                                static_cast<double>(unit_.diag_pt2bc_task),
+                                static_cast<double>(unit_.diag_pt2bc_think),
+                                static_cast<double>(unit_.plan_slots[bsp::kPilotSlotPitch].desired),
+                                unit_.plan_slots[bsp::kPilotSlotPitch].active,
+                                static_cast<double>(owner_.summary.simulated_seconds));
                         }
                         if constexpr (GameUnitsHost::Impl::kPlaneControlRateLawBound) {
                             // The free-flight arm (controller mode 0, flag 1) is
@@ -45405,12 +45462,14 @@ void GameUnitsHost::report() {
             host.log.notef("summary landing sequencer deck %s: refused=%d queue=%zu records=%zu "
                 "passes=%llu hits=%llu outside=%llu inserts=%llu releases=%llu lookups=%llu "
                 "found=%llu modes 1=%llu 2=%llu 3=%llu 4=%llu spacing_mode4_refused=%llu site=%llu "
-                "landed=%llu slot_tail_unapplied=%llu (packet cc9_landing_sequencer)",
+                "landed=%llu slot_tail_unapplied=%llu (packet cc9_landing_sequencer) "
+                "site_busy=%llu bound=%d (006D0530, cc13-carrierdeck)",
                 i < decks.size() ? decks.name_at(i).c_str() : "?", d.refused ? 1 : 0,
                 d.queue.size(), d.assignments.size(), d.passes, d.hit_passes, d.outside_passes,
                 d.inserts, d.releases, d.lookups, d.found, d.mode_counts[1], d.mode_counts[2],
                 d.mode_counts[3], d.mode_counts[4], d.spacing_mode4_refused, d.spacing_mode4_site,
-                d.landed_arm_hits, d.slot_tail_unapplied);
+                d.landed_arm_hits, d.slot_tail_unapplied, d.spacing_site_busy,
+                Impl::kCarrierSiteHasFreeRunwayCc13Bound ? 1 : 0);
             for (const Impl::LandingAssignment& a : d.assignments) {
                 host.log.notef("summary landing record %s: mode=%d path=%.1f spacing=%.3f "
                     "side=%d", host.slots[a.plane]->row.name.c_str(), a.mode_10,

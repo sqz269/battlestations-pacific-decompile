@@ -33,6 +33,7 @@ struct GameNativeGuiEffectApplication::Impl final : GuiTextEffectConsumer {
     GameNativeGuiEffectApplication& facade;
     GameHostLog& log;
     GameNativeRendererApplication& renderer;
+    const volatile std::uint32_t* const material_profile;
     GameVfsHost& vfs;
     GameNativeGuiEffectApplicationBindings bindings;
     GameNativeVfsRawServices raw;
@@ -67,7 +68,9 @@ struct GameNativeGuiEffectApplication::Impl final : GuiTextEffectConsumer {
     Impl(GameNativeGuiEffectApplication& application, GameHostLog& l,
         GameNativeRendererApplication& r, GameVfsHost& files,
         GameNativeGuiEffectApplicationBindings inputs)
-        : facade(application), log(l), renderer(r), vfs(files), bindings(inputs), raw(vfs.borrow_raw_services()),
+        : facade(application), log(l), renderer(r),
+          material_profile(r.borrow_gui_material_destruction_profile_00d5e520()),
+          vfs(files), bindings(inputs), raw(vfs.borrow_raw_services()),
           textures(renderer.texture_cache()), registry(renderer.effect_registry_domain()),
           compiler_owners(renderer.material_compiler_owners()),
           sources(renderer.material_compiler_sources()), effect_owners(renderer.material_effect_owners()),
@@ -176,7 +179,10 @@ struct GameNativeGuiEffectApplication::Impl final : GuiTextEffectConsumer {
             &materials.material_slots == &process.material_pool_00f8d3ac() &&
             &materials.parameter_slots == &process.parameter_pool_00f8d3e4(),
             "GUI material invocation requires the same canonical geometry, owners, strings and process pools");
-        return renderer.borrow_gui_material_destruction_profile_00d5e520();
+        // This canonical immutable view was admitted before any acquisition.
+        // The same domain checks above still apply during every invocation;
+        // a retained native preparation is not another ready-time admission.
+        return material_profile;
     }
     const volatile std::uint32_t* validate_consumer_domain(GuiTextBufferServices& services) {
         validate_domain();

@@ -240,6 +240,9 @@ public:
     FontRegistryStartup* native_font_registry() const noexcept {
         return services_.properties.font_names.registry.existing_registry();
     }
+    void* native_font_registry_image() const noexcept {
+        return services_.properties.font_names.registry.existing_native_registry_image();
+    }
 private:
     friend class GuiTextRuntimeImplementation;
     friend class GuiTextRuntimeCopyOperation;

@@ -1,5 +1,6 @@
 #include "bsp/gui_text_material.hpp"
 #include "bsp/gui_text_lifetime.hpp"
+#include "bsp/native_font_resources.hpp"
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -150,7 +151,8 @@ bool ensure_gui_text_font_shader_00ab8ce0(GuiTextLifetime& lifetime,
         if (reference_height_matches(reference_height)) {
             // Native reads the font only on the ordered-height-match arm.
             require(text.font != nullptr, "Text shader height match requires a live font");
-            use_point = text.font->scale_ratio == 1.0f; //00D7A24C.
+            use_point = (services.fonts ? services.fonts->resolve(text.font).scale_ratio_18()
+                : text.font->scale_ratio) == 1.0f; //00D7A24C.
         }
         auto& name = call ? call->default_name : legacy_name;
         if (call) {

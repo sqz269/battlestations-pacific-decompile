@@ -3188,6 +3188,28 @@ bool GameMissionLuaHost::stationary_class_exists(const std::string& name) {
     return found;
 }
 
+std::string GameMissionLuaHost::read_stationary_class_string(const std::string& name,
+    const char* key) {
+    std::string value;
+    if (state_ == nullptr || name.empty() || key == nullptr) return value;
+    const int top = ::lua_gettop(state_);
+    // The same 00851CB0 StationaryClass/type-name lookup as the existing
+    // presence reader above, followed by the installed field itself.
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "StationaryClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, name.c_str());
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TSTRING) {
+                const char* text = lua_tolstring(state_, -1, nullptr);
+                if (text != nullptr) value = text;
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 int GameMissionLuaHost::run_is_ready_to_send_planes_00895d20(lua_State* state,
     int argument_count) {
     static_cast<void>(argument_count);
@@ -4226,6 +4248,20 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             } else {
                 route_push_squadron(static_cast<int>(entity), record.name,
                     member.type_class_id, units_before);
+                // Packet cc13-spawnsq: 009486BF stores the same 009420A0 bag at
+                // +0C0h on the plane arm too, so pass A gives the squadron its
+                // `Party` (00928A1E) and 007F491A hands it to the wing. Counted
+                // whether or not the switch is on.
+                if (PendingEntity* node = find_pending(static_cast<int>(entity))) {
+                    ++summary_.spawn_squadron_party_nodes;
+                    node->spawn_squadron_record = true;   // log only: counts its wing
+                    if constexpr (kSpawnNewSquadronPartyCc13Bound) {
+                        node->party = request.party;
+                        node->race = member.race > 0 ? member.race
+                                                     : (request.party == 0 ? 2 : 1);
+                        node->generated_party = true;
+                    }
+                }
             }
         } else {
             if (!attach_created_entity_00928a00(static_cast<int>(entity), record.name,
@@ -4969,6 +5005,7 @@ public:
                     plane.launched_party = node.launched_party;
                 }
                 if (node.launched_record) ++host_.summary_.launched_wing_nodes;
+                if (node.spawn_squadron_record) ++host_.summary_.spawn_squadron_wing_nodes;
                 ++host_.summary_.init_all_wing_marked;
             }
             return;   // the wing append below is retired
@@ -5012,6 +5049,7 @@ public:
                 plane.launched_party = node.launched_party;
             }
             if (node.launched_record) ++host_.summary_.launched_wing_nodes;
+            if (node.spawn_squadron_record) ++host_.summary_.spawn_squadron_wing_nodes;
             host_.pending_entities_.push_back(std::move(plane));  // `node` stays valid
             ++host_.summary_.init_all_wing_appended;
         }
@@ -7026,14 +7064,22 @@ void GameMissionLuaHost::fire_recon_listeners_00980e50(std::size_t u, int old, i
 //  - the +174h id is the host's entity id (unit index + 1), the thisTable key;
 //  - a squadron's +354h is its first resolved member's category, frozen then
 //    (007F4BE8/007F5438 write it once, in the init slot 007F4BA0).
-void GameMissionLuaHost::publish_recon_slot_tables_00806b10() {
-    if (units_hooks_ == nullptr || state_ == nullptr) return;
+// Packet cc13-reconload: `apply` false is a dry run for the load census. It
+// walks the same buckets and counts what would be published, but touches no
+// Lua, no generation, no last-published content, no squadron category cache
+// and no summary counter.
+GameMissionLuaHost::ReconPublishCounts GameMissionLuaHost::publish_recon_slot_tables_00806b10(
+    bool apply) {
+    ReconPublishCounts counts;
+    if (units_hooks_ == nullptr || state_ == nullptr) return counts;
     const GameGunneryHost* gunnery = units_hooks_->gunnery();
-    if (gunnery == nullptr) return;
+    if (gunnery == nullptr) return counts;
     const bsp::ReconSensorPassState& pass = gunnery->recon_sensor_pass_state();
-    if (pass.passes == recon_publish_generation_) return;
-    recon_publish_generation_ = pass.passes;
-    ++summary_.recon_publish_passes;
+    if (pass.passes == recon_publish_generation_) return counts;
+    if (apply) {
+        recon_publish_generation_ = pass.passes;
+        ++summary_.recon_publish_passes;
+    }
 
     auto category_of = [&](std::size_t unit) -> int {
         const int class_id = units_hooks_->unit_class_id(unit);
@@ -7053,7 +7099,7 @@ void GameMissionLuaHost::publish_recon_slot_tables_00806b10() {
             if (member == bsp::kPlaneSquadronNoUnit) break;
             const int category =
                 bsp::recon_publish_category_for_class(units_hooks_->unit_class_id(member));
-            recon_squadron_category_.emplace(unit, category);
+            if (apply) recon_squadron_category_.emplace(unit, category);
             return category;
         }
         return bsp::kReconPublishNoCategory;   // +354h = 13h from 007F2DF6
@@ -7074,12 +7120,12 @@ void GameMissionLuaHost::publish_recon_slot_tables_00806b10() {
             for (const std::size_t unit : triple) {
                 if (bsp::recon_publish_excludes_class_00805de6(
                         units_hooks_->unit_class_id(unit))) {
-                    ++summary_.recon_publish_excluded;
+                    if (apply) ++summary_.recon_publish_excluded;
                     continue;
                 }
                 const int category = category_of(unit);
                 if (category < 0 || category >= static_cast<int>(kCategories)) {
-                    ++summary_.recon_publish_no_category;
+                    if (apply) ++summary_.recon_publish_no_category;
                     continue;
                 }
                 buckets[r][static_cast<std::size_t>(category)].push_back(
@@ -7087,6 +7133,7 @@ void GameMissionLuaHost::publish_recon_slot_tables_00806b10() {
             }
         }
         if (!any_triple) continue;   // no slot rebuilt for this party yet
+        ++counts.slots;
         std::vector<std::uint32_t> content;
         for (std::size_t r = 0; r < buckets.size(); ++r) {
             for (std::size_t c = 0; c < kCategories; ++c) {
@@ -7098,9 +7145,12 @@ void GameMissionLuaHost::publish_recon_slot_tables_00806b10() {
         }
         std::vector<std::uint32_t>& last = recon_published_[static_cast<std::size_t>(party)];
         if (content == last) {
-            ++summary_.recon_publish_unchanged;
+            if (apply) ++summary_.recon_publish_unchanged;
             continue;
         }
+        ++counts.published;
+        counts.entries += content.size();
+        if (!apply) continue;
         last = content;
         ++summary_.recon_publish_slots;
 
@@ -7146,6 +7196,7 @@ void GameMissionLuaHost::publish_recon_slot_tables_00806b10() {
         bsp::pop_recon_global_table_006b8210(instance);
         ::lua_settop(state_, top);
     }
+    return counts;
 }
 
 // Packet cc9_lua_set_ship_speed. 00890D30 SetShipSpeed(entity, speed): argument 0
@@ -11776,10 +11827,12 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.init_all_squadron_ids);
     log_.notef("summary mission script generated entity party (packet "
         "cc9_generated_entity_party, 00944FD0 -> 00928A00): bound=%d nodes=%llu writes=%llu "
-        "launched_party_nodes=%llu launched_wing_nodes=%llu",
+        "launched_party_nodes=%llu launched_wing_nodes=%llu spawn_squadron_party_nodes=%llu "
+        "spawn_squadron_wing_nodes=%llu spawn_squadron_bound=%d",
         kGeneratedEntityPartyBound ? 1 : 0, summary_.generated_party_nodes,
         summary_.generated_party_writes, summary_.launched_party_nodes,
-        summary_.launched_wing_nodes);
+        summary_.launched_wing_nodes, summary_.spawn_squadron_party_nodes,
+        summary_.spawn_squadron_wing_nodes, kSpawnNewSquadronPartyCc13Bound ? 1 : 0);
     log_.notef("summary SEntity::InitAll pass E bound=%d released=%llu",
         kSEntityInitPassEReleaseBound ? 1 : 0, summary_.init_all_holders_released);
     log_.notef("summary SEntity::InitAll pending dedup bound=%d skipped_pending=%llu "

@@ -20666,7 +20666,10 @@ guard's sus_prog.exe refusal where the mission completes. Every plan has `helm_m
 - **What the mission needs** (this installation's `COTP-USN\PRCPUS\usn_15_battle_of_surigao_strait.lua`):
   - Win: Fuso, Yamashiro, Nachi and Ashigara all die (:388-392, :862).
   - Fail: every US ship dies, or a spotted IJN ship comes within 3 km of JapanGoTo (0, 12000) (:847-858).
-  - Only US torpedoes hurt the battleships (GUNNERY_OPEN_ITEMS 269.1 item 4; `took=0.0` on every shell).
+  - Torpedoes are the lever against the battleships. Per GUNNERY_OPEN_ITEMS 266.1 (read from the image), shell
+    blasts are max(0, BlastDamage - armour 130), which is 0 for every US gun. A direct hit does (DamageMin..Max -
+    armour), about 100-120 for 14in and 150-170 for 16in, against about 90000 HP. 269.1 item 4's "took=0.0 on every
+    shell" is the blast rows only.
 - **Old plans on 1e09f61b9** (ref, 90000 frames):
 
   | Plan | Result | Notes |
@@ -20824,3 +20827,36 @@ kamikaze_squadron_drops=0 OFF and ON. Only PRCP06 spawns kamikaze planes (96, lu
 634.97 s, so the reach is thin. No WINS row has kamikaze squadrons. The USN19 (Okinawa) pair had not finished at
 flip time: after 2.5 h, each run had a log over 2 GB. If it finishes, the results are in
 local\pt1_{off,on}_kk_u19.log.
+
+## 324. BSM03/04/05/06 plans, seat-artillery flips; handoff (cc9-helm1, 2026-10-24)
+
+Commits on agent/cc9-helm1: 322d3f8fa (seat flips), 8fce90716 (bsm06_h1_i, bsm03_h1_x8),
+1d208d93d (bsm05_h1_m3), 6d7a99f52 (bsm04_h1_f), a370cc8ff (bsm06_h1_j). Each plan went to
+cc9-lua72 before its commit. All runs: guard logged, unselected=0, role_forced=0, pf=0.
+
+| Row | Plan | ref | 20,3 | default |
+|---|---|---|---|---|
+| BSM04 | bsm04_h1_f | completed 941.89 s | completed 671.96 s | completed 671.96 s |
+| BSM06 | bsm06_h1_i | completed 1518.36 s | lost 1164.01 s (Ford) | completed 1254.10 s |
+| BSM06 | bsm06_h1_j | completed 1518.36 s | completed 1263.11 s | no end by 2000 s (Nagara) |
+| BSM03 | bsm03_h1_x8 | completed 486.00 s | lost (Kane) | lost (Kane) |
+| BSM05 | bsm05_h1_m3 | completed 417.12 s | lost 246.06 s | lost 327.04 s |
+
+- kSeatArtilleryClassSpeedCc13Bound and kSeatArtilleryTriggerRefusalCc13Bound ON (322d3f8fa),
+  paired on 92bc2ae66 on BSM03 c2 (HUD fire) and USN02 l70_u2_b. No WINS outcome moved.
+- A script-selected ship's held main guns are silent, so BSM03/05 use `releasegun` (AI
+  gunners). After a releasegun, the map is up: HUD inputs are lost (screen 2Eh's 005484F0
+  does not run), takehelm stops steering, and closing the map is not hosted. A `select` on the
+  released ship re-holds its guns (BSM05: 0 shots, death at 120 s). `moveto` without select
+  still counts as selected. Quote multi-word unit names on every order line.
+- BSM03: the latched course point decides the route. Of an 8-point sweep around (1350,-2700),
+  three win in ref (x2, x7, x8); all lose in 20,3/default. A held-gun route with the seat
+  switches ON (helm legs, HUD artillery and torpedoes) lost at 306 s to a PT torpedo.
+- BSM05: a 3x3 moveto sweep (start 3600/4000/4400 x three points) wins only in ref. Ford dies
+  to Natsugumo torpedoes, a friendly Parrot torpedo (279 m) or the Fortress's guns.
+- BSM06: ref takeoff trace (BSP_PLANE_GROUND_TRACE) shows no decel on 92bc2ae66. Stock never
+  launches from the Airfield; the h1_i launches all take off at 44-47 m/s.
+- JM04/JM15: finishscript is never due (reported to the lead earlier; unreachable scripts).
+
+Open: BSM03/05 robustness in 20,3/default; BSM06 one plan for all three envs (108 stock is
+the limit). Logs: cc9-helm1\local\h1r_<row>_main_<env>.log; plans in local\h1_b*_*.txt.

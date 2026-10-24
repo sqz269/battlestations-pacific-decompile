@@ -49,6 +49,10 @@ struct FontWrappedLayout {
 bool build_font_wrapped_00aba270_fragment(const FontData& font,
     std::u16string_view transformed_text, const FontWrappedParameters& parameters,
     FontWrappedLayout& output, std::string& error);
+// Same scalar core, borrowing image-aware canonical glyphs and native +14.
+bool build_font_wrapped_00aba270_fragment(const NativeFontResources& font,
+    std::u16string_view transformed_text, const FontWrappedParameters& parameters,
+    FontWrappedLayout& output, std::string& error);
 
 //00aba86d..00aba896 y arithmetic: add offset to an already-normalized vertex y,
 // spill/reload/store through x87. False for nonfinite input/result, output intact.

@@ -139,7 +139,7 @@ std::optional<GuiTextSingleLineContinuation> build_gui_text_single_line_00ab9fd0
     section.range_words_0c[3] = length(text) * 2u; // Actual section+18.
     const float normalized_width = widget.layout().transform.size.width;
     text.measured_width = 0.0f;
-    const auto height = current_font(lifetime, services).data().scaled_height;
+    const auto height = current_font(lifetime, services).scaled_height_14();
     const auto width = container_width(normalized_width, saved_control);
     for (const char16_t* cursor = text.text.c_str(); *cursor; ++cursor) {
         const auto& glyph = current_font(lifetime, services).glyph(*cursor);

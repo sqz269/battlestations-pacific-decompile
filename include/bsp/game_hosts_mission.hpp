@@ -34,6 +34,8 @@
 #include <string>
 #include <vector>
 
+#include "bsp/game_native_mission_units.hpp"
+
 namespace bsp {
 class LocaleTables;
 struct GuiLayoutPage;
@@ -263,6 +265,8 @@ public:
     const GameMissionSummary& summary() const noexcept;
     // Read-only render-capture evidence from the existing simulation owner.
     float simulated_seconds() const noexcept;
+    // Borrow from the current mission frame only; ask again each render frame.
+    GameNativeMissionUnitSource native_render_unit_source() const noexcept;
 
     struct Impl;
 

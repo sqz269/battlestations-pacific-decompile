@@ -140,11 +140,16 @@ std::string ascii_fold(const std::u16string& text, std::size_t limit) {
 // changes. A present but retired/mismatched native association cannot fall back
 // to a semantic copy. Registry descriptors, fonts and actual images stay stable
 // throughout layout/drawing; every GameTextRun must retire before its font.
+const NativeFontResources* borrow_native_font(const FontRegistryOwnedFont* owned) noexcept {
+    if (!owned || !owned->native_resources) return nullptr;
+    const auto* native = owned->native_resources;
+    return native->live() && &native->descriptor() == &owned->descriptor ? native : nullptr;
+}
 const FontData* borrow_font_data(const FontRegistryOwnedFont* owned) noexcept {
     if (owned == nullptr) return nullptr;
     if (const auto* native = owned->native_resources) {
         if (!native->live() || &native->descriptor() != &owned->descriptor) return nullptr;
-        return &native->data();
+        return native->native_image() ? nullptr : &native->data();
     }
     return owned->resources ? &owned->resources->data : nullptr;
 }
@@ -159,7 +164,7 @@ IDirect3DTexture9* borrow_font_sheet(const FontRegistryOwnedFont& owned,
         error = "font has no live canonical native resource association";
         return nullptr;
     }
-    void* const raw = native.data().space_lf_glyph.gfx_texture_18;
+    void* const raw = native.glyph(u' ').gfx_texture_18;
     if (raw == nullptr) return nullptr;
     if ((reinterpret_cast<std::uintptr_t>(raw) & 3u) != 0) {
         error = "font glyph sheet has an unaligned actual owner";
@@ -254,7 +259,7 @@ public:
         owned_ = owner_.fonts.registry().find_font_00ac3570(name);
         owner_.log.implemented("GuiText::find_font", "00ab8c30");
         run_.font_name = name;
-        run_.font_resolved = borrow_font_data(owned_) != nullptr;
+        run_.font_resolved = borrow_native_font(owned_) || borrow_font_data(owned_);
         if (owned_ == nullptr) return nullptr;
         return &owned_->descriptor;
     }
@@ -297,7 +302,8 @@ public:
         run_.wrapped = false;
         std::u16string transformed = transform(text);
         const FontData* font = font_data();
-        if (font == nullptr) {
+        const auto* native = borrow_native_font(owned_);
+        if (!font && !native) {
             run_.error = "no decoded font data for " + run_.font_name;
             return;
         }
@@ -306,8 +312,10 @@ public:
         parameters.width_scale = widget_->font_scale;
         parameters.alignment = static_cast<std::uint32_t>(widget_->align);
         std::string error;
-        if (!build_font_single_line_00ab9fd0_fragment(*font, transformed, parameters,
-                single_, error)) {
+        const bool complete = native
+            ? build_font_single_line_00ab9fd0_fragment(*native, transformed, parameters, single_, error)
+            : build_font_single_line_00ab9fd0_fragment(*font, transformed, parameters, single_, error);
+        if (!complete) {
             run_.error = error;
             return;
         }
@@ -319,7 +327,8 @@ public:
         run_.wrapped = true;
         std::u16string transformed = transform(text);
         const FontData* font = font_data();
-        if (font == nullptr) {
+        const auto* native = borrow_native_font(owned_);
+        if (!font && !native) {
             run_.error = "no decoded font data for " + run_.font_name;
             return;
         }
@@ -333,8 +342,10 @@ public:
         parameters.vertical_alignment =
             static_cast<std::uint32_t>(widget_->vertical_align);
         std::string error;
-        if (!build_font_wrapped_00aba270_fragment(*font, transformed, parameters,
-                wrapped_, error)) {
+        const bool complete = native
+            ? build_font_wrapped_00aba270_fragment(*native, transformed, parameters, wrapped_, error)
+            : build_font_wrapped_00aba270_fragment(*font, transformed, parameters, wrapped_, error);
+        if (!complete) {
             run_.error = error;
             return;
         }
@@ -369,7 +380,9 @@ private:
     // 00a9eba0. The transform happens inside the geometry update, so it is here rather
     // than in the resolver.
     std::u16string transform(const std::u16string& text) {
-        if (owned_ == nullptr || !owned_->descriptor.uppercase_only) return text;
+        if (owned_ == nullptr) return text;
+        const auto* native = borrow_native_font(owned_);
+        if (!(native ? native->uppercase_only_48() : owned_->descriptor.uppercase_only)) return text;
         run_.uppercased = true;
         std::u16string out = text;
         if constexpr (kTextUppercaseCc15Bound) {
@@ -463,13 +476,13 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
     }
 
     const FontRegistryOwnedFont* owned = binding.owned();
+    const auto* native = borrow_native_font(owned);
     const FontData* const decoded = borrow_font_data(owned);
-    if (decoded == nullptr) {
+    if (!decoded && !native) {
         run.error = "font resources retired before glyph geometry";
         ++host.summary.runs_failed;
         return false;
     }
-    const FontData& font = *decoded;
     run.sheet = borrow_font_sheet(*owned, run.error);
     if (run.sheet == nullptr) {
         if (run.error.empty()) run.error = "font " + run.font_name + " has no glyph sheet texture";
@@ -505,7 +518,8 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
     std::array<std::uint16_t, 6> indices{};
     run.quads.reserve(placements.size());
     for (const FontGlyphPlacement& placement : placements) {
-        const FontGlyphData& glyph = select_font_glyph_00ad4480(font, placement.code_unit);
+        const FontGlyphData& glyph = native ? native->glyph(placement.code_unit)
+            : select_font_glyph_00ad4480(*decoded, placement.code_unit);
         FontGeometryParameters parameters;
         parameters.x = placement.x;
         parameters.y = placement.y;
@@ -644,10 +658,10 @@ struct GameNativeTextApplication::Impl {
           buffers{b.widgets, grid.graphics.streams.geometry, b.materials, b.parenting,
               grid.strings, renderer.publication_00f8d394(), b.material_vtable_00d5e520,
               &grid.graphics},
-          shader{buffers, b.configuration_0109cf04},
+          shader{buffers, b.configuration_0109cf04, &b.fonts},
           names{b.widgets, buffers.geometry.actual_owners()},
           font_names{names, b.font_registry, b.fonts, b.constructor.one_00d7a24c},
-          content{b.locale, b.locale_runtime, b.content_comparison, buffers, calls},
+          content{b.locale, b.locale_runtime, b.content_comparison, buffers, calls, &b.fonts},
           nonempty{shader, b.parameters, layouts, b.style, b.fonts, b.blend_factor_00f8be54},
           single{b.fonts, grid.graphics.streams.mapping, buffers.geometry.actual_owners(),
               layouts, b.vertical_scale_00e12fd4},
@@ -801,6 +815,24 @@ GameNativeTextStatus GameNativeTextApplication::submit_utf16(GuiWidgetOwner& own
     std::u16string_view text) {
     return native_text_submit(*impl_, owner, 0x00ab6ab0,
         [&](GuiTextRuntimeImplementation& actual) { actual.submit_utf16_00ab6ab0(text); });
+}
+void GameNativeTextApplication::retire_owned_text(std::unique_ptr<GuiLayoutWidget> layout) {
+    auto& app = *impl_;
+    app.require_entry();
+    if (!layout || layout->transform.parent)
+        throw std::invalid_argument("Native Text retirement requires its sole detached layout allocation");
+    auto& owner = app.binding.widgets.owner(*layout);
+    (void)app.implementation(owner);
+    owner.require_no_active_owned_operation();
+    GameNativeTextEntry guard(app);
+    auto* actual_layout = layout.get();
+    app.children.accept_detached_child(std::move(layout));
+    try {
+        app.children.delete_text_child_virtual4(*actual_layout, 1);
+    } catch (...) {
+        app.record_failure(0x00ab8ee0);
+        throw;
+    }
 }
 GameNativeTextStatus GameNativeTextApplication::resume_after_completed_glyph_child(GuiWidgetOwner& owner) {
     auto& app = *impl_;

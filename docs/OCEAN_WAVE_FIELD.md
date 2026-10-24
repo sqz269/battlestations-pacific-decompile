@@ -4096,3 +4096,153 @@ failures. The guard line is absent because there is no completion.
   squadron in reserve for it, or put it first in the generator's target list.
   - Only then can phase 2 and the C-47s, and therefore the paratrooper switches, be reached.
   - ships62's generator is `local\s62_j8mk.py` (cc9-ships44).
+
+
+## 118. USNOS: the loss is Enterprise torpedoed by the Takao group; plan `p26_os_a` holds to 1675 s; carrier final approaches float at ~80 m (cc9-physics26, 2026-10-24)
+
+The script is `scripts/missions/COTP-USN/us_osumi.lua` (this installation, mtime 2024-10-29).
+
+**Lose condition.**
+- luaCheckObjectives (955) calls luaMissionFailed while primary 1 is active and either all six TroopTrans1-6 are
+  dead or `Mission.BigE` (Enterprise) is dead.
+- luaMissionFailedNew(Mission.JapHQs[1], "Game Over") only uses HQ1 as the camera entity, so `entity="HQ1"` in our
+  summaries does not mean HQ1 fell.
+- At the start of phase 2, luaMoveToPh2 (1619) sends `NavigatorAttackMove(Mission.InitTakao[1], Mission.BigE)`. That
+  is the Takao1 group: Takao1 plus Shima4-7, in formation on Takao1.
+- Primary 1 is completed only in luaReinTime (1735). luaReinTime runs either at the end of the 900 s blockade
+  countdown (luaBlockadeMovieEnd) or once the blockade is cleared (luaReinFadeOut).
+- The win needs all of:
+  - all three JapHQs captured (troops within 1500 m of a neutral HQ);
+  - the reinforcement's FinalTrgs killed (primary 5, ReinDead);
+  - then the nuke sequence.
+
+**The 1099.95 s loss** (`p25i_off_osL` on 802e1d8b9, and again `local\main_osL` on main 14ae38b93, l65_os_c1):
+- Enterprise dies at 1095.79 s, first damage at 1080.88 s. The killer is Shima4, by torpedo (cat 7) from 2.29 km.
+- l65_os_c1 parks Enterprise at (12500, -4000) from frame 300, and the Takao group closes on it from the
+  north-west at about 14 m/s.
+
+Variants (`local\p26_mkos.py`, all on the tree build of 14ae38b93, ref, 36000 frames):
+
+| Plan | Change | End |
+| --- | --- | --- |
+| `p26_os_a` | Enterprise moveto (13500,-9000) at frame 15000 and (15000,-13000) at 19000 | failed 1675.51 s (Enterprise torpedoed by Shima7 at 1672.51 s) |
+| `p26_os_b` | Enterprise 331/339 strikes on Takao1/Shima4/Shima5 every 600 frames from 14000 | failed 1099.95 s (Takao1 dies 1094.04 s; Shima4 still torpedoes at 1080.88 s) |
+| `p26_os_c` | a + b | failed 1585.42 s (Shima7 at 1581.07 s) |
+
+`p26_os_a` meets goal 1: HQ1 is held, and the run goes past 1600 s.
+
+**The carriers still land nothing, and the cause is now visible.**
+- In `main_osa`, Enterprise_sqn01, 02 and 37 queue at Enterprise at 1400.19-1401.19 s.
+- Enterprise is stopped at (14995, -12993) by about step 32000.
+- All three squadrons are alive and still queued at 1672.56 s. When Enterprise dies they re-queue on Reprisal and
+  Lexington.
+- Deck summary for Enterprise: queue=3, records=3, releases=0, landed=0, modes 3=2210.
+- The heads do fly finals: Enterprise_sqn02 enters 5D8 at 1528.32 s and 1619.90 s, and Enterprise_sqn01 at
+  1554.94 s.
+- Every one of those finals ends in the abort state (64C -> 5B8 at 1543.33 s, 1571.16 s and 1635.52 s).
+- The pattern (Enterprise_sqn01, `land final trace` / `land final flight`, 1555-1566 s):
+  - throttle 0, brake 0.197, and speed falls from 98 to 33 m/s (q 3.1 -> 1.04);
+  - the commanded pitch steepens from -0.22 to -0.55, but the live pitch rises from -0.24 to +0.03;
+  - vy goes to about 0 at Y about 80 m;
+  - the first abort trace is at local (x -0.4, y 77.1, z -204.2): 77 m above the deck, 204 m behind it.
+- Enterprise_sqn02's aborts look the same (y 77.9 at z -206.5).
+- The heads stop descending once they are slow, about 80 m above the deck. This is the airfield "float" of
+  SQUADRON_LAND_TASK.md 5n/5o, but on a deck. Airfield3 does land planes in the same run (inserts=2, found=492).
+- Next: find why the live pitch fails to follow `cmd` below q of about 1.5 on the carrier final. Candidates are the
+  5o direction-hold steer with a deck target, a stall or altitude protection, or the deck-height reference. Read
+  game_hosts_units.cpp around 36540-36640 and the 009B1F1D begin steer. Pair any fix on `p26_os_a`.
+
+## 119. Carrier-final float on USNOS: comparison with an airfield final, and handoff (cc9-physics26, 2026-10-24)
+
+Static, from two logs: `local\main_osa.log` (USNOS, plan `p26_os_a`, Enterprise_sqn01 final 1555-1566 s, then
+abort 64C->5B8) and cc9-party1's `local\pt1_off_na_b06.log` (Airfield_sqn06 final 975-985 s, 5D8->5F8->620
+success). Airfield3 in USNOS is not a usable reference: it lands 359 planes but logs no `land final trace` line, so
+it does not fly the 5D8/5F8 final.
+
+| | Airfield_sqn06 (lands) | Enterprise_sqn01 (floats) |
+|---|---|---|
+| 5B8 circle speed before the final | 97.8 m/s, mode 3 | 133.3 m/s, mode 3 |
+| `land begin trace` at A8 ~830 | spd 69.0, `fast=0`, Y 181.9, H 79.7 | spd 100.6, `fast=1`, Y 168.8, H 80.3 |
+| first `land final flight` | spd ~46 vs spd_cmd ~40, q 1.31 | spd 98.0 vs spd_cmd 46.5, q 3.11 |
+| throttle / air brake on the airborne final | thr 0.00-0.28, brk 0.000 throughout | thr 0.000, brk 0.197 from 1556 s to 1563 s, then 0.118, 0.047, 0.039 |
+| live pitch vs `cmd` | tracks within 0.003 (-0.229 vs -0.227) at q 1.02-1.31 | tracks to 1557 s (-0.253 vs -0.245); then -0.190/-0.236 (q 1.68), -0.101/-0.251, -0.043/-0.288, -0.023/-0.344, -0.014/-0.398, +0.030/-0.553 (q 1.04) |
+| vy | about -8 steady | -17.5 at 1557 s, then -10.4, -5.3, -2.1, -1.0, -0.5 |
+| outcome | Y 116 -> 35 over A8 555 -> 199, success | Y levels at about 80 (79.4 at A8 211); the abort trace puts it 77 m above the deck |
+
+Findings:
+1. **The pitch-rate limit and low-q elevator authority are not the term by themselves.** The airfield final holds
+   pitch -0.23 to within 0.003 at q 1.02-1.08, lower than the carrier's q when it diverges (1.68). The divergence
+   starts while the carrier plane is still above spd_cmd and decelerating hard.
+2. **What differs is the entry energy and the air brake.** The carrier squadron flies its 5B8 standby circle at
+   133 m/s (vs 98 m/s), enters the final with `fast=1` at about 100 m/s, and the airborne final (009B1F2C-009B1FDF,
+   `plane_air_brake_mode_2d8 = 1`, game_hosts_units.cpp:36586) answers the 52 m/s overspeed with throttle 0 and the
+   air brake at 0.197 for seven seconds. The airfield plane never uses the brake. The live pitch leaves `cmd` exactly
+   in the braking window and climbs to level while aoa stays near 0, so the nose follows the flight path rather than
+   the command; once the plane is slow, the hold (A8 < 260) asks for -0.55 and gets +0.03.
+3. **The deck reference is a candidate, not shown.** H is 80.3 at the carrier's begin trace (the airfield's is 79.7
+   at the same A8 and falls to 63.7 by A8 677), and the plane levels at Y of about 80, which is far above a
+   carrier deck. I did not establish whether H, the 5o glide pitch P = -atan2(Y-H, m), or something else sets the
+   80 m level. The begin trace stops printing once the final starts, so H during the float is not logged.
+4. Item (3) of the lead's brief: this hinges on image terms that the host transcribes with labelled substitutions.
+   The question for cc13 is below. I did not read the image.
+
+**Question for cc13 (via the lead):**
+(a) In the airborne land-final half (009B1F2C-009B1FDF and the throttle/brake law 0099D300 with +2D8h = 1), does the
+image drive the air brake when the plane is over +2B4h, and does the air-brake channel (or the deceleration) feed a
+pitching moment or a pitch-command change in 007D8470 or the 007D88CB direction hold? The host shows the brake at
+0.197 and the nose rising to level with aoa about 0 while `cmd` goes from -0.24 to -0.55.
+(b) What height does 009B1420's H use for a deck target (approach+30h answering vtable[5Ch](9))? Is it the deck
+height of the moving ship, or a fixed or airfield-style reference? The host logs H = 80.3 for Enterprise at A8 833.
+(c) Is the 5B8 standby circle speed for a carrier holder (133 m/s here) image-faithful, or is the circle flown at
+the carrier's own speed or a fixed loiter speed?
+
+**Next step for the successor:**
+- Log H, P and the brake/pitch every tick from 1550-1570 s on `p26_os_a` (main_osa reproduces it at 1555 s;
+  Enterprise is stopped at (14995, -12993) from 1400 s). Add an `H=` field to `land final trace`.
+- Once cc13 answers, put the indicated term behind an OFF switch and pair it on `p26_os_a` (ref env). Success
+  means a `land final trace` with Y below 30 near the deck and a 620 state for Enterprise_sqn01/02/37, and
+  `releases`/`landed` above 0 on Enterprise's deck line.
+- A cheap discriminator before cc13 answers: a temporary build that holds the brake at 0 on the airborne final.
+  If the float goes away, the brake/pitch coupling is the term; if Y still levels near 80, it is the H reference.
+  This is a diagnostic only, not a flip.
+
+**Lane handoff (cc9-physics26).** My commits: a12180f58 (atktgt flip, section 114), 691b19de2 (CHG06 airborne and
+altitude-draw flips, 115), 8d85ea786 and 29f1ab4f8 (sections 116-117), 5632272b4 (section 118), and this section.
+Open items:
+- JM08 phase 2 needs USTroopTransport 03 dead. It is with cc9-ships63 (section 117).
+- USNOS has no win yet. `p26_os_a` holds the HQ to 1675.51 s. The carrier finals above stop the squadrons landing.
+- The JM08 paratroopers are unreached.
+- `kReleaseTimerNotify0DhBound` is still OFF.
+Plans and logs are in this tree's local\: `p26_os_a/b/c.txt`, `p26_p01_a.txt`, `main_osa.log`, `main_osL.log`.
+
+Lease `p26-doc119` (this doc) is released with this section.
+
+## 120. `kCarrierSiteHasFreeRunwayCc13Bound` (006D0530) is unreached on six carrier rows (cc9-physics27, 2026-10-24)
+
+The switch (cc13 44b94b4b9, OFF) makes a carrier deck's mode-4 landing spacing wait for a free runway: 006D0530
+answers false while an occupant of site+34h lies less than Pilot/Landing/MinFreeRunwayLength along the deck
+(006BCC90 z). `planeglobals.lua:631` (this installation) sets that length to 12 m. The answer is evaluated in both
+modes, and ` site_busy=N` counts the passes where it would zero the spacing: tp < 0.25 FDT, the site not late
+(now - site+40h >= 0.4 FDT) and the deck not free.
+
+Pairs on 44b94b4b9: OFF is the tree build, ON is `local\p27_fr` (`pair_export --flip
+kCarrierSiteHasFreeRunwayCc13Bound=true`). Ref env (`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`), launcher
+`local\p27_pair.ps1`.
+
+| Row (plan) | Carrier decks with mode-4 passes (m4 / site passes / landed) | site_busy | pair_diff |
+| --- | --- | --- | --- |
+| USN01 (`usn01_l69_u1_a`) | Enterprise 77 / 77 / 0 | 0 | gameplay identical; completed 370.03 s, guard logged |
+| BSM01 (`bsm01_s62_b1_h`) | Akagi 806/291/275, Kaga 1664/711/470, Hiryu 1778/776/548, Soryu 1090/402/343, Zuikaku 1147/446/394, Shokaku 1619/636/491 | 0 | gameplay identical; EndMission 821.92 s, guard logged |
+| BSM04 (`l72w_bsm04_h1_f`) | Lexington 673 / 370 / 195 | 0 | gameplay identical; completed 941.89 s |
+| USNOS (`p26_os_a`) | Enterprise 152 / 142 / 0 | 0 | gameplay identical; failed 1675.51 s (as section 118) |
+| ESMP08 (`esmp08_p12_e8_rb`, OFF only) | Zuiho 116/80/36, Chitose 313/128/147 | 0 | - ; completed 1284.28 s |
+| IJN18 (`l71_i18_s`, OFF only) | Bogue1-4: no mode-4 passes (l71r's Bogue3 landings did not recur) | 0 | - ; EndMission 1791.62 s |
+
+Verdict: **unreached**. Over about 3,700 carrier site passes, with 2,900 planes landed on carrier decks, no pass
+found a deck occupant inside the 12 m free-runway margin while the site was not late. The switch stays OFF, recorded
+as unreached; flipping it changes nothing on these rows. A plausible reason (not shown): a plane that touches down is
+inside the margin only during the first 0.4 FDT after its touchdown, when the site is late anyway and the spacing is
+zeroed by the other term.
+
+Note: `local\main_osa.log` is now this pair's OFF run. physics26's log of the same name (sections 118-119) was
+copied first to `local\p26_main_osa.log`.

@@ -1036,31 +1036,46 @@ bool GameDeviceHost::clear_and_present(unsigned long long mission_frame, float s
     log_.implemented("RendererHost::clear_and_present", "00b2b200/00b21430/00b2f4a0");
     const bool mission_ship = mission_frame != 0 && renderer_.mission_ship_enabled();
     if (mission_ship) renderer_.prepare_mission_ship();
-    renderer_.begin_frame(kMilestoneClearColor);
     // Packet cc9_d3d_recreate_holders. The renderer's 00B29670 fallback can
     // replace the device inside begin_frame; this bridge follows it. The sprite
     // bridge's textures (the frontend and font hosts) were created on the old
     // device and are not rebuilt, so the overlay is retired rather than drawn
     // with foreign textures (a d3d9 access violation, docs/D3D_DEVICE_LOST.md 6).
-    if (IDirect3DDevice9* const current = renderer_.device(); current != device_) {
-        device_ = current;
-        if (overlay_) {
-            overlay_ = nullptr;
-            log_.note("sprite bridge retired: the device was recreated and its textures "
-                      "belong to the previous device");
+    const auto after_begin = [&] {
+        if (IDirect3DDevice9* const current = renderer_.device(); current != device_) {
+            device_ = current;
+            if (overlay_ || native_mission_overlay_) {
+                overlay_ = nullptr;
+                native_mission_overlay_ = nullptr;
+                log_.note("frontend overlays retired: the device was recreated and their textures "
+                          "belong to the previous device");
+            }
         }
-        if (device_ == nullptr) return false;
-    }
-    if (mission_ship) renderer_.draw_mission_ship(mission_frame, simulated_seconds);
-    if (overlay_) overlay_(*device_);
+        return device_ != nullptr;
+    };
     // Diagnostic frontend capture before native EndFrame. Later native debug,
     // XLive and clear-request work can change the finally presented pixels.
-    if (capture_) {
-        std::function<void(IDirect3DDevice9&)> capture = std::move(capture_);
-        capture_ = nullptr;
-        capture(*device_);
+    const auto overlay_and_capture = [&] {
+        if (overlay_) overlay_(*device_);
+        if (capture_) {
+            std::function<void(IDirect3DDevice9&)> capture = std::move(capture_);
+            capture_ = nullptr;
+            capture(*device_);
+        }
+    };
+    const auto native_overlay_and_capture = [&] {
+        if (native_mission_overlay_) native_mission_overlay_();
+        overlay_and_capture();
+    };
+    NativeRendererPresentObservation present{};
+    if (!mission_ship || !renderer_.run_mission_render_frame(mission_frame, simulated_seconds,
+        kMilestoneClearColor, after_begin, native_overlay_and_capture, present)) {
+        renderer_.begin_frame(kMilestoneClearColor);
+        if (!after_begin()) return false;
+        if (mission_ship) renderer_.draw_mission_ship(mission_frame, simulated_seconds);
+        overlay_and_capture();
+        present = renderer_.end_frame();
     }
-    const auto present = renderer_.end_frame();
     if (!present.returned) {
         ++presents_skipped_;
         log_.note("native frame skipped Present");
@@ -1078,6 +1093,9 @@ bool GameDeviceHost::clear_and_present(unsigned long long mission_frame, float s
 void GameDeviceHost::set_overlay(std::function<void(IDirect3DDevice9&)> overlay) {
     overlay_ = std::move(overlay);
 }
+void GameDeviceHost::set_native_mission_overlay(std::function<void()> overlay) {
+    native_mission_overlay_ = std::move(overlay);
+}
 
 void GameDeviceHost::request_capture(std::function<void(IDirect3DDevice9&)> capture) {
     capture_ = std::move(capture);
@@ -1085,6 +1103,7 @@ void GameDeviceHost::request_capture(std::function<void(IDirect3DDevice9&)> capt
 
 void GameDeviceHost::release() {
     overlay_ = nullptr;
+    native_mission_overlay_ = nullptr;
     capture_ = nullptr;
     // The renderer composition retains the real COM reference through native
     // teardown and its later diagnostic AddRef/Release pairs.
@@ -1849,13 +1868,14 @@ void GameStartupHost::exit_if_native_fonts_interrupted() noexcept {
 
 void GameStartupHost::retire_native_fonts_before_drain() noexcept {
     if (!fonts_) return;
-    // Current frontend owns sprite/CPU Text borrowers, not a bound native Text
-    // factory. A future native factory must survive until its fonts retire.
+    // End frontend borrowers first. The optional native Text factory remains
+    // alive through Font retirement and the following shared renderer drain.
     if (frontend_) {
         try { log_.note("native fonts cannot retire while the frontend still borrows them"); log_.close(); }
         catch (...) {}
         std::_Exit(1);
     }
+    retire_native_gui_text_before_fonts();
     try { fonts_->retire_native_fonts(); }
     catch (...) {
         exit_if_native_fonts_interrupted();
@@ -1913,10 +1933,19 @@ void GameStartupHost::close_native_shadow_after_drain() noexcept {
     }
 }
 
+void GameStartupHost::exit_if_native_gui_resources_retained() noexcept {
+    if (!frontend_ || !frontend_->native_gui_resources_require_process_retention()) return;
+    try { log_.note("native GUI resource graph remains live; retaining frontend/renderer/VFS owners until process exit"); log_.close(); }
+    catch (...) { std::fputs("bsp_game: native GUI resources require process retention\n", stderr); }
+    std::_Exit(1);
+}
+
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_gui_resources_retained();
     exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
+    exit_if_native_gui_text_incomplete();
     exit_if_native_shadow_incomplete();
     if(settings_host_&&settings_host_->requires_process_retention()) {
         try{log_.notef("native settings loader interrupted at %08x; retaining actual settings/catalog/VFS/renderer graph",settings_host_->failure_site());log_.close();}
@@ -1938,7 +1967,10 @@ GameStartupHost::~GameStartupHost() {
     delete frame_host_;
     // The sprite bridge holds textures created on the device, so it goes before the
     // device and before the font host whose registry its pages reference.
-    if (device_) device_->set_overlay(nullptr);
+    if (device_) {
+        device_->set_native_mission_overlay(nullptr);
+        device_->set_overlay(nullptr);
+    }
     delete menu_;
     delete frontend_;
     frontend_ = nullptr;
@@ -1953,6 +1985,7 @@ GameStartupHost::~GameStartupHost() {
         if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
     }
     close_native_gui_probe_after_drain();
+    close_native_gui_text_after_drain();
     close_native_shadow_after_drain();
     close_native_platform_after_drain();
     if (input_) {
@@ -2054,6 +2087,7 @@ void GameStartupHost::game_explorer_release() {
 void GameStartupHost::exit_process(int code) {
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
+    exit_if_native_gui_text_incomplete();
     exit_if_native_shadow_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
@@ -2717,6 +2751,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // Borrow the SAME native renderer/VFS/cache domain. Font images and the
     // sole decoded DAT allocations now belong to the actual native producer.
     fonts_ = new GameFontHost(log_, *vfs_, *scripts_, *native_renderer_);
+    if (GameNativeGuiRenderApplication::text_requested()) fonts_->enable_native_font_images();
 
     // Phase 7, 0073e13c: the whole of 0073bae0 through its reconstruction, which loads the
     // font descriptors, forces the fingerprint payload, creates the GUI manager and walks
@@ -2725,8 +2760,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // page scripts. Evidence: docs/APP_INIT_FONTS_GUI.md.
     frontend_ = new GameFrontendHost(log_, *vfs_, *scripts_, *fonts_, *device_->device(),
         platform_->widescreen, gui_sse2_conversion());
+    frontend_->bind_native_gui_resources(*native_renderer_);
     frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
         settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));
+    initialize_native_gui_render();
     // 0073E14B follows the retail-stubbed After InitGui checkpoint. Borrow the
     // canonical host cell and its shared raw lifetime domain; an earlier
     // diagnostic path may already have made this warm.
@@ -2759,6 +2796,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             native_gui_probe_->retire_caller_references();
         } catch (...) {
             exit_if_native_gui_probe_incomplete();
+            exit_if_native_gui_text_incomplete();
             throw;
         }
     }
@@ -2768,8 +2806,16 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         std::uint32_t word58;
         std::memcpy(&word58, const_cast<const std::uint8_t*>(settings + 0x58), sizeof word58);
         native_renderer_->configure_mission_ship(*input_runtime_, require_frame_clock_context(),
-            NativeRenderResourceInitArguments{settings[0x8c], settings[0x8d], word58});
+            NativeRenderResourceInitArguments{settings[0x8c], settings[0x8d], word58}, [this] {
+                const auto* mission = menu_ ? menu_->mission() : nullptr;
+                return mission ? mission->native_render_unit_source() : GameNativeMissionUnitSource{};
+            });
+        native_renderer_->bind_mission_startup_random(*random_threads_);
     }
+    if (native_gui_render_)
+        native_renderer_->register_mission_prepare_callback(this, [](void* owner) {
+            static_cast<GameStartupHost*>(owner)->prepare_native_gui_text_resources();
+        });
     summary_.fonts_loaded = fonts_->registry().fonts().size();
     summary_.font_resource_opens = fonts_->resource_opens();
     summary_.fingerprint_defined_bytes = fonts_->fingerprint().defined_size();
@@ -2874,6 +2920,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         device_->set_overlay([frontend_host](IDirect3DDevice9& device) {
             frontend_host->draw_bridge(device);
         });
+        if (native_gui_render_)
+            device_->set_native_mission_overlay([this] { draw_native_gui_text_mission_overlay(); });
     }
 
     // The Init tail and the front end, for the run summary.
@@ -2958,6 +3006,7 @@ void GameStartupHost::application_shutdown() {
     exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
+    exit_if_native_gui_text_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
@@ -3046,9 +3095,17 @@ void GameStartupHost::application_shutdown() {
         summary_.text_quads = frontend.text_quads;
     }
     // The menu host holds the front-end host by reference, so it goes first.
-    if (device_) device_->set_overlay(nullptr);
+    if (device_) {
+        device_->set_native_mission_overlay(nullptr);
+        device_->set_overlay(nullptr);
+    }
     delete menu_;
     menu_ = nullptr;
+    // End native widget borrowers before retiring the manager's texture
+    // credits. The same Text factory still survives Font retirement/drain.
+    retire_native_gui_text_before_fonts();
+    try { if (frontend_) frontend_->retire_native_gui_resources(); }
+    catch (...) { exit_if_native_gui_resources_retained(); std::_Exit(1); }
     delete frontend_;
     frontend_ = nullptr;
     retire_native_fonts_before_drain();
@@ -3081,9 +3138,11 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_native_gui_resources_retained();
     exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
+    exit_if_native_gui_text_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
@@ -3096,6 +3155,7 @@ void GameStartupHost::destroy_singleton_lifetime_manager() {
     if (native_renderer_) native_renderer_->drain_singletons();
     else singletons_->shutdown();
     close_native_gui_probe_after_drain();
+    close_native_gui_text_after_drain();
     close_native_platform_after_drain();
     if (lua_services_)
         log_.notef("native Lua after raw singleton drain: fundamentals=%s getters=%u",

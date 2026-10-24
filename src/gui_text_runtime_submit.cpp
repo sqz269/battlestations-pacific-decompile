@@ -117,7 +117,7 @@ GuiTextSubmitResult submit_gui_text_ellipsis_00abb000(GuiTextLifetime& lifetime,
     frame->converted = convert_source(source, localize, services);
     auto& font = services.content.nonempty.fonts.resolve(text.font);
     auto& locale = services.content.content;
-    frame->clipped = ellipsize_gui_text_00ab8f00(text, font.data(),
+    frame->clipped = ellipsize_gui_text_00ab8f00(text, font,
         locale.locale, locale.locale_runtime, frame->converted, width);
     const auto view = std::u16string_view(frame->clipped);
     return submit(std::move(frame), view);

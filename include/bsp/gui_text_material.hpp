@@ -4,6 +4,7 @@
 
 namespace bsp {
 class GuiTextLifetime;
+class NativeFontResourceOwners;
 
 // Complete00B19210 valid-storage sequence. ECX material, stack actual effect,
 // RET4. Publish/retain new before release old, reload effect before dirty+B4,
@@ -36,6 +37,7 @@ struct GuiTextShaderServices {
     GuiTextBufferServices& buffers;
     // SAME live pointer global; signed DWORD+28 is read only without override.
     void* const volatile& configuration_0109cf04;
+    NativeFontResourceOwners* fonts{}; // Same canonical font domain, when bound.
 };
 
 // Complete00AB8CE0 supported normal path, ECX Text/no stack/RET/AL attempted.

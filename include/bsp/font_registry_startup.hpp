@@ -5,6 +5,7 @@
 
 namespace bsp {
 class NativeFontResources;
+class NativeFontResourceOwners;
 
 // Required native00ad4c30 boundary. Bind the existing stream resource loader
 // to the application's live device, D3DX imports, VFS and mip setting. A true
@@ -55,6 +56,11 @@ public:
     // Font identity remains stable across appends. A failed appended font has
     // null resources; callers must check it. Valid until owner destruction.
     const FontRegistryOwnedFont* find_font_00ac3570(const std::string&) const noexcept;
+    // Image mode delegates semantic selection to the same native registry/list
+    // used by Text. This aggregate only maps the selected descriptor identity
+    // back to its custody row; it never compares descriptor names in this arm.
+    void use_native_image_lookup_00ac3570(NativeFontResourceOwners&);
+    void clear_retired_image_lookup(const NativeFontResourceOwners&);
 
     // ECX registry; stack(root, descriptor, language_path); native RET0Ch.
     // Fresh mask1 Lua owner with cached fundamentals, runtime DoFile and VFS
@@ -96,6 +102,8 @@ private:
     FontRegistry registry_;
     std::vector<std::unique_ptr<FontRegistryOwnedFont>> fonts_;
     FontRegistryStartup** publication_{};
+    const NativeFontResourceOwners* native_image_lookup_{}; // Borrowed, no release.
+    bool native_image_lookup_selected_{};
 };
 
 // Getter007371d0: cdecl/no args natively, EAX registry, plain RET. `published`

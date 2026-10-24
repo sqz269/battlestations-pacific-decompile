@@ -214,7 +214,7 @@ GuiTextContentContinuation prepare_gui_text_content_00aba8d0_fragment(
     std::u16string copied(input); //004C8DD0 at00ABA8FA, separate owned wrapper
     auto& text = binding.text;
     if (!text.font) throw std::logic_error("Text content has no live font descriptor");
-    if (text.font->uppercase_only) {
+    if (e.fonts ? e.fonts->resolve(text.font).uppercase_only_48() : text.font->uppercase_only) {
         //00ABA91C/00A9EC30: repeat this even after ellipsis already uppercased.
         //The current sidecar mapping is not assumed to be idempotent.
         for (char16_t& code_unit : copied)

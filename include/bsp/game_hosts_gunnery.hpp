@@ -77,6 +77,7 @@
 #include <vector>
 
 #include "bsp/gun_aiming.hpp"
+#include "bsp/camera_projection.hpp"
 #include "bsp/gun_pending_timers.hpp"
 #include "bsp/ordnance_kinds.hpp"
 #include "bsp/gun_platform_arc.hpp"
@@ -1014,6 +1015,18 @@ struct GameGunnerySummary {
 };
 
 // The gun chain for one mission run, owned for the whole run.
+// Borrowed immutable asset metadata from the same cache that supplies firing.
+// mesh remains valid while this host/cache lives; no gun pose is stored here.
+struct GameDeviceVisualMetadata {
+    std::size_t unit_index{};
+    int platform_key{};
+    int device_class{-1};
+    const std::string* mesh{};
+    std::size_t hierarchy_items{};
+    bool source_loaded{};
+    bool mount_known{};
+};
+
 class GameGunneryHost {
 public:
     GameGunneryHost(GameHostLog& log, GameUnitsHost& units, GameMissionLuaHost& lua);
@@ -1168,6 +1181,16 @@ public:
     void pop_deferred_hit_back();
 
     const std::vector<GameGunRow>& guns() const noexcept;
+    // Render-only read seam. A nonnull empty Mesh is an authored meshless
+    // device; null Mesh means its existing asset-cache provider is absent.
+    bool device_visual_metadata(std::size_t gun_index,
+        GameDeviceVisualMetadata& out) const noexcept;
+    // Recompute one original hierarchy item's current world matrix from the
+    // SAME cached authored hierarchy, live gun angles/mount and unit_pose as
+    // firing. No persistent pose, firing counter or diagnostic is changed.
+    // False leaves no usable output; never substitute an identity matrix.
+    bool device_visual_node_world(std::size_t gun_index,
+        std::size_t hierarchy_item, bsp::CameraMatrix& out) const;
     // Packet cc8_ship_ai_firepower_inputs: the gun indices 00956C20 put in one
     // unit's category list, in insertion order. The ship AI's firepower host
     // walks these where the image walks the list at unit+398h + category*0Ch.

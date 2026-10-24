@@ -46,9 +46,10 @@ public:
     struct PendingProperties {
         NativeLuaReaderStorage& reader;
         NativeLuaStateStorage& lua_owner;
+        NativeLuaServiceBindings& lua_services; // SAME script/reader service domain
     };
     // Only at the normal AC6806/EH5 boundary, with SAME reader/Lua still live.
-    // Future genuine tail MUST independently guard the entire borrowed graph
+    // Properties tail MUST independently guard the entire borrowed graph
     // before this borrow and through its actual reader teardown/Lua close.
     PendingProperties borrow_for_properties_tail();
 private:

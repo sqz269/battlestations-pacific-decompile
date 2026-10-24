@@ -2,9 +2,11 @@
 
 #include "bsp/native_gui_media_focus_lifetime.hpp"
 #include "bsp/native_singleton_vector_registration_wrappers.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 
 #include <cstdlib>
 #include <cstring>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -18,6 +20,9 @@ void* pointer(Word value) noexcept { return reinterpret_cast<void*>(value); }
 void* at(void* base, Word offset) noexcept { return pointer(address(base) + offset); }
 volatile Word& word(void* base, Word offset = 0) noexcept {
     return *static_cast<volatile Word*>(at(base, offset));
+}
+const volatile Word& word(const void* base, Word offset = 0) noexcept {
+    return *static_cast<const volatile Word*>(pointer(address(base) + offset));
 }
 void validate(bool valid) {
     if (!valid) _invalid_parameter_noinfo();
@@ -41,6 +46,49 @@ void insert_at(void* vector, Word position, void* page) {
         result_iterator, vector, pointer(position), &page);
 }
 } // namespace
+
+void* find_native_gui_page_00aa3140(void* manager, const void* requested_name,
+    NativeGuiPageLookupBindings& bindings) {
+    void* const vector = at(manager, 0x14);
+    Word cursor = word(vector, 4); // AA3146, native ESI.
+    validate(cursor <= word(vector, 8));
+    for (;;) {
+        const Word end = word(vector, 8); // AA3158, before current begin.
+        validate(word(vector, 4) <= end);
+        // Native CMP EBX,EBX at3165 is an always-equal container check.
+        if (cursor == end) return nullptr;
+        validate(cursor < word(vector, 8));
+        void* const page = pointer(word(pointer(cursor)));
+        const Word profile = word(page); // AA317E, CURRENT receiver/profile.
+        const auto* const table = bindings.current_page_table(page, profile);
+        if (!table)
+            throw std::logic_error("Raw Page lookup requires its actual current table");
+        const Word target = table[0x7c / 4];
+        const void* const name = target == 0x00ac3fa0u
+            ? gui_widgets_cc13::gui_layer_name_00ac3fa0(page)
+            : bindings.call_page_name_7c(page, target);
+        const Word actual_length = word(name); // AA3185 BEFORE incoming length.
+        const Word requested_length = word(requested_name);
+        bool equal = false;
+        if (actual_length == requested_length) {
+            if (actual_length == 0) {
+                equal = requested_length == 0;
+            } else if (requested_length != 0) {
+                const auto* const incoming_data =
+                    reinterpret_cast<const char*>(word(requested_name, 4));
+                const auto* const actual_data =
+                    reinterpret_cast<const char*>(word(name, 4));
+                equal = _stricmp(actual_data, incoming_data) == 0;
+            }
+        }
+        if (equal) {
+            validate(cursor < word(vector, 8)); // AA31CB, AFTER callback/compare.
+            return pointer(word(pointer(cursor))); // AA31D5: reload slot, not page.
+        }
+        validate(cursor < word(vector, 8)); // AA31BC, before advancing.
+        cursor += 4;
+    }
+}
 
 void remove_native_gui_page_pointer_00aa30c0(void* manager, void* page) {
     void* const vector = at(manager, 0x14);

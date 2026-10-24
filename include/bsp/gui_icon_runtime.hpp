@@ -75,6 +75,18 @@ struct GuiIconStateTextureConstants {
     const volatile double& width_divisor_00cec380;
     const volatile double& height_divisor_00cef1b8;
 };
+// Optional raw-native composition over this SAME derived state/base owner.
+// All three callbacks must be supplied together. This capability bypasses the
+// GeneratedInstanceGeometry arm completely; it does not make a LogicalTexture
+// view or another native widget/model/reference domain. The provider retains
+// actual acquisitions and authenticates the canonical raw widget lifetime.
+struct GuiIconNativeGeometryServices {
+    std::function<void()> construct_and_associate74;
+    std::function<void(GuiIconWidget&)> rebuild_00ab3cb0;
+    // Runs before derived fields/texture references die. It must reject live
+    // material borrowers or interrupted operations; destruction cannot throw.
+    std::function<void()> before_runtime_destruction;
+};
 struct GuiIconRuntimeServices {
     const bool& crt_sse2_conversion; // required live0109EEA4 alias
     GuiGeometryRuntimeServices geometry;
@@ -85,6 +97,7 @@ struct GuiIconRuntimeServices {
     // Required only by reached00AB2690/00AB27A0 constant reads. All aliases
     // remain live across texture callbacks; there are no numeric fallbacks.
     const GuiIconStateTextureConstants* state_texture_constants{};
+    GuiIconNativeGeometryServices native_geometry;
 };
 // Owns Icon-derived fields and every state texture reference over the existing
 // base layout. Base reader/children must finish BEFORE read_properties; the

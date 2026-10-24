@@ -31,6 +31,9 @@ public:
     // the recovered order instead of this class choosing one. initialize keeps the
     // milestone-2a entry point and is the two calls in that order.
     void initialize(const std::string& language_font_path);
+    // Select the image-shaped Font producer before the sole descriptor load.
+    // The default typed producer remains unchanged unless explicitly selected.
+    void enable_native_font_images();
     //00ac3910 with (root, descriptor, language path), the argument order the callee sees.
     void load_descriptors_00ac3910(const std::string& root, const std::string& descriptor,
         const std::string& language_font_path);

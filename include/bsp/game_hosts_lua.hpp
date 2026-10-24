@@ -146,6 +146,28 @@ static_assert(!kLaunchedSquadronPartyCc13Bound || kGeneratedEntityPartyBound,
               "kLaunchedSquadronPartyCc13Bound uses the generated-entity party write");
 static_assert(!kLaunchedSquadronPartyCc13Bound || kGeneratedWingPartyBound,
               "kLaunchedSquadronPartyCc13Bound uses the generated wing party copy");
+// Packet cc13-spawnsq (cc13-esmp01party). SpawnNew's member create 009483D0
+// picks its arm at 00948519 (class vtable+18h(6)): a ship takes vtable+28h(0)
+// (00948529), anything else operator new + 007F2C60 (00948538..00948563).
+// Both arms join at 0094859D, and 00948692..009486BF builds the member bag
+// (00922E20) and stores it at entity+0C0h for either arm. The bag is 009420A0's:
+// Party = the request's party (009420AC), Race = 2 for party 0 else 1
+// (009420B9..009420C1), with 00944210's 0043D8F0 merging the member table
+// over it. Pass A reads a squadron's bag `Party` through 00927050's kind-1 arm
+// (00928A1E; PROVISIONAL for this caller, by analogy with 006C5050's launched
+// squadron), and 007F491A copies the squadron's descriptor to each wing plane.
+// The host's surface arm writes the node's party/race; its plane-squadron arm
+// wrote none, so a SpawnNew squadron and its wing had no thisTable Party and
+// commandhelpers.lua:330 indexed recon[nil] once one was selected (ESMP01,
+// "D3A Val #1.6"). True: the plane arm's pending node takes party, race and
+// generated_party as the surface arm does, and the wings follow through
+// kGeneratedWingPartyBound. False: no Party, as before (counted:
+// spawn_squadron_party_nodes, spawn_squadron_wing_nodes).
+inline constexpr bool kSpawnNewSquadronPartyCc13Bound = false;
+static_assert(!kSpawnNewSquadronPartyCc13Bound || kGeneratedEntityPartyBound,
+              "kSpawnNewSquadronPartyCc13Bound uses the generated-entity party write");
+static_assert(!kSpawnNewSquadronPartyCc13Bound || kGeneratedWingPartyBound,
+              "kSpawnNewSquadronPartyCc13Bound uses the generated wing party copy");
 
 inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 8)
 
@@ -218,6 +240,22 @@ inline constexpr bool kLuaReconListenersBound = true;  // ON: pairs held (docs/L
 // its recon triples after each recon pass. False: the maps stay the empty shell
 // 00803A40 built, and every luaGetShipsAround* query answers empty.
 inline constexpr bool kReconPublishBound = true;  // ON: pairs held (docs/RECON_PUBLICATION.md section 4)
+// Packet cc13-reconload: the scene load's recon refresh. 004DFB70 creates all
+// three slots (004E0535..004E0544, 008053C0(0..2); 008050E0 stores +25h = 1 in a
+// new slot) and then calls 00807A50 BSP_Recon_ForceRefreshNow at 004E0546, whose
+// 008079B0 rebuilds each slot (008073C0) and, +25h being set, publishes it
+// (00806B10), before luaStageInit at 004E0C3C. So luaInit reads filled recon
+// tables (ijn_30_finale.lua:258 flips recon[PARTY_ALLIED].own.landfort to the
+// Japanese). The InitAll call 00926370 is not a load point: every scene-load
+// InitAll call passes CL = 0 (0046737A, 0046EB4B, 0046EB88, 0046EBC6, 0046ED0F).
+// True: right after the host's load recon pass (004E059B, which rebuilds every
+// side's triples) the tables are published once. LABELLED: the image's
+// 004E0546 rebuild and its 004E059B rebuild of the local slot are one host pass
+// (no time passes between them). False: the first publication is the first
+// frame's, after luaInit.
+inline constexpr bool kReconLoadForceRefreshCc13Bound = false;
+static_assert(!kReconLoadForceRefreshCc13Bound || kReconPublishBound,
+              "kReconLoadForceRefreshCc13Bound publishes through 00806B10");
 
 // Packet cc9_recon_level_step_check (docs/LUA_BINDING_MISSION.md, "Why LOMP06's
 // seaplane listener was silent"). 008073C0 resets every record at each pass
@@ -1337,6 +1375,8 @@ struct GameMissionLuaSummary {
     unsigned long long generated_party_writes{0};
     unsigned long long launched_party_nodes{0};   // packet cc13-lsqparty
     unsigned long long launched_wing_nodes{0};    // packet cc13-lsqparty2
+    unsigned long long spawn_squadron_party_nodes{0};   // packet cc13-spawnsq
+    unsigned long long spawn_squadron_wing_nodes{0};    // packet cc13-spawnsq
     // 0094C480 / 00949750 / 0094C490. docs/LUA_SPAWN_NEW_HOST.md.
     unsigned long long spawn_new_calls{0};       // tables the binding accepted
     unsigned long long spawn_new_rejected{0};    // argument 1 was not a table
@@ -1883,7 +1923,15 @@ public:
     void dispatch_recon_listeners_00980e50();
     // 00980E50's per-change body: every matching `recon` callback with (unit, old, new, party).
     void fire_recon_listeners_00980e50(std::size_t unit, int old, int level, int party);
-    void publish_recon_slot_tables_00806b10();
+    // Per call: parties with a rebuilt slot, parties published (content changed),
+    // and the entries those publications carry. `apply` false is the dry run of
+    // packet cc13-reconload's load census (no Lua or state touched).
+    struct ReconPublishCounts {
+        int slots{0};
+        int published{0};
+        std::size_t entries{0};
+    };
+    ReconPublishCounts publish_recon_slot_tables_00806b10(bool apply = true);
     void dispatch_hit_listeners_00988510();
     // Packet cc9_set_invincible_native. 00897A50 SetInvincible, always bound: the
     // gunnery host's setter stores unit+150h and every reader of it is gated on
@@ -2036,6 +2084,9 @@ public:
     // has no `VehicleClass` row by construction.
     // docs/SCENE_STATIONARY_UNITS.md.
     bool stationary_class_exists(const std::string& name);
+    // Read one installed StationaryClass[name] string without running a chunk.
+    // Empty on an absent/non-string field; restores the live Lua stack.
+    std::string read_stationary_class_string(const std::string& name, const char* key);
 
     int run_is_ready_to_send_planes_00895d20(lua_State* state, int argument_count);
     // Packet cc9_lua54_prcp01: 008B2320/008B24A0 and 008B25F0/008B2770.
@@ -2354,6 +2405,9 @@ private:
         // Log only, set whatever the switch: the node is an air-ops launched
         // squadron with a record party (counts its wing planes).
         bool launched_record{false};
+        // Log only, set whatever the switch: the node is a SpawnNew plane
+        // squadron (packet cc13-spawnsq; counts its wing planes).
+        bool spawn_squadron_record{false};
         std::size_t units_before{0};
         // The unit count right after this squadron's creator returned: its wing
         // is [units_before, units_end). A later creation before InitAll (the

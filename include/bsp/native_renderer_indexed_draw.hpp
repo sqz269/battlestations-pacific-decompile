@@ -18,6 +18,62 @@ struct NativeRendererIndexedDrawContext {
     const volatile std::uint32_t* actual_logical_vertex_profile_00d61d6c;
 };
 
+enum class NativeRendererIndexedDrawTerminal : std::uint8_t {
+    skippedInhibited,
+    skippedLost,
+    skippedEmpty,
+    skippedStreamCount,
+    deviceCalled
+};
+
+struct NativeRendererIndexedDrawObservation {
+    void* actual_renderer = nullptr;
+    void* actual_device = nullptr;
+    std::uint32_t primitive_type = 0;
+    std::uint32_t minimum_vertex = 0;
+    std::uint32_t vertex_count = 0;
+    std::uint32_t start_index = 0;
+    std::uint32_t primitive_count = 0;
+    std::int32_t base_vertex = 0;
+    std::uint32_t inhibit = 0;
+    std::uint8_t lost = 0;
+    const void* logical_stream = nullptr;
+    std::uint32_t logical_count = 0;
+    std::uint32_t logical_tag = 0;
+    NativeRendererIndexedDrawTerminal terminal =
+        NativeRendererIndexedDrawTerminal::skippedInhibited;
+    std::int32_t returned_hresult = 0;
+};
+
+// Observations borrow all identities. Fields whose native read boundary was
+// not reached stay zero: lost follows the inhibit gate, logical fields follow
+// the empty-count gate, and device/base/HRESULT are valid only for deviceCalled.
+// With an observer, a nonnull logical stream's tag is also read after its native
+// count query. Callbacks run after native guard completion on normal returns.
+using NativeRendererIndexedDrawObserver = void (*)(
+    const NativeRendererIndexedDrawObservation&, void* userdata) noexcept;
+
+// Thread-local, nestable diagnostic scope. A null callback adds no raw reads,
+// logging, or device operations; the original draw result remains ignored.
+class NativeRendererIndexedDrawObserverScope final {
+public:
+    explicit NativeRendererIndexedDrawObserverScope(
+        NativeRendererIndexedDrawObserver, void* userdata = nullptr) noexcept;
+    ~NativeRendererIndexedDrawObserverScope() noexcept;
+    NativeRendererIndexedDrawObserverScope(
+        const NativeRendererIndexedDrawObserverScope&) = delete;
+    NativeRendererIndexedDrawObserverScope& operator=(
+        const NativeRendererIndexedDrawObserverScope&) = delete;
+    NativeRendererIndexedDrawObserverScope(
+        NativeRendererIndexedDrawObserverScope&&) = delete;
+    NativeRendererIndexedDrawObserverScope& operator=(
+        NativeRendererIndexedDrawObserverScope&&) = delete;
+
+private:
+    NativeRendererIndexedDrawObserver previous_observer_;
+    void* previous_userdata_;
+};
+
 // Complete B24010..B2415B. Original ECX renderer; stack primitive type,
 // minimum vertex, vertex count, start index, primitive count; RET14h.
 // Inhibit1D90/lost1D8A gates precede viewport1904 read and optional guard.

@@ -43,6 +43,8 @@ class LocaleTables;
 
 namespace bsp::game {
 
+class GameNativeRendererApplication;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptHost;
@@ -159,6 +161,15 @@ public:
         GameFontHost& fonts, IDirect3DDevice9& device, bool widescreen,
         const bool& gui_sse2_conversion);
     ~GameFrontendHost();
+
+    // BSP_NATIVE_GUI_RESOURCES: borrow the application's SAME ready native
+    // renderer before initial startup. The existing manager slots borrow the
+    // returned references; this binding owns them until explicit retirement.
+    void bind_native_gui_resources(GameNativeRendererApplication&);
+    // End manager texture borrowers before calling, before renderer drain.
+    // Interrupted native work requires process retention and cannot be retried.
+    void retire_native_gui_resources();
+    bool native_gui_resources_require_process_retention() const noexcept;
     GameFrontendHost(const GameFrontendHost&) = delete;
     GameFrontendHost& operator=(const GameFrontendHost&) = delete;
 

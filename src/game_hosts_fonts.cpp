@@ -68,6 +68,13 @@ void GameFontHost::initialize(const std::string& language_font_path) {
     preload_fingerprint_payload_00be9760();
 }
 
+void GameFontHost::enable_native_font_images() {
+    auto& host = *impl_;
+    if (host.initialized || host.native_failed || host.native_retirement_attempted)
+        throw std::logic_error("Native Font image selection must precede descriptor loading");
+    host.native.enable_native_font_images();
+}
+
 void GameFontHost::load_descriptors_00ac3910(const std::string& root,
     const std::string& descriptor, const std::string& language_font_path) {
     auto& host = *impl_;

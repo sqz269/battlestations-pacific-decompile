@@ -53,7 +53,7 @@ NativeGuiPageReaderContinuation::borrow_for_properties_tail() {
         prefix_->continuation != 0x00ac6806u || prefix_->native_eh_state != 5 ||
         retained_reader_profile() != 0x00ce44fcu || !owner_ || !owner_->state_04)
         throw std::logic_error("GUI reader borrow requires the normal AC6806 properties boundary");
-    return {live_reader(), *owner_};
+    return {live_reader(), *owner_, context_->lua};
 }
 void continue_native_gui_page_reader_00ac67cc(NativeGuiPageConstructionAcquired& prefix,
     NativeGuiPageScriptContinuation& scripts, NativeGuiPageReaderContinuation& frame,

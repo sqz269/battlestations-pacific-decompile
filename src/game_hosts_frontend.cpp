@@ -2,6 +2,8 @@
 // See include/bsp/game_hosts_frontend.hpp for the address list and the evidence.
 #include "bsp/game_hosts_frontend.hpp"
 
+#include "bsp/game_native_gui_resource_application.hpp"
+
 #include "bsp/blocking_screen.hpp"
 #include "bsp/d3d9_texture.hpp"
 #include "bsp/fingerprint_payload.hpp"
@@ -187,6 +189,9 @@ struct GameFrontendHost::Impl {
         bool ready_flag{true};
     } manager;
     std::set<const void*> page_handles;  // which create_gui_resource results are pages
+    // Sole owner of the two returned native texture references. ManagerState
+    // stores raw borrowers; bridge COM textures remain a separate draw path.
+    std::unique_ptr<GameNativeGuiResourceApplication> native_gui_resources;
 
     // The sprite bridge.
     D3dxImageImports imports;
@@ -555,15 +560,25 @@ public:
         switch (entry.kind) {
         case GuiResourceKind::Texture: {
             record.kind = "texture";
-            // The renderer's own texture entry point is *(00f8d394) virtual +64h, which
-            // belongs to the renderer owner. The bridge loads the file through the same
-            // mounted VFS instead, and a name the VFS rejects stays null exactly as the
-            // native guard leaves it.
-            IDirect3DTexture9* texture = owner_.create_texture(record.name);
-            result = texture;
-            record.detail = texture != nullptr ? "loaded by the sprite bridge"
-                                               : "VFS rejected the name";
-            owner_.log.unimplemented("GuiManagerResources::renderer_load_texture", "00aa5e60");
+            if (owner_.native_gui_resources) {
+                if (manager != &owner_.manager) {
+                    throw std::logic_error("Native GUI resources require the existing frontend manager");
+                }
+                result = owner_.native_gui_resources->load_manager_texture_00aa5e20(
+                    entry.offset, entry.name);
+                const auto& operation = owner_.native_gui_resources->operation(
+                    owner_.native_gui_resources->operation_count() - 1);
+                record.detail = !operation.resolved ? "actual VFS rejected the name"
+                    : result ? "actual renderer64/B319B0 texture reference"
+                             : "actual renderer64/B319B0 returned null";
+            } else {
+                // Default-OFF host route through the same mounted VFS.
+                IDirect3DTexture9* texture = owner_.create_texture(record.name);
+                result = texture;
+                record.detail = texture != nullptr ? "loaded by the sprite bridge"
+                                                   : "VFS rejected the name";
+                owner_.log.unimplemented("GuiManagerResources::renderer_load_texture", "00aa5e60");
+            }
             break;
         }
         case GuiResourceKind::Group: {
@@ -662,6 +677,31 @@ GameFrontendHost::GameFrontendHost(GameHostLog& log, GameVfsHost& vfs, GameScrip
     : impl_(std::make_unique<Impl>(log, vfs, scripts, fonts, device, widescreen,
           gui_sse2_conversion)) {}
 GameFrontendHost::~GameFrontendHost() = default;
+
+void GameFrontendHost::bind_native_gui_resources(GameNativeRendererApplication& renderer) {
+    if (!GameNativeGuiResourceApplication::requested()) return;
+    auto& host = *impl_;
+    if (host.native_gui_resources || host.summary.gui_startup_ran || host.manager.constructed ||
+        host.manager.fields[0x28 / 4] || host.manager.fields[0x2c / 4]) {
+        throw std::logic_error("Native GUI resource binding requires the empty initial frontend manager");
+    }
+    host.native_gui_resources = std::make_unique<GameNativeGuiResourceApplication>(
+        host.log, renderer, host.vfs);
+}
+void GameFrontendHost::retire_native_gui_resources() {
+    auto& host = *impl_;
+    if (!host.native_gui_resources) return;
+    if (host.native_gui_resources->failure()) {
+        throw std::logic_error("Failed native GUI resources require process retention without manager mutation");
+    }
+    // End both projected manager borrowers before any terminal can reenter.
+    host.manager.fields[0x28 / 4] = nullptr;
+    host.manager.fields[0x2c / 4] = nullptr;
+    host.native_gui_resources->retire_textures();
+}
+bool GameFrontendHost::native_gui_resources_require_process_retention() const noexcept {
+    return impl_->native_gui_resources && impl_->native_gui_resources->requires_process_retention();
+}
 
 void GameFrontendHost::run_font_and_gui_startup_0073bae0(const std::string& language_font_path) {
     Impl& host = *impl_;

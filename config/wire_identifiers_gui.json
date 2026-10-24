@@ -1,0 +1,567 @@
+{
+  "schema_version": 1,
+  "identifiers": [
+    {
+      "address": "0x00aa1a40",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_factory"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:79 executable body; include/bsp/gui_widgets_cc13.hpp:199 FrameBox factory row supplies this address,pool allocator,default and copy constructors. Executable factory selects pool,allocates,constructs chosen variant and frees slot on constructor exception. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00aa1cc0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_is_kind_of"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:72 executable body; Header:129-143 kGuiTypeDescriptors row identifies this address and lineage depth; executable overloads scan current lineage words and stop on first equality. Both descriptor-reference and borrowed-volatile overloads implement this predicate; simple-name use evidence cannot distinguish overloads. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00aa1d50",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_scalar_deleting_destructor"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:90 executable body; include/bsp/gui_widgets_cc13.hpp:237-250 kGuiWidgetDeletingDestructors row supplies this address,destructor,vtable and pool type. Body stores optional vtable,invokes exact destructor contract,frees only for flags bit0 and returns self. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00aa38b0",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "native_gui_layer_is_kind_of_00aa38b0"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:13 executable body; Whole native Layer predicate over the three borrowed current00F8BF88-role ID words; source/header explicitly preserve ordered current-word reads and ordinary zero matching. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00aa3d10",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_scalar_deleting_destructor"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:90 executable body; include/bsp/gui_widgets_cc13.hpp:237-250 kGuiWidgetDeletingDestructors row supplies this address,destructor,vtable and pool type. Body stores optional vtable,invokes exact destructor contract,frees only for flags bit0 and returns self. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00aa9a90",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_scalar_deleting_destructor"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:90 executable body; include/bsp/gui_widgets_cc13.hpp:237-250 kGuiWidgetDeletingDestructors row supplies this address,destructor,vtable and pool type. Body stores optional vtable,invokes exact destructor contract,frees only for flags bit0 and returns self. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00aabd60",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00aad550",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00aafeb0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_is_kind_of"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:72 executable body; Header:129-143 kGuiTypeDescriptors row identifies this address and lineage depth; executable overloads scan current lineage words and stop on first equality. Both descriptor-reference and borrowed-volatile overloads implement this predicate; simple-name use evidence cannot distinguish overloads. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ab0480",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_scalar_deleting_destructor"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:90 executable body; include/bsp/gui_widgets_cc13.hpp:237-250 kGuiWidgetDeletingDestructors row supplies this address,destructor,vtable and pool type. Body stores optional vtable,invokes exact destructor contract,frees only for flags bit0 and returns self. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ab24a0",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ab3180",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "identifiers": [
+        "gui_depth3_type_init"
+      ],
+      "evidence": "src/engine_seg49_64_78_cc13.cpp:1163 executable body; include/bsp/engine_seg49_64_78_cc13.hpp:605-617 explicitly pairs Icon,Line,Scrollbar init/return variants and supplies guard/name constants. Body executes guarded name store,parent init,parent-id copy,counter postincrement,then returns target. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ab31d0",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "identifiers": [
+        "gui_depth3_type_init"
+      ],
+      "evidence": "src/engine_seg49_64_78_cc13.cpp:1163 executable body; include/bsp/engine_seg49_64_78_cc13.hpp:605-617 explicitly pairs Icon,Line,Scrollbar init/return variants and supplies guard/name constants. Body executes guarded name store,parent init,parent-id copy,counter postincrement,then returns target. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ab6100",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_scalar_deleting_destructor"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:90 executable body; include/bsp/gui_widgets_cc13.hpp:237-250 kGuiWidgetDeletingDestructors row supplies this address,destructor,vtable and pool type. Body stores optional vtable,invokes exact destructor contract,frees only for flags bit0 and returns self. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00abc020",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_own_id"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:55 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current own id word without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00abc030",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_name_address"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:58 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current native-name address without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00abc560",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00abcbd0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_initialize"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:105 executable body; Header:148-159 identifies Curve/Progbar init and return variants, guards,names,parent domains. Body performs the full guarded initialization over selected depth. New interface exposes target by reference; native EAX return of the Return variant is not reproduced as a C++ return value. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00abcc20",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_initialize"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:105 executable body; Header:148-159 identifies Curve/Progbar init and return variants, guards,names,parent domains. Body performs the full guarded initialization over selected depth. New interface exposes target by reference; native EAX return of the Return variant is not reproduced as a C++ return value. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00abdfe0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_is_kind_of"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:72 executable body; Header:129-143 kGuiTypeDescriptors row identifies this address and lineage depth; executable overloads scan current lineage words and stop on first equality. Both descriptor-reference and borrowed-volatile overloads implement this predicate; simple-name use evidence cannot distinguish overloads. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00abe010",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_scalar_deleting_destructor"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:90 executable body; include/bsp/gui_widgets_cc13.hpp:237-250 kGuiWidgetDeletingDestructors row supplies this address,destructor,vtable and pool type. Body stores optional vtable,invokes exact destructor contract,frees only for flags bit0 and returns self. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00abed90",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00abf4c0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_is_kind_of"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:72 executable body; Header:129-143 kGuiTypeDescriptors row identifies this address and lineage depth; executable overloads scan current lineage words and stop on first equality. Both descriptor-reference and borrowed-volatile overloads implement this predicate; simple-name use evidence cannot distinguish overloads. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac1b90",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_own_id"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:55 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current own id word without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac1ba0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_name_address"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:58 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current native-name address without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac2080",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac2390",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "identifiers": [
+        "gui_depth3_type_init"
+      ],
+      "evidence": "src/engine_seg49_64_78_cc13.cpp:1163 executable body; include/bsp/engine_seg49_64_78_cc13.hpp:605-617 explicitly pairs Icon,Line,Scrollbar init/return variants and supplies guard/name constants. Body executes guarded name store,parent init,parent-id copy,counter postincrement,then returns target. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac23e0",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "identifiers": [
+        "gui_depth3_type_init"
+      ],
+      "evidence": "src/engine_seg49_64_78_cc13.cpp:1163 executable body; include/bsp/engine_seg49_64_78_cc13.hpp:605-617 explicitly pairs Icon,Line,Scrollbar init/return variants and supplies guard/name constants. Body executes guarded name store,parent init,parent-id copy,counter postincrement,then returns target. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac2920",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_is_kind_of"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:72 executable body; Header:129-143 kGuiTypeDescriptors row identifies this address and lineage depth; executable overloads scan current lineage words and stop on first equality. Both descriptor-reference and borrowed-volatile overloads implement this predicate; simple-name use evidence cannot distinguish overloads. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac31f0",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "identifiers": [
+        "gui_singleton_destruct"
+      ],
+      "evidence": "src/engine_seg49_64_78_cc13.cpp:1177 executable body; include/bsp/engine_seg49_64_78_cc13.hpp explicitly pairs00AB21C0/00AC31F0; body clears selected global and writes singleton-base vtable00CE3818. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac3400",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "list_buy_sentinel_00aac180"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:1086 executable body; 00AC3400 reviewed ledger evidence: allocate0Ch,next and previous self-linked,payload uninitialized,return sentinel. This shared executable helper performs that identical allocation/link/return shape; FontRegistry ownership still uses its documented standard-container abstraction and provisional name. New C++ semantic interface, not a native ABI replacement; no game validation claimed.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0x00ac3f80",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_own_id"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:55 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current own id word without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac3f90",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_name_address"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:58 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current native-name address without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac77a0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_own_id"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:55 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current own id word without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac77b0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_name_address"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:58 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current native-name address without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac77f0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_is_kind_of"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:72 executable body; Header:129-143 kGuiTypeDescriptors row identifies this address and lineage depth; executable overloads scan current lineage words and stop on first equality. Both descriptor-reference and borrowed-volatile overloads implement this predicate; simple-name use evidence cannot distinguish overloads. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac7900",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_scalar_deleting_destructor"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:90 executable body; include/bsp/gui_widgets_cc13.hpp:237-250 kGuiWidgetDeletingDestructors row supplies this address,destructor,vtable and pool type. Body stores optional vtable,invokes exact destructor contract,frees only for flags bit0 and returns self. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac7b80",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_initialize"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:105 executable body; Header:148-159 identifies Curve/Progbar init and return variants, guards,names,parent domains. Body performs the full guarded initialization over selected depth. New interface exposes target by reference; native EAX return of the Return variant is not reproduced as a C++ return value. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac7bd0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_initialize"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:105 executable body; Header:148-159 identifies Curve/Progbar init and return variants, guards,names,parent domains. Body performs the full guarded initialization over selected depth. New interface exposes target by reference; native EAX return of the Return variant is not reproduced as a C++ return value. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac7c00",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_own_id"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:55 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current own id word without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac7c10",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_name_address"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:58 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current native-name address without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac7c60",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_is_kind_of"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:72 executable body; Header:129-143 kGuiTypeDescriptors row identifies this address and lineage depth; executable overloads scan current lineage words and stop on first equality. Both descriptor-reference and borrowed-volatile overloads implement this predicate; simple-name use evidence cannot distinguish overloads. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac7ca0",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_destroy_with_base"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:102 executable body; include/bsp/gui_widgets_cc13.hpp:257-260 identifies Scrollbar00AC7CA0 and its00D5CCF8 vtable/base00AA9730; body performs vtable store and exact base-destructor tail contract. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac8200",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac8210",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_scalar_deleting_destructor"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:90 executable body; include/bsp/gui_widgets_cc13.hpp:237-250 kGuiWidgetDeletingDestructors row supplies this address,destructor,vtable and pool type. Body stores optional vtable,invokes exact destructor contract,frees only for flags bit0 and returns self. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac8500",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "identifiers": [
+        "gui_depth3_type_init"
+      ],
+      "evidence": "src/engine_seg49_64_78_cc13.cpp:1163 executable body; include/bsp/engine_seg49_64_78_cc13.hpp:605-617 explicitly pairs Icon,Line,Scrollbar init/return variants and supplies guard/name constants. Body executes guarded name store,parent init,parent-id copy,counter postincrement,then returns target. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac8550",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "identifiers": [
+        "gui_depth3_type_init"
+      ],
+      "evidence": "src/engine_seg49_64_78_cc13.cpp:1163 executable body; include/bsp/engine_seg49_64_78_cc13.hpp:605-617 explicitly pairs Icon,Line,Scrollbar init/return variants and supplies guard/name constants. Body executes guarded name store,parent init,parent-id copy,counter postincrement,then returns target. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ac98f0",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acbc90",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_scalar_deleting_destructor"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:90 executable body; include/bsp/gui_widgets_cc13.hpp:237-250 kGuiWidgetDeletingDestructors row supplies this address,destructor,vtable and pool type. Body stores optional vtable,invokes exact destructor contract,frees only for flags bit0 and returns self. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acbcd0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_own_id"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:55 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current own id word without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acbce0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_name_address"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:58 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current native-name address without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acc1c0",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acc780",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_is_kind_of"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:72 executable body; Header:129-143 kGuiTypeDescriptors row identifies this address and lineage depth; executable overloads scan current lineage words and stop on first equality. Both descriptor-reference and borrowed-volatile overloads implement this predicate; simple-name use evidence cannot distinguish overloads. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acc880",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_scalar_deleting_destructor"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:90 executable body; include/bsp/gui_widgets_cc13.hpp:237-250 kGuiWidgetDeletingDestructors row supplies this address,destructor,vtable and pool type. Body stores optional vtable,invokes exact destructor contract,frees only for flags bit0 and returns self. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acd0d0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_own_id"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:55 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current own id word without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acd0e0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_name_address"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:58 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current native-name address without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acd520",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acdb70",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_is_kind_of"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:72 executable body; Header:129-143 kGuiTypeDescriptors row identifies this address and lineage depth; executable overloads scan current lineage words and stop on first equality. Both descriptor-reference and borrowed-volatile overloads implement this predicate; simple-name use evidence cannot distinguish overloads. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acdef0",
+      "source": "src/gui_widgets_cc13.cpp",
+      "identifiers": [
+        "gui_widget_scalar_deleting_destructor"
+      ],
+      "evidence": "src/gui_widgets_cc13.cpp:90 executable body; include/bsp/gui_widgets_cc13.hpp:237-250 kGuiWidgetDeletingDestructors row supplies this address,destructor,vtable and pool type. Body stores optional vtable,invokes exact destructor contract,frees only for flags bit0 and returns self. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ace080",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_own_id"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:55 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current own id word without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ace090",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_name_address"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:58 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current native-name address without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ace0c0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_is_kind_of"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:72 executable body; Header:129-143 kGuiTypeDescriptors row identifies this address and lineage depth; executable overloads scan current lineage words and stop on first equality. Both descriptor-reference and borrowed-volatile overloads implement this predicate; simple-name use evidence cannot distinguish overloads. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ace610",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00aceae0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_own_id"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:55 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current own id word without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00aceaf0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_name_address"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:58 executable body; Header:129-143 kGuiTypeDescriptors row associates this address and exact class descriptor/depth; body returns the current native-name address without initialization. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00acf8e0",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ad0280",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "allocate_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:55 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ad26a0",
+      "source": "include/bsp/gui_widgets_cc13.hpp",
+      "identifiers": [
+        "gui_type_is_kind_of"
+      ],
+      "evidence": "include/bsp/gui_widgets_cc13.hpp:72 executable body; Header:129-143 kGuiTypeDescriptors row identifies this address and lineage depth; executable overloads scan current lineage words and stop on first equality. Both descriptor-reference and borrowed-volatile overloads implement this predicate; simple-name use evidence cannot distinguish overloads. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00ad3420",
+      "source": "src/native_gui_widget_pools_cc13.cpp",
+      "identifiers": [
+        "free_gui_widget_pool_slot"
+      ],
+      "evidence": "src/native_gui_widget_pools_cc13.cpp:60 executable body; include/bsp/native_gui_widget_pools_cc13.hpp traits macro identifies this address as its type-specialized free_thunk_address or allocate_stub_address. The executable wrapper selects that process pool and invokes its full allocate/free engine, with required explicit startup checks. New C++ semantic interface, not a native ABI replacement; no game validation claimed."
+    },
+    {
+      "address": "0x00800b10",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "identifiers": [
+        "rain_pool_free_008007a0"
+      ],
+      "evidence": "src/engine_seg49_64_78_cc13.cpp:1854 executable body; include/bsp/engine_seg49_64_78_cc13.hpp:1065 identifies00800B10 as thunk to008007A0. Body locks selected pool,returns decoded slot index to page free stack,increments free count,updates lowest-free page and unlocks. New interface receives decoded page/slot instead of raw pointer. New C++ semantic interface, not a native ABI replacement; no game validation claimed.",
+      "shared_implementation": true
+    }
+  ]
+}

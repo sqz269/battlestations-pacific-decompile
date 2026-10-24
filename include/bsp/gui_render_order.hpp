@@ -182,13 +182,13 @@ struct GuiCameraPlacement {
     float target[3]{};
     float up[3]{0.0F, 1.0F, 0.0F}; // 00AA3E6B..00AA3E74 stage (0, 1, 0)
 };
-// cc13-fix67 (fix6b), OFF: 00AA3E7F MOVSS xmm0,[00D19620] loads C61C4000 = -10000.0 and
-// 00AA3E87 stores it as the target z; -9992 is not the image's value. Presentation only.
-inline constexpr bool kGuiCameraTargetZImageBound = true;   // ON: cc9-lua66 (SQUADRON_LAND_TASK 5ig)
-inline constexpr float kGuiCameraTargetZ = kGuiCameraTargetZImageBound ? -10000.0F : -9992.0F; // 00D19620; image bits C61C4000 at 00D19620
+// AA3E7F reads D19620 bytes 00 40 1C C6 (-10000). At the builder call,
+// EDX=ESP+3C is the eye; stacked target=ESP+30. AA3E87 writes eye+8,
+// while AA3E79 writes target+8=0. See docs/OCT24_GUI_CAMERA.md.
+inline constexpr float kGuiCameraEyeZ = -10000.0F;
 
-// 00AA3E30..00AA3E93: eye = (0.5 + 0.5/width, 0.375 + 0.5/height, 0),
-// target = (eye.x, eye.y, kGuiCameraTargetZ; the image stores -10000). The native divides in x87 extended precision
+// 00AA3E30..00AA3EB1: eye = (0.5 + 0.5/width, 0.375 + 0.5/height, -10000),
+// target = (eye.x, eye.y, 0). The native divides in x87 extended precision
 // and rounds each sum to float; this uses double and rounds once, which agrees
 // for every back-buffer size the game can set.
 GuiCameraPlacement gui_camera_placement_00aa3e00(

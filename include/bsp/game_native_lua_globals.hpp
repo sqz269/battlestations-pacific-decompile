@@ -16,12 +16,16 @@ public:
     NativeLuaFundamentalsOwner* volatile& fundamentals_0108ff1c() noexcept {
         return fundamentals_;
     }
+    // Native Lua string-field setters borrow this distinct loader-zero byte
+    // when a NativeString data pointer is null. No reset or alternate literal.
+    const char* empty_string_0108ff2c() const noexcept;
 private:
     friend GameNativeLuaGlobalsProcess& game_native_lua_globals_process();
     GameNativeLuaGlobalsProcess();
     enum class Phase { unattempted, returned, threw };
     NativeLuaFundamentalsOwner* volatile fundamentals_{};
     LuaRuntimeGlobals globals_;
+    char empty_string_0108ff2c_{};
     NativeLuaRegionLifetimeContext lifetime_;
     std::mutex mutex_;
     Phase phase_{Phase::unattempted};
