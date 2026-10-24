@@ -76,9 +76,11 @@ void assign_string(void* dst, void* src, Pool19Host& host) {
 //  6. states 0Ah..1, 0 and -1: the NativeStrings at +58h, +50h, +48h, +40h,
 //     +38h, +30h, +28h, +20h, +18h, +10h, +08h and +00h, each released and
 //     not cleared.
-// Uncertainty: what each string and the map hold; the layout of the 2Ch
-// bytes +60h..+74h between the strings and the vectors (nothing destroys
-// them). The record is at least 434h bytes.
+// Plain data the destructor leaves alone: the 18h bytes +60h..+77h between the
+// strings and the vectors (three dwords and three floats), and the C4h-byte
+// block +360h..+423h after the two side blocks plus the byte at +424h.
+// Uncertainty: what each string and the map hold. The record is at least
+// 434h bytes.
 // ---------------------------------------------------------------------------
 void mission_record_destroy_005c8ae0(void* record, Pool19Host& host) {
     void* const tree = at(record, 0x428);
@@ -188,7 +190,10 @@ void* multi_error_screen_construct_005d2f90(void* screen, Pool19Host& host) {
 //     count to 0 and the slot takes that name. filled = (+00h + 1) + forward.
 //  7. For i < filled: id = *(uint16*)00617870(hud+1B4h, &slot[i]) (the map's
 //     operator[] inserts a missing key); icon i vtable[88h](id, 0, 1.0f) then
-//     vtable[34h](1).
+//     vtable[34h](1). The image reads icon i's vtable+88h slot address before
+//     the 00617870 call (00618D8B..00618D97) and re-reads the icon pointer
+//     after it (00618DB4). The C++ reads the icon once before the call, which
+//     is equivalent because 00617870 does not touch the HUD icons.
 //  8. [hud + 78h + (+00h)*4] vtable[34h](1).
 //  9. When +10h is non-null, +3Dh is set and the carousel's own vector is
 //     non-empty: +3Dh = 0 and [+10h]->vtable[0](+04h).
