@@ -175,6 +175,7 @@ struct MissionCommandGraph {
  bool failed{};
  GameNativeMissionFrameJobs* frame_jobs{};
  bool material_observed{};
+ bool preparation_observed{};
  unsigned long generation{};
  std::uint64_t submitted{},completed{};
 
@@ -476,6 +477,16 @@ struct MissionCommandGraph {
    pending->executed=true;
    check(frames.queue->commands_14.count_04==0 && !frames.queue->context_30 && pending->retired(),
      "mission queue execution did not retire native command owners");
+   if(frame_jobs && !preparation_observed) {
+    const auto& jobs=frame_jobs->publication();
+    const auto* const owner=jobs.actual_frame_0109cf08;
+    log.notef("native mission preparation snapshot: mode=%u frame=%p descriptor=%p workers=%d remaining=%d active=%d",
+     execution.actual_synchronization_0108d6dc.mode_00,owner,jobs.actual_preparation_00f8d444,
+     owner?owner->pool_04.worker_count_14:0,
+     owner?owner->pool_04.remaining_20.load(std::memory_order_relaxed):0,
+     owner?owner->pool_04.dispatch_active_18.load(std::memory_order_relaxed):0);
+    preparation_observed=true;
+   }
    U indexed_calls=0,primitive_calls=0,returned=0;
    for(auto& batch:pending->batch_frames) for(const auto& record:batch.records) {
     if(record->pass.draw_terminal==0xb24010) ++indexed_calls;

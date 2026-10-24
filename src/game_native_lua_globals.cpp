@@ -10,6 +10,9 @@ GameNativeLuaGlobalsProcess& game_native_lua_globals_process() {
     static auto* const process = new GameNativeLuaGlobalsProcess;
     return *process;
 }
+const char* GameNativeLuaGlobalsProcess::empty_string_0108ff2c() const noexcept {
+    return &empty_string_0108ff2c_;
+}
 int GameNativeLuaGlobalsProcess::initialize_once_00cd7ce0() {
     std::lock_guard lock(mutex_);
     if (phase_ == Phase::returned) return registration_;

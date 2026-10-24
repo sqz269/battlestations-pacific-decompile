@@ -214,3 +214,80 @@ through all prefix checks and becomes true immediately before `B1F4D0` assumes
 ownership, so the GUI borrower can release its label on a pre-entry failure.
 Optional group profiles bind before the first submission, through the same
 render access and canonical camera/model/matrix domains.
+
+### D2 full-scene validation
+
+The first complete executable is `local/render_D/d2_refresh.exe`, SHA-256
+`37db0a86a62209765a8aca03dd8c49fcf12ec4a43bcfc054bfec835c7f824682`.
+`d2_refresh_build.log` records the Win32 build and both existing CTests passing.
+The clean D2 control is `origin/main` `185e1bf5d22113cd5b05e03efc3e41dae39fc15c`,
+frozen as `origin_d2_control.exe`, SHA-256
+`26b9585f3258ab897723d52bce14a45a57deca2f288ba71a2c4a06439ae716db`.
+Its source status was clean; its build also passed both CTests.
+
+`d2_refresh_off_usn04.log` exits **0** with every native mission switch unset.
+Against `origin_d2_usn04.log`, `d2_refresh_off_pair.json` reports **pair_diff 0**:
+21 unit rows, 706 summaries and 1392 native rows match. Recognized OS
+pretranslation count noise is reported separately.
+
+With SHIP, FRAME and UNITS set to1, `d2_all_on_usn04.log` exits **0**, loads
+1790 drawables and completes 599 presents. Its 561 command executions end with
+native batches3691/112, each submitting and returning3803 `B24010` calls.
+Both counts cross the original parallel-preparation threshold. The unchanged
+native dispatch body uses the bound canonical job owner and startup random
+registry; shutdown joins workers and closes all model/scene companions.
+`d2_all_on_pair.json` shows all unit rows, native statuses/call counts and
+gameplay summaries unchanged. Its only changed summary is the intentionally
+different screenshot path (`capture.png` versus `d2_all.png`). The full raw
+comparison returns1 for render diagnostics and that path, rather than a gameplay
+census difference. The captures are `d2_all_N001.png`, `_N060.png`, `_N180.png`.
+
+An isolated Val probe first exposed a real missing producer: its six reflective
+sections requested effect slot3, `ReflectionCubeMap`, before any post-load
+material-texture refresh. Original `B17D90` retains its fallback on each miss;
+original caller `B43410` does not release it. The failed probe accumulated
+exactly6*561 extra fallback references and tripped the strict texture-owner exit
+guard. The fix runs original whole-registry `B24DD0`/`B19000` after model-load
+batches, using the same renderer/Lua/cache owners and canonical literal storage.
+The original getter and exit guard remain unchanged. The complete run finishes
+with only the previously established error-texture residue at refcount1.
+See [material refresh evidence](OCT24_RENDER_D_MATERIAL_REFRESH.md). Authored
+scene publication and the subsequent validation follow below.
+
+### Authored reflection and complete census
+
+The scene header is borrowed directly from the existing mission host's
+`scene_contents->root_properties()`. It is never reparsed or cached in a second
+render-world structure. `4EE450`'s HDR filename rule and `B1B830` publish its
+`g_Environment.ReflCubemap` to the same native renderer Lua owner before
+`B24DD0`. For USN04 this loads the installed
+`effects/hdr_rcs_usn_05_guadalca.dds` as an actual `D61870` cube texture.
+
+`local/render_D/d2_reflection.exe`, SHA-256
+`fd511bc55c9159ac7e41794efd93136fd1ea7c8a57e118b300c4e68233a0b1e4`,
+is built from source through `23922d4d8`; `d2_reflection_build.log` passes both
+existing CTests. Three matching USN04 runs exit **0**:
+
+| Run log | Switches | Result |
+| --- | --- | --- |
+| `d2_final_off_usn04.log` | All mission render switches unset | `d2_final_off_pair.json`: pair_diff0 against the clean185e1bf5d control |
+| `d2_final_all_on_usn04.log` | SHIP, FRAME, UNITS and all five no-op switches1 | 1790 drawables, 599 presents; real native jobs/cubemap; clean drain |
+| `d2_final_val_on_usn04.log` | SHIP, FRAME, VIEW_UNIT18; UNITS0 | Genuine Val matrix palette/exterior, 599 presents; clean drain |
+
+All runs use the same screenshot argument. `d2_final_all_pair.json` and
+`d2_final_val_pair.json` match **all21 unit rows,706 summaries and1392 native
+rows**, with no added/removed/changed gameplay census entries, statuses or call
+counts. Their raw comparisons return1 only for the expected rendering
+diagnostics; OS pretranslation jitter remains separately recognized noise.
+The first-command snapshot in the complete run records synchronization mode0,
+nonnull actual frame/descriptor, **31 workers**, remaining0 and active0. Native
+singleton shutdown joins workers, removes the real cube texture, closes every
+model companion, and leaves only the established error-texture residue1.
+
+Screenshots at mission frames1/60/180 are retained as
+`d2_final_all_N001.png`/`_N060.png`/`_N180.png` and
+`d2_final_val_N001.png`/`_N060.png`/`_N180.png`. The final Val capture was visually
+checked for its complete textured exterior, cockpit and wings; the full-scene
+capture was checked for the controlled ship and mounted models. These captures
+demonstrate this Source/native-body composition, without retail camera,
+lighting, animation or terrain/ocean visual-parity claims.

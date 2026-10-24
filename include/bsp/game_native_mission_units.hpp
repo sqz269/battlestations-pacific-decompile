@@ -5,6 +5,8 @@
 
 #include "bsp/camera_projection.hpp"
 
+namespace bsp { struct ScenePropertyBlock; }
+
 namespace bsp::game {
 
 class GameMissionLuaHost;
@@ -12,10 +14,13 @@ class GameUnitsHost;
 class GameVfsHost;
 
 // Borrowed from the existing mission owner. Query the owner again each render
-// frame; neither pointer may survive mission/frame-host destruction.
+// frame; pointers may not survive mission/frame-host destruction.
 struct GameNativeMissionUnitSource {
     const GameUnitsHost* units{};
     GameMissionLuaHost* lua{};
+    // Existing parsed scene-header owner, published by 00469B60. This is a
+    // synchronous borrow for original world-parameter inputs, not a copy.
+    const bsp::ScenePropertyBlock* root_properties{};
 
     explicit operator bool() const noexcept { return units != nullptr && lua != nullptr; }
 };

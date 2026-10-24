@@ -61,6 +61,10 @@ void* volatile&
 GameNativeRendererScalarProcess::shadow_target_publication_00f8bbf0() noexcept {
     return shadow_target_publication_00f8bbf0_;
 }
+const char*
+GameNativeRendererScalarProcess::material_texture_nil_00f8d438() const noexcept {
+    return &material_texture_nil_00f8d438_;
+}
 GameNativeRendererSectionImport volatile&
 GameNativeRendererScalarProcess::enter_iat_00ce2218() noexcept {
     return enter_iat_00ce2218_;

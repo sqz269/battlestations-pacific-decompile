@@ -27,6 +27,7 @@ struct MissionShipGraph final {
     std::function<GameNativeMissionUnitSource()> unit_source;
     const GameUnitsHost* bound_units{}; // Identity only; reborrow from mission before every use.
     const GameMissionLuaHost* bound_lua{};
+    const bsp::ScenePropertyBlock* bound_root_properties{};
     const NativeShaderBinaryCacheOperation* shader_creation{};
     std::size_t inspected_units{};
     NativeMissionFrameSwitches frame_switches;
@@ -47,6 +48,7 @@ struct MissionShipGraph final {
     std::unique_ptr<GameNativeMissionModel> model;
     std::unique_ptr<GameNativeMissionDevices> devices_visual;
     std::unique_ptr<GameNativeMissionFrameJobs> frame_jobs;
+    std::unique_ptr<GameNativeMissionMaterialRefresh> material_refresh;
     std::unique_ptr<GameNativeMissionFactories> factories;
     std::unique_ptr<MissionShipShaderPreloadGraph> preload;
     std::unique_ptr<MissionShipFoliageGraph> foliage;
@@ -106,6 +108,7 @@ struct MissionShipGraph final {
             (preload && preload->requires_process_retention()) ||
             (commands && commands->requires_process_retention()) ||
             (frame_jobs && frame_jobs->requires_process_retention()) ||
+            (material_refresh && material_refresh->requires_process_retention()) ||
             (resources && resources->requires_process_retention()) ||
             (scene && scene->requires_process_retention()) ||
             (lighting && lighting->requires_process_retention());
@@ -171,12 +174,16 @@ struct MissionShipGraph final {
             (void)resources->construct_and_initialize();
             if (prepare_callback) prepare_callback(prepare_context);
             const auto source = unit_source();
-            check(static_cast<bool>(source), "mission rendering requires loaded simulation units");
+            check(source && source.root_properties, "mission rendering requires loaded simulation units and scene header");
             bound_units = source.units;
             bound_lua = source.lua;
+            bound_root_properties = source.root_properties;
             GameNativeMissionUnits units(source, files);
+            material_refresh = std::make_unique<GameNativeMissionMaterialRefresh>(application, graph.profiles.data);
             if (all_units) devices_visual = std::make_unique<GameNativeMissionDevices>(log, *source.units);
             load_new_unit_models(units);
+            material_refresh->publish_reflection_cubemap(*source.root_properties, arguments.word_00 != 0);
+            material_refresh->refresh_after_model_load();
             check(model->drawable_count() != 0, "mission has no installed unit drawables");
             update_live_poses(0);
             fit_camera();
@@ -208,7 +215,8 @@ struct MissionShipGraph final {
         const auto count = units.count();
         check(count >= inspected_units, "mission unit indices lost their append-only owner");
         const auto first = model->drawable_count();
-        const auto selected = bound_units->controlled_bound() ? bound_units->controlled_index() : std::size_t{0};
+        const auto selected = diagnostic_view_unit.value_or(bound_units->controlled_bound()
+            ? bound_units->controlled_index() : std::size_t{0});
         for (std::size_t i = inspected_units; i != count; ++i) {
             if (!all_units && i != selected) continue;
             GameNativeMissionUnitDescriptor descriptor;
@@ -249,7 +257,8 @@ struct MissionShipGraph final {
         check(stage == Stage::ready, "mission refresh requires its complete render graph");
         try {
             const auto source = unit_source();
-            check(source && source.units == bound_units && source.lua == bound_lua,
+            check(source && source.units == bound_units && source.lua == bound_lua &&
+                source.root_properties == bound_root_properties,
                 "mission render units changed owner before graph retirement");
             GameNativeMissionUnits units(source, files);
             if (devices_visual && devices_visual->refresh_source()) {
@@ -258,6 +267,8 @@ struct MissionShipGraph final {
                     census.gun_rows, census.physical_platforms, census.visible_instances);
             }
             if (load_new_unit_models(units) != 0) {
+                material_refresh->publish_reflection_cubemap(*source.root_properties, arguments.word_00 != 0);
+                material_refresh->refresh_after_model_load();
                 update_live_poses(0);
                 fit_camera();
             }
@@ -265,7 +276,8 @@ struct MissionShipGraph final {
     }
     void update_live_poses(std::uint64_t mission_frame) {
         const auto source = unit_source();
-        check(source && source.units == bound_units && source.lua == bound_lua,
+        check(source && source.units == bound_units && source.lua == bound_lua &&
+            source.root_properties == bound_root_properties,
             "mission render units changed owner before graph retirement");
         GameNativeMissionUnits units(source, files);
         if (devices_visual) devices_visual->validate_source();
