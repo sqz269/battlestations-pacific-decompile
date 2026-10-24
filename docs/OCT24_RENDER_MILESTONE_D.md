@@ -291,3 +291,51 @@ checked for its complete textured exterior, cockpit and wings; the full-scene
 capture was checked for the controlled ship and mounted models. These captures
 demonstrate this Source/native-body composition, without retail camera,
 lighting, animation or terrain/ocean visual-parity claims.
+
+### Completed build and submarine smoke
+
+The completed artifact is **`local/render_D/d2_complete.exe`**, SHA-256
+`2edc8f3021b938e93eba2708a7a4a951891af68ab1c56824e09c5d7e156d4cae`,
+from source through `d8838d0d8`. `d2_complete_build.log` passes the Win32 build
+and both existing CTests. This final compatibility change accepts missing/empty
+reflection fields using the existing `SceneSkyFields` Source default, retains
+the original unconditional HDR prefix and clears the old Lua parameter through
+`B1B830`. Malformed schema still fails. The raw scene constructor's default was
+not separately re-audited; this is the existing reconstructed header contract.
+
+The same completed executable was rerun for all accepted cases:
+
+| Log / comparison | Evidence |
+| --- | --- |
+| `d2_complete_off_usn04.log` / `d2_complete_off_pair.json` | Process0; **pair_diff0** against clean185e1bf5d, all21/706/1392 census rows equal |
+| `d2_complete_all_usn04.log` / `d2_complete_all_pair.json` | Process0,599 presents,1790 drawables,31 native workers; exact21/706/1392 gameplay census equal to the same executable OFF |
+| `d2_complete_val_usn04.log` / `d2_complete_val_pair.json` | Process0,599 presents, actual Val palette/exterior/cubemap; exact21/706/1392 gameplay census equal to the same executable OFF |
+| `d2_complete_sub_chg08.log` / `d2_complete_sub_pair.json` | Process0,599 presents,427 drawables/2033 sections across I-15 and five ships plus mounted devices; all6 unit and1148 native rows equal to the clean control |
+
+The CHG08 smoke uses two mission frames at0.05s, and captures mission frame1.
+Its controlled I-15 uses the installed `models/ships/japan/I-54.mmod` (17 model
+nodes). The other units use Texas, York, Benham and Clemson assets. The original
+52/18 batch counts select serial preparation, preserving the original threshold;
+the complete USN04 case selects parallel preparation. Every accepted ON run
+closes models and textures normally and leaves only the established residue1.
+CHG08's only changed summary is the control's different screenshot path; the
+remaining671 summaries match. Its large HUD Err/Artillery/FighterAce panels are
+already visible in `chg08_control.png`; this smoke proves native model drawing
+and ownership, not repaired HUD output.
+
+Final captures are `d2_complete_all_N001.png`/`_N060.png`/`_N180.png`,
+`d2_complete_val_N001.png`/`_N060.png`/`_N180.png`, and
+`d2_complete_sub_N001.png`. All were copied into the coordinator's
+`battlestations-pacific-decompile-cc16-progress/local/render_D/`, along with the
+completed executable, logs, comparisons, build record and artifact hashes.
+`validation.json` records the process/census results. The original game
+installation and saved analysis remain preserved; source annotations were
+saved, with their old values archived in
+`ghidra-annotations-20261024T092305Z.json`. The index is fresh; the snapshot
+command skipped because Ghidra's function count was unchanged.
+
+For the complete default-OFF route, set `BSP_NATIVE_MISSION_SHIP=1`,
+`BSP_NATIVE_MISSION_FRAME=1` and `BSP_NATIVE_MISSION_UNITS=1`. Optional
+`BSP_NATIVE_MISSION_VIEW_UNIT` selects a diagnostic focus. Terrain, ocean,
+weather, post and tone mapping remain named default-OFF no-ops with the blockers
+above. No real pass from that optional follow-up was claimed.

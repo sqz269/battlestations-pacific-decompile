@@ -147,5 +147,9 @@ owner plus fresh output/key, RET8/EAX output; `B319B0` current renderer `+64`
 with name/zero, RET8/owned texture result. This helper is a new C++ composition,
 not an Original vtable/FH3/SEH/register/fault ABI replacement. No arithmetic or
 reference-count leaf was changed. Only source/diff review was performed here;
-primary integration must establish build, actual loading, visual output, and
-post-drain ownership behavior.
+primary integration establishes build, actual loading, visual output, and
+post-drain ownership behavior in
+[the milestone runtime record](OCT24_RENDER_MILESTONE_D.md#completed-build-and-submarine-smoke).
+The completed USN04 full-scene, focused Val and CHG08 submarine runs all exit0;
+the native cube texture is admitted as D61870 and retired during normal drain.
+The strict fallback-owner guard accepts only the previously established residue1.
