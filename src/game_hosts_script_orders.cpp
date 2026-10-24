@@ -3833,8 +3833,11 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     // exception out of a native also restores the outer values. The row lives
     // in rows_in_flight_ (a std::list, so its address is stable), not in this
     // frame. A Lua error is a longjmp (Lua 5.1 is built as C), and under /EHsc
-    // the destructor is not guaranteed to run for it: row_ may then stay set,
-    // but it points at a live heap row, never at a dead stack frame.
+    // the destructor is not guaranteed to run for it. When it is skipped,
+    // row_, state_ and argument_count_ all stay at the inner dispatch's
+    // values, and its node is not erased, so rows_in_flight_ grows by one per
+    // escaped error. row_ then points at that live heap row, never at a dead
+    // stack frame, and the growth is bounded by the error count: harmless.
     struct DispatchRestore {
         GameScriptOrdersHost& host;
         lua_State* const outer_state;
@@ -3854,6 +3857,11 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     // Packet cc13-dispguard: the machine is the main thread only. lua_pushthread
     // answers 1 for it (no allocation, no GC step); a native run on a coroutine
     // leaves the kept pointer as it was, so a collected coroutine is never kept.
+    // Evidence that natives run on the main thread: src/ has no lua_newthread
+    // or lua_resume, and none of this installation's 621 .lua files mentions
+    // coroutine or newthread. A later script that does use coroutines makes
+    // the readers see the last main-thread state instead of the coroutine:
+    // an intended safety change, but a behavioural one.
     if (state == nullptr) {
         machine_state_ = state;
     } else {
