@@ -3,11 +3,107 @@
 #include "bsp/fixed_step_countdown.hpp"
 
 #include <algorithm>
+#include <charconv>
+
+extern "C" {
+#include <lua.h>
+}
 
 // Evidence: docs/RECON_SLOT_LISTS.md. The routine addresses in the comments are
 // the native sites each statement comes from.
 
 namespace bsp {
+
+void* construct_recon_slot_008050e0(cc13_seg49::Raw slot, std::int32_t index,
+    std::uint32_t clock_bits) {
+    slot.at<std::uint32_t>(0x04) = 0;
+    slot.at<std::uint32_t>(0x08) = 0;
+    slot.at<std::uint32_t>(0x0c) = 0;
+    slot.at<std::uint8_t>(0x10) = 0;
+    slot.at<std::uint32_t>(0x18) = 0;
+    slot.at<std::uint32_t>(0x1c) = 0;
+    slot.at<std::uint32_t>(0x20) = 0;
+    slot.at<std::uint32_t>(0x00) = 0x00d08e94;
+    slot.at<std::uint32_t>(0x14) = 0x00d08e88;
+    for (const auto base : kReconSlotArrayOffsets) {
+        for (std::size_t i = 0; i < kReconSlotArrayLength; ++i)
+            slot.at<cc13_seg49::ReconList>(base + i * kReconSlotArrayStride) = {0, nullptr, nullptr};
+    }
+    for (const auto offset : kReconTripleOffsets)
+        slot.at<cc13_seg49::ReconList>(offset) = {0, nullptr, nullptr};
+    for (std::size_t i = 0; i < kReconSlotArrayLength; ++i)
+        slot.at<cc13_seg49::ReconList>(kReconSlotCarryOverArrayOffset + i * kReconSlotArrayStride) = {0, nullptr, nullptr};
+    slot.at<std::int32_t>(kReconSlotIndexOffset) = index;
+    slot.at<std::uint32_t>(kReconSlotLastRefreshTimeOffset) = clock_bits;
+    slot.at<std::uint8_t>(kReconSlotDirtyOffset) = 1;
+    return slot.p;
+}
+
+void destruct_recon_slot_00805240(cc13_seg49::Raw slot,
+    cc13_seg49::Seg49Host& host, NativeObserverLifetime& observers) {
+    using namespace cc13_seg49;
+    slot.at<std::uint32_t>(0x00) = 0x00d08e94;
+    slot.at<std::uint32_t>(0x14) = 0x00d08e88;
+    host.recon_slot_global(static_cast<std::size_t>(slot.at<std::int32_t>(kReconSlotIndexOffset))) = nullptr;
+    for (const auto offset : kReconTripleOffsets)
+        recon_list_clear_008042b0(host, slot.at<ReconList>(offset));
+    for (std::size_t i = 0; i < kReconSlotArrayLength; ++i) {
+        for (const auto base : kReconSlotArrayOffsets)
+            recon_list_destroy_payloads_00804d20(host, slot.at<ReconList>(base + i * kReconSlotArrayStride));
+    }
+    for (std::size_t i = kReconSlotArrayLength; i != 0; --i)
+        recon_list_clear_008042b0(host, slot.at<ReconList>(kReconSlotCarryOverArrayOffset + (i - 1) * kReconSlotArrayStride));
+    for (std::size_t i = kReconTripleOffsets.size(); i != 0; --i)
+        recon_list_clear_008042b0(host, slot.at<ReconList>(kReconTripleOffsets[i - 1]));
+    for (std::size_t relation = 3; relation != 0; --relation) {
+        for (std::size_t i = kReconSlotArrayLength; i != 0; --i)
+            recon_list_clear_008042b0(host, slot.at<ReconList>(kReconSlotArrayOffsets[relation - 1] + (i - 1) * kReconSlotArrayStride));
+    }
+    observers.destroy_observed_owner_00695760(slot.at<NativeObserverOwnerStorage>(0x14));
+    observers.destroy_callback_owner_00695870(slot.at<NativeObserverOwnerStorage>(0x00));
+}
+
+void publish_recon_relation_categories_00805d90(cc13_seg49::Seg49Host& lists,
+    ReconRelationPublicationHost& host, ReconLuaInstanceView instance,
+    const cc13_seg49::ReconList& triple, const char* const* names,
+    std::int32_t) {
+    using namespace cc13_seg49;
+    struct Buckets {
+        Seg49Host& host;
+        std::array<ReconList, kReconPublishCategoryCount> values{};
+        ~Buckets() {
+            for (std::size_t i = values.size(); i != 0; --i)
+                recon_list_clear_008042b0(host, values[i - 1]);
+        }
+    } buckets{lists};
+    for (auto* node = triple.head; node != nullptr; node = node->next) {
+        Raw record{static_cast<std::uint8_t*>(node->payload)};
+        Raw unit{static_cast<std::uint8_t*>(record.ptr(4))};
+        if (recon_publish_excludes_class_00805de6(unit.at<int>(0xc4))) continue;
+        const auto category = host.category_virtual_00(unit.p + 0x170,
+            unit.at<std::uint32_t>(0x170));
+        if (category == kReconPublishNoCategory) continue;
+        recon_list_push_back_00804c30(lists, buckets.values[static_cast<std::size_t>(category)], node->payload);
+    }
+    for (std::size_t category = 0; category < buckets.values.size(); ++category) {
+        struct Scope {
+            ReconTableScope value;
+            ~Scope() { pop_recon_table_scope(value); }
+        } scope{push_recon_named_table_008037d0(instance, names[category])};
+        const auto& bucket = buckets.values[category];
+        if (bucket.count == 0) continue;
+        for (auto* node = bucket.head; node != nullptr; node = node->next) {
+            Raw record{static_cast<std::uint8_t*>(node->payload)};
+            Raw unit{static_cast<std::uint8_t*>(record.ptr(4))};
+            char key[36];
+            const auto result = std::to_chars(key, key + sizeof key - 1, unit.at<std::uint16_t>(0x174));
+            *result.ptr = '\0';
+            lua_pushstring(instance.state_04, key);
+            host.push_unit_lua_self_00927bf0(unit.p, instance);
+            lua_settable(instance.state_04, -3);
+        }
+    }
+}
 
 namespace {
 
