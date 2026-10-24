@@ -348,6 +348,7 @@ const char* free_attack_candidate_note_name(int note) noexcept {
     case N::NotUnitOrSquadron: return "not_unit_or_squadron";
     case N::NoDetect: return "no_detect";
     case N::NoRank: return "not_in_list";
+    case N::LeaderGuardOut: return "leader_guard_out";
     }
     return "?";
 }

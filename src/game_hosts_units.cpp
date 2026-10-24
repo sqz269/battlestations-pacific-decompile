@@ -18992,8 +18992,11 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             apply ? "applied" : "census only");
     }
     if (!fa.first_pick_logged && d.target < h.slots.size()) {
-        // Packet cc13-fapick, log-only and always on: once per squadron, at its first
-        // pick, every recon contact 009F7810 visited and the return it left by, then
+        // Packet cc13-fapick, log-only and always on: once per squadron name, at the
+        // first tick that leaves a target (the 0071D980 override send's, else the
+        // selector's +08h pick when 0071DF70, the same-target or the air-target test
+        // stopped the send). Until then every tick traces (one vector per tick, no
+        // output). The line lists every recon contact 009F7810 visited and the return it left by, then
         // the enemy squadrons the recon list (+DE8h) did not offer. Reads only: the
         // traces are copies of what the loop already computed (no predicate is run
         // again), and the not_in_recon scan reads the registry, unit_dead and the
@@ -19024,14 +19027,19 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             if (shown == kCap) { ++hidden; continue; }
             // 009F7480 and 009F7876 drop before 009F7BA0's guard test; 009F7BA0
             // runs filter accept (the guard circle in C), then 00804350, then the rank.
+            // Filter B scores with 009F6B10 (FLDZ) and never reaches 009F7BA0: scored_b,
+            // neither test run.
             using N = bsp::cc13_seg68::SquadronCandidateNote;
             const N n = static_cast<N>(t.note);
-            const bool scored = n == N::Scored || n == N::NoRank;
-            const int guard_in = n == N::GuardOut ? 0 : (scored || n == N::NoDetect) ? 1 : -1;
+            const bool filter_b = d.filter == bsp::band009f::SquadronTargetFilter::At14;
+            const bool scored = !filter_b && (n == N::Scored || n == N::NoRank);
+            const int guard_in = n == N::GuardOut || n == N::LeaderGuardOut ? 0
+                : (scored || n == N::NoDetect) ? 1 : -1;
             const int detect = n == N::NoDetect ? 0 : scored ? 1 : -1;
             std::snprintf(buf, sizeof buf, " [%s kind=%s %s rank=%d guard_in=%d detect=%d score=%.3f]",
                 unit_name(t.unit, t.squadron), t.squadron ? "18h" : "unit",
-                bsp::free_attack_candidate_note_name(t.note), t.rank, guard_in, detect,
+                filter_b && n == N::Scored ? "scored_b" : bsp::free_attack_candidate_note_name(t.note),
+                t.rank, guard_in, detect,
                 static_cast<double>(t.score));
             list += buf;
             ++shown;
