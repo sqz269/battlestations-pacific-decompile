@@ -107,6 +107,7 @@ struct MissionShipCameraGraph final {
             center[1] + radius * 0.8f, center[2] - radius * 0.9f};
         set_camera_look_at_00b700e0(owner->camera, eye, center, owner->pose,
             environment.crt, environment.viewport.one_bits_00d7a24c);
+        set_camera_far_00b6fc10(owner->projection, radius * 5.0f + 1000.0f);
         (void)get_native_camera_view_projection_00b70490(raw);
         log.notef("native mission ship fixed camera fit: center=%.6f,%.6f,%.6f radius=%.6f "
             "eye=%.6f,%.6f,%.6f", center[0], center[1], center[2], radius,

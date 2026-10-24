@@ -1,0 +1,402 @@
+{
+  "schema_version": 1,
+  "identifiers": [
+    {
+      "address": "00644a20",
+      "source": "src/game_hosts_hud.cpp",
+      "identifiers": [
+        "run_root_observer_notice"
+      ],
+      "evidence": "src/game_hosts_hud.cpp: executable run_root_observer_notice. Destruction-notice body confirms the selected entity, clears observed/control state through clear_controlled_unit_004c0890 and resets cursor(false,FFFFh). Host interface-update delivery/fused-squadron liveness substitutes and missing raw root+1Ch field remain labelled. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "006bf310",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "player_air_ops_launch"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable player_air_ops_launch. The stock-admission branch evaluates air_ops_stock_available_006bf230(...).total and refuses totals<=0. Existing inline semantic total read, not a new standalone native stock-count wrapper. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "006c6630",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "run_get_property_0088bf80"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable run_get_property_0088bf80. Executable case-insensitive planes/stock/slots/numSlots reader builds the corresponding Lua deck tables and values. Deck-registry substitute retained: missing deck answers empty and reader is not selected by native class. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    },
+    {
+      "address": "006c7e20",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "run_set_air_base_slot_count_008963e0"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable run_set_air_base_slot_count_008963e0. The SetAirBaseSlotCount body appends fully defaulted AirOpsSlot records until wanted size and pops tail entries when shrinking. Deck registry and ignoring negative count are explicit host substitutions; payload/allocator ABI is not claimed. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    },
+    {
+      "address": "006d0e60",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "run_get_property_0088bf80"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable run_get_property_0088bf80. The body runs class readers before the same four air-ops property keys, folding the airfield delegation into GetProperty. Host class selection/missing-deck substitutions remain; no native airfield+72Ch ABI. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    },
+    {
+      "address": "006d3c10",
+      "source": "src/game_hosts_scene_contents.cpp",
+      "identifiers": [
+        "retain_airfield_runway"
+      ],
+      "evidence": "src/game_hosts_scene_contents.cpp: executable retain_airfield_runway. Actual property reader validates retained/raw RunwayWidth and RunwayLength, reads both floats and stores them in AirOpsDeck. It represents the scene-reader runway fields only, not complete native holder/deck construction ABI. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "006f7f40",
+      "source": "src/game_hosts_commands.cpp",
+      "identifiers": [
+        "command_requires_target"
+      ],
+      "evidence": "src/game_hosts_commands.cpp: executable command_requires_target. Executable virtual callback resolves the command class and returns its requires_target field; the base class row carries false. Preserves the host class-table substitute for native constant-return slots. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "006fd8b0",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "publish_unit_deaths_00929800"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable publish_unit_deaths_00929800. Existing body publishes Dead/KillReason and callback-tail semantics for destroyed units. Only the generic tail shared by the ship override is projected; ship teardown, LastBanto, scoring and native order/frame assumptions remain unverified/excluded. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    },
+    {
+      "address": "006ff170",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "read_loadout_text"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable read_loadout_text. Executable Lua chunk reads carried KamikazePlaneClass/KamikazeBulletClass Type and BlastDamageMin/Max, defaults max to min, executes via luaL_loadbuffer/lua_pcall and serializes loadout terms. Partial carried-field read only; full BombClass inheritance/raw class storage remains unverified. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "00779820",
+      "source": "src/game_hosts_ai.cpp",
+      "identifiers": [
+        "tick_request_join_formation"
+      ],
+      "evidence": "src/game_hosts_ai.cpp: executable tick_request_join_formation. Computes same_entity_or_group_00779820: identical entity, or valid follower formation-group id equal to leader group; folded into follow facts before the reconstructed availability predicate. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "007f3820",
+      "source": "src/game_hosts_scene_contents.cpp",
+      "identifiers": [
+        "queue_plane_squadron_wing_007f4580"
+      ],
+      "evidence": "src/game_hosts_scene_contents.cpp: executable queue_plane_squadron_wing_007f4580. Existing spawn projection applies reconstructed member-name plans and stores names for every wing; wing0 keeps the authored name because squadron and leader are fused. Initial naming only, not the general native runtime rename/flag/mode ABI. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    },
+    {
+      "address": "00894100",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "dispatch"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Explicit GetSubmarineDepthLevel branch reads retained depth, applies the death gate, pushes one integer. needAir/catapult/kamikaze are explicitly false host substitutions; general native-class behavior is not claimed. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "00895570",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "run_land_convoy_native"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable run_land_convoy_native. Explicit address==0x00895570 branch resolves the entity name and stores land-convoy stopped=false through set_land_convoy_stopped_3a8; missing-name/unit handling and switch gate retained. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008956e0",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "run_land_convoy_native"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable run_land_convoy_native. Explicit address==0x008956e0 branch stores land-convoy stopped=true through set_land_convoy_stopped_3a8; no native storage/ABI claim. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "00895850",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "run_land_convoy_native"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable run_land_convoy_native. Explicit address==0x00895850 branch reads argument2 as float and calls set_land_convoy_speed_368; labelled host entity resolution retained. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "0089a190",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "dispatch"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Explicit FillPathPoints branch resolves retained path by name, creates a 1-based Lua table and pushes each points_world vector; an unresolved/non-path gives an empty table as labelled. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "0089b840",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "dispatch"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Explicit GetCapturePercentage branch queries command_building_capture_fraction_006f1f90 and applies std::fabs before pushing under kLuaCapturePercentageFabsBound=true. Source/header now supersede the old signed-fraction defect; non-building fallback0 and host scope remain. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "0089cc50",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "dispatch"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Explicit GetSquadronPlanes branch resolves registry members, emits 1-based entity-id strings and caps at five; fused/departed lead and malformed-native-input substitutions remain. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008a3e70",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "dispatch"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Explicit PilotMoveOnPath branch sets pilot_path_no_speed_=true, calls lua_binding_navigator_move_on_path, then restores outer path/no-speed state. Existing command routing/gates retained; no speed store is added. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008a7e60",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "dispatch"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Explicit GetRotation branch resolves unit world basis, calls basis_degrees_0042d2e0 and pushes a vector3 table. Non-unit/unresolved handling remains labelled and no new native arithmetic/ABI proof is claimed. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008a9f90",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "dispatch"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Explicit PutTo branch reads the vector, calls place_at_world_position_008193a0, optionally places squadron members, and handles heading only with exactly three arguments and the existing gate. Host storage/switch limits retained. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008aadf0",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "dispatch"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Explicit ForceRecon branch calls force_recon_refresh_00807a50 when gunnery exists and sync_recon_level_tables_0077b0c0, then returns zero. The labelled immediate after-pass synchronization is preserved. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008aaf30",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "binding_trampoline"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable binding_trampoline. force_select_row is bound to address0x008aaf30; executable branch calls hud_force_select_unit_006485a0 outside error replay and returns zero results. Existing switch gates remain unchanged. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008ab070",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "push_resolved_entity"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable push_resolved_entity. Executable GetSelectedUnit branch reads controlled_bound/index, resolves the controlled unit name through scene_entity_ids_, then pushes thisTable[key], or returns false for the nil arm. Host identity substitute for native00E188D8 retained. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008ab260",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "binding_trampoline"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable binding_trampoline. select_unit_row is bound to address0x008ab260; resolves Lua entity argument0 then calls hud_set_selected_unit_00647300, returning zero. Existing switch/error-replay and unresolved-unit handling retained. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008aca30",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "mission_checkpoint_binding"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable mission_checkpoint_binding. binding_trampoline routes address0x008aca30 with save=false. The actual body calls load_checkpoint_004379c0 and leaves its table/nil result; mission-file-stem id, exception handling and host profile boundary remain labelled substitutes. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008acb70",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "mission_checkpoint_binding"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable mission_checkpoint_binding. binding_trampoline routes address0x008acb70 with save=true. Body serializes save_checkpoint_00438020, writes only the host executable/export profile path and returns the binding result. Native gamepad/input/profile scheduling is not reconstructed. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008b16e0",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "dispatch"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Executable Countdown branch decodes text/level/seconds/callback/extras, releases prior Lua refs, stores active/start/duration/level/callback state and retains new refs. HUD show/begin calls remain logged unimplemented, so this is a partial host handler. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008b19a0",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "dispatch"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Executable CountdownCancel branch computes countdown_time_left, calls countdown_stop_007340a0 and pushes the remaining float. Native HUD clear and mode-specific music/screen effects remain outside existing partial coverage. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008b2320",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "run_simplified_multiplier"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable run_simplified_multiplier. Explicit recon setter arm stores Lua argument1 float into simplified_recon_74_ and returns zero; address dispatch distinguishes recon/sonar and setters/getters. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008b24a0",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "run_simplified_multiplier"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable run_simplified_multiplier. Recon getter arm selects simplified_recon_74_, pushes its number and returns one; same executable dispatch body as the related setter. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008b25f0",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "run_simplified_multiplier"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable run_simplified_multiplier. Explicit sonar setter arm selects simplified_sonar_78_, stores argument1 float and returns zero. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008b2770",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "run_simplified_multiplier"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable run_simplified_multiplier. Sonar getter selects simplified_sonar_78_, pushes its number and returns one. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008bd900",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "binding_trampoline"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable binding_trampoline. objective_status_row explicitly includes0x008bd900; the branch decodes party/slot/name, chooses status2, applies sets.set_status for admitted slot-mask entries and returns zero. No table-only stand-in. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "008d0740",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "binding_trampoline"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable binding_trampoline. avoidance_setting explicitly tests0x008d0740; its branch applies lua_toboolean(argument1) to set_avoid_all_ship_collision_008d0852 and returns zero. Only the proven value store is projected; private Lua owner/SEH is excluded. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "00923b80",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "set_script_entity_party_00928f50",
+        "set_unit_party_00928f50"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable set_script_entity_party_00928f50, set_unit_party_00928f50. Concrete party helpers write the script/unit party and mirror identity fields. Partial host projection only: no general supplied race-argument store, native child recursion or00696350 notification. Existing native RET0Ch ABI is not implemented. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    },
+    {
+      "address": "00927c50",
+      "source": "src/game_hosts_hud.cpp",
+      "identifiers": [
+        "selectable_inputs_00645060"
+      ],
+      "evidence": "src/game_hosts_hud.cpp: executable selectable_inputs_00645060. The role loop checks all retained role words and sets team_query_00927c50 when a word is9 or0. Only native value0 call-site projection is hosted, not a general value-argument query. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    },
+    {
+      "address": "0092bd00",
+      "source": "src/game_hosts_script_orders.cpp",
+      "identifiers": [
+        "unit_parts_land_avoidance_disabled"
+      ],
+      "evidence": "src/game_hosts_script_orders.cpp: executable unit_parts_land_avoidance_disabled. Executable enabled branch calls set_hull_class_bit_0092bd70(index,false); labelled host hull-mask substitute for walking every native shape and applying group mask0Dh. Invalid/unresolved unit path remains a record. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "0093bd80",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "run_set_failure_0088eff0"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable run_set_failure_0088eff0. Ship failure branch reads Lua argument3 as seconds only when numeric and argument_count>=3, else1e10f, then routes the named EngineJam failure through script_set_failure_008132c0. Existing class/message-timing substitutions and non-ship limitations remain. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    },
+    {
+      "address": "00968710",
+      "source": "src/game_hosts_lua.cpp",
+      "identifiers": [
+        "dispatch_exit_zone_listeners_00982120"
+      ],
+      "evidence": "src/game_hosts_lua.cpp: executable dispatch_exit_zone_listeners_00982120. For exitzone listeners checks the entity-id set then exited-value set; empty sets admit all, otherwise std::find must match. Folded predicate inside callback dispatch; event production/order substitutions remain. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    },
+    {
+      "address": "009ffd60",
+      "source": "src/game_hosts_ai.cpp",
+      "identifiers": [
+        "slot_team"
+      ],
+      "evidence": "src/game_hosts_ai.cpp: executable slot_team. Reads the published slot-party array, falling back to the slot when absent; labelled substitute for native player-record+28h, not a native pointer-layout accessor. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "00a0fc50",
+      "source": "src/game_hosts_ai.cpp",
+      "identifiers": [
+        "command_pass_interval"
+      ],
+      "evidence": "src/game_hosts_ai.cpp: executable command_pass_interval. Writes kAiCommandMemberPassIntervalLow/High (2.0f/4.0f) to the two outputs; the shared command argument is intentionally unused. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "00a10040",
+      "source": "src/game_hosts_ai.cpp",
+      "identifiers": [
+        "destroy_group"
+      ],
+      "evidence": "src/game_hosts_ai.cpp: executable destroy_group. The kAiTargetGroupDestroyedIdleBound branch finds commands targeting the destroyed group and installs an Idle AiCommandObject owned by each surviving group. Target-observer arm only; no native allocation-failure or observer ABI claim. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "00ada420",
+      "source": "src/game_hosts_scene_contents.cpp",
+      "identifiers": [
+        "create_scene_world_object"
+      ],
+      "evidence": "src/game_hosts_scene_contents.cpp: executable create_scene_world_object. Enabled landscape branch reads the model BoundingBox and uses its minimum for heightfield origin inputs. This is the explicit model-box substitute for native terrain-node tree accumulation, not a reconstructed recursive node-bound algorithm. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "00ada890",
+      "source": "src/game_hosts_scene_contents.cpp",
+      "identifiers": [
+        "cell_height_00adb3a0"
+      ],
+      "evidence": "src/game_hosts_scene_contents.cpp: executable cell_height_00adb3a0. Folded split-index algorithm computes tile=index>>5 and local=index-tile*32 for both axes, moving the final one-past coordinate to prior tile column32. Existing bounds/hole handling surrounds the same operation. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    },
+    {
+      "address": "00ade500",
+      "source": "src/game_hosts_scene_contents.cpp",
+      "identifiers": [
+        "create_scene_world_object"
+      ],
+      "evidence": "src/game_hosts_scene_contents.cpp: executable create_scene_world_object. Enabled landscape branch resolves model/heightmap bytes, obtains model BoundingBox minima, calls the heightfield loader and publishes the field. Model-box/native-node and absent render/part-instance lifetime substitutions remain; not full terrain/model acquisition. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+    },
+    {
+      "address": "00adfd70",
+      "source": "src/game_hosts_scene_contents.cpp",
+      "identifiers": [
+        "load_terrain_height_field_00adda60"
+      ],
+      "evidence": "src/game_hosts_scene_contents.cpp: executable load_terrain_height_field_00adda60. Executable U16 chunk branch reads offset/scale, reciprocal scale and every33x33 u16 sample, then publishes the block index. StructuredReader/storage/error handling substitute for native tile-buffer ABI; U16 scope only. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    },
+    {
+      "address": "00adfeb0",
+      "source": "src/game_hosts_scene_contents.cpp",
+      "identifiers": [
+        "load_terrain_height_field_00adda60"
+      ],
+      "evidence": "src/game_hosts_scene_contents.cpp: executable load_terrain_height_field_00adda60. Executable NODE-child loop compares tags case-insensitively, decodes U16 and skips unknown chunks. F32/U8 are explicitly rejected, not implemented; no full native chunk-reader claim. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation.",
+      "shared_implementation": true
+    }
+  ]
+}

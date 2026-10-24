@@ -1,5 +1,7 @@
 #pragma once
+#include "bsp/game_native_mission_units.hpp"
 #include <cstdint>
+#include <functional>
 #include <memory>
 
 struct IDirect3D9;
@@ -183,7 +185,7 @@ public:
     // simulation untouched. The captured startup providers survive raw drain.
     static bool mission_ship_requested() noexcept;
     void configure_mission_ship(GameInputRuntime&, const NativeFrameClockPublicationContext&,
-        NativeRenderResourceInitArguments);
+        NativeRenderResourceInitArguments, std::function<GameNativeMissionUnitSource()>);
     bool mission_ship_enabled() const noexcept;
     void prepare_mission_ship();
     void draw_mission_ship(std::uint64_t mission_frame, float simulated_seconds);

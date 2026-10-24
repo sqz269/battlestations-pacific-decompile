@@ -24,6 +24,8 @@ struct MissionShipGraph final {
     GameInputRuntime& input;
     const NativeFrameClockPublicationContext& clock;
     NativeRenderResourceInitArguments arguments;
+    std::function<GameNativeMissionUnitSource()> unit_source;
+    const GameUnitsHost* bound_units{}; // Identity only; reborrow from mission before every use.
     Stage stage{Stage::prepared};
     bool shader_open{};
     std::uint64_t last_mission_frame{};
@@ -48,12 +50,14 @@ struct MissionShipGraph final {
         NativeLuaServiceBindings& binding, NativeShaderBinaryCacheContext& shaders,
         void* const volatile& current_renderer, void* const volatile& cache,
         GameInputRuntime& in, const NativeFrameClockPublicationContext& time,
-        NativeRenderResourceInitArguments args)
+        NativeRenderResourceInitArguments args, std::function<GameNativeMissionUnitSource()> units)
         : log(l), graph(g), devices(d), cameras(c), frames(f), constructor(ctor),
           shared_resources(r), texture_loading(textures), declarations(dc), layouts(ls),
           raw_strings(strings), vfs(vs), files(vf), singletons(host), owners(actual),
           lua(binding), shader_cache(shaders), renderer(current_renderer), entry_cache(cache),
-          input(in), clock(time), arguments(args) {}
+          input(in), clock(time), arguments(args), unit_source(std::move(units)) {
+        check(static_cast<bool>(unit_source), "mission rendering requires its existing simulation owner");
+    }
     ~MissionShipGraph() {
         if (stage != Stage::prepared && stage != Stage::closed) std::terminate();
     }
@@ -80,7 +84,7 @@ struct MissionShipGraph final {
             singletons, graph.profiles.data, input);
         stage = Stage::preparing;
         try {
-            log.note("native mission ship: BSP_NATIVE_MISSION_SHIP=1 prepare installed Fletcher");
+            log.note("native mission ship: BSP_NATIVE_MISSION_SHIP=1 prepare live unit models");
             factories = std::make_unique<GameNativeMissionFactories>(log, files,
                 singletons, graph.profiles.data);
             factories->create();
@@ -118,8 +122,23 @@ struct MissionShipGraph final {
                 *reinterpret_cast<void* const volatile*>(devices.platform_publication.identity()),
                 lua, shader_cache, arguments);
             (void)resources->construct_and_initialize();
-            model->load_installed_ship("models/ships/us/fletcher.mmod");
-            check(model->drawable_count() != 0, "installed Fletcher has no native drawables");
+            const auto source = unit_source();
+            check(static_cast<bool>(source), "mission rendering requires loaded simulation units");
+            bound_units = source.units;
+            GameNativeMissionUnits units(source, files);
+            const auto selected = source.units->controlled_bound()
+                ? source.units->controlled_index() : std::size_t{0};
+            for (std::size_t i = 0; i != units.count(); ++i) {
+                GameNativeMissionUnitDescriptor descriptor;
+                if (i != selected || !units.descriptor(i, descriptor)) continue;
+                model->load_installed_unit(descriptor.model_logical_name, i);
+                log.notef("native mission unit: index=%zu name=%s type=%d asset=%s models=%zu",
+                    i, descriptor.instance_name.c_str(), descriptor.type_id,
+                    descriptor.model_logical_name.c_str(), model->unit_drawable_count(i));
+                break; // D1: the controlled unit's actual installed model at its live pose.
+            }
+            check(model->drawable_count() != 0, "controlled mission unit has no installed drawables");
+            update_live_poses(0);
             fit_camera();
             scene = std::make_unique<MissionShipSceneGraph>(log, resources->scenes,
                 owners, game_native_renderer_scalar_process().increment_iat_00ce221c(),
@@ -143,6 +162,28 @@ struct MissionShipGraph final {
             log.notef("native mission ship prepare failed: %s retention=process", error.what());
             throw;
         } catch (...) { stage = Stage::failed; throw; }
+    }
+    void update_live_poses(std::uint64_t mission_frame) {
+        const auto source = unit_source();
+        check(source && source.units == bound_units,
+            "mission render units changed owner before graph retirement");
+        GameNativeMissionUnits units(source, files);
+        for (std::size_t i = 0; i != units.count(); ++i) {
+            if (!model->unit_loaded(i)) continue;
+            CameraMatrix current;
+            const bool posed = units.read_transform(i, current);
+            const bool visible = posed && units.visible(i);
+            model->set_unit_visible(i, visible);
+            if (!posed) continue;
+            check(model->update_unit_transform(i, current), "live unit lost its native models");
+            if (mission_frame == 1 || mission_frame == 60 || mission_frame == 180)
+                log.notef("native mission pose: frame=%llu unit=%zu position=%.6f,%.6f,%.6f "
+                    "forward=%.6f,%.6f,%.6f visible=%d path=B6DB10 source=unit_pose",
+                    static_cast<unsigned long long>(mission_frame), i,
+                    static_cast<double>(current[12]), static_cast<double>(current[13]),
+                    static_cast<double>(current[14]), static_cast<double>(current[8]),
+                    static_cast<double>(current[9]), static_cast<double>(current[10]), visible);
+        }
     }
     void fit_camera() {
         std::vector<std::array<float, 4>> spheres;
@@ -177,6 +218,7 @@ struct MissionShipGraph final {
         check(stage == Stage::ready, "mission ship draw requires completed preparation");
         try {
             commands->before_device_generation(generation);
+            update_live_poses(mission_frame);
             camera->update_viewport();
             resources->prepare_screen_matrix();
             last_mission_frame = mission_frame;

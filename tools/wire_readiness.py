@@ -33,7 +33,7 @@ Approximations (say so when quoting numbers):
 - "stand_in_hosts" lists the host files whose text mentions the address: usually a record/unimplemented row
   the body would replace, sometimes only a comment.
 """
-import argparse, bisect, collections, json, re, sqlite3, struct, sys
+import argparse, bisect, collections, hashlib, json, re, sqlite3, struct, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -181,7 +181,7 @@ DEF_RE = re.compile(r'^[ \t]*(?:template\s*<[^>{;]*>\s*)?(?:__declspec\([^\n)]*\
                     r'(?:[\w:<>,\*&~ \t]+?[ \t\*&])?'
                     r'((?:(?:\w+(?:<[^;{}\n]*>)?)::)*(~?\w+))[ \t]*'
                     r'\(([^;{}()]*(?:\([^;{}()]*\)[^;{}()]*)*)\)[ \t]*(?:const[ \t]*)?(?:noexcept[ \t]*)?'
-                    r'(?:override[ \t]*)?(?:->[^{;]*)?(?::[^;{]+)?\s*\{', re.M)
+                    r'(?:override[ \t]*)?(?:->[^{;]*)?(?:\s*:[^;{]+)?\s*\{', re.M)
 ADDR_HEAD = re.compile(r'^\s*(?://+|/?\*+)\s*(?:Address:?\s*)?(?:0x)?([0-9A-Fa-f]{8})\b|Address:\s*(?:0x)?([0-9A-Fa-f]{8})\b')
 COMMENT_LINE = re.compile(r'^\s*(//|/\*|\*)')
 strip_comments = lambda t: re.sub(r'//[^\n]*|/\*.*?\*/', ' ', t, flags=re.S)
@@ -458,7 +458,17 @@ for r in rows:
     by_cat[r['category']][r['state']] += 1
 out = ROOT / 'local/output/wire_readiness.json'
 out.parent.mkdir(parents=True, exist_ok=True)
-json.dump(dict(summary=dict(counts), excluded_recon=dict(excluded_recon),
+source_hashes = [(p.relative_to(ROOT).as_posix(), hashlib.sha256(t.encode()).hexdigest())
+                 for p, t in sorted(srcs.items())]
+inputs = dict(head=pb.git('rev-parse', 'HEAD').strip(),
+              index_built_utc=(db.execute("select value from meta where key='built_utc'").fetchone() or ['?'])[0],
+              source_text_sha256=hashlib.sha256(json.dumps(source_hashes).encode()).hexdigest(),
+              map_text_sha256=hashlib.sha256(mp.encode()).hexdigest(),
+              tool_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+              scope_tool_sha256=hashlib.sha256((ROOT / 'tools/progress_board.py').read_bytes()).hexdigest(),
+              identifier_manifests={p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                                    for p in sorted((ROOT / 'config').glob('wire_identifiers*.json'))})
+json.dump(dict(summary=dict(counts), inputs=inputs, excluded_recon=dict(excluded_recon),
                ready_abi=dict(abi_counts), by_category={k: dict(v) for k, v in by_cat.items()},
                edges=dict(ghidra=ghidra_edges, rel32_added=scan_edges, address_taken_funcs=len(address_taken)),
                reachable_files=len(reach), roots=len(roots), rows=sorted(rows, key=lambda r: (r['state'], r['category'], r['address']))),

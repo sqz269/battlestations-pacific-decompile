@@ -2768,7 +2768,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         std::uint32_t word58;
         std::memcpy(&word58, const_cast<const std::uint8_t*>(settings + 0x58), sizeof word58);
         native_renderer_->configure_mission_ship(*input_runtime_, require_frame_clock_context(),
-            NativeRenderResourceInitArguments{settings[0x8c], settings[0x8d], word58});
+            NativeRenderResourceInitArguments{settings[0x8c], settings[0x8d], word58}, [this] {
+                const auto* mission = menu_ ? menu_->mission() : nullptr;
+                return mission ? mission->native_render_unit_source() : GameNativeMissionUnitSource{};
+            });
     }
     summary_.fonts_loaded = fonts_->registry().fonts().size();
     summary_.font_resource_opens = fonts_->resource_opens();

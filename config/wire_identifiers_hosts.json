@@ -1,0 +1,644 @@
+{
+ "schema_version": 1,
+ "identifiers": [
+  {
+   "address": "00417e60",
+   "source": "src/game_hosts_ship_ai.cpp",
+   "identifiers": [
+    "run_landing_modes_3_4"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_ship_ai.cpp:6293 defines run_landing_modes_3_4; operative region src/game_hosts_ship_ai.cpp:6317-6331. The landing-mode4 arm finds the layer group and offsets the pad point by10.0. LABELLED ready/group guards and ascending group lookup differ from unconditional native dispatch. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function ShipAiApproach landing_mode_4 arm (006F3C5A) [existing_host_equivalent_verified]"
+  },
+  {
+   "address": "00673a10",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "shipyard_order"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:15943 defines shipyard_order; operative region src/game_hosts_gunnery.cpp:15943-16023. The order handler validates the yard/idle entry and executes class/count production commands; host order arguments replace the screen receiver and messages. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_HudSupportManager_ConfirmOrder [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006bed30",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "record_return_to_base_007f16d0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:14862 defines record_return_to_base_007f16d0; operative region src/game_hosts_units.cpp:14889-14924. The home-base arm resolves ownership and excludes unavailable/sunk/unsupported homes. LABELLED sunk-owner removal substitutes retention of the native owner pointer. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsBlock_UnavailableForReturn [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006bef70",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "landing_circle_point_006c5380"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:18024 defines landing_circle_point_006c5380; operative region src/game_hosts_units.cpp:18024-18034. The queue-index arm searches the landing deck's squadron queue, returning its n or-1 before deriving the holding point. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsBlock_SquadronQueueIndex [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006beff0",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "run_takeoff_run_step_009ce2c0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:37969 defines run_takeoff_run_step_009ce2c0; operative region src/game_hosts_units.cpp:38156-38174. The takeoff arm builds the local takeoff target (0-x,0-y,length/2-z) in the modeled holder frame. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsHolder_TakeoffLocalPoint [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006bf060",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "landing_request_006c54c0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:18516 defines landing_request_006c54c0; operative region src/game_hosts_units.cpp:18513-18539. The landing-request arm searches the current squadron queue and creates a queue record only when absent. The original record174 word and tail-slot publication remain labelled host substitutions. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsBlock_HasQueuedSquadron [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006bf0d0",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "landing_deck_006c0750"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:15468 defines landing_deck_006c0750; operative region src/game_hosts_units.cpp:15539-15542. The deck refresh writes both runway widthB0 and lengthB4 from authored deck facts. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsBlock_SetRunwayDimensions [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006bf7f0",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "land_task_retire_006c8800"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:8596 defines land_task_retire_006c8800; operative region src/game_hosts_units.cpp:8619-8624. The retirement arm overwrites the matched queue record with the last record and pops the tail, implementing the native unordered erase semantics under its existing binding. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsQueue_SwapEraseRecord [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006c0d20",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "landing_deck_006c0750"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:15468 defines landing_deck_006c0750; operative region src/game_hosts_units.cpp:15466-15499. The holder construction/cache arm resizes typed deck storage, initializes/rebuilds the current owner holder and clears its queue/assignment/site fields. Raw C0 native allocation/owner ABI is substituted. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsBlock_CreateHolder [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006c7540",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "landing_sequencer_006cc9f0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:18430 defines landing_sequencer_006cc9f0; operative region src/game_hosts_units.cpp:18447-18458. The release arm erases every assignment whose plane belongs to the released squadron, retaining the vector's ordered erase behavior. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsBlock_EraseSquadronAssignments [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006c7680",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "land_task_retire_006c8800"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:8596 defines land_task_retire_006c8800; operative region src/game_hosts_units.cpp:8595-8635. The retirement arm locates the squadron in each holder, swap-erases the queue record and compacts its assignment records. Native slot publication remains explicitly unmodeled. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOps_RetireLandingSquadron [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006ca5a0",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "landing_deck_006c0750"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:15468 defines landing_deck_006c0750; operative region src/game_hosts_units.cpp:15563-15570. The airfield arm uses the35.0 runway inset in the actual deck target computation; it is the modeled constant-leaf behavior in shared layout code. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsBlock_RunwayInset35 [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006cdf60",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "base_launch_task_tick_007f1f00"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:16849 defines base_launch_task_tick_007f1f00; operative region src/game_hosts_units.cpp:16865-16874. The airfield readiness arm tests that site_ready18 has no live member before allowing the launch task to send a plane. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsSite_IsReadyForPlane [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006ce230",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "plane_touchdown_007cc440"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:16326 defines plane_touchdown_007cc440; operative region src/game_hosts_units.cpp:16363-16368. The touchdown handler stores site_stamp40 from the simulation clock; native process-clock/global transport is substituted. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsSite_StampTime [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006ce4a0",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "run_takeoff_run_step_009ce2c0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:37969 defines run_takeoff_run_step_009ce2c0; operative region src/game_hosts_units.cpp:38097-38112. The takeoff arm searches site occupants for a landed plane still in its taxi queue and holds when found. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsSite_HasLandedOccupant [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006ced90",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "plane_touchdown_007cc440"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:16326 defines plane_touchdown_007cc440; operative region src/game_hosts_units.cpp:16362-16366. The touchdown handler appends the plane identity to site_occupants34 only when it is not already present. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsSite_AddOccupant [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006cef80",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "plane_liftoff_c6h_007c6f50"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:17412 defines plane_liftoff_c6h_007c6f50; operative region src/game_hosts_units.cpp:17427-17437. The liftoff arm finds the plane in the current holder's occupancy vector and erases it, implementing the modeled site-leave operation. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsSite_RemoveOccupant [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006cf180",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "plane_liftoff_c6h_007c6f50"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:17412 defines plane_liftoff_c6h_007c6f50; operative region src/game_hosts_units.cpp:17409-17437. The site28 forwarding chain reaches the same actual occupancy-vector erasure in the liftoff handler. The source identifies this chain as006CF180->006CEF80, so the older GroundSurface name remains only a descriptive hypothesis. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsSite_GroundSurfaceThunk [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006cf190",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "base_launch_task_tick_007f1f00"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:16849 defines base_launch_task_tick_007f1f00; operative region src/game_hosts_units.cpp:16899-16902. The launch dispatch stores the chosen member in site_ready18 and updates the launch bookkeeping; native observer object ABI is substituted. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsSite_SetReadyPlaneObserver [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006cf730",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "place_on_launch_spot_007c5f60"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:16961 defines place_on_launch_spot_007c5f60; operative region src/game_hosts_units.cpp:16961-17015. The airfield arm computes and publishes the launch-site pose for the queued plane using host deck/model facts. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsSite_PoseQueuedPlane [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006cfe40",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "carrier_elevator_platform_tick_006fc480"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:17829 defines carrier_elevator_platform_tick_006fc480; operative region src/game_hosts_units.cpp:17829-17840. The platform wrapper gates zero delta/missing owner before stepping the modeled elevator platform, sharing the006FC480 body. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsElevatorSite_PlatformTick [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006cff40",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "base_launch_task_tick_007f1f00"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:16849 defines base_launch_task_tick_007f1f00; operative region src/game_hosts_units.cpp:16865-16874. The mother-ship readiness arm additionally requires an existing elevator, mode50=0 and platform position18 below0. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsElevatorSite_IsReadyForPlane [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006d0050",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "carrier_elevator_site_tick_006d0600"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:17728 defines carrier_elevator_site_tick_006d0600; operative region src/game_hosts_units.cpp:17812-17825. The no-plane flag1 arm sends the empty platform up by storing position, mode and timer; this is the modeled elevator-message effect in shared dispatch. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_MotherShipSite_HandleElevatorMessage [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006d00e0",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "run_land_park_tick_009b22c0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:36748 defines run_land_park_tick_009b22c0; operative region src/game_hosts_units.cpp:36788-36800. The carrier parking arm produces the lift target with z less plane descriptor158, using carrier-local coordinates. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsElevatorSite_TaxiTarget [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006d0120",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "run_land_park_tick_009b22c0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:36748 defines run_land_park_tick_009b22c0; operative region src/game_hosts_units.cpp:36788-36798. The same arm obtains the queue origin directly from the typed elevator lift point; missing lift state remains an explicit refusal. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirOpsElevatorSite_QueueOrigin [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006d0930",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "place_on_launch_spot_007c5f60"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:16961 defines place_on_launch_spot_007c5f60; operative region src/game_hosts_units.cpp:17015-17044. The mother-ship arm publishes queued-plane lift pose/carry translation. LABELLED probe ordering differs: host probes the lift point. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_MotherShipSite_PoseQueuedPlane [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006d2040",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "landing_deck_006c0750"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:15468 defines landing_deck_006c0750; operative region src/game_hosts_units.cpp:15559-15562. The airfield heading arm computes atan2 from local row2; top-level host airfield world rows stand in for the native local frame. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirField_GetHeading [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "006d2980",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "airfield_aim_point"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:3012 defines airfield_aim_point; operative region src/game_hosts_gunnery.cpp:3028-3041. The airfield arm builds the live hangar list, capped at six, then selects the corresponding aim-point source. Host dead-unit checks substitute the native object/class gates. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirField_RebuildAimPoints [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006d3250",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "airfield_aim_point"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:3012 defines airfield_aim_point; operative region src/game_hosts_gunnery.cpp:3041-3060. The same arm selects a hangar with the labelled 006D325E..006D327D draw when several hangars exist; typed host hangars replace native park-slot storage. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_AirField_PickParkSlot [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "006def30",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "bind_aa_acceptance"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:7001 defines bind_aa_acceptance; operative region src/game_hosts_gunnery.cpp:7062-7107. The artillery acceptance arm solves the gravity arc and tests traverse limits. LABELLED world-frame convention, nullable-bot precondition and binding gates remain. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_ArtilleryGunnerBot_AcceptsTarget [existing_host_verified_ledger_only]"
+  },
+  {
+   "address": "006dfd90",
+   "source": "src/game_hosts_ship_ai.cpp",
+   "identifiers": [
+    "zone_set_vtable_218"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_ship_ai.cpp:3333 defines zone_set_vtable_218; operative region src/game_hosts_ship_ai.cpp:3333-3345. The navigation-group wrapper resolves the class layer group through the current zone runtime; readiness/null guards remain explicit host behavior. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_ShipUnit_GetNavigationGroup [existing_host_verified_ledger_only]"
+  },
+  {
+   "address": "006e7c60",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "apply_hit"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:12250 defines apply_hit; operative region src/game_hosts_gunnery.cpp:12349-12365. The hit-record arm assigns hull_damage_base from the weapon damage interval/RNG draw or deferred replay draw; this is executable damage behavior, not its completion counter. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function GameGunneryHost hit record draw (hull_damage_base) [reconstructed_in_existing_source_checked_by_cc13_gpr33]"
+  },
+  {
+   "address": "006eb060",
+   "source": "src/game_hosts_ship_ai.cpp",
+   "identifiers": [
+    "weapon_hit_probability"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_ship_ai.cpp:4879 defines weapon_hit_probability; operative region src/game_hosts_ship_ai.cpp:4867-4905. The weapon-hit-probability handler rejects range at/past max, selects the subtype/function profile and returns1 for unrecognized subtypes. LABELLED image-default accuracy curves and existing binding gates remain. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_Weapon_HitProbabilityForRange [existing_host_verified_ledger_only]"
+  },
+  {
+   "address": "006f47f0",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "repair_unit_to_fraction"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:16466 defines repair_unit_to_fraction; operative region src/game_hosts_gunnery.cpp:16466-16476. The repair handler gates positive fraction and health below max, then clamps fraction*max+health and publishes the new health. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_CommandBuilding_Repair [existing_host_partial]"
+  },
+  {
+   "address": "006f7360",
+   "source": "src/game_hosts_ship_ai.cpp",
+   "identifiers": [
+    "capture_step"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_ship_ai.cpp:13087 defines capture_step; operative region src/game_hosts_ship_ai.cpp:13147-13168. The capture step contains the labelled repeating owned callback schedule and invokes the capture rule at its modeled fixed interval; it is not the general native callback scheduler/ABI. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_FixedStepCallback_RepeatingStep [existing_host_partial]"
+  },
+  {
+   "address": "006fc380",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "carrier_elevator_ready"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:16470 defines carrier_elevator_ready; operative region src/game_hosts_units.cpp:16470-16505. The readiness/setup handler initializes the modeled elevator from the carrier's authored lift/plane facts; raw native object construction is excluded. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_ElevatorPlatform_Setup [host_reference_unverified]"
+  },
+  {
+   "address": "006fc6b0",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "carrier_elevator_site_tick_006d0600"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:17728 defines carrier_elevator_site_tick_006d0600; operative region src/game_hosts_units.cpp:17818-17824. The empty-up arm sets elevator p18, mode50=1 and timer9C=0, implementing the modeled send-empty-up state change. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_ElevatorPlatform_SendEmptyUp [host_reference_unverified]"
+  },
+  {
+   "address": "006fd660",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "run_projectiles"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:11051 defines run_projectiles; operative region src/game_hosts_gunnery.cpp:11627-11650. The depth-charge water-entry arm checks hit/fall velocity and kills a breaking-up round. LABELLED substitution: unread breakup effects are replaced by death without blast. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_DepthChargeShot_WaterEntry [host_reference_unverified]"
+  },
+  {
+   "address": "006fdc50",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "run_gun_aim_and_fire"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:8321 defines run_gun_aim_and_fire; operative region src/game_hosts_gunnery.cpp:9640-9668. The immediate-fire arm issues set_request(true) through the same executable request transition used by the gun tick; native point-effect ownership is not inferred. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_MSTGun_ImmediateFire [host_reference_unverified]"
+  },
+  {
+   "address": "006fdc90",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "run_gun_aim_and_fire"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:8321 defines run_gun_aim_and_fire; operative region src/game_hosts_gunnery.cpp:9611-9627. The MRT request arm updates fire-request/immediate state through set_request; source retains the turning-class split and original binding gates. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_MRTGun_SetFireRequest [host_reference_unverified]"
+  },
+  {
+   "address": "006fdcd0",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "run_gun_aim_and_fire"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:8321 defines run_gun_aim_and_fire; operative region src/game_hosts_gunnery.cpp:9611-9627. The MST request arm refuses a false request while salvo4D8 is set, otherwise applies the shared request transition and immediate-flag drop. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_MSTGun_SetFireRequest [host_reference_unverified]"
+  },
+  {
+   "address": "006fe0d0",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "run_gun_aim_and_fire"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:8321 defines run_gun_aim_and_fire; operative region src/game_hosts_gunnery.cpp:8351-8376. The single-turning-gun tick arm runs its immediate-fire condition and updates the modeled request state; this is a shared tick handler rather than a raw gun object method. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_MSTGun_Tick [host_reference_unverified]"
+  },
+  {
+   "address": "00746320",
+   "source": "src/game_hosts_ship_ai.cpp",
+   "identifiers": [
+    "landfort_fire_roll_007470b0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_ship_ai.cpp:13328 defines landfort_fire_roll_007470b0; operative region src/game_hosts_ship_ai.cpp:13328-13368. The fire-damage arm rolls and applies modeled landfort health damage. Native smoke/effect lifetime is explicitly excluded by the source. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function GameShipAiHost::Impl (landfort fire roll) [existing_hosted_verify_only_mismatch_noted]"
+  },
+  {
+   "address": "0074bc10",
+   "source": "src/game_hosts_ship_ai.cpp",
+   "identifiers": [
+    "select_state_for_command_009f3d00"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_ship_ai.cpp:2941 defines select_state_for_command_009f3d00; operative region src/game_hosts_ship_ai.cpp:3025-3037. The land-enter arm reads the typed lander's landing_time1210 field for a kind0C unit; this is the semantic getter in shared dispatch, not a native pointer ABI. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_LandingShip_GetLandingTime [host_reconstruction_checked_against_listing]"
+  },
+  {
+   "address": "0074ec50",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "ship_wreck_sink_block_00824fe5"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:3815 defines ship_wreck_sink_block_00824fe5; operative region src/game_hosts_units.cpp:3815-3862. The single-player wreck arm executes the labelled leak redistribution/reset draw sequence. Native leak/effect object lifetime is not supplied. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_LeakManager_ResetForWreck [host_reconstruction_checked_against_listing]"
+  },
+  {
+   "address": "0074f090",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "add_leak_0074f440"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:44134 defines add_leak_0074f440; operative region src/game_hosts_units.cpp:44134-44173. The leak notification arm refreshes/transforms the impact and updates modeled leak state through its established rule; native bag/list storage is substituted. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_LeakManager_AddLeak [host_reconstruction_checked_against_listing]"
+  },
+  {
+   "address": "00779aa0",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "run_kamikaze_contacts"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:12555 defines run_kamikaze_contacts; operative region src/game_hosts_gunnery.cpp:12576-12585. The contact arm rejects classes with both damage510 and blast514 nonpositive before detonating; this is the modeled class attack-slot predicate. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_Unit_ClassHasAttackSlot [existing_host_verified_ledger_only]"
+  },
+  {
+   "address": "007ba2e0",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "terrain_avoidance_water_009a1420"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:13128 defines terrain_avoidance_water_009a1420; operative region src/game_hosts_units.cpp:13153-13165. The inline direction lambda computes pi/2-heading, wraps negative angles, and stores cos/sin components; the enclosing real handler owns this executable lambda. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function direction lambda in game_hosts_units.cpp:11146 [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "007bc7a0",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "player_bomb_release_006082d0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:6163 defines player_bomb_release_006082d0; operative region src/game_hosts_units.cpp:6222-6235. The bomb-release gate checks pitch and bank thresholds and refuses the release when the allowed-bank condition fails. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function player bomb release gate in game_hosts_units.cpp:5493 [existing_implementation_minor_deviation]; fragment cc13_tier2_check_release_rocket_pass [existing_implementation_minor_deviation]"
+  },
+  {
+   "address": "007c3c90",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "ground_state_from_locked_007ca3f0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:17161 defines ground_state_from_locked_007ca3f0; operative region src/game_hosts_units.cpp:17161-17201. The ground-state handler updates the modeled ground/flight state and site occupant membership through the labelled request-ground-state chain. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_Plane_RequestGroundState host chain [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "007da380",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "control_step_007da710"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:40944 defines control_step_007da710; operative region src/game_hosts_units.cpp:41006-41034. The control-factor arm handles free-flight equal factors and the water-mode rate inputs/coupling behavior; source-labelled speed substitution and mode gates remain. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function control_step_007da710_mode_factors_inline [reconstructed_partial_listing_checked]"
+  },
+  {
+   "address": "007db630",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "carrier_deck_reparent_007c71e0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:17878 defines carrier_deck_reparent_007c71e0; operative region src/game_hosts_units.cpp:17918-17927. The deck-wire arm computes its clamp/half argument and stores plane_wireAC=min(argument,MaxWireRope). Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function inline 007DB630 (carrier deck wire seed) [reconstructed_listing_checked]"
+  },
+  {
+   "address": "00805490",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "publish_recon_triples_008073c0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:7898 defines publish_recon_triples_008073c0; operative region src/game_hosts_gunnery.cpp:7946-7974. The grouping arm folds detected squadron members into class18 groups, checking member level and squadron identity. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_Recon_GroupMembersUnderSquadron [existing_implementation_verified_ledger_only]"
+  },
+  {
+   "address": "00805680",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "publish_recon_triples_008073c0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:7898 defines publish_recon_triples_008073c0; operative region src/game_hosts_gunnery.cpp:7975-7997. The convoy grouping arm computes maximum member levels per convoy. LABELLED counted-only substitution: convoy entities have no unit index, so group triples are not published. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_Recon_GroupMembersUnderConvoy [existing_implementation_verified_ledger_only]"
+  },
+  {
+   "address": "0080f750",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "player_fire_weapon_group"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:16031 defines player_fire_weapon_group; operative region src/game_hosts_gunnery.cpp:16047-16056. The player-fire arm filters devices to Function8/9 and refuses an empty launcher set; it includes the modeled Function-is8-or9 predicate. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_GunDevice_FunctionIs8Or9 [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "00810d80",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "torpedo_stock_rearm_0072d520"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:4159 defines torpedo_stock_rearm_0072d520; operative region src/game_hosts_gunnery.cpp:4159-4170. The rearm arm tests nonzero torpedo_spare before obtaining stock, including the host infinite-stock convention. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_Ship_HasTorpedoStockForDevice [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "00810da0",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "torpedo_stock_rearm_0072d520"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:4159 defines torpedo_stock_rearm_0072d520; operative region src/game_hosts_gunnery.cpp:4159-4170. The same stock arm decrements only positive torpedo_spare; the nonpositive/infinite-stock convention is retained. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_Ship_ConsumeTorpedoStockForDevice [existing_implementation_verified_against_listing]"
+  },
+  {
+   "address": "00810dd0",
+   "source": "src/game_hosts_ship_ai.cpp",
+   "identifiers": [
+    "register_ship_ai_unit"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_ship_ai.cpp:12407 defines register_ship_ai_unit; operative region src/game_hosts_ship_ai.cpp:12407-12427. The registration arm constructs per-ship navigation/search owner state and loads its class depth settings for newly registered typed controllers. Native owner pointers and create-if-absent object ABI are substituted by the load/generated-unit registration path. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_Ship_EnsureAiOwners [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "00812cd0",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "command_blocks_auto_action_00811f50"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:21783 defines command_blocks_auto_action_00811f50; operative region src/game_hosts_units.cpp:21796-21804. The descriptor arm copies the active typed command descriptor before its bounds test, modeling the unit-wrapper forwarding path with host index ownership. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_UnitInstance_CopyActiveTargetDescriptor [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "00813660",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "unit_named_state_dispatch"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:13686 defines unit_named_state_dispatch; operative region src/game_hosts_gunnery.cpp:13686-13696. The failure-retirement handler routes mothership failures first, then clears modeled steering/engine jam state by failure name. Native session message transport remains a host substitution. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_ShipUnit_OnFailureRecordExpired [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "008137b0",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "unit_named_state_dispatch"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:13686 defines unit_named_state_dispatch; operative region src/game_hosts_gunnery.cpp:13686-13696. The same handler clears steering_jam9E4 and engine_jam9E5 for the named failure; it contains the semantic clear operation, not only a log. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_ShipInstance_ClearFailureFromMessage [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "00816410",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "vehicle_avoidance_007df4f0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:12792 defines vehicle_avoidance_007df4f0; operative region src/game_hosts_units.cpp:12937-12955. The hull-point arm transforms the ray to body space and clamps its scale against hull-box extents to obtain the boundary distance. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_Unit_ClampPointToHullBox [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "00818110",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "script_set_failure_008132c0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:13823 defines script_set_failure_008132c0; operative region src/game_hosts_gunnery.cpp:13823-13835. The explosion arm creates a queued (unit,damage) task payload. LABELLED partial construction: message24/28/2C/34 fields and native object/pool lifetime are not modeled. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_ShipExplosionFailureTask_Construct [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "008198a0",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "script_set_failure_008132c0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:13823 defines script_set_failure_008132c0; operative region src/game_hosts_gunnery.cpp:13823-13835. The message/setter explosion arm enqueues the delayed explosion damage payload; the explicit omitted message fields and native lifetime qualifications remain. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_ShipInstance_SetFailureFromMessage [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "0081beb0",
+   "source": "src/game_hosts_units.cpp",
+   "identifiers": [
+    "route_unit_exited_00811e80"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_units.cpp:21833 defines route_unit_exited_00811e80; operative region src/game_hosts_units.cpp:21833-21860. The exit-zone arm checks role permission, records the Lua channel as allowed, sets cause4 and kills the modeled unit. Labelled party/Lua/native owner gaps remain. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_UnitInstance_ExitMissionZone [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "0082ada0",
+   "source": "src/game_hosts_ship_ai.cpp",
+   "identifiers": [
+    "zone_set_vtable_218"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_ship_ai.cpp:3333 defines zone_set_vtable_218; operative region src/game_hosts_ship_ai.cpp:3333-3345. The class-navigation-group lookup is executed through the zone runtime for layer0 in this wrapper; native class arrays/manager globals are substituted. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_ShipClass_NavigationGroupAtDepth [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "00848410",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "ship_in_shipyard_hangar_0081de10"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:15683 defines ship_in_shipyard_hangar_0081de10; operative region src/game_hosts_gunnery.cpp:15683-15709. The shipyard hangar query traverses host hangar objects and filters live objects for membership. Host vectors/indices replace native object-pointer rows. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_Shipyard_CollectLiveHangarObjects [existing_host_partial]"
+  },
+  {
+   "address": "00862660",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "add_gun_to_target_record_00864ca0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:7273 defines add_gun_to_target_record_00864ca0; operative region src/game_hosts_gunnery.cpp:7273-7298. The target-record registration arm computes the bot offset and registers the gun in the modeled target record; native record/object ABI is not supplied. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_GunneryTargetRecord_RegisterGun [existing_host_substitution_labelled]"
+  },
+  {
+   "address": "008fea40",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "set_bot_fire_target_00727f10"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:7169 defines set_bot_fire_target_00727f10; operative region src/game_hosts_gunnery.cpp:7236-7241. Tail-gunner target assignment resets the aim countdown to -1; host category/target storage replaces the raw bot. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_GunBot_SetFireTargetTurretClass [existing_implementation_spot_checked]"
+  },
+  {
+   "address": "009035a0",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "set_bot_fire_target_00727f10"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:7169 defines set_bot_fire_target_00727f10; operative region src/game_hosts_gunnery.cpp:7193-7221. Torpedo target assignment clears a changed target and updates target, fire-target flag and cached attack range; compile-time binding gates remain. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_TorpedoBot_SetFireTarget [existing_implementation_spot_checked]"
+  },
+  {
+   "address": "00933da0",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "ship_systems_sink_draws_00933da0_00933bb0"
+   ],
+   "shared_implementation": true,
+   "evidence": "Source view 515837c10: src/game_hosts_gunnery.cpp:16615 defines ship_systems_sink_draws_00933da0_00933bb0; operative region src/game_hosts_gunnery.cpp:16615-16642. The grid=true arm computes grid extents and executes the conditional sink-effect RNG sequence. The function also serves00933BB0; effects remain a labelled host projection. Shared semantic host substitution/new C++ ABI only; does not claim complete native object/pool/SEH compatibility, runtime reachability or game validation. Existing ledger qualifications retained: function BSP_ShipSystems_SinkGridEffects [existing_host_substitution_labelled_verified_against_listing]"
+  }
+ ]
+}
