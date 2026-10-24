@@ -18352,3 +18352,18 @@ Rules carried over:
 - Pass absolute --helm-orders paths.
 - An IJN18 map close needs `input 0xC1` after a releasegun.
 - Critical hints never stop the simulation, so no plan needs `input 0x4A`.
+
+Queue for the successor, from the lead (2026-10-24):
+1. USN15: time `config/win_orders/usn15_g57_jc_def.txt` (100000 frames) on current main (e3702e012+), default env first,
+   then ref and 20,3. gunnery57's numbers come from its branch exe: default won 1957.83 s, ref failed 1732.61 s, 20,3
+   failed 1757.64 s. Put the main numbers in the row. If default loses on main, mark USN15 as having no current plan
+   and tell the lead.
+2. BSM01: re-plan on ebc33b017+, where recon is ON. Order: ref, then 20,3, then default. `s62_b1_h` has no end there,
+   because JapFighterTrgGang (bsm_01:523) is filled, the raid changes, the MiniSub survives and luaMoveToPh4 never
+   fires. Start from `l72_b1_k1`: on the `local\l72_rc` export it gave ref 827.92 s and 20,3 836.92 s. Commit the plan
+   and the row.
+3. USN21 `g56_c2`: recon1's kLuaLastPositionOnKilledBound flip changes the end line to "EndScene reached" and makes
+   the guard refuse once instead of 14 times; the time is unchanged at 2966.77 s. Update the row's end note once
+   that flip lands.
+4. BSM09 `l68_b9_d1` is a nil end (MissionStatus=true, MissionCompleteRan=nil, EndScene not reached), now marked in the
+   table.
