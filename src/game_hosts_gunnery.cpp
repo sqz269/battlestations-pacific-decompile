@@ -1016,7 +1016,10 @@ constexpr bool kAaLineOfFireBound = true;
 //    flight (GameUnitsHost::plane_own_base_hit_filter_0084c213). It drops hits on
 //    the base unit only, never on another plane. OFF: every hit is taken (the
 //    filter still runs for the census; +C18h has no other reader).
-constexpr bool kPlaneOwnBaseHitFilterBound = false;
+//    ON by the pair of 2026-10-24 (cc9-party1, SHIP_AI_OPEN_ITEMS 323): 15 WINS
+//    rows with launches plus BSM06 stock are gameplay identical, shot_drops=0
+//    and crash_drops=0 OFF and ON.
+constexpr bool kPlaneOwnBaseHitFilterBound = true;
 //  * kKamikazeSameSquadronShotDropCc13Bound: packet cc13-kamisq. 0084BF00's
 //    squadron test (0084C1D8-0084C211) on the projectile sweep: with a shooter
 //    squadron ([owner+9D4h], stored to [esp+44h] at 0084BF6D), a hit on a plane
@@ -1028,7 +1031,10 @@ constexpr bool kPlaneOwnBaseHitFilterBound = false;
 //    neither drops nor counts down. The plane crash sweep has always applied it
 //    (pc_same_squadron). OFF: every hit is taken (the test still runs for the
 //    census, kamikaze_squadron_drops).
-constexpr bool kKamikazeSameSquadronShotDropCc13Bound = false;
+//    ON by the pair of 2026-10-24 (cc9-party1, SHIP_AI_OPEN_ITEMS 323): stock
+//    PRCP02, PRCP06 (96 kamikaze planes), PRCP07, USN11 and USN18 are fully
+//    identical, kamikaze_squadron_drops=0 OFF and ON.
+constexpr bool kKamikazeSameSquadronShotDropCc13Bound = true;
 //  * kAaLineOfFireExpiryDrawBound: packet cc9_g35_friendly_fire. On a cache miss
 //    0072F6E0 draws U([00CE74F8] = 0.8, [00CE3814] = 1.2) from 00BD2F10 on stream
 //    ECX=1 (0072F76D) and stores it, times [GlobalConfig+8Ch], as the record's
@@ -1313,7 +1319,10 @@ constexpr bool kTailGunnerClearReleaseBound = true;
 //    is kept. relation_cleared counts once per acquisition in both arms: the
 //    first tick of a same-party hold per gun and target (ON drops on that
 //    tick). OFF: counted only.
-constexpr bool kGunBotNotAllyDropCc13Bound = false;
+//    ON by the pair of 2026-10-24 (cc9-party1, SHIP_AI_OPEN_ITEMS 323): all 20
+//    WINS rows and BSM06 stock are gameplay identical, relation_cleared=0 in
+//    every run, so no row reaches the same-party hold.
+constexpr bool kGunBotNotAllyDropCc13Bound = true;
 static_assert(!kGunBotNotAllyDropCc13Bound || kTailGunnerClearReleaseBound,
     "kGunBotNotAllyDropCc13Bound drops through 008FFA75's vtable[38h](0), the release "
     "kTailGunnerClearReleaseBound transcribes");
