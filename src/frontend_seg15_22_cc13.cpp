@@ -1009,6 +1009,32 @@ void menu_prompt_record_list_clear_00531f80(Raw list, Seg15Host& host) {
     }
 }
 
+// 005321F0: members in reverse declaration order, as the SEH states 6..2 run.
+void menu_prompt_destroy_005321f0(Raw s, Seg15Host& host) {
+    s.at<std::uint32_t>(0x0) = 0x00CED3C4;
+    s.at<std::uint32_t>(0x8) = 0x00CED3B0;
+    s.at<std::uint32_t>(0xC) = 0x00CED3AC;
+    s.at<std::uint32_t>(0x10) = 0x00CED38C;
+    remove_page(s, 0x14, host);
+    Raw list{s.p + 0x278};
+    menu_prompt_record_list_clear_00531f80(list, host);
+    host.free_00bf65ac(list.ptr(4));
+    list.ptr(4) = nullptr;
+    Raw strings{s.p + 0x268};  // 004324A0 inlined; the stack words are the vector and the screen
+    if (strings.ptr(4) != nullptr) {
+        host.native_string_range_destroy_00432050(strings.ptr(4), strings.ptr(8), strings.p, s.p);
+        host.free_00bf65ac(strings.ptr(4));
+    }
+    strings.ptr(4) = nullptr;
+    strings.ptr(8) = nullptr;
+    strings.ptr(0xC) = nullptr;
+    host.eh_vector_destruct_00bf7c6e(s.p + 0x60, 0x48, 7, 0x00530F90);
+    host.eh_vector_destruct_00bf7c6e(s.p + 0x40, 0x10, 2, 0x004324A0);
+    singleton_00e18e6c_clear_base_00530cc0(Raw{s.p + 0xC}, host);  // inlined in the image
+    s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
 void menu_prompt_collect_children_00532350(Raw s, void* out, Seg15Host& host) {
     host.push_page_slot_004d6790(out, reinterpret_cast<void**>(s.p + 0x14));
 }
@@ -2193,6 +2219,17 @@ void multi_error_set_error_code_005d2e70(Raw s, std::int32_t code, Seg15Host& ho
     s.at<std::int32_t>(0x54) = applied;
     if (applied == 1) s.at<std::uint32_t>(0x58) = 0;
     if (s.at<std::uint8_t>(kActive) != 0) multi_error_show_message_005d24f0(s, host);
+}
+
+// 005D2EB0: vtables, page +10h, the two string vectors +30h, listener base, base.
+void multi_error_destroy_005d2eb0(Raw s, Seg15Host& host) {
+    s.at<std::uint32_t>(0x0) = 0x00CF1BF4;
+    s.at<std::uint32_t>(0x8) = 0x00CF1BE0;
+    s.at<std::uint32_t>(0xC) = 0x00CF1BC0;
+    remove_page(s, 0x10, host);
+    host.eh_vector_destruct_00bf7c6e(s.p + 0x30, 0x10, 2, 0x004324A0);
+    s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
+    host.front_end_screen_destruct_004f71a0(s);
 }
 
 void multi_error_collect_children_005d2f60(Raw s, void* out, Seg15Host& host) {
