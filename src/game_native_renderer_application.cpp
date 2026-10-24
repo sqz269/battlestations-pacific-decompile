@@ -38,6 +38,8 @@
 #include "bsp/native_system_constant_gather.hpp"
 #include "bsp/native_particle_preparation.hpp"
 #include "bsp/game_native_mission_model.hpp"
+#include "bsp/game_native_mission_frame.hpp"
+#include "bsp/cc13_front4.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_native_mission_command.hpp"
 #include "bsp/game_native_mission_lighting.hpp"
@@ -844,7 +846,9 @@ bool GameNativeRendererApplication::mission_ship_enabled() const noexcept {
 }
 void GameNativeRendererApplication::prepare_mission_ship() {
     auto& p = *impl_;
-    check(p.phase == Impl::Phase::ready && p.mission_ship,
+    check(p.mission_ship && (p.phase == Impl::Phase::ready ||
+        (p.phase == Impl::Phase::rendering && p.mission_ship->frame_switches.enabled &&
+            p.mission_ship->frame_state.phase == GameRenderPhase::kRendering)),
         "mission ship preparation requires the configured ready renderer");
     if (p.mission_ship->stage == MissionShipGraph::Stage::ready) return;
     try { p.mission_ship->prepare(*this, p.device_generation); }
@@ -856,6 +860,104 @@ void GameNativeRendererApplication::draw_mission_ship(std::uint64_t mission_fram
         "mission ship requires the existing native BeginScene and a mission frame");
     try { p.mission_ship->draw(mission_frame, simulated_seconds, p.device_generation); }
     catch (...) { p.phase = Impl::Phase::failed; throw; }
+}
+bool GameNativeRendererApplication::run_mission_render_frame(std::uint64_t mission_frame,
+    float simulated_seconds, U clear_color, const std::function<bool()>& after_begin,
+    const std::function<void()>& overlay_and_capture, NativeRendererPresentObservation& present) {
+    auto& p = *impl_;
+    if (!p.mission_ship || !p.mission_ship->frame_switches.enabled) return false;
+    present = {};
+    auto& mission = *p.mission_ship;
+    try {
+        check(mission_frame && mission.stage == MissionShipGraph::Stage::ready &&
+            p.frames && after_begin && overlay_and_capture,
+            "native mission frame requires completed preparation and its device bridge");
+        const bool idle = mission.frame_state.phase == GameRenderPhase::kIdle;
+        const bool retained = mission.frame_state.phase == GameRenderPhase::kRendering;
+        check((idle && p.phase == Impl::Phase::ready) ||
+            (retained && p.phase == Impl::Phase::rendering),
+            "native mission phase disagrees with the device frame");
+        NativeMissionFrameHooks hooks;
+        hooks.begin_and_clear = [&] {
+            mission.overlay_window_open = false;
+            mission.overlay_submitted = false;
+            begin_frame(clear_color);
+            return after_begin();
+        };
+        hooks.update_camera = [&] { mission.update_view(mission_frame, p.device_generation); };
+        hooks.gather_sort_submit = [&] { mission.submit_scene(); };
+        hooks.execute_commands = [&] { mission.execute_scene(mission_frame, simulated_seconds); };
+        hooks.overlay_and_capture = [&] {
+            check(!mission.overlay_window_open, "native mission overlay callback is reentrant");
+            mission.overlay_window_open = true;
+            try { overlay_and_capture(); }
+            catch (...) { mission.overlay_window_open = false; throw; }
+            mission.overlay_window_open = false;
+        };
+        hooks.end_and_present = [&] {
+            present = end_frame();
+            return present.returned && SUCCEEDED(static_cast<HRESULT>(present.result));
+        };
+        hooks.queue_retained = [&] { return p.frames->queue && p.frames->queue->control_20 != 0; };
+        hooks.log = [&](const char* message) { p.log.note(message); };
+        const auto result = mission.frame_coordinator.run(mission.frame_state, mission.frame_switches, hooks);
+        check(result != NativeMissionFrameResult::kDisabled &&
+            result != NativeMissionFrameResult::kBlocked &&
+            result != NativeMissionFrameResult::kBeginFailed,
+            "native mission frame could not complete its admitted phase");
+        check((mission.frame_state.phase == GameRenderPhase::kIdle && p.phase == Impl::Phase::ready) ||
+            (mission.frame_state.phase == GameRenderPhase::kRendering && p.phase == Impl::Phase::rendering),
+            "native mission frame left inconsistent device and game phases");
+        return true;
+    } catch (...) {
+        mission.overlay_window_open = false;
+        mission.observe_failed_frame();
+        p.phase = Impl::Phase::failed;
+        throw;
+    }
+}
+void GameNativeRendererApplication::register_mission_prepare_callback(void* context,
+    void (*callback)(void*)) {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::ready && p.mission_ship && context && callback &&
+        p.mission_ship->stage == MissionShipGraph::Stage::prepared &&
+        !p.mission_ship->prepare_callback,
+        "mission prepare callback requires one retained startup borrower before preparation");
+    p.mission_ship->prepare_context = context;
+    p.mission_ship->prepare_callback = callback;
+}
+void* GameNativeRendererApplication::mission_overlay_queue() {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::rendering && p.mission_ship &&
+        p.mission_ship->frame_switches.enabled && p.mission_ship->overlay_window_open && p.frames,
+        "native GUI queue may only be borrowed inside the mission overlay callback");
+    check(p.frames->queue != nullptr, "native mission overlay queue is absent");
+    return p.frames->queue;
+}
+void* GameNativeRendererApplication::mission_overlay_pass_context() {
+    (void)mission_overlay_queue();
+    auto* const service = static_cast<std::uint8_t*>(impl_->frames->service);
+    check(service != nullptr, "native mission overlay render service is absent");
+    return reinterpret_cast<void*>(static_cast<std::uintptr_t>(
+        cc13_front4::render_service_word_1d4_00b0d0d0(cc13_sweepA::Raw{service})));
+}
+void GameNativeRendererApplication::submit_mission_overlay_scene(void* queue, void* scene,
+    void* camera, void* targets, void* actual8b_label) {
+    auto& p = *impl_;
+    check(queue == mission_overlay_queue() && targets == mission_overlay_pass_context() &&
+        scene && camera && actual8b_label && !p.mission_ship->overlay_submitted,
+        "native GUI submission requires the current queue/context and one original command label");
+    auto& mission = *p.mission_ship;
+    mission.overlay_submitted = true;
+    try {
+        mission.commands->retire_executed_command_before_overlay();
+        mission.commands->submit_scene_with_label(scene, camera, targets, actual8b_label);
+        mission.commands->execute_before_overlay();
+    } catch (...) {
+        mission.observe_failed_frame();
+        p.phase = Impl::Phase::failed;
+        throw;
+    }
 }
 void GameNativeRendererApplication::release_application_preload_rows() {
     auto& p = *impl_;
