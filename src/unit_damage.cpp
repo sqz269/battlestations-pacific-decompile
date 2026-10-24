@@ -480,18 +480,92 @@ void ship_on_health_changed_00827a90(UnitDamageHost& host, std::uint32_t entity)
     host.send_death_message(entity, kUnitDeathSessionMessageId);  // 00827AE5 + 00827B77
 }
 
-// 00958A30. __fastcall(this), RET 0. Partial: only the root-unit branch
-// 00958DA7-00958DCF is modelled; the subobject branch 00958A58-00958DA6 drives
-// the per-part destruction sequence through vtable[1B4h], [19Ch] and [204h] and
-// is not reconstructed.
+namespace {
+inline constexpr const char* kInferiorFailureState = "InferiorFailure";  // 00CF0B74
+inline constexpr int kInferiorFailureClassA = 0x46;  // 00958AFB
+inline constexpr int kInferiorFailureClassB = 0x45;  // 00958B43
+inline constexpr int kInferiorFailureClassGate = 0x1b;  // 00958B0A
+
+// COMISS 0.0f, x / JC: the branch is taken for 0 < x and for unordered, so the
+// fall-through is exactly x <= 0 (ordered).
+bool not_above_zero_ordered(float x) noexcept { return x <= 0.0f; }
+
+// 00958AE4..00958B80 (and 00958C19..00958C6D): +728h reloaded from the owner's
+// descriptor +190h, then +18Ch when class 46h holds (directly, or through 1Bh
+// and vtable[204h](46h)). Returns whether the second, 45h, test held, which
+// writes +18Ch again.
+bool reload_inferior_failure_lockout(UnitDamageHost& host, std::uint32_t entity) {
+    auto owner_descriptor = [&] {
+        return host.entity_class_descriptor(host.entity_subobject_owner(entity));
+    };
+    host.write_subobject_lockout(entity, host.descriptor_float(owner_descriptor(), 0x190));
+    auto holds = [&](int kind) {
+        if (host.class_id_test(entity, kind)) return true;
+        return host.class_id_test(entity, kInferiorFailureClassGate) &&
+               host.dispatch_class_flag(entity, kind);
+    };
+    if (holds(kInferiorFailureClassA)) {
+        host.write_subobject_lockout(entity, host.descriptor_float(owner_descriptor(), 0x18c));
+    }
+    if (holds(kInferiorFailureClassB)) {
+        host.write_subobject_lockout(entity, host.descriptor_float(owner_descriptor(), 0x18c));
+        return true;
+    }
+    return false;
+}
+}  // namespace
+
+// 00958A30. __fastcall(this), RET 0, body 00958A30..00958DCF.
+// Root unit (+71Ch null), 00958DA7..00958DCF: vtable[70h](1) when health <= 0
+// (COMISS/JC, so a NaN health returns without destroying).
+// Subobject (+71Ch set), 00958A58..00958DA6, health read once into XMM0:
+//   health <= 0 and +720h clear (00958A7A..00958BC2): vtable[194h]("InferiorFailure",
+//     0), vtable[1B4h](0072AB10()), the +728h reload, then the owner's
+//     vtable[1ACh]([owner desc+194h]) when class 1Bh holds and [own desc+174h] is set;
+//   health <= 0, +720h set, +358h zero and +728h <= 0 (00958C01..00958CD3):
+//     vtable[1B4h](0072AB10()) and the +728h reload, nothing more;
+//   otherwise (00958CD4..00958DA6), only with +720h set: vtable[1B4h](0) when
+//     +728h <= 0; then, when the re-read health >= +36Ch (FCOMIP/JC, unordered
+//     returns), vtable[19Ch]("InferiorFailure", 0) and, when +728h > 0, +728h = 0
+//     and vtable[1B4h](0).
 void unit_react_to_health_change_00958a30(UnitDamageHost& host, std::uint32_t entity) {
-    if (host.entity_subobject_owner(entity) != 0) {
-        return;  // contract: unread, the subobject branch
+    if (host.entity_subobject_owner(entity) == 0) {  // 00958A4B
+        if (!not_above_zero_ordered(host.read_health(entity).current_health)) {
+            return;  // 00958DB1
+        }
+        host.dispatch_destroy(entity, 1);  // 00958DBE, vtable[70h]
+        return;
     }
-    if (!unit_is_dead(host.read_health(entity))) {
-        return;  // 00958DB1
+    const float health = host.read_health(entity).current_health;  // 00958A58
+    const bool dead = not_above_zero_ordered(health);
+    if (dead && !host.entity_failure_latched(entity)) {
+        host.dispatch_named_state_194(entity, kInferiorFailureState, 0);  // 00958AA1
+        host.dispatch_damage_state(entity, host.last_damage_state_index_0072ab10(entity));
+        reload_inferior_failure_lockout(host, entity);
+        if (host.class_id_test(entity, kInferiorFailureClassGate) &&
+            host.descriptor_byte_174(host.entity_class_descriptor(entity))) {  // 00958B9B
+            const std::uint32_t owner = host.entity_subobject_owner(entity);
+            host.dispatch_owner_float_1ac(
+                owner, host.descriptor_float(host.entity_class_descriptor(owner), 0x194));
+        }
+        return;
     }
-    host.dispatch_destroy(entity, 1);  // 00958DBE, vtable[70h]
+    if (dead && host.entity_word_358(entity) == 0 &&
+        not_above_zero_ordered(host.entity_subobject_lockout(entity))) {  // 00958BE7..00958BFB
+        host.dispatch_damage_state(entity, host.last_damage_state_index_0072ab10(entity));
+        reload_inferior_failure_lockout(host, entity);
+        return;
+    }
+    if (!host.entity_failure_latched(entity)) return;  // 00958CDB
+    if (not_above_zero_ordered(host.entity_subobject_lockout(entity))) {
+        host.dispatch_damage_state(entity, 0);  // 00958CF4
+    }
+    const UnitHealth now = host.read_health(entity);  // 00958CF6 / 00958D00, float spills
+    if (!(now.current_health >= now.max_health)) return;  // 00958D12 FCOMIP / JC
+    host.dispatch_named_state_19c(entity, kInferiorFailureState, 0);  // 00958D43
+    if (!(host.entity_subobject_lockout(entity) > 0.0f)) return;  // 00958D77 JBE
+    host.write_subobject_lockout(entity, 0.0f);  // 00958D8C
+    host.dispatch_damage_state(entity, 0);       // 00958D94
 }
 
 // 0042ED80, 00CE6290+F4h and 00CFC3D0+F4h. __thiscall(this, float), RET 4.

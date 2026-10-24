@@ -387,7 +387,11 @@ bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
         static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
     const float d = static_cast<double>(d2) > 1e-10                       // 00CE3820
         ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
-    if (!(r < d)) return false;                                           // 004F3887
+    bool proceed = r < d;                                                 // 004F3887
+    if constexpr (kCircleTangentUnorderedCc13Bound) {
+        proceed = r < d || std::isnan(r);                                 // JC on unordered
+    }
+    if (!proceed) return false;
     const float ux = static_cast<float>(static_cast<double>(dx) / d);
     const float uz = static_cast<float>(static_cast<double>(dz) / d);
     const float p = static_cast<float>(static_cast<double>(r) * r / d);   // 004F38C1
