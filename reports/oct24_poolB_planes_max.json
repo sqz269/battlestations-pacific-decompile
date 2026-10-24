@@ -73,14 +73,25 @@
         "evidence": "Body reaches 007D5889 RET; all ten recovered marker names and both collision-point arms present; native live model reloads and temporary retain/release ordering retained"
       },
       "listing_instruction_count": 1632
-    }
-  ],
-  "open": [
+    },
     {
       "address": "007f4ba0",
-      "status": "evidence review in progress"
+      "name": "plane_squadron_sentity_init_007f4ba0",
+      "source": "src/plane_squadron_entity.cpp",
+      "status": "reconstructed_complete_ordinary_body_build_pending",
+      "coverage": "complete ordinary body 007F4BA0-007F544F; native FH3 frame/unwind excluded",
+      "original_abi": "ECX squadron; no stack arguments; squadron vtable 00D087C0 slot A4h; RET at 007F544F",
+      "evidence": "All 606 assembly instructions and saved pseudocode reviewed. Covers authored State/HomeBase/SpawnPoint/Vel3D/DummyObjectID, member pose invalidation/placement, current-command and autoattack arms, complete saved squadron reader fields and normal cleanup, observer reassignment, slope layers, launch-task creation and final F4/leader refresh. 007ED260 preserves ECX for the implicit 007ED6E0 receiver at 007F4EF5. Both 00465080 and 00468560 consume their float argument with RET8, leaving flags1 for 0077D600 RET0Ch. 004425C0 consumes/destructs the by-value 14h-byte LuaObject and constructs the 14h-byte reader. 0071BDC0 is an actual single RET4 and is represented by its proven lack of ordinary side effects. Native shared scratch output retained because tag4 handle conversion can leave its destination unchanged. Member count has no added five-slot bound or reset. Observer old/new/owner and launch-home captures survive callbacks; current receiver/leader reloads match listing. x87 instructions are FLDZ/FLD/FSTP only, with no DC register arithmetic; 00CE380C live bytes 0000C03F prove 1.5f. Full direct call-site evidence in reports/oct24_poolB_planes_max.json.",
+      "uncertainty": "New unwired C++ API with caller-initialized native local scratch input; FH3 exception registration/unwind, x87 status/signaling-NaN effects and binary ABI equivalence unproved. Address-named helper and virtual boundaries require faithful providers; CRT/STL/Lua library bodies receive no reconstruction credit. Build pending parent integration; no new fixtures or game run.",
+      "correction": {
+        "was": "BSP_PlaneSquadron_SEntityInitSlotA4 incomplete_or_unverified_body_credit_withdrawn_oct24 in game_hosts_units.cpp; historical evidence stopped at 007F4CA1",
+        "is": "Complete ordinary raw-storage initializer in canonical plane_squadron_entity family",
+        "evidence": "Live Ghidra function is present and ends at 007F544F; all normal arms including complete saved-state body and launch tail reviewed and reconstructed"
+      },
+      "listing_instruction_count": 606
     }
   ],
+  "open": [],
   "call_sites": [
     {
       "function": "0074af50",
@@ -1098,6 +1109,311 @@
       "function": "007d3e60",
       "address": "007d586c",
       "native": "004215d0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4bbd",
+      "native": "0077fad0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4bfa",
+      "native": "007ed260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c19",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c4a",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c5d",
+      "native": "008f0e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c74",
+      "native": "008f0e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c85",
+      "native": "00925a90"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4c9a",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4cad",
+      "native": "008f0e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4cc4",
+      "native": "008f0e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4cd6",
+      "native": "00925a90"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4ce2",
+      "native": "006bcd20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4cfa",
+      "native": "007f1c00"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4d0d",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4d44",
+      "native": "007ed1d0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4d57",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4d7d",
+      "native": "0085dc80"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4d99",
+      "native": "0042ed50"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4db0",
+      "native": "007f2920"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4ddd",
+      "native": "007eda90"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e0c",
+      "native": "0071be40"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e50",
+      "native": "00465080"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e68",
+      "native": "00414db0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e87",
+      "native": "007ef8f0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e91",
+      "native": "00468560"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4e9e",
+      "native": "0077d600"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4ec5",
+      "native": "008f2260"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4edd",
+      "native": "00521e30"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4ee5",
+      "native": "007f15f0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4ef5",
+      "native": "007ed6e0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4f1e",
+      "native": "009238a0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4f27",
+      "native": "004425c0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4f4e",
+      "native": "00bd8e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4f6d",
+      "native": "00bd8e20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4f8a",
+      "native": "00bd5eb0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4fde",
+      "native": "00bd7a20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f4fe8",
+      "native": "00bf681b"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5000",
+      "native": "0084d810"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f504d",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f508e",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f50c5",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5142",
+      "native": "006952a0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5152",
+      "native": "00694a60"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5189",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f51c0",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f51f7",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f522c",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5239",
+      "native": "004c17d0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f524a",
+      "native": "0041df40"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5255",
+      "native": "004c17d0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5268",
+      "native": "0041df40"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5296",
+      "native": "0071bdc0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f52da",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f52ea",
+      "native": "007f0dc0"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5321",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5358",
+      "native": "00bd6830"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f5361",
+      "native": "00bd7a20"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f537a",
+      "native": "00441210"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f53b6",
+      "native": "00bf681b"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f53dd",
+      "native": "00bf681b"
+    },
+    {
+      "function": "007f4ba0",
+      "address": "007f53ff",
+      "native": "007f1de0"
     }
   ],
   "indirect_calls": [
@@ -1118,6 +1434,84 @@
       "site": "007d5539",
       "slot": "00",
       "contract": "release retained captured effect only on zero decrement result"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f4be6",
+      "slot": "00",
+      "contract": "leader+170h ECX; result stored squadron+354h"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f4d78",
+      "slot": "1bc",
+      "contract": "current leader ECX; DummyObjectID DWORD; RET4"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f4df1",
+      "slot": "50",
+      "contract": "current command block ECX; EAX predicate pointer"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f4e04",
+      "slot": "54",
+      "contract": "reload current command block ECX; DWORD0; RET4"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f4fbb",
+      "slot": "10",
+      "contract": "reader key {1,index}, field {4,shared scratch DWORD}; RET10h"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f50f0",
+      "slot": "10",
+      "contract": "reader key {0,D08AA0}, field {1,shared scratch DWORD}; RET10h"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f5126",
+      "slot": "10",
+      "contract": "reader key {0,D08A94}, field {4,shared scratch DWORD}; RET10h"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f528d",
+      "slot": "04",
+      "contract": "reader enter key {0,CF8E4C}; RET8"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f52a6",
+      "slot": "08",
+      "contract": "reader leave key; no stack args"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f53ae",
+      "slot": "5c",
+      "contract": "captured home ECX, kind9, AL predicate; RET4"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f53d5",
+      "slot": "5c",
+      "contract": "same captured home ECX, kind45h, AL predicate; RET4"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f5420",
+      "slot": "f4",
+      "contract": "squadron ECX, current float at +150h; RET4"
+    },
+    {
+      "function": "007f4ba0",
+      "site": "007f5436",
+      "slot": "00",
+      "contract": "reload current leader+170h ECX; result stored squadron+354h"
     }
   ]
 }
