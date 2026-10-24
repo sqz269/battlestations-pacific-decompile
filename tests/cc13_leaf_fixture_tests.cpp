@@ -39,6 +39,7 @@
 #include "bsp/cc13_dyn1.hpp"
 #include "bsp/render_fx_cc13.hpp"
 #include "bsp/oct18b_nc_mid.hpp"
+#include "bsp/game_dynamics_list.hpp"
 #include "cc13_leaf_reference.hpp"
 #include <float.h>
 #include <array>
@@ -593,6 +594,250 @@ template<class Open> void run_fixture2(Open open) {
     }
 }
 
+// cc13-fixture3: the register-ABI Dyn leaves.
+// 00C412D0: EBX = segment start, EDX = box; stack (entry_out, &end), RET 8; AL.
+bool native_segment_box(unsigned offset, const float* start, const float* box, float* entry,
+                        const float* end) {
+    void* fn = image + offset;
+    unsigned char hit = 0;
+    __asm {
+        push end
+        push entry
+        mov ebx, start
+        mov edx, box
+        call fn
+        mov hit, al
+    }
+    return hit != 0;
+}
+
+// 00C309D0 / 00C30D10 / 00C31060 / 00C313A0: ECX = &count, ESI = output; stack (input,
+// count, bound), RET 0Ch.
+void native_clip(unsigned offset, std::int32_t* count_out, float* output, const float* input,
+                 std::int32_t count, float limit) {
+    void* fn = image + offset;
+    __asm {
+        push limit
+        push count
+        push input
+        mov ecx, count_out
+        mov esi, output
+        call fn
+    }
+}
+
+// 00C34CF0: EBX = count; stack (output, nodes), RET 8.
+void native_expand(unsigned offset, float* output, const void* const* nodes, std::int32_t count) {
+    void* fn = image + offset;
+    __asm {
+        push nodes
+        push output
+        mov ebx, count
+        call fn
+    }
+}
+
+// A double near a float draw, so the double support routines see full 53-bit operands.
+double edge_or_double(float lo, float hi) {
+    const float f = edge_or(lo, hi);
+    if (!std::isfinite(f) || next() % 4 == 0) return f;
+    return static_cast<double>(f) * (1.0 + (static_cast<double>(next()) - 2147483648.0) * 1e-15);
+}
+
+// The cc13-fixture3 routines (docs/CC13_FIXTURE_PASS_3.md). Runs once per precision control,
+// like run_fixture2.
+template<class Open> void run_fixture3(Open open) {
+    using namespace bsp::cc13_dyn1;
+    alignas(16) static std::uint8_t shape1[0x220], shape2[0x220];
+    auto fill_shape = [&] {
+        std::memset(shape1, 0xab, sizeof(shape1));
+        for (int k = 0; k < 3; ++k) {
+            const float e = edge_or(0, 5);
+            std::memcpy(shape1 + 0x210 + 4 * k, &e, 4);
+        }
+        std::memcpy(shape2, shape1, sizeof(shape1));
+    };
+    auto fill_xf = [&](float xf[12]) {
+        for (int k = 0; k < 9; ++k) xf[k] = edge_or(-1.5f, 1.5f);
+        for (int k = 9; k < 12; ++k) xf[k] = edge_or(-100, 100);
+    };
+    {
+        auto& c = open("00C47AA0 box shape support (float)");
+        auto native = at<void (__fastcall*)(const void*, int, float*, const float*, const float*)>(cc13_leaf_00c47aa0);
+        for (int i = 0; i < 3000; ++i) {
+            fill_shape();
+            float xf[12], dir[3], o1[3] = {7, 7, 7}, o2[3] = {7, 7, 7};
+            fill_xf(xf);
+            for (auto& v : dir) v = edge_or(-2, 2);
+            if (i % 25 == 0) dir[i / 25 % 3] = 0.0f;  // a zero dot picks -1
+            native(shape1, 0, o1, dir, xf);
+            box_shape_support_00c47aa0(shape2, o2, dir, xf);
+            if (nan_only_diff(o1, o2, 3)) { c.check_nan_only(); continue; }
+            check_note(c, same(o1, o2), "dir=%a,%a,%a k=%d: %a / %a", dir[0], dir[1], dir[2],
+                       first_diff(o1, o2, 3), o1[0], o2[0]);
+        }
+    }
+    auto nan_only_diff_d = [](const double* a, const double* b, int n) {
+        bool differs = false;
+        for (int k = 0; k < n; ++k) {
+            if (std::memcmp(a + k, b + k, 8) == 0) continue;
+            if (!(std::isnan(a[k]) && std::isnan(b[k]))) return false;
+            differs = true;
+        }
+        return differs;
+    };
+    {
+        auto& c = open("00C38470 box shape support (double)");
+        auto native = at<void (__fastcall*)(const void*, int, double*, const double*, const float*)>(cc13_leaf_00c38470);
+        for (int i = 0; i < 3000; ++i) {
+            fill_shape();
+            float xf[12];
+            double dir[3], o1[3] = {7, 7, 7}, o2[3] = {7, 7, 7};
+            fill_xf(xf);
+            for (auto& v : dir) v = edge_or_double(-2, 2);
+            if (i % 25 == 0) dir[i / 25 % 3] = 0.0;
+            native(shape1, 0, o1, dir, xf);
+            box_shape_support_00c38470(shape2, o2, dir, xf);
+            if (nan_only_diff_d(o1, o2, 3)) { c.check_nan_only(); continue; }
+            check_note(c, same(o1, o2), "dir=%a,%a,%a: %a,%a,%a / %a,%a,%a", dir[0], dir[1], dir[2],
+                       o1[0], o1[1], o1[2], o2[0], o2[1], o2[2]);
+        }
+    }
+    {
+        auto& c = open("00C38810 cylinder shape support (double)");
+        auto native = at<void (__fastcall*)(const void*, int, double*, const double*, const float*)>(cc13_leaf_00c38810);
+        for (int i = 0; i < 3000; ++i) {
+            fill_shape();
+            float xf[12];
+            double dir[3], o1[3] = {7, 7, 7}, o2[3] = {7, 7, 7};
+            fill_xf(xf);
+            for (auto& v : dir) v = edge_or_double(-2, 2);
+            if (i % 25 == 0) dir[i / 25 % 3] = 0.0;
+            if (i % 30 == 1) { dir[0] = xf[3] * 1e-4; dir[1] = xf[4]; dir[2] = xf[5] * 1e-4; }  // near the axis
+            native(shape1, 0, o1, dir, xf);
+            cylinder_shape_support_00c38810(shape2, o2, dir, xf);
+            if (nan_only_diff_d(o1, o2, 3)) { c.check_nan_only(); continue; }
+            check_note(c, same(o1, o2), "dir=%a,%a,%a: %a,%a,%a / %a,%a,%a", dir[0], dir[1], dir[2],
+                       o1[0], o1[1], o1[2], o2[0], o2[1], o2[2]);
+        }
+    }
+    {
+        auto& c = open("00C412D0 segment / box slab entry");
+        for (int i = 0; i < 3000; ++i) {
+            float start[3], end[3], box[6], e1[3] = {7, 7, 7}, e2[3] = {7, 7, 7};
+            for (int k = 0; k < 3; ++k) {
+                const float a = edge_or(-10, 10), b = edge_or(-10, 10);
+                box[k] = i % 7 ? (a < b ? a : b) : a;  // mostly ordered boxes
+                box[3 + k] = i % 7 ? (a < b ? b : a) : b;
+                start[k] = edge_or(-15, 15);
+                end[k] = edge_or(-15, 15);
+            }
+            if (i % 11 == 0) for (int k = 0; k < 3; ++k) end[k] = start[k];             // degenerate
+            if (i % 13 == 0) start[i % 3] = box[i % 3];                                // on a face
+            const bool h1 = native_segment_box(cc13_leaf_00c412d0, start, box, e1, end);
+            const bool h2 = segment_box_entry_00c412d0(start, box, e2, end);
+            if (h1 == h2 && nan_only_diff(e1, e2, 3)) { c.check_nan_only(); continue; }
+            check_note(c, h1 == h2 && same(e1, e2), "s=%a,%a,%a e=%a,%a,%a: %d %a / %d %a",
+                       start[0], start[1], start[2], end[0], end[1], end[2], h1, e1[0], h2, e2[0]);
+        }
+    }
+    {
+        struct Clip { unsigned offset; const char* name;
+                      void (*fn)(std::int32_t&, float*, const float*, std::int32_t, float); };
+        const Clip clips[] = {
+            {cc13_leaf_00c313a0, "00C313A0 polygon clip x at least", clip_x_at_least_00c313a0},
+            {cc13_leaf_00c30d10, "00C30D10 polygon clip y at least", clip_y_at_least_00c30d10},
+            {cc13_leaf_00c31060, "00C31060 polygon clip x at most", clip_x_at_most_00c31060},
+            {cc13_leaf_00c309d0, "00C309D0 polygon clip y at most", clip_y_at_most_00c309d0},
+        };
+        for (const auto& clip : clips) {
+            auto& c = open(clip.name);
+            for (int i = 0; i < 2000; ++i) {
+                const std::int32_t n = 1 + static_cast<std::int32_t>(next() % 7);
+                float in[14], o1[28], o2[28];
+                for (int k = 0; k < 2 * n; ++k) in[k] = edge_or(-10, 10);
+                const float bound = i % 9 == 0 ? in[next() % (2 * n)] : edge_or(-6, 6);  // on a vertex
+                for (int k = 0; k < 28; ++k) o1[k] = o2[k] = -77.0f;
+                std::int32_t c1 = -1, c2 = -1;
+                native_clip(clip.offset, &c1, o1, in, n, bound);
+                clip.fn(c2, o2, in, n, bound);
+                const bool counts = c1 == c2;
+                if (counts && nan_only_diff(o1, o2, 28)) { c.check_nan_only(); continue; }
+                check_note(c, counts && same(o1, o2), "n=%d bound=%a: %d / %d k=%d", n, bound, c1, c2,
+                           first_diff(o1, o2, 28));
+            }
+        }
+    }
+    {
+        auto& c = open("00C34CF0 expand node matrices");
+        for (int i = 0; i < 1000; ++i) {
+            const std::int32_t n = 1 + static_cast<std::int32_t>(next() % 4);
+            alignas(16) float nodes[4][14];
+            const void* ptrs[4];
+            for (int j = 0; j < 4; ++j) {
+                for (auto& v : nodes[j]) v = edge_or(-100, 100);
+                ptrs[j] = nodes[j];  // +08h is nodes[j][2]
+            }
+            float o1[64], o2[64];
+            for (int k = 0; k < 64; ++k) o1[k] = o2[k] = -77.0f;
+            native_expand(cc13_leaf_00c34cf0, o1, ptrs, n);
+            expand_node_matrices_00c34cf0(o2, ptrs, n);
+            if (nan_only_diff(o1, o2, 64)) { c.check_nan_only(); continue; }
+            check_note(c, same(o1, o2), "n=%d k=%d", n, first_diff(o1, o2, 64));
+        }
+    }
+    {
+        auto& c = open("00C37F60 body add force at point");
+        auto native = at<void (__fastcall*)(void*, int, const float*, const float*)>(cc13_leaf_00c37f60);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(16) float body1[0x18], body2[0x18], m1[0x18], m2[0x18];
+            for (int k = 0; k < 0x18; ++k) { body1[k] = edge_or(-50, 50); m1[k] = edge_or(-50, 50); }
+            std::uint32_t flags = next();
+            std::memcpy(&body1[0x14], &flags, 4);  // B+50h
+            std::memcpy(body2, body1, sizeof(body1));
+            std::memcpy(m2, m1, sizeof(m1));
+            void* p1 = m1;
+            void* p2 = m2;
+            std::memcpy(&body1[1], &p1, 4);  // B+4h = motion
+            std::memcpy(&body2[1], &p2, 4);
+            float force[3], point[3];
+            for (int k = 0; k < 3; ++k) { force[k] = edge_or(-1000, 1000); point[k] = edge_or(-60, 60); }
+            native(body1, 0, force, point);
+            body_add_force_at_point_00c37f60(body2, force, point);
+            std::memcpy(&body1[1], &p2, 4);  // compare the motion pointers as equal
+            const bool exact = same(body1, body2) && same(m1, m2);
+            if (!exact && (same(body1, body2) || nan_only_diff(body1, body2, 0x18)) &&
+                (same(m1, m2) || nan_only_diff(m1, m2, 0x18))) {
+                c.check_nan_only();
+                continue;
+            }
+            check_note(c, exact, "f=%a,%a,%a k=%d", force[0], force[1], force[2], first_diff(m1, m2, 0x18));
+        }
+    }
+    {
+        auto& c = open("00C43EA0 interpolate body transform");
+        auto native = at<void (__fastcall*)(void*, int, float*, float)>(cc13_leaf_00c43ea0);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(16) float body[0x10], motion[0x30];
+            bsp::DynamicsTransform34 previous, current;
+            for (int k = 0; k < 12; ++k) { previous.m[k] = edge_or(-100, 100); current.m[k] = edge_or(-100, 100); }
+            std::memset(body, 0, sizeof(body));
+            std::memset(motion, 0, sizeof(motion));
+            void* m = motion;
+            std::memcpy(&body[1], &m, 4);                        // B+4h = motion
+            std::memcpy(&body[2], current.m, sizeof(current.m));  // B+08h..34h
+            std::memcpy(&motion[0x21], previous.m, sizeof(previous.m));  // M+84h..B0h
+            const float alpha = i % 10 == 0 ? static_cast<float>(i % 3) * 0.5f : edge_or(-0.5f, 1.5f);
+            float o1[12];
+            for (auto& v : o1) v = -77.0f;
+            native(body, 0, o1, alpha);
+            const bsp::DynamicsTransform34 o2 = bsp::interpolate_body_transform_00c43ea0(previous, current, alpha);
+            if (nan_only_diff(o1, o2.m, 12)) { c.check_nan_only(); continue; }
+            check_note(c, same(o1, o2.m), "t=%a k=%d", alpha, first_diff(o1, o2.m, 12));
+        }
+    }
+}
+
 }  // namespace
 
 int main() {
@@ -836,6 +1081,7 @@ int main() {
         state = 0x2468ace1u;
         const std::string tag = pc == _PC_53 ? " @53" : " @24";
         run_fixture2([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
+        run_fixture3([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
     }
     _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
     // cc13-fixture2 cases carry a precision suffix. The pass that decides is the precision of
@@ -844,7 +1090,9 @@ int main() {
     // The documented findings of docs/CC13_FIXTURE_PASS_2.md are pinned: a deciding pass fails
     // when its mismatch or NaN sign/payload-only count differs from the pinned one (0 for an
     // unlisted routine), so a new mismatch or a fixed one both show up.
-    static const char* const primary53[] = {"00C37860"};
+    // cc13-fixture3: the double support mappings 00C38470 and 00C38810 are reached only from
+    // the GJK routines 00C51C20 / 00C51EF0 of the narrow-phase intersectors (Dyn workers).
+    static const char* const primary53[] = {"00C37860", "00C38470", "00C38810"};
     struct Pinned { const char* address; int failures; int nan_only; const char* finding; };
     static const Pinned pinned[] = {
         {"004F3DA0", 57, 0, "float intermediates overflow where the x87 stack does not"},
@@ -853,6 +1101,9 @@ int main() {
         {"00941AA0", 0, 10, "NaN sign/payload only"},
         {"00A8B860", 0, 1, "NaN sign/payload only"},
         {"00B75580", 0, 1, "NaN sign/payload only"},
+        // cc13-fixture3 (docs/CC13_FIXTURE_PASS_3.md).
+        {"00C47AA0", 0, 1, "NaN sign/payload only"},
+        {"00C38810", 0, 4, "NaN sign/payload only"},
     };
     int failures = 0;
     for (int i = 0; i < count; ++i) {
