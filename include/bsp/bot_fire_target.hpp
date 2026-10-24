@@ -267,6 +267,24 @@ struct GunAimAngles {
 GunAimAngles gun_bot_angles_from_local_008fdaf0(float local_horz,
                                                 float local_vert) noexcept;
 
+// The whole of 008FDAF0. ABI: ECX = target point, EDX = origin point (float[3]
+// each), stack (frame, out float[2]), RET 8; the ledger's older "__cdecl"
+// reading missed the two register inputs. The three callees are game code
+// reached through this host; each is reconstructed elsewhere
+// (cc13_front2.cpp, system_camera_axes.cpp, cc13_sweepA.cpp).
+struct GunBotAnglesHost {
+    virtual ~GunBotAnglesHost() = default;
+    // 0042D0D0, ECX = out, EDX = direction, stack (frame, normalize) RET 8.
+    virtual void transform_direction_0042d0d0(float out[3], const float direction[3], const void* frame,
+                                              bool normalize) = 0;
+    // 00419440, ECX = vector, length on ST0 (the image stores it as a float).
+    virtual float vector_length_00419440(const float vector[3]) = 0;
+    // 00521370, ECX = direction, EDX = pitch out, stack yaw out, RET 4.
+    virtual void direction_to_pitch_yaw_00521370(const float direction[3], float* pitch, float* yaw) = 0;
+};
+void gun_bot_angles_from_world_008fdaf0(const float target[3], const float origin[3], const void* frame,
+                                        float out[2], GunBotAnglesHost& host);
+
 // 008FFA20's aim error: one draw per angle, each in [0, degrees) converted to
 // radians. `draw` is the value 00BD2F10 returned.
 float gun_bot_apply_aim_error_008ffa20(float angle, float draw) noexcept;

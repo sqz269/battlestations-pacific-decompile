@@ -211,6 +211,27 @@ GunAimAngles gun_bot_angles_from_local_008fdaf0(float local_horz,
     return angles;
 }
 
+void gun_bot_angles_from_world_008fdaf0(const float target[3], const float origin[3], const void* frame,
+                                        float out[2], GunBotAnglesHost& host)
+{
+    // 008FDAF3..008FDB1A: target - origin, one float subtraction per axis.
+    const float direction[3] = {target[0] - origin[0], target[1] - origin[1], target[2] - origin[2]};
+    // 008FDB1E: into the frame, PUSH 0 = no normalisation.
+    float local[3];
+    host.transform_direction_0042d0d0(local, direction, frame, false);
+    // 008FDB26..008FDB4A: FCOMI/JBE, so a zero, negative or NaN length gives
+    // a 0.0 scale; otherwise 1/length (DE F1 FDIVRP) stored as a float.
+    const float length = host.vector_length_00419440(local);
+    const float scale = length > 0.0f ? 1.0f / length : 0.0f;
+    // 008FDB50..008FDB7C: each axis scaled and stored as a float.
+    const float unit[3] = {local[0] * scale, local[1] * scale, local[2] * scale};
+    // 008FDB80: EDX = out+4 takes the pitch, the pushed out the yaw.
+    host.direction_to_pitch_yaw_00521370(unit, &out[1], &out[0]);
+    // 008FDB85..008FDB91: out[0] = -0.0f - out[0].
+    const GunAimAngles angles = gun_bot_angles_from_local_008fdaf0(out[0], out[1]);
+    out[0] = angles.horz;
+}
+
 float gun_bot_apply_aim_error_008ffa20(float angle, float draw) noexcept
 {
     // 008FFE9x: draw * pi / 180 added to the angle. The draw itself comes from
