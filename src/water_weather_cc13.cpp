@@ -1858,6 +1858,9 @@ float sky_unsigned_dimension_c(std::uint32_t value) {
     const auto signed_value = static_cast<std::int32_t>(value);
     const float unsigned_bias = 4294967296.0f; // CE3978 = 4F800000
     float result;
+    // Keep FILD exact until the native FADD/FSTP sites. The inline x87 uses
+    // the caller's PC (PC24 on the post-device main thread); narrowing the
+    // signed integer before the add would introduce another rounding step.
     __asm {
         fild signed_value
         cmp signed_value, 0
@@ -1875,6 +1878,8 @@ void sky_texel_offsets_c(void* layer_base) {
     // BBFCC9..BBFD22. DC C9 at BBFCFB multiplies ST1 by ST0, leaving
     // ST0=zero for the following multiply by inverse_height. Do not replace
     // these products with literal zero: dimensions0 produce Inf and NaN.
+    // Each x87 divide/product uses the caller's PC24 on the main thread,
+    // including the ST1-destination FMUL; no C++ double chain is introduced.
     __asm {
         fld height
         fld width
