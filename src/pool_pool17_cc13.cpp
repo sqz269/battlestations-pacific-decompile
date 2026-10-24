@@ -58,6 +58,7 @@ void with_temp_string(Pool17Host& host, const char* literal, std::uint32_t n, Ca
 // funclet of 004B02A0 allocate_native_soldier_registry_node_004b02a0, whose credited body in
 // src/native_soldier_registry_tree.cpp already expresses it as `catch (...) { free(node); throw; }`;
 // this is the funclet as a separate function for the record, not a second implementation.
+// Ledger: filed as a fragment of parent 004B02A0, not credited as a function; covered by its parent.
 // ABI: EH catch funclet, runs on the parent frame (EBP = 004B02A0's frame); no return.
 // EH: none of its own. Uncertainty: [EBP-14h] is the node pointer only by the parent's store order.
 [[noreturn]] void soldier_registry_node_allocation_catch_004b0312(Pool17Host& host, void* node_at_ebp_minus_14) {
@@ -78,9 +79,12 @@ void* pointer_slot_construct_null_004ba0d0(void* slot) noexcept {
 // Evidence: disk listing read whole. Member layout agrees with the credited destructor 004D74E0
 // (scene_record_destruct_004d74e0 in src/cg_rebuild_c_cc13.cpp).
 // ABI: __thiscall(ECX = this), EAX = this, RET. SEH frame with handler 00C66801.
-// EH states (store order): 0 after the player-slot array; 3 after the +928h string array; 5 after
-// the environment block; 0Dh after the +C78h tree; 0Fh after +D5Ch; 14h after the cloud colours;
-// 15h / 16h around the two operator new(0A0h) calls (back to 14h after each).
+// EH states (listing order of the stores): 0 after the player-slot array (004DA2E4); 3, 5, 0Dh and
+// 0Fh are each stored BEFORE the call they guard: 3 before the +928h string array (004DA321), 5
+// before the environment block (004DA33D), 0Dh before the +C78h tree head allocation (004DA3A9),
+// 0Fh before +D5Ch (004DA3E6); 14h after the cloud colours (004DA495); 15h after the first
+// operator new(0A0h), before 004C62A0 (004DA4F7), back to 14h at 004DA50E; 16h after the second
+// operator new, before 004C63E0 (004DA527), and it stays 16h to the end of the function.
 // Uncertainty: member names are hypotheses; the 0x3F1C61AB pair at +100C/+1010 is loaded from
 // 00CE74F4 (about 0.611) and stored as bits; the four floats of the function-static at 00E18AF4 are
 // 1.0f by the first-use initializer and modelled through global_dword.
@@ -139,7 +143,7 @@ void* scene_record_construct_004da2a0(Pool17Host& host, void* record) {
     void* layer_a = host.operator_new_00bf681b(0xA0);  // state 15h
     at<void*>(record, 0xC18) =
         layer_a != nullptr ? host.scene_record_texture_layer_construct_a_004c62a0(layer_a) : nullptr;
-    void* layer_b = host.operator_new_00bf681b(0xA0);  // state 16h
+    void* layer_b = host.operator_new_00bf681b(0xA0);  // state 16h until the end
     at<void*>(record, 0xC1C) =
         layer_b != nullptr ? host.scene_record_texture_layer_construct_b_004c63e0(layer_b) : nullptr;
 
