@@ -5,7 +5,15 @@ project(bsp_reconstruction VERSION 0.1.0 LANGUAGES C CXX)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE
   src/game_native_gui_render_application.cpp
   src/game_native_gui_node_application.cpp
-  src/game_native_gui_resource_application.cpp)
+  src/game_native_gui_resource_application.cpp
+  src/game_native_gui_icon_application.cpp)
+# Page/widget source prerequisites remain inactive until the genuine raw Page
+# application composes their mandatory ownership and current-dispatch providers.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE
+  src/native_gui_icon_delayed_loads.cpp
+  src/native_gui_line_storage.cpp
+  src/native_gui_line_identity.cpp
+  src/native_gui_page_properties_continuation.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_link_libraries bsp_game PRIVATE bsp_d3dx_headers)
 if(NOT WIN32 OR NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
   message(FATAL_ERROR "Use MSVC targeting Win32 (scripts/build.ps1). The original is x86.")
