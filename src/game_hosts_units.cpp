@@ -3413,6 +3413,7 @@ struct GameUnitsHost::Impl {
                                   int new_mode);
     unsigned long long lhc_n{0}, lhc_on{0}, lhc_far{0}, lhc_side_moved{0}, lhc_heading{0};
     unsigned long long lhc_own_ok{0}, lhc_own_far{0}, lhc_leave{0}, lhc_trace{0};
+    unsigned long long lfm_trace{0};  // cc9-physics28: land final mode-loss lines
     double lhc_dd_r_sum{0.0}, lhc_delta_fail_sum{0.0}, lhc_r_moved_sum{0.0};
     double lhc_point_moved_sum{0.0}, lhc_own_d_r_sum{0.0};
     bool landing_turn_in_006c5e20(const LandingDeck& d, const GameUnitSlot& p) const;
@@ -18423,6 +18424,22 @@ void GameUnitsHost::Impl::landing_mode_006c7960(LandingDeck& d, std::size_t deck
     if (leader_pass && p.land_task_installed &&
         p.land_state == GameUnitSlot::LandTaskState::kStandby) {
         landing_head_circle_diag(d, p, rec.mode_10, mode);   // DIAGNOSTIC
+    }
+    if (rec.mode_10 == 4 && mode != 4 && p.land_task_installed && lfm_trace < 80
+        && p.land_state == GameUnitSlot::LandTaskState::kFinal) {
+        // DIAGNOSTIC (cc9-physics28): a plane on land/final losing mode 4 (its
+        // final then aborts at 009B3DB2): this pass's inputs to the mode.
+        ++lfm_trace;
+        const std::array<float, 3> l = landing_local_006bcc90(d, p.motion.position);
+        log.notef("  land final mode loss %s t=%.2f mode 4->%d leader=%d head_mode=%d "
+            "corridor=%d usable=%d spacing=%.3f m900=%d local=(%.1f %.1f %.1f) hdg=%.4f "
+            "rwy=%.4f (006C7960, cc9-physics28 diagnostic)", p.row.name.c_str(),
+            static_cast<double>(summary.simulated_seconds), mode, leader_pass ? 1 : 0,
+            head_mode, landing_corridor_006c3b10(d, p) ? 1 : 0,
+            landing_deck_usable_006bed60(deck_index) ? 1 : 0,
+            static_cast<double>(rec.spacing_8), p.plane_control_mode_900,
+            static_cast<double>(l[0]), static_cast<double>(l[1]), static_cast<double>(l[2]),
+            static_cast<double>(p.plane_heading_c6c), static_cast<double>(d.runway_heading_88));
     }
     rec.mode_10 = mode;
     landing_path_006c6020(d, rec);
