@@ -43363,7 +43363,10 @@ bool GameUnitsHost::helm_route_take(std::size_t index, float throttle, float x, 
         host.helm_route_x = x;
         host.helm_route_z = z;
         // Packet cc13-mapback (log only): map_up is the state
-        // kHelmPrepareMapUpGateCc13Bound tests; while it is 1 the take waits.
+        // kHelmPrepareMapUpGateCc13Bound tests. map_up=1 means the take waits:
+        // the prepare (role-1 transfer) is skipped, and so is the issue gate
+        // further down, which also requires this unit to be the controlled
+        // unit (controlled_index == index), as it is here.
         host.log.notef("helm route taken: \"%s\" throttle %.3f toward (%.1f, %.1f); role 1 "
             "through 0077C470(unit, 2, 1) at the next step, then the helm every step "
             "map_up=%d",

@@ -249,6 +249,17 @@ struct GameHudHost::Impl {
     // it, +20h (the id) and +38h (the payload, a unit index; SIZE_MAX for
     // null). 006840F0 services the record without clearing it, so 0068AA40's
     // "already the pending payload" test reads the last push.
+    // SUBSTITUTION, labelled (rev2 N1). The tracker assumes that every push
+    // noted here is accepted and that the noted sites are the only writers.
+    // Neither holds in general:
+    //  - 004CC460 refuses when [00E19894] is set and 00683E90(id) is true
+    //    (004CC478..004CC491), leaving +20h/+38h as they were.
+    //  - +38h is a linked weak reference (unlink 006952A0 / link 00694A60,
+    //    004CC4CC..004CC4E2), so a unit's destruction can clear it while this
+    //    index stays stale. That is harmless here: a dead unit fails +5Ch.
+    //  - Pushes the host only records are not noted, e.g. the 34h limbo
+    //    pushes at 0064734B, 006485A0's empty-list arm and cc13-limbo's
+    //    009595B8.
     int record_pending_id_20{0};
     std::size_t record_pending_payload_38{static_cast<std::size_t>(-1)};
     void note_pending_record_004cc460(int id, bool controlled_payload) {
