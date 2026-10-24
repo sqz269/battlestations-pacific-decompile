@@ -58,8 +58,7 @@ void depth_charge_write_state_006fcc50(void* shot, void* sink, Pool08Host& host)
     host.bomb_projectile_write_state_006e0f40(shot, sink);
     StateSinkEmit open{};
     open.op = StateSinkEmit::Op::open_table;
-    open.key = "_depthCharge";
-    open.type = StateSinkType::string;
+    open.key = "_depthCharge";  // no value: type left at its default, as in 00855D30's model
     host.state_sink_emit(sink, open);
     struct Field { const char* key; std::uint32_t offset; };
     for (const Field& f : {Field{"dragvert", 0x468}, Field{"dragside", 0x46C}, Field{"divedepth", 0x470}}) {
@@ -153,8 +152,8 @@ void* turning_gun_base_construct_006fdda0(void* gun, std::uint32_t arg, Pool08Ho
 // ABI: __thiscall(ECX = device row; arg) RET 4, EAX = launcher. Reached through a
 // factory table (data reference only). operator new(4DCh), memset 0; under EH state 0
 // (handler 00C83A98, funclet frees through 0042B100) 006FDFC0(ECX = block; arg);
-// state -1. A null block skips the constructor and the stores hit null, as in the
-// binary. +3F4h = row, +354h = row; the NativeString at +154h takes the row's name
+// a null block skips the constructor and the stores hit null, as in the binary.
+// +3F4h = row, +354h = row (006FE3E9/006FE3EF), then state -1 (006FE3FA); the NativeString at +154h takes the row's name
 // [row+54h]: 0041DD40(+154h; strlen or 0 when null, preserve 0), then when the data
 // pointer is set memcpy(data, name, length) - the length without the terminator.
 // ---------------------------------------------------------------------------
