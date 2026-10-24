@@ -23,7 +23,8 @@ void movie_camera_fixed_driver_00790390(float& accumulator_53c, bool enabled_634
 //   complete for those keys; `modifier`, `deckpos`, `upvector`,
 //   `relativetotarget`, `event`, `finishscript`, `flyalt` and the `_thennone`
 //   transforms are counted as unsupported and not applied.
-// - 007911E0 step, 00795C10 weight, 0078FCF0 ease: complete (cc13-P1); 00791020
+// - 00795C10 weight, 0078FCF0 ease: complete (cc13-P1); 007911E0 step complete
+//   with kMovieStepStaleTrackFlagCc13Bound; 00791020
 //   begin complete with kMovieBeginDropsModifierCc13Bound; 00798130 evaluate:
 //   flyalt (007986C3..007987B4) and the type-3 +BCh read (007988A9) are not
 //   modelled.
@@ -72,6 +73,12 @@ inline constexpr bool kMovieBeginDropsModifierCc13Bound = false;
 // XORPS zero on both clock arms), so the clock restarts from 0 for the first
 // keys 007A0770 adds. OFF: the clock keeps the value the running arm gave it.
 inline constexpr bool kMovieUpdateEmptyTrackClockCc13Bound = false;
+// Packet cc13-P1 (rev9 F1). ON: 007911E0 reads BL from [[key+4]+74h]+390h
+// (007911FD..0079122A) before its state-0 call to 00791020 stores key+4, so on
+// the step that begins a key BL is 0 and a cut or blend-0 key that finishes on
+// that same step queues its finish script even with camera+390h set. OFF: the
+// camera flag is tested on every step, as before.
+inline constexpr bool kMovieStepStaleTrackFlagCc13Bound = false;
 
 // 00799B00, 104h bytes. Field comments name the image offset.
 struct MovieKeyframe {
