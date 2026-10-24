@@ -146,6 +146,28 @@ static_assert(!kLaunchedSquadronPartyCc13Bound || kGeneratedEntityPartyBound,
               "kLaunchedSquadronPartyCc13Bound uses the generated-entity party write");
 static_assert(!kLaunchedSquadronPartyCc13Bound || kGeneratedWingPartyBound,
               "kLaunchedSquadronPartyCc13Bound uses the generated wing party copy");
+// Packet cc13-spawnsq (cc13-esmp01party). SpawnNew's member create 009483D0
+// picks its arm at 00948519 (class vtable+18h(6)): a ship takes vtable+28h(0)
+// (00948529), anything else operator new + 007F2C60 (00948538..00948563).
+// Both arms join at 0094859D, and 00948692..009486BF builds the member bag
+// (00922E20) and stores it at entity+0C0h for either arm. The bag is 009420A0's:
+// Party = the request's party (009420AC), Race = 2 for party 0 else 1
+// (009420B9..009420C1), with 00944210's 0043D8F0 merging the member table
+// over it. Pass A reads a squadron's bag `Party` through 00927050's kind-1 arm
+// (00928A1E; PROVISIONAL for this caller, by analogy with 006C5050's launched
+// squadron), and 007F491A copies the squadron's descriptor to each wing plane.
+// The host's surface arm writes the node's party/race; its plane-squadron arm
+// wrote none, so a SpawnNew squadron and its wing had no thisTable Party and
+// commandhelpers.lua:330 indexed recon[nil] once one was selected (ESMP01,
+// "D3A Val #1.6"). True: the plane arm's pending node takes party, race and
+// generated_party as the surface arm does, and the wings follow through
+// kGeneratedWingPartyBound. False: no Party, as before (counted:
+// spawn_squadron_party_nodes, spawn_squadron_wing_nodes).
+inline constexpr bool kSpawnNewSquadronPartyCc13Bound = false;
+static_assert(!kSpawnNewSquadronPartyCc13Bound || kGeneratedEntityPartyBound,
+              "kSpawnNewSquadronPartyCc13Bound uses the generated-entity party write");
+static_assert(!kSpawnNewSquadronPartyCc13Bound || kGeneratedWingPartyBound,
+              "kSpawnNewSquadronPartyCc13Bound uses the generated wing party copy");
 
 inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 8)
 
@@ -1337,6 +1359,8 @@ struct GameMissionLuaSummary {
     unsigned long long generated_party_writes{0};
     unsigned long long launched_party_nodes{0};   // packet cc13-lsqparty
     unsigned long long launched_wing_nodes{0};    // packet cc13-lsqparty2
+    unsigned long long spawn_squadron_party_nodes{0};   // packet cc13-spawnsq
+    unsigned long long spawn_squadron_wing_nodes{0};    // packet cc13-spawnsq
     // 0094C480 / 00949750 / 0094C490. docs/LUA_SPAWN_NEW_HOST.md.
     unsigned long long spawn_new_calls{0};       // tables the binding accepted
     unsigned long long spawn_new_rejected{0};    // argument 1 was not a table
@@ -2354,6 +2378,9 @@ private:
         // Log only, set whatever the switch: the node is an air-ops launched
         // squadron with a record party (counts its wing planes).
         bool launched_record{false};
+        // Log only, set whatever the switch: the node is a SpawnNew plane
+        // squadron (packet cc13-spawnsq; counts its wing planes).
+        bool spawn_squadron_record{false};
         std::size_t units_before{0};
         // The unit count right after this squadron's creator returned: its wing
         // is [units_before, units_end). A later creation before InitAll (the
