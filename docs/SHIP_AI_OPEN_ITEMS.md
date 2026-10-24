@@ -20757,3 +20757,48 @@ with takehelm; a moveto is overridden by the autotarget think once a second, and
 
 **Run notes:** an empty `s62_launch_*.txt` means the run is queued for a slot. A run that logs "present failed" does
 not count; four such runs on 2026-10-23 crashed at bsp_game+3f6965 after the session switched to RDP.
+
+## 323. kLaunchedSquadronPartyCc13Bound flipped ON; two items left open (cc9-party1, 2026-10-24)
+
+The switch (cc13 417ae3db3 + 2669f3f0a, header include/bsp/game_hosts_lua.hpp) stamps the owner's party on a
+squadron launched during a mission (006C7490 -> create_squadron, 006C5050 bag `Party`) and on its wing planes
+(007F491A). Pairs: OFF = 2669f3f0a, ON = the same commit with the switch flipped (local\pt1_pair). BSM03 and BSM06
+were paired on 77d8b45fc. Stock rows ran 60000 frames; WINS rows used the keeper's plan and frame count. All
+runs were on the console session, with no "present failed" lines.
+
+| Row (menu id) | launched party/wing OFF = ON | 330 failures OFF -> ON | pair_diff | End (OFF / ON) |
+| --- | --- | --- | --- | --- |
+| CHG06 | 5 / 10 | 324 -> 0 | 3 moved | failed 986.88 s, both |
+| IJN29 (ijn_29) | OFF 4 / 8, ON 107 / 214 | 988 -> 0 | 3 moved | no end, both |
+| IJN30 (ijn_30) | 2 / 4 | 992 -> 0 | 3 moved | no end / **failed 95.05 s** |
+| USN03 (LOMP 02) | 1 / 2 | 77 -> 0 | 1 | failed 222.01 s |
+| USN09 (usn_9) | 1 / 1 | 200 -> 0 | 1 | failed 622.22 s |
+| PRCP05 (usn_09_Leyte) | 10 / 18 | 0 | 1 | failed 1986.71 s |
+| ESMP01 | 1 / 2 | 94 -> 94 | 1 | failed 291.55 s |
+| USN04, USN13, JM12 | 4/8, 9/18, 40/80 | 0 | 1 | unchanged |
+| USN07, JM04, JM14 | 0 | 0 | 0 | unchanged |
+
+Every WINS row is gameplay identical (pair_diff 1, or 0 for BSM03), with the same end: USN01, USN02, LOMP06, PRCP01,
+USN21, IJN18, BSM09, BSM01, ESMP08, USN12, LOMP10, JM06, IJN08, USN15, USNOS, JM08, BSM04, BSM03 and BSM06. Of
+these, launches occur in USN01, PRCP01, USN21, BSM09, ESMP08, LOMP10, JM06, USNOS, JM08, BSM04 and BSM06.
+
+How the rows move: OFF, the mission think calls luaCheckMusic on GetSelectedUnit (the controlled unit). Once that
+unit is a launched squadron (CHG06 AirField_sqn05, IJN29 Hakuryu_sqn01, IJN30 AirField 01_sqn01),
+commandhelpers.lua:330 `recon[targetUnit.Party]` raises an error every tick, and the rest of the think never runs.
+ON, the think runs to the end. In CHG06 the script's MoveTo orders go from 5 to 3746 and the shots from 13164 to 130.
+The end is unchanged. In IJN29 the mission progresses: there are 1023 units against 675, and more waves launch. In
+IJN30 luaCheckObjectives reaches its phase-1 test (`luaRemoveDeadsFromTable(Mission.Airfields)` empty ->
+luaMissionFailed) and fails at 95.05 s.
+
+Open:
+1. **IJN30 airfields die without damage.** In both runs, "AirField 01" dies at 12.05 s and "AirField 02" at
+   91.60 s, with first_damage=-1, killer=- and KillReason=harm. OFF never notices, because the think aborts. ON,
+   the script's Game Over follows 3.45 s after the second death. Nobody has yet traced who kills an airfield that
+   has taken no hits. Read the death writer, then decide whether the stock Game Over at 95 s is faithful.
+2. **ESMP01 still fails at line 330, 94 times, OFF and ON alike.** The controlled unit is "D3A Val #1.6"
+   (PlaneSquadronGen, party 1 on the native side). SetSelectedUnit puts it there at mission frame 963, and it is not
+   a launched squadron. Its `thisTable` slot either has no `Party`, or has one that `recon` lacks. The
+   generated-entity census reports nodes=0 writes=0. Find the route that creates this squadron, which
+   kGeneratedEntityPartyBound does not cover, and which party it should carry.
+
+Logs: J:\PROG\battlestations-pacific-decompile-cc9-party1\local\pt1_{off,on}_<row>.log; the diffs are in pt1_diff_<row>.txt.
