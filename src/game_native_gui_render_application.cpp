@@ -30,6 +30,7 @@
 #include "bsp/post_effects_cc13.hpp"
 #include "bsp/system_fog_owner.hpp"
 #include <cstring>
+#include <cstdlib>
 #include <cwctype>
 #include <optional>
 #include <stdexcept>
@@ -434,4 +435,39 @@ bool GameNativeGuiRenderApplication::requires_process_retention() const noexcept
         (p.text && p.text->failure()) || (p.effects && p.effects->failure());
 }
 std::uint64_t GameNativeGuiRenderApplication::submitted_frames() const noexcept { return impl_->frames; }
+
+void GameStartupHost::initialize_native_gui_render() {
+    if (!GameNativeGuiRenderApplication::text_requested()) return;
+    require(!native_gui_render_ && native_renderer_ && vfs_ && singletons_ && native_data_ &&
+        input_runtime_ && fonts_ && locale_, "native GUI Text requires the existing ready startup owners");
+    native_gui_render_ = std::make_unique<GameNativeGuiRenderApplication>(log_, *native_renderer_,
+        *vfs_, *singletons_, *native_data_, *input_runtime_, *fonts_, *locale_, gui_sse2_conversion());
+}
+void GameStartupHost::prepare_native_gui_text_resources() {
+    if (native_gui_render_) native_gui_render_->prepare_text_in_open_shader_cache();
+}
+void GameStartupHost::exit_if_native_gui_text_incomplete() noexcept {
+    if (!native_gui_render_ || !native_gui_render_->requires_process_retention()) return;
+    try { log_.note("native GUI Text interrupted; retaining Text/font/material/node/frame owners"); log_.close(); }
+    catch (...) {}
+    std::_Exit(1);
+}
+void GameStartupHost::retire_native_gui_text_before_fonts() noexcept {
+    if (!native_gui_render_) return;
+    try { native_gui_render_->retire_before_fonts(); }
+    catch (...) {
+        try { log_.note("native GUI Text retirement failed; retaining all borrowed owners"); log_.close(); }
+        catch (...) {}
+        std::_Exit(1);
+    }
+}
+void GameStartupHost::close_native_gui_text_after_drain() noexcept {
+    if (!native_gui_render_) return;
+    try { native_gui_render_->after_native_renderer_drain(); native_gui_render_.reset(); }
+    catch (...) {
+        try { log_.note("native GUI Text metadata close failed after renderer drain"); log_.close(); }
+        catch (...) {}
+        std::_Exit(1);
+    }
+}
 } // namespace bsp::game
