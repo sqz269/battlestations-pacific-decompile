@@ -397,7 +397,8 @@ struct LandFortSceneHost {
     // Dyn library bindings, not reconstructed vendor-library body credit.
     virtual void call_00c336c0(float* out12, const float* matrix16) = 0;
     virtual void* call_00c5d580(void* world, const void* descriptor84) = 0;
-    [[noreturn]] virtual void invalid_iterator_00bf6713() = 0;
+    // 00BF6713 has a plain RET; its qualified CRT handler may return.
+    virtual void invalid_iterator_00bf6713() = 0;
 };
 
 void land_fort_init_scene_and_create_static_body_007482b0(
