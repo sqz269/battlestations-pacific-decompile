@@ -20,6 +20,26 @@ struct NativeNetworkConsoleThreadImports {
     CloseFunction volatile close_handle;
 };
 const NativeNetworkConsoleThreadImports& native_network_console_thread_imports() noexcept;
+struct NativeNetworkConsoleStartImports {
+    using CreateFunction = HANDLE (WINAPI*)(LPSECURITY_ATTRIBUTES, SIZE_T,
+        LPTHREAD_START_ROUTINE, LPVOID, DWORD, LPDWORD);
+    using PriorityFunction = BOOL (WINAPI*)(HANDLE, int);
+    CreateFunction volatile create_thread;
+    PriorityFunction volatile set_thread_priority;
+};
+struct NativeNetworkConsoleConstructContext {
+    NativeNetworkConsoleBaseContext& base;
+    const NativeNetworkConsoleChannelContext& channel;
+    const NativeNetworkConsoleStartImports& imports;
+    LPTHREAD_START_ROUTINE send_entry_00a3cec0;
+    LPTHREAD_START_ROUTINE receive_entry_00a3cee0;
+};
+// 00A3D060, ECX actual 4003F0h storage, EAX same storage, RET. Complete normal
+// constructor with real existing base/member constructors and two supplied
+// native worker-entry bindings. Preserves selective writes and creation/priority
+// order. Original private FH3/SEH unwinding and binary ABI remain unproved.
+NativeNetworkConsoleStorage* construct_native_network_console_00a3d060(
+    NativeNetworkConsoleStorage&, const NativeNetworkConsoleConstructContext&);
 struct NativeNetworkConsoleStopContext {
     volatile std::uint8_t& quit_00f8abe0;
     const volatile std::uint8_t& send_active_00f8abe1;

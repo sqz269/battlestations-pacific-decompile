@@ -5,6 +5,7 @@
 #include "bsp/cc13_gui1.hpp"
 
 #include <cstring>
+#include <initializer_list>
 
 namespace bsp::cc13_gui1 {
 namespace {
@@ -434,6 +435,45 @@ void gui_text_submit_utf16_00ab6ab0(GuiTextHooks& host, void* text, const Native
 // ---------------------------------------------------------------------------
 // Listbox. Row list: std::list at +0FCh (head pointer +100h, size +104h).
 // ---------------------------------------------------------------------------
+
+// 00A9DF40, native __thiscall ECX destination, EAX destination, RET. Complete
+// normal body from the 64-instruction listing; the base and sentinel allocator
+// are bound to their established native bodies. Unwritten padding, list+0 and
+// sentinel payloads remain untouched. Original FH3/SEH unwinding is outside the
+// nonthrowing hook contract of this family; this is not a binary ABI replacement.
+void* gui_listbox_construct_00a9df40(void* listbox, GuiListboxConstructHooks& host) {
+    host.widget_base_construct_00aa9390(listbox, 11); // 00A9DF61
+    at<std::uint32_t>(listbox, 0) = 0x00D5BBF8u;
+    void* const row_list = static_cast<unsigned char*>(listbox) + 0xFC;
+    void* const rows = host.allocate_sentinel_00a9b720(row_list); // 00A9DF7A
+    at<void*>(listbox, 0x100) = rows;
+    at<std::uint32_t>(listbox, 0x104) = 0;
+    at<void*>(listbox, 0x108) = row_list;
+    at<void*>(listbox, 0x10C) = rows;
+    at<std::uint8_t>(listbox, 0x120) = 1;
+    at<std::uint32_t>(listbox, 0x110) = 0;
+    at<std::uint32_t>(listbox, 0x114) = 0;
+    at<std::uint32_t>(listbox, 0x118) = 0xFFFFFFFFu;
+    for (const std::uint32_t offset : {0x11Cu, 0x11Du, 0x11Eu, 0x11Fu, 0x121u})
+        at<std::uint8_t>(listbox, offset) = 0;
+    for (const std::uint32_t offset : {0x124u, 0x128u, 0x12Cu, 0x130u, 0x134u})
+        at<std::uint32_t>(listbox, offset) = 0;
+    at<std::uint8_t>(listbox, 0x149) = 1;
+    at<std::uint8_t>(listbox, 0x14A) = 1;
+    at<std::uint8_t>(listbox, 0x138) = 0;
+    at<std::uint32_t>(listbox, 0x13C) = 0;
+    at<std::uint8_t>(listbox, 0x140) = 0;
+    at<std::uint8_t>(listbox, 0x141) = 0;
+    at<std::uint32_t>(listbox, 0x144) = 0;
+    at<std::uint8_t>(listbox, 0x148) = 0;
+    void* const secondary_list = static_cast<unsigned char*>(listbox) + 0x14C;
+    at<void*>(listbox, 0x150) = host.allocate_sentinel_00a9b720(secondary_list); // 00A9E036
+    at<std::uint32_t>(listbox, 0x154) = 0;
+    at<std::uint32_t>(listbox, 0x170) = 0;
+    at<std::uint32_t>(listbox, 0x174) = 0;
+    at<std::uint32_t>(listbox, 0x178) = 0;
+    return listbox;
+}
 
 // 00A9D750 BSP_GuiListbox_InsertRow. __thiscall(ECX = listbox; row, const
 // iterator* where, char after) RET 0Ch, no SEH.

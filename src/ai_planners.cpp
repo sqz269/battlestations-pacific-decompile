@@ -1,6 +1,8 @@
 #include <bsp/ai_planners.hpp>
 
 #include <cmath>
+#include <cstdlib>
+#include <cstring>
 
 namespace bsp {
 namespace {
@@ -35,6 +37,36 @@ constexpr const char* kCommandTypeNames[kAiCommandTypeCount] = {
 
 int kind_index(AiPlannerKind kind) noexcept { return static_cast<int>(kind); }
 
+void trim_ai_class_list(std::string& text) {
+    // 00D21D5C is exactly " ,-"; tabs and newlines are not trim characters.
+    const auto first = text.find_first_not_of(" ,-");
+    if (first == std::string::npos) { text.clear(); return; }
+    const auto last = text.find_last_not_of(" ,-");
+    text = text.substr(first, last - first + 1);
+}
+
+std::string take_ai_class_token(std::string& remaining) {
+    const auto split = std::strcspn(remaining.c_str(), ",");
+    if (split == remaining.size()) {
+        std::string token = remaining;
+        remaining.clear();
+        return token;
+    }
+    std::string token = remaining.substr(0, split);
+    // Native signed delimiter-index < 1 clears the rest; initial/repeated
+    // delimiter trims normally make this branch unreachable for valid text.
+    if (split == 0) remaining.clear();
+    else remaining = remaining.substr(split + 1);
+    trim_ai_class_list(remaining);
+    return token;
+}
+
+template<class T> T ai_class_field(const void* object, std::size_t offset) {
+    T value;
+    std::memcpy(&value, static_cast<const unsigned char*>(object) + offset, sizeof value);
+    return value;
+}
+
 } // namespace
 
 const AiPlannerClass* ai_planner_class_table() noexcept { return kPlannerClasses; }
@@ -57,6 +89,62 @@ const char* ai_command_type_name(AiCommandType type) noexcept {
         return nullptr;
     }
     return kCommandTypeNames[id];
+}
+
+// 00A06840..00A072C7, ECX input string, EDX class-id vector, two stack
+// output arguments, RET 8. Complete normal value algorithm from the full
+// pseudocode, with register/stack roles and signed JLE checked in assembly.
+// Diagnostic bytes 00CE4390="\n", 00D08B78=" (", 00D18C14=")\n" read live.
+// Pool temporaries/STL allocation and original FH3 unwinding are not reproduced.
+void ai_debug_parse_class_equipment_list_00a06840(std::string_view input,
+    std::vector<std::int32_t>& class_ids, std::vector<std::int32_t>& equipment_ids,
+    std::string& errors, AiDebugClassListHost& host) {
+    std::string remaining(input);
+    trim_ai_class_list(remaining);
+    while (!remaining.empty()) {
+        const std::string token = take_ai_class_token(remaining);
+        const auto separator = std::strcspn(token.c_str(), "-");
+        const auto class_id = static_cast<std::int32_t>(std::atol(token.substr(0, separator).c_str()));
+        const auto equipment_id = separator == token.size() ? std::int32_t{0}
+            : static_cast<std::int32_t>(std::atol(token.substr(separator + 1).c_str()));
+        const void* const vehicle_class = host.class_get_or_create_009653b0(class_id); // 00A06C7C
+        if (!vehicle_class) {
+            errors += "invalid vehicle class index: " + std::to_string(class_id) + "\n";
+            continue;
+        }
+        const auto limit = ai_class_field<std::int32_t>(vehicle_class, 0x128); // 00951F10
+        // Native JLE accepts equality and negative equipment ids; no new range rule.
+        if (equipment_id <= limit) {
+            class_ids.push_back(class_id);
+            equipment_ids.push_back(equipment_id);
+        } else {
+            const auto name = ai_class_field<const char*>(vehicle_class, 0x54);
+            errors += "invalid equipment index: " + std::to_string(equipment_id)
+                + " for vehicle class: " + name + " (" + std::to_string(class_id) + ")\n";
+        }
+    }
+}
+
+// 00A072D0..00A078A3, same native register/stack roles and RET 8 as above.
+// Complete normal value algorithm: append only resolved ids and raw class+134h
+// values, retain caller outputs/diagnostics, and continue after an invalid id.
+// A null class is checked before any field read. Storage/SEH caveat as above.
+void ai_debug_parse_class_list_00a072d0(std::string_view input,
+    std::vector<std::int32_t>& class_ids, std::vector<std::uint32_t>& fields_134,
+    std::string& errors, AiDebugClassListHost& host) {
+    std::string remaining(input);
+    trim_ai_class_list(remaining);
+    while (!remaining.empty()) {
+        const std::string token = take_ai_class_token(remaining);
+        const auto class_id = static_cast<std::int32_t>(std::atol(token.c_str()));
+        const void* const vehicle_class = host.class_get_or_create_009653b0(class_id); // 00A075FE
+        if (!vehicle_class) {
+            errors += "invalid vehicle class index: " + std::to_string(class_id) + "\n";
+        } else {
+            class_ids.push_back(class_id);
+            fields_134.push_back(ai_class_field<std::uint32_t>(vehicle_class, 0x134));
+        }
+    }
 }
 
 // 00A0FCE0: XOR EAX,EAX; RET. Original ABI: command in ECX (unused),

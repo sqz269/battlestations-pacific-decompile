@@ -747,6 +747,18 @@ void gui_text_set_cursor_mode_00ab95f0(void* text, GuiTextCursor& cursor, std::i
 // the widget's model, or null.
 void* gui_first_vertex_stream(void* widget, GuiLeafHost& host);
 
+struct GuiSectionVertexStreamHost {
+    virtual ~GuiSectionVertexStreamHost() = default;
+    // Exact native call boundaries; callee internals are not reconstructed here.
+    virtual void* call_00b74640(void* model, std::int32_t index) = 0;
+    virtual std::uint32_t call_00b72b20(void* geometry) = 0;
+    virtual void* call_00b73260(void* geometry, std::int32_t index) = 0;
+};
+// 00ABE640, native ECX = section, RET -> EAX stream or null. Complete normal
+// body, unlike the existing higher-level first_vertex_stream hook. Valid raw
+// Win32 widget storage required; no native binary calling-convention claim.
+void* gui_section_get_first_vertex_stream_00abe640(void* section, GuiSectionVertexStreamHost&);
+
 // 00ABE670, __thiscall(section, const float size[2]), RET 4: 00AA7970 then vtable +7Ch.
 void gui_section_set_size_00abe670(void* section, const float (&size)[2], GuiLeafHost& host);
 
