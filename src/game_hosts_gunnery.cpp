@@ -1007,6 +1007,28 @@ constexpr bool kLandPlatformAttachmentBound = true;
 //    since nothing static stands between ships at sea. OFF: always clear.
 //    docs/SHIP_PLATFORM_ATTACHMENT.md.
 constexpr bool kAaLineOfFireBound = true;
+//  * kPlaneOwnBaseHitFilterBound: packet cc13-bsm6strip. 0084BF00's own-base
+//    filter (0084C213-0084C278) on both of the host's 0084BF00 callers (the
+//    projectile sweep and the plane crash sweep): a shot owned by a squadron plane
+//    with +908h < 2.0, a holder +BF4h and +C18h > 0 that hits the holder's base
+//    owner ([[+BF4h]+4]+7Ch) does not impact (the round flies on) and sets
+//    +C18h = 5; with no hit, +C18h > 0 counts down while the plane is in free
+//    flight (GameUnitsHost::plane_own_base_hit_filter_0084c213). It drops hits on
+//    the base unit only, never on another plane. OFF: every hit is taken (the
+//    filter still runs for the census; +C18h has no other reader).
+constexpr bool kPlaneOwnBaseHitFilterBound = false;
+//  * kKamikazeSameSquadronShotDropCc13Bound: packet cc13-kamisq. 0084BF00's
+//    squadron test (0084C1D8-0084C211) on the projectile sweep: with a shooter
+//    squadron ([owner+9D4h], stored to [esp+44h] at 0084BF6D), a hit on a plane
+//    (vt[5Ch](0Fh), 0084C1EE) whose +9D4h is that squadron, by a bullet class
+//    whose +8 is 11h ("Kamikaze", 0084C1FF), clears the hit flag (0084C211), so
+//    the round flies on. The image runs it before the own-base block (0084C213),
+//    which does not test the hit flag: its entry gate was decided on the swept
+//    hit, and a squadron mate never matches the base owner, so that block
+//    neither drops nor counts down. The plane crash sweep has always applied it
+//    (pc_same_squadron). OFF: every hit is taken (the test still runs for the
+//    census, kamikaze_squadron_drops).
+constexpr bool kKamikazeSameSquadronShotDropCc13Bound = false;
 //  * kAaLineOfFireExpiryDrawBound: packet cc9_g35_friendly_fire. On a cache miss
 //    0072F6E0 draws U([00CE74F8] = 0.8, [00CE3814] = 1.2) from 00BD2F10 on stream
 //    ECX=1 (0072F76D) and stores it, times [GlobalConfig+8Ch], as the record's
@@ -1269,6 +1291,51 @@ constexpr bool kGunBotRetargetReleaseBound = true;
 //    records 4988 -> 4991 (sends 8798, drops 11); USN04 gameplay identical
 //    (sends 1435, drops 3). local\g52_tg_*.log, d3bc814e1.
 constexpr bool kTailGunnerClearReleaseBound = true;
+//  * kGunBotNotAllyDropCc13Bound: packet cc13-gunnergates (cc13-bsm6strip).
+//    008FFA20 (TailGunnerBot) keeps its target only while the target is
+//    present, target+5Dh is clear, bot+50h (the gun) and its parent [+3Ch] are
+//    present with parent+5Dh clear, and 00803510(ECX = gun+54h, EDX = target+54h)
+//    is non-zero (008FFA2D..008FFA5F). 00803510 answers 0 for the same party,
+//    or for two party-2 sides: the target must not be an ally. A failure is
+//    008FFA75's vtable[38h](0), the clear. The same inlined test is in every
+//    bot's think: AAGunnerBot 00902958, AAFlakBot 009030F5, TorpedoBot
+//    008FFF76, DepthChargeBot 008FC0B5, and ArtilleryGunnerBot 006DF520 through
+//    008FB890 (006DF541); so it applies to every gun here. The host's
+//    validity drop tests dead || !unit_alive_and_visible (+5Ch active, +5Dh),
+//    with no relation term. ON: the drop also takes a same-party target.
+//    SUBSTITUTION (labelled): gun+54h is read as the owner's +54h side (gun+54h
+//    is copied from [gun+3F0h]+54h, cc13_front5.cpp). The known divergence
+//    case is SetParty (008A8930 -> vtable[2Ch] 00951F30 -> 00928F50): its
+//    00923B80 stores +54h/+58h (00923B92) and walks the children (+48h first,
+//    +44h next), calling each child's vtable[2Ch] unless it answers
+//    IsKindOf(*arg3) (00923BA4..00923BBE), so a gun follows its owner unless
+//    it is of the filtered class (PROVISIONAL: arg3 not read). The +5Ch test
+//    is kept. relation_cleared counts once per acquisition in both arms: the
+//    first tick of a same-party hold per gun and target (ON drops on that
+//    tick). OFF: counted only.
+constexpr bool kGunBotNotAllyDropCc13Bound = false;
+static_assert(!kGunBotNotAllyDropCc13Bound || kTailGunnerClearReleaseBound,
+    "kGunBotNotAllyDropCc13Bound drops through 008FFA75's vtable[38h](0), the release "
+    "kTailGunnerClearReleaseBound transcribes");
+//  * kShipAaEnableGateCc13Bound: packet cc13-gunnergates. 008FFAB8..008FFAE7
+//    (TailGunnerBot only; the byte +221h test has no other site in .text):
+//    with a target and bot+68h set, director = [gun+3F0h]->vtable[114h](); when
+//    it exists and director+221h (AAEnable, 0089C740 -> 0071E050) is 0, the
+//    target is cleared through vtable[38h](0) and the think goes on. Slot 114h
+//    is 0080E150 ([ecx+738h]) in the ship vtables (MDestroyer 00CFC3D0 ...
+//    MBattleship 00CF90B0) and 0047F180 (XOR EAX,EAX) in all five plane
+//    vtables (00D05F20, 00D06638, 00D1A000, 00D19D28, 00D06920). 0072C6A0 gives
+//    the TailGunnerBot only to a gun with a kind-0Fh ancestor (00922E90), so
+//    the owner is a plane and the gate is not reached in the image. A ship's
+//    AAEnable acts upstream, through director+221h in the stance
+//    (kShipDirectorEnablesBound) and the 009F2E0F query byte. ON IS A NO-OP BY
+//    CONSTRUCTION: the arm needs a ship-kind AND a plane-kind owner, which
+//    never holds, mirroring the image's unreachable 008FFAB8. Do not pair it.
+//    OFF: counted only (aa_enable_blocked, always 0).
+constexpr bool kShipAaEnableGateCc13Bound = false;
+static_assert(!kShipAaEnableGateCc13Bound || kShipDirectorEnablesBound,
+    "kShipAaEnableGateCc13Bound reads the AAEnable byte from the scene director entry "
+    "that kShipDirectorEnablesBound reads");
 //  * kSeatArtilleryLeadBound: cc9-ships54, SHIP_AI_OPEN_ITEMS 271. 00957740's
 //    hit lead (009578C3..00957A50) on the player-seat artillery aim: a ship hit
 //    (IsKindOf 6) leads through 00902290 and the hit offset turns with it; any
@@ -1276,6 +1343,28 @@ constexpr bool kTailGunnerClearReleaseBound = true;
 //    hit point (the ship branch recorded). ON by mechanism: USN10, USNOS a7 and
 //    BSM09 gameplay identical, the ship leads equal the old record counts.
 constexpr bool kSeatArtilleryLeadBound = true;
+//  * kSeatArtilleryClassSpeedCc13Bound: packet cc13-seatspeed (rev4 BSM03).
+//    The seat's arc solve 00955630 (0095A07A..0095A08C) takes FLD
+//    [[[dev+3F8h]+34h]+50h], the class +50h speed that 006E98BC rewrites to
+//    sqrt(9.81 * Range) for an artillery class: the bot's chain at
+//    006DFAAA..006DFAB3. ON: the seat solves with gun.class_speed when
+//    gun.artillery_class, the bot's own predicate (kArtilleryClassSpeedBound
+//    && artillery_class). OFF: the authored V0 (gun.muzzle_speed), as before.
+//    Reach: a player-held artillery seat (group 3) only; needs a pair.
+constexpr bool kSeatArtilleryClassSpeedCc13Bound = false;
+static_assert(!kSeatArtilleryClassSpeedCc13Bound || kArtilleryClassSpeedBound,
+    "kSeatArtilleryClassSpeedCc13Bound needs kArtilleryClassSpeedBound: gun.class_speed is "
+    "that switch's 006E98BC rewrite");
+//  * kSeatArtilleryTriggerRefusalCc13Bound: packet cc13-seatspeed. 0095A0E5
+//    MOV BL,AL keeps the solve result, and 0095A0EF 0085ABA0(horz, vert) /
+//    0095A0F4 TEST AL,AL / 0095A0F8 XOR BL,BL clears it when the call refuses
+//    the pair, so the trigger needs 0085ABA0's acceptance too. Its answer
+//    depends only on the pair, the gun's arcs (007F5FC0) and its two rates,
+//    so the host takes it at the drain itself on a copy of the gun's angles,
+//    the same call the image makes, with no lag. ON: the player-held trigger
+//    is held && solved && within && accepted. OFF: held && solved && within.
+//    Reach: a player-held artillery seat whose pair is outside its arcs.
+constexpr bool kSeatArtilleryTriggerRefusalCc13Bound = false;
 //  * kPlayerWeaponGroupFireBound: packet cc9_player_weapon_group_fire. Message
 //    79h's group 5 arm (0095A441): the player's depth-charge launchers take
 //    the 99h-held byte as their trigger, and GameGunneryHost::
@@ -2450,6 +2539,11 @@ struct GameGunneryHost::Impl {
     };
     unsigned long long next_projectile_serial{0};
     unsigned long long trace_scene_draws{0};   // kTraceSceneDamageDrawBound
+    // kPlaneOwnBaseHitFilterBound, per caller (0 = the projectile sweep, 1 = the
+    // plane crash sweep): hits the filter answers "drop" for (dropped only when
+    // ON) and its miss-arm countdowns. The filter runs with the switch either
+    // way: its only state is +C18h, which nothing else in the host reads.
+    unsigned long long own_base_drops[2]{0, 0}, own_base_countdowns[2]{0, 0};
     static bool rng_streams_enabled() {
         static const bool on = [] {
             char* text = nullptr;
@@ -3014,6 +3108,17 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_handovers{0};
     unsigned long long seat_returns{0};
     unsigned long long seat_held_ticks{0};
+    // Packet cc13-gunnergates: targets 00803510 would clear (same party), the
+    // 008FFAB8 AAEnable gate's blocks, ship AA-gun targets held with AAEnable
+    // clear, and the per-ship one-time "AAEnable=0" line flags.
+    unsigned long long relation_cleared{0};
+    unsigned long long aa_enable_blocked{0};
+    unsigned long long aa_disabled_ship_targets{0};
+    std::vector<unsigned char> aa_enable_clear_logged;
+    std::vector<std::size_t> relation_held_target;   // per gun: target + 1 of a same-party hold
+    unsigned long long aa_enable_cache_step{0};
+    std::vector<unsigned long long> aa_enable_cache_stamp;   // per unit
+    std::vector<const SceneDirectorEnables*> aa_enable_cache_entry;
     unsigned long long seat_trigger_ticks{0};
     // cc9-gunnery53, kRoleOwnerDeviceWalkBound (0095AC1D).
     unsigned long long seat_role_takes{0};
@@ -3027,6 +3132,12 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_artillery_guns{0};      // accepted guns, every message
     unsigned long long seat_artillery_unsolved{0};  // 00955630 returned false
     unsigned long long seat_artillery_hits{0};      // 00957740 took the segment hit
+    // Packet cc13-seatspeed (log only): player-held messages on an
+    // artillery-class gun whose class +50h speed differs from the authored V0
+    // (each message, whether or not the solve's answer would change), and held
+    // triggers 0085ABA0's refusal clears (0095A0F8), in either setting.
+    unsigned long long seat_solve_speed_differs_messages{0};
+    unsigned long long seat_trigger_refused{0};
     // kSeatArtilleryLeadBound: the 009578C3 lead taken on a ship (00902290) and
     // on any other entity (00901C20), how many of the ship leads turned
     // (00902290's lead path), and how many used the platform velocity.
@@ -3949,6 +4060,25 @@ struct GameGunneryHost::Impl {
         }
         return nullptr;
     }
+    // 0084C1D8-0084C211 (0084BF00 step 6), shared by the projectile sweep and the
+    // plane crash sweep: true when a Kamikaze-type (+8 == 11h) round fired by a
+    // squadron plane hits a plane of the same squadron (+9D4h). A unit outside
+    // every squadron has no +9D4h here, so a null shooter squadron skips the test
+    // (0084C1E4) and a non-member victim never matches. PROVISIONAL: registry
+    // membership stands in for the image's plane test (vt[5Ch](0Fh): 0084BF3F on
+    // the shooter, 0084C1EE on the victim) and for +9D4h on both; it differs only
+    // if an image plane has +9D4h set that the registry never recorded. Also
+    // PROVISIONAL: "Kamikaze" is the class type string the host maps from 11h.
+    static bool kamikaze_same_squadron_0084c1ee(const GameBulletClassRow* weapon,
+        std::size_t shooter, std::size_t victim) {
+        bool same = false;
+        if (weapon != nullptr && weapon->type == "Kamikaze") {
+            const auto* own = bsp::plane_squadron_registry().find_by_member_unit(shooter);
+            same = own != nullptr
+                && own == bsp::plane_squadron_registry().find_by_member_unit(victim);
+        }
+        return same;
+    }
 
     // --- authored data, through the live interpreter ------------------------
     void flatten_class_tables(const std::vector<int>& class_ids);
@@ -4269,6 +4399,7 @@ struct GameGunneryHost::Impl {
     std::vector<GameBulletClassRow> crash_bullets;   // read on first use, by id
     unsigned long long pc_plane_steps{0}, pc_segments{0}, pc_unit_hits{0};
     unsigned long long pc_same_squadron{0}, pc_land_hits{0}, pc_submerged{0};
+    unsigned long long kamikaze_squadron_drops{0};   // projectile sweep, packet cc13-kamisq
     unsigned long long pc_surface_cuts{0}, pc_impacts{0}, pc_blast_records{0};
     unsigned long long pc_hits_21{0}, pc_hits_98{0}, pc_hits_99{0}, pc_hits_other{0};
     unsigned long long pc_logged{0}, pc_cooldown_steps{0};
@@ -8187,7 +8318,24 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (u.torpedo_cooldown_6fc > 0.0f) u.torpedo_cooldown_6fc -= dt;
         }
     }
+    // Packet cc13-gunnergates: the owner's scene director entry, looked up by
+    // name at most once per owner per step. Re-read every step, so an AAEnable
+    // (0089C740) or a table clear between steps is seen; neither runs inside
+    // this loop.
+    ++aa_enable_cache_step;
+    auto owner_director_enables = [&](std::size_t u) -> const SceneDirectorEnables* {
+        if (aa_enable_cache_stamp.size() < unit_state.size()) {
+            aa_enable_cache_stamp.resize(unit_state.size(), 0);
+            aa_enable_cache_entry.resize(unit_state.size(), nullptr);
+        }
+        if (aa_enable_cache_stamp[u] != aa_enable_cache_step) {
+            aa_enable_cache_stamp[u] = aa_enable_cache_step;
+            aa_enable_cache_entry[u] = scene_director_enables_find(unit_state[u].row.name);
+        }
+        return aa_enable_cache_entry[u];
+    };
     for (std::size_t g = 0; g < guns.size(); ++g) {
+        if (relation_held_target.size() < guns.size()) relation_held_target.resize(guns.size(), 0);
         GameGunRow& gun = guns[g];
         const std::size_t owner_unit = gun.unit_index;
         if (owner_unit >= unit_state.size()) continue;
@@ -8231,9 +8379,24 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         bool have_target = false;
         bool torpedo_think_hold = false;   // kTorpedoBotThinkTimerBound
         std::size_t target = 0;
+        std::size_t same_party_hold = 0;   // target + 1 while held with a same party
         if (gun.target_unit != 0 && gun.target_unit - 1 < unit_state.size()) {
             target = gun.target_unit - 1;
-            if (unit_state[target].dead || !units.unit_alive_and_visible(target)) {
+            const bool host_drop = unit_state[target].dead || !units.unit_alive_and_visible(target);
+            // kGunBotNotAllyDropCc13Bound: 008FFA58 00803510(gun+54h,
+            // target+54h) == 0, a same-party target. Counted on the first tick
+            // of a hold per gun and target, so OFF compares with ON's one drop.
+            const bool same_party = bsp::scoring_relative_party_00803510(
+                units.unit_side_0054(owner_unit), units.unit_side_0054(target)) == 0;
+            if (!host_drop && same_party) {
+                same_party_hold = target + 1;
+                if (relation_held_target[g] != same_party_hold) ++relation_cleared;
+            }
+            bool drop = host_drop;
+            if constexpr (kGunBotNotAllyDropCc13Bound) {
+                drop = host_drop || same_party;
+            }
+            if (drop) {
                 // 008FFA20's target-validity test: a dead target is dropped.
                 // For a tail gunner the drop is 008FFA75's vtable[38h](0) =
                 // 008FEA40 -> 006DF170 -> vtable[30h] 008FEA60, the release.
@@ -8248,6 +8411,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 have_target = true;
             }
         }
+        relation_held_target[g] = same_party_hold;
         // Packet cc9_player_gun_seat: the side gate 008FFA99 (and 00902999,
         // 00903136, 0090003B) runs a bot only while [gun+1ACh] is 8 or an AI
         // slot. A gun the player's seat holds gets no bot target, angle or
@@ -8259,6 +8423,44 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if (player_seat) {
             have_target = false;
             ++seat_held_ticks;
+        }
+        // kShipAaEnableGateCc13Bound: 008FFAB8..008FFAE7, past the side gate, in
+        // the TailGunnerBot (a kind-1 gun under a plane). The director is
+        // [gun+3F0h]->vtable[114h](), non-null only for a ship owner; its +221h
+        // is the AAEnable byte the scene director entry holds.
+        // A ship-kind AND plane-kind owner never holds, so the lookup is never made.
+        const bool aa_class_gun = gun.category == 1 || gun.category == 5 || gun.category == 6;
+        const bool ship_owner = aa_class_gun
+            && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindShipBase);
+        if (have_target && gun.category == 1 && ship_owner
+            && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase)) {
+            const SceneDirectorEnables* e = owner_director_enables(owner_unit);
+            if (e != nullptr && !e->anti_air) {
+                ++aa_enable_blocked;
+                if constexpr (kShipAaEnableGateCc13Bound) {
+                    gun.target_unit = 0;                        // 008FFAE7 vtable[38h](0)
+                    gun.target_name.clear();
+                    have_target = false;
+                }
+            }
+        }
+        // Log-only: a ship's AA-class gun (kinds 1, 5, 6) holding a target while
+        // that ship's AAEnable byte is clear, which the upstream director gate
+        // should not let happen; and the first clear AAEnable seen per ship.
+        if (ship_owner) {
+            const SceneDirectorEnables* e = owner_director_enables(owner_unit);
+            if (e != nullptr && !e->anti_air) {
+                if (have_target) ++aa_disabled_ship_targets;
+                if (aa_enable_clear_logged.size() < unit_state.size()) {
+                    aa_enable_clear_logged.resize(unit_state.size(), 0);
+                }
+                if (!aa_enable_clear_logged[owner_unit]) {
+                    aa_enable_clear_logged[owner_unit] = 1;
+                    log.notef("  AAEnable=0 on %s (gun %zu kind %d, director+221h, packet "
+                        "cc13-gunnergates)", unit_state[owner_unit].row.name.c_str(), g,
+                        gun.category);
+                }
+            }
         }
         // kTorpedoBotOwnerPlayerGateCc13Bound: 008FFF20's owner test at 00900080,
         // past the holder gate (a player seat leaves at 0090003B first).
@@ -11054,8 +11256,41 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
         args.exclude_entity = reinterpret_cast<const void*>(shot.owner_unit);
         bsp::HitRecordFill record;
         bsp::hit_record_reset_00470470(record);
-        const bool hit = bsp::query_segment_0098add0(query, args, record);
+        bool hit = bsp::query_segment_0098add0(query, args, record);
         done("Projectile::sweep_entities_0098add0", 0x0098add0u);
+        // The entry gate (0084C1DC/0084C1E6/0084C1EA) is decided on the swept hit,
+        // before the squadron drop, and the own-base block reads that decision.
+        const bool swept_hit = hit;
+        const std::size_t hu = swept_hit && query.hit_unit != 0 && query.hit_landscape == 0
+            ? query.hit_unit - 1 : static_cast<std::size_t>(-1);
+        if (hu != static_cast<std::size_t>(-1) && shot.owner_unit != 0
+            && kamikaze_same_squadron_0084c1ee(bullet(shot.bullet_class),
+                shot.owner_unit - 1, hu)) {
+            // 0084C1D8-0084C211, kKamikazeSameSquadronShotDropCc13Bound. The
+            // image clears the hit flag (0084C211, xor bl,bl) and falls into
+            // the own-base block (0084C213), which never tests BL: the base
+            // compare fails for a squadron mate, so 0084C27A takes neither the
+            // drop nor the countdown.
+            ++kamikaze_squadron_drops;
+            if constexpr (kKamikazeSameSquadronShotDropCc13Bound) {
+                hit = false;
+            }
+        }
+        {
+            // 0084C213-0084C278, kPlaneOwnBaseHitFilterBound. A dropped hit
+            // skips 0084BC60 (0084C2BB), so the round flies on. It is given the
+            // swept hit, not the post-drop flag (see above).
+            const int ob = units.plane_own_base_hit_filter_0084c213(
+                shot.owner_unit - 1, swept_hit, hu);
+            if (ob == 1) {
+                ++own_base_drops[0];
+                if constexpr (kPlaneOwnBaseHitFilterBound) {
+                    hit = false;
+                }
+            } else if (ob == 2) {
+                ++own_base_countdowns[0];
+            }
+        }
         if constexpr (kLandscapeSpatialAttachBound) {
             note_land_hit_query(LandHitConsumer::Projectile, hit && query.hit_landscape != 0);
         }
@@ -12953,6 +13188,21 @@ void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
             bool land = false;
             const bool hit = query_segment_units_impl(*this, from, to, i + 1, hit_unit,
                 hit_point, &land);
+            {
+                // 0084C213-0084C278, kPlaneOwnBaseHitFilterBound (a land hit is a
+                // hit entity that is not a unit). A dropped hit moves to the next
+                // point, as the Kamikaze drop below does.
+                const int ob = units.plane_own_base_hit_filter_0084c213(i, hit || land,
+                    hit ? hit_unit - 1 : static_cast<std::size_t>(-1));
+                if (ob == 1) {
+                    ++own_base_drops[1];
+                    if constexpr (kPlaneOwnBaseHitFilterBound) {
+                        continue;
+                    }
+                } else if (ob == 2) {
+                    ++own_base_countdowns[1];
+                }
+            }
             if (!hit) {
                 if (land) ++pc_land_hits;
                 continue;
@@ -12960,13 +13210,9 @@ void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
             const std::size_t victim = hit_unit - 1;
             const GameBulletClassRow* weapon = plane_crash_bullet(st.kamikaze_bullet_class);
             // 0084BF00 step 6: a Kamikaze-type (11h) shot skips its squadron.
-            if (weapon != nullptr && weapon->type == "Kamikaze") {
-                const auto* own =
-                    bsp::plane_squadron_registry().find_by_member_unit(i);
-                if (own != nullptr && own == bsp::plane_squadron_registry().find_by_member_unit(victim)) {
-                    ++pc_same_squadron;
-                    continue;
-                }
+            if (kamikaze_same_squadron_0084c1ee(weapon, i, victim)) {
+                ++pc_same_squadron;
+                continue;
             }
             ++pc_unit_hits;
             switch (st.kamikaze_bullet_class) {
@@ -14964,13 +15210,24 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
         // 0095A08C..0095A0AA: 00955630(ECX unit, EDX aim, dev+0FCh, the
         // speed [[dev+3F8h]+34h]+50h, &vert, &horz), in this host's
         // convention: the world-frame solve (mount NULL) turned into the
-        // hull-relative pair as the bot's 006DFAD4 path does.
+        // hull-relative pair as the bot's 006DFAD4 path does. The +50h speed
+        // is the class one, sqrt(9.81 * Range) after 006E98BC for an artillery
+        // class; the host uses it only under kSeatArtilleryClassSpeedCc13Bound
+        // and otherwise the authored V0.
         float muzzle[3];
         gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
         bsp::GunGravityArcQuery q;
         q.aim_point = {aim[0], aim[1], aim[2]};
         q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
-        q.muzzle_speed = gun.muzzle_speed;
+        const bool class_speed = kArtilleryClassSpeedBound && gun.artillery_class;
+        if (!seat_ai && class_speed && gun.class_speed != gun.muzzle_speed) {
+            ++seat_solve_speed_differs_messages;
+        }
+        if constexpr (kSeatArtilleryClassSpeedCc13Bound) {
+            q.muzzle_speed = class_speed ? gun.class_speed : gun.muzzle_speed;
+        } else {
+            q.muzzle_speed = gun.muzzle_speed;
+        }
         q.mount_frame = nullptr;
         const bsp::GunGravityArcSolution arc = bsp::solve_gun_gravity_arc_00955630(q);
         if (!arc.solved) ++seat_artillery_unsolved;
@@ -14990,7 +15247,8 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
         // 0095A0FA..0095A1C2: the trigger, skipped for an AI-held seat (and
         // on a world +1FE4h of 2). A player-held gun takes the pair and fires
         // with +34h when the solve held and both axes are within 2 degrees
-        // (00D0C26C) of it; 0085ABA0's own refusal is not folded in here.
+        // (00D0C26C) of it. 0085ABA0's refusal (0095A0F8 XOR BL,BL) is folded
+        // in under kSeatArtilleryTriggerRefusalCc13Bound.
         if (!seat_ai) {
             gun.seat_horz = horz;
             gun.seat_vert = vert;
@@ -14998,7 +15256,24 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
             const bool within = std::fabs(bsp::wrapped_angle_subtract_00438b10(
                                     gun.angles.vert, vert)) <= band
                 && std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.horz, horz)) <= band;
-            gun.seat_trigger = m.held_34 && arc.solved && within;
+            const bool trigger = m.held_34 && arc.solved && within;
+            // 0085ABA0's answer for this pair, on a copy: the gun's own target
+            // pair is still set by the deferred call above. Probed only for a
+            // held trigger; otherwise the trigger is false in both settings.
+            bool accepted = true;
+            if (trigger) {
+                bsp::GunTurningAngles probe = gun.angles;
+                float probe_mark = 0.0f;
+                const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
+                accepted = bsp::gun_set_target_angles_0085aba0(probe, arcs, gun.speeds,
+                    horz, vert, probe_mark);
+                if (!accepted) ++seat_trigger_refused;
+            }
+            if constexpr (kSeatArtilleryTriggerRefusalCc13Bound) {
+                gun.seat_trigger = trigger && accepted;
+            } else {
+                gun.seat_trigger = trigger;
+            }
         }
     }
     done("PlayerGunSeat::artillery_arm_00959f72", 0x00959f72u);
@@ -17456,20 +17731,26 @@ void GameGunneryHost::report() {
             s.torpedo_friendly_scans, s.torpedo_friendly_holds);
         host.log.notef("summary mission gunnery player seat messages=%llu handovers=%llu "
             "returns=%llu held_ticks=%llu trigger_ticks=%llu bound=%d (00959C20/008FFA99, "
-            "packet cc9_player_gun_seat)", host.seat_messages, host.seat_handovers,
+            "packet cc9_player_gun_seat) relation_cleared=%llu relation_bound=%d "
+            "aa_enable_blocked=%llu aa_enable_bound=%d aa_disabled_ship_targets=%llu",
+            host.seat_messages, host.seat_handovers,
             host.seat_returns, host.seat_held_ticks, host.seat_trigger_ticks,
-            kPlayerGunSeatBound ? 1 : 0);
+            kPlayerGunSeatBound ? 1 : 0, host.relation_cleared,
+            kGunBotNotAllyDropCc13Bound ? 1 : 0, host.aa_enable_blocked,
+            kShipAaEnableGateCc13Bound ? 1 : 0, host.aa_disabled_ship_targets);
         host.log.notef("summary mission gunnery role owner device walk takes=%llu releases=%llu "
             "bound=%d (0095AC1D: 00954000 / 00953F60, cc9-gunnery53)", host.seat_role_takes,
             host.seat_role_releases, kRoleOwnerDeviceWalkBound ? 1 : 0);
         host.log.notef("summary mission gunnery player seat groups 0..5=%llu/%llu/%llu/%llu/%llu/%llu "
             "artillery guns=%llu unsolved=%llu hits=%llu turns=%llu refusals=%llu bound=%d "
-            "(00959F72, packet cc9_player_gun_seat_artillery)",
+            "(00959F72, packet cc9_player_gun_seat_artillery) seat_solve_speed_differs_messages=%llu "
+            "seat_trigger_refused=%llu",
             host.seat_group_messages[0], host.seat_group_messages[1], host.seat_group_messages[2],
             host.seat_group_messages[3], host.seat_group_messages[4], host.seat_group_messages[5],
             host.seat_artillery_guns, host.seat_artillery_unsolved, host.seat_artillery_hits,
             host.seat_artillery_turns, host.seat_artillery_refusals,
-            kPlayerGunSeatArtilleryBound ? 1 : 0);
+            kPlayerGunSeatArtilleryBound ? 1 : 0, host.seat_solve_speed_differs_messages,
+            host.seat_trigger_refused);
         if constexpr (kSeatArtilleryLeadBound) {
             host.log.notef("summary mission gunnery seat artillery lead ship=%llu turned=%llu "
                 "other=%llu adds_speed=%llu (009578C3, 00902290 / 00901C20, packet s54_seat_lead)",
@@ -17812,6 +18093,11 @@ void GameGunneryHost::report() {
             host.log.notef("summary mission gunnery trace scene-damage draws=%llu (0084C19F, "
                 "stream 1, 00428420 not run)", host.trace_scene_draws);
         }
+        host.log.notef("summary mission gunnery own-base filter bound=%d (0084C213-0084C278, "
+            "packet cc13-bsm6strip) shot_drops=%llu shot_countdowns=%llu crash_drops=%llu "
+            "crash_countdowns=%llu", kPlaneOwnBaseHitFilterBound ? 1 : 0,
+            host.own_base_drops[0], host.own_base_countdowns[0], host.own_base_drops[1],
+            host.own_base_countdowns[1]);
         if (kAaGunnerShipHullPointBound) {
             host.log.notef("summary mission gunnery aa gunner hull_points=%llu (00902BFD -> "
                 "00816650, packet cc9_g51_aa_hull_point)", host.aa_gunner_hull_points);
@@ -18317,9 +18603,9 @@ void GameGunneryHost::report() {
         s.fire_messages, s.fire_if_ready, s.can_fire_refusals, s.shots,
         static_cast<double>(s.first_shot_seconds));
     host.log.notef("summary mission gunnery projectiles created=%llu steps=%llu sweeps=%llu "
-        "entity_impacts=%llu water=%llu expired=%llu in_flight=%zu",
+        "entity_impacts=%llu water=%llu expired=%llu in_flight=%zu kamikaze_squadron_drops=%llu",
         s.projectiles, s.projectile_steps, s.sweeps, s.impacts_entity, s.water_crossings,
-        s.expired, host.shots.size());
+        s.expired, host.shots.size(), host.kamikaze_squadron_drops);
     host.log.notef("summary mission gunnery kamikaze contacts=%llu hostile_refused=%llu "
         "detonations=%llu direct_arms=%llu blast_records=%llu self_records=%llu "
         "blast_damage=%.1f min_gap=%.1f at %.2f s bound=%d (009377E0 / 008145B0 / 00819A20, "

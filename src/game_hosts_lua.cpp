@@ -4443,6 +4443,27 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
         if (owner < units.count()) owner_skill = units.skill_level(owner);
         if (PendingEntity* node = find_pending(static_cast<int>(entity))) {
             node->launch_skill = owner_skill;
+            // Packet cc13-lsqparty: 006C5050's bag `Party` (the owner's +54h),
+            // which 00927050's kind-1 arm reads at pass A (00928A1E). The
+            // value is the air-ops record's party (game_hosts_script_orders.cpp
+            // `squadron.party = record.party`), whose fused slot is this
+            // squadron's leader. Counted whether or not the switch is on.
+            const bsp::PlaneSquadronHostRecord* launched = nullptr;
+            for (const bsp::PlaneSquadronHostRecord& r :
+                 bsp::plane_squadron_registry().records()) {
+                if (r.from_air_ops_launch && r.squadron_unit != bsp::kPlaneSquadronNoUnit
+                    && r.squadron_unit + 1 == static_cast<std::size_t>(entity)) {
+                    launched = &r;
+                }
+            }
+            if (launched != nullptr && launched->party >= 0) {
+                ++summary_.launched_party_nodes;
+                node->launched_record = true;   // log only: counts its wing
+                if constexpr (kLaunchedSquadronPartyCc13Bound) {
+                    node->party = launched->party;
+                    node->launched_party = true;
+                }
+            }
         }
         log_.notef("air ops launch skill: squadron=%s owner=%s skill=%d applied=%d "
             "(006C5101, packet cc9_carrier_launch_skill)", name.c_str(),
@@ -4889,7 +4910,9 @@ public:
                 node.class_index, !kSEntityInitThisTableStepsBound, node.findable)) {
             host_.init_all_attached_.insert(node.entity_id);
             if (node.wing_member) ++host_.summary_.wing_member_tables;
-            if ((node.load_scene || node.generated_party) &&
+            // Packet cc13-lsqparty: a launched squadron's node is written as a
+            // generated one is (launched_party is only set with the switch on).
+            if ((node.load_scene || node.generated_party || node.launched_party) &&
                 (node.party >= 0 || node.race >= 0)) {
                 host_.write_party_race_fields(node.entity_id, node.party, node.race);
                 if (node.generated_party) {
@@ -4897,6 +4920,10 @@ public:
                     host_.log_.notef("  generated entity party: thisTable[%d] (\"%s\") Party=%d "
                         "Race=%d written at pass A (packet cc9_generated_entity_party)",
                         node.entity_id, node.name.c_str(), node.party, node.race);
+                } else if (node.launched_party) {
+                    host_.log_.notef("  launched squadron party: thisTable[%d] (\"%s\") Party=%d "
+                        "written at pass A (006C5050 bag Party, packet cc13-lsqparty)",
+                        node.entity_id, node.name.c_str(), node.party);
                 }
             }
         }
@@ -4933,11 +4960,15 @@ public:
                 plane.class_index = node.class_index;
                 // Packet cc9_generated_wing_party: 007F491A, the squadron's
                 // descriptor in the plane's +C0h.
-                if (kGeneratedWingPartyBound && node.generated_party) {
+                // Packet cc13-lsqparty2: the same 007F491A copy for a launched
+                // squadron (launched_party is only set with its switch on).
+                if (kGeneratedWingPartyBound && (node.generated_party || node.launched_party)) {
                     plane.party = node.party;
                     plane.race = node.race;
-                    plane.generated_party = true;
+                    plane.generated_party = node.generated_party;
+                    plane.launched_party = node.launched_party;
                 }
+                if (node.launched_record) ++host_.summary_.launched_wing_nodes;
                 ++host_.summary_.init_all_wing_marked;
             }
             return;   // the wing append below is retired
@@ -4972,11 +5003,15 @@ public:
             plane.squadron_id = leader;  // 007F4B49 MOV [EBX+9D4h],ESI
             // Packet cc9_generated_wing_party: 007F491A, the squadron's
             // descriptor in the plane's +C0h.
-            if (kGeneratedWingPartyBound && node.generated_party) {
+            // Packet cc13-lsqparty2: the same 007F491A copy for a launched
+            // squadron (launched_party is only set with its switch on).
+            if (kGeneratedWingPartyBound && (node.generated_party || node.launched_party)) {
                 plane.party = node.party;
                 plane.race = node.race;
-                plane.generated_party = true;
+                plane.generated_party = node.generated_party;
+                plane.launched_party = node.launched_party;
             }
+            if (node.launched_record) ++host_.summary_.launched_wing_nodes;
             host_.pending_entities_.push_back(std::move(plane));  // `node` stays valid
             ++host_.summary_.init_all_wing_appended;
         }
@@ -11740,9 +11775,11 @@ void GameMissionLuaHost::report_mission_script_state() {
         kSEntityInitThisTableStepsBound ? 1 : 0, summary_.init_all_class_bound,
         summary_.init_all_squadron_ids);
     log_.notef("summary mission script generated entity party (packet "
-        "cc9_generated_entity_party, 00944FD0 -> 00928A00): bound=%d nodes=%llu writes=%llu",
+        "cc9_generated_entity_party, 00944FD0 -> 00928A00): bound=%d nodes=%llu writes=%llu "
+        "launched_party_nodes=%llu launched_wing_nodes=%llu",
         kGeneratedEntityPartyBound ? 1 : 0, summary_.generated_party_nodes,
-        summary_.generated_party_writes);
+        summary_.generated_party_writes, summary_.launched_party_nodes,
+        summary_.launched_wing_nodes);
     log_.notef("summary SEntity::InitAll pass E bound=%d released=%llu",
         kSEntityInitPassEReleaseBound ? 1 : 0, summary_.init_all_holders_released);
     log_.notef("summary SEntity::InitAll pending dedup bound=%d skipped_pending=%llu "
