@@ -188,7 +188,8 @@ def commits_with_patches(*paths):
 NO_BODY_STATUSES = {'metadata_only_no_function_body_verified_oct24'}
 OUT_OF_SCOPE_STATUSES = {'library_instantiation_out_of_scope', 'compiler_generated_out_of_scope',
                          'out_of_scope_vendor_library', 'standard_library_reuse',
-                         'vendor_lua_out_of_scope', 'vendor_stl_out_of_scope'}
+                         'vendor_lua_out_of_scope', 'vendor_stl_out_of_scope',
+                         'non_callable_continuation_out_of_scope'}
 
 
 def reconstruction_has_body(status):

@@ -59,10 +59,13 @@ See `docs/AVOID_ZONE_DYN_HULL.md` and `docs/DYN_BODY_CREATION.md`; existing buil
 claims are inherited evidence, not newly executed validation. These are real partial
 bodies, so no metadata-only status was applied.
 
-Compiler projections `00cb89ad`, `00cc1a01`, and `00cc1b36` preserve the existing
-`compiler_boundary_*` statuses. They model source cleanup or delimit native FH3
-handling; they do not implement native exception transport. They are a scope qualification,
-not newly missing ordinary gameplay bodies. No ABI or game-validation claim was added.
+Follow-up assembly inspection classifies `00cb89ad`, `00cc1a01`, and `00cc1b36`
+as `compiler_generated_out_of_scope`. Each is exactly two instructions/ten bytes:
+MOV EAX,FuncInfo then JMP `00bf6b43` (`__CxxFrameHandler3`). Their FuncInfo values
+are `00def8d4`, `00dfa900`, `00dfaaa0`; their references are parent prologue/EH
+metadata, with no independent game cleanup instructions. The original
+`compiler_boundary_*` values and qualified parent cleanup projections remain
+preserved as evidence; native exception transport is not claimed.
 
 `00c36990` is the important edge case: its fragment ledger and existing
 `pool36_free_thunk_00c36990` source body retain it in the target although all seven incoming

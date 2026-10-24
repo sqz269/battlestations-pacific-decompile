@@ -355,6 +355,11 @@ def wired(a):
     for ident in ident_by_addr.get(a, ()):
         users = [f for f in defined_in.get(ident, ()) if f in reach and f.suffix == '.cpp']
         defs = owner_files.get(ident, set())
+        if ident in plain_idents and len(def_files.get(ident, ())) > 1:
+            # Common method names (dispatch, initialize, release...) must not borrow a
+            # use from an unrelated class/file. Ambiguous plain names only count locally.
+            implementation = ROOT / ident_sources.get(a, recon[a][1]) if recon[a][1] else None
+            users = [f for f in users if f == implementation]
         for f in users:
             if f not in defs:
                 return True
@@ -368,7 +373,14 @@ def wired(a):
 
 def host_own(a):
     # the host defines its own function at this address (a stand-in or an independent host version)
-    return any(f in host_files for ident in ident_by_addr.get(a, ()) for f in owner_files.get(ident, ()))
+    for ident in ident_by_addr.get(a, ()):
+        files = owner_files.get(ident, ())
+        if ident in plain_idents and len(def_files.get(ident, ())) > 1:
+            implementation = ROOT / ident_sources.get(a, recon[a][1]) if recon[a][1] else None
+            files = [f for f in files if f == implementation]
+        if any(f in host_files for f in files):
+            return True
+    return False
 
 
 # ---- ABI class of a ready row, from its definition's parameter list

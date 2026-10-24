@@ -26,30 +26,6 @@
    "evidence": "include/bsp/options_seg56_cc13.hpp:362-365 explicitly associates 00890340 with declaration lua_set_plane_gears; body src/options_seg56_cc13.cpp:191. Original ABI/layout qualifications remain in ledger. Header: // SetPlaneGears 00890340 / ForcePlaneGears 00890840: for every slot below the squadron's // count +3CCh (re-read each pass) 007B8CE0(slot <= 4 ? [+3D0h + 4*slot] : null, integer arg1, // 0 / 1). int lua_set_plane_gears(LuaArgs& args, ImageAccess& image, Seg56Host& host);"
   },
   {
-   "address": "00895570",
-   "source": "src/game_hosts_lua.cpp",
-   "identifiers": [
-    "run_land_convoy_native"
-   ],
-   "evidence": "include/bsp/game_hosts_lua.hpp:2063-2065 explicitly associates 00895570 with declaration run_land_convoy_native; body src/game_hosts_lua.cpp:8341. Original ABI/layout qualifications remain in ledger. Header:     // Packet cc13-fix5: the LandConvoy natives (00895570, 008956E0, 00895850), each     // under its own switch. `address` selects the store.     int run_land_convoy_native(lua_State* state, int argument_count, std::uint32_t address); Host substitution/shared handler only; preserve the ledger qualification, not original ABI compatibility."
-  },
-  {
-   "address": "008956e0",
-   "source": "src/game_hosts_lua.cpp",
-   "identifiers": [
-    "run_land_convoy_native"
-   ],
-   "evidence": "include/bsp/game_hosts_lua.hpp:2063-2065 explicitly associates 008956e0 with declaration run_land_convoy_native; body src/game_hosts_lua.cpp:8341. Original ABI/layout qualifications remain in ledger. Header:     // Packet cc13-fix5: the LandConvoy natives (00895570, 008956E0, 00895850), each     // under its own switch. `address` selects the store.     int run_land_convoy_native(lua_State* state, int argument_count, std::uint32_t address); Host substitution/shared handler only; preserve the ledger qualification, not original ABI compatibility."
-  },
-  {
-   "address": "00895850",
-   "source": "src/game_hosts_lua.cpp",
-   "identifiers": [
-    "run_land_convoy_native"
-   ],
-   "evidence": "include/bsp/game_hosts_lua.hpp:2063-2065 explicitly associates 00895850 with declaration run_land_convoy_native; body src/game_hosts_lua.cpp:8341. Original ABI/layout qualifications remain in ledger. Header:     // Packet cc13-fix5: the LandConvoy natives (00895570, 008956E0, 00895850), each     // under its own switch. `address` selects the store.     int run_land_convoy_native(lua_State* state, int argument_count, std::uint32_t address); Host substitution/shared handler only; preserve the ledger qualification, not original ABI compatibility."
-  },
-  {
    "address": "00898c60",
    "source": "src/engine_seg56_cc13.cpp",
    "identifiers": [
@@ -64,22 +40,6 @@
     "lua_binding_navigator_move_to"
    ],
    "evidence": "include/bsp/lua_binding_navigator.hpp:427-429 explicitly associates 008a2bc0 with declaration lua_binding_navigator_move_to; body src/lua_binding_navigator.cpp:226. Original ABI/layout qualifications remain in ledger. Header: // 008A2F20 NavigatorMoveToRange, and byte-identically 008A2BC0 NavigatorMoveToPos and // 008A2D70 NavigatorDirectMoveToRange: issue kCommandObjectMoveTo. int lua_binding_navigator_move_to(LuaCommandTargetSource& targets,"
-  },
-  {
-   "address": "008aca30",
-   "source": "src/game_hosts_lua.cpp",
-   "identifiers": [
-    "mission_checkpoint_binding"
-   ],
-   "evidence": "include/bsp/game_hosts_lua.hpp:1469-1472 explicitly associates 008aca30 with declaration mission_checkpoint_binding; body src/game_hosts_lua.cpp:11309. Original ABI/layout qualifications remain in ledger. Header:     // Packet cc9_lua49_checkpoint (kMissionCheckpointBound in the .cpp):     // SaveCheckpoint 008ACB70 (save = true) and LoadCheckpoint 008ACA30 on     // this state's BSP_Chk_Save. Returns the binding's result count.     int mission_checkpoint_binding(lua_State* state, bool save); Host substitution/shared handler only; preserve the ledger qualification, not original ABI compatibility."
-  },
-  {
-   "address": "008acb70",
-   "source": "src/game_hosts_lua.cpp",
-   "identifiers": [
-    "mission_checkpoint_binding"
-   ],
-   "evidence": "include/bsp/game_hosts_lua.hpp:1469-1472 explicitly associates 008acb70 with declaration mission_checkpoint_binding; body src/game_hosts_lua.cpp:11309. Original ABI/layout qualifications remain in ledger. Header:     // Packet cc9_lua49_checkpoint (kMissionCheckpointBound in the .cpp):     // SaveCheckpoint 008ACB70 (save = true) and LoadCheckpoint 008ACA30 on     // this state's BSP_Chk_Save. Returns the binding's result count.     int mission_checkpoint_binding(lua_State* state, bool save); Host substitution/shared handler only; preserve the ledger qualification, not original ABI compatibility."
   },
   {
    "address": "008afbd0",
@@ -120,38 +80,6 @@
     "lua_mission_narrative_post"
    ],
    "evidence": "include/bsp/engine_seg56_cc13.hpp:864-867 explicitly associates 008b1010 with declaration lua_mission_narrative_post; body src/engine_seg56_cc13.cpp:1420. Original ABI/layout qualifications remain in ledger. Header: // MissionNarrative 008B0C10 / Urgent 008B0E10 / Override 008B1010: text = variant 0's string, // passed by pointer; callback = variant 1's string copied when there are at least two // arguments, else empty; extras = variants 2..n when there are at least three (CMP 3 / JL). int lua_mission_narrative_post(std::uint32_t entry_point, LuaArgs& args, NarrativeHost& host);"
-  },
-  {
-   "address": "008b2320",
-   "source": "src/game_hosts_lua.cpp",
-   "identifiers": [
-    "run_simplified_multiplier"
-   ],
-   "evidence": "include/bsp/game_hosts_lua.hpp:2089-2090 explicitly associates 008b2320 with declaration run_simplified_multiplier; body src/game_hosts_lua.cpp:3215. Original ABI/layout qualifications remain in ledger. Header:     // Packet cc9_lua54_prcp01: 008B2320/008B24A0 and 008B25F0/008B2770.     int run_simplified_multiplier(lua_State* state, int argument_count, Host substitution/shared handler only; preserve the ledger qualification, not original ABI compatibility."
-  },
-  {
-   "address": "008b24a0",
-   "source": "src/game_hosts_lua.cpp",
-   "identifiers": [
-    "run_simplified_multiplier"
-   ],
-   "evidence": "include/bsp/game_hosts_lua.hpp:2089-2090 explicitly associates 008b24a0 with declaration run_simplified_multiplier; body src/game_hosts_lua.cpp:3215. Original ABI/layout qualifications remain in ledger. Header:     // Packet cc9_lua54_prcp01: 008B2320/008B24A0 and 008B25F0/008B2770.     int run_simplified_multiplier(lua_State* state, int argument_count, Host substitution/shared handler only; preserve the ledger qualification, not original ABI compatibility."
-  },
-  {
-   "address": "008b25f0",
-   "source": "src/game_hosts_lua.cpp",
-   "identifiers": [
-    "run_simplified_multiplier"
-   ],
-   "evidence": "include/bsp/game_hosts_lua.hpp:2089-2090 explicitly associates 008b25f0 with declaration run_simplified_multiplier; body src/game_hosts_lua.cpp:3215. Original ABI/layout qualifications remain in ledger. Header:     // Packet cc9_lua54_prcp01: 008B2320/008B24A0 and 008B25F0/008B2770.     int run_simplified_multiplier(lua_State* state, int argument_count, Host substitution/shared handler only; preserve the ledger qualification, not original ABI compatibility."
-  },
-  {
-   "address": "008b2770",
-   "source": "src/game_hosts_lua.cpp",
-   "identifiers": [
-    "run_simplified_multiplier"
-   ],
-   "evidence": "include/bsp/game_hosts_lua.hpp:2089-2090 explicitly associates 008b2770 with declaration run_simplified_multiplier; body src/game_hosts_lua.cpp:3215. Original ABI/layout qualifications remain in ledger. Header:     // Packet cc9_lua54_prcp01: 008B2320/008B24A0 and 008B25F0/008B2770.     int run_simplified_multiplier(lua_State* state, int argument_count, Host substitution/shared handler only; preserve the ledger qualification, not original ABI compatibility."
   },
   {
    "address": "008b2ad0",
