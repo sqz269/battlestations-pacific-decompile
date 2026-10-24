@@ -91,35 +91,72 @@ void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord
 }
 
 void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds) noexcept {
-    // 0080E011/0080E019: COMISS timer, 0 with JC skipping the countdown, so an
-    // ordered timer at or above zero counts down and a negative or NaN timer
-    // does not.
-    if (!(record.timer_04 < 0.0f)) {
-        const float next = record.timer_04 - seconds; // 0080E01E, one float store
-        record.timer_04 = next;                       // 0080E028
-        // 0080E02D/0080E031: FCOMI 0 against the new timer, JBE skips. The
-        // reset therefore runs only on the step that drives it below zero.
-        if (next < 0.0f) {
-            record.sub_a = UnitAiOrderSubRecord{}; // 0080E03D..0080E04F
-            record.sub_b = UnitAiOrderSubRecord{}; // 0080E052..0080E064
-            record.sub_a.field_08 = kUnitAiOrderSubRecordReset; // 0080E042
-            record.sub_b.field_08 = kUnitAiOrderSubRecordReset; // 0080E057
-        }
-    }
+    unit_ai_order_slot_step_0080e000(record, seconds, kUnitAiOrderResetFieldsCc13Bound);
+}
 
-    // 0080E069: FMUL against the double 50.0 at 00CE3938, then one float store.
-    const float step = static_cast<float>(static_cast<double>(seconds) * kUnitAiOrderBlendRate);
-    const float target = record.sub_a.value_00; // 0080E072
-    const float current = record.blend_00;      // 0080E079
-    const float diff = target - current;        // 0080E089, stored at 0080E08D
-    // 0080E095/0080E099: FCOMI diff against zero, JC takes the negative arm.
-    if (!(diff < 0.0f)) {
-        // 0080E0A0/0080E0A2: FCOMIP diff against step, JBE snaps.
-        record.blend_00 = (diff <= step) ? target : (current + step); // 0080E0A4, 0080E0B6
+void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds, bool image_reset) noexcept {
+    if (image_reset) {
+        // cc13-fixture5, checked against the bytes at the main thread's 24-bit
+        // precision. 0080E011 COMISS / JC: an unordered timer skips the countdown.
+        if (record.timer_04 >= 0.0f) {
+            const float next = record.timer_04 - seconds; // 0080E01E, stored at 0080E020
+            record.timer_04 = next;                       // 0080E028
+            if (0.0f > next) {                            // 0080E02D FCOMI 0, next / JBE
+                // 0080E03D..0080E064: five stores per sub-record. field_10, field_14
+                // (+18h/+1Ch, +34h/+38h) and the bytes after the flag keep their values.
+                UnitAiOrderSubRecord* const subs[] = {&record.sub_a, &record.sub_b};
+                for (UnitAiOrderSubRecord* sub : subs) {
+                    sub->field_04 = 0.0f;                       // 0080E03D / 0080E052
+                    sub->field_08 = kUnitAiOrderSubRecordReset; // 0080E042 / 0080E057
+                    sub->value_00 = 0.0f;                       // 0080E047 / 0080E05C
+                    sub->flag_0c = false;                       // 0080E04C / 0080E061
+                    sub->field_18 = 0;                          // 0080E04F / 0080E064
+                }
+            }
+        }
+        const float step = static_cast<float>(static_cast<double>(seconds) * kUnitAiOrderBlendRate); // 0080E06F
+        const float target = record.sub_a.value_00; // 0080E072
+        const float current = record.blend_00;      // 0080E079
+        const float diff = target - current;        // 0080E089, stored at 0080E08D
+        if (diff >= 0.0f) {                         // 0080E095 FCOMI / JC: unordered goes negative
+            // 0080E0A0 FCOMIP diff, step / JBE: an unordered step snaps to the target.
+            record.blend_00 = diff > step ? current + step : target;   // 0080E0A4 / 0080E0B6
+        } else {
+            const float magnitude = -diff;                             // 0080E0C4 FCHS
+            record.blend_00 = magnitude > step ? current - step : target;  // 0080E0CF / 0080E0E1
+        }
     } else {
-        // 0080E0C4 negates the difference before the same compare.
-        const float magnitude = -diff;
-        record.blend_00 = (magnitude <= step) ? target : (current - step); // 0080E0CF, 0080E0E1
+        // OFF: the earlier model, which clears whole sub-records.
+        // 0080E011/0080E019: COMISS timer, 0 with JC skipping the countdown, so an
+        // ordered timer at or above zero counts down and a negative or NaN timer
+        // does not.
+        if (!(record.timer_04 < 0.0f)) {
+            const float next = record.timer_04 - seconds; // 0080E01E, one float store
+            record.timer_04 = next;                       // 0080E028
+            // 0080E02D/0080E031: FCOMI 0 against the new timer, JBE skips. The
+            // reset therefore runs only on the step that drives it below zero.
+            if (next < 0.0f) {
+                record.sub_a = UnitAiOrderSubRecord{}; // 0080E03D..0080E04F
+                record.sub_b = UnitAiOrderSubRecord{}; // 0080E052..0080E064
+                record.sub_a.field_08 = kUnitAiOrderSubRecordReset; // 0080E042
+                record.sub_b.field_08 = kUnitAiOrderSubRecordReset; // 0080E057
+            }
+        }
+
+        // 0080E069: FMUL against the double 50.0 at 00CE3938, then one float store.
+        const float step = static_cast<float>(static_cast<double>(seconds) * kUnitAiOrderBlendRate);
+        const float target = record.sub_a.value_00; // 0080E072
+        const float current = record.blend_00;      // 0080E079
+        const float diff = target - current;        // 0080E089, stored at 0080E08D
+        // 0080E095/0080E099: FCOMI diff against zero, JC takes the negative arm.
+        if (!(diff < 0.0f)) {
+            // 0080E0A0/0080E0A2: FCOMIP diff against step, JBE snaps.
+            record.blend_00 = (diff <= step) ? target : (current + step); // 0080E0A4, 0080E0B6
+        } else {
+            // 0080E0C4 negates the difference before the same compare.
+            const float magnitude = -diff;
+            record.blend_00 = (magnitude <= step) ? target : (current - step); // 0080E0CF, 0080E0E1
+        }
     }
 }
 

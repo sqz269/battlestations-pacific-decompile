@@ -805,6 +805,8 @@ void* bot_state_move_on_path_circle_construct_009bc960(Cc13Seg67bHost& host, voi
                                                        void* approach);
 // 009B9680: __fastcall(ECX = task), RET, AL.
 bool bot_task_maneuver_roll_completed_009b9680(Cc13Seg67bHost& host, void* task);
+// The same body without the (unused) host, for the leaf fixture.
+bool bot_task_maneuver_roll_completed_009b9680(void* task);
 // 009B9740 (barrelroll, vtable 00D206D0 slot +64h) and 009BA2F0 (gainaltitude, vtable
 // 00D20480 slot +64h): __thiscall(ECX = task; float dt), RET 4, dt unread. 009BA2F0
 // takes one stream-1 draw in its no-target arm.
@@ -1314,6 +1316,10 @@ void ship_ai_debug_draw_state_label_009e8900(Cc13Seg67bHost& host, void* self,
 // ---- medium rows, batch 2 (docs/CC13_SEG67B.md 3.47) ----
 // 009B94E0: __thiscall(ECX = split s task; byte wrap), RET 4.
 void bot_task_split_s_roll_step_009b94e0(Cc13Seg67bHost& host, void* task, std::uint8_t wrap);
+// The same body with 00438B10 supplied directly (the leaf fixture passes
+// bsp::wrapped_angle_subtract_00438b10).
+void bot_task_split_s_roll_step_009b94e0(void* task, std::uint8_t wrap,
+                                         float (*wrapped_angle_subtract_00438b10)(float, float));
 // 009B95D0: __thiscall(ECX = stop task; float dt, unread), RET 4.
 void bot_task_stop_tick_009b95d0(void* task, float dt);
 // 009BAE10 / 009BAE80 / 009BAEF0: __stdcall(bot, archive), RET 8, EAX = task or 0.

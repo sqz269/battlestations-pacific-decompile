@@ -234,5 +234,8 @@ int movie_camera_key_ticks_00797ed0(HudMovieCamera& camera, float dt,
 // argument, +410h / zoom.
 bool movie_camera_update_0079a3b0(HudMovieCamera& camera, MovieCameraParentHost& host,
                                   float dt, std::array<float, 16>& world, float& fov);
+// 0078FCF0 MovieCamera_EaseInOutQuad, __stdcall(float), RET 4, ST0 result: the
+// internal ease the keyframe weights use, exposed for the leaf fixture.
+float movie_camera_ease_in_out_quad_0078fcf0(float x) noexcept;
 
 }  // namespace bsp
