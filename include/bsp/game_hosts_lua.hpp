@@ -2084,6 +2084,9 @@ public:
     // has no `VehicleClass` row by construction.
     // docs/SCENE_STATIONARY_UNITS.md.
     bool stationary_class_exists(const std::string& name);
+    // Read one installed StationaryClass[name] string without running a chunk.
+    // Empty on an absent/non-string field; restores the live Lua stack.
+    std::string read_stationary_class_string(const std::string& name, const char* key);
 
     int run_is_ready_to_send_planes_00895d20(lua_State* state, int argument_count);
     // Packet cc9_lua54_prcp01: 008B2320/008B24A0 and 008B25F0/008B2770.

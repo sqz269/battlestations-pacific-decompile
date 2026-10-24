@@ -9,6 +9,8 @@
 namespace bsp {
 struct NativeCameraEnvironment;
 struct NativeModelEnvironment;
+struct NativeMatrixIndexedModelEnvironment;
+struct NativeGroupEnvironment;
 struct NativeTracelineLifetimeAccess;
 
 // Prepare before native work from the SAME real owner environments. The model
@@ -22,14 +24,23 @@ struct NativeRender20Profiles {
     const volatile std::uint32_t* const camera_00d62cf0;
     const volatile std::uint32_t* const model_00d62de8;
     const volatile std::uint32_t* const traceline_00d0c928;
+    const volatile std::uint32_t* const group_00d634f8;
+    const NativeGroupEnvironment* const group_environment;
+    // Optional genuine derived model view. Its +20 is the SAME B748E0 body;
+    // the actual owner/pool/palette are supplied by the matrix model domain.
+    const volatile std::uint32_t* const matrix_model_00d63590;
 
     NativeRender20Profiles(const NativeCameraEnvironment&,
         const NativeModelEnvironment&, const NativeTracelineLifetimeAccess&,
-        const NativeModelEnvironment& actual_traceline_model_environment);
+        const NativeModelEnvironment& actual_traceline_model_environment,
+        const NativeGroupEnvironment* actual_group_environment = nullptr,
+        const NativeMatrixIndexedModelEnvironment* actual_matrix_environment = nullptr);
     // Ordinary model-only application composition. No Traceline lifetime is
     // manufactured: D0C928 remains unsupported in this narrower domain.
     NativeRender20Profiles(const NativeCameraEnvironment&,
-        const NativeModelEnvironment&);
+        const NativeModelEnvironment&,
+        const NativeGroupEnvironment* actual_group_environment = nullptr,
+        const NativeMatrixIndexedModelEnvironment* actual_matrix_environment = nullptr);
 };
 
 // Complete B72190[84]. Native ECX scene, stack context, RET4; adds EDX access.
@@ -52,6 +63,20 @@ void __fastcall render_native_camera_children_00b6fb80(void* actual_camera,
     const NativeTracelineRenderAccess*, void* actual_context,
     float lod, float visibility, std::uint32_t flags);
 
+// Complete B8EF10[110]. Native ECX cGroup, original four stack words/RET10;
+// EDX adds the SAME render access. Current sphere/profile/slot reads, native
+// x87/SSE clamp and original context/flags argument spill aliases are retained.
+void __fastcall render_native_group_children_00b8ef10(void* actual_group,
+    const NativeTracelineRenderAccess*, void* actual_context,
+    float lod, float visibility, std::uint32_t flags);
+
+// B8F100: byte175 selects the instruction-identical raw Model static/cache
+// path or the existing canonical B8EBE0 attachment-array aggregation. The
+// dynamic arm needs the SAME Group companion and a bound group_environment;
+// its existing C++ companion/array projection is not a raw pointer/FH3 ABI.
+const void* __fastcall get_native_group_world_sphere_00b8f100(void* actual_group,
+    const NativeTracelineRenderAccess*);
+
 // Shared source-only selector. Naked/integer-only, no profile lookup or FP.
 // Old model/Traceline bridge keeps its late profile callback; node/camera routes
 // require the new preflighted binding, preserving legacy null-binding fallback.
@@ -61,7 +86,7 @@ NativeRender20Body __fastcall select_native_render20_body(std::uint32_t target,
     const NativeTracelineRenderAccess*) noexcept;
 
 // New entries require live access, zero cell, canonical render20_profiles and
-// existing real services. Four profiles only; D0C8C8/__purecall is not admitted.
+// existing real services. Group is optional; D0C8C8/__purecall is not admitted.
 // Unknown mapped targets use the existing actual application dispatch after
 // balanced FP spills. That extra C++ frame/FP/exception path does not preserve
 // original stack alias/virtual ABI/FH3/hardware-fault equivalence. Missing-profile

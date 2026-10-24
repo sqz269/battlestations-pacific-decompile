@@ -15,8 +15,9 @@ cc9 and cc15 were notified through coordination messages 830 and 831.
 
 ## Resource identity
 
-`count()` reads `GameUnitsSummary::units`, which `create_units` refreshes from
-`slots.size()` after every batch, including runtime spawns. `descriptor(index)`
+`count()` reads the existing canonical `GameUnitsHost::count()` (`slots.size()`),
+including runtime spawns. `GameUnitsSummary::units` also refreshes to that size
+after every `create_units` batch. `descriptor(index)`
 uses `unit_row` only for instance/class/type identity. It reads the same installed
 `VehicleClass[type_id].Mesh` string that the existing unit host uses for model
 Aux and buoyancy reads (`class_buoyancy_list_0082fe30`). It verifies that logical
@@ -33,6 +34,16 @@ The existing shared field schema records the original Mesh read at `0087CB44`
 inside `0087CA80`: `__thiscall` descriptor receiver, stack Lua-object row, `RET 4`.
 `00960230` calls that common loader before its vehicle-specific fields. The
 adapter uses the existing C++ Lua reader rather than invoking that native ABI.
+
+Stationary props are different installed metadata: `StationaryClass[type_symbol]`
+has no `VehicleClass` descriptor by construction. The adapter matches the unit
+host's classification (unknown vehicle-kind id plus an existing stationary row)
+and reads that row's Mesh through the new stack-preserving
+`read_stationary_class_string` reader. It extends the existing `00851CB0`
+StationaryClass/name lookup without a script chunk, second Lua state, parser,
+numeric VehicleClass substitute, or path rewrite. Descriptor `stationary_prop`
+records which actual class table supplied the asset. Other VehicleClass choices
+retain the same reader and complete logical name as D1.
 
 ## Pose and visibility evidence
 
@@ -54,6 +65,27 @@ Do not use `units()` or `GameUnitRow::position`/`heading_degrees` for drawing:
 position only under `kPlaneRowPositionBound`, leaving ship-only row fields alone.
 The current affine basis can contain plane pitch/roll and ship/submarine motion
 that those summary fields do not express.
+
+Stationary props also have a valid placed canonical pose: their slot begins with
+`world_valid = 1`, and `create_units` publishes every created entity's authored
+composed frame before admitting the slot. No current host path sets that byte to
+zero; the shared refresh helper only sets it to one. The guard therefore does
+not exclude a motionless placed prop. This is source evidence, not a live check.
+
+For props, `unit_alive_and_visible` cannot be used as an unconditional filter:
+the host intentionally withholds full native flags when there is no vehicle
+creator. The adapter first uses those full lifecycle gates whenever available.
+For a confirmed stationary prop without that flag provenance, it instead reads
+the actual host activity `+5Ch` and teardown `+5Dh` cells through `unit_active`
+and `unit_flag_005d`. The unavailable native destroyed/pending-destroy flag
+contract remains unclaimed. No flags or gameplay slots are edited.
+
+The slot vector is append-only in the current host: no erase/clear/pop/resize
+path was found, and every runtime creation batch updates the summary count.
+Within one mission owner, a renderer can inspect new metadata indices once and
+load appended models before BeginScene. It must still re-read every loaded
+unit's pose/visibility each frame, and retire its graph before a different
+mission owner replaces that index space.
 
 ## Evidence limits and integration
 

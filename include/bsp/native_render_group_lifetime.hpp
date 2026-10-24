@@ -3,6 +3,7 @@
 
 namespace bsp {
 class NativeModelReference;
+class GeneratedModelNodeLifetime;
 class SizedStoragePool;
 class ActualNativeStringPoolStorage;
 struct NativeStringRawPoolContext;
@@ -15,6 +16,9 @@ class NativeRenderGroupModels {
 public:
     virtual ~NativeRenderGroupModels() = default;
     virtual NativeModelReference& resolve_actual_model(void* actual_slot) = 0;
+    // Same canonical actual-prefix lookup for derived model companions. The
+    // default preserves existing ordinary-model providers; no new credit.
+    virtual GeneratedModelNodeLifetime& resolve_actual_model_node(void* actual_slot);
 };
 
 // Original ECX=actual4Ch group; RET. Release/clear actual binding, then reload

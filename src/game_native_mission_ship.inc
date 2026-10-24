@@ -26,11 +26,18 @@ struct MissionShipGraph final {
     NativeRenderResourceInitArguments arguments;
     std::function<GameNativeMissionUnitSource()> unit_source;
     const GameUnitsHost* bound_units{}; // Identity only; reborrow from mission before every use.
+    const GameMissionLuaHost* bound_lua{};
+    const NativeShaderBinaryCacheOperation* shader_creation{};
+    std::size_t inspected_units{};
     NativeMissionFrameSwitches frame_switches;
     NativeMissionFrameCoordinator frame_coordinator;
     GameRenderFrameState frame_state;
     void* prepare_context{};
     void (*prepare_callback)(void*){};
+    const NativeGroupEnvironment* gui_group_environment{};
+    RandomThreads* startup_random{};
+    bool all_units{};
+    std::optional<std::size_t> diagnostic_view_unit;
     bool overlay_window_open{}, overlay_submitted{};
     Stage stage{Stage::prepared};
     bool shader_open{};
@@ -38,6 +45,8 @@ struct MissionShipGraph final {
     // Reverse destruction keeps dependencies until all consumer companions
     // have closed, after their genuine native owners have already retired.
     std::unique_ptr<GameNativeMissionModel> model;
+    std::unique_ptr<GameNativeMissionDevices> devices_visual;
+    std::unique_ptr<GameNativeMissionFrameJobs> frame_jobs;
     std::unique_ptr<GameNativeMissionFactories> factories;
     std::unique_ptr<MissionShipShaderPreloadGraph> preload;
     std::unique_ptr<MissionShipFoliageGraph> foliage;
@@ -64,9 +73,20 @@ struct MissionShipGraph final {
           input(in), clock(time), arguments(args), unit_source(std::move(units)) {
         check(static_cast<bool>(unit_source), "mission rendering requires its existing simulation owner");
         frame_switches = native_mission_frame_switches_from_environment(true);
+        char all[2]{};
+        all_units = GetEnvironmentVariableA("BSP_NATIVE_MISSION_UNITS", all, sizeof all) == 1 && all[0] == '1';
         frame_state.game_state = static_cast<std::uint32_t>(GameStateId::kInMission);
         frame_state.interface_manager_present = true;
         frame_state.interface_level = 1;
+        char selected[32]{};
+        const auto length = GetEnvironmentVariableA("BSP_NATIVE_MISSION_VIEW_UNIT", selected, sizeof selected);
+        if (length) {
+            check(length < sizeof selected, "native mission diagnostic view unit is too long");
+            char* end{};
+            const auto index = std::strtoul(selected, &end, 10);
+            check(end != selected && *end == '\0', "native mission diagnostic view unit must be an index");
+            diagnostic_view_unit = static_cast<std::size_t>(index);
+        }
     }
     ~MissionShipGraph() {
         if (stage != Stage::prepared && stage != Stage::closed) std::terminate();
@@ -74,12 +94,18 @@ struct MissionShipGraph final {
     bool owns_live_layouts() const noexcept {
         return stage == Stage::ready || stage == Stage::retired;
     }
+    bool owns_live_shader_cache() const noexcept {
+        return stage == Stage::ready && shader_open && shader_creation &&
+            shader_creation->phase == NativeShaderBinaryCacheOperation::Phase::complete &&
+            shader_creation->cache && shader_creation->cache == shader_cache.actual_cache_0108d6ec;
+    }
     bool requires_process_retention() const noexcept {
         return stage == Stage::preparing || stage == Stage::retiring || stage == Stage::failed ||
-            shader_open || (model && model->requires_process_retention()) ||
+            (shader_open && !owns_live_shader_cache()) || (model && model->requires_process_retention()) ||
             (factories && factories->requires_process_retention()) ||
             (preload && preload->requires_process_retention()) ||
             (commands && commands->requires_process_retention()) ||
+            (frame_jobs && frame_jobs->requires_process_retention()) ||
             (resources && resources->requires_process_retention()) ||
             (scene && scene->requires_process_retention()) ||
             (lighting && lighting->requires_process_retention());
@@ -119,12 +145,23 @@ struct MissionShipGraph final {
                 foliage->publication_00f8c210, nullptr};
             commands = std::make_unique<MissionCommandGraph>(log, frames, graph,
                 devices, cameras, constructor, files, singletons, raw_strings,
-                vfs.strings, shared_resources.publication, entry_cache, providers);
+                vfs.strings, shared_resources.publication, entry_cache, providers,
+                model->matrix_model_environment(), gui_group_environment);
+            if (all_units) {
+                check(startup_random != nullptr, "native mission jobs require the existing startup random registry");
+                frame_jobs = std::make_unique<GameNativeMissionFrameJobs>(graph.profiles.data,
+                    frames.queue_getter, singletons.native_deletion_bindings(), *startup_random);
+                commands->bind_preparation_jobs(*frame_jobs);
+            }
             commands->before_device_generation(generation);
             check(!shader_cache.actual_cache_0108d6ec,
                 "mission ship requires a fresh closed shader-cache bracket");
             application.create_shader_cache();
             shader_open = true;
+            shader_creation = application.shader_cache_creation_operation();
+            check(shader_creation && shader_creation->phase == NativeShaderBinaryCacheOperation::Phase::complete &&
+                shader_creation->cache && shader_creation->cache == shader_cache.actual_cache_0108d6ec,
+                "mission shader-cache creation did not return the canonical live owner");
             resources = std::make_unique<MissionRenderResourcesGraph>(shared_resources,
                 graph, cameras, texture_loading, declarations, layouts, raw_strings,
                 vfs, singletons, owners, model->effect_cache(), model->material_lifetime(),
@@ -136,19 +173,11 @@ struct MissionShipGraph final {
             const auto source = unit_source();
             check(static_cast<bool>(source), "mission rendering requires loaded simulation units");
             bound_units = source.units;
+            bound_lua = source.lua;
             GameNativeMissionUnits units(source, files);
-            const auto selected = source.units->controlled_bound()
-                ? source.units->controlled_index() : std::size_t{0};
-            for (std::size_t i = 0; i != units.count(); ++i) {
-                GameNativeMissionUnitDescriptor descriptor;
-                if (i != selected || !units.descriptor(i, descriptor)) continue;
-                model->load_installed_unit(descriptor.model_logical_name, i);
-                log.notef("native mission unit: index=%zu name=%s type=%d asset=%s models=%zu",
-                    i, descriptor.instance_name.c_str(), descriptor.type_id,
-                    descriptor.model_logical_name.c_str(), model->unit_drawable_count(i));
-                break; // D1: the controlled unit's actual installed model at its live pose.
-            }
-            check(model->drawable_count() != 0, "controlled mission unit has no installed drawables");
+            if (all_units) devices_visual = std::make_unique<GameNativeMissionDevices>(log, *source.units);
+            load_new_unit_models(units);
+            check(model->drawable_count() != 0, "mission has no installed unit drawables");
             update_live_poses(0);
             fit_camera();
             scene = std::make_unique<MissionShipSceneGraph>(log, resources->scenes,
@@ -156,12 +185,13 @@ struct MissionShipGraph final {
                 cameras.decrement, reinterpret_cast<const char*>(graph.profiles(0xce7e10)));
             scene->create();
             for (std::size_t i = 0; i != model->drawable_count(); ++i)
-                scene->attach(model->drawable(i), model->drawable_reference(i));
+                scene->attach(model->drawable(i), model->drawable_reference(i), model->profile(model->drawable(i)));
             lighting = std::make_unique<MissionShipLightingGraph>(log, graph, cameras,
                 owners, raw_strings, static_cast<std::uint8_t>(arguments.word_00));
             lighting->create_and_bind(scene->raw());
-            application.release_shader_cache();
-            shader_open = false;
+            // Keep this SAME one-shot cache while late mission models can load.
+            // B3B7F4/B34890 dereference it in the installed binary shader mode.
+            // A completed current-owner cache is retired exactly once below.
             stage = Stage::ready;
             log.notef("native mission ship ready: renderer=%p service=%p queue=%p scene=%p camera=%p "
                 "models=%zu sections=%zu generation=%lu init_args=%u,%u,%u",
@@ -174,11 +204,71 @@ struct MissionShipGraph final {
             throw;
         } catch (...) { stage = Stage::failed; throw; }
     }
+    std::size_t load_new_unit_models(GameNativeMissionUnits& units) {
+        const auto count = units.count();
+        check(count >= inspected_units, "mission unit indices lost their append-only owner");
+        const auto first = model->drawable_count();
+        const auto selected = bound_units->controlled_bound() ? bound_units->controlled_index() : std::size_t{0};
+        for (std::size_t i = inspected_units; i != count; ++i) {
+            if (!all_units && i != selected) continue;
+            GameNativeMissionUnitDescriptor descriptor;
+            if (!units.descriptor(i, descriptor)) {
+                log.notef("native mission unit skipped: index=%zu blocker=no installed class Mesh", i);
+                continue;
+            }
+            model->load_installed_unit(descriptor.model_logical_name, i);
+            if (bound_units->unit_is_kind_of(i, static_cast<int>(VehicleClassKind::PlaneBase)))
+                check(model->configure_plane_default_visibility(i), "native plane defaults lost their loaded unit");
+            log.notef("native mission unit: index=%zu name=%s type=%d asset=%s models=%zu stationary=%d",
+                i, descriptor.instance_name.c_str(), descriptor.type_id,
+                descriptor.model_logical_name.c_str(), model->unit_drawable_count(i),
+                descriptor.stationary_prop);
+        }
+        if (devices_visual) for (const auto& binding : devices_visual->bindings()) {
+            if (binding.mesh.empty() || model->unit_loaded(binding.render_key)) continue;
+            model->load_installed_unit(binding.mesh, binding.render_key);
+            check(model->unit_hierarchy_count(binding.render_key) == binding.hierarchy_items,
+                "native device hierarchy differs from the firing host's original asset items");
+            log.notef("native mission device model: key=%zu unit=%zu platform=%d class=%d asset=%s models=%zu",
+                binding.render_key, binding.unit_index, binding.platform_key, binding.device_class,
+                binding.mesh.c_str(), model->unit_drawable_count(binding.render_key));
+        }
+        if (scene && model->drawable_count() != first) {
+            // Legacy model companions admit the native null-lighting B6ED80
+            // branch. B723F0 changes only outer+1C and its resource credit;
+            // keep the genuine resource creator while roots are attached.
+            lighting->begin_root_attachment();
+            for (std::size_t i = first; i != model->drawable_count(); ++i)
+                scene->attach(model->drawable(i), model->drawable_reference(i), model->profile(model->drawable(i)));
+            lighting->end_root_attachment();
+        }
+        inspected_units = count;
+        return model->drawable_count() - first;
+    }
+    void refresh_units() {
+        check(stage == Stage::ready, "mission refresh requires its complete render graph");
+        try {
+            const auto source = unit_source();
+            check(source && source.units == bound_units && source.lua == bound_lua,
+                "mission render units changed owner before graph retirement");
+            GameNativeMissionUnits units(source, files);
+            if (devices_visual && devices_visual->refresh_source()) {
+                const auto& census = devices_visual->census();
+                log.notef("native mission device source extended before BeginScene: gun_rows=%zu physical_platforms=%zu visible_instances=%zu",
+                    census.gun_rows, census.physical_platforms, census.visible_instances);
+            }
+            if (load_new_unit_models(units) != 0) {
+                update_live_poses(0);
+                fit_camera();
+            }
+        } catch (...) { stage = Stage::failed; throw; }
+    }
     void update_live_poses(std::uint64_t mission_frame) {
         const auto source = unit_source();
-        check(source && source.units == bound_units,
+        check(source && source.units == bound_units && source.lua == bound_lua,
             "mission render units changed owner before graph retirement");
         GameNativeMissionUnits units(source, files);
+        if (devices_visual) devices_visual->validate_source();
         for (std::size_t i = 0; i != units.count(); ++i) {
             if (!model->unit_loaded(i)) continue;
             CameraMatrix current;
@@ -195,11 +285,35 @@ struct MissionShipGraph final {
                     static_cast<double>(current[14]), static_cast<double>(current[8]),
                     static_cast<double>(current[9]), static_cast<double>(current[10]), visible);
         }
+        if (devices_visual) for (const auto& binding : devices_visual->bindings()) {
+            if (binding.mesh.empty()) continue;
+            bool posed = true;
+            for (std::size_t item = 0; item != binding.hierarchy_items; ++item) {
+                CameraMatrix current;
+                if (!devices_visual->current_node_world(binding.render_key, item, current)) {
+                    posed = false;
+                    break;
+                }
+                // Metadata-only hierarchy items have no actual visual/palette
+                // node. The model facade returns false for exactly that case.
+                (void)model->update_hierarchy_transform(binding.render_key, item, current);
+            }
+            model->set_unit_visible(binding.render_key, posed && units.visible(binding.unit_index));
+        }
     }
     void fit_camera() {
         std::vector<std::array<float, 4>> spheres;
         CameraAxis low{}, high{};
+        const auto source = unit_source();
+        check(source && source.units == bound_units && source.lua == bound_lua,
+            "mission camera lost its canonical unit source");
+        const auto selected = diagnostic_view_unit.value_or(source.units->controlled_bound()
+            ? source.units->controlled_index() : std::size_t{0});
+        check(!diagnostic_view_unit || model->unit_loaded(selected),
+            "native mission diagnostic view unit has no loaded model");
+        const bool focus_loaded = model->unit_loaded(selected);
         for (std::size_t i = 0; i != model->drawable_count(); ++i) {
+            if (focus_loaded && model->drawable_unit_index(i) != selected) continue;
             const auto* raw_sphere = get_native_model_world_sphere_00b6e8c0(
                 model->drawable(i), &commands->render_access());
             std::array<float, 4> sphere;
@@ -230,6 +344,7 @@ struct MissionShipGraph final {
         try {
             commands->before_device_generation(generation);
             update_live_poses(mission_frame);
+            fit_camera();
             camera->update_viewport();
             resources->prepare_screen_matrix();
             last_mission_frame = mission_frame;
@@ -260,16 +375,21 @@ struct MissionShipGraph final {
         if (commands) commands->complete_frame();
     }
     void observe_failed_frame() noexcept {
+        if (frame_jobs) frame_jobs->observe_interrupted();
         if (commands) commands->observe_failed_frame();
         stage = Stage::failed;
     }
-    void retire_before_native_drain() {
+    void retire_before_native_drain(GameNativeRendererApplication& application) {
         if (stage == Stage::closed) return;
         if (stage == Stage::prepared) { stage = Stage::closed; return; }
         check(stage == Stage::ready && !requires_process_retention(),
             "incomplete mission ship graph cannot be retired");
         stage = Stage::retiring;
         try {
+            if (shader_open) {
+                application.release_shader_cache();
+                shader_open = false;
+            }
             preload->retire_before_native_drain();
             lighting->retire_before_native_drain();
             scene->retire_before_native_drain();
@@ -290,6 +410,7 @@ struct MissionShipGraph final {
         preload->after_native_drain();
         factories->after_native_drain();
         model->after_native_renderer_drain();
+        if (frame_jobs) frame_jobs->after_native_drain();
         stage = Stage::closed;
         log.notef("native mission ship closed: last_mission_frame=%llu camera=retired scene=retired "
             "models=retired foliage=retired resources=retired",

@@ -7,9 +7,11 @@
 
 namespace bsp {
 struct NativeModelEnvironment;
+struct NativeMatrixIndexedModelEnvironment;
 struct NativeMaterialDestructionAccess;
 struct NativeMaterialEffectCacheContext;
 class NativeModelReference;
+class RenderCommandReference;
 class NativeLuaServiceBindings;
 struct NativeInstanceGeometryAccess;
 class NativeRenderGroupModels;
@@ -38,6 +40,8 @@ public:
     NativeMaterialEffectCacheContext& effect_cache();
     NativeMaterialDestructionAccess& material_lifetime() noexcept;
     NativeModelEnvironment& model_environment() noexcept;
+    // Bind the genuine matrix profile/pool/type domain once before traversal.
+    NativeMatrixIndexedModelEnvironment& matrix_model_environment();
     NativeLuaServiceBindings& lua_services() noexcept;
     NativeInstanceGeometryAccess& instance_geometry() noexcept;
     NativeRenderGroupModels& group_models() noexcept;
@@ -54,12 +58,25 @@ public:
     std::size_t unit_count() const noexcept;
     std::size_t unit_drawable_count(std::size_t unit_index) const noexcept;
     std::size_t drawable_unit_index(std::size_t drawable_index) const;
+    std::size_t unit_hierarchy_count(std::size_t unit_index) const noexcept;
+    std::size_t drawable_hierarchy_index(std::size_t drawable_index) const;
     // Compose immutable authored asset matrices with the borrowed current unit
     // pose, then publish through actual B6DB10 (including graph invalidation).
     // No simulation pose is retained. False means that index is not loaded.
     bool update_unit_transform(std::size_t unit_index, const CameraMatrix&);
+    // Publish a borrowed, already composed world matrix for an ORIGINAL asset
+    // hierarchy item through B6DB10. This supports authoritative articulation
+    // without saving angles or overrides. False means no loaded actual node.
+    bool update_hierarchy_transform(std::size_t unit_index, std::size_t hierarchy_item,
+        const CameraMatrix& composed_world);
+    // Plane creator defaults only: original cockpit Note roles and broken-wing
+    // descendant-name filter. Call after loading, before live visibility.
+    // The caller supplies true host plane classification. No damage state is
+    // inferred. Idempotent for a configured unit; unknown unit => false.
+    bool configure_plane_default_visibility(std::size_t unit_index);
     // Publish factor 1/0 through B6DA70 for every flattened drawable. No live
-    // visibility/liveness field is copied into this domain. Unknown => false.
+    // visibility/liveness field is copied into this domain. Configured plane
+    // defaults remain masked when visible is true. Unknown => false.
     bool set_unit_visible(std::size_t unit_index, bool visible);
 
     // Compatibility diagnostic: unit zero in an otherwise empty domain.
@@ -67,7 +84,9 @@ public:
     void load_installed_ship(const char* logical_name);
     std::size_t drawable_count() const noexcept;
     void* drawable(std::size_t) const;
-    NativeModelReference& drawable_reference(std::size_t) const;
+    // The canonical actual +04 companion for ordinary or matrix-indexed models;
+    // each also implements GeneratedModelNodeLifetime over the same prefix.
+    RenderCommandReference& drawable_reference(std::size_t) const;
     std::size_t section_count() const noexcept; // Unique loaded asset sections.
     // First loaded logical asset, retained for the single-ship diagnostic.
     const char* installed_name() const noexcept;

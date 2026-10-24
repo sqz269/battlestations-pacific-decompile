@@ -23,6 +23,8 @@ struct NativeMaterialTextureNameLiterals;
 struct NativeEffectRegistryDestructionContext;
 class NativeRenderActualOwnerRegistry;
 struct NativeCameraEnvironment;
+struct NativeGroupEnvironment;
+class RandomThreads;
 struct NativeNodeRawConstants;
 class NativeViewportRegistry;
 struct NativeCockpitViewportReleaseContext;
@@ -186,6 +188,8 @@ public:
     static bool mission_ship_requested() noexcept;
     void configure_mission_ship(GameInputRuntime&, const NativeFrameClockPublicationContext&,
         NativeRenderResourceInitArguments, std::function<GameNativeMissionUnitSource()>);
+    // Borrow the original startup registry through genuine native job drain.
+    void bind_mission_startup_random(RandomThreads&);
     bool mission_ship_enabled() const noexcept;
     void prepare_mission_ship();
     void draw_mission_ship(std::uint64_t mission_frame, float simulated_seconds);
@@ -197,13 +201,18 @@ public:
     // One startup borrower, invoked after render resources initialize while
     // the existing mission shader-cache bracket is open. No second cache.
     void register_mission_prepare_callback(void*, void (*)(void*));
+    // Optional SAME-node GUI group environment, retained by its startup owner.
+    // Bind before the first native scene submission; no live profile mutation.
+    void bind_mission_gui_group_environment(const NativeGroupEnvironment*);
     // Borrow only inside the native frame's post-world overlay callback.
     // Submit at most once per actual begin; the original eight-byte label is
     // consumed by B1F4D0, including its own exceptional cleanup path.
+    // label_entered_native is reset false on entry, then set immediately before
+    // B1F4D0 owns the header. A pre-entry failure leaves cleanup with the caller.
     void* mission_overlay_queue();
     void* mission_overlay_pass_context();
     void submit_mission_overlay_scene(void* queue, void* scene, void* camera,
-        void* targets, void* actual8b_label);
+        void* targets, void* actual8b_label, bool& label_entered_native);
     // 00737F30's 737F80..737FB0 loop over the startup Application's preload rows,
     // when the mission preload borrowed that object (kApplicationCc15Bound).
     void release_application_preload_rows();

@@ -185,6 +185,60 @@ API, not a newly recovered binary-compatible call interface.
 The service pointer must be live and nonnull; the getter supplies no guard.
 Forward its returned value unchanged, including a null targets pointer.
 
+## D2 MatrixIndexedModel render and palette contract
+
+Live bytes from the configured `bsp.gpr` program establish that actual profile
+`00D63590` uses `00B748E0` at vtable `+0x20`, `00B6E8C0` at `+0x48` and
+`006EF890` at `+0x58`. It is not a distinct matrix-only render body. The existing
+`render_native_generated_model_00b748e0` implements the original complete normal
+body and already recognizes the sphere/visibility leaves. Original render ABI:
+ECX actual model, stack context/LOD/visibility/flags, `RET 10h`; the source adds
+EDX access while retaining the original stack-word positions and x87/SSE body.
+The source interface is not a drop-in original ABI or native FH3 proof.
+
+The D2 extension binds a genuine borrowed `00D63590` table in
+`NativeRender20Profiles`, using the matrix owner's
+`NativeMatrixIndexedModelEnvironment`. It must share the exact existing base
+`NativeModelEnvironment`; no static-model table is substituted. Captured numeric
+profile `00D63590` translates to that canonical current table, after which the
+existing target selector reaches `00B748E0`. The model facade's render services
+must return that same table for actual matrix models. Null optional bindings
+leave the profile unsupported. The canonical owner/pool/constructor and bone
+materialization are separate units/model packets.
+
+The existing material constant builder has two different palette contracts:
+
+* Shader-definition byte `+0x30 != 0xFF`: `00B8FF00` reads the signed count at
+  model `+0x188`; `00B90620` reads the node from `[[model+0x184]+index*4]`.
+  `00B426A8..00B426E4` refreshes that genuine node's world matrix and transposes
+  the first three rows from node `+0xF0` into successive 48-byte register data.
+  This is the ordered pointer-array contract needed by MatrixIndexedModel.
+* Shader-definition byte `+0x32 != 0xFF`: the separate skin path expects either
+  optimized animator/palette storage at `+0x190`, or 0x60-byte records containing
+  node pointers and inverse-bind matrices. It is not interchangeable with the
+  matrix-indexed pointer array.
+
+The Val resource's authored WeightMapNames must therefore resolve, in their
+original order, to actual hierarchy nodes with their authored/world transforms.
+The model packet supplies those nodes and the original `+0x184/+0x188/+0x18C`
+header. Runtime material observations must still establish the selected shader
+register contract; identity palettes or inferred bone names are not substitutes.
+No new render body, palette implementation, test or live-validation claim is
+added by this translation packet.
+
+Both `NativeRender20Profiles` constructors accept the trailing optional
+`const NativeMatrixIndexedModelEnvironment*` after the optional group pointer.
+For the ordinary mission route, construct with
+`(camera_environment, model_environment, group_or_null, matrix_environment)`.
+The matrix environment's `base` must be that exact model environment, its
+node runtime must be the camera's same runtime, and its actual `00D63590`
+table must be nonnull. The appended table is at source-record offset `0x18`;
+the group's table/environment offsets and every render-access offset stay
+unchanged. Only integer captured-profile translation is extended; original
+render-body FP instructions and outgoing stack words are untouched. The packet
+depends on the separate matrix-owner header from the units worker and is not
+independently build-tested.
+
 ## Validation boundary
 
 Source review and `git diff --check` cover this packet. No new tests, standalone
