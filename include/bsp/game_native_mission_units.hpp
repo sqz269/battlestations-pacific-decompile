@@ -27,7 +27,8 @@ struct GameNativeMissionUnitDescriptor {
     std::string class_name;
     std::string type_symbol;
     int type_id{-1};
-    std::string model_logical_name;  // installed VehicleClass[type_id].Mesh, unchanged
+    bool stationary_prop{false};  // host has no vehicle descriptor; StationaryClass[type_symbol]
+    std::string model_logical_name;  // installed class table's Mesh string, unchanged
 };
 
 // New C++ render binding, not an original object layout or calling convention.
