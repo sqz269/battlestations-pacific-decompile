@@ -53,6 +53,24 @@ std::string format_marker_distance_0063e5c0(float distance, bool nautical_miles)
     return text;
 }
 
+std::string format_marker_distance_0063e5c0(void* target, MarkerDistanceHost& host) {
+    float distance = 0.0f;                         // 0063E5D8 XORPS / 0063E5E9
+    void* const camera = host.controlled_unit_00e188d8(); // 0063E60D
+    if (camera != nullptr && target != nullptr) {  // 0063E613, 0063E61B
+        if (!host.pose_current_c8(camera)) host.refresh_pose_00414db0(camera); // 0063E61F
+        if (!host.pose_current_c8(target)) host.refresh_pose_00414db0(target); // 0063E62E
+        float from[3];
+        float to[3];
+        host.position_fc(camera, from);
+        host.position_fc(target, to);
+        const float vec[3] = {to[0] - from[0], to[1] - from[1], to[2] - from[2]};
+        distance = host.vector_length_0042b2f0(vec); // 0063E689, FSTP float
+    }
+    // The flag is read only on the text path (after the 0063E6AF zero test).
+    if (distance == 0.0f) return {};
+    return format_marker_distance_0063e5c0(distance, host.nautical_miles_00f88988());
+}
+
 std::int32_t device_class_icon_index_0065ea30(std::string_view name) noexcept {
     const auto lower = [](char c) { return c >= 'A' && c <= 'Z' ? static_cast<char>(c + 32) : c; };
     for (const DeviceClassIcon& entry : kDeviceClassIcons) {

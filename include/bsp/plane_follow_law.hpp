@@ -315,6 +315,15 @@ PlaneFollowPhaseA plane_follow_phase_a_009c0251(
 // chord midpoint m = c + (r*r/d) u and b = h (-u.z, u.x), h = r sqrt(d*d -
 // r*r) / d, u = (q - c) / d; 004F4430 writes out0 = m + b, out1 = m - b.
 // False, outs untouched, unless r < d (004F3887).  xz pairs.
+//
+// 004F3882 FLD r / 004F3885 FCOMIP ST0(r),ST1(d) / 004F3887 JC: carry is set
+// for r < d AND for unordered, so the image also proceeds (NaN outs, true)
+// when r is NaN.  d is never NaN (a NaN d2 takes 004F385E JBE to d = 0).  OFF
+// keeps the live decline; ON is the image's unordered arm.  Live paths:
+// GameUnitsHost::motion_step_00825f20 (the 009FBB20 circle steer) and
+// GameUnitsHost -> plane_follow_geometry_009bfee0 (009C1448 turn circle),
+// both into circle_tangent_points_004f4840.
+inline constexpr bool kCircleTangentUnorderedCc13Bound = false;
 bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
                                     float out0[2], float out1[2]) noexcept;
 

@@ -122,9 +122,24 @@ void force_recon_refresh_00807a50(ReconCountdown& countdown, ReconRefreshHost& h
 // ---------------------------------------------------------------------------
 // 008053C0, the lazy slot creation
 // ---------------------------------------------------------------------------
-// __fastcall void(int index): create the slot only when its table entry is
-// null. Returns true when this call created it, which is what the caller of a
-// reconstruction needs to know; the native routine returns nothing.
-bool ensure_recon_slot_008053c0(bool slot_present) noexcept;
+// __fastcall(ECX = index), plain RET, body 008053C0..00805423. Creates the
+// slot only when its table entry is null. EAX on exit is the table entry: the
+// existing slot (008053D9 load, JNZ straight to the epilogue) or the value just
+// stored at 0080540D, so the function is returned that.
+struct ReconSlotHost {
+    virtual ~ReconSlotHost() = default;
+    // [00F874BC + index*4], read at 008053D9 and written at 0080540D.
+    virtual void* slot(int index) = 0;
+    virtual void set_slot(int index, void* value) = 0;
+    // 008053E9 operator new 00BF681B(12A0h); null on failure.
+    virtual void* allocate_00bf681b(std::size_t bytes) = 0;
+    // 00805404 __thiscall 008050E0(ECX = block; index), returns the block.
+    virtual void* construct_slot_008050e0(void* block, int index) = 0;
+    // Unwind state 0 (008053F7) frees the block through 00BF65AC if the
+    // constructor throws (funclet 00C904B0).
+    virtual void free_00bf65ac(void* block) noexcept = 0;
+};
+
+void* ensure_recon_slot_008053c0(int index, ReconSlotHost& host);
 
 } // namespace bsp

@@ -83,6 +83,38 @@ inline float peer_rows_quality_00786010(const PeerRows& rows, int index) noexcep
 // is sent. Returns the number of probes. A NaN accumulator sends none.
 int conn_test_probe_step_00786150(float& accum, float quality, float dt) noexcept;
 
+// The 1Ch-byte MT_CONNTEST message 00786150 builds on its stack (stream 1 at
+// [ESP+14h], stream 2 at [ESP+30h]): 0075B430(0Fh) fills +00h..+17h, then
+// +00h = 00D02FBC (vtable), +04h = the stream flag, word +18h = the size.
+struct ConnTestMessage {
+    std::uint8_t bytes[0x1C]{};
+};
+inline constexpr std::uint32_t kConnTestMessageType = 0x0F;        // 007861D3 PUSH 0Fh
+inline constexpr std::uint32_t kConnTestMessageVtable = 0x00D02FBC; // 007861A3 MOV EBX
+inline constexpr std::uint16_t kConnTestLargeSize = 0x4B;          // 007861EF
+inline constexpr std::uint16_t kConnTestSmallSize = 0x8C;          // 00786273
+
+struct ConnTestProbeHost {
+    virtual ~ConnTestProbeHost() = default;
+    // [row.peer + D50h] != 0 (0078617F), the peer's record.
+    virtual bool peer_has_record(std::uint32_t peer) = 0;
+    // 0075B430, __thiscall(ECX = message; type), RET 4.
+    virtual void session_message_construct_base_0075b430(ConnTestMessage& message,
+                                                         std::uint32_t type) = 0;
+    // 00783DC0, __thiscall(ECX = [[00E188A8] + 2078h]; peer, &message), RET 8.
+    // The owner is re-read before every send (007861F6, 0078627A).
+    virtual void session_send_00783dc0(std::uint32_t peer, ConnTestMessage& message) = 0;
+};
+
+// 00786150 whole, __thiscall(ECX = row; float dt) RET 4, body
+// 00786150..007862BB. Gates on +10h, +00h and the peer record; product =
+// (float)(+0Ch * dt) (0078618C..007861AB) is shared by both streams; each
+// stream runs conn_test_probe_step_00786150's rule and sends one message per
+// subtraction, the subtraction stored before the message is built. The
+// message is never destroyed on the normal path (EH state 0 around the send,
+// then -1 at 00786222/007862A3, no destructor call). Returns the probes sent.
+int conn_test_send_probes_00786150(PeerRow& row, float dt, ConnTestProbeHost& host);
+
 // ---------------------------------------------------------------------------
 // MNetwork packet header: tick unwrap (007858C0)
 // ---------------------------------------------------------------------------
