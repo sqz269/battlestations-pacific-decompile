@@ -122,6 +122,22 @@ inline constexpr std::uint32_t kAiCommandVtableNotifyEntity = 0x24u;
 
 const char* ai_command_type_name(AiCommandType type) noexcept;
 
+// The twelve concrete vtable +4h leaves. Native ABI: __thiscall (ECX =
+// command, unused), no stack arguments, RET, EAX = the type id. These portable
+// bodies expose the result rather than a replacement native calling convention.
+AiCommandType ai_command_non_control_get_type_00a0fce0() noexcept;
+AiCommandType ai_command_selling_get_type_00a0fd30() noexcept;
+AiCommandType ai_command_idle_get_type_00a0fd80() noexcept;
+AiCommandType ai_command_defend_position_get_type_00a0fe90() noexcept;
+AiCommandType ai_command_retreat_get_type_00a0fef0() noexcept;
+AiCommandType ai_command_move_to_get_type_00a10270() noexcept;
+AiCommandType ai_command_cautious_move_get_type_00a10310() noexcept;
+AiCommandType ai_command_regrouping_move_get_type_00a103a0() noexcept;
+AiCommandType ai_command_patrol_to_get_type_00a10470() noexcept;
+AiCommandType ai_command_move_to_attack_get_type_00a108c0() noexcept;
+AiCommandType ai_command_cautious_attack_get_type_00a109f0() noexcept;
+AiCommandType ai_command_close_attack_get_type_00a10b10() noexcept;
+
 // The IsType bodies. Each concrete class answers its own id and, for the three
 // families, the abstract base id as well; NonControl, Idle and Selling answer
 // only themselves.

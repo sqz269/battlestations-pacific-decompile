@@ -1,0 +1,288 @@
+{
+  "packet": "oct24-poolB-tail",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source_validation": "Exported listings and live verified function bounds",
+  "build": "Pending primary integrator build after batch merge",
+  "tests": "No new tests; no game run or host wiring",
+  "abi_compatible": false,
+  "game_validated": false,
+  "native_differential_tested": false,
+  "routines": [
+    {
+      "address": "00a06840",
+      "name": "AiDebug_ParseClassEquipmentList",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00a072d0",
+      "name": "AiDebug_ParseClassList",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00a0fce0",
+      "name": "bsp::ai_command_non_control_get_type_00a0fce0",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,0; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a0fd30",
+      "name": "bsp::ai_command_selling_get_type_00a0fd30",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,14; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a0fd80",
+      "name": "bsp::ai_command_idle_get_type_00a0fd80",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,1; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a0fe90",
+      "name": "bsp::ai_command_defend_position_get_type_00a0fe90",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,11; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a0fef0",
+      "name": "bsp::ai_command_retreat_get_type_00a0fef0",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,13; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a10270",
+      "name": "bsp::ai_command_move_to_get_type_00a10270",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,3; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a10310",
+      "name": "bsp::ai_command_cautious_move_get_type_00a10310",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,4; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a103a0",
+      "name": "bsp::ai_command_regrouping_move_get_type_00a103a0",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,5; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a10470",
+      "name": "bsp::ai_command_patrol_to_get_type_00a10470",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,12; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a108c0",
+      "name": "bsp::ai_command_move_to_attack_get_type_00a108c0",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,7; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a109f0",
+      "name": "bsp::ai_command_cautious_attack_get_type_00a109f0",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,8; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a10b10",
+      "name": "bsp::ai_command_close_attack_get_type_00a10b10",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/ai_planners.cpp",
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "evidence": "XOR EAX,EAX or MOV EAX,9; RET; complete exported listing read",
+      "uncertainty": "Portable C++ result interface; no native ABI or gameplay claim."
+    },
+    {
+      "address": "00a2cdd0",
+      "name": "AiDebug_GroupTargetText",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00a2d580",
+      "name": "AiDebug_GroupMembersOverlay",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00a2f6f0",
+      "name": "AiGroup_DescribeDebug",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00a33020",
+      "name": "Unknown_VtD232C4_Destruct",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00a37130",
+      "name": "Unknown_VtD232C4_Construct",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00a3d060",
+      "name": "NetworkConsoleSend_Construct",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00a475a0",
+      "name": "XLiveSystem_Destruct",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00a9df40",
+      "name": "GuiListbox_Construct",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00abe640",
+      "name": "GuiSection_GetFirstVertexStream",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00b6a390",
+      "name": "LuaObject_WriteLuaSourceText",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00bbf8a0",
+      "name": "SkyBox_Construct",
+      "outcome": "open",
+      "coverage": "not yet reviewed",
+      "blocker": "Scheduled in later bounded tail packet"
+    },
+    {
+      "address": "00bea9e0",
+      "name": "bsp::pc_storage_state_is_zero_or_one_00bea9e0",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/storage_backend.cpp",
+      "original_abi": "ECX manager; RET; EAX bool",
+      "evidence": "MOV EAX,[ECX+8]; zero/one branches return 1, other values return 0",
+      "uncertainty": "Valid domain: kind < 3 and formatted path fits 256 bytes; allocation is a native host binding."
+    },
+    {
+      "address": "00beaa70",
+      "name": "bsp::pc_storage_capability_true_00beaa70",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/storage_backend.cpp",
+      "original_abi": "ECX manager unused; RET; AL bool",
+      "evidence": "MOV AL,1; RET; upper EAX bits are unspecified",
+      "uncertainty": "Valid domain: kind < 3 and formatted path fits 256 bytes; allocation is a native host binding."
+    },
+    {
+      "address": "00beab50",
+      "name": "bsp::pc_storage_create_slot_directory_00beab50",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/storage_backend.cpp",
+      "original_abi": "ECX manager; name*; RET 4",
+      "evidence": "null string data maps to empty; sprintf root/name; ignored CreateDirectoryA result",
+      "uncertainty": "Valid domain: kind < 3 and formatted path fits 256 bytes; allocation is a native host binding."
+    },
+    {
+      "address": "00beaba0",
+      "name": "bsp::pc_storage_read_file_00beaba0",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/storage_backend.cpp",
+      "original_abi": "ECX manager; name*,kind,buffer-out**,size-out*; RET 10h",
+      "evidence": "low-DWORD GetFileSizeEx result; allocation, ReadFile BOOL, close; preserve size-failure leak and ignored byte count",
+      "uncertainty": "Valid domain: kind < 3 and formatted path fits 256 bytes; allocation is a native host binding."
+    },
+    {
+      "address": "00beacb0",
+      "name": "bsp::pc_storage_write_file_00beacb0",
+      "outcome": "reconstructed",
+      "coverage": "complete",
+      "source": "src/storage_backend.cpp",
+      "original_abi": "ECX manager; name*,kind,buffer*,size; RET 10h",
+      "evidence": "CreateFileA WRITE/SHARE_WRITE/CREATE_ALWAYS; WriteFile BOOL then close; ignored byte count",
+      "uncertainty": "Valid domain: kind < 3 and formatted path fits 256 bytes; allocation is a native host binding."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00beac2e",
+      "native": "00bf55be",
+      "containing_function": "00beaba0",
+      "contract": "unread allocation binding"
+    },
+    {
+      "address": "00beac72",
+      "native": "00bf6989",
+      "containing_function": "00beaba0",
+      "contract": "unread free binding"
+    }
+  ]
+}

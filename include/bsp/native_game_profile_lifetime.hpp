@@ -4,6 +4,10 @@
 #include <cstdint>
 
 namespace bsp {
+// 007F9020: ECX=uninitialized destination, source on stack, RET4/EAX=dest.
+// Actual1Ch record: THREE 8-byte pooled strings followed by one DWORD.
+void* copy_construct_profile_bonus_record_007f9020(void* destination, void* source,
+    NativeStringRawPoolContext& strings);
 struct NativeGameProfileLifetimeContext;
 struct NativeGameProfileLifetimeCalls : NativeProfileCollectionCalls {
     virtual ~NativeGameProfileLifetimeCalls()=default;

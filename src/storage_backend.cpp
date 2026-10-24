@@ -4,6 +4,7 @@
 #define NOMINMAX
 #include <windows.h>
 #include <array>
+#include <cstdio>
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -68,6 +69,77 @@ bool decode_blocks(std::vector<std::uint8_t>& bytes) {
     return true;
 }
 } // namespace
+
+// 00BEA9E0: MOV EAX,[ECX+8]; accept zero or one, otherwise XOR EAX,EAX; RET.
+// Complete leaf; native ECX manager projection and return ABI are in the header.
+bool pc_storage_state_is_zero_or_one_00bea9e0(const PcStorageNativeFileState& state) noexcept {
+    return state.state_08 == 0 || state.state_08 == 1;
+}
+
+// 00BEAA70: MOV AL,1; RET. EAX's upper bits are unspecified in the native body.
+bool pc_storage_capability_true_00beaa70() noexcept { return true; }
+
+// 00BEAB50, __thiscall ECX manager, RET 4. Complete normal body. The fixed
+// local path capacity and unchecked sprintf are original preconditions.
+void pc_storage_create_slot_directory_00beab50(PcStorageNativeFileState& state,
+                                              const char* name) {
+    char path_buffer[256];
+    std::sprintf(path_buffer, "%s\\%s", state.root_534 ? state.root_534 : "",
+                 name ? name : "");
+    CreateDirectoryA(path_buffer, nullptr);
+}
+
+// 00BEABA0, __thiscall ECX manager, RET 10h. Complete normal body from
+// 00BEABA0..00BEACA2. Preserve the original failure side effects: size remains
+// unchanged on open/size failure; error is only set, never cleared; the valid
+// file handle is not closed when GetFileSizeEx fails. File size high bits and
+// ReadFile's byte count are ignored. Allocator internals remain bound calls.
+void pc_storage_read_file_00beaba0(PcStorageNativeFileState& state, const char* name,
+    std::uint32_t kind, void*& buffer, std::uint32_t& size, PcStorageNativeFileMemory& memory) {
+    char path_buffer[256];
+    std::sprintf(path_buffer, "%s\\%s\\%s", state.root_534 ? state.root_534 : "",
+                 name ? name : "", kinds[kind]);
+    HANDLE file = CreateFileA(path_buffer, GENERIC_READ, FILE_SHARE_READ, nullptr,
+                              OPEN_EXISTING, 0, nullptr);
+    if (file != INVALID_HANDLE_VALUE) {
+        LARGE_INTEGER file_size;
+        if (GetFileSizeEx(file, &file_size)) {
+            size = file_size.LowPart;
+            buffer = memory.call_00bf55be(size); // native CALL at 00BEAC2E
+            DWORD transferred = 0;
+            const BOOL read_ok = ReadFile(file, buffer, size, &transferred, nullptr);
+            CloseHandle(file);
+            if (!read_ok) {
+                state.error_20 = 1;
+                if (buffer) {
+                    memory.call_00bf6989(buffer); // native CALL at 00BEAC72
+                    buffer = nullptr;
+                }
+            }
+            return;
+        }
+    }
+    state.error_20 = 1;
+    buffer = nullptr;
+}
+
+// 00BEACB0, __thiscall ECX manager, RET 10h. Complete normal body; Win32
+// BOOL controls the error byte and the transferred byte count is ignored.
+void pc_storage_write_file_00beacb0(PcStorageNativeFileState& state, const char* name,
+    std::uint32_t kind, const void* buffer, std::uint32_t size) {
+    char path_buffer[256];
+    std::sprintf(path_buffer, "%s\\%s\\%s", state.root_534 ? state.root_534 : "",
+                 name ? name : "", kinds[kind]);
+    HANDLE file = CreateFileA(path_buffer, GENERIC_WRITE, FILE_SHARE_WRITE, nullptr,
+                              CREATE_ALWAYS, 0, nullptr);
+    if (file != INVALID_HANDLE_VALUE) {
+        DWORD transferred;
+        const BOOL write_ok = WriteFile(file, buffer, size, &transferred, nullptr);
+        CloseHandle(file);
+        if (write_ok) return;
+    }
+    state.error_20 = 1;
+}
 
 PcStorageBackend::PcStorageBackend(std::string root, NativeStringStorage& strings,
     PcStorageLuaHost& lua, ArchiveCompressionState& compression)

@@ -2,6 +2,7 @@
 // native routine over an injected host; the host methods are the native call
 // sites. Nothing here allocates, links or copies real memory.
 #include "bsp/unit_instance_layout.hpp"
+#include <cstring>
 
 namespace bsp {
 
@@ -235,6 +236,64 @@ bool unit_class_uses_vehicle_base(std::uint32_t instance_ctor) noexcept
     default:
         return false;
     }
+}
+
+namespace {
+void write_unit_constructor_u32(std::uint8_t* self, std::size_t offset, std::uint32_t value) {
+    std::memcpy(self + offset, &value, sizeof(value));
+}
+}
+
+// 00951B60, full normal-path body. __thiscall ECX=this, stack arg, EAX=this,
+// RET 4 at 00951BCC. Listing 00951B6A..00951BBF gives the base call, eight
+// vptr writes and two tags. The base call's internals remain a host boundary.
+std::uint8_t* construct_dive_bomber_unit_00951b60(PlaneUnitConstructorHost& host, std::uint8_t* self, std::uint32_t arg) {
+    host.call_007cfd20(self, arg, 0);
+    write_unit_constructor_u32(self, 0x000, 0x00d19d28);
+    write_unit_constructor_u32(self, 0x010, 0x00d19d10);
+    write_unit_constructor_u32(self, 0x024, 0x00d19d08);
+    write_unit_constructor_u32(self, 0x170, 0x00d19d04);
+    write_unit_constructor_u32(self, 0x1e4, 0x00d19cfc);
+    write_unit_constructor_u32(self, 0x310, 0x00d19ce4);
+    write_unit_constructor_u32(self, 0x38c, 0x00d19ce0);
+    write_unit_constructor_u32(self, 0x72c, 0x00d19ca0);
+    write_unit_constructor_u32(self, 0x0c4, 0x12);
+    write_unit_constructor_u32(self, 0xaac, 8);
+    return self;
+}
+
+// 00951C40: same __thiscall/RET 4 ABI (00951CAC), complete sequence at
+// 00951C4A..00951C9F. Base semantics and descriptive field meanings are provisional.
+std::uint8_t* construct_torpedo_bomber_unit_00951c40(PlaneUnitConstructorHost& host, std::uint8_t* self, std::uint32_t arg) {
+    host.call_007cfd20(self, arg, 0);
+    write_unit_constructor_u32(self, 0x000, 0x00d1a000);
+    write_unit_constructor_u32(self, 0x010, 0x00d19fe8);
+    write_unit_constructor_u32(self, 0x024, 0x00d19fe0);
+    write_unit_constructor_u32(self, 0x170, 0x00d19fdc);
+    write_unit_constructor_u32(self, 0x1e4, 0x00d19fd4);
+    write_unit_constructor_u32(self, 0x310, 0x00d19fbc);
+    write_unit_constructor_u32(self, 0x38c, 0x00d19fb8);
+    write_unit_constructor_u32(self, 0x72c, 0x00d19f78);
+    write_unit_constructor_u32(self, 0x0c4, 0x11);
+    write_unit_constructor_u32(self, 0xaac, 9);
+    return self;
+}
+
+// 00951D20: same __thiscall/RET 4 ABI (00951D8C), complete sequence at
+// 00951D2A..00951D7F. Base semantics and descriptive field meanings are provisional.
+std::uint8_t* construct_kamikaze_unit_00951d20(PlaneUnitConstructorHost& host, std::uint8_t* self, std::uint32_t arg) {
+    host.call_007cfd20(self, arg, 0);
+    write_unit_constructor_u32(self, 0x000, 0x00d1a2d8);
+    write_unit_constructor_u32(self, 0x010, 0x00d1a2c0);
+    write_unit_constructor_u32(self, 0x024, 0x00d1a2b8);
+    write_unit_constructor_u32(self, 0x170, 0x00d1a2b4);
+    write_unit_constructor_u32(self, 0x1e4, 0x00d1a2ac);
+    write_unit_constructor_u32(self, 0x310, 0x00d1a294);
+    write_unit_constructor_u32(self, 0x38c, 0x00d1a290);
+    write_unit_constructor_u32(self, 0x72c, 0x00d1a250);
+    write_unit_constructor_u32(self, 0x0c4, 0x17);
+    write_unit_constructor_u32(self, 0xaac, 0xc);
+    return self;
 }
 
 } // namespace bsp
