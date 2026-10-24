@@ -3,6 +3,7 @@
 // store the image makes is a float cast here.
 #include "bsp/engine_seg1_cc13.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/native_vector2_math.hpp"
 
 #include <cstdint>
@@ -23,8 +24,13 @@ float x87_reload(float value) noexcept {
 }  // namespace
 
 float math_lerp_00414130(const float* a, const float* b, const float* t) noexcept {
+    // cc13-fixture8: the only caller (0059A39C, BSP_MainMenuScreen_Update) runs on the main
+    // thread, so FSUBP, FMULP and FADDP each round to 24 bits (docs/CC13_FPU_PRECISION.md).
+    using namespace bsp::cc13x87;
     const float spilled_a = *a;
-    return static_cast<float>((static_cast<double>(*b) - spilled_a) * *t + spilled_a);
+    const double d = x87_sub24(*b, spilled_a);  // 00414141 FSUBP ST2: b - a
+    const double p = x87_mul24(d, *t);          // 00414145 FMULP ST2
+    return static_cast<float>(x87_add24(p, spilled_a));  // 00414147 FADDP, 00414149 FSTP
 }
 
 float* vector3_assign_00414220(float* destination, const float* source) noexcept {
