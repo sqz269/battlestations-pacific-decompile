@@ -47,8 +47,13 @@ public:
 
     const std::vector<GameNativeMissionDeviceBinding>& bindings() const noexcept;
     const GameNativeMissionDeviceCensus& census() const noexcept;
-    // Call once before each actual camera/pose update. A changed source census
-    // or identity requires explicit asset/owner rebinding, never silent reuse.
+    // Before BeginScene only: accept appended rows after verifying every old
+    // row/binding is unchanged. True means the gun census grew, possibly only
+    // by duplicate physical-platform rows. Reborrow binding entries afterward
+    // and load missing sparse keys before starting the native frame.
+    bool refresh_source();
+    // Strict during a frame: no source growth or identity change is admitted.
+    // Call once before each actual camera/pose update.
     void validate_source() const;
     // Read a fresh world matrix for the ORIGINAL asset hierarchy index. Caller
     // synchronously publishes it to genuine model/palette nodes. False means

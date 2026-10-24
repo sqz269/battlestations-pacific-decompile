@@ -112,12 +112,39 @@ pose, never an identity or origin fallback.
 
 The adapter borrows the same units/gunnery hosts until native visual retirement.
 Source queries and simulation run on their existing single application thread.
-A replaced host, changed gun census, changed row identity, equipment/Mesh change
-or changed authored hierarchy requires explicit asset/owner rebinding and fails
-validation. Dynamic asset replacement/spawn integration is not supplied here.
+A replaced host, changed existing row identity, equipment/Mesh change or changed
+authored hierarchy requires explicit asset/owner rebinding and fails validation.
+Append-only gun growth is accepted by the pre-frame refresh described below;
+per-camera reads continue to reject an unrefreshed census change. Dynamic
+replacement of an existing asset/physical platform is not supplied here.
 The adapter owns no native references and must be retired before its source
 host disappears. The native model/scene/command graph retains its existing
 owner/queue rules and sole BeginScene/Present bracket.
+
+## Append-only runtime source growth
+
+`bool refresh_source()` is a metadata-only operation for the primary's safe
+pre-BeginScene loading boundary. It requires the same borrowed units/gunnery
+identities, rejects shrink, and preserves every existing gun row and device
+binding. With an unchanged row count it runs strict validation and returns false.
+
+For growth it constructs fresh temporary metadata with the same physical-key
+deduplication and source-provider checks. It verifies the old row-to-binding
+prefix and each old binding's gun index, sparse render key, unit/platform key,
+device class, Mesh and hierarchy count. Only after all reads, allocations and
+checks succeed does it swap the new metadata into place. Rejected growth leaves
+the adapter's previous metadata intact. No pose or game object is copied or
+written. Appending a duplicate row can increase gun count while preserving the
+existing physical binding and first-gun sparse key.
+
+True means the gun census grew. The caller must reborrow binding entries,
+load any missing nonempty sparse device keys alongside appended units, and
+attach/update their genuine native nodes before starting the frame. Old native
+owners are unaffected because their identity/key/path metadata must match.
+`census()` then exposes the accepted counts for the primary's loading log.
+Do not refresh assets during an open or retained native frame; finish that
+frame first. `validate_source()` and `current_node_world()` remain strict during
+camera/pose work and supply no origin, identity or last-shot fallback.
 
 ## Verification boundary
 
