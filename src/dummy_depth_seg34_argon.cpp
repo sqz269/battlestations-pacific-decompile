@@ -546,45 +546,33 @@ void OwnedPtrWithDefault_Assign_006fbc20(void* self, void* new_ptr) {
 // [0x006fbce0] BSP_ElevatorPlatform_StartTravel
 // Original ABI: __thiscall (ECX = self, stack [ESP+4] = downward_flag, [ESP+8] = elapsed_time), RET 8.
 void ElevatorPlatform_StartTravel_006fbce0(void* self, std::uint8_t downward_flag, float elapsed_time) {
+    // cc13-fixture5: the main thread runs this at 24-bit precision, so every x87
+    // operation rounds to float (previously a double chain, and the constants were
+    // read through their image addresses).
+    constexpr float kMinTimeFraction_00ce65d0 = 0.4f;   // double 0.4000000059604645
+    constexpr float kMinRate_00d7a358 = 0.01f;          // double 0.009999999776482582
+    constexpr float kMinRateValue_00d7a238 = 0.01f;
     const float margin_1c = field_at<float>(self, 0x1c);
     const float depth_48 = field_at<float>(self, 0x48);
     const float speed_44 = field_at<float>(self, 0x44);
-    const float total_time = static_cast<float>(
-        (static_cast<double>(margin_1c) + static_cast<double>(margin_1c) + static_cast<double>(depth_48)) /
-        static_cast<double>(speed_44)
-    );
+    // 006FBCFA-006FBD13: ((m + m) + d) / s.
+    const float total_time = ((margin_1c + margin_1c) + depth_48) / speed_44;
 
+    // 006FBD16-006FBD30: 0 > e takes 0 (a NaN is kept).
     const float clamped_elapsed = (0.0f > elapsed_time) ? 0.0f : elapsed_time;
-    const float rem_time = static_cast<float>(
-        static_cast<double>(total_time) - static_cast<double>(clamped_elapsed)
-    );
-    const float min_time = static_cast<float>(
-        static_cast<double>(total_time) * (*reinterpret_cast<const double*>(0x00ce65d0))
-    );
-    const float denom_time = (min_time > rem_time) ? min_time : rem_time;
+    const float rem_time = total_time - clamped_elapsed;                    // 006FBD3B
+    const float min_time = total_time * kMinTimeFraction_00ce65d0;          // 006FBD43, exact product
+    const float denom_time = (min_time > rem_time) ? min_time : rem_time;   // 006FBD55
 
-    float travel_dist = 0.0f;
-    if (downward_flag != 0u) {
-        travel_dist = static_cast<float>(
-            static_cast<double>(margin_1c) + static_cast<double>(field_at<float>(self, 0x18))
-        );
-    } else {
-        travel_dist = static_cast<float>(
-            static_cast<double>(margin_1c) + static_cast<double>(depth_48) -
-            static_cast<double>(field_at<float>(self, 0x18))
-        );
-    }
+    // 006FBD69-006FBD85: down m + h, up (m + d) - h.
+    const float height_18 = field_at<float>(self, 0x18);
+    const float travel_dist = downward_flag != 0u ? margin_1c + height_18
+                                                  : (margin_1c + depth_48) - height_18;
 
-    const float nonneg_dist = (0.0f > travel_dist) ? 0.0f : travel_dist;
-    const float rate = static_cast<float>(
-        (static_cast<double>(nonneg_dist) / static_cast<double>(denom_time)) /
-        static_cast<double>(speed_44)
-    );
-    if (*reinterpret_cast<const double*>(0x00d7a358) > static_cast<double>(rate)) {
-        field_at<float>(self, 0x4c) = *reinterpret_cast<const float*>(0x00d7a238);
-    } else {
-        field_at<float>(self, 0x4c) = rate;
-    }
+    const float nonneg_dist = (0.0f > travel_dist) ? 0.0f : travel_dist;   // 006FBD93 JA
+    const float rate = (nonneg_dist / denom_time) / speed_44;              // 006FBDA9-006FBDAC
+    // 006FBDB6: the double 0.01f > rate (FCOMIP / JBE, so a NaN rate is stored).
+    field_at<float>(self, 0x4c) = kMinRate_00d7a358 > rate ? kMinRateValue_00d7a238 : rate;
 }
 
 // [0x006fbf00] BSP_ElevatorPlatform_ReadState

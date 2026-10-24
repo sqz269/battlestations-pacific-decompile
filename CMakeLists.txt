@@ -322,6 +322,7 @@ if(BUILD_TESTING)
     # cc13 leaf reconstructions against their original bytes (tools/verify_cc13_leaf_reference.py).
     add_executable(bsp_cc13_leaf_fixture_tests tests/cc13_leaf_fixture_tests.cpp src/band_0040_cc13.cpp
                    src/band_0045_cc13.cpp src/band_0067_cc13.cpp src/band_0090_cc13.cpp
+                   src/dummy_depth_seg34_argon.cpp src/director_geommesh_seg38_39_argon.cpp  # cc13-fixture5
                    src/band_0060_cc13.cpp)  # band_0060: ingame_gui_cc13 (cc13-trivialslots cases)
     target_include_directories(bsp_cc13_leaf_fixture_tests PRIVATE local)
     target_link_libraries(bsp_cc13_leaf_fixture_tests PRIVATE bsp_core)

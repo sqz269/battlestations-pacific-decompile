@@ -141,10 +141,15 @@ std::uint32_t hash_upper_case_0043b700(std::uint32_t length, const char* data) {
 
 float time_of_day_hours_004439b0(std::int32_t hours, std::int32_t minutes,
     std::int32_t seconds, std::int32_t milliseconds) {
-    const double sum = ((static_cast<double>(minutes) / kMinutesPerHour + static_cast<double>(hours))
-        + static_cast<double>(seconds) / kSecondsPerHour)
-        + static_cast<double>(milliseconds) / kMillisecondsPerHour;
-    float value = static_cast<float>(sum);                 // FSTP float [ECX+4]
+    // cc13-fixture5: Lua's SetDayTime runs on the main thread at 24-bit precision, so
+    // each FDIV / FIADD / FADDP rounds to float (the double sum differed from the
+    // bytes on 1362 of 4000 inputs).
+    auto to_float = [](double v) { return static_cast<float>(v); };
+    const float m = to_float(static_cast<double>(minutes) / kMinutesPerHour);       // 004439B4
+    const float mh = to_float(static_cast<double>(m) + static_cast<double>(hours)); // 004439BA FIADD
+    const float s = to_float(static_cast<double>(seconds) / kSecondsPerHour);       // 004439C2
+    const float ms = to_float(static_cast<double>(milliseconds) / kMillisecondsPerHour);  // 004439CE
+    float value = (mh + s) + ms;                           // 004439C8, 004439D4; FSTP float [ECX+4]
     if (0.0f > value) {
         do value = static_cast<float>(static_cast<double>(value) + kHoursPerDay);
         while (0.0f > value);                              // COMISS 0 > value

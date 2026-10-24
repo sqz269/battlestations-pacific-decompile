@@ -96,6 +96,26 @@ CODE = {
     0xc34cf0: 0x272,  # expand node 3x4 matrices to 4x4 (register ABI)
     0xc37f60: 0xcd,   # body add force at point
     0xc43ea0: 0x15c,  # interpolate body transform
+    # cc13-fixture5: game-logic float leaves (00438B10, a callee of 009B94E0, is above).
+    0xbd4bf0: 0x131,  # matrix4x4 equals
+    0x9fa510: 0x106,  # world edge overrun
+    0x6fbce0: 0x106,  # elevator platform start travel
+    0x78faf0: 0xdf,   # movie camera approach offset
+    0x78fcf0: 0x76,   # movie camera ease in-out quad
+    0x80e000: 0xed,   # unit AI order slot step
+    0x4f3030: 0x59,   # segment lerp
+    0x4439b0: 0x79,   # time of day hours
+    0x6e2490: 0x4e,   # projectile shot speed
+    0x681f40: 0x7a,   # game near world edge
+    0x59c9b0: 0x7a,   # world point beyond map margin
+    0x4f40c0: 0x68,   # is left turn
+    0x4f2fd0: 0x57,   # circle contains point
+    0x9b94e0: 0xa4,   # split-S roll step (calls 00438B10)
+    0x9b9680: 0xb7,   # maneuver roll completed
+    0x786030: 0xea,   # average peer quality
+    0x815440: 0xd1,   # build unit order record
+    0x7b9620: 0x98,   # plane altitude sink predicate
+    0x727c30: 0xf9,   # index of readiest barrel
 }
 # Tail-jump targets replaced by MOV EAX,ECX; RET, so a fixture reads the ECX a thunk passes on.
 TAIL_STUBS = (0x6833f0, 0x4f71d0)
@@ -114,6 +134,12 @@ DATA = {
     0xd61cc0: 0x48,                # vertex element type sizes (18 dwords)
     # cc13-fixture3 constants: the double -1.0 at 00D7A250 and the double 1e-7 at 00D7A298.
     0xd7a250: 8, 0xd7a298: 8,
+    # cc13-fixture5 constants (00D7A264 lies inside the 00D7A260 range above).
+    0xce65d0: 8, 0xd7a358: 8, 0xd045f0: 8, 0xce3938: 8, 0xce3d68: 8, 0xce3d70: 8,
+    0xce4798: 8, 0xce4790: 8, 0xcf48a0: 8, 0xd03dd0: 8, 0xd20330: 8, 0xd7a258: 8,
+    0xce3d40: 8, 0xce3dc0: 8,
+    0xd7a238: 4, 0xce3800: 4, 0xce3804: 4, 0xce4788: 4, 0xce398c: 4, 0xce3958: 4,
+    0xce7d7c: 4, 0xce38b8: 4, 0xce3854: 4,
 }
 SQRT = 0xbf7030
 SQRT_STUB = bytes([0xd9, 0xfa, 0xc3])
