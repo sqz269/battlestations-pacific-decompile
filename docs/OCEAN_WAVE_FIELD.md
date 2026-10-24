@@ -4151,3 +4151,68 @@ Variants (`local\p26_mkos.py`, all on the tree build of 14ae38b93, ref, 36000 fr
 - Next: find why the live pitch fails to follow `cmd` below q of about 1.5 on the carrier final. Candidates are the
   5o direction-hold steer with a deck target, a stall or altitude protection, or the deck-height reference. Read
   game_hosts_units.cpp around 36540-36640 and the 009B1F1D begin steer. Pair any fix on `p26_os_a`.
+
+## 119. Carrier-final float on USNOS: comparison with an airfield final, and handoff (cc9-physics26, 2026-10-24)
+
+Static, from two logs: `local\main_osa.log` (USNOS, plan `p26_os_a`, Enterprise_sqn01 final 1555-1566 s, then
+abort 64C->5B8) and cc9-party1's `local\pt1_off_na_b06.log` (Airfield_sqn06 final 975-985 s, 5D8->5F8->620
+success). Airfield3 in USNOS is not a usable reference: it lands 359 planes but logs no `land final trace` line, so
+it does not fly the 5D8/5F8 final.
+
+| | Airfield_sqn06 (lands) | Enterprise_sqn01 (floats) |
+|---|---|---|
+| 5B8 circle speed before the final | 97.8 m/s, mode 3 | 133.3 m/s, mode 3 |
+| `land begin trace` at A8 ~830 | spd 69.0, `fast=0`, Y 181.9, H 79.7 | spd 100.6, `fast=1`, Y 168.8, H 80.3 |
+| first `land final flight` | spd ~46 vs spd_cmd ~40, q 1.31 | spd 98.0 vs spd_cmd 46.5, q 3.11 |
+| throttle / air brake on the airborne final | thr 0.00-0.28, brk 0.000 throughout | thr 0.000, brk 0.197 from 1556 s to 1563 s, then 0.118, 0.047, 0.039 |
+| live pitch vs `cmd` | tracks within 0.003 (-0.229 vs -0.227) at q 1.02-1.31 | tracks to 1557 s (-0.253 vs -0.245); then -0.190/-0.236 (q 1.68), -0.101/-0.251, -0.043/-0.288, -0.023/-0.344, -0.014/-0.398, +0.030/-0.553 (q 1.04) |
+| vy | about -8 steady | -17.5 at 1557 s, then -10.4, -5.3, -2.1, -1.0, -0.5 |
+| outcome | Y 116 -> 35 over A8 555 -> 199, success | Y levels at about 80 (79.4 at A8 211); the abort trace puts it 77 m above the deck |
+
+Findings:
+1. **The pitch-rate limit and low-q elevator authority are not the term by themselves.** The airfield final holds
+   pitch -0.23 to within 0.003 at q 1.02-1.08, lower than the carrier's q when it diverges (1.68). The divergence
+   starts while the carrier plane is still above spd_cmd and decelerating hard.
+2. **What differs is the entry energy and the air brake.** The carrier squadron flies its 5B8 standby circle at
+   133 m/s (vs 98 m/s), enters the final with `fast=1` at about 100 m/s, and the airborne final (009B1F2C-009B1FDF,
+   `plane_air_brake_mode_2d8 = 1`, game_hosts_units.cpp:36586) answers the 52 m/s overspeed with throttle 0 and the
+   air brake at 0.197 for seven seconds. The airfield plane never uses the brake. The live pitch leaves `cmd` exactly
+   in the braking window and climbs to level while aoa stays near 0, so the nose follows the flight path rather than
+   the command; once the plane is slow, the hold (A8 < 260) asks for -0.55 and gets +0.03.
+3. **The deck reference is a candidate, not shown.** H is 80.3 at the carrier's begin trace (the airfield's is 79.7
+   at the same A8 and falls to 63.7 by A8 677), and the plane levels at Y of about 80, which is far above a
+   carrier deck. I did not establish whether H, the 5o glide pitch P = -atan2(Y-H, m), or something else sets the
+   80 m level. The begin trace stops printing once the final starts, so H during the float is not logged.
+4. Item (3) of the lead's brief: this hinges on image terms that the host transcribes with labelled substitutions.
+   The question for cc13 is below. I did not read the image.
+
+**Question for cc13 (via the lead):**
+(a) In the airborne land-final half (009B1F2C-009B1FDF and the throttle/brake law 0099D300 with +2D8h = 1), does the
+image drive the air brake when the plane is over +2B4h, and does the air-brake channel (or the deceleration) feed a
+pitching moment or a pitch-command change in 007D8470 or the 007D88CB direction hold? The host shows the brake at
+0.197 and the nose rising to level with aoa about 0 while `cmd` goes from -0.24 to -0.55.
+(b) What height does 009B1420's H use for a deck target (approach+30h answering vtable[5Ch](9))? Is it the deck
+height of the moving ship, or a fixed or airfield-style reference? The host logs H = 80.3 for Enterprise at A8 833.
+(c) Is the 5B8 standby circle speed for a carrier holder (133 m/s here) image-faithful, or is the circle flown at
+the carrier's own speed or a fixed loiter speed?
+
+**Next step for the successor:**
+- Log H, P and the brake/pitch every tick from 1550-1570 s on `p26_os_a` (main_osa reproduces it at 1555 s;
+  Enterprise is stopped at (14995, -12993) from 1400 s). Add an `H=` field to `land final trace`.
+- Once cc13 answers, put the indicated term behind an OFF switch and pair it on `p26_os_a` (ref env). Success
+  means a `land final trace` with Y below 30 near the deck and a 620 state for Enterprise_sqn01/02/37, and
+  `releases`/`landed` above 0 on Enterprise's deck line.
+- A cheap discriminator before cc13 answers: a temporary build that holds the brake at 0 on the airborne final.
+  If the float goes away, the brake/pitch coupling is the term; if Y still levels near 80, it is the H reference.
+  This is a diagnostic only, not a flip.
+
+**Lane handoff (cc9-physics26).** My commits: a12180f58 (atktgt flip, section 114), 691b19de2 (CHG06 airborne and
+altitude-draw flips, 115), 8d85ea786 and 29f1ab4f8 (sections 116-117), 5632272b4 (section 118), and this section.
+Open items:
+- JM08 phase 2 needs USTroopTransport 03 dead. It is with cc9-ships63 (section 117).
+- USNOS has no win yet. `p26_os_a` holds the HQ to 1675.51 s. The carrier finals above stop the squadrons landing.
+- The JM08 paratroopers are unreached.
+- `kReleaseTimerNotify0DhBound` is still OFF.
+Plans and logs are in this tree's local\: `p26_os_a/b/c.txt`, `p26_p01_a.txt`, `main_osa.log`, `main_osL.log`.
+
+Lease `p26-doc119` (this doc) is released with this section.
