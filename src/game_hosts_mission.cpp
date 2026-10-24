@@ -1059,9 +1059,9 @@ public:
     // 00414130 is ECX = a, EDX = b, [ESP+4] = t, returning (b - a) * t + a. The
     // caller passes ECX = this+1A8h, EDX -> 00CEFF04 and t -> 00D7A2F0, so the
     // offset moves a tenth of the way to -0.21 per frame: the header's `low`
-    // is the target and `high` the rate. Uncertainty: the body evaluates in
-    // double; this runs on the main thread, whose x87 precision is 24-bit, so
-    // the image rounds after each of the three operations (at most 1 ulp apart).
+    // is the target and `high` the rate. This runs on the main thread (24-bit x87
+    // precision); math_lerp_00414130 rounds each of the three operations to 24
+    // bits as the image does (cc13-fixture8, bit-exact in the leaf fixture).
     float blend_map_offset(float current, float low, float high) override {
         if (kMissionDetailOffsetLerpBound) {
             owner_.log.implemented("MainMenuUpdate::blend_map_offset", "00414130");

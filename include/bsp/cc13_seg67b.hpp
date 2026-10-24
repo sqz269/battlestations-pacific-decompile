@@ -979,6 +979,17 @@ void* pilot_bot_create_takeoff_task_009cff40(Cc13Seg67bHost& host, void* owner,
 // 009D5AE0 / 009D5B90: __thiscall(ECX = plan block), RET, AL.
 bool ship_ai_path_any_positive_side_ahead_009d5ae0(ShipAiPathPlanBlock& plan);
 bool ship_ai_path_any_negative_side_ahead_009d5b90(ShipAiPathPlanBlock& plan);
+// cc13-fixture8: the two walks decide an undecided node with their own inline copy of the
+// direction rule (009D5B29-009D5B56 / 009D5BD9-009D5C06), whose JC takes +1 when the two
+// route sums are unordered (a NaN cost, or +inf and -inf in one sum); the shared rule 009D9E6C
+// used by the host walk gives -1. OFF: the host keeps the shared rule. ON: the inline rule, so
+// an unordered pair picks link_plus. Live: game_hosts_ship_ai.cpp ShipAiApproachPoint arc
+// centre (009E47D3/009E47E4), under kShipAiArcCentrePlanTestCc13Bound. Only unordered sums
+// differ.
+inline constexpr bool kShipAiPathSideWalkNanCc13Bound = false;
+// The walks with the inline rule regardless of the switch (the fixture's ON arm).
+bool ship_ai_path_any_positive_side_ahead_image_009d5ae0(ShipAiPathPlanBlock& plan);
+bool ship_ai_path_any_negative_side_ahead_image_009d5b90(ShipAiPathPlanBlock& plan);
 // 009CA1A0 / 009CD1F0 / 009CFEE0 / 009D4DB0: __thiscall(ECX = task), RET.
 void bot_task_retreat_destruct_body_009ca1a0(Cc13Seg67bHost& host, void* task);
 void bot_task_strafe_destruct_body_009cd1f0(Cc13Seg67bHost& host, void* task);

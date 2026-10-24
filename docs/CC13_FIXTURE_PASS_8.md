@@ -32,12 +32,27 @@ main thread.
 | 0042C450 | `bsp::cc13_sweepA::camera_clamp_zoom_0042c450` | 00609BD0 | 3000/3000 | 3000/3000 |
 | 007B5BE0 | `bsp::cc13_seg47::unit_largest_extent_007b5be0` | 007B5F10, 009B5680, 009C4950, 009D0D90 | 3000/3000 | 3000/3000 |
 | 006EB870 | `bsp::cc13_seg33a::ratio_abs_dc_over_8c_006eb870` | none | 3000/3000 (remodelled) | 3000/3000 |
-| 009B93F0 | `bsp::bot_task_tight_turn_slot68_009b93f0` | vtable 00D205E0 slot 26 | 3000/3000 | 2972/3000 |
+| 009B93F0 | `bsp::bot_task_tight_turn_slot68_009b93f0` | vtable 00D205E0 slot 26 (no call site found; see below) | 3000/3000 | 2972/3000 |
 | 00B0A3F0 | `bsp::particle_emitters::tracer_bounding_sphere_00b0a3f0` | vtable 00D5E048 slot 9 | 1000/1000 | 1000/1000 |
 | 006EA530 | `bsp::cc13_seg33a::torpedo_class_scaled_e4_006ea530` | vtable 00CFA56C slot 7 | 3000/3000 | 3000/3000 |
 
 The 53-bit mismatches belong to routines that are modelled at 24-bit. They are informational
 only.
+
+009B93F0 is the one row whose 24-bit and 53-bit results differ for a reason other than a
+remodel, so its thread matters most. It is reachable only as slot 26 (+68h) of the tight-turn
+task vtable 00D205E0. The pull-up vtable 00D20568 has the same extra slot, 009B9140. No call site
+for that slot was found:
+
+- A capstone scan of `.text` for `CALL [reg+68h]`, and for `MOV reg,[reg+68h]` followed by
+  `CALL reg`, confirmed 14 sites.
+- None of them is in the bot-task segments (0099xxxx-009Fxxxx), and none acts on a task object.
+  The slot-only candidates `bsp.py callers` lists (00689510, 0071C1E0, 00721890, 00922F30,
+  00925F20 and the GUI and D3D9 sites) belong to other classes.
+
+So, as with the unreferenced 009C6220, the 24-bit decision rests on the family. The same vtable's
+slot 25 (009B93D0, the conditioned tick) and the other seg67 bot tasks run from the bot task
+update on the main-thread frame.
 
 ## Case notes
 
@@ -62,19 +77,56 @@ not behind a switch:
 
 The "before" counts come from the first probe run, whose input stream differed slightly.
 
-## Follow-up
+## Follow-up commit
 
-Seven more routines were probed in this pass and land in a second commit. 009A5390,
-006F22F0, 006F22B0, 00727D30 and 00729A40 were bit-exact, but they live in bsp_game files that
-the test target does not build yet. 009D5AE0 and 009D5B90 need a fix in
-`src/cc13_seg67b.cpp`, and that fix is live. The walks decide an undecided node with their own inline copy
-of the direction rule (009D5B06-009D5B56 and 009D5BB6-009D5C06). Its FCOMIP/JC gives +1 when the
-two route costs are unordered (a NaN). The shared rule 009D9E6C, which the C++ walk calls, gives -1
-there. The walk is live through `kShipAiArcCentrePlanTestCc13Bound` (ON). The follow-up puts the
-inline rule behind an OFF switch, `kShipAiPathSideWalkNanCc13Bound`, and adds the fixture cases.
+The second commit adds seven more routines:
+
+| Address | C++ | Caller evidence | 24-bit | 53-bit |
+|---|---|---|---|---|
+| 009A5390 | `bsp::depth_charge_turnto_give_up_009a5390` | 009A5870 | 3000/3000 | 3000/3000 |
+| 00727D30 | `bsp::band_0071_cc13::gun_any_barrel_ready_within_00727d30` | 00547A20, 009E9910, 009E9A50 | 3000/3000 | 3000/3000 |
+| 00729A40 | `bsp::band_0071_cc13::gun_any_barrel_timer_below_max_00729a40` | 00547480, 00547A20 | 3000/3000 | 3000/3000 |
+| 006F22F0 | `bsp::band_006b_cc13::math_max_float_int_006f22f0` | 0074AF50 | 3000/3000 | 3000/3000 |
+| 006F22B0 | `bsp::band_006b_cc13::math_min_float_int_006f22b0` | 0074AF50 | 3000/3000 | 3000/3000 |
+| 009D5AE0 | `bsp::ship_ai_path_any_positive_side_ahead_009d5ae0` | 009D5CF0, 009E46F0 | 2942/3000 pinned; ON 3000/3000 | 2942/3000 |
+| 009D5B90 | `bsp::ship_ai_path_any_negative_side_ahead_009d5b90` | 009D5CF0, 009E46F0 | 2939/3000 pinned; ON 3000/3000 | 2939/3000 |
+
+`src/depth_charge_task_cc13.cpp` and `src/band_0071_cc13.cpp` move from bsp_game to bsp_core in
+`cmake/startup.cmake`, so the test target links them without a `CMakeLists.txt` change. The
+layerfix commit had already moved `weapon_fall_time_007bcc80` into bsp_core, and fixture7 moved
+`band_006b_cc13.cpp` (006F22F0, 006F22B0).
+
+### Switch: kShipAiPathSideWalkNanCc13Bound (OFF)
+
+009D5AE0 and 009D5B90 decide an undecided node with their own inline copy of the direction rule
+(009D5B06-009D5B56 and 009D5BB6-009D5C06). That copy computes:
+
+- plus = (+50h + +38h) + plus->+3Ch, with each FADD rounded to 24 bits and the sum stored as float;
+- minus = (+4Ch + +34h) + minus->+3Ch, computed the same way;
+- then `FCOMIP` and `JC` give +1 when plus < minus **or the two are unordered**, and -1 otherwise.
+
+The C++ walk calls the shared rule 009D9E6C, which gives -1 for an unordered pair. In the fixture
+every OFF mismatch has either a NaN input (117 cases) or both +inf and -inf in one sum (2 cases,
+009D5B90). The walk is live: `game_hosts_ship_ai.cpp` reaches it for the arc centre
+(009E47D3/009E47E4) under `kShipAiArcCentrePlanTestCc13Bound`, which is ON.
+
+- OFF keeps the shared rule. The fixture pins its difference at 58/3000 and 61/3000.
+- ON uses the inline rule (`ship_ai_path_walk_inline_direction`). The `_image_` entry points
+  expose the ON arm as the "ON arm" cases, which are 3000/3000 at both precisions.
+- The pins read the switch (`kShipAiPathSideWalkNanCc13Bound ? 0 : 58`), so the test also passes
+  with it ON. `python tools/off_switch_on_build.py --names kShipAiPathSideWalkNanCc13Bound` builds
+  and tests clean.
+
+009D5930 (decide direction) carries the same unordered-cost uncertainty through
+`ship_ai_path_node_direction_009d9e6c`; see its comment at 009D9440. This switch does not cover
+that body.
 
 ## Status
 
-Promotion means the ledger row moves to `semantic_native_fixture_tested`. All 16 rows were
-promoted, three of them after a remodel. Every row now carries `cpp_symbol` and
-`abi_compatible: false`. Nothing here is game-validated.
+Promotion means the ledger row moves to `semantic_native_fixture_tested`.
+
+- The first commit promoted 16 rows, three of them after a remodel.
+- The follow-up promotes 009A5390, 00727D30, 00729A40, 006F22F0 and 006F22B0.
+- 009D5AE0 and 009D5B90 become `reconstructed_build_tested_off_switch`.
+
+Every row carries `cpp_symbol` and `abi_compatible: false`. Nothing here is game-validated.
