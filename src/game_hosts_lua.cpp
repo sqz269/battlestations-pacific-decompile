@@ -568,6 +568,10 @@ int binding_trampoline(lua_State* state) {
     const bool clear_forced_recon_row = kLuaClearForcedReconLevelBound
         && dispatch_row.address == 0x008aab90u;
     const bool crew_level_row = kLuaSetCrewLevelBound && dispatch_row.address == 0x00894f20u;
+    // Packet cc13-smbind: no switch, nothing in this process reads what they store.
+    const bool support_manager_bann_row = dispatch_row.address == 0x0088c750u;
+    const bool support_manager_permit_row = dispatch_row.address == 0x0088c8e0u;
+    const bool support_manager_enable_row = dispatch_row.address == 0x0088cbb0u;
     // Packet cc13-fix10.
     const bool proximity_trigger_row
         = kLuaProximityTriggersBound && dispatch_row.address == 0x008c9730u;
@@ -739,6 +743,7 @@ int binding_trampoline(lua_State* state) {
         || set_failure_row || get_failure_row || dead_meat_row
         || unit_selectable_row || entity_speed_row
         || clear_forced_recon_row || crew_level_row
+        || support_manager_bann_row || support_manager_permit_row || support_manager_enable_row
         || proximity_trigger_row || remove_trigger_row || ordnance_trigger_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
@@ -1096,6 +1101,14 @@ int binding_trampoline(lua_State* state) {
     if (crew_level_row) {
         if (!host->error_replay()) host->run_set_crew_level_00894f20(state, argc);
         return 0;
+    }
+    if (support_manager_bann_row || support_manager_permit_row) {
+        if (host->error_replay()) return 0;
+        return host->run_support_manager_set_banned_0088c750_0088c8e0(support_manager_bann_row);
+    }
+    if (support_manager_enable_row) {
+        if (host->error_replay()) return 0;
+        return host->run_support_manager_enable_0088cbb0(state, argc);
     }
     if (proximity_trigger_row) {
         if (!host->error_replay()) host->run_add_proximity_trigger_008c9730(state, argc);
@@ -9941,6 +9954,70 @@ int GameMissionLuaHost::run_set_crew_level_00894f20(lua_State* state, int argume
         "vtable[128h], packet cc13-fix18)", row != nullptr ? row->name.c_str() : "?", level,
         skill, written);
     log_.implemented("MissionLuaNative::SetCrewLevel", "00894f20");
+    return 0;
+}
+
+// Packet cc13-smbind. 0088C750 BannSupportmanager() and 0088C8E0 PermitSupportmanager(),
+// __cdecl bindings that read no argument and push nothing (00B66400). Both are
+// bsp::seg56_options_cc13::lua_bann/permit_support_manager (src/options_seg56_cc13.cpp),
+// whose Seg56Host this host does not implement. 0088C82E MOV CL,BL (EBX = 1, 0088C76F) /
+// 0088C9BE XOR CL,CL, then CALL 00A38DA0 (session_spawn_player_vehicles_00a38da0,
+// src/cc13_sweepC2.cpp): [00F8AB6A] = CL; 00652A50(CL) and 00652A40(CL) on the panel
+// ([00E198C4]+BCh); when banning, 0068B3F0 on the interface and, outside session mode 2
+// and only in effective game mode 4 (004BCA50), the player-slot refill. Then, when
+// [[00E188A8]+1FE4h] == 1, message D7h (0075B430, byte +18h = banned) goes out through
+// 0076A9F0. Host: the flag is stored in support_manager_banned_00f8ab6a_. LABELLED: the
+// panel setters and 0068B3F0 are not applied (this process has no support-manager panel);
+// the refill does not run (a single-player campaign mission's effective mode is 8,
+// game_hosts_hud.hpp) and no message is sent (session word 0, single player, as
+// crew_level_skill_006e6210 assumes). Nothing here reads 00F8AB6A: the image's reader
+// 00A25B90 (bsp::planner_quick_spawn_00a25b90) reaches this host only as
+// AiPlanners::quick_spawn_named_group, which records. No RNG.
+int GameMissionLuaHost::run_support_manager_set_banned_0088c750_0088c8e0(bool banned) {
+    if (banned) {
+        ++summary_.support_manager_bann_calls;
+    } else {
+        ++summary_.support_manager_permit_calls;
+    }
+    support_manager_banned_00f8ab6a_ = banned ? 1 : 0;              // 00A38DCF / 00A39003 arm
+    if (banned) {
+        log_.notef("  BannSupportmanager 0088c750: [00F8AB6A]=1 (00A38DA0, packet cc13-smbind)");
+        log_.implemented("MissionLuaNative::BannSupportmanager", "0088c750");
+    } else {
+        log_.notef("  PermitSupportmanager 0088c8e0: [00F8AB6A]=0 (00A38DA0, packet cc13-smbind)");
+        log_.implemented("MissionLuaNative::PermitSupportmanager", "0088c8e0");
+    }
+    return 0;
+}
+
+// Packet cc13-smbind. 0088CBB0 SupportManagerEnable(entity, enable), __cdecl binding, no
+// result (0088CD24 00B66400). bsp::seg56_options_cc13::lua_support_manager_enable.
+// 0088CCAE 00888AA0 resolves argument 0 (no null test); 0088CCE0 00B66250 reads argument 1
+// (lua_toboolean, no type gate). Enable: 0088CD08 0065BBA0 on the panel ([00E198C4]+BCh),
+// which is 0065B1F0, std::list::remove of every node whose +8h is the entity from the list
+// at +1F8h. Disable: 0088CD1B 00665EF0 appends the entity to that list. Host: the list is
+// support_panel_disabled_list_1f8_, keyed by the entity's ID. LABELLED: an unresolved
+// entity is counted and nothing is stored (the image would edit the list with whatever
+// 00888AA0 returned); nothing in this process reads the list. No RNG.
+int GameMissionLuaHost::run_support_manager_enable_0088cbb0(lua_State* state,
+    int argument_count) {
+    ++summary_.support_manager_enable_calls;
+    const bool enable = argument_count >= 2 && lua_toboolean(state, 2) != 0;
+    const int id = air_ops_entity_id(state);
+    if (id <= 0) {
+        ++summary_.support_manager_enable_unresolved;
+        log_.unimplemented("MissionLuaNative::SupportManagerEnable", "0088cbb0");
+        return 0;
+    }
+    std::vector<int>& list = support_panel_disabled_list_1f8_;
+    if (enable) {
+        list.erase(std::remove(list.begin(), list.end(), id), list.end());  // 0065B1F0
+    } else {
+        list.push_back(id);                                                  // 00665EF0
+    }
+    log_.notef("  SupportManagerEnable 0088cbb0: id=%d enable=%d list=%zu (%s, packet "
+        "cc13-smbind)", id, enable ? 1 : 0, list.size(), enable ? "0065BBA0" : "00665EF0");
+    log_.implemented("MissionLuaNative::SupportManagerEnable", "0088cbb0");
     return 0;
 }
 

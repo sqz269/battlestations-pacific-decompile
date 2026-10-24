@@ -1182,6 +1182,10 @@ struct GameMissionLuaSummary {
     unsigned long long crew_level_calls{0};               // packet cc13-fix18, 00894F20
     unsigned long long crew_level_unresolved{0};
     unsigned long long reload_time_mul_calls{0};          // packet cc13-fix18, 008C14B0
+    unsigned long long support_manager_bann_calls{0};     // packet cc13-smbind, 0088C750
+    unsigned long long support_manager_permit_calls{0};   // packet cc13-smbind, 0088C8E0
+    unsigned long long support_manager_enable_calls{0};   // packet cc13-smbind, 0088CBB0
+    unsigned long long support_manager_enable_unresolved{0};
     unsigned long long attack_target_calls{0};
     unsigned long long attack_target_fire_arm{0};
     unsigned long long attack_target_command_arm{0};
@@ -1874,6 +1878,9 @@ public:
     int run_clear_forced_recon_level_008aab90(lua_State* state, int argument_count);
     int run_set_crew_level_00894f20(lua_State* state, int argument_count);
     int run_set_device_reload_time_mul_008c14b0(lua_State* state, int argument_count);
+    // Packet cc13-smbind: BannSupportmanager / PermitSupportmanager / SupportManagerEnable.
+    int run_support_manager_set_banned_0088c750_0088c8e0(bool banned);
+    int run_support_manager_enable_0088cbb0(lua_State* state, int argument_count);
     // Packet cc13-fix10, under kLuaProximityTriggersBound.
     int run_add_proximity_trigger_008c9730(lua_State* state, int argument_count);
     int run_remove_trigger_008c5fd0(lua_State* state, int argument_count);
@@ -2163,6 +2170,11 @@ private:
     // two squadron entries (the orders host hands out a const view only).
     GameUnitsHost* units_hooks_{nullptr};
     GameMissionResultHost* mission_result_{nullptr};  // packet cc13-fix20
+    // Packet cc13-smbind. The byte global 00F8AB6A that 00A38DA0 stores (1 banned, 0
+    // permitted), and the panel list at ([00E198C4]+BCh)+1F8h that SupportManagerEnable
+    // edits, held as entity ids (unit index + 1). Nothing in this process reads either.
+    std::uint8_t support_manager_banned_00f8ab6a_{0};
+    std::vector<int> support_panel_disabled_list_1f8_;
     // Packet cc9_lua_listeners: the (channel, id) registry of 00980C10.
     struct ListenerEntry {
         std::string channel;
