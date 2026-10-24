@@ -748,6 +748,10 @@ class GameScriptOrdersHost final : public bsp::LuaBindingNavigatorHost,
 public:
     GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units);
     ~GameScriptOrdersHost();
+    // Packet cc13-reconload, log-only: the scene load's recon publication entry
+    // count (dry run when OFF), for the end-of-run summary line; also marks
+    // that the scene-load block ran.
+    void note_recon_load_entries(std::size_t entries) noexcept;
     // Packet cc9_after_row9_order_queue: apply the deferred orders.
     std::size_t drain_deferred_orders_0076c600();
     // Packet cc9_ai_squadron_settarget_intake: see
@@ -1308,6 +1312,12 @@ private:
     GameScriptTimerSummary timers_{};
     std::size_t script_identity_writes_{0};  // packet cc9_scene_race_and_script_identity
     std::size_t script_party_sets_{0};
+    // Packet cc13-reconload, log-only: the luaInit window depth, the SetParty
+    // calls made inside it, and the scene load's recon publication count.
+    int luainit_depth_{0};
+    std::size_t luainit_setparty_calls_{0};
+    std::size_t recon_load_entries_{0};
+    bool recon_load_seen_{false};
     void mirror_script_identity_00928100();
     void write_script_identity_fields(const GameScriptEntity& script, bool type);
 
