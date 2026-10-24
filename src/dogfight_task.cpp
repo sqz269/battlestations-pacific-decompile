@@ -10,6 +10,30 @@
 
 namespace bsp {
 
+namespace {
+// The image's planar/vector lengths at PC24 (kDogfightPc24Cc13Bound): every
+// product and sum rounds to float, the stored sum is tested against the double
+// 1e-10 [00CE3820] (FCOMI / JBE, so a NaN also gives 0), and the root is the
+// FSQRT 00BF7030, stored as float.
+float pc24_floored_root(float sum) noexcept {
+    return !(static_cast<double>(sum) > 1e-10) ? 0.0f : std::sqrt(sum);
+}
+// 00414C60 on (a, b): FLD b, FLD a, FMUL ST0, FLD ST1, FMULP ST2, FADDP.
+float pc24_length2_00414c60(float a, float b) noexcept {
+    const float aa = a * a;
+    const float bb = b * b;
+    return pc24_floored_root(bb + aa);
+}
+// 0042B2F0 on (a, b, c): (b*b + a*a) + c*c (0042B2F9-0042B307).
+float pc24_length3_0042b2f0(float a, float b, float c) noexcept {
+    const float aa = a * a;
+    const float bb = b * b;
+    const float s = bb + aa;
+    const float cc = c * c;
+    return pc24_floored_root(s + cc);
+}
+}  // namespace
+
 const char* dogfight_state_name(DogfightState s) noexcept {
     switch (s) {
     case DogfightState::kMoveTo: return "moveto";
@@ -35,9 +59,21 @@ DogfightState dogfight_unengaged_state_009aafa0(bool is_flight_leader) noexcept 
 
 DogfightMoveToCommand dogfight_moveto_standin(const DogfightMoveToInputs& in) noexcept {
     DogfightMoveToCommand out;
-    const double dx = static_cast<double>(in.target_pos[0]) - in.own_pos[0];
-    const double dz = static_cast<double>(in.target_pos[2]) - in.own_pos[2];
-    out.horizontal_range = static_cast<float>(std::sqrt(dx * dx + dz * dz));
+    if constexpr (kDogfightPc24Cc13Bound) {
+        // The moveto tick's own planar length (009C1930-009C197D): dx and dz are
+        // stored as floats, then FLD ST1/FMULP ST2 (dz*dz), FMUL ST0 (dx*dx),
+        // FADDP, and the 1e-10 floor. LABELLED: this stand-in has no single image
+        // site, so the closest one gives the precision.
+        const float dx = in.target_pos[0] - in.own_pos[0];
+        const float dz = in.target_pos[2] - in.own_pos[2];
+        const float zz = dz * dz;
+        const float xx = dx * dx;
+        out.horizontal_range = pc24_floored_root(zz + xx);
+    } else {
+        const double dx = static_cast<double>(in.target_pos[0]) - in.own_pos[0];
+        const double dz = static_cast<double>(in.target_pos[2]) - in.own_pos[2];
+        out.horizontal_range = static_cast<float>(std::sqrt(dx * dx + dz * dz));
+    }
     out.heading = heading_command_009f9e40(in.target_pos[0], in.target_pos[2],
                                            in.own_pos[0], in.own_pos[2]);
     const float distance = (out.horizontal_range > in.min_distance)
@@ -73,8 +109,14 @@ float dogfight_angle_score_009aa630(const float local[3]) noexcept {
     const float z = (1.0f > local[2]) ? 1.0f : local[2];
     const float tx = local[0] / z;
     const float ty = local[1] / z;
-    const float t = static_cast<float>(std::sqrt(static_cast<double>(tx) * tx +
-                                                 static_cast<double>(ty) * ty));
+    // 009AA8E5: 0042B2F0 on (tx, ty, 0) at [ESP+58h].
+    float t;
+    if constexpr (kDogfightPc24Cc13Bound) {
+        t = pc24_length3_0042b2f0(tx, ty, 0.0f);
+    } else {
+        t = static_cast<float>(std::sqrt(static_cast<double>(tx) * tx +
+                                         static_cast<double>(ty) * ty));
+    }
     return interp_00419010(0.25f, 1.0f, 1.5f, 0.2f, t);
 }
 
@@ -95,8 +137,14 @@ bool dogfight_needs_reselect_009aac70(bool target_live, float timer_after_dt,
                                       float shoot_distance) noexcept {
     if (!target_live) return true;
     // 009AACE9-009AAD0E: FCOMIP / JBE, then COMISS 0 > timer.
-    const double limit = static_cast<double>(shoot_distance) + 200.0;
-    return static_cast<double>(previous_distance) > limit && timer_after_dt < 0.0f;
+    // 009AACF8 FADD qword 200.0 [00CE4D70] rounds to float at PC24 (ON).
+    if constexpr (kDogfightPc24Cc13Bound) {
+        const float limit = shoot_distance + 200.0f;
+        return previous_distance > limit && timer_after_dt < 0.0f;
+    } else {
+        const double limit = static_cast<double>(shoot_distance) + 200.0;
+        return static_cast<double>(previous_distance) > limit && timer_after_dt < 0.0f;
+    }
 }
 
 DogfightLatch dogfight_latch_009aac70(bool has_target, float distance,
@@ -202,8 +250,16 @@ DogfightTransition dogfight_transition_009aafa0(const DogfightTransitionInputs& 
 
 bool dogfight_on_target_009a9bd0(float local_z, float tan_x, float tan_y) noexcept {
     if (!(local_z > 1.0f)) return false;
-    const double sq = static_cast<double>(tan_y) * tan_y + static_cast<double>(tan_x) * tan_x;
-    const float len = (sq <= 1e-10) ? 0.0f : static_cast<float>(std::sqrt(sq));
+    // 009A9BFA-009A9C07: FLD [+F8h], FLD [+FCh], FMUL ST0, FLD ST1, FMULP ST2,
+    // FADDP, no store between, then 009A9C15 FCOMI against 1e-10 / JBE (also on
+    // NaN) to 0.
+    float len;
+    if constexpr (kDogfightPc24Cc13Bound) {
+        len = pc24_length2_00414c60(tan_x, tan_y);
+    } else {
+        const double sq = static_cast<double>(tan_y) * tan_y + static_cast<double>(tan_x) * tan_x;
+        len = (sq <= 1e-10) ? 0.0f : static_cast<float>(std::sqrt(sq));
+    }
     return 0.800000011920929 > static_cast<double>(len);  // 009A9C38 FCOMIP / JBE
 }
 
@@ -297,14 +353,22 @@ bool dogfight_gun_tick_009fc7c0(DogfightGunState& st, const DogfightGunInputs& i
     bool fired = false;
     if (in.has_target) {
         const float x = in.lead_local[0], y = in.lead_local[1], z = in.lead_local[2];
-        const float d = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
-                                                     static_cast<double>(y) * y +
-                                                     static_cast<double>(z) * z));
+        // 009FCB25 0042B2F0 (ON: per-op float with the 1e-10 floor). LABELLED: the
+        // image measures the world delta; the length of the unit-frame lead is the
+        // same up to rounding.
+        const float d = kDogfightPc24Cc13Bound
+            ? pc24_length3_0042b2f0(x, y, z)
+            : static_cast<float>(std::sqrt(static_cast<double>(x) * x +
+                                           static_cast<double>(y) * y +
+                                           static_cast<double>(z) * z));
         const float far_limit = in.search_range_30 > in.shoot_distance + 200.0f
             ? in.search_range_30 : in.shoot_distance + 200.0f;
         if (d > 1.0f && far_limit > d) {
-            const float lateral = static_cast<float>(
-                std::sqrt(static_cast<double>(x) * x + static_cast<double>(y) * y));
+            // 009FCC00 00414C60 on the local (x, y) (ON: per-op float, 1e-10 floor).
+            const float lateral = kDogfightPc24Cc13Bound
+                ? pc24_length2_00414c60(x, y)
+                : static_cast<float>(
+                      std::sqrt(static_cast<double>(x) * x + static_cast<double>(y) * y));
             bool envelope = false;
             if (st.hold_4c > 0.0f) {
                 envelope = true;
@@ -360,7 +424,11 @@ DogfightThrottle dogfight_throttle_007b4ed0(float f) noexcept {
 
 PlaneNeighbourRadii plane_neighbour_radii_007e11d0(float refresh_period_88) noexcept {
     PlaneNeighbourRadii r;
-    const float base = static_cast<float>((static_cast<double>(refresh_period_88) + 3.0) * 180.0);
+    // 007E1233-007E1245: FADD qword 3.0 [00D7A2B0], FMUL qword 180.0 [00CE3D20],
+    // FSTP float. At PC24 (kDogfightPc24Cc13Bound) the sum rounds first.
+    const float base = kDogfightPc24Cc13Bound
+        ? (refresh_period_88 + 3.0f) * 180.0f
+        : static_cast<float>((static_cast<double>(refresh_period_88) + 3.0) * 180.0);
     r.near_any = base;
     r.enemy_plane = (base <= 1200.0f) ? 1200.0f : base;
     r.friendly_plane = (static_cast<double>(base) <= 500.0) ? 500.0f : base;
