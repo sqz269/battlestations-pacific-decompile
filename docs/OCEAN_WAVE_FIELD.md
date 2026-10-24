@@ -4246,3 +4246,48 @@ zeroed by the other term.
 
 Note: `local\main_osa.log` is now this pair's OFF run. physics26's log of the same name (sections 118-119) was
 copied first to `local\p26_main_osa.log`.
+
+## 121. Carrier-final float: the rate trace, an air-brake diagnostic and two queue plans (cc9-physics27, 2026-10-24)
+
+All runs: USNOS, 36200/36000 frames, ref env, tree 4c0023429 (origin/main with cc13's log-only d7074c0af). Every
+run ends `failed at 1675.51 s` (Enterprise torpedoed), as in section 118, and none lands a plane on Enterprise.
+
+**Rate trace** (`BSP_PLANE_RATE_TRACE=Enterprise_sqn01`, plan `p26_os_a`; kept excerpt
+`local\p27_tr_osa_kept.txt`, 1550-1575 s, sent to cc13 via the lead). The nose follows the command to 1560 s
+(pitch -0.220 vs pt2bc -0.236). From 1561 s it rises while the command steepens: at 1562.00 s pitch is -0.057 vs
+pt2bc -0.271, with pslot -0.52; at 1564.00 s pitch is -0.017 vs -0.375, with pslot -0.97; from 1565 s pslot is pinned
+at -1.000 and the body rate wy is about -0.001. Bank stays at or below 0.04 in magnitude after 1560 s. pt_task and
+pt_think equal pt2bc to the abort, and the first change is at 1566.05 s (pt2bc -0.0069 while the task still asks
+-0.53). So the saturated nose-down stick produces almost no pitch rate.
+
+**Air-brake diagnostic** (not committed: an export `local\p27_nb` that forces `plane_live_air_brake` to 0 before the
+latch from each 009B1F2C airborne-final tick until 0.5 s after it; log `local\p27_nb_osa.log`). `brk=0.000` holds
+through Enterprise_sqn01's final. The plane descends faster early (Y 87.1 at 1561.25 s vs 104.8 with the brake),
+then levels at the same floor: Y 83.7, 82.6, 80.4 and 80.0 over 1562-1565 s, vy -2.0 to -0.55, with the pitch
+rising from -0.24 to -0.01 against a command of -0.49. Every Enterprise final still aborts (sqn02 at 75.7 m, sqn01 at
+78.2 m, sqn02|.-III at 77.4 m), and the deck shows landed=0. **The brake is not the float term.**
+
+**Queue plans** (item 3 of the lead's brief: keep a squadron queued behind the head). `local\p27_mkos.py` writes
+`p27_os_q1.txt` and `p27_os_q2.txt`: `p26_os_a` with its four `order Enterprise <slot> 2` returns 400 or 1200
+frames apart instead of 10.
+
+| Plan | Queued at Enterprise | Heads entering 5D8 (begin trace) | Aborts (height) | Deck |
+| --- | --- | --- | --- | --- |
+| q2 (1200) | sqn01 1400 s, sqn02 1460 s, sqn37 1520 s, sqn50 1580 s | sqn01 1541.93, sqn02 1584.87, sqn50 1626.41: all `fast=1`, about 100 m/s, H 77.0-80.0 | 77.2, 77.0, 79.7; wingman sqn01\|.-III 76.9 | landed=0 |
+| q1 (400) | as above, 20 s apart | sqn02 1542.83 `fast=1` 99 m/s, H 78.2 | 78.7, 77.4, 78.2 | landed=0, releases=1 |
+
+- Staggering does not slow a head. 006C3F80's loop lowers a head's spacing only for another squadron's plane ahead
+  of it in mode 3 or 4, and by the time the next head flies its final, the one ahead has already aborted.
+- The float is not specific to a fast lone head. In q2, Enterprise_sqn01|.-III, a wingman, flew a full final from
+  1652.94 s (86 -> 34 m/s). Its Y was 101.8, 89.6, 81.7, 80.0, 81.4, 81.8, 80.6 and 79.3 over 1658-1665 s while the
+  command steepened to -0.51, and it aborted at 1665.55 s at 76.9 m.
+- Two other wingmen entering with `fast=0` abort within a second of 5D8, at 168-227 m. That is a separate early
+  abort, not read here.
+
+**Reading (an inference; I did not read the image).** With or without the brake, head or wingman, every carrier
+final levels within a few metres of the begin trace's H, which is 77-82 on every entry. The open term is therefore
+the deck-height reference H of 009B1420 for a ship target, physics26's question (b) in section 119, or whatever pins
+the plane to it, together with the pitch-authority question in the rate trace. A plan change cannot get a carrier
+landing on USNOS.
+
+Lease `p27-doc121` (this doc) is released with this section.
