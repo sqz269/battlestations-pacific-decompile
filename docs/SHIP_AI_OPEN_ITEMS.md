@@ -20802,3 +20802,10 @@ Open:
    kGeneratedEntityPartyBound does not cover, and which party it should carry.
 
 Logs: J:\PROG\battlestations-pacific-decompile-cc9-party1\local\pt1_{off,on}_<row>.log; the diffs are in pt1_diff_<row>.txt.
+
+**kGunBotNotAllyDropCc13Bound flipped ON** (cc9-party1, 2026-10-24). Pairs were run on ff591695a. The rows were the
+newest plan for each of the 20 WINS missions (BSM01, 03, 04, 05, 06, 09, ESMP08, IJN08, IJN18, JM06, JM08, LOMP06,
+LOMP10, PRCP01, USN01, USN02, USN12, USN15, USN21, USNOS) plus BSM06 stock. Every pair is gameplay identical
+(pair_diff 1) with the same end. relation_cleared=0 OFF and ON in every run, so in these rows no bot gun holds a
+same-party target. The BSM06 airfield-squadron case from cc13-bsm6strip does not occur in BSM06 stock at 40000
+frames. Logs: local\pt1_{off,on}_na_<row>.log.

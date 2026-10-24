@@ -1313,7 +1313,10 @@ constexpr bool kTailGunnerClearReleaseBound = true;
 //    is kept. relation_cleared counts once per acquisition in both arms: the
 //    first tick of a same-party hold per gun and target (ON drops on that
 //    tick). OFF: counted only.
-constexpr bool kGunBotNotAllyDropCc13Bound = false;
+//    ON by the pair of 2026-10-24 (cc9-party1, SHIP_AI_OPEN_ITEMS 323): all 20
+//    WINS rows and BSM06 stock are gameplay identical, relation_cleared=0 in
+//    every run, so no row reaches the same-party hold.
+constexpr bool kGunBotNotAllyDropCc13Bound = true;
 static_assert(!kGunBotNotAllyDropCc13Bound || kTailGunnerClearReleaseBound,
     "kGunBotNotAllyDropCc13Bound drops through 008FFA75's vtable[38h](0), the release "
     "kTailGunnerClearReleaseBound transcribes");
