@@ -156,6 +156,28 @@
       "original_abi": "ECX=entity; DL cleared; tail JMP00922C80",
       "evidence": "Live verified thunk00922DD0..00922DD6: XOR DL,DL then JMP00922C80. Uses existing full callee with allow_far=0.",
       "uncertainty": "Names provisional; new C++ interface, no native FH3, binary ABI or game-validation claim."
+    },
+    {
+      "address": "00749210",
+      "name": "read_structure_class_fields_00749210",
+      "source": "src/vehicle_class_fields.cpp",
+      "header": "include/bsp/vehicle_class_fields.hpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "__thiscall ECX=descriptor; Lua row stack; RET4",
+      "evidence": "Full normal00749210..00749775 listing: base read; ExplosionEfx; ONLY first SmokeFireEfx item; actual+160 handle fallback for DamageSmokeEfx vector+140; all SecondaryExplosionEfx to vector+150; ordered scalar/boolean/type fields; effect replacement AddRef-before-old-release and temporary release; Lua refs retained/released in body order. Native PUSH1 before GetInteger is the subsequent Acquire flag, not a numeric getter argument. Independent review:0074966F loads EDX=1Bh;0074967B calls00746B90 with explicit default0x1B in Source.",
+      "uncertainty": "Names provisional; Lua handles and supplied services are explicit C++ interfaces, not native FH3, object-layout or binary ABI proof."
+    },
+    {
+      "address": "0074d4a0",
+      "name": "read_wreckable_class_fields_0074d4a0",
+      "source": "src/vehicle_class_fields.cpp",
+      "header": "include/bsp/vehicle_class_fields.hpp",
+      "status": "reconstructed_body_build_pending",
+      "coverage": "complete_normal_body_over_explicit_native_call_boundaries",
+      "original_abi": "__thiscall ECX=descriptor; Lua row stack; RET4",
+      "evidence": "Full normal0074D4A0..0074D70D listing: base; ExplosionEfx+138; nil-tested Wreck with actual pooled NativeString temporary passed as ECX to004B3F10; nil zeroes+13C; integer-only Smoke updates+14C with refcount traffic. Explicit native dependencies, no host wiring.",
+      "uncertainty": "Names provisional; Lua handles and supplied services are explicit C++ interfaces, not native FH3, object-layout or binary ABI proof."
     }
   ],
   "call_sites": [
@@ -183,6 +205,35 @@
       "address": "00922dd2",
       "native": "00922c80",
       "kind": "tail_jump"
+    },
+    {
+      "address": "007493da",
+      "native": "00b67800"
+    },
+    {
+      "address": "007494a1",
+      "native": "004d9c00"
+    },
+    {
+      "address": "007495f4",
+      "native": "004d9c00"
+    },
+    {
+      "address": "0074d5c9",
+      "native": "0041e870"
+    },
+    {
+      "address": "0074d5d7",
+      "native": "004b3f10"
     }
-  ]
+  ],
+  "independent_review": {
+    "agent": "owner_max",
+    "scope": [
+      "00749210",
+      "0074d4a0",
+      "008b01b0"
+    ],
+    "result": "No remaining material normal-path bugs after explicit FakedType EDX fallback0x1B correction. Native endpoint, iterator coverage, field offsets, handle traffic, prompt arguments and temporary lifetimes checked against listing."
+  }
 }
