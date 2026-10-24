@@ -20,6 +20,21 @@ static_assert(bsp::sensor_max_value_for_level_0080866b(2) == bsp::kReconDetectio
 // {begin, count, capacity} triples.
 
 namespace bsp {
+void destruct_sensor_row_00808230(SensorClassTable& table, SensorCategory observer) {
+    const auto row = static_cast<std::size_t>(observer);
+    std::vector<SensorGuiRangeRing>{}.swap(table.gui_rings[row]);
+    for (std::size_t column = kSensorCategoryCount; column != 0; --column) {
+        std::vector<SensorTableEntry>{}.swap(table.lists[row * 8 + column - 1]);
+    }
+}
+
+void destruct_sensor_class_table_00808d20(SensorClassTable& table) {
+    for (std::size_t row = kSensorCategoryCount; row != 0; --row) {
+        destruct_sensor_row_00808230(table, static_cast<SensorCategory>(row - 1));
+    }
+    table.native_vtable_00 = 0x00ceb130;
+}
+
 namespace {
 
 // 008085C5..008085F7: Dist is read as a Lua number, stored, then squared.

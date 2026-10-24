@@ -198,6 +198,11 @@ struct SensorClassTable {
     // One ring list per observer category (00807F60's destination).
     std::array<std::vector<SensorGuiRangeRing>, kSensorCategoryCount> gui_rings{};
 
+    // Lifecycle words model the native prefix; this C++ object is not a raw
+    //2A8h record. Existing list/ring values use std::vector storage.
+    std::uint32_t native_vtable_00 = 0;
+    std::int32_t native_reference_count_04 = 0;
+
     std::vector<SensorTableEntry>& list(SensorCategory observer, SensorCategory subject) {
         return lists[sensor_list_index_008085aa(observer, subject)];
     }
@@ -206,6 +211,13 @@ struct SensorClassTable {
         return lists[sensor_list_index_008085aa(observer, subject)];
     }
 };
+
+//00808230 ECX=row, RET00808294: release GUI rings at+54h, then the seven
+// entry lists in reverse order. The model's unused column7 stays unused.
+void destruct_sensor_row_00808230(SensorClassTable&, SensorCategory observer);
+//00808D20 ECX=this, RET00808D75: seven rows in reverse order, then base
+// destructor00BD30F0 restores00CEB130. No deleting-destructor flag exists.
+void destruct_sensor_class_table_00808d20(SensorClassTable&);
 
 // ---------------------------------------------------------------------------
 // The loader, 008082A0
