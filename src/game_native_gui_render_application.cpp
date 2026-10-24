@@ -79,37 +79,10 @@ public:
     void* queue_004c11f0() override { return renderer_.mission_overlay_queue(); }
     void* pass_context_00b0d0d0() override { return renderer_.mission_overlay_pass_context(); }
     void submit_scene_00b1f4d0(void* queue, void* scene, void* camera,
-        void* context, void* label, GameNativeGuiLabelTransition& transition) override {
-        submit(renderer_, queue, scene, camera, context, label, transition, 0);
+        void* context, void* label, bool& entered) override {
+        renderer_.submit_mission_overlay_scene(queue, scene, camera, context, label, entered);
     }
 private:
-    template<class Renderer> static auto submit(Renderer& renderer, void* queue,
-        void* scene, void* camera, void* context, void* label,
-        GameNativeGuiLabelTransition& transition, int) -> decltype(
-            renderer.submit_mission_overlay_scene(queue, scene, camera, context,
-                label, std::declval<bool&>()), void()) {
-        bool entered{};
-        transition = GameNativeGuiLabelTransition::not_entered;
-        try {
-            renderer.submit_mission_overlay_scene(queue, scene, camera, context, label, entered);
-        } catch (...) {
-            transition = entered ? GameNativeGuiLabelTransition::entered :
-                GameNativeGuiLabelTransition::not_entered;
-            throw;
-        }
-        transition = entered ? GameNativeGuiLabelTransition::entered :
-            GameNativeGuiLabelTransition::not_entered;
-    }
-    template<class Renderer> static void submit(Renderer& renderer, void* queue,
-        void* scene, void* camera, void* context, void* label,
-        GameNativeGuiLabelTransition& transition, long) {
-        // Published D3 did not expose its pre-native ownership transition.
-        // On an exception keep this genuinely unknown; the failed GUI/frame
-        // graph is retained until process exit, with no guessed label free.
-        transition = GameNativeGuiLabelTransition::unknown;
-        renderer.submit_mission_overlay_scene(queue, scene, camera, context, label);
-        transition = GameNativeGuiLabelTransition::entered;
-    }
     GameNativeRendererApplication& renderer_;
 };
 } // namespace
@@ -127,6 +100,10 @@ struct GameNativeGuiRenderApplication::Impl {
     const bool& sse2;
     GameNativeVfsRawServices raw;
     GameNativeGuiTextState& globals;
+    // Admit this immutable canonical view while renderer acquisitions are
+    // quiescent. The mission preparation callback itself is a retained native
+    // acquisition, so the ready-only getter must not be re-entered there.
+    const volatile Word* material_profile;
     NativeMaterialDestructionAccess materials;
     NativeMaterialParameterAccess parameters;
     LiteralTextLocale locale_calls;
@@ -156,8 +133,7 @@ struct GameNativeGuiRenderApplication::Impl {
     NativeString scene_name;
     bool scene_name_live{}, root_linked{};
     NativeString label;
-    enum class LabelOwnership { empty, owned, unknown };
-    LabelOwnership label_ownership{LabelOwnership::empty};
+    bool label_live{};
     NativeRenderActualOwnerReleaseObservation scene_release;
     std::uint64_t frames{};
     Phase phase{Phase::prepared};
@@ -191,6 +167,7 @@ struct GameNativeGuiRenderApplication::Impl {
         : log(output), renderer(app), files(vfs), singletons(host), data(mapped), input(controls),
           fonts(font_host), locale(locale_host), sse2(conversion), raw(vfs.borrow_raw_services()),
           globals(game_native_gui_text_state()),
+          material_profile(app.borrow_gui_material_destruction_profile_00d5e520()),
           materials{app.actual_owners(), raw.strings,
               game_native_material_process().parameter_pool_00f8d3e4(),
               game_native_material_process().material_pool_00f8d3ac()},
@@ -235,7 +212,7 @@ struct GameNativeGuiRenderApplication::Impl {
                 locale.tables(), locale_calls, source_ucrt_text_content_comparison(), nullptr,
                 source_ucrt_text_name_comparer(), sse2,
                 *static_cast<void* const volatile*>(renderer.borrow_platform_publication_0109cf04().identity()),
-                renderer.borrow_gui_material_destruction_profile_00d5e520(),
+                material_profile,
                 table(data, 0x00d62d60, 8), raw.strings,
                 static_cast<const char*>(data.data_at(0x00cefd78, 1)),
                 globals.vertical_scale_00e12fd4(), globals.blend_factor_00f8be54(),
@@ -385,32 +362,26 @@ struct GameNativeGuiRenderApplication::Impl {
             set_native_viewport_dimensions_00b1f940(*static_cast<NativeViewportOwner*>(viewport), dimensions.data());
         }
         void set_pass_label_0041e870(std::string_view value) override {
-            require(app.label_ownership == LabelOwnership::empty && value == "X",
-                "native GUI pass label cannot overlap");
-            app.label_ownership = LabelOwnership::owned;
+            require(!app.label_live && value == "X", "native GUI pass label cannot overlap");
+            app.label_live = true;
             app.label.assign_0041e870(app.raw.strings, "X");
         }
         void* render_command_queue_004c11f0() override { return commands.queue_004c11f0(); }
         void* render_pass_context_00b0d0d0() override { return commands.pass_context_00b0d0d0(); }
         void submit_scene_00b1f4d0(void* queue, const void* scene, const void* camera, void* context) override {
-            require(app.label_ownership == LabelOwnership::owned,
-                "native GUI submission lost its actual label");
+            require(app.label_live, "native GUI submission lost its actual label");
             // Prefix validation can fail before the consuming native call.
             // Once entered, B1F4D0 owns cleanup even when it throws.
-            auto transition = GameNativeGuiLabelTransition::not_entered;
+            bool entered{};
             try {
                 commands.submit_scene_00b1f4d0(queue, const_cast<void*>(scene),
-                    const_cast<void*>(camera), context, &app.label, transition);
+                    const_cast<void*>(camera), context, &app.label, entered);
             } catch (...) {
-                if (transition == GameNativeGuiLabelTransition::entered)
-                    app.label_ownership = LabelOwnership::empty;
-                else if (transition == GameNativeGuiLabelTransition::unknown)
-                    app.label_ownership = LabelOwnership::unknown;
+                if (entered) app.label_live = false;
                 throw;
             }
-            require(transition == GameNativeGuiLabelTransition::entered,
-                "native GUI queue did not enter its consuming submission");
-            app.label_ownership = LabelOwnership::empty;
+            require(entered, "native GUI queue did not enter its consuming submission");
+            app.label_live = false;
         }
     };
 };
@@ -470,6 +441,8 @@ void GameNativeGuiRenderApplication::retire_before_fonts() {
         p.renderer.viewport_registry().forget_quiescent(p.viewport_record);
         release_native_render_actual_owner_observed(p.renderer.actual_owners(), p.scene_raw, p.scene_release);
         p.phase = Impl::Phase::retired;
+        p.log.notef("native GUI Text retired: submitted_frames=%llu model=returned camera=returned scene=released",
+            static_cast<unsigned long long>(p.frames));
     } catch (...) { p.fail(); throw; }
 }
 void GameNativeGuiRenderApplication::after_native_renderer_drain() {

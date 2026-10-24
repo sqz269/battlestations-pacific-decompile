@@ -55,11 +55,13 @@ The native callback is separate from the existing sprite callback and runs only
 in the shared mission frame's post-world scope, before sprite drawing/capture.
 Ordinary front-end frames do not submit an unprepared native Text scene.
 
-The adapter accepts both published D3 submission and its newer entry-observation
-overload. The latter reports whether B1F4D0 entered. The older API has an
-explicit unknown ownership state on throw: it retains the failed GUI/frame and
-label until process exit without guessing a free. Normal return confirms label
-consumption. No exceptional continuation or native SEH equivalence is claimed.
+The adapter uses the shared renderer's explicit entry-observation API. It keeps
+label ownership until that API confirms B1F4D0 entered; the native function then
+owns its cleanup, including failure. An interrupted GUI/frame is retained until
+process exit. No exceptional continuation or native SEH equivalence is claimed.
+The immutable material destruction table is admitted during ready startup,
+before mission preparation becomes an active retained acquisition, and remains
+borrowed from that same renderer through normal drain.
 
 The Font arm reuses AD55C0 construction, AD4540 unsigned-WORD lookup, AD4AA0
 native tree insertion, and the established native tree/string cleanup. In image
@@ -118,6 +120,15 @@ The first wired build caught use of a C++20 expression in this C++17 target;
 the adapter now uses ordinary overload substitution. Final wired OFF/ON runs
 remain pending. These build and earlier OFF observations do not establish an ON
 draw, pixel correctness, complete raw widget ABI, or page bring-up.
+
+The first wired ON probe (`usn04_text_on_probe1.log`, source `848a7988e`) ran on
+slot14/core30 at 10:04:01Z and exited 1 before any Present: a ready-only material
+profile getter was incorrectly called from the active mission preparation
+callback. The fix captures its immutable view during ready metadata composition;
+the renderer's acquisition/retention guard is unchanged. Image Fonts loaded,
+but this failed probe proves no native Text draw or normal retirement. The
+replacement build also merges renderD's explicit label-entry API and borrows
+the startup's existing RandomThreads; it adds no random owner or frame graph.
 
 Final screenshots belong under this tree's `local/gui_render/` and must be
 copied to the cc16-progress tree before this worktree is removed.

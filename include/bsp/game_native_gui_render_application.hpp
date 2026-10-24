@@ -12,8 +12,6 @@ class GameInputRuntime;
 class GameFontHost;
 class GameLocaleHost;
 
-enum class GameNativeGuiLabelTransition { not_entered, entered, unknown };
-
 // The mission's existing command owner supplies the queue and pass context.
 // B1F4D0 consumes the actual eight-byte label argument. This interface adds
 // no queue, BeginScene/EndScene/Present, command owner, or frame clock.
@@ -23,7 +21,7 @@ public:
     virtual void* queue_004c11f0() = 0;
     virtual void* pass_context_00b0d0d0() = 0;
     virtual void submit_scene_00b1f4d0(void* queue, void* scene, void* camera,
-        void* pass_context, void* actual_label, GameNativeGuiLabelTransition&) = 0;
+        void* pass_context, void* actual_label, bool& label_entered_native) = 0;
 };
 
 // One optional renderer-side GUI domain. No GUI manager, front-end frame,
