@@ -181,7 +181,7 @@ DEF_RE = re.compile(r'^[ \t]*(?:template\s*<[^>{;]*>\s*)?(?:__declspec\([^\n)]*\
                     r'(?:[\w:<>,\*&~ \t]+?[ \t\*&])?'
                     r'((?:(?:\w+(?:<[^;{}\n]*>)?)::)*(~?\w+))[ \t]*'
                     r'\(([^;{}()]*(?:\([^;{}()]*\)[^;{}()]*)*)\)[ \t]*(?:const[ \t]*)?(?:noexcept[ \t]*)?'
-                    r'(?:override[ \t]*)?(?:->[^{;]*)?(?::[^;{]+)?\s*\{', re.M)
+                    r'(?:override[ \t]*)?(?:->[^{;]*)?(?:\s*:[^;{]+)?\s*\{', re.M)
 ADDR_HEAD = re.compile(r'^\s*(?://+|/?\*+)\s*(?:Address:?\s*)?(?:0x)?([0-9A-Fa-f]{8})\b|Address:\s*(?:0x)?([0-9A-Fa-f]{8})\b')
 COMMENT_LINE = re.compile(r'^\s*(//|/\*|\*)')
 strip_comments = lambda t: re.sub(r'//[^\n]*|/\*.*?\*/', ' ', t, flags=re.S)

@@ -2,6 +2,77 @@
  "schema_version": 1,
  "identifiers": [
   {
+   "address": "006d1e50",
+   "source": "src/game_hosts_gunnery.cpp",
+   "identifiers": [
+    "gun_artillery_kind_005459b0"
+   ],
+   "evidence": "Reviewed006D1E50 predicate is membership in{2,3,4,6}; source1123-1126 implements that same host predicate behind the existing artillery-kind switch. Distinct original helper shares this semantic predicate; switch qualification retained. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00809cb0",
+   "source": "src/projectile_kinds.cpp",
+   "identifiers": [
+    "load_rocket_class_fields"
+   ],
+   "evidence": "Source class descriptor row37 maps Rocket reader00809CB0; executable load_rocket_class_fields at260 reads that subclass after its parent. Header299 grouped four readers; do not assign all addresses to the first declared torpedo reader. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00829cd0",
+   "source": "src/cc13_seg52b.cpp",
+   "identifiers": [
+    "ship_indexed_point_array_push_back_0082a590"
+   ],
+   "evidence": "Existing reconstruction notes verify byte-identical body to0082A590 with same00829180 callee; executable source95 implements the shared push-back. Original Ghidra extent overreach remains qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "0082a550",
+   "source": "src/engine_seg4_6_9_cc13.cpp",
+   "identifiers": [
+    "pod_pointer_array_push_back_00467f60"
+   ],
+   "evidence": "Existing reviewed record verifies identical body to00467F60 with same004674F0 callee; source539 implements shared scalar pointer push-back. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "0082d040",
+   "source": "src/ship_buoyancy_elements.cpp",
+   "identifiers": [
+    "ship_buoyancy_build_list_0082d4ca"
+   ],
+   "evidence": "Existing record specifically verifies0082D4CA..0082D690 station sampling, argument order, fields and24-bit precision against this executable list-builder. This is a partial full0082D040 projection: AABB and vector lifetime regions remain unread, not promoted. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00835940",
+   "source": "src/weapon_director.cpp",
+   "identifiers": [
+    "director_command_message_0071da50"
+   ],
+   "evidence": "Existing evidence expressly identifies director_command_message_0071da50 as typed sub-kind/value model, here selector7. Actual source91 supplies that message model. It omits native base/zero stores/0077C2A0 routing, so keep existing_host_substitution_labelled and all those boundaries. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "008359c0",
+   "source": "src/weapon_director.cpp",
+   "identifiers": [
+    "director_command_message_0071da50"
+   ],
+   "evidence": "Existing evidence expressly identifies director_command_message_0071da50 as typed sub-kind/value model, here selector8. Actual source91 supplies that message model. It omits native base/zero stores/0077C2A0 routing, so keep existing_host_substitution_labelled and all those boundaries. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00835a40",
+   "source": "src/weapon_director.cpp",
+   "identifiers": [
+    "director_command_message_0071da50"
+   ],
+   "evidence": "Existing evidence expressly identifies director_command_message_0071da50 as typed sub-kind/value model, here selector9. Actual source91 supplies that message model. It omits native base/zero stores/0077C2A0 routing, so keep existing_host_substitution_labelled and all those boundaries. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
    "address": "0088c750",
    "source": "src/options_seg56_cc13.cpp",
    "identifiers": [
@@ -40,6 +111,14 @@
     "lua_binding_navigator_move_to"
    ],
    "evidence": "include/bsp/lua_binding_navigator.hpp:427-429 explicitly associates 008a2bc0 with declaration lua_binding_navigator_move_to; body src/lua_binding_navigator.cpp:226. Original ABI/layout qualifications remain in ledger. Header: // 008A2F20 NavigatorMoveToRange, and byte-identically 008A2BC0 NavigatorMoveToPos and // 008A2D70 NavigatorDirectMoveToRange: issue kCommandObjectMoveTo. int lua_binding_navigator_move_to(LuaCommandTargetSource& targets,"
+  },
+  {
+   "address": "008a3cd0",
+   "source": "src/lua_binding_navigator.cpp",
+   "identifiers": [
+    "lua_binding_navigator_set_torpedo_evasion"
+   ],
+   "evidence": "Source158 selects avoidance sub-kind7 and delegates executable argument/route body set_navigator_avoidance_flag at49; header398-412 ties original008A3CD0 to director+738h and00835940. Host delivery/ABI limits retained. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
   },
   {
    "address": "008afbd0",
@@ -410,12 +489,54 @@
    "evidence": "include/bsp/engine_seg56_cc13.hpp:988-990 explicitly associates 008da970 with declaration static_color_black; body src/engine_seg56_cc13.cpp:1603. Original ABI/layout qualifications remain in ledger. Header: // 008DA920 / 008DA970: lazily initialised static colours, guard bit 1 of 00F88BD4 / 00F88BE8. // Black (0,0,0,1) lives at 00F88BC4, red (1,0,0,1) at 00F88BD8. 1.0 is the float 00D7A24C. Rgba static_color_black() noexcept;"
   },
   {
+   "address": "008eea80",
+   "source": "src/native_scene_property_hash_iterator.cpp",
+   "identifiers": [
+    "next_native_scene_property_hash_008eeb60"
+   ],
+   "evidence": "Reviewed ledger describes same64-bucket iterator-next algorithm: node+0Ch then scan table+8+i*4, i<40h. Source42-85 implements precisely that shared algorithm. docs/CC13_SEG59B.md; distinct original entry, shared semantic body. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
    "address": "008ef360",
    "source": "src/native_scene_property_record_type9_four_byte_array_storage.cpp",
    "identifiers": [
     "construct_native_scene_property_record_type9_four_byte_array_storage_008ef360"
    ],
    "evidence": "include/bsp/native_scene_property_record_type9_four_byte_array_storage.hpp:14-43 explicitly associates 008ef360 with declaration construct_native_scene_property_record_type9_four_byte_array_storage_008ef360; body src/native_scene_property_record_type9_four_byte_array_storage.cpp:28. Original ABI/layout qualifications remain in ledger. Header: // Whole [008EF360,008EF3D4): 116 bytes, 36 instructions, both branches. // Descriptive names are hypotheses. This API constructs raw storage. // Supply fresh/unowned writable 56-byte root storage and a stable readable // span of exactly 4*element_count bytes, with element_count in [1,3FFFFFFF]. // Root, input and active call frame must be disjoint and nonwrapping. Require // DF clear for current CRT. Elements are opaque bits with no numeric semantics. // ECX=root; incoming EDX unused; stack +4/+8/+C contain count/data/full flags. // Native DWORD additions double count twice: the first precedes phase/tag // stores, the second follows them, and then CMP reads only the low flag byte. // No new"
+  },
+  {
+   "address": "008ef650",
+   "source": "src/native_scene_property_hash_iterator.cpp",
+   "identifiers": [
+    "begin_native_scene_property_hash_008eeb10"
+   ],
+   "evidence": "Reviewed name evidence explicitly says same body as008EEB10, separate copy. Source8-38 implements64-bucket begin. docs/CC13_SEG59B.md. Shared semantic body. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "008f1960",
+   "source": "src/scene_property_bag.cpp",
+   "identifiers": [
+    "scene_reference_kind_letter"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:152 explicitly names scene_reference_kind_letter; source70-82 implements all eight reference-kind letters. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "008f6fc0",
+   "source": "src/scene_traffic_groups.cpp",
+   "identifiers": [
+    "load_prop_library"
+   ],
+   "evidence": "Source592-614 explicitly folds the per-extension008F6FC0 work into load_prop_library: enumerate_library_files(folder,extension), per-file load/error accumulation, for enums then props. Executable combined semantic projection; no separate arbitrary-extension entry or original native ABI is exposed. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "008f7db0",
+   "source": "src/game_hosts.cpp",
+   "identifiers": [
+    "resolve_language"
+   ],
+   "evidence": "GameStartupHost::resolve_language source2122 onward implements options-file-first, registry-LCID fallback and original language selection. The prior source winmain_startup.cpp only called an abstract host provider; this is its concrete implementation. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
   },
   {
    "address": "008fb750",
@@ -562,12 +683,213 @@
    "evidence": "docs/CC13_SEG59B.md:30,82 names delete_robot_descriptor for these robot destructor rows; src/robot_config.cpp:788-806 resets base vtable, releases/nulls name, conditionally releases block by flags. Shared semantic model, preserve ledger ABI qualifications."
   },
   {
+   "address": "00900c60",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900c80",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900ca0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900cc0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900ce0",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900d00",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900d20",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "00900d40",
+   "source": "src/robot_config.cpp",
+   "identifiers": [
+    "load_robot_config_00901610"
+   ],
+   "evidence": "docs/CC13_SEG59B.md:128 and source841-848 identify each named find_robot_config_00900af0 lookup followed by its corresponding global-alias publication. The complete semantic alias operation is folded into this loader; no standalone native wrapper or native ABI is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "0092bec0",
+   "source": "src/submarine_model.cpp",
+   "identifiers": [
+    "submarine_step_periscope_repair_00854650"
+   ],
+   "evidence": "Source268-280 includes the periscope repair completion deadline store. Existing evidence explicitly says only deadline is modelled; physical body/node callback calls are omitted. This identifies that partial host projection, not a full native routine. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof.",
+   "shared_implementation": true
+  },
+  {
+   "address": "009ff3a0",
+   "source": "src/ai_target_weights.cpp",
+   "identifiers": [
+    "ai_plane_loadout_arm"
+   ],
+   "evidence": "Source454 onward, especially556-560, implements the documented min(ammo,LevelbombParams[2]) then CVTTSS2SI-style int cast inline. Complete scalar expression is folded into the loadout arm; no standalone native calling interface is supplied. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
    "address": "00a0fc90",
    "source": "src/ai_command_object.cpp",
    "identifiers": [
     "ai_command_notification_is_discarded"
    ],
    "evidence": "include/bsp/ai_command_object.hpp:84-88 explicitly associates 00a0fc90 with declaration ai_command_notification_is_discarded; body src/ai_command_object.cpp:22. Original ABI/layout qualifications remain in ledger. Header: // vt+24h is 00A0FC90 (`RET 8`) in every one of the sixteen vtables between // 00D22968 and 00D22C68, so no class acts on a member notification. This // closes docs/AI_GROUP_THINK.md's \"whether any class in the block overrides // the slot was not settled\". bool ai_command_notification_is_discarded(AiCommandType type) noexcept;"
+  },
+  {
+   "address": "00a152e0",
+   "source": "src/ai_command_tick.cpp",
+   "identifiers": [
+    "ai_command_tick_vt000c"
+   ],
+   "evidence": "Source228 dispatcher CautiousAttack arm306 onward executes the actual cautious approach/follower/formation rules behind the existing switches. This is the named branch, not an address table; preserve omitted domains in the existing host model. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00a31c60",
+   "source": "src/unit_kind_query.cpp",
+   "identifiers": [
+    "unit_kind_body_answers"
+   ],
+   "evidence": "Source181 identifies class4Bh native body; source291 onward implements owning-chain comparisons plus dynamic class-id equality using its decoded accept list. Not merely unit_kind_body_for_class metadata lookup. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00a7a460",
+   "source": "src/fmod_configuration_library.cpp",
+   "identifiers": [
+    "memory_get_stats"
+   ],
+   "evidence": "Source448-451 is FmodConfigurationLibrary::memory_get_stats; reviewed original only calls FMOD_Memory_GetStats into discarded locals (no failure/report). Concrete callers supply the locals; preserve adapter/transport limits. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00aa7190",
+   "source": "src/gui_widget_frame_runtime.cpp",
+   "identifiers": [
+    "dispatch_current68"
+   ],
+   "evidence": "GuiWidgetFrameRuntime::dispatch_current68 source302 executes the current68 pointer bubbling/fresh listener/backend/button ordering. Whole normal AA7190 caller evidence is docs/GUI_POINTER_LISTENER_RUNTIME.md and existing reconstruction record; seven admitted base profiles, separate Listbox branch. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ac0280",
+   "source": "src/gui_section_runtime.cpp",
+   "identifiers": [
+    "properties_bound"
+   ],
+   "evidence": "Existing record explicitly names GuiSectionRuntimeImplementation::properties_bound; actual source1302 onward executes the bound property/lifetime operations. docs/GUI_SECTION_TEXTURE_OWNERSHIP.md, reports/gui_section_texture_ownership.json. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ac3fb0",
+   "source": "include/bsp/gui_widgets_cc13.hpp",
+   "identifiers": [
+    "gui_widget_virtual_noop"
+   ],
+   "evidence": "Header420-422 explicitly pairs00AC7C90 and00AC3FB0 with the executable inline empty virtual body. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ac9900",
+   "source": "include/bsp/hud_widgets.hpp",
+   "identifiers": [
+    "gui_read_properties"
+   ],
+   "evidence": "Header359/370 defines executable visitor-based gui_read_properties, instantiated with kGuiGridProperties identified by the ledger/header schema. This executes the semantic property iteration; retain the existing modelled-layout limits rather than assigning the schema accessor. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ac9950",
+   "source": "include/bsp/hud_widgets.hpp",
+   "identifiers": [
+    "gui_describe_properties"
+   ],
+   "evidence": "Header359/370 defines executable visitor-based gui_describe_properties, instantiated with kGuiGridProperties identified by the ledger/header schema. This executes the semantic property iteration; retain the existing modelled-layout limits rather than assigning the schema accessor. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00acd800",
+   "source": "include/bsp/hud_widgets.hpp",
+   "identifiers": [
+    "gui_describe_properties"
+   ],
+   "evidence": "Header359/370 defines executable visitor-based gui_describe_properties, instantiated with kGuiSoundProperties identified by the ledger/header schema. This executes the semantic property iteration; retain the existing modelled-layout limits rather than assigning the schema accessor. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00acf120",
+   "source": "src/gui_type_dispatch.cpp",
+   "identifiers": [
+    "set_size58"
+   ],
+   "evidence": "GuiFrameBoxTypeImplementation::set_size58 source153 performs base58, fresh current state/records, sequential size copies and current88 rebuild. Other class overloads share the simple name; file-granular readiness retains this limitation. reports/orch5_menu_size_dispatch.json. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ad3430",
+   "source": "include/bsp/hud_widgets.hpp",
+   "identifiers": [
+    "gui_read_properties"
+   ],
+   "evidence": "Header359/370 defines executable visitor-based gui_read_properties, instantiated with kGuiAnimIconProperties identified by the ledger/header schema. This executes the semantic property iteration; retain the existing modelled-layout limits rather than assigning the schema accessor. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00ad3550",
+   "source": "include/bsp/hud_widgets.hpp",
+   "identifiers": [
+    "gui_describe_properties"
+   ],
+   "evidence": "Header359/370 defines executable visitor-based gui_describe_properties, instantiated with kGuiAnimIconProperties identified by the ledger/header schema. This executes the semantic property iteration; retain the existing modelled-layout limits rather than assigning the schema accessor. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00b000a0",
+   "source": "src/native_particle_parameter_runtime_loading.cpp",
+   "identifiers": [
+    "append_segment"
+   ],
+   "evidence": "Source371-386 implements accumulated integral, captured/current byte count and ordered payload copies; original00b000a0 is the hermite branch, called with matching selector at435/448. Existing strict fixture/x87 qualifications retained. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00b00120",
+   "source": "src/native_particle_parameter_runtime_loading.cpp",
+   "identifiers": [
+    "append_segment"
+   ],
+   "evidence": "Source371-386 implements accumulated integral, captured/current byte count and ordered payload copies; original00b00120 is the linear branch, called with matching selector at435/448. Existing strict fixture/x87 qualifications retained. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
   },
   {
    "address": "00b55f00",
@@ -616,6 +938,22 @@
     "read_mshd_lod_phase"
    ],
    "evidence": "include/bsp/post_effects_cc13.hpp:329-329 explicitly associates 00b5b240 with declaration read_mshd_lod_phase; body src/post_effects_cc13.cpp:387. Original ABI/layout qualifications remain in ledger. Header: MshdLodPhase read_mshd_lod_phase(const MshdTable& phase, const MshdLayerHooks&);       // 00B5B240"
+  },
+  {
+   "address": "00b6f090",
+   "source": "src/native_point_light_links.cpp",
+   "identifiers": [
+    "erase_first"
+   ],
+   "evidence": "Template source49 implements first-match erase with swap-last over the actual array; source164/166 calls it for real point-light/node backlinks. Existing physical-storage fixture proof and ABI limitations retained. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00b6f150",
+   "source": "src/native_gui_text_model_clone.cpp",
+   "identifiers": [
+    "copy_native_gui_text_model_base_00b6f150_fragment"
+   ],
+   "evidence": "Actual source65 onward is the explicitly partial clone-base projection, invoking point-light links and copying admitted fields. Preserve partial_projection status and excluded full clone/storage domains; mapping does not promote coverage. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
   },
   {
    "address": "00b762b0",
@@ -984,6 +1322,86 @@
     "checked_cast"
    ],
    "evidence": "Shared template checked_cast is defined in include/bsp/scene_graph2_cc13.hpp and explicitly instantiated in src/scene_graph2_cc13.cpp:1965-1980. Ledger identifies this exact semantic algorithm; iterator wrapper addresses also listed at source:575-582. Parameterized C++ model retains its callback/ABI qualifications."
+  },
+  {
+   "address": "00bd3590",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "complete"
+   ],
+   "evidence": "PcStorageBackend::complete, source:239, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00bda2c0",
+   "source": "src/native_vfs_name_resolution.cpp",
+   "identifiers": [
+    "upper_bound"
+   ],
+   "evidence": "Actual-storage implementation source:172; local helper has the reviewed long ledger name shortened in C++. Its in-body native site addresses, ordered string/tree/provider operations and existing complete_source record establish the association. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00bdb1e0",
+   "source": "src/native_vfs_name_resolution.cpp",
+   "identifiers": [
+    "find_group"
+   ],
+   "evidence": "Actual-storage implementation source:231; local helper has the reviewed long ledger name shortened in C++. Its in-body native site addresses, ordered string/tree/provider operations and existing complete_source record establish the association. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00bdc680",
+   "source": "src/native_vfs_name_resolution.cpp",
+   "identifiers": [
+    "try_constructed"
+   ],
+   "evidence": "Actual-storage implementation source:119; local helper has the reviewed long ledger name shortened in C++. Its in-body native site addresses, ordered string/tree/provider operations and existing complete_source record establish the association. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00bddaa0",
+   "source": "src/native_vfs_name_resolution.cpp",
+   "identifiers": [
+    "try_extension_prefixes"
+   ],
+   "evidence": "Actual-storage implementation source:190; local helper has the reviewed long ledger name shortened in C++. Its in-body native site addresses, ordered string/tree/provider operations and existing complete_source record establish the association. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00bead60",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "delete_slot"
+   ],
+   "evidence": "PcStorageBackend::delete_slot, source:156, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00beaf00",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "clear_marker"
+   ],
+   "evidence": "PcStorageBackend::clear_marker, source:137, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00beaf70",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "stamp_marker"
+   ],
+   "evidence": "PcStorageBackend::stamp_marker, source:141, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00beb1c0",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "file_exists"
+   ],
+   "evidence": "PcStorageBackend::file_exists, source:94, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+  },
+  {
+   "address": "00beb1e0",
+   "source": "src/storage_backend.cpp",
+   "identifiers": [
+    "storage_query_1c"
+   ],
+   "evidence": "PcStorageBackend::storage_query_1c, source:99, is the executable semantic storage helper for this reviewed operation. HasValidMarker uses file_exists(name,\"valid\"); ClearOperation is the code-clear arm of complete(state). Native field/transport differences remain qualified. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
   }
  ]
 }
