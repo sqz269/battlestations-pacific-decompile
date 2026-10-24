@@ -27,6 +27,79 @@ struct PoolShape {
 constexpr PoolShape kPool36{0x1504, 0x28, 0x1400, 0x1500};
 constexpr PoolShape kPool20{0xd04, 0x18, 0xc00, 0xd00};
 
+static_assert(sizeof(void*) == 4 && sizeof(MitPoolAllocator) == 0x38);
+constexpr std::uint32_t kPool36Vtable = 0x00d7a1dc;
+constexpr std::uint32_t kPool20Vtable = 0x00d7a1e4;
+
+void pool_unlink(MitPoolAllocator& pool, void*& registry_head) noexcept {
+    pool.vtable_00 = 0x00d7a0c0;  // allocator_list_elem base, 00403970
+    if (pool.field_04 != 0)
+        raw(reinterpret_cast<void*>(pool.field_04)).at<std::uint32_t>(8) = pool.registry_next_08;
+    else
+        registry_head = reinterpret_cast<void*>(pool.registry_next_08);
+    if (pool.registry_next_08 != 0)
+        raw(reinterpret_cast<void*>(pool.registry_next_08)).at<std::uint32_t>(4) = pool.field_04;
+    // Native unlink keeps this element's stale links.
+}
+
+void pool_destroy_lock(MitPoolAllocator& pool) noexcept {
+    while (static_cast<std::int32_t>(pool.lock_depth_24) > 0) {
+        --pool.lock_depth_24;
+        ::LeaveCriticalSection(&pool.lock_0c);
+    }
+    ::DeleteCriticalSection(&pool.lock_0c);
+}
+
+MitPoolAllocator* pool_construct(MitPoolAllocator& pool, void*& registry_head,
+    std::uint32_t vtable, const MitPoolLifecycleCrt& crt) {
+    // Publication precedes both the concrete vtable store and lock creation.
+    pool.field_04 = 0;
+    pool.registry_next_08 = reinterpret_cast<std::uint32_t>(registry_head);
+    if (registry_head != nullptr) raw(registry_head).ptr(4) = &pool;
+    registry_head = &pool;
+    unsigned unwind_state = 0;
+    try {
+        pool.vtable_00 = vtable;
+        ::InitializeCriticalSection(&pool.lock_0c);
+        pool.lock_depth_24 = 0;
+        pool.pages_28 = nullptr;
+        pool.page_count_2c = 0;
+        // FH3 state 2: vector at +28h, section at +0Ch, base links.
+        unwind_state = 2;
+        pool.first_free_page_34 = 0xffffffffu;
+        pool.page_capacity_30 = 0x20;
+        auto* fresh = static_cast<std::uint8_t**>(crt.operator_new_00bf55be(0x80));
+        auto cursor = reinterpret_cast<std::uintptr_t>(fresh);
+        // Reload count/table after allocation. A provider can observe/change
+        // the published pool; retain the image's zero-destination skip too.
+        for (std::uint32_t i = 0; i < pool.page_count_2c; ++i, cursor += 4) {
+            if (cursor != 0)
+                *reinterpret_cast<std::uint8_t**>(cursor) = pool.pages_28[i];
+        }
+        if (pool.pages_28 != nullptr) crt.free_00bf6989(pool.pages_28);
+        pool.pages_28 = fresh;
+    } catch (...) {
+        if (unwind_state == 2) {
+            if (pool.pages_28 != nullptr) crt.free_00bf6989(pool.pages_28);
+            pool_destroy_lock(pool);
+        }
+        pool_unlink(pool, registry_head);
+        throw;
+    }
+    return &pool;
+}
+
+void pool_destroy(MitPoolAllocator& pool, void*& registry_head,
+    std::uint32_t vtable, const MitPoolLifecycleCrt& crt) {
+    pool.vtable_00 = vtable;
+    // The image reloads both count and table after every page-delete callback.
+    for (std::uint32_t i = 0; i < pool.page_count_2c; ++i)
+        crt.delete_00bf65ac(pool.pages_28[i]);
+    if (pool.pages_28 != nullptr) crt.free_00bf6989(pool.pages_28);
+    pool_destroy_lock(pool);
+    pool_unlink(pool, registry_head);
+}
+
 std::uint8_t* page_construct(const PoolShape& s, std::uint8_t* page, std::uint32_t page_index) noexcept {
     const Raw p = raw(page);
     p.at<std::uint16_t>(s.depth_off) = 0x80;
@@ -290,6 +363,28 @@ int format_string_1024_0040cfc0(char* buffer, const char* format, ...) {
     const int result = ::vsprintf_s(buffer, 0x400, format, args);  // 0040CFD4 CALL 00BF7289
     va_end(args);
     return result;
+}
+
+// ------------------------------------------------------ oct24 pool lifecycle
+
+MitPoolAllocator* pool36_construct_00407590(MitPoolAllocator& pool,
+    void*& registry_head, const MitPoolLifecycleCrt& crt) {
+    return pool_construct(pool, registry_head, kPool36Vtable, crt);
+}
+
+void pool36_destroy_global_00407690(MitPoolAllocator& pool,
+    void*& registry_head, const MitPoolLifecycleCrt& crt) {
+    pool_destroy(pool, registry_head, kPool36Vtable, crt);
+}
+
+MitPoolAllocator* pool20_construct_0040f910(MitPoolAllocator& pool,
+    void*& registry_head, const MitPoolLifecycleCrt& crt) {
+    return pool_construct(pool, registry_head, kPool20Vtable, crt);
+}
+
+void pool20_destroy_global_0040fa10(MitPoolAllocator& pool,
+    void*& registry_head, const MitPoolLifecycleCrt& crt) {
+    pool_destroy(pool, registry_head, kPool20Vtable, crt);
 }
 
 }  // namespace bsp::cc15_dyn_live
