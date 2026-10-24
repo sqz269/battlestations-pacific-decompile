@@ -286,6 +286,7 @@ struct GameHudHost::Impl {
     unsigned long long movie_publishes{0};
     unsigned long long movie_unsupported{0};
     unsigned long long movie_events_fired{0};   // cc9_lua49_movie_modifier
+    unsigned long long movie_finish_due{0}, movie_finish_ran{0};   // cc13-finscr
     unsigned long long movie_step_draws{0};   // switch 4, 00798D07
     unsigned long long movie_last_pose_log{0};
     int pick_basis_source{0};   // 0 none, 1 ShipCaptain, 2 movie camera
@@ -2274,22 +2275,62 @@ void GameHudHost::Impl::step_movie_camera(float seconds) {
         return;
     }
     done("MovieCamera::update", 0x0079a3b0u);
+    // Packet cc13-finscr: the finishscripts 007912E0 reached in this update.
+    std::string finish_note;
+    const std::vector<std::string> due = std::move(movie.finish_due);
+    movie.finish_due.clear();
+    for (const std::string& name : due) {
+        ++movie_finish_due;
+        finish_note += " finishscript=" + name;
+        if constexpr (kMovieCameraFinishScriptCc13Bound) {
+            finish_note += " ran=1";
+        } else {
+            finish_note += " would_run=1";
+        }
+    }
+    if constexpr (kMovieCameraFinishScriptCc13Bound) {
+        // 007912E0 00887E50(ECX = [[00E188A8]+1A08h], 0, &name, 0, 0, -1): `_G[name]()`
+        // through the script-orders host's named runner, as the keyframe events.
+        // SUBSTITUTION, labelled: run after 00798130's loops instead of inside the
+        // step, in the same order, because the script may destroy this camera.
+        GameScriptOrdersHost* orders = lua != nullptr ? lua->script_orders() : nullptr;
+        for (const std::string& name : due) {
+            if (orders == nullptr) {
+                record("MovieKeyframe::finishscript", 0x00887e50u);
+            } else {
+                log.notef("movie keyframe finishscript runs \"%s\" at hud update frame %llu "
+                    "(007912E0 -> 00887E50, packet cc13-finscr)", name.c_str(), summary.update_frames);
+                static_cast<bsp::MissionBlackoutHost&>(*orders).mission_lua_call_named_00887e50(name);
+                ++movie_finish_ran;
+                done("MovieKeyframe::finishscript", 0x007912e0u);
+            }
+        }
+    }
+    if (!movie_active) {
+        // A finishscript destroyed the camera; its pose is not published.
+        log.notef("movie camera pose skipped at hud update frame %llu:%s", summary.update_frames,
+            finish_note.c_str());
+        return;
+    }
     bsp::CameraMatrix16 matrix{};
     for (std::size_t i = 0; i < 16; ++i) matrix[i] = world[i];
     bsp::MissionCameraProjection projection = camera_projection;
     projection.fov = fov;                                // 0079B833 00B6FBB0
     bsp::publish_mission_camera(matrix, projection);
     ++movie_publishes;
-    if (movie_publishes == 1 || summary.update_frames >= movie_last_pose_log + 40) {
-        movie_last_pose_log = summary.update_frames;
+    // A frame with a due finishscript also prints, off the 40-frame cadence
+    // (which it does not reset), with the cc13-finscr note at the end.
+    const bool cadence = movie_publishes == 1 || summary.update_frames >= movie_last_pose_log + 40;
+    if (cadence || !finish_note.empty()) {
+        if (cadence) movie_last_pose_log = summary.update_frames;
         log.notef("movie camera pose at hud update frame %llu: clock %.2f s, position "
-            "(%.1f,%.1f,%.1f), look-at (%.1f,%.1f,%.1f), forward (%.4f,%.4f,%.4f), fov %.4f",
+            "(%.1f,%.1f,%.1f), look-at (%.1f,%.1f,%.1f), forward (%.4f,%.4f,%.4f), fov %.4f%s",
             summary.update_frames, static_cast<double>(movie.clock_3b0),
             static_cast<double>(world[12]), static_cast<double>(world[13]),
             static_cast<double>(world[14]), static_cast<double>(movie.look_384[0]),
             static_cast<double>(movie.look_384[1]), static_cast<double>(movie.look_384[2]),
             static_cast<double>(world[8]), static_cast<double>(world[9]),
-            static_cast<double>(world[10]), static_cast<double>(fov));
+            static_cast<double>(world[10]), static_cast<double>(fov), finish_note.c_str());
     }
 }
 
@@ -4415,8 +4456,11 @@ void GameHudHost::report() {
         impl.movie_events_fired);
     impl.log.notef("summary mission hud movie camera keys (packet cc9_movie_camera_keys): "
         "step_draw_bound=%d step_draws=%llu parent_killed_byte_bound=%d "
-        "terrain_avoid_bound=%d", kMovieStepDrawBound ? 1 : 0, impl.movie_step_draws,
-        kMovieParentKilledByteBound ? 1 : 0, kMovieTerrainAvoidBound ? 1 : 0);
+        "terrain_avoid_bound=%d finishscript_bound=%d finishscript_due=%llu "
+        "finishscript_ran=%llu", kMovieStepDrawBound ? 1 : 0, impl.movie_step_draws,
+        kMovieParentKilledByteBound ? 1 : 0, kMovieTerrainAvoidBound ? 1 : 0,
+        kMovieCameraFinishScriptCc13Bound ? 1 : 0, impl.movie_finish_due,
+        impl.movie_finish_ran);
     impl.log.notef("summary mission hud force select unit (packet cc9_force_select_unit, "
         "008AAF30 / 006485A0 / 00648290): bound=%d calls=%llu selects=%llu rebuilds=%llu "
         "primary_8c=%zu secondary_9c=%zu", kForceSelectUnitBound ? 1 : 0, impl.force_calls,

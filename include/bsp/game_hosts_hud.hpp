@@ -350,6 +350,19 @@ inline constexpr bool kMovieParentKilledByteBound = true;
 // parses the key and answers the ground from world_ground_height_00903860;
 // OFF counts the key as unsupported.
 inline constexpr bool kMovieTerrainAvoidBound = true;
+// Packet cc13-finscr. A keyframe's `finishscript` (007A0EB0 stores the string at
+// keyframe+FCh for a camera key or a named postype). 007911E0 at the end of the
+// blend (state 1, clock >= start + blend, 007912A0..007912B6) calls 00887E50 on
+// [[00E188A8]+1A08h] with (0, &name, 0, 0, -1) at 007912E0 unless the camera's
+// byte +390h is set ([[key+4]+74h], 0079121D; only 0079D179's store of 0 is
+// known), then sets state 2 (007912E5). True: the name is parsed and the call
+// runs through the script-orders host's named 00887E50. SUBSTITUTION, labelled:
+// at the end of the same 0079A3B0 update rather than inside 00798130's key loop,
+// because the script may destroy the camera. False: the key stays unsupported
+// and the pose line notes `finishscript=<name> would_run=1`.
+inline constexpr bool kMovieCameraFinishScriptCc13Bound = false;
+static_assert(!kMovieCameraFinishScriptCc13Bound || kMovieMoverBound,
+              "finishscript needs the movie camera mover");
 // Packet cc13-fix24 (docs/CC13_FIX24.md). The in-mission interface update's
 // 0068C52C call 0054D3C0 (ECX = HUD manager +A8h, the hints screen) returns
 // CVTTSS2SI of the screen's +54h seconds-left float, and 0068C531 tests EAX for
