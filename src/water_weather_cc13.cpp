@@ -1845,6 +1845,165 @@ void cloud_instance_invalidate_lighting_00bbe760(CloudInstanceC& c, const CloudI
 // ---------------------------------------------------------------------------
 // Sky box
 
+namespace {
+template<class T> T sky_construct_read_c(const void* object, std::size_t offset) {
+    T value;
+    std::memcpy(&value, static_cast<const unsigned char*>(object) + offset, sizeof value);
+    return value;
+}
+template<class T> void sky_construct_write_c(void* object, std::size_t offset, T value) {
+    std::memcpy(static_cast<unsigned char*>(object) + offset, &value, sizeof value);
+}
+float sky_unsigned_dimension_c(std::uint32_t value) {
+    const auto signed_value = static_cast<std::int32_t>(value);
+    const float unsigned_bias = 4294967296.0f; // CE3978 = 4F800000
+    float result;
+    __asm {
+        fild signed_value
+        cmp signed_value, 0
+        jge sky_dimension_nonnegative
+        fadd unsigned_bias
+    sky_dimension_nonnegative:
+        fstp result
+    }
+    return result;
+}
+void sky_texel_offsets_c(void* layer_base) {
+    const float width = sky_construct_read_c<float>(layer_base, 0x74);
+    const float height = sky_construct_read_c<float>(layer_base, 0x78);
+    float inverse_width, inverse_height, zero_width, zero_height;
+    // BBFCC9..BBFD22. DC C9 at BBFCFB multiplies ST1 by ST0, leaving
+    // ST0=zero for the following multiply by inverse_height. Do not replace
+    // these products with literal zero: dimensions0 produce Inf and NaN.
+    __asm {
+        fld height
+        fld width
+        fld1
+        fld st(0)
+        fdivrp st(2), st(0)
+        fxch st(1)
+        fstp inverse_width
+        fdivrp st(1), st(0)
+        fstp inverse_height
+        fld inverse_width
+        fldz
+        fmul st(1), st(0)
+        fxch st(1)
+        fstp zero_width
+        fmul inverse_height
+        fstp zero_height
+    }
+    sky_construct_write_c(layer_base, 0x34, zero_width);
+    sky_construct_write_c(layer_base, 0x3C, std::uint32_t{0});
+    sky_construct_write_c(layer_base, 0x40, std::uint32_t{0});
+    sky_construct_write_c(layer_base, 0x38, zero_height);
+    sky_construct_write_c(layer_base, 0x44, inverse_width);
+    sky_construct_write_c(layer_base, 0x48, zero_height);
+    sky_construct_write_c(layer_base, 0x4C, std::uint32_t{0});
+    sky_construct_write_c(layer_base, 0x50, std::uint32_t{0});
+    sky_construct_write_c(layer_base, 0x54, zero_width);
+    sky_construct_write_c(layer_base, 0x58, inverse_height);
+    sky_construct_write_c(layer_base, 0x5C, std::uint32_t{0});
+    sky_construct_write_c(layer_base, 0x60, std::uint32_t{0});
+    sky_construct_write_c(layer_base, 0x64, inverse_width);
+    sky_construct_write_c(layer_base, 0x68, inverse_height);
+    sky_construct_write_c(layer_base, 0x6C, std::uint32_t{0});
+    sky_construct_write_c(layer_base, 0x70, std::uint32_t{0});
+}
+}
+
+// 00BBF8A0..00BC02BF. ECX destination, source/atmosphere/name on stack,
+// RET0Ch, EAX destination. Complete normal raw-storage and host-call sequence;
+// native pool/STL allocation, FH3 unwinding, unmasked FP/hardware faults and
+// original binary ABI are outside this source interface. Producer writes and
+// all register-sensitive node/material and x87 sites were checked in assembly.
+void* sky_box_construct_00bbf8a0(void* destination, void* source, void* atmosphere,
+    std::string_view name, SkyBoxConstructHostC& host) {
+    static_assert(sizeof(void*) == 4);
+    auto* const bytes = static_cast<unsigned char*>(destination);
+    sky_construct_write_c(destination, 0, std::uint32_t{0x00CEB130});
+    sky_construct_write_c(destination, 4, std::uint32_t{1});
+    sky_construct_write_c(destination, 0, std::uint32_t{0x00D64618});
+    sky_construct_write_c(destination, 8, static_cast<void*>(nullptr));
+    sky_construct_write_c(destination, 0xC, atmosphere);
+    sky_construct_write_c(destination, 0x10, static_cast<void*>(nullptr));
+    for (std::size_t offset = 0x18; offset <= 0x30; offset += 4)
+        sky_construct_write_c(destination, offset, std::uint32_t{0});
+    // 00439750 is MOV EAX,ECX; RET, so the 4x10h array callbacks write nothing.
+    for (std::size_t layer = 0; layer != 3; ++layer)
+        sky_construct_write_c(destination, 0x84 + layer * 0x54, static_cast<void*>(nullptr));
+    if (source) {
+        sky_construct_write_c(destination, 8, source);
+        _InterlockedIncrement(reinterpret_cast<volatile long*>(static_cast<unsigned char*>(source) + 4));
+    }
+    void* const manager = host.call_004c1400();
+    void* const resource = host.call_00b80d70(manager, "sky\\skybox.mmod");
+    void* const instance = host.resource_vslot_08(resource, 6, 1.0f);
+    sky_construct_write_c(destination, 0x10, instance);
+    if (_InterlockedDecrement(reinterpret_cast<volatile long*>(static_cast<unsigned char*>(resource) + 4)) == 0)
+        host.refcounted_vslot_00(resource);
+    void* const node = sky_construct_read_c<void*>(instance, 0xC);
+    sky_construct_write_c(destination, 0x14, node);
+    void* const captured_34 = sky_construct_read_c<void*>(node, 0x34);
+    host.call_00b6d890(node, sky_construct_read_c<void*>(destination, 8));
+    const char* const suffixes[]{"_A.tga", "_B.tga", "_C.tga"};
+    for (std::size_t layer = 0; layer != 3; ++layer) {
+        void* const texture_manager = host.global_pointer_00f8d394();
+        const std::string texture_name = std::string(name) + suffixes[layer];
+        void* const texture = host.texture_manager_vslot_64(texture_manager, texture_name, 0);
+        const auto base = layer * 0x54;
+        sky_construct_write_c(destination, base + 0x84, texture);
+        const auto width = host.texture_vslot_3c(texture);
+        sky_construct_write_c(destination, base + 0x74, sky_unsigned_dimension_c(width));
+        const auto height = host.texture_vslot_40(sky_construct_read_c<void*>(destination, base + 0x84));
+        sky_construct_write_c(destination, base + 0x78, sky_unsigned_dimension_c(height));
+        sky_texel_offsets_c(bytes + base);
+    }
+    void* const current_node = sky_construct_read_c<void*>(destination, 0x14);
+    sky_construct_write_c(current_node, 0x138, sky_construct_read_c<std::uint32_t>(current_node, 0x138) & ~3u);
+    sky_construct_write_c(captured_34, 0x138, sky_construct_read_c<std::uint32_t>(captured_34, 0x138) & ~3u);
+    void* const nested_34 = sky_construct_read_c<void*>(current_node, 0x34);
+    void* const nested_3c = sky_construct_read_c<void*>(nested_34, 0x3C);
+    sky_construct_write_c(nested_3c, 0x138, sky_construct_read_c<std::uint32_t>(nested_3c, 0x138) & ~3u);
+    host.call_00b72b50(host.call_00b74640(nested_3c, 0));
+    for (std::uint32_t geometry_index = 0; geometry_index < host.call_00b74650(captured_34); ++geometry_index) {
+        std::array<float, 4> bounds{};
+        const std::uint32_t radius_bits = 0x501502F9u; // CE4970, copied as raw float bits
+        std::memcpy(&bounds[3], &radius_bits, sizeof radius_bits);
+        host.call_00b72650(host.call_00b74640(captured_34, geometry_index), bounds);
+        void* const geometry = host.call_00b74640(captured_34, geometry_index);
+        for (std::uint32_t element_index = 0; element_index < host.call_00b72b40(geometry); ++element_index) {
+            void* element = host.call_00b732c0(geometry, element_index);
+            void* material = sky_construct_read_c<void*>(element, 0x20);
+            void* const first_texture = sky_construct_read_c<std::int16_t>(material, 0x34) > 0
+                ? sky_construct_read_c<void*>(material, 0x10) : nullptr;
+            const void* const name_header = host.call_00b33e40(first_texture);
+            const auto length = sky_construct_read_c<std::uint32_t>(name_header, 0);
+            const char* const data = sky_construct_read_c<const char*>(name_header, 4);
+            const std::string element_name = length ? std::string(data, length) : std::string();
+            std::size_t layer = 0;
+            if (!std::strstr(element_name.c_str(), "skyboxdummy_a")) {
+                if (std::strstr(element_name.c_str(), "skyboxdummy_b")) layer = 1;
+                else if (std::strstr(element_name.c_str(), "skyboxdummy_c")) layer = 2;
+            }
+            element = host.call_00b732c0(geometry, element_index);
+            material = sky_construct_read_c<void*>(element, 0x20);
+            host.call_00b18b20(material, "cLuminance", reinterpret_cast<float*>(bytes + 0x30));
+            const char* const offset_names[]{"cOffset0", "cOffset1", "cOffset2", "cOffset3", "cTextureSize"};
+            for (std::size_t parameter = 0; parameter != 5; ++parameter) {
+                element = host.call_00b732c0(geometry, element_index);
+                material = sky_construct_read_c<void*>(element, 0x20);
+                host.call_00b18ac0(material, offset_names[parameter],
+                    reinterpret_cast<float*>(bytes + layer * 0x54 + 0x34 + parameter * 0x10), 1);
+            }
+            element = host.call_00b732c0(geometry, element_index);
+            host.call_00b189f0(sky_construct_read_c<void*>(element, 0x20), 0,
+                sky_construct_read_c<void*>(destination, layer * 0x54 + 0x84));
+        }
+    }
+    return destination;
+}
+
 float sky_box_rotation_radians_00bbf1a0(float degrees) noexcept {
     // 00BBF1A6..00BBF1C4: FMUL qword 00D64610 (3.141592025756836, not the double pi),
     // FDIV qword 00CE3D20 (180.0), FSTP float.
