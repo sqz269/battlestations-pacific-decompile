@@ -48,6 +48,10 @@
 #include "bsp/engine_seg43_45_cc13.hpp"
 #include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/particle_emitters_cc13.hpp"
+#include "bsp/band_006b_cc13.hpp"
+#include "bsp/band_004b_cc13.hpp"
+#include "bsp/engine_services_cc13.hpp"
+#include "bsp/cc13_gui1.hpp"
 #include "cc13_leaf_reference.hpp"
 #include <float.h>
 #include <array>
@@ -1113,6 +1117,238 @@ int main() {
         const std::string tag = pc == _PC_53 ? " @53" : " @24";
         run_fixture8([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
     }
+    // cc13-fixture7: Dyn shape supports and transforms, and main-thread vector helpers. Each
+    // routine runs at 53-bit and at 24-bit precision control on the same inputs; the deciding
+    // pass is the calling thread's (primary53 below lists the worker-only routines).
+    {
+        // Same-bits compare of n floats: 1 equal, 0 differs, -1 differs only where both are NaN.
+        const auto cmp = [](const float* a, const float* b, int n) {
+            if (std::memcmp(a, b, 4 * static_cast<std::size_t>(n)) == 0) return 1;
+            return nan_only_diff(a, b, n) ? -1 : 0;
+        };
+        const auto record = [](Case& c, int r) { if (r < 0) c.check_nan_only(); else c.check(r == 1); };
+        const auto bits = [] { std::uint32_t u = next(); float f; std::memcpy(&f, &u, 4); return f; };
+        const auto run_fixture7 = [&](auto open7) {
+            {
+                auto& c = open7("00C48080 sphere support (float)");
+                auto native = at<void (__fastcall*)(const void*, int, float*, const float*, const float*)>(cc13_leaf_00c48080);
+                alignas(16) unsigned char shape[0x220]{};
+                for (int i = 0; i < 2000; ++i) {
+                    const float r = edge_or(0, 50);
+                    std::memcpy(shape + 0x210, &r, 4);
+                    float dir[3], xf[12], o1[3] = {7, 7, 7}, o2[3] = {7, 7, 7};
+                    for (float& v : dir) v = edge_or(-1, 1);
+                    for (float& v : xf) v = edge_or(-1000, 1000);
+                    native(shape, 0, o1, dir, xf);
+                    bsp::cc13_dyn1::sphere_shape_support_00c48080(shape, o2, dir, xf);
+                    record(c, cmp(o1, o2, 3));
+                }
+            }
+            {
+                auto& c = open7("00C38970 sphere support (double)");
+                auto native = at<void (__fastcall*)(const void*, int, double*, const double*, const float*)>(cc13_leaf_00c38970);
+                alignas(16) unsigned char shape[0x220]{};
+                for (int i = 0; i < 2000; ++i) {
+                    const float r = edge_or(0, 50);
+                    std::memcpy(shape + 0x210, &r, 4);
+                    double dir[3], o1[3] = {7, 7, 7}, o2[3] = {7, 7, 7};
+                    float xf[12];
+                    for (double& v : dir) v = static_cast<double>(edge_or(-1, 1)) + (next() % 2 ? 1e-9 : 0.0);
+                    for (float& v : xf) v = edge_or(-1000, 1000);
+                    native(shape, 0, o1, dir, xf);
+                    bsp::cc13_dyn1::sphere_shape_support_00c38970(shape, o2, dir, xf);
+                    const bool same = std::memcmp(o1, o2, sizeof(o1)) == 0;
+                    bool nan = !same;
+                    for (int k = 0; k < 3; ++k)
+                        if (std::memcmp(&o1[k], &o2[k], 8) != 0 && !(std::isnan(o1[k]) && std::isnan(o2[k]))) nan = false;
+                    if (nan) c.check_nan_only(); else c.check(same);
+                }
+            }
+            {
+                auto& c = open7("00C377F0 ccw 2D");
+                auto native = at<int (__stdcall*)(float, float, float, float, float, float)>(cc13_leaf_00c377f0);
+                for (int i = 0; i < 4000; ++i) {
+                    float v[6];
+                    for (float& x : v) x = edge_or(-100, 100);
+                    if (i % 20 == 0) { v[4] = v[0] + (v[2] - v[0]) * 2.0f; v[5] = v[1] + (v[3] - v[1]) * 2.0f; }  // collinear
+                    const bool n1 = native(v[0], v[1], v[2], v[3], v[4], v[5]) != 0;
+                    const bool n2 = bsp::cc13_dyn1::ccw_2d_00c377f0(v[0], v[1], v[2], v[3], v[4], v[5]);
+                    check_note(c, n1 == n2, "%a %a %a %a %a %a: %d / %d", v[0], v[1], v[2], v[3], v[4], v[5], n1, n2);
+                }
+            }
+            {
+                // Random bit patterns, signalling NaNs included: FLD/FSTP quiets them.
+                auto& e = open7("00C33650 transform 3x4 to 4x4");
+                auto expand = at<void (__fastcall*)(const float*, int, float*)>(cc13_leaf_00c33650);
+                auto& f = open7("00C336C0 transform from 4x4");
+                auto from = at<void (__fastcall*)(float*, int, const float*)>(cc13_leaf_00c336c0);
+                for (int i = 0; i < 1000; ++i) {
+                    float src[16], a1[16], a2[16], b1[12], b2[12];
+                    for (float& v : src) v = i % 2 ? bits() : edge_or(-10, 10);
+                    for (int k = 0; k < 16; ++k) a1[k] = a2[k] = 3.0f;
+                    expand(src, 0, a1);
+                    bsp::cc13_dyn1::transform_expand_3x4_to_4x4_00c33650(src, a2);
+                    check_note(e, std::memcmp(a1, a2, sizeof(a1)) == 0, "[%d] %08x / %08x", first_diff(a1, a2, 16),
+                               first_diff(a1, a2, 16) < 0 ? 0u : reinterpret_cast<std::uint32_t&>(a1[first_diff(a1, a2, 16)]),
+                               first_diff(a1, a2, 16) < 0 ? 0u : reinterpret_cast<std::uint32_t&>(a2[first_diff(a1, a2, 16)]));
+                    for (int k = 0; k < 12; ++k) b1[k] = b2[k] = 3.0f;
+                    from(b1, 0, src);
+                    bsp::cc13_dyn1::transform_from_4x4_00c336c0(b2, src);
+                    f.check(std::memcmp(b1, b2, sizeof(b1)) == 0);
+                }
+            }
+            {
+                auto& c = open7("00C37F10 body inertia");
+                auto native = at<void (__fastcall*)(const void*, int, float*)>(cc13_leaf_00c37f10);
+                alignas(16) unsigned char m[0x60]{};
+                void* body[2] = {nullptr, m};
+                for (int i = 0; i < 2000; ++i) {
+                    for (int k = 0; k < 3; ++k) { const float v = edge_or(-5, 5); std::memcpy(m + 0x54 + 4 * k, &v, 4); }
+                    float o1[3] = {7, 7, 7}, o2[3] = {7, 7, 7};
+                    native(body, 0, o1);
+                    bsp::cc13_dyn1::body_inertia_00c37f10(body, o2);
+                    record(c, cmp(o1, o2, 3));
+                }
+            }
+            {
+                auto& c = open7("00709B60 vec3 add scaled");
+                auto native = at<void (__fastcall*)(float*, const float*, float)>(cc13_leaf_00709b60);
+                auto& d = open7("006E0540 vec3 add scaled");
+                auto native2 = at<void (__fastcall*)(float*, int, const float*, float)>(cc13_leaf_006e0540);
+                for (int i = 0; i < 3000; ++i) {
+                    float v[3], dv[3];
+                    for (float& x : v) x = edge_or(-100, 100);
+                    for (float& x : dv) x = edge_or(-10, 10);
+                    const float s = edge_or(-3, 3);
+                    float o1[3] = {v[0], v[1], v[2]};
+                    bsp::band_0067_cc13::Vec3 o2{v[0], v[1], v[2]};
+                    native(o1, dv, s);
+                    bsp::band_0067_cc13::vec3_add_scaled_in_place_00709b60(o2, {dv[0], dv[1], dv[2]}, s);
+                    const float r2[3] = {o2.x, o2.y, o2.z};
+                    record(c, cmp(o1, r2, 3));
+                    float p1[3] = {v[0], v[1], v[2]}, p2[3] = {v[0], v[1], v[2]};
+                    native2(p1, 0, dv, s);
+                    bsp::band_006b_cc13::vec3_add_scaled_in_place_006e0540(p2, dv, s);
+                    record(d, cmp(p1, p2, 3));
+                }
+            }
+            {
+                auto& c = open7("0059C920 world bounds center");
+                auto native = at<void (__fastcall*)(const void*, int, float*)>(cc13_leaf_0059c920);
+                auto& d = open7("004B4850 map box center");
+                auto native2 = at<void (__fastcall*)(const void*, int, float*)>(cc13_leaf_004b4850);
+                static unsigned char game[0x7140]{};
+                for (int i = 0; i < 3000; ++i) {
+                    float f[6];
+                    for (float& x : f) x = edge_or(-5000, 5000);
+                    std::memcpy(game + 0x711c, f, sizeof(f));
+                    float o1[3] = {7, 7, 7}, o2[3] = {7, 7, 7}, q1[3] = {7, 7, 7};
+                    native(game, 0, o1);
+                    bsp::cc13_fe1::game_world_bounds_center_0059c920(game, o2);
+                    record(c, cmp(o1, o2, 3));
+                    native2(game, 0, q1);
+                    const bsp::cc13_band004b::GameMapBox box{f[0], f[1], f[2], f[3], f[4], f[5]};
+                    const std::array<float, 3> q2 = bsp::cc13_band004b::game_map_box_center_004b4850(box);
+                    record(d, cmp(q1, q2.data(), 3));
+                }
+            }
+            {
+                auto& a = open7("004193E0 vector3 length squared");
+                auto la = at<float (__fastcall*)(const float*)>(cc13_leaf_004193e0);
+                auto& b = open7("00427E30 vector3 length squared");
+                auto lb = at<float (__fastcall*)(const float*)>(cc13_leaf_00427e30);
+                auto& c2 = open7("004191D0 vector2 length squared");
+                auto lc = at<float (__fastcall*)(const float*)>(cc13_leaf_004191d0);
+                for (int i = 0; i < 3000; ++i) {
+                    float v[3];
+                    for (float& x : v) x = edge_or(-1000, 1000);
+                    // Tiny and huge vectors: the squares leave float range on the stack.
+                    if (i % 5 == 1) for (float& x : v) x = std::ldexp(x, -72);
+                    if (i % 5 == 2) for (float& x : v) x = std::ldexp(x, 54);
+                    float n = la(v), r = bsp::engine_seg1_cc13::vector3_length_squared_004193e0(v);
+                    record(a, cmp(&n, &r, 1));
+                    n = lb(v); r = bsp::cc13_left61::vector3_length_squared_00427e30(v);
+                    record(b, cmp(&n, &r, 1));
+                    n = lc(v); r = bsp::engine_seg1_cc13::vector2_length_squared_004191d0(v);
+                    record(c2, cmp(&n, &r, 1));
+                }
+            }
+            {
+                auto& c = open7("00BEE140 scale vector4");
+                auto native = at<void (__fastcall*)(float*, const float*, const float*)>(cc13_leaf_00bee140);
+                auto& d = open7("004E5D20 rgba scale");
+                auto native2 = at<void (__fastcall*)(float*, int, float)>(cc13_leaf_004e5d20);
+                for (int i = 0; i < 3000; ++i) {
+                    float v[4], o1[4] = {7, 7, 7, 7}, o2[4] = {7, 7, 7, 7};
+                    for (float& x : v) x = edge_or(-100, 100);
+                    const float s = edge_or(-4, 4);
+                    native(o1, &s, v);
+                    // The 24-bit arm (kScaleVector4Pc24Cc13Bound is still off on the live path).
+                    bsp::engine_services_cc13::scale_vector4_pc24_00bee140(o2, &s, v);
+                    record(c, cmp(o1, o2, 4));
+                    float p1[4] = {v[0], v[1], v[2], v[3]}, p2[4] = {v[0], v[1], v[2], v[3]};
+                    native2(p1, 0, s);
+                    bsp::scene_weather_cc13::scale_rgba_004e5d20(p2, s);
+                    record(d, cmp(p1, p2, 4));
+                }
+            }
+            {
+                auto& c = open7("00AB6BD0 text height");
+                auto native = at<float (__fastcall*)(const void*)>(cc13_leaf_00ab6bd0);
+                alignas(16) unsigned char ctx[0x180]{}, font[0x20]{};
+                for (int i = 0; i < 3000; ++i) {
+                    const int mode = static_cast<int>(next() % 3);
+                    ctx[0xfc] = mode == 0 ? static_cast<unsigned char>(1 + next() % 255) : 0;
+                    const float h = edge_or(-100, 1000);
+                    std::memcpy(ctx + 0x178, &h, 4);
+                    const std::int16_t fh = static_cast<std::int16_t>(next());
+                    std::memcpy(font + 0x14, &fh, 2);
+                    void* const fp = mode == 1 ? font : nullptr;
+                    std::memcpy(ctx + 0x108, &fp, 4);
+                    float n = native(ctx), r = bsp::cc13_gui1::text_context_get_normalized_text_height_00ab6bd0(ctx);
+                    record(c, cmp(&n, &r, 1));
+                }
+            }
+            {
+                auto& c = open7("007B8140 float window sample and sum");
+                auto native = at<void (__fastcall*)(void*, int, std::int32_t, std::int32_t, float)>(cc13_leaf_007b8140);
+                alignas(16) float w1[24], w2[24];
+                for (int i = 0; i < 3000; ++i) {
+                    for (int k = 0; k < 24; ++k) w1[k] = w2[k] = edge_or(-50, 50);
+                    const std::int32_t count = static_cast<std::int32_t>(next() % 22);
+                    const std::int32_t index = count > 0 ? static_cast<std::int32_t>(next() % count) : 0;
+                    const float sample = edge_or(-50, 50);
+                    native(w1, 0, index, count, sample);
+                    bsp::cc13_seg47::float_window_set_sample_and_sum_007b8140(bsp::cc13_seg47::raw(w2), index, count, sample);
+                    record(c, cmp(w1, w2, 24));
+                }
+            }
+            {
+                auto& c = open7("007BA450 max3");
+                auto native = at<float (__fastcall*)(const float*, const float*, const float*)>(cc13_leaf_007ba450);
+                auto& d = open7("00AB0FE0 gui colour equal");
+                auto native2 = at<int (__fastcall*)(const float*, int, const float*)>(cc13_leaf_00ab0fe0);
+                for (int i = 0; i < 3000; ++i) {
+                    float v[3];
+                    for (float& x : v) x = edge_or(-10, 10);
+                    if (i % 10 == 0) v[1] = v[0];
+                    float n = native(&v[0], &v[1], &v[2]), r = bsp::cc13_seg47::max3_007ba450(&v[0], &v[1], &v[2]);
+                    record(c, cmp(&n, &r, 1));
+                    float a[4], b[4];
+                    for (int k = 0; k < 4; ++k) { a[k] = edge_or(0, 1); b[k] = next() % 4 ? a[k] : edge_or(0, 1); }
+                    if (i % 7 == 0) b[next() % 4] = -0.0f * a[0];
+                    d.check((native2(a, 0, b) != 0) == bsp::cc13_gui1::gui_color_equal_00ab0fe0(a, b));
+                }
+            }
+        };
+        for (const unsigned pc : {static_cast<unsigned>(_PC_53), static_cast<unsigned>(_PC_24)}) {
+            _controlfp_s(&control, pc | _RC_NEAR, _MCW_PC | _MCW_RC);
+            state = 0x7f0c13a7u;
+            const std::string tag = pc == _PC_53 ? " @53" : " @24";
+            run_fixture7([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
+        }
+        _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
+    }
     _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
     // cc13-fixture2 cases carry a precision suffix. The pass that decides is the precision of
     // the thread the image runs the routine on (docs/CC13_FPU_PRECISION.md): 24-bit for the
@@ -1122,7 +1358,7 @@ int main() {
     // unlisted routine), so a new mismatch or a fixed one both show up.
     // cc13-fixture3: the double support mappings 00C38470 and 00C38810 are reached only from
     // the GJK routines 00C51C20 / 00C51EF0 of the narrow-phase intersectors (Dyn workers).
-    static const char* const primary53[] = {"00C37860", "00C38470", "00C38810"};
+    static const char* const primary53[] = {"00C37860", "00C38470", "00C38810", "00C38970"};
     struct Pinned { const char* address; int failures; int nan_only; const char* finding; };
     static const Pinned pinned[] = {
         {"004F3DA0", 57, 0, "float intermediates overflow where the x87 stack does not"},
