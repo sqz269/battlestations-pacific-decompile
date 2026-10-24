@@ -185,6 +185,14 @@ def commits_with_patches(*paths):
         yield int(parts[1]), harness_of(parts[4]), parts[2], parts[3], body.splitlines()
 
 
+NO_BODY_STATUSES = {'metadata_only_no_function_body_verified_oct24'}
+
+
+def reconstruction_has_body(status):
+    """Explicit audits can withdraw body credit without deleting their evidence record."""
+    return status not in NO_BODY_STATUSES
+
+
 def first_ledger_records(kind_now, passes):
     """address -> (ts, harness, pass) for functions and fragments, first time each address entered the ledger."""
     funcs, frags = {}, {}
@@ -305,14 +313,20 @@ def build(now=None):
         if not name.startswith(FUNCLET):
             funcs[a] = (seg, tag, rk, ln, name, rn)
     kind_now = {}
-    for addr, kind in db.execute('select printf("%08x", address), kind from recon'):
+    audited_no_body, current_bodies = set(), set()
+    for addr, kind, status in db.execute('select printf("%08x", address), kind, status from recon'):
+        if kind == 'function':
+            (current_bodies if reconstruction_has_body(status) else audited_no_body).add(int(addr, 16))
         if kind == 'function' or addr not in kind_now:
             kind_now[addr] = kind  # a function record wins over a fragment at the same address
+    audited_no_body -= current_bodies
     passes = Passes()
     ledger_funcs, ledger_frags = first_ledger_records(kind_now, passes)
     ledger_first = {int(a, 16): v for a, v in ledger_funcs.items()}
+    ledger_first = {a: v for a, v in ledger_first.items() if a not in audited_no_body}
     frag_first = {int(a, 16): v[0] for a, v in ledger_frags.items()}
     src_first = first_source_bodies(set(funcs), passes)
+    src_first = {a: v for a, v in src_first.items() if a not in audited_no_body}
     union = dict(ledger_first)
     for a, v in src_first.items():
         if a not in union or v[0] < union[a][0]:
@@ -416,6 +430,7 @@ def build(now=None):
                  target=sum(game.values()), game_done=len(game_union),
                  game_rate24=sum(1 for v in game_union.values() if v[0] >= now - 86400),
                  game_outside=sum(1 for a, g in game.items() if g and funcs[a][0] is None),
+                 audited_no_body=len(audited_no_body),
                  pool_remaining=sum(s['remaining'] for s in segments),
                  rate24=sum(1 for v in union.values() if v[0] >= now - 86400),
                  names24=sum(1 for v in names_first.values() if v[0] >= now - 86400),
