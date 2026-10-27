@@ -63,10 +63,23 @@ void cross3(float out[3], const float a[3], const float b[3]) {
     }
 }
 
+// 00B64260..00B642D8, the look-at translation: three inlined dots with the eye held on
+// the x87 stack, each (x*x' + y*y') + z*z' (the first add takes either product first),
+// FSTP float, then FCHS.
 float dot3(const float a[3], const float b[3]) {
-    return static_cast<float>(static_cast<double>(a[0]) * b[0] +
-                              static_cast<double>(a[1]) * b[1] +
-                              static_cast<double>(a[2]) * b[2]);
+    float out;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-3: each FMUL and FADDP rounded at PC24 (00B6426A..00B6428A,
+        // 00B6429B..00B642AB, 00B642C0..00B642CC).
+        out = static_cast<float>(pc24::x87_add24(
+            pc24::x87_add24(pc24::x87_mul24(a[0], b[0]), pc24::x87_mul24(a[1], b[1])),
+            pc24::x87_mul24(a[2], b[2])));
+    } else {
+        out = static_cast<float>(static_cast<double>(a[0]) * b[0] +
+                                 static_cast<double>(a[1]) * b[1] +
+                                 static_cast<double>(a[2]) * b[2]);
+    }
+    return out;
 }
 
 void identity(AdvanceMatrix& m) {
@@ -225,6 +238,7 @@ void rotate_about_axis_equivalent(AdvanceMatrix& out, const AdvanceMatrix& in,
 
     // 0085E4F0..0085E544's two guards, reproduced so the fast path agrees with
     // the native on when *not* to rotate at all.
+    // pc24-lint: allow no caller; a Rodrigues equivalent, not an image chain (0085E4D0's live copy is per op)
     const float len2 = static_cast<float>(static_cast<double>(w[0]) * w[0] +
                                           static_cast<double>(w[1]) * w[1] +
                                           static_cast<double>(w[2]) * w[2]);
@@ -260,8 +274,11 @@ void rotate_about_axis_equivalent(AdvanceMatrix& out, const AdvanceMatrix& in,
         const double x = in.m[4 * row + 0];
         const double y = in.m[4 * row + 1];
         const double z = in.m[4 * row + 2];
+        // pc24-lint: allow no caller; a Rodrigues equivalent, not an image chain
         out.m[4 * row + 0] = static_cast<float>(x * r[0] + y * r[3] + z * r[6]);
+        // pc24-lint: allow no caller; a Rodrigues equivalent, not an image chain
         out.m[4 * row + 1] = static_cast<float>(x * r[1] + y * r[4] + z * r[7]);
+        // pc24-lint: allow no caller; a Rodrigues equivalent, not an image chain
         out.m[4 * row + 2] = static_cast<float>(x * r[2] + y * r[5] + z * r[8]);
     }
     // Row 3 stays as `in` had it, matching 0085E833's restore.

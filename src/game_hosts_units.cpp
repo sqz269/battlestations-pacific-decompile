@@ -183,6 +183,7 @@
 #include "bsp/sw1b_switch_reach.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_shipai_cc13.hpp"           // pc24w1-sweep2-3 (0074F490)
+#include "bsp/pc24_flightrender_cc13.hpp"     // pc24w1-sweep1-3 (007DB4D0)
 
 #include <cfloat>
 #include <cmath>
@@ -10470,6 +10471,22 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         }
         const float bi = bsp::clamped_interpolate_00419010(y1, 1.0f, y2, 0.0f, trl);
         const float b = static_cast<float>(static_cast<double>(bi) * 0.20000000298023224);
+        float rate;
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            // pc24w1-sweep1-3: each op rounded at PC24. c = (sr * slide + b) * yaw_spd
+            // (007DB566..007DB570), dd = a + c * cr (007DB584..007DB58C), e = (sr * c) /
+            // (ps * cr) (007DB59E..007DB5AC), then (ps * e) * sr + dd (007DB603..007DB60A).
+            const float ys = u.plane_class.yaw_spd;                           // +1B0h
+            const float c = static_cast<float>(cc13x87::x87_mul24(
+                cc13x87::x87_add24(cc13x87::x87_mul24(sr, u.plane_class.slide_ratio), b), ys));
+            const float dd = static_cast<float>(cc13x87::x87_add24(a, cc13x87::x87_mul24(c, cr)));
+            const float ps = u.plane_class.pitch_spd;                         // +1ACh
+            float e = static_cast<float>(cc13x87::x87_div24(cc13x87::x87_mul24(sr, c),
+                                                            cc13x87::x87_mul24(ps, cr)));
+            if (e > 0.6000000238418579f) e = 0.6000000238418579f;
+            rate = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_mul24(cc13x87::x87_mul24(ps, e), sr), dd));
+        } else {
         const double ys = u.plane_class.yaw_spd;                              // +1B0h
         const float c = static_cast<float>(
             (static_cast<double>(sr) * u.plane_class.slide_ratio + b) * ys);  // +1B8h
@@ -10479,8 +10496,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         float e = static_cast<float>((static_cast<double>(sr) * c) /
             (static_cast<double>(cr) * ps));
         if (e > 0.6000000238418579f) e = 0.6000000238418579f;
-        return static_cast<float>(static_cast<double>(dd) +
+        rate = static_cast<float>(static_cast<double>(dd) +
             ps * e * static_cast<double>(sr));
+        }
+        return rate;
     }
 
     void run_follow_law_009bfee0_009bee30(
