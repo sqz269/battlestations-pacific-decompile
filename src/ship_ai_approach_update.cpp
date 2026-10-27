@@ -20,10 +20,20 @@
 #include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/gamepad_force_events.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 namespace bsp {
 
 namespace {
+
+// kPc24ShipAiCc13Bound (bsp/pc24_shipai_cc13.hpp), packet pc24w1-sweep2-2: ON rounds every
+// x87 op of the chains below to 24 bits, as the main thread's precision control does; OFF
+// keeps the double chains that round once at the float store. Sites in this file:
+// 009F1BC0 goal range and frame-state offset, 009E46F0 arc-centre length, 009E7FC0
+// normalized score, 009E76D0 slot total, 009E5E90 slot of bearing, 009E6A90 gate ratios,
+// 009E6E80 standoff offset and side curve, 009E9190 avoidance length, 0095E9A0 hits to sink.
+namespace pc24 = cc13x87;
 
 // Packet cc9_x87_dc_form_w2 (docs/CC13_X87_DC_FORM_AUDIT.md W2, docs/SHIP_AI_OPEN_ITEMS.md 217).
 // True: 009E7441..009E7469 as the bytes compute it, 0.5 * (h*pi + pi). False: the
@@ -83,9 +93,17 @@ float ship_ai_approach_goal_range_009f1bc0(float goal_x, float goal_z,
     const float dx = static_cast<float>(static_cast<double>(goal_x) - unit_x);
     const float dz = static_cast<float>(static_cast<double>(goal_z) - unit_z);
     // 009F1C96..009F1CAC: dx*dx + 0*0 + dz*dz, one float store.
-    const float sum = static_cast<float>(static_cast<double>(dx) * dx +
-                                         0.0 * 0.0 +
-                                         static_cast<double>(dz) * dz);
+    float sum;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009F1CA0 FMULP dx*dx, 009F1CA4 0*0, 009F1CA6 FADDP, 009F1CA8 dz*dz, 009F1CAA FADDP.
+        sum = static_cast<float>(pc24::x87_add24(
+            pc24::x87_add24(pc24::x87_mul24(dx, dx), pc24::x87_mul24(0.0, 0.0)),
+            pc24::x87_mul24(dz, dz)));
+    } else {
+        sum = static_cast<float>(static_cast<double>(dx) * dx +
+                                 0.0 * 0.0 +
+                                 static_cast<double>(dz) * dz);
+    }
     // 009F1CBA FCOMI then JBE: the square root runs only on the strictly
     // greater, ordered side; everything else stores 0.0f.
     if (!(static_cast<double>(sum) > kApproachRangeEpsilonSq)) {
@@ -111,8 +129,14 @@ float ship_ai_approach_arc_centre_009e46f0(bool have_point, float dx, float dz) 
     // 009E4833..009E4843: dx*dx accumulated onto dz*dz at x87 precision, one
     // float store. 009E4841's FXCH leaves dx in ST0 and dz in ST1 for the
     // atan2 below, which is why the helper takes them in that order.
-    const float lensq = static_cast<float>(static_cast<double>(dx) * dx +
-                                           static_cast<double>(dz) * dz);
+    float lensq;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009E4839 dx*dx, 009E483D FMULP dz*dz, 009E483F FADDP, each rounded.
+        lensq = static_cast<float>(pc24::x87_add24(pc24::x87_mul24(dz, dz), pc24::x87_mul24(dx, dx)));
+    } else {
+        lensq = static_cast<float>(static_cast<double>(dx) * dx +
+                                   static_cast<double>(dz) * dz);
+    }
     // 009E4851, FCOMIP of the threshold against the length then JBE: atan2 runs
     // on the reached side, everything else falls to the same FLDZ.
     if (!(kApproachArcCentreEpsilonSq <= static_cast<double>(lensq))) return 0.0f;
@@ -163,7 +187,14 @@ float ship_ai_approach_normalized_score_009e7fc0(float raw, float maximum,
                                                  float tune_00) noexcept {
     // 009E81E4..009E81FC: divide, multiply, one float store. The image never
     // tests the divisor.
-    return static_cast<float>(static_cast<double>(raw) / maximum * tune_00);
+    float score;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009E81EA FDIV, 009E81FA FMUL, each rounded.
+        score = static_cast<float>(pc24::x87_mul24(pc24::x87_div24(raw, maximum), tune_00));
+    } else {
+        score = static_cast<float>(static_cast<double>(raw) / maximum * tune_00);
+    }
+    return score;
 }
 
 float ship_ai_approach_avoid_weight_009e9190(float strength, float slot_angle,
@@ -178,10 +209,18 @@ float ship_ai_approach_avoid_weight_009e9190(float strength, float slot_angle,
 float ship_ai_approach_slot_total_009e76d0(const ShipAiApproachSlotScore& slot) noexcept {
     // 009E7BE0..009E7BEE, in the image's accumulation order.
     double total = slot.avoid_3c;
-    total += slot.normalized_2c;
-    total += slot.penalty_30;
-    total += slot.bearing_34;
-    total += slot.evade_38;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009E7BE3, 009E7BE5, 009E7BE8, 009E7BEB: four FADDs, each rounded.
+        total = pc24::x87_add24(total, slot.normalized_2c);
+        total = pc24::x87_add24(total, slot.penalty_30);
+        total = pc24::x87_add24(total, slot.bearing_34);
+        total = pc24::x87_add24(total, slot.evade_38);
+    } else {
+        total += slot.normalized_2c;
+        total += slot.penalty_30;
+        total += slot.bearing_34;
+        total += slot.evade_38;
+    }
     return static_cast<float>(total);
 }
 
@@ -214,9 +253,17 @@ int ship_ai_approach_slot_of_bearing_009e5e90(float bearing) noexcept {
     if (!(0.0f <= shifted)) {
         shifted = static_cast<float>(static_cast<double>(shifted) + kApproachFullTurn);
     }
-    const double scaled = static_cast<double>(shifted) * kApproachSlotDivisor;
-    // 009E5ECC, _ftol2 (00BF7420 is CVTTSD2SI), truncation toward zero.
-    return static_cast<int>(scaled / kApproachFullTurn);
+    int slot;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009E5EC4 FMUL, 009E5ECA FDIVRP, each rounded before the 009E5ECC truncation.
+        slot = static_cast<int>(pc24::x87_div24(
+            pc24::x87_mul24(shifted, kApproachSlotDivisor), kApproachFullTurn));
+    } else {
+        const double scaled = static_cast<double>(shifted) * kApproachSlotDivisor;
+        // 009E5ECC, _ftol2 (00BF7420 is CVTTSD2SI), truncation toward zero.
+        slot = static_cast<int>(scaled / kApproachFullTurn);
+    }
+    return slot;
 }
 
 void ship_ai_approach_turn_costs_009e5e90(const bool blocked[kShipAiApproachSlotCount],
@@ -622,18 +669,33 @@ void ship_ai_approach_limit_throttle_009e6a90(ShipAiApproachState& state,
             // 009E6D70, FCOMI then JC: below -50 is the astern arm.
             if (static_cast<double>(distance) < kApproachAsternWindow) {
                 if (kApproachHeadingDeadband > error_abs) { // 009E6DEC
-                    const double ratio =
-                        (-static_cast<double>(distance) - kApproachStopWindow) /
-                        kApproachAsternDivisor; // 009E6DF7..009E6E10
+                    double ratio;
+                    if constexpr (kPc24ShipAiCc13Bound) {
+                        // 009E6DF7 FCHS (exact), 009E6E01 FSUB, 009E6E10 FDIV, each rounded.
+                        ratio = pc24::x87_div24(
+                            pc24::x87_sub24(-static_cast<double>(distance), kApproachStopWindow),
+                            kApproachAsternDivisor);
+                    } else {
+                        ratio =
+                            (-static_cast<double>(distance) - kApproachStopWindow) /
+                            kApproachAsternDivisor; // 009E6DF7..009E6E10
+                    }
                     const float capped = clamp_float_by_ref_00415620(
                         static_cast<float>(ratio), 0.0f, kApproachAsternCap);
                     state.commanded_throttle_1210 =
                         -min_by_ref_00415510(limit, capped); // 009E6E40
                 }
             } else if (kApproachHeadingDeadband > error_abs) { // 009E6D83
-                const double ratio =
-                    (static_cast<double>(distance) - kApproachStopWindow) /
-                    kApproachGateRange; // 009E6D8E..009E6DA1
+                double ratio;
+                if constexpr (kPc24ShipAiCc13Bound) {
+                    // 009E6D8E FSUB, 009E6DA1 FDIV, each rounded.
+                    ratio = pc24::x87_div24(
+                        pc24::x87_sub24(distance, kApproachStopWindow), kApproachGateRange);
+                } else {
+                    ratio =
+                        (static_cast<double>(distance) - kApproachStopWindow) /
+                        kApproachGateRange; // 009E6D8E..009E6DA1
+                }
                 const float capped = clamp_float_by_ref_00415620(
                     static_cast<float>(ratio), 0.0f, kApproachAheadCap);
                 limit = min_by_ref_00415510(limit, capped); // 009E6DD0
@@ -784,9 +846,16 @@ void ship_ai_approach_choose_standoff_009e6e80(ShipAiApproachState& state,
     }
 
     // 009E733F..009E7375.
-    float offset = static_cast<float>(
-        (static_cast<double>(state.goal_range_11e0) - state.standoff_range_11e4) /
-        turn_radius);
+    float offset;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009E734D FSUB, 009E734F FDIV, each rounded.
+        offset = static_cast<float>(pc24::x87_div24(
+            pc24::x87_sub24(state.goal_range_11e0, state.standoff_range_11e4), turn_radius));
+    } else {
+        offset = static_cast<float>(
+            (static_cast<double>(state.goal_range_11e0) - state.standoff_range_11e4) /
+            turn_radius);
+    }
     if (state.flag_1208) {
         // 009E7360, COMISS of 0.0 against the offset then JBE.
         offset = (0.0f > offset)
@@ -820,6 +889,17 @@ void ship_ai_approach_choose_standoff_009e6e80(ShipAiApproachState& state,
                 // 009E7441..009E7469: h = (c + c*c) * 0.5, float-stored at 009E7455
                 // (009E7451 DC C9 leaves 0.5 in ST0); 009E7463 DC C9 gives h*pi with
                 // pi left in ST0, FADDP gives h*pi + pi, FMULP by the retained 0.5.
+                if constexpr (kPc24ShipAiCc13Bound) {
+                    // 009E7447 c*c, 009E7449 FADDP, 009E7451 *0.5; 009E7463 h*pi,
+                    // 009E7465 FADDP, 009E7467 FMULP; each rounded. [00CE3D28] is the
+                    // double of float pi, the value of kApproachHalfTurn.
+                    const float h = static_cast<float>(pc24::x87_mul24(
+                        pc24::x87_add24(capped, pc24::x87_mul24(capped, capped)),
+                        kApproachSideCurveScale));
+                    side_weight = static_cast<float>(pc24::x87_mul24(
+                        pc24::x87_add24(pc24::x87_mul24(h, kApproachHalfTurn), kApproachHalfTurn),
+                        kApproachSideCurveScale));
+                } else {
                 const float h = static_cast<float>(
                     (static_cast<double>(capped) + static_cast<double>(capped) * capped) *
                     kApproachSideCurveScale);
@@ -827,6 +907,7 @@ void ship_ai_approach_choose_standoff_009e6e80(ShipAiApproachState& state,
                     (static_cast<double>(h) * static_cast<double>(kApproachHalfTurn) +
                      static_cast<double>(kApproachHalfTurn)) *
                     kApproachSideCurveScale);
+                }
             } else {
                 // As first transcribed from the listing text: q = c + c*c, then
                 // (0.5 * q) * (q + pi * q).
@@ -885,16 +966,34 @@ void ship_ai_approach_refresh_avoidance_009e9190(ShipAiApproachState& state,
             }
             host.refresh_pose_00414db0(candidate); // 009E9290
             const ShipAiApproachPoint p = host.entity_world_position(candidate);
-            const double dx = static_cast<double>(p.x) - unit_pos.x;
-            const double dz = static_cast<double>(p.z) - unit_pos.z;
-            const float distance_sq =
-                static_cast<float>(dx * dx + 0.0 * 0.0 + dz * dz); // 009E92CB
+            float distance_sq = 0.0f;
+            if constexpr (kPc24ShipAiCc13Bound) {
+                // pc24w1-sweep2-6: 009E929B / 009E92AB FSUB, each FSTP DWORD; then
+                // 009E92BF FMULP, 009E92C3 FMUL, 009E92C5 FADDP, 009E92C7 FMUL and
+                // 009E92C9 FADDP, each at PC24, stored at 009E92CB.
+                const float dx = static_cast<float>(static_cast<double>(p.x) - unit_pos.x);
+                const float dz = static_cast<float>(static_cast<double>(p.z) - unit_pos.z);
+                distance_sq = static_cast<float>(pc24::x87_add24(
+                    pc24::x87_add24(pc24::x87_mul24(dx, dx), pc24::x87_mul24(0.0, 0.0)),
+                    pc24::x87_mul24(dz, dz)));
+            } else {
+                const double dx = static_cast<double>(p.x) - unit_pos.x;
+                const double dz = static_cast<double>(p.z) - unit_pos.z;
+                distance_sq =
+                    static_cast<float>(dx * dx + 0.0 * 0.0 + dz * dz); // 009E92CB
+            }
             const float radius = static_cast<float>(
                 static_cast<double>(host.entity_speed_0494(candidate)) +
                 kApproachAvoidSpeedPad); // 009E92D5
             // 009E92E5, FCOMIP of radius*radius against the distance then JBE.
-            if (!(static_cast<double>(radius) * radius >
-                  static_cast<double>(distance_sq))) {
+            bool inside = false;
+            if constexpr (kPc24ShipAiCc13Bound) {
+                // pc24w1-sweep2-6: the 009E92E1 FMULP rounds at PC24 before the compare.
+                inside = pc24::x87_mul24(radius, radius) > static_cast<double>(distance_sq);
+            } else {
+                inside = static_cast<double>(radius) * radius > static_cast<double>(distance_sq);
+            }
+            if (!inside) {
                 continue;
             }
             // 009E92EF..009E933B, the duplicate walk, then 009E9342..009E9397.
@@ -943,10 +1042,19 @@ void ship_ai_approach_refresh_avoidance_009e9190(ShipAiApproachState& state,
     // 009E95B5..009E966A.
     float heading = 0.0f;
     float strength = 0.0f;
-    const float length_sq = static_cast<float>(
-        static_cast<double>(accumulator.x) * accumulator.x +
-        static_cast<double>(accumulator.y) * accumulator.y +
-        static_cast<double>(accumulator.z) * accumulator.z);
+    float length_sq;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009E95D6 y*y, 009E95DA x*x, 009E95DE FADDP, 009E95E2 z*z, 009E95E6 FADDP.
+        length_sq = static_cast<float>(pc24::x87_add24(
+            pc24::x87_add24(pc24::x87_mul24(accumulator.x, accumulator.x),
+                            pc24::x87_mul24(accumulator.y, accumulator.y)),
+            pc24::x87_mul24(accumulator.z, accumulator.z)));
+    } else {
+        length_sq = static_cast<float>(
+            static_cast<double>(accumulator.x) * accumulator.x +
+            static_cast<double>(accumulator.y) * accumulator.y +
+            static_cast<double>(accumulator.z) * accumulator.z);
+    }
     // 009E95F4, FCOMIP of the squared length against 1.0 then JBE.
     if (length_sq > 1.0f) {
         heading = ship_ai_approach_heading_from_delta(accumulator.x, accumulator.z);
@@ -972,8 +1080,16 @@ int ship_ai_approach_select_slot_009e76d0(ShipAiApproachState& state,
                                           float seconds,
                                           ShipAiApproachSelectHost& host) {
     // 009E76D0..009E76F4: the wobble phase, advanced and wrapped in place.
-    state.wobble_phase_1214 = host.wrap_angle_00605070(static_cast<float>(
-        kApproachPhaseRate * seconds + static_cast<double>(state.wobble_phase_1214)));
+    float advanced = 0.0f;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // pc24w1-sweep2-6: 009E76DA FMUL and 009E76E4 FADD each round at PC24.
+        advanced = static_cast<float>(pc24::x87_add24(
+            pc24::x87_mul24(kApproachPhaseRate, seconds), state.wobble_phase_1214));
+    } else {
+        advanced = static_cast<float>(
+            kApproachPhaseRate * seconds + static_cast<double>(state.wobble_phase_1214));
+    }
+    state.wobble_phase_1214 = host.wrap_angle_00605070(advanced);
 
     if (state.mode_1234 == ShipAiApproachMode::inside_3) {
         // 009E79B4: mode 3 clears every blocked byte and scores nothing.
@@ -1147,8 +1263,14 @@ void ship_ai_approach_frame_state_009f1bc0(ShipAiApproachState& state,
             static_cast<double>(state.point_1228.x) - goal.x);
         const float dz = static_cast<float>(
             static_cast<double>(state.point_1228.z) - goal.z);
-        const float moved = static_cast<float>(static_cast<double>(dx) * dx +
-                                               static_cast<double>(dz) * dz);
+        float moved;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 009F1EF1 dx*dx, 009F1EF5 FMULP dz*dz, 009F1EF7 FADDP, each rounded.
+            moved = static_cast<float>(pc24::x87_add24(pc24::x87_mul24(dz, dz), pc24::x87_mul24(dx, dx)));
+        } else {
+            moved = static_cast<float>(static_cast<double>(dx) * dx +
+                                       static_cast<double>(dz) * dz);
+        }
         // 009F1F03, FCOMIP of the squared offset against 1.0 then JBE.
         displaced = (moved > 1.0f);
     } else {
@@ -1387,6 +1509,22 @@ float ship_ai_torpedo_hits_to_sink_0095e9a0(const ShipAiTorpedoSinkInputs& in) n
     if (!(fraction > 0.0f)) return kTorpedoSinkNoKill; // 0095EAC0 JBE
     // 0095EAC2..0095EAE8: FCOMI lo against armour, JBE when lo <= armour.
     float excess = 0.0f;
+    float sink_hits;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 0095EACE FADD, 0095EAD2 FMUL 0.5, 0095EAD8 FSUBRP; else 0095EADE FSUBR,
+        // 0095EAE2 FMUL 0.5. 0095EB05 FMUL, 0095EB09 FMUL 0.5, 0095EB0F FADD; 0095EB1B
+        // FMUL, 0095EB1F FDIVP. Every op rounded.
+        if (lo > armour) {
+            excess = static_cast<float>(
+                pc24::x87_sub24(pc24::x87_mul24(pc24::x87_add24(lo, hi), 0.5), armour));
+        } else {
+            excess = static_cast<float>(pc24::x87_mul24(pc24::x87_sub24(hi, armour), 0.5));
+        }
+        const float per_hit = static_cast<float>(pc24::x87_add24(
+            pc24::x87_mul24(pc24::x87_mul24(p.water_damage, in.water_tick_damage), 0.5), excess));
+        sink_hits = static_cast<float>(
+            pc24::x87_div24(remaining, pc24::x87_mul24(per_hit, fraction)));
+    } else {
     if (lo > armour) {
         excess = static_cast<float>((static_cast<double>(lo) + hi) * 0.5 - armour);
     } else {
@@ -1396,8 +1534,10 @@ float ship_ai_torpedo_hits_to_sink_0095e9a0(const ShipAiTorpedoSinkInputs& in) n
     const float per_hit = static_cast<float>(
         static_cast<double>(in.water_tick_damage) * p.water_damage * 0.5 + excess);
     // 0095EB17..0095EB21: remaining / (per_hit * fraction).
-    return static_cast<float>(static_cast<double>(remaining) /
+    sink_hits = static_cast<float>(static_cast<double>(remaining) /
                               (static_cast<double>(per_hit) * fraction));
+    }
+    return sink_hits;
 }
 
 float ship_ai_compass_heading_007b4e90(float x, float z) noexcept {

@@ -7,9 +7,12 @@
 
 // pc24w1-sweep1-3, kPc24FlightRenderCc13Bound (OFF): ON = per-op PC24 in this file's
 // copies of 00419440 length, 004F9B30 cross and the 0085DAD0 inlined dot, all reached
-// from orthonormalize_up_first_0085dad0 (main thread). 0085E4D0's live arm is the
-// kRotateAboutAxisImageTailBound (ON) one, already per op. Movers: the re-orthonormalised
-// plane pose rows.
+// from orthonormalize_up_first_0085dad0. 0085E4D0's live arm is the
+// kRotateAboutAxisImageTailBound (ON) one, already per op. The 007D9F60/007C6500 plane
+// tick-element work, wave-1 008750A0 and interp 00875160 run as frame-job pool jobs, so the
+// precision is 24 or 53 bits by claiming thread; these chains (and the look-at dot3 used by
+// 0085E4D0) are modelled at 24 per the standing policy (model 24, record 53). Movers: the
+// re-orthonormalised plane pose rows.
 
 // Reconstruction of 007C6500 and the two pose writers it dispatches to.
 // docs/PLANE_ADVANCE_POSE.md carries the evidence and the coverage table; every

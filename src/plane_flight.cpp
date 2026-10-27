@@ -99,11 +99,24 @@ float heading_command_009f9e40(float target_x, float target_z, float unit_x, flo
     // library sees y = dz and x = dx.
     const float dz = target_z - unit_z;
     const float dx = target_x - unit_x;
-    float heading = kPlaneQuarterTurn - std::atan2(dz, dx);
-    if (heading < 0.0f) {
-        heading += kPlaneFullTurn;  // 009F9E9F FADD qword [00CE3828]
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-3: 009F9E7E calls the double CRT atan2 (not atan2f) and 009F9E83
+        // stores its result through float; the 009F9E8B FSUBR and 009F9E9F FADD are
+        // rounded at PC24 and stored (009F9E91, 009F9EA5).
+        const float angle = static_cast<float>(
+            std::atan2(static_cast<double>(dz), static_cast<double>(dx)));
+        float heading = static_cast<float>(cc13x87::x87_sub24(kPlaneQuarterTurn, angle));
+        if (heading < 0.0f) {
+            heading = static_cast<float>(cc13x87::x87_add24(heading, kPlaneFullTurn));
+        }
+        return heading;
+    } else {
+        float heading = kPlaneQuarterTurn - std::atan2(dz, dx);
+        if (heading < 0.0f) {
+            heading += kPlaneFullTurn;  // 009F9E9F FADD qword [00CE3828]
+        }
+        return heading;
     }
-    return heading;
 }
 
 float pitch_command_009fb800(const PlanePitchCommandInputs& in) {

@@ -4,7 +4,7 @@
 // the listing has FSTP dword, as the rocket twin does (src/rocket_task_cc13.cpp).
 //
 // kPc24PlaneTasksCc13Bound (OFF, pc24w1-sweep3-2) rounds per op at 24 bits in
-// 009A3300, 009A5F50, 009A65F0 (its 0042B2F0 length copy included), 009A3770,
+// 009A3300, 009A5F50, 009A65F0 (with the 0042B2F0 callee, inlined in C++), 009A3770,
 // 009A3CF0, 009A4010 and 009A4940. 009A3290 and 009A3AE0 already round once
 // (an exact factor); see their pc24-lint allow notes. Movers when ON: depth-charge
 // plane approach, release timing and release points.
@@ -447,7 +447,8 @@ bool depth_charge_should_break_off_009a65f0(const DepthChargeTask& t, DepthCharg
     const float dx = p[0] - pos[0], dy = p[1] - pos[1], dz = p[2] - pos[2];
     bool keep;
     if constexpr (kPc24PlaneTasksCc13Bound) {
-        // 0042B2F9..0042B307 (the 0042B2F0 copy): (dy*dy + dx*dx) + dz*dz per op.
+        // 0042B2F9..0042B307 (the 0042B2F0 callee, CALLed at 009A669B, inlined in
+        // C++): (dy*dy + dx*dx) + dz*dz per op.
         const float len = length_or_zero(cc13x87::x87_add24(
             cc13x87::x87_add24(cc13x87::x87_mul24(dy, dy), cc13x87::x87_mul24(dx, dx)),
             cc13x87::x87_mul24(dz, dz)));
