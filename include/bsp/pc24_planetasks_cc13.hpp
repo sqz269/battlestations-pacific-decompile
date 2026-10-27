@@ -13,6 +13,8 @@ namespace bsp {
 // kPc24PlaneTasksCc13Bound (OFF): per-op PC24 arithmetic in
 //   pc24w1-sweep3-1 (cc13-pc24w1-sweep3-1):
 //     009C4F80 dive_bomb_aim_heading_009c4f80 (dive_bomb_task.cpp)
+//     009C62B0 flyabove tick: dive_bomb_flyabove_altitude_009c6e10 and
+//              dive_bomb_flyabove_bank_009c6857 (dive_bomb_task.cpp)
 //     009AC190 kamikaze_gotowards_tick_009ac190 (kamikaze_task_cc13.cpp)
 //     009AC910 kamikaze_aim_tick_009ac910 (kamikaze_task_cc13.cpp)
 //     0042B2F0 planar_length (kamikaze_task_cc13.cpp)
@@ -26,9 +28,13 @@ namespace bsp {
 //   00419510 also has the bound naked copy camera_vector_normalize_00419510
 //   (system_camera_axes.cpp) and the C++ copies in plane_pose_commit.cpp and
 //   world_ocean.cpp.
+//   Not here: 009AC0B0, 009ADE00 and 009AE9D0 round per op under
+//   kKamikazeX87FloatCc13Bound, and 009C6857's cross-track sum under
+//   kDiveBombPc24Cc13Bound; those sites flip with their own switches.
 // Expected movers when ON: plane task waypoints and approach timing, kamikaze
 // turn-around and pitch targets, the kamikaze lock window, the dive-bomb aim
-// bearing and the formation-follow steer point (attack release points).
+// bearing, the flyabove dive reference and roll-in latch, and the
+// formation-follow steer point (attack release points).
 inline constexpr bool kPc24PlaneTasksCc13Bound = false;
 
 }  // namespace bsp

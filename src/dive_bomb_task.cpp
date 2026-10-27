@@ -822,12 +822,21 @@ DiveBombFlyAboveAltitudeCommand dive_bomb_flyabove_altitude_009c6e10(
     // 009C6F11 FCOMI / 009C6F13 FSTP ST1 keep err in ST0, and 009C6F17 FLD A is
     // popped again by 009C6F1D FCOMIP and 009C6F1F FSTP ST0 (cc13-audit7,
     // tools/x87_sym.py 009C6E10: `(v9c6e44 + v9c6e44) / divisor`).
-    const float v = static_cast<float>(
-        (static_cast<double>(dive_bomb_constant::kDiveFlyAboveTermsBound
-                                 ? out.height_error : in.planar_distance) +
-         static_cast<double>(dive_bomb_constant::kDiveFlyAboveTermsBound
-                                 ? out.height_error : in.planar_distance)) /
-        static_cast<double>(divisor));
+    float v;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009C6F33 FADD ST0,ST0 and 009C6F3B FDIV, each at PC24. The doubling is
+        // exact, so this matches the OFF arm except outside float's exponent range.
+        const float x = dive_bomb_constant::kDiveFlyAboveTermsBound
+                            ? out.height_error : in.planar_distance;
+        v = static_cast<float>(cc13x87::x87_div24(cc13x87::x87_add24(x, x), divisor));
+    } else {
+        v = static_cast<float>(
+            (static_cast<double>(dive_bomb_constant::kDiveFlyAboveTermsBound
+                                     ? out.height_error : in.planar_distance) +
+             static_cast<double>(dive_bomb_constant::kDiveFlyAboveTermsBound
+                                     ? out.height_error : in.planar_distance)) /
+            static_cast<double>(divisor));
+    }
     // 009C6F4D FCOMIP against the 0.8 at 00CE3D40, 009C6F51 `76` JBE.
     out.reference = (static_cast<double>(v) <=
                      dive_bomb_flyabove_constant::kLeaveSpanScale)
@@ -995,9 +1004,20 @@ DiveBombFlyAboveBank dive_bomb_flyabove_bank_009c6857(
     }
     out.weapon_select_3 = true;  // 009C68A0 approach+CCh = 3
     // 009C68AA-009C68C8. FCOS, * R, less 120 m, stored as a float.
-    out.along_track = static_cast<float>(std::cos(eabs) * range);
-    const float margin = static_cast<float>(
-        std::cos(eabs) * range - dive_bomb_flyabove_constant::kRollInAlongTrack);
+    float margin;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009C68B0 FSTP DWORD rounds the cosine to float; 009C68BE FMULP (* R) and
+        // 009C68C2 FSUB qword 120 each round at PC24; 009C68C8 FSTP DWORD.
+        const float c = static_cast<float>(std::cos(eabs));
+        const double along = cc13x87::x87_mul24(c, range);
+        out.along_track = static_cast<float>(along);
+        margin = static_cast<float>(
+            cc13x87::x87_sub24(along, dive_bomb_flyabove_constant::kRollInAlongTrack));
+    } else {
+        out.along_track = static_cast<float>(std::cos(eabs) * range);
+        margin = static_cast<float>(
+            std::cos(eabs) * range - dive_bomb_flyabove_constant::kRollInAlongTrack);
+    }
     // 009C68D2 FCOMIP with ST0 = margin and ST1 = the FLDZ zero, 009C68D4 `76`
     // JBE -> 009C6919, the latch.
     if (!(margin > 0.0f)) {
