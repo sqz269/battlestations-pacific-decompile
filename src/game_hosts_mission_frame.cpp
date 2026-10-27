@@ -61,6 +61,8 @@
 #include "bsp/mission_state_entry.hpp"
 #include "bsp/ocean_spectrum.hpp"
 #include "bsp/mission_state_frame.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_missionlua_cc13.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/render_tail.hpp"
 #include "bsp/session_polls.hpp"
@@ -1732,11 +1734,21 @@ public:
                     units.unit_position_00fc(leader, qx, qy, qz);
                     // 00977A8C..00977AB8: each difference is stored to a float.
                     const float dx = sx - qx, dy = sy - qy, dz = sz - qz;
-                    // 00977AC8..00977AD8: (dx*dx + dy*dy) + dz*dz on the x87 at
-                    // 53-bit precision, FSTP to a float.
-                    const double wide = (static_cast<double>(dx) * dx
-                        + static_cast<double>(dy) * dy) + static_cast<double>(dz) * dz;
-                    const float d2 = static_cast<float>(wide);
+                    // 00977AC8..00977AD8: (dx*dx + dy*dy) + dz*dz on the x87,
+                    // FSTP to a float.
+                    float d2;
+                    if constexpr (kPc24MissionLuaCc13Bound) {
+                        // The main thread runs at PC24: each FMULP/FMUL ST0 and
+                        // FADDP rounds to 24 bits.
+                        d2 = static_cast<float>(cc13x87::x87_add24(
+                            cc13x87::x87_add24(cc13x87::x87_mul24(dx, dx),
+                                               cc13x87::x87_mul24(dy, dy)),
+                            cc13x87::x87_mul24(dz, dz)));
+                    } else {
+                        const double wide = (static_cast<double>(dx) * dx
+                            + static_cast<double>(dy) * dy) + static_cast<double>(dz) * dz;
+                        d2 = static_cast<float>(wide);
+                    }
                     // 00977AE0 FLD double [00D09FE8] / FCOMI / JA: 4.0e6 > d2.
                     if (4.0e6 > static_cast<double>(d2)) hit = true;
                 }
@@ -2010,6 +2022,7 @@ public:
                     const auto clamp1 = [](float v) {
                         return v > 1.0f ? 1.0 : (v < -1.0f ? -1.0 : static_cast<double>(v));
                     };
+                    // pc24-lint: allow diagnostic log line (BSP_HULL_ATTITUDE_TRACE); no image arithmetic
                     owner_.log.notef("hull attitude: t=%.2f unit=%s roll=%.2f pitch=%.2f "
                         "tilt=%.2f y=%.2f alive=%d",
                         static_cast<double>(owner_.units->summary().simulated_seconds),

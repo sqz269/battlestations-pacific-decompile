@@ -44,6 +44,8 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/ship_ai_states.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_usn02_deruyter_fire
 #include "bsp/game_hosts_ai.hpp"       // packet cc9_l65_chooser_surface_set
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_missionlua_cc13.hpp"
 #include "bsp/weapon_director.hpp"     // packet g44_scan_row_write (0071D560)
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
@@ -843,11 +845,26 @@ bsp::BuildingPadModel* GameScriptOrdersHost::building_pads() {
         // length of (x, 0, z); zero when that length is not positive.
         float frame[16]{};
         if (units_.scene_marker_frame(static_cast<std::uint32_t>(marker.id), frame)) {
-            const double len = std::sqrt(static_cast<double>(frame[8]) * frame[8]
-                + static_cast<double>(frame[10]) * frame[10]);
-            const float inv = len > 0.0 ? static_cast<float>(1.0 / len) : 0.0f;
-            pad.facing_x = inv * frame[8];
-            pad.facing_z = inv * frame[10];
+            if constexpr (kPc24MissionLuaCc13Bound) {
+                // 006AC2A0 calls 00419440 on (x, 0, z): each square FSTP DWORD, the
+                // sums and 00BF7030's FSQRT at PC24, FSTP DWORD; 006AC2AC-006AC2C3:
+                // 1/len (FDIVRP, PC24) when len > 0, else +0; 006AC2D1/006AC2E2:
+                // inv * x and inv * z (FMUL, PC24).
+                const float xx = static_cast<float>(cc13x87::x87_mul24(frame[8], frame[8]));
+                const float zz = static_cast<float>(cc13x87::x87_mul24(frame[10], frame[10]));
+                const float len = static_cast<float>(cc13x87::x87_sqrt24(
+                    static_cast<float>(cc13x87::x87_add24(xx, zz))));
+                const float inv =
+                    len > 0.0f ? static_cast<float>(cc13x87::x87_div24(1.0, len)) : 0.0f;
+                pad.facing_x = static_cast<float>(cc13x87::x87_mul24(inv, frame[8]));
+                pad.facing_z = static_cast<float>(cc13x87::x87_mul24(inv, frame[10]));
+            } else {
+                const double len = std::sqrt(static_cast<double>(frame[8]) * frame[8]
+                    + static_cast<double>(frame[10]) * frame[10]);
+                const float inv = len > 0.0 ? static_cast<float>(1.0 / len) : 0.0f;
+                pad.facing_x = inv * frame[8];
+                pad.facing_z = inv * frame[10];
+            }
         }
         points.push_back(pad);
     }
@@ -5602,8 +5619,15 @@ void GameScriptOrdersHost::run_blackout_update(float step) {
 float GameScriptOrdersHost::countdown_time_left() const noexcept {
     // 007340AC-007340D5 and 008B1B40: +44h - (clock - +48h), each FSUB on a
     // float operand, stored as a float, then 0 when it is below zero.
-    const float left = static_cast<float>(static_cast<double>(countdown_.duration_44)
-        - (static_cast<double>(mission_clock_) - static_cast<double>(countdown_.started_48)));
+    float left;
+    if constexpr (kPc24MissionLuaCc13Bound) {
+        // 007340B5 FSUB (clock - +48h) and 007340B8 FSUBP each round at PC24.
+        left = static_cast<float>(cc13x87::x87_sub24(
+            countdown_.duration_44, cc13x87::x87_sub24(mission_clock_, countdown_.started_48)));
+    } else {
+        left = static_cast<float>(static_cast<double>(countdown_.duration_44)
+            - (static_cast<double>(mission_clock_) - static_cast<double>(countdown_.started_48)));
+    }
     return left < 0.0f ? 0.0f : left;
 }
 
@@ -5647,7 +5671,13 @@ void GameScriptOrdersHost::basis_degrees_0042d2e0(const bsp::CameraMatrix& world
         const float shifted = static_cast<float>(static_cast<double>(a[i]) + 131.9468994140625);
         const float wrapped = static_cast<float>(std::fmod(static_cast<double>(shifted),
                                                            6.2831854820251465));
-        out[i] = static_cast<float>(static_cast<double>(wrapped) / 3.1415927410125732 * 180.0);
+        if constexpr (kPc24MissionLuaCc13Bound) {
+            // 008BF8A3 FDIV qword pi and 008BF8A9 FMUL qword 180 each round at PC24.
+            out[i] = static_cast<float>(cc13x87::x87_mul24(
+                cc13x87::x87_div24(wrapped, 3.1415927410125732), 180.0));
+        } else {
+            out[i] = static_cast<float>(static_cast<double>(wrapped) / 3.1415927410125732 * 180.0);
+        }
     }
 }
 
@@ -5732,8 +5762,15 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
         // 00733BB0 and 005B7390 (005B7434-005B7466).
         narrative_active_14_ = true;
         narrative_fade_in_1c_ = static_cast<float>(static_cast<double>(fade) * 0.5);
-        narrative_display_20_ = static_cast<float>(
-            static_cast<double>(head.text.size()) * char_wait + wait_base);
+        if constexpr (kPc24MissionLuaCc13Bound) {
+            // 005B744E FILD, 005B7454 FMUL and 005B7457 FADD each round at PC24.
+            narrative_display_20_ = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_mul24(static_cast<double>(head.text.size()), char_wait),
+                wait_base));
+        } else {
+            narrative_display_20_ = static_cast<float>(
+                static_cast<double>(head.text.size()) * char_wait + wait_base);
+        }
         narrative_fade_out_24_ = fade;
         narrative_state_18_ = 0;
         narrative_alpha_28_ = 0.0f;
@@ -5754,8 +5791,16 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
     }
     float top = 1.0f;   // 00D7A24C
     if (narrative_state_18_ == 0) {
-        narrative_alpha_28_ = static_cast<float>(
-            (1.0 / static_cast<double>(narrative_fade_in_1c_)) * step + narrative_alpha_28_);
+        if constexpr (kPc24MissionLuaCc13Bound) {
+            // 0073530B FDIVRP (1 / +1Ch), 0073530D FMUL dt, 00735311 FADD +28h, each
+            // at PC24.
+            narrative_alpha_28_ = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_mul24(cc13x87::x87_div24(1.0, narrative_fade_in_1c_), step),
+                narrative_alpha_28_));
+        } else {
+            narrative_alpha_28_ = static_cast<float>(
+                (1.0 / static_cast<double>(narrative_fade_in_1c_)) * step + narrative_alpha_28_);
+        }
         if (1.0f <= narrative_alpha_28_) narrative_state_18_ = 1;
     } else if (narrative_state_18_ == 1) {
         if (narrative_text_ != "*") {
@@ -5765,8 +5810,16 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
         if (narrative_display_20_ <= 0.0f) narrative_state_18_ = 2;
         narrative_alpha_28_ = top;
     } else if (narrative_state_18_ == 2) {
-        narrative_alpha_28_ = static_cast<float>(narrative_alpha_28_ -
-            (1.0 / static_cast<double>(narrative_fade_out_24_)) * step);
+        if constexpr (kPc24MissionLuaCc13Bound) {
+            // 0073528D FDIVRP (1 / +24h), 0073528F FMUL dt, 00735293 FSUBP from +28h,
+            // each at PC24.
+            narrative_alpha_28_ = static_cast<float>(cc13x87::x87_sub24(
+                narrative_alpha_28_,
+                cc13x87::x87_mul24(cc13x87::x87_div24(1.0, narrative_fade_out_24_), step)));
+        } else {
+            narrative_alpha_28_ = static_cast<float>(narrative_alpha_28_ -
+                (1.0 / static_cast<double>(narrative_fade_out_24_)) * step);
+        }
     }
     if (0.0f <= narrative_alpha_28_) {
         if (top < narrative_alpha_28_) narrative_alpha_28_ = top;
@@ -5847,8 +5900,15 @@ void GameScriptOrdersHost::narrative_clear_00734fa0() {
 void GameScriptOrdersHost::run_countdown_update_00735100() {
     if (!countdown_.active_3c) return;  // 0073514E
     // 00735161-0073517D: the remaining time, rounded to a float.
-    const float left = static_cast<float>(static_cast<double>(countdown_.duration_44)
-        - (static_cast<double>(mission_clock_) - static_cast<double>(countdown_.started_48)));
+    float left;
+    if constexpr (kPc24MissionLuaCc13Bound) {
+        // 00735174 FSUB (clock - +48h) and 00735177 FSUBP each round at PC24.
+        left = static_cast<float>(cc13x87::x87_sub24(
+            countdown_.duration_44, cc13x87::x87_sub24(mission_clock_, countdown_.started_48)));
+    } else {
+        left = static_cast<float>(static_cast<double>(countdown_.duration_44)
+            - (static_cast<double>(mission_clock_) - static_cast<double>(countdown_.started_48)));
+    }
     // 00735181-00735194: expire when 0 > left, or when left <= [00D7A218] = 0.0f.
     if (left > 0.0f) {
         // 00735196-007351B3: 005BCA80(left / +44h, left) on [[00E198C4]+58h].
