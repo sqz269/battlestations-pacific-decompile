@@ -55,12 +55,12 @@ std::array<float, 2> heading_to_direction_006bc0c0(float heading) noexcept {
         direction = {static_cast<float>(std::cos(static_cast<double>(angle))),
                      static_cast<float>(std::sin(static_cast<double>(angle)))};
     } else {
-    double angle = kHeadingBasisQuarterTurn - static_cast<double>(heading);
-    if (angle < 0.0) {
-        angle += kHeadingBasisFullTurn;
-    }
-    direction = std::array<float, 2>{static_cast<float>(std::cos(angle)),
-                                static_cast<float>(std::sin(angle))};
+        double angle = kHeadingBasisQuarterTurn - static_cast<double>(heading);
+        if (angle < 0.0) {
+            angle += kHeadingBasisFullTurn;
+        }
+        direction = std::array<float, 2>{static_cast<float>(std::cos(angle)),
+                                    static_cast<float>(std::sin(angle))};
     }
     return direction;
 }
@@ -191,9 +191,9 @@ ShipClassAiDerivedMotion ship_class_ai_derived_motion_00828f20(
             cc13x87::x87_div24(max_rot_angle_04f8, max_rot_angle_change_ratio_04fc),
             kShipClassYawAuthorityHalf));
     } else {
-    out.yaw_authority_0524 = static_cast<float>(
-        (max_rot_angle / static_cast<double>(max_rot_angle_change_ratio_04fc)) *
-        kShipClassYawAuthorityHalf);
+        out.yaw_authority_0524 = static_cast<float>(
+            (max_rot_angle / static_cast<double>(max_rot_angle_change_ratio_04fc)) *
+            kShipClassYawAuthorityHalf);
     }
     out.turn_radius_0520 =
         static_cast<float>(static_cast<double>(max_speed_0500) / max_rot_angle);
