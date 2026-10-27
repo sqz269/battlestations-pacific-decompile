@@ -2,6 +2,8 @@
 // docs/TORPEDO_TASK_ARM.md; every address in a comment is a listing address.
 
 #include "bsp/torpedo_task_arm.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include "bsp/geometry_helpers.hpp"
 #include "bsp/unit_rudder.hpp"
@@ -280,8 +282,16 @@ TorpedoDisarmedArmResult torpedo_done_disarmed_arm_009d29e0(
     const float w = (out.ratio > 1.5f)                                  // 009D2C14
         ? interpolate_clamped(2.0f, 2.5f, 3.5f, 1.0f, out.ratio)
         : interpolate_clamped(0.3f, 1.0f, 1.5f, 2.5f, out.ratio);
-    float c = static_cast<float>(
-        (1.2000000476837158 - static_cast<double>(ah / b1)) * 5.0);    // 009D2C72-009D2C94
+    float c;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009D2C7A FDIV, 009D2C88 FSUBR m64, 009D2C8E FMUL m64 5.0, 009D2C94 FSTP:
+        // each op rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        c = static_cast<float>(x87_mul24(x87_sub24(1.2000000476837158, ah / b1), 5.0));
+    } else {
+        c = static_cast<float>(
+            (1.2000000476837158 - static_cast<double>(ah / b1)) * 5.0);  // 009D2C72-009D2C94
+    }
     c = 0.0f > c ? 0.0f : c;                                            // 009D2C98 00415550
     c = c > 1.0f ? 1.0f : c;                                            // 009D2CB7 00415510
     out.follow_blend_8c = (w - 1.0f) * c + 1.0f;                        // 009D2CBC-009D2CCD
