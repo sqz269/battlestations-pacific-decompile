@@ -70,7 +70,9 @@ float dot3(const float a[3], const float b[3]) {
     float out;
     if constexpr (kPc24FlightRenderCc13Bound) {
         // pc24w1-sweep1-3: each FMUL and FADDP rounded at PC24 (00B6426A..00B6428A,
-        // 00B6429B..00B642AB, 00B642C0..00B642CC).
+        // 00B6429B..00B642AB, 00B642C0..00B642CC). 0085E4D0 runs from frame-job pool work
+        // (24 or 53 bits by claiming thread); modelled at 24 per the standing policy
+        // (model 24, record 53).
         out = static_cast<float>(pc24::x87_add24(
             pc24::x87_add24(pc24::x87_mul24(a[0], b[0]), pc24::x87_mul24(a[1], b[1])),
             pc24::x87_mul24(a[2], b[2])));
