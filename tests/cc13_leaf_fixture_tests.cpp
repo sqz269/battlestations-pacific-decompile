@@ -67,6 +67,9 @@
 #include "bsp/engine_seg43_45_cc13.hpp"
 #include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/particle_emitters_cc13.hpp"
+#include "bsp/ship_ai_path_planner.hpp"
+#include "bsp/depth_charge_task_cc13.hpp"
+#include "bsp/band_0071_cc13.hpp"
 #include "bsp/band_006b_cc13.hpp"
 #include "bsp/band_004b_cc13.hpp"
 #include "bsp/engine_services_cc13.hpp"
@@ -1903,6 +1906,10 @@ int main() {
     static const char* const primary53[] = {"00C37860", "00C38470", "00C38810", "00C38970"};
     struct Pinned { const char* address; int failures; int nan_only; const char* finding; };
     static const Pinned pinned[] = {
+        // cc13-fixture8 follow-up: the side walks' OFF arm (the C++ shared direction rule) on unordered
+        // sums; with the switch ON the walks take the image's rule and must match outright.
+        {"009D5AE0", bsp::kShipAiPathSideWalkNanCc13Bound ? 0 : 58, 0, "unordered route sums (NaN, inf-inf): the image's JC gives +1, the C++ shared rule (009d9e6c, its < deviates from the image) -1; ON arm matches"},
+        {"009D5B90", bsp::kShipAiPathSideWalkNanCc13Bound ? 0 : 61, 0, "unordered route sums (NaN, inf-inf): the image's JC gives +1, the C++ shared rule (009d9e6c, its < deviates from the image) -1; ON arm matches"},
         {"004F3DA0", 57, 0, "float intermediates overflow where the x87 stack does not"},
         {"00B64470", 0, 7, "NaN sign/payload only"},
         {"00B62DD0", 0, 54, "NaN sign/payload only"},
@@ -2170,6 +2177,101 @@ template<class Open> void run_fixture8(Open open) {
             const float a = native(cls), b = bsp::cc13_seg33a::torpedo_class_scaled_e4_006ea530(cls);
             if (nan_only_diff(&a, &b, 1)) { c.check_nan_only(); continue; }
             check_note(c, same(a, b), "v=%a %a / %a", get_f(cls, 0xe4), a, b);
+        }
+    }
+    {   // 009D5AE0 / 009D5B90: the plan's signed-node walks over a small acyclic node graph.
+        static_assert(offsetof(bsp::ShipAiPathNode, field_14) == 0x14);
+        static_assert(offsetof(bsp::ShipAiPathNode, link_minus) == 0x20);
+        static_assert(offsetof(bsp::ShipAiPathNode, link_minus_length) == 0x34);
+        static_assert(offsetof(bsp::ShipAiPathNode, remaining_length) == 0x3c);
+        static_assert(offsetof(bsp::ShipAiPathNode, cost_plus) == 0x50);
+        static_assert(offsetof(bsp::ShipAiPathPlanBlock, head) == 0x20);
+        for (int variant = 0; variant < 4; ++variant) {  // OFF (pinned NaN difference), then the ON arm
+            const int side = variant & 1;
+            const bool image = variant >= 2;
+            // The ON arm's names do not start with the address, so the OFF pins do not apply to it.
+            auto& c = open(image ? (side ? "ON arm 009D5B90 path any negative side ahead" : "ON arm 009D5AE0 path any positive side ahead")
+                                 : (side ? "009D5B90 path any negative side ahead" : "009D5AE0 path any positive side ahead"));
+            auto native = at<bool (__fastcall*)(void*)>(side ? cc13_leaf_009d5b90 : cc13_leaf_009d5ae0);
+            for (int i = 0; i < 3000; ++i) {
+                constexpr int n = 7;
+                bsp::ShipAiPathNode g1[n], g2[n];
+                bsp::ShipAiPathPlanBlock p1, p2;
+                for (int k = 0; k < n; ++k) {
+                    bsp::ShipAiPathNode& v = g1[k];
+                    const std::uint32_t r = next();
+                    v.direction = r % 5 == 0 ? (r & 8 ? 1 : -1) : 0;
+                    v.field_14 = static_cast<std::uint8_t>(r % 9 == 0 ? (r & 16 ? 1 : 0xff) : 0);
+                    v.link_minus = k + 1 < n && (r & 32) ? &g1[k + 1 + (r >> 8) % (n - k - 1)] : nullptr;
+                    v.link_plus = k + 1 < n && (r & 64) ? &g1[k + 1 + (r >> 16) % (n - k - 1)] : nullptr;
+                    v.link_minus_length = edge_or(0, 50); v.link_plus_length = edge_or(0, 50);
+                    v.remaining_length = edge_or(0, 500);
+                    v.cost_minus = edge_or(0, 100); v.cost_plus = edge_or(0, 100);
+                }
+                for (int k = 0; k < n; ++k) {
+                    g2[k] = g1[k];
+                    if (g1[k].link_minus) g2[k].link_minus = g2 + (g1[k].link_minus - g1);
+                    if (g1[k].link_plus) g2[k].link_plus = g2 + (g1[k].link_plus - g1);
+                }
+                p1.head = i % 50 == 0 ? nullptr : g1; p2.head = p1.head ? g2 : nullptr;
+                const bool o1 = native(&p1);
+                const bool o2 = image ? (side ? bsp::ship_ai_path_any_negative_side_ahead_image_009d5b90(p2)
+                                              : bsp::ship_ai_path_any_positive_side_ahead_image_009d5ae0(p2))
+                                      : (side ? bsp::ship_ai_path_any_negative_side_ahead_009d5b90(p2)
+                                              : bsp::ship_ai_path_any_positive_side_ahead_009d5ae0(p2));
+                bool ok = o1 == o2;
+                for (int k = 0; k < n; ++k) ok = ok && g1[k].direction == g2[k].direction;
+                bool any_nan = false;
+                for (int k = 0; k < n; ++k) any_nan = any_nan || std::isnan(g1[k].cost_minus) || std::isnan(g1[k].cost_plus) ||
+                    std::isnan(g1[k].link_minus_length) || std::isnan(g1[k].link_plus_length) || std::isnan(g1[k].remaining_length);
+                check_note(c, ok, "case %d result %d / %d nan=%d", i, o1, o2, any_nan);
+            }
+        }
+    }
+    {   auto& c = open("009A5390 depth charge turn-to give up");
+        auto native = at<int (__fastcall*)(void*)>(cc13_leaf_009a5390);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) unsigned char inner[0x4c]{}, state[8]{};
+            void* p = inner;
+            std::memcpy(state + 4, &p, 4);
+            const float range = edge_or(0, 3000), fly = edge_or(0, 6000);
+            put(inner, 0x48, range); put(inner, 0x40, fly);
+            const bool a = native(state) != 0, b = bsp::depth_charge_turnto_give_up_009a5390(range, fly);
+            check_note(c, a == b, "range=%a fly=%a %d / %d", range, fly, a, b);
+        }
+    }
+    for (int kind = 0; kind < 2; ++kind) {
+        auto& c = open(kind ? "00729A40 gun any barrel timer below max" : "00727D30 gun any barrel ready within");
+        for (int i = 0; i < 3000; ++i) {
+            float timers[6];
+            for (float& v : timers) v = i % 13 == 0 ? FLT_MAX : edge_or(-1, 30);
+            const std::int32_t count = static_cast<std::int32_t>(next() % 8) - 1;
+            alignas(4) unsigned char gun[0x44c]{};
+            const float* tp = timers;
+            std::memcpy(gun + 0x414, &tp, 4);
+            put(gun, 0x448, count);
+            const float t = edge_or(-1, 30);
+            bool a, b;
+            if (kind) {
+                a = at<bool (__fastcall*)(void*)>(cc13_leaf_00729a40)(gun);
+                b = bsp::band_0071_cc13::gun_any_barrel_timer_below_max_00729a40(timers, count);
+            } else {
+                a = at<bool (__fastcall*)(void*, int, float)>(cc13_leaf_00727d30)(gun, 0, t);
+                b = bsp::band_0071_cc13::gun_any_barrel_ready_within_00727d30(timers, count, t);
+            }
+            check_note(c, a == b, "count=%d t=%a %d / %d", count, t, a, b);
+        }
+    }
+    for (int side = 0; side < 2; ++side) {
+        auto& c = open(side ? "006F22F0 max(float(int), v)" : "006F22B0 min(float(int), v)");
+        auto native = at<float (__fastcall*)(std::int32_t, int, float)>(side ? cc13_leaf_006f22f0 : cc13_leaf_006f22b0);
+        for (int i = 0; i < 3000; ++i) {
+            const std::int32_t bound = i % 5 == 0 ? static_cast<std::int32_t>(next()) : static_cast<std::int32_t>(next() % 200) - 100;
+            const float v = edge_or(-120, 120);
+            const float a = native(bound, 0, v);
+            const float b = side ? bsp::band_006b_cc13::math_max_float_int_006f22f0(bound, v)
+                                 : bsp::band_006b_cc13::math_min_float_int_006f22b0(bound, v);
+            check_note(c, same(a, b), "bound=%d v=%a %a / %a", bound, v, a, b);
         }
     }
 }

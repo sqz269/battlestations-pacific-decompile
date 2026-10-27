@@ -3,6 +3,7 @@
 // Hypothesis names, build-tested only, nothing wired.
 
 #include "bsp/cc13_seg67b.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/ship_ai_path_follower.hpp"
 #include "bsp/geometry_helpers.hpp"
 
@@ -2663,13 +2664,38 @@ namespace {
 // null) ends it with 0; a node whose signed byte +14h passes `hit` ends it with
 // 1; an undecided node gets the 009D5930 direction rule, stored into +4h; then
 // the walk follows +24h on +1, +20h on -1, else ends with 0.
-template <typename Hit>
+// 009D5B06-009D5B56 (and 009D5BB6-009D5C06), the walks' inline direction rule: a decided
+// node keeps +4h; no minus link -> (plus link ? +1 : 0); no plus link -> -1; otherwise
+// plus = (+50h + +38h) + plus->+3Ch and minus = (+4Ch + +34h) + minus->+3Ch, each FADD
+// rounded to 24 bits on the main thread, the sum stored float, and FCOMIP plus,minus / JC gives +1 when plus < minus or
+// the pair is unordered, else -1.
+void ship_ai_path_walk_inline_direction(ShipAiPathNode& n) {
+    if (n.direction != 0) return;
+    if (n.link_minus == nullptr) {
+        n.direction = n.link_plus != nullptr ? 1 : 0;
+    } else if (n.link_plus == nullptr) {
+        n.direction = -1;
+    } else {
+        using cc13x87::x87_add24;
+        const float minus = static_cast<float>(
+            x87_add24(x87_add24(n.cost_minus, n.link_minus_length), n.link_minus->remaining_length));
+        const float plus = static_cast<float>(
+            x87_add24(x87_add24(n.cost_plus, n.link_plus_length), n.link_plus->remaining_length));
+        n.direction = !(plus >= minus) ? 1 : -1;
+    }
+}
+
+template <bool Image, typename Hit>
 bool ship_ai_path_walk_for_signed_node(ShipAiPathPlanBlock& plan, Hit hit) {
     ShipAiPathNode* n = plan.head;
     while (n != nullptr) {
         if (n->link_minus == nullptr && n->link_plus == nullptr) return false;
         if (hit(static_cast<std::int8_t>(n->field_14))) return true;
-        ship_ai_path_node_decide_direction_009d5930(*n);
+        if constexpr (Image) {
+            ship_ai_path_walk_inline_direction(*n);
+        } else {
+            ship_ai_path_node_decide_direction_009d5930(*n);
+        }
         n = ship_ai_path_node_next_009d9ee6(*n);
     }
     return false;
@@ -2678,17 +2704,30 @@ bool ship_ai_path_walk_for_signed_node(ShipAiPathPlanBlock& plan, Hit hit) {
 
 // 009D5AE0 (009D5AE0-009D5B87). The walk above with `hit` = signed byte +14h > 0
 // (009D5B00 CMP / JG). The direction rule is inline at 009D5B06-009D5B56.
-// UNCERTAINTY: 009D5B4F JC takes the +1 arm when the costs are unordered (NaN);
-// the shared rule ship_ai_path_node_direction_009d9e6c returns -1 there.
+// 009D5B4F JC takes the +1 arm when the costs are unordered (NaN), as the image's
+// 009D9E6C does; the C++ shared rule (ship_ai_path_node_direction_009d9e6c, whose `<`
+// deviates from the image) returns -1 there. The inline rule is behind
+// kShipAiPathSideWalkNanCc13Bound (cc13-fixture8 pinned the OFF difference).
 bool ship_ai_path_any_positive_side_ahead_009d5ae0(ShipAiPathPlanBlock& plan) {
-    return ship_ai_path_walk_for_signed_node(plan, [](std::int8_t b) { return b > 0; });
+    return ship_ai_path_walk_for_signed_node<kShipAiPathSideWalkNanCc13Bound>(
+        plan, [](std::int8_t b) { return b > 0; });
+}
+
+bool ship_ai_path_any_positive_side_ahead_image_009d5ae0(ShipAiPathPlanBlock& plan) {
+    return ship_ai_path_walk_for_signed_node<true>(plan, [](std::int8_t b) { return b > 0; });
 }
 
 // 009D5B90 (009D5B90-009D5C37). The same walk with `hit` = signed byte +14h < 0
 // (009D5BB0 CMP / JL). Inline rule 009D5BB6-009D5C06.
-// UNCERTAINTY: as 009D5AE0, the JC at 009D5BFF takes +1 on NaN costs.
+// As 009D5AE0, the JC at 009D5BFF takes +1 on unordered costs (the C++ shared rule
+// gives -1); behind the same switch.
 bool ship_ai_path_any_negative_side_ahead_009d5b90(ShipAiPathPlanBlock& plan) {
-    return ship_ai_path_walk_for_signed_node(plan, [](std::int8_t b) { return b < 0; });
+    return ship_ai_path_walk_for_signed_node<kShipAiPathSideWalkNanCc13Bound>(
+        plan, [](std::int8_t b) { return b < 0; });
+}
+
+bool ship_ai_path_any_negative_side_ahead_image_009d5b90(ShipAiPathPlanBlock& plan) {
+    return ship_ai_path_walk_for_signed_node<true>(plan, [](std::int8_t b) { return b < 0; });
 }
 
 // ---------------------------------------------------------------------------
