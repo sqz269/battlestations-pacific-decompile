@@ -13,6 +13,47 @@ namespace {
 // absolute value written with the -0.0 at 00D7A208.
 float abs_009d3766(float v) noexcept { return v < 0.0f ? -v : v; }
 
+// cc13-D3 follow-up (PC24 rule, docs/CC13_FPU_PRECISION.md): ON rounds every x87
+// operation of 009D1500's 600 arm and of 009D0160 to float, as the main thread's
+// 24-bit precision control does; OFF keeps the double chains rounded once.
+// 009D1360 needs no switch: its chains are float operations already, its two
+// double-constant steps are single operations (80.0 divide) or exact (0.5 scale).
+// Live: game_hosts_units.cpp torpedo_time_to_target / torpedo_reset_run_time sites.
+// cc13-pc24torp extends it to the rest of the file: the 009D3519 and 00414C60
+// lengths, the 009D04BE/009D05ED/009D0625 reset chains, the 009D38C3 and 009D3C2C
+// sector angles and the 009D3A47 slope ratio; ON also loads the two scan
+// constants the image holds as float values (00CEC160 1.2f, 00D7A2F8 0.02f),
+// which OFF reads as the doubles 1.2 and 0.02. Live as well: the
+// torpedo_approach_update_009d3420 and reset_*_009d04be/05ed/0625 sites in
+// game_hosts_units.cpp.
+constexpr bool kTorpedoApproachPc24Cc13Bound = false;
+
+// cc13-torphome (rev4): 009D3BB4-009D3BC0 scales the bearing to a sector,
+// trunc(F(F(b * 36.0) / 2pi)), 0..35. OFF truncates the radians unscaled (0..6),
+// so the home sector and the walk start in the wrong place. ON scales, rounds each
+// x87 result to float (main thread, PC24), stores the unclamped sector at +64h as
+// 009D3BC8 does and clamps only the walk's copy.
+// Live: game_hosts_units.cpp update_torpedo_approach_009d3420 ->
+// torpedo_approach_update_009d3420 -> torpedo_home_sector_009d3bc8.
+constexpr bool kTorpedoHomeSectorScaleCc13Bound = false;
+constexpr double kTorpedoHomeSectorScale_00d1fbc8 = 36.0;                 // m64
+// m64, but it holds float(2*pi) widened: 6.2831854820251465, not 2*pi.
+constexpr double kTorpedoHomeSectorTwoPi_00ce3828 = 6.2831854820251465;
+
+// 00CEC160 and 00D7A2F8 as the image stores them (rev5_probe f64).
+constexpr double kTorpedoScanRangeFactorImage_00cec160 = 1.2000000476837158;
+constexpr double kTorpedoScanSlopeStepGrowthImage_00d7a2f8 = 0.019999999552965164;
+
+// ON arm of the xz length at 009D3536-009D3563, and of 00414C60 which is the same
+// code: each square and the sum round to 24 bits and the sum is stored to a float
+// (009D353E FSTP), the 1e-10 test reads that float (JBE takes zero, also on a
+// NaN, which leaves ZF/CF set), and the 00BF7030 sqrt result is stored to a float.
+float length_xz_pc24(float a, float b) noexcept {
+    const float d2 = b * b + a * a;
+    if (!(static_cast<double>(d2) > kTorpedoRangeEpsilonSquared_00ce3820)) return 0.0f;
+    return static_cast<float>(std::sqrt(static_cast<double>(d2)));
+}
+
 }  // namespace
 
 void torpedo_approach_apply_profile_009d3433(TorpedoApproachState& s,
@@ -47,9 +88,13 @@ float torpedo_approach_range_009d3519(const float unit_xz[2],
     const float dz = target_xz[1] - unit_xz[1];
     // 009D3536-009D3550: the sum of squares against the double 1e-10, then
     // 00BF7030 (sqrt) or zero.
-    const double d2 = static_cast<double>(dz) * dz + static_cast<double>(dx) * dx;
-    if (d2 <= kTorpedoRangeEpsilonSquared_00ce3820) return 0.0f;
-    return static_cast<float>(std::sqrt(d2));
+    if constexpr (kTorpedoApproachPc24Cc13Bound) {
+        return length_xz_pc24(dx, dz);
+    } else {
+        const double d2 = static_cast<double>(dz) * dz + static_cast<double>(dx) * dx;
+        if (d2 <= kTorpedoRangeEpsilonSquared_00ce3820) return 0.0f;
+        return static_cast<float>(std::sqrt(d2));
+    }
 }
 
 float torpedo_approach_bearing_009d3586(const float unit_xz[2],
@@ -134,6 +179,11 @@ float torpedo_engagement_eta_009d3c93(const TorpedoApproachState& s,
 // steering delta in radians and why the 600.0 at 00D20198 is not a speed. The
 // name is kept because it is load bearing across three files; renaming it is a
 // follow-up. docs/TORPEDO_RUN_PROFILE.md has the producer.
+// Documented deviations (cc13-D3): the image has no speed == 0 guard (x87 division
+// by zero gives +inf, then the 600 arm); the selected release distance is nonzero
+// with the shipped tuning, so the guard never fires. The quotient is FSTP'd to a
+// float at 009D1542 in the image too; only the 600 arm returns the x87 value, whose
+// ops round to 24 bits on the main thread, against the double-then-float here.
 float torpedo_time_to_target_009d1500(const TorpedoApproachState& s) noexcept {
     const float speed = torpedo_commanded_speed_009d3c99(
         s.elapsed_134, s.speed_late_7c, s.speed_early_80);
@@ -145,12 +195,26 @@ float torpedo_time_to_target_009d1500(const TorpedoApproachState& s) noexcept {
     // 009D1565-009D1595: below the float 600 at 00CE4BC4 the metric switches to
     // one second for the first `speed` units and 600 units a second after it.
     if (speed < kTorpedoCruiseSpeedFloor_00ce4bc4) {
-        return static_cast<float>((s.range_90 - speed) / kTorpedoCruiseSpeedRate_00d20198 +
-                                  kTorpedoCruiseSpeedFirstSecond_00d7a210);
+        if constexpr (kTorpedoApproachPc24Cc13Bound) {
+            // 009D1598 FSUB, 009D159B FDIV m64 600, 009D15A1 FADD m64 1.0: each
+            // rounds to 24 bits; both constants are exact floats.
+            const float over = (s.range_90 - speed) /
+                               static_cast<float>(kTorpedoCruiseSpeedRate_00d20198);
+            return over + static_cast<float>(kTorpedoCruiseSpeedFirstSecond_00d7a210);
+        } else {
+            return static_cast<float>((s.range_90 - speed) / kTorpedoCruiseSpeedRate_00d20198 +
+                                      kTorpedoCruiseSpeedFirstSecond_00d7a210);
+        }
     }
     return t;
 }
 
+// Documented deviations (cc13-D3), shared by 009D1360 and 009D0160: the image has no
+// zero-divide guards (run == 0 gives an infinite quotient, dd == 0 a NaN); the guards
+// here never fire on reachable data: the run speed is 51.44 on every logged 009D1360
+// call (JM08, USN04, USN21), and the dd-divide arm needs dd > leg >= 0, so dd > 0.
+// The +98h store is the caller's (the result is returned), as is the unit's
+// fall-time / speed input (passed in instead of 007BCC80 / vslot +38h / 007BCFA0).
 TorpedoRunTimeResult torpedo_run_time_009d1360(const TorpedoApproachState& s,
                                                const TorpedoRunTimeInputs& in) noexcept {
     TorpedoRunTimeResult out;
@@ -201,7 +265,11 @@ float torpedo_reset_attack_speed_009d03d9(float travel_speed_18c, float min_hit_
 float torpedo_reset_scan_seed_009d04be(float draw, float turn_circle_radius_268,
                                        float far_80) noexcept {
     // 009D04BE FMUL [EDI+268h], 009D04D3 FADD [ESI+80h], 009D04F9 FSTP float.
-    return static_cast<float>(static_cast<double>(draw) * turn_circle_radius_268 + far_80);
+    if constexpr (kTorpedoApproachPc24Cc13Bound) {
+        return draw * turn_circle_radius_268 + far_80;
+    } else {
+        return static_cast<float>(static_cast<double>(draw) * turn_circle_radius_268 + far_80);
+    }
 }
 
 float torpedo_reset_engage_range_009d0517(float scan_seed_88) noexcept {
@@ -212,47 +280,90 @@ float torpedo_reset_engage_range_009d0517(float scan_seed_88) noexcept {
 
 float torpedo_reset_near_leg_009d05ed(float near_7c, float far_80, float draw) noexcept {
     // 009D05D1-009D05ED: draw * (+80h - +7Ch) + +7Ch.
-    const double gap = static_cast<double>(far_80) - near_7c;
-    return static_cast<float>(static_cast<double>(draw) * gap + near_7c);
+    if constexpr (kTorpedoApproachPc24Cc13Bound) {
+        // DE EA FSUBP ST2 (gap), FMULP (by draw), FADDP (near): three rounded ops.
+        return near_7c + draw * (far_80 - near_7c);
+    } else {
+        const double gap = static_cast<double>(far_80) - near_7c;
+        return static_cast<float>(static_cast<double>(draw) * gap + near_7c);
+    }
 }
 
 float torpedo_reset_far_leg_009d0625(float near_7c, float far_80, float draw) noexcept {
     // 009D0612-009D0625: +80h - draw * (+80h - +7Ch), +7Ch the new near leg.
-    const double gap = static_cast<double>(far_80) - near_7c;
-    return static_cast<float>(static_cast<double>(far_80) - draw * gap);
+    if constexpr (kTorpedoApproachPc24Cc13Bound) {
+        // DE E2 FSUBRP ST2 (gap), FMULP (by draw), DE E9 FSUBP ST1 (far minus it).
+        return far_80 - draw * (far_80 - near_7c);
+    } else {
+        const double gap = static_cast<double>(far_80) - near_7c;
+        return static_cast<float>(static_cast<double>(far_80) - draw * gap);
+    }
 }
 
+// Documented deviations (cc13-D3): see 009D1360 above (the same unreachable run == 0
+// guard; dd > L >= 0 in the dd-divide arm); the +98h store is the caller's.
 float torpedo_reset_run_time_009d0160(const TorpedoApproachState& s, float fall_time,
                                       float run_speed) noexcept {
-    const double speed = s.closing_speed_bias_70;
-    // 009D01A6-009D01B8: dt stored to a float, NO floor (009D1360 floors it).
-    const float dt = static_cast<float>((speed - run_speed) /
-                                        static_cast<double>(kTorpedoDecelRate_00cf1440));
-    // 009D01BC-009D01D2: dd = (+70h + run) * 0.5 * dt, stored to a float.
-    const float dd = static_cast<float>((speed + run_speed) *
-        static_cast<double>(kTorpedoHalf_00d7a280) * dt);
-    // 009D01D6-009D01E4: the fall lead, stored to a float.
-    const float lead = static_cast<float>(speed * fall_time);
-    // 009D01E8-009D01FF: L = +7Ch - (lead + dd), stored to a float.
-    const float leg = static_cast<float>(
-        static_cast<double>(s.speed_late_7c) - (static_cast<double>(lead) + dd));
-    float t = fall_time;                                  // 009D023F: L < 0
-    if (!(leg < 0.0f)) {
-        if (dd <= leg) {
-            // 009D0227-009D0239: fall + dt + (L - dd) / run.
-            const double rest = run_speed != 0.0f
-                ? (static_cast<double>(leg) - dd) / run_speed : 0.0;
-            const float rest_f = static_cast<float>(rest);   // 009D022F FSTP
-            t = static_cast<float>(static_cast<double>(fall_time) + dt + rest_f);
-        } else {
-            // 009D0215-009D0221: fall + dt * L / dd (dd > L >= 0 here).
-            t = static_cast<float>(static_cast<double>(fall_time) +
-                                   static_cast<double>(dt) * (leg / static_cast<double>(dd)));
+    if constexpr (kTorpedoApproachPc24Cc13Bound) {
+        const float v = s.closing_speed_bias_70;
+        // 009D01AE FSUBP, 009D01B2 FDIV m64 80, 009D01B8 FSTP: dt.
+        const float dt = (v - run_speed) / kTorpedoDecelRate_00cf1440;
+        // 009D01BE FADDP, 009D01C2 FMUL m64 0.5, 009D01CE FMULP by dt, 009D01D2 FSTP.
+        const float dd = ((v + run_speed) * kTorpedoHalf_00d7a280) * dt;
+        // 009D01E0 FMULP, 009D01E4 FSTP: the fall lead.
+        const float lead = v * fall_time;
+        // 009D01F2 FADDP, 009D01F6 FSUBR [+7Ch], 009D01FF FSTP: L.
+        const float leg = s.speed_late_7c - (lead + dd);
+        // 009D0203..009D020D FLDZ / FLD L / FCOMI ST1 / JB 009D023F: JB is taken for
+        // L < 0 and for unordered, so a NaN L keeps t = fall_time.
+        float t = fall_time;
+        if (leg >= 0.0f) {
+            if (dd <= leg) {
+                // 009D0227 FSUBP, 009D022B FDIVRP, 009D022F FSTP; 009D0233 FADDP
+                // fall + dt, 009D0235 FADD the stored quotient.
+                const float rest = run_speed != 0.0f ? (leg - dd) / run_speed : 0.0f;
+                t = (fall_time + dt) + rest;
+            } else {
+                // 009D0219 FDIVRP L / dd, 009D021D FMULP by dt, 009D021F FADDP fall.
+                t = fall_time + dt * (leg / dd);
+            }
         }
+        // 009D0255 FLD [+9Ch], 009D025B FADD, then the floor at zero into +98h.
+        const float total = s.run_time_bias_9c + t;
+        return total < 0.0f ? 0.0f : total;
+    } else {
+        const double speed = s.closing_speed_bias_70;
+        // 009D01A6-009D01B8: dt stored to a float, NO floor (009D1360 floors it).
+        const float dt = static_cast<float>((speed - run_speed) /
+                                            static_cast<double>(kTorpedoDecelRate_00cf1440));
+        // 009D01BC-009D01D2: dd = (+70h + run) * 0.5 * dt, stored to a float.
+        const float dd = static_cast<float>((speed + run_speed) *
+            static_cast<double>(kTorpedoHalf_00d7a280) * dt);
+        // 009D01D6-009D01E4: the fall lead, stored to a float.
+        const float lead = static_cast<float>(speed * fall_time);
+        // 009D01E8-009D01FF: L = +7Ch - (lead + dd), stored to a float.
+        const float leg = static_cast<float>(
+            static_cast<double>(s.speed_late_7c) - (static_cast<double>(lead) + dd));
+        // 009D023F: L < 0. Pre-existing mismatch kept byte-identical in this arm: a
+        // NaN L takes the arithmetic here, where the image's JB keeps t = fall_time.
+        float t = fall_time;
+        if (!(leg < 0.0f)) {
+            if (dd <= leg) {
+                // 009D0227-009D0239: fall + dt + (L - dd) / run.
+                const double rest = run_speed != 0.0f
+                    ? (static_cast<double>(leg) - dd) / run_speed : 0.0;
+                const float rest_f = static_cast<float>(rest);   // 009D022F FSTP
+                t = static_cast<float>(static_cast<double>(fall_time) + dt + rest_f);
+            } else {
+                // 009D0215-009D0221: fall + dt * L / dd (dd > L >= 0 here).
+                t = static_cast<float>(static_cast<double>(fall_time) +
+                                       static_cast<double>(dt) * (leg / static_cast<double>(dd)));
+            }
+        }
+        // 009D0255-009D0285: the bias, then the floor at zero into +98h.
+        const float total = static_cast<float>(static_cast<double>(s.run_time_bias_9c) + t);
+        return total < 0.0f ? 0.0f : total;
     }
-    // 009D0255-009D0285: the bias, then the floor at zero into +98h.
-    const float total = static_cast<float>(static_cast<double>(s.run_time_bias_9c) + t);
-    return total < 0.0f ? 0.0f : total;
 }
 
 float torpedo_engage_range_009d4b63(float current_8c, float attack_dist_tuning,
@@ -265,17 +376,48 @@ float torpedo_engage_range_009d4b63(float current_8c, float attack_dist_tuning,
 
 float torpedo_sector_bearing_009d38a6(int sector) noexcept {
     // 009D38B4-009D38D8: pi/2 minus sector * pi / 18, wrapped by 2*pi.
-    float bearing = kHalfPi_00ce3830 -
-                    static_cast<float>(static_cast<double>(sector) * kPi_00ce3d28 /
-                                       kTorpedoSectorsPerHalfTurn_00cee930);
+    float angle;
+    if constexpr (kTorpedoApproachPc24Cc13Bound) {
+        // 009D38C3 FMUL and 009D38C9 FDIV each round to 24 bits before the
+        // 009D38CF FSTP; sector and pi are float values, so a double op rounded
+        // to float is the 24-bit op.
+        angle = static_cast<float>(
+            static_cast<double>(static_cast<float>(static_cast<double>(sector) * kPi_00ce3d28)) /
+            kTorpedoSectorsPerHalfTurn_00cee930);
+    } else {
+        angle = static_cast<float>(static_cast<double>(sector) * kPi_00ce3d28 /
+                                   kTorpedoSectorsPerHalfTurn_00cee930);
+    }
+    float bearing = kHalfPi_00ce3830 - angle;
     if (bearing < 0.0f) bearing += kTwoPi_00ce3828;
     return bearing;
 }
 
+namespace {
+// 009D3BB4-009D3BC5, the sector before the clamp. FLD the wrapped bearing,
+// FMUL m64 [00D1FBC8] 36.0, FDIVRP (DE F1) by the m64 2*pi [00CE3828] still on
+// the stack at double precision (FLD does not round to the 24-bit control), each
+// result rounded to float as the main thread's PC24 does, then 009D3BC0 CALL
+// 00BF7420 (_ftol2) truncates. 009D3BC8 stores this value, unclamped, at +64h.
+int torpedo_home_sector_raw_009d3bc0(float bearing_target_to_unit) noexcept {
+    const float scaled = static_cast<float>(static_cast<double>(bearing_target_to_unit) *
+                                            kTorpedoHomeSectorScale_00d1fbc8);  // 009D3BB8
+    const float quotient = static_cast<float>(static_cast<double>(scaled) /
+                                              kTorpedoHomeSectorTwoPi_00ce3828);  // 009D3BBE
+    return static_cast<int>(quotient);                                            // 009D3BC0
+}
+}  // namespace
+
 int torpedo_home_sector_009d3bc8(float bearing_target_to_unit) noexcept {
-    // 009D3BAF CALL 00BF7420, the float-to-int truncation, then 009D3BCE
+    // 009D3BC0 CALL 00BF7420, the float-to-int truncation, then 009D3BC5
     // CMP 0x23 clamps to the last sector.
-    int sector = static_cast<int>(bearing_target_to_unit);
+    int sector;
+    if constexpr (kTorpedoHomeSectorScaleCc13Bound) {
+        sector = torpedo_home_sector_raw_009d3bc0(bearing_target_to_unit);
+    } else {
+        // OFF: the radians are truncated without the 36/(2*pi) scale (0..6).
+        sector = static_cast<int>(bearing_target_to_unit);
+    }
     if (sector > kTorpedoSectorCount - 1) sector = kTorpedoSectorCount - 1;
     return sector;
 }
@@ -312,7 +454,16 @@ TorpedoTurnPlan torpedo_turn_plan_009d3bce(const unsigned char sector_clear[],
     // 009D3C2A-009D3C4E: the cheaper walk wins, and the forward one divides by
     // -18 while the backward one divides by +18, so the sign of the result is
     // the direction of the turn.
-    if (forward < backward) {
+    if constexpr (kTorpedoApproachPc24Cc13Bound) {
+        // 009D3C30/009D3C42 FMUL and 009D3C36/009D3C48 FDIV round to 24 bits each
+        // before the 009D3C50 FSTP.
+        const int gap = forward < backward ? forward : backward;
+        const double div = forward < backward ? kTorpedoSectorsPerHalfTurnNeg_00d21430
+                                              : kTorpedoSectorsPerHalfTurn_00cee930;
+        plan.turn_offset_5c = static_cast<float>(
+            static_cast<double>(static_cast<float>(static_cast<double>(gap) * kPi_00ce3d28)) /
+            div);
+    } else if (forward < backward) {
         plan.turn_offset_5c =
             static_cast<float>(static_cast<double>(forward) * kPi_00ce3d28 /
                                kTorpedoSectorsPerHalfTurnNeg_00d21430);
@@ -339,8 +490,13 @@ void scan_sectors(TorpedoApproachHost& host, TorpedoApproachState& s,
                   float start_radius, float slope_limit, float slope_step) {
     // 009D37EE-009D3808: the cap is the scan seed times 1.2, held down by the
     // engage distance.
-    float cap = static_cast<float>(static_cast<double>(s.scan_radius_seed_88) *
-                                   kTorpedoScanRangeFactor_00cec160);
+    const double range_factor = kTorpedoApproachPc24Cc13Bound
+                                    ? kTorpedoScanRangeFactorImage_00cec160
+                                    : kTorpedoScanRangeFactor_00cec160;
+    const double step_growth = kTorpedoApproachPc24Cc13Bound
+                                   ? kTorpedoScanSlopeStepGrowthImage_00d7a2f8
+                                   : kTorpedoScanSlopeStepGrowth_00d7a2f8;
+    float cap = static_cast<float>(static_cast<double>(s.scan_radius_seed_88) * range_factor);
     if (cap > s.engage_range_8c) cap = s.engage_range_8c;
 
     // 009D3820-009D3840: the ground under the target, floored at 20 when it is
@@ -369,12 +525,21 @@ void scan_sectors(TorpedoApproachHost& host, TorpedoApproachState& s,
                 // 009D3960-009D399A: the slope from the target's ground up to
                 // the probe over the radius past 400.
                 const float h = host.terrain_height_0041bc20(px, pz);
-                const double denom =
-                    static_cast<double>(radius) - kTorpedoScanSlopeBase_00ce3d90;
-                if (denom != 0.0 &&
-                    static_cast<double>(limit) <
-                        (static_cast<double>(h) - ground_at_target) / denom) {
-                    blocked = true;
+                if constexpr (kTorpedoApproachPc24Cc13Bound) {
+                    // 009D3A47 FSUB, 009D3A4F FSUB m64 400 and 009D3A55 FDIVP
+                    // each round to 24 bits; radius >= 450 here, so no zero divide.
+                    const float rise = h - ground_at_target;
+                    const float run = static_cast<float>(
+                        static_cast<double>(radius) - kTorpedoScanSlopeBase_00ce3d90);
+                    blocked = limit < rise / run;
+                } else {
+                    const double denom =
+                        static_cast<double>(radius) - kTorpedoScanSlopeBase_00ce3d90;
+                    if (denom != 0.0 &&
+                        static_cast<double>(limit) <
+                            (static_cast<double>(h) - ground_at_target) / denom) {
+                        blocked = true;
+                    }
                 }
             } else {
                 // 009D39CB: the short-range blocked test.
@@ -389,7 +554,7 @@ void scan_sectors(TorpedoApproachHost& host, TorpedoApproachState& s,
             }
             radius = static_cast<float>(radius + kTorpedoScanRadiusStep_00d1f3f8);
             limit += step;
-            step = static_cast<float>(step + kTorpedoScanSlopeStepGrowth_00d7a2f8);
+            step = static_cast<float>(step + step_growth);  // 009D3A83
         }
     }
     // 009D39FD: index 36 is a wrap copy of index 0.
@@ -455,8 +620,11 @@ TorpedoApproachUpdateResult torpedo_approach_update_009d3420(
                 // flight leader's position, against the engage distance.
                 const float dx = target_point[0] - designated_xz[0];
                 const float dz = target_point[2] - designated_xz[1];
-                const float len = static_cast<float>(
-                    std::sqrt(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz));
+                const float len =
+                    kTorpedoApproachPc24Cc13Bound
+                        ? length_xz_pc24(dx, dz)
+                        : static_cast<float>(std::sqrt(static_cast<double>(dx) * dx +
+                                                       static_cast<double>(dz) * dz));
                 if (state.engage_range_8c <= len) state.in_range_latch_131 = false;
             }
         }
@@ -517,8 +685,10 @@ TorpedoApproachUpdateResult torpedo_approach_update_009d3420(
                 start_radius =
                     static_cast<float>(start_radius - kTorpedoScanRadiusShrink_00cf1440);
                 slope_step = kTorpedoScanSlopeStepReset_00d21438;
-                slope_limit =
-                    static_cast<float>(slope_limit + kTorpedoScanSlopeStepGrowth_00d7a2f8);
+                slope_limit = static_cast<float>(  // 009D3AC7
+                    slope_limit + (kTorpedoApproachPc24Cc13Bound
+                                       ? kTorpedoScanSlopeStepGrowthImage_00d7a2f8
+                                       : kTorpedoScanSlopeStepGrowth_00d7a2f8));
             }
         }
     }
@@ -539,9 +709,18 @@ TorpedoApproachUpdateResult torpedo_approach_update_009d3420(
             // the truncation to a sector index.
             const float bearing_from_target =
                 torpedo_approach_bearing_009d3586(target_xz, unit_xz);
-            state.home_sector_64 = torpedo_home_sector_009d3bc8(bearing_from_target);
+            if constexpr (kTorpedoHomeSectorScaleCc13Bound) {
+                // 009D3BC8 stores the sector before 009D3BCB's clamp; only the
+                // walk below uses the clamped one.
+                state.home_sector_64 = torpedo_home_sector_raw_009d3bc0(bearing_from_target);
+            } else {
+                state.home_sector_64 = torpedo_home_sector_009d3bc8(bearing_from_target);
+            }
             const TorpedoTurnPlan plan = torpedo_turn_plan_009d3bce(
-                state.sector_clear_30, state.sector_clear_count_58, state.home_sector_64);
+                state.sector_clear_30, state.sector_clear_count_58,
+                kTorpedoHomeSectorScaleCc13Bound
+                    ? torpedo_home_sector_009d3bc8(bearing_from_target)
+                    : state.home_sector_64);
             state.turn_offset_5c = plan.turn_offset_5c;   // 009D3C50
             state.forward_gap_68 = plan.forward_gap_68;   // 009D3C53
             state.backward_gap_6c = plan.backward_gap_6c; // 009D3C56

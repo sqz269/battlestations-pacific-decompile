@@ -1,0 +1,1381 @@
+{
+  "lane": "oct24-poolB",
+  "review": "cc13-rev7 blind-review fix round",
+  "audit_scope": {
+    "original_new_bodies": 96,
+    "precision_audited": 96,
+    "class_duplicate_audited": 96
+  },
+  "pc24": {
+    "assigned_body_fixes": 3,
+    "addresses": [
+      "0074af50",
+      "007d3e60",
+      "007eb380"
+    ],
+    "existing_partial_projection_fixes": [
+      "0074afcc",
+      "0074b109"
+    ],
+    "idiom": "Existing per-operation pc24(double)->float under project /fp:strict/SSE2.",
+    "target": "Main-thread PC24; inline x87 bodies preserve native instructions/control-word dependence.",
+    "evidence_reports": [
+      "reports/oct24_poolB_fix_planes.json",
+      "reports/oct24_poolB_fix_early.json"
+    ]
+  },
+  "duplicates_removed": [
+    {
+      "address": "00bea9e0",
+      "removed_cpp_symbols": [
+        "pc_storage_state_is_zero_or_one_00bea9e0"
+      ],
+      "canonical_cpp_symbol": "bsp::PcStorageBackend::state_is_zero_or_one_00bea9e0",
+      "source": "src/storage_backend.cpp",
+      "provenance": "Existing backend22f875a60; extracted member is called by that existing owner.",
+      "coverage": "existing_checked_projection"
+    },
+    {
+      "address": "00beaa70",
+      "removed_cpp_symbols": [
+        "pc_storage_capability_true_00beaa70"
+      ],
+      "canonical_cpp_symbol": "bsp::PcStorageBackend::capability_true_00beaa70",
+      "source": "src/storage_backend.cpp",
+      "provenance": "Existing backend22f875a60; extracted member is called by that existing owner.",
+      "coverage": "existing_checked_projection"
+    },
+    {
+      "address": "00beab50",
+      "removed_cpp_symbols": [
+        "pc_storage_create_slot_directory_00beab50"
+      ],
+      "canonical_cpp_symbol": "bsp::PcStorageBackend::create_slot_directory_00beab50",
+      "source": "src/storage_backend.cpp",
+      "provenance": "Existing backend22f875a60; extracted member is called by that existing owner.",
+      "coverage": "existing_checked_projection"
+    },
+    {
+      "address": "00beaba0",
+      "removed_cpp_symbols": [
+        "pc_storage_read_file_00beaba0"
+      ],
+      "canonical_cpp_symbol": "bsp::PcStorageBackend::read_file_00beaba0",
+      "source": "src/storage_backend.cpp",
+      "provenance": "Existing backend22f875a60; extracted member is called by that existing owner.",
+      "coverage": "existing_checked_projection"
+    },
+    {
+      "address": "00beacb0",
+      "removed_cpp_symbols": [
+        "pc_storage_write_file_00beacb0"
+      ],
+      "canonical_cpp_symbol": "bsp::PcStorageBackend::write_file_00beacb0",
+      "source": "src/storage_backend.cpp",
+      "provenance": "Existing backend22f875a60; extracted member is called by that existing owner.",
+      "coverage": "existing_checked_projection"
+    }
+  ],
+  "other_fixes": {
+    "helper_reuse": [
+      {
+        "address": "007d4812",
+        "name": "bind_plane_bow_wave_points_007d4812",
+        "source": "src/plane_bow_wave.cpp",
+        "caller": "plane_class_bind_model_data_007d3e60",
+        "change": "Both stable-array and new live-container APIs share bind_wave_points. The live adapter preserves current begin/end reads at the loop head, post-marker bounds validation, 007D4915 invalid-parameter callback and begin reload after a returning handler. A fixed records/count call could not preserve callback mutation semantics.",
+        "ledger_before": {
+          "name": "bind_plane_bow_wave_points_007d4812",
+          "parent": "007d3e60",
+          "remaining": "Only BowWaves model-point binding, valid stable records and present nonempty marker preconditions; marker lookup and failures delegated to host.",
+          "status": "reconstructed_win32_build_and_existing_checks_passed",
+          "source": "src/plane_bow_wave.cpp",
+          "native_range": "007d4812..007d4953 (last instruction length 5)",
+          "address": "007d4812",
+          "abi_compatible": false,
+          "kind": "fragment"
+        },
+        "ledger_after": {
+          "name": "bind_plane_bow_wave_points_007d4812",
+          "parent": "007d3e60",
+          "remaining": "Only BowWaves model-point binding. Stable-array API keeps valid stable-record and present-marker preconditions; live-container overload reloads descriptor bounds and validates the destination after marker callbacks, including the returning invalid-parameter handler. Marker lookup and failures remain host boundaries.",
+          "status": "reconstructed_fragment_live_container_reviewed_build_pending",
+          "source": "src/plane_bow_wave.cpp",
+          "native_range": "007d4812..007d4953 (last instruction length 5)",
+          "address": "007d4812",
+          "abi_compatible": false,
+          "kind": "fragment",
+          "evidence": "reports/oct24_poolB_fix_planes.json: 007D3E60 now calls bind_plane_bow_wave_points_007d4812 through PlaneBowWaveLiveBindingHost. Both APIs share one point-binding loop in src/plane_bow_wave.cpp; current bounds are read at the loop head and after marker lookup, and begin is reloaded after returning 00BF6713. Interior fragment only, no duplicate complete-body credit."
+        },
+        "rename": false,
+        "ledger_cli": "ledger add-fragment --json <preserved-record-plus-current-evidence> --replace; no supersedes because the surviving symbol is unchanged."
+      },
+      {
+        "address": "007eb4e0",
+        "name": "timed_flag_debounce_007eb4e0",
+        "source": "src/gameplay_seg48_cc13.cpp",
+        "caller": "plane_fx_component_step_007eb380",
+        "change": "Existing TimedFlag/bool API and raw uint8_t overload share debounce_timed_flag. Raw overload preserves CMP/store of exact AL and +28h bytes; no bool canonicalization. Equality resets timer; otherwise one float add then strict > timeout stores raw state.",
+        "native_pcs": [
+          "007eb4e0",
+          "007eb4e8",
+          "007eb4ff",
+          "007eb505",
+          "007eb51d"
+        ]
+      }
+    ],
+    "bow_wave_fragment_ledger": "007D4812 records surviving plane_bow_wave.cpp helper and live binder reuse.",
+    "minor_rows": [
+      {
+        "address": "00b6a390",
+        "change": "Correct source/header address lists."
+      },
+      {
+        "address": "007f4ba0",
+        "change": "Use named native field offsets; text expansion unchanged."
+      }
+    ],
+    "attribution_correction": {
+      "address": "00abe640",
+      "change": "Remove stale Section attribution from Icon companion wrapper; retain complete Section body."
+    },
+    "unordered_guard_corrections": [
+      "0074afcc",
+      "0074b109",
+      "00922c80"
+    ],
+    "retained_distinct_partial_fragments": [
+      "00a3d060",
+      "00a9df40"
+    ]
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "source_checked_commit": "8878f94b9c106c4a13fc11d785fba29a8e13693f",
+    "build_log": "local/build-poolB-fix-publish2.log",
+    "msvc": "Win32 Release",
+    "build_passed": true,
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "game_runs": 0,
+    "host_wiring_added": false,
+    "binary_abi_validated": false,
+    "native_differential_tested": false
+  },
+  "report_call_checks": {
+    "checked": 325,
+    "failed": 0
+  },
+  "focused_expression_witnesses": {
+    "count": 7,
+    "report": "reports/oct24_poolB_fix_early.json",
+    "scope": "Focused expression/branch witnesses; not native or game differential proof."
+  },
+  "independent_reviews": [
+    {
+      "scope": "Plane PC24 chains and canonical overloads",
+      "result": "No material findings."
+    },
+    {
+      "scope": "Landing ramp PC24/NaN guards",
+      "result": "One partial-latch unordered issue found and corrected by8918814016."
+    },
+    {
+      "scope": "Storage extraction against existing backend",
+      "result": "No material findings; checked-domain limits preserved."
+    }
+  ],
+  "storage_qualifications": [
+    "Existing path rejects a formatted path >=256 bytes and invalid kind.",
+    "Existing read rejects >DWORD file sizes and short reads and closes size-failure handles; image truncates size, ignores successful short counts and leaks that failure handle.",
+    "Checked std::vector allocation remains the existing qualified storage substitution; raw failure-side-effect equivalence is not claimed."
+  ],
+  "limitations": [
+    "Native EH/FH3, exception/status identity, binary ABI and gameplay equivalence remain unvalidated.",
+    "Existing checked storage projection intentionally differs from native malformed/failed-read behavior."
+  ],
+  "commits_on_main": [
+    {
+      "commit": "ad202a337e5cd39d58b6b8a12ab166683eff1132",
+      "subject": "Consolidate five duplicate PC storage leaves into the existing backend"
+    },
+    {
+      "commit": "b967076dd3ff716265d30f2479c80b48d815ba80",
+      "subject": "Repair plane PC24 arithmetic and reuse canonical fragments"
+    },
+    {
+      "commit": "20aab81cabd07cd20e9c73b65607f2c195a2dcd8",
+      "subject": "Fix landing-ship PC24 chains and audit early PoolB bodies"
+    },
+    {
+      "commit": "d2570fcddf02a29e87143429eeb5a933927471c2",
+      "subject": "Clarify unrelated pad-distance helper audit scope"
+    },
+    {
+      "commit": "fc41e9c508a7b5d6970d1dd78ae4f61e02bfd557",
+      "subject": "Audit PoolB tail precision and implementation ownership"
+    },
+    {
+      "commit": "8918814016d3ac4829079d7293e6dc4e40f04c72",
+      "subject": "Preserve unordered timer skip in landing ramp latch"
+    }
+  ],
+  "left_open": [],
+  "routines": [
+    {
+      "address": "007482b0",
+      "source": "src/land_and_structures.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "007482b0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "land_fort_init_scene_and_create_static_body_007482b0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00749210",
+      "source": "src/vehicle_class_fields.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "00749210",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "read_structure_class_fields_00749210"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0074a1f0",
+      "source": "src/cc13_seg41_land.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "0074a1f0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "landing_ship_serialize_0074a1f0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0074af50",
+      "source": "src/building_pads.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "0074af50",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "landing_ship_update_0074af50"
+      ],
+      "pc24_arithmetic_fixed": true,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0074d4a0",
+      "source": "src/vehicle_class_fields.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "0074d4a0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "read_wreckable_class_fields_0074d4a0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00758fe0",
+      "source": "src/cc13_seg41_land.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "00758fe0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "mothership_detach_from_world_lists_00758fe0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0077e380",
+      "source": "src/native_unit_owner_entity.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "0077e380",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "destruct_native_unit_owner_entity_0077e380"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0077eed0",
+      "source": "src/native_unit_owner_entity.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "0077eed0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_native_unit_owner_entity_0077eed0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "007cfd00",
+      "source": "include/bsp/local_player_unit_lists.hpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "007cfd00",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "plane_class_is_kind_of_007cfd00"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "007d3e60",
+      "source": "src/plane_class_fields.cpp",
+      "audit_report": "reports/oct24_poolB_fix_planes.json",
+      "audit_key": "007d3e60",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "plane_class_bind_model_data_007d3e60"
+      ],
+      "pc24_arithmetic_fixed": true,
+      "duplicate_removed": false
+    },
+    {
+      "address": "007eb380",
+      "source": "src/cc13_seg48.cpp",
+      "audit_report": "reports/oct24_poolB_fix_planes.json",
+      "audit_key": "007eb380",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "plane_fx_component_step_007eb380"
+      ],
+      "pc24_arithmetic_fixed": true,
+      "duplicate_removed": false
+    },
+    {
+      "address": "007f4ba0",
+      "source": "src/plane_squadron_entity.cpp",
+      "audit_report": "reports/oct24_poolB_fix_planes.json",
+      "audit_key": "007f4ba0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "plane_squadron_sentity_init_007f4ba0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "007f9020",
+      "source": "src/native_game_profile_lifetime.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "007f9020",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "copy_construct_profile_bonus_record_007f9020"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "008050e0",
+      "source": "src/recon_slot_lists.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "008050e0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_recon_slot_008050e0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00805240",
+      "source": "src/recon_slot_lists.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "00805240",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "destruct_recon_slot_00805240"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00805d90",
+      "source": "src/recon_slot_lists.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "00805d90",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "publish_recon_relation_categories_00805d90"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00808cb0",
+      "source": "src/sensor_tables.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "00808cb0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_sensor_class_table_00808cb0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00810f60",
+      "source": "src/unit_hull_extents.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "00810f60",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "initialize_unit_director_and_hull_00810f60"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "008160b0",
+      "source": "src/unit_fire_flooding.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "008160b0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "tick_unit_repair_task_008160b0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "008b01b0",
+      "source": "src/engine_seg56_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "008b01b0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "lua_game_end_scene_008b01b0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "008d1a10",
+      "source": "src/engine_seg56_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "008d1a10",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_perf_timing_registry_008d1a10"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "008d1ab0",
+      "source": "src/engine_seg56_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "008d1ab0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "destruct_perf_timing_registry_008d1ab0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "008d1b80",
+      "source": "src/engine_seg56_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "008d1b80",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "get_perf_timing_registry_008d1b80"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "008f02b0",
+      "source": "src/scene_property_bag.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "008f02b0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "scene_property_decl_is_enum_letter_008f02b0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "008f02e0",
+      "source": "src/scene_property_bag.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "008f02e0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "scene_property_decl_is_lua_s_letter_008f02e0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "008ff040",
+      "source": "src/gun_bot_ticks.cpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "008ff040",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "attach_ballistic_gun_bot_008ff040"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00922dd0",
+      "source": "include/bsp/entity_mission_seg60_argon.hpp",
+      "audit_report": "reports/oct24_poolB_fix_early.json",
+      "audit_key": "00922dd0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "entity_is_surface_target_00922dd0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00951220",
+      "source": "src/scene_traffic_groups.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00951220",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "create_traffic_record_00951220"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00951aa0",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00951aa0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_recon_plane_class_00951aa0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00951af0",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00951af0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_fighter_class_00951af0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00951b40",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00951b40",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_dive_bomber_class_00951b40"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00951b60",
+      "source": "src/unit_instance_layout.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00951b60",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_dive_bomber_unit_00951b60"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00951c20",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00951c20",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_torpedo_bomber_class_00951c20"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00951c40",
+      "source": "src/unit_instance_layout.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00951c40",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_torpedo_bomber_unit_00951c40"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00951d00",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00951d00",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_kamikaze_class_00951d00"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00951d20",
+      "source": "src/unit_instance_layout.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00951d20",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_kamikaze_unit_00951d20"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00951de0",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00951de0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_level_bomber_class_00951de0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00951e30",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00951e30",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_command_building_class_00951e30"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "009536e0",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "009536e0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_small_recon_plane_class_009536e0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00953720",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00953720",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "small_recon_plane_class_name_00953720"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00953770",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00953770",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_large_recon_plane_class_00953770"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "009537b0",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "009537b0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "large_recon_plane_class_name_009537b0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00959940",
+      "source": "src/unit_destructor_levels.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00959940",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "destruct_unit_game_object_00959940"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0095cc90",
+      "source": "src/unit_instance_layout.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "0095cc90",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_unit_game_object_0095cc90"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0095fee0",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "0095fee0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_airfield_class_0095fee0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0095ff50",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "0095ff50",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_shipyard_class_0095ff50"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0095ffc0",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "0095ffc0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_land_vehicle_class_0095ffc0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00960050",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00960050",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_dummy_target_class_00960050"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00963380",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00963380",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_ship_class_base_00963380"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00963c20",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00963c20",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_landing_ship_class_00963c20"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00963cb0",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00963cb0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_cargo_class_00963cb0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00963d30",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00963d30",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_battleship_class_00963d30"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00963db0",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00963db0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_submarine_class_00963db0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00963e00",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00963e00",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "submarine_class_name_00963e00"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00963e40",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00963e40",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_torpedo_boat_class_00963e40"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00963ec0",
+      "source": "src/vehicle_class.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00963ec0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_mothership_class_00963ec0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0096dcb0",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0096dcb0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "destruct_warning_event_record_0096dcb0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097a220",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097a220",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_recon_0097a220"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097a330",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097a330",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "destruct_recon_0097a330"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097a450",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097a450",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_kill_0097a450"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097a530",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097a530",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "destruct_kill_0097a530"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097a620",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097a620",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_exit_zone_0097a620"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097a6d0",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097a6d0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "destruct_exit_zone_0097a6d0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097a790",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097a790",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_input_0097a790"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097a810",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097a810",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "destruct_input_0097a810"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097a8b0",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097a8b0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_surrender_0097a8b0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097a930",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097a930",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "destruct_surrender_0097a930"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097a9d0",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097a9d0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_leak_0097a9d0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "0097aa50",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "0097aa50",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "destruct_leak_0097aa50"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a06840",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a06840",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_debug_parse_class_equipment_list_00a06840"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a072d0",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a072d0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_debug_parse_class_list_00a072d0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a0fce0",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a0fce0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_non_control_get_type_00a0fce0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a0fd30",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a0fd30",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_selling_get_type_00a0fd30"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a0fd80",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a0fd80",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_idle_get_type_00a0fd80"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a0fe90",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a0fe90",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_defend_position_get_type_00a0fe90"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a0fef0",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a0fef0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_retreat_get_type_00a0fef0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a10270",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a10270",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_move_to_get_type_00a10270"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a10310",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a10310",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_cautious_move_get_type_00a10310"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a103a0",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a103a0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_regrouping_move_get_type_00a103a0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a10470",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a10470",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_patrol_to_get_type_00a10470"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a108c0",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a108c0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_move_to_attack_get_type_00a108c0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a109f0",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a109f0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_cautious_attack_get_type_00a109f0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a10b10",
+      "source": "src/ai_planners.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a10b10",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_command_close_attack_get_type_00a10b10"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a2cdd0",
+      "source": "src/ai_group_think.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a2cdd0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_debug_group_target_text_00a2cdd0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a2d580",
+      "source": "src/ai_group_think.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a2d580",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_debug_group_members_overlay_00a2d580"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a2f6f0",
+      "source": "src/ai_group_think.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a2f6f0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "ai_group_describe_debug_00a2f6f0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a3d060",
+      "source": "src/native_network_console_runtime.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a3d060",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "construct_native_network_console_00a3d060"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00a9df40",
+      "source": "src/cc13_gui1.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00a9df40",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "gui_listbox_construct_00a9df40"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00abe640",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00abe640",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "gui_section_get_first_vertex_stream_00abe640"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00b6a390",
+      "source": "src/lua_object.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00b6a390",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "lua_object_write_lua_source_text_00b6a390"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00bbf8a0",
+      "source": "src/water_weather_cc13.cpp",
+      "audit_report": "reports/oct24_poolB_fix_tail.json",
+      "audit_key": "00bbf8a0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "sky_box_construct_00bbf8a0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": false
+    },
+    {
+      "address": "00bea9e0",
+      "source": "src/storage_backend.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00bea9e0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "bsp::PcStorageBackend::state_is_zero_or_one_00bea9e0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": true
+    },
+    {
+      "address": "00beaa70",
+      "source": "src/storage_backend.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00beaa70",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "bsp::PcStorageBackend::capability_true_00beaa70"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": true
+    },
+    {
+      "address": "00beab50",
+      "source": "src/storage_backend.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00beab50",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "bsp::PcStorageBackend::create_slot_directory_00beab50"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": true
+    },
+    {
+      "address": "00beaba0",
+      "source": "src/storage_backend.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00beaba0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "bsp::PcStorageBackend::read_file_00beaba0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": true
+    },
+    {
+      "address": "00beacb0",
+      "source": "src/storage_backend.cpp",
+      "audit_report": "reports/oct24_poolB_fix_primary.json",
+      "audit_key": "00beacb0",
+      "precision_and_class_duplicate_audited": true,
+      "cpp_symbols": [
+        "bsp::PcStorageBackend::write_file_00beacb0"
+      ],
+      "pc24_arithmetic_fixed": false,
+      "duplicate_removed": true
+    }
+  ]
+}

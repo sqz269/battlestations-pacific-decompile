@@ -163,6 +163,8 @@ std::uint32_t plane_set_classify_point(const PlaneRow* rows, int count, const fl
 // 00B65710, __thiscall(set, const float box[6] {min.xyz, max.xyz}), RET 4.
 // With half = 0.5 (double D7A280) and |n| as (n <= 0 ? -0.0f - n : n):
 // AAA when dot(n, (min+max)*half) - d < -dot(|n|, (max-min)*half).
+// cc13-fixture4: modelled at the main thread's 24-bit precision with the image's float
+// spills and sum order (docs/CC13_FIXTURE_PASS_4.md); bit-exact against the original bytes.
 std::uint32_t plane_set_classify_aabb(const PlaneRow* rows, int count, const float box[6]);
 
 // ---------------------------------------------------------------------------
@@ -437,5 +439,27 @@ void scale_color32(const std::uint8_t in[4], std::uint8_t out[4], float scale);
 // Index pattern of the disc fan written by 00B8B980 (centre vertex 0, rim
 // vertices 1..n): triangle i = (0, i+1, (i+1) % n + 1), 16-bit indices.
 void disc_fan_indices(std::uint32_t rim_count, std::vector<std::uint16_t>& out);
+
+// 00B8B980 whole body (cc13-P4), __stdcall(geometry, const float radius_xy[2],
+// uint32 rim_count), RET 0Ch; ECX is not read. The angle and step are locals,
+// not register inputs: angle starts at 0.0f (00B8B999) and the step is
+// 2pi / rim_count (00B8B995..00B8B9B3: FILD, +2^32 when negative, FDIVR by the
+// double at 00CE3828, which is 2pi rounded to float). The host owns the two
+// D3D buffers: 00B73260(geometry, 0) then its vtable+10h(0,0,0) lock and +14h
+// unlock for vertices; [geometry+60h] vtable+0Ch(0,0,0) lock and +10h unlock
+// for indices.
+struct FlareDiscFanHost {
+    virtual ~FlareDiscFanHost() = default;
+    virtual unsigned char* lock_vertex_stream0_00b73260() = 0;
+    virtual void unlock_vertex_stream0() = 0;
+    virtual std::uint16_t* lock_index_buffer_60() = 0;
+    virtual void unlock_index_buffer_60() = 0;
+};
+// 28h-byte vertices: centre {0,0,0, 1.0f, 00FFFFFFh}; rim k {r.x*cos a,
+// r.y*sin a, 0.999f (00D63400), 1.0f, 00FFFFFFh, +18h/+1Ch 0.5f}. The image
+// leaves +14h, and +18h..+27h of the centre, unwritten. Then the indices of
+// disc_fan_indices. Float math is modelled at the 24-bit precision control.
+void write_disc_fan_00b8b980(FlareDiscFanHost& host, const float radius_xy[2],
+    std::uint32_t rim_count);
 
 } // namespace bsp::cc13fx

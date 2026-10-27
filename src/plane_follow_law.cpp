@@ -383,18 +383,43 @@ bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
                                     float out0[2], float out1[2]) noexcept {
     const float dx = q[0] - c[0];                                         // 004F3826
     const float dz = q[1] - c[1];                                         // 004F3838
-    const float d2 = static_cast<float>(
-        static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    float d2 = 0.0f;
+    if constexpr (kCircleTangentPc24Cc13Bound) {
+        // 004F3846 FMULP / 004F3848 FMUL ST0 / 004F384A FADDP, each at PC24.
+        d2 = F(static_cast<double>(F(static_cast<double>(dx) * dx)) +
+               F(static_cast<double>(dz) * dz));
+    } else {
+        d2 = static_cast<float>(
+            static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    }
     const float d = static_cast<double>(d2) > 1e-10                       // 00CE3820
         ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
-    if (!(r < d)) return false;                                           // 004F3887
+    bool proceed = r < d;                                                 // 004F3887
+    if constexpr (kCircleTangentUnorderedCc13Bound) {
+        proceed = r < d || std::isnan(r);                                 // JC on unordered
+    }
+    if (!proceed) return false;
     const float ux = static_cast<float>(static_cast<double>(dx) / d);
     const float uz = static_cast<float>(static_cast<double>(dz) / d);
-    const float p = static_cast<float>(static_cast<double>(r) * r / d);   // 004F38C1
-    const float t = static_cast<float>(std::sqrt(static_cast<double>(
-        static_cast<float>(static_cast<double>(d) * d -
-                           static_cast<double>(r) * r))));                // 004F38D8
-    const float h = static_cast<float>(static_cast<double>(t) * r / d);   // 004F38F2
+    float p = 0.0f;
+    float t = 0.0f;
+    float h = 0.0f;
+    if constexpr (kCircleTangentPc24Cc13Bound) {
+        // 004F38BD FMUL ST0 / 004F38BF FDIV: r*r, then / d.
+        p = F(static_cast<double>(F(static_cast<double>(r) * r)) / d);       // 004F38C1
+        // 004F38CA FMULP (d*d) / 004F38CC FMUL ST0 (r*r) / 004F38CE FSUBP.
+        const float radicand = F(static_cast<double>(F(static_cast<double>(d) * d)) -
+                                 F(static_cast<double>(r) * r));            // 004F38D0
+        t = F(std::sqrt(static_cast<double>(radicand)));                    // 004F38DD
+        // 004F38E9 FMUL r / 004F38EE FDIV d.
+        h = F(static_cast<double>(F(static_cast<double>(t) * r)) / d);       // 004F38F2
+    } else {
+        p = static_cast<float>(static_cast<double>(r) * r / d);             // 004F38C1
+        t = static_cast<float>(std::sqrt(static_cast<double>(
+            static_cast<float>(static_cast<double>(d) * d -
+                               static_cast<double>(r) * r))));              // 004F38D8
+        h = static_cast<float>(static_cast<double>(t) * r / d);             // 004F38F2
+    }
     const float mx = static_cast<float>(
         c[0] + static_cast<double>(static_cast<float>(static_cast<double>(p) * ux)));
     const float mz = static_cast<float>(

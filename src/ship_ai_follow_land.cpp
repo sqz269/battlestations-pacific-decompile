@@ -217,7 +217,15 @@ ShipAiFollowLandXZ ship_ai_land_pad_approach_point_006ac5d0(const ShipAiLandPadL
     const float across = std::fabs((kShipAiFollowBackOffBias - facing.z) * dx + facing.x * dz);
 
     float offset;
-    if (across <= half_width && along <= half_width && -along <= line.ahead_run_21c) {
+    bool inside;
+    if constexpr (kPadApproachPointImageCc13Bound) {
+        // 006AC99D JBE, 006AC9E4 JA, 006AC9F8 JA: each leaves the corridor only on an ordered
+        // greater-than, so an unordered compare stays inside (the carrot).
+        inside = !(across > half_width) && !(along > half_width) && !(-along > line.ahead_run_21c);
+    } else {
+        inside = across <= half_width && along <= half_width && -along <= line.ahead_run_21c;
+    }
+    if (inside) {
         // Inside the corridor: a carrot ahead of the ship's own projection on
         // the approach axis, tapering to the axis as the lateral error grows.
         // 006ACA2C: interp(0.5, 1.0, 1.0, 0.0, across / half_width).
@@ -230,9 +238,38 @@ ShipAiFollowLandXZ ship_ai_land_pad_approach_point_006ac5d0(const ShipAiLandPadL
     }
     // Outside it: a hold-off point one clearance behind the pad, so a ship that
     // has missed the line is sent back to the entry rather than across it.
-    offset = line.astern_clearance_218 < half_width ? line.astern_clearance_218 : half_width;
+    if constexpr (kPadApproachPointImageCc13Bound) {
+        // 006AC9B3 / 006ACAC4: FCOMIP clearance, half_width; JBE keeps the clearance, also when
+        // the compare is unordered.
+        offset = line.astern_clearance_218 > half_width ? half_width : line.astern_clearance_218;
+    } else {
+        offset = line.astern_clearance_218 < half_width ? line.astern_clearance_218 : half_width;
+    }
     return ShipAiFollowLandXZ{line.origin_x_20c - offset * facing.x,
                               line.origin_z_214 - offset * facing.z};
+}
+
+// cc13-padfix. 006AC5D0 with its out+4 store: y is [+210h] + 0.0 (006ACA98) after the carrot and
+// [+210h] - 0.0 (006ACB01) after the hold-off, the double 00D7A258 being 0.0. The corridor test is
+// repeated here with the arm's own rule so the sign of a zero y follows the branch taken.
+ShipAiLandPadPoint ship_ai_land_pad_approach_point_xyz_006ac5d0(const ShipAiLandPadLine& line,
+                                                               const ShipAiFollowLandXZ& facing,
+                                                               const ShipAiFollowLandXZ& from,
+                                                               float half_width) {
+    const ShipAiFollowLandXZ xz =
+        ship_ai_land_pad_approach_point_006ac5d0(line, facing, from, half_width);
+    const float dx = line.origin_x_20c - from.x;
+    const float dz = line.origin_z_214 - from.z;
+    const float along = dx * facing.x + facing.z * dz;
+    const float across = std::fabs((kShipAiFollowBackOffBias - facing.z) * dx + facing.x * dz);
+    bool inside;
+    if constexpr (kPadApproachPointImageCc13Bound) {
+        inside = !(across > half_width) && !(along > half_width) && !(-along > line.ahead_run_21c);
+    } else {
+        inside = across <= half_width && along <= half_width && -along <= line.ahead_run_21c;
+    }
+    const float y = inside ? line.origin_y_210 + 0.0f : line.origin_y_210 - 0.0f;
+    return ShipAiLandPadPoint{xz.x, y, xz.z};
 }
 
 // 009E1E0E..009E1E31.

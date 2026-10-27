@@ -743,8 +743,9 @@ struct GuiTextCursor {
 void gui_text_set_cursor_mode_00ab95f0(void* text, GuiTextCursor& cursor, std::int32_t mode,
                                        GuiLeafHost& host);
 
-// 00AB10A0 (Icon) / 00ABE640 (Section), __fastcall(ECX = widget): the first vertex stream of
-// the widget's model, or null.
+// Historical 00AB10A0 (Icon) host projection: the first vertex stream of the
+// widget's model, or null. This forwarding boundary does not implement
+// 00ABE640; use gui_section_get_first_vertex_stream_00abe640 for that body.
 void* gui_first_vertex_stream(void* widget, GuiLeafHost& host);
 
 struct GuiSectionVertexStreamHost {
@@ -755,7 +756,7 @@ struct GuiSectionVertexStreamHost {
     virtual void* call_00b73260(void* geometry, std::int32_t index) = 0;
 };
 // 00ABE640, native ECX = section, RET -> EAX stream or null. Complete normal
-// body, unlike the existing higher-level first_vertex_stream hook. Valid raw
+// body. The first_vertex_stream hook above is not Section credit. Valid raw
 // Win32 widget storage required; no native binary calling-convention claim.
 void* gui_section_get_first_vertex_stream_00abe640(void* section, GuiSectionVertexStreamHost&);
 

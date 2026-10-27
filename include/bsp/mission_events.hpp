@@ -260,9 +260,12 @@ struct WarningReportResult {
 inline constexpr bool kMissionWarningReportWalkAllBound = true;
 
 // 009763e0, __thiscall(this, Warning*). Walks the pending queue then the applied
-// queue; the first expired entry is retired and the call returns, and the first
-// entry whose duplicate test matches refreshes its own timestamp and destroys the
-// incoming warning. Only when both walks fall through is the message id looked up
+// queue; every expired entry is retired and the walk goes on (with
+// kMissionWarningReportWalkAllBound, ON), and the first entry whose duplicate
+// test matches refreshes its own timestamp and destroys the incoming warning.
+// Still a projection: the duplicate test is vtable +14h (+E0h walk) / +20h
+// (+ECh walk) on the queued entry, modelled as an id/kind compare; the +24h
+// lock, 0096C220's unlink and 009730C0's insert are not host calls. Only when both walks fall through is the message id looked up
 // and the warning queued.
 WarningReportResult report_warning_009763e0(
     WarningManagerState& state, WarningManagerHost& host, const WarningRecord& incoming,

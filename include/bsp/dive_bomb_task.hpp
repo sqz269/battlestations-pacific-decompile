@@ -527,6 +527,13 @@ DiveBombAimError dive_bomb_aim_error_009c5c9b(const DiveBombAimErrorInputs& in) 
 
 // 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x), RET 14h. Kept here
 // because both calls above are inside a body with no Ghidra function coverage.
+// Packet cc13-D2 (rev8). True: the hi clamp follows 004190A9 FCOMIP v,hi / JBE
+// 004190BC, so a NaN v is returned unchanged; the lo clamp (0041908C-00419092
+// FCOMIP lo,v / JBE) already passes a NaN on in both arms. False: the
+// `(v <= hi) ? v : hi` used before, which turns a NaN into hi. The helper is
+// shared by the dive-bomb, dogfight and retreat (ON) paths. Changes only NaN
+// cases.
+inline constexpr bool kInterpClamped00419010NanCc13Bound = false;
 float dive_bomb_interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
                                              float x) noexcept;
 struct DiveBombAimDiveReleaseResult {
@@ -1589,13 +1596,19 @@ struct DiveBombCruiseProfileInputs {
     bool overridden_38e = false;
     float control_alt_384 = 0.0f;
     bool one_shot_3ab = false;
-    float cruising_altitude = dive_bomb_constant::kCruisingAltitude;
-    float begin_altitude = dive_bomb_constant::kBeginAltRange;
-    float attack_distance = dive_bomb_constant::kAttackDistance;
+    float cruising_altitude = dive_bomb_constant::kCruisingAltitude;   // tuning+4C0h
+    float begin_altitude = dive_bomb_constant::kBeginAltRange;         // tuning+4CCh
+    float attack_distance = dive_bomb_constant::kAttackDistance;       // tuning+4C4h
     float speed_ratio_41c = 1.0f;
     float current_attack_distance_4b0 = 0.0f;  // task+4B0h, 009C8A30
+    // 009C899B: U(0, 15.0 [00CE5380]) on stream 1, which a leader's call
+    // always consumes (before the ctl+38Ch test). The caller draws it and passes
+    // it in; result.consumed_begin_altitude_draw says when the draw belongs.
+    float begin_altitude_draw = 0.0f;
 };
 struct DiveBombCruiseProfileResult {
+    bool ran_base_0099b660 = false;     // 009C8926, first, every call
+    bool consumed_begin_altitude_draw = false;   // leaders only
     bool wrote_394 = false;
     float altitude_394 = 0.0f;
     bool wrote_398 = false;
@@ -1603,10 +1616,18 @@ struct DiveBombCruiseProfileResult {
     bool wrote_39c = false;
     float altitude_39c = 0.0f;
     bool dirty_3ad = false;
+    // The one-shot bytes cleared whenever their override byte is clear
+    // (009C8971 +3A9h, 009C89DD +3AAh, 009C8A17 +3ABh), leaders only.
+    bool cleared_3a9 = false;
+    bool cleared_3aa = false;
+    bool cleared_3ab = false;
     float attack_distance_4b0 = 0.0f;
-    // 009C8A74: task+4BCh = [00CFDEB0], and 009C8A7C re-runs the approach update
-    // with dt = 0.0f and diving = false before the tail jump to 0099B740.
+    // 009C8A74: task+4BCh = 3600.0 [00CFDEB0] on every call.
+    float delay_4bc = 3600.0f;
+    // 009C8A7C re-runs the approach update 009C7A80 with dt = 0.0f and diving =
+    // false, then the tail jump to 0099B740. Every call.
     bool reran_approach_update = false;
+    bool ran_tail_0099b740 = false;
 };
 DiveBombCruiseProfileResult dive_bomb_cruise_profile_009c8920(
     const DiveBombCruiseProfileInputs& in) noexcept;
@@ -1625,8 +1646,38 @@ struct DiveBombBreakOffInputs {
     float distance_to_target = 0.0f;
     float safe_distance = dive_bomb_constant::kSafeDistance;
     float speed_ratio_41c = 1.0f;
+    // 009C8ADF 009C7910 on task+310h. Both host callers use the answer only in
+    // 009C83E0's attacking arm, where it is true, so it defaults to true.
+    bool attacking_009c7910 = true;
 };
 bool dive_bomb_should_break_off_009c8a90(const DiveBombBreakOffInputs& in) noexcept;
+
+// Packet cc13-D2 (defect rows 009C7F00, 009C8A90). Both are unordered x87
+// compares.
+// - 009C7F3C FCOMIP ctl+398h vs the sum, JBE: a NaN takes ctl+398h as the
+//   ceiling.
+// - 009C8B4D FCOMIP SafeDist * +41Ch vs the range, JA false: a NaN breaks off.
+// True: the image's NaN arms. False: the ordered `<=` compares used before.
+// Changes only NaN cases.
+inline constexpr bool kDiveBombNanComparesCc13Bound = false;
+
+// Packet cc13-pc24dog. On the main thread the image's x87 runs at PC24, so each
+// FADD/FSUB/FMUL/FDIV rounds to float, including one with a qword operand.
+// True: the per-op float chains of the dive-bomb file, in listing order.
+// - 007BCC80: 2h, 2h * g, vy * vy and their sum.
+// - 007BCC80: root + vy, then / g.
+// - 009C56AE: ceiling + 50, rounded before the FCOMIP.
+// - 009C572F-009C5739: lead + travel, then + 5.0, stored.
+// - 009C5749: -travel * 3.0.
+// - 009C6570: R * 1.1.
+// - 009C65C5/009C65CB: h * 0.7, then + 200.
+// - 009C661B/009C6621: B4h * 0.8, then - S.
+// - 009C6875-009C6879: 0.5 sin + 0.5, then * R.
+// - 009C667F: ratio * 700.
+// - 009C6EDD-009C6EE5: -err * 3.0, then / divisor.
+// - 007BCC86: COMISS 0,h / JC also computes for a NaN height.
+// False: the double chains used before. Changes only ulp and NaN cases.
+inline constexpr bool kDiveBombPc24Cc13Bound = false;
 
 // ---------------------------------------------------------------------------
 // Which command installs kind 8. docs/ATTACK_COMMANDS.md: 007EEC50 picks the

@@ -270,8 +270,11 @@ bool run_apply_in_game_interface_load_arm_004c9ccd(std::int32_t session_mode,
                                                    bool suppress_flag_218c,
                                                    LoadingElementHost& host) {
     if (!host.loading_element_present()) {
-        // 004C9CE9: a null allocation stores null and skips the init, but the
-        // active byte is written unconditionally at 004C9D1F.
+        // 004C9CE9 only skips the constructor for a null allocation; 004C9D02
+        // still calls the init through the stored pointer, and 00BF681B throws
+        // rather than return null. A false return here is a host's own
+        // failure, not an image path. The active byte is written
+        // unconditionally at 004C9D1F.
         if (host.create_loading_element_00636d90()) {
             host.loading_element_init_00636f30();
         }
@@ -282,6 +285,115 @@ bool run_apply_in_game_interface_load_arm_004c9ccd(std::int32_t session_mode,
         return false;
     }
     return true;
+}
+
+// ---------------------------------------------------------------------------
+// Step 7, whole body. 004C9CA0 over raw memory.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+template <typename T>
+T& raw_field(void* base, std::size_t offset) {
+    return *reinterpret_cast<T*>(static_cast<std::uint8_t*>(base) + offset);
+}
+
+// The load arm's four steps over the native slot [00E198C4]+D4h.
+class RawLoadingElementHost final : public LoadingElementHost {
+public:
+    explicit RawLoadingElementHost(ApplyInGameInterfaceHost& host) : host_(host) {}
+    bool loading_element_present() override {
+        return raw_field<void*>(host_.hud_manager_00e198c4(), kInGameInterfaceLoadingElementOffset) != nullptr;
+    }
+    bool create_loading_element_00636d90() override {
+        // 004C9CD5..004C9CFC. The compiler's null test on the new-expression
+        // stores null without constructing, but 004C9D02 then calls through the
+        // stored pointer regardless; 00BF681B throws instead of returning null,
+        // so the init below always runs, as it does in the image.
+        void* const storage = host_.operator_new_00bf681b(static_cast<std::uint32_t>(kLoadingElementSize));
+        element_ = storage != nullptr ? host_.construct_loading_element_00636d90(storage) : nullptr;
+        raw_field<void*>(host_.hud_manager_00e198c4(), kInGameInterfaceLoadingElementOffset) = element_;
+        return true;
+    }
+    void loading_element_init_00636f30() override {
+        // 004C9D02..004C9D11: through EAX, the element just stored, not a reload.
+        host_.virtual_call_0(element_, 0x10);
+    }
+    void set_loading_element_active() override {
+        // 004C9D13..004C9D1F reload the manager and the slot.
+        void* const element = raw_field<void*>(host_.hud_manager_00e198c4(), kInGameInterfaceLoadingElementOffset);
+        raw_field<std::uint8_t>(element, kLoadingElementActiveByteOffset) = 1;
+    }
+
+private:
+    ApplyInGameInterfaceHost& host_;
+    void* element_ = nullptr;
+};
+
+void set_input_context_level(ApplyInGameInterfaceHost& host, std::uint32_t level) {
+    host.input_set_context_level_00a933f0(host.input_manager_004bec00(), 0x1E, level);
+}
+
+}  // namespace
+
+void apply_in_game_interface_004c9ca0(void* game, bool loading, ApplyInGameInterfaceHost& host) {
+    const auto network_session = [&]() {
+        // 004C9D23/004C9D2F and 004C9E32/004C9E3A: game+1FE4h != 0 and the
+        // byte at game+218Ch clear.
+        return raw_field<std::int32_t>(game, 0x1FE4) != 0 && raw_field<std::uint8_t>(game, 0x218C) == 0;
+    };
+    if (loading) {
+        RawLoadingElementHost element_host(host);
+        if (run_apply_in_game_interface_load_arm_004c9ccd(raw_field<std::int32_t>(game, 0x1FE4),
+                                                          raw_field<std::uint8_t>(game, 0x218C) != 0,
+                                                          element_host)) {
+            // 004C9D3B..004C9D53.
+            host.menu_command_screen_set_3c_00530630(host.menu_command_screen_00425d10(), 0);
+            set_input_context_level(host, 5);
+        }
+        return;
+    }
+
+    // 004C9D6B..004C9D88: the element is read with no null test.
+    void* const element = raw_field<void*>(host.hud_manager_00e198c4(), kInGameInterfaceLoadingElementOffset);
+    if (raw_field<std::uint8_t>(element, kLoadingElementEnterByteOffset) != 0) host.virtual_call_0(element, 0x1C);
+    raw_field<std::uint8_t>(element, kLoadingElementActiveByteOffset) = 0;
+    raw_field<std::uint8_t>(element, kLoadingElementEnterByteOffset) = 0;
+    host.front_end_screen_commit_visibility_004f83b0(element);
+    // 004C9D8D..004C9DAC: the slot is reloaded; deleting destructor (+0Ch, 1)
+    // and the clear only when it is non-null.
+    void*& slot = raw_field<void*>(host.hud_manager_00e198c4(), kInGameInterfaceLoadingElementOffset);
+    if (slot != nullptr) {
+        host.virtual_call_1(slot, 0x0C, 1);
+        slot = nullptr;
+    }
+    // 004C9DAE..004C9DF6: "interface/textures/allbutingame.ats" (00CE765C) into a
+    // temporary {length, data}, unloaded, then the data returned with length + 1.
+    struct { std::uint32_t length; void* data; } name;
+    host.native_string_construct_0041e870(&name, "interface/textures/allbutingame.ats");
+    host.texture_atlas_unload_00aefa30(host.atlas_manager_00f8c26c(), &name);
+    if (name.data != nullptr) {
+        host.sized_pool_return_block_00bd1510(host.sized_pool_00419cc0(), name.data, name.length + 1, 1);
+    }
+    // 004C9DFB..004C9E06: set 3, commit 1.
+    host.front_end_frame_select_layout_set_00518250(host.front_end_frame_004c1ac0(), 3, 1);
+    // 004C9E0B..004C9E2C: on the global game, not ECX; +1EE0h = (AL == 0).
+    void* const global_game = host.game_global_00e188a8();
+    const bool matched = host.profile_records_check_007f8d60(static_cast<std::uint8_t*>(global_game) + 0x650,
+                                                             static_cast<std::uint8_t*>(global_game) + 0x2198);
+    raw_field<std::uint8_t>(host.game_global_00e188a8(), 0x1EE0) = matched ? 0 : 1;
+    if (!network_session()) return;
+    // 004C9E42..004C9E9D.
+    set_input_context_level(host, 0);
+    const auto player = [&]() {
+        return raw_field<void*>(game, 0x18CC + static_cast<std::size_t>(raw_field<std::int32_t>(game, 0x18EC)) * 4);
+    };
+    void* const local_player = player();
+    raw_field<void*>(local_player, 0x30) = host.recon_ensure_slot_008053c0(raw_field<std::int32_t>(local_player, 0x28));
+    host.recon_rebuild_slot_lists_008073c0(raw_field<void*>(player(), 0x30));
+    raw_field<std::uint8_t>(game, 0x193C) = 0;
+    host.game_build_local_player_unit_lists_004c3cb0(game);
+    host.hud_root_force_select_unit_006485a0(raw_field<void*>(host.hud_manager_00e198c4(), 0x40));
 }
 
 }  // namespace bsp

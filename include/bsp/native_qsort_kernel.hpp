@@ -34,4 +34,16 @@ using NativeQsortCompare = std::int32_t (__cdecl *)(const void*, const void*);
 void sort_valid_native_bytes_00bfc350(void* actual_base, std::uint32_t count,
     std::uint32_t width, NativeQsortCompare compare);
 
+// 00BFC350 whole entry (cc13-P4): the two validation arms ahead of the kernel above.
+// 00BFC35E..00BFC393: base null with count != 0; 00BFC394..00BFC3D0: width 0 or a
+// null comparator. Each sets *_errno() (00BFFB8B) = 16h (EINVAL), calls
+// _invalid_parameter(0,0,0,0,0) (00BF66EF) and returns. Both CRT services are bound.
+struct NativeQsortCrtHost {
+    virtual ~NativeQsortCrtHost() = default;
+    virtual int* errno_slot_00bffb8b() = 0;
+    virtual void invalid_parameter_00bf66ef() = 0;
+};
+void qsort_00bfc350(NativeQsortCrtHost& crt, void* base, std::uint32_t count,
+    std::uint32_t width, NativeQsortCompare compare);
+
 } // namespace bsp

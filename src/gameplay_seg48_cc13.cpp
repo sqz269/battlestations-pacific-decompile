@@ -358,9 +358,19 @@ namespace {
 
 void set_definition_007e2600(DamageEffectSwitch& self, DamageEffectStep& step) {
     // 007E2600 stops the live effect and replaces it with one built from the
-    // held definition (none releases it).
-    self.has_effect_4 = self.definition_0 >= 0;
-    self.effect_definition_84 = self.definition_0;
+    // held definition (none releases it). Both callers (007E28CB / 007E293D)
+    // pass the switch itself, so the definition tested is the held +0h.
+    if (self.has_effect_4) ++step.stop_children_calls;  // 007E262F 00867B10, +9h = 1
+    if (self.definition_0 >= 0) {
+        ++step.effects_created;  // 007E26F2 008687C0 from the held +0h; stored at +4h
+        if (self.has_effect_4) ++step.effects_released;  // 007E271F the old one released
+        self.has_effect_4 = true;
+        self.effect_definition_84 = self.definition_0;
+    } else {
+        if (self.has_effect_4) ++step.effects_released;  // 007E2774..007E2788
+        self.has_effect_4 = false;  // 007E2791 +4h = 0
+        self.effect_definition_84 = self.definition_0;
+    }
     step.definition_set = true;
     ++step.set_definition_calls;
 }
@@ -612,15 +622,27 @@ ActuatorAnimResult actuator_block_load_007dea60(ActuatorAnimBlock& block,
     return actuator_block_anim_007de9a0(block, clock_f876a4);  // 007DEB3D
 }
 
-void timed_flag_debounce_007eb4e0(TimedFlag& flag, bool now, float dt) noexcept {
-    if (now == flag.value) {
-        flag.timer = 0.0f;  // 007EB51D
+namespace {
+template<class Value>
+void debounce_timed_flag(Value& value, float& timer, float time_out, Value now, float dt) noexcept {
+    if (now == value) {
+        timer = 0.0f;  // 007EB51D
         return;
     }
-    flag.timer = flag.timer + dt;  // 007EB4E8-007EB4F7
-    if (flag.timer > flag.time_out) {
-        flag.value = now;  // 007EB505
+    timer = timer + dt;  // 007EB4E8-007EB4F7: one float op under /fp:strict
+    if (timer > time_out) {
+        value = now;  // 007EB505
     }
+}
+}
+
+void timed_flag_debounce_007eb4e0(TimedFlag& flag, bool now, float dt) noexcept {
+    debounce_timed_flag(flag.value, flag.timer, flag.time_out, now, dt);
+}
+
+void timed_flag_debounce_007eb4e0(std::uint8_t& value, float& timer, float time_out,
+                                std::uint8_t now, float dt) noexcept {
+    debounce_timed_flag(value, timer, time_out, now, dt);
 }
 
 // ---- cc13-gpr48b: 007D9360 --------------------------------------------------

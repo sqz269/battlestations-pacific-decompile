@@ -460,6 +460,8 @@ std::size_t plane_class_unconsumed_path_count() noexcept;
 // Complete ordinary model binder 007D3E60..007D5889, native ECX descriptor,
 // no stack arguments, RET. This augments the Lua field reader above with the
 // actual raw-storage model-point walk; it does not wire a game provider.
+// Main-thread PC24 x87 operations use per-operation float conversions under
+// the project's /fp:strict build; genuine double constants retain their width.
 struct PlaneClassModelConstants {
     const double& minus_one_00d7a250;
     const double& period_00ce3828;

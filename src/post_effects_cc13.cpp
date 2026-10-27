@@ -7,6 +7,7 @@
 
 #include <cctype>
 #include <cmath>
+#include <cstring>
 #include <limits>
 #include <stdexcept>
 
@@ -297,16 +298,25 @@ std::uint32_t plane_set_classify_point(const PlaneRow* rows, int count, const fl
 }
 
 std::uint32_t plane_set_classify_aabb(const PlaneRow* rows, int count, const float box[6]) {
-    auto mag = [](float v) { return v <= 0.0f ? kNegZero - v : v; };
+    // cc13-fixture4: main-thread precision (24-bit). 00B6572F..00B657C1 store each sum and
+    // difference to float, then halve it by the double [00D7A280] into a float slot.
+    float centre[3], half[3];
+    for (int k = 0; k < 3; ++k) {
+        centre[k] = static_cast<float>(mul24(static_cast<float>(add24(box[k], box[k + 3])), 0.5));
+        half[k] = static_cast<float>(mul24(static_cast<float>(sub24(box[k + 3], box[k])), 0.5));
+    }
+    // COMISS v, 0 / JBE: zero, negative and NaN take -0.0f - v ([00D7A208]).
+    auto mag = [](float v) { return v > 0.0f ? v : kNegZero - v; };
     for (int i = 0; i < count; ++i) {
         const PlaneRow& q = rows[i];
-        const double center = static_cast<double>(q.c) * (static_cast<double>(box[2]) + box[5]) * 0.5 +
-            static_cast<double>(q.a) * (static_cast<double>(box[0]) + box[3]) * 0.5 +
-            static_cast<double>(q.b) * (static_cast<double>(box[1]) + box[4]) * 0.5;
-        const double radius = static_cast<double>(mag(q.c)) * 0.5 * (static_cast<double>(box[5]) - box[2]) +
-            static_cast<double>(mag(q.a)) * (static_cast<double>(box[3]) - box[0]) * 0.5 +
-            static_cast<double>(mag(q.b)) * (static_cast<double>(box[4]) - box[1]) * 0.5;
-        if (center - q.d < -radius) return kPlaneSetOutside;
+        // 00B65847..00B65864: (b cy + a cx) + c cz on the stack, FSTP float, minus d, FSTP float.
+        const float dot = static_cast<float>(add24(add24(mul24(q.b, centre[1]), mul24(q.a, centre[0])),
+                                                   mul24(q.c, centre[2])));
+        const float dist = static_cast<float>(sub24(dot, q.d));
+        // 00B6586C..00B65886: (|b| hy + |a| hx) + |c| hz, FSTP float.
+        const float radius = static_cast<float>(add24(add24(mul24(mag(q.b), half[1]), mul24(mag(q.a), half[0])),
+                                                      mul24(mag(q.c), half[2])));
+        if (-radius > dist) return kPlaneSetOutside;  // FCHS / FCOMIP / JA: NaN continues
     }
     return kPlaneSetInside;
 }
@@ -562,6 +572,58 @@ void disc_fan_indices(std::uint32_t rim_count, std::vector<std::uint16_t>& out) 
         out.push_back(static_cast<std::uint16_t>(i + 1));
         out.push_back(static_cast<std::uint16_t>((i + 1) % rim_count + 1));
     }
+}
+
+namespace {
+
+void put_f32(unsigned char* at, float value) { std::memcpy(at, &value, 4); }
+void put_u32(unsigned char* at, std::uint32_t value) { std::memcpy(at, &value, 4); }
+
+} // namespace
+
+void write_disc_fan_00b8b980(FlareDiscFanHost& host, const float radius_xy[2],
+    std::uint32_t rim_count) {
+    // 00B8B995..00B8B9B3. With the precision control at 24 bits the division
+    // rounds once to float; 2pi at 00CE3828 is exactly 6.2831855f. A 53-bit
+    // control would round the quotient twice (double, then the FSTP float).
+    const float step = static_cast<float>(6.2831853071795862) / static_cast<float>(rim_count);
+    float angle = 0.0f;
+
+    unsigned char* vertex = host.lock_vertex_stream0_00b73260();
+    // 00B8B9CD..00B8BA0B: the centre.
+    put_f32(vertex + 0x00, 0.0f);
+    put_f32(vertex + 0x04, 0.0f);
+    put_f32(vertex + 0x08, 0.0f);
+    put_f32(vertex + 0x0c, 1.0f);
+    put_u32(vertex + 0x10, 0x00ffffffu);
+    vertex += 0x28;
+    // 00B8BA50..00B8BAD7, rim_count times (00B8BA17 skips a zero count).
+    for (std::uint32_t i = 0; i < rim_count; ++i) {
+        // FSIN / FCOS take the float angle; each result is stored to float
+        // before the product (00B8BA56, 00B8BA68).
+        const float sine = static_cast<float>(std::sin(static_cast<double>(angle)));
+        const float cosine = static_cast<float>(std::cos(static_cast<double>(angle)));
+        put_u32(vertex + 0x10, 0x00ffffffu);
+        put_f32(vertex + 0x00, radius_xy[0] * cosine);
+        put_f32(vertex + 0x04, radius_xy[1] * sine);
+        put_f32(vertex + 0x08, 0.999f); // 00D63400, 3F7FBE77h
+        put_f32(vertex + 0x0c, 1.0f);
+        angle = step + angle; // 00B8BAAC..00B8BAC5
+        put_f32(vertex + 0x18, 0.5f); // 00CE3800
+        put_f32(vertex + 0x1c, 0.5f);
+        vertex += 0x28;
+    }
+    host.unlock_vertex_stream0(); // 00B8BADE..00B8BAE5
+
+    // 00B8BAE7..00B8BB3E: triangle i = (0, i+1, (i+1) % n + 1), DIV unsigned.
+    std::uint16_t* index = host.lock_index_buffer_60();
+    for (std::uint32_t i = 0; i < rim_count; ++i) {
+        index[0] = 0;
+        index[1] = static_cast<std::uint16_t>(i + 1);
+        index[2] = static_cast<std::uint16_t>((i + 1) % rim_count + 1);
+        index += 3;
+    }
+    host.unlock_index_buffer_60();
 }
 
 } // namespace bsp::cc13fx

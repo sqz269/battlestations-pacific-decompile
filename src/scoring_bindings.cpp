@@ -124,7 +124,14 @@ void scoring_set_slot_medal(ScoringBindingHost& host, MissionScoreMap map, int s
 int scoring_get_slot_keyed_score(ScoringBindingHost& host, MissionScoreMap map, int slot,
                                  const std::string& key)
 {
-    return host.score_map_find(slot, scoring_map_record_offset(map), key);
+    // 0090C800 / 0090C870 / 0090C8E0 / 0090C950, each 42
+    // instructions, read whole: map = scoring + slot*284h + 4 + offset (IMUL / LEA at
+    // 0090C804..0090C819); 004C8B80 find (bound library); 0090C82C..0090C837 and
+    // 0090C84F..0090C85D are checked-iterator asserts through 00BF6713, which never
+    // returns in this image (__invoke_watson) and cannot fire for a find on this same
+    // map; end() -> 0 (0090C840..0090C84C); else node+14h (0090C862). RET 8.
+    const int* const value = host.score_map_find_004c8b80(slot, scoring_map_record_offset(map), key);
+    return value != nullptr ? *value : 0;
 }
 
 namespace {

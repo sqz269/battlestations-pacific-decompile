@@ -1,0 +1,175 @@
+# cc9-lua73 USN12 n1: l68_u12_e8 with the frame 13000-13105 attack block (selects + attack orders on the followers) moved 300 frames earlier, to 12700-12805. e3c2cc5b3: ref completed 1485.32 s, 20,3 1485.32 s, default 1530.37 s.
+# cc9-lua68 USN12 e8: g45 e7 with every MontGrp ship, not only Montpelier, sent past CLGoTo to (7600,7000) at each escape click from frame 16600; the phase-3 test reads luaRemoveDeadsFromTable(MontGrp)[1], so when Montpelier is lost (20,3 on aa5f342e6: Montpelier sunk 690.55 s) the next survivor carries the escape (usn_12_augusta.lua 431-473, this installation, 2024-07-13). Main 03d3df7f8 (export local\l68_m1): completed 1395.24 s (reference, as e7) and 1500.34 s (20,3; e7 does not end), guard on both.
+# cc9-gunnery45 USN12 e7: decoy Montpelier (the IJN leader's fire target, which every follower tube waits on) south to (2500,-7000), beyond the follower torpedo gate; attack orders on the followers at 650 s; from frame 16600 Montpelier (MontGrp[1]) runs past CLGoTo to (7600,7000) while the rest wait at (4500,2500) clear of its path
+12000 select Montpelier
+12010 moveto Montpelier 2500 -7000
+12700 select Cleveland
+12705 attack Cleveland Sendai
+12710 select Columbia
+12715 attack Columbia Agano
+12720 select Denver
+12725 attack Denver Naganami
+12730 select Charles
+12735 attack Charles Hatsukaze
+12740 select Claxton
+12745 attack Claxton Hatsukaze
+12750 select Converse
+12755 attack Converse Wakatsuki
+12760 select Dyson
+12765 attack Dyson Wakatsuki
+12770 select Foote
+12775 attack Foote Haguro
+12780 select Spence
+12785 attack Spence Haguro
+12790 select Stanley
+12795 attack Stanley Sendai
+12800 select Thatcher
+12805 attack Thatcher Agano
+13500 select Montpelier
+13510 moveto Montpelier 2500 -7000
+15000 select Montpelier
+15010 moveto Montpelier 2500 -7000
+16600 select Montpelier
+16601 moveto Montpelier 7600 7000
+16605 select Cleveland
+16606 moveto Cleveland 7600 7000
+16610 select Columbia
+16611 moveto Columbia 7600 7000
+16615 select Denver
+16616 moveto Denver 7600 7000
+16620 select Charles
+16621 moveto Charles 7600 7000
+16625 select Claxton
+16626 moveto Claxton 7600 7000
+16630 select Converse
+16631 moveto Converse 7600 7000
+16635 select Dyson
+16636 moveto Dyson 7600 7000
+16640 select Foote
+16641 moveto Foote 7600 7000
+16645 select Spence
+16646 moveto Spence 7600 7000
+16650 select Stanley
+16651 moveto Stanley 7600 7000
+16655 select Thatcher
+16656 moveto Thatcher 7600 7000
+18600 select Montpelier
+18601 moveto Montpelier 7600 7000
+18605 select Cleveland
+18606 moveto Cleveland 7600 7000
+18610 select Columbia
+18611 moveto Columbia 7600 7000
+18615 select Denver
+18616 moveto Denver 7600 7000
+18620 select Charles
+18621 moveto Charles 7600 7000
+18625 select Claxton
+18626 moveto Claxton 7600 7000
+18630 select Converse
+18631 moveto Converse 7600 7000
+18635 select Dyson
+18636 moveto Dyson 7600 7000
+18640 select Foote
+18641 moveto Foote 7600 7000
+18645 select Spence
+18646 moveto Spence 7600 7000
+18650 select Stanley
+18651 moveto Stanley 7600 7000
+18655 select Thatcher
+18656 moveto Thatcher 7600 7000
+20600 select Montpelier
+20601 moveto Montpelier 7600 7000
+20605 select Cleveland
+20606 moveto Cleveland 7600 7000
+20610 select Columbia
+20611 moveto Columbia 7600 7000
+20615 select Denver
+20616 moveto Denver 7600 7000
+20620 select Charles
+20621 moveto Charles 7600 7000
+20625 select Claxton
+20626 moveto Claxton 7600 7000
+20630 select Converse
+20631 moveto Converse 7600 7000
+20635 select Dyson
+20636 moveto Dyson 7600 7000
+20640 select Foote
+20641 moveto Foote 7600 7000
+20645 select Spence
+20646 moveto Spence 7600 7000
+20650 select Stanley
+20651 moveto Stanley 7600 7000
+20655 select Thatcher
+20656 moveto Thatcher 7600 7000
+22600 select Montpelier
+22601 moveto Montpelier 7600 7000
+22605 select Cleveland
+22606 moveto Cleveland 7600 7000
+22610 select Columbia
+22611 moveto Columbia 7600 7000
+22615 select Denver
+22616 moveto Denver 7600 7000
+22620 select Charles
+22621 moveto Charles 7600 7000
+22625 select Claxton
+22626 moveto Claxton 7600 7000
+22630 select Converse
+22631 moveto Converse 7600 7000
+22635 select Dyson
+22636 moveto Dyson 7600 7000
+22640 select Foote
+22641 moveto Foote 7600 7000
+22645 select Spence
+22646 moveto Spence 7600 7000
+22650 select Stanley
+22651 moveto Stanley 7600 7000
+22655 select Thatcher
+22656 moveto Thatcher 7600 7000
+24600 select Montpelier
+24601 moveto Montpelier 7600 7000
+24605 select Cleveland
+24606 moveto Cleveland 7600 7000
+24610 select Columbia
+24611 moveto Columbia 7600 7000
+24615 select Denver
+24616 moveto Denver 7600 7000
+24620 select Charles
+24621 moveto Charles 7600 7000
+24625 select Claxton
+24626 moveto Claxton 7600 7000
+24630 select Converse
+24631 moveto Converse 7600 7000
+24635 select Dyson
+24636 moveto Dyson 7600 7000
+24640 select Foote
+24641 moveto Foote 7600 7000
+24645 select Spence
+24646 moveto Spence 7600 7000
+24650 select Stanley
+24651 moveto Stanley 7600 7000
+24655 select Thatcher
+24656 moveto Thatcher 7600 7000
+26600 select Montpelier
+26601 moveto Montpelier 7600 7000
+26605 select Cleveland
+26606 moveto Cleveland 7600 7000
+26610 select Columbia
+26611 moveto Columbia 7600 7000
+26615 select Denver
+26616 moveto Denver 7600 7000
+26620 select Charles
+26621 moveto Charles 7600 7000
+26625 select Claxton
+26626 moveto Claxton 7600 7000
+26630 select Converse
+26631 moveto Converse 7600 7000
+26635 select Dyson
+26636 moveto Dyson 7600 7000
+26640 select Foote
+26641 moveto Foote 7600 7000
+26645 select Spence
+26646 moveto Spence 7600 7000
+26650 select Stanley
+26651 moveto Stanley 7600 7000
+26655 select Thatcher
+26656 moveto Thatcher 7600 7000

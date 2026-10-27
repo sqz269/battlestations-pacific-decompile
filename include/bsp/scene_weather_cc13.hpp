@@ -90,6 +90,10 @@ struct SceneWeatherFields {
 // differ.
 void linearize_rgb_004e5c00(float* rgb) noexcept;
 
+// 004E5D20 BSP_Color_ScaleRgbaByScalar, __thiscall(ECX = float rgba[4]; float s), RET 4:
+// rgba[i] *= s for i = 0..3, each product stored to float. Caller 004EC99E (weather fog colour L).
+void scale_rgba_004e5d20(float* rgba, float s) noexcept;
+
 // 004ECA30: __fastcall(ECX = g_Weather bag, EDX = scene record), RET; caller
 // 004F2237 only when the header's g_Weather entry exists and is a sub-bag.
 // `bag_index` is the g_Weather bag in `model`. `linearize` is the byte 00F88A0C.

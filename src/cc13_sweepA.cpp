@@ -1865,11 +1865,13 @@ void* wreck_create_from_scene_004f0cc0(const char* name, std::uint32_t a, std::u
 // extended, exact) is above d2 (FCOMIP/JBE: NaN gives 0). The extended sum is
 // modelled in double (exact products, double-rounded sum).
 bool circle2f_contains_point_004f2fd0(const float* circle, const float* point) {
-    const float dx = point[0] - circle[0];
-    const float dy = point[1] - circle[1];
-    const float d2 = static_cast<float>(static_cast<double>(dy) * dy + static_cast<double>(dx) * dx);
-    const double r = circle[2];
-    return r * r > static_cast<double>(d2);
+    // cc13-fixture5: per x87 operation at the main thread's 24-bit precision (the
+    // double model differed from the bytes on 64 of 4000 inputs, mostly on the rim).
+    const float dx = point[0] - circle[0];   // 004F2FD9, stored
+    const float dy = point[1] - circle[1];   // 004F2FE1, stored
+    const float d2 = dx * dx + dy * dy;      // 004F2FF4-004F2FFC, stored at 004F3000
+    const float r = circle[2];
+    return r * r > d2;                       // 004F300A unstored product; FCOMIP / JBE
 }
 
 // ============================ segments 12..14 ==============================
