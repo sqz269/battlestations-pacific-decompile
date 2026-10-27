@@ -36,6 +36,9 @@ namespace bsp {
 //   0092E8C0 righting rate, 00825F20 target speed and boost refill (ship_motion.cpp)
 //   008252C0 engine audio, 00834E90 steering target and propeller rates (unit_motion.cpp)
 //   009D29E0 torpedo done follow blend (torpedo_task_arm.cpp)
+// Sites (pc24w1-sweep2-2, listed in the ship_ai_approach_update.cpp block comment):
+//   009F1BC0, 009E46F0, 009E7FC0, 009E76D0 slot total (also used by ship_ai_ring_scan.cpp),
+//   009E5E90, 009E6A90, 009E6E80, 009E9190, 0095E9A0 (ship_ai_approach_update.cpp)
 // Movers: ship headings, throttle and path picks, submarine depth, torpedo run times and hits.
 inline constexpr bool kPc24ShipAiCc13Bound = false;
 
