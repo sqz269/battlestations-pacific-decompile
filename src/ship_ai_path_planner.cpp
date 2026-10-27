@@ -4,6 +4,7 @@
 
 #include "bsp/ship_ai_path_planner.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/ship_ai_switch_reach.hpp"
 
 #include "bsp/vector_helpers.hpp"
 
@@ -139,6 +140,19 @@ std::int32_t ship_ai_path_node_direction_009d9e6c(const ShipAiPathNode& node) no
     }
     if (node.link_plus == nullptr) {  // 009D9E86
         return -1;
+    }
+    {
+        // Reach counter (cc9-sweep2b, log-only): both arms' answers.
+        using cc13x87::x87_add24;
+        const float minus_on = static_cast<float>(
+            x87_add24(x87_add24(node.cost_minus, node.link_minus_length), node.link_minus->remaining_length));
+        const float plus_on = static_cast<float>(
+            x87_add24(x87_add24(node.cost_plus, node.link_plus_length), node.link_plus->remaining_length));
+        const float plus_off = node.cost_plus + node.link_plus_length + node.link_plus->remaining_length;
+        const float minus_off = node.cost_minus + node.link_minus_length + node.link_minus->remaining_length;
+        ShipAiSwitchReach& reach = ship_ai_switch_reach();
+        ++reach.path_dir_evals;
+        if (!(plus_on >= minus_on) != (plus_off < minus_off)) ++reach.path_dir_differs;
     }
     if constexpr (kShipAiPathNodeDirectionUnorderedCc13Bound) {
         // 009D9EA6-009D9ED3: minus = ([+4Ch] + [+34h]) + minus->[+3Ch] and plus = ([+50h] +
