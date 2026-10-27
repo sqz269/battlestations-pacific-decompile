@@ -2,6 +2,7 @@
 // the model and docs/CC13_SWEEPC.md for the evidence. Names are hypotheses, not recovered symbols.
 
 #include "bsp/cc13_sweepC.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cstring>
 #include <string.h>
@@ -1852,15 +1853,18 @@ void* camera_pool_create_camera_00b8a200(SweepCHost& host, std::uint32_t arg) {
     return block != nullptr ? host.camera_construct_00b71a80(block, arg) : nullptr;
 }
 
-// 00B999A0, RET 4 -> ST0. s = float(p.y*n.y + p.x*n.x + p.z*n.z) (x87 sum, FSTP float), then
-// float(s - plane+0Ch). The products are exact in double; the two sums can round differently
-// from the extended sum only by a double rounding before the float store.
+// 00B999A0, RET 4 -> ST0. s = float((p.y*n.y + p.x*n.x) + p.z*n.z) (FMUL, FMUL, FADDP, FMUL,
+// FADDP, FSTP float), then float(s - plane+0Ch). cc13-fixture6: modelled per x87 operation at
+// 24-bit precision control, the precision of the main thread (no reference in the image; judged
+// with its render family). n is copied through FLD / FSTP DWORD first; that only quiets a
+// signalling NaN, which the products then propagate the same way.
 float plane_signed_distance_00b999a0(const void* plane, const float* point) {
+    using namespace cc13x87;
     const auto* const n = static_cast<const float*>(plane);
-    const double sum = static_cast<double>(point[1]) * n[1] + static_cast<double>(point[0]) * n[0] +
-                       static_cast<double>(point[2]) * n[2];
+    const double sum = x87_add24(x87_add24(x87_mul24(point[1], n[1]), x87_mul24(point[0], n[0])),
+                                 x87_mul24(point[2], n[2]));
     const float s = static_cast<float>(sum);
-    return static_cast<float>(static_cast<double>(s) - static_cast<double>(n[3]));
+    return static_cast<float>(x87_sub24(s, n[3]));
 }
 
 // 00AACE40, 00ACBE50, 00ACD250, 00ACEFC0: one 35-instruction shape (address-stripped compare).

@@ -1,5 +1,7 @@
 #include "bsp/fixed_step_job_waves.hpp"
 
+#include <cstring>
+
 // The four job waves of BSP_Game_RunFixedSimulationSteps 00875BB0:
 // 00875CAA..00875D19, 00875D1A..00875D89, 00875D8A..00875DF9 inside the step
 // loop, and 00875F55..00875FC0 once per frame. docs/FIXED_STEP_JOB_WAVES.md.
@@ -70,6 +72,88 @@ SubNodeAction fixed_step_subnode_action(bool enabled_11, bool expired_10) noexce
         return SubNodeAction::kRelease;
     }
     return SubNodeAction::kSkip;
+}
+
+namespace {
+
+std::uint8_t* load_ptr(const std::uint8_t* base, std::size_t offset) noexcept
+{
+    std::uint8_t* value = nullptr;
+    std::memcpy(&value, base + offset, sizeof(value));
+    return value;
+}
+
+void store_ptr(std::uint8_t* base, std::size_t offset, std::uint8_t* value) noexcept
+{
+    std::memcpy(base + offset, &value, sizeof(value));
+}
+
+void add_i32(std::uint8_t* base, std::size_t offset, std::int32_t delta) noexcept
+{
+    std::int32_t value = 0;
+    std::memcpy(&value, base + offset, sizeof(value));
+    value = static_cast<std::int32_t>(static_cast<std::uint32_t>(value) + static_cast<std::uint32_t>(delta));
+    std::memcpy(base + offset, &value, sizeof(value));
+}
+
+std::int32_t load_i32(const std::uint8_t* base, std::size_t offset) noexcept
+{
+    std::int32_t value = 0;
+    std::memcpy(&value, base + offset, sizeof(value));
+    return value;
+}
+
+} // namespace
+
+void tick_element_run_subnodes_008759b0(std::uint8_t* element, float step,
+                                        TickSubNodeHost& host) noexcept
+{
+    std::uint8_t* sub = load_ptr(element, kTickElementSubHeadOffset); // 008759B6
+    while (sub != nullptr) {                                          // 008759BD / 00875A69
+        std::uint8_t* const next = load_ptr(sub, kTickSubNodeNextOffset); // 008759C7, [ESP+10h]
+        if (sub[kTickSubNodeEnabledOffset] != 0) {                    // 008759C4
+            host.step_subnode(sub, step);                             // 008759DF
+        }
+        if (sub[kTickSubNodeExpiredOffset] != 0) {                    // 008759E1
+            std::uint8_t* const lock = host.pending_registry_lock();  // 008759E6..008759EB
+            if (lock != nullptr) {
+                host.enter_lock(lock);                                // 008759F3
+                add_i32(lock, kTickSubListLockDepthOffset, 1);        // 008759F9
+            }
+            // The links are read again here: the step call may have moved them.
+            std::uint8_t* const prev = load_ptr(sub, kTickSubNodePrevOffset); // 008759FD
+            const bool off_list = prev == nullptr &&
+                load_ptr(sub, kTickSubNodeNextOffset) == nullptr &&   // 00875A04
+                load_i32(element, kTickElementSubCountOffset) > 1;    // 00875A09 JG
+            if (!off_list) {
+                std::uint8_t* const after = load_ptr(sub, kTickSubNodeNextOffset);
+                if (prev != nullptr) {
+                    store_ptr(prev, kTickSubNodeNextOffset, after);   // 00875A16
+                } else {
+                    store_ptr(element, kTickElementSubHeadOffset, after); // 00875A1E
+                }
+                std::uint8_t* const before = load_ptr(sub, kTickSubNodePrevOffset);
+                if (after != nullptr) {
+                    store_ptr(after, kTickSubNodePrevOffset, before); // 00875A2B
+                } else {
+                    store_ptr(element, kTickElementSubTailOffset, before); // 00875A33
+                }
+                store_ptr(sub, kTickSubNodeNextOffset, nullptr);      // 00875A36
+                store_ptr(sub, kTickSubNodePrevOffset, nullptr);      // 00875A39
+                add_i32(element, kTickElementSubCountOffset, -1);     // 00875A3C
+            }
+            store_ptr(sub, kTickSubNodeOwnerOffset, nullptr);         // 00875A42
+            if (lock != nullptr) {
+                add_i32(lock, kTickSubListLockDepthOffset, -1);       // 00875A47
+                host.leave_lock(lock);                                // 00875A4C
+            }
+            host.destroy_subnode(sub);                                // 00875A5A
+            if (load_i32(element, kTickElementSubCountOffset) == 0) { // 00875A5C JZ exit
+                break;
+            }
+        }
+        sub = next;                                                   // 00875A61 / 00875A67
+    }
 }
 
 std::size_t run_fixed_step_job_wave_group(

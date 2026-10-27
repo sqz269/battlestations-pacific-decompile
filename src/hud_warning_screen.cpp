@@ -1,5 +1,7 @@
 #include "bsp/hud_warning_screen.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_hudgui_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
 
 // Packet cc9_screen_50h. docs/SHIP_SCREEN_UPDATE.md section 16.
@@ -142,9 +144,15 @@ void integrated_controls_0064b870(IntegratedControlsState& screen,
         }
         if (host.local_player_role(1)) {                              // 0064B9C5
             if (!device) {
-                screen.thrust_24 = static_cast<float>(
-                    static_cast<double>(screen.thrust_24) -
-                    static_cast<double>(in.thrust_1bb4) * dt);        // 0064B9D9..0064B9E4
+                if constexpr (kPc24HudGuiCc13Bound) {
+                    // 0064B9E0 FMUL dt rounds, 0064B9E4 FSUBP (DE E9) +24h - it.
+                    screen.thrust_24 = static_cast<float>(cc13x87::x87_sub24(
+                        screen.thrust_24, cc13x87::x87_mul24(in.thrust_1bb4, dt)));
+                } else {
+                    screen.thrust_24 = static_cast<float>(
+                        static_cast<double>(screen.thrust_24) -
+                        static_cast<double>(in.thrust_1bb4) * dt);    // 0064B9D9..0064B9E4
+                }
             } else if (in.byte_1b91) {                                // 0064B9F0
                 if (0.0f < in.thrust_1bb4) {                          // 0064BA02 JC
                     screen.thrust_24 = static_cast<float>(
@@ -157,8 +165,14 @@ void integrated_controls_0064b870(IntegratedControlsState& screen,
             // +28h - turn*dt to [-1, 1].
             if (kThrustLow > screen.thrust_24) screen.thrust_24 = kThrustLow;
             else if (screen.thrust_24 > kOne) screen.thrust_24 = kOne;
-            screen.turn_28 = static_cast<float>(
-                static_cast<double>(screen.turn_28) - static_cast<double>(in.turn_1be4) * dt);
+            if constexpr (kPc24HudGuiCc13Bound) {
+                // 0064BA68 FMUL dt rounds, 0064BA81 FSUBP (DE E9) +28h - it.
+                screen.turn_28 = static_cast<float>(cc13x87::x87_sub24(
+                    screen.turn_28, cc13x87::x87_mul24(in.turn_1be4, dt)));
+            } else {
+                screen.turn_28 = static_cast<float>(
+                    static_cast<double>(screen.turn_28) - static_cast<double>(in.turn_1be4) * dt);
+            }
             if (kMinusOne > screen.turn_28) screen.turn_28 = kMinusOne;
             else if (screen.turn_28 > kOne) screen.turn_28 = kOne;
             host.issue_order(screen.thrust_24, screen.turn_28);       // 0064BA97..0064BB12
@@ -206,6 +220,15 @@ void binoculars_0051ef00(BinocularsState& screen, ShipViewInputHost& host,
     host.lens_effect_off_00452b80();                                  // 0051F030
 }
 
+// 0051F130..0051F141 (yaw) and 0051F193..0051F1A4 (pitch): step * sign, * zoom, * axis,
+// * config as four FMULs, each rounded at PC24 (kPc24HudGuiCc13Bound ON).
+float binoculars_step_delta_pc24(float step, double sign, float zoom, float axis,
+                                 float config) noexcept {
+    using namespace cc13x87;
+    return static_cast<float>(
+        x87_mul24(x87_mul24(x87_mul24(x87_mul24(step, sign), zoom), axis), config));
+}
+
 // 0051F050, __fastcall(mover, flag* +24h, float dt, float zoom), RET 8.
 void binoculars_0051f050(BinocularsState& screen, ShipViewInputHost& host,
                          const BinocularsViewTerms& terms, float dt) {
@@ -217,11 +240,23 @@ void binoculars_0051f050(BinocularsState& screen, ShipViewInputHost& host,
     const float yaw_axis = clamp_view_axis(terms.yaw_axis_1584);
     const float pitch_axis = clamp_view_axis(terms.pitch_axis_15b4);
     const float step = static_cast<double>(dt) > kDtCap ? kDtCapF : dt;   // 0051F10B
-    const float yaw_delta = static_cast<float>(
-        static_cast<double>(step) * kYawSign * screen.zoom_38 * yaw_axis * terms.config_04);
+    float yaw_delta = 0.0f;
+    if constexpr (kPc24HudGuiCc13Bound) {
+        yaw_delta = binoculars_step_delta_pc24(step, kYawSign, screen.zoom_38, yaw_axis,
+                                               terms.config_04);
+    } else {
+        yaw_delta = static_cast<float>(
+            static_cast<double>(step) * kYawSign * screen.zoom_38 * yaw_axis * terms.config_04);
+    }
     host.set_mover_yaw(wrapped_angle_add_00438aa0(host.mover_yaw(), yaw_delta));   // 0051F159
-    const float pitch_delta = static_cast<float>(
-        static_cast<double>(step) * kDtCap * screen.zoom_38 * pitch_axis * terms.config_04);
+    float pitch_delta = 0.0f;
+    if constexpr (kPc24HudGuiCc13Bound) {
+        pitch_delta = binoculars_step_delta_pc24(step, kDtCap, screen.zoom_38, pitch_axis,
+                                                 terms.config_04);
+    } else {
+        pitch_delta = static_cast<float>(
+            static_cast<double>(step) * kDtCap * screen.zoom_38 * pitch_axis * terms.config_04);
+    }
     // 0051E650: wrap, then clamp into [+3ECh, +3F0h].
     float pitch = wrapped_angle_add_00438aa0(host.mover_pitch(), pitch_delta);
     const float low = host.mover_min_pitch();
@@ -343,7 +378,14 @@ std::size_t unit_pick_00526a40(UnitPickScreenState& screen, UnitPickHost& host,
         host.camera_basis(from, forward);
         float to[3];
         for (int i = 0; i < 3; ++i) {
-            to[i] = static_cast<float>(static_cast<double>(forward[i]) * kPickRayLength + from[i]);
+            if constexpr (kPc24HudGuiCc13Bound) {
+                // 00526BD6/00526BF3/00526BFE FMUL 10000 rounds and FSTPs float, then
+                // 00526C0C/00526C18/00526C24 FADD the camera point and FSTP float.
+                const float product = static_cast<float>(cc13x87::x87_mul24(forward[i], kPickRayLength));
+                to[i] = static_cast<float>(cc13x87::x87_add24(product, from[i]));
+            } else {
+                to[i] = static_cast<float>(static_cast<double>(forward[i]) * kPickRayLength + from[i]);
+            }
         }
         std::size_t hit = 0;
         const bool hit_any = host.ray_pick_009043a0(from, to, firing, hit);
@@ -359,8 +401,15 @@ std::size_t unit_pick_00526a40(UnitPickScreenState& screen, UnitPickHost& host,
             // 00526DB7..00526E1F: the lock radius, squared.
             const int index = host.game_1fe4() ? 2 : host.game_difficulty_6ac();
             const float multiplier = host.lock_radius_multiplier(index);
-            const float radius = static_cast<float>(
-                static_cast<double>(multiplier) * (kPickRadiusBase / static_cast<double>(zoom)));
+            float radius = 0.0f;
+            if constexpr (kPc24HudGuiCc13Bound) {
+                // 00526E09 FDIVR qword 0.03 / zoom rounds, 00526E13 FMULP by the multiplier.
+                radius = static_cast<float>(cc13x87::x87_mul24(
+                    multiplier, cc13x87::x87_div24(kPickRadiusBase, zoom)));
+            } else {
+                radius = static_cast<float>(
+                    static_cast<double>(multiplier) * (kPickRadiusBase / static_cast<double>(zoom)));
+            }
             float best = static_cast<float>(static_cast<double>(radius) * radius);
             // 00526E30..00526FE6 over game+1974h, then 00527003..005271B9
             // over game+19BCh: a squadron contributes up to five members.

@@ -1,4 +1,5 @@
 #include "bsp/entity_mission_seg60_argon.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -258,8 +259,12 @@ float* scene_property_copy_float16_00924280(
     float* dst16
 ) noexcept {
   const float* src = Raw{static_cast<std::uint8_t*>(prop_record)}.at<const float*>(0x20);
+  // Sixteen FLD/FSTP DWORD copies, which quiet a signalling NaN (cc13-fixture10).
   for (std::size_t i = 0; i < 16; ++i) {
-    dst16[i] = src[i];
+    std::uint32_t bits;
+    std::memcpy(&bits, src + i, 4);
+    bits = cc13x87::x87_fld_fstp_bits(bits);
+    std::memcpy(dst16 + i, &bits, 4);
   }
   return dst16;
 }

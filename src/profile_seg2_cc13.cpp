@@ -3,6 +3,7 @@
 // its address, the original ABI and every simplification next to it.
 
 #include "bsp/profile_seg2_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 
@@ -282,18 +283,22 @@ void tick_element_unused_slot_0042bba0(void*) noexcept {}
 // 0042BBB0: XOR AL,AL; RET.
 bool tick_element_predicate_0042bbb0() noexcept { return false; }
 
-// 0042AE20, __thiscall(v, out, float s), RET 8: out = v / s, three DIVs.
+// 0042AE20, __thiscall(v, out, float s), RET 8: out = v / s, three DIVs. Main thread
+// (MovCam), 24-bit precision control: each FDIV rounds to 24 bits with the extended
+// exponent before its FSTP DWORD (cc13-fixture9).
 void vector3_divide_scalar_to_0042ae20(const float v[3], float out[3], float s) noexcept {
-    out[0] = v[0] / s;
-    out[1] = v[1] / s;
-    out[2] = v[2] / s;
+    out[0] = static_cast<float>(cc13x87::x87_div24(v[0], s));
+    out[1] = static_cast<float>(cc13x87::x87_div24(v[1], s));
+    out[2] = static_cast<float>(cc13x87::x87_div24(v[2], s));
 }
 
-// 0042AE50, __thiscall(v, float s), RET 4, EAX = v: v *= s.
+// 0042AE50, __thiscall(v, float s), RET 4, EAX = v: v *= s. Its only image caller is
+// BSP_PlaneWanderer_FixedStep (007BE2A3), judged at the main thread's 24-bit precision
+// control: each FMUL rounds to 24 bits with the extended exponent (cc13-fixture9).
 float* vector3_scale_in_place_0042ae50(float v[3], float s) noexcept {
-    v[0] = s * v[0];
-    v[1] = v[1] * s;
-    v[2] = s * v[2];
+    v[0] = static_cast<float>(cc13x87::x87_mul24(s, v[0]));
+    v[1] = static_cast<float>(cc13x87::x87_mul24(v[1], s));
+    v[2] = static_cast<float>(cc13x87::x87_mul24(s, v[2]));
     return v;
 }
 
@@ -316,13 +321,15 @@ float* vector3_subtract_in_place_0042aee0(float v[3], const float w[3]) noexcept
 // 0042B220, __fastcall(ECX = a, EDX = b), RET, ST0: listing order
 // (a.y*b.y + a.x*b.x) + a.z*b.z on the x87 stack, then FSTP float / FLD, so
 // the result is float-rounded (the decompiler's operand order is wrong).
-// Products of floats are exact in double; the intermediate sum rounds to 53
-// bits here instead of 64 before the final float rounding (MINOR).
+// The caller (MovCam step) runs on the main thread at 24-bit precision control, so every
+// FMUL and FADD rounds to 24 bits with the extended exponent (cc13-fixture9).
 float vector3_dot_0042b220(const float a[3], const float b[3]) noexcept {
-    const double y = static_cast<double>(a[1]) * static_cast<double>(b[1]);
-    const double x = static_cast<double>(a[0]) * static_cast<double>(b[0]);
-    const double z = static_cast<double>(a[2]) * static_cast<double>(b[2]);
-    return static_cast<float>((y + x) + z);
+    using cc13x87::x87_add24;
+    using cc13x87::x87_mul24;
+    const double y = x87_mul24(a[1], b[1]);
+    const double x = x87_mul24(a[0], b[0]);
+    const double z = x87_mul24(a[2], b[2]);
+    return static_cast<float>(x87_add24(x87_add24(y, x), z));
 }
 
 // 0042B3C0 / 0042B3F0 / 0042B420, __thiscall(matrix, float angle), RET 4:

@@ -5,6 +5,13 @@
 
 #include <cstddef>
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
+
+// kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-7, 009FC260): the band
+// distance test at 009FC3A6-009FC3C0, the span test at 009FC698-009FC6A2 and the
+// return blend at 009FC776-009FC78A.
+
 namespace bsp {
 namespace {
 
@@ -94,9 +101,17 @@ float leg_separated_altitude_009fc260(const std::vector<float>& bands, float y,
         if (moved_any) {
             // Both differences are x87 intermediates; this is the image's literal
             // test, which reduces to up > y.
-            const double span = static_cast<double>(up) - down;
-            const double below = static_cast<double>(y) - down;
-            if (span > below) {
+            bool span_wins;
+            if constexpr (kPc24PlaneTasksCc13Bound) {
+                // 009FC698 FLD [ESP+20h]; D8 E1 FSUB ST0,ST1; DE E1 FSUBRP: both
+                // differences are PC24 stack values.
+                span_wins = cc13x87::x87_sub24(up, down) > cc13x87::x87_sub24(y, down);
+            } else {
+                const double span = static_cast<double>(up) - down;
+                const double below = static_cast<double>(y) - down;
+                span_wins = span > below;
+            }
+            if (span_wins) {
                 alt = down;
             } else if (up < tuning.ceiling_210) {
                 alt = up;
@@ -150,16 +165,35 @@ float LegAltitudeManager::altitude_009fc260(const LegAltitudeUnitHost& host,
             static_cast<double>(host.turn_circle_radius_268(rec.unit)) + self_r);
         const float dx = static_cast<float>(static_cast<double>(point[0]) - rec.point[0]);
         const float dz = static_cast<float>(static_cast<double>(point[2]) - rec.point[2]);
-        const double d2 = static_cast<double>(dx) * dx + static_cast<double>(dz) * dz;
-        if (static_cast<double>(r) * r > d2) bands.push_back(rec.point[1]);
+        bool inside;
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009FC3A6-009FC3C0: DE CA FMULP dx*dx, DE CB FMULP dz*dz, DE C2 FADDP,
+            // DC C8 FMUL ST0 r*r, FCOMIP; every product and the sum round to PC24.
+            const double d2 = cc13x87::x87_add24(cc13x87::x87_mul24(dz, dz),
+                                                 cc13x87::x87_mul24(dx, dx));
+            inside = cc13x87::x87_mul24(r, r) > d2;
+        } else {
+            const double d2 = static_cast<double>(dx) * dx + static_cast<double>(dz) * dz;
+            inside = static_cast<double>(r) * r > d2;
+        }
+        if (inside) bands.push_back(rec.point[1]);
         ++i;
     }
     const float alt = leg_separated_altitude_009fc260(bands, y, tuning);
     if (self_found) {
         records_[self_index].point = {point[0], alt, point[2]};
     }
-    return static_cast<float>(static_cast<double>(y) +
-                              static_cast<double>(weight) * (static_cast<double>(alt) - y));
+    float out;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009FC776-009FC78A: DE EA FSUBP ST2 alt - y, DE CA FMULP weight *, DE C1
+        // FADDP y +, each rounded to PC24.
+        out = static_cast<float>(cc13x87::x87_add24(
+            y, cc13x87::x87_mul24(weight, cc13x87::x87_sub24(alt, y))));
+    } else {
+        out = static_cast<float>(static_cast<double>(y) +
+                                 static_cast<double>(weight) * (static_cast<double>(alt) - y));
+    }
+    return out;
 }
 
 }  // namespace bsp

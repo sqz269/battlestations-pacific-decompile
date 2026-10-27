@@ -132,6 +132,36 @@ enum class SubNodeAction : std::uint8_t {
 
 SubNodeAction fixed_step_subnode_action(bool enabled_11, bool expired_10) noexcept;
 
+// What 008759B0 calls out of the image. The sub-node virtuals belong to the
+// sub-node classes, and the lock is the pending registry's.
+struct TickSubNodeHost {
+    virtual ~TickSubNodeHost() = default;
+    // 008759D0..008759DF: sub->vtable[+0Ch](step), __thiscall, one float.
+    virtual void step_subnode(std::uint8_t* sub, float step) = 0;
+    // 008759E6/008759EB: [BSP_PendingRegistry_Get 00875280 () + 4h], may be null.
+    virtual std::uint8_t* pending_registry_lock() = 0;
+    // 008759F3 [00CE2218] and 00875A4C [00CE2210]: the lock's enter and leave.
+    virtual void enter_lock(std::uint8_t* lock) = 0;
+    virtual void leave_lock(std::uint8_t* lock) = 0;
+    // 00875A52..00875A5A: sub->vtable[0](1), the deleting destructor.
+    virtual void destroy_subnode(std::uint8_t* sub) = 0;
+};
+
+inline constexpr std::size_t kTickSubNodeOwnerOffset = 0x04;   // cleared at 00875A42
+inline constexpr std::size_t kTickSubListLockDepthOffset = 0x18; // 008759F9 / 00875A47
+
+// 008759B0: __thiscall(ECX = tick element)(float step), RET 4, body
+// 008759B0-00875A76, complete. Walks the element's sub-list from +1Ch. Each
+// sub-node's next pointer (+0Ch) is read before anything else happens to it.
+// An enabled sub-node (+11h) runs vtable[+0Ch](step). An expired one (+10h) is
+// then unlinked under the pending-registry lock, its +4h is cleared and it is
+// destroyed. The walk stops early when that unlink leaves the count at +24h
+// zero. A sub-node with no neighbours while the count is above one is taken to
+// be off this list: the count and the links stay, but +4h is still cleared and
+// the sub-node is still destroyed (00875A04..00875A0D).
+void tick_element_run_subnodes_008759b0(std::uint8_t* element, float step,
+                                        TickSubNodeHost& host) noexcept;
+
 // ---------------------------------------------------------------------------
 // The host
 //

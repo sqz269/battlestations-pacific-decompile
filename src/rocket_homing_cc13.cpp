@@ -5,6 +5,12 @@
 // float store, as in src/rocket_task_cc13.cpp. The main thread runs the FPU at
 // 24 bits (docs/CC13_FPU_PRECISION.md), so the last bit can differ.
 #include "bsp/rocket_homing_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
+
+// kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-7, 0080A000): the gravity
+// terms of rocket_ignition_step (0080A124-0080A148) and the axial speed and step
+// of rocket_thrust_step (0080A179-0080A1C3).
 
 #include "bsp/camera_affine.hpp"
 #include "bsp/gamepad_force_events.hpp"
@@ -40,10 +46,20 @@ std::array<float, 3> transform_point(const std::array<float, 3>& p, const Camera
 
 }  // namespace
 
+void vector3_divide_in_place_pc24_0042ae80(std::array<float, 3>& v, float s) noexcept {
+    v[0] = static_cast<float>(cc13x87::x87_div24(v[0], s));   // 0042AE8A FDIVP
+    v[1] = static_cast<float>(cc13x87::x87_div24(v[1], s));   // 0042AE93 FDIV
+    v[2] = static_cast<float>(cc13x87::x87_div24(v[2], s));   // 0042AE98 FDIVR
+}
+
 void vector3_divide_in_place_0042ae80(std::array<float, 3>& v, float s) noexcept {
-    v[0] = static_cast<float>(static_cast<double>(v[0]) / s);   // 0042AE8A FDIVP
-    v[1] = static_cast<float>(static_cast<double>(v[1]) / s);   // 0042AE93 FDIV
-    v[2] = static_cast<float>(static_cast<double>(v[2]) / s);   // 0042AE98 FDIVR
+    if constexpr (kVector3DivideInPlacePc24Cc13Bound) {
+        vector3_divide_in_place_pc24_0042ae80(v, s);
+    } else {
+        v[0] = static_cast<float>(static_cast<double>(v[0]) / s);   // 0042AE8A FDIVP
+        v[1] = static_cast<float>(static_cast<double>(v[1]) / s);   // 0042AE93 FDIV
+        v[2] = static_cast<float>(static_cast<double>(v[2]) / s);   // 0042AE98 FDIVR
+    }
 }
 
 void rocket_set_homing_target_0080aa20(RocketHomingBlock& block, std::size_t target_plus_one,
@@ -85,8 +101,17 @@ bool rocket_ignition_step_0080a024(RocketFlight& r, const RocketClassParams& c, 
     const float accumulated = static_cast<float>(static_cast<double>(pre) + timer);
     r.ignition_timer_490 = static_cast<float>(static_cast<double>(accumulated) - credit);
     const double g = rocket_homing::kGravity;
-    r.velocity[1] = static_cast<float>(static_cast<double>(r.velocity[1]) - g * pre);
-    r.velocity[1] = static_cast<float>(static_cast<double>(r.velocity[1]) - g * -static_cast<double>(credit));
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 0080A124-0080A148: DC CB FMUL g * pre, DE E3 FSUBRP vy - that (stored);
+        // FCHS credit, DE C9 FMULP g * -credit, D8 AE FSUBR vy - that. Each op PC24.
+        r.velocity[1] = static_cast<float>(
+            cc13x87::x87_sub24(r.velocity[1], cc13x87::x87_mul24(g, pre)));
+        r.velocity[1] = static_cast<float>(cc13x87::x87_sub24(
+            r.velocity[1], cc13x87::x87_mul24(g, -static_cast<double>(credit))));
+    } else {
+        r.velocity[1] = static_cast<float>(static_cast<double>(r.velocity[1]) - g * pre);
+        r.velocity[1] = static_cast<float>(static_cast<double>(r.velocity[1]) - g * -static_cast<double>(credit));
+    }
     return lit_now;
 }
 
@@ -94,13 +119,30 @@ float rocket_thrust_step_0080a15b(RocketFlight& r, const RocketClassParams& c, f
     // 0080A16B..0080A198: the axial speed along the world forward row +ECh..+F4h
     // (+CCh + 20h). The host's pose doubles as the world matrix (labelled).
     const CameraMatrix& w = r.pose;
-    const float axial = static_cast<float>(
-        static_cast<double>(w[kForward + 1]) * r.velocity[1]
-        + static_cast<double>(w[kForward + 0]) * r.velocity[0]
-        + static_cast<double>(w[kForward + 2]) * r.velocity[2]);
+    float axial;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 0080A179-0080A196: (w1 vy + w0 vx) + w2 vz, D8 8E FMUL and DE C1 FADDP,
+        // each op PC24.
+        axial = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_add24(cc13x87::x87_mul24(w[kForward + 1], r.velocity[1]),
+                               cc13x87::x87_mul24(w[kForward + 0], r.velocity[0])),
+            cc13x87::x87_mul24(w[kForward + 2], r.velocity[2])));
+    } else {
+        axial = static_cast<float>(
+            static_cast<double>(w[kForward + 1]) * r.velocity[1]
+            + static_cast<double>(w[kForward + 0]) * r.velocity[0]
+            + static_cast<double>(w[kForward + 2]) * r.velocity[2]);
+    }
     const float vmax = c.vmax_d8;                                    // [ESP+0Ch]
     if (!(vmax > axial)) return axial;                              // 0080A1B0 JBE
-    float stepped = static_cast<float>(static_cast<double>(c.accel_dc) * dt + axial);
+    float stepped;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 0080A1B6-0080A1C3: D8 8C FMUL accel * dt, D8 C2 FADD + axial, each PC24.
+        stepped = static_cast<float>(
+            cc13x87::x87_add24(cc13x87::x87_mul24(c.accel_dc, dt), axial));
+    } else {
+        stepped = static_cast<float>(static_cast<double>(c.accel_dc) * dt + axial);
+    }
     if (stepped > vmax) stepped = vmax;                              // 0080A1D1 JBE
     const float delta = static_cast<float>(static_cast<double>(stepped) - axial);
     const float dx = static_cast<float>(static_cast<double>(delta) * w[kForward + 0]);
@@ -198,6 +240,7 @@ RocketHomingExit rocket_homing_step_0080a25c(RocketFlight& r, const RocketClassP
     // 0080A50D..0080A553: velocity = world rotation x (0, 0, axial speed), 0042D0D0
     // with normalize 0. The zero terms are kept so a non-finite row propagates.
     for (int i = 0; i < 3; ++i) {
+        // pc24-lint: allow 0042D0D0 order (0*right + 0*up) + axial*fwd; the zero terms are exact and the product is exact in double, so one rounding
         r.velocity[i] = static_cast<float>(0.0 * m[kRight + i] + 0.0 * m[kUp + i]
                                            + static_cast<double>(axial_speed) * m[kForward + i]);
     }

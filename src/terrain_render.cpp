@@ -1,6 +1,7 @@
 // Terrain and foliage render kernels. Evidence in docs/CC13_TERRAIN_RENDER.md;
 // names are hypotheses.
 #include "bsp/terrain_render.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 
@@ -57,15 +58,24 @@ FoliageCellSide foliage_cell_classify_plane_00ae2fe0(const FoliageCellBox& cell,
 TerrainBoxVisibility terrain_box_classify_planes_00ae05e0(const std::vector<TerrainPlane>& planes,
     const TerrainVec3f& centre, const TerrainVec3f& half_extent) noexcept
 {
+    // cc13-fixture6: per x87 operation at 24-bit precision control (main thread, the bush cull
+    // 00AE1A10), in the listing's order. 00AE065B-00AE06AF: r = (|b| e.y + |a| e.x) + |c| e.z,
+    // each |v| stored to float after FABS; s = (a p.x + b p.y) + c p.z. r and s are FSTP'd to
+    // float, then s - d is stored to float (00AE06B7). 00AE06C6-00AE06D4: -r > s returns
+    // Outside (JA, so an unordered compare does not); r > s gives Intersecting.
+    using namespace cc13x87;
     TerrainBoxVisibility result = TerrainBoxVisibility::Inside;
     for (const TerrainPlane& plane : planes) {
-        const float reach = std::fabs(plane.c) * half_extent.z + std::fabs(plane.a) * half_extent.x
-            + std::fabs(plane.b) * half_extent.y;
-        const float side = (plane.c * centre.z + plane.a * centre.x + centre.y * plane.b) - plane.d;
-        if (side < -reach) {
+        const float aa = std::fabs(plane.a), ab = std::fabs(plane.b), ac = std::fabs(plane.c);
+        const float reach = static_cast<float>(x87_add24(
+            x87_add24(x87_mul24(ab, half_extent.y), x87_mul24(aa, half_extent.x)), x87_mul24(ac, half_extent.z)));
+        const float dot = static_cast<float>(x87_add24(
+            x87_add24(x87_mul24(plane.a, centre.x), x87_mul24(plane.b, centre.y)), x87_mul24(plane.c, centre.z)));
+        const float side = static_cast<float>(x87_sub24(dot, plane.d));
+        if (-reach > side) {
             return TerrainBoxVisibility::Outside;
         }
-        if (side < reach) {
+        if (reach > side) {
             result = TerrainBoxVisibility::Intersecting;
         }
     }

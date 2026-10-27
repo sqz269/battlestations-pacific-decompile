@@ -2,6 +2,9 @@
 
 #include <cmath>
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_gunnery_cc13.hpp"   // pc24w1-gunnery-1: 009FA7E0 the |pos|^2 chain
+
 // Packet cc9_gun_aim_terms. docs/GUN_AIM_TERMS.md.
 
 namespace bsp {
@@ -30,8 +33,16 @@ void gun_aim_wander_step_009fa7e0(GunAimWander& w, float dt, float rx, float ry)
     w.vel[1] += w.accel * r * ry;
     w.pos[0] += h * w.vel[0];
     w.pos[1] += h * w.vel[1];
-    const double sq = static_cast<double>(w.pos[0]) * w.pos[0]
-        + static_cast<double>(w.pos[1]) * w.pos[1];
+    double sq;
+    if constexpr (kPc24GunneryCc13Bound) {
+        // 009FA8BB-009FA8C8: x*x (FMUL ST0), y*y (FMULP ST2), FADDP at PC24, FSTP float.
+        using namespace cc13x87;
+        sq = static_cast<float>(x87_add24(x87_mul24(w.pos[0], w.pos[0]),
+                                          x87_mul24(w.pos[1], w.pos[1])));
+    } else {
+        sq = static_cast<double>(w.pos[0]) * w.pos[0]
+            + static_cast<double>(w.pos[1]) * w.pos[1];
+    }
     float len = 0.0f;
     bool bounced = false;
     if (sq > 1e-10) {   // 00CE3820

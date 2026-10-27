@@ -1,4 +1,5 @@
 #include "bsp/actions_seg5_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/unit_motion.hpp"
 
 #include <cmath>
@@ -1019,9 +1020,11 @@ float abs_difference(float a, float b) {
 }
 } // namespace
 
-// 00454970.
+// 00454970: four FLD/FSTP DWORD copies, which quiet a signalling NaN (cc13-fixture10).
 Object shake_key_copy_00454970(Object dest, Object source) {
-    move_key(dest, source);
+    for (std::uint32_t offset = 0; offset < 0x10; offset += 4) {
+        native_at<std::uint32_t>(dest, offset) = cc13x87::x87_fld_fstp_bits(native_at<std::uint32_t>(source, offset));
+    }
     return dest;
 }
 

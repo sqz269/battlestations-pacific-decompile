@@ -10,6 +10,7 @@
 // (local/sweepB5_dis.py decodes the DC/DE forms by the Intel encoding).
 
 #include "bsp/cc13_sweepB5.hpp"
+#include "bsp/engine_seg1_cc13.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -37,12 +38,10 @@ float f32_bits(std::uint32_t bits) {
 }
 
 // 00414260 BSP_Vector3f_ScaleTo, __thiscall(ECX = this, out, float s), RET 8:
-// out = this * s per component (float stores), EAX = out.
+// out = this * s per component (float stores), EAX = out. Delegates to the fixture-tested
+// 24-bit model (cc13-fixture9).
 float* vector3_scale_to_00414260(const float* self, float* out, float s) {
-    out[0] = self[0] * s;
-    out[1] = self[1] * s;
-    out[2] = self[2] * s;
-    return out;
+    return engine_seg1_cc13::vector3_scale_to_00414260(self, out, s);
 }
 
 // 004142A0 BSP_Vector3f_AddTo, __thiscall(ECX = this, out, v), RET 8:

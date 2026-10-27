@@ -10,6 +10,8 @@
 
 #include <cmath>
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/cc13_ship_ai_commit_band.hpp" // kShipAiCommitmentBandQuarterBound
 #include "bsp/ship_ai_seg67_switches_cc13.hpp" // kShipAiClearanceRefreshSentinelBound
 #include "bsp/ship_ai_switch_reach.hpp"
@@ -319,8 +321,16 @@ void ship_ai_refresh_turn_clearance_009ef910(ShipAiClearanceBlock& blk,
 // The 2.0 (00D7A308) and the 16.0 (00CED9F8) stay on the x87 stack between the
 // two conversions, so both ends use the same expression. 00BF7420 truncates.
 int ship_ai_throttle_band_index_009d56f0(float value) noexcept {
-    const double scaled = (static_cast<double>(value) + kShipAiThrottleProfileOrigin) *
-                          kShipAiThrottleProfileScale;
+    double scaled = 0.0;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // pc24w1-sweep2-6: 009D56FC / 009D5723 FADD and 009D5706 / 009D5727 FMUL
+        // each round at PC24 before 00BF7420 truncates.
+        scaled = cc13x87::x87_mul24(cc13x87::x87_add24(value, kShipAiThrottleProfileOrigin),
+                                    kShipAiThrottleProfileScale);
+    } else {
+        scaled = (static_cast<double>(value) + kShipAiThrottleProfileOrigin) *
+                 kShipAiThrottleProfileScale;
+    }
     return static_cast<int>(scaled);
 }
 

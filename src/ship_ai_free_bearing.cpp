@@ -10,6 +10,8 @@
 #include "bsp/geometry_helpers.hpp"
 #include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 namespace bsp {
 namespace {
@@ -39,9 +41,19 @@ float dist2(const std::array<float, 2>& a, const std::array<float, 2>& b) {
 // OFF keeps the SSE float products, each rounded before the add.
 inline constexpr bool kOutlineWalkX87ProductsBound = true;
 
+// pc24w1-sweep2-3, kPc24ShipAiCc13Bound: the main thread's PC24 also rounds each product
+// (0041630C FMULP, 0041630A..00416308 FMUL ST0) before the 0041630E FADDP, and likewise
+// 00416438 / 0041643C before 00416440; the products are not exact on the x87 stack.
 float sum_of_products_x87(float a, float b, float c, float d) {
     if constexpr (kOutlineWalkX87ProductsBound) {
-        return static_cast<float>(static_cast<double>(a) * b + static_cast<double>(c) * d);
+        float sum;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            sum = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(a, b),
+                                                        cc13x87::x87_mul24(c, d)));
+        } else {
+            sum = static_cast<float>(static_cast<double>(a) * b + static_cast<double>(c) * d);
+        }
+        return sum;
     } else {
         return a * b + c * d;
     }

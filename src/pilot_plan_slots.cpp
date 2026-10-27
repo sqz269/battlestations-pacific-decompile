@@ -2,6 +2,12 @@
 
 #include <cmath>
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
+
+// kPc24PlaneTasksCc13Bound site here (pc24w1-sweep3-7): the quantize of
+// pilot_quantize_control_axis_007bb6e0.
+
 namespace bsp {
 namespace {
 
@@ -92,7 +98,14 @@ float pilot_quantize_control_axis_007bb6e0(float command) noexcept {
     // 00CFD408 = 127.0, 00D05998 = 128.5. 00BF7420 is _ftol2_sse, whose
     // CVTTSD2SI truncates toward zero - which for the positive argument range
     // this sees is a floor, making the whole thing a round-half-up.
-    const int n = static_cast<int>(static_cast<double>(command) * 127.0 + 128.5);
+    int n;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 007BB6EA-007BB6F8 (DC C9 FMUL, DC C2 FADD; 007BB843/007BB847 for the
+        // later axes): the product and the sum each round to PC24 before _ftol2.
+        n = static_cast<int>(cc13x87::x87_add24(cc13x87::x87_mul24(command, 127.0), 128.5));
+    } else {
+        n = static_cast<int>(static_cast<double>(command) * 127.0 + 128.5);
+    }
     if (n >= 0xFF) {
         return 1.0f;
     }

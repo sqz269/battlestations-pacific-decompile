@@ -3,6 +3,7 @@
 // wired into any game host. See docs/CC13_GP_006B_0070.md.
 
 #include "bsp/band_006b_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/native_bit_cursor_fields.hpp"
 
 #include <cstring>
@@ -265,13 +266,22 @@ void vec3_add_scaled_in_place_006e0540(float v[3], const float d[3], float s) no
 }
 
 float* matrix4x4_transpose_in_place_006fdd00(float m[16]) noexcept {
-    // 006FDD02..006FDD5D: (1,4) (2,8) (3,12) (6,9) (7,13) (11,14).
-    std::swap(m[1], m[4]);
-    std::swap(m[2], m[8]);
-    std::swap(m[3], m[12]);
-    std::swap(m[6], m[9]);
-    std::swap(m[7], m[13]);
-    std::swap(m[11], m[14]);
+    // 006FDD02..006FDD5D: (1,4) (2,8) (3,12) (6,9) (7,13) (11,14). In each pair the lower
+    // element goes up through FLD/FSTP DWORD, which quiets a signalling NaN (bit 22), and
+    // the upper element goes down through MOVSS unchanged (cc13-fixture9).
+    auto* w = reinterpret_cast<std::uint32_t*>(m);
+    const auto swap_pair = [w](int up, int down) {
+        const std::uint32_t u = w[up];
+        const std::uint32_t d = w[down];
+        w[up] = cc13x87::x87_fld_fstp_bits(d);
+        w[down] = u;
+    };
+    swap_pair(1, 4);
+    swap_pair(2, 8);
+    swap_pair(3, 12);
+    swap_pair(6, 9);
+    swap_pair(7, 13);
+    swap_pair(11, 14);
     return m;
 }
 

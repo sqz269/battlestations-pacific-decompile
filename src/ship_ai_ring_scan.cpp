@@ -16,6 +16,8 @@
 #include <cstring>
 
 #include "bsp/unit_rudder.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 namespace bsp {
 
@@ -61,8 +63,14 @@ float ship_ai_ring_scan_decay_score_009e6400(float bearing,
     // subtracting arm: an unordered pair (CF=ZF=1) takes the JBE too.
     double ramp = 0.0;
     if (!(static_cast<double>(magnitude) < kShipAiRingScanDecayPeak)) {
-        ramp = (kShipAiRingScanDecayEdge - static_cast<double>(magnitude)) /
-               kShipAiRingScanDecaySpan;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // pc24w1-sweep2-6: 009E6440 FSUBR and 009E6446 FDIV each round at PC24.
+            ramp = cc13x87::x87_div24(cc13x87::x87_sub24(kShipAiRingScanDecayEdge, magnitude),
+                                      kShipAiRingScanDecaySpan);
+        } else {
+            ramp = (kShipAiRingScanDecayEdge - static_cast<double>(magnitude)) /
+                   kShipAiRingScanDecaySpan;
+        }
     } else {
         ramp = static_cast<double>(magnitude) / kShipAiRingScanDecaySpan;
     }
@@ -128,13 +136,28 @@ float ship_ai_ring_scan_arc_cost_009e6870(float centre, float side, float span,
     // 009E6931 FCOMIP of the span against the nearest edge distance, JC to the
     // subtracting arm: the divide runs when span >= nearest or the pair is
     // unordered.
-    if (span < nearest) {
-        // 009E693E..009E6945: nearest - (span - scaled_span).
-        return static_cast<float>(static_cast<double>(nearest) -
-                                  (static_cast<double>(span) - scaled_span));
+    float cost = 0.0f;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // pc24w1-sweep2-6: 009E6941 FSUB / 009E6945 FSUBP and 009E6935 FDIV /
+        // 009E6938 FMUL each round at PC24.
+        if (span < nearest) {
+            cost = static_cast<float>(
+                cc13x87::x87_sub24(nearest, cc13x87::x87_sub24(span, scaled_span)));
+        } else {
+            cost = static_cast<float>(
+                cc13x87::x87_mul24(cc13x87::x87_div24(nearest, span), scaled_span));
+        }
+    } else {
+        if (span < nearest) {
+            // 009E693E..009E6945: nearest - (span - scaled_span).
+            cost = static_cast<float>(static_cast<double>(nearest) -
+                                      (static_cast<double>(span) - scaled_span));
+        } else {
+            // 009E6935..009E6938: (nearest / span) * scaled_span.
+            cost = static_cast<float>(static_cast<double>(nearest) / span * scaled_span);
+        }
     }
-    // 009E6935..009E6938: (nearest / span) * scaled_span.
-    return static_cast<float>(static_cast<double>(nearest) / span * scaled_span);
+    return cost;
 }
 
 float ship_ai_ring_scan_arc_score_009e6870(float centre, float side, float span,
@@ -332,9 +355,16 @@ void ship_ai_ring_scan_009e76d0(ShipAiApproachState& state,
                                 float seconds,
                                 ShipAiRingScanHost& host) {
     // 009E76D0..009E76F4. One float store, then the in-place wrap.
-    const float advanced = static_cast<float>(
-        static_cast<double>(seconds) * kShipAiRingScanOneFifth +
-        static_cast<double>(state.wobble_phase_1214));
+    float advanced = 0.0f;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // pc24w1-sweep2-6: 009E76DA FMUL and 009E76E4 FADD each round at PC24.
+        advanced = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_mul24(seconds, kShipAiRingScanOneFifth), state.wobble_phase_1214));
+    } else {
+        advanced = static_cast<float>(
+            static_cast<double>(seconds) * kShipAiRingScanOneFifth +
+            static_cast<double>(state.wobble_phase_1214));
+    }
     state.wobble_phase_1214 = host.wrap_phase_00605070(advanced);
 
     // 009E76F9, the mode test.

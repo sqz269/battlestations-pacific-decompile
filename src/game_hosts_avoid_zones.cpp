@@ -6,6 +6,11 @@
 #include <cstdint>
 #include <cstring>
 
+#include "bsp/cc13_x87_model.hpp"
+// kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-3): 0041BC20
+// avoid_zone_sample_0041bc20, the two row lerps and the column lerp.
+#include "bsp/pc24_planetasks_cc13.hpp"
+
 namespace bsp::game {
 
 namespace {
@@ -83,17 +88,26 @@ float avoid_zone_sample_0041bc20(const bsp::TerrainGridLayerRecord& layer,
     const float h01 = avoid_zone_cell_height_0041bae0(layer, ix, iz + 1);      // 0041BC7A
     const float h10 = avoid_zone_cell_height_0041bae0(layer, ix + 1, iz);      // 0041BC8A
     const float h00 = avoid_zone_cell_height_0041bae0(layer, ix, iz);          // 0041BC97
-    // 0041BCA0-0041BCBB: a = h00 + fu * (h10 - h00), stored as a float.
-    const float a = static_cast<float>(static_cast<double>(h00) +
-        static_cast<double>(fu) * (static_cast<double>(h10) - h00));
-    // 0041BCBF-0041BCD1: b = h01 + fu * (h11 - h01), stored as a float.
-    const float b = static_cast<float>(static_cast<double>(h01) +
-        static_cast<double>(fu) * (static_cast<double>(h11) - h01));
     // 0041BCE1-0041BCED: the v fraction, FISUB then FSTP float.
     const float fv = static_cast<float>(static_cast<double>(c.v) - iz);
-    // 0041BCF1-0041BCF9: a + fv * (b - a), stored as a float.
-    return static_cast<float>(static_cast<double>(a) +
-        static_cast<double>(fv) * (static_cast<double>(b) - a));
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // The same three lerps with each FSUBP / FMULP / FADDP rounded at PC24
+        // (0041BCAD/B5/B9, 0041BCC9/CD/CF, 0041BCDF/F1/F3), each stored float.
+        using namespace bsp::cc13x87;
+        const float a = static_cast<float>(x87_add24(h00, x87_mul24(fu, x87_sub24(h10, h00))));
+        const float b = static_cast<float>(x87_add24(h01, x87_mul24(fu, x87_sub24(h11, h01))));
+        return static_cast<float>(x87_add24(a, x87_mul24(fv, x87_sub24(b, a))));
+    } else {
+        // 0041BCA0-0041BCBB: a = h00 + fu * (h10 - h00), stored as a float.
+        const float a = static_cast<float>(static_cast<double>(h00) +
+            static_cast<double>(fu) * (static_cast<double>(h10) - h00));
+        // 0041BCBF-0041BCD1: b = h01 + fu * (h11 - h01), stored as a float.
+        const float b = static_cast<float>(static_cast<double>(h01) +
+            static_cast<double>(fu) * (static_cast<double>(h11) - h01));
+        // 0041BCF1-0041BCF9: a + fv * (b - a), stored as a float.
+        return static_cast<float>(static_cast<double>(a) +
+            static_cast<double>(fv) * (static_cast<double>(b) - a));
+    }
 }
 
 GameAvoidZoneRegistry::GameAvoidZoneRegistry() {
