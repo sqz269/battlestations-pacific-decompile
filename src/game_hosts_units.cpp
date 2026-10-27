@@ -6991,8 +6991,9 @@ struct GameUnitsHost::Impl {
     // denominator (009B1713-009B1728), the glide height H and G and the raise
     // (009B1842-009B1925), the deck test (009B19BA-009B19D2), the pitch-arm products
     // lvl x w (009B1A59), spd x 3 (009B1A7C) and length x 1.4 (009B1AA2), and the hold's
-    // lateral -X x 1.25 x u (009B1B76-009B1B82). True: per-op float in the listing's
-    // order. False: the double chains rounded once.
+    // lateral -X x 1.25 x u (009B1B76-009B1B82); and the caller 009B1D70's speed
+    // +2B4h = mc + (a+5Ch - mc) x a+4Ch (009B1DAB-009B1DCE). True: per-op float in the
+    // listing's order. False: the double chains rounded once.
     static constexpr bool kLandBeginSteerPc24Cc13Bound = false;
     // Packet p20_strafe_horizontal (section 80). 009CAD27-009CAD58: dx and dz are FSTP'd
     // to floats (009CAD30, 009CAD3E) and d2 = (dx dx + 0 0) + dz dz is stored as a float
@@ -36842,9 +36843,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     g.dynamics_spd_multipliers_level_flight),
                                 unit_.plane_stall_spd);
                         }
-                        unit_.plane_desired_speed_2b4 = static_cast<float>(static_cast<double>(mc) +
-                            static_cast<double>(unit_.land_spacing_4c) *
-                            (static_cast<double>(unit_.land_speed_5c) - mc));
+                        if constexpr (GameUnitsHost::Impl::kLandBeginSteerPc24Cc13Bound) {
+                            // 009B1DAB-009B1DCE at 24 bits: FSUBP (a+5Ch - mc), FMULP by
+                            // a+4Ch, FADDP mc, each rounded, then FSTP float.
+                            const float d = unit_.land_speed_5c - mc;
+                            const float p = d * unit_.land_spacing_4c;
+                            unit_.plane_desired_speed_2b4 = mc + p;
+                        } else {
+                            unit_.plane_desired_speed_2b4 = static_cast<float>(static_cast<double>(mc) +
+                                static_cast<double>(unit_.land_spacing_4c) *
+                                (static_cast<double>(unit_.land_speed_5c) - mc));
+                        }
                         unit_.plane_trg_speed_corr_off_2b0 = 1;
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
