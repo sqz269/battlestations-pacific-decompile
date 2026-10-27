@@ -14,6 +14,8 @@
 #include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/game_hosts_ready.hpp"  // kSunkShipFlushBound, packet cc13-jm08
 #include "bsp/hull_terrain_contact.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_hudgui_cc13.hpp"
 #include "bsp/entity_orders.hpp"  // packet cc13-fix1: the command class category
 #include "bsp/avoid_zone_draft_bodies.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
@@ -13956,10 +13958,21 @@ void GameUnitsHost::Impl::player_helm_issue_0064b870(GameUnitSlot& slot) {
     // 0064BA97-0064BB12: floor(B / step + bias) * step, floor(4A + bias) / 4.
     const double step = 0.16666667163372039794921875;              // [00CF5E60]
     const double bias = 0.4900000095367431640625;                  // [00CF5E58]
-    const float bin = static_cast<float>(helm_lever_28 / step + bias);
+    float bin = 0.0f;
+    float ain = 0.0f;
+    if constexpr (bsp::kPc24HudGuiCc13Bound) {
+        // PC24 (packet pc24w1-hudgui-2): 0064BA99 FDIV and 0064BAD7 FMUL round to
+        // 24 bits before the FADD of the bias (0064BAA4, 0064BADD).
+        bin = static_cast<float>(bsp::cc13x87::x87_add24(
+            bsp::cc13x87::x87_div24(helm_lever_28, step), bias));
+        ain = static_cast<float>(bsp::cc13x87::x87_add24(
+            bsp::cc13x87::x87_mul24(helm_lever_24, 4.0), bias));         // [00D7A328]
+    } else {
+        bin = static_cast<float>(helm_lever_28 / step + bias);
+        ain = static_cast<float>(helm_lever_24 * 4.0 + bias);           // [00D7A328]
+    }
     const float turn = static_cast<float>(
         static_cast<float>(std::floor(static_cast<double>(bin))) * step);
-    const float ain = static_cast<float>(helm_lever_24 * 4.0 + bias);   // [00D7A328]
     const float thrust = static_cast<float>(
         static_cast<float>(std::floor(static_cast<double>(ain))) * 0.25);   // [00D7A348]
     issue_into_ring(slot, thrust, turn);                            // 00816A40, kind 0
