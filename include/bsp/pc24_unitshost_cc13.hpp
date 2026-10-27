@@ -47,8 +47,8 @@ namespace bsp {
 //     007DC830 free_flight_wreck_lift (|bank| * 0.8 + 0.6 and (q * u) * h)
 //     007CE040 motion_step fixed-step velocity / acceleration (FDIV by the step,
 //              not * 1/dt; 007CED84-007CEE3F)
-//     007B8E70 kz_forward_speed_b2c (stand-in dot, PROVISIONAL: the image's
-//              ctl+44h writer is not modelled)
+//     007B8E70 kz_forward_speed_b2c (stand-in dot in 0042D0D0's order, the ctl+44h
+//              writer at 007D9C34; PROVISIONAL: the 0085DEA0 matrix vs pose_row2)
 // Movers (units-DE): strafe range/height and aim, level-bomb release delay,
 // dive-bomb aim point, moveto distance, circle steer, control authority, wreck
 // lift, the fighter lead's target acceleration, kamikaze forward speed.
