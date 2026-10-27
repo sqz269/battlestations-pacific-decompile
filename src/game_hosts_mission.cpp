@@ -46,6 +46,7 @@
 #include "bsp/scene_record_side_blocks.hpp"
 #include "bsp/session_participant_pools.hpp"
 #include "bsp/vfs_mounts.hpp"
+#include "bsp/sw1b_switch_reach.hpp"
 
 #include <algorithm>
 #include <array>
@@ -1063,6 +1064,8 @@ public:
     // precision); math_lerp_00414130 rounds each of the three operations to 24
     // bits as the image does (cc13-fixture8, bit-exact in the leaf fixture).
     float blend_map_offset(float current, float low, float high) override {
+        bsp::sw1b_note(bsp::Sw1bReach::MissionDetailOffsetLerp,                // sw1b reach
+            engine_seg1_cc13::math_lerp_00414130(&current, &low, &high), current);
         if (kMissionDetailOffsetLerpBound) {
             owner_.log.implemented("MainMenuUpdate::blend_map_offset", "00414130");
             return engine_seg1_cc13::math_lerp_00414130(&current, &low, &high);

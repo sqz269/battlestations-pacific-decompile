@@ -12,6 +12,7 @@
 #include "bsp/native_string_byte_append.hpp"
 #include "bsp/native_string_vector_lookup.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/sw1b_switch_reach.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -327,6 +328,13 @@ void scale_vector4_pc24_00bee140(float* out, const float* scalar, const float* v
 }
 
 void scale_vector4_00bee140(float* out, const float* scalar, const float* v) noexcept {
+    {                                                                     // sw1b reach
+        float on[4];                         // before the store: out may alias v
+        scale_vector4_pc24_00bee140(on, scalar, v);
+        const float s = *scalar;
+        const float off[4] = {s * v[0], v[1] * s, v[2] * s, s * v[3]};
+        sw1b_note(Sw1bReach::ScaleVector4Pc24, std::memcmp(on, off, sizeof off) != 0);
+    }
     if constexpr (kScaleVector4Pc24Cc13Bound) {
         scale_vector4_pc24_00bee140(out, scalar, v);
     } else {

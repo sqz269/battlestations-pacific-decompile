@@ -12,6 +12,8 @@
 
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/attack_target_classify.hpp"
@@ -51,6 +53,7 @@
 #include "bsp/building_pads.hpp"
 #include "bsp/ship_ai_station_keeping.hpp"
 #include "bsp/ship_ai_switch_reach.hpp"
+#include "bsp/hud_movie_camera.hpp"
 #include "bsp/ship_ai_torpedo_response.hpp"
 #include "bsp/ship_ai_arm_final_step.hpp"
 #include "bsp/ship_ai_layer_selection.hpp"
@@ -2755,8 +2758,17 @@ struct GameShipAiHost::Impl {
             const float g = (slot_min > ceiling) ? ceiling : slot_min;
             const float ratio = static_cast<float>(static_cast<double>(g) / reference);
             if (limit_344 > ratio) limit_344 = ratio;
-            const float r = static_cast<float>(static_cast<double>(own_turn) /
-                (static_cast<double>(group_turn) * 1.2000000476837158));   // 00CEC160
+            float r;
+            if constexpr (bsp::kPc24ShipAiCc13Bound) {
+                // 009F4EBA FMUL m64 00CEC160, 009F4EC0 FDIVR (own turn), 009F4EC4
+                // FSTP: each op rounds to 24 bits on the main thread.
+                using namespace bsp::cc13x87;
+                r = static_cast<float>(
+                    x87_div24(own_turn, x87_mul24(group_turn, 1.2000000476837158)));
+            } else {
+                r = static_cast<float>(static_cast<double>(own_turn) /
+                    (static_cast<double>(group_turn) * 1.2000000476837158));   // 00CEC160
+            }
             if (0.75f > r) {                                    // 00CEE07C
                 limit_348 = 0.75f;
             } else {
@@ -2772,8 +2784,17 @@ struct GameShipAiHost::Impl {
         }
         // 009F4F30..009F4F88: s = clamp((ceiling + 6.70421028) / reference, 1, 1.25)
         // (00D21B38; 00415620 with 1.0f and 1.25f).
-        const float s_raw = static_cast<float>(
-            (static_cast<double>(ceiling) + 6.70421028137207) / reference);
+        float s_raw;
+        if constexpr (bsp::kPc24ShipAiCc13Bound) {
+            // 009F4F5D FADD m64 00D21B38, 009F4F6E FDIVR (reference), 009F4F7F FSTP:
+            // each op rounds to 24 bits on the main thread.
+            using namespace bsp::cc13x87;
+            s_raw = static_cast<float>(
+                x87_div24(x87_add24(ceiling, 6.70421028137207), reference));
+        } else {
+            s_raw = static_cast<float>(
+                (static_cast<double>(ceiling) + 6.70421028137207) / reference);
+        }
         const float s = (1.0f > s_raw) ? 1.0f : ((s_raw > 1.25f) ? 1.25f : s_raw);
         if (kShipStationKeepingBound && ctl.blk.flag_3a5) {
             // 009F4F8C..009F5020, brain+3ADh set: brain+3A4h is blk+39Ch, the
@@ -2798,8 +2819,16 @@ struct GameShipAiHost::Impl {
             if (limit_344 > s) limit_344 = s;                     // 009F5014
             station_arm = true;
         }
-        const float a = static_cast<float>(static_cast<double>(group_turn) * 1.25 /
-                                           static_cast<double>(own_turn));   // 00CF87C0
+        float a;
+        if constexpr (bsp::kPc24ShipAiCc13Bound) {
+            // 009F503F FMUL m64 00CF87C0, 009F5050 FDIVR into the 0082E850 result,
+            // 009F505A FSTP: each op rounds to 24 bits on the main thread.
+            using namespace bsp::cc13x87;
+            a = static_cast<float>(x87_div24(x87_mul24(group_turn, 1.25), own_turn));
+        } else {
+            a = static_cast<float>(static_cast<double>(group_turn) * 1.25 /
+                                   static_cast<double>(own_turn));   // 00CF87C0
+        }
         const float b = static_cast<float>(static_cast<double>(own_turn) / 200.0); // 00CE4D70
         float m = (a > b) ? b : a;                                          // 009F5075
         if (m < 1.0f) m = 1.0f;                                             // 00415690
@@ -5654,8 +5683,18 @@ public:
         const float dx = unit_pos.x - x;
         const float dz = unit_pos.z - z;
         const float reach = weapon_range_0494(e) + range;
-        return static_cast<double>(dx) * dx + 0.0 * 0.0 + static_cast<double>(dz) * dz
-            < static_cast<double>(reach) * reach;
+        if constexpr (bsp::kPc24ShipAiCc13Bound) {
+            // 009E61ED FMULP (dx*dx), 009E61F3 FADDP (+0*0), 009E61F7 FMULP (dz*dz),
+            // 009E61FB FADDP, 009E61FD FSTP float; 009E6207 FMULP (reach^2), compared
+            // at 009E620B without a store. Each op rounds to 24 bits on the main thread.
+            using namespace bsp::cc13x87;
+            const float sum = static_cast<float>(
+                x87_add24(x87_add24(x87_mul24(dx, dx), 0.0), x87_mul24(dz, dz)));
+            return sum < x87_mul24(reach, reach);
+        } else {
+            return static_cast<double>(dx) * dx + 0.0 * 0.0 + static_cast<double>(dz) * dz
+                < static_cast<double>(reach) * reach;
+        }
     }
     void erase_traffic_record(int r) override {
         ctl_.traffic.erase(ctl_.traffic.begin() + r);
@@ -5854,6 +5893,14 @@ public:
     std::uint32_t engagement_target_009e5e00() override {
         owner_.done("ShipAiApproach::engagement_target_009e5e00", 0x009e5e00u);
         const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        if (t != 0u) {
+            // Reach counter (cc9-sweep2b, log-only): ON answers 0 for these.
+            bsp::ShipAiSwitchReach& reach = bsp::ship_ai_switch_reach();
+            ++reach.engage_target_reads;
+            if (!(t - 1u < owner_.units.count() && owner_.units.unit_is_kind_of(t - 1u, 0x1c))) {
+                ++reach.engage_target_differs;
+            }
+        }
         if constexpr (kEngagementTargetKindTestCc13Bound) {
             // 009E5E05..009E5E26: t answers only when t->vtable[5Ch](1Ch) is true.
             const bool known = t != 0u && t - 1u < owner_.units.count();
@@ -6358,16 +6405,19 @@ public:
         PadZones zones(owner_);
         if (bsp::refresh_pad_line_006ac5d0(*p, layer, zones)) ++s.landing_pad_line_casts;
         // 009F21F6..009F220F: 006AC5D0(pad)(&out, &unit+0FCh, layer, 200.0f).
-        const bsp::ShipAiFollowLandXZ point = bsp::ship_ai_land_pad_approach_point_006ac5d0(
+        const bsp::ShipAiLandPadPoint point = bsp::ship_ai_land_pad_approach_point_xyz_006ac5d0(
             p->line, bsp::ShipAiFollowLandXZ{p->facing_x, p->facing_z},
             bsp::ShipAiFollowLandXZ{unit_pos[0], unit_pos[2]}, 200.0f);
-        // 009F2214..009F2228; y is taken as 0.0f (SUBSTITUTION, labelled: the
-        // per-call arm's out+4 store was not re-read).
-        ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{point.x, 0.0f, point.z};
+        // 009F2214..009F2228 store all three floats. OFF takes y as 0.0f (SUBSTITUTION,
+        // labelled); kPadApproachPointImageCc13Bound ON takes the arm's out+4,
+        // [+210h] +/- 0.0, which 009F225B..009F2261 then reads back for the distance.
+        const float point_y = bsp::kPadApproachPointImageCc13Bound ? point.y : 0.0f;
+        ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{point.x, point_y, point.z};
         ++s.landing_mode3_points;
+        if (p->line.origin_y_210 != 0.0f) ++s.landing_mode3_y_differs;   // sw1 reach
         // 009F2247..009F2293: |point - unit+0FCh| through 0042B2F0.
         const double dx = static_cast<double>(point.x) - unit_pos[0];
-        const double dy = 0.0 - static_cast<double>(unit_pos[1]);
+        const double dy = static_cast<double>(point_y) - static_cast<double>(unit_pos[1]);
         const double dz = static_cast<double>(point.z) - unit_pos[2];
         const float d = static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
         // 009F22A5..009F22E7: reach = max(00811A30(unit, 1.0) * 2.5, 300.0f).
@@ -9140,13 +9190,32 @@ public:
         // 004192E0(&out, &in): 00419260 answers 1/sqrt(x*x + z*z), and +0.0f
         // for a zero-length vector, and both components are scaled by it.
         owner_.done("ShipAiArmTail::normalize", 0x004192e0u);
-        const double square = static_cast<double>(x) * x + static_cast<double>(z) * z;
-        bsp::ShipAiNavPose out{};
-        if (square <= 0.0) return out;
-        const float scale = static_cast<float>(1.0 / std::sqrt(square));
-        out.x = x * scale;
-        out.z = z * scale;
-        return out;
+        if constexpr (bsp::kPc24ShipAiCc13Bound) {
+            // 00419276 FMUL st0 -> FSTP float, 00419282 FMULP -> FSTP float, 0041928A
+            // FADD -> FSTP float, 00419296 sqrt (00BF7030) -> FSTP float, then 0 or
+            // 004192C7 1/len -> FSTP float; 004192EE FSTP, 004192FC FMULP / 00419302
+            // FMUL -> FSTP float. Each op rounds to 24 bits on the main thread.
+            using namespace bsp::cc13x87;
+            const float x_sq = static_cast<float>(x87_mul24(x, x));
+            const float z_sq = static_cast<float>(x87_mul24(z, z));
+            const float length =
+                static_cast<float>(std::sqrt(static_cast<double>(
+                    static_cast<float>(x87_add24(x_sq, z_sq)))));
+            const float scale =
+                (length == 0.0f) ? 0.0f : static_cast<float>(x87_div24(1.0, length));
+            bsp::ShipAiNavPose out{};
+            out.x = static_cast<float>(x87_mul24(x, scale));
+            out.z = static_cast<float>(x87_mul24(scale, z));
+            return out;
+        } else {
+            const double square = static_cast<double>(x) * x + static_cast<double>(z) * z;
+            bsp::ShipAiNavPose out{};
+            if (square <= 0.0) return out;
+            const float scale = static_cast<float>(1.0 / std::sqrt(square));
+            out.x = x * scale;
+            out.z = z * scale;
+            return out;
+        }
     }
     int neighbour_list_count_009eeb8b() override {
         // [[00E188A8]+19CCh]+60h, world list 6 (ships). OFF: the milestone 2r
@@ -13348,10 +13417,22 @@ void GameShipAiHost::Impl::landfort_fire_roll_007470b0(CaptureBuilding& b, float
     if (!building_health_of(b.unit, health, max_health)) return;
     // 007470D3..00747107: ((max - hp) / max) * ((amount / max) * (mul * 10.0)),
     // x87 extended, stored as a float at 00747107.
-    const double m = static_cast<double>(max_health);
-    const float chance = static_cast<float>(((m - static_cast<double>(health)) / m)
-        * ((static_cast<double>(amount) / m)
-           * (static_cast<double>(b.smoke_fire_mul_164) * 10.0)));
+    float chance;
+    if constexpr (bsp::kPc24ShipAiCc13Bound) {
+        // 007470EB FSUB, 007470F1 FDIV, 007470F7 FDIVRP (amount / max), 007470FD FMUL
+        // m64 10.0, 00747103 FMULP, 00747105 FMULP, 00747107 FSTP: each op rounds to
+        // 24 bits on the main thread.
+        using namespace bsp::cc13x87;
+        chance = static_cast<float>(x87_mul24(
+            x87_div24(x87_sub24(max_health, health), max_health),
+            x87_mul24(x87_div24(amount, max_health),
+                      x87_mul24(b.smoke_fire_mul_164, 10.0))));
+    } else {
+        const double m = static_cast<double>(max_health);
+        chance = static_cast<float>(((m - static_cast<double>(health)) / m)
+            * ((static_cast<double>(amount) / m)
+               * (static_cast<double>(b.smoke_fire_mul_164) * 10.0)));
+    }
     ++fire_rolls;
     ++fire_draws;
     const float draw = gunnery_draws->death_mode_draw_00bd2f10(1, b.unit, 0.0f, 1.0f);
@@ -13410,11 +13491,27 @@ void GameShipAiHost::Impl::landfort_fire_frame_00745be0(CaptureBuilding& b, floa
     float health = 0.0f, max_health = 0.0f;
     if (!building_health_of(b.unit, health, max_health)) return;
     // 00745CDC..00745D38: min(1.0, (max - hp) / max) * class+170h * 0.01.
-    const float ratio = static_cast<float>((static_cast<double>(max_health)
-        - static_cast<double>(health)) / static_cast<double>(max_health));
+    float ratio;
+    if constexpr (bsp::kPc24ShipAiCc13Bound) {
+        // 00745CFE FSUB, 00745D12 FDIV, 00745D1C FSTP: each op rounds to 24 bits.
+        using namespace bsp::cc13x87;
+        ratio = static_cast<float>(x87_div24(x87_sub24(max_health, health), max_health));
+    } else {
+        ratio = static_cast<float>((static_cast<double>(max_health)
+            - static_cast<double>(health)) / static_cast<double>(max_health));
+    }
     const float capped = 1.0f < ratio ? 1.0f : ratio;                   // 00415510
-    const float chance = static_cast<float>(static_cast<double>(capped)
-        * (static_cast<double>(b.secondary_mul_170) * 0.0099999997764825821));
+    float chance;
+    if constexpr (bsp::kPc24ShipAiCc13Bound) {
+        // 00745D2B FMUL m64 00D7A358, 00745D36 FMULP by the capped ratio, 00745D38
+        // FSTP: each op rounds to 24 bits.
+        using namespace bsp::cc13x87;
+        chance = static_cast<float>(
+            x87_mul24(capped, x87_mul24(b.secondary_mul_170, 0.0099999997764825821)));
+    } else {
+        chance = static_cast<float>(static_cast<double>(capped)
+            * (static_cast<double>(b.secondary_mul_170) * 0.0099999997764825821));
+    }
     ++fire_secondary_rolls;
     ++fire_draws;
     const float draw = gunnery_draws->death_mode_draw_00bd2f10(0, b.unit, 0.0f, 1.0f);
@@ -14975,6 +15072,11 @@ void GameShipAiHost::report() {
         host.summary.landing_pad_line_casts, host.summary.landing_mode3_in_reach,
         host.summary.landing_begins, host.summary.landing_mode4_points,
         bsp::kShipAiApproachLandingModesBound ? 1 : 0);
+    host.log.notef("summary mission ship ai pad approach point image (006AC5D0, sw1 reach): "
+        "bound=%d calls=%llu corridor_differs=%llu holdoff_differs=%llu mode3_y_differs=%llu",
+        bsp::pad_approach_reach().bound ? 1 : 0, bsp::pad_approach_reach().calls,
+        bsp::pad_approach_reach().corridor_differs, bsp::pad_approach_reach().holdoff_differs,
+        host.summary.landing_mode3_y_differs);
     host.log.notef("summary mission ship ai landing requests 94h=%llu begun=%llu held=%llu "
         "no_site=%llu no_pad=%llu (0074A4C0, packet cc9_startlanding_94h)",
         host.summary.landing_requests_94h, host.summary.landing_requests_begun,
@@ -15237,6 +15339,28 @@ void GameShipAiHost::report() {
             bsp::kShipAiThrottleProfileNanArmsCc13Bound ? 1 : 0,
             bsp::kShipAiNavigationNanArmsCc13Bound ? 1 : 0,
             bsp::kShipAiFireStepPc24Cc13Bound ? 1 : 0);
+        host.log.notef("summary mission torpedo home sector reach calls=%llu differs=%llu "
+            "bound=%d (009D3BB4-009D3BC8 kTorpedoHomeSectorScaleCc13Bound; packet cc9-sweep2b)",
+            reach.torpedo_home_calls, reach.torpedo_home_differs, reach.torpedo_home_bound);
+        host.log.notef("summary mission cc13 switch reach engage_target_reads=%llu "
+            "engage_target_differs=%llu water_rate_calls=%llu water_rate_differs=%llu "
+            "order_step_calls=%llu order_step_differs=%llu movie_begin_modifier_differs=%llu "
+            "movie_empty_clock_differs=%llu movie_stale_flag_differs=%llu "
+            "seabed_speed_calls=%llu seabed_speed_differs=%llu bound=%d%d%d%d%d%d%d "
+            "(009E5E00, 007DA406, 0080E000, 00791020/0079A3B0/007911E0, 0092D730; "
+            "packet cc9-sweep2b)",
+            reach.engage_target_reads, reach.engage_target_differs, reach.water_rate_calls,
+            reach.water_rate_differs, reach.order_step_calls, reach.order_step_differs,
+            reach.movie_begin_modifier_differs, reach.movie_empty_clock_differs,
+            reach.movie_stale_flag_differs, reach.seabed_speed_calls,
+            reach.seabed_speed_differs,
+            kEngagementTargetKindTestCc13Bound ? 1 : 0,
+            reach.water_rate_bound,
+            kUnitAiOrderResetFieldsCc13Bound ? 1 : 0,
+            kMovieBeginDropsModifierCc13Bound ? 1 : 0,
+            kMovieUpdateEmptyTrackClockCc13Bound ? 1 : 0,
+            kMovieStepStaleTrackFlagCc13Bound ? 1 : 0,
+            kSubmarineSeabedSpeedPc24Cc13Bound ? 1 : 0);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {

@@ -1,4 +1,5 @@
 #include "bsp/plane_flight.hpp"
+#include "bsp/sw1b_switch_reach.hpp"
 
 #include <cmath>
 
@@ -345,6 +346,8 @@ PlaneDynAccumulators accumulate_free_flight_007db680(const PlaneFreeFlightState&
     } else {
         above_cutoff = speed_squared > 1.0e-10f;
     }
+    sw1b_note(Sw1bReach::PlaneFlightX87,                                  // sw1b reach
+              (static_cast<double>(speed_squared) > 1.0e-10) != (speed_squared > 1.0e-10f));
     if (above_cutoff) {
         const float speed = std::sqrt(speed_squared);  // 007DBA7B 00BF7030
         if (speed > 0.001f) {
@@ -498,6 +501,12 @@ PlaneBodyAcceleration fold_world_into_body_007d8470(PlaneDynAccumulators& acc,
     const PlaneBodyAcceleration result =
         fold_world_into_body_007d8470(static_cast<const PlaneDynAccumulators&>(acc),
                                       world_to_body);
+    for (int i = 0; i < 3; ++i) {                                         // sw1b reach
+        const float v = acc.body_resist_40[i];
+        const float magnitude = v < 0.0f ? -v : v;
+        sw1b_note(Sw1bReach::PlaneResist40Deadband,
+                  0.001f > magnitude && !sw1b_same_bits(v, 0.0f));
+    }
     if constexpr (kPlaneResist40DeadbandCc13Bound) {
         // 007D85A0-007D85E7: |dyn+40h..48h| < 0.001f (00D7A23C) zeroes; JBE keeps equality.
         for (int i = 0; i < 3; ++i) {
@@ -575,6 +584,14 @@ PlaneGroundBand ground_band_007dbeb3(const PlaneGroundBandInputs& in) noexcept {
     } else {
         open = static_cast<float>(0.6000000238418579 -
             static_cast<double>(in.latched_throttle) * 26.0);
+    }
+    {                                                                     // sw1b reach
+        const float scaled = static_cast<float>(static_cast<double>(in.latched_throttle) * 26.0);
+        // pc24-lint: allow sw1b reach counter, replica of the OFF arm (log only)
+        sw1b_note(Sw1bReach::PlaneFlightX87,
+                  static_cast<float>(0.6000000238418579 - static_cast<double>(scaled)),
+                  static_cast<float>(0.6000000238418579 -
+                                     static_cast<double>(in.latched_throttle) * 26.0));
     }
     // 007DBECB-007DBEE8: the larger of the latched air brake and that.
     const float brake_in = in.latched_air_brake > open ? in.latched_air_brake : open;

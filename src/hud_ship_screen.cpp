@@ -390,9 +390,16 @@ void gauge_write_0043b2f0(ShipScreenState::Gauge& gauge, int index, ShipScreenHo
 }
 }  // namespace
 
-// Packet D4: OFF until cc9 pairs it. ON rounds the two gauge products to float before their adds,
-// as the 24-bit x87 does at 0043B3EC and 0043B40C.
-inline constexpr bool kShipScreenGaugeProductRoundCc13Bound = false;
+// Packet D4. ON rounds the two gauge products to float before their adds, as the 24-bit x87
+// does at 0043B3EC and 0043B40C. ON by mechanism (cc9-sweep1b): HUD-only; 18 WINS-row pairs
+// gameplay identical with 3-913 differing ticks per row.
+inline constexpr bool kShipScreenGaugeProductRoundCc13Bound = true;
+
+static ShipScreenGaugeReach g_ship_screen_gauge_reach{kShipScreenGaugeProductRoundCc13Bound};
+
+const ShipScreenGaugeReach& ship_screen_gauge_reach() noexcept {
+    return g_ship_screen_gauge_reach;
+}
 
 void ship_screen_gauge_0043b370(ShipScreenState::Gauge& gauge, int index, ShipScreenHost& host,
                                 float value, float dt) {
@@ -416,21 +423,21 @@ void ship_screen_gauge_0043b370(ShipScreenState::Gauge& gauge, int index, ShipSc
     // x87 stack. The main thread runs the x87 at 24-bit precision, so each FMUL already rounds
     // to a float significand before its FADD. ON rounds the products; OFF keeps the 53-bit
     // product (the earlier reading, packet D4).
-    float rate = 0.0f;
-    float next = 0.0f;
-    if constexpr (kShipScreenGaugeProductRoundCc13Bound) {
-        const float gained_gap = static_cast<float>(static_cast<double>(gain) * gap);
-        rate = static_cast<float>(static_cast<double>(gained_gap) + gauge.rate_14);
-        rate = static_cast<float>(static_cast<double>(rate) * kGaugeDamping);     // 0043B3FB
-        gauge.rate_14 = rate;                                         // 0043B409
-        const float step = static_cast<float>(static_cast<double>(gain) * rate);
-        next = static_cast<float>(static_cast<double>(step) + gauge.value_10);
-    } else {
-        rate = static_cast<float>(static_cast<double>(gain) * gap + gauge.rate_14);
-        rate = static_cast<float>(static_cast<double>(rate) * kGaugeDamping);     // 0043B3FB
-        gauge.rate_14 = rate;                                         // 0043B409
-        next = static_cast<float>(static_cast<double>(gain) * rate + gauge.value_10);
-    }
+    // Both forms are computed so the reach counter (sw1, log only) sees how often they differ.
+    const float gained_gap = static_cast<float>(static_cast<double>(gain) * gap);
+    float rate_on = static_cast<float>(static_cast<double>(gained_gap) + gauge.rate_14);
+    rate_on = static_cast<float>(static_cast<double>(rate_on) * kGaugeDamping);   // 0043B3FB
+    const float step_on = static_cast<float>(static_cast<double>(gain) * rate_on);
+    const float next_on = static_cast<float>(static_cast<double>(step_on) + gauge.value_10);
+    float rate_off = static_cast<float>(static_cast<double>(gain) * gap + gauge.rate_14);
+    rate_off = static_cast<float>(static_cast<double>(rate_off) * kGaugeDamping); // 0043B3FB
+    const float next_off = static_cast<float>(static_cast<double>(gain) * rate_off
+                                              + gauge.value_10);
+    ++g_ship_screen_gauge_reach.ticks;
+    if (rate_on != rate_off || next_on != next_off) ++g_ship_screen_gauge_reach.differs;
+    const float rate = kShipScreenGaugeProductRoundCc13Bound ? rate_on : rate_off;
+    const float next = kShipScreenGaugeProductRoundCc13Bound ? next_on : next_off;
+    gauge.rate_14 = rate;                                             // 0043B409
     gauge.value_10 = next;                                            // 0043B419
     gauge_write_0043b2f0(gauge, index, host, next);
     gauge.primed_18 = true;                                           // 0043B424

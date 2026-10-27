@@ -5,6 +5,7 @@
 // symbols.
 
 #include "bsp/ship_ai_navigation.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <array>
 #include <cmath>
@@ -83,42 +84,62 @@ std::uint32_t unit_ai_order_published_offset(int index) noexcept {
 }
 
 void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src) noexcept {
-    unit_ai_order_copy_00811d10(dst, src, kUnitAiOrderCopyPc24Cc13Bound);
+    if constexpr (kUnitAiOrderCopyPc24Cc13Bound) {
+        unit_ai_order_copy_image_00811d10(dst, src);
+    } else {
+        // 00811D14..00811D71, sixteen copies over +00h..+3Fh and nothing past it.
+        dst.blend_00 = src.blend_00; // 00811D14
+        dst.timer_04 = src.timer_04; // 00811D18
+        dst.sub_a = src.sub_a;       // 00811D1E..00811D46
+        dst.sub_b = src.sub_b;       // 00811D49..00811D71
+        // +40h, +44h, +48h, +4Ch and +50h are deliberately not copied. The routine
+        // returns at 00811D74 with RET 4.
+    }
 }
 
-void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src, bool image_copy) noexcept {
-    if (image_copy) {
-        // cc13-fixture10: the image's sixteen copies on the raw record. 'f' is FLD/FSTP DWORD
-        // (a signalling NaN is quieted), 'd' a dword MOV, 'b' a byte MOV.
-        static constexpr struct { std::uint8_t offset; char kind; } kSteps[] = {
-            {0x00, 'f'}, {0x04, 'f'}, {0x08, 'f'}, {0x0C, 'f'}, {0x10, 'f'}, {0x14, 'b'},
-            {0x18, 'f'}, {0x1C, 'f'}, {0x20, 'd'}, {0x24, 'f'}, {0x28, 'f'}, {0x2C, 'f'},
-            {0x30, 'b'}, {0x34, 'f'}, {0x38, 'f'}, {0x3C, 'd'}};
-        auto* const d = reinterpret_cast<unsigned char*>(&dst);
-        const auto* const s = reinterpret_cast<const unsigned char*>(&src);
-        for (const auto& step : kSteps) {
-            if (step.kind == 'b') {
-                d[step.offset] = s[step.offset];
-                continue;
-            }
+void unit_ai_order_copy_image_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src) noexcept {
+    // cc13-fixture10: the image's sixteen copies on the raw record. 'f' is FLD/FSTP DWORD
+    // (a signalling NaN is quieted), 'd' a dword MOV, 'b' a byte MOV.
+    static constexpr struct { std::uint8_t offset; char kind; } kSteps[] = {
+        {0x00, 'f'}, {0x04, 'f'}, {0x08, 'f'}, {0x0C, 'f'}, {0x10, 'f'}, {0x14, 'b'},
+        {0x18, 'f'}, {0x1C, 'f'}, {0x20, 'd'}, {0x24, 'f'}, {0x28, 'f'}, {0x2C, 'f'},
+        {0x30, 'b'}, {0x34, 'f'}, {0x38, 'f'}, {0x3C, 'd'}};
+    auto* const d = reinterpret_cast<unsigned char*>(&dst);
+    const auto* const s = reinterpret_cast<const unsigned char*>(&src);
+    for (const auto& step : kSteps) {
+        if (step.kind == 'b') {
+            d[step.offset] = s[step.offset];
+        } else {
             std::uint32_t bits;
             std::memcpy(&bits, s + step.offset, 4);
             if (step.kind == 'f') bits = cc13x87::x87_fld_fstp_bits(bits);
             std::memcpy(d + step.offset, &bits, 4);
         }
-        return;
     }
-    // 00811D14..00811D71, sixteen copies over +00h..+3Fh and nothing past it.
-    dst.blend_00 = src.blend_00; // 00811D14
-    dst.timer_04 = src.timer_04; // 00811D18
-    dst.sub_a = src.sub_a;       // 00811D1E..00811D46
-    dst.sub_b = src.sub_b;       // 00811D49..00811D71
-    // +40h, +44h, +48h, +4Ch and +50h are deliberately not copied. The routine
-    // returns at 00811D74 with RET 4.
 }
 
+namespace {
+bool order_sub_same(const UnitAiOrderSubRecord& a, const UnitAiOrderSubRecord& b) noexcept {
+    return ship_ai_reach_same_bits(a.value_00, b.value_00) &&
+           ship_ai_reach_same_bits(a.field_04, b.field_04) &&
+           ship_ai_reach_same_bits(a.field_08, b.field_08) && a.flag_0c == b.flag_0c &&
+           ship_ai_reach_same_bits(a.field_10, b.field_10) &&
+           ship_ai_reach_same_bits(a.field_14, b.field_14) && a.field_18 == b.field_18;
+}
+}  // namespace
+
 void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds) noexcept {
+    // Reach counter (cc9-sweep2b, log-only): the other setting on a copy.
+    UnitAiOrderRecord other = record;
+    unit_ai_order_slot_step_0080e000(other, seconds, !kUnitAiOrderResetFieldsCc13Bound);
     unit_ai_order_slot_step_0080e000(record, seconds, kUnitAiOrderResetFieldsCc13Bound);
+    ShipAiSwitchReach& reach = ship_ai_switch_reach();
+    ++reach.order_step_calls;
+    if (!ship_ai_reach_same_bits(other.blend_00, record.blend_00) ||
+        !ship_ai_reach_same_bits(other.timer_04, record.timer_04) ||
+        !order_sub_same(other.sub_a, record.sub_a) || !order_sub_same(other.sub_b, record.sub_b)) {
+        ++reach.order_step_differs;
+    }
 }
 
 void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds, bool image_reset) noexcept {
@@ -210,8 +231,17 @@ ShipAiTurnLead ship_ai_turn_lead_009ee848(float bearing, float distance, float u
     // 009EE8B1..009EE8C3, one 80-bit chain with a single float store:
     // (pi/2 - blk+3D0h) * taper * taper.
     const double window = static_cast<double>(nav.turn_window_3d0);
-    const float lead = static_cast<float>((kShipAiNavQuarterTurn - window) *
-                                          (static_cast<double>(taper) * static_cast<double>(taper)));
+    float lead;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009EE8B7 FSUBR m64, 009EE8BF FMULP (taper*taper), 009EE8C1 FMULP, 009EE8C3
+        // FSTP: each op rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        lead = static_cast<float>(x87_mul24(x87_sub24(kShipAiNavQuarterTurn, window),
+                                            x87_mul24(taper, taper)));
+    } else {
+        lead = static_cast<float>((kShipAiNavQuarterTurn - window) *
+                                  (static_cast<double>(taper) * static_cast<double>(taper)));
+    }
 
     // 009EE8C7: the unit's own heading through vtable slot 50h; 009EE8EA flips
     // it by the image's pi while the latched direction is astern.
@@ -331,9 +361,18 @@ ShipAiNavResult ship_ai_navigation_arm_009ee671(ShipAiControlBlock& blk,
         const float floored = native_max_00415550(kShipAiNavCosineFloor, std::fabs(cosine));
         // 009EEA89/009EEA95: the doubled floor divides the distance, which
         // 009EEA5C had stored as a double.
-        const float radius = static_cast<float>(static_cast<double>(blk.distance_32c) /
-                                                (static_cast<double>(floored) +
-                                                 static_cast<double>(floored)));
+        float radius;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 009EEA89 FADD st0,st0, 009EEA95 FDIVR, 009EEA99 FSTP: each op rounds
+            // to 24 bits on the main thread.
+            using namespace cc13x87;
+            radius = static_cast<float>(
+                x87_div24(blk.distance_32c, x87_add24(floored, floored)));
+        } else {
+            radius = static_cast<float>(static_cast<double>(blk.distance_32c) /
+                                        (static_cast<double>(floored) +
+                                         static_cast<double>(floored)));
+        }
         nav.look_ahead_340 = native_min_00415510(nav.look_ahead_max_3c8, radius); // 009EEA9D
     }
 
