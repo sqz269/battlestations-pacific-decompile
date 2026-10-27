@@ -20,6 +20,7 @@
 #include "bsp/frontend_seg12_17_cc13.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/rocket_task_cc13.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
 #include "bsp/post_effects_cc13.hpp"
 #include "bsp/seg6_cc13.hpp"
 #include "bsp/scene_weather_cc13.hpp"
@@ -1491,6 +1492,11 @@ int main() {
         std::memcpy(record + 0x3c, &object_pointer, 4);
         std::memcpy(record + 0x314, &rocket_pointer, 4);
         auto native = at<float (__fastcall*)(void*, int, float)>(cc13_leaf_00809e10);
+        // pc24w1-sweep3-7: with kPc24PlaneTasksCc13Bound on, the C++ rounds per op at 24 bits,
+        // so the image runs at 24-bit precision control here too.
+        if constexpr (bsp::kPc24PlaneTasksCc13Bound) {
+            _controlfp_s(&control, _PC_24 | _RC_NEAR, _MCW_PC | _MCW_RC);
+        }
         for (int i = 0; i < 2000; ++i) {
             launch = uniform(0, 300);
             const float vmax = uniform(launch - 60, 400), accel = uniform(1, 120), range = uniform(0, 6000);
@@ -1500,6 +1506,7 @@ int main() {
             const float b = bsp::rocket_flight_time_00809e10(range, launch, vmax, accel);
             c.check(same(a, b));
         }
+        _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
     }
     {
         using namespace bsp::band_0045_cc13;
