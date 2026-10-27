@@ -1,6 +1,8 @@
 #include "bsp/camera_path_sampler.hpp"
 #include "bsp/camera_frame_state.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/material_effect_plane.hpp"
+#include "bsp/pc24_camera_cc13.hpp"
 #include <cmath>
 #include <cstring>
 
@@ -615,10 +617,22 @@ CameraPathKnotTotals derive_camera_path_knots_007af150(
     }
     const CameraPathKnotWords& first = knots[0];
     const CameraPathKnotWords& last = knots[n - 1];
-    const double cx = static_cast<double>(first[0]) - last[0];
-    const double cy = static_cast<double>(first[1]) - last[1];
-    const double cz = static_cast<double>(first[2]) - last[2];
-    totals.closed_24 = cz * cz + cy * cy + cx * cx < 1.0;   // 007AF297
+    if constexpr (kPc24CameraCc13Bound) {
+        // 007AF241..007AF285: each difference FSTP to float, then cx * cx, cy * cy,
+        // FADDP, cz * cz, FADDP, FSTP float, FLD1 FCOMIP (closed when 1 > d).
+        const float cx = first[0] - last[0];
+        const float cy = first[1] - last[1];
+        const float cz = first[2] - last[2];
+        const float d = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_add24(cc13x87::x87_mul24(cx, cx), cc13x87::x87_mul24(cy, cy)),
+            cc13x87::x87_mul24(cz, cz)));
+        totals.closed_24 = 1.0f > d;                       // 007AF297
+    } else {
+        const double cx = static_cast<double>(first[0]) - last[0];
+        const double cy = static_cast<double>(first[1]) - last[1];
+        const double cz = static_cast<double>(first[2]) - last[2];
+        totals.closed_24 = cz * cz + cy * cy + cx * cx < 1.0;   // 007AF297
+    }
     totals.running_1c = 0.0f;                              // 007AF2BE
     for (std::size_t i = 0; i < n; ++i) {
         CameraPathKnotWords& k = knots[i];
@@ -628,9 +642,17 @@ CameraPathKnotTotals derive_camera_path_knots_007af150(
         const float dx = to[0] - k[0];                     // 007AF56D
         const float dy = to[1] - k[1];
         const float dz = to[2] - k[2];
-        const float d2 = static_cast<float>(
-            (static_cast<double>(dy) * dy + static_cast<double>(dx) * dx)
-            + static_cast<double>(dz) * dz);               // 007AF5A5
+        float d2;
+        if constexpr (kPc24CameraCc13Bound) {
+            // 007AF589..007AF5A5: dx * dx, dy * dy, FADDP, dz * dz, FADDP, FSTP.
+            d2 = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_add24(cc13x87::x87_mul24(dy, dy), cc13x87::x87_mul24(dx, dx)),
+                cc13x87::x87_mul24(dz, dz)));
+        } else {
+            d2 = static_cast<float>(
+                (static_cast<double>(dy) * dy + static_cast<double>(dx) * dx)
+                + static_cast<double>(dz) * dz);               // 007AF5A5
+        }
         const float duration = static_cast<double>(d2) > 1e-10   // 00CE3820
             ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
         k[7] = duration;                                   // 007AF5FB +1C
