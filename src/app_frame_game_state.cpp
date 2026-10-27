@@ -110,6 +110,7 @@ int profiler_end_frame_00be34d0(ProfilerCounters& profiler, const int& static_sl
         // 24-bit significand before the float store.
         float seconds;
         if constexpr (kPc24AppFrameCc13Bound) {
+            // The int64 ticks convert to double exactly below 2^53, as FILD qword does.
             seconds = static_cast<float>(cc13x87::x87_div24(
                 static_cast<double>(record->accumulated_ticks), tick_scale));
         } else {

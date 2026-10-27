@@ -9,7 +9,11 @@ namespace bsp {
 
 // AI planners: src/ai_close_attack_tick.cpp (00A13B60), src/ai_command_tick.cpp (00A14DD0,
 // 004F2F40, 00A11690), src/ai_planner_tails.cpp (009FFC10), src/ai_target_weights.cpp
-// (009FE200, 00A08460).
+// (009FE200, 00A08460). Besides the rounding, ON in 00A13B60 takes two non-rounding edge
+// cases from the image: the collection walk drops a candidate at exactly d2 == collect^2
+// (JBE at 00A13C81, no root), and the scoring distance is 0 unless d2 > 1e-10 [00CE3820].
+// Untouched same-address copies (not under this switch): 00A13B60 in
+// src/gameplay_seg69_70_cc13.cpp and 004F2F40 in src/avoid_zone_polygon_partition.cpp.
 inline constexpr bool kPc24AiPlannersCc13Bound = false;
 
 // Application frame: src/app_frame_game_state.cpp (00BE34D0 profiler end frame).
