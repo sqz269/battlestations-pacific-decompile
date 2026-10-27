@@ -601,8 +601,9 @@ struct GameUnitSlot {
     // heading and bank untouched when the forward axis is near vertical.
     float plane_pitch_angle_c64{0.0f};
     // unit+C7Ch, the world velocity's elevation (007C1C4B..007C1CA8), written only
-    // under kUnitsHostDeviationsCc13Bound; kept when |v| <= 0.1. Starts at 0
-    // (the constructor's value was not read; labelled).
+    // under kUnitsHostDeviationsCc13Bound by refresh_attitude_007c1900 (all three
+    // of its host callers); kept when |v| <= 0.1. Starts at 0 (the constructor's
+    // value was not read; labelled).
     float plane_velocity_elevation_c7c{0.0f};
     // Packet cc9_torpedo_run_pitch_profile: the measured angle the last pitch
     // demand used (diagnostic).
@@ -13522,9 +13523,13 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     // (docs/FIGHTER_GUN_LEAD.md). So the velocity's elevation is the term.
     float pitch = 0.0f;
     if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
-        // cc13-unitsdev: the image reads unit+C7Ch, which 007C1900 (host
-        // refresh_attitude_007c1900, earlier in the same step) writes only when
-        // |v| > 0.1 and otherwise leaves at its previous value.
+        // cc13-unitsdev: the image reads unit+C7Ch, which 007C18B0/007C1900
+        // writes only when |v| > 0.1 (otherwise it keeps its value). In the
+        // image that write is at 007CEE9C, after the think (007CE865) and the
+        // motion, so think sees the previous step's C7C. The host's
+        // refresh_attitude_007c1900 runs before pilot_think_and_commit in each
+        // of its three arms (free flight, ground roll/deck, surface), from the
+        // velocity the previous step's motion left, so it holds the same value.
         pitch = u.plane_velocity_elevation_c7c;
     } else {
         const double horiz = std::sqrt(static_cast<double>(v_world[0]) * v_world[0] +
@@ -13573,21 +13578,6 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     };
     float tr_fy = 0.0f, tr_wa = -1.0f, tr_wb = -1.0f, tr_w = -1.0f;   // DIAGNOSTIC
 
-    // cc13-unitsdev: 00419510 in place on pass 1's direction, as 0099FBED (inverted)
-    // and 0099FCA0 (after the (1 - w) store, w > 0 only) call it with ECX = EDX = f.
-    // 00419440's length at PC24 ((x*x + y*y) + z*z, the squares and sum stored),
-    // 1/len when len > 0 else +0, then f[i] * that stored.
-    auto normalize_f_00419510 = [](float f[3]) {
-        using namespace bsp::cc13x87;
-        const float xx = static_cast<float>(x87_mul24(f[0], f[0]));
-        const float yy = static_cast<float>(x87_mul24(f[1], f[1]));
-        const float zz = static_cast<float>(x87_mul24(f[2], f[2]));
-        const float len = static_cast<float>(
-            x87_sqrt24(static_cast<float>(x87_add24(x87_add24(xx, yy), zz))));
-        float inv = 0.0f;
-        if (len > 0.0f) inv = static_cast<float>(x87_div24(1.0, len));
-        for (int i = 0; i < 3; ++i) f[i] = static_cast<float>(x87_mul24(f[i], inv));
-    };
     float p0[3]{}, a[3]{}, mid[3]{}, b[3]{};
     float c0 = 0.1f;
     float r = 0.0f;
@@ -13629,20 +13619,14 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
             if (inverted) {
                 const float k = static_cast<float>(std::cos(bank_f) * std::cos(pitch) * 0.15);   // double [00CE6618]
                 for (int i = 0; i < 3; ++i) f[i] = k * up[i] + f[i];
-                if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
-                    normalize_f_00419510(f);                         // 0099FBED
-                }
+                // 0099FBED (and 0099FCA0 below) call 00419510 with EDX = f but
+                // ECX = an unused temporary ([ESP+468h] / [ESP+45Ch]); f is not
+                // normalized and 0099FCA9 reads it as is (cc13-unitsdev, rev9).
             } else if (pitch < 0.0f) {
                 const float wa = avoid_interp(10.0f, 0.0f, 50.0f, 1.0f, h9b4);   // [00CEB4D4]
                 const float wb = avoid_interp(-0.4f, 0.0f, -0.15f, 1.0f, pitch); // [00D1F400]
                 const float w = wb * wa;
-                if (w > 0.0f) {
-                    // pc24-lint: allow unchanged pre-cc13-unitsdev line, only re-braced; its per-op rounding belongs to the PC24 lane
-                    f[1] = static_cast<float>((1.0 - w) * f[1]);
-                    if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
-                        normalize_f_00419510(f);                     // 0099FCA0
-                    }
-                }
+                if (w > 0.0f) f[1] = static_cast<float>((1.0 - w) * f[1]);
                 tr_wa = wa;                                          // DIAGNOSTIC
                 tr_wb = wb;
                 tr_w = w;
