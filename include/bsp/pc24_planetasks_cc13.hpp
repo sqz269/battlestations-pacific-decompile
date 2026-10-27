@@ -28,6 +28,13 @@ namespace bsp {
 //     009B5C80 level_bomb_aim_tick and 009B6670 level_bomb_prepare_tick
 //              (plane_level_bomb_task.cpp); dogfight_task.cpp stays under
 //              kDogfightPc24Cc13Bound / kFollowWaitFloatHelpersCc13Bound
+//   pc24w1-sweep3-7 (sites listed atop each .cpp):
+//     009FC260 (leg_altitude_manager_cc13.cpp), 00414C60 and 009BD150
+//     (moveonpath_task_cc13.cpp), 007BB6E0 (pilot_plan_slots.cpp), 0099D0A0
+//     and 0099D300's 0099E490/0099D756/0099E344 (plane_ai_control.cpp),
+//     007F23A0 (plane_formation.cpp; its game_hosts_units.cpp copy is
+//     pc24w1-sweep3-5's), 00809E10 (rocket_task_cc13.cpp), 0080A000's
+//     0080A024/0080A15B (rocket_homing_cc13.cpp)
 //   Other copies of the same image routines are narrowed by their own
 //   packets, not here: 0042B2F0 in plane_wanderer.cpp (pc24w1-sweep3-4) and
 //   game_hosts_units.cpp avoid_len (pc24w1-sweep3-5); 009AC190's bearing in

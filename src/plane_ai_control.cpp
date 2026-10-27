@@ -3,8 +3,15 @@
 #include <cmath>
 
 #include "bsp/unit_rudder.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
 
 #include <cstring>
+
+// kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-7): the pitch floor of
+// pilot_pitch_demand_0099e490 (0099E4D8-0099E4E4), the turn-rate sums of
+// pilot_heading_diff_0099d0a0 (0099D27D-0099D2AB), pilot_speed_corr_decay_0099d756
+// (0099D777-0099D787) and pilot_roll_servo_limit_0099e344 (0099E355-0099E35F).
 
 // Reconstruction of the plane AI's control-writing step. docs/PLANE_AI_CONTROL.md carries the
 // evidence, the writer census and the coverage table; every name is a hypothesis, not a
@@ -366,8 +373,17 @@ PilotBotPitchResult pilot_pitch_demand_0099e490(const PilotBotPitchInputs& in) {
     // this block was re-read by agent/cc8-dive-bomb at 8647b8c02 and the shape
     // below - an absolute built by FSUBP, then FCOMIP/JBE taking the larger -
     // is confirmed. Only the sentence was wrong.
-    const float floor_target = in.pitch_turn_max_pitch -
-        static_cast<float>(2.5 * (1.0 - static_cast<double>(q)));
+    float floor_target;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 0099E4D8-0099E4E4: DE EA FSUBP ST2 1 - q (the FLD1 of 0099E4A4), DC 0D FMUL
+        // 2.5 ([00CE3DE0]), DE E9 FSUBP max - that, each rounded to PC24.
+        floor_target = static_cast<float>(cc13x87::x87_sub24(
+            in.pitch_turn_max_pitch,
+            cc13x87::x87_mul24(cc13x87::x87_sub24(1.0, q), 2.5)));
+    } else {
+        floor_target = in.pitch_turn_max_pitch -
+            static_cast<float>(2.5 * (1.0 - static_cast<double>(q)));
+    }
     out.floored_target = (floor_target > in.pitch_target) ? floor_target : in.pitch_target;
 
     // 0099E51A-0099E554. The measured angle has a sideslip correction taken off
@@ -394,6 +410,7 @@ PilotBotPitchResult pilot_pitch_demand_0099e490(const PilotBotPitchInputs& in) {
         out.demand = n / d;
     } else {
         const float sign = (cos_bank > 0.0f) ? 1.0f : ((cos_bank < 0.0f) ? -1.0f : 0.0f);
+        // pc24-lint: allow n * 100.0 is exact in double and sign is 0 or +-1, so one rounding (0099E67B-0099E689)
         out.demand = static_cast<float>(static_cast<double>(n) * 100.0 *
                                         static_cast<double>(sign));
     }
@@ -453,13 +470,25 @@ float pilot_heading_diff_0099d0a0(const PilotHeadingDiffInputs& in) {
     const float cos_bank = std::cos(clamped);
     float turn_rate = in.turn_roll_spd * cos_pitch;
     turn_rate += in.pitch_spd * pitch_command;
-    turn_rate += in.yaw_spd * in.slide_ratio * cos_pitch * cos_bank;
     // 00CE3D40 is 3FE99999A0000000h - the exact widening of the FLOAT 0.8f, not
     // the nearest double to 0.8. Same for the 0.1 threshold above (00D7A3A0).
     // Writing the decimal literal loses bit-identity.
-    turn_rate = static_cast<float>(static_cast<double>(turn_rate) +
-                                   static_cast<double>(0.8f) *
-                                       static_cast<double>(in.yaw_spd));
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 0099D27D-0099D295: ((cos_pitch * cos_bank) * SlideRatio [+1B8h]) * YawSpd
+        // [+1B0h], DE CA / DE CA / DE CB FMULP, then DE C2 FADDP, each PC24, stored
+        // to float; 0099D2A3-0099D2AB: DC 0D FMUL 0.8f, DE C1 FADDP, PC24.
+        const double side = cc13x87::x87_mul24(
+            cc13x87::x87_mul24(cc13x87::x87_mul24(cos_pitch, cos_bank), in.slide_ratio),
+            in.yaw_spd);
+        turn_rate = static_cast<float>(cc13x87::x87_add24(turn_rate, side));
+        turn_rate = static_cast<float>(cc13x87::x87_add24(
+            turn_rate, cc13x87::x87_mul24(in.yaw_spd, static_cast<double>(0.8f))));
+    } else {
+        turn_rate += in.yaw_spd * in.slide_ratio * cos_pitch * cos_bank;
+        turn_rate = static_cast<float>(static_cast<double>(turn_rate) +
+                                       static_cast<double>(0.8f) *
+                                           static_cast<double>(in.yaw_spd));
+    }
 
     // 0099D2AF-0099D2BD, then the sign from the ORIGINAL argument at 0099D244.
     const float sweep = turn_rate * std::sin(clamped) * roll_out_time;
@@ -719,8 +748,15 @@ float pilot_speed_corr_decay_0099d756(float scale_2b8, float mul_decay, float dt
     // 0099D766 COMISS against 1.0 (XMM3) and 0099D775 JBE: only a value above 1.0 decays.
     if (!(scale_2b8 > 1.0f)) return scale_2b8;
     // 0099D777-0099D787: FLD +2B8h, FLD [EBX+B8h], FMUL [ESP+6Ch], FSUBP, FSTP float.
-    const float v = static_cast<float>(static_cast<double>(scale_2b8)
-        - static_cast<double>(mul_decay) * static_cast<double>(dt));
+    float v;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // D8 4C FMUL, DE E9 FSUBP (scale - product), each rounded to PC24.
+        v = static_cast<float>(
+            cc13x87::x87_sub24(scale_2b8, cc13x87::x87_mul24(mul_decay, dt)));
+    } else {
+        v = static_cast<float>(static_cast<double>(scale_2b8)
+            - static_cast<double>(mul_decay) * static_cast<double>(dt));
+    }
     // 0099D794 FCOMI 1.0 against it, 0099D798 JBE keeps it; below 1.0 stores 1.0.
     return 1.0f <= v ? v : 1.0f;
 }
@@ -738,8 +774,15 @@ float pilot_roll_servo_limit_0099e344(float roll_spd_1a8, float roll_accel_1bc,
                                       float waggle_limit) {
     // 0099E344-0099E35F: FLD +1A8h, FLD ST0, FDIV +1BCh, FDIV [EBX], FSTP float;
     // 0099E363 FMUL by the +1A8h left on the stack, 0099E367 FSTP float.
-    const float q = static_cast<float>(static_cast<double>(roll_spd_1a8)
-        / static_cast<double>(roll_accel_1bc) / static_cast<double>(waggle_limit));
+    float q;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 0099E357/0099E35D: the two FDIVs each round to PC24.
+        q = static_cast<float>(cc13x87::x87_div24(
+            cc13x87::x87_div24(roll_spd_1a8, roll_accel_1bc), waggle_limit));
+    } else {
+        q = static_cast<float>(static_cast<double>(roll_spd_1a8)
+            / static_cast<double>(roll_accel_1bc) / static_cast<double>(waggle_limit));
+    }
     return static_cast<float>(static_cast<double>(roll_spd_1a8) * static_cast<double>(q));
 }
 
