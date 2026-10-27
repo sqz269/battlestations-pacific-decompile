@@ -61,6 +61,8 @@
 #include "bsp/dive_bomb_goaway_turn.hpp"
 #include "bsp/move_to_glide.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
+#include "bsp/torpedo_run_time_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/torpedo_goaway_tick.hpp"
 #include "bsp/plane_fly_to_solver.hpp"
 #include "bsp/cc13_seg68.hpp"
@@ -10969,9 +10971,20 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         const float vy = slot.motion.linear_velocity.y;
         const float vz = slot.motion.linear_velocity.z;
         bsp::TorpedoRunTimeInputs in;
+        if constexpr (bsp::kTorpedoRunTimeAxisSpeedCc13Bound) {
+            // 009D138C CALL [vtable+38h] = 0092D730: velocity . body axis, as
+            // (vy*ay + vx*ax) + vz*az (0092D74E..0092D763: D8 4E FMUL, DE C1 FADDP),
+            // each op PC24, stored to float at 0092D765.
+            const auto& a = slot.motion.pose_row2;   // 00C32000 body+8, +18h..+20h
+            in.unit_speed = static_cast<float>(bsp::cc13x87::x87_add24(
+                bsp::cc13x87::x87_add24(bsp::cc13x87::x87_mul24(vy, a[1]),
+                                        bsp::cc13x87::x87_mul24(vx, a[0])),
+                bsp::cc13x87::x87_mul24(vz, a[2])));
+        } else {
         // 009D138C unit->vtable[38h], the speed unit_speed_vtable38 takes.
         in.unit_speed = static_cast<float>(std::sqrt(static_cast<double>(vx) * vx +
             static_cast<double>(vy) * vy + static_cast<double>(vz) * vz));
+        }
         // 009D137D FLD [EDI+100h], the altitude, then 007BCC80 at 009D139D.
         in.fall_time = bsp::weapon_fall_time_007bcc80(slot.motion.position[1], vy);
         in.run_speed = torpedo_device_min_007bce20(slot, true);    // 009D13BF
