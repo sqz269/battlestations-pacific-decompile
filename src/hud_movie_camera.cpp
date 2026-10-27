@@ -13,7 +13,9 @@ void movie_camera_fixed_driver_00790390(float& accumulator, bool enabled, float 
 }
 }
 
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/mission_camera.hpp"
+#include "bsp/pc24_camera_cc13.hpp"
 #include "bsp/plane_advance_pose.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/ship_ai_switch_reach.hpp"
@@ -149,7 +151,13 @@ void evaluate_position_00795650(MovieKeyframe& k, MovieCameraParentHost& host) {
             ship = true;                              // 007956B6
             Mat16 w{};
             host.world(parent, w);
-            offset[1] = static_cast<float>(w[13] - host.class_height_a8(parent) * kHalf);
+            if constexpr (kPc24CameraCc13Bound) {
+                // 007956EB..007956FC: FLD w13, FLD height, FMUL qword 0.5, FSUBP, FSTP.
+                offset[1] = static_cast<float>(cc13x87::x87_sub24(
+                    w[13], cc13x87::x87_mul24(host.class_height_a8(parent), kHalf)));
+            } else {
+                offset[1] = static_cast<float>(w[13] - host.class_height_a8(parent) * kHalf);
+            }
         } else if (host.is_kind(parent, 0x0f)) {
             plane = true;                             // 0079571B 0078FCC0
             offset = host.plane_velocity_810(parent);
@@ -398,10 +406,19 @@ void evaluate_00798130(MovieTrack& track, HudMovieCamera& camera,
                         up[s][c] = ua + ub;
                     }
                 }
-                zoom[s] = static_cast<float>(static_cast<double>(k.zoom_c8) * w
-                    + static_cast<double>(zoom[s]) * u);
-                window[s] = static_cast<float>(static_cast<double>(k.smooth_d0) * w
-                    + static_cast<double>(window[s]) * u);
+                if constexpr (kPc24CameraCc13Bound) {
+                    // 007987C6..007987E7: zoom_c8 * w, zoom * u, FADDP, FSTP.
+                    zoom[s] = static_cast<float>(cc13x87::x87_add24(
+                        cc13x87::x87_mul24(k.zoom_c8, w), cc13x87::x87_mul24(zoom[s], u)));
+                    // 007987F9..0079881E: w * smooth_d0, u * window, FADDP, FSTP.
+                    window[s] = static_cast<float>(cc13x87::x87_add24(
+                        cc13x87::x87_mul24(k.smooth_d0, w), cc13x87::x87_mul24(window[s], u)));
+                } else {
+                    zoom[s] = static_cast<float>(static_cast<double>(k.zoom_c8) * w
+                        + static_cast<double>(zoom[s]) * u);
+                    window[s] = static_cast<float>(static_cast<double>(k.smooth_d0) * w
+                        + static_cast<double>(window[s]) * u);
+                }
             }
             fresh[s] = false;
         }
@@ -418,8 +435,15 @@ void evaluate_00798130(MovieTrack& track, HudMovieCamera& camera,
                 const float xx = up[a][0] * up[a][0];
                 const float yy = up[a][1] * up[a][1];
                 const float zz = up[a][2] * up[a][2];
-                const float len = static_cast<float>(std::sqrt(
-                    static_cast<float>(static_cast<double>(xx) + yy + zz)));
+                float len;
+                if constexpr (kPc24CameraCc13Bound) {
+                    // 00798AAD..00798AB9: FADDP xx + yy kept on the stack, + zz, FSTP.
+                    len = static_cast<float>(std::sqrt(static_cast<float>(
+                        cc13x87::x87_add24(cc13x87::x87_add24(xx, yy), zz))));
+                } else {
+                    len = static_cast<float>(std::sqrt(
+                        static_cast<float>(static_cast<double>(xx) + yy + zz)));
+                }
                 const float inv = len > 0.0f ? 1.0f / len : 0.0f;
                 for (int c = 0; c < 3; ++c) up[a][static_cast<std::size_t>(c)] *= inv;
                 zoom[a] = static_cast<float>((zoom[a + 1] + zoom[a]) * kHalf);
@@ -693,8 +717,16 @@ bool movie_camera_update_0079a3b0(HudMovieCamera& camera, MovieCameraParentHost&
     for (int i = 0; i < 3; ++i) {
         f[static_cast<std::size_t>(i)] = target[static_cast<std::size_t>(i)] - pos[static_cast<std::size_t>(i)];
     }
-    const float len2 = static_cast<float>(static_cast<double>(f[0]) * f[0]
-        + static_cast<double>(f[1]) * f[1] + static_cast<double>(f[2]) * f[2]);
+    float len2;
+    if constexpr (kPc24CameraCc13Bound) {
+        // 0079B6FA..0079B70C: f0 * f0, f1 * f1, FADDP, f2 * f2, FADDP, FSTP.
+        len2 = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_add24(cc13x87::x87_mul24(f[0], f[0]), cc13x87::x87_mul24(f[1], f[1])),
+            cc13x87::x87_mul24(f[2], f[2])));
+    } else {
+        len2 = static_cast<float>(static_cast<double>(f[0]) * f[0]
+            + static_cast<double>(f[1]) * f[1] + static_cast<double>(f[2]) * f[2]);
+    }
     if (kForwardFloorSq > len2) {                        // 0079B71A
         f = {0.0f, 0.0f, 1.0f};
     } else {                                             // 0079B73B 00419510

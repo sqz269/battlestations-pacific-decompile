@@ -1,5 +1,7 @@
 #include "bsp/ai_command_tick.hpp"
 #include "bsp/gameplay_seg69_70_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_misc_cc13.hpp"
 #include <array>
 #include <cmath>
 #include <vector>
@@ -485,8 +487,18 @@ AiCautiousRouteResult ai_cautious_approach_pass_00a14dd0(AiCommandTickHost& host
     const float angle = -0.0f - kCautiousRouteTurn;
     const double c = static_cast<float>(std::cos(static_cast<double>(angle)));
     const double s = static_cast<float>(std::sin(static_cast<double>(angle)));
-    const float turned[3] = {static_cast<float>(d[0] * c + d[2] * s), d[1],
-                             static_cast<float>(-(d[0] * s) + d[2] * c)};
+    float turned[3] = {0.0f, d[1], 0.0f};
+    if constexpr (kPc24AiPlannersCc13Bound) {
+        // 00B62D10 under 00439820, per op: (y*m10 + x*m00) + z*m20 + w*m30, each FMUL and
+        // FADDP rounded. The y row and the translation are zero and w' = 1, so only the
+        // x and z products and their sum move.
+        using namespace cc13x87;
+        turned[0] = static_cast<float>(x87_add24(x87_mul24(d[0], c), x87_mul24(d[2], s)));
+        turned[2] = static_cast<float>(x87_add24(x87_mul24(d[0], -s), x87_mul24(d[2], c)));
+    } else {
+        turned[0] = static_cast<float>(d[0] * c + d[2] * s);
+        turned[2] = static_cast<float>(-(d[0] * s) + d[2] * c);
+    }
     // 00A14FBC..00A1500D: times the double 0.3.
     const float off[3] = {static_cast<float>(turned[0] * kCautiousRouteOffset),
                           static_cast<float>(turned[1] * kCautiousRouteOffset),
@@ -543,11 +555,22 @@ namespace {
 void normalize2_004f2f40(float v[2]) noexcept {
     const float x = v[0];
     const float y = v[1];
-    const float len2 = static_cast<float>(static_cast<double>(x) * x
-                                          + static_cast<double>(y) * y);
-    const float len = static_cast<double>(len2) > kWedgeNormalizeCutoff
-        ? static_cast<float>(std::sqrt(static_cast<double>(len2)))
-        : static_cast<float>(kWedgeNormalizeShort);
+    float len = 0.0f;
+    if constexpr (kPc24AiPlannersCc13Bound) {
+        // 004F2F5B FMUL ST0 (x*x), 004F2F5F FMULP ST2 (y*y), 004F2F61 FADDP, each rounded;
+        // 00BF7030 FSQRT rounds once to 24 bits.
+        using namespace cc13x87;
+        const float len2 = static_cast<float>(x87_add24(x87_mul24(x, x), x87_mul24(y, y)));
+        len = static_cast<double>(len2) > kWedgeNormalizeCutoff
+            ? static_cast<float>(x87_sqrt24(len2))
+            : static_cast<float>(kWedgeNormalizeShort);
+    } else {
+        const float len2 = static_cast<float>(static_cast<double>(x) * x
+                                              + static_cast<double>(y) * y);
+        len = static_cast<double>(len2) > kWedgeNormalizeCutoff
+            ? static_cast<float>(std::sqrt(static_cast<double>(len2)))
+            : static_cast<float>(kWedgeNormalizeShort);
+    }
     v[0] = static_cast<float>(static_cast<double>(x) / len);
     v[1] = static_cast<float>(static_cast<double>(y) / len);
 }
@@ -624,8 +647,16 @@ AiCautiousWedgeResult ai_formation_wedge_00a11690(AiCommandTickHost& host, void*
     {
         const double c = static_cast<float>(std::cos(static_cast<double>(a)));
         const double s = static_cast<float>(std::sin(static_cast<double>(a)));
-        out.frame_u[0] = static_cast<float>(s * d1 + c * d0);   // 00A11782
-        out.frame_u[1] = static_cast<float>(c * d1 - s * d0);   // 00A117B8
+        if constexpr (kPc24AiPlannersCc13Bound) {
+            // 00A11774/00A1177C FMULs and 00A11780 FADDP; 00A117AA/00A117B2 FMULs and
+            // 00A117B6 FSUBP (DE E9); each op rounded.
+            using namespace cc13x87;
+            out.frame_u[0] = static_cast<float>(x87_add24(x87_mul24(s, d1), x87_mul24(c, d0)));
+            out.frame_u[1] = static_cast<float>(x87_sub24(x87_mul24(c, d1), x87_mul24(s, d0)));
+        } else {
+            out.frame_u[0] = static_cast<float>(s * d1 + c * d0);   // 00A11782
+            out.frame_u[1] = static_cast<float>(c * d1 - s * d0);   // 00A117B8
+        }
         normalize2_004f2f40(out.frame_u);                        // 00A117BC
     }
     // 00A117C1..00A11837: the same with a + pi/2, stored as binary32 first.
@@ -633,8 +664,15 @@ AiCautiousWedgeResult ai_formation_wedge_00a11690(AiCommandTickHost& host, void*
         const float a2 = static_cast<float>(static_cast<double>(a) + kWedgeQuarterTurn);
         const double c = static_cast<float>(std::cos(static_cast<double>(a2)));
         const double s = static_cast<float>(std::sin(static_cast<double>(a2)));
-        out.frame_v[0] = static_cast<float>(s * d1 + c * d0);   // 00A117FD
-        out.frame_v[1] = static_cast<float>(c * d1 - s * d0);   // 00A11833
+        if constexpr (kPc24AiPlannersCc13Bound) {
+            // 00A117EF..00A117FB and 00A11825..00A11831 (FSUBP DE E9), each op rounded.
+            using namespace cc13x87;
+            out.frame_v[0] = static_cast<float>(x87_add24(x87_mul24(s, d1), x87_mul24(c, d0)));
+            out.frame_v[1] = static_cast<float>(x87_sub24(x87_mul24(c, d1), x87_mul24(s, d0)));
+        } else {
+            out.frame_v[0] = static_cast<float>(s * d1 + c * d0);   // 00A117FD
+            out.frame_v[1] = static_cast<float>(c * d1 - s * d0);   // 00A11833
+        }
         normalize2_004f2f40(out.frame_v);                        // 00A11837
     }
     // 00A1183C..00A1185A: FLDZ, FCOMIP against v[1], JBE skips, so a
