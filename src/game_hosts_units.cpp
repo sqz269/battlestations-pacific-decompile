@@ -9972,7 +9972,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             static_cast<double>(p[2]) - (direction ? 0.0 : m[14])};
         for (int r = 0; r < 3; ++r) {
             const float* row = m + 4 * r;
-            // pc24-lint: allow SUBSTITUTION (pc24w1-sweep3-5): 004142E0 multiplies by the stored inverse at unit+110h, which this host does not keep; no image chain here to round per op
+            // pc24-lint: allow SUBSTITUTION (pc24w1-sweep3-5): 004142E0 multiplies by a stored inverse (unit+110h, written via 00B63D50, 00B632D0 or 00414E10), which this host does not keep; no image chain here to round per op
             const double n = std::sqrt(static_cast<double>(row[0]) * row[0] +
                                        static_cast<double>(row[1]) * row[1] +
                                        static_cast<double>(row[2]) * row[2]);
@@ -13386,10 +13386,12 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
     if (1.0f > g) {
         if constexpr (kPc24PlaneTasksCc13Bound) {
             // pc24w1-sweep3-5: 0099CB3B..0099CB47 and 0099CB51..0099CB55, each op
-            // rounded at PC24 against the double 1.1.
+            // rounded at PC24 against the qword [00CE3DF0] = 1.100000023841858 (float 1.1
+            // widened).
             namespace pc24 = bsp::cc13x87;
-            lo = static_cast<float>(pc24::x87_add24(pc24::x87_mul24(pc24::x87_sub24(lo, 1.1), g), 1.1));
-            hi = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(pc24::x87_add24(hi, 1.1), g), 1.1));
+            constexpr double kFade = 1.100000023841858;   // [00CE3DF0]
+            lo = static_cast<float>(pc24::x87_add24(pc24::x87_mul24(pc24::x87_sub24(lo, kFade), g), kFade));
+            hi = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(pc24::x87_add24(hi, kFade), g), kFade));
         } else {
         lo = static_cast<float>((static_cast<double>(lo) - 1.1) * g + 1.1);     // double [00CE3DF0]
         hi = static_cast<float>((static_cast<double>(hi) + 1.1) * g - 1.1);
@@ -13433,7 +13435,8 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
                         // rounded at PC24.
                         namespace pc24 = bsp::cc13x87;
                         const float s = static_cast<float>(std::sin(static_cast<double>(ab)));
-                        const double a = pc24::x87_mul24(pc24::x87_sub24(m, 0.4), s);
+                        // [00CE65D0] is float 0.4 widened.
+                        const double a = pc24::x87_mul24(pc24::x87_sub24(m, 0.4000000059604645), s);
                         v = static_cast<float>(pc24::x87_add24(a + a, 1.0));
                     } else {
                     v = static_cast<float>(
@@ -13757,7 +13760,7 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
                     // pc24w1-sweep3-5: both FCOS results stored through float, then
                     // 0099FB75 FMUL and 0099FB80 FMUL 0.15, each rounded at PC24.
                     k = static_cast<float>(bsp::cc13x87::x87_mul24(
-                        bsp::cc13x87::x87_mul24(std::cos(pitch), std::cos(bank_f)), 0.15));
+                        bsp::cc13x87::x87_mul24(std::cos(pitch), std::cos(bank_f)), 0.15000000596046448));   // [00CE6618]
                 } else {
                 k = static_cast<float>(std::cos(bank_f) * std::cos(pitch) * 0.15);   // double [00CE6618]
                 }
