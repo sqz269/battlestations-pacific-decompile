@@ -61,6 +61,12 @@ namespace bsp {
 //     006BEE40 carrier holder: the 0042D0D0 offset rows
 //     Not narrowed: 004142E0 follow_to_body (a substitution; the image uses
 //     the stored inverse at unit+110h)
+//   pc24w1-sweep3-6 (game_hosts_units.cpp air ops; sites listed at each body):
+//     006CDF70 landing blocks width * 0.8 + half width; 007C5AC0 site timer;
+//     006CFE90 elevator nose distance; 006D0390 elevator lane top and bound;
+//     007C5F60 launch-spot slide (006CF730's chain); 006C3B10 corridor zp,
+//     ceiling and overshoot; 006C3E50 landing radius (with 007C6760's mix);
+//     006C6020 landing path length; 006C3F80 landing spacing floor, sum and x
 //   Other copies of the same image routines are narrowed by their own
 //   packets, not here: 0042B2F0 in plane_wanderer.cpp (pc24w1-sweep3-4) and
 //   game_hosts_units.cpp avoid_len (pc24w1-sweep3-5); 009AC190's bearing in
@@ -76,7 +82,8 @@ namespace bsp {
 // bearing, the flyabove dive reference and roll-in latch, and the
 // formation-follow steer point (attack release points); from sweep3-4, the
 // wanderer drift, retreat target and countdown and tight-turn limit; from sweep3-5, the
-// leader turn rate, vehicle and terrain avoidance and carrier holder offsets.
+// leader turn rate, vehicle and terrain avoidance and carrier holder offsets;
+// from sweep3-6, carrier landing approach, spacing and launch-spot placement.
 inline constexpr bool kPc24PlaneTasksCc13Bound = false;
 
 }  // namespace bsp
