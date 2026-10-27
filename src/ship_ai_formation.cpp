@@ -477,7 +477,8 @@ bool ship_ai_follow_update_formation_point(ShipAiFollowFormationPointHost& host,
             // 0041928A FADD -> FSTP float, 00419296 sqrt (00BF7030) -> FSTP float,
             // then 004192B3 FUCOMIP against zero returns 0 or 004192C7 1/len.
             // 009DF576 FSTPs that to a float; 009DF580/009DF588 FMUL dx/dz -> FSTP
-            // float with no length gate, so a zero-length rederive writes zeros.
+            // float with no length gate, so a zero-length rederive writes zeros, or
+            // NaN when dx or dz is NaN (OFF skips the store in both cases).
             using namespace cc13x87;
             const float dx_sq = static_cast<float>(x87_mul24(dx, dx));
             const float dz_sq = static_cast<float>(x87_mul24(dz, dz));
