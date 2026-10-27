@@ -70,6 +70,7 @@
 #include "bsp/cc13_seg67n_switches.hpp"   // packet cc13-seg67n3 (009FAAD0 per install)
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
+#include "bsp/units_host_deviations_cc13.hpp"  // packet cc13-unitsdev
 #include "bsp/cc13_release_timer.hpp"            // packet cc13-reltimer (009FA3A0 stubs)
 #include "bsp/band_0099_cc13.hpp"                // 009D49E0 / 009C8290 (cc13-reltimer2)
 #include "bsp/torpedo_issue_timing.hpp"
@@ -597,6 +598,10 @@ struct GameUnitSlot {
     // live pose. Slot state rather than locals because the native leaves the
     // heading and bank untouched when the forward axis is near vertical.
     float plane_pitch_angle_c64{0.0f};
+    // unit+C7Ch, the world velocity's elevation (007C1C4B..007C1CA8), written only
+    // under kUnitsHostDeviationsCc13Bound; kept when |v| <= 0.1. Starts at 0
+    // (the constructor's value was not read; labelled).
+    float plane_velocity_elevation_c7c{0.0f};
     // Packet cc9_torpedo_run_pitch_profile: the measured angle the last pitch
     // demand used (diagnostic).
     float diag_held_pitch{0.0f};
@@ -13457,11 +13462,19 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     // unit+C7Ch: the elevation of the vector at unit+AC8h (007C1CA8), and
     // unit+AC8h is the world velocity vtable[34h] 007BBB70 returns
     // (docs/FIGHTER_GUN_LEAD.md). So the velocity's elevation is the term.
-    const double horiz = std::sqrt(static_cast<double>(v_world[0]) * v_world[0] +
-                                   static_cast<double>(v_world[2]) * v_world[2]);
-    const float pitch = avoid_len(v_world) > 1.0f
-        ? static_cast<float>(std::atan2(static_cast<double>(v_world[1]), horiz))
-        : u.plane_pitch_angle_c64;
+    float pitch = 0.0f;
+    if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+        // cc13-unitsdev: the image reads unit+C7Ch, which 007C1900 (host
+        // refresh_attitude_007c1900, earlier in the same step) writes only when
+        // |v| > 0.1 and otherwise leaves at its previous value.
+        pitch = u.plane_velocity_elevation_c7c;
+    } else {
+        const double horiz = std::sqrt(static_cast<double>(v_world[0]) * v_world[0] +
+                                       static_cast<double>(v_world[2]) * v_world[2]);
+        pitch = avoid_len(v_world) > 1.0f
+            ? static_cast<float>(std::atan2(static_cast<double>(v_world[1]), horiz))
+            : u.plane_pitch_angle_c64;
+    }
     const float bank = u.plane_bank_angle_c68;
     float bank_f = std::fabs(bank);
     if (static_cast<double>(bank_f) > 1.5707963705062866) {          // double [00CE3830]
@@ -13502,6 +13515,21 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     };
     float tr_fy = 0.0f, tr_wa = -1.0f, tr_wb = -1.0f, tr_w = -1.0f;   // DIAGNOSTIC
 
+    // cc13-unitsdev: 00419510 in place on pass 1's direction, as 0099FBED (inverted)
+    // and 0099FCA0 (after the (1 - w) store, w > 0 only) call it with ECX = EDX = f.
+    // 00419440's length at PC24 ((x*x + y*y) + z*z, the squares and sum stored),
+    // 1/len when len > 0 else +0, then f[i] * that stored.
+    auto normalize_f_00419510 = [](float f[3]) {
+        using namespace bsp::cc13x87;
+        const float xx = static_cast<float>(x87_mul24(f[0], f[0]));
+        const float yy = static_cast<float>(x87_mul24(f[1], f[1]));
+        const float zz = static_cast<float>(x87_mul24(f[2], f[2]));
+        const float len = static_cast<float>(
+            x87_sqrt24(static_cast<float>(x87_add24(x87_add24(xx, yy), zz))));
+        float inv = 0.0f;
+        if (len > 0.0f) inv = static_cast<float>(x87_div24(1.0, len));
+        for (int i = 0; i < 3; ++i) f[i] = static_cast<float>(x87_mul24(f[i], inv));
+    };
     float p0[3]{}, a[3]{}, mid[3]{}, b[3]{};
     float c0 = 0.1f;
     float r = 0.0f;
@@ -13528,7 +13556,14 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
             }
             const float h0 = avoid_surface_height(p0[0], p0[2]);
             c0 = static_cast<float>(p0[1] - (h0 + 10.0));
-            if (0.1 > c0) c0 = 0.1f;                                 // double [00D7A3A0]
+            if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+                // cc13-unitsdev: 0099FA91 FLD double [00D7A3A0] = 0.10000000149011612
+                // (0.1f widened), FCOMIP, JBE keeps c0; else [00D7A2F0] 0.1f. No float
+                // lies between 0.1 and 0.1f, so the two compares agree on every input.
+                if (0.10000000149011612 > c0) c0 = 0.1f;
+            } else {
+                if (0.1 > c0) c0 = 0.1f;                             // double [00D7A3A0]
+            }
         } else {                                                     // 0099FAB4-0099FF49
             float f[3] = {m[8], m[9], m[10]};
             float up[3];
@@ -13536,11 +13571,20 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
             if (inverted) {
                 const float k = static_cast<float>(std::cos(bank_f) * std::cos(pitch) * 0.15);   // double [00CE6618]
                 for (int i = 0; i < 3; ++i) f[i] = k * up[i] + f[i];
+                if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+                    normalize_f_00419510(f);                         // 0099FBED
+                }
             } else if (pitch < 0.0f) {
                 const float wa = avoid_interp(10.0f, 0.0f, 50.0f, 1.0f, h9b4);   // [00CEB4D4]
                 const float wb = avoid_interp(-0.4f, 0.0f, -0.15f, 1.0f, pitch); // [00D1F400]
                 const float w = wb * wa;
-                if (w > 0.0f) f[1] = static_cast<float>((1.0 - w) * f[1]);
+                if (w > 0.0f) {
+                    // pc24-lint: allow unchanged pre-cc13-unitsdev line, only re-braced; its per-op rounding belongs to the PC24 lane
+                    f[1] = static_cast<float>((1.0 - w) * f[1]);
+                    if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+                        normalize_f_00419510(f);                     // 0099FCA0
+                    }
+                }
                 tr_wa = wa;                                          // DIAGNOSTIC
                 tr_wb = wb;
                 tr_w = w;
@@ -36289,8 +36333,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             d2 = static_cast<double>(dx) * dx +
                                  static_cast<double>(dz) * dz;
                         }
-                        unit_.moveto_distance_64 = d2 <= 1e-6
-                            ? 0.0f : static_cast<float>(std::sqrt(d2));
+                        if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+                            // cc13-unitsdev: 009BEC41..009BEC4F FCOMI against 1e-10
+                            // [00CE3820], JBE (unordered too) stores 0 (009BEC64);
+                            // else 00BF7030 sqrt stored as a float (009BEC56).
+                            unit_.moveto_distance_64 = 0.0f;
+                            if (d2 > 1.0e-10) {
+                                unit_.moveto_distance_64 = static_cast<float>(std::sqrt(d2));
+                            }
+                        } else {
+                            unit_.moveto_distance_64 = d2 <= 1e-6
+                                ? 0.0f : static_cast<float>(std::sqrt(d2));
+                        }
                         owner_.record("BotApproach::refresh_path_leg_009fd050", 0x009fd050u);
                         if constexpr (bsp::kLegAltitudeManagerBound
                                       && GameUnitsHost::Impl::kMoveToLegAltitudeBound) {
@@ -40854,6 +40908,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (a.heading_and_bank_written) {
                             unit_.plane_heading_c6c = a.heading;
                             unit_.plane_bank_angle_c68 = a.bank;
+                        }
+                        if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+                            // cc13-unitsdev: 007C1BCD..007C1CA8, unit+C7Ch from the
+                            // world velocity +AC8h: |v| = sqrt((y*y + x*x) + z*z)
+                            // stored, 0 at or below 1e-10 [00CE3820]; only when
+                            // |v| > 0.1 [00D7A3A0] (FCOMPI/JBE at 007C1C55, unordered
+                            // keeps it too) the horizontal sqrt(z*z + x*x) (same
+                            // floor) and C7Ch = atan2(y, horizontal) (00BF701A),
+                            // stored as a float; otherwise C7Ch keeps its value.
+                            using namespace bsp::cc13x87;
+                            const float* const v = unit_.plane_world_velocity;
+                            const double xx = x87_mul24(v[0], v[0]);
+                            const double yy = x87_mul24(v[1], v[1]);
+                            const double zz = x87_mul24(v[2], v[2]);
+                            const float s3 = static_cast<float>(x87_add24(x87_add24(yy, xx), zz));
+                            float len3 = 0.0f;
+                            if (s3 > 1.0e-10) len3 = static_cast<float>(std::sqrt(static_cast<double>(s3)));
+                            if (len3 > 0.10000000149011612) {
+                                const float s2 = static_cast<float>(x87_add24(zz, xx));
+                                float horiz = 0.0f;
+                                if (s2 > 1.0e-10) horiz = static_cast<float>(std::sqrt(static_cast<double>(s2)));
+                                unit_.plane_velocity_elevation_c7c = static_cast<float>(
+                                    std::atan2(static_cast<double>(v[1]), static_cast<double>(horiz)));
+                            }
                         }
                         if constexpr (GameUnitsHost::Impl::kPlaneVelocityLowpassBound) {
                             // 007C1B85-007C1D05: only when |ctl+18h| > 0.1 (double
