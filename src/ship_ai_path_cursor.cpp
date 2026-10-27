@@ -191,9 +191,9 @@ ShipAiPathFollowStep ship_ai_path_follow_step_007add70(ShipAiPathCursor& cursor,
                     radius));
                 hit = cc13x87::x87_mul24(reach, reach) > dist_sq;
             } else {
-            const float reach = static_cast<float>(
-                ((1.0 - factor) * std::fabs(s) + factor) * static_cast<double>(radius));
-            hit = static_cast<double>(reach) * reach > dist_sq;
+                const float reach = static_cast<float>(
+                    ((1.0 - factor) * std::fabs(s) + factor) * static_cast<double>(radius));
+                hit = static_cast<double>(reach) * reach > dist_sq;
             }
             if (!hit) continue;
         }
