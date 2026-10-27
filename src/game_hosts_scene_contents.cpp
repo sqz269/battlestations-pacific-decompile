@@ -5203,7 +5203,10 @@ bool vsub_clip_00aebd20(float s[6], const float lo[2], const float hi[2]) noexce
 float vsub_slope(float x0, float z0, float y0, float x1, float z1, float y1) noexcept {
     const float dx = terrain_f32(static_cast<double>(x1) - x0);
     const float dz = terrain_f32(static_cast<double>(z1) - z0);
-    const double dy = static_cast<double>(y1) - y0;
+    // pc24w1-sweep1-6: the image stores y1 - y0 as a QWORD (00AEB844/00AEB847), so under
+    // PC24 it keeps the 24-bit rounded difference; the rest are single ops.
+    const double dy = kPc24FlightRenderCc13Bound ? pc24::x87_sub24(y1, y0)
+                                                 : static_cast<double>(y1) - y0;
     const float xx = terrain_f32(static_cast<double>(dx) * dx);
     const float zz = terrain_f32(static_cast<double>(dz) * dz);
     const float len = terrain_f32(std::sqrt(static_cast<double>(terrain_f32(static_cast<double>(xx) + zz))));
@@ -5243,9 +5246,20 @@ float vsub_ground_00aebde0(const VsubCellWalker& w, float x, float z) noexcept {
     const float s01 = vsub_sample(w, i, j1);
     const float s10 = vsub_sample(w, i1, j);
     const float s00 = vsub_sample(w, i, j);
-    const float a = terrain_f32(s00 + (static_cast<double>(s10) - s00) * fx);
-    const float b = terrain_f32(s01 + static_cast<double>(fx) * (static_cast<double>(s11) - s01));
-    return terrain_f32(a + (static_cast<double>(b) - a) * fz);
+    float result;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-6: a = s00 + (s10 - s00) * fx (00AEBED4..00AEBEEC), b = s01 +
+        // (s11 - s01) * fx (00AEBEF0..00AEBF02), a + (b - a) * fz (00AEBF06..00AEBF1A), each
+        // FSUBP/FMULP/FADDP rounded at PC24 and each result stored.
+        const float a = terrain_f32(pc24::x87_add24(s00, pc24::x87_mul24(pc24::x87_sub24(s10, s00), fx)));
+        const float b = terrain_f32(pc24::x87_add24(s01, pc24::x87_mul24(pc24::x87_sub24(s11, s01), fx)));
+        result = terrain_f32(pc24::x87_add24(a, pc24::x87_mul24(pc24::x87_sub24(b, a), fz)));
+    } else {
+        const float a = terrain_f32(s00 + (static_cast<double>(s10) - s00) * fx);
+        const float b = terrain_f32(s01 + static_cast<double>(fx) * (static_cast<double>(s11) - s01));
+        result = terrain_f32(a + (static_cast<double>(b) - a) * fz);
+    }
+    return result;
 }
 
 // 00AEAAA0 (ECX = &t; h0, y0, h1, y1), RET 10h.
@@ -5255,10 +5269,19 @@ bool vsub_cross_00aeaaa0(float h0, float y0, float h1, float y1, float& t) noexc
         t = 0.0f;
         return true;
     }
-    const double d0 = static_cast<double>(y0) - h0;
-    const float dh = terrain_f32(static_cast<double>(h1) - h0);
-    const float dy = terrain_f32(static_cast<double>(y1) - y0);
-    t = terrain_f32(d0 / (static_cast<double>(dh) - dy));   // no zero guard in the image
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-6: y0 - h0 kept on the stack (00AEAAE5), h1 - h0 stored (00AEAAE9),
+        // y1 - y0 stored (00AEAAF5), dh - dy (00AEAAFD), then the FDIVP (00AEAB01); each op
+        // rounded at PC24.
+        const float dh = terrain_f32(pc24::x87_sub24(h1, h0));
+        const float dy = terrain_f32(pc24::x87_sub24(y1, y0));
+        t = terrain_f32(pc24::x87_div24(pc24::x87_sub24(y0, h0), pc24::x87_sub24(dh, dy)));
+    } else {
+        const double d0 = static_cast<double>(y0) - h0;
+        const float dh = terrain_f32(static_cast<double>(h1) - h0);
+        const float dy = terrain_f32(static_cast<double>(y1) - y0);
+        t = terrain_f32(d0 / (static_cast<double>(dh) - dy));   // no zero guard in the image
+    }
     return true;
 }
 
@@ -5299,7 +5322,14 @@ bool vsub_cell_edge_00aec090(VsubCellWalker& w, float bx, float bz, float yb) no
     } else {
         const float s0 = vsub_sample(w, w.e0i, w.e0j);
         const float s1 = vsub_sample(w, w.e1i, w.e1j);
-        w.hb = terrain_f32(static_cast<double>(s1) * w.frac + (1.0 - w.frac) * s0);
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            // pc24w1-sweep1-6: 00AEAFA0's s1 * frac (00AEB007), 1 - frac (00AEB00B), times
+            // s0 (00AEB00D), the FADDP (00AEB010); each rounded at PC24, stored.
+            w.hb = terrain_f32(pc24::x87_add24(pc24::x87_mul24(s1, w.frac),
+                                               pc24::x87_mul24(pc24::x87_sub24(1.0, w.frac), s0)));
+        } else {
+            w.hb = terrain_f32(static_cast<double>(s1) * w.frac + (1.0 - w.frac) * s0);
+        }
     }
     return vsub_cross_00aeb940(w);
 }
@@ -5332,7 +5362,13 @@ bool vsub_cell_walk_00aec120(VsubCellWalker& w, float out[3], unsigned long long
             vsub_iter_step_00aeb6d0(it);
             ++cells;
             w.e0i = it.e0i; w.e0j = it.e0j; w.e1i = it.e1i; w.e1j = it.e1j; w.frac = it.frac;
-            const float y = terrain_f32(static_cast<double>(w.slope) * it.t + w.y0);
+            float y;
+            if constexpr (kPc24FlightRenderCc13Bound) {
+                // pc24w1-sweep1-6: 00AEC30D FMUL t then 00AEC318 FADD y0, each rounded.
+                y = terrain_f32(pc24::x87_add24(pc24::x87_mul24(w.slope, it.t), w.y0));
+            } else {
+                y = terrain_f32(static_cast<double>(w.slope) * it.t + w.y0);
+            }
             if (vsub_cell_edge_00aec090(w, it.nx, it.nz, y)) {
                 hit = true;
                 break;
@@ -5391,8 +5427,15 @@ bool vsub_tile_00aec3f0(VsubTileWalker& w, unsigned long long& tiles,
     float out[3];
     if (!vsub_cell_walk_00aec120(c, out, cells)) return false;
     w.hit[1] = out[1];
-    w.hit[0] = terrain_f32(static_cast<double>(out[0]) / n + fi);
-    w.hit[2] = terrain_f32(static_cast<double>(out[2]) / n + fj);
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-6: out / n then + the tile index (00AEC603/00AEC609,
+        // 00AEC610/00AEC614), each rounded at PC24.
+        w.hit[0] = terrain_f32(pc24::x87_add24(pc24::x87_div24(out[0], n), fi));
+        w.hit[2] = terrain_f32(pc24::x87_add24(pc24::x87_div24(out[2], n), fj));
+    } else {
+        w.hit[0] = terrain_f32(static_cast<double>(out[0]) / n + fi);
+        w.hit[2] = terrain_f32(static_cast<double>(out[2]) / n + fj);
+    }
     return true;
 }
 
@@ -5447,7 +5490,12 @@ bool vsub_tile_walk_00aec7c0(VsubTileWalker& w, float out[3], unsigned long long
             }
             vsub_iter_step_00aeb6d0(it);
             w.ti = it.ci; w.tj = it.cj;
-            w.yb = terrain_f32(static_cast<double>(w.slope) * it.t + w.y0);
+            if constexpr (kPc24FlightRenderCc13Bound) {
+                // pc24w1-sweep1-6: 00AEC97D FMUL t then 00AEC983 FADD y0, each rounded.
+                w.yb = terrain_f32(pc24::x87_add24(pc24::x87_mul24(w.slope, it.t), w.y0));
+            } else {
+                w.yb = terrain_f32(static_cast<double>(w.slope) * it.t + w.y0);
+            }
             w.bx = it.nx; w.bz = it.nz;
             if (vsub_tile_00aec3f0(w, tiles, cells)) {
                 hit = true;
