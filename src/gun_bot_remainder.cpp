@@ -396,7 +396,8 @@ std::array<float, 2> torpedo_run_end_008fff20(const std::array<float, 2>& gun_xz
         // 0090047B FDIV, 0090048B FMUL, 00900491 FSTP: each op rounds to 24 bits.
         using namespace cc13x87;
         degrees = static_cast<float>(
-            x87_mul24(x87_div24(std::fabs(snap_radians), 3.141592653589793), 180.0));
+            // [00CE3D28] is the float pi widened (qword 00 00 00 60 FB 21 09 40).
+            x87_mul24(x87_div24(std::fabs(snap_radians), 3.1415927410125732), 180.0));
     } else {
         degrees = static_cast<float>(
             static_cast<double>(std::fabs(snap_radians)) / 3.141592653589793 * 180.0);

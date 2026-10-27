@@ -130,7 +130,9 @@ float unit_audio_param00_008253c6(bool gate_5d, float reference_speed,
         // 008253FC FDIVP (1 / reference), 00825404 FMULP, 00825406 FADDP (+0),
         // 00825408 FSTP: each op rounds to 24 bits on the main thread.
         using namespace cc13x87;
-        return static_cast<float>(x87_mul24(x87_div24(1.0, reference_speed), forward_speed));
+        // The FADDP +0 at 00825406 turns a -0 product into +0.
+        return static_cast<float>(x87_add24(
+            x87_mul24(x87_div24(1.0, reference_speed), forward_speed), 0.0));
     } else {
         const double reciprocal = 1.0 / static_cast<double>(reference_speed);
         return static_cast<float>(static_cast<double>(forward_speed) * reciprocal);

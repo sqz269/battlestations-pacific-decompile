@@ -220,6 +220,10 @@ float ship_target_speed_00826a3a(float max_speed, float gameplay_scale, float th
     // 00826A53..00826A5F: the remaining two multiplies share one narrowing.
     if constexpr (kPc24ShipAiCc13Bound) {
         // 00826A57 / 00826A5B FMUL, 00826A5F FSTP: each rounds to 24 bits.
+        // Operand order from the stores: after the PUSH ECX at 00826A4E, [esp+14h] is the
+        // slot written at 008269B8/008269F0/00826A00 (the throttle; zeroed out of action)
+        // and [esp+1Ch] the slot written at 00826792 (the 0/1 engine gate from 00826754),
+        // so the image multiplies scaled * throttle, then * engine_gate.
         using namespace cc13x87;
         return static_cast<float>(x87_mul24(x87_mul24(scaled, throttle), engine_gate));
     } else {
