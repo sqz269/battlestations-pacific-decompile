@@ -11,9 +11,13 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/cc13_x87_model.hpp"  // pc24w1-gunnery-2
+#include "bsp/pc24_gunnery_cc13.hpp"
 #include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/game_hosts_ready.hpp"  // kSunkShipFlushBound, packet cc13-jm08
 #include "bsp/hull_terrain_contact.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_hudgui_cc13.hpp"
 #include "bsp/entity_orders.hpp"  // packet cc13-fix1: the command class category
 #include "bsp/avoid_zone_draft_bodies.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
@@ -84,6 +88,7 @@
 #include "bsp/cc13_takeoff_notify.hpp"        // packet cc13-takeoff (007C17D0, +AA0h)
 #include "bsp/squadron_spent_ordnance.hpp"    // packet cc9_squadron_spent_ordnance_rtb
 #include "bsp/scene_record_side_blocks.hpp"
+#include "bsp/pc24_unitshost_cc13.hpp"       // packet pc24w1-units-A (kPc24UnitsHostCc13Bound)
 #include "bsp/plane_follow_law.hpp"
 #include "bsp/plane_follow_hold.hpp"
 #include "bsp/plane_formation.hpp"
@@ -9429,28 +9434,71 @@ struct GameUnitsHost::Impl {
             if (!(1.0f < l[2]) || !(l[2] < 800.0f)) continue;       // [00D7A24C], double [00CE3948]
             float v[3];
             follow_to_body(s, u.plane_world_velocity, true, v);    // vtable[34h], 0042D0D0
-            auto band15 = [](double a) {                           // doubles [00CF3F20] 15, [00CE3D58] -15
-                if (a > 15.0) return a - 15.0;
-                if (a >= -15.0) return 0.0;
-                return a + 15.0;
-            };
-            const double fx = band15(static_cast<double>(l[0]) + v[0]);
-            const double fy = band15(static_cast<double>(l[1]) + v[1]);
-            const double rx = fx / l[2], ry = fy / l[2];
-            if (!(rx * rx + ry * ry < 0.014399999752640724)) continue;   // double [00D1F3F0]
+            bool outside_cone = false;
+            if constexpr (bsp::kPc24GunneryCc13Bound) {
+                // PC24 (pc24w1-gunnery-2): 0099ED64..0099ED86 v + l stored as floats;
+                // the 15 band on the stored sum, each arm FSUB/FADD/FSUBR stored
+                // (0099ED8A..0099EDCE); 0099EDD6/0099EDE0 FDIV by l.z stored; then
+                // ry*ry + rx*rx (0099EDF6..0099EDFC) against [00D1F3F0], JBE skips
+                // (unordered too).
+                using namespace bsp::cc13x87;
+                auto band15 = [](float a) {
+                    float r = 0.0f;
+                    if (a > 15.0) r = static_cast<float>(x87_sub24(a, 15.0));
+                    else if (-15.0 > a) r = static_cast<float>(x87_add24(a, 15.0));
+                    else r = static_cast<float>(x87_sub24(a, a));   // FSUBR ST0,ST0
+                    return r;
+                };
+                const float fx = band15(static_cast<float>(x87_add24(v[0], l[0])));
+                const float fy = band15(static_cast<float>(x87_add24(v[1], l[1])));
+                const float rx = static_cast<float>(x87_div24(fx, l[2]));
+                const float ry = static_cast<float>(x87_div24(fy, l[2]));
+                outside_cone = !(0.014399999752640724 >
+                                 x87_add24(x87_mul24(ry, ry), x87_mul24(rx, rx)));
+            } else {
+                auto band15 = [](double a) {                       // doubles [00CF3F20] 15, [00CE3D58] -15
+                    if (a > 15.0) return a - 15.0;
+                    if (a >= -15.0) return 0.0;
+                    return a + 15.0;
+                };
+                const double fx = band15(static_cast<double>(l[0]) + v[0]);
+                const double fy = band15(static_cast<double>(l[1]) + v[1]);
+                const double rx = fx / l[2], ry = fy / l[2];
+                outside_cone = !(rx * rx + ry * ry < 0.014399999752640724);   // double [00D1F3F0]
+            }
+            if (outside_cone) continue;
             u.ga_flag_26c_4 = true;                                // 0099EE11
             // 0099EE1F-0099EF02: the point (0, 0, z) on the shooter's line,
             // world (+CCh pose), minus the own world velocity, in the own frame.
             const float* m = s.world.data();
             float w[3];
-            for (int i = 0; i < 3; ++i) {
-                w[i] = static_cast<float>(m[12 + i] + static_cast<double>(l[2]) * m[8 + i]) -
-                       u.plane_world_velocity[i];
+            if constexpr (bsp::kPc24GunneryCc13Bound) {
+                // PC24: 004142E0 on (0, 0, z) as ((0*up + 0*right) + z*forward) + origin,
+                // each op rounded, stored; 0099EE67..0099EE90 minus the velocity, stored.
+                using namespace bsp::cc13x87;
+                for (int i = 0; i < 3; ++i) {
+                    const float point = static_cast<float>(x87_add24(
+                        x87_add24(x87_add24(x87_mul24(0.0, m[4 + i]), x87_mul24(0.0, m[i])),
+                                  x87_mul24(l[2], m[8 + i])),
+                        m[12 + i]));
+                    w[i] = static_cast<float>(x87_sub24(point, u.plane_world_velocity[i]));
+                }
+            } else {
+                for (int i = 0; i < 3; ++i) {
+                    w[i] = static_cast<float>(m[12 + i] + static_cast<double>(l[2]) * m[8 + i]) -
+                           u.plane_world_velocity[i];
+                }
             }
             float o[3];
             follow_to_body(u, w, false, o);
-            acc_x += o[0];
-            acc_y += o[1];
+            if constexpr (bsp::kPc24GunneryCc13Bound) {
+                // 0099EECA..0099EF02: the sums are float locals ([ESP+14h], [ESP+18h]).
+                acc_x = static_cast<float>(bsp::cc13x87::x87_add24(o[0], acc_x));
+                acc_y = static_cast<float>(bsp::cc13x87::x87_add24(o[1], acc_y));
+            } else {
+                acc_x += o[0];
+                acc_y += o[1];
+            }
         }
         if (!u.ga_flag_26c_4) return;
         ++u.ga_flagged_ticks;
@@ -9503,9 +9551,22 @@ struct GameUnitsHost::Impl {
         }
         // 0099F087 004F2F40: the 2-D threat sum normalised, then x 0.8
         // (double [00CE3D40]).
-        const double len = std::sqrt(acc_x * acc_x + acc_y * acc_y);
         double nx = 0.0, ny = 0.0;
-        if (len > 1e-10) { nx = acc_x / len; ny = acc_y / len; }
+        if constexpr (bsp::kPc24GunneryCc13Bound) {
+            // PC24, 004F2F40: s = x*x + y*y stored; len = sqrt(s) (00BF7030) stored when
+            // s > 1e-10 [00CE3820], else 1e-5 [00CE3C70] stored; both components are
+            // divided by len (no zero arm).
+            using namespace bsp::cc13x87;
+            const float s2 = static_cast<float>(
+                x87_add24(x87_mul24(acc_y, acc_y), x87_mul24(acc_x, acc_x)));
+            float len = static_cast<float>(1.0e-5);
+            if (s2 > 1.0e-10) len = static_cast<float>(std::sqrt(static_cast<double>(s2)));
+            nx = static_cast<float>(x87_div24(acc_x, len));
+            ny = static_cast<float>(x87_div24(acc_y, len));
+        } else {
+            const double len = std::sqrt(acc_x * acc_x + acc_y * acc_y);
+            if (len > 1e-10) { nx = acc_x / len; ny = acc_y / len; }
+        }
         const float x = static_cast<float>(nx * 0.800000011920929);
         const float y = static_cast<float>(ny * 0.800000011920929);
         const float x8 = static_cast<float>(static_cast<double>(x) * 0.800000011920929);
@@ -9972,7 +10033,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             static_cast<double>(p[2]) - (direction ? 0.0 : m[14])};
         for (int r = 0; r < 3; ++r) {
             const float* row = m + 4 * r;
-            // pc24-lint: allow SUBSTITUTION (pc24w1-sweep3-5): 004142E0 multiplies by the stored inverse at unit+110h, which this host does not keep; no image chain here to round per op
+            // pc24-lint: allow SUBSTITUTION (pc24w1-sweep3-5): 004142E0 multiplies by a stored inverse (unit+110h, written via 00B63D50, 00B632D0 or 00414E10), which this host does not keep; no image chain here to round per op
             const double n = std::sqrt(static_cast<double>(row[0]) * row[0] +
                                        static_cast<double>(row[1]) * row[1] +
                                        static_cast<double>(row[2]) * row[2]);
@@ -13386,10 +13447,12 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
     if (1.0f > g) {
         if constexpr (kPc24PlaneTasksCc13Bound) {
             // pc24w1-sweep3-5: 0099CB3B..0099CB47 and 0099CB51..0099CB55, each op
-            // rounded at PC24 against the double 1.1.
+            // rounded at PC24 against the qword [00CE3DF0] = 1.100000023841858 (float 1.1
+            // widened).
             namespace pc24 = bsp::cc13x87;
-            lo = static_cast<float>(pc24::x87_add24(pc24::x87_mul24(pc24::x87_sub24(lo, 1.1), g), 1.1));
-            hi = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(pc24::x87_add24(hi, 1.1), g), 1.1));
+            constexpr double kFade = 1.100000023841858;   // [00CE3DF0]
+            lo = static_cast<float>(pc24::x87_add24(pc24::x87_mul24(pc24::x87_sub24(lo, kFade), g), kFade));
+            hi = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(pc24::x87_add24(hi, kFade), g), kFade));
         } else {
         lo = static_cast<float>((static_cast<double>(lo) - 1.1) * g + 1.1);     // double [00CE3DF0]
         hi = static_cast<float>((static_cast<double>(hi) + 1.1) * g - 1.1);
@@ -13433,7 +13496,8 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
                         // rounded at PC24.
                         namespace pc24 = bsp::cc13x87;
                         const float s = static_cast<float>(std::sin(static_cast<double>(ab)));
-                        const double a = pc24::x87_mul24(pc24::x87_sub24(m, 0.4), s);
+                        // [00CE65D0] is float 0.4 widened.
+                        const double a = pc24::x87_mul24(pc24::x87_sub24(m, 0.4000000059604645), s);
                         v = static_cast<float>(pc24::x87_add24(a + a, 1.0));
                     } else {
                     v = static_cast<float>(
@@ -13757,7 +13821,7 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
                     // pc24w1-sweep3-5: both FCOS results stored through float, then
                     // 0099FB75 FMUL and 0099FB80 FMUL 0.15, each rounded at PC24.
                     k = static_cast<float>(bsp::cc13x87::x87_mul24(
-                        bsp::cc13x87::x87_mul24(std::cos(pitch), std::cos(bank_f)), 0.15));
+                        bsp::cc13x87::x87_mul24(std::cos(pitch), std::cos(bank_f)), 0.15000000596046448));   // [00CE6618]
                 } else {
                 k = static_cast<float>(std::cos(bank_f) * std::cos(pitch) * 0.15);   // double [00CE6618]
                 }
@@ -14257,10 +14321,21 @@ void GameUnitsHost::Impl::player_helm_issue_0064b870(GameUnitSlot& slot) {
     // 0064BA97-0064BB12: floor(B / step + bias) * step, floor(4A + bias) / 4.
     const double step = 0.16666667163372039794921875;              // [00CF5E60]
     const double bias = 0.4900000095367431640625;                  // [00CF5E58]
-    const float bin = static_cast<float>(helm_lever_28 / step + bias);
+    float bin = 0.0f;
+    float ain = 0.0f;
+    if constexpr (bsp::kPc24HudGuiCc13Bound) {
+        // PC24 (packet pc24w1-hudgui-2): 0064BA99 FDIV and 0064BAD7 FMUL round to
+        // 24 bits before the FADD of the bias (0064BAA4, 0064BADD).
+        bin = static_cast<float>(bsp::cc13x87::x87_add24(
+            bsp::cc13x87::x87_div24(helm_lever_28, step), bias));
+        ain = static_cast<float>(bsp::cc13x87::x87_add24(
+            bsp::cc13x87::x87_mul24(helm_lever_24, 4.0), bias));         // [00D7A328]
+    } else {
+        bin = static_cast<float>(helm_lever_28 / step + bias);
+        ain = static_cast<float>(helm_lever_24 * 4.0 + bias);           // [00D7A328]
+    }
     const float turn = static_cast<float>(
         static_cast<float>(std::floor(static_cast<double>(bin))) * step);
-    const float ain = static_cast<float>(helm_lever_24 * 4.0 + bias);   // [00D7A328]
     const float thrust = static_cast<float>(
         static_cast<float>(std::floor(static_cast<double>(ain))) * 0.25);   // [00D7A348]
     issue_into_ring(slot, thrust, turn);                            // 00816A40, kind 0
@@ -22911,7 +22986,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const float* o = unit_.wanderer.offset;
                             for (int i = 0; i < 3; ++i) unit_.motion.position[i] += o[i] * step;
                             const double d = static_cast<double>(avoid_len(o)) * step;
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             unit_.wanderer_displacement += d;
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             owner_.wanderer_displacement_total += d;
                         } else {
                             (void)step;
@@ -23300,6 +23377,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                             const float along = wa[0] * nx + wa[1] * ny + wa[2] * nz;
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             owner_.log.notef(
                                 "  dive probe %-12s alt=%.1f spd=%.2f pitch=%.4f "
                                 "path=%.4f aoa=%.4f | along=%.3f thrust=%.3f drag=%.3f "
@@ -25696,16 +25774,37 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // inverse of the world matrix; rows 0/1/2 are right/up/forward.
                     void df_local(const float p[3], float out[3]) const {
                         const float* m = unit_.world.data();
-                        const double d[3] = {static_cast<double>(p[0]) - m[12],
-                                             static_cast<double>(p[1]) - m[13],
-                                             static_cast<double>(p[2]) - m[14]};
-                        for (int r = 0; r < 3; ++r) {
-                            const float* row = m + 4 * r;
-                            const double n = std::sqrt(static_cast<double>(row[0]) * row[0] +
-                                                       static_cast<double>(row[1]) * row[1] +
-                                                       static_cast<double>(row[2]) * row[2]);
-                            out[r] = static_cast<float>(
-                                (d[0] * row[0] + d[1] * row[1] + d[2] * row[2]) / (n > 0 ? n : 1));
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // Per-op PC24 of the host's stand-in formula (004142E0
+                            // itself multiplies by the inverse matrix): d_k =
+                            // p_k - m[12+k] as floats, n = sqrt((r0^2 + r1^2) + r2^2),
+                            // out = ((d0 r0 + d1 r1) + d2 r2) / n.
+                            using namespace bsp::cc13x87;
+                            const float d[3] = {static_cast<float>(x87_sub24(p[0], m[12])),
+                                                static_cast<float>(x87_sub24(p[1], m[13])),
+                                                static_cast<float>(x87_sub24(p[2], m[14]))};
+                            for (int r = 0; r < 3; ++r) {
+                                const float* row = m + 4 * r;
+                                const double n = x87_sqrt24(x87_add24(
+                                    x87_add24(x87_mul24(row[0], row[0]), x87_mul24(row[1], row[1])),
+                                    x87_mul24(row[2], row[2])));
+                                const double dot = x87_add24(
+                                    x87_add24(x87_mul24(d[0], row[0]), x87_mul24(d[1], row[1])),
+                                    x87_mul24(d[2], row[2]));
+                                out[r] = static_cast<float>(x87_div24(dot, n > 0 ? n : 1.0));
+                            }
+                        } else {
+                            const double d[3] = {static_cast<double>(p[0]) - m[12],
+                                                 static_cast<double>(p[1]) - m[13],
+                                                 static_cast<double>(p[2]) - m[14]};
+                            for (int r = 0; r < 3; ++r) {
+                                const float* row = m + 4 * r;
+                                const double n = std::sqrt(static_cast<double>(row[0]) * row[0] +
+                                                           static_cast<double>(row[1]) * row[1] +
+                                                           static_cast<double>(row[2]) * row[2]);
+                                out[r] = static_cast<float>(
+                                    (d[0] * row[0] + d[1] * row[1] + d[2] * row[2]) / (n > 0 ? n : 1));
+                            }
                         }
                     }
 
@@ -25794,6 +25893,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                                      cur->motion.position[i];
                                     s2 += e * e;
                                 }
+                                // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                                 unit_.df_aim_lead_shift_sum += std::sqrt(s2);
                             }
                         }
@@ -25931,10 +26031,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     }
                     static float df_absf(float v) { return v > 0.0f ? v : -0.0f - v; }
                     static float df_heading_of(float x, float z) {        // pi/2 - atan2(z, x)
-                        double hh = 1.5707963705062866 -
-                            std::atan2(static_cast<double>(z), static_cast<double>(x));
-                        if (0.0 > hh) hh += 6.2831854820251465;
-                        return static_cast<float>(hh);
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // 009A8873-009A889A: atan2 stored as a float, pi/2 [00CE3830]
+                            // minus it stored, + 2pi [00CE3828] when negative, stored.
+                            using namespace bsp::cc13x87;
+                            const float a = static_cast<float>(
+                                std::atan2(static_cast<double>(z), static_cast<double>(x)));
+                            float hh = static_cast<float>(x87_sub24(1.5707963705062866, a));
+                            if (0.0f > hh) hh = static_cast<float>(x87_add24(hh, 6.2831854820251465));
+                            return hh;
+                        } else {
+                            double hh = 1.5707963705062866 -
+                                std::atan2(static_cast<double>(z), static_cast<double>(x));
+                            if (0.0 > hh) hh += 6.2831854820251465;
+                            return static_cast<float>(hh);
+                        }
                     }
                     float df_h9b4() const {
                         const float* p = unit_.motion.position;
@@ -26059,10 +26170,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             base = df_heading_of(u[0] - tp[0], u[2] - tp[2]);      // away
                         }
                         const float hh = bsp::wrapped_angle_add_00438aa0(base, 0.0f);  // + U(-0.8, 0.8) = 0
-                        double a = 1.5707963705062866 - hh;
-                        if (0.0 > a) a += 6.2831854820251465;
-                        unit_.mv_vec_20 = static_cast<float>(std::cos(a));
-                        unit_.mv_vec_24 = static_cast<float>(std::sin(a));
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // 009A89BD-009A89F5: pi/2 - h stored, + 2pi when negative,
+                            // stored; cos and sin of the float.
+                            using namespace bsp::cc13x87;
+                            float a = static_cast<float>(x87_sub24(1.5707963705062866, hh));
+                            if (0.0f > a) a = static_cast<float>(x87_add24(a, 6.2831854820251465));
+                            unit_.mv_vec_20 = static_cast<float>(x87_cos(a));
+                            unit_.mv_vec_24 = static_cast<float>(x87_sin(a));
+                        } else {
+                            double a = 1.5707963705062866 - hh;
+                            if (0.0 > a) a += 6.2831854820251465;
+                            unit_.mv_vec_20 = static_cast<float>(std::cos(a));
+                            unit_.mv_vec_24 = static_cast<float>(std::sin(a));
+                        }
                         const float hi = df_ip(100.0f, 0.0f, 500.0f, unit_.plane_climb_angle_1ec,
                                                ceiling - u[1]);                     // 009A8A6A
                         const float lo = df_ip(200.0f, 0.0f, 600.0f, -0.0f - unit_.plane_drop_angle,
@@ -26096,7 +26217,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const float dz = unit_.df_aim[2] - u[2];
                                 float yv, xv;
                                 if (unit_.df_horizontal_d8 > unit_.df_row.aim_shoot_distance * 3.0 && !out) {
-                                    float c = static_cast<float>(ceiling - (u[1] + 50.0));
+                                    float c;
+                                    if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                                        // 009A8CB3-009A8CC7: u1 + 50 [00CE3938], then
+                                        // ceiling minus it, each op rounded.
+                                        c = static_cast<float>(bsp::cc13x87::x87_sub24(
+                                            ceiling, bsp::cc13x87::x87_add24(u[1], 50.0)));
+                                    } else {
+                                        c = static_cast<float>(ceiling - (u[1] + 50.0));
+                                    }
                                     if (c > 300.0) c = 300.0f;
                                     yv = c;
                                     xv = 500.0f;
@@ -26131,10 +26260,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             } else {
                                 const float hgt = static_cast<float>(u[1] - df_h9b4());
                                 const float a1 = df_ip(400.0f, 0.2f, 900.0f, 1.45f, hgt);
-                                const float spd = static_cast<float>(std::sqrt(
-                                    static_cast<double>(unit_.plane_world_velocity[0]) * unit_.plane_world_velocity[0] +
-                                    static_cast<double>(unit_.plane_world_velocity[1]) * unit_.plane_world_velocity[1] +
-                                    static_cast<double>(unit_.plane_world_velocity[2]) * unit_.plane_world_velocity[2]));
+                                float spd;
+                                if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                                    // vtable[38h] stand-in, per op: (v0^2 + v1^2) + v2^2.
+                                    const float* wv = unit_.plane_world_velocity;
+                                    spd = static_cast<float>(bsp::cc13x87::x87_sqrt24(
+                                        bsp::pc24_unitshost::dot3(wv, wv)));
+                                } else {
+                                    spd = static_cast<float>(std::sqrt(
+                                        static_cast<double>(unit_.plane_world_velocity[0]) * unit_.plane_world_velocity[0] +
+                                        static_cast<double>(unit_.plane_world_velocity[1]) * unit_.plane_world_velocity[1] +
+                                        static_cast<double>(unit_.plane_world_velocity[2]) * unit_.plane_world_velocity[2]));
+                                }
                                 const float lfs = owner_.bot_desired_speed_007c47f0(unit_);
                                 const float ratio = lfs > 0.0f ? spd / lfs : 0.0f;
                                 const float a2 = df_ip(1.0f, 1.45f, 1.8f, 0.2f, ratio);
@@ -26329,10 +26466,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // (A+8)+1E4h taken as the class climb angle +1E4h; the
                         // mode-2 write is overwritten by +2D0h = 0 below.
                         unit_.plan_state.pitch_target_2bc = unit_.plane_climb_angle_1e4;
-                        if (static_cast<double>(unit_.av_20) > 0.10000000149011612) {
-                            unit_.av_20 = static_cast<float>(unit_.av_20 - dt * 0.5);
+                        float b1;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // 009A82E4-009A82F0: +20h - dt * 0.5 [00D7A280] (DE E9);
+                            // 009A82F7-009A830A: (1 - dt) (DE E1) * +1Ch, stored.
+                            using namespace bsp::cc13x87;
+                            if (static_cast<double>(unit_.av_20) > 0.10000000149011612) {
+                                unit_.av_20 = static_cast<float>(x87_sub24(unit_.av_20, x87_mul24(dt, 0.5)));
+                            }
+                            b1 = static_cast<float>(x87_mul24(x87_sub24(1.0, dt), unit_.av_1c));
+                        } else {
+                            if (static_cast<double>(unit_.av_20) > 0.10000000149011612) {
+                                unit_.av_20 = static_cast<float>(unit_.av_20 - dt * 0.5);
+                            }
+                            b1 = static_cast<float>((1.0 - dt) * unit_.av_1c);
                         }
-                        const float b1 = static_cast<float>((1.0 - dt) * unit_.av_1c);
                         unit_.av_1c = b1;
                         unit_.plan_state.bank_target_2c4 = b1;
                         unit_.plan_heading_mode_2cc = 1;
@@ -26403,6 +26551,88 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // the arc arm.
                     static bool df_predict_00954650(const GameUnitSlot& t, const float acc[3],
                                                     float time, float out[3]) {
+                        bool arc;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            arc = df_predict_00954650_pc24(t, acc, time, out);
+                        } else {
+                            arc = df_predict_00954650_double(t, acc, time, out);
+                        }
+                        return arc;
+                    }
+                    // The image's operation order, each op rounded (PC24), each
+                    // FSTP float kept: s2 and |acc_perp| through 0042B2F0
+                    // ((y^2 + x^2) + z^2, 1e-10 cutoff); n = v / s, k = n . acc,
+                    // ap = acc - n k, d = ap / w (00954716-00954841, DE FA), rate
+                    // = w / s, r = s / rate, c = d r + P, th = -rate t; 00952340:
+                    // q = P - c, 0085C3F0 (qa = q . ax, perp = q - qa ax (DE EA at
+                    // 0085C480), the 1e-4 [00D7A268] gate, (perp cos + qa ax) +
+                    // (ax x perp) sin), out = c + rq. Straight arm: P + v t.
+                    static bool df_predict_00954650_pc24(const GameUnitSlot& t, const float acc[3],
+                                                         float time, float out[3]) {
+                        using namespace bsp::cc13x87;
+                        namespace pu = bsp::pc24_unitshost;
+                        const float* v = t.plane_world_velocity;
+                        const float* p = t.motion.position;
+                        bool arc = false;
+                        float s = 0.0f, rate = 0.0f, n[3] = {0.0f, 0.0f, 0.0f}, d[3] = {0.0f, 0.0f, 0.0f};
+                        const float s2 = static_cast<float>(x87_add24(
+                            x87_add24(x87_mul24(v[1], v[1]), x87_mul24(v[0], v[0])), x87_mul24(v[2], v[2])));
+                        if (static_cast<double>(s2) > 1e-10) {
+                            s = static_cast<float>(x87_sqrt24(s2));
+                            if (s > 1.0f) {
+                                for (int i = 0; i < 3; ++i) n[i] = static_cast<float>(x87_div24(v[i], s));
+                                const float k = pu::dot3(n, acc);
+                                float ap[3];
+                                for (int i = 0; i < 3; ++i)
+                                    ap[i] = static_cast<float>(x87_sub24(acc[i], static_cast<float>(x87_mul24(n[i], k))));
+                                const float w = pu::length3_0042b2f0(ap[0], ap[1], ap[2]);
+                                rate = static_cast<float>(x87_div24(w, s));
+                                if (w > 0.0f && rate > 0.008726646502812704) {   // [00D1A630]
+                                    for (int i = 0; i < 3; ++i) d[i] = static_cast<float>(x87_div24(ap[i], w));
+                                    arc = true;
+                                }
+                            }
+                        }
+                        if (!arc) {
+                            for (int i = 0; i < 3; ++i)
+                                out[i] = static_cast<float>(x87_add24(p[i], static_cast<float>(x87_mul24(v[i], time))));
+                            return false;
+                        }
+                        const float r = static_cast<float>(x87_div24(s, rate));
+                        float c[3];
+                        for (int i = 0; i < 3; ++i)
+                            c[i] = static_cast<float>(x87_add24(static_cast<float>(x87_mul24(d[i], r)), p[i]));
+                        float ax[3];
+                        pu::cross_004f9b30(d, n, ax);
+                        const float th = static_cast<float>(x87_mul24(-rate, time));
+                        float q[3];
+                        for (int i = 0; i < 3; ++i) q[i] = static_cast<float>(x87_sub24(p[i], c[i]));
+                        const float qa = pu::dot3(ax, q);
+                        float pa[3], perp[3];
+                        for (int i = 0; i < 3; ++i) {
+                            pa[i] = static_cast<float>(x87_mul24(qa, ax[i]));
+                            perp[i] = static_cast<float>(x87_sub24(q[i], pa[i]));
+                        }
+                        const float pp = static_cast<float>(x87_add24(
+                            x87_add24(x87_mul24(perp[1], perp[1]), x87_mul24(perp[0], perp[0])),
+                            x87_mul24(perp[2], perp[2])));
+                        float rq[3] = {q[0], q[1], q[2]};
+                        if (static_cast<double>(pp) >= 9.999999747378752e-05) {   // [00D7A268]
+                            float cr[3];
+                            pu::cross_004f9b30(ax, perp, cr);
+                            const float sn = static_cast<float>(x87_sin(th));
+                            const float cs = static_cast<float>(x87_cos(th));
+                            for (int i = 0; i < 3; ++i) {
+                                const float sc = static_cast<float>(x87_mul24(cr[i], sn));
+                                const float cp = static_cast<float>(x87_mul24(perp[i], cs));
+                                rq[i] = static_cast<float>(x87_add24(static_cast<float>(x87_add24(cp, pa[i])), sc));
+                            }
+                        }
+                        for (int i = 0; i < 3; ++i) out[i] = static_cast<float>(x87_add24(c[i], rq[i]));
+                        return true;
+                    }
+                    static bool df_predict_00954650_double(const GameUnitSlot& t, const float acc[3],
+                                                           float time, float out[3]) {
                         const double v[3] = {t.plane_world_velocity[0], t.plane_world_velocity[1],
                                              t.plane_world_velocity[2]};
                         const double p[3] = {t.motion.position[0], t.motion.position[1],
@@ -26412,14 +26642,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         bool arc = false;
                         double rate = 0.0, d[3] = {0.0, 0.0, 0.0}, n[3] = {0.0, 0.0, 0.0};
                         if (s2 > 1e-10 && s > 1.0) {
+                            // pc24-lint: allow OFF arm of kPc24UnitsHostCc13Bound (df_predict_00954650_pc24 is the ON arm)
                             for (int i = 0; i < 3; ++i) n[i] = v[i] / s;
                             const double k = n[0] * acc[0] + n[1] * acc[1] + n[2] * acc[2];
                             double ap[3];
+                            // pc24-lint: allow OFF arm of kPc24UnitsHostCc13Bound (df_predict_00954650_pc24 is the ON arm)
                             for (int i = 0; i < 3; ++i) ap[i] = acc[i] - k * n[i];
                             const double w2 = ap[0] * ap[0] + ap[1] * ap[1] + ap[2] * ap[2];
                             const double w = w2 <= 1e-10 ? 0.0 : std::sqrt(w2);   // 0042B2F0
                             rate = w / s;
                             if (w > 0.0 && rate > 0.008726646502812704) {
+                                // pc24-lint: allow OFF arm of kPc24UnitsHostCc13Bound (df_predict_00954650_pc24 is the ON arm)
                                 for (int i = 0; i < 3; ++i) d[i] = ap[i] / w;
                                 arc = true;
                             }
@@ -26429,7 +26662,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 out[i] = static_cast<float>(p[i] + v[i] * time);
                             return false;
                         }
+                        // pc24-lint: allow OFF arm of kPc24UnitsHostCc13Bound (df_predict_00954650_pc24 is the ON arm)
                         const double r = s / rate;
+                        // pc24-lint: allow OFF arm of kPc24UnitsHostCc13Bound (df_predict_00954650_pc24 is the ON arm)
                         const double c[3] = {p[0] + r * d[0], p[1] + r * d[1], p[2] + r * d[2]};
                         // 004F9B30: axis = d x n.
                         const double ax[3] = {d[1] * n[2] - d[2] * n[1], d[2] * n[0] - d[0] * n[2],
@@ -26439,6 +26674,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const double q[3] = {p[0] - c[0], p[1] - c[1], p[2] - c[2]};
                         const double qa = q[0] * ax[0] + q[1] * ax[1] + q[2] * ax[2];
                         double perp[3];
+                        // pc24-lint: allow OFF arm of kPc24UnitsHostCc13Bound (df_predict_00954650_pc24 is the ON arm)
                         for (int i = 0; i < 3; ++i) perp[i] = q[i] - qa * ax[i];
                         const double pp = perp[0] * perp[0] + perp[1] * perp[1] + perp[2] * perp[2];
                         double rq[3] = {q[0], q[1], q[2]};
@@ -26446,6 +26682,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const double cr[3] = {ax[1] * perp[2] - ax[2] * perp[1],
                                                   ax[2] * perp[0] - ax[0] * perp[2],
                                                   ax[0] * perp[1] - ax[1] * perp[0]};
+                            // pc24-lint: allow OFF arm of kPc24UnitsHostCc13Bound (df_predict_00954650_pc24 is the ON arm)
                             for (int i = 0; i < 3; ++i)
                                 rq[i] = qa * ax[i] + std::cos(th) * perp[i] + std::sin(th) * cr[i];
                         }
@@ -26535,14 +26772,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.gl_muzzle = muzzle;
                         const float* own = unit_.motion.position;
                         auto dist = [&](const float q[3]) {
-                            const double a = q[0] - own[0], b = q[1] - own[1], c = q[2] - own[2];
-                            return static_cast<float>(std::sqrt(a * a + b * b + c * c));
+                            float len;
+                            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                                // 00427C90 then 0042B2F0 (009FC945/009FC94C, 009FC9A8/009FC9AF).
+                                len = bsp::pc24_unitshost::length3_0042b2f0(
+                                    q[0] - own[0], q[1] - own[1], q[2] - own[2]);
+                            } else {
+                                const double a = q[0] - own[0], b = q[1] - own[1], c = q[2] - own[2];
+                                len = static_cast<float>(std::sqrt(a * a + b * b + c * c));
+                            }
+                            return len;
                         };
                         float lead[3];
                         bool arc = df_predict_00954650(tgt, acc, dist(p) / muzzle, lead);
                         arc = df_predict_00954650(tgt, acc, dist(lead) / muzzle, lead) || arc;
                         ++unit_.gl_lead_ticks;
                         if (arc) ++unit_.gl_arc_ticks;
+                        // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                         const float shift = static_cast<float>(std::sqrt(
                             static_cast<double>(lead[0] - p[0]) * (lead[0] - p[0]) +
                             static_cast<double>(lead[1] - p[1]) * (lead[1] - p[1]) +
@@ -26584,8 +26830,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                               bool reaim = false) {
                         if (!gi.has_target) return false;
                         const float x = gi.lead_local[0], y = gi.lead_local[1], z = gi.lead_local[2];
-                        const float d = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
-                            static_cast<double>(y) * y + static_cast<double>(z) * z));
+                        float d;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // 009FCB25: 0042B2F0 of the world delta, here the local lead.
+                            d = bsp::pc24_unitshost::length3_0042b2f0(x, y, z);
+                        } else {
+                            d = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
+                                static_cast<double>(y) * y + static_cast<double>(z) * z));
+                        }
                         const float far_limit = gi.search_range_30 > gi.shoot_distance + 200.0f
                             ? gi.search_range_30 : gi.shoot_distance + 200.0f;
                         if (!(d > 1.0f) || !(far_limit > d)) return false;   // 009FCB3D, 009FCB6A
@@ -26617,15 +26869,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (dir[0] != 0.0f || dir[1] != 0.0f || dir[2] != 0.0f) {
                                 const float* m = unit_.world.data();
                                 double w[3] = {0.0, 0.0, 0.0};
-                                for (int r = 0; r < 3; ++r) {
-                                    const float* row = m + 4 * r;
-                                    const double n = std::sqrt(
-                                        static_cast<double>(row[0]) * row[0] +
-                                        static_cast<double>(row[1]) * row[1] +
-                                        static_cast<double>(row[2]) * row[2]);
-                                    const double s = static_cast<double>(gi.lead_local[r]) /
-                                                     (n > 0 ? n : 1);
-                                    for (int k = 0; k < 3; ++k) w[k] += s * row[k];
+                                if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                                    // The stand-in rebuild, each op rounded (PC24).
+                                    using namespace bsp::cc13x87;
+                                    for (int r = 0; r < 3; ++r) {
+                                        const float* row = m + 4 * r;
+                                        const double n = x87_sqrt24(x87_add24(
+                                            x87_add24(x87_mul24(row[0], row[0]), x87_mul24(row[1], row[1])),
+                                            x87_mul24(row[2], row[2])));
+                                        const double s = x87_div24(gi.lead_local[r], n > 0 ? n : 1.0);
+                                        for (int k = 0; k < 3; ++k) w[k] = x87_add24(w[k], x87_mul24(s, row[k]));
+                                    }
+                                } else {
+                                    for (int r = 0; r < 3; ++r) {
+                                        const float* row = m + 4 * r;
+                                        const double n = std::sqrt(
+                                            static_cast<double>(row[0]) * row[0] +
+                                            static_cast<double>(row[1]) * row[1] +
+                                            static_cast<double>(row[2]) * row[2]);
+                                        const double s = static_cast<double>(gi.lead_local[r]) /
+                                                         (n > 0 ? n : 1);
+                                        for (int k = 0; k < 3; ++k) w[k] += s * row[k];
+                                    }
                                 }
                                 const float u[3] = {static_cast<float>(w[0]) / d,
                                                     static_cast<float>(w[1]) / d,
@@ -27074,10 +27339,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_gun_fire_bc9 = f;
                         }
                         if (unit_.df_gun.burst_4b && !was_burst) {
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             const double d = std::sqrt(
                                 static_cast<double>(gi.lead_local[0]) * gi.lead_local[0] +
                                 static_cast<double>(gi.lead_local[1]) * gi.lead_local[1] +
                                 static_cast<double>(gi.lead_local[2]) * gi.lead_local[2]);
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             owner_.log.notef("  fighter gun burst %-12s target=%s d=%.1f "
                                 "lateral=%.2f state=%s",
                                 unit_.row.name.c_str(),
@@ -27278,14 +27545,31 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (owner_.lua.plane_globals_loaded()) {
                                 lf = owner_.lua.plane_globals().dynamics_spd_multipliers_level_flight;
                             }
-                            const double v2 = static_cast<double>(unit_.plane_world_velocity[0]) * unit_.plane_world_velocity[0] +
-                                static_cast<double>(unit_.plane_world_velocity[1]) * unit_.plane_world_velocity[1] +
-                                static_cast<double>(unit_.plane_world_velocity[2]) * unit_.plane_world_velocity[2];
-                            const float limit = bsp::dive_bomb_interpolate_clamped_00419010(
-                                sr * stall, 0.0f, lf * stall, 1.6f, static_cast<float>(std::sqrt(v2)));
-                            double h = std::sqrt(dx * dx + dz * dz);
-                            if (h < 1.0) h = 1.0;
-                            take = std::atan(dy / h) < limit;
+                            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                                // Speed: the vtable[38h] stand-in per op. 009AABD3-009AAC31:
+                                // h = 0042B2F0(dx, 0, dz), max(h, 1) (00415550), dy / that
+                                // (FDIVR) stored, atan stored, limit > atan takes it.
+                                using namespace bsp::cc13x87;
+                                const float* wv = unit_.plane_world_velocity;
+                                const float spd = static_cast<float>(x87_sqrt24(bsp::pc24_unitshost::dot3(wv, wv)));
+                                const float limit = bsp::dive_bomb_interpolate_clamped_00419010(
+                                    sr * stall, 0.0f, lf * stall, 1.6f, spd);
+                                const float fdy = static_cast<float>(dy);
+                                float h = bsp::pc24_unitshost::length3_0042b2f0(
+                                    static_cast<float>(dx), 0.0f, static_cast<float>(dz));
+                                if (h < 1.0f) h = 1.0f;
+                                const float ratio = static_cast<float>(x87_div24(fdy, h));
+                                take = static_cast<float>(std::atan(static_cast<double>(ratio))) < limit;
+                            } else {
+                                const double v2 = static_cast<double>(unit_.plane_world_velocity[0]) * unit_.plane_world_velocity[0] +
+                                    static_cast<double>(unit_.plane_world_velocity[1]) * unit_.plane_world_velocity[1] +
+                                    static_cast<double>(unit_.plane_world_velocity[2]) * unit_.plane_world_velocity[2];
+                                const float limit = bsp::dive_bomb_interpolate_clamped_00419010(
+                                    sr * stall, 0.0f, lf * stall, 1.6f, static_cast<float>(std::sqrt(v2)));
+                                double h = std::sqrt(dx * dx + dz * dz);
+                                if (h < 1.0) h = 1.0;
+                                take = std::atan(dy / h) < limit;
+                            }
                         }
                         if (!take) return false;
                         for (std::size_t j = 0; j < owner_.slots.size(); ++j) {
@@ -27613,9 +27897,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const float* mt = tgt.world.data();
                             bsp::DogfightAimInputs ai;
                             ai.distance = unit_.df_distance_d4;
-                            ai.tan_len = static_cast<float>(std::sqrt(
-                                static_cast<double>(unit_.df_tan_f8[0]) * unit_.df_tan_f8[0] +
-                                static_cast<double>(unit_.df_tan_f8[1]) * unit_.df_tan_f8[1]));
+                            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                                // 009A77F4: 00414C60, (x^2 + y^2) stored, cutoff, sqrt.
+                                ai.tan_len = bsp::pc24_unitshost::length2_00414c60(
+                                    unit_.df_tan_f8[0], unit_.df_tan_f8[1]);
+                            } else {
+                                ai.tan_len = static_cast<float>(std::sqrt(
+                                    static_cast<double>(unit_.df_tan_f8[0]) * unit_.df_tan_f8[0] +
+                                    static_cast<double>(unit_.df_tan_f8[1]) * unit_.df_tan_f8[1]));
+                            }
                             ai.local_z = unit_.df_local_ec[2];
                             // vt[34h] on both units; the forward rows stand in.
                             ai.opposing = mo[8] * mt[8] + mo[9] * mt[9] + mo[10] * mt[10] < 0.0f;
@@ -27633,9 +27923,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                                unit_.df_gun.fire_48;
                             {
                                 const auto& v = tgt.motion.linear_velocity;
-                                ai.target_speed = static_cast<float>(std::sqrt(
-                                    static_cast<double>(v.x) * v.x + static_cast<double>(v.y) * v.y +
-                                    static_cast<double>(v.z) * v.z));
+                                if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                                    // Stand-in speed, per op: (x^2 + y^2) + z^2.
+                                    using namespace bsp::cc13x87;
+                                    ai.target_speed = static_cast<float>(x87_sqrt24(static_cast<float>(x87_add24(
+                                        x87_add24(x87_mul24(v.x, v.x), x87_mul24(v.y, v.y)), x87_mul24(v.z, v.z)))));
+                                } else {
+                                    ai.target_speed = static_cast<float>(std::sqrt(
+                                        static_cast<double>(v.x) * v.x + static_cast<double>(v.y) * v.y +
+                                        static_cast<double>(v.z) * v.z));
+                                }
                             }
                             ai.dt = dt;
                             const bsp::DogfightAimCommand c =
@@ -28419,12 +28716,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const float dx = p[0] - u[0], dy = p[1] - u[1], dz = p[2] - u[2];
                         // 009CA8E7-009CA984: +18h the 3-D and +1Ch the horizontal
                         // distance, 0 at or below double [00CE3820].
-                        const double s3 = static_cast<double>(static_cast<float>(
-                            static_cast<double>(dx) * dx + static_cast<double>(dy) * dy +
-                            static_cast<double>(dz) * dz));
+                        double s3 = 0.0;
+                        double s2 = 0.0;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // pc24w1-units-DE: 009CA8EB / 009CA8F9 FMUL ST0 and 009CA901
+                            // FMULP, then 009CA905 FADD (dy*dy + dx*dx) and 009CA907
+                            // FADD (+ dz*dz), each at PC24; 009CA947 FADDP dx*dx + dz*dz.
+                            namespace x8 = bsp::cc13x87;
+                            const double xx = x8::x87_mul24(dx, dx);
+                            const double yy = x8::x87_mul24(dy, dy);
+                            const double zz = x8::x87_mul24(dz, dz);
+                            s3 = static_cast<float>(x8::x87_add24(x8::x87_add24(yy, xx), zz));
+                            s2 = static_cast<float>(x8::x87_add24(xx, zz));
+                        } else {
+                            s3 = static_cast<double>(static_cast<float>(
+                                static_cast<double>(dx) * dx + static_cast<double>(dy) * dy +
+                                static_cast<double>(dz) * dz));
+                            s2 = static_cast<double>(static_cast<float>(
+                                static_cast<double>(dx) * dx + static_cast<double>(dz) * dz));
+                        }
                         unit_.st_gt_dist_18 = s3 > 1e-10 ? static_cast<float>(std::sqrt(s3)) : 0.0f;
-                        const double s2 = static_cast<double>(static_cast<float>(
-                            static_cast<double>(dx) * dx + static_cast<double>(dz) * dz));
                         unit_.st_gt_horiz_1c = s2 > 1e-10 ? static_cast<float>(std::sqrt(s2)) : 0.0f;
                         // 009CA980-009CA9BA: pi/2 - atan2(dz, dx), wrapped into [0, 2pi).
                         const float h0 = bsp::heading_command_009f9e40(p[0], p[2], u[0], u[2]);
@@ -28506,9 +28817,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009CB2E7-009CB304: the point in the unit's frame (004142E0).
                         float l[3];
                         df_local(p, l);
-                        const double s3 = static_cast<double>(l[0]) * l[0] +
-                                          static_cast<double>(l[1]) * l[1] +
-                                          static_cast<double>(l[2]) * l[2];
+                        double s3 = 0.0;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // pc24w1-units-DE: 009CB329 / 009CB33F FMULP, 009CB343 FADDP
+                            // (l1*l1 + l0*l0), 009CB345 FMUL and 009CB347 FADDP, each at
+                            // PC24, then the 009CB349 FSTP DWORD.
+                            namespace x8 = bsp::cc13x87;
+                            s3 = static_cast<float>(x8::x87_add24(
+                                x8::x87_add24(x8::x87_mul24(l[1], l[1]), x8::x87_mul24(l[0], l[0])),
+                                x8::x87_mul24(l[2], l[2])));
+                        } else {
+                            s3 = static_cast<double>(l[0]) * l[0] +
+                                 static_cast<double>(l[1]) * l[1] +
+                                 static_cast<double>(l[2]) * l[2];
+                        }
                         const float len = s3 > 1e-10 ? static_cast<float>(std::sqrt(s3)) : 0.0f;
                         // 009CB384-009CB3AE: f = max(z, 0.75 |l|) (double [00CEC9D8]).
                         const float q = static_cast<float>(len * 0.75);
@@ -28641,7 +28963,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const float dist = st_horizontal_009cad00();
                         const float ceiling = owner_.lua.plane_globals_loaded()
                             ? owner_.lua.plane_globals().dynamics_ceiling : 1500.0f;
-                        float hgt = static_cast<float>(ceiling * 0.8999999761581421 - u[1]);
+                        float hgt = 0.0f;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // pc24w1-units-DE: 009CAF31 FMUL qword and 009CAF37 FSUB, each
+                            // at PC24, then the 009CAF3D FSTP DWORD.
+                            namespace x8 = bsp::cc13x87;
+                            hgt = static_cast<float>(
+                                x8::x87_sub24(x8::x87_mul24(ceiling, 0.8999999761581421), u[1]));
+                        } else {
+                            hgt = static_cast<float>(ceiling * 0.8999999761581421 - u[1]);
+                        }
                         if (0.0f > hgt) hgt = 0.0f;
                         else if (hgt > 400.0f) hgt = 400.0f;
                         const float ad = st_attack_dist_658();
@@ -28826,9 +29157,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // over the n kind-25h racks, summed on the x87 stack and
                             // stored as a float. LABELLED: n is the BombPlatform count.
                             const int n = static_cast<int>(rack);
-                            longest = static_cast<float>(
-                                static_cast<double>(unit_.plane_bomb_delay_1f4) * (n > 1 ? n - 1 : 0)
-                                + static_cast<double>(longest));
+                            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                                // pc24w1-units-DE: 007C202F FIMUL and 007C2033 FADD, each
+                                // at PC24.
+                                namespace x8 = bsp::cc13x87;
+                                longest = static_cast<float>(x8::x87_add24(
+                                    x8::x87_mul24(unit_.plane_bomb_delay_1f4, n > 1 ? n - 1 : 0),
+                                    longest));
+                            } else {
+                                longest = static_cast<float>(
+                                    static_cast<double>(unit_.plane_bomb_delay_1f4) * (n > 1 ? n - 1 : 0)
+                                    + static_cast<double>(longest));
+                            }
                         }
                         unit_.lb_release_delay_1fc = longest;
                     }
@@ -29478,6 +29818,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ++unit_.lb_releases;
                             if (unit_.lb_first_release_at < 0.0f)
                                 unit_.lb_first_release_at = owner_.summary.simulated_seconds;
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             owner_.log.notef("level bomb release: %s t=%.2f alt=%.1f miss=%.1f "
                                 "bank=%.4f pitch=%.4f speed=%.2f (009B5A1A, packet "
                                 "cc9_plane_level_bomb_task)", unit_.row.name.c_str(),
@@ -30256,10 +30597,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // unit vtable[204h] = 007B8E70, unit+B2Ch: the body forward speed.
                     float kz_forward_speed_b2c() const {
                         const float* f = unit_.motion.pose_row2;
-                        return static_cast<float>(
-                            static_cast<double>(unit_.motion.linear_velocity.x) * f[0] +
-                            static_cast<double>(unit_.motion.linear_velocity.y) * f[1] +
-                            static_cast<double>(unit_.motion.linear_velocity.z) * f[2]);
+                        float speed = 0.0f;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // pc24w1-units-DE: per-op PC24 of this stand-in dot
+                            // ((vx f0 + vy f1) + vz f2). The image reads ctl+44h, which
+                            // the core step writes (007D80C0 copies it); that writer's
+                            // order is not modelled here.
+                            namespace x8 = bsp::cc13x87;
+                            speed = static_cast<float>(x8::x87_add24(
+                                x8::x87_add24(x8::x87_mul24(unit_.motion.linear_velocity.x, f[0]),
+                                              x8::x87_mul24(unit_.motion.linear_velocity.y, f[1])),
+                                x8::x87_mul24(unit_.motion.linear_velocity.z, f[2])));
+                        } else {
+                            speed = static_cast<float>(
+                                static_cast<double>(unit_.motion.linear_velocity.x) * f[0] +
+                                static_cast<double>(unit_.motion.linear_velocity.y) * f[1] +
+                                static_cast<double>(unit_.motion.linear_velocity.z) * f[2]);
+                        }
+                        return speed;
                     }
                     // The plan sink both tasks write through (cc13's KamikazePlanCommand).
                     void kz_apply_plan(const bsp::KamikazePlanCommand& c) {
@@ -33211,18 +33566,44 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // orthogonal scaled inverse of the pose at +CCh,
                             // i.e. (p - t) . row_j / |row_j|^2.
                             const bsp::CameraMatrix& m = unit_.world;
-                            const double dx = static_cast<double>(ap[0]) - m[12];
-                            const double dy = static_cast<double>(ap[1]) - m[13];
-                            const double dz = static_cast<double>(ap[2]) - m[14];
-                            const double r0 = static_cast<double>(m[0]) * m[0] +
-                                static_cast<double>(m[1]) * m[1] + static_cast<double>(m[2]) * m[2];
-                            const double r2 = static_cast<double>(m[8]) * m[8] +
-                                static_cast<double>(m[9]) * m[9] + static_cast<double>(m[10]) * m[10];
                             bsp::DiveBombAimDiveTailInputs tin;
-                            tin.aim_local_x = static_cast<float>(
-                                (dx * m[0] + dy * m[1] + dz * m[2]) / r0);
-                            tin.aim_local_z = static_cast<float>(
-                                (dx * m[8] + dy * m[9] + dz * m[10]) / r2);
+                            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                                // pc24w1-units-DE: per-op PC24 of this stand-in formula
+                                // (00B63D50 + 004142E0 multiply by the inverted pose):
+                                // d_k = p_k - m[12+k] as floats, |row|^2 =
+                                // (r0*r0 + r1*r1) + r2*r2, local = ((d0 r0 + d1 r1) +
+                                // d2 r2) / |row|^2, as units-A's df_local does.
+                                namespace x8 = bsp::cc13x87;
+                                const float d[3] = {static_cast<float>(x8::x87_sub24(ap[0], m[12])),
+                                                    static_cast<float>(x8::x87_sub24(ap[1], m[13])),
+                                                    static_cast<float>(x8::x87_sub24(ap[2], m[14]))};
+                                const auto local = [&](int r) {
+                                    const float* row = m.data() + 4 * r;
+                                    const double n2 = x8::x87_add24(
+                                        x8::x87_add24(x8::x87_mul24(row[0], row[0]),
+                                                      x8::x87_mul24(row[1], row[1])),
+                                        x8::x87_mul24(row[2], row[2]));
+                                    const double dot = x8::x87_add24(
+                                        x8::x87_add24(x8::x87_mul24(d[0], row[0]),
+                                                      x8::x87_mul24(d[1], row[1])),
+                                        x8::x87_mul24(d[2], row[2]));
+                                    return static_cast<float>(x8::x87_div24(dot, n2));
+                                };
+                                tin.aim_local_x = local(0);
+                                tin.aim_local_z = local(2);
+                            } else {
+                                const double dx = static_cast<double>(ap[0]) - m[12];
+                                const double dy = static_cast<double>(ap[1]) - m[13];
+                                const double dz = static_cast<double>(ap[2]) - m[14];
+                                const double r0 = static_cast<double>(m[0]) * m[0] +
+                                    static_cast<double>(m[1]) * m[1] + static_cast<double>(m[2]) * m[2];
+                                const double r2 = static_cast<double>(m[8]) * m[8] +
+                                    static_cast<double>(m[9]) * m[9] + static_cast<double>(m[10]) * m[10];
+                                tin.aim_local_x = static_cast<float>(
+                                    (dx * m[0] + dy * m[1] + dz * m[2]) / r0);
+                                tin.aim_local_z = static_cast<float>(
+                                    (dx * m[8] + dy * m[9] + dz * m[10]) / r2);
+                            }
                             tin.pitch_c64 = unit_.plane_pitch_angle_c64;
                             tin.bank_c68 = unit_.plane_bank_angle_c68;
                             // unit->vtable[38h]: the same live-velocity length
@@ -35272,6 +35653,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const double dspeed = std::fabs(static_cast<double>(unit_.plane_desired_speed_2b4) -
                                                             old_speed);
                             ++owner_.mvs_n;
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             owner_.mvs_dsep_sum += dsep;
                             if (dsep > owner_.mvs_dsep_max) owner_.mvs_dsep_max = dsep;
                             if (dspeed > 0.0) ++owner_.mvs_speed_changed;
@@ -35469,6 +35851,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         - t->motion.position[2];
                                     const double off = std::sqrt(dx * dx + dz * dz);
                                     ++owner_.goaway_aim_points_;
+                                    // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                                     owner_.goaway_aim_offset_sum_ += off;
                                     if (off > owner_.goaway_aim_offset_max_) {
                                         owner_.goaway_aim_offset_max_ = off;
@@ -35908,6 +36291,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // |v|; with them zero the angle sat near 90 deg.
                             float vn[3];
                             GameUnitsHost::Impl::velocity_versus_nose(unit_, vn);
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             owner_.log.notef("  torpedo %-12s velocity census "
                                 "tick=%d |v|=%.2f angle=%.1f deg body_fwd=%.2f "
                                 "alt=%.1f travel_spd=%.2f x_drag=%.2f "
@@ -36242,8 +36626,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.moveto_point[1] = cruise - unit_.moveto_alt_offset_2c;
                         const float dx = unit_.moveto_point[0] - unit_.motion.position[0];
                         const float dz = unit_.moveto_point[2] - unit_.motion.position[2];
-                        const double d2 = static_cast<double>(dx) * dx +
-                                          static_cast<double>(dz) * dz;
+                        double d2 = 0.0;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // pc24w1-units-DE: 009BEC35 FMUL ST0, 009BEC39 FMULP and
+                            // 009BEC3B FADDP, each at PC24, then the 009BEC3D FSTP DWORD.
+                            namespace x8 = bsp::cc13x87;
+                            d2 = static_cast<float>(
+                                x8::x87_add24(x8::x87_mul24(dx, dx), x8::x87_mul24(dz, dz)));
+                        } else {
+                            d2 = static_cast<double>(dx) * dx +
+                                 static_cast<double>(dz) * dz;
+                        }
                         unit_.moveto_distance_64 = d2 <= 1e-6
                             ? 0.0f : static_cast<float>(std::sqrt(d2));
                         owner_.record("BotApproach::refresh_path_leg_009fd050", 0x009fd050u);
@@ -38286,6 +38679,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.lhs_b_sum += owner_.last_blend_b_;
                             owner_.lhs_want_sum += want;
                             owner_.lhs_wingmen_sum += owner_.last_blend_wingmen_;
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             owner_.lhs_v_sum += v;
                             owner_.lhs_sep_sum += sep;
                             if (floor) ++owner_.lhs_floor;
@@ -38377,12 +38771,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                             const float* p = unit_.motion.position;
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             const float* v = unit_.plane_world_velocity;
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             const double vs = std::sqrt(static_cast<double>(v[0]) * v[0] +
                                 static_cast<double>(v[1]) * v[1] + static_cast<double>(v[2]) * v[2]);
                             double lvs = 0.0, ldist = -1.0, lhead = 0.0;
                             if (ld != nullptr) {
                                 const float* lv = ld->plane_world_velocity;
+                                // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                                 lvs = std::sqrt(static_cast<double>(lv[0]) * lv[0] +
                                     static_cast<double>(lv[1]) * lv[1] +
                                     static_cast<double>(lv[2]) * lv[2]);
@@ -39952,8 +40349,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         CircleSteer009fbb20 s;
                         const float dx = pos[0] - point[0];                    // 009FBB64
                         const float dz = pos[1] - point[1];                    // 009FBB77
-                        const float d2 = static_cast<float>(
-                            static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+                        float d2 = 0.0f;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // pc24w1-units-DE: 009FBB83 FMUL ST0, 009FBB87 FMULP and
+                            // 009FBB89 FADDP, each at PC24.
+                            namespace x8 = bsp::cc13x87;
+                            d2 = static_cast<float>(
+                                x8::x87_add24(x8::x87_mul24(dx, dx), x8::x87_mul24(dz, dz)));
+                        } else {
+                            d2 = static_cast<float>(
+                                static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+                        }
                         const float dist = static_cast<double>(d2) > 1e-10     // 00CE3820
                             ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
                         s.dist = dist;
@@ -40018,9 +40424,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             static_cast<float>(static_cast<double>(rz) * r)));  // 009FBE92
                         const float pvx = px - pos[0];                         // 009FBE9E
                         const float pvz = pz - pos[1];                         // 009FBEAA
-                        float w = static_cast<float>(
-                            (static_cast<double>(ratio) - 1.0) /
-                            0.20000000298023224);                              // 00CE3D10
+                        float w = 0.0f;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // pc24w1-units-DE: 009FBEB4 FSUB and 009FBEB8 FDIV qword,
+                            // each at PC24.
+                            namespace x8 = bsp::cc13x87;
+                            w = static_cast<float>(
+                                x8::x87_div24(x8::x87_sub24(ratio, 1.0), 0.20000000298023224));
+                        } else {
+                            w = static_cast<float>(
+                                (static_cast<double>(ratio) - 1.0) /
+                                0.20000000298023224);                          // 00CE3D10
+                        }
                         if (0.0f > w) w = 0.0f;                                // 009FBECC
                         else if (w > 1.0f) w = 1.0f;                           // 009FBFC3
                         const float omw = static_cast<float>(1.0 - static_cast<double>(w));
@@ -41623,6 +42038,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         while (delta < -kPi) {
                             delta += 2.0 * kPi;
                         }
+                        // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                         owner_.summary.plane_heading_change += std::fabs(delta);
                     }
 
@@ -41660,10 +42076,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             range_min, 0.0f, range_max, 1.0f, s);
                         // 007D9AFC-007D9B0C: + (ctl+10h)->+0C0h * 0.6 (00CEFF98, a
                         // double), the timed direction hold's remaining seconds.
-                        const float b = GameUnitsHost::Impl::kPlaneDirectionHoldBound
-                            ? static_cast<float>(static_cast<double>(unit_.plane_dir_hold_seconds)
-                                * 0.6000000238418579 + static_cast<double>(r))
-                            : r;
+                        float b = r;
+                        if constexpr (GameUnitsHost::Impl::kPlaneDirectionHoldBound) {
+                            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                                // pc24w1-units-DE: 007D9B02 FMUL qword and 007D9B08 FADD,
+                                // each at PC24.
+                                namespace x8 = bsp::cc13x87;
+                                b = static_cast<float>(x8::x87_add24(
+                                    x8::x87_mul24(unit_.plane_dir_hold_seconds, 0.6000000238418579),
+                                    r));
+                            } else {
+                                b = static_cast<float>(static_cast<double>(unit_.plane_dir_hold_seconds)
+                                    * 0.6000000238418579 + static_cast<double>(r));
+                            }
+                        }
                         // 007D9B10..007D9B6E, the literal three-way pick.
                         float t = 0.0f;
                         if (a > b) {
@@ -41995,6 +42421,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const std::string& rate_trace = plane_rate_trace_name();
                         if (!rate_trace.empty() && unit_.row.name == rate_trace) {
                             const float* w = unit_.plane_body_angular;
+                            // pc24-lint: allow host diagnostic (counter or log, not read back by the game path)
                             const double mag = std::sqrt(static_cast<double>(w[0]) * w[0] +
                                 static_cast<double>(w[1]) * w[1] + static_cast<double>(w[2]) * w[2]);
                             // Packet cc13-ratetraceband: the pitch band set (pilot+CCh)
@@ -42475,11 +42902,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         float u = 1.0f - t;                                                // 007DCBEB
                         const float c68 = unit_.plane_bank_angle_c68;
                         const float aw = c68 > 0.0f ? c68 : -0.0f - c68;
-                        const float p = static_cast<float>(static_cast<double>(aw) * 0.800000011920929
-                            + 0.6000000238418579);                                         // 007DCC0B
+                        float p = 0.0f;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // pc24w1-units-DE: 007DCC0F FMUL qword and 007DCC15 FADD
+                            // qword, each at PC24.
+                            namespace x8 = bsp::cc13x87;
+                            p = static_cast<float>(x8::x87_add24(
+                                x8::x87_mul24(aw, 0.800000011920929), 0.6000000238418579));
+                        } else {
+                            p = static_cast<float>(static_cast<double>(aw) * 0.800000011920929
+                                + 0.6000000238418579);                                     // 007DCC0B
+                        }
                         if (0.0f > u) u = 0.0f;                                            // 007DCC23
                         const float q = p > 1.0f ? 1.0f : p;                               // 007DCC3F
-                        const float force = static_cast<float>(static_cast<double>(q) * u * h);   // 007DCC80
+                        float force = 0.0f;
+                        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                            // pc24w1-units-DE: 007DCC88 and 007DCC9E FMUL, each at PC24.
+                            namespace x8 = bsp::cc13x87;
+                            force = static_cast<float>(x8::x87_mul24(x8::x87_mul24(q, u), h));
+                        } else {
+                            force = static_cast<float>(static_cast<double>(q) * u * h);    // 007DCC80
+                        }
                         const bsp::PlaneWaterPose pose = water_pose();
                         float w[3];
                         for (int c = 0; c < 3; ++c) {
@@ -42723,13 +43166,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     if (step_seconds > 0.0f) {
                         const double idt = 1.0 / static_cast<double>(step_seconds);
                         for (int i = 0; i < 3; ++i) {
-                            const float v = static_cast<float>(
-                                (static_cast<double>(slot.motion.position[i]) -
-                                 slot.fd_prev_pos[i]) * idt);                  // +648h
-                            slot.fd_accel_654[i] = slot.fd_steps >= 2
-                                ? static_cast<float>((static_cast<double>(v) -
-                                                      slot.fd_vel_648[i]) * idt)
-                                : 0.0f;                                        // +654h
+                            float v = 0.0f;
+                            float accel = 0.0f;
+                            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                                // pc24w1-units-DE: the image divides, it does not
+                                // multiply by 1/dt. 007CED84-007CEDD3: each difference
+                                // FSUB then FSTP DWORD, then FDIV by the float step at
+                                // PC24 and FSTP DWORD (ctl+338h); 007CEDFB-007CEE3F the
+                                // same for (ctl+338h - ctl+3ACh) / dt (ctl+344h).
+                                namespace x8 = bsp::cc13x87;
+                                const float dp = static_cast<float>(
+                                    x8::x87_sub24(slot.motion.position[i], slot.fd_prev_pos[i]));
+                                v = static_cast<float>(x8::x87_div24(dp, step_seconds));
+                                const float dv = static_cast<float>(
+                                    x8::x87_sub24(v, slot.fd_vel_648[i]));
+                                accel = static_cast<float>(x8::x87_div24(dv, step_seconds));
+                            } else {
+                                v = static_cast<float>(
+                                    (static_cast<double>(slot.motion.position[i]) -
+                                     slot.fd_prev_pos[i]) * idt);              // +648h
+                                accel = static_cast<float>((static_cast<double>(v) -
+                                                            slot.fd_vel_648[i]) * idt);
+                            }
+                            slot.fd_accel_654[i] = slot.fd_steps >= 2 ? accel : 0.0f;   // +654h
                             slot.fd_vel_648[i] = v;                            // -> +6BCh
                             slot.fd_prev_pos[i] = slot.motion.position[i];
                         }

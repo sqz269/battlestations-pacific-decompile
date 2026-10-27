@@ -39,6 +39,14 @@ namespace bsp {
 //     vector_helpers.cpp (its length_kernel is a naked-asm replica of the
 //     image's x87 sequence, so it rounds per op at the caller's precision)
 //     and length_2d_00414c60 in plane_water_law.cpp:34 (float ops)
+//   pc24w1-sweep3-4 (sites listed at each body):
+//     007BE060 plane_wanderer_fixed_step_007be060, with length3_0042b2f0
+//              ((y*y + x*x) + z*z and the 1e-10 floor) and 00439950
+//              plane_wanderer_random_direction_00439950 (plane_wanderer.cpp)
+//     009C8F40 retreat_refresh_target_009c8f40 and 009C9FB0
+//              retreat_arm_009c9fb0 (plane_retreat_task.cpp)
+//     009BA020 tight_turn_tick_009ba020 fragment, 2.0 - e / 10 degrees
+//              (strafe_task.cpp)
 //   pc24w1-sweep3-5 (game_hosts_units.cpp; sites listed at each body):
 //     007D7DA0 leader_turn_rate (x, y, z and z + (cb * c0) * yaw_spd)
 //     009BEE30 follow law: the 009BFD70 latch d / length / dot, the latched
@@ -66,7 +74,8 @@ namespace bsp {
 // Expected movers when ON: plane task waypoints and approach timing, kamikaze
 // turn-around and pitch targets, the kamikaze lock window, the dive-bomb aim
 // bearing, the flyabove dive reference and roll-in latch, and the
-// formation-follow steer point (attack release points); from sweep3-5, the
+// formation-follow steer point (attack release points); from sweep3-4, the
+// wanderer drift, retreat target and countdown and tight-turn limit; from sweep3-5, the
 // leader turn rate, vehicle and terrain avoidance and carrier holder offsets.
 inline constexpr bool kPc24PlaneTasksCc13Bound = false;
 
