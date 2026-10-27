@@ -16770,8 +16770,15 @@ bool GameUnitsHost::Impl::landing_blocks_006cdf70(const GameUnitSlot& a,
         x = 0.0f > e ? 0.0f : e;
     }
     if (!(z >= 0.0f) || !(R > z)) return false;
-    return static_cast<double>(b.class_width_00a4) * 0.800000011920929 +
-        static_cast<double>(hwa) > static_cast<double>(std::fabs(x));
+    double lim;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // pc24w1-sweep3-6: 006CE200 FMUL 0.8, 006CE206 FADD the half width, each rounded
+        // at PC24 before the 006CE20A compare.
+        lim = bsp::cc13x87::x87_add24(bsp::cc13x87::x87_mul24(b.class_width_00a4, 0.800000011920929), hwa);
+    } else {
+        lim = static_cast<double>(b.class_width_00a4) * 0.800000011920929 + static_cast<double>(hwa);
+    }
+    return lim > static_cast<double>(std::fabs(x));
 }
 
 // 006CE610 (006CE610-006CE795, __thiscall(site, plane, ...)): false when an
@@ -16920,8 +16927,14 @@ void GameUnitsHost::Impl::plane_site_probe_007c5ac0(GameUnitSlot& p, float step)
             p.plane_contact_height_bfc = 999.0f;                    // 00CF4888
         }
         // 007C5EF3-007C5F04: +C04h = (dist - 200.0) x 0.004 (00CE4D70, 00CEB160).
-        p.plane_site_timer_c04 = static_cast<float>(
-            (static_cast<double>(dist) - 200.0) * 0.004000000189989805);
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // pc24w1-sweep3-6: 007C5EF8 FSUB, 007C5EFE FMUL, each rounded at PC24.
+            p.plane_site_timer_c04 = static_cast<float>(
+                bsp::cc13x87::x87_mul24(bsp::cc13x87::x87_sub24(dist, 200.0), 0.004000000189989805));
+        } else {
+            p.plane_site_timer_c04 = static_cast<float>(
+                (static_cast<double>(dist) - 200.0) * 0.004000000189989805);
+        }
     }
     // 007C5F0A-007C5F57, every step.
     if (p.plane_near_site_c02 && p.plane_contact_deck_bf4 != 0) {
@@ -17149,9 +17162,18 @@ float GameUnitsHost::Impl::carrier_elevator_nose_distance_006cfe90(const Landing
     const std::array<float, 3> l = carrier_local_point(d, nose);
     const float dx = l[0] - d.elevator.lift[0];
     const float dz = l[2] - d.elevator.lift[2];
-    const float s = static_cast<float>(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
-    return static_cast<double>(s) > 1e-10 ? static_cast<float>(std::sqrt(static_cast<double>(s)))
-                                          : 0.0f;
+    float out;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // pc24w1-sweep3-6: 006CFEED..006CFEF3 squares and sum, FSTP float, the 1e-10
+        // floor and 00BF7030's FSQRT, each op rounded at PC24.
+        const float s = static_cast<float>(bsp::cc13x87::x87_add24(bsp::cc13x87::x87_mul24(dx, dx), bsp::cc13x87::x87_mul24(dz, dz)));
+        out = static_cast<double>(s) > 1e-10 ? static_cast<float>(bsp::cc13x87::x87_sqrt24(s)) : 0.0f;
+    } else {
+        const float s = static_cast<float>(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+        out = static_cast<double>(s) > 1e-10 ? static_cast<float>(std::sqrt(static_cast<double>(s)))
+                                             : 0.0f;
+    }
+    return out;
 }
 
 // 006CFF70 (site vtable +3Ch, RET 4): false for a null plane, else
@@ -17186,10 +17208,24 @@ bool GameUnitsHost::Impl::carrier_elevator_lane_006d0390(const LandingDeck& d,
     if (!landing_queue_clear_006ce610(d, p)) return false;
     const double lz = d.elevator.lift[2];
     const double pz = carrier_local_point(d, p.motion.position)[2];
-    if (!(lz - (14.0 - 2.0) > pz)) return true;                          // 006D03FA
+    double top;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // pc24w1-sweep3-6: 14.0 - 2.0 (006D03EE), then Lz less it (006D03F4), rounded.
+        top = bsp::cc13x87::x87_sub24(lz, bsp::cc13x87::x87_sub24(14.0, 2.0));
+    } else {
+        top = lz - (14.0 - 2.0);
+    }
+    if (!(top > pz)) return true;                                        // 006D03FA
     float s = static_cast<float>(static_cast<double>(avoid_len(p.plane_world_velocity)) - 1.0);
     if (0.0f > s) s = 0.0f;
-    const double bound = lz - (static_cast<double>(s) + s + (14.0 + 5.0));
+    double bound;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 006D0438 s + s, 006D0440 14.0 + 5.0, 006D0446 FADDP, 006D0448 FSUBP, each
+        // rounded at PC24.
+        bound = bsp::cc13x87::x87_sub24(lz, bsp::cc13x87::x87_add24(static_cast<double>(s) + s, bsp::cc13x87::x87_add24(14.0, 5.0)));
+    } else {
+        bound = lz - (static_cast<double>(s) + s + (14.0 + 5.0));
+    }
     if (!(pz > bound)) return true;                                      // 006D0450
     return carrier_elevator_lift_free_006d0150(d, p);
 }
@@ -17615,8 +17651,15 @@ bool GameUnitsHost::Impl::place_on_launch_spot_007c5f60(GameUnitSlot& p,
         const float len = std::sqrt(dir[0] * dir[0] + dir[1] * dir[1] + dir[2] * dir[2]);
         const float inv = len > 0.0f ? 1.0f / len : 0.0f;
         for (float& c : dir) c *= inv;
-        slide = static_cast<float>((static_cast<double>(plane_desc_158(p)) + 1.0)
-            - static_cast<double>(index_9d8) * 0.20000000298023224);
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // pc24w1-sweep3-6: 006CF730's 006CF86D FADD +158h, 006CF877 FMUL 0.2,
+            // 006CF87D FSUBP, each rounded at PC24.
+            slide = static_cast<float>(bsp::cc13x87::x87_sub24(bsp::cc13x87::x87_add24(plane_desc_158(p), 1.0),
+                bsp::cc13x87::x87_mul24(static_cast<double>(index_9d8), 0.20000000298023224)));
+        } else {
+            slide = static_cast<float>((static_cast<double>(plane_desc_158(p)) + 1.0)
+                - static_cast<double>(index_9d8) * 0.20000000298023224);
+        }
         pos[0] = a[0] + dir[0] * slide;
         pos[1] = a[1];
         pos[2] = a[2] + dir[2] * slide;
@@ -17625,6 +17668,7 @@ bool GameUnitsHost::Impl::place_on_launch_spot_007c5f60(GameUnitSlot& p,
         float fwd[3] = {h > 0.0f ? dir[0] * (cp / h) : 0.0f, sp,
                         h > 0.0f ? dir[2] * (cp / h) : cp};
         const float fl = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] + fwd[2] * fwd[2]);
+        // pc24-lint: allow float ops (per-op single precision); the host's own orthonormalisation stands in for 0085DC80, labelled above
         for (float& c : fwd) c /= fl;
         // right = up x forward, up = forward x right (the identity pose's handedness).
         float right[3] = {fwd[2], 0.0f, -fwd[0]};
@@ -18642,10 +18686,24 @@ bool GameUnitsHost::Impl::landing_corridor_006c3b10(const LandingDeck& d,
     // so the AirField/MotherShip parent arm never answers.
     const std::array<float, 3> l = landing_local_006bcc90(d, p.motion.position);
     const double L = landing_run_length_006ba620(d);
-    const float zp = static_cast<float>(static_cast<double>(l[2]) - L * 1.5);   // 00CE3D78
+    float zp;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // pc24w1-sweep3-6: 006C3BD7 FMUL 1.5, 006C3BDD FSUBR, rounded at PC24.
+        zp = static_cast<float>(bsp::cc13x87::x87_sub24(l[2], bsp::cc13x87::x87_mul24(L, 1.5)));
+    } else {
+        zp = static_cast<float>(static_cast<double>(l[2]) - L * 1.5);   // 00CE3D78
+    }
     const double tan_a = static_cast<double>(static_cast<float>(
         std::tan(static_cast<double>(g.pilot_landing_approach_angle))));        // 00412E20
-    if (static_cast<double>(l[1]) > 5.0 - 2.0 * (tan_a * zp)) return false;     // 00D7A370
+    double ceiling;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 006C3C01 FMUL zp (rounded), 006C3C05 doubled, 006C3C07 FSUBR 5.0 (rounded).
+        const double tz = bsp::cc13x87::x87_mul24(tan_a, zp);
+        ceiling = bsp::cc13x87::x87_sub24(5.0, tz + tz);
+    } else {
+        ceiling = 5.0 - 2.0 * (tan_a * zp);
+    }
+    if (static_cast<double>(l[1]) > ceiling) return false;                      // 00D7A370
     const float w = static_cast<float>(static_cast<double>(d.width_b0) * 0.5);
     float e;
     if (l[0] > 0.0f) {
@@ -18656,7 +18714,13 @@ bool GameUnitsHost::Impl::landing_corridor_006c3b10(const LandingDeck& d,
         e = v < 0.0f ? v : 0.0f;                                   // 00415510 min
     }
     const float ev[3] = {e, l[1], zp};
-    const float over = static_cast<float>(static_cast<double>(avoid_len(ev)) - L * 1.5);
+    float over;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // pc24w1-sweep3-6: 006C3C85 FMUL 1.5, 006C3C8B FSUBR, rounded at PC24.
+        over = static_cast<float>(bsp::cc13x87::x87_sub24(avoid_len(ev), bsp::cc13x87::x87_mul24(L, 1.5)));
+    } else {
+        over = static_cast<float>(static_cast<double>(avoid_len(ev)) - L * 1.5);
+    }
     const float pb11 = static_cast<float>(
         static_cast<double>(g.pilot_landing_pos_behind) * 1.100000023841858);  // 00CE3DF0
     if (over > pb11) return false;
@@ -18711,11 +18775,25 @@ float GameUnitsHost::Impl::landing_radius_006c3e50(const LandingDeck& d,
         m = mx;
     } else if (bsp::unit_is_kind_of(p.class_id, 0x12) || bsp::unit_is_kind_of(p.class_id, 0x14)
                || bsp::unit_is_kind_of(p.class_id, 0x11)) {
-        m = static_cast<float>(static_cast<double>(mx) * 0.4000000059604645 +
-                               static_cast<double>(mn) * 0.6000000238418579);
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // pc24w1-sweep3-6: 007C67E8 FMUL 0.4, 007C67F2 FMUL 0.6, 007C67F8 FADDP,
+            // each rounded at PC24.
+            m = static_cast<float>(bsp::cc13x87::x87_add24(bsp::cc13x87::x87_mul24(mx, 0.4000000059604645),
+                                                  bsp::cc13x87::x87_mul24(mn, 0.6000000238418579)));
+        } else {
+            m = static_cast<float>(static_cast<double>(mx) * 0.4000000059604645 +
+                                   static_cast<double>(mn) * 0.6000000238418579);
+        }
     }
     const float turn = p.plane_turn_circle_radius * m;
-    return static_cast<float>(static_cast<double>(turn) * f * f);
+    float radius;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 006C3F35 FMULP R * f, 006C3F38 FMULP * f, each rounded at PC24.
+        radius = static_cast<float>(bsp::cc13x87::x87_mul24(bsp::cc13x87::x87_mul24(turn, f), f));
+    } else {
+        radius = static_cast<float>(static_cast<double>(turn) * f * f);
+    }
+    return radius;
 }
 
 // 006C5C40 (006C5C40-006C5E18, RET 4): on the landing circle.
@@ -18954,7 +19032,14 @@ void GameUnitsHost::Impl::landing_path_006c6020(LandingDeck& d, LandingAssignmen
     }
     const float rm = r < m1 ? r : m1;                               // 00415510(r, m1)
     const double arc = static_cast<double>(rm) * static_cast<double>(theta);
-    float path = static_cast<float>(static_cast<double>(g.pilot_landing_pos_behind) + arc);
+    float path;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // pc24w1-sweep3-6: 006C63EB FMUL min(r, m1) * theta and 006C63FE FADD PosBehind,
+        // each rounded at PC24.
+        path = static_cast<float>(bsp::cc13x87::x87_add24(g.pilot_landing_pos_behind, bsp::cc13x87::x87_mul24(rm, theta)));
+    } else {
+        path = static_cast<float>(static_cast<double>(g.pilot_landing_pos_behind) + arc);
+    }
     if (m1 > r) {
         const float qx = dir[0] * r + c[0];
         const float qz = r * dir[1] + c[2];
@@ -19086,7 +19171,10 @@ void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssign
     const float t = static_cast<float>(static_cast<double>(gap) / static_cast<double>(speed));
     float s;
     if (own4) {
-        s = 0.4000000059604645 * F > static_cast<double>(t) ? 0.0f
+        const double floor_t = kPc24PlaneTasksCc13Bound
+            ? bsp::cc13x87::x87_mul24(0.4000000059604645, F)   // pc24w1-sweep3-6: 006C4465 FMUL, rounded
+            : 0.4000000059604645 * F;
+        s = floor_t > static_cast<double>(t) ? 0.0f
             : bsp::clamped_interpolate_00419010(static_cast<float>(F * 0.699999988079071),
                   0.009999999776482582f, static_cast<float>(1.100000023841858 * F),
                   1.100000023841858f, t);
@@ -19095,10 +19183,20 @@ void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssign
             : bsp::clamped_interpolate_00419010(static_cast<float>(F * 0.75),
                   0.009999999776482582f, static_cast<float>(1.25 * F), 2.0f, t);
     }
-    const float sum = static_cast<float>(static_cast<double>(least) +
-        static_cast<double>(F) * k * static_cast<double>(speed));
-    const float x = static_cast<float>((static_cast<double>(own_path) - sum) /
-        static_cast<double>(own_path));
+    float sum;
+    float x;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // pc24w1-sweep3-6: (F * k) * speed + least (006C451B..006C4527, FSTP float), then
+        // (own - sum) / own (006C4533..006C4535), each op rounded at PC24.
+        sum = static_cast<float>(bsp::cc13x87::x87_add24(
+            bsp::cc13x87::x87_mul24(bsp::cc13x87::x87_mul24(F, static_cast<double>(k)), speed), least));
+        x = static_cast<float>(bsp::cc13x87::x87_div24(bsp::cc13x87::x87_sub24(own_path, sum), own_path));
+    } else {
+        sum = static_cast<float>(static_cast<double>(least) +
+            static_cast<double>(F) * k * static_cast<double>(speed));
+        x = static_cast<float>((static_cast<double>(own_path) - sum) /
+            static_cast<double>(own_path));
+    }
     const float last = bsp::clamped_interpolate_00419010(-0.15000000596046448f,
         0.009999999776482582f, 0.15000000596046448f, 2.0f, x);
     rec.spacing_8 = last > s ? s : last;
