@@ -21,6 +21,11 @@ namespace bsp {
 // friendly_in_line_eval 007DEDB0, the dogfight threat cone 009A85B0 and give-up
 // ratio 009A7B98, the takeoff run step 009CE2C0's ship obstacle factor, and
 // motion_step 00825F20's "wing trace2" log line (log text only).
+// vehicle_avoidance 007DF4F0 uses +110h as its own frame only while unit+B04h stays zero:
+// with speed > 10 and |+B04h| / speed > 0.1 the image builds the frame from
+// normalize(velocity + B04h) instead (007DF5E0-007DF959; game_hosts_units.cpp, the
+// comment above AvoidBox ob in vehicle_avoidance). No writer of +B04h was found, so the
+// +110h frame is the one that runs.
 // Movers when ON: gunfire avoidance flags and dodge direction, formation
 // station keeping and steer points, sight-follow targets, vehicle avoidance
 // probes, friendly line-of-fire tests, dogfight threat and give-up decisions,
