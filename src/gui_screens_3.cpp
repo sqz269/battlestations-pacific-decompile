@@ -4,6 +4,8 @@
 // this is wired into the game host; it is reconstructed and build-tested only.
 
 #include "bsp/gui_screens_3.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_hudgui_cc13.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -146,11 +148,26 @@ void hud_hints_show_0054e020(HudHintsState& screen, HudHintsHost& host, bool pau
         const std::array<float, 3> frame = host.widget_local_position_00aa67f0(screen.pause_frame_48);  // 0054E1AE
         const double y = frame[1];
         const double h1 = host.text_normalized_height_00ab6bd0(screen.pause_text_2c);  // 0054E1CB
-        host.widget_set_local_xy_00aa7d00(screen.pause_title_28, frame[0],
-                                          static_cast<float>(y - (h1 * 0.5 + kPauseTitleGap)));  // 0054E1F9
+        float title_y = 0.0F;
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // PC24: 0054E1D0 FMUL 0.5, 0054E1DC FADD gap, 0054E1E2 FSUBR y, each rounded.
+            using namespace cc13x87;
+            title_y = static_cast<float>(x87_sub24(y, x87_add24(x87_mul24(h1, 0.5), kPauseTitleGap)));
+        } else {
+            title_y = static_cast<float>(y - (h1 * 0.5 + kPauseTitleGap));
+        }
+        host.widget_set_local_xy_00aa7d00(screen.pause_title_28, frame[0], title_y);  // 0054E1F9
         const double h2 = host.text_normalized_height_00ab6bd0(screen.pause_text_2c);  // 0054E201
-        host.widget_set_local_xy_00aa7d00(screen.pause_button_38, frame[0],
-                                          static_cast<float>(h2 * 0.5 + static_cast<double>(frame[1]) + kPauseButtonGap));  // 0054E22F
+        float button_y = 0.0F;
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // PC24: 0054E206 FMUL 0.5, 0054E212 FADD frame y, 0054E216 FADD gap, each rounded.
+            using namespace cc13x87;
+            button_y = static_cast<float>(
+                x87_add24(x87_add24(x87_mul24(h2, 0.5), frame[1]), kPauseButtonGap));
+        } else {
+            button_y = static_cast<float>(h2 * 0.5 + static_cast<double>(frame[1]) + kPauseButtonGap);
+        }
+        host.widget_set_local_xy_00aa7d00(screen.pause_button_38, frame[0], button_y);  // 0054E22F
         hud_hints_play_cue_0054de90(1, host);                         // 0054E238
         return;
     }

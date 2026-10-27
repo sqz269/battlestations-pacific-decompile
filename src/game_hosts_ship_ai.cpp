@@ -9198,6 +9198,9 @@ public:
             using namespace bsp::cc13x87;
             const float x_sq = static_cast<float>(x87_mul24(x, x));
             const float z_sq = static_cast<float>(x87_mul24(z, z));
+            // 00419260 calls the CRT sqrt (00BF7030), which sets 53-bit PC (027F)
+            // before FSQRT; x87_sqrt24 matches only because the radicand is already a
+            // stored float (0041928E).
             const float length =
                 static_cast<float>(x87_sqrt24(static_cast<double>(
                     static_cast<float>(x87_add24(x_sq, z_sq)))));
