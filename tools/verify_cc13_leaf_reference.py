@@ -172,6 +172,23 @@ CODE = {
     0x7ae3e0: 0xa6,   # vector3 component max
     # cc13-fixture8 follow-up.
     0x6f22f0: 0x3e, 0x6f22b0: 0x3e,
+    # cc13-fixture9: vector helpers, exact compares and float copies.
+    0x42ae80: 0x21,   # vector3 divide in place
+    0x42ae50: 0x21,   # vector3 scale in place
+    0x42ae20: 0x23,   # vector3 divide scalar to
+    0x414260: 0x23,   # vector3 scale to
+    0x4142a0: 0x23,   # vector3 add to
+    0x42b220: 0x1d,   # vector3 dot
+    0x709ac0: 0x3b,   # vec3 sub (hidden return)
+    0xb50020: 0x2c,   # vector4 add
+    0x42aee0: 0x21,   # vector3 subtract in place
+    0x42aeb0: 0x21,   # vector3 add in place
+    0x427c90: 0x23,   # vector3 subtract to
+    0x475df0: 0x51,   # vector4 exact equals
+    0x453f40: 0x41,   # vector3 exact equals
+    0x533d30: 0x31,   # vec2 equal
+    0x6fdd00: 0x63,   # 4x4 transpose in place
+    0xb40400: 0x37,   # 2x4 from transposed matrix
 }
 # Tail-jump targets replaced by MOV EAX,ECX; RET, so a fixture reads the ECX a thunk passes on.
 TAIL_STUBS = (0x6833f0, 0x4f71d0)
