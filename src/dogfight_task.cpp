@@ -529,14 +529,22 @@ float follow_wait_value_009be3e0(bool in_position_85, const float member_minus_s
             result = v;
         } else {
             // 007B4E90: pi/2 - atan2(z, x), wrapped into [0, 2pi).
+            // pc24w1-sweep3-3: this is the OFF arm of kFollowWaitFloatHelpersCc13Bound,
+            // whose ON arm above is the image's per-op float chain; not re-wrapped.
+            // pc24-lint: allow OFF arm of kFollowWaitFloatHelpersCc13Bound (selected through arm())
             double hdg = 1.5707963267948966 - std::atan2(static_cast<double>(z), static_cast<double>(x));
+            // pc24-lint: allow OFF arm of kFollowWaitFloatHelpersCc13Bound
             if (hdg < 0.0) hdg += 6.283185307179586;
+            // pc24-lint: allow OFF arm of kFollowWaitFloatHelpersCc13Bound
             double d = hdg - leader_heading;
+            // pc24-lint: allow OFF arm of kFollowWaitFloatHelpersCc13Bound
             while (d > 3.141592653589793) d -= 6.283185307179586;
+            // pc24-lint: allow OFF arm of kFollowWaitFloatHelpersCc13Bound
             while (d < -3.141592653589793) d += 6.283185307179586;
             const float ang = static_cast<float>(d < 0.0 ? -d : d);
             float v = interp_00419010(dont_wait_hdg, 0.0f, wait_hdg, 1.0f, ang);
             if (v < 1.0f) {
+                // pc24-lint: allow OFF arm of kFollowWaitFloatHelpersCc13Bound
                 const float h = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
                                                              static_cast<double>(z) * z));
                 v = v + interp_00419010(good_position_dist, 1.0f, nearby_dist, 0.0f, h);
