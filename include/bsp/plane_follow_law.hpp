@@ -323,7 +323,7 @@ PlaneFollowPhaseA plane_follow_phase_a_009c0251(
 // GameUnitsHost::motion_step_00825f20 (the 009FBB20 circle steer) and
 // GameUnitsHost -> plane_follow_geometry_009bfee0 (009C1448 turn circle),
 // both into circle_tangent_points_004f4840.
-inline constexpr bool kCircleTangentUnorderedCc13Bound = false;
+inline constexpr bool kCircleTangentUnorderedCc13Bound = true;  // ON by pruning (cc9-sweep1b): nan_r 0 on every OFF run
 // Reach counter for kCircleTangentUnorderedCc13Bound (log only, sw1): calls to
 // 004F4840 and those with a NaN r, where ON proceeds and OFF declines; also for
 // kCircleTangentPc24Cc13Bound (sw1b): calls whose result or outs differ between its forms.
