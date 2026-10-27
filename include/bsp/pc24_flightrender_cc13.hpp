@@ -62,8 +62,22 @@ namespace bsp {
 // Movers: ocean wave heights, plane pose rows, plane turn rates, bearings, climb angles and
 // heading commands.
 //
-// Copies still to narrow: 00ADB480 vsub_bilinear_00adb480 and 004F9B30 quad_cross
-// (game_hosts_scene_contents.cpp, pc24w1-sweep1-4).
+// pc24w1-sweep1-4, the terrain segment walk in src/game_hosts_scene_contents.cpp:
+//  * 00ADC5F0 block_sample: sample * scale + offset, 00ADC62E..00ADC630; also its copy in
+//    cell_height_arm_00adb3a0 (00ADB3A0, CALL EDX at 00ADB42C) on the main-thread arm only.
+//  * 004F9B30 quad_cross (00ADEB80 line-quad test): products rounded before the FSUBRP,
+//    004F9B54..004F9BA0.
+//  * 00AE9BD0 leaf: 004193E0 (CALL at 00AE9C42), the squared length (xx + yy) + zz, 00419401..00419429.
+//  * 00AE9D80 node walk: the mirrors (max + min) - s, y_in / y_out and the leaf end points
+//    s + d * t, 00AE9E8B..00AEA019.
+//  * 00AEA2B0 ray walk: the 00419440 length, direction (q - p) / length, the mirrors and the
+//    slab t = (bound - o) / d, 00AEA2CB..00AEA465.
+//  * 00ADB480 vsub_bilinear_00adb480 (VSUB vertical probe): the bilinear chain as in
+//    grid_height_arm_00adb480.
+//  00ADA240 landscape_entry_segment_hit's march is not live (kTerrainSegmentQuadtreeBound and
+//  kTerrainVerticalSubwalkBound ON) and carries lint allows.
+// Movers: terrain segment hits (line of sight and ground probes through 00ADA240) and the
+// VSUB vertical probe height; not the Dyn hull ground contact.
 inline constexpr bool kPc24FlightRenderCc13Bound = false;
 
 }  // namespace bsp
