@@ -189,6 +189,23 @@ CODE = {
     0x533d30: 0x31,   # vec2 equal
     0x6fdd00: 0x63,   # 4x4 transpose in place
     0xb40400: 0x37,   # 2x4 from transposed matrix
+    # cc13-fixture10: record copies (FLD/FSTP float fields).
+    0x47d250: 0x85,   # record 54h copy
+    0x47f930: 0x85,   # record 54h copy assign
+    0x47d2e0: 0x79,   # record 4Ch copy
+    0x47f9c0: 0x79,   # record 4Ch copy assign
+    0x47f0c0: 0x67,   # record 40h copy
+    0x454970: 0x1f,   # shake key copy
+    0x7baa80: 0x70,   # plane state record copy
+    0x7baaf0: 0x7b,   # plane control state copy
+    0x80b890: 0x6d,   # turn path segment copy
+    0x811d10: 0x67,   # unit AI order copy
+    0xbc7f00: 0x4f,   # water record 30h copy
+    0x924280: 0x68,   # scene property copy 16 floats
+    0xb8e750: 0x2a,   # track key block copy
+    0x952df0: 0x97,   # copy 44h records
+    0x952f30: 0x97,   # copy backward 44h records
+    0x955090: 0x86,   # fill 44h records
 }
 # Tail-jump targets replaced by MOV EAX,ECX; RET, so a fixture reads the ECX a thunk passes on.
 TAIL_STUBS = (0x6833f0, 0x4f71d0)

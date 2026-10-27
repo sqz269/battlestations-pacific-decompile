@@ -5,6 +5,7 @@
 
 #include <cctype>
 #include <cmath>
+#include <cstring>
 #include <stdexcept>
 
 // Segments 88/91, second scene-graph pass (cc13-scene2). Evidence and ABIs:
@@ -1077,8 +1078,14 @@ void copy_track_range_00b8e730(const float track_08[4], float out[4]) {
     for (int i = 0; i < 4; ++i) out[i] = track_08[i];
 }
 
+// Six FLD/FSTP DWORD copies, which quiet a signalling NaN (cc13-fixture10).
 void copy_track_key_block_00b8e750(const float track_18[6], float out[6]) {
-    for (int i = 0; i < 6; ++i) out[i] = track_18[i];
+    for (int i = 0; i < 6; ++i) {
+        std::uint32_t bits;
+        std::memcpy(&bits, track_18 + i, 4);
+        bits = cc13x87::x87_fld_fstp_bits(bits);
+        std::memcpy(out + i, &bits, 4);
+    }
 }
 
 void group_params_apply_00b8eb20(float params_08, float& node_184, bool node_is_group) {

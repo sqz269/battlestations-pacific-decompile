@@ -25,7 +25,8 @@ std::int32_t ship_ai_path_node_decide_direction_009d5930(ShipAiPathNode& node) n
     // 009D5937-009D5986 is the rule bsp/ship_ai_path_planner.hpp projects from
     // 009D9E72-009D9ED4, instruction for instruction: the same three cases and
     // the same FCOMIP at 009D5970, which sets the carry when the plus route is
-    // strictly cheaper.
+    // strictly cheaper or the pair is unordered (009D5974 JC stores +1; see
+    // kShipAiPathNodeDirectionUnorderedCc13Bound for the C++ OFF arm's -1).
     node.direction = ship_ai_path_node_direction_009d9e6c(node);
     return node.direction;
 }

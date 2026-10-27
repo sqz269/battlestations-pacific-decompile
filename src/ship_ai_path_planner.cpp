@@ -3,6 +3,7 @@
 // Names are hypotheses, not recovered symbols.
 
 #include "bsp/ship_ai_path_planner.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include "bsp/vector_helpers.hpp"
 
@@ -139,10 +140,23 @@ std::int32_t ship_ai_path_node_direction_009d9e6c(const ShipAiPathNode& node) no
     if (node.link_plus == nullptr) {  // 009D9E86
         return -1;
     }
-    // 009D9E96..009D9ED4: the plus side wins only when it is strictly cheaper.
-    const float plus = node.cost_plus + node.link_plus_length + node.link_plus->remaining_length;
-    const float minus = node.cost_minus + node.link_minus_length + node.link_minus->remaining_length;
-    return plus < minus ? 1 : -1;
+    if constexpr (kShipAiPathNodeDirectionUnorderedCc13Bound) {
+        // 009D9EA6-009D9ED3: minus = ([+4Ch] + [+34h]) + minus->[+3Ch] and plus = ([+50h] +
+        // [+38h]) + plus->[+3Ch], each FADD rounded to 24 bits (main thread) and FSTP'd to a
+        // float; FCOMIP plus, minus then JB keeps EBP = +1 on CF, which is set by plus <
+        // minus and by an unordered pair; otherwise EBX = -1.
+        using cc13x87::x87_add24;
+        const float minus = static_cast<float>(
+            x87_add24(x87_add24(node.cost_minus, node.link_minus_length), node.link_minus->remaining_length));
+        const float plus = static_cast<float>(
+            x87_add24(x87_add24(node.cost_plus, node.link_plus_length), node.link_plus->remaining_length));
+        return !(plus >= minus) ? 1 : -1;
+    } else {
+        // 009D9E96..009D9ED4: the plus side wins only when it is strictly cheaper.
+        const float plus = node.cost_plus + node.link_plus_length + node.link_plus->remaining_length;
+        const float minus = node.cost_minus + node.link_minus_length + node.link_minus->remaining_length;
+        return plus < minus ? 1 : -1;
+    }
 }
 
 ShipAiPathNode* ship_ai_path_node_next_009d9ee6(const ShipAiPathNode& node) noexcept {
