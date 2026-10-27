@@ -292,7 +292,9 @@ void vector3_divide_scalar_to_0042ae20(const float v[3], float out[3], float s) 
     out[2] = static_cast<float>(cc13x87::x87_div24(v[2], s));
 }
 
-// 0042AE50, __thiscall(v, float s), RET 4, EAX = v: v *= s. 24-bit per FMUL, as above.
+// 0042AE50, __thiscall(v, float s), RET 4, EAX = v: v *= s. Its only image caller is
+// BSP_PlaneWanderer_FixedStep (007BE2A3), judged at the main thread's 24-bit precision
+// control: each FMUL rounds to 24 bits with the extended exponent (cc13-fixture9).
 float* vector3_scale_in_place_0042ae50(float v[3], float s) noexcept {
     v[0] = static_cast<float>(cc13x87::x87_mul24(s, v[0]));
     v[1] = static_cast<float>(cc13x87::x87_mul24(v[1], s));
