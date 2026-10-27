@@ -68,9 +68,21 @@ void alpha_from_non_black_bgra(std::uint8_t* pixels, std::uint32_t width, std::u
     }
 }
 
+// cc13-fixture6: the extent as the x87 forms it at 24-bit precision control (main thread):
+// FILD is exact, and FADD 2^32 (CE3978) for a negative int rounds to 24 bits.
+namespace {
+double unsigned_extent24(std::uint32_t v) {
+    const double w = static_cast<std::int32_t>(v);
+    return w < 0.0 ? add24(w, 4294967296.0) : w;
+}
+}  // namespace
+
+// cc13-fixture6: 1/width and 1/height are FDIV results at 24-bit precision control (main
+// thread, 00B50050's luminance pass). The column and row products are single roundings of
+// exact products, so they need no 24-bit model.
 void sample_offsets_downscale4x4(std::uint32_t width, std::uint32_t height, Float4 out[16]) {
-    const float inv_w = f(1.0 / unsigned_extent(width));
-    const float inv_h = f(1.0 / unsigned_extent(height));
+    const float inv_w = f(div24(1.0, unsigned_extent24(width)));
+    const float inv_h = f(div24(1.0, unsigned_extent24(height)));
     // Column x values are computed once, before the loop (XMM0..XMM3).
     const float col[4] = {f(inv_w * (0.0 - 1.5)), f(inv_w * -0.5), f(inv_w * 0.5), f(1.5 * inv_w)};
     for (int row = 0; row < 4; ++row) {
@@ -82,9 +94,10 @@ void sample_offsets_downscale4x4(std::uint32_t width, std::uint32_t height, Floa
     }
 }
 
+// cc13-fixture6: width * 3 (FMUL ST(1),ST(0)) and the reciprocal at 24-bit precision control.
 void sample_offsets_avg_lum3x3(std::uint32_t width, std::uint32_t height, Float4 out[9]) {
-    const float tu = f(1.0 / (unsigned_extent(width) * 3.0));
-    const float tv = f(1.0 / (unsigned_extent(height) * 3.0));
+    const float tu = f(div24(1.0, mul24(unsigned_extent24(width), 3.0)));
+    const float tv = f(div24(1.0, mul24(unsigned_extent24(height), 3.0)));
     const float y0 = f(-1.0 * tv);
     const float y1 = f(tv * 0.0);
     for (int i = -1; i < 2; ++i) {
@@ -287,12 +300,15 @@ void ortho_off_center_lh(float out[16], float l, float r, float b, float t, floa
     }
 }
 
+// cc13-fixture6: per x87 operation at 24-bit precision control (main thread, 00B714D0), in the
+// listing's order: (a*p.x + b*p.y) + c*p.z (00B65180-00B65193) is FSTP'd to float, minus d
+// is FSTP'd to float (00B6519D), and FCOMIP against 0 takes Outside on s > 0 (JA).
 std::uint32_t plane_set_classify_point(const PlaneRow* rows, int count, const float p[3]) {
     for (int i = 0; i < count; ++i) {
         const PlaneRow& q = rows[i];
-        const double dist = static_cast<double>(q.c) * p[2] + static_cast<double>(q.b) * p[1] +
-            static_cast<double>(q.a) * p[0];
-        if (0.0 < dist - q.d) return kPlaneSetOutside;
+        const float dot = f(add24(add24(mul24(q.a, p[0]), mul24(q.b, p[1])), mul24(q.c, p[2])));
+        const float s = f(sub24(dot, q.d));
+        if (s > 0.0f) return kPlaneSetOutside;
     }
     return kPlaneSetInside;
 }
@@ -519,11 +535,15 @@ void MitBlockPool::trim() {
     }
 }
 
+// cc13-fixture6: per x87 operation at 24-bit precision control (main thread, 00B8D150):
+// x*x and y*y (00B8B372, 00B8B376) summed and FSTP'd to float, the root (00BF7030) FSTP'd to
+// float, then FSUBR, FMUL and FADD each rounded to 24 bits. The root is a single rounding of
+// a float operand, so the double sqrt rounded to float is the same value.
 float flare_centre_weight(float x, float y, float visibility) {
     if (!(visibility > 0.0f)) return 0.0f;
-    const float sum = f(static_cast<double>(y) * y + static_cast<double>(x) * x);
+    const float sum = f(add24(mul24(y, y), mul24(x, x)));
     const float r = f(std::sqrt(static_cast<double>(sum)));
-    return f((1.4142136573791504 - r) * 0.20000000298023224 + 0.05000000074505806);
+    return f(add24(mul24(sub24(1.4142136573791504, r), 0.20000000298023224), 0.05000000074505806));
 }
 
 float flare_edge_fade(float x, float y, float visibility, float limit, bool limit_flag) {

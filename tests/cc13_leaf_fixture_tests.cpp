@@ -71,6 +71,12 @@
 #include "bsp/band_004b_cc13.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/cc13_gui1.hpp"
+// cc13-fixture6
+#include "bsp/path_movcam_seg46_argon.hpp"
+#include "bsp/terrain_render.hpp"
+#include "bsp/classes_seg7_cc13.hpp"
+#include "bsp/water_render.hpp"
+#include "bsp/cc13_sweepC.hpp"
 #include "cc13_leaf_reference.hpp"
 #include <float.h>
 #include <array>
@@ -1161,6 +1167,225 @@ template<class Open> void run_fixture8(Open open);
 // cc13-fixture4 (docs/CC13_FIXTURE_PASS_4.md); defined at the end of this file.
 void run_fixture4(const std::function<Case&(const char*)>& open);
 bool fixture4_pin(const std::string& name, bool& wants53, int& failures, int& nan_only, const char*& finding);
+// ---- cc13-fixture6: render and geometry float leaves (docs/CC13_FIXTURE_PASS_6.md) ----
+// A raw dword: any bit pattern, signalling NaNs included (one draw in eight forced to one), for
+// the routines that only move floats through FLD / FSTP.
+float fx6_raw_bits() {
+    std::uint32_t bits = next();
+    if (next() % 8 == 0) bits = (bits & 0x803fffffu) | 0x7f800001u;  // a signalling NaN
+    float v;
+    std::memcpy(&v, &bits, 4);
+    return v;
+}
+
+// Compares n floats: a match, a NaN sign/payload-only difference, or a mismatch.
+void fx6_check(Case& c, const float* a, const float* b, int n) {
+    if (nan_only_diff(a, b, n)) { c.check_nan_only(); return; }
+    const int k = first_diff(a, b, n);
+    check_note(c, k < 0, "[%d] %a / %a", k, k < 0 ? 0.0 : a[k], k < 0 ? 0.0 : b[k]);
+}
+
+template<class Open> void run_fixture6(Open open) {
+    {   using bsp::path_movcam_seg46_argon::Vec3;
+        auto& mn = open("007AE330 vector3 component min");
+        auto& mx = open("007AE3E0 vector3 component max");
+        auto nmin = at<Vec3* (__fastcall*)(Vec3*, const Vec3*, const Vec3*)>(cc13_leaf_007ae330);
+        auto nmax = at<Vec3* (__fastcall*)(Vec3*, const Vec3*, const Vec3*)>(cc13_leaf_007ae3e0);
+        for (int i = 0; i < 3000; ++i) {
+            Vec3 a, b;
+            float* pa = &a.x;
+            float* pb = &b.x;
+            for (int k = 0; k < 3; ++k) {
+                pa[k] = i % 7 == 0 ? fx6_raw_bits() : edge_or(-100, 100);
+                pb[k] = i % 5 == 0 ? pa[k] : (i % 7 == 1 ? fx6_raw_bits() : edge_or(-100, 100));
+            }
+            Vec3 o1{-9, -9, -9}, o2 = o1, o3 = o1, o4 = o1;
+            const bool r1 = nmin(&o1, &a, &b) == &o1;
+            bsp::path_movcam_seg46_argon::vector3_component_min_007ae330(o2, a, b);
+            if (!r1) mn.check(false); else fx6_check(mn, &o1.x, &o2.x, 3);
+            const bool r3 = nmax(&o3, &a, &b) == &o3;
+            bsp::path_movcam_seg46_argon::vector3_component_max_007ae3e0(o4, a, b);
+            if (!r3) mx.check(false); else fx6_check(mx, &o3.x, &o4.x, 3);
+        }
+    }
+    {
+        auto& c = open("00B999A0 plane signed distance");
+        auto native = at<float (__fastcall*)(const float*, int, const float*)>(cc13_leaf_00b999a0);
+        for (int i = 0; i < 3000; ++i) {
+            float plane[4], p[3];
+            for (auto& v : plane) v = edge_or(-2, 2);
+            for (auto& v : p) v = edge_or(-1000, 1000);
+            const float r1 = native(plane, 0, p), r2 = bsp::cc13_sweepC::plane_signed_distance_00b999a0(plane, p);
+            fx6_check(c, &r1, &r2, 1);
+        }
+    }
+    {
+        auto& c = open("00B65140 plane set classify point");
+        auto native = at<std::uint32_t (__fastcall*)(const void*, int, const float*)>(cc13_leaf_00b65140);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) std::uint8_t set[0x144]{};
+            auto* rows = reinterpret_cast<bsp::cc13fx::PlaneRow*>(set);
+            const int count = static_cast<int>(next() % 17);
+            for (int r = 0; r < 16; ++r) {
+                rows[r] = {edge_or(-1, 1), edge_or(-1, 1), edge_or(-1, 1), edge_or(-50, 50), next()};
+            }
+            std::memcpy(set + 0x140, &count, 4);
+            float p[3] = {edge_or(-60, 60), edge_or(-60, 60), edge_or(-60, 60)};
+            if (i % 30 == 0 && count > 0) {  // on the first plane: a*x + b*y + c*z = d
+                rows[0] = {0.0f, 1.0f, 0.0f, p[1], 0};
+            } else if (i % 3 == 0 && count > 0) {  // the last plane's s - d near 0
+                bsp::cc13fx::PlaneRow& q = rows[count - 1];
+                q.d = q.a * p[0] + q.b * p[1] + q.c * p[2];
+            }
+            const std::uint32_t n1 = native(set, 0, p), n2 = bsp::cc13fx::plane_set_classify_point(rows, count, p);
+            check_note(c, n1 == n2, "count=%d p=%a,%a,%a: %x / %x", count, p[0], p[1], p[2], n1, n2);
+        }
+    }
+    {
+        using bsp::cc13fx::Float4;
+        auto extent = [](int i) -> std::uint32_t {
+            switch (i % 8) {
+            case 0: return next();                                        // any, 2^31 and up included
+            case 1: return 0;
+            case 2: return 1u << (next() % 32);
+            case 3: return (next() >> 4) | 1u;                            // above 2^24, odd
+            default: return 1 + next() % 4096;
+            }
+        };
+        auto& d = open("00B4CC50 sample offsets downscale 4x4");
+        auto down = at<void (__stdcall*)(std::uint32_t, std::uint32_t, Float4*)>(cc13_leaf_00b4cc50);
+        auto& a = open("00B4CDE0 sample offsets average luminance 3x3");
+        auto avg = at<void (__stdcall*)(std::uint32_t, std::uint32_t, Float4*)>(cc13_leaf_00b4cde0);
+        for (int i = 0; i < 2000; ++i) {
+            const std::uint32_t w = extent(i), h = extent(i / 8 + i);
+            Float4 o1[16], o2[16];
+            for (int k = 0; k < 16; ++k) o1[k] = o2[k] = Float4{3.0f, 4.0f, 5.0f, 6.0f};
+            down(w, h, o1);
+            bsp::cc13fx::sample_offsets_downscale4x4(w, h, o2);
+            fx6_check(d, &o1[0].x, &o2[0].x, 64);
+            Float4 q1[9], q2[9];
+            for (int k = 0; k < 9; ++k) q1[k] = q2[k] = Float4{3.0f, 4.0f, 5.0f, 6.0f};
+            avg(w, h, q1);
+            bsp::cc13fx::sample_offsets_avg_lum3x3(w, h, q2);
+            fx6_check(a, &q1[0].x, &q2[0].x, 36);
+        }
+    }
+    {
+        auto& c = open("00B8B350 flare centre weight");
+        auto native = at<float (__fastcall*)(const void*)>(cc13_leaf_00b8b350);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) std::uint8_t flare[0x200]{};
+            const float x = edge_or(-1.5f, 1.5f), y = edge_or(-1.5f, 1.5f), vis = i % 10 == 0 ? edge_or(-1, 1) : edge_or(0, 1);
+            std::memcpy(flare + 0x1a4, &x, 4);
+            std::memcpy(flare + 0x1a8, &y, 4);
+            std::memcpy(flare + 0x1b4, &vis, 4);
+            const float r1 = native(flare), r2 = bsp::cc13fx::flare_centre_weight(x, y, vis);
+            fx6_check(c, &r1, &r2, 1);
+        }
+    }
+    {
+        auto& c = open("00481510 box corners from bounds");
+        auto native = at<void* (__fastcall*)(void*, int, const float*)>(cc13_leaf_00481510);
+        for (int i = 0; i < 3000; ++i) {
+            float bounds[6];
+            for (auto& v : bounds) v = edge_or(-500, 500);
+            float b1[28], b2[28];
+            for (int k = 0; k < 28; ++k) b1[k] = b2[k] = static_cast<float>(k) + 0.5f;
+            const bool r = native(b1, 0, bounds) == b1;
+            bsp::cc13_seg7::box_corners_from_bounds_00481510(reinterpret_cast<std::uint8_t*>(b2), bounds);
+            if (!r) c.check(false); else fx6_check(c, b1, b2, 28);
+        }
+    }
+    {
+        auto& c = open("00B9A3F0 normal map layers");
+        auto native = at<void (__fastcall*)(void*, int, const float*, const float*)>(cc13_leaf_00b9a3f0);
+        for (int i = 0; i < 3000; ++i) {
+            float scales[4], speeds[4];
+            for (auto& v : scales) v = edge_or(-64, 64);
+            for (auto& v : speeds) v = edge_or(-4, 4);
+            float field[0x68 / 4];
+            for (int k = 0; k < 0x68 / 4; ++k) field[k] = -7.0f;
+            native(field, 0, scales, speeds);
+            const bsp::water_render::NormalMapLayers l = bsp::water_render::set_normal_map_layers_00b9a3f0(scales, speeds);
+            const float o2[8] = {l.inverse_scale_44.x, l.inverse_scale_44.y, l.inverse_scale_44.z, l.inverse_scale_44.w,
+                                 l.scroll_speed_54.x, l.scroll_speed_54.y, l.scroll_speed_54.z, l.scroll_speed_54.w};
+            fx6_check(c, field + 0x44 / 4, o2, 8);
+        }
+    }
+    {
+        auto& c = open("00B75DE0 matrix from transposed 3x4");
+        auto native = at<void (__fastcall*)(float*, const float*)>(cc13_leaf_00b75de0);
+        auto& t = open("00B40440 float3x4 from matrix transposed");
+        auto native_t = at<void (__fastcall*)(std::uint32_t*, int, const std::uint32_t*)>(cc13_leaf_00b40440);
+        for (int i = 0; i < 2000; ++i) {
+            float src[16], o1[16], o2[16];
+            for (auto& v : src) v = i % 2 ? fx6_raw_bits() : edge_or(-100, 100);
+            for (int k = 0; k < 16; ++k) o1[k] = o2[k] = -5.0f;
+            native(o1, src);
+            bsp::cc13_scene2::matrix_from_transposed_3x4_00b75de0(o2, src);
+            fx6_check(c, o1, o2, 16);
+            std::uint32_t m[16], t1[12], t2[12];
+            std::memcpy(m, src, sizeof m);
+            for (int k = 0; k < 12; ++k) t1[k] = t2[k] = 0xdeadbeefu;
+            native_t(t1, 0, m);
+            bsp::cc13_render1::float3x4_from_matrix_transposed_00b40440(t2, m);
+            fx6_check(t, reinterpret_cast<const float*>(t1), reinterpret_cast<const float*>(t2), 12);
+        }
+    }
+    {
+        auto& a = open("00ADBD00 height field height range (1e10 / -1000)");
+        auto& b = open("00ADB280 height field height range (100000 / -100000)");
+        auto na = at<void (__fastcall*)(void*)>(cc13_leaf_00adbd00);
+        auto nb = at<void (__fastcall*)(void*)>(cc13_leaf_00adb280);
+        for (int i = 0; i < 1000; ++i) {
+            const std::uint32_t cols = next() % 5, rows = next() % 5;
+            float tiles[25][8]{};
+            void* table[25]{};
+            for (std::uint32_t k = 0; k < cols * rows; ++k) {
+                tiles[k][5] = i % 9 == 0 ? fx6_raw_bits() : edge_or(-2000, 3000);
+                tiles[k][6] = i % 9 == 1 ? fx6_raw_bits() : edge_or(-2000, 3000);
+                table[k] = next() % 5 ? tiles[k] : nullptr;
+            }
+            for (int which = 0; which < 2; ++which) {
+                alignas(4) std::uint8_t f1[0x48]{}, f2[0x48]{};
+                void* const tp = table;
+                std::memcpy(f1 + 0x38, &cols, 4);
+                std::memcpy(f1 + 0x3c, &rows, 4);
+                std::memcpy(f1 + 0x40, &tp, 4);
+                std::memcpy(f2, f1, sizeof f1);
+                (which ? nb : na)(f1);
+                bsp::cc13_terrain::height_field_compute_height_range(which ? 0x00ADB280u : 0x00ADBD00u, f2);
+                fx6_check(which ? b : a, reinterpret_cast<const float*>(f1 + 0x10), reinterpret_cast<const float*>(f2 + 0x10), 2);
+            }
+        }
+    }
+    {
+        auto& c = open("00AE05E0 AABB classify against planes");
+        auto native = at<int (__fastcall*)(int, const float*, const float*, const float*)>(cc13_leaf_00ae05e0);
+        for (int i = 0; i < 3000; ++i) {
+            const int count = static_cast<int>(next() % 7);
+            std::vector<bsp::TerrainPlane> planes(static_cast<std::size_t>(count));
+            float raw[6 * 4];
+            for (int k = 0; k < count; ++k) {
+                planes[k] = {edge_or(-1, 1), edge_or(-1, 1), edge_or(-1, 1), edge_or(-100, 100)};
+                std::memcpy(raw + 4 * k, &planes[k], 16);
+            }
+            const bsp::TerrainVec3f centre{edge_or(-100, 100), edge_or(-100, 100), edge_or(-100, 100)};
+            const bsp::TerrainVec3f extent{edge_or(0, 30), edge_or(0, 30), edge_or(0, 30)};
+            if (count > 0 && i % 3 == 0) {  // the last plane's s - d near +r or -r
+                bsp::TerrainPlane& q = planes[count - 1];
+                const float dot = q.a * centre.x + q.b * centre.y + q.c * centre.z;
+                const float r = std::fabs(q.b) * extent.y + std::fabs(q.a) * extent.x + std::fabs(q.c) * extent.z;
+                q.d = i % 2 ? dot - r : dot + r;
+                std::memcpy(raw + 4 * (count - 1), &q, 16);
+            }
+            const int n1 = native(count, raw, &centre.x, &extent.x);
+            const int n2 = static_cast<int>(bsp::terrain_box_classify_planes_00ae05e0(planes, centre, extent));
+            check_note(c, n1 == n2, "count=%d: %d / %d", count, n1, n2);
+        }
+    }
+}
+// ---- end cc13-fixture6 ----
 
 }  // namespace
 
@@ -1418,6 +1643,7 @@ int main() {
         run_fixture2([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
         run_fixture3([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
         run_fixture5([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
+        run_fixture6([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });  // cc13-fixture6
     }
     // cc13-fixture8: the same two passes over its own input stream.
     for (const unsigned pc : {static_cast<unsigned>(_PC_53), static_cast<unsigned>(_PC_24)}) {

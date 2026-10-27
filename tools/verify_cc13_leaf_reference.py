@@ -153,6 +153,21 @@ CODE = {
     0x7b8140: 0xa3,   # float window set sample and sum
     0x7ba450: 0x49,   # max3
     0xab0fe0: 0x51,   # gui colour equal
+    # cc13-fixture6: render and geometry float leaves.
+    0xae05e0: 0x127,  # AABB classify against a plane set
+    0xb65140: 0x99,   # plane set classify point
+    0xb4cc50: 0xde,   # sample offsets downscale 4x4
+    0xb4cde0: 0xbc,   # sample offsets average luminance 3x3
+    0xb8b350: 0x55,   # flare centre weight (sqrt)
+    0x481510: 0x111,  # box corners from bounds
+    0xb9a3f0: 0x55,   # ocean normal map layers
+    0xb999a0: 0x4a,   # plane signed distance
+    0xb75de0: 0x66,   # matrix from transposed 3x4
+    0xb40440: 0x4d,   # float3x4 from matrix transposed
+    0xadbd00: 0xbf,   # height field height range (1e10 / -1000)
+    0xadb280: 0xbf,   # height field height range (100000 / -100000)
+    0x7ae330: 0xa6,   # vector3 component min
+    0x7ae3e0: 0xa6,   # vector3 component max
 }
 # Tail-jump targets replaced by MOV EAX,ECX; RET, so a fixture reads the ECX a thunk passes on.
 TAIL_STUBS = (0x6833f0, 0x4f71d0)
@@ -184,6 +199,9 @@ DATA = {
     # cc13-fixture4 constants.
     0xd7a244: 4, 0xd7a248: 4, 0xd638e4: 4,  # and 00D7A210, listed by fixture8
     0xcef1b8: 8,                   # cc13-fixture7: the double 720.0 (00AB6BD0 divisor)
+    # cc13-fixture6 constants (00CE3D78, 00D7A250 and 00D7A258 are listed above).
+    0xce3978: 4, 0xcec9e0: 8, 0xd633e0: 8,
+    0xce3d10: 8, 0xd7a270: 8, 0xce4970: 4, 0xd7a240: 4, 0xce4bc8: 4, 0xd5d2d4: 4,
 }
 SQRT = 0xbf7030
 SQRT_STUB = bytes([0xd9, 0xfa, 0xc3])

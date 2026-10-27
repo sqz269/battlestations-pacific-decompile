@@ -397,9 +397,10 @@ std::int32_t baked_frame_index_00b92500(const BakedTrack& track, std::int32_t ch
     return frame * track.nodes_per_frame;
 }
 
+// Each element moves by FLD / FSTP DWORD, which quiets a signalling NaN (cc13-fixture6).
 void matrix_from_transposed_3x4_00b75de0(float out[16], const float src[12]) {
     for (int r = 0; r < 3; ++r)
-        for (int c = 0; c < 4; ++c) out[c * 4 + r] = src[r * 4 + c];
+        for (int c = 0; c < 4; ++c) out[c * 4 + r] = cc13x87::x87_fld_fstp(src[r * 4 + c]);
     out[3] = 0;
     out[7] = 0;
     out[11] = 0;
