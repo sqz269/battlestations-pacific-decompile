@@ -39,6 +39,22 @@ namespace bsp {
 // Sites (pc24w1-sweep2-2, listed in the ship_ai_approach_update.cpp block comment):
 //   009F1BC0, 009E46F0, 009E7FC0, 009E76D0 slot total (also used by ship_ai_ring_scan.cpp),
 //   009E5E90, 009E6A90, 009E6E80, 009E9190, 0095E9A0 (ship_ai_approach_update.cpp)
+// Sites (pc24w1-sweep2-3):
+//   007ADD70 path follow step cursor (ship_ai_path_cursor.cpp)
+//   00416270 free bearing sum of products (ship_ai_free_bearing.cpp)
+//   006BC0C0 heading to direction, 00828F20 class derived motion (ship_ai_throttle_ring.cpp)
+//   0074F490 leak model build, the 00937F0B..00937F19 term (game_hosts_units.cpp)
+//   009E4A60 / 009E9EB0 sub attack (ship_ai_sub_attack.cpp) carry only pc24-lint allow
+//            comments; their live chains are under kShipAiFireStepPc24Cc13Bound, not here
+// Sites (pc24w1-sweep2-6):
+//   009D0C10 torpedo goaway heading (torpedo_goaway_tick.cpp)
+//   009D56F0 throttle band index (ship_ai_clearance_profile.cpp)
+//   009D6B40 throttle profile index (ship_ai_obstacle_tables.cpp)
+//   009DB820 goal planar distance, 009F1420 goal vector refresh (ship_ai_goal_vector.cpp)
+//   009E4330 nav block constructor (ship_ai_nav_block_ctor.cpp)
+//   009E6400 decay score, 009E6870 arc cost (ship_ai_ring_scan.cpp)
+//   009E76D0 wobble phase (ship_ai_ring_scan.cpp and ship_ai_approach_update.cpp)
+//   009E9190 traffic gate 009E929B..009E92E1 (ship_ai_approach_update.cpp)
 // Movers: ship headings, throttle and path picks, submarine depth, torpedo run times and hits.
 inline constexpr bool kPc24ShipAiCc13Bound = false;
 
