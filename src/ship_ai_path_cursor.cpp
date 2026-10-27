@@ -3,6 +3,8 @@
 #include <cmath>
 
 #include "bsp/unit_rudder.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 namespace bsp {
 
@@ -154,8 +156,15 @@ ShipAiPathFollowStep ship_ai_path_follow_step_007add70(ShipAiPathCursor& cursor,
         const float pz = has_path && point_count > 0 ? points_xyz[at * 3 + 2] : 0.0f;
         const float dx = px - pos_x;
         const float dz = pz - pos_z;
-        const float dist_sq =
-            static_cast<float>(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
+        float dist_sq;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 007ADE4D FMUL ST0, 007ADE51 FMULP, 007ADE53 FADDP, each rounded at PC24.
+            dist_sq = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(dz, dz),
+                                                            cc13x87::x87_mul24(dx, dx)));
+        } else {
+            dist_sq =
+                static_cast<float>(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
+        }
         hit = radius_sq > dist_sq;
         index += step;
         if (index >= point_count) {
@@ -171,9 +180,21 @@ ShipAiPathFollowStep ship_ai_path_follow_step_007add70(ShipAiPathCursor& cursor,
             if (0.0f > a) a = static_cast<float>(a + 6.2831854820251465);  // 00CE3828
             const float turn = wrapped_angle_subtract_00438b10(heading, a);
             const float s = static_cast<float>(std::sin(static_cast<double>(turn)));
-            const float reach = static_cast<float>(
-                ((1.0 - factor) * std::fabs(s) + factor) * static_cast<double>(radius));
-            hit = static_cast<double>(reach) * reach > dist_sq;
+            if constexpr (kPc24ShipAiCc13Bound) {
+                // 007ADF19 FSUBRP 1 - f, 007ADF24 FMUL |s|, 007ADF28 FADDP f, 007ADF2A
+                // FMUL radius, stored; then 007ADF3C FMULP reach * reach is rounded before
+                // the 007ADF40 FCOMIP against the stored distance.
+                const float reach = static_cast<float>(cc13x87::x87_mul24(
+                    cc13x87::x87_add24(cc13x87::x87_mul24(cc13x87::x87_sub24(1.0, factor),
+                                                          std::fabs(s)),
+                                       factor),
+                    radius));
+                hit = cc13x87::x87_mul24(reach, reach) > dist_sq;
+            } else {
+                const float reach = static_cast<float>(
+                    ((1.0 - factor) * std::fabs(s) + factor) * static_cast<double>(radius));
+                hit = static_cast<double>(reach) * reach > dist_sq;
+            }
             if (!hit) continue;
         }
         out.hit_pass = pass;
