@@ -33,6 +33,25 @@ namespace bsp {
 // Expected movers when ON: dogfight lead points and fine-aim angles, the arc
 // predictor's arc/straight verdicts, maneuver headings and pitch, the avoid
 // turn's bank decay, and early-edge target pickups.
+//   units-DE (cc13-pc24w1-units-DE), the strafe/ordnance and flight-core host
+//   bodies (PlaneBinding methods unless named otherwise):
+//     009CA870 st_gotowards_tick (3-D and planar squared distances)
+//     009CB1B0 st_aim_tick (|l|^2, stored as float at 009CB349)
+//     009CADB0 st_attackrun_tick (ceiling * 0.9 - y)
+//     007C1FB0 lb_rack_timing (BombDelay * (n - 1) + longest)
+//     009C58D0 run_dive_bomb_aimdive_tick (stand-in d . row / |row|^2, per op as
+//              df_local)
+//     009BEBA0 moveto_refresh (planar distance dx*dx + dz*dz)
+//     009FBB20 circle_steer (d2 and w = (ratio - 1) / 0.2)
+//     007D9A70 control_authority (hold * 0.6 + r)
+//     007DC830 free_flight_wreck_lift (|bank| * 0.8 + 0.6 and (q * u) * h)
+//     007CE040 motion_step fixed-step velocity / acceleration (FDIV by the step,
+//              not * 1/dt; 007CED84-007CEE3F)
+//     007B8E70 kz_forward_speed_b2c (stand-in dot in 0042D0D0's order, the ctl+44h
+//              writer at 007D9C34; PROVISIONAL: the 0085DEA0 matrix vs pose_row2)
+// Movers (units-DE): strafe range/height and aim, level-bomb release delay,
+// dive-bomb aim point, moveto distance, circle steer, control authority, wreck
+// lift, the fighter lead's target acceleration, kamikaze forward speed.
 inline constexpr bool kPc24UnitsHostCc13Bound = false;
 
 namespace pc24_unitshost {
