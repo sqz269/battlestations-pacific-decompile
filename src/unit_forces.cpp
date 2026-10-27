@@ -1,4 +1,6 @@
 #include "bsp/unit_forces.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <cmath>
 
@@ -50,10 +52,22 @@ UnitLeakTickResult unit_leak_tick_0074f930(UnitLeakEntry* entries, std::uint32_t
 
     // 0074F9CB..0074FA4F. The health read is 00923BE0; its +5Dh gate suppresses the cap.
     if (result.total_water > 0.0f && !health_gate_5d) {
-        const double ratio = (static_cast<double>(1.0) - static_cast<double>(unit_health)) *
-                             static_cast<double>(settings_flood_scale) *
-                             static_cast<double>(capacity) / static_cast<double>(result.total_water);
-        const float scale = static_cast<float>(ratio);
+        float scale;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 0074F9FE FLD1, 0074FA00 FSUBRP (1 - health), 0074FA02 FMUL [+404h],
+            // 0074FA08 FMUL [+0Ch], 0074FA0B FDIV [+28h], 0074FA0E FSTP float: each op
+            // rounds to 24 bits on the main thread.
+            using namespace cc13x87;
+            const double ratio = x87_div24(
+                x87_mul24(x87_mul24(x87_sub24(1.0, unit_health), settings_flood_scale), capacity),
+                result.total_water);
+            scale = static_cast<float>(ratio);
+        } else {
+            const double ratio = (static_cast<double>(1.0) - static_cast<double>(unit_health)) *
+                                 static_cast<double>(settings_flood_scale) *
+                                 static_cast<double>(capacity) / static_cast<double>(result.total_water);
+            scale = static_cast<float>(ratio);
+        }
         if (scale < 1.0f) {
             for (std::uint32_t i = 0; i < count; ++i) {
                 entries[i].water *= scale;
@@ -235,10 +249,23 @@ float unit_propeller_turn_assist_00825de0(float yaw_rate, float propeller_load,
 
 OceanVec3 unit_steering_torque_00937440(const UnitSteeringTorqueInputs& in) noexcept {
     // 0093746D..009374A1.
-    const double along = static_cast<double>(in.velocity.z) * static_cast<double>(in.axis.z) +
-                         static_cast<double>(in.velocity.x) * static_cast<double>(in.axis.x) +
-                         static_cast<double>(in.velocity.y) * static_cast<double>(in.axis.y);
-    float ratio = static_cast<float>(along / static_cast<double>(in.reference_speed));
+    float ratio;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 00937472 FLD v[4] * axis+1Ch, 0093747B FLD v[0] * axis+18h, 00937480 FADDP,
+        // 00937482 FLD v[8] * axis+20h, 00937488 FADDP, 0093748A FSTP float (the dot);
+        // 0093749B FDIVR by the 0080FC30 reference speed, 009374A7 FSTP float. Each op
+        // rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        const float dot = static_cast<float>(x87_add24(
+            x87_add24(x87_mul24(in.velocity.y, in.axis.y), x87_mul24(in.velocity.x, in.axis.x)),
+            x87_mul24(in.velocity.z, in.axis.z)));
+        ratio = static_cast<float>(x87_div24(dot, in.reference_speed));
+    } else {
+        const double along = static_cast<double>(in.velocity.z) * static_cast<double>(in.axis.z) +
+                             static_cast<double>(in.velocity.x) * static_cast<double>(in.axis.x) +
+                             static_cast<double>(in.velocity.y) * static_cast<double>(in.axis.y);
+        ratio = static_cast<float>(along / static_cast<double>(in.reference_speed));
+    }
     ratio = native_abs(ratio);
 
     // 009374C5..009374DC.
