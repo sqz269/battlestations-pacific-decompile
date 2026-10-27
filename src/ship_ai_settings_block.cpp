@@ -240,13 +240,23 @@ float weapon_hit_accuracy_range_fraction_00838530(const WeaponHitAccuracyProfile
         w = clamped_interpolate_00419010(profile.small_target_size, 1.0f,
                                          profile.large_target_size, 0.0f, target_length);
     }
-    // 0083857C..00838589: FLD w, FLD1, FSUBRP, FSTP float.
-    const float one_minus_w = static_cast<float>(1.0 - static_cast<double>(w));
-    const float r_small = range_fraction_row_00838530(profile.small_target_accuracy, accuracy);
-    const float r_large = range_fraction_row_00838530(profile.large_target_accuracy, accuracy);
-    // 008386C6..008386D8: r_large * (1-w) + r_small * w, one float store.
-    return static_cast<float>(static_cast<double>(r_large) * one_minus_w +
-                              static_cast<double>(r_small) * w);
+    if constexpr (kWeaponHitAccuracyBlendPc24Cc13Bound) {
+        // 0083857C..00838589: FLD w, FLD1, FSUBRP, FSTP float.
+        const float one_minus_w = 1.0f - w;
+        const float r_small = range_fraction_row_00838530(profile.small_target_accuracy, accuracy);
+        const float r_large = range_fraction_row_00838530(profile.large_target_accuracy, accuracy);
+        // 008386C6..008386D8: each FMUL and the FADDP round to float at 24-bit;
+        // only the two FMUL roundings differ from OFF.
+        return r_large * one_minus_w + r_small * w;
+    } else {
+        // 0083857C..00838589: FLD w, FLD1, FSUBRP, FSTP float.
+        const float one_minus_w = static_cast<float>(1.0 - static_cast<double>(w));
+        const float r_small = range_fraction_row_00838530(profile.small_target_accuracy, accuracy);
+        const float r_large = range_fraction_row_00838530(profile.large_target_accuracy, accuracy);
+        // 008386C6..008386D8: r_large * (1-w) + r_small * w, one float store.
+        return static_cast<float>(static_cast<double>(r_large) * one_minus_w +
+                                  static_cast<double>(r_small) * w);
+    }
 }
 
 float weapon_hit_accuracy_scaled_008387b0(const WeaponHitAccuracyProfile profiles[4],
