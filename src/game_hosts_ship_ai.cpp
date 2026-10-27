@@ -51,6 +51,7 @@
 #include "bsp/building_pads.hpp"
 #include "bsp/ship_ai_station_keeping.hpp"
 #include "bsp/ship_ai_switch_reach.hpp"
+#include "bsp/hud_movie_camera.hpp"
 #include "bsp/ship_ai_torpedo_response.hpp"
 #include "bsp/ship_ai_arm_final_step.hpp"
 #include "bsp/ship_ai_layer_selection.hpp"
@@ -5854,6 +5855,14 @@ public:
     std::uint32_t engagement_target_009e5e00() override {
         owner_.done("ShipAiApproach::engagement_target_009e5e00", 0x009e5e00u);
         const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        if (t != 0u) {
+            // Reach counter (cc9-sweep2b, log-only): ON answers 0 for these.
+            bsp::ShipAiSwitchReach& reach = bsp::ship_ai_switch_reach();
+            ++reach.engage_target_reads;
+            if (!(t - 1u < owner_.units.count() && owner_.units.unit_is_kind_of(t - 1u, 0x1c))) {
+                ++reach.engage_target_differs;
+            }
+        }
         if constexpr (kEngagementTargetKindTestCc13Bound) {
             // 009E5E05..009E5E26: t answers only when t->vtable[5Ch](1Ch) is true.
             const bool known = t != 0u && t - 1u < owner_.units.count();
@@ -15237,6 +15246,28 @@ void GameShipAiHost::report() {
             bsp::kShipAiThrottleProfileNanArmsCc13Bound ? 1 : 0,
             bsp::kShipAiNavigationNanArmsCc13Bound ? 1 : 0,
             bsp::kShipAiFireStepPc24Cc13Bound ? 1 : 0);
+        host.log.notef("summary mission torpedo home sector reach calls=%llu differs=%llu "
+            "bound=%d (009D3BB4-009D3BC8 kTorpedoHomeSectorScaleCc13Bound; packet cc9-sweep2b)",
+            reach.torpedo_home_calls, reach.torpedo_home_differs, reach.torpedo_home_bound);
+        host.log.notef("summary mission cc13 switch reach engage_target_reads=%llu "
+            "engage_target_differs=%llu water_rate_calls=%llu water_rate_differs=%llu "
+            "order_step_calls=%llu order_step_differs=%llu movie_begin_modifier_differs=%llu "
+            "movie_empty_clock_differs=%llu movie_stale_flag_differs=%llu "
+            "seabed_speed_calls=%llu seabed_speed_differs=%llu bound=%d%d%d%d%d%d%d "
+            "(009E5E00, 007DA406, 0080E000, 00791020/0079A3B0/007911E0, 0092D730; "
+            "packet cc9-sweep2b)",
+            reach.engage_target_reads, reach.engage_target_differs, reach.water_rate_calls,
+            reach.water_rate_differs, reach.order_step_calls, reach.order_step_differs,
+            reach.movie_begin_modifier_differs, reach.movie_empty_clock_differs,
+            reach.movie_stale_flag_differs, reach.seabed_speed_calls,
+            reach.seabed_speed_differs,
+            kEngagementTargetKindTestCc13Bound ? 1 : 0,
+            reach.water_rate_bound,
+            kUnitAiOrderResetFieldsCc13Bound ? 1 : 0,
+            kMovieBeginDropsModifierCc13Bound ? 1 : 0,
+            kMovieUpdateEmptyTrackClockCc13Bound ? 1 : 0,
+            kMovieStepStaleTrackFlagCc13Bound ? 1 : 0,
+            kSubmarineSeabedSpeedPc24Cc13Bound ? 1 : 0);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {

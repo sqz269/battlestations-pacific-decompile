@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/game_hosts_ready.hpp"  // kSunkShipFlushBound, packet cc13-jm08
 #include "bsp/hull_terrain_contact.hpp"
 #include "bsp/entity_orders.hpp"  // packet cc13-fix1: the command class category
@@ -12206,6 +12207,21 @@ public:
         bsp::SubmarineSeabedScan& scan = slot_.sub_scan;
         bsp::submarine_scan_publish_00855440(scan, slot_.sub_bands[3]);
         float speed = 0.0f;
+        {
+            // Reach counter (cc9-sweep2b, log-only): both forms of 0092D730.
+            const float vy_ry = slot_.motion.linear_velocity.y * slot_.motion.pose_row2[1];
+            const float vx_rx = slot_.motion.linear_velocity.x * slot_.motion.pose_row2[0];
+            const float vz_rz = slot_.motion.linear_velocity.z * slot_.motion.pose_row2[2];
+            const float per_op = (vy_ry + vx_rx) + vz_rz;
+            // pc24-lint: allow reach counter mirrors the OFF arm's single rounding
+            const float once = static_cast<float>(
+                static_cast<double>(slot_.motion.linear_velocity.y) * slot_.motion.pose_row2[1]
+                + static_cast<double>(slot_.motion.linear_velocity.x) * slot_.motion.pose_row2[0]
+                + static_cast<double>(slot_.motion.linear_velocity.z) * slot_.motion.pose_row2[2]);
+            bsp::ShipAiSwitchReach& reach = bsp::ship_ai_switch_reach();
+            ++reach.seabed_speed_calls;
+            if (!bsp::ship_ai_reach_same_bits(per_op, once)) ++reach.seabed_speed_differs;
+        }
         if constexpr (kSubmarineSeabedSpeedPc24Cc13Bound) {
             // 0092D74E-0092D763: FMUL, FMUL, FADDP, FMUL, FADDP, each to 24 bits.
             const float vy_ry = slot_.motion.linear_velocity.y * slot_.motion.pose_row2[1];
@@ -41460,6 +41476,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ri.max_yaw_control = g.dynamics_water_max_yaw_control;
                                 ri.max_ctrl_angle = g.dynamics_water_max_ctrl_angle;
                                 ri.min_ctrl_angle = g.dynamics_water_min_ctrl_angle;
+                            }
+                            {
+                                // Reach counter (cc9-sweep2b, log-only).
+                                bsp::ShipAiSwitchReach& reach = bsp::ship_ai_switch_reach();
+                                ++reach.water_rate_calls;
+                                reach.water_rate_bound =
+                                    GameUnitsHost::Impl::kWaterRateFactorsNanOrderCc13Bound ? 1 : 0;
+                                const float dot_y = (unit_.motion.pose_row1[0] * 0.0f +
+                                                     unit_.motion.pose_row1[1]) +
+                                                    unit_.motion.pose_row1[2] * 0.0f;
+                                if (!bsp::ship_ai_reach_same_bits(dot_y, unit_.motion.pose_row1[1]) ||
+                                    std::isnan(unit_.plane_live_throttle)) {
+                                    ++reach.water_rate_differs;
+                                }
                             }
                             if constexpr (GameUnitsHost::Impl::kWaterRateFactorsNanOrderCc13Bound) {
                                 // 007DA406-007DA423: the up row dotted with (0, 1, 0), the
