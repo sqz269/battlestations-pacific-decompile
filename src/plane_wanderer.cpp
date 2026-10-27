@@ -23,7 +23,11 @@ float length3_0042b2f0(const float v[3]) {
         const float s = f32(pc24::x87_add24(pc24::x87_add24(pc24::x87_mul24(v[1], v[1]),
                                                             pc24::x87_mul24(v[0], v[0])),
                                             pc24::x87_mul24(v[2], v[2])));
-        return f32(std::sqrt(static_cast<double>(s)));
+        // 0042B30C-0042B33C: sqrt only when s > 1e-10 [00CE3820] (FCOMI/JBE), else +0,
+        // NaN included.
+        float len = 0.0f;
+        if (static_cast<double>(s) > 1.0e-10) len = f32(std::sqrt(static_cast<double>(s)));
+        return len;
     } else {
         const double s = static_cast<double>(v[0]) * v[0] + static_cast<double>(v[1]) * v[1] +
                          static_cast<double>(v[2]) * v[2];
