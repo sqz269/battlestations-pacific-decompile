@@ -516,21 +516,23 @@ bool movcam_has_vehicle_camera_pose_007a0dd0(std::vector<VehicleCameraElement>* 
 }
 
 void movcam_approach_0078faf0(std::array<float, 3>& state, float dt) noexcept {
+    // cc13-fixture5: per x87 operation at the main thread's 24-bit precision; the
+    // double model differed from the bytes on 492 of 4000 inputs.
     const float current = state[0];
     const float target = state[1];
-    const float d = static_cast<float>(static_cast<double>(target) - current);  // 0078FB0E
+    const float d = target - current;                 // 0078FB0A, stored at 0078FB0E
     const float x = d > 0.0f ? d : -0.0f - d;
-    const float step = static_cast<float>(static_cast<double>(x) * dt * 1.399999976158142);  // 0078FB48
+    const float step = (x * dt) * 1.4f;               // 0078FB3E, then the double 1.4f at 0078FB42
     float next;
-    if (target < current) {  // 0078FB50 JB
-        next = static_cast<float>(static_cast<double>(current) - step);
+    if (!(target >= current)) {  // 0078FB4E FCOMIP / JC: below, or unordered
+        next = current - step;
         if (target > next) next = target;  // 0078FB9E
     } else {
-        next = static_cast<float>(static_cast<double>(current) + step);
+        next = current + step;
         if (next > target) next = target;  // 0078FB6B
     }
     state[0] = next;
-    state[2] = static_cast<float>(static_cast<double>(dt) * next + state[2]);
+    state[2] = dt * next + state[2];                  // 0078FBC1-0078FBC3
 }
 
 // ---------------------------------------------------------------------------

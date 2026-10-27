@@ -1363,6 +1363,10 @@ constexpr double kRollSpan_00d20330 = 0.8726646453142166;   // 50 degrees
 // UNCERTAINTY: the +2A0h chain is modelled at 24-bit precision (main thread);
 // under 53-bit the quotient can differ in the last bit.
 bool bot_task_maneuver_roll_completed_009b9680(Cc13Seg67bHost&, void* task) {
+    return bot_task_maneuver_roll_completed_009b9680(task);
+}
+
+bool bot_task_maneuver_roll_completed_009b9680(void* task) {
     void* const unit = ptr_at(task, 0x2F4);
     const float d = at<float>(task, 0x400) - at<float>(unit, 0xC64);
     if (0.0f > d) {
@@ -6319,7 +6323,9 @@ void circle_state_debug_draw(Cc13Seg67bHost& host, void* state) {
 // quotient and the products round once less. Caller: the split s tick 009B9CA0 (no
 // Ghidra function; vtable 00D207C0 +64h) at 009B9D05, with wrap = ([task+3F8h] == 1);
 // cc9 does not model the split s task.
-void bot_task_split_s_roll_step_009b94e0(Cc13Seg67bHost& host, void* task, std::uint8_t wrap) {
+namespace {
+template <class Subtract>
+void split_s_roll_step(void* task, std::uint8_t wrap, Subtract wrapped_angle_subtract_00438b10) {
     void* const desc = ptr_at(task, 0x2F8);
     void* const unit = ptr_at(task, 0x2F4);
     const float rate = at<float>(desc, 0x1A8) / at<float>(desc, 0x1BC);         // 009B94F7
@@ -6328,12 +6334,23 @@ void bot_task_split_s_roll_step_009b94e0(Cc13Seg67bHost& host, void* task, std::
     const float off = static_cast<float>(-1.5707963705062866 -
                                          static_cast<double>(at<float>(unit, 0xC64)));  // 009B9517
     const float sq = off * off;                                                 // 009B952B
-    const float v = wrap != 0 ? host.wrapped_angle_subtract_00438b10(3.14159274101257324f, bank)
+    const float v = wrap != 0 ? wrapped_angle_subtract_00438b10(3.14159274101257324f, bank)
                               : bank;                                           // 009B9547
     at<std::uint8_t>(task, 0x298) = 1;                                          // 009B955C
     const float q = -v / twice;                                                 // 009B9563
     at<float>(task, 0x294) = q * sq;                                            // 009B9569
     at<std::uint32_t>(task, 0x2D0) = 0;                                         // 009B9573
+}
+}  // namespace
+
+void bot_task_split_s_roll_step_009b94e0(Cc13Seg67bHost& host, void* task, std::uint8_t wrap) {
+    split_s_roll_step(task, wrap,
+                      [&host](float a, float b) { return host.wrapped_angle_subtract_00438b10(a, b); });
+}
+
+void bot_task_split_s_roll_step_009b94e0(void* task, std::uint8_t wrap,
+                                         float (*wrapped_angle_subtract_00438b10)(float, float)) {
+    split_s_roll_step(task, wrap, wrapped_angle_subtract_00438b10);
 }
 
 // 009B95D0 (009B95D0-009B963D), the stop task's tick: the plan slots in image order.

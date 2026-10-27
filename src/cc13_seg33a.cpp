@@ -3,6 +3,7 @@
 // hypotheses, not recovered symbols.
 
 #include "bsp/cc13_seg33a.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -2316,7 +2317,9 @@ float ratio_abs_dc_over_8c_006eb870(void* cls) {
     const float divisor = at<float>(cls, 0x8C);
     if (!(divisor > 0.0f)) return 0.0f;
     const float magnitude = std::fabs(at<float>(cls, 0xDC));
-    return static_cast<float>(static_cast<double>(magnitude) / static_cast<double>(divisor));
+    // cc13-fixture8: 006EB8A5 FDIV rounds to 24 bits on the main thread, then the FSTP rounds
+    // again; the two differ from one float division only for a denormal quotient.
+    return static_cast<float>(cc13x87::x87_div24(magnitude, divisor));
 }
 
 // 006EB9C0, __thiscall(message, entity), RET 4. 0075B430(message, 7Ch); word +18h = 0, +1Ah = +1Ch

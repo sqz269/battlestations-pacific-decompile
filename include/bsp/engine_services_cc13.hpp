@@ -223,6 +223,12 @@ bool scene_type_is_kind_of_00c30230(const std::uint32_t (&types_0109e9c4)[3], st
 // 00BEE140 BSP_Vector4_ScaleByScalarRef, __fastcall(ECX out, EDX const float* scalar, stack const float*
 // v) RET 4: out[i] = scalar * v[i], single-precision FMUL per lane (the scalar is loaded once).
 void scale_vector4_00bee140(float* out, const float* scalar, const float* v) noexcept;
+// The HUD host's caller runs on the main thread at 24-bit precision control, where each FMUL
+// rounds to 24 bits with the extended exponent before the FSTP DWORD: a denormal product is
+// rounded twice (cc13-fixture7, docs/CC13_FIXTURE_PASS_7.md). scale_vector4_pc24_00bee140
+// models that and is fixture-tested; scale_vector4_00bee140 takes it once this is flipped.
+inline constexpr bool kScaleVector4Pc24Cc13Bound = false;
+void scale_vector4_pc24_00bee140(float* out, const float* scalar, const float* v) noexcept;
 
 // ---------------------------------------------------------------------------------------------------
 // Virtual-table and singleton-base teardown.

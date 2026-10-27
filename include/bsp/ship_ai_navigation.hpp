@@ -77,6 +77,14 @@ inline constexpr float kUnitAiOrderSubRecordReset = 1000.0f; // 00CE3804
 // remaining gap is no larger than that step.
 void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds) noexcept;
 
+// cc13-fixture5 OFF switch. ON takes the image's reset, which stores only value_00,
+// field_04, field_08, flag_0c and field_18 of each sub-record (0080E03D..0080E064)
+// and keeps field_10/field_14, and the image's NaN order: an unordered timer skips
+// the countdown, an unordered gap takes the negative arm, and an unordered step
+// snaps to the target. OFF keeps the whole-sub-record reset above.
+inline constexpr bool kUnitAiOrderResetFieldsCc13Bound = false;
+void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds, bool image_reset) noexcept;
+
 // ---------------------------------------------------------------------------
 // 009ED6B0's navigation arm, 009EDA26-009EF228
 // ---------------------------------------------------------------------------

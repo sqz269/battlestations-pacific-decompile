@@ -257,39 +257,6 @@ float dive_bomb_decay_dive_altitude_009c7a94(float dive_altitude_a8,
     return (dive_altitude_a8 < decayed) ? dive_altitude_a8 : decayed;
 }
 
-// 007BCC80, read whole; see the header for the listing and the sign argument.
-float weapon_fall_time_007bcc80(float height_above_aim_point,
-                                float unit_velocity_y) noexcept {
-    // 007BCC86 COMISS 0,h / JC: the body runs when 0 < h or unordered, so a NaN
-    // height computes (ON) instead of returning 0.
-    const bool skip = kDiveBombPc24Cc13Bound ? (height_above_aim_point <= 0.0f)
-                                             : !(height_above_aim_point > 0.0f);
-    if (skip) return 0.0f;
-    const float vy = unit_velocity_y -
-        dive_bomb_constant::kFallTimeVerticalBias;       // 007BCCA4, 00E08E54
-    // 007BCCB6 FMUL and 007BCCDA FDIV both take the QWORD at 00CF9058, and
-    // 007BCCC2/007BCCCF round the discriminant and its root to float on the way.
-    const double g = dive_bomb_constant::kGravity;
-    if constexpr (kDiveBombPc24Cc13Bound) {
-        // 007BCCB0-007BCCC2: FLD h, FADD ST0,ST0, FMUL qword g, FLD ST1 (vy),
-        // FMULP ST2, FADDP: vy*vy + (2h)*g, each op rounded at PC24. g is
-        // float-exact (00CF9058 = 4023 9EB8 6000 0000), so the double product
-        // is exact and the cast is the one rounding.
-        const float h2 = height_above_aim_point + height_above_aim_point;
-        const float h2g = static_cast<float>(static_cast<double>(h2) * g);
-        const float vv = vy * vy;
-        const float disc = vv + h2g;
-        const float root = std::sqrt(disc);                 // 007BCCCA-007BCCCF
-        const float sum = root + vy;                        // 007BCCD7
-        return static_cast<float>(static_cast<double>(sum) / g);   // 007BCCDA-007BCCE0
-    } else {
-        const float disc = static_cast<float>(
-            static_cast<double>(vy) * vy + 2.0 * height_above_aim_point * g);
-        const float root = std::sqrt(disc);
-        return static_cast<float>((static_cast<double>(root) + vy) / g);
-    }
-}
-
 // 009C7D71-009C7E33, the diving arm of the approach update.
 DiveBombImpactPoint dive_bomb_impact_point_009c7d71(
     const DiveBombImpactPointInputs& in) noexcept {
@@ -303,32 +270,6 @@ DiveBombImpactPoint dive_bomb_impact_point_009c7d71(
     out.point[1] = in.aim_point_y;
     out.point[2] = in.unit_position[2] + out.fall_time * in.unit_velocity[2];
     return out;
-}
-
-// 00419010, five stack floats, RET 14h. Equal ordered endpoints return y0;
-// otherwise the interpolation is clamped between the two y values whichever way
-// round they are. Transcribed from docs/UNIT_RUDDER_CURVE.md's reconstruction.
-float dive_bomb_interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
-                                             float x) noexcept {
-    if (x1 == x0) {
-        return y0;
-    }
-    const float v = ((x - x0) / (x1 - x0)) * (y1 - y0) + y0;
-    const float hi = (y1 < y0) ? y0 : y1;
-    const float lo = (y0 < y1) ? y0 : y1;
-    // 0041908C-00419092 FCOMIP lo,v / JBE: only lo > v clamps; NaN passes on.
-    if (v < lo) {
-        return lo;
-    }
-    // 004190A9 FCOMIP v,hi / JBE 004190BC: v when v <= hi or unordered (ON).
-    // sw3 reach: the arms differ only when v or hi is NaN.
-    plane_task_reach_count(g_plane_task_reach_sw3.interp_hi,
-        plane_task_reach_bits_differ((v > hi) ? hi : v, (v <= hi) ? v : hi));
-    if constexpr (kInterpClamped00419010NanCc13Bound) {
-        return (v > hi) ? hi : v;
-    } else {
-        return (v <= hi) ? v : hi;
-    }
 }
 
 // 009C59BA-009C5C9B.
