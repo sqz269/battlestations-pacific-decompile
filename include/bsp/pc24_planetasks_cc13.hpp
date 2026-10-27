@@ -35,6 +35,10 @@ namespace bsp {
 //     007F23A0 (plane_formation.cpp; its game_hosts_units.cpp copy is
 //     pc24w1-sweep3-5's), 00809E10 (rocket_task_cc13.cpp), 0080A000's
 //     0080A024/0080A15B (rocket_homing_cc13.cpp)
+//     Other 00414C60 copies, not switched: bsp::length_2d_00414c60 in
+//     vector_helpers.cpp (its length_kernel is a naked-asm replica of the
+//     image's x87 sequence, so it rounds per op at the caller's precision)
+//     and length_2d_00414c60 in plane_water_law.cpp:34 (float ops)
 //   Other copies of the same image routines are narrowed by their own
 //   packets, not here: 0042B2F0 in plane_wanderer.cpp (pc24w1-sweep3-4) and
 //   game_hosts_units.cpp avoid_len (pc24w1-sweep3-5); 009AC190's bearing in
