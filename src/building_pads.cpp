@@ -1,6 +1,8 @@
 // Packet cc9_building_pad_model. See bsp/building_pads.hpp and
 // docs/SHIP_AI_OPEN_ITEMS.md sections 74.5 and 75.
 #include "bsp/building_pads.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <cfloat>
 
@@ -114,8 +116,15 @@ void BuildingPadModel::begin_landing_0074a990(int ship, int pad, int building, f
     l.pad_1200 = pad;                 // 0074A9B0
     set_occupant_006ac490(pad, ship); // 0074A9B6
     // 0074A9D2-0074A9E6: (U(0, 0.75f) FIADD +1208h) FMUL double 1.5, FSTP float.
-    l.landing_time_1210 = static_cast<float>(
-        (static_cast<double>(draw) + static_cast<double>(spawn_phase_1208)) * 1.5);
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // The FIADD and the FMUL each round to 24 bits on the main thread.
+        using namespace cc13x87;
+        l.landing_time_1210 = static_cast<float>(
+            x87_mul24(x87_add24(draw, static_cast<double>(spawn_phase_1208)), 1.5));
+    } else {
+        l.landing_time_1210 = static_cast<float>(
+            (static_cast<double>(draw) + static_cast<double>(spawn_phase_1208)) * 1.5);
+    }
 }
 
 int BuildingPadModel::lander_pad_1200(int ship) const {
