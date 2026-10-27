@@ -1770,6 +1770,15 @@ constexpr bool kOverrideHpHealthZeroBound = true;  // ON: faithful, no reach (SH
 //    breakup (00761310, presentation; recorded). LABELLED: run once, at the host's
 //    health-zero kill. False: no message and no draw. Packet cc9_ship_death_message.
 constexpr bool kShipDeathMessageBound = true;  // ON: USN02, JM08 pairs identical (SHIP_AI 239)
+//  * kAdoptedShipDeathMessageBound (cc9-recon2, OFF): 00827A90 calls 00958A30 at
+//    00827AAB and tests only [this+370h] <= 0 afterwards (00827AB0), so a ship-family
+//    unit with +71Ch set (00958A30's InferiorFailure arm, not destroyed) still sends 9Ah
+//    or draws the breakup. Slot 1B0h holds 00827A90 in eight of the nine ship-family
+//    vtables and its tail-jump thunk 00758390 in the ninth (00D017E0 = 00758390), and
+//    in no other vtable, so the existing ship-kind gate in ship_death_message_00827ab0
+//    is the class test. OFF: kill_unit's InferiorFailure arm
+//    returns before the message. Counted either way (adopted_ship_zero).
+constexpr bool kAdoptedShipDeathMessageBound = false;
 constexpr float kWreckChanceInstalled = 0.3f;
 //  * kShipBreakInTwoDrawsBound (cc9-ships60, SHIP_AI 298): the 98h receiver 00814520
 //    tail-jumps to 00935D30 BSP_UnitController_BreakInTwo, whose two pieces take 11
@@ -4545,6 +4554,7 @@ struct GameGunneryHost::Impl {
         unsigned long long messages_9a{0}, kamikaze_removals{0}, no_breakup_nodes{0};
         unsigned long long breakup_draws{0}, breakups_98{0}, break_in_two_draws{0};
         unsigned long long break_in_two_puff_draws{0};   // kShipBreakInTwoPuffDrawsCc13Bound
+        unsigned long long adopted_ship_zero{0};         // kAdoptedShipDeathMessageBound
     } ship_death;
     unsigned long long override_hp_kills{0};
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
@@ -14288,6 +14298,13 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
             const std::size_t owner = units.parent_link_71c(victim);
             if (owner < unit_state.size()) {
                 inferior_failure_health_zero_00958a30(victim, owner);
+                // 00827AB0: the ship slot tests the health after 00958A30 returns.
+                if (units.ship_death_message_class(victim).ship) {
+                    ++ship_death.adopted_ship_zero;
+                    if constexpr (kShipDeathMessageBound && kAdoptedShipDeathMessageBound) {
+                        ship_death_message_00827ab0(victim);
+                    }
+                }
                 return;
             }
         }
@@ -18364,6 +18381,9 @@ void GameGunneryHost::report() {
                 d.break_in_two_draws,
                 kShipDeathMessageBound ? 1 : 0, host.override_hp_kills,
                 kOverrideHpHealthZeroBound ? 1 : 0);
+            host.log.notef("summary mission gunnery adopted ship health zero=%llu bound=%d "
+                "(00827AAB -> 00958A30 +71Ch arm, then 00827AB0)", d.adopted_ship_zero,
+                kAdoptedShipDeathMessageBound ? 1 : 0);
             if constexpr (bsp::kShipBreakInTwoPuffDrawsCc13Bound) {
                 host.log.notef("summary mission gunnery ship break in two puff draws=%llu "
                     "(00935D30 -> 0092A240, packet cc13-frontier)", d.break_in_two_puff_draws);

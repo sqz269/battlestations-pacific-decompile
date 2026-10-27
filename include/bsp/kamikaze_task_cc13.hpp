@@ -34,7 +34,7 @@ namespace bsp {
 // and 009ADE00's distance sums and of 009AE9D0's two distances rounds to
 // float. True: per-step float rounding. False: double intermediates rounded
 // at the stores, as before.
-inline constexpr bool kKamikazeX87FloatCc13Bound = false;
+inline constexpr bool kKamikazeX87FloatCc13Bound = true;  // ON by pruning (cc9-sweep1b): reach counter 0 differs on every OFF run (sites 0)
 
 // ---------------------------------------------------------------------------
 // Shared pieces

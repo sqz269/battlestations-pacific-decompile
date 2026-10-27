@@ -252,7 +252,7 @@ namespace {
 // query before the box query, the image's float operation order with no
 // zero-divide guards, and the second damping setter 00c37e00. OFF keeps the
 // earlier projection, which live play has run on (with an empty list).
-constexpr bool kDynamicsBuoyancyWholeBodyCc13Bound = false;
+constexpr bool kDynamicsBuoyancyWholeBodyCc13Bound = true;  // ON by pruning (cc9-sweep1b): reach counter 0 differs on every OFF run (sites 0)
 
 // 0044636a..004463e3: `x > 0 ? x : -0.0f - x` against the -0.0f at 00d7a208.
 float image_magnitude(float x) noexcept

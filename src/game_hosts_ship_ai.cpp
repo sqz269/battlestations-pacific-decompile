@@ -9214,6 +9214,9 @@ public:
             using namespace bsp::cc13x87;
             const float x_sq = static_cast<float>(x87_mul24(x, x));
             const float z_sq = static_cast<float>(x87_mul24(z, z));
+            // 00419260 calls the CRT sqrt (00BF7030), which sets 53-bit PC (027F)
+            // before FSQRT; x87_sqrt24 matches only because the radicand is already a
+            // stored float (0041928E).
             const float length =
                 static_cast<float>(x87_sqrt24(static_cast<double>(
                     static_cast<float>(x87_add24(x_sq, z_sq)))));
@@ -15588,6 +15591,12 @@ void GameShipAiHost::report() {
             kMovieUpdateEmptyTrackClockCc13Bound ? 1 : 0,
             kMovieStepStaleTrackFlagCc13Bound ? 1 : 0,
             kSubmarineSeabedSpeedPc24Cc13Bound ? 1 : 0);
+        host.log.notef("summary mission path direction reach evals=%llu differs=%llu "
+            "bound=%d%d (009D9E6C kShipAiPathNodeDirectionUnorderedCc13Bound, "
+            "kShipAiPathSideWalkNanCc13Bound; packet cc9-sweep2b)",
+            reach.path_dir_evals, reach.path_dir_differs,
+            bsp::kShipAiPathNodeDirectionUnorderedCc13Bound ? 1 : 0,
+            bsp::kShipAiPathSideWalkNanCc13Bound ? 1 : 0);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {

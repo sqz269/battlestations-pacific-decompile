@@ -227,7 +227,7 @@ void scale_vector4_00bee140(float* out, const float* scalar, const float* v) noe
 // rounds to 24 bits with the extended exponent before the FSTP DWORD: a denormal product is
 // rounded twice (cc13-fixture7, docs/CC13_FIXTURE_PASS_7.md). scale_vector4_pc24_00bee140
 // models that and is fixture-tested; scale_vector4_00bee140 takes it once this is flipped.
-inline constexpr bool kScaleVector4Pc24Cc13Bound = false;
+inline constexpr bool kScaleVector4Pc24Cc13Bound = true;  // ON by pruning (cc9-sweep1b): reach counter 0 differs on every OFF run (sites 0)
 void scale_vector4_pc24_00bee140(float* out, const float* scalar, const float* v) noexcept;
 
 // ---------------------------------------------------------------------------------------------------

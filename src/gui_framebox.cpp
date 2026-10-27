@@ -1,5 +1,7 @@
 #include "bsp/gui_framebox.hpp"
 #include "bsp/gui_lua_reader.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_hudgui_cc13.hpp"
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -17,62 +19,90 @@ void read_value(const GuiTable& table,const char* name,GuiLuaFieldType type,void
 }
 float rounded(double value) noexcept { return static_cast<float>(value); }
 float sub2(float value,float first,float second) noexcept {
+    float out=0.0f;
+    if constexpr (kPc24HudGuiCc13Bound) {
+        using namespace cc13x87;
+        out=rounded(x87_sub24(x87_sub24(value,first),second));
+    } else {
 #if defined(_MSC_VER) && defined(_M_IX86)
-    float result;
-    __asm {
-        fld value
-        fsub first
-        fsub second
-        fstp result
-    }
-    return result;
+        float result;
+        __asm {
+            fld value
+            fsub first
+            fsub second
+            fstp result
+        }
+        out=result;
 #else
-    return rounded((static_cast<double>(value)-first)-second);
+        out=rounded((static_cast<double>(value)-first)-second);
 #endif
+    }
+    return out;
 }
 float scaled_sub2(float value,float scale,float first,float second) noexcept {
+    float out=0.0f;
+    if constexpr (kPc24HudGuiCc13Bound) {
+        using namespace cc13x87;
+        out=rounded(x87_sub24(x87_sub24(x87_mul24(value,scale),first),second));
+    } else {
 #if defined(_MSC_VER) && defined(_M_IX86)
-    float result;
-    __asm {
-        fld value
-        fmul scale
-        fsub first
-        fsub second
-        fstp result
-    }
-    return result;
+        float result;
+        __asm {
+            fld value
+            fmul scale
+            fsub first
+            fsub second
+            fstp result
+        }
+        out=result;
 #else
-    return rounded((static_cast<double>(value)*scale-first)-second);
+        out=rounded((static_cast<double>(value)*scale-first)-second);
 #endif
+    }
+    return out;
 }
 float uv_border(float border,float texture_extent,float span) noexcept {
+    float out=0.0f;
+    if constexpr (kPc24HudGuiCc13Bound) {
+        using namespace cc13x87;
+        out=rounded(x87_mul24(x87_div24(border,texture_extent),span));
+    } else {
 #if defined(_MSC_VER) && defined(_M_IX86)
-    float result;
-    __asm {
-        fld border
-        fdiv texture_extent
-        fmul span
-        fstp result
-    }
-    return result;
+        float result;
+        __asm {
+            fld border
+            fdiv texture_extent
+            fmul span
+            fstp result
+        }
+        out=result;
 #else
-    return rounded((static_cast<double>(border)/texture_extent)*span);
+        out=rounded((static_cast<double>(border)/texture_extent)*span);
 #endif
+    }
+    return out;
 }
 float uv_border_y(float border,float texture_extent,float scale,float span) noexcept {
+    float out=0.0f;
+    if constexpr (kPc24HudGuiCc13Bound) {
+        using namespace cc13x87;
+        out=rounded(x87_mul24(x87_div24(x87_div24(border,texture_extent),scale),span));
+    } else {
 #if defined(_MSC_VER) && defined(_M_IX86)
-    float result;
-    __asm {
-        fld border
-        fdiv texture_extent
-        fdiv scale
-        fmul span
-        fstp result
-    }
-    return result;
+        float result;
+        __asm {
+            fld border
+            fdiv texture_extent
+            fdiv scale
+            fmul span
+            fstp result
+        }
+        out=result;
 #else
-    return rounded(((static_cast<double>(border)/texture_extent)/scale)*span);
+        out=rounded(((static_cast<double>(border)/texture_extent)/scale)*span);
 #endif
+    }
+    return out;
 }
 struct Rect { float x,y,w,h; };
 void write_rect(std::array<GuiQuadVertex,54>& out,std::size_t offset,
@@ -224,8 +254,16 @@ std::array<GuiQuadVertex,54> gui_framebox_write_geometry_00acf9b0(
     const auto v_bottom=uv_border_y(bottom,texture_y,scale,v_span);
     const auto u_center=sub2(u_span,u_left,u_right);
     const auto v_center=sub2(v_span,v_top,v_bottom);
-    const double u_middle=static_cast<double>(state.uv.left)+u_left;
-    const double v_middle=static_cast<double>(state.uv.top)+v_top;
+    double u_middle=0.0,v_middle=0.0;
+    if constexpr (kPc24HudGuiCc13Bound) {
+        // PC24: 00ACFBC2 / 00ACFC4B FADD rounds to 24 bits before the FST double and
+        // the second FADD (00ACFBD9 / 00ACFC6E) of the centre span.
+        u_middle=cc13x87::x87_add24(u_left,state.uv.left);
+        v_middle=cc13x87::x87_add24(v_top,state.uv.top);
+    } else {
+        u_middle=static_cast<double>(state.uv.left)+u_left;
+        v_middle=static_cast<double>(state.uv.top)+v_top;
+    }
     const float px[]{0,left,rounded(static_cast<double>(left)+center_x)};
     const float py[]{0,top,rounded(static_cast<double>(top)+center_y)};
     const float pw[]{left,center_x,right},ph[]{top,center_y,bottom};

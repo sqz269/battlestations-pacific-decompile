@@ -282,3 +282,73 @@ place to look for a stall-sensitive input. That pointer is unverified.
 Save directory: the same SHA-256, size and mtime before (local/nondet2_save_before.txt) and after
 (local/nondet2_save_after.txt) the runs. After the last run, Get-Process/CIM showed no hog, no
 driver and no bsp_game of this tree left.
+
+## 6. The Dyn task pool, runtime threads and the stack scrub (cc9-nondet1)
+
+Worker cc9-nondet1, 2026-10-27, from main 1c49c8c0d.
+
+### The Dyn task pool is not on the USN21 path
+
+- `dyn_task_manager_run_batch_00c33140` has two callers: the native world step 00C5C540 (Solve, at
+  00C5BCCA and 00C5C0E8) and its collision pass 00C57070 (at 00C577EE).
+- The mission never runs that step. Every USN21 log's end table has
+  `FixedStepFanout::simulate_physics_world 00875e0c UNIMPLEMENTED calls=80000`, because
+  `GameFixedStepHost::native_game_` is null (src/game_hosts_fixed_step.cpp). Rigid bodies are
+  integrated through 00C41550 and 00C5B1B0 on the main thread.
+- Had it run, it still could not reorder results:
+  - `run_batch` is a full barrier: the main thread waits on the group's event.
+  - Each task gets a fixed, contiguous range of islands.
+  - The kernels are transcriptions of the image's assembly.
+
+### Threads that run during a mission
+
+These were listed from the live nd1_c1 process, with start addresses from
+NtQueryInformationThread (local/nd1_threads.ps1):
+
+| thread | CPU | start |
+| --- | --- | --- |
+| main | about 1650 s | bsp_game.exe+4FD170 |
+| three FMOD threads | 34 s, 5 s, 2 s | fmodex.dll+1C161 |
+| about 60 driver threads | about 19 s, nearly all on one thread | nvd3dum.dll+45A344 |
+
+There are also 64 idle-priority threads that used 0 s of CPU. No Dyn worker, frame-job worker or
+renderer control worker does any work.
+
+The mission loads no messages or sounds. The message manager's sound hooks are unreached, and the
+end of a run reports `sound after raw singleton drain: started=0`. So FMOD playback state cannot
+feed gameplay.
+
+This leaves the main thread's own inputs. The stack is one of them: the message pump, Present
+and the driver leave garbage below the stack pointer that depends on timing. A gameplay read of
+a stack slot nothing wrote would then depend on stalls.
+
+### BSP_STACK_SCRUB
+
+`BSP_STACK_SCRUB=<hex byte>[,<KiB>]` is a harness-only diagnostic in src/game_hosts.cpp. It is
+off when the variable is unset. When set, it fills the given amount of stack below
+`GameFrameHost::game_on_move` with the byte before every frame; the default amount is 256 KiB.
+
+Results, both on 1c49c8c0d, plain load:
+
+| run | scrub | shots | deaths | hits |
+| --- | --- | --- | --- | --- |
+| nd1_c1 | none | 146859 | 520 | 10693 |
+| nd1_s0 | 00 | 146859 | 520 | 10693 |
+
+`local/nd1_first.py` finds no gameplay line that differs between the two. The only differences
+are the monitor name, `pretranslate` and `present failed` lines.
+
+Zero-filling the stack at the start of each frame therefore does not move USN21. That is weak
+evidence against a stale stack read before the first call inside the frame. It does not rule out
+garbage written during the frame, for example by FMOD or the driver.
+
+### Runs lost to the renderer under the rdp-tcp session
+
+- **nd1_d1** (BelowNormal plus a 200/200 ms duty hog) crashed at mission frame 27670:
+  - c0000005 reading 00000000 at bsp_game.exe+430325, in
+    `set_native_renderer_render_state_00b24460`+D5.
+  - The minidump is local/nd1_d1_u21.dmp; the map is local/nd1_map_base.map.
+- **nd1_c2** hung in `d3d9!CBaseDevice::Reset`, called from bsp_game+2DC040. I killed the process.
+- **nd1_c1 and nd1_s0** survived, but 32757 and 41543 of their frames skipped Present.
+
+The lead stopped hog and stall runs on 2026-10-27.
