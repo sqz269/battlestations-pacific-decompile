@@ -64,6 +64,14 @@ std::uint32_t unit_ai_order_published_offset(int index) noexcept;
 // flag and the unit back-pointer are deliberately outside it.
 void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src) noexcept;
 
+// cc13-fixture10 OFF switch. ON takes the image's copy: the twelve floats go through
+// FLD/FSTP DWORD, which quiets a signalling NaN (sets bit 22): +00h..+10h, +18h, +1Ch,
+// +24h..+2Ch, +34h and +38h; the dwords +20h/+3Ch by MOV; and flag_0c at +14h/+30h as one
+// byte, leaving the three bytes after it untouched. OFF keeps the member-wise copy above,
+// which carries signalling NaNs through unchanged and may write the padding after the flag.
+inline constexpr bool kUnitAiOrderCopyPc24Cc13Bound = false;
+void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src, bool image_copy) noexcept;
+
 // The rate 0080E000 slews +00h toward sub_a.value_00 with, and the value it
 // resets both sub-records' field_08 to.
 inline constexpr double kUnitAiOrderBlendRate = 50.0;      // 00CE3938, a double

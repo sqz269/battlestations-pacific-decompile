@@ -83,6 +83,10 @@
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/rocket_homing_cc13.hpp"
 #include "bsp/frontend_seg15_22_cc13.hpp"
+#include "bsp/actions_seg5_cc13.hpp"
+#include "bsp/cc13_seg49.hpp"
+#include "bsp/entity_mission_seg60_argon.hpp"
+#include "bsp/water_weather_cc13.hpp"
 #include "cc13_leaf_reference.hpp"
 #include <float.h>
 #include <array>
@@ -1172,6 +1176,8 @@ template<class Open> void run_fixture5(Open open) {
 template<class Open> void run_fixture8(Open open);
 // cc13-fixture9: defined at the end of the file.
 template<class Open> void run_fixture9(Open open);
+// cc13-fixture10: defined at the end of the file.
+template<class Open> void run_fixture10(Open open);
 // cc13-fixture4 (docs/CC13_FIXTURE_PASS_4.md); defined at the end of this file.
 void run_fixture4(const std::function<Case&(const char*)>& open);
 bool fixture4_pin(const std::string& name, bool& wants53, int& failures, int& nan_only, const char*& finding);
@@ -1905,6 +1911,13 @@ int main() {
         state = 0x0f1c5e09u;
         const std::string tag = pc == _PC_53 ? " @53" : " @24";
         run_fixture9([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
+    }
+    // cc13-fixture10: the same two passes over its own input stream.
+    for (const unsigned pc : {static_cast<unsigned>(_PC_53), static_cast<unsigned>(_PC_24)}) {
+        _controlfp_s(&control, pc | _RC_NEAR, _MCW_PC | _MCW_RC);
+        state = 0x0f1c5e10u;
+        const std::string tag = pc == _PC_53 ? " @53" : " @24";
+        run_fixture10([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
     }
     _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
     // cc13-fixture2 cases carry a precision suffix. The pass that decides is the precision of
@@ -2653,6 +2666,117 @@ template<class Open> void run_fixture9(Open open) {
                                                                         reinterpret_cast<const std::uint32_t*>(m));
             check_note(d, std::memcmp(t1, t2, sizeof(t1)) == 0, "[%d]", first_diff(t1, t2, 8));
         }
+    }
+}
+
+}  // namespace
+
+namespace {
+
+// cc13-fixture10 (docs/CC13_FIXTURE_PASS_10.md): main-thread record copies. Each takes raw bit
+// patterns (signalling NaNs included, since FLD/FSTP DWORD quiets them) and compares the whole
+// destination buffer, slack included. Runs once per precision control; the caller resets the
+// generator so both passes see the same inputs.
+constexpr int kFixture10Words = 0x80;
+
+template<class Open> void run_fixture10(Open open) {
+    auto fill = [](std::uint32_t* w, int n) {
+        for (int k = 0; k < n; ++k) {
+            std::uint32_t u = next();
+            // One word in four becomes a NaN or infinity pattern; half of those are signalling.
+            if (next() % 4 == 0) u = (u & 0x803fffffu) | 0x7f800000u | (next() % 2 ? 0x00400000u : 0u);
+            w[k] = u;
+        }
+    };
+    auto run = [&](const char* name, auto native, auto cpp) {
+        auto& c = open(name);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(16) std::uint32_t src[kFixture10Words], d1[kFixture10Words], d2[kFixture10Words];
+            fill(src, kFixture10Words);
+            for (int k = 0; k < kFixture10Words; ++k) d1[k] = d2[k] = 0xcdcdcdcdu;
+            native(d1, src);
+            cpp(d2, src);
+            const int k = first_diff(reinterpret_cast<float*>(d1), reinterpret_cast<float*>(d2), kFixture10Words);
+            check_note(c, k < 0, "[%d] %08x / %08x", k, k < 0 ? 0u : d1[k], k < 0 ? 0u : d2[k]);
+        }
+    };
+    using Copy = void* (__fastcall*)(void*, int, const void*);
+    auto thiscall_copy = [](unsigned offset) {
+        return [offset](std::uint32_t* d, const std::uint32_t* s) { at<Copy>(offset)(d, 0, s); };
+    };
+    namespace s7 = bsp::cc13_seg7;
+    auto obj = [](std::uint32_t* p) { return reinterpret_cast<s7::Object>(p); };
+    auto cobj = [](const std::uint32_t* p) { return reinterpret_cast<s7::Object>(const_cast<std::uint32_t*>(p)); };
+    run("0047D250 record 54h copy", thiscall_copy(cc13_leaf_0047d250),
+        [&](std::uint32_t* d, const std::uint32_t* s) { s7::record54_copy_0047d250(obj(d), cobj(s)); });
+    run("0047F930 record 54h copy assign", thiscall_copy(cc13_leaf_0047f930),
+        [&](std::uint32_t* d, const std::uint32_t* s) { s7::record54_copy_assign_0047f930(obj(d), cobj(s)); });
+    run("0047D2E0 record 4Ch copy", thiscall_copy(cc13_leaf_0047d2e0),
+        [&](std::uint32_t* d, const std::uint32_t* s) { s7::record4c_copy_0047d2e0(obj(d), cobj(s)); });
+    run("0047F9C0 record 4Ch copy assign", thiscall_copy(cc13_leaf_0047f9c0),
+        [&](std::uint32_t* d, const std::uint32_t* s) { s7::record4c_copy_assign_0047f9c0(obj(d), cobj(s)); });
+    run("0047F0C0 record 40h copy", thiscall_copy(cc13_leaf_0047f0c0),
+        [&](std::uint32_t* d, const std::uint32_t* s) { s7::record40_copy_0047f0c0(obj(d), cobj(s)); });
+    run("00454970 shake key copy", thiscall_copy(cc13_leaf_00454970),
+        [&](std::uint32_t* d, const std::uint32_t* s) {
+            bsp::cc13_seg5::shake_key_copy_00454970(reinterpret_cast<std::uint8_t*>(d),
+                                                    reinterpret_cast<std::uint8_t*>(const_cast<std::uint32_t*>(s)));
+        });
+    run("007BAA80 plane state record copy", thiscall_copy(cc13_leaf_007baa80),
+        [&](std::uint32_t* d, const std::uint32_t* s) {
+            bsp::cc13_seg47::plane_state_record_copy_007baa80(bsp::cc13_seg47::raw(d), bsp::cc13_seg47::raw(const_cast<std::uint32_t*>(s)));
+        });
+    run("007BAAF0 plane control state copy", thiscall_copy(cc13_leaf_007baaf0),
+        [&](std::uint32_t* d, const std::uint32_t* s) {
+            bsp::cc13_seg47::plane_control_state_copy_007baaf0(bsp::cc13_seg47::raw(d), bsp::cc13_seg47::raw(const_cast<std::uint32_t*>(s)));
+        });
+    run("0080B890 turn path segment copy", thiscall_copy(cc13_leaf_0080b890),
+        [&](std::uint32_t* d, const std::uint32_t* s) {
+            bsp::cc13_seg49::turn_path_segment_copy_0080b890(bsp::ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(d)},
+                                                             bsp::ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(const_cast<std::uint32_t*>(s))});
+        });
+    run("00811D10 unit AI order copy", thiscall_copy(cc13_leaf_00811d10),
+        [&](std::uint32_t* d, const std::uint32_t* s) {
+            bsp::unit_ai_order_copy_00811d10(*reinterpret_cast<bsp::UnitAiOrderRecord*>(d),
+                                             *reinterpret_cast<const bsp::UnitAiOrderRecord*>(s), true);
+        });
+    run("00BC7F00 water record 30h copy", thiscall_copy(cc13_leaf_00bc7f00),
+        [&](std::uint32_t* d, const std::uint32_t* s) { bsp::water_weather_cc13::w2_record30_copy_00bc7f00(d, s); });
+    {   // 00924280: ECX = the property record, whose +20h points at the 16 floats.
+        auto native = at<float* (__fastcall*)(void*, int, float*)>(cc13_leaf_00924280);
+        run("00924280 scene property copy 16 floats",
+            [&](std::uint32_t* d, const std::uint32_t* s) {
+                void* record[9] = {};
+                record[8] = const_cast<std::uint32_t*>(s);
+                native(record, 0, reinterpret_cast<float*>(d));
+            },
+            [&](std::uint32_t* d, const std::uint32_t* s) {
+                void* record[9] = {};
+                record[8] = const_cast<std::uint32_t*>(s);
+                bsp::entity_mission_seg60_argon::scene_property_copy_float16_00924280(record, reinterpret_cast<float*>(d));
+            });
+    }
+    {   // 00B8E750: ECX = the track; the key block is +18h..+2Ch.
+        auto native = at<void (__fastcall*)(const void*, int, float*)>(cc13_leaf_00b8e750);
+        run("00B8E750 track key block copy",
+            [&](std::uint32_t* d, const std::uint32_t* s) { native(s, 0, reinterpret_cast<float*>(d)); },
+            [&](std::uint32_t* d, const std::uint32_t* s) {
+                bsp::cc13_scene2::copy_track_key_block_00b8e750(reinterpret_cast<const float*>(s + 6), reinterpret_cast<float*>(d));
+            });
+    }
+    {   // The 44h-record ranges (__cdecl): three records.
+        using Range = std::uint32_t* (__cdecl*)(const std::uint32_t*, const std::uint32_t*, std::uint32_t*);
+        constexpr int n = 3 * 0x11;
+        run("00952DF0 copy 44h records",
+            [&](std::uint32_t* d, const std::uint32_t* s) { at<Range>(cc13_leaf_00952df0)(s, s + n, d); },
+            [&](std::uint32_t* d, const std::uint32_t* s) { bsp::cc13_seg62::copy_44_00952df0(s, s + n, d); });
+        run("00952F30 copy backward 44h records",
+            [&](std::uint32_t* d, const std::uint32_t* s) { at<Range>(cc13_leaf_00952f30)(s, s + n, d + n); },
+            [&](std::uint32_t* d, const std::uint32_t* s) { bsp::cc13_seg62::copy_backward_44_00952f30(s, s + n, d + n); });
+        using Fill = void (__cdecl*)(std::uint32_t*, std::uint32_t*, const std::uint32_t*);
+        run("00955090 fill 44h records",
+            [&](std::uint32_t* d, const std::uint32_t* s) { at<Fill>(cc13_leaf_00955090)(d, d + n, s); },
+            [&](std::uint32_t* d, const std::uint32_t* s) { bsp::cc13_seg62::fill_44_00955090(d, d + n, s); });
     }
 }
 
