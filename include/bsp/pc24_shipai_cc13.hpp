@@ -17,6 +17,12 @@ namespace bsp {
 //   009D15F0 torpedo_aim_tick_full (torpedo_aim_tick.cpp)
 //   0074F930 unit_leak_tick / 00937440 unit_steering_torque (unit_forces.cpp; 00937440 is
 //            not live while kTorpedoBoatRudderTorqueBound is ON)
+// Sites (pc24w1-sweep2-4):
+//   009F4DA0 formation throttle ceiling, 009E6170 traffic record range test, 007470B0 /
+//            00745BE0 land fort fire rolls, 009ED6B0 arm tail normalize (004192E0)
+//            (game_hosts_ship_ai.cpp)
+//   00852860 attack-move altitude gate, 009F3240 approach throttle
+//            (ship_ai_attackmove_substates.cpp)
 // Movers: ship headings, throttle and path picks, submarine depth, torpedo run times and hits.
 inline constexpr bool kPc24ShipAiCc13Bound = false;
 
