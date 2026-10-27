@@ -11,6 +11,8 @@
 // so the plain float expressions below are correctly rounded binary32.
 
 #include "bsp/ship_ai_path_follower.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <cmath>
 
@@ -61,23 +63,49 @@ ShipAiPathTangentChord ship_ai_path_tangent_chord_004f3970(
     if (len > circle.radius) {  // 004F3A4D FCOMI / 004F3A51 JBE
         // 004F3A57-004F3B19, the point is outside the circle.
         // 004F3A6C-004F3A7A: the foot of the tangent chord, r^2/len along u.
-        const float foot =
-            static_cast<float>(static_cast<double>(circle.radius) * circle.radius / len);
-        // 004F3A7E-004F3A96: the tangent length, sqrt(len^2 - r^2).
-        const float radicand = static_cast<float>(static_cast<double>(len) * len -
-                                                  static_cast<double>(circle.radius) * circle.radius);
+        float foot;
+        float radicand;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 004F3A76 FMUL st0, 004F3A78 FDIV len, 004F3A7A FSTP; 004F3A83 FMULP
+            // (len*len), 004F3A85 FMUL st0 (r*r), 004F3A87 FSUBP, 004F3A89 FSTP: each
+            // op rounds to 24 bits on the main thread.
+            using namespace cc13x87;
+            foot = static_cast<float>(x87_div24(x87_mul24(circle.radius, circle.radius), len));
+            radicand = static_cast<float>(
+                x87_sub24(x87_mul24(len, len), x87_mul24(circle.radius, circle.radius)));
+        } else {
+            foot = static_cast<float>(static_cast<double>(circle.radius) * circle.radius / len);
+            // 004F3A7E-004F3A96: the tangent length, sqrt(len^2 - r^2).
+            radicand = static_cast<float>(static_cast<double>(len) * len -
+                                          static_cast<double>(circle.radius) * circle.radius);
+        }
         const float tangent = std::sqrt(radicand);
         // 004F3A9A-004F3AAC: half the chord, tangent * r / len.
-        const float half = static_cast<float>(static_cast<double>(tangent) * circle.radius / len);
+        float half;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 004F3AA2 FMUL r, 004F3AA8 FDIV len, 004F3AAC FSTP.
+            using namespace cc13x87;
+            half = static_cast<float>(x87_div24(x87_mul24(tangent, circle.radius), len));
+        } else {
+            half = static_cast<float>(static_cast<double>(tangent) * circle.radius / len);
+        }
         // 004F3AB0-004F3AEE and 004F3AF5-004F3B19.
         result.base = {{circle.x + ux * foot, circle.z + uz * foot}};
         result.half_chord = {{-uz * half, ux * half}};
     } else {
         // 004F3B22-004F3B91, the point is inside the circle: the chord through
         // the point perpendicular to the centre direction.
-        const float radicand =
-            static_cast<float>(static_cast<double>(circle.radius) * circle.radius -
-                               static_cast<double>(len) * len);
+        float radicand;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 004F3B25 FMUL st0 (r*r), 004F3B29 FMULP (len*len), 004F3B2B FSUBRP,
+            // 004F3B2D FSTP: each op rounds to 24 bits on the main thread.
+            using namespace cc13x87;
+            radicand = static_cast<float>(
+                x87_sub24(x87_mul24(circle.radius, circle.radius), x87_mul24(len, len)));
+        } else {
+            radicand = static_cast<float>(static_cast<double>(circle.radius) * circle.radius -
+                                          static_cast<double>(len) * len);
+        }
         const float half = std::sqrt(radicand);
         result.base = point;  // 004F3B46-004F3B62
         result.half_chord = {{-uz * half, ux * half}};
@@ -251,15 +279,33 @@ ShipAiPathFollowerResult ship_ai_path_follower_point_009e3c00(
         if (!record.more_path_20) {  // 009E4067 / 009E4085, always true here
             // 009E4087-009E40ED. The normal of the following leg, unnormalised.
             const std::array<float, 2> normal{{-out_leg[1], out_leg[0]}};
-            const float offset_from_node = static_cast<float>(
-                static_cast<double>(pose[1] - target->z) * normal[1] +
-                static_cast<double>(pose[0] - target->x) * normal[0]);
-            const float bisector_side = static_cast<float>(
-                static_cast<double>(bisector[1]) * normal[1] +
-                static_cast<double>(bisector[0]) * normal[0]);
-            if (static_cast<double>(offset_from_node) * static_cast<double>(bisector_side) <
-                kShipAiPathFollowerOvershootLimit) {
-                overshot = true;  // 009E40ED
+            if constexpr (kPc24ShipAiCc13Bound) {
+                // 009E40B1/009E40BD FMULP, 009E40C1 FADDP, 009E40C3 FSTP (offset);
+                // 009E40CD/009E40D1 FMULP, 009E40D5 FADDP, 009E40D9 FSTP (side);
+                // 009E40DD FMUL, compared at 009E40E7 without a store. Each op
+                // rounds to 24 bits on the main thread.
+                using namespace cc13x87;
+                const float d_z = pose[1] - target->z;  // 009E40A3 FSTP
+                const float d_x = pose[0] - target->x;  // 009E4098 FSTP
+                const float offset_from_node = static_cast<float>(
+                    x87_add24(x87_mul24(d_z, normal[1]), x87_mul24(d_x, normal[0])));
+                const float bisector_side = static_cast<float>(x87_add24(
+                    x87_mul24(bisector[1], normal[1]), x87_mul24(bisector[0], normal[0])));
+                if (x87_mul24(offset_from_node, bisector_side) <
+                    kShipAiPathFollowerOvershootLimit) {
+                    overshot = true;  // 009E40ED
+                }
+            } else {
+                const float offset_from_node = static_cast<float>(
+                    static_cast<double>(pose[1] - target->z) * normal[1] +
+                    static_cast<double>(pose[0] - target->x) * normal[0]);
+                const float bisector_side = static_cast<float>(
+                    static_cast<double>(bisector[1]) * normal[1] +
+                    static_cast<double>(bisector[0]) * normal[0]);
+                if (static_cast<double>(offset_from_node) * static_cast<double>(bisector_side) <
+                    kShipAiPathFollowerOvershootLimit) {
+                    overshot = true;  // 009E40ED
+                }
             }
         }
 

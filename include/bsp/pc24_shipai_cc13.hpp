@@ -13,6 +13,7 @@ namespace bsp {
 //            ship_ai_formation_reshape_slot (ship_ai_formation.cpp)
 //   009EAE20 / 009EAFC0 neighbour near / avoid box refresh (ship_ai_neighbour_box.cpp)
 //   009D9550 ship_ai_path_prune (ship_ai_path_search.cpp)
+//   004F3970 tangent chord / 009E3C00 follower point (ship_ai_path_follower.cpp)
 //   009D15F0 torpedo_aim_tick_full (torpedo_aim_tick.cpp)
 //   0074F930 unit_leak_tick / 00937440 unit_steering_torque (unit_forces.cpp; 00937440 is
 //            not live while kTorpedoBoatRudderTorqueBound is ON)
