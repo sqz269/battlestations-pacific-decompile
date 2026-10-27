@@ -39,6 +39,20 @@ namespace bsp {
 //     vector_helpers.cpp (its length_kernel is a naked-asm replica of the
 //     image's x87 sequence, so it rounds per op at the caller's precision)
 //     and length_2d_00414c60 in plane_water_law.cpp:34 (float ops)
+//   pc24w1-sweep3-5 (game_hosts_units.cpp; sites listed at each body):
+//     007D7DA0 leader_turn_rate (x, y, z and z + (cb * c0) * yaw_spd)
+//     009BEE30 follow law: the 009BFD70 latch d / length / dot, the latched
+//              k and steer point, the 009BF13D sight point
+//     0042B2F0 avoid_len (length_0042b2f0_pc24, with the 1e-10 floor)
+//     007DF4F0 vehicle avoidance: closing dots, (d - rr) / s, t, box top,
+//              gap, 1.5 / PitchSpd, zz and the box-corner sums
+//     0099CAB0 band shaper fade and BC4h value
+//     0099F1C0 terrain avoidance: C7Ch length, p0, c0, inverted k,
+//              (1 - w) * f.y, fan run lengths and band edges, the 009A1420
+//              water fan offset
+//     006BEE40 carrier holder: the 0042D0D0 offset rows
+//     Not narrowed: 004142E0 follow_to_body (a substitution; the image uses
+//     the stored inverse at unit+110h)
 //   Other copies of the same image routines are narrowed by their own
 //   packets, not here: 0042B2F0 in plane_wanderer.cpp (pc24w1-sweep3-4) and
 //   game_hosts_units.cpp avoid_len (pc24w1-sweep3-5); 009AC190's bearing in
@@ -52,7 +66,8 @@ namespace bsp {
 // Expected movers when ON: plane task waypoints and approach timing, kamikaze
 // turn-around and pitch targets, the kamikaze lock window, the dive-bomb aim
 // bearing, the flyabove dive reference and roll-in latch, and the
-// formation-follow steer point (attack release points).
+// formation-follow steer point (attack release points); from sweep3-5, the
+// leader turn rate, vehicle and terrain avoidance and carrier holder offsets.
 inline constexpr bool kPc24PlaneTasksCc13Bound = false;
 
 }  // namespace bsp
