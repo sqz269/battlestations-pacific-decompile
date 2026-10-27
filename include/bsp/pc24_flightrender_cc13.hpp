@@ -7,9 +7,10 @@ namespace bsp {
 // significand (extended exponent) before the next op. The OFF arms evaluate each chain in
 // double and round once at the float store.
 //
-// kPc24FlightRenderCc13Bound (packet pc24w1-sweep1-1, OFF): ON = per-op PC24 in the terrain
-// height-field leaves of src/game_hosts_scene_contents.cpp, with each op rounded as the
-// listing does (bsp/cc13_x87_model.hpp x87_*24):
+// kPc24FlightRenderCc13Bound (OFF): ON = per-op PC24, each op rounded as the listing does
+// (bsp/cc13_x87_model.hpp x87_*24). Sites by packet:
+//
+// pc24w1-sweep1-1, the terrain height-field leaves of src/game_hosts_scene_contents.cpp:
 //  * 00ADDA60 TRNV2 origin, 00ADDB65..00ADDB81 and 00ADDBBF..00ADDBCC: (box / 300) - 1.0.
 //  * 00ADA900 height and 00ADABA0 normal: ((world - node) - origin) * float(1 / 9.375),
 //    00ADA922..00ADA93D / 00ADA94A..00ADA968 and 00ADABC4..00ADABDE / 00ADABEB..00ADAC01.
@@ -20,8 +21,13 @@ namespace bsp {
 //  * 00ADAA40 cell normal: the inlined 004F9B30 cross (each product rounded before its
 //    difference, 004F9B54..004F9BA0) and the 00419440 length sum (xx + yy) + zz, the
 //    partial sum rounded but not stored (0041947D..00419485).
-// Movers: terrain heights and normals (00ADB3A0 grid lookups for ground contact, wakes,
-// land-convoy and ground AI clearance) and the TRNV2 origin set at load.
+// 00ADB480 and 00ADAA40 are switched only through the main-thread entries
+// (grid_height_arm_00adb480 / cell_normal_arm_00adaa40 with this switch). The Dyn hull terrain
+// contact (src/hull_terrain_contact.cpp, under DynWorkerPrecisionScope) calls the
+// grid_height_pc53_00adb480 / cell_normal_pc53_00adaa40 entries, which stay 53-bit either way.
+// Movers: main-thread terrain heights and normals only (00ADB3A0 grid lookups for wakes,
+// land-convoy and ground AI clearance), and the TRNV2 origin set at load; not the Dyn hull
+// ground contact.
 //
 // pc24w1-sweep1-2, ocean grid/coverage and plane pose leaves:
 //  * 00B960C0 ocean grid (src/ocean_wave_field.cpp): u * 63, 63 * v and the three lerps
@@ -56,8 +62,21 @@ namespace bsp {
 // Movers: ocean wave heights, plane pose rows, plane turn rates, bearings, climb angles and
 // heading commands.
 //
-// Copies still to narrow: 00ADB480 vsub_bilinear_00adb480 and 004F9B30 quad_cross
-// (game_hosts_scene_contents.cpp, pc24w1-sweep1-4).
+// pc24w1-sweep1-4, the terrain segment walk in src/game_hosts_scene_contents.cpp:
+//  * 00ADC5F0 block_sample: sample * scale + offset, 00ADC62E..00ADC630.
+//  * 004F9B30 quad_cross (00ADEB80 line-quad test): products rounded before the FSUBRP,
+//    004F9B54..004F9BA0.
+//  * 00AE9BD0 leaf: the inlined 004193E0 squared length (xx + yy) + zz, 00419401..00419429.
+//  * 00AE9D80 node walk: the mirrors (max + min) - s, y_in / y_out and the leaf end points
+//    s + d * t, 00AE9E8B..00AEA019.
+//  * 00AEA2B0 ray walk: the 00419440 length, direction (q - p) / length, the mirrors and the
+//    slab t = (bound - o) / d, 00AEA2CB..00AEA465.
+//  * 00ADB480 vsub_bilinear_00adb480 (VSUB vertical probe): the bilinear chain as in
+//    grid_height_arm_00adb480.
+//  00ADA240 landscape_entry_segment_hit's march is not live (kTerrainSegmentQuadtreeBound and
+//  kTerrainVerticalSubwalkBound ON) and carries lint allows.
+// Movers: terrain segment hits (line of sight and ground probes through 00ADA240) and the
+// VSUB vertical probe height; not the Dyn hull ground contact.
 inline constexpr bool kPc24FlightRenderCc13Bound = false;
 
 }  // namespace bsp

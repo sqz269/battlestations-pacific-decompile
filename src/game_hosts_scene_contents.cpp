@@ -41,6 +41,8 @@
 #include "bsp/gun_fire_points.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/structured_reader.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_flightrender_cc13.hpp"
 
 extern "C" {
 #include "lauxlib.h"
@@ -2073,6 +2075,9 @@ static bool scene_vfs_resolves(GameSceneContentsHost::Impl& owner, const std::st
 // Packet cc9_landscape_terrain. The rounding points of the x87 code are kept by
 // storing through float at each FSTP the listing shows.
 static float terrain_f32(double value) noexcept { return static_cast<float>(value); }
+// kPc24FlightRenderCc13Bound ON: the same chains with every op rounded at 24-bit precision
+// control (bsp/pc24_flightrender_cc13.hpp).
+namespace pc24 = bsp::cc13x87;
 
 // __stricmp (00ADDC91 NODE, 00ADFEB0 U16) and 00425850 (TRNV2) compare tags
 // without regard to case.
@@ -2116,8 +2121,15 @@ static std::shared_ptr<SceneTerrainHeightField> load_terrain_height_field_00adda
         // FLD +68h / FDIV 300 (float) / FSUB 1.0 (double) / FSTP float, floor
         // (00BF85B0) to float, FMUL 300 / FSTP +80h; the same for +70h -> +84h.
         const float tile = 300.0f;
-        const float ux = terrain_f32(static_cast<double>(box_min_x) / tile - 1.0);
-        const float uz = terrain_f32(static_cast<double>(box_min_z) / tile - 1.0);
+        float ux, uz;
+        if constexpr (bsp::kPc24FlightRenderCc13Bound) {
+            // 00ADDB6E FDIV then 00ADDB7B FSUB, each rounded (00ADDBC2 / 00ADDBC6 for z).
+            ux = terrain_f32(pc24::x87_sub24(pc24::x87_div24(box_min_x, tile), 1.0));
+            uz = terrain_f32(pc24::x87_sub24(pc24::x87_div24(box_min_z, tile), 1.0));
+        } else {
+            ux = terrain_f32(static_cast<double>(box_min_x) / tile - 1.0);
+            uz = terrain_f32(static_cast<double>(box_min_z) / tile - 1.0);
+        }
         field->origin_x = terrain_f32(static_cast<double>(terrain_f32(std::floor(ux))) * tile);
         field->origin_z = terrain_f32(static_cast<double>(terrain_f32(std::floor(uz))) * tile);
     }
@@ -4061,8 +4073,15 @@ float SceneTerrainHeightField::cell_height_00adb3a0(int i, int j) const noexcept
 // and every lerp is stored through float.
 float SceneTerrainHeightField::height_00ada900(float x, float z) const noexcept {
     const float inv = terrain_f32(1.0 / kTerrainCellSize);
-    const float u = terrain_f32((static_cast<double>(x) - node_x - origin_x) * inv);
-    const float v = terrain_f32((static_cast<double>(z) - node_z - origin_z) * inv);
+    float u, v;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // 00ADA922 FSUB node, 00ADA933 FSUB origin, 00ADA939 FMUL; z at 00ADA94A..00ADA964.
+        u = terrain_f32(pc24::x87_mul24(pc24::x87_sub24(pc24::x87_sub24(x, node_x), origin_x), inv));
+        v = terrain_f32(pc24::x87_mul24(pc24::x87_sub24(pc24::x87_sub24(z, node_z), origin_z), inv));
+    } else {
+        u = terrain_f32((static_cast<double>(x) - node_x - origin_x) * inv);
+        v = terrain_f32((static_cast<double>(z) - node_z - origin_z) * inv);
+    }
     return grid_height_00adb480(u, v);
 }
 
@@ -4071,13 +4090,30 @@ float SceneTerrainHeightField::height_00ada900(float x, float z) const noexcept 
 // same with origin_z (00ADA161..00ADA1A8), then slot 48h 00ADB480. No node term.
 float SceneTerrainHeightField::local_height_00ada160(float x, float z) const noexcept {
     const float inv = terrain_f32(1.0 / kTerrainCellSize);
-    const float u = terrain_f32((static_cast<double>(x) - origin_x) * inv);
-    const float v = terrain_f32((static_cast<double>(z) - origin_z) * inv);
+    float u, v;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // 00ADA178 FSUB, 00ADA184 FMULP; z at 00ADA190 / 00ADA196.
+        u = terrain_f32(pc24::x87_mul24(pc24::x87_sub24(x, origin_x), inv));
+        v = terrain_f32(pc24::x87_mul24(pc24::x87_sub24(z, origin_z), inv));
+    } else {
+        u = terrain_f32((static_cast<double>(x) - origin_x) * inv);
+        v = terrain_f32((static_cast<double>(z) - origin_z) * inv);
+    }
     return grid_height_00adb480(u, v);
 }
 
-// 00ADB480, slot 48h: the bilinear height at grid (u, v).
+// 00ADB480, slot 48h: the bilinear height at grid (u, v). The main-thread entry takes
+// kPc24FlightRenderCc13Bound; the Dyn worker entry (53-bit) always takes the double arm.
 float SceneTerrainHeightField::grid_height_00adb480(float u, float v) const noexcept {
+    return grid_height_arm_00adb480<kPc24FlightRenderCc13Bound>(u, v);
+}
+
+float SceneTerrainHeightField::grid_height_pc53_00adb480(float u, float v) const noexcept {
+    return grid_height_arm_00adb480<false>(u, v);
+}
+
+template <bool kPc24Bound>
+float SceneTerrainHeightField::grid_height_arm_00adb480(float u, float v) const noexcept {
     const int i = static_cast<int>(u);
     const int j = static_cast<int>(v);
     const float fu = terrain_f32(static_cast<double>(u) - i);
@@ -4085,10 +4121,21 @@ float SceneTerrainHeightField::grid_height_00adb480(float u, float v) const noex
     const float h01 = cell_height_00adb3a0(i, j + 1);
     const float h10 = cell_height_00adb3a0(i + 1, j);
     const float h00 = cell_height_00adb3a0(i, j);
-    const float a = terrain_f32(h00 + static_cast<double>(fu) * (static_cast<double>(h10) - h00));
-    const float b = terrain_f32(h01 + static_cast<double>(fu) * (static_cast<double>(h11) - h01));
-    const float fv = terrain_f32(static_cast<double>(v) - j);
-    return terrain_f32(a + static_cast<double>(fv) * (static_cast<double>(b) - a));
+    float result;
+    if constexpr (kPc24Bound) {
+        // 00ADB4F9 FSUBP, 00ADB502 FMULP, 00ADB506 FADDP -> a; 00ADB516 / 00ADB51A /
+        // 00ADB51C -> b; 00ADB52C FSUBP, 00ADB53E FMULP, 00ADB540 FADDP; each rounded.
+        const float a = terrain_f32(pc24::x87_add24(h00, pc24::x87_mul24(fu, pc24::x87_sub24(h10, h00))));
+        const float b = terrain_f32(pc24::x87_add24(h01, pc24::x87_mul24(fu, pc24::x87_sub24(h11, h01))));
+        const float fv = terrain_f32(static_cast<double>(v) - j);
+        result = terrain_f32(pc24::x87_add24(a, pc24::x87_mul24(fv, pc24::x87_sub24(b, a))));
+    } else {
+        const float a = terrain_f32(h00 + static_cast<double>(fu) * (static_cast<double>(h10) - h00));
+        const float b = terrain_f32(h01 + static_cast<double>(fu) * (static_cast<double>(h11) - h01));
+        const float fv = terrain_f32(static_cast<double>(v) - j);
+        result = terrain_f32(a + static_cast<double>(fv) * (static_cast<double>(b) - a));
+    }
+    return result;
 }
 
 // 00ADABA0 then 00ADAA40: three samples of the truncated cell, points
@@ -4098,8 +4145,17 @@ float SceneTerrainHeightField::grid_height_00adb480(float u, float v) const noex
 // by float(1 / length), or by 0 when the length is not positive.
 void SceneTerrainHeightField::normal_00adaba0(float x, float z, float out[3]) const noexcept {
     const float inv = terrain_f32(1.0 / kTerrainCellSize);
-    const int i = static_cast<int>(terrain_f32((static_cast<double>(x) - node_x - origin_x) * inv));
-    const int j = static_cast<int>(terrain_f32((static_cast<double>(z) - node_z - origin_z) * inv));
+    int i, j;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // 00ADABC8 FSUB node, 00ADABD4 FSUB origin, 00ADABDA FMUL; z at 00ADABF1..00ADABFD.
+        i = static_cast<int>(terrain_f32(
+            pc24::x87_mul24(pc24::x87_sub24(pc24::x87_sub24(x, node_x), origin_x), inv)));
+        j = static_cast<int>(terrain_f32(
+            pc24::x87_mul24(pc24::x87_sub24(pc24::x87_sub24(z, node_z), origin_z), inv)));
+    } else {
+        i = static_cast<int>(terrain_f32((static_cast<double>(x) - node_x - origin_x) * inv));
+        j = static_cast<int>(terrain_f32((static_cast<double>(z) - node_z - origin_z) * inv));
+    }
     cell_normal_00adaa40(i, j, out);
 }
 
@@ -4109,13 +4165,30 @@ void SceneTerrainHeightField::normal_00adaba0(float x, float z, float out[3]) co
 // 00ADAA40(out, i, j). No node term.
 void SceneTerrainHeightField::local_normal_00ada1c0(float x, float z, float out[3]) const noexcept {
     const float inv = terrain_f32(1.0 / kTerrainCellSize);
-    const int j = static_cast<int>(terrain_f32((static_cast<double>(z) - origin_z) * inv));
-    const int i = static_cast<int>(terrain_f32((static_cast<double>(x) - origin_x) * inv));
+    int i, j;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // 00ADA1D7 FSUB, 00ADA1E3 FMULP; x at 00ADA1F8 / 00ADA1FF.
+        j = static_cast<int>(terrain_f32(pc24::x87_mul24(pc24::x87_sub24(z, origin_z), inv)));
+        i = static_cast<int>(terrain_f32(pc24::x87_mul24(pc24::x87_sub24(x, origin_x), inv)));
+    } else {
+        j = static_cast<int>(terrain_f32((static_cast<double>(z) - origin_z) * inv));
+        i = static_cast<int>(terrain_f32((static_cast<double>(x) - origin_x) * inv));
+    }
     cell_normal_00adaa40(i, j, out);
 }
 
-// 00ADAA40, slot 30h: the unit normal of cell (i, j).
+// 00ADAA40, slot 30h: the unit normal of cell (i, j). Entries as for 00ADB480: the
+// main thread takes kPc24FlightRenderCc13Bound, the Dyn worker always the double arm.
 void SceneTerrainHeightField::cell_normal_00adaa40(int i, int j, float out[3]) const noexcept {
+    cell_normal_arm_00adaa40<kPc24FlightRenderCc13Bound>(i, j, out);
+}
+
+void SceneTerrainHeightField::cell_normal_pc53_00adaa40(int i, int j, float out[3]) const noexcept {
+    cell_normal_arm_00adaa40<false>(i, j, out);
+}
+
+template <bool kPc24Bound>
+void SceneTerrainHeightField::cell_normal_arm_00adaa40(int i, int j, float out[3]) const noexcept {
     const float fi = static_cast<float>(i);
     const float fj = static_cast<float>(j);
     const float h00 = cell_height_00adb3a0(i, j);
@@ -4127,14 +4200,28 @@ void SceneTerrainHeightField::cell_normal_00adaa40(int i, int j, float out[3]) c
         terrain_f32(static_cast<double>(h10) - h00), 0.0f};
     const float d2[3] = {0.0f, terrain_f32(static_cast<double>(h01) - h00),
         terrain_f32(static_cast<double>(p2z) - fj)};
-    const float c[3] = {
-        terrain_f32(static_cast<double>(d2[1]) * d1[2] - static_cast<double>(d2[2]) * d1[1]),
-        terrain_f32(static_cast<double>(d2[2]) * d1[0] - static_cast<double>(d2[0]) * d1[2]),
-        terrain_f32(static_cast<double>(d2[0]) * d1[1] - static_cast<double>(d2[1]) * d1[0])};
+    float c[3];
+    if constexpr (kPc24Bound) {
+        // The 004F9B30 cross (called at 00ADAB3E; inlined here): both products rounded before the FSUBRP (004F9B5F / 004F9B6D / 004F9B71,
+        // 004F9B87 / 004F9B8F / 004F9B93, 004F9B9A / 004F9B9C / 004F9B9E).
+        c[0] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(d2[1], d1[2]), pc24::x87_mul24(d2[2], d1[1])));
+        c[1] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(d2[2], d1[0]), pc24::x87_mul24(d2[0], d1[2])));
+        c[2] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(d2[0], d1[1]), pc24::x87_mul24(d2[1], d1[0])));
+    } else {
+        c[0] = terrain_f32(static_cast<double>(d2[1]) * d1[2] - static_cast<double>(d2[2]) * d1[1]);
+        c[1] = terrain_f32(static_cast<double>(d2[2]) * d1[0] - static_cast<double>(d2[0]) * d1[2]);
+        c[2] = terrain_f32(static_cast<double>(d2[0]) * d1[1] - static_cast<double>(d2[1]) * d1[0]);
+    }
     const float xx = terrain_f32(static_cast<double>(c[0]) * c[0]);
     const float yy = terrain_f32(static_cast<double>(c[1]) * c[1]);
     const float zz = terrain_f32(static_cast<double>(c[2]) * c[2]);
-    const float sum = terrain_f32(static_cast<double>(xx) + yy + zz);
+    float sum;
+    if constexpr (kPc24Bound) {
+        // 0041947D FADDP xx + yy, rounded but not stored, then 00419485 FADD zz.
+        sum = terrain_f32(pc24::x87_add24(pc24::x87_add24(xx, yy), zz));
+    } else {
+        sum = terrain_f32(static_cast<double>(xx) + yy + zz);
+    }
     const float length = terrain_f32(std::sqrt(static_cast<double>(sum)));
     const float scale = length > 0.0f ? terrain_f32(1.0 / length) : 0.0f;
     for (int k = 0; k < 3; ++k) out[k] = terrain_f32(static_cast<double>(c[k]) * scale);
@@ -4308,7 +4395,16 @@ constexpr float kQuadTreeTop = 1e10f;          // terrain +14h [00CE4970]
 float block_sample_00adc5f0(const SceneTerrainBlock& block, int x, int z) noexcept {
     const std::uint16_t s = block.samples[static_cast<std::size_t>(33 * z + x)];
     if (s == 0xffffu) return kTerrainNoGround;
-    return terrain_f32(s * static_cast<double>(block.inv_scale) + block.offset);
+    float out;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-4: FILD of the sample (exact), 00ADC62E FMULP +34h and 00ADC630
+        // FADD +2Ch, each rounded at PC24, then FSTP (00ADC633).
+        out = terrain_f32(pc24::x87_add24(pc24::x87_mul24(static_cast<double>(s), block.inv_scale),
+                                          block.offset));
+    } else {
+        out = terrain_f32(s * static_cast<double>(block.inv_scale) + block.offset);
+    }
+    return out;
 }
 
 // The tile table +40h[+38h * z + x], null outside the grid (00ADAC30 is +38h,
@@ -4400,9 +4496,17 @@ void build_quadtree_00aea820(const SceneTerrainHeightField& field) {
 // 004F9B30: out.x = a.y*b.z - a.z*b.y, out.y = b.x*a.z - a.x*b.z,
 // out.z = b.y*a.x - a.y*b.x.
 void quad_cross(const float a[3], const float b[3], float out[3]) noexcept {
-    out[0] = terrain_f32(static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1]);
-    out[1] = terrain_f32(static_cast<double>(b[0]) * a[2] - static_cast<double>(a[0]) * b[2]);
-    out[2] = terrain_f32(static_cast<double>(b[1]) * a[0] - static_cast<double>(a[1]) * b[0]);
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-4: each product rounded at PC24 before its FSUBRP, and the
+        // difference rounded (004F9B54..004F9BA0).
+        out[0] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(a[1], b[2]), pc24::x87_mul24(a[2], b[1])));
+        out[1] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(b[0], a[2]), pc24::x87_mul24(a[0], b[2])));
+        out[2] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(b[1], a[0]), pc24::x87_mul24(a[1], b[0])));
+    } else {
+        out[0] = terrain_f32(static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1]);
+        out[1] = terrain_f32(static_cast<double>(b[0]) * a[2] - static_cast<double>(a[0]) * b[2]);
+        out[2] = terrain_f32(static_cast<double>(b[1]) * a[0] - static_cast<double>(a[1]) * b[0]);
+    }
 }
 
 float quad_dot(const float a[3], const float b[3]) noexcept {
@@ -4539,8 +4643,18 @@ bool leaf_00ae9bd0(const SceneTerrainHeightField& field, int tile_x, int tile_z,
     if (block == nullptr) return false;
     float diff[3];
     for (int k = 0; k < 3; ++k) diff[k] = terrain_f32(static_cast<double>(start[k]) - end[k]);
-    const double length_sq = static_cast<double>(diff[1]) * diff[1]
-        + static_cast<double>(diff[0]) * diff[0] + static_cast<double>(diff[2]) * diff[2];
+    double length_sq;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-4: 004193E0 stores x*x and y*y through float (00419407,
+        // 00419415), adds them (0041941D), squares z (0041941F) and adds it (00419425),
+        // each op rounded at PC24; the result is stored through float (00419429).
+        length_sq = terrain_f32(pc24::x87_add24(
+            pc24::x87_add24(pc24::x87_mul24(diff[0], diff[0]), pc24::x87_mul24(diff[1], diff[1])),
+            pc24::x87_mul24(diff[2], diff[2])));
+    } else {
+        length_sq = static_cast<double>(diff[1]) * diff[1]
+            + static_cast<double>(diff[0]) * diff[0] + static_cast<double>(diff[2]) * diff[2];
+    }
     if (length_sq < kQuadLeafMinLengthSq) return false;
     ++scene_terrain_quadtree_census().leaves;
     return tile_walk_00adf1b0(*block, tile_x, tile_z, start, end, out);
@@ -4564,24 +4678,59 @@ int node_walk_00ae9d80(const SceneTerrainHeightField& field, const QuadBox& box,
     float dx = ray.direction[0], dy = ray.direction[1], dz = ray.direction[2];
     if ((ray.flags & 4u) != 0) {
         dx = -dx;
-        sx = terrain_f32(static_cast<double>(box.max_x) + box.min_x - sx);
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            // pc24w1-sweep1-4: 00AE9E8B FADD then 00AE9E98 FSUB, each rounded at PC24.
+            sx = terrain_f32(pc24::x87_sub24(pc24::x87_add24(box.max_x, box.min_x), sx));
+        } else {
+            sx = terrain_f32(static_cast<double>(box.max_x) + box.min_x - sx);
+        }
     }
     if ((ray.flags & 2u) != 0) {
         dz = -ray.direction[2];
-        sz = terrain_f32(static_cast<double>(box.max_z) + box.min_z - sz);
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            // pc24w1-sweep1-4: 00AE9EAC FADD then 00AE9EB5 FSUB, each rounded at PC24.
+            sz = terrain_f32(pc24::x87_sub24(pc24::x87_add24(box.max_z, box.min_z), sz));
+        } else {
+            sz = terrain_f32(static_cast<double>(box.max_z) + box.min_z - sz);
+        }
     }
-    const float y_in = terrain_f32(sy + static_cast<double>(terrain_f32(static_cast<double>(dy) * t_in)));
-    const float y_out = terrain_f32(static_cast<double>(t_out) * dy + sy);
+    float y_in;
+    float y_out;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-4: dy * t_in stored (00AE9EC3/00AE9EC5) plus sy (00AE9ED3);
+        // dy * t_out stored (00AE9EE5/00AE9EE9) plus sy (00AE9EF3); each op rounded.
+        y_in = terrain_f32(pc24::x87_add24(pc24::x87_mul24(dy, t_in), sy));
+        y_out = terrain_f32(pc24::x87_add24(pc24::x87_mul24(dy, t_out), sy));
+    } else {
+        y_in = terrain_f32(sy + static_cast<double>(terrain_f32(static_cast<double>(dy) * t_in)));
+        y_out = terrain_f32(static_cast<double>(t_out) * dy + sy);
+    }
     const float y_lo = y_in < y_out ? y_in : y_out;
     const SceneTerrainHeightField::QuadNode& node = field.quadtree[static_cast<std::size_t>(node_index)];
     if (!(y_lo <= node.max_y)) return 0;
     const float y_hi = y_out < y_in ? y_in : y_out;
     if (!(node.min_y <= y_hi)) return 0;
     if (node.children == -1) {
-        const float start[3] = {terrain_f32(sx + static_cast<double>(terrain_f32(static_cast<double>(t_in) * dx))),
-            y_in, terrain_f32(sz + static_cast<double>(terrain_f32(static_cast<double>(dz) * t_in)))};
-        const float end[3] = {terrain_f32(sx + static_cast<double>(dx) * t_out), y_out,
-            terrain_f32(sz + static_cast<double>(dz) * t_out)};
+        float start[3];
+        float end[3];
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            // pc24w1-sweep1-4: the four products d * t stored through float
+            // (00AE9FA6..00AEA009) and each added to s (00AE9FCF..00AEA019), every op
+            // rounded at PC24.
+            start[0] = terrain_f32(pc24::x87_add24(sx, pc24::x87_mul24(t_in, dx)));
+            start[1] = y_in;
+            start[2] = terrain_f32(pc24::x87_add24(sz, pc24::x87_mul24(dz, t_in)));
+            end[0] = terrain_f32(pc24::x87_add24(sx, pc24::x87_mul24(dx, t_out)));
+            end[1] = y_out;
+            end[2] = terrain_f32(pc24::x87_add24(sz, pc24::x87_mul24(dz, t_out)));
+        } else {
+            start[0] = terrain_f32(sx + static_cast<double>(terrain_f32(static_cast<double>(t_in) * dx)));
+            start[1] = y_in;
+            start[2] = terrain_f32(sz + static_cast<double>(terrain_f32(static_cast<double>(dz) * t_in)));
+            end[0] = terrain_f32(sx + static_cast<double>(dx) * t_out);
+            end[1] = y_out;
+            end[2] = terrain_f32(sz + static_cast<double>(dz) * t_out);
+        }
         return leaf_00ae9bd0(field, node.tile_x, node.tile_z, start, end, ray.hit) ? 1 : 0;
     }
     const float txm = terrain_f32((static_cast<double>(tx1) + tx0) * 0.5);   // [00D7A280]
@@ -4637,32 +4786,69 @@ bool ray_walk_00aea2b0(const SceneTerrainHeightField& field, const float p[3], c
     const QuadBox box{0.0f, 0.0f, span, span};
     float diff[3];
     for (int k = 0; k < 3; ++k) diff[k] = terrain_f32(static_cast<double>(q[k]) - p[k]);
-    const float length = terrain_f32(std::sqrt(static_cast<double>(diff[0]) * diff[0]
-        + static_cast<double>(diff[1]) * diff[1] + static_cast<double>(diff[2]) * diff[2]));  // 00419440
+    float length;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-4: 00419440 (00AEA307): squares rounded, (xx + yy) + zz with each
+        // add rounded and stored through float (00419489), then 00BF7030's FSQRT, rounded.
+        const float sum = terrain_f32(pc24::x87_add24(
+            pc24::x87_add24(pc24::x87_mul24(diff[0], diff[0]), pc24::x87_mul24(diff[1], diff[1])),
+            pc24::x87_mul24(diff[2], diff[2])));
+        length = terrain_f32(pc24::x87_sqrt24(sum));
+    } else {
+        length = terrain_f32(std::sqrt(static_cast<double>(diff[0]) * diff[0]
+            + static_cast<double>(diff[1]) * diff[1] + static_cast<double>(diff[2]) * diff[2]));  // 00419440
+    }
     QuadRay ray;
     ray.length = length;
     ray.origin[0] = p[0];
     ray.origin[1] = p[1];
     ray.origin[2] = p[2];
     for (int k = 0; k < 3; ++k) {
-        ray.direction[k] = terrain_f32((static_cast<double>(q[k]) - p[k]) / length);
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            // pc24w1-sweep1-4: q - p re-formed (00AEA2CB..00AEA357), each rounded, then
+            // divided by the length (00AEA377..00AEA392), rounded at PC24.
+            ray.direction[k] = terrain_f32(pc24::x87_div24(pc24::x87_sub24(q[k], p[k]), length));
+        } else {
+            ray.direction[k] = terrain_f32((static_cast<double>(q[k]) - p[k]) / length);
+        }
     }
     if (ray.direction[0] < 0.0f) {
         ray.direction[0] = -ray.direction[0];   // [00D7A208] -0.0 minus
         ray.flags = 4u;
-        ray.origin[0] = terrain_f32(static_cast<double>(box.max_x) + box.min_x - p[0]);
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            // pc24w1-sweep1-4: 00AEA3BA FADD then 00AEA3CF FSUB, each rounded at PC24.
+            ray.origin[0] = terrain_f32(pc24::x87_sub24(pc24::x87_add24(box.max_x, box.min_x), p[0]));
+        } else {
+            ray.origin[0] = terrain_f32(static_cast<double>(box.max_x) + box.min_x - p[0]);
+        }
     }
     if (ray.direction[2] < 0.0f) {
         ray.flags |= 2u;
         ray.direction[2] = -ray.direction[2];
-        ray.origin[2] = terrain_f32(static_cast<double>(box.max_z) + box.min_z - ray.origin[2]);
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            // pc24w1-sweep1-4: 00AEA3F2 FADD then 00AEA3FF FSUB, each rounded at PC24.
+            ray.origin[2] = terrain_f32(pc24::x87_sub24(pc24::x87_add24(box.max_z, box.min_z),
+                                                        ray.origin[2]));
+        } else {
+            ray.origin[2] = terrain_f32(static_cast<double>(box.max_z) + box.min_z - ray.origin[2]);
+        }
     }
     if (ray.direction[0] < kQuadMinDirection) ray.direction[0] = kQuadMinDirection;
     if (ray.direction[2] < kQuadMinDirection) ray.direction[2] = kQuadMinDirection;
-    const float tx0 = terrain_f32((static_cast<double>(box.min_x) - ray.origin[0]) / ray.direction[0]);
-    const float tx1 = terrain_f32((static_cast<double>(box.max_x) - ray.origin[0]) / ray.direction[0]);
-    const float tz0 = terrain_f32((static_cast<double>(box.min_z) - ray.origin[2]) / ray.direction[2]);
-    const float tz1 = terrain_f32((static_cast<double>(box.max_z) - ray.origin[2]) / ray.direction[2]);
+    float tx0, tx1, tz0, tz1;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-4: (bound - origin) / direction, the FSUB/FSUBR and FDIV/FDIVR
+        // each rounded at PC24 (00AEA430..00AEA443, 00AEA452..00AEA465).
+        tx0 = terrain_f32(pc24::x87_div24(pc24::x87_sub24(box.min_x, ray.origin[0]), ray.direction[0]));
+        tx1 = terrain_f32(pc24::x87_div24(pc24::x87_sub24(box.max_x, ray.origin[0]), ray.direction[0]));
+        tz0 = terrain_f32(pc24::x87_div24(pc24::x87_sub24(box.min_z, ray.origin[2]), ray.direction[2]));
+        tz1 = terrain_f32(pc24::x87_div24(pc24::x87_sub24(box.max_z, ray.origin[2]), ray.direction[2]));
+    } else {
+        tx0 = terrain_f32((static_cast<double>(box.min_x) - ray.origin[0]) / ray.direction[0]);
+        tx1 = terrain_f32((static_cast<double>(box.max_x) - ray.origin[0]) / ray.direction[0]);
+        tz0 = terrain_f32((static_cast<double>(box.min_z) - ray.origin[2]) / ray.direction[2]);
+        tz1 = terrain_f32((static_cast<double>(box.max_z) - ray.origin[2]) / ray.direction[2]);
+    }
     const float t_lo = tz0 < tx0 ? tx0 : tz0;
     const float t_hi = tx1 < tz1 ? tx1 : tz1;
     if (t_hi <= t_lo) return false;
@@ -5221,10 +5407,22 @@ float vsub_bilinear_00adb480(const SceneTerrainHeightField& field, float u, floa
     const float h01 = field.cell_height_00adb3a0(i, j + 1);
     const float h10 = field.cell_height_00adb3a0(i + 1, j);
     const float h00 = field.cell_height_00adb3a0(i, j);
-    const float a = terrain_f32(h00 + static_cast<double>(fu) * (static_cast<double>(h10) - h00));
-    const float b = terrain_f32(h01 + static_cast<double>(fu) * (static_cast<double>(h11) - h01));
-    const float fv = terrain_f32(static_cast<double>(v) - j);
-    return terrain_f32(a + static_cast<double>(fv) * (static_cast<double>(b) - a));
+    float result;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-4, the same chain as grid_height_arm_00adb480: 00ADB4F9 FSUBP,
+        // 00ADB502 FMULP, 00ADB506 FADDP -> a; 00ADB516 / 00ADB51A / 00ADB51C -> b;
+        // 00ADB52C FSUBP, 00ADB53E FMULP, 00ADB540 FADDP; each rounded at PC24.
+        const float a = terrain_f32(pc24::x87_add24(h00, pc24::x87_mul24(fu, pc24::x87_sub24(h10, h00))));
+        const float b = terrain_f32(pc24::x87_add24(h01, pc24::x87_mul24(fu, pc24::x87_sub24(h11, h01))));
+        const float fv = terrain_f32(static_cast<double>(v) - j);
+        result = terrain_f32(pc24::x87_add24(a, pc24::x87_mul24(fv, pc24::x87_sub24(b, a))));
+    } else {
+        const float a = terrain_f32(h00 + static_cast<double>(fu) * (static_cast<double>(h10) - h00));
+        const float b = terrain_f32(h01 + static_cast<double>(fu) * (static_cast<double>(h11) - h01));
+        const float fv = terrain_f32(static_cast<double>(v) - j);
+        result = terrain_f32(a + static_cast<double>(fv) * (static_cast<double>(b) - a));
+    }
+    return result;
 }
 
 // 00AECC40 (fastcall terrain, EDX world from; world to, out; RET 8) after its
@@ -5375,6 +5573,7 @@ bool landscape_entry_segment_hit(std::size_t entry, const float from[3],
     const double length = std::sqrt(d[0] * d[0] + d[1] * d[1] + d[2] * d[2]);
     const int steps = std::max(1, static_cast<int>(std::ceil(length / (kTerrainCellSize * 0.5))));
     auto below = [&](double t) {
+        // pc24-lint: allow not live (pc24w1-sweep1-4): kTerrainSegmentQuadtreeBound and kTerrainVerticalSubwalkBound are both ON, so both 00ADA240 arms return above; this march is the host stand-in with no image chain
         const double p[3] = {a[0] + d[0] * t, a[1] + d[1] * t, a[2] + d[2] * t};
         return p[1] < local_ground(field, p[0], p[2]);
     };
@@ -5401,6 +5600,7 @@ bool landscape_entry_segment_hit(std::size_t entry, const float from[3],
     }
     if (t_hit < 0.0) return false;
     if (vertical_case) ++scene_terrain_quadtree_census().vertical_hits;
+    // pc24-lint: allow not live (pc24w1-sweep1-4): the march's answer, unreachable while kTerrainSegmentQuadtreeBound and kTerrainVerticalSubwalkBound are ON
     const double local[3] = {a[0] + d[0] * t_hit, a[1] + d[1] * t_hit, a[2] + d[2] * t_hit};
     double world[3];
     frame_point(object.world, local, world);   // 00ADA240's +F0h transform back
