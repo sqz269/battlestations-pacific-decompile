@@ -14503,6 +14503,8 @@ int GameShipAiHost::transport_launch_craft_008206f0(std::size_t unit) {
                                              keel(h_pos, 2)};
                     // 0082178B 004F49F0, its ST0 stored as a float; blocked when the half
                     // widths' sum is above it (JA, unordered does not block).
+                    // seg_b's ON order (c-h, c+h) follows the image's ECX/EDX; OFF has it
+                    // reversed, harmless only while the substitution stays symmetric.
                     const float gap = static_cast<float>(segment_distance_2d_004f49f0(seg_a, seg_b));
                     const double widths = x87_add24(x87_mul24(craft_keys.width_00a4, 0.5),
                                                     x87_mul24(ok.width_00a4, 0.5));
