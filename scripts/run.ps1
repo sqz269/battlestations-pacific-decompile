@@ -8,6 +8,10 @@ param(
     [string[]]$GameArguments = @()
 )
 $ErrorActionPreference = 'Stop'
+if ((Test-Path "$env:USERPROFILE\.bsp\DRAIN") -and $env:BSP_IGNORE_DRAIN -ne '1') {
+    Write-Error "DRAIN is set ($env:USERPROFILE\.bsp\DRAIN): not starting a game run." -ErrorAction Continue
+    exit 75
+}
 $repoRoot = Split-Path $PSScriptRoot -Parent
 if (!$GameRoot) {
     $target = Get-Content -LiteralPath (Join-Path $repoRoot 'config/target.json') -Raw | ConvertFrom-Json

@@ -3,10 +3,12 @@
 // docs/CC13_POST_EFFECTS_AND_RESOURCES.md. Names are hypotheses.
 
 #include "bsp/post_effects_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cctype>
 #include <cmath>
 #include <cstring>
+#include <limits>
 #include <stdexcept>
 
 namespace bsp::cc13fx {
@@ -18,6 +20,13 @@ double unsigned_extent(std::uint32_t v) { return static_cast<double>(v); }
 
 float f(double v) { return static_cast<float>(v); }
 
+// FSIN / FCOS and the 24-bit precision-control model: include/bsp/cc13_x87_model.hpp.
+using cc13x87::x87_sin;
+using cc13x87::x87_cos;
+double mul24(double a, double b) { return cc13x87::x87_mul24(a, b); }
+double add24(double a, double b) { return cc13x87::x87_add24(a, b); }
+double sub24(double a, double b) { return cc13x87::x87_sub24(a, b); }
+double div24(double a, double b) { return cc13x87::x87_div24(a, b); }
 // CE3828: the double 6.2831854820251465, i.e. (double)(float)(2*pi).
 constexpr double kTwoPi = 6.2831854820251465;
 constexpr float kNegZero = -0.0f;  // D7A208
@@ -165,13 +174,15 @@ int fill_fullscreen_primitive(int vertex_count, FullscreenVertex out[4]) {
     return 4;
 }
 
+// cc13-fixture2 follow-up: no static caller (a camera-block helper); modelled at the main
+// thread's 24-bit precision control, each FMUL/FSUB/FDIV rounded to 24 significand bits.
 void invert2x2(float m[4]) {
     const float m0 = m[0];
-    const float det = f(static_cast<double>(m0) * m[3] - static_cast<double>(m[1]) * m[2]);
-    m[0] = m[3] / det;
-    m[1] = -m[1] / det;
-    m[2] = -m[2] / det;
-    m[3] = m0 / det;
+    const float det = f(sub24(mul24(m0, m[3]), mul24(m[1], m[2])));
+    m[0] = f(div24(m[3], det));
+    m[1] = f(div24(-static_cast<double>(m[1]), det));
+    m[2] = f(div24(-static_cast<double>(m[2]), det));
+    m[3] = f(div24(m0, det));
 }
 
 void orthonormalize_rows(float m[16]) {
@@ -195,36 +206,45 @@ void orthonormalize_rows(float m[16]) {
 
 void compose_euler_scale_translation(float out[16], const float t[3], const float euler[3],
     const float scale[3]) {
-    const float s2 = f(std::sin(static_cast<double>(euler[2])));
-    const float s1 = f(std::sin(static_cast<double>(euler[1])));
-    const float s0 = f(std::sin(static_cast<double>(euler[0])));
-    const float c2 = f(std::cos(static_cast<double>(euler[2])));
-    const float c1 = f(std::cos(static_cast<double>(euler[1])));
-    const float c0 = f(std::cos(static_cast<double>(euler[0])));
-    const double S1 = s1, S2 = s2, S0 = s0, C0 = c0, C1 = c1, C2 = c2;
+    const float s2 = f(x87_sin(euler[2]));
+    const float s1 = f(x87_sin(euler[1]));
+    const float s0 = f(x87_sin(euler[0]));
+    const float c2 = f(x87_cos(euler[2]));
+    const float c1 = f(x87_cos(euler[1]));
+    const float c0 = f(x87_cos(euler[0]));
+    using D = double;
+    // cc13-fixture2 (fixture-found): the image stores four pair products to float first
+    // (00B6450F c2*c0, 00B64520 -c2*s0, 00B64530 s2*s0, 00B6453A -s2*c0) and three more
+    // before their scale multiply (00B64569 c1*s2, 00B645C2 c1*c2, 00B645EE c1*s0,
+    // 00B64610 c1*c0); the rest stays on the x87 stack. Follow-up: the callers (005ADDA0 HUD
+    // map icons, 00ACBEC0 GUI model) run on the main thread, so every operation rounds to a
+    // 24-bit significand (x87_*24).
+    const float c2c0 = f(mul24(c2, c0)), nc2s0 = f(mul24(-D(c2), s0)), s2s0 = f(mul24(s2, s0)),
+                ns2c0 = f(mul24(-D(s2), c0));
     out[3] = 0.0f;
-    out[0] = f(scale[0] * (C2 * C0 - S1 * S2 * S0));
-    out[1] = f(C1 * S2 * scale[0]);
-    out[2] = f((S1 * -S2 * C0 + S0 * -C2) * scale[0]);
+    out[0] = f(mul24(sub24(c2c0, mul24(s1, s2s0)), scale[0]));
+    out[1] = f(mul24(f(mul24(c1, s2)), scale[0]));
+    out[2] = f(mul24(add24(mul24(s1, ns2c0), nc2s0), scale[0]));
     out[7] = 0.0f;
-    out[4] = f(scale[1] * (S1 * S0 * -C2 + -S2 * C0));
+    out[4] = f(mul24(add24(mul24(s1, nc2s0), ns2c0), scale[1]));
     out[11] = 0.0f;
     out[15] = 1.0f;
-    out[5] = f(C1 * C2 * scale[1]);
-    out[6] = f((S2 * S0 - S1 * C2 * C0) * scale[1]);
-    out[8] = f(scale[2] * C1 * S0);
-    out[9] = f(scale[2] * S1);
-    out[10] = f(scale[2] * C1 * C0);
+    out[5] = f(mul24(f(mul24(c1, c2)), scale[1]));
+    out[6] = f(mul24(sub24(s2s0, mul24(s1, c2c0)), scale[1]));
+    out[8] = f(mul24(f(mul24(c1, s0)), scale[2]));
+    out[9] = f(mul24(s1, scale[2]));
+    out[10] = f(mul24(scale[2], f(mul24(c1, c0))));
     out[12] = t[0];
     out[13] = t[1];
     out[14] = t[2];
 }
 
 void frustum_planes(float planes[24], float vertical, float horizontal, float near_d, float far_d) {
-    const float ch = f(std::cos(static_cast<double>(horizontal)));
-    const float sh = f(std::sin(static_cast<double>(horizontal)));
-    const float cv = f(std::cos(static_cast<double>(vertical)));
-    const float sv = f(std::sin(static_cast<double>(vertical)));
+    const float ch = f(x87_cos(horizontal));
+    const float sh = f(x87_sin(horizontal));
+    const float cv = f(x87_cos(vertical));
+    const float sv = f(x87_sin(vertical));
+
     const float p[24] = {
         ch, 0.0f, sh, 0.0f,
         kNegZero - ch, 0.0f, sh, 0.0f,
@@ -236,15 +256,35 @@ void frustum_planes(float planes[24], float vertical, float horizontal, float ne
     for (int i = 0; i < 24; ++i) planes[i] = p[i];
 }
 
-void ortho_off_center_lh(float out[16], float l, float r, float b, float t, float zn, float zf) {
+// cc13-fixture2 follow-up: the image's callers (GUI ortho 00AA2020, shadow fits 00A8AEB0,
+// 00A8BD20, 00A8ECB0) run on the main thread at 24-bit precision control, so the faithful
+// model rounds each operation to a 24-bit significand. ortho_off_center_lh is live (the
+// native GUI pass), so it keeps the earlier double model until kOrthoOffCenterPc24Cc13Bound
+// is flipped; the fixture tests ortho_off_center_lh_pc24.
+void ortho_off_center_lh_pc24(float out[16], float l, float r, float b, float t, float zn, float zf) {
     for (int i = 0; i < 16; ++i) out[i] = 0.0f;
     out[15] = 1.0f;
-    out[0] = f(2.0 / (static_cast<double>(r) - l));
-    out[5] = f(2.0 / (static_cast<double>(t) - b));
-    out[10] = f(1.0 / (static_cast<double>(zf) - zn));
-    out[12] = f((static_cast<double>(l) + r) / (static_cast<double>(l) - r));
-    out[13] = f((static_cast<double>(b) + t) / (static_cast<double>(b) - t));
-    out[14] = f(static_cast<double>(zn) / (static_cast<double>(zn) - zf));
+    out[0] = f(div24(2.0, sub24(r, l)));
+    out[5] = f(div24(2.0, sub24(t, b)));
+    out[10] = f(div24(1.0, sub24(zf, zn)));
+    out[12] = f(div24(add24(l, r), sub24(l, r)));
+    out[13] = f(div24(add24(b, t), sub24(b, t)));
+    out[14] = f(div24(zn, sub24(zn, zf)));
+}
+
+void ortho_off_center_lh(float out[16], float l, float r, float b, float t, float zn, float zf) {
+    if constexpr (kOrthoOffCenterPc24Cc13Bound) {
+        ortho_off_center_lh_pc24(out, l, r, b, t, zn, zf);
+    } else {
+        for (int i = 0; i < 16; ++i) out[i] = 0.0f;
+        out[15] = 1.0f;
+        out[0] = f(2.0 / (static_cast<double>(r) - l));
+        out[5] = f(2.0 / (static_cast<double>(t) - b));
+        out[10] = f(1.0 / (static_cast<double>(zf) - zn));
+        out[12] = f((static_cast<double>(l) + r) / (static_cast<double>(l) - r));
+        out[13] = f((static_cast<double>(b) + t) / (static_cast<double>(b) - t));
+        out[14] = f(static_cast<double>(zn) / (static_cast<double>(zn) - zf));
+    }
 }
 
 std::uint32_t plane_set_classify_point(const PlaneRow* rows, int count, const float p[3]) {
@@ -258,16 +298,25 @@ std::uint32_t plane_set_classify_point(const PlaneRow* rows, int count, const fl
 }
 
 std::uint32_t plane_set_classify_aabb(const PlaneRow* rows, int count, const float box[6]) {
-    auto mag = [](float v) { return v <= 0.0f ? kNegZero - v : v; };
+    // cc13-fixture4: main-thread precision (24-bit). 00B6572F..00B657C1 store each sum and
+    // difference to float, then halve it by the double [00D7A280] into a float slot.
+    float centre[3], half[3];
+    for (int k = 0; k < 3; ++k) {
+        centre[k] = static_cast<float>(mul24(static_cast<float>(add24(box[k], box[k + 3])), 0.5));
+        half[k] = static_cast<float>(mul24(static_cast<float>(sub24(box[k + 3], box[k])), 0.5));
+    }
+    // COMISS v, 0 / JBE: zero, negative and NaN take -0.0f - v ([00D7A208]).
+    auto mag = [](float v) { return v > 0.0f ? v : kNegZero - v; };
     for (int i = 0; i < count; ++i) {
         const PlaneRow& q = rows[i];
-        const double center = static_cast<double>(q.c) * (static_cast<double>(box[2]) + box[5]) * 0.5 +
-            static_cast<double>(q.a) * (static_cast<double>(box[0]) + box[3]) * 0.5 +
-            static_cast<double>(q.b) * (static_cast<double>(box[1]) + box[4]) * 0.5;
-        const double radius = static_cast<double>(mag(q.c)) * 0.5 * (static_cast<double>(box[5]) - box[2]) +
-            static_cast<double>(mag(q.a)) * (static_cast<double>(box[3]) - box[0]) * 0.5 +
-            static_cast<double>(mag(q.b)) * (static_cast<double>(box[4]) - box[1]) * 0.5;
-        if (center - q.d < -radius) return kPlaneSetOutside;
+        // 00B65847..00B65864: (b cy + a cx) + c cz on the stack, FSTP float, minus d, FSTP float.
+        const float dot = static_cast<float>(add24(add24(mul24(q.b, centre[1]), mul24(q.a, centre[0])),
+                                                   mul24(q.c, centre[2])));
+        const float dist = static_cast<float>(sub24(dot, q.d));
+        // 00B6586C..00B65886: (|b| hy + |a| hx) + |c| hz, FSTP float.
+        const float radius = static_cast<float>(add24(add24(mul24(mag(q.b), half[1]), mul24(mag(q.a), half[0])),
+                                                      mul24(mag(q.c), half[2])));
+        if (-radius > dist) return kPlaneSetOutside;  // FCHS / FCOMIP / JA: NaN continues
     }
     return kPlaneSetInside;
 }

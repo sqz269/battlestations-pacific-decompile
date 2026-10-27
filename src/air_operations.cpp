@@ -393,7 +393,22 @@ int air_ops_pick_launch_slot_006c7210(const AirOpsDeck& deck) noexcept {
 
 namespace {
 AirOpsSquadronFactory* g_squadron_factory = nullptr;
+// Moved up from the tick (cc13-D2) so 006C56D0 and 006C5950 can read them.
+AirOpsSquadronPlaneCount g_squadron_plane_count = nullptr;
+void* g_squadron_plane_count_context = nullptr;
+AirOpsClassDefaultArm g_class_default_arm = nullptr;
+void* g_class_default_arm_context = nullptr;
+
+std::int32_t squadron_plane_count(std::uint32_t squadron) noexcept {
+    return (squadron != 0u && g_squadron_plane_count != nullptr)
+        ? g_squadron_plane_count(squadron, g_squadron_plane_count_context) : 0;
+}
 } // namespace
+
+void set_air_ops_class_default_arm_reader(AirOpsClassDefaultArm reader, void* context) noexcept {
+    g_class_default_arm = reader;
+    g_class_default_arm_context = context;
+}
 
 void set_air_ops_squadron_factory(AirOpsSquadronFactory* factory) noexcept {
     g_squadron_factory = factory;
@@ -420,25 +435,51 @@ std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squ
                                              std::int32_t plane_count) noexcept {
     const std::size_t none = deck.slots.size();
     std::size_t chosen = none;
-    // 006C56D0's own priority, and the break matters: the walk stops at the slot
-    // that already holds this squadron, and the free-slot candidate is only
-    // remembered while no such slot has been found. "Free" is not a state test
-    // alone - state 6 or 1 AND the class equal to the squadron's +35Ch AND the
-    // count equal to its +3CCh.
-    for (std::size_t index = 0; index < deck.slots.size(); ++index) {
-        const AirOpsSlot& slot = deck.slots[index];
-        if (slot.launched_squadron == squadron) {
+    // DEFECT ROW (cc13-D2). 006C5736-006C577B (the decompile agrees): the walk
+    // breaks at a slot whose +28h already holds the squadron, but the slot it
+    // then uses is ESI, the first FREE candidate seen before that break. The
+    // holder is never chosen. A squadron whose holder comes first (the usual
+    // case after 006C7490 queues it) changes nothing. A free candidate before
+    // its holder is a state 6 or 1 slot with +4h = squadron+35Ch and +8h =
+    // squadron+3CCh, the live count at this call. That slot is bound to the
+    // squadron, so the squadron then holds two slots. The OFF arm takes the
+    // holder and compares the count with the queued plane_count.
+    // kAirOpsArriveSquadronWalkCc13Bound gives the image's walk.
+    if constexpr (kAirOpsArriveSquadronWalkCc13Bound) {
+        const std::int32_t live = squadron_plane_count(squadron);   // squadron+3CCh
+        for (std::size_t index = 0; index < deck.slots.size(); ++index) {
+            const AirOpsSlot& slot = deck.slots[index];
+            if (slot.launched_squadron == squadron) break;          // 006C5739
+            if (chosen != none) continue;                           // 006C5743
+            const std::int32_t state = static_cast<std::int32_t>(slot.state);
+            if (state != 6 && state != static_cast<std::int32_t>(AirOpsSlotState::kCooldown)) {
+                continue;                                           // 006C574A-006C5752
+            }
+            if (slot.vehicle_class != vehicle_class) continue;      // 006C5757 +35Ch
+            if (slot.assigned_count != live) continue;              // 006C5762 +3CCh
+            chosen = index;                                         // 006C576A
+        }
+    } else {
+        // 006C56D0's own priority, and the break matters: the walk stops at the slot
+        // that already holds this squadron, and the free-slot candidate is only
+        // remembered while no such slot has been found. "Free" is not a state test
+        // alone - state 6 or 1 AND the class equal to the squadron's +35Ch AND the
+        // count equal to its +3CCh.
+        for (std::size_t index = 0; index < deck.slots.size(); ++index) {
+            const AirOpsSlot& slot = deck.slots[index];
+            if (slot.launched_squadron == squadron) {
+                chosen = index;
+                break;
+            }
+            if (chosen != none) continue;
+            const std::int32_t state = static_cast<std::int32_t>(slot.state);
+            if (state != 6 && state != static_cast<std::int32_t>(AirOpsSlotState::kCooldown)) {
+                continue;
+            }
+            if (slot.vehicle_class != vehicle_class) continue;
+            if (slot.assigned_count != plane_count) continue;
             chosen = index;
-            break;
         }
-        if (chosen != none) continue;
-        const std::int32_t state = static_cast<std::int32_t>(slot.state);
-        if (state != 6 && state != static_cast<std::int32_t>(AirOpsSlotState::kCooldown)) {
-            continue;
-        }
-        if (slot.vehicle_class != vehicle_class) continue;
-        if (slot.assigned_count != plane_count) continue;
-        chosen = index;
     }
     if (chosen == none) return none;
 
@@ -460,8 +501,26 @@ std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squ
     // from, the class and count are the ones the slot already holds, so every
     // clamp is slack and the simplification is exact here. It would not be for a
     // squadron arriving with a count the deck cannot stock. contract.
-    slot.vehicle_class = vehicle_class;
-    slot.assigned_count = plane_count;
+    // ON (kAirOpsArriveSquadronWalkCc13Bound): 006C57DD calls 006C0F00(index,
+    // [squadron+3D0h]+538h, squadron+3C8h), clamps and all. SUBSTITUTION,
+    // labelled: the deck has no squadron object. The queued class (the
+    // squadron's +35Ch) stands for its first member's class, and the queued
+    // count (the launch's WingCount, slot+8h) stands for +3C8h. Both equal the
+    // image's values for a squadron this deck launched; neither field was read.
+    // Passing slot.class_field_134 as the class default is safe: the walk only
+    // picks a slot already holding this class, so 006C0F00's class-change arm
+    // (the +4h/+10h writes) is never taken, and the argument is never read.
+    if constexpr (kAirOpsArriveSquadronWalkCc13Bound) {
+        std::vector<std::int32_t> live(deck.slots.size(), 0);
+        for (std::size_t i = 0; i < deck.slots.size(); ++i) {
+            live[i] = squadron_plane_count(deck.slots[i].launched_squadron);
+        }
+        air_ops_fill_slot_006c0f00(deck, static_cast<int>(chosen), vehicle_class, plane_count,
+                                   slot.class_field_134, live.data());
+    } else {
+        slot.vehicle_class = vehicle_class;
+        slot.assigned_count = plane_count;
+    }
     // 006C57D8 tests the state again AFTER that call, so this is not dead in the
     // native: 006C0F00 could move it. Nothing here does, so it cannot fire.
     if (static_cast<std::int32_t>(slot.state) == 2) {
@@ -474,6 +533,12 @@ std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squ
         slot.timer = kAirOpsSlotCooldownSeconds;
         slot.launch_requested = false;
     }
+    // 006C5814-006C5830: +28h = squadron when it differs, moving the observer
+    // pair (006952A0 / 00694A60, not carried by the deck model). Then (006C5835-)
+    // 00696350 event-4 notice, the 006BD520 slot message and 0077C7B0. These
+    // have no single-player effect: the notice has no event-4 handler, and the
+    // broadcast sends only to networked peers. See the cc13-tier1 row
+    // air_ops_publish_slot_record_only_006bf150. DOCUMENTED.
     slot.launched_squadron = squadron;
     return chosen;
 }
@@ -523,6 +588,28 @@ void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
     air_ops_launch_start_006c7490(deck, slot_index, false);
 }
 
+// 006C7490-006C7539, __thiscall(ECX = block, int slot, flag), RET 8. Order:
+// - 006C74C6: squadron = 006C5050(flag, slot+1, class+70h, +8h, +10h, +4Ch,
+//   +50h).
+// - 006C74CB: +0Ch = +8h in state 2; state 3 with the timer pair.
+// - 006C74FF: +28h = squadron when it differs, with the observer pair moved;
+//   a null squadron is stored too.
+// - 006C7528: 00922F30(squadron, 0).
+// - 006C7530: 006BF150(slot).
+// DOCUMENTED DEVIATIONS (cc13-D2; the row was defect_found):
+// - The state writes come before the factory call. The factory reads only the
+//   request, and the request's fields (class, +8h, +10h, +4Ch, owner) are ones
+//   the state writes do not touch, so the order does not show.
+// - A null squadron is not stored. The image would then call 00922F30 on a
+//   null node, so it cannot reach that arm; its callers refuse first
+//   (006CC715 queues while block+38h is held).
+// - 00922F30, the node enable, belongs to the factory's unit creation (the
+//   units host creates a live unit).
+// - 006BF150 has no single-player effect (cc13-tier1).
+// - The 006CC7B0 push stands for 007F1C00, which 006C5050 reaches through
+//   004F0AD0 -> 007F4580. It is drained on the next update, so its position
+//   inside this call does not show.
+// - The class+70h argument is the class id (labelled below).
 void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index, bool flag) noexcept {
     if (slot_index < 0 || static_cast<std::size_t>(slot_index) >= deck.slots.size()) return;
     AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
@@ -658,6 +745,11 @@ const std::string& AirOpsDeckRegistry::name_at(std::size_t index) const noexcept
 // ---------------------------------------------------------------------------
 // The tick
 // ---------------------------------------------------------------------------
+// 006BF230-006BF2FF, __thiscall(ECX = block, int out[2], class), RET 8.
+// DOCUMENTED DEVIATION (cc13-D2): the sums match the listing. The +0Ch lock is
+// taken and dropped at 006BF27F-006BF295 around each read of the slot count,
+// which the host's single thread does not need. A null launched_plane_counts
+// (no squadron reader installed) reads each squadron's +3CCh as 0.
 AirOpsStockAvailable air_ops_stock_available_006bf230(
     const AirOpsDeck& deck, std::uint32_t vehicle_class,
     const std::int32_t* launched_plane_counts) noexcept {
@@ -751,17 +843,26 @@ AirOpsSlotTickResult air_ops_slot_tick_006c0510(
     return out;
 }
 
-namespace {
-AirOpsSquadronPlaneCount g_squadron_plane_count = nullptr;
-void* g_squadron_plane_count_context = nullptr;
-} // namespace
-
 void set_air_ops_squadron_plane_count(AirOpsSquadronPlaneCount reader,
                                       void* context) noexcept {
     g_squadron_plane_count = reader;
     g_squadron_plane_count_context = context;
 }
 
+// 006C0DA0, __thiscall(ECX = block, float step), RET 4. Under the +0Ch lock,
+// 006C0510(step) runs on each slot in index order. When it returns true,
+// 006C0DFB makes 00696350(owner+7Ch, 4, 0), the 006BD520 message for (block,
+// index) and 0077C7B0(msg, 0).
+// DOCUMENTED DEVIATIONS (cc13-D2; the row was defect_found):
+// - The three calls are counted rather than made. They have no single-player
+//   effect: no observer handles event 4, and 0077C7B0 sends only to networked
+//   peers. Same verdict as 006BF150 (cc13-tier1, row
+//   air_ops_publish_slot_record_only_006bf150).
+// - 006C58A0 runs at the head of this function. Its caller 006CDC70 runs it
+//   on the same block immediately before 006C0DA0, with nothing between, and
+//   006CDC70's loop below is this function's only caller, so the per-block
+//   order is the image's.
+// - The lock is the host's single thread.
 AirOpsDeckTickResult air_ops_deck_update_006c0da0(AirOpsDeck& deck, float step_seconds) {
     AirOpsDeckTickResult out;
     // 006CDC70 runs 006C58A0 first of all nine and before its game-state gate,
@@ -792,6 +893,19 @@ AirOpsDeckTickResult air_ops_deck_update_006c0da0(AirOpsDeck& deck, float step_s
     return out;
 }
 
+// 006C5950-006C5B65, __thiscall(ECX = block, squadron), RET 4.
+// DOCUMENTED DEVIATIONS (cc13-D2):
+// - The head 006C59A4-006C59DC is made by the caller, 007F1CA0's host in
+//   game_hosts_units.cpp under kStockReturnQueueEraseBound. That head finds
+//   the squadron's 14h record at block+98h and erases it with 006BF7F0
+//   under the +4h lock.
+// - The +0Ch lock is the host's single thread.
+// - The observer pair is not carried.
+// - The per-slot 00696350 / 006BD520 / 0077C7B0 have no single-player effect
+//   (cc13-tier1, row air_ops_publish_slot_record_only_006bf150).
+// - The null-squadron return guards a call that would reset every empty
+//   slot. The host's only caller passes squadron_unit + 1, never 0.
+// DEFECT (OFF-switched): +10h, at the class restore below.
 std::size_t air_ops_return_squadron_slot_006c5950(AirOpsDeck& deck,
                                                   std::uint32_t squadron) noexcept {
     std::size_t returned = 0;
@@ -827,13 +941,41 @@ std::size_t air_ops_return_squadron_slot_006c5950(AirOpsDeck& deck,
                                                  static_cast<int>(deck.slots.size()));
         if (room < count) count = room;
         slot.vehicle_class = vehicle_class;
-        slot.class_field_134 = class_field;
+        // 006C5ACD-006C5AE3: +4h != class -> +4h = class and +10h = class+134h
+        // (0 for a null class). A null class leaves both alone, so the old +10h
+        // survives (+10h was cleared only when +4h was set). DEFECT ROW (cc13-D2):
+        // the OFF arm restores the slot's own +10h. ON
+        // (kAirOpsReturnSlotClassArmCc13Bound) takes class+134h through the
+        // reader the host installs, and keeps the old value while none is
+        // installed.
+        if constexpr (kAirOpsReturnSlotClassArmCc13Bound) {
+            slot.class_field_134 = (vehicle_class != 0u && g_class_default_arm != nullptr)
+                ? g_class_default_arm(vehicle_class, g_class_default_arm_context)
+                : class_field;
+        } else {
+            slot.class_field_134 = class_field;
+        }
         slot.assigned_count = count;
         ++returned;
     }
     return returned;
 }
 
+// 006CDC70, __thiscall(ECX = block, float dt), RET 4: per block, 006C58A0,
+// 006C0DA0, 006C77E0; then, unless [00E188A8]+1FE4h == 2 (a networked
+// client), [block+3Ch]->vtable[4](dt), 006C64B0, 006C6540, 006CD240;
+// 006C5B70 when +1Ch, +1Dh are clear and the owner +7Ch is live (not +5Dh);
+// 006CD810.
+// BLOCKED (cc13-D2; defect_found): this loop runs only 006C58A0 + 006C0DA0 per
+// deck. The rest of the sequence lives in other hosts, so it cannot be put
+// back in order from this file:
+// - 006C77E0 and 006C5B70 run from game_hosts_units.cpp.
+// - 006C64B0 and 006CD240 run from GameScriptOrdersHost::
+//   run_air_ops_update_006cdc70 after this loop, across all decks.
+// - 006C6540 has only the raw oct18_tail_a body, not wired.
+// - 006CD810 has only cc13_sweepC2's raw SweepC2Host body, not wired.
+// - The +3Ch virtual has no host.
+// The 1FE4h == 2 gate always passes in single player.
 AirOpsDeckTickResult air_ops_update_decks_006cdc70(float step_seconds) {
     AirOpsDeckTickResult total;
     AirOpsDeckRegistry& registry = air_ops_decks();
@@ -867,6 +1009,12 @@ std::int32_t live_count(const std::int32_t* counts, std::size_t index) noexcept 
 }
 } // namespace
 
+// 006BD460-006BD4D7, __thiscall(ECX = block, int slot), RET 4 -> EAX.
+// DOCUMENTED DEVIATION (cc13-D2): the walk matches the listing. The +0Ch
+// critical section (006BD46D EnterCriticalSection with the +18h depth count,
+// 006BD4CC LeaveCriticalSection) is not modelled: the host is single-threaded
+// and nothing else touches a deck during the call. Squadron +3CCh comes in as
+// launched_plane_counts.
 std::int32_t air_ops_slot_capacity_006bd460(const AirOpsDeck& deck, int slot_index,
                                             const std::int32_t* launched_plane_counts) noexcept {
     std::int32_t capacity = deck.max_in_air_planes;   // 006BD480 block+58h
@@ -884,6 +1032,15 @@ std::int32_t air_ops_slot_capacity_006bd460(const AirOpsDeck& deck, int slot_ind
     return capacity;
 }
 
+// 006C0F00, __thiscall(ECX = block, slot, class, count), RET 0Ch.
+// DOCUMENTED DEVIATIONS (cc13-D2):
+// - The slot-index guard is a host guard; every caller passes a valid index.
+// - The +0Ch lock is the host's single thread.
+// - class+134h arrives as class_default_arm.
+// - The 006BF150 publish on a class change (00696350 event 4, 006BD520,
+//   0077C7B0) has no single-player effect (cc13-tier1, row
+//   air_ops_publish_slot_record_only_006bf150).
+// The clamps and writes match the listing (cc13-sweepC).
 std::int32_t air_ops_fill_slot_006c0f00(AirOpsDeck& deck, int slot_index,
                                         std::uint32_t vehicle_class, std::int32_t count,
                                         std::int32_t class_default_arm,

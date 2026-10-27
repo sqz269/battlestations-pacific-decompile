@@ -1,6 +1,7 @@
 #include "bsp/scene_graph2_cc13.hpp"
 
 #include "bsp/post_effects_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cctype>
 #include <cmath>
@@ -1454,6 +1455,10 @@ float pair_part(const std::vector<float>& pairs, std::uint32_t cell, int part) {
 }  // namespace
 
 void ocean_fft32(float* cells, int stride_complex) {
+    using cc13x87::x87_add24; using cc13x87::x87_sub24; using cc13x87::x87_mul24;
+    const auto add24 = [](double a, double b) { return x87_add24(a, b); };
+    const auto sub24 = [](double a, double b) { return x87_sub24(a, b); };
+    const auto mul24 = [](double a, double b) { return x87_mul24(a, b); };
     auto re = [&](int i) -> float& { return cells[2 * i * stride_complex]; };
     auto im = [&](int i) -> float& { return cells[2 * i * stride_complex + 1]; };
     int j = 0;
@@ -1478,15 +1483,17 @@ void ocean_fft32(float* cells, int stride_complex) {
             for (int i = jj; i < 32; i += l2) {
                 const int i1 = i + l1;
                 const float x1 = re(i1), y1 = im(i1);
-                const float t1 = f(static_cast<double>(x1) * u1 - static_cast<double>(y1) * u2);
-                const float t2 = f(static_cast<double>(y1) * u1 + static_cast<double>(x1) * u2);
-                re(i1) = f(static_cast<double>(re(i)) - t1);
-                im(i1) = f(static_cast<double>(im(i)) - t2);
-                re(i) = f(static_cast<double>(t1) + re(i));
-                im(i) = f(static_cast<double>(t2) + im(i));
+                // cc13-fixture4: main-thread precision (24-bit), each product and sum
+                // rounded on the stack before the FSTP float (00B94FAC..00B94FC8).
+                const float t1 = f(sub24(mul24(x1, u1), mul24(y1, u2)));
+                const float t2 = f(add24(mul24(y1, u1), mul24(x1, u2)));
+                re(i1) = f(sub24(re(i), t1));
+                im(i1) = f(sub24(im(i), t2));
+                re(i) = f(add24(t1, re(i)));
+                im(i) = f(add24(t2, im(i)));
             }
-            const float z = f(static_cast<double>(u1) * c1 - static_cast<double>(u2) * c2);
-            u2 = f(static_cast<double>(u2) * c1 + static_cast<double>(u1) * c2);
+            const float z = f(sub24(mul24(u1, c1), mul24(u2, c2)));
+            u2 = f(add24(mul24(u2, c1), mul24(u1, c2)));
             u1 = z;
         }
         const float c2n = f(std::sqrt(static_cast<double>(f((1.0 - c1) * 0.5))));

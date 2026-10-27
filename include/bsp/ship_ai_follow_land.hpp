@@ -477,18 +477,18 @@ ShipAiFollowLandXZ ship_ai_land_pad_approach_point_006ac5d0(const ShipAiLandPadL
                                                             const ShipAiFollowLandXZ& from,
                                                             float half_width);
 
-// cc13-padfix. OFF keeps the host model of 006AC5D0 as it was. ON makes it follow the
-// listing (006AC5D0-006ACB35) in four places:
-//   * refresh_pad_line_006ac5d0 calls PadLineZoneQueries::refresh_pad_pose_00414db0 where the
-//     image calls 00414DB0 when byte [pad+0C8h] is 0: once after the key store (006AC620) and
-//     once after a nonzero group (006AC68B);
+// cc13-padfix. OFF keeps the host model of 006AC5D0 as it was. ON changes two behaviours to
+// follow the listing (006AC5D0-006ACB35):
 //   * the corridor test leaves only on ordered greater-thans (006AC99D JBE, 006AC9E4 JA,
 //     006AC9F8 JA), so an unordered compare keeps the carrot where OFF takes the hold-off;
 //   * the hold-off distance takes the image's NaN order: [+218h] > half_width ? half_width :
-//     [+218h] (FCOMIP / JBE at 006AC9B3 and 006ACAC4), so an unordered clearance is kept;
-//   * ship_ai_land_pad_approach_point_xyz_006ac5d0 also yields out+4 = [+210h] + 0.0 inside the
-//     corridor and [+210h] - 0.0 outside it (double 00D7A258 at 006ACA98 / 006ACB01).
-// cc9 orders and pairs the flip.
+//     [+218h] (FCOMIP / JBE at 006AC9B3 and 006ACAC4), so an unordered clearance is kept.
+// ON also routes the image's two 00414DB0 sites (006AC620, 006AC68B) through the seam
+// PadLineZoneQueries::refresh_pad_pose_00414db0, which does nothing by default (the host pad
+// position is already world), so that seam alone changes no behaviour.
+// Separately, and not switched, ship_ai_land_pad_approach_point_xyz_006ac5d0 yields out+4 =
+// [+210h] + 0.0 inside the corridor and [+210h] - 0.0 outside it (double 00D7A258 at 006ACA98 /
+// 006ACB01). cc9 orders and pairs the flip.
 inline constexpr bool kPadApproachPointImageCc13Bound = false;
 // Reach counter for kPadApproachPointImageCc13Bound (log only, sw1): calls to the
 // per-call arm, those where the image's and the host's corridor tests disagree, and

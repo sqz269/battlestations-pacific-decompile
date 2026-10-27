@@ -952,8 +952,15 @@ constexpr bool kLuaOverrideHpBound = true;
 //  * kOverrideHpDeadUnitCc13Bound (cc13-D3, OFF): 008C1930 has no dead or state test;
 //    it stores unit+36Ch (008C1A71) and calls 00877B90 (008C1AA8) on a dead or sinking
 //    unit too. OFF keeps the host's skip of a dead unit. ON writes both on a dead unit
-//    and does not re-run the health-zero kill for a unit that was already dead
-//    (provisional: the image's 00958A30 re-entry on a dead unit was not traced).
+//    and does not re-run the health-zero kill for a unit that was already dead.
+//    Fact (cc13-D3 follow-up): +720h is the InferiorFailure latch, not a destroyed
+//    flag (set by message 7Dh at 0095AD0A, cleared by 7Eh at 0095AD7F). For an
+//    adopted subobject (+71Ch set, 00958A6D) OverrideHP to 0 raises InferiorFailure
+//    once while +720h is clear and does not destroy the unit. A root unit (+71Ch
+//    null, 00958A4B JE 00958DA7) gets vtable[70h](1) whenever health <= 0, with no
+//    dead or latch test. Flip precondition: trace vtable[70h](1) on an
+//    already-destroyed root unit; until it shows destroy is idempotent, the ON arm's
+//    skip of the kill for a dead unit stays a deviation.
 //    Live: MissionLuaNative OverrideHP -> GameMissionLuaHost::run_override_hp_008c1930
 //    -> GameGunneryHost::override_hp_008c1930.
 constexpr bool kOverrideHpDeadUnitCc13Bound = false;
@@ -7238,6 +7245,11 @@ public:
             && other < owner_.units.count()) {
             // 00727F44 -> 009035A0, 00727F56 -> 00903580 (CC13_VER_23 D1/D2).
             GameGunneryHost::Impl::TorpedoBotRange& tb = owner_.torpedo_bot_range_by_gun[slot];
+            // 009035A7..009035B5 compares 00521EA0(bot+38h) with the target. 006DF170
+            // stores the object pointer itself at bot+3Ch (006DF1C3) and registers an
+            // observer, so the handle resolves to the stored object until it is gone;
+            // a gone object is never passed again. Comparing indices is the same test
+            // (cc13-D6, intended).
             const bool changed = tb.target_plus_one != other + 1;
             tb.target_plus_one = other + 1;
             const float tube_range = row.max_range;
@@ -16931,7 +16943,8 @@ void GameGunneryHost::override_hp_008c1930(std::size_t unit_index, float value) 
             static_cast<double>(state.health), state.dead ? 1 : 0, kLuaOverrideHpBound ? 1 : 0);
     }
     // kOverrideHpDeadUnitCc13Bound OFF: a dead unit is skipped (dead_before is then
-    // always false below this test).
+    // always false below this test). The +720h InferiorFailure fact and the root-unit
+    // flip precondition are at the switch.
     const bool dead_before = state.dead;
     if (!kLuaOverrideHpBound || (dead_before && !kOverrideHpDeadUnitCc13Bound)) {
         host.record("MissionLuaNative::OverrideHP", 0x008c1930u);

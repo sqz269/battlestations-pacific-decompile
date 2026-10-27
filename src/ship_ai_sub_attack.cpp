@@ -6,6 +6,7 @@
 #include "bsp/ship_ai_sub_attack.hpp"
 
 #include "bsp/geometry_helpers.hpp"
+#include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/unit_motion.hpp"
 #include "bsp/unit_rudder.hpp"
 
@@ -32,6 +33,10 @@ bool relative_bearing(ShipAiSubAttackHost& host, float heading, float& relative)
     const float dx = f(static_cast<double>(target[0]) - self[0]);
     const float dz = f(static_cast<double>(target[2]) - self[2]);
     float d2 = 0.0f;
+    const float d2_per_op = f(static_cast<double>(f(static_cast<double>(dx) * dx))
+                              + f(static_cast<double>(dz) * dz));
+    const float d2_once = f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    ship_ai_reach_note_fire(d2_per_op > 1.0f, d2_once > 1.0f);
     if constexpr (kShipAiFireStepPc24Cc13Bound) {
         // 009EA063 FMULP / 009EA065 FMUL ST0 / 009EA067 FADDP (and the 009EA141,
         // 009EA216 copies), each at PC24.
@@ -69,6 +74,9 @@ float ship_ai_sub_attack_range_009e4a60(ShipAiSubAttackHost& host) {
     const float dx = f(static_cast<double>(target[0]) - self[0]);       // 009E4AAB
     const float dz = f(static_cast<double>(target[2]) - self[2]);       // 009E4ABC
     float d2 = 0.0f;
+    ship_ai_reach_note_fire(f(static_cast<double>(f(static_cast<double>(dx) * dx))
+                              + f(static_cast<double>(dz) * dz)),
+                            f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz));
     if constexpr (kShipAiFireStepPc24Cc13Bound) {
         // 009E4AC8 FMUL ST0 / 009E4ACC FMULP ST2 / 009E4ACE FADDP, each at PC24.
         d2 = f(static_cast<double>(f(static_cast<double>(dx) * dx))
@@ -297,6 +305,8 @@ float ship_ai_sub_attack_fire_step_009e9eb0(ShipAiSubAttackFire& fire, float dt,
         if (fire.close_40 != 0.0f) {
             // 009E9FB6..009EA0B7: close in, the firing end more than 135 degrees off.
             double swap_limit = static_cast<double>(fire.swap_period_60) * kSubAttackSwapFraction;
+            ship_ai_reach_note_fire(static_cast<double>(swap) > static_cast<double>(f(swap_limit)),
+                                    static_cast<double>(swap) > swap_limit);
             if constexpr (kShipAiFireStepPc24Cc13Bound) {
                 swap_limit = f(swap_limit);  // 009E9FB9 FMUL rounds to 24 bits in ST0
             }
@@ -362,6 +372,11 @@ float ship_ai_sub_attack_fire_step_009e9eb0(ShipAiSubAttackFire& fire, float dt,
     if (static_cast<double>(range) > static_cast<double>(kSubAttackCloseEnter)) {  // 009EA36B
         const float water = host.tubes_min_water_speed_0aec();          // 009EA371, +0AECh
         float lead = 0.0f;                                              // 009EA376..9EA386
+        ship_ai_reach_note_fire(
+            f(static_cast<double>(f(static_cast<double>(range) - kSubAttackCloseEnter))
+              / static_cast<double>(water)),
+            f((static_cast<double>(range) - static_cast<double>(kSubAttackCloseEnter))
+              / static_cast<double>(water)));
         if constexpr (kShipAiFireStepPc24Cc13Bound) {
             const float over = f(static_cast<double>(range) - kSubAttackCloseEnter);  // FSUB
             lead = f(static_cast<double>(over) / static_cast<double>(water));         // FDIV
@@ -394,6 +409,16 @@ float ship_ai_sub_attack_fire_step_009e9eb0(ShipAiSubAttackFire& fire, float dt,
     // 009EA525..009EA5B8: less the target's closing rate over our MaxSpeed.
     const std::array<float, 3> velocity2 = host.target_velocity_vtable34();  // 009EA53B
     float closing = 0.0f;
+    {
+        const float x = f(static_cast<double>(velocity2[0]) * unit[0]);
+        const float y = f(static_cast<double>(unit[1]) * 0.0);
+        const float z = f(static_cast<double>(velocity2[2]) * unit[2]);
+        ship_ai_reach_note_fire(
+            f(static_cast<double>(f(static_cast<double>(x) + y)) + z),
+            f((static_cast<double>(velocity2[0]) * unit[0]
+               + static_cast<double>(unit[1]) * 0.0)
+              + static_cast<double>(velocity2[2]) * unit[2]));
+    }
     if constexpr (kShipAiFireStepPc24Cc13Bound) {
         // 009EA541 FMUL, 009EA54E FMUL double 0.0, 009EA560 FADDP, 009EA566 FMUL,
         // 009EA56A FADDP: five ops, each rounded at PC24.
@@ -446,6 +471,17 @@ float ship_ai_sub_attack_fire_step_009e9eb0(ShipAiSubAttackFire& fire, float dt,
         } else {
             reverse = speed > 0.0f ? edge(s + kSubAttackBandNudge) > t
                                    : t > edge(s + kSubAttackBandSlack);
+        }
+        {
+            const auto rounded = [](double value) { return static_cast<double>(f(value)); };
+            const double slack = fire.fore_30 ? kSubAttackBandSlack - s : s + kSubAttackBandSlack;
+            const double nudge = fire.fore_30 ? kSubAttackBandNudge - s : s + kSubAttackBandNudge;
+            const bool per_op = fire.fore_30
+                ? (speed > 0.0f ? t > rounded(slack) : rounded(nudge) > t)
+                : (speed > 0.0f ? rounded(nudge) > t : t > rounded(slack));
+            const bool once = fire.fore_30 ? (speed > 0.0f ? t > slack : nudge > t)
+                                           : (speed > 0.0f ? nudge > t : t > slack);
+            ship_ai_reach_note_fire(per_op, once);
         }
     }
     if (reverse) {

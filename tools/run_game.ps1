@@ -113,6 +113,11 @@ $deadline = (Get-Date).AddSeconds($WaitSeconds)
 $slot = -1
 $slotFile = $null
 while ($slot -lt 0) {
+    # A drain (the coordinator's ~\.bsp\DRAIN file) stops queued launches here, also while waiting for a slot.
+    if ((Test-Path "$env:USERPROFILE\.bsp\DRAIN") -and $env:BSP_IGNORE_DRAIN -ne '1') {
+        Write-Error "DRAIN is set ($env:USERPROFILE\.bsp\DRAIN): not starting $logFull. Stop queuing runs; report to your lead." -ErrorAction Continue
+        exit 75
+    }
     for ($k = 0; $k -lt $Slots; $k++) {
         $candidate = Join-Path $lockDir "bsp_game.slot$k.lock"
         if (Test-Path $candidate) {

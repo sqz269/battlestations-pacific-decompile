@@ -1618,3 +1618,26 @@ moved to frame 6750, so the stop catches HenryPT at z~-3000 in the default env t
 - Logs `cc9-lua52\local\l73r_b1m<n>_main_<env>.log`; sibling plans `local\l73_b1_m2.txt`, `local\l73_b1_m3.txt`.
 - The BSM01 row moves to `l73_b1_m1`, which wins all three envs. m2 shows the margin is thin: 50 frames later and
   ref loses.
+
+## 2026-10-24, USN12 re-plan `l73_u12_n1`, all three envs (cc9-lua73, keeper)
+
+Base: main e3c2cc5b3. `l68_u12_e8` fails 20,3 at 1290.13 s: in that run the 663-686 s torpedo melee sinks Charles,
+Montpelier, Denver and Columbia (Naganami, Haguro, Hatsukaze), and Haguro sinks Cleveland, the last of
+Mission.MontGrp, at 1288.53 s; usn_12_augusta.lua (this installation) then runs luaMissionFailed (line 393).
+
+**`config/win_orders/usn12_l73_u12_n1.txt`** is e8 with its follower attack block (frames 13000-13105: the selects and
+attack orders on Cleveland, Columbia, Denver, Charles and the destroyers) moved 300 frames earlier.
+
+| Plan | ref | 20,3 | default |
+| --- | --- | --- | --- |
+| `l73_u12_n1` (block -300) | completed 1485.32 s | completed 1485.32 s | completed 1530.37 s |
+| n3 (block -150) | completed 1485.32 s | completed 1555.39 s | completed 1560.40 s |
+| n4 (block +150) | completed 1505.34 s | completed 1620.51 s | completed 1535.37 s |
+| n2 (block +300) | completed 1625.46 s | completed 1510.35 s | completed 1570.41 s |
+| n5 (Montpelier decoy at (2500,-7500)) | completed 1560.40 s | **failed 1290.13 s** | completed 1620.46 s |
+| n6 (decoy at (3000,-7000)) | completed 1560.40 s | **failed 1290.13 s** | completed 1620.46 s |
+
+- Every n1 completion logs the guard's refusal; pf=0, helm_moveto_unselected=0, helm_role_forced=0.
+- Any shift of the attack block in -300..+300 wins all three envs, so the e8 timing was the knife-edge, not the
+  approach. The USN12 row moves to `l73_u12_n1`.
+- Logs `cc9-lua52\local\l73r_u12n<k>_main_<env>.log`; sibling plans `local\l73_u12_n<k>.txt`.

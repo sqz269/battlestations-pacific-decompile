@@ -835,6 +835,12 @@ bool load_robot_config_00901610(RobotConfigRegistry& registry, RobotConfigAliase
         add(construct_descriptor<DepthChargeBotConfig>(context.descriptors, "DepthChargeBot", 0x00d18038));
         //009DBFE0 publishes Navigator before registration. Other aliases are all
         //looked up only after every registration (duplicates keep older entries).
+        //cc13-D6: the image does these eight lookups inline (009019DC..00901A4F,
+        //each 00900AF0 then a store to F8A30C, E199A0, ..., E19988). The eight
+        //per-alias setters 00900C60..00900D40 (`*ECX = 00900AF0(name)`) have no
+        //rel32 or absolute reference anywhere in the PE (scanned; the same scan
+        //finds 00900AF0's 16 call sites), so they never run and the loader's
+        //assignment is the whole behaviour.
         aliases.navigator_f8a688 = construct_descriptor<NavigatorBotConfig>(
             context.descriptors, "NavigatorBot", 0x00d217dc);
         add(aliases.navigator_f8a688);

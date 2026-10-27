@@ -641,6 +641,8 @@ PlaneBodyAcceleration fold_world_into_body_007d8470(const PlaneDynAccumulators& 
 // The same fold on the live accumulators: with kPlaneResist40DeadbandCc13Bound it
 // also applies 007D85A0-007D85E7's deadband to acc.body_resist_40 in place (the
 // image rewrites dyn+40h..48h). The third fold itself (dyn+34h) is add_water_band's.
+// Overload resolution: a non-const PlaneDynAccumulators lvalue now selects this
+// in-place overload, so such callers get the deadband when the switch is ON.
 PlaneBodyAcceleration fold_world_into_body_007d8470(PlaneDynAccumulators& acc,
                                                     const float world_to_body[9]);
 
