@@ -26,6 +26,8 @@ struct CloudSceneProperty {
     float as_float() const noexcept { return kind == 0 ? static_cast<float>(integer) : real; }
 };
 using CloudScenePropertyBag = std::map<std::string, CloudSceneProperty>;
+// A colour property without a nested bag (a null ECX at 004773A0 -> 008F2260 in
+// the image) throws std::out_of_range("cloud colour has no channels: <name>").
 
 enum class CloudPropertyBranch { None, Particle, ShadedMesh, DiffuseMesh };
 
@@ -149,7 +151,9 @@ void apply_cloud_diffuse_mesh_properties_00477710(const CloudScenePropertyBag& b
                                                   CloudMeshEntityFields& entity,
                                                   CloudMeshTarget& mesh);
 
-// What the whole pass reads off the entity, and its two entity calls.
+// What the whole pass reads off the entity, and its two entity calls. Capture
+// the view after base_scene_properties_0048dbd0 returns: the image reads
+// [[+188h]+34h], +1A4h, +0C0h and +1A8h after that call (00477737).
 struct CloudEntityPassView {
     std::int32_t cloud_type{};              // [[entity+188h]+34h]
     bool has_particle_instance{};           // entity+1A4h != 0
