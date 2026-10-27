@@ -1,4 +1,6 @@
 #include "bsp/sensor_tables.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include "bsp/recon_slot_lists.hpp"
 
@@ -165,9 +167,17 @@ SensorCategory sensor_category_submarine_00852b90(
     // float slot before the FCOMIP), so it is compared unrounded; a double is
     // exact enough for a float Y. The other two limits are stored to a float
     // slot first ([ESP+8]), which the float arithmetic below reproduces.
-    const double surface_limit =
-        (static_cast<double>(bands.band_1204) + static_cast<double>(bands.band_1200)) /
-        static_cast<double>(kSubmarineSurfaceDivisor);
+    double surface_limit;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 00852BB7 FADD and 00852BBD FDIV each round to 24 bits on the main thread.
+        using namespace cc13x87;
+        surface_limit = x87_div24(x87_add24(bands.band_1204, bands.band_1200),
+                                  static_cast<double>(kSubmarineSurfaceDivisor));
+    } else {
+        surface_limit =
+            (static_cast<double>(bands.band_1204) + static_cast<double>(bands.band_1200)) /
+            static_cast<double>(kSubmarineSurfaceDivisor);
+    }
     if (static_cast<double>(world_y) > surface_limit) {
         return SensorCategory::surface;
     }
