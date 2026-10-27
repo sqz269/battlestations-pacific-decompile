@@ -33,6 +33,8 @@ void path_cursor_save_007b1800(const PathCursorState& c, PathCursorSaveHost& h) 
 }
 }
 
+#include "bsp/cc13_x87_model.hpp"
+
 #include <cmath>
 #include <limits>
 #include <new>
@@ -97,11 +99,16 @@ inline void apply_camera_ref_speed_limit(
 // 007AE330 BSP_Vector3_ComponentMin_007ae330
 // Address: 007AE330-007AE3D5
 // Evidence: FCOMIP ST0(b.z), ST1(a.z) + JBE selects b when !(b > a) (so b <= a or unordered);
-// repeats for y and x, then writes x, y, z to ECX and returns ECX.
+// repeats for y and x, then writes x, y, z to ECX and returns ECX. Each operand goes through
+// FLD / FSTP DWORD into a stack slot first, which quiets a signalling NaN (cc13-fixture6).
 Vec3& vector3_component_min_007ae330(Vec3& out, const Vec3& a, const Vec3& b) noexcept {
-    const float z = (b.z > a.z) ? a.z : b.z;
-    const float y = (b.y > a.y) ? a.y : b.y;
-    const float x = (b.x > a.x) ? a.x : b.x;
+    using cc13x87::x87_fld_fstp;
+    const float az = x87_fld_fstp(a.z), bz = x87_fld_fstp(b.z);
+    const float z = (bz > az) ? az : bz;
+    const float ay = x87_fld_fstp(a.y), by = x87_fld_fstp(b.y);
+    const float y = (by > ay) ? ay : by;
+    const float ax = x87_fld_fstp(a.x), bx = x87_fld_fstp(b.x);
+    const float x = (bx > ax) ? ax : bx;
     out.x = x;
     out.y = y;
     out.z = z;
@@ -111,11 +118,16 @@ Vec3& vector3_component_min_007ae330(Vec3& out, const Vec3& a, const Vec3& b) no
 // 007AE3E0 BSP_Vector3_ComponentMax_007ae3e0
 // Address: 007AE3E0-007AE485
 // Evidence: FCOMIP ST0(a.z), ST1(b.z) + JBE selects b when !(a > b) (so a <= b or unordered);
-// repeats for y and x, then writes x, y, z to ECX and returns ECX.
+// repeats for y and x, then writes x, y, z to ECX and returns ECX. Operands are quieted by
+// FLD / FSTP DWORD as in 007AE330.
 Vec3& vector3_component_max_007ae3e0(Vec3& out, const Vec3& a, const Vec3& b) noexcept {
-    const float z = (a.z > b.z) ? a.z : b.z;
-    const float y = (a.y > b.y) ? a.y : b.y;
-    const float x = (a.x > b.x) ? a.x : b.x;
+    using cc13x87::x87_fld_fstp;
+    const float az = x87_fld_fstp(a.z), bz = x87_fld_fstp(b.z);
+    const float z = (az > bz) ? az : bz;
+    const float ay = x87_fld_fstp(a.y), by = x87_fld_fstp(b.y);
+    const float y = (ay > by) ? ay : by;
+    const float ax = x87_fld_fstp(a.x), bx = x87_fld_fstp(b.x);
+    const float x = (ax > bx) ? ax : bx;
     out.x = x;
     out.y = y;
     out.z = z;

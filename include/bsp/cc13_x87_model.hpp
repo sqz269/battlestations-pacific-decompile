@@ -145,4 +145,19 @@ inline double x87_cos(double x) noexcept {
     return std::cos(x);
 }
 
+// cc13-fixture6: FLD DWORD then FSTP DWORD. Every value passes unchanged except a signalling
+// NaN, which FLD converts to the quiet NaN with the same sign and payload (bit 22 set; the
+// invalid-operation exception is masked). A dword copy (MOV, MOVSS) keeps the signalling NaN.
+inline std::uint32_t x87_fld_fstp_bits(std::uint32_t bits) noexcept {
+    const bool nan = (bits & 0x7f800000u) == 0x7f800000u && (bits & 0x007fffffu) != 0;
+    return nan ? bits | 0x00400000u : bits;
+}
+inline float x87_fld_fstp(float v) noexcept {
+    std::uint32_t bits;
+    std::memcpy(&bits, &v, sizeof bits);
+    bits = x87_fld_fstp_bits(bits);
+    std::memcpy(&v, &bits, sizeof v);
+    return v;
+}
+
 }  // namespace bsp::cc13x87
