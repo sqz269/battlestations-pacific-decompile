@@ -496,6 +496,12 @@ void ai_publish_scene_owner_players(const std::vector<std::pair<std::string, int
 // unit+180h for a unit created at run time by index, ahead of the by-name table
 // (008206F0 bags `OwnerPlayer 8` at 00821A72). Cleared by the publication above.
 void ai_set_unit_owner_player(std::size_t unit, int owner);
+// 009FFD20 BSP_Unit_LossCountingSlot for a units-host index, by the same steps
+// as the coordinator's (packet cc13-powerup-bind: 008E4680's slot arm).
+int ai_unit_slot_009ffd20(const GameUnitsHost& units, std::size_t unit);
+// 009FFD20's single-player arm for a +180h of 9: 0 for the local player's team,
+// else 4.
+int ai_team_slot_009ffd20(int team);
 // Packet s57_follow_join (docs/SHIP_AI_OPEN_ITEMS.md section 278): 0077C8D0
 // BSP_Entity_RequestJoinFormation for a caller outside the coordinator (00816ED5,
 // the scene command `follow` arm), on the one live coordinator. False when there

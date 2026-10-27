@@ -5,6 +5,7 @@
 // host power-up manager. Evidence, reach and the ON-only lookups are in
 // docs/CC13_POWERUP.md. Names are hypotheses, not recovered symbols.
 
+#include "bsp/game_hosts_powerups.hpp"
 #include "bsp/powerup_config.hpp"
 #include "bsp/world_entities.hpp"
 
@@ -99,6 +100,9 @@ struct PowerupRuntime {
     // (destroy_powerup_manager_004d2d84), so a later frame never sees these keys.
     std::array<std::vector<std::uintptr_t>, kPowerupPlayerSlots> record_keys{};
     std::array<std::vector<PowerUpSlot>, kPowerupPlayerSlots> other_records{};
+    // +80h + category*0Ch: the sixteen modifier lists (packet cc13-powerup-bind,
+    // include/bsp/game_hosts_powerups.hpp), with the manager's lifetime.
+    game_powerups::PowerupCategoryLists category_lists{};
     PowerupCounts counts{};
     std::string load_error{};
 };

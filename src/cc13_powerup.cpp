@@ -263,6 +263,7 @@ void destroy_powerup_manager_004d2d84(PowerupRuntime& runtime) {
         runtime.record_keys[slot].clear();
         runtime.other_records[slot].clear();
     }
+    for (auto& list : runtime.category_lists) list.clear();
     runtime.counts = PowerupCounts{};
 }
 

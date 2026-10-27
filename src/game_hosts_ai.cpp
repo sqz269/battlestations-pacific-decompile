@@ -1164,6 +1164,33 @@ void ai_set_unit_owner_player(std::size_t unit, int owner) {
     g_unit_owner_players[unit] = owner;
 }
 
+int ai_team_slot_009ffd20(int team) {
+    // The coordinator's party_slot_of_team / slot_team(0) steps.
+    const int slot0_party = g_scene_slot_parties[0];
+    const int slot0_team = (g_scene_slot_parties_published && slot0_party >= 0) ? slot0_party : 0;
+    return kAiPartyGateUnforcedBound ? (team == slot0_team ? 0 : 4) : team;
+}
+
+int ai_unit_slot_009ffd20(const GameUnitsHost& units, std::size_t unit) {
+    // The coordinator's unit_slot_009ffd20 / unit_owner_player_0180 steps for a
+    // unit index (no squadron proxy).
+    const int team_slot = ai_team_slot_009ffd20(units.unit_side_0054(unit));
+    if constexpr (!kAiOwnerPlayerSlotBound) return team_slot;
+    int owner = 9;
+    const auto by_index = g_unit_owner_players.find(unit);
+    if (by_index != g_unit_owner_players.end()) {
+        owner = by_index->second;
+    } else if (const GameUnitRow* row = units.unit_row(unit)) {
+        if (g_scene_owner_player_conflicts.count(row->name) == 0) {
+            const auto it = g_scene_owner_players.find(row->name);
+            if (it != g_scene_owner_players.end()) owner = it->second;
+        }
+    }
+    if (owner == 8) return -1;
+    if (owner >= 0 && owner < 8) return owner;
+    return team_slot;
+}
+
 struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                                      public bsp::AiPlannerHost,
                                      public bsp::AiCommandMemberPassHost,

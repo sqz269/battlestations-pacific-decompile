@@ -309,6 +309,8 @@ struct GameMissionFrameHost::Impl {
                     bsp::cc13_powerup::powerup_runtime();
                 if (powerups.host == powerup_binding.get()) {
                     bsp::cc13_powerup::destroy_powerup_manager_004d2d84(powerups);
+                    // Packet cc13-powerup-bind: the unit view goes with the lists.
+                    bsp::game_powerups::publish_powerup_unit_resolver(nullptr);
                 }
             }
         }
@@ -456,6 +458,8 @@ struct GameMissionFrameHost::Impl {
     } warning_activate{};
     // Packet cc13-powerup: the binding published with the power-up registry.
     std::unique_ptr<bsp::cc13_powerup::PowerupManagerHost> powerup_binding{};
+    // Packet cc13-powerup-bind: the unit view 008E4680 reads, published with it.
+    std::unique_ptr<bsp::game_powerups::PowerupUnitResolver> powerup_unit_resolver{};
     bool device_edge_injected{false};         // the executable's own injection
     // Packet cc_mission_tick's reconstruction of the four-call opener of every
     // simulated frame, and the dynamics list behind its fourth call.
@@ -1559,6 +1563,32 @@ private:
     GameMissionFrameHost::Impl& host_;
 };
 
+// Packet cc13-powerup-bind: what 008E4680 reads off a unit, over the units host.
+// LABELLED: this process has no entity ids, so a unit's +174h word is its index
+// plus one (unique and non-zero, which is all 008E4680's two id compares and the
+// centre lookup use).
+class PowerupUnitResolverBinding final : public bsp::game_powerups::PowerupUnitResolver {
+public:
+    explicit PowerupUnitResolverBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
+    bool view_unit(std::size_t unit_index, bsp::game_powerups::PowerupUnitView& out) const override {
+        const GameUnitsHost* units = host_.units.get();
+        if (units == nullptr || unit_index >= units->count() || unit_index >= 0xFFFFu) return false;
+        out.live = units->unit_alive_and_visible(unit_index);              // 0043F080
+        out.party = units->unit_side_0054(unit_index);                     // +54h
+        out.id = static_cast<std::uint16_t>(unit_index + 1);               // +174h
+        out.slot = ai_unit_slot_009ffd20(*units, unit_index);              // 009FFD20
+        units->unit_position_00fc(unit_index, out.position[0], out.position[1],
+            out.position[2]);                                              // 00427EB0
+        return true;
+    }
+    bool view_unit_by_id(std::uint16_t id, bsp::game_powerups::PowerupUnitView& out) const override {
+        return id != 0 && view_unit(static_cast<std::size_t>(id) - 1, out);
+    }
+
+private:
+    GameMissionFrameHost::Impl& host_;
+};
+
 // Packet cc13-powerup: 004DC6A0's 008EDC60 + 008ECEC0, the registry part, with
 // Scripts/datatables/PowerupClasses.lua read out of the VFS as the warning table
 // is. Runs at every load, as 004DC6A0 does from 004DFB70; the previous frame's
@@ -1585,6 +1615,8 @@ void load_powerup_classes_cc13(GameMissionFrameHost::Impl& host) {
     if (error.empty() && bsp::cc13_powerup::load_powerup_classes_004dc6a0(runtime,
             *host.powerup_binding, text, local_player_party())) {
         host.done("PowerUps::load_classes", 0x008ecec0u);
+        host.powerup_unit_resolver = std::make_unique<PowerupUnitResolverBinding>(host);
+        bsp::game_powerups::publish_powerup_unit_resolver(host.powerup_unit_resolver.get());
         host.log.notef("power-up classes loaded: records=%llu texture_requests=%llu "
             "(008ECEC0, packet cc13-powerup)", runtime.counts.class_records,
             runtime.counts.texture_requests);

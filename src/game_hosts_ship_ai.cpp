@@ -14,6 +14,7 @@
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_shipai_cc13.hpp"
+#include "bsp/game_hosts_powerups.hpp"  // packet cc13-powerup-bind
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/attack_target_classify.hpp"
@@ -993,6 +994,21 @@ bool has_ship_navigation_class(int kind) noexcept {
     }
 }
 
+// 00811A30 BSP_Unit_TurnCircleRadiusAtThrottle: 0082E960(class, fraction), a
+// float (0082E97B), divided by ProductForUnit(5, unit) at 00811A81 and stored to
+// float. Packet cc13-powerup-bind: the product under the site gate
+// ([00F88C30]+C4h, 00811A59); gate shut, the image divides by 1.0f, which is the
+// class radius the call sites took before.
+float ship_turn_circle_00811a30(GameUnitsHost& units, std::size_t index, float fraction) {
+    const float radius = units.unit_class_turn_circle_radius_0082e960(index, fraction);
+    if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+        if (const auto m = bsp::game_powerups::powerup_site_product(5, index)) {
+            return radius / *m;
+        }
+    }
+    return radius;
+}
+
 class HullGeometryUnitAccess final : public bsp::ShipAiHullPreStepAccess {
 public:
     HullGeometryUnitAccess(GameUnitsHost& units, std::size_t index,
@@ -1005,7 +1021,7 @@ public:
     }
     float unit_turn_circle_00811a30(float fraction) override {
         // The represented modifier channel5 is empty, so its scale is1.
-        return units_.unit_class_turn_circle_radius_0082e960(index_, fraction);
+        return ship_turn_circle_00811a30(units_, index_, fraction);
     }
     float unit_full_beam_09cc() override {
         return units_.unit_half_width_09cc(index_);
@@ -4623,7 +4639,7 @@ public:
         // same way (packet cc9_generated_ship_ai_registration, part 2).
         if constexpr (kApproachTurnRadiusBound) {
             owner_.done("ShipAiApproachPoint::unit_turn_radius", 0x00811a30u);
-            return owner_.units.unit_class_turn_circle_radius_0082e960(index_, fraction);
+            return ship_turn_circle_00811a30(owner_.units, index_, fraction);
         } else {
             static_cast<void>(fraction);
             owner_.record("ShipAiApproachPoint::unit_turn_radius", 0x00811a30u);
@@ -5529,7 +5545,7 @@ public:
         return q.damage_cap;
     }
     float unit_turn_radius_00811a30(float rudder) override {
-        return owner_.units.unit_class_turn_circle_radius_0082e960(index_, rudder);
+        return ship_turn_circle_00811a30(owner_.units, index_, rudder);
     }
     int unit_clearance_count_0080df40() override {
         // 009E731B, reached only with +12BAh set and +12B4h above 0.
@@ -6268,7 +6284,7 @@ public:
         in.class_lands_troops_vtable_2c = owner_.units.unit_class_lands_troops_vtable_2c(index_);
         if (kApproachTurnRadiusBound) {
             in.turn_radius_00811a30 =
-                owner_.units.unit_class_turn_circle_radius_0082e960(index_, 1.0f);
+                ship_turn_circle_00811a30(owner_.units, index_, 1.0f);
         }
         const bsp::ShipAiApproachLatchResult r =
             bsp::ship_ai_approach_mode_latch_009f1f47(ctl_.approach, in);
@@ -6421,7 +6437,7 @@ public:
         const double dz = static_cast<double>(point.z) - unit_pos[2];
         const float d = static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
         // 009F22A5..009F22E7: reach = max(00811A30(unit, 1.0) * 2.5, 300.0f).
-        const float turn = owner_.units.unit_class_turn_circle_radius_0082e960(index_, 1.0f);
+        const float turn = ship_turn_circle_00811a30(owner_.units, index_, 1.0f);
         const float reach = std::max(static_cast<float>(turn * 2.5), 300.0f);
         if (!(reach > d)) {
             owner_.done("ShipAiApproach::landing_mode_3", 0x009f21a0u);
@@ -8867,7 +8883,7 @@ public:
         return bsp::ship_ai_refresh_torpedo_track_009dc060(t, &c);
     }
     float class_length_three_quarters_00811a30() override {
-        const float radius = owner_.units.unit_class_turn_circle_radius_0082e960(index_,
+        const float radius = ship_turn_circle_00811a30(owner_.units, index_,
             bsp::kShipAiContactGapLengthArg);
         owner_.done("ShipAiThrottleProfile::class_length_00811a30", 0x00811a30u);
         return radius;
@@ -9068,7 +9084,7 @@ public:
         // gameplay modifier product for channel 5, which is 1.0f in this
         // process. The turn-circle half is now a recovered value, so only the
         // divide is a record.
-        const float radius = owner_.units.unit_class_turn_circle_radius_0082e960(index_,
+        const float radius = ship_turn_circle_00811a30(owner_.units, index_,
             1.0f);
         owner_.done("ShipAiClearance::class_length_unit_00811a30", 0x00811a30u);
         return radius;
@@ -10375,7 +10391,7 @@ public:
                                             final_leg);
     }
     float turn_circle_radius_00811a30(float throttle) override {
-        return owner_.units.unit_class_turn_circle_radius_0082e960(index_, throttle);
+        return ship_turn_circle_00811a30(owner_.units, index_, throttle);
     }
     bool state_reached_vtable_2c(const bsp::ShipAiFollowLandXZ& goal) override {
         // 00D21658 slot 2Ch is 009DAB10, the navigation states' shared test
@@ -13290,8 +13306,18 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             if (!units.unit_alive_and_visible(u) || unit_dead(u)) continue;
             // The modifier 008E6430(10, unit) is 1.0f: the list is empty here.
             const float power = u < capture_power_0804.size() ? capture_power_0804[u] : 10.0f;
+            float capture_modifier = 1.0f;
+            if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+                // Packet cc13-powerup-bind: 006F69B9, ProductForUnit(0Ah, ship)
+                // under the site gate ([00F88C30]+100h). Gate shut: 1.0f as
+                // before. The scoring-slot sites 006F6A13 / 006F6B4C / 006F6BA3 /
+                // 006F6CFA feed arrays this host does not model.
+                if (const auto m = bsp::game_powerups::powerup_site_product(0x0A, u)) {
+                    capture_modifier = *m;
+                }
+            }
             strength[party] = bsp::command_building_add_capture_power_006f69d2(
-                strength[party], power, 1.0f);
+                strength[party], power, capture_modifier);
         }
         // Arm 2, 006F6A58..006F6BF8: every pad of +794h whose occupant (006AC220)
         // is IsKindOf(0Ch), alive and active (+5Ch set, +5Dh/+60h/+5Eh clear), has
@@ -13334,6 +13360,21 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
                 strength[c.first] = static_cast<std::int32_t>(
                     static_cast<float>(strength[c.first]) + c.second);   // 006F6C1C..006F6C47
                 ++capture_paratrooper_adds;
+            }
+        }
+        if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+            // Packet cc13-powerup-bind: 006F6D63..006F6DB5, for a building whose
+            // +54h is below 2, the other party's strength (index party == 0)
+            // becomes CVTTSS2SI((float)s / ProductForUnit(0Bh, building)) under
+            // the site gate ([00F88C30]+10Ch). Gate shut: the DIVSS by 1.0f
+            // returns s for every count this host reaches, as before (LABELLED:
+            // the host skips that pass while shut).
+            const int building_party = units.unit_side_0054(b.unit);
+            if (building_party < 2) {
+                if (const auto m = bsp::game_powerups::powerup_site_product(0x0B, b.unit)) {
+                    std::int32_t& opposed = strength[building_party == 0 ? 1 : 0];
+                    opposed = static_cast<std::int32_t>(static_cast<float>(opposed) / *m);
+                }
             }
         }
         const bsp::CommandBuildingTickOutcome tick = bsp::command_building_capture_tick_006f6760(
