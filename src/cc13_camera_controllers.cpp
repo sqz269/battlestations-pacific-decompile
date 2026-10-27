@@ -15,6 +15,7 @@ int modifier_type_zero_0078e760() noexcept { return 0; }
 #include "bsp/camera_position_modes.hpp"
 #include "bsp/gamepad_force_events.hpp"
 #include "bsp/native_bit_cursor_fields.hpp"
+#include "bsp/pc24_camera_cc13.hpp"
 #include "bsp/ship_ai_bearing_rating.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/world_ocean.hpp"
@@ -63,7 +64,16 @@ void parse_curve(ModifierCurve& curve, const ModifierLuaValue& v, bool degrees) 
 float linear_curve(const ModifierCurve& curve, float t) noexcept {
     const CurveSample s = sample_modifier_curve(curve, t, kOne);
     const double f = s.fraction;
-    return static_cast<float>((1.0 - f) * s.prev_value + static_cast<double>(s.next_value) * f);
+    float value;
+    if constexpr (kPc24CameraCc13Bound) {
+        // 00792386..0079239F: FLD1 FSUBRP (1 - f), FMUL prev, FMULP f * next, FADDP.
+        value = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_mul24(cc13x87::x87_sub24(1.0, f), s.prev_value),
+            cc13x87::x87_mul24(f, s.next_value)));
+    } else {
+        value = static_cast<float>((1.0 - f) * s.prev_value + static_cast<double>(s.next_value) * f);
+    }
+    return value;
 }
 
 // Gamecamera curves resolve each key through a callback (00792500/00792610)
@@ -164,6 +174,7 @@ float modifier_ease(float f) noexcept {
     }
     const float r = kOne - f;               // FSTP
     const float sq = r * r;                 // FSTP
+    // pc24-lint: allow sq + sq doubles a float exactly, so 1 - (sq + sq) has one rounding (00791E31..00791E35)
     return static_cast<float>(1.0 - (static_cast<double>(sq) + sq));
 }
 
@@ -180,8 +191,13 @@ CurveSample sample_modifier_curve(const ModifierCurve& curve, float t, float sta
     }
     if (i < curve.size()) {
         // FLD t, FLD prev, FSUBP, FSUBR key, FDIVP, FSTP (00791DA3).
-        s.fraction = static_cast<float>((static_cast<double>(t) - prev_time) /
-                                        (static_cast<double>(curve[i].first) - prev_time));
+        if constexpr (kPc24CameraCc13Bound) {
+            s.fraction = static_cast<float>(cc13x87::x87_div24(
+                cc13x87::x87_sub24(t, prev_time), cc13x87::x87_sub24(curve[i].first, prev_time)));
+        } else {
+            s.fraction = static_cast<float>((static_cast<double>(t) - prev_time) /
+                                            (static_cast<double>(curve[i].first) - prev_time));
+        }
         s.next_value = curve[i].second;
     }
     return s;
@@ -191,9 +207,21 @@ CurveSample sample_modifier_curve(const ModifierCurve& curve, float t, float sta
 float blend_modifier_curve(const CurveSample& s, float linear) noexcept {
     const double L = linear;
     const double ease = modifier_ease(s.fraction);
-    const float w = static_cast<float>(ease * (1.0 - L) + L * s.fraction);
-    return static_cast<float>(static_cast<double>(w) * s.next_value +
-                              static_cast<double>(s.prev_value) * (1.0 - w));
+    float value;
+    if constexpr (kPc24CameraCc13Bound) {
+        // 00791E4C..00791E66: FSUBRP 1 - L, ease * (1 - L), L * f, FADDP, FSTP w.
+        const float w = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_mul24(ease, cc13x87::x87_sub24(1.0, L)), cc13x87::x87_mul24(L, s.fraction)));
+        // 00791E6A..00791E90: FSUBP 1 - w, (1 - w) * prev, w * next, FADDP, FSTP.
+        value = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_mul24(cc13x87::x87_sub24(1.0, w), s.prev_value),
+            cc13x87::x87_mul24(w, s.next_value)));
+    } else {
+        const float w = static_cast<float>(ease * (1.0 - L) + L * s.fraction);
+        value = static_cast<float>(static_cast<double>(w) * s.next_value +
+                                   static_cast<double>(s.prev_value) * (1.0 - w));
+    }
+    return value;
 }
 
 // ---------------------------------------------------------------------------
@@ -349,13 +377,30 @@ void goaround_evaluate_00791c90(GoAroundModifier& m, float elapsed, float offset
     const float rho = blend_modifier_curve(sample_modifier_curve(m.rho_34, t, 0.0f), m.rho_linear_10);
     ModifierKeyframe& k = *m.owner_4;
     // 007921E6..00792262; FSIN/FCOS results are spilled to float.
-    const float sin_rho = static_cast<float>(std::sin(static_cast<double>(rho)));
-    const float cos_theta = static_cast<float>(std::cos(static_cast<double>(theta)));
-    k.work_40[0] = static_cast<float>(-static_cast<double>(sin_rho) * radius * cos_theta + k.local_34[0]);
-    const float cos_rho = static_cast<float>(std::cos(static_cast<double>(rho)));
-    k.work_40[2] = static_cast<float>(static_cast<double>(cos_rho) * radius * cos_theta + k.local_34[2]);
-    const float sin_theta = static_cast<float>(std::sin(static_cast<double>(theta)));
-    k.work_40[1] = static_cast<float>(static_cast<double>(sin_theta) * radius + k.local_34[1]);
+    if constexpr (kPc24CameraCc13Bound) {
+        const float sin_rho = static_cast<float>(std::sin(static_cast<double>(rho)));
+        const float cos_theta = static_cast<float>(std::cos(static_cast<double>(theta)));
+        // 00792202..00792216: FLD sin_rho, FCHS, FMUL radius, FMUL cos_theta, FADD local.
+        k.work_40[0] = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_mul24(cc13x87::x87_mul24(-static_cast<double>(sin_rho), radius), cos_theta),
+            k.local_34[0]));
+        const float cos_rho = static_cast<float>(std::cos(static_cast<double>(rho)));
+        // 00792235..00792247.
+        k.work_40[2] = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_mul24(cc13x87::x87_mul24(cos_rho, radius), cos_theta), k.local_34[2]));
+        const float sin_theta = static_cast<float>(std::sin(static_cast<double>(theta)));
+        // 00792254..00792262.
+        k.work_40[1] = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_mul24(sin_theta, radius), k.local_34[1]));
+    } else {
+        const float sin_rho = static_cast<float>(std::sin(static_cast<double>(rho)));
+        const float cos_theta = static_cast<float>(std::cos(static_cast<double>(theta)));
+        k.work_40[0] = static_cast<float>(-static_cast<double>(sin_rho) * radius * cos_theta + k.local_34[0]);
+        const float cos_rho = static_cast<float>(std::cos(static_cast<double>(rho)));
+        k.work_40[2] = static_cast<float>(static_cast<double>(cos_rho) * radius * cos_theta + k.local_34[2]);
+        const float sin_theta = static_cast<float>(std::sin(static_cast<double>(theta)));
+        k.work_40[1] = static_cast<float>(static_cast<double>(sin_theta) * radius + k.local_34[1]);
+    }
     if (!m.zoom_44.empty()) k.zoom_c8 = linear_curve(m.zoom_44, t);
     if (!m.patterntime_54.empty()) k.smooth_d0 = linear_curve(m.patterntime_54, t);
 }
