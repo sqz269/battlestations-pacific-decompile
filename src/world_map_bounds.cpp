@@ -1,4 +1,6 @@
 #include "bsp/world_map_bounds.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_hudgui_cc13.hpp"
 
 #include "bsp/scene_property_bag.hpp"
 
@@ -198,7 +200,42 @@ BorderZoneSet build_border_zones_004d5bd0(const WorldMapBounds& bounds) {
             if (i == last)                  // 004C7253..004C7275
                 r.length = to_float(border_edge_length_004b6c40(bounds, edge) - offset);
             const double len = r.length;
-            if (edge == 0 || edge == 2) {
+            if constexpr (kPc24HudGuiCc13Bound) {
+                // PC24 (004C72BC..004C7432): every FADD/FSUB/FMUL rounds to 24 bits, in
+                // the listing's order; margin M [00CE3938], end extension E [00CE47A0],
+                // depth D [00CE7640].
+                using namespace cc13x87;
+                const double M = kBorderMargin, E = kBorderEndExtension;
+                if (edge == 0 || edge == 2) {
+                    const double s = x87_add24(nw_x, offset);
+                    r.a[0] = to_float(x87_add24(s, M));                      // 004C72CC
+                    r.b[0] = r.a[0];
+                    r.c[0] = to_float(x87_sub24(x87_add24(s, len), M));      // 004C72F6
+                    r.d[0] = r.c[0];
+                    if (i == 0) r.a[0] = to_float(x87_sub24(r.a[0], E));     // 004C7313
+                    if (i == last) r.d[0] = to_float(x87_add24(r.d[0], E));  // 004C732E
+                    const float z0 = edge == 0 ? bounds.north_west[2] : bounds.south_east[2];
+                    const float dir = edge == 0 ? kBorderPositive : kBorderNegative;
+                    r.a[2] = to_float(x87_add24(x87_mul24(kBorderDepth, dir), z0));  // 004C7345
+                    r.b[2] = to_float(x87_add24(x87_mul24(dir, M), z0));             // 004C7358
+                    r.c[2] = r.b[2];
+                    r.d[2] = r.a[2];
+                } else {
+                    const float x0 = edge == 1 ? bounds.south_east[0] : nw_x;
+                    const float dir = edge == 1 ? kBorderPositive : kBorderNegative;
+                    r.a[0] = to_float(x87_add24(x87_mul24(kBorderDepth, dir), x0));  // 004C73C9
+                    r.b[0] = to_float(x87_add24(x87_mul24(dir, M), x0));             // 004C73DC
+                    r.c[0] = r.b[0];
+                    r.d[0] = r.a[0];
+                    const double s = x87_sub24(nw_z, offset);
+                    r.a[2] = to_float(x87_sub24(s, M));                      // 004C73F7
+                    r.b[2] = r.a[2];
+                    r.c[2] = to_float(x87_add24(x87_sub24(s, len), M));      // 004C7421
+                    r.d[2] = r.c[2];
+                    if (i == 0) r.a[2] = to_float(x87_add24(r.a[2], E));     // 004C743A
+                    if (i == last) r.d[2] = to_float(x87_sub24(r.d[2], E));  // 004C7448
+                }
+            } else if (edge == 0 || edge == 2) {
                 // 004C72BC..004C7305, x along the edge.
                 const double start = static_cast<double>(nw_x) + offset;
                 r.a[0] = to_float(start + kBorderMargin);
@@ -301,7 +338,15 @@ std::array<float, 3> get_closest_border_zone_008aecd0(const WorldMapBounds& boun
     // 008AEEA2 COMISS offset, 0.0 / JBE; 008AEECA 0071C4F0 on the position.
     if (offset > 0.0f && !point_outside_world_map_0071c4f0(bounds, position)) {
         // 008AEED7..008AEEFB: ((dx*dx + 0*0) + dz*dz) as a float, then 1.0 < it.
-        const float square = to_float((static_cast<double>(dx) * dx + 0.0) + static_cast<double>(dz) * dz);
+        float square = 0.0f;
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // PC24: each FMUL/FADDP at 008AEEDF..008AEEEB rounds to 24 bits.
+            using namespace cc13x87;
+            square = to_float(x87_add24(x87_add24(x87_mul24(dx, dx), x87_mul24(0.0, 0.0)),
+                                        x87_mul24(dz, dz)));
+        } else {
+            square = to_float((static_cast<double>(dx) * dx + 0.0) + static_cast<double>(dz) * dz);
+        }
         if (1.0f < square) {
             // 008AEF22 0042B2F0 on (dx, 0, dz); 008AEF2B..008AEF55.
             const float length = force_event_vector_length_0042b2f0({dx, 0.0f, dz});

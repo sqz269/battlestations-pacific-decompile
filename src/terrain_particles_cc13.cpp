@@ -684,9 +684,13 @@ void height_field_compute_height_range(std::uint32_t address, void* field) {
         for (std::uint32_t c = 0; c < columns; ++c) {
             const void* tile = tiles[columns * r + c];
             if (tile == nullptr) continue;
-            const float lo = rd<float>(tile, 0x14), mn = rd<float>(field, 0x10);
+            // Both operands pass FLD / FSTP DWORD to stack slots first, which quiets a
+            // signalling NaN (cc13-fixture6).
+            const float lo = cc13x87::x87_fld_fstp(rd<float>(tile, 0x14));
+            const float mn = cc13x87::x87_fld_fstp(rd<float>(field, 0x10));
             wr<float>(field, 0x10, lo > mn ? mn : lo);
-            const float hi = rd<float>(tile, 0x18), mx = rd<float>(field, 0x14);
+            const float hi = cc13x87::x87_fld_fstp(rd<float>(tile, 0x18));
+            const float mx = cc13x87::x87_fld_fstp(rd<float>(field, 0x14));
             wr<float>(field, 0x14, mx > hi ? mx : hi);
         }
     }

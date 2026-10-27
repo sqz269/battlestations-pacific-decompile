@@ -3,6 +3,7 @@
 // simplified.
 
 #include "bsp/cc13_seg49.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 namespace bsp::cc13_seg49 {
 std::uint32_t entity_path_type_code_0080d780() noexcept { return 0x12u; }
@@ -1685,15 +1686,19 @@ void aligned_buffer_reserve_0080b7d0(Seg49Host& host, Raw holder, int capacity)
 }
 
 // 0080B890, ABI: __thiscall(ECX = destination, source) RET 4. The 44h segment copy, field by
-// field (the byte +38h alone).
+// field: dwords +00h and +04h by MOV, floats +08h..+34h, +3Ch and +40h by FLD/FSTP DWORD (a
+// signalling NaN is quieted; cc13-fixture10), the byte +38h alone.
 void turn_path_segment_copy_0080b890(Raw destination, Raw source) noexcept
 {
-    for (std::size_t off = 0; off < 0x38; off += 4) {
-        destination.at<std::uint32_t>(off) = source.at<std::uint32_t>(off);
-    }
+    const auto fld_fstp = [&](std::size_t off) {
+        destination.at<std::uint32_t>(off) = cc13x87::x87_fld_fstp_bits(source.at<std::uint32_t>(off));
+    };
+    destination.at<std::uint32_t>(0x0) = source.at<std::uint32_t>(0x0);
+    destination.at<std::uint32_t>(0x4) = source.at<std::uint32_t>(0x4);
+    for (std::size_t off = 0x8; off < 0x38; off += 4) fld_fstp(off);
     destination.at<std::uint8_t>(0x38) = source.at<std::uint8_t>(0x38);
-    destination.at<std::uint32_t>(0x3C) = source.at<std::uint32_t>(0x3C);
-    destination.at<std::uint32_t>(0x40) = source.at<std::uint32_t>(0x40);
+    fld_fstp(0x3C);
+    fld_fstp(0x40);
 }
 
 // 0080BB60, ABI: __fastcall(ECX = path) RET. No caller. 0080B1F0 on every segment into one

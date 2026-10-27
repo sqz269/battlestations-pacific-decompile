@@ -490,6 +490,16 @@ ShipAiFollowLandXZ ship_ai_land_pad_approach_point_006ac5d0(const ShipAiLandPadL
 // [+210h] + 0.0 inside the corridor and [+210h] - 0.0 outside it (double 00D7A258 at 006ACA98 /
 // 006ACB01). cc9 orders and pairs the flip.
 inline constexpr bool kPadApproachPointImageCc13Bound = false;
+// Reach counter for kPadApproachPointImageCc13Bound (log only, sw1): calls to the
+// per-call arm, those where the image's and the host's corridor tests disagree, and
+// hold-offs whose clearance compare is unordered.
+struct PadApproachReach {
+    bool bound{false};
+    unsigned long long calls{0};
+    unsigned long long corridor_differs{0};
+    unsigned long long holdoff_differs{0};
+};
+const PadApproachReach& pad_approach_reach() noexcept;
 
 // The three floats 006AC5D0 writes to *out (006ACB21, 006ACB28, 006ACB2F).
 struct ShipAiLandPadPoint {

@@ -20,6 +20,7 @@
 #include "bsp/frontend_seg12_17_cc13.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/rocket_task_cc13.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
 #include "bsp/post_effects_cc13.hpp"
 #include "bsp/seg6_cc13.hpp"
 #include "bsp/scene_weather_cc13.hpp"
@@ -67,10 +68,26 @@
 #include "bsp/engine_seg43_45_cc13.hpp"
 #include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/particle_emitters_cc13.hpp"
+#include "bsp/ship_ai_path_planner.hpp"
+#include "bsp/depth_charge_task_cc13.hpp"
+#include "bsp/band_0071_cc13.hpp"
 #include "bsp/band_006b_cc13.hpp"
 #include "bsp/band_004b_cc13.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/cc13_gui1.hpp"
+// cc13-fixture6
+#include "bsp/path_movcam_seg46_argon.hpp"
+#include "bsp/terrain_render.hpp"
+#include "bsp/classes_seg7_cc13.hpp"
+#include "bsp/water_render.hpp"
+#include "bsp/cc13_sweepC.hpp"
+#include "bsp/profile_seg2_cc13.hpp"
+#include "bsp/rocket_homing_cc13.hpp"
+#include "bsp/frontend_seg15_22_cc13.hpp"
+#include "bsp/actions_seg5_cc13.hpp"
+#include "bsp/cc13_seg49.hpp"
+#include "bsp/entity_mission_seg60_argon.hpp"
+#include "bsp/water_weather_cc13.hpp"
 #include "cc13_leaf_reference.hpp"
 #include <float.h>
 #include <array>
@@ -1158,9 +1175,232 @@ template<class Open> void run_fixture5(Open open) {
 }
 // cc13-fixture8: defined at the end of the file.
 template<class Open> void run_fixture8(Open open);
+// cc13-fixture9: defined at the end of the file.
+template<class Open> void run_fixture9(Open open);
+// cc13-fixture10: defined at the end of the file.
+template<class Open> void run_fixture10(Open open);
 // cc13-fixture4 (docs/CC13_FIXTURE_PASS_4.md); defined at the end of this file.
 void run_fixture4(const std::function<Case&(const char*)>& open);
 bool fixture4_pin(const std::string& name, bool& wants53, int& failures, int& nan_only, const char*& finding);
+// ---- cc13-fixture6: render and geometry float leaves (docs/CC13_FIXTURE_PASS_6.md) ----
+// A raw dword: any bit pattern, signalling NaNs included (one draw in eight forced to one), for
+// the routines that only move floats through FLD / FSTP.
+float fx6_raw_bits() {
+    std::uint32_t bits = next();
+    if (next() % 8 == 0) bits = (bits & 0x803fffffu) | 0x7f800001u;  // a signalling NaN
+    float v;
+    std::memcpy(&v, &bits, 4);
+    return v;
+}
+
+// Compares n floats: a match, a NaN sign/payload-only difference, or a mismatch.
+void fx6_check(Case& c, const float* a, const float* b, int n) {
+    if (nan_only_diff(a, b, n)) { c.check_nan_only(); return; }
+    const int k = first_diff(a, b, n);
+    check_note(c, k < 0, "[%d] %a / %a", k, k < 0 ? 0.0 : a[k], k < 0 ? 0.0 : b[k]);
+}
+
+template<class Open> void run_fixture6(Open open) {
+    {   using bsp::path_movcam_seg46_argon::Vec3;
+        auto& mn = open("007AE330 vector3 component min");
+        auto& mx = open("007AE3E0 vector3 component max");
+        auto nmin = at<Vec3* (__fastcall*)(Vec3*, const Vec3*, const Vec3*)>(cc13_leaf_007ae330);
+        auto nmax = at<Vec3* (__fastcall*)(Vec3*, const Vec3*, const Vec3*)>(cc13_leaf_007ae3e0);
+        for (int i = 0; i < 3000; ++i) {
+            Vec3 a, b;
+            float* pa = &a.x;
+            float* pb = &b.x;
+            for (int k = 0; k < 3; ++k) {
+                pa[k] = i % 7 == 0 ? fx6_raw_bits() : edge_or(-100, 100);
+                pb[k] = i % 5 == 0 ? pa[k] : (i % 7 == 1 ? fx6_raw_bits() : edge_or(-100, 100));
+            }
+            Vec3 o1{-9, -9, -9}, o2 = o1, o3 = o1, o4 = o1;
+            const bool r1 = nmin(&o1, &a, &b) == &o1;
+            bsp::path_movcam_seg46_argon::vector3_component_min_007ae330(o2, a, b);
+            if (!r1) mn.check(false); else fx6_check(mn, &o1.x, &o2.x, 3);
+            const bool r3 = nmax(&o3, &a, &b) == &o3;
+            bsp::path_movcam_seg46_argon::vector3_component_max_007ae3e0(o4, a, b);
+            if (!r3) mx.check(false); else fx6_check(mx, &o3.x, &o4.x, 3);
+        }
+    }
+    {
+        auto& c = open("00B999A0 plane signed distance");
+        auto native = at<float (__fastcall*)(const float*, int, const float*)>(cc13_leaf_00b999a0);
+        for (int i = 0; i < 3000; ++i) {
+            float plane[4], p[3];
+            for (auto& v : plane) v = edge_or(-2, 2);
+            for (auto& v : p) v = edge_or(-1000, 1000);
+            const float r1 = native(plane, 0, p), r2 = bsp::cc13_sweepC::plane_signed_distance_00b999a0(plane, p);
+            fx6_check(c, &r1, &r2, 1);
+        }
+    }
+    {
+        auto& c = open("00B65140 plane set classify point");
+        auto native = at<std::uint32_t (__fastcall*)(const void*, int, const float*)>(cc13_leaf_00b65140);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) std::uint8_t set[0x144]{};
+            auto* rows = reinterpret_cast<bsp::cc13fx::PlaneRow*>(set);
+            const int count = static_cast<int>(next() % 17);
+            for (int r = 0; r < 16; ++r) {
+                rows[r] = {edge_or(-1, 1), edge_or(-1, 1), edge_or(-1, 1), edge_or(-50, 50), next()};
+            }
+            std::memcpy(set + 0x140, &count, 4);
+            float p[3] = {edge_or(-60, 60), edge_or(-60, 60), edge_or(-60, 60)};
+            if (i % 30 == 0 && count > 0) {  // on the first plane: a*x + b*y + c*z = d
+                rows[0] = {0.0f, 1.0f, 0.0f, p[1], 0};
+            } else if (i % 3 == 0 && count > 0) {  // the last plane's s - d near 0
+                bsp::cc13fx::PlaneRow& q = rows[count - 1];
+                q.d = q.a * p[0] + q.b * p[1] + q.c * p[2];
+            }
+            const std::uint32_t n1 = native(set, 0, p), n2 = bsp::cc13fx::plane_set_classify_point(rows, count, p);
+            check_note(c, n1 == n2, "count=%d p=%a,%a,%a: %x / %x", count, p[0], p[1], p[2], n1, n2);
+        }
+    }
+    {
+        using bsp::cc13fx::Float4;
+        auto extent = [](int i) -> std::uint32_t {
+            switch (i % 8) {
+            case 0: return next();                                        // any, 2^31 and up included
+            case 1: return 0;
+            case 2: return 1u << (next() % 32);
+            case 3: return (next() >> 4) | 1u;                            // above 2^24, odd
+            default: return 1 + next() % 4096;
+            }
+        };
+        auto& d = open("00B4CC50 sample offsets downscale 4x4");
+        auto down = at<void (__stdcall*)(std::uint32_t, std::uint32_t, Float4*)>(cc13_leaf_00b4cc50);
+        auto& a = open("00B4CDE0 sample offsets average luminance 3x3");
+        auto avg = at<void (__stdcall*)(std::uint32_t, std::uint32_t, Float4*)>(cc13_leaf_00b4cde0);
+        for (int i = 0; i < 2000; ++i) {
+            const std::uint32_t w = extent(i), h = extent(i / 8 + i);
+            Float4 o1[16], o2[16];
+            for (int k = 0; k < 16; ++k) o1[k] = o2[k] = Float4{3.0f, 4.0f, 5.0f, 6.0f};
+            down(w, h, o1);
+            bsp::cc13fx::sample_offsets_downscale4x4(w, h, o2);
+            fx6_check(d, &o1[0].x, &o2[0].x, 64);
+            Float4 q1[9], q2[9];
+            for (int k = 0; k < 9; ++k) q1[k] = q2[k] = Float4{3.0f, 4.0f, 5.0f, 6.0f};
+            avg(w, h, q1);
+            bsp::cc13fx::sample_offsets_avg_lum3x3(w, h, q2);
+            fx6_check(a, &q1[0].x, &q2[0].x, 36);
+        }
+    }
+    {
+        auto& c = open("00B8B350 flare centre weight");
+        auto native = at<float (__fastcall*)(const void*)>(cc13_leaf_00b8b350);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) std::uint8_t flare[0x200]{};
+            const float x = edge_or(-1.5f, 1.5f), y = edge_or(-1.5f, 1.5f), vis = i % 10 == 0 ? edge_or(-1, 1) : edge_or(0, 1);
+            std::memcpy(flare + 0x1a4, &x, 4);
+            std::memcpy(flare + 0x1a8, &y, 4);
+            std::memcpy(flare + 0x1b4, &vis, 4);
+            const float r1 = native(flare), r2 = bsp::cc13fx::flare_centre_weight(x, y, vis);
+            fx6_check(c, &r1, &r2, 1);
+        }
+    }
+    {
+        auto& c = open("00481510 box corners from bounds");
+        auto native = at<void* (__fastcall*)(void*, int, const float*)>(cc13_leaf_00481510);
+        for (int i = 0; i < 3000; ++i) {
+            float bounds[6];
+            for (auto& v : bounds) v = edge_or(-500, 500);
+            float b1[28], b2[28];
+            for (int k = 0; k < 28; ++k) b1[k] = b2[k] = static_cast<float>(k) + 0.5f;
+            const bool r = native(b1, 0, bounds) == b1;
+            bsp::cc13_seg7::box_corners_from_bounds_00481510(reinterpret_cast<std::uint8_t*>(b2), bounds);
+            if (!r) c.check(false); else fx6_check(c, b1, b2, 28);
+        }
+    }
+    {
+        auto& c = open("00B9A3F0 normal map layers");
+        auto native = at<void (__fastcall*)(void*, int, const float*, const float*)>(cc13_leaf_00b9a3f0);
+        for (int i = 0; i < 3000; ++i) {
+            float scales[4], speeds[4];
+            for (auto& v : scales) v = edge_or(-64, 64);
+            for (auto& v : speeds) v = edge_or(-4, 4);
+            float field[0x68 / 4];
+            for (int k = 0; k < 0x68 / 4; ++k) field[k] = -7.0f;
+            native(field, 0, scales, speeds);
+            const bsp::water_render::NormalMapLayers l = bsp::water_render::set_normal_map_layers_00b9a3f0(scales, speeds);
+            const float o2[8] = {l.inverse_scale_44.x, l.inverse_scale_44.y, l.inverse_scale_44.z, l.inverse_scale_44.w,
+                                 l.scroll_speed_54.x, l.scroll_speed_54.y, l.scroll_speed_54.z, l.scroll_speed_54.w};
+            fx6_check(c, field + 0x44 / 4, o2, 8);
+        }
+    }
+    {
+        auto& c = open("00B75DE0 matrix from transposed 3x4");
+        auto native = at<void (__fastcall*)(float*, const float*)>(cc13_leaf_00b75de0);
+        auto& t = open("00B40440 float3x4 from matrix transposed");
+        auto native_t = at<void (__fastcall*)(std::uint32_t*, int, const std::uint32_t*)>(cc13_leaf_00b40440);
+        for (int i = 0; i < 2000; ++i) {
+            float src[16], o1[16], o2[16];
+            for (auto& v : src) v = i % 2 ? fx6_raw_bits() : edge_or(-100, 100);
+            for (int k = 0; k < 16; ++k) o1[k] = o2[k] = -5.0f;
+            native(o1, src);
+            bsp::cc13_scene2::matrix_from_transposed_3x4_00b75de0(o2, src);
+            fx6_check(c, o1, o2, 16);
+            std::uint32_t m[16], t1[12], t2[12];
+            std::memcpy(m, src, sizeof m);
+            for (int k = 0; k < 12; ++k) t1[k] = t2[k] = 0xdeadbeefu;
+            native_t(t1, 0, m);
+            bsp::cc13_render1::float3x4_from_matrix_transposed_00b40440(t2, m);
+            fx6_check(t, reinterpret_cast<const float*>(t1), reinterpret_cast<const float*>(t2), 12);
+        }
+    }
+    {
+        auto& a = open("00ADBD00 height field height range (1e10 / -1000)");
+        auto& b = open("00ADB280 height field height range (100000 / -100000)");
+        auto na = at<void (__fastcall*)(void*)>(cc13_leaf_00adbd00);
+        auto nb = at<void (__fastcall*)(void*)>(cc13_leaf_00adb280);
+        for (int i = 0; i < 1000; ++i) {
+            const std::uint32_t cols = next() % 5, rows = next() % 5;
+            float tiles[25][8]{};
+            void* table[25]{};
+            for (std::uint32_t k = 0; k < cols * rows; ++k) {
+                tiles[k][5] = i % 9 == 0 ? fx6_raw_bits() : edge_or(-2000, 3000);
+                tiles[k][6] = i % 9 == 1 ? fx6_raw_bits() : edge_or(-2000, 3000);
+                table[k] = next() % 5 ? tiles[k] : nullptr;
+            }
+            for (int which = 0; which < 2; ++which) {
+                alignas(4) std::uint8_t f1[0x48]{}, f2[0x48]{};
+                void* const tp = table;
+                std::memcpy(f1 + 0x38, &cols, 4);
+                std::memcpy(f1 + 0x3c, &rows, 4);
+                std::memcpy(f1 + 0x40, &tp, 4);
+                std::memcpy(f2, f1, sizeof f1);
+                (which ? nb : na)(f1);
+                bsp::cc13_terrain::height_field_compute_height_range(which ? 0x00ADB280u : 0x00ADBD00u, f2);
+                fx6_check(which ? b : a, reinterpret_cast<const float*>(f1 + 0x10), reinterpret_cast<const float*>(f2 + 0x10), 2);
+            }
+        }
+    }
+    {
+        auto& c = open("00AE05E0 AABB classify against planes");
+        auto native = at<int (__fastcall*)(int, const float*, const float*, const float*)>(cc13_leaf_00ae05e0);
+        for (int i = 0; i < 3000; ++i) {
+            const int count = static_cast<int>(next() % 7);
+            std::vector<bsp::TerrainPlane> planes(static_cast<std::size_t>(count));
+            float raw[6 * 4];
+            for (int k = 0; k < count; ++k) {
+                planes[k] = {edge_or(-1, 1), edge_or(-1, 1), edge_or(-1, 1), edge_or(-100, 100)};
+                std::memcpy(raw + 4 * k, &planes[k], 16);
+            }
+            const bsp::TerrainVec3f centre{edge_or(-100, 100), edge_or(-100, 100), edge_or(-100, 100)};
+            const bsp::TerrainVec3f extent{edge_or(0, 30), edge_or(0, 30), edge_or(0, 30)};
+            if (count > 0 && i % 3 == 0) {  // the last plane's s - d near +r or -r
+                bsp::TerrainPlane& q = planes[count - 1];
+                const float dot = q.a * centre.x + q.b * centre.y + q.c * centre.z;
+                const float r = std::fabs(q.b) * extent.y + std::fabs(q.a) * extent.x + std::fabs(q.c) * extent.z;
+                q.d = i % 2 ? dot - r : dot + r;
+                std::memcpy(raw + 4 * (count - 1), &q, 16);
+            }
+            const int n1 = native(count, raw, &centre.x, &extent.x);
+            const int n2 = static_cast<int>(bsp::terrain_box_classify_planes_00ae05e0(planes, centre, extent));
+            check_note(c, n1 == n2, "count=%d: %d / %d", count, n1, n2);
+        }
+    }
+}
+// ---- end cc13-fixture6 ----
 
 }  // namespace
 
@@ -1252,6 +1492,11 @@ int main() {
         std::memcpy(record + 0x3c, &object_pointer, 4);
         std::memcpy(record + 0x314, &rocket_pointer, 4);
         auto native = at<float (__fastcall*)(void*, int, float)>(cc13_leaf_00809e10);
+        // pc24w1-sweep3-7: with kPc24PlaneTasksCc13Bound on, the C++ rounds per op at 24 bits,
+        // so the image runs at 24-bit precision control here too.
+        if constexpr (bsp::kPc24PlaneTasksCc13Bound) {
+            _controlfp_s(&control, _PC_24 | _RC_NEAR, _MCW_PC | _MCW_RC);
+        }
         for (int i = 0; i < 2000; ++i) {
             launch = uniform(0, 300);
             const float vmax = uniform(launch - 60, 400), accel = uniform(1, 120), range = uniform(0, 6000);
@@ -1261,6 +1506,7 @@ int main() {
             const float b = bsp::rocket_flight_time_00809e10(range, launch, vmax, accel);
             c.check(same(a, b));
         }
+        _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
     }
     {
         using namespace bsp::band_0045_cc13;
@@ -1418,6 +1664,7 @@ int main() {
         run_fixture2([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
         run_fixture3([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
         run_fixture5([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
+        run_fixture6([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });  // cc13-fixture6
     }
     // cc13-fixture8: the same two passes over its own input stream.
     for (const unsigned pc : {static_cast<unsigned>(_PC_53), static_cast<unsigned>(_PC_24)}) {
@@ -1665,6 +1912,20 @@ int main() {
         }
         _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
     }
+    // cc13-fixture9: the same two passes over its own input stream.
+    for (const unsigned pc : {static_cast<unsigned>(_PC_53), static_cast<unsigned>(_PC_24)}) {
+        _controlfp_s(&control, pc | _RC_NEAR, _MCW_PC | _MCW_RC);
+        state = 0x0f1c5e09u;
+        const std::string tag = pc == _PC_53 ? " @53" : " @24";
+        run_fixture9([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
+    }
+    // cc13-fixture10: the same two passes over its own input stream.
+    for (const unsigned pc : {static_cast<unsigned>(_PC_53), static_cast<unsigned>(_PC_24)}) {
+        _controlfp_s(&control, pc | _RC_NEAR, _MCW_PC | _MCW_RC);
+        state = 0x0f1c5e10u;
+        const std::string tag = pc == _PC_53 ? " @53" : " @24";
+        run_fixture10([&](const char* name) -> Case& { return open((std::string(name) + tag).c_str()); });
+    }
     _controlfp_s(&control, _PC_53 | _RC_NEAR, _MCW_PC | _MCW_RC);
     // cc13-fixture2 cases carry a precision suffix. The pass that decides is the precision of
     // the thread the image runs the routine on (docs/CC13_FPU_PRECISION.md): 24-bit for the
@@ -1677,6 +1938,11 @@ int main() {
     static const char* const primary53[] = {"00C37860", "00C38470", "00C38810", "00C38970"};
     struct Pinned { const char* address; int failures; int nan_only; const char* finding; };
     static const Pinned pinned[] = {
+        // cc13-fixture8 follow-up: the side walks' OFF arm (the C++ shared direction rule) on unordered
+        // sums; with either switch ON (the walks' own, or kShipAiPathNodeDirectionUnorderedCc13Bound on the
+        // shared rule) the walks take the image's rule and must match outright.
+        {"009D5AE0", (bsp::kShipAiPathSideWalkNanCc13Bound || bsp::kShipAiPathNodeDirectionUnorderedCc13Bound) ? 0 : 58, 0, "unordered route sums (NaN, inf-inf): the image's JC gives +1, the C++ shared rule (009d9e6c, its < deviates from the image) -1; ON arm matches"},
+        {"009D5B90", (bsp::kShipAiPathSideWalkNanCc13Bound || bsp::kShipAiPathNodeDirectionUnorderedCc13Bound) ? 0 : 61, 0, "unordered route sums (NaN, inf-inf): the image's JC gives +1, the C++ shared rule (009d9e6c, its < deviates from the image) -1; ON arm matches"},
         {"004F3DA0", 57, 0, "float intermediates overflow where the x87 stack does not"},
         {"00B64470", 0, 7, "NaN sign/payload only"},
         {"00B62DD0", 0, 54, "NaN sign/payload only"},
@@ -1946,6 +2212,101 @@ template<class Open> void run_fixture8(Open open) {
             check_note(c, same(a, b), "v=%a %a / %a", get_f(cls, 0xe4), a, b);
         }
     }
+    {   // 009D5AE0 / 009D5B90: the plan's signed-node walks over a small acyclic node graph.
+        static_assert(offsetof(bsp::ShipAiPathNode, field_14) == 0x14);
+        static_assert(offsetof(bsp::ShipAiPathNode, link_minus) == 0x20);
+        static_assert(offsetof(bsp::ShipAiPathNode, link_minus_length) == 0x34);
+        static_assert(offsetof(bsp::ShipAiPathNode, remaining_length) == 0x3c);
+        static_assert(offsetof(bsp::ShipAiPathNode, cost_plus) == 0x50);
+        static_assert(offsetof(bsp::ShipAiPathPlanBlock, head) == 0x20);
+        for (int variant = 0; variant < 4; ++variant) {  // OFF (pinned NaN difference), then the ON arm
+            const int side = variant & 1;
+            const bool image = variant >= 2;
+            // The ON arm's names do not start with the address, so the OFF pins do not apply to it.
+            auto& c = open(image ? (side ? "ON arm 009D5B90 path any negative side ahead" : "ON arm 009D5AE0 path any positive side ahead")
+                                 : (side ? "009D5B90 path any negative side ahead" : "009D5AE0 path any positive side ahead"));
+            auto native = at<bool (__fastcall*)(void*)>(side ? cc13_leaf_009d5b90 : cc13_leaf_009d5ae0);
+            for (int i = 0; i < 3000; ++i) {
+                constexpr int n = 7;
+                bsp::ShipAiPathNode g1[n], g2[n];
+                bsp::ShipAiPathPlanBlock p1, p2;
+                for (int k = 0; k < n; ++k) {
+                    bsp::ShipAiPathNode& v = g1[k];
+                    const std::uint32_t r = next();
+                    v.direction = r % 5 == 0 ? (r & 8 ? 1 : -1) : 0;
+                    v.field_14 = static_cast<std::uint8_t>(r % 9 == 0 ? (r & 16 ? 1 : 0xff) : 0);
+                    v.link_minus = k + 1 < n && (r & 32) ? &g1[k + 1 + (r >> 8) % (n - k - 1)] : nullptr;
+                    v.link_plus = k + 1 < n && (r & 64) ? &g1[k + 1 + (r >> 16) % (n - k - 1)] : nullptr;
+                    v.link_minus_length = edge_or(0, 50); v.link_plus_length = edge_or(0, 50);
+                    v.remaining_length = edge_or(0, 500);
+                    v.cost_minus = edge_or(0, 100); v.cost_plus = edge_or(0, 100);
+                }
+                for (int k = 0; k < n; ++k) {
+                    g2[k] = g1[k];
+                    if (g1[k].link_minus) g2[k].link_minus = g2 + (g1[k].link_minus - g1);
+                    if (g1[k].link_plus) g2[k].link_plus = g2 + (g1[k].link_plus - g1);
+                }
+                p1.head = i % 50 == 0 ? nullptr : g1; p2.head = p1.head ? g2 : nullptr;
+                const bool o1 = native(&p1);
+                const bool o2 = image ? (side ? bsp::ship_ai_path_any_negative_side_ahead_image_009d5b90(p2)
+                                              : bsp::ship_ai_path_any_positive_side_ahead_image_009d5ae0(p2))
+                                      : (side ? bsp::ship_ai_path_any_negative_side_ahead_009d5b90(p2)
+                                              : bsp::ship_ai_path_any_positive_side_ahead_009d5ae0(p2));
+                bool ok = o1 == o2;
+                for (int k = 0; k < n; ++k) ok = ok && g1[k].direction == g2[k].direction;
+                bool any_nan = false;
+                for (int k = 0; k < n; ++k) any_nan = any_nan || std::isnan(g1[k].cost_minus) || std::isnan(g1[k].cost_plus) ||
+                    std::isnan(g1[k].link_minus_length) || std::isnan(g1[k].link_plus_length) || std::isnan(g1[k].remaining_length);
+                check_note(c, ok, "case %d result %d / %d nan=%d", i, o1, o2, any_nan);
+            }
+        }
+    }
+    {   auto& c = open("009A5390 depth charge turn-to give up");
+        auto native = at<int (__fastcall*)(void*)>(cc13_leaf_009a5390);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(4) unsigned char inner[0x4c]{}, state[8]{};
+            void* p = inner;
+            std::memcpy(state + 4, &p, 4);
+            const float range = edge_or(0, 3000), fly = edge_or(0, 6000);
+            put(inner, 0x48, range); put(inner, 0x40, fly);
+            const bool a = native(state) != 0, b = bsp::depth_charge_turnto_give_up_009a5390(range, fly);
+            check_note(c, a == b, "range=%a fly=%a %d / %d", range, fly, a, b);
+        }
+    }
+    for (int kind = 0; kind < 2; ++kind) {
+        auto& c = open(kind ? "00729A40 gun any barrel timer below max" : "00727D30 gun any barrel ready within");
+        for (int i = 0; i < 3000; ++i) {
+            float timers[6];
+            for (float& v : timers) v = i % 13 == 0 ? FLT_MAX : edge_or(-1, 30);
+            const std::int32_t count = static_cast<std::int32_t>(next() % 8) - 1;
+            alignas(4) unsigned char gun[0x44c]{};
+            const float* tp = timers;
+            std::memcpy(gun + 0x414, &tp, 4);
+            put(gun, 0x448, count);
+            const float t = edge_or(-1, 30);
+            bool a, b;
+            if (kind) {
+                a = at<bool (__fastcall*)(void*)>(cc13_leaf_00729a40)(gun);
+                b = bsp::band_0071_cc13::gun_any_barrel_timer_below_max_00729a40(timers, count);
+            } else {
+                a = at<bool (__fastcall*)(void*, int, float)>(cc13_leaf_00727d30)(gun, 0, t);
+                b = bsp::band_0071_cc13::gun_any_barrel_ready_within_00727d30(timers, count, t);
+            }
+            check_note(c, a == b, "count=%d t=%a %d / %d", count, t, a, b);
+        }
+    }
+    for (int side = 0; side < 2; ++side) {
+        auto& c = open(side ? "006F22F0 max(float(int), v)" : "006F22B0 min(float(int), v)");
+        auto native = at<float (__fastcall*)(std::int32_t, int, float)>(side ? cc13_leaf_006f22f0 : cc13_leaf_006f22b0);
+        for (int i = 0; i < 3000; ++i) {
+            const std::int32_t bound = i % 5 == 0 ? static_cast<std::int32_t>(next()) : static_cast<std::int32_t>(next() % 200) - 100;
+            const float v = edge_or(-120, 120);
+            const float a = native(bound, 0, v);
+            const float b = side ? bsp::band_006b_cc13::math_max_float_int_006f22f0(bound, v)
+                                 : bsp::band_006b_cc13::math_min_float_int_006f22b0(bound, v);
+            check_note(c, same(a, b), "bound=%d v=%a %a / %a", bound, v, a, b);
+        }
+    }
 }
 #pragma warning(pop)
 }  // namespace
@@ -2171,6 +2532,259 @@ bool fixture4_pin(const std::string& name, bool& wants53, int& failures, int& na
             return true;
         }
     return false;
+}
+
+}  // namespace
+
+namespace {
+
+// cc13-fixture9 (docs/CC13_FIXTURE_PASS_9.md): main-thread vector helpers, exact compares and
+// float copies. Runs once per precision control; the caller resets the generator so both
+// passes see the same inputs. Copies take raw bit patterns (signalling NaNs included), since
+// FLD/FSTP DWORD quiets them.
+template<class Open> void run_fixture9(Open open) {
+    auto rec = [](Case& c, const float* a, const float* b, int n) {
+        if (nan_only_diff(a, b, n)) { c.check_nan_only(); return; }
+        const int k = first_diff(a, b, n);
+        check_note(c, k < 0, "[%d] %a / %a", k, k < 0 ? 0.0 : a[k], k < 0 ? 0.0 : b[k]);
+    };
+    auto bits = [] { const std::uint32_t u = next(); float f; std::memcpy(&f, &u, 4); return f; };
+    auto vec = [](float* v, int n, float lo, float hi) { for (int k = 0; k < n; ++k) v[k] = edge_or(lo, hi); };
+    {   auto& c = open("0042AE80 vector3 divide in place");
+        auto native = at<void (__fastcall*)(float*, int, float)>(cc13_leaf_0042ae80);
+        auto& d = open("0042AE50 vector3 scale in place");
+        auto native2 = at<void (__fastcall*)(float*, int, float)>(cc13_leaf_0042ae50);
+        auto& e = open("0042AE20 vector3 divide scalar to");
+        auto native3 = at<void (__fastcall*)(const float*, int, float*, float)>(cc13_leaf_0042ae20);
+        auto& f = open("00414260 vector3 scale to");
+        auto native4 = at<float* (__fastcall*)(const float*, int, float*, float)>(cc13_leaf_00414260);
+        for (int i = 0; i < 3000; ++i) {
+            float v[3];
+            vec(v, 3, -100, 100);
+            const float s = i % 4 == 0 ? std::ldexp(edge_or(-4, 4), -100) : edge_or(-8, 8);
+            float a1[3] = {v[0], v[1], v[2]};
+            std::array<float, 3> a2{v[0], v[1], v[2]};
+            native(a1, 0, s);
+            bsp::vector3_divide_in_place_pc24_0042ae80(a2, s);  // the OFF switch's 24-bit arm
+            rec(c, a1, a2.data(), 3);
+            float b1[3] = {v[0], v[1], v[2]}, b2[3] = {v[0], v[1], v[2]};
+            native2(b1, 0, s);
+            bsp::profile_seg2_cc13::vector3_scale_in_place_0042ae50(b2, s);
+            rec(d, b1, b2, 3);
+            float o1[3] = {7, 7, 7}, o2[3] = {7, 7, 7};
+            native3(v, 0, o1, s);
+            bsp::profile_seg2_cc13::vector3_divide_scalar_to_0042ae20(v, o2, s);
+            rec(e, o1, o2, 3);
+            float p1[3] = {7, 7, 7}, p2[3] = {7, 7, 7};
+            native4(v, 0, p1, s);
+            bsp::engine_seg1_cc13::vector3_scale_to_00414260(v, p2, s);
+            rec(f, p1, p2, 3);
+        }
+    }
+    {   auto& c = open("004142A0 vector3 add to");
+        auto native = at<float* (__fastcall*)(const float*, int, float*, const float*)>(cc13_leaf_004142a0);
+        auto& d = open("00B50020 vector4 add");
+        auto native2 = at<float* (__fastcall*)(const float*, int, float*, const float*)>(cc13_leaf_00b50020);
+        auto& e = open("0042AEB0 vector3 add in place");
+        auto native3 = at<float* (__fastcall*)(float*, int, const float*)>(cc13_leaf_0042aeb0);
+        auto& f = open("0042AEE0 vector3 subtract in place");
+        auto native4 = at<float* (__fastcall*)(float*, int, const float*)>(cc13_leaf_0042aee0);
+        auto& g = open("00427C90 vector3 subtract to");
+        auto native5 = at<float* (__fastcall*)(const float*, int, float*, const float*)>(cc13_leaf_00427c90);
+        auto& h = open("00709AC0 vec3 sub");
+        auto native6 = at<void (__fastcall*)(float*, const float*, const float*)>(cc13_leaf_00709ac0);
+        for (int i = 0; i < 3000; ++i) {
+            float a[4], b[4];
+            vec(a, 4, -1000, 1000);
+            vec(b, 4, -1000, 1000);
+            if (i % 5 == 0) for (int k = 0; k < 4; ++k) b[k] = -a[k];
+            float o1[4] = {7, 7, 7, 7}, o2[4] = {7, 7, 7, 7};
+            native(a, 0, o1, b);
+            bsp::engine_seg1_cc13::vector3_add_to_004142a0(a, o2, b);
+            rec(c, o1, o2, 3);
+            native2(a, 0, o1, b);
+            bsp::cc13_scene2::vector4_add_00b50020(a, o2, b);
+            rec(d, o1, o2, 4);
+            float p1[3] = {a[0], a[1], a[2]}, p2[3] = {a[0], a[1], a[2]};
+            native3(p1, 0, b);
+            bsp::profile_seg2_cc13::vector3_add_in_place_0042aeb0(p2, b);
+            rec(e, p1, p2, 3);
+            float q1[3] = {a[0], a[1], a[2]}, q2[3] = {a[0], a[1], a[2]};
+            native4(q1, 0, b);
+            bsp::profile_seg2_cc13::vector3_subtract_in_place_0042aee0(q2, b);
+            rec(f, q1, q2, 3);
+            native5(a, 0, o1, b);
+            bsp::cc13_left61::vector3_subtract_to_00427c90(a, o2, b);
+            rec(g, o1, o2, 3);
+            native6(o1, a, b);
+            const bsp::band_0067_cc13::Vec3 r = bsp::band_0067_cc13::vec3_sub_00709ac0({a[0], a[1], a[2]}, {b[0], b[1], b[2]});
+            const float r2[3] = {r.x, r.y, r.z};
+            rec(h, o1, r2, 3);
+        }
+    }
+    {   auto& c = open("0042B220 vector3 dot");
+        auto native = at<float (__fastcall*)(const float*, const float*)>(cc13_leaf_0042b220);
+        for (int i = 0; i < 3000; ++i) {
+            float a[3], b[3];
+            vec(a, 3, -100, 100);
+            vec(b, 3, -100, 100);
+            // Tiny and huge vectors: the products leave float range on the stack.
+            if (i % 5 == 1) for (float& x : a) x = std::ldexp(x, -70);
+            if (i % 5 == 2) for (float& x : a) x = std::ldexp(x, 60);
+            const float n = native(a, b), r = bsp::profile_seg2_cc13::vector3_dot_0042b220(a, b);
+            rec(c, &n, &r, 1);
+        }
+    }
+    {   auto& c = open("00475DF0 vector4 exact equals");
+        auto native = at<int (__fastcall*)(const float*, int, const float*)>(cc13_leaf_00475df0);
+        auto& d = open("00453F40 vector3 exact equals");
+        auto native2 = at<int (__fastcall*)(const float*, int, const float*)>(cc13_leaf_00453f40);
+        auto& e = open("00533D30 vec2 equal");
+        auto native3 = at<int (__fastcall*)(const float*, int, const float*)>(cc13_leaf_00533d30);
+        for (int i = 0; i < 3000; ++i) {
+            float a[4], b[4];
+            vec(a, 4, -2, 2);
+            for (int k = 0; k < 4; ++k) b[k] = next() % 3 ? a[k] : edge_or(-2, 2);
+            if (i % 7 == 0) b[next() % 4] = -0.0f * a[0];
+            const bsp::band_0045_cc13::Vec4 a4{a[0], a[1], a[2], a[3]}, b4{b[0], b[1], b[2], b[3]};
+            c.check((native(a, 0, b) != 0) == bsp::band_0045_cc13::exact_equals_00475df0(a4, b4));
+            const bsp::band_0045_cc13::Vec3 a3{a[0], a[1], a[2]}, b3{b[0], b[1], b[2]};
+            d.check((native2(a, 0, b) != 0) == bsp::band_0045_cc13::exact_equals_00453f40(a3, b3));
+            e.check((native3(a, 0, b) != 0) == bsp::frontend_seg15_22_cc13::vec2f_equal_00533d30(a, b));
+        }
+    }
+    {   auto& c = open("006FDD00 4x4 transpose in place");
+        auto native = at<float* (__fastcall*)(float*)>(cc13_leaf_006fdd00);
+        auto& d = open("00B40400 2x4 from transposed matrix");
+        auto native2 = at<void (__fastcall*)(float*, int, const float*)>(cc13_leaf_00b40400);
+        for (int i = 0; i < 3000; ++i) {
+            float m[16];
+            for (float& x : m) x = i % 2 ? bits() : edge_or(-10, 10);
+            float m1[16], m2[16];
+            std::memcpy(m1, m, sizeof(m));
+            std::memcpy(m2, m, sizeof(m));
+            native(m1);
+            bsp::band_006b_cc13::matrix4x4_transpose_in_place_006fdd00(m2);
+            check_note(c, std::memcmp(m1, m2, sizeof(m1)) == 0, "[%d]", first_diff(m1, m2, 16));
+            float t1[8], t2[8];
+            for (int k = 0; k < 8; ++k) t1[k] = t2[k] = 3.0f;
+            native2(t1, 0, m);
+            bsp::cc13_render1::float2x4_from_matrix_transposed_00b40400(reinterpret_cast<std::uint32_t*>(t2),
+                                                                        reinterpret_cast<const std::uint32_t*>(m));
+            check_note(d, std::memcmp(t1, t2, sizeof(t1)) == 0, "[%d]", first_diff(t1, t2, 8));
+        }
+    }
+}
+
+}  // namespace
+
+namespace {
+
+// cc13-fixture10 (docs/CC13_FIXTURE_PASS_10.md): main-thread record copies. Each takes raw bit
+// patterns (signalling NaNs included, since FLD/FSTP DWORD quiets them) and compares the whole
+// destination buffer, slack included. Runs once per precision control; the caller resets the
+// generator so both passes see the same inputs.
+constexpr int kFixture10Words = 0x80;
+
+template<class Open> void run_fixture10(Open open) {
+    auto fill = [](std::uint32_t* w, int n) {
+        for (int k = 0; k < n; ++k) {
+            std::uint32_t u = next();
+            // One word in four becomes a NaN or infinity pattern; half of those are signalling.
+            if (next() % 4 == 0) u = (u & 0x803fffffu) | 0x7f800000u | (next() % 2 ? 0x00400000u : 0u);
+            w[k] = u;
+        }
+    };
+    auto run = [&](const char* name, auto native, auto cpp) {
+        auto& c = open(name);
+        for (int i = 0; i < 3000; ++i) {
+            alignas(16) std::uint32_t src[kFixture10Words], d1[kFixture10Words], d2[kFixture10Words];
+            fill(src, kFixture10Words);
+            for (int k = 0; k < kFixture10Words; ++k) d1[k] = d2[k] = 0xcdcdcdcdu;
+            native(d1, src);
+            cpp(d2, src);
+            const int k = first_diff(reinterpret_cast<float*>(d1), reinterpret_cast<float*>(d2), kFixture10Words);
+            check_note(c, k < 0, "[%d] %08x / %08x", k, k < 0 ? 0u : d1[k], k < 0 ? 0u : d2[k]);
+        }
+    };
+    using Copy = void* (__fastcall*)(void*, int, const void*);
+    auto thiscall_copy = [](unsigned offset) {
+        return [offset](std::uint32_t* d, const std::uint32_t* s) { at<Copy>(offset)(d, 0, s); };
+    };
+    namespace s7 = bsp::cc13_seg7;
+    auto obj = [](std::uint32_t* p) { return reinterpret_cast<s7::Object>(p); };
+    auto cobj = [](const std::uint32_t* p) { return reinterpret_cast<s7::Object>(const_cast<std::uint32_t*>(p)); };
+    run("0047D250 record 54h copy", thiscall_copy(cc13_leaf_0047d250),
+        [&](std::uint32_t* d, const std::uint32_t* s) { s7::record54_copy_0047d250(obj(d), cobj(s)); });
+    run("0047F930 record 54h copy assign", thiscall_copy(cc13_leaf_0047f930),
+        [&](std::uint32_t* d, const std::uint32_t* s) { s7::record54_copy_assign_0047f930(obj(d), cobj(s)); });
+    run("0047D2E0 record 4Ch copy", thiscall_copy(cc13_leaf_0047d2e0),
+        [&](std::uint32_t* d, const std::uint32_t* s) { s7::record4c_copy_0047d2e0(obj(d), cobj(s)); });
+    run("0047F9C0 record 4Ch copy assign", thiscall_copy(cc13_leaf_0047f9c0),
+        [&](std::uint32_t* d, const std::uint32_t* s) { s7::record4c_copy_assign_0047f9c0(obj(d), cobj(s)); });
+    run("0047F0C0 record 40h copy", thiscall_copy(cc13_leaf_0047f0c0),
+        [&](std::uint32_t* d, const std::uint32_t* s) { s7::record40_copy_0047f0c0(obj(d), cobj(s)); });
+    run("00454970 shake key copy", thiscall_copy(cc13_leaf_00454970),
+        [&](std::uint32_t* d, const std::uint32_t* s) {
+            bsp::cc13_seg5::shake_key_copy_00454970(reinterpret_cast<std::uint8_t*>(d),
+                                                    reinterpret_cast<std::uint8_t*>(const_cast<std::uint32_t*>(s)));
+        });
+    run("007BAA80 plane state record copy", thiscall_copy(cc13_leaf_007baa80),
+        [&](std::uint32_t* d, const std::uint32_t* s) {
+            bsp::cc13_seg47::plane_state_record_copy_007baa80(bsp::cc13_seg47::raw(d), bsp::cc13_seg47::raw(const_cast<std::uint32_t*>(s)));
+        });
+    run("007BAAF0 plane control state copy", thiscall_copy(cc13_leaf_007baaf0),
+        [&](std::uint32_t* d, const std::uint32_t* s) {
+            bsp::cc13_seg47::plane_control_state_copy_007baaf0(bsp::cc13_seg47::raw(d), bsp::cc13_seg47::raw(const_cast<std::uint32_t*>(s)));
+        });
+    run("0080B890 turn path segment copy", thiscall_copy(cc13_leaf_0080b890),
+        [&](std::uint32_t* d, const std::uint32_t* s) {
+            bsp::cc13_seg49::turn_path_segment_copy_0080b890(bsp::ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(d)},
+                                                             bsp::ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(const_cast<std::uint32_t*>(s))});
+        });
+    run("00811D10 unit AI order copy", thiscall_copy(cc13_leaf_00811d10),
+        [&](std::uint32_t* d, const std::uint32_t* s) {
+            bsp::unit_ai_order_copy_image_00811d10(*reinterpret_cast<bsp::UnitAiOrderRecord*>(d),
+                                                   *reinterpret_cast<const bsp::UnitAiOrderRecord*>(s));
+        });
+    run("00BC7F00 water record 30h copy", thiscall_copy(cc13_leaf_00bc7f00),
+        [&](std::uint32_t* d, const std::uint32_t* s) { bsp::water_weather_cc13::w2_record30_copy_00bc7f00(d, s); });
+    {   // 00924280: ECX = the property record, whose +20h points at the 16 floats.
+        auto native = at<float* (__fastcall*)(void*, int, float*)>(cc13_leaf_00924280);
+        run("00924280 scene property copy 16 floats",
+            [&](std::uint32_t* d, const std::uint32_t* s) {
+                void* record[9] = {};
+                record[8] = const_cast<std::uint32_t*>(s);
+                native(record, 0, reinterpret_cast<float*>(d));
+            },
+            [&](std::uint32_t* d, const std::uint32_t* s) {
+                void* record[9] = {};
+                record[8] = const_cast<std::uint32_t*>(s);
+                bsp::entity_mission_seg60_argon::scene_property_copy_float16_00924280(record, reinterpret_cast<float*>(d));
+            });
+    }
+    {   // 00B8E750: ECX = the track; the key block is +18h..+2Ch.
+        auto native = at<void (__fastcall*)(const void*, int, float*)>(cc13_leaf_00b8e750);
+        run("00B8E750 track key block copy",
+            [&](std::uint32_t* d, const std::uint32_t* s) { native(s, 0, reinterpret_cast<float*>(d)); },
+            [&](std::uint32_t* d, const std::uint32_t* s) {
+                bsp::cc13_scene2::copy_track_key_block_00b8e750(reinterpret_cast<const float*>(s + 6), reinterpret_cast<float*>(d));
+            });
+    }
+    {   // The 44h-record ranges (__cdecl): three records.
+        using Range = std::uint32_t* (__cdecl*)(const std::uint32_t*, const std::uint32_t*, std::uint32_t*);
+        constexpr int n = 3 * 0x11;
+        run("00952DF0 copy 44h records",
+            [&](std::uint32_t* d, const std::uint32_t* s) { at<Range>(cc13_leaf_00952df0)(s, s + n, d); },
+            [&](std::uint32_t* d, const std::uint32_t* s) { bsp::cc13_seg62::copy_44_00952df0(s, s + n, d); });
+        run("00952F30 copy backward 44h records",
+            [&](std::uint32_t* d, const std::uint32_t* s) { at<Range>(cc13_leaf_00952f30)(s, s + n, d + n); },
+            [&](std::uint32_t* d, const std::uint32_t* s) { bsp::cc13_seg62::copy_backward_44_00952f30(s, s + n, d + n); });
+        using Fill = void (__cdecl*)(std::uint32_t*, std::uint32_t*, const std::uint32_t*);
+        run("00955090 fill 44h records",
+            [&](std::uint32_t* d, const std::uint32_t* s) { at<Fill>(cc13_leaf_00955090)(d, d + n, s); },
+            [&](std::uint32_t* d, const std::uint32_t* s) { bsp::cc13_seg62::fill_44_00955090(d, d + n, s); });
+    }
 }
 
 }  // namespace

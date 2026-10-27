@@ -578,18 +578,12 @@ void shape_group_assign_00c48050(void* shape, std::uint32_t value, Cc13Dyn1Calls
 
 // -------------------------------------------------------------------- transforms
 
-// A float copied through FLD DWORD / FSTP DWORD: a signalling NaN comes out quiet (bit 22
-// set); every other pattern, denormals included, is unchanged (cc13-fixture7).
-static std::uint32_t fld_fstp_word(std::uint32_t u) noexcept {
-    const bool snan = (u & 0x7f800000u) == 0x7f800000u && (u & 0x007fffffu) != 0 && (u & 0x00400000u) == 0;
-    return snan ? u | 0x00400000u : u;
-}
-
 void transform_expand_3x4_to_4x4_00c33650(const float src[12], float dst[16]) noexcept {
     // FLD/FSTP copies in the image's store order (00C33650..00C336B1); the 0 words are
-    // MOVSS stores of a zeroed XMM0.
+    // MOVSS stores of a zeroed XMM0. x87_fld_fstp_bits quiets a signalling NaN (bit 22 set)
+    // and leaves every other pattern, denormals included, unchanged (cc13-fixture7).
     const std::uint32_t* const s0 = reinterpret_cast<const std::uint32_t*>(src);
-    const auto s = [s0](int k) { return fld_fstp_word(s0[k]); };
+    const auto s = [s0](int k) { return cc13x87::x87_fld_fstp_bits(s0[k]); };
     auto* d = reinterpret_cast<std::uint32_t*>(dst);
     d[0] = s(0);
     d[1] = s(1);
@@ -611,7 +605,7 @@ void transform_expand_3x4_to_4x4_00c33650(const float src[12], float dst[16]) no
 
 void transform_from_4x4_00c336c0(float dst[12], const float src[16]) noexcept {
     const std::uint32_t* const s0 = reinterpret_cast<const std::uint32_t*>(src);
-    const auto s = [s0](int k) { return fld_fstp_word(s0[k]); };
+    const auto s = [s0](int k) { return cc13x87::x87_fld_fstp_bits(s0[k]); };
     auto* d = reinterpret_cast<std::uint32_t*>(dst);
     d[0] = s(0);
     d[1] = s(1);

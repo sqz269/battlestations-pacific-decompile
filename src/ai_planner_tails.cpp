@@ -3,6 +3,8 @@
 // for the address evidence behind every rule. Read-only analysis; the names are
 // hypotheses and nothing here is ABI-compatible.
 #include "bsp/ai_planner_tails.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_misc_cc13.hpp"
 
 #include <cmath>
 #include <cstddef>
@@ -73,11 +75,24 @@ float ai_tail_horizontal_length(const float v[3]) noexcept {
         return 0.0F;
     }
     // 009FFC1F-009FFC5F: x and z only, and exactly zero at or below the epsilon.
-    const double squared = static_cast<double>(v[0]) * v[0] + static_cast<double>(v[2]) * v[2];
-    if (squared <= kAiTailLengthEpsilon) {
-        return 0.0F;
+    float length = 0.0F;
+    if constexpr (kPc24AiPlannersCc13Bound) {
+        // 009FFC26 FMUL ST0 (z*z), 009FFC2A FMULP ST2 (x*x), 009FFC2C FADDP, each rounded,
+        // then 009FFC2E FSTP float. 009FFC3A FCOMI against the double 1e-10 with JBE (a NaN
+        // also gives 0) and 00BF7030 FSQRT on the stored float, rounded and stored.
+        using namespace cc13x87;
+        const float squared = static_cast<float>(x87_add24(x87_mul24(v[0], v[0]),
+                                                           x87_mul24(v[2], v[2])));
+        if (static_cast<double>(squared) > kAiTailLengthEpsilon) {
+            length = static_cast<float>(x87_sqrt24(squared));
+        }
+    } else {
+        const double squared = static_cast<double>(v[0]) * v[0] + static_cast<double>(v[2]) * v[2];
+        if (!(squared <= kAiTailLengthEpsilon)) {
+            length = static_cast<float>(std::sqrt(squared));
+        }
     }
-    return static_cast<float>(std::sqrt(squared));
+    return length;
 }
 
 int ai_tail_enemy_team(int own_team) noexcept {

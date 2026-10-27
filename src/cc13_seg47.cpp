@@ -1288,11 +1288,15 @@ namespace {
 // NaN would be quieted; MOVZX/MOV per byte): +0..+20h floats, +24h..+26h
 // bytes, +28h..+38h floats. +27h is not copied.
 void copy_state_record(Raw destination, Raw source) {
-    for (std::size_t off = 0; off <= 0x20; off += 4) destination.at<float>(off) = source.at<float>(off);
+    // The FLD/FSTP copies are modelled bit for bit (cc13-fixture10).
+    const auto fld_fstp = [&](std::size_t off) {
+        destination.at<std::uint32_t>(off) = cc13x87::x87_fld_fstp_bits(source.at<std::uint32_t>(off));
+    };
+    for (std::size_t off = 0; off <= 0x20; off += 4) fld_fstp(off);
     destination.at<std::uint8_t>(0x24) = source.at<std::uint8_t>(0x24);
     destination.at<std::uint8_t>(0x25) = source.at<std::uint8_t>(0x25);
     destination.at<std::uint8_t>(0x26) = source.at<std::uint8_t>(0x26);
-    for (std::size_t off = 0x28; off <= 0x38; off += 4) destination.at<float>(off) = source.at<float>(off);
+    for (std::size_t off = 0x28; off <= 0x38; off += 4) fld_fstp(off);
 }
 }  // namespace
 

@@ -1,17 +1,29 @@
 #include "bsp/world_ocean.hpp"
 #include "bsp/point_effect_advance.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_flightrender_cc13.hpp"
+
 #include <cmath>
 
 namespace bsp {
+namespace pc24 = cc13x87;
 OceanVec3 cross_004f9b30(const OceanVec3& a, const OceanVec3& b) noexcept {
     // out.x = a[1]*b[2] - a[2]*b[1]
     // out.y = b[0]*a[2] - a[0]*b[2]
     // out.z = b[1]*a[0] - a[1]*b[0]
     OceanVec3 out;
-    out.x = a.y * b.z - a.z * b.y;
-    out.y = b.x * a.z - a.x * b.z;
-    out.z = b.y * a.x - a.y * b.x;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-2: each product rounded at PC24 before its difference, the
+        // difference rounded, then FSTP float (004F9B54..004F9BA0).
+        out.x = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(a.y, b.z), pc24::x87_mul24(a.z, b.y)));
+        out.y = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(a.z, b.x), pc24::x87_mul24(a.x, b.z)));
+        out.z = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(a.x, b.y), pc24::x87_mul24(a.y, b.x)));
+    } else {
+        out.x = a.y * b.z - a.z * b.y;
+        out.y = b.x * a.z - a.x * b.z;
+        out.z = b.y * a.x - a.y * b.x;
+    }
     return out;
 }
 
@@ -20,11 +32,22 @@ float length_00419440(const OceanVec3& v) noexcept {
     // zz are rounded individually. The partial sum xx+yy stays on the x87 stack
     // unrounded and only the total is stored, which the double below models.
     // The square root is the CRT helper at 00BF7030 applied to that float.
-    const float xx = v.x * v.x;
-    const float yy = v.y * v.y;
-    const float zz = v.z * v.z;
-    const float sum = static_cast<float>((static_cast<double>(xx) + yy) + zz);
-    return static_cast<float>(std::sqrt(static_cast<double>(sum)));
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-2: each square rounded at PC24 and stored to float, the
+        // partial sum rounded but not stored (0041947D), the total rounded and
+        // stored (00419485/00419489).
+        const float xx = static_cast<float>(pc24::x87_mul24(v.x, v.x));
+        const float yy = static_cast<float>(pc24::x87_mul24(v.y, v.y));
+        const float zz = static_cast<float>(pc24::x87_mul24(v.z, v.z));
+        const float sum = static_cast<float>(pc24::x87_add24(pc24::x87_add24(xx, yy), zz));
+        return static_cast<float>(std::sqrt(static_cast<double>(sum)));
+    } else {
+        const float xx = v.x * v.x;
+        const float yy = v.y * v.y;
+        const float zz = v.z * v.z;
+        const float sum = static_cast<float>((static_cast<double>(xx) + yy) + zz);
+        return static_cast<float>(std::sqrt(static_cast<double>(sum)));
+    }
 }
 
 OceanVec3 normalize_00419510(const OceanVec3& v) noexcept {

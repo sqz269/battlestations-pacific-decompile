@@ -1,4 +1,6 @@
 #include "bsp/band_009f_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <cstring>
 
@@ -23,7 +25,14 @@ namespace {
 // two floats are exact in double, so the double sum rounded to float stands in
 // for the extended sum (a double-rounding difference is possible in principle).
 float horizontal_distance_squared(float dx, float dz) noexcept {
-    return static_cast<float>(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 00A2C191 FMUL st0, 00A2C195 FMULP, 00A2C197 FADDP, 00A2C199 FSTP: each op
+        // rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        return static_cast<float>(x87_add24(x87_mul24(dz, dz), x87_mul24(dx, dx)));
+    } else {
+        return static_cast<float>(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
+    }
 }
 
 }  // namespace
@@ -34,8 +43,17 @@ bool ai_point_outside_sphere_00a1a660(const AiSphereFilter& filter, const float 
     const float dy = point[1] - filter.centre[1];
     const float dz = point[2] - filter.centre[2];
     // 00A1A683..00A1A69E: (dx*dx + dy*dy) + dz*dz, stored as a float.
-    const float d = static_cast<float>(static_cast<double>(dx) * dx + static_cast<double>(dy) * dy +
-                                       static_cast<double>(dz) * dz);
+    float d;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 00A1A690 / 00A1A694 FMULP, 00A1A698 FADDP, 00A1A69A FMUL st0, 00A1A69C
+        // FADDP, 00A1A69E FSTP: each op rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        d = static_cast<float>(x87_add24(x87_add24(x87_mul24(dx, dx), x87_mul24(dy, dy)),
+                                         x87_mul24(dz, dz)));
+    } else {
+        d = static_cast<float>(static_cast<double>(dx) * dx + static_cast<double>(dy) * dy +
+                               static_cast<double>(dz) * dz);
+    }
     // 00A1A6A9 FCOMI st0 = d, st1 = r^2; JBE answers 0, so equal or unordered is inside.
     return d > filter.radius_squared;
 }
@@ -133,7 +151,15 @@ AiNearestGroup ai_nearest_group_00a1c960(const std::vector<AiGroupLeader>& leade
         // dx*dx + dz*dz stored as a float.
         const float dx = point[0] - g.position[0];
         const float dz = point[2] - g.position[2];
-        const float d = static_cast<float>(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+        float d;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 00A1C9F2 FMUL st0, 00A1C9F6 FMULP, 00A1C9F8 FADDP, 00A1C9FA FSTP: each
+            // op rounds to 24 bits on the main thread.
+            using namespace cc13x87;
+            d = static_cast<float>(x87_add24(x87_mul24(dx, dx), x87_mul24(dz, dz)));
+        } else {
+            d = static_cast<float>(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+        }
         // 00A1CA06 FCOMI (best, d) / JA, then 00A1CA0F COMISS 0, best / JBE:
         // take when best > d or best < 0; unordered takes neither arm.
         if (best.distance_squared > d || best.distance_squared < 0.0f) {

@@ -3,6 +3,9 @@
 #include <cmath>
 #include <vector>
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_misc_cc13.hpp"
+
 namespace bsp {
 
 std::uint32_t ai_close_attack_order_class(bool member_is_ship_base) noexcept {
@@ -48,8 +51,17 @@ float ai_close_attack_score(const AiCloseAttackScoreInputs& in) noexcept {
     // 00A14990-00A1499C multiplies the three.
     float score = ai_close_attack_range_factor(in.distance, in.near_dist, in.far_dist)
                 * in.target_weight;
-    score *= in.in_target_group ? in.target_group_member_mul : 1.0f;
-    score *= in.is_existing_target ? in.existing_target_mul : 1.0f;
+    const float group = in.in_target_group ? in.target_group_member_mul : 1.0f;
+    const float sticky = in.is_existing_target ? in.existing_target_mul : 1.0f;
+    if constexpr (kPc24AiPlannersCc13Bound) {
+        // 00A14990 FLD [ESP+5Ch] (existing-target multiplier), FMUL [ESP+14h] (group
+        // multiplier), FMUL [ESP+28h] (range * weight): the multipliers pair first.
+        using namespace cc13x87;
+        score = static_cast<float>(x87_mul24(x87_mul24(sticky, group), score));
+    } else {
+        score *= group;
+        score *= sticky;
+    }
     return score;
 }
 
@@ -65,6 +77,15 @@ float planar_distance(const float a[3], const float b[3]) noexcept {
     const float dx = a[0] - b[0];
     const float dz = a[2] - b[2];
     return std::sqrt(dx * dx + dz * dz);
+}
+
+// The image's inline planar test: float differences (FSUB m32, FSTP m32), then
+// dz*dz, dx*dx (FMUL ST0 / FMULP ST2), FADDP, FSTP m32, each op at PC24.
+float planar_squared_pc24(const float a[3], const float b[3]) noexcept {
+    using namespace cc13x87;
+    const float dx = static_cast<float>(x87_sub24(a[0], b[0]));
+    const float dz = static_cast<float>(x87_sub24(a[2], b[2]));
+    return static_cast<float>(x87_add24(x87_mul24(dz, dz), x87_mul24(dx, dx)));
 }
 
 }  // namespace
@@ -111,10 +132,15 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
             float target_position[3] = {0.0f, 0.0f, 0.0f};
             if (host.close_candidate_position(existing, target_position)) {
                 // 00A145CF-00A14604: float differences, the sum stored as a float.
-                const float dx = target_position[0] - centre[0];
-                const float dz = target_position[2] - centre[2];
-                const float d2 = static_cast<float>(static_cast<double>(dz) * dz +
-                                                    static_cast<double>(dx) * dx);
+                float d2;
+                if constexpr (kPc24AiPlannersCc13Bound) {
+                    d2 = planar_squared_pc24(target_position, centre);
+                } else {
+                    const float dx = target_position[0] - centre[0];
+                    const float dz = target_position[2] - centre[2];
+                    d2 = static_cast<float>(static_cast<double>(dz) * dz +
+                                            static_cast<double>(dx) * dx);
+                }
                 if (!(d2 < collect_squared) &&                                   // 00A14612 JC
                     static_cast<double>(collect_squared) * 2.0 > d2) {          // 00A1461C JBE
                     appended.push_back(existing);
@@ -138,8 +164,15 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
                 if (!host.close_candidate_position(candidate, candidate_position)) continue;
                 // 00A13BE6's collection walk keeps only what is inside the squared
                 // collect radius of the centre the caller passed.
-                const float from_centre = planar_distance(centre, candidate_position);
-                if (from_centre * from_centre > collect_squared) continue;
+                if constexpr (kPc24AiPlannersCc13Bound) {
+                    // 00A13C48-00A13C81 (and the four later list copies): no root; the
+                    // squared distance against collect^2, JBE skips unless collect^2 > d2.
+                    const float d2 = planar_squared_pc24(candidate_position, centre);
+                    if (!(collect_squared > d2)) continue;
+                } else {
+                    const float from_centre = planar_distance(centre, candidate_position);
+                    if (from_centre * from_centre > collect_squared) continue;
+                }
             } else if (!host.close_candidate_position(candidate, candidate_position)) {
                 // An appended entry meets only the scoring loop's own tests.
                 continue;
@@ -152,7 +185,14 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
             if (!ai_close_attack_candidate_admitted(in.target_weight, in.in_target_group)) {
                 continue;
             }
-            in.distance = planar_distance(member_position, candidate_position);
+            if constexpr (kPc24AiPlannersCc13Bound) {
+                // 00A14891-00A148F9: the root (00BF7030 FSQRT) only above 1e-10 [00CE3820];
+                // otherwise (and for a NaN) 0.
+                const float d2 = planar_squared_pc24(candidate_position, member_position);
+                in.distance = d2 > 1e-10 ? static_cast<float>(cc13x87::x87_sqrt24(d2)) : 0.0f;
+            } else {
+                in.distance = planar_distance(member_position, candidate_position);
+            }
             in.near_dist = near_dist;
             in.far_dist = far_dist;
             in.is_existing_target = existing != nullptr && existing == candidate;
@@ -177,18 +217,42 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
             }
         } else if (kCloseAttackFallbackOffsetBound) {
             // 00A14A78-00A14D4C (docs/PLANNER_GROUP_COMPOSITION.md).
-            double r = static_cast<double>(member_count) * kCloseFallbackRadiusPerMember;
-            if (kCloseFallbackRadiusFloor > r) r = kCloseFallbackRadiusFloor;
-            const double dx = static_cast<double>(member_position[0]) - centre[0];
-            const double dz = static_cast<double>(member_position[2]) - centre[2];
-            const float d2 = static_cast<float>(dx * dx + dz * dz);   // 00A14BD3
-            const float r2 = static_cast<float>(r * r);               // 00A14AC2
+            float d2;
+            float r2;
+            if constexpr (kPc24AiPlannersCc13Bound) {
+                // 00A14A7F FILD, FMUL [00D22C90], FSTP m32; the 400 floor; 00A14AC0
+                // FMUL ST0, FSTP m32; 00A14B9E-00A14BD3 the planar chain.
+                using namespace cc13x87;
+                float r = static_cast<float>(
+                    x87_mul24(static_cast<double>(member_count), kCloseFallbackRadiusPerMember));
+                if (kCloseFallbackRadiusFloor > r) r = static_cast<float>(kCloseFallbackRadiusFloor);
+                r2 = static_cast<float>(x87_mul24(r, r));
+                d2 = planar_squared_pc24(member_position, centre);
+            } else {
+                double r = static_cast<double>(member_count) * kCloseFallbackRadiusPerMember;
+                if (kCloseFallbackRadiusFloor > r) r = kCloseFallbackRadiusFloor;
+                const double dx = static_cast<double>(member_position[0]) - centre[0];
+                const double dz = static_cast<double>(member_position[2]) - centre[2];
+                d2 = static_cast<float>(dx * dx + dz * dz);   // 00A14BD3
+                r2 = static_cast<float>(r * r);               // 00A14AC2
+            }
             if (d2 > r2) {                                            // 00A14BE3
                 float point[3];
                 for (int k = 0; k < 3; ++k) {
-                    point[k] = static_cast<float>(
-                        static_cast<double>(member_position[k]) * kCloseFallbackOwnWeight +
-                        static_cast<double>(centre[k]) * kCloseFallbackCentreWeight);
+                    if constexpr (kPc24AiPlannersCc13Bound) {
+                        // 00A14CCE-00A14D41: own*0.4 and centre*0.6 each stored as a
+                        // float, then FLD centre term, FADD own term, FSTP m32.
+                        using namespace cc13x87;
+                        const float own = static_cast<float>(
+                            x87_mul24(member_position[k], kCloseFallbackOwnWeight));
+                        const float mid = static_cast<float>(
+                            x87_mul24(centre[k], kCloseFallbackCentreWeight));
+                        point[k] = static_cast<float>(x87_add24(mid, own));
+                    } else {
+                        point[k] = static_cast<float>(
+                            static_cast<double>(member_position[k]) * kCloseFallbackOwnWeight +
+                            static_cast<double>(centre[k]) * kCloseFallbackCentreWeight);
+                    }
                 }
                 if (host.close_issue_moveto(member, point)) ++result.fallback_movetos;
             }

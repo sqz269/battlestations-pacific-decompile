@@ -8,6 +8,8 @@
 // listing reads and call a host for every native call site.
 
 #include "bsp/ship_ai_goal_vector.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/ship_ai_seg67_switches_cc13.hpp" // kShipAiNavigationNanArmsCc13Bound
 #include "bsp/ship_ai_switch_reach.hpp"
 
@@ -159,7 +161,16 @@ ShipAiGoalRefreshResult ship_ai_refresh_goal_vector_009f1420(ShipAiGoalVectorSta
         const double gx = static_cast<double>(state.goal_x_0b2c);
         const double gy = static_cast<double>(state.goal_y_0b30);
         const double gz = static_cast<double>(state.goal_z_0b34);
-        const float length_sq = round_to_float((gx * gx + gy * gy) + gz * gz);
+        float length_sq = 0.0f;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // pc24w1-sweep2-6: 009F1546/009F154A FMULP, 009F154E FADDP, 009F1550
+            // FMUL and 009F1552 FADDP each round at PC24.
+            length_sq = round_to_float(cc13x87::x87_add24(
+                cc13x87::x87_add24(cc13x87::x87_mul24(gx, gx), cc13x87::x87_mul24(gy, gy)),
+                cc13x87::x87_mul24(gz, gz)));
+        } else {
+            length_sq = round_to_float((gx * gx + gy * gy) + gz * gz);
+        }
         refresh = !(kShipAiGoalKeepLengthSq <= length_sq);
     }
 
@@ -183,8 +194,16 @@ float ship_ai_goal_planar_distance_009db820(float goal_x, float goal_z,
                                             float pose_x, float pose_z) {
     const float dx = pose_x - goal_x;
     const float dz = pose_z - goal_z;
-    const float distance_sq =
-        round_to_float(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    float distance_sq = 0.0f;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // pc24w1-sweep2-6: 009DB88D FMUL, 009DB891 FMULP and 009DB893 FADDP each
+        // round at PC24.
+        distance_sq = round_to_float(
+            cc13x87::x87_add24(cc13x87::x87_mul24(dx, dx), cc13x87::x87_mul24(dz, dz)));
+    } else {
+        distance_sq =
+            round_to_float(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    }
     if (!(static_cast<double>(distance_sq) > kShipAiGoalDistanceEpsilonSq)) {
         return 0.0f;  // 009DB8BC
     }

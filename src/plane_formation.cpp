@@ -4,6 +4,14 @@
 
 #include <array>
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
+
+// kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-7): shapes 2, 3 and 4 of
+// plane_formation_station_007f23a0 (007F25BD-007F2836). The same image routine
+// is also copied as place_wing_member_on_station_007f23a0 in game_hosts_units.cpp,
+// narrowed by pc24w1-sweep3-5, not here.
+
 namespace bsp {
 
 namespace {
@@ -144,18 +152,70 @@ PlaneFormationStation plane_formation_station_007f23a0(
             // 007F25BD-007F26A8. z over max(1, morale) (007F25DF 00415550);
             // x times max(2 morale - 1, 0.8) (00CE74F8); y times
             // clamp(2.2 - 1.2 morale, 0, 1) (00D05AC8, 00CEC160, doubles).
-            const double m1 = static_cast<double>(1.0f < m ? m : 1.0f);
-            z = static_cast<float>((1.0 / m1) * (pd * dz));                       // 007F260C
-            const float wide = static_cast<float>((md - 1.0) * 2.0 + 1.0);         // 007F2620
-            x = static_cast<float>(pd * spacing_x * (wide > 0.8f ? wide : 0.8f));  // 007F2633
-            y = static_cast<float>(pd * dy * clamp01(static_cast<float>(
-                    2.2000000476837158 - md * 1.2000000476837158)));                // 007F268A
+            if constexpr (kPc24PlaneTasksCc13Bound) {
+                // 007F25E4-007F260C: DE F2 FDIVRP 1/m1, FMUL pair*dz, DE CA FMULP;
+                // 007F2616-007F2620: FSUB m - 1, FADD ST0,ST0, DE C1 FADDP + 1;
+                // 007F2629-007F2633 and 007F2637-007F268A likewise, each op PC24.
+                const float m1 = 1.0f < m ? m : 1.0f;
+                z = static_cast<float>(cc13x87::x87_mul24(cc13x87::x87_div24(1.0, m1),
+                                                          cc13x87::x87_mul24(pair, dz)));
+                const double s = cc13x87::x87_sub24(m, 1.0);
+                const float wide = static_cast<float>(
+                    cc13x87::x87_add24(cc13x87::x87_add24(s, s), 1.0));
+                x = static_cast<float>(cc13x87::x87_mul24(cc13x87::x87_mul24(pair, spacing_x),
+                                                          wide > 0.8f ? wide : 0.8f));
+                y = static_cast<float>(cc13x87::x87_mul24(
+                    cc13x87::x87_mul24(pair, dy),
+                    clamp01(static_cast<float>(cc13x87::x87_sub24(
+                        2.2000000476837158, cc13x87::x87_mul24(m, 1.2000000476837158))))));
+            } else {
+                const double m1 = static_cast<double>(1.0f < m ? m : 1.0f);
+                z = static_cast<float>((1.0 / m1) * (pd * dz));                       // 007F260C
+                const float wide = static_cast<float>((md - 1.0) * 2.0 + 1.0);         // 007F2620
+                x = static_cast<float>(pd * spacing_x * (wide > 0.8f ? wide : 0.8f));  // 007F2633
+                y = static_cast<float>(pd * dy * clamp01(static_cast<float>(
+                        2.2000000476837158 - md * 1.2000000476837158)));                // 007F268A
+            }
             keep_yz = 0.20000000298023224 > md;
             break;
         }
         case 3:
             // 007F2739-007F2836. y is shape 1's. The rest depends on the tuning
             // singleton's +3E8h byte (007F2744), the flag the tail's z mirror reads.
+            if constexpr (kPc24PlaneTasksCc13Bound) {
+                // 007F2828-007F2832: FMUL dy, FMUL morale on the pair left on the
+                // stack, each PC24.
+                y = static_cast<float>(
+                    cc13x87::x87_mul24(cc13x87::x87_mul24(pair, dy), m));
+                if (in.symmetrical_position) {
+                    // 007F2755-007F275D: DE E1 FSUBRP 1 - m. 007F2772-007F27A8:
+                    // a = (idx*sx)*0.15 and b = sx*pair stored to floats, then
+                    // a*rest + b*m (DE C1 FADDP). 007F27AC-007F27DA: c = (idx*dz)*0.8
+                    // and d = dz*pair stored, then c*rest + d*m (DE C2 FADDP ST2).
+                    const float idx = static_cast<float>(in.formation_index);
+                    const double rest = cc13x87::x87_sub24(1.0, m);
+                    const float a = static_cast<float>(cc13x87::x87_mul24(
+                        cc13x87::x87_mul24(idx, spacing_x), 0.15000000596046448));
+                    const float b = static_cast<float>(static_cast<double>(spacing_x) * pd);
+                    x = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(a, rest),
+                                                              cc13x87::x87_mul24(b, m)));
+                    const float c = static_cast<float>(cc13x87::x87_mul24(
+                        cc13x87::x87_mul24(idx, dz), 0.800000011920929));
+                    const float d = static_cast<float>(static_cast<double>(dz) * pd);
+                    z = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(d, m),
+                                                              cc13x87::x87_mul24(c, rest)));
+                } else {
+                    // 007F27EA-007F280A: (0.7 m (D8 C9) + 0.3) * (pair*sx);
+                    // 007F280E-007F2822: (0.25 m + 0.75) * (pair*dz), each op PC24.
+                    x = static_cast<float>(cc13x87::x87_mul24(
+                        cc13x87::x87_add24(cc13x87::x87_mul24(0.699999988079071, m),
+                                           0.30000001192092896),
+                        cc13x87::x87_mul24(pair, spacing_x)));
+                    z = static_cast<float>(cc13x87::x87_mul24(
+                        cc13x87::x87_add24(cc13x87::x87_mul24(m, 0.25), 0.75),
+                        cc13x87::x87_mul24(pair, dz)));
+                }
+            } else {
             y = static_cast<float>(pd * dy * md);                                  // 007F2832
             if (in.symmetrical_position) {
                 // 007F2751-007F27DC: blend, by morale, the pair spacing with one
@@ -177,14 +237,34 @@ PlaneFormationStation plane_formation_station_007f23a0(
                                        (0.699999988079071 * md + 0.30000001192092896));
                 z = static_cast<float>(pd * dz * (md * 0.25 + 0.75));
             }
+            }
             break;
         case 4: {
             // 007F26AD-007F2734, then shape 2's y clamp and flag (007F2647-).
+            if constexpr (kPc24PlaneTasksCc13Bound) {
+                // 007F26D5-007F26F5: DC C9 FMUL m*0.8, FADD 0.2, times pair*dz;
+                // 007F26F9-007F2703: DC EA FSUB m - 1, DE C9 FMULP 0.8*, DE C1 FADDP
+                // + 1; then 007F270C-007F2716 and 007F2724-007F272E with shape 2's
+                // clamp. Each op PC24.
+                z = static_cast<float>(cc13x87::x87_mul24(
+                    cc13x87::x87_add24(cc13x87::x87_mul24(m, 0.800000011920929),
+                                       0.20000000298023224),
+                    cc13x87::x87_mul24(pair, dz)));
+                const float wide = static_cast<float>(cc13x87::x87_add24(
+                    cc13x87::x87_mul24(0.800000011920929, cc13x87::x87_sub24(m, 1.0)), 1.0));
+                x = static_cast<float>(cc13x87::x87_mul24(cc13x87::x87_mul24(pair, spacing_x),
+                                                          wide > 0.4f ? wide : 0.4f));
+                y = static_cast<float>(cc13x87::x87_mul24(
+                    cc13x87::x87_mul24(pair, dy),
+                    clamp01(static_cast<float>(cc13x87::x87_sub24(
+                        2.4000000953674316, cc13x87::x87_mul24(m, 1.399999976158142))))));
+            } else {
             z = static_cast<float>(pd * dz * (md * 0.800000011920929 + 0.20000000298023224));
             const float wide = static_cast<float>((md - 1.0) * 0.800000011920929 + 1.0);
             x = static_cast<float>(pd * spacing_x * (wide > 0.4f ? wide : 0.4f));  // 00CE7804
             y = static_cast<float>(pd * dy * clamp01(static_cast<float>(
                     2.4000000953674316 - md * 1.399999976158142)));                 // 00D08B20, 00D045F0
+            }
             keep_yz = 0.20000000298023224 > md;
             break;
         }

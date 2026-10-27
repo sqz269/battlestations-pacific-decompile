@@ -1,5 +1,7 @@
 #include "bsp/movie_decoder.hpp"
 #include "bsp/unit_motion.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_misc_cc13.hpp"
 
 #include <cstddef>
 #include <cmath>
@@ -139,8 +141,21 @@ void ensure_movie_decoder_frame_seconds_00a4cc10(MovieDecoderState& state, Movie
         BinkRealtime realtime;
         host.bink().get_realtime(state.handle, &realtime, 1);
         // Native FILD unsigned fixup and x87 reciprocal/multiply, one final float store.
-        state.frame_seconds = static_cast<float>(static_cast<double>(realtime.frame_rate_divisor)
-            * (1.0 / static_cast<double>(realtime.frame_rate)));
+        if constexpr (kPc24MovieCc13Bound) {
+            // 00A4CC39 FILD rate (+2^32 fixup FADD when negative), FLD1, 00A4CC53
+            // FDIVRP = 1/rate, FILD divisor (same fixup), 00A4CC61 FMULP, each at PC24.
+            using namespace cc13x87;
+            const auto load_unsigned = [](std::uint32_t v) noexcept {
+                const double s = static_cast<double>(static_cast<std::int32_t>(v));
+                return s < 0.0 ? x87_add24(s, 4294967296.0) : s;
+            };
+            state.frame_seconds = static_cast<float>(x87_mul24(
+                x87_div24(1.0, load_unsigned(realtime.frame_rate)),
+                load_unsigned(realtime.frame_rate_divisor)));
+        } else {
+            state.frame_seconds = static_cast<float>(static_cast<double>(realtime.frame_rate_divisor)
+                * (1.0 / static_cast<double>(realtime.frame_rate)));
+        }
     }
 }
 

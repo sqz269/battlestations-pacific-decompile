@@ -11,9 +11,12 @@
 // noted in the doc's Uncertainties section.
 
 #include "bsp/ship_ai_attackmove_substates.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
 
 #include <cmath>
+#include <cstring>
 
 namespace bsp {
 
@@ -41,6 +44,43 @@ float heading_from_bearing(float bearing) {
     return h;
 }
 
+// cc13-p5: one slot's bearing and heading direction, per x87 operation at the
+// main thread's 24-bit precision (009E5680..009E5730).
+struct RingSlotAngles {
+    float bearing;
+    float cos_h;
+    float sin_h;
+};
+
+RingSlotAngles ring_slot_angles_pc24(int index) {
+    using namespace cc13x87;
+    // 009E5688 FILD, 009E5698 FDIV 60.0, 009E569E FMUL 2*pi: each rounds to 24 bits.
+    const float spoke = static_cast<float>(x87_mul24(
+        x87_div24(static_cast<double>(index), kAttackMoveRingDivisor), kAttackMoveRingFullTurn));
+    // 009E56AA _CIfmod (FPREM, exact), then the float stores at 009E56AF / 009E56B7.
+    float bearing = static_cast<float>(std::fmod(static_cast<double>(spoke), kAttackMoveRingFullTurn));
+    // 009E56BF..009E56E5: a float plus or minus the widened float 2*pi is exact in
+    // double, so rounding the double once is the 24-bit FADD / FSUB.
+    bearing = wrap_once_to_half_turn(bearing);
+    // 009E56ED FSUBR pi/2, stored at 009E56FE; exact in double for the same reason.
+    float h = static_cast<float>(kAttackMoveRingQuarterTurn - static_cast<double>(bearing));
+    if (0.0f > h) { // 009E5706 FLDZ / FCOMIP / JBE: an unordered h is left alone
+        h = static_cast<float>(static_cast<double>(h) + kAttackMoveRingFullTurn); // 009E570C
+    }
+    // 009E571E FCOS and 009E572E FSIN ignore precision control. Here the double
+    // cos / sin is rounded to float: last-ulp equal to FCOS / FSIN except rare
+    // double-rounding ties.
+    return {bearing, static_cast<float>(x87_cos(h)), static_cast<float>(x87_sin(h))};
+}
+
+void put_u32(std::uint8_t* base, std::size_t offset, std::uint32_t value) {
+    std::memcpy(base + offset, &value, sizeof(value));
+}
+
+void put_f32(std::uint8_t* base, std::size_t offset, float value) {
+    std::memcpy(base + offset, &value, sizeof(value));
+}
+
 } // namespace
 
 // ---------------------------------------------------------------------------
@@ -52,9 +92,15 @@ bool ship_ai_attackmove_altitude_gate_00852860(float world_y, float ceiling_a,
     // 00852884 FDIV double 3.0, 0085288A FXCH, 0085288C FCOMIP ST0,ST1 with
     // ST0 = world_y. The JBE at 00852890 is the TRUE side once the
     // 00852892..008528AC logical NOT is applied.
-    const double limit =
-        (static_cast<double>(ceiling_a) + static_cast<double>(ceiling_b)) /
-        kAttackMoveAltitudeGateDivisor;
+    double limit;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // The FADD and FDIV each round to 24 bits on the main thread; no store.
+        using namespace cc13x87;
+        limit = x87_div24(x87_add24(ceiling_a, ceiling_b), kAttackMoveAltitudeGateDivisor);
+    } else {
+        limit = (static_cast<double>(ceiling_a) + static_cast<double>(ceiling_b)) /
+                kAttackMoveAltitudeGateDivisor;
+    }
     return !(static_cast<double>(world_y) > limit);
 }
 
@@ -107,19 +153,27 @@ ShipAiAttackMoveRingSlot ship_ai_attackmove_ring_slot_009e5530(int index,
     slot.unit_00 = unit;     // 009E5692
     slot.nested_04 = nested; // 009E5695
 
-    // 009E5680..009E56AA. The product is stored to a float slot at 009E56A0
-    // before the fmod, so the rounding happens there and not at the end.
-    const float spoke = static_cast<float>(
-        (static_cast<double>(index) / kAttackMoveRingDivisor) * kAttackMoveRingFullTurn);
-    float bearing = static_cast<float>(
-        std::fmod(static_cast<double>(spoke), kAttackMoveRingFullTurn));
-    bearing = wrap_once_to_half_turn(bearing);
-    slot.angle_08 = bearing; // 009E56F9
+    if constexpr (kAttackMoveRingPc24Cc13Bound) {
+        const RingSlotAngles angles = ring_slot_angles_pc24(index);
+        slot.angle_08 = angles.bearing; // 009E56F9
+        slot.dir_x_0c = angles.cos_h;   // 009E571E, 009E5734
+        slot.dir_y_10 = 0.0f;           // 009E573C
+        slot.dir_z_14 = angles.sin_h;   // 009E572E, 009E574A
+    } else {
+        // 009E5680..009E56AA. The product is stored to a float slot at 009E56A0
+        // before the fmod, so the rounding happens there and not at the end.
+        const float spoke = static_cast<float>(
+            (static_cast<double>(index) / kAttackMoveRingDivisor) * kAttackMoveRingFullTurn);
+        float bearing = static_cast<float>(
+            std::fmod(static_cast<double>(spoke), kAttackMoveRingFullTurn));
+        bearing = wrap_once_to_half_turn(bearing);
+        slot.angle_08 = bearing; // 009E56F9
 
-    const float heading = heading_from_bearing(bearing);
-    slot.dir_x_0c = std::cos(heading); // 009E571E, 009E5734
-    slot.dir_y_10 = 0.0f;              // 009E573C
-    slot.dir_z_14 = std::sin(heading); // 009E572E, 009E574A
+        const float heading = heading_from_bearing(bearing);
+        slot.dir_x_0c = std::cos(heading); // 009E571E, 009E5734
+        slot.dir_y_10 = 0.0f;              // 009E573C
+        slot.dir_z_14 = std::sin(heading); // 009E572E, 009E574A
+    }
 
     slot.reset_44 = kAttackMoveRingScoreReset; // 009E55B1
     // 009E55A1's U(0, 2.0) draw (00CE3958) is taken by the caller, which overwrites
@@ -129,15 +183,89 @@ ShipAiAttackMoveRingSlot ship_ai_attackmove_ring_slot_009e5530(int index,
     return slot;
 }
 
+std::uint8_t* ship_ai_attackmove_ring_construct_whole_009e5530(
+    std::uint8_t* nested, std::uint8_t* owner, ShipAiAttackMoveRingConstructHost& host) {
+    constexpr float kMinusOne = -1.0f;    // 00D7A260
+    constexpr float kSpeedSeed = 100.0f;  // 00CE3D08
+    put_u32(nested, 0x00, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(owner))); // 009E5540
+
+    // Pass one, 009E5550..009E55C1: counter 3Bh with SUB 1 / JNS, so 60 records.
+    for (int i = 0; i < kAttackMoveRingSlotCount; ++i) {
+        std::uint8_t* const record = nested + 4 + kAttackMoveRingSlotStride * static_cast<std::uint32_t>(i);
+        put_u32(record, 0x00, 0);   // 009E5559
+        put_f32(record, 0x2c, 0.0f); // 009E5563
+        put_f32(record, 0x28, 0.0f); // 009E556A
+        put_f32(record, 0x24, 0.0f); // 009E556E
+        put_f32(record, 0x20, 0.0f); // 009E5576
+        put_f32(record, 0x1c, 0.0f); // 009E557B
+        put_f32(record, 0x18, 0.0f); // 009E5580
+        put_f32(record, 0x3c, 0.0f); // 009E558A
+        put_f32(record, 0x30, 0.0f); // 009E558F
+        put_f32(record, 0x34, 0.0f); // 009E5594
+        put_f32(record, 0x38, 0.0f); // 009E5599
+        record[0x40] = 0;            // 009E559E
+        put_f32(record, 0x48, host.random_uniform_00bd2f10(1, 0.0f, kAttackMoveRingJitterHigh)); // 009E55A1/009E55A6
+        put_f32(record, 0x44, kAttackMoveRingScoreReset); // 009E55B1
+    }
+
+    host.range_curve_clear_00954940(nested + 0x12c0); // 009E55C9
+    host.range_curve_clear_00954940(nested + 0x13b0); // 009E55D4
+    const std::uint32_t head = host.traffic_list_head_node_009df8f0(nested + 0x14a0); // 009E55E1
+    put_u32(nested, 0x14a4, head);   // 009E55F1
+    put_u32(nested, 0x14a8, 0);      // 009E55F4
+
+    // The scalar seeds, in listing order 009E55F7..009E566F.
+    put_f32(nested, 0x11d8, 0.0f);
+    put_f32(nested, 0x1218, 0.0f);
+    put_f32(nested, 0x1214, 0.0f);
+    put_f32(nested, 0x1210, 0.0f);
+    put_u32(nested, 0x11e8, 0);
+    put_f32(nested, 0x121c, kMinusOne);
+    nested[0x11d6] = 0;
+    nested[0x11d5] = 0;
+    nested[0x11d4] = 0;
+    put_f32(nested, 0x11f0, kSpeedSeed);
+    put_f32(nested, 0x11fc, kMinusOne);
+    put_u32(nested, 0x1200, 0x3c);
+    put_f32(nested, 0x1220, kMinusOne);
+    put_f32(nested, 0x1224, kMinusOne);
+    nested[0x1208] = 0;
+    nested[0x1209] = 0;
+
+    // Pass two, 009E5680..009E5758.
+    std::uint32_t owner_unit = 0;
+    for (int i = 0; i < kAttackMoveRingSlotCount; ++i) {
+        std::uint8_t* const record = nested + 4 + kAttackMoveRingSlotStride * static_cast<std::uint32_t>(i);
+        std::memcpy(&owner_unit, owner + 0xaa8, sizeof(owner_unit)); // 009E568C, re-read each slot
+        put_u32(record, 0x00, owner_unit);                           // 009E5692
+        put_u32(record, 0x04, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(nested))); // 009E5695
+        const RingSlotAngles angles = ring_slot_angles_pc24(i);
+        put_f32(record, 0x08, angles.bearing); // 009E56F9
+        put_f32(record, 0x0c, angles.cos_h);   // 009E5734
+        put_f32(record, 0x10, 0.0f);           // 009E573C
+        put_f32(record, 0x14, angles.sin_h);   // 009E574A
+    }
+    return nested; // 009E575E
+}
+
 // ---------------------------------------------------------------------------
 // 009F3240, the approach sub-state
 // ---------------------------------------------------------------------------
 float ship_ai_attackmove_approach_throttle_009f3240(float max_weapon_range, float bias) {
     // 009F32A6 FLD +494h, 009F32AC FADD double 500.0, 009F32B2 FSUB bias,
     // 009F32B6 FADD ST0,ST0, 009F32B8 store to a float slot.
-    const float doubled = static_cast<float>(
-        2.0 * ((static_cast<double>(max_weapon_range) + kAttackMoveApproachRangeOffset) -
-               static_cast<double>(bias)));
+    float doubled;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // Each FADD / FSUB rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        const double t = x87_sub24(
+            x87_add24(max_weapon_range, kAttackMoveApproachRangeOffset), bias);
+        doubled = static_cast<float>(x87_add24(t, t));
+    } else {
+        doubled = static_cast<float>(
+            2.0 * ((static_cast<double>(max_weapon_range) + kAttackMoveApproachRangeOffset) -
+                   static_cast<double>(bias)));
+    }
     // 009F32C2 FCOMIP with 0.0 on top: the JBE side is `0.0 <= doubled`.
     if (!(0.0f <= doubled)) {
         return 0.0f; // 009F32C6
