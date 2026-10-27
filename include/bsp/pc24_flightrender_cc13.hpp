@@ -78,6 +78,15 @@ namespace bsp {
 //  kTerrainVerticalSubwalkBound ON) and carries lint allows.
 // Movers: terrain segment hits (line of sight and ground probes through 00ADA240) and the
 // VSUB vertical probe height; not the Dyn hull ground contact.
+//
+// pc24w1-sweep1-5, the rest of the same walk (src/game_hosts_scene_contents.cpp):
+//  * quad_dot / 00ADEB40 scalar_triple: (x*x' + y*y') + z*z', 00ADEB55..00ADEB6B.
+//  * 00ADEB80 line_quad: the inlined dots, 1 / ((v + u) + w) and 1 / ((-v + u) + w) (the
+//    OFF arms sum (w + v) + u), the stored weights and (cu*d + cv*{c,a}) + cw*b,
+//    00ADEC6F..00ADF003.
+//  * 00ADF1B0 tile_walk: the entry times and the cell corners index * 9.375 + base,
+//    00ADF2ED..00ADF514.
+// Movers: the same terrain segment hit points.
 inline constexpr bool kPc24FlightRenderCc13Bound = false;
 
 }  // namespace bsp
