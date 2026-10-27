@@ -1,6 +1,9 @@
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/system_camera_axes.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_flightrender_cc13.hpp"
+
 #include <cmath>
 
 // Reconstruction of 0085DC80 and the three vector helpers it calls.
@@ -10,19 +13,31 @@
 namespace bsp {
 namespace {
 
+namespace pc24 = cc13x87;
+
 // 00419440 BSP_Vector3f_Length, __fastcall(const float* v /*ECX*/) -> ST0.
 // Each square is rounded back to float through [ESP+8] (00419467, 00419475,
 // 00419481) before the adds, so the three products are float; only the two adds
 // at 0041947D and 00419485 stay on the x87 stack, which is why the accumulation
 // is modelled in double and rounded once, at 00419489 FSTP float.
 float length_00419440(const float v[3]) {
-    const float xx = v[0] * v[0];  // 00419461 FLD ST1 / 00419463 FMULP ST2
-    const float yy = v[1] * v[1];  // 0041946F FLD ST2 / 00419471 FMULP ST3
-    const float zz = v[2] * v[2];  // 0041947F FMUL ST0, the self-multiply
-    const float sum = static_cast<float>(static_cast<double>(xx) +
-                                         static_cast<double>(yy) +
-                                         static_cast<double>(zz));
-    return std::sqrt(sum);  // 0041948D FLD float / 00419491 CALL 00BF7030
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-2: each square and both adds rounded at PC24; the partial
+        // sum at 0041947D is not stored, the total is (00419489).
+        const float xx = static_cast<float>(pc24::x87_mul24(v[0], v[0]));
+        const float yy = static_cast<float>(pc24::x87_mul24(v[1], v[1]));
+        const float zz = static_cast<float>(pc24::x87_mul24(v[2], v[2]));
+        const float sum = static_cast<float>(pc24::x87_add24(pc24::x87_add24(xx, yy), zz));
+        return std::sqrt(sum);
+    } else {
+        const float xx = v[0] * v[0];  // 00419461 FLD ST1 / 00419463 FMULP ST2
+        const float yy = v[1] * v[1];  // 0041946F FLD ST2 / 00419471 FMULP ST3
+        const float zz = v[2] * v[2];  // 0041947F FMUL ST0, the self-multiply
+        const float sum = static_cast<float>(static_cast<double>(xx) +
+                                             static_cast<double>(yy) +
+                                             static_cast<double>(zz));
+        return std::sqrt(sum);  // 0041948D FLD float / 00419491 CALL 00BF7030
+    }
 }
 
 // 00419510 BSP_Vector3f_Normalize, __fastcall(float* out /*ECX*/, const float* in
@@ -46,22 +61,37 @@ void normalize_00419510(float v[3]) {
 // out.x = a.y*b.z - a.z*b.y. Both products stay on the stack and the difference is
 // rounded once, so the term is modelled in double.
 void cross_004f9b30(float out[3], const float a[3], const float b[3]) {
-    const double x = static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1];
-    const double y = static_cast<double>(a[2]) * b[0] - static_cast<double>(a[0]) * b[2];
-    const double z = static_cast<double>(a[0]) * b[1] - static_cast<double>(a[1]) * b[0];
-    out[0] = static_cast<float>(x);
-    out[1] = static_cast<float>(y);
-    out[2] = static_cast<float>(z);
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-2: at PC24 each product is rounded before the difference.
+        out[0] = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(a[1], b[2]), pc24::x87_mul24(a[2], b[1])));
+        out[1] = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(a[2], b[0]), pc24::x87_mul24(a[0], b[2])));
+        out[2] = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(a[0], b[1]), pc24::x87_mul24(a[1], b[0])));
+    } else {
+        const double x = static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1];
+        const double y = static_cast<double>(a[2]) * b[0] - static_cast<double>(a[0]) * b[2];
+        const double z = static_cast<double>(a[0]) * b[1] - static_cast<double>(a[1]) * b[0];
+        out[0] = static_cast<float>(x);
+        out[1] = static_cast<float>(y);
+        out[2] = static_cast<float>(z);
+    }
 }
 
 // 0085DCEE..0085DD02 and 0085DD2A..0085DD42, the same inlined dot twice. The
 // native order is (x*x' + y*y') + z*z' with everything on the x87 stack and a
 // single FSTP float at the end.
 float dot3_x87(const float a[3], const float b[3]) {
-    const double sum = static_cast<double>(a[0]) * b[0] +
-                       static_cast<double>(a[1]) * b[1] +
-                       static_cast<double>(a[2]) * b[2];
-    return static_cast<float>(sum);
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-2: at PC24 each FMUL and FADDP is rounded (0085DCEE..0085DD00,
+        // 0085DD2A..0085DD40); the first FADDP adds x*x' to y*y'.
+        return static_cast<float>(pc24::x87_add24(
+            pc24::x87_add24(pc24::x87_mul24(a[1], b[1]), pc24::x87_mul24(a[0], b[0])),
+            pc24::x87_mul24(a[2], b[2])));
+    } else {
+        const double sum = static_cast<double>(a[0]) * b[0] +
+                           static_cast<double>(a[1]) * b[1] +
+                           static_cast<double>(a[2]) * b[2];
+        return static_cast<float>(sum);
+    }
 }
 
 // 0085DCB7..0085DCEB. The three scaled components are computed into [ESP+10h..18h]
