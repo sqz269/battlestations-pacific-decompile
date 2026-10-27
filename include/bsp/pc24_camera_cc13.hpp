@@ -28,9 +28,11 @@
 //   (004DC9BC..004DC9CE; the other copy, game_set_view_fov_004dc940 in
 //   seg10_cc13.cpp, is not switched here); 0064E2D6 the pipe-sight FOV scale (0064E2D6..0064E2E3,
 //   inside 0064DD30; the host passes zoom state 0, so ON and OFF agree today).
-//   0087EC0F the config FOV in radians (0087EC0F..0087EC2F, inside 0087D7B0;
-//   live through the host's per-frame pipe-sight FOV, which models it as a
-//   main-thread 24-bit chain). Its other copy, fov() in
+//   0087EC0F the config FOV in radians (0087EC0F..0087EC2F, inside 0087D7B0).
+//   24 bits because the image runs 0087D7B0 once in app-init phase 11
+//   (0073E1A1), after CreateDevice in phase 6 (0073DC25) has set PC24 on the
+//   WinMain thread; the host recomputes per frame what the loader stored at
+//   config+F8h. Its other copy, fov() in
 //   native_global_config_load.cpp, is inline x87 and takes the thread's
 //   precision control as it is.
 inline constexpr bool kPc24CameraCc13Bound = false;
