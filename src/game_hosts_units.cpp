@@ -30754,9 +30754,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         float speed = 0.0f;
                         if constexpr (bsp::kPc24UnitsHostCc13Bound) {
                             // pc24w1-units-DE: per-op PC24 of this stand-in dot
-                            // ((vx f0 + vy f1) + vz f2). The image reads ctl+44h, which
-                            // the core step writes (007D80C0 copies it); that writer's
-                            // order is not modelled here.
+                            // ((vx f0 + vy f1) + vz f2). The image reads unit+B2Ch,
+                            // which 007D80C0 writes, reached from 007D9C10 / 007D9C34
+                            // through 0042D0D0; that writer chain's order is not
+                            // modelled here.
                             namespace x8 = bsp::cc13x87;
                             speed = static_cast<float>(x8::x87_add24(
                                 x8::x87_add24(x8::x87_mul24(unit_.motion.linear_velocity.x, f[0]),
