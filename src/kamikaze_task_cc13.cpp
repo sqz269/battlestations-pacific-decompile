@@ -11,6 +11,7 @@
 #include "bsp/dive_bomb_task.hpp"
 #include "bsp/unit_motion.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/sw1b_switch_reach.hpp"
 
 namespace bsp {
 
@@ -42,6 +43,13 @@ float distance3_009ac0b0(const std::array<float, 3>& p, const std::array<float, 
         d2 = to_f(static_cast<double>(dy) * dy + static_cast<double>(dx) * dx +
                   static_cast<double>(dz) * dz);
     }
+    // pc24-lint: allow sw1b reach counter, replica of the OFF arm (log only)
+    sw1b_note(Sw1bReach::KamikazeX87Float,                               // sw1b reach
+              to_f(static_cast<double>(to_f(static_cast<double>(dz) * dz)) +
+                   to_f(static_cast<double>(to_f(static_cast<double>(dx) * dx)) +
+                        to_f(static_cast<double>(dy) * dy))),
+              to_f(static_cast<double>(dy) * dy + static_cast<double>(dx) * dx +
+                   static_cast<double>(dz) * dz));
     if (!(static_cast<double>(d2) > kDistEpsD)) return 0.0f;
     return to_f(std::sqrt(static_cast<double>(d2)));
 }
@@ -687,10 +695,20 @@ void drop_kamikaze_approach_update_009ade00(DropKamikazeApproach& ap,
     } else {
         d2 = to_f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
     }
+    // pc24-lint: allow sw1b reach counter, replica of the OFF arm (log only)
+    sw1b_note(Sw1bReach::KamikazeX87Float,                               // sw1b reach
+              to_f(static_cast<double>(to_f(static_cast<double>(dx) * dx)) +
+                   to_f(static_cast<double>(dz) * dz)),
+              to_f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz));
     const float dist = (static_cast<double>(d2) > kDistEpsD)
         ? to_f(std::sqrt(static_cast<double>(d2))) : 0.0f;
     ap.target_dist_b4 = dist;
     ap.target_hdg_b8 = bearing_to(dx, dz);                               // 009ADF0D
+    if (ap.inside_c0 && !in.reload_enabled) {                            // sw1b reach
+        sw1b_note(Sw1bReach::KamikazeX87Float,
+                  (to_f(static_cast<double>(ap.start_dist_ac) + 100.0) > dist)
+                      != (static_cast<double>(ap.start_dist_ac) + 100.0 > dist));
+    }
     bool inside;
     if (!ap.inside_c0) {
         inside = ap.start_dist_ac > dist;                                // 009AE023
@@ -720,6 +738,15 @@ void drop_kamikaze_approach_update_009ade00(DropKamikazeApproach& ap,
         l2 = to_f(static_cast<double>(lx) * lx + static_cast<double>(lz) * lz);
         leader_close = static_cast<double>(ap.attack_dist_b0) * ap.attack_dist_b0 > l2;
     }
+    {                                                                     // sw1b reach
+        const float l2_on = to_f(static_cast<double>(to_f(static_cast<double>(lz) * lz)) +
+                                 to_f(static_cast<double>(lx) * lx));
+        // pc24-lint: allow sw1b reach counter, replica of the OFF arm (log only)
+        const float l2_off = to_f(static_cast<double>(lx) * lx + static_cast<double>(lz) * lz);
+        sw1b_note(Sw1bReach::KamikazeX87Float,
+                  (to_f(static_cast<double>(ap.attack_dist_b0) * ap.attack_dist_b0) > l2_on)
+                      != (static_cast<double>(ap.attack_dist_b0) * ap.attack_dist_b0 > l2_off));
+    }
     ap.inside_c0 = ap.inside_c0 && leader_close;
 }
 
@@ -746,6 +773,15 @@ DropKamikazeProfileWrite drop_kamikaze_cruise_profile_009ae9d0(
     } else {
         ap.start_dist_ac = to_f(static_cast<double>(draw) * (ratio * rocket_drop_dist_460));
         ap.attack_dist_b0 = to_f(ratio * 500.0 + ap.start_dist_ac);
+    }
+    {                                                                     // sw1b reach
+        const float start_on = to_f(static_cast<double>(draw) * to_f(ratio * rocket_drop_dist_460));
+        // pc24-lint: allow sw1b reach counter, replica of the OFF arm (log only)
+        const float start_off = to_f(static_cast<double>(draw) * (ratio * rocket_drop_dist_460));
+        sw1b_note(Sw1bReach::KamikazeX87Float,
+                  !sw1b_same_bits(start_on, start_off)
+                      || !sw1b_same_bits(to_f(static_cast<double>(to_f(ratio * 500.0)) + start_on),
+                                         to_f(ratio * 500.0 + start_off)));
     }
     return w;
 }
