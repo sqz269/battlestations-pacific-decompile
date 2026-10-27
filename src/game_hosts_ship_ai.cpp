@@ -15550,6 +15550,12 @@ void GameShipAiHost::report() {
             kMovieUpdateEmptyTrackClockCc13Bound ? 1 : 0,
             kMovieStepStaleTrackFlagCc13Bound ? 1 : 0,
             kSubmarineSeabedSpeedPc24Cc13Bound ? 1 : 0);
+        host.log.notef("summary mission path direction reach evals=%llu differs=%llu "
+            "bound=%d%d (009D9E6C kShipAiPathNodeDirectionUnorderedCc13Bound, "
+            "kShipAiPathSideWalkNanCc13Bound; packet cc9-sweep2b)",
+            reach.path_dir_evals, reach.path_dir_differs,
+            bsp::kShipAiPathNodeDirectionUnorderedCc13Bound ? 1 : 0,
+            bsp::kShipAiPathSideWalkNanCc13Bound ? 1 : 0);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {
