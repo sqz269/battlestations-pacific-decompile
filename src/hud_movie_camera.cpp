@@ -574,6 +574,8 @@ void parse_007a0eb0(MovieKeyframe& k, HudMovieCamera& camera, const MovieKeyfram
 
 }  // namespace
 
+float movie_camera_ease_in_out_quad_0078fcf0(float x) noexcept { return ease_0078fcf0(x); }
+
 void movie_camera_construct_0079d020(HudMovieCamera& camera) noexcept {
     camera = HudMovieCamera{};
 }

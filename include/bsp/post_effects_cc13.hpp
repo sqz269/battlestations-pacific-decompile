@@ -140,7 +140,12 @@ void frustum_planes(float planes[24], float vertical, float horizontal, float ne
 // m11 = 2/(t-b), m22 = 1/(zf-zn), m30 = (l+r)/(l-r), m31 = (b+t)/(b-t),
 // m32 = zn/(zn-zf), m33 = 1, all else 0. Used by the GUI order pass
 // (include/bsp/gui_render_order.hpp).
+// The image runs it on the main thread at 24-bit precision control:
+// ortho_off_center_lh_pc24 models that per operation and is fixture-tested. The live
+// ortho_off_center_lh keeps the double model while this switch is OFF (cc9 flips it).
+inline constexpr bool kOrthoOffCenterPc24Cc13Bound = false;
 void ortho_off_center_lh(float out[16], float l, float r, float b, float t, float zn, float zf);
+void ortho_off_center_lh_pc24(float out[16], float l, float r, float b, float t, float zn, float zf);
 
 // Plane-set classifiers over the 20-byte rows {a, b, c, d, flags} with the
 // signed count at +140h (BSP_PlaneSet_GetCount 00B65080). Both return 0AAAh or
@@ -158,6 +163,8 @@ std::uint32_t plane_set_classify_point(const PlaneRow* rows, int count, const fl
 // 00B65710, __thiscall(set, const float box[6] {min.xyz, max.xyz}), RET 4.
 // With half = 0.5 (double D7A280) and |n| as (n <= 0 ? -0.0f - n : n):
 // AAA when dot(n, (min+max)*half) - d < -dot(|n|, (max-min)*half).
+// cc13-fixture4: modelled at the main thread's 24-bit precision with the image's float
+// spills and sum order (docs/CC13_FIXTURE_PASS_4.md); bit-exact against the original bytes.
 std::uint32_t plane_set_classify_aabb(const PlaneRow* rows, int count, const float box[6]);
 
 // ---------------------------------------------------------------------------

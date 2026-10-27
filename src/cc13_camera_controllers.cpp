@@ -1,4 +1,5 @@
 #include "bsp/cc13_camera_controllers.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 namespace bsp::cc13cam {
 void modifier_write_noop_0078e730(void*) noexcept {}
@@ -844,10 +845,12 @@ void movcam_interpolator_init_007900b0(MovCamInterpolator& r, const std::string&
 }
 
 namespace {
-// (x*x + y*y) + z*z, stored float; sqrt only above 1e-10 (00CE3820).
+// (x*x + y*y) + z*z, stored float; sqrt only above 1e-10 (00CE3820). cc13-fixture2 follow-up:
+// the MovCam callers (007943D0, 00794B80, 00794D60, 00794F70, 007A5A00) run on the main thread,
+// so the sums of squares and the 00793730/00793800 divisions round to 24 bits (x87_*24).
 float length_by_squares(const std::array<float, 3>& v) noexcept {
-    const float sum = static_cast<float>((static_cast<double>(v[0]) * v[0] + static_cast<double>(v[1]) * v[1]) +
-                                         static_cast<double>(v[2]) * v[2]);
+    const float sum = static_cast<float>(cc13x87::x87_add24(
+        cc13x87::x87_add24(cc13x87::x87_mul24(v[0], v[0]), cc13x87::x87_mul24(v[1], v[1])), cc13x87::x87_mul24(v[2], v[2])));
     return static_cast<double>(sum) > 1e-10 ? static_cast<float>(std::sqrt(static_cast<double>(sum))) : 0.0f;
 }
 }  // namespace
@@ -855,8 +858,9 @@ float length_by_squares(const std::array<float, 3>& v) noexcept {
 std::array<float, 3> scale_to_length_00793730(const std::array<float, 3>& v, float length) noexcept {
     const float len = length_by_squares(v);
     if (9.999999974752427e-07f > std::fabs(len)) return {0.0f, 0.0f, 0.0f};    // 00D7A288
-    const float s = static_cast<float>(static_cast<double>(length) / len);       // FSTP 007937D6
-    return {v[0] * s, s * v[1], s * v[2]};
+    const float s = static_cast<float>(cc13x87::x87_div24(length, len));          // FSTP 007937D6
+    return {static_cast<float>(cc13x87::x87_mul24(v[0], s)), static_cast<float>(cc13x87::x87_mul24(s, v[1])),
+            static_cast<float>(cc13x87::x87_mul24(s, v[2]))};
 }
 
 void movcam_steer_00794b80(MovCamMotion& m, const MovCamLimits& limits, const std::array<float, 3>& dir,
@@ -886,7 +890,7 @@ void movcam_keep_above_ground_00790540(std::array<float, 3>& p, bool has_ground,
 
 namespace {
 float length2_by_squares(const std::array<float, 2>& v) noexcept {
-    const float sum = static_cast<float>(static_cast<double>(v[0]) * v[0] + static_cast<double>(v[1]) * v[1]);
+    const float sum = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(v[0], v[0]), cc13x87::x87_mul24(v[1], v[1])));
     return static_cast<double>(sum) > 1e-10 ? static_cast<float>(std::sqrt(static_cast<double>(sum))) : 0.0f;
 }
 }  // namespace
@@ -894,8 +898,8 @@ float length2_by_squares(const std::array<float, 2>& v) noexcept {
 std::array<float, 2> scale_to_length_00793800(const std::array<float, 2>& v, float length) noexcept {
     const float len = length2_by_squares(v);
     if (9.999999974752427e-07f > std::fabs(len)) return {0.0f, 0.0f};
-    const float s = static_cast<float>(static_cast<double>(length) / len);
-    return {v[0] * s, s * v[1]};
+    const float s = static_cast<float>(cc13x87::x87_div24(length, len));
+    return {static_cast<float>(cc13x87::x87_mul24(v[0], s)), static_cast<float>(cc13x87::x87_mul24(s, v[1]))};
 }
 
 void movcam_turn_00794d60(MovCamTurn& t, const MovCamTurnLimits& limits, const std::array<float, 2>& d,

@@ -3,6 +3,7 @@
 // not preserved (see the header). Every FSTP dword spill is an f32() below.
 
 #include "bsp/weather_render.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 
@@ -512,10 +513,13 @@ CloudInstanceStep cloud_instance_step_00bbe8b0(CloudInstanceState& s, WeatherMat
 // ---------------------------------------------------------------------------
 // Sky colour gradients
 
+// cc13-fixture2 follow-up: the callers (00BBF440 sky gradient, 00BBF590 fog colour) render on
+// the main thread at 24-bit precision control: each FSUB/FMUL/FADD rounds to 24 significand
+// bits before its FSTP, which differs from a float operation only for denormal results.
 Rgba sky_lerp_00bbf280(const Rgba& a, const Rgba& b, float t) noexcept {
     const auto one = [t](float lo, float hi) {
-        const float d = f32(static_cast<double>(hi) - lo);
-        return f32(static_cast<double>(lo) + f32(static_cast<double>(d) * t));
+        const float d = f32(cc13x87::x87_sub24(hi, lo));
+        return f32(cc13x87::x87_add24(lo, f32(cc13x87::x87_mul24(d, t))));
     };
     return {one(a.r, b.r), one(a.g, b.g), one(a.b, b.b), one(a.a, b.a)};
 }

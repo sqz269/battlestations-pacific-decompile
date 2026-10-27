@@ -428,6 +428,21 @@ float dogfight_moveto_speed_009becd0(float max_spd, float level_flight_speed, fl
 // False: the earlier double model with exact pi and a [-pi, pi] wrap. Changes
 // only boundary, NaN and ulp cases.
 inline constexpr bool kFollowWaitFloatHelpersCc13Bound = false;
+
+// Packet cc13-pc24dog. On the main thread the image's x87 runs at PC24, so every
+// FADD/FSUB/FMUL/FDIV rounds to float (docs/CC13_FPU_PRECISION.md). True: the
+// per-op float chains in this file, in listing order:
+// - the stand-in moveto range: the 009C1930-009C197D planar length, with dx
+//   and dz stored, dz*dz + dx*dx, and a 1e-10 floor;
+// - 009AA8E5 0042B2F0 on (tx, ty, 0): (yy + xx) + zz, with a 1e-10 floor;
+// - 009AACF8: shoot + 200 rounded before the FCOMIP;
+// - 009A9BFA-009A9C30: the tangent length, with a 1e-10 floor (so a NaN gives
+//   0, which is on target);
+// - 009FCB25 0042B2F0 and 009FCC00 00414C60 in the gun tick;
+// - 007E1239/007E123F: (period + 3) rounded before the * 180.
+// False: the double chains used before. Changes only ulp, the 1e-10 floor and
+// NaN cases.
+inline constexpr bool kDogfightPc24Cc13Bound = false;
 float follow_wait_value_009be3e0(bool in_position_85, const float member_minus_station[3],
                                  float leader_heading, float dont_wait_hdg, float wait_hdg,
                                  float good_position_dist, float nearby_dist) noexcept;

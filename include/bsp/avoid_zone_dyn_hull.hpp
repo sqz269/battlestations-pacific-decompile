@@ -62,6 +62,29 @@ bool avoid_zone_dyn_hull_triangles_00c5dae0(
     const OceanVec3* points, std::uint32_t count,
     AvoidZoneDynHullTriangles& output);
 
+// 00C5DAE0 whole body: the stack descriptor and the EAX output record.
+struct AvoidZoneDynHullDescriptor {
+    std::uint8_t flags = 0;          // +00 bit0 flat list, bit1 reverse winding
+    std::uint32_t count = 0;         // +04
+    const void* points = nullptr;    // +08 three floats per point
+    std::uint32_t stride = 12;       // +0C bytes between points
+    float epsilon = 0.0f;            // +10 00C35E80 duplicate tolerance
+    float field_14 = 0.0f;           // +14 not read by 00C5DAE0
+    std::uint32_t limit = 0;         // +18 00C5D900 limit
+    std::uint32_t field_1c = 0;      // +1C not read by 00C5DAE0
+};
+struct AvoidZoneDynHullGenerated {
+    bool polygon_list = false;       // +00 1 when flags bit0 is clear
+    std::uint32_t vertex_count = 0;  // +04
+    std::vector<OceanVec3> vertices; // +08
+    std::uint32_t triangle_count = 0;  // +0C
+    std::uint32_t index_count = 0;   // +10
+    std::vector<std::uint32_t> indices;  // +14
+};
+// Returns 0 when the output was written, 1 otherwise (output untouched).
+std::uint32_t avoid_zone_dyn_hull_generate_00c5dae0(
+    const AvoidZoneDynHullDescriptor& descriptor, AvoidZoneDynHullGenerated& output);
+
 // 00C389C0 data production and 004039D0 deep copy. Existing data must have
 // its first six words initialized, as the native constructors do. Temporary
 // edge hash/pool allocation identity is not reproduced; output data is real.

@@ -1,6 +1,9 @@
 #include "bsp/scene_weather_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
+#include <cstddef>
+#include <limits>
 #include <cstring>
 #include <stdexcept>
 
@@ -116,13 +119,11 @@ void linearize_if(bool linearize, Rgba& colour) {
     }
 }
 
-// FLD L / FLD ST0 / FMUL component / FSTP: each product of two floats is exact
-// in the 80-bit register, so one float rounding matches the image.
+// 004E5D20 (scale_rgba_004e5d20 below) on an Rgba, which it reads as float[4].
+static_assert(sizeof(Rgba) == 16 && offsetof(Rgba, r) == 0 && offsetof(Rgba, g) == 4 &&
+              offsetof(Rgba, b) == 8 && offsetof(Rgba, a) == 12);
 void scale_rgba(Rgba& colour, float l) {
-    colour.r = colour.r * l;
-    colour.g = colour.g * l;
-    colour.b = colour.b * l;
-    colour.a = colour.a * l;
+    scale_rgba_004e5d20(&colour.r, l);
 }
 
 // FLD L / FMUL scale / FADD offset / FSTP: 80-bit natively, double here.
@@ -893,6 +894,14 @@ bool guarded(std::string& error, Body&& body) {
 
 }  // namespace
 
+// 004E5D20 BSP_Color_ScaleRgbaByScalar, __thiscall(ECX = float rgba[4]; float s), RET 4:
+// FLD s / FLD ST0 / FMUL component / FSTP for r, g, b, a in order. The weather reader runs on
+// the main thread at 24-bit precision control: each product is rounded to 24 bits with the
+// extended exponent before the store (cc13-fixture7).
+void scale_rgba_004e5d20(float* rgba, float s) noexcept {
+    for (int i = 0; i < 4; ++i) rgba[i] = static_cast<float>(cc13x87::x87_mul24(rgba[i], s));
+}
+
 void linearize_rgb_004e5c00(float* rgb) noexcept {
     for (int i = 0; i < 3; ++i) {
         float c = rgb[i];
@@ -903,8 +912,12 @@ void linearize_rgb_004e5c00(float* rgb) noexcept {
         if (c < 0.0f) {
             c = -0.0f - c;
         }
-        rgb[i] = static_cast<float>(std::exp2(static_cast<double>(kLinearizeExponent) *
-                                              std::log2(static_cast<double>(c))));
+        // cc13-fixture2 (fixture-found): an infinite exponent product makes FRNDINT/FSUB form
+        // inf - inf, so F2XM1/FSCALE return the default NaN instead of inf or 0. Follow-up: the
+        // callers include the frontend tactical library (00502480, 00504130) on the main
+        // thread, so the tail's FSUB and FADDP round to 24 bits (cc13x87::x87_pow2_tail24).
+        const double y = cc13x87::x87_fyl2x(kLinearizeExponent, c);
+        rgb[i] = static_cast<float>(cc13x87::x87_pow2_tail24(y));
     }
 }
 

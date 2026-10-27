@@ -256,21 +256,6 @@ float dive_bomb_decay_dive_altitude_009c7a94(float dive_altitude_a8,
     return (dive_altitude_a8 < decayed) ? dive_altitude_a8 : decayed;
 }
 
-// 007BCC80, read whole; see the header for the listing and the sign argument.
-float weapon_fall_time_007bcc80(float height_above_aim_point,
-                                float unit_velocity_y) noexcept {
-    if (!(height_above_aim_point > 0.0f)) return 0.0f;   // 007BCC86
-    const float vy = unit_velocity_y -
-        dive_bomb_constant::kFallTimeVerticalBias;       // 007BCCA4, 00E08E54
-    // 007BCCB6 FMUL and 007BCCDA FDIV both take the QWORD at 00CF9058, and
-    // 007BCCC2/007BCCCF round the discriminant and its root to float on the way.
-    const double g = dive_bomb_constant::kGravity;
-    const float disc = static_cast<float>(
-        static_cast<double>(vy) * vy + 2.0 * height_above_aim_point * g);
-    const float root = std::sqrt(disc);
-    return static_cast<float>((static_cast<double>(root) + vy) / g);
-}
-
 // 009C7D71-009C7E33, the diving arm of the approach update.
 DiveBombImpactPoint dive_bomb_impact_point_009c7d71(
     const DiveBombImpactPointInputs& in) noexcept {
@@ -284,29 +269,6 @@ DiveBombImpactPoint dive_bomb_impact_point_009c7d71(
     out.point[1] = in.aim_point_y;
     out.point[2] = in.unit_position[2] + out.fall_time * in.unit_velocity[2];
     return out;
-}
-
-// 00419010, five stack floats, RET 14h. Equal ordered endpoints return y0;
-// otherwise the interpolation is clamped between the two y values whichever way
-// round they are. Transcribed from docs/UNIT_RUDDER_CURVE.md's reconstruction.
-float dive_bomb_interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
-                                             float x) noexcept {
-    if (x1 == x0) {
-        return y0;
-    }
-    const float v = ((x - x0) / (x1 - x0)) * (y1 - y0) + y0;
-    const float hi = (y1 < y0) ? y0 : y1;
-    const float lo = (y0 < y1) ? y0 : y1;
-    // 0041908C-00419092 FCOMIP lo,v / JBE: only lo > v clamps; NaN passes on.
-    if (v < lo) {
-        return lo;
-    }
-    // 004190A9 FCOMIP v,hi / JBE 004190BC: v when v <= hi or unordered (ON).
-    if constexpr (kInterpClamped00419010NanCc13Bound) {
-        return (v > hi) ? hi : v;
-    } else {
-        return (v <= hi) ? v : hi;
-    }
 }
 
 // 009C59BA-009C5C9B.
@@ -404,9 +366,15 @@ DiveBombAimGlideReleaseResult dive_bomb_aimglide_release_009c5777(
     // 009C56AA loads [ESP+1Ch] second, so 009C56B4's FCOMIP compares
     // `ceiling + 50.0` against the height above the aim point and 009C56B8's JBE
     // bails when the ceiling is the smaller. See the header for both producers.
-    if (!(static_cast<double>(in.glide_release_ceiling) +
-              dive_bomb_constant::kGlideHeightMargin >
-          static_cast<double>(in.height_above_aim_point))) {
+    // 009C56AE FADD qword 50.0 rounds to float at PC24 (kDiveBombPc24Cc13Bound).
+    const bool below_ceiling = kDiveBombPc24Cc13Bound
+        ? (static_cast<float>(static_cast<double>(in.glide_release_ceiling) +
+                              dive_bomb_constant::kGlideHeightMargin) >
+           in.height_above_aim_point)
+        : (static_cast<double>(in.glide_release_ceiling) +
+               dive_bomb_constant::kGlideHeightMargin >
+           static_cast<double>(in.height_above_aim_point));
+    if (!below_ceiling) {
         return out;
     }
     out.gate_reached = 3;
@@ -429,9 +397,14 @@ DiveBombAimGlideReleaseResult dive_bomb_aimglide_release_009c5777(
     // walks a stick of bombs through the target.
     const float lead =
         in.lateral_b - std::cos(in.bearing_error_18) * in.lateral_a;
-    const double lead_travel_margin =
-        static_cast<double>(lead) + static_cast<double>(in.travel_accumulator_20) +
-        dive_bomb_constant::kGlideLeadMargin;
+    // 009C572F FADDP ST2 (lead + travel) and 009C5733 FADD qword 5.0 each round
+    // at PC24, and 009C5739 stores the margin as float (kDiveBombPc24Cc13Bound).
+    const double lead_travel_margin = kDiveBombPc24Cc13Bound
+        ? static_cast<double>(static_cast<float>(
+              static_cast<double>(lead + in.travel_accumulator_20) +
+              dive_bomb_constant::kGlideLeadMargin))
+        : static_cast<double>(lead) + static_cast<double>(in.travel_accumulator_20) +
+              dive_bomb_constant::kGlideLeadMargin;
     // 009C5743 FCOMI ST0,ST1 compares the travel with that sum and 009C5745
     // `76` JBE bails unless the travel is the greater - that is, unless
     // `lead < -5.0`. This was written `lead > 5.0`: the lead's sign backwards.
@@ -448,9 +421,14 @@ DiveBombAimGlideReleaseResult dive_bomb_aimglide_release_009c5777(
     // which needs a positive travel accumulator; the two as they stood were
     // mutually exclusive at the zero this host supplied, so the salvo at
     // 009C5777 could never fire at any altitude.
-    if (!(lead_travel_margin >
-          -static_cast<double>(in.travel_accumulator_20) *
-              dive_bomb_constant::kGlideLeadScale)) {
+    // 009C5749 FMUL qword 3.0 rounds at PC24 (ON).
+    const double scaled_travel = kDiveBombPc24Cc13Bound
+        ? static_cast<double>(static_cast<float>(
+              -static_cast<double>(in.travel_accumulator_20) *
+              dive_bomb_constant::kGlideLeadScale))
+        : -static_cast<double>(in.travel_accumulator_20) *
+              dive_bomb_constant::kGlideLeadScale;
+    if (!(lead_travel_margin > scaled_travel)) {
         return out;
     }
     out.gate_reached = 6;
@@ -785,9 +763,14 @@ DiveBombFlyAboveAltitudeCommand dive_bomb_flyabove_altitude_009c6e10(
     // 009C655F-009C6589. The compare is against 1.1 * R and the store is the
     // bare R, so the clamp lands 10 per cent under where it triggers.
     const float release_limit = in.new_release_mul_40 * in.release_altitude_a8;
-    if (static_cast<double>(c) >
-        static_cast<double>(release_limit) *
-            dive_bomb_flyabove_constant::kNewReleaseMargin) {
+    // 009C6570 FMUL qword 1.1 rounds at PC24 before the FCOMIP (kDiveBombPc24Cc13Bound).
+    const double release_trigger = kDiveBombPc24Cc13Bound
+        ? static_cast<double>(static_cast<float>(
+              static_cast<double>(release_limit) *
+              dive_bomb_flyabove_constant::kNewReleaseMargin))
+        : static_cast<double>(release_limit) *
+              dive_bomb_flyabove_constant::kNewReleaseMargin;
+    if (static_cast<double>(c) > release_trigger) {
         c = release_limit;  // 009C6580-009C6589
     }
     out.limit_c = c;
@@ -809,10 +792,18 @@ DiveBombFlyAboveAltitudeCommand dive_bomb_flyabove_altitude_009c6e10(
             : dive_bomb_flyabove_constant::kClimbReferenceCap;
     // 009C6EAA COMISS 0, err with 009C6EAF `76` JBE: the fall-through is err < 0.
     if (out.height_error < 0.0f) {
-        const float v = static_cast<float>(
-            -static_cast<double>(out.height_error) *
-            dive_bomb_flyabove_constant::kClimbGain /
-            static_cast<double>(divisor));
+        // 009C6EDD FCHS, 009C6EDF FMUL qword 3.0, 009C6EE5 FDIV: at PC24 the
+        // product rounds before the quotient (kDiveBombPc24Cc13Bound).
+        const float v = kDiveBombPc24Cc13Bound
+            ? static_cast<float>(
+                  static_cast<double>(static_cast<float>(
+                      -static_cast<double>(out.height_error) *
+                      dive_bomb_flyabove_constant::kClimbGain)) /
+                  static_cast<double>(divisor))
+            : static_cast<float>(
+                  -static_cast<double>(out.height_error) *
+                  dive_bomb_flyabove_constant::kClimbGain /
+                  static_cast<double>(divisor));
         // 009C6EF5 `77` JA keeps the cap when the quotient is the larger.
         out.reference =
             (v > dive_bomb_flyabove_constant::kClimbReferenceCap)
@@ -856,10 +847,18 @@ DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
             ? height_above_aim_point
             : dive_bomb_flyabove_constant::kHeightFloor;
     // 009C65C1-009C65D1.
-    out.threshold = static_cast<float>(
-        static_cast<double>(out.floored_height) *
-            dive_bomb_flyabove_constant::kHeightScale +
-        dive_bomb_flyabove_constant::kHeightBias);
+    // At PC24 (kDiveBombPc24Cc13Bound) the 009C65C5 product rounds before the
+    // 009C65CB FADD.
+    out.threshold = kDiveBombPc24Cc13Bound
+        ? static_cast<float>(
+              static_cast<double>(static_cast<float>(
+                  static_cast<double>(out.floored_height) *
+                  dive_bomb_flyabove_constant::kHeightScale)) +
+              dive_bomb_flyabove_constant::kHeightBias)
+        : static_cast<float>(
+              static_cast<double>(out.floored_height) *
+                  dive_bomb_flyabove_constant::kHeightScale +
+              dive_bomb_flyabove_constant::kHeightBias);
     // 009C65D5-009C65FD: the difference, floored at zero. CORRECTION, packet
     // cc8_dive_heading: the minuend is R, the PLANAR RANGE at 009C63A6, not the
     // height. The x87 stack, walked forward from 009C64EE with every push and
@@ -891,10 +890,16 @@ bool dive_bomb_flyabove_leave_009c66e3(float bearing_error,
                                        const DiveBombFlyAboveSpan& span,
                                        float attack_distance_b4) noexcept {
     // 009C6615-009C6621: the far endpoint. FSUBRP leaves (+B4h * 0.8) - S.
-    const float far_endpoint = static_cast<float>(
-        static_cast<double>(attack_distance_b4) *
-            dive_bomb_flyabove_constant::kLeaveSpanScale -
-        static_cast<double>(span.threshold));
+    // At PC24 (kDiveBombPc24Cc13Bound) the 009C661B product rounds before the
+    // 009C6621 FSUBRP.
+    const float far_endpoint = kDiveBombPc24Cc13Bound
+        ? static_cast<float>(attack_distance_b4 *
+                             static_cast<float>(dive_bomb_flyabove_constant::kLeaveSpanScale)) -
+              span.threshold
+        : static_cast<float>(
+              static_cast<double>(attack_distance_b4) *
+                  dive_bomb_flyabove_constant::kLeaveSpanScale -
+              static_cast<double>(span.threshold));
     // 009C663E: InterpolateClamped(0, 20 deg, far, pi, span).
     const float tolerance = dive_bomb_interpolate_clamped_00419010(
         0.0f, dive_bomb_flyabove_constant::kLeaveToleranceLow, far_endpoint,
@@ -961,10 +966,19 @@ DiveBombFlyAboveBank dive_bomb_flyabove_bank_009c6857(
     // the earlier `1.5 * sin` reading.
     if constexpr (dive_bomb_constant::kDiveFlyAboveCrossTrackBound) {
         const double sin_f = static_cast<double>(static_cast<float>(std::sin(eabs)));
-        out.cross_track = static_cast<float>(
-            (sin_f * dive_bomb_flyabove_constant::kRollInSinHalf +
-             dive_bomb_flyabove_constant::kRollInSinHalf) *
-            range);
+        if constexpr (kDiveBombPc24Cc13Bound) {
+            // At PC24 the 009C6877 FADDP rounds before the 009C6879 FMUL. The
+            // 0.5 scaling is exact.
+            const float half_sum = static_cast<float>(
+                sin_f * dive_bomb_flyabove_constant::kRollInSinHalf +
+                dive_bomb_flyabove_constant::kRollInSinHalf);
+            out.cross_track = static_cast<float>(static_cast<double>(half_sum) * range);
+        } else {
+            out.cross_track = static_cast<float>(
+                (sin_f * dive_bomb_flyabove_constant::kRollInSinHalf +
+                 dive_bomb_flyabove_constant::kRollInSinHalf) *
+                range);
+        }
     } else {
         out.cross_track = static_cast<float>(
             std::sin(eabs) * (1.0 + dive_bomb_flyabove_constant::kRollInSinHalf) *
@@ -1076,7 +1090,11 @@ DiveBombFlyAboveStep dive_bomb_flyabove_flags_009c659f(
 bool dive_bomb_flyabove_bank_limit_009c6678(float speed_ratio_24, float lead_range_r,
                                             float* bank_limit_2c8) noexcept {
     // 009C667F FMUL qword 700 (00D20D20), 009C6685 FCOMPI against R, 009C6687 JBE.
-    if (!(static_cast<double>(speed_ratio_24) * 700.0 > static_cast<double>(lead_range_r))) {
+    // At PC24 (kDiveBombPc24Cc13Bound) the product rounds before the FCOMIP.
+    const bool fast_enough = kDiveBombPc24Cc13Bound
+        ? (speed_ratio_24 * 700.0f > lead_range_r)
+        : (static_cast<double>(speed_ratio_24) * 700.0 > static_cast<double>(lead_range_r));
+    if (!fast_enough) {
         return false;
     }
     *bank_limit_2c8 = dive_bomb_interpolate_clamped_00419010(

@@ -1661,6 +1661,24 @@ bool dive_bomb_should_break_off_009c8a90(const DiveBombBreakOffInputs& in) noexc
 // Changes only NaN cases.
 inline constexpr bool kDiveBombNanComparesCc13Bound = false;
 
+// Packet cc13-pc24dog. On the main thread the image's x87 runs at PC24, so each
+// FADD/FSUB/FMUL/FDIV rounds to float, including one with a qword operand.
+// True: the per-op float chains of the dive-bomb file, in listing order.
+// - 007BCC80: 2h, 2h * g, vy * vy and their sum.
+// - 007BCC80: root + vy, then / g.
+// - 009C56AE: ceiling + 50, rounded before the FCOMIP.
+// - 009C572F-009C5739: lead + travel, then + 5.0, stored.
+// - 009C5749: -travel * 3.0.
+// - 009C6570: R * 1.1.
+// - 009C65C5/009C65CB: h * 0.7, then + 200.
+// - 009C661B/009C6621: B4h * 0.8, then - S.
+// - 009C6875-009C6879: 0.5 sin + 0.5, then * R.
+// - 009C667F: ratio * 700.
+// - 009C6EDD-009C6EE5: -err * 3.0, then / divisor.
+// - 007BCC86: COMISS 0,h / JC also computes for a NaN height.
+// False: the double chains used before. Changes only ulp and NaN cases.
+inline constexpr bool kDiveBombPc24Cc13Bound = false;
+
 // ---------------------------------------------------------------------------
 // Which command installs kind 8. docs/ATTACK_COMMANDS.md: 007EEC50 picks the
 // class and 0099A170 turns it into a task, so a task exists only for a unit

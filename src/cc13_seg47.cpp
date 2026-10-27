@@ -3,6 +3,7 @@
 // the simplifications it makes. Reconstructed and build-tested only.
 
 #include "bsp/cc13_seg47.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -1173,13 +1174,14 @@ std::int32_t unit_is_gun_of_subtype156_007ba3e0(Seg47Host& host, Raw unit) {
 
 // 007BA450, __fastcall(ECX = const float* a, EDX = const float* b; const float* c),
 // RET 4, ST0. m = (*a < *b or unordered) ? *b : *a; result = (m < *c or
-// unordered) ? *c : m (FCOMI/JB on both).
+// unordered) ? *c : m (FCOMI/JB on both). Equal operands keep the earlier one, so
+// max3(+0, -0, ..) is +0. The selections index a pair: MSVC folds the plain ternary
+// into MAXSS, which keeps the later operand on a tie (cc13-fixture7).
 float max3_007ba450(const float* a, const float* b, const float* c) {
-    const float x = *a;
-    const float y = *b;
-    const float m = !(x >= y) ? y : x;
-    const float z = *c;
-    return !(m >= z) ? z : m;
+    const float ab[2] = {*b, *a};
+    const float m = ab[*a >= *b];
+    const float mc[2] = {*c, m};
+    return mc[m >= *c];
 }
 
 // 007BA600, __thiscall(ECX = plane; const float[3]*), RET 4: +F0h..+F8h = the vector.
@@ -1591,7 +1593,7 @@ void plane_update_cockpit_transform_007bb310(Seg47Host& host, Raw plane) {
 
 // 007BB4C0, __fastcall(ECX = const float a[], EDX = const float b[]), ST0.
 // For the three 10h-strided rows: d = a_i - b_i (each stored float), l2 =
-// d.y^2 + d.x^2 + d.z^2 (x87 extended, one rounding to float; double here),
+// d.y^2 + d.x^2 + d.z^2 (on the x87 stack, rounded to float at the FSTP),
 // dist = l2 > 1e-10 ? sqrt(l2) (float) : 0.0f; sum = dist + sum (float).
 // The sum of the three vertex distances (the ledger name "MinVertexDistance"
 // does not match the body).
@@ -1603,8 +1605,10 @@ float triangle_vertex_distance_sum_007bb4c0(const float* a, const float* b) {
         const float dx = p[0] - q[0];
         const float dy = p[1] - q[1];
         const float dz = p[2] - q[2];
-        const float l2 = static_cast<float>(static_cast<double>(dy) * dy + static_cast<double>(dx) * dx +
-                                            static_cast<double>(dz) * dz);
+        // cc13-fixture2 follow-up: no reference in the image (rel32 and absolute scans are
+        // empty); modelled at the main thread's 24-bit precision control (x87_*24).
+        const float l2 = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_add24(cc13x87::x87_mul24(dy, dy), cc13x87::x87_mul24(dx, dx)), cc13x87::x87_mul24(dz, dz)));
         float dist;
         if (static_cast<double>(l2) > kTinyLength2_00ce3820)
             dist = static_cast<float>(std::sqrt(static_cast<double>(l2)));

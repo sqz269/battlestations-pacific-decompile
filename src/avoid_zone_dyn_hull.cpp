@@ -333,8 +333,11 @@ void degenerate_box(std::vector<V>& p,V center,V extent,bool strict) {
     p={{lo.x,lo.y,lo.z},{hi.x,lo.y,lo.z},{hi.x,hi.y,lo.z},{lo.x,hi.y,lo.z},
        {lo.x,lo.y,hi.z},{hi.x,lo.y,hi.z},{hi.x,hi.y,hi.z},{lo.x,hi.y,hi.z}};
 }
-// 00C35E80 as 00C5DAE0 calls it: packed XYZ, epsilon 0.001, a scale output.
-// The whole body is dyn_hull_cleanup_points_00c35e80 below.
+// 00C35E80 as 00C5DDD0's descriptor has 00C5DAE0 call it: packed XYZ, epsilon
+// 0.001, a scale output. The whole body is dyn_hull_cleanup_points_00c35e80
+// below, which avoid_zone_dyn_hull_generate_00c5dae0 calls directly. No caller
+// remains; kept for reference because the ledger's cleanup_00c35e80 fragment
+// row (00C35E80) names it.
 std::vector<V> cleanup_00c35e80(const V* input,std::uint32_t count,V& scale) {
     std::vector<V> clean(count>8?count:8);
     std::uint32_t kept=0;
@@ -450,26 +453,83 @@ bool dyn_hull_cleanup_points_00c35e80(V* out,std::uint32_t count,const void* sou
     return true;
 }
 
-bool avoid_zone_dyn_hull_triangles_00c5dae0(const V* points,std::uint32_t count,
-                                          AvoidZoneDynHullTriangles& output) {
-    if(!count) return false;
-    if(!points) throw std::invalid_argument("Dyn hull points are null");
-    for(std::uint32_t i=0;i<count;++i)
-        if(!std::isfinite(points[i].x) || !std::isfinite(points[i].y) || !std::isfinite(points[i].z))
+// 00C5DAE0 DYN_ConvexHull_GenerateTriangles, whole body (00C5DAE0..00C5DDCD).
+// ABI: EAX = output record, [ESP+4] = descriptor, RET 4; EAX result is the
+// frame word [ESP+20h]: 1 until the output is filled at 00C5DC1A, then 0.
+// Steps: 00C35E80 cleanup (count, points +08h, stride +0Ch, epsilon +10h, the
+// scale output, EDX = max(count,8)*12 scratch), x87 rescale 00C5DB81..00C5DB9F
+// with one FSTP float per product, 00C5D900 (ECX count, EDX points, limit
+// +18h), 00C32510 compaction (ESI = &count). Flags byte bit 0 selects the flat
+// list (output byte 0 = 0) over the {3,a,b,c} polygon list (byte 0 = 1,
+// 00C5DCEF); bit 1 reverses each triangle's winding. Descriptor +14h/+1Ch are
+// not read. EH: none in this frame; the C++ failure exits leak nothing (the
+// native 00C5D900-failure exit frees only the scratch buffer).
+// Uncertainty: finite point domain only; operator new failure is not modelled.
+std::uint32_t avoid_zone_dyn_hull_generate_00c5dae0(const AvoidZoneDynHullDescriptor& descriptor,
+                                                    AvoidZoneDynHullGenerated& output) {
+    const std::uint32_t count=descriptor.count;
+    if(!count) return 1;                                         // 00C5DB3B
+    if(!descriptor.points) throw std::invalid_argument("Dyn hull points are null");
+    const auto* base=static_cast<const unsigned char*>(descriptor.points);
+    for(std::uint32_t i=0;i<count;++i) {
+        V v;std::memcpy(&v,base+static_cast<std::size_t>(i)*descriptor.stride,sizeof v);
+        if(!std::isfinite(v.x) || !std::isfinite(v.y) || !std::isfinite(v.z))
             throw std::domain_error("Dyn hull exceptional coordinate domain unresolved");
-    V scale;std::vector<V> cleaned=cleanup_00c35e80(points,count,scale);
+    }
+    // 00C5DB06..00C5DB1A: the scratch is max(count, 8) points.
+    std::vector<V> cleaned(count>8?count:8);
+    std::uint32_t kept=0;V scale;
+    dyn_hull_cleanup_points_00c35e80(cleaned.data(),count,descriptor.points,descriptor.stride,&kept,
+                                     descriptor.epsilon,&scale);   // 00C5DB5B, AL is always 1
+    cleaned.resize(kept);
     for(V& p:cleaned) p={fmul(p.x,scale.x),fmul(p.y,scale.y),fmul(p.z,scale.z)};
     Triangles triangles;
-    if(!hull_00c5cae0(cleaned,triangles,4096)) return false;
-    AvoidZoneDynHullTriangles result;
+    if(!hull_00c5cae0(cleaned,triangles,static_cast<int>(descriptor.limit))) return 1;   // 00C5DBBE
     // 00C5D900 preserves live triangle-array order, then 00C32510 compacts in
     // index encounter order, storing index+1 in the zero-initialized map.
+    std::vector<V> points;std::vector<std::uint32_t> flat;
     std::vector<std::uint32_t> remap(cleaned.size(),0);
     for(const auto& t:triangles) if(t) for(int v:t->vertex) {
-        if(!remap[v]) { result.points.push_back(cleaned[v]);remap[v]=static_cast<std::uint32_t>(result.points.size()); }
-        result.indices.push_back(remap[v]-1);
+        if(!remap[v]) { points.push_back(cleaned[v]);remap[v]=static_cast<std::uint32_t>(points.size()); }
+        flat.push_back(remap[v]-1);
     }
-    output=std::move(result);return true;
+    const auto triangle_count=static_cast<std::uint32_t>(flat.size()/3);
+    const bool reverse=(descriptor.flags&2)!=0;
+    AvoidZoneDynHullGenerated result;
+    result.vertex_count=static_cast<std::uint32_t>(points.size());   // 00C5DC2A
+    result.vertices=std::move(points);
+    result.triangle_count=triangle_count;
+    if(descriptor.flags&1) {
+        result.polygon_list=false;                               // 00C5DC3A
+        result.index_count=triangle_count*3;
+        result.indices.reserve(result.index_count);
+        for(std::uint32_t i=0;i<triangle_count;++i) for(int k=0;k<3;++k)
+            result.indices.push_back(flat[i*3+(reverse?2-k:k)]);   // memcpy or the 00C5DCA6 loop
+    } else {
+        result.polygon_list=true;                                // 00C5DCEF
+        result.index_count=triangle_count*3+triangle_count;
+        result.indices.reserve(result.index_count);
+        for(std::uint32_t i=0;i<triangle_count;++i) {
+            result.indices.push_back(3);
+            for(int k=0;k<3;++k) result.indices.push_back(flat[i*3+(reverse?2-k:k)]);
+        }
+    }
+    output=std::move(result);return 0;
+}
+
+bool avoid_zone_dyn_hull_triangles_00c5dae0(const V* points,std::uint32_t count,
+                                          AvoidZoneDynHullTriangles& output) {
+    // 00C5DDD0's descriptor: flags 1, stride 0Ch, epsilon [00D7A23C] = 0.001f,
+    // +14h [00D7A238] = 0.01f, limits 1000h.
+    AvoidZoneDynHullDescriptor descriptor;
+    descriptor.flags=1;descriptor.count=count;descriptor.points=points;
+    descriptor.stride=sizeof(V);descriptor.epsilon=0.001f;descriptor.field_14=0.01f;
+    descriptor.limit=0x1000;descriptor.field_1c=0x1000;
+    AvoidZoneDynHullGenerated generated;
+    if(avoid_zone_dyn_hull_generate_00c5dae0(descriptor,generated)) return false;
+    output.points=std::move(generated.vertices);
+    output.indices=std::move(generated.indices);
+    return true;
 }
 void avoid_zone_dyn_hull_data_00c389c0(AvoidZoneDynHullData& data,
     const AvoidZoneDynHullTriangles& hull,const AvoidZoneDynHullMemory& m) {
