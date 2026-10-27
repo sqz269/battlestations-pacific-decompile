@@ -150,6 +150,10 @@ bool weapon_hit_accuracy_category_008387b0(int weapon_kind,
 //       00419010(x0=row[i], y0=float((i+1)*0.1), x1=row[i-1], y1=float(i*0.1), x=accuracy)
 //       with 0.1 the double 00D7A3A0 (0.1f widened);
 //   result = float(r_large * float(1 - w) + r_small * w) (008386C6..008386D8).
+// cc13-p5 OFF switch: ON rounds 1 - w (0083857C FSUBRP) and the two products of
+// the blend (008386CB, 008386D2 FMUL) to float as the main thread's 24-bit x87
+// does. OFF keeps the double evaluation, which rounds the blend once.
+inline constexpr bool kWeaponHitAccuracyBlendPc24Cc13Bound = false;
 float weapon_hit_accuracy_range_fraction_00838530(const WeaponHitAccuracyProfile& profile,
                                                   float target_length,
                                                   float accuracy) noexcept;

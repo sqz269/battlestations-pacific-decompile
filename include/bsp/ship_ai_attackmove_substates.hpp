@@ -163,6 +163,39 @@ ShipAiAttackMoveRingSlot ship_ai_attackmove_ring_slot_009e5530(int index,
                                                                std::uint32_t unit,
                                                                std::uint32_t nested);
 
+// cc13-p5 OFF switch for the slot above. ON rounds as the main thread's 24-bit
+// x87 does: the FDIV at 009E5698 and the FMUL at 009E569E each round to 24
+// bits (OFF rounds the double quotient and product once, at the store), and
+// the heading's FCOS / FSIN at 009E571E / 009E572E are the extended results
+// rounded once to float (OFF uses the float cos / sin). The wraps and the
+// quarter-turn subtract are already exact in double: every constant is a float
+// widened to double.
+inline constexpr bool kAttackMoveRingPc24Cc13Bound = false;
+
+// What the whole 009E5530 calls out of the image.
+struct ShipAiAttackMoveRingConstructHost {
+    virtual ~ShipAiAttackMoveRingConstructHost() = default;
+    // 009E55A1: BSP_Random_UniformFloatRange 00BD2F10, ECX = stream (1), stack
+    // (low 0.0f, high 2.0f [00CE3958]); the ST0 result is stored as a float.
+    virtual float random_uniform_00bd2f10(int stream, float low, float high) = 0;
+    // 009E55C9 / 009E55D4: BSP_ShipAi_RangeCurveClear 00954940 on nested+12C0h
+    // and nested+13B0h.
+    virtual void range_curve_clear_00954940(std::uint8_t* curve) = 0;
+    // 009E55E1: BSP_ShipAiTraffic_ListHeadNode 009DF8F0 (ECX = nested+14A0h);
+    // the EAX node is stored at nested+14A4h.
+    virtual std::uint32_t traffic_list_head_node_009df8f0(std::uint8_t* list) = 0;
+};
+
+// 009E5530 whole, over the nested object's raw memory (at least 14ACh bytes).
+// `owner` is the pointer stored at nested+0h; the second pass reads its
+// +0AA8h. Returns nested (009E575E). Both passes and the scalar seeds follow
+// the listing, with the slot angles rounded per operation as above. Not wired
+// into a host path: the live host builds the ring with
+// ship_ai_attackmove_ring_slot_009e5530 and seeds the scalars in its own
+// structs (ShipAiApproachState, kShipAiApproachTimerSeedBound).
+std::uint8_t* ship_ai_attackmove_ring_construct_whole_009e5530(
+    std::uint8_t* nested, std::uint8_t* owner, ShipAiAttackMoveRingConstructHost& host);
+
 // 009F3240: __thiscall(sub)(float seconds), RET 4, body 009F3240-009F3664,
 // complete. vtable 00D21994 slot +0Ch.
 //
