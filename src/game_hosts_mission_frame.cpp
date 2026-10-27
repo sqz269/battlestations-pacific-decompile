@@ -5493,8 +5493,10 @@ void GameMissionFrameHost::report(long requested_frames) {
             host.frames.entities_updated, host.frames.unit_motion_ticks);
     }
     host.log.notef("summary mission circle tangent unordered (004F4840, sw1 reach): bound=%d "
-        "calls=%llu nan_r=%llu", bsp::circle_tangent_reach().bound ? 1 : 0,
-        bsp::circle_tangent_reach().calls, bsp::circle_tangent_reach().nan_r);
+        "calls=%llu nan_r=%llu pc24_bound=%d pc24_differs=%llu",
+        bsp::circle_tangent_reach().bound ? 1 : 0, bsp::circle_tangent_reach().calls,
+        bsp::circle_tangent_reach().nan_r, bsp::circle_tangent_reach().pc24_bound ? 1 : 0,
+        bsp::circle_tangent_reach().pc24_differs);
     host.log.notef("summary mission world active_byte_bound=%d active=%d traffic_walks=%llu "
         "(packet cc9_construct_world, [game+19CCh]+4ACh)", kWorldActiveByteBound ? 1 : 0,
         host.world.world_gate.enabled ? 1 : 0, host.frames.traffic_walks);
