@@ -18,7 +18,7 @@ namespace bsp {
 //    00ADA174..00ADA196 and 00ADA1D3..00ADA201.
 //  * 00ADB480 bilinear: a = h00 + fu * (h10 - h00), b = h01 + fu * (h11 - h01) and
 //    a + fv * (b - a), each product and sum rounded (00ADB4EC..00ADB542).
-//  * 00ADAA40 cell normal: the inlined 004F9B30 cross (each product rounded before its
+//  * 00ADAA40 cell normal: 004F9B30 (CALL at 00ADAB3E), the cross (each product rounded before its
 //    difference, 004F9B54..004F9BA0) and the 00419440 length sum (xx + yy) + zz, the
 //    partial sum rounded but not stored (0041947D..00419485).
 // 00ADB480 and 00ADAA40 are switched only through the main-thread entries
@@ -86,7 +86,16 @@ namespace bsp {
 //    00ADEC6F..00ADF003.
 //  * 00ADF1B0 tile_walk: the entry times and the cell corners index * 9.375 + base,
 //    00ADF2ED..00ADF514.
-// Movers: the same terrain segment hit points.
+// Movers: the same terrain segment hit points, through the entry times, line_quad and
+// quad_dot only. The 00ADF1B0 corner arm moves no value: FILD i * 9.375 is exact for
+// i <= 32 and both arms round base + product once.
+//
+// pc24w1-sweep1-6, the VSUB vertical walker (00AECC40 under kTerrainVerticalSubwalkBound;
+// src/game_hosts_scene_contents.cpp, no exports):
+//  * 00AEBDE0 vsub_ground bilinear a / b / result; 00AEC090 vsub_cell_edge (00AEAFA0)
+//    s1 * frac + (1 - frac) * s0; 00AEAAA0 vsub_cross (y0 - h0) / (dh - dy); 00AEB7E0
+//    vsub_slope's qword dy; 00AEC120 / 00AEC7C0 y = slope * t + y0; 00AEC3F0 out / n + index.
+// Movers: the near-vertical terrain segment hit points (00ADA240 -> 00AECC40).
 inline constexpr bool kPc24FlightRenderCc13Bound = false;
 
 }  // namespace bsp
