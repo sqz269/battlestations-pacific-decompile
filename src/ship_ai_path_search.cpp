@@ -3,6 +3,8 @@
 // docs/SHIP_AI_PATH_SEARCH.md. Names are hypotheses, not recovered symbols.
 
 #include "bsp/ship_ai_path_search.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -565,11 +567,23 @@ void ship_ai_path_prune_009d9550(ShipAiPathNode& start, ShipAiPathSearchHost& ho
             // 009D9585..009D959B, no intermediate float store: the image sums in
             // the x87 stack. 009D9599 JBE sends a tie, and an unordered pair, to
             // link_plus.
-            const double minus_cost = static_cast<double>(minus->remaining_length) +
-                                      node->link_minus_length + node->cost_minus;
-            const double plus_cost = static_cast<double>(plus->remaining_length) +
-                                     node->link_plus_length + node->cost_plus;
-            keep_minus = plus_cost > minus_cost;
+            if constexpr (kPc24ShipAiCc13Bound) {
+                // 009D9585 FLD minus+3Ch, 009D9588 FADD +34h, 009D958B FADD +4Ch; 009D958E
+                // FLD plus+3Ch, 009D9591 FADD +38h, 009D9594 FADD +50h: each FADD rounds to
+                // 24 bits on the main thread, nothing is stored.
+                using cc13x87::x87_add24;
+                const double minus_cost = x87_add24(
+                    x87_add24(minus->remaining_length, node->link_minus_length), node->cost_minus);
+                const double plus_cost = x87_add24(
+                    x87_add24(plus->remaining_length, node->link_plus_length), node->cost_plus);
+                keep_minus = plus_cost > minus_cost;
+            } else {
+                const double minus_cost = static_cast<double>(minus->remaining_length) +
+                                          node->link_minus_length + node->cost_minus;
+                const double plus_cost = static_cast<double>(plus->remaining_length) +
+                                         node->link_plus_length + node->cost_plus;
+                keep_minus = plus_cost > minus_cost;
+            }
         }
         if (keep_minus) {  // 009D959D, drop link_plus
             host.release_path_node_vtable0(plus);
