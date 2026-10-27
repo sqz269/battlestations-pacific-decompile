@@ -287,9 +287,12 @@ float ship_ai_path_remaining_length_009d9e50(ShipAiPathPlanBlock& plan,
 // 009D5930) takes +1 when plus < minus or the two route sums are unordered (a NaN cost, or
 // +inf and -inf in one sum); OFF's `plus < minus` gives -1 there. ON: `!(plus >= minus)`,
 // each sum rounded per FADD to 24 bits and stored as float as the image does. Only unordered
-// sums (and sums whose x87 intermediate would leave float range) differ. Live through every
-// C++ caller: 009D5930 (the 009E3C00 follower in ship_ai_path_follower.cpp, the
-// cc13_seg67b.cpp walks), 009D9E50 remaining length, the 009E3C6C cursor walk, the
+// sums (and sums whose x87 intermediate would leave float range) differ; a subnormal sum is
+// rounded twice by static_cast<float>(x87_add24) (24-bit significand, then float), which
+// the image's single FSTP does not do, a documentation-only gap. Live through every
+// C++ caller: 009D5930 (the 009E3C00 follower in ship_ai_path_follower.cpp, and the
+// cc13_seg67b.cpp 009D5AE0/5B90 walks, whose live entry is game_hosts_ship_ai.cpp:8728/8729,
+// override_11d4/11d5), 009D9E50 remaining length, the 009E3C6C cursor walk, the
 // ship_ai_path_point.cpp walk and the game_hosts_ship_ai.cpp arc-centre log walk.
 inline constexpr bool kShipAiPathNodeDirectionUnorderedCc13Bound = false;
 std::int32_t ship_ai_path_node_direction_009d9e6c(const ShipAiPathNode& node) noexcept;
