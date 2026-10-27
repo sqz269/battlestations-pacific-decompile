@@ -21,6 +21,13 @@ namespace bsp {
 //     00419510 normalize_00419510 (plane_follow_law.cpp)
 //     009BFEE0 plane_follow_geometry_009bfee0 with its Phase A
 //              plane_follow_phase_a_009c0251 (plane_follow_law.cpp)
+//   pc24w1-sweep3-2 (depth charge; sites listed atop depth_charge_task_cc13.cpp):
+//     009A3300, 009A5F50, 009A65F0, 009A3770, 009A3CF0, 009A4010, 009A4940
+//   pc24w1-sweep3-3 (sites listed in each .cpp):
+//     0041BC20 avoid_zone_sample (game_hosts_avoid_zones.cpp)
+//     009B5C80 level_bomb_aim_tick and 009B6670 level_bomb_prepare_tick
+//              (plane_level_bomb_task.cpp); dogfight_task.cpp stays under
+//              kDogfightPc24Cc13Bound / kFollowWaitFloatHelpersCc13Bound
 //   Other copies of the same image routines are narrowed by their own
 //   packets, not here: 0042B2F0 in plane_wanderer.cpp (pc24w1-sweep3-4) and
 //   game_hosts_units.cpp avoid_len (pc24w1-sweep3-5); 009AC190's bearing in
