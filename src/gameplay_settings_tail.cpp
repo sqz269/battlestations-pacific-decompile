@@ -4,6 +4,8 @@
 #include "bsp/gameplay_settings_tail.hpp"
 
 #include "bsp/dive_bomb_task.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_gunnery_cc13.hpp"
 
 namespace bsp {
 
@@ -153,7 +155,15 @@ float weapon_hit_accuracy_sample_008383d0(const WeaponHitAccuracyProfile& profil
         if (i < 0) i = 0;
         if (i > 8) i = 8;
         // 00838485..00838496: d = t * 10.0 - (i + 1), float-stored.
-        const float d = static_cast<float>(static_cast<double>(t) * 10.0 - static_cast<double>(i + 1));
+        float d = 0.0f;
+        if constexpr (kPc24GunneryCc13Bound) {
+            // PC24 (pc24w1-gunnery-2): 00838485 FMUL 10.0 [00CE3DC0] rounds to 24 bits
+            // before 00838492 FISUB.
+            d = static_cast<float>(cc13x87::x87_sub24(cc13x87::x87_mul24(t, 10.0),
+                                                      static_cast<double>(i + 1)));
+        } else {
+            d = static_cast<float>(static_cast<double>(t) * 10.0 - static_cast<double>(i + 1));
+        }
         if (0.0f > d) {            // 008384A0 FCOMIP, JBE not taken
             b = 0.0f;
         } else if (d > 1.0f) {     // 0083851A COMISS, JBE not taken

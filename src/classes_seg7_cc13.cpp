@@ -1,4 +1,5 @@
 #include "bsp/classes_seg7_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cstring>
 
@@ -6,8 +7,8 @@ namespace bsp::cc13_seg7 {
 
 namespace {
 
-// One field-copy step of the record copies: 'd' dword, 'f' float (FLD/FSTP),
-// 'b' byte.
+// One field-copy step of the record copies: 'd' dword, 'f' float (FLD/FSTP DWORD, which
+// quiets a signalling NaN; cc13-fixture10), 'b' byte.
 struct CopyStep {
     char kind;
     std::uint32_t offset;
@@ -18,7 +19,10 @@ Object copy_record(Object dest, Object source, const CopyStep (&steps)[N]) {
     for (const CopyStep& step : steps) {
         switch (step.kind) {
         case 'd': native_at<std::uint32_t>(dest, step.offset) = native_at<std::uint32_t>(source, step.offset); break;
-        case 'f': native_at<float>(dest, step.offset) = native_at<float>(source, step.offset); break;
+        case 'f':
+            native_at<std::uint32_t>(dest, step.offset) =
+                cc13x87::x87_fld_fstp_bits(native_at<std::uint32_t>(source, step.offset));
+            break;
         default: native_at<std::uint8_t>(dest, step.offset) = native_at<std::uint8_t>(source, step.offset); break;
         }
     }

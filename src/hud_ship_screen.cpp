@@ -1,5 +1,8 @@
 #include "bsp/hud_ship_screen.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_hudgui_cc13.hpp"
+
 #include <cmath>
 
 // Packet cc9_ship_screen_update, parts 1 and 2; packet cc9_ship_screen_parts34,
@@ -94,7 +97,13 @@ void ship_screen_flashes_0064abd0(ShipScreenState& screen, ShipScreenHost& host,
         for (float& v : screen.flash_intensity) v = 0.0f;
     }
     // 0064ABFA..0064AC0C: one factor, float-stored.
-    const float factor = static_cast<float>(1.0 - static_cast<double>(dt) * kFlashDecayRate);
+    float factor = 0.0f;
+    if constexpr (kPc24HudGuiCc13Bound) {
+        // 0064ABFE FMUL qword 4.0 rounds, then 0064AC08 FSUBRP ST2 (DE E2) is 1.0 - it.
+        factor = static_cast<float>(cc13x87::x87_sub24(1.0, cc13x87::x87_mul24(dt, kFlashDecayRate)));
+    } else {
+        factor = static_cast<float>(1.0 - static_cast<double>(dt) * kFlashDecayRate);
+    }
     for (float& v : screen.flash_intensity) v = v * factor;         // 0064AC10..0064AC3F
     for (int i = 0; i < 4; ++i) {
         const float v = screen.flash_intensity[i];
@@ -122,13 +131,24 @@ void ship_screen_stick_0064a9f0(ShipScreenHost& host, float ease) {
         angle = kStickBackAngle;
     } else if (t > 0.0f) {
         angle = static_cast<float>(static_cast<double>(kStickFullAngle) * t);   // 0064AA68
+    } else if constexpr (kPc24HudGuiCc13Bound) {
+        // 0064AA76 FMUL qword rounds, then 0064AA7C FADD ST0,ST0.
+        const double scaled = cc13x87::x87_mul24(t, kStickBackScale);
+        angle = static_cast<float>(cc13x87::x87_add24(scaled, scaled));
     } else {
         const double scaled = static_cast<double>(t) * kStickBackScale;       // 0064AA73
         angle = static_cast<float>(scaled + scaled);
     }
     if (ease != 0.0f) {                                             // 0064AA87..0064AA8E
         const float current = host.rotation(ShipScreenWidget::Stick);   // [+48h]+48h
-        angle = static_cast<float>((static_cast<double>(angle) - current) * ease + current);
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // 0064AAA3 FSUBP ST2 (DE EA) angle - current, 0064AAA9 FMULP by ease,
+            // 0064AAAB FADDP current, each rounded.
+            angle = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_mul24(cc13x87::x87_sub24(angle, current), ease), current));
+        } else {
+            angle = static_cast<float>((static_cast<double>(angle) - current) * ease + current);
+        }
     }
     host.set_rotation(ShipScreenWidget::Stick, angle);              // 0064AABF, +44h
 }
@@ -308,10 +328,22 @@ float ship_screen_dir_0064aad0(ShipScreenHost& host) {
     const float x = static_cast<float>(-static_cast<double>(host.unit_ordered_rudder()));
     float r;
     if (static_cast<double>(x) > kDirDeadZone) {                      // 0064AAF0 FCOMI
-        const float v = static_cast<float>((static_cast<double>(x) - kDirDeadZone) / kDirRange);
+        float v = 0.0f;
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // 0064AAF4 FSUBRP (DE E1) x - 0.05 rounds, then 0064AAF6 FDIV qword.
+            v = static_cast<float>(cc13x87::x87_div24(cc13x87::x87_sub24(x, kDirDeadZone), kDirRange));
+        } else {
+            v = static_cast<float>((static_cast<double>(x) - kDirDeadZone) / kDirRange);
+        }
         r = (static_cast<double>(v) > 1.0) ? 1.0f : v;                // 0064AB00..0064AB16
     } else if (kDirDeadZoneNeg > static_cast<double>(x)) {            // 0064AB1E
-        const float v = static_cast<float>((static_cast<double>(x) + kDirDeadZone) / kDirRange);
+        float v = 0.0f;
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // 0064AB28 FADDP x + 0.05 rounds, then 0064AB2A FDIV qword.
+            v = static_cast<float>(cc13x87::x87_div24(cc13x87::x87_add24(x, kDirDeadZone), kDirRange));
+        } else {
+            v = static_cast<float>((static_cast<double>(x) + kDirDeadZone) / kDirRange);
+        }
         r = (kDirFloor > static_cast<double>(v)) ? kDirFloorF : v;    // 0064AB34..0064AB44
     } else {
         r = 0.0f;                                                     // 0064AB50
@@ -319,8 +351,16 @@ float ship_screen_dir_0064aad0(ShipScreenHost& host) {
     float offset = 0.0f;                                              // 0064AB61
     if (r != 0.0f) {                                                  // 0064AB55..0064AB67
         const float bias = r > 0.0f ? kDirBiasPos : kDirBiasNeg;      // 0064AB69..0064AB78
-        offset = static_cast<float>(static_cast<double>(bias) * kPiF / kDegrees +
-                                    static_cast<double>(r) * kDirScale);   // 0064AB86..0064ABA1
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // 0064AB8A FMUL pi, 0064AB90 FDIV 180, 0064AB99 FMUL r * scale, 0064AB9F FADDP;
+            // each op rounds.
+            offset = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_div24(cc13x87::x87_mul24(bias, kPiF), kDegrees),
+                cc13x87::x87_mul24(r, kDirScale)));
+        } else {
+            offset = static_cast<float>(static_cast<double>(bias) * kPiF / kDegrees +
+                                        static_cast<double>(r) * kDirScale);   // 0064AB86..0064ABA1
+        }
     }
     const float angle = static_cast<float>(kTwoPiF - offset);         // 0064ABAC FSUBR
     host.set_rotation(ShipScreenWidget::Dir, angle);                  // 0064ABC3, +44h
@@ -350,9 +390,16 @@ void gauge_write_0043b2f0(ShipScreenState::Gauge& gauge, int index, ShipScreenHo
 }
 }  // namespace
 
-// Packet D4: OFF until cc9 pairs it. ON rounds the two gauge products to float before their adds,
-// as the 24-bit x87 does at 0043B3EC and 0043B40C.
-inline constexpr bool kShipScreenGaugeProductRoundCc13Bound = false;
+// Packet D4. ON rounds the two gauge products to float before their adds, as the 24-bit x87
+// does at 0043B3EC and 0043B40C. ON by mechanism (cc9-sweep1b): HUD-only; 18 WINS-row pairs
+// gameplay identical with 3-913 differing ticks per row.
+inline constexpr bool kShipScreenGaugeProductRoundCc13Bound = true;
+
+static ShipScreenGaugeReach g_ship_screen_gauge_reach{kShipScreenGaugeProductRoundCc13Bound};
+
+const ShipScreenGaugeReach& ship_screen_gauge_reach() noexcept {
+    return g_ship_screen_gauge_reach;
+}
 
 void ship_screen_gauge_0043b370(ShipScreenState::Gauge& gauge, int index, ShipScreenHost& host,
                                 float value, float dt) {
@@ -376,21 +423,21 @@ void ship_screen_gauge_0043b370(ShipScreenState::Gauge& gauge, int index, ShipSc
     // x87 stack. The main thread runs the x87 at 24-bit precision, so each FMUL already rounds
     // to a float significand before its FADD. ON rounds the products; OFF keeps the 53-bit
     // product (the earlier reading, packet D4).
-    float rate = 0.0f;
-    float next = 0.0f;
-    if constexpr (kShipScreenGaugeProductRoundCc13Bound) {
-        const float gained_gap = static_cast<float>(static_cast<double>(gain) * gap);
-        rate = static_cast<float>(static_cast<double>(gained_gap) + gauge.rate_14);
-        rate = static_cast<float>(static_cast<double>(rate) * kGaugeDamping);     // 0043B3FB
-        gauge.rate_14 = rate;                                         // 0043B409
-        const float step = static_cast<float>(static_cast<double>(gain) * rate);
-        next = static_cast<float>(static_cast<double>(step) + gauge.value_10);
-    } else {
-        rate = static_cast<float>(static_cast<double>(gain) * gap + gauge.rate_14);
-        rate = static_cast<float>(static_cast<double>(rate) * kGaugeDamping);     // 0043B3FB
-        gauge.rate_14 = rate;                                         // 0043B409
-        next = static_cast<float>(static_cast<double>(gain) * rate + gauge.value_10);
-    }
+    // Both forms are computed so the reach counter (sw1, log only) sees how often they differ.
+    const float gained_gap = static_cast<float>(static_cast<double>(gain) * gap);
+    float rate_on = static_cast<float>(static_cast<double>(gained_gap) + gauge.rate_14);
+    rate_on = static_cast<float>(static_cast<double>(rate_on) * kGaugeDamping);   // 0043B3FB
+    const float step_on = static_cast<float>(static_cast<double>(gain) * rate_on);
+    const float next_on = static_cast<float>(static_cast<double>(step_on) + gauge.value_10);
+    float rate_off = static_cast<float>(static_cast<double>(gain) * gap + gauge.rate_14);
+    rate_off = static_cast<float>(static_cast<double>(rate_off) * kGaugeDamping); // 0043B3FB
+    const float next_off = static_cast<float>(static_cast<double>(gain) * rate_off
+                                              + gauge.value_10);
+    ++g_ship_screen_gauge_reach.ticks;
+    if (rate_on != rate_off || next_on != next_off) ++g_ship_screen_gauge_reach.differs;
+    const float rate = kShipScreenGaugeProductRoundCc13Bound ? rate_on : rate_off;
+    const float next = kShipScreenGaugeProductRoundCc13Bound ? next_on : next_off;
+    gauge.rate_14 = rate;                                             // 0043B409
     gauge.value_10 = next;                                            // 0043B419
     gauge_write_0043b2f0(gauge, index, host, next);
     gauge.primed_18 = true;                                           // 0043B424

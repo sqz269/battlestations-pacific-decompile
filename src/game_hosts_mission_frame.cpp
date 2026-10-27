@@ -24,6 +24,8 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hint_passes.hpp"
+#include "bsp/plane_follow_law.hpp"
+#include "bsp/sw1b_switch_reach.hpp"
 #include "bsp/game_profile_owner.hpp"
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq2
 #include "bsp/game_observer_runtime.hpp"
@@ -59,6 +61,8 @@
 #include "bsp/mission_state_entry.hpp"
 #include "bsp/ocean_spectrum.hpp"
 #include "bsp/mission_state_frame.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_missionlua_cc13.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/render_tail.hpp"
 #include "bsp/session_polls.hpp"
@@ -1730,11 +1734,21 @@ public:
                     units.unit_position_00fc(leader, qx, qy, qz);
                     // 00977A8C..00977AB8: each difference is stored to a float.
                     const float dx = sx - qx, dy = sy - qy, dz = sz - qz;
-                    // 00977AC8..00977AD8: (dx*dx + dy*dy) + dz*dz on the x87 at
-                    // 53-bit precision, FSTP to a float.
-                    const double wide = (static_cast<double>(dx) * dx
-                        + static_cast<double>(dy) * dy) + static_cast<double>(dz) * dz;
-                    const float d2 = static_cast<float>(wide);
+                    // 00977AC8..00977AD8: (dx*dx + dy*dy) + dz*dz on the x87,
+                    // FSTP to a float.
+                    float d2;
+                    if constexpr (kPc24MissionLuaCc13Bound) {
+                        // The main thread runs at PC24: each FMULP/FMUL ST0 and
+                        // FADDP rounds to 24 bits.
+                        d2 = static_cast<float>(cc13x87::x87_add24(
+                            cc13x87::x87_add24(cc13x87::x87_mul24(dx, dx),
+                                               cc13x87::x87_mul24(dy, dy)),
+                            cc13x87::x87_mul24(dz, dz)));
+                    } else {
+                        const double wide = (static_cast<double>(dx) * dx
+                            + static_cast<double>(dy) * dy) + static_cast<double>(dz) * dz;
+                        d2 = static_cast<float>(wide);
+                    }
                     // 00977AE0 FLD double [00D09FE8] / FCOMI / JA: 4.0e6 > d2.
                     if (4.0e6 > static_cast<double>(d2)) hit = true;
                 }
@@ -2008,6 +2022,7 @@ public:
                     const auto clamp1 = [](float v) {
                         return v > 1.0f ? 1.0 : (v < -1.0f ? -1.0 : static_cast<double>(v));
                     };
+                    // pc24-lint: allow diagnostic log line (BSP_HULL_ATTITUDE_TRACE); no image arithmetic
                     owner_.log.notef("hull attitude: t=%.2f unit=%s roll=%.2f pitch=%.2f "
                         "tilt=%.2f y=%.2f alive=%d",
                         static_cast<double>(owner_.units->summary().simulated_seconds),
@@ -5490,6 +5505,16 @@ void GameMissionFrameHost::report(long requested_frames) {
             "while every pass that reads the world object itself still ticks none, because "
             "construct_world 004de610 is a load record", scene.created,
             host.frames.entities_updated, host.frames.unit_motion_ticks);
+    }
+    host.log.notef("summary mission circle tangent unordered (004F4840, sw1 reach): bound=%d "
+        "calls=%llu nan_r=%llu pc24_bound=%d pc24_differs=%llu",
+        bsp::circle_tangent_reach().bound ? 1 : 0, bsp::circle_tangent_reach().calls,
+        bsp::circle_tangent_reach().nan_r, bsp::circle_tangent_reach().pc24_bound ? 1 : 0,
+        bsp::circle_tangent_reach().pc24_differs);
+    for (int k = 0; k < static_cast<int>(bsp::Sw1bReach::Count); ++k) {
+        const auto id = static_cast<bsp::Sw1bReach>(k);
+        host.log.notef("summary mission switch reach (sw1b): %s sites=%llu differs=%llu",
+            bsp::sw1b_reach_name(id), bsp::sw1b_reach(id).sites, bsp::sw1b_reach(id).differs);
     }
     host.log.notef("summary mission world active_byte_bound=%d active=%d traffic_walks=%llu "
         "(packet cc9_construct_world, [game+19CCh]+4ACh)", kWorldActiveByteBound ? 1 : 0,

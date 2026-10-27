@@ -135,5 +135,12 @@ void rocket_set_homing_target_0080aa20(RocketHomingBlock& block, std::size_t tar
 
 // 0042AE80, __thiscall(float v[3]; float s), RET 4: v /= s, each a float store.
 void vector3_divide_in_place_0042ae80(std::array<float, 3>& v, float s) noexcept;
+// The rocket air step (via game_hosts_gunnery) runs on the main thread at 24-bit precision
+// control, where each FDIV rounds to 24 bits with the extended exponent before the FSTP
+// DWORD: a denormal quotient is rounded twice (cc13-fixture9, docs/CC13_FIXTURE_PASS_9.md).
+// vector3_divide_in_place_pc24_0042ae80 models that and is fixture-tested;
+// vector3_divide_in_place_0042ae80 takes it once this is flipped.
+inline constexpr bool kVector3DivideInPlacePc24Cc13Bound = false;
+void vector3_divide_in_place_pc24_0042ae80(std::array<float, 3>& v, float s) noexcept;
 
 }  // namespace bsp

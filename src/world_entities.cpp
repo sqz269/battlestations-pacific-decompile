@@ -1,4 +1,6 @@
 #include "bsp/world_entities.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_hudgui_cc13.hpp"
 
 #include <cmath>
 
@@ -123,8 +125,14 @@ void update_markers_006dc1a0(WorldTickState& state, WorldTickHost& host) {
     // fourth is rewritten before the setter runs.
     for (const MarkerEntry& entry : markers.tinted_highlights) {
         MarkerColor color = host.marker_get_color(entry.target);
-        color.rgba[3] = static_cast<float>(
-            static_cast<double>(magnitude) * kMarkerAlphaPulseScale + kMarkerAlphaPulseBias);
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // PC24: 006DC552 FMUL [00CEC9D8] rounds to 24 bits before 006DC561 FADD [00D7A348].
+            color.rgba[3] = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_mul24(magnitude, kMarkerAlphaPulseScale), kMarkerAlphaPulseBias));
+        } else {
+            color.rgba[3] = static_cast<float>(
+                static_cast<double>(magnitude) * kMarkerAlphaPulseScale + kMarkerAlphaPulseBias);
+        }
         host.marker_set_color(entry.target, color);
     }
 }

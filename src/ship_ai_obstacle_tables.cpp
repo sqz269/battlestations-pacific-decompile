@@ -10,6 +10,8 @@
 
 #include <cmath>
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/unit_motion.hpp" // unit_clamp_00415690, unit_step_towards_0042ac60
 #include "bsp/unit_rudder.hpp" // clamped_interpolate_00419010, the wrapped angles
 
@@ -47,9 +49,19 @@ int clamp_bin(int bin) noexcept {
 // FLD 0.5; FADD ST(3),ST(0); FXCH ST(3); CALL 00BF7420. The helper at 00BF7420
 // is CVTTSD2SI (00BF7435), so the conversion truncates toward zero.
 int ship_ai_throttle_profile_index_009d6b40(float value) noexcept {
-    const double scaled = (static_cast<double>(value) + kShipAiThrottleProfileOrigin)
-                              * kShipAiThrottleProfileScale
-                          + kShipAiThrottleProfileRound;
+    double scaled = 0.0;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // pc24w1-sweep2-6: the FADD, FMUL and FADD of 0.5 each round at PC24
+        // (009D6B85 / 009D6B8D / 009D6B95, and the same at 009D6BA0-009D6BB9).
+        scaled = cc13x87::x87_add24(
+            cc13x87::x87_mul24(cc13x87::x87_add24(value, kShipAiThrottleProfileOrigin),
+                               kShipAiThrottleProfileScale),
+            kShipAiThrottleProfileRound);
+    } else {
+        scaled = (static_cast<double>(value) + kShipAiThrottleProfileOrigin)
+                     * kShipAiThrottleProfileScale
+                 + kShipAiThrottleProfileRound;
+    }
     return static_cast<int>(scaled);
 }
 

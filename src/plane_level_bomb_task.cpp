@@ -8,6 +8,12 @@
 #include "bsp/vector_helpers.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/cc13_x87_model.hpp"
+// kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-3): 009B5C80
+// level_bomb_aim_tick_009b5c80 (the +-0.5 doubling at 009B5FA2/009B5FDC and the
+// pitch scale 009B6271-009B6281); 009B6670 level_bomb_prepare_tick_009b6670 (q at
+// 009B69C6-009B69E8 and the blend at 009B6A32-009B6A53).
+#include "bsp/pc24_planetasks_cc13.hpp"
 
 // docs/SQUADRON_LAND_TASK.md section 5ee. Names are hypotheses; every address
 // below is the instruction the line reproduces.
@@ -217,9 +223,21 @@ LevelBombAimCommand level_bomb_aim_tick_009b5c80(const LevelBombAimInputs& in,
             const float t = static_cast<float>(-in.probe.out_a[2] * kAimProbeVert);
             vert = (-1.0f > t) ? -1.0f : (t > 1.0f ? 1.0f : t);       // 009B5F79-009B5FC7
             if (s > 0.5f) {
-                s = static_cast<float>((s - 0.5) + (s - 0.5));          // 009B5FA2
+                if constexpr (kPc24PlaneTasksCc13Bound) {
+                    // FSUB qword 0.5, FADD ST0,ST0, FSTP float.
+                    const double h = cc13x87::x87_sub24(s, 0.5);
+                    s = static_cast<float>(cc13x87::x87_add24(h, h));
+                } else {
+                    s = static_cast<float>((s - 0.5) + (s - 0.5));          // 009B5FA2
+                }
             } else if (-0.5f > s) {
-                s = static_cast<float>((s + 0.5) + (s + 0.5));          // 009B5FDC
+                if constexpr (kPc24PlaneTasksCc13Bound) {
+                    // FADD qword 0.5, FADD ST0,ST0, FSTP float.
+                    const double h = cc13x87::x87_add24(s, 0.5);
+                    s = static_cast<float>(cc13x87::x87_add24(h, h));
+                } else {
+                    s = static_cast<float>((s + 0.5) + (s + 0.5));          // 009B5FDC
+                }
             } else {
                 s = 0.0f;
             }
@@ -252,8 +270,15 @@ LevelBombAimCommand level_bomb_aim_tick_009b5c80(const LevelBombAimInputs& in,
         out.pitch_base = base;
         out.pitch_low = kAimPitchLow;
         out.pitch_high = g.impact_distance;
-        const float x = static_cast<float>(
-            dy / (static_cast<double>(g.impact_distance) - kAimDenomBias));
+        float x;
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009B6279 FSUB qword 299, 009B627F FDIVP (DE F9: dy / that), FSTP float.
+            x = static_cast<float>(cc13x87::x87_div24(
+                dy, cc13x87::x87_sub24(g.impact_distance, kAimDenomBias)));
+        } else {
+            x = static_cast<float>(
+                dy / (static_cast<double>(g.impact_distance) - kAimDenomBias));
+        }
         out.pitch_scale = clamped_interpolate_00419010(0.05f, 0.1f, 0.35f, 1.0f, x);
     }
     // 009B62E8-009B6384: the speed.
@@ -464,13 +489,27 @@ LevelBombPrepareTickResult level_bomb_prepare_tick_009b6670(
         } else {
             b = clamped_interpolate_00419010(0.8f, 0.5235988f, 1.4f, 0.17453294f, out.ratio);
         }
-        float q = static_cast<float>(
-            (1.2000000476837158 - static_cast<double>(h) / static_cast<double>(b)) * 5.0);   // 009B69C6-009B69E8
-        q = 0.0f > q ? 0.0f : q;                                      // 009B69EC 00415550
-        const double e = static_cast<double>(clamped_interpolate_00419010(
-            1.4f, 1.0f, 0.5f, 0.0f, out.ratio)) - 1.0;                // 009B6A2D-009B6A40
-        const float c = q > 1.0f ? 1.0f : q;                          // 009B6A44 00415510
-        s.blend_8c = static_cast<float>(static_cast<double>(c) * e + 1.0);   // 009B6A49-009B6A53
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009B69CE FDIV, 009B69DC FSUBR qword 1.2, 009B69E2 FMUL qword 5, FSTP
+            // float; 009B6A32 FSUB qword 1 (stored as a double, already 24-bit);
+            // 009B6A49 FMUL, 009B6A4D FADD qword 1, FSTP float.
+            using namespace cc13x87;
+            float q = static_cast<float>(x87_mul24(
+                x87_sub24(1.2000000476837158, x87_div24(h, b)), 5.0));
+            q = 0.0f > q ? 0.0f : q;                                  // 009B69EC 00415550
+            const double e = x87_sub24(clamped_interpolate_00419010(
+                1.4f, 1.0f, 0.5f, 0.0f, out.ratio), 1.0);
+            const float c = q > 1.0f ? 1.0f : q;                      // 009B6A44 00415510
+            s.blend_8c = static_cast<float>(x87_add24(x87_mul24(c, e), 1.0));
+        } else {
+            float q = static_cast<float>(
+                (1.2000000476837158 - static_cast<double>(h) / static_cast<double>(b)) * 5.0);   // 009B69C6-009B69E8
+            q = 0.0f > q ? 0.0f : q;                                      // 009B69EC 00415550
+            const double e = static_cast<double>(clamped_interpolate_00419010(
+                1.4f, 1.0f, 0.5f, 0.0f, out.ratio)) - 1.0;                // 009B6A2D-009B6A40
+            const float c = q > 1.0f ? 1.0f : q;                          // 009B6A44 00415510
+            s.blend_8c = static_cast<float>(static_cast<double>(c) * e + 1.0);   // 009B6A49-009B6A53
+        }
     }
     out.runs_follow_tick = true;                                      // 009B6A75 009C1FD0
     // 009B6A83: [approach+1Ch]+40h = 0, the gun cone (no host cell).

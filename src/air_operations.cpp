@@ -2,6 +2,9 @@
 // Addresses in comments are the native sites each rule was read from.
 #include "bsp/air_operations.hpp"
 #include "bsp/launch_ver_cc13.hpp"
+#include "bsp/plane_task_reach_sw3.hpp"
+
+#include <cstring>
 
 namespace bsp {
 
@@ -430,9 +433,13 @@ void air_ops_push_assign_queue_006cc7b0(AirOpsDeck& deck, std::uint32_t squadron
     deck.assign_queue.push_back(entry);
 }
 
-std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squadron,
-                                             std::uint32_t vehicle_class,
-                                             std::int32_t plane_count) noexcept {
+namespace {
+// Both arms of kAirOpsArriveSquadronWalkCc13Bound, so the sw3 reach counter
+// can run the other one on a copy of the deck.
+template <bool kImageWalk>
+std::size_t air_ops_arrive_squadron_impl(AirOpsDeck& deck, std::uint32_t squadron,
+                                         std::uint32_t vehicle_class,
+                                         std::int32_t plane_count) noexcept {
     const std::size_t none = deck.slots.size();
     std::size_t chosen = none;
     // DEFECT ROW (cc13-D2). 006C5736-006C577B (the decompile agrees): the walk
@@ -445,7 +452,7 @@ std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squ
     // squadron, so the squadron then holds two slots. The OFF arm takes the
     // holder and compares the count with the queued plane_count.
     // kAirOpsArriveSquadronWalkCc13Bound gives the image's walk.
-    if constexpr (kAirOpsArriveSquadronWalkCc13Bound) {
+    if constexpr (kImageWalk) {
         const std::int32_t live = squadron_plane_count(squadron);   // squadron+3CCh
         for (std::size_t index = 0; index < deck.slots.size(); ++index) {
             const AirOpsSlot& slot = deck.slots[index];
@@ -510,7 +517,7 @@ std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squ
     // Passing slot.class_field_134 as the class default is safe: the walk only
     // picks a slot already holding this class, so 006C0F00's class-change arm
     // (the +4h/+10h writes) is never taken, and the argument is never read.
-    if constexpr (kAirOpsArriveSquadronWalkCc13Bound) {
+    if constexpr (kImageWalk) {
         std::vector<std::int32_t> live(deck.slots.size(), 0);
         for (std::size_t i = 0; i < deck.slots.size(); ++i) {
             live[i] = squadron_plane_count(deck.slots[i].launched_squadron);
@@ -540,6 +547,36 @@ std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squ
     // broadcast sends only to networked peers. See the cc13-tier1 row
     // air_ops_publish_slot_record_only_006bf150. DOCUMENTED.
     slot.launched_squadron = squadron;
+    return chosen;
+}
+
+bool air_ops_slots_differ(const AirOpsSlot& a, const AirOpsSlot& b) noexcept {
+    return a.vehicle_class != b.vehicle_class || a.assigned_count != b.assigned_count
+        || a.requested_count != b.requested_count || a.class_field_134 != b.class_field_134
+        || a.launched_squadron != b.launched_squadron || a.state != b.state
+        || std::memcmp(&a.timer, &b.timer, sizeof a.timer) != 0
+        || a.launch_requested != b.launch_requested;
+}
+} // namespace
+
+std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squadron,
+                                             std::uint32_t vehicle_class,
+                                             std::int32_t plane_count) noexcept {
+    AirOpsDeck other = deck;
+    const std::size_t chosen = air_ops_arrive_squadron_impl<kAirOpsArriveSquadronWalkCc13Bound>(
+        deck, squadron, vehicle_class, plane_count);
+    std::size_t other_chosen;
+    {   // sw3 reach: the other arm on a copy of the deck.
+        PlaneTaskReachShadow shadow;
+        other_chosen = air_ops_arrive_squadron_impl<!kAirOpsArriveSquadronWalkCc13Bound>(
+            other, squadron, vehicle_class, plane_count);
+    }
+    bool slots_differ = other.slots.size() != deck.slots.size();
+    for (std::size_t i = 0; !slots_differ && i < deck.slots.size(); ++i) {
+        slots_differ = air_ops_slots_differ(deck.slots[i], other.slots[i]);
+    }
+    plane_task_reach_count(g_plane_task_reach_sw3.airops_arrive, chosen != other_chosen,
+                           slots_differ);
     return chosen;
 }
 
@@ -948,10 +985,14 @@ std::size_t air_ops_return_squadron_slot_006c5950(AirOpsDeck& deck,
         // (kAirOpsReturnSlotClassArmCc13Bound) takes class+134h through the
         // reader the host installs, and keeps the old value while none is
         // installed.
+        // sw3 reach: the reader is consulted in both builds (a pure class read).
+        const std::int32_t image_field = (vehicle_class != 0u && g_class_default_arm != nullptr)
+            ? g_class_default_arm(vehicle_class, g_class_default_arm_context)
+            : class_field;
+        plane_task_reach_count(g_plane_task_reach_sw3.airops_return, image_field != class_field,
+                               g_class_default_arm != nullptr);
         if constexpr (kAirOpsReturnSlotClassArmCc13Bound) {
-            slot.class_field_134 = (vehicle_class != 0u && g_class_default_arm != nullptr)
-                ? g_class_default_arm(vehicle_class, g_class_default_arm_context)
-                : class_field;
+            slot.class_field_134 = image_field;
         } else {
             slot.class_field_134 = class_field;
         }

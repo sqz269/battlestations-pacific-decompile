@@ -1,4 +1,6 @@
 #include "bsp/award_trackers.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_hudgui_cc13.hpp"
 
 namespace bsp {
 
@@ -164,12 +166,33 @@ ZoneProximity scan_capture_zones_00692fd0(float px, float py, float pz,
         const float dx = px - zone.x;
         const float dy = py - zone.y;
         const float dz = pz - zone.z;
-        const double distance_squared = static_cast<double>(dz) * dz
-            + static_cast<double>(dx) * dx + static_cast<double>(dy) * dy;
+        double distance_squared = 0.0;
+        bool outside_landing = false;
+        double capture_squared = 0.0;
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // PC24: 00693189..006931AB (dy*dy + dx*dx) + dz*dz stored as a float;
+            // the int radius FILD stored as a float (00693185), its square stored
+            // (006931B9); JA at 006931C7 skips when d2 > r2 (unordered does not).
+            // 00693238..00693280 repeats it for the capture radius (+7A0h).
+            using namespace cc13x87;
+            distance_squared = static_cast<float>(x87_add24(
+                x87_add24(x87_mul24(dy, dy), x87_mul24(dx, dx)), x87_mul24(dz, dz)));
+            const float landing = static_cast<float>(zone.landing_radius);
+            const float landing_squared = static_cast<float>(x87_mul24(landing, landing));
+            outside_landing = distance_squared > landing_squared;
+            const float capture = static_cast<float>(zone.capture_radius);
+            capture_squared = static_cast<float>(x87_mul24(capture, capture));
+        } else {
+            distance_squared = static_cast<double>(dz) * dz
+                + static_cast<double>(dx) * dx + static_cast<double>(dy) * dy;
 
-        // 0069317f: FILD the int radius, then FMUL ST0,ST0.
-        const double landing = static_cast<double>(zone.landing_radius);
-        if (!(distance_squared <= landing * landing)) {
+            // 0069317f: FILD the int radius, then FMUL ST0,ST0.
+            const double landing = static_cast<double>(zone.landing_radius);
+            outside_landing = !(distance_squared <= landing * landing);
+            const double capture = static_cast<double>(zone.capture_radius);
+            capture_squared = capture * capture;
+        }
+        if (outside_landing) {
             continue;
         }
         if (zone.state != kCaptureZoneActiveState) {
@@ -177,8 +200,7 @@ ZoneProximity scan_capture_zones_00692fd0(float px, float py, float pz,
         }
         result.in_landing_radius = true;
 
-        const double capture = static_cast<double>(zone.capture_radius);
-        if (capture * capture < distance_squared) {
+        if (capture_squared < distance_squared) {
             // 00693282 breaks out of the whole walk, it does not advance to the
             // next zone. Any zone after this one is never examined.
             break;

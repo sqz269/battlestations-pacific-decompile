@@ -4,6 +4,7 @@
 
 #include "bsp/gameplay_seg48_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/sw1b_switch_reach.hpp"
 
 namespace bsp {
 namespace {
@@ -191,6 +192,11 @@ PlaneControlTargets plane_control_targets_007da710(const PlaneControlClass& cls,
         // The image multiplies in the other order: 007DAA5C..007DAA6E is
         // (yaw_raw * f1) * [class+1B4h], each product rounded to the
         // destination float. The two orders differ in the last place only.
+        {                                                                 // sw1b reach
+            const float raw_by_mode = yaw_raw * mode_factor_f1;
+            sw1b_note(Sw1bReach::PlaneYawRollOrder, roll + raw_by_mode * cls.yaw_roll_ratio,
+                      roll + cls.yaw_roll_ratio * mode_factor_f1 * yaw_raw);
+        }
         if constexpr (kPlaneYawRollCouplingOrderCc13Bound) {
             const float raw_by_mode = yaw_raw * mode_factor_f1;
             roll += raw_by_mode * cls.yaw_roll_ratio;

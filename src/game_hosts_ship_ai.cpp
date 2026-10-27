@@ -12,6 +12,8 @@
 
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/attack_target_classify.hpp"
@@ -51,6 +53,7 @@
 #include "bsp/building_pads.hpp"
 #include "bsp/ship_ai_station_keeping.hpp"
 #include "bsp/ship_ai_switch_reach.hpp"
+#include "bsp/hud_movie_camera.hpp"
 #include "bsp/ship_ai_torpedo_response.hpp"
 #include "bsp/ship_ai_arm_final_step.hpp"
 #include "bsp/ship_ai_layer_selection.hpp"
@@ -2755,8 +2758,17 @@ struct GameShipAiHost::Impl {
             const float g = (slot_min > ceiling) ? ceiling : slot_min;
             const float ratio = static_cast<float>(static_cast<double>(g) / reference);
             if (limit_344 > ratio) limit_344 = ratio;
-            const float r = static_cast<float>(static_cast<double>(own_turn) /
-                (static_cast<double>(group_turn) * 1.2000000476837158));   // 00CEC160
+            float r;
+            if constexpr (bsp::kPc24ShipAiCc13Bound) {
+                // 009F4EBA FMUL m64 00CEC160, 009F4EC0 FDIVR (own turn), 009F4EC4
+                // FSTP: each op rounds to 24 bits on the main thread.
+                using namespace bsp::cc13x87;
+                r = static_cast<float>(
+                    x87_div24(own_turn, x87_mul24(group_turn, 1.2000000476837158)));
+            } else {
+                r = static_cast<float>(static_cast<double>(own_turn) /
+                    (static_cast<double>(group_turn) * 1.2000000476837158));   // 00CEC160
+            }
             if (0.75f > r) {                                    // 00CEE07C
                 limit_348 = 0.75f;
             } else {
@@ -2772,8 +2784,17 @@ struct GameShipAiHost::Impl {
         }
         // 009F4F30..009F4F88: s = clamp((ceiling + 6.70421028) / reference, 1, 1.25)
         // (00D21B38; 00415620 with 1.0f and 1.25f).
-        const float s_raw = static_cast<float>(
-            (static_cast<double>(ceiling) + 6.70421028137207) / reference);
+        float s_raw;
+        if constexpr (bsp::kPc24ShipAiCc13Bound) {
+            // 009F4F5D FADD m64 00D21B38, 009F4F6E FDIVR (reference), 009F4F7F FSTP:
+            // each op rounds to 24 bits on the main thread.
+            using namespace bsp::cc13x87;
+            s_raw = static_cast<float>(
+                x87_div24(x87_add24(ceiling, 6.70421028137207), reference));
+        } else {
+            s_raw = static_cast<float>(
+                (static_cast<double>(ceiling) + 6.70421028137207) / reference);
+        }
         const float s = (1.0f > s_raw) ? 1.0f : ((s_raw > 1.25f) ? 1.25f : s_raw);
         if (kShipStationKeepingBound && ctl.blk.flag_3a5) {
             // 009F4F8C..009F5020, brain+3ADh set: brain+3A4h is blk+39Ch, the
@@ -2798,8 +2819,16 @@ struct GameShipAiHost::Impl {
             if (limit_344 > s) limit_344 = s;                     // 009F5014
             station_arm = true;
         }
-        const float a = static_cast<float>(static_cast<double>(group_turn) * 1.25 /
-                                           static_cast<double>(own_turn));   // 00CF87C0
+        float a;
+        if constexpr (bsp::kPc24ShipAiCc13Bound) {
+            // 009F503F FMUL m64 00CF87C0, 009F5050 FDIVR into the 0082E850 result,
+            // 009F505A FSTP: each op rounds to 24 bits on the main thread.
+            using namespace bsp::cc13x87;
+            a = static_cast<float>(x87_div24(x87_mul24(group_turn, 1.25), own_turn));
+        } else {
+            a = static_cast<float>(static_cast<double>(group_turn) * 1.25 /
+                                   static_cast<double>(own_turn));   // 00CF87C0
+        }
         const float b = static_cast<float>(static_cast<double>(own_turn) / 200.0); // 00CE4D70
         float m = (a > b) ? b : a;                                          // 009F5075
         if (m < 1.0f) m = 1.0f;                                             // 00415690
@@ -5654,8 +5683,18 @@ public:
         const float dx = unit_pos.x - x;
         const float dz = unit_pos.z - z;
         const float reach = weapon_range_0494(e) + range;
-        return static_cast<double>(dx) * dx + 0.0 * 0.0 + static_cast<double>(dz) * dz
-            < static_cast<double>(reach) * reach;
+        if constexpr (bsp::kPc24ShipAiCc13Bound) {
+            // 009E61ED FMULP (dx*dx), 009E61F3 FADDP (+0*0), 009E61F7 FMULP (dz*dz),
+            // 009E61FB FADDP, 009E61FD FSTP float; 009E6207 FMULP (reach^2), compared
+            // at 009E620B without a store. Each op rounds to 24 bits on the main thread.
+            using namespace bsp::cc13x87;
+            const float sum = static_cast<float>(
+                x87_add24(x87_add24(x87_mul24(dx, dx), 0.0), x87_mul24(dz, dz)));
+            return sum < x87_mul24(reach, reach);
+        } else {
+            return static_cast<double>(dx) * dx + 0.0 * 0.0 + static_cast<double>(dz) * dz
+                < static_cast<double>(reach) * reach;
+        }
     }
     void erase_traffic_record(int r) override {
         ctl_.traffic.erase(ctl_.traffic.begin() + r);
@@ -5854,6 +5893,14 @@ public:
     std::uint32_t engagement_target_009e5e00() override {
         owner_.done("ShipAiApproach::engagement_target_009e5e00", 0x009e5e00u);
         const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        if (t != 0u) {
+            // Reach counter (cc9-sweep2b, log-only): ON answers 0 for these.
+            bsp::ShipAiSwitchReach& reach = bsp::ship_ai_switch_reach();
+            ++reach.engage_target_reads;
+            if (!(t - 1u < owner_.units.count() && owner_.units.unit_is_kind_of(t - 1u, 0x1c))) {
+                ++reach.engage_target_differs;
+            }
+        }
         if constexpr (kEngagementTargetKindTestCc13Bound) {
             // 009E5E05..009E5E26: t answers only when t->vtable[5Ch](1Ch) is true.
             const bool known = t != 0u && t - 1u < owner_.units.count();
@@ -6358,16 +6405,19 @@ public:
         PadZones zones(owner_);
         if (bsp::refresh_pad_line_006ac5d0(*p, layer, zones)) ++s.landing_pad_line_casts;
         // 009F21F6..009F220F: 006AC5D0(pad)(&out, &unit+0FCh, layer, 200.0f).
-        const bsp::ShipAiFollowLandXZ point = bsp::ship_ai_land_pad_approach_point_006ac5d0(
+        const bsp::ShipAiLandPadPoint point = bsp::ship_ai_land_pad_approach_point_xyz_006ac5d0(
             p->line, bsp::ShipAiFollowLandXZ{p->facing_x, p->facing_z},
             bsp::ShipAiFollowLandXZ{unit_pos[0], unit_pos[2]}, 200.0f);
-        // 009F2214..009F2228; y is taken as 0.0f (SUBSTITUTION, labelled: the
-        // per-call arm's out+4 store was not re-read).
-        ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{point.x, 0.0f, point.z};
+        // 009F2214..009F2228 store all three floats. OFF takes y as 0.0f (SUBSTITUTION,
+        // labelled); kPadApproachPointImageCc13Bound ON takes the arm's out+4,
+        // [+210h] +/- 0.0, which 009F225B..009F2261 then reads back for the distance.
+        const float point_y = bsp::kPadApproachPointImageCc13Bound ? point.y : 0.0f;
+        ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{point.x, point_y, point.z};
         ++s.landing_mode3_points;
+        if (p->line.origin_y_210 != 0.0f) ++s.landing_mode3_y_differs;   // sw1 reach
         // 009F2247..009F2293: |point - unit+0FCh| through 0042B2F0.
         const double dx = static_cast<double>(point.x) - unit_pos[0];
-        const double dy = 0.0 - static_cast<double>(unit_pos[1]);
+        const double dy = static_cast<double>(point_y) - static_cast<double>(unit_pos[1]);
         const double dz = static_cast<double>(point.z) - unit_pos[2];
         const float d = static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
         // 009F22A5..009F22E7: reach = max(00811A30(unit, 1.0) * 2.5, 300.0f).
@@ -9140,13 +9190,35 @@ public:
         // 004192E0(&out, &in): 00419260 answers 1/sqrt(x*x + z*z), and +0.0f
         // for a zero-length vector, and both components are scaled by it.
         owner_.done("ShipAiArmTail::normalize", 0x004192e0u);
-        const double square = static_cast<double>(x) * x + static_cast<double>(z) * z;
-        bsp::ShipAiNavPose out{};
-        if (square <= 0.0) return out;
-        const float scale = static_cast<float>(1.0 / std::sqrt(square));
-        out.x = x * scale;
-        out.z = z * scale;
-        return out;
+        if constexpr (bsp::kPc24ShipAiCc13Bound) {
+            // 00419276 FMUL st0 -> FSTP float, 00419282 FMULP -> FSTP float, 0041928A
+            // FADD -> FSTP float, 00419296 sqrt (00BF7030) -> FSTP float, then 0 or
+            // 004192C7 1/len -> FSTP float; 004192EE FSTP, 004192FC FMULP / 00419302
+            // FMUL -> FSTP float. Each op rounds to 24 bits on the main thread.
+            using namespace bsp::cc13x87;
+            const float x_sq = static_cast<float>(x87_mul24(x, x));
+            const float z_sq = static_cast<float>(x87_mul24(z, z));
+            // 00419260 calls the CRT sqrt (00BF7030), which sets 53-bit PC (027F)
+            // before FSQRT; x87_sqrt24 matches only because the radicand is already a
+            // stored float (0041928E).
+            const float length =
+                static_cast<float>(x87_sqrt24(static_cast<double>(
+                    static_cast<float>(x87_add24(x_sq, z_sq)))));
+            const float scale =
+                (length == 0.0f) ? 0.0f : static_cast<float>(x87_div24(1.0, length));
+            bsp::ShipAiNavPose out{};
+            out.x = static_cast<float>(x87_mul24(x, scale));
+            out.z = static_cast<float>(x87_mul24(scale, z));
+            return out;
+        } else {
+            const double square = static_cast<double>(x) * x + static_cast<double>(z) * z;
+            bsp::ShipAiNavPose out{};
+            if (square <= 0.0) return out;
+            const float scale = static_cast<float>(1.0 / std::sqrt(square));
+            out.x = x * scale;
+            out.z = z * scale;
+            return out;
+        }
     }
     int neighbour_list_count_009eeb8b() override {
         // [[00E188A8]+19CCh]+60h, world list 6 (ships). OFF: the milestone 2r
@@ -13348,10 +13420,22 @@ void GameShipAiHost::Impl::landfort_fire_roll_007470b0(CaptureBuilding& b, float
     if (!building_health_of(b.unit, health, max_health)) return;
     // 007470D3..00747107: ((max - hp) / max) * ((amount / max) * (mul * 10.0)),
     // x87 extended, stored as a float at 00747107.
-    const double m = static_cast<double>(max_health);
-    const float chance = static_cast<float>(((m - static_cast<double>(health)) / m)
-        * ((static_cast<double>(amount) / m)
-           * (static_cast<double>(b.smoke_fire_mul_164) * 10.0)));
+    float chance;
+    if constexpr (bsp::kPc24ShipAiCc13Bound) {
+        // 007470EB FSUB, 007470F1 FDIV, 007470F7 FDIVRP (amount / max), 007470FD FMUL
+        // m64 10.0, 00747103 FMULP, 00747105 FMULP, 00747107 FSTP: each op rounds to
+        // 24 bits on the main thread.
+        using namespace bsp::cc13x87;
+        chance = static_cast<float>(x87_mul24(
+            x87_div24(x87_sub24(max_health, health), max_health),
+            x87_mul24(x87_div24(amount, max_health),
+                      x87_mul24(b.smoke_fire_mul_164, 10.0))));
+    } else {
+        const double m = static_cast<double>(max_health);
+        chance = static_cast<float>(((m - static_cast<double>(health)) / m)
+            * ((static_cast<double>(amount) / m)
+               * (static_cast<double>(b.smoke_fire_mul_164) * 10.0)));
+    }
     ++fire_rolls;
     ++fire_draws;
     const float draw = gunnery_draws->death_mode_draw_00bd2f10(1, b.unit, 0.0f, 1.0f);
@@ -13410,11 +13494,27 @@ void GameShipAiHost::Impl::landfort_fire_frame_00745be0(CaptureBuilding& b, floa
     float health = 0.0f, max_health = 0.0f;
     if (!building_health_of(b.unit, health, max_health)) return;
     // 00745CDC..00745D38: min(1.0, (max - hp) / max) * class+170h * 0.01.
-    const float ratio = static_cast<float>((static_cast<double>(max_health)
-        - static_cast<double>(health)) / static_cast<double>(max_health));
+    float ratio;
+    if constexpr (bsp::kPc24ShipAiCc13Bound) {
+        // 00745CFE FSUB, 00745D12 FDIV, 00745D1C FSTP: each op rounds to 24 bits.
+        using namespace bsp::cc13x87;
+        ratio = static_cast<float>(x87_div24(x87_sub24(max_health, health), max_health));
+    } else {
+        ratio = static_cast<float>((static_cast<double>(max_health)
+            - static_cast<double>(health)) / static_cast<double>(max_health));
+    }
     const float capped = 1.0f < ratio ? 1.0f : ratio;                   // 00415510
-    const float chance = static_cast<float>(static_cast<double>(capped)
-        * (static_cast<double>(b.secondary_mul_170) * 0.0099999997764825821));
+    float chance;
+    if constexpr (bsp::kPc24ShipAiCc13Bound) {
+        // 00745D2B FMUL m64 00D7A358, 00745D36 FMULP by the capped ratio, 00745D38
+        // FSTP: each op rounds to 24 bits.
+        using namespace bsp::cc13x87;
+        chance = static_cast<float>(
+            x87_mul24(capped, x87_mul24(b.secondary_mul_170, 0.0099999997764825821)));
+    } else {
+        chance = static_cast<float>(static_cast<double>(capped)
+            * (static_cast<double>(b.secondary_mul_170) * 0.0099999997764825821));
+    }
     ++fire_secondary_rolls;
     ++fire_draws;
     const float draw = gunnery_draws->death_mode_draw_00bd2f10(0, b.unit, 0.0f, 1.0f);
@@ -14087,6 +14187,81 @@ double segment_distance_2d_004f49f0(const double a[4], const double b[4]) {
                                  segment_point_distance_2d(b, a[2], a[3]));
     return to_b <= to_a ? to_b : to_a;
 }
+
+// kTransportLaunchCraftCc13Bound helpers (packet cc13-transport-launch). The
+// main thread is PC24, so each x87 op of 008206F0 rounds to 24 bits.
+// 00BF7420 _ftol2: truncation; NaN or out of range gives 0x80000000.
+int transport_launch_ftol2_00bf7420(double v) {
+    int out = -2147483647 - 1;
+    if (v > -2147483649.0 && v < 2147483648.0) out = static_cast<int>(v);
+    return out;
+}
+
+// 0042B2F0 at PC24: (y*y + x*x) + z*z stored as a float, 0 at or below 1e-10
+// [00CE3820] (or unordered), else the sqrt (00BF7030) stored as a float.
+float transport_launch_length3_0042b2f0(const float v[3]) {
+    using namespace bsp::cc13x87;
+    const float sum = static_cast<float>(x87_add24(
+        x87_add24(x87_mul24(v[1], v[1]), x87_mul24(v[0], v[0])), x87_mul24(v[2], v[2])));
+    float len = 0.0f;
+    if (static_cast<double>(sum) > 1.0e-10) len = static_cast<float>(std::sqrt(static_cast<double>(sum)));
+    return len;
+}
+
+// 008208BB..00820CBF at PC24: the ring's four corners through the transport's
+// matrix (004142E0, ECX = the local (x, 0, z): ((y*up + x*right) + z*forward) +
+// origin per component), their world y zeroed (00820A7B..00820A95), then each
+// edge's n - 1 inner points appended to the same vector (00820C70), so the
+// candidates are the four corners followed by the inner points.
+void transport_launch_ring_points_cc13(int ring, float ring_step, float spacing, float half_x,
+                                       float half_z, const float right[3], const float up[3],
+                                       const float forward[3], const float origin[3],
+                                       std::vector<std::array<float, 3>>& points) {
+    using namespace bsp::cc13x87;
+    const float m = static_cast<float>(x87_mul24(static_cast<double>(ring), ring_step));
+    const float cx0 = static_cast<float>(x87_sub24(-static_cast<double>(half_x), m));  // FCHS, FSUBP
+    const float cz0 = static_cast<float>(x87_sub24(-static_cast<double>(half_z), m));  // FSUBRP
+    const float cx1 = static_cast<float>(x87_add24(m, half_x));
+    const float cz1 = static_cast<float>(x87_add24(m, half_z));
+    auto to_world = [&](float x, float z) {
+        std::array<float, 3> out{};
+        for (int k = 0; k < 3; ++k) {
+            out[k] = static_cast<float>(x87_add24(
+                x87_add24(x87_add24(x87_mul24(0.0f, up[k]), x87_mul24(x, right[k])),
+                          x87_mul24(z, forward[k])),
+                origin[k]));
+        }
+        out[1] = 0.0f;
+        return out;
+    };
+    points.push_back(to_world(cx0, cz0));
+    points.push_back(to_world(cx1, cz0));
+    points.push_back(to_world(cx1, cz1));
+    points.push_back(to_world(cx0, cz1));
+    for (int e = 0; e < 4; ++e) {
+        const std::array<float, 3> a = points[static_cast<std::size_t>(e)];
+        const std::array<float, 3> b = points[static_cast<std::size_t>(e == 3 ? 0 : e + 1)];
+        const float d[3] = {static_cast<float>(x87_sub24(b[0], a[0])),
+                            static_cast<float>(x87_sub24(b[1], a[1])),
+                            static_cast<float>(x87_sub24(b[2], a[2]))};
+        const int whole = transport_launch_ftol2_00bf7420(transport_launch_length3_0042b2f0(d));
+        // 00820B80: FILD whole, FDIV spacing (no guard), _ftol2.
+        const int n = transport_launch_ftol2_00bf7420(x87_div24(static_cast<double>(whole), spacing));
+        if (n > 1) {
+            const float nf = static_cast<float>(n);                          // 00820BC7
+            const float step[3] = {static_cast<float>(x87_div24(d[0], nf)),
+                                   static_cast<float>(x87_div24(d[1], nf)),
+                                   static_cast<float>(x87_div24(d[2], nf))};
+            for (int j = 1; j < n; ++j) {
+                const float jf = static_cast<float>(j);                      // 00820BF6
+                points.push_back(
+                    {static_cast<float>(x87_add24(static_cast<float>(x87_mul24(step[0], jf)), a[0])),
+                     static_cast<float>(x87_add24(static_cast<float>(x87_mul24(step[1], jf)), a[1])),
+                     static_cast<float>(x87_add24(static_cast<float>(x87_mul24(jf, step[2])), a[2]))});
+            }
+        }
+    }
+}
 }  // namespace
 
 float GameShipAiHost::transport_cooldown_1124(std::size_t unit) const {
@@ -14159,54 +14334,71 @@ int GameShipAiHost::transport_launch_craft_008206f0(std::size_t unit) {
     const float half_z = static_cast<float>(k06 * ship_keys.length_00a0);
     float right[3], up[3], forward[3], origin[3];
     host.units.unit_pose(unit, right, up, forward, origin);
-    auto to_world = [&](float x, float z, float out[3]) {
-        for (int k = 0; k < 3; ++k) {
-            out[k] = static_cast<float>(static_cast<double>(x) * right[k]
-                + static_cast<double>(z) * forward[k] + origin[k]);
-        }
-    };
     std::vector<std::size_t> launched;
     int pad = first_free_pad();                                          // 00820844
     for (int ring = 1; pad >= 0 && ring <= 4; ++ring) {                  // 00820860, 00821D48
-        // 008208BB: ring x step, then the four corners (-x,-z) (+x,-z) (+x,+z)
-        // (-x,+z) through the transport's matrix (004142E0).
-        const float m = static_cast<float>(ring * static_cast<double>(ring_step));
-        const float cx0 = static_cast<float>(-static_cast<double>(half_x) - m);
-        const float cx1 = static_cast<float>(static_cast<double>(half_x) + m);
-        const float cz0 = static_cast<float>(-static_cast<double>(half_z) - m);
-        const float cz1 = static_cast<float>(static_cast<double>(half_z) + m);
-        float corner[4][3];
-        to_world(cx0, cz0, corner[0]);
-        to_world(cx1, cz0, corner[1]);
-        to_world(cx1, cz1, corner[2]);
-        to_world(cx0, cz1, corner[3]);
-        // 00820AA0..00820CBF: each edge split into n = ftol(ftol(|edge|) / spacing)
-        // parts; the n - 1 inner points, corners excluded.
         std::vector<std::array<float, 3>> points;
-        for (int e = 0; e < 4; ++e) {
-            const float* a = corner[e];
-            const float* b = corner[e == 3 ? 0 : e + 1];
-            const float d[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};
-            const double len = std::sqrt(static_cast<double>(d[0]) * d[0]
-                + static_cast<double>(d[1]) * d[1] + static_cast<double>(d[2]) * d[2]);
-            const int whole = static_cast<int>(len);
-            const int n = spacing > 0.0f ? static_cast<int>(whole / static_cast<double>(spacing)) : 0;
-            if (n <= 1) continue;
-            const float step[3] = {d[0] / static_cast<float>(n), d[1] / static_cast<float>(n),
-                                   d[2] / static_cast<float>(n)};
-            for (int j = 1; j < n; ++j) {
-                points.push_back({static_cast<float>(j * static_cast<double>(step[0]) + a[0]),
-                                  static_cast<float>(j * static_cast<double>(step[1]) + a[1]),
-                                  static_cast<float>(j * static_cast<double>(step[2]) + a[2])});
+        if constexpr (kTransportLaunchCraftCc13Bound) {
+            transport_launch_ring_points_cc13(ring, ring_step, spacing, half_x, half_z, right, up,
+                                              forward, origin, points);
+        } else {
+            auto to_world = [&](float x, float z, float out[3]) {
+                for (int k = 0; k < 3; ++k) {
+                    out[k] = static_cast<float>(static_cast<double>(x) * right[k]
+                        + static_cast<double>(z) * forward[k] + origin[k]);
+                }
+            };
+            // 008208BB: ring x step, then the four corners (-x,-z) (+x,-z) (+x,+z)
+            // (-x,+z) through the transport's matrix (004142E0).
+            const float m = static_cast<float>(ring * static_cast<double>(ring_step));
+            const float cx0 = static_cast<float>(-static_cast<double>(half_x) - m);
+            const float cx1 = static_cast<float>(static_cast<double>(half_x) + m);
+            const float cz0 = static_cast<float>(-static_cast<double>(half_z) - m);
+            const float cz1 = static_cast<float>(static_cast<double>(half_z) + m);
+            float corner[4][3];
+            to_world(cx0, cz0, corner[0]);
+            to_world(cx1, cz0, corner[1]);
+            to_world(cx1, cz1, corner[2]);
+            to_world(cx0, cz1, corner[3]);
+            // 00820AA0..00820CBF: each edge split into n = ftol(ftol(|edge|) / spacing)
+            // parts; the n - 1 inner points, corners excluded.
+            for (int e = 0; e < 4; ++e) {
+                const float* a = corner[e];
+                const float* b = corner[e == 3 ? 0 : e + 1];
+                const float d[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};
+                const double len = std::sqrt(static_cast<double>(d[0]) * d[0]
+                    + static_cast<double>(d[1]) * d[1] + static_cast<double>(d[2]) * d[2]);
+                const int whole = static_cast<int>(len);
+                const int n = spacing > 0.0f ? static_cast<int>(whole / static_cast<double>(spacing)) : 0;
+                if (n <= 1) continue;
+                const float step[3] = {d[0] / static_cast<float>(n), d[1] / static_cast<float>(n),
+                                       d[2] / static_cast<float>(n)};
+                for (int j = 1; j < n; ++j) {
+                    points.push_back({static_cast<float>(j * static_cast<double>(step[0]) + a[0]),
+                                      static_cast<float>(j * static_cast<double>(step[1]) + a[1]),
+                                      static_cast<float>(j * static_cast<double>(step[2]) + a[2])});
+                }
             }
         }
         const bsp::BuildingPadModel::Pad* target = pads.pad(pad);
         if (target == nullptr) break;
         std::vector<float> dist;
-        for (const auto& p : points) {
-            const double dx = target->position[0] - p[0], dy = target->position[1] - p[1],
-                         dz = target->position[2] - p[2];
-            dist.push_back(static_cast<float>(dz * dz + dx * dx + dy * dy));
+        if constexpr (kTransportLaunchCraftCc13Bound) {
+            // 00820D0C..00820D4E: float differences, then (dy*dy + dx*dx) + dz*dz.
+            using namespace bsp::cc13x87;
+            for (const auto& p : points) {
+                const float dx = static_cast<float>(x87_sub24(target->position[0], p[0]));
+                const float dy = static_cast<float>(x87_sub24(target->position[1], p[1]));
+                const float dz = static_cast<float>(x87_sub24(target->position[2], p[2]));
+                dist.push_back(static_cast<float>(x87_add24(
+                    x87_add24(x87_mul24(dy, dy), x87_mul24(dx, dx)), x87_mul24(dz, dz))));
+            }
+        } else {
+            for (const auto& p : points) {
+                const double dx = target->position[0] - p[0], dy = target->position[1] - p[1],
+                             dz = target->position[2] - p[2];
+                dist.push_back(static_cast<float>(dz * dz + dx * dx + dy * dy));
+            }
         }
         // 00820DB4..00820EDC, three picks, as the image does them: the first
         // strict minimum of dist over the first |points| entries; that point is
@@ -14233,58 +14425,152 @@ int GameShipAiHost::transport_launch_craft_008206f0(std::size_t unit) {
         }
         bool made = false;
         for (const auto& c : candidates) {                               // 00820F01..00821803
-            const double dx = static_cast<double>(target->position[0]) - c[0];
-            const double dz = static_cast<double>(target->position[2]) - c[2];
-            const float len = static_cast<float>(std::sqrt(static_cast<float>(dx * dx + 0.0)
-                + dz * dz));
-            const float inv = len > 0.0f ? 1.0f / len : 0.0f;
-            const float dir_x = static_cast<float>(inv * dx);
-            const float dir_y = 0.0f;                                    // [00D7A258] 0.0 x inv
-            const float dir_z = static_cast<float>(inv * dz);
-            // 008210A0..0082118E: two ground probes at (k - 0.5) x craft length
-            // along the pad direction; a ground above -5.0 [00CFBC84] rejects.
-            bool shallow = false;
-            for (int k = 0; k < 2 && !shallow; ++k) {
-                const double t = (k - 0.5) * craft_keys.length_00a0;
-                const float q[3] = {static_cast<float>(c[0] + t * dir_x),
-                                    static_cast<float>(c[1] + t * dir_y),
-                                    static_cast<float>(c[2] + t * dir_z)};
-                float ground = 0.0f;
-                if (world_ground_height_00903860(q, ground) && -5.0f < ground) shallow = true;
-            }
-            if (shallow) {
-                ++s.craft_depth_rejects;
-                continue;
-            }
-            // 00821194..008217D7: ships of list 6 whose class +A8h + y is above
-            // -5.0 [00D098C8], within (their A0h x 0.5 + craft A0h) in 3-D, whose
-            // keel segment comes nearer the craft's than the two half widths.
-            const double half_craft = 0.5 * craft_keys.length_00a0;
-            const double seg_b[4] = {c[0] + half_craft * dir_x, c[2] + half_craft * dir_z,
-                                     c[0] - half_craft * dir_x, c[2] - half_craft * dir_z};
-            bool blocked = false;
-            for (std::size_t i = 0; i < host.units.world_list_size(6) && !blocked; ++i) {
-                const std::size_t e = host.units.world_list_entry(6, i);
-                if (e >= host.units.count()) continue;
-                const GameUnitRow* other = host.units.unit_row(e);
-                if (other == nullptr) continue;
-                const GameUnitsHost::VehicleClassLaunchKeys& ok =
-                    host.class_launch_keys(other->type_id);
-                float r[3], u[3], f[3], t[3];
-                if (!host.units.unit_pose(e, r, u, f, t)) continue;
-                if (!(-5.0 < static_cast<double>(ok.height_00a8) + t[1])) continue;
-                const double ex = t[0] - c[0], ey = t[1] - c[1], ez = t[2] - c[2];
-                const double reach = ok.length_00a0 * 0.5 + craft_keys.length_00a0;
-                if (!(ex * ex + ey * ey + ez * ez < reach * reach)) continue;
-                const double half = 0.5 * ok.length_00a0;
-                const double seg_a[4] = {t[0] - half * f[0], t[2] - half * f[2],
-                                         t[0] + half * f[0], t[2] + half * f[2]};
-                const double gap = segment_distance_2d_004f49f0(seg_a, seg_b);
-                if (gap < ok.width_00a4 * 0.5 + craft_keys.width_00a4 * 0.5) blocked = true;
-            }
-            if (blocked) {
-                ++s.craft_clearance_rejects;
-                continue;
+            float dir_x = 0.0f, dir_y = 0.0f, dir_z = 0.0f;
+            if constexpr (kTransportLaunchCraftCc13Bound) {
+                using namespace bsp::cc13x87;
+                // 00820FE7..0082109C: float dx, dz; the squares stored, plus the 0 x 0
+                // of 00820EF5; the sqrt (00BF7030) stored; 1/len only when len > 0.
+                const float zero_sq = static_cast<float>(x87_mul24(0.0, 0.0));
+                const float dx = static_cast<float>(x87_sub24(target->position[0], c[0]));
+                const float dz = static_cast<float>(x87_sub24(target->position[2], c[2]));
+                const float sq_x = static_cast<float>(x87_mul24(dx, dx));
+                const float sq_z = static_cast<float>(x87_mul24(dz, dz));
+                const float len2 = static_cast<float>(x87_add24(x87_add24(sq_x, zero_sq), sq_z));
+                const float len = static_cast<float>(std::sqrt(static_cast<double>(len2)));
+                float inv = 0.0f;
+                if (len > 0.0f) inv = static_cast<float>(x87_div24(1.0, len));
+                dir_x = static_cast<float>(x87_mul24(dx, inv));
+                dir_y = static_cast<float>(x87_mul24(0.0, inv));             // [00D7A258] 0.0 x inv
+                dir_z = static_cast<float>(x87_mul24(inv, dz));
+                // 008210A0..0082118E: L x dir first, then t = k - 0.5 times each.
+                const float craft_len = craft_keys.length_00a0;
+                const float lx = static_cast<float>(x87_mul24(craft_len, dir_x));
+                const float ly = static_cast<float>(x87_mul24(craft_len, dir_y));
+                const float lz = static_cast<float>(x87_mul24(craft_len, dir_z));
+                bool shallow = false;
+                for (int k = 0; k < 2 && !shallow; ++k) {
+                    const float t = static_cast<float>(x87_sub24(static_cast<double>(k), 0.5));
+                    const float q[3] = {
+                        static_cast<float>(x87_add24(c[0], static_cast<float>(x87_mul24(lx, t)))),
+                        static_cast<float>(x87_add24(c[1], static_cast<float>(x87_mul24(ly, t)))),
+                        static_cast<float>(x87_add24(static_cast<float>(x87_mul24(t, lz)), c[2]))};
+                    float ground = 0.0f;
+                    if (world_ground_height_00903860(q, ground) && -5.0f < ground) shallow = true;
+                }
+                if (shallow) {
+                    ++s.craft_depth_rejects;
+                    continue;
+                }
+                // 00821194..0082125D: the craft's keel ends c -/+ (L x dir) x 0.5.
+                const float hx = static_cast<float>(x87_mul24(lx, 0.5));
+                const float hz = static_cast<float>(x87_mul24(lz, 0.5));
+                const double seg_b[4] = {static_cast<float>(x87_sub24(c[0], hx)),
+                                         static_cast<float>(x87_sub24(c[2], hz)),
+                                         static_cast<float>(x87_add24(hx, c[0])),
+                                         static_cast<float>(x87_add24(hz, c[2]))};
+                bool blocked = false;
+                for (std::size_t i = 0; i < host.units.world_list_size(6) && !blocked; ++i) {
+                    const std::size_t e = host.units.world_list_entry(6, i);
+                    if (e >= host.units.count()) continue;
+                    const GameUnitRow* other = host.units.unit_row(e);
+                    if (other == nullptr) continue;
+                    const GameUnitsHost::VehicleClassLaunchKeys& ok =
+                        host.class_launch_keys(other->type_id);
+                    float r[3], u[3], f[3], t[3];
+                    if (!host.units.unit_pose(e, r, u, f, t)) continue;
+                    // 0082134E: skipped when -5.0 [00D098C8] >= +A8h + y (unordered passes).
+                    if (-5.0 >= x87_add24(ok.height_00a8, t[1])) continue;
+                    // 00821450..008214DB: float differences and reach, the squares
+                    // (ey*ey + ex*ex) + ez*ez; skipped when d2 >= reach^2 (unordered passes).
+                    const float ex = static_cast<float>(x87_sub24(t[0], c[0]));
+                    const float ey = static_cast<float>(x87_sub24(t[1], c[1]));
+                    const float ez = static_cast<float>(x87_sub24(t[2], c[2]));
+                    const float reach = static_cast<float>(
+                        x87_add24(craft_keys.length_00a0, x87_mul24(ok.length_00a0, 0.5)));
+                    const float d2 = static_cast<float>(x87_add24(
+                        x87_add24(x87_mul24(ey, ey), x87_mul24(ex, ex)), x87_mul24(ez, ez)));
+                    const float reach2 = static_cast<float>(x87_mul24(reach, reach));
+                    if (d2 >= reach2) continue;
+                    // 008215A4..00821784: the keel ends (0, 0, -/+A0h x 0.5) through the
+                    // world matrix as 004142E0 orders it (x and z only).
+                    const float h_neg =
+                        static_cast<float>(x87_mul24(-static_cast<double>(ok.length_00a0), 0.5));
+                    const float h_pos = static_cast<float>(x87_mul24(0.5, ok.length_00a0));
+                    auto keel = [&](float h, int k) {
+                        return static_cast<float>(x87_add24(
+                            x87_add24(x87_add24(x87_mul24(u[k], 0.0), x87_mul24(r[k], 0.0)),
+                                      x87_mul24(f[k], h)),
+                            t[k]));
+                    };
+                    const double seg_a[4] = {keel(h_neg, 0), keel(h_neg, 2), keel(h_pos, 0),
+                                             keel(h_pos, 2)};
+                    // 0082178B 004F49F0, its ST0 stored as a float; blocked when the half
+                    // widths' sum is above it (JA, unordered does not block).
+                    // seg_b's ON order (c-h, c+h) follows the image's ECX/EDX; OFF has it
+                    // reversed, harmless only while the substitution stays symmetric.
+                    const float gap = static_cast<float>(segment_distance_2d_004f49f0(seg_a, seg_b));
+                    const double widths = x87_add24(x87_mul24(craft_keys.width_00a4, 0.5),
+                                                    x87_mul24(ok.width_00a4, 0.5));
+                    if (widths > gap) blocked = true;
+                }
+                if (blocked) {
+                    ++s.craft_clearance_rejects;
+                    continue;
+                }
+            } else {
+                const double dx = static_cast<double>(target->position[0]) - c[0];
+                const double dz = static_cast<double>(target->position[2]) - c[2];
+                const float len = static_cast<float>(std::sqrt(static_cast<float>(dx * dx + 0.0)
+                    + dz * dz));
+                const float inv = len > 0.0f ? 1.0f / len : 0.0f;
+                dir_x = static_cast<float>(inv * dx);
+                dir_y = 0.0f;                                            // [00D7A258] 0.0 x inv
+                dir_z = static_cast<float>(inv * dz);
+                // 008210A0..0082118E: two ground probes at (k - 0.5) x craft length
+                // along the pad direction; a ground above -5.0 [00CFBC84] rejects.
+                bool shallow = false;
+                for (int k = 0; k < 2 && !shallow; ++k) {
+                    const double t = (k - 0.5) * craft_keys.length_00a0;
+                    const float q[3] = {static_cast<float>(c[0] + t * dir_x),
+                                        static_cast<float>(c[1] + t * dir_y),
+                                        static_cast<float>(c[2] + t * dir_z)};
+                    float ground = 0.0f;
+                    if (world_ground_height_00903860(q, ground) && -5.0f < ground) shallow = true;
+                }
+                if (shallow) {
+                    ++s.craft_depth_rejects;
+                    continue;
+                }
+                // 00821194..008217D7: ships of list 6 whose class +A8h + y is above
+                // -5.0 [00D098C8], within (their A0h x 0.5 + craft A0h) in 3-D, whose
+                // keel segment comes nearer the craft's than the two half widths.
+                const double half_craft = 0.5 * craft_keys.length_00a0;
+                const double seg_b[4] = {c[0] + half_craft * dir_x, c[2] + half_craft * dir_z,
+                                         c[0] - half_craft * dir_x, c[2] - half_craft * dir_z};
+                bool blocked = false;
+                for (std::size_t i = 0; i < host.units.world_list_size(6) && !blocked; ++i) {
+                    const std::size_t e = host.units.world_list_entry(6, i);
+                    if (e >= host.units.count()) continue;
+                    const GameUnitRow* other = host.units.unit_row(e);
+                    if (other == nullptr) continue;
+                    const GameUnitsHost::VehicleClassLaunchKeys& ok =
+                        host.class_launch_keys(other->type_id);
+                    float r[3], u[3], f[3], t[3];
+                    if (!host.units.unit_pose(e, r, u, f, t)) continue;
+                    if (!(-5.0 < static_cast<double>(ok.height_00a8) + t[1])) continue;
+                    const double ex = t[0] - c[0], ey = t[1] - c[1], ez = t[2] - c[2];
+                    const double reach = ok.length_00a0 * 0.5 + craft_keys.length_00a0;
+                    if (!(ex * ex + ey * ey + ez * ez < reach * reach)) continue;
+                    const double half = 0.5 * ok.length_00a0;
+                    const double seg_a[4] = {t[0] - half * f[0], t[2] - half * f[2],
+                                             t[0] + half * f[0], t[2] + half * f[2]};
+                    const double gap = segment_distance_2d_004f49f0(seg_a, seg_b);
+                    if (gap < ok.width_00a4 * 0.5 + craft_keys.width_00a4 * 0.5) blocked = true;
+                }
+                if (blocked) {
+                    ++s.craft_clearance_rejects;
+                    continue;
+                }
             }
             // 00821808..00821B0C: the craft, class +78Ch, "LandingShip", the bag
             // Type / Party / Race / Skill 2 / OwnerPlayer 8 / LandingCommanderPlayer
@@ -14975,6 +15261,11 @@ void GameShipAiHost::report() {
         host.summary.landing_pad_line_casts, host.summary.landing_mode3_in_reach,
         host.summary.landing_begins, host.summary.landing_mode4_points,
         bsp::kShipAiApproachLandingModesBound ? 1 : 0);
+    host.log.notef("summary mission ship ai pad approach point image (006AC5D0, sw1 reach): "
+        "bound=%d calls=%llu corridor_differs=%llu holdoff_differs=%llu mode3_y_differs=%llu",
+        bsp::pad_approach_reach().bound ? 1 : 0, bsp::pad_approach_reach().calls,
+        bsp::pad_approach_reach().corridor_differs, bsp::pad_approach_reach().holdoff_differs,
+        host.summary.landing_mode3_y_differs);
     host.log.notef("summary mission ship ai landing requests 94h=%llu begun=%llu held=%llu "
         "no_site=%llu no_pad=%llu (0074A4C0, packet cc9_startlanding_94h)",
         host.summary.landing_requests_94h, host.summary.landing_requests_begun,
@@ -15237,6 +15528,28 @@ void GameShipAiHost::report() {
             bsp::kShipAiThrottleProfileNanArmsCc13Bound ? 1 : 0,
             bsp::kShipAiNavigationNanArmsCc13Bound ? 1 : 0,
             bsp::kShipAiFireStepPc24Cc13Bound ? 1 : 0);
+        host.log.notef("summary mission torpedo home sector reach calls=%llu differs=%llu "
+            "bound=%d (009D3BB4-009D3BC8 kTorpedoHomeSectorScaleCc13Bound; packet cc9-sweep2b)",
+            reach.torpedo_home_calls, reach.torpedo_home_differs, reach.torpedo_home_bound);
+        host.log.notef("summary mission cc13 switch reach engage_target_reads=%llu "
+            "engage_target_differs=%llu water_rate_calls=%llu water_rate_differs=%llu "
+            "order_step_calls=%llu order_step_differs=%llu movie_begin_modifier_differs=%llu "
+            "movie_empty_clock_differs=%llu movie_stale_flag_differs=%llu "
+            "seabed_speed_calls=%llu seabed_speed_differs=%llu bound=%d%d%d%d%d%d%d "
+            "(009E5E00, 007DA406, 0080E000, 00791020/0079A3B0/007911E0, 0092D730; "
+            "packet cc9-sweep2b)",
+            reach.engage_target_reads, reach.engage_target_differs, reach.water_rate_calls,
+            reach.water_rate_differs, reach.order_step_calls, reach.order_step_differs,
+            reach.movie_begin_modifier_differs, reach.movie_empty_clock_differs,
+            reach.movie_stale_flag_differs, reach.seabed_speed_calls,
+            reach.seabed_speed_differs,
+            kEngagementTargetKindTestCc13Bound ? 1 : 0,
+            reach.water_rate_bound,
+            kUnitAiOrderResetFieldsCc13Bound ? 1 : 0,
+            kMovieBeginDropsModifierCc13Bound ? 1 : 0,
+            kMovieUpdateEmptyTrackClockCc13Bound ? 1 : 0,
+            kMovieStepStaleTrackFlagCc13Bound ? 1 : 0,
+            kSubmarineSeabedSpeedPc24Cc13Bound ? 1 : 0);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {

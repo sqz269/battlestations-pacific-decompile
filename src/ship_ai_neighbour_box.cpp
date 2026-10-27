@@ -10,6 +10,8 @@
 // the projection stores a float too.
 
 #include "bsp/ship_ai_neighbour_box.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <cmath>
 
@@ -160,10 +162,18 @@ bool ship_ai_neighbour_near_box_refresh_009eae20(ShipAiObstacleNode& node,
     const float advance_magnitude = std::fabs(advance);
 
     // 009EAF8C FLD [EAX+9C8h]; FMUL double 0.55; FADD |advance|; FSTP [ESI+38h].
-    // One rounding, at the store.
-    node.near_half_beam = static_cast<float>(
-        static_cast<double>(host.observed_hull_length_09c8()) * kShipAiNeighbourBoxHalfLengthScale +
-        static_cast<double>(advance_magnitude));
+    // One rounding, at the store (OFF); ON rounds the FMUL and the FADD to 24 bits each,
+    // as the main thread's precision control does.
+    if constexpr (kPc24ShipAiCc13Bound) {
+        using namespace cc13x87;
+        node.near_half_beam = static_cast<float>(x87_add24(
+            x87_mul24(host.observed_hull_length_09c8(), kShipAiNeighbourBoxHalfLengthScale),
+            advance_magnitude));
+    } else {
+        node.near_half_beam = static_cast<float>(
+            static_cast<double>(host.observed_hull_length_09c8()) * kShipAiNeighbourBoxHalfLengthScale +
+            static_cast<double>(advance_magnitude));
+    }
     // 009EAF9F FLD [EAX+9CCh]; FMUL double 0.6; FSTP [ESI+3Ch].
     node.near_half_length = static_cast<float>(
         static_cast<double>(host.observed_hull_beam_09cc()) * kShipAiNeighbourBoxHalfBeamScale);
@@ -178,9 +188,17 @@ float ship_ai_neighbour_closing_speed_009eb14d(const std::array<float, 2>& relat
                                                float go_away_spd_add_1d0) noexcept
 {
     // 009EB14D..009EB15F: the dot is stored as a float before the add.
-    const float dot = static_cast<float>(
-        static_cast<double>(relative_velocity[0]) * static_cast<double>(direction_to_self[0]) +
-        static_cast<double>(relative_velocity[1]) * static_cast<double>(direction_to_self[1]));
+    float dot;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009EB151 FMUL, 009EB159 FMUL, 009EB15D FADDP: each rounds to 24 bits.
+        using namespace cc13x87;
+        dot = static_cast<float>(x87_add24(x87_mul24(relative_velocity[0], direction_to_self[0]),
+                                           x87_mul24(relative_velocity[1], direction_to_self[1])));
+    } else {
+        dot = static_cast<float>(
+            static_cast<double>(relative_velocity[0]) * static_cast<double>(direction_to_self[0]) +
+            static_cast<double>(relative_velocity[1]) * static_cast<double>(direction_to_self[1]));
+    }
     // 009EB167 FADD [EDI+50h]; 009EB16A FSTP float.
     float closing = static_cast<float>(static_cast<double>(dot) +
                                        static_cast<double>(go_away_spd_add_1d0));
@@ -261,11 +279,20 @@ float ship_ai_neighbour_travel_limit_009eb334(float slack,
     if (self_speed > closing_speed) {
         // 009EB38B FDIVRP; FADD double 1.0; FMUL double 0.5; FMULP;
         // 009EB39B FSTP float -- the whole chain stays on the x87 stack.
-        limit = static_cast<float>(
-            static_cast<double>(limit) *
-            ((static_cast<double>(self_speed) / static_cast<double>(closing_speed) +
-              kShipAiNeighbourBoxSpeedRatioBias) *
-             kShipAiNeighbourBoxSpeedRatioScale));
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // Each of the four ops rounds to 24 bits on the main thread.
+            using namespace cc13x87;
+            limit = static_cast<float>(x87_mul24(
+                limit, x87_mul24(x87_add24(x87_div24(self_speed, closing_speed),
+                                           kShipAiNeighbourBoxSpeedRatioBias),
+                                 kShipAiNeighbourBoxSpeedRatioScale)));
+        } else {
+            limit = static_cast<float>(
+                static_cast<double>(limit) *
+                ((static_cast<double>(self_speed) / static_cast<double>(closing_speed) +
+                  kShipAiNeighbourBoxSpeedRatioBias) *
+                 kShipAiNeighbourBoxSpeedRatioScale));
+        }
     }
     return limit;
 }
@@ -369,9 +396,17 @@ ShipAiNeighbourAvoidArm ship_ai_neighbour_avoid_box_refresh_009eafc0(
     const float time_to_gap = static_cast<float>(static_cast<double>(gap) /
                                                  static_cast<double>(closing_speed));
     float projection_time = time_to_gap - arrive_time;
-    const float slack = static_cast<float>(static_cast<double>(gap) -
-                                           static_cast<double>(closing_speed) *
-                                               static_cast<double>(arrive_time));
+    float slack;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009EB1CA FMULP closing * arrive_time, 009EB1CC FSUBP from gap, 009EB1CE FSTP
+        // float: each op rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        slack = static_cast<float>(x87_sub24(gap, x87_mul24(closing_speed, arrive_time)));
+    } else {
+        slack = static_cast<float>(static_cast<double>(gap) -
+                                   static_cast<double>(closing_speed) *
+                                       static_cast<double>(arrive_time));
+    }
     // 009EB1D8 JBE and 009EB1E8 COMISS: both have to be strictly positive.
     if (!(projection_time > 0.0f) || !(slack > 0.0f)) {
         copy_near_box_to_avoid_box(node, motion);
@@ -380,9 +415,17 @@ ShipAiNeighbourAvoidArm ship_ai_neighbour_avoid_box_refresh_009eafc0(
 
     // 009EB1FE..009EB212: how far the observed ship runs in that time.
     const float observed_speed = host.observed_body_axis_speed_0092d730();
-    float travel = static_cast<float>(static_cast<double>(observed_speed) *
-                                      static_cast<double>(projection_time) *
-                                      static_cast<double>(settings.est_pos_ship_spd_mul_1bc));
+    float travel;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009EB20B FMUL projection_time, 009EB20F FMUL [EDI+3Ch], 009EB212 FSTP float.
+        using namespace cc13x87;
+        travel = static_cast<float>(x87_mul24(x87_mul24(observed_speed, projection_time),
+                                              settings.est_pos_ship_spd_mul_1bc));
+    } else {
+        travel = static_cast<float>(static_cast<double>(observed_speed) *
+                                    static_cast<double>(projection_time) *
+                                    static_cast<double>(settings.est_pos_ship_spd_mul_1bc));
+    }
     float travel_magnitude = std::fabs(travel); // 009EB21E..009EB227
     // 009EB231 COMISS |travel|,1.0f; 009EB238 JBE.
     if (!(travel_magnitude > kShipAiNeighbourBoxMinTravel)) {
@@ -432,9 +475,16 @@ ShipAiNeighbourAvoidArm ship_ai_neighbour_avoid_box_refresh_009eafc0(
     if (travel_magnitude > limit) {
         // 009EB3B7 the ratio, 009EB3CC it shortens the time as well, 009EB3C6
         // and 009EB3D6/009EB3EA rewrite the magnitude and the signed value.
-        projection_time = static_cast<float>(static_cast<double>(projection_time) *
-                                             (static_cast<double>(limit) /
-                                              static_cast<double>(travel_magnitude)));
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 009EB3B7 FDIVP, 009EB3CC FMUL, 009EB3D0 FSTP float: each op rounds to 24 bits.
+            using namespace cc13x87;
+            projection_time = static_cast<float>(
+                x87_mul24(x87_div24(limit, travel_magnitude), projection_time));
+        } else {
+            projection_time = static_cast<float>(static_cast<double>(projection_time) *
+                                                 (static_cast<double>(limit) /
+                                                  static_cast<double>(travel_magnitude)));
+        }
         travel = (travel > 0.0f) ? limit : (kShipAiSectorNegateZero - limit);
         travel_magnitude = limit;
     }

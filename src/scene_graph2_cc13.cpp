@@ -5,6 +5,7 @@
 
 #include <cctype>
 #include <cmath>
+#include <cstring>
 #include <stdexcept>
 
 // Segments 88/91, second scene-graph pass (cc13-scene2). Evidence and ABIs:
@@ -397,9 +398,10 @@ std::int32_t baked_frame_index_00b92500(const BakedTrack& track, std::int32_t ch
     return frame * track.nodes_per_frame;
 }
 
+// Each element moves by FLD / FSTP DWORD, which quiets a signalling NaN (cc13-fixture6).
 void matrix_from_transposed_3x4_00b75de0(float out[16], const float src[12]) {
     for (int r = 0; r < 3; ++r)
-        for (int c = 0; c < 4; ++c) out[c * 4 + r] = src[r * 4 + c];
+        for (int c = 0; c < 4; ++c) out[c * 4 + r] = cc13x87::x87_fld_fstp(src[r * 4 + c]);
     out[3] = 0;
     out[7] = 0;
     out[11] = 0;
@@ -1076,8 +1078,14 @@ void copy_track_range_00b8e730(const float track_08[4], float out[4]) {
     for (int i = 0; i < 4; ++i) out[i] = track_08[i];
 }
 
+// Six FLD/FSTP DWORD copies, which quiet a signalling NaN (cc13-fixture10).
 void copy_track_key_block_00b8e750(const float track_18[6], float out[6]) {
-    for (int i = 0; i < 6; ++i) out[i] = track_18[i];
+    for (int i = 0; i < 6; ++i) {
+        std::uint32_t bits;
+        std::memcpy(&bits, track_18 + i, 4);
+        bits = cc13x87::x87_fld_fstp_bits(bits);
+        std::memcpy(out + i, &bits, 4);
+    }
 }
 
 void group_params_apply_00b8eb20(float params_08, float& node_184, bool node_is_group) {

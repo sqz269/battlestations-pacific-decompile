@@ -2,6 +2,7 @@
 // and docs/CC13_SEG62.md. Names are hypotheses; build-tested only.
 
 #include "bsp/cc13_seg62.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cstring>
 
@@ -125,8 +126,10 @@ Object matrix_scale_00952950(Seg62Host& host, Object out, float x, float y, floa
 // FLD/FSTP, which is a bit copy for every non-signalling value). Caller
 // 00955030 (STL_inst).
 std::uint32_t* copy_44_00952df0(const std::uint32_t* first, const std::uint32_t* last, std::uint32_t* dest) {
+    // The FLD/FSTP copies quiet a signalling NaN; they are modelled (cc13-fixture10).
     for (; first != last; first += 0x11, dest += 0x11) {
-        for (int i = 0; i < 0x11; ++i) dest[i] = first[i];
+        dest[0] = first[0];
+        for (int i = 1; i < 0x11; ++i) dest[i] = cc13x87::x87_fld_fstp_bits(first[i]);
     }
     return dest;
 }
@@ -138,7 +141,8 @@ std::uint32_t* copy_backward_44_00952f30(const std::uint32_t* first, const std::
     while (last != first) {
         last -= 0x11;
         dest_end -= 0x11;
-        for (int i = 0; i < 0x11; ++i) dest_end[i] = last[i];
+        dest_end[0] = last[0];
+        for (int i = 1; i < 0x11; ++i) dest_end[i] = cc13x87::x87_fld_fstp_bits(last[i]);
     }
     return dest_end;
 }
@@ -294,7 +298,8 @@ std::uint32_t list_value_at_00954df0(Object list, std::int32_t index) {
 // 0095B2DB.
 void fill_44_00955090(std::uint32_t* first, std::uint32_t* last, const std::uint32_t* value) {
     for (; first != last; first += 0x11) {
-        for (int i = 0; i < 0x11; ++i) first[i] = value[i];
+        first[0] = value[0];
+        for (int i = 1; i < 0x11; ++i) first[i] = cc13x87::x87_fld_fstp_bits(value[i]);
     }
 }
 

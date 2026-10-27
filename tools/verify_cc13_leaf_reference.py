@@ -120,6 +120,8 @@ CODE = {
     0x809de0: 0x23, 0x7b5390: 0x6d, 0x791640: 0x71, 0x59ab10: 0xad, 0x790460: 0x61, 0x414130: 0x25,
     0x9c6220: 0x47, 0x88a0c0: 0x6d, 0x98a710: 0x3f, 0x638b20: 0x31, 0x42c450: 0x62, 0x7b5be0: 0x3a,
     0x6eb870: 0x53, 0x9b93f0: 0x21, 0xb0a3f0: 0x28, 0x6ea530: 0x15,
+    # cc13-fixture8 follow-up.
+    0x9d5ae0: 0xa8, 0x9d5b90: 0xa8, 0x9a5390: 0x1e, 0x727d30: 0x3b, 0x729a40: 0x39,
     # cc13-fixture4: main-thread math leaves (docs/CC13_FIXTURE_PASS_4.md).
     0x709ef0: 0x55a,  # flag cloth wind and springs (sqrt)
     0x70a450: 0x141,  # flag cloth integrate
@@ -153,6 +155,57 @@ CODE = {
     0x7b8140: 0xa3,   # float window set sample and sum
     0x7ba450: 0x49,   # max3
     0xab0fe0: 0x51,   # gui colour equal
+    # cc13-fixture6: render and geometry float leaves.
+    0xae05e0: 0x127,  # AABB classify against a plane set
+    0xb65140: 0x99,   # plane set classify point
+    0xb4cc50: 0xde,   # sample offsets downscale 4x4
+    0xb4cde0: 0xbc,   # sample offsets average luminance 3x3
+    0xb8b350: 0x55,   # flare centre weight (sqrt)
+    0x481510: 0x111,  # box corners from bounds
+    0xb9a3f0: 0x55,   # ocean normal map layers
+    0xb999a0: 0x4a,   # plane signed distance
+    0xb75de0: 0x66,   # matrix from transposed 3x4
+    0xb40440: 0x4d,   # float3x4 from matrix transposed
+    0xadbd00: 0xbf,   # height field height range (1e10 / -1000)
+    0xadb280: 0xbf,   # height field height range (100000 / -100000)
+    0x7ae330: 0xa6,   # vector3 component min
+    0x7ae3e0: 0xa6,   # vector3 component max
+    # cc13-fixture8 follow-up.
+    0x6f22f0: 0x3e, 0x6f22b0: 0x3e,
+    # cc13-fixture9: vector helpers, exact compares and float copies.
+    0x42ae80: 0x21,   # vector3 divide in place
+    0x42ae50: 0x21,   # vector3 scale in place
+    0x42ae20: 0x23,   # vector3 divide scalar to
+    0x414260: 0x23,   # vector3 scale to
+    0x4142a0: 0x23,   # vector3 add to
+    0x42b220: 0x1d,   # vector3 dot
+    0x709ac0: 0x3b,   # vec3 sub (hidden return)
+    0xb50020: 0x2c,   # vector4 add
+    0x42aee0: 0x21,   # vector3 subtract in place
+    0x42aeb0: 0x21,   # vector3 add in place
+    0x427c90: 0x23,   # vector3 subtract to
+    0x475df0: 0x51,   # vector4 exact equals
+    0x453f40: 0x41,   # vector3 exact equals
+    0x533d30: 0x31,   # vec2 equal
+    0x6fdd00: 0x63,   # 4x4 transpose in place
+    0xb40400: 0x37,   # 2x4 from transposed matrix
+    # cc13-fixture10: record copies (FLD/FSTP float fields).
+    0x47d250: 0x85,   # record 54h copy
+    0x47f930: 0x85,   # record 54h copy assign
+    0x47d2e0: 0x79,   # record 4Ch copy
+    0x47f9c0: 0x79,   # record 4Ch copy assign
+    0x47f0c0: 0x67,   # record 40h copy
+    0x454970: 0x1f,   # shake key copy
+    0x7baa80: 0x70,   # plane state record copy
+    0x7baaf0: 0x7b,   # plane control state copy
+    0x80b890: 0x6d,   # turn path segment copy
+    0x811d10: 0x67,   # unit AI order copy
+    0xbc7f00: 0x4f,   # water record 30h copy
+    0x924280: 0x68,   # scene property copy 16 floats
+    0xb8e750: 0x2a,   # track key block copy
+    0x952df0: 0x97,   # copy 44h records
+    0x952f30: 0x97,   # copy backward 44h records
+    0x955090: 0x86,   # fill 44h records
 }
 # Tail-jump targets replaced by MOV EAX,ECX; RET, so a fixture reads the ECX a thunk passes on.
 TAIL_STUBS = (0x6833f0, 0x4f71d0)
@@ -184,6 +237,9 @@ DATA = {
     # cc13-fixture4 constants.
     0xd7a244: 4, 0xd7a248: 4, 0xd638e4: 4,  # and 00D7A210, listed by fixture8
     0xcef1b8: 8,                   # cc13-fixture7: the double 720.0 (00AB6BD0 divisor)
+    # cc13-fixture6 constants (00CE3D78, 00D7A250 and 00D7A258 are listed above).
+    0xce3978: 4, 0xcec9e0: 8, 0xd633e0: 8,
+    0xce3d10: 8, 0xd7a270: 8, 0xce4970: 4, 0xd7a240: 4, 0xce4bc8: 4, 0xd5d2d4: 4,
 }
 SQRT = 0xbf7030
 SQRT_STUB = bytes([0xd9, 0xfa, 0xc3])

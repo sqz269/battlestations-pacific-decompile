@@ -6,6 +6,8 @@
 // own graph: 870/870 instructions reached, 0 depth conflicts at any join.
 
 #include "bsp/torpedo_aim_tick.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <cmath>
 
@@ -184,9 +186,18 @@ TorpedoAimTickResult torpedo_aim_tick_full_009d15f0(TorpedoAimTickHost& host,
     // the slot ends up with the larger of the two turn radii.
     float f34 = (in.turn_radius_26c <= in.turn_radius_268) ? in.turn_radius_268
                                                            : in.turn_radius_26c;
-    const float turn_room = static_cast<float>(
-        static_cast<double>(f34 * f40_sin) +
-        (static_cast<double>(speed) + kTurnRadiusBias));        // 009D1994
+    float turn_room;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009D1984 FMUL f34 * sin, 009D198C FADD qword bias to speed, 009D1992 FADDP,
+        // 009D1994 FSTP float: each op rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        turn_room = static_cast<float>(
+            x87_add24(x87_mul24(f34, f40_sin), x87_add24(speed, kTurnRadiusBias)));  // 009D1994
+    } else {
+        turn_room = static_cast<float>(
+            static_cast<double>(f34 * f40_sin) +
+            (static_cast<double>(speed) + kTurnRadiusBias));        // 009D1994
+    }
     bool skipped_to_join = false;
     if (turn_room > f14_range) {                               // 009D19A0
         host.update_run_time_009d1360();                       // 009D19A4
@@ -335,9 +346,17 @@ TorpedoAimTickResult torpedo_aim_tick_full_009d15f0(TorpedoAimTickHost& host,
                                            kConeNearY1, f0c_time)   // 009D21AC
             : clamped_interpolate_00419010(kConeSplit, kConeNearY1, kConeFarX1,
                                            kConeFarY1, f0c_time);   // 009D21F2
-    out.gate_cone = static_cast<float>(static_cast<double>(cone_deg) *
-                                       kDegToRadNum / kDegToRadDen) >
-                    f18_turn_mag;                               // 009D2209
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009D21F7 FMUL qword, 009D21FD FDIV qword, each rounded to 24 bits on the main
+        // thread; 009D2209 FCOMIP compares the stack value, with no float store.
+        using namespace cc13x87;
+        out.gate_cone = x87_div24(x87_mul24(cone_deg, kDegToRadNum), kDegToRadDen) >
+                        static_cast<double>(f18_turn_mag);      // 009D2209
+    } else {
+        out.gate_cone = static_cast<float>(static_cast<double>(cone_deg) *
+                                           kDegToRadNum / kDegToRadDen) >
+                        f18_turn_mag;                           // 009D2209
+    }
     // 009D2215-009D2231: each of the four byte flags jumps to 009D228B when
     // clear, and 009D2231 TEST BL,BL jumps to the tail.  So the ground arm at
     // 009D2239 needs all five, while the countdown at 009D228F is re-tested at

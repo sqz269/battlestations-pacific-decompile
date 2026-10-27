@@ -20959,3 +20959,61 @@ Winnability, stock 120000-frame runs on the recon-ON build (`local\rc1_win_{i23L
   looks feasible.
 - IJN30: phase 1 needs both B-29 waves dead. Wave 1 (2 groups of 3 squadrons with 5 wings, 30 planes) loses 18 by
   774 s, then 12 stay alive to 6000 s, out of AA reach, so wave 2 never spawns. It needs a fighter-intercept plan.
+
+## 328. JM08 won on the reference env (s63_v3); USNOS c22 holds past 4000 s (cc9-ships63, 2026-10-24)
+
+**JM08 landed as a WINS row** by cc9-lua72 (561d57228): `config/win_orders/jm08_s63_j8_v3.txt`, a byte copy of
+`cc9-ships44\local\s63_j8_v3.txt` (generator `local\s63_j8mk.py v3`, building on ships62's `s62_j8mk.py h`).
+- **Reference env, 110000 frames:** completed 4246.98 s on e3cdbd967 and again on 561d57228
+  (`local\s63_v3m_j8.log`, 2.3 GB of FreeAttack chooser spam). Both runs log the guard refusal,
+  helm_moveto_unselected=0 and helm_role_forced=0.
+- **This is a knife-edge.** The HQ bottoms out at 9 hp.
+- **Other envs fail.** `BSP_FRAME_JITTER=20,3` has no end (`s63_v3j_j8.log`: LST 01/02 and LSM 01/02 survive).
+  The default env fails at 1911.79 s (`s63_v3d_j8.log`): phase 1 diverges and the invasion force shells the HQ
+  from frame 13000.
+
+**Why h stopped working, and what the plan changes** (`local\s63_j8an.py <log>` prints launches, ship deaths and HQ
+damage per 1000 steps):
+- **h on e3cdbd967 has no end** (`s63_h_j8.log`). TT03 parks at (1637,-647) from step 23050 and survives. The
+  Oscar (154) strikes on it only strafe (bullet 90, about 7 hp a hit; health about 1720). All six bomber launches
+  (166/167, three of each) go to TT06, which dies to the fourth.
+- **k: hold the fighters and bombers.** No class-154 airfield line from 14000, and no 166/167 line from 6000.
+  10 of 11 landships die by 929 s, mostly to Fubuki, Isokaze and the Gyoraitei. The invasion force (Helena,
+  Auilick, Macomb) then idles and **never shells the HQ**. LST 03 cruises to (-4572,7265) and parks.
+- **t: bombers back from 20000.** 167/166 launches cycle over the landships, and LST 03 dies at 1189.8 s. The
+  B-17s spawn at 24212, SBD #3.3-3.6 with CAP #3.7 at 27813, and C47 #4.1-4.5 at 31414.
+- **Phase 2 has two levers:**
+  - The cover lines must exist before the B-17 spawn. k's cover started at 26000, so the B-17s flew 1800 frames
+    unopposed.
+  - **Held-slot re-orders** (order 1, then order 3, SCRIPTED_HELM 16) move every airborne squadron onto the SBDs
+    at their spawn (27820) and onto the C47s at theirs (31420). Fighters launched at the SBD spawn kill one SBD
+    before the bombs (p). Re-ordered squadrons that are already airborne kill six to all of them (q, v1, v3).
+- **v3** = t plus cover from 20000 with the Gekko (152) lines ahead of the Oscars, plus both re-orders.
+  - B-17 damage (bullet 72) is still about 18k over several passes, against an HQ of about 17k plus repair.
+  - SBD damage (bullet 71) is only 0.3k.
+  - All 20 C47s die by 4244 s (CheckPrim3).
+- **Variants that keep v3's phase 1 lose phase 2.** v1 (Oscars first) fails at 1592 s. w1 (a B-17 re-order at
+  30600 and the C47 re-order at 34000) and w2 (only the C47 re-order at 34000) fail at about 1740 s.
+- **Any change to a line before the last landship's death reshuffles phase 1.** r/s dropped the phase-1 Oscar
+  and Gekko strikes: r spawned the B-17s at 32630; in s the HQ was shelled to 3.1k with no end.
+- **Facts for a re-plan:**
+  - The airfield has 4 slots.
+  - Cleanup bombers hold their slots for about 6000 frames.
+  - A launch at a squadron that does not exist yet is refused ("no unit by the target name"), and the line falls
+    through.
+  - An `order 1` is unconditional: re-order frames must come from a run with the same phase 1.
+
+**USNOS (queue item 2).**
+- The WINS plan `usnos_s45_os_k` fails at 909.90 s on e3cdbd967 (`s63_ok_os.log`, Game Over: every TroopTrans
+  is dead; TT6/TT3/TT2 die to wave-1 planes by 277 s).
+- **ships61's c22 and c19 hold.** On e3cdbd967, 80000 frames, ref env (`s63_c22_os.log`, `s63_c19_os.log`):
+  no end through 4000 s, MissionPhase=2, and TroopTrans6 alive at the end. Sent to cc9-physics26 (the
+  Enterprise landing window).
+  - Both plans have about 28 unselected movetos (helm_moveto_unselected=29 / 27).
+- **f** (`local\s63_osmk.py`, c22 with a select one frame before each moveto) also holds through 4000 s
+  (`s63_f_os.log`).
+  - HQ1, HQ2 and CB2 are neutralized at 1507, 1950 and 2151 s, but no transport is within 1500 m, so none is
+    captured.
+  - TT3 dies to Yamato at 3528 s. Two movetos were still unselected (frames 40000 and 70000).
+- **g** puts each select in the moveto's own frame. It is queued for 210000 frames (`s63_g_os.log`), because c19's
+  transport legs start at frame 75000.

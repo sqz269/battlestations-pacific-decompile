@@ -1,6 +1,8 @@
 // Reconstruction of the hit narrowphase. See docs/HIT_NARROWPHASE.md for the
 // evidence behind every rule; the comments here only cite the site.
 #include "bsp/hit_narrowphase.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_gunnery_cc13.hpp"
 
 #include <cmath>
 
@@ -81,6 +83,18 @@ bool segment_box_hit_0085cdb0(const HitQueryBounds& box, const HitQueryPoint& p0
     const float hi[3] = {box.max.x, box.max.y, box.max.z};
     const float a3[3] = {p0.x, p0.y, p0.z};
     const float b3[3] = {p1.x, p1.y, p1.z};
+    // (x - a) / den stored as a float. PC24 (pc24w1-gunnery-2): the FSUBP at
+    // 0085CE41 / 0085CE5B (and the second axis pass) rounds the numerator to 24
+    // bits before the FDIVP.
+    auto fraction = [](float x, float a, float den) {
+        float t = 0.0f;
+        if constexpr (kPc24GunneryCc13Bound) {
+            t = static_cast<float>(cc13x87::x87_div24(cc13x87::x87_sub24(x, a), den));
+        } else {
+            t = static_cast<float>((static_cast<double>(x) - a) / den);
+        }
+        return t;
+    };
     float entry = 0.0f;          // FLDZ, [ESP+10h]
     float exit = 1.0f;           // 00D7A24C, [ESP+14h]
     for (int i = 0; i < 3; ++i) {
@@ -93,20 +107,20 @@ bool segment_box_hit_0085cdb0(const HitQueryBounds& box, const HitQueryPoint& p0
             if (a < lo[i]) return false;                    // all below
             const float den = static_cast<float>(static_cast<double>(b) - a);
             if (hi[i] < a) {
-                t_in = static_cast<float>((static_cast<double>(hi[i]) - a) / den);
+                t_in = fraction(hi[i], a, den);
             }
             if (lo[i] > b) {
-                t_out = static_cast<float>((static_cast<double>(lo[i]) - a) / den);
+                t_out = fraction(lo[i], a, den);
             }
         } else {
             if (hi[i] < a) return false;
             if (b < lo[i]) return false;
             const float den = static_cast<float>(static_cast<double>(b) - a);
             if (a < lo[i]) {
-                t_in = static_cast<float>((static_cast<double>(lo[i]) - a) / den);
+                t_in = fraction(lo[i], a, den);
             }
             if (b > hi[i]) {
-                t_out = static_cast<float>((static_cast<double>(hi[i]) - a) / den);
+                t_out = fraction(hi[i], a, den);
             }
         }
         if (entry < t_in) entry = t_in;                     // 0085CEC4..0085CEDA

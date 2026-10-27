@@ -4487,6 +4487,9 @@ void GameHudHost::report() {
         impl.gun_aim_changed[1], impl.gun_aim_changed[2], impl.gun_aim_changed[3],
         impl.gun_aim_changed[4], impl.gun_aim_changed[5], impl.gun_aim_max_yaw_delta,
         impl.gun_aim_max_pitch_delta);
+    impl.log.notef("summary mission hud ship screen gauge product round (0043B370, sw1 reach): "
+        "bound=%d ticks=%llu differs=%llu", bsp::ship_screen_gauge_reach().bound ? 1 : 0,
+        bsp::ship_screen_gauge_reach().ticks, bsp::ship_screen_gauge_reach().differs);
     impl.log.notef("summary mission hud set selected unit (packet cc9_set_selected_unit, "
         "008AB260 / 00647300): bound=%d calls=%llu accepted=%llu pushes_20h=%llu",
         kSetSelectedUnitBound ? 1 : 0, impl.select_calls, impl.select_accepted,
