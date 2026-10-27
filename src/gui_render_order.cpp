@@ -1,4 +1,6 @@
 #include "bsp/gui_render_order.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_hudgui_cc13.hpp"
 #include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
@@ -82,12 +84,26 @@ GuiCameraPlacement gui_camera_placement_00aa3e00(
     std::int32_t back_buffer_width, std::int32_t back_buffer_height) noexcept
 {
     GuiCameraPlacement placement{};
-    const double half_x = 0.5 + (back_buffer_width != 0
-            ? 0.5 / static_cast<double>(back_buffer_width)
-            : 0.0);
-    const double half_y = 0.375 + (back_buffer_height != 0
-            ? 0.5 / static_cast<double>(back_buffer_height)
-            : 0.0);
+    double half_x = 0.0;
+    double half_y = 0.0;
+    if constexpr (kPc24HudGuiCc13Bound) {
+        // PC24: 00AA3E47 FDIVRP / 00AA3E67 FIDIV round to 24 bits before the
+        // FADDs at 00AA3E5F (0.5 [00D7A280]) and 00AA3E8D (0.375 [00CF0A90]).
+        using namespace cc13x87;
+        double step_x = 0.0;
+        double step_y = 0.0;
+        if (back_buffer_width != 0) step_x = x87_div24(0.5, static_cast<double>(back_buffer_width));
+        if (back_buffer_height != 0) step_y = x87_div24(0.5, static_cast<double>(back_buffer_height));
+        half_x = x87_add24(step_x, 0.5);
+        half_y = x87_add24(step_y, 0.375);
+    } else {
+        half_x = 0.5 + (back_buffer_width != 0
+                ? 0.5 / static_cast<double>(back_buffer_width)
+                : 0.0);
+        half_y = 0.375 + (back_buffer_height != 0
+                ? 0.5 / static_cast<double>(back_buffer_height)
+                : 0.0);
+    }
     placement.eye[0] = static_cast<float>(half_x);
     placement.eye[1] = static_cast<float>(half_y);
     placement.eye[2] = kGuiCameraEyeZ; // 00AA3E87 stores eye+8, not target+8.
