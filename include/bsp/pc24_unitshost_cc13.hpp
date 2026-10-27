@@ -33,6 +33,25 @@ namespace bsp {
 // Expected movers when ON: dogfight lead points and fine-aim angles, the arc
 // predictor's arc/straight verdicts, maneuver headings and pitch, the avoid
 // turn's bank decay, and early-edge target pickups.
+//   units-BC (cc13-pc24w1-units-BC), the land and takeoff host bodies:
+//     009B0300 run_land_line_tick_009b0300 (s2 009B04E7-04EF, near-field ratio
+//              009B0667-06A1, upper/lower 009B0766-07CE, +2B4h 009B0899-08B6)
+//     009AFAF0 land_geometry_009afaf0 (dx dx + dz dz 009AFC03-FC0B)
+//     007C07A0 arm_direction_hold_007c07a0 (pi/2 - float(atan2) 007C0843-084B)
+//     009B22C0 run_land_park_tick_009b22c0 (retarget 009B2423-2433, heading
+//              009B29A0-29AE, speed scale 009B2A5E-2ABD, deadband 009B2B97-2BA7)
+//     009B1300 land_min_speed_009b1300 (0042B2F0 |v|, inside the
+//              kLandMinSpeedOwnerVelocityBound ON arm)
+//     009C18C0 run_land_moveto_tick_009c18c0 (the 009F9E40 bearing 009F9E5D-9E91)
+//     009CDE50 run_takeoff_prepare_step_009cde50 (wobble angle 009CDF3E-DF46,
+//              00419260 length, member distance via 0042B2F0 at 009CE083)
+//     009CE2C0 run_takeoff_run_step_009ce2c0 (ten chains, 009CE5C0-F41E)
+//     009B3900 run_land_task_tick_009b3eb0 (altitude decay 009B3A91-3A9F, request
+//              pacing 009B3AFA-3B06)
+// Expected movers when ON (units-BC): landing approach speeds, line and park
+// steering, the park yaw and speed scale, the land moveto bearing, the takeoff
+// wobble and squadron spacing, takeoff pitch, yaw and throttle, and the land
+// request pacing and altitude decay.
 inline constexpr bool kPc24UnitsHostCc13Bound = false;
 
 namespace pc24_unitshost {

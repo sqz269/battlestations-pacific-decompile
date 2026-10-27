@@ -38111,11 +38111,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // the sqrt result is stored as float at 0042B320.
                                 float len;
                                 if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                                    const float s2 = static_cast<float>(bsp::cc13x87::x87_add24(
-                                        bsp::cc13x87::x87_add24(bsp::cc13x87::x87_mul24(v[1], v[1]),
-                                            bsp::cc13x87::x87_mul24(v[0], v[0])),
-                                        bsp::cc13x87::x87_mul24(v[2], v[2])));
-                                    len = static_cast<float>(bsp::cc13x87::x87_sqrt24(s2));
+                                    // 0042B30C-0042B33C: +0 when the sum is not above 1e-10
+                                    // (NaN included); 009B1343-009B1355 then divide by it.
+                                    len = bsp::pc24_unitshost::length3_0042b2f0(v[0], v[1], v[2]);
                                 } else {
                                     len = static_cast<float>(std::sqrt(
                                         static_cast<double>(v[0]) * v[0] + static_cast<double>(v[1]) * v[1]
@@ -38818,11 +38816,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // as float, and stores the sqrt as float (0042B320).
                                 float d;
                                 if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                                    const float s2 = static_cast<float>(bsp::cc13x87::x87_add24(
-                                        bsp::cc13x87::x87_add24(bsp::cc13x87::x87_mul24(ey, ey),
-                                            bsp::cc13x87::x87_mul24(ex, ex)),
-                                        bsp::cc13x87::x87_mul24(ez, ez)));
-                                    d = static_cast<float>(bsp::cc13x87::x87_sqrt24(s2));
+                                    // 0042B30C-0042B33C: +0 when the sum is not above 1e-10.
+                                    d = bsp::pc24_unitshost::length3_0042b2f0(ex, ey, ez);
                                 } else {
                                     d = static_cast<float>(std::sqrt(
                                         static_cast<double>(ex) * ex + static_cast<double>(ey) * ey +
