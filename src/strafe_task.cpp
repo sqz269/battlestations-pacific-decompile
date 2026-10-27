@@ -6,10 +6,62 @@
 
 #include <cmath>
 
+#include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/unit_rudder.hpp"
 
 namespace bsp {
 namespace {
+
+// 009CCF58-009CCF86: (unit y - aim y) / approach+30h + 2 * [+8]+188h. The
+// height is spilled as a double (009CCF60 FSTP qword) and the subtraction
+// runs in x87 precision before the float store at 009CCF86.
+// At PC24 (kStrafeX87FaithfulCc13Bound) the FSUBR, FDIV and both FADDs
+// each round to float; the OFF arm is the 53-bit (pool-worker) model.
+// Both arms are templated so the sw3 reach counter can evaluate the other.
+template <bool kPc24>
+float strafe_climb_threshold(const StrafeRangeInputs& in) noexcept {
+    if constexpr (kPc24) {
+        const float climb = (in.unit_height_100 - in.aim_height) / in.glide_tan_30;
+        return climb + (in.field_188 + in.field_188);
+    } else {
+        const double climb = (static_cast<double>(in.unit_height_100) - in.aim_height) /
+                             in.glide_tan_30;
+        return static_cast<float>(
+            climb + (static_cast<double>(in.field_188) + in.field_188));
+    }
+}
+
+template <bool kFaithful>
+bool point_off_nose_impl(const float local[3]) noexcept {
+    if constexpr (kFaithful) {
+        const float xx = local[0] * local[0];        // 00419276-00419278
+        const float zz = local[2] * local[2];        // 00419280-00419286
+        const float sum = xx + zz;                   // 0041928A-0041928E
+        const float root = std::sqrt(sum);           // 00419296-0041929B
+        const float r = (root == 0.0f) ? 0.0f : 1.0f / root;  // 004192B3-004192C9
+        const float rx = local[0] * r;               // 00996587-0099658B
+        const float rz = r * local[2];               // 0099658F-00996593
+        return std::fabs(rx) > rz;                   // 009965A5-009965B5
+    } else {
+        // BSP_Vector2f_ReciprocalLength over (x, z), then rz < |rx|.
+        const double len2 = static_cast<double>(local[0]) * local[0] +
+                            static_cast<double>(local[2]) * local[2];
+        if (!(len2 > 0.0)) return false;
+        const float rl = static_cast<float>(1.0 / std::sqrt(len2));
+        return rl * local[2] < std::fabs(rl * local[0]);
+    }
+}
+
+template <bool kFaithful>
+float point_distance_square_impl(float dx, float dz) noexcept {
+    if constexpr (kFaithful) {
+        const float zz = dz * dz;                    // 0099635D
+        const float xx = dx * dx;                    // 0099635F-00996361
+        return zz + xx;                              // 00996363-00996365
+    } else {
+        return static_cast<float>(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
+    }
+}
 
 bool strafe_attack_state(StrafeState s) noexcept {
     // 009CC6A0-009CC6CA: aim, goaway, attackrun, prepare, gotowards.
@@ -78,7 +130,11 @@ void strafe_approach_update_009cced0(StrafeApproachUpdate& ap, float dt,
     ap.elapsed_44 = ap.elapsed_44 + dt;                    // 009CCEE6-009CCEF3
     const float countdown = ap.countdown_d0;
     // 009CCF06 FCOMI dt,c / JC: an unordered compare also decrements (ON).
-    const bool decrement = kStrafeX87FaithfulCc13Bound ? !(dt >= countdown) : dt < countdown;
+    const bool decrement_on = !(dt >= countdown);
+    const bool decrement_off = dt < countdown;
+    plane_task_reach_count(g_plane_task_reach_sw3.strafe_countdown,
+                           decrement_on != decrement_off);   // sw3 reach
+    const bool decrement = kStrafeX87FaithfulCc13Bound ? decrement_on : decrement_off;
     if (decrement) {                                       // 009CCF06 FCOMI, JB
         ap.countdown_d0 = countdown - dt;                  // 009CCF9F
         return;
@@ -88,28 +144,23 @@ void strafe_approach_update_009cced0(StrafeApproachUpdate& ap, float dt,
         ap.in_range_50 = false;                            // 009CD015
         return;
     }
-    // 009CCF58-009CCF86: (unit y - aim y) / approach+30h + 2 * [+8]+188h. The
-    // height is spilled as a double (009CCF60 FSTP qword) and the subtraction
-    // runs in x87 precision before the float store at 009CCF86.
-    // At PC24 (kStrafeX87FaithfulCc13Bound) the FSUBR, FDIV and both FADDs
-    // each round to float; the OFF arm is the 53-bit (pool-worker) model.
-    float threshold;
-    if constexpr (kStrafeX87FaithfulCc13Bound) {
-        const float climb = (in.unit_height_100 - in.aim_height) / in.glide_tan_30;
-        threshold = climb + (in.field_188 + in.field_188);
-    } else {
-        const double climb = (static_cast<double>(in.unit_height_100) - in.aim_height) /
-                             in.glide_tan_30;
-        threshold = static_cast<float>(
-            climb + (static_cast<double>(in.field_188) + in.field_188));
-    }
+    // 009CCF58-009CCF86, strafe_climb_threshold (kStrafeX87FaithfulCc13Bound).
+    const float threshold_on = strafe_climb_threshold<true>(in);
+    const float threshold_off = strafe_climb_threshold<false>(in);
     // 009CCF8A-009CCFE3: floored at tuning+658h times 1.0 ([00D7A24C]) or, for
     // a kind 10h/16h plane, 1.4 ([00D06874]).
     const float scale = in.not_bomber_kind ? 1.0f : 1.39999997615814208984375f;
     const float floor = in.attack_dist_658 * scale;
-    if (!(threshold > floor)) threshold = floor;
-    // 009CCFE9-009CCFF8: in range when the threshold exceeds 009CAD00.
-    ap.in_range_50 = threshold > in.horizontal_distance;
+    const auto in_range = [&](float threshold) {
+        if (!(threshold > floor)) threshold = floor;
+        // 009CCFE9-009CCFF8: in range when the threshold exceeds 009CAD00.
+        return threshold > in.horizontal_distance;
+    };
+    const bool in_range_on = in_range(threshold_on);
+    const bool in_range_off = in_range(threshold_off);
+    plane_task_reach_count(g_plane_task_reach_sw3.strafe_in_range, in_range_on != in_range_off,
+                           plane_task_reach_bits_differ(threshold_on, threshold_off));   // sw3 reach
+    ap.in_range_50 = kStrafeX87FaithfulCc13Bound ? in_range_on : in_range_off;
 }
 
 float tight_turn_pitch_ref_009bafc0(float altitude, float speed, float pitch,
@@ -172,23 +223,11 @@ TightTurnCommand tight_turn_tick_009ba020(bool side_408, float roll_c68, float p
 // the sum, which differs from 00419260 only in rounding and at float
 // underflow/overflow of the squares. ABI: not ABI-compatible (plain C++).
 bool point_off_nose_00996510(const float local[3]) noexcept {
-    if constexpr (kStrafeX87FaithfulCc13Bound) {
-        const float xx = local[0] * local[0];        // 00419276-00419278
-        const float zz = local[2] * local[2];        // 00419280-00419286
-        const float sum = xx + zz;                   // 0041928A-0041928E
-        const float root = std::sqrt(sum);           // 00419296-0041929B
-        const float r = (root == 0.0f) ? 0.0f : 1.0f / root;  // 004192B3-004192C9
-        const float rx = local[0] * r;               // 00996587-0099658B
-        const float rz = r * local[2];               // 0099658F-00996593
-        return std::fabs(rx) > rz;                   // 009965A5-009965B5
-    } else {
-        // BSP_Vector2f_ReciprocalLength over (x, z), then rz < |rx|.
-        const double len2 = static_cast<double>(local[0]) * local[0] +
-                            static_cast<double>(local[2]) * local[2];
-        if (!(len2 > 0.0)) return false;
-        const float rl = static_cast<float>(1.0 / std::sqrt(len2));
-        return rl * local[2] < std::fabs(rl * local[0]);
-    }
+    // point_off_nose_impl holds both arms.
+    const bool on = point_off_nose_impl<true>(local);
+    const bool off = point_off_nose_impl<false>(local);
+    plane_task_reach_count(g_plane_task_reach_sw3.strafe_off_nose, on != off);   // sw3 reach
+    return kStrafeX87FaithfulCc13Bound ? on : off;
 }
 
 // 00996300-00996385, __fastcall(ECX = condition) -> AL. 0099631A-00996374:
@@ -202,21 +241,16 @@ bool point_distance_reached_00996300(float plane_x, float plane_z, float point_x
                                      float point_z, float dist2) noexcept {
     const float dx = point_x - plane_x;
     const float dz = point_z - plane_z;
-    float d2;
-    if constexpr (kStrafeX87FaithfulCc13Bound) {
-        const float zz = dz * dz;                    // 0099635D
-        const float xx = dx * dx;                    // 0099635F-00996361
-        d2 = zz + xx;                                // 00996363-00996365
-    } else {
-        d2 = static_cast<float>(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
-    }
+    // point_distance_square_impl holds both arms of the square.
+    const float d2_on = point_distance_square_impl<true>(dx, dz);
+    const float d2_off = point_distance_square_impl<false>(dx, dz);
     // 00996370 FCOMIP d2,[+28h] / JC 0099637F (XOR EAX,EAX): an unordered compare
     // sets CF, so a NaN answers 0 (ON). OFF answers true on NaN.
-    if constexpr (kStrafeX87FaithfulCc13Bound) {
-        return d2 >= dist2;
-    } else {
-        return !(d2 < dist2);
-    }
+    const bool on = d2_on >= dist2;
+    const bool off = !(d2_off < dist2);
+    plane_task_reach_count(g_plane_task_reach_sw3.strafe_distance, on != off,
+                           plane_task_reach_bits_differ(d2_on, d2_off));   // sw3 reach
+    return kStrafeX87FaithfulCc13Bound ? on : off;
 }
 
 }  // namespace bsp

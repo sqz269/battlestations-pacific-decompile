@@ -4,8 +4,10 @@
 #include "bsp/dogfight_task.hpp"
 
 #include <cmath>
+#include <type_traits>
 
 #include "bsp/dive_bomb_task.hpp"  // dive_bomb_interpolate_clamped_00419010
+#include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/plane_flight.hpp"   // heading_command_009f9e40, pitch_command_to_point_009f9ed0
 
 namespace bsp {
@@ -486,60 +488,72 @@ float follow_wait_value_009be3e0(bool in_position_85, const float member_minus_s
     if (in_position_85) return 1.0f;
     const float x = member_minus_station[0];
     const float z = member_minus_station[2];
-    float result;
-    if constexpr (kFollowWaitFloatHelpersCc13Bound) {
-        constexpr double kHalfPiF = 1.5707963705062866;    // [00CE3830]
-        constexpr double kTwoPiF = 6.2831854820251465;     // [00CE3828]
-        constexpr double kPiF = 3.1415927410125732;        // [00CE3D28], -[00CE3D18]
-        // 007B4E90: atan2 (00BF701A) stored float, pi/2 - a stored float, plus
-        // 2pi stored float when 0 > h.
-        const float a = static_cast<float>(std::atan2(static_cast<double>(z), static_cast<double>(x)));
-        float hdg = static_cast<float>(kHalfPiF - a);
-        if (0.0f > hdg) hdg = static_cast<float>(hdg + kTwoPiF);
-        // 00438B10(hdg, leader): the difference stored float, then 2pi steps
-        // stored float until it lies in (-pi, pi]. An unordered first compare
-        // takes the upper arm, whose JBE returns the NaN unchanged.
-        float d = hdg - leader_heading;                    // 00438B10-00438B18
-        if (!(-kPiF < d) && !std::isnan(d)) {              // 00438B26 FCOMI, JC
-            do { d = static_cast<float>(d + kTwoPiF); } while (!(-kPiF < d));
-        } else if (d > kPiF) {                             // 00438B59 FCOMI, JBE
-            do { d = static_cast<float>(d - kTwoPiF); } while (d > kPiF);
+    // Both arms, so the sw3 reach counter can evaluate the other one.
+    const auto arm = [&](auto helpers) -> float {
+        float result;
+        if constexpr (decltype(helpers)::value) {
+            constexpr double kHalfPiF = 1.5707963705062866;    // [00CE3830]
+            constexpr double kTwoPiF = 6.2831854820251465;     // [00CE3828]
+            constexpr double kPiF = 3.1415927410125732;        // [00CE3D28], -[00CE3D18]
+            // 007B4E90: atan2 (00BF701A) stored float, pi/2 - a stored float, plus
+            // 2pi stored float when 0 > h.
+            const float a = static_cast<float>(std::atan2(static_cast<double>(z), static_cast<double>(x)));
+            float hdg = static_cast<float>(kHalfPiF - a);
+            if (0.0f > hdg) hdg = static_cast<float>(hdg + kTwoPiF);
+            // 00438B10(hdg, leader): the difference stored float, then 2pi steps
+            // stored float until it lies in (-pi, pi]. An unordered first compare
+            // takes the upper arm, whose JBE returns the NaN unchanged.
+            float d = hdg - leader_heading;                    // 00438B10-00438B18
+            if (!(-kPiF < d) && !std::isnan(d)) {              // 00438B26 FCOMI, JC
+                do { d = static_cast<float>(d + kTwoPiF); } while (!(-kPiF < d));
+            } else if (d > kPiF) {                             // 00438B59 FCOMI, JBE
+                do { d = static_cast<float>(d - kTwoPiF); } while (d > kPiF);
+            }
+            // 009BE4B8-009BE4D2: 0 < d keeps d, else -0.0 - d (SUBSS).
+            const float ang = (d > 0.0f) ? d : -0.0f - d;
+            // 009BE503 00419010(+2Ch, 0, +30h, 1, ang), stored float.
+            float v = interp_00419010(dont_wait_hdg, 0.0f, wait_hdg, 1.0f, ang);
+            // 009BE510 FLD1 / FCOMIP / JBE: only 1 > v takes the distance term.
+            if (1.0f > v) {
+                // 0042B2F0 on (dx, 0, dz): zz + (0*0 + xx), stored float; a sum
+                // not above 1e-10 [00CE3820] is length 0, else FSQRT stored float.
+                const float xx = x * x;
+                const float zz = z * z;
+                const float sum = zz + (0.0f + xx);
+                const float h = (static_cast<double>(sum) > 1e-10) ? std::sqrt(sum) : 0.0f;
+                // 009BE54D 00419010(+18h, 1, +34h, 0, h) then FADD v, stored float.
+                const float s = interp_00419010(good_position_dist, 1.0f, nearby_dist, 0.0f, h) + v;
+                // 00415510(&s, &1.0): 1.0 <= s or unordered gives 1.0, else s.
+                v = (1.0f > s) ? s : 1.0f;
+            }
+            result = v;
+        } else {
+            // 007B4E90: pi/2 - atan2(z, x), wrapped into [0, 2pi).
+            double hdg = 1.5707963267948966 - std::atan2(static_cast<double>(z), static_cast<double>(x));
+            if (hdg < 0.0) hdg += 6.283185307179586;
+            double d = hdg - leader_heading;
+            while (d > 3.141592653589793) d -= 6.283185307179586;
+            while (d < -3.141592653589793) d += 6.283185307179586;
+            const float ang = static_cast<float>(d < 0.0 ? -d : d);
+            float v = interp_00419010(dont_wait_hdg, 0.0f, wait_hdg, 1.0f, ang);
+            if (v < 1.0f) {
+                const float h = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
+                                                             static_cast<double>(z) * z));
+                v = v + interp_00419010(good_position_dist, 1.0f, nearby_dist, 0.0f, h);
+                if (v > 1.0f) v = 1.0f;
+            }
+            result = v;
         }
-        // 009BE4B8-009BE4D2: 0 < d keeps d, else -0.0 - d (SUBSS).
-        const float ang = (d > 0.0f) ? d : -0.0f - d;
-        // 009BE503 00419010(+2Ch, 0, +30h, 1, ang), stored float.
-        float v = interp_00419010(dont_wait_hdg, 0.0f, wait_hdg, 1.0f, ang);
-        // 009BE510 FLD1 / FCOMIP / JBE: only 1 > v takes the distance term.
-        if (1.0f > v) {
-            // 0042B2F0 on (dx, 0, dz): zz + (0*0 + xx), stored float; a sum
-            // not above 1e-10 [00CE3820] is length 0, else FSQRT stored float.
-            const float xx = x * x;
-            const float zz = z * z;
-            const float sum = zz + (0.0f + xx);
-            const float h = (static_cast<double>(sum) > 1e-10) ? std::sqrt(sum) : 0.0f;
-            // 009BE54D 00419010(+18h, 1, +34h, 0, h) then FADD v, stored float.
-            const float s = interp_00419010(good_position_dist, 1.0f, nearby_dist, 0.0f, h) + v;
-            // 00415510(&s, &1.0): 1.0 <= s or unordered gives 1.0, else s.
-            v = (1.0f > s) ? s : 1.0f;
-        }
-        result = v;
-    } else {
-        // 007B4E90: pi/2 - atan2(z, x), wrapped into [0, 2pi).
-        double hdg = 1.5707963267948966 - std::atan2(static_cast<double>(z), static_cast<double>(x));
-        if (hdg < 0.0) hdg += 6.283185307179586;
-        double d = hdg - leader_heading;
-        while (d > 3.141592653589793) d -= 6.283185307179586;
-        while (d < -3.141592653589793) d += 6.283185307179586;
-        const float ang = static_cast<float>(d < 0.0 ? -d : d);
-        float v = interp_00419010(dont_wait_hdg, 0.0f, wait_hdg, 1.0f, ang);
-        if (v < 1.0f) {
-            const float h = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
-                                                         static_cast<double>(z) * z));
-            v = v + interp_00419010(good_position_dist, 1.0f, nearby_dist, 0.0f, h);
-            if (v > 1.0f) v = 1.0f;
-        }
-        result = v;
+        return result;
+    };
+    const float result = arm(std::bool_constant<kFollowWaitFloatHelpersCc13Bound>{});
+    float other;
+    {   // sw3 reach: the other arm.
+        PlaneTaskReachShadow shadow;
+        other = arm(std::bool_constant<!kFollowWaitFloatHelpersCc13Bound>{});
     }
+    plane_task_reach_count(g_plane_task_reach_sw3.follow_wait,
+                           plane_task_reach_bits_differ(result, other));
     return result;
 }
 

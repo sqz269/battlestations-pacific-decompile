@@ -185,7 +185,7 @@ def commits_with_patches(*paths):
         yield int(parts[1]), harness_of(parts[4]), parts[2], parts[3], body.splitlines()
 
 
-from ledger import NO_BODY_STATUSES
+from ledger import NO_BODY_STATUSES, load_reconstruction
 OUT_OF_SCOPE_STATUSES = {'library_instantiation_out_of_scope', 'compiler_generated_out_of_scope',
                          'out_of_scope_vendor_library', 'standard_library_reuse',
                          'vendor_lua_out_of_scope', 'vendor_stl_out_of_scope',
@@ -419,6 +419,7 @@ def build(now=None):
             milestones.append({'ts': int(line.split()[0]), 'id': mid})
 
     tags = collections.Counter(v[1] for v in funcs.values() if v[1])
+    recon = load_reconstruction()
     snapshot = (db.execute("select value from meta where key='built_utc'").fetchone() or ['?'])[0][:16].replace('T', ' ') + ' UTC'
     return dict(
         generated=dt.datetime.fromtimestamp(now, dt.timezone.utc).strftime('%Y-%m-%d %H:%M UTC'), snapshot=snapshot,
@@ -437,6 +438,8 @@ def build(now=None):
                  game_rate24=sum(1 for v in game_union.values() if v[0] >= now - 86400),
                  game_outside=sum(1 for a, g in game.items() if g and funcs[a][0] is None),
                  audited_no_body=len(audited_no_body),
+                 # done bodies whose double chains the image rounds per op at PC24 (cc13 census, not live or Dyn)
+                 pc24_debt=len({r['address'] for pool in (recon['functions'], recon['fragments']) for r in pool if r.get('pc24_debt')}),
                  pool_remaining=sum(s['remaining'] for s in segments),
                  rate24=sum(1 for v in union.values() if v[0] >= now - 86400),
                  names24=sum(1 for v in names_first.values() if v[0] >= now - 86400),
