@@ -12,6 +12,8 @@
 // on the stack.
 
 #include "bsp/ship_ai_bearing_rating.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include "bsp/gun_aiming.hpp"
 #include "bsp/gun_gravity_arc.hpp"
@@ -120,7 +122,18 @@ float ship_ai_firepower_excess_damage(const ShipAiFirepowerDamageBand& band,
     // 0095EE45 FCOMI / JBE, then one x87 chain per arm with a single float store
     // at 0095EE66.
     float excess;
-    if (band.lower > armour) {
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 0095EE49 FADD, 0095EE4D FMUL m64 0.5, 0095EE53 FSUBRP; or 0095EE59 FSUBR,
+        // 0095EE5D FMUL m64 0.5; 0095EE66 FSTP. Each op rounds to 24 bits.
+        using namespace cc13x87;
+        if (band.lower > armour) {
+            excess = static_cast<float>(x87_sub24(
+                x87_mul24(x87_add24(band.lower, band.upper), kShipAiFirepowerHalf), armour));
+        } else {
+            excess = static_cast<float>(
+                x87_mul24(x87_sub24(band.upper, armour), kShipAiFirepowerHalf));
+        }
+    } else if (band.lower > armour) {
         excess = static_cast<float>(
             (static_cast<double>(band.lower) + static_cast<double>(band.upper))
                 * kShipAiFirepowerHalf
@@ -170,36 +183,59 @@ float ship_ai_firepower_contribution(const ShipAiFirepowerQuery& query,
     const float kill = ship_ai_firepower_kill_fraction(band, armour);
     const float excess = ship_ai_firepower_excess_damage(band, armour, query.damage_cap);
 
-    // 0095EE29..0095EE39. FIMUL folds the round count in as an integer; the
-    // product is stored to float at 0095EE39.
-    const float product = static_cast<float>(
-        static_cast<double>(shots) * static_cast<double>(hit_probability)
-        * static_cast<double>(rounds) * static_cast<double>(kill));
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 0095EE2D FMUL, 0095EE31 FIMUL, 0095EE35 FMUL, 0095EE39 FSTP; 0095EE8A FMULP,
+        // 0095EE8E FSTP; 0095EE92 FMUL (the base, kept by FST qword 0095EE96 at its
+        // 24-bit value); 0095EE9A FMUL, 0095EEA0 FMUL, 0095EEA6 FDIV, 0095EEA9 FSTP;
+        // 0095EEC2 FMUL, 0095EECC base FSTP float, 0095EED0 FADD, 0095EED4 FSTP;
+        // 0095EEEA FMUL, 0095EEF6 FADD, 0095EEFA FSTP. Each op rounds to 24 bits.
+        using namespace cc13x87;
+        const float product = static_cast<float>(x87_mul24(
+            x87_mul24(x87_mul24(shots, hit_probability), static_cast<double>(rounds)), kill));
+        const float water_argument =
+            static_cast<float>(x87_mul24(projectile.water_damage, product));
+        const double base = x87_mul24(product, excess);
+        const float fire_argument = static_cast<float>(x87_div24(
+            x87_mul24(x87_mul24(base, projectile.fire_chance), projectile.fire_damage),
+            query.damage_threshold));
+        const float water_term = min_by_ref_00415510(query.window_seconds, water_argument);
+        const float partial = static_cast<float>(x87_add24(
+            x87_mul24(water_term, tick.water_tick_damage), static_cast<float>(base)));
+        const float fire_term = min_by_ref_00415510(query.window_seconds, fire_argument);
+        return static_cast<float>(
+            x87_add24(x87_mul24(fire_term, tick.fire_tick_damage), partial));
+    } else {
+        // 0095EE29..0095EE39. FIMUL folds the round count in as an integer; the
+        // product is stored to float at 0095EE39.
+        const float product = static_cast<float>(
+            static_cast<double>(shots) * static_cast<double>(hit_probability)
+            * static_cast<double>(rounds) * static_cast<double>(kill));
 
-    // 0095EE7E..0095EE8E, the flooding argument, stored to float.
-    const float water_argument = static_cast<float>(
-        static_cast<double>(projectile.water_damage) * static_cast<double>(product));
+        // 0095EE7E..0095EE8E, the flooding argument, stored to float.
+        const float water_argument = static_cast<float>(
+            static_cast<double>(projectile.water_damage) * static_cast<double>(product));
 
-    // 0095EE92..0095EE96, the base term; the image keeps it as a double.
-    const double base = static_cast<double>(product) * static_cast<double>(excess);
+        // 0095EE92..0095EE96, the base term; the image keeps it as a double.
+        const double base = static_cast<double>(product) * static_cast<double>(excess);
 
-    // 0095EE9A..0095EEA9, the fire argument, stored to float.
-    const float fire_argument = static_cast<float>(
-        base * static_cast<double>(projectile.fire_chance)
-        * static_cast<double>(projectile.fire_damage)
-        / static_cast<double>(query.damage_threshold));
+        // 0095EE9A..0095EEA9, the fire argument, stored to float.
+        const float fire_argument = static_cast<float>(
+            base * static_cast<double>(projectile.fire_chance)
+            * static_cast<double>(projectile.fire_damage)
+            / static_cast<double>(query.damage_threshold));
 
-    // 0095EEBD..0095EED4: min against the window, scaled, added to the base.
-    const float water_term = min_by_ref_00415510(query.window_seconds, water_argument);
-    const float partial = static_cast<float>(
-        static_cast<double>(water_term) * static_cast<double>(tick.water_tick_damage)
-        + static_cast<double>(static_cast<float>(base)));
+        // 0095EEBD..0095EED4: min against the window, scaled, added to the base.
+        const float water_term = min_by_ref_00415510(query.window_seconds, water_argument);
+        const float partial = static_cast<float>(
+            static_cast<double>(water_term) * static_cast<double>(tick.water_tick_damage)
+            + static_cast<double>(static_cast<float>(base)));
 
-    // 0095EEE5..0095EEFA.
-    const float fire_term = min_by_ref_00415510(query.window_seconds, fire_argument);
-    return static_cast<float>(
-        static_cast<double>(fire_term) * static_cast<double>(tick.fire_tick_damage)
-        + static_cast<double>(partial));
+        // 0095EEE5..0095EEFA.
+        const float fire_term = min_by_ref_00415510(query.window_seconds, fire_argument);
+        return static_cast<float>(
+            static_cast<double>(fire_term) * static_cast<double>(tick.fire_tick_damage)
+            + static_cast<double>(partial));
+    }
 }
 
 bool ship_ai_firepower_category_enabled(const ShipAiFirepowerQuery& query,

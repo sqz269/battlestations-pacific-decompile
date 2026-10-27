@@ -5,6 +5,7 @@
 // symbols.
 
 #include "bsp/ship_ai_navigation.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <array>
 #include <cmath>
@@ -210,8 +211,17 @@ ShipAiTurnLead ship_ai_turn_lead_009ee848(float bearing, float distance, float u
     // 009EE8B1..009EE8C3, one 80-bit chain with a single float store:
     // (pi/2 - blk+3D0h) * taper * taper.
     const double window = static_cast<double>(nav.turn_window_3d0);
-    const float lead = static_cast<float>((kShipAiNavQuarterTurn - window) *
-                                          (static_cast<double>(taper) * static_cast<double>(taper)));
+    float lead;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009EE8B7 FSUBR m64, 009EE8BF FMULP (taper*taper), 009EE8C1 FMULP, 009EE8C3
+        // FSTP: each op rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        lead = static_cast<float>(x87_mul24(x87_sub24(kShipAiNavQuarterTurn, window),
+                                            x87_mul24(taper, taper)));
+    } else {
+        lead = static_cast<float>((kShipAiNavQuarterTurn - window) *
+                                  (static_cast<double>(taper) * static_cast<double>(taper)));
+    }
 
     // 009EE8C7: the unit's own heading through vtable slot 50h; 009EE8EA flips
     // it by the image's pi while the latched direction is astern.
@@ -331,9 +341,18 @@ ShipAiNavResult ship_ai_navigation_arm_009ee671(ShipAiControlBlock& blk,
         const float floored = native_max_00415550(kShipAiNavCosineFloor, std::fabs(cosine));
         // 009EEA89/009EEA95: the doubled floor divides the distance, which
         // 009EEA5C had stored as a double.
-        const float radius = static_cast<float>(static_cast<double>(blk.distance_32c) /
-                                                (static_cast<double>(floored) +
-                                                 static_cast<double>(floored)));
+        float radius;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 009EEA89 FADD st0,st0, 009EEA95 FDIVR, 009EEA99 FSTP: each op rounds
+            // to 24 bits on the main thread.
+            using namespace cc13x87;
+            radius = static_cast<float>(
+                x87_div24(blk.distance_32c, x87_add24(floored, floored)));
+        } else {
+            radius = static_cast<float>(static_cast<double>(blk.distance_32c) /
+                                        (static_cast<double>(floored) +
+                                         static_cast<double>(floored)));
+        }
         nav.look_ahead_340 = native_min_00415510(nav.look_ahead_max_3c8, radius); // 009EEA9D
     }
 

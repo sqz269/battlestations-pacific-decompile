@@ -23,6 +23,10 @@ namespace bsp {
 //            (game_hosts_ship_ai.cpp)
 //   00852860 attack-move altitude gate, 009F3240 approach throttle
 //            (ship_ai_attackmove_substates.cpp)
+//   009DE5B0 arm final step squares and reach (ship_ai_arm_final_step.cpp)
+//   0095EB40 firepower rating excess and contribution (ship_ai_bearing_rating.cpp)
+//   009ED6B0 turn lead, look-ahead radius (ship_ai_navigation.cpp); stopping distance,
+//            setback radicand, astern limit (ship_ai_navigation_arm_tail.cpp)
 // Movers: ship headings, throttle and path picks, submarine depth, torpedo run times and hits.
 inline constexpr bool kPc24ShipAiCc13Bound = false;
 
