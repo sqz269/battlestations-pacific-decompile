@@ -966,16 +966,34 @@ void ship_ai_approach_refresh_avoidance_009e9190(ShipAiApproachState& state,
             }
             host.refresh_pose_00414db0(candidate); // 009E9290
             const ShipAiApproachPoint p = host.entity_world_position(candidate);
-            const double dx = static_cast<double>(p.x) - unit_pos.x;
-            const double dz = static_cast<double>(p.z) - unit_pos.z;
-            const float distance_sq =
-                static_cast<float>(dx * dx + 0.0 * 0.0 + dz * dz); // 009E92CB
+            float distance_sq = 0.0f;
+            if constexpr (kPc24ShipAiCc13Bound) {
+                // pc24w1-sweep2-6: 009E929B / 009E92AB FSUB, each FSTP DWORD; then
+                // 009E92BF FMULP, 009E92C3 FMUL, 009E92C5 FADDP, 009E92C7 FMUL and
+                // 009E92C9 FADDP, each at PC24, stored at 009E92CB.
+                const float dx = static_cast<float>(static_cast<double>(p.x) - unit_pos.x);
+                const float dz = static_cast<float>(static_cast<double>(p.z) - unit_pos.z);
+                distance_sq = static_cast<float>(pc24::x87_add24(
+                    pc24::x87_add24(pc24::x87_mul24(dx, dx), pc24::x87_mul24(0.0, 0.0)),
+                    pc24::x87_mul24(dz, dz)));
+            } else {
+                const double dx = static_cast<double>(p.x) - unit_pos.x;
+                const double dz = static_cast<double>(p.z) - unit_pos.z;
+                distance_sq =
+                    static_cast<float>(dx * dx + 0.0 * 0.0 + dz * dz); // 009E92CB
+            }
             const float radius = static_cast<float>(
                 static_cast<double>(host.entity_speed_0494(candidate)) +
                 kApproachAvoidSpeedPad); // 009E92D5
             // 009E92E5, FCOMIP of radius*radius against the distance then JBE.
-            if (!(static_cast<double>(radius) * radius >
-                  static_cast<double>(distance_sq))) {
+            bool inside = false;
+            if constexpr (kPc24ShipAiCc13Bound) {
+                // pc24w1-sweep2-6: the 009E92E1 FMULP rounds at PC24 before the compare.
+                inside = pc24::x87_mul24(radius, radius) > static_cast<double>(distance_sq);
+            } else {
+                inside = static_cast<double>(radius) * radius > static_cast<double>(distance_sq);
+            }
+            if (!inside) {
                 continue;
             }
             // 009E92EF..009E933B, the duplicate walk, then 009E9342..009E9397.
@@ -1062,8 +1080,16 @@ int ship_ai_approach_select_slot_009e76d0(ShipAiApproachState& state,
                                           float seconds,
                                           ShipAiApproachSelectHost& host) {
     // 009E76D0..009E76F4: the wobble phase, advanced and wrapped in place.
-    state.wobble_phase_1214 = host.wrap_angle_00605070(static_cast<float>(
-        kApproachPhaseRate * seconds + static_cast<double>(state.wobble_phase_1214)));
+    float advanced = 0.0f;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // pc24w1-sweep2-6: 009E76DA FMUL and 009E76E4 FADD each round at PC24.
+        advanced = static_cast<float>(pc24::x87_add24(
+            pc24::x87_mul24(kApproachPhaseRate, seconds), state.wobble_phase_1214));
+    } else {
+        advanced = static_cast<float>(
+            kApproachPhaseRate * seconds + static_cast<double>(state.wobble_phase_1214));
+    }
+    state.wobble_phase_1214 = host.wrap_angle_00605070(advanced);
 
     if (state.mode_1234 == ShipAiApproachMode::inside_3) {
         // 009E79B4: mode 3 clears every blocked byte and scores nothing.

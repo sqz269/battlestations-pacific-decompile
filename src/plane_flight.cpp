@@ -1,5 +1,11 @@
 #include "bsp/plane_flight.hpp"
 #include "bsp/sw1b_switch_reach.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_flightrender_cc13.hpp"
+
+// pc24w1-sweep1-3, kPc24FlightRenderCc13Bound (OFF): ON = 009F9ED0's pitch command with
+// the atan2 result stored through float and pi/2 minus it rounded at PC24, as the bytes
+// do. Movers: the plane pitch command toward a point (dive and climb angles).
 
 #include <cmath>
 
@@ -67,9 +73,18 @@ float pitch_command_to_point_009f9ed0(float altitude_error, float distance,
     const double half_pi = 1.5707963705062866;
     const double two_pi = 6.2831854820251465;
     const double pi = 3.1415927410125732;
-    float t = static_cast<float>(
+    float t;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-3: 009F9EE0 FSTP stores the atan2 result through float before
+        // the 009F9EE8 FSUBR, which is rounded at PC24 and stored (009F9EEE).
+        const float angle = static_cast<float>(std::atan2(static_cast<double>(distance),
+                                                          static_cast<double>(altitude_error)));
+        t = static_cast<float>(cc13x87::x87_sub24(half_pi, angle));
+    } else {
+    t = static_cast<float>(
         half_pi - std::atan2(static_cast<double>(distance),
                              static_cast<double>(altitude_error)));   // 009F9EE8
+    }
     if (0.0 > static_cast<double>(t)) {
         t = static_cast<float>(static_cast<double>(t) + two_pi);        // 009F9F02
     }
@@ -84,11 +99,24 @@ float heading_command_009f9e40(float target_x, float target_z, float unit_x, flo
     // library sees y = dz and x = dx.
     const float dz = target_z - unit_z;
     const float dx = target_x - unit_x;
-    float heading = kPlaneQuarterTurn - std::atan2(dz, dx);
-    if (heading < 0.0f) {
-        heading += kPlaneFullTurn;  // 009F9E9F FADD qword [00CE3828]
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-3: 009F9E7E calls the double CRT atan2 (not atan2f) and 009F9E83
+        // stores its result through float; the 009F9E8B FSUBR and 009F9E9F FADD are
+        // rounded at PC24 and stored (009F9E91, 009F9EA5).
+        const float angle = static_cast<float>(
+            std::atan2(static_cast<double>(dz), static_cast<double>(dx)));
+        float heading = static_cast<float>(cc13x87::x87_sub24(kPlaneQuarterTurn, angle));
+        if (heading < 0.0f) {
+            heading = static_cast<float>(cc13x87::x87_add24(heading, kPlaneFullTurn));
+        }
+        return heading;
+    } else {
+        float heading = kPlaneQuarterTurn - std::atan2(dz, dx);
+        if (heading < 0.0f) {
+            heading += kPlaneFullTurn;  // 009F9E9F FADD qword [00CE3828]
+        }
+        return heading;
     }
-    return heading;
 }
 
 float pitch_command_009fb800(const PlanePitchCommandInputs& in) {

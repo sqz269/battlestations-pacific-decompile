@@ -92,18 +92,16 @@ bool ship_ai_attackmove_altitude_gate_00852860(float world_y, float ceiling_a,
     // 00852884 FDIV double 3.0, 0085288A FXCH, 0085288C FCOMIP ST0,ST1 with
     // ST0 = world_y. The JBE at 00852890 is the TRUE side once the
     // 00852892..008528AC logical NOT is applied.
+    double limit;
     if constexpr (kPc24ShipAiCc13Bound) {
         // The FADD and FDIV each round to 24 bits on the main thread; no store.
         using namespace cc13x87;
-        const double limit =
-            x87_div24(x87_add24(ceiling_a, ceiling_b), kAttackMoveAltitudeGateDivisor);
-        return !(static_cast<double>(world_y) > limit);
+        limit = x87_div24(x87_add24(ceiling_a, ceiling_b), kAttackMoveAltitudeGateDivisor);
     } else {
-        const double limit =
-            (static_cast<double>(ceiling_a) + static_cast<double>(ceiling_b)) /
-            kAttackMoveAltitudeGateDivisor;
-        return !(static_cast<double>(world_y) > limit);
+        limit = (static_cast<double>(ceiling_a) + static_cast<double>(ceiling_b)) /
+                kAttackMoveAltitudeGateDivisor;
     }
+    return !(static_cast<double>(world_y) > limit);
 }
 
 // ---------------------------------------------------------------------------
