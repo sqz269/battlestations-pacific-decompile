@@ -1,5 +1,7 @@
 #include "bsp/torpedo_goaway_tick.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
 
 namespace bsp {
@@ -35,10 +37,17 @@ float torpedo_goaway_heading_009d0c10(
     const bool push = (turn > 0.0f && probe < 0.0f) ||
                       (turn < 0.0f && probe > 0.0f);
     if (push) {
-        turn = static_cast<float>(
-            static_cast<double>(turn) +
-            static_cast<double>(probe) *
-                static_cast<double>(torpedo_goaway_tick::kProbeNudge));
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // pc24w1-sweep2-6: 009D0D54 FMUL qword and 009D0D5A FADD each round
+            // at PC24.
+            turn = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_mul24(probe, torpedo_goaway_tick::kProbeNudge), turn));
+        } else {
+            turn = static_cast<float>(
+                static_cast<double>(turn) +
+                static_cast<double>(probe) *
+                    static_cast<double>(torpedo_goaway_tick::kProbeNudge));
+        }
     }
     // 009D0D7B: the store is the aircraft's own heading plus the turn.
     return wrapped_angle_add_00438aa0(in.unit_heading_c6c, turn);

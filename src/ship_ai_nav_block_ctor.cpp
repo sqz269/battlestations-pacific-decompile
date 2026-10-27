@@ -7,6 +7,9 @@
 // exactly where the listing has an `FSTP`/`FST` to a dword or a `MOVSS` store.
 #include "bsp/ship_ai_nav_block_ctor.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
+
 namespace bsp {
 namespace {
 
@@ -131,15 +134,32 @@ ShipAiNavBlockFields ship_ai_nav_block_ctor_009e4330(const ShipAiNavBlockUnitInp
 
     // 009E45C1..009E45D1.  The divisor stays in the x87 register, so it is not
     // rounded to float before the divide.  No zero guard.
-    fields.shoulder_angle_1b4 = store_float(
-        static_cast<double>(fields.hull_scale_3e4)
-        / (static_cast<double>(fields.turn_circle_cruise_3cc) * kShipAiNavBlockStopSeconds));
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // pc24w1-sweep2-6: 009E45C9 FMUL and 009E45CF FDIVP each round at PC24.
+        fields.shoulder_angle_1b4 = store_float(cc13x87::x87_div24(
+            fields.hull_scale_3e4,
+            cc13x87::x87_mul24(fields.turn_circle_cruise_3cc, kShipAiNavBlockStopSeconds)));
+    } else {
+        fields.shoulder_angle_1b4 = store_float(
+            static_cast<double>(fields.hull_scale_3e4)
+            / (static_cast<double>(fields.turn_circle_cruise_3cc) * kShipAiNavBlockStopSeconds));
+    }
 
     // 009E45D7..009E4606.  No domain guard on the square root.
     const double cruise = static_cast<double>(fields.turn_circle_cruise_3cc);
     const double hull = static_cast<double>(unit.hull_length_09c8);
-    const float radicand =
-        store_float(cruise * cruise - hull * hull * kShipAiNavBlockShoulderHullShare);
+    float radicand = 0.0f;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // pc24w1-sweep2-6: 009E45DF FMULP (cruise^2), 009E45E1 FMUL (hull^2),
+        // 009E45E3 FMUL (share) and 009E45E9 FSUBP each round at PC24.
+        radicand = store_float(cc13x87::x87_sub24(
+            cc13x87::x87_mul24(cruise, cruise),
+            cc13x87::x87_mul24(cc13x87::x87_mul24(hull, hull),
+                               kShipAiNavBlockShoulderHullShare)));
+    } else {
+        radicand =
+            store_float(cruise * cruise - hull * hull * kShipAiNavBlockShoulderHullShare);
+    }
     fields.shoulder_offset_1b8 = host.sqrt_00bf7030(radicand);
 
     // 009E4600 and 009E460C, the owner again.
