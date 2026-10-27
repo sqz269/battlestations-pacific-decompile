@@ -15237,6 +15237,9 @@ void GameShipAiHost::report() {
             bsp::kShipAiThrottleProfileNanArmsCc13Bound ? 1 : 0,
             bsp::kShipAiNavigationNanArmsCc13Bound ? 1 : 0,
             bsp::kShipAiFireStepPc24Cc13Bound ? 1 : 0);
+        host.log.notef("summary mission torpedo home sector reach calls=%llu differs=%llu "
+            "bound=%d (009D3BB4-009D3BC8 kTorpedoHomeSectorScaleCc13Bound; packet cc9-sweep2b)",
+            reach.torpedo_home_calls, reach.torpedo_home_differs, reach.torpedo_home_bound);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {

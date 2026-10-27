@@ -31,6 +31,12 @@ struct ShipAiSwitchReach {
     // a different value (or, for a compare, a different outcome).
     unsigned long long fire_pc24_sites{0};
     unsigned long long fire_pc24_differs{0};
+    // 009D3BB4-009D3BC8 torpedo home sector (kTorpedoHomeSectorScaleCc13Bound,
+    // packet cc9-sweep2b): replans that compute a home sector, and those where
+    // the stored +64h or the walk's start differ between the two arms.
+    unsigned long long torpedo_home_calls{0};
+    unsigned long long torpedo_home_differs{0};
+    int torpedo_home_bound{-1};  // the build's setting, -1 until reached
 };
 
 inline ShipAiSwitchReach& ship_ai_switch_reach() noexcept {
