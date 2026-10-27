@@ -66,7 +66,9 @@ RingSlotAngles ring_slot_angles_pc24(int index) {
     if (0.0f > h) { // 009E5706 FLDZ / FCOMIP / JBE: an unordered h is left alone
         h = static_cast<float>(static_cast<double>(h) + kAttackMoveRingFullTurn); // 009E570C
     }
-    // 009E571E FCOS and 009E572E FSIN ignore precision control; FSTP float rounds once.
+    // 009E571E FCOS and 009E572E FSIN ignore precision control. Here the double
+    // cos / sin is rounded to float: last-ulp equal to FCOS / FSIN except rare
+    // double-rounding ties.
     return {bearing, static_cast<float>(x87_cos(h)), static_cast<float>(x87_sin(h))};
 }
 

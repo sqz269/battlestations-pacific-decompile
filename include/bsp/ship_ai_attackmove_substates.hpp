@@ -166,8 +166,9 @@ ShipAiAttackMoveRingSlot ship_ai_attackmove_ring_slot_009e5530(int index,
 // cc13-p5 OFF switch for the slot above. ON rounds as the main thread's 24-bit
 // x87 does: the FDIV at 009E5698 and the FMUL at 009E569E each round to 24
 // bits (OFF rounds the double quotient and product once, at the store), and
-// the heading's FCOS / FSIN at 009E571E / 009E572E are the extended results
-// rounded once to float (OFF uses the float cos / sin). The wraps and the
+// the heading's FCOS / FSIN at 009E571E / 009E572E are the double cos / sin
+// rounded to float, last-ulp equal to FCOS / FSIN except rare double-rounding
+// ties (OFF uses the float cos / sin). The wraps and the
 // quarter-turn subtract are already exact in double: every constant is a float
 // widened to double.
 inline constexpr bool kAttackMoveRingPc24Cc13Bound = false;

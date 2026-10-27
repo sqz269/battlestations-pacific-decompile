@@ -245,7 +245,8 @@ float weapon_hit_accuracy_range_fraction_00838530(const WeaponHitAccuracyProfile
         const float one_minus_w = 1.0f - w;
         const float r_small = range_fraction_row_00838530(profile.small_target_accuracy, accuracy);
         const float r_large = range_fraction_row_00838530(profile.large_target_accuracy, accuracy);
-        // 008386C6..008386D8: each FMUL and the FADDP round to float at 24-bit.
+        // 008386C6..008386D8: each FMUL and the FADDP round to float at 24-bit;
+        // only the two FMUL roundings differ from OFF.
         return r_large * one_minus_w + r_small * w;
     } else {
         // 0083857C..00838589: FLD w, FLD1, FSUBRP, FSTP float.
