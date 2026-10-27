@@ -17,6 +17,7 @@
 #include "bsp/game_hosts_mission_result.hpp"  // packet cc13-fix20
 
 #include "bsp/air_operations.hpp"
+#include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/mothership_failure.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/bullet_engagement_range.hpp"  // packet cc9_ai_plane_loadout_arm
@@ -1364,6 +1365,17 @@ GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
                                                            nullptr, 0)
             : 0;
     });
+    // 006C5950's class restore (006C5AD9) reads the same class+134h; its reader
+    // is consulted only under kAirOpsReturnSlotClassArmCc13Bound (and the sw3
+    // reach count).
+    bsp::set_air_ops_class_default_arm_reader(
+        [](std::uint32_t vehicle_class, void*) -> std::int32_t {
+            return g_class_arm_host != nullptr
+                ? g_class_arm_host->read_vehicle_class_integer(static_cast<int>(vehicle_class),
+                                                               "DefaultEquipment", nullptr, 0)
+                : 0;
+        },
+        nullptr);
     // The content-suffix list at manager +48h/+4Ch is empty in this process, as
     // milestone 2b recorded, so every override query answers with the base file
     // alone. The resource adapter is the same one the locale tables read
@@ -1382,6 +1394,7 @@ GameMissionLuaHost::~GameMissionLuaHost() {
     if (g_class_arm_host == this) {
         g_class_arm_host = nullptr;
         script_orders_set_class_default_arm_reader(nullptr);
+        bsp::set_air_ops_class_default_arm_reader(nullptr, nullptr);
         bsp::shipyard_set_create_unit(nullptr);
     }
     // The world walk holds a bare pointer to this host for the spawn drain.
@@ -12347,6 +12360,27 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.air_ops_ready_calls, summary_.air_ops_ready_true,
         summary_.air_ops_launch_calls, summary_.air_ops_launch_started,
         summary_.air_ops_launch_queued);
+    // cc9-sweep3 reach counters for cc13's plane-task / air-ops switches (log only).
+    const auto reach = [this](const char* name, const bsp::PlaneTaskReachPair& pair) {
+        log_.notef("summary mission plane task reach (sw3) %s: calls=%llu differs=%llu inner=%llu",
+            name, pair.calls.load(), pair.differs.load(), pair.inner.load());
+    };
+    const bsp::PlaneTaskReachSw3& r = bsp::g_plane_task_reach_sw3;
+    reach("strafe_countdown 009CCF06 (kStrafeX87FaithfulCc13Bound)", r.strafe_countdown);
+    reach("strafe_in_range 009CCF58 (kStrafeX87FaithfulCc13Bound)", r.strafe_in_range);
+    reach("strafe_off_nose 00996510 (kStrafeX87FaithfulCc13Bound)", r.strafe_off_nose);
+    reach("strafe_distance 00996300 (kStrafeX87FaithfulCc13Bound)", r.strafe_distance);
+    reach("follow_wait 009BE3E0 (kFollowWaitFloatHelpersCc13Bound)", r.follow_wait);
+    reach("interp_hi 004190A9 (kInterpClamped00419010NanCc13Bound)", r.interp_hi);
+    reach("retreat_zone 009C8D40 (kRetreatX87FaithfulCc13Bound)", r.retreat_zone);
+    reach("retreat_countdown 009C9FB4 (kRetreatX87FaithfulCc13Bound)", r.retreat_countdown);
+    reach("retreat_arm 009CA02C (kRetreatX87FaithfulCc13Bound)", r.retreat_arm);
+    reach("retreat_inside 009C9EA0 (kRetreatX87FaithfulCc13Bound)", r.retreat_inside);
+    reach("retreat_steer 009C9310 (kRetreatX87FaithfulCc13Bound)", r.retreat_steer);
+    reach("dive_ceiling 009C7F3C (kDiveBombNanComparesCc13Bound)", r.dive_ceiling);
+    reach("dive_breakoff 009C8B4D (kDiveBombNanComparesCc13Bound)", r.dive_breakoff);
+    reach("airops_arrive 006C56D0 (kAirOpsArriveSquadronWalkCc13Bound)", r.airops_arrive);
+    reach("airops_return 006C5AD9 (kAirOpsReturnSlotClassArmCc13Bound)", r.airops_return);
 }
 
 void GameMissionLuaHost::report_natives(std::size_t limit) {
