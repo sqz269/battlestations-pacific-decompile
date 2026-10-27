@@ -79,7 +79,7 @@ included.
 **00811D10 is live.** `game_hosts_ship_ai.cpp` reaches it through promote_order and
 `motion_step_00825f20`.
 
-- The image arm is `unit_ai_order_copy_00811d10(dst, src, true)`, a step table of the recipe
+- The image arm is `unit_ai_order_copy_image_00811d10(dst, src)`, a step table of the recipe
   f+00..+10, b+14, f+18, f+1C, d+20, f+24..+2C, b+30, f+34, f+38, d+3C. The fixture tests it.
 - The live two-argument function keeps the member-wise copy until the OFF switch
   `kUnitAiOrderCopyPc24Cc13Bound` (include/bsp/ship_ai_navigation.hpp) is flipped.
