@@ -12,6 +12,11 @@
 
 #include <cmath>
 
+#include "bsp/cc13_x87_model.hpp"
+// pc24w1-gunnery-1, kPc24GunneryCc13Bound: the helper chains 0042B260 (lenSq),
+// 0042D0D0 (the three rows) and 0042CF10 (x / (root + 1)), per op at PC24.
+#include "bsp/pc24_gunnery_cc13.hpp"
+
 namespace bsp {
 namespace {
 
@@ -50,10 +55,17 @@ constexpr float kHalfPiNegative = -1.5707963705062866f;
 // spilled again at 0042B2C1, and the three divisions share it.
 BombVector3 normalize_with_floor_0042b260(const BombVector3& v) noexcept
 {
-    const float length_sq = static_cast<float>(
-        (static_cast<double>(v.y) * static_cast<double>(v.y) +
-         static_cast<double>(v.x) * static_cast<double>(v.x)) +
-        static_cast<double>(v.z) * static_cast<double>(v.z));
+    float length_sq;
+    if constexpr (kPc24GunneryCc13Bound) {
+        using namespace cc13x87;
+        length_sq = static_cast<float>(x87_add24(
+            x87_add24(x87_mul24(v.y, v.y), x87_mul24(v.x, v.x)), x87_mul24(v.z, v.z)));
+    } else {
+        length_sq = static_cast<float>(
+            (static_cast<double>(v.y) * static_cast<double>(v.y) +
+             static_cast<double>(v.x) * static_cast<double>(v.x)) +
+            static_cast<double>(v.z) * static_cast<double>(v.z));
+    }
 
     const float length =
         static_cast<double>(length_sq) > kNormalizeLengthSqFloor
@@ -92,18 +104,30 @@ BombVector3 transform_direction_0042d0d0(const GunGravityArcMountFrame& frame,
                                          const BombVector3& v) noexcept
 {
     BombVector3 out;
-    out.x = static_cast<float>(
-        (static_cast<double>(frame.inverse_x_basis.x) * static_cast<double>(v.x) +
-         static_cast<double>(frame.inverse_y_basis.x) * static_cast<double>(v.y)) +
-        static_cast<double>(frame.inverse_z_basis.x) * static_cast<double>(v.z));
-    out.y = static_cast<float>(
-        (static_cast<double>(frame.inverse_x_basis.y) * static_cast<double>(v.x) +
-         static_cast<double>(frame.inverse_y_basis.y) * static_cast<double>(v.y)) +
-        static_cast<double>(frame.inverse_z_basis.y) * static_cast<double>(v.z));
-    out.z = static_cast<float>(
-        (static_cast<double>(frame.inverse_x_basis.z) * static_cast<double>(v.x) +
-         static_cast<double>(frame.inverse_y_basis.z) * static_cast<double>(v.y)) +
-        static_cast<double>(frame.inverse_z_basis.z) * static_cast<double>(v.z));
+    if constexpr (kPc24GunneryCc13Bound) {
+        // 0042D0F2-0042D14A: per row, the first two products FADDP, then the third.
+        using namespace cc13x87;
+        const auto row = [&](float m0, float m1, float m2) {
+            return static_cast<float>(x87_add24(
+                x87_add24(x87_mul24(m0, v.x), x87_mul24(m1, v.y)), x87_mul24(m2, v.z)));
+        };
+        out.x = row(frame.inverse_x_basis.x, frame.inverse_y_basis.x, frame.inverse_z_basis.x);
+        out.y = row(frame.inverse_x_basis.y, frame.inverse_y_basis.y, frame.inverse_z_basis.y);
+        out.z = row(frame.inverse_x_basis.z, frame.inverse_y_basis.z, frame.inverse_z_basis.z);
+    } else {
+        out.x = static_cast<float>(
+            (static_cast<double>(frame.inverse_x_basis.x) * static_cast<double>(v.x) +
+             static_cast<double>(frame.inverse_y_basis.x) * static_cast<double>(v.y)) +
+            static_cast<double>(frame.inverse_z_basis.x) * static_cast<double>(v.z));
+        out.y = static_cast<float>(
+            (static_cast<double>(frame.inverse_x_basis.y) * static_cast<double>(v.x) +
+             static_cast<double>(frame.inverse_y_basis.y) * static_cast<double>(v.y)) +
+            static_cast<double>(frame.inverse_z_basis.y) * static_cast<double>(v.z));
+        out.z = static_cast<float>(
+            (static_cast<double>(frame.inverse_x_basis.z) * static_cast<double>(v.x) +
+             static_cast<double>(frame.inverse_y_basis.z) * static_cast<double>(v.y)) +
+            static_cast<double>(frame.inverse_z_basis.z) * static_cast<double>(v.z));
+    }
     return out;
 }
 
@@ -125,8 +149,10 @@ float asin_clamped_0042cf10(float x) noexcept
     const float squared = static_cast<float>(static_cast<double>(x) * static_cast<double>(x));
     const float remainder = static_cast<float>(1.0 - static_cast<double>(squared));
     const float root = static_cast<float>(std::sqrt(static_cast<double>(remainder)));
-    const float quotient =
-        static_cast<float>(static_cast<double>(x) / (static_cast<double>(root) + 1.0));
+    // 0042CF71 FADD qword 1, 0042CF77 FDIVR by the saved double x.
+    const float quotient = kPc24GunneryCc13Bound
+        ? static_cast<float>(cc13x87::x87_div24(x, cc13x87::x87_add24(root, 1.0)))
+        : static_cast<float>(static_cast<double>(x) / (static_cast<double>(root) + 1.0));
     const float half = static_cast<float>(std::atan(static_cast<double>(quotient)));
     return static_cast<float>(static_cast<double>(half) + static_cast<double>(half));
 }
