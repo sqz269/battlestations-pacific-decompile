@@ -41,10 +41,12 @@ float* vector3_assign_00414220(float* destination, const float* source) noexcept
     return destination;
 }
 
+// Main thread, 24-bit precision control (cc13-fixture9): each FMUL rounds to 24 bits with
+// the extended exponent before its FSTP DWORD.
 float* vector3_scale_to_00414260(const float* v, float* out, float s) noexcept {
-    out[0] = static_cast<float>(static_cast<double>(v[0]) * s);
-    out[1] = static_cast<float>(static_cast<double>(v[1]) * s);
-    out[2] = static_cast<float>(static_cast<double>(s) * v[2]);
+    out[0] = static_cast<float>(cc13x87::x87_mul24(v[0], s));
+    out[1] = static_cast<float>(cc13x87::x87_mul24(v[1], s));
+    out[2] = static_cast<float>(cc13x87::x87_mul24(s, v[2]));
     return out;
 }
 

@@ -5,6 +5,7 @@
 // float store, as in src/rocket_task_cc13.cpp. The main thread runs the FPU at
 // 24 bits (docs/CC13_FPU_PRECISION.md), so the last bit can differ.
 #include "bsp/rocket_homing_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include "bsp/camera_affine.hpp"
 #include "bsp/gamepad_force_events.hpp"
@@ -40,10 +41,20 @@ std::array<float, 3> transform_point(const std::array<float, 3>& p, const Camera
 
 }  // namespace
 
+void vector3_divide_in_place_pc24_0042ae80(std::array<float, 3>& v, float s) noexcept {
+    v[0] = static_cast<float>(cc13x87::x87_div24(v[0], s));   // 0042AE8A FDIVP
+    v[1] = static_cast<float>(cc13x87::x87_div24(v[1], s));   // 0042AE93 FDIV
+    v[2] = static_cast<float>(cc13x87::x87_div24(v[2], s));   // 0042AE98 FDIVR
+}
+
 void vector3_divide_in_place_0042ae80(std::array<float, 3>& v, float s) noexcept {
-    v[0] = static_cast<float>(static_cast<double>(v[0]) / s);   // 0042AE8A FDIVP
-    v[1] = static_cast<float>(static_cast<double>(v[1]) / s);   // 0042AE93 FDIV
-    v[2] = static_cast<float>(static_cast<double>(v[2]) / s);   // 0042AE98 FDIVR
+    if constexpr (kVector3DivideInPlacePc24Cc13Bound) {
+        vector3_divide_in_place_pc24_0042ae80(v, s);
+    } else {
+        v[0] = static_cast<float>(static_cast<double>(v[0]) / s);   // 0042AE8A FDIVP
+        v[1] = static_cast<float>(static_cast<double>(v[1]) / s);   // 0042AE93 FDIV
+        v[2] = static_cast<float>(static_cast<double>(v[2]) / s);   // 0042AE98 FDIVR
+    }
 }
 
 void rocket_set_homing_target_0080aa20(RocketHomingBlock& block, std::size_t target_plus_one,

@@ -1177,9 +1177,10 @@ void float4_block_set_scalar_00b40710(std::uint8_t* block, std::int32_t slot, st
     float4_block_set_dwords(block, slot, v);
 }
 
+// Each element moves by FLD / FSTP DWORD, which quiets a signalling NaN (cc13-fixture9).
 void float2x4_from_matrix_transposed_00b40400(std::uint32_t out[8], const std::uint32_t m[16]) noexcept {
     for (int r = 0; r < 2; ++r)
-        for (int c = 0; c < 4; ++c) out[r * 4 + c] = m[c * 4 + r];
+        for (int c = 0; c < 4; ++c) out[r * 4 + c] = cc13x87::x87_fld_fstp_bits(m[c * 4 + r]);
 }
 
 // Each element moves by FLD / FSTP DWORD, which quiets a signalling NaN (cc13-fixture6).
