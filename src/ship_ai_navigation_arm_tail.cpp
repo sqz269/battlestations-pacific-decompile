@@ -2,6 +2,8 @@
 // See include/bsp/ship_ai_navigation_arm_tail.hpp and
 // docs/SHIP_AI_NAVIGATION_ARM_TAIL.md.  Every name is a hypothesis.
 #include "bsp/ship_ai_navigation_arm_tail.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <cmath>
 
@@ -71,8 +73,16 @@ float ship_ai_approach_ceiling_009eecdb(float remaining_330, float reference_spe
     // 009EED1A FDIV, 009EED37 FMULP, 009EED39 FMUL 0.5, then 009EED3F stores
     // the stopping distance as a float before 009EED43 divides by it.
     const double speed = static_cast<double>(reference_speed_3c4);
-    const float stopping_distance = static_cast<float>(
-        (speed / static_cast<double>(class_deceleration_508)) * speed * kShipAiArmTailHalf);
+    float stopping_distance;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // Each of the FDIV, FMULP and FMUL rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        stopping_distance = static_cast<float>(x87_mul24(
+            x87_mul24(x87_div24(speed, class_deceleration_508), speed), kShipAiArmTailHalf));
+    } else {
+        stopping_distance = static_cast<float>(
+            (speed / static_cast<double>(class_deceleration_508)) * speed * kShipAiArmTailHalf);
+    }
     const float ratio = static_cast<float>(static_cast<double>(remaining_330) /
                                            static_cast<double>(stopping_distance));
     // 009EED4B, 00415620(&ratio, &0.25f)(&1.0f).
@@ -126,9 +136,20 @@ ShipAiSetbackStep ship_ai_traffic_setback_step_009eed62(float walked,
     // 009EEE11 FCOMI with JBE: only an ordered "perp < clearance" backs off.
     if (perp < clearance) {
         // 009EEE15..009EEE25, 00BF7030: the half chord inside the circle.
-        const float back = static_cast<float>(
-            std::sqrt(static_cast<double>(clearance) * static_cast<double>(clearance) -
-                      static_cast<double>(perp) * static_cast<double>(perp)));
+        float back;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 009EEE15 FMUL st0 (perp^2), 009EEE19 FMULP (clearance^2), 009EEE1B
+            // FSUBRP, 009EEE1D FSTP float, then the square root and 009EEE2A FSTP:
+            // each op rounds to 24 bits on the main thread.
+            using namespace cc13x87;
+            const float radicand = static_cast<float>(
+                x87_sub24(x87_mul24(clearance, clearance), x87_mul24(perp, perp)));
+            back = static_cast<float>(std::sqrt(static_cast<double>(radicand)));
+        } else {
+            back = static_cast<float>(
+                std::sqrt(static_cast<double>(clearance) * static_cast<double>(clearance) -
+                          static_cast<double>(perp) * static_cast<double>(perp)));
+        }
         out_walked += back;                 // 009EEE3C
         proj_x -= back * dir_x;             // 009EEE5C..009EEE67
         proj_z -= back * dir_z;             // 009EEE6B..009EEE76
@@ -173,8 +194,18 @@ ShipAiThrottleDirection ship_ai_astern_choice_009ef0a8(float heading_error_abs,
     // 009EF17A..009EF18E: 120 degrees while astern, 130 otherwise.
     const int degrees = astern ? kShipAiArmTailAsternAngleAsternDeg
                                : kShipAiArmTailAsternAngleAheadDeg;
-    const float limit = static_cast<float>(
-        (static_cast<double>(degrees) * kShipAiArmTailPi) / kShipAiArmTailHalfCircleDeg);
+    float limit;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009EF188 FMUL m64 pi, 009EF18E FDIV m64 180: each rounds to 24 bits, so
+        // the unstored x87 value is a float.
+        using namespace cc13x87;
+        limit = static_cast<float>(x87_div24(
+            x87_mul24(static_cast<double>(degrees), kShipAiArmTailPi),
+            kShipAiArmTailHalfCircleDeg));
+    } else {
+        limit = static_cast<float>(
+            (static_cast<double>(degrees) * kShipAiArmTailPi) / kShipAiArmTailHalfCircleDeg);
+    }
     // 009EF196 FCOMIP with JBE: only an ordered "error > limit" reverses.
     return (heading_error_abs > limit) ? ShipAiThrottleDirection::Astern
                                        : ShipAiThrottleDirection::Ahead;

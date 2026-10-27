@@ -3,6 +3,8 @@
 // field offsets.  Every comparison below is spelled the way the listing spells
 // it, so an unordered (NaN) operand takes the same branch it takes natively.
 #include "bsp/ship_ai_arm_final_step.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <cmath>
 
@@ -126,8 +128,17 @@ ShipAiArmFinalOverride ship_ai_arm_final_avoidance_override_009de8f1(
         return out;
     }
     // 009DE908..009DE930: float(x*x + z*z) against the double 1.0e-4.
-    const float square = static_cast<float>(static_cast<double>(avoidance_x_34c) * avoidance_x_34c +
-                                            static_cast<double>(avoidance_z_350) * avoidance_z_350);
+    float square;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009DE916 FMUL st0, 009DE91A FMULP, 009DE91C FADDP, 009DE91E FSTP: each op
+        // rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        square = static_cast<float>(x87_add24(x87_mul24(avoidance_x_34c, avoidance_x_34c),
+                                              x87_mul24(avoidance_z_350, avoidance_z_350)));
+    } else {
+        square = static_cast<float>(static_cast<double>(avoidance_x_34c) * avoidance_x_34c +
+                                    static_cast<double>(avoidance_z_350) * avoidance_z_350);
+    }
     if (!(static_cast<double>(square) > kShipAiArmFinalAvoidanceMinSquare)) {
         return out;
     }
@@ -152,8 +163,17 @@ ShipAiArmFinalSeparationTurn ship_ai_arm_final_separation_turn_009debb9(
     ShipAiArmFinalSeparationTurn out{};
 
     // 009DEBB9..009DEBDB: float(z*z + x*x) against the double 1.0e-10.
-    const float square = static_cast<float>(static_cast<double>(separation_z) * separation_z +
-                                            static_cast<double>(separation_x) * separation_x);
+    float square;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009DEBC3 FMULP, 009DEBC5 FMUL st0, 009DEBC7 FADDP, 009DEBC9 FSTP: each op
+        // rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        square = static_cast<float>(x87_add24(x87_mul24(separation_z, separation_z),
+                                              x87_mul24(separation_x, separation_x)));
+    } else {
+        square = static_cast<float>(static_cast<double>(separation_z) * separation_z +
+                                    static_cast<double>(separation_x) * separation_x);
+    }
     if (!(static_cast<double>(square) > kShipAiArmFinalSeparationMinSquare)) {
         return out;
     }
@@ -307,18 +327,35 @@ std::array<float, 2> ship_ai_arm_final_separation_vector_009de96c(
             continue; // 009DEA73, 009DEA7D, 009DEA87, 009DEA91
         }
         // 009DEA99..009DEAAE: the two hull radii over 1.5.
-        const float reach =
-            static_cast<float>((static_cast<double>(node.unit_hull_radius_9c8) +
-                                static_cast<double>(tuning.hull_radius_9c8)) /
-                               kShipAiArmFinalEscapeLoadScale);
+        float reach;
+        float square;
+        double reach_sq;
         const float offset_x = probe_x - node.centre_x_20; // 009DEAB2
         const float offset_z = probe_z - node.centre_z_24; // 009DEABD
-        const float square = static_cast<float>(static_cast<double>(offset_z) * offset_z +
-                                                static_cast<double>(offset_x) * offset_x);
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 009DEAA2 FADD, 009DEAA8 FDIV m64 1.5, 009DEAAE FSTP; 009DEADA FMULP,
+            // 009DEADC FMUL st0, 009DEADE FADDP, 009DEAE0 FSTP; 009DEAF8 FMUL st0
+            // compared at 009DEAFA without a store. Each op rounds to 24 bits.
+            using namespace cc13x87;
+            reach = static_cast<float>(x87_div24(
+                x87_add24(node.unit_hull_radius_9c8, tuning.hull_radius_9c8),
+                kShipAiArmFinalEscapeLoadScale));
+            square = static_cast<float>(
+                x87_add24(x87_mul24(offset_z, offset_z), x87_mul24(offset_x, offset_x)));
+            reach_sq = x87_mul24(reach, reach);
+        } else {
+            reach =
+                static_cast<float>((static_cast<double>(node.unit_hull_radius_9c8) +
+                                    static_cast<double>(tuning.hull_radius_9c8)) /
+                                   kShipAiArmFinalEscapeLoadScale);
+            square = static_cast<float>(static_cast<double>(offset_z) * offset_z +
+                                        static_cast<double>(offset_x) * offset_x);
+            reach_sq = static_cast<double>(reach) * reach;
+        }
         if (!(square > kShipAiArmFinalSeparationNearSquare)) {
             continue; // 009DEAEE
         }
-        if (!(static_cast<double>(reach) * reach > static_cast<double>(square))) {
+        if (!(reach_sq > static_cast<double>(square))) {
             continue; // 009DEAFE
         }
         // 009DEB04..009DEB4C: the falloff, divided by the distance so the

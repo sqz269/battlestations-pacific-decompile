@@ -10,6 +10,10 @@
 #include <cstddef>
 
 #include "bsp/unit_rudder.hpp"  // wrapped_angle_add_00438aa0
+#include "bsp/cc13_x87_model.hpp"
+// pc24w1-gunnery-1, kPc24GunneryCc13Bound: 00BD2E60 lo + u*(hi - lo), 007304A0 the
+// fan offset, 0072FEFB the ring angle, per op at PC24.
+#include "bsp/pc24_gunnery_cc13.hpp"
 
 namespace bsp {
 namespace {
@@ -34,9 +38,17 @@ float gun_dispersion_uniform_00bd2e60(RandomState& state, float low,
     const std::uint32_t word = random_next_u32_00ba2c20(state);
     const float unit = narrow(static_cast<double>(word) * 0x1p-32);
     // 00BD2EAF..00BD2EC6: lo + u * (hi - lo), one FSTP float at the end.
-    const double lo = low;
-    return narrow(lo + static_cast<double>(unit) *
-                           (static_cast<double>(high) - lo));
+    float result;
+    if constexpr (kPc24GunneryCc13Bound) {
+        // 00BD2EB9 FSUBP (hi - lo), 00BD2EBD FMUL u, 00BD2EC0 FADDP lo.
+        using namespace cc13x87;
+        result = narrow(x87_add24(x87_mul24(x87_sub24(high, low), unit), low));
+    } else {
+        const double lo = low;
+        result = narrow(lo + static_cast<double>(unit) *
+                                 (static_cast<double>(high) - lo));
+    }
+    return result;
 }
 
 float gun_throw_magnitude_0073031d(const GunThrowInputs& inputs) noexcept {
@@ -120,11 +132,21 @@ float gun_torpedo_fan_offset_007304a0(float magnitude, int tube_count,
     }
     // 007304D2..007304EA: the magnitude is widened to a double, divided by
     // tube_count - 1 and multiplied by the tube index.
-    const double spread = static_cast<double>(magnitude) /
-                          static_cast<double>(tube_count - 1) *
-                          static_cast<double>(index);
-    // 007304F0..007304FE: minus half the magnitude, then FSTP float.
-    return narrow(spread - static_cast<double>(magnitude) * kHalf);
+    float result;
+    if constexpr (kPc24GunneryCc13Bound) {
+        // 007304E6 FDIVR, 007304EA FIMUL, 007304F6 FMUL -mag by 0.5, 007304FC FADDP.
+        using namespace cc13x87;
+        const double spread = x87_mul24(
+            x87_div24(magnitude, static_cast<double>(tube_count - 1)), static_cast<double>(index));
+        result = narrow(x87_add24(spread, x87_mul24(-static_cast<double>(magnitude), kHalf)));
+    } else {
+        const double spread = static_cast<double>(magnitude) /
+                              static_cast<double>(tube_count - 1) *
+                              static_cast<double>(index);
+        // 007304F0..007304FE: minus half the magnitude, then FSTP float.
+        result = narrow(spread - static_cast<double>(magnitude) * kHalf);
+    }
+    return result;
 }
 
 std::array<float, 3> gun_multi_bullet_ring_0072fefb(
@@ -137,9 +159,14 @@ std::array<float, 3> gun_multi_bullet_ring_0072fefb(
     }
     // 0072FEFB..0072FF11: FILD index, FMUL 2*pi (00CE3828, a double), FIDIV by
     // the count, FSTP float.
-    const float angle = narrow(static_cast<double>(bullet_index) *
-                               6.283185307179586 /
-                               static_cast<double>(bullet_count));
+    // ON: the qword at 00CE3828 is the float 2*pi widened, 6.2831854820251465.
+    const float angle = kPc24GunneryCc13Bound
+        ? narrow(cc13x87::x87_div24(
+              cc13x87::x87_mul24(static_cast<double>(bullet_index), 6.2831854820251465),
+              static_cast<double>(bullet_count)))
+        : narrow(static_cast<double>(bullet_index) *
+                 6.283185307179586 /
+                 static_cast<double>(bullet_count));
     const float sine = narrow(std::sin(static_cast<double>(angle)));
     const float cosine = narrow(std::cos(static_cast<double>(angle)));
     const double radius = cone_angle;
