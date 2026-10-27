@@ -1,5 +1,7 @@
 #include "bsp/ai_target_weights.hpp"
 #include "bsp/ai_tuning_globals.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_misc_cc13.hpp"
 
 // Evidence: docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md.
 // Target MSVC Win32. Nothing here is a binary-compatible replacement: the native
@@ -378,7 +380,19 @@ float ai_expected_hit_damage_009fe200(float low, float high, float armour,
         return 0.0f;
     }
     float result;
-    if (low >= armour) {
+    if constexpr (kPc24AiPlannersCc13Bound) {
+        using namespace cc13x87;
+        if (low >= armour) {
+            // 009FE21D FADDP, 009FE21F FMUL 0.5, 009FE225 FSUBRP (DE E1) - armour.
+            result = static_cast<float>(x87_sub24(x87_mul24(x87_add24(high, low), 0.5), armour));
+        } else {
+            // 009FE22B FSUBRP ST3 (DE E3) high - armour, 009FE22D FSUBP (DE E9) high - low,
+            // 009FE22F FDIVR (D8 F9) over / that, 009FE233 over * 0.5, 009FE239 FMULP.
+            const double over = x87_sub24(high, armour);
+            const double ratio = x87_div24(over, x87_sub24(high, low));
+            result = static_cast<float>(x87_mul24(ratio, x87_mul24(over, 0.5)));
+        }
+    } else if (low >= armour) {
         // 009FE21D..009FE225: (low + high) * 0.5 - armour.
         result = static_cast<float>((static_cast<double>(low) + high) * 0.5 - armour);
     } else {
@@ -422,7 +436,14 @@ namespace {
 // tuning+10h / p1 * p2, stored to a float (00A08C4C), then / the entry's +2Ch
 // (00A08C54), stored again.
 float ai_plane_option_factor(float damage_calc_time, float p1, float p2, float reload) {
-    const float scaled = static_cast<float>(static_cast<double>(damage_calc_time) / p1 * p2);
+    float scaled = 0.0f;
+    if constexpr (kPc24AiPlannersCc13Bound) {
+        // 00A08C46 FDIV and 00A08C49 FMUL each round before the 00A08C4C FSTP.
+        scaled = static_cast<float>(
+            cc13x87::x87_mul24(cc13x87::x87_div24(damage_calc_time, p1), p2));
+    } else {
+        scaled = static_cast<float>(static_cast<double>(damage_calc_time) / p1 * p2);
+    }
     return static_cast<float>(static_cast<double>(scaled) / reload);
 }
 
@@ -443,9 +464,17 @@ float max_by_ref_00415550(float a, float b) {
 // stored to [ESP+18h] at 00A08A0A.
 void loadout_rate_and_cap(int ammo, float p1, float p2, float min_reload, float& rate,
                           float& cap) {
-    rate = static_cast<float>(static_cast<double>(ammo) /
-                              (kAiLoadoutParamsHalf * static_cast<double>(p1) +
-                               static_cast<double>(min_reload)));
+    if constexpr (kPc24AiPlannersCc13Bound) {
+        // 00A0875A FMUL (D8 C9) 0.5 * p1, 00A0875C FADD min, 00A08760 FDIVP ST2 (DE FA)
+        // ammo / that; each op rounds. FILD of the ammo count is exact.
+        using namespace cc13x87;
+        rate = static_cast<float>(x87_div24(static_cast<double>(ammo),
+            x87_add24(x87_mul24(kAiLoadoutParamsHalf, p1), min_reload)));
+    } else {
+        rate = static_cast<float>(static_cast<double>(ammo) /
+                                  (kAiLoadoutParamsHalf * static_cast<double>(p1) +
+                                   static_cast<double>(min_reload)));
+    }
     cap = static_cast<float>(static_cast<double>(p2) / static_cast<double>(p1));
 }
 
@@ -514,13 +543,26 @@ void ai_plane_loadout_arm(AiTargetWeightModelHost& host, const AiTargetWeightKey
         const double half = static_cast<double>(tuning.levelbomb_params_1) * kAiLoadoutParamsHalf;
         gun_walk = false;                              // 00A08831
         // 00A08840 FADD ST0,ST2 / 00A08846 FDIVP (DE F9): ammo / (min + half).
-        rate = static_cast<float>(static_cast<double>(fammo) /
-                                  (static_cast<double>(min_reload) + half));
+        if constexpr (kPc24AiPlannersCc13Bound) {
+            // ON: the FADD and the FDIVP each round (half, p1 * 0.5, is exact).
+            rate = static_cast<float>(
+                cc13x87::x87_div24(fammo, cc13x87::x87_add24(min_reload, half)));
+        } else {
+            rate = static_cast<float>(static_cast<double>(fammo) /
+                                      (static_cast<double>(min_reload) + half));
+        }
         const float slack = static_cast<float>(dct - half); // 00A0884C FSUBR [+10h]
         // 00A08853 00415550(0.0, slack), x rate, + ammo.
-        factor = static_cast<float>(
-            static_cast<double>(max_by_ref_00415550(0.0f, slack)) * static_cast<double>(rate) +
-            static_cast<double>(fammo));
+        if constexpr (kPc24AiPlannersCc13Bound) {
+            // ON: 00A08858 FMUL rate and 00A0885C FADD ammo each round before the
+            // 00A08A28 FSTP.
+            factor = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_mul24(max_by_ref_00415550(0.0f, slack), rate), fammo));
+        } else {
+            factor = static_cast<float>(
+                static_cast<double>(max_by_ref_00415550(0.0f, slack)) * static_cast<double>(rate) +
+                static_cast<double>(fammo));
+        }
         use_min = false;
         descriptor = kAiPlaneOptionLevelBomb;
         break;
@@ -559,10 +601,18 @@ void ai_plane_loadout_arm(AiTargetWeightModelHost& host, const AiTargetWeightKey
             const float p2 = tuning.levelbomb_params_2;
             const int drops = static_cast<int>(p2 > fa ? fa : p2);
             gun_walk = false; // 00A089AD
-            rate = static_cast<float>(static_cast<double>(drops) /
-                                      (static_cast<double>(tuning.levelbomb_params_1) *
-                                           kAiLoadoutParamsHalf +
-                                       static_cast<double>(min_reload)));
+            if constexpr (kPc24AiPlannersCc13Bound) {
+                // ON: 00A089C2 FMUL 0.5, 00A089C8 FADD min, 00A089CC FDIVP each round.
+                using namespace cc13x87;
+                rate = static_cast<float>(x87_div24(static_cast<double>(drops),
+                    x87_add24(x87_mul24(tuning.levelbomb_params_1, kAiLoadoutParamsHalf),
+                              min_reload)));
+            } else {
+                rate = static_cast<float>(static_cast<double>(drops) /
+                                          (static_cast<double>(tuning.levelbomb_params_1) *
+                                               kAiLoadoutParamsHalf +
+                                           static_cast<double>(min_reload)));
+            }
             factor = static_cast<float>(dct * static_cast<double>(rate)); // 00A089D2
             use_min = false;
             descriptor = kAiPlaneOptionLevelBomb;
@@ -710,7 +760,13 @@ float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightK
                 const float damage = ai_expected_hit_damage_009fe200(
                     b.blast_min, b.blast_max, target_armour, target_hit_points);
                 const double accuracy = host.bullet_accuracy(key.attacker, b.sub_type, key.target);
-                value = static_cast<float>(accuracy * o.factor * damage);
+                if constexpr (kPc24AiPlannersCc13Bound) {
+                    // 00A08E65 FMUL +10h and 00A08E68 FMUL damage each round.
+                    value = static_cast<float>(
+                        cc13x87::x87_mul24(cc13x87::x87_mul24(accuracy, o.factor), damage));
+                } else {
+                    value = static_cast<float>(accuracy * o.factor * damage);
+                }
             }
         } else if (o.descriptor == kAiPlaneOptionLevelBomb && o.bullet.sub_type == 0x0F) {
             // 00A08E81..00A08EDF, paratroopers: Paratroopers accuracy (00A371A0
@@ -722,10 +778,21 @@ float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightK
             if (o.bullet.paratrooper_terms_known) {
                 const float first = key.target_is_neutral == 1 ? o.bullet.paratrooper_d8
                                                                : o.bullet.paratrooper_fc;
-                v = static_cast<double>(first) * scaled * o.bullet.paratrooper_f8;
+                if constexpr (kPc24AiPlannersCc13Bound) {
+                    // 00A08EC0/00A08ED5 FMUL scaled and 00A08EC4/00A08ED9 FMUL +F8h round.
+                    v = cc13x87::x87_mul24(cc13x87::x87_mul24(first, scaled),
+                                           o.bullet.paratrooper_f8);
+                } else {
+                    v = static_cast<double>(first) * scaled * o.bullet.paratrooper_f8;
+                }
             }
             host.note_plane_option(o.descriptor, static_cast<float>(v));
-            total = static_cast<float>(static_cast<double>(total) + v);
+            if constexpr (kPc24AiPlannersCc13Bound) {
+                // 00A09209 FADD total rounds before the 00A0920D FSTP.
+                total = static_cast<float>(cc13x87::x87_add24(total, v));
+            } else {
+                total = static_cast<float>(static_cast<double>(total) + v);
+            }
             continue;
         } else if (o.descriptor == kAiPlaneOptionDiveBomb ||
                    o.descriptor == kAiPlaneOptionRocket ||
@@ -740,7 +807,13 @@ float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightK
                 kAiRocketAccuracyBound && o.bullet.sub_type == 0x12
                     ? host.rocket_accuracy(key.attacker, o.bullet, key.target)
                     : host.bullet_accuracy(key.attacker, o.bullet.sub_type, key.target);
-            value = static_cast<float>(accuracy * o.factor * damage);
+            if constexpr (kPc24AiPlannersCc13Bound) {
+                // 00A091F6 FMUL +10h and 00A091F9 FMUL damage each round.
+                value = static_cast<float>(
+                    cc13x87::x87_mul24(cc13x87::x87_mul24(accuracy, o.factor), damage));
+            } else {
+                value = static_cast<float>(accuracy * o.factor * damage);
+            }
         } else if (o.descriptor == kAiPlaneOptionTorpedo ||
                    o.descriptor == kAiPlaneOptionDepthCharge) {
             // 00A0904E..00A09106: the same pair through 00415550, against the
@@ -751,7 +824,13 @@ float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightK
                 low, high, target_underwater_armour, target_hit_points);
             const double accuracy =
                 host.bullet_accuracy(key.attacker, o.bullet.sub_type, key.target);
-            value = static_cast<float>(static_cast<double>(o.factor) * accuracy * damage);
+            if constexpr (kPc24AiPlannersCc13Bound) {
+                // 00A090F6 FMUL qword accuracy and 00A090FA FMUL damage each round.
+                value = static_cast<float>(
+                    cc13x87::x87_mul24(cc13x87::x87_mul24(o.factor, accuracy), damage));
+            } else {
+                value = static_cast<float>(static_cast<double>(o.factor) * accuracy * damage);
+            }
         } else if (o.descriptor == kAiPlaneOptionStrafe ||
                    o.descriptor == kAiPlaneOptionDogfight) {
             // 00A08F20..00A08FA8 / 00A08FBD..00A09045.
@@ -759,7 +838,14 @@ float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightK
                 host.bullet_accuracy(key.attacker, o.bullet.sub_type, key.target);
             const float damage = ai_expected_hit_damage_009fe200(
                 o.bullet.damage_min, o.bullet.damage_max, target_armour, target_hit_points);
-            value = static_cast<float>(static_cast<double>(o.factor) * accuracy * damage);
+            if constexpr (kPc24AiPlannersCc13Bound) {
+                // 00A08F8B/00A09028 FMUL qword accuracy and 00A08F8F/00A0902C FMUL damage
+                // each round.
+                value = static_cast<float>(
+                    cc13x87::x87_mul24(cc13x87::x87_mul24(o.factor, accuracy), damage));
+            } else {
+                value = static_cast<float>(static_cast<double>(o.factor) * accuracy * damage);
+            }
             host.note_plane_option_terms(o.factor, accuracy, damage);
             if (loadout) {
                 // 00A08F97 x tuning+8h, DogfightEquipmentPenalty.
