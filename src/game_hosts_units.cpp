@@ -7034,8 +7034,9 @@ struct GameUnitsHost::Impl {
     // lvl x w (009B1A59), spd x 3 (009B1A7C) and length x 1.4 (009B1AA2), and the hold's
     // lateral -X x 1.25 x u (009B1B76-009B1B82); and the caller 009B1D70's speed
     // +2B4h = mc + (a+5Ch - mc) x a+4Ch (009B1DAB-009B1DCE). True: per-op float in the
-    // listing's order. False: the double chains rounded once.
-    static constexpr bool kLandBeginSteerPc24Cc13Bound = false;
+    // listing's order. False: the double chains rounded once. ON (cc9-physics29,
+    // OCEAN_WAVE_FIELD 124): six WINS rows paired, BSM01 l72_b1_k1 moved with its end kept.
+    static constexpr bool kLandBeginSteerPc24Cc13Bound = true;
     // Packet p20_strafe_horizontal (section 80). 009CAD27-009CAD58: dx and dz are FSTP'd
     // to floats (009CAD30, 009CAD3E) and d2 = (dx dx + 0 0) + dz dz is stored as a float
     // (009CAD58), main-thread 24-bit per op. True: float per op. False: double dx, dz.
