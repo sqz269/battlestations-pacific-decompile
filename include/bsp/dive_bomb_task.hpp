@@ -533,7 +533,9 @@ DiveBombAimError dive_bomb_aim_error_009c5c9b(const DiveBombAimErrorInputs& in) 
 // `(v <= hi) ? v : hi` used before, which turns a NaN into hi. The helper is
 // shared by the dive-bomb, dogfight and retreat (ON) paths. Changes only NaN
 // cases.
-inline constexpr bool kInterpClamped00419010NanCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-27) without pairs: the sw3 interp_hi census counts every
+// 00419010 call reaching 004190A9 (up to 8.2M per row) and differs=0 on all 18 WINS rows.
+inline constexpr bool kInterpClamped00419010NanCc13Bound = true;
 float dive_bomb_interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
                                              float x) noexcept;
 struct DiveBombAimDiveReleaseResult {
@@ -1659,7 +1661,9 @@ bool dive_bomb_should_break_off_009c8a90(const DiveBombBreakOffInputs& in) noexc
 // - 009C8B4D FCOMIP SafeDist * +41Ch vs the range, JA false: a NaN breaks off.
 // True: the image's NaN arms. False: the ordered `<=` compares used before.
 // Changes only NaN cases.
-inline constexpr bool kDiveBombNanComparesCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-27) without pairs: the sw3 dive_ceiling / dive_breakoff census
+// counts differs=0 on all 18 WINS rows (dive_ceiling up to 209k calls per row).
+inline constexpr bool kDiveBombNanComparesCc13Bound = true;
 
 // Packet cc13-pc24dog. On the main thread the image's x87 runs at PC24, so each
 // FADD/FSUB/FMUL/FDIV rounds to float, including one with a qword operand.

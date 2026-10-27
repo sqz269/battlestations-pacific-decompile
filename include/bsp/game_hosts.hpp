@@ -656,7 +656,7 @@ struct GameRunSummary {
 // cc15-ob3: WinMain's 1Ch stack Application. 008F8496 constructs it through
 // 00737970 (BEA970/BEA810 register it and publish E1AE90); 008F8444 retires it
 // through 007379A0 before the 008F8449 manager drain.
-inline constexpr bool kApplicationCc15Bound = false;
+inline constexpr bool kApplicationCc15Bound = true;
 
 class GameStartupHost final : public StartupHost {
 public:

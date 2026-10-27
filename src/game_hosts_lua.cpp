@@ -124,7 +124,10 @@ constexpr bool kShipyardLaunchSkillCc13Bound = true;
 // kSpawnNewMissingClassRaisesBound raise burns a serial; OFF takes it before the
 // reads. Live: MissionLuaNative SpawnNew 0094C480 ->
 // GameMissionLuaHost::run_spawn_new_00949750.
-constexpr bool kSpawnNewNonTableArgumentCc13Bound = false;
+// ON (cc9-recon2, unreached): no log since 2026-10-15 has spawn_new_rejected > 0,
+// and the one missing-class raise (PRCP05, calls=1) has no later SpawnNew whose
+// serial could shift.
+constexpr bool kSpawnNewNonTableArgumentCc13Bound = true;
 
 // Packet cc13-atktgt: UnitGetAttackTarget 008A6DE0's arm by director kind. The
 // image asks director->vtable[48h](2) (008A6F0D). A squadron's director is the

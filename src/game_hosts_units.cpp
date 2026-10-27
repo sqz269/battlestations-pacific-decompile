@@ -11,6 +11,8 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/cc13_x87_model.hpp"  // pc24w1-gunnery-2
+#include "bsp/pc24_gunnery_cc13.hpp"
 #include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/game_hosts_ready.hpp"  // kSunkShipFlushBound, packet cc13-jm08
 #include "bsp/hull_terrain_contact.hpp"
@@ -9394,28 +9396,71 @@ struct GameUnitsHost::Impl {
             if (!(1.0f < l[2]) || !(l[2] < 800.0f)) continue;       // [00D7A24C], double [00CE3948]
             float v[3];
             follow_to_body(s, u.plane_world_velocity, true, v);    // vtable[34h], 0042D0D0
-            auto band15 = [](double a) {                           // doubles [00CF3F20] 15, [00CE3D58] -15
-                if (a > 15.0) return a - 15.0;
-                if (a >= -15.0) return 0.0;
-                return a + 15.0;
-            };
-            const double fx = band15(static_cast<double>(l[0]) + v[0]);
-            const double fy = band15(static_cast<double>(l[1]) + v[1]);
-            const double rx = fx / l[2], ry = fy / l[2];
-            if (!(rx * rx + ry * ry < 0.014399999752640724)) continue;   // double [00D1F3F0]
+            bool outside_cone = false;
+            if constexpr (bsp::kPc24GunneryCc13Bound) {
+                // PC24 (pc24w1-gunnery-2): 0099ED64..0099ED86 v + l stored as floats;
+                // the 15 band on the stored sum, each arm FSUB/FADD/FSUBR stored
+                // (0099ED8A..0099EDCE); 0099EDD6/0099EDE0 FDIV by l.z stored; then
+                // ry*ry + rx*rx (0099EDF6..0099EDFC) against [00D1F3F0], JBE skips
+                // (unordered too).
+                using namespace bsp::cc13x87;
+                auto band15 = [](float a) {
+                    float r = 0.0f;
+                    if (a > 15.0) r = static_cast<float>(x87_sub24(a, 15.0));
+                    else if (-15.0 > a) r = static_cast<float>(x87_add24(a, 15.0));
+                    else r = static_cast<float>(x87_sub24(a, a));   // FSUBR ST0,ST0
+                    return r;
+                };
+                const float fx = band15(static_cast<float>(x87_add24(v[0], l[0])));
+                const float fy = band15(static_cast<float>(x87_add24(v[1], l[1])));
+                const float rx = static_cast<float>(x87_div24(fx, l[2]));
+                const float ry = static_cast<float>(x87_div24(fy, l[2]));
+                outside_cone = !(0.014399999752640724 >
+                                 x87_add24(x87_mul24(ry, ry), x87_mul24(rx, rx)));
+            } else {
+                auto band15 = [](double a) {                       // doubles [00CF3F20] 15, [00CE3D58] -15
+                    if (a > 15.0) return a - 15.0;
+                    if (a >= -15.0) return 0.0;
+                    return a + 15.0;
+                };
+                const double fx = band15(static_cast<double>(l[0]) + v[0]);
+                const double fy = band15(static_cast<double>(l[1]) + v[1]);
+                const double rx = fx / l[2], ry = fy / l[2];
+                outside_cone = !(rx * rx + ry * ry < 0.014399999752640724);   // double [00D1F3F0]
+            }
+            if (outside_cone) continue;
             u.ga_flag_26c_4 = true;                                // 0099EE11
             // 0099EE1F-0099EF02: the point (0, 0, z) on the shooter's line,
             // world (+CCh pose), minus the own world velocity, in the own frame.
             const float* m = s.world.data();
             float w[3];
-            for (int i = 0; i < 3; ++i) {
-                w[i] = static_cast<float>(m[12 + i] + static_cast<double>(l[2]) * m[8 + i]) -
-                       u.plane_world_velocity[i];
+            if constexpr (bsp::kPc24GunneryCc13Bound) {
+                // PC24: 004142E0 on (0, 0, z) as ((0*up + 0*right) + z*forward) + origin,
+                // each op rounded, stored; 0099EE67..0099EE90 minus the velocity, stored.
+                using namespace bsp::cc13x87;
+                for (int i = 0; i < 3; ++i) {
+                    const float point = static_cast<float>(x87_add24(
+                        x87_add24(x87_add24(x87_mul24(0.0, m[4 + i]), x87_mul24(0.0, m[i])),
+                                  x87_mul24(l[2], m[8 + i])),
+                        m[12 + i]));
+                    w[i] = static_cast<float>(x87_sub24(point, u.plane_world_velocity[i]));
+                }
+            } else {
+                for (int i = 0; i < 3; ++i) {
+                    w[i] = static_cast<float>(m[12 + i] + static_cast<double>(l[2]) * m[8 + i]) -
+                           u.plane_world_velocity[i];
+                }
             }
             float o[3];
             follow_to_body(u, w, false, o);
-            acc_x += o[0];
-            acc_y += o[1];
+            if constexpr (bsp::kPc24GunneryCc13Bound) {
+                // 0099EECA..0099EF02: the sums are float locals ([ESP+14h], [ESP+18h]).
+                acc_x = static_cast<float>(bsp::cc13x87::x87_add24(o[0], acc_x));
+                acc_y = static_cast<float>(bsp::cc13x87::x87_add24(o[1], acc_y));
+            } else {
+                acc_x += o[0];
+                acc_y += o[1];
+            }
         }
         if (!u.ga_flag_26c_4) return;
         ++u.ga_flagged_ticks;
@@ -9468,9 +9513,22 @@ struct GameUnitsHost::Impl {
         }
         // 0099F087 004F2F40: the 2-D threat sum normalised, then x 0.8
         // (double [00CE3D40]).
-        const double len = std::sqrt(acc_x * acc_x + acc_y * acc_y);
         double nx = 0.0, ny = 0.0;
-        if (len > 1e-10) { nx = acc_x / len; ny = acc_y / len; }
+        if constexpr (bsp::kPc24GunneryCc13Bound) {
+            // PC24, 004F2F40: s = x*x + y*y stored; len = sqrt(s) (00BF7030) stored when
+            // s > 1e-10 [00CE3820], else 1e-5 [00CE3C70] stored; both components are
+            // divided by len (no zero arm).
+            using namespace bsp::cc13x87;
+            const float s2 = static_cast<float>(
+                x87_add24(x87_mul24(acc_y, acc_y), x87_mul24(acc_x, acc_x)));
+            float len = static_cast<float>(1.0e-5);
+            if (s2 > 1.0e-10) len = static_cast<float>(std::sqrt(static_cast<double>(s2)));
+            nx = static_cast<float>(x87_div24(acc_x, len));
+            ny = static_cast<float>(x87_div24(acc_y, len));
+        } else {
+            const double len = std::sqrt(acc_x * acc_x + acc_y * acc_y);
+            if (len > 1e-10) { nx = acc_x / len; ny = acc_y / len; }
+        }
         const float x = static_cast<float>(nx * 0.800000011920929);
         const float y = static_cast<float>(ny * 0.800000011920929);
         const float x8 = static_cast<float>(static_cast<double>(x) * 0.800000011920929);
