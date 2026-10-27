@@ -346,9 +346,9 @@ void ship_screen_damage_panel_0064f665(ShipScreenState& screen, ShipScreenHost& 
                 cc13x87::x87_sub24(d.full_36c, d.current_370), d.full_36c);
             if (damage > worst) worst = static_cast<float>(damage);
         } else {
-        const double full = d.full_36c;
-        const double damage = (full - d.current_370) / full;          // 0064FC49..0064FC5F
-        if (damage > worst) worst = static_cast<float>(damage);       // 0064FC67..0064FC6D
+            const double full = d.full_36c;
+            const double damage = (full - d.current_370) / full;      // 0064FC49..0064FC5F
+            if (damage > worst) worst = static_cast<float>(damage);   // 0064FC67..0064FC6D
         }
     }
     if (worst > kCircleShowAbove) {                                   // 0064FC82 COMISS
