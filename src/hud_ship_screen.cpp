@@ -350,9 +350,10 @@ void gauge_write_0043b2f0(ShipScreenState::Gauge& gauge, int index, ShipScreenHo
 }
 }  // namespace
 
-// Packet D4: OFF until cc9 pairs it. ON rounds the two gauge products to float before their adds,
-// as the 24-bit x87 does at 0043B3EC and 0043B40C.
-inline constexpr bool kShipScreenGaugeProductRoundCc13Bound = false;
+// Packet D4. ON rounds the two gauge products to float before their adds, as the 24-bit x87
+// does at 0043B3EC and 0043B40C. ON by mechanism (cc9-sweep1b): HUD-only; 18 WINS-row pairs
+// gameplay identical with 3-913 differing ticks per row.
+inline constexpr bool kShipScreenGaugeProductRoundCc13Bound = true;
 
 static ShipScreenGaugeReach g_ship_screen_gauge_reach{kShipScreenGaugeProductRoundCc13Bound};
 
