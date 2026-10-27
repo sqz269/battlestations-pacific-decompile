@@ -63,10 +63,11 @@ namespace bsp {
 // heading commands.
 //
 // pc24w1-sweep1-4, the terrain segment walk in src/game_hosts_scene_contents.cpp:
-//  * 00ADC5F0 block_sample: sample * scale + offset, 00ADC62E..00ADC630.
+//  * 00ADC5F0 block_sample: sample * scale + offset, 00ADC62E..00ADC630; also its copy in
+//    cell_height_arm_00adb3a0 (00ADB3A0, CALL EDX at 00ADB42C) on the main-thread arm only.
 //  * 004F9B30 quad_cross (00ADEB80 line-quad test): products rounded before the FSUBRP,
 //    004F9B54..004F9BA0.
-//  * 00AE9BD0 leaf: the inlined 004193E0 squared length (xx + yy) + zz, 00419401..00419429.
+//  * 00AE9BD0 leaf: 004193E0 (CALL at 00AE9C42), the squared length (xx + yy) + zz, 00419401..00419429.
 //  * 00AE9D80 node walk: the mirrors (max + min) - s, y_in / y_out and the leaf end points
 //    s + d * t, 00AE9E8B..00AEA019.
 //  * 00AEA2B0 ray walk: the 00419440 length, direction (q - p) / length, the mirrors and the

@@ -4051,7 +4051,14 @@ constexpr int kTerrainTileCells = 32;          // [00D5D658]
 // the last tile's column 32 for the index one past it) and the block's slot 8h
 // 00ADC5F0. The node y is added to a block's answer, hole included (00ADB43E);
 // a missing tile or an index outside the grid answers -1000.0 bare.
+// The main-thread entry takes kPc24FlightRenderCc13Bound; the two arms below pick their
+// own (grid_height_arm_00adb480 / cell_normal_arm_00adaa40 pass false for the Dyn worker).
 float SceneTerrainHeightField::cell_height_00adb3a0(int i, int j) const noexcept {
+    return cell_height_arm_00adb3a0<kPc24FlightRenderCc13Bound>(i, j);
+}
+
+template <bool kPc24Bound>
+float SceneTerrainHeightField::cell_height_arm_00adb3a0(int i, int j) const noexcept {
     const int wide = tiles_wide != 0 ? tiles_wide * kTerrainTileCells + 1 : 0;
     const int deep = tiles_deep != 0 ? tiles_deep * kTerrainTileCells + 1 : 0;
     if (i < 0 || i >= wide || j < 0 || j >= deep) return kTerrainNoGround;
@@ -4063,8 +4070,17 @@ float SceneTerrainHeightField::cell_height_00adb3a0(int i, int j) const noexcept
     if (index < 0) return kTerrainNoGround;
     const SceneTerrainBlock& block = blocks[static_cast<std::size_t>(index)];
     const std::uint16_t s = block.samples[static_cast<std::size_t>(33 * lz + lx)];
-    const float value = s == 0xffffu ? kTerrainNoGround
-        : terrain_f32(s * static_cast<double>(block.inv_scale) + block.offset);
+    float value;
+    if (s == 0xffffu) {
+        value = kTerrainNoGround;
+    } else if constexpr (kPc24Bound) {
+        // pc24w1-sweep1-4: the block's slot 8h, 00ADC5F0 (CALL EDX near 00ADB42C):
+        // FILD sample * +34h (00ADC62E) + +2Ch (00ADC630), each rounded at PC24, stored.
+        value = terrain_f32(pc24::x87_add24(pc24::x87_mul24(static_cast<double>(s), block.inv_scale),
+                                            block.offset));
+    } else {
+        value = terrain_f32(s * static_cast<double>(block.inv_scale) + block.offset);
+    }
     return terrain_f32(static_cast<double>(node_y) + value);
 }
 
@@ -4117,10 +4133,10 @@ float SceneTerrainHeightField::grid_height_arm_00adb480(float u, float v) const 
     const int i = static_cast<int>(u);
     const int j = static_cast<int>(v);
     const float fu = terrain_f32(static_cast<double>(u) - i);
-    const float h11 = cell_height_00adb3a0(i + 1, j + 1);
-    const float h01 = cell_height_00adb3a0(i, j + 1);
-    const float h10 = cell_height_00adb3a0(i + 1, j);
-    const float h00 = cell_height_00adb3a0(i, j);
+    const float h11 = cell_height_arm_00adb3a0<kPc24Bound>(i + 1, j + 1);
+    const float h01 = cell_height_arm_00adb3a0<kPc24Bound>(i, j + 1);
+    const float h10 = cell_height_arm_00adb3a0<kPc24Bound>(i + 1, j);
+    const float h00 = cell_height_arm_00adb3a0<kPc24Bound>(i, j);
     float result;
     if constexpr (kPc24Bound) {
         // 00ADB4F9 FSUBP, 00ADB502 FMULP, 00ADB506 FADDP -> a; 00ADB516 / 00ADB51A /
@@ -4191,9 +4207,9 @@ template <bool kPc24Bound>
 void SceneTerrainHeightField::cell_normal_arm_00adaa40(int i, int j, float out[3]) const noexcept {
     const float fi = static_cast<float>(i);
     const float fj = static_cast<float>(j);
-    const float h00 = cell_height_00adb3a0(i, j);
-    const float h10 = cell_height_00adb3a0(i + 1, j);
-    const float h01 = cell_height_00adb3a0(i, j + 1);
+    const float h00 = cell_height_arm_00adb3a0<kPc24Bound>(i, j);
+    const float h10 = cell_height_arm_00adb3a0<kPc24Bound>(i + 1, j);
+    const float h01 = cell_height_arm_00adb3a0<kPc24Bound>(i, j + 1);
     const float p1x = terrain_f32(static_cast<double>(fi) + kTerrainCellSize);
     const float p2z = terrain_f32(static_cast<double>(fj) + kTerrainCellSize);
     const float d1[3] = {terrain_f32(static_cast<double>(p1x) - fi),
