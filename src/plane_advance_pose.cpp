@@ -2,6 +2,15 @@
 
 #include <cmath>
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_flightrender_cc13.hpp"
+
+// pc24w1-sweep1-3, kPc24FlightRenderCc13Bound (OFF): ON = per-op PC24 in this file's
+// copies of 00419440 length, 004F9B30 cross and the 0085DAD0 inlined dot, all reached
+// from orthonormalize_up_first_0085dad0 (main thread). 0085E4D0's live arm is the
+// kRotateAboutAxisImageTailBound (ON) one, already per op. Movers: the re-orthonormalised
+// plane pose rows.
+
 // Reconstruction of 007C6500 and the two pose writers it dispatches to.
 // docs/PLANE_ADVANCE_POSE.md carries the evidence and the coverage table; every
 // name is a hypothesis, not a recovered symbol.
@@ -15,9 +24,16 @@ float length_00419440(const float v[3]) {
     const float xx = v[0] * v[0];
     const float yy = v[1] * v[1];
     const float zz = v[2] * v[2];
-    return std::sqrt(static_cast<float>(static_cast<double>(xx) +
-                                        static_cast<double>(yy) +
-                                        static_cast<double>(zz)));
+    float sum;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-3: both adds rounded at PC24 (0041947D, 00419485); the
+        // partial sum is not stored, the total is (00419489).
+        sum = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_add24(xx, yy), zz));
+    } else {
+        sum = static_cast<float>(static_cast<double>(xx) + static_cast<double>(yy) +
+                                 static_cast<double>(zz));
+    }
+    return std::sqrt(sum);
 }
 
 // The reciprocal guard 0085DAE5..0085DB00 shares with 00419510 and 0085DC96:
@@ -37,21 +53,43 @@ void scale3(float v[3], float s) {
 void normalize3(float v[3]) { scale3(v, reciprocal_or_zero(length_00419440(v))); }
 
 // The inlined x87 dot: (x*x' + y*y') + z*z' with a single rounding at the end.
+// 0085DAD0's copy is 0085DB40..0085DB54: (y*y' + x*x') + z*z', the same value
+// since the first add has two operands.
 float dot3_x87(const float a[3], const float b[3]) {
-    return static_cast<float>(static_cast<double>(a[0]) * b[0] +
-                              static_cast<double>(a[1]) * b[1] +
-                              static_cast<double>(a[2]) * b[2]);
+    float out;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-3: each FMUL and FADDP rounded at PC24 (0085DB43..0085DB52).
+        out = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_add24(cc13x87::x87_mul24(a[1], b[1]), cc13x87::x87_mul24(a[0], b[0])),
+            cc13x87::x87_mul24(a[2], b[2])));
+    } else {
+        out = static_cast<float>(static_cast<double>(a[0]) * b[0] +
+                                 static_cast<double>(a[1]) * b[1] +
+                                 static_cast<double>(a[2]) * b[2]);
+    }
+    return out;
 }
 
 // 004F9B30 BSP_Vector3f_Cross, out = a x b, the standard right-hand formula
 // traced in docs/PLANE_POSE_COMMIT.md.
 void cross_004f9b30(float out[3], const float a[3], const float b[3]) {
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-3: each product rounded at PC24 before the FSUBRP
+        // (004F9B54..004F9BA0).
+        out[0] = static_cast<float>(cc13x87::x87_sub24(cc13x87::x87_mul24(a[1], b[2]),
+                                                       cc13x87::x87_mul24(a[2], b[1])));
+        out[1] = static_cast<float>(cc13x87::x87_sub24(cc13x87::x87_mul24(a[2], b[0]),
+                                                       cc13x87::x87_mul24(a[0], b[2])));
+        out[2] = static_cast<float>(cc13x87::x87_sub24(cc13x87::x87_mul24(a[0], b[1]),
+                                                       cc13x87::x87_mul24(a[1], b[0])));
+    } else {
     const double x = static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1];
     const double y = static_cast<double>(a[2]) * b[0] - static_cast<double>(a[0]) * b[2];
     const double z = static_cast<double>(a[0]) * b[1] - static_cast<double>(a[1]) * b[0];
     out[0] = static_cast<float>(x);
     out[1] = static_cast<float>(y);
     out[2] = static_cast<float>(z);
+    }
 }
 
 void copy3(float out[3], const float in[3]) {
@@ -205,6 +243,7 @@ RotationAxisAngle rotation_axis_angle_0085e4d0(const float w[3]) {
     }
 
     // 0085E4F0..0085E506: (x*x + y*y) + z*z, rounded once to float.
+    // pc24-lint: allow OFF arm of kRotateAboutAxisImageTailBound (ON); the live arm above rounds per op
     const float len2 = static_cast<float>(static_cast<double>(w[0]) * w[0] +
                                           static_cast<double>(w[1]) * w[1] +
                                           static_cast<double>(w[2]) * w[2]);

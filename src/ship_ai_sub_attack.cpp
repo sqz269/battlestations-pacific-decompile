@@ -35,6 +35,7 @@ bool relative_bearing(ShipAiSubAttackHost& host, float heading, float& relative)
     float d2 = 0.0f;
     const float d2_per_op = f(static_cast<double>(f(static_cast<double>(dx) * dx))
                               + f(static_cast<double>(dz) * dz));
+    // pc24-lint: allow reach diagnostic: the once value is the OFF arm's model, logged against the per-op value (ship_ai_switch_reach.hpp); the live result is below
     const float d2_once = f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
     ship_ai_reach_note_fire(d2_per_op > 1.0f, d2_once > 1.0f);
     if constexpr (kShipAiFireStepPc24Cc13Bound) {
@@ -74,6 +75,7 @@ float ship_ai_sub_attack_range_009e4a60(ShipAiSubAttackHost& host) {
     const float dx = f(static_cast<double>(target[0]) - self[0]);       // 009E4AAB
     const float dz = f(static_cast<double>(target[2]) - self[2]);       // 009E4ABC
     float d2 = 0.0f;
+    // pc24-lint: allow reach diagnostic: the once value is the OFF arm's model, logged against the per-op value (ship_ai_switch_reach.hpp); the live result is below
     ship_ai_reach_note_fire(f(static_cast<double>(f(static_cast<double>(dx) * dx))
                               + f(static_cast<double>(dz) * dz)),
                             f(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz));
@@ -372,6 +374,7 @@ float ship_ai_sub_attack_fire_step_009e9eb0(ShipAiSubAttackFire& fire, float dt,
     if (static_cast<double>(range) > static_cast<double>(kSubAttackCloseEnter)) {  // 009EA36B
         const float water = host.tubes_min_water_speed_0aec();          // 009EA371, +0AECh
         float lead = 0.0f;                                              // 009EA376..9EA386
+        // pc24-lint: allow reach diagnostic: the once value is the OFF arm's model, logged against the per-op value (ship_ai_switch_reach.hpp); the live result is below
         ship_ai_reach_note_fire(
             f(static_cast<double>(f(static_cast<double>(range) - kSubAttackCloseEnter))
               / static_cast<double>(water)),
@@ -413,6 +416,7 @@ float ship_ai_sub_attack_fire_step_009e9eb0(ShipAiSubAttackFire& fire, float dt,
         const float x = f(static_cast<double>(velocity2[0]) * unit[0]);
         const float y = f(static_cast<double>(unit[1]) * 0.0);
         const float z = f(static_cast<double>(velocity2[2]) * unit[2]);
+        // pc24-lint: allow reach diagnostic: the once value is the OFF arm's model, logged against the per-op value (ship_ai_switch_reach.hpp); the live result is below
         ship_ai_reach_note_fire(
             f(static_cast<double>(f(static_cast<double>(x) + y)) + z),
             f((static_cast<double>(velocity2[0]) * unit[0]
