@@ -2,13 +2,21 @@
 // docs/CC13_DEPTH_CHARGE_TASK.md; every address in a comment is a listing
 // address. x87 intermediates are carried in double and stored to float wherever
 // the listing has FSTP dword, as the rocket twin does (src/rocket_task_cc13.cpp).
+//
+// kPc24PlaneTasksCc13Bound (OFF, pc24w1-sweep3-2) rounds per op at 24 bits in
+// 009A3300, 009A5F50, 009A65F0 (its 0042B2F0 length copy included), 009A3770,
+// 009A3CF0, 009A4010 and 009A4940. 009A3290 and 009A3AE0 already round once
+// (an exact factor); see their pc24-lint allow notes. Movers when ON: depth-charge
+// plane approach, release timing and release points.
 
 #include "bsp/depth_charge_task_cc13.hpp"
 
 #include <cmath>
 
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/dive_bomb_task.hpp"
 #include "bsp/geometry_helpers.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
 #include "bsp/robot_config.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/vector_helpers.hpp"
@@ -171,8 +179,15 @@ float depth_charge_fall_lead_009a3300(float aim_point_y, float unit_y,
     const float v = 0.0f < aim_point_y ? 0.0f : aim_point_y;          // 009A3352 FCOMIP, JBE
     // 009A336E FMUL qword 0.02 [00D7A2F8], FSUBR qword 0.15 [00CE6618], FSTP
     // float, then FADD the fall time.
-    const float k = static_cast<float>(0.15000000596046448 - static_cast<double>(v) *
-                                                                 0.019999999552965164);
+    float k;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009A336E..009A337A: the FMUL rounds to 24 bits before the FSUBR.
+        k = static_cast<float>(cc13x87::x87_sub24(
+            0.15000000596046448, cc13x87::x87_mul24(v, 0.019999999552965164)));
+    } else {
+        k = static_cast<float>(0.15000000596046448 - static_cast<double>(v) *
+                                                         0.019999999552965164);
+    }
     return static_cast<float>(static_cast<double>(k) + fall);
 }
 
@@ -180,6 +195,7 @@ float depth_charge_stick_half_009a3290(int remaining_rounds, float run_speed_30)
     const float n = static_cast<float>(static_cast<double>(remaining_rounds) * kPointFour);   // 009A32AA
     // 009A32B8 FCOMI 0.5 against n; above: 0.5 * 0.5f, else 0.5 * n.
     const double m = kHalf > static_cast<double>(n) ? kHalf * 0.5f : kHalf * n;
+    // pc24-lint: allow 0.5 * n (or 0.5 * 0.5f) is exact, so the FMULP / FMUL pair at 009A32D0..009A32D2 rounds once
     return static_cast<float>(m * run_speed_30);
 }
 
@@ -237,8 +253,15 @@ void depth_charge_approach_update_009a5f50(DepthChargeApproach& ap, DepthChargeT
     ap.rel_bearing_50 = wrapped_angle_subtract_00438b10(ap.bearing_4c, host.unit_heading_50());
     // 009A60D4-009A6102: +44h + 100 (qword) against +48h; while in range the
     // alt-loadout test keeps it.
-    const bool inside = static_cast<double>(ap.attack_range_44) + depth_charge::kAttackRangeHysteresis >
-                        static_cast<double>(ap.range_48);
+    bool inside;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009A60DA: the FADD stays on the stack, rounded to 24 bits, for the FCOMIP.
+        inside = cc13x87::x87_add24(ap.attack_range_44, depth_charge::kAttackRangeHysteresis) >
+                 static_cast<double>(ap.range_48);
+    } else {
+        inside = static_cast<double>(ap.attack_range_44) + depth_charge::kAttackRangeHysteresis >
+                 static_cast<double>(ap.range_48);
+    }
     if (!ap.in_range_75) {
         ap.in_range_75 = inside;
     } else {
@@ -303,9 +326,16 @@ void depth_charge_approach_update_009a5f50(DepthChargeApproach& ap, DepthChargeT
     ap.run_in_60 = static_cast<float>(static_cast<double>(c) * dist);       // 009A6396
     if (ap.stick_half_58 > ap.run_in_60) {                            // 009A63A3 FCOMI, JBE
         ap.run_in_60 = static_cast<float>(static_cast<double>(ap.stick_half_58) - 1.0);   // 00D7A210
-        ap.release_bias_5c = static_cast<float>(
-            static_cast<double>(ap.stick_half_58) * dt * 0.10000000149011612 +   // 00D7A3A0
-            ap.release_bias_5c);
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009A63B5..009A63C2: stick * dt, * qword 0.1, + bias, each rounded to 24 bits.
+            ap.release_bias_5c = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_mul24(cc13x87::x87_mul24(ap.stick_half_58, dt), 0.10000000149011612),
+                ap.release_bias_5c));
+        } else {
+            ap.release_bias_5c = static_cast<float>(
+                static_cast<double>(ap.stick_half_58) * dt * 0.10000000149011612 +   // 00D7A3A0
+                ap.release_bias_5c);
+        }
     } else {
         ap.release_bias_5c = 0.0f;                                    // 009A63E3
     }
@@ -415,10 +445,22 @@ bool depth_charge_should_break_off_009a65f0(const DepthChargeTask& t, DepthCharg
     const std::array<float, 3> pos = host.unit_position();            // 009A6658
     const std::array<float, 3>& p = t.ap.ref.world_point_1c;
     const float dx = p[0] - pos[0], dy = p[1] - pos[1], dz = p[2] - pos[2];
-    const float len = length_or_zero((static_cast<double>(dy) * dy + static_cast<double>(dx) * dx) +
-                                     static_cast<double>(dz) * dz);   // 009A669B 0042B2F0
-    const double safe = static_cast<double>(host.tuning().safe_dist_4b0) * t.ap.speed_ratio_24;
-    return !(safe > len);                                             // 009A66AD, JA keeps
+    bool keep;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 0042B2F9..0042B307 (the 0042B2F0 copy): (dy*dy + dx*dx) + dz*dz per op.
+        const float len = length_or_zero(cc13x87::x87_add24(
+            cc13x87::x87_add24(cc13x87::x87_mul24(dy, dy), cc13x87::x87_mul24(dx, dx)),
+            cc13x87::x87_mul24(dz, dz)));
+        // 009A66A0..009A66AD: the FMUL stays on the stack, rounded to 24 bits, for the FCOMIP.
+        const double safe = cc13x87::x87_mul24(host.tuning().safe_dist_4b0, t.ap.speed_ratio_24);
+        keep = !(safe > len);
+    } else {
+        const float len = length_or_zero((static_cast<double>(dy) * dy + static_cast<double>(dx) * dx) +
+                                         static_cast<double>(dz) * dz);   // 009A669B 0042B2F0
+        const double safe = static_cast<double>(host.tuning().safe_dist_4b0) * t.ap.speed_ratio_24;
+        keep = !(safe > len);                                         // 009A66AD, JA keeps
+    }
+    return keep;
 }
 
 int depth_charge_rule_009a5870(DepthChargeTask& t, DepthChargeTaskHost& host,
@@ -516,12 +558,25 @@ DepthChargePlanCommand depth_charge_attackrun_tick_009a3770(DepthChargeTask& t,
     if (dt < cd) {                                                    // 009A3797 FCOMI, JC
         ar.countdown_1c = static_cast<float>(static_cast<double>(cd) - dt);
     } else {
-        ar.countdown_1c = static_cast<float>((static_cast<double>(ar.period_18) - dt) + cd);
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009A37A2..009A37C8: FSUBR period - dt, FADDP + cd.
+            ar.countdown_1c = static_cast<float>(
+                cc13x87::x87_add24(cc13x87::x87_sub24(ar.period_18, dt), cd));
+        } else {
+            ar.countdown_1c = static_cast<float>((static_cast<double>(ar.period_18) - dt) + cd);
+        }
         const float ext[3] = {80.0f, 60.0f, 120.0f};                  // 00CE5444, 00CEB4B0, 00D05804
         const float w[3] = {0.0f, 0.0f, 0.0f};
         const NearFieldProbeResult pr = host.near_field_probe_007f0280(ext, w);   // 009A3805
-        const float u = static_cast<float>(-static_cast<double>(pr.out_a[0]) * pr.out_b[1] *
-                                           pr.out_b[2]);              // 009A3818
+        float u;
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009A380A..009A3818: FCHS, FMUL, FMUL, each product rounded to 24 bits.
+            u = static_cast<float>(cc13x87::x87_mul24(
+                cc13x87::x87_mul24(-static_cast<double>(pr.out_a[0]), pr.out_b[1]), pr.out_b[2]));
+        } else {
+            u = static_cast<float>(-static_cast<double>(pr.out_a[0]) * pr.out_b[1] *
+                                   pr.out_b[2]);                      // 009A3818
+        }
         ar.offset_20 = static_cast<float>(static_cast<double>(u) * kThirtyDegrees);   // 009A3826
     }
     c.writes_heading_2c0 = true;                                      // 009A384C, mode 2
@@ -555,6 +610,7 @@ DepthChargePlanCommand depth_charge_leave_tick_009a39f0(DepthChargeTask& t, floa
 void depth_charge_turnto_enter_009a3ae0(DepthChargeTask& t, DepthChargeTaskHost& host) {
     const float sign = t.ap.rel_bearing_50 > 0.0f ? -1.0f : 1.0f;     // 009A3AFD
     const float mult = host.bomber_kind() ? 1.1f : 1.3f;              // 00CE6448, 00CEB4B4
+    // pc24-lint: allow sign is +-1, so roll * sign is exact and the FMUL pair at 009A3B59..009A3B5D rounds once
     t.tt.bank_18 = static_cast<float>(static_cast<double>(host.class_block().turn_roll_25c) *
                                       sign * mult);                   // 009A3B4D-009A3B61
 }
@@ -591,8 +647,15 @@ float depth_charge_goaway_heading_009a3cf0(DepthChargeTask& t, DepthChargeTaskHo
     const float ext[3] = {60.0f, 50.0f, 80.0f};                       // 00CEB4B0, 00CEB4D4, 00CE5444
     const float w[3] = {0.0f, 0.0f, 0.0f};
     const NearFieldProbeResult pr = host.near_field_probe_007f0280(ext, w);   // 009A3D95
-    const float u = static_cast<float>(-static_cast<double>(pr.out_a[0]) * pr.out_b[1] *
-                                       pr.out_b[2]);                  // 009A3DB3
+    float u;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009A3D9A..009A3DB3: FCHS, FMUL, FMUL, each product rounded to 24 bits.
+        u = static_cast<float>(cc13x87::x87_mul24(
+            cc13x87::x87_mul24(-static_cast<double>(pr.out_a[0]), pr.out_b[1]), pr.out_b[2]));
+    } else {
+        u = static_cast<float>(-static_cast<double>(pr.out_a[0]) * pr.out_b[1] *
+                               pr.out_b[2]);                          // 009A3DB3
+    }
     const float e = wrapped_angle_subtract_00438b10(h0, host.unit_heading_50());   // 009A3DC7
     float c;
     if (-kGoAwayClamp > static_cast<double>(e)) {                     // 009A3DDA
@@ -603,7 +666,12 @@ float depth_charge_goaway_heading_009a3cf0(DepthChargeTask& t, DepthChargeTaskHo
         c = e;
     }
     if ((c > 0.0f && 0.0f > u) || (0.0f > c && u > 0.0f)) {           // 009A3E0B-009A3E2F
-        c = static_cast<float>(static_cast<double>(u) * kThirtyDegrees + c);
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009A3E31..009A3E3F: FMUL qword 30 degrees, FADD c, each rounded to 24 bits.
+            c = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(u, kThirtyDegrees), c));
+        } else {
+            c = static_cast<float>(static_cast<double>(u) * kThirtyDegrees + c);
+        }
     }
     return wrapped_angle_add_00438aa0(host.unit_heading_50(), c);    // 009A3E5C
 }
@@ -658,10 +726,20 @@ DepthChargeAimResult depth_charge_aim_tick_009a4010(DepthChargeTask& t, DepthCha
     float speed_bias = 0.0f;                                          // [ESP+1Ch]
     const float ax = pr.out_a[0] > 0.0f ? pr.out_a[0] : -pr.out_a[0];   // AND 7FFFFFFFh
     if (static_cast<double>(ax) > kProbeGate) {                       // 009A415A
-        const float u = static_cast<float>(-static_cast<double>(pr.out_a[0]) * pr.out_b[1] *
-                                           pr.out_b[2]);              // 009A417A
-        speed_bias = static_cast<float>(-static_cast<double>(pr.out_a[2]) * pr.out_b[0] *
-                                        pr.out_b[1]);                 // 009A418A
+        float u;
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009A4164..009A417A: FCHS a0, FMULP b1, FMULP b2; 009A417E..009A418A: FCHS a2,
+            // FMUL b0, FMULP b1. Each product rounds to 24 bits.
+            u = static_cast<float>(cc13x87::x87_mul24(
+                cc13x87::x87_mul24(-static_cast<double>(pr.out_a[0]), pr.out_b[1]), pr.out_b[2]));
+            speed_bias = static_cast<float>(cc13x87::x87_mul24(
+                cc13x87::x87_mul24(-static_cast<double>(pr.out_a[2]), pr.out_b[0]), pr.out_b[1]));
+        } else {
+            u = static_cast<float>(-static_cast<double>(pr.out_a[0]) * pr.out_b[1] *
+                                   pr.out_b[2]);                      // 009A417A
+            speed_bias = static_cast<float>(-static_cast<double>(pr.out_a[2]) * pr.out_b[0] *
+                                            pr.out_b[1]);             // 009A418A
+        }
         if (u > 0.5f) {                                               // 009A4198 [00CE3800]
             o = static_cast<float>((static_cast<double>(u) - kHalf) * 2.0);
         } else if (-0.5f > u) {                                       // 009A41B4 [00CE69D0]
@@ -683,13 +761,27 @@ DepthChargeAimResult depth_charge_aim_tick_009a4010(DepthChargeTask& t, DepthCha
     c.turn_2c8 = clamped_interpolate_00419010(250.0f, 0.2f, 500.0f, 1.2f, r);
     // 009A4307-009A432B: e = r - (float(+5Ch + +58h) + 150), floored at 1.
     const float window = ap.release_bias_5c + ap.stick_half_58;
-    float e = static_cast<float>(static_cast<double>(r) -
-                                 (static_cast<double>(window) + depth_charge::kReleaseCeiling));
+    float e;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009A4323..009A4329: FADD qword 150, FSUBP, each rounded to 24 bits.
+        e = static_cast<float>(cc13x87::x87_sub24(
+            r, cc13x87::x87_add24(window, depth_charge::kReleaseCeiling)));
+    } else {
+        e = static_cast<float>(static_cast<double>(r) -
+                               (static_cast<double>(window) + depth_charge::kReleaseCeiling));
+    }
     if (1.0f > e) e = 1.0f;                                           // 009A4340
     const std::array<float, 3> pos = host.unit_position();
     const float alt = aim_altitude(ap);                               // 009A436B
-    const float g = static_cast<float>(
-        (static_cast<double>(pos[1]) - (static_cast<double>(alt) - kProjCap)) / e);   // 009A437B
+    float g;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009A4373..009A437B: FSUB qword 30, FSUBP, FDIV e, each rounded to 24 bits.
+        g = static_cast<float>(cc13x87::x87_div24(
+            cc13x87::x87_sub24(pos[1], cc13x87::x87_sub24(alt, kProjCap)), e));
+    } else {
+        g = static_cast<float>(
+            (static_cast<double>(pos[1]) - (static_cast<double>(alt) - kProjCap)) / e);   // 009A437B
+    }
     const float scale = clamped_interpolate_00419010(0.01f, 0.8f, 0.35f, 1.8f, g);   // 009A43B2
     write_cruise(c, alt, ap.fly_above_40, ap.range_48, scale);        // 009A43DF
     const DepthChargeClass cls = host.class_block();
@@ -704,10 +796,22 @@ DepthChargeAimResult depth_charge_aim_tick_009a4010(DepthChargeTask& t, DepthCha
     const float v = static_cast<float>(static_cast<double>(alt_f) * k2);
     const float speed = clamped_interpolate_00419010(0.0f, spd_a, 1.0f, cls.level_flight_speed, v);
     c.writes_speed_2b4 = true;                                        // 009A4565
-    c.speed_2b4 = static_cast<float>(static_cast<double>(speed_bias) * 15.0 + speed);   // 00CF3F20
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009A4540..009A4565: FMUL qword 15, FADD speed, each rounded to 24 bits.
+        c.speed_2b4 = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(speed_bias, 15.0), speed));
+    } else {
+        c.speed_2b4 = static_cast<float>(static_cast<double>(speed_bias) * 15.0 + speed);   // 00CF3F20
+    }
     aim.pull_out_18 = ap.rel_bearing_50 > depth_charge::kPullOutBearing;   // 009A4572
     // 009A4584-009A45A3: arm inside 200 m of the release window.
-    if (!(depth_charge::kArmBand > static_cast<double>(r) - static_cast<double>(window))) {
+    double run_left;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009A4595: the FSUB stays on the stack, rounded to 24 bits, for the FCOMIP.
+        run_left = cc13x87::x87_sub24(r, window);
+    } else {
+        run_left = static_cast<double>(r) - static_cast<double>(window);
+    }
+    if (!(depth_charge::kArmBand > run_left)) {
         ap.arm_request_76 = false;                                    // 009A465D
         return out;
     }
@@ -811,10 +915,18 @@ DepthChargeFollowResult depth_charge_follow_tick_009a4940(DepthChargeTask& t, De
     const float dist = length_2d_00414c60(d);                         // 009A4BFA
     const float k1 = clamped_interpolate_00419010(0.5f, 1.0f, 1.5f, 0.2f, e);   // 009A4C31
     const DepthChargeClass cls = host.class_block();
-    const float q = static_cast<float>(
-        static_cast<double>(k1) *
-        (static_cast<double>(ap.speed_ratio_24) * host.tuning().fly_above_dist_4a8 +
-         cls.turn_circle_radius_268));                                // 009A4C36-009A4C4D
+    float q;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009A4C36..009A4C4D: FMUL, FADD, FMULP k1, each rounded to 24 bits.
+        q = static_cast<float>(cc13x87::x87_mul24(
+            k1, cc13x87::x87_add24(cc13x87::x87_mul24(ap.speed_ratio_24, host.tuning().fly_above_dist_4a8),
+                                   cls.turn_circle_radius_268)));
+    } else {
+        q = static_cast<float>(
+            static_cast<double>(k1) *
+            (static_cast<double>(ap.speed_ratio_24) * host.tuning().fly_above_dist_4a8 +
+             cls.turn_circle_radius_268));                            // 009A4C36-009A4C4D
+    }
     const float k2 = clamped_interpolate_00419010(250.0f, 1.0f, 400.0f, 0.01f, ly);   // 009A4C84
     const float kq = static_cast<float>(static_cast<double>(k2) * q);
     const float x = static_cast<float>(static_cast<double>(dist) / kq);   // 009A4C98 FDIVR
