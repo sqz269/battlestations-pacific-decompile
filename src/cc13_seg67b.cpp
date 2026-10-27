@@ -2704,8 +2704,9 @@ bool ship_ai_path_walk_for_signed_node(ShipAiPathPlanBlock& plan, Hit hit) {
 
 // 009D5AE0 (009D5AE0-009D5B87). The walk above with `hit` = signed byte +14h > 0
 // (009D5B00 CMP / JG). The direction rule is inline at 009D5B06-009D5B56.
-// 009D5B4F JC takes the +1 arm when the costs are unordered (NaN); the shared rule
-// ship_ai_path_node_direction_009d9e6c returns -1 there. The inline rule is behind
+// 009D5B4F JC takes the +1 arm when the costs are unordered (NaN), as the image's
+// 009D9E6C does; the C++ shared rule (ship_ai_path_node_direction_009d9e6c, whose `<`
+// deviates from the image) returns -1 there. The inline rule is behind
 // kShipAiPathSideWalkNanCc13Bound (cc13-fixture8 pinned the OFF difference).
 bool ship_ai_path_any_positive_side_ahead_009d5ae0(ShipAiPathPlanBlock& plan) {
     return ship_ai_path_walk_for_signed_node<kShipAiPathSideWalkNanCc13Bound>(
@@ -2718,7 +2719,8 @@ bool ship_ai_path_any_positive_side_ahead_image_009d5ae0(ShipAiPathPlanBlock& pl
 
 // 009D5B90 (009D5B90-009D5C37). The same walk with `hit` = signed byte +14h < 0
 // (009D5BB0 CMP / JL). Inline rule 009D5BB6-009D5C06.
-// UNCERTAINTY: as 009D5AE0, the JC at 009D5BFF takes +1 on NaN costs.
+// As 009D5AE0, the JC at 009D5BFF takes +1 on unordered costs (the C++ shared rule
+// gives -1); behind the same switch.
 bool ship_ai_path_any_negative_side_ahead_009d5b90(ShipAiPathPlanBlock& plan) {
     return ship_ai_path_walk_for_signed_node<kShipAiPathSideWalkNanCc13Bound>(
         plan, [](std::int8_t b) { return b < 0; });

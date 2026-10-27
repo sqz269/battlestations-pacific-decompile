@@ -1680,10 +1680,10 @@ int main() {
     static const char* const primary53[] = {"00C37860", "00C38470", "00C38810", "00C38970"};
     struct Pinned { const char* address; int failures; int nan_only; const char* finding; };
     static const Pinned pinned[] = {
-        // cc13-fixture8 follow-up: the side walks' OFF arm (the shared direction rule) on unordered
+        // cc13-fixture8 follow-up: the side walks' OFF arm (the C++ shared direction rule) on unordered
         // sums; with the switch ON the walks take the image's rule and must match outright.
-        {"009D5AE0", bsp::kShipAiPathSideWalkNanCc13Bound ? 0 : 58, 0, "unordered route sums (NaN, inf-inf): the image's JC gives +1, the shared rule -1; ON arm matches"},
-        {"009D5B90", bsp::kShipAiPathSideWalkNanCc13Bound ? 0 : 61, 0, "unordered route sums (NaN, inf-inf): the image's JC gives +1, the shared rule -1; ON arm matches"},
+        {"009D5AE0", bsp::kShipAiPathSideWalkNanCc13Bound ? 0 : 58, 0, "unordered route sums (NaN, inf-inf): the image's JC gives +1, the C++ shared rule (009d9e6c, its < deviates from the image) -1; ON arm matches"},
+        {"009D5B90", bsp::kShipAiPathSideWalkNanCc13Bound ? 0 : 61, 0, "unordered route sums (NaN, inf-inf): the image's JC gives +1, the C++ shared rule (009d9e6c, its < deviates from the image) -1; ON arm matches"},
         {"004F3DA0", 57, 0, "float intermediates overflow where the x87 stack does not"},
         {"00B64470", 0, 7, "NaN sign/payload only"},
         {"00B62DD0", 0, 54, "NaN sign/payload only"},

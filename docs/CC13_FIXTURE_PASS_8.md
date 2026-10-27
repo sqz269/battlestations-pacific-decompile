@@ -105,21 +105,25 @@ layerfix commit had already moved `weapon_fall_time_007bcc80` into bsp_core, and
 - minus = (+4Ch + +34h) + minus->+3Ch, computed the same way;
 - then `FCOMIP` and `JC` give +1 when plus < minus **or the two are unordered**, and -1 otherwise.
 
-The C++ walk calls the shared rule 009D9E6C, which gives -1 for an unordered pair. In the fixture
+The C++ walk calls the C++ shared rule (`ship_ai_path_node_direction_009d9e6c`, whose `<`
+deviates from the image), which gives -1 for an unordered pair. The image's 009D9E6C gives +1
+there, like the inline copy: 009D9E75 sets EBP = +1, and 009D9EC8 FCOMIP / 009D9ECC JB keeps it
+when plus < minus or the pair is unordered. In the fixture
 every OFF mismatch has either a NaN input (117 cases) or both +inf and -inf in one sum (2 cases,
 009D5B90). The walk is live: `game_hosts_ship_ai.cpp` reaches it for the arc centre
 (009E47D3/009E47E4) under `kShipAiArcCentrePlanTestCc13Bound`, which is ON.
 
-- OFF keeps the shared rule. The fixture pins its difference at 58/3000 and 61/3000.
+- OFF keeps the C++ shared rule. The fixture pins its difference at 58/3000 and 61/3000.
 - ON uses the inline rule (`ship_ai_path_walk_inline_direction`). The `_image_` entry points
   expose the ON arm as the "ON arm" cases, which are 3000/3000 at both precisions.
 - The pins read the switch (`kShipAiPathSideWalkNanCc13Bound ? 0 : 58`), so the test also passes
   with it ON. `python tools/off_switch_on_build.py --names kShipAiPathSideWalkNanCc13Bound` builds
   and tests clean.
 
-009D5930 (decide direction) carries the same unordered-cost uncertainty through
-`ship_ai_path_node_direction_009d9e6c`; see its comment at 009D9440. This switch does not cover
-that body.
+The image's 009D5930 (decide direction) also takes +1 on an unordered pair (009D5970/009D5974
+JC stores 1). Its C++ version reuses `ship_ai_path_node_direction_009d9e6c`, so it has the same
+confirmed deviation. This switch does not cover that body; a separate switch on the shared rule
+itself does (packet cc13-fixture8g).
 
 ## Status
 

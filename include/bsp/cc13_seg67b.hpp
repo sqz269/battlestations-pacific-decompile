@@ -981,9 +981,10 @@ bool ship_ai_path_any_positive_side_ahead_009d5ae0(ShipAiPathPlanBlock& plan);
 bool ship_ai_path_any_negative_side_ahead_009d5b90(ShipAiPathPlanBlock& plan);
 // cc13-fixture8: the two walks decide an undecided node with their own inline copy of the
 // direction rule (009D5B29-009D5B56 / 009D5BD9-009D5C06), whose JC takes +1 when the two
-// route sums are unordered (a NaN cost, or +inf and -inf in one sum); the shared rule 009D9E6C
-// used by the host walk gives -1. OFF: the host keeps the shared rule. ON: the inline rule, so
-// an unordered pair picks link_plus. Live: game_hosts_ship_ai.cpp ShipAiApproachPoint arc
+// route sums are unordered (a NaN cost, or +inf and -inf in one sum), as the image's 009D9E6C
+// also does. The C++ shared rule (ship_ai_path_node_direction_009d9e6c, whose `<` deviates
+// from the image) gives -1 there. OFF: the walks keep the C++ shared rule. ON: the inline
+// rule, so an unordered pair picks link_plus. Live: game_hosts_ship_ai.cpp ShipAiApproachPoint arc
 // centre (009E47D3/009E47E4), under kShipAiArcCentrePlanTestCc13Bound. Only unordered sums
 // differ.
 inline constexpr bool kShipAiPathSideWalkNanCc13Bound = false;
