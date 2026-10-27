@@ -9,6 +9,14 @@ namespace bsp {
 
 // Gunnery: src/game_hosts_gunnery.cpp, src/gun_aim_terms.cpp, src/gun_gravity_arc.cpp and
 // src/gun_dispersion.cpp. The sites are listed at each `if constexpr` in those files.
+// Packet pc24w1-gunnery-2 adds: src/game_hosts_units.cpp 0099EC40 gunfire_detect (the
+// cone test, the shooter-line point, the float threat sums and 004F2F40's normalize with
+// its 1e-5 floor), src/gameplay_settings_tail.cpp 008383D0 (t*10 - (i+1)) and
+// src/hit_narrowphase.cpp 0085CDB0 (the slab fractions' numerators). 00956C20's blast
+// sum in src/gunnery_tables.cpp already rounds as the image does (exact sum and x0.5,
+// one float rounding, then a float add) and is not switched.
+// Expected movers when ON: plane gunfire avoidance (flag, direction and timers),
+// weapon hit accuracy samples, and segment/box hit entry points and line-of-fire tests.
 inline constexpr bool kPc24GunneryCc13Bound = false;
 
 }  // namespace bsp

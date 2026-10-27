@@ -7,8 +7,17 @@
 #include <cstddef>
 #include <string>
 
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/ocean_height.hpp"
+#include "bsp/pc24_flightrender_cc13.hpp"
 #include "bsp/scene_file.hpp"
+
+// pc24w1-sweep1-3, kPc24FlightRenderCc13Bound (OFF): ON = per-op PC24 (x87_*24) in the
+// spectrum leaves the main thread runs at 24-bit precision control; OFF keeps each double
+// chain rounded once at the float store. Sites: 00BF0DF0 s and ku * sigma + mean; 00B94CA0
+// arg, dot and the A * E * D / k^4 tail; 00B95750 l2; 00B952D0 butterflies and twiddle
+// step; 00B95D30 the h(k, t) complex step. Movers: the ocean wave heights (h0 at load and
+// h(t) per frame), so wakes, the ocean height samplers and everything floating on them.
 
 namespace bsp {
 namespace {
@@ -50,14 +59,25 @@ float ocean_normal_draw_00bf0df0(RandomState& state, float mean, float sigma) {
         u1 = f32(static_cast<double>(a) * 2.0 - 1.0);                  // 00BF0EAC..00BF0EB0
         const float b = f32(static_cast<double>(random_next_u32_00ba2c20(state)) * kTwoToMinus32);
         u2 = f32(static_cast<double>(b) * 2.0 - 1.0);                  // 00BF0F30..00BF0F34
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            // 00BF0F40 FMUL ST0, 00BF0F44 FMULP, 00BF0F46 FADDP, each rounded at PC24.
+            s = f32(cc13x87::x87_add24(cc13x87::x87_mul24(u2, u2), cc13x87::x87_mul24(u1, u1)));
+        } else {
         s = f32(static_cast<double>(u1) * u1 + static_cast<double>(u2) * u2);  // 00BF0F48
+        }
     } while (s >= 1.0f);                                                // 00BF0F50 FCOMI, JAE
     static_cast<void>(kTwoTo32);
     const float log_s = f32(std::log(static_cast<double>(s)));         // 00BF0F60, 00BF0F65
     const float ratio = f32(static_cast<double>(log_s) * -2.0 / s);     // 00BF0F6D, 00BF0F73
     const float k = f32(std::sqrt(static_cast<double>(ratio)));         // 00BF0F7F
     const float ku = f32(static_cast<double>(k) * u1);                  // 00BF0F8D
-    return f32(static_cast<double>(ku) * sigma + mean);                 // 00BF0F99, 00BF0F9D
+    float out;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        out = f32(cc13x87::x87_add24(cc13x87::x87_mul24(ku, sigma), mean));  // 00BF0F99, 00BF0F9D
+    } else {
+    out = f32(static_cast<double>(ku) * sigma + mean);                  // 00BF0F99, 00BF0F9D
+    }
+    return out;
 }
 
 float ocean_phillips_00b94ca0(const OceanSpectrum& sp, float kx, float ky) {
@@ -72,20 +92,48 @@ float ocean_phillips_00b94ca0(const OceanSpectrum& sp, float kx, float ky) {
     const float kL2 = f32(static_cast<double>(kL) * kL);                // 00B94D29
     const double neg_inv = -1.0 / static_cast<double>(kL2);             // 00B94D31 FDIVR -1.0
     const float kl2 = f32(static_cast<double>(kl) * kl);                // 00B94D3D
-    const float arg = f32(neg_inv - kl2);                               // 00B94D45
+    float arg;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // The 00B94D31 quotient stays on the stack, rounded at PC24, into the 00B94D41 FSUB.
+        arg = f32(cc13x87::x87_sub24(cc13x87::x87_div24(-1.0, kL2), kl2));
+    } else {
+    arg = f32(neg_inv - kl2);                                           // 00B94D45
+    }
     const float e = f32(std::exp(static_cast<double>(arg)));            // 00B94D4D, 00B94D52
     const float kxn = f32(static_cast<double>(inv_k) * kx);             // 00B94D81
     const float kyn = f32(static_cast<double>(inv_k) * ky);             // 00B94D94
-    const float dot = f32(static_cast<double>(kxn) * sp.wind_cos_6c +
-                          static_cast<double>(kyn) * sp.wind_sin_70);   // 00B94DA1
+    float dot;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // 00B94D89 FMUL +6Ch, 00B94D9C FMUL +70h, 00B94D9F FADDP, each rounded at PC24.
+        dot = f32(cc13x87::x87_add24(cc13x87::x87_mul24(kxn, sp.wind_cos_6c),
+                                     cc13x87::x87_mul24(kyn, sp.wind_sin_70)));
+    } else {
+    dot = f32(static_cast<double>(kxn) * sp.wind_cos_6c +
+              static_cast<double>(kyn) * sp.wind_sin_70);               // 00B94DA1
+    }
     const float directional = f32(signed_pow_or_zero(dot, sp.direction_power_84));
     const float k4 = f32(signed_pow_or_zero(k, 4.0f));                  // 00B94E57
+    float out;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // 00B94E6E FMUL e, 00B94E72 FMUL D, 00B94E76 FDIV k^4, each rounded at PC24.
+        out = f32(cc13x87::x87_div24(
+            cc13x87::x87_mul24(cc13x87::x87_mul24(sp.wave_height_80, e), directional), k4));
+    } else {
     // 00B94E67..00B94E7A: A * E * D / k^4, rounded once.
-    return f32(static_cast<double>(sp.wave_height_80) * e * directional / k4);
+    out = f32(static_cast<double>(sp.wave_height_80) * e * directional / k4);
+    }
+    return out;
 }
 
 void ocean_spectrum_build_00b95750(OceanSpectrum& sp) {
-    const float l2 = f32(static_cast<double>(sp.wind_speed_74) * sp.wind_speed_74 / kOceanGravity);
+    float l2;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // The product, then 00B95771 FDIV by the qword gravity, each rounded at PC24.
+        l2 = f32(cc13x87::x87_div24(cc13x87::x87_mul24(sp.wind_speed_74, sp.wind_speed_74),
+                                    kOceanGravity));
+    } else {
+    l2 = f32(static_cast<double>(sp.wind_speed_74) * sp.wind_speed_74 / kOceanGravity);
+    }
     sp.largest_wave_78 = l2;                                                       // 00B9578F
     sp.smallest_wave_7c = f32(static_cast<double>(l2) * sp.small_wave_factor_8c);  // 00B95798
 
@@ -200,15 +248,35 @@ void ocean_fft64_00b952d0(int dir, float* x, float* y) {
         for (int jj = 0; jj < l1; ++jj) {
             for (int i = jj; i < n; i += l2) {
                 const int i1 = i + l1;
-                const float t1 = f32(static_cast<double>(u1) * x[i1] - static_cast<double>(u2) * y[i1]);
-                const float t2 = f32(static_cast<double>(u1) * y[i1] + static_cast<double>(u2) * x[i1]);
+                float t1;
+                float t2;
+                if constexpr (kPc24FlightRenderCc13Bound) {
+                    // 00B953DE..00B953E8 and 00B953F0..00B953F6: each product rounded
+                    // at PC24 before the FSUBP / FADDP.
+                    t1 = f32(cc13x87::x87_sub24(cc13x87::x87_mul24(u1, x[i1]),
+                                                cc13x87::x87_mul24(u2, y[i1])));
+                    t2 = f32(cc13x87::x87_add24(cc13x87::x87_mul24(u1, y[i1]),
+                                                cc13x87::x87_mul24(u2, x[i1])));
+                } else {
+                t1 = f32(static_cast<double>(u1) * x[i1] - static_cast<double>(u2) * y[i1]);
+                t2 = f32(static_cast<double>(u1) * y[i1] + static_cast<double>(u2) * x[i1]);
+                }
                 x[i1] = f32(static_cast<double>(x[i]) - t1);
                 y[i1] = f32(static_cast<double>(y[i]) - t2);
                 x[i] = f32(static_cast<double>(x[i]) + t1);
                 y[i] = f32(static_cast<double>(y[i]) + t2);
             }
-            const float z = f32(static_cast<double>(u1) * c1 - static_cast<double>(u2) * c2);
+            float z;
+            if constexpr (kPc24FlightRenderCc13Bound) {
+                // 00B95443..00B95454 and 00B9545A..00B95464, products rounded first.
+                z = f32(cc13x87::x87_sub24(cc13x87::x87_mul24(u1, c1),
+                                           cc13x87::x87_mul24(u2, c2)));
+                u2 = f32(cc13x87::x87_add24(cc13x87::x87_mul24(u1, c2),
+                                            cc13x87::x87_mul24(u2, c1)));
+            } else {
+            z = f32(static_cast<double>(u1) * c1 - static_cast<double>(u2) * c2);
             u2 = f32(static_cast<double>(u1) * c2 + static_cast<double>(u2) * c1);
+            }
             u1 = z;
         }
         // 00B95488..00B954E1.
@@ -274,8 +342,17 @@ void ocean_spectrum_advance_00b95d30(OceanSpectrum& sp, float t) {
             const double cm = km.im;
             const double d = k0.im;
             OceanComplex& out = sp.h_20[static_cast<std::size_t>(wrap64(m) * kOceanGridSide + wrap64(n))];
+            if constexpr (kPc24FlightRenderCc13Bound) {
+                // 00B95E71..00B95E91 and 00B95E97..00B95EA3: every sum, difference and
+                // product rounded at PC24.
+                out.re = f32(cc13x87::x87_sub24(cc13x87::x87_mul24(cc13x87::x87_add24(a, b), c),
+                                                cc13x87::x87_mul24(cc13x87::x87_add24(cm, d), s)));
+                out.im = f32(cc13x87::x87_add24(cc13x87::x87_mul24(cc13x87::x87_sub24(d, cm), c),
+                                                cc13x87::x87_mul24(cc13x87::x87_sub24(b, a), s)));
+            } else {
             out.re = f32((a + b) * c - (cm + d) * s);                            // 00B95E93
             out.im = f32((d - cm) * c + (b - a) * s);                            // 00B95EA5
+            }
         }
     }
     ocean_fft2d_00b95aa0(-1, sp.h_20);                                           // 00B9609A

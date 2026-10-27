@@ -698,7 +698,10 @@ std::size_t air_ops_return_squadron_slot_006c5950(AirOpsDeck& deck,
 // value comes from the reader below. False: the slot keeps its own +10h, which
 // differs only after a non-default loadout. The ON arm needs the host to
 // install the reader before the flip; without a reader it keeps +10h as OFF.
-inline constexpr bool kAirOpsReturnSlotClassArmCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-27) without pairs: GameMissionLuaHost installs the reader (d99dfc0c0),
+// and the sw3 airops_return census counts differs=0 on all 18 WINS rows (reached on ESMP08
+// and BSM04, 2 calls each, reader installed on both).
+inline constexpr bool kAirOpsReturnSlotClassArmCc13Bound = true;
 // The class's +134h. Not a native structure; installed by the host that knows
 // the classes (game_hosts_script_orders.hpp has the same reader for 006C0F00).
 using AirOpsClassDefaultArm = std::int32_t (*)(std::uint32_t vehicle_class, void* context);

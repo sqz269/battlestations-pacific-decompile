@@ -1,4 +1,6 @@
 #include "bsp/mission_tree_data.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_missionlua_cc13.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -305,8 +307,16 @@ void read_mission_group_metadata(MissionTreeLuaView& view, MissionGroupData& out
 // ---------------------------------------------------------------------------
 
 float mission_tree_load_progress(std::int32_t one_based_index) noexcept {
-    return static_cast<float>(static_cast<double>(one_based_index) * kMissionTreeProgressStep +
-                              kMissionTreeProgressBase);
+    if constexpr (kPc24MissionLuaCc13Bound) {
+        // 005CAD49-005CAD5A: FILD n; FMUL qword 0.02f-widened; FADD qword 0.45f-widened;
+        // FSTP dword. PC24 rounds the product and the sum separately.
+        return static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_mul24(static_cast<double>(one_based_index), kMissionTreeProgressStep),
+            kMissionTreeProgressBase));
+    } else {
+        return static_cast<float>(static_cast<double>(one_based_index) * kMissionTreeProgressStep +
+                                  kMissionTreeProgressBase);
+    }
 }
 
 MissionTreeIndex find_mission_by_id_005c3470(const std::vector<MissionGroupData>& groups,

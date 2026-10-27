@@ -6,6 +6,8 @@
 
 #include <cmath>
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
 #include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/unit_rudder.hpp"
 
@@ -196,8 +198,16 @@ TightTurnCommand tight_turn_tick_009ba020(bool side_408, float roll_c68, float p
     c.bank_target = side * static_cast<float>(1.5707963267948966);   // [00CE3830]
     float e = wrapped_angle_subtract_00438b10(roll_c68, c.bank_target);
     if (e <= 0.0f) e = -0.0f - e;                             // [00D7A208]
-    float p = static_cast<float>(2.0 - static_cast<double>(e) /
-                                 static_cast<double>(static_cast<float>(0.17453292519943295)));
+    float p;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // pc24w1-sweep3-4: 009BA107 FDIV by 10 degrees (the float-rounded double at
+        // 00D05850), 009BA10D FSUBR from 2.0, each rounded at PC24, then FSTP float.
+        p = static_cast<float>(cc13x87::x87_sub24(
+            2.0, cc13x87::x87_div24(e, static_cast<double>(static_cast<float>(0.17453292519943295)))));
+    } else {
+        p = static_cast<float>(2.0 - static_cast<double>(e) /
+                               static_cast<double>(static_cast<float>(0.17453292519943295)));
+    }
     if (0.0f <= p) {
         if (1.0f < p) p = 1.0f;
     } else {

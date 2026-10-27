@@ -7,6 +7,9 @@
 #include <algorithm>
 #include <cmath>
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_missionlua_cc13.hpp"
+
 namespace bsp {
 namespace {
 
@@ -162,7 +165,13 @@ bool spawn_member_offset_00948cc0(const SpawnNewRequest& request, std::size_t me
         float l = fh;                                          // local_50 = max(0, +ACh)
         if (a + 1u < count) l = std::max(l, half(width(a + 1u), width(a)));
         if (a + 2u < count) l = std::max(l, half(width(a + 2u), width(a)));
-        return static_cast<float>(static_cast<double>(l) * 2.5 + 5.0);   // [00CE3DE0] [00D7A370]
+        if constexpr (kPc24MissionLuaCc13Bound) {
+            // 0094916C FMUL qword 2.5, FSTP DWORD; 0094918E FADD 5.0; each at PC24.
+            return static_cast<float>(cc13x87::x87_add24(
+                static_cast<float>(cc13x87::x87_mul24(l, 2.5)), 5.0));
+        } else {
+            return static_cast<float>(static_cast<double>(l) * 2.5 + 5.0);   // [00CE3DE0] [00D7A370]
+        }
     };
     auto row_gap = [&](std::size_t r) {
         const std::size_t a = 3u * r;
@@ -170,7 +179,13 @@ bool spawn_member_offset_00948cc0(const SpawnNewRequest& request, std::size_t me
         g = std::max(g, half(length(a - 3u), length(a)));
         if (a + 1u < count) g = std::max(g, half(length(a - 2u), length(a + 1u)));
         if (a + 2u < count) g = std::max(g, half(length(a - 1u), length(a + 2u)));
-        return static_cast<float>(5.0 + static_cast<double>(g) * 1.5);   // [00D7A370] [00CE3D78]
+        if constexpr (kPc24MissionLuaCc13Bound) {
+            // 0094917A FMUL qword 1.5, FSTP DWORD; 00949196 FADD to 5.0; each at PC24.
+            return static_cast<float>(cc13x87::x87_add24(
+                5.0, static_cast<float>(cc13x87::x87_mul24(g, 1.5))));
+        } else {
+            return static_cast<float>(5.0 + static_cast<double>(g) * 1.5);   // [00D7A370] [00CE3D78]
+        }
     };
     const float lateral = row_lateral(row);
     float z = 0.0f;
@@ -196,11 +211,25 @@ const SpawnPlacementWorld* g_spawn_placement_world = nullptr;
 
 void normalize_row(float* r) noexcept {
     // 0094A140's per-row normalise: 00419440 length, reciprocal 0 at length <= 0.
-    const double n = std::sqrt(static_cast<double>(r[0]) * r[0] +
-                               static_cast<double>(r[1]) * r[1] +
-                               static_cast<double>(r[2]) * r[2]);
-    const float inv = n > 0.0 ? static_cast<float>(1.0 / n) : 0.0f;
-    for (int i = 0; i < 3; ++i) r[i] *= inv;
+    if constexpr (kPc24MissionLuaCc13Bound) {
+        // 00419440 (0094A17A, 0094A1F9, 0094A278): each square FSTP DWORD, the two
+        // sums and 00BF7030's FSQRT at PC24, FSTP DWORD; 0094A183-0094A193: 1/len
+        // (FDIVRP, PC24) when len > 0, else +0; 0094A1A4-0094A1CD: each component
+        // times it (FMUL, PC24), FSTP DWORD.
+        const float xx = static_cast<float>(cc13x87::x87_mul24(r[0], r[0]));
+        const float yy = static_cast<float>(cc13x87::x87_mul24(r[1], r[1]));
+        const float zz = static_cast<float>(cc13x87::x87_mul24(r[2], r[2]));
+        const float n = static_cast<float>(cc13x87::x87_sqrt24(
+            static_cast<float>(cc13x87::x87_add24(cc13x87::x87_add24(xx, yy), zz))));
+        const float inv = n > 0.0f ? static_cast<float>(cc13x87::x87_div24(1.0, n)) : 0.0f;
+        for (int i = 0; i < 3; ++i) r[i] = static_cast<float>(cc13x87::x87_mul24(r[i], inv));
+    } else {
+        const double n = std::sqrt(static_cast<double>(r[0]) * r[0] +
+                                   static_cast<double>(r[1]) * r[1] +
+                                   static_cast<double>(r[2]) * r[2]);
+        const float inv = n > 0.0 ? static_cast<float>(1.0 / n) : 0.0f;
+        for (int i = 0; i < 3; ++i) r[i] *= inv;
+    }
 }
 
 // One solved request, so every member of a request is placed on the same
@@ -263,13 +292,50 @@ SpawnGroupFrame spawn_reference_frame_0094a140(const SpawnNewRequest& request) n
 SpawnGroupFrame spawn_candidate_frame_0094a140(const SpawnGroupFrame& r, float angle,
                                                float distance) noexcept {
     SpawnGroupFrame c = r;
-    const double s = std::sin(static_cast<double>(angle));
-    const double co = std::cos(static_cast<double>(angle));
-    // (0, 0, d) . RotY(-a) = d * (sin(-a), 0, cos(-a)), then into R.
-    const double lx = -s * distance;
-    const double lz = co * distance;
-    for (int i = 0; i < 3; ++i) {
-        c.m[12 + i] = static_cast<float>(r.m[12 + i] + lx * r.m[i] + lz * r.m[8 + i]);
+    if constexpr (kPc24MissionLuaCc13Bound) {
+        // The image's products, at PC24: ((RotY(a) * T(0, 0, d)) * RotY(-a)) * R through
+        // 00413920 (0094A6A0, 0094A6A7, 0094A6AE; left operand ECX, out [ESP+4],
+        // right [ESP+8]). RotY is 00B646E0: FSIN/FCOS of the float, each FSTP DWORD,
+        // rows (c, 0, -0 - s, 0) / (0, 1, 0, 0) / (s, 0, c, 0) / (0, 0, 0, 1); -a is
+        // the SUBSS -0 - a at 0094A3F2. T (0094A4F6-0094A59A) is the identity with
+        // [3][2] = d. So the basis carries RotY(a) * RotY(-a)'s rounding too.
+        const auto rot_y_00b646e0 = [](float a, float m[16]) {
+            const float s = static_cast<float>(cc13x87::x87_sin(a));
+            const float co = static_cast<float>(cc13x87::x87_cos(a));
+            const float rows[16] = {co, 0.0f, -0.0f - s, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                                    s,  0.0f, co,        0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+            for (int i = 0; i < 16; ++i) m[i] = rows[i];
+        };
+        // 00413920: out[i][j] = ((a[i][0] b[0][j] + a[i][1] b[1][j]) + a[i][2] b[2][j])
+        // + a[i][3] b[3][j], each FMUL/FADD at PC24, each element FSTP DWORD.
+        const auto mat_mul_00413920 = [](const float a[16], const float b[16], float o[16]) {
+            for (int i = 0; i < 4; ++i) {
+                for (int j = 0; j < 4; ++j) {
+                    double acc = cc13x87::x87_add24(cc13x87::x87_mul24(a[4 * i], b[j]),
+                                                    cc13x87::x87_mul24(a[4 * i + 1], b[4 + j]));
+                    acc = cc13x87::x87_add24(acc, cc13x87::x87_mul24(a[4 * i + 2], b[8 + j]));
+                    acc = cc13x87::x87_add24(acc, cc13x87::x87_mul24(a[4 * i + 3], b[12 + j]));
+                    o[4 * i + j] = static_cast<float>(acc);
+                }
+            }
+        };
+        float ry_a[16], ry_n[16], m1[16], m2[16];
+        float t[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+        t[14] = distance;
+        rot_y_00b646e0(angle, ry_a);
+        rot_y_00b646e0(-0.0f - angle, ry_n);
+        mat_mul_00413920(ry_a, t, m1);
+        mat_mul_00413920(m1, ry_n, m2);
+        mat_mul_00413920(m2, r.m, c.m);
+    } else {
+        const double s = std::sin(static_cast<double>(angle));
+        const double co = std::cos(static_cast<double>(angle));
+        // (0, 0, d) . RotY(-a) = d * (sin(-a), 0, cos(-a)), then into R.
+        const double lx = -s * distance;
+        const double lz = co * distance;
+        for (int i = 0; i < 3; ++i) {
+            c.m[12 + i] = static_cast<float>(r.m[12 + i] + lx * r.m[i] + lz * r.m[8 + i]);
+        }
     }
     return c;
 }

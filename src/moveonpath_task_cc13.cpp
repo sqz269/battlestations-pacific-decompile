@@ -7,6 +7,11 @@
 #include <cmath>
 
 #include "bsp/unit_rudder.hpp"   // clamped_interpolate_00419010
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
+
+// kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-7): planar_length_00414c60
+// (00414C61-00414C6E) and the rule timer reload of 009BD150 (009BD16A-009BD179).
 
 namespace bsp {
 
@@ -15,8 +20,15 @@ namespace {
 // 00414C60 BSP_Vector2f_LengthWithCutoff: s = x*x + z*z rounded to float; 0 when
 // s <= 1e-10 ([00CE3820], a qword), else sqrt(s) (00BF7030) rounded to float.
 float planar_length_00414c60(float dx, float dz) noexcept {
-    const float s = static_cast<float>(static_cast<double>(dx) * dx +
-                                       static_cast<double>(dz) * dz);
+    float s;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 00414C66 DC C8 FMUL ST0 x*x, DE CA FMULP z*z, DE C1 FADDP, each PC24.
+        s = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(dz, dz),
+                                                  cc13x87::x87_mul24(dx, dx)));
+    } else {
+        s = static_cast<float>(static_cast<double>(dx) * dx +
+                               static_cast<double>(dz) * dz);
+    }
     if (!(static_cast<double>(s) > 1e-10)) {
         return 0.0f;
     }
@@ -116,8 +128,14 @@ bool moveonpath_rule_timer_009bd150(MoveOnPathTask& task, float dt) noexcept {
         return false;
     }
     // 009BD16A-009BD179: (+518h - dt) + timer.
-    task.rule_timer_51c = static_cast<float>(
-        (static_cast<double>(task.rule_period_518) - dt) + task.rule_timer_51c);
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // D8 AE FSUBR [ESI+518h] period - dt, DE C1 FADDP + timer, each PC24.
+        task.rule_timer_51c = static_cast<float>(cc13x87::x87_add24(
+            task.rule_timer_51c, cc13x87::x87_sub24(task.rule_period_518, dt)));
+    } else {
+        task.rule_timer_51c = static_cast<float>(
+            (static_cast<double>(task.rule_period_518) - dt) + task.rule_timer_51c);
+    }
     return true;
 }
 

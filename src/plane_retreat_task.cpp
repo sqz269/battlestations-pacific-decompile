@@ -6,7 +6,9 @@
 
 #include <cmath>
 
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/dive_bomb_task.hpp"   // the per-op float 00419010 (kRetreatX87FaithfulCc13Bound)
+#include "bsp/pc24_planetasks_cc13.hpp"
 #include "bsp/plane_task_reach_sw3.hpp"
 
 namespace bsp {
@@ -219,8 +221,18 @@ void retreat_refresh_target_009c8f40(RetreatApproach& approach, const WorldMapBo
                    z < to_float(static_cast<double>(hi) + m);
     } else {
         // 009C9010-009C9110: a z-constant edge, inset by twice the margin.
-        const float lo = to_float(static_cast<double>((x1 < x2) ? x1 : x2) + m + m);
-        const float hi = to_float(static_cast<double>((x2 < x1) ? x1 : x2) - (static_cast<double>(m) + m));
+        float lo;
+        float hi;
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // pc24w1-sweep3-4: 009C8FC7-009C901D, m + m (FADD ST0,ST1) first, then
+            // min + 2m (FADD) and max - 2m (FSUBR), each rounded at PC24 and stored.
+            const double twice = cc13x87::x87_add24(m, m);
+            lo = to_float(cc13x87::x87_add24((x1 < x2) ? x1 : x2, twice));
+            hi = to_float(cc13x87::x87_sub24((x2 < x1) ? x1 : x2, twice));
+        } else {
+            lo = to_float(static_cast<double>((x1 < x2) ? x1 : x2) + m + m);
+            hi = to_float(static_cast<double>((x2 < x1) ? x1 : x2) - (static_cast<double>(m) + m));
+        }
         approach.target_64[1] = z1;
         approach.target_64[0] = (lo <= x) ? ((x <= hi) ? x : hi) : lo;
         lined_up = to_float(static_cast<double>(lo) - m) < x &&
@@ -247,7 +259,13 @@ bool retreat_countdown_step_impl(float& countdown, float period, float dt) noexc
         countdown = to_float(static_cast<double>(countdown) - dt);
         return false;
     }
-    countdown = to_float((static_cast<double>(period) - dt) + countdown);
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // pc24w1-sweep3-4: 009C9FCA FSUBR (period - dt), 009C9FD7 FADDP (+ countdown),
+        // each rounded at PC24; 009CA151/009CA156 are the same.
+        countdown = to_float(cc13x87::x87_add24(cc13x87::x87_sub24(period, dt), countdown));
+    } else {
+        countdown = to_float((static_cast<double>(period) - dt) + countdown);
+    }
     return true;
 }
 }  // namespace
