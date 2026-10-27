@@ -28,6 +28,9 @@ namespace bsp {
 //   0095EB40 firepower rating excess and contribution (ship_ai_bearing_rating.cpp)
 //   009ED6B0 turn lead, look-ahead radius (ship_ai_navigation.cpp); stopping distance,
 //            setback radicand, astern limit (ship_ai_navigation_arm_tail.cpp)
+// Sites (pc24w1-sweep2-2, listed in the ship_ai_approach_update.cpp block comment):
+//   009F1BC0, 009E46F0, 009E7FC0, 009E76D0 slot total (also used by ship_ai_ring_scan.cpp),
+//   009E5E90, 009E6A90, 009E6E80, 009E9190, 0095E9A0 (ship_ai_approach_update.cpp)
 // Movers: ship headings, throttle and path picks, submarine depth, torpedo run times and hits.
 inline constexpr bool kPc24ShipAiCc13Bound = false;
 
