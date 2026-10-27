@@ -948,11 +948,19 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
             float q[2] = {in.own_pos[0], in.own_pos[2]};
             // kPc24PlaneTasksCc13Bound: 009C13D8 FADD rounds 1 + R at PC24 before the
             // 009C13E0 FCOMI and the 009C13E4 FDIVRP (also PC24).
-            const double r1 = kPc24PlaneTasksCc13Bound
-                ? x87_add24(1.0, turn_radius)
-                : 1.0 + static_cast<double>(turn_radius);
+            double r1 = 0.0;
+            if constexpr (kPc24PlaneTasksCc13Bound) {
+                r1 = x87_add24(1.0, turn_radius);
+            } else {
+                r1 = 1.0 + static_cast<double>(turn_radius);
+            }
             if (!(r1 <= dist)) {
-                const float k = kPc24PlaneTasksCc13Bound ? F(x87_div24(r1, dist)) : F(r1 / dist);
+                float k = 0.0f;
+                if constexpr (kPc24PlaneTasksCc13Bound) {
+                    k = F(x87_div24(r1, dist));
+                } else {
+                    k = F(r1 / dist);
+                }
                 q[0] = F(c[0] + static_cast<double>(F(static_cast<double>(ddx) * k)));
                 q[1] = F(c[1] + static_cast<double>(F(static_cast<double>(k) * ddz)));
             }

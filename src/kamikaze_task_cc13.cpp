@@ -322,6 +322,16 @@ KamikazePlanCommand kamikaze_gotowards_tick_009ac190(KamikazeGoTowardsState& st,
                                                static_cast<double>(st.dist_18)));
     st.pitch_20 = pitch_direct;
     float pitch = pitch_direct;
+    // 009AC4BF-009AC4DA: the turbo range test, d > +3Ch + 10.0.
+    bool beyond_turbo = false;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009AC4CE FADD qword 10.0 rounds at PC24 before 009AC4D6 FCOMI.
+        beyond_turbo = static_cast<double>(st.dist_18) >
+                       x87_add24(ap.profile.turbo_range_3c, 10.0);
+    } else {
+        beyond_turbo = static_cast<double>(st.dist_18) >
+                       static_cast<double>(ap.profile.turbo_range_3c) + 10.0;
+    }
     if (st.turnaround_1d) {
         // 009AC45B-009AC4BA: climb to +4Ch over +48h, clamped to [-30, 20] degrees.
         const float rise = to_f(static_cast<double>(ap.climb_alt_4c) - h);
@@ -330,12 +340,8 @@ KamikazePlanCommand kamikaze_gotowards_tick_009ac190(KamikazeGoTowardsState& st,
         if (-0.5235988f > v) pitch = -0.5235988f;                       // 00CEC728
         else if (v > 0.34906587f) pitch = 0.34906587f;                  // 00CE398C
         else pitch = v;
-    } else if (kPc24PlaneTasksCc13Bound
-                   // 009AC4CE FADD qword 10.0 rounds at PC24 before 009AC4D6 FCOMI.
-                   ? static_cast<double>(st.dist_18) >
-                         x87_add24(ap.profile.turbo_range_3c, 10.0)
-                   : static_cast<double>(st.dist_18) >
-                         static_cast<double>(ap.profile.turbo_range_3c) + 10.0) {   // 009AC4BF-009AC4DA
+    } else if (beyond_turbo) {   // 009AC4BF-009AC4DA
+
         // 009AC4E0-009AC4F6: e = h - d / +48h * +4Ch.
         float q;
         if constexpr (kPc24PlaneTasksCc13Bound) {
