@@ -72,6 +72,7 @@
 #include "bsp/cc13_seg67n_switches.hpp"   // packet cc13-seg67n3 (009FAAD0 per install)
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
+#include "bsp/follow_to_body_pc24_cc13.hpp"  // packet cc13-followbody
 #include "bsp/cc13_release_timer.hpp"            // packet cc13-reltimer (009FA3A0 stubs)
 #include "bsp/band_0099_cc13.hpp"                // 009D49E0 / 009C8290 (cc13-reltimer2)
 #include "bsp/torpedo_issue_timing.hpp"
@@ -9951,9 +9952,57 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // 004142E0 with unit+110h (the inverse of the world matrix): a world point
     // in the unit's body frame; rows 0/1/2 of the pose are right/up/forward.
     // With `direction` it is 0042D0D0(normalize = 0): the rotation only.
+    // cc13-followbody: 00B63D50 per op at PC24, the inverse the image caches at
+    // unit+110h from the pose at unit+CCh (u.world). Each row's squared length
+    // n = (a*a + b*b) + c*c with every square stored float (00B63D7D..00B63E39);
+    // column r of the 3x3 is row r / n (00B63E47 FDIVP, 00B63E50 FDIV, 00B63E58
+    // FDIVR m32, each stored); translation r = ((-inv[r] * t0) - t1 * inv[4+r])
+    // - t2 * inv[8+r] (00B63E9A..00B63F03, FSUBP DE E9 = ST1 - ST0); the last
+    // column is 0, 0, 0, 1.
+    static void follow_inverse_00b63d50(const float* s, float inv[16]) {
+        namespace x8 = bsp::cc13x87;
+        float n[3];
+        for (int r = 0; r < 3; ++r) {
+            const float* row = s + 4 * r;
+            const float aa = static_cast<float>(x8::x87_mul24(row[0], row[0]));
+            const float bb = static_cast<float>(x8::x87_mul24(row[1], row[1]));
+            const float cc = static_cast<float>(x8::x87_mul24(row[2], row[2]));
+            n[r] = static_cast<float>(x8::x87_add24(x8::x87_add24(aa, bb), cc));
+        }
+        for (int r = 0; r < 3; ++r) {
+            inv[r] = static_cast<float>(x8::x87_div24(s[4 * r], n[r]));
+            inv[4 + r] = static_cast<float>(x8::x87_div24(s[4 * r + 1], n[r]));
+            inv[8 + r] = static_cast<float>(x8::x87_div24(s[4 * r + 2], n[r]));
+        }
+        for (int r = 0; r < 3; ++r) {
+            inv[12 + r] = static_cast<float>(x8::x87_sub24(
+                x8::x87_sub24(x8::x87_mul24(-inv[r], s[12]), x8::x87_mul24(s[13], inv[4 + r])),
+                x8::x87_mul24(s[14], inv[8 + r])));
+        }
+        inv[3] = inv[7] = inv[11] = 0.0f;
+        inv[15] = 1.0f;
+    }
     static void follow_to_body(const GameUnitSlot& u, const float p[3], bool direction,
                                float out[3]) {
         const float* m = u.world.data();
+        if constexpr (bsp::kFollowToBodyPc24Cc13Bound) {
+            // cc13-followbody: 004142E0 (point) / 0042D0D0 with flag 0 (direction)
+            // by that inverse, per op: out[j] = ((p0 * inv[j] + p1 * inv[4+j])
+            // + p2 * inv[8+j]) (+ inv[12+j] for the point), each output stored
+            // float (00414328/00414340/0041435B; 0042D11A/0042D131/0042D14A).
+            // The input is staged first (004142E3..004142FA), so out may alias p.
+            namespace x8 = bsp::cc13x87;
+            float inv[16];
+            follow_inverse_00b63d50(m, inv);
+            const float q[3] = {p[0], p[1], p[2]};
+            for (int j = 0; j < 3; ++j) {
+                double sum = x8::x87_add24(
+                    x8::x87_add24(x8::x87_mul24(q[0], inv[j]), x8::x87_mul24(q[1], inv[4 + j])),
+                    x8::x87_mul24(q[2], inv[8 + j]));
+                if (!direction) sum = x8::x87_add24(sum, inv[12 + j]);
+                out[j] = static_cast<float>(sum);
+            }
+        } else {
         const double d[3] = {
             static_cast<double>(p[0]) - (direction ? 0.0 : m[12]),
             static_cast<double>(p[1]) - (direction ? 0.0 : m[13]),
@@ -9965,6 +10014,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
                                        static_cast<double>(row[2]) * row[2]);
             out[r] = static_cast<float>(
                 (d[0] * row[0] + d[1] * row[1] + d[2] * row[2]) / (n > 0 ? n : 1));
+        }
         }
     }
     static bsp::PlaneFollowHoldAttitude follow_hold_attitude(const GameUnitSlot& u) {
