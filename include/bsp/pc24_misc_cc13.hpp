@@ -17,9 +17,9 @@ namespace bsp {
 inline constexpr bool kPc24AiPlannersCc13Bound = false;
 
 // Application frame: src/app_frame_game_state.cpp (00BE34D0 profiler end frame).
-inline constexpr bool kPc24AppFrameCc13Bound = false;
+inline constexpr bool kPc24AppFrameCc13Bound = true;  // ON by pruning (cc9-sweep1b, lead): display only
 
 // Movie decoder: src/movie_decoder.cpp (00A4CC10 frame seconds).
-inline constexpr bool kPc24MovieCc13Bound = false;
+inline constexpr bool kPc24MovieCc13Bound = true;  // ON by pruning (cc9-sweep1b, lead): display only
 
 }  // namespace bsp

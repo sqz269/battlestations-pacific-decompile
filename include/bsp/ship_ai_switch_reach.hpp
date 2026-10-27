@@ -62,6 +62,11 @@ struct ShipAiSwitchReach {
     // bits differ between per-op float and the double chain.
     unsigned long long seabed_speed_calls{0};
     unsigned long long seabed_speed_differs{0};
+    // 009D9E6C kShipAiPathNodeDirectionUnorderedCc13Bound (and, through the
+    // walks' OFF arm, kShipAiPathSideWalkNanCc13Bound): undecided two-link
+    // nodes evaluated, and those where the image's rule and the C++ `<` differ.
+    unsigned long long path_dir_evals{0};
+    unsigned long long path_dir_differs{0};
 };
 
 inline ShipAiSwitchReach& ship_ai_switch_reach() noexcept {
