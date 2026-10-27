@@ -37,6 +37,31 @@ struct ShipAiSwitchReach {
     unsigned long long torpedo_home_calls{0};
     unsigned long long torpedo_home_differs{0};
     int torpedo_home_bound{-1};  // the build's setting, -1 until reached
+    // Second batch (packet cc9-sweep2b). Each *_differs counts the evaluations
+    // where the switch's two arms would give a different result.
+    // 009E5E00 kEngagementTargetKindTestCc13Bound: non-zero +0B20h targets read,
+    // and those that are not kind 1Ch.
+    unsigned long long engage_target_reads{0};
+    unsigned long long engage_target_differs{0};
+    // 007DA406/007DA47C kWaterRateFactorsNanOrderCc13Bound: water-arm calls, and
+    // those whose up value bits or throttle gate differ.
+    unsigned long long water_rate_calls{0};
+    unsigned long long water_rate_differs{0};
+    int water_rate_bound{-1};  // the build's setting, -1 until reached
+    // 0080E000 kUnitAiOrderResetFieldsCc13Bound: steps, and those whose record
+    // differs after the step.
+    unsigned long long order_step_calls{0};
+    unsigned long long order_step_differs{0};
+    // 00791020 / 0079A3B0 / 007911E0 movie trio: begins of a use-current key
+    // holding a modifier; empty-track updates with a non-zero clock; finishes
+    // where the stale-flag read changes the suppression.
+    unsigned long long movie_begin_modifier_differs{0};
+    unsigned long long movie_empty_clock_differs{0};
+    unsigned long long movie_stale_flag_differs{0};
+    // 0092D730 kSubmarineSeabedSpeedPc24Cc13Bound: scans, and those whose speed
+    // bits differ between per-op float and the double chain.
+    unsigned long long seabed_speed_calls{0};
+    unsigned long long seabed_speed_differs{0};
 };
 
 inline ShipAiSwitchReach& ship_ai_switch_reach() noexcept {

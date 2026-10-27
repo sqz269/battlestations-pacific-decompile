@@ -16,6 +16,7 @@ void movie_camera_fixed_driver_00790390(float& accumulator, bool enabled, float 
 #include "bsp/mission_camera.hpp"
 #include "bsp/plane_advance_pose.hpp"
 #include "bsp/plane_pose_commit.hpp"
+#include "bsp/ship_ai_switch_reach.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -93,6 +94,7 @@ void begin_00791020(MovieKeyframe& k, const HudMovieCamera& camera) {
     if (!k.use_current_d8) return;
     k.parent_attached_24 = false;                    // 007910D6
     k.transform_2c = 0;                              // 007910DA
+    if (k.modifier_e4) ++ship_ai_switch_reach().movie_begin_modifier_differs;  // reach, log-only
     if constexpr (kMovieBeginDropsModifierCc13Bound) {
         k.modifier_e4.reset();                       // 007910E3..007910EB
     }
@@ -310,6 +312,9 @@ bool step_007911e0(MovieKeyframe& k, HudMovieCamera& camera) {
         // camera +390h (BL, 0079121D) call 00887E50. Recorded here; the caller
         // runs or logs it (kMovieCameraFinishScriptCc13Bound).
         bool suppressed = camera.finish_suppress_390;
+        if (!k.finish_script_fc.empty() && !track_known && camera.finish_suppress_390) {
+            ++ship_ai_switch_reach().movie_stale_flag_differs;  // reach, log-only
+        }
         if constexpr (kMovieStepStaleTrackFlagCc13Bound) {
             suppressed = track_known && camera.finish_suppress_390;
         } else {
@@ -665,6 +670,7 @@ bool movie_camera_update_0079a3b0(HudMovieCamera& camera, MovieCameraParentHost&
         camera.clock_3b0 = 0.0f;
     }
     if (camera.camera_498.keys.empty() || camera.target_414.keys.empty()) {
+        if (camera.clock_3b0 != 0.0f) ++ship_ai_switch_reach().movie_empty_clock_differs;  // reach
         if constexpr (kMovieUpdateEmptyTrackClockCc13Bound) {
             camera.clock_3b0 = 0.0f;                     // 0079BBD5
         }

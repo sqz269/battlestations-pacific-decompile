@@ -90,8 +90,28 @@ void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord
     // returns at 00811D74 with RET 4.
 }
 
+namespace {
+bool order_sub_same(const UnitAiOrderSubRecord& a, const UnitAiOrderSubRecord& b) noexcept {
+    return ship_ai_reach_same_bits(a.value_00, b.value_00) &&
+           ship_ai_reach_same_bits(a.field_04, b.field_04) &&
+           ship_ai_reach_same_bits(a.field_08, b.field_08) && a.flag_0c == b.flag_0c &&
+           ship_ai_reach_same_bits(a.field_10, b.field_10) &&
+           ship_ai_reach_same_bits(a.field_14, b.field_14) && a.field_18 == b.field_18;
+}
+}  // namespace
+
 void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds) noexcept {
+    // Reach counter (cc9-sweep2b, log-only): the other setting on a copy.
+    UnitAiOrderRecord other = record;
+    unit_ai_order_slot_step_0080e000(other, seconds, !kUnitAiOrderResetFieldsCc13Bound);
     unit_ai_order_slot_step_0080e000(record, seconds, kUnitAiOrderResetFieldsCc13Bound);
+    ShipAiSwitchReach& reach = ship_ai_switch_reach();
+    ++reach.order_step_calls;
+    if (!ship_ai_reach_same_bits(other.blend_00, record.blend_00) ||
+        !ship_ai_reach_same_bits(other.timer_04, record.timer_04) ||
+        !order_sub_same(other.sub_a, record.sub_a) || !order_sub_same(other.sub_b, record.sub_b)) {
+        ++reach.order_step_differs;
+    }
 }
 
 void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds, bool image_reset) noexcept {
