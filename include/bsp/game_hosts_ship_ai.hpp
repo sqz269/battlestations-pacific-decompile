@@ -647,6 +647,9 @@ struct GameShipAiSummary {
     // inside the reach, landings begun (0074A990), and mode-4 standoff points.
     unsigned long long landing_mode3_no_pad{0};
     unsigned long long landing_mode3_points{0};
+    // sw1 reach (kPadApproachPointImageCc13Bound): mode-3 points whose pad line y
+    // ([+210h]) is not +0.0, where the image's out+4 differs from the stored 0.0f.
+    unsigned long long landing_mode3_y_differs{0};
     unsigned long long landing_pad_line_casts{0};
     unsigned long long landing_mode3_in_reach{0};
     unsigned long long landing_begins{0};

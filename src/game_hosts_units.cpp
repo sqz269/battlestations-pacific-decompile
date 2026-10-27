@@ -180,6 +180,7 @@
 #include "bsp/cc13_jm08_switches.hpp"
 #include "bsp/cc13_torp_goaway.hpp"           // packet cc13-goaway (009D0D90 draws, 00901610)
 #include "bsp/follow_release_seams_cc13.hpp"
+#include "bsp/sw1b_switch_reach.hpp"
 
 #include <cfloat>
 #include <cmath>
@@ -22770,6 +22771,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             } else {
                                 v = world_speed > floor_speed ? world_speed : floor_speed;
                             }
+                            bsp::sw1b_note(bsp::Sw1bReach::PlaneDragOrder,       // sw1b reach
+                                floor_speed > world_speed ? floor_speed : world_speed,
+                                world_speed > floor_speed ? world_speed : floor_speed);
                             float closed = 1.0f - unit_.plane_latched_throttle;
                             if (closed < 0.0f) closed = 0.0f;
                             if (closed > 1.0f) closed = 1.0f;
@@ -22792,6 +22796,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 d = ((-sign * v) * v) * kb;
                             } else {
                                 d = -sign * v * v * k * coefficient * brake;
+                            }
+                            {                                                    // sw1b reach
+                                const float image_coefficient =
+                                    (unit_.plane_accel / unit_.plane_max_spd) / unit_.plane_max_spd;
+                                const float kb = brake * (k * image_coefficient);
+                                bsp::sw1b_note(bsp::Sw1bReach::PlaneDragOrder,
+                                    ((-sign * v) * v) * kb,
+                                    -sign * v * v * k * coefficient * brake);
                             }
                             // 007DBB0E / 007DBB23, the two pitch ramps the call
                             // site multiplies in. Both endpoints of the second
@@ -23184,6 +23196,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     if (static_cast<double>(b2) > 1.0e-10) {
                                         const float sp = std::sqrt(b2);
                                         if (sp > 3.0f) {
+                                            // pc24-lint: allow sw1b reach counter, replica of the OFF arm (log only)
+                                            bsp::sw1b_note(bsp::Sw1bReach::PlaneFlightX87,  // sw1b reach
+                                                static_cast<float>(static_cast<double>(b[1]) -
+                                                    static_cast<double>(static_cast<float>(
+                                                        static_cast<double>(sp) * 0.10000000149011612))),
+                                                static_cast<float>(static_cast<double>(b[1]) -
+                                                    static_cast<double>(sp) * 0.10000000149011612));
                                             if constexpr (bsp::kPlaneFlightX87Cc13Bound) {
                                                 // 007D8D6D FMUL rounds sp * 0.1 to float, then FSUBP.
                                                 const float drop = static_cast<float>(

@@ -204,6 +204,10 @@ bool ship_ai_nav_goal_already_reached_009da610(ShipAiGoalPlan& blk,
 // everything before it is the cache refresh, which casts two rays through the
 // avoid-zone group and stays on the host. Coverage: partial.
 // ---------------------------------------------------------------------------
+static PadApproachReach g_pad_approach_reach{kPadApproachPointImageCc13Bound};
+
+const PadApproachReach& pad_approach_reach() noexcept { return g_pad_approach_reach; }
+
 ShipAiFollowLandXZ ship_ai_land_pad_approach_point_006ac5d0(const ShipAiLandPadLine& line,
                                                             const ShipAiFollowLandXZ& facing,
                                                             const ShipAiFollowLandXZ& from,
@@ -224,6 +228,18 @@ ShipAiFollowLandXZ ship_ai_land_pad_approach_point_006ac5d0(const ShipAiLandPadL
         inside = !(across > half_width) && !(along > half_width) && !(-along > line.ahead_run_21c);
     } else {
         inside = across <= half_width && along <= half_width && -along <= line.ahead_run_21c;
+    }
+    // sw1 reach (log only): the two corridor rules and the two hold-off orders disagree only
+    // on an unordered compare.
+    ++g_pad_approach_reach.calls;
+    const bool inside_image =
+        !(across > half_width) && !(along > half_width) && !(-along > line.ahead_run_21c);
+    const bool inside_host =
+        across <= half_width && along <= half_width && -along <= line.ahead_run_21c;
+    if (inside_image != inside_host) ++g_pad_approach_reach.corridor_differs;
+    if (!inside_image && !inside_host
+        && !(line.astern_clearance_218 < half_width) && !(line.astern_clearance_218 >= half_width)) {
+        ++g_pad_approach_reach.holdoff_differs;
     }
     if (inside) {
         // Inside the corridor: a carrot ahead of the ship's own projection on

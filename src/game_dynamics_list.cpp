@@ -1,6 +1,7 @@
 #include "bsp/game_dynamics_list.hpp"
 
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/sw1b_switch_reach.hpp"
 
 namespace bsp {
 namespace {
@@ -312,6 +313,10 @@ std::size_t apply_dynamics_buoyancy_004462d0(
             const float water = host.water_height_0078cf20(center.x, center.z);
 
             const float submersion = dynamics_submersion_fraction(axis, extent, center.y, water);
+            // sw1b reach: the ON arm also calls 00C37E00, so every site is a difference in
+            // calls; differs counts the sites whose submersion or force value differs too.
+            const float submersion_on =
+                dynamics_submersion_fraction_image_004462d0(axis, extent, center.y, water);
 
             const float scalar = host.body_buoyancy_scalar_00c31fc0(record.body);
             // The divide by record+1Ch is what the fade path manipulates. The
@@ -322,6 +327,12 @@ std::size_t apply_dynamics_buoyancy_004462d0(
                 : static_cast<float>(
                       static_cast<double>(scalar) * kDynamicsBuoyancyGravity *
                       static_cast<double>(submersion) / static_cast<double>(record.buoyancy_divisor));
+            {
+                const float force_on = (scalar * 10.0f) * submersion_on / record.buoyancy_divisor;
+                sw1b_note(Sw1bReach::DynamicsBuoyancy,
+                          !sw1b_same_bits(submersion_on, submersion)
+                              || !sw1b_same_bits(force_on, force));
+            }
             host.apply_buoyancy_force_00c32050(record.body, force);
             host.set_body_damping_00c37de0(record.body, damping_scale * submersion);
         }
