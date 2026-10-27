@@ -7,6 +7,7 @@
 #include "bsp/rocket_homing_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_planetasks_cc13.hpp"
+#include "bsp/plane_task_reach_sw3.hpp"
 
 // kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-7, 0080A000): the gravity
 // terms of rocket_ignition_step (0080A124-0080A148) and the axial speed and step
@@ -53,13 +54,18 @@ void vector3_divide_in_place_pc24_0042ae80(std::array<float, 3>& v, float s) noe
 }
 
 void vector3_divide_in_place_0042ae80(std::array<float, 3>& v, float s) noexcept {
-    if constexpr (kVector3DivideInPlacePc24Cc13Bound) {
-        vector3_divide_in_place_pc24_0042ae80(v, s);
-    } else {
-        v[0] = static_cast<float>(static_cast<double>(v[0]) / s);   // 0042AE8A FDIVP
-        v[1] = static_cast<float>(static_cast<double>(v[1]) / s);   // 0042AE93 FDIV
-        v[2] = static_cast<float>(static_cast<double>(v[2]) / s);   // 0042AE98 FDIVR
-    }
+    std::array<float, 3> pc24 = v;
+    vector3_divide_in_place_pc24_0042ae80(pc24, s);
+    std::array<float, 3> plain = v;
+    plain[0] = static_cast<float>(static_cast<double>(plain[0]) / s);   // 0042AE8A FDIVP
+    plain[1] = static_cast<float>(static_cast<double>(plain[1]) / s);   // 0042AE93 FDIV
+    plain[2] = static_cast<float>(static_cast<double>(plain[2]) / s);   // 0042AE98 FDIVR
+    // sw3b reach: the arms differ only for a denormal quotient.
+    plane_task_reach_count(g_plane_task_reach_sw3.vec3_divide,
+        plane_task_reach_bits_differ(pc24[0], plain[0]) ||
+        plane_task_reach_bits_differ(pc24[1], plain[1]) ||
+        plane_task_reach_bits_differ(pc24[2], plain[2]));
+    v = kVector3DivideInPlacePc24Cc13Bound ? pc24 : plain;
 }
 
 void rocket_set_homing_target_0080aa20(RocketHomingBlock& block, std::size_t target_plus_one,

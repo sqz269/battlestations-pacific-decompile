@@ -12381,6 +12381,7 @@ void GameMissionLuaHost::report_mission_script_state() {
     reach("dive_breakoff 009C8B4D (kDiveBombNanComparesCc13Bound)", r.dive_breakoff);
     reach("airops_arrive 006C56D0 (kAirOpsArriveSquadronWalkCc13Bound)", r.airops_arrive);
     reach("airops_return 006C5AD9 (kAirOpsReturnSlotClassArmCc13Bound)", r.airops_return);
+    reach("vec3_divide 0042AE80 (kVector3DivideInPlacePc24Cc13Bound)", r.vec3_divide);
 }
 
 void GameMissionLuaHost::report_natives(std::size_t limit) {

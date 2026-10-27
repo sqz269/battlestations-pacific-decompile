@@ -42,6 +42,8 @@ struct PlaneTaskReachSw3 {
     // kAirOpsReturnSlotClassArmCc13Bound: per returned slot, differs = +10h
     // differs; inner = the class+134h reader was installed
     PlaneTaskReachPair airops_return;
+    // kVector3DivideInPlacePc24Cc13Bound (0042AE80): differs = any component's bits
+    PlaneTaskReachPair vec3_divide;
 };
 
 inline PlaneTaskReachSw3 g_plane_task_reach_sw3;
