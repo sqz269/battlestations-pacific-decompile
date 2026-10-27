@@ -7,6 +7,8 @@
 // as double intermediates rounded once to float where the image stores.
 
 #include "bsp/ship_ai_formation.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -90,8 +92,16 @@ ShipAiFormationOffset ship_ai_formation_reshape_slot(ShipAiFormationShape shape,
     const ShipAiFormationOffset& entry = (*table)[slot];
     ShipAiFormationOffset out{};
     out.across = static_cast<float>(static_cast<double>(entry.across) * dist);
-    out.along = static_cast<float>(dist * kShipAiFormationReshapeAlongScale *
-                                   static_cast<double>(entry.along));
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 0070F06A FLD dist, 0070F06C FMUL st(2) (the 00CE3D78 scale), 0070F06E FMULP
+        // by along, 0070F070 FSTP float: each op rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        out.along = static_cast<float>(
+            x87_mul24(x87_mul24(dist, kShipAiFormationReshapeAlongScale), entry.along));
+    } else {
+        out.along = static_cast<float>(dist * kShipAiFormationReshapeAlongScale *
+                                       static_cast<double>(entry.along));
+    }
     return out;
 }
 
@@ -198,9 +208,17 @@ float ship_ai_formation_published_speed(float reference_speed,
                                         float blend) noexcept {
     const float divisor =
         (blend > kShipAiFormationSpeedBlendFloor) ? blend : kShipAiFormationSpeedBlendFloor;
-    return static_cast<float>(static_cast<double>(reference_speed) *
-                              kShipAiFormationPublishSpeedScale /
-                              static_cast<double>(divisor));
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009DF68F FMUL qword [00CF87C0], 009DF69A FDIV float [esp+10h],
+        // 009DF69E FSTP float: each op rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        return static_cast<float>(x87_div24(
+            x87_mul24(reference_speed, kShipAiFormationPublishSpeedScale), divisor));
+    } else {
+        return static_cast<float>(static_cast<double>(reference_speed) *
+                                  kShipAiFormationPublishSpeedScale /
+                                  static_cast<double>(divisor));
+    }
 }
 
 float ship_ai_formation_member_speed(const ShipAiUnitGroupMember& member) noexcept {
@@ -453,12 +471,30 @@ bool ship_ai_follow_update_formation_point(ShipAiFollowFormationPointHost& host,
             dx = state.station_point_14.x - probe_out.x;
             dz = state.station_point_14.z - probe_out.z;
         }
-        const double length = std::sqrt(static_cast<double>(dx) * dx +
-                                        static_cast<double>(dz) * dz);
-        if (length > 0.0) {
-            const float inverse = static_cast<float>(1.0 / length);
-            state.slot_direction_1c.x = inverse * dx;
-            state.slot_direction_1c.z = inverse * dz;
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 009DF571 calls 00419260 (BSP_Vector2f_ReciprocalLength) on {dx, dz}:
+            // 00419276 FMUL st0 -> FSTP float, 00419282 FMULP -> FSTP float,
+            // 0041928A FADD -> FSTP float, 00419296 sqrt (00BF7030) -> FSTP float,
+            // then 004192B3 FUCOMIP against zero returns 0 or 004192C7 1/len.
+            // 009DF576 FSTPs that to a float; 009DF580/009DF588 FMUL dx/dz -> FSTP
+            // float with no length gate, so a zero-length rederive writes zeros.
+            using namespace cc13x87;
+            const float dx_sq = static_cast<float>(x87_mul24(dx, dx));
+            const float dz_sq = static_cast<float>(x87_mul24(dz, dz));
+            const float length_sq = static_cast<float>(x87_add24(dx_sq, dz_sq));
+            const float length = static_cast<float>(std::sqrt(static_cast<double>(length_sq)));
+            const float inverse =
+                (length == 0.0f) ? 0.0f : static_cast<float>(x87_div24(1.0, length));
+            state.slot_direction_1c.x = static_cast<float>(x87_mul24(inverse, dx));
+            state.slot_direction_1c.z = static_cast<float>(x87_mul24(inverse, dz));
+        } else {
+            const double length = std::sqrt(static_cast<double>(dx) * dx +
+                                            static_cast<double>(dz) * dz);
+            if (length > 0.0) {
+                const float inverse = static_cast<float>(1.0 / length);
+                state.slot_direction_1c.x = inverse * dx;
+                state.slot_direction_1c.z = inverse * dz;
+            }
         }
     }
 
