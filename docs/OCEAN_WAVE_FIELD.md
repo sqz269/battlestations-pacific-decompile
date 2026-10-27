@@ -4389,3 +4389,54 @@ d59ec7e9a, ref env, the trace on Enterprise_sqn01, and 36000 frames.
   `p27_pair.ps1`.
 
 Lease `p27-doc122` (this doc) is released with this section.
+
+## 123. The `fast=0` wingman abort is a separation go-around; the carrier-landing census (cc9-physics29, 2026-10-27)
+
+**Abort cause.** physics28's log-only commits f706267fe (the land/abort enter line prints from/done/mode/spacing) and
+3b8c3a34b (`land final mode loss`, 006C7960) were rerun on `p27_os_l0` (tree build of 6ff7f8eae, ref env, 36000
+frames). The run is deterministic against p27/p28: the same touchdowns (Enterprise_sqn02 at 1553.09 s,
+sqn01|.-II at 1595.93 s), the same aborts and the same end (failed 1605.44 s). The log has 1472 `present failed`
+lines because the display was lost during the run, so treat it as diagnostic only. Excerpt: `local\p29_l0_kept.txt`.
+
+| t (s) | Line | Inputs |
+| --- | --- | --- |
+| 1580.97 | mode 4 -> 3 | wingman pass, head_mode=4, corridor=1, usable=1, **spacing=0.000**, local=(39.9, 207.5, -675.6) |
+| 1581.57 | mode 4 -> 3 | the same, spacing=0.000, local z -656.6 |
+| 1581.87 | enters land/abort | from=1528 (5F8, final), done=0, mode=3, spacing=0.010 |
+| 1591.78 | mode 4 -> 3 | wingman pass, head_mode=4, **corridor=0**, spacing=0.010, local=(457.4, 186.7, -313.4) |
+| 1591.88 | enters land/abort | from=1528, done=0, mode=3, spacing=2.000 |
+
+- Both aborts take 009B3DB2 (final, mode not 4). Neither is the done-byte arm (done=0).
+- First abort: the wingman arm of 006C7960 (head_mode not 1, 2 or 3) gives 4 only when ReadyForLaunch (006BED60),
+  the corridor (006C3B10) and spacing > [00D7A218] = 0.0 all hold. The spacing from 006C3F80 is 0, which the own-4
+  branch writes when the time gap to the nearest counted plane ahead is below 0.4 x 1.2 x FollowDistTime. This
+  installation's `planeglobals.lua` sets FollowDistTime = 9 (its comment: the interval at which landing planes try
+  to follow each other), so the threshold is 4.32 s. The wingman is closer than that to the plane ahead and goes
+  around. That is the designed separation rule.
+- Second abort: the corridor test fails 457 m off the centre line.
+- 006C7960 and 006C3F80 were compared with the image line by line (the counting test, the spawn/side/pointer
+  tie-break, the gap and least-path minima, both interpolation arms). All 11 constants match: 00CEC160 1.2,
+  00CE65D0 0.4, 00CEFFA0 0.7, 00CE3DF0 1.1, 00CE6448 1.1f, 00D7A280 0.5, 00CEC9D8 0.75, 00CF87C0 1.25, 00CE3958 2.0f,
+  00CF87CC -0.15f, 00CE7818 0.15f. The one difference is that the host computes `least + speed*k*F` in double where
+  the image rounds each float op. That cannot turn a 4.32 s threshold miss into a pass. **No host gap was found in
+  the abort decision.**
+- Open: why the wingman closes to within 4.3 s of its leader on the glide path. That is upstream, in the
+  standby circle and turn-in spacing (006C5E20 / 006C46B0) and the flight path. It needs a position trace of
+  sqn01|.-II and |.-III from 1560 s, and it is not a switch candidate yet.
+
+**Identity check of f706267fe + 3b8c3a34b.** The two commits only read fields before existing clears and call const
+helpers (no RNG, no mutable state); the only write is the new `lfm_trace` counter. BSM04 `bsm04_h1_f` (Lexington, 3
+carrier touchdowns), tree build against an origin/main 1c49c8c0d export (`local\p29_main`): `pair_diff` exit 0
+(`local\p29_b4_main.log` / `p29_b4_tree.log`).
+
+**Carrier-landing census** (physics28's `local\p28_landscan.ps1` over lua73's 2026-10-24 main refs in
+`cc9-lua52\local\l73r_*_main_ref.log`, plus the run above).
+- BSM01 (k1/m1/m3): 51-52 Japanese carrier touchdowns, with 59-64 finals and 6-7 aborts. m2 flies no finals.
+- BSM04 (h1_f): Lexington 3 touchdowns, 5 finals, 0 aborts.
+- ESMP08 (e8): Chitose 2 and Zuiho 1, 3 finals, 0 aborts.
+- USN01 (u1): 1 final, no touchdown, no abort. The mission ends first.
+- BSM06 (b6i/b6j): airfield finals only.
+- Every other WINS row flies no finals.
+- Still open: the BSM01 aborts predate f706267fe, so their arm is unread. The BSM01 census run on the diagnostic
+  build (`p29_b1k1`, plan `bsm01_l72_b1_k1.txt`) could not start: from 12:02 the session was disconnected (FMOD
+  init 61). Rerun it once a console session is back.
