@@ -2,7 +2,9 @@
 
 #include "bsp/camera_decomposition.hpp"
 #include "bsp/camera_multiply.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/gamepad_force_events.hpp"
+#include "bsp/pc24_camera_cc13.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/world_entity_update.hpp"
@@ -98,8 +100,16 @@ void keep_above_water_0042f0c0(ShipCaptainCamera& camera, const ShipCaptainTarge
     const float dy = T[1] - ty;
     const float dz = T[2] - tz;
     const float ux = unit.world[4], uy = unit.world[5], uz = unit.world[6];  // +DCh..+E4h
-    const float h = static_cast<float>(
-        (static_cast<double>(ux) * dx + static_cast<double>(uy) * dy) + static_cast<double>(uz) * dz);
+    float h;
+    if constexpr (kPc24CameraCc13Bound) {
+        // 0042F1A3..0042F1C5: ux * dx, uy * dy, FADDP, uz * dz, FADDP, FSTP.
+        h = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_add24(cc13x87::x87_mul24(ux, dx), cc13x87::x87_mul24(uy, dy)),
+            cc13x87::x87_mul24(uz, dz)));
+    } else {
+        h = static_cast<float>(
+            (static_cast<double>(ux) * dx + static_cast<double>(uy) * dy) + static_cast<double>(uz) * dz);
+    }
     const float hh = (1.0f <= h || std::isnan(h)) ? h : 1.0f;   // 0042F1CD..0042F1E5
     const float uxh = ux * hh;
     const float uyh = uy * hh;
@@ -126,8 +136,14 @@ void keep_above_water_0042f0c0(ShipCaptainCamera& camera, const ShipCaptainTarge
                 !std::isnan(water_base)) {
                 r[1] = water_probe;                            // 0042F413
                 if (kind == 2) {
-                    r[0] = static_cast<float>((static_cast<double>(q[0]) + bx) * kHalf);
-                    r[2] = static_cast<float>((static_cast<double>(q[2]) + bz) * kHalf);
+                    if constexpr (kPc24CameraCc13Bound) {
+                        // 0042F41B..0042F43B: FADD, FMUL qword 0.5 (DC C9), FSTP; twice.
+                        r[0] = static_cast<float>(cc13x87::x87_mul24(cc13x87::x87_add24(q[0], bx), kHalf));
+                        r[2] = static_cast<float>(cc13x87::x87_mul24(cc13x87::x87_add24(q[2], bz), kHalf));
+                    } else {
+                        r[0] = static_cast<float>((static_cast<double>(q[0]) + bx) * kHalf);
+                        r[2] = static_cast<float>((static_cast<double>(q[2]) + bz) * kHalf);
+                    }
                 }
             }
         }
@@ -184,10 +200,18 @@ void construct_ship_captain_0064b650(ShipCaptainCamera& camera) noexcept {
 void bind_ship_captain_0064da40(ShipCaptainCamera& camera, const ShipCaptainTargetView& unit,
                                 const ShipCameraSettings& settings) noexcept {
     // 0064DBA0..0064DBD0: the pitch limits, degrees to radians.
-    camera.min_pitch_3ec = static_cast<float>(
-        (kDegToRadPi * settings.min_angle_deg) / kDegToRadDen);
-    camera.max_pitch_3f0 = static_cast<float>(
-        (settings.max_angle_deg * kDegToRadPi) / kDegToRadDen);
+    if constexpr (kPc24CameraCc13Bound) {
+        // 0064DB94..0064DBBE: max * pi (DC C9), FDIV ST2 180; pi * min, FDIVRP 180.
+        camera.min_pitch_3ec = static_cast<float>(cc13x87::x87_div24(
+            cc13x87::x87_mul24(kDegToRadPi, settings.min_angle_deg), kDegToRadDen));
+        camera.max_pitch_3f0 = static_cast<float>(cc13x87::x87_div24(
+            cc13x87::x87_mul24(settings.max_angle_deg, kDegToRadPi), kDegToRadDen));
+    } else {
+        camera.min_pitch_3ec = static_cast<float>(
+            (kDegToRadPi * settings.min_angle_deg) / kDegToRadDen);
+        camera.max_pitch_3f0 = static_cast<float>(
+            (settings.max_angle_deg * kDegToRadPi) / kDegToRadDen);
+    }
     const bool retarget = !camera.has_target;                 // 0064DBDC..0064DBE6
     // 00432E60(unit, 1): +3F4h = 1, 0042F650 sets the target and clears focus.
     camera.mode_3f4 = 1;
@@ -273,12 +297,26 @@ bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTa
         // 00432F01..00432F81: the sway.
         const float twice = static_cast<float>(static_cast<double>(dt) + dt);
         const float t = (1.0f <= twice || std::isnan(twice)) ? 1.0f : twice;
-        const double goal = static_cast<double>(unit.rudder) * unit.throttle * kSwayGain;
-        const float a = camera.sway_goal_3fc;
-        const float new_a = static_cast<float>(a + (goal - a) * t);
-        camera.sway_goal_3fc = new_a;
-        const float b = camera.sway_3f8;
-        camera.sway_3f8 = static_cast<float>(b + (static_cast<double>(new_a) - b) * t);
+        if constexpr (kPc24CameraCc13Bound) {
+            // 00432F35..00432F81: two FMULs (the second by qword 3.0), goal - a, * t,
+            // + a, FSTP; then new_a - b, * t, + b, FSTP.
+            const double goal = cc13x87::x87_mul24(
+                cc13x87::x87_mul24(unit.rudder, unit.throttle), kSwayGain);
+            const float a = camera.sway_goal_3fc;
+            const float new_a = static_cast<float>(cc13x87::x87_add24(
+                a, cc13x87::x87_mul24(cc13x87::x87_sub24(goal, a), t)));
+            camera.sway_goal_3fc = new_a;
+            const float b = camera.sway_3f8;
+            camera.sway_3f8 = static_cast<float>(cc13x87::x87_add24(
+                b, cc13x87::x87_mul24(cc13x87::x87_sub24(new_a, b), t)));
+        } else {
+            const double goal = static_cast<double>(unit.rudder) * unit.throttle * kSwayGain;
+            const float a = camera.sway_goal_3fc;
+            const float new_a = static_cast<float>(a + (goal - a) * t);
+            camera.sway_goal_3fc = new_a;
+            const float b = camera.sway_3f8;
+            camera.sway_3f8 = static_cast<float>(b + (static_cast<double>(new_a) - b) * t);
+        }
     }
     focus_gate_0042dcd0(camera);                               // 00432F99
     if (camera.has_target && !camera.detached_400) {
@@ -327,13 +365,29 @@ bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTa
         const double rz = camera.orient_2b8[10];
         std::array<float, 3> v{unit.world[8], 0.0f, unit.world[10]};
         normalize_camera_basis_0042b260(v);
-        const float dot = static_cast<float>((v[0] * rx + ry * v[1]) + v[2] * rz);
+        float dot;
+        if constexpr (kPc24CameraCc13Bound) {
+            // 0043325C..0043328C: v0 * rx, ry * v1, FADDP, v2 * rz, FADDP, FSTP.
+            dot = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_add24(cc13x87::x87_mul24(v[0], rx), cc13x87::x87_mul24(ry, v[1])),
+                cc13x87::x87_mul24(v[2], rz)));
+        } else {
+            dot = static_cast<float>((v[0] * rx + ry * v[1]) + v[2] * rz);
+        }
         float front[3] = {static_cast<float>(v[0] * static_cast<double>(dot)),
                           static_cast<float>(v[1] * static_cast<double>(dot)),
                           static_cast<float>(v[2] * static_cast<double>(dot))};
         const double gx = kWorldUp00f8758c[0], gy = kWorldUp00f8758c[1],
                      gz = kWorldUp00f8758c[2];
-        const float dot2 = static_cast<float>((rx * gx + ry * gy) + rz * gz);
+        float dot2;
+        if constexpr (kPc24CameraCc13Bound) {
+            // 004332B4..004332DA: ry * gy, rx * gx, FADDP, rz * gz, FADDP, FSTP.
+            dot2 = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_add24(cc13x87::x87_mul24(rx, gx), cc13x87::x87_mul24(ry, gy)),
+                cc13x87::x87_mul24(rz, gz)));
+        } else {
+            dot2 = static_cast<float>((rx * gx + ry * gy) + rz * gz);
+        }
         float up[3] = {static_cast<float>(gx * dot2), static_cast<float>(dot2 * gy),
                        static_cast<float>(dot2 * gz)};
         float sum[3];
@@ -408,17 +462,39 @@ void clear_mission_camera() noexcept {
 
 float global_config_fov_0087ec0f(double fovs_degrees, float divisor) noexcept {
     // FMUL qword pi (00CE3D28), FDIV qword 180.0 (00CE3D20), FDIV dword divisor.
-    return static_cast<float>(fovs_degrees * kDegToRadPi / kDegToRadDen / divisor);
+    float fov;
+    if constexpr (kPc24CameraCc13Bound) {
+        // 0087EC0F..0087EC2F: each of the three operations rounds to 24 bits.
+        fov = static_cast<float>(cc13x87::x87_div24(
+            cc13x87::x87_div24(cc13x87::x87_mul24(fovs_degrees, kDegToRadPi), kDegToRadDen), divisor));
+    } else {
+        fov = static_cast<float>(fovs_degrees * kDegToRadPi / kDegToRadDen / divisor);
+    }
+    return fov;
 }
 
 float pipe_sight_fov_scale_0064e2d6(float zoom_rate, float zoom_state) noexcept {
     // FLD [settings+7Ch]; FMUL [00E197F4]; FLD1; FSUBRP.
-    return static_cast<float>(1.0 - static_cast<double>(zoom_rate) * zoom_state);
+    float scale;
+    if constexpr (kPc24CameraCc13Bound) {
+        // 0064E2D6..0064E2E3: the FMUL rounds to 24 bits before 1 - product.
+        scale = static_cast<float>(cc13x87::x87_sub24(1.0, cc13x87::x87_mul24(zoom_rate, zoom_state)));
+    } else {
+        scale = static_cast<float>(1.0 - static_cast<double>(zoom_rate) * zoom_state);
+    }
+    return scale;
 }
 
 float mission_fov_004dc940(float stored, float divisor, float scale) noexcept {
     // FLD [global+F4h+idx*4]; FMUL [00F889B4]; FMUL scale; FSTP.
-    return static_cast<float>(static_cast<double>(stored) * divisor * scale);
+    float fov;
+    if constexpr (kPc24CameraCc13Bound) {
+        // 004DC9BC..004DC9CE: each FMUL dword rounds to 24 bits.
+        fov = static_cast<float>(cc13x87::x87_mul24(cc13x87::x87_mul24(stored, divisor), scale));
+    } else {
+        fov = static_cast<float>(static_cast<double>(stored) * divisor * scale);
+    }
+    return fov;
 }
 
 }  // namespace bsp

@@ -295,7 +295,7 @@ tr.hidden { display: none; }
   const K = D.kpi;
   const share = pct(K.game_done, K.target);
   $('#kpis').innerHTML = [
-    ['Game code reconstructed', fmt(K.game_done), `<b>+${fmt(K.game_rate24)}</b> in the last 24 h; ${fmt(K.functions)} including libraries`],
+    ['Game code reconstructed', fmt(K.game_done), `<b>+${fmt(K.game_rate24)}</b> in the last 24 h; ${fmt(K.functions)} including libraries; ${fmt(K.pc24_debt)} carry PC24 precision debt`],
     [`Of the ${fmt(K.target)} game target`, share + '%', `<div class="bar"><i style="width:${share}%"></i></div>`],
     ['Reviewed names', fmt(K.names), `<b>+${fmt(K.names24)}</b> in the last 24 h`],
     ['Fragments', fmt(K.fragments), 'partial routines, counted apart'],

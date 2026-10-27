@@ -23,6 +23,8 @@
 #include "bsp/pose_refresh.hpp"
 #include "bsp/cc13_front6.hpp"
 #include "bsp/engine_services_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_hudgui_cc13.hpp"
 
 #include <cmath>
 #include <cstdio>
@@ -603,8 +605,15 @@ void GameHudMinimapHost::update_005c0f20(float seconds) {
             // heading, 005C186C FADD double pi/2 (00CF1438), 005C1874 FSTP.
             const float yaw = static_cast<float>(std::atan2(static_cast<double>(forward[0]),
                                                             static_cast<double>(forward[2])));
-            const float wedge = static_cast<float>(static_cast<double>(-yaw)
-                - static_cast<double>(headings.icon) + 1.5707963267948966);
+            float wedge = 0.0f;
+            if constexpr (bsp::kPc24HudGuiCc13Bound) {
+                // 005C1864 FSUB float and 005C186C FADD double each round at PC24.
+                wedge = static_cast<float>(bsp::cc13x87::x87_add24(
+                    bsp::cc13x87::x87_sub24(-yaw, headings.icon), 1.5707963267948966));
+            } else {
+                wedge = static_cast<float>(static_cast<double>(-yaw)
+                    - static_cast<double>(headings.icon) + 1.5707963267948966);
+            }
             host.done("HudMinimap::camera_heading_0042ba40", 0x0042ba40u);
             binding.set_map_layer_rotation(host.direction, wedge);
         } else {

@@ -1,5 +1,8 @@
 #include "bsp/app_frame_game_state.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_misc_cc13.hpp"
+
 namespace bsp {
 namespace {
 
@@ -103,8 +106,15 @@ int profiler_end_frame_00be34d0(ProfilerCounters& profiler, const int& static_sl
         // divide happens at 80 bit precision and rounds once on the store to
         // float32. This rounds a double instead, which can differ in the last
         // bit for values that fall on a tie.
-        const float seconds
-            = static_cast<float>(static_cast<double>(record->accumulated_ticks) / tick_scale);
+        // ON: the main thread's x87 runs at PC24, so the 00be3532 FDIV rounds to a
+        // 24-bit significand before the float store.
+        float seconds;
+        if constexpr (kPc24AppFrameCc13Bound) {
+            seconds = static_cast<float>(cc13x87::x87_div24(
+                static_cast<double>(record->accumulated_ticks), tick_scale));
+        } else {
+            seconds = static_cast<float>(static_cast<double>(record->accumulated_ticks) / tick_scale);
+        }
         profiler.history[offset] = seconds;
         // 00be354a, the current value is reloaded from the ring.
         profiler.current[slot] = profiler.history[offset];
@@ -123,10 +133,22 @@ int profiler_end_frame_00be34d0(ProfilerCounters& profiler, const int& static_sl
         const std::int64_t frame_origin = profiler.records[app_update_slot].first_entry;
         const double start_delta = static_cast<double>(record->first_entry - frame_origin);
         const double end_delta = static_cast<double>(record->last_exit - frame_origin);
-        profiler.start_offsets[offset] = static_cast<float>(
-            (start_delta / tick_scale) / display_scale + kProfilerNormalizedBias);
-        profiler.display[slot].end_offset = static_cast<float>(
-            (end_delta / tick_scale) / display_scale + kProfilerNormalizedBias);
+        if constexpr (kPc24AppFrameCc13Bound) {
+            // 00be3597 FDIV ST0,ST2, 00be3599 FDIV [ECX+4], 00be359c FADD ST0,ST1
+            // (and 00be35db/e7/ea), each rounded at PC24.
+            using namespace cc13x87;
+            profiler.start_offsets[offset] = static_cast<float>(x87_add24(
+                x87_div24(x87_div24(start_delta, tick_scale), display_scale),
+                kProfilerNormalizedBias));
+            profiler.display[slot].end_offset = static_cast<float>(x87_add24(
+                x87_div24(x87_div24(end_delta, tick_scale), display_scale),
+                kProfilerNormalizedBias));
+        } else {
+            profiler.start_offsets[offset] = static_cast<float>(
+                (start_delta / tick_scale) / display_scale + kProfilerNormalizedBias);
+            profiler.display[slot].end_offset = static_cast<float>(
+                (end_delta / tick_scale) / display_scale + kProfilerNormalizedBias);
+        }
     }
 
     // 00be361d: the run-time registration count is cleared every frame.

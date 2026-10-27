@@ -1,6 +1,9 @@
 #include "bsp/plane_angular_velocity.hpp"
 #include "bsp/unit_rudder.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_flightrender_cc13.hpp"
+
 #include <cmath>
 
 // docs/PLANE_ANGULAR_VELOCITY.md carries the evidence and the coverage table;
@@ -9,16 +12,27 @@
 namespace bsp {
 namespace {
 
+namespace pc24 = cc13x87;
+
 // The same length and reciprocal guard the whole family shares: 00419440, and
 // the `len > 0 ? 1/len : +0.0f` at 00B63F26 / 00B63FB0, which is byte for byte
 // the guard in 00419510 and 0085DC96.
 float length3(const float v[3]) {
-    const float xx = v[0] * v[0];
-    const float yy = v[1] * v[1];
-    const float zz = v[2] * v[2];
-    return std::sqrt(static_cast<float>(static_cast<double>(xx) +
-                                        static_cast<double>(yy) +
-                                        static_cast<double>(zz)));
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-2: 00419461..00419489, each square and both adds rounded at
+        // PC24; the squares and the total are stored to float, the partial sum is not.
+        const float xx = static_cast<float>(pc24::x87_mul24(v[0], v[0]));
+        const float yy = static_cast<float>(pc24::x87_mul24(v[1], v[1]));
+        const float zz = static_cast<float>(pc24::x87_mul24(v[2], v[2]));
+        return std::sqrt(static_cast<float>(pc24::x87_add24(pc24::x87_add24(xx, yy), zz)));
+    } else {
+        const float xx = v[0] * v[0];
+        const float yy = v[1] * v[1];
+        const float zz = v[2] * v[2];
+        return std::sqrt(static_cast<float>(static_cast<double>(xx) +
+                                            static_cast<double>(yy) +
+                                            static_cast<double>(zz)));
+    }
 }
 
 void scale_by_reciprocal(float v[3], float len) {
@@ -33,12 +47,20 @@ void scale_by_reciprocal(float v[3], float len) {
 
 // 004F9B30, out = a x b, traced in docs/PLANE_POSE_COMMIT.md.
 void cross3(float out[3], const float a[3], const float b[3]) {
-    const double x = static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1];
-    const double y = static_cast<double>(a[2]) * b[0] - static_cast<double>(a[0]) * b[2];
-    const double z = static_cast<double>(a[0]) * b[1] - static_cast<double>(a[1]) * b[0];
-    out[0] = static_cast<float>(x);
-    out[1] = static_cast<float>(y);
-    out[2] = static_cast<float>(z);
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-2: 004F9B54..004F9BA0, each product rounded at PC24 before
+        // its difference (FSUBRP), the difference rounded, then FSTP float.
+        out[0] = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(a[1], b[2]), pc24::x87_mul24(a[2], b[1])));
+        out[1] = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(a[2], b[0]), pc24::x87_mul24(a[0], b[2])));
+        out[2] = static_cast<float>(pc24::x87_sub24(pc24::x87_mul24(a[0], b[1]), pc24::x87_mul24(a[1], b[0])));
+    } else {
+        const double x = static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1];
+        const double y = static_cast<double>(a[2]) * b[0] - static_cast<double>(a[0]) * b[2];
+        const double z = static_cast<double>(a[0]) * b[1] - static_cast<double>(a[1]) * b[0];
+        out[0] = static_cast<float>(x);
+        out[1] = static_cast<float>(y);
+        out[2] = static_cast<float>(z);
+    }
 }
 
 float dot3(const float a[3], const float b[3]) {
@@ -121,11 +143,22 @@ void multiply_00413920(AdvanceMatrix& dst, const AdvanceMatrix& left,
     AdvanceMatrix tmp;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
-            double sum = 0.0;
-            for (int k = 0; k < 4; ++k) {
-                sum += static_cast<double>(left.m[4 * i + k]) * right.m[4 * k + j];
+            if constexpr (kPc24FlightRenderCc13Bound) {
+                // pc24w1-sweep1-2: 00413961..00413C81, every element is
+                // ((l0*r0 + l1*r1) + l2*r2) + l3*r3 with each product and sum
+                // rounded at PC24 and one FSTP float.
+                double sum = pc24::x87_mul24(left.m[4 * i], right.m[j]);
+                for (int k = 1; k < 4; ++k) {
+                    sum = pc24::x87_add24(sum, pc24::x87_mul24(left.m[4 * i + k], right.m[4 * k + j]));
+                }
+                tmp.m[4 * i + j] = static_cast<float>(sum);
+            } else {
+                double sum = 0.0;
+                for (int k = 0; k < 4; ++k) {
+                    sum += static_cast<double>(left.m[4 * i + k]) * right.m[4 * k + j];
+                }
+                tmp.m[4 * i + j] = static_cast<float>(sum);
             }
-            tmp.m[4 * i + j] = static_cast<float>(sum);
         }
     }
     dst = tmp;
@@ -133,18 +166,34 @@ void multiply_00413920(AdvanceMatrix& dst, const AdvanceMatrix& left,
 
 void transform_direction_0042d0d0(float out[3], const float v[3], const AdvanceMatrix& m) {
     // 0042D0F2..0042D116: column 0 is m[0], m[4], m[8]. No translation row.
-    const float x = static_cast<float>(static_cast<double>(v[0]) * m.m[0] +
-                                       static_cast<double>(v[1]) * m.m[4] +
-                                       static_cast<double>(v[2]) * m.m[8]);
-    const float y = static_cast<float>(static_cast<double>(v[0]) * m.m[1] +
-                                       static_cast<double>(v[1]) * m.m[5] +
-                                       static_cast<double>(v[2]) * m.m[9]);
-    const float z = static_cast<float>(static_cast<double>(v[0]) * m.m[2] +
-                                       static_cast<double>(v[1]) * m.m[6] +
-                                       static_cast<double>(v[2]) * m.m[10]);
-    out[0] = x;
-    out[1] = y;
-    out[2] = z;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-2: 0042D0F2..0042D14A, each component (v0*c0 + v1*c1) + v2*c2
+        // with each product and sum rounded at PC24 and one FSTP float.
+        const auto column = [&](int c) {
+            return static_cast<float>(pc24::x87_add24(
+                pc24::x87_add24(pc24::x87_mul24(v[0], m.m[c]), pc24::x87_mul24(v[1], m.m[4 + c])),
+                pc24::x87_mul24(v[2], m.m[8 + c])));
+        };
+        const float x = column(0);
+        const float y = column(1);
+        const float z = column(2);
+        out[0] = x;
+        out[1] = y;
+        out[2] = z;
+    } else {
+        const float x = static_cast<float>(static_cast<double>(v[0]) * m.m[0] +
+                                           static_cast<double>(v[1]) * m.m[4] +
+                                           static_cast<double>(v[2]) * m.m[8]);
+        const float y = static_cast<float>(static_cast<double>(v[0]) * m.m[1] +
+                                           static_cast<double>(v[1]) * m.m[5] +
+                                           static_cast<double>(v[2]) * m.m[9]);
+        const float z = static_cast<float>(static_cast<double>(v[0]) * m.m[2] +
+                                           static_cast<double>(v[1]) * m.m[6] +
+                                           static_cast<double>(v[2]) * m.m[10]);
+        out[0] = x;
+        out[1] = y;
+        out[2] = z;
+    }
 }
 
 void NativeAdvanceMatrixOps::build_look_at_00b63f10(AdvanceMatrix& out, const float eye[3],

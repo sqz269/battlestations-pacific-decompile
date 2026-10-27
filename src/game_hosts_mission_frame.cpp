@@ -24,6 +24,8 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hint_passes.hpp"
+#include "bsp/plane_follow_law.hpp"
+#include "bsp/sw1b_switch_reach.hpp"
 #include "bsp/game_profile_owner.hpp"
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq2
 #include "bsp/game_observer_runtime.hpp"
@@ -5490,6 +5492,16 @@ void GameMissionFrameHost::report(long requested_frames) {
             "while every pass that reads the world object itself still ticks none, because "
             "construct_world 004de610 is a load record", scene.created,
             host.frames.entities_updated, host.frames.unit_motion_ticks);
+    }
+    host.log.notef("summary mission circle tangent unordered (004F4840, sw1 reach): bound=%d "
+        "calls=%llu nan_r=%llu pc24_bound=%d pc24_differs=%llu",
+        bsp::circle_tangent_reach().bound ? 1 : 0, bsp::circle_tangent_reach().calls,
+        bsp::circle_tangent_reach().nan_r, bsp::circle_tangent_reach().pc24_bound ? 1 : 0,
+        bsp::circle_tangent_reach().pc24_differs);
+    for (int k = 0; k < static_cast<int>(bsp::Sw1bReach::Count); ++k) {
+        const auto id = static_cast<bsp::Sw1bReach>(k);
+        host.log.notef("summary mission switch reach (sw1b): %s sites=%llu differs=%llu",
+            bsp::sw1b_reach_name(id), bsp::sw1b_reach(id).sites, bsp::sw1b_reach(id).differs);
     }
     host.log.notef("summary mission world active_byte_bound=%d active=%d traffic_walks=%llu "
         "(packet cc9_construct_world, [game+19CCh]+4ACh)", kWorldActiveByteBound ? 1 : 0,

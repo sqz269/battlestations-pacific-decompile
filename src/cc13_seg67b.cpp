@@ -2844,9 +2844,11 @@ bool ship_ai_path_node_subtree_complete_009d5a80(void* node) {
 // 009D94C1); else 009D9440(plus) (009D94DC). -1 (009D94EE): when +34h > 1.0
 // (009D94F8), 00414EB0 on (minus - node) (009D951F); else 009D9440(minus)
 // (009D9533). Any other direction: 0.0 (009D9545 FLDZ).
-// UNCERTAINTY: inherited from 009D5930 through ship_ai_path_node_direction_009d9e6c:
-// the image's JC takes the +1 arm on unordered (NaN) costs (009D5974, 009D5B4F,
-// 009D5BFF); the shared rule returns -1 there.
+// Inherited from 009D5930 through ship_ai_path_node_direction_009d9e6c: the image
+// takes +1 on an unordered pair of route sums (009D5974 JC; also 009D9ECC JB and the
+// walks' 009D5B4F/009D5BFF); the C++ shared rule's OFF arm gives -1 there, and
+// kShipAiPathNodeDirectionUnorderedCc13Bound (ship_ai_path_planner.hpp) selects the
+// image's rule.
 float ship_ai_path_node_run_heading_009d9440(ShipAiPathNode& node) {
     ship_ai_path_node_decide_direction_009d5930(node);
     if (node.direction == 1) {

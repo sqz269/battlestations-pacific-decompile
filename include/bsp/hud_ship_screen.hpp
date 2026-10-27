@@ -201,6 +201,14 @@ float ship_screen_gauge_round_004396f0(float value) noexcept;
 // 0043B370, __thiscall(gauge, float value, float dt), RET 8, with 0043B2F0.
 void ship_screen_gauge_0043b370(ShipScreenState::Gauge& gauge, int index,
                                 ShipScreenHost& host, float value, float dt);
+// Reach counter for kShipScreenGaugeProductRoundCc13Bound (log only): primed gauge
+// ticks, and those where the rounded-product (ON) and unrounded (OFF) forms differ.
+struct ShipScreenGaugeReach {
+    bool bound{false};
+    unsigned long long ticks{0};
+    unsigned long long differs{0};
+};
+const ShipScreenGaugeReach& ship_screen_gauge_reach() noexcept;
 // 0064FD24..006500C1, part 4.
 void ship_screen_gauges_0064fd24(ShipScreenState& screen, ShipScreenHost& host, float dt);
 // 0064DD30, part 1.
