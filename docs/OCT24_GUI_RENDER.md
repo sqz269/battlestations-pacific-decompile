@@ -7,7 +7,7 @@ FrontEndFrame, or in-mission interface manager is instantiated by this work.
 
 ## Acceptance status
 
-Steps 1--3 pass the bounded USN04 fixtures below. Native pages remain a separate
+Steps 1--3 pass the bounded USN04 mission runs below. Native pages remain a separate
 deliverable. Input remains outside this lane and blocks button dispatch.
 
 | Step | Runtime selection | Current evidence |
@@ -15,7 +15,7 @@ deliverable. Input remains outside this lane and blocks button dispatch.
 | 1. Text, image Font, real glyph buffers/effects | `BSP_NATIVE_GUI_TEXT=1` | Visible native Text in USN04; ON game exit0/gameplay identical; OFF pair_diff exit0 |
 | 2. Initial GUI texture resources | `BSP_NATIVE_GUI_RESOURCES=1` | ON game exit0/native texture retirement/gameplay identical; OFF pair_diff exit0 |
 | 3. Per-widget Model and page cGroup ownership | `BSP_NATIVE_GUI_NODES=1` | Same actual Model under actual cGroup; ON visible/game exit0/normal retirement; OFF pair_diff exit0 |
-| 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` proposed | Exact 18-class audit in `OCT24_GUI_PAGES.md`; actual Screen manager/page ownership and ten factory arms remain blockers |
+| 4. One native page and its widget types | `BSP_NATIVE_GUI_PAGE=1` proposed | Source prerequisites below are integrated; warm actual Screen manager, raw Icon/Text composition, one Page lifetime and ten factory arms still block ON |
 
 All runtime selections default OFF. No comparison-tool noise rule is changed.
 USN04 is the deterministic comparison mission; USN21 is excluded from single-pair
@@ -266,5 +266,187 @@ Text route is retained. This does not prove a 124h Page or all 18 raw widget cla
 Final images/logs/manifests/pairs/hash record are copied to the coordinator's
 `local/gui_render/oct24_gui_step3/`.
 
-Final screenshots belong under this tree's `local/gui_render/` and must be
-copied to the cc16-progress tree before this worktree is removed.
+### Step 4: integrated source prerequisites, not Page acceptance
+
+The following bounded packets are compiled with `bsp_game`, without activating
+a Page route or adding any GUI-chain object. Existing default-OFF bridge
+ownership is retained. They do not add retained factory arms for the ten
+unsupported classes and must not be described as all18 widget delivery.
+
+* `OCT24_GUI_PAGE_LOOKUP.md`: AA3140 walks the actual88h manager's +14 Page
+  vector, invokes current+7C on actual Pages, compares native8B names, and
+  reloads the chosen vector slot after callbacks. No getter/manager construction.
+* `OCT24_GUI_PAGE_TAIL.md`: AC6806..AC6878 current Page+18, reader+08, same
+  node root propagation, actual reader retirement and same-domain Lua close.
+  Full raw Page property dispatch remains a mandatory genuine provider.
+* `OCT24_GUI_PAGE_AUTHORITY.md`: one existing host Page/tree ownership
+  capability and same-widget aliases; explicitly not an actual124h Page or
+  native terminal transport. It cannot be a second owner beside a raw Page.
+* `OCT24_GUI_ICON.md`, `OCT24_GUI_ICON_LIFETIME.md`, and
+  `OCT24_GUI_ICON_DELAYED.md`: deferred real Icon HAL geometry, exact remaining
+  raw allocation/state/terminal contract, and raw delayed-singleton producer /
+  normal cancellation/drain. The shared deletion arm and same raw Icon state
+  authority are not activated; delayed texture insertion/delivery is absent.
+* `OCT24_GUI_LINE_STORAGE.md` / `OCT24_GUI_LINE.md`: actual104h Line and same
+  +04 companion, raw point-vector operations and deferred native HAL geometry.
+  Manager+28 null is preserved by the material path, without a replacement.
+* `OCT24_GUI_SCROLLBAR_STORAGE.md`: actualFCh Scrollbar, constructors/copy,
+  canonical identity, exact x87 setters and loaded handling. Full AC85A0 raw
+  property traversal and genuine child/layout dispatch remain required.
+* `OCT24_GUI_SOUND.md`: actual108h Sound, default-base copy with empty strings,
+  recovered +2/-2 reference schedule, stop/reload/cleanup ordering and retained
+  failures. Genuine audio companions and current stop providers are required.
+* `OCT24_GUI_BUTTON.md`: actualFCh Button, default-only raw list registration,
+  copy/destruction and canonical identity. Actual process registry/focus producer
+  remains required. This supplies no input or button dispatch.
+* `OCT24_GUI_WIDGET_LIFETIME_DISPATCH.md`: closed actual GUI Group/ClipBox
+  child20/delete04(1), exact native list self-detachment and ClipBox identity
+  retirement. This GUI Group is distinct from Step3's renderer cGroup. Genuine
+  class-query/type-phase and timed-entry providers remain mandatory.
+
+Independent source review found and corrected a Page-stage identity guard:
+the original reader-stage Page pointer must equal the current prefix's Page,
+before the tail borrows raw backing. Sound's copy/reference/stop schedule was
+independently checked against the original listings. Neither review adds live
+Page, native binary ABI, original FH3/SEH or failure-unwind proof.
+
+Every candidate Screen still reaches the actual GUI manager getter during
+AC59A0: AC59C5, AC5B32 and conditionally AC5EE6. GUI sent cc15/coordinator the
+required warm actual88h AA5D70/F8BC5C borrow contract. It must use the same
+native platform/focus, strings, scenes, pools and owner registry through Page
+retirement, reread current publication at each call, and reject null without
+entering 004C12B0's constructor. No such supplied production borrow is active
+in this lane. The same manager's +08 tree/+14 vector, matching store removal,
+current20/04 terminal and sole widget storage authority must be composed before
+replacing the bridge projection. `FE_initial`'s two Icons and Text still need
+full raw state/lifetime composition. The original18-class audit remains in
+`OCT24_GUI_PAGES.md`.
+
+Input is out of scope and remains the blocker for button dispatch after visual
+Page bring-up. Step4 is incomplete; no native Page ON run or screenshot is
+claimed by this prerequisite batch.
+
+#### Final prerequisite regression check
+
+Candidate source `4e28ec0c9657f545ba360a96e7cc9c6a7af526b6` is frozen under
+`local/gui_render/step4_source_final/`; `source.json` records clean source and
+full binary hashes. The subsequent merge `2c0775cdf` adds only published WINS
+plans/documentation; no compiled source or build configuration changes. The
+refreshed clean origin/main control is `561d57228c29f2164c8813f9880f66daf3750cc4`,
+frozen under `baseline/step4_561d57228/`. Candidate and control Release builds
+pass both existing checks; no new tests are added.
+
+* `usn04_origin_step4_final.log`, `usn04_step4_source_off_final.log`, and
+  `usn04_step4_source_cumulative_on_final.log` all exit0, with599 presents.
+  Launcher manifests preserve exact arguments, flags, slots and binary hashes.
+* `step4_source_off_pair.json`: literal pair_diff exit0, all21 unit rows,
+  all1392 native rows and all706 summaries identical. Only existing
+  pretranslate-count noise remains; no comparison rules are changed.
+* `step4_source_on_pair.json`: cumulative delivered Steps1--3 ON, game exit0,
+  gameplay and all21 unit rows identical. Literal pair_diff exit1 reflects the
+  two native Text/Model rows, concrete renderer64 resource method, expected
+  bridge texture ownership14->13 and native renderer diagnostics. It is not a
+  Page ON test. Trace and native full-unit rendering remain OFF.
+* `usn04_control_step4_prerequisites_N180.png` was visually inspected: visible
+  white native Text above the actual mission ship. The actual cGroup contains
+  the SAME Text Model;561 Text submissions retire normally, followed by Group
+  scene unlink/return and initial GUI resource-reference retirement.
+
+The final N001/N060/N180 and OFF PNGs, logs/manifests, source provenance,
+comparison JSON and build logs are copied with SHA-256 verification into the
+coordinator tree's `local/gui_render/oct24_gui_source_prerequisites/`. Prior
+accepted Step1/2/3 evidence remains in its corresponding copied directories.
+
+Final screenshots belong under this tree's `local/gui_render/` and are copied
+to the cc16-progress tree before this worktree is removed.
+
+#### Further raw Page prerequisites
+
+The next source batch adds actual Icon/AnimIcon state storage and matching
+canonical identities, Text actual-field/font/shader operations, raw Grid/Curve
+storage, full raw AAA710 child enumeration and the AC4C50 Page property schedule.
+Their focused evidence is in `OCT24_GUI_ICON_STORAGE.md`,
+`OCT24_GUI_ANIM_ICON_STORAGE.md`, `OCT24_GUI_TEXT_STORAGE.md`,
+`OCT24_GUI_TEXT_SHADER_STORAGE.md`, `OCT24_GUI_GRID.md`, `OCT24_GUI_CURVE.md`,
+`OCT24_GUI_RAW_CHILDREN.md` and `OCT24_GUI_PAGE_PROPERTIES.md`.
+
+GUI's SAME Model environment now selects raw name transport before its first
+Model, closing the domain prerequisite for existing full raw Text bodies;
+`OCT24_GUI_RAW_MODEL_NAMES.md` records the source boundary. Independent review
+corrected a raw scratch header being treated as a C++ NativeString object.
+The same actual8B header now reaches raw AA2490/4BCB80 without a second string.
+Icon failures keep their canonical binding and retained graph until process
+disposition. The Page path executes only each manager getter's genuine nonnull
+fast arm and rejects absent publication without constructing A or unwinding
+native graph effects. The unrestricted scene-acquisition entry is preserved.
+
+Normal Win32 Release and both existing checks pass in
+`raw_widget_wave_build.log`, `raw_page_wave_build.log` and
+`raw_page_warm_build.log`; no tests are added. Original names/comments remain,
+with saved preimages in `local/ghidra-annotations-20261024T123855Z.json`.
+This is source/build evidence; no native Page ON runtime is claimed.
+
+`OCT24_GUI_PROGBAR_STORAGE.md` records another unresolved full18 boundary:
+the native Progbar request140 uses the Icon138/13C pool, writes its value at
+the pool's138 slab-index word and its default field at the next slot13C.
+The exact alias/return relationship is established from source/listings;
+no crash/game consequence is claimed. No repaired trailer, larger pool or fake
+production lifetime is introduced. Full18 admission, genuine derived providers,
+the warm cc15 manager and sole Page retirement still block Step4 activation.
+Input remains outside scope and blocks later button dispatch.
+
+The closed raw tree dispatcher additionally admits optional full canonical
+Text/Icon children in its SAME registry/lifetime context; Step1's prefix-only
+Text identity is excluded. Real current lineage/timed providers remain
+mandatory (`OCT24_GUI_WIDGET_TREE.md`). Raw GUI Model9 now has its true11C/120
+default allocation, placement copy, retirement and canonical+04 identity;
+its copy factory remains unadmitted until genuine partial-loader failure
+custody is supplied (`OCT24_GUI_MODEL_STORAGE.md`). Neither is Page activation.
+
+#### Final combined-source verification
+
+The final tested candidate is clean source
+`3b4cd7b960cd36edbf717e4f9c511591090f0a49`, frozen in
+`local/gui_render/final_gui_candidate/` with executable SHA-256
+`d531fd65e782b6758a88fb59e889e94e485552f5151466c538c6c21ec790583b`.
+The clean origin/main control is
+`ebc33b01739be9615214ea5b24911b5f36e3b214`, frozen in
+`baseline/final_ebc33b017/`, executable SHA-256
+`a5a7df004ef8f9e76f6656477d2467724f72570291ae74ec784900838513ebbb`.
+Both source manifests record empty dirty lists and DLL hashes. Both final
+Win32 Release builds pass the two existing checks. No tests are added.
+
+All three final USN04 runs use the same pinned difficulty1/600 frames/
+181 mission frames/0.05 seconds/1280x720/vsync/N180 arguments and exit0 with
+599 presents. Their logs are `usn04_gui_control_final.log`,
+`usn04_gui_off_final.log` and `usn04_gui_on_final.log`.
+
+* OFF sets all three GUI switches and the mission-frame/ship switches0.
+  `gui_off_pair.json` is literal pair_diff exit0: all21 unit rows, all1392
+  native rows and all706 summary lines match. Existing pretranslate noise
+  is unchanged as a comparison rule; no rules or baselines are edited.
+* ON sets GUI Text/resources/nodes and mission-frame/ship1, with tracing and
+  full native-unit rendering0. The game exits0 with gameplay/all21 unit rows
+  identical. `gui_on_pair.json` is literal exit1 for expected graphics/native
+  diagnostics: two standalone Text/Model rows, concrete renderer64 and bridge
+  texture ownership14->13. This is cumulative Steps1--3, not a Page ON test.
+* `usn04_control_gui_final_N180.png` is visually inspected: white native Text
+  above the native mission ship. Actual Group1FC21100 contains the SAME
+  Text Model1F85B2F8. Log lines10665--10667 show561 Text submissions retiring,
+  Group scene unlink/return and GUI resource-reference retirement before the
+  renderer drain. Actual N001/N060/N180 files are the native-frame captures;
+  the unsuffixed bridge capture is not used as native visual proof.
+
+The final screenshots, logs/launcher manifests, exact source/binary hashes,
+comparison JSON, build logs and central boundary docs are hash-verified copies
+under the coordinator tree's `local/gui_render/oct24_gui_final/` with
+`evidence_sha256.json`. The worktree and frozen binaries remain available.
+Only documentation changes follow the tested source in this GUI batch.
+
+A second independent read-only Progbar audit confirms the requested-size
+thunk, actual13C stride/138 index, same-pointer scalar/thunk and conditional
+return inconsistency. It does not observe a crash or prove every Original
+lifetime impossible; external callback/terminal provenance remains unclosed.
+No pool/index repair is added. Warm-manager production custody, raw derived
+providers and sole Page ownership still block Step4; input remains outside
+scope and the later button-dispatch blocker.

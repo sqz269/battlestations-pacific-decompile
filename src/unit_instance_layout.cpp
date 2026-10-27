@@ -2,6 +2,7 @@
 // native routine over an injected host; the host methods are the native call
 // sites. Nothing here allocates, links or copies real memory.
 #include "bsp/unit_instance_layout.hpp"
+#include <cstring>
 
 namespace bsp {
 
@@ -235,6 +236,127 @@ bool unit_class_uses_vehicle_base(std::uint32_t instance_ctor) noexcept
     default:
         return false;
     }
+}
+
+namespace {
+void write_unit_constructor_u32(std::uint8_t* self, std::size_t offset, std::uint32_t value) {
+    std::memcpy(self + offset, &value, sizeof(value));
+}
+}
+
+// 00951B60, full normal-path body. __thiscall ECX=this, stack arg, EAX=this,
+// RET 4 at 00951BCC. Listing 00951B6A..00951BBF gives the base call, eight
+// vptr writes and two tags. The base call's internals remain a host boundary.
+std::uint8_t* construct_dive_bomber_unit_00951b60(PlaneUnitConstructorHost& host, std::uint8_t* self, std::uint32_t arg) {
+    host.call_007cfd20(self, arg, 0);
+    write_unit_constructor_u32(self, 0x000, 0x00d19d28);
+    write_unit_constructor_u32(self, 0x010, 0x00d19d10);
+    write_unit_constructor_u32(self, 0x024, 0x00d19d08);
+    write_unit_constructor_u32(self, 0x170, 0x00d19d04);
+    write_unit_constructor_u32(self, 0x1e4, 0x00d19cfc);
+    write_unit_constructor_u32(self, 0x310, 0x00d19ce4);
+    write_unit_constructor_u32(self, 0x38c, 0x00d19ce0);
+    write_unit_constructor_u32(self, 0x72c, 0x00d19ca0);
+    write_unit_constructor_u32(self, 0x0c4, 0x12);
+    write_unit_constructor_u32(self, 0xaac, 8);
+    return self;
+}
+
+// 00951C40: same __thiscall/RET 4 ABI (00951CAC), complete sequence at
+// 00951C4A..00951C9F. Base semantics and descriptive field meanings are provisional.
+std::uint8_t* construct_torpedo_bomber_unit_00951c40(PlaneUnitConstructorHost& host, std::uint8_t* self, std::uint32_t arg) {
+    host.call_007cfd20(self, arg, 0);
+    write_unit_constructor_u32(self, 0x000, 0x00d1a000);
+    write_unit_constructor_u32(self, 0x010, 0x00d19fe8);
+    write_unit_constructor_u32(self, 0x024, 0x00d19fe0);
+    write_unit_constructor_u32(self, 0x170, 0x00d19fdc);
+    write_unit_constructor_u32(self, 0x1e4, 0x00d19fd4);
+    write_unit_constructor_u32(self, 0x310, 0x00d19fbc);
+    write_unit_constructor_u32(self, 0x38c, 0x00d19fb8);
+    write_unit_constructor_u32(self, 0x72c, 0x00d19f78);
+    write_unit_constructor_u32(self, 0x0c4, 0x11);
+    write_unit_constructor_u32(self, 0xaac, 9);
+    return self;
+}
+
+// 00951D20: same __thiscall/RET 4 ABI (00951D8C), complete sequence at
+// 00951D2A..00951D7F. Base semantics and descriptive field meanings are provisional.
+std::uint8_t* construct_kamikaze_unit_00951d20(PlaneUnitConstructorHost& host, std::uint8_t* self, std::uint32_t arg) {
+    host.call_007cfd20(self, arg, 0);
+    write_unit_constructor_u32(self, 0x000, 0x00d1a2d8);
+    write_unit_constructor_u32(self, 0x010, 0x00d1a2c0);
+    write_unit_constructor_u32(self, 0x024, 0x00d1a2b8);
+    write_unit_constructor_u32(self, 0x170, 0x00d1a2b4);
+    write_unit_constructor_u32(self, 0x1e4, 0x00d1a2ac);
+    write_unit_constructor_u32(self, 0x310, 0x00d1a294);
+    write_unit_constructor_u32(self, 0x38c, 0x00d1a290);
+    write_unit_constructor_u32(self, 0x72c, 0x00d1a250);
+    write_unit_constructor_u32(self, 0x0c4, 0x17);
+    write_unit_constructor_u32(self, 0xaac, 0xc);
+    return self;
+}
+
+// 0095CC90: ordinary constructor, not an array helper. __thiscall ECX=this,
+// stack flag/class; EAX=this; RET 8 at 0095CF7C. Evidence: full exported body
+// and listing. Uncertainty: SEH unwind and external base/array bodies remain
+// outside this projection; x87 copy semantics stay explicit at the host.
+std::uint8_t* construct_unit_game_object_0095cc90(UnitGameObjectConstructorHost& host,
+    std::uint8_t* self, std::uint32_t flag, std::uint32_t vehicle_class) {
+    const auto put = [self](std::size_t off, std::uint32_t value) { write_unit_constructor_u32(self, off, value); };
+    const auto get = [self](std::size_t off) {
+        std::uint32_t value;
+        std::memcpy(&value, self + off, sizeof(value));
+        return value;
+    };
+    host.call_0087b670(self, flag);
+    put(0x38c, 0x00d1a578);
+    put(0x390, 1);
+    put(0x000, 0x00d1a698);
+    put(0x010, 0x00d1a680);
+    put(0x024, 0x00d1a678);
+    put(0x170, 0x00d1a674);
+    put(0x1e4, 0x00d1a66c);
+    put(0x310, 0x00d1a654);
+    put(0x38c, 0x00d1a650);
+    host.call_00bf7cd1(self + 0x394, 0x0c, 0x0c, 0x00952640, 0x00957080);
+    put(0x424, 0); put(0x428, 0); put(0x42c, 0);
+    put(0x538, vehicle_class);
+    host.call_00bf7cd1(self + 0x53c, 0x18, 10, 0x004c2d40, 0x004bd350);
+    const auto one = host.read_global_u32(0x00d7a24c);
+    put(0x664, 0); put(0x668, 0); put(0x66c, 0); put(0x670, 0);
+    put(0x6cc, 0); put(0x6d0, 0); put(0x714, 0); put(0x718, 0);
+    put(0x63c, one);
+    put(0x6f0, host.read_global_u32(0x00ceb4b0));
+    const auto initial_limit = host.read_global_u32(0x00ce4adc);
+    put(0x528, 0xfffffff7); put(0x324, 0); put(0x6f4, 0);
+    self[0x520] = 0;
+    put(0x630, 0xffffffff);
+    self[0x6b4] = 0;
+    put(0x6b8, 0xffffffff); put(0x530, 0xffffffff); put(0x534, 0xffffffff);
+    self[0x6c9] = 0;
+    put(0x0c4, 5); put(0x634, 0); put(0x6d4, 0); put(0x6d8, 0); put(0x524, 0);
+    self[0x6c8] = 1;
+    put(0x704, initial_limit); put(0x700, initial_limit);
+    self[0x4d8] = 0; self[0x6e8] = 0;
+    put(0x4c0, host.read_global_u32(0x00f87574));
+    put(0x4c4, host.read_global_u32(0x00f87578));
+    put(0x4c8, host.read_global_u32(0x00f8757c));
+    put(0x4a8, host.x87_float_load_store(get(0x4c0)));
+    put(0x4ac, host.x87_float_load_store(get(0x4c4)));
+    put(0x4b0, host.x87_float_load_store(get(0x4c8)));
+    put(0x4cc, host.read_global_u32(0x00f87574));
+    put(0x4d0, host.read_global_u32(0x00f87578));
+    put(0x4d4, host.read_global_u32(0x00f8757c));
+    put(0x4b4, host.x87_float_load_store(get(0x4cc)));
+    const auto final_limit = host.read_global_u32(0x00d7a260);
+    put(0x4b8, host.x87_float_load_store(get(0x4d0)));
+    put(0x4bc, host.x87_float_load_store(get(0x4d4)));
+    self[0x644] = 0; self[0x70c] = 0;
+    put(0x71c, 0); self[0x720] = 0; put(0x724, 0); put(0x638, 0); put(0x4dc, 0);
+    put(0x6ec, 1);
+    put(0x708, final_limit); put(0x704, final_limit); put(0x700, final_limit);
+    put(0x6f8, 0); put(0x6fc, 0); put(0x728, 0); put(0x52c, 0);
+    return self;
 }
 
 } // namespace bsp

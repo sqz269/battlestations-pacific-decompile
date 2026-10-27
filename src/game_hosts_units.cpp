@@ -596,6 +596,13 @@ struct GameUnitSlot {
     // it (before 009FC7C0, the rocket and 009A17D0) and as 0099D300 entered.
     float diag_pt2bc_task{0.0f};
     float diag_pt2bc_think{0.0f};
+    // Packet cc13-ratetraceband (diagnostic): cmd[1] after 0099BC00, before the
+    // 0099BF30 band repair, and the avoidance counters as 009A17D0 was entered.
+    float diag_cmd1_pre{0.0f};
+    int diag_va_plane_ticks0{0};
+    int diag_va_ship_ticks0{0};
+    int diag_tr_bands0{0};
+    int diag_ga_flagged_ticks0{0};
     float plane_bank_angle_c68{0.0f};
     float plane_heading_c6c{0.0f};
     float plane_class_turn_roll_spd{0.0f};   // desc+1C8h TurnRollSpd
@@ -6230,6 +6237,9 @@ struct GameUnitsHost::Impl {
         // (007BC7BA-007BC7D4: ordnance 33h, then 007BC7CD COMISS 0,[desc+E0h] /
         // 007BC7D4 JAE 007BC86C) SKIPS the gate and returns 1 when +E0h <= 0; a
         // NaN +E0h falls through to the gate. It does not apply to a bomb.
+        // Documented deviation (cc13-D3): the rocket arm is not modelled; it is
+        // unreachable here, because the bomb test above (ordnance_has_general_bomb_2ah,
+        // whose exclusion list holds 33h) already refuses such a plane (cc13-tier2).
         if (pitch > -0.87266463f) {
             float limit = 1.3962635f - std::fabs(pitch);
             if (limit < 0.0f) limit = 0.0f;
@@ -6471,6 +6481,20 @@ struct GameUnitsHost::Impl {
     // the request is recorded only, and every plane's throttle is analogue.
     static constexpr bool kKamikazeBoostTurboBound = false;
     unsigned long long boost_turbo_steps_{0};
+    // Packet cc13-PL3: the image's operation order inside the drag 007D9140 and
+    // its coefficient 007C4990. 007C4990-007C4992 forms desc+50Ch as
+    // (Accel / MaxSpd) / MaxSpd (DE FA, DE F9); 007D91D2-007D91EC forms
+    // KB = (1 + AirBrakeDrag * brake) * (k * coef) and 007D928D-007D9295 returns
+    // ((-sgn(v) * v) * v) * KB; 007D924E-007D9266 keeps the speed unless the
+    // floor compares greater, so a NaN on either side keeps the speed. Every
+    // product rounds to float on the 24-bit main thread. False: the host's
+    // Accel / MaxSpd^2, its left-to-right product and its NaN-to-floor max.
+    static constexpr bool kPlaneDragOrderCc13Bound = false;
+    // Packet cc13-PL3: 007DA380's water arm 007DA3D0-007DA53F reads the up value
+    // as the dot ((DCh * 0) + E0h) + (E4h * 0) and gates the throttled arm on
+    // unit+9F0h > 0 (COMISS / JBE, so NaN fails). Finite inputs are identical
+    // either way. False: E0h alone and the helper's !(thr <= 0) gate.
+    static constexpr bool kWaterRateFactorsNanOrderCc13Bound = false;
     // kPlaneDeadMeatRollBound / kPlaneWreckForwardDragBound step counts.
     unsigned long long dead_meat_roll_steps{0};
     unsigned long long dead_meat_spin_steps{0};
@@ -6954,6 +6978,22 @@ struct GameUnitsHost::Impl {
     // task and the level-bomb prepare's exit (009B84A0). True: both stores. False:
     // recorded only, as before.
     static constexpr bool kFollowExitClearsBound = true;
+    // Packet D5 (cc13): OFF until cc9 pairs it. 009C3374-009C3396: on a state change
+    // the moveto task's rule calls the old state's vtable+8 (exit), stores task+310h,
+    // then the new state's vtable+4 (enter). Only follow (00D20AB8) has a non-stub exit,
+    // 009BDE40; moveto 00D20A80 and circle 00D20A9C have 007B3DC0 (RET). ON: a follow ->
+    // moveto/circle change (a wingman promoted to leader) runs follow_exit_009bde40.
+    // OFF: no exit call, as before. The follow enter (009BED80) stays with the follow
+    // tick's entry detection.
+    static constexpr bool kMoveToFollowExitCc13Bound = false;
+    // Packet cc13-D5. 009B1420's x87 chains at the main thread's 24-bit precision, each
+    // FMUL/FADD/FSUB rounded: the c1 softening (009B1538-009B1550), the asin
+    // denominator (009B1713-009B1728), the glide height H and G and the raise
+    // (009B1842-009B1925), the deck test (009B19BA-009B19D2), the pitch-arm products
+    // lvl x w (009B1A59), spd x 3 (009B1A7C) and length x 1.4 (009B1AA2), and the hold's
+    // lateral -X x 1.25 x u (009B1B76-009B1B82). True: per-op float in the listing's
+    // order. False: the double chains rounded once.
+    static constexpr bool kLandBeginSteerPc24Cc13Bound = false;
     // Packet p20_strafe_horizontal (section 80). 009CAD27-009CAD58: dx and dz are FSTP'd
     // to floats (009CAD30, 009CAD3E) and d2 = (dx dx + 0 0) + dz dz is stored as a float
     // (009CAD58), main-thread 24-bit per op. True: float per op. False: double dx, dz.
@@ -7169,6 +7209,25 @@ struct GameUnitsHost::Impl {
     // base term only on heading mode 2. Draws at their midpoints, as every
     // other dogfight draw in this host.
     static constexpr bool kDogfightManeuverBodyBound = true;
+    // Packet cc13-D5 (spot-check gap rows). 009A85B0 (009A85DF-009A8607): when the
+    // target's published byte [T + 9C0h + 8*[00F876B8]] is set (its own 007B9140(T, 0),
+    // published by 007CDC70; read live here, as kReleaseTimerNotify0DhBound does), the
+    // plane must answer 007B9140(plane, 0) too, else the threat test is false
+    // (009A86DF). True: that clause. False: skipped, as before. SUBSTITUTION, labelled:
+    // the image reads the byte 007CDC70 published for the step slot [00F876B8]; True
+    // computes 007B9140(T, 0) live at the call, which can differ when T's racks change
+    // within the step.
+    static constexpr bool kDfThreatOrdnanceClauseCc13Bound = false;
+    // Packet cc13-D5. The cone arm 009A8682-009A86C6 at 24-bit precision:
+    // ShootDistance x 1.5 (FMUL qword 00CE3D78) is rounded before the FCOMIP,
+    // x / z and y / z are FSTP'd as floats, and 0042B2F0 forms (x*x + y*y) + z*z
+    // per op in float. True: those roundings. False: the 53-bit double chain.
+    static constexpr bool kDfThreatConePc24Cc13Bound = false;
+    // Packet cc13-D5. 009B4D00's spacing distances, own_d (009B4FE4-009B5054) and each
+    // peer's (009B50EE-009B5154): dx and dz FSTP'd as floats, d2 = (dx*dx + 0) + dz*dz
+    // per op in float, sqrt (00BF7030) only above 1e-10 (00CE3820), else 0; as 0042B2F0
+    // with y = 0. True: gun_length3_0042b2f0<false>. False: the 53-bit double sqrt.
+    static constexpr bool kLevelBombSpacingDistPc24Cc13Bound = false;
     static constexpr bool kDogfightAvoidBodiesBound = true;
     static constexpr bool kDogfightAvoidPickBound = true;
     // Packet cc13-dogfight1 (docs/CC13_DOGFIGHT_DRAWS.md): three of those draws
@@ -12144,10 +12203,20 @@ public:
         (void)dt;
         bsp::SubmarineSeabedScan& scan = slot_.sub_scan;
         bsp::submarine_scan_publish_00855440(scan, slot_.sub_bands[3]);
-        const float speed = static_cast<float>(
-            static_cast<double>(slot_.motion.linear_velocity.y) * slot_.motion.pose_row2[1]
-            + static_cast<double>(slot_.motion.linear_velocity.x) * slot_.motion.pose_row2[0]
-            + static_cast<double>(slot_.motion.linear_velocity.z) * slot_.motion.pose_row2[2]);
+        float speed = 0.0f;
+        if constexpr (kSubmarineSeabedSpeedPc24Cc13Bound) {
+            // 0092D74E-0092D763: FMUL, FMUL, FADDP, FMUL, FADDP, each to 24 bits.
+            const float vy_ry = slot_.motion.linear_velocity.y * slot_.motion.pose_row2[1];
+            const float vx_rx = slot_.motion.linear_velocity.x * slot_.motion.pose_row2[0];
+            const float sum_yx = vy_ry + vx_rx;
+            const float vz_rz = slot_.motion.linear_velocity.z * slot_.motion.pose_row2[2];
+            speed = sum_yx + vz_rz;
+        } else {
+            speed = static_cast<float>(
+                static_cast<double>(slot_.motion.linear_velocity.y) * slot_.motion.pose_row2[1]
+                + static_cast<double>(slot_.motion.linear_velocity.x) * slot_.motion.pose_row2[0]
+                + static_cast<double>(slot_.motion.linear_velocity.z) * slot_.motion.pose_row2[2]);
+        }
         const bsp::SubmarineScanPoint p = bsp::submarine_scan_point_00855420(scan.state,
             slot_.sub_class_width, slot_.sub_class_length, speed,
             slot_.sub_class_max_speed, slot_.ring.current_param_b);
@@ -12801,6 +12870,22 @@ float GameUnitsHost::Impl::avoid_surface_height(float x, float z) {
     }
 }
 
+// Packet cc9_plane_body_rate_check: the one plane BSP_PLANE_RATE_TRACE names
+// (empty when unset). Diagnostic only.
+static const std::string& plane_rate_trace_name() {
+    static const std::string value = [] {
+        char* text = nullptr;
+        std::size_t length = 0;
+        std::string v;
+        if (_dupenv_s(&text, &length, "BSP_PLANE_RATE_TRACE") == 0 && text != nullptr) {
+            v = text;
+        }
+        std::free(text);
+        return v;
+    }();
+    return value;
+}
+
 // 0099B670 -> 007DF4F0 (__thiscall(neighbours = unit+C50h, pilot), RET 4,
 // body 007DF4F0-007E073E), for one plane per think. The unit+C50h object is
 // built for AI planes not of the local player's party (007D621F), which
@@ -12927,6 +13012,19 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
                 ga_insert_0099b790(u, 1, ylo, yhi);                 // 007DFDC4, pilot+CCh
                 ++u.va_bands;
                 plane_hit = true;
+                if (!plane_rate_trace_name().empty() && u.row.name == plane_rate_trace_name()) {
+                    // Packet cc13-ratetraceband: diagnostic, env-gated.
+                    log.notef("plane rate band %s t=%.2f branch=aircraft_007dfdc4 other=%s "
+                        "class=%d mode900=%d lp=(%.1f %.1f %.1f) d=%.1f rr=%.1f t_ca=%.2f "
+                        "w=%.3f band=(%.4f %.4f)",
+                        u.row.name.c_str(), static_cast<double>(summary.simulated_seconds),
+                        o.row.name.c_str(), static_cast<int>(o.class_id), o.plane_control_mode_900,
+                        static_cast<double>(lp[0]), static_cast<double>(lp[1]),
+                        static_cast<double>(lp[2]), static_cast<double>(d),
+                        static_cast<double>(rr), static_cast<double>(t),
+                        static_cast<double>(w), static_cast<double>(ylo),
+                        static_cast<double>(yhi));
+                }
             }
             // 007DFDD3-007DFE7F: both bands reach into the central +/-0.3
             // ([00D06888]/[00CE69C8]), closing under 35 ([00CE4D90]), ahead,
@@ -13021,6 +13119,19 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
             ga_insert_0099b790(u, 1, ylo, yhi);                       // 007E0706
             ++u.va_bands;
             ship_hit = true;
+            if (!plane_rate_trace_name().empty() && u.row.name == plane_rate_trace_name()) {
+                // Packet cc13-ratetraceband: diagnostic, env-gated.
+                log.notef("plane rate band %s t=%.2f branch=ship_007e0706 other=%s "
+                    "class=%d mode900=%d l=(%.1f %.1f %.1f) gap=%.1f tc=%.2f h9b4=%.1f "
+                    "box_h=%.1f band=(%.4f %.4f)",
+                    u.row.name.c_str(), static_cast<double>(summary.simulated_seconds),
+                    o.row.name.c_str(), static_cast<int>(o.class_id), o.plane_control_mode_900,
+                    static_cast<double>(l[0]), static_cast<double>(l[1]),
+                    static_cast<double>(l[2]), static_cast<double>(gap),
+                    static_cast<double>(tc), static_cast<double>(h9b4),
+                    static_cast<double>(b.mx[1] - b.mn[1]), static_cast<double>(ylo),
+                    static_cast<double>(yhi));
+            }
         }
     }
     if (plane_hit) ++u.va_plane_ticks;
@@ -13033,8 +13144,20 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
 // band and inserts it into pilot+4h + pass * C8h.
 static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot& u, int pass,
                                         float lo, float hi, float dlo, float dhi, float r,
-                                        float bank_f, float level_flight_speed, float speed) {
-    if (!(lo < hi)) return;                                          // 0099CABC
+                                        float bank_f, float level_flight_speed, float speed,
+                                        bool trace = false) {
+    // DIAGNOSTIC (cc9-physics27, BSP_PLANE_RATE_TRACE): one "plane tr shape" line per
+    // call naming the exit taken; log-only.
+    auto shape_note = [&](const char* exit, bool cov, float mm, float bs, float dn, float ee) {
+        if (!trace) return;
+        host.log.notef("plane tr shape %s t=%.2f pass=%d exit=%s covers=%d m=%.4f base=%.4f "
+            "den=%.2f e=%.4f lo=%.4f hi=%.4f dlo=%.2f dhi=%.2f r=%.2f",
+            u.row.name.c_str(), static_cast<double>(host.summary.simulated_seconds), pass, exit,
+            cov ? 1 : 0, static_cast<double>(mm), static_cast<double>(bs), static_cast<double>(dn),
+            static_cast<double>(ee), static_cast<double>(lo), static_cast<double>(hi),
+            static_cast<double>(dlo), static_cast<double>(dhi), static_cast<double>(r));
+    };
+    if (!(lo < hi)) { shape_note("lo>=hi", false, 0.0f, 0.0f, 0.0f, 0.0f); return; }   // 0099CABC
     // 0099CAD4-0099CB19; x0 is pilot+264h (0099CAF2). 0099D300 stores 0.0 there
     // at 0099EB9D (XORPS 0099EB89) every think; the 0.12 ([00CE81A8]) stored at
     // 0099EB95 goes to pilot+260h. The 0.12 below is the old reading, kept
@@ -13045,7 +13168,7 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
     if (1.0f > g) {
         lo = static_cast<float>((static_cast<double>(lo) - 1.1) * g + 1.1);     // double [00CE3DF0]
         hi = static_cast<float>((static_cast<double>(hi) + 1.1) * g - 1.1);
-        if (!(lo < hi)) return;                                      // 0099CB67
+        if (!(lo < hi)) { shape_note("fade", false, 0.0f, 0.0f, 0.0f, g); return; }   // 0099CB67
     }
     const float ratio = dlo / dhi;                                   // 0099CB6D-0099CBB8
     if (static_cast<double>(ratio) > 1.8) {                          // double [00D049A8]
@@ -13093,11 +13216,12 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
         else r = static_cast<float>(r * 0.7);
     }
     if (range_test) {                                                // 0099CDC9
-        if (dlo > r && dhi > r) return;
+        if (dlo > r && dhi > r) { shape_note("range", covers, m, 0.0f, 0.0f, 0.0f); return; }
         r = static_cast<float>(r * 1.1);
     }
     const float base = covers ? avoid_interp(0.0f, 0.3f, 0.08f, 0.5f, m) : 0.3f;   // [00D05B50] [00CE3800]
     const float den = (200.0 > r) ? r : 200.0f;                      // double [00CE4D70]
+    const float e_trace = dhi / den - base;                          // DIAGNOSTIC copy of e
     if (lo > -1.0f) {                                                // 0099CD96
         const float e = dhi / den - base;                            // dHi for both edges
         if (0.0f > e) {
@@ -13114,9 +13238,10 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
             hi = hi - e * e;
         }
     }
-    if (!(lo < hi)) return;                                          // 0099D016
+    if (!(lo < hi)) { shape_note("final_lo>=hi", covers, m, base, den, e_trace); return; }   // 0099D016
     host.ga_insert_0099b790(u, pass, lo, hi);                        // 0099D025
     ++u.tr_bands;
+    shape_note("inserted", covers, m, base, den, e_trace);
 }
 
 // 009A1420..009A17A1 (0099F1C0's branch A, inside the body 0099F1C0-009A17CB),
@@ -13295,9 +13420,12 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     } else {
         sa = avoid_interp(0.1f, 1.0f, 1.2f, 8.0f, bank_f) * sa;      // [00D7A2F0] [00CE3814] [00CE3918]
     }
+    const float sa_bank_trace = sa;                                  // DIAGNOSTIC
     if (pitch < 0.0f) sa = static_cast<float>(sa - w_width * pitch * 4.0);   // double [00D7A328]
+    const float sa_pitch_trace = sa - sa_bank_trace;                 // DIAGNOSTIC
     const float* p_now = u.world.data() + 12;
     const float h9b4 = p_now[1] - avoid_surface_height(p_now[0], p_now[2]);   // unit+9B4h, labelled
+    const float sa_h_trace = avoid_interp(80.0f, 0.0f, 460.0f, w_width + w_width, h9b4);   // DIAGNOSTIC
     sa = avoid_interp(80.0f, 0.0f, 460.0f, w_width + w_width, h9b4) + sa;     // [00CE5444] [00D1F404]
     const float* fr = u.world.data() + 8;                            // forward row
     const float fwd_speed = v_world[0] * fr[0] + v_world[1] * fr[1] + v_world[2] * fr[2];   // 007D99C0
@@ -13305,8 +13433,23 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     sa = avoid_interp(static_cast<float>(max_spd * 1.4), 0.0f,       // double [00D045F0]
                       static_cast<float>(2.5 * max_spd),             // double [00CE3DE0]
                       static_cast<float>(w_width * 3.0), fwd_speed) + sa;
+    const float sa_speed_trace = avoid_interp(static_cast<float>(max_spd * 1.4), 0.0f,   // DIAGNOSTIC
+                      static_cast<float>(2.5 * max_spd), static_cast<float>(w_width * 3.0), fwd_speed);
     if (!(sa > 10.0f)) sa = 10.0f;                                   // [00CE38B8]
     const double look_d = static_cast<double>(v_look * look_t);      // 0099F470, a double
+
+    // DIAGNOSTIC (cc9-physics27, BSP_PLANE_RATE_TRACE): "plane tr arm" per pass and
+    // "plane tr run" per 0099CAB0 call for the named plane; log-only. The heights
+    // are recomputed here without avoid_surface_height's census counters.
+    const bool tr_trace = !plane_rate_trace_name().empty() && u.row.name == plane_rate_trace_name();
+    auto tr_heights = [&](float x, float z, float& lh, float& sh) {
+        OceanFieldBinding sea(*this);
+        sh = bsp::ocean_water_height_0078cf20(x, z, sea);
+        const GameAvoidZoneRegistry& reg = GameAvoidZoneRegistry::instance();
+        const bsp::TerrainGridLayerRecord* layer = reg.layer(reg.squadron_layer_34c());
+        lh = layer != nullptr ? avoid_zone_sample_0041bc20(*layer, x, z) : 0.0f;
+    };
+    float tr_fy = 0.0f, tr_wa = -1.0f, tr_wb = -1.0f, tr_w = -1.0f;   // DIAGNOSTIC
 
     float p0[3]{}, a[3]{}, mid[3]{}, b[3]{};
     float c0 = 0.1f;
@@ -13324,6 +13467,7 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
             const float m_turn = avoid_interp(-0.15f, 0.0f, 0.2f, 2.5f, -pitch);   // [00CF87CC] [00CE54A0] [00CF87C8]
             const float c = m_turn * sin_b * cos_p * u.plane_class.slide_ratio * u.plane_class.yaw_spd;
             for (int i = 0; i < 3; ++i) f[i] = c * l[i] + f[i];      // 0099F62F's normalize is discarded
+            tr_fy = f[1];                                            // DIAGNOSTIC
             r = static_cast<float>(avoid_interp(0.3f, 0.6f, 1.2f, 1.2f, bank_f) * look_d);   // [00CE69C8] [00CE3D30] [00CE3814]
             for (int i = 0; i < 3; ++i) p0[i] = static_cast<float>(p_now[i] - f[i] * 10.0);   // double [00CE3DC0]
             for (int i = 0; i < 3; ++i) {
@@ -13346,7 +13490,11 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
                 const float wb = avoid_interp(-0.4f, 0.0f, -0.15f, 1.0f, pitch); // [00D1F400]
                 const float w = wb * wa;
                 if (w > 0.0f) f[1] = static_cast<float>((1.0 - w) * f[1]);
+                tr_wa = wa;                                          // DIAGNOSTIC
+                tr_wb = wb;
+                tr_w = w;
             }
+            tr_fy = f[1];                                            // DIAGNOSTIC
             r = static_cast<float>(look_d * 1.1);                    // double [00CE3DF0]
             for (int i = 0; i < 3; ++i) {
                 a[i] = static_cast<float>(r * (f[i] - up[i]) * 0.75) + p0[i];   // double [00CEC9D8]
@@ -13366,6 +13514,61 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
         const float n_f = static_cast<float>(n_steps);
         const float ds = 1.0f / n_f;
         float s = ds > 1.0f ? 1.0f : ds;
+        if (tr_trace) {                                              // DIAGNOSTIC
+            const GameAvoidZoneRegistry& reg = GameAvoidZoneRegistry::instance();
+            const int li = static_cast<int>(reg.squadron_layer_34c());
+            const bsp::TerrainGridLayerRecord* layer = reg.layer(reg.squadron_layer_34c());
+            float lh_pos = 0.0f, sh_pos = 0.0f, lh_p0 = 0.0f, lh_a = 0.0f, lh_m = 0.0f,
+                  lh_b = 0.0f, sh_x = 0.0f;
+            tr_heights(p_now[0], p_now[2], lh_pos, sh_pos);
+            tr_heights(p0[0], p0[2], lh_p0, sh_x);
+            tr_heights(a[0], a[2], lh_a, sh_x);
+            tr_heights(mid[0], mid[2], lh_m, sh_x);
+            tr_heights(b[0], b[2], lh_b, sh_x);
+            log.notef("plane tr arm %s t=%.2f pass=%d pos=(%.1f %.1f %.1f) layer=%d cell=%.1f "
+                "half_ext=%.1f dim=%d layer_h=%.2f sea_h=%.2f h9b4=%.2f pitch=%.4f bank=%.4f "
+                "bank_f=%.4f inv=%d speed=%.2f v_stall=%.2f look_t=%.3f look_d=%.2f r=%.2f "
+                "sa=%.2f sa_parts=(%.2f %.2f %.2f %.2f) max_spd=%.1f width=%.2f fy=%.4f "
+                "wa=%.3f wb=%.3f w=%.3f p0=(%.1f %.1f %.1f|%.2f) a=(%.1f %.1f %.1f|%.2f) "
+                "mid=(%.1f %.1f %.1f|%.2f) b=(%.1f %.1f %.1f|%.2f) c0=%.2f n_steps=%d",
+                u.row.name.c_str(), static_cast<double>(summary.simulated_seconds), pass,
+                static_cast<double>(p_now[0]), static_cast<double>(p_now[1]),
+                static_cast<double>(p_now[2]), li,
+                layer ? static_cast<double>(layer->cell_size) : -1.0,
+                layer ? static_cast<double>(layer->half_extent) : -1.0,
+                layer ? layer->dimension : -1, static_cast<double>(lh_pos),
+                static_cast<double>(sh_pos), static_cast<double>(h9b4),
+                static_cast<double>(pitch), static_cast<double>(bank),
+                static_cast<double>(bank_f), inverted ? 1 : 0, static_cast<double>(speed),
+                static_cast<double>(v_stall), static_cast<double>(look_t), look_d,
+                static_cast<double>(r), static_cast<double>(sa),
+                static_cast<double>(sa_bank_trace), static_cast<double>(sa_pitch_trace),
+                static_cast<double>(sa_h_trace), static_cast<double>(sa_speed_trace),
+                static_cast<double>(max_spd), static_cast<double>(w_width),
+                static_cast<double>(tr_fy), static_cast<double>(tr_wa),
+                static_cast<double>(tr_wb), static_cast<double>(tr_w),
+                static_cast<double>(p0[0]), static_cast<double>(p0[1]), static_cast<double>(p0[2]),
+                static_cast<double>(lh_p0),
+                static_cast<double>(a[0]), static_cast<double>(a[1]), static_cast<double>(a[2]),
+                static_cast<double>(lh_a),
+                static_cast<double>(mid[0]), static_cast<double>(mid[1]), static_cast<double>(mid[2]),
+                static_cast<double>(lh_m),
+                static_cast<double>(b[0]), static_cast<double>(b[1]), static_cast<double>(b[2]),
+                static_cast<double>(lh_b), static_cast<double>(c0), n_steps);
+        }
+        auto run_note = [&](int j, float tt, float ss, const char* site, float lo_, float hi_,
+                            float dlo_, float dhi_, const float x[3], float cc) {   // DIAGNOSTIC
+            if (!tr_trace) return;
+            float lh = 0.0f, sh = 0.0f;
+            tr_heights(x[0], x[2], lh, sh);
+            log.notef("plane tr run %s t=%.2f pass=%d j=%d tt=%.3f s=%.3f site=%s lo=%.4f "
+                "hi=%.4f dlo=%.2f dhi=%.2f smp=(%.1f %.1f %.1f) c=%.2f layer_h=%.2f",
+                u.row.name.c_str(), static_cast<double>(summary.simulated_seconds), pass, j,
+                static_cast<double>(tt), static_cast<double>(ss), site,
+                static_cast<double>(lo_), static_cast<double>(hi_), static_cast<double>(dlo_),
+                static_cast<double>(dhi_), static_cast<double>(x[0]), static_cast<double>(x[1]),
+                static_cast<double>(x[2]), static_cast<double>(cc), static_cast<double>(lh));
+        };
         auto len_from_p0 = [&](const float x[3]) {
             const double dx = static_cast<double>(x[0]) - p0[0];
             const double dy = static_cast<double>(x[1]) - p0[1];
@@ -13419,8 +13622,9 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
                     float x[3];
                     for (int i = 0; i < 3; ++i) x[i] = cme[i] * fx + e1[i];
                     dhi = len_from_p0(x);
+                    run_note(j, t, s, "first_half", lo, hi, dlo, dhi, smp, c);   // DIAGNOSTIC
                     terrain_shape_band_0099cab0(*this, u, pass, lo, hi, dlo, dhi, r, bank_f,
-                                                level_flight, speed);   // 009A0AE0
+                                                level_flight, speed, tr_trace);   // 009A0AE0
                     state = 1;
                 }
                 c_prev = c;
@@ -13452,16 +13656,18 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
                     float x[3];
                     for (int i = 0; i < 3; ++i) x[i] = e2[i] + (1.0f - hi) * (c2[i] - e2[i]);
                     dhi = len_from_p0(x);
+                    run_note(j, t, s, "second_half", lo, hi, dlo, dhi, smp, c);   // DIAGNOSTIC
                     terrain_shape_band_0099cab0(*this, u, pass, lo, hi, dlo, dhi, r, bank_f,
-                                                level_flight, speed);   // 009A1240
+                                                level_flight, speed, tr_trace);   // 009A1240
                     state = 1;
                 }
                 c_prev = c;
             }
             if (blocked) {                                           // 009A1296-009A138E
                 dhi = c0 / (c0 - c) * len_from_p0(smp);
+                run_note(j, t, s, "open_end", lo, 1.1f, dlo, dhi, smp, c);   // DIAGNOSTIC
                 terrain_shape_band_0099cab0(*this, u, pass, lo, 1.1f, dlo, dhi, r, bank_f,
-                                            level_flight, speed);
+                                            level_flight, speed, tr_trace);
             }
             s = s + ds;                                              // 009A13AC
             if (s > 1.0f) s = 1.0f;
@@ -22523,7 +22729,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 0.0f, unit_.plane_max_spd * min_drag_spd_mul,
                                 max_drag_pitch, unit_.plane_max_spd * max_drag_spd_mul,
                                 state.pitch);
-                            float v = world_speed > floor_speed ? world_speed : floor_speed;
+                            float v = 0.0f;
+                            if constexpr (GameUnitsHost::Impl::kPlaneDragOrderCc13Bound) {
+                                // 007D924E-007D9266: FCOMIP floor, speed; JBE keeps the speed.
+                                v = floor_speed > world_speed ? floor_speed : world_speed;
+                            } else {
+                                v = world_speed > floor_speed ? world_speed : floor_speed;
+                            }
                             float closed = 1.0f - unit_.plane_latched_throttle;
                             if (closed < 0.0f) closed = 0.0f;
                             if (closed > 1.0f) closed = 1.0f;
@@ -22535,7 +22747,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 007D926C-007D929B multiplies in -sgn(v), so the
                             // value opposes forward motion.
                             const float sign = v > 0.0f ? 1.0f : (v < 0.0f ? -1.0f : 0.0f);
-                            float d = -sign * v * v * k * coefficient * brake;
+                            float d = 0.0f;
+                            if constexpr (GameUnitsHost::Impl::kPlaneDragOrderCc13Bound) {
+                                // 007C4990: (Accel / MaxSpd) / MaxSpd. 007D91D2-007D91EC
+                                // and 007D928D-007D9295: ((-sgn * v) * v) * (brake * (k * coef)).
+                                const float image_coefficient =
+                                    (unit_.plane_accel / unit_.plane_max_spd) / unit_.plane_max_spd;
+                                const float k_coefficient = k * image_coefficient;
+                                const float kb = brake * k_coefficient;
+                                d = ((-sign * v) * v) * kb;
+                            } else {
+                                d = -sign * v * v * k * coefficient * brake;
+                            }
                             // 007DBB0E / 007DBB23, the two pitch ramps the call
                             // site multiplies in. Both endpoints of the second
                             // are 1.0 for a healthy aircraft, so r2 is 1.0 until
@@ -22927,8 +23150,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     if (static_cast<double>(b2) > 1.0e-10) {
                                         const float sp = std::sqrt(b2);
                                         if (sp > 3.0f) {
-                                            b[1] = static_cast<float>(static_cast<double>(b[1]) -
-                                                static_cast<double>(sp) * 0.10000000149011612);
+                                            if constexpr (bsp::kPlaneFlightX87Cc13Bound) {
+                                                // 007D8D6D FMUL rounds sp * 0.1 to float, then FSUBP.
+                                                const float drop = static_cast<float>(
+                                                    static_cast<double>(sp) * 0.10000000149011612);
+                                                b[1] = static_cast<float>(static_cast<double>(b[1]) -
+                                                    static_cast<double>(drop));
+                                            } else {
+                                                b[1] = static_cast<float>(static_cast<double>(b[1]) -
+                                                    static_cast<double>(sp) * 0.10000000149011612);
+                                            }
                                             const float l = std::sqrt(b[0] * b[0] + b[1] * b[1] + b[2] * b[2]);
                                             const float li = l > 0.0f ? 1.0f / l : 0.0f;
                                             for (int i = 0; i < 3; ++i) {
@@ -25356,13 +25587,51 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     bool df_threat_009a85b0(bool want_cone) {
                         const GameUnitSlot* t = df_target_slot();
                         if (t == nullptr || !df_pilot_targets_us(*t)) return false;
-                        if (!want_cone) return true;
-                        float v[3];
-                        GameUnitsHost::Impl::follow_to_body(*t, unit_.motion.position, false, v);
-                        if (!(v[2] > 10.0f)) return false;                          // 009A8671
-                        if (!(unit_.df_row.aim_shoot_distance * 1.5 > v[2])) return false;
-                        const double a = v[0] / v[2], b = v[1] / v[2];
-                        return std::sqrt(a * a + b * b) < 1.0;                      // 009A86C6
+                        bool threatened = true;
+                        if constexpr (GameUnitsHost::Impl::kDfThreatOrdnanceClauseCc13Bound) {
+                            // 009A85EF: the target's published 007B9140(T, 0); 009A8600:
+                            // the plane's own. Both: kind 17h, or some rack holds a round.
+                            // SUBSTITUTION, labelled: T's is computed live, not read from
+                            // the step slot [00F876B8] 007CDC70 published.
+                            if (df_can_drop_007b9140(*t) && !df_can_drop_007b9140(unit_)) {
+                                threatened = false;                                 // 009A8607
+                            }
+                        }
+                        if (threatened && want_cone) {
+                            float v[3];
+                            GameUnitsHost::Impl::follow_to_body(*t, unit_.motion.position, false, v);
+                            if (!(v[2] > 10.0f)) {                                  // 009A8671
+                                threatened = false;
+                            } else if constexpr (GameUnitsHost::Impl::kDfThreatConePc24Cc13Bound) {
+                                const float limit = static_cast<float>(
+                                    static_cast<double>(unit_.df_row.aim_shoot_distance) * 1.5);
+                                if (!(limit > v[2])) {                              // 009A8698
+                                    threatened = false;
+                                } else {
+                                    const float ab[3] = {v[0] / v[2], v[1] / v[2], 0.0f};
+                                    threatened = bsp::gun_length3_0042b2f0<false>(ab) < 1.0f;
+                                }
+                            } else {
+                                if (!(unit_.df_row.aim_shoot_distance * 1.5 > v[2])) {
+                                    threatened = false;
+                                } else {
+                                    const double a = v[0] / v[2], b = v[1] / v[2];
+                                    threatened = std::sqrt(a * a + b * b) < 1.0;    // 009A86C6
+                                }
+                            }
+                        }
+                        return threatened;
+                    }
+                    // 007B9140(unit, 0): 1 for kind 17h (007B914A), else the first rack
+                    // that holds a round (the walk of plane_holds_rack_round_007b9140).
+                    bool df_can_drop_007b9140(const GameUnitSlot& s) {
+                        if (bsp::unit_is_kind_of(s.class_id, 0x17)) return true;
+                        GameUnitSlot& m = const_cast<GameUnitSlot&>(s);   // the rack list is a lazy cache
+                        for (const PlaneOrdnanceRack& rack : owner_.ordnance_racks(m)) {
+                            if (rack.class_id == 0) continue;
+                            if (owner_.plane_rack_holds_round(s, rack)) return true;
+                        }
+                        return false;
                     }
                     // A dogfight state-enter draw: 00BD2F10(lo, hi) on the unit's keyed
                     // stream under kDogfightEnterDrawsBound, else the midpoint.
@@ -28508,9 +28777,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const std::size_t own_ld = own->flight_leader();
                         if (own_ld == bsp::kPlaneSquadronNoUnit || own_ld >= owner_.slots.size()) return {};
                         const float* op = owner_.slots[own_ld]->motion.position;
-                        const float own_d = static_cast<float>(std::sqrt(
-                            static_cast<double>(unit_.lb_aim[0] - op[0]) * (unit_.lb_aim[0] - op[0]) +
-                            static_cast<double>(unit_.lb_aim[2] - op[2]) * (unit_.lb_aim[2] - op[2])));
+                        float own_d = 0.0f;
+                        if constexpr (GameUnitsHost::Impl::kLevelBombSpacingDistPc24Cc13Bound) {
+                            // 009B4FE4-009B5054: float dx, dz; 0042B2F0's chain.
+                            const float v[3] = {unit_.lb_aim[0] - op[0], 0.0f,
+                                                unit_.lb_aim[2] - op[2]};
+                            own_d = bsp::gun_length3_0042b2f0<false>(v);
+                        } else {
+                            own_d = static_cast<float>(std::sqrt(
+                                static_cast<double>(unit_.lb_aim[0] - op[0]) * (unit_.lb_aim[0] - op[0]) +
+                                static_cast<double>(unit_.lb_aim[2] - op[2]) * (unit_.lb_aim[2] - op[2])));
+                        }
                         unsigned own_id = 0;
                         std::vector<bsp::LevelBombPeer> list;
                         const auto& recs = reg.records();
@@ -28539,9 +28816,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (!(tz * tz + tx * tx + 0.0f < bsp::level_bomb::kPeerTargetRadiusSq)) continue;
                             const float* lp = l.motion.position;
                             bsp::LevelBombPeer peer;
-                            peer.distance = static_cast<float>(std::sqrt(
-                                static_cast<double>(unit_.lb_aim[0] - lp[0]) * (unit_.lb_aim[0] - lp[0]) +
-                                static_cast<double>(unit_.lb_aim[2] - lp[2]) * (unit_.lb_aim[2] - lp[2])));
+                            if constexpr (GameUnitsHost::Impl::kLevelBombSpacingDistPc24Cc13Bound) {
+                                // 009B50EE-009B5154: the same chain on the peer leader.
+                                const float v[3] = {unit_.lb_aim[0] - lp[0], 0.0f,
+                                                    unit_.lb_aim[2] - lp[2]};
+                                peer.distance = bsp::gun_length3_0042b2f0<false>(v);
+                            } else {
+                                peer.distance = static_cast<float>(std::sqrt(
+                                    static_cast<double>(unit_.lb_aim[0] - lp[0]) * (unit_.lb_aim[0] - lp[0]) +
+                                    static_cast<double>(unit_.lb_aim[2] - lp[2]) * (unit_.lb_aim[2] - lp[2])));
+                            }
                             peer.id = static_cast<unsigned>(r);
                             list.push_back(peer);
                         }
@@ -36303,9 +36587,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009B14DB-009B1554: c1 = interp(80, 0.8, 260, 0, A8), softened below 0.8.
                         float c1 = bsp::clamped_interpolate_00419010(80.0f, 0.800000011920929f,
                             260.0f, 0.0f, a8);
+                        constexpr bool kPc24 = GameUnitsHost::Impl::kLandBeginSteerPc24Cc13Bound;
                         if (0.800000011920929 > static_cast<double>(c1)) {
-                            c1 = static_cast<float>((1.0 - (0.800000011920929 - c1) *
-                                0.30000001192092896) * c1);
+                            if constexpr (kPc24) {
+                                // 009B1542-009B154E: FSUB, FMUL 0.3, FSUBRP from 1, FMULP.
+                                const float s = (0.8f - c1) * 0.3f;
+                                c1 = (1.0f - s) * c1;
+                            } else {
+                                c1 = static_cast<float>((1.0 - (0.800000011920929 - c1) *
+                                    0.30000001192092896) * c1);
+                            }
                         }
                         // 009B155A-009B15BC: W = [unit+DF4h]+9Ch+[00F876B8]*1Ch, the pilot
                         // bot's lifetime seconds (bot+80h, copied at 0099B198).
@@ -36351,8 +36642,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 g->pilot_landing_approach_dist, 1.0f,
                                 static_cast<float>(static_cast<double>(g->pilot_landing_pos_behind) *
                                     0.800000011920929), 0.0f, ratio);
-                            const float den = static_cast<float>((1.100000023841858 -
-                                static_cast<double>(i) * 0.5) * class_turn_radius_26c_007db4d0());
+                            float den = 0.0f;
+                            if constexpr (kPc24) {
+                                // 009B1713-009B1722: FMUL 0.5, FSUBR 1.1, FMUL [class+26Ch].
+                                den = (1.1f - i * 0.5f) * class_turn_radius_26c_007db4d0();
+                            } else {
+                                den = static_cast<float>((1.100000023841858 -
+                                    static_cast<double>(i) * 0.5) * class_turn_radius_26c_007db4d0());
+                            }
                             float q = static_cast<float>(static_cast<double>(axn) / den);
                             if (static_cast<double>(q) > 0.949999988079071) q = 0.949999988079071f;
                             corr = static_cast<float>(static_cast<double>(
@@ -36373,19 +36670,36 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const float m = 100.0 > static_cast<double>(half) ? 100.0f : half;
                         const float zm = static_cast<float>(static_cast<double>(Z) - m);
                         float H;
-                        if (static_cast<double>(zm) > 100.0) {
-                            H = static_cast<float>((0.5 + 100.0 * static_cast<double>(t2)) +
-                                (static_cast<double>(zm) - 100.0) * t1);
+                        float G;
+                        if constexpr (kPc24) {
+                            // 009B1890-009B18BC: (0.5 + 100 t2) + (zm - 100) t1, or 0.5 + zm t2,
+                            // each op rounded; 009B18CD-009B18D5: G = (Z - 10) t2.
+                            if (zm > 100.0f) {
+                                H = (0.5f + 100.0f * t2) + (zm - 100.0f) * t1;
+                            } else {
+                                H = 0.5f + zm * t2;
+                            }
+                            G = (Z - 10.0f) * t2;
                         } else {
-                            H = static_cast<float>(0.5 + static_cast<double>(zm) * t2);
+                            if (static_cast<double>(zm) > 100.0) {
+                                H = static_cast<float>((0.5 + 100.0 * static_cast<double>(t2)) +
+                                    (static_cast<double>(zm) - 100.0) * t1);
+                            } else {
+                                H = static_cast<float>(0.5 + static_cast<double>(zm) * t2);
+                            }
+                            G = static_cast<float>((static_cast<double>(Z) - 10.0) * t2);
                         }
-                        const float G = static_cast<float>((static_cast<double>(Z) - 10.0) * t2);
                         // 009B18DB-009B1929: above the lower slope far out, H is raised.
                         if (Z > 20.0f && G > Y) {
                             const float q4 = static_cast<float>(static_cast<double>(Z) * 0.25);
                             const float w = 20.0 > static_cast<double>(q4) ? 20.0f : q4;
-                            H = static_cast<float>(static_cast<double>(H) +
-                                (static_cast<double>(G) - Y) * (static_cast<double>(m) / w));
+                            if constexpr (kPc24) {
+                                // 009B1911-009B1921: m / w, G - Y, the product, + H.
+                                H = (G - Y) * (m / w) + H;
+                            } else {
+                                H = static_cast<float>(static_cast<double>(H) +
+                                    (static_cast<double>(G) - Y) * (static_cast<double>(m) / w));
+                            }
                         }
                         // 009B192F-009B1956: P = -atan2(Y - H, m).
                         const float dyh = static_cast<float>(static_cast<double>(Y) - H);
@@ -36400,18 +36714,36 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         GameUnitsHost::Impl::LandingDeck* dk = owner_.landing_deck_006c0750(
                             unit_.land_deck_plus_one - 1u, unit_.land_site_plus_one - 1u);
                         if (dk != nullptr && g->pilot_landing_approach_dist > Z) {
-                            const double v = (static_cast<double>(owner_.landing_run_length_006ba620(*dk)) *
-                                1.399999976158142 + Z) * t1 + 2.0;
-                            if (static_cast<double>(Y) - 0.5 > v) unit_.land_done_18 = true;
+                            if constexpr (kPc24) {
+                                // 009B19BA-009B19D2: FMUL 1.4, FADD Z, FMUL t1, FADD 2; Y - 0.5.
+                                const float v = (owner_.landing_run_length_006ba620(*dk) * 1.4f + Z) *
+                                    t1 + 2.0f;
+                                if (Y - 0.5f > v) unit_.land_done_18 = true;
+                            } else {
+                                const double v = (static_cast<double>(owner_.landing_run_length_006ba620(*dk)) *
+                                    1.399999976158142 + Z) * t1 + 2.0;
+                                if (static_cast<double>(Y) - 0.5 > v) unit_.land_done_18 = true;
+                            }
                         }
                         // 009B19E2-009B1B22: the pitch arm.
                         const float spd = GameUnitsHost::Impl::leader_live_speed_007b8e60(unit_);  // vtable[38h], labelled
                         const float lvl = owner_.bot_desired_speed_007c47f0(unit_);
-                        const bool fast = static_cast<double>(spd) >
-                            static_cast<double>(lvl) * w_speed;
-                        const bool far_out = static_cast<double>(Z) > static_cast<double>(spd) * 3.0;
-                        const bool high = static_cast<double>(Y) >
-                            static_cast<double>(unit_.motion_class.hull_length) * 1.399999976158142;  // class+A0h
+                        bool fast = false;
+                        bool far_out = false;
+                        bool high = false;
+                        if constexpr (kPc24) {
+                            // 009B1A59, 009B1A7C, 009B1AA2: each product rounded before the
+                            // FCOMIP.
+                            fast = spd > lvl * w_speed;
+                            far_out = Z > spd * 3.0f;
+                            high = Y > unit_.motion_class.hull_length * 1.4f;              // class+A0h
+                        } else {
+                            fast = static_cast<double>(spd) >
+                                static_cast<double>(lvl) * w_speed;
+                            far_out = static_cast<double>(Z) > static_cast<double>(spd) * 3.0;
+                            high = static_cast<double>(Y) >
+                                static_cast<double>(unit_.motion_class.hull_length) * 1.399999976158142;  // class+A0h
+                        }
                         float pitch;
                         int mode;
                         if (!fast && !far_out && !high) {
@@ -36441,8 +36773,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // interp(1.0 -> 0, 4.0 (00CE3D34) -> 1, |X|).
                                 const float u = bsp::clamped_interpolate_00419010(
                                     1.0f, 0.0f, 4.0f, 1.0f, ax);
-                                const float lat = static_cast<float>(
-                                    -static_cast<double>(X) * 1.25 * static_cast<double>(u));
+                                float lat = 0.0f;
+                                if constexpr (kPc24) {
+                                    // 009B1B7A-009B1B82: FCHS, FMUL 1.25, FMULP u.
+                                    lat = (-X * 1.25f) * u;
+                                } else {
+                                    lat = static_cast<float>(
+                                        -static_cast<double>(X) * 1.25 * static_cast<double>(u));
+                                }
                                 // 009B1B88-009B1BAE: fwd = max(Z, 2|X|).
                                 const float two = ax + ax;
                                 const float fwd = Z > two ? Z : two;
@@ -38892,6 +39230,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.log.notef("  moveto task %s: state %d -> %d (009C3310)",
                                     unit_.row.name.c_str(), static_cast<int>(unit_.moveto_state),
                                     static_cast<int>(next));
+                                // 009C3387: the old state's exit (non-stub only for follow).
+                                if constexpr (GameUnitsHost::Impl::kMoveToFollowExitCc13Bound) {
+                                    if (unit_.moveto_state ==
+                                        GameUnitSlot::MoveToTaskState::kFollow) {
+                                        owner_.follow_exit_009bde40(unit_);
+                                    }
+                                }
                                 unit_.moveto_state = next;
                             }
                         } else {
@@ -39819,6 +40164,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                             if constexpr (GameUnitsHost::Impl::kPilotAvoidanceUpdateBound) {
                                 // 009A17D0, before 0099D300.
+                                unit_.diag_va_plane_ticks0 = unit_.va_plane_ticks;
+                                unit_.diag_va_ship_ticks0 = unit_.va_ship_ticks;
+                                unit_.diag_tr_bands0 = unit_.tr_bands;
+                                unit_.diag_ga_flagged_ticks0 = unit_.ga_flagged_ticks;
                                 owner_.gunfire_avoidance_009a17d0(unit_, elapsed);
                             }
                             if constexpr (kBandShaperPlan264Bound) {
@@ -39931,6 +40280,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::pilot_evaluate_plan_slots_0099bc00(
                                 unit_.plan_slots, unit_.pilot_command_block,
                                 bsp::kPilotSlewRate, elapsed);
+                            unit_.diag_cmd1_pre = unit_.pilot_command_block[bsp::kPilotCmdPitch];
                             if constexpr (GameUnitsHost::Impl::kPilotAvoidanceUpdateBound) {
                                 owner_.gunfire_repair_0099bf30(unit_);   // 0099BF30
                             }
@@ -41076,6 +41426,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ri.max_ctrl_angle = g.dynamics_water_max_ctrl_angle;
                                 ri.min_ctrl_angle = g.dynamics_water_min_ctrl_angle;
                             }
+                            if constexpr (GameUnitsHost::Impl::kWaterRateFactorsNanOrderCc13Bound) {
+                                // 007DA406-007DA423: the up row dotted with (0, 1, 0), the
+                                // first product through the DC-form FMUL ST1,ST0 (DC C9):
+                                // ((DCh * 0) + E0h) + (E4h * 0), so a non-finite row term
+                                // reaches the ramp.
+                                ri.up_y = (unit_.motion.pose_row1[0] * 0.0f + unit_.motion.pose_row1[1])
+                                    + unit_.motion.pose_row1[2] * 0.0f;
+                                // 007DA47C COMISS unit+9F0h, 0.0 then JBE: a NaN throttle
+                                // takes the not-throttled arm, which the helper's
+                                // !(thr <= 0) gate would not; 0.0 selects that arm.
+                                if (!(unit_.plane_live_throttle > 0.0f)) ri.throttle_9f0 = 0.0f;
+                            }
                             const bsp::PlaneWaterRateFactors rf = bsp::water_rate_factors_007da3d0(ri);
                             m = rf.out_a;
                             f2 = rf.out_b;
@@ -41230,25 +41592,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // its latched stick, the three targets and the body rates
                         // (ctl+48h/+4Ch/+50h) with |w| in degrees per second, the
                         // magnitude 00901C20 gates at |w|^2 > 0.001.
-                        static const std::string rate_trace = [] {
-                            char* text = nullptr;
-                            std::size_t length = 0;
-                            std::string value;
-                            if (_dupenv_s(&text, &length, "BSP_PLANE_RATE_TRACE") == 0 &&
-                                text != nullptr) {
-                                value = text;
-                            }
-                            std::free(text);
-                            return value;
-                        }();
+                        const std::string& rate_trace = plane_rate_trace_name();
                         if (!rate_trace.empty() && unit_.row.name == rate_trace) {
                             const float* w = unit_.plane_body_angular;
                             const double mag = std::sqrt(static_cast<double>(w[0]) * w[0] +
                                 static_cast<double>(w[1]) * w[1] + static_cast<double>(w[2]) * w[2]);
+                            // Packet cc13-ratetraceband: the pitch band set (pilot+CCh)
+                            // and the first pair 0099B940 would find cmd1_pre in.
+                            float band_lo = 0.0f, band_hi = 0.0f;
+                            int band_at = -1;
+                            for (int i = 0; i < unit_.ga_band_n[1] && band_at < 0; ++i) {
+                                const float blo = unit_.ga_band[1][i][0], bhi = unit_.ga_band[1][i][1];
+                                if (unit_.diag_cmd1_pre > blo && bhi > unit_.diag_cmd1_pre) {
+                                    band_at = i;
+                                    band_lo = blo;
+                                    band_hi = bhi;
+                                }
+                            }
                             owner_.log.notef("plane rate trace %s step=%.3f stick=(%.3f %.3f %.3f) "
                                 "target=(%.4f %.4f %.4f) w=(%.4f %.4f %.4f) |w|=%.2f deg/s "
                                 "pitch=%.4f held=%.4f pt2bc=%.4f mode=%d y=%.1f cmd_alt=%.1f "
-                                "bank=%.4f pt_task=%.4f pt_think=%.4f pslot=%.4f/%d t=%.2f",
+                                "bank=%.4f pt_task=%.4f pt_think=%.4f pslot=%.4f/%d t=%.2f "
+                                "cmd1_pre=%.4f pbands=%d pband=%d(%.4f %.4f) "
+                                "d_va_plane=%d d_va_ship=%d d_tr_bands=%d d_ga_flag=%d",
                                 unit_.row.name.c_str(), static_cast<double>(step),
                                 static_cast<double>(unit_.plane_latched_controls[0]),
                                 static_cast<double>(unit_.plane_latched_controls[1]),
@@ -41269,7 +41635,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(unit_.diag_pt2bc_think),
                                 static_cast<double>(unit_.plan_slots[bsp::kPilotSlotPitch].desired),
                                 unit_.plan_slots[bsp::kPilotSlotPitch].active,
-                                static_cast<double>(owner_.summary.simulated_seconds));
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                static_cast<double>(unit_.diag_cmd1_pre),
+                                unit_.ga_band_n[1], band_at,
+                                static_cast<double>(band_lo), static_cast<double>(band_hi),
+                                unit_.va_plane_ticks - unit_.diag_va_plane_ticks0,
+                                unit_.va_ship_ticks - unit_.diag_va_ship_ticks0,
+                                unit_.tr_bands - unit_.diag_tr_bands0,
+                                unit_.ga_flagged_ticks - unit_.diag_ga_flagged_ticks0);
                         }
                         if constexpr (GameUnitsHost::Impl::kPlaneControlRateLawBound) {
                             // The free-flight arm (controller mode 0, flag 1) is
@@ -42543,6 +42916,13 @@ void GameUnitsHost::store_unit_moveto_point(std::size_t index,
     impl_->slots[index]->moveto_point[2] = world[2];
 }
 
+// Documented deviation (cc13-D3): 007C9540 -> 004134F0 copies the whole 4x4 to +74h
+// and +674h (translation included), clears +C8h / +10Ch, invalidates the child chain
+// (0042ED50) and re-syncs (plane+310h) vtable[0Ch]. This takes the three rotation
+// rows and republishes the pose (the +310h re-sync folded in). The dropped
+// translation is unobservable: every caller passes the unit's own position (the
+// squadron arm loads each member's +FCh..+104h at 008A0D9B..008A0DB7; the
+// single-entity caller sets m[12..14] to the position).
 bool GameUnitsHost::set_unit_world_basis_007c9540(std::size_t index, const float right[3],
     const float up[3], const float forward[3]) noexcept {
     if (index >= impl_->slots.size()) return false;

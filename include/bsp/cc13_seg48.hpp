@@ -417,4 +417,60 @@ void cc13_seg48_plane_flight_controller_load_007db430(void* controller, void* re
 // ---- plane sound set ----
 void cc13_seg48_plane_sound_set_for_each_slot18_007de760(void* set, std::uint32_t a, float b, Cc13Seg48Host& host);
 
+// 007EB380..007EBF03, complete ordinary FX step. Native ECX = component
+// (plane+C98h), one stack float dt, RET 4 at 007EBF01; no native EH frame.
+// Image constants remain explicit inputs at their original widths/addresses.
+// This interface does not alter the older Cc13Seg48Host implementations.
+// Main-thread PC24 arithmetic depends on the project's /fp:strict setting;
+// native image doubles are rounded only after each x87 operation.
+struct PlaneFxStepGlobals {
+    std::uint8_t* const& game_00e188a8;
+    std::uint8_t* const& sound_00f8bbd8;
+    const double& c_00ce3d40;
+    const double& c_00d086a0;
+    const float& c_00d08698;
+    const double& c_00ce3d48;
+    const float& c_00d06bb4;
+    const double& c_00d08690;
+    const double& c_00d7a210;
+    const double& c_00ce3820;
+    const double& c_00ce4bd8;
+    const double& c_00d04368;
+    const float& c_00ce54a0;
+    const double& c_00ce7630;
+    const float& c_00ce3958;
+    const float& c_00ce3d30;
+    const float& c_00ce38c8;
+    const void* rpm_key_00d08688;
+    const void* load_key_00d08680;
+    const void* pass_key_00d08678;
+};
+
+struct PlaneFxStepHost {
+    virtual ~PlaneFxStepHost() = default;
+    virtual void call_0042ac60(float* current, float target, float max_step) = 0;
+    virtual std::uint8_t* call_0042e740() = 0;
+    // Five stack floats, RET 14h, ST0 result; keep the unrounded result until
+    // the caller's explicit float store or following x87 expression.
+    virtual double call_00419010(float x0, float y0, float x1, float y1, float x) = 0;
+    virtual std::uint8_t vcall_controller_38(void* controller) = 0;
+    virtual bool vcall_plane_5c(void* plane, std::uint32_t kind) = 0;
+    virtual void vcall_effect_10(void* effect, float value, float dt) = 0;
+    virtual const float* vcall_plane_34(void* plane, float* out3) = 0;
+    virtual double vcall_plane_38(void* plane) = 0;
+    virtual void vcall_sound_1c(void* sound, const void* key, float value) = 0;
+    virtual void call_007e1b30(void* holder) = 0;
+    virtual void call_007eb0e0(void* component) = 0;
+    virtual void call_007eae30(void* holder, std::uint8_t restart) = 0;
+    virtual void call_007eb160(void* component) = 0;
+    virtual void call_00414db0(void* entity) = 0;
+    virtual float* call_00413920(const float* left16, float* out16, const float* right16) = 0;
+    virtual void call_004134f0(float* out16, const float* source16) = 0;
+    virtual void call_00b6db70(void* node) = 0;
+    virtual void call_007de490(void* holder, float dt) = 0;
+};
+
+void plane_fx_component_step_007eb380(std::uint8_t* component, float dt,
+                                    const PlaneFxStepGlobals& globals, PlaneFxStepHost& host);
+
 }  // namespace bsp

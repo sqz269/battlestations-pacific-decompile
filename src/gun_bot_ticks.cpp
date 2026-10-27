@@ -6,8 +6,18 @@
 #include "bsp/unit_rudder.hpp"
 
 #include <cmath>
+#include <cstring>
 
 namespace bsp {
+// 008FF040..008FF05B complete listing: base attach, CURRENT +50h to +68h,
+// roll error. Original __thiscall ECX=bot, one stack pointer, RET4.
+// Descriptive names remain hypotheses; callees are explicit native boundaries.
+void attach_ballistic_gun_bot_008ff040(void* bot, void* unit, GunBotAttachmentHost& host) {
+    host.attach_008fbc80(bot, unit);
+    auto* bytes = static_cast<unsigned char*>(bot);
+    std::memcpy(bytes + 0x68, bytes + 0x50, 4);
+    host.roll_error_008fdbe0(bot);
+}
 
 // ---------------------------------------------------------------------------
 // 0072C6A0, which bot a weapon descriptor sub-type gets

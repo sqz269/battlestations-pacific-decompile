@@ -170,6 +170,28 @@ struct LeakSubscription : EventSubscription {       // 28h, vtable 00D1B6CC
     RangeFilter duration{};                          // +1Ch
 };
 using FireSubscription = LeakSubscription;           // 28h, vtable 00D1B6DC, same fields
+
+// Subscription lifecycle bodies. Native ABI: ECX=this, no stack arguments,
+// plain RET; constructors return this in EAX. These value-model constructors
+// return fresh empty filters/callback. Destructors release filters in native
+// reverse order, then callback storage. std::set/std::string are qualified
+// storage substitutions: native sentinels, vtables, pool allocation and EH are
+// not binary-compatible with these existing model types.
+ReconSubscription construct_recon_0097a220();
+void destruct_recon_0097a330(ReconSubscription&);
+KillSubscription construct_kill_0097a450();
+void destruct_kill_0097a530(KillSubscription&);
+ExitZoneSubscription construct_exit_zone_0097a620();
+void destruct_exit_zone_0097a6d0(ExitZoneSubscription&);
+InputSubscription construct_input_0097a790();
+void destruct_input_0097a810(InputSubscription&);
+SurrenderSubscription construct_surrender_0097a8b0();
+void destruct_surrender_0097a930(SurrenderSubscription&);
+// Native0097A9D0 leaves duration min/max untouched. Supply the allocation's
+// existing range words explicitly; archive Load later writes their values.
+LeakSubscription construct_leak_0097a9d0(RangeFilter untouched_duration);
+void destruct_leak_0097aa50(LeakSubscription&);
+
 struct RepairSubscription : EventSubscription {     // 2Ch, vtable 00D1B6EC
     EntityIdFilter entity{};                         // +0Ch
     IntFilter repair_setting{};                      // +1Ch
@@ -472,6 +494,9 @@ struct WarningEventRecord {
     std::string name{};
 };
 WarningEventRecord construct_warning_event_record_0096dc00(std::string name);
+//0096DCB0 ECX=this, RET0096DD07; release name storage, base vtable00D1AF18.
+// Value model uses std::string storage and has no native vtable field.
+void destruct_warning_event_record_0096dcb0(WarningEventRecord&);
 
 // --- reports ---------------------------------------------------------------------------------------
 
@@ -718,9 +743,22 @@ struct GuiTextCursor {
 void gui_text_set_cursor_mode_00ab95f0(void* text, GuiTextCursor& cursor, std::int32_t mode,
                                        GuiLeafHost& host);
 
-// 00AB10A0 (Icon) / 00ABE640 (Section), __fastcall(ECX = widget): the first vertex stream of
-// the widget's model, or null.
+// Historical 00AB10A0 (Icon) host projection: the first vertex stream of the
+// widget's model, or null. This forwarding boundary does not implement
+// 00ABE640; use gui_section_get_first_vertex_stream_00abe640 for that body.
 void* gui_first_vertex_stream(void* widget, GuiLeafHost& host);
+
+struct GuiSectionVertexStreamHost {
+    virtual ~GuiSectionVertexStreamHost() = default;
+    // Exact native call boundaries; callee internals are not reconstructed here.
+    virtual void* call_00b74640(void* model, std::int32_t index) = 0;
+    virtual std::uint32_t call_00b72b20(void* geometry) = 0;
+    virtual void* call_00b73260(void* geometry, std::int32_t index) = 0;
+};
+// 00ABE640, native ECX = section, RET -> EAX stream or null. Complete normal
+// body. The first_vertex_stream hook above is not Section credit. Valid raw
+// Win32 widget storage required; no native binary calling-convention claim.
+void* gui_section_get_first_vertex_stream_00abe640(void* section, GuiSectionVertexStreamHost&);
 
 // 00ABE670, __thiscall(section, const float size[2]), RET 4: 00AA7970 then vtable +7Ch.
 void gui_section_set_size_00abe670(void* section, const float (&size)[2], GuiLeafHost& host);

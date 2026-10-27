@@ -47,6 +47,50 @@ const NativeNetworkConsoleThreadImports& native_network_console_thread_imports()
     static const NativeNetworkConsoleThreadImports imports{&::Sleep, &::CloseHandle};
     return imports;
 }
+
+// 00A3D060..00A3D199, original ECX=this, EAX=this, RET. Complete normal path
+// from the 87-instruction listing. The real member constructors establish their
+// own clocks/slots; this parent preserves padding and never clears the arrays.
+// Import pointers are captured at the native load sites. Thread creation failure
+// is retained as a stored null handle passed to SetThreadPriority, with no check.
+NativeNetworkConsoleStorage* construct_native_network_console_00a3d060(
+    NativeNetworkConsoleStorage& owner, const NativeNetworkConsoleConstructContext& context) {
+    construct_native_network_console_base_00a3cf00(owner, context.base); // 00A3D080
+    write(owner.bytes, std::uint32_t{0x00D23F48});
+    write(owner.bytes + 0x15C, std::uint32_t{0});
+    for (std::size_t i = 0; i != 16; ++i) {
+        auto* element = ::new (owner.bytes + 0x19C + i * 0x49C) NativeNetworkConsoleChannelStorage;
+        construct_native_network_console_channel_00a3ce60(*element, context.channel);
+    }
+    owner.bytes[0x4B5C] = std::byte{0};
+    write(owner.bytes + 0x4B60, std::uint32_t{0});
+    write(owner.bytes + 0x4B64, std::uint32_t{0});
+    for (std::size_t i = 0; i != 1000; ++i) {
+        auto* element = ::new (owner.bytes + 0x5B08 + i * 0x82C) NativeNetworkConsoleQueue82cStorage;
+        construct_native_network_console_queue_00a3a3d0(*element);
+    }
+    for (std::size_t i = 0; i != 1000; ++i) {
+        auto* element = ::new (owner.bytes + 0x2046EC + i * 0x820) NativeNetworkConsoleQueue820Storage;
+        construct_native_network_console_queue_00a3a500(*element);
+    }
+    write(owner.bytes + 0x2046E8, owner.bytes + 0x5B08);
+    write(owner.bytes + 0x4003EC, owner.bytes + 0x2046EC);
+    write(owner.bytes + 0x203EBC, std::uint32_t{0});
+    write(owner.bytes + 0x3FFBCC, std::uint32_t{0});
+    write(owner.bytes + 0x4, std::uint32_t{0});
+    write(owner.bytes + 0x148, critical_section_create_00bd1860()); // 00A3D135
+    auto* const second_lock = critical_section_create_00bd1860(); // 00A3D140
+    const auto create = context.imports.create_thread; // native CE2238 load at 00A3D145
+    write(owner.bytes + 0x14C, second_lock);
+    const HANDLE send = create(nullptr, 0, context.send_entry_00a3cec0, &owner, 0, nullptr);
+    const auto priority = context.imports.set_thread_priority; // CE22A0 at 00A3D15D
+    write(owner.bytes + 0x154, send);
+    (void)priority(send, 1);
+    const HANDLE receive = create(nullptr, 0, context.receive_entry_00a3cee0, &owner, 0, nullptr);
+    write(owner.bytes + 0x158, receive);
+    (void)priority(receive, 1);
+    return &owner;
+}
 void write_native_network_console_ack_00a3aab0(
     NativeNetworkConsoleChannelStorage& channel, std::byte* header) noexcept {
     auto* data = channel.bytes;

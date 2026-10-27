@@ -360,4 +360,48 @@ LandConvoyPlacementResult land_convoy_place_members_00742400(
     bool world_pose_law,
     LandConvoyPlacementHost& host);
 
+// Complete ordinary 007482B0..00748986 scene/static-body initializer. Native
+// ECX = MLandFort, no stack arguments, RET; FH3 frame/unwind is not reproduced.
+// Native descriptors are passed as raw 84h / 48h storage. Their layouts agree
+// with ship_hull_body.hpp, cc13_sweepA4.hpp and cc13_seg52b.cpp; the existing
+// projected convoy interfaces above are unchanged. This interface is unwired.
+struct LandFortSceneHost {
+    virtual ~LandFortSceneHost() = default;
+    virtual void call_00955420(void* fort) = 0;
+    virtual bool call_0048e9f0(void* bag, const char* key) = 0;
+    virtual std::uint8_t* call_008f2260(void* bag, const char* key) = 0;
+    virtual void call_00710bb0(void* visual, std::uint32_t group) = 0;
+    virtual std::uint32_t call_00927a80(void* fort) = 0;
+    virtual void* call_00bf681b(std::uint32_t bytes) = 0;
+    virtual void* call_00864580(void* storage) = 0;
+    virtual void vcall_70(void* fort, std::uint32_t value) = 0;
+    virtual bool vcall_5c(void* child, std::uint32_t kind) = 0;
+    virtual void vcall_1b4(void* child, std::int32_t group) = 0;
+    // The slot address is captured before 00927A80; its target is loaded after
+    // that call, even if the fort's current vtable pointer changed meanwhile.
+    virtual void vcall_128(void* fort, std::uint32_t value, std::uint32_t native_target) = 0;
+    virtual void vcall_04(void* gunnery, void* tick_element) = 0;
+    virtual void vcall_38(void* node, const float* matrix16) = 0;
+    virtual void* vcall_40(void* parent_component) = 0;
+    virtual void call_00b6e680(void* node, void* parent_node) = 0;
+    // Library bindings: native checked vector<48h> {proxy,begin,end,capacity}.
+    virtual void call_00747cc0(void* vector16, std::uint32_t capacity) = 0;
+    virtual void call_00748150(void* vector16, const void* shape48) = 0;
+    virtual std::uint8_t* call_00476b90(void* fort) = 0;
+    virtual void* call_00bf55be(std::uint32_t bytes) = 0;
+    virtual void call_00bf6989(void* storage) = 0;
+    virtual void call_00bf65ac(void* storage) = 0;
+    virtual void call_00414db0(void* entity) = 0;
+    virtual float* call_00413920(const float* left16, float* out16, const float* right16) = 0;
+    virtual void call_004134f0(float* out16, const float* source16) = 0;
+    // Dyn library bindings, not reconstructed vendor-library body credit.
+    virtual void call_00c336c0(float* out12, const float* matrix16) = 0;
+    virtual void* call_00c5d580(void* world, const void* descriptor84) = 0;
+    // 00BF6713 has a plain RET; its qualified CRT handler may return.
+    virtual void invalid_iterator_00bf6713() = 0;
+};
+
+void land_fort_init_scene_and_create_static_body_007482b0(
+    std::uint8_t* fort, std::uint8_t* const& game_00e188a8, LandFortSceneHost& host);
+
 }  // namespace bsp

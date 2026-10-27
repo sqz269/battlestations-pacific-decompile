@@ -7,6 +7,7 @@
 #include "bsp/native_game_class_cleanup.hpp"
 #include "bsp/native_profile_hints_owner.hpp"
 #include "bsp/native_gui_media_focus_lifetime.hpp"
+#include "bsp/native_gui_icon_delayed_loads.hpp"
 #include "bsp/native_weak_owner.hpp"
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/observer_dispatch_owner.hpp"
@@ -88,6 +89,12 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         return;
     }
     switch (profile) {
+    case 0x00d5c4b8:
+        if (bindings.gui_icon_delayed_loads != nullptr) {
+            bindings.gui_icon_delayed_loads->delete_registered_00ab57c0(owner, flags);
+            return;
+        }
+        break;
     case 0x00ce7d38:
         if (bindings.particle_clock != nullptr) {
             delete_native_particle_clock_004de340(

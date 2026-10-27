@@ -26,8 +26,44 @@
 
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/vehicle_class.hpp"
+#include "bsp/native_string.hpp"
 
 namespace bsp {
+
+// Raw leaf reader dependencies. Lua references are owned host handles; effects
+// returned by acquire carry one reference. Append is the qualified stock vector
+// call, not reconstructed library credit. Every slot below is native storage.
+struct VehicleClassLeafFieldHost {
+    virtual ~VehicleClassLeafFieldHost() = default;
+    virtual void base_00960230(void* descriptor, const GuiLuaRef& row) = 0;
+    virtual GuiLuaRef get_00b67800(const GuiLuaRef& table, const char* key) = 0;
+    virtual GuiLuaRef unbound_00b65f50() = 0;
+    virtual void release_00b67700(const GuiLuaRef& object) = 0;
+    virtual void assign_00b67690(GuiLuaRef& object, const GuiLuaRef& source) = 0;
+    virtual void first_00b67080(const GuiLuaRef& table, GuiLuaRef& key, GuiLuaRef& value) = 0;
+    virtual void next_00b67190(const GuiLuaRef& table, GuiLuaRef& key, GuiLuaRef& value) = 0;
+    virtual bool is_unbound_00b66420(const GuiLuaRef& object) = 0;
+    virtual bool is_integer_00b66a60(const GuiLuaRef& object) = 0;
+    virtual bool is_nil_00b65fb0(const GuiLuaRef& object) = 0;
+    virtual std::int32_t integer_00b66290(const GuiLuaRef& object) = 0;
+    virtual float number_00b66270(const GuiLuaRef& object) = 0;
+    virtual const char* string_00b662b0(const GuiLuaRef& object) = 0;
+    virtual bool boolean_or_00b662f0(const GuiLuaRef& object, bool fallback) = 0;
+    virtual std::int32_t integer_or_00b66380(const GuiLuaRef& object, std::int32_t fallback) = 0;
+    virtual float float_or_00b66330(const GuiLuaRef& object, float fallback) = 0;
+    virtual std::uint32_t call_00746b90(const GuiLuaRef& object, std::uint32_t fallback) = 0;
+    virtual void* acquire_00870cd0(std::int32_t id, std::uint32_t one) = 0;
+    virtual void retain_effect(void* effect) = 0; // InterlockedIncrement(effect+4)
+    virtual void release_effect(void* effect) = 0; // decrement, slot0 on zero
+    virtual void append_004d9c00(void* vector, void* const* effect) = 0;
+    virtual void* wreck_004b3f10(const void* native_string) = 0;
+};
+// Complete normal bodies. ECX=descriptor, row pointer on stack, RET4.
+// Explicit C++ interfaces and host handles are not original object/ABI proof.
+void read_structure_class_fields_00749210(void* descriptor, const GuiLuaRef& row,
+    VehicleClassLeafFieldHost& host);
+void read_wreckable_class_fields_0074d4a0(void* descriptor, const GuiLuaRef& row,
+    NativeStringRawPoolContext& strings, VehicleClassLeafFieldHost& host);
 
 // ---------------------------------------------------------------------------
 // Key schema as data

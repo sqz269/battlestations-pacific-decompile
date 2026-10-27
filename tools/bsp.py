@@ -1230,7 +1230,13 @@ def ledger_write(args):
     elif args.ledger_command in ('add-function', 'add-fragment'):
         data = json.loads(Path(args.json_file).read_text(encoding='utf-8')) if getattr(args, 'json_file', None) else json.loads(args.json)
         records = data if isinstance(data, list) else [data]
+        if args.supersedes and len(records) != 1:
+            sys.exit('--supersedes takes one record; in a batch put "supersedes": "<old name>" in each record')
+        renames = {}  # id(record) -> old name it supersedes (a rename at the same address and kind)
         for record in records:
+            old = record.pop('supersedes', None) or args.supersedes
+            if old:
+                renames[id(record)] = old
             for key in ('address', 'name', 'source', 'status'):
                 if key not in record:
                     sys.exit(f'missing field {key}')
@@ -1247,12 +1253,30 @@ def ledger_write(args):
             existing = next((r for r in pool if r['address'] == record['address'] and r.get('name') == record['name']), None)
             if existing and not args.replace:
                 sys.exit(f"{record['address']} {record['kind']} {record['name']} already recorded; pass --replace to supersede it. Existing record:\n{json.dumps(existing)}")
+            old = renames.get(id(record))
+            if old and not any(r['address'] == record['address'] and r.get('name') == old for r in pool):
+                names = [r.get('name') for r in pool if r['address'] == record['address']]
+                sys.exit(f"{record['address']} {record['kind']}: no record named {old!r} to supersede; records there: {names}")
         for record in records:
             previous = ledger.upsert(ledger.RECON_DIR, record, key=ledger.RECON_KEY)
+            # a rename: the address can hold several implementations, so only the named old record goes
+            old = renames.get(id(record))
+            if old and old != record['name']:
+                for gone in ledger.drop(ledger.RECON_DIR, record['address'],
+                                        lambda r: r.get('kind') == record['kind'] and r.get('name') == old):
+                    print(f"superseded (stays in git history): {gone['address']} {gone.get('name')}")
+            # --replace also supersedes a no-body placeholder (e.g. name "kTrivialSlots") at the same address and kind
+            placeholders = []
+            if args.replace and record['status'] not in ledger.NO_BODY_STATUSES:
+                placeholders = ledger.drop(ledger.RECON_DIR, record['address'],
+                                           lambda r: r.get('kind') == record['kind'] and r.get('name') != record['name']
+                                           and r.get('status') in ledger.NO_BODY_STATUSES)
             if len(records) == 1:
                 print(f"{record['address']} {record['kind']} {record['name']}")
                 if previous:
                     print(f"replaced (previous record stays in git history): {json.dumps(previous)}")
+            for placeholder in placeholders:
+                print(f"dropped no-body placeholder (stays in git history): {placeholder['address']} {placeholder.get('name')}")
         if len(records) != 1:
             print(f"recorded {len(records)} {args.ledger_command} records; previous values stay in git history")
 
@@ -1546,7 +1570,8 @@ local/output/ and prints the path. --full or BSP_OUTPUT_BUDGET=0 lifts the cap.
       the ONLY sanctioned way to delete trees: never git worktree remove / git clean / Remove-Item -Recurse
   worktree list   |   exports check | exports restore (hours: snapshot + index + re-decompile, resumable)
   ledger add-name <addr> <name> --evidence T [--replace|--append-evidence]
-  ledger add-function|add-fragment --json '{...}' [--replace]   |   ledger migrate
+  ledger add-function|add-fragment --json '{...}' [--replace] [--supersedes OLD_NAME]   |   ledger migrate
+      (a rename: the record named OLD_NAME at that address/kind goes; batches use "supersedes" per record)
 
 Rules that cost money when broken: one representation at a time (pseudocode or assembly, not both);
 batch independent reads into one shell call; never re-read a path already in this context.
@@ -1736,8 +1761,10 @@ def main():
     q = ls.add_parser('add-name'); q.add_argument('address'); q.add_argument('name'); q.add_argument('--evidence', required=True)
     q.add_argument('--force', action='store_true', help='ignore another owner\'s lease'); q.add_argument('--replace', action='store_true', help='supersede an existing record')
     q.add_argument('--append-evidence', action='store_true', help='flag: keep the existing record and append the --evidence text to its evidence (the name is updated if it differs)')
-    q = ls.add_parser('add-function'); g = q.add_mutually_exclusive_group(required=True); g.add_argument('--json'); g.add_argument('--json-file'); q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
-    q = ls.add_parser('add-fragment'); g = q.add_mutually_exclusive_group(required=True); g.add_argument('--json'); g.add_argument('--json-file'); q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
+    for kind in ('add-function', 'add-fragment'):
+        q = ls.add_parser(kind); g = q.add_mutually_exclusive_group(required=True); g.add_argument('--json'); g.add_argument('--json-file')
+        q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
+        q.add_argument('--supersedes', metavar='OLD_NAME', help='rename: drop the record with this name at the same address and kind')
     p.set_defaults(func=ledger_cmd)
     args = parser.parse_args()
     with output_budget(argv=sys.argv[1:], full=getattr(args, 'full', False)):

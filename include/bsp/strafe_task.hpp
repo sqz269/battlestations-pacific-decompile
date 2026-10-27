@@ -49,6 +49,20 @@ inline constexpr bool kStrafeAttackrunSeedDrawBound = true;   // GUNNERY 193: ON
 // an aircraft. It must not be ON without kStrafeTaskBound.
 inline constexpr bool kAttackChoiceGunsFedBound = true;   // ON: SQUADRON_LAND_TASK 5cb
 
+// Packet cc13-D2 (defect rows 00996300, 00996510, 009CCED0). The image runs
+// these x87 chains at PC24, the main thread's precision and cc9's fixed-step
+// policy (docs/CC13_HOST_PRECISION_CENSUS.md), so every operation rounds to
+// float.
+// True:
+// - float per operation, in image order;
+// - 00996510's reciprocal length is 00419260 itself: the squares, sum, sqrt
+//   and 1/len are each stored as float, and a zero length gives 0;
+// - 009CCED0's countdown FCOMI dt,c / JC sends a NaN to the decrement arm.
+// False: the 53-bit models (double chains rounded once at the store), which
+// are the image's pool-worker case, and ordered compares. Changes only ulp
+// and NaN cases.
+inline constexpr bool kStrafeX87FaithfulCc13Bound = false;
+
 // 009CC690's inputs. `ctl` is [task+404h] (approach+0Ch).
 struct StrafeRuleInputs {
     StrafeState current = StrafeState::kNone;

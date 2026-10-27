@@ -163,7 +163,10 @@ static_assert(!kLaunchedSquadronPartyCc13Bound || kGeneratedWingPartyBound,
 // generated_party as the surface arm does, and the wings follow through
 // kGeneratedWingPartyBound. False: no Party, as before (counted:
 // spawn_squadron_party_nodes, spawn_squadron_wing_nodes).
-inline constexpr bool kSpawnNewSquadronPartyCc13Bound = false;
+// ON by the pair of 2026-10-24 (cc9-party1, SHIP_AI_OPEN_ITEMS 323): ESMP01's
+// 94 commandhelpers.lua:330 failures go to 0 (7 squadron nodes, 14 wing
+// nodes); ESMP01, USN19 and ten WINS rows are gameplay identical.
+inline constexpr bool kSpawnNewSquadronPartyCc13Bound = true;
 static_assert(!kSpawnNewSquadronPartyCc13Bound || kGeneratedEntityPartyBound,
               "kSpawnNewSquadronPartyCc13Bound uses the generated-entity party write");
 static_assert(!kSpawnNewSquadronPartyCc13Bound || kGeneratedWingPartyBound,
@@ -253,7 +256,11 @@ inline constexpr bool kReconPublishBound = true;  // ON: pairs held (docs/RECON_
 // 004E0546 rebuild and its 004E059B rebuild of the local slot are one host pass
 // (no time passes between them). False: the first publication is the first
 // frame's, after luaInit.
-inline constexpr bool kReconLoadForceRefreshCc13Bound = false;
+// ON (cc9-recon1, pairs on cd0ecf3ee): IJN30 luaInit SetParty 1 -> 15, the
+// hangars survive; ESMP05 and IJN28 luaInit/think Lua errors gone; BSM01
+// s62_b1_h loses its EndMission (JapFighterTrgGang filled); other WINS rows
+// gameplay identical.
+inline constexpr bool kReconLoadForceRefreshCc13Bound = true;
 static_assert(!kReconLoadForceRefreshCc13Bound || kReconPublishBound,
               "kReconLoadForceRefreshCc13Bound publishes through 00806B10");
 
@@ -647,6 +654,20 @@ inline constexpr bool kLuaTrulyDeadBound = true;   // ON: JM06 / USN04 pairs (OC
 // TrulyDead answers true from then on. LABELLED: the last-position table
 // (00928D49..00928E7E) is not written. False: `Ptr` is never nulled.
 inline constexpr bool kLuaTrulyDeadOnKilledBound = true;   // ON: JM06 / USN04 pairs (OCEAN_WAVE_FIELD 66)
+// Packet cc9-recon1-lastpos: the last-position half of 00928C80. After `Ptr`,
+// 00928D49 00B67580 makes a new table and 00928D81 00B67800 binds it as
+// self.LastPosition (key 00D19454); 00928D97 00414DB0 refreshes the pose when
+// +C8h is clear; 00928DE6 / 00928E32 / 00928E7E 00B67400 store x / y / z (keys
+// 00CEB488 / 00D045F8 / 00CFD718) from +FCh / +100h / +104h. Read by
+// commandhelpers.lua:10626 (luaMissionEnd_CamOnEnt on a TrulyDead end entity:
+// USN21's 14 `pos` nil errors at :10627). True: the host writes the table from
+// the slot's pose translation (unit_pose, +FCh). LABELLED: the 00414DB0 refresh
+// is the host's current pose. False: no LastPosition (nil).
+// ON (cc9-recon1, pairs on 064194207): every WINS row gameplay identical; USN21
+// :10627 errors 14 -> 0, luaMissionCompletedNew reaches EndScene.
+inline constexpr bool kLuaLastPositionOnKilledBound = true;
+static_assert(!kLuaLastPositionOnKilledBound || kLuaTrulyDeadOnKilledBound,
+              "kLuaLastPositionOnKilledBound writes inside the 00928C80 Lua half");
 
 // Packet cc9_set_air_base_slot_count (docs/LUA_BINDING_MISSION.md, "SetAirBaseSlotCount,
 // 008963E0"). SetAirBaseSlotCount(entity, n) resizes the air-ops block's 58h slot array
@@ -1343,6 +1364,7 @@ struct GameMissionLuaSummary {
     unsigned long long untouchable_marked{0};
     unsigned long long untouchable_remove_calls{0};   // packet p16_lua_natives
     unsigned long long truly_dead_ptr_nulled{0};      // packet p16_truly_dead
+    unsigned long long last_position_written{0};      // packet cc9-recon1-lastpos
     unsigned long long untouchable_cleared{0};
     unsigned long long untouchable_is_calls{0};
     unsigned long long untouchable_is_true{0};

@@ -116,6 +116,13 @@ void destroy_gui_timed_entry_profile(GuiTimedEntryStorage& entry) {
         throw std::logic_error("Timed deletion requires a supported current derived profile");
     reset_gui_timed_entry_base_00ad3990(entry);
 }
+GuiTimedEntryStorage* delete_gui_timed_entry_profile(GuiTimedEntryStorage& entry, std::uint32_t flags,
+    void (*free_00bf65ac)(void*)) {
+    destroy_gui_timed_entry_profile(entry);
+    // AC2FE8 / AD3A40: TEST byte [ESP+8 / +4], 1; the pointer itself is pushed.
+    if ((flags & 1u) != 0) free_00bf65ac(&entry);
+    return &entry;
+}
 
 bool update_gui_timed_entry_alpha_00ac2f40(GuiTimedEntryStorage& entry,
     GuiWidgetOwner& domain_owner, float delta) {

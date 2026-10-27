@@ -58,6 +58,14 @@ public:
     void update_00beb9b0();
 
 private:
+    // Canonical PC leaves extracted from this backend's existing implementation.
+    // Typed checked projections; see the source for native ABI and domain limits.
+    bool state_is_zero_or_one_00bea9e0() const noexcept;
+    static bool capability_true_00beaa70() noexcept;
+    void create_slot_directory_00beab50(std::string_view name);
+    std::vector<std::uint8_t> read_file_00beaba0(std::string_view name, std::uint32_t kind);
+    void write_file_00beacb0(std::string_view name, std::uint32_t kind,
+        const void* bytes, std::uint32_t size);
     std::string path(std::string_view name, const char* leaf = nullptr) const;
     bool file_exists(std::string_view name, const char* leaf) const;
     void clear_marker(std::string_view name);

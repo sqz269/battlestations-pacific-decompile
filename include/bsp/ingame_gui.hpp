@@ -90,6 +90,25 @@ inline constexpr std::string_view kDistanceMileKey = "globals.mile";            
 
 std::string format_marker_distance_0063e5c0(float distance, bool nautical_miles);
 
+// The front half, 0063E5D8..0063E68E: the distance itself. The camera unit is
+// read once (0063E60D, kept in EDI); each entity whose byte +C8h is clear gets
+// 00414DB0 (ECX = entity), camera first. The difference is formed per axis in
+// float (FSUB/FSTP, 0063E63D..0063E66D) and its length taken by 0042B2F0
+// (ECX = &vec, result in ST0, stored to float at 0063E68E).
+struct MarkerDistanceHost {
+    virtual ~MarkerDistanceHost() = default;
+    virtual void* controlled_unit_00e188d8() = 0;        // [00E188D8]
+    virtual bool pose_current_c8(void* entity) = 0;      // byte [entity + C8h] != 0
+    virtual void refresh_pose_00414db0(void* entity) = 0;
+    virtual void position_fc(void* entity, float out[3]) = 0; // entity + FCh/100h/104h
+    virtual float vector_length_0042b2f0(const float vec[3]) = 0;
+    virtual bool nautical_miles_00f88988() = 0;          // byte [00F88988]
+};
+
+// 0063E5C0 whole: the distance (0.0f without a camera unit or a target), then
+// the formatter above. `out` cleared at 0063E5E5..0063E60A is the empty return.
+std::string format_marker_distance_0063e5c0(void* target, MarkerDistanceHost& host);
+
 // ---------------------------------------------------------------------------
 // Device-class icon index (0065EA30)
 // ---------------------------------------------------------------------------

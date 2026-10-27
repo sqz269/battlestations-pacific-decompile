@@ -448,10 +448,27 @@ struct CapturePointCandidate {
 // node+4h, point at node+8h) whose squared distance to the controlled unit is
 // not above float(radius)^2 and whose side is 2 becomes +F4h. Both poses are
 // refreshed first (00414DB0 when +C8h is clear), the point's before the unit's.
-// The sum is (dx*dx + dy*dy) + dz*dz in x87 double precision, stored to float,
-// as is float(radius)*float(radius); an unordered compare selects (JA only).
+// The sum is (dy*dy + dx*dx) + dz*dz, stored to float, as is
+// float(radius)*float(radius); an unordered compare selects (JA only). Main-thread
+// x87 runs at 24-bit precision control, so every product and sum rounds to float.
+// This pure form is the walk over candidates whose poses are already refreshed.
 HudUnitRef select_nearby_capture_point_005bd420(const std::array<float, 3>& controlled_position,
     const std::vector<CapturePointCandidate>& points);
+
+// The whole body of 005BD420 over a host (cc13-P4).
+struct CapturePointSelectHost {
+    virtual ~CapturePointSelectHost() = default;
+    virtual void set_selected_capture_point_f4(HudUnitRef point) = 0;          // screen+F4h
+    virtual HudUnitRef controlled_unit_00e188d8() = 0;                         // [00E188D8]
+    virtual bool unit_is_kind_5c(HudUnitRef unit, std::int32_t kind) = 0;      // vtable+5Ch
+    // *(*(00E188A8)+19CCh)+16Ch in list order (next node+4h, point node+8h).
+    virtual std::vector<HudUnitRef> capture_point_list_16c() = 0;
+    virtual void refresh_pose_if_stale_00414db0(HudUnitRef unit) = 0;          // when byte +C8h is 0
+    virtual std::array<float, 3> unit_position_fc(HudUnitRef unit) = 0;        // +FCh..+104h
+    virtual std::int32_t capture_radius_7c4(HudUnitRef point) = 0;             // +7C4h, int
+    virtual std::int32_t unit_side_54(HudUnitRef unit) = 0;                    // +54h
+};
+void update_nearby_capture_point_005bd420(CapturePointSelectHost& host);
 
 // ---------------------------------------------------------------------------
 // Advancing the campaign selection after a mission (005C3DE0)

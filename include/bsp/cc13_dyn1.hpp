@@ -197,7 +197,7 @@ void shape_group_assign_00c48050(void* shape, std::uint32_t value, Cc13Dyn1Calls
 
 // ---- transforms ----
 // 00C33650 __thiscall(ECX = src 3x4, dst 4x4), RET 4: rows of three become rows of four,
-// +0Ch/+1Ch/+2Ch = 0, +3Ch = the 1.0f at 00D7A24C. Word copies.
+// +0Ch/+1Ch/+2Ch = 0, +3Ch = the 1.0f at 00D7A24C. FLD/FSTP DWORD copies, which quiet a signalling NaN; the reverse copies the same way.
 void transform_expand_3x4_to_4x4_00c33650(const float src[12], float dst[16]) noexcept;
 // 00C336C0 __thiscall(ECX = dst 3x4, src 4x4), RET 4: the reverse, dropping column 3.
 void transform_from_4x4_00c336c0(float dst[12], const float src[16]) noexcept;

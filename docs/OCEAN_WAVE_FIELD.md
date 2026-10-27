@@ -4246,3 +4246,146 @@ zeroed by the other term.
 
 Note: `local\main_osa.log` is now this pair's OFF run. physics26's log of the same name (sections 118-119) was
 copied first to `local\p26_main_osa.log`.
+
+## 121. Carrier-final float: the rate trace, an air-brake diagnostic and two queue plans (cc9-physics27, 2026-10-24)
+
+All runs: USNOS, 36200/36000 frames, ref env, tree 4c0023429 (origin/main with cc13's log-only d7074c0af). Every
+run ends `failed at 1675.51 s` (Enterprise torpedoed), as in section 118, and none lands a plane on Enterprise.
+
+**Rate trace** (`BSP_PLANE_RATE_TRACE=Enterprise_sqn01`, plan `p26_os_a`; kept excerpt
+`local\p27_tr_osa_kept.txt`, 1550-1575 s, sent to cc13 via the lead). The nose follows the command to 1560 s
+(pitch -0.220 vs pt2bc -0.236). From 1561 s it rises while the command steepens: at 1562.00 s pitch is -0.057 vs
+pt2bc -0.271, with pslot -0.52; at 1564.00 s pitch is -0.017 vs -0.375, with pslot -0.97; from 1565 s pslot is pinned
+at -1.000 and the body rate wy is about -0.001. Bank stays at or below 0.04 in magnitude after 1560 s. pt_task and
+pt_think equal pt2bc to the abort, and the first change is at 1566.05 s (pt2bc -0.0069 while the task still asks
+-0.53). So the saturated nose-down stick produces almost no pitch rate.
+
+**Air-brake diagnostic** (not committed: an export `local\p27_nb` that forces `plane_live_air_brake` to 0 before the
+latch from each 009B1F2C airborne-final tick until 0.5 s after it; log `local\p27_nb_osa.log`). `brk=0.000` holds
+through Enterprise_sqn01's final. The plane descends faster early (Y 87.1 at 1561.25 s vs 104.8 with the brake),
+then levels at the same floor: Y 83.7, 82.6, 80.4 and 80.0 over 1562-1565 s, vy -2.0 to -0.55, with the pitch
+rising from -0.24 to -0.01 against a command of -0.49. Every Enterprise final still aborts (sqn02 at 75.7 m, sqn01 at
+78.2 m, sqn02|.-III at 77.4 m), and the deck shows landed=0. **The brake is not the float term.**
+
+**Queue plans** (item 3 of the lead's brief: keep a squadron queued behind the head). `local\p27_mkos.py` writes
+`p27_os_q1.txt` and `p27_os_q2.txt`: `p26_os_a` with its four `order Enterprise <slot> 2` returns 400 or 1200
+frames apart instead of 10.
+
+| Plan | Queued at Enterprise | Heads entering 5D8 (begin trace) | Aborts (height) | Deck |
+| --- | --- | --- | --- | --- |
+| q2 (1200) | sqn01 1400 s, sqn02 1460 s, sqn37 1520 s, sqn50 1580 s | sqn01 1541.93, sqn02 1584.87, sqn50 1626.41: all `fast=1`, about 100 m/s, H 77.0-80.0 | 77.2, 77.0, 79.7; wingman sqn01\|.-III 76.9 | landed=0 |
+| q1 (400) | as above, 20 s apart | sqn02 1542.83 `fast=1` 99 m/s, H 78.2 | 78.7, 77.4, 78.2 | landed=0, releases=1 |
+
+- Staggering does not slow a head. 006C3F80's loop lowers a head's spacing only for another squadron's plane ahead
+  of it in mode 3 or 4, and by the time the next head flies its final, the one ahead has already aborted.
+- The float is not specific to a fast lone head. In q2, Enterprise_sqn01|.-III, a wingman, flew a full final from
+  1652.94 s (86 -> 34 m/s). Its Y was 101.8, 89.6, 81.7, 80.0, 81.4, 81.8, 80.6 and 79.3 over 1658-1665 s while the
+  command steepened to -0.51, and it aborted at 1665.55 s at 76.9 m.
+- Two other wingmen entering with `fast=0` abort within a second of 5D8, at 168-227 m. That is a separate early
+  abort, not read here.
+
+**Reading (an inference; I did not read the image).** With or without the brake, head or wingman, every carrier
+final levels within a few metres of the begin trace's H, which is 77-82 on every entry. The open term is therefore
+the deck-height reference H of 009B1420 for a ship target, physics26's question (b) in section 119, or whatever pins
+the plane to it, together with the pitch-authority question in the rate trace. A plan change cannot get a carrier
+landing on USNOS.
+
+**Correction (cc13-osdeck, static).** H is not a floor. It is the glide-slope height at a look-ahead point
+(009B1842-009B1929), measured above the touchdown point T (Enterprise's T is at world y 15.9) and recomputed on every
+steer pass as Z shrinks. The host formula reproduces the logged P = -0.2095 at Z = 832.4 exactly. The command keeps
+steepening because Y stays above H, and the match of the float height with the begin trace's H is coincidental. The
+float is the plane not following the command, and the authority reading above is withdrawn: the rate law follows the
+stick exactly (cc13). The band trace below shows what moves the stick.
+
+**Band trace** (cc13's 69468ba7c, log-only, gated on `BSP_PLANE_RATE_TRACE`; tree fb4798251, `p26_os_a`, ref env;
+kept excerpts `local\p27_band_osa_kept.txt` (Enterprise_sqn01, 1550-1575 s) and `local\p27_bandw_osa_kept.txt`
+(Enterprise_sqn02|.-III, 1536-1545 s), raw logs deleted):
+
+| t (s) | cmd1_pre | band 0 (lo, hi) | stick pitch | pitch | y |
+| --- | --- | --- | --- | --- | --- |
+| 1559.50 | +0.005 | (-5.0, 0.0105) | 0.008 | -0.238 | 120.7 |
+| 1560.00 | -0.005 | (-5.0, 0.1729) | 0.173 | -0.223 | 114.2 |
+| 1561.00 | -0.224 | (-5.0, 0.1630) | 0.165 | -0.131 | 104.8 |
+| 1562.00 | -0.298 | (-5.0, 0.0888) | 0.087 | -0.057 | 100.2 |
+| 1563.00 | -0.369 | (-5.0, 0.0307) | 0.031 | -0.028 | 98.4 |
+| 1565.00 | -0.392 | (-5.0, 0.0099) | 0.008 | -0.012 | 97.0 |
+| 1566.00 | -0.290 | (-5.0, 0.1586) | 0.157 | +0.001 | 95.0 |
+| 1567.00 | +0.012 | none | 0.008 | +0.126 | 92.5 |
+
+- The nose-down command lies inside the one active band (lo -5.0), and the band repair moves the stick to the band's
+  upper edge, which is about level. The plane holds 95-97 m while the latched pitch command steepens to -0.52.
+- Every line in the window reads `d_va_plane=0 d_va_ship=0 d_tr_bands=2 d_ga_flag=0`, and there is no `plane rate
+  band` line between 1539 s and the end of the excerpt. So neither the vehicle-avoidance ship branch (007E0706) nor its
+  aircraft branch (007DFDC4) makes this band. Its producer is the one `d_tr_bands` counts, not identified here.
+- The run's 22 `plane rate band` lines are all earlier: the ship branch on Enterprise at 54.10 s, and the aircraft
+  branch on the squadron's own wingmen at 1533.3-1534.9 s (sqn01|.-III, mode900 7, d down to 15 m) and
+  1538.6-1538.9 s (sqn01|.-II, d about 60 m).
+- The wingman's early abort (sqn02|.-III, 5D8 at 1538.43 s, 5F8 at 1538.83 s, 64C at 1539.43 s at Y of about 200) has
+  no band at entry, and the stick follows cmd1_pre (-0.35, -0.69, -0.71). That abort is the abort test, not the band.
+
+Lease `p27-doc121` (this doc) is released with this section; the correction and the band trace are under
+`p27-doc121b`.
+
+## 122. The float is the terrain arm reading the nav border; Enterprise parked on layer-0 water lands planes; handoff (cc9-physics27, 2026-10-24)
+
+**Terrain-arm trace** (d59ec7e9a, log-only: `plane tr arm` per pass, `plane tr run` per 0099CAB0 call site,
+`plane tr shape` per 0099CAB0 exit, printed only for the plane `BSP_PLANE_RATE_TRACE` names). With the variable unset,
+a USN01 pair against the parent commit gives pair_diff exit 0. The `p26_os_a` run's excerpt is
+`local\p27_tr2_osa_kept.txt` (1550-1575 s).
+- Avoid-zone layer 2 (0041BC20, squadron+34Ch) reads 0.00 at (14311,-11765) at 1550 s, 21.08 at 1551 s, 77.90 at
+  1552 s, then a flat 86.09 from 1553 s to the end of the window, at the plane and at p0, a, mid and b. sea_h is
+  about -0.5.
+- So h9b4 = y - 86: 41.4 at 1559 s, 18.7 at 1561 s, 10.9 at 1565 s. sa is clamped to 10.0 (parts: bank 2.40, pitch
+  6.43, h 0, speed 0), which puts the floor at about 96 m.
+- At 1561.05 s pass 0 inserts nothing (exit `fade`). Pass 1 (wa 0.218, wb 1.0) inserts (-1.1, -0.048) and
+  (-1.1, 0.1665). The second is the band the repair clamps the stick to, and these two inserts are `d_tr_bands=2`.
+
+**Why 86 m.** `local\p27_navgrid.py` parses this installation's `us_osumi.nav` (172939 bytes) as
+parse_terrain_grid_nav does and samples it as 0041BC20/00417FA0 do.
+- There are three TerrainGridLayers, each with half_extent 12000, dim 240, cell 100 and scalar 2.0022. Layer 2's
+  slope is 2.7475, which is tan 70 deg.
+- The grid covers x and z in [-12000, 12000], and 00417FA0 clamps anything outside it to the edge cells. The rows at
+  z <= -11900 read 86.09, a border wall: z = -11800 already reads 0.
+- `p26_os_a` parks Enterprise at (15000,-13000), south of the grid edge, so every sample there reads the 86 m border
+  row. If the image clamps as ported, the float is faithful and is an artifact of the plan. Whether layer 2 in the
+  image reads about 86 at (14807,-12495) was put to cc13 through the lead.
+- The old parking point (12500,-4000), (13500,-9000), and the band z = -3000 to -11800 at x > 12000 read 0.
+
+**Layer-0 parking plans.** Each is `p26_os_a` with only the frame-19000 moveto changed. Both use the tree build of
+d59ec7e9a, ref env, the trace on Enterprise_sqn01, and 36000 frames.
+
+| Plan | Enterprise parks at | Layer 2 within 1.5 km | End | Enterprise deck | Touchdowns |
+| --- | --- | --- | --- | --- | --- |
+| `p27_os_l0` | (17000,-10000) | 0.00 | failed 1605.44 s (Enterprise torpedoed by Shima7 at 1600.59 s, first damage 1560.25 s) | modes 4=393, landed=67, inserts=2 | **2**: Enterprise_sqn02 at 1553.09 s (5F8 -> 620), Enterprise_sqn01\|.-II at 1595.93 s |
+| `p27_os_l0b` | (15000,-10000) | 0.00 | failed 1515.35 s | no finals flown | 0 |
+
+- `p27_os_l0` gives **the first carrier touchdowns on USNOS**. On 5F8 the head descends to the deck: its first
+  contact is at local y 4.08, z -123.5, vy -3.9. It touches down 1.0 s later at local z -93.3, |v| 31.7.
+- Further heads are still on final when Enterprise dies: sqn02|.-II has contact at 1564.80 s, sqn02|.-III at
+  1575.21 s and sqn01 at 1587.02 s, all at local y about 4.
+- Two `fast=0` aborts of sqn01|.-III, at 1581.87 s (209.7 m) and 1591.88 s (202.9 m), are the separate early abort
+  of section 121.
+- The excerpt is `local\p27_l0_kept.txt`.
+- Because Enterprise is parked closer to the Takao group, the mission is lost 70 s earlier than with `p26_os_a`
+  (1675.51 s). `p27_os_l0b`, 2 km closer still, is lost at 1515 s before any final.
+- USNOS has no win row, so no WINS timing was sent to the keeper.
+
+**Handoff (cc9-physics27).**
+- Commits: 54f3f42c7 (section 120, `kCarrierSiteHasFreeRunwayCc13Bound` unreached, stays OFF), 5fdf7e198 and
+  33ed49ea5 (section 121), d59ec7e9a (the terrain-arm trace) and this section.
+- Open item 1: cc13's answer on layer 2 at (14807,-12495). If the image reads 0 there, the sampler or its index
+  is a host gap (a switch to pair on `p26_os_a`). If it reads about 86, the float is faithful and closed.
+- Open item 2: a USNOS plan that lands planes AND keeps Enterprise alive past about 1675 s. Park on layer-0 water
+  that is also out of the Takao group's reach: east or north-east of (17000,-10000), with x > 12000 clamped to
+  column 238, and z between -3000 and -11800 reading 0. Check every candidate with
+  `python -I local\p27_navgrid.py 2 <x> <z>`, which prints the maximum within 1.5 km.
+- Open item 3: the `fast=0` wingman's early abort (5F8 -> 64C within about 1 s at about 200 m, no band) is not read.
+- `kReleaseTimerNotify0DhBound` (physics26's open item) was not touched.
+- Housekeeping: the raw logs `main_osa.log` (section 120's OFF run), `p27_nb_osa.log`, `p27_q1.log` and
+  `p27_q2.log` (section 121) and `p27_l0*.log` were deleted for disk space. Their results are in sections 120-122
+  and in the kept excerpts. Kept files: `p27_tr_osa_kept.txt`, `p27_band_osa_kept.txt`, `p27_bandw_osa_kept.txt`,
+  `p27_tr2_osa_kept.txt`, `p27_l0_kept.txt` (each with a manifest) and `p26_main_osa.log`. Plans: `p27_os_q1.txt`,
+  `p27_os_q2.txt`, `p27_os_l0.txt`, `p27_os_l0b.txt`. Launchers: `p27_band2.ps1` (plan and trace name) and
+  `p27_pair.ps1`.
+
+Lease `p27-doc122` (this doc) is released with this section.

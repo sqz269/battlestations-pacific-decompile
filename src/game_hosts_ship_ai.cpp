@@ -50,6 +50,7 @@
 #include "bsp/ship_ai_follow_land.hpp"
 #include "bsp/building_pads.hpp"
 #include "bsp/ship_ai_station_keeping.hpp"
+#include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/ship_ai_torpedo_response.hpp"
 #include "bsp/ship_ai_arm_final_step.hpp"
 #include "bsp/ship_ai_layer_selection.hpp"
@@ -111,6 +112,11 @@
 
 namespace bsp::game {
 
+// cc13-D6. 009E5E00 returns brain+0B20h only when that target answers
+// vtable[5Ch](1Ch) (a CommandBuilding), else 0. False: the host returns +0B20h
+// unchecked, which matches while standoff mode 4 (the only caller, 009E6B85) keeps
+// the kind-1Ch target it latched with. cc9 orders and pairs the flip.
+inline constexpr bool kEngagementTargetKindTestCc13Bound = false;
 // Packet cc9_ship_firepower, docs/SHIP_AI_FIREPOWER.md. True: the eight
 // predicates 0095EB40 asks about a mount answer from the gun rows the gunnery
 // host keeps (barrel timers, arcs, the refined projectile sub-type, the Bullets
@@ -5847,7 +5853,14 @@ public:
     }
     std::uint32_t engagement_target_009e5e00() override {
         owner_.done("ShipAiApproach::engagement_target_009e5e00", 0x009e5e00u);
-        return ctl_.goal_vector.raw_target_0b20;
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        if constexpr (kEngagementTargetKindTestCc13Bound) {
+            // 009E5E05..009E5E26: t answers only when t->vtable[5Ch](1Ch) is true.
+            const bool known = t != 0u && t - 1u < owner_.units.count();
+            return known && owner_.units.unit_is_kind_of(t - 1u, 0x1c) ? t : 0u;
+        } else {
+            return t;
+        }
     }
     std::int32_t target_radius_07c4(std::uint32_t target) override {
         // 009E6B90, FILD [target+7C4h] with no kind test: mode 4 is latched only
@@ -9992,6 +10005,10 @@ public:
         return owner_.class_number(index_, "MaxSpeed");      // 00831903, +500h
     }
     int tubes_ready(bool fore, float horizon) override {
+        // cc13-D6: 009E9910/009E9A50 (and 009E99A0) check the walk with 00BF6713:
+        // first <= last, the same container, and it < last before each read and
+        // each step. A begin..end walk over a vector the loop does not change
+        // passes all of them, so they are not modelled (intended).
         build_tubes_009e97b0();
         int ready = 0;
         for (const std::size_t gun : fore ? ctl_.sub_tubes_fore : ctl_.sub_tubes_aft) {
@@ -15205,6 +15222,23 @@ void GameShipAiHost::report() {
         "(0070E450 at 009DEEE9 / 009DEFD3; packet cc9_arm_final_area_key)",
         host.summary.arm_final_area_keys, host.summary.arm_final_area_key_differs,
         kShipAiArmFinalAreaKeyBound ? 1 : 0);
+    {
+        bsp::ShipAiSwitchReach& reach = bsp::ship_ai_switch_reach();
+        host.log.notef("summary mission ship ai switch reach station_calls=%llu "
+            "station_nan_operands=%llu station_nan_differs=%llu station_pc24_differs=%llu "
+            "throttle_nan_operands=%llu navigation_nan_operands=%llu fire_pc24_sites=%llu "
+            "fire_pc24_differs=%llu bound=%d%d%d%d%d (009EDA28, 009E04E0, 00415510/00415550/"
+            "00415620/009EE62B, 009E9EB0/009E4A60; packet cc9-sweep2)",
+            reach.station_calls, reach.station_nan_operands, reach.station_nan_differs,
+            reach.station_pc24_differs, reach.throttle_nan_operands,
+            reach.navigation_nan_operands, reach.fire_pc24_sites, reach.fire_pc24_differs,
+            bsp::kShipAiStationKeepingNanArmsCc13Bound ? 1 : 0,
+            bsp::kShipAiStationKeepingPc24Cc13Bound ? 1 : 0,
+            bsp::kShipAiThrottleProfileNanArmsCc13Bound ? 1 : 0,
+            bsp::kShipAiNavigationNanArmsCc13Bound ? 1 : 0,
+            bsp::kShipAiFireStepPc24Cc13Bound ? 1 : 0);
+        reach = bsp::ShipAiSwitchReach{};
+    }
     for (const GameShipAiRow& row : host.rows) {
         if (row.traffic_scans == 0) continue;
         host.log.notef("ship ai traffic setback unit=%s scans=%llu steps=%llu max_setback=%.1f",

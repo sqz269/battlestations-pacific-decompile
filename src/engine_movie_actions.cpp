@@ -88,7 +88,9 @@ std::optional<MovieAction> parse_movie_action_0045e5e0(MovieActionTokens& tokens
         tokens.read_token();
         action.refer_path = tokens.read_nonempty_string();
     }
-    if (flag(info.enum_label)) {                      // record +48h, 0045E945..0045E95F
+    // Flag +48h, 0045E945..0045E95F. The table stands it in with the label (+38h):
+    // in all 32 calls to 0045D480 the fifth flag is 1 exactly when that label is non-empty.
+    if (flag(info.enum_label)) {
         tokens.expect("Enum");
         tokens.read_token();
         action.enum_text = tokens.read_nonempty_string();

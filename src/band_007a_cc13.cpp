@@ -22,6 +22,10 @@ void propagate_dirty(const ActuatorChannel& channel, std::uint8_t& block_dirty) 
 
 } // namespace
 
+// Documented deviation (cc13-D3): one body for 007B8D10 (wanted = 1.0f, 00D7A24C) and
+// 007B8D40 (0.0f); the image hardwires the constant and reads the channel from
+// [plane+DECh]+44h itself. For the address's own constant the result is identical,
+// NaN included (UCOMISS unordered -> PF set -> false; C++ == is false).
 bool actuator_channel_at_value_007b8d10(const ActuatorChannel& channel, float wanted) noexcept {
     // 007B8D19 CMP byte [EAX],0 / JE true; 007B8D1E UCOMISS value, wanted; LAHF; TEST AH,44h; JNP true.
     if (channel.enabled == 0) {
@@ -30,6 +34,9 @@ bool actuator_channel_at_value_007b8d10(const ActuatorChannel& channel, float wa
     return channel.value == wanted;
 }
 
+// Documented deviation (cc13-D3): one body for 007B8DA0 (target 0: CMP [+45h],0 / MOV
+// [+45h],0 / MOV [+4Ch],1 / CMP [+4Ch],0 / MOV [+11h],1) and 007B8DC0 (target 1); the
+// image hardwires the target. With target 0 the stores and their order are the image's.
 void actuator_channel_set_target_007b8da0(ActuatorChannel& channel, std::uint8_t target,
                                           std::uint8_t& block_dirty) noexcept {
     // 007B8DA9 CMP byte [EAX+45h],0 / JE (retract); 007B8DC9 CMP [EAX+45h],1 / JE (extend).
@@ -79,6 +86,9 @@ bool plane_is_leader_with_wingmen_007b95e0(std::int32_t spawn_index, bool has_sq
     return spawn_index == 0 && has_squadron && squadron_active_wingmen > 0;
 }
 
+// Documented deviation (cc13-D3): 007B83F0 stores the value to plane+AA0h itself
+// (007B83FF / 007B8412, MOVSS [ECX+0AA0h]) and returns nothing; this returns the same
+// float for the caller to store (host-ABI glue, no plane object here).
 float plane_launch_delay_007b83f0(bool flag) noexcept {
     constexpr float kLaunchDelay = 5.0F;   // 00CE3850, bits 40A00000
     constexpr float kNoLaunchDelay = -1.0F; // 00D7A260, bits BF800000

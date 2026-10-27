@@ -21,6 +21,13 @@
 #include "bsp/gun_aiming.hpp"
 
 namespace bsp {
+struct GunBotAttachmentHost {
+    virtual ~GunBotAttachmentHost() = default;
+    virtual void attach_008fbc80(void* bot, void* unit) = 0;
+    virtual void roll_error_008fdbe0(void* bot) = 0;
+};
+// 008FF040, ECX=bot, stack unit, RET4. Full base/copy/error-roll body.
+void attach_ballistic_gun_bot_008ff040(void* bot, void* unit, GunBotAttachmentHost& host);
 
 // ---------------------------------------------------------------------------
 // Addresses

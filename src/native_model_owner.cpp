@@ -168,6 +168,12 @@ NativeModelOwner::~NativeModelOwner() {
     } else if (phase != Phase::dead) std::terminate();
 }
 void* construct_native_model_00b75030(NativeModelOwner& owner, const NativeString& name) {
+    if (owner.environment.raw_name_services) {
+        // NativeString is the source caller's SAME live8B header, not a copied
+        // name. The raw overload enforces phase, raw cleanup and bound cells.
+        return construct_native_model_00b75030(owner, static_cast<const void*>(&name),
+            owner.environment.raw_name_services->constants);
+    }
     if (owner.phase != NativeModelOwner::Phase::prepared)
         throw std::logic_error("model constructor requires its unused prepared slot");
     SizedStoragePool* name_pool = owner.environment.actual_names ? nullptr :

@@ -52,6 +52,7 @@ struct NativeMpkgFactoryContext;
 struct NativePakRegistryContext;
 class NativeObserverLifetime;
 class NativeWeakOwnerDomain;
+class NativeGuiIconDelayedLoads;
 struct NativeObserverDispatchOwner;
 namespace game { class GameSoundRuntime; }
 
@@ -265,6 +266,9 @@ struct NativeSingletonDeletionBindings {
     // 004FDE20 published; 509FD0 clears it unconditionally. Only the empty-queue
     // path is admitted: a non-empty queue throws before any store (cc15-ob3).
     NativeLoadingQueueOwnerStorage* volatile* actual_loading_queue_publication_00e18d4c{};
+    // D5C4B8 -> AB57C0 over the SAME actual F8BD98 producer/manager domain.
+    // Bind before any AB5700 getter and retain this service through full drain.
+    NativeGuiIconDelayedLoads* gui_icon_delayed_loads{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -297,7 +301,7 @@ static_assert(offsetof(NativeSingletonDeletionBindings, fixed_step_jobs) == 196)
 static_assert(offsetof(NativeSingletonDeletionBindings, platform) == 200);
 static_assert(offsetof(NativeSingletonDeletionBindings, avoid_manager) == 204);
 static_assert(offsetof(NativeSingletonDeletionBindings, actual_loading_queue_publication_00e18d4c) == 208);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 212);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 216);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

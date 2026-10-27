@@ -1,12 +1,27 @@
 #include "bsp/plane_bow_wave.hpp"
 
 namespace bsp {
+namespace {
+template<class CurrentCount, class CheckedRecord>
+void bind_wave_points(PlaneBowWaveMarkerHost& host, CurrentCount&& current_count,
+                     CheckedRecord&& checked_record) {
+    for (std::size_t index = 0; index < current_count(); ++index) {
+        const PlaneBowWavePoint point = host.first_model_marker_point(
+            "wave", static_cast<std::uint32_t>(index + 1));
+        checked_record(index).model_point = point;
+    }
+}
+}
+
 void bind_plane_bow_wave_points_007d4812(PlaneBowWaveDefinition* records,
     std::size_t count, PlaneBowWaveMarkerHost& host) {
-    for (std::size_t index = 0; index < count; ++index) {
-        records[index].model_point = host.first_model_marker_point(
-            "wave", static_cast<std::uint32_t>(index + 1));
-    }
+    bind_wave_points(host, [&]() { return count; },
+        [&](std::size_t index) -> PlaneBowWaveDefinition& { return records[index]; });
+}
+
+void bind_plane_bow_wave_points_007d4812(PlaneBowWaveLiveBindingHost& host) {
+    bind_wave_points(host, [&]() { return host.current_wave_count(); },
+        [&](std::size_t index) -> PlaneBowWaveDefinition& { return host.checked_wave_record(index); });
 }
 
 namespace {

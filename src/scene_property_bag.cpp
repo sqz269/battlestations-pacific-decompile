@@ -9,6 +9,15 @@
 #include <limits>
 
 namespace bsp {
+// Evidence: both complete listings, null guard then CRT _stricmp and SETZ AL.
+// CRT binding retains the active locale. This source API takes the +118h field
+// value rather than the original ECX layout and is not a native ABI replacement.
+bool scene_property_decl_is_enum_letter_008f02b0(const char* letter) noexcept {
+    return letter != nullptr && _stricmp(letter, "E") == 0;
+}
+bool scene_property_decl_is_lua_s_letter_008f02e0(const char* letter) noexcept {
+    return letter != nullptr && _stricmp(letter, "LUA_S") == 0;
+}
 namespace {
 
 bool equals_no_case(const std::string& a, const std::string& b) noexcept {
@@ -67,6 +76,11 @@ const char* scene_property_type_letter(ScenePropertyType type) noexcept {
     return "";
 }
 
+// 008F1960 __thiscall(ECX = reference, NativeString* out), RET 4: a jump table on
+// [ECX+8] (008F19FC, eight arms, each 0041E350(out, letter)); kinds above 7 return
+// without touching *out. cc13-D6, intended: the host returns the letter instead of
+// assigning a NativeString (host ABI), the table decodes to exactly the cases below,
+// and the "R" fallback is unreachable because every caller passes an enum value 0..7.
 const char* scene_reference_kind_letter(SceneReferenceKind kind) noexcept {
     switch (kind) {
         case SceneReferenceKind::Any: return "R";                   // 00CE60EC

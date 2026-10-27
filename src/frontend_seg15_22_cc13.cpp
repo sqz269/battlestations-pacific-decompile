@@ -4,6 +4,7 @@
 // ECX, a stack argument, x87 or a store order mattered.
 
 #include "bsp/frontend_seg15_22_cc13.hpp"
+#include "bsp/segs_13_15_22_44_cc13.hpp"
 
 #include <cstdarg>
 #include <cstdio>
@@ -1006,6 +1007,32 @@ void menu_prompt_record_list_clear_00531f80(Raw list, Seg15Host& host) {
         host.free_00bf65ac(node);
         node = next;
     }
+}
+
+// 005321F0: members in reverse declaration order, as the SEH states 6..2 run.
+void menu_prompt_destroy_005321f0(Raw s, Seg15Host& host) {
+    s.at<std::uint32_t>(0x0) = 0x00CED3C4;
+    s.at<std::uint32_t>(0x8) = 0x00CED3B0;
+    s.at<std::uint32_t>(0xC) = 0x00CED3AC;
+    s.at<std::uint32_t>(0x10) = 0x00CED38C;
+    remove_page(s, 0x14, host);
+    Raw list{s.p + 0x278};
+    menu_prompt_record_list_clear_00531f80(list, host);
+    host.free_00bf65ac(list.ptr(4));
+    list.ptr(4) = nullptr;
+    Raw strings{s.p + 0x268};  // 004324A0 inlined; the stack words are the vector and the screen
+    if (strings.ptr(4) != nullptr) {
+        host.native_string_range_destroy_00432050(strings.ptr(4), strings.ptr(8), strings.p, s.p);
+        host.free_00bf65ac(strings.ptr(4));
+    }
+    strings.ptr(4) = nullptr;
+    strings.ptr(8) = nullptr;
+    strings.ptr(0xC) = nullptr;
+    host.eh_vector_destruct_00bf7c6e(s.p + 0x60, 0x48, 7, 0x00530F90);
+    host.eh_vector_destruct_00bf7c6e(s.p + 0x40, 0x10, 2, 0x004324A0);
+    singleton_00e18e6c_clear_base_00530cc0(Raw{s.p + 0xC}, host);  // inlined in the image
+    s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
+    host.front_end_screen_destruct_004f71a0(s);
 }
 
 void menu_prompt_collect_children_00532350(Raw s, void* out, Seg15Host& host) {
@@ -2192,6 +2219,17 @@ void multi_error_set_error_code_005d2e70(Raw s, std::int32_t code, Seg15Host& ho
     s.at<std::int32_t>(0x54) = applied;
     if (applied == 1) s.at<std::uint32_t>(0x58) = 0;
     if (s.at<std::uint8_t>(kActive) != 0) multi_error_show_message_005d24f0(s, host);
+}
+
+// 005D2EB0: vtables, page +10h, the two string vectors +30h, listener base, base.
+void multi_error_destroy_005d2eb0(Raw s, Seg15Host& host) {
+    s.at<std::uint32_t>(0x0) = 0x00CF1BF4;
+    s.at<std::uint32_t>(0x8) = 0x00CF1BE0;
+    s.at<std::uint32_t>(0xC) = 0x00CF1BC0;
+    remove_page(s, 0x10, host);
+    host.eh_vector_destruct_00bf7c6e(s.p + 0x30, 0x10, 2, 0x004324A0);
+    s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
+    host.front_end_screen_destruct_004f71a0(s);
 }
 
 void multi_error_collect_children_005d2f60(Raw s, void* out, Seg15Host& host) {
@@ -3585,5 +3623,36 @@ void free_camera_register_00540fe0(Raw s, Fe10Host& host) {
     s.ptr(0x20) = host.gui_find_child_00aa7e00(s.ptr(0x1C), "weapon_Text");
     host.widget_set_visible_34(s.ptr(0x20), false);
 }
+
+// Packet cc13-trivialslots: the kTrivialSlots bodies; evidence and ABI per routine
+// are in the header.
+std::int32_t control_layout_screen_screen_id_00527d30(Raw) noexcept { return 0xE; }
+Raw control_layout_screen_destroy_adjustor8_00527d40(Raw self, std::uint32_t flags, segs_13_15_22_44_cc13::SegBHost& host) {
+    return segs_13_15_22_44_cc13::control_layout_scalar_delete_00527e40(Raw{self.p - 0x8}, flags, host);
+}
+void hud_counters_screen_bind_layout_00528c60(Raw) noexcept {}
+std::int32_t hud_counters_screen_get_screen_id_0052b060(Raw) noexcept { return 0x51; }
+bool hud_counters_screen_is_self_managed_0052b070(Raw) noexcept { return true; }
+std::int32_t credits_screen_get_screen_id_0052fd60(Raw) noexcept { return 8; }
+void menu_prompt_screen_on_listbox_selection_changed_no_op_00530640(Raw) noexcept {}
+std::int32_t menu_prompt_screen_get_screen_id_00532310(Raw) noexcept { return 0x55; }
+bool menu_prompt_screen_is_self_managed_00532320(Raw) noexcept { return true; }
+void hud_formation_screen_on_listbox_activate_no_op_00533b30(Raw) noexcept {}
+std::int32_t hud_formation_screen_get_screen_id_00538cd0(Raw) noexcept { return 0x2A; }
+bool hud_formation_screen_occludes_lower_levels_00538ce0(Raw) noexcept { return true; }
+std::int32_t frame_stats_screen_get_screen_id_0053ba50(Raw) noexcept { return 0x57; }
+bool frame_stats_screen_is_self_managed_0053ba60(Raw) noexcept { return true; }
+void frame_stats_screen_exit_0053ba90(Raw) noexcept {}
+void hud_free_camera_screen_exit_0053d280(Raw) noexcept {}
+void rec30vector_tidy_0053ff00(Raw self, Seg15Host& host) {
+    host.effect_vector_tidy_0053f250(self);
+}
+std::int32_t hud_free_camera_screen_get_screen_id_00540360(Raw) noexcept { return 0x2B; }
+std::int32_t hud_movie_camera_debug_screen_get_screen_id_005ce5b0(Raw) noexcept { return 0x36; }
+void multi_chat_screen_enter_no_op_005ce740(Raw) noexcept {}
+std::int32_t multi_chat_screen_get_screen_id_005cfe40(Raw) noexcept { return 0x15; }
+bool multi_chat_screen_is_self_managed_005cfe50(Raw) noexcept { return true; }
+std::int32_t multi_error_screen_get_screen_id_005d2f40(Raw) noexcept { return 0x1D; }
+std::int32_t hud_pause_multi_screen_get_screen_id_005d3580(Raw) noexcept { return 0x19; }
 
 }  // namespace bsp::frontend_seg15_22_cc13

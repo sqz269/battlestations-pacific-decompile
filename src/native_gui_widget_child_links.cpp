@@ -63,7 +63,11 @@ NativeGuiWidgetTypeKeyContext::NativeGuiWidgetTypeKeyContext(const char* empty,
 
 std::uint32_t native_gui_widget_type_for_key_00aa2490(const NativeString& key,
     const NativeGuiWidgetTypeKeyContext& context) {
-    const char* captured = key.data();
+    return native_gui_widget_type_for_key_00aa2490(static_cast<const void*>(&key), context);
+}
+std::uint32_t native_gui_widget_type_for_key_00aa2490(const void* key,
+    const NativeGuiWidgetTypeKeyContext& context) {
+    const char* captured = static_cast<const char*>(pointer(key, 4));
     if (!captured) captured = context.empty_;
     const auto cut = reverse_find_native_string_bytes_004bcb80(
         key, context.underscore_, 0x7fffffff);

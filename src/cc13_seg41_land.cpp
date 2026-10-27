@@ -551,6 +551,31 @@ void land_fort_serialize_007455f0(std::uint8_t* fort, ArchiveWriter& archive, Fo
     archive.end_08();
 }
 
+// 0074A1F0..0074A412. Evidence: pseudocode plus listing prologue, scalar/tag
+// stores, anchor branch at 0074A39D and RET 4. Original ABI: __thiscall,
+// ECX=ship, one archive pointer; new C++ interface is not a binary replacement.
+// Uncertainty: Hungarian field names are the image's keys, not recovered members.
+void landing_ship_serialize_0074a1f0(std::uint8_t* ship, ArchiveWriter& archive,
+                                    LandingShipArchiveHost& host) {
+    host.ship_describe_state_00818340(ship, archive);
+    archive.begin_04(0, "_landingship");
+    archive.write_0c(0, "nyitva", 3, at<std::uint8_t>(ship, 0x1188));
+    archive.write_0c(0, "horgony", 3, at<std::uint8_t>(ship, 0x1189));
+    archive.write_0c(0, "partraszallas", 3, at<std::uint8_t>(ship, 0x118A));
+    archive.write_0c(0, "gyorsPartraszallas", 3, at<std::uint8_t>(ship, 0x118B));
+    archive.write_0c(0, "partraszalltunk", 3, at<std::uint8_t>(ship, 0x118C));
+    archive.write_0c(0, "rampaElfordulas", 2, at<std::uint32_t>(ship, 0x11A4));
+    archive.write_0c(0, "lastTalaj", 2, at<std::uint32_t>(ship, 0x11A8));
+    archive.write_0c(0, "nyitzarTimer", 2, at<std::uint32_t>(ship, 0x11AC));
+    if (at<std::uint8_t>(ship, 0x1189) != 0) {
+        archive.write_0c(0, "horgonyPont", 5,
+            static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(ship + 0x11B4)));
+        archive.write_0c(0, "horgonyMatrix", 7,
+            static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(ship + 0x11C0)));
+    }
+    archive.end_08();
+}
+
 namespace {
 const float kIdentity4x4[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};  // [00D7A24C] = 1.0f on the diagonal
 void release_slot(RefCounted*& slot, RefCountedHost& host) {
@@ -838,6 +863,18 @@ void landing_ship_detach_0074bd20(std::uint8_t* ship, LandingShipHost& host) {
     for (std::uint8_t* node = at<std::uint8_t*>(list, 4); node != nullptr; node = at<std::uint8_t*>(node, 4)) {
         if (at<std::uint8_t*>(node, 8) == ship) {
             host.list_erase_004837d0(list, node);  // 0074BD4F
+            return;
+        }
+    }
+}
+
+void mothership_detach_from_world_lists_00758fe0(std::uint8_t* ship, MotherShipDetachHost& host) {
+    host.unit_instance_detach_mid_lists_006dffc0(ship);             // 00758FE3
+    std::uint8_t* const list = at<std::uint8_t*>(ship, 0x30) + 0x84;
+    for (std::uint8_t* node = at<std::uint8_t*>(list, 4); node != nullptr;
+         node = at<std::uint8_t*>(node, 4)) {
+        if (at<std::uint8_t*>(node, 8) == ship) {
+            host.list_erase_004837d0(list, node);                  // 0075900F
             return;
         }
     }

@@ -64,9 +64,24 @@ void force_recon_refresh_00807a50(ReconCountdown& countdown, ReconRefreshHost& h
     run_recon_refresh_008079b0(countdown, 0.0f, host); // 00807A66, FLDZ argument
 }
 
-bool ensure_recon_slot_008053c0(bool slot_present) noexcept
+void* ensure_recon_slot_008053c0(int index, ReconSlotHost& host)
 {
-    return !slot_present; // 008053E0 TEST EAX,EAX / 008053E2 JNZ 00805414
+    void* existing = host.slot(index); // 008053D9
+    if (existing != nullptr) {         // 008053E0 TEST / 008053E2 JNZ 00805414
+        return existing;
+    }
+    void* const block = host.allocate_00bf681b(kReconSlotSize); // 008053E4..008053EE
+    void* built = nullptr;                                       // 0080540B XOR EAX,EAX
+    if (block != nullptr) {                                      // 008053F5 / 008053FF JZ
+        try {                                                    // 008053F7 state 0
+            built = host.construct_slot_008050e0(block, index);  // 00805401..00805404
+        } catch (...) {
+            host.free_00bf65ac(block); // funclet 00C904B0
+            throw;
+        }
+    }
+    host.set_slot(index, built); // 0080540D
+    return built;
 }
 
 } // namespace bsp

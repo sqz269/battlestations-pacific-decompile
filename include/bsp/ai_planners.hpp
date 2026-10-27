@@ -1,5 +1,8 @@
 #pragma once
 #include <cstdint>
+#include <string>
+#include <string_view>
+#include <vector>
 
 // The party brain's planner classes and the AI command classes, reconstructed
 // from the read-only analysis of packet cc2_ai_planners. docs/AI_PLANNERS.md
@@ -121,6 +124,40 @@ inline constexpr std::uint32_t kAiCommandVtableDescribe = 0x18u;
 inline constexpr std::uint32_t kAiCommandVtableNotifyEntity = 0x24u;
 
 const char* ai_command_type_name(AiCommandType type) noexcept;
+
+struct AiDebugClassListHost {
+    virtual ~AiDebugClassListHost() = default;
+    // 009653B0: ECX = signed Lua VehicleClass index, RET, EAX native class/null.
+    // Existing class_get_or_create_from_lua_index_009653b0 resolves the table.
+    virtual const void* class_get_or_create_009653b0(std::int32_t index) = 0;
+};
+// 00A06840/00A072D0: native __fastcall ECX NativeString*, EDX class-id vector*,
+// stack second vector*, diagnostic NativeString*, RET 8. Complete normal value
+// algorithms; C++ strings/vectors replace native pool/STL storage mechanics.
+// Native valid domain is terminated strings with matching lengths, valid class
+// objects (+54h name, +128h equipment limit, +134h raw secondary value).
+void ai_debug_parse_class_equipment_list_00a06840(std::string_view input,
+    std::vector<std::int32_t>& class_ids, std::vector<std::int32_t>& equipment_ids,
+    std::string& errors, AiDebugClassListHost&);
+void ai_debug_parse_class_list_00a072d0(std::string_view input,
+    std::vector<std::int32_t>& class_ids, std::vector<std::uint32_t>& fields_134,
+    std::string& errors, AiDebugClassListHost&);
+
+// The twelve concrete vtable +4h leaves. Native ABI: __thiscall (ECX =
+// command, unused), no stack arguments, RET, EAX = the type id. These portable
+// bodies expose the result rather than a replacement native calling convention.
+AiCommandType ai_command_non_control_get_type_00a0fce0() noexcept;
+AiCommandType ai_command_selling_get_type_00a0fd30() noexcept;
+AiCommandType ai_command_idle_get_type_00a0fd80() noexcept;
+AiCommandType ai_command_defend_position_get_type_00a0fe90() noexcept;
+AiCommandType ai_command_retreat_get_type_00a0fef0() noexcept;
+AiCommandType ai_command_move_to_get_type_00a10270() noexcept;
+AiCommandType ai_command_cautious_move_get_type_00a10310() noexcept;
+AiCommandType ai_command_regrouping_move_get_type_00a103a0() noexcept;
+AiCommandType ai_command_patrol_to_get_type_00a10470() noexcept;
+AiCommandType ai_command_move_to_attack_get_type_00a108c0() noexcept;
+AiCommandType ai_command_cautious_attack_get_type_00a109f0() noexcept;
+AiCommandType ai_command_close_attack_get_type_00a10b10() noexcept;
 
 // The IsType bodies. Each concrete class answers its own id and, for the three
 // families, the abstract base id as well; NonControl, Idle and Selling answer

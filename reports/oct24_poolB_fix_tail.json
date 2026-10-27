@@ -1,0 +1,2699 @@
+{
+  "packet": "oct24-poolB-fix-tail",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "scope": "All 35 assigned new PoolB bodies: main-thread PC24 arithmetic/helper-composition audit plus address/class duplicate audit. No games, host wiring, or broad tests.",
+  "summary": {
+    "assigned": 35,
+    "audited": 35,
+    "direct_x87_arithmetic_instructions": 7,
+    "direct_x87_arithmetic_bodies": 2,
+    "arithmetic_body_changes": 0,
+    "pc24_changed_addresses": [],
+    "pc24_changed_native_pcs": [],
+    "true_duplicate_implementations_removed": [],
+    "attribution_only_corrections": [
+      "00abe640"
+    ],
+    "retained_distinct_existing_fragments": [
+      "00a3d060",
+      "00a9df40"
+    ],
+    "minor_address_list_fixes": [
+      "00b6a390"
+    ]
+  },
+  "precision_contract": {
+    "reference": "docs/CC13_FPU_PRECISION.md",
+    "main_thread": "Post-D3D-device main thread PC24, round-to-nearest, exceptions masked. Existing inline x87 continues to inherit the caller control word; no global control-word mutation introduced.",
+    "other_threads": "Worker and pre-device main-thread PC53 are distinct contracts; this audit does not claim all gameplay runs at PC24.",
+    "compiler": "Existing /fp:strict for bsp_core (CMakeLists.txt:266) and bsp_game (cmake/startup.cmake:512); established SSE2 float intermediates. The audit found no unrounded assigned C++ float/double arithmetic chain to repair.",
+    "idiom": "For C++ x87 models, established pc24(double single_operation)->float or strict per-op float intermediates are appropriate. Existing inline x87 preserves arithmetic and store ordering directly here.",
+    "crt": "Native _ftol2, Lua numerical conversion, formatting and all transcendental internals retain their explicit binding domains. CRT transcendental temporary PC53 must not be flattened into PC24; none is reconstructed by these changes."
+  },
+  "validation": {
+    "static_native_listing_audit": "PASS: complete --asm listing for each address via tools/bsp.py show; no truncated listing accepted.",
+    "duplicate_audit": "PASS: rg -n -i ADDRESS and class/command-name searches across include/src for every row; inspected external address hits, candidate alternatives, current lookup records and relevant consumers.",
+    "original_report_evidence": "Original normal-path ABI/evidence limits retained. Native call-evidence rows copied from the original reports for relevant containing functions.",
+    "call_evidence": "PASS: python tools/verify_report_calls.py reports/oct24_poolB_fix_tail.json; 103 call rows checked, 0 failed against live verified Ghidra project/program.",
+    "git_diff_check": "PASS: git diff --check",
+    "build": "Parent performs the combined Win32 build; this worker changed comments/attribution only, with no expression or function-body behavior change.",
+    "tests": "No new tests; no broad suite requested or added.",
+    "abi_compatible": false,
+    "game_validated": false,
+    "native_differential_tested": false
+  },
+  "ledger_reconciliation": {
+    "function_records_deleted": [],
+    "function_records_renamed": [],
+    "supersedes_required": [],
+    "explanation": "No duplicate complete function implementation or stale competing function record was found among the 35 rows. Existing A3D060 dependency and A9DF40 companion fragments are valid distinct partial contracts. Section historical wrapper coverage was corrected by append-evidence, retaining prior evidence and canonical function identity."
+  },
+  "routines": [
+    {
+      "address": "0096dcb0",
+      "baseline_name": "BSP_WarningEventRecord_Destruct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_warning_event_record_0096dcb0"
+      ],
+      "original_abi": "ECX=this; no stack arguments; RET0 at0096dd07",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0096dcb0/assembly.txt",
+        "line_count": 28,
+        "complete": true,
+        "audit_text_sha256": "7d4bd7f95d656ddf5e5fa9696ee7a66b8e34055f53a51080a84dd790225b588b",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0096dcb0",
+        "class_pattern": "WarningEventRecord",
+        "address_hits": [
+          "src\\engine_seg49_64_78_cc13.cpp:73://0096DCB0 ECX=this, RET0096DD07; non-null NativeString block is returned",
+          "src\\engine_seg49_64_78_cc13.cpp:75:void destruct_warning_event_record_0096dcb0(WarningEventRecord& record) {",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:491:// 0096DC00 / 0096DCB0: a 0Ch {vtable 00D1AFE4, NativeString} record built from a NativeString",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:497://0096DCB0 ECX=this, RET0096DD07; release name storage, base vtable00D1AF18.",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:499:void destruct_warning_event_record_0096dcb0(WarningEventRecord&);",
+          "src\\warning_string_seg64_argon.cpp:162:  host.warning_event_record_destruct_0096dcb0(record.p);",
+          "include\\bsp\\warning_string_seg64_argon.hpp:99:  virtual void warning_event_record_destruct_0096dcb0(void* record) = 0;"
+        ],
+        "external_address_hits": [
+          "src\\warning_string_seg64_argon.cpp:162:  host.warning_event_record_destruct_0096dcb0(record.p);",
+          "include\\bsp\\warning_string_seg64_argon.hpp:99:  virtual void warning_event_record_destruct_0096dcb0(void* record) = 0;"
+        ],
+        "class_hit_count": 7,
+        "class_file_count": 3,
+        "ledger_records": [
+          "reconstruction: function destruct_warning_event_record_0096dcb0 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097a220",
+      "baseline_name": "BSP_ReconSubscription_Construct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_recon_0097a220"
+      ],
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a322; constructors return this in EAX",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097a220/assembly.txt",
+        "line_count": 83,
+        "complete": true,
+        "audit_text_sha256": "2ea3f39b6c56cc9871c24e38bfe295032e822701dba633dc2239be21456a1e51",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097a220",
+        "class_pattern": "ReconSubscription",
+        "address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:26:    {\"recon\", 0x4C, 0x0097A220, 0x00D1B67C},",
+          "src\\engine_seg49_64_78_cc13.cpp:6:// 0097A220, ECX=this / EAX=this, RET at 0097A322. Callback +4/+8 is",
+          "src\\engine_seg49_64_78_cc13.cpp:8:ReconSubscription construct_recon_0097a220() { return {}; }",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:180:ReconSubscription construct_recon_0097a220();"
+        ],
+        "external_address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:26:    {\"recon\", 0x4C, 0x0097A220, 0x00D1B67C},"
+        ],
+        "class_hit_count": 9,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function construct_recon_0097a220 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097a330",
+      "baseline_name": "BSP_ReconSubscription_Destruct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_recon_0097a330"
+      ],
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a44d; constructors return this in EAX",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097a330/assembly.txt",
+        "line_count": 105,
+        "complete": true,
+        "audit_text_sha256": "ebcaf6cef3031ed5b95054f8d2c917040b575a4834b75464260c70e09e009ce4",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097a330",
+        "class_pattern": "ReconSubscription",
+        "address_hits": [
+          "src\\engine_seg49_64_78_cc13.cpp:10:// 0097A330, ECX=this, RET at 0097A44D. Native erases and frees tree heads",
+          "src\\engine_seg49_64_78_cc13.cpp:13:void destruct_recon_0097a330(ReconSubscription& s) {",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:181:void destruct_recon_0097a330(ReconSubscription&);"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 9,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function destruct_recon_0097a330 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097a450",
+      "baseline_name": "BSP_KillSubscription_Construct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_kill_0097a450"
+      ],
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a522; constructors return this in EAX",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097a450/assembly.txt",
+        "line_count": 69,
+        "complete": true,
+        "audit_text_sha256": "2320b8bf5f17394947eff10f5cde6e9376090f7839825f183af4f4859ca21225",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097a450",
+        "class_pattern": "KillSubscription",
+        "address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:27:    {\"kill\", 0x3C, 0x0097A450, 0x00D1B68C},",
+          "src\\engine_seg49_64_78_cc13.cpp:21:// 0097A450, ECX=this / EAX=this, RET at 0097A522. Two entity sets and",
+          "src\\engine_seg49_64_78_cc13.cpp:23:KillSubscription construct_kill_0097a450() { return {}; }",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:182:KillSubscription construct_kill_0097a450();"
+        ],
+        "external_address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:27:    {\"kill\", 0x3C, 0x0097A450, 0x00D1B68C},"
+        ],
+        "class_hit_count": 11,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function construct_kill_0097a450 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097a530",
+      "baseline_name": "BSP_KillSubscription_Destruct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_kill_0097a530"
+      ],
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a61e; constructors return this in EAX",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097a530/assembly.txt",
+        "line_count": 87,
+        "complete": true,
+        "audit_text_sha256": "b4c24b5de05a250b21c3d6a2d98606bfc7dc3d1ed6223e38c0c19265ca575a42",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097a530",
+        "class_pattern": "KillSubscription",
+        "address_hits": [
+          "src\\engine_seg49_64_78_cc13.cpp:25:// 0097A530, ECX=this, RET at 0097A61E; reverse member destruction.",
+          "src\\engine_seg49_64_78_cc13.cpp:26:void destruct_kill_0097a530(KillSubscription& s) {",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:183:void destruct_kill_0097a530(KillSubscription&);"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 11,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function destruct_kill_0097a530 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097a620",
+      "baseline_name": "BSP_ExitZoneSubscription_Construct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_exit_zone_0097a620"
+      ],
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a6c1; constructors return this in EAX",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097a620/assembly.txt",
+        "line_count": 52,
+        "complete": true,
+        "audit_text_sha256": "86c1bbfe21899c0f649b5f01b1422722e96d71b89429e44009fad719461a23bd",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097a620",
+        "class_pattern": "ExitZoneSubscription",
+        "address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:29:    {\"exitzone\", 0x2C, 0x0097A620, 0x00D1B69C},",
+          "src\\engine_seg49_64_78_cc13.cpp:33:// 0097A620, ECX=this / EAX=this, RET at 0097A6C1. Entity +0Ch and",
+          "src\\engine_seg49_64_78_cc13.cpp:35:ExitZoneSubscription construct_exit_zone_0097a620() { return {}; }",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:184:ExitZoneSubscription construct_exit_zone_0097a620();"
+        ],
+        "external_address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:29:    {\"exitzone\", 0x2C, 0x0097A620, 0x00D1B69C},"
+        ],
+        "class_hit_count": 9,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function construct_exit_zone_0097a620 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097a6d0",
+      "baseline_name": "BSP_ExitZoneSubscription_Destruct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_exit_zone_0097a6d0"
+      ],
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a78f; constructors return this in EAX",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097a6d0/assembly.txt",
+        "line_count": 69,
+        "complete": true,
+        "audit_text_sha256": "ec8471c77035d67e9a194636aee047460711d491f3371142731fd9c4a14ac214",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097a6d0",
+        "class_pattern": "ExitZoneSubscription",
+        "address_hits": [
+          "src\\engine_seg49_64_78_cc13.cpp:37:// 0097A6D0, ECX=this, RET at 0097A78F; boolean, entity, callback.",
+          "src\\engine_seg49_64_78_cc13.cpp:38:void destruct_exit_zone_0097a6d0(ExitZoneSubscription& s) {",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:185:void destruct_exit_zone_0097a6d0(ExitZoneSubscription&);"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 9,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function destruct_exit_zone_0097a6d0 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097a790",
+      "baseline_name": "BSP_InputSubscription_Construct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_input_0097a790"
+      ],
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a800; constructors return this in EAX",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097a790/assembly.txt",
+        "line_count": 38,
+        "complete": true,
+        "audit_text_sha256": "cef05e1b482a1262e293917079eb4cd6e7416b991a1462000f521841c4b424f4",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097a790",
+        "class_pattern": "InputSubscription",
+        "address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:30:    {\"input\", 0x1C, 0x0097A790, 0x00D1B6AC},",
+          "src\\engine_seg49_64_78_cc13.cpp:44:// 0097A790, ECX=this / EAX=this, RET at 0097A800. Integer filter +0Ch",
+          "src\\engine_seg49_64_78_cc13.cpp:46:InputSubscription construct_input_0097a790() { return {}; }",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:186:InputSubscription construct_input_0097a790();"
+        ],
+        "external_address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:30:    {\"input\", 0x1C, 0x0097A790, 0x00D1B6AC},"
+        ],
+        "class_hit_count": 9,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function construct_input_0097a790 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097a810",
+      "baseline_name": "BSP_InputSubscription_Destruct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_input_0097a810"
+      ],
+      "original_abi": "ECX=this; no stack args; RET 0 at 0097a8a5; constructors return this in EAX",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle using the existing subscription types. Native tree sentinels/allocator state/vtables, sized storage pool and EH use qualified std::set/std::string storage substitutions; no binary ABI or allocator-trace equivalence claimed.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097a810/assembly.txt",
+        "line_count": 48,
+        "complete": true,
+        "audit_text_sha256": "1c3a4d0895c50b9d931232d6df533ff1f79ec386873370899275d49c1507c4b1",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097a810",
+        "class_pattern": "InputSubscription",
+        "address_hits": [
+          "src\\engine_seg49_64_78_cc13.cpp:48:// 0097A810, ECX=this, plain RET. Integer filter precedes callback release.",
+          "src\\engine_seg49_64_78_cc13.cpp:49:void destruct_input_0097a810(InputSubscription& s) {",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:187:void destruct_input_0097a810(InputSubscription&);"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 9,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function destruct_input_0097a810 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097a8b0",
+      "baseline_name": "BSP_SurrenderSubscription_Construct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_surrender_0097a8b0"
+      ],
+      "original_abi": "ECX=this; no stack arguments; RET0 at0097a920",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097a8b0/assembly.txt",
+        "line_count": 38,
+        "complete": true,
+        "audit_text_sha256": "6bb5310df1afaf770e7c5dc80e3a77be885322be81eb9a007e14261647edff90",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097a8b0",
+        "class_pattern": "SurrenderSubscription",
+        "address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:31:    {\"surrender\", 0x1C, 0x0097A8B0, 0x00D1B6BC},",
+          "src\\engine_seg49_64_78_cc13.cpp:54://0097A8B0 ECX=this/EAX=this, RET0097A920; empty party filter/callback.",
+          "src\\engine_seg49_64_78_cc13.cpp:55:SurrenderSubscription construct_surrender_0097a8b0() { return {}; }",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:188:SurrenderSubscription construct_surrender_0097a8b0();"
+        ],
+        "external_address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:31:    {\"surrender\", 0x1C, 0x0097A8B0, 0x00D1B6BC},"
+        ],
+        "class_hit_count": 9,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function construct_surrender_0097a8b0 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097a930",
+      "baseline_name": "BSP_SurrenderSubscription_Destruct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_surrender_0097a930"
+      ],
+      "original_abi": "ECX=this; no stack arguments; RET0 at0097a9c5",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097a930/assembly.txt",
+        "line_count": 48,
+        "complete": true,
+        "audit_text_sha256": "12b813c6ca02942906b67f43443f1f97836bda6d2cc182c0f52b2fedc75c2e46",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097a930",
+        "class_pattern": "SurrenderSubscription",
+        "address_hits": [
+          "src\\engine_seg49_64_78_cc13.cpp:56://0097A930 ECX=this, RET0097A9C5; party tree then callback storage.",
+          "src\\engine_seg49_64_78_cc13.cpp:57:void destruct_surrender_0097a930(SurrenderSubscription& s) {",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:189:void destruct_surrender_0097a930(SurrenderSubscription&);"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 9,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function destruct_surrender_0097a930 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097a9d0",
+      "baseline_name": "BSP_LeakSubscription_Construct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "construct_leak_0097a9d0"
+      ],
+      "original_abi": "ECX=this; no stack arguments; RET0 at0097aa47",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097a9d0/assembly.txt",
+        "line_count": 39,
+        "complete": true,
+        "audit_text_sha256": "c7975d61ce95bfc09a434aa3227272c40aaf9e307da0139f84ec001d8c414557",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "RangeFilter duration is copied from the allocation preimage; native constructor writes its range vtable only and performs no float arithmetic. No new default values or rounding were introduced."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097a9d0",
+        "class_pattern": "LeakSubscription",
+        "address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:33:    {\"leak\", 0x28, 0x0097A9D0, 0x00D1B6CC},",
+          "src\\engine_seg49_64_78_cc13.cpp:61://0097A9D0 ECX=this/EAX=this, RET0097AA47. Range vtable alone is written",
+          "src\\engine_seg49_64_78_cc13.cpp:63:LeakSubscription construct_leak_0097a9d0(RangeFilter untouched_duration) {",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:190:// Native0097A9D0 leaves duration min/max untouched. Supply the allocation's",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:192:LeakSubscription construct_leak_0097a9d0(RangeFilter untouched_duration);"
+        ],
+        "external_address_hits": [
+          "include\\bsp\\band_0095_cc13.hpp:33:    {\"leak\", 0x28, 0x0097A9D0, 0x00D1B6CC},"
+        ],
+        "class_hit_count": 9,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function construct_leak_0097a9d0 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "0097aa50",
+      "baseline_name": "BSP_LeakSubscription_Destruct",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "destruct_leak_0097aa50"
+      ],
+      "original_abi": "ECX=this; no stack arguments; RET0 at0097aae5",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_subscriptions.json"
+      ],
+      "prior_coverage": "complete value-model lifecycle",
+      "prior_uncertainty": "Complete value-model lifecycle; qualified std::set/std::string/std::vector storage substitutions exclude native allocation trace, exception unwinding and binary ABI equivalence. Names remain hypotheses. The sensor model unused column7 is outside the seven native entry lists; existing consumers never populate it.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/0097aa50/assembly.txt",
+        "line_count": 48,
+        "complete": true,
+        "audit_text_sha256": "164fa74cc9a7e16cd12cf9614c386cd9f688631434cccaa972ab2201c41cc01b",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No floating-point arithmetic in the assigned source body or its local container/string helpers."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "0097aa50",
+        "class_pattern": "LeakSubscription",
+        "address_hits": [
+          "src\\engine_seg49_64_78_cc13.cpp:68://0097AA50 ECX=this, RET0097AAE5; range has no owned storage.",
+          "src\\engine_seg49_64_78_cc13.cpp:69:void destruct_leak_0097aa50(LeakSubscription& s) {",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:193:void destruct_leak_0097aa50(LeakSubscription&);"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 9,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function destruct_leak_0097aa50 status=reconstructed_value_model_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "00a06840",
+      "baseline_name": "BSP_AiDebug_ParseClassEquipmentList",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_debug_parse_class_equipment_list_00a06840"
+      ],
+      "original_abi": "__fastcall ECX input NativeString*, EDX class-id vector*, stack equipment-id vector*, errors NativeString*; RET 8",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete normal path",
+      "prior_uncertainty": "Explicit source interface; native allocator/STL storage and original FH3/SEH/fault behavior are not established.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a06840/assembly.txt",
+        "line_count": 793,
+        "complete": true,
+        "audit_text_sha256": "58d34fee1daf91a40ad33315f8a505388f751dad9fee5365c1b6d5ce89f61f45",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Local trimming/token extraction and std::atol operate on strings and signed integer ids; class lookup is an existing address-named host binding. No float/double chain."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a06840",
+        "class_pattern": "AiDebugClass|parse.*class.*list",
+        "address_hits": [
+          "src\\ai_planners.cpp:94:// 00A06840..00A072C7, ECX input string, EDX class-id vector, two stack",
+          "src\\ai_planners.cpp:99:void ai_debug_parse_class_equipment_list_00a06840(std::string_view input,",
+          "include\\bsp\\ai_planners.hpp:134:// 00A06840/00A072D0: native __fastcall ECX NativeString*, EDX class-id vector*,",
+          "include\\bsp\\ai_planners.hpp:139:void ai_debug_parse_class_equipment_list_00a06840(std::string_view input,",
+          "include\\bsp\\gameplay_seg61_62_cc13.hpp:481:// Callers 00A06840 and 00A072D0. Answers 00964790(index, readRace = 1)"
+        ],
+        "external_address_hits": [
+          "include\\bsp\\gameplay_seg61_62_cc13.hpp:481:// Callers 00A06840 and 00A072D0. Answers 00964790(index, readRace = 1)"
+        ],
+        "class_hit_count": 10,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_debug_parse_class_equipment_list_00a06840 status=reconstructed_normal_path_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Only canonical parser bodies. gameplay_seg61_62_cc13.hpp mentions these entries as callers of the existing class resolver; it supplies no parser body."
+      }
+    },
+    {
+      "address": "00a072d0",
+      "baseline_name": "BSP_AiDebug_ParseClassList",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_debug_parse_class_list_00a072d0"
+      ],
+      "original_abi": "__fastcall ECX input NativeString*, EDX class-id vector*, stack raw-field vector*, errors NativeString*; RET 8",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete normal path",
+      "prior_uncertainty": "Explicit source interface; native allocator/STL storage and original FH3/SEH/fault behavior are not established.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a072d0/assembly.txt",
+        "line_count": 475,
+        "complete": true,
+        "audit_text_sha256": "dbe5e548f33ddc9477850c628a4f95a55eec7633c41350b20884f9a57ee028b1",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Local trimming/token extraction and std::atol operate on strings and signed integer ids; class lookup is an existing address-named host binding. No float/double chain."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a072d0",
+        "class_pattern": "AiDebugClass|parse.*class.*list",
+        "address_hits": [
+          "src\\ai_planners.cpp:128:// 00A072D0..00A078A3, same native register/stack roles and RET 8 as above.",
+          "src\\ai_planners.cpp:132:void ai_debug_parse_class_list_00a072d0(std::string_view input,",
+          "include\\bsp\\ai_planners.hpp:134:// 00A06840/00A072D0: native __fastcall ECX NativeString*, EDX class-id vector*,",
+          "include\\bsp\\ai_planners.hpp:142:void ai_debug_parse_class_list_00a072d0(std::string_view input,",
+          "include\\bsp\\gameplay_seg61_62_cc13.hpp:481:// Callers 00A06840 and 00A072D0. Answers 00964790(index, readRace = 1)"
+        ],
+        "external_address_hits": [
+          "include\\bsp\\gameplay_seg61_62_cc13.hpp:481:// Callers 00A06840 and 00A072D0. Answers 00964790(index, readRace = 1)"
+        ],
+        "class_hit_count": 10,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_debug_parse_class_list_00a072d0 status=reconstructed_normal_path_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Only canonical parser bodies. gameplay_seg61_62_cc13.hpp mentions these entries as callers of the existing class resolver; it supplies no parser body."
+      }
+    },
+    {
+      "address": "00a0fce0",
+      "baseline_name": "BSP_AiCommand_NonControl_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_non_control_get_type_00a0fce0"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a0fce0/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "1b0bb701d7a81925df9a4134f87683df2ed6340a4ff779cede8efe0f22d11a4e",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a0fce0",
+        "class_pattern": "NonControl|Non_Control",
+        "address_hits": [
+          "src\\ai_planners.cpp:150:// 00A0FCE0: XOR EAX,EAX; RET. Original ABI: command in ECX (unused),",
+          "src\\ai_planners.cpp:152:AiCommandType ai_command_non_control_get_type_00a0fce0() noexcept {",
+          "src\\ai_planners.cpp:156:// 00A0FD30: MOV EAX,0Eh; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:161:// 00A0FD80: MOV EAX,1; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:166:// 00A0FE90: MOV EAX,0Bh; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:171:// 00A0FEF0: MOV EAX,0Dh; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:176:// 00A10270: MOV EAX,3; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:181:// 00A10310: MOV EAX,4; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:186:// 00A103A0: MOV EAX,5; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:191:// 00A10470: MOV EAX,0Ch; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:196:// 00A108C0: MOV EAX,7; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:201:// 00A109F0: MOV EAX,8; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:206:// 00A10B10: MOV EAX,9; RET. Same original ABI as 00A0FCE0.",
+          "include\\bsp\\ai_planners.hpp:149:AiCommandType ai_command_non_control_get_type_00a0fce0() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 44,
+        "class_file_count": 11,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_non_control_get_type_00a0fce0 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a0fd30",
+      "baseline_name": "BSP_AiCommand_Selling_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_selling_get_type_00a0fd30"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a0fd30/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "bbcd657f52cb0f8ed0d53ed1950320a4fe08c2d57b566dbc5e99536ef1e82f9b",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a0fd30",
+        "class_pattern": "Selling|Selling",
+        "address_hits": [
+          "src\\ai_planners.cpp:156:// 00A0FD30: MOV EAX,0Eh; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:157:AiCommandType ai_command_selling_get_type_00a0fd30() noexcept {",
+          "include\\bsp\\ai_planners.hpp:150:AiCommandType ai_command_selling_get_type_00a0fd30() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 55,
+        "class_file_count": 8,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_selling_get_type_00a0fd30 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a0fd80",
+      "baseline_name": "BSP_AiCommand_Idle_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_idle_get_type_00a0fd80"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a0fd80/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "63f9f4b48b68ee25c6ffecea44ab8bbc672c4285295155eaa48b07912948080b",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a0fd80",
+        "class_pattern": "Idle|Idle",
+        "address_hits": [
+          "src\\ai_planners.cpp:161:// 00A0FD80: MOV EAX,1; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:162:AiCommandType ai_command_idle_get_type_00a0fd80() noexcept {",
+          "include\\bsp\\ai_planners.hpp:151:AiCommandType ai_command_idle_get_type_00a0fd80() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 870,
+        "class_file_count": 188,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_idle_get_type_00a0fd80 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a0fe90",
+      "baseline_name": "BSP_AiCommand_DefendPosition_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_defend_position_get_type_00a0fe90"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a0fe90/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "6fb783c48e355e2f0e79fb55997c3b85132b962338c35880d4e7e15dae69e09f",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a0fe90",
+        "class_pattern": "DefendPosition|Defend_Position",
+        "address_hits": [
+          "src\\ai_planners.cpp:166:// 00A0FE90: MOV EAX,0Bh; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:167:AiCommandType ai_command_defend_position_get_type_00a0fe90() noexcept {",
+          "include\\bsp\\ai_planners.hpp:152:AiCommandType ai_command_defend_position_get_type_00a0fe90() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 41,
+        "class_file_count": 14,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_defend_position_get_type_00a0fe90 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a0fef0",
+      "baseline_name": "BSP_AiCommand_Retreat_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_retreat_get_type_00a0fef0"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a0fef0/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "c862937a4451af84695542d00bc74b4d6dbd26a0fb99bbf804921ab7369b3674",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a0fef0",
+        "class_pattern": "Retreat|Retreat",
+        "address_hits": [
+          "src\\ai_planners.cpp:171:// 00A0FEF0: MOV EAX,0Dh; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:172:AiCommandType ai_command_retreat_get_type_00a0fef0() noexcept {",
+          "include\\bsp\\ai_planners.hpp:153:AiCommandType ai_command_retreat_get_type_00a0fef0() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 486,
+        "class_file_count": 70,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_retreat_get_type_00a0fef0 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a10270",
+      "baseline_name": "BSP_AiCommand_MoveTo_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_move_to_get_type_00a10270"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a10270/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "bdb392d45bb6b979d22e5c5b35548a7f0088cd4685f6c8df2e4a600a466118d1",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a10270",
+        "class_pattern": "MoveTo|Move_To",
+        "address_hits": [
+          "src\\ai_planners.cpp:176:// 00A10270: MOV EAX,3; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:177:AiCommandType ai_command_move_to_get_type_00a10270() noexcept {",
+          "include\\bsp\\ai_planners.hpp:154:AiCommandType ai_command_move_to_get_type_00a10270() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 2209,
+        "class_file_count": 157,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_move_to_get_type_00a10270 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a10310",
+      "baseline_name": "BSP_AiCommand_CautiousMove_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_cautious_move_get_type_00a10310"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a10310/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "ec8a7b0ff1de5dada87b7ec6aca41808a8932c4ff5ea942fac2e2305f0ae8851",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a10310",
+        "class_pattern": "CautiousMove|Cautious_Move",
+        "address_hits": [
+          "src\\ai_planners.cpp:181:// 00A10310: MOV EAX,4; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:182:AiCommandType ai_command_cautious_move_get_type_00a10310() noexcept {",
+          "include\\bsp\\ai_planners.hpp:155:AiCommandType ai_command_cautious_move_get_type_00a10310() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 41,
+        "class_file_count": 12,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_cautious_move_get_type_00a10310 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a103a0",
+      "baseline_name": "BSP_AiCommand_RegroupingMove_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_regrouping_move_get_type_00a103a0"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a103a0/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "181d86e3033083f3ac509d546fa0f00718dd3721614c8b2abb3b890c1f192495",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a103a0",
+        "class_pattern": "RegroupingMove|Regrouping_Move",
+        "address_hits": [
+          "src\\ai_planners.cpp:186:// 00A103A0: MOV EAX,5; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:187:AiCommandType ai_command_regrouping_move_get_type_00a103a0() noexcept {",
+          "include\\bsp\\ai_planners.hpp:156:AiCommandType ai_command_regrouping_move_get_type_00a103a0() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 41,
+        "class_file_count": 14,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_regrouping_move_get_type_00a103a0 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a10470",
+      "baseline_name": "BSP_AiCommand_PatrolTo_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_patrol_to_get_type_00a10470"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a10470/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "a17d22c4d3a9ee150c51e329c0a38c1348de88eaab167dd6e17784e864c3aca7",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a10470",
+        "class_pattern": "PatrolTo|Patrol_To",
+        "address_hits": [
+          "src\\ai_planners.cpp:191:// 00A10470: MOV EAX,0Ch; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:192:AiCommandType ai_command_patrol_to_get_type_00a10470() noexcept {",
+          "include\\bsp\\ai_planners.hpp:157:AiCommandType ai_command_patrol_to_get_type_00a10470() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 52,
+        "class_file_count": 12,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_patrol_to_get_type_00a10470 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a108c0",
+      "baseline_name": "BSP_AiCommand_MoveToAttack_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_move_to_attack_get_type_00a108c0"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a108c0/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "8eecae2b7a52a7b737a6163dcb9d54b31e94426797b280d7e691b7df6f942c3f",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a108c0",
+        "class_pattern": "MoveToAttack|Move_To_Attack",
+        "address_hits": [
+          "src\\ai_planners.cpp:196:// 00A108C0: MOV EAX,7; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:197:AiCommandType ai_command_move_to_attack_get_type_00a108c0() noexcept {",
+          "include\\bsp\\ai_planners.hpp:158:AiCommandType ai_command_move_to_attack_get_type_00a108c0() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 55,
+        "class_file_count": 14,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_move_to_attack_get_type_00a108c0 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a109f0",
+      "baseline_name": "BSP_AiCommand_CautiousAttack_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_cautious_attack_get_type_00a109f0"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a109f0/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "e8ec2aff59231a4eb4ddb2050d471a050998c9c715af19d6d9530e43962501bb",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a109f0",
+        "class_pattern": "CautiousAttack|Cautious_Attack",
+        "address_hits": [
+          "src\\ai_planners.cpp:201:// 00A109F0: MOV EAX,8; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:202:AiCommandType ai_command_cautious_attack_get_type_00a109f0() noexcept {",
+          "include\\bsp\\ai_planners.hpp:159:AiCommandType ai_command_cautious_attack_get_type_00a109f0() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 51,
+        "class_file_count": 14,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_cautious_attack_get_type_00a109f0 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a10b10",
+      "baseline_name": "BSP_AiCommand_CloseAttack_GetType",
+      "source": "src/ai_planners.cpp",
+      "cpp_symbols": [
+        "ai_command_close_attack_get_type_00a10b10"
+      ],
+      "original_abi": "__thiscall ECX=command unused; RET; EAX type",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete",
+      "prior_uncertainty": "Portable C++ result interface; no native ABI or gameplay claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a10b10/assembly.txt",
+        "line_count": 3,
+        "complete": true,
+        "audit_text_sha256": "dce976cc7c088887323fdadda68114d5757ef960b2acfa6b8ba7261e1f509799",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native leaf returns an immediate integer command id; source returns the corresponding enum. No arithmetic helper composition."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a10b10",
+        "class_pattern": "CloseAttack|Close_Attack",
+        "address_hits": [
+          "src\\ai_planners.cpp:206:// 00A10B10: MOV EAX,9; RET. Same original ABI as 00A0FCE0.",
+          "src\\ai_planners.cpp:207:AiCommandType ai_command_close_attack_get_type_00a10b10() noexcept {",
+          "include\\bsp\\ai_planners.hpp:160:AiCommandType ai_command_close_attack_get_type_00a10b10() noexcept;"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 203,
+        "class_file_count": 25,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_command_close_attack_get_type_00a10b10 status=reconstructed_body_build_tested source=src/ai_planners.cpp"
+        ],
+        "reconciliation": "Address grep and class/command-name grep find one getter body. Other command family/type-name/lifetime logic has a different contract.",
+        "external_get_type_candidates": []
+      }
+    },
+    {
+      "address": "00a2cdd0",
+      "baseline_name": "BSP_AiDebug_GroupTargetText",
+      "source": "src/ai_group_think.cpp",
+      "cpp_symbols": [
+        "ai_debug_group_target_text_00a2cdd0"
+      ],
+      "original_abi": "ECX score-list subobject=group+24h, RET, no native return text",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete normal value/host-effect projection",
+      "prior_uncertainty": "Native pool/STL allocation and invalid checked-container paths/FH3 are excluded. Valid128 records, <=16 terms, terminated labels; no binary ABI/game claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a2cdd0/assembly.txt",
+        "line_count": 475,
+        "complete": true,
+        "audit_text_sha256": "0fc168419cdc3aab561e66d7f719f554fe2f4e1d9ae60d10b78e4ee1b579a621",
+        "floating_point_instructions": [
+          "00a2cffa: FLD float ptr [EBP + 0xffffff58] ",
+          "00a2d003: FSTP double ptr [ESP] ",
+          "00a2d149: FLD float ptr [EBX] ",
+          "00a2d14f: FSTP double ptr [ESP] "
+        ],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "exact_float_to_double_printf_promotion",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "FLD float/FSTP double at A2CFFA/A2D003 and A2D149/A2D14F promote already-rounded float fields for printf. The source static_cast<double>(float) is exact. Colour words are integer bit copies; refresh helpers are existing host bindings. CRT formatting internals are outside this reconstruction."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a2cdd0",
+        "class_pattern": "AiGroupDebug|AiGroupDescribe|group.*(target_text|members_overlay|describe_debug)",
+        "address_hits": [
+          "src\\ai_group_think.cpp:46:// 00A2CDD0..00A2D43C. Original ECX is the score-list subobject, not the",
+          "src\\ai_group_think.cpp:53:std::string ai_debug_group_target_text_00a2cdd0(void* score_list,",
+          "src\\ai_group_think.cpp:149:        (void)ai_debug_group_target_text_00a2cdd0(static_cast<unsigned char*>(group) + 0x24, state, host);",
+          "include\\bsp\\ai_group_think.hpp:50:// 00A2CDD0: native ECX = score-list subobject at group+24h, RET, no returned",
+          "include\\bsp\\ai_group_think.hpp:55:std::string ai_debug_group_target_text_00a2cdd0(void* score_list, AiGroupDebugState&, AiGroupDebugHost&);",
+          "include\\bsp\\band_009f_cc13.hpp:111:// reader is the unreached debug overlay 00A2CDD0 (src/game_hosts_ai.cpp,",
+          "src\\game_hosts_ai.cpp:1109:// only record reader is 00A2CDD0 <- 00A2D580 <- 00A31000, a text overlay"
+        ],
+        "external_address_hits": [
+          "include\\bsp\\band_009f_cc13.hpp:111:// reader is the unreached debug overlay 00A2CDD0 (src/game_hosts_ai.cpp,",
+          "src\\game_hosts_ai.cpp:1109:// only record reader is 00A2CDD0 <- 00A2D580 <- 00A31000, a text overlay"
+        ],
+        "class_hit_count": 22,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_debug_group_target_text_00a2cdd0 status=reconstructed_normal_value_host_effects_build_tested source=src/ai_group_think.cpp"
+        ],
+        "reconciliation": "Canonical debug-text body; game_hosts_ai.cpp is a host call binding and band_009f_cc13.hpp documents the score-list layout, neither is another body."
+      }
+    },
+    {
+      "address": "00a2d580",
+      "baseline_name": "BSP_AiDebug_GroupMembersOverlay",
+      "source": "src/ai_group_think.cpp",
+      "cpp_symbols": [
+        "ai_debug_group_members_overlay_00a2d580"
+      ],
+      "original_abi": "ECX group, RET",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete normal value/host-effect projection",
+      "prior_uncertainty": "Native temporary string/pool/STL and invalid-container/FH3 paths excluded. No invented draw call; original computed positions/text are discarded. No binary ABI/game claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a2d580/assembly.txt",
+        "line_count": 215,
+        "complete": true,
+        "audit_text_sha256": "3e2e45c177270204d8e65590a90d952ba3ea9b8afa83247a6b7b9b34b0580923",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No native floating-point instructions. Callback 006F7DD0 returns a point through an existing address-named binding; colour storage copies raw integer words. Callback repetition/order is unchanged."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a2d580",
+        "class_pattern": "AiGroupDebug|AiGroupDescribe|group.*(target_text|members_overlay|describe_debug)",
+        "address_hits": [
+          "src\\ai_group_think.cpp:98:// 00A2D580..00A2D8B2, original ECX group, plain RET. Complete normal",
+          "src\\ai_group_think.cpp:103:void ai_debug_group_members_overlay_00a2d580(void* group,",
+          "include\\bsp\\ai_group_think.hpp:56:// 00A2D580: native ECX = group, RET. Same normal-path projection/domain; no",
+          "include\\bsp\\ai_group_think.hpp:58:void ai_debug_group_members_overlay_00a2d580(void* group, AiGroupDebugState&, AiGroupDebugHost&);",
+          "src\\game_hosts_ai.cpp:1109:// only record reader is 00A2CDD0 <- 00A2D580 <- 00A31000, a text overlay"
+        ],
+        "external_address_hits": [
+          "src\\game_hosts_ai.cpp:1109:// only record reader is 00A2CDD0 <- 00A2D580 <- 00A31000, a text overlay"
+        ],
+        "class_hit_count": 22,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_debug_group_members_overlay_00a2d580 status=reconstructed_normal_value_host_effects_build_tested source=src/ai_group_think.cpp"
+        ],
+        "reconciliation": "Canonical overlay body; game_hosts_ai.cpp contains its address binding only. The helper call to the separate A2CDD0 body is composition, not an alternative overlay implementation."
+      }
+    },
+    {
+      "address": "00a2f6f0",
+      "baseline_name": "BSP_AiGroup_DescribeDebug",
+      "source": "src/ai_group_think.cpp",
+      "cpp_symbols": [
+        "ai_group_describe_debug_00a2f6f0"
+      ],
+      "original_abi": "ECX group, stack output NativeString*, RET4, EAX output header",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete normal value/host-effect projection",
+      "prior_uncertainty": "Requires a valid nonempty native member list, string/type-name tables and supplied ECX/ST0/EAX-compatible entry bridges. Native pool/STL allocation and FH3/SEH/fault paths excluded. CRT conversion remains binding, no library body credit; no binary ABI/game claim.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a2f6f0/assembly.txt",
+        "line_count": 1764,
+        "complete": true,
+        "audit_text_sha256": "8d0a025f23e8861507392169d6b20d9a3069b1e00ca66e8f0ba9cc4504de1cb2",
+        "floating_point_instructions": [
+          "00a303b2: FMUL double ptr [0x00d7a220] "
+        ],
+        "arithmetic_instructions": [
+          "00a303b2: FMUL double ptr [0x00d7a220] "
+        ]
+      },
+      "precision_audit": {
+        "result": "native_x87_sequence_already_preserved",
+        "changed": false,
+        "direct_arithmetic_pcs": [
+          "00a303b2"
+        ],
+        "helper_composition": "Inline x87 performs CALL native recon_ratio_entry_00a2c3d0 at A303AD, FMUL qword D7A220 at A303B2, CALL native _ftol2 entry00BF7420 at A303B8. It keeps ST0 across both native register bindings with no intermediate C++ double chain or float spill. PC24 multiplication follows the main-thread control word; the native integer conversion remains a CRT binding. Added precision-boundary comments only."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00a2f6f0",
+        "class_pattern": "AiGroupDebug|AiGroupDescribe|group.*(target_text|members_overlay|describe_debug)",
+        "address_hits": [
+          "include\\bsp\\ai_group_think.hpp:74:// 00A2F6F0: native ECX=group, stack NativeString* out, RET4/EAX out. Complete",
+          "include\\bsp\\ai_group_think.hpp:78:std::string ai_group_describe_debug_00a2f6f0(void* group,",
+          "src\\ai_group_think.cpp:155:// 00A2F6F0..00A30FFF, native ECX group, stack output NativeString*, RET4,",
+          "src\\ai_group_think.cpp:163:std::string ai_group_describe_debug_00a2f6f0(void* group,"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 22,
+        "class_file_count": 2,
+        "ledger_records": [
+          "reconstruction: function bsp::ai_group_describe_debug_00a2f6f0 status=reconstructed_normal_value_host_effects_build_tested source=src/ai_group_think.cpp"
+        ],
+        "reconciliation": "Canonical function remains in its existing source. External address hits are call bindings, metadata, or comments; no alternative whole body found."
+      }
+    },
+    {
+      "address": "00a3d060",
+      "baseline_name": "BSP_NetworkConsoleSend_Construct",
+      "source": "src/native_network_console_runtime.cpp",
+      "cpp_symbols": [
+        "construct_native_network_console_00a3d060"
+      ],
+      "original_abi": "__thiscall ECX actual4003F0h storage, EAX same storage, RET",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete normal path",
+      "prior_uncertainty": "Explicit source interface; native allocator/STL storage and original FH3/SEH/fault behavior are not established.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a3d060/assembly.txt",
+        "line_count": 88,
+        "complete": true,
+        "audit_text_sha256": "fd3bc4feb23ac565ad35f9f6a4fcd3767f0c9dcdfec31ee2e8dec5062df328a2",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Parent has no floating-point instructions. Existing channel ctor00A3CE60 calls reset00A3AD10, whose FILD-qword/FDIVP/FSTP-clock sequence is already a single inline-x87 block preserving the native arithmetic/store order. Base ctor00A3CF00 and queue ctors00A3A3D0/00A3A500 use pointer/integer/storage operations. No helper was replaced or widened."
+      },
+      "duplicate_audit": {
+        "result": "retained_dependency_fragment_and_complete_parent",
+        "implementations_removed": [],
+        "address_pattern": "00a3d060",
+        "class_pattern": "NetworkConsoleSend",
+        "address_hits": [
+          "src\\native_network_console_runtime.cpp:51:// 00A3D060..00A3D199, original ECX=this, EAX=this, RET. Complete normal path",
+          "src\\native_network_console_runtime.cpp:56:NativeNetworkConsoleStorage* construct_native_network_console_00a3d060(",
+          "include\\bsp\\native_network_console_runtime.hpp:37:// 00A3D060, ECX actual 4003F0h storage, EAX same storage, RET. Complete normal",
+          "include\\bsp\\native_network_console_runtime.hpp:41:NativeNetworkConsoleStorage* construct_native_network_console_00a3d060("
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 17,
+        "class_file_count": 5,
+        "ledger_records": [
+          "reconstruction: fragment native_network_console_parent_storage_binding_r172 status=network_console_parent_array_dependencies_reconstructed source=src/native_network_console_storage.cpp",
+          "reconstruction: function bsp::construct_native_network_console_00a3d060 status=reconstructed_normal_path_build_tested source=src/native_network_console_runtime.cpp"
+        ],
+        "reconciliation": "native_network_console_parent_storage_binding_r172 is a dependency-binding fragment in native_network_console_storage.cpp, not a parent constructor implementation. The complete parent remains solely in native_network_console_runtime.cpp. NativeNetworkConsoleSendContext functions are send/receive logic, not constructors."
+      }
+    },
+    {
+      "address": "00a9df40",
+      "baseline_name": "BSP_GuiListbox_Construct",
+      "source": "src/cc13_gui1.cpp",
+      "cpp_symbols": [
+        "gui_listbox_construct_00a9df40"
+      ],
+      "original_abi": "__thiscall ECX destination, EAX destination, RET",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete normal path",
+      "prior_uncertainty": "Explicit source interface; native allocator/STL storage and original FH3/SEH/fault behavior are not established.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00a9df40/assembly.txt",
+        "line_count": 65,
+        "complete": true,
+        "audit_text_sha256": "adcbccee5274f1e54f11d2c08541ca40ddf4ce666ba7c0318a1c024714cb8d9e",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "No native floating-point instructions. Derived float-zero fields are raw DWORD-zero stores; base00AA9390 and sentinel00A9B720 remain explicit address-named bindings with their native call order. No local arithmetic chains."
+      },
+      "duplicate_audit": {
+        "result": "retained_distinct_partial_companion_and_complete_raw_constructor",
+        "implementations_removed": [],
+        "address_pattern": "00a9df40",
+        "class_pattern": "GuiListbox",
+        "address_hits": [
+          "src\\cc13_gui1.cpp:439:// 00A9DF40, native __thiscall ECX destination, EAX destination, RET. Complete",
+          "src\\cc13_gui1.cpp:444:void* gui_listbox_construct_00a9df40(void* listbox, GuiListboxConstructHooks& host) {",
+          "include\\bsp\\cc13_gui1.hpp:293:// 00A9DF40: ECX = destination, EAX = destination, RET. Complete normal path;",
+          "include\\bsp\\cc13_gui1.hpp:296:void* gui_listbox_construct_00a9df40(void* listbox, GuiListboxConstructHooks&);",
+          "src\\oct18b_nc_mid.cpp:182:                                 : host.construct_00a9df40(storage);",
+          "include\\bsp\\oct18b_nc_mid.hpp:61:    virtual void* construct_00a9df40(void* storage) = 0;"
+        ],
+        "external_address_hits": [
+          "src\\oct18b_nc_mid.cpp:182:                                 : host.construct_00a9df40(storage);",
+          "include\\bsp\\oct18b_nc_mid.hpp:61:    virtual void* construct_00a9df40(void* storage) = 0;"
+        ],
+        "class_hit_count": 270,
+        "class_file_count": 36,
+        "ledger_records": [
+          "reconstruction: fragment GuiListboxRuntime::GuiListboxRuntime status=partial_projection_msvc_win32_tu_and_canonical_owner_fixture_tested source=src/gui_listbox_runtime.cpp",
+          "reconstruction: function bsp::cc13_gui1::gui_listbox_construct_00a9df40 status=reconstructed_normal_path_build_tested source=src/cc13_gui1.cpp"
+        ],
+        "reconciliation": "GuiListboxRuntime::GuiListboxRuntime consumes an already-created GuiWidgetOwner and validates type11/node-owner identity. C++ defaults initialize borrowed rows, selection, listener, paging and projected fields. It does not call AA9390 or construct raw180h storage/A9B720 sentinels. The new raw-storage constructor covers those native selective stores/calls. Retained the existing partial fragment status, companion limits and runtime consumers; neither body was removed or credited as an upgrade of the fragment.",
+        "companion_source": "src/gui_listbox_runtime.cpp:172",
+        "companion_contract": "include/bsp/gui_listbox_runtime.hpp:144",
+        "runtime_consumers": [
+          "src/gui_type_dispatch.cpp",
+          "src/gui_listbox_row_control.cpp",
+          "src/gui_listbox_pointer_runtime.cpp",
+          "src/main_menu_command_listener.cpp",
+          "src/main_menu_objective_rows.cpp",
+          "src/main_menu_runtime_listeners.cpp",
+          "src/main_menu_selection_listener.cpp"
+        ],
+        "raw_constructor_consumers": "No source/header/test callers or hook implementations found beyond its declaration and definition. Native factory hook oct18b_nc_mid still binds address00A9DF40, rather than silently calling this source interface."
+      }
+    },
+    {
+      "address": "00abe640",
+      "baseline_name": "BSP_GuiSection_GetFirstVertexStream",
+      "source": "src/engine_seg49_64_78_cc13.cpp",
+      "cpp_symbols": [
+        "gui_section_get_first_vertex_stream_00abe640"
+      ],
+      "original_abi": "__thiscall ECX section, RET, EAX stream/null",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete normal path",
+      "prior_uncertainty": "Explicit source interface; native allocator/STL storage and original FH3/SEH/fault behavior are not established.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00abe640/assembly.txt",
+        "line_count": 22,
+        "complete": true,
+        "audit_text_sha256": "5a8df75d41c41787397ba27b91614e7ff49ad41de64d4a2d33cca7ec7df6e7a4",
+        "floating_point_instructions": [],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "no_native_floating_point_operations",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Pointer/null/count logic only. GeneratedModel_GetGeometry00B74640, Geometry_GetVertexStreamCount00B72B20 and Geometry_GetVertexStream00B73260 are explicit existing bindings, with all native null/count guards preserved."
+      },
+      "duplicate_audit": {
+        "result": "historical_forwarding_attribution_corrected",
+        "implementations_removed": [],
+        "address_pattern": "00abe640",
+        "class_pattern": "GuiSection",
+        "address_hits": [
+          "src\\engine_seg49_64_78_cc13.cpp:1427:// 00ABE640..00ABE66E: ECX = section, plain RET, EAX result. Each null/zero",
+          "src\\engine_seg49_64_78_cc13.cpp:1431:void* gui_section_get_first_vertex_stream_00abe640(void* section, GuiSectionVertexStreamHost& host)",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:746:// 00AB10A0 (Icon) / 00ABE640 (Section), __fastcall(ECX = widget): the first vertex stream of",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:757:// 00ABE640, native ECX = section, RET -> EAX stream or null. Complete normal",
+          "include\\bsp\\engine_seg49_64_78_cc13.hpp:760:void* gui_section_get_first_vertex_stream_00abe640(void* section, GuiSectionVertexStreamHost&);"
+        ],
+        "external_address_hits": [],
+        "class_hit_count": 54,
+        "class_file_count": 12,
+        "ledger_records": [
+          "reconstruction: function bsp::cc13_seg49_64_78::gui_section_get_first_vertex_stream_00abe640 status=reconstructed_normal_path_build_tested source=src/engine_seg49_64_78_cc13.cpp"
+        ],
+        "reconciliation": "gui_first_vertex_stream is an older one-call GuiLeafHost::first_vertex_stream boundary, not the three-call Section implementation. Corrected its header attribution to the historical Icon projection only, preserving Icon behavior. Canonical Section body/ledger name remain unchanged. Appended ledger evidence explicitly superseding the older wrapper attribution as Section coverage; no function record was deleted or renamed, so --supersedes OLD_NAME is not applicable.",
+        "attribution_only_changes": [
+          "include/bsp/engine_seg49_64_78_cc13.hpp",
+          "config/names/00ab0000.jsonl"
+        ]
+      }
+    },
+    {
+      "address": "00b6a390",
+      "baseline_name": "BSP_LuaObject_WriteLuaSourceText",
+      "source": "src/lua_object.cpp",
+      "cpp_symbols": [
+        "lua_object_write_lua_source_text_00b6a390"
+      ],
+      "original_abi": "ECX actual14h LuaObject; stream,NativeString* name,sort DWORD,signed indent DWORD,append-CRLF byte,flatten byte on stack; RET18h, AL1",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete normal value/host-effect projection",
+      "prior_uncertainty": "Finite acyclic stable object/interpreter domain. Native pool/STL allocation, FH3, nonlocal Lua errors and hardware/allocator faults excluded; no original binary ABI or game validation. Earlier vendor_luaplus_probable_out_of_scope metadata was explicitly uncertain. No vendor version or matching source established; current primary LuaPlus DumpObject has different arguments, filtering and sorting. Vendor provenance remains unresolved.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00b6a390/assembly.txt",
+        "line_count": 1836,
+        "complete": true,
+        "audit_text_sha256": "b2312db4e33434e7cf931ade7e431b0bbf861a9f268f5193d4ca05edc88c06ee",
+        "floating_point_instructions": [
+          "00b6a5bd: FSTP float ptr [ESP + 0xc] ",
+          "00b6a5c1: FLD float ptr [ESP + 0xc] ",
+          "00b6a5ca: FSTP float ptr [ESP] ",
+          "00b6aac8: FSTP float ptr [ESP + 0xc] ",
+          "00b6aacc: FLD float ptr [ESP + 0xc] ",
+          "00b6ba45: FSTP float ptr [ESP + 0xc] ",
+          "00b6ba49: FLD float ptr [ESP + 0xc] "
+        ],
+        "arithmetic_instructions": []
+      },
+      "precision_audit": {
+        "result": "native_float_spill_and_integer_conversion_boundaries_preserved",
+        "changed": false,
+        "direct_arithmetic_pcs": [],
+        "helper_composition": "Native float stores/reloads occur at B6A5BD/B6A5C1/B6A5CA, B6AAC8/B6AACC and B6BA45/B6BA49. Existing lua_number_float32_00b66270 uses inline FLD double/FSTP float; lua_number_integer_00b66290 uses that same explicit float narrowing before the established SSE2/native-x87 truncation alternatives. The formatter0043BDF0 receives float, and Lua/CRT/sorting internals remain bindings. No arithmetic or transcendental expression was rewritten. Fixed stale top-level address lists in source/header only."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00b6a390",
+        "class_pattern": "LuaObject",
+        "address_hits": [
+          "include\\bsp\\cc13_seg51b.hpp:103:    // BSP_LuaObject_SetNumericElement(table; index, float value), RET 8; 00B6A390",
+          "include\\bsp\\cc13_seg51b.hpp:118:    virtual void lua_object_write_lua_source_text_00b6a390(Object object, Object stream,",
+          "src\\cc13_seg51b.cpp:106:    host.lua_object_write_lua_source_text_00b6a390(camos, stream, &name, 0u, 0u, 1u, 0u);",
+          "src\\lua_object.cpp:168:// 00B6A390..00B6BD22. Native ECX actual14h object, six stack arguments,",
+          "src\\lua_object.cpp:177:bool lua_object_write_lua_source_text_00b6a390(NativeLuaObjectStorage& object,",
+          "src\\lua_object.cpp:221:                (void)lua_object_write_lua_source_text_00b6a390(value, stream, \"[\" + key_text + \"]\",",
+          "src\\lua_object.cpp:244:                (void)lua_object_write_lua_source_text_00b6a390(child, stream, child_name,",
+          "src\\lua_object.cpp:256:                (void)lua_object_write_lua_source_text_00b6a390(child, stream, child_name,",
+          "include\\bsp\\lua_object.hpp:43:// 00B6A390: native ECX actual14h LuaObject; stream,name*,sort DWORD,indent",
+          "include\\bsp\\lua_object.hpp:54:bool lua_object_write_lua_source_text_00b6a390(NativeLuaObjectStorage& object,"
+        ],
+        "external_address_hits": [
+          "include\\bsp\\cc13_seg51b.hpp:103:    // BSP_LuaObject_SetNumericElement(table; index, float value), RET 8; 00B6A390",
+          "include\\bsp\\cc13_seg51b.hpp:118:    virtual void lua_object_write_lua_source_text_00b6a390(Object object, Object stream,",
+          "src\\cc13_seg51b.cpp:106:    host.lua_object_write_lua_source_text_00b6a390(camos, stream, &name, 0u, 0u, 1u, 0u);"
+        ],
+        "class_hit_count": 1600,
+        "class_file_count": 264,
+        "ledger_records": [
+          "reconstruction: function bsp::lua_object_write_lua_source_text_00b6a390 status=reconstructed_normal_value_host_effects_build_tested source=src/lua_object.cpp"
+        ],
+        "reconciliation": "Canonical actual-Lua-object recursive B6A390 writer only. cc13_seg51b exposes a call boundary/consumer and native_lua_* files implement separate tracked-object primitives. lua_text_dump.hpp/cpp describes distinct entry0043C530 (depth-limited mission save printer) and its0043C1C0/006AD8D0 family, not an alternative B6A390 sorted/flattened writer. Vendor LuaPlus provenance remains unproved and is not upgraded."
+      }
+    },
+    {
+      "address": "00bbf8a0",
+      "baseline_name": "BSP_SkyBox_Construct",
+      "source": "src/water_weather_cc13.cpp",
+      "cpp_symbols": [
+        "sky_box_construct_00bbf8a0"
+      ],
+      "original_abi": "ECX raw destination130h; source,atmosphere,NativeString* name on stack; RET0Ch, EAX destination",
+      "prior_evidence_reports": [
+        "reports/oct24_poolB_tail.json"
+      ],
+      "prior_coverage": "complete normal value/host-effect projection",
+      "prior_uncertainty": "Valid raw model/resource/node/material/texture identities and native slot0 domain. Native string/pool/STL allocation, FH3 unwinding, unmasked FP/hardware faults and original binary ABI excluded. Full Win32 build pending primary; no game/ABI proof.",
+      "exported": true,
+      "reconstructed": true,
+      "body_arithmetic_changed": false,
+      "native_listing": {
+        "path": "exports/bsp/functions/00bbf8a0/assembly.txt",
+        "line_count": 773,
+        "complete": true,
+        "audit_text_sha256": "8d83ef9a913a3f6fc7704ababa32fec5a775b07ff9e37dc207f04cbb00c2cfa8",
+        "floating_point_instructions": [
+          "00bbf9ea: FLD1 ",
+          "00bbf9f2: FSTP float ptr [ESP] ",
+          "00bbfc93: FILD dword ptr [ESP + 0x14] ",
+          "00bbfc99: FADD float ptr [0x00ce3978] ",
+          "00bbfca5: FSTP float ptr [ESI + 0x74] ",
+          "00bbfcb5: FILD dword ptr [ESP + 0x14] ",
+          "00bbfcbb: FADD float ptr [0x00ce3978] ",
+          "00bbfcc1: FSTP float ptr [ESP + 0x10] ",
+          "00bbfcc9: FLD float ptr [ESP + 0x10] ",
+          "00bbfcd3: FST float ptr [ESI + 0x78] ",
+          "00bbfcd6: FLD float ptr [ESI + 0x74] ",
+          "00bbfcdd: FLD1 ",
+          "00bbfcdf: FLD ST0 ",
+          "00bbfce1: FDIVRP ST2,ST0 ",
+          "00bbfce3: FXCH ",
+          "00bbfce5: FSTP float ptr [ESP + 0x74] ",
+          "00bbfcef: FDIVRP ",
+          "00bbfcf1: FSTP float ptr [ESP + 0x10] ",
+          "00bbfcf5: FLD float ptr [ESP + 0x74] ",
+          "00bbfcf9: FLDZ ",
+          "00bbfcfb: FMUL ST1 ",
+          "00bbfcfd: FXCH ",
+          "00bbfcff: FSTP float ptr [ESP + 0x14] ",
+          "00bbfd0c: FMUL float ptr [ESP + 0x10] ",
+          "00bbfd22: FSTP float ptr [ESP + 0x14] "
+        ],
+        "arithmetic_instructions": [
+          "00bbfc99: FADD float ptr [0x00ce3978] ",
+          "00bbfcbb: FADD float ptr [0x00ce3978] ",
+          "00bbfce1: FDIVRP ST2,ST0 ",
+          "00bbfcef: FDIVRP ",
+          "00bbfcfb: FMUL ST1 ",
+          "00bbfd0c: FMUL float ptr [ESP + 0x10] "
+        ]
+      },
+      "precision_audit": {
+        "result": "native_x87_helpers_already_preserved",
+        "changed": false,
+        "direct_arithmetic_pcs": [
+          "00bbfc99",
+          "00bbfcbb",
+          "00bbfce1",
+          "00bbfcef",
+          "00bbfcfb",
+          "00bbfd0c"
+        ],
+        "helper_composition": "sky_unsigned_dimension_c retains exact FILD signed32, conditional FADD float2^32 and FSTP float for width/height at BBFC99/BBFCBB. sky_texel_offsets_c is inline x87 for reciprocal FDIVRP at BBFCE1/BBFCEF and zero FMUL at BBFCFB/BBFD0C, including the ST1 destination and float spill/reload boundaries. Operations use the caller PC, thus PC24 on the post-device main thread, with no double-expression composition. Zero dimensions still produce the native Inf/NaN behavior. Added precision-boundary comments only."
+      },
+      "duplicate_audit": {
+        "result": "no_duplicate_whole_body",
+        "implementations_removed": [],
+        "address_pattern": "00bbf8a0",
+        "class_pattern": "SkyBox",
+        "address_hits": [
+          "src\\water_weather_cc13.cpp:1739:    a.sky_box_18 = host.construct_sky_box_00bbf8a0(source, sky_arg);",
+          "src\\water_weather_cc13.cpp:1753:    a.sky_box_18 = host.construct_sky_box_00bbf8a0(a.source_0c, sky_arg);",
+          "src\\water_weather_cc13.cpp:1915:// 00BBF8A0..00BC02BF. ECX destination, source/atmosphere/name on stack,",
+          "src\\water_weather_cc13.cpp:1920:void* sky_box_construct_00bbf8a0(void* destination, void* source, void* atmosphere,",
+          "include\\bsp\\water_weather_cc13.hpp:976:    // operator_new(130h) then 00BBF8A0(source, atmosphere, arg); 0 when allocation failed.",
+          "include\\bsp\\water_weather_cc13.hpp:977:    virtual std::uint32_t construct_sky_box_00bbf8a0(std::uint32_t source, std::uint32_t arg) = 0;",
+          "include\\bsp\\water_weather_cc13.hpp:1079:// Sky box (130h, built by 00BBF8A0).",
+          "include\\bsp\\water_weather_cc13.hpp:1107:// 00BBF8A0: native ECX destination130h, stack source, atmosphere, NativeString*",
+          "include\\bsp\\water_weather_cc13.hpp:1113:void* sky_box_construct_00bbf8a0(void* destination, void* source, void* atmosphere,",
+          "include\\bsp\\weather_render.hpp:274:// coordinate at +28h (default 0.1); its sky box (00BBF8A0, at +18h) holds two"
+        ],
+        "external_address_hits": [
+          "include\\bsp\\weather_render.hpp:274:// coordinate at +28h (default 0.1); its sky box (00BBF8A0, at +18h) holds two"
+        ],
+        "class_hit_count": 35,
+        "class_file_count": 8,
+        "ledger_records": [
+          "reconstruction: function bsp::water_weather_cc13::sky_box_construct_00bbf8a0 status=reconstructed_normal_value_host_effects_build_tested source=src/water_weather_cc13.cpp"
+        ],
+        "reconciliation": "Only canonical SkyBox raw-storage constructor. Atmosphere functions call an existing constructor hook; skybox getters and scene property loaders have distinct contracts. No alternative complete SkyBox constructor."
+      }
+    }
+  ],
+  "call_evidence": [
+    {
+      "address": "0096dce6",
+      "native": "00419cc0",
+      "containing": "0096dcb0",
+      "evidence_report": "reports/oct24_poolB_subscriptions.json"
+    },
+    {
+      "address": "0096dced",
+      "native": "00bd1510",
+      "containing": "0096dcb0",
+      "evidence_report": "reports/oct24_poolB_subscriptions.json"
+    },
+    {
+      "address": "00a06c7c",
+      "native": "009653b0",
+      "containing_function": "00a06840",
+      "contract": "class lookup",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a06e3a",
+      "native": "00951f10",
+      "containing_function": "00a06840",
+      "contract": "MOV EAX,[ECX+128h], inlined established leaf",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a075fe",
+      "native": "009653b0",
+      "containing_function": "00a072d0",
+      "contract": "class lookup",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a3d080",
+      "native": "00a3cf00",
+      "containing_function": "00a3d060",
+      "contract": "existing actual base constructor",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a3d0af",
+      "native": "00bf7cd1",
+      "containing_function": "00a3d060",
+      "contract": "16x49Ch callbacks A3CE60/A3A770, existing actual member constructors",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a3d0e6",
+      "native": "00bf7cd1",
+      "containing_function": "00a3d060",
+      "contract": "1000x82Ch callbacks A3A3D0/A3A3E0",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a3d10b",
+      "native": "00bf7cd1",
+      "containing_function": "00a3d060",
+      "contract": "1000x820h callbacks A3A500/A3A520",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a3d135",
+      "native": "00bd1860",
+      "containing_function": "00a3d060",
+      "contract": "existing tracked critical section constructor",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a3d140",
+      "native": "00bd1860",
+      "containing_function": "00a3d060",
+      "contract": "existing tracked critical section constructor",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a9df61",
+      "native": "00aa9390",
+      "containing_function": "00a9df40",
+      "contract": "existing native widget base constructor, type11",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a9df7a",
+      "native": "00a9b720",
+      "containing_function": "00a9df40",
+      "contract": "existing self-linked0Ch sentinel allocator",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a9e036",
+      "native": "00a9b720",
+      "containing_function": "00a9df40",
+      "contract": "existing self-linked0Ch sentinel allocator",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00abe64a",
+      "native": "00b74640",
+      "containing_function": "00abe640",
+      "contract": "unread callee internals; native argument0",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00abe657",
+      "native": "00b72b20",
+      "containing_function": "00abe640",
+      "contract": "unread callee internals; zero result tested",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00abe664",
+      "native": "00b73260",
+      "containing_function": "00abe640",
+      "contract": "unread callee internals; native argument0",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2cf72",
+      "native": "00a10c20",
+      "containing_function": "00a2cdd0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2cfac",
+      "native": "00a2c050",
+      "containing_function": "00a2cdd0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2cfb4",
+      "native": "00a10c20",
+      "containing_function": "00a2cdd0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2d3d1",
+      "native": "00414db0",
+      "containing_function": "00a2cdd0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2d64f",
+      "native": "00414db0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2d673",
+      "native": "00414db0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2d6c8",
+      "native": "007788b0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2d6f7",
+      "native": "0071eb60",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2d712",
+      "native": "00414db0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2d72a",
+      "native": "0071eb60",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2d731",
+      "native": "006f7dd0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2d82f",
+      "native": "00414db0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2d87d",
+      "native": "00a2cdd0",
+      "containing_function": "00a2d580",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2f791",
+      "native": "00a2def0",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a2f95d",
+      "native": "00a2e1e0",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a3019b",
+      "native": "00a137d0",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a303ad",
+      "native": "00a2c3d0",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a303b8",
+      "native": "00bf7420",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a30cf2",
+      "native": "0071be40",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a30d0d",
+      "native": "0071be40",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00a30dc8",
+      "native": "007ed500",
+      "containing_function": "00a2f6f0",
+      "contract": "Address-named native boundary; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6a5cd",
+      "native": "0043bdf0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6ab34",
+      "native": "00623170",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6a51d",
+      "native": "00a675a0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6aa0c",
+      "native": "00a675a0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b63c",
+      "native": "00a675a0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6a5b8",
+      "native": "00a67770",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6aac3",
+      "native": "00a67770",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6ba40",
+      "native": "00a67770",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6a548",
+      "native": "00a677e0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6a679",
+      "native": "00a67810",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6aa38",
+      "native": "00a67810",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b6a3",
+      "native": "00a67810",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6ad15",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6af3b",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b213",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b3ed",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b51d",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b543",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6bae3",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6bb0f",
+      "native": "00b66de0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6a9e0",
+      "native": "00b67080",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b603",
+      "native": "00b67080",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6aaf8",
+      "native": "00b67190",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6ba29",
+      "native": "00b67190",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6acd0",
+      "native": "00b677e0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6aef3",
+      "native": "00b677e0",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b1cb",
+      "native": "00b68100",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b3a2",
+      "native": "00b68100",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6bc3a",
+      "native": "00b68550",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6ab69",
+      "native": "00b69f50",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6acee",
+      "native": "00b6a390",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6af14",
+      "native": "00b6a390",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b1eb",
+      "native": "00b6a390",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b3c5",
+      "native": "00b6a390",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6b8e9",
+      "native": "00b6a390",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6aad0",
+      "native": "00bf7420",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00b6ba4d",
+      "native": "00bf7420",
+      "containing_function": "00b6a390",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbf9b0",
+      "native": "004c1400",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc024b",
+      "native": "00b189f0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc0005",
+      "native": "00b18ac0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc0086",
+      "native": "00b18ac0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc0107",
+      "native": "00b18ac0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc0188",
+      "native": "00b18ac0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc0209",
+      "native": "00b18ac0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbff79",
+      "native": "00b18b20",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbfe65",
+      "native": "00b33e40",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbfa28",
+      "native": "00b6d890",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbfe25",
+      "native": "00b72650",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbfe38",
+      "native": "00b72b40",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc027c",
+      "native": "00b72b40",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbfda9",
+      "native": "00b72b50",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbfe4e",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbff62",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbffe3",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc0071",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc00f2",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc0173",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc01f4",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc0238",
+      "native": "00b732c0",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbfda2",
+      "native": "00b74640",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbfe1e",
+      "native": "00b74640",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbfe2d",
+      "native": "00b74640",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbfdb6",
+      "native": "00b74650",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bc0298",
+      "native": "00b74650",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    },
+    {
+      "address": "00bbf9bc",
+      "native": "00b80d70",
+      "containing_function": "00bbf8a0",
+      "contract": "Address-named native boundary or existing actual-Lua API; argument/result roles in source header and body comments",
+      "evidence_report": "reports/oct24_poolB_tail.json"
+    }
+  ],
+  "format_call_evidence": [
+    {
+      "address": "00a2d015",
+      "format": "%s%d :  %.3f ",
+      "cleanup": "00A2D021 ADD ESP,18h (six DWORDs)"
+    },
+    {
+      "address": "00a2d15f",
+      "format": "%.3f%s",
+      "cleanup": "00A2D164 ADD ESP,14h (five DWORDs)"
+    }
+  ],
+  "excluded_adjacent_finding": {
+    "address": "00bbf1a0",
+    "source": "src/water_weather_cc13.cpp",
+    "symbol": "sky_box_rotation_radians_00bbf1a0",
+    "finding": "Existing double multiplication/division chain is outside the assigned/new35 set and was reported to the primary without modifying that body."
+  },
+  "integrator_validation": {
+    "command": "./scripts/build.ps1",
+    "source_checked_commit": "8878f94b9c106c4a13fc11d785fba29a8e13693f",
+    "build_log": "local/build-poolB-fix-publish2.log",
+    "msvc": "Win32 Release",
+    "build_passed": true,
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "game_runs": 0,
+    "host_wiring_added": false,
+    "binary_abi_validated": false,
+    "native_differential_tested": false
+  },
+  "aggregate_fix_report": "reports/oct24_poolB_fixes.json"
+}

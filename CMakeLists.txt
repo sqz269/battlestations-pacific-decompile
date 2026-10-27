@@ -5,7 +5,37 @@ project(bsp_reconstruction VERSION 0.1.0 LANGUAGES C CXX)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE
   src/game_native_gui_render_application.cpp
   src/game_native_gui_node_application.cpp
-  src/game_native_gui_resource_application.cpp)
+  src/game_native_gui_resource_application.cpp
+  src/game_native_gui_icon_application.cpp
+  src/game_native_gui_line_application.cpp)
+# Page/widget source prerequisites remain inactive until the genuine raw Page
+# application composes their mandatory ownership and current-dispatch providers.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE
+  src/native_gui_icon_delayed_loads.cpp
+  src/native_gui_icon_storage.cpp
+  src/native_gui_icon_identity.cpp
+  src/native_gui_text_field_storage.cpp
+  src/native_gui_grid_storage.cpp
+  src/native_gui_grid_identity.cpp
+  src/native_gui_anim_icon_storage.cpp
+  src/native_gui_anim_icon_identity.cpp
+  src/native_gui_curve_storage.cpp
+  src/native_gui_curve_identity.cpp
+  src/native_gui_text_shader_storage.cpp
+  src/native_gui_page_properties.cpp
+  src/native_gui_model_storage.cpp
+  src/native_gui_model_identity.cpp
+  src/native_gui_widget_property_children.cpp
+  src/native_gui_line_storage.cpp
+  src/native_gui_line_identity.cpp
+  src/native_gui_page_properties_continuation.cpp
+  src/native_gui_scrollbar_storage.cpp
+  src/native_gui_scrollbar_identity.cpp
+  src/native_gui_sound_storage.cpp
+  src/native_gui_button_storage.cpp
+  src/native_gui_button_identity.cpp
+  src/native_gui_clip_box_identity.cpp
+  src/native_gui_widget_lifetime_dispatch.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_link_libraries bsp_game PRIVATE bsp_d3dx_headers)
 if(NOT WIN32 OR NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
   message(FATAL_ERROR "Use MSVC targeting Win32 (scripts/build.ps1). The original is x86.")
@@ -291,7 +321,9 @@ if(BUILD_TESTING)
   if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/local/cc13_leaf_reference.hpp")
     # cc13 leaf reconstructions against their original bytes (tools/verify_cc13_leaf_reference.py).
     add_executable(bsp_cc13_leaf_fixture_tests tests/cc13_leaf_fixture_tests.cpp src/band_0040_cc13.cpp
-                   src/band_0045_cc13.cpp src/band_0067_cc13.cpp src/band_0090_cc13.cpp)
+                   src/band_0045_cc13.cpp src/band_0067_cc13.cpp src/band_0090_cc13.cpp
+                   src/dummy_depth_seg34_argon.cpp src/director_geommesh_seg38_39_argon.cpp  # cc13-fixture5
+                   src/band_0060_cc13.cpp)  # band_0060: ingame_gui_cc13 (cc13-trivialslots cases)
     target_include_directories(bsp_cc13_leaf_fixture_tests PRIVATE local)
     target_link_libraries(bsp_cc13_leaf_fixture_tests PRIVATE bsp_core)
     target_compile_options(bsp_cc13_leaf_fixture_tests PRIVATE /W4 /WX /fp:strict)

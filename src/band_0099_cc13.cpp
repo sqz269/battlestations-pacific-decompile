@@ -69,6 +69,10 @@ int torpedo_step_result_009d49e0(bool in_listed_state, bool flag_528) noexcept {
     return flag_528 ? 2 : 0;
 }
 
+// Documented deviation (cc13-D3): the image walks the registry list at [00F8A314]
+// (next +0Ch) and returns the matching node; this walks a vector projection of the
+// same names in the same order and returns the index (-1 for no node). The match
+// test (length, then __stricmp) and first-match order are the image's.
 int bot_task_factory_find_0099c690(const std::vector<BotTaskFactoryName>& factories,
                                    std::size_t length, const char* chars) {
     for (std::size_t i = 0; i < factories.size(); ++i) {
@@ -96,6 +100,13 @@ void ship_ai_heading_set_vector_009da9d0(HeadingRecord& record, float heading) n
     }
     // 009DAA04..009DAA18: FCOS / FSIN on the float, each stored as a float. The
     // double library functions stand in for the x87 instructions.
+    // Documented deviation (cc13-D3): FCOS/FSIN are not subject to precision control
+    // and their extended result is rounded once by FSTP float; the double functions
+    // round twice (to double, then float), which can differ only in the last float
+    // bit. The two qword constants are float values (pi/2 and 2pi rounded to float),
+    // so the double subtraction and addition above are exact unless |heading| is
+    // below about 2^-28, and their single cast matches the FSUBR / FADD rounding at
+    // the main thread's 24-bit control.
     record.direction[0] = static_cast<float>(std::cos(static_cast<double>(a)));
     record.direction[1] = 0.0f;
     record.direction[2] = static_cast<float>(std::sin(static_cast<double>(a)));

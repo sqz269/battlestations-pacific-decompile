@@ -457,6 +457,49 @@ std::size_t plane_class_unprovided_path_count() noexcept;
 extern const PlaneClassKeyCount kPlaneClassUnconsumedPaths[];
 std::size_t plane_class_unconsumed_path_count() noexcept;
 
+// Complete ordinary model binder 007D3E60..007D5889, native ECX descriptor,
+// no stack arguments, RET. This augments the Lua field reader above with the
+// actual raw-storage model-point walk; it does not wire a game provider.
+// Main-thread PC24 x87 operations use per-operation float conversions under
+// the project's /fp:strict build; genuine double constants retain their width.
+struct PlaneClassModelConstants {
+    const double& minus_one_00d7a250;
+    const double& period_00ce3828;
+    const double& lower_angle_00ce3d18;
+    const double& upper_angle_00ce3d28;
+    const double& bound_scale_00d04310;
+    const double& side_scale_00cf5e58;
+};
+
+struct PlaneClassModelHost {
+    virtual ~PlaneClassModelHost() = default;
+    virtual void call_0095f500(void* descriptor) = 0;
+    // Inspected library contracts: the counted string is 1Ch bytes, with
+    // inline data+4h / length+14h / capacity+18h (inline capacity 15).
+    virtual void call_00408720(void* string28, const char* text, std::uint32_t length) = 0;
+    virtual void call_00bf65ac(void* storage) = 0;
+    virtual bool call_00717f20(void* model, const void* string28, std::uint32_t index) = 0;
+    virtual std::uint8_t* call_00718000(void* model, const void* string28, std::uint32_t index) = 0;
+    virtual std::uint8_t* call_00718870(void* model, const void* string28, std::uint32_t index) = 0;
+    virtual const float* call_00484270(void* group, float* out3, std::uint32_t index) = 0;
+    virtual const float* call_004f9b30(float* out3, const float* a3, const float* b3) = 0;
+    virtual void call_0085dc80(float* matrix16) = 0;
+    virtual void call_00725b40(void* vector16, std::uint32_t capacity) = 0;
+    virtual void call_004215d0(void* vector16, const float* point3) = 0;
+    virtual void call_007bd600(void* array12, std::int32_t capacity) = 0;
+    virtual void call_007d1d30(void* vector16, const void* retained_record16) = 0;
+    // IAT [00CE221C]/[00CE2220]; retain the counted pointer captured before
+    // decrement when the release virtual call is taken.
+    virtual std::int32_t interlocked_increment(volatile std::int32_t* count) = 0;
+    virtual std::int32_t interlocked_decrement(volatile std::int32_t* count) = 0;
+    virtual void vcall_00_release(void* counted) = 0;
+    // Qualified CRT boundary: this hook may return.
+    virtual void invalid_parameter_00bf6713() = 0;
+};
+
+void plane_class_bind_model_data_007d3e60(std::uint8_t* descriptor,
+    const PlaneClassModelConstants& constants, PlaneClassModelHost& host);
+
 }  // namespace bsp
 
 #endif  // BSP_PLANE_CLASS_FIELDS_HPP

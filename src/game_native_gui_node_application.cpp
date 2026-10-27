@@ -54,6 +54,7 @@ struct GameNativeGuiNodeApplication::Impl {
     LightTypeBootstrap node_types;
     ModelTypeBootstrap model_types;
     NativeGroupTypes group_types;
+    NativeModelRawNameServices model_names;
     NativeModelEnvironment models;
     NativeGroupEnvironment groups;
     GuiNativeScene scene;
@@ -71,11 +72,12 @@ struct GameNativeGuiNodeApplication::Impl {
           node_types(vfs.native_owners().types(), vfs.native_types().light_types()),
           model_types(vfs.native_owners().types(), node_types, vfs.native_types().model_types()),
           group_types(vfs.native_owners().types(), node_types, vfs.native_types().group_types()),
+          model_names{app.node_constants(), raw.strings},
           models{game_native_resource_pool_process().model_pool_01090054(),
               app.camera_environment().nodes, model_types, app.actual_owners(),
               {cell<std::uint32_t>(data, 0x00ce4adc), cell<std::uint32_t>(data, 0x00ce4970),
                cell<std::uint32_t>(data, 0x00d7a208), cell<std::uint32_t>(data, 0x00d7a260)},
-              table(data, 0x00d62de8, 0x5c), table(data, 0x00d62c88, 0x58), &raw.strings},
+              table(data, 0x00d62de8, 0x5c), table(data, 0x00d62c88, 0x58), nullptr, &model_names},
           groups{game_native_resource_pool_process().group_pool_010902f4(),
               app.camera_environment().nodes, group_types,
               {app.node_constants().one_00d7a24c, app.node_constants().positive_bound_00ce4970},

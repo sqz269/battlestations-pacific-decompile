@@ -290,6 +290,36 @@ public:
         return out;
     }
 
+    std::vector<TableKey> table_keys() override {
+        // 00BD5F50 keeps every string, integer and number key in lua_next
+        // order (tags 0, 1, 2). The kGuiLuaKeyArrayCapacity stop is a host
+        // guard: 00BD5F50 has no bounds check and would overrun the 250-pair
+        // frame array. Only the record reader's switched UniqueMultiSettings
+        // walk calls this.
+        std::vector<TableKey> out;
+        if (host_.type_of(stack_.back()) != GuiLuaType::Table) return out;
+        GuiLuaRef key{};
+        GuiLuaRef value{};
+        bool restart = true;
+        while (host_.next(stack_.back(), key, value, restart)) {
+            restart = false;
+            const GuiLuaType type = host_.type_of(key);
+            if (type == GuiLuaType::String) {
+                out.push_back({GuiLuaKeyKind::Name, 0});
+            } else if (type == GuiLuaType::Number) {
+                const double number = host_.to_number(key);
+                const auto integer = static_cast<std::int32_t>(number);
+                if (static_cast<double>(integer) == number) {
+                    out.push_back({GuiLuaKeyKind::Index, integer});
+                } else {
+                    out.push_back({GuiLuaKeyKind::FloatIndex, 0});
+                }
+            }
+            if (out.size() >= kGuiLuaKeyArrayCapacity) break;
+        }
+        return out;
+    }
+
 private:
     // 00BD5EB0 reports presence from lua_type: an unbound reference and a nil
     // are both absent, which is what the guarded reads test.

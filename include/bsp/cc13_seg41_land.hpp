@@ -394,6 +394,15 @@ struct FortArchiveHost {
 };
 void land_fort_serialize_007455f0(std::uint8_t* fort, ArchiveWriter& archive, FortArchiveHost& host);
 
+struct LandingShipArchiveHost {
+    virtual ~LandingShipArchiveHost() = default;
+    virtual void ship_describe_state_00818340(std::uint8_t* ship, ArchiveWriter& archive) = 0;
+};
+// 0074A1F0, ECX = ship, archive on stack, RET 4. Complete normal body;
+// archive tags/pointer payloads retain their native 32-bit representation.
+void landing_ship_serialize_0074a1f0(std::uint8_t* ship, ArchiveWriter& archive,
+                                    LandingShipArchiveHost& host);
+
 // 00745FA0, __thiscall(ECX fort, index, anchor) RET 8: effect definition
 // class+154h[index] (checked against class+150h's {first +4, last +8}),
 // passed by value (AddRef) to 008687C0(ECX &out, EDX parent +4A4h, definition,
@@ -580,6 +589,21 @@ std::uint8_t* landing_ship_construct_0074bb00(std::uint8_t* ship, std::uint32_t 
 // 0074BD20, __fastcall(ECX ship): 006DFFC0, then erase the ship's node from
 // the list [ship+30h]+A8h (head +4, node next +4, value +8) when present.
 void landing_ship_detach_0074bd20(std::uint8_t* ship, LandingShipHost& host);
+
+struct MotherShipDetachHost {
+    virtual ~MotherShipDetachHost() = default;
+    // 006DFFC0: ECX=ship, no stack arguments, RET0. Performs the early
+    // detach followed by the world's +54h and +60h list removals.
+    virtual void unit_instance_detach_mid_lists_006dffc0(std::uint8_t* ship) = 0;
+    // 004837D0: ECX=actual list, one actual node, RET4. Unlink/free the node;
+    // the borrowed ship payload is untouched. The unused EAX result is successor.
+    virtual void list_erase_004837d0(std::uint8_t* list, std::uint8_t* node) = 0;
+};
+// Complete normal 00758FE0..00759015, __thiscall ECX=ship, RET0, no delete
+// flag. After the mid-list detach, re-read ship+30h and scan world+84h's head
+// at+88h, following node+4h, for the first node whose+8h equals ship. Erase
+// only that node. No world-null guard, replacement list, or game host wiring.
+void mothership_detach_from_world_lists_00758fe0(std::uint8_t* ship, MotherShipDetachHost& host);
 // 0074BD60, __fastcall(ECX ship): free +1198h, zero +1198h..+11A0h, JMP 0081F3A0.
 void landing_ship_destruct_0074bd60(std::uint8_t* ship, LandingShipHost& host);
 // 0074BE00, __thiscall(ECX class, row) RET 4 -> ship: new 122Ch (00BF55BE),

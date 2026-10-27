@@ -548,7 +548,7 @@ void engine_movie_parse_file_004602c0(Raw movie, Raw path, SweepA3Host& host) {
 Raw movie_action_type_construct_0045d480(Raw record, Raw name, Raw refer_label, std::uint8_t refer_flag,
                                          Raw num1_label, std::uint8_t num1_flag, Raw num2_label,
                                          std::uint8_t num2_flag, Raw num3_label, std::uint8_t num3_flag,
-                                         Raw enum_options, Raw enum_label, std::uint8_t enum_flag,
+                                         Raw enum_label, Raw enum_options, std::uint8_t enum_flag,
                                          Raw offset_label, std::uint8_t offset_flag, SweepA3Host& host) {
     for (const std::size_t offset : {0x0u, 0x8u, 0x14u, 0x20u, 0x2cu, 0x38u, 0x40u, 0x4cu}) {
         record.at<std::uint32_t>(offset) = 0;
@@ -563,12 +563,12 @@ Raw movie_action_type_construct_0045d480(Raw record, Raw name, Raw refer_label, 
     record.at<std::uint8_t>(0x1c) = num1_flag;
     record.at<std::uint8_t>(0x28) = num2_flag;
     record.at<std::uint8_t>(0x34) = num3_flag;
-    assign_string(Raw{record.field(0x38)}, enum_options, host);
-    assign_string(Raw{record.field(0x40)}, enum_label, host);
+    assign_string(Raw{record.field(0x38)}, enum_label, host);    // the label, e.g. "Type:"
+    assign_string(Raw{record.field(0x40)}, enum_options, host);  // the '|' options
     record.at<std::uint8_t>(0x48) = enum_flag;
     assign_string(Raw{record.field(0x4c)}, offset_label, host);
     record.at<std::uint8_t>(0x54) = offset_flag;
-    for (const Raw argument : {name, refer_label, num1_label, num2_label, num3_label, enum_options, enum_label,
+    for (const Raw argument : {name, refer_label, num1_label, num2_label, num3_label, enum_label, enum_options,
                                offset_label})
         release_string(argument, host);
     return record;

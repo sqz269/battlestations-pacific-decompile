@@ -185,4 +185,63 @@ inline constexpr bool kShipAiClearance364SyncCc13Bound = true;  // ON with the c
 // (bsp/game_hosts_hud_world.hpp) requires this switch.
 inline constexpr bool kCruiseLatchedPlayerArmCc13Bound = true;  // ON (cc9-lua70, 2026-10-19): IJN18 l70_i18_r trial, ref EndMission 1685.52 s (Zao 163 cat-6 shots / 111 hits vs 0); see WINS_TABLE
 
+// Packet cc13-P3 (the 009ED6B0 row). The two NaN-only deviations the seg67f
+// audit left in the station-keeping arm 009EDA28..009EE57B
+// (ship_ai_station_keeping.cpp):
+//  - 009EDC46 00415550(ECX = &120.0f, EDX = &unit+9C8h). 00415550 is
+//    FCOMIP a,b / JBE: a when a > b, else b, so a NaN length yields NaN. The
+//    host's max_00415550 was (b > a) ? b : a and yielded 120.
+//  - 009EE11D, 009EE23A (COMISS across, XMM0 = 0) and 009EE37B, 009EE49F
+//    (COMISS across, [00D7A218] = 0.0f), each followed by JC: a NaN across
+//    takes the "across < 0" arm. The host's (0 > across) took the other one.
+// True: both follow the image. False: as before.
+// Reach: only a NaN unit length (unit+9C8h) or a NaN station offset; every
+// finite input gives the same result either way.
+inline constexpr bool kShipAiStationKeepingNanArmsCc13Bound = false;
+
+// Packet cc13-P3 (the 009E04E0 row). The NaN-only deviations the seg67e/f
+// audits left in 009E04E0 (ship_ai_clearance_profile.cpp), each from the disk
+// bytes:
+//  - 009E06DA: the arc-cosine clamp sends a NaN heading error to 00BF9940
+//    (acos); the host gave pi.
+//  - 009E0767/009E0778: a NaN |error| takes the steer-only arm; the host banded.
+//  - 009E099F/009E0AB6: only an ordered negative discriminant returns the
+//    average; a NaN one runs the square root. The host returned the average.
+//  - 009E0BB9 JBE: a NaN compare counts the track as stand-on; the host counted
+//    give-way.
+//  - 009E0C8A JBE: a NaN |error| takes the inner (quarter-turn) arm; the host
+//    took the wide one.
+//  - 009E0CA2/009E0E54 JB: a NaN lateral side picks the left normal; the host
+//    picked its negation.
+//  - 009E0D07/009E0EA4 COMISS 0,e / JBE: a NaN error gives gap + lateral; the
+//    host gave gap - lateral.
+// True: all of them follow the image. False: as before.
+// Reach: only a NaN track heading, position or speed; every finite input gives
+// the same result either way.
+inline constexpr bool kShipAiThrottleProfileNanArmsCc13Bound = false;
+
+// Packet cc13-P3 follow-up (rev8 F2, the 009ED6B0 row). The NaN-only deviations
+// left in the navigation arm 009EE580..009EEAAB:
+//  - 00415510 min (ship_ai_navigation.cpp): ST0 = b, ST1 = a, FCOMIP, JBE
+//    returns b, so an unordered compare yields b. The host's (b <= a) ? b : a
+//    yielded a. Used at 009EE96F and 009EEA9D and for the turn-lead denominator.
+//  - 00415550 max: ST0 = a, ST1 = b, FCOMIP, JBE returns b; same NaN fault in
+//    the host's (a <= b) ? b : a. Used at 009EE9AA and the cosine floor.
+//  - 00415620 clamp: the second test is FCOMI a,c / JBE returning a, so a NaN
+//    there yields a; the host's (a <= high) yielded high.
+//  - 009EE62B 00415550(&floor, &path+2F4h+8) (ship_ai_goal_vector.cpp): a NaN
+//    width wins; the host's (low < width) kept the floor.
+// True: all of them follow the image. False: as before.
+// Reach: only NaN path, turn or speed inputs; every finite input gives the same
+// result either way.
+inline constexpr bool kShipAiNavigationNanArmsCc13Bound = false;
+
+// Packet cc13-P3 follow-up (rev8 F4, the 009ED6B0 row). The main thread runs
+// the image's x87 at PC24 (docs/CC13_FPU_PRECISION.md), so every FMUL, FADD,
+// FSUB and FDIV in the station-keeping arm 009EDA28..009EE57B rounds to float.
+// The host evaluated several chains in double and rounded once (or compared
+// unrounded). True: each operation rounds to float in listing order
+// (ship_ai_station_keeping.cpp). False: as before.
+inline constexpr bool kShipAiStationKeepingPc24Cc13Bound = false;
+
 } // namespace bsp

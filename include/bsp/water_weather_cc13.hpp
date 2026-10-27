@@ -1082,6 +1082,37 @@ struct SkyBoxC {
     float luminance_30{};
 };
 
+struct SkyBoxConstructHostC {
+    virtual ~SkyBoxConstructHostC() = default;
+    virtual void* call_004c1400() = 0;
+    virtual void* call_00b80d70(void* manager, std::string_view name) = 0;
+    virtual void* resource_vslot_08(void* resource, std::uint32_t kind, float scale) = 0;
+    virtual void refcounted_vslot_00(void* object) = 0;
+    virtual void call_00b6d890(void* node, void* source) = 0;
+    virtual void* global_pointer_00f8d394() = 0;
+    virtual void* texture_manager_vslot_64(void* manager, std::string_view name, std::uint32_t flags) = 0;
+    virtual std::uint32_t texture_vslot_3c(void* texture) = 0;
+    virtual std::uint32_t texture_vslot_40(void* texture) = 0;
+    virtual void* call_00b74640(void* model, std::uint32_t index) = 0;
+    virtual std::uint32_t call_00b74650(void* model) = 0;
+    virtual void call_00b72b50(void* geometry) = 0;
+    virtual void call_00b72650(void* geometry, const std::array<float, 4>& bounds) = 0;
+    virtual std::uint32_t call_00b72b40(void* geometry) = 0;
+    virtual void* call_00b732c0(void* geometry, std::uint32_t index) = 0;
+    virtual const void* call_00b33e40(void* texture) = 0;
+    virtual void call_00b18b20(void* material, std::string_view name, float* scalar) = 0;
+    virtual void call_00b18ac0(void* material, std::string_view name, float* vector, std::uint32_t count) = 0;
+    virtual void call_00b189f0(void* material, std::uint32_t slot, void* texture) = 0;
+};
+// 00BBF8A0: native ECX destination130h, stack source, atmosphere, NativeString*
+// name, RET0Ch/EAX destination. Complete normal raw-storage/host-call body.
+// Native string/pool/FH3 mechanics and original binary ABI are not reproduced.
+// Requires valid resource/node/mesh/material identities and texture slot0 as
+// native does. The four Vec4 no-op constructors retain unwritten bytes, including
+// cTextureSize.z/w. x87 texel math retains DC C9's ST1 destination and float spills.
+void* sky_box_construct_00bbf8a0(void* destination, void* source, void* atmosphere,
+    std::string_view name, SkyBoxConstructHostC&);
+
 class SkyBoxHostC {
 public:
     virtual ~SkyBoxHostC() = default;

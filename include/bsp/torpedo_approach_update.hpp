@@ -384,7 +384,7 @@ float torpedo_engage_range_009d4b63(float current_8c, float attack_dist_tuning,
 // [0, 2*pi).
 float torpedo_sector_bearing_009d38a6(int sector) noexcept;
 
-// 009D3BAF-009D3BC8: the sector the unit currently sits in, as seen from the
+// 009D3BB4-009D3BCD: the sector the unit currently sits in, as seen from the
 // target, clamped to the last sector.
 int torpedo_home_sector_009d3bc8(float bearing_target_to_unit) noexcept;
 

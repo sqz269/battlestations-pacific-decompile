@@ -949,6 +949,21 @@ constexpr bool kSubmarineSensorCategoryBound = true;
 //    ON by the pairs of 2026-09-28: LOMP10 moves only the eight San Jose ships'
 //    health (x1.25); USN04 identity.
 constexpr bool kLuaOverrideHpBound = true;
+//  * kOverrideHpDeadUnitCc13Bound (cc13-D3, OFF): 008C1930 has no dead or state test;
+//    it stores unit+36Ch (008C1A71) and calls 00877B90 (008C1AA8) on a dead or sinking
+//    unit too. OFF keeps the host's skip of a dead unit. ON writes both on a dead unit
+//    and does not re-run the health-zero kill for a unit that was already dead.
+//    Fact (cc13-D3 follow-up): +720h is the InferiorFailure latch, not a destroyed
+//    flag (set by message 7Dh at 0095AD0A, cleared by 7Eh at 0095AD7F). For an
+//    adopted subobject (+71Ch set, 00958A6D) OverrideHP to 0 raises InferiorFailure
+//    once while +720h is clear and does not destroy the unit. A root unit (+71Ch
+//    null, 00958A4B JE 00958DA7) gets vtable[70h](1) whenever health <= 0, with no
+//    dead or latch test. Flip precondition: trace vtable[70h](1) on an
+//    already-destroyed root unit; until it shows destroy is idempotent, the ON arm's
+//    skip of the kill for a dead unit stays a deviation.
+//    Live: MissionLuaNative OverrideHP -> GameMissionLuaHost::run_override_hp_008c1930
+//    -> GameGunneryHost::override_hp_008c1930.
+constexpr bool kOverrideHpDeadUnitCc13Bound = false;
 //  * kAiUntouchableGateBound (packet cc9_untouchable_gate, docs/GUNNERY_OPEN_ITEMS.md
 //    section 40): 00862440, called only at 00865248 in the unit gunnery AI tick
 //    00864FE0, skips a candidate that 00863990 accepted when the candidate's proxy
@@ -1016,7 +1031,10 @@ constexpr bool kAaLineOfFireBound = true;
 //    flight (GameUnitsHost::plane_own_base_hit_filter_0084c213). It drops hits on
 //    the base unit only, never on another plane. OFF: every hit is taken (the
 //    filter still runs for the census; +C18h has no other reader).
-constexpr bool kPlaneOwnBaseHitFilterBound = false;
+//    ON by the pair of 2026-10-24 (cc9-party1, SHIP_AI_OPEN_ITEMS 323): 15 WINS
+//    rows with launches plus BSM06 stock are gameplay identical, shot_drops=0
+//    and crash_drops=0 OFF and ON.
+constexpr bool kPlaneOwnBaseHitFilterBound = true;
 //  * kKamikazeSameSquadronShotDropCc13Bound: packet cc13-kamisq. 0084BF00's
 //    squadron test (0084C1D8-0084C211) on the projectile sweep: with a shooter
 //    squadron ([owner+9D4h], stored to [esp+44h] at 0084BF6D), a hit on a plane
@@ -1028,7 +1046,10 @@ constexpr bool kPlaneOwnBaseHitFilterBound = false;
 //    neither drops nor counts down. The plane crash sweep has always applied it
 //    (pc_same_squadron). OFF: every hit is taken (the test still runs for the
 //    census, kamikaze_squadron_drops).
-constexpr bool kKamikazeSameSquadronShotDropCc13Bound = false;
+//    ON by the pair of 2026-10-24 (cc9-party1, SHIP_AI_OPEN_ITEMS 323): stock
+//    PRCP02, PRCP06 (96 kamikaze planes), PRCP07, USN11 and USN18 are fully
+//    identical, kamikaze_squadron_drops=0 OFF and ON.
+constexpr bool kKamikazeSameSquadronShotDropCc13Bound = true;
 //  * kAaLineOfFireExpiryDrawBound: packet cc9_g35_friendly_fire. On a cache miss
 //    0072F6E0 draws U([00CE74F8] = 0.8, [00CE3814] = 1.2) from 00BD2F10 on stream
 //    ECX=1 (0072F76D) and stores it, times [GlobalConfig+8Ch], as the record's
@@ -1313,7 +1334,10 @@ constexpr bool kTailGunnerClearReleaseBound = true;
 //    is kept. relation_cleared counts once per acquisition in both arms: the
 //    first tick of a same-party hold per gun and target (ON drops on that
 //    tick). OFF: counted only.
-constexpr bool kGunBotNotAllyDropCc13Bound = false;
+//    ON by the pair of 2026-10-24 (cc9-party1, SHIP_AI_OPEN_ITEMS 323): all 20
+//    WINS rows and BSM06 stock are gameplay identical, relation_cleared=0 in
+//    every run, so no row reaches the same-party hold.
+constexpr bool kGunBotNotAllyDropCc13Bound = true;
 static_assert(!kGunBotNotAllyDropCc13Bound || kTailGunnerClearReleaseBound,
     "kGunBotNotAllyDropCc13Bound drops through 008FFA75's vtable[38h](0), the release "
     "kTailGunnerClearReleaseBound transcribes");
@@ -2577,6 +2601,11 @@ struct GameGunneryHost::Impl {
     // These are device Type values, not IsKindOf class ids: the class ids are
     // MRTGun 23h (00730ED0), MSTGun 24h (006FDF20) and MDepthChargeLauncher 27h
     // (006FE050, under MSTGun).
+    // cc13-D3 label correction (values unchanged): 00731E20 builds its object with
+    // 006FDED0, which sets class 24h at 006FDF0F, so it is the MSTGun creator
+    // (factory record GetName -> 'MSTGun' at 00CE4674); 006FE390 builds with
+    // 006FDFC0 and is the MDepthChargeLauncher creator. The MRTGun / MSTGun labels
+    // on the next two lines are one factory record off.
     static constexpr int kTurningClassRapid = 0x24;   // device Type -> MRTGun (00731E20)
     static constexpr int kTurningClassSingle = 0x27;  // device Type -> MSTGun (006FE390)
     struct ImmediateFireState {
@@ -7216,6 +7245,11 @@ public:
             && other < owner_.units.count()) {
             // 00727F44 -> 009035A0, 00727F56 -> 00903580 (CC13_VER_23 D1/D2).
             GameGunneryHost::Impl::TorpedoBotRange& tb = owner_.torpedo_bot_range_by_gun[slot];
+            // 009035A7..009035B5 compares 00521EA0(bot+38h) with the target. 006DF170
+            // stores the object pointer itself at bot+3Ch (006DF1C3) and registers an
+            // observer, so the handle resolves to the stored object until it is gone;
+            // a gone object is never passed again. Comparing indices is the same test
+            // (cc13-D6, intended).
             const bool changed = tb.target_plus_one != other + 1;
             tb.target_plus_one = other + 1;
             const float tube_range = row.max_range;
@@ -16908,7 +16942,11 @@ void GameGunneryHost::override_hp_008c1930(std::size_t unit_index, float value) 
             static_cast<double>(value), static_cast<double>(state.max_health),
             static_cast<double>(state.health), state.dead ? 1 : 0, kLuaOverrideHpBound ? 1 : 0);
     }
-    if (!kLuaOverrideHpBound || state.dead) {
+    // kOverrideHpDeadUnitCc13Bound OFF: a dead unit is skipped (dead_before is then
+    // always false below this test). The +720h InferiorFailure fact and the root-unit
+    // flip precondition are at the switch.
+    const bool dead_before = state.dead;
+    if (!kLuaOverrideHpBound || (dead_before && !kOverrideHpDeadUnitCc13Bound)) {
         host.record("MissionLuaNative::OverrideHP", 0x008c1930u);
         return;
     }
@@ -16929,7 +16967,7 @@ void GameGunneryHost::override_hp_008c1930(std::size_t unit_index, float value) 
         bsp::UnitHealth after;
         after.current_health = state.health;
         after.max_health = state.max_health;
-        if (bsp::unit_is_dead(after)
+        if (bsp::unit_is_dead(after) && !dead_before
             && host.health_zero_callback_allowed(write.dispatch_health_changed)) {
             ++host.override_hp_kills;
             host.kill_unit(unit_index);

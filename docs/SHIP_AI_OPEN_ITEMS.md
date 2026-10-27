@@ -20806,6 +20806,37 @@ Open:
 
 Logs: J:\PROG\battlestations-pacific-decompile-cc9-party1\local\pt1_{off,on}_<row>.log; the diffs are in pt1_diff_<row>.txt.
 
+**kGunBotNotAllyDropCc13Bound flipped ON** (cc9-party1, 2026-10-24). Pairs were run on ff591695a. The rows were the
+newest plan for each of the 20 WINS missions (BSM01, 03, 04, 05, 06, 09, ESMP08, IJN08, IJN18, JM06, JM08, LOMP06,
+LOMP10, PRCP01, USN01, USN02, USN12, USN15, USN21, USNOS) plus BSM06 stock. Every pair is gameplay identical
+(pair_diff 1) with the same end. relation_cleared=0 OFF and ON in every run, so in these rows no bot gun holds a
+same-party target. The BSM06 airfield-squadron case from cc13-bsm6strip does not occur in BSM06 stock at 40000
+frames. Logs: local\pt1_{off,on}_na_<row>.log.
+
+**kPlaneOwnBaseHitFilterBound flipped ON** (cc9-party1, 2026-10-24). The ON build is ff591695a with this switch
+flipped; the OFF baseline is the not-ally OFF logs from the same commit. Rows: USN01, PRCP01, USN21, IJN18, BSM09,
+BSM01, ESMP08, USN12, LOMP10, JM06, USNOS, JM08, BSM04, BSM03 and BSM06 (WINS plans), plus BSM06 stock. Every pair
+is gameplay identical (pair_diff 1) with the same end. The census reads shot_drops=0 and crash_drops=0 in every
+run, OFF and ON alike, so in these rows no slow deck plane's round ever hits its own base. The countdowns
+(shot_countdowns up to 18 in PRCP01; crash_countdowns) are equal OFF and ON. Logs: local\pt1_ob_na_<row>.log.
+
+**kKamikazeSameSquadronShotDropCc13Bound flipped ON** (cc9-party1, 2026-10-24). Pairs ran on ff591695a (OFF from
+local\pt1_offff, a pair export with no flip). The rows are stock runs of 40000 frames on the menu ids whose scripts
+mention kamikaze: PRCP02, PRCP06, PRCP07, USN11 and USN18, all fully identical (pair_diff 0) with the same end.
+kamikaze_squadron_drops=0 OFF and ON. Only PRCP06 spawns kamikaze planes (96, luaKamikazeSpawned) before it fails at
+634.97 s, so the reach is thin. No WINS row has kamikaze squadrons. The USN19 (Okinawa) pair had not finished at
+flip time: after 2.5 h, each run had a log over 2 GB. If it finishes, the results are in
+local\pt1_{off,on}_kk_u19.log. Later I stopped the USN19 pair (still running after more than 3 h) and deleted its
+logs, so for this switch USN19 is inconclusive.
+
+**kSpawnNewSquadronPartyCc13Bound flipped ON** (cc9-party1, 2026-10-24), which closes open item 2 above. The pairs
+are OFF and ON on 0e53ff179. ESMP01 (stock, 60000 frames) has spawn_squadron_party_nodes=7 and wing_nodes=14 on
+both sides. Its commandhelpers.lua:330 failures go from 94 to 0, and the run is gameplay identical with the same
+end (failed 291.55 s). USN19 (stock, capped at 20000 frames because its log reaches 1.9 GB) has 69/171 nodes,
+no Lua errors on either side, and is gameplay identical. The WINS rows whose scripts call SpawnNew are IJN18
+ia5, BSM01, BSM04 h1_f, USN12, JM06, JM08 s63_v3, ESMP08, PRCP01 p26_a, LOMP06 and USNOS. All are gameplay
+identical with the same end, with node counts up to 89/178 (BSM01).
+
 ## 324. BSM03/04/05/06 plans, seat-artillery flips; handoff (cc9-helm1, 2026-10-24)
 
 Commits on agent/cc9-helm1: 322d3f8fa (seat flips), 8fce90716 (bsm06_h1_i, bsm03_h1_x8),
@@ -20839,7 +20870,97 @@ cc9-lua72 before its commit. All runs: guard logged, unselected=0, role_forced=0
 Open: BSM03/05 robustness in 20,3/default; BSM06 one plan for all three envs (108 stock is
 the limit). Logs: cc9-helm1\local\h1r_<row>_main_<env>.log; plans in local\h1_b*_*.txt.
 
-## 325. JM08 won on the reference env (s63_v3); USNOS c22 holds past 4000 s (cc9-ships63, 2026-10-24)
+## 325. USN15 wins in ref and in default; handoff (cc9-gunnery57, 2026-10-24)
+
+Two plans, one per env. Both are legal (pf=0, helm_moveto_unselected=0, helm_role_forced=0), end
+through Mission.EndMission ("summary mission end: nil") with the guard's sus_prog.exe refusal,
+and reproduce exactly on a rerun.
+
+| Plan | Env | Frames | Result |
+| --- | --- | --- | --- |
+| `config/win_orders/usn15_g57_mb.txt` (3364b40a5 on main) | ref | 104000 | Fuso dies 3734.57 s, win |
+| same | default | | fails 1657.54 s |
+| same | 20,3 | | fails 1572.46 s |
+| `config/win_orders/usn15_g57_jc_def.txt` (f307a34a8) | default | 100000 | Fuso dies 1957.83 s, win |
+| same | ref | | fails 1732.61 s |
+| same | 20,3 | | fails 1757.64 s |
+
+How they were found (scripts in cc9-gunnery52\local\, g57_ prefix):
+- `g57_gen.py` writes whole plans and serializes every (select, order) pair onto its own frame,
+  which keeps uns=0. The `T:` family (two fronts) is the opener of both wins: west BBs attack
+  Yamashiro, east BBs + CAs attack key [Yamashiro, Nachi, Fuso], a destroyer torpedo reserve.
+- `g57_tail.py <base> <cut_frame> <tail_cfg> <out>` keeps the base lines before the cut (the run is
+  identical up to the cut, "prefix freezing") and appends a generated tail. Tune the ending on a
+  fixed opener this way; every opener change reshuffles the whole battle.
+- `g57_safe.ps1` launches rows 30 s apart and relaunches a renderer-init death once after 60 s.
+  When the display is asleep every start dies (even the retry); a 400-frame smoke run wakes it.
+
+Mission facts that decided the plans:
+- Fail: any spotted IJN ship within 3 km of JapanGoTo (0,12000), checked every 5 s, or all
+  USShips dead. Unspotted IJN parked at JapanGoTo do not fail the mission, but cannot be attacked.
+- Hold spots west of x≈-6000 at z≈11400 are outside the zone: F25-F28 died there with
+  KillReason=exitzone. CLs at (-6500..-4900, 11000) are safe.
+- Shropshire carries torpedoes (b62, 1369 per hit on an IJN BB); the ref win's last 3 hits came
+  from it. US torpedo presses at a moving BB beyond ~1.5 km mostly miss.
+- After Yamashiro dies in ref, Fuso runs to EdgeMove1 and parks near (6400-6800, 10400) from
+  ~3000 s; the ref endgame stages the four CLs south (6000,6500), then attacks the parked Fuso.
+- Margins are thin: of 7 ref endgames on the same prefix 3 win (mb, na, nb); of 8 default hunt
+  tails 1 wins (jc). Losers leave Fuso at 2400-9900 HP when the last US ship dies.
+
+Open: one plan for all three envs (none found; each env's opener plays out differently), and a
+20,3 plan. A 20,3 attempt would follow the default recipe: sweep `T:` openers in 20,3 at
+36000-50000 frames, pick one that kills the wings and Yamashiro without failing, then tune a
+tail on that prefix. Logs: cc9-gunnery52\local\g57_r13_mb.log, g57_r20_jc.log, g57_v6_*.log.
+
+## 326. Handoff (cc9-party1, 2026-10-24)
+
+On main (b70a10873), five cc13 switches are now ON: kLaunchedSquadronPartyCc13Bound, kGunBotNotAllyDropCc13Bound,
+kPlaneOwnBaseHitFilterBound, kKamikazeSameSquadronShotDropCc13Bound and kSpawnNewSquadronPartyCc13Bound. Section 323
+has the pairs and their mechanisms. Open:
+- **IJN30 airfields** (section 323, item 1, routed to cc13): "AirField 01" and "AirField 02" die at 12.05 s and
+  91.60 s with no damage, and the stock run now ends in Game Over at 95.05 s. Who kills an undamaged airfield is
+  untraced.
+- **Thin reach.** relation_cleared, own-base shot_drops/crash_drops and kamikaze_squadron_drops are 0 in every row
+  paired. The switches are faithful but no row exercises them yet. A row that does would show a count > 0 OFF.
+- **USN19** is very slow: at 20000 frames its log reaches 1.9 GB. Its kamikaze pair is inconclusive (I stopped it
+  after more than 3 h). If you need it, cap it at about 20000 frames.
+
+Tools in J:\PROG\battlestations-pacific-decompile-cc9-party1\local\: pt1_rows.ps1 (launcher, staggered 30 s),
+pt1_sum2.ps1 (per-row census, end and pair_diff, with free OFF/ON prefixes and a census regex). A row whose launch
+file is empty is still waiting for a free slot.
+
+## 327. Recon load refresh and LastPosition flips; Lua error sweep (cc9-recon1, 2026-10-24)
+
+Flipped: kReconLoadForceRefreshCc13Bound (ebc33b017) and kLuaLastPositionOnKilledBound (11d05164d). The pairs and
+mechanisms are in the commit messages. Logs are in J:\PROG\battlestations-pacific-decompile-cc9-recon1\local\
+(`rc1_{off,on}_<row>.log`, `rc1_diff_<row>.txt`). The sweep tool is `local\rc1_errs.py <glob>`: Lua
+`script call ... failed` lines grouped by script:line.
+
+Lua runtime errors left on the recon-ON build, all rows paired:
+
+| Row | Site | Count | Class |
+|---|---|---|---|
+| ESMP04 stock | commandhelpers.lua:1588 via 04_solomon_sea.lua:652 (`luaCheckVictory`) | 1 | script-faithful: in the frame of the completion (872.91 s), every Allied ship within 30 km is dead, so `luaGetShipsAroundCoordinate` returns nil (commandhelpers.lua:457 returns nil for an empty result) and `luaRemoveDeadsFromTable(nil)` fails |
+| IJN18 l70_i18_r | ijn_18_solomons.lua:585 `luaGetDistance3D(GetSelectedUnit(), ...)` | 84 | OPEN, see below |
+| USN21 g56_c2 | commandhelpers.lua:10627 `ent.LastPosition` nil | 14 -> 0 | host gap, fixed by kLuaLastPositionOnKilledBound |
+| IJN28 stock | ijn_28_prelude.lua:1274 `Mission.USNShips` nil | 170 -> 0 | host gap, fixed by the recon load refresh |
+| ESMP05 stock | 05_philippine_sea.lua:204 luaInitMission | 1 -> 0 | host gap, fixed by the recon load refresh |
+
+Open, IJN18 :585: phase 2 selects Kita1 (SetSelectedUnit at about 333 s). When Kita1 dies at 401.18 s, the death
+route clears the controlled unit (004C0890(null)) and records the limbo push 004CC460 and LimboScreen::take_unit
+00565FB0, both unimplemented. GetSelectedUnit (008AB070) then answers nil, and every objective check from 405 s
+errors at :585 until the 653.96 s fail. Static question: does the image's limbo screen (34h) pause the simulation,
+or auto-select a unit when no input arrives? If neither, the errors are faithful for an idle player, and the plan
+should `select` a live ship after a controlled death.
+
+Winnability, stock 120000-frame runs on the recon-ON build (`local\rc1_win_{i23L,i30L}.log`):
+- IJN23: attack waves 1-3 are cleared by the defences alone (countdowns at 669.96, 1680.51 and 3247.04 s). Wave 4 is
+  still alive at 6000 s and the HQs survive. A plan that helps clear wave 4 and then the phase-3 troops or planes
+  looks feasible.
+- IJN30: phase 1 needs both B-29 waves dead. Wave 1 (2 groups of 3 squadrons with 5 wings, 30 planes) loses 18 by
+  774 s, then 12 stay alive to 6000 s, out of AA reach, so wave 2 never spawns. It needs a fighter-intercept plan.
+
+## 328. JM08 won on the reference env (s63_v3); USNOS c22 holds past 4000 s (cc9-ships63, 2026-10-24)
 
 **JM08 landed as a WINS row** by cc9-lua72 (561d57228): `config/win_orders/jm08_s63_j8_v3.txt`, a byte copy of
 `cc9-ships44\local\s63_j8_v3.txt` (generator `local\s63_j8mk.py v3`, building on ships62's `s62_j8mk.py h`).

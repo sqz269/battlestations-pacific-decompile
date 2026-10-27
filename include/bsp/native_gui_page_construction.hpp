@@ -21,7 +21,8 @@ struct NativeGuiPageConstructionContext {
 struct NativeGuiPageConstructionAcquired {
     enum class Phase { not_started, running, awaiting_lua_continuation, failed,
         awaiting_reader_continuation,
-        awaiting_properties_continuation }; // appended; existing values unchanged
+        awaiting_properties_continuation,
+        constructed }; // appended; existing values unchanged
     Phase phase{Phase::not_started};
     void* actual_page{};
     const void* actual_name{};
@@ -47,8 +48,9 @@ void bind_native_gui_widget_node_00aa6720(void* actual_widget,
 // +E4/+E8, page padding and the pool's +124 ID retain their existing bytes.
 //
 // Script continuation AC6714..AC67CB is a separate retained Source stage. The
-// remaining AC67CC..AC6878 builds the raw reader, visits properties, propagates
-// the node root and tears down temporaries. Native state0 cleanup needs the now
+// reader and properties continuations cover AC67CC..AC6878, with mandatory
+// genuine raw property/current-dispatch providers. They propagate the node root
+// and tear down temporaries on normal success. Native state0 cleanup needs the now
 // available full AA9730 plus genuine lifetime bindings; state1 first needs
 // 41DD20(page+100). This prefix still RETAINS state/resources on C++ error and
 // reports failed; availability of those callees adds no unwind/rollback here.

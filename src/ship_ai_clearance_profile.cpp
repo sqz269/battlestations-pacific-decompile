@@ -12,6 +12,7 @@
 
 #include "bsp/cc13_ship_ai_commit_band.hpp" // kShipAiCommitmentBandQuarterBound
 #include "bsp/ship_ai_seg67_switches_cc13.hpp" // kShipAiClearanceRefreshSentinelBound
+#include "bsp/ship_ai_switch_reach.hpp"
 
 #include "bsp/unit_rudder.hpp" // clamped_interpolate_00419010,
                                // wrapped_angle_add_00438aa0,
@@ -398,6 +399,29 @@ ShipAiContactHorizon ship_ai_contact_horizon_009e07d1(float lateral,
     return out;
 }
 
+// 009E099F / 009E0AB6: FCOMI then JA to the average exit, so with the NaN
+// switch on only an ordered negative discriminant returns the average and a
+// NaN one runs the square root.
+static bool discriminant_returns_average(float discriminant) noexcept {
+    ship_ai_reach_note_nan(ship_ai_switch_reach().throttle_nan_operands, discriminant);
+    if constexpr (kShipAiThrottleProfileNanArmsCc13Bound) {
+        return 0.0f > discriminant;
+    } else {
+        return !(discriminant >= 0.0f);
+    }
+}
+
+// 009E0CA2 / 009E0E54: COMISS lateral, 0 / JC to the left-normal arm, taken for
+// lateral < 0 and, with the NaN switch on, for an unordered compare.
+static bool lateral_picks_normal(float lateral_side) noexcept {
+    ship_ai_reach_note_nan(ship_ai_switch_reach().throttle_nan_operands, lateral_side);
+    if constexpr (kShipAiThrottleProfileNanArmsCc13Bound) {
+        return !(lateral_side >= 0.0f);
+    } else {
+        return lateral_side < 0.0f;
+    }
+}
+
 // 009E0953..009E09E4 (upper) and 009E0A30..009E0AF0 (lower). Both solve
 // x^2 + b*x + c = 0 with b built from the reachable speed after `horizon_seconds`
 // of acceleration and c from the distance; the halving constant is +0.5
@@ -416,7 +440,7 @@ float ship_ai_contact_speed_root_009e0953(float average, float distance,
         const float b = (own_speed + acceleration * horizon_seconds) * -2.0f;
         const float discriminant =
             b * b - ((distance + distance) * acceleration + own_speed * own_speed) * 4.0f;
-        if (!(discriminant >= 0.0f)) {
+        if (discriminant_returns_average(discriminant)) {
             return average; // 009E099F
         }
         const float root = std::sqrt(discriminant);
@@ -434,8 +458,8 @@ float ship_ai_contact_speed_root_009e0953(float average, float distance,
     const float b = (acceleration * horizon_seconds - own_speed) * -2.0f;
     const float discriminant =
         b * b - (own_speed * own_speed - (distance + distance) * acceleration) * 4.0f;
-    if (!(discriminant >= 0.0f)) {
-        return average;
+    if (discriminant_returns_average(discriminant)) {
+        return average; // 009E0AB6
     }
     const float root = std::sqrt(discriminant);
     const float lower_solution = (-b - root) * -0.5f;
@@ -505,7 +529,13 @@ ShipAiContactBandOutcome ship_ai_apply_contact_band_009e0b37(ShipAiThrottleProfi
 
     // 009E0B81..009E0BCC. The window covers the whole axis, so no throttle
     // avoids this contact and the counters decide what the hull does instead.
-    if ((window.low + 0.5f) * -2.0f <= window.high - 1.0f) {
+    // 009E0BB9 FCOMIP / JBE.
+    const float stand_on_edge = (window.low + 0.5f) * -2.0f;
+    const float give_way_edge = window.high - 1.0f;
+    ship_ai_reach_note_nan(ship_ai_switch_reach().throttle_nan_operands,
+                           stand_on_edge - give_way_edge);
+    if (kShipAiThrottleProfileNanArmsCc13Bound ? !(stand_on_edge > give_way_edge)
+                                               : (stand_on_edge <= give_way_edge)) {
         counts.stand_on_74 += 1;
         stand_on = true;
     } else {
@@ -525,19 +555,21 @@ ShipAiAvoidanceStep ship_ai_contact_avoidance_step_009e0c7c(float heading_error,
     // prefers.
     const ShipAiAvoidanceStep normal{-dir_z, dir_x};
     const float magnitude = std::fabs(heading_error);
+    ship_ai_reach_note_nan(ship_ai_switch_reach().throttle_nan_operands, heading_error);
 
     // 009E0C86. Past a quarter turn the bearing arms run; inside it the arm at
     // 009E0E42 runs. Both have the same shape, with opposite signs on the
     // course step (00D7A308 is +2.0, 00D19660 is -2.0).
-    const bool wide = !(magnitude <= kShipAiClearanceHalfPiWide);
+    const bool wide = kShipAiThrottleProfileNanArmsCc13Bound ? (magnitude > kShipAiClearanceHalfPiWide)
+                                                             : !(magnitude <= kShipAiClearanceHalfPiWide);
     if (wide && magnitude > kShipAiContactBearingMaxActive) {
         // 009E0CA2. Nearly reciprocal: the side alone decides.
-        return (lateral_side < 0.0f) ? normal
+        return lateral_picks_normal(lateral_side) ? normal
                                      : ShipAiAvoidanceStep{-normal.x, -normal.z};
     }
     if (!wide && magnitude < kShipAiContactBearingMin) {
         // 009E0E42's inner arm, the same test with the same answer.
-        return (lateral_side < 0.0f) ? normal
+        return lateral_picks_normal(lateral_side) ? normal
                                      : ShipAiAvoidanceStep{-normal.x, -normal.z};
     }
 
@@ -545,7 +577,10 @@ ShipAiAvoidanceStep ship_ai_contact_avoidance_step_009e0c7c(float heading_error,
     // lateral gap has to land inside a band whose low end opens up when the hull
     // is standing on.
     const float course_sign = wide ? -2.0f : 2.0f;
-    const float reach = (heading_error >= 0.0f) ? (gap + lateral_side)
+    // 009E0D07/009E0EA4 COMISS 0,e / JBE.
+    const bool error_not_negative = kShipAiThrottleProfileNanArmsCc13Bound ? !(0.0f > heading_error)
+                                                                           : (heading_error >= 0.0f);
+    const float reach = error_not_negative ? (gap + lateral_side)
                                                 : (gap - lateral_side);
     const float low = stand_on ? -(kShipAiAvoidBandPad + width) : 0.0f;
     if (low <= reach && reach < width + kShipAiAvoidBandPad) {
@@ -643,9 +678,16 @@ void ship_ai_build_throttle_profile_009e04e0(ShipAiThrottleProfileBlock& blk,
         // -1.0) is the arc-cosine pattern; the routine feeds it the heading error
         // rather than a cosine.
         float arc = 0.0f;
+        ship_ai_reach_note_nan(ship_ai_switch_reach().throttle_nan_operands, heading_error);
         if (!(heading_error > 1.0f)) {
-            arc = (heading_error >= -1.0f) ? std::acos(heading_error)
-                                           : kShipAiObstacleHalfTurn;
+            if constexpr (kShipAiThrottleProfileNanArmsCc13Bound) {
+                // 009E06DA: only an ordered error below -1 gives pi.
+                arc = (-1.0f > heading_error) ? kShipAiObstacleHalfTurn
+                                              : std::acos(heading_error);
+            } else {
+                arc = (heading_error >= -1.0f) ? std::acos(heading_error)
+                                               : kShipAiObstacleHalfTurn;
+            }
         }
 
         // 009E0705..009E074B.
@@ -658,7 +700,12 @@ void ship_ai_build_throttle_profile_009e04e0(ShipAiThrottleProfileBlock& blk,
         bool stand_on = false;
         bool run_avoidance = false;
 
-        if (magnitude <= kShipAiContactBearingMin || magnitude >= kShipAiContactBearingMaxActive) {
+        // 009E0767/009E0778: with the NaN switch on, an unordered |error| is
+        // steer-only as in the image.
+        const bool steer_only = kShipAiThrottleProfileNanArmsCc13Bound
+            ? !(magnitude > kShipAiContactBearingMin && magnitude < kShipAiContactBearingMaxActive)
+            : (magnitude <= kShipAiContactBearingMin || magnitude >= kShipAiContactBearingMaxActive);
+        if (steer_only) {
             // 009E0C52..009E0C76. A contact on nearly the same or the exactly
             // opposite course cannot be banded; it only steers.
             run_avoidance = (std::fabs(lateral_side) < width + kShipAiContactWidthPad);

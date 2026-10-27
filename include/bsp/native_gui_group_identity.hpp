@@ -57,6 +57,9 @@ public:
     // boundary. Original FH3/SEH and binary ABI are not claimed.
     void* delete_scalar_00ac73e0(const volatile std::uint32_t& actual_flags_slot);
     bool retired() const noexcept;
+    // Borrow existing admission/caller identities; no raw read or new authority.
+    void* actual_identity() const noexcept { return identity_; }
+    NativeGuiWidgetLifetimeContext& lifetime_context() const noexcept { return context_.lifetime; }
 private:
     enum class Phase { bound, destroying, retired };
     void* const identity_;

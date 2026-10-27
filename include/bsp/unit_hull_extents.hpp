@@ -1,7 +1,22 @@
 #pragma once
 #include "bsp/hit_narrowphase.hpp"
+#include <cstddef>
+#include <cstdint>
 
 namespace bsp {
+struct UnitHullInitializationHost {
+    virtual ~UnitHullInitializationHost() = default;
+    virtual void attach_lua_self_0077e830(void* unit) = 0;
+    virtual void* allocate_00bf681b(std::size_t bytes) = 0;
+    virtual void* construct_director_008366d0(void* memory, void* unit) = 0;
+    virtual void instantiate_devices_0095a880(void* unit, std::uint32_t a,
+        std::uint32_t b, std::uint32_t c) = 0;
+    virtual void notify_slot_210(void* unit) = 0;
+};
+// 00810F60: ECX=unit, RET0. Full normal body around the established x87
+// hull fragment. Actual raw pointers; the native allocation/FH3 ABI is unproven.
+void initialize_unit_director_and_hull_00810f60(void* unit, void* const& game_00e188a8,
+    UnitHullInitializationHost& host);
 // Semantic storage, not the native unit object layout.
 struct UnitHullExtents {
     float length_09c8{};

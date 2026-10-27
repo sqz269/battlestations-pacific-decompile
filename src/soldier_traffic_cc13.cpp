@@ -115,11 +115,13 @@ EntityClipQuery entity_clip_query_0048a010(const EntityClipInputs& in) noexcept 
                  f32(static_cast<double>(in.position.y) - r),
                  f32(static_cast<double>(in.position.z) - r)};
     // 0048A147..0048A189: s = float(sin(float(fov))); (length / r) * s in x87,
-    // against ClipDistance + entity+17Ch; JBE fails when (clip + bias) <= product.
+    // against ClipDistance + entity+17Ch; JBE fails when (clip + bias) <= product
+    // or the compare is unordered. The main thread's x87 runs at 24-bit
+    // precision, so each step rounds to float.
     const float fov = in.fov_aspect_product;
     const float s = f32(std::sin(static_cast<double>(fov)));
-    const double product = static_cast<double>(in.length) / r * s;
-    const double limit = static_cast<double>(in.clip_distance) + in.clip_bias;
+    const float product = f32(static_cast<double>(f32(static_cast<double>(in.length) / r)) * s);
+    const float limit = f32(static_cast<double>(in.clip_distance) + in.clip_bias);
     q.distance_passes = limit > product;
     return q;
 }
@@ -142,6 +144,42 @@ bool entity_clip_result_0048a010(const EntityClipInputs& in, const EntityClipQue
     return false;
 }
 
+bool entity_clip_0048a010(const Vec3& position, EntityClipHost& host) {
+    if (!host.camera_present_1ed4()) {
+        return host.visible_flag_5c();  // 0048A024
+    }
+    EntityClipInputs in;
+    in.camera_present = true;
+    in.model_radius_present = host.model_radius_vslot48(in.model_radius);  // 0048A02E..0048A04C
+    in.position = position;
+    // 0048A0FF..0048A110: the camera pose refresh when [camera+C8h] == 0.
+    if (!host.camera_pose_valid_c8()) {
+        host.refresh_camera_pose_00414db0();
+    }
+    in.camera_position = host.camera_position_fc();
+    // 0048A115..0048A143: delta = position - camera, each component stored as float.
+    const Vec3 delta{f32(static_cast<double>(position.x) - in.camera_position.x),
+                     f32(static_cast<double>(position.y) - in.camera_position.y),
+                     f32(static_cast<double>(position.z) - in.camera_position.z)};
+    in.fov_aspect_product = host.fov_aspect_product_00b6fc30();  // 0048A147
+    in.clip_distance = host.clip_distance_00485520();            // 0048A162, +0Ch read at 0048A17B
+    in.length = host.length_0042b2f0(delta);                     // 0048A16D
+    in.clip_bias = host.clip_bias_17c();
+    in.visible_flag = host.visible_flag_5c();
+    const EntityClipQuery q = entity_clip_query_0048a010(in);
+    // 0048A189 JBE: 004B48E0 (ECX = game, &{min, max}) is asked only when the
+    // distance test passes.
+    const bool in_view = q.distance_passes && host.box_in_view_004b48e0(q.box_min, q.box_max);
+    EntityClipAction action = EntityClipAction::None;
+    const bool result = entity_clip_result_0048a010(in, q, in_view, action);
+    if (action == EntityClipAction::Show_vslot11c) {
+        host.show_vslot11c();
+    } else if (action == EntityClipAction::Hide_vslot118) {
+        host.hide_vslot118();
+    }
+    return result;
+}
+
 // ---------------------------------------------------------------------------
 // 0048A1E0
 // ---------------------------------------------------------------------------
@@ -161,9 +199,11 @@ MuzzleEffectPlan plan_muzzle_effect_0048a1e0(const MuzzleEffectInputs& in) noexc
         return p;  // 0048A264
     }
     // 0048A2DD..0048A315: (length * float(sin(float(fov)))) > FireEfxClipDistance
-    // returns (JA); equal spawns.
+    // returns (JA); equal spawns, and so does an unordered compare (JA not
+    // taken), as here. The product rounds to float (24-bit x87 precision).
     const float s = f32(std::sin(static_cast<double>(in.fov_aspect_product)));
-    if (static_cast<double>(in.distance) * s > in.fire_efx_clip_distance) {
+    const float product = f32(static_cast<double>(in.distance) * s);
+    if (product > in.fire_efx_clip_distance) {
         return p;
     }
     p.spawn = true;
@@ -193,9 +233,71 @@ MuzzleEffectPlan plan_muzzle_effect_0048a1e0(const MuzzleEffectInputs& in) noexc
     return p;
 }
 
+void muzzle_effect_0048a1e0(int variant, MuzzleEffectHost& host) {
+    MuzzleEffectInputs in;
+    in.class_fire_point_valid = host.class_fire_point_valid_24();
+    if (!in.class_fire_point_valid) {
+        return;  // 0048A20A
+    }
+    in.effect_present = host.effect_present_180();
+    if (in.effect_present) {
+        in.effect_ready = host.effect_finished_00865fe0();  // 0048A22A
+        if (!in.effect_ready) {
+            return;  // 0048A231
+        }
+        in.effect_flag9 = host.effect_flag9();  // 0048A247
+        if (in.effect_flag9) {
+            host.release_effect_00484620();     // 0048A251
+        }
+    }
+    in.camera_present = host.camera_present_1ed4();
+    if (!in.camera_present) {
+        return;  // 0048A264
+    }
+    // 0048A26A..0048A285: camera pose, then entity pose (00414DB0 when +C8h == 0).
+    if (!host.camera_pose_valid_c8()) {
+        host.refresh_camera_pose_00414db0();
+    }
+    if (!host.entity_pose_valid_c8()) {
+        host.refresh_entity_pose_00414db0();
+    }
+    const Vec3 e = host.entity_position_fc();
+    const Vec3 c = host.camera_position_fc();
+    const Vec3 delta{f32(static_cast<double>(e.x) - c.x), f32(static_cast<double>(e.y) - c.y),
+                     f32(static_cast<double>(e.z) - c.z)};    // 0048A28A..0048A2C1
+    in.fov_aspect_product = host.fov_aspect_product_00b6fc30();       // 0048A2DD
+    in.fire_efx_clip_distance = host.fire_efx_clip_distance_00485520();  // 0048A2F8
+    in.distance = host.length_0042b2f0(delta);                        // 0048A303
+    // The distance test runs before vslot +5Ch is asked (0048A315 JA).
+    const float s = f32(std::sin(static_cast<double>(in.fov_aspect_product)));
+    if (f32(static_cast<double>(in.distance) * s) > in.fire_efx_clip_distance) {
+        return;
+    }
+    in.is_kind_3a = host.is_kind_3a_vslot5c();  // 0048A324
+    in.variant = variant;
+    in.fire_point = host.class_fire_point_18();
+    const MuzzleEffectPlan p = plan_muzzle_effect_0048a1e0(in);
+    host.create_effect_008687c0(p.euler, p.translation, p.post_rotate_y_pi);
+    if (p.set_effect_flag9) {
+        host.set_new_effect_flag9();  // 0048A564..0048A574
+    }
+}
+
 bool unreferenced_fire_roll_0048aec0(SoldierTrafficRandom& rng, float fire_chance, float dt) {
     const float r = rng.uniform_00bd2f10(SoldierRngSite::UnreferencedFireRoll_0048aed0, 0.0f, 1.0f);
-    return static_cast<double>(r) < static_cast<double>(fire_chance) * dt;
+    // 0048AEDB FLD [type+18h] / FMUL dt rounds to float (24-bit x87); 0048AEE4
+    // FCOMIP r against it and 0048AEE8 JAE skips, so r < product or an
+    // unordered compare calls 0048A1E0(0).
+    const float product = f32(static_cast<double>(fire_chance) * dt);
+    return !(r >= product);
+}
+
+void fire_roll_0048aec0(TroopMember& m, float dt, SoldierTrafficRandom& rng,
+                        TroopMemberHost& host) {
+    // [ESP+4] is the member payload: +0 the type, +4 the entity (ECX for 0048A1E0).
+    if (unreferenced_fire_roll_0048aec0(rng, m.type->fire_chance, dt)) {
+        host.muzzle_effect_0048a1e0(m, 0);  // 0048AEEF
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -221,6 +323,26 @@ TrafficViewGateResult traffic_view_gate_0048a650(const TrafficViewGateInputs& in
     r.remap_00487470 = true;
     r.tick = true;
     return r;
+}
+
+bool traffic_view_gate_0048a650(TrafficViewGateHost& host) {
+    TrafficViewGateInputs in;
+    in.box_in_view = host.box_in_view_004b48e0();  // 0048A660
+    if (in.box_in_view) {
+        in.anchor_present = host.anchor_present_168();
+        in.side = host.side_16c();
+        if (in.anchor_present) {
+            in.anchor_side = host.anchor_side_54();
+        } else {
+            in.local_player_slot_28_zero = host.local_player_slot_28_zero();
+        }
+    }
+    const TrafficViewGateResult r = traffic_view_gate_0048a650(in);
+    if (r.remap_00487470) {
+        host.set_side_16c(r.side);  // 0048A682 / 0048A6B6, before the call
+        host.remap_00487470();      // 0048A688 / 0048A6BC
+    }
+    return r.tick;
 }
 
 // ---------------------------------------------------------------------------
@@ -276,24 +398,27 @@ void tick_fake_effects_0048a6d0(LandingTroopState& troop, float dt, FakeEffectHo
             m.fake_effect_timer =
                 rng.uniform_00bd2f10(SoldierRngSite::FakeEffectTimer_0048a880, fx.min_time,
                                      fx.max_time);
+            // 0048A895..0048A95F: the member pose refresh runs before the camera
+            // test at 0048A9A5.
+            const Vec3 p = host.member_world_position(m);
             if (!host.camera_present()) {
                 continue;
             }
-            const Vec3 p = host.member_world_position(m);
             const Vec3 c = host.camera_world_position();
             const float dx = f32(static_cast<double>(p.x) - c.x);
             const float dy = f32(static_cast<double>(p.y) - c.y);
             const float dz = f32(static_cast<double>(p.z) - c.z);
-            // 0048AAAD..0048AAEE: s = float(sum of squares); sqrt when s > 1e-10.
-            const float s = f32(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx +
-                                static_cast<double>(dy) * dy);
+            // 0048AAAD..0048AAEE: s = dz^2 + (dy^2 + dx^2), each step rounded to
+            // float (24-bit x87); sqrt (00BF7030) when s > 1e-10.
+            const float s = f32(static_cast<double>(f32(static_cast<double>(dz) * dz)) +
+                                f32(static_cast<double>(f32(static_cast<double>(dy) * dy)) +
+                                    f32(static_cast<double>(dx) * dx)));
             const float dist = static_cast<double>(s) > kSqrtCutoff_00ce3820
                                    ? f32(std::sqrt(static_cast<double>(s)))
                                    : 0.0f;
             const float sn = f32(std::sin(static_cast<double>(host.fov_aspect_product_00b6fc30())));
-            // 0048AB2E FCOMPI / JBE: spawn when FireEfx > dist * s.
-            if (!(static_cast<double>(host.fire_efx_clip_distance()) >
-                  static_cast<double>(dist) * sn)) {
+            // 0048AB2E FCOMPI / JBE: spawn when FireEfx > float(dist * s).
+            if (!(host.fire_efx_clip_distance() > f32(static_cast<double>(dist) * sn))) {
                 continue;
             }
             // 0048ABC5..0048AC47: two draws U(-r, r); the first scales the identity's
@@ -311,9 +436,12 @@ void tick_fake_effects_0048a6d0(LandingTroopState& troop, float dt, FakeEffectHo
             }
             const float roll =
                 rng.uniform_00bd2f10(SoldierRngSite::FakeEffectDieRoll_0048ad8b, 0.0f, 1.0f);
-            // 0048AD90..0048ADA9: (dt / [path]+28h) * Speed * DieChance > roll.
-            const double chance = static_cast<double>(dt) / m.path_length_scale *
-                                  troop.view.speed * troop.view.die_chance;
+            // 0048AD90..0048ADA9: (dt / [path]+28h) * Speed * DieChance > roll,
+            // each step rounded to float (24-bit x87).
+            const float chance = f32(
+                static_cast<double>(f32(static_cast<double>(
+                    f32(static_cast<double>(dt) / m.path_length_scale)) * troop.view.speed)) *
+                troop.view.die_chance);
             if (!(chance > roll)) {
                 continue;
             }
@@ -394,7 +522,8 @@ void tick_troop_members_0048b120(LandingTroopState& troop, float dt, TroopMember
 
             // 0048B35B..0048B448: fade +44h while 0 < f < 1.
             if (kOne_00d7a24c > m.fade && m.fade > kZero_00d7a218) {
-                m.fade = f32(static_cast<double>(m.fade) - dt / kFadeSeconds_00d7a2b0);
+                m.fade = f32(static_cast<double>(m.fade) -
+                             f32(static_cast<double>(dt) / kFadeSeconds_00d7a2b0));
                 if (m.fade > kZero_00d7a218) {
                     host.set_visibility_00b6da70(m, m.fade, true);
                 } else {
@@ -422,12 +551,13 @@ void tick_troop_members_0048b120(LandingTroopState& troop, float dt, TroopMember
                     }
                 } else {
                     // hold == 0.0 exactly: advance (0048B584).
-                    m.path_position =
-                        f32(static_cast<double>(v.speed) * dt + m.path_position);
+                    m.path_position = f32(
+                        static_cast<double>(f32(static_cast<double>(v.speed) * dt)) + m.path_position);
                 }
                 break;
             case TroopMemberState::Running:  // 0048B5A5
-                m.path_position = f32(static_cast<double>(v.speed) * dt + m.path_position);
+                m.path_position = f32(
+                    static_cast<double>(f32(static_cast<double>(v.speed) * dt)) + m.path_position);
                 if (m.path_position > m.path_end) {  // 0048B5DE FCOMPI / JBE
                     m.state = TroopMemberState::Arrived;
                     m.path_position = f32(static_cast<double>(m.path_end) - kPathEndInset_00ce6638);
@@ -437,8 +567,8 @@ void tick_troop_members_0048b120(LandingTroopState& troop, float dt, TroopMember
                 if (!host.entity_is_kind_3a(m)) {
                     const float roll = rng.uniform_00bd2f10(
                         SoldierRngSite::FiringMuzzleRoll_0048baaa, 0.0f, 1.0f);
-                    if (static_cast<double>(roll) <
-                        static_cast<double>(type.fire_chance) * dt) {
+                    // 0048BAB2..0048BABE: float product; JAE skips, unordered calls.
+                    if (!(roll >= f32(static_cast<double>(type.fire_chance) * dt))) {
                         host.muzzle_effect_0048a1e0(m, 0);
                     }
                 }
@@ -468,7 +598,8 @@ void tick_troop_members_0048b120(LandingTroopState& troop, float dt, TroopMember
                 if (kDyingFadeStart_00ce6630 > m.timer && m.timer > kOne_00d7a24c) {
                     host.set_visibility_00b6da70(
                         m,
-                        f32((static_cast<double>(m.timer) - kDyingFadeOffset_00d7a210) /
+                        f32(static_cast<double>(f32(static_cast<double>(m.timer) -
+                                                    kDyingFadeOffset_00d7a210)) /
                             kDyingFadeSpan_00ce6628),
                         true);
                     host.set_entity_byte_184(m, true);
@@ -499,8 +630,8 @@ void tick_troop_members_0048b120(LandingTroopState& troop, float dt, TroopMember
                 if (!type.is_soldier) {
                     const float roll = rng.uniform_00bd2f10(
                         SoldierRngSite::VehicleMuzzleRoll_0048ba4d, 0.0f, 1.0f);
-                    if (static_cast<double>(roll) <
-                        static_cast<double>(type.fire_chance) * dt) {
+                    // 0048BA55..0048BA61: float product; JAE skips, unordered calls.
+                    if (!(roll >= f32(static_cast<double>(type.fire_chance) * dt))) {
                         host.muzzle_effect_0048a1e0(m, 0);
                     }
                 } else if (li == 1 && outer_lists_empty && !troop.ship_attached &&
@@ -527,7 +658,8 @@ void tick_troop_members_0048b120(LandingTroopState& troop, float dt, TroopMember
                 if (m.timer > kOne_00d7a24c) {
                     host.set_visibility_00b6da70(
                         m,
-                        f32((static_cast<double>(m.timer) - kLeavingFadeOffset_00d7a308) /
+                        f32(static_cast<double>(f32(static_cast<double>(m.timer) -
+                                                    kLeavingFadeOffset_00d7a308)) /
                             kLeavingFadeSpan_00ce3dc0),
                         true);
                     host.set_entity_byte_184(m, true);

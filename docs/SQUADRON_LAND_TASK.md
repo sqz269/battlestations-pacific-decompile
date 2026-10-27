@@ -18313,3 +18313,57 @@ helm_role_forced=0; absolute --helm-orders paths; --difficulty 1.
    moves NO WINS row. Non-WINS moves for the re-time notes: BSM03 stock (intro hands over to Kane, same Game Over
    381.03 s), BSM06 stock (no end -> Game Over 962.89 s in phase 2), BSM04 g56_b4_e (Tiger movie at 174.11 s, B-17s spawn,
    same Game Over 204.06 s); JM04 and JM15 stock unchanged. Logs: cc9-helm1\local\h1r_<b3|b4|b6|jm4|jm15>_{main,s5}_ref.log.
+
+## cc9-lua72 handoff (2026-10-24, WINS keeper, at about 72% context)
+
+Tree J:\PROG\battlestations-pacific-decompile-cc9-lua52 (agent/cc9-lua52). The scripts, plan drafts and logs named
+here are in its untracked `local\`; copy them out before the tree is removed.
+
+Tools:
+- `local\l72_runs2.ps1` is the launcher. A job is "row:variant:env[:tag]", with rows in `local\l72_rows.txt`. A
+  variant is `main` (the tree build) or an export `local\l72_<variant>`. env is ref, j3 (20,3) or sh (default).
+  Launches are staggered 30 s. A renderer-init death (EXITCODE=4) is relaunched once after 60 s, and the void output
+  is kept as `.void<n>.out`.
+- `python local\l72_q.py 'local\l72r_<pattern>*.log'` summarizes runs.
+- `python local\l72_near.py <log> <step> <x> <z> <r>` lists the units within r of a point at a ship-ai step.
+- Slots are shared with other lanes, so a `.running` marker can wait an hour for a slot before its log appears.
+
+Landed or committed on this lane:
+- 749c7cf7a -> main 1fae686d4: kHintPauseHudGateCc15Bound ON and USN02 row `l72_u2_g4`.
+- d23f05a83 -> main 968ba5206: the 515837c10 re-time, PRCP01 `p26_p01_a` and IJN18 `l72_i18_ia5`.
+- 561d57228 and 0e7d41b11: JM08 `s63_j8_v3` row (the plan is 10.3 MB), the USN15 base and the move causes. Both landed.
+- fb915d4d9: BSM01 atktgt split and re-plan `l72_b1_k1`. NOT landed when this handoff was written.
+
+Open items:
+1. USN15 `g57_mb` is lost on main: ref failed 3444.28 s, and Yamashiro survives. It was timed on 9a3179122, so the
+   move lies in 9a3179122..3364b40a5. It is with gunnery57.
+2. IJN08 needs a re-plan. The cause is 05cb6f1bc, a faithful nav-seed flip.
+3. Several rows lose the default env:
+   - BSM01: HenryPT dies before the MiniSub is hit.
+   - USN02 g4 loses 20,3.
+   - USN12 loses 20,3 (knife-edge).
+   - The BSM03, BSM05 and BSM06 rows are partial-env.
+4. When recon1's kReconLoadForceRefreshCc13Bound flip lands, re-time BSM01 k1. On the `local\l72_rc` export it gives
+   ref 827.92 s and 20,3 836.92 s.
+5. BSM01 k3 and k4 both fail the default env at 1875.70 s, so no sibling wins all three envs.
+
+Rules carried over:
+- A row is non-provisional only with helm_moveto_unselected=0 and helm_role_forced=0.
+- Pass absolute --helm-orders paths.
+- An IJN18 map close needs `input 0xC1` after a releasegun.
+- Critical hints never stop the simulation, so no plan needs `input 0x4A`.
+
+Queue for the successor, from the lead (2026-10-24):
+1. USN15: time `config/win_orders/usn15_g57_jc_def.txt` (100000 frames) on current main (e3702e012+), default env first,
+   then ref and 20,3. gunnery57's numbers come from its branch exe: default won 1957.83 s, ref failed 1732.61 s, 20,3
+   failed 1757.64 s. Put the main numbers in the row. If default loses on main, mark USN15 as having no current plan
+   and tell the lead.
+2. BSM01: re-plan on ebc33b017+, where recon is ON. Order: ref, then 20,3, then default. `s62_b1_h` has no end there,
+   because JapFighterTrgGang (bsm_01:523) is filled, the raid changes, the MiniSub survives and luaMoveToPh4 never
+   fires. Start from `l72_b1_k1`: on the `local\l72_rc` export it gave ref 827.92 s and 20,3 836.92 s. Commit the plan
+   and the row.
+3. USN21 `g56_c2`: recon1's kLuaLastPositionOnKilledBound flip changes the end line to "EndScene reached" and makes
+   the guard refuse once instead of 14 times; the time is unchanged at 2966.77 s. Update the row's end note once
+   that flip lands.
+4. BSM09 `l68_b9_d1` is a nil end (MissionStatus=true, MissionCompleteRan=nil, EndScene not reached), now marked in the
+   table.

@@ -388,9 +388,9 @@ std::int32_t sign_of(float r) { return 0.0f > r ? -1 : (r > 0.0f ? 1 : 0); }
 }  // namespace
 
 // 0049B1F0 __thiscall(ECX spawner, float dt), RET 4: slot 1 of the vtable
-// 00CE6830 that 00498E60 installs (left8 named that constructor
-// marker_construct; the object is the plane-debris spawner whose records
-// 0049A760 fills). No direct caller. Spawner fields: +20h vector of 54h-byte
+// 00CE6830 that 00498E60 installs (plane_debris_spawner_construct_00498e60,
+// named marker_construct until cc13-m498; the object is the plane-debris
+// spawner whose records 0049A760 fills). No direct caller. Spawner fields: +20h vector of 54h-byte
 // records, +44h plane entity, byte +48h, byte +49h spawned latch, +4Ch spawn
 // timer. Record fields: +0 entity, +4 class, +8 position, +14h velocity, +20h
 // angles, +2Ch turn rates, +38h their decay, +44h life, +48h drag, byte +4Ch

@@ -331,4 +331,31 @@ extern const UnitClassCreatorRow kUnitClassCreators[kUnitClassCreatorCount];
 // True for the eight ship classes whose instance constructor is 0081ED40.
 bool unit_class_uses_vehicle_base(std::uint32_t instance_ctor) noexcept;
 
+// Concrete leaf plane constructors. Native __thiscall: ECX=this, one stack
+// dword forwarded with a second zero dword to 007CFD20, EAX=this, RET 4.
+// Evidence: exports/bsp/functions/<address>/{decompiled.c,assembly.txt}.
+// Names are hypotheses; callers provide an image of the native unit size.
+struct PlaneUnitConstructorHost {
+    virtual ~PlaneUnitConstructorHost() = default;
+    virtual void call_007cfd20(std::uint8_t* self, std::uint32_t arg, std::uint32_t zero) = 0; // contract unread
+};
+std::uint8_t* construct_dive_bomber_unit_00951b60(PlaneUnitConstructorHost&, std::uint8_t*, std::uint32_t);
+std::uint8_t* construct_torpedo_bomber_unit_00951c40(PlaneUnitConstructorHost&, std::uint8_t*, std::uint32_t);
+std::uint8_t* construct_kamikaze_unit_00951d20(PlaneUnitConstructorHost&, std::uint8_t*, std::uint32_t);
+
+// 0095CC90 __thiscall(ECX=this, flag, vehicleClass), EAX=this, RET 8.
+// Full ordinary path; native SEH unwind 00CA9416 is not projected. Global
+// values are supplied as bits. The six FLD/FSTP copies remain an explicit FPU
+// operation, including its NaN handling, rather than assuming a bitwise copy.
+struct UnitGameObjectConstructorHost {
+    virtual ~UnitGameObjectConstructorHost() = default;
+    virtual void call_0087b670(std::uint8_t* self, std::uint32_t flag) = 0; // contract unread
+    virtual void call_00bf7cd1(std::uint8_t* first, std::uint32_t stride,
+        std::uint32_t count, std::uint32_t constructor, std::uint32_t destructor) = 0;
+    virtual std::uint32_t read_global_u32(std::uint32_t address) = 0;
+    virtual std::uint32_t x87_float_load_store(std::uint32_t source_bits) = 0;
+};
+std::uint8_t* construct_unit_game_object_0095cc90(UnitGameObjectConstructorHost&,
+    std::uint8_t* self, std::uint32_t flag, std::uint32_t vehicle_class);
+
 } // namespace bsp

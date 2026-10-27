@@ -313,20 +313,7 @@ GuiTextRuntimeCopyPhase GuiTextRuntimeCopyOperation::run_00aa1380() {
         auto& allocation = factory_.allocations_.at(destination_.get());
         allocation.raw_slot = raw_slot_;
         allocation.prefix = initialize_native_gui_widget_identity_00aa9520_fragment(raw_slot_);
-        auto& owner = factory_.services_.buffers.widgets.construct_base_copy_00aa9520(
-            *destination_, source_, preimage_, services_.base, base_acquired_, source_borrow_.get());
-        auto copied = std::unique_ptr<GuiTextRuntimeImplementation>(new GuiTextRuntimeImplementation(
-            factory_, owner, GuiTextRuntimeImplementation::CopiedAdmission{}));
-        copied_implementation_ = copied.get();
-        implementation_ = std::move(copied); // Preserve shell before copied lifetime effects.
-        // Publish the retained shell before allocating/copying derived fields.
-        // Its active-operation query rejects retirement even if lifetime
-        // allocation or copied-string construction throws before association.
-        factory_.services_.buffers.widgets.begin_base_copy_type_admission(owner, *copied_implementation_);
-        factory_.bind_identity(owner);
-        copied_implementation_->initialize_copy(source_implementation_.lifetime(), services_.cursor);
-        copied_implementation_->copy_operation_ = this;
-        if (copied_implementation_->run_copy() == GuiTextCopyPhase::pending_content) {
+        if (copy_construct_00abb2c0() == GuiTextCopyPhase::pending_content) {
             phase_ = GuiTextRuntimeCopyPhase::pending_content;
             return phase_;
         }
@@ -339,6 +326,40 @@ GuiTextRuntimeCopyPhase GuiTextRuntimeCopyOperation::run_00aa1380() {
         phase_ = GuiTextRuntimeCopyPhase::failed;
         throw; // All published ownership and source borrow remain on this frame.
     }
+}
+// ---------------------------------------------------------------------------
+// 00ABB2C0 BSP_GuiText_CopyConstruct, whole body (00ABB2C0..00ABB623), as the
+// one C++ sequence 00AA1380 runs on its allocated slot.
+// ABI: __thiscall, ECX = destination Text, [ESP+4] = source Text, EAX =
+// destination, RET 4 at 00ABB621. EH: handler 00CB820C, states 0..6 over the
+// base widget, the wide string and the native strings; C++ ownership replaces
+// the unwind (the shell and lifetime stay retained on failure, no rollback).
+// Steps in native order:
+//   00ABB2E5 AA9520 base widget copy          construct_base_copy_00aa9520
+//   00ABB2FD vtable 00D5C6C8, derived prefix  initialize_copy's identity publish
+//   00ABB303..00ABB5F8 derived field copies   GuiTextLifetime after-base ctor
+//     (+EC wide string, +F4/+1C0/+1C8 native strings, scalar copies, cursor/
+//     shadow/glyph/aux/cache slots cleared, state colours +11C..+158 last)
+//   00ABB5FA AB8910, 00ABB601 AB8530, 00ABB608 ABB1D0   run_derived_00abb2c0
+// The type admission and identity binding between the base copy and the
+// derived copy are C++ registration, not native stores.
+// Uncertainty: the native SEH partial-unwind states are not reproduced.
+// ---------------------------------------------------------------------------
+GuiTextCopyPhase GuiTextRuntimeCopyOperation::copy_construct_00abb2c0() {
+    auto& owner = factory_.services_.buffers.widgets.construct_base_copy_00aa9520(
+        *destination_, source_, preimage_, services_.base, base_acquired_, source_borrow_.get());
+    auto copied = std::unique_ptr<GuiTextRuntimeImplementation>(new GuiTextRuntimeImplementation(
+        factory_, owner, GuiTextRuntimeImplementation::CopiedAdmission{}));
+    copied_implementation_ = copied.get();
+    implementation_ = std::move(copied); // Preserve shell before copied lifetime effects.
+    // Publish the retained shell before allocating/copying derived fields.
+    // Its active-operation query rejects retirement even if lifetime
+    // allocation or copied-string construction throws before association.
+    factory_.services_.buffers.widgets.begin_base_copy_type_admission(owner, *copied_implementation_);
+    factory_.bind_identity(owner);
+    copied_implementation_->initialize_copy(source_implementation_.lifetime(), services_.cursor);
+    copied_implementation_->copy_operation_ = this;
+    return copied_implementation_->run_copy();
 }
 void GuiTextRuntimeCopyOperation::finish_admission() {
     auto& copied = implementation();

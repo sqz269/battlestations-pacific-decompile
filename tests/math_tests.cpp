@@ -127,6 +127,16 @@
 #include <string>
 #include <filesystem>
 #include <fstream>
+#include <cstddef>
+#include "bsp/render_fx_cc13.hpp"
+#include "bsp/render_sprites_cc13.hpp"
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <Windows.h>
 
 namespace {
 int failures = 0;
@@ -1709,6 +1719,7 @@ int main() {
             std::vector<std::string> read_string_array(std::string_view) override { return {}; }
             std::vector<std::int32_t> read_int_array(std::string_view) override { return {}; }
             std::vector<std::string> string_keys() override { return {}; }
+            std::vector<TableKey> table_keys() override { return {}; }
         };
 
         MapSizeView absent;
@@ -3749,6 +3760,60 @@ int main() {
                   "0071B710/00938F61: deruyter.mmod keeps only record 0's hull ConvexObject, "
                   "box widened by 0.02 per 00C57C40");
         }
+    }
+
+    {
+        // cc13-rendershapes: one case per former render_fx row shape.
+        using namespace bsp::cc13_render1;
+        alignas(8) std::uint8_t obj[0x150]{};
+        for (std::size_t i = 0; i < sizeof(obj); ++i) obj[i] = static_cast<std::uint8_t>(i * 7 + 1);
+        std::uint32_t v = 0;
+        std::memcpy(&v, obj + 0x24, 4);
+        check(d3d9_surface_sample_count_00b3cd30(obj) == v, "00B3CD30 reads +24h");
+        d3d9_surface_set_sample_count_00b3ce20(obj, 0x12345678u);
+        check(d3d9_surface_sample_count_00b3cd30(obj) == 0x12345678u, "00B3CE20 writes +24h");
+        check(material_effect_byte13c_00b400b0(obj) == obj[0x13c], "00B400B0 reads +13Ch");
+        check(shader_effect_pass_record_00b40050(obj, 2) == obj + 0x144 + 0x80, "00B40050 +144h+40h*i");
+        std::uint8_t* const base = obj + 0x40;
+        std::memcpy(obj + 0x0c, &base, 4);
+        check(vertex_declaration_element_at_00b47c80(obj, 3) == base + 0x3c, "00B47C80 [+0Ch]+14h*i");
+        check(pod_pair_zero_init_00b4ec30(obj + 0x100) == obj + 0x100 && obj[0x100] == 0 && obj[0x107] == 0
+                  && obj[0x108] != 0, "00B4EC30 zeroes 8 bytes and returns self");
+        post_effect_owner_noop_slot0c_00b4ec40(obj);
+        check(d3d9_texture2d_kind_00b3ce40(obj) == 0, "00B3CE40 returns 0");
+        check(volume_texture_kind_00b3d080(obj) == 2, "00B3D080 returns 2");
+
+        struct LockObject { CRITICAL_SECTION cs; std::uint32_t depth; } lock{};
+        static_assert(offsetof(LockObject, depth) == 0x18, "depth dword at +18h");
+        InitializeCriticalSection(&lock.cs);
+        lock.depth = 5;
+        LockObject* const lp = &lock;
+        std::memcpy(obj + 0x48, &lp, 4);
+        std::memcpy(obj + 0x4c, &lp, 4);
+        std::uint32_t f40 = 0;
+        std::memcpy(&f40, obj + 0x40, 4);
+        check(locked_object_field40_00b5df90(obj) == f40 && lock.depth == 5, "00B5DF90 locked +40h");
+        check(locked_object_byte45_00b5e020(obj) == obj[0x45] && lock.depth == 5, "00B5E020 locked +45h");
+        DeleteCriticalSection(&lock.cs);
+
+        struct Host final : bsp::cc13_render_sprites::SlabPoolHost {
+            void enter(void*) override {}
+            void leave(void*) override {}
+            void* operator_new(std::size_t n) override { return ::operator new(n); }
+            void free(void* p) override { ::operator delete(p); }
+        } host;
+        alignas(8) std::uint8_t pool[0x40]{};
+        std::memset(pool + 0x34, 0xff, 4);   // no free slab
+        void* const slot = hardware_layout_pool_allocate_raw_slot_stub_00b488d0(pool, host);
+        std::uint8_t** slabs = nullptr;
+        std::memcpy(&slabs, pool + 0x28, 4);
+        std::uint16_t before = 0, after = 0;
+        std::memcpy(&before, slabs[0] + 0x8c0, 2);
+        hardware_layout_return_raw_slot_00b47c10(pool, slot, host);
+        std::memcpy(&after, slabs[0] + 0x8c0, 2);
+        check(slot != nullptr && after == before + 1, "00B488D0/00B47C10 forward to 00B48780/00B479C0");
+        ::operator delete(slabs[0]);
+        ::operator delete(slabs);
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

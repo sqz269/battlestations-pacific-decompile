@@ -5,8 +5,10 @@
 // modelled: the image's EH state stores only select unwind actions.
 
 #include "bsp/cc13_seg48.hpp"
+#include "bsp/gameplay_seg48_cc13.hpp"
 
 #include <cstring>
+#include <cmath>
 
 namespace bsp {
 
@@ -15,6 +17,12 @@ namespace {
 template <class T>
 T& at(void* base, std::size_t offset) {
     return cc13_seg48_at<T>(base, offset);
+}
+
+// One main-thread x87 arithmetic operation at PC=24. The project's
+// /fp:strict setting preserves these explicit float conversions.
+float pc24(double value) {
+    return static_cast<float>(value);
 }
 
 // The inlined reference release the image repeats everywhere:
@@ -1698,6 +1706,241 @@ void cc13_seg48_plane_sound_set_for_each_slot18_007de760(void* set, std::uint32_
     for (void** it = first; it != last; ++it) {
         host.vcall_18_sound(*it, a, b);
     }
+}
+
+// 007EB380..007EBF03: complete ordinary control flow, native ECX component,
+// stack float dt / RET 4. All 833 listing instructions were reviewed. The
+// decompiler's unaff_retaddr is dt; its unaff_EBP and reused locals are not
+// source inputs. In particular, load uses the clamped acceleration mapping,
+// +70h uses the wanted/running multiplier, and the four holders are +48h,
+// +74h, +A0h and +CCh. No DC-form ambiguous x87 multiply exists in this span.
+// CRT sqrt is a qualified stock substitution, not reconstructed game credit.
+// Every x87 arithmetic operation rounds at PC24 in image order under
+// /fp:strict (docs/CC13_FPU_PRECISION.md); x87 environment/ABI proof is open.
+void plane_fx_component_step_007eb380(std::uint8_t* component, float dt,
+                                    const PlaneFxStepGlobals& g, PlaneFxStepHost& host) {
+    auto plane = [&]() { return at<std::uint8_t*>(component, 4); };
+    at<float>(component, 0x20) = at<float>(plane(), 0x9F0);
+    const float max_step = at<float>(component, 0x1C) * dt;
+    host.call_0042ac60(&at<float>(component, 0x18), at<float>(component, 0x20), max_step); // 007EB3BC
+    at<float>(component, 0x38) = at<float>(component, 0x18);
+    const float rpm_delta = pc24(static_cast<double>(at<float>(component, 0x18))
+        - at<float>(component, 0x34));                               // 007EB3D4
+    const float response = pc24(static_cast<double>(rpm_delta) * g.c_00ce3d40); // 007EB3D7
+    const float acceleration_delta = pc24(static_cast<double>(response) * dt); // 007EB3E6
+    at<float>(component, 0x3C) = pc24(static_cast<double>(acceleration_delta)
+        + at<float>(component, 0x3C));                                // 007EB3EB
+    const float acceleration = at<float>(component, 0x3C);
+    if (g.c_00d086a0 > acceleration) at<float>(component, 0x3C) = g.c_00d08698;
+    else if (acceleration > g.c_00ce3d48) at<float>(component, 0x3C) = g.c_00d06bb4;
+    const float previous = at<float>(component, 0x34);
+    const float limit_delta = pc24(static_cast<double>(at<float>(component, 0x38)) - previous); // 007EB44E
+    const float limit = pc24(static_cast<double>(limit_delta) * 3.0);  // 007EB450
+    if (at<float>(component, 0x38) > previous
+        ? at<float>(component, 0x3C) > limit : limit > at<float>(component, 0x3C))
+        at<float>(component, 0x3C) = limit;
+    const float applied_acceleration = at<float>(component, 0x3C);
+    const float applied_delta = pc24(static_cast<double>(dt) * applied_acceleration); // 007EB492
+    at<float>(component, 0x34) = pc24(static_cast<double>(previous) + applied_delta); // 007EB496
+    const float scaled_load = pc24(static_cast<double>(applied_acceleration) * g.c_00d08690); // 007EB49B
+    float load = pc24(static_cast<double>(scaled_load) + 0.5);         // 007EB4A1
+    if (0.0f > load) load = 0.0f;
+    else if (load > 1.0f) load = 1.0f;
+
+    std::uint8_t* tuning = host.call_0042e740();                         // 007EB4C0
+    const std::uint8_t state = host.vcall_controller_38(plane() + 0x72C); // 007EB4D9
+    gameplay_seg48_cc13::timed_flag_debounce_007eb4e0(
+        at<std::uint8_t>(component, 0x28), at<float>(component, 0x2C),
+        at<float>(component, 0x24), state, dt);
+    bool wanted = false;
+    if (at<std::uint8_t>(component, 0x28) != 0) {
+        std::uint8_t* p = plane();
+        wanted = at<std::uint8_t>(p, 0xBC8) != 0
+            || !host.vcall_plane_5c(p, 0x17) || at<std::uint8_t>(p, 0xC24) != 0; // 007EB53D
+    }
+    float effect_value = 0.0f;
+    if (at<std::uint8_t>(component, 0x14) != 0) {
+        const float fade = at<float>(component, 0x30) + dt;
+        at<float>(component, 0x30) = fade < 1.0f ? fade : 1.0f;
+        const float current = at<float>(component, 0x34);
+        effect_value = static_cast<float>(host.call_00419010(0.0f, at<float>(tuning, 0x174),
+            1.0f, at<float>(tuning, 0x178), current));                  // 007EB5C8
+        if (wanted || current != 0.0f) {
+            at<float>(component, 0x40) = 0.0f;
+        } else {
+            at<float>(component, 0x40) = at<float>(component, 0x40) + dt;
+            if (at<float>(component, 0x40) > 3.0f) {
+                at<std::uint8_t>(component, 0x14) = 0;
+                at<float>(component, 0x40) = 0.0f;
+                host.call_007eb0e0(component);                         // 007EB620
+            }
+        }
+    } else {
+        const float fade = at<float>(component, 0x30) - dt;
+        at<float>(component, 0x30) = fade > 0.0f ? fade : 0.0f;
+        at<float>(component, 0x40) = at<float>(component, 0x40) + dt;
+        if (wanted || (at<float>(component, 0x40) > 1.0f && at<float>(component, 0x34) > 0.0f)) {
+            if (dt > 0.0f) {
+                host.call_007eae30(component + 0x48, 1);               // 007EB6B4
+                host.call_007eb160(component);                         // 007EB6BB
+                at<std::uint8_t>(component, 0x14) = 1;
+                effect_value = 0.0f;
+                at<float>(component, 0x40) = 0.0f;
+            }
+        } else if (at<float>(component, 0x30) == 0.0f) {
+            host.call_007e1b30(component + 0x48);                       // 007EB693
+            host.call_007eb0e0(component);                             // 007EB69A
+        }
+    }
+    for (std::int32_t i = 0; i < at<std::int32_t>(component, 0xC); ++i)
+        host.vcall_effect_10(at<void**>(component, 8)[i], effect_value, dt); // 007EB700
+
+    float multiplier = 1.0f;
+    if (!wanted) {
+        float stored;
+        if (at<std::uint8_t>(component, 0x14) != 0)
+            stored = pc24(static_cast<double>(at<float>(tuning, 0x6CC))
+                - host.call_00419010(0.0f, 1.0f, at<float>(tuning, 0x6AC), 0.0f,
+                                     at<float>(component, 0x34)));    // 007EB742/007EB747
+        else stored = pc24(static_cast<double>(at<float>(tuning, 0x6CC)) - g.c_00d7a210); // 007EB76B
+        multiplier = stored < 1.0f ? stored : 1.0f;
+    }
+
+    std::uint8_t* listener = at<std::uint8_t*>(g.game_00e188a8, 0x19FC);
+    float vector_out[3];
+    const float* vector = host.vcall_plane_34(plane(), vector_out);     // 007EB7A0
+    float relative[3], displacement[3];
+    for (std::size_t i = 0; i != 3; ++i)
+        relative[i] = vector[i] - at<float>(listener, 0x1B8 + 4 * i); // 007EB7A4/7AD/7B7
+    for (std::size_t i = 0; i != 3; ++i)
+        displacement[i] = relative[i] * dt;                          // 007EB7D5/7E1/7E7
+    const auto refresh = [&](std::uint8_t* p) {
+        if (at<std::uint8_t>(p, 0xC8) == 0) {
+            if (at<void*>(p, 0x3C) != nullptr) host.call_00414db0(at<void*>(p, 0x3C));
+            float scratch[16];
+            const float* matrix;
+            if (at<std::uint8_t*>(p, 0x3C) == nullptr)
+                matrix = reinterpret_cast<const float*>(p + 0x74);
+            else matrix = host.call_00413920(reinterpret_cast<const float*>(p + 0x74), scratch,
+                reinterpret_cast<const float*>(at<std::uint8_t*>(p, 0x3C) + 0xCC));
+            host.call_004134f0(reinterpret_cast<float*>(p + 0xCC), matrix);
+            at<std::uint8_t>(p, 0xC8) = 1;
+            at<std::uint8_t>(p, 0x10C) = 0;
+        }
+    };
+    std::uint8_t* p = plane();
+    refresh(p);                                                       // 007EB7F8/007EB812/007EB823
+    float predicted[3];
+    for (std::size_t i = 0; i != 3; ++i) predicted[i] = at<float>(p, 0xFC + 4 * i) - displacement[i];
+    p = plane();
+    refresh(p);                                                       // 007EB873/007EB88D/007EB89E
+    float position[3];
+    for (std::size_t i = 0; i != 3; ++i) position[i] = at<float>(p, 0xFC + 4 * i);
+    listener = at<std::uint8_t*>(g.game_00e188a8, 0x19FC);
+    if ((at<std::uint8_t>(listener, 0x5C) & 2) == 0) host.call_00b6db70(listener); // 007EB8EE
+    float listener_position[3], current_delta[3], predicted_delta[3];
+    for (std::size_t i = 0; i != 3; ++i) {
+        listener_position[i] = at<float>(listener, 0x120 + 4 * i);
+        predicted_delta[i] = predicted[i] - listener_position[i];
+    }
+    const auto length = [&](const float* v) {
+        // 007EB943..94F, 007EB9CD..9D9 and 007EBBF7..BC03.
+        const float sx = pc24(static_cast<double>(v[0]) * v[0]);
+        const float sy = pc24(static_cast<double>(v[1]) * v[1]);
+        const float syx = pc24(static_cast<double>(sy) + sx);
+        const float sz = pc24(static_cast<double>(v[2]) * v[2]);
+        const float square = pc24(static_cast<double>(syx) + sz);
+        return square > g.c_00ce3820 ? static_cast<float>(std::sqrt(static_cast<double>(square))) : 0.0f;
+    };
+    const float predicted_distance = length(predicted_delta);          // 007EB965
+    for (std::size_t i = 0; i != 3; ++i)
+        current_delta[i] = position[i] - listener_position[i];         // 007EB987/9B/AF
+    const float current_distance = length(current_delta);              // 007EB9EF
+    std::uint8_t* sound_globals = g.sound_00f8bbd8;
+    const float distance_delta = pc24(static_cast<double>(predicted_distance) - current_distance); // 007EBA16
+    const float distance_rate = pc24(static_cast<double>(distance_delta) / dt); // 007EBA25
+    float rate = pc24(static_cast<double>(distance_rate) / at<float>(sound_globals, 0x14)); // 007EBA2C
+    if (at<float>(sound_globals, 0x18) > rate) rate = at<float>(sound_globals, 0x18);
+    else if (rate > at<float>(sound_globals, 0x1C)) rate = at<float>(sound_globals, 0x1C);
+    const float pitch_offset = pc24(static_cast<double>(rate) + g.c_00d7a210); // 007EBA72
+    const float pitch = pc24(static_cast<double>(pitch_offset) * at<float>(tuning, 0x6B4)); // 007EBA7D
+    at<float>(component, 0x70) = multiplier;
+    at<float>(component, 0x64) = pitch;
+    if (at<void*>(component, 0x58) != nullptr)
+        host.vcall_sound_1c(at<void*>(component, 0x58), g.rpm_key_00d08688,
+                            at<float>(component, 0x34));               // 007EBAB5
+    if (at<void*>(component, 0x58) != nullptr)
+        host.vcall_sound_1c(at<void*>(component, 0x58), g.load_key_00d08680, load); // 007EBAD9
+
+    float toward_listener[3];
+    for (std::size_t i = 0; i != 3; ++i) toward_listener[i] = listener_position[i] - position[i];
+    float velocity[3];
+    (void)host.vcall_plane_34(plane(), velocity);                       // 007EBB0C
+    const float velocity_x_sq = pc24(static_cast<double>(velocity[0]) * velocity[0]); // 007EBB22
+    const float velocity_y_sq = pc24(static_cast<double>(velocity[1]) * velocity[1]); // 007EBB26
+    const float velocity_yx_sq = pc24(static_cast<double>(velocity_y_sq) + velocity_x_sq); // 007EBB2A
+    const float velocity_z_sq = pc24(static_cast<double>(velocity[2]) * velocity[2]); // 007EBB2E
+    const float denominator = pc24(static_cast<double>(velocity_yx_sq) + velocity_z_sq); // 007EBB32
+    float projection;
+    if (denominator > 0.0f) {
+        const float dot_y = pc24(static_cast<double>(toward_listener[1]) * velocity[1]); // 007EBB46
+        const float dot_x = pc24(static_cast<double>(toward_listener[0]) * velocity[0]); // 007EBB4C
+        const float dot_xy = pc24(static_cast<double>(dot_x) + dot_y); // 007EBB50
+        const float dot_z = pc24(static_cast<double>(toward_listener[2]) * velocity[2]); // 007EBB56
+        const float numerator = pc24(static_cast<double>(dot_z) + dot_xy); // 007EBB5A
+        projection = numerator / denominator;
+    } else projection = static_cast<float>(g.c_00ce4bd8);
+    sound_globals = g.sound_00f8bbd8;                                  // 007EBB7A reload
+    const float half_window = pc24(static_cast<double>(at<float>(sound_globals, 0x34)) * 0.5); // 007EBB8D
+    const float centered = pc24(static_cast<double>(projection) - half_window); // 007EBB93
+    const float absolute = centered > 0.0f ? centered : -0.0f - centered;
+    float pass = 0.0f;
+    if (g.c_00d04368 > absolute && at<float>(sound_globals, 0x30) > length(current_delta))
+        pass = g.c_00ce54a0;
+    if (at<void*>(component, 0x58) != nullptr)
+        host.vcall_sound_1c(at<void*>(component, 0x58), g.pass_key_00d08678, pass); // 007EBC6E/007EBC91
+
+    if (dt > 0.0f && plane() != nullptr) {
+        p = plane();
+        const std::int32_t flight_state = at<std::int32_t>(p, 0x900);
+        if (flight_state == 7 || flight_state == 6 || flight_state == 4 || flight_state == 5) {
+            std::uint8_t* descriptor = at<std::uint8_t*>(p, 0x538);
+            const float ratio = static_cast<float>(host.vcall_plane_38(p) / at<float>(descriptor, 0x188)); // 007EBCE1
+            if (at<std::uint8_t>(plane(), 0x5D) != 0) {
+                at<float>(component, 0x44) = at<float>(component, 0x44) + dt;
+                if (!(g.c_00ce7630 > at<float>(component, 0x44))) {
+                    at<float>(component, 0x44) = at<float>(component, 0x44) + dt;
+                    const float since_threshold = pc24(static_cast<double>(at<float>(component, 0x44))
+                        - g.c_00ce7630);                              // 007EBD7C
+                    const float level = pc24(static_cast<double>(since_threshold) * g.c_00ce3d40); // 007EBD7E
+                    at<float>(component, 0x9C) = level < 1.0f ? level : 1.0f;
+                } else if (at<float>(component, 0x44) >= g.c_00ce3958 && ratio > g.c_00ce3d30) {
+                    host.call_007eae30(component + 0x74, 1);            // 007EBD44
+                    at<float>(component, 0x94) = 0.0f;
+                    at<float>(component, 0x9C) = 0.0f;
+                    at<float>(component, 0x44) = g.c_00ce38c8;
+                }
+            }
+            float volume = static_cast<float>(host.call_00419010(at<float>(tuning, 0x24), 0.0f,
+                at<float>(tuning, 0x28), 1.0f, ratio));                 // 007EBDD0
+            float target_pitch = static_cast<float>(host.call_00419010(at<float>(tuning, 0x2C),
+                at<float>(tuning, 0x34), at<float>(tuning, 0x30), at<float>(tuning, 0x38), ratio)); // 007EBDFF
+            host.call_007eae30(component + 0xA0, 0);                   // 007EBE10
+            at<float>(component, 0xC8) = volume;
+            at<float>(component, 0xBC) = target_pitch;
+            volume = static_cast<float>(host.call_00419010(at<float>(tuning, 0x3C), 0.0f,
+                at<float>(tuning, 0x40), 1.0f, ratio));                 // 007EBE4D
+            target_pitch = static_cast<float>(host.call_00419010(at<float>(tuning, 0x44),
+                at<float>(tuning, 0x4C), at<float>(tuning, 0x48), at<float>(tuning, 0x50), ratio)); // 007EBE7C
+            host.call_007eae30(component + 0xCC, 0);                   // 007EBE8D
+            at<float>(component, 0xF4) = volume;
+            at<float>(component, 0xE8) = target_pitch;
+        }
+    }
+    host.call_007de490(component + 0x48, dt);                           // 007EBEB3
+    host.call_007de490(component + 0x74, dt);                           // 007EBEC6
+    host.call_007de490(component + 0xA0, dt);                           // 007EBEDC
+    host.call_007de490(component + 0xCC, dt);                           // 007EBEF2
 }
 
 }  // namespace bsp

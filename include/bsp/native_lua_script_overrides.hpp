@@ -6,6 +6,10 @@ namespace bsp {
 // Searches backward in the counted bytes; the set uses strlen semantics.
 std::uint32_t reverse_find_native_string_bytes_004bcb80(const NativeString&,
     const char* byte_set,std::int32_t start);
+// Same body over a live actual8B header; no NativeString object lifetime is
+// required or started, and no header/data owner or copy is constructed.
+std::uint32_t reverse_find_native_string_bytes_004bcb80(const void* actual_header8,
+    const char* byte_set,std::int32_t start);
 // 419CA0: ECX actual string; EAX data or external original E17654 fallback.
 const char* native_string_data_or_00419ca0(const NativeString&,const char* empty_00e17654) noexcept;
 // BDEF80: add48 to manager then tail-jump4CDC20. Original RET4.

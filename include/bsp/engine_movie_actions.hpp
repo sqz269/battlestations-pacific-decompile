@@ -25,8 +25,11 @@ struct MovieActionTypeInfo {
     const char* name;            // record +0
     const char* refer_label;     // +8, flag +10h: ReferPath -> action +18h
     const char* num_labels[3];   // +14h/+20h/+2Ch, flags +1Ch/+28h/+34h: Num1..3 -> +20h..+28h
-    const char* enum_options;    // +38h, the '|' separated choices
-    const char* enum_label;      // +40h, flag +48h: Enum -> action +2Ch
+    // Member order is not native order. 0045D480 gets the label as its sixth
+    // string and stores it at +38h (0045D5E9/0045D5ED), then gets the '|'
+    // options as its seventh and stores them at +40h (0045D620/0045D624).
+    const char* enum_options;    // +40h, the '|' separated choices
+    const char* enum_label;      // +38h, e.g. "Type:"; flag +48h: Enum -> action +2Ch
     const char* offset_label;    // +4Ch, flag +54h: OffsetX/Y/Z -> +34h/+3Ch/+38h
     bool constructible;          // 0045DE50 has a case for the index
 };

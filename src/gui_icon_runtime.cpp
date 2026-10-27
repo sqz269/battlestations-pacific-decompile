@@ -409,10 +409,17 @@ struct GuiIconRuntime::Impl final : GuiIconHost {
         : widget(base), overbright(brightness), services(std::move(supplied)) {
         require(widget.type == GuiWidgetType::Icon && widget.transform.type_id == kGuiIconTypeId,
             "GuiIconRuntime requires the SAME type6 base widget owner.");
-        validate_geometry_services(services.geometry);
+        const auto& native = services.native_geometry;
+        const bool native_geometry = bool(native.construct_and_associate74) ||
+            bool(native.rebuild_00ab3cb0) || bool(native.before_runtime_destruction);
+        require(!native_geometry || (native.construct_and_associate74 &&
+            native.rebuild_00ab3cb0 && native.before_runtime_destruction),
+            "Icon native geometry requires its complete same-owner capability.");
+        if (!native_geometry) validate_geometry_services(services.geometry);
         const auto& t = services.textures;
         require(t.resolve.find_atlas_item && t.resolve.load_texture && t.resolve.width &&
-            t.resolve.height && t.resolve.retain && t.release && t.logical_texture &&
+            t.resolve.height && t.resolve.retain && t.release &&
+            (native_geometry || bool(t.logical_texture)) &&
             services.platform_allows_point_filter && services.base_loaded78_00aa7170 &&
             services.set_position_00aa7dc0, "Icon runtime is missing an actual texture or base hook service.");
     }
@@ -420,9 +427,11 @@ struct GuiIconRuntime::Impl final : GuiIconHost {
         require(raw != nullptr, "Icon texture resolution returned no texture.");
         TextureReference reference;
         reference.native_reference = std::shared_ptr<void>(raw, services.textures.release);
-        reference.logical = services.textures.logical_texture(raw);
-        require(reference.logical && reference.logical->texture,
-            "Icon texture lacks its retained actual logical/COM resource.");
+        if (!services.native_geometry.rebuild_00ab3cb0) {
+            reference.logical = services.textures.logical_texture(raw);
+            require(reference.logical && reference.logical->texture,
+                "Icon texture lacks its retained actual logical/COM resource.");
+        }
         textures.push_back(std::move(reference));
         return raw;
     }
@@ -469,12 +478,17 @@ struct GuiIconRuntime::Impl final : GuiIconHost {
 
 GuiIconRuntime::GuiIconRuntime(GuiLayoutWidget& widget, float& overbright,
     GuiIconRuntimeServices services) : impl_(std::make_unique<Impl>(widget, overbright, std::move(services))) {}
-GuiIconRuntime::~GuiIconRuntime() = default;
+GuiIconRuntime::~GuiIconRuntime() {
+    if (impl_->services.native_geometry.before_runtime_destruction)
+        impl_->services.native_geometry.before_runtime_destruction();
+}
 const GuiIconWidget& GuiIconRuntime::state() const noexcept { return impl_->icon; }
 void GuiIconRuntime::constructed74_00ab2540() {
     auto& self = *impl_;
     if (!self.widget.transform.bounds_enabled) {
-        self.services.geometry.associate_geometry(std::make_shared<GeneratedInstanceGeometry>(),
+        if (self.services.native_geometry.construct_and_associate74)
+            self.services.native_geometry.construct_and_associate74();
+        else self.services.geometry.associate_geometry(std::make_shared<GeneratedInstanceGeometry>(),
             -1.0f, -1.0f); // 00D7A260, verified saved bytes BF800000
     }
     self.services.set_position_00aa7dc0({});
@@ -519,9 +533,11 @@ void GuiIconRuntime::set_state_texture_00ab2690(std::uint32_t index, void* textu
             self.services.textures.resolve.retain(texture); // AB26D7
             replacement.native_reference = std::shared_ptr<void>(texture,
                 self.services.textures.release);
-            replacement.logical = self.services.textures.logical_texture(texture);
-            require(replacement.logical && replacement.logical->texture,
-                "Icon replacement texture needs its actual retained logical/COM owner.");
+            if (!self.services.native_geometry.rebuild_00ab3cb0) {
+                replacement.logical = self.services.textures.logical_texture(texture);
+                require(replacement.logical && replacement.logical->texture,
+                    "Icon replacement texture needs its actual retained logical/COM owner.");
+            }
         }
         // There is exactly one adoption per appended state. Move its token
         // out and publish the replacement BEFORE releasing: destructor callbacks
@@ -643,6 +659,10 @@ void GuiIconRuntime::set_scale48_00ab2820(GuiWidgetOwner& owner, const GuiWidget
 void GuiIconRuntime::rebuild_00ab3cb0(std::int16_t index) {
     auto& self = *impl_;
     self.icon.current_state = index;
+    if (self.services.native_geometry.rebuild_00ab3cb0) {
+        self.services.native_geometry.rebuild_00ab3cb0(self.icon);
+        return;
+    }
     const auto* selected = self.icon.has_texture ? gui_icon_state_at(self.icon, index) : nullptr;
     require(!self.icon.has_texture || selected, "Icon state index is outside the native signed16 state vector.");
     GuiGeometryRebuildRequest request;

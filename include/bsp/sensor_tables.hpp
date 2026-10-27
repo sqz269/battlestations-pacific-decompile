@@ -193,6 +193,9 @@ constexpr int sensor_category_for_key_or_previous(int matched, int previous) noe
 // ---------------------------------------------------------------------------
 
 struct SensorClassTable {
+    // Qualified value model of the two initialized native base words.
+    std::uint32_t native_vtable_00{};
+    std::uint32_t native_reference_count_04{};
     // 56 lists, addressed with sensor_list_index_008085aa. Columns 7 stay empty.
     std::array<std::vector<SensorTableEntry>, kSensorListCount> lists{};
     // One ring list per observer category (00807F60's destination).
@@ -208,6 +211,10 @@ struct SensorClassTable {
 };
 
 // ---------------------------------------------------------------------------
+// 00808CB0 ECX=fresh2A8h record, EAX=this, RET00808D10: refcount1,
+// vtable00D08FEC and seven empty rows. std::vector replaces raw list storage.
+SensorClassTable construct_sensor_class_table_00808cb0();
+
 // The loader, 008082A0
 // ---------------------------------------------------------------------------
 

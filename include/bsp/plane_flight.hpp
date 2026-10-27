@@ -23,6 +23,23 @@
 
 namespace bsp {
 
+// cc13-PL4 OFF switches. The core law 007DB680 and the integrator 007D8470 run
+// live (game_hosts_units.cpp, kFlightIntegratorBound), so each faithful change
+// waits behind a switch that cc9 pairs and flips.
+//
+// 007D85A0-007D85E7: 007D8470 applies the 0.001f deadband to dyn+40h..48h (the
+// third fold, after dyn+34h is rotated in) as well as to dyn+1Ch and dyn+04h.
+// True: the accumulator overload of fold_world_into_body_007d8470 zeroes each
+// body_resist_40 component under 0.001f in place. False: only the first two.
+inline constexpr bool kPlaneResist40DeadbandCc13Bound = false;
+// The main thread's x87 runs at 24-bit precision. 007DBA67 compares the float
+// speed squared against the double 1e-10 (00CE3820); 007DBEBB-007DBEC1 rounds
+// throttle * 26.0 before 0.6 - it; 007D8D6D rounds speed * 0.1 before the
+// subtraction from body vy (the landed hold-down, game_hosts_units.cpp). True:
+// those three forms. False: the float 1e-10f gate and one rounding of each
+// double expression, as before.
+inline constexpr bool kPlaneFlightX87Cc13Bound = false;
+
 // ---------------------------------------------------------------------------
 // The pilot control block, unit+9E4h. Five float axes and three bytes, zeroed by
 // the plane unit constructor 007CFD20 at 007CFE92..007CFEB8 except the throttle,
@@ -620,6 +637,13 @@ PlaneBodyVelocityStep integrate_body_velocity_007d8611(const float velocity[3],
                                                         float step) noexcept;
 
 PlaneBodyAcceleration fold_world_into_body_007d8470(const PlaneDynAccumulators& acc,
+                                                    const float world_to_body[9]);
+// The same fold on the live accumulators: with kPlaneResist40DeadbandCc13Bound it
+// also applies 007D85A0-007D85E7's deadband to acc.body_resist_40 in place (the
+// image rewrites dyn+40h..48h). The third fold itself (dyn+34h) is add_water_band's.
+// Overload resolution: a non-const PlaneDynAccumulators lvalue now selects this
+// in-place overload, so such callers get the deadband when the switch is ON.
+PlaneBodyAcceleration fold_world_into_body_007d8470(PlaneDynAccumulators& acc,
                                                     const float world_to_body[9]);
 
 // The quantity the acceptance test pins: the world-up component of one free

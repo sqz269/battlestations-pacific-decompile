@@ -5,6 +5,10 @@
 #include <cstdint>
 #include <vector>
 
+#include "bsp/cc13_seg49.hpp"
+#include "bsp/observer_lifetime.hpp"
+#include "bsp/recon_values.hpp"
+
 // The per-party recon slots: how a unit gets into a party's recon list, and how
 // 008073C0 rebuilds the five published lists every three seconds.
 //
@@ -20,6 +24,36 @@
 // the fourth array, the five triples, the membership rule and the sensor model.
 
 namespace bsp {
+
+//008050E0 ECX=fresh12A0h slot; stack index; EAX=this; RET4 at0080522A.
+// Writes only recovered fields, preserving untouched allocation bytes including
+//+24h and+30h. clock_bits is the actual DWORD at00F876A4, copied unchanged.
+void* construct_recon_slot_008050e0(cc13_seg49::Raw slot, std::int32_t index,
+    std::uint32_t clock_bits);
+//00805240 ECX=slot; RET008053BC. Actual raw list storage and global slot
+// table are supplied through the existing host; observer teardown uses the
+// existing native lifetime implementation. Does not free the slot itself.
+void destruct_recon_slot_00805240(cc13_seg49::Raw slot,
+    cc13_seg49::Seg49Host&, NativeObserverLifetime&);
+
+struct ReconRelationPublicationHost {
+    virtual ~ReconRelationPublicationHost() = default;
+    //00805E31: actual unit+170h base, freshly loaded native vtable slot0.
+    virtual std::int32_t category_virtual_00(void* category_base,
+        std::uint32_t native_vtable) = 0;
+    //00927BF0: thisTable[decimal u16 unit+174h] through the passed instance.
+    virtual void push_unit_lua_self_00927bf0(void* unit, ReconLuaInstanceView) = 0;
+};
+//00805D90: native ECX is unused; stack(instance,triple,unused), RET0Ch at
+//00805F27. Complete normal flow: filter ten classes/no-category19, bucket in
+//input order, ensure all19 named raw tables and assign decimal keys with
+//ordinary lua_settable(-3). Caller supplies the live19-entry00E0B590 table;
+//category virtual must return0..18 or19. Native table/stack preconditions and
+//unprotected Lua error behavior remain. New interface, not a native ABI shim.
+void publish_recon_relation_categories_00805d90(cc13_seg49::Seg49Host& lists,
+    ReconRelationPublicationHost&, ReconLuaInstanceView,
+    const cc13_seg49::ReconList& triple, const char* const* category_names_00e0b590,
+    std::int32_t unused);
 
 // ---------------------------------------------------------------------------
 // Slot layout beyond bsp/fixed_step_countdown.hpp

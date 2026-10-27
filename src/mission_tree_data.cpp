@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <stdexcept>
 #include <string>
 
 // docs/MISSION_TREE_LUA_READER.md. Every rule here is one branch of 005C6A70,
@@ -114,6 +115,8 @@ read_mission_map_sizes_005c6dbe(MissionTreeLuaView& view) {
 // 005C6A70, one 434h mission record
 // ---------------------------------------------------------------------------
 
+static void read_unique_multi_settings_by_name(MissionTreeLuaView& view, MissionRecordData& out);
+
 static void read_mission_record_impl(MissionTreeLuaView& view, MissionRecordData& out,
                                      const MissionPictureTextureServices* pictures) {
     out.screen.name = view.read_string("id", "");
@@ -185,9 +188,51 @@ static void read_mission_record_impl(MissionTreeLuaView& view, MissionRecordData
 
     // 005C78E5 clears the settings container before the walk.
     out.extra.unique_multi_settings.clear();
+    out.extra.unique_multi_settings_by_index.clear();
     out.extra.has_unique_multi_settings = view.has_name("UniqueMultiSettings");
     if (!out.extra.has_unique_multi_settings) return;
 
+    if constexpr (kMissionUniqueMultiSettingsIntegerKeysCc13Bound) {
+        // 005C792B..005C7ADF. Two nested enumerations through the reader's +18h
+        // slot, each into its own 250-pair key array pre-filled with FFFFFFFFh
+        // (005C7944, 005C79B4). 005C7992 and 005C79F6 enter each key with kind 1
+        // and the entry's word, whatever the entry's tag: an integer key is
+        // entered as itself, but a string key would be entered by its char*
+        // and a fractional number by its float bits, and the walk would then
+        // enumerate or index a nil and raise an unprotected Lua error. The
+        // reconstruction stops there instead of reproducing it.
+        // Leaf: 005C7A59 reads MenuDIS through +0Ch with the default (Bool, 0);
+        // 005C7A7D SETZ stores its negation through 005C6850 (outer key) and
+        // 005C49C0 (inner key).
+        const auto require_index = [](const MissionTreeLuaView::TableKey& key) {
+            if (key.kind != GuiLuaKeyKind::Index) {
+                throw std::logic_error(
+                    "UniqueMultiSettings key is not an integer (005C6A70 indexes nil)");
+            }
+            return key.index;
+        };
+        view.enter_by_name("UniqueMultiSettings");                       // 005C7942
+        for (const auto& outer : view.table_keys()) {                     // 005C7974
+            const std::int32_t row = require_index(outer);
+            view.enter_by_index(row);                                     // 005C79B2
+            for (const auto& inner : view.table_keys()) {                 // 005C79E3
+                const std::int32_t option = require_index(inner);
+                view.enter_by_index(option);                              // 005C7A11
+                const bool menu_dis = view.read_bool(kMissionUniqueMultiSettingKey, false);
+                out.extra.unique_multi_settings_by_index[row][option] = !menu_dis;
+                view.leave();                                             // 005C7A9B
+            }
+            view.leave();                                                 // 005C7AB7
+        }
+        view.leave();                                                     // 005C7ADD
+    } else {
+        read_unique_multi_settings_by_name(view, out);
+    }
+}
+
+// The pre-cc13-P1 walk, kept byte for byte as the OFF arm of
+// kMissionUniqueMultiSettingsIntegerKeysCc13Bound.
+static void read_unique_multi_settings_by_name(MissionTreeLuaView& view, MissionRecordData& out) {
     // 005C7944..005C7ADF: two nested key enumerations. The outer keys are the
     // multiplayer modes, the inner keys the parameters, and the only value
     // read is the MenuDIS boolean, stored inverted (005C7A87's SETZ on the

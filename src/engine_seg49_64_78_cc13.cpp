@@ -3,6 +3,79 @@
 #include "bsp/engine_seg49_64_78_cc13.hpp"
 
 namespace bsp::cc13_seg49_64_78 {
+// 0097A220, ECX=this / EAX=this, RET at 0097A322. Callback +4/+8 is
+// zeroed; +0Ch entity and +1Ch/+2Ch/+3Ch integer filters get empty heads.
+ReconSubscription construct_recon_0097a220() { return {}; }
+
+// 0097A330, ECX=this, RET at 0097A44D. Native erases and frees tree heads
+// at +40h,+30h,+20h,+10h, restores base vtable, then returns callback block
+// to its sized pool. C++ containers supply the storage operations here.
+void destruct_recon_0097a330(ReconSubscription& s) {
+    s.party.values.clear();
+    s.new_level.values.clear();
+    s.old_level.values.clear();
+    s.entity.ids.clear();
+    std::string{}.swap(s.callback);
+}
+
+// 0097A450, ECX=this / EAX=this, RET at 0097A522. Two entity sets and
+// the last-attacker-player integer set are constructed empty.
+KillSubscription construct_kill_0097a450() { return {}; }
+
+// 0097A530, ECX=this, RET at 0097A61E; reverse member destruction.
+void destruct_kill_0097a530(KillSubscription& s) {
+    s.last_attacker_player_index.values.clear();
+    s.last_attacker.ids.clear();
+    s.entity.ids.clear();
+    std::string{}.swap(s.callback);
+}
+
+// 0097A620, ECX=this / EAX=this, RET at 0097A6C1. Entity +0Ch and
+// boolean +1Ch filters and callback start empty.
+ExitZoneSubscription construct_exit_zone_0097a620() { return {}; }
+
+// 0097A6D0, ECX=this, RET at 0097A78F; boolean, entity, callback.
+void destruct_exit_zone_0097a6d0(ExitZoneSubscription& s) {
+    s.exited.values.clear();
+    s.entity.ids.clear();
+    std::string{}.swap(s.callback);
+}
+
+// 0097A790, ECX=this / EAX=this, RET at 0097A800. Integer filter +0Ch
+// and callback start empty; native vtable is 00D1B6AC.
+InputSubscription construct_input_0097a790() { return {}; }
+
+// 0097A810, ECX=this, plain RET. Integer filter precedes callback release.
+void destruct_input_0097a810(InputSubscription& s) {
+    s.input_id.values.clear();
+    std::string{}.swap(s.callback);
+}
+
+//0097A8B0 ECX=this/EAX=this, RET0097A920; empty party filter/callback.
+SurrenderSubscription construct_surrender_0097a8b0() { return {}; }
+//0097A930 ECX=this, RET0097A9C5; party tree then callback storage.
+void destruct_surrender_0097a930(SurrenderSubscription& s) {
+    s.party.values.clear();
+    std::string{}.swap(s.callback);
+}
+//0097A9D0 ECX=this/EAX=this, RET0097AA47. Range vtable alone is written
+// at+1Ch; its two float words are not initialized by the native body.
+LeakSubscription construct_leak_0097a9d0(RangeFilter untouched_duration) {
+    LeakSubscription s;
+    s.duration = untouched_duration;
+    return s;
+}
+//0097AA50 ECX=this, RET0097AAE5; range has no owned storage.
+void destruct_leak_0097aa50(LeakSubscription& s) {
+    s.entity.ids.clear();
+    std::string{}.swap(s.callback);
+}
+//0096DCB0 ECX=this, RET0096DD07; non-null NativeString block is returned
+// to its sized pool, then native base vtable is restored.
+void destruct_warning_event_record_0096dcb0(WarningEventRecord& record) {
+    std::string{}.swap(record.name);
+}
+
 ReconStyleRecord* recon_default_style_008036f0(ReconStyleFallback& state) noexcept {
     if ((state.flags & 1u) == 0) {
         state.flags |= 1u;
@@ -1349,6 +1422,21 @@ void gui_text_set_cursor_mode_00ab95f0(void* text, GuiTextCursor& cursor, std::i
 void* gui_first_vertex_stream(void* widget, GuiLeafHost& host)
 {
     return host.first_vertex_stream(widget);
+}
+
+// 00ABE640..00ABE66E: ECX = section, plain RET, EAX result. Each null/zero
+// branch precedes the next native call. Offset +4Ch is the established widget
+// generated-model field. Callee contracts are retained as address boundaries;
+// this routine claims no additional geometry implementation or binary ABI.
+void* gui_section_get_first_vertex_stream_00abe640(void* section, GuiSectionVertexStreamHost& host)
+{
+    void* model;
+    std::memcpy(&model, static_cast<unsigned char*>(section) + 0x4C, sizeof model);
+    if (!model) return nullptr;
+    void* const geometry = host.call_00b74640(model, 0); // 00ABE64A
+    if (!geometry) return nullptr;
+    if (host.call_00b72b20(geometry) == 0) return nullptr; // 00ABE657
+    return host.call_00b73260(geometry, 0); // 00ABE664
 }
 
 void gui_section_set_size_00abe670(void* section, const float (&size)[2], GuiLeafHost& host)

@@ -246,4 +246,8 @@ ScenePropertyParseResult scene_property_bag_parse(ScenePropertyBagHost& host,
                                                   bool group_registry,
                                                   bool allow_untyped_numbers);
 
+// 008F02B0/008F02E0: ECX=declaration, RET 0, AL boolean. The pointer at
+// declaration+118h is passed explicitly; names reflect literal E/LUA_S tests.
+bool scene_property_decl_is_enum_letter_008f02b0(const char* letter) noexcept;
+bool scene_property_decl_is_lua_s_letter_008f02e0(const char* letter) noexcept;
 }  // namespace bsp

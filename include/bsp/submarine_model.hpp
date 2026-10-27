@@ -15,6 +15,13 @@
 
 namespace bsp {
 
+// OFF: the dive law (00936DC0), the seabed scan (00855420) and their 00419010
+// interpolations evaluate multi-op chains in double and round once. ON: each
+// x87 FMUL/FADD/FSUB/FDIV rounds to float, as the main thread's 24-bit precision
+// control does (docs/CC13_FPU_PRECISION.md). Live under kSubmarineDiveBound and
+// kSubmarineSeabedBound (game_hosts_units.cpp); cc9 pairs the flip.
+inline constexpr bool kSubmarineInterpolatePc24Cc13Bound = false;
+
 // ---------------------------------------------------------------------------
 // Layout
 // ---------------------------------------------------------------------------

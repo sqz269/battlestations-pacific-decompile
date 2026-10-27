@@ -281,6 +281,20 @@ void gui_text_submit_utf16_00ab6ab0(GuiTextHooks& host, void* text, const Native
 // ---------------------------------------------------------------------------
 // Listbox, segment 75
 // ---------------------------------------------------------------------------
+struct GuiListboxConstructHooks {
+    virtual ~GuiListboxConstructHooks() = default;
+    // Existing complete normal-path body: construct_native_gui_widget_base_00aa9390.
+    // Native __thiscall(ECX = listbox; type) RET 4.
+    virtual void widget_base_construct_00aa9390(void* listbox, std::uint32_t type) = 0;
+    // Existing allocator: allocate_native_gui_widget_list_sentinel_00a9b720.
+    // Native ECX = list subobject (unused); RET -> self-linked 0Ch-byte head.
+    virtual void* allocate_sentinel_00a9b720(void* list) = 0;
+};
+// 00A9DF40: ECX = destination, EAX = destination, RET. Complete normal path;
+// preserves all unwritten padding. The shared hook/nonthrowing SEH boundary
+// described at the top of this header applies.
+void* gui_listbox_construct_00a9df40(void* listbox, GuiListboxConstructHooks&);
+
 struct GuiListboxHooks : NativeListHooks {
     // 00AAA5A0 BSP_GuiWidget_AttachChild (gui_widget_attach_child_00aaa5a0 above).
     virtual void attach_child_00aaa5a0(void* parent, void* child, const NativeListIterator* where) = 0;

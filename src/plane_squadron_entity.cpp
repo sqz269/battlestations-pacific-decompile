@@ -204,17 +204,220 @@ std::size_t plane_squadron_broadcast_to_members_007ecf80(
     // 007ECF86 CMP [EBX+3CCh],ESI / 007ECF8C JLE: nothing to do at zero.
     if (visit == nullptr || squadron.live_count <= 0) return 0;
     std::size_t reached = 0;
-    const int live = squadron.live_count < static_cast<int>(kPlaneSquadronMaxWings)
-        ? squadron.live_count : static_cast<int>(kPlaneSquadronMaxWings);
     // 007ECFA0..007ECFB9: EDI walks &members[0] upwards, ESI counts against
-    // +3CCh re-read every iteration.
-    for (int i = 0; i < live; ++i) {
+    // +3CCh re-read every iteration, so a member's +128h handler that changes
+    // the count is seen on the next pass (packet D4; the count was read once).
+    // The null skip and the wing-maximum cap are added guards.
+    for (int i = 0; i < squadron.live_count && i < static_cast<int>(kPlaneSquadronMaxWings);
+         ++i) {
         void* member = squadron.members[static_cast<std::size_t>(i)];
         if (member == nullptr) continue;
         visit(member, context);
         ++reached;
     }
     return reached;
+}
+
+namespace {
+template<class T> void squadron_init_store(void* object, std::size_t offset, T value) {
+    std::memcpy(static_cast<std::uint8_t*>(object) + offset, &value, sizeof(value));
+}
+void* squadron_init_add(void* object, std::size_t offset) {
+    return static_cast<std::uint8_t*>(object) + offset;
+}
+}
+
+// 007F4BA0..007F544F: all 606 listing instructions reviewed, including RET.
+// ECX=squadron, no stack arguments. Normal reader cleanup is included; FH3
+// registration/unwind is excluded. Boundaries below are inspected native calls,
+// not replacements for their bodies. No game/host wiring is supplied.
+// FP census: FLDZ/FLD/FSTP and MOVSS copies only; no x87/SSE arithmetic.
+void plane_squadron_sentity_init_007f4ba0(void* s, PlaneSquadronInitScratch& scratch,
+    const PlaneSquadronInitGlobals& g, PlaneSquadronInitHost& h) {
+    using O = PlaneSquadronInitOffset;
+    auto* temp = scratch.bytes; // native B+0Ch, reused without invented defaults
+    const auto get_pointer = [&](const void* object, std::size_t offset) {
+        return squadron_gate_read<void*>(object, offset);
+    };
+    const auto property = [&](std::uint32_t key) {
+        void* holder = get_pointer(s, O::state_holder);
+        return h.call_008f2260(get_pointer(holder, 8), key);
+    };
+    const auto mode = [&]() {
+        return squadron_gate_read<std::int32_t>(g.game_00e188a8, 0x1fe4);
+    };
+    const auto cache_leader_component = [&]() {
+        if (void* leader = get_pointer(s, O::members)) {
+            const auto result = h.component_virtual_00(squadron_init_add(leader, 0x170));
+            squadron_init_store(s, O::leader_component_id, result);
+        }
+    };
+    h.call_0077fad0(s);
+    squadron_init_store(s, O::wing_count, squadron_gate_read<std::uint32_t>(s, O::live_count));
+    cache_leader_component();
+    squadron_init_store(s, O::formation_shape, std::uint32_t{1});
+    h.call_007ed260(s);
+    void* holder = get_pointer(s, O::state_holder);
+    if (squadron_gate_read<std::int32_t>(holder, 4) == 1) {
+        void* p = property(0x00cf8818); // State
+        std::int32_t state = 7;
+        if (p && squadron_gate_read<std::uint32_t>(p, 4) == 0)
+            state = squadron_gate_read<std::int32_t>(p, 0xc);
+        temp[0] = static_cast<std::uint8_t>(state <= 1);
+        void* home = nullptr;
+        p = property(0x00cf8820); // HomeBase
+        if (p && squadron_gate_read<std::uint32_t>(p, 4) == 5) {
+            const char* first = h.call_008f0e20(p);
+            if (std::strlen(first) != 0) {
+                const char* second = h.call_008f0e20(p);
+                home = h.call_00925a90(get_pointer(g.game_00e188a8, 0x19cc), second);
+            }
+        }
+        p = property(0x00ce56b8); // SpawnPoint
+        if (p && squadron_gate_read<std::uint32_t>(p, 4) == 5) {
+            const char* first = h.call_008f0e20(p);
+            if (std::strlen(first) != 0) {
+                const char* second = h.call_008f0e20(p);
+                void* spawn = h.call_00925a90(get_pointer(g.game_00e188a8, 0x19cc), second);
+                void* parent = get_pointer(spawn, 0x3c); // no native null guard
+                if (h.call_006bcd20(parent, 0)) {
+                    temp[0] = 1;
+                    home = parent;
+                }
+            }
+        }
+        h.call_007f1c00(s, home, temp[0]); // callee consumes only the low flag byte
+        p = property(0x00cfc85c); // Vel3D
+        if (p && squadron_gate_read<std::uint32_t>(p, 4) == 7) {
+            std::memcpy(temp + 0xc, squadron_init_add(p, 0xc), 12);
+            h.call_007ed1d0(s, temp + 0xc);
+        }
+        p = property(0x00cfc840); // DummyObjectID
+        if (p && squadron_gate_read<std::uint32_t>(p, 4) == 0) {
+            void* leader = get_pointer(s, O::members);
+            h.entity_virtual_1bc(leader, squadron_gate_read<std::uint32_t>(p, 0xc));
+        }
+        h.call_0085dc80(squadron_init_add(s, O::local_transform));
+        void* child = get_pointer(s, O::children);
+        squadron_init_store(s, O::world_transform_valid, std::uint8_t{0});
+        squadron_init_store(s, O::dependent_pose_valid, std::uint8_t{0});
+        while (child) {
+            h.call_0042ed50(child);
+            child = get_pointer(child, 0x44);
+        }
+        if (!squadron_gate_read<std::uint8_t>(s, O::inside_home_base)) h.call_007f2920(s);
+        if (mode() != 2) {
+            void* current = get_pointer(get_pointer(s, O::ai_command_block), 0x38);
+            squadron_init_store(s, O::current_command, current);
+            if (current && h.call_007eda90(s)) {
+                if (h.block_virtual_50(get_pointer(s, O::ai_command_block)))
+                    h.block_virtual_54(get_pointer(s, O::ai_command_block), 0);
+            }
+        }
+        if (!h.call_0071be40(get_pointer(s, O::ai_command_block)) && mode() != 2) {
+            void* leader = get_pointer(s, O::members);
+            if (leader && squadron_gate_read<std::int32_t>(leader, 0x900) == 6) {
+                if (!squadron_gate_read<std::uint8_t>(s, O::world_transform_valid)) h.call_00414db0(s);
+                void* point = h.call_007ef8f0(g.game_00e188a8, temp + 0xc,
+                    squadron_init_add(s, O::world_position));
+                const void* target = h.call_00468560(temp + 0x38, point, 0.0f);
+                h.call_0077d600(s, 0x00e08f88, target, 1);
+            } else if (void* base = get_pointer(s, O::home_base)) {
+                const void* target = h.call_00465080(temp + 0xc, base, 0.0f);
+                h.call_0077d600(s, 0x00e08f68, target, 1);
+            }
+        }
+        const auto current_mode = mode();
+        if (current_mode == 0 || current_mode == 1) {
+            p = property(0x00cf87ec); // AutoAttackTarget
+            if (p && squadron_gate_read<std::uint32_t>(p, 4) == 0) {
+                const auto id = squadron_gate_read<std::int32_t>(p, 0xc);
+                if (id >= 0) {
+                    void* target = h.call_00521e30(static_cast<std::uint16_t>(id));
+                    h.call_007f15f0(s, target);
+                }
+            }
+        }
+    } else if (squadron_gate_read<std::uint8_t>(s, O::inside_home_base)) {
+        // 007ED260 preserves ECX=s, so 007F4EF5 needs no explicit ECX reload.
+        h.call_007ed6e0(s);
+    }
+    holder = get_pointer(s, O::state_holder);
+    if (holder && squadron_gate_read<std::int32_t>(holder, 4) == 3) {
+        alignas(4) std::uint8_t root20[0x14];
+        void* reader = temp + 0x24; // native B+30h, exactly 14h bytes
+        h.call_009238a0(s, root20);
+        h.call_004425c0(reader, root20); // consumes the by-value root; no extra release
+        h.call_00bd8e20(reader, 0, 0x00d08ad4);
+        h.call_00bd8e20(reader, 0, 0x00cf8880); // planes
+        std::uint32_t index = 0;
+        while (h.call_00bd5eb0(reader, 1, index)) {
+            h.reader_virtual_10(reader, 1, index, 4, temp);
+            const auto count = squadron_gate_read<std::uint32_t>(s, O::live_count);
+            const auto slot = static_cast<std::uint32_t>(O::members + count * 4);
+            squadron_init_store(s, slot, squadron_gate_read<std::uint32_t>(temp, 0));
+            squadron_init_store(s, O::live_count, squadron_gate_read<std::uint32_t>(s, O::live_count) + 1u);
+            ++index; // no added five-member bound or count reset
+        }
+        h.call_00bd7a20(reader);
+        void* storage = h.call_00bf681b(0x22c);
+        void* block = storage ? h.call_0084d810(storage, s) : nullptr;
+        squadron_init_store(s, O::ai_command_block, block);
+        squadron_init_store(s, O::current_command, get_pointer(block, 0x38)); // native unchecked read
+        h.call_00bd6830(reader, 0, 0x00d08ac8, 1, temp);
+        squadron_init_store(s, O::attack_mode, squadron_gate_read<std::uint32_t>(temp, 0));
+        h.call_00bd6830(reader, 0, 0x00d08ab8, 1, squadron_init_add(s, O::num_followers));
+        h.call_00bd6830(reader, 0, 0x00d08aac, 1, squadron_init_add(s, O::wing_count));
+        h.reader_virtual_10(reader, 0, 0x00d08aa0, 1, temp);
+        squadron_init_store(s, O::formation_shape, squadron_gate_read<std::uint32_t>(temp, 0));
+        h.reader_virtual_10(reader, 0, 0x00d08a94, 4, temp); // homeBase
+        void* old_home = get_pointer(s, O::home_base);
+        void* new_home = get_pointer(temp, 0);
+        void* observer = squadron_init_add(s, O::home_base_observer);
+        if (old_home != new_home) {
+            if (old_home) h.call_006952a0(old_home, observer);
+            squadron_init_store(observer, 0x14, new_home);
+            if (new_home) h.call_00694a60(new_home, observer);
+        }
+        h.call_00bd6830(reader, 0, 0x00d08a84, 2, squadron_init_add(s, O::collected_damage));
+        h.call_00bd6830(reader, 0, 0x00d08a70, 2, squadron_init_add(s, O::previous_collected_damage));
+        h.call_00bd6830(reader, 0, 0x00d08a5c, 3, squadron_init_add(s, O::retreat_in_progress));
+        h.call_00bd6830(reader, 0, 0x00d08a44, 2, temp + 4);
+        // 007F5231 FLD / 5235 FSTP: explicit float32 spill before singleton call.
+        squadron_init_store(temp, 0, squadron_gate_read<float>(temp, 4));
+        void* registry = h.call_004c17d0();
+        const float slope = squadron_gate_read<float>(temp, 0);
+        void* layer = h.call_0041df40(registry, slope, 0);
+        squadron_init_store(s, O::avoid_layer_primary, layer);
+        registry = h.call_004c17d0();
+        layer = h.call_0041df40(registry, 1.5f, 1); // 00CE380C = 3FC00000
+        void* captured_block = get_pointer(s, O::ai_command_block);
+        squadron_init_store(s, O::avoid_layer_secondary, layer);
+        h.reader_virtual_04(reader, 0, 0x00cf8e4c); // gameUnit
+        // 007F5296 calls 0071BDC0: actual single RET4, no ordinary side effects.
+        // Its ECX is the block captured before the preceding reader callback.
+        static_cast<void>(captured_block);
+        h.reader_virtual_08(reader);
+        h.call_00bd6830(reader, 0, 0x00d08a30, 3, squadron_init_add(s, O::inside_home_base));
+        h.call_007f0dc0(squadron_init_add(s, O::countdowns), reader);
+        h.call_00bd6830(reader, 0, 0x00d08a08, 2, squadron_init_add(s, O::eq_per));
+        h.call_00bd6830(reader, 0, 0x00d089f8, 3, squadron_init_add(s, O::automatic_drop_enabled));
+        h.call_00bd7a20(reader);
+        squadron_init_store(reader, 0, std::uint32_t{0x00ce44fc});
+        h.call_00441210(squadron_init_add(reader, 4));
+        squadron_init_store(reader, 0, std::uint32_t{0x00ce374c});
+    }
+    void* home = get_pointer(s, O::home_base); // retain EDI across both kind tests/allocation
+    if (home && squadron_gate_read<std::int32_t>(get_pointer(s, O::state_holder), 4) != 2) {
+        bool launch = h.entity_virtual_5c(home, 9);
+        if (!launch) launch = h.entity_virtual_5c(home, 0x45);
+        if (launch) {
+            if (void* storage = h.call_00bf681b(0x38))
+                h.call_007f1de0(storage, squadron_init_add(home, 0x310), s);
+        }
+    }
+    h.squadron_virtual_f4(s, squadron_gate_read<float>(s, O::invincibility_seconds));
+    cache_leader_component(); // reload leader after the F4 callback
 }
 
 }  // namespace bsp

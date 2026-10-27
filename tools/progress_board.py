@@ -185,8 +185,7 @@ def commits_with_patches(*paths):
         yield int(parts[1]), harness_of(parts[4]), parts[2], parts[3], body.splitlines()
 
 
-NO_BODY_STATUSES = {'metadata_only_no_function_body_verified_oct24',
-                    'incomplete_or_unverified_body_credit_withdrawn_oct24'}
+from ledger import NO_BODY_STATUSES
 OUT_OF_SCOPE_STATUSES = {'library_instantiation_out_of_scope', 'compiler_generated_out_of_scope',
                          'out_of_scope_vendor_library', 'standard_library_reuse',
                          'vendor_lua_out_of_scope', 'vendor_stl_out_of_scope',
@@ -429,6 +428,8 @@ def build(now=None):
         game_total=game_total,
         commits=sorted(hourly.items()), milestones=milestones, tags=dict(tags.most_common()),
         passes=passes.rows, tag_names=tag_names, fn=fn,
+        remaining=sorted((a, funcs[a][0], funcs[a][4]) for a, g in game.items()
+                         if g and a not in union and funcs[a][0] is not None),
         kpi=dict(functions=len(union), ledger_functions=len(ledger_first), fragments=len(frag_first), names=len(names_first),
                  tags=sum(tags.values()), excluded=sum(1 for g in game_any.values() if not g),
                  unreferenced=sum(1 for a, g in game_any.items() if g and not game[a]),
@@ -449,6 +450,7 @@ def main():
     ap.add_argument('--out', default=str(ROOT / 'local/progress_board.html'))
     ap.add_argument('--json', help='also write the data as JSON')
     ap.add_argument('--no-index', action='store_true', help='do not run bsp.py index --if-stale first')
+    ap.add_argument('--remaining', help='write the unfinished pool rows (address, segment, name, lease) as TSV')
     ap.add_argument('--history-ref', default=MAIN, help='freeze history to a commit/ref for a reproducible audit')
     args = ap.parse_args()
     MAIN = args.history_ref
@@ -460,6 +462,14 @@ def main():
     if not INDEX.exists():
         sys.exit('no index; run: python tools/bsp.py index')
     data = build()
+    remaining = data.pop('remaining')
+    if args.remaining:
+        import coordination
+        leases = coordination.active_leases()
+        held = {a: lease['owner'] for a, _, _ in remaining for lease in leases if coordination.covers(lease, a)}
+        lines = ['address\tsegment\tname\tlease'] + [f'{a:08x}\t{s}\t{n}\t{held.get(a, "")}' for a, s, n in remaining]
+        Path(args.remaining).write_text('\n'.join(lines) + '\n', encoding='utf-8')
+        print(f'wrote {args.remaining}: {len(remaining)} unfinished pool rows, {sum(1 for a, _, _ in remaining if a in held)} leased')
     payload = json.dumps(data, separators=(',', ':')).replace('</', '<\\/')
     html = TEMPLATE.read_text(encoding='utf-8')
     assert '__DATA__' in html

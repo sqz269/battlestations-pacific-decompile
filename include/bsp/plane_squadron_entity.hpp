@@ -199,4 +199,112 @@ std::size_t plane_squadron_broadcast_to_members_007ecf80(
     const PlaneSquadronEntity& squadron,
     void (*visit)(void* member, void* context), void* context) noexcept;
 
+// Complete ordinary 007F4BA0..007F544F, squadron vtable 00D087C0 +A4h.
+// Native ECX=squadron, no stack arguments, RET. Descriptive names are hypotheses.
+// The caller supplies initialized bytes representing native local storage B+0Ch
+// through B+5Bh: Lua handle conversion can leave the DWORD at B+0Ch untouched.
+// No default value is invented for that slot. This C++ interface is unwired;
+// native FH3 frame/unwind and binary ABI equivalence remain unproved.
+struct PlaneSquadronInitScratch {
+    alignas(4) std::uint8_t bytes[0x50];
+};
+
+// Native offsets used by the raw-storage init interface, named consistently
+// with PlaneSquadronEntity and the saved-field keys in 007F50CF..007F5364.
+// These constants do not claim a C++ object layout or binary ABI.
+struct PlaneSquadronInitOffset {
+    static constexpr std::size_t children = 0x48;
+    static constexpr std::size_t local_transform = 0x74;
+    static constexpr std::size_t state_holder = 0xc0;
+    static constexpr std::size_t world_transform_valid = 0xc8;
+    static constexpr std::size_t world_position = 0xfc;
+    static constexpr std::size_t dependent_pose_valid = 0x10c;
+    static constexpr std::size_t invincibility_seconds = 0x150;
+    static constexpr std::size_t current_command = 0x344;
+    static constexpr std::size_t ai_command_block = 0x348;
+    static constexpr std::size_t avoid_layer_secondary = 0x34c;
+    static constexpr std::size_t avoid_layer_primary = 0x350;
+    static constexpr std::size_t leader_component_id = 0x354; // slot +00h result
+    static constexpr std::size_t retreat_in_progress = 0x361;
+    static constexpr std::size_t attack_mode = 0x370;
+    static constexpr std::size_t eq_per = 0x374; // native saved key "EQper"
+    static constexpr std::size_t automatic_drop_enabled = 0x378;
+    static constexpr std::size_t countdowns = 0x37c;
+    static constexpr std::size_t num_followers = 0x3bc;
+    static constexpr std::size_t wing_count = 0x3c8;
+    static constexpr std::size_t live_count = 0x3cc;
+    static constexpr std::size_t members = 0x3d0;
+    static constexpr std::size_t formation_shape = 0x3e4;
+    static constexpr std::size_t home_base_observer = 0x3f0;
+    static constexpr std::size_t home_base = 0x404;
+    static constexpr std::size_t inside_home_base = 0x408;
+    static constexpr std::size_t collected_damage = 0x40c;
+    static constexpr std::size_t previous_collected_damage = 0x410;
+};
+struct PlaneSquadronInitGlobals {
+    std::uint8_t* const& game_00e188a8;
+};
+struct PlaneSquadronInitHost {
+    virtual ~PlaneSquadronInitHost() = default;
+    virtual void call_0077fad0(void* squadron) = 0; // ECX, RET
+    virtual std::uint32_t component_virtual_00(void* component) = 0; // ECX, RET
+    // Native 007ED260 leaves ECX unchanged; 007F4EF5 reuses it for 007ED6E0.
+    virtual void call_007ed260(void* squadron) = 0;
+    virtual void* call_008f2260(void* bag, std::uint32_t key_address) = 0; // RET4
+    virtual const char* call_008f0e20(void* property) = 0; // ECX, RET
+    virtual void* call_00925a90(void* registry, const char* name) = 0; // RET4
+    virtual void* call_006bcd20(void* entity, std::uint8_t require_active) = 0; // ECX,DL
+    virtual void call_007f1c00(void* squadron, void* base, std::uint8_t flag) = 0; // RET8
+    virtual void call_007ed1d0(void* squadron, const void* vector3) = 0; // RET4
+    virtual void entity_virtual_1bc(void* entity, std::uint32_t value) = 0; // RET4
+    virtual void call_0085dc80(void* matrix) = 0;
+    virtual void call_0042ed50(void* node) = 0;
+    virtual void call_007f2920(void* squadron) = 0;
+    virtual bool call_007eda90(void* squadron) = 0;
+    virtual void* block_virtual_50(void* block) = 0;
+    virtual void block_virtual_54(void* block, std::uint32_t value) = 0;
+    virtual void* call_0071be40(void* block) = 0;
+    // Both target constructors are ECX=out, (entity/point,float) on stack, RET8.
+    virtual void* call_00465080(void* out24, void* entity, float extra) = 0;
+    virtual void call_00414db0(void* node) = 0;
+    virtual void* call_007ef8f0(void* game, void* out3, const void* point3) = 0; // RET8
+    virtual void* call_00468560(void* out24, const void* point3, float extra) = 0;
+    virtual void call_0077d600(void* squadron, std::uint32_t command_address,
+        const void* target24, std::uint32_t flags) = 0; // RET0Ch
+    virtual void* call_00521e30(std::uint16_t handle) = 0; // CX, RET
+    virtual void call_007f15f0(void* squadron, void* target) = 0; // RET4
+    virtual void call_007ed6e0(void* squadron) = 0;
+    virtual void call_009238a0(void* squadron, void* out_lua20) = 0; // RET4
+    // ECX=reader; consumes/destructs a by-value 14h-byte LuaObject, RET14h.
+    virtual void call_004425c0(void* reader20, void* consumed_lua20) = 0;
+    virtual void call_00bd8e20(void* reader, std::uint32_t key_kind,
+        std::uint32_t key_value) = 0; // RET8
+    virtual bool call_00bd5eb0(void* reader, std::uint32_t key_kind,
+        std::uint32_t key_value) = 0; // RET8, AL
+    // Reader +10h and direct BD6830 both take key {tag,value}, field {tag,dest},
+    // RET10h. Tags 1/2/3 store DWORD/float/byte. Tag4 writes a DWORD handle only
+    // for an integral number or table; other values leave the destination alone.
+    virtual void reader_virtual_10(void* reader, std::uint32_t key_kind,
+        std::uint32_t key_value, std::uint32_t field_kind, void* destination) = 0;
+    virtual void call_00bd6830(void* reader, std::uint32_t key_kind,
+        std::uint32_t key_value, std::uint32_t field_kind, void* destination) = 0;
+    virtual void call_00bd7a20(void* reader) = 0; // reader+4 vector pop, RET
+    virtual void* call_00bf681b(std::uint32_t bytes) = 0; // CRT new binding only
+    virtual void* call_0084d810(void* storage, void* squadron) = 0; // RET4
+    virtual void call_006952a0(void* old_base, void* observer_owner) = 0; // ECX,EDX
+    virtual void call_00694a60(void* new_base, void* observer_owner) = 0; // ECX,EDX
+    virtual void* call_004c17d0() = 0;
+    virtual void* call_0041df40(void* registry, float value, std::uint8_t angle) = 0; // RET8
+    virtual void reader_virtual_04(void* reader, std::uint32_t key_kind,
+        std::uint32_t key_value) = 0;
+    virtual void reader_virtual_08(void* reader) = 0;
+    virtual void call_007f0dc0(void* settings, void* reader) = 0; // RET4
+    virtual void call_00441210(void* vector_at_reader_plus4) = 0;
+    virtual bool entity_virtual_5c(void* entity, std::uint32_t kind) = 0; // RET4, AL
+    virtual void* call_007f1de0(void* storage, void* parent_node, void* squadron) = 0; // RET8
+    virtual void squadron_virtual_f4(void* squadron, float value) = 0; // RET4
+};
+void plane_squadron_sentity_init_007f4ba0(void* native_squadron,
+    PlaneSquadronInitScratch&, const PlaneSquadronInitGlobals&, PlaneSquadronInitHost&);
+
 }  // namespace bsp

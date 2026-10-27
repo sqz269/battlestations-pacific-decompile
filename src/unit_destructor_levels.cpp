@@ -3,6 +3,7 @@
 // Ghidra was read-only; every name is a hypothesis, not a recovered symbol.
 
 #include "bsp/unit_destructor_levels.hpp"
+#include <cstring>
 
 namespace bsp {
 namespace {
@@ -402,6 +403,83 @@ void run_unit_release_0081f3a0(UnitReleaseHost& host, const UnitReleaseState& st
                 break;
         }
     }
+}
+
+// 00959940: ECX=this, no explicit arguments, RET 00959BE4. Full normal-path
+// body, including both node-drain loops, from exported pseudocode and listing.
+// The 00419CC0 lookup takes no arguments: three values pushed before it belong
+// to the following 00BD1510 (RET 0Ch), not to the lookup. Native SEH unwinding
+// and actual ABI binding remain outside this portable image/host interface.
+void destruct_unit_game_object_00959940(UnitGameObjectDestructorHost& host, std::uint8_t* self) {
+    const auto get = [self](std::size_t offset) {
+        std::uint32_t value;
+        std::memcpy(&value, self + offset, sizeof(value));
+        return value;
+    };
+    const auto put = [self](std::size_t offset, std::uint32_t value) {
+        std::memcpy(self + offset, &value, sizeof(value));
+    };
+    const auto release_ref = [&](std::size_t offset) {
+        const std::uint32_t object = get(offset);
+        if (object != 0) {
+            if (host.interlocked_decrement_00ce2220(object + 4) == 0)
+                host.invoke_vslot0_noargs(object);
+            put(offset, 0);
+        }
+    };
+    const auto drain_list = [&](std::size_t header) {
+        while (get(header + 4) != 0) {
+            const auto node = get(header + 4);
+            const auto previous = host.read_u32(node);
+            const auto next = host.read_u32(node + 4);
+            if (previous == 0) put(header + 4, next);
+            else host.write_u32(previous + 4, next);
+            if (next == 0) put(header + 8, previous);
+            else host.write_u32(next, previous);
+            put(header, get(header) - 1);
+            host.call_00bf65ac(node);
+        }
+    };
+    put(0x000, 0x00d1a698);
+    put(0x010, 0x00d1a680);
+    put(0x024, 0x00d1a678);
+    put(0x170, 0x00d1a674);
+    put(0x1e4, 0x00d1a66c);
+    put(0x310, 0x00d1a654);
+    put(0x38c, 0x00d1a650);
+    release_ref(0x538);
+    if (get(0x4a4) != 0) {
+        if (host.read_global_u32(0x00e188dc) == get(0x4a4)) host.call_004bca80(0);
+        release_ref(0x4a4);
+    }
+    if (const auto object = get(0x6f4)) {
+        host.invoke_vslot_flag(object, 4, 1);
+        put(0x6f4, 0);
+    }
+    if (const auto object = get(0x724)) {
+        host.invoke_vslot_flag(object, 0, 1);
+        put(0x724, 0);
+    }
+    drain_list(0x424);
+    for (std::size_t category = 0; category != 12; ++category)
+        drain_list(0x394 + category * 0x0c);
+    if (const auto buffer = get(0x718)) {
+        const auto bytes = get(0x714) + 1;
+        const auto pool = host.call_00419cc0();
+        host.call_00bd1510(pool, buffer, bytes, 1);
+    }
+    if (const auto buffer = get(0x6d0)) {
+        const auto bytes = get(0x6cc) + 1;
+        const auto pool = host.call_00419cc0();
+        host.call_00bd1510(pool, buffer, bytes, 1);
+    }
+    release_ref(0x670);
+    if (const auto memory = get(0x664)) host.call_00bf65ac(memory);
+    put(0x664, 0); put(0x668, 0); put(0x66c, 0);
+    host.call_00bf7c6e(self + 0x53c, 0x18, 10, 0x004bd350);
+    host.call_00955eb0(self + 0x424);
+    host.call_00bf7c6e(self + 0x394, 0x0c, 12, 0x00957080);
+    host.call_0087a410(self);
 }
 
 }  // namespace bsp

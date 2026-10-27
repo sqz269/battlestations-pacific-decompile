@@ -30,10 +30,17 @@ static_assert(sizeof(DynConvexShapePoolStorage) == 0x38);
 // Its complete vtable and the ConvexMeshShape vtable must be supplied by the
 // owning runtime, with callable Win32 methods. No replacement vtable is invented.
 // The shape vtable's lifetime operations must use this same convex allocator.
+// cc13-P1: the primitive shape words are the image's own vtable addresses by
+// default (00D7A04C base, 00D7A058 sphere, 00D7A0C8 box, 00D7A098 cylinder), as
+// the cc13_dyn1 constructors store them; the terrain constructor stores its own.
 struct DynBodyCreationContext {
     AvoidZoneDynHullMemory memory;
     DynConvexShapePoolStorage* convex_pool;
     const void* convex_shape_vtable;
+    std::uint32_t shape_base_vtable{0x00d7a04cu};
+    std::uint32_t sphere_shape_vtable{0x00d7a058u};
+    std::uint32_t box_shape_vtable{0x00d7a0c8u};
+    std::uint32_t cylinder_shape_vtable{0x00d7a098u};
 };
 
 // Native complete pool constructors. Storage sizes: body 124h, motion 1A4h,
@@ -80,17 +87,21 @@ void dyn_convex_shape_local_bounds_00c57c40(DynConvexShapeStorage&);
 void dyn_convex_shape_construct_00c57f50(DynConvexShapeStorage&, DynBodyStorage&,
     const DynShapeDescriptor&, const void* complete_vtable);
 
-// Complete type-4 branch and its post-switch continuation. Other native shape
-// constructors are outside this API, and rejected before mutating storage.
-void dyn_body_attach_convex_shape_00c5c940(DynBodyStorage&,
-    const DynShapeDescriptor&, const DynBodyCreationContext&);
+// 00C5C940, the whole switch on descriptor+10h (jump table 00C5CABC): 0 sphere,
+// 1 box, 2 cylinder, 4 convex mesh, 5 terrain; 3 and any value above 5 attach
+// nothing. `descriptor` is the raw per-type native record
+// (the box record is 50h bytes, longer than DynShapeDescriptor). Returns the new
+// shape, or null for type 3 / out of range (EAX = EBX at 00C5CAAB).
+void* dyn_body_attach_shape_00c5c940(DynBodyStorage&, const void* descriptor,
+    const DynBodyCreationContext&);
 
-// Both static and dynamic allocation branches of 00C5D580, restricted to convex
-// descriptors. Shapes is the native descriptor+78/+7C vector made explicit;
-// desc.shape_count must equal count. Hull data is borrowed by each shape, so the
-// owner's retained handle must outlive the body. Owning world/scene construction,
-// SAP endpoint insertion, collision stepping and body destruction are separate.
-DynBodyStorage* dyn_world_create_convex_body_00c5d580(void* native_world,
-    const DynBodyDescriptor&, const DynShapeDescriptor* const* shapes,
+// Both static and dynamic allocation branches of 00C5D580 and its whole
+// descriptor loop. Shapes is the native descriptor+78/+7C vector of raw shape
+// records made explicit; desc.shape_count must equal count. Hull data is borrowed
+// by each convex shape, so the owner's retained handle must outlive the body.
+// Owning world/scene construction, SAP endpoint insertion, collision stepping
+// and body destruction are separate.
+DynBodyStorage* dyn_world_create_body_00c5d580(void* native_world,
+    const DynBodyDescriptor&, const void* const* shapes,
     std::uint32_t count, const DynBodyCreationContext&);
 } // namespace bsp

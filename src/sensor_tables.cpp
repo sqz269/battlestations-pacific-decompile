@@ -20,6 +20,12 @@ static_assert(bsp::sensor_max_value_for_level_0080866b(2) == bsp::kReconDetectio
 // {begin, count, capacity} triples.
 
 namespace bsp {
+SensorClassTable construct_sensor_class_table_00808cb0() {
+    SensorClassTable table;
+    table.native_vtable_00 = 0x00D08FEC;
+    table.native_reference_count_04 = 1;
+    return table;
+}
 namespace {
 
 // 008085C5..008085F7: Dist is read as a Lua number, stored, then squared.
