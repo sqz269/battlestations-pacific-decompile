@@ -1,5 +1,6 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/dive_bomb_task.hpp"  // the two leaves moved from dive_bomb_task.cpp
+#include "bsp/plane_task_reach_sw3.hpp"
 
 #include <cmath>
 
@@ -236,6 +237,9 @@ float dive_bomb_interpolate_clamped_00419010(float x0, float y0, float x1, float
         return lo;
     }
     // 004190A9 FCOMIP v,hi / JBE 004190BC: v when v <= hi or unordered (ON).
+    // sw3 reach: the arms differ only when v or hi is NaN.
+    plane_task_reach_count(g_plane_task_reach_sw3.interp_hi,
+        plane_task_reach_bits_differ((v > hi) ? hi : v, (v <= hi) ? v : hi));
     if constexpr (kInterpClamped00419010NanCc13Bound) {
         return (v > hi) ? hi : v;
     } else {

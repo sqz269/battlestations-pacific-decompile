@@ -7,6 +7,7 @@
 #include <cmath>
 
 #include "bsp/dive_bomb_task.hpp"   // the per-op float 00419010 (kRetreatX87FaithfulCc13Bound)
+#include "bsp/plane_task_reach_sw3.hpp"
 
 namespace bsp {
 namespace {
@@ -16,8 +17,12 @@ constexpr double kTwoPi = 6.2831854820251465;    // 00CE3828
 
 float to_float(double v) noexcept { return static_cast<float>(v); }
 
+// Every kRetreatX87FaithfulCc13Bound site below is a template on kFaithful (the
+// switch's value) so that the sw3 reach counters can evaluate the other arm.
+
 // 00419260 BSP_Vector2f_ReciprocalLength: the squares and their sum stored
 // as floats (00419278, 00419286, 0041928E), then sqrt and the reciprocal.
+template <bool kFaithful>
 float reciprocal_length_00419260(float x, float z) noexcept {
     const float xx = to_float(static_cast<double>(x) * x);
     const float zz = to_float(static_cast<double>(z) * z);
@@ -25,7 +30,7 @@ float reciprocal_length_00419260(float x, float z) noexcept {
     const float root = to_float(std::sqrt(static_cast<double>(sum)));
     // 004192B3-004192C2: a root equal to 0 returns 0 (FUCOMIP, LAHF/TEST
     // AH,44h/JP), not 1/0. Only behind kRetreatX87FaithfulCc13Bound.
-    if constexpr (kRetreatX87FaithfulCc13Bound) {
+    if constexpr (kFaithful) {
         return (root == 0.0f) ? 0.0f : to_float(1.0 / root);
     } else {
         return to_float(1.0 / root);
@@ -38,8 +43,9 @@ float reciprocal_length_00419260(float x, float z) noexcept {
 // the FADD each round to float. kRetreatX87FaithfulCc13Bound takes the per-op
 // float form (dive_bomb_interpolate_clamped_00419010, same clamp). OFF is the
 // double chain with one rounding, as before.
+template <bool kFaithful>
 float interpolate_clamped_00419010(float x0, float y0, float x1, float y1, float x) noexcept {
-    if constexpr (kRetreatX87FaithfulCc13Bound) {
+    if constexpr (kFaithful) {
         return dive_bomb_interpolate_clamped_00419010(x0, y0, x1, y1, x);
     } else {
         if (x1 == x0) return y0;
@@ -80,7 +86,9 @@ float heading_from_vector(float x, float z) noexcept {
 // Because every image step is stored, that differs at PC24 and PC53 alike. The
 // ON arm (kRetreatX87FaithfulCc13Bound) rounds at each store. DOCUMENTED: the
 // null-zone return is a host guard (the image dereferences 004C7730's result).
-bool retreat_refresh_zone_009c8d40(RetreatApproach& approach, const BorderZoneSet& zones,
+namespace {
+template <bool kFaithful>
+bool retreat_refresh_zone_impl(RetreatApproach& approach, const BorderZoneSet& zones,
     const std::array<float, 3>& position, std::int32_t side, float turn_circle_radius) {
     const BorderZoneHit hit = closest_border_zone_004c7730(zones, position, side);
     if (hit.zone == nullptr) return false;
@@ -90,7 +98,7 @@ bool retreat_refresh_zone_009c8d40(RetreatApproach& approach, const BorderZoneSe
     approach.edge_40[1] = z.b[2];   // +24h
     approach.edge_40[2] = z.c[0];   // +28h
     approach.edge_40[3] = z.c[2];   // +30h
-    if constexpr (kRetreatX87FaithfulCc13Bound) {
+    if constexpr (kFaithful) {
         float sx = 0.0f + z.a[0];                  // 009C8DB2-009C8DB8
         float sz = 0.0f + z.a[2];                  // 009C8DBC-009C8DC0
         sx = z.b[0] + sx;  sz = z.b[2] + sz;       // 009C8DD2-009C8DE6
@@ -106,7 +114,7 @@ bool retreat_refresh_zone_009c8d40(RetreatApproach& approach, const BorderZoneSe
         const float mid_z = half * ez;             // 009C8E76-009C8E7A
         const float to_x = qx - mid_x;             // 009C8E7E-009C8E86
         const float to_z = qz - mid_z;             // 009C8E8A-009C8E96
-        const float r = reciprocal_length_00419260(to_x, to_z);   // 009C8E9A
+        const float r = reciprocal_length_00419260<kFaithful>(to_x, to_z);   // 009C8E9A
         approach.direction_58[0] = r * to_x;       // 009C8EAF-009C8EB5, +58h
         approach.direction_58[1] = r * to_z;       // 009C8EB9-009C8EBD, +5Ch
         const float rx = turn_circle_radius * approach.direction_58[0];  // 009C8EE0-009C8EE6
@@ -121,7 +129,7 @@ bool retreat_refresh_zone_009c8d40(RetreatApproach& approach, const BorderZoneSe
         const double mid_z = kRetreatHalf * (static_cast<double>(approach.edge_40[3]) + approach.edge_40[1]);
         const float to_x = to_float(((((0.0 + z.a[0]) + z.b[0]) + z.c[0]) + z.d[0]) * kRetreatQuarter - mid_x);
         const float to_z = to_float(kRetreatQuarter * ((((0.0 + z.a[2]) + z.b[2]) + z.c[2]) + z.d[2]) - mid_z);
-        const float r = reciprocal_length_00419260(to_x, to_z);
+        const float r = reciprocal_length_00419260<kFaithful>(to_x, to_z);
         approach.direction_58[0] = to_float(static_cast<double>(r) * to_x);
         approach.direction_58[1] = to_float(static_cast<double>(r) * to_z);
         approach.enter_point_50[0] = to_float(static_cast<double>(turn_circle_radius) *
@@ -130,6 +138,29 @@ bool retreat_refresh_zone_009c8d40(RetreatApproach& approach, const BorderZoneSe
             approach.direction_58[1] + mid_z);
     }
     return true;
+}
+}  // namespace
+
+bool retreat_refresh_zone_009c8d40(RetreatApproach& approach, const BorderZoneSet& zones,
+    const std::array<float, 3>& position, std::int32_t side, float turn_circle_radius) {
+    RetreatApproach other = approach;
+    const bool ok = retreat_refresh_zone_impl<kRetreatX87FaithfulCc13Bound>(
+        approach, zones, position, side, turn_circle_radius);
+    {   // sw3 reach: the other arm on a copy.
+        PlaneTaskReachShadow shadow;
+        retreat_refresh_zone_impl<!kRetreatX87FaithfulCc13Bound>(
+            other, zones, position, side, turn_circle_radius);
+    }
+    if (ok) {
+        bool differs = false;
+        for (int i = 0; i < 2; ++i) {
+            differs = differs ||
+                plane_task_reach_bits_differ(approach.direction_58[i], other.direction_58[i]) ||
+                plane_task_reach_bits_differ(approach.enter_point_50[i], other.enter_point_50[i]);
+        }
+        plane_task_reach_count(g_plane_task_reach_sw3.retreat_zone, differs);
+    }
+    return ok;
 }
 
 // 00489C40-00489C90, cdecl-style RET 4 (point*) -> EAX = node+8h. A wrapper:
@@ -208,14 +239,27 @@ void retreat_refresh_target_009c8f40(RetreatApproach& approach, const WorldMapBo
 // 009CA130 (009CA135-009CA158, approach +38h/+34h). FCOMI dt,c then JC: dt < c
 // (and, ON, an unordered compare) decrements and stops; otherwise c += period -
 // dt and the rule runs.
-bool retreat_countdown_step(float& countdown, float period, float dt) noexcept {
-    const bool decrement = kRetreatX87FaithfulCc13Bound ? !(dt >= countdown) : dt < countdown;
+namespace {
+template <bool kFaithful>
+bool retreat_countdown_step_impl(float& countdown, float period, float dt) noexcept {
+    const bool decrement = kFaithful ? !(dt >= countdown) : dt < countdown;
     if (decrement) {
         countdown = to_float(static_cast<double>(countdown) - dt);
         return false;
     }
     countdown = to_float((static_cast<double>(period) - dt) + countdown);
     return true;
+}
+}  // namespace
+
+bool retreat_countdown_step(float& countdown, float period, float dt) noexcept {
+    float other = countdown;
+    const bool runs = retreat_countdown_step_impl<kRetreatX87FaithfulCc13Bound>(countdown, period, dt);
+    const bool other_runs =
+        retreat_countdown_step_impl<!kRetreatX87FaithfulCc13Bound>(other, period, dt);
+    plane_task_reach_count(g_plane_task_reach_sw3.retreat_countdown, runs != other_runs,
+                           plane_task_reach_bits_differ(countdown, other));   // sw3 reach
+    return runs;
 }
 
 float retreat_moveto_timer_009c92f0(float turn_circle_radius, float travel_speed) noexcept {
@@ -232,7 +276,9 @@ float retreat_moveto_timer_009c92f0(float turn_circle_radius, float travel_speed
 // 009C9EA0 test is an input the caller computes before the rule (it is pure).
 // DEFECT (OFF-switched): 009CA048 COMISS 0,timer / JA enters the zone only when
 // 0 > timer, so a NaN timer stays; the OFF arm's `>= 0` test leaves on a NaN.
-RetreatState retreat_arm_009c9fb0(const RetreatArmInputs& in) noexcept {
+namespace {
+template <bool kFaithful>
+RetreatState retreat_arm_impl(const RetreatArmInputs& in) noexcept {
     switch (in.state) {
     case RetreatState::kFollow:
         return in.flight_leader ? RetreatState::kMoveTo : RetreatState::kFollow;
@@ -241,7 +287,7 @@ RetreatState retreat_arm_009c9fb0(const RetreatArmInputs& in) noexcept {
         // 009CA02C: stay while the timer is >= 0 and +61h is clear.
         {
             bool stay;
-            if constexpr (kRetreatX87FaithfulCc13Bound) {
+            if constexpr (kFaithful) {
                 stay = !(0.0f > in.moveto_timer) && !in.lined_up_61;
             } else {
                 stay = (0.0f < in.moveto_timer || in.moveto_timer == 0.0f) && !in.lined_up_61;
@@ -255,8 +301,18 @@ RetreatState retreat_arm_009c9fb0(const RetreatArmInputs& in) noexcept {
         return in.state;
     }
 }
+}  // namespace
 
-bool retreat_inside_enter_zone_009c9ea0(const RetreatApproach& approach, float x, float z,
+RetreatState retreat_arm_009c9fb0(const RetreatArmInputs& in) noexcept {
+    const RetreatState state = retreat_arm_impl<kRetreatX87FaithfulCc13Bound>(in);
+    plane_task_reach_count(g_plane_task_reach_sw3.retreat_arm,
+        state != retreat_arm_impl<!kRetreatX87FaithfulCc13Bound>(in));   // sw3 reach
+    return state;
+}
+
+namespace {
+template <bool kFaithful>
+bool retreat_inside_enter_zone_impl(const RetreatApproach& approach, float x, float z,
     float turn_circle_radius) noexcept {
     const float dx = to_float(static_cast<double>(x) - approach.enter_point_50[0]);
     const float dz = to_float(static_cast<double>(z) - approach.enter_point_50[1]);
@@ -265,7 +321,7 @@ bool retreat_inside_enter_zone_009c9ea0(const RetreatApproach& approach, float x
     // FCOMI tests the stored float sum against 1e-10 [00CE3820], JBE (also on
     // NaN) to 0. 009C9F3C FCOMIP R,d / JBE: a NaN distance answers false.
     float d;
-    if constexpr (kRetreatX87FaithfulCc13Bound) {
+    if constexpr (kFaithful) {
         const float xx = dx * dx;
         const float zz = dz * dz;
         const float sq = zz + xx;
@@ -276,8 +332,21 @@ bool retreat_inside_enter_zone_009c9ea0(const RetreatApproach& approach, float x
     }
     return d < turn_circle_radius;
 }
+}  // namespace
 
-RetreatMoveToSteer retreat_moveto_steer_009c9310(const RetreatMoveToInputs& in) noexcept {
+bool retreat_inside_enter_zone_009c9ea0(const RetreatApproach& approach, float x, float z,
+    float turn_circle_radius) noexcept {
+    const bool inside = retreat_inside_enter_zone_impl<kRetreatX87FaithfulCc13Bound>(
+        approach, x, z, turn_circle_radius);
+    plane_task_reach_count(g_plane_task_reach_sw3.retreat_inside,
+        inside != retreat_inside_enter_zone_impl<!kRetreatX87FaithfulCc13Bound>(
+            approach, x, z, turn_circle_radius));   // sw3 reach
+    return inside;
+}
+
+namespace {
+template <bool kFaithful>
+RetreatMoveToSteer retreat_moveto_steer_impl(const RetreatMoveToInputs& in) noexcept {
     RetreatMoveToSteer out;
     const float m = in.margin_30;
     const float max_z = in.bounds.north_west[2];   // +7124h
@@ -285,10 +354,10 @@ RetreatMoveToSteer retreat_moveto_steer_009c9310(const RetreatMoveToInputs& in) 
     const float max_x = in.bounds.south_east[0];   // +7128h
     const float min_x = in.bounds.north_west[0];   // +711Ch
     // 009C93BD, 009C93F6, 009C942F, 009C9468.
-    const float w1 = interpolate_clamped_00419010(max_z, 1.0f, to_float(static_cast<double>(max_z) - m), 0.0f, in.z);
-    const float w2 = interpolate_clamped_00419010(min_z, 1.0f, to_float(static_cast<double>(min_z) + m), 0.0f, in.z);
-    const float w3 = interpolate_clamped_00419010(max_x, 1.0f, to_float(static_cast<double>(max_x) - m), 0.0f, in.x);
-    const float w4 = interpolate_clamped_00419010(min_x, 1.0f, to_float(static_cast<double>(min_x) + m), 0.0f, in.x);
+    const float w1 = interpolate_clamped_00419010<kFaithful>(max_z, 1.0f, to_float(static_cast<double>(max_z) - m), 0.0f, in.z);
+    const float w2 = interpolate_clamped_00419010<kFaithful>(min_z, 1.0f, to_float(static_cast<double>(min_z) + m), 0.0f, in.z);
+    const float w3 = interpolate_clamped_00419010<kFaithful>(max_x, 1.0f, to_float(static_cast<double>(max_x) - m), 0.0f, in.x);
+    const float w4 = interpolate_clamped_00419010<kFaithful>(min_x, 1.0f, to_float(static_cast<double>(min_x) + m), 0.0f, in.x);
     // 009C94D4-009C95B0: the push, rows (0,-1), (0,1), (-1,0), (1,0).
     float push_x = to_float(static_cast<double>(to_float(0.0 - w3)) + w4);
     float push_z = to_float(static_cast<double>(to_float(0.0 - w1)) + w2);
@@ -297,7 +366,7 @@ RetreatMoveToSteer retreat_moveto_steer_009c9310(const RetreatMoveToInputs& in) 
         to_float(0.0 + w1)) + w2)) + w3);
     w = to_float(static_cast<double>(w4) + w);
     if (0.0f < w) {
-        const float r = reciprocal_length_00419260(push_x, push_z);
+        const float r = reciprocal_length_00419260<kFaithful>(push_x, push_z);
         push_x = to_float(static_cast<double>(r) * push_x);
         push_z = to_float(static_cast<double>(r) * push_z);
         if (1.0f <= w) w = 1.0f;
@@ -309,7 +378,7 @@ RetreatMoveToSteer retreat_moveto_steer_009c9310(const RetreatMoveToInputs& in) 
     // 009C96AD-009C96BD: dx*dx, dz*dz and their sum (FADDP) with no store between,
     // so at PC24 (kRetreatX87FaithfulCc13Bound) each rounds to float; the stored
     // float sum is what FCOMI tests against 1e-10 [00CE3820] at 009C96CB.
-    if constexpr (kRetreatX87FaithfulCc13Bound) {
+    if constexpr (kFaithful) {
         const float xx = dx * dx;
         const float zz = dz * dz;
         const float sq = zz + xx;
@@ -321,7 +390,7 @@ RetreatMoveToSteer retreat_moveto_steer_009c9310(const RetreatMoveToInputs& in) 
     }
     out.timer_runs = in.turn_circle_radius > out.distance;   // 009C96FB
     // 009C9716-009C978B.
-    const float r = reciprocal_length_00419260(dx, dz);
+    const float r = reciprocal_length_00419260<kFaithful>(dx, dz);
     const float ux = to_float(static_cast<double>(r) * dx);
     const float uz = to_float(static_cast<double>(r) * dz);
     const float om = to_float(1.0 - w);
@@ -333,8 +402,25 @@ RetreatMoveToSteer retreat_moveto_steer_009c9310(const RetreatMoveToInputs& in) 
     const float vx = to_float(static_cast<double>(bx) + ax);
     out.heading_2c0 = heading_from_vector(vx, vz);
     // 009C97C0-009C97F6.
-    out.desired_speed_2b4 = interpolate_clamped_00419010(0.0f, in.squadron_speed_3a0, 1.0f,
+    out.desired_speed_2b4 = interpolate_clamped_00419010<kFaithful>(0.0f, in.squadron_speed_3a0, 1.0f,
                                                          in.max_spd_188, w);
+    return out;
+}
+}  // namespace
+
+RetreatMoveToSteer retreat_moveto_steer_009c9310(const RetreatMoveToInputs& in) noexcept {
+    const RetreatMoveToSteer out = retreat_moveto_steer_impl<kRetreatX87FaithfulCc13Bound>(in);
+    RetreatMoveToSteer other;
+    {   // sw3 reach: the other arm.
+        PlaneTaskReachShadow shadow;
+        other = retreat_moveto_steer_impl<!kRetreatX87FaithfulCc13Bound>(in);
+    }
+    plane_task_reach_count(g_plane_task_reach_sw3.retreat_steer,
+        plane_task_reach_bits_differ(out.weight, other.weight) ||
+        plane_task_reach_bits_differ(out.heading_2c0, other.heading_2c0) ||
+        plane_task_reach_bits_differ(out.desired_speed_2b4, other.desired_speed_2b4) ||
+        plane_task_reach_bits_differ(out.distance, other.distance) ||
+        out.timer_runs != other.timer_runs);
     return out;
 }
 

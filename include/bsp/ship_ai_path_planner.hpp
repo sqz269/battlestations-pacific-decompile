@@ -283,6 +283,15 @@ float ship_ai_path_remaining_length_009d9e50(ShipAiPathPlanBlock& plan,
 // The direction decision the two walks share, 009D9E6C-009D9EDC and
 // 009E3C56-009E3CC7. Returns the value stored into node+4h. A node that already
 // carries a nonzero direction keeps it.
+// cc13-fixture8g: the image's FCOMIP / JB (009D9EC8/009D9ECC, and 009D5970/009D5974 in
+// 009D5930) takes +1 when plus < minus or the two route sums are unordered (a NaN cost, or
+// +inf and -inf in one sum); OFF's `plus < minus` gives -1 there. ON: `!(plus >= minus)`,
+// each sum rounded per FADD to 24 bits and stored as float as the image does. Only unordered
+// sums (and sums whose x87 intermediate would leave float range) differ. Live through every
+// C++ caller: 009D5930 (the 009E3C00 follower in ship_ai_path_follower.cpp, the
+// cc13_seg67b.cpp walks), 009D9E50 remaining length, the 009E3C6C cursor walk, the
+// ship_ai_path_point.cpp walk and the game_hosts_ship_ai.cpp arc-centre log walk.
+inline constexpr bool kShipAiPathNodeDirectionUnorderedCc13Bound = false;
 std::int32_t ship_ai_path_node_direction_009d9e6c(const ShipAiPathNode& node) noexcept;
 
 // The step the walks take after the decision, 009D9EE6-009D9EFE. Null when
