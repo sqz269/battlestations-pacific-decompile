@@ -9,6 +9,9 @@
 
 #include <cmath>
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
+
 namespace bsp {
 
 // ---------------------------------------------------------------------------
@@ -38,13 +41,28 @@ float clamp_float_by_ref_00415620(float value, float low, float high) noexcept {
 // fcos into out[0] and fsin into out[1]. Both literals are doubles, so the
 // subtraction and the wrap happen in the x87 stack's precision and only the two
 // results are stored as float32.
+// pc24w1-sweep2-3, kPc24ShipAiCc13Bound: the bytes store the angle through float after
+// the FSUBR (006BC0CB FSTP dword) and after the wrap FADD (006BC0DF), and FCOS / FSIN
+// read that float (006BC0E7, 006BC0F9). ON keeps those two stores; FCOS and FSIN
+// ignore precision control.
 std::array<float, 2> heading_to_direction_006bc0c0(float heading) noexcept {
+    std::array<float, 2> direction;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        float angle = static_cast<float>(cc13x87::x87_sub24(kHeadingBasisQuarterTurn, heading));
+        if (0.0f > angle) {   // 006BC0D5 FCOMIP of 0 against the angle, JBE
+            angle = static_cast<float>(cc13x87::x87_add24(angle, kHeadingBasisFullTurn));
+        }
+        direction = {static_cast<float>(std::cos(static_cast<double>(angle))),
+                     static_cast<float>(std::sin(static_cast<double>(angle)))};
+    } else {
     double angle = kHeadingBasisQuarterTurn - static_cast<double>(heading);
     if (angle < 0.0) {
         angle += kHeadingBasisFullTurn;
     }
-    return std::array<float, 2>{static_cast<float>(std::cos(angle)),
+    direction = std::array<float, 2>{static_cast<float>(std::cos(angle)),
                                 static_cast<float>(std::sin(angle))};
+    }
+    return direction;
 }
 
 // ---------------------------------------------------------------------------
@@ -167,9 +185,16 @@ ShipClassAiDerivedMotion ship_class_ai_derived_motion_00828f20(
     }
 
     const double max_rot_angle = static_cast<double>(max_rot_angle_04f8);
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // pc24w1-sweep2-3: 00828F50 FDIV then 00828F54 FMUL 0.5, each rounded at PC24.
+        out.yaw_authority_0524 = static_cast<float>(cc13x87::x87_mul24(
+            cc13x87::x87_div24(max_rot_angle_04f8, max_rot_angle_change_ratio_04fc),
+            kShipClassYawAuthorityHalf));
+    } else {
     out.yaw_authority_0524 = static_cast<float>(
         (max_rot_angle / static_cast<double>(max_rot_angle_change_ratio_04fc)) *
         kShipClassYawAuthorityHalf);
+    }
     out.turn_radius_0520 =
         static_cast<float>(static_cast<double>(max_speed_0500) / max_rot_angle);
     out.derived = true;

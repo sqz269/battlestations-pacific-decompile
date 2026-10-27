@@ -179,6 +179,8 @@
 #include "bsp/cc13_jm08_switches.hpp"
 #include "bsp/cc13_torp_goaway.hpp"           // packet cc13-goaway (009D0D90 draws, 00901610)
 #include "bsp/follow_release_seams_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"           // pc24w1-sweep2-3 (0074F490)
 
 #include <cfloat>
 #include <cmath>
@@ -3751,8 +3753,16 @@ struct GameUnitsHost::Impl {
                 (e.level_base - e.level_draft) / (e.level_top - e.level_base));
             shaped = bsp::ship_hydro_depth_factor_00932fb5(frac, rec.depth_exponent, shaped);
             shaped = std::fabs(e.level_top - e.level_base) * shaped;
-            const float term = static_cast<float>(static_cast<double>(e.coefficient)
-                * static_cast<double>(shaped) * static_cast<double>(rec.gravity) / 10.0);
+            float term;
+            if constexpr (bsp::kPc24ShipAiCc13Bound) {
+                // pc24w1-sweep2-3: 00937F0B FMUL, 00937F12 FMUL settings+510h, 00937F19
+                // FDIV 10.0, each rounded at PC24.
+                term = static_cast<float>(bsp::cc13x87::x87_div24(bsp::cc13x87::x87_mul24(
+                    bsp::cc13x87::x87_mul24(e.coefficient, shaped), rec.gravity), 10.0));
+            } else {
+                term = static_cast<float>(static_cast<double>(e.coefficient)
+                    * static_cast<double>(shaped) * static_cast<double>(rec.gravity) / 10.0);
+            }
             sum = term + sum;
         }
         // 00937F46..00937F74: controller+84h = sum - settings+510h * Mass.
