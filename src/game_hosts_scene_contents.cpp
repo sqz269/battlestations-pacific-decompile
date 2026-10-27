@@ -4102,8 +4102,18 @@ float SceneTerrainHeightField::local_height_00ada160(float x, float z) const noe
     return grid_height_00adb480(u, v);
 }
 
-// 00ADB480, slot 48h: the bilinear height at grid (u, v).
+// 00ADB480, slot 48h: the bilinear height at grid (u, v). The main-thread entry takes
+// kPc24FlightRenderCc13Bound; the Dyn worker entry (53-bit) always takes the double arm.
 float SceneTerrainHeightField::grid_height_00adb480(float u, float v) const noexcept {
+    return grid_height_arm_00adb480<kPc24FlightRenderCc13Bound>(u, v);
+}
+
+float SceneTerrainHeightField::grid_height_pc53_00adb480(float u, float v) const noexcept {
+    return grid_height_arm_00adb480<false>(u, v);
+}
+
+template <bool kPc24Bound>
+float SceneTerrainHeightField::grid_height_arm_00adb480(float u, float v) const noexcept {
     const int i = static_cast<int>(u);
     const int j = static_cast<int>(v);
     const float fu = terrain_f32(static_cast<double>(u) - i);
@@ -4112,7 +4122,7 @@ float SceneTerrainHeightField::grid_height_00adb480(float u, float v) const noex
     const float h10 = cell_height_00adb3a0(i + 1, j);
     const float h00 = cell_height_00adb3a0(i, j);
     float result;
-    if constexpr (kPc24FlightRenderCc13Bound) {
+    if constexpr (kPc24Bound) {
         // 00ADB4F9 FSUBP, 00ADB502 FMULP, 00ADB506 FADDP -> a; 00ADB516 / 00ADB51A /
         // 00ADB51C -> b; 00ADB52C FSUBP, 00ADB53E FMULP, 00ADB540 FADDP; each rounded.
         const float a = terrain_f32(pc24::x87_add24(h00, pc24::x87_mul24(fu, pc24::x87_sub24(h10, h00))));
@@ -4167,8 +4177,18 @@ void SceneTerrainHeightField::local_normal_00ada1c0(float x, float z, float out[
     cell_normal_00adaa40(i, j, out);
 }
 
-// 00ADAA40, slot 30h: the unit normal of cell (i, j).
+// 00ADAA40, slot 30h: the unit normal of cell (i, j). Entries as for 00ADB480: the
+// main thread takes kPc24FlightRenderCc13Bound, the Dyn worker always the double arm.
 void SceneTerrainHeightField::cell_normal_00adaa40(int i, int j, float out[3]) const noexcept {
+    cell_normal_arm_00adaa40<kPc24FlightRenderCc13Bound>(i, j, out);
+}
+
+void SceneTerrainHeightField::cell_normal_pc53_00adaa40(int i, int j, float out[3]) const noexcept {
+    cell_normal_arm_00adaa40<false>(i, j, out);
+}
+
+template <bool kPc24Bound>
+void SceneTerrainHeightField::cell_normal_arm_00adaa40(int i, int j, float out[3]) const noexcept {
     const float fi = static_cast<float>(i);
     const float fj = static_cast<float>(j);
     const float h00 = cell_height_00adb3a0(i, j);
@@ -4181,8 +4201,8 @@ void SceneTerrainHeightField::cell_normal_00adaa40(int i, int j, float out[3]) c
     const float d2[3] = {0.0f, terrain_f32(static_cast<double>(h01) - h00),
         terrain_f32(static_cast<double>(p2z) - fj)};
     float c[3];
-    if constexpr (kPc24FlightRenderCc13Bound) {
-        // 004F9B30: both products rounded before the FSUBRP (004F9B5F / 004F9B6D / 004F9B71,
+    if constexpr (kPc24Bound) {
+        // The 004F9B30 cross (called at 00ADAB3E; inlined here): both products rounded before the FSUBRP (004F9B5F / 004F9B6D / 004F9B71,
         // 004F9B87 / 004F9B8F / 004F9B93, 004F9B9A / 004F9B9C / 004F9B9E).
         c[0] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(d2[1], d1[2]), pc24::x87_mul24(d2[2], d1[1])));
         c[1] = terrain_f32(pc24::x87_sub24(pc24::x87_mul24(d2[2], d1[0]), pc24::x87_mul24(d2[0], d1[2])));
@@ -4196,7 +4216,7 @@ void SceneTerrainHeightField::cell_normal_00adaa40(int i, int j, float out[3]) c
     const float yy = terrain_f32(static_cast<double>(c[1]) * c[1]);
     const float zz = terrain_f32(static_cast<double>(c[2]) * c[2]);
     float sum;
-    if constexpr (kPc24FlightRenderCc13Bound) {
+    if constexpr (kPc24Bound) {
         // 0041947D FADDP xx + yy, rounded but not stored, then 00419485 FADD zz.
         sum = terrain_f32(pc24::x87_add24(pc24::x87_add24(xx, yy), zz));
     } else {
