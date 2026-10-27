@@ -462,7 +462,15 @@ void clear_mission_camera() noexcept {
 
 float global_config_fov_0087ec0f(double fovs_degrees, float divisor) noexcept {
     // FMUL qword pi (00CE3D28), FDIV qword 180.0 (00CE3D20), FDIV dword divisor.
-    return static_cast<float>(fovs_degrees * kDegToRadPi / kDegToRadDen / divisor);
+    float fov;
+    if constexpr (kPc24CameraCc13Bound) {
+        // 0087EC0F..0087EC2F: each of the three operations rounds to 24 bits.
+        fov = static_cast<float>(cc13x87::x87_div24(
+            cc13x87::x87_div24(cc13x87::x87_mul24(fovs_degrees, kDegToRadPi), kDegToRadDen), divisor));
+    } else {
+        fov = static_cast<float>(fovs_degrees * kDegToRadPi / kDegToRadDen / divisor);
+    }
+    return fov;
 }
 
 float pipe_sight_fov_scale_0064e2d6(float zoom_rate, float zoom_state) noexcept {
