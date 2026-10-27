@@ -8,7 +8,9 @@
 
 #include <array>
 #include <cmath>
+#include <cstring>
 
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/geometry_helpers.hpp"
 #include "bsp/ship_ai_seg67_switches_cc13.hpp" // kShipAiNavigationNanArmsCc13Bound
 #include "bsp/ship_ai_switch_reach.hpp"
@@ -81,6 +83,31 @@ std::uint32_t unit_ai_order_published_offset(int index) noexcept {
 }
 
 void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src) noexcept {
+    unit_ai_order_copy_00811d10(dst, src, kUnitAiOrderCopyPc24Cc13Bound);
+}
+
+void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src, bool image_copy) noexcept {
+    if (image_copy) {
+        // cc13-fixture10: the image's sixteen copies on the raw record. 'f' is FLD/FSTP DWORD
+        // (a signalling NaN is quieted), 'd' a dword MOV, 'b' a byte MOV.
+        static constexpr struct { std::uint8_t offset; char kind; } kSteps[] = {
+            {0x00, 'f'}, {0x04, 'f'}, {0x08, 'f'}, {0x0C, 'f'}, {0x10, 'f'}, {0x14, 'b'},
+            {0x18, 'f'}, {0x1C, 'f'}, {0x20, 'd'}, {0x24, 'f'}, {0x28, 'f'}, {0x2C, 'f'},
+            {0x30, 'b'}, {0x34, 'f'}, {0x38, 'f'}, {0x3C, 'd'}};
+        auto* const d = reinterpret_cast<unsigned char*>(&dst);
+        const auto* const s = reinterpret_cast<const unsigned char*>(&src);
+        for (const auto& step : kSteps) {
+            if (step.kind == 'b') {
+                d[step.offset] = s[step.offset];
+                continue;
+            }
+            std::uint32_t bits;
+            std::memcpy(&bits, s + step.offset, 4);
+            if (step.kind == 'f') bits = cc13x87::x87_fld_fstp_bits(bits);
+            std::memcpy(d + step.offset, &bits, 4);
+        }
+        return;
+    }
     // 00811D14..00811D71, sixteen copies over +00h..+3Fh and nothing past it.
     dst.blend_00 = src.blend_00; // 00811D14
     dst.timer_04 = src.timer_04; // 00811D18
