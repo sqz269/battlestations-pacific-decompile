@@ -5,6 +5,13 @@
 
 #include "bsp/rocket_task_cc13.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
+
+// kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-7): rocket_flight_time_00809e10
+// (00809E77-00809EF3). The chains of 007B3EA0, 007B78F0, 007B4980, 007B4F60, 007B5430
+// and 007B6240 in this file are not live and stay as pc24_debt.
+
 namespace bsp {
 bool rocket_on_hit_007b6d00(RocketTask& t, std::uint32_t) noexcept { t.ap.elapsed_44 = 0.0f; return true; }
 int rocket_slot_return9_007b6ce0() noexcept { return 9; }
@@ -444,19 +451,50 @@ float rocket_flight_time_00809e10(float range, float launch_speed, float vmax_d8
     // 00809E5D FCOMI, JB: at or above VMax the rocket coasts.
     if (!(v0 < vmax)) return static_cast<float>(static_cast<double>(range) / v0);
     // 00809E75-00809EA1: the distance spent reaching VMax, stored float.
-    const float reach_a = static_cast<float>(kHalf * vmax * vmax / a);
-    const float reach = static_cast<float>(static_cast<double>(reach_a) - (kHalf * v0) * v0 / a);
+    float reach_a;
+    float reach;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 00809E77-00809E9D: DC C9 FMUL 0.5 v0, D8 CB FMUL 0.5 * VMax, D8 CB FMUL
+        // * VMax, DE FA FDIVP / a; then D8 CB FMUL v0 * 0.5 v0, D8 F2 FDIV / a,
+        // DE E9 FSUBP reach_a - that. Each op PC24.
+        const double half_v0 = cc13x87::x87_mul24(kHalf, v0);
+        reach_a = static_cast<float>(cc13x87::x87_div24(
+            cc13x87::x87_mul24(cc13x87::x87_mul24(kHalf, vmax), vmax), a));
+        reach = static_cast<float>(cc13x87::x87_sub24(
+            reach_a, cc13x87::x87_div24(cc13x87::x87_mul24(v0, half_v0), a)));
+    } else {
+        reach_a = static_cast<float>(kHalf * vmax * vmax / a);
+        reach = static_cast<float>(static_cast<double>(reach_a) - (kHalf * v0) * v0 / a);
+    }
     if (static_cast<double>(range) > reach) {
         // 00809EAD-00809EC3: (R - reach) / VMax + (VMax - v0) / a. The FSTP at
         // 00809EB7 float-rounds (VMax - v0) / a; the cruise quotient stays on the
         // x87 stack until the FADD at 00809EBF.
-        const float accel_time = static_cast<float>((vmax - v0) / a);
-        return static_cast<float>((static_cast<double>(range) - reach) / vmax + accel_time);
+        float out;
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // DE E4 FSUBRP VMax - v0, DE F1 FDIVRP / a (stored), DE E1 FSUBRP R - reach,
+            // DE F1 FDIVRP / VMax, D8 44 FADD accel_time: each op PC24.
+            const float accel_time = static_cast<float>(
+                cc13x87::x87_div24(cc13x87::x87_sub24(vmax, v0), a));
+            out = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_div24(cc13x87::x87_sub24(range, reach), vmax), accel_time));
+        } else {
+            const float accel_time = static_cast<float>((vmax - v0) / a);
+            out = static_cast<float>((static_cast<double>(range) - reach) / vmax + accel_time);
+        }
+        return out;
     }
     // 00809ED1-00809F10: sqrt(2 (R + 0.5 v0 (v0 / a)) / a) - v0 / a.
     const float q = static_cast<float>(v0 / a);
     const float p = static_cast<float>((kHalf * v0) * q);
-    const double s = static_cast<float>(2.0 * (static_cast<double>(range) + p) / a);
+    double s;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 00809EEB DE C2 FADDP R + p, DC C0 FADD ST0,ST0, DE F1 FDIVRP / a, each PC24.
+        const double sum = cc13x87::x87_add24(range, p);
+        s = static_cast<float>(cc13x87::x87_div24(cc13x87::x87_add24(sum, sum), a));
+    } else {
+        s = static_cast<float>(2.0 * (static_cast<double>(range) + p) / a);
+    }
     const float root = static_cast<float>(std::sqrt(s));
     return static_cast<float>(static_cast<double>(root) - q);
 }
