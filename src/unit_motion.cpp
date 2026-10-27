@@ -1,4 +1,6 @@
 #include "bsp/unit_motion.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/camera_affine.hpp"
 
 #include <cmath>
@@ -124,8 +126,15 @@ float unit_audio_param00_008253c6(bool gate_5d, float reference_speed,
     // 008253EA..00825406: (forward - 0) * (1 / (reference - 0)) * (1 - 0) + 0. The
     // reciprocal is taken first, exactly as the listing schedules it, and nothing
     // guards a zero reference speed.
-    const double reciprocal = 1.0 / static_cast<double>(reference_speed);
-    return static_cast<float>(static_cast<double>(forward_speed) * reciprocal);
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 008253FC FDIVP (1 / reference), 00825404 FMULP, 00825406 FADDP (+0),
+        // 00825408 FSTP: each op rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        return static_cast<float>(x87_mul24(x87_div24(1.0, reference_speed), forward_speed));
+    } else {
+        const double reciprocal = 1.0 / static_cast<double>(reference_speed);
+        return static_cast<float>(static_cast<double>(forward_speed) * reciprocal);
+    }
 }
 
 void unit_update_engine_audio_008252c0(UnitEngineAudioState& state,
@@ -311,7 +320,16 @@ float unit_steering_angle_target_00834ed7(float steering_source) noexcept {
         // 00834EF5..00834F05: 00834F03 DC C9 (FMUL ST1,ST0) leaves blend in ST0 and
         // (s - bias) * blend in ST1; 00834F05 DE E9 (FSUBP ST1,ST0) then gives
         // (s - bias) * blend - blend.
-        return static_cast<float>(biased * kUnitSteeringBlend - kUnitSteeringBlend);
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 00834EF5 FSUB m64, 00834F03 FMUL, 00834F05 FSUBP: each op rounds to
+            // 24 bits on the main thread.
+            using namespace cc13x87;
+            return static_cast<float>(x87_sub24(
+                x87_mul24(x87_sub24(steering_source, kUnitSteeringBias), kUnitSteeringBlend),
+                kUnitSteeringBlend));
+        } else {
+            return static_cast<float>(biased * kUnitSteeringBlend - kUnitSteeringBlend);
+        }
     } else {
         // 00834EF5..00834F05 as first transcribed: (s - bias) - blend * (s - bias).
         return static_cast<float>(biased - kUnitSteeringBlend * biased);
@@ -321,9 +339,18 @@ float unit_steering_angle_target_00834ed7(float steering_source) noexcept {
 float unit_propeller_base_rate_008350f2(float throttle, float steering, float load,
                                         float class_gain, float class_idle) noexcept {
     // 008350F8..00835116: gain * load * 1.2 + idle, one store.
-    const double weighted = static_cast<double>(class_gain) * static_cast<double>(load);
-    const float loaded = static_cast<float>(weighted * kUnitPropellerLoadScale +
-                                            static_cast<double>(class_idle));
+    float loaded;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 00835104 FMUL, 00835110 FMUL m64 1.2, 00835116 FADD, 00835129 FSTP: each
+        // op rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        loaded = static_cast<float>(x87_add24(
+            x87_mul24(x87_mul24(class_gain, load), kUnitPropellerLoadScale), class_idle));
+    } else {
+        const double weighted = static_cast<double>(class_gain) * static_cast<double>(load);
+        loaded = static_cast<float>(weighted * kUnitPropellerLoadScale +
+                                    static_cast<double>(class_idle));
+    }
     // 0083512D: throttle * 4, stored to a float before the clamp.
     const float scaled = static_cast<float>(static_cast<double>(throttle) *
                                             kUnitPropellerThrottleGain);
@@ -334,10 +361,19 @@ float unit_propeller_base_rate_008350f2(float throttle, float steering, float lo
         clamped = kUnitPropellerRateCeiling;
     }
     // 00835159..00835175: (1 - |throttle|) * clamped * loaded * steering.
-    const double magnitude = 1.0 - static_cast<double>(std::fabs(throttle));
-    return static_cast<float>(((magnitude * static_cast<double>(clamped)) *
-                               static_cast<double>(loaded)) *
-                              static_cast<double>(steering));
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 00835167 FSUBRP, 00835169 / 0083516D / 00835171 FMUL, 00835175 FSTP: each op
+        // rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        return static_cast<float>(x87_mul24(
+            x87_mul24(x87_mul24(x87_sub24(1.0, std::fabs(throttle)), clamped), loaded),
+            steering));
+    } else {
+        const double magnitude = 1.0 - static_cast<double>(std::fabs(throttle));
+        return static_cast<float>(((magnitude * static_cast<double>(clamped)) *
+                                   static_cast<double>(loaded)) *
+                                  static_cast<double>(steering));
+    }
 }
 
 float unit_propeller_side_term_008351f5(float base_rate, bool node_local_x_positive) noexcept {
@@ -349,9 +385,15 @@ float unit_propeller_side_term_008351f5(float base_rate, bool node_local_x_posit
 
 float unit_propeller_target_rate_00835220(float class_gain, float throttle,
                                           float side_term) noexcept {
-    return static_cast<float>(static_cast<double>(class_gain) *
-                                  static_cast<double>(throttle) +
-                              static_cast<double>(side_term));
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 00835226 FMUL, 0083522A FADD, 0083522E FSTP: each rounds to 24 bits.
+        using namespace cc13x87;
+        return static_cast<float>(x87_add24(x87_mul24(class_gain, throttle), side_term));
+    } else {
+        return static_cast<float>(static_cast<double>(class_gain) *
+                                      static_cast<double>(throttle) +
+                                  static_cast<double>(side_term));
+    }
 }
 
 float unit_propeller_rate_slew_00835203(float scaled_delta) noexcept {
@@ -362,9 +404,18 @@ float unit_propeller_spin_delta_0083541f(std::size_t index, float rate,
                                          float scaled_delta) noexcept {
     // 0083541F: (index & 1) * 2 - 1, converted with FILD.
     const int sign = static_cast<int>(index & 1u) * 2 - 1;
-    const float product = static_cast<float>(static_cast<double>(sign) *
-                                             static_cast<double>(scaled_delta) *
-                                             static_cast<double>(rate));
+    float product;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 0083543B / 00835442 FMUL, 00835444 FSTP: each rounds to 24 bits (the first
+        // is exact, sign being +-1).
+        using namespace cc13x87;
+        product = static_cast<float>(
+            x87_mul24(x87_mul24(static_cast<double>(sign), scaled_delta), rate));
+    } else {
+        product = static_cast<float>(static_cast<double>(sign) *
+                                     static_cast<double>(scaled_delta) *
+                                     static_cast<double>(rate));
+    }
     return -product; // FCHS at 0083544C, after the value was rounded to a float.
 }
 

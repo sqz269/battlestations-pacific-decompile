@@ -1,4 +1,6 @@
 #include "bsp/gun_bot_remainder.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include "bsp/avoid_zone_clearance.hpp"  // native_segment_crossing_004f3730
 
@@ -389,8 +391,16 @@ std::array<float, 2> torpedo_run_end_008fff20(const std::array<float, 2>& gun_xz
                                               const std::array<float, 2>& node_axis_xz,
                                               float snap_radians) noexcept {
     // 0090047B/0090048B: FDIV [00CE3D28] (pi), FMUL [00CE3D20] (180).
-    const float degrees = static_cast<float>(
-        static_cast<double>(std::fabs(snap_radians)) / 3.141592653589793 * 180.0);
+    float degrees;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 0090047B FDIV, 0090048B FMUL, 00900491 FSTP: each op rounds to 24 bits.
+        using namespace cc13x87;
+        degrees = static_cast<float>(
+            x87_mul24(x87_div24(std::fabs(snap_radians), 3.141592653589793), 180.0));
+    } else {
+        degrees = static_cast<float>(
+            static_cast<double>(std::fabs(snap_radians)) / 3.141592653589793 * 180.0);
+    }
     // 0090049D 00414260: axis * degrees; 009004A4 * 2.0 (00D7A308).
     const float ox = static_cast<float>(static_cast<double>(node_axis_xz[0] * degrees) * 2.0);
     const float oz = static_cast<float>(static_cast<double>(node_axis_xz[1] * degrees) * 2.0);
@@ -442,8 +452,16 @@ TorpedoFriendlyCrossing torpedo_friendly_crossing_008fff20(
     const float pz = friendly_velocity_xz[1] * time + friendly_position[2];
     out.miss = length2_with_cutoff_00414c60(px - crossing[0], pz - crossing[1]);
     // 009007D0..009007E6: run * 300 (00CE3CA8) / 1000 (00CE47A0) + 200 (00CE4D70).
-    out.threshold = static_cast<float>(
-        static_cast<double>(out.run_distance) * 300.0 / 1000.0 + 200.0);
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009007D4 FMUL, 009007DA FDIV, 009007E0 FADD, 009007E6 FSTP: each op
+        // rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        out.threshold = static_cast<float>(
+            x87_add24(x87_div24(x87_mul24(out.run_distance, 300.0), 1000.0), 200.0));
+    } else {
+        out.threshold = static_cast<float>(
+            static_cast<double>(out.run_distance) * 300.0 / 1000.0 + 200.0);
+    }
     // 009007F2 FCOMIP threshold, miss; JA aborts.
     out.blocks = out.threshold > out.miss;
     return out;

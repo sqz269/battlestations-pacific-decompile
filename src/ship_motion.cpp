@@ -1,4 +1,6 @@
 #include "bsp/ship_motion.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -68,12 +70,22 @@ float ship_righting_rate_0092e9e1(float rate, float angle, float dt) noexcept {
 
     // 0092EA49..0092EA57: FILD of that int, times the double at 00D19628, minus the
     // angle, and the difference is narrowed to float before it is used.
-    const float error =
-        static_cast<float>(static_cast<double>(sign) * righting - static_cast<double>(angle));
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 0092EA4D FMUL m64, 0092EA53 FSUBRP, 0092EA57 FSTP; 0092EA63 FMUL m64 10.0,
+        // 0092EA69 FMULP, 0092EA6B FSUBP, 0092EA6D FSTP: each op rounds to 24 bits.
+        using namespace cc13x87;
+        const float error = static_cast<float>(
+            x87_sub24(x87_mul24(static_cast<double>(sign), righting), angle));
+        return static_cast<float>(
+            x87_sub24(rate, x87_mul24(error, x87_mul24(dt, kShipMotionRightingGain))));
+    } else {
+        const float error =
+            static_cast<float>(static_cast<double>(sign) * righting - static_cast<double>(angle));
 
-    // 0092EA5B..0092EA6D: rate - error * (dt * 10.0), one narrowing at the end.
-    const double gain = static_cast<double>(dt) * kShipMotionRightingGain;
-    return static_cast<float>(static_cast<double>(rate) - static_cast<double>(error) * gain);
+        // 0092EA5B..0092EA6D: rate - error * (dt * 10.0), one narrowing at the end.
+        const double gain = static_cast<double>(dt) * kShipMotionRightingGain;
+        return static_cast<float>(static_cast<double>(rate) - static_cast<double>(error) * gain);
+    }
 }
 
 ShipSteeringStep ship_apply_steering_0092e8c0(const ShipSteeringInputs& in) noexcept {
@@ -206,8 +218,14 @@ float ship_target_speed_00826a3a(float max_speed, float gameplay_scale, float th
     const float scaled = static_cast<float>(static_cast<double>(max_speed) *
                                             static_cast<double>(gameplay_scale));
     // 00826A53..00826A5F: the remaining two multiplies share one narrowing.
-    return static_cast<float>((static_cast<double>(scaled) * static_cast<double>(throttle)) *
-                              static_cast<double>(engine_gate));
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 00826A57 / 00826A5B FMUL, 00826A5F FSTP: each rounds to 24 bits.
+        using namespace cc13x87;
+        return static_cast<float>(x87_mul24(x87_mul24(scaled, throttle), engine_gate));
+    } else {
+        return static_cast<float>((static_cast<double>(scaled) * static_cast<double>(throttle)) *
+                                  static_cast<double>(engine_gate));
+    }
 }
 
 float ship_engine_gate_00826754(bool engine_jam, float thrust_mod) noexcept {
@@ -245,10 +263,20 @@ ShipBoostStep ship_boost_step_00826a6f(const ShipBoostInputs& in) noexcept {
     }
 
     // 00826AC9..00826AE2: refill. One narrowing after the multiply, divide and add.
-    const double refilled = (static_cast<double>(in.dt) * static_cast<double>(in.boost_capacity)) /
-                                static_cast<double>(in.boost_refill_time) +
-                            static_cast<double>(in.reserve);
-    float value = static_cast<float>(refilled);
+    float value;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 00826AD0 FMUL, 00826AD6 FDIV, 00826ADC FADD, 00826AE2 FSTP: each op rounds
+        // to 24 bits on the main thread.
+        using namespace cc13x87;
+        value = static_cast<float>(x87_add24(
+            x87_div24(x87_mul24(in.dt, in.boost_capacity), in.boost_refill_time), in.reserve));
+    } else {
+        const double refilled =
+            (static_cast<double>(in.dt) * static_cast<double>(in.boost_capacity)) /
+                static_cast<double>(in.boost_refill_time) +
+            static_cast<double>(in.reserve);
+        value = static_cast<float>(refilled);
+    }
     // 00826AF0..00826B04: clamped at the capacity. The JC keeps the value only when it
     // is strictly below, so an unordered compare clamps.
     if (!(value < in.boost_capacity)) {
