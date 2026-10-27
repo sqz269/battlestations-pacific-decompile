@@ -736,6 +736,8 @@ struct SceneTerrainHeightField {
     // kPc24Bound picks the per-op 24-bit chains (main thread) or the double ones.
     template <bool kPc24Bound> float grid_height_arm_00adb480(float u, float v) const noexcept;
     template <bool kPc24Bound> void cell_normal_arm_00adaa40(int i, int j, float out[3]) const noexcept;
+    // 00ADB3A0 with its 00ADC5F0 sample chain per op (kPc24Bound) or in double.
+    template <bool kPc24Bound> float cell_height_arm_00adb3a0(int i, int j) const noexcept;
 
     // Packet cc9_terrain_segment_quadtree: the tree 00AEA820 builds at the end
     // of 00ADDA60 (20-byte nodes at +3Ch: min y, max y, first child or -1, tile
