@@ -26,8 +26,11 @@ namespace bsp::game_powerups {
 // (the host had no store). Sites, by category (powerupclasses.lua PUET_):
 //   1 FIREPOWER 0047057F / 0047062F (00470510 / 004705C0 hull and part damage)
 //   2 ARMOR 0087784F, 00877875, 00877965, 008779A3 (008777D0)
-//   3 SHIP_REPAIR 0082791B (00826F10), 0093C16A, 0093C25A, 0093C592, 0093C7C5,
-//     0093C8C5; the HUD rows 006496A1 / 006496B7 are not hosted
+//   3 SHIP_REPAIR 0093C16A, 0093C25A, 0093C592, 0093C7C5, 0093C8C5; not hosted:
+//     0082791B, in the undefined body 00827850..0082795B (not in 00826F10), which
+//     nothing references (no rel32 or absolute dword); it returns
+//     float((... * unit+1150h) * m) through RET 4. The HUD rows 006496A1 /
+//     006496B7 are not hosted either
 //   4 SHIP_SPEED 0080FC4F (0080FC30), 00824252 / 00824538 / 00824736 (00822C20),
 //     00826A21 (00825F20)
 //   5 SHIP_TURNFACTOR 008118BA (00811890), 00811A59 (00811A30)
