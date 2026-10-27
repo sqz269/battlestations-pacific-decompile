@@ -83,42 +83,62 @@ std::uint32_t unit_ai_order_published_offset(int index) noexcept {
 }
 
 void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src) noexcept {
-    unit_ai_order_copy_00811d10(dst, src, kUnitAiOrderCopyPc24Cc13Bound);
+    if constexpr (kUnitAiOrderCopyPc24Cc13Bound) {
+        unit_ai_order_copy_image_00811d10(dst, src);
+    } else {
+        // 00811D14..00811D71, sixteen copies over +00h..+3Fh and nothing past it.
+        dst.blend_00 = src.blend_00; // 00811D14
+        dst.timer_04 = src.timer_04; // 00811D18
+        dst.sub_a = src.sub_a;       // 00811D1E..00811D46
+        dst.sub_b = src.sub_b;       // 00811D49..00811D71
+        // +40h, +44h, +48h, +4Ch and +50h are deliberately not copied. The routine
+        // returns at 00811D74 with RET 4.
+    }
 }
 
-void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src, bool image_copy) noexcept {
-    if (image_copy) {
-        // cc13-fixture10: the image's sixteen copies on the raw record. 'f' is FLD/FSTP DWORD
-        // (a signalling NaN is quieted), 'd' a dword MOV, 'b' a byte MOV.
-        static constexpr struct { std::uint8_t offset; char kind; } kSteps[] = {
-            {0x00, 'f'}, {0x04, 'f'}, {0x08, 'f'}, {0x0C, 'f'}, {0x10, 'f'}, {0x14, 'b'},
-            {0x18, 'f'}, {0x1C, 'f'}, {0x20, 'd'}, {0x24, 'f'}, {0x28, 'f'}, {0x2C, 'f'},
-            {0x30, 'b'}, {0x34, 'f'}, {0x38, 'f'}, {0x3C, 'd'}};
-        auto* const d = reinterpret_cast<unsigned char*>(&dst);
-        const auto* const s = reinterpret_cast<const unsigned char*>(&src);
-        for (const auto& step : kSteps) {
-            if (step.kind == 'b') {
-                d[step.offset] = s[step.offset];
-                continue;
-            }
+void unit_ai_order_copy_image_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src) noexcept {
+    // cc13-fixture10: the image's sixteen copies on the raw record. 'f' is FLD/FSTP DWORD
+    // (a signalling NaN is quieted), 'd' a dword MOV, 'b' a byte MOV.
+    static constexpr struct { std::uint8_t offset; char kind; } kSteps[] = {
+        {0x00, 'f'}, {0x04, 'f'}, {0x08, 'f'}, {0x0C, 'f'}, {0x10, 'f'}, {0x14, 'b'},
+        {0x18, 'f'}, {0x1C, 'f'}, {0x20, 'd'}, {0x24, 'f'}, {0x28, 'f'}, {0x2C, 'f'},
+        {0x30, 'b'}, {0x34, 'f'}, {0x38, 'f'}, {0x3C, 'd'}};
+    auto* const d = reinterpret_cast<unsigned char*>(&dst);
+    const auto* const s = reinterpret_cast<const unsigned char*>(&src);
+    for (const auto& step : kSteps) {
+        if (step.kind == 'b') {
+            d[step.offset] = s[step.offset];
+        } else {
             std::uint32_t bits;
             std::memcpy(&bits, s + step.offset, 4);
             if (step.kind == 'f') bits = cc13x87::x87_fld_fstp_bits(bits);
             std::memcpy(d + step.offset, &bits, 4);
         }
-        return;
     }
-    // 00811D14..00811D71, sixteen copies over +00h..+3Fh and nothing past it.
-    dst.blend_00 = src.blend_00; // 00811D14
-    dst.timer_04 = src.timer_04; // 00811D18
-    dst.sub_a = src.sub_a;       // 00811D1E..00811D46
-    dst.sub_b = src.sub_b;       // 00811D49..00811D71
-    // +40h, +44h, +48h, +4Ch and +50h are deliberately not copied. The routine
-    // returns at 00811D74 with RET 4.
 }
 
+namespace {
+bool order_sub_same(const UnitAiOrderSubRecord& a, const UnitAiOrderSubRecord& b) noexcept {
+    return ship_ai_reach_same_bits(a.value_00, b.value_00) &&
+           ship_ai_reach_same_bits(a.field_04, b.field_04) &&
+           ship_ai_reach_same_bits(a.field_08, b.field_08) && a.flag_0c == b.flag_0c &&
+           ship_ai_reach_same_bits(a.field_10, b.field_10) &&
+           ship_ai_reach_same_bits(a.field_14, b.field_14) && a.field_18 == b.field_18;
+}
+}  // namespace
+
 void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds) noexcept {
+    // Reach counter (cc9-sweep2b, log-only): the other setting on a copy.
+    UnitAiOrderRecord other = record;
+    unit_ai_order_slot_step_0080e000(other, seconds, !kUnitAiOrderResetFieldsCc13Bound);
     unit_ai_order_slot_step_0080e000(record, seconds, kUnitAiOrderResetFieldsCc13Bound);
+    ShipAiSwitchReach& reach = ship_ai_switch_reach();
+    ++reach.order_step_calls;
+    if (!ship_ai_reach_same_bits(other.blend_00, record.blend_00) ||
+        !ship_ai_reach_same_bits(other.timer_04, record.timer_04) ||
+        !order_sub_same(other.sub_a, record.sub_a) || !order_sub_same(other.sub_b, record.sub_b)) {
+        ++reach.order_step_differs;
+    }
 }
 
 void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds, bool image_reset) noexcept {

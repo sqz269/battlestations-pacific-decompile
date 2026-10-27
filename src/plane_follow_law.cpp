@@ -3,6 +3,7 @@
 #include "bsp/plane_follow_law.hpp"
 
 #include <cmath>
+#include <cstring>
 
 #include "bsp/camera_position_modes.hpp"      // camera_asin_clamped_0042cf10
 #include "bsp/dive_bomb_task.hpp"
@@ -379,12 +380,22 @@ PlaneFollowPhaseA plane_follow_phase_a_009c0251(
     return out;
 }
 
-bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
-                                    float out0[2], float out1[2]) noexcept {
+static CircleTangentReach g_circle_tangent_reach{kCircleTangentUnorderedCc13Bound,
+                                                  kCircleTangentPc24Cc13Bound};
+
+const CircleTangentReach& circle_tangent_reach() noexcept { return g_circle_tangent_reach; }
+
+namespace {
+
+// One form of 004F3810: kPc24 picks the per-op (ON) or once-rounded (OFF) chains of
+// kCircleTangentPc24Cc13Bound.  Outs are untouched on false.
+template <bool kPc24>
+bool circle_tangent_form(const float c[2], float r, const float q[2], float out0[2],
+                         float out1[2]) noexcept {
     const float dx = q[0] - c[0];                                         // 004F3826
     const float dz = q[1] - c[1];                                         // 004F3838
     float d2 = 0.0f;
-    if constexpr (kCircleTangentPc24Cc13Bound) {
+    if constexpr (kPc24) {
         // 004F3846 FMULP / 004F3848 FMUL ST0 / 004F384A FADDP, each at PC24.
         d2 = F(static_cast<double>(F(static_cast<double>(dx) * dx)) +
                F(static_cast<double>(dz) * dz));
@@ -404,7 +415,7 @@ bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
     float p = 0.0f;
     float t = 0.0f;
     float h = 0.0f;
-    if constexpr (kCircleTangentPc24Cc13Bound) {
+    if constexpr (kPc24) {
         // 004F38BD FMUL ST0 / 004F38BF FDIV: r*r, then / d.
         p = F(static_cast<double>(F(static_cast<double>(r) * r)) / d);       // 004F38C1
         // 004F38CA FMULP (d*d) / 004F38CC FMUL ST0 (r*r) / 004F38CE FSUBP.
@@ -430,6 +441,35 @@ bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
     out0[1] = static_cast<float>(static_cast<double>(mz) + bz);
     out1[0] = static_cast<float>(static_cast<double>(mx) - bx);           // 004F4498
     out1[1] = static_cast<float>(static_cast<double>(mz) - bz);
+    return true;
+}
+
+}  // namespace
+
+bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
+                                    float out0[2], float out1[2]) noexcept {
+    // sw1 reach (log only): both PC24 forms run on copies of the outs, and the calls where
+    // their result or any out bit differs are counted; the selected form is unchanged.
+    float on0[2] = {0.0f, 0.0f};
+    float on1[2] = {0.0f, 0.0f};
+    float off0[2] = {0.0f, 0.0f};
+    float off1[2] = {0.0f, 0.0f};
+    const bool ok_on = circle_tangent_form<true>(c, r, q, on0, on1);
+    const bool ok_off = circle_tangent_form<false>(c, r, q, off0, off1);
+    ++g_circle_tangent_reach.calls;
+    if (std::isnan(r)) ++g_circle_tangent_reach.nan_r;   // ON proceeds where OFF declines
+    if (ok_on != ok_off || std::memcmp(on0, off0, sizeof on0) != 0
+        || std::memcmp(on1, off1, sizeof on1) != 0) {
+        ++g_circle_tangent_reach.pc24_differs;
+    }
+    const bool ok = kCircleTangentPc24Cc13Bound ? ok_on : ok_off;
+    if (!ok) return false;                                               // outs untouched
+    const float* const src0 = kCircleTangentPc24Cc13Bound ? on0 : off0;
+    const float* const src1 = kCircleTangentPc24Cc13Bound ? on1 : off1;
+    out0[0] = src0[0];
+    out0[1] = src0[1];
+    out1[0] = src1[0];
+    out1[1] = src1[1];
     return true;
 }
 

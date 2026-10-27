@@ -4,6 +4,8 @@
 
 #include "bsp/torpedo_approach_update.hpp"
 
+#include "bsp/ship_ai_switch_reach.hpp"
+
 #include <cmath>
 
 namespace bsp {
@@ -709,6 +711,19 @@ TorpedoApproachUpdateResult torpedo_approach_update_009d3420(
             // the truncation to a sector index.
             const float bearing_from_target =
                 torpedo_approach_bearing_009d3586(target_xz, unit_xz);
+            {
+                // Reach counter (log-only): the OFF arm stores and walks from
+                // the clamped unscaled truncation; ON stores the raw scaled
+                // sector and walks from its clamp.
+                ShipAiSwitchReach& reach = ship_ai_switch_reach();
+                int off_sector = static_cast<int>(bearing_from_target);
+                if (off_sector > kTorpedoSectorCount - 1) off_sector = kTorpedoSectorCount - 1;
+                int on_raw = torpedo_home_sector_raw_009d3bc0(bearing_from_target);
+                int on_walk = on_raw > kTorpedoSectorCount - 1 ? kTorpedoSectorCount - 1 : on_raw;
+                ++reach.torpedo_home_calls;
+                if (off_sector != on_raw || off_sector != on_walk) ++reach.torpedo_home_differs;
+                reach.torpedo_home_bound = kTorpedoHomeSectorScaleCc13Bound ? 1 : 0;
+            }
             if constexpr (kTorpedoHomeSectorScaleCc13Bound) {
                 // 009D3BC8 stores the sector before 009D3BCB's clamp; only the
                 // walk below uses the clamped one.

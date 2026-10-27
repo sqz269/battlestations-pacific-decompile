@@ -4,6 +4,7 @@
 
 #include "bsp/post_effects_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/sw1b_switch_reach.hpp"
 
 #include <cctype>
 #include <cmath>
@@ -297,6 +298,18 @@ void ortho_off_center_lh(float out[16], float l, float r, float b, float t, floa
         out[12] = f((static_cast<double>(l) + r) / (static_cast<double>(l) - r));
         out[13] = f((static_cast<double>(b) + t) / (static_cast<double>(b) - t));
         out[14] = f(static_cast<double>(zn) / (static_cast<double>(zn) - zf));
+    }
+    {                                                                     // sw1b reach
+        float on[16];
+        ortho_off_center_lh_pc24(on, l, r, b, t, zn, zf);
+        const float off[6] = {
+            f(2.0 / (static_cast<double>(r) - l)), f(2.0 / (static_cast<double>(t) - b)),
+            f(1.0 / (static_cast<double>(zf) - zn)),
+            f((static_cast<double>(l) + r) / (static_cast<double>(l) - r)),
+            f((static_cast<double>(b) + t) / (static_cast<double>(b) - t)),
+            f(static_cast<double>(zn) / (static_cast<double>(zn) - zf))};
+        const float on6[6] = {on[0], on[5], on[10], on[12], on[13], on[14]};
+        sw1b_note(Sw1bReach::OrthoOffCenterPc24, std::memcmp(on6, off, sizeof off) != 0);
     }
 }
 

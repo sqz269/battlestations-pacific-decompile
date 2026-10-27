@@ -51,6 +51,7 @@
 #include "bsp/building_pads.hpp"
 #include "bsp/ship_ai_station_keeping.hpp"
 #include "bsp/ship_ai_switch_reach.hpp"
+#include "bsp/hud_movie_camera.hpp"
 #include "bsp/ship_ai_torpedo_response.hpp"
 #include "bsp/ship_ai_arm_final_step.hpp"
 #include "bsp/ship_ai_layer_selection.hpp"
@@ -5854,6 +5855,14 @@ public:
     std::uint32_t engagement_target_009e5e00() override {
         owner_.done("ShipAiApproach::engagement_target_009e5e00", 0x009e5e00u);
         const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        if (t != 0u) {
+            // Reach counter (cc9-sweep2b, log-only): ON answers 0 for these.
+            bsp::ShipAiSwitchReach& reach = bsp::ship_ai_switch_reach();
+            ++reach.engage_target_reads;
+            if (!(t - 1u < owner_.units.count() && owner_.units.unit_is_kind_of(t - 1u, 0x1c))) {
+                ++reach.engage_target_differs;
+            }
+        }
         if constexpr (kEngagementTargetKindTestCc13Bound) {
             // 009E5E05..009E5E26: t answers only when t->vtable[5Ch](1Ch) is true.
             const bool known = t != 0u && t - 1u < owner_.units.count();
@@ -6358,16 +6367,19 @@ public:
         PadZones zones(owner_);
         if (bsp::refresh_pad_line_006ac5d0(*p, layer, zones)) ++s.landing_pad_line_casts;
         // 009F21F6..009F220F: 006AC5D0(pad)(&out, &unit+0FCh, layer, 200.0f).
-        const bsp::ShipAiFollowLandXZ point = bsp::ship_ai_land_pad_approach_point_006ac5d0(
+        const bsp::ShipAiLandPadPoint point = bsp::ship_ai_land_pad_approach_point_xyz_006ac5d0(
             p->line, bsp::ShipAiFollowLandXZ{p->facing_x, p->facing_z},
             bsp::ShipAiFollowLandXZ{unit_pos[0], unit_pos[2]}, 200.0f);
-        // 009F2214..009F2228; y is taken as 0.0f (SUBSTITUTION, labelled: the
-        // per-call arm's out+4 store was not re-read).
-        ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{point.x, 0.0f, point.z};
+        // 009F2214..009F2228 store all three floats. OFF takes y as 0.0f (SUBSTITUTION,
+        // labelled); kPadApproachPointImageCc13Bound ON takes the arm's out+4,
+        // [+210h] +/- 0.0, which 009F225B..009F2261 then reads back for the distance.
+        const float point_y = bsp::kPadApproachPointImageCc13Bound ? point.y : 0.0f;
+        ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{point.x, point_y, point.z};
         ++s.landing_mode3_points;
+        if (p->line.origin_y_210 != 0.0f) ++s.landing_mode3_y_differs;   // sw1 reach
         // 009F2247..009F2293: |point - unit+0FCh| through 0042B2F0.
         const double dx = static_cast<double>(point.x) - unit_pos[0];
-        const double dy = 0.0 - static_cast<double>(unit_pos[1]);
+        const double dy = static_cast<double>(point_y) - static_cast<double>(unit_pos[1]);
         const double dz = static_cast<double>(point.z) - unit_pos[2];
         const float d = static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
         // 009F22A5..009F22E7: reach = max(00811A30(unit, 1.0) * 2.5, 300.0f).
@@ -14975,6 +14987,11 @@ void GameShipAiHost::report() {
         host.summary.landing_pad_line_casts, host.summary.landing_mode3_in_reach,
         host.summary.landing_begins, host.summary.landing_mode4_points,
         bsp::kShipAiApproachLandingModesBound ? 1 : 0);
+    host.log.notef("summary mission ship ai pad approach point image (006AC5D0, sw1 reach): "
+        "bound=%d calls=%llu corridor_differs=%llu holdoff_differs=%llu mode3_y_differs=%llu",
+        bsp::pad_approach_reach().bound ? 1 : 0, bsp::pad_approach_reach().calls,
+        bsp::pad_approach_reach().corridor_differs, bsp::pad_approach_reach().holdoff_differs,
+        host.summary.landing_mode3_y_differs);
     host.log.notef("summary mission ship ai landing requests 94h=%llu begun=%llu held=%llu "
         "no_site=%llu no_pad=%llu (0074A4C0, packet cc9_startlanding_94h)",
         host.summary.landing_requests_94h, host.summary.landing_requests_begun,
@@ -15237,6 +15254,28 @@ void GameShipAiHost::report() {
             bsp::kShipAiThrottleProfileNanArmsCc13Bound ? 1 : 0,
             bsp::kShipAiNavigationNanArmsCc13Bound ? 1 : 0,
             bsp::kShipAiFireStepPc24Cc13Bound ? 1 : 0);
+        host.log.notef("summary mission torpedo home sector reach calls=%llu differs=%llu "
+            "bound=%d (009D3BB4-009D3BC8 kTorpedoHomeSectorScaleCc13Bound; packet cc9-sweep2b)",
+            reach.torpedo_home_calls, reach.torpedo_home_differs, reach.torpedo_home_bound);
+        host.log.notef("summary mission cc13 switch reach engage_target_reads=%llu "
+            "engage_target_differs=%llu water_rate_calls=%llu water_rate_differs=%llu "
+            "order_step_calls=%llu order_step_differs=%llu movie_begin_modifier_differs=%llu "
+            "movie_empty_clock_differs=%llu movie_stale_flag_differs=%llu "
+            "seabed_speed_calls=%llu seabed_speed_differs=%llu bound=%d%d%d%d%d%d%d "
+            "(009E5E00, 007DA406, 0080E000, 00791020/0079A3B0/007911E0, 0092D730; "
+            "packet cc9-sweep2b)",
+            reach.engage_target_reads, reach.engage_target_differs, reach.water_rate_calls,
+            reach.water_rate_differs, reach.order_step_calls, reach.order_step_differs,
+            reach.movie_begin_modifier_differs, reach.movie_empty_clock_differs,
+            reach.movie_stale_flag_differs, reach.seabed_speed_calls,
+            reach.seabed_speed_differs,
+            kEngagementTargetKindTestCc13Bound ? 1 : 0,
+            reach.water_rate_bound,
+            kUnitAiOrderResetFieldsCc13Bound ? 1 : 0,
+            kMovieBeginDropsModifierCc13Bound ? 1 : 0,
+            kMovieUpdateEmptyTrackClockCc13Bound ? 1 : 0,
+            kMovieStepStaleTrackFlagCc13Bound ? 1 : 0,
+            kSubmarineSeabedSpeedPc24Cc13Bound ? 1 : 0);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {

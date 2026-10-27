@@ -2737,8 +2737,8 @@ template<class Open> void run_fixture10(Open open) {
         });
     run("00811D10 unit AI order copy", thiscall_copy(cc13_leaf_00811d10),
         [&](std::uint32_t* d, const std::uint32_t* s) {
-            bsp::unit_ai_order_copy_00811d10(*reinterpret_cast<bsp::UnitAiOrderRecord*>(d),
-                                             *reinterpret_cast<const bsp::UnitAiOrderRecord*>(s), true);
+            bsp::unit_ai_order_copy_image_00811d10(*reinterpret_cast<bsp::UnitAiOrderRecord*>(d),
+                                                   *reinterpret_cast<const bsp::UnitAiOrderRecord*>(s));
         });
     run("00BC7F00 water record 30h copy", thiscall_copy(cc13_leaf_00bc7f00),
         [&](std::uint32_t* d, const std::uint32_t* s) { bsp::water_weather_cc13::w2_record30_copy_00bc7f00(d, s); });
