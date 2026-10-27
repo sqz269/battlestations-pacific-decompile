@@ -7,7 +7,9 @@
 
 #include "bsp/camera_position_modes.hpp"      // camera_asin_clamped_0042cf10
 #include "bsp/dive_bomb_task.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/native_scalar_float_by_ref.hpp"  // 00415510 / 00415550
+#include "bsp/pc24_planetasks_cc13.hpp"
 // 00438B10 is already reconstructed there; `FLD [ESP+4] / FSUB [ESP+8]` at its
 // own entry fixes the order as wrap(left - right), which is what every call
 // below depends on.
@@ -152,6 +154,13 @@ inline float F(double v) noexcept { return static_cast<float>(v); }
 inline float fsin(float v) noexcept { return F(std::sin(static_cast<double>(v))); }
 inline float fcos(float v) noexcept { return F(std::cos(static_cast<double>(v))); }
 
+// PC24 per-op arithmetic (kPc24PlaneTasksCc13Bound).
+using cc13x87::x87_add24;
+using cc13x87::x87_div24;
+using cc13x87::x87_mul24;
+using cc13x87::x87_sqrt24;
+using cc13x87::x87_sub24;
+
 // 009C0142-009C0164 and 009C0F86-009C0FAE both wrap with a SINGLE conditional
 // add of 2*pi ([00CE3828] = 6.2831854820251465), not a loop; an input below
 // -2*pi therefore stays negative in the image and does so here.
@@ -165,15 +174,29 @@ float wrap_once_to_two_pi_009c0150(float a) noexcept {
 // 00419440 BSP_Vector3f_Length, then 00419510's own rule: scale by 1/len when
 // len > 0, else write the zero vector (00419522-0041953D).
 void normalize_00419510(const float v[3], float out[3]) noexcept {
-    const double len = std::sqrt(static_cast<double>(v[0]) * v[0] +
-                                 static_cast<double>(v[1]) * v[1] +
-                                 static_cast<double>(v[2]) * v[2]);
-    if (!(len > 0.0)) {
-        out[0] = out[1] = out[2] = 0.0f;
-        return;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 00419456-0041949A: x*x and y*y each FSTP DWORD, (x*x + y*y) at PC24,
+        // z*z FSTP DWORD, + z*z at PC24, FSTP DWORD; 00BF7030's FSQRT at PC24,
+        // FSTP DWORD. 00419522-0041953D: 1/len (FDIVRP, PC24) when len > 0, else
+        // +0 (XORPS); 00419543-0041955E then always stores v[i] * that (so a
+        // zero vector keeps its signs: -0 * 0 = -0).
+        const float xx = F(x87_mul24(v[0], v[0]));
+        const float yy = F(x87_mul24(v[1], v[1]));
+        const float zz = F(x87_mul24(v[2], v[2]));
+        const float len = F(x87_sqrt24(F(x87_add24(x87_add24(xx, yy), zz))));
+        const float inv = (len > 0.0f) ? F(x87_div24(1.0, len)) : 0.0f;
+        for (int i = 0; i < 3; ++i) out[i] = F(x87_mul24(v[i], inv));
+    } else {
+        const double len = std::sqrt(static_cast<double>(v[0]) * v[0] +
+                                     static_cast<double>(v[1]) * v[1] +
+                                     static_cast<double>(v[2]) * v[2]);
+        if (!(len > 0.0)) {
+            out[0] = out[1] = out[2] = 0.0f;
+        } else {
+            const float inv = static_cast<float>(1.0 / len);
+            for (int i = 0; i < 3; ++i) out[i] = v[i] * inv;
+        }
     }
-    const float inv = static_cast<float>(1.0 / len);
-    for (int i = 0; i < 3; ++i) out[i] = v[i] * inv;
 }
 
 // The tail's ordered select, 009C17C6-009C183B: below the floor the floor
@@ -190,194 +213,426 @@ float asin_clamped(float v) noexcept { return camera_asin_clamped_0042cf10(v); }
 // 0042BE90: |*ECX| (00D7A208 is the sign mask).
 float fabs_0042be90(float v) noexcept { return v > 0.0f ? v : F(-0.0 - v); }
 
-}  // namespace
-
-PlaneFollowPhaseA plane_follow_phase_a_009c0251(
-    const PlaneFollowPhaseAInputs& in) noexcept {
+// kPc24PlaneTasksCc13Bound ON: Phase A with every FADD/FSUB/FMUL/FDIV rounded at
+// PC24 in the listing's order (009C0331-009C0EC7), the FSTP DWORD stores as F().
+// The control flow, the BL values and the asin/min/fabs calls are those of
+// the switch-off arm of plane_follow_phase_a_009c0251; only the arithmetic
+// differs.
+PlaneFollowPhaseA phase_a_pc24_009c0251(const PlaneFollowPhaseAInputs& in) noexcept {
     const float A = in.heading_error;
     const float V = in.cross_track;
     const float AL = in.along_track;
     const float vl = in.leader_speed;
     const float iw = in.inv_turn_rate;
     const float r = in.turn_radius;
-    // base-21h, written by the classifier at 009C01F0 / 009C021E.
     const bool sgn = V < 0.0f;
-    // 009C0ECB-009C0EDF: (BL ? [00E0E2F9]=2 : [00E0E2FB]=4) | [00E0E2F8]=8,
-    // BL being the V-sign byte on every path that reaches it.
     const int bl_turn_circle = sgn ? 10 : 12;
-    // 009C0800: TEST BL,BL / JE 009C08F5 (BL=2) else 009C0814 (BL=4).
     const int bl_abeam_0800 = sgn ? 4 : 2;
-    // 009C08E7: TEST BL,BL / JE 009C0814 (BL=4) else 009C08F5 (BL=2).
     const int bl_abeam_08e7 = sgn ? 2 : 4;
+    // 009C0409-009C0423 and 009C09CD-009C09D9 use 2r as r + r (FADD ST1), the
+    // cut arms r * 2.0 (FMUL qword 00D7A308); both are exact.
+    const double two_r = x87_add24(r, r);
 
     PlaneFollowPhaseA out;
-    // 009C086D / 009C0B82: behind the moving station at the end of the plan,
-    // or more than 5% of that distance off the track -> turn circle; else lead
-    // pursuit.  `time` is base+04h (quadrant 1) or base-10h (quadrant 2).
+    // 009C086D-009C08C7 / 009C0B82-009C0BC1: e = |x24 + V| (FSTP DWORD, 0042BE90)
+    // against p * 0.05 (FMUL qword 00D7A270, PC24).
     auto lead_or_circle = [&](float p, float x24, float time) {
         out.time = time;
         if (0.0f > p) {
             out.bl = bl_turn_circle;
-            return out;
+        } else {
+            const float e = fabs_0042be90(F(x87_add24(x24, V)));
+            out.bl = (static_cast<double>(e) > x87_mul24(p, kGuardShare)) ? bl_turn_circle : 1;
         }
-        const float e = fabs_0042be90(F(static_cast<double>(x24) + V));
-        out.bl = (static_cast<double>(e) > static_cast<double>(p) * kGuardShare)
-                     ? bl_turn_circle : 1;
         return out;
+    };
+    // 009C0508-009C0522 and its siblings: F(F(x - t * vl) + AL).
+    auto plan_end = [&](float x, float t) {
+        return F(x87_add24(F(x87_sub24(x, x87_mul24(t, vl))), AL));
     };
 
     if (in.quadrant_bl == 1) {
-        // 009C032D-009C0409: the first arc, turning through th onto the track.
-        float th, x18, x24;
+        float th, x18;
         if (!sgn) {
             th = F(A + kHalfPi);                                          // 009C033F
-            x18 = F(-static_cast<double>(r) * fsin(th));
+            x18 = F(-static_cast<double>(r) * fsin(th));                  // 009C0371
         } else {
-            th = F(kHalfPi - A);                                          // 009C03A5
-            x18 = F(static_cast<double>(fsin(th)) * r);
+            th = F(kHalfPi - A);                                          // 009C03A7
+            x18 = F(static_cast<double>(fsin(th)) * r);                   // 009C03D9
         }
-        const float T = F(kHalfPi * iw + static_cast<double>(th) * iw);   // base-10h
-        const float x1c = F(static_cast<double>(F(1.0 - fcos(th))) * r);
-        x24 = sgn ? F(static_cast<double>(x18) + r) : F(static_cast<double>(x18) - r);
-        float x28 = F(static_cast<double>(x1c) + r);                      // 009C0417
-        const float t = F(static_cast<double>(x24) + V);                  // 009C0423
-        float t4 = T;                                                     // base+04h
+        // 009C034B-009C0355: th * iw and pi/2 * iw (FMULP), FADDP.
+        const float T = F(x87_add24(x87_mul24(kHalfPi, iw), x87_mul24(th, iw)));
+        // 009C0389-009C0393: (1 - cos th) * r.
+        const float x1c = F(x87_mul24(x87_sub24(1.0, fcos(th)), r));
+        float x24 = sgn ? F(x87_add24(x18, r)) : F(x87_sub24(x18, r));   // 009C0407 / 009C03A1
+        float x28 = F(x87_add24(x1c, r));                                 // 009C0415
+        const float t = F(x87_add24(x24, V));                             // 009C041F
+        float t4 = T;
         if (!sgn ? (t < 0.0f) : (t > 0.0f)) {
-            // 009C0463: the arc is cut short where it already meets the track.
             const float at = !sgn ? F(-0.0 - t) : t;
-            const float half = F(static_cast<double>(at) * 0.5);
-            float phi = asin_clamped(F(static_cast<double>(half) / r));
+            const float half = F(x87_mul24(at, 0.5));                     // 009C0468
+            float phi = asin_clamped(F(x87_div24(half, r)));              // 009C0472
             phi = min_native_float_by_ref_00415510(&th, &phi);          // 009C0492
             x24 = F(-0.0 - V);                                            // 009C04AC
-            x28 = F(x28 - static_cast<double>(r) * 2.0 * F(1.0 - fcos(phi)));
-            t4 = F(T - static_cast<double>(phi) * 2.0 * iw);              // 009C04F6
+            // 009C04C4-009C04DA: x28 - (1 - cos phi) * (r * 2.0).
+            x28 = F(x87_sub24(x28, x87_mul24(x87_sub24(1.0, fcos(phi)), x87_mul24(r, 2.0))));
+            // 009C04E2-009C04F2: T - (phi * 2.0) * iw.
+            t4 = F(x87_sub24(T, x87_mul24(x87_mul24(phi, 2.0), iw)));
         }
-        // 009C0508-009C0522: along-track position at the end of the plan,
-        // relative to the station that has moved on at the leader's speed.
-        const float p = F(static_cast<double>(F(x28 - static_cast<double>(t4) * vl)) + AL);
-        if (0.0f > p) return lead_or_circle(p, x24, t4);                  // 009C052E
-        // 009C0534: ahead of it: plan a full reversal instead.
-        float t2 = F(static_cast<double>(iw) * kPi + T);                  // 009C055C
-        const float x1c_b = F(static_cast<double>(x1c) - r);              // base+1Ch
-        const float x18_b = sgn ? F(static_cast<double>(x18) + r) : F(static_cast<double>(x18) - r);
-        const float h = F(F(static_cast<double>(x18_b) + V) * 0.5);       // base-14h
-        const bool too_far = !sgn ? (h >= r) : (-r >= h);                     // 009C0578 / 009C06C7
-        if (!too_far) {
-            // 009C057E-009C07B6: the second arc and its alternative.
-            const float arg = (h < 0.0f)
-                ? F(static_cast<double>(F(static_cast<double>(h) + r)) / r)       // 009C058D
-                : F(-static_cast<double>(F(static_cast<double>(h) - r)) / r);     // 009C05BA
-            const float psi1 = asin_clamped(arg);
-            const float beta = !sgn ? F(-0.0 - A) : A;                    // 009C05F2 / 009C0728
-            const float two_iw = F(2.0 * iw);                             // base+34h
-            t2 = F(static_cast<double>(psi1) * two_iw + t2);
-            const float x44 = !sgn
-                ? F(static_cast<double>(F(1.0 - fcos(beta))) * -static_cast<double>(r))
-                : F(static_cast<double>(F(1.0 - fcos(beta))) * r);
-            const float x48 = F(static_cast<double>(fsin(beta)) * r);
-            const float g = F(static_cast<double>(fabs_0042be90(
-                F(F(static_cast<double>(x44) + V) * 0.5))) / r);
-            const float psi2 = asin_clamped(g);
-            const float t3 = F(static_cast<double>(psi2) * two_iw +
-                               F(static_cast<double>(beta) * iw + static_cast<double>(iw) * kTwoPi));
-            if (t3 <= t2) {
-                // 009C0829-009C0861, 009C08DF: never reached by the sampled
-                // geometries (docs/PLANE_FOLLOW_PHASE_A.md section 8);
-                // transcribed from the listing.
-                const float q = F(static_cast<double>(F(x48 - static_cast<double>(t3) * vl)) + AL);
-                if (-q > p) return lead_or_circle(p, x24, t4);
-                out.bl = bl_abeam_08e7;
-                out.time = t3;
-                return out;
+        const float p = plan_end(x28, t4);                                // 009C0508-009C0522
+        PlaneFollowPhaseA res;
+        if (0.0f > p) {
+            res = lead_or_circle(p, x24, t4);                             // 009C052E
+        } else {
+            // 009C0550-009C055C: iw * pi + T.
+            float t2 = F(x87_add24(x87_mul24(iw, kPi), T));
+            const float x1c_b = F(x87_sub24(x1c, r));                     // 009C0548
+            const float x18_b = sgn ? F(x87_add24(x18, r)) : F(x87_sub24(x18, r));
+            const float h = F(x87_mul24(x87_add24(x18_b, V), 0.5));       // 009C0560-009C0568
+            const bool too_far = !sgn ? (h >= r) : (-r >= h);             // 009C0576 / 009C06C5
+            bool decided = false;
+            if (!too_far) {
+                const float arg = (h < 0.0f)
+                    ? F(x87_div24(F(x87_add24(h, r)), r))                 // 009C058D-009C059B
+                    : F(x87_div24(-static_cast<double>(F(x87_sub24(h, r))), r));  // 009C05BA-009C05CE
+                const float psi1 = asin_clamped(arg);
+                const float beta = !sgn ? F(-0.0 - A) : A;
+                const double two_iw = x87_mul24(iw, 2.0);                 // FSTP QWORD [ESP+6Ch]
+                t2 = F(x87_add24(x87_mul24(psi1, two_iw), t2));           // 009C05E0-009C05F8
+                const float c1 = F(x87_sub24(1.0, fcos(beta)));
+                const float x44 = !sgn ? F(x87_mul24(c1, -static_cast<double>(r)))
+                                       : F(x87_mul24(c1, r));             // 009C0618 / 009C0748
+                const float x48 = F(x87_mul24(fsin(beta), r));            // 009C0630 / 009C0762
+                const float g = F(x87_div24(
+                    fabs_0042be90(F(x87_mul24(x87_add24(x44, V), 0.5))), r));  // 009C063C-009C064F
+                const float psi2 = asin_clamped(g);
+                // 009C0664-009C0680: psi2 * 2iw + F(beta * iw + iw * 2pi).
+                const float t3 = F(x87_add24(
+                    x87_mul24(psi2, two_iw),
+                    F(x87_add24(x87_mul24(beta, iw), x87_mul24(iw, kTwoPi)))));
+                if (t3 <= t2) {
+                    const float q = plan_end(x48, t3);                    // 009C0829-009C0847
+                    if (-q > p) {
+                        res = lead_or_circle(p, x24, t4);
+                    } else {
+                        out.bl = bl_abeam_08e7;
+                        out.time = t3;
+                        res = out;
+                    }
+                    decided = true;
+                }
+            }
+            if (!decided) {
+                const float q = plan_end(x1c_b, t2);                      // 009C07D6-009C07F0
+                if (-q > p) {
+                    res = lead_or_circle(p, x24, t4);                     // 009C07FC
+                } else {
+                    out.bl = bl_abeam_0800;
+                    out.time = t2;
+                    res = out;
+                }
             }
         }
-        // 009C07D6-009C0814.
-        const float q = F(static_cast<double>(F(x1c_b - static_cast<double>(t2) * vl)) + AL);
-        if (-q > p) return lead_or_circle(p, x24, t4);                    // 009C07FC
-        out.bl = bl_abeam_0800;
-        out.time = t2;
-        return out;
+        return res;
     }
 
     if (in.quadrant_bl == 2) {
-        // 009C0909-009C09B9.
         float th, T, x24;
         if (!sgn) {
             th = A;
-            T = F(static_cast<double>(iw) * A + static_cast<double>(iw) * kPi);
-            x24 = F(static_cast<double>(r) * F(1.0 - fcos(th)) - 2.0 * r);
+            // 009C0911-009C092F: iw * A + iw * pi.
+            T = F(x87_add24(x87_mul24(iw, A), x87_mul24(iw, kPi)));
+            // 009C094B-009C0955: r * (1 - cos th) - 2r.
+            x24 = F(x87_sub24(x87_mul24(r, x87_sub24(1.0, fcos(th))), two_r));
         } else {
             th = F(-0.0 - A);
-            T = F(static_cast<double>(th) * iw + static_cast<double>(iw) * kPi);
-            x24 = F(2.0 * r - static_cast<double>(r) * F(1.0 - fcos(th)));
+            // 009C0971-009C0983: th * iw + iw * pi.
+            T = F(x87_add24(x87_mul24(th, iw), x87_mul24(iw, kPi)));
+            // 009C099F-009C09A9: 2r - r * (1 - cos th).
+            x24 = F(x87_sub24(two_r, x87_mul24(r, x87_sub24(1.0, fcos(th)))));
         }
-        float x28 = F(static_cast<double>(fsin(th)) * r + 2.0 * r);      // 009C09CD
-        const float t = F(static_cast<double>(x24) + V);                  // 009C09D9
+        // 009C09BB-009C09C9: sin th * r + 2r.
+        float x28 = F(x87_add24(x87_mul24(fsin(th), r), two_r));
+        const float t = F(x87_add24(x24, V));                             // 009C09D5
         if (!sgn ? (t < 0.0f) : (t > 0.0f)) {
-            const float at = !sgn ? F(-0.0 - t) : t;                      // 009C0A7F
-            const float phi = asin_clamped(F(static_cast<double>(F(static_cast<double>(at) * 0.5)) / r));
+            const float at = !sgn ? F(-0.0 - t) : t;                      // 009C0A75
+            const float phi = asin_clamped(
+                F(x87_div24(F(x87_mul24(at, 0.5)), r)));                  // 009C0A84-009C0A8E
             x24 = F(-0.0 - V);
-            x28 = F(x28 - static_cast<double>(F(1.0 - fcos(phi))) * (2.0 * r));
-            T = F(T - (static_cast<double>(phi) + phi) * iw);
+            // 009C0AC4-009C0AD4: x28 - (1 - cos phi) * 2r.
+            x28 = F(x87_sub24(x28, x87_mul24(x87_sub24(1.0, fcos(phi)), two_r)));
+            // 009C0ADA-009C0AEA: T - (phi + phi) * iw.
+            T = F(x87_sub24(T, x87_mul24(x87_add24(phi, phi), iw)));
         }
-        const float p = F(static_cast<double>(F(x28 - static_cast<double>(T) * vl)) + AL);  // 009C09FC
-        if (0.0f > p) return lead_or_circle(p, x24, T);                   // 009C0A24
-        const float gam = !sgn ? F(kHalfPi - A) : F(A + kHalfPi);         // 009C0A36 / 009C0AFF
-        const float t5 = F(static_cast<double>(gam) * iw + static_cast<double>(iw) * kThreeHalfPi);
-        const float x48 = F(static_cast<double>(F(static_cast<double>(F(1.0 - fcos(gam))) * r)) - r);
-        const float q = F(static_cast<double>(F(x48 - static_cast<double>(t5) * vl)) + AL);  // 009C0B65
-        if (-q > p) return lead_or_circle(p, x24, T);                     // 009C0B73
-        out.bl = bl_abeam_08e7;                                           // 009C0B75
-        out.time = t5;
-        return out;
+        const float p = plan_end(x28, T);                                 // 009C09FC-009C0A12
+        PlaneFollowPhaseA res;
+        if (0.0f > p) {
+            res = lead_or_circle(p, x24, T);                              // 009C0A24
+        } else {
+            const float gam = !sgn ? F(kHalfPi - A) : F(A + kHalfPi);     // 009C0A36 / 009C0AFF
+            // 009C0A44-009C0A4E: gam * iw + iw * 3pi/2.
+            const float t5 = F(x87_add24(x87_mul24(gam, iw), x87_mul24(iw, kThreeHalfPi)));
+            // 009C0B31-009C0B41: (1 - cos gam) * r - r.
+            const float x48 = F(x87_sub24(x87_mul24(x87_sub24(1.0, fcos(gam)), r), r));
+            const float q = plan_end(x48, t5);                            // 009C0B47-009C0B61
+            if (-q > p) {
+                res = lead_or_circle(p, x24, T);                          // 009C0B73
+            } else {
+                out.bl = bl_abeam_08e7;                                   // 009C0B75
+                out.time = t5;
+                res = out;
+            }
+        }
+        return res;
     }
 
     if (in.quadrant_bl == 4) {
-        // 009C0BE3-009C0C6D.
         float gam, x34;
         if (!sgn) {
-            gam = F(A - kHalfPi);
-            x34 = F(static_cast<double>(F(fsin(gam) - 1.0)) * r);
+            gam = F(A - kHalfPi);                                         // 009C0BE7
+            x34 = F(x87_mul24(x87_sub24(fsin(gam), 1.0), r));             // 009C0C11-009C0C17
         } else {
-            gam = F(-(A + kHalfPi));
-            x34 = F(static_cast<double>(F(1.0 - fsin(gam))) * r);
+            gam = F(-x87_add24(A, kHalfPi));                              // 009C0C2B-009C0C31
+            x34 = F(x87_mul24(x87_sub24(1.0, fsin(gam)), r));             // 009C0C59-009C0C5B
         }
-        float t6 = F((static_cast<double>(gam) + kThreeHalfPi) * iw);     // base-10h
-        float x38 = F((3.0 - F(1.0 - fcos(gam))) * r);                    // 009C0C81
-        const float u = F(static_cast<double>(x34) + V);                  // 009C0C8D
+        // 009C0BF5-009C0BFB / 009C0C3B-009C0C41: (gam + 3pi/2) * iw.
+        float t6 = F(x87_mul24(x87_add24(gam, kThreeHalfPi), iw));
+        // 009C0C6F-009C0C7D: (3.0 - (1 - cos gam)) * r.
+        float x38 = F(x87_mul24(x87_sub24(3.0, x87_sub24(1.0, fcos(gam))), r));
+        const float u = F(x87_add24(x34, V));                             // 009C0C85-009C0C89
         if (!sgn ? (u < 0.0f) : (u > 0.0f)) {
-            const float phi = asin_clamped(                               // 009C0D15
-                F(static_cast<double>(F(static_cast<double>(fabs_0042be90(u)) * 0.5)) / r));
-            x38 = F(x38 - static_cast<double>(r) * 2.0 * F(1.0 - fcos(phi)));
-            t6 = F(t6 - 2.0 * phi * iw);
+            const float phi = asin_clamped(                               // 009C0D19-009C0D2D
+                F(x87_div24(F(x87_mul24(fabs_0042be90(u), 0.5)), r)));
+            // 009C0D4F-009C0D73: x38 - (1 - cos phi) * (r * 2.0).
+            x38 = F(x87_sub24(x38, x87_mul24(x87_sub24(1.0, fcos(phi)), x87_mul24(r, 2.0))));
+            // 009C0D7B-009C0D8F: t6 - (phi * 2.0) * iw.
+            t6 = F(x87_sub24(t6, x87_mul24(x87_mul24(phi, 2.0), iw)));
         }
-        const float p = F(static_cast<double>(F(x38 - static_cast<double>(t6) * vl)) + AL);  // 009C0CC2
-        const float dl = !sgn ? F(kPi - A) : F(A + kPi);                  // 009C0CDC / 009C0DA0
-        const float half_turn = F(kPi * iw);                              // base+24h (a double store)
-        const float t7 = F(static_cast<double>(iw) * dl + kPi * iw);      // base+04h
-        const float x48 = F(-static_cast<double>(r) * fsin(dl));          // 009C0DE0
-        const float q = F(static_cast<double>(F(x48 - static_cast<double>(t7) * vl)) + AL);
-        const float ap = (p > 0.0f) ? p : F(-0.0 - p);                    // 009C0E04 / 009C0E0C
-        const float aq = (q > 0.0f) ? q : F(-0.0 - q);                    // 009C0E24 / 009C0E2C
+        const float p = plan_end(x38, t6);                                // 009C0CA8-009C0CBE
+        const float dl = !sgn ? F(kPi - A) : F(A + kPi);                  // 009C0CD8 / 009C0D9C
+        const double pi_iw = x87_mul24(kPi, iw);                          // 009C0CE0 FMUL, FST QWORD
+        const float half_turn = F(pi_iw);                                 // 009C0EBA FSTP DWORD
+        // 009C0CE6-009C0CEC: pi * iw + dl * iw.
+        const float t7 = F(x87_add24(pi_iw, x87_mul24(dl, iw)));
+        const float x48 = F(-static_cast<double>(r) * fsin(dl));          // 009C0DD4-009C0DDC
+        const float q = plan_end(x48, t7);                                // 009C0DE4-009C0DFA
+        const float ap = (p > 0.0f) ? p : F(-0.0 - p);
+        const float aq = (q > 0.0f) ? q : F(-0.0 - q);
         if (aq > ap) {                                                    // 009C0E42
             out.bl = bl_abeam_0800;
             out.time = t6;
-            return out;
+        } else {
+            float t7v = t7;
+            float hv = half_turn;
+            out.bl = bl_turn_circle;
+            out.time = min_native_float_by_ref_00415510(&t7v, &hv);     // 009C0EC2
         }
-        float t7v = t7;
-        float hv = half_turn;
-        out.bl = bl_turn_circle;
-        out.time = min_native_float_by_ref_00415510(&t7v, &hv);         // 009C0EC2
         return out;
     }
 
-    // Quadrant 3, 009C0E4E-009C0EC7: always the turn circle.
-    const float gam = !sgn ? F(-(A + kHalfPi)) : F(A - kHalfPi);
-    float t8 = F((kHalfPi + gam) * iw);                                   // base+04h
-    float hv = F(static_cast<double>(iw) * kPi);                          // 009C0EB0
+    // Quadrant 3, 009C0E4E-009C0EC7.
+    const float gam = !sgn ? F(-x87_add24(A, kHalfPi)) : F(x87_sub24(A, kHalfPi));
+    // 009C0E62-009C0E66 / 009C0E8C-009C0E90: (pi/2 + gam) * iw.
+    float t8 = F(x87_mul24(x87_add24(kHalfPi, gam), iw));
+    float hv = F(x87_mul24(iw, kPi));                                     // 009C0EB0
     out.bl = bl_turn_circle;
     out.time = min_native_float_by_ref_00415510(&t8, &hv);
     return out;
+}
+
+}  // namespace
+
+PlaneFollowPhaseA plane_follow_phase_a_009c0251(
+    const PlaneFollowPhaseAInputs& in) noexcept {
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        return phase_a_pc24_009c0251(in);
+    } else {
+        // The previous Phase A, unchanged (re-indented).
+        const float A = in.heading_error;
+        const float V = in.cross_track;
+        const float AL = in.along_track;
+        const float vl = in.leader_speed;
+        const float iw = in.inv_turn_rate;
+        const float r = in.turn_radius;
+        // base-21h, written by the classifier at 009C01F0 / 009C021E.
+        const bool sgn = V < 0.0f;
+        // 009C0ECB-009C0EDF: (BL ? [00E0E2F9]=2 : [00E0E2FB]=4) | [00E0E2F8]=8,
+        // BL being the V-sign byte on every path that reaches it.
+        const int bl_turn_circle = sgn ? 10 : 12;
+        // 009C0800: TEST BL,BL / JE 009C08F5 (BL=2) else 009C0814 (BL=4).
+        const int bl_abeam_0800 = sgn ? 4 : 2;
+        // 009C08E7: TEST BL,BL / JE 009C0814 (BL=4) else 009C08F5 (BL=2).
+        const int bl_abeam_08e7 = sgn ? 2 : 4;
+
+        PlaneFollowPhaseA out;
+        // 009C086D / 009C0B82: behind the moving station at the end of the plan,
+        // or more than 5% of that distance off the track -> turn circle; else lead
+        // pursuit.  `time` is base+04h (quadrant 1) or base-10h (quadrant 2).
+        auto lead_or_circle = [&](float p, float x24, float time) {
+            out.time = time;
+            if (0.0f > p) {
+                out.bl = bl_turn_circle;
+                return out;
+            }
+            const float e = fabs_0042be90(F(static_cast<double>(x24) + V));
+            out.bl = (static_cast<double>(e) > static_cast<double>(p) * kGuardShare)
+                         ? bl_turn_circle : 1;
+            return out;
+        };
+
+        if (in.quadrant_bl == 1) {
+            // 009C032D-009C0409: the first arc, turning through th onto the track.
+            float th, x18, x24;
+            if (!sgn) {
+                th = F(A + kHalfPi);                                          // 009C033F
+                x18 = F(-static_cast<double>(r) * fsin(th));
+            } else {
+                th = F(kHalfPi - A);                                          // 009C03A5
+                x18 = F(static_cast<double>(fsin(th)) * r);
+            }
+            const float T = F(kHalfPi * iw + static_cast<double>(th) * iw);   // base-10h
+            const float x1c = F(static_cast<double>(F(1.0 - fcos(th))) * r);
+            x24 = sgn ? F(static_cast<double>(x18) + r) : F(static_cast<double>(x18) - r);
+            float x28 = F(static_cast<double>(x1c) + r);                      // 009C0417
+            const float t = F(static_cast<double>(x24) + V);                  // 009C0423
+            float t4 = T;                                                     // base+04h
+            if (!sgn ? (t < 0.0f) : (t > 0.0f)) {
+                // 009C0463: the arc is cut short where it already meets the track.
+                const float at = !sgn ? F(-0.0 - t) : t;
+                const float half = F(static_cast<double>(at) * 0.5);
+                float phi = asin_clamped(F(static_cast<double>(half) / r));
+                phi = min_native_float_by_ref_00415510(&th, &phi);          // 009C0492
+                x24 = F(-0.0 - V);                                            // 009C04AC
+                x28 = F(x28 - static_cast<double>(r) * 2.0 * F(1.0 - fcos(phi)));
+                t4 = F(T - static_cast<double>(phi) * 2.0 * iw);              // 009C04F6
+            }
+            // 009C0508-009C0522: along-track position at the end of the plan,
+            // relative to the station that has moved on at the leader's speed.
+            const float p = F(static_cast<double>(F(x28 - static_cast<double>(t4) * vl)) + AL);
+            if (0.0f > p) return lead_or_circle(p, x24, t4);                  // 009C052E
+            // 009C0534: ahead of it: plan a full reversal instead.
+            float t2 = F(static_cast<double>(iw) * kPi + T);                  // 009C055C
+            const float x1c_b = F(static_cast<double>(x1c) - r);              // base+1Ch
+            const float x18_b = sgn ? F(static_cast<double>(x18) + r) : F(static_cast<double>(x18) - r);
+            const float h = F(F(static_cast<double>(x18_b) + V) * 0.5);       // base-14h
+            const bool too_far = !sgn ? (h >= r) : (-r >= h);                     // 009C0578 / 009C06C7
+            if (!too_far) {
+                // 009C057E-009C07B6: the second arc and its alternative.
+                const float arg = (h < 0.0f)
+                    ? F(static_cast<double>(F(static_cast<double>(h) + r)) / r)       // 009C058D
+                    : F(-static_cast<double>(F(static_cast<double>(h) - r)) / r);     // 009C05BA
+                const float psi1 = asin_clamped(arg);
+                const float beta = !sgn ? F(-0.0 - A) : A;                    // 009C05F2 / 009C0728
+                const float two_iw = F(2.0 * iw);                             // base+34h
+                t2 = F(static_cast<double>(psi1) * two_iw + t2);
+                const float x44 = !sgn
+                    ? F(static_cast<double>(F(1.0 - fcos(beta))) * -static_cast<double>(r))
+                    : F(static_cast<double>(F(1.0 - fcos(beta))) * r);
+                const float x48 = F(static_cast<double>(fsin(beta)) * r);
+                const float g = F(static_cast<double>(fabs_0042be90(
+                    F(F(static_cast<double>(x44) + V) * 0.5))) / r);
+                const float psi2 = asin_clamped(g);
+                const float t3 = F(static_cast<double>(psi2) * two_iw +
+                                   F(static_cast<double>(beta) * iw + static_cast<double>(iw) * kTwoPi));
+                if (t3 <= t2) {
+                    // 009C0829-009C0861, 009C08DF: never reached by the sampled
+                    // geometries (docs/PLANE_FOLLOW_PHASE_A.md section 8);
+                    // transcribed from the listing.
+                    const float q = F(static_cast<double>(F(x48 - static_cast<double>(t3) * vl)) + AL);
+                    if (-q > p) return lead_or_circle(p, x24, t4);
+                    out.bl = bl_abeam_08e7;
+                    out.time = t3;
+                    return out;
+                }
+            }
+            // 009C07D6-009C0814.
+            const float q = F(static_cast<double>(F(x1c_b - static_cast<double>(t2) * vl)) + AL);
+            if (-q > p) return lead_or_circle(p, x24, t4);                    // 009C07FC
+            out.bl = bl_abeam_0800;
+            out.time = t2;
+            return out;
+        }
+
+        if (in.quadrant_bl == 2) {
+            // 009C0909-009C09B9.
+            float th, T, x24;
+            if (!sgn) {
+                th = A;
+                T = F(static_cast<double>(iw) * A + static_cast<double>(iw) * kPi);
+                x24 = F(static_cast<double>(r) * F(1.0 - fcos(th)) - 2.0 * r);
+            } else {
+                th = F(-0.0 - A);
+                T = F(static_cast<double>(th) * iw + static_cast<double>(iw) * kPi);
+                x24 = F(2.0 * r - static_cast<double>(r) * F(1.0 - fcos(th)));
+            }
+            float x28 = F(static_cast<double>(fsin(th)) * r + 2.0 * r);      // 009C09CD
+            const float t = F(static_cast<double>(x24) + V);                  // 009C09D9
+            if (!sgn ? (t < 0.0f) : (t > 0.0f)) {
+                const float at = !sgn ? F(-0.0 - t) : t;                      // 009C0A7F
+                const float phi = asin_clamped(F(static_cast<double>(F(static_cast<double>(at) * 0.5)) / r));
+                x24 = F(-0.0 - V);
+                x28 = F(x28 - static_cast<double>(F(1.0 - fcos(phi))) * (2.0 * r));
+                T = F(T - (static_cast<double>(phi) + phi) * iw);
+            }
+            const float p = F(static_cast<double>(F(x28 - static_cast<double>(T) * vl)) + AL);  // 009C09FC
+            if (0.0f > p) return lead_or_circle(p, x24, T);                   // 009C0A24
+            const float gam = !sgn ? F(kHalfPi - A) : F(A + kHalfPi);         // 009C0A36 / 009C0AFF
+            const float t5 = F(static_cast<double>(gam) * iw + static_cast<double>(iw) * kThreeHalfPi);
+            const float x48 = F(static_cast<double>(F(static_cast<double>(F(1.0 - fcos(gam))) * r)) - r);
+            const float q = F(static_cast<double>(F(x48 - static_cast<double>(t5) * vl)) + AL);  // 009C0B65
+            if (-q > p) return lead_or_circle(p, x24, T);                     // 009C0B73
+            out.bl = bl_abeam_08e7;                                           // 009C0B75
+            out.time = t5;
+            return out;
+        }
+
+        if (in.quadrant_bl == 4) {
+            // 009C0BE3-009C0C6D.
+            float gam, x34;
+            if (!sgn) {
+                gam = F(A - kHalfPi);
+                x34 = F(static_cast<double>(F(fsin(gam) - 1.0)) * r);
+            } else {
+                gam = F(-(A + kHalfPi));
+                x34 = F(static_cast<double>(F(1.0 - fsin(gam))) * r);
+            }
+            float t6 = F((static_cast<double>(gam) + kThreeHalfPi) * iw);     // base-10h
+            float x38 = F((3.0 - F(1.0 - fcos(gam))) * r);                    // 009C0C81
+            const float u = F(static_cast<double>(x34) + V);                  // 009C0C8D
+            if (!sgn ? (u < 0.0f) : (u > 0.0f)) {
+                const float phi = asin_clamped(                               // 009C0D15
+                    F(static_cast<double>(F(static_cast<double>(fabs_0042be90(u)) * 0.5)) / r));
+                x38 = F(x38 - static_cast<double>(r) * 2.0 * F(1.0 - fcos(phi)));
+                t6 = F(t6 - 2.0 * phi * iw);
+            }
+            const float p = F(static_cast<double>(F(x38 - static_cast<double>(t6) * vl)) + AL);  // 009C0CC2
+            const float dl = !sgn ? F(kPi - A) : F(A + kPi);                  // 009C0CDC / 009C0DA0
+            const float half_turn = F(kPi * iw);                              // base+24h (a double store)
+            const float t7 = F(static_cast<double>(iw) * dl + kPi * iw);      // base+04h
+            const float x48 = F(-static_cast<double>(r) * fsin(dl));          // 009C0DE0
+            const float q = F(static_cast<double>(F(x48 - static_cast<double>(t7) * vl)) + AL);
+            const float ap = (p > 0.0f) ? p : F(-0.0 - p);                    // 009C0E04 / 009C0E0C
+            const float aq = (q > 0.0f) ? q : F(-0.0 - q);                    // 009C0E24 / 009C0E2C
+            if (aq > ap) {                                                    // 009C0E42
+                out.bl = bl_abeam_0800;
+                out.time = t6;
+                return out;
+            }
+            float t7v = t7;
+            float hv = half_turn;
+            out.bl = bl_turn_circle;
+            out.time = min_native_float_by_ref_00415510(&t7v, &hv);         // 009C0EC2
+            return out;
+        }
+
+        // Quadrant 3, 009C0E4E-009C0EC7: always the turn circle.
+        const float gam = !sgn ? F(-(A + kHalfPi)) : F(A - kHalfPi);
+        float t8 = F((kHalfPi + gam) * iw);                                   // base+04h
+        float hv = F(static_cast<double>(iw) * kPi);                          // 009C0EB0
+        out.bl = bl_turn_circle;
+        out.time = min_native_float_by_ref_00415510(&t8, &hv);
+        return out;
+    }
 }
 
 static CircleTangentReach g_circle_tangent_reach{kCircleTangentUnorderedCc13Bound,
@@ -577,10 +832,20 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
         in.own_pos[1] - in.station[1],
         in.own_pos[2] - in.station[2],
     };
-    const float d = static_cast<float>(
-        std::sqrt(static_cast<double>(d3[0]) * d3[0] +
-                  static_cast<double>(d3[1]) * d3[1] +
-                  static_cast<double>(d3[2]) * d3[2]));
+    float d;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 0042B2F9-0042B309: (y*y + x*x) + z*z, each op at PC24, FSTP DWORD;
+        // 0042B30C-0042B319: +0 at or below the double 1e-10 (unordered
+        // included), else 00BF7030's FSQRT at PC24, FSTP DWORD.
+        const float d2 = F(x87_add24(x87_add24(x87_mul24(d3[1], d3[1]), x87_mul24(d3[0], d3[0])),
+                                     x87_mul24(d3[2], d3[2])));
+        d = (static_cast<double>(d2) > 1e-10) ? F(x87_sqrt24(d2)) : 0.0f;
+    } else {
+        d = static_cast<float>(
+            std::sqrt(static_cast<double>(d3[0]) * d3[0] +
+                      static_cast<double>(d3[1]) * d3[1] +
+                      static_cast<double>(d3[2]) * d3[2]));
+    }
     out.range_3d = d;
     // SUBSTITUTION, labelled, for the switch-off binding only: base-0Ch is
     // Phase A's; without it D stands in, the same slope-times-distance shape
@@ -611,11 +876,29 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
             // nose: pose row 2's (x, z) times 00419260's reciprocal length.
             float fx, fz;
             if (in.run_phase_a) {
-                const double inv = 1.0 / std::sqrt(
-                    static_cast<double>(in.own_forward[0]) * in.own_forward[0] +
-                    static_cast<double>(in.own_forward[2]) * in.own_forward[2]);
-                fx = F(in.own_forward[0] * inv);
-                fz = F(in.own_forward[2] * inv);
+                if constexpr (kPc24PlaneTasksCc13Bound) {
+                    // 00419260: x*x and z*z each FSTP DWORD, their sum at PC24,
+                    // FSTP DWORD, 00BF7030's FSQRT at PC24, FSTP DWORD; +0 for a
+                    // zero length (FUCOMIP/LAHF), else 1/len (FDIVRP, PC24).
+                    const float xx = F(x87_mul24(in.own_forward[0], in.own_forward[0]));
+                    const float zz = F(x87_mul24(in.own_forward[2], in.own_forward[2]));
+                    const float len = F(x87_sqrt24(F(x87_add24(zz, xx))));
+                    const float inv = (len == 0.0f) ? 0.0f : F(x87_div24(1.0, len));  // 009C15FC
+                    const float px = F(x87_mul24(in.own_forward[0], inv));            // 009C1616
+                    const float pz = F(x87_mul24(inv, in.own_forward[2]));            // 009C161E
+                    // 009C1622-009C1642: the image swaps through sums, each at PC24
+                    // and stored: s = pz + px, [ESP+50h] = s - pz (fx here),
+                    // [ESP+4Ch] = s - [ESP+50h] (fz here).
+                    const float s = F(x87_add24(pz, px));
+                    fx = F(x87_sub24(s, pz));
+                    fz = F(x87_sub24(s, fx));
+                } else {
+                    const double inv = 1.0 / std::sqrt(
+                        static_cast<double>(in.own_forward[0]) * in.own_forward[0] +
+                        static_cast<double>(in.own_forward[2]) * in.own_forward[2]);
+                    fx = F(in.own_forward[0] * inv);
+                    fz = F(in.own_forward[2] * inv);
+                }
             } else {
                 // pose row 2 normalized is (sin h, cos h) for the slot +50h
                 // heading h.
@@ -663,9 +946,21 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
             if (!(static_cast<double>(dist) >= kLengthFloor)) dist = kLengthFloor;
             // 009C13C8-009C142C: inside radius + 1, pushed out to it.
             float q[2] = {in.own_pos[0], in.own_pos[2]};
-            const double r1 = 1.0 + static_cast<double>(turn_radius);
+            // kPc24PlaneTasksCc13Bound: 009C13D8 FADD rounds 1 + R at PC24 before the
+            // 009C13E0 FCOMI and the 009C13E4 FDIVRP (also PC24).
+            double r1 = 0.0;
+            if constexpr (kPc24PlaneTasksCc13Bound) {
+                r1 = x87_add24(1.0, turn_radius);
+            } else {
+                r1 = 1.0 + static_cast<double>(turn_radius);
+            }
             if (!(r1 <= dist)) {
-                const float k = F(r1 / dist);
+                float k = 0.0f;
+                if constexpr (kPc24PlaneTasksCc13Bound) {
+                    k = F(x87_div24(r1, dist));
+                } else {
+                    k = F(r1 / dist);
+                }
                 q[0] = F(c[0] + static_cast<double>(F(static_cast<double>(ddx) * k)));
                 q[1] = F(c[1] + static_cast<double>(F(static_cast<double>(k) * ddz)));
             }

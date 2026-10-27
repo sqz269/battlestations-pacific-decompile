@@ -174,6 +174,25 @@ inline constexpr bool kShipAiBigLandingShipBound = true;
 // section 41 with the same zero reach.
 inline constexpr bool kShipAiStandoffTargetKindBound = true;
 
+// Packet cc13-transport-launch. 008206F0 (transport_launch_craft_008206f0)
+// re-derived from the listing 00820810-00821803 (the main thread is PC24: every
+// x87 op rounds to 24 bits). True: the image's geometry, per op in its order and
+// with its float stores: the corners through 004142E0 ((y*up + x*right) +
+// z*forward) + origin, their world y zeroed (00820A7B..00820A95); the four
+// corners kept in the candidate vector ahead of the inner edge points (the edges
+// append to the same vector, 00820C70); 0042B2F0's 1e-10 floor and _ftol2 of a
+// PC24 quotient for the edge split; float differences and (dy^2 + dx^2) + dz^2
+// for the pad distances; the stored squares, sqrt and 1/len of the pad
+// direction; the probes' t times the pre-scaled direction; the clearance test's
+// float reach, squared distances, keel ends through the world matrix and float
+// gap, with the image's NaN arms (an unordered height or distance compare
+// passes, an unordered gap compare does not block). False: the previous double
+// evaluation, inner points only, the corners' world y kept.
+// Movers when ON: landing-craft spawn points (y = 0 and the corner candidates),
+// the chosen candidate per pad, depth and clearance rejects, the craft frame,
+// launch counts and the launch cooldown.
+inline constexpr bool kTransportLaunchCraftCc13Bound = false;
+
 class GameHostLog;
 class GameUnitsHost;
 class GameSceneContentsHost;

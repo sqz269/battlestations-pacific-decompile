@@ -12,6 +12,7 @@
 
 #include "bsp/ship_ai_attackmove_substates.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
 
 #include <cmath>
@@ -91,10 +92,18 @@ bool ship_ai_attackmove_altitude_gate_00852860(float world_y, float ceiling_a,
     // 00852884 FDIV double 3.0, 0085288A FXCH, 0085288C FCOMIP ST0,ST1 with
     // ST0 = world_y. The JBE at 00852890 is the TRUE side once the
     // 00852892..008528AC logical NOT is applied.
-    const double limit =
-        (static_cast<double>(ceiling_a) + static_cast<double>(ceiling_b)) /
-        kAttackMoveAltitudeGateDivisor;
-    return !(static_cast<double>(world_y) > limit);
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // The FADD and FDIV each round to 24 bits on the main thread; no store.
+        using namespace cc13x87;
+        const double limit =
+            x87_div24(x87_add24(ceiling_a, ceiling_b), kAttackMoveAltitudeGateDivisor);
+        return !(static_cast<double>(world_y) > limit);
+    } else {
+        const double limit =
+            (static_cast<double>(ceiling_a) + static_cast<double>(ceiling_b)) /
+            kAttackMoveAltitudeGateDivisor;
+        return !(static_cast<double>(world_y) > limit);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -247,9 +256,18 @@ std::uint8_t* ship_ai_attackmove_ring_construct_whole_009e5530(
 float ship_ai_attackmove_approach_throttle_009f3240(float max_weapon_range, float bias) {
     // 009F32A6 FLD +494h, 009F32AC FADD double 500.0, 009F32B2 FSUB bias,
     // 009F32B6 FADD ST0,ST0, 009F32B8 store to a float slot.
-    const float doubled = static_cast<float>(
-        2.0 * ((static_cast<double>(max_weapon_range) + kAttackMoveApproachRangeOffset) -
-               static_cast<double>(bias)));
+    float doubled;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // Each FADD / FSUB rounds to 24 bits on the main thread.
+        using namespace cc13x87;
+        const double t = x87_sub24(
+            x87_add24(max_weapon_range, kAttackMoveApproachRangeOffset), bias);
+        doubled = static_cast<float>(x87_add24(t, t));
+    } else {
+        doubled = static_cast<float>(
+            2.0 * ((static_cast<double>(max_weapon_range) + kAttackMoveApproachRangeOffset) -
+                   static_cast<double>(bias)));
+    }
     // 009F32C2 FCOMIP with 0.0 on top: the JBE side is `0.0 <= doubled`.
     if (!(0.0f <= doubled)) {
         return 0.0f; // 009F32C6

@@ -20,6 +20,8 @@
 #include "bsp/cc13_kamikaze_direct.hpp"   // packet cc13-kzdirect
 #include "bsp/structured_hierarchy.hpp"
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq (the deferred hit queue)
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_gunnery_cc13.hpp"    // packet pc24w1-gunnery-1
 
 #include <array>
 #include <deque>
@@ -2019,11 +2021,26 @@ float intercept_time_00901c20(const float rel[3], const float vel[3], float spee
     const float vv = vel[0] * vel[0] + vel[1] * vel[1] + vel[2] * vel[2];
     float t = 0.0f;
     if (0.01f <= vv - a * a) {
-        if (static_cast<double>(vv) * 1.5 < static_cast<double>(speed) * speed) {
+        // kPc24GunneryCc13Bound: 0090205B-00902070 compares vv*1.5 (FMUL qword) with
+        // speed*speed (FMUL ST0), both rounded at PC24.
+        const bool fast = kPc24GunneryCc13Bound
+            ? cc13x87::x87_mul24(vv, 1.5) < cc13x87::x87_mul24(speed, speed)
+            : static_cast<double>(vv) * 1.5 < static_cast<double>(speed) * speed;
+        if (fast) {
             const float qa = vv - speed * speed;
             const float qb = (distance + distance) * a;
-            const float disc = static_cast<float>(static_cast<double>(qb) * qb
-                - static_cast<double>(qa) * 4.0 * distance * distance);
+            float disc;
+            if constexpr (kPc24GunneryCc13Bound) {
+                // 00902094-009020BC: qb*qb (FMUL ST0), d*d (FMULP ST2) stored float,
+                // qa * 4.0 (FMUL qword), * d*d (FMULP), FSUBP (DE E9) = qb*qb - that.
+                using namespace cc13x87;
+                const float dd = static_cast<float>(x87_mul24(distance, distance));
+                disc = static_cast<float>(x87_sub24(x87_mul24(qb, qb),
+                                                    x87_mul24(x87_mul24(qa, 4.0), dd)));
+            } else {
+                disc = static_cast<float>(static_cast<double>(qb) * qb
+                    - static_cast<double>(qa) * 4.0 * distance * distance);
+            }
             float t1 = 0.0f;
             float t2 = 0.0f;
             if (0.0f <= disc) {
@@ -3633,9 +3650,17 @@ struct GameGunneryHost::Impl {
         if (!units.unit_plane_body_angular_rate(target, w)) return;   // 00901CE5..00901CFF
         ++turn_average_tests;
         // 00901D03..00901D1F: (x*x + y*y) + z*z on the x87 stack, stored as a float.
-        const float w2 = static_cast<float>(
-            (static_cast<double>(w[0]) * w[0] + static_cast<double>(w[1]) * w[1])
-            + static_cast<double>(w[2]) * w[2]);
+        float w2;
+        if constexpr (kPc24GunneryCc13Bound) {
+            // kPc24GunneryCc13Bound: the same order, each FMULP/FADDP rounded at PC24.
+            using namespace cc13x87;
+            w2 = static_cast<float>(x87_add24(
+                x87_add24(x87_mul24(w[1], w[1]), x87_mul24(w[0], w[0])), x87_mul24(w[2], w[2])));
+        } else {
+            w2 = static_cast<float>(
+                (static_cast<double>(w[0]) * w[0] + static_cast<double>(w[1]) * w[1])
+                + static_cast<double>(w[2]) * w[2]);
+        }
         if (!(w2 > 0.001f)) return;                  // 00901D23..00901D31, JBE skips
         // 00901D37..00901E4C: both matrices start as the identity.
         bsp::AdvanceMatrix identity{};
@@ -9028,6 +9053,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     want_horz = bsp::wrapped_angle_add_00438aa0(want_horz, sw.h);
                     want_vert = bsp::wrapped_angle_add_00438aa0(want_vert, sw.v);
                     ++aa_gunner_error_ticks;
+                    // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
                     aa_gunner_miss_sum += std::sqrt(static_cast<double>(sw.h) * sw.h
                         + static_cast<double>(sw.v) * sw.v) * distance;
                 }
@@ -9977,7 +10003,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     direction[i] += radius * (ct * b[i] + st * a[i]);
                 }
                 ++throw_cone_shots;
+                // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
                 throw_angle_sum_deg += std::atan(radius) * 57.29577951308232;
+                // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
                 throw_magnitude_sum_deg += magnitude * 57.29577951308232;
             }
             done("Gun::throw_cone_00730540", 0x00730540u);
@@ -10141,6 +10169,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                         + sign * magnitude * 3.14159265358979 / 180.0);
                 }
                 const float vyaw = std::atan2(shot.flight.velocity.x, shot.flight.velocity.z);
+                // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
                 torpedo_gyro_offset_sum_deg += std::fabs(bsp::wrapped_angle_subtract_00438b10(
                     shot.commanded_heading, vyaw)) * 57.2957795;
                 ++torpedo_gyro_launches;
@@ -11131,7 +11160,12 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 && round->heading_turn > 0.0f) {
                 // 00857061: e = -SubtractWrapped(yaw, +46Ch), clamp(e, +/-rate) * dt.
                 const float e = bsp::wrapped_angle_subtract_00438b10(shot.commanded_heading, nose);
-                const float rate = static_cast<float>(round->heading_turn * 3.14159265358979 / 180.0);
+                // kPc24GunneryCc13Bound: 008570D7-008570E3 FMUL qword pi [00CE3D28]
+                // (3.1415927410125732), FDIV qword 180 [00CE3D20], each at PC24.
+                const float rate = kPc24GunneryCc13Bound
+                    ? static_cast<float>(cc13x87::x87_div24(
+                          cc13x87::x87_mul24(round->heading_turn, 3.1415927410125732), 180.0))
+                    : static_cast<float>(round->heading_turn * 3.14159265358979 / 180.0);
                 const float step = std::max(-rate, std::min(rate, e)) * dt;
                 if (step != 0.0f) {
                     nose = static_cast<float>(bsp::wrapped_angle_subtract_00438b10(nose + step, 0.0f));
@@ -11160,7 +11194,11 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             if (turn_rate > 0.0f && speed > 0.0f) {
                 const float yaw = std::atan2(vx, vz);
                 const float e = bsp::wrapped_angle_subtract_00438b10(shot.commanded_heading, yaw);
-                const float rate = static_cast<float>(turn_rate * 3.14159265358979 / 180.0);
+                // kPc24GunneryCc13Bound: 008570D7-008570E3, as above.
+                const float rate = kPc24GunneryCc13Bound
+                    ? static_cast<float>(cc13x87::x87_div24(
+                          cc13x87::x87_mul24(turn_rate, 3.1415927410125732), 180.0))
+                    : static_cast<float>(turn_rate * 3.14159265358979 / 180.0);
                 const float step = std::max(-rate, std::min(rate, e)) * dt;
                 if (step != 0.0f) {
                     const float ny = yaw + step;
@@ -12044,6 +12082,7 @@ public:
         // delivered at the start of the next gunnery step.
         owner_.pending_hull_torques.push_back({victim_, {torque.x, torque.y, torque.z}});
         ++owner_.summary.roll_torque_posted;
+        // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
         const double m = std::sqrt(static_cast<double>(torque.x) * torque.x
             + static_cast<double>(torque.y) * torque.y + static_cast<double>(torque.z) * torque.z);
         if (m > owner_.summary.roll_torque_max_magnitude) owner_.summary.roll_torque_max_magnitude = m;
@@ -13443,6 +13482,7 @@ void GameGunneryHost::Impl::plane_crash_impact_0084bc60(std::size_t plane, std::
             ++reached;
         }
     }
+    // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
     pc_blast_damage += dealt;
     log.notef("plane crash impact: plane=%s victim=%s t=%.2f class=%d blast=%.0f..%.0f range=%.0f "
         "reached=%zu dealt=%.1f victim_health=%.1f (0084BC60 / 007BBA10, packet "
@@ -17466,6 +17506,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
             drift[0] = n * v[2] * r1 + r2 * (n * v[0]);
             drift[2] = -n * v[0] * r1 + r2 * (n * v[2]);
             ++h.bomb_drift_drops;
+            // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
             const double mag = std::sqrt(static_cast<double>(drift[0]) * drift[0]
                 + static_cast<double>(drift[2]) * drift[2]);
             if (mag > h.bomb_drift_max) h.bomb_drift_max = mag;
@@ -17509,17 +17550,21 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         {
             // Diagnostic: the turn from the 5do velocity to the new direction.
             const double nb = vmag;
+            // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
             const double na = std::sqrt(static_cast<double>(velocity[0]) * velocity[0]
                 + static_cast<double>(velocity[1]) * velocity[1]
                 + static_cast<double>(velocity[2]) * velocity[2]);
+            // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
             double c = (nb > 0.0 && na > 0.0) ? (static_cast<double>(before[0]) * velocity[0]
                 + static_cast<double>(before[1]) * velocity[1]
                 + static_cast<double>(before[2]) * velocity[2]) / (nb * na) : 1.0;
             if (c > 1.0) c = 1.0;
             if (c < -1.0) c = -1.0;
+            // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
             const double turn = std::acos(c) * 57.29577951308232;
             if (turn > h.scatter_max_turn_deg) h.scatter_max_turn_deg = turn;
             if (h.scatter_drops <= 6) {
+                // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
                 h.log.notef("bomb drop scatter: unit=%s t=%.2f cone=%.3f deg turn=%.3f deg "
                     "v_before=(%.1f %.1f %.1f) v_after=(%.1f %.1f %.1f) (006E4D50 / 006E1F00)",
                     h.unit_state[unit_index].row.name.c_str(), static_cast<double>(h.clock_seconds),
@@ -18596,6 +18641,7 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo_closest_approach swims=%zu "
             "(centre to centre, horizontal)", rows.size());
         for (const GameTorpedoApproachRow& r : rows) {
+            // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
             host.log.notef("  torpedo from %-12s nearest %-14s min=%.1f m at t=%.2f s "
                 "of %.2f s run | ordered %-14s min=%.1f m at t=%.2f s "
                 "target_moved=%.1f m crossing=%.3f rad "
