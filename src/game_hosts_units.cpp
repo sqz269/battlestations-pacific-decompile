@@ -3446,6 +3446,7 @@ struct GameUnitsHost::Impl {
     unsigned long long lhc_n{0}, lhc_on{0}, lhc_far{0}, lhc_side_moved{0}, lhc_heading{0};
     unsigned long long lhc_own_ok{0}, lhc_own_far{0}, lhc_leave{0}, lhc_trace{0};
     unsigned long long lfm_trace{0};  // cc9-physics28: land final mode-loss lines
+    unsigned long long lsp_trace{0};  // cc9-physics29: land spacing-zero lines
     double lhc_dd_r_sum{0.0}, lhc_delta_fail_sum{0.0}, lhc_r_moved_sum{0.0};
     double lhc_point_moved_sum{0.0}, lhc_own_d_r_sum{0.0};
     bool landing_turn_in_006c5e20(const LandingDeck& d, const GameUnitSlot& p) const;
@@ -19070,6 +19071,7 @@ void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssign
     float least = 999999.0f;
     float gap = 999999.0f;
     int k = 0;
+    std::size_t gap_plane = static_cast<std::size_t>(-1);          // DIAGNOSTIC
     for (const LandingAssignment& o : d.assignments) {
         if (o.plane == rec.plane) continue;
         const GameUnitSlot& op = *slots[o.plane];
@@ -19108,6 +19110,7 @@ void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssign
         least = o.path_4 > least ? least : o.path_4;
         const float ng = -gdiff;
         const float m = ng > gap ? gap : ng;
+        if (!(ng > gap)) gap_plane = o.plane;                       // DIAGNOSTIC
         gap = 0.0f > m ? 0.0f : m;
         ++k;
     }
@@ -19201,6 +19204,27 @@ void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssign
     const float last = bsp::clamped_interpolate_00419010(-0.15000000596046448f,
         0.009999999776482582f, 0.15000000596046448f, 2.0f, x);
     rec.spacing_8 = last > s ? s : last;
+    if (own4 && p.land_task_installed && lsp_trace < 80 && !(rec.spacing_8 > 0.0f)
+        && (p.land_state == GameUnitSlot::LandTaskState::kBegin
+            || p.land_state == GameUnitSlot::LandTaskState::kFinal)) {
+        // DIAGNOSTIC (cc9-physics29): a mode-4 plane on land/begin or land/final whose
+        // spacing is 0 (006C7960 then gives a wingman mode 3 and 009B3DB2 aborts).
+        ++lsp_trace;
+        log.notef("  land spacing zero %s t=%.2f k=%d own_path=%.1f gap=%.1f behind=%s "
+            "behind_path=%.1f least=%.1f speed=%.2f gap_s=%.3f F=%.3f s=%.3f last=%.3f "
+            "(006C3F80, cc9-physics29 diagnostic)", p.row.name.c_str(),
+            static_cast<double>(summary.simulated_seconds), k, static_cast<double>(own_path),
+            static_cast<double>(gap),
+            gap_plane < slots.size() ? slots[gap_plane]->row.name.c_str() : "-",
+            [&] {
+                for (const LandingAssignment& o : d.assignments)
+                    if (o.plane == gap_plane) return static_cast<double>(o.path_4);
+                return -1.0;
+            }(),
+            static_cast<double>(least), static_cast<double>(speed),
+            static_cast<double>(gap) / static_cast<double>(speed), static_cast<double>(F),
+            static_cast<double>(s), static_cast<double>(last));
+    }
 }
 
 // 006CC9F0 (006CC9F0-006CCD77, __thiscall(block)(squadron, float), RET 8,
