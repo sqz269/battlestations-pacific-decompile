@@ -8,6 +8,8 @@
 #include <cmath>
 
 #include "bsp/bot_tasks.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
 #include "bsp/dive_bomb_task.hpp"
 #include "bsp/unit_motion.hpp"
 #include "bsp/unit_rudder.hpp"
@@ -24,6 +26,12 @@ constexpr double kDistEpsD = 1e-10;                // 00CE3820 qword
 constexpr float kNegZeroF = -0.0f;                 // 00D7A208 dword
 
 float to_f(double v) { return static_cast<float>(v); }
+
+using cc13x87::x87_add24;
+using cc13x87::x87_div24;
+using cc13x87::x87_mul24;
+using cc13x87::x87_sqrt24;
+using cc13x87::x87_sub24;
 
 // 009AC0B0 / 009AC10B-009AC13B: |p - unit| in 3-D, the squared sum rounded to
 // float, 0 at or below 1e-10.
@@ -48,7 +56,17 @@ float distance3_009ac0b0(const std::array<float, 3>& p, const std::array<float, 
 
 // 0042B2F0 on (dx, 0, dz): the planar length.
 float planar_length(float dx, float dz) {
-    return to_f(std::sqrt(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz));
+    float len;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 0042B2F9-0042B309: (y*y + x*x) + z*z with y = 0, each op at PC24, then FSTP
+        // DWORD; 0042B30C-0042B319: +0 at or below the double 1e-10 (00CE3820, unordered
+        // included); else 00BF7030's FSQRT at PC24 and FSTP DWORD.
+        const float d2 = to_f(x87_add24(x87_mul24(dx, dx), x87_mul24(dz, dz)));
+        len = (static_cast<double>(d2) > kDistEpsD) ? to_f(x87_sqrt24(d2)) : 0.0f;
+    } else {
+        len = to_f(std::sqrt(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz));
+    }
+    return len;
 }
 
 // pi/2 - atan2(dz, dx), wrapped into [0, 2pi): 009AC228-009AC25C, 009ADEBB-009ADEF8.
@@ -247,18 +265,37 @@ KamikazePlanCommand kamikaze_gotowards_tick_009ac190(KamikazeGoTowardsState& st,
     const float h = to_f(static_cast<double>(in.unit_position[1]) - p[1]);
     // 009AC305-009AC33D: R = (k * |err| + 3.0 [00D7A2B0]) * class+188h.
     const float k = rocket ? 1.2f : 0.8f;                                // 00CE3814 / 00CE74F8
-    const float turn_dist = to_f((static_cast<double>(k) * abs_err + 3.0) * in.class_speed_188);
+    float turn_dist;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009AC329-009AC33D: FMUL, FADD qword 3.0, FMUL, each rounded at PC24.
+        turn_dist = to_f(x87_mul24(x87_add24(x87_mul24(k, abs_err), 3.0), in.class_speed_188));
+    } else {
+        turn_dist = to_f((static_cast<double>(k) * abs_err + 3.0) * in.class_speed_188);
+    }
     float heading = h_target;
     if (st.turnaround_1d) {
         // 009AC347-009AC35E: hold the turnaround while dist <= R + 50.0 (qword 00CE3938).
-        if (static_cast<double>(st.dist_18) <= static_cast<double>(turn_dist) + 50.0)
+        bool hold;
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009AC350 FADD rounds R + 50.0 at PC24 before 009AC358 FCOMIP.
+            hold = static_cast<double>(st.dist_18) <= x87_add24(turn_dist, 50.0);
+        } else {
+            hold = static_cast<double>(st.dist_18) <= static_cast<double>(turn_dist) + 50.0;
+        }
+        if (hold)
             heading = wrapped_angle_add_00438aa0(h_target, kPiF);       // 009AC3EC
         else
             st.turnaround_1d = false;
     } else {
         // 009AC367-009AC38F: m = (h - 100.0 [00D7A220 qword]) * (1.5 or 1.0).
         const float f = rocket ? 1.5f : 1.0f;                            // 00CE380C / 00D7A24C
-        float m = to_f((static_cast<double>(h) - 100.0) * f);
+        float m;
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009AC389 FSUBR ST1 (h - 100.0), 009AC38B FMUL, each at PC24.
+            m = to_f(x87_mul24(x87_sub24(h, 100.0), f));
+        } else {
+            m = to_f((static_cast<double>(h) - 100.0) * f);
+        }
         if (!(m <= turn_dist)) m = turn_dist;                            // 009AC39F
         if (m > st.dist_18) {                                            // 009AC3C0
             // 009AC3C2-009AC3CE: a rocket-like plane turns only when h >= 0.2 d.
@@ -285,15 +322,32 @@ KamikazePlanCommand kamikaze_gotowards_tick_009ac190(KamikazeGoTowardsState& st,
         if (-0.5235988f > v) pitch = -0.5235988f;                       // 00CEC728
         else if (v > 0.34906587f) pitch = 0.34906587f;                  // 00CE398C
         else pitch = v;
-    } else if (static_cast<double>(st.dist_18) >
-               static_cast<double>(ap.profile.turbo_range_3c) + 10.0) {   // 009AC4BF-009AC4DA
+    } else if (kPc24PlaneTasksCc13Bound
+                   // 009AC4CE FADD qword 10.0 rounds at PC24 before 009AC4D6 FCOMI.
+                   ? static_cast<double>(st.dist_18) >
+                         x87_add24(ap.profile.turbo_range_3c, 10.0)
+                   : static_cast<double>(st.dist_18) >
+                         static_cast<double>(ap.profile.turbo_range_3c) + 10.0) {   // 009AC4BF-009AC4DA
         // 009AC4E0-009AC4F6: e = h - d / +48h * +4Ch.
-        const float q = to_f(static_cast<double>(st.dist_18) / ap.attack_range_48 *
-                             ap.climb_alt_4c);
+        float q;
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009AC4E8 FDIV, 009AC4EB FMUL, each at PC24, 009AC4EE FSTP DWORD.
+            q = to_f(x87_mul24(x87_div24(st.dist_18, ap.attack_range_48), ap.climb_alt_4c));
+        } else {
+            q = to_f(static_cast<double>(st.dist_18) / ap.attack_range_48 *
+                     ap.climb_alt_4c);
+        }
         const float e = to_f(static_cast<double>(h) - q);
         // 009AC4FE-009AC548: 0.6 (00CEFF98) when e >= 0, else 0.8 (00CE3D40).
         const double kk = (0.0f <= e) ? 0.6000000238418579 : 0.800000011920929;
-        const float y = to_f(-(static_cast<double>(e) * kk + h));
+        float y;
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009AC504/009AC527 FMUL qword, 009AC50A/009AC52D FADDP (+ h), each at
+            // PC24, then FCHS and FSTP DWORD.
+            y = to_f(-x87_add24(x87_mul24(e, kk), h));
+        } else {
+            y = to_f(-(static_cast<double>(e) * kk + h));
+        }
         const float p2 = to_f(std::atan2(static_cast<double>(y),
                                          static_cast<double>(st.dist_18)));
         // 009AC54C-009AC5E1: clamp p2 into [direct - w, direct + a], a and w ramps
@@ -378,17 +432,36 @@ KamikazePlanCommand kamikaze_aim_tick_009ac910(KamikazeAimState& st, KamikazeApp
     c.writes_pitch_slot_29c = true;
     if (st.locked_18) {
         // 009ACA54-009ACAEC: gains 36 (00D1FBC8) and 24 (00CE4790), qwords.
-        c.yaw_284 = clamp_unit(to_f(static_cast<double>(u) * 36.0 * mul));
-        c.pitch_29c = clamp_unit(to_f(static_cast<double>(v) * 24.0 * mul));
+        const float side = st.bank_side_19 ? 1.0f : -1.0f;
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009ACA54 FMUL qword 36, 009ACA62 FMUL +24h; 009ACA93 FMUL qword 24,
+            // 009ACAB0 FMUL +24h; each at PC24.
+            c.yaw_284 = clamp_unit(to_f(x87_mul24(x87_mul24(u, 36.0), mul)));
+            c.pitch_29c = clamp_unit(to_f(x87_mul24(x87_mul24(v, 24.0), mul)));
+        } else {
+            c.yaw_284 = clamp_unit(to_f(static_cast<double>(u) * 36.0 * mul));
+            c.pitch_29c = clamp_unit(to_f(static_cast<double>(v) * 24.0 * mul));
+        }
         // 009ACAF2-009ACB5F: bank = max(base - eta, 1) * side * 0.06 (qword 00CF0AC0).
         float b = to_f(static_cast<double>(no_fire ? 12.0f : 5.0f) - ap.eta_60);
-        const float side = st.bank_side_19 ? 1.0f : -1.0f;
         if (1.0f > b) b = 1.0f;
-        c.bank_2c4 = to_f(static_cast<double>(b) * side * 0.05999999865889549);
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009ACB55 FMUL side, 009ACB59 FMUL qword 0.06, each at PC24.
+            c.bank_2c4 = to_f(x87_mul24(x87_mul24(b, side), 0.05999999865889549));
+        } else {
+            c.bank_2c4 = to_f(static_cast<double>(b) * side * 0.05999999865889549);
+        }
     } else {
         // 009ACB6A-009ACC07: gains 20 (00CE3D88) and 15 (00CF3F20); bank 0.
-        c.yaw_284 = clamp_unit(to_f(static_cast<double>(u) * 20.0 * mul));
-        c.pitch_29c = clamp_unit(to_f(static_cast<double>(v) * 15.0 * mul));
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009ACB6A FMUL qword 20, 009ACB78 FMUL +24h; 009ACBA9 FMUL qword 15,
+            // 009ACBC6 FMUL +24h; each at PC24.
+            c.yaw_284 = clamp_unit(to_f(x87_mul24(x87_mul24(u, 20.0), mul)));
+            c.pitch_29c = clamp_unit(to_f(x87_mul24(x87_mul24(v, 15.0), mul)));
+        } else {
+            c.yaw_284 = clamp_unit(to_f(static_cast<double>(u) * 20.0 * mul));
+            c.pitch_29c = clamp_unit(to_f(static_cast<double>(v) * 15.0 * mul));
+        }
         c.bank_2c4 = 0.0f;
     }
     c.writes_bank_2c4 = true;                                            // 009ACC0F, +2CCh = 1
@@ -403,8 +476,15 @@ KamikazePlanCommand kamikaze_aim_tick_009ac910(KamikazeAimState& st, KamikazeApp
     float w = no_fire ? 0.025f : 0.035f;                                 // 00D1FBBC / 00D1F3C8
     const float d = in.distance;
     if (1000.0 > static_cast<double>(d)) {
-        if (200.0 > static_cast<double>(d)) w = to_f(1000.0 / 200.0f * w);
-        else w = to_f(1000.0 / d * w);
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            // 009ACCCE/009ACCE8 FDIV (1000 / max(d, 200)), 009ACCD2/009ACCEC FMUL w,
+            // each at PC24.
+            const float den = (200.0 > static_cast<double>(d)) ? 200.0f : d;
+            w = to_f(x87_mul24(x87_div24(1000.0, den), w));
+        } else {
+            if (200.0 > static_cast<double>(d)) w = to_f(1000.0 / 200.0f * w);
+            else w = to_f(1000.0 / d * w);
+        }
     }
     // 009ACCF8-009ACD30: inside TurboRange and inside the window on both axes.
     const float neg_w = -w;

@@ -7,6 +7,8 @@
 #include "bsp/dive_bomb_task.hpp"
 
 #include "bsp/cc13_tier2_switches.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_planetasks_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
 
 #include <cmath>
@@ -1189,10 +1191,19 @@ float dive_bomb_aim_heading_009c4f80(
     // of the body +Y row. 009C5068 FSUBR makes it pi/2 - atan2, and
     // 009C5072-009C507C add 2pi to a negative - the same bearing form
     // 009C7B8A builds for the target.
-    float bearing = static_cast<float>(
-        dive_bomb_constant::kHalfPi -
-        std::atan2(static_cast<double>(in.body_up_z),
-                   static_cast<double>(in.body_up_x)));
+    float bearing;
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // 009C5060 FSTP DWORD rounds the atan2 to float before 009C5068's
+        // FSUBR, which rounds to 24 bits (PC24).
+        const float a = static_cast<float>(std::atan2(static_cast<double>(in.body_up_z),
+                                                      static_cast<double>(in.body_up_x)));
+        bearing = static_cast<float>(cc13x87::x87_sub24(dive_bomb_constant::kHalfPi, a));
+    } else {
+        bearing = static_cast<float>(
+            dive_bomb_constant::kHalfPi -
+            std::atan2(static_cast<double>(in.body_up_z),
+                       static_cast<double>(in.body_up_x)));
+    }
     if (bearing < 0.0f) {
         bearing += static_cast<float>(dive_bomb_constant::kTwoPi);
     }
