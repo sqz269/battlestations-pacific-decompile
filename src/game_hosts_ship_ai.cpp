@@ -9199,7 +9199,7 @@ public:
             const float x_sq = static_cast<float>(x87_mul24(x, x));
             const float z_sq = static_cast<float>(x87_mul24(z, z));
             const float length =
-                static_cast<float>(std::sqrt(static_cast<double>(
+                static_cast<float>(x87_sqrt24(static_cast<double>(
                     static_cast<float>(x87_add24(x_sq, z_sq)))));
             const float scale =
                 (length == 0.0f) ? 0.0f : static_cast<float>(x87_div24(1.0, length));
