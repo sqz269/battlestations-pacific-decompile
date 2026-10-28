@@ -164,3 +164,28 @@ type-ID transition19/18 to21/20. Evidence commit is `8330382ab`. It remains
 unpublished until a matching common-code ON build passes strict serial USN21
 OFF/ON four-plus-four (all OFF self-agree) and the separate no-bounds-aid pair.
 Other gameplay runs/heavy builds are held during that final acceptance window.
+
+## Matched activation pair
+
+The A1 gate worker merged the frozen common code into its candidate at clean
+`6c8016fa756932161f09d4ccc5617ecd8adf8e51`. Its source/include diff against
+`6216ea1af` is only `kNativeRendererStartupCc15Bound: false -> true`.
+Win32 Release and both existing suites pass; lint reports zero findings.
+The common ON executable SHA-256 is
+`799F5FD80A1C35FBB002DE0504A1D6B608044AF14F30C4B124667448B38F3972`.
+Both sides use XLive SHA-256
+`DDF2C2A86D96F37819147C38991A74EF5C5946CE625E7B4E7914F8382AA13F87`.
+The common pair is copied under the cc9 worktree's
+`local/codex_a1_activation`; earlier634/5ca inputs remain immutable.
+
+Common ON reference/milestone-D smoke checks precede the approved strict
+serial alternating eight USN21 runs and the separate no-aid pair. Root holds
+other game/heavy-build work. Any first OFF-self disagreement or unexpected ON
+delta stops the series for review, without hidden retries. A1 remains OFF on
+main until those results are accepted.
+
+The common ON reference and milestone-D1600 checks have now passed against
+matched OFF546: exactly the documented A1 records, ordered differences0,
+teardown differences0, frame36 and matching first RNG. The strict serial series
+has started. No other game or heavy build is scheduled during it; P3a2 work is
+static and remains OFF/unbuilt pending an explicit build window.
