@@ -35,7 +35,7 @@ class GameNativeReadOnlyData;
 // the bridge ManagerState, never this cell; the reconstructed callers' host
 // hooks have no production implementation; Lua IsGUIActive (008CA010) uses
 // the bridge's widget lookup. No cc9 file reads the cell or the stand-in.
-inline constexpr bool kGuiManagerCc15Bound = false;
+inline constexpr bool kGuiManagerCc15Bound = true;
 
 class GameNativeGuiManagerApplication {
 public:
