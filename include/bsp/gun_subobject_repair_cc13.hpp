@@ -42,7 +42,7 @@ namespace bsp {
 // at Repair[level] / GunRepairTime per second of the capture step (a flip adds one
 // Repair[level] / GunRepairTime step), and destroyed guns return to service at full
 // health.
-inline constexpr bool kGunSubobjectRepairCc13Bound = false;
+inline constexpr bool kGunSubobjectRepairCc13Bound = true;   // ON: SHIP_AI 330.2
 
 static_assert(!kGunSubobjectRepairCc13Bound
                   || (kGunDestroyedFailureCc13Bound && kGunDeviceHitDamageCc13Bound),
