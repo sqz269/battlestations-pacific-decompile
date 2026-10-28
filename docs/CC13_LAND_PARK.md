@@ -117,10 +117,43 @@ the speed request, and the path transitions `007C16F0` (4 -> 5) / `007C1680` (5 
   (holder+88h). The tick also sets it at once when the plane rests on a holder whose owner is
   dead (`009B22DC`-`009B2313`).
 - Park does not leave by the `+900h` 4/5 arm (`009B3D0B`-`009B3D3B` skips park and abort).
-- From land/abort, the image pushes a takeoff task at the first ground abort (`0099B0BE`,
-  docs/SQUADRON_LAND_TASK.md 5bp); the host's abort arm returns to standby (+66Ch) or park
-  (+66Dh) instead.
+- From land/abort on the ground, the image pushes a takeoff task in the same tick
+  (`0099B0BE`, docs/SQUADRON_LAND_TASK.md 5bp). The host does the same (packet
+  cc13-landabort corrects an earlier line here, which said the host goes to standby or park
+  instead). The details:
+  - **Where.** The push is the tail of `0099ACD0` (the pilot bot's tick,
+    `__thiscall(bot, float dt)`, RET 4), after `009998A0` has ticked the head task. EBX is
+    that head task: `[bot+58h]` front while `+5Ch` != 0 (`0099AE83`-`0099AE8C`).
+  - **Condition.** All of these, in order:
+    1. `0099B0BE`-`0099B0D4`: the plane (`[bot+50h]+72Ch`) answers vtable[38h] false
+       (not airborne).
+    2. `0099B0D6`-`0099B0E1`: head vtable[38h]. For land it is `0099B710`, which is always 1.
+    3. `0099B0E3`-`0099B0F8`: `0042A7E0` (+900h is 4 or 5), or +900h == 6.
+    4. `0099B0FA`-`0099B105`: head vtable[30h]. For land it is `009B3730`, which is false
+       only in park (+620h) and final (+5F8h), so it is true in abort.
+  - **What is pushed.** `0099B107`-`0099B113`: `009CFF40(bot, DL = 0)`, which is
+    new(4D4h) + `009CF8E0` with flag 0. It is pushed at the head by `00999F50`. The start
+    state is takeoff/parking when +904h is set and +900h == 5, else Takeoff (or SlowTakeoff
+    for a carried +AA0h > 0).
+  - **How the host covers it.** `push_ground_retakeoff_0099b107`, called from the task-arm
+    tail of `game_hosts_units.cpp`, under `kGroundRetakeoffBound`, `kTakeoffTaskHeadBound`
+    and `kBaseLaunchChainBound` (all ON).
+    - Its land head takes `head_30` = state not park and not final, so a land head in abort
+      pushes when +900h is 4, 5 or 6.
+    - The host runs the same tick order as the image: rule (park done -> `009B0980`), then
+      the abort tick, then the tail.
+    - The abort rule's standby/park arms (`009B3E08`-`009B3E43`) would act only on the next
+      tick. By then the takeoff task is the head, so the land task is not ticked.
+    - The abort tick's ground arm (`009B0E74`-`009B0F93`) writes no +900h.
+    - The park done test needs +900h != 5, so the push starts in takeoff/Takeoff.
+    - The dead-owner done (`009B22DC`) is the exception: with +904h set and +900h == 5, it
+      would start in takeoff/parking, which the host does not bind. That is an existing gap
+      of cc9_ground_retakeoff, not a new one.
+  - **Not modelled.** The host leaves out the plane-airborne test (step 1) and keeps only
+    the +900h test. This is as before.
 
-For a recalled on-deck squadron, then, a plane at rest on its holder and facing the runway
-heading taxis to the hangar/lift and stays in park; a plane not on a holder (+BF8h clear) is
-done on its first tick and goes to abort, where the image re-launches it.
+For a recalled on-deck squadron, then:
+- A plane at rest on its holder and facing the runway heading taxis to the hangar/lift and
+  stays in park.
+- A plane not on a holder (+BF8h clear) is done on its first tick and goes to abort. There,
+  in the same tick, both the image and the host push a takeoff task and re-launch it.
