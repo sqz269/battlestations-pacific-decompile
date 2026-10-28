@@ -190,11 +190,18 @@ bool publish_pose_004329d0(ShipCaptainCamera& camera, const ShipCaptainTargetVie
 void construct_ship_captain_0064b650(ShipCaptainCamera& camera) noexcept {
     camera = ShipCaptainCamera{};
     // 00432750: +380h = 1, +33Ch = 0, +1C0h = 0, +1DCh..+1E4h = 1.0f.
-    // SUBSTITUTION: its three 00BD2F10 draws into +1E8h..+1F0h (00432938,
-    // 00432955, 00432972) are not taken. They would advance the shared random
-    // stream the ship AI draws from, and the phases never reach the pose.
+    // Its three 00BD2F10 draws into +1E8h..+1F0h (00432938, 00432955,
+    // 00432972) are stream 0 (ECX = 0). OFF: not taken (SUBSTITUTION). ON
+    // (kShipCaptainCameraDrawsCc13Bound): the HUD host draws them and calls
+    // seed_ship_captain_phases_00432938. The phases never reach the pose.
     // 00519290: +3D4h = 0, +3E8h = 0, +3ECh/+3F0h, then 0064B650 overrides
     // +3ECh = 00CEC728, +3F0h = 00CEC400, +3F4h = 0, +400h = 0.
+}
+
+void seed_ship_captain_phases_00432938(ShipCaptainCamera& camera, const float draws[3]) noexcept {
+    // 0043293D / 0043295A / 00432977 store the draws at [esp+10h..18h]; 00432983
+    // (+1E8h), 00432990 and 0043299A (+1ECh, +1F0h, read after the POP EDI) copy them.
+    for (int i = 0; i < 3; ++i) camera.phase_1e8[i] = draws[i];
 }
 
 void bind_ship_captain_0064da40(ShipCaptainCamera& camera, const ShipCaptainTargetView& unit,
