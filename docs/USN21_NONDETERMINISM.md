@@ -453,6 +453,7 @@ against the OFF halves listed in section 7. The raw logs are deleted, except for
 | S5 kTorpedoCandidateGyroHeadingCc13Bound | 8034859ab | bsm09, usn01, bsm01 | lomp06, prcp01, usn12, esmp08, usn21 (aided), jm06 | usn02, ijn18 |
 | S15 kRocketTargetStopHandlersCc13Bound | 6f827a3d2 | bsm09, usn01, lomp10, prcp01, bsm01, jm06, ijn18, usn21 (aided) | esmp08 | none |
 | kPc24DynHullCc13Bound + kHullShapeBuildPc24Cc13Bound | a4e705339 | all 11 rows and usn21 (aided) | none | none |
+| Seven stream-set switches (S1, S3, S10, stream set 2 x2, S19, S22) | 896c3c6d8 | none | bsm09, usn12, jm08, lomp10, prcp01 | usn01 (chain5), bsm06 |
 
 Outcome movers:
 - S4, prcp01: completed at 689.96 s, now failed at 745.94 s. The first divergence is at
@@ -479,9 +480,19 @@ sides. Every row moved, which fits a shared stream-1 reshuffle:
 - prcp01: completes at 755 s, not 690 s.
 - bsm09, usn12 and jm08: same outcome.
 
-The flip commit is not made yet, because S1's constant was not identified. S3 is
-kShipCaptainCameraDrawsCc13Bound and S10 is kFollowSightCountdownDrawCc13Bound. The logs
-`local\nd1_ssoff_*` and `nd1_sson_*` are kept until that commit.
+The seven switches were flipped jointly in 896c3c6d8: S1 kHullAimSharedStreamCc13Bound, S3
+kShipCaptainCameraDrawsCc13Bound, S10 kFollowSightCountdownDrawCc13Bound, the two stream set 2
+switches, S19 and S22. No record showed which flags the sson build had set. Three rows were
+therefore re-run on 8c244690b (`ss2off`) against the same base with all seven ON (`ss2on`),
+aided on both sides:
+- usn01 completes at 445 s, not 380 s.
+- lomp10 completes at 878 s, not 1141 s.
+- bsm06 `h1_i` failed at 1005 s OFF and never ends ON. On OFF, a Hatsushimo torpedo sinks
+  John D. Ford, which holds at throttle 0 per the plan.
+
+Note: bsm06 `h1_i` completed at 1149 s on cen2 (b3ed16b1e) but fails at 1005 s on
+8c244690b, before any stream-set switch. That base carries the S4, S5, S15 and hull flips
+and the origin/main merges, so the cause is not isolated.
 
 Pair caveat: chain6's rows other than usn21 ran unaided on both sides. Unaided runs still
 reproduced. The hull pair was gameplay identical on 11 unaided rows. The prcp01 run on

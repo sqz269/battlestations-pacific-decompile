@@ -64,6 +64,7 @@
 
 namespace bsp {
 
-inline constexpr bool kNearFieldProbeCachedListCc13Bound = false;
+// ON since cc9-nondet2 (2026-10-28), jointly with the other six stream-set switches (docs/USN21_NONDETERMINISM.md 8).
+inline constexpr bool kNearFieldProbeCachedListCc13Bound = true;
 
 }  // namespace bsp
