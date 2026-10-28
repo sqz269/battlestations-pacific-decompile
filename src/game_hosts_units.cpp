@@ -16777,9 +16777,17 @@ void GameUnitsHost::Impl::ensure_parent_link_71c_006f5cc0(std::size_t index) {
                 const float dx = slot.motion.position[0] - cb.motion.position[0];
                 const float dy = slot.motion.position[1] - cb.motion.position[1];
                 const float dz = slot.motion.position[2] - cb.motion.position[2];
-                const float d2 = static_cast<float>(
-                    (static_cast<double>(dx) * dx + static_cast<double>(dy) * dy)
-                    + static_cast<double>(dz) * dz);
+                float d2;
+                if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                    // 006F5D97-006F5DB3: (dx*dx + dy*dy) + dz*dz, each op rounded.
+                    using namespace bsp::cc13x87;
+                    d2 = static_cast<float>(x87_add24(x87_add24(x87_mul24(dx, dx), x87_mul24(dy, dy)),
+                                                      x87_mul24(dz, dz)));
+                } else {
+                    d2 = static_cast<float>(
+                        (static_cast<double>(dx) * dx + static_cast<double>(dy) * dy)
+                        + static_cast<double>(dz) * dz);
+                }
                 const std::int32_t r2 = static_cast<std::int32_t>(
                     static_cast<std::uint32_t>(cb.inferior_range_7c8)
                     * static_cast<std::uint32_t>(cb.inferior_range_7c8));
@@ -17011,6 +17019,7 @@ void GameUnitsHost::Impl::log_ground_contact_loss(const GameUnitSlot& p) {
         hw = static_cast<float>(static_cast<double>(d.width_b0) * 0.5);
         hl = static_cast<float>(static_cast<double>(d.length_b4) * 0.5);
     }
+    // pc24-lint: allow host diagnostic (log_ground_contact_loss is log output only)
     const double v = std::sqrt(static_cast<double>(p.plane_world_velocity[0]) * p.plane_world_velocity[0]
         + static_cast<double>(p.plane_world_velocity[1]) * p.plane_world_velocity[1]
         + static_cast<double>(p.plane_world_velocity[2]) * p.plane_world_velocity[2]);
@@ -26503,10 +26512,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const float a1 = df_ip(400.0f, 0.2f, 900.0f, 1.45f, hgt);
                                 float spd;
                                 if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                                    // vtable[38h] stand-in, per op: (v0^2 + v1^2) + v2^2.
+                                    // vtable[38h] 007B8E60 reads unit+B1Ch, which 007D8020
+                                    // writes as an inline 0042B2F0 of ctl+18h (1e-10 cutoff).
                                     const float* wv = unit_.plane_world_velocity;
-                                    spd = static_cast<float>(bsp::cc13x87::x87_sqrt24(
-                                        bsp::pc24_unitshost::dot3(wv, wv)));
+                                    spd = bsp::pc24_unitshost::length3_0042b2f0(wv[0], wv[1], wv[2]);
                                 } else {
                                     spd = static_cast<float>(std::sqrt(
                                         static_cast<double>(unit_.plane_world_velocity[0]) * unit_.plane_world_velocity[0] +
@@ -26858,7 +26867,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             x87_add24(x87_mul24(perp[1], perp[1]), x87_mul24(perp[0], perp[0])),
                             x87_mul24(perp[2], perp[2])));
                         float rq[3] = {q[0], q[1], q[2]};
-                        if (static_cast<double>(pp) >= 9.999999747378752e-05) {   // [00D7A268]
+                        if (!(9.999999747378752e-05 > static_cast<double>(pp))) {   // [00D7A268], JBE: unordered rotates
                             float cr[3];
                             pu::cross_004f9b30(ax, perp, cr);
                             const float sn = static_cast<float>(x87_sin(th));
@@ -27787,12 +27796,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 lf = owner_.lua.plane_globals().dynamics_spd_multipliers_level_flight;
                             }
                             if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                                // Speed: the vtable[38h] stand-in per op. 009AABD3-009AAC31:
+                                // Speed: vtable[38h] 007B8E60 = unit+B1Ch, written by
+                                // 007D8020 as an inline 0042B2F0 of ctl+18h. 009AABD3-009AAC31:
                                 // h = 0042B2F0(dx, 0, dz), max(h, 1) (00415550), dy / that
                                 // (FDIVR) stored, atan stored, limit > atan takes it.
                                 using namespace bsp::cc13x87;
                                 const float* wv = unit_.plane_world_velocity;
-                                const float spd = static_cast<float>(x87_sqrt24(bsp::pc24_unitshost::dot3(wv, wv)));
+                                const float spd = bsp::pc24_unitshost::length3_0042b2f0(wv[0], wv[1], wv[2]);
                                 const float limit = bsp::dive_bomb_interpolate_clamped_00419010(
                                     sr * stall, 0.0f, lf * stall, 1.6f, spd);
                                 const float fdy = static_cast<float>(dy);
@@ -28165,10 +28175,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             {
                                 const auto& v = tgt.motion.linear_velocity;
                                 if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                                    // Stand-in speed, per op: (x^2 + y^2) + z^2.
-                                    using namespace bsp::cc13x87;
-                                    ai.target_speed = static_cast<float>(x87_sqrt24(static_cast<float>(x87_add24(
-                                        x87_add24(x87_mul24(v.x, v.x), x87_mul24(v.y, v.y)), x87_mul24(v.z, v.z)))));
+                                    // Probably the target's vtable[38h] 007B8E60 = unit+B1Ch,
+                                    // 007D8020's inline 0042B2F0 of the velocity (rev9 N1).
+                                    ai.target_speed = bsp::pc24_unitshost::length3_0042b2f0(v.x, v.y, v.z);
                                 } else {
                                     ai.target_speed = static_cast<float>(std::sqrt(
                                         static_cast<double>(v.x) * v.x + static_cast<double>(v.y) * v.y +
@@ -47529,9 +47538,11 @@ void GameUnitsHost::report() {
         const GameUnitRow& row = owned->row;
         if (!row.start_speed_authored || row.start_speed == 0.0f) continue;
         ++seeded;
+        // pc24-lint: allow host diagnostic (GameUnitsHost::report end-of-run log)
         const double expected = static_cast<double>(row.start_speed_ratio)
             * static_cast<double>(row.max_speed)
             * static_cast<double>(host.summary.simulated_seconds);
+        // pc24-lint: allow host diagnostic (GameUnitsHost::report end-of-run log)
         host.log.notef("  %-20s %10.4f %10.4f %8.4f %9.4f %10.2f %10.2f %10.2f",
             row.name.c_str(), static_cast<double>(row.start_speed),
             static_cast<double>(row.max_speed),
@@ -47807,6 +47818,7 @@ void GameUnitsHost::report() {
         double uy = s->motion.pose_row1[1];
         if (uy > 1.0) uy = 1.0;
         if (uy < -1.0) uy = -1.0;
+        // pc24-lint: allow host diagnostic (GameUnitsHost::report end-of-run log)
         host.log.notef("summary hull tilt %s: max=%.2f final=%.2f deg (diagnostic, cc9_hull_inertia)",
             s->row.name.c_str(), static_cast<double>(s->diag_hull_tilt_max_deg),
             std::acos(uy) * 57.29577951308232);
@@ -48009,6 +48021,7 @@ void GameUnitsHost::report() {
                     static_cast<double>(slot->attack_hdg_err_first),
                     static_cast<double>(slot->attack_hdg_err_last));
             }
+            // pc24-lint: allow host diagnostic (GameUnitsHost::report end-of-run log)
             host.log.notef("summary mission pilot attack: ordered=%zu "
                 "range_first_mean=%.1f m range_last_mean=%.1f m closed_mean=%.1f m "
                 "worst_closed=%.1f m | heading_error_first_mean=%.3f rad "
@@ -49451,6 +49464,7 @@ void GameUnitsHost::report() {
                     // swim. Both target numbers are hull POSE headings, so the
                     // two are commensurable; the ship-ai step heading is a
                     // different field and is deliberately absent here.
+                    // pc24-lint: allow host diagnostic (GameUnitsHost::report end-of-run log)
                     host.log.notef("  torpedo %-12s run-in at attackrun entry: "
                         "entries=%d yaw_C6C=%.4f own_pose=%.4f "
                         "target_pose=%.4f crossing=%.4f rad (%.1f deg)",
