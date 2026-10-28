@@ -12,6 +12,7 @@
 
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/gun_owner_inferior_operational_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/game_hosts_powerups.hpp"  // packet cc13-powerup-bind
@@ -4823,13 +4824,21 @@ public:
     // BOUND: the same three bytes the gunnery host's own fire gate answers
     // (FireRequestBinding: unit_fire_blocked, gun_disabled, gun_suppressed),
     // all clear there, so every mount is operational as it is for firing.
-    bool device_is_operational(bsp::NativeHandle) override {
+    bool device_is_operational(bsp::NativeHandle device) override {
         if (!kShipFirepowerBound) {
             owner_.record("ShipAiFirepower::device_is_operational_00729f10", 0x0095ec52u);
             return true;
         }
         owner_.done("ShipAiFirepower::device_is_operational_00729f10", 0x0095ec52u);
-        return bsp::ship_ai_gun_is_operational_00729f10(false, false, false);
+        if constexpr (bsp::kGunIsOperationalHostedCc13) {
+            // [device+3F0h] is the gun row's unit (bsp/gun_owner_inferior_operational_cc13.hpp).
+            const GameGunRow* gun = gun_row(device);
+            return gun == nullptr
+                || bsp::gun_is_operational_00729f10_cc13(owner_.units, *gun);
+        } else {
+            static_cast<void>(device);
+            return bsp::ship_ai_gun_is_operational_00729f10(false, false, false);
+        }
     }
 
     // 0095EC84, 00727D70: the [device+448h] reload timers at [device+414h] that
@@ -10127,7 +10136,7 @@ public:
             for (std::size_t b = 0; b < barrels; ++b) {
                 if (row.fire.barrel_timers[b] <= horizon) { loaded = true; break; }
             }
-            if (loaded && operational()) ++ready;
+            if (loaded && operational(row)) ++ready;
         }
         return ready;
     }
@@ -10135,7 +10144,7 @@ public:
         build_tubes_009e97b0();
         float least = 3600.0f;                               // 00CFDEB0
         for (const std::size_t gun : fore ? ctl_.sub_tubes_fore : ctl_.sub_tubes_aft) {
-            if (!operational()) continue;
+            if (!operational(owner_.gunnery->guns()[gun])) continue;
             const GameGunRow& row = owner_.gunnery->guns()[gun];
             // 00729920: the least of the first [+448h] barrel timers (<= keeps).
             float timer = 3600.0f;
@@ -10239,7 +10248,15 @@ public:
 private:
     // 00729F10 through the same answers FirepowerBinding gives 0095EB40: the
     // three bytes have no producer here, so every tube is operational (LABELLED).
-    static bool operational() { return bsp::ship_ai_gun_is_operational_00729f10(false, false, false); }
+    // Under kGunIsOperationalHostedCc13, bsp::gun_is_operational_00729f10_cc13.
+    bool operational(const GameGunRow& row) const {
+        if constexpr (bsp::kGunIsOperationalHostedCc13) {
+            return bsp::gun_is_operational_00729f10_cc13(owner_.units, row);
+        } else {
+            static_cast<void>(row);
+            return bsp::ship_ai_gun_is_operational_00729f10(false, false, false);
+        }
+    }
     // 009E97B0, once per brain (+0AC8h): the unit's Function-7 guns split by the
     // sign of their node's forward axis (node+110h, row 2 of the world matrix)
     // against the hull's (+0ECh..+0F4h), and the least WaterTravelSpeed
