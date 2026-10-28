@@ -22,7 +22,7 @@ namespace bsp {
 // Sites (src/game_hosts_units.cpp), each a 009C2980 construction:
 //   bot_task_ctor_seeds_0099c6f0 with a follow state (#tb74; dogfight, strafe, level
 //     bomb, kamikaze, drop kamikaze, depth charge, dive bomb, torpedo, moveonpath)
-//   the retreat install (#rf, 009C9C5D), the land install (#l74, 009B2EE4) and the
+//   the retreat install (#rf, 009C9C63), the land install (#l74, 009B2EE4) and the
 //     moveto install (#mt74, run_moveto_task_install_009c3000)
 // One draw per 009C2980 call, in call order. The construct paths' rel32 callers of
 // 009C2980 (PE scan) give the counts: dogfight 009A94E0, strafe 009CC020, level bomb
