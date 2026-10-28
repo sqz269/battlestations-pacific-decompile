@@ -64,6 +64,7 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_missionlua_cc13.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/powerup_session_broadcast_cc13.hpp"
 #include "bsp/render_tail.hpp"
 #include "bsp/session_polls.hpp"
 #include "bsp/session_participant_pools.hpp"
@@ -1557,9 +1558,23 @@ public:
             host_.record("PowerUps::resolve_air_support_classes", 0x008e34f0u);
         }
     }
+    // kPowerupSessionBroadcastCc13Bound: 0076A9F0 -> 00784790 sends only to the
+    // transport's peers, and this process has none, so the send is recorded only.
     void send_powerup_message67(std::int32_t, const bsp::cc13_powerup::PowerupItem&,
         std::int32_t) override {
-        throw std::logic_error("power-up message 67 without a session");
+        if constexpr (bsp::kPowerupSessionBroadcastCc13Bound) {
+            host_.record("PowerUps::send_message67", 0x0076a9f0u);
+        } else {
+            throw std::logic_error("power-up message 67 without a session");
+        }
+    }
+    void send_powerup_message68(const bsp::game_powerups::PowerupModifier&,
+        std::int32_t) override {
+        if constexpr (bsp::kPowerupSessionBroadcastCc13Bound) {
+            host_.record("PowerUps::send_message68", 0x0076a9f0u);
+        } else {
+            throw std::logic_error("power-up message 68 without a session");
+        }
     }
     std::vector<bsp::PowerUpSlot>& active_slot_records() override {
         return host_.world.power_ups.player_slots;
