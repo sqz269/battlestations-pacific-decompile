@@ -68,6 +68,9 @@ namespace bsp {
 //   - DeviceWalkRack::bullet_class (the cc13_devwalk rack walk) gets 2Eh instead of 0;
 //   - the single-drop test (007C0E30 arm): 2Eh is none of 2Bh/2Ch/33h, so it stays on the
 //     bomb arm, as the image's DummyTarget descriptor does.
-inline constexpr bool kSquadronAmmoDummyKindsCc13Bound = false;
+// ON (cc9-sweep3c, 2026-10-28) without a pair: reached only in TRN1-TRN6, which the
+// harness cannot launch (`--menu-select TRN1`: group 0, detail=0, step=Stopped, units=0),
+// and no WINS row reaches it. Compiles ON (off_switch_on_build).
+inline constexpr bool kSquadronAmmoDummyKindsCc13Bound = true;
 
 }  // namespace bsp
