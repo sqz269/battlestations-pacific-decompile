@@ -21205,9 +21205,9 @@ logs `cc9-sweep2\local\sw2br_<row>_sw2e_{off,on}.log`.
 - Prune flips (b35305ecd), zero reach on all seven rows: kReloadTorpedoesBound,
   kLuaIsUnitSelectableBound, kLuaGetEntitySpeedBound, kLuaSquadronLandAndKillBound,
   kAirOpsSceneSquadronOrdersBound, kEngineMovieStopRosterExemptBound (p01 drops ten movie-only
-  squadrons, all exempt_reach=0), kHudUnitHealthColourBound, kVector3DivideInPlacePc24Cc13Bound,
-  kAiRocketAccuracyBound, and kPowerupSessionBroadcastCc13Bound (its OFF arm throws wherever it
-  is reached).
+  squadrons, all exempt_reach=0), kHudUnitHealthColourBound, kAiRocketAccuracyBound, and
+  kPowerupSessionBroadcastCc13Bound (its OFF arm throws wherever it is reached).
+  kVector3DivideInPlacePc24Cc13Bound was flipped by cc9-sweep3b (section 331).
 - Paired flip: kShipAiApproachTimerSeedBound with kDeadLeaderRepublishesFollowerPairBound. Reach:
   approach enters 0/0/2/3/2/26/40 and formation leaves with members left 5/2/8/7/5/17/20 on
   u01/b9/b6i/l10/p01/u12/j8v3. u01 and b9 are gameplay-identical. b6i (both fail, Game Over),

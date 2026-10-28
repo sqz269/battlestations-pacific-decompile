@@ -17,6 +17,6 @@ namespace bsp {
 // Movers when ON: B feeds lead_bearing_error, which drives the flyabove bank and
 // heading every tick of the dive approach, and the readers of
 // db_flyabove_lead_bearing (last float ulp).
-inline constexpr bool kFlyaboveLeadBearingPc24Cc13Bound = false;
+inline constexpr bool kFlyaboveLeadBearingPc24Cc13Bound = true;  // cc9-sweep2b: paired at fd90db962, BSM04/BSM06 h1_i/h1_j/BSM09 identical
 
 }  // namespace bsp
