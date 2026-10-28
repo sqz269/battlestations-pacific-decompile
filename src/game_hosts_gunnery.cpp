@@ -22,6 +22,7 @@
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq (the deferred hit queue)
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_gunnery_cc13.hpp"    // packet pc24w1-gunnery-1
+#include "bsp/pc24_gunnery_rng_cc13.hpp"  // packet pc24w2-gunrng
 
 #include <array>
 #include <deque>
@@ -4077,8 +4078,24 @@ struct GameGunneryHost::Impl {
             u2 = draw(purpose, a, b, -1.0f, 1.0f);
             s = u1 * u1 + u2 * u2;
         } while (s >= 1.0f || s == 0.0f);
-        const float k = static_cast<float>(std::sqrt(-2.0 * std::log(static_cast<double>(s))
-            / static_cast<double>(s)));
+        float k;
+        if constexpr (bsp::kPc24GunneryRngCc13Bound) {
+            // pc24w2-gunrng: 00BF0F60 calls the CRT log 00BFA910 (_CIlog). With SSE2 present
+            // (__use_sse2_mathfcns [0109EEA0], set from CPUID at 00C0AC8F) and the exception
+            // masks at their defaults, it takes __libm_sse2_log (00C148D0), a double result
+            // the x87 precision control does not touch; 00BF0F65 FSTP dword rounds it to
+            // float. std::log stands in for __libm_sse2_log: the two double results can
+            // differ in the last ulp, which moves the float only at a rounding boundary.
+            // Then L * -2.0 (00BF0F6D, qword [00D19660], exact) / s (00BF0F73 FDIV, rounded
+            // at PC24), FSTP float (00BF0F77), _CIsqrt (00BF0F7F), FSTP float (00BF0F84).
+            const float log_s = static_cast<float>(std::log(static_cast<double>(s)));
+            const float ratio = static_cast<float>(
+                cc13x87::x87_div24(cc13x87::x87_mul24(log_s, -2.0), s));
+            k = static_cast<float>(std::sqrt(static_cast<double>(ratio)));
+        } else {
+            k = static_cast<float>(std::sqrt(-2.0 * std::log(static_cast<double>(s))
+                / static_cast<double>(s)));
+        }
         return k * u1 * sigma + mean;
     }
 
@@ -16762,8 +16779,23 @@ void GameGunneryHost::ship_systems_sink_draws_00933da0_00933bb0(std::size_t unit
         ++host.sink_grid_calls;
         // 00933DC2..00933E1C: class+A4h is the host's width, class+A0h its length
         // (as in damage_smoke_tick_008227e0); _ftol truncates.
-        const int nx = static_cast<int>(static_cast<double>(us.hull_width) * 1.5 / 15.0 + 1.0);
-        const int ny = static_cast<int>(static_cast<double>(us.hull_length) * 1.5 / 15.0 + 1.0);
+        int nx, ny;
+        if constexpr (bsp::kPc24GunneryRngCc13Bound) {
+            // pc24w2-gunrng: extent * 1.5 (qword [00CE3D78]; 00933DCE x, 00933DD6 y) is
+            // stored as a float (00933DD2, 00933DDC), / 15.0 (qword [00CF3F20]; 00933DEC x,
+            // 00933E0F y), + 1 (FLD1; 00933DF0 x, 00933E13 y), each rounded at PC24, then
+            // 00BF7420 truncates the register (00933DF4, 00933E17).
+            const auto count = [](float extent) {
+                const float scaled = static_cast<float>(cc13x87::x87_mul24(extent, 1.5));
+                return static_cast<int>(
+                    cc13x87::x87_add24(cc13x87::x87_div24(scaled, 15.0), 1.0));
+            };
+            nx = count(us.hull_width);
+            ny = count(us.hull_length);
+        } else {
+            nx = static_cast<int>(static_cast<double>(us.hull_width) * 1.5 / 15.0 + 1.0);
+            ny = static_cast<int>(static_cast<double>(us.hull_length) * 1.5 / 15.0 + 1.0);
+        }
         if (kShipSystemsSinkDrawsBound && nx > 0 && ny > 0) {
             for (int i = 0; i < nx * ny; ++i) {
                 ++host.sink_draws;

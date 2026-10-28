@@ -73,6 +73,8 @@
 #include "bsp/cc13_seg67n_switches.hpp"   // packet cc13-seg67n3 (009FAAD0 per install)
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
+#include "bsp/follow_to_body_pc24_cc13.hpp"  // packet cc13-followbody
+#include "bsp/units_host_deviations_cc13.hpp"  // packet cc13-unitsdev
 #include "bsp/cc13_release_timer.hpp"            // packet cc13-reltimer (009FA3A0 stubs)
 #include "bsp/band_0099_cc13.hpp"                // 009D49E0 / 009C8290 (cc13-reltimer2)
 #include "bsp/torpedo_issue_timing.hpp"
@@ -601,6 +603,11 @@ struct GameUnitSlot {
     // live pose. Slot state rather than locals because the native leaves the
     // heading and bank untouched when the forward axis is near vertical.
     float plane_pitch_angle_c64{0.0f};
+    // unit+C7Ch, the world velocity's elevation (007C1C4B..007C1CA8), written only
+    // under kUnitsHostDeviationsCc13Bound by refresh_attitude_007c1900 (all three
+    // of its host callers); kept when |v| <= 0.1. Starts at 0 (the constructor's
+    // value was not read; labelled).
+    float plane_velocity_elevation_c7c{0.0f};
     // Packet cc9_torpedo_run_pitch_profile: the measured angle the last pitch
     // demand used (diagnostic).
     float diag_held_pitch{0.0f};
@@ -3447,6 +3454,7 @@ struct GameUnitsHost::Impl {
     unsigned long long lhc_n{0}, lhc_on{0}, lhc_far{0}, lhc_side_moved{0}, lhc_heading{0};
     unsigned long long lhc_own_ok{0}, lhc_own_far{0}, lhc_leave{0}, lhc_trace{0};
     unsigned long long lfm_trace{0};  // cc9-physics28: land final mode-loss lines
+    unsigned long long lsp_trace{0};  // cc9-physics29: land spacing-zero lines
     double lhc_dd_r_sum{0.0}, lhc_delta_fail_sum{0.0}, lhc_r_moved_sum{0.0};
     double lhc_point_moved_sum{0.0}, lhc_own_d_r_sum{0.0};
     bool landing_turn_in_006c5e20(const LandingDeck& d, const GameUnitSlot& p) const;
@@ -7035,8 +7043,9 @@ struct GameUnitsHost::Impl {
     // lvl x w (009B1A59), spd x 3 (009B1A7C) and length x 1.4 (009B1AA2), and the hold's
     // lateral -X x 1.25 x u (009B1B76-009B1B82); and the caller 009B1D70's speed
     // +2B4h = mc + (a+5Ch - mc) x a+4Ch (009B1DAB-009B1DCE). True: per-op float in the
-    // listing's order. False: the double chains rounded once.
-    static constexpr bool kLandBeginSteerPc24Cc13Bound = false;
+    // listing's order. False: the double chains rounded once. ON (cc9-physics29,
+    // OCEAN_WAVE_FIELD 124): six WINS rows paired, BSM01 l72_b1_k1 moved with its end kept.
+    static constexpr bool kLandBeginSteerPc24Cc13Bound = true;
     // Packet p20_strafe_horizontal (section 80). 009CAD27-009CAD58: dx and dz are FSTP'd
     // to floats (009CAD30, 009CAD3E) and d2 = (dx dx + 0 0) + dz dz is stored as a float
     // (009CAD58), main-thread 24-bit per op. True: float per op. False: double dx, dz.
@@ -10032,9 +10041,57 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // 004142E0 with unit+110h (the inverse of the world matrix): a world point
     // in the unit's body frame; rows 0/1/2 of the pose are right/up/forward.
     // With `direction` it is 0042D0D0(normalize = 0): the rotation only.
+    // cc13-followbody: 00B63D50 per op at PC24, the inverse the image caches at
+    // unit+110h from the pose at unit+CCh (u.world). Each row's squared length
+    // n = (a*a + b*b) + c*c with every square stored float (00B63D7D..00B63E39);
+    // column r of the 3x3 is row r / n (00B63E47 FDIVP, 00B63E50 FDIV, 00B63E58
+    // FDIVR m32, each stored); translation r = ((-inv[r] * t0) - t1 * inv[4+r])
+    // - t2 * inv[8+r] (00B63E9A..00B63F03, FSUBP DE E9 = ST1 - ST0); the last
+    // column is 0, 0, 0, 1.
+    static void follow_inverse_00b63d50(const float* s, float inv[16]) {
+        namespace x8 = bsp::cc13x87;
+        float n[3];
+        for (int r = 0; r < 3; ++r) {
+            const float* row = s + 4 * r;
+            const float aa = static_cast<float>(x8::x87_mul24(row[0], row[0]));
+            const float bb = static_cast<float>(x8::x87_mul24(row[1], row[1]));
+            const float cc = static_cast<float>(x8::x87_mul24(row[2], row[2]));
+            n[r] = static_cast<float>(x8::x87_add24(x8::x87_add24(aa, bb), cc));
+        }
+        for (int r = 0; r < 3; ++r) {
+            inv[r] = static_cast<float>(x8::x87_div24(s[4 * r], n[r]));
+            inv[4 + r] = static_cast<float>(x8::x87_div24(s[4 * r + 1], n[r]));
+            inv[8 + r] = static_cast<float>(x8::x87_div24(s[4 * r + 2], n[r]));
+        }
+        for (int r = 0; r < 3; ++r) {
+            inv[12 + r] = static_cast<float>(x8::x87_sub24(
+                x8::x87_sub24(x8::x87_mul24(-inv[r], s[12]), x8::x87_mul24(s[13], inv[4 + r])),
+                x8::x87_mul24(s[14], inv[8 + r])));
+        }
+        inv[3] = inv[7] = inv[11] = 0.0f;
+        inv[15] = 1.0f;
+    }
     static void follow_to_body(const GameUnitSlot& u, const float p[3], bool direction,
                                float out[3]) {
         const float* m = u.world.data();
+        if constexpr (bsp::kFollowToBodyPc24Cc13Bound) {
+            // cc13-followbody: 004142E0 (point) / 0042D0D0 with flag 0 (direction)
+            // by that inverse, per op: out[j] = ((p0 * inv[j] + p1 * inv[4+j])
+            // + p2 * inv[8+j]) (+ inv[12+j] for the point), each output stored
+            // float (00414328/00414340/0041435B; 0042D11A/0042D131/0042D14A).
+            // The input is staged first (004142E3..004142FA), so out may alias p.
+            namespace x8 = bsp::cc13x87;
+            float inv[16];
+            follow_inverse_00b63d50(m, inv);
+            const float q[3] = {p[0], p[1], p[2]};
+            for (int j = 0; j < 3; ++j) {
+                double sum = x8::x87_add24(
+                    x8::x87_add24(x8::x87_mul24(q[0], inv[j]), x8::x87_mul24(q[1], inv[4 + j])),
+                    x8::x87_mul24(q[2], inv[8 + j]));
+                if (!direction) sum = x8::x87_add24(sum, inv[12 + j]);
+                out[j] = static_cast<float>(sum);
+            }
+        } else {
         const double d[3] = {
             static_cast<double>(p[0]) - (direction ? 0.0 : m[12]),
             static_cast<double>(p[1]) - (direction ? 0.0 : m[13]),
@@ -10048,6 +10105,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             // pc24-lint: allow SUBSTITUTION, see above
             out[r] = static_cast<float>(
                 (d[0] * row[0] + d[1] * row[1] + d[2] * row[2]) / (n > 0 ? n : 1));
+        }
         }
     }
     static bsp::PlaneFollowHoldAttitude follow_hold_attitude(const GameUnitSlot& u) {
@@ -13733,6 +13791,28 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     // unit+C7Ch: the elevation of the vector at unit+AC8h (007C1CA8), and
     // unit+AC8h is the world velocity vtable[34h] 007BBB70 returns
     // (docs/FIGHTER_GUN_LEAD.md). So the velocity's elevation is the term.
+    float pitch = 0.0f;
+    if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+        // cc13-unitsdev: the image reads unit+C7Ch, which 007C18B0/007C1900
+        // writes only when |v| > 0.1 (otherwise it keeps its value). In the
+        // image that write is at 007CEE9C, after the think (007CE865) and the
+        // motion, so think sees the previous step's C7C. The host's
+        // refresh_attitude_007c1900 runs before pilot_think_and_commit in each
+        // of its three arms (free flight, ground roll/deck, surface), from the
+        // velocity the host holds at that point. In steady free flight that is
+        // the velocity the previous step's motion left, so the values agree.
+        // LABELLED, they differ when the velocity changes between the image's
+        // write and the host's refresh: (a) 007CE040 runs the 007C0910 sweep
+        // collision at 007CEF67, after the 007CEE9C write, so the image's C7C
+        // predates a collision response the host sees; (b) on the ground roll
+        // carrier_deck_carry_in rewrites plane_world_velocity under the
+        // carrier's current matrix just before the refresh; (c) out-of-step
+        // writers zero or replace the velocity (flight_state_notify,
+        // plane_enter_state_two, airfield_site_tick,
+        // carrier_elevator_send_empty_down, carrier_deck_capture), after which
+        // the host keeps a C7C one step older than the image's.
+        pitch = u.plane_velocity_elevation_c7c;
+    } else {
     double horiz;
     if constexpr (kPc24PlaneTasksCc13Bound) {
         // pc24w1-sweep3-5: the C7Ch writer (007C1B85..007C1CA8) forms x*x + z*z at PC24,
@@ -13746,9 +13826,10 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     horiz = std::sqrt(static_cast<double>(v_world[0]) * v_world[0] +
                       static_cast<double>(v_world[2]) * v_world[2]);
     }
-    const float pitch = avoid_len(v_world) > 1.0f
+    pitch = avoid_len(v_world) > 1.0f
         ? static_cast<float>(std::atan2(static_cast<double>(v_world[1]), horiz))
         : u.plane_pitch_angle_c64;
+    }
     const float bank = u.plane_bank_angle_c68;
     float bank_f = std::fabs(bank);
     if (static_cast<double>(bank_f) > 1.5707963705062866) {          // double [00CE3830]
@@ -13829,7 +13910,14 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
             } else {
             c0 = static_cast<float>(p0[1] - (h0 + 10.0));
             }
-            if (0.1 > c0) c0 = 0.1f;                                 // double [00D7A3A0]
+            if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+                // cc13-unitsdev: 0099FA91 FLD double [00D7A3A0] = 0.10000000149011612
+                // (0.1f widened), FCOMIP, JBE keeps c0; else [00D7A2F0] 0.1f. No float
+                // lies between 0.1 and 0.1f, so the two compares agree on every input.
+                if (0.10000000149011612 > c0) c0 = 0.1f;
+            } else {
+                if (0.1 > c0) c0 = 0.1f;                             // double [00D7A3A0]
+            }
         } else {                                                     // 0099FAB4-0099FF49
             float f[3] = {m[8], m[9], m[10]};
             float up[3];
@@ -13845,6 +13933,9 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
                 k = static_cast<float>(std::cos(bank_f) * std::cos(pitch) * 0.15);   // double [00CE6618]
                 }
                 for (int i = 0; i < 3; ++i) f[i] = k * up[i] + f[i];
+                // 0099FBED (and 0099FCA0 below) call 00419510 with EDX = f but
+                // ECX = an unused temporary ([ESP+468h] / [ESP+45Ch]); f is not
+                // normalized and 0099FCA9 reads it as is (cc13-unitsdev, rev9).
             } else if (pitch < 0.0f) {
                 const float wa = avoid_interp(10.0f, 0.0f, 50.0f, 1.0f, h9b4);   // [00CEB4D4]
                 const float wb = avoid_interp(-0.4f, 0.0f, -0.15f, 1.0f, pitch); // [00D1F400]
@@ -19088,6 +19179,7 @@ void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssign
     float least = 999999.0f;
     float gap = 999999.0f;
     int k = 0;
+    std::size_t gap_plane = static_cast<std::size_t>(-1);          // DIAGNOSTIC
     for (const LandingAssignment& o : d.assignments) {
         if (o.plane == rec.plane) continue;
         const GameUnitSlot& op = *slots[o.plane];
@@ -19126,6 +19218,7 @@ void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssign
         least = o.path_4 > least ? least : o.path_4;
         const float ng = -gdiff;
         const float m = ng > gap ? gap : ng;
+        if (!(ng > gap)) gap_plane = o.plane;                       // DIAGNOSTIC
         gap = 0.0f > m ? 0.0f : m;
         ++k;
     }
@@ -19219,6 +19312,27 @@ void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssign
     const float last = bsp::clamped_interpolate_00419010(-0.15000000596046448f,
         0.009999999776482582f, 0.15000000596046448f, 2.0f, x);
     rec.spacing_8 = last > s ? s : last;
+    if (own4 && p.land_task_installed && lsp_trace < 80 && !(rec.spacing_8 > 0.0f)
+        && (p.land_state == GameUnitSlot::LandTaskState::kBegin
+            || p.land_state == GameUnitSlot::LandTaskState::kFinal)) {
+        // DIAGNOSTIC (cc9-physics29): a mode-4 plane on land/begin or land/final whose
+        // spacing is 0 (006C7960 then gives a wingman mode 3 and 009B3DB2 aborts).
+        ++lsp_trace;
+        log.notef("  land spacing zero %s t=%.2f k=%d own_path=%.1f gap=%.1f behind=%s "
+            "behind_path=%.1f least=%.1f speed=%.2f gap_s=%.3f F=%.3f s=%.3f last=%.3f "
+            "(006C3F80, cc9-physics29 diagnostic)", p.row.name.c_str(),
+            static_cast<double>(summary.simulated_seconds), k, static_cast<double>(own_path),
+            static_cast<double>(gap),
+            gap_plane < slots.size() ? slots[gap_plane]->row.name.c_str() : "-",
+            [&] {
+                for (const LandingAssignment& o : d.assignments)
+                    if (o.plane == gap_plane) return static_cast<double>(o.path_4);
+                return -1.0;
+            }(),
+            static_cast<double>(least), static_cast<double>(speed),
+            static_cast<double>(gap) / static_cast<double>(speed), static_cast<double>(F),
+            static_cast<double>(s), static_cast<double>(last));
+    }
 }
 
 // 006CC9F0 (006CC9F0-006CCD77, __thiscall(block)(squadron, float), RET 8,
@@ -36769,8 +36883,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             d2 = static_cast<double>(dx) * dx +
                                  static_cast<double>(dz) * dz;
                         }
-                        unit_.moveto_distance_64 = d2 <= 1e-6
-                            ? 0.0f : static_cast<float>(std::sqrt(d2));
+                        if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+                            // cc13-unitsdev: 009BEC41..009BEC4F FCOMI against 1e-10
+                            // [00CE3820], JBE (unordered too) stores 0 (009BEC64);
+                            // else 00BF7030 sqrt stored as a float (009BEC56).
+                            unit_.moveto_distance_64 = 0.0f;
+                            if (d2 > 1.0e-10) {
+                                unit_.moveto_distance_64 = static_cast<float>(std::sqrt(d2));
+                            }
+                        } else {
+                            unit_.moveto_distance_64 = d2 <= 1e-6
+                                ? 0.0f : static_cast<float>(std::sqrt(d2));
+                        }
                         owner_.record("BotApproach::refresh_path_leg_009fd050", 0x009fd050u);
                         if constexpr (bsp::kLegAltitudeManagerBound
                                       && GameUnitsHost::Impl::kMoveToLegAltitudeBound) {
@@ -41334,6 +41458,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (a.heading_and_bank_written) {
                             unit_.plane_heading_c6c = a.heading;
                             unit_.plane_bank_angle_c68 = a.bank;
+                        }
+                        if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+                            // cc13-unitsdev: 007C1BCD..007C1CA8, unit+C7Ch from the
+                            // world velocity +AC8h: |v| = sqrt((y*y + x*x) + z*z)
+                            // stored, 0 at or below 1e-10 [00CE3820]; only when
+                            // |v| > 0.1 [00D7A3A0] (FCOMPI/JBE at 007C1C55, unordered
+                            // keeps it too) the horizontal sqrt(z*z + x*x) (same
+                            // floor) and C7Ch = atan2(y, horizontal) (00BF701A),
+                            // stored as a float; otherwise C7Ch keeps its value.
+                            using namespace bsp::cc13x87;
+                            const float* const v = unit_.plane_world_velocity;
+                            const double xx = x87_mul24(v[0], v[0]);
+                            const double yy = x87_mul24(v[1], v[1]);
+                            const double zz = x87_mul24(v[2], v[2]);
+                            const float s3 = static_cast<float>(x87_add24(x87_add24(yy, xx), zz));
+                            float len3 = 0.0f;
+                            if (s3 > 1.0e-10) len3 = static_cast<float>(std::sqrt(static_cast<double>(s3)));
+                            if (len3 > 0.10000000149011612) {
+                                const float s2 = static_cast<float>(x87_add24(zz, xx));
+                                float horiz = 0.0f;
+                                if (s2 > 1.0e-10) horiz = static_cast<float>(std::sqrt(static_cast<double>(s2)));
+                                unit_.plane_velocity_elevation_c7c = static_cast<float>(
+                                    std::atan2(static_cast<double>(v[1]), static_cast<double>(horiz)));
+                            }
                         }
                         if constexpr (GameUnitsHost::Impl::kPlaneVelocityLowpassBound) {
                             // 007C1B85-007C1D05: only when |ctl+18h| > 0.1 (double
