@@ -65,7 +65,7 @@ namespace {
 
 // Packet cc15-fe2: the mission-detail page's 00414130 call (0059A36F..0059A39C)
 // runs engine_seg1_cc13.cpp's lerp instead of returning the offset unchanged.
-constexpr bool kMissionDetailOffsetLerpBound = false;
+constexpr bool kMissionDetailOffsetLerpBound = true;  // ON by bundle pair (cc9-sweep1b)
 
 // Packet cc9_frame_delta_jitter. A process-private splitmix64 stream, so the
 // shared generator 00BD2F10 (gunnery, planner) never sees a draw from it.

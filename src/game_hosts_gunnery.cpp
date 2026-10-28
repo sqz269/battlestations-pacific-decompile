@@ -2612,6 +2612,7 @@ struct GameGunneryHost::Impl {
         trace_scene_damage = 33, // 0084C19F, U(+ACh, +B0h) for 00428420, stream 1, key (shot serial | plane, 0)
         ship_break_in_two = 34, // 00935D30's 11 piece-offset draws, stream 1, key (unit, 0 front | 1 back)
         sink_leak = 35,       // 0074ECA5, 0074EC50's per-leak U(0, 1), stream 1, key (ship, 0)
+        hull_aim_point = 36,  // 00816650 via 009FA260, the hull aim pick, stream 1, key (shooter, 0)
     };
     unsigned long long next_projectile_serial{0};
     unsigned long long trace_scene_draws{0};   // kTraceSceneDamageDrawBound
@@ -19382,6 +19383,11 @@ std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() cons
 
 float GameGunneryHost::ship_ai_draw(std::size_t unit_index, float low, float high) {
     return impl_->draw(Impl::Draw::ship_ai_torpedo, unit_index, 0, low, high);
+}
+
+float GameGunneryHost::hull_aim_point_draw_00816650(std::size_t unit_index, float low,
+                                                    float high) {
+    return impl_->draw(Impl::Draw::hull_aim_point, unit_index, 0, low, high);
 }
 
 float GameGunneryHost::auto_target_phase_draw_009f6a8f(std::size_t unit_index) {

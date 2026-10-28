@@ -11,7 +11,7 @@ namespace {
 
 // cc13-P4 (007DA710 R3): ON takes the image's multiply order for the yaw-roll
 // coupling. OFF keeps the earlier order, which live play has run on.
-constexpr bool kPlaneYawRollCouplingOrderCc13Bound = false;
+constexpr bool kPlaneYawRollCouplingOrderCc13Bound = true;  // ON by bundle pair (cc9-sweep1b)
 
 // 007DAB79..007DAB8A, and again at 007DAB99 and 007DAD0F: MSVC's fabs here is
 // `-0.0f - x` under a sign test rather than a bit mask, the -0.0f coming from
