@@ -20,7 +20,7 @@ namespace bsp {
 // x87 FMUL/FADD/FSUB/FDIV rounds to float, as the main thread's 24-bit precision
 // control does (docs/CC13_FPU_PRECISION.md). Live under kSubmarineDiveBound and
 // kSubmarineSeabedBound (game_hosts_units.cpp); cc9 pairs the flip.
-inline constexpr bool kSubmarineInterpolatePc24Cc13Bound = false;
+inline constexpr bool kSubmarineInterpolatePc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 
 // ---------------------------------------------------------------------------
 // Layout

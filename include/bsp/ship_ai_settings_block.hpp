@@ -155,7 +155,7 @@ bool weapon_hit_accuracy_category_008387b0(int weapon_kind,
 // does; only those two FMULs change. 1 - w (0083857C FSUBRP) is the same both
 // ways: OFF's float(1.0 - double(w)) is already one rounded operation. OFF
 // keeps the products in double and rounds the sum once.
-inline constexpr bool kWeaponHitAccuracyBlendPc24Cc13Bound = false;
+inline constexpr bool kWeaponHitAccuracyBlendPc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 float weapon_hit_accuracy_range_fraction_00838530(const WeaponHitAccuracyProfile& profile,
                                                   float target_length,
                                                   float accuracy) noexcept;

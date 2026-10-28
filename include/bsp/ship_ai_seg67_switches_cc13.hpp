@@ -242,6 +242,6 @@ inline constexpr bool kShipAiNavigationNanArmsCc13Bound = true;  // ON (cc9-swee
 // The host evaluated several chains in double and rounded once (or compared
 // unrounded). True: each operation rounds to float in listing order
 // (ship_ai_station_keeping.cpp). False: as before.
-inline constexpr bool kShipAiStationKeepingPc24Cc13Bound = false;
+inline constexpr bool kShipAiStationKeepingPc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 
 } // namespace bsp

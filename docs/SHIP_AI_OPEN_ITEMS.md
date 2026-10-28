@@ -21126,3 +21126,34 @@ reaches it, so its pair is identical by construction.
 
 Run cap: at most 2 runs per worker (cc9 total about 8). 0x8876086A exit 4 or FMOD create_result=78 at startup
 means device exhaustion: hold and do not retry until the lead reopens.
+
+## 330. cc13 switch flips and the rows they lose (cc9-sweep2b, 2026-10-28)
+
+Flips on agent/cc9-sweep2: 0f0070649 kTorpedoHomeSectorScaleCc13Bound; d3ad11c39 the three
+ship-AI NaN-arm switches (prune, zero reach); 2f03c778c bundle b2 (17 switches, listed in the
+commit); 0174a0ec6 kPc24ShipAiCc13Bound; e331ba421 kPc24GunneryCc13Bound with
+kFollowToBodyPc24Cc13Bound. All faithful, all flipped with losses. Pairs are ref-env, one run
+at a time, OFF d3ad11c39 vs ON exports of the same commit; logs
+`cc9-sweep2\local\sw2br_<row>_sw2c_{off,b2,s4,g5}.log`. Long rows (USN21, IJN18, JM06,
+ESMP08) were not paired on that base and need a light-load re-time on main (provisional).
+
+Rows lost, for the WINS re-plan queue (first divergence and the likely cause):
+- BSM01 `l73_b1_m1` (home sector): EndMission 839.92 s -> no end. Gunnery step 2900 (145 s):
+  enemy torpedo planes replan from the right sector; the plan never takes Donald.
+- BSM06 `h1_i` / `h1_j` (b2, bisected to kShipAiStationKeepingPc24Cc13Bound): failed 1617.45 s /
+  no end. Ship AI step 11460 (573 s): Sagami Maru's station-keeping rudder 0.842 -> 0.843.
+- BSM05 `h1_m3` (b2): failed 333.04 s. Controlled unit frame 170 (8.5 s): forward speed
+  18.611 -> 18.612 (not bisected).
+- PRCP01 `p26_p01_a` (b2): failed 1095.74 s. Ship AI step 2090: Kuroshio (follow) rudder
+  0.132 -> 0.131 (not bisected; station keeping is the likely member).
+- BSM03 `h1_x8` (ship-AI PC24): failed 408.02 s. Controlled unit frame 1630 (81.5 s): heading
+  -18.186 -> -18.187.
+- PRCP01 `p26_p01_a` (ship-AI PC24): failed 1014.33 s. Ship AI step 4840: Cushing rudder
+  -0.969 -> -0.968.
+- BSM06 `h1_i` / `h1_j` (gunnery + follow_to_body): failed 983.88 / 1281.12 s. Gunnery step
+  3400 (170 s): hits 79 -> 70 on the same shots.
+- JM08 `s63_j8_v3` (gunnery + follow_to_body): failed 1604.49 s (HQ destroyed). At 103.7 s the
+  Wildcat #1.1 kill of H6K Mavis 01 lands 0.05 s earlier.
+
+Rows that moved and still won are in each flip commit. 008E6430(0xF) at 008570B5 is identity
+for every campaign row (no power-up store; only MP Swirl differs), so it is not a host gap.
