@@ -152,9 +152,9 @@ constexpr bool kSetCommandMessageCc13Bound = true;
 // 51 round trips and no line other than the summary count moved.
 constexpr bool kCommandMessageCc13Bound = true;
 
-// [00e188a8]+1fe4h. The single-player value, which is what every other host in
-// this executable already reports for the same field: 0 (1 is the session host,
-// 2 the client). docs/CC13_SESSION_MODE_AUDIT.md: every use here tests == 2,
+// [00e188a8]+1fe4h's single-player value 0 (1 is the session host, 2 the client).
+// It is now only the OFF value of session_mode_1fe4() below; the uses read that
+// (packet cc13-mp2c). docs/CC13_SESSION_MODE_AUDIT.md: every use here tests == 2,
 // != 2 or {0, 1}, so 0 and the earlier 1 take the same arm. The byte 00E0C978
 // (005E2F99..005E2FAB), which is SET to 1 in single player, is a different global.
 constexpr int kSessionModeSinglePlayer = 0;
