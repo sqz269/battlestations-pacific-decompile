@@ -153,6 +153,10 @@ namespace cp = bsp::cc13_powerup;
 // [game+1FE4h] == 1 sends message 67 or 68 at 008EA466, 008ED5AB, 008E8AC0 and
 // 008E8CE6. A mission-tree or skirmish run is session 0; hosting is not modelled.
 // kPowerupSessionBroadcastCc13Bound replaces each call with the send.
+// CORRECTION (packet cc13-mp1): only a mission-tree run is session 0. A front-end
+// skirmish is session 1. 005EC990 calls 00770E40, which is Session_SetMode(1), and
+// game+218Ch is set as well (005E6F87). These sends test only +1FE4h, so a skirmish
+// reaches them and this throws (MP5).
 void require_unhosted_session(cp::PowerupRuntime& runtime, const char* where) {
     if (runtime.host->session_word_1fe4() == 1) {
         throw std::logic_error(std::string(where) + ": session 1 power-up messages not modelled");
