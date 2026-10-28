@@ -30,7 +30,10 @@ namespace bsp {
 // approach update (aim_point_009fada0, the hull point with the lead), whatever the
 // +70h drop latch (st_ref70_dropped) and the target's +5Dh/+5Eh say.
 // ON, in st_refresh_aim_point, in this order:
-//   1. st_ref70_dropped already latched: the point is left as it is (frozen).
+//   1. st_aim_frozen already set (by path 2 or 3 below, cleared at each install): the
+//      point is left as it is (frozen). Not st_ref70_dropped: st_target_70 latches that on
+//      the target's +5Eh at any +70h reader, including a goaway reader that runs before
+//      this refresh, and testing it here would skip path 2.
 //   2. The 009FAF90 path: the target's +5Eh mirror (scene_destroyed_005e) is set and it
 //      is kind 2 (the ref holds only a kind-2 target, 009FB200): point = target.world x
 //      point, then latch. LABELLED: applied at the next approach update with the
@@ -40,6 +43,21 @@ namespace bsp {
 //      no lead, then latch. LABELLED: a target that does not sample the hull has no
 //      host +28h; its point is the target's position, as the OFF refresh gives it.
 //   4. Otherwise the OFF refresh.
+// LABELLED, the non-kind-2 residual (same invariant: 009FADA0 writes +1Ch only while
+// sub+18h is bound). 009FB200 binds sub+18h only for a kind-2 target (009FB352 JZ
+// 009FB3A7); otherwise +1Ch = the target's position at the bind (009FB32A..009FB346) and is
+// never refreshed, and with no target +1Ch = +28h = [00F87574..7C] (009FB36B..009FB3A4).
+// Path 4 refreshes such a target every update. Not fixed: 007EEBA7 lets strafe take a
+// non-surface target only when it answers IsKindOf(41h), a NavPoint, which does not move
+// and samples no hull (aim_point_009fada0 returns its position, unled), so both points are
+// the same; the no-target case never installs here (009CD170 returns first). Census
+// 2026-10-28 (local saf_nk2*.py): 212 shipped scenes, 0 of the 40 squadron attack
+// commands (SetTarget/AttackMove/Kamikaze/LevelBomb/DiveBomb/Dogfight) aim at a non-kind-2
+// entity (only Moveto/MoveOnPath reach NavPoints and Paths); of ~2250 Lua
+// PilotSetTarget/NavigatorAttackMove calls, the ~345 whose target resolves by name are
+// all kind 2 (the rest pass unit tables or parameters); and the 207 distinct targets of
+// the host's "strafe task 009CC230" lines across 13457 local run logs are all ships,
+// submarines, landing ships, torpedo boats and airfields (21 are spawned "#n.m" ships).
 // RNG: none either way (the refresh re-picks only on a new target, the lead draws nothing).
 // Movers: strafing planes between their target's death and the range test's next run;
 // small against a ship shot to death (path 3: only the lead goes), possibly large where
@@ -48,6 +66,6 @@ namespace bsp {
 // and its 009FAF90; whether their hosts freeze their aim points is not read here.
 inline constexpr bool kStrafeAimPointFreezeCc13Bound = false;
 static_assert(!kStrafeAimPointFreezeCc13Bound || kStrafeTargetFallback70Cc13Bound,
-              "the freeze keys off strafe70's +70h drop latch");
+              "path 3 relies on strafe70's st_ref70_drop_009fada0 to latch +70h");
 
 }  // namespace bsp
