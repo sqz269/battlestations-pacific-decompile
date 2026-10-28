@@ -15861,6 +15861,9 @@ void GameShipAiHost::report() {
             "(00811D10 kUnitAiOrderCopyPc24Cc13Bound; packet cc9-sweep2b)",
             reach.order_copy_calls, reach.order_copy_differs,
             bsp::kUnitAiOrderCopyPc24Cc13Bound ? 1 : 0);
+        host.log.notef("summary mission rocket accuracy reach reads=%llu differs=%llu "
+            "(00A0910B..00A09201 009FE4F1 kAiRocketAccuracyBound; packet cc9-sweep2b)",
+            reach.rocket_accuracy_reads, reach.rocket_accuracy_differs);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {
