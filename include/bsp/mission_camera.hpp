@@ -95,6 +95,10 @@ struct MissionCameraOcean {
 
 // 0064B650 over 00519290 and 00432750: the fields the update reads.
 void construct_ship_captain_0064b650(ShipCaptainCamera& camera) noexcept;
+// 00432938..0043299A: the constructor's three 00BD2F10 stream-0 draws, U(0, 2 pi), into
+// +1E8h..+1F0h in draw order. The caller draws (kShipCaptainCameraDrawsCc13Bound).
+void seed_ship_captain_phases_00432938(ShipCaptainCamera& camera, const float draws[3]) noexcept;
+inline constexpr float kShipCaptainPhaseHigh00ce3d9c = 6.28318548f;  // 40C90FDBh
 
 // 0064DA40's part that shapes the pose, for a view whose previous target is
 // not this unit: pitch limits, 00432E60(unit, 1), then the seed.
