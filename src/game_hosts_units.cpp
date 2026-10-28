@@ -166,6 +166,7 @@
 #include "bsp/opportunistic_rocket_cc13.hpp"
 #include "bsp/rocket_target_stop_cc13.hpp"  // cc13-rocketstop, task+38Ch per task
 #include "bsp/free_attack_accept_test_cc13.hpp"  // cc13-tranche2 S18
+#include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/wingmen_recount_countdown_cc13.hpp"  // cc13-tranche2 S19
 #include "bsp/near_field_probe_cached_list_cc13.hpp"  // cc13-tranche2 S22
 #include "bsp/attack_target_classify.hpp"
@@ -20508,8 +20509,9 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
         // 009F83AD..009F8407 tail below.
         const bool target_resolved = over_target != 0u && over_target - 1u < h.slots.size()
             && !gun->unit_dead(over_target - 1u);
-        const bool target_live = [&]() -> bool {
-            if constexpr (bsp::kFreeAttackAcceptTestCc13Bound) {
+        // Both arms (sw3b reach count); the ON arm only reads unit state.
+        const auto target_live_arm = [&](auto accept_test) -> bool {
+            if constexpr (decltype(accept_test)::value) {
                 if (!(target_resolved && category_12)) return target_resolved;
                 // 009F830C 007EE8F0(ECX = squadron; current, target, 00922DC0(target),
                 // 007B58D0(squadron)). LABELLED: the flight leader stands for the
@@ -20569,7 +20571,12 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             } else {
                 return target_resolved;
             }
-        }();
+        };
+        const bool live_on = target_live_arm(std::true_type{});
+        const bool live_off = target_live_arm(std::false_type{});
+        bsp::plane_task_reach_count(bsp::g_plane_task_reach_sw3.free_attack,
+            live_on != live_off, target_resolved && category_12);
+        const bool target_live = bsp::kFreeAttackAcceptTestCc13Bound ? live_on : live_off;
         FreeAttackWorld leash_world(*this, h, *gun);
         if (current == 0x00E08F58u && !early_arm && (!category_12 || target_live)
                 && over_target != 0u && over_target - 1u < h.slots.size()) {
@@ -49176,6 +49183,12 @@ void GameUnitsHost::report() {
         "units=%zu input_one=%zu (00953cc0; current roles0/4=8, flag634=0)",
         host.summary.generic_tick_calls, host.summary.generic_tick_unavailable,
         generic_units, generic_input_one);
+    {   // cc9-sweep3b reach counter for S18 (log only).
+        const bsp::PlaneTaskReachPair& fa = bsp::g_plane_task_reach_sw3.free_attack;
+        host.log.notef("summary mission plane task reach (sw3) free_attack 009F830C "
+            "(kFreeAttackAcceptTestCc13Bound): calls=%llu differs=%llu inner=%llu",
+            fa.calls.load(), fa.differs.load(), fa.inner.load());
+    }
     host.log.notef("summary mission plane step: steps=%llu free_flight=%llu "
         "ground_roll=%llu surface=%llu none=%llu (007ce040 arm selection)",
         host.summary.plane_steps, host.summary.plane_arm_free_flight,

@@ -44,6 +44,9 @@ struct PlaneTaskReachSw3 {
     PlaneTaskReachPair airops_return;
     // kVector3DivideInPlacePc24Cc13Bound (0042AE80): differs = any component's bits
     PlaneTaskReachPair vec3_divide;
+    // kFreeAttackAcceptTestCc13Bound (009F830C): differs = the gate's answer;
+    // inner = a category 1/2 command with a resolved target (the test ran)
+    PlaneTaskReachPair free_attack;
 };
 
 inline PlaneTaskReachSw3 g_plane_task_reach_sw3;
