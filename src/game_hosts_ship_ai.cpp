@@ -14310,7 +14310,11 @@ float length_2d_00414c60(float x, float z) {
 // LABELLED: when 004F3630 finds den (= -|d|) relatively equal to 0 (|d| < 1e-4, d = 0
 // included) it writes nothing and the image reads t from the stack slot that held the
 // point argument (pointer bits) and u from the slot holding d.x * r; this model takes
-// t = 0 for that case, so the result is |d.x * r|.
+// t = 0 for that case, so the result is |d.x * r|. At the only caller (0082178B) the point
+// arguments are main-thread stack locals (K+100h..118h), so the unwritten t is the
+// pointer's bits, which read as a positive denormal below 1.0: the image takes the |u|
+// branch and t = 0 matches it there. It would diverge only for a point at address
+// 3F800000h or above.
 float segment_point_distance_00419ab0(const float start[2], const float end[2],
                                       const float point[2]) {
     namespace x8 = bsp::cc13x87;
