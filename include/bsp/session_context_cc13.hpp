@@ -65,6 +65,10 @@ inline SessionContext skirmish_session_context(std::int32_t mode) noexcept {
 }
 
 // The process's context, the game object's fields. A campaign run never writes it.
+// The campaign values are set in exactly one place: SessionContext's default member
+// initialisers above, (0, false, 8, 8, false). The only writer is
+// GameMissionHost::Impl::start_skirmish's kSkirmishSessionCc13Bound arm. Every reader
+// site's OFF arm is its old literal, so the campaign path does not read this at all.
 inline SessionContext& session_context() noexcept {
     static SessionContext context;
     return context;

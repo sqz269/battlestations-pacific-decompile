@@ -11836,8 +11836,15 @@ public:
         return 0.0f;
     }
     int session_mode() const override { return 0; }
-    // game+218Ch: false unless a skirmish context was published (packet cc13-mp1).
-    bool session_flag_218c() const override { return bsp::session_context().skirmish_218c; }
+    // game+218Ch from the session context (packet cc13-mp1). Campaign identity: the
+    // OFF arm is the old literal false.
+    bool session_flag_218c() const override {
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            return bsp::session_context().skirmish_218c;
+        } else {
+            return false;
+        }
+    }
     Vec3 world_position() override { return unreached(Vec3{}); }
     float ground_height_at(const Vec3&) override { return unreached(0.0f); }
     bool ground_normal_at(const Vec3&, Vec3&) override { return unreached(false); }

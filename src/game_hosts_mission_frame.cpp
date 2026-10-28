@@ -64,6 +64,7 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_missionlua_cc13.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/powerup_session_broadcast_cc13.hpp"
 #include "bsp/render_tail.hpp"
 #include "bsp/session_polls.hpp"
 #include "bsp/session_participant_pools.hpp"
@@ -1505,7 +1506,15 @@ public:
     float clock_00f876a4() override { return host_.world_clock; }
     std::int32_t local_player_slot_18ec() override { return 0; }  // single player
     // A mission-tree launch has no session (kAiCoordinatorCreatedAtLoad).
-    std::int32_t session_word_1fe4() override { return 0; }
+    // Packet cc13-mp1 (MP2a): the session context's game+1FE4h. Campaign identity:
+    // the OFF arm is the old literal 0.
+    std::int32_t session_word_1fe4() override {
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            return bsp::session_context().session_word_1fe4;
+        } else {
+            return 0;
+        }
+    }
     // 005E2F00 forces EnablePowerups to 1 in single player (005E2FAB).
     bool powerups_enabled_00e0c978() override { return true; }
     void report_powerup_009789a0(std::int32_t slot, const bsp::cc13_powerup::PowerupItem&,
@@ -1549,9 +1558,23 @@ public:
             host_.record("PowerUps::resolve_air_support_classes", 0x008e34f0u);
         }
     }
+    // kPowerupSessionBroadcastCc13Bound: 0076A9F0 -> 00784790 sends only to the
+    // transport's peers, and this process has none, so the send is recorded only.
     void send_powerup_message67(std::int32_t, const bsp::cc13_powerup::PowerupItem&,
         std::int32_t) override {
-        throw std::logic_error("power-up message 67 without a session");
+        if constexpr (bsp::kPowerupSessionBroadcastCc13Bound) {
+            host_.record("PowerUps::send_message67", 0x0076a9f0u);
+        } else {
+            throw std::logic_error("power-up message 67 without a session");
+        }
+    }
+    void send_powerup_message68(const bsp::game_powerups::PowerupModifier&,
+        std::int32_t) override {
+        if constexpr (bsp::kPowerupSessionBroadcastCc13Bound) {
+            host_.record("PowerUps::send_message68", 0x0076a9f0u);
+        } else {
+            throw std::logic_error("power-up message 68 without a session");
+        }
     }
     std::vector<bsp::PowerUpSlot>& active_slot_records() override {
         return host_.world.power_ups.player_slots;
@@ -3323,14 +3346,13 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
     host.load.participant_count_available = participant_count != nullptr;
     host.load.participant_scene_slots = scene_slot_count;
 
-    // Packet cc13-mp1 (MP2a): game+1FE4h, +614h and +61Ch from the session context.
-    // A campaign's context is (0, mode 8, not forced) and leaves these fields as they
-    // were (+614h stays the load's 0); only a published skirmish context, which needs
-    // kSkirmishSessionCc13Bound, carries a session and its mode here.
-    {
+    // Packet cc13-mp1 (MP2a): game+1FE4h, +614h and +61Ch from the session context,
+    // only when a skirmish context was published. Campaign identity: the OFF arm
+    // writes nothing, so scene_state keeps its old defaults (0, 0, false).
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
         const bsp::SessionContext& session = bsp::session_context();
-        host.scene_state.session_mode = session.session_word_1fe4;
         if (session.session_word_1fe4 != 0) {
+            host.scene_state.session_mode = session.session_word_1fe4;
             host.scene_state.script_slot = session.game_mode_614;
             host.scene_state.script_slot_forced = session.forced_61c;
         }

@@ -1172,12 +1172,15 @@ public:
         inputs.script_slot = 0;    // game+614h
         inputs.script_slot_forced = false;
         // Packet cc13-mp1 (MP2a): a published skirmish context carries the session
-        // word and its mode; the campaign context leaves the three values above.
-        const bsp::SessionContext& session = bsp::session_context();
-        if (session.session_word_1fe4 != 0) {
-            inputs.session_mode = session.session_word_1fe4;
-            inputs.script_slot = session.game_mode_614;
-            inputs.script_slot_forced = session.forced_61c;
+        // word and its mode. Campaign identity: the OFF arm leaves the three old
+        // literals above (0, 0, false).
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            const bsp::SessionContext& session = bsp::session_context();
+            if (session.session_word_1fe4 != 0) {
+                inputs.session_mode = session.session_word_1fe4;
+                inputs.script_slot = session.game_mode_614;
+                inputs.script_slot_forced = session.forced_61c;
+            }
         }
         const SetPendingSceneResult result = run_set_pending_scene_004e2770(
             owner_.load.records, std::string(scene), std::string(weather_override), inputs,
@@ -1910,6 +1913,7 @@ void GameMissionHost::load_mission_tree_005caaf0() {
     }
     if (host.skirmish) {
         // Packet cc13-mp1: the id names a MissionTree.multi entry, not a campaign one.
+        // Campaign identity: without --skirmish the else arm is the old code.
         host.resolve_skirmish_entry();
     } else if (!host.summary.requested_found) {
         host.log.notef("mission id %s is not in the tree; 005caaf0's tail clamps the "
@@ -2246,6 +2250,7 @@ bool GameMissionHost::advance(float seconds) {
     case GameMissionStep::Idle:
         if (host.skirmish) {
             // Packet cc13-mp1: the multiplayer front end, not the campaign pages.
+            // Campaign identity: skirmish is false unless --skirmish called set_skirmish.
             host.start_skirmish();
             host.step = host.summary.load_requested ? GameMissionStep::LoadRequested
                                                     : GameMissionStep::Stopped;

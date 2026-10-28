@@ -2907,6 +2907,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         settings_view_.gameplay.language_index_04);
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, *singletons_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(),
+        // cc13-mp1. Campaign identity: no --skirmish passes options_.menu_select as before.
         options_.skirmish.empty() ? options_.menu_select : options_.skirmish,
         options_.mission_frames,
         profiler_, summary_.language, options_.mission_complete_frame, options_.order_frame,
@@ -2925,6 +2926,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     }
     // Packet cc13-mp1, --skirmish: the requested id above names a MissionTree.multi
     // entry, and the mission host takes the multiplayer path with this mode.
+    // Campaign identity: not called without --skirmish.
     if (!options_.skirmish.empty() && menu_->mission() != nullptr) {
         menu_->mission()->set_skirmish(options_.skirmish_mode);
         log_.notef("--skirmish %s --skirmish-mode %d", options_.skirmish.c_str(),
