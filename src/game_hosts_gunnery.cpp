@@ -23,6 +23,8 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_gunnery_cc13.hpp"    // packet pc24w1-gunnery-1
 #include "bsp/pc24_gunnery_rng_cc13.hpp"  // packet pc24w2-gunrng
+#include "bsp/pc24_avoid_zone_cc13.hpp"  // census, cc9-nondet1
+#include "bsp/pc24_dyn_hull_cc13.hpp"  // census, cc9-nondet1
 #include "bsp/game_hosts_powerups.hpp"  // packet cc13-powerup-bind
 #include <optional>
 
@@ -3406,6 +3408,10 @@ struct GameGunneryHost::Impl {
     // Packet s52_sink_draws: calls of 00933DA0 / 00933BB0, the stream-1 draws
     // taken, and the effects (recorded).
     unsigned long long sink_grid_calls{0};
+    // Census for kPc24GunneryRngCc13Bound (cc9-nondet1): calls of each site and how
+    // often the per-op result differs from the double chain.
+    unsigned long long pc24_rng_normal_calls{0}, pc24_rng_normal_differs{0};
+    unsigned long long pc24_rng_grid_calls{0}, pc24_rng_grid_differs{0};
     unsigned long long sink_spray_calls{0};
     unsigned long long sink_draws{0};
     unsigned long long sink_effects{0};
@@ -4104,6 +4110,16 @@ struct GameGunneryHost::Impl {
         // than a retry (labelled; the host guard is kept).
         } while (s >= 1.0f || s == 0.0f);
         float k;
+        {
+            // Census (cc9-nondet1, log only): both chains, counted where they differ.
+            const float log_s = static_cast<float>(std::log(static_cast<double>(s)));
+            const float per_op = static_cast<float>(std::sqrt(static_cast<double>(
+                static_cast<float>(cc13x87::x87_div24(cc13x87::x87_mul24(log_s, -2.0), s)))));
+            const float chained = static_cast<float>(std::sqrt(-2.0
+                * std::log(static_cast<double>(s)) / static_cast<double>(s)));
+            ++pc24_rng_normal_calls;
+            if (std::memcmp(&per_op, &chained, sizeof per_op) != 0) ++pc24_rng_normal_differs;
+        }
         if constexpr (bsp::kPc24GunneryRngCc13Bound) {
             // pc24w2-gunrng: 00BF0F60 calls the CRT log 00BFA910 (_CIlog). With SSE2 present
             // (__use_sse2_mathfcns [0109EEA0], set from CPUID at 00C0AC8F) and the exception
@@ -16940,6 +16956,22 @@ void GameGunneryHost::ship_systems_sink_draws_00933da0_00933bb0(std::size_t unit
         // 00933DC2..00933E1C: class+A4h is the host's width, class+A0h its length
         // (as in damage_smoke_tick_008227e0); _ftol truncates.
         int nx, ny;
+        {
+            // Census (cc9-nondet1, log only): per-op vs double grid counts.
+            const auto per_op = [](float extent) {
+                const float scaled = static_cast<float>(cc13x87::x87_mul24(extent, 1.5));
+                return static_cast<int>(
+                    cc13x87::x87_add24(cc13x87::x87_div24(scaled, 15.0), 1.0));
+            };
+            const auto chained = [](float extent) {
+                return static_cast<int>(static_cast<double>(extent) * 1.5 / 15.0 + 1.0);
+            };
+            ++host.pc24_rng_grid_calls;
+            if (per_op(us.hull_width) != chained(us.hull_width)
+                || per_op(us.hull_length) != chained(us.hull_length)) {
+                ++host.pc24_rng_grid_differs;
+            }
+        }
         if constexpr (bsp::kPc24GunneryRngCc13Bound) {
             // pc24w2-gunrng: extent * 1.5 (qword [00CE3D78]; 00933DCE x, 00933DD6 y) is
             // stored as a float (00933DD2, 00933DDC), / 15.0 (qword [00CF3F20]; 00933DEC x,
@@ -18417,6 +18449,20 @@ void GameGunneryHost::report() {
                 "spray_calls=%llu draws=%llu effects=%llu (00933DA0 / 00933BB0, stream 1, "
                 "packet s52_sink_draws)", kShipSystemsSinkDrawsBound ? 1 : 0,
                 host.sink_grid_calls, host.sink_spray_calls, host.sink_draws, host.sink_effects);
+            host.log.notef("summary mission pc24 gunnery rng census bound=%d normal_calls=%llu "
+                "normal_differs=%llu grid_calls=%llu grid_differs=%llu (00BF0DF0 / 00933DA0, "
+                "per-op vs double)", bsp::kPc24GunneryRngCc13Bound ? 1 : 0,
+                host.pc24_rng_normal_calls, host.pc24_rng_normal_differs,
+                host.pc24_rng_grid_calls, host.pc24_rng_grid_differs);
+            const bsp::AvoidZonePc24Census& az = bsp::avoid_zone_pc24_census();
+            const bsp::DynHullPc24Census& dh = bsp::dyn_hull_pc24_census();
+            host.log.notef("summary mission pc24 avoid zone census bound=%d rebuild_calls=%llu "
+                "rebuild_differs=%llu detour_calls=%llu detour_differs=%llu (00419260 / 0041A2FC); "
+                "dyn hull bound=%d compares=%llu threshold_differs=%llu decision_differs=%llu "
+                "(00C5D3C9)", bsp::kPc24AvoidZoneCc13Bound ? 1 : 0, az.rebuild_calls,
+                az.rebuild_differs, az.detour_calls, az.detour_differs,
+                bsp::kPc24DynHullCc13Bound ? 1 : 0, dh.compares, dh.threshold_differs,
+                dh.decision_differs);
             host.log.notef("summary mission submarine wake draws bound=%d picks=%llu sprays=%llu "
                 "(008546E4 / 008546FC, stream 1, packet s53_sub_wake_draws)",
                 kSubmarineWakeDrawsBound ? 1 : 0, host.sub_wake_picks, host.sub_wake_sprays);

@@ -45580,6 +45580,22 @@ float GameUnitsHost::unit_heading_radians(std::size_t index) const {
     return Impl::pose_heading_radians(*host.slots[index]);
 }
 
+float GameUnitsHost::unit_heading_vtable50(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size() || !host.slots[index]) return 0.0f;
+    const GameUnitSlot& slot = *host.slots[index];
+    const int id = slot.class_id;
+    if (id >= 0x06 && id <= 0x0E) return slot.hull_heading_1050;   // 006DFD60
+    if (id >= 0x0F && id <= 0x17) return slot.plane_heading_c6c;   // 0074E260
+    if (id == 0x45) {
+        // 006D2040: atan2(+94h, +9Ch) of the local frame's row 2, FSTP float. The
+        // host's airfield is top level, so its pose rows are the local rows (as at
+        // runway_heading_88).
+        return Impl::pose_heading_radians(slot);
+    }
+    return 0.0f;                                                   // 0042B8C0 FLDZ
+}
+
 float GameUnitsHost::unit_current_yaw_rate_00811940(std::size_t index) {
     Impl& host = *impl_;
     if (index >= host.slots.size()) return 0.0f;
