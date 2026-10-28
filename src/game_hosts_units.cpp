@@ -5795,8 +5795,10 @@ struct GameUnitsHost::Impl {
                 // cc13-flybearing (rev7 PC24 debt): 009C63C4 FSTP dword stores the
                 // 00BF701A atan2 as a float, 009C63CC FSUBR qword [00CE3830] (pi/2,
                 // the float widened) rounds at PC24, 009C63D2 FSTP dword. ABI:
-                // inline in 009C62B0. Uncertain: the CRT atan2 is double here,
-                // rounded to float at the store (the image's FPATAN runs at PC24).
+                // inline in 009C62B0. FPATAN ignores PC (00BF701A is a CRT trandisp
+                // stub that sets its own control word), so the image's atan2 result is
+                // rounded to float once at 009C63C4. Residual: CRT double atan2 vs x87
+                // FPATAN last-ulp.
                 const float atan2_f = static_cast<float>(
                     std::atan2(static_cast<double>(lead_z), static_cast<double>(lead_x)));
                 lead_bearing = static_cast<float>(bsp::cc13x87::x87_sub24(
