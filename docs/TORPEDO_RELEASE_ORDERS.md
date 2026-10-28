@@ -299,6 +299,28 @@ So the wiring's assumption is supported rather than merely stated, with one resi
 the class descriptor field at `unit+538h`, `+A0h`. `coverage: partial` for `0079CBD0`, of which only
 the seeding block is read.
 
+**Correction (packet cc13-issuea0, 2026-10-28).** This subsection is wrong about the writer of
+`ctl+390h`, and so about the gate:
+
+- `0079CBD0` is `BSP_GameCameraModifier_EnsureCamera` (cc13_camera_controllers). The object at
+  `[EDI+8]` that it seeds is the **camera** it builds: `new(410h)`, then `00650830` for kind 8 or
+  `0064B650` for kind 6. It is not the pilot control block.
+  - The camera's `+3E8h` test matched the squadron constructor's `+3E8h` store (`007F2E00`) only
+    by coincidence.
+  - `+A0h` of the class descriptor is Length.
+- The control block is the plane squadron at `unit+9D4h`. Its three allocators (`004F0AD0`,
+  `009483D0`, `007F3500`) each do `new(414h)` and `memset` 0 before `007F2C60`, which writes no
+  `+390h`.
+- A whole-`.text` scan for disp32 `0x390` stores finds no writer on the block. The only `+390h`
+  accesses in `007D1E50`-`007F8390` are the reads `007EEF46` and `007EFB3A`.
+- So in the image `ctl+390h` is 0.0:
+  - At `007EEF40`, `0.0 > +374h` never holds, and the `007EEF54` whole-flight loop never issues
+    orders of 999.
+  - `007EFB30` always sets `+378h`.
+- The "throttle" reading above therefore does not apply.
+- The host's `1.0 * 0.95` stand-in is the OFF arm of `bsp::kPlaneIssueThresholdZeroCc13Bound`.
+  The ON arm uses 0.0 (`include/bsp/plane_issue_threshold_cc13.hpp`).
+
 ## Corrections
 
 ### Correction to `docs/TORPEDO_APPROACH_UPDATE.md` (packet `cc8_torpedo_approach_update`)
