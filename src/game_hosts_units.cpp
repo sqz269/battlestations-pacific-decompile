@@ -6567,7 +6567,7 @@ struct GameUnitsHost::Impl {
     // floor compares greater, so a NaN on either side keeps the speed. Every
     // product rounds to float on the 24-bit main thread. False: the host's
     // Accel / MaxSpd^2, its left-to-right product and its NaN-to-floor max.
-    static constexpr bool kPlaneDragOrderCc13Bound = false;
+    static constexpr bool kPlaneDragOrderCc13Bound = true;  // ON by bundle pair (cc9-sweep1b)
     // Packet cc13-PL3: 007DA380's water arm 007DA3D0-007DA53F reads the up value
     // as the dot ((DCh * 0) + E0h) + (E4h * 0) and gates the throttled arm on
     // unit+9F0h > 0 (COMISS / JBE, so NaN fails). Finite inputs are identical
