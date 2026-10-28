@@ -16,4 +16,12 @@ namespace bsp {
 // around zones.
 inline constexpr bool kPc24AvoidZoneCc13Bound = false;
 
+// Census (cc9-nondet1, log only): length_of calls in the corner rebuild and elsewhere,
+// and how often the per-op length differs from the double one.
+struct AvoidZonePc24Census {
+    unsigned long long rebuild_calls{0}, rebuild_differs{0};
+    unsigned long long detour_calls{0}, detour_differs{0};
+};
+const AvoidZonePc24Census& avoid_zone_pc24_census() noexcept;
+
 }  // namespace bsp
