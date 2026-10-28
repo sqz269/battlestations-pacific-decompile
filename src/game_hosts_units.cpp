@@ -3456,6 +3456,11 @@ struct GameUnitsHost::Impl {
     unsigned long long lhc_own_ok{0}, lhc_own_far{0}, lhc_leave{0}, lhc_trace{0};
     unsigned long long lfm_trace{0};  // cc9-physics28: land final mode-loss lines
     unsigned long long lsp_trace{0};  // cc9-physics29: land spacing-zero lines
+    // cc9-physics29 (diagnostic): the OFF census of kUnitsHostDeviationsCc13Bound, the
+    // calls where the ON arm would give a different moveto distance or pass-1 pitch.
+    unsigned long long uhd_moveto_calls{0}, uhd_moveto_differs{0};
+    unsigned long long uhd_pitch_calls{0}, uhd_pitch_differs{0}, uhd_pitch_lowspeed{0};
+    double uhd_pitch_maxdiff{0.0};
     double lhc_dd_r_sum{0.0}, lhc_delta_fail_sum{0.0}, lhc_r_moved_sum{0.0};
     double lhc_point_moved_sum{0.0}, lhc_own_d_r_sum{0.0};
     bool landing_turn_in_006c5e20(const LandingDeck& d, const GameUnitSlot& p) const;
@@ -13831,6 +13836,17 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     pitch = avoid_len(v_world) > 1.0f
         ? static_cast<float>(std::atan2(static_cast<double>(v_world[1]), horiz))
         : u.plane_pitch_angle_c64;
+    // DIAGNOSTIC (cc9-physics29): the ON arm would read C7Ch, which the writer in
+    // refresh_attitude_007c1900 now keeps in both modes (read only by this census
+    // when OFF).
+    ++uhd_pitch_calls;
+    if (pitch != u.plane_velocity_elevation_c7c) {
+        ++uhd_pitch_differs;
+        if (!(avoid_len(v_world) > 1.0f)) ++uhd_pitch_lowspeed;
+        const double dd = std::fabs(static_cast<double>(pitch)
+            - static_cast<double>(u.plane_velocity_elevation_c7c));
+        if (dd > uhd_pitch_maxdiff) uhd_pitch_maxdiff = dd;
+    }
     }
     const float bank = u.plane_bank_angle_c68;
     float bank_f = std::fabs(bank);
@@ -36889,6 +36905,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         } else {
                             unit_.moveto_distance_64 = d2 <= 1e-6
                                 ? 0.0f : static_cast<float>(std::sqrt(d2));
+                            // DIAGNOSTIC (cc9-physics29): the ON arm gives 0 unless
+                            // d2 > 1e-10 (NaN too); count the calls where the two differ.
+                            ++owner_.uhd_moveto_calls;
+                            if (!(d2 > 1.0e-10) != (d2 <= 1e-6)) ++owner_.uhd_moveto_differs;
                         }
                         owner_.record("BotApproach::refresh_path_leg_009fd050", 0x009fd050u);
                         if constexpr (bsp::kLegAltitudeManagerBound
@@ -41709,7 +41729,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_heading_c6c = a.heading;
                             unit_.plane_bank_angle_c68 = a.bank;
                         }
-                        if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+                        {   // cc9-physics29: written in both modes; OFF reads it only
+                            // in the terrain_avoidance_0099f1c0 census (diagnostic).
                             // cc13-unitsdev: 007C1BCD..007C1CA8, unit+C7Ch from the
                             // world velocity +AC8h: |v| = sqrt((y*y + x*x) + z*z)
                             // stored, 0 at or below 1e-10 [00CE3820]; only when
@@ -47057,6 +47078,13 @@ void GameUnitsHost::report() {
     host.log.notef("summary unit yaw rate 00811940 bound=%d calls=%llu nonzero=%llu "
         "(packet cc9_unit_yaw_rate_forward_speed)", kUnitYawRateForwardSpeedBound ? 1 : 0,
         host.yaw_rate_calls_00811940, host.yaw_rate_nonzero_00811940);
+    if constexpr (!bsp::kUnitsHostDeviationsCc13Bound) {
+        host.log.notef("summary units host deviations census (OFF, cc9-physics29): moveto "
+            "calls=%llu differs=%llu | pass-1 pitch calls=%llu differs=%llu lowspeed=%llu "
+            "maxdiff=%.6f rad (kUnitsHostDeviationsCc13Bound)", host.uhd_moveto_calls,
+            host.uhd_moveto_differs, host.uhd_pitch_calls, host.uhd_pitch_differs,
+            host.uhd_pitch_lowspeed, host.uhd_pitch_maxdiff);
+    }
     if constexpr (kSquadronLandTaskBound) {
         unsigned long long installs = 0, kept = 0, refused = 0, empty = 0, reqs = 0, refused_states = 0;
         for (const Impl::LandTaskCensus& c : host.land_census) {
