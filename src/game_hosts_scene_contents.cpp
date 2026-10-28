@@ -5019,6 +5019,62 @@ struct VsubIter {
 
 int vsub_trunc(double v) noexcept { return static_cast<int>(v); }   // 00BF7420, CVTTSS2SI
 
+// pc24w1-sweep1-7 (rev8 FIX): v + 0.5 before 00BF7420 (_ftol2_sse, truncating) is an
+// x87 FADD of 0.5 ([00D7A280] or the 0.5 kept in ST1), rounded at PC24 before the
+// truncation: 00AEAB53 and 00AEAB8A (00AEAB30), 00AEB23B (00AEB1F0), 00AEB35B
+// (00AEB310), 00AEB164..00AEB1B3 (00AEB0B0). For v = 0.49999997f the PC24 sum ties to
+// 1.0, so the image truncates to 1 where the unrounded double sum gives 0.
+int vsub_trunc_half(float v) noexcept {
+    int r;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        r = vsub_trunc(pc24::x87_add24(v, 0.5));
+    } else {
+        r = vsub_trunc(static_cast<double>(v) + 0.5);
+    }
+    return r;
+}
+
+// pc24w1-sweep1-7: the next crossing td * c + t0 is FIMUL then FADD, each rounded at PC24,
+// then FSTP float: 00AEAB75/00AEAB79 and 00AEABAD/00AEABB1 (00AEAB30), 00AEB2EF/00AEB2F8
+// (00AEB1F0), 00AEB40F/00AEB418 (00AEB310), 00AEB0F9/00AEB10D and 00AEB116/00AEB11A
+// (00AEB0B0). The OFF arm rounds the exact product-sum once.
+float vsub_next_crossing(float td, int c, float t0) noexcept {
+    float next;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        next = terrain_f32(pc24::x87_add24(pc24::x87_mul24(td, c), t0));
+    } else {
+        next = terrain_f32(static_cast<double>(td) * c + t0);
+    }
+    return next;
+}
+
+// pc24w1-sweep1-7: a * a + 1 before the sqrt is FMUL ST0,ST0 then FADD of the qword 1.0
+// ([00D7A210]), each rounded at PC24, then FSTP float (00AEB50B/00AEB50D for x,
+// 00AEB5A9/00AEB5AB for z). The OFF arm rounds a * a + 1 once.
+float vsub_slope_sq_plus_one(float a) noexcept {
+    float s;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        s = terrain_f32(pc24::x87_add24(pc24::x87_mul24(a, a), 1.0));
+    } else {
+        s = terrain_f32(static_cast<double>(a) * a + 1.0);
+    }
+    return s;
+}
+
+// pc24w1-sweep1-7: the first crossing's 1 - frac (FLD1; FSUBRP, rounded at PC24) feeds the
+// FMUL by td: 00AEB54E/00AEB550 then 00AEB552 for x, 00AEB5ED/00AEB5EF then 00AEB5F1 for z.
+// The OFF arm keeps 1 - frac unrounded in double. For a negative direction the JA skips the
+// FSUBRP and frac itself is multiplied.
+double vsub_one_minus(double frac) noexcept {
+    double r;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        r = pc24::x87_sub24(1.0, frac);
+    } else {
+        r = 1.0 - frac;
+    }
+    return r;
+}
+
 // 00AEB430 (fastcall ECX = iterator, plain RET).
 void vsub_iter_init_00aeb430(VsubIter& it) noexcept {
     it.dx = terrain_f32(static_cast<double>(it.x1) - it.x0);
@@ -5033,9 +5089,9 @@ void vsub_iter_init_00aeb430(VsubIter& it) noexcept {
     it.dirz = terrain_f32(static_cast<double>(r) * it.dz);
     if (std::fabs(it.dirx) > kQuadMinDirection) {
         const float a = terrain_f32(static_cast<double>(it.dirz) / it.dirx);
-        it.tdx = terrain_f32(std::sqrt(static_cast<double>(terrain_f32(static_cast<double>(a) * a + 1.0))));
+        it.tdx = terrain_f32(std::sqrt(static_cast<double>(vsub_slope_sq_plus_one(a))));
         double f = terrain_f32(std::fmod(static_cast<double>(it.x0), 1.0));   // 00BF857A
-        if (!(0.0f > it.dirx)) f = 1.0 - f;
+        if (!(0.0f > it.dirx)) f = vsub_one_minus(f);
         it.tmx0 = terrain_f32(f * it.tdx);
     } else {
         it.tdx = terrain_f32(static_cast<double>(it.len) + it.len);
@@ -5043,9 +5099,9 @@ void vsub_iter_init_00aeb430(VsubIter& it) noexcept {
     }
     if (std::fabs(it.dirz) > kQuadMinDirection) {
         const float b = terrain_f32(static_cast<double>(it.dirx) / it.dirz);
-        it.tdz = terrain_f32(std::sqrt(static_cast<double>(terrain_f32(static_cast<double>(b) * b + 1.0))));
+        it.tdz = terrain_f32(std::sqrt(static_cast<double>(vsub_slope_sq_plus_one(b))));
         double f = terrain_f32(std::fmod(static_cast<double>(it.z0), 1.0));
-        if (!(0.0f > it.dirz)) f = 1.0 - f;
+        if (!(0.0f > it.dirz)) f = vsub_one_minus(f);
         it.tmz0 = terrain_f32(f * it.tdz);
     } else {
         it.tdz = terrain_f32(static_cast<double>(it.len) + it.len);
@@ -5075,16 +5131,16 @@ bool vsub_iter_crosses_00aeb680(const VsubIter& it) noexcept {
 void vsub_iter_snap_00aeab30(VsubIter& it) noexcept {
     it.flags = 0;
     if (it.tmx < kVsubEps) {
-        it.px = static_cast<float>(vsub_trunc(static_cast<double>(it.px) + 0.5));   // [00D7A280]
+        it.px = static_cast<float>(vsub_trunc_half(it.px));   // [00D7A280]
         ++it.cx;
         it.flags += 1;
-        it.tmx = terrain_f32(static_cast<double>(it.tdx) * it.cx + it.tmx0);
+        it.tmx = vsub_next_crossing(it.tdx, it.cx, it.tmx0);
     }
     if (it.tmz < kVsubEps) {
-        it.pz = static_cast<float>(vsub_trunc(static_cast<double>(it.pz) + 0.5));
+        it.pz = static_cast<float>(vsub_trunc_half(it.pz));
         ++it.cz;
         it.flags += 2;
-        it.tmz = terrain_f32(static_cast<double>(it.tdz) * it.cz + it.tmz0);
+        it.tmz = vsub_next_crossing(it.tdz, it.cz, it.tmz0);
     }
 }
 
@@ -5097,7 +5153,7 @@ void vsub_iter_point(VsubIter& it, float t) noexcept {
 void vsub_iter_step_x_00aeb1f0(VsubIter& it) noexcept {
     const float t = it.tmx;
     vsub_iter_point(it, t);
-    it.nx = static_cast<float>(vsub_trunc(static_cast<double>(it.nx) + 0.5));
+    it.nx = static_cast<float>(vsub_trunc_half(it.nx));
     const float pz = it.nz;
     const int k = static_cast<int>(std::floor(static_cast<double>(pz)));   // 00BF85B0, FISTP
     const int k2 = static_cast<double>(k) == static_cast<double>(pz) ? k : k + 1;
@@ -5109,14 +5165,14 @@ void vsub_iter_step_x_00aeb1f0(VsubIter& it) noexcept {
     it.cj = k;
     ++it.cx;
     it.t = t;
-    it.tmx = terrain_f32(static_cast<double>(it.tdx) * it.cx + it.tmx0);
+    it.tmx = vsub_next_crossing(it.tdx, it.cx, it.tmx0);
 }
 
 // 00AEB310, a step across a z line.
 void vsub_iter_step_z_00aeb310(VsubIter& it) noexcept {
     const float t = it.tmz;
     vsub_iter_point(it, t);
-    it.nz = static_cast<float>(vsub_trunc(static_cast<double>(it.nz) + 0.5));
+    it.nz = static_cast<float>(vsub_trunc_half(it.nz));
     const float px = it.nx;
     const int k = static_cast<int>(std::floor(static_cast<double>(px)));
     const int k2 = static_cast<double>(k) == static_cast<double>(px) ? k : k + 1;
@@ -5128,7 +5184,7 @@ void vsub_iter_step_z_00aeb310(VsubIter& it) noexcept {
     it.cj = cur < iz ? cur : iz;
     ++it.cz;
     it.t = t;
-    it.tmz = terrain_f32(static_cast<double>(it.tdz) * it.cz + it.tmz0);
+    it.tmz = vsub_next_crossing(it.tdz, it.cz, it.tmz0);
 }
 
 // 00AEB0B0, a step through a grid corner (both crossings within 0.001).
@@ -5137,13 +5193,13 @@ void vsub_iter_step_xz_00aeb0b0(VsubIter& it) noexcept {
     ++it.cz;
     ++it.cx;
     it.t = t;
-    it.tmz = terrain_f32(static_cast<double>(it.tdz) * it.cz + it.tmz0);
-    it.tmx = terrain_f32(static_cast<double>(it.tdx) * it.cx + it.tmx0);
+    it.tmz = vsub_next_crossing(it.tdz, it.cz, it.tmz0);
+    it.tmx = vsub_next_crossing(it.tdx, it.cx, it.tmx0);
     vsub_iter_point(it, t);
-    it.nx = static_cast<float>(vsub_trunc(static_cast<double>(it.nx) + 0.5));
-    it.nz = static_cast<float>(vsub_trunc(static_cast<double>(it.nz) + 0.5));
-    const int a = vsub_trunc(static_cast<double>(it.nx) + 0.5);
-    const int b = vsub_trunc(static_cast<double>(it.nz) + 0.5);
+    it.nx = static_cast<float>(vsub_trunc_half(it.nx));
+    it.nz = static_cast<float>(vsub_trunc_half(it.nz));
+    const int a = vsub_trunc_half(it.nx);
+    const int b = vsub_trunc_half(it.nz);
     it.e0i = a; it.e1i = a; it.e0j = b; it.e1j = b;   // +70h is left as it was
     const int cz = static_cast<int>(it.pz);
     it.cj = cz < b ? cz : b;
@@ -5605,9 +5661,17 @@ VsubAnswer vsub_vertical_00aecc40(const SceneTerrainHeightField& field, const fl
         return answer;
     }
     answer.hit = true;
-    answer.point[0] = terrain_f32(static_cast<double>(out[0]) * size + field.origin_x);
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // pc24w1-sweep1-7: out * size (00AECE77 FMULP) + origin x (00AECE81 FADDP, node
+        // +80h), size * out (00AECE89 FMUL) + origin z (00AECE8D FADD, +84h); each op rounded
+        // at PC24, then FSTP float.
+        answer.point[0] = terrain_f32(pc24::x87_add24(pc24::x87_mul24(out[0], size), field.origin_x));
+        answer.point[2] = terrain_f32(pc24::x87_add24(pc24::x87_mul24(size, out[2]), field.origin_z));
+    } else {
+        answer.point[0] = terrain_f32(static_cast<double>(out[0]) * size + field.origin_x);
+        answer.point[2] = terrain_f32(static_cast<double>(size) * out[2] + field.origin_z);
+    }
     answer.point[1] = out[1];
-    answer.point[2] = terrain_f32(static_cast<double>(size) * out[2] + field.origin_z);
     return answer;
 }
 
