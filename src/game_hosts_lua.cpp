@@ -10936,6 +10936,24 @@ std::string GameMissionLuaHost::read_bullet_class_string(int index, const char* 
     return value;
 }
 
+bool GameMissionLuaHost::read_bullet_class_bool(int index, const char* key, bool fallback) {
+    // The boolean companion of read_bullet_class_number (packet cc13-rocketfuze).
+    if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const int top = ::lua_gettop(state_);
+    bool value = fallback;
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "Bullets");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TBOOLEAN) value = ::lua_toboolean(state_, -1) != 0;
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 namespace {
 
 struct LoadoutCacheKey {
