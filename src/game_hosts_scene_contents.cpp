@@ -31,6 +31,8 @@
 #include "bsp/scene_contents_hosts.hpp"
 #include "bsp/scene_deferred_refs.hpp"
 #include "bsp/scene_entity_factory.hpp"
+#include "bsp/session_context_cc13.hpp"
+#include "bsp/world_map_bounds.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_unit_creators.hpp"
 #include "bsp/shipyard_production.hpp"
@@ -1008,6 +1010,12 @@ struct GameSceneContentsHost::Impl {
     // 004E9C10 returned this load. The record keeps answering for the entity.
     std::vector<std::unique_ptr<SceneNamedEntityImage>> named_entity_images;
     ScenePropertyBlock root_properties;
+    // Packet cc13-skirmish-gate (kSkirmishSessionCc13Bound): game+705Ch..711Bh, the
+    // eight play-area rows 004D5BD0 copies from 004E6C00's globals. Read once per
+    // load from root_properties' Map block; all zero when it has no
+    // MultiPlayMapSizes, which is a fresh process's table.
+    bool mode_areas_read{false};
+    std::array<SceneModeArea, 8> mode_areas{};
     PropertyLibrary library;
     VehicleClassRegistry vehicle_registry;
     std::string scene_path;
@@ -1507,8 +1515,44 @@ public:
         return static_cast<SceneGameMode>(mode_);
     }
     SceneModeArea mode_area(int slot) override {
-        // *(00e188a8)+705Ch + slot*18h. This process builds no play-area table,
-        // and single player never reaches a mode with one.
+        // *(00e188a8)+705Ch + slot*18h. Single player never reaches a mode with
+        // one: modes 8, 9 and 10 return before the area test.
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            // Packet cc13-skirmish-gate. The image fills the rows while it reads the
+            // scene header, before any entity reaches this gate: 00469BF0 ->
+            // 004F1D70 -> 004E6C00 stores Map.MultiPlayMapSizes' sixteen vectors
+            // at 00E189A0..00E18A3C (IslandCapture1v1..4v4, Duel, Escort, Siege,
+            // Competitive, each _nw then _se: 004E6C6B..004E7059), and 004D5BD0
+            // copies them verbatim to game+705Ch.. (004D5BE6..). The row is
+            // {nw.x, nw.y, nw.z, se.x, se.y, se.z}. kModeAreaSlot's cross mapping
+            // (Siege row 4, Competitive 5, Duel 6, Escort 7: 0046C78C, 0046C803,
+            // 0046C87A, 0046C8F1) is the image's own and is kept. A Map block
+            // without MultiPlayMapSizes takes 004E6C00's early return before the
+            // global stores; this process loads one scene, so the rows stay zero
+            // as in a fresh process.
+            if (!owner_.mode_areas_read) {
+                owner_.mode_areas_read = true;
+                for (const auto& block : owner_.root_properties.blocks) {
+                    if (_stricmp(block.first.c_str(), "Map") != 0) continue;
+                    bsp::WorldMapSettings settings;
+                    if (bsp::read_world_map_settings_004e6c00(block.second, settings)) {
+                        for (std::size_t i = 0; i < owner_.mode_areas.size(); ++i) {
+                            const bsp::WorldMapBounds& row = settings.multiplayer[i];
+                            SceneModeArea& area = owner_.mode_areas[i];
+                            for (std::size_t k = 0; k < 3; ++k) {
+                                area.bounds[k] = row.north_west[k];
+                                area.bounds[3 + k] = row.south_east[k];
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            owner_.log.implemented("SceneGate::mode_area", "004d5bd0");
+            if (slot < 0 || static_cast<std::size_t>(slot) >= owner_.mode_areas.size())
+                return SceneModeArea{};
+            return owner_.mode_areas[static_cast<std::size_t>(slot)];
+        }
         static_cast<void>(slot);
         owner_.log.unimplemented("SceneGate::mode_area", "004c8760");
         return SceneModeArea{};
@@ -5958,6 +6002,9 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     // without it a process that loaded a second mission would answer
     // `GenerateObject` out of the first one's records.
     scene_spawn_pool().clear();
+    // The play-area rows are read from this scene's own Map block.
+    impl.mode_areas_read = false;
+    impl.mode_areas = {};
     // Same reason again: the authored Path entities belong to this scene.
     scene_path_registry().clear();
     scene_world_class_lists().clear();
