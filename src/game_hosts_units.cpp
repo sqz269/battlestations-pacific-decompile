@@ -14,6 +14,7 @@
 #include "bsp/cc13_x87_model.hpp"  // pc24w1-gunnery-2
 #include "bsp/pc24_gunnery_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/aim_lead_body_axis_cc13.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"
 #include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/game_hosts_ready.hpp"  // kSunkShipFlushBound, packet cc13-jm08
@@ -13301,11 +13302,18 @@ bool GameUnitsHost::Impl::aim_point_009fada0(GameUnitSlot& shooter,
     for (int i = 0; i < 3; ++i) axis.axis[i] = ts.motion.pose_row2[i];
     pin.speed = bsp::unit_forward_speed_0092d730(axis);
     // vtable[34h] = 00812090: the body axis +94h..9Ch times that speed.
-    // SUBSTITUTION, labelled, the one neighbour_world_velocity makes: the
-    // hull's heading direction, level.
+    // ON (bsp::kAimLeadBodyAxisCc13Bound, packet cc13-aimaxis): 008120A3-008120CB,
+    // row.x * s, row.y * s, s * row.z, each one float product. OFF: the
+    // SUBSTITUTION, labelled, the one neighbour_world_velocity makes: the hull's
+    // heading direction, level.
+    if constexpr (bsp::kAimLeadBodyAxisCc13Bound) {
+        pin.velocity = {axis.axis[0] * pin.speed, axis.axis[1] * pin.speed,
+                        pin.speed * axis.axis[2]};
+    } else {
     const double hd = static_cast<double>(pose_heading_radians(ts));
     pin.velocity = {static_cast<float>(std::sin(hd)) * pin.speed, 0.0f,
                     static_cast<float>(std::cos(hd)) * pin.speed};
+    }
     // 008120F8: 00811890(unit, unit+984h), which is 00811940.
     UnitRudderBinding rudder(*this, ts);
     if constexpr (kUnitYawRateForwardSpeedBound) rudder.forward_speed = pin.speed;
