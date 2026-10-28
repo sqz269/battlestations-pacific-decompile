@@ -17,6 +17,7 @@
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
+#include "bsp/gun_subobject_repair_cc13.hpp"   // packet cc13-gunD
 #include "bsp/camera_multiply.hpp"
 #include "bsp/cc13_tier2_switches.hpp"
 #include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (the 31h release)
@@ -3915,6 +3916,8 @@ struct GameGunneryHost::Impl {
         // product scales the rate (packet cc13-powerup-bind, rev5 N2).
         float repair_tick_3b4{0.0f};  // settings+3B4h (already / 100)
         float repair_body_mul_3d4{0.0f};  // settings+3D4h BodyRepairMultiplier
+        // Packet cc13-gunD: settings+3B8h GunRepairTickPercentage (already / 100).
+        float gun_repair_tick_3b8{0.0f};
         // Packet cc9_component_failures: the task's failure vector (+18h) and
         // its flags as 0093BCC0 leaves them (+46h = 1, priority 0).
         bsp::RepairTaskState task{};
@@ -4422,10 +4425,18 @@ struct GameGunneryHost::Impl {
     // the 0043F7D0 -> 0072B5A0 destroyed failure at zero health.
     void apply_gun_damage_00728080(std::size_t g, float amount);
     void gun_destroyed_failure_0072b5a0(std::size_t g);
+    // Packet cc13-gunD (kGunSubobjectRepairCc13Bound): 0093C860 over one ship's guns,
+    // 006F47F0's gun loop, 00877B90 on one gun, and the 69h clear 007280A0.
+    void repair_guns_0093c860(std::size_t unit, float dt);
+    void repair_guns_006f47f0(std::size_t unit, float fraction);
+    void set_gun_health_00877b90(std::size_t g, float requested);
+    void gun_full_health_destroyed_stop_0072a0d0(std::size_t g);
+    void gun_clear_destroyed_failure_007280a0(std::size_t g);
     // 008777D0 on one gun (index into guns), the device-hit entry packet C1 calls.
     void apply_gun_hit_record_008777d0(std::size_t g, const bsp::HitRecord& hit);
     unsigned long long gun_damage_calls{0};
     unsigned long long guns_destroyed{0};
+    unsigned long long guns_revived{0};                  // packet cc13-gunD, 007280A0
     unsigned long long gun_fire_destroyed_refusals{0};   // 0073018E (+5Dh), 007301A7 (+358h)
     void build_rank_table();
     void attach_passes(std::size_t first_unit);
@@ -5387,7 +5398,13 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "    f.dcwater = num(SG.WaterTickDamage, 1000) or 0\n"
         "    f.dcfire = num(SG.FireTickDamage, 1000) or 0\n"
         "    f.dcbody = num(SG.BodyRepairTickPercentage, 1000000) or 200000\n"
-        "    f.dcbodymul = num(SG.BodyRepairMultiplier, 1000) or 2000\n"
+        "    f.dcbodymul = num(SG.BodyRepairMultiplier, 1000) or 2000\n";
+    if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+        // Packet cc13-gunD: GunRepairTickPercentage (0083E290, default 2.0). OFF: the
+        // chunk text is unchanged (the literal is only split here).
+        chunk += "    f.dcgun = num(SG.GunRepairTickPercentage, 1000000) or 2000000\n";
+    }
+    chunk +=
         "    f.dcsg = (type(ShipGlobals) == 'table') and 1 or 0\n"
         // Packet cc9_component_failures. Damage.Sections (0087CA80): kind from
         // 007149D0 with no remap, Index, FailureChance / 100 (default -1) and
@@ -5645,6 +5662,11 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 flat_scaled(type_id, "dcbody", 1000000.0f, 0.2f));
             dc.repair_body_mul_3d4 = flat_scaled(type_id, "dcbodymul", kMilliScale, 2.0f);
             dc.repair_fraction = dc.repair_tick_3b4 * dc.repair_body_mul_3d4;
+            if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+                // 0083E290..0083E2AA: GunRepairTickPercentage / 100 into settings+3B8h.
+                dc.gun_repair_tick_3b8 = bsp::store_repair_tick_percentage_0083e243(
+                    flat_scaled(type_id, "dcgun", 1000000.0f, 2.0f));
+            }
             dc.task.failure_repair_enabled = true;   // 0093BCC0 +46h = 1
             dc.task.hull_repair_enabled = true;      // +45h = 1
             if (dc.script_hull_repair >= 0) {
@@ -14394,6 +14416,9 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             }
             done("DamageControl::repair_hull_0093c770", 0x0093c770u);
         }
+        if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+            repair_guns_0093c860(i, dt);   // 0093CA3A, the second step
+        }
         if constexpr (kComponentFailureBound) {
             // 0093C520, the third step: every failure's seconds run down at
             // rate 1.0 (priority 0, +46h set) and expired ones are retired.
@@ -17437,6 +17462,108 @@ void GameGunneryHost::Impl::gun_destroyed_failure_0072b5a0(std::size_t g) {
     done("Gun::apply_set_destroyed_failure_0072b5a0", 0x0072b5a0u);
 }
 
+// Packet cc13-gunD (kGunSubobjectRepairCc13Bound, include/bsp/gun_subobject_repair_cc13.hpp).
+// 00877B90 on one gun's +370h.
+void GameGunneryHost::Impl::set_gun_health_00877b90(std::size_t g, float requested) {
+    GameGunRow& gun = guns[g];
+    bsp::UnitHealth health;
+    health.current_health = gun.health_370;
+    health.max_health = gun.max_health_36c;
+    health.invincibility = 0.0f;
+    const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health, requested,
+        bsp::UnitSessionMode::campaign, 0, false);
+    if (write.wrote) gun.health_370 = write.stored_health;
+}
+
+// 0093C99F..0093C9CC / 006F498C..006F49B3: a gun at full health with +5Dh set gets
+// vtable[19Ch]("destroyed", 0) = 0072A0D0, whose 69h reaches 007280A0. LABELLED: the
+// 69h chain applies inline (an early flush, as packet B's 68h chain), not at the
+// session receive queue's drain.
+void GameGunneryHost::Impl::gun_full_health_destroyed_stop_0072a0d0(std::size_t g) {
+    if (!guns[g].destroyed_5d) return;
+    done("Gun::stop_destroyed_failure_0072a0d0", 0x0072a0d0u);
+    gun_clear_destroyed_failure_007280a0(g);
+}
+
+// 007280A0 on message 69h: +3B8h = 0 (007280C0); vtable[1B4h](0) = 00877B00, +358h = 0
+// (00876EC0); 008781F0(1), the scene nodes shown again (presentation, not modelled);
+// 00925A00 (00925A1F..00925A38: the parent [gun+3Ch] has +5Ch set and +5Dh, +60h, +5Eh
+// clear; LABELLED: the owner's UnitState is not dead), which clears +5Fh and +5Eh (no
+// gun fields: B's destroy path never sets them), +60h (00925A70; B flushes at once, so
+// no F899A8 entry is left) and +5Dh (00925A73); then 00956C20 on [gun+3F0h] (007280DF),
+// which takes the gun back into the category lists. LABELLED: a dead owner's rebuild
+// is skipped, as in gun_destroyed_failure_0072b5a0.
+void GameGunneryHost::Impl::gun_clear_destroyed_failure_007280a0(std::size_t g) {
+    GameGunRow& gun = guns[g];
+    gun.destroyed_3b8 = false;                                      // 007280C0
+    gun.damage_level_358 = 0;                                       // 00877B00(0)
+    const bool owner_live = gun.unit_index < unit_state.size()
+        && !unit_state[gun.unit_index].dead;
+    if (owner_live) {
+        gun.destroyed_60 = false;                                   // 00925A70
+        gun.destroyed_5d = false;                                   // 00925A73
+        done("MissionEntity::cancel_pending_destroy_00925a00", 0x00925a00u);
+        rebuild_weapon_category_index_00956c20(gun.unit_index);    // 007280DF
+    }
+    ++guns_revived;
+    done("Gun::apply_clear_destroyed_failure_007280a0", 0x007280a0u);
+}
+
+// 0093C860 over unit `unit`'s guns. The rate (0093C881..0093C8E6): settings+3D8h when
+// task+24h is 2, else 1.0 (the host's task priority is the constructor's 0, so 1.0),
+// times the modifier product (3) under the 00F88C30 gate (0093C8C5). Per gun:
+// ((settings+3B8h * dt) * gun+36Ch) * rate, per operation at PC24 (0093C938..0093C94C),
+// into 00879810 (negated into 00879070, 0093C957); then 00877B90(max) when max <= health
+// (0093C986 JC), and the destroyed stop.
+void GameGunneryHost::Impl::repair_guns_0093c860(std::size_t unit, float dt) {
+    namespace x8 = bsp::cc13x87;
+    const DamageControl& dc = damage_control[unit];
+    float rate = 1.0f;                                              // 0093C896, priority 0
+    if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+        if (const auto m = bsp::game_powerups::powerup_site_product(3, unit)) {
+            rate = static_cast<float>(x8::x87_mul24(*m, rate));     // 0093C8E2
+        }
+    }
+    for (std::size_t g = 0; g < guns.size(); ++g) {
+        GameGunRow& gun = guns[g];
+        if (gun.unit_index != unit) continue;
+        // 0093C8F7..0093C923: IsKindOf(4), not IsKindOf(0Fh) and +378h, true for a gun.
+        const float amount = static_cast<float>(x8::x87_mul24(x8::x87_mul24(
+            x8::x87_mul24(dc.gun_repair_tick_3b8, dt), gun.max_health_36c), rate));
+        bsp::UnitHealth health;
+        health.current_health = gun.health_370;
+        health.max_health = gun.max_health_36c;
+        health.invincibility = 0.0f;
+        const bsp::UnitDamageGates gates;                          // +5Eh: never set on a gun
+        const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
+            bsp::health_delta_to_damage_00879810(amount));
+        if (!outcome.refused) set_gun_health_00877b90(g, outcome.new_health);
+        if (gun.max_health_36c <= gun.health_370) {                 // 0093C986
+            set_gun_health_00877b90(g, gun.max_health_36c);         // 0093C99A
+            gun_full_health_destroyed_stop_0072a0d0(g);
+        }
+    }
+    done("RepairTask::repair_subobjects_0093c860", 0x0093c860u);
+}
+
+// 006F47F0's gun loop (006F48EC..006F49E3), `fraction` = Repair[level] * a / GunRepairTime
+// (006F48CE..006F48D5), run only when it is above 0 (006F48E6). Per gun: max * fraction
+// + health (006F4935 FMUL, 006F4939 FADD, FSTP float), the lesser of it and max
+// (006F4949), 00877B90 (006F4965), then the destroyed stop when health >= max (006F498A).
+void GameGunneryHost::Impl::repair_guns_006f47f0(std::size_t unit, float fraction) {
+    namespace x8 = bsp::cc13x87;
+    if (!(fraction > 0.0f)) return;
+    for (std::size_t g = 0; g < guns.size(); ++g) {
+        GameGunRow& gun = guns[g];
+        if (gun.unit_index != unit) continue;                       // 006F4909 IsKindOf(4)
+        const float sum = static_cast<float>(x8::x87_add24(
+            x8::x87_mul24(gun.max_health_36c, fraction), gun.health_370));
+        set_gun_health_00877b90(g, gun.max_health_36c > sum ? sum : gun.max_health_36c);
+        if (gun.max_health_36c <= gun.health_370) gun_full_health_destroyed_stop_0072a0d0(g);
+    }
+    done("CommandBuilding::repair_guns_006f48ec", 0x006f48ecu);
+}
+
 // Packet cc13-gunB follow-up: 008777D0 BSP_UnitInstance_ApplyHitRecord with ECX = a
 // gun. Hull pass (008777DD..008778D4): skipped when hit+34h is -1; armour = gun+368h,
 // times ProductForUnit(2, [gun+3F0h]) under the powerup gate (0087784F hull and
@@ -17476,6 +17603,15 @@ void GameGunneryHost::Impl::apply_gun_hit_record_008777d0(std::size_t g,
     } else {
         (void)g;
         (void)hit;
+    }
+}
+
+void GameGunneryHost::repair_unit_guns_006f47f0(std::size_t unit_index, float fraction) {
+    if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+        impl_->repair_guns_006f47f0(unit_index, fraction);
+    } else {
+        (void)unit_index;
+        (void)fraction;
     }
 }
 
