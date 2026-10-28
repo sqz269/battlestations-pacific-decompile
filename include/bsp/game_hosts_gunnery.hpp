@@ -1344,6 +1344,10 @@ public:
     // 0088E000): the party multiplier, the invincibility floor and the death funnel,
     // as a hit's damage takes them. No caller yet (packet cc9_difficulty_multipliers).
     void apply_script_damage_0095da00(std::size_t unit_index, float amount);
+    // Packet cc13-gunC C1b (include/bsp/ship_damaged_gfx_remove_cc13.hpp): vtable[1B4h]
+    // as SetDamagedGFXLevel 0088F710 calls it; 00819CC0 for a ship. Returns the gun rows
+    // destroyed and detached. Nothing happens unless kShipDamagedGfxRemoveCc13Bound.
+    int set_damaged_gfx_level_00819cc0(std::size_t unit_index, int level);
     // Packet cc13-gunB: 00728080 on one gun row (index into guns()), through
     // 00442AE0, 0087D730, 00879070 and, at zero health, the 0072B5A0 destroyed
     // failure. A no-op unless kGunDestroyedFailureCc13Bound. No caller yet (packet C).
