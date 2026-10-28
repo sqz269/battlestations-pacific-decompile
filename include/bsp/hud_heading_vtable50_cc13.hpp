@@ -20,6 +20,12 @@ namespace bsp {
 //   45h MAirfield (00CF8C08): 006D2040 atan2(+94h, +9Ch), the local frame's row 2
 //   05h (00D1A698), 19h MLandVehicle (00CFFDE0), 46h MShipyard (00D0B770): 0042B8C0
 //     FLDZ, so 0
+//   1Ah LandConvoy (00CEA570, its +B8h the conditional 004F25B0): 0042B8C0, so 0 (the
+//     accessor's default arm)
+// LABELLED: the image also seeds +1050h at spawn and relocation (00818EA0
+// ResetPoseDependentState, 0081F980). The host's hull_heading_1050 has no writer before the
+// first motion tick, so with ON a ship icon drawn before its first motion step shows 0, for
+// at most one frame.
 // Movers when ON: minimap icon rotation only (render): shipyards and land vehicles stop
 // turning with their pose, planes follow +C6Ch, ships and airfields change by rounding.
 inline constexpr bool kHudHeadingVtable50Cc13Bound = false;
