@@ -243,33 +243,6 @@ HullTerrainContactSolver::HullShape& HullTerrainContactSolver::hull_shape(
         }
         const std::uint32_t n = avoid_zone_dyn_hull_vertex_count_00c32d20(handle);
         for (std::uint32_t i = 0; i < n; ++i) local.push_back(handle.data->vertices[i].point);
-        {
-            // Census (cc9-nondet1, log only): the same build at the other precision, compared
-            // vertex by vertex and destroyed. Its repair-pass compares also reach the dyn hull
-            // census, which therefore counts each shape twice in this build.
-            AvoidZoneDynHullHandle shadow{};
-            unsigned int saved = 0;
-            _controlfp_s(&saved, 0, 0);
-            unsigned int ignored = 0;
-            if (kHullShapeBuildPc24Cc13Bound) {
-                // The real build ran at _PC_24; the shadow runs at the caller's precision.
-                avoid_zone_dyn_hull_construct_00c5df30(shadow, centred.data(),
-                    static_cast<std::uint32_t>(centred.size()), memory);
-            } else {
-                _controlfp_s(&ignored, _PC_24, _MCW_PC);
-                avoid_zone_dyn_hull_construct_00c5df30(shadow, centred.data(),
-                    static_cast<std::uint32_t>(centred.size()), memory);
-                _controlfp_s(&ignored, saved & _MCW_PC, _MCW_PC);
-            }
-            const std::uint32_t sn = avoid_zone_dyn_hull_vertex_count_00c32d20(shadow);
-            bool same = sn == n;
-            for (std::uint32_t i = 0; same && i < n; ++i) {
-                same = std::memcmp(&shadow.data->vertices[i].point, &local[local.size() - n + i],
-                                   sizeof(OceanVec3)) == 0;
-            }
-            if (!same) ++census_.hull_scope_differs;
-            avoid_zone_dyn_hull_destroy_00c37450(shadow, memory);
-        }
         ++census_.hull_shapes;
         census_.raw_points += raw.size();
         census_.hull_vertices += n;

@@ -263,10 +263,6 @@ public:
         // Dyn hull builds (kHullTerrainDynHullVerticesBound): shapes built, their raw points
         // and the hull vertices 00C5DEB0 kept.
         unsigned long long hull_shapes{0}, raw_points{0}, hull_vertices{0};
-        // Census for kHullShapeBuildPc24Cc13Bound (cc9-nondet1, log only): shapes whose
-        // shadow build at the other precision (_PC_24 when OFF, the caller's when ON) kept
-        // a different vertex count or different vertex bytes.
-        unsigned long long hull_scope_differs{0};
         // Hull pairs (00C535E0): world steps, pairs whose world boxes met, shape pairs
         // tested, hits, 00C4B610 groups solved, groups with two or more hulls and the largest.
         unsigned long long world_steps{0}, hull_pairs_near{0}, hull_shape_tests{0};
