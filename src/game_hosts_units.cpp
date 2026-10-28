@@ -3165,7 +3165,7 @@ struct GameUnitsHost::Impl {
         // +3Dh ended, so one command is ended once.
         std::uint32_t fighter_ended_command{0};
     };
-    unsigned long long moveto_self_issues{0}, moveto_self_placed{0};
+    unsigned long long moveto_self_issues{0}, moveto_self_placed{0}, moveto_self_wings{0};
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
     // Packet cc13-steptail (kSquadronGeneralStepTailBound): the head the general
     // tail last issued on, so it issues once per head.
@@ -8293,6 +8293,15 @@ struct GameUnitsHost::Impl {
     // ON (SQUADRON_LAND_TASK 5hm): unit+184h is the player flag, so an AI squadron's
     // moveto-self is raised to stage 2 at once (0084E0A4) and the image churns too.
     static constexpr bool kSquadronMoveToSelfBound = true;
+    // Packet s65_moveto_self_wing_follow (SHIP_AI 329.2, 330). 0084E5A8 puts the
+    // moveto-self into the squadron's own director, and each wing's bot takes it
+    // through 0099A170's member arm: the kind-7 moveto task (009C3000) runs the
+    // follow state 009C1FD0 on the leader for every non-leader member. SUBSTITUTION,
+    // labelled, as 009F8615's stop head (cc13-stophead): the host stands each member in
+    // for the director, so the moveto-self also goes to every live wing member once it
+    // is placed. False: the leader's row only, and the wings, whose rows
+    // retire_ended_command_rows stripped, idle on the director tail and fly straight.
+    static constexpr bool kSquadronMoveToSelfWingFollowBound = false;
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -21329,6 +21338,22 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                                      "0084E595 moveto-self",
                                      h.slots[sq.squadron_unit]->row.name) != nullptr) {
                 ++placed;
+            }
+            if constexpr (Impl::kSquadronMoveToSelfWingFollowBound) {
+                std::size_t wings = 0;
+                for (const std::size_t m : sq.member_units) {
+                    if (placed == 0 || m == bsp::kPlaneSquadronNoUnit || m >= h.slots.size()
+                        || m == sq.squadron_unit || gun->unit_dead(m)) continue;
+                    if (issue_script_command(m, 0x00E08F68u, target, 1,
+                            "0084E595 moveto-self wing",
+                            h.slots[sq.squadron_unit]->row.name) != nullptr) {
+                        ++wings;
+                    }
+                }
+                h.moveto_self_wings += wings;
+                h.log.notef("squadron moveto-self wings: \"%s\" at %.2f s wings=%zu (0099A170 "
+                    "member arm, packet s65_moveto_self_wing_follow)", sq.name.c_str(),
+                    static_cast<double>(now), wings);
             }
             st.moveto_self = true;
             ++h.moveto_self_issues;
