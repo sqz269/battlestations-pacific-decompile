@@ -7100,7 +7100,9 @@ struct GameUnitsHost::Impl {
     // 009B21A0 is called directly (+1Ch = 0, +18h = 0, +28h = 3.0), with no 009B3680
     // switch, no exit and no 007B8AD0 leader test. False: the host refuses the task
     // (the plane keeps no land task; a recalled grounded squadron flies on).
-    static constexpr bool kLandTaskGroundParkStartBound = false;
+    // ON (cc9-physics29, OCEAN_WAVE_FIELD 125): census 0 on every WINS plane row; the USNOS
+    // s63_os_g pair parks recalled grounded planes, which then retake off and land.
+    static constexpr bool kLandTaskGroundParkStartBound = true;
     // Packet cc9_carrier_elevator (docs/SQUADRON_LAND_TASK.md 5ao). True, on a
     // mother-ship deck: land/park's carrier arm (009B23E4's vtable[5Ch](9)
     // branches: the lift targets 006D0120/006D00E0, ParkVelocity, the +28h
