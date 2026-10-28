@@ -16779,9 +16779,9 @@ void GameUnitsHost::Impl::ensure_parent_link_71c_006f5cc0(std::size_t index) {
                 const float dz = slot.motion.position[2] - cb.motion.position[2];
                 float d2;
                 if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                    // 006F5D97-006F5DB3: (dy*dy + dx*dx) + dz*dz, each op rounded.
+                    // 006F5D97-006F5DB3: (dx*dx + dy*dy) + dz*dz, each op rounded.
                     using namespace bsp::cc13x87;
-                    d2 = static_cast<float>(x87_add24(x87_add24(x87_mul24(dy, dy), x87_mul24(dx, dx)),
+                    d2 = static_cast<float>(x87_add24(x87_add24(x87_mul24(dx, dx), x87_mul24(dy, dy)),
                                                       x87_mul24(dz, dz)));
                 } else {
                     d2 = static_cast<float>(
