@@ -21,13 +21,24 @@ namespace bsp {
 //   009B688A (prepare's wait arm: the leader's 9C1h), 009B59FC (release tick:
 //   1), and the setter 009B59D0.
 // The host already writes all of them except the setter (src/plane_level_bomb_task.cpp
-// and lb_release_tick_009b59f0). Mode 2 makes unit+DF0h = 9C3h (007BB150), and
+// and lb_release_tick_009b59f0). 009B59D0 has no rel32 or absolute reference
+// (every section scanned; the positive control 009B8450 is found at 00D20260),
+// so it needs no model.
+// Recovered field name: 009B4690 (ConstructFromStream, reached only from the
+// stream load 009B77C0) registers {3, &approach+CCh} / {0, "bayDoorState"}
+// (string 00D200B8) at 009B4858-009B4876. That address-taken writer is a save
+// load, which the host does not run. A task with no state answers 1 (009B8496),
+// so the opener still runs and 007C6A8D still reads C20h.
+// Mode 2 makes unit+DF0h = 9C3h (007BB150), and
 // 007C6A8D then sets channel C's target to 9C3h.
 // The wingmen's +424h passthrough 009B8BD0 -> 007BBBA0 (kLevelBombReleaseOrderSpendBound)
 // raises unit+C20h, which 007C6A8D also reads. With this switch, a level bomber
 // reaches 007C6A8D, so that path opens the bay as well.
 // OFF: a plane with neither a torpedo nor a dive-bomb task is left alone, as before.
-// ON-only line: "summary level-bomb bay opener steps= mode2=".
+// ON-only line: "summary level-bomb bay opener steps= mode2= shadowed_by_torpedo_or_dive=".
+// The last count is the steps where a level-bomb task is installed while a torpedo
+// or dive-bomb task is live, i.e. where the host's task priority substitution
+// could differ from the image's list order.
 inline constexpr bool kLevelBombBayOpenerCc13Bound = false;
 
 // kLevelBombDropBayGateCc13Bound (b): the bay test of 007CC8E0

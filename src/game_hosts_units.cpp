@@ -4215,10 +4215,21 @@ struct GameUnitsHost::Impl {
     // (009C8290) tasks only, and a plane with neither task is left alone.
     unsigned long long bay_open_target_writes{0}, bay_open_steps{0};
     unsigned long long lb_bay_opener_steps{0}, lb_bay_opener_mode2{0};   // packet cc13-lbbay
+    unsigned long long lb_bay_opener_shadowed{0};   // level task live under a torpedo/dive task
     void bay_open_step_cc13(GameUnitSlot& s, std::size_t index) {
         namespace rt = bsp::cc13_release_timer;
         if (!bsp::unit_is_kind_of(s.class_id, 0x0F)) return;
         int mode = 1;
+        if constexpr (bsp::kLevelBombBayOpenerCc13Bound) {
+            // The host's torpedo -> dive -> level order stands for the image's
+            // first task in bot+58h/+5Ch whose +50h is not 1; count the overlap.
+            if (s.level_bomb_task_installed
+                && ((s.torpedo_task_installed && s.torpedo_state != bsp::TorpedoState::kNone)
+                    || (s.dive_bomb_task_installed
+                        && s.dive_bomb_state != bsp::DiveBombState::kNone))) {
+                ++lb_bay_opener_shadowed;
+            }
+        }
         if (s.torpedo_task_installed && s.torpedo_state != bsp::TorpedoState::kNone) {
             const bsp::TorpedoState t = s.torpedo_state;
             const bool listed = t == bsp::TorpedoState::kAim || t == bsp::TorpedoState::kDone
@@ -4239,11 +4250,9 @@ struct GameUnitsHost::Impl {
         } else {
             if constexpr (bsp::kLevelBombBayOpenerCc13Bound) {
                 // 009B8450 (packet cc13-lbbay): the level-bomb task's vtable[+50h],
-                // close_cc = task+4C4h (approach+CCh).
-                if (!s.level_bomb_task_installed
-                    || s.level_bomb_state == bsp::LevelBombState::kNone) {
-                    return;
-                }
+                // close_cc = task+4C4h (approach+CCh, "bayDoorState"). A task with
+                // no state answers 1 (009B8496), and 007C6A8D still reads C20h.
+                if (!s.level_bomb_task_installed) return;
                 const bsp::LevelBombState l = s.level_bomb_state;
                 const bool attacking = l == bsp::LevelBombState::kAttackRun
                     || l == bsp::LevelBombState::kAim || l == bsp::LevelBombState::kPrepare
@@ -49027,8 +49036,9 @@ void GameUnitsHost::report() {
             }
             if constexpr (bsp::kLevelBombBayOpenerCc13Bound) {
                 host.log.notef("summary level-bomb bay opener steps=%llu mode2=%llu "
-                    "(009B8450, packet cc13-lbbay)",
-                    host.lb_bay_opener_steps, host.lb_bay_opener_mode2);
+                    "shadowed_by_torpedo_or_dive=%llu (009B8450, packet cc13-lbbay)",
+                    host.lb_bay_opener_steps, host.lb_bay_opener_mode2,
+                    host.lb_bay_opener_shadowed);
             }
             host.log.notef("summary moveto cruise by_ordnance=%llu bound=%d leg separations=%llu "
                 "bound=%d (009C3650, 009BEC85, packet p16_moveto_cruise)",
