@@ -112,6 +112,7 @@
 #include "bsp/cc13_heading_wrap.hpp"
 #include "bsp/cc13_arc_centre.hpp"
 #include "bsp/cc13_seg67b.hpp"
+#include "bsp/segment_distance_2d_cc13.hpp"  // packet cc13-p3b
 
 namespace bsp::game {
 
@@ -14169,7 +14170,146 @@ double segment_point_distance_2d(const double s[4], double px, double pz) {
     return std::sqrt(ex * ex + ez * ez);
 }
 
+// kSegmentDistance2dCc13Bound (packet cc13-p3b): the image's 004F49F0 and helpers, each
+// x87 op at PC24 (bsp::cc13x87), every listing store a float. Points are float2 {x, z}.
+
+// 004F3560 BSP_Math_RelativeEqualFloat(a, b), 004F3560-004F3626, two float stack args,
+// RET 8: 004F356D FSUB at PC24 stored; |a|, |b|, |diff| by SSE (x > 0 ? x : -0.0 - x,
+// [00D7A208] = -0.0); m = |a| when |a| > |b| (FCOMIP, JA; unordered takes |b|); m = 1.0
+// [00D7A24C] when 1 > m (FLD1 FCOMIP, JBE keeps m); equal when m * [00E0830C] (1e-4f,
+// FMUL m32 at PC24, 004F3608) > |diff| (JBE gives 0).
+bool relative_equal_004f3560(float a, float b) {
+    namespace x8 = bsp::cc13x87;
+    auto sse_abs = [](float x) { return x > 0.0f ? x : -0.0f - x; };
+    const float diff = static_cast<float>(x8::x87_sub24(a, b));
+    const float abs_b = sse_abs(b);
+    const float abs_a = sse_abs(a);
+    float m = abs_a > abs_b ? abs_a : abs_b;
+    const float abs_diff = sse_abs(diff);
+    if (1.0f > m) m = 1.0f;
+    return x8::x87_mul24(m, 1.0e-4f) > abs_diff;
+}
+
+// 004F3630 BSP_Math_SegmentParameters2D, 004F3630-004F372E, __fastcall(ECX = a0,
+// EDX = da, b0, db, float* t, float* u), RET 10h. den = db.x*da.y - db.y*da.x
+// (004F3682..004F3692, FSUBP DE E9 = ST1 - ST0) stored; 004F3560(den, 0) -> false with
+// t and u unwritten. t = (((a0.x*db.y + db.x*b0.y) - db.y*b0.x) - db.x*a0.y) / den
+// (004F36B6..004F36FB: FADDP DE C1, FSUBRP DE E2 / DE E5 = ST0 - ST(i), FDIVP DE FE =
+// ST6 / ST0), stored at 004F36FF; u = (((a0.y*da.x + b0.x*da.y) - a0.x*da.y) - b0.y*da.x)
+// / -den (004F3701..004F3725: FADDP DE C3, FSUBRP DE E3, FSUBP DE E9, FCHS, FDIVP DE F9 =
+// ST1 / ST0), stored at 004F3727. Each op at PC24.
+bool segment_parameters_004f3630(const float a0[2], const float da[2], const float b0[2],
+                                 const float db[2], float& t, float& u) {
+    namespace x8 = bsp::cc13x87;
+    const float den = static_cast<float>(
+        x8::x87_sub24(x8::x87_mul24(db[0], da[1]), x8::x87_mul24(db[1], da[0])));
+    if (relative_equal_004f3560(den, 0.0f)) return false;
+    const double n_t = x8::x87_sub24(
+        x8::x87_sub24(x8::x87_add24(x8::x87_mul24(a0[0], db[1]), x8::x87_mul24(db[0], b0[1])),
+                      x8::x87_mul24(db[1], b0[0])),
+        x8::x87_mul24(db[0], a0[1]));
+    t = static_cast<float>(x8::x87_div24(n_t, den));
+    const double n_u = x8::x87_sub24(
+        x8::x87_sub24(x8::x87_add24(x8::x87_mul24(a0[1], da[0]), x8::x87_mul24(b0[0], da[1])),
+                      x8::x87_mul24(a0[0], da[1])),
+        x8::x87_mul24(b0[1], da[0]));
+    u = static_cast<float>(x8::x87_div24(n_u, -static_cast<double>(den)));
+    return true;
+}
+
+// 004F3730 BSP_Math_SegmentCrossing2D, 004F3730-004F37FF, __fastcall(ECX = a0, EDX = a1,
+// b0, b1, float2* out), RET 0Ch: da = a1 - a0 and db = b1 - b0 stored as floats
+// (004F373C..004F3777), 004F3630; false when it is, when t < 0 (FCOMI, JC: unordered too)
+// or 1.0 < t (COMISS, JC), then the same for u (004F37A3..004F37B2). The crossing point it
+// writes (004F37B4..004F37EB) is not used by 004F49F0.
+bool segment_crossing_004f3730(const float a0[2], const float a1[2], const float b0[2],
+                               const float b1[2]) {
+    namespace x8 = bsp::cc13x87;
+    const float da[2] = {static_cast<float>(x8::x87_sub24(a1[0], a0[0])),
+                         static_cast<float>(x8::x87_sub24(a1[1], a0[1]))};
+    const float db[2] = {static_cast<float>(x8::x87_sub24(b1[0], b0[0])),
+                         static_cast<float>(x8::x87_sub24(b1[1], b0[1]))};
+    float t = 0.0f, u = 0.0f;
+    if (!segment_parameters_004f3630(a0, da, b0, db, t, u)) return false;
+    if (!(t >= 0.0f) || 1.0f < t) return false;
+    if (!(u >= 0.0f) || 1.0f < u) return false;
+    return true;
+}
+
+// 00414C60 at PC24 on {x, z}: x*x + z*z (00414C66 FMUL ST0, 00414C6A FMULP, FADDP) stored
+// as a float; 0 at or below double [00CE3820] 1e-10 (FCOMI, JBE: unordered too), else
+// 00BF7030 sqrt stored as a float.
+float length_2d_00414c60(float x, float z) {
+    namespace x8 = bsp::cc13x87;
+    const float s = static_cast<float>(x8::x87_add24(x8::x87_mul24(x, x), x8::x87_mul24(z, z)));
+    return static_cast<double>(s) > 1e-10 ? static_cast<float>(x8::x87_sqrt24(s)) : 0.0f;
+}
+
+// 00419AB0 BSP_Segment2f_PointDistance, 00419AB0-00419BEB, __fastcall(ECX = start,
+// EDX = end, point), RET 4. d = end - start stored (00419AB8..00419ACC); r = 00419260
+// BSP_Vector2f_ReciprocalLength(d): x*x and z*z each stored, their sum stored, 00BF7030
+// sqrt stored, then 0 when it is 0 (FUCOMIP/LAHF/TEST AH,44h/JP: unordered divides) else
+// 1 / len stored (FLD1 FDIVRP DE F1). n = (-(r*d.z), d.x*r) stored (00419AF0..00419B1B);
+// 004F3630(start, d, point, n, &t, &u), its result not tested. 0 > t (COMISS, JBE):
+// |point - start| inline as 00414C60 does it (00419B32..00419B98); t > 1.0 (COMISS, JBE:
+// unordered falls through): 00414C60(point - end) (00419B9B..00419BC5); else |u| (AND
+// 7FFFFFFFh, 00419BC8..00419BE3).
+// LABELLED: when 004F3630 finds den (= -|d|) relatively equal to 0 (|d| < 1e-4, d = 0
+// included) it writes nothing and the image reads t from the stack slot that held the
+// point argument (pointer bits) and u from the slot holding d.x * r; this model takes
+// t = 0 for that case, so the result is |d.x * r|.
+float segment_point_distance_00419ab0(const float start[2], const float end[2],
+                                      const float point[2]) {
+    namespace x8 = bsp::cc13x87;
+    const float d[2] = {static_cast<float>(x8::x87_sub24(end[0], start[0])),
+                        static_cast<float>(x8::x87_sub24(end[1], start[1]))};
+    const float xx = static_cast<float>(x8::x87_mul24(d[0], d[0]));
+    const float zz = static_cast<float>(x8::x87_mul24(d[1], d[1]));
+    const float len = static_cast<float>(x8::x87_sqrt24(static_cast<float>(x8::x87_add24(xx, zz))));
+    float r = 0.0f;
+    if (!(len == 0.0f)) r = static_cast<float>(x8::x87_div24(1.0, len));
+    const float dxr = static_cast<float>(x8::x87_mul24(d[0], r));
+    const float n[2] = {-static_cast<float>(x8::x87_mul24(r, d[1])), dxr};
+    float t = 0.0f, u = dxr;
+    static_cast<void>(segment_parameters_004f3630(start, d, point, n, t, u));
+    if (0.0f > t) {
+        return length_2d_00414c60(static_cast<float>(x8::x87_sub24(point[0], start[0])),
+                                  static_cast<float>(x8::x87_sub24(point[1], start[1])));
+    }
+    if (t > 1.0f) {
+        return length_2d_00414c60(static_cast<float>(x8::x87_sub24(point[0], end[0])),
+                                  static_cast<float>(x8::x87_sub24(point[1], end[1])));
+    }
+    return std::fabs(u);
+}
+
+// 004F49F0 BSP_Segment2f_SegmentDistance, 004F49F0-004F4ACE, __fastcall(ECX = a0,
+// EDX = a1, b0, b1), RET 8, float in ST0: 0 when 004F3730 says they cross (004F4A0A..
+// 004F4A1C); else d1 = 00419AB0(a0, a1; b0), d2 = (a0, a1; b1), d3 = (b0, b1; a0),
+// d4 = (b0, b1; a1), each stored; m1 = d4 > d3 ? d3 : d4, m2 = d2 > d1 ? d1 : d2,
+// result m1 > m2 ? m2 : m1 (FCOMIP, JBE: unordered takes the second).
+float segment_distance_004f49f0_image(const float a0[2], const float a1[2], const float b0[2],
+                                      const float b1[2]) {
+    if (segment_crossing_004f3730(a0, a1, b0, b1)) return 0.0f;
+    const float d1 = segment_point_distance_00419ab0(a0, a1, b0);
+    const float d2 = segment_point_distance_00419ab0(a0, a1, b1);
+    const float d3 = segment_point_distance_00419ab0(b0, b1, a0);
+    const float d4 = segment_point_distance_00419ab0(b0, b1, a1);
+    const float m1 = d4 > d3 ? d3 : d4;
+    const float m2 = d2 > d1 ? d1 : d2;
+    return m1 > m2 ? m2 : m1;
+}
+
 double segment_distance_2d_004f49f0(const double a[4], const double b[4]) {
+    if constexpr (bsp::kSegmentDistance2dCc13Bound) {
+        // 0082178B passes the craft keel (here b) as ECX/EDX and the other ship's keel
+        // (here a) as the stack pair; the callers hold float values.
+        const float e0[2] = {static_cast<float>(b[0]), static_cast<float>(b[1])};
+        const float e1[2] = {static_cast<float>(b[2]), static_cast<float>(b[3])};
+        const float s0[2] = {static_cast<float>(a[0]), static_cast<float>(a[1])};
+        const float s1[2] = {static_cast<float>(a[2]), static_cast<float>(a[3])};
+        return segment_distance_004f49f0_image(e0, e1, s0, s1);
+    } else {
     auto cross = [](double ox, double oz, double ax, double az, double bx, double bz) {
         return (ax - ox) * (bz - oz) - (az - oz) * (bx - ox);
     };
@@ -14186,6 +14326,7 @@ double segment_distance_2d_004f49f0(const double a[4], const double b[4]) {
     const double to_b = std::min(segment_point_distance_2d(b, a[0], a[1]),
                                  segment_point_distance_2d(b, a[2], a[3]));
     return to_b <= to_a ? to_b : to_a;
+    }
 }
 
 // kTransportLaunchCraftCc13Bound helpers (packet cc13-transport-launch). The
