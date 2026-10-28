@@ -191,7 +191,7 @@ inline constexpr bool kShipAiStandoffTargetKindBound = true;
 // Movers when ON: landing-craft spawn points (y = 0 and the corner candidates),
 // the chosen candidate per pad, depth and clearance rejects, the craft frame,
 // launch counts and the launch cooldown.
-inline constexpr bool kTransportLaunchCraftCc13Bound = false;
+inline constexpr bool kTransportLaunchCraftCc13Bound = true;   // ON: SHIP_AI 330.3
 
 class GameHostLog;
 class GameUnitsHost;
