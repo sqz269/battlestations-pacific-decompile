@@ -7,6 +7,7 @@
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/game_sound_runtime.hpp"
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/gui_lua_runtime.hpp"
 #include "bsp/locale_tables.hpp"
@@ -14,6 +15,8 @@
 #include "bsp/message_record_resolver.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/resource_lookup.hpp"
+#include "bsp/sound_sample_cache.hpp"
+#include "bsp/sound_sample_runtime.hpp"
 #include "bsp/vfs_mounts.hpp"
 
 #include <windows.h>
@@ -111,6 +114,9 @@ private:
 // read is reached: [[00E198C4]+A4h], the HUD's narrative screen (slot 33h), whose
 // +7Ch / +80h 005BB130 loads from DialogGlobals.lua. The screen itself is not hosted;
 // `screen` carries those two words and nothing else is read from it.
+void retain_sample_reference(void* object);
+void release_sample_reference(void* object);
+
 class RecordMissPlayback final : public VoiceLineHost {
 public:
     VoicePlaybackManager screen;
@@ -121,7 +127,11 @@ public:
     bool sound_completed_vslot_0c(void*) override { throw unreached(); }
     float sound_duration_00a81860(void*) override { throw unreached(); }
     void stop_sound_vslot_08(void*, std::uint32_t) override { throw unreached(); }
-    void release_reference(void*) noexcept override {}  // no reference is ever held
+    // OFF no reference is ever held. ON a record can hold 00A83FD0 samples (cc15-bank).
+    void release_reference(void* object) noexcept override {
+        if constexpr (kMessageSoundBankCc15Bound) release_sample_reference(object);
+        else (void)object;
+    }
     void stop_auxiliary_vslot_08(void*, std::uint32_t) override { throw unreached(); }
     void reset_auxiliary_0054d510(void*&, void*) override { throw unreached(); }
     void set_sound_flag_00a7d120(std::uint32_t) override { throw unreached(); }
@@ -132,7 +142,14 @@ public:
     void notify_005a2650(std::uint32_t, void*, std::uint32_t) override { throw unreached(); }
     VoiceLine* allocate_line_00bf681b(std::uint32_t) override { throw unreached(); }
     VoiceLineNode& allocate_node_00bf681b(std::uint32_t) override { throw unreached(); }
-    void retain_reference(void*) override { throw unreached(); }
+    void retain_reference(void* object) override {
+        if constexpr (kMessageSoundBankCc15Bound) {
+            retain_sample_reference(object);
+        } else {
+            (void)object;
+            throw unreached();
+        }
+    }
     std::uint32_t invalid_target_00e188d8() override { throw unreached(); }
     bool target_valid_00645160(std::uint32_t, bool) override { throw unreached(); }
     VoiceSubtitleContext& subtitle_context() override { throw unreached(); }
@@ -153,6 +170,26 @@ private:
 // cc15-msg2: 008D57A0's globals, bound by the application (bind_voice_language_settings).
 const std::vector<LanguageEntry>* g_voice_catalog = nullptr;  // [00F88974], count [00F88978]
 const int* g_voice_language_index = nullptr;                  // [00F88980]+4h
+// cc15-bank: the core sound runtime whose sample cache is [00F8BBE8] (bind_sound_runtime).
+GameSoundRuntime* g_sound_runtime = nullptr;
+
+GameSoundRuntime& bound_sound_runtime() {
+    if (g_sound_runtime == nullptr || !g_sound_runtime->started())
+        throw std::logic_error("00A83FD0: the sample cache [00F8BBE8] needs a started sound runtime");
+    return *g_sound_runtime;
+}
+
+// cc15-bank: a record slot's D5B074 sample reference, as 00704590 handles it at
+// 00704E6B..00704EBB: InterlockedIncrement / InterlockedDecrement ([00CE221C] /
+// [00CE2220]) on +4h, and the object's vslot 0 when the count reaches zero (for D5B074,
+// 00A82E80 through SoundSampleRuntime, which unlinks the weak cache entry).
+void retain_sample_reference(void* object) {
+    InterlockedIncrement(reinterpret_cast<volatile LONG*>(static_cast<unsigned char*>(object) + 4));
+}
+void release_sample_reference(void* object) {
+    if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(static_cast<unsigned char*>(object) + 4)) == 0)
+        bound_sound_runtime().samples().zero_references_slot_00(object);
+}
 
 // 008D57A0 on [00F88980], read afresh at every call as 00704590 calls it:
 // - "english" when [00F88978] < index (JL) or the row's voice_dir +10h is empty;
@@ -211,9 +248,19 @@ struct GameMessageManagerHost::Impl final : seg::MessageManagerCalls {
     void clear_records() noexcept {
         NativeStringStorage& s = crt_string_storage();
         for (auto& [key, record] : records) {
-            // 00704060 order: the timed keys, the four references (always null here,
-            // 00A83FD0 being a seam), then the three strings.
+            // 00704060 order: the timed keys, the four references (null OFF, 00A83FD0
+            // being a seam; samples ON, released last slot first), then the three strings.
             destroy_message_keys_00703b90(record.timed_keys_34, s);
+            if constexpr (kMessageSoundBankCc15Bound) {
+                const std::size_t slots = record.resources_20.size() < 4 ? record.resources_20.size() : 4;
+                for (std::size_t i = slots; i != 0; --i) {
+                    if (void* captured = record.resources_20[i - 1]) {
+                        ++summary.sound_bank_references_released;
+                        release_sample_reference(captured);
+                        record.resources_20[i - 1] = nullptr;  // 004C3810 clears after the call
+                    }
+                }
+            }
             record.alternate_name_18.release_to(s);
             record.auxiliary_0c.release_to(s);
             record.text_00.release_to(s);
@@ -409,8 +456,24 @@ struct GameMessageManagerHost::Impl final : seg::MessageManagerCalls {
         return {keys->keys, keys->keys + count};
     }
     void report_loading_progress_0057c1a0(float) override {}
-    void retain_reference(void*) override { unreached("a sound bank reference (00A83FD0 is a seam)"); }
-    void release_reference(void*) override { unreached("a sound bank reference (00A83FD0 is a seam)"); }
+    // 00704590 / 00704060's slot references: D5B074 samples from 00A83FD0 (cc15-bank).
+    void retain_reference(void* object) override {
+        if constexpr (kMessageSoundBankCc15Bound) {
+            retain_sample_reference(object);
+        } else {
+            (void)object;
+            unreached("a sound bank reference (00A83FD0 is a seam)");
+        }
+    }
+    void release_reference(void* object) override {
+        if constexpr (kMessageSoundBankCc15Bound) {
+            ++summary.sound_bank_references_released;
+            release_sample_reference(object);
+        } else {
+            (void)object;
+            unreached("a sound bank reference (00A83FD0 is a seam)");
+        }
+    }
     bool file_store_exists_vslot8(const std::string& path) override {
         const bool present = vfs.exists(path);  // 00BDD440
         ++(present ? summary.voice_probe_hits : summary.voice_probe_misses);
@@ -421,10 +484,34 @@ struct GameMessageManagerHost::Impl final : seg::MessageManagerCalls {
         ++summary.streamed_probes_not_evaluated;
         return false;
     }
-    void* load_sound_bank_00a83fd0(const std::string&) override {
-        // [00F8BBE8] 00A83FD0 loads the .fsb through FMOD's sample cache; not hosted.
-        ++summary.sound_banks_not_loaded;
-        return nullptr;
+    void* load_sound_bank_00a83fd0(const std::string& file) override {
+        if constexpr (kMessageSoundBankCc15Bound) {
+            // 00704E42..00704E52: 00A83FD0 __thiscall(ECX = [00F8BBE8]; &temporary, &path),
+            // RET 8, EAX = &temporary. The reconstructed body (sound_sample_cache.cpp) scans
+            // the live cache; a miss builds a 7Ch D5B074 sample through 00A85440/00A84D70,
+            // which loads the .fsb through 00A84740 (FMOD createSound from memory). The
+            // temporary carries one reference; the caller retains it into the slot and
+            // drops the temporary's.
+            SoundSampleRuntime& samples = bound_sound_runtime().samples();
+            SoundSampleCacheContext& cache = samples.sample_cache_context();
+            NativeString name;
+            assign_text(name, cache.strings, file);
+            void* temporary = nullptr;
+            try {
+                acquire_sound_sample_00a83fd0(samples.current_sample_cache_00f8bbe8(), temporary, name, cache);
+            } catch (...) {
+                name.release_to(cache.strings);
+                throw;
+            }
+            name.release_to(cache.strings);
+            ++summary.sound_banks_loaded;
+            return temporary;
+        } else {
+            (void)file;
+            // [00F8BBE8] 00A83FD0 loads the .fsb through FMOD's sample cache; not hosted.
+            ++summary.sound_banks_not_loaded;
+            return nullptr;
+        }
     }
     std::string language_name_008d57a0() override {
         if constexpr (kMessageVoiceLanguageCc15Bound) {
@@ -470,6 +557,10 @@ void GameMessageManagerHost::bind_voice_language_settings(
     g_voice_language_index = &language_index_04;
 }
 
+void GameMessageManagerHost::bind_sound_runtime(GameSoundRuntime* runtime) noexcept {
+    g_sound_runtime = runtime;
+}
+
 GameMessageManagerHost::~GameMessageManagerHost() {
     if (impl_->layout) destruct_007071f0();
 }
@@ -487,6 +578,11 @@ void GameMessageManagerHost::destruct_007071f0() {
     seg::destruct_message_manager_007071f0(*impl_->layout, *impl_);
     impl_->layout.reset();
     ++impl_->summary.destructed;
+    if constexpr (kMessageSoundBankCc15Bound) {
+        impl_->log.notef("message manager: destruct released=%llu sound bank references, "
+            "cache_samples=%zu (cc15-bank)", impl_->summary.sound_bank_references_released,
+            bound_sound_runtime().summary().samples);
+    }
     impl_->log.implemented("MessageManager::destruct", "007071f0");
 }
 
@@ -504,6 +600,11 @@ void GameMessageManagerHost::load_messages_007065e0(bool load, const MessageMana
     seg::load_messages_007065e0(*impl_->layout, options, load, *impl_);
     ++(load ? impl_->summary.loads : impl_->summary.unloads);
     impl_->summary.records_added += impl_->records.size() - before;
+    if constexpr (kMessageSoundBankCc15Bound) {
+        impl_->log.notef("message manager: 00A83FD0 sound banks acquired=%llu released=%llu "
+            "cache_samples=%zu (cc15-bank)", impl_->summary.sound_banks_loaded,
+            impl_->summary.sound_bank_references_released, bound_sound_runtime().summary().samples);
+    }
     impl_->log.implemented("MessageManager::load_messages", "007065e0");
 }
 

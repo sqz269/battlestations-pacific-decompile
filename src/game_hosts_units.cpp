@@ -10505,8 +10505,8 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // df_row.aim_shoot_distance and gun+38h the controller's 0.09 default, as
     // df_gun_tick_009fc7c0 has them. x87 chains are modelled at 24-bit precision
     // (float per operation); a 53-bit thread could differ in the last bit.
-    // Not hosted: unit+914h's readers 0072C128 / 0072C5FE (squadron-head
-    // substitution in the gun code). 009BED80's +84h clear: follow_sight_enter_009bed80.
+    // Not hosted: unit+914h's reader 0072C5FE (squadron-head substitution in the
+    // gun code). 0072C128 is plane_shot_owner_squadron_head_0072c119 (cc13-s24). 009BED80's +84h clear: follow_sight_enter_009bed80.
     static constexpr float kFollowSightPeriod70 = 0.6f;   // 00CE3D30 = 3F19999Ah
     // 009BED80, the follow Enter: of the sight block it clears only +84h
     // (009BEDC3) and +85h (009BEE1C; the host recomputes +85h every tick).
@@ -46380,6 +46380,21 @@ int GameUnitsHost::plane_squadron_live_count_3cc(std::size_t plane) const noexce
     const bsp::PlaneSquadronHostRecord* const sq =
         bsp::plane_squadron_registry().find_by_member_unit(plane);
     return sq != nullptr ? sq->live_count() : -1;
+}
+
+std::size_t GameUnitsHost::plane_shot_owner_squadron_head_0072c119(
+    std::size_t owner) const noexcept {
+    if (owner >= impl_->slots.size() || !impl_->slots[owner]) return owner;
+    const GameUnitSlot& s = *impl_->slots[owner];
+    if (!bsp::unit_is_kind_of(s.class_id, 0x0F)) return owner;           // 0072C11E
+    if (!(s.plane_formation_sight_914 > 0.0f)) return owner;             // 0072C128 JBE
+    const bsp::PlaneSquadronHostRecord* const r =
+        bsp::plane_squadron_registry().find_by_member_unit(owner);
+    if (r == nullptr) return owner;
+    // [squadron+3D0h], the first seat, read as at 0099B01C (see the pilot step).
+    const std::size_t head = Impl::kSquadronRemovesDeadBound ? r->flight_leader()
+        : r->member_units.empty() ? bsp::kPlaneSquadronNoUnit : r->member_units[0];
+    return head < impl_->slots.size() && impl_->slots[head] ? head : owner;
 }
 
 std::size_t GameUnitsHost::squadron_list_24_leader(std::size_t entry_unit) const {
