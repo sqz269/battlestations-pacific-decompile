@@ -33,16 +33,13 @@
 //    for it and the source makes no draws; rev5's sketch had the source's record drawn
 //    twice and skipped, which needs a source whose vtable[B0h] node is not the node the
 //    query meets (not the case for the ship owners, projectile+238h, traced here);
-//  * plane crash (apply_gunless_blast_hit): the crash shot is the plane's p+72Ch
-//    sub-object, not the primary (rev5 N1): 007C0910 pushes p, then p+72Ch
-//    (007C0BF6..007C0C01); 0084BF00's arg2 ([ESP+E0h] at 0084C079) goes to SetShot at
-//    0084C0C3, and 0084BC60's buffer+20h is that record's +4h. Slot +54h of the +72Ch
-//    vtables (00CFFFE8, 00D00280, 00D065B0, 00D06898, 00D0B9F8, 00D19CA0, 00D19F78,
-//    00D1A250; bytes read) is 0042BBA0 (C2 04 00: RET 4, no FLD), so neither SetShot
-//    pass draws, and F1 changes nothing there. UNEXPLAINED: a RET 4 reached through
-//    SetShot's argument-less vtable[54h] call would unbalance the stack, so either SetShot
-//    never runs on that object or a later constructor replaces its vtable (open with
-//    rev5 / cgbuildA for C2b);
+//  * plane crash (apply_gunless_blast_hit): 0084BF00 hands SetShot [arg2+0CCh], not
+//    arg2 (0084C079 MOV EAX,[ESP+0E0h]; 0084C084 MOV EAX,[EAX+0CCh]; PUSH; 0084C0C3).
+//    For the crash arg2 is p+72Ch and [p+72Ch+0CCh] is the plane's primary object (the
+//    one 0084BF56 tests with IsKindOf(0Fh)), so the shot is the plane: its vtable[54h] is
+//    0042B8D0 (D9 EE C3: FLDZ; RET) on all eight plane vtables (00D06638, 00D1A000,
+//    00D19D28, 00D06920, 00D00070, 00D0BA80, 00D00308, 00D1A2D8; slot +54h read from the
+//    bytes), so neither of its SetShot passes draws, and F1 changes nothing there;
 //  * the HUD free-camera, water-mine and kamikaze callers of 0084BAD0 are not hosted
 //    through apply_impact_blast.
 // Movers when ON: stream 1 shifts by N draws per shot-bearing burst from the first such

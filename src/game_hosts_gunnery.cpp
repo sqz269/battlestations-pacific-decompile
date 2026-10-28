@@ -1794,7 +1794,8 @@ constexpr bool kShipDeathMessageBound = true;  // ON: USN02, JM08 pairs identica
 //    in no other vtable, so the existing ship-kind gate in ship_death_message_00827ab0
 //    is the class test. OFF: kill_unit's InferiorFailure arm
 //    returns before the message. Counted either way (adopted_ship_zero).
-constexpr bool kAdoptedShipDeathMessageBound = false;
+//    ON (cc9-recon2, unreached): adopted_ship_zero=0 on all 18 WINS rows (2026-10-28).
+constexpr bool kAdoptedShipDeathMessageBound = true;
 constexpr float kWreckChanceInstalled = 0.3f;
 //  * kShipBreakInTwoDrawsBound (cc9-ships60, SHIP_AI 298): the 98h receiver 00814520
 //    tail-jumps to 00935D30 BSP_UnitController_BreakInTwo, whose two pieces take 11
@@ -4685,8 +4686,18 @@ struct GameGunneryHost::Impl {
         int team = gun.seat_1ac;
         if (team == 8 && gun.category == 0) {
             std::size_t stamp_owner = owner;
+            // Census for the S24 flip (cc9-recon2): stamps whose owner has a squadron
+            // head, and those where the head's role-1 slot differs from the owner's.
+            const std::size_t head = units.plane_shot_owner_squadron_head_0072c119(owner);
+            if (head != owner) {
+                ++shot_team_head.replaced;
+                std::int32_t own_slot = team, head_slot = team;
+                const bool own_ok = units.unit_current_role_slot(owner, 1, own_slot);
+                const bool head_ok = units.unit_current_role_slot(head, 1, head_slot);
+                if (own_ok != head_ok || own_slot != head_slot) ++shot_team_head.slot_differs;
+            }
             if constexpr (kShotTeamSquadronHeadCc13Bound) {
-                stamp_owner = units.plane_shot_owner_squadron_head_0072c119(owner);
+                stamp_owner = head;
             }
             std::int32_t slot = team;
             if (units.unit_current_role_slot(stamp_owner, 1, slot)) team = slot;
@@ -4720,6 +4731,10 @@ struct GameGunneryHost::Impl {
         unsigned long long adopted_ship_zero{0};         // kAdoptedShipDeathMessageBound
     } ship_death;
     unsigned long long override_hp_kills{0};
+    struct ShotTeamHeadCounts {   // kShotTeamSquadronHeadCc13Bound census
+        unsigned long long replaced{0}, slot_differs{0};
+    };
+    mutable ShotTeamHeadCounts shot_team_head;
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
     bool line_of_sight_00864680(std::size_t observer, std::size_t target);
     unsigned long long los_tests{0};
@@ -19687,6 +19702,10 @@ void GameGunneryHost::report() {
             host.log.notef("summary mission gunnery adopted ship health zero=%llu bound=%d "
                 "(00827AAB -> 00958A30 +71Ch arm, then 00827AB0)", d.adopted_ship_zero,
                 kAdoptedShipDeathMessageBound ? 1 : 0);
+            host.log.notef("summary mission gunnery shot team squadron head replaced=%llu "
+                "slot differs=%llu bound=%d (0072C119..0072C145, packet cc13-s24)",
+                host.shot_team_head.replaced, host.shot_team_head.slot_differs,
+                kShotTeamSquadronHeadCc13Bound ? 1 : 0);
             if constexpr (bsp::kShipBreakInTwoPuffDrawsCc13Bound) {
                 host.log.notef("summary mission gunnery ship break in two puff draws=%llu "
                     "(00935D30 -> 0092A240, packet cc13-frontier)", d.break_in_two_puff_draws);

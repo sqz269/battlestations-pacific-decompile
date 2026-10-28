@@ -38,6 +38,9 @@
 
 namespace bsp {
 
-inline constexpr bool kFreeAttackAcceptTestCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-28): census differs on all six short rows (USN01 7433, BSM09
+// 28526, BSM06 h1_i 253, LOMP10 8412, PRCP01 23289, USN12 4664 of the gate answers), yet
+// the pairs (ab36d2284) are gameplay identical with the same end times on all six.
+inline constexpr bool kFreeAttackAcceptTestCc13Bound = true;
 
 }  // namespace bsp

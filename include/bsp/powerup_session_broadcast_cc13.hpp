@@ -34,6 +34,6 @@ namespace bsp {
 // explicit route override of 4 (building_pads.cpp:336, 0074B0A0) goes to peers only
 // and is never delivered locally (0077C3C6 peer walk, no 0077C43A enqueue); with the
 // default [00E0AF1C] = 1 the message is only enqueued locally through 0076E520.
-inline constexpr bool kPowerupSessionBroadcastCc13Bound = false;
+inline constexpr bool kPowerupSessionBroadcastCc13Bound = true;  // cc9-sweep2b: prune flip, the OFF arm throws wherever this is reached (session 1 only)
 
 }  // namespace bsp

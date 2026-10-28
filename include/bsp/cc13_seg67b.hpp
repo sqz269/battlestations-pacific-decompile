@@ -987,7 +987,7 @@ bool ship_ai_path_any_negative_side_ahead_009d5b90(ShipAiPathPlanBlock& plan);
 // rule, so an unordered pair picks link_plus. Live: game_hosts_ship_ai.cpp ShipAiApproachPoint arc
 // centre (009E47D3/009E47E4), under kShipAiArcCentrePlanTestCc13Bound. Only unordered sums
 // differ.
-inline constexpr bool kShipAiPathSideWalkNanCc13Bound = false;
+inline constexpr bool kShipAiPathSideWalkNanCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 // The walks with the inline rule regardless of the switch (the fixture's ON arm).
 bool ship_ai_path_any_positive_side_ahead_image_009d5ae0(ShipAiPathPlanBlock& plan);
 bool ship_ai_path_any_negative_side_ahead_image_009d5b90(ShipAiPathPlanBlock& plan);

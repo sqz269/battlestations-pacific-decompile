@@ -148,7 +148,7 @@ bool torpedo_gyro_heading_differs(float commanded, float vx, float vz) noexcept 
 // vtable[5Ch](1Ch) (a CommandBuilding), else 0. False: the host returns +0B20h
 // unchecked, which matches while standoff mode 4 (the only caller, 009E6B85) keeps
 // the kind-1Ch target it latched with. cc9 orders and pairs the flip.
-inline constexpr bool kEngagementTargetKindTestCc13Bound = false;
+inline constexpr bool kEngagementTargetKindTestCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 // Packet cc9_ship_firepower, docs/SHIP_AI_FIREPOWER.md. True: the eight
 // predicates 0095EB40 asks about a mount answer from the gun rows the gunnery
 // host keeps (barrel timers, arcs, the refined projectile sub-type, the Bullets
@@ -15861,6 +15861,9 @@ void GameShipAiHost::report() {
             "(00811D10 kUnitAiOrderCopyPc24Cc13Bound; packet cc9-sweep2b)",
             reach.order_copy_calls, reach.order_copy_differs,
             bsp::kUnitAiOrderCopyPc24Cc13Bound ? 1 : 0);
+        host.log.notef("summary mission rocket accuracy reach reads=%llu differs=%llu "
+            "(00A0910B..00A09201 009FE4F1 kAiRocketAccuracyBound; packet cc9-sweep2b)",
+            reach.rocket_accuracy_reads, reach.rocket_accuracy_differs);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {

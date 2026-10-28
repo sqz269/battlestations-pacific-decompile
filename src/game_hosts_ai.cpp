@@ -46,6 +46,7 @@
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"  // packet pc24w1-units-1 (kPc24UnitsHostCc13Bound)
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp4 (MP2b, the 004E17FD gate)
+#include "bsp/plane_task_reach_sw3.hpp"  // cc9-sweep3c reach counter (log only)
 
 namespace bsp::game {
 
@@ -5765,6 +5766,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const int carried = bsp::kAiPlaneBagEquipmentBound ? units.plane_bag_equipment(x) : -1;
         const int equipment = carried >= 0 ? carried
             : row != nullptr && game_ai_plane_equipment_count(row->type_id) > 0 ? 1 : 0;
+        {   // sw3c reach, log only: the other arm's equipment.
+            const int bag = units.plane_bag_equipment(x);
+            const int other = !bsp::kAiPlaneBagEquipmentBound && bag >= 0 ? bag
+                : row != nullptr && game_ai_plane_equipment_count(row->type_id) > 0 ? 1 : 0;
+            bsp::plane_task_reach_count(bsp::g_plane_task_reach_sw3.ai_bag_equipment,
+                                        other != equipment);
+        }
         if (equipment > 0) ++c.records_loadout;
         return equipment;
     }

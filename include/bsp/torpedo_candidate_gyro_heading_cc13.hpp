@@ -28,7 +28,8 @@ namespace bsp {
 // threat test's answer for torpedoes still turning onto their gyro heading, not yet
 // swimming, or homing (their +46Ch is the bearing to their target), hence which torpedoes
 // count as threats and the evasive turns they cause.
-inline constexpr bool kTorpedoCandidateGyroHeadingCc13Bound = false;
+// ON since cc9-nondet2 (2026-10-28): plausible on every pair (docs/USN21_NONDETERMINISM.md 8).
+inline constexpr bool kTorpedoCandidateGyroHeadingCc13Bound = true;
 
 // Census (cc9-nondet1, log only), src/game_hosts_ship_ai.cpp: reads at the track
 // (009DC0F9) and threat (00817535) sites, and those where +46Ch and atan2(velocity)

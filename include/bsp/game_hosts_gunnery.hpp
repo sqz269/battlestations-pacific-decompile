@@ -514,7 +514,7 @@ inline constexpr bool kShipSetTorpedoStockBound = true;
 // kUnitGunneryTorpedoCategory; the call is queued by the script host and applied at
 // the start of the gunnery host's next fixed step; 0072CF00's torpedo-model tail is
 // presentation. False: the native stays an unimplemented record.
-inline constexpr bool kReloadTorpedoesBound = false;
+inline constexpr bool kReloadTorpedoesBound = true;  // cc9-sweep2b: prune flip, zero reach on u01/b9/b6i/l10/p01/u12/j8v3
 
 // Packet cc9_gun_rest_angles (docs/GUN_REST_ANGLES.md). True: a targetless gun
 // follows the image's idle rule instead of commanding its rest angles every

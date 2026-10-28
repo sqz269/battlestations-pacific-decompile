@@ -67,18 +67,18 @@ inline constexpr bool kMovieKeyframeModifierBound = true;   // ON: SQUADRON_LAND
 // (007910CE..007910EB: slot +0 with 1, then +E4h = 0) before it takes the
 // current pose, so a `use current` key never evaluates a `goaround` it parsed.
 // OFF: the modifier survives and 00795C10 keeps evaluating it, as before.
-inline constexpr bool kMovieBeginDropsModifierCc13Bound = false;
+inline constexpr bool kMovieBeginDropsModifierCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 // Packet cc13-P1. ON: 0079A3B0 stores +3B0h = 0.0 when either track is empty
 // (0079A3F8/0079A404 JBE to 0079BBD5 MOVSS [EDI],XMM0; XMM0 is the 0079A3B6
 // XORPS zero on both clock arms), so the clock restarts from 0 for the first
 // keys 007A0770 adds. OFF: the clock keeps the value the running arm gave it.
-inline constexpr bool kMovieUpdateEmptyTrackClockCc13Bound = false;
+inline constexpr bool kMovieUpdateEmptyTrackClockCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 // Packet cc13-P1 (rev9 F1). ON: 007911E0 reads BL from [[key+4]+74h]+390h
 // (007911FD..0079122A) before its state-0 call to 00791020 stores key+4, so on
 // the step that begins a key BL is 0 and a cut or blend-0 key that finishes on
 // that same step queues its finish script even with camera+390h set. OFF: the
 // camera flag is tested on every step, as before.
-inline constexpr bool kMovieStepStaleTrackFlagCc13Bound = false;
+inline constexpr bool kMovieStepStaleTrackFlagCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 
 // 00799B00, 104h bytes. Field comments name the image offset.
 struct MovieKeyframe {

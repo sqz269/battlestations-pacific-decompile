@@ -1015,6 +1015,21 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
                     record.world[8 + lane] = forward[lane];
                 }
             }
+        } else {
+            // DIAGNOSTIC (cc9-physics29): the OFF census, whether the ON arm would
+            // replace the identity axes (the owner's rows differ from identity).
+            float right[3], up[3], forward[3], translation[3];
+            if (units_.unit_pose(owner, right, up, forward, translation)) {
+                double dev = 0.0;
+                for (int lane = 0; lane < 3; ++lane) {
+                    dev = std::max(dev, std::fabs(static_cast<double>(right[lane]) - (lane == 0)));
+                    dev = std::max(dev, std::fabs(static_cast<double>(up[lane]) - (lane == 1)));
+                    dev = std::max(dev, std::fabs(static_cast<double>(forward[lane]) - (lane == 2)));
+                }
+                log_.notef("air ops launch axes census: squadron=%s owner=%s identity=%d "
+                    "max_dev=%.4f (kBaseLaunchAxesCc13Bound OFF, cc9-physics29 diagnostic)",
+                    record.name.c_str(), home_base.c_str(), dev == 0.0 ? 1 : 0, dev);
+            }
         }
     }
     // cc13-tier1, kAirOpsLaunchFlagAirborneBound (include/bsp/
@@ -2210,6 +2225,15 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
                     "(slot+28h = %u, 006C56D0; packet cc9_lua47_scene_squadron_orders)",
                     base.c_str(), slot_number, row->name.c_str(), s.launched_squadron);
             }
+        }
+    } else if (record == nullptr && s.launched_squadron != 0u
+               && static_cast<std::size_t>(s.launched_squadron - 1u) < units_.count()) {
+        // Packet cc9-sweep2b reach: the order the ON arm would take, logged only.
+        const GameUnitRow* row = units_.unit_row(s.launched_squadron - 1u);
+        if (row != nullptr && bsp::plane_squadron_registry().find(row->name) != nullptr) {
+            log_.notef("player air ops order reach (kAirOpsSceneSquadronOrdersBound OFF): "
+                "base=\"%s\" slot=%d holds scene squadron %s, refused", base.c_str(),
+                slot_number, row->name.c_str());
         }
     }
     if (record == nullptr) return refuse("the slot holds no squadron this host built");

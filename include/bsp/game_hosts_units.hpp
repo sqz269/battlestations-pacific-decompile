@@ -456,7 +456,7 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // SUBSTITUTION, labelled: motion.linear_velocity and motion.pose_row2 stand in for
 // the image's 00C31F40 (velocity) and 00C32000 (matrix) on [unit+D08h]+2Ch.
 // True: per-op float in that order. False: the double chain rounded once.
-inline constexpr bool kSubmarineSeabedSpeedPc24Cc13Bound = false;
+inline constexpr bool kSubmarineSeabedSpeedPc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 
 // Packet cc9_submarine_dive_teleport (docs/SUBMARINE_MODEL.md section 15). True: a
 // submarine whose scene row authors `Dive` is placed at bands[Dive] at attach
@@ -514,7 +514,10 @@ inline constexpr bool kTaskProfileActivationOnlyBound = true;  // GUNNERY 193: O
 // branch as the +398h block. True: with kTaskProfileActivationOnlyBound it runs at
 // activation only, so a non-forced SquadronSetReleaseAlt lasts for the task. False:
 // per think, which ends the script value one think after its 0.5 s countdown.
-inline constexpr bool kDiveReleaseAltActivationOnlyBound = false;
+// ON (cc9-sweep3c, 2026-10-28) by pairs bundled with kSeg67bDogfightAimSpeedCorrOffBound
+// (cc13_seg67b_switches.hpp). The sw3 dive_release_alt census reaches only b9
+// (differs 5 of 57).
+inline constexpr bool kDiveReleaseAltActivationOnlyBound = true;
 
 inline constexpr bool kPlaneRowPositionBound = true;  // ON: mechanism held, one premise miss (docs/CONTROLLED_UNIT.md)
 
@@ -532,7 +535,9 @@ inline constexpr bool kMoveToLuaAltZeroOffsetBound = true;  // GUNNERY 193: ON b
 // True: the store moves there, so a script altitude that the activation retires
 // still zeroes the freshly drawn +2Ch. False: the store follows the install's
 // refresh, and the activation's +2Ch survives.
-inline constexpr bool kMoveToActivationLuaAltOrderBound = false;
+// ON (cc9-sweep3c, 2026-10-28) without pairs: the sw3 moveto_lua_alt_order census
+// counts differs=0 (no install clears a live +3ADh) on u01, b9, b6i, l10, p01, u12, j8v3.
+inline constexpr bool kMoveToActivationLuaAltOrderBound = true;
 
 class GameUnitsHost {
 public:

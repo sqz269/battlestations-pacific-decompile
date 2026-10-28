@@ -28,6 +28,7 @@ namespace bsp {
 // Movers: GetProperty(unit, "reconlevel")[party] after SetForcedReconLevel, read by
 // luaGetReconLevel (commandhelpers.lua 1816), messagesender.lua 230 (ReconCheck message
 // gates) and chg_7_cargo.lua (516, 707).
-inline constexpr bool kReconLevelForcedCc13Bound = false;
+// ON (cc9-recon2): JM04, JM12, LOMP06, USN02 pairs gameplay identical (single-mission runs).
+inline constexpr bool kReconLevelForcedCc13Bound = true;
 
 }  // namespace bsp

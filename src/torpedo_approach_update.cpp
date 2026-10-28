@@ -28,7 +28,7 @@ float abs_009d3766(float v) noexcept { return v < 0.0f ? -v : v; }
 // which OFF reads as the doubles 1.2 and 0.02. Live as well: the
 // torpedo_approach_update_009d3420 and reset_*_009d04be/05ed/0625 sites in
 // game_hosts_units.cpp.
-constexpr bool kTorpedoApproachPc24Cc13Bound = false;
+constexpr bool kTorpedoApproachPc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 
 // cc13-torphome (rev4): 009D3BB4-009D3BC0 scales the bearing to a sector,
 // trunc(F(F(b * 36.0) / 2pi)), 0..35. OFF truncates the radians unscaled (0..6),
