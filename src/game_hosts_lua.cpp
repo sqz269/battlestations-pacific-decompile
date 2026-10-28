@@ -68,6 +68,7 @@
 #include "bsp/native_lua_class_setters.hpp"
 #include "bsp/native_lua_field_setters.hpp"
 #include "bsp/native_lua_object_boolean.hpp"
+#include "bsp/recon_level_forced_cc13.hpp"
 #include "bsp/recon_values.hpp"
 #include "bsp/recon_slot_lists.hpp"  // packet cc9_recon_publication
 #include "bsp/shipyard_production.hpp"  // packet cc9_lua_add_shipyard_stock
@@ -5829,7 +5830,8 @@ int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const c
     // SUBSTITUTION: the levels come from the host's recon pass the way
     // sync_recon_level_tables_0077b0c0 takes them: the unit's own side reads
     // 2 (0 once dead), a covered side its pass level, an uncovered side 0.
-    // Forced levels (SetForcedReconLevel) are not modelled.
+    // Forced levels (SetForcedReconLevel) replace a party's level only under
+    // kReconLevelForcedCc13Bound; OFF they are not consulted.
     const int own_side = units->unit_side_0054(index);
     const bool dead = gunnery->unit_dead(index);
     ::lua_createtable(state, 0, 3);
@@ -5841,6 +5843,12 @@ int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const c
             const bsp::ReconDetectionLevel detected = pass.level(party, index);
             level = detected == bsp::ReconDetectionLevel::identified ? 2
                 : detected == bsp::ReconDetectionLevel::blip ? 1 : 0;
+        }
+        if constexpr (bsp::kReconLevelForcedCc13Bound) {
+            // 00779C12..00779C1F: record+10h set -> record+8h, the forced level as
+            // SetForcedReconLevel stored it (00805D0E), in place of the computed one.
+            int forced = 0;
+            if (bsp::forced_recon_level_raw(party, index, forced)) level = forced;
         }
         ::lua_pushnumber(state, static_cast<lua_Number>(party));
         ::lua_pushnumber(state, static_cast<lua_Number>(level));
