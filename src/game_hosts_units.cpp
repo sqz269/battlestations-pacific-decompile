@@ -77,6 +77,7 @@
 #include "bsp/leave_countdown_all_squadrons_cc13.hpp"
 #include "bsp/gameplay_seg47_cc13.hpp"
 #include "bsp/strafe_target_fallback_70_cc13.hpp"
+#include "bsp/strafe_aim_point_freeze_cc13.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/plane_cached_speed_b1c_cc13.hpp"
 #include "bsp/follow_sight_draw_cc13.hpp"
@@ -723,6 +724,12 @@ struct GameUnitSlot {
     // (009FAE11) once the kind-5 target's +5Dh is set. Read only under
     // bsp::kStrafeTargetFallback70Cc13Bound.
     bool st_ref70_dropped{false};
+    // Packet cc13-strafeaimfreeze (bsp::kStrafeAimPointFreezeCc13Bound): sub+1Ch frozen
+    // by 009FADA0's head drop or 009FAF90, and the census of each path.
+    bool st_aim_frozen{false};
+    int st_aim_freeze_5d{0};
+    int st_aim_freeze_notify{0};
+    int st_aim_frozen_refreshes{0};
     bsp::StrafeApproachUpdate st_ap{};      // +44h, +CCh, +D0h, +50h
     float st_speed_ratio_24{1.0f};
     float st_glide_angle_2c{0.0f};
@@ -29952,12 +29959,68 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // which 009FADA0 (009CCED0's first call, 009CCEDF) keeps on the
                     // target's hull. With no target the ref keeps its last point.
                     void st_refresh_aim_point() {
+                        if constexpr (bsp::kStrafeAimPointFreezeCc13Bound) {
+                            // Packet cc13-strafeaimfreeze (strafe_aim_point_freeze_cc13.hpp).
+                            const GameUnitSlot* t = st_target();
+                            if (unit_.st_aim_frozen) {
+                                // 1. sub+18h is null: 009FADA0 no longer writes +1Ch.
+                                // The slot's own flag, not st_ref70_dropped: a goaway
+                                // reader can latch that on +5Eh before path 2 has run.
+                                ++unit_.st_aim_frozen_refreshes;
+                            } else if (t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x02) &&
+                                       st_ref70_destroyed_009faf90(*t)) {
+                                // 2. 009FAF90 (009FAFC6..009FAFEC): +1Ch = target+CCh x
+                                // +1Ch, the world point transformed a second time, when
+                                // the kill-list notify (+5Eh) reaches a ref 009FADA0 has
+                                // not dropped. LABELLED: applied at this update with the
+                                // matrix the host has now, not at the drain.
+                                const std::array<float, 3> world{unit_.st_aim_point[0],
+                                    unit_.st_aim_point[1], unit_.st_aim_point[2]};
+                                std::array<float, 3> out{};
+                                bsp::transform_point_004142e0(world, t->world, out);
+                                for (int i = 0; i < 3; ++i) unit_.st_aim_point[i] = out[i];
+                                unit_.st_aim_frozen = true;
+                                unit_.st_ref70_dropped = true;
+                                ++unit_.st_aim_freeze_notify;
+                            } else if (t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x02) &&
+                                       bsp::unit_is_kind_of(t->class_id, 0x05) &&
+                                       t->state != nullptr && t->state->simulate != 0) {
+                                // 3. 009FADA6..009FAE11, the head of 009FADA0: the ref
+                                // holds the target (kind 2, 009FB200), sub+14h is set (the
+                                // target is kind 5) and [sub+14h]+5Dh is set
+                                // (state->simulate): +1Ch = target+CCh x +28h, no lead and
+                                // no re-pick, and the ref lets go (the latch
+                                // st_ref70_drop_009fada0 sets just after this call).
+                                // LABELLED: a target that does not sample the hull has no
+                                // host +28h; its point is its position, as the OFF arm
+                                // gives it.
+                                if (kHullAimOffsetEnabled && hull_aim_target_samples_hull(*t) &&
+                                    unit_.hull_aim_target_plus_one == unit_.command_target_plus_one) {
+                                    std::array<float, 3> out{};
+                                    bsp::transform_point_004142e0(unit_.hull_aim_ref.body_offset_28,
+                                                                  t->world, out);
+                                    for (int i = 0; i < 3; ++i) unit_.st_aim_point[i] = out[i];
+                                } else {
+                                    for (int i = 0; i < 3; ++i)
+                                        unit_.st_aim_point[i] = t->motion.position[i];
+                                }
+                                unit_.st_aim_frozen = true;
+                                ++unit_.st_aim_freeze_5d;
+                            } else if (t != nullptr) {
+                                // 4. The OFF refresh.
+                                float p[3] = {t->motion.position[0], t->motion.position[1],
+                                              t->motion.position[2]};
+                                owner_.aim_point_009fada0(unit_, *t, unit_.command_target_plus_one, p);
+                                for (int i = 0; i < 3; ++i) unit_.st_aim_point[i] = p[i];
+                            }
+                        } else {
                         const GameUnitSlot* t = st_target();
                         if (t == nullptr) return;
                         float p[3] = {t->motion.position[0], t->motion.position[1],
                                       t->motion.position[2]};
                         owner_.aim_point_009fada0(unit_, *t, unit_.command_target_plus_one, p);
                         for (int i = 0; i < 3; ++i) unit_.st_aim_point[i] = p[i];
+                        }
                     }
                     // 009CAD00 (009CAD00-009CAD8B): the horizontal distance to the
                     // aim point, 0 at or below double [00CE3820].
@@ -30031,6 +30094,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009CA5CD 009FB200: the ref is built on the task's target,
                             // and its 009FADA0 (009FB364) may drop it at once.
                             unit_.st_ref70_dropped = false;
+                            // cc13-strafeaimfreeze: a new ref, so no frozen point. LABELLED:
+                            // a drop at 009FB364 freezes at the first refresh instead.
+                            unit_.st_aim_frozen = false;
                             st_ref70_drop_009fada0();
                         }
                         unit_.st_ap.countdown_d0 = -st_draw("d0", 0.0f, 1.0f);   // 009CA5FD
@@ -50970,6 +51036,17 @@ void GameUnitsHost::report() {
                     host.log.notef("summary mission strafe profile activations bound=%d "
                         "activations=%d leader_seeds=%d (009CD020 / 009CD0AA, cc9-gunnery38 O1)",
                         GameUnitsHost::Impl::kStrafeProfileActivationSeedBound ? 1 : 0, pa, ps);
+                    if constexpr (bsp::kStrafeAimPointFreezeCc13Bound) {
+                        int f5d = 0, fnt = 0, frr = 0;
+                        for (const auto& slot : host.slots) {
+                            f5d += slot->st_aim_freeze_5d;
+                            fnt += slot->st_aim_freeze_notify;
+                            frr += slot->st_aim_frozen_refreshes;
+                        }
+                        host.log.notef("summary mission strafe aim_freeze head_5d=%d notify_5e=%d "
+                            "frozen_refreshes=%d (009FADA0 / 009FAF90, packet cc13-strafeaimfreeze)",
+                            f5d, fnt, frr);
+                    }
                 }
             }
             {
