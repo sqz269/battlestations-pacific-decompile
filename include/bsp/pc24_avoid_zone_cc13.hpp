@@ -6,7 +6,7 @@
 // (include/bsp/cc13_x87_model.hpp); OFF keeps the earlier double sum rounded once.
 namespace bsp {
 
-// kPc24AvoidZoneCc13Bound (OFF), src/avoid_zone_geometry.cpp length_of:
+// kPc24AvoidZoneCc13Bound (ON), src/avoid_zone_geometry.cpp length_of:
 //   00419260 reciprocal length (normalized()): x*x and y*y each FMUL and FSTP float
 //            (00419276, 00419282), FADD 0041928A, FSTP float, then _CIsqrt 00BF7030.
 //            Live only as the per-tick detour normalize, through
@@ -21,7 +21,9 @@ namespace bsp {
 //   (ship_ai_lateral_record.cpp, called from avoid_zone_owner.cpp), an inline-asm per-op
 //   copy that needs no switch.
 // Movers: avoid-zone detour normals only.
-inline constexpr bool kPc24AvoidZoneCc13Bound = false;
+// Flipped ON (cc9-nondet1, 2026-10-28): the detour differed on lomp10, bsm01, jm06 and
+// usn21; gameplay identical on all four pairs. Rebuild site dead (cc13 rev7).
+inline constexpr bool kPc24AvoidZoneCc13Bound = true;
 
 // Census (cc9-nondet1, log only): length_of calls in the corner rebuild and elsewhere,
 // and how often the per-op length differs from the double one.

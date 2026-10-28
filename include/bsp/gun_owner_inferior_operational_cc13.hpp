@@ -37,7 +37,7 @@ namespace bsp {
 // (include/bsp/gun_destroyed_failure_cc13.hpp); clear otherwise. CanFire (00729A80)
 // does not read +720h; the fire gate's own +720h test (0072D1C1, unit_fire_blocked) is
 // unchanged.
-inline constexpr bool kGunOwnerInferiorOperationalCc13Bound = false;
+inline constexpr bool kGunOwnerInferiorOperationalCc13Bound = true;   // ON: SHIP_AI 330.1
 
 // Every hosted 00729F10 site takes gun_is_operational_00729f10_cc13 when this is set
 // and keeps its verbatim "every gun operational" arm otherwise. A packet that fills
