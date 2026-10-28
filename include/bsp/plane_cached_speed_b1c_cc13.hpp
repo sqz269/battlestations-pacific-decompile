@@ -80,6 +80,7 @@ inline float plane_cached_speed_b1c_007d8020(const float v[3]) {
 // speeds and follow-law steering, dive-bomb pull-out, wherever a speed rounds
 // differently or falls under the 1e-10 floor; and, for the torpedo and dive-bomb
 // readers, every deck-parented plane (plane_world_velocity is deck-relative).
-inline constexpr bool kPlaneCachedSpeedB1cCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-28), in the plane-tasks bundle; alone on JM08 it equals OFF.
+inline constexpr bool kPlaneCachedSpeedB1cCc13Bound = true;
 
 }  // namespace bsp

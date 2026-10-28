@@ -97,7 +97,8 @@ static_assert(!kReleaseTimerPredicate007BB110Bound || kReleaseBayOpenCc13Bound,
 // the notify is never set, as before. The image has NO reader of timer+0Dh
 // (docs/CC13_RELEASE_TIMER.md section 2), so this switch changes no behaviour;
 // it adds one log line per store.
-inline constexpr bool kReleaseTimerNotify0DhBound = false;
+// ON (cc9-sweep3c, 2026-10-28) without pairs: no reader, so no behaviour moves.
+inline constexpr bool kReleaseTimerNotify0DhBound = true;
 
 // 009D2F09 MOVSS XMM1,[00CE3800] (00 00 00 3F), stored at timer+4h.
 inline constexpr float kReseedLow_00ce3800 = 0.5f;  // 00CE3800

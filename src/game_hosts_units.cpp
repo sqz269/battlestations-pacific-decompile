@@ -166,6 +166,7 @@
 #include "bsp/opportunistic_rocket_cc13.hpp"
 #include "bsp/rocket_target_stop_cc13.hpp"  // cc13-rocketstop, task+38Ch per task
 #include "bsp/free_attack_accept_test_cc13.hpp"  // cc13-tranche2 S18
+#include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/wingmen_recount_countdown_cc13.hpp"  // cc13-tranche2 S19
 #include "bsp/near_field_probe_cached_list_cc13.hpp"  // cc13-tranche2 S22
 #include "bsp/attack_target_classify.hpp"
@@ -212,6 +213,7 @@
 #include "bsp/pc24_shipai_cc13.hpp"           // pc24w1-sweep2-3 (0074F490)
 #include "bsp/pc24_flightrender_cc13.hpp"     // pc24w1-sweep1-3 (007DB4D0)
 #include "bsp/pc24_planetasks_cc13.hpp"       // pc24w1-sweep3-5 (sites at each body)
+#include "bsp/flyabove_lead_bearing_pc24_cc13.hpp"  // cc13-flybearing
 #include "bsp/dive_flyabove_avoid_increment_cc13.hpp"  // cc13-flyavoid, 009C6D59
 #include "bsp/session_context_cc13.hpp"  // cc13-mp1 (MP2a)
 
@@ -3165,7 +3167,7 @@ struct GameUnitsHost::Impl {
         // +3Dh ended, so one command is ended once.
         std::uint32_t fighter_ended_command{0};
     };
-    unsigned long long moveto_self_issues{0}, moveto_self_placed{0};
+    unsigned long long moveto_self_issues{0}, moveto_self_placed{0}, moveto_self_wings{0};
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
     // Packet cc13-steptail (kSquadronGeneralStepTailBound): the head the general
     // tail last issued on, so it issues once per head.
@@ -5338,6 +5340,15 @@ struct GameUnitsHost::Impl {
             // +398h block above does.
             const bool profile_call = !kDiveReleaseAltActivationOnlyBound
                 || !kTaskProfileActivationOnlyBound || db_profile_activation;
+            {   // sw3c reach, log only: the block's effect on a tick the ON arm skips.
+                const bool on_call = !kTaskProfileActivationOnlyBound || db_profile_activation;
+                const bool block = unit_is_flight_leader_007b8ad0(slot.process_index)
+                    && !rb->sq_freeze_38e;
+                const bool changes = block && (rb->sq_lock_3ab
+                    || summary.simulated_seconds >= rb->sq_timer_expiry_384);
+                bsp::plane_task_reach_count(bsp::g_plane_task_reach_sw3.dive_release_alt,
+                                            !on_call && changes, block);
+            }
             if (profile_call && unit_is_flight_leader_007b8ad0(slot.process_index)
                 && !rb->sq_freeze_38e) {
                 if (summary.simulated_seconds >= rb->sq_timer_expiry_384 && !rb->sq_lock_3ab) {
@@ -5891,10 +5902,25 @@ struct GameUnitsHost::Impl {
                 (lead_d2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
                     ? 0.0f : static_cast<float>(std::sqrt(lead_d2));
             }
-            float lead_bearing = static_cast<float>(
+            float lead_bearing = 0.0f;
+            if constexpr (bsp::kFlyaboveLeadBearingPc24Cc13Bound) {
+                // cc13-flybearing (rev7 PC24 debt): 009C63C4 FSTP dword stores the
+                // 00BF701A atan2 as a float, 009C63CC FSUBR qword [00CE3830] (pi/2,
+                // the float widened) rounds at PC24, 009C63D2 FSTP dword. ABI:
+                // inline in 009C62B0. FPATAN ignores PC (00BF701A is a CRT trandisp
+                // stub that sets its own control word), so the image's atan2 result is
+                // rounded to float once at 009C63C4. Residual: CRT double atan2 vs x87
+                // FPATAN last-ulp.
+                const float atan2_f = static_cast<float>(
+                    std::atan2(static_cast<double>(lead_z), static_cast<double>(lead_x)));
+                lead_bearing = static_cast<float>(bsp::cc13x87::x87_sub24(
+                    bsp::dive_bomb_constant::kHalfPi, atan2_f));
+            } else {
+            lead_bearing = static_cast<float>(
                 bsp::dive_bomb_constant::kHalfPi -
                 std::atan2(static_cast<double>(lead_z),
                            static_cast<double>(lead_x)));
+            }
             if (lead_bearing < 0.0f) {
                 lead_bearing +=
                     static_cast<float>(bsp::dive_bomb_constant::kTwoPi);
@@ -8293,6 +8319,15 @@ struct GameUnitsHost::Impl {
     // ON (SQUADRON_LAND_TASK 5hm): unit+184h is the player flag, so an AI squadron's
     // moveto-self is raised to stage 2 at once (0084E0A4) and the image churns too.
     static constexpr bool kSquadronMoveToSelfBound = true;
+    // Packet s65_moveto_self_wing_follow (SHIP_AI 329.2, 330). 0084E5A8 puts the
+    // moveto-self into the squadron's own director, and each wing's bot takes it
+    // through 0099A170's member arm: the kind-7 moveto task (009C3000) runs the
+    // follow state 009C1FD0 on the leader for every non-leader member. SUBSTITUTION,
+    // labelled, as 009F8615's stop head (cc13-stophead): the host stands each member in
+    // for the director, so the moveto-self also goes to every live wing member once it
+    // is placed. False: the leader's row only, and the wings, whose rows
+    // retire_ended_command_rows stripped, idle on the director tail and fly straight.
+    static constexpr bool kSquadronMoveToSelfWingFollowBound = false;
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -20483,8 +20518,9 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
         // 009F83AD..009F8407 tail below.
         const bool target_resolved = over_target != 0u && over_target - 1u < h.slots.size()
             && !gun->unit_dead(over_target - 1u);
-        const bool target_live = [&]() -> bool {
-            if constexpr (bsp::kFreeAttackAcceptTestCc13Bound) {
+        // Both arms (sw3b reach count); the ON arm only reads unit state.
+        const auto target_live_arm = [&](auto accept_test) -> bool {
+            if constexpr (decltype(accept_test)::value) {
                 if (!(target_resolved && category_12)) return target_resolved;
                 // 009F830C 007EE8F0(ECX = squadron; current, target, 00922DC0(target),
                 // 007B58D0(squadron)). LABELLED: the flight leader stands for the
@@ -20544,7 +20580,12 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             } else {
                 return target_resolved;
             }
-        }();
+        };
+        const bool live_on = target_live_arm(std::true_type{});
+        const bool live_off = target_live_arm(std::false_type{});
+        bsp::plane_task_reach_count(bsp::g_plane_task_reach_sw3.free_attack,
+            live_on != live_off, target_resolved && category_12);
+        const bool target_live = bsp::kFreeAttackAcceptTestCc13Bound ? live_on : live_off;
         FreeAttackWorld leash_world(*this, h, *gun);
         if (current == 0x00E08F58u && !early_arm && (!category_12 || target_live)
                 && over_target != 0u && over_target - 1u < h.slots.size()) {
@@ -21329,6 +21370,22 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                                      "0084E595 moveto-self",
                                      h.slots[sq.squadron_unit]->row.name) != nullptr) {
                 ++placed;
+            }
+            if constexpr (Impl::kSquadronMoveToSelfWingFollowBound) {
+                std::size_t wings = 0;
+                for (const std::size_t m : sq.member_units) {
+                    if (placed == 0 || m == bsp::kPlaneSquadronNoUnit || m >= h.slots.size()
+                        || m == sq.squadron_unit || gun->unit_dead(m)) continue;
+                    if (issue_script_command(m, 0x00E08F68u, target, 1,
+                            "0084E595 moveto-self wing",
+                            h.slots[sq.squadron_unit]->row.name) != nullptr) {
+                        ++wings;
+                    }
+                }
+                h.moveto_self_wings += wings;
+                h.log.notef("squadron moveto-self wings: \"%s\" at %.2f s wings=%zu (0099A170 "
+                    "member arm, packet s65_moveto_self_wing_follow)", sq.name.c_str(),
+                    static_cast<double>(now), wings);
             }
             st.moveto_self = true;
             ++h.moveto_self_issues;
@@ -29172,6 +29229,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (c.speed_from_target) {
                                 unit_.plane_desired_speed_2b4 = c.desired_speed;
                                 unit_.plane_air_brake_mode_2d8 = 1;
+                                bsp::plane_task_reach_count(   // sw3c reach, log only
+                                    bsp::g_plane_task_reach_sw3.aim_speed_corr_off,
+                                    unit_.plane_trg_speed_corr_off_2b0 != 1);
                                 if constexpr (bsp::kSeg67bDogfightAimSpeedCorrOffBound) {
                                     // 009A7932: plan+2B0h = 1 (byte), so 0099D924 does not
                                     // raise the speed correction while aiming.
@@ -35870,6 +35930,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             arm.unit_free_flight_72c = unit_.plane_control_mode_900 == 7;
                             const bsp::TorpedoArmResult ar =
                                 bsp::torpedo_arm_drop_009d49a0(arm);
+                            if (ar.fell_through_to_0099b6a0) {   // sw3c reach, log only
+                                bsp::plane_task_reach_count(
+                                    bsp::g_plane_task_reach_sw3.torpedo_fallthrough,
+                                    arm.has_squadron_2fc,
+                                    arm.has_squadron_2fc && arm.unit_free_flight_72c);
+                            }
                             if (ar.armed) {
                                 unit_.torpedo_drop_timer = ar.prepare_timer;
                                 unit_.torpedo_timer_armed_since_enter = true;
@@ -37882,6 +37948,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 GameUnitSlot* blk =
                                     owner_.squadron_slot_of(unit_.process_index);
                                 if (leader && blk != nullptr && !blk->sq_alt_set) {
+                                    bsp::plane_task_reach_count(   // sw3c reach, log only
+                                        bsp::g_plane_task_reach_sw3.moveto_lua_alt_order,
+                                        blk->sq_lua_alt_3ad
+                                            && GameUnitsHost::Impl::kMoveToActivationDrawsBound
+                                            && bsp::kMoveToTaskTickBound);
                                     blk->sq_lua_alt_3ad = false;
                                 }
                             }
@@ -49135,6 +49206,30 @@ void GameUnitsHost::report() {
         "units=%zu input_one=%zu (00953cc0; current roles0/4=8, flag634=0)",
         host.summary.generic_tick_calls, host.summary.generic_tick_unavailable,
         generic_units, generic_input_one);
+    {   // cc9-sweep3b reach counter for S18 (log only).
+        const bsp::PlaneTaskReachPair& fa = bsp::g_plane_task_reach_sw3.free_attack;
+        host.log.notef("summary mission plane task reach (sw3) free_attack 009F830C "
+            "(kFreeAttackAcceptTestCc13Bound): calls=%llu differs=%llu inner=%llu",
+            fa.calls.load(), fa.differs.load(), fa.inner.load());
+        // cc9-sweep3c reach counters for the plane-logic OFF switches (log only).
+        const bsp::PlaneTaskReachSw3& r = bsp::g_plane_task_reach_sw3;
+        const struct { const char* name; const bsp::PlaneTaskReachPair* pair; } rows[] = {
+            {"aim_speed_corr_off 009A7932 (kSeg67bDogfightAimSpeedCorrOffBound)",
+             &r.aim_speed_corr_off},
+            {"dive_release_alt 009C89E4 (kDiveReleaseAltActivationOnlyBound)",
+             &r.dive_release_alt},
+            {"moveto_lua_alt_order 009C375A (kMoveToActivationLuaAltOrderBound)",
+             &r.moveto_lua_alt_order},
+            {"ai_bag_equipment 00A04608 (kAiPlaneBagEquipmentBound)", &r.ai_bag_equipment},
+            {"torpedo_fallthrough 009D49DA (kTorpedoArmFallthroughReleaseBound)",
+             &r.torpedo_fallthrough},
+        };
+        for (const auto& row : rows) {
+            host.log.notef("summary mission plane task reach (sw3) %s: calls=%llu differs=%llu "
+                "inner=%llu", row.name, row.pair->calls.load(), row.pair->differs.load(),
+                row.pair->inner.load());
+        }
+    }
     host.log.notef("summary mission plane step: steps=%llu free_flight=%llu "
         "ground_roll=%llu surface=%llu none=%llu (007ce040 arm selection)",
         host.summary.plane_steps, host.summary.plane_arm_free_flight,

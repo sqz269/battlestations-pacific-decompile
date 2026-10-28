@@ -30,6 +30,9 @@ namespace bsp {
 // squadron and its wings (carrier and airfield launches, both flag arms), so the
 // first steps of their flight, the inside-start deck placement and launch timing
 // downstream of it.
-inline constexpr bool kBaseLaunchAxesCc13Bound = false;
+// ON (cc9-physics29, OCEAN_WAVE_FIELD 126): 15 WINS plane rows paired; every launch on
+// the launching rows had non-identity owner axes; launches stay clean; PRCP01 loses its
+// completion, BSM06 h1_j gains one (docs/OCEAN_WAVE_FIELD.md 126).
+inline constexpr bool kBaseLaunchAxesCc13Bound = true;
 
 }  // namespace bsp

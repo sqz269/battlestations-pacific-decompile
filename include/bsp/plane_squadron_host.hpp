@@ -57,7 +57,9 @@ inline constexpr bool kPlaneSceneEquipmentBound = true;   // ON: SQUADRON_LAND_T
 // (00A04608..00A0464E), so with this ON the AI host takes the slot's carried
 // bag `Equipment` instead of the generator default 1 (0094BD34). Committed
 // OFF (5dn): inert on single-player rows while no AI coordinator exists.
-inline constexpr bool kAiPlaneBagEquipmentBound = false;
+// ON (cc9-sweep3c, 2026-10-28) without pairs: the sw3 ai_bag_equipment census
+// counts calls=0 on u01, b9, b6i, l10, p01, u12, j8v3.
+inline constexpr bool kAiPlaneBagEquipmentBound = true;
 
 // The three property-bag keys 007F4580 mode 1 reads besides `Type` (00CE4780,
 // which the scene pass already resolves onto its record). Each is verified from

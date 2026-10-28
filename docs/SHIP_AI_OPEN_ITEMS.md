@@ -21158,7 +21158,45 @@ Rows lost, for the WINS re-plan queue (first divergence and the likely cause):
 Rows that moved and still won are in each flip commit. 008E6430(0xF) at 008570B5 is identity
 for every campaign row (no power-up store; only MP Swirl differs), so it is not a host gap.
 
-## 331. Group A-C OFF-switch split: census, prune flips and one paired flip (cc9-sweep2b, 2026-10-28)
+## 331. Units-host PC24 and S18 flips, JM08 zero release; handoff (cc9-sweep3b, 2026-10-28)
+
+cc9-sweep3b paired the last two switches in its queue and flipped both. It used OFF exports vs
+ON exports with `BSP_GUNNERY_RNG_STREAMS=1`, at most one game run alive at a time.
+
+**kPc24UnitsHostCc13Bound** (flip 1a649aab7; paired alone on the plane-bundle base, judged by
+plausibility as for the other PC24 bundles). Rows u01, b9, b6i, l10, p01, u12:
+- USN01 `l69_u1_a`: won 415.02 -> 430.02 s.
+- BSM09: 450.01 s on both sides.
+- LOMP10: 1037.44 -> 863.46 s.
+- PRCP01: 689.96 -> 839.22 s.
+- USN12: 1560.40 -> 1555.39 s.
+- BSM06 `h1_i`: completed 1149.00 s -> **failed 1079.93 s**. This is the one outcome flip; it
+  is a long gunnery row whose OFF side already sits near the edge (see 330 for `h1_i` failing
+  under gunnery + follow_to_body). Not bisected inside the bundle.
+Carriers still recover and launch, strikes release, and flooding still sinks ships on every
+row, so the bundle was flipped as faithful.
+
+**kFreeAttackAcceptTestCc13Bound** (S18). ab36d2284 adds a reach counter, `free_attack` in
+`include/bsp/plane_task_reach_sw3.hpp` (differs = the two gate answers disagree; inner =
+category 1/2 with a resolved target), printed from the units host before
+"summary mission plane step". The census differed on all six rows, but every ON pair was
+gameplay identical to its OFF pair (pair_diff exit 1), so 26f154a1b flips it ON.
+
+**Open: JM08 `s63_j8_v3` zero release under plane-tasks PC24.** With
+kPc24PlaneTasksCc13Bound ON, the 9 Hosho dive bombers release 0 bombs; OFF fails at 1114.01 s
+and ON never ends. kPlaneCachedSpeedB1cCc13Bound alone equals OFF. The flip is landed
+(babbe3cd4) as faithful; the zero release is with cc13 for a static read of the dive entry
+under PC24. Separately, the JM08 arrive-walk move (006C56D0) comes from the plan's frame-300
+launches from airfield slots 1 and 2 being refused ("slot not in state 1 or 5").
+
+**Known loss:** BSM01 `l73_b1_m1` does not end on the current OFF base (not bisected).
+
+State at handoff: no leases, no runs. 1a649aab7, ab36d2284 and 26f154a1b are on
+agent/cc9-sweep3 for the lead to land. Earlier flips (strafe, interp_hi, dive NaN,
+airops_return, follow_wait, arrive walk, retreat, vec3 divide, plane bundle with S7 and
+pc24bear) are already on main (e3c6046c0, babbe3cd4).
+
+## 332. Group A-C OFF-switch split: census, prune flips and one paired flip (cc9-sweep2b, 2026-10-28)
 
 Census at 292c293bd (log-only reach commit) on u01, b9, b6i, l10, p01, u12 and j8v3, OFF export
 `sw2e_off` vs ON export `sw2e_on` (all eleven group A-C switches below except the power-up one);
@@ -21167,9 +21205,9 @@ logs `cc9-sweep2\local\sw2br_<row>_sw2e_{off,on}.log`.
 - Prune flips (b35305ecd), zero reach on all seven rows: kReloadTorpedoesBound,
   kLuaIsUnitSelectableBound, kLuaGetEntitySpeedBound, kLuaSquadronLandAndKillBound,
   kAirOpsSceneSquadronOrdersBound, kEngineMovieStopRosterExemptBound (p01 drops ten movie-only
-  squadrons, all exempt_reach=0), kHudUnitHealthColourBound, kVector3DivideInPlacePc24Cc13Bound,
-  kAiRocketAccuracyBound, and kPowerupSessionBroadcastCc13Bound (its OFF arm throws wherever it
-  is reached).
+  squadrons, all exempt_reach=0), kHudUnitHealthColourBound, kAiRocketAccuracyBound, and
+  kPowerupSessionBroadcastCc13Bound (its OFF arm throws wherever it is reached).
+  kVector3DivideInPlacePc24Cc13Bound was flipped by cc9-sweep3b (section 331).
 - Paired flip: kShipAiApproachTimerSeedBound with kDeadLeaderRepublishesFollowerPairBound. Reach:
   approach enters 0/0/2/3/2/26/40 and formation leaves with members left 5/2/8/7/5/17/20 on
   u01/b9/b6i/l10/p01/u12/j8v3. u01 and b9 are gameplay-identical. b6i (both fail, Game Over),
