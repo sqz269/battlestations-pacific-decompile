@@ -38,6 +38,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_profile_owner.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/session_context_cc13.hpp"
 
 #include <cstdio>
 
@@ -310,7 +311,8 @@ void GameMissionResultHost::run_end_scene_004d7970(bool aborted) {
     inputs.already_run = end_scene_body_done_;  // game+1EE2h
     inputs.local_player_mode = session_mode_;   // game+1FE4h
     inputs.current_request = control_.state;    // game+5D4h
-    inputs.session_selector_218c = false;       // game+218Ch, unset in this process
+    // game+218Ch: false unless a skirmish context was published (packet cc13-mp1).
+    inputs.session_selector_218c = bsp::session_context().skirmish_218c;
     inputs.game_field_624 = 0;                  // game+624h
 
     const bool first = !end_scene_body_done_;

@@ -45,6 +45,7 @@
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_record_side_blocks.hpp"
 #include "bsp/session_participant_pools.hpp"
+#include "bsp/session_context_cc13.hpp"
 #include "bsp/vfs_mounts.hpp"
 #include "bsp/sw1b_switch_reach.hpp"
 
@@ -1170,6 +1171,14 @@ public:
         inputs.session_mode = 0;   // game+1FE4h, single player
         inputs.script_slot = 0;    // game+614h
         inputs.script_slot_forced = false;
+        // Packet cc13-mp1 (MP2a): a published skirmish context carries the session
+        // word and its mode; the campaign context leaves the three values above.
+        const bsp::SessionContext& session = bsp::session_context();
+        if (session.session_word_1fe4 != 0) {
+            inputs.session_mode = session.session_word_1fe4;
+            inputs.script_slot = session.game_mode_614;
+            inputs.script_slot_forced = session.forced_61c;
+        }
         const SetPendingSceneResult result = run_set_pending_scene_004e2770(
             owner_.load.records, std::string(scene), std::string(weather_override), inputs,
             scene_);
@@ -1491,6 +1500,17 @@ void GameMissionHost::Impl::start_skirmish() {
         return;
     }
     const MissionRecordData& record = tables.multi[static_cast<std::size_t>(skirmish_index)];
+    // Packet cc13-mp1 (MP2a): 005E6F87 (+218Ch = 1), then 0076FAD0's session word 1
+    // and SetGameMode(+618h, 0), published before the scene record is built.
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
+        bsp::session_context() = bsp::skirmish_session_context(skirmish_mode);
+        log.notef("skirmish session context: +1FE4h=1 +218Ch=1 +618h=%d +614h=%d +61Ch=0 "
+            "effective mode %d (004bca50)", skirmish_mode, skirmish_mode,
+            bsp::effective_game_mode_004bca50(bsp::session_context()));
+    } else {
+        log.notef("skirmish session context not published (kSkirmishSessionCc13Bound off): "
+            "the map loads as a single-player scene");
+    }
     MissionStatsBinding stats(*this);
     PendingSceneBinding scene(*this);
     MissionStartBinding start(*this, scene, stats);

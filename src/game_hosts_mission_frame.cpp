@@ -80,6 +80,7 @@
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/resource_lookup.hpp"
+#include "bsp/session_context_cc13.hpp"
 #include "bsp/vfs_mounts.hpp"
 
 #include <array>
@@ -3321,6 +3322,19 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
     host.load.participant_scene_present = scene_record != nullptr;
     host.load.participant_count_available = participant_count != nullptr;
     host.load.participant_scene_slots = scene_slot_count;
+
+    // Packet cc13-mp1 (MP2a): game+1FE4h, +614h and +61Ch from the session context.
+    // A campaign's context is (0, mode 8, not forced) and leaves these fields as they
+    // were (+614h stays the load's 0); only a published skirmish context, which needs
+    // kSkirmishSessionCc13Bound, carries a session and its mode here.
+    {
+        const bsp::SessionContext& session = bsp::session_context();
+        host.scene_state.session_mode = session.session_word_1fe4;
+        if (session.session_word_1fe4 != 0) {
+            host.scene_state.script_slot = session.game_mode_614;
+            host.scene_state.script_slot_forced = session.forced_61c;
+        }
+    }
 
     // 004e087b picks the script slot; single player always resolves to 8, and
     // 004e0a50 reads the raw slot to choose the arm.
