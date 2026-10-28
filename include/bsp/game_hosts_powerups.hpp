@@ -19,10 +19,24 @@
 // Campaign rows: only IJN05 and USN16 author PowerupClassID, always
 // "repairtest", which names no class (008E6CB0 misses), so no list fills there.
 // The multi scenes grant plain names; nine of them (multi\duelOne, scene1 ..
-// scene8) also author the bracket form "S[a,b,..]", which 008ED720 hands to
-// 008EC650 for a draw on the shared random stream. That pick is not modelled
-// (phase 2b): such a building throws "008EC650 shared-stream draw not modelled"
-// with the switch ON, so those nine scenes cannot pair until 2b.
+// scene8) also author the bracket form "S[a,b,..]", which 008ED720 splits at
+// each "]" and hands chunk by chunk to 008EC650 for a pick.
+// Phase 2b: 008EC650. The chunk's first character picks the mode ('A' one
+// fixed pick per chunk, 'T' picks without replacement, anything else 'S' with
+// replacement); a "*" token becomes "<mode>*", and tokens naming a manager+1B8h
+// random_names row expand to its names; manager+1ACh caches each chunk's list.
+// The pick draws on BSP_RandomThreads stream 0 (00BD2FC0, ECX = 0): once when an
+// 'A' chunk's list is built (008ECAAE) and once per 'S' / 'T' pick (008ECCF7).
+// LABELLED stand-in: a stream-0 generator drawn only in game_hosts_powerups.cpp,
+// held by the runtime and reset with the manager, so each scene starts the
+// same sequence (the image's stream 0 runs on across scenes).
+// Its seed and MT sequence are not modelled, so its values (and the picks)
+// differ from the image's; stream 1, the gameplay stream, is unaffected. A
+// chunk list with no names ('A') throws where the image divides by zero, and a
+// tail with no "]" throws where 008ED720 loops forever.
+// Follow-up (option ii): a shared stream-0 generator for the host, which the
+// gunnery and HUD stream-0 consumers would draw on too, would replace this
+// stand-in; until then those consumers and this one do not share a sequence.
 
 #include <array>
 #include <cstddef>
