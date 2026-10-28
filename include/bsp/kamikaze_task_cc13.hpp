@@ -45,7 +45,7 @@ inline constexpr bool kKamikazeX87FloatCc13Bound = true;  // ON by pruning (cc9-
 // overrides it to carry the dirty ref into the unit's hull aim ref and pick
 // there. False: the pick waits for the host's next 009FADA0 (kz_target_point),
 // which re-picks on the dirty byte.
-inline constexpr bool kKamikazeEnterPickCc13Bound = false;
+inline constexpr bool kKamikazeEnterPickCc13Bound = true;  // ON by pair (cc9-sweep1b): USN19
 
 // ---------------------------------------------------------------------------
 // Shared pieces
