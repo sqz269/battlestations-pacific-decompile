@@ -65,8 +65,7 @@
 #include "bsp/dive_bomb_goaway_turn.hpp"
 #include "bsp/move_to_glide.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
-#include "bsp/torpedo_run_time_cc13.hpp"
-#include "bsp/cc13_x87_model.hpp"
+#include "bsp/plane_cached_speed_b1c_cc13.hpp"
 #include "bsp/torpedo_goaway_tick.hpp"
 #include "bsp/plane_fly_to_solver.hpp"
 #include "bsp/cc13_seg68.hpp"
@@ -7169,8 +7168,15 @@ struct GameUnitsHost::Impl {
     }
     static float leader_live_speed_007b8e60(const GameUnitSlot& u) {
         const float* v = u.plane_world_velocity;
-        return static_cast<float>(std::sqrt(static_cast<double>(v[0]) * v[0] +
+        float speed;
+        if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
+            // 007B8E60 FLD [unit+B1Ch], as 007D8020 caches it (per op, 1e-10 floor).
+            speed = bsp::plane_cached_speed_b1c_007d8020(v);
+        } else {
+        speed = static_cast<float>(std::sqrt(static_cast<double>(v[0]) * v[0] +
             static_cast<double>(v[1]) * v[1] + static_cast<double>(v[2]) * v[2]));
+        }
+        return speed;
     }
     // Packet cc9_wing_achieved_speed (docs/PLANE_FOLLOW_LAW.md section 16): the
     // torpedo and dive-bomb moveto speed slot 009C1850 as the image forms it,
@@ -10053,10 +10059,15 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         // here is rf_hdgV, authored 0/DEG(400), so the term is zero either way.
         a.turn_c70 = 0.0f;
         // vtable+38h 007B8E60 BSP_Unit_GetCachedSpeed: the world speed.
+        if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
+            // unit+B1Ch as 007D8020 caches it (per op, 1e-10 floor).
+            a.speed = bsp::plane_cached_speed_b1c_007d8020(u.plane_world_velocity);
+        } else {
         a.speed = static_cast<float>(std::sqrt(
             static_cast<double>(u.plane_world_velocity[0]) * u.plane_world_velocity[0] +
             static_cast<double>(u.plane_world_velocity[1]) * u.plane_world_velocity[1] +
             static_cast<double>(u.plane_world_velocity[2]) * u.plane_world_velocity[2]));
+        }
         // SUBSTITUTION, labelled: ctl+A0h/A4h/A8h (unit+B50h..B58h), which the
         // gains pair with roll, pitch and yaw rate, are not carried; the body
         // angular velocity ctl+48h pitch / +4Ch yaw / +50h roll stands in. Of
@@ -11162,15 +11173,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         const float vy = slot.motion.linear_velocity.y;
         const float vz = slot.motion.linear_velocity.z;
         bsp::TorpedoRunTimeInputs in;
-        if constexpr (bsp::kTorpedoRunTimeAxisSpeedCc13Bound) {
-            // 009D138C CALL [vtable+38h] = 0092D730: velocity . body axis, as
-            // (vy*ay + vx*ax) + vz*az (0092D74E..0092D763: D8 4E FMUL, DE C1 FADDP),
-            // each op PC24, stored to float at 0092D765.
-            const auto& a = slot.motion.pose_row2;   // 00C32000 body+8, +18h..+20h
-            in.unit_speed = static_cast<float>(bsp::cc13x87::x87_add24(
-                bsp::cc13x87::x87_add24(bsp::cc13x87::x87_mul24(vy, a[1]),
-                                        bsp::cc13x87::x87_mul24(vx, a[0])),
-                bsp::cc13x87::x87_mul24(vz, a[2])));
+        if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
+            // 009D138C CALL [vtable+38h] = 007B8E60 on a plane: FLD [unit+B1Ch],
+            // the speed 007D8020 caches from ctl+18h (plane_world_velocity).
+            in.unit_speed = bsp::plane_cached_speed_b1c_007d8020(slot.plane_world_velocity);
         } else {
         // 009D138C unit->vtable[38h], the speed unit_speed_vtable38 takes.
         in.unit_speed = static_cast<float>(std::sqrt(static_cast<double>(vx) * vx +
@@ -24691,13 +24697,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         float unit_speed_vtable38() override {
                             // 009D3D01, unit->vtable[38h]. The plane's speed,
                             // taken from the live linear velocity.
+                            float speed;
+                            if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
+                                // 007B8E60 FLD [unit+B1Ch], as 007D8020 caches it
+                                // from ctl+18h (plane_world_velocity).
+                                speed = bsp::plane_cached_speed_b1c_007d8020(
+                                    slot_.plane_world_velocity);
+                            } else {
                             const float vx = slot_.motion.linear_velocity.x;
                             const float vy = slot_.motion.linear_velocity.y;
                             const float vz = slot_.motion.linear_velocity.z;
-                            return static_cast<float>(std::sqrt(
+                            speed = static_cast<float>(std::sqrt(
                                 static_cast<double>(vx) * vx +
                                 static_cast<double>(vy) * vy +
                                 static_cast<double>(vz) * vz));
+                            }
+                            return speed;
                         }
                         bsp::TorpedoApproachControl read_control_block() override {
                             // unit+9D4h. This host has no pilot control block,
@@ -33719,11 +33734,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             tin.bank_c68 = unit_.plane_bank_angle_c68;
                             // unit->vtable[38h]: the same live-velocity length
                             // the torpedo seam's unit_speed_vtable38 returns.
+                            if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
+                                // 007B8E60 FLD [unit+B1Ch], as 007D8020 caches it.
+                                tin.speed_vtable38 = bsp::plane_cached_speed_b1c_007d8020(
+                                    unit_.plane_world_velocity);
+                            } else {
                             const double vx = unit_.motion.linear_velocity.x;
                             const double vy = unit_.motion.linear_velocity.y;
                             const double vz = unit_.motion.linear_velocity.z;
                             tin.speed_vtable38 = static_cast<float>(
                                 std::sqrt(vx * vx + vy * vy + vz * vz));
+                            }
                             tin.pitch_spd_1ac = unit_.plane_pitch_spd;   // class+1ACh
                             // [ESP+14h], 009C59D6: unit+100h less the aim point y.
                             tin.height_above_aim_14 = unit_.motion.position[1] - ap[1];
