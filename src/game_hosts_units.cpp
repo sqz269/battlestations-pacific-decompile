@@ -11258,6 +11258,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     bool aim_point_009fada0(GameUnitSlot& shooter, const GameUnitSlot& target,
                             std::size_t target_plus_one, float out[3],
                             GameHostLog* log_out = nullptr);
+    // cc13-kzpick: 009FA260 alone on the shooter's hull aim ref (the pick
+    // 009ABF60's tail makes at 009AC09E), with no world point taken and no lead.
+    void hull_aim_pick_009fa260(GameUnitSlot& shooter, const GameUnitSlot& target,
+                                std::size_t target_plus_one);
     unsigned long long aim_lead_applied_{0};
 
     // Packet cc9_aim_error_draw: 009C3DA0 (dive) / 009D02A0 (torpedo). The
@@ -13238,6 +13242,30 @@ float avoid_interp(float x0, float y0, float x1, float y1, float x) {   // 00419
 }
 
 }  // namespace
+
+// cc13-kzpick (kKamikazeEnterPickCc13Bound): the pick only. hull_aim_world_point
+// is the host's 009FADA0 body: it re-constructs the ref on a new target, picks
+// on the dirty byte (approach_target_ref_pick_009fa260, clearing it) and then
+// stores the world point. That store lands in hull_aim_ref.world_point_1c,
+// which nothing reads before the next 009FADA0 rewrites it, and the point
+// itself is discarded here; the lead tail of aim_point_009fada0 is not run.
+// The sections are the ones aim_point_009fada0 passes.
+void GameUnitsHost::Impl::hull_aim_pick_009fa260(GameUnitSlot& shooter,
+                                                 const GameUnitSlot& target,
+                                                 std::size_t target_plus_one) {
+    bsp::ApproachTargetSections sections;
+    const bsp::ApproachTargetSections* sections_in = nullptr;
+    if (kApproachSectionPointsBound && shooter.hull_aim_ref.section_chance_64 > 0.0f
+        && hull_aim_target_samples_hull(target)
+        && target_plus_one != 0 && target_plus_one - 1 < slots.size()) {
+        sections = approach_target_sections(target_plus_one - 1, target);
+        sections_in = &sections;
+    }
+    float discard[3] = {target.motion.position[0], target.motion.position[1],
+                        target.motion.position[2]};
+    (void)hull_aim_world_point(shooter, target, target_plus_one, discard, nullptr,
+                               sections_in, &log);
+}
 
 // Packet cc9_approach_target_lead: 009FADA0's tail 009FAF05-009FAF7D.
 bool GameUnitsHost::Impl::aim_point_009fada0(GameUnitSlot& shooter,
@@ -31081,6 +31109,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ref.world_point_1c = point;
                         return true;
                     }
+                    // cc13-kzpick (kKamikazeEnterPickCc13Bound): 009ABF60's tail
+                    // JMP 009FA260 (009AC09E), right after 009AC160. The dirty ref
+                    // is carried into hull_aim_ref exactly as kz_target_point
+                    // carries it, then picked there, so the next 009FADA0 finds
+                    // both refs clean and does not re-pick. DEVIATION, labelled: with
+                    // no live target the image's 009FA260 still clears +41h at
+                    // 009FA2CE (no pick), while this leaves the ref dirty and
+                    // kz_target_point picks later. That is close to the image, since
+                    // 009FB1D9 BindTarget picks when a target is bound.
+                    void kz_enter_pick_009fa260(bsp::ApproachTargetRefState& ref) {
+                        const GameUnitSlot* t = st_target();
+                        if (t == nullptr || !df_slot_live(*t) || !ref.dirty_41) return;
+                        bsp::ApproachTargetRefState& h = unit_.hull_aim_ref;
+                        h.bias_34 = ref.bias_34;
+                        h.spread_48 = ref.spread_48;
+                        h.centre_54 = ref.centre_54;
+                        h.section_chance_64 = ref.section_chance_64;
+                        h.weight_68 = ref.weight_68;
+                        h.weight_6c = ref.weight_6c;
+                        h.weight_70 = ref.weight_70;
+                        h.dirty_41 = true;
+                        unit_.aim_error_drawn = true;
+                        unit_.hull_aim_seed = ++g_hull_aim_pick_counter;
+                        ref.dirty_41 = false;
+                        owner_.hull_aim_pick_009fa260(unit_, *t, unit_.command_target_plus_one);
+                    }
                     // unit vtable[204h] = 007B8E70, unit+B2Ch: the body forward speed.
                     float kz_forward_speed_b2c() const {
                         const float* f = unit_.motion.pose_row2;
@@ -31307,6 +31361,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             b.kz_apply_plan(c);
                         }
                         void clear_gun_block_34_38() override {}
+                        void pick_target_ref_009fa260(bsp::ApproachTargetRefState& ref) override {
+                            b.kz_enter_pick_009fa260(ref);
+                        }
                     };
                     // 0099A170 -> 009AF720 -> 009AEEF0 (009AED20, 009AB920).
                     void kz_install_009af720(KzHost& h) {
@@ -31360,6 +31417,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.kz.state == bsp::KamikazeState::kGoTowards) {
                             bsp::kamikaze_gotowards_enter_009ac160(unit_.kz.gotowards, unit_.kz.ap,
                                 kz_robot_row(unit_), unit_.kz_alt_394, unit_.kz_alt_398, h);
+                            if constexpr (bsp::kKamikazeEnterPickCc13Bound) {
+                                h.pick_target_ref_009fa260(unit_.kz.ap.ref);   // 009AC09E
+                            }
                         }
                         const GameUnitSlot* t = st_target();
                         owner_.log.notef("kamikaze task 009AF720 kind 0Ch installed %s -> %s: "

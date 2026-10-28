@@ -189,7 +189,10 @@ void kamikaze_aim_error_009abf60(KamikazeApproach& ap, const KamikazeRobotRow& r
     // later instead: the host's next 009FADA0 (kz_target_point) copies the
     // dirty ref into the unit's hull aim ref and marks it dirty, and
     // aim_point_009fada0 -> hull_aim_world_point runs
-    // approach_target_ref_pick_009fa260 on that dirty byte.
+    // approach_target_ref_pick_009fa260 on that dirty byte. cc13-kzpick: under
+    // kKamikazeEnterPickCc13Bound both 009AC160 call sites (kamikaze_enter and
+    // kz_install_009af720) call KamikazeTaskHost::pick_target_ref_009fa260 next,
+    // which KzHost overrides, so the pick is made at enter as here.
     s.bias_34 = {dh, 0.0f, dv};
 }
 
@@ -614,6 +617,9 @@ void kamikaze_enter(KamikazeTask& task, KamikazeTaskHost& host, KamikazeRandom& 
         kamikaze_gotowards_enter_009ac160(task.gotowards, task.ap, host.robot_row(),
                                           host.ctl_alt_cruise_394(), host.ctl_alt_second_398(),
                                           rng);
+        if constexpr (kKamikazeEnterPickCc13Bound) {
+            host.pick_target_ref_009fa260(task.ap.ref);   // 009AC09E JMP 009FA260
+        }
     } else if (s == KamikazeState::kAim) {
         kamikaze_aim_enter_009ac8d0(task.aim, host.roll_c68());
     } else if (is_formation(s)) {
@@ -652,7 +658,8 @@ KamikazeArmResult kamikaze_task_arm_009af510(KamikazeTask& task, KamikazeTaskHos
     // (clear, then 009FADA0); they are hoisted here, 009FADA0 first, which the
     // live host cannot observe (its clear_gun_block_34_38 is empty). Entering
     // gotowards here runs 009AC160 -> 009ABF60 without their 009FA260 tail pick;
-    // the host picks at the next 009FADA0 instead (blocked, see 009ABF60).
+    // the host picks at the next 009FADA0 instead (see 009ABF60; picked at
+    // enter under kKamikazeEnterPickCc13Bound).
     std::array<float, 3> ref_point{};
     const bool has_target = host.update_target_ref_009fada0(ap.ref, dt, ref_point);
     r.has_target = has_target;
