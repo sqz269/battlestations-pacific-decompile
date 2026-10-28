@@ -34071,12 +34071,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const bsp::NearFieldProbeResult pr = nf_probe_007f0280(ext, w);
                             const float inc = bsp::dive_flyabove_avoid_increment_009c6b7b(
                                 pr, b18, unit_.db_flyabove_lead_range);
+                            // rev7 NIT (cc13-flyraw): with 009C6A46's JBE taken
+                            // (T not > 0) frame+44h keeps the raw lead bearing B
+                            // (db_flyabove_lead_bearing, the 009C63E6 store), so
+                            // inc is added to B itself, not to Add(C, Sub(B, C)),
+                            // which can differ by an ulp or at the wrap.
+                            const float a0 = (dead_band_t > 0.0f)
+                                ? bsp::wrapped_angle_add_00438aa0(   // 009C6A97
+                                      unit_.plane_heading_c6c,
+                                      bsp::dive_bomb_flyabove_dead_band_009c6a37(
+                                          bearing_error, dead_band_t))
+                                : unit_.db_flyabove_lead_bearing;
                             const float a = bsp::wrapped_angle_add_00438aa0(
-                                bsp::wrapped_angle_add_00438aa0(
-                                    unit_.plane_heading_c6c,
-                                    bsp::dive_bomb_flyabove_dead_band_009c6a37(
-                                        bearing_error, dead_band_t)),
-                                inc);                                // 009C6D54
+                                a0, inc);                            // 009C6D54
                             in.heading_to_aim_point =
                                 bsp::dive_bomb_flyabove_slew_009c6d6f(
                                     unit_.plane_heading_c6c, a,
