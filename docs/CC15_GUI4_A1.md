@@ -135,8 +135,10 @@ ever serializes or compares an id.
 - OFF replaces the embedded scene-environment metadata with one heap allocation in mission
   resources. The default environment does not construct that mission graph; the msd gate must
   cover this changed allocation path.
-- Tree and scene-child frame counters currently only advance. Their reservation admits at most
-  256 calls of each kind over the domain lifetime; no repeated GUI-page or reload claim is made.
+- The immutable `634258460` matrix baseline used advancing-only tree and scene-child frame
+  counters. Common snapshot `6216ea1af` reuses outer-completed frame prefixes within the 256
+  reserved slots of each kind; entered, failed and not-entered frames remain reserved. This
+  prepared change provides no live GUI, reload or allocator runtime proof.
 - The prior msd frame-515 crash was contained on main by 171CEF8C7; this does not prove that the
   late planes draw. See `docs/MILESTONE_D_SCENE_RESOURCE_CONFUSION.md`.
 
