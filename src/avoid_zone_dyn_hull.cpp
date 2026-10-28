@@ -13,6 +13,7 @@
 
 namespace bsp {
 namespace {
+DynHullPc24Census g_dyn_hull_pc24_census{};  // census, cc9-nondet1
 using V = OceanVec3;
 // Explicit x87 arithmetic retains the extended intermediates and binary32
 // stores visible in this Dyn build. Valid finite inputs only; see the report.
@@ -303,6 +304,17 @@ bool hull_00c5cae0(const std::vector<V>& p,Triangles& all,int limit) {
             } else {
                 area_limit=static_cast<double>(epsilon)*epsilon*static_cast<double>(0.1f);
             }
+            {
+                // Census (cc9-nondet1, log only): the kept/extruded decision under the per-op
+                // threshold vs the double one.
+                const double per_op=cc13x87::x87_mul24(cc13x87::x87_mul24(epsilon,epsilon),static_cast<double>(0.1f));
+                const double chained=static_cast<double>(epsilon)*epsilon*static_cast<double>(0.1f);
+                const bool above=above_00c51740(p,t,center,plane_epsilon);
+                const auto m=magnitude(area);
+                ++g_dyn_hull_pc24_census.compares;
+                if(per_op!=chained) ++g_dyn_hull_pc24_census.threshold_differs;
+                if((above || m<per_op)!=(above || m<chained)) ++g_dyn_hull_pc24_census.decision_differs;
+            }
             if(above_00c51740(p,t,center,plane_epsilon) || magnitude(area)<area_limit) {
                 extrude_00c51480(all,t.neighbor[0],vertex);
                 j=static_cast<int>(all.size());
@@ -394,6 +406,8 @@ void reserve_adjacency(AvoidZoneDynHullData& data,std::uint32_t count,const Avoi
     release(m,data.adjacency);data.adjacency=next;data.adjacency_capacity=count;
 }
 } // namespace
+
+const DynHullPc24Census& dyn_hull_pc24_census() noexcept { return g_dyn_hull_pc24_census; }
 
 bool dyn_hull_cleanup_points_00c35e80(V* out,std::uint32_t count,const void* source,
                                       std::uint32_t stride,std::uint32_t* count_out,

@@ -28,7 +28,29 @@ constexpr double kTwoPiDouble = 6.2831854820251465;
 // in 00419260; 0041A304/0041A308/0041A30A in the corner rebuild). _CIsqrt returns the
 // correctly rounded root, which FSTP rounds to float, as the double sqrt here does. The
 // OFF arm sums the exact squares in double and rounds once.
+// Census for kPc24AvoidZoneCc13Bound (cc9-nondet1, log only): length_of calls inside the
+// corner rebuild (mission-load zone build) and outside it (detour normals), and how often
+// the per-op length differs from the double one. Main thread only.
+bool g_in_corner_rebuild = false;
+AvoidZonePc24Census g_avoid_zone_pc24_census{};
+
 float length_of(float x, float y) noexcept {
+    {
+        const float per_op = static_cast<float>(std::sqrt(static_cast<double>(static_cast<float>(
+            cc13x87::x87_add24(cc13x87::x87_mul24(x, x), cc13x87::x87_mul24(y, y))))));
+        const float chained = static_cast<float>(std::sqrt(
+            static_cast<double>(x) * static_cast<double>(x)
+            + static_cast<double>(y) * static_cast<double>(y)));
+        const bool differs = std::memcmp(&per_op, &chained, sizeof per_op) != 0;
+        auto& census = g_avoid_zone_pc24_census;
+        if (g_in_corner_rebuild) {
+            ++census.rebuild_calls;
+            if (differs) ++census.rebuild_differs;
+        } else {
+            ++census.detour_calls;
+            if (differs) ++census.detour_differs;
+        }
+    }
     float len;
     if constexpr (kPc24AvoidZoneCc13Bound) {
         const float sum = static_cast<float>(
@@ -94,6 +116,8 @@ void pull_back_to_zone_boundary(const AvoidZoneTable& table,
 }
 
 } // namespace
+
+const AvoidZonePc24Census& avoid_zone_pc24_census() noexcept { return g_avoid_zone_pc24_census; }
 
 // ---------------------------------------------------------------------------
 // Bearings
@@ -500,6 +524,11 @@ AvoidZoneTangentCorners avoid_zone_tangent_corners_00422500(
 // ---------------------------------------------------------------------------
 
 void avoid_zone_rebuild_corner_data(AvoidZonePolygon& zone) noexcept {
+    struct RebuildScope {
+        bool saved = g_in_corner_rebuild;
+        RebuildScope() noexcept { g_in_corner_rebuild = true; }
+        ~RebuildScope() { g_in_corner_rebuild = saved; }
+    } rebuild_scope;
     const std::int32_t count = static_cast<std::int32_t>(zone.corners.size());
     if (count == 0) return;
 
