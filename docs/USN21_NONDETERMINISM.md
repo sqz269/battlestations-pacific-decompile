@@ -394,3 +394,50 @@ Decision (cc9 lead, 2026-10-28):
   when unset and logs one startup line when active.
 - Pairs and WINS runs on noisy rows (USN21 at least) set it on both sides (docs/TOOLING.md,
   section 1, "Noisy rows").
+
+## 7. Hand-off: PC24 and stream switch censuses and pairs (cc9-nondet1, 2026-10-28)
+
+The worker tree is `J:\PROG\battlestations-pacific-decompile-cc9-nondet1`. Everything below runs
+one game at a time from `local\`:
+- `nd1_census2.ps1 -Rows <list> -ExeTag <dir under local\nd1_exe> -Prefix <p> [-BoundsAid]`
+  writes `nd1_<p>_<row>.log` and appends start/end lines to `nd1_<p>sus.txt`.
+- `nd1_chain*.ps1` chain those calls and log each step to `nd1_chain.txt`.
+- `nd1_pairs.ps1 -Off <p> -On <p> -Rows <list>` prints pair_diff headlines.
+- Creating `local\nd1_census.stop` or the DRAIN flag stops a chain before its next run.
+
+Every pair's OFF half is a census log from the same commit as its ON exe.
+
+Done and committed:
+- Censuses: 0a9f01d9b (gunnery RNG, avoid zone, dyn hull), 21b615d04 (S4) and c2ff264bd (S5 + S15)
+  are landed. b3ed16b1e (hullscope) is on the branch, not yet landed.
+- Aid: 66f1f910e (`BSP_SEARCHER_BOUNDS_INIT`, section 6).
+- Flips: 08f74b74f (gunnery RNG ON) and 6f1edbdb9 (avoid zone ON). Both were gameplay identical on
+  every pair.
+
+S4 kAimLeadBodyAxisCc13Bound is not flipped:
+- ijn18 is identical.
+- bsm09, usn01, lomp10, usn12, bsm01, esmp08 and usn21 (aided) moved, and the moves are plausible.
+- prcp01 goes from completed at 689.96 s to failed at 745.94 s (`usn03.obj_p2_fail`, Enterprise).
+  The lead decides whether that is a knife-edge row or an S4 defect.
+- Logs: `nd1_s4c_*` (OFF), `nd1_s4on_*`, `nd1_s4a/s4oa_usn21`.
+
+The census on b3ed16b1e (`nd1_c2_*`, usn21 in `nd1_c2a_usn21`) found every switch nonzero:
+- S5 track_differs is nonzero on every row except lomp10 (0 reads). The threat reads differ on
+  usn02, usn12 and ijn18.
+- S15 not_reset is nonzero on bsm09, usn01, lomp10, prcp01, bsm01, jm06, ijn18 and esmp08.
+  lomp06, usn02 and usn12 have 0.
+- hullscope hull_scope_differs is 1 to 8 shapes per row, 0 on usn01.
+
+Queued when this was written:
+- chain5: the 7-switch stream-set joint pair (S1, S3, S10, both stream set 2 switches, S19, S22).
+  The ON exe is `sson` and the OFF exe is `cen2`, both sides aided. Rows, in order: usn01,
+  bsm09, lomp10, prcp01, usn12, bsm06 `h1_i`, jm08 `s63_j8_v3`. Prefixes `ssoff` / `sson`.
+- chain6, then:
+  - S5 alone (`s5on`);
+  - S15 alone (`s15on`);
+  - hullscope + dyn hull jointly (`hullon`).
+  Each runs on its nonzero rows, then on usn21 aided (`*oa`). The OFF halves are `nd1_c2_*` and
+  `nd1_c2a_usn21`.
+
+Each result is judged by plausibility. Rows that move go to cc9-lua74 after a flip. A flip
+commit takes a one-commit lease on the header, then pc24_lint and a full build.

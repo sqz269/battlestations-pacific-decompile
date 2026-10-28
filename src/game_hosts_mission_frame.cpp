@@ -2518,8 +2518,17 @@ public:
     // --- the mission-start one-shot --------------------------------------
     bool session_counts_mission_start_004b6260() override {
         owner_.done("MissionFrame::session_counts_mission_start", 0x004b6260u);
-        // No session object, so session+F4h is null and the routine answers no.
-        return bsp::session_counts_mission_004b6260(false, false);
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            // Packet cc13-skirmish-gate: 004B6260 tests session+F4h (game+1FE4h) at
+            // 004B6260 and session+29Ch (game+218Ch) at 004B6269. A skirmish has
+            // both set, so the answer stays no; a campaign has neither.
+            const bsp::SessionContext& session = bsp::session_context();
+            return bsp::session_counts_mission_004b6260(session.session_word_1fe4 != 0,
+                session.skirmish_218c);
+        } else {
+            // No session object, so session+F4h is null and the routine answers no.
+            return bsp::session_counts_mission_004b6260(false, false);
+        }
     }
     void adjust_mission_start_counters_004bcaa0(bool add) override {
         bsp::adjust_mission_counters_004bcaa0(owner_.mission_counters, add);
@@ -4139,6 +4148,13 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
     bsp::MissionDeviceWaitInputs inputs{};
     inputs.local_view_mode = host.scene_state.session_mode;
     inputs.session_flag_29c = false;
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
+        // Packet cc13-skirmish-gate: 004DB944 LEA EDI,[EBP+1EF0h] and 004DB94C
+        // CMP byte [EDI+29Ch] read game+218Ch, the skirmish byte 005E6F87 sets.
+        // A skirmish (+1FE4h = 1, +218Ch = 1) therefore takes the device-wait arm
+        // at 004DB955, not the player-count arm at 004DB9BE.
+        inputs.session_flag_29c = bsp::session_context().skirmish_218c;
+    }
     inputs.game_field_624 = 0;
     bsp::MissionEntryPlayerSlot current_slots[bsp::kLocalPlayerSlotCount];
     host.entry.participant_view_available = host.participants.try_entry_slots(current_slots);

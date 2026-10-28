@@ -6729,7 +6729,7 @@ struct GameUnitsHost::Impl {
     // as the dot ((DCh * 0) + E0h) + (E4h * 0) and gates the throttled arm on
     // unit+9F0h > 0 (COMISS / JBE, so NaN fails). Finite inputs are identical
     // either way. False: E0h alone and the helper's !(thr <= 0) gate.
-    static constexpr bool kWaterRateFactorsNanOrderCc13Bound = false;
+    static constexpr bool kWaterRateFactorsNanOrderCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
     // kPlaneDeadMeatRollBound / kPlaneWreckForwardDragBound step counts.
     unsigned long long dead_meat_roll_steps{0};
     unsigned long long dead_meat_spin_steps{0};

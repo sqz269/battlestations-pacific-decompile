@@ -114,7 +114,7 @@
 
 namespace bsp {
 
-inline constexpr bool kGunDeviceHitDamageCc13Bound = false;
+inline constexpr bool kGunDeviceHitDamageCc13Bound = true;   // ON: SHIP_AI 330.2
 
 // 0043F7F0's two decisions, in its order.
 struct DeviceHitSplit {

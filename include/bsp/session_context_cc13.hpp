@@ -12,6 +12,13 @@ namespace bsp {
 // the image's Session_SetMode(1) runs. OFF: every run keeps the campaign context, so a
 // --skirmish run loads its map as a single-player scene, as MP1 alone does. A campaign
 // run never publishes anything and reads the campaign context either way.
+// Packet cc13-skirmish-gate adds three reader sites:
+//   004DB94C state 0Ch arm pick, +218Ch (game_hosts_mission_frame.cpp
+//            enter_mission_state_004da6c0's session_flag_29c)
+//   004B6260 mission-start session test, +1FE4h and +218Ch (game_hosts_mission_frame.cpp
+//            session_counts_mission_start_004b6260; a skirmish still answers no)
+//   0046C550 scene gate play-area rows game+705Ch, from 004E6C00 / 004D5BD0
+//            (game_hosts_scene_contents.cpp SceneGateBinding::mode_area)
 inline constexpr bool kSkirmishSessionCc13Bound = false;
 
 // The five game fields. Descriptive names are hypotheses.
