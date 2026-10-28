@@ -423,10 +423,13 @@ void remove_items_bound_to_008e8a30(cp::PowerupRuntime& runtime, std::size_t bui
 // stream (GameGunneryHost::ship_ai_draw), is unaffected: nothing here draws on
 // it. Private to this file; the gunnery and HUD stream-0 consumers keep their
 // own draws (a shared stream-0 generator is the follow-up, see the header).
+// The generator lives in the runtime with the default seed and is reset with
+// the manager (destroy_powerup_manager_004d2d84), so every manager lifetime,
+// and so every scene of a multi-mission run, starts the same sequence; the
+// image's stream 0 runs on across scenes instead.
 std::uint32_t stream0_stand_in_00bd2fc0(cp::PowerupRuntime& runtime) {
-    static std::mt19937 generator;  // default seed, not the image's
     ++runtime.counts.stream0_draws;
-    return static_cast<std::uint32_t>(generator());
+    return static_cast<std::uint32_t>(runtime.stream0_stand_in());
 }
 
 // 00585EB0 then 00584110: strip the set's characters from the front, then the back.

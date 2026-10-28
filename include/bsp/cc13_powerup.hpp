@@ -13,6 +13,7 @@
 #include <cstdint>
 #include <list>
 #include <map>
+#include <random>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -131,6 +132,11 @@ struct PowerupRuntime {
     // _stricmp order: an 'A' chunk's one fixed pick, any other chunk's expanded
     // list (a 'T' pick erases its name).
     std::map<std::string, std::vector<std::string>, AsciiCaseLess> bracket_picks{};
+    // LABELLED stand-in for BSP_RandomThreads stream 0, 008EC650's draws
+    // (game_hosts_powerups.cpp). Default seed, reset with the manager, so each
+    // manager lifetime starts the same sequence; the image's stream 0 is
+    // process-wide and its seed and MT sequence are not modelled.
+    std::mt19937 stream0_stand_in{};
     PowerupCounts counts{};
     std::string load_error{};
 };

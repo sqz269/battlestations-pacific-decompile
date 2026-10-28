@@ -27,7 +27,9 @@
 // random_names row expand to its names; manager+1ACh caches each chunk's list.
 // The pick draws on BSP_RandomThreads stream 0 (00BD2FC0, ECX = 0): once when an
 // 'A' chunk's list is built (008ECAAE) and once per 'S' / 'T' pick (008ECCF7).
-// LABELLED stand-in: a private stream-0 generator in game_hosts_powerups.cpp.
+// LABELLED stand-in: a stream-0 generator drawn only in game_hosts_powerups.cpp,
+// held by the runtime and reset with the manager, so each scene starts the
+// same sequence (the image's stream 0 runs on across scenes).
 // Its seed and MT sequence are not modelled, so its values (and the picks)
 // differ from the image's; stream 1, the gameplay stream, is unaffected. A
 // chunk list with no names ('A') throws where the image divides by zero, and a
