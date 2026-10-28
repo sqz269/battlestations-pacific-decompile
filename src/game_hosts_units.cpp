@@ -5707,11 +5707,25 @@ struct GameUnitsHost::Impl {
                 slot.plane_world_velocity[2] - target_v[2];
             const float lead_x = target_p[0] - 3.0f * rel_vx - own_p[0];
             const float lead_z = target_p[2] - 3.0f * rel_vz - own_p[2];
+            float lead_range = 0.0f;
+            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                // pc24w2-units: 009C637D FMUL ST0,ST0 (x*x), 009C637F..81 z*z,
+                // 009C6383 FADDP, each at PC24, stored float at 009C6385; FCOMI
+                // against double [00CE3820] 1e-10, JBE (NaN too) -> 0 at
+                // 009C63B1, else 00BF7030 sqrt stored float (009C639E/009C63A6).
+                namespace x8 = bsp::cc13x87;
+                const float lead_d2 = static_cast<float>(
+                    x8::x87_add24(x8::x87_mul24(lead_x, lead_x), x8::x87_mul24(lead_z, lead_z)));
+                if (static_cast<double>(lead_d2) > bsp::dive_bomb_constant::kDistanceEpsilonSq) {
+                    lead_range = static_cast<float>(x8::x87_sqrt24(lead_d2));
+                }
+            } else {
             const double lead_d2 = static_cast<double>(lead_x) * lead_x +
                                    static_cast<double>(lead_z) * lead_z;
-            const float lead_range =
+            lead_range =
                 (lead_d2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
                     ? 0.0f : static_cast<float>(std::sqrt(lead_d2));
+            }
             float lead_bearing = static_cast<float>(
                 bsp::dive_bomb_constant::kHalfPi -
                 std::atan2(static_cast<double>(lead_z),
@@ -10063,26 +10077,31 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         inv[3] = inv[7] = inv[11] = 0.0f;
         inv[15] = 1.0f;
     }
+    // cc13-followbody: 004142E0 (point) / 0042D0D0 with flag 0 (direction)
+    // by that inverse of the pose m, per op: out[j] = ((p0 * inv[j] + p1 *
+    // inv[4+j]) + p2 * inv[8+j]) (+ inv[12+j] for the point), each output stored
+    // float (00414328/00414340/0041435B; 0042D11A/0042D131/0042D14A).
+    // The input is staged first (004142E3..004142FA), so out may alias p.
+    // Shared by follow_to_body and the dogfight df_local (pc24w2-units).
+    static void to_body_image_004142e0(const float* m, const float p[3], bool direction,
+                                       float out[3]) {
+        namespace x8 = bsp::cc13x87;
+        float inv[16];
+        follow_inverse_00b63d50(m, inv);
+        const float q[3] = {p[0], p[1], p[2]};
+        for (int j = 0; j < 3; ++j) {
+            double sum = x8::x87_add24(
+                x8::x87_add24(x8::x87_mul24(q[0], inv[j]), x8::x87_mul24(q[1], inv[4 + j])),
+                x8::x87_mul24(q[2], inv[8 + j]));
+            if (!direction) sum = x8::x87_add24(sum, inv[12 + j]);
+            out[j] = static_cast<float>(sum);
+        }
+    }
     static void follow_to_body(const GameUnitSlot& u, const float p[3], bool direction,
                                float out[3]) {
         const float* m = u.world.data();
         if constexpr (bsp::kFollowToBodyPc24Cc13Bound) {
-            // cc13-followbody: 004142E0 (point) / 0042D0D0 with flag 0 (direction)
-            // by that inverse, per op: out[j] = ((p0 * inv[j] + p1 * inv[4+j])
-            // + p2 * inv[8+j]) (+ inv[12+j] for the point), each output stored
-            // float (00414328/00414340/0041435B; 0042D11A/0042D131/0042D14A).
-            // The input is staged first (004142E3..004142FA), so out may alias p.
-            namespace x8 = bsp::cc13x87;
-            float inv[16];
-            follow_inverse_00b63d50(m, inv);
-            const float q[3] = {p[0], p[1], p[2]};
-            for (int j = 0; j < 3; ++j) {
-                double sum = x8::x87_add24(
-                    x8::x87_add24(x8::x87_mul24(q[0], inv[j]), x8::x87_mul24(q[1], inv[4 + j])),
-                    x8::x87_mul24(q[2], inv[8 + j]));
-                if (!direction) sum = x8::x87_add24(sum, inv[12 + j]);
-                out[j] = static_cast<float>(sum);
-            }
+            to_body_image_004142e0(m, p, direction, out);
         } else {
         const double d[3] = {
             static_cast<double>(p[0]) - (direction ? 0.0 : m[12]),
@@ -16393,8 +16412,17 @@ std::size_t GameUnitsHost::Impl::plane_landing_site_006c0840(const GameUnitSlot&
             if (l[2] > -1500.0f && 800.0 > static_cast<double>(l[2])) {
                 l[2] = static_cast<float>(static_cast<double>(l[2]) * 0.30000001192092896);
             }
+            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                // pc24w2-units: 006C0840 00427E30 (006C0A96): x*x (00427E3B), y*y (00427E3F),
+                // FADDP, z*z (00427E45 FMUL ST0), FADDP, each at PC24; stored float (00427E49).
+                namespace x8 = bsp::cc13x87;
+                c.key = static_cast<float>(x8::x87_add24(
+                    x8::x87_add24(x8::x87_mul24(l[0], l[0]), x8::x87_mul24(l[1], l[1])),
+                    x8::x87_mul24(l[2], l[2])));
+            } else {
             c.key = static_cast<float>(static_cast<double>(l[0]) * l[0]
                 + static_cast<double>(l[1]) * l[1] + static_cast<double>(l[2]) * l[2]);
+            }
         }
         list.push_back(c);
     }
@@ -16567,8 +16595,17 @@ bool GameUnitsHost::Impl::landing_site_key_006c09fe(std::size_t deck_index, std:
         if (l[2] > -1500.0f && 800.0 > static_cast<double>(l[2])) {
             l[2] = static_cast<float>(static_cast<double>(l[2]) * 0.30000001192092896);
         }
+        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+            // pc24w2-units: the 006C09FE block of 006C0840, 00427E30 (006C0A96): x*x (00427E3B), y*y (00427E3F),
+            // FADDP, z*z (00427E45 FMUL ST0), FADDP, each at PC24; stored float (00427E49).
+            namespace x8 = bsp::cc13x87;
+            c.key = static_cast<float>(x8::x87_add24(
+                x8::x87_add24(x8::x87_mul24(l[0], l[0]), x8::x87_mul24(l[1], l[1])),
+                x8::x87_mul24(l[2], l[2])));
+        } else {
         c.key = static_cast<float>(static_cast<double>(l[0]) * l[0]
             + static_cast<double>(l[1]) * l[1] + static_cast<double>(l[2]) * l[2]);
+        }
     }
     ++rtb_site_keys;
     return true;
@@ -25987,24 +26024,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void df_local(const float p[3], float out[3]) const {
                         const float* m = unit_.world.data();
                         if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                            // Per-op PC24 of the host's stand-in formula (004142E0
-                            // itself multiplies by the inverse matrix): d_k =
-                            // p_k - m[12+k] as floats, n = sqrt((r0^2 + r1^2) + r2^2),
-                            // out = ((d0 r0 + d1 r1) + d2 r2) / n.
-                            using namespace bsp::cc13x87;
-                            const float d[3] = {static_cast<float>(x87_sub24(p[0], m[12])),
-                                                static_cast<float>(x87_sub24(p[1], m[13])),
-                                                static_cast<float>(x87_sub24(p[2], m[14]))};
-                            for (int r = 0; r < 3; ++r) {
-                                const float* row = m + 4 * r;
-                                const double n = x87_sqrt24(x87_add24(
-                                    x87_add24(x87_mul24(row[0], row[0]), x87_mul24(row[1], row[1])),
-                                    x87_mul24(row[2], row[2])));
-                                const double dot = x87_add24(
-                                    x87_add24(x87_mul24(d[0], row[0]), x87_mul24(d[1], row[1])),
-                                    x87_mul24(d[2], row[2]));
-                                out[r] = static_cast<float>(x87_div24(dot, n > 0 ? n : 1.0));
-                            }
+                            // pc24w2-units: the image path itself. 009AA753..009AA775
+                            // (00B63D50 into +110h, then 004142E0 by it), 009AAE72..
+                            // 009AAE80 (004142E0 by +110h) and 009FCBBF..009FCBCB
+                            // (00414E10's +110h, 00414D10 -> 004142E0) all apply the
+                            // 00B63D50 inverse, each op at PC24 (follow_to_body's
+                            // helper). The wave-1 arm narrowed the normalised-row
+                            // stand-in instead.
+                            GameUnitsHost::Impl::to_body_image_004142e0(m, p, false, out);
                         } else {
                             const double d[3] = {static_cast<double>(p[0]) - m[12],
                                                  static_cast<double>(p[1]) - m[13],
@@ -45721,43 +45748,109 @@ bool GameUnitsHost::add_leak_0074f440(std::size_t index, std::uint32_t count,
         // 0074F10F..0074F170: along = forward . d (row 2 of pose+CCh, stored as a
         // float), plus Length * 0.5 (00D7A280).
         const float* f = s.motion.pose_row2;
-        const float along = static_cast<float>(static_cast<double>(f[1]) * d[1] +
+        // pc24w2-units (kPc24UnitsHostCc13Bound): 0074F12F f1*d1, 0074F142 f0*d0,
+        // 0074F146 FADDP, 0074F154 f2*d2, 0074F158 FADDP, each at PC24, stored
+        // float at 0074F15A. OFF sums in double.
+        namespace x8 = bsp::cc13x87;
+        float along = 0.0f;
+        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+            along = static_cast<float>(x8::x87_add24(
+                x8::x87_add24(x8::x87_mul24(f[1], d[1]), x8::x87_mul24(f[0], d[0])),
+                x8::x87_mul24(f[2], d[2])));
+        } else {
+        along = static_cast<float>(static_cast<double>(f[1]) * d[1] +
             static_cast<double>(f[0]) * d[0] + static_cast<double>(f[2]) * d[2]);
+        }
         const float shifted = static_cast<float>(static_cast<double>(along) +
             static_cast<double>(s.motion_class.hull_length) * 0.5);
         // 0074F174..0074F193: 00BF7420 truncates; below 0 -> 0; at or past
         // count/2 -> count/2 - 1.
         const int half = static_cast<int>(s.leaks.size()) >> 1;
-        int leak = s.leak_station_04 != 0.0f
+        int leak = 0;
+        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+            // pc24w2-units: 0074F178 FDIV m32 at PC24, then 00BF7420 truncates
+            // that 24-bit quotient.
+            leak = s.leak_station_04 != 0.0f
+                ? static_cast<int>(x8::x87_div24(shifted, s.leak_station_04)) : 0;
+        } else {
+        leak = s.leak_station_04 != 0.0f
             ? static_cast<int>(static_cast<double>(shifted) / s.leak_station_04) : 0;
+        }
         if (leak < 0) leak = 0; else if (leak >= half) leak = half - 1;
         // 0074F196..0074F1AB: the +x side takes the second half.
-        const double side = static_cast<double>(d[0]) * f[2] - static_cast<double>(f[0]) * d[2];
+        double side = 0.0;
+        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+            // pc24w2-units: 0074F196 d0*f2, 0074F198 f0*d2, 0074F19A FSUBP (DE E9,
+            // ST1 - ST0), each at PC24; FCOMIP against 0 (JBE keeps the first half).
+            side = x8::x87_sub24(x8::x87_mul24(d[0], f[2]), x8::x87_mul24(f[0], d[2]));
+        } else {
+        side = static_cast<double>(d[0]) * f[2] - static_cast<double>(f[0]) * d[2];
+        }
         if (side > 0.0) leak += half;
         // 0074F4A1..0074F4EA: k = ln(sqrt(DologSzorzo)) / ln(2.0), stored as a float.
-        const float k = static_cast<float>(
+        float k = 0.0f;
+        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+            // pc24w2-units: 0074F4A1 00BF7030 sqrt (FSQRT at PC24) stored float,
+            // 0074F4AE 00BFA910 ln stored float, 0074F4C5 ln(double [00D7A308] 2.0)
+            // stored float, 0074F4D6 FDIVR m32 at PC24, stored at [00E1AECC].
+            const float root = static_cast<float>(
+                x8::x87_sqrt24(static_cast<float>(Impl::kDologSzorzoSubstitute)));
+            const float ln_root = static_cast<float>(std::log(static_cast<double>(root)));
+            const float ln_two = static_cast<float>(std::log(2.0));
+            k = static_cast<float>(x8::x87_div24(ln_root, ln_two));
+        } else {
+        k = static_cast<float>(
             std::log(static_cast<double>(static_cast<float>(
                 std::sqrt(static_cast<double>(Impl::kDologSzorzoSubstitute))))) /
             std::log(2.0));
+        }
         // 0074F1AD..0074F22C: u = |D / R| ^ (1 / k), 0 when D / R is 0.
         const float ratio = static_cast<float>(
             static_cast<double>(s.leak_total_rate_2c) / s.leak_rate_34);
         const float inv_k = static_cast<float>(1.0 / static_cast<double>(k));
+        // pc24w2-units: the inline power (0074F208..0074F21C and 0074F286..
+        // 0074F29A): FYL2X y*log2(x), FRNDINT, FSUB ST1,ST0 at PC24 (the
+        // fraction rounds to 24 bits), F2XM1, FLD1 FADDP at PC24, FSCALE, stored
+        // float. FYL2X and F2XM1 are not narrowed by precision control; they are
+        // modelled in double here (labelled: the image keeps 64-bit significands).
+        auto pow_0074f208 = [](float x, float y) {
+            const double t = static_cast<double>(y) * std::log2(static_cast<double>(x));
+            const double n = std::nearbyint(t);
+            const double frac = x8::x87_sub24(t, n);
+            const double m = x8::x87_add24(std::expm1(frac * 0.69314718055994531), 1.0);
+            return static_cast<float>(std::ldexp(m, static_cast<int>(n)));
+        };
         float u = 0.0f;
         if (ratio != 0.0f) {
+            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                u = pow_0074f208(std::fabs(ratio), inv_k);
+            } else {
             u = static_cast<float>(std::exp2(static_cast<double>(inv_k) *
                 std::log2(std::fabs(static_cast<double>(ratio)))));
+            }
         }
         // 0074F22C..0074F24B: z = (T * u + amount) / T, T = +38h.
         const float t = s.leak_damage_to_death_38;
         const float tu = static_cast<float>(static_cast<double>(t) * u);
-        const float z = static_cast<float>(
+        float z = 0.0f;
+        if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+            // pc24w2-units: 0074F245 FADD m32 (amount, stored float at [ESP+20h])
+            // at PC24, then 0074F249 FDIVRP (DE F1, ST0 / ST1 = sum / T) at PC24,
+            // stored float at 0074F24B.
+            z = static_cast<float>(x8::x87_div24(x8::x87_add24(tu, amount), t));
+        } else {
+        z = static_cast<float>(
             (static_cast<double>(tu) + amount) / static_cast<double>(t));
+        }
         // 0074F24F..0074F2A4: w = |z| ^ k, 0 when z is 0.
         float w = 0.0f;
         if (z != 0.0f) {
+            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                w = pow_0074f208(std::fabs(z), k);
+            } else {
             w = static_cast<float>(std::exp2(static_cast<double>(k) *
                 std::log2(std::fabs(static_cast<double>(z)))));
+            }
         }
         // 0074F2AA..0074F2D1: D' = w * R; rates[leak] += D' - D; +2Ch = D'.
         const float next = static_cast<float>(static_cast<double>(w) * s.leak_rate_34);

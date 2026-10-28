@@ -96,6 +96,22 @@ namespace bsp {
 //    s1 * frac + (1 - frac) * s0; 00AEAAA0 vsub_cross (y0 - h0) / (dh - dy); 00AEB7E0
 //    vsub_slope's qword dy; 00AEC120 / 00AEC7C0 y = slope * t + y0; 00AEC3F0 out / n + index.
 // Movers: the near-vertical terrain segment hit points (00ADA240 -> 00AECC40).
+//
+// pc24w1-sweep1-7, the same walker's grid iterator (src/game_hosts_scene_contents.cpp, no
+// exports; found by the wave-2 census of lint-skipped bodies):
+//  * 00AEB430 vsub_iter_init: a * a + 1 before the sqrt (vsub_slope_sq_plus_one) and the
+//    first crossing (1 - frac) * td (vsub_one_minus), for x and for z.
+//  * 00AEAB30 snap, 00AEB1F0 / 00AEB310 / 00AEB0B0 steps: the next crossing td * c + t0
+//    (vsub_next_crossing, FIMUL then FADD).
+//  * 00AECC40 vsub_vertical: the hit point out * size + origin.
+//  Not narrowed: the v + 0.5 before 00BF7420 truncates (00AEAB53, 00AEB23B, 00AEB35B,
+//  00AEB164..00AEB196) is one FADD, and its 24-bit rounding cannot change the truncation
+//  for the non-negative cell and tile coordinates the walk produces.
+//  Correction (rev8 FIX): that is wrong. 00BF7420 truncates the PC24-rounded sum, and
+//  v = 0.49999997f sums to 1 - 2^-25, which ties to even at 1.0: the image gives 1, the
+//  double sum 0. ON now truncates x87_add24(v, 0.5) (vsub_trunc_half) at 00AEAB53,
+//  00AEAB8A, 00AEB23B, 00AEB35B and 00AEB164..00AEB1B3.
+// Movers: the same near-vertical hit points, through the crossing parameters.
 inline constexpr bool kPc24FlightRenderCc13Bound = false;
 
 }  // namespace bsp
