@@ -158,7 +158,7 @@ struct LevelBombApproach {
     float bearing_c0 = 0.0f;         // +C0h
     float time_error_c4 = 0.0f;      // +C4h, 009B4400's third draw
     int step_c8 = 0xFF;              // +C8h = task+4C0h
-    bool close_cc = false;           // +CCh
+    bool close_cc = false;           // +CCh = task+4C4h, "bayDoorState" (009B4858-009B4876)
     bool in_range_cd = false;        // +CDh = task+4C5h
     bool has_ordnance_ce = true;     // +CEh = task+4C6h
     float impact[3] = {0.0f, 0.0f, 0.0f};   // +D0h..+D8h

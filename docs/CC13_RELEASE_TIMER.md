@@ -279,6 +279,12 @@ Substitutions, labelled:
   can answer other than 1 are unmodelled mode sources: LevelBomb `009B8450`, Rocket `007B6F90`,
   CloseToShip `009A2BD0`, DepthCharge `009A5D80` and DropKamikaze `009ADDB0`. That is no regression,
   because the predicate it serves is read by the torpedo release timer only.
+  Packet cc13-lbbay (2026-10-28) models LevelBomb `009B8450` under `kLevelBombBayOpenerCc13Bound`
+  (`include/bsp/level_bomb_bay_cc13.hpp`, OFF). In attackrun, aim, prepare, release and goaway it
+  answers 2 or 0 from task+4C4h = approach+CCh (`lb_ap.close_cc`), and 1 otherwise. The same packet
+  applies `007CC8E0`'s bay test (`007BB110` inlined, `007CC8F4-007CC928`) to the level bomber's rack
+  tick under `kLevelBombDropBayGateCc13Bound`, which `static_assert`s the opener. After that packet,
+  the predicate is no longer read by the torpedo release timer only.
 - The opener runs before the block step in the same fixed step; the image's order between the
   pilot think, the plane tick and the block step is not established.
 
