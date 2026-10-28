@@ -37,6 +37,7 @@ struct MissionShipGraph final {
     void (*prepare_callback)(void*){};
     const NativeGroupEnvironment* gui_group_environment{};
     RandomThreads* startup_random{};
+    StartupSceneDomain* startup_domain{}; // A1 borrow; null unless kNativeRendererStartupCc15Bound
     bool all_units{};
     std::optional<std::size_t> diagnostic_view_unit;
     bool overlay_window_open{}, overlay_submitted{};
@@ -170,7 +171,7 @@ struct MissionShipGraph final {
                 vfs, singletons, owners, model->effect_cache(), model->material_lifetime(),
                 model->model_environment(), commands->render_access(), renderer,
                 *reinterpret_cast<void* const volatile*>(devices.platform_publication.identity()),
-                lua, shader_cache, arguments);
+                lua, shader_cache, arguments, startup_domain ? &startup_domain->scenes : nullptr);
             (void)resources->construct_and_initialize();
             if (prepare_callback) prepare_callback(prepare_context);
             const auto source = unit_source();
@@ -194,7 +195,8 @@ struct MissionShipGraph final {
             for (std::size_t i = 0; i != model->drawable_count(); ++i)
                 scene->attach(model->drawable(i), model->drawable_reference(i), model->profile(model->drawable(i)));
             lighting = std::make_unique<MissionShipLightingGraph>(log, graph, cameras,
-                owners, raw_strings, static_cast<std::uint8_t>(arguments.word_00));
+                owners, raw_strings, static_cast<std::uint8_t>(arguments.word_00),
+                startup_domain ? &startup_domain->registry : nullptr);
             lighting->create_and_bind(scene->raw());
             // Keep this SAME one-shot cache while late mission models can load.
             // B3B7F4/B34890 dereference it in the installed binary shader mode.

@@ -64,9 +64,21 @@ struct MissionShipLightingGraph {
  volatile U published_resource{},null_resource{};
  Phase phase{Phase::prepared};
 
+ // A1: the startup domain's registry/gate recipe when borrowed (never under
+ // kNativeRendererStartupCc15Bound OFF); the members above stay unused then.
+ SceneRegistryContexts* const borrowed;
+ NativeSceneRegistrationGateContext& gates() noexcept {return borrowed?borrowed->gate:gate;}
+ NativeSceneResourceStorageContext& storage_context() noexcept {
+  return borrowed?borrowed->resource_storage:resource_storage;
+ }
+ NativeSceneResourceIdentityContext& identity_context() noexcept {
+  return borrowed?borrowed->resource_identity:resource_identity;
+ }
+ NativeGuiSceneFieldsContext& fields() noexcept {return borrowed?borrowed->scene_fields:scene_fields;}
+
  MissionShipLightingGraph(GameHostLog& output,DestructionGraph& g,CameraGraph& c,
      NativeRenderActualOwnerRegistry& actual,NativeStringRawPoolContext& raw,
-     std::uint8_t startup_scale_ambient)
+     std::uint8_t startup_scale_ambient,SceneRegistryContexts* startup_registry=nullptr)
   :log(output),graph(g),cameras(c),owners(actual),strings(raw),globals(MissionLightingGlobals::process()),
    // Source settings+8C aliases F88A0C and has already been loaded by startup.
    // Parent captures this exact byte in init arguments.word00; device/settings
@@ -85,7 +97,8 @@ struct MissionShipLightingGraph {
    ambient_identity{actual,g.profiles(0xd62f3c)},
    resource_storage{raw,registry_storage,ambient,ambient_identity,g.profiles(0xd7a24c)},
    resource_identity{resource_storage,g.profiles(0xd63168)},
-   scene_fields{actual,game_native_renderer_scalar_process().increment_iat_00ce221c(),c.decrement} {}
+   scene_fields{actual,game_native_renderer_scalar_process().increment_iat_00ce221c(),c.decrement},
+   borrowed(startup_registry) {}
  ~MissionShipLightingGraph() {
   if(phase!=Phase::prepared && phase!=Phase::closed)std::terminate();
  }
@@ -156,18 +169,20 @@ struct MissionShipLightingGraph {
       "mission lighting must bind after model roots on the native null-lighting scene");
   phase=Phase::creating;outer=actual_outer_scene;
   try {
-   graph.types.initialize_light_00cd80a0();
-   graph.types.initialize_directional_00cd80f0();
    auto& pools=game_native_resource_pool_process();
-   pools.initialize_directional_light_once_00cd8080();
+   if(!borrowed){
+    graph.types.initialize_light_00cd80a0();
+    graph.types.initialize_directional_00cd80f0();
+    pools.initialize_directional_light_once_00cd8080();
+   } // A1 startup already ran these image CRT initializers once.
    sun_pool=&pools.directional_light_pool_01090154();
    construct_native_string_header_0041e870(&resource_name,strings,"Mission ship lighting");
    resource_name_live=true;
    resource=raw_allocate(0x3c);
    check(resource!=nullptr,"mission lighting resource allocation returned null");
    resource_frame.name_or_ambient_argument=bits(&resource_name);
-   construct_native_scene_resource_00b83c50(resource,resource_frame,resource_storage,resource_acquired);
-   resource_reference.emplace(resource,resource_identity);
+   construct_native_scene_resource_00b83c50(resource,resource_frame,storage_context(),resource_acquired);
+   resource_reference.emplace(resource,identity_context());
 
    construct_native_string_header_0041e870(&sun_name,strings,"Mission sun");
    sun_name_live=true;
@@ -185,14 +200,14 @@ struct MissionShipLightingGraph {
    owners.publish(std::move(admission),*sun_reference);
    configure_owners();
    insert_frame.node_argument=bits(sun);
-   register_native_scene_node_if_light_00b83d50(resource,insert_frame,gate,insertion);
+   register_native_scene_node_if_light_00b83d50(resource,insert_frame,gates(),insertion);
    check(insertion.complete && get<U>(resource,0x20)==1,
        "mission lighting did not register its one native directional light");
    const void* const head=get<void*>(resource,0x1c);
    check(head && get<void*>(head)!=head && get<void*>(get<void*>(head),8)==sun,
        "mission lighting first native registry entry is not its sun");
    published_resource=bits(resource);
-   set_native_gui_scene_resource_00b723f0(outer,published_resource,scene_fields);
+   set_native_gui_scene_resource_00b723f0(outer,published_resource,fields());
    check(get<void*>(outer,0x1c)==resource,"mission outer scene did not retain native lighting resource");
    sun_name_live=false;destroy_native_string_header_0041dd20(&sun_name,strings);
    resource_name_live=false;destroy_native_string_header_0041dd20(&resource_name,strings);
@@ -207,7 +222,7 @@ struct MissionShipLightingGraph {
       resource_reference->reference_count.load()==2,
       "mission root insertion requires its genuine live lighting credits");
   phase=Phase::roots_detached;
-  set_native_gui_scene_resource_00b723f0(outer,null_resource,scene_fields);
+  set_native_gui_scene_resource_00b723f0(outer,null_resource,fields());
   check(get<void*>(outer,0x1c)==nullptr && resource_reference->reference_count.load()==1,
       "mission root insertion did not preserve the lighting creator");
  }
@@ -215,7 +230,7 @@ struct MissionShipLightingGraph {
   check(phase==Phase::roots_detached && get<void*>(outer,0x1c)==nullptr &&
       resource_reference->reference_count.load()==1,
       "mission root insertion lost its lighting creator");
-  set_native_gui_scene_resource_00b723f0(outer,published_resource,scene_fields);
+  set_native_gui_scene_resource_00b723f0(outer,published_resource,fields());
   check(get<void*>(outer,0x1c)==resource && resource_reference->reference_count.load()==2,
       "mission root insertion failed to restore native lighting");
   phase=Phase::ready;
@@ -234,11 +249,11 @@ struct MissionShipLightingGraph {
        "mission lighting has unexpected outer/resource credits at shutdown");
    // Restore native-null before A1 detaches its static roots. B723F0 has no
    // root propagation; model+170 remained null throughout this diagnostic.
-   set_native_gui_scene_resource_00b723f0(outer,null_resource,scene_fields);
+   set_native_gui_scene_resource_00b723f0(outer,null_resource,fields());
    check(get<void*>(outer,0x1c)==nullptr && resource_reference->reference_count.load()==1,
        "mission lighting failed to release the outer scene resource credit");
    erase_frame.node_argument=bits(sun);
-   unregister_native_scene_node_if_light_00b83ec0(resource,erase_frame,gate);
+   unregister_native_scene_node_if_light_00b83ec0(resource,erase_frame,gates());
    check(get<U>(resource,0x20)==0,"mission lighting registry retained its sun key");
    release_native_render_actual_owner_observed(owners,resource,resource_release);
    check(resource_reference->retired() && resource_acquired.ambient_reference->retired(),

@@ -48,6 +48,15 @@ struct NativeInstanceGeneratorContext;
 class NativePlatformLoadPublication;
 struct NativeFrameClockPublicationContext;
 struct NativeRenderResourceInitArguments;
+struct NativeGuiSceneIdentityContext;
+struct NativeGuiSceneFieldsContext;
+struct NativeSceneResourceIdentityContext;
+struct NativeCameraStorageConstructContext;
+struct NativeDirectionalLightIdentityContext;
+struct NativeSystemFogConstants;
+struct NativeSystemFogStorageContext;
+struct NativeNodeBaseDestructionContext;
+class NativeNodeSceneChildDispatch;
 }
 namespace bsp::game {
 struct GameNativeMaterialCompilerOwners;
@@ -60,6 +69,23 @@ class GameNativeReadOnlyData;
 class GameNativeLuaServices;
 class GameHostLog;
 class GameInputRuntime;
+// cc15-gui4 A1: open the application's one raw scene domain (registry/gate,
+// scene environment, node/camera/viewport/light/fog contexts) at the 0073DD12
+// startup position; the opt-in mission graph and the GUI pages borrow it.
+inline constexpr bool kNativeRendererStartupCc15Bound = false;
+// Borrowed views of that domain, valid from open_startup_scene_domain() until
+// the renderer is destroyed. Every member shares one owner registry, string
+// domain, import cells and live one cell, as AC59A0's admission requires.
+struct GameNativeRendererSceneDomain {
+    NativeGuiSceneIdentityContext& outer;
+    NativeGuiSceneFieldsContext& scene_fields;
+    NativeSceneResourceIdentityContext& resource;
+    NativeCameraStorageConstructContext& camera;
+    NativeDirectionalLightIdentityContext& directional;
+    const NativeSystemFogConstants& fog_constants;
+    NativeSystemFogStorageContext& fog;
+    NativeNodeBaseDestructionContext& node;
+};
 // Stable metadata over the original VFS reader and this renderer's existing
 // geometry/cache domains. Borrowing invokes no native field reader. Retain the
 // application through every consumer; entered operations require their own
@@ -226,6 +252,14 @@ public:
     // retirement; they do not grant another owner or permit replay/rebinding.
     const NativeShaderBinaryCacheOperation* shader_cache_creation_operation() const noexcept;
     bool shader_cache_released() const noexcept;
+    // A1 (kNativeRendererStartupCc15Bound): build the startup scene domain
+    // once, in the ready renderer, before any mission or GUI page graph.
+    void open_startup_scene_domain();
+    bool startup_scene_domain_open() const noexcept;
+    GameNativeRendererSceneDomain startup_scene_domain();
+    // Scene-child +50 targets outside the raw camera/directional families
+    // (GUI Group, Model) go to this one borrower; null restores rejection.
+    void bind_startup_scene_child_delegate(NativeNodeSceneChildDispatch*);
     NativeShaderBinaryCacheContext& shader_cache_context() noexcept;
     // Same compiler and secondary-pass construction/copy/registration domains.
     // No effect/program load graph is created. The caller keeps persistent
