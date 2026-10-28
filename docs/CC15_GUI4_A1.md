@@ -176,3 +176,11 @@ Exact executable hashes, row receipts and remaining ON gates are recorded in
 `docs/CODEX_CC16_INTEGRATION_2026-10-28.md`. These receipts validate the current
 domain-only fallback and shutdown correction; they do not accept the ON flip,
 startup shader preload, repeated GUI traversal, reload or late-plane drawing.
+
+## A1 activation candidate, 2026-10-28
+
+The switch-only activation candidate sets `kNativeRendererStartupCc15Bound` ON
+over accepted OFF source `5ca4639f0b`. No other switch changes. Acceptance is
+pending the current-code lifecycle, 13-row identity and serial alternating
+USN21 4+4 gates recorded in `docs/CODEX_GUI4_A1_ACTIVATION.md`. This candidate
+does not establish native GUI page drawing or startup shader preload.

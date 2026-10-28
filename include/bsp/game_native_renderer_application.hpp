@@ -72,7 +72,7 @@ class GameInputRuntime;
 // cc15-gui4 A1: open the application's one raw scene domain (registry/gate,
 // scene environment, node/camera/viewport/light/fog contexts) at the 0073DD12
 // startup position; the opt-in mission graph and the GUI pages borrow it.
-inline constexpr bool kNativeRendererStartupCc15Bound = false;
+inline constexpr bool kNativeRendererStartupCc15Bound = true;
 // Borrowed views of that domain, valid from open_startup_scene_domain() until
 // the renderer is destroyed. Every member shares one owner registry, string
 // domain, import cells and live one cell, as AC59A0's admission requires.
