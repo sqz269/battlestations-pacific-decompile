@@ -65,8 +65,16 @@ ScrollBarGeometry compute_scroll_bar_geometry(
     if (range < track) {
         // FADDP ST2,ST0 then FSUBP at 006834FD: (track + min_height) - range in
         // one x87 expression, stored to a float slot at 00683501.
-        const float candidate =
+        float candidate;
+        if constexpr (kPc24FrontendCc13Bound) {
+            // 006834FD DE C2 FADDP ST2 (track + min_height) and 006834FF DE E9
+            // FSUBP ST1 (that - range) each round at PC24; 00683501 FSTP float.
+            candidate = static_cast<float>(
+                cc13x87::x87_sub24(cc13x87::x87_add24(track, min_height), range));
+        } else {
+        candidate =
             static_cast<float>((static_cast<double>(track) + min_height) - range);
+        }
         // FCOMIP/JBE at 0068350B: keep min_height unless candidate is greater.
         geometry.thumb_height = (min_height < candidate) ? candidate : min_height;
         geometry.thumb_travel = range;

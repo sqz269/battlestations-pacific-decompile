@@ -17,7 +17,14 @@ namespace bsp {
 //   00683440 thumb_progress_from_scroll (frontend_screen_animation.cpp):
 //            offset / range * travel, 00683461 FLD / 00683464 FDIV / 00683467 FMUL /
 //            0068346A FSTP: the quotient rounds before the multiply.
-// Movers: prompt button x positions and the scroll thumb position (pixel layout only).
+//   006834A0 compute_scroll_bar_geometry (frontend_screen_animation.cpp): the
+//            thumb height candidate (track + min_height) - range, 006834FD DE C2
+//            FADDP ST2 / 006834FF DE E9 FSUBP ST1 / 00683501 FSTP float.
+//   Not switched: 00683820's dragged_thumb_y (00683918) and
+//   scroll_offset_from_thumb_y (00683980) have no host caller
+//   (update_front_end_screen_scroller is never called), so they are pc24_debt.
+// Movers: prompt button x positions, the scroll thumb position and height (pixel
+// layout only).
 inline constexpr bool kPc24FrontendCc13Bound = false;
 
 }  // namespace bsp
