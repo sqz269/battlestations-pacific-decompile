@@ -42,7 +42,8 @@ namespace bsp {
 // Movers when ON: dive-bomber flyabove headings whenever another aircraft is inside
 // the flyabove box, so the flyabove path near other planes, the roll-in latch, the
 // dive start point and the release.
-inline constexpr bool kDiveFlyaboveAvoidIncrementCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-28), in the plane-tasks bundle (plausibility pairs).
+inline constexpr bool kDiveFlyaboveAvoidIncrementCc13Bound = true;
 
 // 009C6B3F-009C6CB6, per op at PC24 (plain float ops round the same way; the qword
 // constants are float values widened). Returns 0 when 009C6B75's JBE is taken.

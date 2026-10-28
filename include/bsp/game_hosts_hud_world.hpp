@@ -321,7 +321,7 @@ inline constexpr bool kHudInterfaceControlledUnitBound = true;
 // 00F8715C/00F8716C/00F8717C and guard 00F8718C, scaling through 00BEE140.
 // OFF records the hook as unimplemented and zero-fills the RGBA. No runtime
 // caller reaches the hook yet, so the switch has no observable effect today.
-inline constexpr bool kHudUnitHealthColourBound = false;
+inline constexpr bool kHudUnitHealthColourBound = true;  // cc9-sweep2b: prune flip, zero reach on u01/b9/b6i/l10/p01/u12/j8v3
 
 class GameHostLog;
 class GameFrontendHost;

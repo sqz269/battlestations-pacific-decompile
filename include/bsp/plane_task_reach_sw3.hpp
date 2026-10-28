@@ -44,6 +44,26 @@ struct PlaneTaskReachSw3 {
     PlaneTaskReachPair airops_return;
     // kVector3DivideInPlacePc24Cc13Bound (0042AE80): differs = any component's bits
     PlaneTaskReachPair vec3_divide;
+    // kFreeAttackAcceptTestCc13Bound (009F830C): differs = the gate's answer;
+    // inner = a category 1/2 command with a resolved target (the test ran)
+    PlaneTaskReachPair free_attack;
+    // cc9-sweep3c, the plane-logic OFF switches:
+    // kSeg67bDogfightAimSpeedCorrOffBound (009A7932): calls = not-head-on aim
+    // ticks; differs = plan+2B0h is not already 1
+    PlaneTaskReachPair aim_speed_corr_off;
+    // kDiveReleaseAltActivationOnlyBound (009C89E4-009C8A17): calls = ticks with
+    // a script release altitude; differs = a non-activation tick changes the
+    // block's state; inner = the leader block runs at all
+    PlaneTaskReachPair dive_release_alt;
+    // kMoveToActivationLuaAltOrderBound (009C375A): calls = the install's
+    // leader store runs; differs = it clears a live +3ADh before 009C36BF
+    PlaneTaskReachPair moveto_lua_alt_order;
+    // kAiPlaneBagEquipmentBound (00A04608): calls = records that hold a round;
+    // differs = the carried bag Equipment differs from the default
+    PlaneTaskReachPair ai_bag_equipment;
+    // kTorpedoArmFallthroughReleaseBound (009D49DA): calls = fall-throughs to
+    // 0099B6A0; differs = consumed changes (a squadron); inner = 007BBBA0 runs
+    PlaneTaskReachPair torpedo_fallthrough;
 };
 
 inline PlaneTaskReachSw3 g_plane_task_reach_sw3;

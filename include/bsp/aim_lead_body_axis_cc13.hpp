@@ -33,6 +33,8 @@ namespace bsp {
 // the forward axis's y component and loses the level direction's horizontal length.
 // For a level hull, pose_row2 equals (sin h, 0, cos h) up to rounding, so the lead
 // moves little.
-inline constexpr bool kAimLeadBodyAxisCc13Bound = false;
+//
+// ON since cc9-nondet2 (2026-10-28): plausible on every pair (docs/USN21_NONDETERMINISM.md 7).
+inline constexpr bool kAimLeadBodyAxisCc13Bound = true;
 
 }  // namespace bsp

@@ -35,7 +35,7 @@ namespace bsp {
 // from 0077FA8D), so after a hand-over every member, the new leader included, keeps
 // a `follow` aimed at the dead leader, as before.
 // No 00BD2F10 draw on any of these paths.
-inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = false;
+inline constexpr bool kDeadLeaderRepublishesFollowerPairBound = true;  // cc9-sweep2b: paired at 292c293bd on 7 rows (j8v3 loses, see SHIP_AI_OPEN_ITEMS 331)
 
 // True: when the dying unit still leads its group (00778890 at 0071C156) and a
 // successor exists (0071C163), leave_group_on_destroy_0077bd70 runs

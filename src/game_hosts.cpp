@@ -2024,6 +2024,14 @@ GameStartupHost::~GameStartupHost() {
         catch(...) {std::fputs("bsp_game: native input settings require process retention\n",stderr);std::fflush(stderr);}
         std::_Exit(1);
     }
+    if constexpr (kNativeGuiPageChainCc15Bound) {
+        if (native_gui_pages_ && native_gui_pages_->requires_process_retention()) {
+            try { log_.notef("native GUI page chain interrupted at %08x; retaining its frames until process exit",
+                native_gui_pages_->failure_site()); log_.close(); }
+            catch (...) { std::fputs("bsp_game: native GUI page chain requires process retention\n", stderr); std::fflush(stderr); }
+            std::_Exit(1);
+        }
+    }
     if constexpr (kGuiManagerCc15Bound) {
         if (native_gui_manager_ && native_gui_manager_->requires_process_retention()) {
             try { log_.note("native GUI manager interrupted; retaining its manager/cells until process exit"); log_.close(); }
@@ -2056,6 +2064,7 @@ GameStartupHost::~GameStartupHost() {
         if (native_renderer_) native_renderer_->drain_singletons();
         else singletons_->shutdown();
         if(scripts_)scripts_->input().after_singleton_drain();
+        if constexpr (kNativeGuiPageChainCc15Bound) native_gui_pages_.reset();
         if constexpr (kGuiManagerCc15Bound) {
             if (native_gui_manager_) {
                 // The deletion arm and cells lived through the drain; the
@@ -2854,6 +2863,13 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             native_gui_manager_ = std::make_unique<GameNativeGuiManagerApplication>(log_,
                 *singletons_, *native_data_, native_renderer_->actual_owners(), vfs_->raw_strings());
         if (native_gui_manager_) frontend_->bind_native_gui_manager(*native_gui_manager_);
+    }
+    if constexpr (kNativeGuiPageChainCc15Bound) {
+        // cc15-gui4 P3a: the AA5840 page chain on that manager. No page loads
+        // until the joint FE_initial flip.
+        if (!native_gui_pages_ && native_gui_manager_ && native_data_ && native_renderer_)
+            native_gui_pages_ = std::make_unique<GameNativeGuiPageApplication>(log_,
+                *native_gui_manager_, *native_renderer_, *vfs_, *native_data_);
     }
     frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
         settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));

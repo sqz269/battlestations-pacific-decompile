@@ -24,7 +24,7 @@
 // False: they construct at 0.0f, as before.
 namespace bsp {
 
-inline constexpr bool kShipAiApproachTimerSeedBound = false;
+inline constexpr bool kShipAiApproachTimerSeedBound = true;  // cc9-sweep2b: paired at 292c293bd on 7 rows (j8v3 loses, see SHIP_AI_OPEN_ITEMS 331)
 
 inline constexpr float kShipAiApproachTimerSeed =
     kShipAiApproachTimerSeedBound ? -1.0f : 0.0f;  // [00D7A260] when bound

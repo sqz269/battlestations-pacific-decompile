@@ -28,6 +28,6 @@ namespace bsp {
 // Movers: a latched target with +5Ch clear (scene node inactive) or +60h set before its
 // +5Dh store now counts as engageable, as in the image, so level bombers keep the forced
 // attack and do not break off, and strafers keep their approach, on such targets.
-inline constexpr bool kTargetDisabledByte5dCc13Bound = false;
+inline constexpr bool kTargetDisabledByte5dCc13Bound = true;  // ON by joint pair (cc9-sweep1b)
 
 }  // namespace bsp

@@ -32,6 +32,7 @@ namespace bsp {
 // (df_arm_body_009ab1c0, `if (!unit_.dogfight_task_installed)`), so a repeated dogfight
 // order on a new target reaches no bot_task_ctor_seeds_0099c6f0 and keeps the block. If
 // the image rebuilds the task on such an order, that reset is missed (unverified).
-inline constexpr bool kRocketTargetStopHandlersCc13Bound = false;
+// ON since cc9-nondet2 (2026-10-28): plausible on every pair (docs/USN21_NONDETERMINISM.md 8).
+inline constexpr bool kRocketTargetStopHandlersCc13Bound = true;
 
 }  // namespace bsp

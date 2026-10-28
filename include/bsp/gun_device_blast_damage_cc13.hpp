@@ -75,6 +75,6 @@
 
 namespace bsp {
 
-inline constexpr bool kGunDeviceBlastDamageCc13Bound = false;
+inline constexpr bool kGunDeviceBlastDamageCc13Bound = true;   // ON: SHIP_AI 330.2
 
 }  // namespace bsp
