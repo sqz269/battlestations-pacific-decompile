@@ -138,7 +138,8 @@ void upload_native_instance_groups_00b1e990(void* command, NativeInstanceGroupUp
             void* const attached_model = read<void*>(group, 0x1c + category_word);
             if (model_table[0x50 / 4] != 0x00b6ed80u) std::terminate();
             auto& binding = a.scenes.resolve_key(reinterpret_cast<Word>(attached_model));
-            set_node_scene_00b6ed80(a.scenes, binding, scene, false);
+            if (scene && scene == a.host_attach_excluded_scene) ++a.host_attach_skips;
+            else set_node_scene_00b6ed80(a.scenes, binding, scene, false);
             void* const sources = offset(group, 0x24 + category * 12u);
             if (category != 0) {
                 const Word count = read<Word>(sources, 4);
