@@ -3980,6 +3980,14 @@ struct GameGunneryHost::Impl {
     unsigned long long device_blast_dispatched{0};
     unsigned long long device_blast_drops{0};
     unsigned long long device_blast_applies{0};
+    // Log only (cc9-sweep3c): deferred nodes whose dispatch ends off the hull
+    // record, so queued_hits == dispatched + these. device_mesh_returns counts the
+    // C1 non-relay return in apply_hit.
+    unsigned long long device_mesh_returns{0};
+    unsigned long long undispatched_device_blast{0};
+    unsigned long long undispatched_device_mesh{0};
+    unsigned long long undispatched_wreck_past_window{0};
+    unsigned long long undispatched_other{0};
     struct DeviceBlastMount {
         std::size_t row{0};
         std::vector<bsp::HitPartEntry> entries;
@@ -8774,6 +8782,22 @@ void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
         ? unit_state[state.fire_target - 1].row.name : std::string();
     state.row.command_target = state.command_target != 0
         ? unit_state[state.command_target - 1].row.name : std::string();
+    // DIAGNOSTIC, env-gated (packet cc13-gundiag (b)): BSP_FIRE_GATE_TRACE=<unit
+    // name> prints the director's two targets whenever either changes. Reads only.
+    static const std::string director_trace_unit = aa_env("BSP_FIRE_GATE_TRACE");
+    if (!director_trace_unit.empty() && state.row.name == director_trace_unit) {
+        static std::map<std::size_t, std::pair<std::string, std::string>> last_targets;
+        const auto seen = last_targets.find(index);
+        if (seen == last_targets.end() || seen->second.first != state.row.fire_target
+            || seen->second.second != state.row.command_target) {
+            last_targets[index] = {state.row.fire_target, state.row.command_target};
+            log.notef("  fire gate director t=%.2f %s fire_target=%s command_target=%s "
+                "(00863640 director+238h / 0071EBF0)", static_cast<double>(clock_seconds),
+                director_trace_unit.c_str(),
+                state.row.fire_target.empty() ? "-" : state.row.fire_target.c_str(),
+                state.row.command_target.empty() ? "-" : state.row.command_target.c_str());
+        }
+    }
     done("Gunnery::director_fire_target_00863640", 0x00863640u);
     done("Gunnery::director_newest_command_target_0071ebf0", 0x0071ebf0u);
 
@@ -9984,6 +10008,18 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     static_cast<double>(gun.speeds.horz * 57.2957795f),
                     static_cast<double>(gun.speeds.vert * 57.2957795f), gun.seat_1ac,
                     gun.angle_refusals, gun.aim_steps, static_cast<double>(dt));
+                // Packet cc13-gundiag (a): the gun's destroyed bytes (+60h, +5Dh,
+                // +3B8h), its health +370h / +36Ch, the damage level +358h and the
+                // owner's +720h. Reads only.
+                log.notef("  fire gate gun state t=%.2f %s gun=%zu cat=%d destroyed_60=%d "
+                    "destroyed_5d=%d destroyed_3b8=%d health=%.1f max_health=%.1f "
+                    "damage_level=%d owner_failure_720=%d",
+                    static_cast<double>(clock_seconds), fire_gate_unit.c_str(), g,
+                    gun.category, gun.destroyed_60 ? 1 : 0, gun.destroyed_5d ? 1 : 0,
+                    gun.destroyed_3b8 ? 1 : 0, static_cast<double>(gun.health_370),
+                    static_cast<double>(gun.max_health_36c),
+                    static_cast<int>(gun.damage_level_358),
+                    units.inferior_failure_720(owner_unit) ? 1 : 0);
             }
         }
         if (kAaBotFireTestsBound && !player_seat
@@ -11500,7 +11536,37 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
             }
         }
     }
-    if (!hit) return true;
+    // DIAGNOSTIC, env-gated (packet cc13-gundiag (c)): with BSP_FIRE_GATE_TRACE and
+    // BSP_FIRE_GATE_TARGET naming the pair (either role), the verdict whenever it
+    // changes for that ordered pair, with the hit's distance from `to`. Reads only.
+    static const std::string los_trace_unit = aa_env("BSP_FIRE_GATE_TRACE");
+    static const std::string los_trace_target = aa_env("BSP_FIRE_GATE_TARGET");
+    auto trace_pair = [&](bool visible, float d2_seen) {
+        if (los_trace_unit.empty() || los_trace_target.empty()) return;
+        if (observer >= unit_state.size() || target >= unit_state.size()) return;
+        const std::string& on = unit_state[observer].row.name;
+        const std::string& tn = unit_state[target].row.name;
+        if (!((on == los_trace_unit && tn == los_trace_target)
+                || (on == los_trace_target && tn == los_trace_unit))) {
+            return;
+        }
+        static std::map<std::pair<std::size_t, std::size_t>, int> last_verdict;
+        int& last = last_verdict.try_emplace({observer, target}, -1).first->second;
+        if (last == (visible ? 1 : 0)) return;
+        last = visible ? 1 : 0;
+        log.notef("  fire gate los t=%.2f observer=%s target=%s visible=%d hit=%d "
+            "hit_to_target=%.1f from=(%.1f,%.1f,%.1f) to=(%.1f,%.1f,%.1f) "
+            "(00864680 kind 44h, blocked past 25 m)", static_cast<double>(clock_seconds),
+            on.c_str(), tn.c_str(), visible ? 1 : 0, hit ? 1 : 0,
+            hit ? static_cast<double>(std::sqrt(d2_seen)) : 0.0,
+            static_cast<double>(from[0]), static_cast<double>(from[1]),
+            static_cast<double>(from[2]), static_cast<double>(to[0]),
+            static_cast<double>(to[1]), static_cast<double>(to[2]));
+    };
+    if (!hit) {
+        trace_pair(true, 0.0f);
+        return true;
+    }
     ++los_hits;
     // 00864680 tail: blocked when |to - hit|^2 > 625 (00CFBC80); ON: the passed
     // point, the target (008647FD..00864852).
@@ -11510,8 +11576,10 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
     const float d2 = dz * dz + dx * dx + dy * dy;   // 008648xx: (z, x) then y
     if (625.0f < d2) {
         ++los_blocked;
+        trace_pair(false, d2);
         return false;
     }
+    trace_pair(true, d2);
     return true;
 }
 
@@ -13202,6 +13270,10 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     deferred_replay = &node;
     const bool victim_known = node.victim < unit_state.size();
     const float before = victim_known ? unit_state[node.victim].health : 0.0f;
+    const unsigned long long hull_before = summary.dispatched_hits;
+    const unsigned long long blast_before = device_blast_dispatched;
+    const unsigned long long mesh_before = device_mesh_returns;
+    const unsigned long long wreck_before = wreck_hits_past_window;
     if (bsp::kGunDeviceBlastGunlessCc13Bound && node.gunless && node.blast_device_gun >= 0) {
         // Packet cc13-c2b: a gunless burst's mount record (shot 0 or a plane).
         device_blast_dispatch_gunless(node.victim,
@@ -13216,6 +13288,12 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     } else {
         apply_hit(node.shooter, node.gun_row, node.victim, node.point, node.direction,
             node.has_blast ? &record : nullptr, node.team_id);
+    }
+    if (summary.dispatched_hits == hull_before) {   // log only: where the node ended
+        if (device_blast_dispatched != blast_before) ++undispatched_device_blast;
+        else if (device_mesh_returns != mesh_before) ++undispatched_device_mesh;
+        else if (wreck_hits_past_window != wreck_before) ++undispatched_wreck_past_window;
+        else ++undispatched_other;
     }
     deferred_replay = nullptr;
     if (victim_known) {
@@ -13425,6 +13503,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
                 // LABELLED: the image still writes the parent's 0077CE60 block here;
                 // the host returns before its attribution tail.
                 gun_device_hit_damage_008777d0(victim, static_cast<std::size_t>(device_gun), hit);
+                ++device_mesh_returns;
                 return;
             } else {
                 ++device_hit_relays;
@@ -20254,6 +20333,29 @@ void GameGunneryHost::report() {
                 "reverse_verdict_differs=%llu role_swap=%d (packet cc9_los_role_swap)",
                 host.los_hits, host.los_verdict_disagree, kGunneryLosRoleSwapBound ? 1 : 0);
         }
+        // DIAGNOSTIC, env-gated (packet cc13-gundiag (d)), only with
+        // BSP_GUN_DESTROY_SUMMARY=1: packet B's destroy count (0072B5A0), packet D's
+        // revive count (007280A0), and each side's guns live / destroyed (+5Dh) at
+        // mission end. Reads only.
+        static const bool gun_destroy_summary = aa_env("BSP_GUN_DESTROY_SUMMARY") == "1";
+        if (gun_destroy_summary) {
+            std::map<int, std::array<unsigned long long, 2>> by_side;
+            for (const GameGunRow& gun : host.guns) {
+                const int side = gun.unit_index < host.unit_state.size()
+                    ? host.unit_state[gun.unit_index].row.side : -1;
+                ++by_side[side][gun.destroyed_5d ? 1 : 0];
+            }
+            std::string sides;
+            for (const auto& [side, counts] : by_side) {
+                char part[96];
+                std::snprintf(part, sizeof(part), " side%d=%llu/%llu", side, counts[0],
+                    counts[1]);
+                sides += part;
+            }
+            host.log.notef("summary mission gunnery gun destroy guns_destroyed=%llu "
+                "guns_revived=%llu live/destroyed:%s (0072B5A0 / 007280A0, packet "
+                "cc13-gundiag)", host.guns_destroyed, host.guns_revived, sides.c_str());
+        }
         host.log.notef("summary mission gunnery submarine sensor category calls=%llu "
             "surface=%llu periscope_in=%llu periscope_out=%llu underwater=%llu deep=%llu "
             "unseeded=%llu differs=%llu bound=%d (00852B90, packet cc9_submarine_sensor_category)",
@@ -20616,6 +20718,16 @@ void GameGunneryHost::report() {
         s.part_damages, s.fire_messages_9e, s.flood_messages_9e, s.attributions, s.deaths,
         s.kill_credits, static_cast<double>(s.damage_total),
         static_cast<double>(s.first_hit_seconds));
+    if constexpr (kHitDeferredDispatchCc13Bound) {
+        // cc9-sweep3c: `dispatched` above counts hull records only; these are the
+        // queued nodes that ended elsewhere, so queued = dispatched + their sum
+        // (plus nodes still left in the deferred queue).
+        host.log.notef("summary mission gunnery damage off-hull dispatches device_blast=%llu "
+            "device_mesh=%llu wreck_past_window=%llu other=%llu (queued_hits = dispatched + "
+            "these + deferred left)", host.undispatched_device_blast,
+            host.undispatched_device_mesh, host.undispatched_wreck_past_window,
+            host.undispatched_other);
+    }
     {
         double water = 0.0, fire = 0.0, repaired = 0.0;
         std::size_t enabled = 0;
