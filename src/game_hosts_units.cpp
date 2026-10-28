@@ -31225,14 +31225,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         {
                             bsp::StrafeRangeInputs rin;
-                            rin.has_target = tr != nullptr;
+                            if constexpr (bsp::kStrafeTargetFallback70Cc13Bound) {
+                                rin.has_target = tr != nullptr;
+                                // target+5Dh: 009CCF37 CMP [target+5Dh],0, on +54h / +70h.
+                                if constexpr (bsp::kTargetDisabledByte5dCc13Bound) {
+                                    rin.target_disabled_5d = tr != nullptr && tr->state != nullptr &&
+                                                             tr->state->simulate != 0;
+                                } else {
+                                    // SUBSTITUTION, labelled: the host's liveness.
+                                    rin.target_disabled_5d = tr != nullptr && !df_slot_live(*tr);
+                                }
+                            } else {
+                            rin.has_target = t != nullptr;
                             // target+5Dh: 009CCF37 CMP [target+5Dh],0.
                             if constexpr (bsp::kTargetDisabledByte5dCc13Bound) {
-                                rin.target_disabled_5d = tr != nullptr && tr->state != nullptr &&
-                                                         tr->state->simulate != 0;
+                                rin.target_disabled_5d = t != nullptr && t->state != nullptr &&
+                                                         t->state->simulate != 0;
                             } else {
                                 // SUBSTITUTION, labelled: the host's liveness.
-                                rin.target_disabled_5d = tr != nullptr && !df_slot_live(*tr);
+                                rin.target_disabled_5d = t != nullptr && !live;
+                            }
                             }
                             rin.unit_height_100 = unit_.motion.position[1];
                             rin.aim_height = unit_.st_aim_point[1];

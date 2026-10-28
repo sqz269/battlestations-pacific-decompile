@@ -16,8 +16,18 @@ namespace bsp {
 //         call (009FB364) and every later one (009CCED0's first call, 009CCEE1) clear
 //         sub+14h and sub+18h at 009FAE0A/009FAE11 once [sub+14h]+5Dh is set. 009FB5E0
 //         (SetTarget) also writes it, but only for the depth charge and dogfight tasks.
+//         009FB190 registers sub+18h with the target's observer list (00694A60); the
+//         ref's vtable 00D21CB4 slot 1, 009FAF90, runs when the observed target is
+//         destroyed and clears sub+18h and sub+14h (009FAFF4/009FAFF7) after moving
+//         +1Ch by the dying target's matrix; slot 7, 009FB670, clears sub+14h only
+//         (009FB687). Those two need no +5Dh and run whatever state the task is in,
+//         the goaway included (docs/CC13_SEG68.md section 3).
 //         So for a unit target +70h holds the target until the first approach update
-//         that sees its +5Dh set, then stays 0.
+//         that sees its +5Dh set, or until the target is destroyed, then stays 0.
+//         009FADA0 call sites on the strafe ref: 009FB364 (construct), 009CCEE1
+//         (009CCED0, from the arm at 009CD182) and 009CCED0(0) from the cruise profile
+//         009CD020 at 009CD0BB (that call is not hosted, see kStrafeProfileActivationSeedBound;
+//         harmless here, the latch only needs one 009FADA0 run after +5Dh).
 // Strafe reads of the pair:
 //   009CCF1C..009CCF3B  range test: none means out of range (host: rin.has_target)
 //   009CB659..009CB6A4  goaway pitch re-plan: none skips the climb/drop pitch, else the
@@ -31,14 +41,23 @@ namespace bsp {
 // +5Dh/+5Eh/+60h clear), and the rocket call gets the commanded target at any liveness.
 // ON: +54h = the target if kind 41h; +70h = the target if kind 2, dropped for good by a
 // latch the host sets where the image runs 009FADA0 (the install and the 009CD182 approach
-// update) when the target is kind 5 with +5Dh (state->simulate) set.
+// update) when the target is kind 5 with +5Dh (state->simulate) set. MISSING writer,
+// labelled: the 009FAF90 destroy drop. This host has no observer callback for a
+// destroyed slot that the latch could test cheaply, so a target that is destroyed
+// without an approach update in between (the goaway, or a kind-2 target that is not
+// kind 5) keeps +70h here until the next 009FADA0 run sees its +5Dh.
+// Pair the flip with S6's kTargetDisabledByte5dCc13Bound: st_ref70_drop_009fada0 reads
+// +5Dh through S6's binding (state->simulate) whatever that switch is set to.
+// 009CC390 also reads task+44Ch, but it is dead: undefined code with no references.
 // Missing: NavPoint targets. Host slots carry vehicle classes, none of them kind 41h, and
 // the strafe arm returns at its top without a command target, so +54h stays unset here.
 // Movers: a strafe target with +5Ch clear or +5Eh/+60h set before +5Dh (OFF: no target,
 // ON: still a target); a target that is not kind 2 (ON: none); a kind-2 target that is
-// not kind 5, e.g. a squadron (never dropped ON); during the
-// goaway break-off the arm is suspended, so ON keeps the target there until the next
-// approach update; and the 007B7870 rocket target goes to 0 after the target dies.
+// not kind 5, e.g. a squadron (the image drops it only when it is destroyed, which this
+// host does not model, so ON keeps it); during the goaway break-off the
+// arm is suspended, so ON keeps the target until the next approach update (the image
+// also drops it if the target is destroyed meanwhile); and the 007B7870 rocket target
+// goes to 0 after the target dies.
 inline constexpr bool kStrafeTargetFallback70Cc13Bound = false;
 
 }  // namespace bsp
