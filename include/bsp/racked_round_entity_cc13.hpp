@@ -111,6 +111,20 @@ inline constexpr bool kRackedRoundEntityCc13Bound = false;
 // no ID: this host's ids above the unit range start at 50000 and do not fit the
 // image's 13-bit message handles, and the only callers here (USN11 / PRCP11
 // :1296/:1533, :1302/:1539) pass each entry to Kill and read nothing else.
+// More labels (rev8):
+// - N-a, order. The image lists the rounds in world +21Ch order. The host lists
+//   them member by member, rack by rack. Harmless: the callers only Kill.
+// - N-b, launched before the Kill. If a round is listed while racked and then
+//   launched before its Kill, the image's Kill releases the entity in flight.
+//   The host logs "rack already empty", and the projectile row flies on. There is
+//   no such window in USN11/PRCP11: the Kill loop runs right after the call.
+// - N-c, table reuse. A proxy's table is replaced only after a Kill marked it
+//   dead. After a drop and a rearm with no Kill in between, the cached table is
+//   reused where the image would give the new round its own thisTable row.
+//   Harmless: only Kill reads it. Resetting it on a count change is not done.
+// - N-d, the round's own death. 00926D90 calls the round's vtable[70h](1)
+//   (00926E05), and the round is torn down after the 009273A0 flush. Neither is
+//   traced for a torpedo entity. The host models only the rack count.
 struct RackedRoundProxy {
     const void* lua_state{nullptr};  // the mission state whose registry caches it
     std::size_t plane{0};            // units-host index of the owner plane (+3BCh)
