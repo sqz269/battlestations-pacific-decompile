@@ -21157,3 +21157,32 @@ Rows lost, for the WINS re-plan queue (first divergence and the likely cause):
 
 Rows that moved and still won are in each flip commit. 008E6430(0xF) at 008570B5 is identity
 for every campaign row (no power-up store; only MP Swirl differs), so it is not a host gap.
+
+## 331. Group A-C OFF-switch split: census, prune flips and one paired flip (cc9-sweep2b, 2026-10-28)
+
+Census at 292c293bd (log-only reach commit) on u01, b9, b6i, l10, p01, u12 and j8v3, OFF export
+`sw2e_off` vs ON export `sw2e_on` (all eleven group A-C switches below except the power-up one);
+logs `cc9-sweep2\local\sw2br_<row>_sw2e_{off,on}.log`.
+
+- Prune flips (b35305ecd), zero reach on all seven rows: kReloadTorpedoesBound,
+  kLuaIsUnitSelectableBound, kLuaGetEntitySpeedBound, kLuaSquadronLandAndKillBound,
+  kAirOpsSceneSquadronOrdersBound, kEngineMovieStopRosterExemptBound (p01 drops ten movie-only
+  squadrons, all exempt_reach=0), kHudUnitHealthColourBound, kVector3DivideInPlacePc24Cc13Bound,
+  kAiRocketAccuracyBound, and kPowerupSessionBroadcastCc13Bound (its OFF arm throws wherever it
+  is reached).
+- Paired flip: kShipAiApproachTimerSeedBound with kDeadLeaderRepublishesFollowerPairBound. Reach:
+  approach enters 0/0/2/3/2/26/40 and formation leaves with members left 5/2/8/7/5/17/20 on
+  u01/b9/b6i/l10/p01/u12/j8v3. u01 and b9 are gameplay-identical. b6i (both fail, Game Over),
+  l10 (both complete, ON at 1117.5 s vs 1195.6 s) and p01 (both complete at 653.16 s) move.
+  u12 gains: OFF fails at 1195.0 s, ON completes at 1625.5 s.
+  - First divergences: b6i at Tatsuno Maru's follow throttle (0.938 vs 0.908 at t=1166.5 s),
+    after the group-0 leader handovers at 709-1083 s, so kDeadLeaderRepublishesFollowerPairBound.
+    p01 at Hayashio (state follow vs stop at 343 s), the unit leaving group 1; that is the same
+    republish, which clears the leaving unit's pair. l10 at Ashigara and u12 at Montpelier, both
+    in attackmove (desired heading 0.42 vs 1.89 and -1.89 vs -2.20): the first approach pass,
+    which the -1.0f seed refills.
+- Loss: JM08 `s63_j8_v3`. OFF has no end in 110000 frames; ON fails at 1635.52 s ("The HQ has
+  been destroyed"). The first divergence is Hawaii in attackmove at step 9900 (about 495 s),
+  desired heading 2.09 vs -2.72, which is the approach seed's first-pass refill. The US line
+  then closes on the HQ, which ends at health 178. This row already failed (HQ destroyed,
+  1604.5 s) under g5 in section 330, so it is a knife edge.
