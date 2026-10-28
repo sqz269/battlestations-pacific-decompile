@@ -6553,6 +6553,11 @@ struct GameUnitsHost::Impl {
     //     fly-to arm unconditionally.  At d_station = 0 that arm's own ramps
     //     return the leader's speed and stationY, so this is the fly-to law's
     //     limit standing in for the hold law, not an invented hold law.
+    //   CORRECTION (packet cc13-tranche2, 2026-10-28): both substitutions are
+    //   closed. kFollowPhaseABound (below) reads Phase A 009C0251-009C0EE0 and
+    //   takes its regime; kPlaneFollowLawBound runs 009BEE30's hold arm
+    //   (009BEE56-009BF9E5) while the +85h latch is set. The text above
+    //   describes the OFF paths only.
     //
     // MEASURED 2026-09-19, and the result is a NULL that must not be read as a
     // success.  With placement false and the law true, USN04 gave mean wing
