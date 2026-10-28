@@ -9951,6 +9951,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     unsigned long long ts_override_calls{0}, ts_override_target{0};
     unsigned long long ts_override_within{0}, ts_override_applied{0};
     float ts_override_max_speed{0.0f};
+    // kMovetoTargetSpeedClassCc13Bound census: calls with a target, calls whose class speed
+    // differs from |linear_velocity| by > 1e-3 (or has no live leader), and calls whose
+    // returned speed differs between the two arms.
+    unsigned long long tsc_calls{0}, tsc_speed_differs{0}, tsc_answer_differs{0};
 
     // 009C23B0 (009C23B0-009C2429, __thiscall(approach), RET, ST0). a =
     // [approach+0Ch]+3A0h (squadron+3A0h, `base`); with a target (+44h) and a
@@ -9981,8 +9985,11 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             return static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
                 + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
         };
-        float speed;
-        if constexpr (kMovetoTargetSpeedClassCc13Bound) {
+        // The ON speed, evaluated on both arms so that the OFF arm can count where it
+        // differs (census for the flip, cc9-physics29); `on_base` marks the
+        // no-live-leader arm, which answers `base` on the ON arm.
+        bool on_base = false;
+        const auto class_speed = [&]() -> float {
             // 009C23DB-009C23E9: MOV EDX,[ECX]; CALL [EDX+38h] on the target, made before the
             // reach test, FSTP float. Slot 38h by class, first match, as
             // run_get_entity_speed_008c0820 dispatches it:
@@ -10024,24 +10031,36 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             if (squadron != nullptr) {
                 const std::size_t leader = squadron->flight_leader();   // 007ED470 +3D0h
                 if (leader == bsp::kPlaneSquadronNoUnit || leader >= slots.size() || !slots[leader]) {
+                    on_base = true;
                     return base;
                 }
-                speed = plane_speed(*slots[leader]);                    // leader's 007B8E60
-            } else if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryShip)) {
-                speed = ship_speed(t);                                  // 0080E0F0 -> 0092D730
-            } else if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryPlane)) {
-                speed = plane_speed(t);                                 // 007B8E60
-            } else {
-                speed = linear_speed(t);                                // LABELLED, unread class
+                return plane_speed(*slots[leader]);                     // leader's 007B8E60
             }
-        } else {
-            speed = linear_speed(t);
-        }
+            if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryShip)) {
+                return ship_speed(t);                                   // 0080E0F0 -> 0092D730
+            }
+            if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryPlane)) {
+                return plane_speed(t);                                  // 007B8E60
+            }
+            return linear_speed(t);                                     // LABELLED, unread class
+        };
+        const float on_speed = class_speed();
+        const float off_speed = linear_speed(t);
         const float reach = unit.plane_turn_circle_radius + unit.moveto_follow_dist_68;  // 009C23E3 FSTP
-        if (!(reach > unit.moveto_distance_64)) return base;                 // 009C23F8 JBE
+        const bool within = reach > unit.moveto_distance_64;
+        const double desired = static_cast<double>(bot_desired_speed_007c47f0(unit));  // pure
+        const auto answer = [&](float s) {
+            return within && static_cast<double>(s) > desired ? s : base;
+        };
+        ++tsc_calls;
+        if (on_base || std::fabs(on_speed - off_speed) > 1e-3f) ++tsc_speed_differs;
+        const float on_answer = on_base ? base : answer(on_speed);
+        if (on_answer != answer(off_speed)) ++tsc_answer_differs;
+        if (kMovetoTargetSpeedClassCc13Bound && on_base) return base;
+        const float speed = kMovetoTargetSpeedClassCc13Bound ? on_speed : off_speed;
+        if (!within) return base;                                            // 009C23F8 JBE
         ++ts_override_within;
-        if (!(static_cast<double>(speed) >
-              static_cast<double>(bot_desired_speed_007c47f0(unit)))) return base;  // 009C2412
+        if (!(static_cast<double>(speed) > desired)) return base;           // 009C2412
         ++ts_override_applied;
         if (speed > ts_override_max_speed) ts_override_max_speed = speed;
         return speed;
@@ -48324,6 +48343,10 @@ void GameUnitsHost::report() {
             host.ts_override_calls, host.ts_override_target, host.ts_override_within,
             host.ts_override_applied, static_cast<double>(host.ts_override_max_speed),
             Impl::kMoveToTargetSpeedOverrideBound ? 1 : 0);
+        host.log.notef("summary moveto target speed class census calls=%llu speed_differs=%llu "
+            "answer_differs=%llu bound=%d (009C23DB, kMovetoTargetSpeedClassCc13Bound, cc9-physics29)",
+            host.tsc_calls, host.tsc_speed_differs, host.tsc_answer_differs,
+            Impl::kMovetoTargetSpeedClassCc13Bound ? 1 : 0);
         host.log.notef("summary carrier landing decks built=%llu refreshes=%llu bound=%d "
             "(007593D0 / 006BEE40 / 006BA620, packet cc9_carrier_landing_deck)",
             host.carrier_decks_built, host.carrier_deck_refreshes,
