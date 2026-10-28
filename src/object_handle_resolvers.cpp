@@ -181,12 +181,14 @@ std::uint32_t __fastcall NativeLuaFieldResolverAdapter::resolve_table(NativeLuaO
         // B662D0 loads CURRENT owner+4/index+8 then tail-calls lua_touserdata.
         frame.active_site = 0x00888ad2;
         void* const result = lua_touserdata(frame.temporary.owner_00->state_04, frame.temporary.index_08);
-        frame.result_bits = reinterpret_cast<std::uint32_t>(result); // ESI before B67700.
+        const auto result_bits = reinterpret_cast<std::uint32_t>(result); // ESI before B67700.
+        frame.result_bits = result_bits;
         frame.active_site = 0x00888ae5;
         destroy_native_lua_object_00b67700(frame.temporary);
         frame.active_site = 0x00888afb;
+        frame.result_bits = result_bits;
         frame.phase = NativeLuaFieldResolverFrame::Phase::complete;
-        return frame.result_bits;
+        return result_bits;
     } catch (...) { fail(frame); throw; }
 }
 } // namespace bsp
