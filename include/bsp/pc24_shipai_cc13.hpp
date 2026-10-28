@@ -63,6 +63,6 @@ namespace bsp {
 //            ship_ai_brain_prepass_schedule.cpp (the x87-exact form: horizon at :42 and
 //            :145, reaches at :172), is not switched.
 // Movers: ship headings, throttle and path picks, submarine depth, torpedo run times and hits.
-inline constexpr bool kPc24ShipAiCc13Bound = false;
+inline constexpr bool kPc24ShipAiCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): pairs on d3ad11c39; see commit
 
 }  // namespace bsp
