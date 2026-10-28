@@ -24,6 +24,10 @@ namespace bsp {
 //            never normalized; the host matches and nothing is modelled.
 // Movers when ON: plane moveto distances near zero, and the pass-1 pitch (so terrain
 // probe points, avoidance bands and the pilot pitch commands) below |v| = 1.
-inline constexpr bool kUnitsHostDeviationsCc13Bound = false;
+// ON (cc9-physics29, docs/OCEAN_WAVE_FIELD.md 127): 15 WINS plane rows paired. The moveto
+// distance arm never differed (census differs=0) and the pitch arm differed by < 5e-7 rad
+// in 10-14% of calls; 12 rows gameplay-identical, j6 and u21 moved trivially, and JM08 moved
+// chaotically (the OFF failure at 1488 s no longer happens inside the run).
+inline constexpr bool kUnitsHostDeviationsCc13Bound = true;
 
 }  // namespace bsp

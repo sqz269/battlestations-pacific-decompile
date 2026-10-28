@@ -4578,3 +4578,19 @@ No WINS row can move.
 - **Flip.** It is a faithful fix, so it is flipped although PRCP01 loses its win (re-plan needed). The moved rows
   went to the lead (lua74 has stopped).
 - Logs: `local\p29_ax_<row>_{off,on}.log`. Diffs: `local\p29_ax_pd_<row>.txt`.
+
+## 127. `kUnitsHostDeviationsCc13Bound` (moveto distance floor, 0099F1C0 pass-1 pitch from +C7Ch): flipped ON (cc9-physics29, 2026-10-28)
+
+- **Census.** It was taken at 3541e7dce, on the OFF arm with the C7Ch writer running in both modes.
+  - Moveto distance arm (1e-10 vs 1e-6): `differs=0` on every row.
+  - Pass-1 pitch: about 10-14% of calls differ (e.g. j8v3 21732/159463, i18 29009/229760), `lowspeed=0`,
+    `maxdiff` < 5e-7 rad.
+- **Pairs.** All 15 WINS plane rows were paired.
+  - First batch at 3541e7dce (`local\p29_uhd_*`): b1k1, b3, b4, b6i, b6j, b9, l10, p01, u01 and u12 are gameplay
+    identical. u21 moved trivially (provisional; long row).
+  - Second batch at eb217d7e6 (`local\p29_ud2_*`, base launch axes ON): i18 and e8 are gameplay identical.
+  - j6 is exit 3 but trivial: one PBY death after the identical 775.93 s end.
+  - j8v3 (JM08) moved chaotically. The first death moves by 0.10 s at 111 s, and the OFF failure ("HQ destroyed",
+    1488.38 s) does not happen inside the ON run, which reaches the frame limit with no end.
+- **Mechanism.** The only nonzero difference is sub-microradian pitch, so the moved rows show chaotic
+  sensitivity, not a behaviour change. Flipped ON as a faithful fix.
