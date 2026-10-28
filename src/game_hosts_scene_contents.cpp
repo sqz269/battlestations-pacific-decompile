@@ -1523,13 +1523,17 @@ public:
             // 004F1D70 -> 004E6C00 stores Map.MultiPlayMapSizes' sixteen vectors
             // at 00E189A0..00E18A3C (IslandCapture1v1..4v4, Duel, Escort, Siege,
             // Competitive, each _nw then _se: 004E6C6B..004E7059), and 004D5BD0
-            // copies them verbatim to game+705Ch.. (004D5BE6..). The row is
-            // {nw.x, nw.y, nw.z, se.x, se.y, se.z}. kModeAreaSlot's cross mapping
-            // (Siege row 4, Competitive 5, Duel 6, Escort 7: 0046C78C, 0046C803,
-            // 0046C87A, 0046C8F1) is the image's own and is kept. A Map block
+            // copies them to game+705Ch.. (004D5BDE..004D5ED6, 48 MOVSS pairs)
+            // with rows 4..7 swapped in pairs: global row 0..3 to row 0..3, 4 to
+            // 6, 5 to 7, 6 to 4, 7 to 5 (004D5D5E 00E18A00 -> 004D5D66 +70ECh,
+            // 004D5E26 +70BCh from global row 6). The row is {nw.x, nw.y, nw.z,
+            // se.x, se.y, se.z}. kModeAreaSlot (Siege row 4, Competitive 5, Duel
+            // 6, Escort 7: 0046C78C, 0046C803, 0046C87A, 0046C8F1) undoes the same
+            // swap, so each mode tests its own MultiPlayMapSizes area. A Map block
             // without MultiPlayMapSizes takes 004E6C00's early return before the
             // global stores; this process loads one scene, so the rows stay zero
             // as in a fresh process.
+            static constexpr std::size_t kGlobalRowForGameRow[8] = {0, 1, 2, 3, 6, 7, 4, 5};
             if (!owner_.mode_areas_read) {
                 owner_.mode_areas_read = true;
                 for (const auto& block : owner_.root_properties.blocks) {
@@ -1537,7 +1541,8 @@ public:
                     bsp::WorldMapSettings settings;
                     if (bsp::read_world_map_settings_004e6c00(block.second, settings)) {
                         for (std::size_t i = 0; i < owner_.mode_areas.size(); ++i) {
-                            const bsp::WorldMapBounds& row = settings.multiplayer[i];
+                            const bsp::WorldMapBounds& row
+                                = settings.multiplayer[kGlobalRowForGameRow[i]];
                             SceneModeArea& area = owner_.mode_areas[i];
                             for (std::size_t k = 0; k < 3; ++k) {
                                 area.bounds[k] = row.north_west[k];
@@ -1552,10 +1557,11 @@ public:
             if (slot < 0 || static_cast<std::size_t>(slot) >= owner_.mode_areas.size())
                 return SceneModeArea{};
             return owner_.mode_areas[static_cast<std::size_t>(slot)];
+        } else {
+            static_cast<void>(slot);
+            owner_.log.unimplemented("SceneGate::mode_area", "004c8760");
+            return SceneModeArea{};
         }
-        static_cast<void>(slot);
-        owner_.log.unimplemented("SceneGate::mode_area", "004c8760");
-        return SceneModeArea{};
     }
     std::string parent_name(void* captured_parent_identity) override {
         static_cast<void>(captured_parent_identity);
