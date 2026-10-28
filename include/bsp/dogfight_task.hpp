@@ -427,7 +427,10 @@ float dogfight_moveto_speed_009becd0(float max_spd, float level_flight_speed, fl
 // where a NaN sum gives 1.0. Every operation rounds to float at PC24.
 // False: the earlier double model with exact pi and a [-pi, pi] wrap. Changes
 // only boundary, NaN and ulp cases.
-inline constexpr bool kFollowWaitFloatHelpersCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-27): paired as part of the bundle (with the arrive walk and retreat)
+// on 13 WINS rows with planes, gameplay identical on 12; JM08 moved only through the arrive
+// walk, and this switch alone (s3b_b3) on JM08 completes at 4246.98 s as OFF.
+inline constexpr bool kFollowWaitFloatHelpersCc13Bound = true;
 
 // Packet cc13-pc24dog. On the main thread the image's x87 runs at PC24, so every
 // FADD/FSUB/FMUL/FDIV rounds to float (docs/CC13_FPU_PRECISION.md). True: the
