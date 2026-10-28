@@ -16,6 +16,91 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex_cc9_a1_activation",
+      "state": "on_candidate_runtime_gates_in_progress",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "function_addresses": [],
+      "activation_sites": ["0073dd12"],
+      "output_files": [
+        "include/bsp/game_native_renderer_application.hpp",
+        "docs/CC15_GUI4_A1.md",
+        "docs/CODEX_GUI4_A1_ACTIVATION.md"
+      ],
+      "notes": "OFF implementation accepted on main5ca4639f0. Switch-only ON candidate634258460; reference USN04 and milestone-D1600 exit0. Await13-row ON comparison, serial alternating USN21 four OFF/four ON, no-aid pair and integrator acceptance. Expected A1 diagnostic/type-id deltas are inventoried exactly; no global noise-mask change. No new body credit."
+    },
+    {
+      "id": "codex_aimfreeze_off_4d0350e9e",
+      "state": "off_candidate_identity_matrix_in_progress",
+      "worker": "aimfreeze_off_gate",
+      "source_ready": false,
+      "function_addresses": [
+        "007b4980", "007b5430", "007b5af0", "007b63cb", "007b78f0",
+        "009a3cf0", "009a4b76", "009a53ef", "009a5f50",
+        "009af0a0", "009af310", "009fada0", "009faf90"
+      ],
+      "output_files": [
+        "include/bsp/approach_ref_freeze_planes_cc13.hpp",
+        "src/game_hosts_units.cpp",
+        "docs/CODEX_AIMFREEZE_OFF_GATE_2026-10-28.md"
+      ],
+      "notes": "Pending source4d0350e9e merged with main5ca4639f0 in worker candidate93b9a5517. Default and all prerequisite freeze switches remain OFF. Fresh Win32 build/three existing suites and PC24 lint passed;13-row OFF identity pending. No ON/runtime freeze-behavior acceptance."
+    },
+    {
+      "id": "codex-gui-page-lifetime",
+      "state": "dependency_integrated_build_and_default_smoke_checked_borrower_unexercised",
+      "done": true,
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "function_addresses": ["00aa6340", "00aa6540"],
+      "output_files": [
+        "include/bsp/game_native_gui_manager_application.hpp",
+        "src/game_native_gui_manager_application.cpp"
+      ],
+      "notes": "Replace hardwired NoPageOwner only through explicit once-only borrowed page-lifetime delegate binding. Keep rejection when unbound; require real delegate lifetime through shared manager drain. Parent P3a2 remains OFF and source-blocked until dependencies are proven. No new raw body credit."
+    },
+    {
+      "id": "codex-gui-widget-state",
+      "state": "dependency_integrated_build_and_default_smoke_checked_provider_unexercised",
+      "done": true,
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "function_addresses": [],
+      "data_addresses": ["00e12fc4", "00f8bccc", "00f8bcdc", "00f8bce0", "00f8bcf0"],
+      "output_files": [
+        "include/bsp/game_native_gui_text_state.hpp",
+        "src/game_native_gui_text_state.cpp"
+      ],
+      "notes": "Extend the retained shared GUI state owner with distinct canonical widget guard/quartet cells and Y-scale only after installed DATA and initialization evidence. Never alias Text F8BE38 or guess defaults. No new raw function credit."
+    },
+    {
+      "id": "codex-gui-raw-field-resolver",
+      "state": "qualified_native_abi_adapter_recovery_and_implementation",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "function_addresses": ["006ad080", "00888aa0"],
+      "data_addresses": ["0109ced4", "0109ced8", "0109cedc"],
+      "output_files": ["include/bsp/object_handle_resolvers.hpp", "src/object_handle_resolvers.cpp"],
+      "notes": "Bridge the canonical CURRENT explicit-context source resolvers to real ECX/EAX fastcall cells for raw Lua field input. Number keeps full32bits; table uses actual NativeLuaObject B67800/userdata/B67700 and only the admitted canonical source target. Nested scoped activation borrows live table aliases and caller-retained frames. No signature reinterpret cast, evaluated Lua-handle projection, OriginalVA publication or new raw-body credit."
+    },
+    {
+      "id": "codex-gui-p3a2",
+      "state": "source_blocked_on_real_raw_field_resolver",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex_cc9_a1_activation", "codex-gui-page-lifetime", "codex-gui-widget-state", "codex-gui-raw-field-resolver"],
+      "function_addresses": [
+        "00aa3140", "00aa31f0", "00aaa710", "00aaacd4", "00ac4c50",
+        "00ac59a0", "00ac6600", "00ac6714", "00ac67cc", "00ac6806"
+      ],
+      "output_files": [
+        "include/bsp/game_native_gui_page_application.hpp",
+        "src/game_native_gui_page_application.cpp",
+        "docs/CC15_GUI4_P3A2.md"
+      ],
+      "notes": "Screen/root-only real AC4C50 and warm AC59A0 provider composition over borrowed A1 domain. AAACD4 is a child-suffix contract, not added whole-function reconstruction credit. Widget state and manager delegate dependencies are prepared; raw field resolver and complete production provider closure remain. Renderer grid-context graphics supply real geometry/stream providers for a page-owned Model companion domain. Keep properties_composed=false until closure; reject unsupported children and preserve native retained-frame lifetime. Packet stays OFF."
+    },
+    {
       "id": "archive_inflate_stream",
       "state": "bounded_implementation_integrated_build_and_fixture_checked",
       "worker": "inflate_read_seek",

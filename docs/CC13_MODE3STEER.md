@@ -47,9 +47,11 @@ blocked/escape inputs:
   - Withdrawn: an earlier revision inferred `[EDI+48h]` was the neighbour's published 330h, from
     the 009F3F80 publish (`009F4D5B` / `009F4D62`). That publish uses a different EDI (the traffic
     slot); the matching offset is a coincidence (180h + 48h = 1C8h).
-  - With own 32Ch = 0, every neighbour more than 100 ahead is cleared; the seed widens that to 1100, so
-    fewer neighbours stay in the pass and traffic logic. wire1 ties this to no pass side being
-    posted.
+  - With own 32Ch = 0, every neighbour that reaches this comparison and is more than 100 ahead
+    is cleared; the seed widens that window to 1100. Own-group nodes for a group leader never
+    reach this comparison: the preceding `009D8010` gate rejects them and holds node+88h at 0.
+    For Ashigara's escorts, that gate explains `pass_posts=0`; the distance window applies to
+    other ships. See `CC13_DRIVE32C.md` section 3 and the correction in `7c26febef`.
 - **The arm-final query range.** It starts at `009DE61D` (`FLD [ESI+32Ch]`, rechecked); wire1
   traces it on to `009DE633` and the `009DC313` exit.
 - **The leader corridor cap** at `009DEEBF` (`FADD [ESI+32Ch]`, rechecked).

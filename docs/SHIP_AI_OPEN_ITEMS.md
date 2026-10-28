@@ -20870,7 +20870,15 @@ cc9-lua72 before its commit. All runs: guard logged, unselected=0, role_forced=0
 Open: BSM03/05 robustness in 20,3/default; BSM06 one plan for all three envs (108 stock is
 the limit). Logs: cc9-helm1\local\h1r_<row>_main_<env>.log; plans in local\h1_b*_*.txt.
 
-## 325. USN15 wins in ref and in default; handoff (cc9-gunnery57, 2026-10-24)
+## 325. Historical USN15 branch wins and timing provenance (cc9-gunnery57, 2026-10-24)
+
+**Historical base caveat:** the worker's correction `f9e4b33860` reports that every result
+below used an executable built from `c0e852105` (2026-10-23 21:30), before `3364b40a5`.
+These branch timings do not establish acceptance on later main revisions. The lua72 handoff
+in `SQUADRON_LAND_TASK.md` records `g57_mb` losing on `3364b40a5`/`515837c10` (ref failure
+at 3444.28 s, Yamashiro surviving), and requests a fresh `jc_def` re-time on main.
+This correction preserves those historical reports; no new timing or causal attribution
+is established by the 2026-10-28 no-game audit.
 
 Two plans, one per env. Both are legal (pf=0, helm_moveto_unselected=0, helm_role_forced=0), end
 through Mission.EndMission ("summary mission end: nil") with the guard's sus_prog.exe refusal,
@@ -20878,10 +20886,10 @@ and reproduce exactly on a rerun.
 
 | Plan | Env | Frames | Result |
 | --- | --- | --- | --- |
-| `config/win_orders/usn15_g57_mb.txt` (3364b40a5 on main) | ref | 104000 | Fuso dies 3734.57 s, win |
+| `config/win_orders/usn15_g57_mb.txt` (historical branch timing; see caveat) | ref | 104000 | Fuso dies 3734.57 s, win |
 | same | default | | fails 1657.54 s |
 | same | 20,3 | | fails 1572.46 s |
-| `config/win_orders/usn15_g57_jc_def.txt` (f307a34a8) | default | 100000 | Fuso dies 1957.83 s, win |
+| `config/win_orders/usn15_g57_jc_def.txt` (historical plan f307a34a8; see caveat) | default | 100000 | Fuso dies 1957.83 s, win |
 | same | ref | | fails 1732.61 s |
 | same | 20,3 | | fails 1757.64 s |
 
