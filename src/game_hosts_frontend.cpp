@@ -3,6 +3,7 @@
 #include "bsp/game_hosts_frontend.hpp"
 
 #include "bsp/game_native_gui_resource_application.hpp"
+#include "bsp/game_native_gui_manager_application.hpp"
 
 #include "bsp/blocking_screen.hpp"
 #include "bsp/d3d9_texture.hpp"
@@ -188,6 +189,7 @@ struct GameFrontendHost::Impl {
         bool constructed{false};
         bool ready_flag{true};
     } manager;
+    GameNativeGuiManagerApplication* native_manager{};  // kGuiManagerCc15Bound only
     std::set<const void*> page_handles;  // which create_gui_resource results are pages
     // Sole owner of the two returned native texture references. ManagerState
     // stores raw borrowers; bridge COM textures remain a separate draw path.
@@ -548,7 +550,12 @@ public:
         owner_.log.implemented("GuiStartupHost::preload_fallback_glyph_table", "0053bc00");
     }
 
-    void* gui_manager() override { return gui_manager_get_or_create_004c12b0(owner_); }
+    void* gui_manager() override {
+        if constexpr (kGuiManagerCc15Bound) {
+            if (owner_.native_manager) owner_.native_manager->get_004c12b0(); // 0073BC19
+        }
+        return gui_manager_get_or_create_004c12b0(owner_);
+    }
 
     void* create_gui_resource(void* manager, void* parent,
         const GuiManagerResource& entry) override {
@@ -687,6 +694,13 @@ void GameFrontendHost::bind_native_gui_resources(GameNativeRendererApplication& 
     }
     host.native_gui_resources = std::make_unique<GameNativeGuiResourceApplication>(
         host.log, renderer, host.vfs);
+}
+
+void GameFrontendHost::bind_native_gui_manager(GameNativeGuiManagerApplication& manager) {
+    auto& host = *impl_;
+    if (host.native_manager || host.summary.gui_startup_ran || host.manager.constructed)
+        throw std::logic_error("Native GUI manager binding requires the empty initial frontend manager");
+    host.native_manager = &manager;
 }
 void GameFrontendHost::retire_native_gui_resources() {
     auto& host = *impl_;

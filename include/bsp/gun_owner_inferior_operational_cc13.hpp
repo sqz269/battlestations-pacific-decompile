@@ -2,6 +2,8 @@
 
 #include <cstddef>
 
+#include "bsp/gun_destroyed_failure_cc13.hpp"
+
 // Packet cc13-gunA (gun damage packet A).
 
 namespace bsp {
@@ -10,7 +12,8 @@ namespace bsp {
 // 00729F10 (00729F10..00729F36, __fastcall gun, AL) = ![[gun+3F0h]+720h] && !gun+3B8h
 // && !gun+5Dh. gun+3F0h is the owning unit: 0072D7E0 (the device init) stores the
 // gun's attach parent [gun+3Ch] there at 0072D80F/0072D81A, which is the host's
-// GameGunRow::unit_index. unit+720h is the owner's InferiorFailure latch: 0095AD0A sets
+// GameGunRow::unit_index. unit+720h is the owner's InferiorFailure latch: the unit
+// constructor zeroes it (0095CF14, MOV byte [ESI+720h],BL); 0095AD0A sets
 // it on message 7Dh (00958A30's first break at health zero, and the shipyard's
 // hangars-lost rule); 0095AD7F clears it on 7Eh (00958D43, health restored). The
 // +728h window does not gate it: 00729F10 reads +720h alone, so a gun stays not
@@ -30,15 +33,17 @@ namespace bsp {
 //            tube timers.
 // Not hosted: the HUD sight status 00547480/00547A20 and 00812B00 IsCommandAvailable.
 // OFF: every gun operational. ON: not operational while its owner's +720h is set.
-// +3B8h and +5Dh stay clear (LABELLED: no producer for a gun in this host; the fire
-// gate answers them false too). CanFire (00729A80) does not read +720h; the fire gate's
-// own +720h test (0072D1C1, unit_fire_blocked) is unchanged.
-inline constexpr bool kGunOwnerInferiorOperationalCc13Bound = false;
+// +3B8h and +5Dh are filled by packet cc13-gunB under kGunDestroyedFailureCc13Bound
+// (include/bsp/gun_destroyed_failure_cc13.hpp); clear otherwise. CanFire (00729A80)
+// does not read +720h; the fire gate's own +720h test (0072D1C1, unit_fire_blocked) is
+// unchanged.
+inline constexpr bool kGunOwnerInferiorOperationalCc13Bound = true;   // ON: SHIP_AI 330.1
 
 // Every hosted 00729F10 site takes gun_is_operational_00729f10_cc13 when this is set
 // and keeps its verbatim "every gun operational" arm otherwise. A packet that fills
 // another term ORs its switch in here.
-inline constexpr bool kGunIsOperationalHostedCc13 = kGunOwnerInferiorOperationalCc13Bound;
+inline constexpr bool kGunIsOperationalHostedCc13 =
+    kGunOwnerInferiorOperationalCc13Bound || kGunDestroyedFailureCc13Bound;
 
 // 00729F10 for one gun row (`gun.unit_index` is [gun+3F0h]), the one helper every hosted
 // site shares. Each term is false unless its switch is set.
@@ -48,8 +53,13 @@ bool gun_is_operational_00729f10_cc13(const Units& units, const GunRow& gun) {
     if constexpr (kGunOwnerInferiorOperationalCc13Bound) {
         owner_inferior_720 = units.inferior_failure_720(gun.unit_index);
     }
-    const bool gun_destroyed_3b8 = false;        // gun+3B8h, 00729F1F: placeholder
-    const bool gun_torn_down_5d = false;         // gun+5Dh, 00729F28: placeholder
+    bool gun_destroyed_3b8 = false;              // gun+3B8h, 00729F1F
+    bool gun_torn_down_5d = false;               // gun+5Dh, 00729F28
+    if constexpr (kGunDestroyedFailureCc13Bound) {
+        // Packet cc13-gunB: 0072B5A0 sets +3B8h, 00926390 +5Dh.
+        gun_destroyed_3b8 = gun.destroyed_3b8;
+        gun_torn_down_5d = gun.destroyed_5d;
+    }
     return !owner_inferior_720 && !gun_destroyed_3b8 && !gun_torn_down_5d;
 }
 

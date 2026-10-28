@@ -21017,3 +21017,143 @@ damage per 1000 steps):
   - TT3 dies to Yamato at 3528 s. Two movetos were still unselected (frames 40000 and 70000).
 - **g** puts each select in the moveto's own frame. It is queued for 210000 frames (`s63_g_os.log`), because c19's
   transport legs start at frame 75000.
+
+## 329. Paratrooper flip, USNOS end conditions, launch-craft pairs; handoff (cc9-ships64, 2026-10-28)
+
+All logs are in cc9-ships44 `local\`. The local scripts are: `s64_rows.ps1`, a launcher for one row (`-NoStreams`
+drops `BSP_GUNNERY_RNG_STREAMS`, `-ExtraEnv` adds variables), `s64_grep.py` (line grep on locked or huge logs),
+`s64_kinds.py` (classifies matching lines), `s64_hq.py` (JM08 HQ damage by bullet), `s64_reach.py` (census of
+landing-craft launches over every tree's logs) and `s64_osmk.py` (USNOS variants on ships63's g).
+
+### 329.1 Paratroopers (landed as e294dee96)
+
+The six paratrooper switches were paired on JM08 s63_j8_v3 and flipped ON. The evidence is in
+docs/CC13_PARATROOPER.md, section "JM08 pair and flip". ON loses the JM08 win on a B-17 knife edge: the HQ
+needs 5-10 s more at about 1762 s. The re-plan is with cc9-lua74. The drop, round and capture half is still
+unexercised in a live run.
+
+### 329.2 USNOS: what the end condition needs
+
+`us_osumi.lua` (this installation, mtime 2024-10-29) completes only when BaseCapped and ReinDead are both
+true. ReinDead requires that every `Mission.FinalTrgs` entry is dead: Yamato, Musashi, Haku1-4 and the six
+`luaFuntime` Betty (BettyOhka) squadrons.
+
+- **Musashi.** Hits take it from 17000 to 6430.6 by about 3625 s. Then it sits in terrain contact, from 2647 s
+  at (392,6274) and later at about (1406,7069).
+  - Per cc13, only 457 mm hits penetrate its armour of 175. The b23 "took=0.0" lines are splash hits.
+  - In s63_os_g, NH and Loui1/2 keep receiving HQ2 and land-target orders up to frame 129600. From about
+    67000, give the 457 mm ships Musashi only.
+  - The 18-inch guns go silent from about 74000 while fire=Musashi at 2100-2500 m. The lead's trace recipe
+    for a g run: `BSP_FIRE_GATE_TRACE=NH BSP_FIRE_GATE_TARGET=Musashi`, `aa_trace_unit=NH`, frames
+    72000-90000. Classify the silence as never-assigned, assigned-but-refused, or fired-and-missed. This is
+    not done yet.
+  - Midway_sqn198, the 331 strike, never attacked: the plan's periodic `order Midway 3 2` recalled it on
+    deck (physics29). Do not recall a slot within about 1000 frames of its real launch.
+- **Betty remnants.** After the Ohka release, each wing releases only inside its own random startDist. A
+  wing that never gets close enough keeps its Ohka, which is faithful (cc13). The squadron then never
+  latches. The dead-target retest ends 00E08F30, and the host places moveto-self on the leader
+  (`squadron moveto-self: "Betty4" ... latch=0 stage2=00E08F30 placed=1`). That is the image's
+  "loiter, never dies" path.
+  - **Host gap:** the wings get nothing. The moveto-self at game_hosts_units.cpp (about 20748) goes only to
+    `sq.squadron_unit`, and `retire_ended_command_rows` has stripped every wing's rows. Each wing drops to
+    "stop / director idle tail" and flies straight. Betty4|.-III is 27 km out by 2100 s, and the wings are
+    hundreds of km out by the end of g.
+  - **Approved fix, not yet coded:** `kSquadronMoveToSelfWingFollowBound` (OFF). When the moveto-self is
+    placed, each live wing gets the follow its squadron command implies, mirroring how a squadron-ordered
+    moveto's wings follow (0099A170's member arm; compare `retreat_0099a45b` fanning out per member, and
+    `run_follow_tick_009c1fd0`).
+  - Lease game_hosts_units.cpp for one commit. Pair on USNOS: the wings should loiter in formation near the
+    leader. Also run a census of moveto-self placements with live wings on the WINS rows.
+  - Even with the fix, the Bettys never die on their own, so USNOS needs fighters on them. The remnants
+    stay near their release points.
+  - Diagnostic log: `s64_cen_os.log` (g, 42000 frames, `BSP_SPENT_RTB_CENSUS=1`, 471fcaa6e).
+- **Plan j** (`s64_osmk.py j`) adds two things to g: 810 intercepts on Betty3/4/5 from five carriers at
+  33300-37800, and 339 strikes on Musashi at 76000-120000.
+  - On 8eded9e50 it fails at 6060.17 s ("Game Over", TT6 dead). TT1-5 die by 2553 s and no base is captured.
+  - The intercepts kill most of Betty1/2/3/5 by 1950 s, but not Betty4.
+  - The extra launches reshuffle the transports' cover. A g baseline on current main is needed before the
+    next variant.
+- rev4's exit-zone scope (007C6C30 for every 007EE2E0(sq,1) arm) went back to cc13 as S9.
+
+### 329.3 kTransportLaunchCraftCc13Bound + kSegmentDistance2dCc13Bound (item 4, open)
+
+These two switches must flip together.
+
+**Reach census** (`s64_reach.txt`: 1151 logs from the last 4 days, every tree): 008206F0 launches craft only
+in the following rows. Every other WINS row, USNOS included (18 logs, all candidates=0 and launched=0), never
+reaches it, so its pair is identical by construction.
+
+| Row | Plan | Env |
+| --- | --- | --- |
+| IJN08 | lua52 l73_i08_v3 | default |
+| JM08 | s63_v3 | default; the ref env gives 0 |
+| IJN23 | recon1 rc1_i23_c | default |
+| IJN24 | (none) | ref |
+
+**Pairs on 471fcaa6e** (ON export `local\s64_tlon`, SHA-256 36DBA5946533):
+
+- **IJN24** ref (`s64_t2{off,on}_i24.log`): pair_diff 1, gameplay identical. On current main this row fails
+  at 560 s, before any landing, so it is unreached.
+- **IJN08** default (`s64_t2{off,on}_i08.log`, `s64_pd2_i08.txt`): pair_diff 3, moved, and plausible.
+  - The launch happens at the same time, 2871.00 s, with the same transport and the same 6 craft.
+  - ON spawns at y=0.0 (world y zeroed) on different pad points: corner candidates ahead of the inner points.
+    OFF spawns at y 0.6-2.5.
+  - Deaths 411 = 411; 24 rows changed, LandingShip#13 is only in OFF and Elco#34 only in ON. Neither side
+    ends the mission.
+  - OFF's exe exited 1 at the end (presents_skipped=50) after a full 100147 frames.
+- **Still to run:** JM08 default and IJN23 default (200k frames).
+  - The lead asked for the exports to be rebuilt from e294dee96 or later (paratroopers ON on both sides,
+    kTorpedoHomeSectorScaleCc13Bound). Rebuild both sides there and re-run IJN08 if its base must match.
+  - Then flip both switches together if plausible, with this census in the commit. Moved rows go to
+    cc9-lua74.
+
+### 329.4 Queue for the successor (lead's order, 2026-10-28)
+
+1. Gun packet A alone: `kGunOwnerInferiorOperationalCc13Bound` (076c9924a). Pair on USN01 and LOMP10 with
+   `BSP_SEARCHER_BOUNDS_INIT=1` on both sides. Flip if plausible: every difference should trace to a latched
+   fort, airfield or shipyard losing its rating, or to guns on inferior-failed owners going non-operational.
+2. Gun B+C1+C2+D jointly (c500599aa): `kGunDestroyedFailureCc13Bound`, `kGunDeviceHitDamageCc13Bound`,
+   `kGunDeviceBlastDamageCc13Bound` and `kGunSubobjectRepairCc13Bound`.
+   - OFF is main with A as decided; ON adds all four.
+   - Rows: u01, b9, l10, p01, u12 and lomp10, with `BSP_SEARCHER_BOUNDS_INIT=1`.
+   - Checks: guns die mostly to blasts and big shells, destroyed turrets stop firing and turning, and
+     damage/fire/flood moves trace to turret relays.
+   - Losses go to the WINS re-plan list.
+3. Item 4 (329.3).
+4. The wing-follow switch (329.2).
+5. A USNOS g run on main with the NH fire-gate trace. Then the plan fix: 457 mm ships on Musashi only from
+   about 67000, no recalls near strike launches, and fighters on the Betty remnants.
+
+Run cap: at most 2 runs per worker (cc9 total about 8). 0x8876086A exit 4 or FMOD create_result=78 at startup
+means device exhaustion: hold and do not retry until the lead reopens.
+
+## 330. cc13 switch flips and the rows they lose (cc9-sweep2b, 2026-10-28)
+
+Flips on agent/cc9-sweep2: 0f0070649 kTorpedoHomeSectorScaleCc13Bound; d3ad11c39 the three
+ship-AI NaN-arm switches (prune, zero reach); 2f03c778c bundle b2 (17 switches, listed in the
+commit); 0174a0ec6 kPc24ShipAiCc13Bound; e331ba421 kPc24GunneryCc13Bound with
+kFollowToBodyPc24Cc13Bound. All faithful, all flipped with losses. Pairs are ref-env, one run
+at a time, OFF d3ad11c39 vs ON exports of the same commit; logs
+`cc9-sweep2\local\sw2br_<row>_sw2c_{off,b2,s4,g5}.log`. Long rows (USN21, IJN18, JM06,
+ESMP08) were not paired on that base and need a light-load re-time on main (provisional).
+
+Rows lost, for the WINS re-plan queue (first divergence and the likely cause):
+- BSM01 `l73_b1_m1` (home sector): EndMission 839.92 s -> no end. Gunnery step 2900 (145 s):
+  enemy torpedo planes replan from the right sector; the plan never takes Donald.
+- BSM06 `h1_i` / `h1_j` (b2, bisected to kShipAiStationKeepingPc24Cc13Bound): failed 1617.45 s /
+  no end. Ship AI step 11460 (573 s): Sagami Maru's station-keeping rudder 0.842 -> 0.843.
+- BSM05 `h1_m3` (b2): failed 333.04 s. Controlled unit frame 170 (8.5 s): forward speed
+  18.611 -> 18.612 (not bisected).
+- PRCP01 `p26_p01_a` (b2): failed 1095.74 s. Ship AI step 2090: Kuroshio (follow) rudder
+  0.132 -> 0.131 (not bisected; station keeping is the likely member).
+- BSM03 `h1_x8` (ship-AI PC24): failed 408.02 s. Controlled unit frame 1630 (81.5 s): heading
+  -18.186 -> -18.187.
+- PRCP01 `p26_p01_a` (ship-AI PC24): failed 1014.33 s. Ship AI step 4840: Cushing rudder
+  -0.969 -> -0.968.
+- BSM06 `h1_i` / `h1_j` (gunnery + follow_to_body): failed 983.88 / 1281.12 s. Gunnery step
+  3400 (170 s): hits 79 -> 70 on the same shots.
+- JM08 `s63_j8_v3` (gunnery + follow_to_body): failed 1604.49 s (HQ destroyed). At 103.7 s the
+  Wildcat #1.1 kill of H6K Mavis 01 lands 0.05 s earlier.
+
+Rows that moved and still won are in each flip commit. 008E6430(0xF) at 008570B5 is identity
+for every campaign row (no power-up store; only MP Swirl differs), so it is not a host gap.

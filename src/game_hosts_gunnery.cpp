@@ -16,6 +16,8 @@
 #include "bsp/gameplay_settings.hpp"
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/gun_mount_positions.hpp"
+#include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
+#include "bsp/gun_subobject_repair_cc13.hpp"   // packet cc13-gunD
 #include "bsp/camera_multiply.hpp"
 #include "bsp/cc13_tier2_switches.hpp"
 #include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (the 31h release)
@@ -106,6 +108,10 @@
 #include "bsp/seg59_ship_lead_s54.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/cc13_damage_smoke.hpp"   // packet cc13-smokepc24 (00822770 PC24 slot count)
+#include "bsp/blast_gather_shot_draw_cc13.hpp"   // packet cc13-gunF1 (009044F4 SetShot)
+#include "bsp/gun_device_blast_damage_cc13.hpp"  // packet cc13-gunC C2 (0098C510 children)
+#include "bsp/gun_device_blast_gunless_cc13.hpp"  // packet cc13-c2b (C2b, gunless bursts)
+#include "bsp/gun_device_hit_damage_cc13.hpp"   // packet cc13-gunC C1 (0043F7F0)
 
 namespace bsp::game {
 namespace {
@@ -3855,6 +3861,85 @@ struct GameGunneryHost::Impl {
     // segment query returned, set by run_projectiles around apply_hit only.
     int impact_shape_kind{0x0A};
     int impact_hull_segment{-1};
+    // Packet cc13-gunC C1 (include/bsp/gun_device_hit_damage_cc13.hpp): the gun row
+    // whose device mesh the direct impact hit (record+0h is the device), or -1;
+    // set by run_projectiles around apply_hit only, like the two above.
+    long long impact_device_gun{-1};
+    // The device class's GeomMesh in node-0 space, element order, as 00712440 builds
+    // the shapes: one triangle per three points with the element's (kind, index).
+    struct DeviceHitMesh {
+        bool has_mesh{false};
+        std::vector<std::array<float, 3>> tris;
+        std::vector<int> element_kind;    // per triangle, element+04h
+        std::vector<int> element_index;   // per triangle, element+08h
+        float radius{0.0f};               // max |vertex|, the broad-phase sphere
+    };
+    std::map<int, DeviceHitMesh> device_hit_meshes;
+    const DeviceHitMesh* device_hit_mesh(int device_class);
+    // Gun rows offered as children of each unit, rebuilt when the gun list grows.
+    std::vector<std::vector<std::size_t>> device_children;
+    std::size_t device_children_guns{static_cast<std::size_t>(-1)};
+    const std::vector<std::size_t>& device_children_of(std::size_t unit);
+    bool device_hit_world_frame(std::size_t gun_row, float axes[3][3], float origin[3]);
+    void gun_device_hit_damage_008777d0(std::size_t unit, std::size_t gun_row,
+        const bsp::HitRecord& hit);
+    unsigned long long device_hit_traces{0};
+    unsigned long long device_hits_traced{0};
+    unsigned long long device_hits_dispatched{0};
+    unsigned long long device_hit_relays{0};
+    unsigned long long device_hit_drops{0};
+    unsigned long long device_hit_gun_applies{0};
+    // Packet cc13-gunC C2 (include/bsp/gun_device_blast_damage_cc13.hpp): the gun row
+    // whose device a blast record is for (record+0h the device), or -1; set by
+    // apply_impact_blast around apply_hit only, and carried by the queued node.
+    long long blast_device_gun{-1};
+    unsigned long long device_blast_records{0};
+    unsigned long long device_blast_dispatched{0};
+    unsigned long long device_blast_drops{0};
+    unsigned long long device_blast_applies{0};
+    struct DeviceBlastMount {
+        std::size_t row{0};
+        std::vector<bsp::HitPartEntry> entries;
+    };
+    void gather_device_blast_mounts(std::size_t unit, const float centre[3], float range,
+        std::vector<DeviceBlastMount>& out);
+    void push_device_blast_records(std::size_t shooter, std::size_t gun_row, std::size_t unit,
+        int team_id, const float point[3], const float direction[3],
+        const bsp::HitRecord& base, std::vector<DeviceBlastMount>& mounts);
+    void device_blast_dispatch_009239a0(std::size_t gun_row, std::size_t unit,
+        std::size_t device_row, const bsp::HitRecord& hit);
+    // Packet cc13-gunF1 (include/bsp/blast_gather_shot_draw_cc13.hpp): the unit of each
+    // record apply_impact_blast's walk will push, in push order, and the discarded
+    // gather draws made for them.
+    std::vector<std::size_t> blast_gathered_records(std::size_t shooter,
+        const float centre[3], float range);
+    unsigned long long blast_gather_shot_draws{0};
+    // Packet cc13-c2b (include/bsp/gun_device_blast_gunless_cc13.hpp): the mounts of a
+    // gunless burst (00819A20, 0084BC60's crash shot). The flush pushes them when the
+    // walked unit's turn ends, after its own record, past every `continue`.
+    unsigned long long gunless_device_blast_records{0};
+    unsigned long long gunless_device_blast_applies{0};
+    struct GunlessDeviceBlastFlush {
+        Impl* host{nullptr};
+        std::size_t source{0};
+        std::size_t unit{0};
+        const float* point{nullptr};
+        bsp::HitRecord base{};
+        std::vector<DeviceBlastMount> mounts;
+        ~GunlessDeviceBlastFlush() noexcept(false) {
+            if (host != nullptr && !mounts.empty() && std::uncaught_exceptions() == 0) {
+                host->push_gunless_device_blast_records(source, unit, point, base, mounts);
+            }
+        }
+    };
+    void arm_gunless_device_blast(GunlessDeviceBlastFlush& flush, std::size_t source,
+        std::size_t unit, const float centre[3], float range, float damage,
+        const float point[3]);
+    void push_gunless_device_blast_records(std::size_t source, std::size_t unit,
+        const float point[3], const bsp::HitRecord& base,
+        std::vector<DeviceBlastMount>& mounts);
+    void device_blast_dispatch_gunless(std::size_t unit, std::size_t device_row,
+        const bsp::HitRecord& hit);
     // Packet cc13-hitq (kHitDeferredDispatchCc13Bound): the deferred hit queue,
     // the std::list at 00F899C0. One node per 00926E80 push: the record as the
     // funnel built it, with the damage draw already made (00470350 runs before
@@ -3877,6 +3962,8 @@ struct GameGunneryHost::Impl {
         int round_bullet_class{-1};
         int impact_shape_kind{0x0A};
         int impact_hull_segment{-1};
+        long long impact_device_gun{-1};        // cc13-gunC C1: record+0h a device
+        long long blast_device_gun{-1};         // cc13-gunC C2: a mount's blast record
         float hull_damage_draw{0.0f};           // record+14h, drawn at the push
         // Host-only (packet cc13-tooklog): queued by blast_radial_damage with
         // element entries, so its dispatch adds to be_damage_element.
@@ -3914,6 +4001,8 @@ struct GameGunneryHost::Impl {
         // product scales the rate (packet cc13-powerup-bind, rev5 N2).
         float repair_tick_3b4{0.0f};  // settings+3B4h (already / 100)
         float repair_body_mul_3d4{0.0f};  // settings+3D4h BodyRepairMultiplier
+        // Packet cc13-gunD: settings+3B8h GunRepairTickPercentage (already / 100).
+        float gun_repair_tick_3b8{0.0f};
         // Packet cc9_component_failures: the task's failure vector (+18h) and
         // its flags as 0093BCC0 leaves them (+46h = 1, priority 0).
         bsp::RepairTaskState task{};
@@ -4415,6 +4504,25 @@ struct GameGunneryHost::Impl {
     // would duplicate its guns and re-seed its throttle, health and category
     // state. See GameGunneryHost::register_new_units_00864bd0.
     void build_guns(std::size_t first_unit);
+    // 00956C20 for one unit over the guns it owns (build_guns' per-unit body).
+    void rebuild_weapon_category_index_00956c20(std::size_t unit);
+    // Packet cc13-gunB (kGunDestroyedFailureCc13Bound): 00728080 on one gun, and
+    // the 0043F7D0 -> 0072B5A0 destroyed failure at zero health.
+    void apply_gun_damage_00728080(std::size_t g, float amount);
+    void gun_destroyed_failure_0072b5a0(std::size_t g);
+    // Packet cc13-gunD (kGunSubobjectRepairCc13Bound): 0093C860 over one ship's guns,
+    // 006F47F0's gun loop, 00877B90 on one gun, and the 69h clear 007280A0.
+    void repair_guns_0093c860(std::size_t unit, float dt);
+    void repair_guns_006f47f0(std::size_t unit, float fraction);
+    void set_gun_health_00877b90(std::size_t g, float requested);
+    void gun_full_health_destroyed_stop_0072a0d0(std::size_t g);
+    void gun_clear_destroyed_failure_007280a0(std::size_t g);
+    // 008777D0 on one gun (index into guns), the device-hit entry packet C1 calls.
+    void apply_gun_hit_record_008777d0(std::size_t g, const bsp::HitRecord& hit);
+    unsigned long long gun_damage_calls{0};
+    unsigned long long guns_destroyed{0};
+    unsigned long long guns_revived{0};                  // packet cc13-gunD, 007280A0
+    unsigned long long gun_fire_destroyed_refusals{0};   // 0073018E (+5Dh), 007301A7 (+358h)
     void build_rank_table();
     void attach_passes(std::size_t first_unit);
     // How many units of the units host this object has already registered.
@@ -5073,6 +5181,124 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
     return entry;
 }
 
+// Packet cc13-gunC C1. 00712440 on the device class's Mesh (desc+50h): the GeomMesh
+// triangles in node-0 space, element by element, each tagged with its element's
+// +04h kind and +08h index (007273DB). Null when the model has no GeomMesh, which
+// leaves the mount unhittable (no fallback shape, as in the image).
+const GameGunneryHost::Impl::DeviceHitMesh*
+GameGunneryHost::Impl::device_hit_mesh(int device_class) {
+    auto found = device_hit_meshes.find(device_class);
+    if (found == device_hit_meshes.end()) {
+        DeviceHitMesh& entry = device_hit_meshes[device_class];
+        const std::string mesh = lua.read_device_class_string(device_class, "Mesh");
+        std::vector<std::uint8_t> bytes;
+        std::vector<bsp::GeomMeshResourcePayload> meshes;
+        std::string error;
+        if (!mesh.empty() && lua.read_resource_file(mesh, bytes) && !bytes.empty()) {
+            bsp::read_mmod_geom_meshes(bytes, meshes, error);
+        }
+        float r2 = 0.0f;
+        for (const bsp::GeomMeshResourcePayload& m : meshes) {
+            for (const bsp::GeomMeshElement& el : m.elements) {
+                for (std::uint16_t ord : el.triangle_ordinals) {
+                    if (ord >= m.triangles.size()) continue;
+                    const bsp::GeomMeshTriangle& t = m.triangles[ord];
+                    if (t.v0 >= m.vertices.size() || t.v1 >= m.vertices.size()
+                        || t.v2 >= m.vertices.size()) continue;
+                    for (std::uint16_t vi : {t.v0, t.v1, t.v2}) {
+                        const std::array<float, 3>& v = m.vertices[vi];
+                        entry.tris.push_back(v);
+                        r2 = std::max(r2, v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+                    }
+                    entry.element_kind.push_back(el.kind);
+                    entry.element_index.push_back(static_cast<int>(el.node_index));
+                }
+            }
+        }
+        entry.has_mesh = !entry.tris.empty();
+        entry.radius = std::sqrt(r2);
+        log.notef("gunnery: device %d hit mesh %s: %zu triangles radius %.2f%s%s", device_class,
+            mesh.empty() ? "-" : mesh.c_str(), entry.tris.size() / 3,
+            static_cast<double>(entry.radius), error.empty() ? "" : " error: ", error.c_str());
+        found = device_hit_meshes.find(device_class);
+    }
+    return found->second.has_mesh ? &found->second : nullptr;
+}
+
+// The gun rows each unit's node carries as children (0070F7D0 / 0098B920): a known
+// mount on a device class with a GeomMesh. Rebuilt whenever the gun list grows.
+const std::vector<std::size_t>& GameGunneryHost::Impl::device_children_of(std::size_t unit) {
+    if (device_children_guns != guns.size()) {
+        device_children.assign(units.count(), {});
+        for (std::size_t row = 0; row < guns.size(); ++row) {
+            const GameGunRow& gun = guns[row];
+            if (!gun.mount_known || gun.device_class < 0) continue;
+            if (device_hit_mesh(gun.device_class) == nullptr) continue;
+            if (gun.unit_index >= device_children.size()) {
+                device_children.resize(gun.unit_index + 1);
+            }
+            device_children[gun.unit_index].push_back(row);
+        }
+        device_children_guns = guns.size();
+    }
+    static const std::vector<std::size_t> kNone;
+    return unit < device_children.size() ? device_children[unit] : kNone;
+}
+
+// The device node's world frame (rev8 (d)): after the first update, world(node 0) =
+// [RotY(-horz), plus RotX(-vert) when the model has no barrel; T = the slot frame
+// translation] x the owner node's world. 00859550 runs every update with dt > 0 and
+// drops the slot frame's 3x3, so there is no authored base rotation. This is the
+// host's own node-0 pose, device_hierarchy_node_world with pick 0 (its root world).
+// Its have_barrel is "barrel" Note present; the image's +3C8h needs "base" too (setup
+// leaves before the barrel lookup without it), and rev8's census has no barrel-only
+// model (312 both, 56 base only, 11 neither), so the two agree on every model.
+// LABELLED gaps: the parent's pose stands in for [gun+3Ch]->vtable[18h] (hull-oriented,
+// unit scale); 0072DD20's kind 46h/44h parent re-expression, recoil and the slot +94h
+// override are not applied; before its first update tick the image's root still
+// carries the full slot frame. Rows: axes[0..2] the frame's x/y/z, origin its
+// translation.
+bool GameGunneryHost::Impl::device_hit_world_frame(std::size_t gun_row, float axes[3][3],
+    float origin[3]) {
+    if (gun_row >= guns.size()) return false;
+    const GameGunRow& gun = guns[gun_row];
+    if (!gun.mount_known) return false;
+    float right[3], up[3], forward[3], o[3];
+    unit_pose(gun.unit_index, right, up, forward, o);
+    const DeviceFirePoints& fp = device_fire_points(gun.device_class);
+    bsp::CameraMatrix world{};
+    if (!device_hierarchy_node_world(gun, fp, 0, right, up, forward, o, world)) return false;
+    for (int r = 0; r < 3; ++r) {
+        for (int k = 0; k < 3; ++k) axes[r][k] = world[static_cast<std::size_t>(r * 4 + k)];
+        origin[r] = world[static_cast<std::size_t>(12 + r)];
+    }
+    return true;
+}
+
+// 008777D0 on the device (0043F851), with the device's own armour (unit+368h from
+// desc+4Ch, 0087BCF4) and health (+36Ch/+370h from desc+48h). The gun-health state
+// and the subtraction are packet B's (cc13-cgbuildB, apply_gun_damage); until that
+// lands this is the seam, counted only.
+// CORRECTION (cc13-gunC C1 follow-up): B has landed in this branch; the seam calls
+// apply_gun_hit_record_008777d0 (packet B, kGunDestroyedFailureCc13Bound), which
+// seeds nothing here: +368h/+36Ch/+370h come from desc+4Ch/+48h at gun setup (HP
+// default 100, Armour default 0). Only with both switches ON does the gun take the
+// record; with B OFF the hit is counted and the gun keeps its health. A direct mount
+// record carries +14h (the 00470350 draw) and +34h = 0 with no part entries, so only
+// B's hull pass runs.
+void GameGunneryHost::Impl::gun_device_hit_damage_008777d0(std::size_t unit,
+    std::size_t gun_row, const bsp::HitRecord& hit) {
+    static_cast<void>(unit);   // guns[gun_row].unit_index; B reads it there
+    ++device_hit_gun_applies;
+    if constexpr (bsp::kGunDeviceHitDamageCc13Bound && bsp::kGunDestroyedFailureCc13Bound) {
+        apply_gun_hit_record_008777d0(gun_row, hit);
+    } else {
+        static_cast<void>(gun_row);
+        static_cast<void>(hit);
+    }
+    done("Device::apply_hit_record_008777d0", 0x008777d0u);
+}
+
 GameGunneryHost::Impl::DeviceFirePoints&
 GameGunneryHost::Impl::device_fire_points(int device) {
     auto found = fire_points_by_device.find(device);
@@ -5375,7 +5601,13 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "    f.dcwater = num(SG.WaterTickDamage, 1000) or 0\n"
         "    f.dcfire = num(SG.FireTickDamage, 1000) or 0\n"
         "    f.dcbody = num(SG.BodyRepairTickPercentage, 1000000) or 200000\n"
-        "    f.dcbodymul = num(SG.BodyRepairMultiplier, 1000) or 2000\n"
+        "    f.dcbodymul = num(SG.BodyRepairMultiplier, 1000) or 2000\n";
+    if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+        // Packet cc13-gunD: GunRepairTickPercentage (0083E290, default 2.0). OFF: the
+        // chunk text is unchanged (the literal is only split here).
+        chunk += "    f.dcgun = num(SG.GunRepairTickPercentage, 1000000) or 2000000\n";
+    }
+    chunk +=
         "    f.dcsg = (type(ShipGlobals) == 'table') and 1 or 0\n"
         // Packet cc9_component_failures. Damage.Sections (0087CA80): kind from
         // 007149D0 with no remap, Index, FailureChance / 100 (default -1) and
@@ -5633,6 +5865,11 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 flat_scaled(type_id, "dcbody", 1000000.0f, 0.2f));
             dc.repair_body_mul_3d4 = flat_scaled(type_id, "dcbodymul", kMilliScale, 2.0f);
             dc.repair_fraction = dc.repair_tick_3b4 * dc.repair_body_mul_3d4;
+            if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+                // 0083E290..0083E2AA: GunRepairTickPercentage / 100 into settings+3B8h.
+                dc.gun_repair_tick_3b8 = bsp::store_repair_tick_percentage_0083e243(
+                    flat_scaled(type_id, "dcgun", 1000000.0f, 2.0f));
+            }
             dc.task.failure_repair_enabled = true;   // 0093BCC0 +46h = 1
             dc.task.hull_repair_enabled = true;      // +45h = 1
             if (dc.script_hull_repair >= 0) {
@@ -5776,6 +6013,20 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             gun.wind_amount = flat_scaled(type_id, make("wind"), kAngleScale, 0.0f);
             gun.muzzle_speed = flat_scaled(type_id, make("v0"), kMilliScale, 0.0f);
             gun.max_range = flat_scaled(type_id, make("range"), kMilliScale, 0.0f);
+            if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+                // Packet cc13-gunB: 0087BCC0 (0043F7B0's first call) seeds +368h from
+                // class +4Ch "Armour" (0087BCF4) and +36Ch / +370h from class +48h
+                // "HP" (0087BD01 / 0087BD11). The damageable-class reader 0087CA80
+                // (the device class's base, 00440770 -> 0087C640) stores "HP" at
+                // +48h (0087CC98, default 100.0) and "Armour" at +4Ch (0087CCCE).
+                if (gun.device_class >= 0) {
+                    gun.armour_368 = lua.read_device_class_number(gun.device_class,
+                        "Armour", 0.0f);
+                    gun.max_health_36c = lua.read_device_class_number(gun.device_class,
+                        "HP", 100.0f);
+                    gun.health_370 = gun.max_health_36c;
+                }
+            }
             // 00731020 answers with descriptor+60h, NOT the authored Lua `Range`:
             // 006E8770 puts `Range` at +68h and never writes +60h. The finalise
             // hook 006E9890 derives +60h from the class sub-type - artillery
@@ -6274,12 +6525,17 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
     // over an existing unit would put a gun this run has destroyed back into
     // its category lists.
     for (std::size_t i = first_unit; i < count; ++i) {
+        rebuild_weapon_category_index_00956c20(i);
+    }
+}
+
+void GameGunneryHost::Impl::rebuild_weapon_category_index_00956c20(std::size_t i) {
         UnitState& state = unit_state[i];
         std::vector<std::size_t> owned;
         for (std::size_t g = 0; g < guns.size(); ++g) {
             if (guns[g].unit_index == i) owned.push_back(g);
         }
-        if (owned.empty()) continue;
+        if (owned.empty()) return;
 
         struct RebuildBinding final : bsp::UnitWeaponCategoryIndexHost {
             RebuildBinding(Impl& owner_in, UnitState& state_in,
@@ -6302,6 +6558,9 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 out.device = reinterpret_cast<void*>(slot + 1);
                 out.dead = false;
                 out.is_gun = true;
+                if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+                    out.dead = gun.destroyed_5d;   // 00956C20's own [dev+5Dh] test
+                }
                 if constexpr (bsp::kGunIsOperationalHostedCc13) {
                     // 00956C98: 00729F10.
                     out.operational = bsp::gun_is_operational_00729f10_cc13(owner.units, gun);
@@ -6369,7 +6628,6 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
         }
         state.row.artillery_max_range = state.artillery_max_range;
         state.row.any_weapon_max_range = state.any_weapon_max_range;
-    }
 }
 
 void GameGunneryHost::Impl::attach_passes(std::size_t first_unit) {
@@ -8421,7 +8679,13 @@ public:
         const std::size_t unit = owner_.guns[gun_].unit_index;
         return unit < owner_.unit_state.size() && owner_.unit_state[unit].dead;
     }
-    bool gun_suppressed() const override { return false; }          // gun+5Dh
+    bool gun_suppressed() const override {                           // gun+5Dh
+        if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+            return owner_.guns[gun_].destroyed_5d;   // 00926390, packet cc13-gunB
+        } else {
+            return false;
+        }
+    }
     void release_fire_target_ref_006952a0() override {
         owner_.record("Gun::release_fire_target_ref_006952a0", 0x006952a0u);
     }
@@ -8484,7 +8748,13 @@ public:
         return kShipyardDestructionRuleBound
             && owner_.units.inferior_failure_720(owner_.guns[gun_].unit_index);
     }
-    bool gun_disabled() const override { return false; }        // gun+3B8h
+    bool gun_disabled() const override {                         // gun+3B8h, 0072D1CD
+        if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+            return owner_.guns[gun_].destroyed_3b8;
+        } else {
+            return false;
+        }
+    }
     void send_fire_message_0ad(std::uint16_t) override {
         ++owner_.guns[gun_].fire_messages;
         ++owner_.summary.fire_messages;
@@ -9302,9 +9572,20 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 gun.angles.target_vert);
             done("Gun::arc_route_deltas_007f6530", 0x007f6530u);
             const float pre_horz = gun.angles.horz, pre_vert = gun.angles.vert;
-            if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
-                ++gun.aim_steps;
-                ++summary.aim_steps;
+            if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+                // Packet cc13-trav: 0085AD96, a set gun+3B8h (0072B5BC) skips the whole
+                // step. LABELLED: 0085AD8C's owner test ([gun+3F0h]+5Dh) is this loop's
+                // `if (state.dead) continue;`, UnitState::dead taken as the owner's +5Dh.
+                if (!gun.destroyed_3b8
+                    && bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
+                    ++gun.aim_steps;
+                    ++summary.aim_steps;
+                }
+            } else {
+                if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
+                    ++gun.aim_steps;
+                    ++summary.aim_steps;
+                }
             }
             done("Gun::step_aim_0085ad80", 0x0085ad80u);
             ++wave_order_pre_steps;
@@ -9383,9 +9664,19 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 gun.angles.horz, gun.angles.vert, gun.angles.target_horz,
                 gun.angles.target_vert);
             done("Gun::arc_route_deltas_007f6530", 0x007f6530u);
-            if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
-                ++gun.aim_steps;
-                ++summary.aim_steps;
+            if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+                // Packet cc13-trav: 0085AD96 (gun+3B8h) as above; the owner test is the
+                // loop's state.dead skip (LABELLED).
+                if (!gun.destroyed_3b8
+                    && bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
+                    ++gun.aim_steps;
+                    ++summary.aim_steps;
+                }
+            } else {
+                if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
+                    ++gun.aim_steps;
+                    ++summary.aim_steps;
+                }
             }
             done("Gun::step_aim_0085ad80", 0x0085ad80u);
         }
@@ -9901,6 +10192,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         gate.fire_params_armed = true;
         gate.disabled = false;
         gate.damage_counter = 0;
+        if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+            gate.disabled = gun.destroyed_3b8;           // gun+3B8h
+            gate.damage_counter = gun.damage_level_358;  // gun+358h
+        }
         gate.barrel_delay_time = gun.fire.barrel_delay_time;
         gate.secondary_delay = gun.fire.fire_stagger;
         gate.unit_cooldown_applies = kUnitFireCooldownBound
@@ -9936,6 +10231,16 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             ++immediate_fire_clears;
         }
 
+        if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+            // 0073018E: Gun_Fire returns for a set gun+5Dh; 007301A7..007301B6: and
+            // when +358h > 0 outside session mode 2, whichever path called it (here
+            // the forced 008A7200 fire, which skips CanFire). LABELLED: +358h stays 0
+            // (level 0, no model damage rows), so +5Dh is the live term.
+            if (gun.destroyed_5d || gun.damage_level_358 > 0) {
+                ++gun_fire_destroyed_refusals;
+                continue;
+            }
+        }
         // 00730160 BSP_Gun_Fire: the next ready barrel, one projectile, then
         // the two timers.
         const int barrel = bsp::next_ready_barrel_007298d0(gun.fire.barrel_timers.data(),
@@ -10388,6 +10693,36 @@ public:
     }
     bsp::HitQueryBounds entity_bounds(const void* entity) override {
         bsp::HitQueryBounds bounds;
+        if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+            // cc13-gunC C1: a device child's sphere box; a parent's box grows over
+            // its children, as 0098B530 grows the parent's local AABB.
+            float centre[3], radius = 0.0f;
+            if (is_device(entity)) {
+                if (!device_sphere(device_row(entity), centre, radius)) return bounds;
+                bounds.min = {centre[0] - radius, centre[1] - radius, centre[2] - radius};
+                bounds.max = {centre[0] + radius, centre[1] + radius, centre[2] + radius};
+                return bounds;
+            }
+            const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
+            if (landscape_entry(index) < 0) {
+                float c[3], half[3];
+                if (!box_of(index, c, half)) return bounds;
+                float lo[3] = {c[0] - half[0], c[1] - half[1], c[2] - half[2]};
+                float hi[3] = {c[0] + half[0], c[1] + half[1], c[2] + half[2]};
+                if (parent_offers_devices(index)) {
+                    for (const std::size_t row : owner_.device_children_of(index)) {
+                        if (!device_sphere(row, centre, radius)) continue;
+                        for (int k = 0; k < 3; ++k) {
+                            lo[k] = std::min(lo[k], centre[k] - radius);
+                            hi[k] = std::max(hi[k], centre[k] + radius);
+                        }
+                    }
+                }
+                bounds.min = {lo[0], lo[1], lo[2]};
+                bounds.max = {hi[0], hi[1], hi[2]};
+                return bounds;
+            }
+        }
         const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
         if (landscape_entry(index) >= 0) {
             float lo[3], hi[3];
@@ -10408,6 +10743,9 @@ public:
         return bounds;
     }
     int shape_count(const void* entity) override {
+        if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+            if (is_device(entity)) return 1;   // offered only by child_entity below
+        }
         const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
         if (landscape_entry(index) >= 0) return 1;   // the shape +344h
         if (index == exclude_) return 0;
@@ -10429,10 +10767,36 @@ public:
     }
     bool shape_trace_segment(const void* entity, int, const bsp::HitQueryPoint& from,
         const bsp::HitQueryPoint& to, bsp::HitRecordFill& record) override;
-    int child_count(const void*) override { return 0; }
-    const void* child_entity(const void*, int) override { return nullptr; }
+    // cc13-gunC C1: a unit's device nodes are its children (0070F7D0 / 0098B920),
+    // walked by 0098AC20 for kind filter 0. OFF, none.
+    int child_count(const void* entity) override {
+        if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+            if (is_device(entity)) return 0;
+            const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
+            if (landscape_entry(index) >= 0 || !parent_offers_devices(index)) return 0;
+            return static_cast<int>(owner_.device_children_of(index).size());
+        } else {
+            static_cast<void>(entity);
+            return 0;
+        }
+    }
+    const void* child_entity(const void* entity, int slot) override {
+        if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+            const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
+            const std::vector<std::size_t>& rows = owner_.device_children_of(index);
+            if (slot < 0 || static_cast<std::size_t>(slot) >= rows.size()) return nullptr;
+            return reinterpret_cast<const void*>(kDeviceEntityBase + rows[static_cast<std::size_t>(slot)]);
+        } else {
+            static_cast<void>(entity);
+            static_cast<void>(slot);
+            return nullptr;
+        }
+    }
 
     std::size_t hit_unit{0};   // one based
+    // cc13-gunC C1: one based gun row when the nearest hit is that gun's device
+    // mesh (hit_unit then names its parent); 0 otherwise.
+    std::size_t hit_gun{0};
     // One based index into scene_world_class_lists().objects() of the
     // Landscape the nearest hit landed on; 0 when the nearest hit is a unit.
     std::size_t hit_landscape{0};
@@ -10451,6 +10815,32 @@ private:
         }
     }
     bool box_of(std::size_t index, float centre[3], float half[3]) const;
+    // cc13-gunC C1: device children are handles kDeviceEntityBase + gun row, far
+    // above the unit and Landscape handles.
+    static constexpr std::size_t kDeviceEntityBase = 0x40000000u;
+    static bool is_device(const void* entity) {
+        return reinterpret_cast<std::size_t>(entity) >= kDeviceEntityBase;
+    }
+    static std::size_t device_row(const void* entity) {
+        return reinterpret_cast<std::size_t>(entity) - kDeviceEntityBase;
+    }
+    // LABELLED: a parent offers its mounts only while it offers its own shape (alive,
+    // visible, attached, not excluded); a wreck's mounts are not offered.
+    bool parent_offers_devices(std::size_t index) const {
+        return index != exclude_ && index < owner_.unit_state.size()
+            && !owner_.unit_state[index].dead && owner_.units.unit_alive_and_visible(index)
+            && !owner_.hit_index_detached(index);
+    }
+    bool device_sphere(std::size_t row, float centre[3], float& radius) {
+        if (row >= owner_.guns.size()) return false;
+        const auto* mesh = owner_.device_hit_mesh(owner_.guns[row].device_class);
+        float axes[3][3];
+        if (mesh == nullptr || !owner_.device_hit_world_frame(row, axes, centre)) return false;
+        radius = mesh->radius;
+        return true;
+    }
+    bool device_trace_segment(std::size_t row, const void* entity, const bsp::HitQueryPoint& from,
+        const bsp::HitQueryPoint& to, bsp::HitRecordFill& record);
 
     GameGunneryHost::Impl& owner_;
     std::size_t exclude_;
@@ -10489,6 +10879,9 @@ bool SegmentBinding::box_of(std::size_t index, float centre[3], float half[3]) c
 bool SegmentBinding::shape_trace_segment(const void* entity, int,
     const bsp::HitQueryPoint& from, const bsp::HitQueryPoint& to,
     bsp::HitRecordFill& record) {
+    if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+        if (is_device(entity)) return device_trace_segment(device_row(entity), entity, from, to, record);
+    }
     const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
     if (landscape_entry(index) >= 0) {
         // 0087FF80: the terrain's slot 3Ch, then the record: point, entity =
@@ -10508,6 +10901,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         record.hull_segment = land.hull_segment;   // 0087FFE5
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = 0;
+        hit_gun = 0;
         hit_landscape = static_cast<std::size_t>(land.landscape_object) + 1;
         return true;
     }
@@ -10643,6 +11037,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         }
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = index + 1;
+        hit_gun = 0;
         hit_landscape = 0;
         if (ship_model) ++owner_.shell_mesh_hits;
         return true;
@@ -10687,6 +11082,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         record.hull_segment = kDirectHitHullSegment;
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = index + 1;
+        hit_gun = 0;
         hit_landscape = 0;
         return true;
     }
@@ -10715,7 +11111,76 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
     record.hull_segment = kDirectHitHullSegment;
     bsp::hit_record_set_entity_00470370(record, entity);
     hit_unit = index + 1;
+    hit_gun = 0;
     hit_landscape = 0;
+    return true;
+}
+
+// cc13-gunC C1: 00724510 / 00723E90 / 00723D60 on a device node: the segment into the
+// device frame (device_hit_world_frame, LABELLED), every GeomMesh triangle in element
+// order, the closest accepted (`t <= best`, so the last acceptor wins a tie), and the
+// record filled with that element's kind and index (00723F62 / 00723F6C). The record's
+// entity is the device (0098AC88 names node+4Ch); hit_unit names the parent.
+bool SegmentBinding::device_trace_segment(std::size_t row, const void* entity,
+    const bsp::HitQueryPoint& from, const bsp::HitQueryPoint& to,
+    bsp::HitRecordFill& record) {
+    if (row >= owner_.guns.size()) return false;
+    const GameGunneryHost::Impl::DeviceHitMesh* model
+        = owner_.device_hit_mesh(owner_.guns[row].device_class);
+    float axes[3][3], origin[3];
+    if (model == nullptr || !owner_.device_hit_world_frame(row, axes, origin)) return false;
+    ++owner_.device_hit_traces;
+    const float wf[3] = {from.x, from.y, from.z};
+    const float wt[3] = {to.x, to.y, to.z};
+    float o[3], d[3];
+    for (int i = 0; i < 3; ++i) {
+        o[i] = (wf[0] - origin[0]) * axes[i][0] + (wf[1] - origin[1]) * axes[i][1]
+            + (wf[2] - origin[2]) * axes[i][2];
+        d[i] = (wt[0] - wf[0]) * axes[i][0] + (wt[1] - wf[1]) * axes[i][1]
+            + (wt[2] - wf[2]) * axes[i][2];
+    }
+    float best = 2.0f;
+    int best_kind = 0x0A;
+    int best_index = kDirectHitHullSegment;
+    const auto& tri = model->tris;
+    for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
+        const auto& a = tri[n];
+        const auto& b = tri[n + 1];
+        const auto& c = tri[n + 2];
+        const float e1[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};
+        const float e2[3] = {c[0] - a[0], c[1] - a[1], c[2] - a[2]};
+        const float p[3] = {d[1] * e2[2] - d[2] * e2[1], d[2] * e2[0] - d[0] * e2[2],
+            d[0] * e2[1] - d[1] * e2[0]};
+        const float det = e1[0] * p[0] + e1[1] * p[1] + e1[2] * p[2];
+        if (std::fabs(det) < 1e-12f) continue;
+        const float inv = 1.0f / det;
+        const float s0[3] = {o[0] - a[0], o[1] - a[1], o[2] - a[2]};
+        const float u = (s0[0] * p[0] + s0[1] * p[1] + s0[2] * p[2]) * inv;
+        if (u < 0.0f || u > 1.0f) continue;
+        const float q[3] = {s0[1] * e1[2] - s0[2] * e1[1], s0[2] * e1[0] - s0[0] * e1[2],
+            s0[0] * e1[1] - s0[1] * e1[0]};
+        const float v = (d[0] * q[0] + d[1] * q[1] + d[2] * q[2]) * inv;
+        if (v < 0.0f || u + v > 1.0f) continue;
+        const float t = (e2[0] * q[0] + e2[1] * q[1] + e2[2] * q[2]) * inv;
+        if (t >= 0.0f && t <= 1.0f && t <= best) {
+            best = t;
+            best_kind = model->element_kind[n / 3];
+            best_index = model->element_index[n / 3];
+        }
+    }
+    if (best > 1.0f) return false;
+    bsp::HitQueryPoint point;
+    point.x = wf[0] + (wt[0] - wf[0]) * best;
+    point.y = wf[1] + (wt[1] - wf[1]) * best;
+    point.z = wf[2] + (wt[2] - wf[2]) * best;
+    bsp::shape_hit_fill_0087fec0(record, point, entity);
+    record.shape_kind = best_kind;
+    record.hull_segment = best_index;
+    bsp::hit_record_set_entity_00470370(record, entity);
+    hit_unit = owner_.guns[row].unit_index + 1;
+    hit_gun = row + 1;
+    hit_landscape = 0;
+    ++owner_.device_hits_traced;
     return true;
 }
 
@@ -11613,6 +12078,18 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                     }
                 }
             }
+            // cc13-gunC C1: the nearest hit is a gun's device mesh, so record+0h is
+            // the device and 009239A0 reaches its 0043F7F0, not the parent's OnHit.
+            const bool device_hit = bsp::kGunDeviceHitDamageCc13Bound && query.hit_gun != 0;
+            if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+                impact_device_gun = device_hit ? static_cast<long long>(query.hit_gun - 1) : -1;
+                if (device_hit) {
+                    // Without kHullElementSegmentBound the impact keeps 0Ah / -1 above;
+                    // the device record's own (kind, index) is what 0043F7F0 tests.
+                    impact_shape_kind = record.shape_kind;
+                    impact_hull_segment = record.hull_segment;
+                }
+            }
             if constexpr (kPlaneSpinSideBound) {
                 // 007BBCF0: hit+34h != -1 -> unit+800h = [[hit+38h]+4h], before
                 // 008777D0 applies the damage.
@@ -11622,7 +12099,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 // keeps the oldest hit's kind and this host the newest. RESIDUAL, not
                 // moved (docs/CC13_HIT_DEFERRED_DISPATCH.md).
                 const std::size_t victim = query.hit_unit - 1;
-                if (victim < plane_trace_element_kind.size()
+                if (!device_hit && victim < plane_trace_element_kind.size()
                     && plane_trace_element_kind[victim] >= 0
                     && units.unit_is_kind_of(victim, 0x0f)) {
                     if (plane_spin_side_800.size() <= victim) {
@@ -11642,6 +12119,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 direction, nullptr, shot.team_id_1c);
             impact_shape_kind = 0x0A;
             impact_hull_segment = kDirectHitHullSegment;
+            if constexpr (bsp::kGunDeviceHitDamageCc13Bound) impact_device_gun = -1;
             // 0084BC60 step 7: the impact also spawns the burst that carries a
             // torpedo's warhead. Without it a torpedo does its DamageMin draw
             // and nothing else, which a carrier's Armour cancels exactly.
@@ -12475,9 +12953,11 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     const int saved_class = round_bullet_class;
     const int saved_kind = impact_shape_kind;
     const int saved_segment = impact_hull_segment;
+    const long long saved_device_gun = impact_device_gun;
     round_bullet_class = node.round_bullet_class;
     impact_shape_kind = node.impact_shape_kind;
     impact_hull_segment = node.impact_hull_segment;
+    impact_device_gun = node.impact_device_gun;
     bsp::HitRecord record = node.record;
     record.part_hits = node.parts.empty() ? nullptr : node.parts.data();
     record.part_hit_count = static_cast<int>(node.parts.size());
@@ -12485,8 +12965,17 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     deferred_replay = &node;
     const bool victim_known = node.victim < unit_state.size();
     const float before = victim_known ? unit_state[node.victim].health : 0.0f;
-    if (node.gunless) {
+    if (bsp::kGunDeviceBlastGunlessCc13Bound && node.gunless && node.blast_device_gun >= 0) {
+        // Packet cc13-c2b: a gunless burst's mount record (shot 0 or a plane).
+        device_blast_dispatch_gunless(node.victim,
+            static_cast<std::size_t>(node.blast_device_gun), record);
+    } else if (node.gunless) {
         apply_gunless_blast_hit(node.shooter, node.victim, node.point, record);
+    } else if (bsp::kGunDeviceBlastDamageCc13Bound && node.blast_device_gun >= 0) {
+        // Packet cc13-gunC C2: record+0h is a mount's device, so 009239A0's handler
+        // loop starts at its vtable[ECh] (0043F7F0), not the unit's.
+        device_blast_dispatch_009239a0(node.gun_row, node.victim,
+            static_cast<std::size_t>(node.blast_device_gun), record);
     } else {
         apply_hit(node.shooter, node.gun_row, node.victim, node.point, node.direction,
             node.has_blast ? &record : nullptr, node.team_id);
@@ -12505,6 +12994,7 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     round_bullet_class = saved_class;
     impact_shape_kind = saved_kind;
     impact_hull_segment = saved_segment;
+    impact_device_gun = saved_device_gun;
     deferred_last_dispatched = &node;
 }
 
@@ -12550,6 +13040,8 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
             node.round_bullet_class = round_bullet_class;
             node.impact_shape_kind = impact_shape_kind;
             node.impact_hull_segment = impact_hull_segment;
+            node.impact_device_gun = impact_device_gun;
+            node.blast_device_gun = blast_device_gun;
             // 00470350 SetShot before the push: the same draw, at the same
             // point in the shared stream, as the OFF body makes below.
             const int queued_class
@@ -12660,6 +13152,52 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     view.shot_is_depth_charge = kDepthChargeInWaterBound && is_depth_charge_class(bullet(priced_class));
     view.shot_is_torpedo = gun.category == bsp::kUnitGunneryTorpedoCategory;
     view.weapon_present = weapon != nullptr;
+
+    // Packet cc13-gunC C1: a direct hit whose record+0h is a gun's device reaches the
+    // device's vtable[ECh], 0043F7F0, from 009239A0's handler loop (00923A70):
+    //   drop (a depth charge, parent not a submarine): 0043F822 returns AL = 0, so
+    //     the loop walks to the parent (+3Ch) and its own handler takes the record:
+    //     the path below, with no gun damage;
+    //   relay (parent kind 6, record+34h != -1): the parent's vtable[ECh] with the same
+    //     record (the path below), then 008777D0 on the device, which returns 1;
+    //   neither: 008777D0 on the device only, and the loop stops there.
+    // 009239A0's attribution then walks from the device to its parent (after that loop) and
+    // credits the parent (0077CE60), as the tail below does for `victim`.
+    struct DeviceGunAfterRelay {
+        GameGunneryHost::Impl* host{nullptr};
+        std::size_t unit{0};
+        std::size_t row{0};
+        const bsp::HitRecord* hit{nullptr};
+        ~DeviceGunAfterRelay() {
+            if (host != nullptr) host->gun_device_hit_damage_008777d0(unit, row, *hit);
+        }
+    } device_after_relay;
+    if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+        const long long device_gun = blast_record == nullptr ? impact_device_gun : -1;
+        impact_device_gun = -1;
+        if (device_gun >= 0) {
+            ++device_hits_dispatched;
+            const bsp::DeviceHitSplit split = bsp::device_hit_split_0043f7f0(
+                is_depth_charge_class(bullet(priced_class)), true,
+                units.unit_is_kind_of(victim, 8), units.unit_is_kind_of(victim, 6),
+                impact_hull_segment);
+            done("Device::relay_hit_0043f7f0", 0x0043f7f0u);
+            if (split.drop) {
+                ++device_hit_drops;
+            } else if (!split.relay) {
+                // LABELLED: the image still writes the parent's 0077CE60 block here;
+                // the host returns before its attribution tail.
+                gun_device_hit_damage_008777d0(victim, static_cast<std::size_t>(device_gun), hit);
+                return;
+            } else {
+                ++device_hit_relays;
+                device_after_relay.host = this;
+                device_after_relay.unit = victim;
+                device_after_relay.row = static_cast<std::size_t>(device_gun);
+                device_after_relay.hit = &hit;
+            }
+        }
+    }
 
     hit_event_fire = 0.0f;
     hit_event_leak = 0.0f;
@@ -12952,6 +13490,13 @@ void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::si
     if (kr.blast_514 > 0.0f) {
         for (std::size_t i = 0; i < unit_state.size(); ++i) {
             if (unit_state[i].dead) continue;  // 009239A6 refuses +5Eh/+5Fh; wrecks are skipped here
+            // Packet cc13-c2b: 0098C510 walks this unit's children after its own record
+            // whatever that test gave; source 0, so the kamikaze's own mounts too.
+            GunlessDeviceBlastFlush device_flush;
+            if constexpr (bsp::kGunDeviceBlastGunlessCc13Bound) {
+                arm_gunless_device_blast(device_flush, unit, i, centre, kr.range_518,
+                    kr.blast_514, contact);
+            }
             float distance = 0.0f;
             if (!blast_box_distance(i, centre, distance)) continue;
             if (distance > kr.range_518) continue;
@@ -13636,6 +14181,13 @@ void GameGunneryHost::Impl::plane_crash_impact_0084bc60(std::size_t plane, std::
             if (i == plane) continue;
             if (unit_state[i].dead) continue;
             if (hit_index_detached(i)) continue;
+            // Packet cc13-c2b: the mounts of every walked unit but the plane (the source,
+            // whose node and children 0098C535 skips).
+            GunlessDeviceBlastFlush device_flush;
+            if constexpr (bsp::kGunDeviceBlastGunlessCc13Bound) {
+                arm_gunless_device_blast(device_flush, plane, i, centre, weapon.blast_range,
+                    damage, point);
+            }
             float distance = 0.0f;
             if (!blast_box_distance(i, centre, distance)) continue;
             if (distance > weapon.blast_range) continue;
@@ -13685,6 +14237,265 @@ void GameGunneryHost::Impl::plane_crash_impact_0084bc60(std::size_t plane, std::
     }
 }
 
+// Packet cc13-gunC C2 (include/bsp/gun_device_blast_damage_cc13.hpp). 0098C510 on each
+// child of the unit's node: 0070F720 -> 00723F80 takes the burst centre into the
+// device's node-0 space and 00723B70 keeps, per element, the closest triangle strictly
+// inside the radius (00723CFB). The mesh lists its triangles element by element; a run
+// of equal (kind, index) stands for one element (LABELLED in the header). The sphere
+// around the node-0 origin is an exact prune: no vertex lies beyond its radius.
+void GameGunneryHost::Impl::gather_device_blast_mounts(std::size_t unit,
+    const float centre[3], float range, std::vector<DeviceBlastMount>& out) {
+    const float r2 = range * range;
+    for (const std::size_t row : device_children_of(unit)) {
+        const DeviceHitMesh* mesh = device_hit_mesh(guns[row].device_class);
+        float axes[3][3], origin[3];
+        if (mesh == nullptr || !device_hit_world_frame(row, axes, origin)) continue;
+        const float rel[3] = {centre[0] - origin[0], centre[1] - origin[1],
+            centre[2] - origin[2]};
+        float local[3];
+        for (int a = 0; a < 3; ++a) local[a] = dot3(rel, axes[a]);
+        if (std::sqrt(dot3(local, local)) - mesh->radius > range) continue;
+        DeviceBlastMount mount;
+        mount.row = row;
+        const std::size_t count = mesh->tris.size() / 3;
+        for (std::size_t t = 0; t < count;) {
+            const int kind = mesh->element_kind[t];
+            const int index = mesh->element_index[t];
+            float best2 = r2;
+            bool any = false;
+            for (; t < count && mesh->element_kind[t] == kind
+                    && mesh->element_index[t] == index; ++t) {
+                const float d2 = point_triangle_distance2_0085df60(local,
+                    mesh->tris[t * 3].data(), mesh->tris[t * 3 + 1].data(),
+                    mesh->tris[t * 3 + 2].data());
+                if (d2 < best2) { best2 = d2; any = true; }   // 00723CFB strict
+            }
+            if (!any) continue;
+            bsp::HitPartEntry e;
+            e.kind = kind;
+            e.part_index = index;
+            e.distance = std::sqrt(best2);
+            mount.entries.push_back(e);
+        }
+        if (!mount.entries.empty()) out.push_back(std::move(mount));
+    }
+}
+
+// 0084BBF9 for each mount's record, after the unit's own: 00470350 SetShot's draw, then
+// the 00926E80 push (apply_hit's queueing path, which makes the draw) or, with the queue
+// OFF, the dispatch at once.
+void GameGunneryHost::Impl::push_device_blast_records(std::size_t shooter,
+    std::size_t gun_row, std::size_t unit, int team_id, const float point[3],
+    const float direction[3], const bsp::HitRecord& base,
+    std::vector<DeviceBlastMount>& mounts) {
+    for (DeviceBlastMount& mount : mounts) {
+        bsp::HitRecord record = base;
+        record.part_hits = mount.entries.data();
+        record.part_hit_count = static_cast<int>(mount.entries.size());
+        ++device_blast_records;
+        float nearest = mount.entries.front().distance;
+        for (const bsp::HitPartEntry& e : mount.entries) nearest = std::min(nearest, e.distance);
+        log.notef("  impact blast device gun=%zu on %s entries=%zu nearest=%.1f",
+            mount.row, unit_name_or_index(unit + 1).c_str(), mount.entries.size(),
+            static_cast<double>(nearest));
+        if constexpr (kHitDeferredDispatchCc13Bound) {
+            blast_device_gun = static_cast<long long>(mount.row);
+            apply_hit(shooter, gun_row, unit, point, direction, &record, team_id);
+            blast_device_gun = -1;
+        } else {
+            static_cast<void>(shooter);
+            static_cast<void>(team_id);
+            static_cast<void>(point);
+            static_cast<void>(direction);
+            const int cls = round_bullet_class >= 0 ? round_bullet_class : guns[gun_row].bullet_class;
+            const GameBulletClassRow* weapon = bullet(cls);
+            // record+14h; unread, as +34h stays -1 and 008777D0 skips its hull pass.
+            static_cast<void>(draw(Draw::hull_damage, gun_row, unit,
+                weapon != nullptr ? weapon->damage_min : 0.0f,
+                weapon != nullptr ? weapon->damage_max : 0.0f));
+            device_blast_dispatch_009239a0(gun_row, unit, mount.row, record);
+        }
+    }
+}
+
+// 009239A0 -> 0043F7F0 for a mount's blast record (+34h = -1, so never a relay): a
+// depth charge over a parent that is not a submarine goes back to the parent, whose
+// 00826F10 2Ch gate (00826F44) refuses it on a ship (LABELLED: not run; counted);
+// otherwise 008777D0 on the device. LABELLED: the 0077CE60 attribution and the
+// IsKindOf(44h) notify are not modelled for these records.
+void GameGunneryHost::Impl::device_blast_dispatch_009239a0(std::size_t gun_row,
+    std::size_t unit, std::size_t device_row, const bsp::HitRecord& hit) {
+    ++device_blast_dispatched;
+    const int cls = round_bullet_class >= 0 ? round_bullet_class : guns[gun_row].bullet_class;
+    const bsp::DeviceHitSplit split = bsp::device_hit_split_0043f7f0(
+        is_depth_charge_class(bullet(cls)), true, units.unit_is_kind_of(unit, 8),
+        units.unit_is_kind_of(unit, 6), hit.hull_segment);
+    done("Device::relay_hit_0043f7f0", 0x0043f7f0u);
+    if (split.drop) {
+        ++device_blast_drops;
+    } else {
+        ++device_blast_applies;
+        apply_gun_hit_record_008777d0(device_row, hit);
+        done("Device::apply_hit_record_008777d0", 0x008777d0u);
+    }
+}
+
+// Packet cc13-gunF1. The records 00904470 gathers, as apply_impact_blast's walk below
+// will push them: per unit (not the shooter, whose node is 00904470's exclude,
+// source->vtable[B0h](), so 0098C535 never reaches it or its mounts), its own record
+// when the hull box is within the radius and, with an element model, at least one
+// element has a triangle strictly inside it (00723B70); then, with
+// kGunDeviceBlastDamageCc13Bound, one per mount with entries (0098C510's children).
+// The same tests as the walk, without its census counters.
+std::vector<std::size_t> GameGunneryHost::Impl::blast_gathered_records(std::size_t shooter,
+    const float centre[3], float range) {
+    std::vector<std::size_t> out;
+    const float r2 = range * range;
+    for (std::size_t i = 0; i < unit_state.size(); ++i) {
+        if (i == shooter) continue;
+        if (unit_state[i].dead) continue;
+        if (hit_index_detached(i)) continue;
+        std::vector<DeviceBlastMount> mounts;
+        if constexpr (bsp::kGunDeviceBlastDamageCc13Bound) {
+            gather_device_blast_mounts(i, centre, range, mounts);
+        }
+        float distance = 0.0f;
+        bool own = blast_box_distance(i, centre, distance) && !(distance > range);
+        if (own) {
+            const ShipModelSlots* model = kBlastElementEntriesBound ? ship_mesh_of(i) : nullptr;
+            const ShipModelSlots* plane_mesh = model == nullptr && kBlastElementEntriesBound
+                ? plane_mesh_of(i, true) : nullptr;
+            if (plane_mesh != nullptr && !plane_mesh->element_ranges.empty()
+                && kPlaneBlastElementEntriesBound) {
+                model = plane_mesh;
+            }
+            if (model == nullptr && plane_mesh == nullptr) {
+                if (const ShipModelSlots* structure = land_structure_mesh_of(i, true)) {
+                    model = structure;
+                }
+            }
+            if (model != nullptr && !model->element_ranges.empty()) {
+                float right[3], up[3], forward[3], origin[3];
+                unit_pose(i, right, up, forward, origin);
+                const float rel[3] = {centre[0] - origin[0], centre[1] - origin[1],
+                    centre[2] - origin[2]};
+                const float local[3] = {dot3(rel, right), dot3(rel, up), dot3(rel, forward)};
+                bool any = false;
+                for (const auto& er : model->element_ranges) {
+                    if (any) break;
+                    if (er.count == 0) continue;
+                    float box2 = 0.0f;
+                    for (int a = 0; a < 3; ++a) {
+                        const float d = local[a] < er.lo[a] ? er.lo[a] - local[a]
+                            : (local[a] > er.hi[a] ? local[a] - er.hi[a] : 0.0f);
+                        box2 += d * d;
+                    }
+                    if (box2 > r2) continue;
+                    for (std::size_t t = er.first; t < er.first + er.count; ++t) {
+                        if (point_triangle_distance2_0085df60(local,
+                                model->element_tris[t * 3].data(),
+                                model->element_tris[t * 3 + 1].data(),
+                                model->element_tris[t * 3 + 2].data()) < r2) {
+                            any = true;
+                            break;
+                        }
+                    }
+                }
+                own = any;
+            }
+        }
+        if (own) out.push_back(i);
+        for (std::size_t m = 0; m < mounts.size(); ++m) out.push_back(i);
+    }
+    return out;
+}
+
+// Packet cc13-c2b (include/bsp/gun_device_blast_gunless_cc13.hpp). A gunless burst's
+// record for one of `unit`'s mounts: hull_segment -1 (00470470; 0084BAD0 never writes
+// +34h), +28h the burst damage, +24h the radius, +2Ch 0 (00819A20 pushes 0; the crash
+// shot's class is the Kamikaze sub-type 11h, not 10h), hull base 0 and weapon scale 1
+// (shot 0, or a plane whose vtable[54h] is 0042B8D0 FLDZ and [108h] 0042BB30 no weapon).
+void GameGunneryHost::Impl::arm_gunless_device_blast(GunlessDeviceBlastFlush& flush,
+    std::size_t source, std::size_t unit, const float centre[3], float range, float damage,
+    const float point[3]) {
+    gather_device_blast_mounts(unit, centre, range, flush.mounts);
+    if (flush.mounts.empty()) return;
+    flush.host = this;
+    flush.source = source;
+    flush.unit = unit;
+    flush.point = point;
+    bsp::HitRecord& base = flush.base;
+    base.hull_damage_base = 0.0f;
+    base.part_damage_base = damage;
+    base.falloff_range = range;
+    base.ignore_falloff = false;
+    base.armour_selector = 0.0f;
+    base.hull_segment = -1;
+    base.weapon_scale = 1.0f;
+    base.owner_modifier = 1.0f;
+    base.part_hits = nullptr;
+    base.part_hit_count = 0;
+}
+
+// 0084BBF9 for each mount's record after the unit's own: both SetShot calls (009044F4,
+// 0084BBB1) see shot 0 or a plane, so no draw is made; then the 00926E80 push (a gunless
+// node, ON with kHitDeferredDispatchCc13Bound) or, with the queue OFF, the dispatch at once.
+void GameGunneryHost::Impl::push_gunless_device_blast_records(std::size_t source,
+    std::size_t unit, const float point[3], const bsp::HitRecord& base,
+    std::vector<DeviceBlastMount>& mounts) {
+    for (DeviceBlastMount& mount : mounts) {
+        bsp::HitRecord record = base;
+        record.part_hits = mount.entries.data();
+        record.part_hit_count = static_cast<int>(mount.entries.size());
+        ++gunless_device_blast_records;
+        float nearest = mount.entries.front().distance;
+        for (const bsp::HitPartEntry& e : mount.entries) nearest = std::min(nearest, e.distance);
+        log.notef("  gunless blast device gun=%zu on %s entries=%zu nearest=%.1f",
+            mount.row, unit_name_or_index(unit + 1).c_str(), mount.entries.size(),
+            static_cast<double>(nearest));
+        if constexpr (kHitDeferredDispatchCc13Bound) {
+            DeferredHit node;
+            node.gunless = true;
+            node.shooter = source;
+            node.victim = unit;
+            for (int i = 0; i < 3; ++i) node.point[i] = point[i];
+            node.direction[0] = 0.0f;
+            node.direction[1] = 1.0f;
+            node.direction[2] = 0.0f;
+            node.has_blast = true;
+            node.record = record;
+            node.parts.assign(mount.entries.begin(), mount.entries.end());
+            node.blast_device_gun = static_cast<long long>(mount.row);
+            queue_deferred_hit(std::move(node));
+        } else {
+            static_cast<void>(source);
+            static_cast<void>(point);
+            ++summary.queued_hits;
+            done("Projectile::queue_hit_00926e80", 0x00926e80u);
+            device_blast_dispatch_gunless(unit, mount.row, record);
+        }
+    }
+}
+
+// 009239A0 -> 0043F7F0 for a gunless mount record: [record+4h] is 0 or a plane, neither
+// answers 5Ch(2Ch), so there is no drop; +34h is -1, so no relay; 008777D0 on the device.
+// LABELLED as C2: no 0077CE60 attribution or IsKindOf(44h) notify.
+void GameGunneryHost::Impl::device_blast_dispatch_gunless(std::size_t unit,
+    std::size_t device_row, const bsp::HitRecord& hit) {
+    ++device_blast_dispatched;
+    const bsp::DeviceHitSplit split = bsp::device_hit_split_0043f7f0(
+        false, true, units.unit_is_kind_of(unit, 8), units.unit_is_kind_of(unit, 6),
+        hit.hull_segment);
+    done("Device::relay_hit_0043f7f0", 0x0043f7f0u);
+    if (split.drop) {
+        ++device_blast_drops;
+    } else {
+        ++gunless_device_blast_applies;
+        apply_gun_hit_record_008777d0(device_row, hit);
+        done("Device::apply_hit_record_008777d0", 0x008777d0u);
+    }
+}
+
 void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
     std::size_t gun_row, int team_id, const float point[3], const float direction[3],
     bool ignore_falloff) {
@@ -13711,11 +14522,79 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         }
     }
 
+    if constexpr (bsp::kBlastGatherShotDrawCc13Bound) {
+        // Packet cc13-gunF1 (include/bsp/blast_gather_shot_draw_cc13.hpp): 00904470's
+        // gather loop runs SetShot (00470350 at 009044F4) on every gathered record
+        // before 0084BAD0's push loop runs it again (0084BBB1): one discarded
+        // shot->vtable[54h] draw per record, in gather order, ahead of the used ones
+        // the pushes below make.
+        const int shot_class = round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class;
+        const GameBulletClassRow* shot = bullet(shot_class);
+        const float low = shot != nullptr ? shot->damage_min : 0.0f;
+        const float high = shot != nullptr ? shot->damage_max : 0.0f;
+        for (const std::size_t unit : blast_gathered_records(shooter, centre, weapon->blast_range)) {
+            static_cast<void>(draw(Draw::hull_damage, gun_row, unit, low, high));
+            ++blast_gather_shot_draws;
+        }
+    }
+
     for (std::size_t i = 0; i < unit_state.size(); ++i) {
         if (i == shooter) continue;  // 0084BBF9 skips the burst's own source
         UnitState& state = unit_state[i];
         if (state.dead) continue;
         if (hit_index_detached(i)) continue;   // 0098C630 never reaches the node
+
+        // Packet cc13-gunC C2 (include/bsp/gun_device_blast_damage_cc13.hpp): 0098C510
+        // recurses into the node's children after its own record whether or not the
+        // unit had one, so the mounts are gathered here and pushed when this unit's
+        // turn ends, past every `continue` below.
+        struct DeviceBlastFlush {
+            GameGunneryHost::Impl* host{nullptr};
+            std::size_t shooter{0};
+            std::size_t gun_row{0};
+            std::size_t unit{0};
+            int team_id{-1};
+            const float* point{nullptr};
+            const float* direction{nullptr};
+            bsp::HitRecord base{};
+            std::vector<DeviceBlastMount> mounts;
+            ~DeviceBlastFlush() noexcept(false) {
+                if (host != nullptr && !mounts.empty() && std::uncaught_exceptions() == 0) {
+                    host->push_device_blast_records(shooter, gun_row, unit, team_id, point,
+                        direction, base, mounts);
+                }
+            }
+        } device_flush;
+        if constexpr (bsp::kGunDeviceBlastDamageCc13Bound) {
+            gather_device_blast_mounts(i, centre, weapon->blast_range, device_flush.mounts);
+            if (!device_flush.mounts.empty()) {
+                device_flush.host = this;
+                device_flush.shooter = shooter;
+                device_flush.gun_row = gun_row;
+                device_flush.unit = i;
+                device_flush.team_id = team_id;
+                device_flush.point = point;
+                device_flush.direction = direction;
+                // The unit's record below, with +34h kept at -1 (00470470).
+                bsp::HitRecord& base = device_flush.base;
+                base.hull_damage_base = 0.0f;
+                base.part_damage_base = damage;
+                base.falloff_range = weapon->blast_range;
+                base.ignore_falloff = ignore_falloff
+                    || (kFlakBlastIgnoreFalloffBound && weapon->type == "Flak");
+                base.armour_selector = 0.0f;
+                base.hull_segment = -1;
+                base.weapon_scale = 1.0f;
+                base.owner_modifier = 1.0f;
+                if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+                    if (const auto m = bsp::game_powerups::powerup_site_product(1, shooter)) {
+                        base.owner_modifier = *m;
+                    }
+                }
+                base.part_hits = nullptr;
+                base.part_hit_count = 0;
+            }
+        }
 
         // The distance from the burst centre to the unit's hull box, in the
         // hull's own frame: the same slab SegmentBinding::shape_trace_segment
@@ -13815,7 +14694,7 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         blast.owner_modifier = 1.0f;
         if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
             // Packet cc13-powerup-bind: 0084BC60's blast record carries the shot
-            // (buffer+20h, 00470350 at 0084BBA7), so 004705C0 takes
+            // (buffer+20h, 00470350 at 0084BBB1), so 004705C0 takes
             // ProductForUnit(1, owner) at 0047062F as the direct hit does.
             // PROVISIONAL: the owner is the shooter. Gate shut: 1.0f as before.
             if (const auto m = bsp::game_powerups::powerup_site_product(1, shooter)) {
@@ -14313,6 +15192,9 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                 if (dc.script_hull_repair == 0) dc.withheld += state.health - before;
             }
             done("DamageControl::repair_hull_0093c770", 0x0093c770u);
+        }
+        if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+            repair_guns_0093c860(i, dt);   // 0093CA3A, the second step
         }
         if constexpr (kComponentFailureBound) {
             // 0093C520, the third step: every failure's seconds run down at
@@ -15228,6 +16110,10 @@ bool GameGunneryHost::Impl::torpedo_tube_can_fire_1d0(std::size_t g) {
     gate.fire_params_armed = true;
     gate.disabled = false;
     gate.damage_counter = 0;
+    if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+        gate.disabled = gun.destroyed_3b8;           // gun+3B8h
+        gate.damage_counter = gun.damage_level_358;  // gun+358h
+    }
     gate.barrel_delay_time = gun.fire.barrel_delay_time;
     gate.secondary_delay = gun.fire.fire_stagger;
     gate.unit_cooldown_applies = false;   // 006D1E50: not for Function 7
@@ -17284,6 +18170,238 @@ void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float
         && host.health_zero_callback_allowed(dispatch_health_changed)) host.kill_unit(unit_index);
 }
 
+// Packet cc13-gunB (kGunDestroyedFailureCc13Bound, include/bsp/
+// gun_destroyed_failure_cc13.hpp). 00728080 BSP_Gun_ApplyDamageIfEnabled: nothing
+// once byte +3B8h is set (00728080 CMP), else 00442AE0 (the role multiplier,
+// config+4Ch) -> 0087D730 (the party multiplier, config+1Ch) -> 00879070 on +370h ->
+// 00877B90, whose 0043F7D0 sends a gun at or below zero (COMISS; NaN lives) down
+// vtable[70h](1). LABELLED: 00442AE0's kind-5 test and 0087D730's device+54h are
+// the owning unit's (difficulty_scaled_damage, as for 0095DA00); the gun's +150h
+// floor is 0.
+void GameGunneryHost::Impl::apply_gun_damage_00728080(std::size_t g, float amount) {
+    if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+        if (g >= guns.size()) return;
+        GameGunRow& gun = guns[g];
+        ++gun.damage_calls;
+        ++gun_damage_calls;
+        if (gun.destroyed_3b8) {                                   // 00728080
+            ++gun.damage_refused;
+            return;
+        }
+        const float scaled = difficulty_scaled_damage(gun.unit_index, amount);
+        bsp::UnitHealth health;
+        health.current_health = gun.health_370;
+        health.max_health = gun.max_health_36c;
+        health.invincibility = 0.0f;
+        const bsp::UnitDamageGates gates;
+        const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates, scaled);
+        if (outcome.refused) {
+            ++gun.damage_refused;
+            return;
+        }
+        const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
+            outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
+        if (write.wrote) gun.health_370 = write.stored_health;
+        if (gun.health_370 <= 0.0f) gun_destroyed_failure_0072b5a0(g);   // 0043F7D0
+        done("Gun::apply_damage_if_enabled_00728080", 0x00728080u);
+    } else {
+        (void)g;
+        (void)amount;
+    }
+}
+
+// The 0043F7D0 death of one gun: vtable[70h](1) 0077D1A0 -> 00926C80 (+60h, once;
+// queues the gun on 00F899A8) -> FlushPending 009273A0 calls only vtable[74h]
+// (0092747F) = 00926390, which sets +5Dh = 1 and +60h = 1, runs 00925C90 and
+// tail-jumps vtable[7Ch] 00729FA0 -> 00440F50 "destroyed" -> 00729FD0 -> message
+// 68h -> 0072B5A0: byte +3B8h = 1 (0072B5BC) and vtable[1B4h](level) -> 00877B00 ->
+// 00876EC0 (+358h). The gun is not deleted; it stays as a wreck. LABELLED: the
+// flush runs here at once, not at the queue's drain later in the frame; 00925C90 is
+// not modelled. LABELLED SUBSTITUTION: level = 0, the host has no model damage
+// rows ([gun+360h]), so +358h stays 0. Then 00956C20 for a live owner (00729FA0
+// and 0072B5A0 both run it), which drops the gun from the category lists. 0072B4C0
+// (the firing effects) is presentation and not modelled. The repair clear 007280A0
+// -> 00925A00 (+5Fh/+5Eh/+60h/+5Dh, 00925A52..00925A73) has no host caller.
+// LABELLED: a dead owner's rebuild is skipped. The image's 0072B5A0 runs 0072B4C0 and
+// 00956C20 on [gun+3F0h] at 0072B606..0072B631 with no owner-dead test, and 00729FA0
+// (00729FB2..00729FC5) calls 00956BA0(gun) instead when the owner's +5Dh or +60h is set.
+void GameGunneryHost::Impl::gun_destroyed_failure_0072b5a0(std::size_t g) {
+    GameGunRow& gun = guns[g];
+    if (gun.destroyed_60) return;                                   // 00926C80
+    gun.destroyed_60 = true;
+    gun.destroyed_5d = true;                                        // 00926390
+    gun.destroyed_3b8 = true;                                       // 0072B5BC
+    gun.damage_level_358 = 0;                                       // 00876EC0, level 0
+    ++guns_destroyed;
+    if (gun.unit_index < unit_state.size() && !unit_state[gun.unit_index].dead) {
+        rebuild_weapon_category_index_00956c20(gun.unit_index);    // 00729FA0, 0072B5A0
+    }
+    done("Gun::apply_set_destroyed_failure_0072b5a0", 0x0072b5a0u);
+}
+
+// Packet cc13-gunD (kGunSubobjectRepairCc13Bound, include/bsp/gun_subobject_repair_cc13.hpp).
+// 00877B90 on one gun's +370h.
+void GameGunneryHost::Impl::set_gun_health_00877b90(std::size_t g, float requested) {
+    GameGunRow& gun = guns[g];
+    bsp::UnitHealth health;
+    health.current_health = gun.health_370;
+    health.max_health = gun.max_health_36c;
+    health.invincibility = 0.0f;
+    const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health, requested,
+        bsp::UnitSessionMode::campaign, 0, false);
+    if (write.wrote) gun.health_370 = write.stored_health;
+}
+
+// 0093C99F..0093C9CC / 006F498C..006F49B3: a gun at full health with +5Dh set gets
+// vtable[19Ch]("destroyed", 0) = 0072A0D0, whose 69h reaches 007280A0. LABELLED: the
+// 69h chain applies inline (an early flush, as packet B's 68h chain), not at the
+// session receive queue's drain.
+void GameGunneryHost::Impl::gun_full_health_destroyed_stop_0072a0d0(std::size_t g) {
+    if (!guns[g].destroyed_5d) return;
+    done("Gun::stop_destroyed_failure_0072a0d0", 0x0072a0d0u);
+    gun_clear_destroyed_failure_007280a0(g);
+}
+
+// 007280A0 on message 69h: +3B8h = 0 (007280C0); vtable[1B4h](0) = 00877B00, +358h = 0
+// through 00876EC0 (its presentation calls, 00710BB0 model group selection and 0049C940,
+// are not modelled); 008781F0(1), the scene nodes shown again (presentation, not
+// modelled); 00925A00 (00925A1F..00925A38: the parent [gun+3Ch] has +5Ch set and +5Dh,
+// +60h, +5Eh clear), which clears +5Fh and +5Eh (no gun fields: B's destroy path never
+// sets them), +60h (00925A70; B flushes at once, so no F899A8 entry is left) and +5Dh
+// (00925A73); then, whatever the gate did (007280B2's non-69h JZ and the 69h path both
+// reach 007280D9), 00956C20 on [gun+3F0h] (007280DF), which takes the gun back into the
+// category lists. The host rebuild is safe on a dead owner (it touches only that unit's
+// lists). LABELLED: the gate is the owner's UnitState not dead, which misses an owner
+// with +5Ch clear (inactive) and a live owner with +60h (pending destroy) or +5Eh set;
+// there the host clears +5Dh/+60h and the image keeps them.
+void GameGunneryHost::Impl::gun_clear_destroyed_failure_007280a0(std::size_t g) {
+    GameGunRow& gun = guns[g];
+    gun.destroyed_3b8 = false;                                      // 007280C0
+    gun.damage_level_358 = 0;                                       // 00877B00(0)
+    const bool owner_live = gun.unit_index < unit_state.size()
+        && !unit_state[gun.unit_index].dead;
+    if (owner_live) {
+        gun.destroyed_60 = false;                                   // 00925A70
+        gun.destroyed_5d = false;                                   // 00925A73
+        done("MissionEntity::cancel_pending_destroy_00925a00", 0x00925a00u);
+    }
+    if (gun.unit_index < unit_state.size()) {
+        rebuild_weapon_category_index_00956c20(gun.unit_index);    // 007280DF
+    }
+    ++guns_revived;
+    done("Gun::apply_clear_destroyed_failure_007280a0", 0x007280a0u);
+}
+
+// 0093C860 over unit `unit`'s guns. The rate (0093C881..0093C8E6): settings+3D8h when
+// task+24h is 2, else 1.0 (the host's task priority is the constructor's 0, so 1.0),
+// times the modifier product (3) under the 00F88C30 gate (0093C8C5). Per gun:
+// ((settings+3B8h * dt) * gun+36Ch) * rate, per operation at PC24 (0093C938..0093C94C),
+// into 00879810 (negated into 00879070, 0093C957); then 00877B90(max) when max <= health
+// (0093C986 JC), and the destroyed stop.
+void GameGunneryHost::Impl::repair_guns_0093c860(std::size_t unit, float dt) {
+    namespace x8 = bsp::cc13x87;
+    const DamageControl& dc = damage_control[unit];
+    float rate = 1.0f;                                              // 0093C896, priority 0
+    if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+        if (const auto m = bsp::game_powerups::powerup_site_product(3, unit)) {
+            rate = static_cast<float>(x8::x87_mul24(*m, rate));     // 0093C8E2
+        }
+    }
+    for (std::size_t g = 0; g < guns.size(); ++g) {
+        GameGunRow& gun = guns[g];
+        if (gun.unit_index != unit) continue;
+        // 0093C8F7..0093C923: IsKindOf(4), not IsKindOf(0Fh) and +378h, true for a gun.
+        const float amount = static_cast<float>(x8::x87_mul24(x8::x87_mul24(
+            x8::x87_mul24(dc.gun_repair_tick_3b8, dt), gun.max_health_36c), rate));
+        bsp::UnitHealth health;
+        health.current_health = gun.health_370;
+        health.max_health = gun.max_health_36c;
+        health.invincibility = 0.0f;
+        const bsp::UnitDamageGates gates;                          // +5Eh: never set on a gun
+        const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
+            bsp::health_delta_to_damage_00879810(amount));
+        if (!outcome.refused) set_gun_health_00877b90(g, outcome.new_health);
+        if (gun.max_health_36c <= gun.health_370) {                 // 0093C986
+            set_gun_health_00877b90(g, gun.max_health_36c);         // 0093C99A
+            gun_full_health_destroyed_stop_0072a0d0(g);
+        }
+    }
+    done("RepairTask::repair_subobjects_0093c860", 0x0093c860u);
+}
+
+// 006F47F0's gun loop (006F48EC..006F49E3), `fraction` = Repair[level] * a / GunRepairTime
+// (006F48CE..006F48D5), run only when it is above 0 (006F48E6). Per gun: max * fraction
+// + health (006F4935 FMUL, 006F4939 FADD, FSTP float), the lesser of it and max
+// (006F4949), 00877B90 (006F4965), then the destroyed stop when health >= max (006F498A).
+void GameGunneryHost::Impl::repair_guns_006f47f0(std::size_t unit, float fraction) {
+    namespace x8 = bsp::cc13x87;
+    if (!(fraction > 0.0f)) return;
+    for (std::size_t g = 0; g < guns.size(); ++g) {
+        GameGunRow& gun = guns[g];
+        if (gun.unit_index != unit) continue;                       // 006F4909 IsKindOf(4)
+        const float sum = static_cast<float>(x8::x87_add24(
+            x8::x87_mul24(gun.max_health_36c, fraction), gun.health_370));
+        set_gun_health_00877b90(g, gun.max_health_36c > sum ? sum : gun.max_health_36c);
+        if (gun.max_health_36c <= gun.health_370) gun_full_health_destroyed_stop_0072a0d0(g);
+    }
+    done("CommandBuilding::repair_guns_006f48ec", 0x006f48ecu);
+}
+
+// Packet cc13-gunB follow-up: 008777D0 BSP_UnitInstance_ApplyHitRecord with ECX = a
+// gun. Hull pass (008777DD..008778D4): skipped when hit+34h is -1; armour = gun+368h,
+// times ProductForUnit(2, [gun+3F0h]) under the powerup gate (0087784F hull and
+// 00877965 parts, the IsKindOf(20h) arms every gun takes; 00877875 / 008779A3 are the
+// non-20h arms, PUSH ESI, the unit itself); 00470510; a positive value goes to
+// vtable[1ACh] = 00728080. Part pass (008778E4..00877A37): each +3Ch entry with +4h
+// != -1 through 004705C0 with the same scaled armour, the largest kept from -FLT_MAX
+// (00D7A244) and dispatched once when above 0.0. Kind 4 (and the hull's IsKindOf(6)
+// alternate, which no gun class takes) read the class vtable[24h] 004407A0 =
+// class+4Ch ([gun+354h]->vt[24h]()), the value 0087BCF4 copies to +368h; exact
+// unless a post-init writer of +368h exists (not scanned). The hit+48h stores
+// before each dispatch have no field on bsp::HitRecord.
+void GameGunneryHost::Impl::apply_gun_hit_record_008777d0(std::size_t g,
+                                                         const bsp::HitRecord& hit) {
+    if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+        if (g >= guns.size()) return;
+        float armour = guns[g].armour_368;
+        if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+            if (const auto m = bsp::game_powerups::powerup_site_product(2, guns[g].unit_index)) {
+                armour = *m * armour;                               // 0087788E..00877899
+            }
+        }
+        if (hit.hull_segment != -1) {
+            const float damage = bsp::hull_damage_00470510(hit, armour);
+            if (damage > 0.0f) apply_gun_damage_00728080(g, damage);   // 008778D2
+        }
+        float best = -3.402823466e+38f;
+        bool any = false;
+        for (int i = 0; i < hit.part_hit_count; ++i) {
+            if (hit.part_hits[i].part_index == -1) continue;
+            const float part = bsp::part_damage_004705c0(hit, armour, i);
+            if (part > best) best = part;
+            any = true;
+        }
+        if (any && best > 0.0f) apply_gun_damage_00728080(g, best);  // 00877A37
+        done("Gun::apply_hit_record_008777d0", 0x008777d0u);
+    } else {
+        (void)g;
+        (void)hit;
+    }
+}
+
+void GameGunneryHost::repair_unit_guns_006f47f0(std::size_t unit_index, float fraction) {
+    if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+        impl_->repair_guns_006f47f0(unit_index, fraction);
+    } else {
+        (void)unit_index;
+        (void)fraction;
+    }
+}
+
+void GameGunneryHost::apply_gun_damage_00728080(std::size_t gun, float amount) {
+    impl_->apply_gun_damage_00728080(gun, amount);
+}
+
 void GameGunneryHost::override_hp_008c1930(std::size_t unit_index, float value) {
     Impl& host = *impl_;
     ++host.override_hp_calls;
@@ -18687,6 +19805,31 @@ void GameGunneryHost::report() {
             "bound=%d (00816650 / 0081F980; 00724510 -> 00723AA0, packet cc9_hull_sections)",
             host.artillery_section_points, kShipSectionPointsBound ? 1 : 0, host.shell_mesh_hits,
             kShellHullHitTestBound ? 1 : 0);
+        // Packet cc13-gunC: each line only under its own switch, so an OFF log is unchanged.
+        if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+            host.log.notef("summary mission gunnery device mesh traces=%llu hits=%llu dispatched=%llu "
+                "relays=%llu drops=%llu gun_applies=%llu meshes=%zu bound=%d (0043F7F0, packet "
+                "cc13-gunC C1)", host.device_hit_traces, host.device_hits_traced,
+                host.device_hits_dispatched, host.device_hit_relays, host.device_hit_drops,
+                host.device_hit_gun_applies, host.device_hit_meshes.size(),
+                bsp::kGunDeviceHitDamageCc13Bound ? 1 : 0);
+        }
+        if constexpr (bsp::kBlastGatherShotDrawCc13Bound) {
+            host.log.notef("summary mission gunnery blast gather shot draws=%llu (009044F4, packet "
+                "cc13-gunF1)", host.blast_gather_shot_draws);
+        }
+        if constexpr (bsp::kGunDeviceBlastDamageCc13Bound) {
+            host.log.notef("summary mission gunnery device blast records=%llu dispatched=%llu "
+                "drops=%llu applies=%llu bound=%d (0098C510 children, packet cc13-gunC C2)",
+                host.device_blast_records, host.device_blast_dispatched, host.device_blast_drops,
+                host.device_blast_applies, bsp::kGunDeviceBlastDamageCc13Bound ? 1 : 0);
+        }
+        if constexpr (bsp::kGunDeviceBlastGunlessCc13Bound) {
+            host.log.notef("summary mission gunnery gunless device blast records=%llu "
+                "applies=%llu bound=%d (00819A20 / 0084BC60 crash shot, packet cc13-c2b)",
+                host.gunless_device_blast_records, host.gunless_device_blast_applies,
+                bsp::kGunDeviceBlastGunlessCc13Bound ? 1 : 0);
+        }
         host.log.notef("summary mission gunnery plane mesh hit tests=%llu mesh_hits=%llu "
             "class_box_hits=%llu bound=%d (0087BCC0 -> 00712440 -> 00724510, packet "
             "cc9_plane_mesh_hit)", host.plane_mesh_tests, host.plane_mesh_hits,

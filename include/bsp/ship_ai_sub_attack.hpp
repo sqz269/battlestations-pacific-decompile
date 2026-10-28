@@ -59,7 +59,7 @@ inline constexpr bool kSubAttackOwnHalfLengthBound = true;
 // float(double op) is the 24-bit rounding of each op. False: the earlier host,
 // which evaluates each chain in double and rounds once (or not at all).
 // Packet cc13-pc24a.
-inline constexpr bool kShipAiFireStepPc24Cc13Bound = false;
+inline constexpr bool kShipAiFireStepPc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 inline constexpr float kSubAttackDefaultTargetLength = 100.0f;// 00CE3D08, 009E9D37
 inline constexpr float kSubAttackNoTubeRange = 500.0f;        // 00CE397C, 009E9D80
 inline constexpr float kSubAttackReadyHorizon = 10.0f;        // 00CE38B8 -> fire+5Ch, 009EABFC

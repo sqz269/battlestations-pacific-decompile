@@ -14,7 +14,7 @@ namespace bsp {
 // (JBE at 00A13C81, no root), and the scoring distance is 0 unless d2 > 1e-10 [00CE3820].
 // Untouched same-address copies (not under this switch): 00A13B60 in
 // src/gameplay_seg69_70_cc13.cpp and 004F2F40 in src/avoid_zone_polygon_partition.cpp.
-inline constexpr bool kPc24AiPlannersCc13Bound = false;
+inline constexpr bool kPc24AiPlannersCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 
 // Application frame: src/app_frame_game_state.cpp (00BE34D0 profiler end frame).
 inline constexpr bool kPc24AppFrameCc13Bound = true;  // ON by pruning (cc9-sweep1b, lead): display only

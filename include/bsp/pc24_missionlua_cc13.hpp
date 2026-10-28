@@ -35,6 +35,7 @@ namespace bsp {
 //   (ship AI landing), countdown / narrative timing and their callbacks,
 //   camera-state degrees, spawn placement positions and frames, and the
 //   loading-screen progress value.
-inline constexpr bool kPc24MissionLuaCc13Bound = false;
+// ON (cc9-recon2): flipped with kPc24LuaSpawnCc13Bound; 18 WINS-row pairs on afa0394fc.
+inline constexpr bool kPc24MissionLuaCc13Bound = true;
 
 }  // namespace bsp

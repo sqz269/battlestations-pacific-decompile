@@ -30,6 +30,6 @@ namespace bsp {
 // station keeping and steer points, sight-follow targets, vehicle avoidance
 // probes, friendly line-of-fire tests, dogfight threat and give-up decisions,
 // the takeoff run's obstacle factor near ships.
-inline constexpr bool kFollowToBodyPc24Cc13Bound = false;
+inline constexpr bool kFollowToBodyPc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): joint pair with the gunnery/follow_to_body switch on d3ad11c39; see commit
 
 }  // namespace bsp

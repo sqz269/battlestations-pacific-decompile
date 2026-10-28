@@ -81,7 +81,7 @@ struct Front6Host {
     virtual void archive_leave_08(void* archive) = 0;
     // vtable +0Ch write, __thiscall(archive; TaggedValue key, TaggedValue value) RET 10h.
     virtual void archive_write_0c(void* archive, TaggedValue key, TaggedValue value) = 0;
-    // 00928450 BSP_GameEntityWriteArchive, __thiscall(ECX = entity; archive) RET 4.
+    // 00928450 BSP_GameEntity_SaveThinkTimingRoles, __thiscall(ECX = entity; archive) RET 4.
     virtual void game_entity_write_archive_00928450(void* entity, void* archive) = 0;
     // 00805020 BSP_ReconDetectionSet_WriteArchive, __thiscall(ECX = set; archive) RET 4.
     virtual void recon_detection_set_write_archive_00805020(void* set, void* archive) = 0;

@@ -13,6 +13,7 @@
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/gun_owner_inferior_operational_cc13.hpp"
+#include "bsp/gun_subobject_repair_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/game_hosts_powerups.hpp"  // packet cc13-powerup-bind
@@ -68,6 +69,7 @@
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/projectile_kinds.hpp"
 #include "bsp/gun_aiming.hpp"
+#include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
 #include "bsp/gun_gravity_arc.hpp"
 #include "bsp/gun_heading_snap.hpp"
 #include "bsp/gameplay_settings_tail.hpp"
@@ -117,13 +119,36 @@
 #include "bsp/segment_distance_2d_cc13.hpp"  // packet cc13-p3b
 #include "bsp/torpedo_candidate_gyro_heading_cc13.hpp"  // packet cc13-torpgyro
 
+namespace bsp {
+TorpedoGyroHeadingCensus& torpedo_gyro_heading_census() noexcept {
+    static TorpedoGyroHeadingCensus census;
+    return census;
+}
+} // namespace bsp
+
 namespace bsp::game {
+
+namespace {
+// Census for kTorpedoCandidateGyroHeadingCc13Bound (cc9-nondet1, log only): whether the
+// commanded heading and the velocity's atan2(x, z) differ by more than 1e-3 rad.
+bool torpedo_gyro_heading_differs(float commanded, float vx, float vz) noexcept {
+    constexpr double kPi = 3.14159265358979323846;
+    double d = static_cast<double>(commanded)
+        - std::atan2(static_cast<double>(vx), static_cast<double>(vz));
+    // The 10000 sentinel (and any non-angle) always counts.
+    if (!(std::fabs(commanded) < 100.0f) || !(std::fabs(d) < 1.0e6)) return true;
+    d = std::fmod(d, 2.0 * kPi);
+    if (d > kPi) d -= 2.0 * kPi;
+    if (d < -kPi) d += 2.0 * kPi;
+    return std::fabs(d) > 1.0e-3;
+}
+} // namespace
 
 // cc13-D6. 009E5E00 returns brain+0B20h only when that target answers
 // vtable[5Ch](1Ch) (a CommandBuilding), else 0. False: the host returns +0B20h
 // unchecked, which matches while standoff mode 4 (the only caller, 009E6B85) keeps
 // the kind-1Ch target it latched with. cc9 orders and pairs the flip.
-inline constexpr bool kEngagementTargetKindTestCc13Bound = false;
+inline constexpr bool kEngagementTargetKindTestCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 // Packet cc9_ship_firepower, docs/SHIP_AI_FIREPOWER.md. True: the eight
 // predicates 0095EB40 asks about a mount answer from the gun rows the gunnery
 // host keeps (barrel timers, arcs, the refined projectile sub-type, the Bullets
@@ -2097,6 +2122,10 @@ struct GameShipAiHost::Impl {
             in.torpedo_position[0] = head->position[0];
             in.torpedo_position[1] = head->position[1];
             in.torpedo_position[2] = head->position[2];
+            ++bsp::torpedo_gyro_heading_census().threat_reads;
+            if (torpedo_gyro_heading_differs(head->commanded_heading_46c, head->velocity[0],
+                                             head->velocity[2]))
+                ++bsp::torpedo_gyro_heading_census().threat_differs;
             if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
                 in.torpedo_heading = head->commanded_heading_46c;   // 00817535
             } else {
@@ -2112,6 +2141,10 @@ struct GameShipAiHost::Impl {
             in.torpedo_position[0] = t.position[0];
             in.torpedo_position[1] = t.position[1];
             in.torpedo_position[2] = t.position[2];
+            ++bsp::torpedo_gyro_heading_census().threat_reads;
+            if (torpedo_gyro_heading_differs(t.commanded_heading_46c, t.velocity[0],
+                                             t.velocity[2]))
+                ++bsp::torpedo_gyro_heading_census().threat_differs;
             if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
                 in.torpedo_heading = t.commanded_heading_46c;       // 00817535
             } else {
@@ -2230,6 +2263,9 @@ struct GameShipAiHost::Impl {
         c.z = t.position[2];
         c.vx = t.velocity[0];
         c.vz = t.velocity[2];
+        ++bsp::torpedo_gyro_heading_census().track_reads;
+        if (torpedo_gyro_heading_differs(t.commanded_heading_46c, t.velocity[0], t.velocity[2]))
+            ++bsp::torpedo_gyro_heading_census().track_differs;
         if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
             // 009DC0F9: record+46Ch, the round's commanded heading.
             c.heading = t.commanded_heading_46c;
@@ -4832,6 +4868,8 @@ public:
         owner_.done("ShipAiFirepower::device_is_operational_00729f10", 0x0095ec52u);
         if constexpr (bsp::kGunIsOperationalHostedCc13) {
             // [device+3F0h] is the gun row's unit (bsp/gun_owner_inferior_operational_cc13.hpp).
+            // LABELLED: a handle with no gun row answers operational (the image
+            // has no such case; every list node holds a gun).
             const GameGunRow* gun = gun_row(device);
             return gun == nullptr
                 || bsp::gun_is_operational_00729f10_cc13(owner_.units, *gun);
@@ -4860,7 +4898,17 @@ public:
             gun->barrel_num, static_cast<int>(gun->fire.barrel_timers.size()), horizon);
     }
 
-    bool device_is_destroyed(bsp::NativeHandle) override { return false; }
+    // [device+3B8h], 0095EC8B. Packet cc13-gunB: set by 0072B5A0 under
+    // kGunDestroyedFailureCc13Bound; nothing sets it otherwise.
+    bool device_is_destroyed(bsp::NativeHandle device) override {
+        if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+            const GameGunRow* gun = gun_row(device);
+            return gun != nullptr && gun->destroyed_3b8;
+        } else {
+            (void)device;
+            return false;
+        }
+    }
 
     // [device+448h], 0095EC98.
     int device_barrel_count(bsp::NativeHandle device) override {
@@ -13288,6 +13336,11 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
                 continue;
             }
             gunnery_draws->repair_unit_to_fraction(b.unit, repair / b.repair_time_180);
+            if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+                // 006F48BC..006F49E3, the gun loop: Repair[level] * a / GunRepairTime.
+                gunnery_draws->repair_unit_guns_006f47f0(b.unit,
+                    repair / bsp::kCommandBuildingGunRepairTime);
+            }
             ++capture_repair_steps;
             for (const CaptureBuilding::GarrisonRecord& r : b.garrison) {
                 if (!r.linked) continue;
@@ -13295,6 +13348,10 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
                 if (units.unit_is_kind_of(r.unit, 0x45)) rate = b.airfield_repair_188;
                 else if (units.unit_is_kind_of(r.unit, 0x46)) rate = b.shipyard_repair_18c;
                 gunnery_draws->repair_unit_to_fraction(r.unit, repair / rate);
+                if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+                    gunnery_draws->repair_unit_guns_006f47f0(r.unit,
+                        repair / bsp::kCommandBuildingGunRepairTime);   // 006F48BC
+                }
                 ++capture_repair_garrison;
             }
         }
@@ -13483,8 +13540,20 @@ void GameShipAiHost::Impl::apply_capture_flip_006f4d10(CaptureBuilding& b,
         // Packet s52_cb_repair: f = Repair[+770h] * 1.0 / 1.0 (006F481E..006F4828),
         // the level before the flip's D4h level 0 below.
         const int lv = b.level_770 < 0 ? 0 : (b.level_770 > 3 ? 3 : b.level_770);
-        if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit,
-            kCommandBuildingStepRepairBound ? kCommandBuildingRepairLevel[lv] : 1.0f);
+        if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+            if (flip.repair) {
+                gunnery_draws->repair_unit_to_fraction(b.unit,
+                    kCommandBuildingStepRepairBound ? kCommandBuildingRepairLevel[lv] : 1.0f);
+                // 006F48CE..006F48D5 with a = 1.0: Repair[level] * 1.0 / GunRepairTime.
+                gunnery_draws->repair_unit_guns_006f47f0(b.unit, static_cast<float>(
+                    bsp::cc13x87::x87_div24(bsp::cc13x87::x87_mul24(
+                        kCommandBuildingRepairLevel[lv], 1.0f),
+                    bsp::kCommandBuildingGunRepairTime)));
+            }
+        } else {
+            if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit,
+                kCommandBuildingStepRepairBound ? kCommandBuildingRepairLevel[lv] : 1.0f);
+        }
     }
     // 006F5362..006F53A4: D4h with level 0, after the repair.
     if (kCommandBuildingLevelBound) command_building_level_006f38e0(b, 0, "flip D4h 006F5362");
