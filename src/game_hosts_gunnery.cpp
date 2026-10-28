@@ -18,6 +18,7 @@
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
 #include "bsp/gun_subobject_repair_cc13.hpp"   // packet cc13-gunD
+#include "bsp/ship_damaged_gfx_remove_cc13.hpp"   // packet cc13-gunC C1b
 #include "bsp/camera_multiply.hpp"
 #include "bsp/cc13_tier2_switches.hpp"
 #include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (the 31h release)
@@ -108,6 +109,7 @@
 #include "bsp/seg59_ship_lead_s54.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/cc13_damage_smoke.hpp"   // packet cc13-smokepc24 (00822770 PC24 slot count)
+#include "bsp/blast_gather_shot_draw_cc13.hpp"   // packet cc13-gunF1 (009044F4 SetShot)
 #include "bsp/gun_device_blast_damage_cc13.hpp"  // packet cc13-gunC C2 (0098C510 children)
 #include "bsp/gun_device_blast_gunless_cc13.hpp"  // packet cc13-c2b (C2b, gunless bursts)
 #include "bsp/gun_device_hit_damage_cc13.hpp"   // packet cc13-gunC C1 (0043F7F0)
@@ -1793,7 +1795,8 @@ constexpr bool kShipDeathMessageBound = true;  // ON: USN02, JM08 pairs identica
 //    in no other vtable, so the existing ship-kind gate in ship_death_message_00827ab0
 //    is the class test. OFF: kill_unit's InferiorFailure arm
 //    returns before the message. Counted either way (adopted_ship_zero).
-constexpr bool kAdoptedShipDeathMessageBound = false;
+//    ON (cc9-recon2, unreached): adopted_ship_zero=0 on all 18 WINS rows (2026-10-28).
+constexpr bool kAdoptedShipDeathMessageBound = true;
 constexpr float kWreckChanceInstalled = 0.3f;
 //  * kShipBreakInTwoDrawsBound (cc9-ships60, SHIP_AI 298): the 98h receiver 00814520
 //    tail-jumps to 00935D30 BSP_UnitController_BreakInTwo, whose two pieces take 11
@@ -3879,6 +3882,14 @@ struct GameGunneryHost::Impl {
     std::vector<std::vector<std::size_t>> device_children;
     std::size_t device_children_guns{static_cast<std::size_t>(-1)};
     const std::vector<std::size_t>& device_children_of(std::size_t unit);
+    // Packet cc13-gunC C1b (include/bsp/ship_damaged_gfx_remove_cc13.hpp): each unit's
+    // vtable[1B4h] level (+358h, 0 at spawn) and the gun rows 00819CC0 detached from its
+    // spatial child array, in detach order, replayed by device_children_of.
+    std::vector<int> damaged_gfx_level;
+    std::vector<std::vector<std::size_t>> device_children_removed;
+    unsigned long long damaged_gfx_calls{0};
+    unsigned long long damaged_gfx_ship_raises{0};
+    unsigned long long damaged_gfx_mounts_removed{0};
     bool device_hit_world_frame(std::size_t gun_row, float axes[3][3], float origin[3]);
     void gun_device_hit_damage_008777d0(std::size_t unit, std::size_t gun_row,
         const bsp::HitRecord& hit);
@@ -3907,6 +3918,12 @@ struct GameGunneryHost::Impl {
         const bsp::HitRecord& base, std::vector<DeviceBlastMount>& mounts);
     void device_blast_dispatch_009239a0(std::size_t gun_row, std::size_t unit,
         std::size_t device_row, const bsp::HitRecord& hit);
+    // Packet cc13-gunF1 (include/bsp/blast_gather_shot_draw_cc13.hpp): the unit of each
+    // record apply_impact_blast's walk will push, in push order, and the discarded
+    // gather draws made for them.
+    std::vector<std::size_t> blast_gathered_records(std::size_t shooter,
+        const float centre[3], float range);
+    unsigned long long blast_gather_shot_draws{0};
     // Packet cc13-c2b (include/bsp/gun_device_blast_gunless_cc13.hpp): the mounts of a
     // gunless burst (00819A20, 0084BC60's crash shot). The flush pushes them when the
     // walked unit's turn ends, after its own record, past every `continue`.
@@ -4678,8 +4695,18 @@ struct GameGunneryHost::Impl {
         int team = gun.seat_1ac;
         if (team == 8 && gun.category == 0) {
             std::size_t stamp_owner = owner;
+            // Census for the S24 flip (cc9-recon2): stamps whose owner has a squadron
+            // head, and those where the head's role-1 slot differs from the owner's.
+            const std::size_t head = units.plane_shot_owner_squadron_head_0072c119(owner);
+            if (head != owner) {
+                ++shot_team_head.replaced;
+                std::int32_t own_slot = team, head_slot = team;
+                const bool own_ok = units.unit_current_role_slot(owner, 1, own_slot);
+                const bool head_ok = units.unit_current_role_slot(head, 1, head_slot);
+                if (own_ok != head_ok || own_slot != head_slot) ++shot_team_head.slot_differs;
+            }
             if constexpr (kShotTeamSquadronHeadCc13Bound) {
-                stamp_owner = units.plane_shot_owner_squadron_head_0072c119(owner);
+                stamp_owner = head;
             }
             std::int32_t slot = team;
             if (units.unit_current_role_slot(stamp_owner, 1, slot)) team = slot;
@@ -4713,6 +4740,10 @@ struct GameGunneryHost::Impl {
         unsigned long long adopted_ship_zero{0};         // kAdoptedShipDeathMessageBound
     } ship_death;
     unsigned long long override_hp_kills{0};
+    struct ShotTeamHeadCounts {   // kShotTeamSquadronHeadCc13Bound census
+        unsigned long long replaced{0}, slot_differs{0};
+    };
+    mutable ShotTeamHeadCounts shot_team_head;
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
     bool line_of_sight_00864680(std::size_t observer, std::size_t target);
     unsigned long long los_tests{0};
@@ -5223,14 +5254,44 @@ GameGunneryHost::Impl::device_hit_mesh(int device_class) {
 const std::vector<std::size_t>& GameGunneryHost::Impl::device_children_of(std::size_t unit) {
     if (device_children_guns != guns.size()) {
         device_children.assign(units.count(), {});
-        for (std::size_t row = 0; row < guns.size(); ++row) {
-            const GameGunRow& gun = guns[row];
-            if (!gun.mount_known || gun.device_class < 0) continue;
-            if (device_hit_mesh(gun.device_class) == nullptr) continue;
-            if (gun.unit_index >= device_children.size()) {
-                device_children.resize(gun.unit_index + 1);
+        if constexpr (bsp::kShipDamagedGfxRemoveCc13Bound) {
+            // C1b: the array holds every device row in build order (00924F90 appends);
+            // 00819CC0's detaches replay as 0098A2C0 swap-removes over that whole array,
+            // then the rows C1 can trace are kept in the resulting order.
+            std::vector<std::vector<std::size_t>> attached(device_children.size());
+            for (std::size_t row = 0; row < guns.size(); ++row) {
+                const GameGunRow& gun = guns[row];
+                if (gun.device_class < 0) continue;
+                if (gun.unit_index >= attached.size()) attached.resize(gun.unit_index + 1);
+                attached[gun.unit_index].push_back(row);
             }
-            device_children[gun.unit_index].push_back(row);
+            if (device_children.size() < attached.size()) device_children.resize(attached.size());
+            for (std::size_t u = 0; u < attached.size(); ++u) {
+                std::vector<std::size_t>& list = attached[u];
+                if (u < device_children_removed.size()) {
+                    for (const std::size_t gone : device_children_removed[u]) {
+                        const auto at = std::find(list.begin(), list.end(), gone);
+                        if (at == list.end()) continue;
+                        *at = list.back();   // 0098A2C0
+                        list.pop_back();
+                    }
+                }
+                for (const std::size_t row : list) {
+                    const GameGunRow& gun = guns[row];
+                    if (!gun.mount_known || device_hit_mesh(gun.device_class) == nullptr) continue;
+                    device_children[u].push_back(row);
+                }
+            }
+        } else {
+            for (std::size_t row = 0; row < guns.size(); ++row) {
+                const GameGunRow& gun = guns[row];
+                if (!gun.mount_known || gun.device_class < 0) continue;
+                if (device_hit_mesh(gun.device_class) == nullptr) continue;
+                if (gun.unit_index >= device_children.size()) {
+                    device_children.resize(gun.unit_index + 1);
+                }
+                device_children[gun.unit_index].push_back(row);
+            }
         }
         device_children_guns = guns.size();
     }
@@ -5599,6 +5660,20 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         // Packet cc13-gunD: GunRepairTickPercentage (0083E290, default 2.0). OFF: the
         // chunk text is unchanged (the literal is only split here).
         chunk += "    f.dcgun = num(SG.GunRepairTickPercentage, 1000000) or 2000000\n";
+    }
+    if constexpr (bsp::kShipDamagedGfxRemoveCc13Bound) {
+        // Packet cc13-gunC C1b: DamagedGFXRemove.Slots, class+7A4h (00833D1B..00833E63,
+        // a next() walk with 00B66290 on each value), as dgrn and dgr1..dgrN.
+        chunk +=
+            "    local dgr = type(row.DamagedGFXRemove) == 'table' and row.DamagedGFXRemove.Slots or nil\n"
+            "    local dgn = 0\n"
+            "    if type(dgr) == 'table' then\n"
+            "      for _, v in pairs(dgr) do\n"
+            "        dgn = dgn + 1\n"
+            "        f['dgr' .. dgn] = tonumber(v) or 0\n"
+            "      end\n"
+            "    end\n"
+            "    f.dgrn = dgn\n";
     }
     chunk +=
         "    f.dcsg = (type(ShipGlobals) == 'table') and 1 or 0\n"
@@ -14333,11 +14408,92 @@ void GameGunneryHost::Impl::device_blast_dispatch_009239a0(std::size_t gun_row,
     }
 }
 
+// Packet cc13-gunF1. The records 00904470 gathers, as apply_impact_blast's walk below
+// will push them: per unit (not the shooter, whose node is 00904470's exclude,
+// source->vtable[B0h](), so 0098C535 never reaches it or its mounts), its own record
+// when the hull box is within the radius and, with an element model, at least one
+// element has a triangle strictly inside it (00723B70); then, with
+// kGunDeviceBlastDamageCc13Bound, one per mount with entries (0098C510's children).
+// The same tests as the walk, without its census counters.
+std::vector<std::size_t> GameGunneryHost::Impl::blast_gathered_records(std::size_t shooter,
+    const float centre[3], float range) {
+    std::vector<std::size_t> out;
+    const float r2 = range * range;
+    for (std::size_t i = 0; i < unit_state.size(); ++i) {
+        if (i == shooter) continue;
+        if (unit_state[i].dead) continue;
+        if (hit_index_detached(i)) continue;
+        std::vector<DeviceBlastMount> mounts;
+        if constexpr (bsp::kGunDeviceBlastDamageCc13Bound) {
+            gather_device_blast_mounts(i, centre, range, mounts);
+        }
+        float distance = 0.0f;
+        bool own = blast_box_distance(i, centre, distance) && !(distance > range);
+        if (own) {
+            const ShipModelSlots* model = kBlastElementEntriesBound ? ship_mesh_of(i) : nullptr;
+            const ShipModelSlots* plane_mesh = model == nullptr && kBlastElementEntriesBound
+                ? plane_mesh_of(i, true) : nullptr;
+            if (plane_mesh != nullptr && !plane_mesh->element_ranges.empty()
+                && kPlaneBlastElementEntriesBound) {
+                model = plane_mesh;
+            }
+            if (model == nullptr && plane_mesh == nullptr) {
+                if (const ShipModelSlots* structure = land_structure_mesh_of(i, true)) {
+                    model = structure;
+                }
+            }
+            if (model != nullptr && !model->element_ranges.empty()) {
+                float right[3], up[3], forward[3], origin[3];
+                unit_pose(i, right, up, forward, origin);
+                const float rel[3] = {centre[0] - origin[0], centre[1] - origin[1],
+                    centre[2] - origin[2]};
+                const float local[3] = {dot3(rel, right), dot3(rel, up), dot3(rel, forward)};
+                bool any = false;
+                for (const auto& er : model->element_ranges) {
+                    if (any) break;
+                    if (er.count == 0) continue;
+                    float box2 = 0.0f;
+                    for (int a = 0; a < 3; ++a) {
+                        const float d = local[a] < er.lo[a] ? er.lo[a] - local[a]
+                            : (local[a] > er.hi[a] ? local[a] - er.hi[a] : 0.0f);
+                        box2 += d * d;
+                    }
+                    if (box2 > r2) continue;
+                    for (std::size_t t = er.first; t < er.first + er.count; ++t) {
+                        if (point_triangle_distance2_0085df60(local,
+                                model->element_tris[t * 3].data(),
+                                model->element_tris[t * 3 + 1].data(),
+                                model->element_tris[t * 3 + 2].data()) < r2) {
+                            any = true;
+                            break;
+                        }
+                    }
+                }
+                own = any;
+            }
+        }
+        if (own) out.push_back(i);
+        for (std::size_t m = 0; m < mounts.size(); ++m) out.push_back(i);
+    }
+    return out;
+}
+
 // Packet cc13-c2b (include/bsp/gun_device_blast_gunless_cc13.hpp). A gunless burst's
 // record for one of `unit`'s mounts: hull_segment -1 (00470470; 0084BAD0 never writes
 // +34h), +28h the burst damage, +24h the radius, +2Ch 0 (00819A20 pushes 0; the crash
-// shot's class is the Kamikaze sub-type 11h, not 10h), hull base 0 and weapon scale 1
-// (shot 0, or a plane whose vtable[54h] is 0042B8D0 FLDZ and [108h] 0042BB30 no weapon).
+// shot's class is the Kamikaze sub-type 11h, not 10h), hull base 0 and weapon scale 1.
+// The crash shot is the plane's primary object (0084C079 arg2 = p+72Ch, 0084C084
+// [EAX+0CCh]; 0084BC60's buffer+20h is that record's +4h). In all eight primary
+// vtables [54h] is 0042B8D0 FLDZ (SetShot: +14h 0, no draw) and [58h] 0042B8E0
+// FLD1 (004705C0 at 004705DA..E4: weapon scale 1); [108h] is 0074E170, which
+// returns p+72Ch, non-null.
+// LABELLED: owner_modifier = 1 for the crash shot, a gap it shares with the
+// existing crash hull record. 004705C0 reads [ret+ACh] = [p+72Ch+0ACh] ([p+7D8h])
+// at 0047060A; when that is non-null and both [00E0C978] (00470614) and
+// [[00F88C30]+94h] (0047061D..0047062A) are set, the modifier is ProductForUnit
+// 008E6430(1, [p+7D8h]) (0047062F), keyed on that unit, not the plane, and it
+// multiplies +28h (00470648..00470650). 1 is exact while either gate is shut or
+// the field is null. The kamikaze (shot 0) is exact: 004705E8 JZ 00470654.
 void GameGunneryHost::Impl::arm_gunless_device_blast(GunlessDeviceBlastFlush& flush,
     std::size_t source, std::size_t unit, const float centre[3], float range, float damage,
     const float point[3]) {
@@ -14442,6 +14598,22 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
     if (speed > 0.0f) {
         for (int i = 0; i < 3; ++i) {
             centre[i] -= (direction[i] / speed) * kBlastCentreBackOff;
+        }
+    }
+
+    if constexpr (bsp::kBlastGatherShotDrawCc13Bound) {
+        // Packet cc13-gunF1 (include/bsp/blast_gather_shot_draw_cc13.hpp): 00904470's
+        // gather loop runs SetShot (00470350 at 009044F4) on every gathered record
+        // before 0084BAD0's push loop runs it again (0084BBB1): one discarded
+        // shot->vtable[54h] draw per record, in gather order, ahead of the used ones
+        // the pushes below make.
+        const int shot_class = round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class;
+        const GameBulletClassRow* shot = bullet(shot_class);
+        const float low = shot != nullptr ? shot->damage_min : 0.0f;
+        const float high = shot != nullptr ? shot->damage_max : 0.0f;
+        for (const std::size_t unit : blast_gathered_records(shooter, centre, weapon->blast_range)) {
+            static_cast<void>(draw(Draw::hull_damage, gun_row, unit, low, high));
+            ++blast_gather_shot_draws;
         }
     }
 
@@ -14601,7 +14773,7 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         blast.owner_modifier = 1.0f;
         if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
             // Packet cc13-powerup-bind: 0084BC60's blast record carries the shot
-            // (buffer+20h, 00470350 at 0084BBA7), so 004705C0 takes
+            // (buffer+20h, 00470350 at 0084BBB1), so 004705C0 takes
             // ProductForUnit(1, owner) at 0047062F as the direct hit does.
             // PROVISIONAL: the owner is the shooter. Gate shut: 1.0f as before.
             if (const auto m = bsp::game_powerups::powerup_site_product(1, shooter)) {
@@ -18309,6 +18481,62 @@ void GameGunneryHost::apply_gun_damage_00728080(std::size_t gun, float amount) {
     impl_->apply_gun_damage_00728080(gun, amount);
 }
 
+// Packet cc13-gunC C1b (include/bsp/ship_damaged_gfx_remove_cc13.hpp). vtable[1B4h] from
+// 0088F710. 00819CE0..00819CF0: the level equal to +358h does nothing; 00877B00 stores
+// it (its model variant is presentation). A ship (00819CC0) with level > 0 (00819CFC)
+// then takes, for each DamagedGFXRemove.Slots key in order and each gun row with that
+// platform key (+38Ch) in build order, with no dead test: 0077D1A0 -> 00926C80 (packet
+// B's chain, idempotent on +60h), then 00710B80's swap-remove from the unit's spatial
+// child array, which a row already detached skips (part +184h is 0). The visibility
+// factor (00B6DA70) and the Funnels loop are presentation, not modelled.
+int GameGunneryHost::set_damaged_gfx_level_00819cc0(std::size_t unit_index, int level) {
+    if constexpr (bsp::kShipDamagedGfxRemoveCc13Bound) {
+        Impl& host = *impl_;
+        if (unit_index >= host.unit_state.size()) return 0;
+        ++host.damaged_gfx_calls;
+        if (host.damaged_gfx_level.size() < host.unit_state.size()) {
+            host.damaged_gfx_level.resize(host.unit_state.size(), 0);
+        }
+        if (host.damaged_gfx_level[unit_index] == level) return 0;          // 00819CF0
+        host.damaged_gfx_level[unit_index] = level;                          // 00877B00
+        host.done("Unit::set_damaged_gfx_level_base_00877b00", 0x00877b00u);
+        if (!host.units.unit_is_kind_of(unit_index, bsp::kUnitGunneryKindShipBase)) return 0;
+        host.done("Ship::set_damaged_gfx_level_00819cc0", 0x00819cc0u);
+        if (level <= 0) return 0;                                            // 00819CFE
+        ++host.damaged_gfx_ship_raises;
+        const int type_id = host.unit_state[unit_index].row.type_id;
+        const int keys = host.flat(type_id, "dgrn", 0);
+        if (host.device_children_removed.size() <= unit_index) {
+            host.device_children_removed.resize(unit_index + 1);
+        }
+        std::vector<std::size_t>& removed = host.device_children_removed[unit_index];
+        int destroyed = 0;
+        for (int k = 1; k <= keys; ++k) {                                    // 00819D10
+            char name[16];
+            std::snprintf(name, sizeof(name), "dgr%d", k);
+            const int key = host.flat(type_id, name, 0);
+            for (std::size_t g = 0; g < host.guns.size(); ++g) {             // +48h / +44h
+                const GameGunRow& gun = host.guns[g];
+                if (gun.unit_index != unit_index || gun.platform_key != key) continue;
+                host.gun_destroyed_failure_0072b5a0(g);                      // 00819D80
+                ++destroyed;
+                if (std::find(removed.begin(), removed.end(), g) != removed.end()) continue;
+                removed.push_back(g);                                        // 00819DB9
+                ++host.damaged_gfx_mounts_removed;
+                host.device_children_guns = static_cast<std::size_t>(-1);
+            }
+        }
+        const GameGunneryHost::Impl::UnitState& state = host.unit_state[unit_index];
+        host.log.notef("gunnery: SetDamagedGFXLevel \"%s\" level=%d slots=%d guns=%d "
+            "(00819CC0, packet cc13-gunC C1b)", state.row.name.c_str(), level, keys, destroyed);
+        return destroyed;
+    } else {
+        static_cast<void>(unit_index);
+        static_cast<void>(level);
+        return 0;
+    }
+}
+
 void GameGunneryHost::override_hp_008c1930(std::size_t unit_index, float value) {
     Impl& host = *impl_;
     ++host.override_hp_calls;
@@ -19583,6 +19811,10 @@ void GameGunneryHost::report() {
             host.log.notef("summary mission gunnery adopted ship health zero=%llu bound=%d "
                 "(00827AAB -> 00958A30 +71Ch arm, then 00827AB0)", d.adopted_ship_zero,
                 kAdoptedShipDeathMessageBound ? 1 : 0);
+            host.log.notef("summary mission gunnery shot team squadron head replaced=%llu "
+                "slot differs=%llu bound=%d (0072C119..0072C145, packet cc13-s24)",
+                host.shot_team_head.replaced, host.shot_team_head.slot_differs,
+                kShotTeamSquadronHeadCc13Bound ? 1 : 0);
             if constexpr (bsp::kShipBreakInTwoPuffDrawsCc13Bound) {
                 host.log.notef("summary mission gunnery ship break in two puff draws=%llu "
                     "(00935D30 -> 0092A240, packet cc13-frontier)", d.break_in_two_puff_draws);
@@ -19720,6 +19952,16 @@ void GameGunneryHost::report() {
                 host.device_hits_dispatched, host.device_hit_relays, host.device_hit_drops,
                 host.device_hit_gun_applies, host.device_hit_meshes.size(),
                 bsp::kGunDeviceHitDamageCc13Bound ? 1 : 0);
+        }
+        if constexpr (bsp::kBlastGatherShotDrawCc13Bound) {
+            host.log.notef("summary mission gunnery blast gather shot draws=%llu (009044F4, packet "
+                "cc13-gunF1)", host.blast_gather_shot_draws);
+        }
+        if constexpr (bsp::kShipDamagedGfxRemoveCc13Bound) {
+            host.log.notef("summary mission gunnery damaged gfx calls=%llu ship_raises=%llu "
+                "mounts_removed=%llu bound=%d (00819CC0, packet cc13-gunC C1b)",
+                host.damaged_gfx_calls, host.damaged_gfx_ship_raises,
+                host.damaged_gfx_mounts_removed, bsp::kShipDamagedGfxRemoveCc13Bound ? 1 : 0);
         }
         if constexpr (bsp::kGunDeviceBlastDamageCc13Bound) {
             host.log.notef("summary mission gunnery device blast records=%llu dispatched=%llu "

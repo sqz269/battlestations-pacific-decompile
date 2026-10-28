@@ -132,6 +132,8 @@
 #include "bsp/squadron_stophead_cc13.hpp"          // packet cc13-stophead
 #include "bsp/squadron_leash_cc13.hpp"             // packet cc13-leash
 #include "bsp/squadron_step_tail_cc13.hpp"         // packet cc13-steptail
+#include "bsp/racked_round_entity_cc13.hpp"        // packet cc13-rackround
+#include "bsp/squadron_ammo_type_rack_round_cc13.hpp"  // packet cc13-ammort
 #include "bsp/director_update_arms.hpp"            // packet cc13-leash: 0080DC70
 #include "bsp/director_target_gate.hpp"
 #include "bsp/plane_squadron_entity.hpp"
@@ -164,8 +166,10 @@
 #include "bsp/gun_fire_points.hpp"
 #include "bsp/geom_mesh_resource.hpp"  // GeomMeshResourcePayload, cc9_ship_section_points
 #include "bsp/opportunistic_rocket_cc13.hpp"
+#include "bsp/rocket_task_cc13.hpp"         // packet cc9-rocket1, the rocket task 007B6A40
 #include "bsp/rocket_target_stop_cc13.hpp"  // cc13-rocketstop, task+38Ch per task
 #include "bsp/free_attack_accept_test_cc13.hpp"  // cc13-tranche2 S18
+#include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/wingmen_recount_countdown_cc13.hpp"  // cc13-tranche2 S19
 #include "bsp/near_field_probe_cached_list_cc13.hpp"  // cc13-tranche2 S22
 #include "bsp/attack_target_classify.hpp"
@@ -212,6 +216,7 @@
 #include "bsp/pc24_shipai_cc13.hpp"           // pc24w1-sweep2-3 (0074F490)
 #include "bsp/pc24_flightrender_cc13.hpp"     // pc24w1-sweep1-3 (007DB4D0)
 #include "bsp/pc24_planetasks_cc13.hpp"       // pc24w1-sweep3-5 (sites at each body)
+#include "bsp/flyabove_lead_bearing_pc24_cc13.hpp"  // cc13-flybearing
 #include "bsp/dive_flyabove_avoid_increment_cc13.hpp"  // cc13-flyavoid, 009C6D59
 #include "bsp/session_context_cc13.hpp"  // cc13-mp1 (MP2a)
 
@@ -795,6 +800,22 @@ struct GameUnitSlot {
     float kz_alt_398{0.0f};                // ctl+398h
     float kz_moveto_near{0.0f};            // 009AED20: BotStateMoveTo(+4Ch, +4Ch, +48h)
     float kz_moveto_speed_range{0.0f};
+    // Packet cc9-rocket1 (bsp::kRocketTaskBound; docs/CC13_ROCKET_TASK.md 7): the
+    // rocket task (kind 0Bh, 007B6A40), one value per unit, the moveto ranges the
+    // arm hands 009BDE80 each think, and a log-only census.
+    bool rocket_task_installed{false};
+    std::size_t rk_target_plus_one{0};
+    bsp::RocketTask rk{};
+    float rk_moveto_near{0.0f}, rk_moveto_far{0.0f}, rk_moveto_speed{0.0f};
+    unsigned long long rk_installs{0}, rk_transitions{0}, rk_releases{0};
+    unsigned long long rk_spawned{0}, rk_spawn_refused{0}, rk_hit_resets{0};
+    int rk_transition_logs{0};
+    int rk_arm_ticks{0}, rk_rocket_ticks{0};
+    int rk_state_ticks[7]{};   // moveto follow prepare gotowards aim goaway attackrun
+    // The aimed rocket's class row (read_rocket_bullet_row), cached by Bullets id.
+    int rk_cls_bullet{-2};
+    float rk_cls_ign{0.0f}, rk_cls_vmax{0.0f}, rk_cls_acc{0.0f};
+    bool rk_cls_aa{false};
     bool drop_kamikaze_task_installed{false};
     bool torpedo_install_refused_class{false};   // packet cc9_dkz_spent_rtb, logged once
     std::size_t dkz_target_plus_one{0};
@@ -3165,7 +3186,7 @@ struct GameUnitsHost::Impl {
         // +3Dh ended, so one command is ended once.
         std::uint32_t fighter_ended_command{0};
     };
-    unsigned long long moveto_self_issues{0}, moveto_self_placed{0};
+    unsigned long long moveto_self_issues{0}, moveto_self_placed{0}, moveto_self_wings{0};
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
     // Packet cc13-steptail (kSquadronGeneralStepTailBound): the head the general
     // tail last issued on, so it issues once per head.
@@ -4899,6 +4920,78 @@ struct GameUnitsHost::Impl {
         lua.lua_settop(top);
         return kind.empty() ? 0 : kind[0] - '0';
     }
+    // Packet cc9-rocket1: the class values the rocket task reads off its aimed
+    // rocket (007C1EB0 / 00809DE0 / 00809E10): IgnitionDelay classDesc+E0h, VMax
+    // +D8h, Acceleration +DCh and AntiAir +E4h, by Bullets id.
+    struct RocketBulletRow {
+        bool found{false};
+        float ignition_delay{0.0f}, vmax{0.0f}, acceleration{0.0f};
+        bool anti_air{false};
+    };
+    RocketBulletRow read_rocket_bullet_row(int bullet) {
+        RocketBulletRow r;
+        if (bullet < 0) return r;
+        char chunk[512];
+        std::snprintf(chunk, sizeof(chunk),
+            "local b = type(Bullets) == 'table' and Bullets[%d] or nil\n"
+            "if type(b) ~= 'table' then return '' end\n"
+            "return string.format('%%.17g %%.17g %%.17g %%d', tonumber(b.IgnitionDelay) or 0,\n"
+            "  tonumber(b.VMax) or 0, tonumber(b.Acceleration) or 0, b.AntiAir and 1 or 0)\n",
+            bullet);
+        const int top = lua.lua_gettop();
+        std::string text;
+        if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
+                                "bsp_rocket_bullet_row") == 0 &&
+            lua.lua_pcall(0, 1, 0) == 0) {
+            text = lua.lua_tolstring_at_top();
+        }
+        lua.lua_settop(top);
+        double ign = 0.0, vmax = 0.0, acc = 0.0;
+        int aa = 0;
+        if (std::sscanf(text.c_str(), "%lf %lf %lf %d", &ign, &vmax, &acc, &aa) == 4) {
+            r.found = true;
+            r.ignition_delay = static_cast<float>(ign);
+            r.vmax = static_cast<float>(vmax);
+            r.acceleration = static_cast<float>(acc);
+            r.anti_air = aa != 0;
+        }
+        return r;
+    }
+    // Packet cc9-rocket1, the PilotSetTarget feed: 007ED970 -> 007B9480 on one
+    // plane, some rack whose descriptor is kind 33h with !(0 >= IgnitionDelay).
+    // Once the plane's rack census ran, its rocket platforms (orx_rack_*, kind 3
+    // = IgnitionDelay > 0) with a round left answer; before it (the mission
+    // script orders during luaStageInit) the same platforms are walked from the
+    // class with their authored rounds. SUBSTITUTION, labelled: a rack's rounds
+    // stand for its attached child (rack vt[220h] answers null once spent).
+    bool plane_has_big_rocket_007b9480(const GameUnitSlot& u) {
+        if (!bsp::unit_is_kind_of(u.class_id, 0x0F)) return false;
+        if (u.rack_census_done) {
+            for (std::size_t i = 0; i < u.orx_rack_kind.size() && i < u.orx_rack_ammo.size(); ++i) {
+                if (u.orx_rack_kind[i] == 3 && u.orx_rack_ammo[i] > 0) return true;
+            }
+            return false;
+        }
+        const int type_id = u.row.type_id;
+        const int platforms = lua.read_vehicle_class_integer(type_id, "BSPGun", "n", 0);
+        for (int p = 1; p <= platforms && p <= 64; ++p) {
+            char key[32];
+            std::snprintf(key, sizeof(key), "p%d_cat", p);
+            if (lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1) !=
+                static_cast<int>(bsp::GunneryCategory::kBombPlatform)) continue;
+            std::snprintf(key, sizeof(key), "p%d_dev", p);
+            const int class_dev = lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1);
+            std::snprintf(key, sizeof(key), "p%d_key", p);
+            const int pkey = lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1);
+            const int dev = rack_equipment_device(u, type_id, pkey, class_dev);
+            const std::string type = dev >= 0 ? lua.read_device_class_string(dev, "Type")
+                                              : std::string();
+            if (type != "BombPlatform" && type != "MultiBombPlatform") continue;
+            if (read_device_rocket_kind(dev) == 3 && rack_equipment_ammo(u, type_id, pkey) > 0)
+                return true;
+        }
+        return false;
+    }
     int read_device_bullet_class_id(int device) {
         if (device < 0) return 0;
         char chunk[512];
@@ -5069,6 +5162,130 @@ struct GameUnitsHost::Impl {
         return changed;
     }
 
+    // Packet cc13-rackround (A, moved): PlaneBinding::plane_rack_census, the rack
+    // census once per unit, hoisted here so one implementation serves every caller.
+    // The body is the original's, re-indented; `owner_` names this Impl.
+    void plane_rack_census(GameUnitSlot& unit_) {
+        Impl& owner_ = *this;
+        if (unit_.rack_census_done) return;
+        unit_.rack_census_done = true;
+        const int type_id = unit_.row.type_id;
+        const int platforms =
+            owner_.lua.read_vehicle_class_integer(type_id, "BSPGun", "n", 0);
+        for (int p = 1; p <= platforms && p <= 64; ++p) {
+            char key[32];
+            std::snprintf(key, sizeof(key), "p%d_cat", p);
+            const int cat = owner_.lua.read_vehicle_class_integer(
+                type_id, "BSPGun", key, -1);
+            if (cat != static_cast<int>(bsp::GunneryCategory::kBombPlatform)) continue;
+            std::snprintf(key, sizeof(key), "p%d_dev", p);
+            const int class_dev = owner_.lua.read_vehicle_class_integer(
+                type_id, "BSPGun", key, -1);
+            // The platform's key, which also indexes the
+            // equipment entry (packet cc9_lua45_rack_equipment_device).
+            std::snprintf(key, sizeof(key), "p%d_key", p);
+            const int pkey = owner_.lua.read_vehicle_class_integer(
+                type_id, "BSPGun", key, -1);
+            const int dev = owner_.rack_equipment_device(unit_, type_id, pkey, class_dev);
+            const std::string type = dev >= 0
+                ? owner_.lua.read_device_class_string(dev, "Type") : std::string();
+            if (type == "BombPlatform") {
+                ++unit_.rack_single_count;
+                // The platform's authored rounds (packet
+                // cc9_dive_bomb_carried_rounds). -1 when absent.
+                const int ammo = owner_.rack_positive_bag_round(unit_,
+                    owner_.rack_equipment_ammo(unit_, type_id, pkey));
+                if (ammo > 0) unit_.rack_rounds_authored += ammo;
+                unit_.rack_authored_per_rack.push_back(ammo);
+                // Packet cc9_rack_bullet_kind. LABELLED: the class's
+                // default Bullet[1]; an equipment bag that changes
+                // the bullet is not read.
+                unit_.rack_bullet_class_per_rack.push_back(
+                    owner_.read_device_bullet_class_id(dev));
+                unit_.rack_bullet_id_per_rack.push_back(
+                    owner_.read_device_bullet_id(dev));
+                // 006E0242 00B66330 default [00CE3D30] = 0.6f.
+                unit_.rack_repeat_per_rack.push_back(
+                    owner_.lua.read_device_class_number(dev, "RepeatTime",
+                        owner_.rack_repeat_default()));
+                // Packet cc9_rack_device_reload: 006E3C00 stores
+                // 30.0 (00CE38C8); an entry's ReloadTime replaces it
+                // through 006E3A20 (below 1.0 becomes 1.0), in both
+                // +48Ch and +490h.
+                float reload = 30.0f;
+                const float authored_reload =
+                    owner_.rack_equipment_reload_time(unit_, type_id, pkey);
+                if (authored_reload >= 0.0f)
+                    reload = authored_reload < 1.0f ? 1.0f : authored_reload;
+                unit_.rack_reload_time_per_rack.push_back(reload);
+                unit_.rack_reload_left_per_rack.push_back(reload);
+            } else if (type == "MultiBombPlatform") {
+                ++unit_.rack_multi_count;
+            }
+            if constexpr (bsp::kOpportunisticRocketBound) {
+                // Packet cc13-oprocket1 (cc9-gunnery39): every rocket
+                // platform, with its own authored rounds.
+                const int rk = (type == "BombPlatform" || type == "MultiBombPlatform")
+                    ? owner_.read_device_rocket_kind(dev) : 0;
+                if (rk > 0) {
+                    unit_.orx_rack_kind.push_back(rk);
+                    unit_.orx_rack_bullet.push_back(owner_.read_device_bullet_id(dev));
+                    unit_.orx_rack_ammo.push_back(
+                        owner_.rack_equipment_ammo(unit_, type_id, pkey));
+                }
+            }
+        }
+        if constexpr (GameUnitsHost::Impl::kRackUnequippedEmptyBound &&
+                      bsp::kPlaneSceneEquipmentBound) {
+            // 0095A880(null, 1, 0) hands no rack a round (5ey).
+            if (unit_.bag_equipment == 0 && unit_.rack_ammo < 0) {
+                unit_.rack_ammo = 0;
+                unit_.rack_ammo_per_rack.assign(
+                    unit_.rack_authored_per_rack.size(), 0);
+            }
+        }
+        if constexpr (GameUnitsHost::Impl::kRackBulletKindBound) {
+            if (bsp::unit_is_kind_of(unit_.class_id, 0x10)
+                && !unit_.rack_bullet_class_per_rack.empty()) {
+                std::string k;
+                for (std::size_t i = 0; i < unit_.rack_bullet_class_per_rack.size(); ++i) {
+                    char b[48];
+                    std::snprintf(b, sizeof(b), "%s%Xh/%.2fs", i ? " " : "",
+                        unit_.rack_bullet_class_per_rack[i],
+                        static_cast<double>(unit_.rack_repeat_per_rack[i]));
+                    k += b;
+                }
+                owner_.log.notef("  rack bullet kinds %s (level bomber): [%s] "
+                    "(007C0D90, packet cc9_rack_bullet_kind)",
+                    unit_.row.name.c_str(), k.c_str());
+            }
+        }
+    }
+
+    // Packet cc13-rackround (A, moved): TorpedoReleaseOrderBinding's first-issue
+    // seed at 007C0DE3-007C0DEF (the rack ammo, once: it runs only while
+    // rack_ammo < 0). The block is the original's, re-indented.
+    void rack_release_issue_seed_007c0de3(GameUnitSlot& slot_) {
+        if (slot_.rack_ammo < 0) {
+            const bool authored =
+                GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
+                slot_.rack_rounds_authored > 0;
+            slot_.rack_ammo = authored
+                    ? slot_.rack_rounds_authored
+                    : slot_.rack_single_count;
+            if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
+                // Each rack's own +484h: its authored Ammo,
+                // or one round per rack where the census
+                // found none (the pool's own fallback).
+                slot_.rack_ammo_per_rack.clear();
+                for (const int a : slot_.rack_authored_per_rack) {
+                    slot_.rack_ammo_per_rack.push_back(
+                        authored ? (a > 0 ? a : 0) : 1);
+                }
+            }
+        }
+    }
+
     // 007EDAD0 BSP_PlaneSquadron_AmmoType (007EDAD0-007EDB7C, __fastcall(squadron),
     // RET): for each of the +3CCh planes at +3D0h, in turn 007B93F0 (2Bh) -> 2,
     // 007B94F0 (2Ch) -> 3, 007B9400 (33h) -> 4, 007B9500 (31h) -> 5, 007B93E0
@@ -5086,9 +5303,18 @@ struct GameUnitsHost::Impl {
             if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size()) continue;
             GameUnitSlot& s = *slots[m];
             const std::vector<PlaneOrdnanceRack>& racks = ordnance_racks(s);
+            // kSquadronAmmoTypeRackRoundCc13Bound: 007B91C0 walks the same rack
+            // slots as 007B9140, so ON takes plane_rack_holds_round's answer.
+            auto holds = [&](const PlaneOrdnanceRack& r) {
+                if constexpr (bsp::kSquadronAmmoTypeRackRoundCc13Bound) {
+                    return plane_rack_holds_round(s, r);
+                } else {
+                    return rack_holds_round(s, r);
+                }
+            };
             auto has = [&](int kind) {
                 for (const PlaneOrdnanceRack& r : racks) {
-                    if (r.class_id != 0 && rack_holds_round(s, r) && ancestry_has(r.class_id, kind)) {
+                    if (r.class_id != 0 && holds(r) && ancestry_has(r.class_id, kind)) {
                         return true;
                     }
                 }
@@ -5100,7 +5326,7 @@ struct GameUnitsHost::Impl {
             if (has(0x31)) return 5;
             if (has(0x2F)) return 6;
             for (const PlaneOrdnanceRack& r : racks) {
-                if (r.class_id == 0 || !rack_holds_round(s, r)) continue;
+                if (r.class_id == 0 || !holds(r)) continue;
                 const int id = r.class_id;
                 if (ancestry_has(id, 0x2A) && !ancestry_has(id, 0x2C) && !ancestry_has(id, 0x31)
                     && !ancestry_has(id, 0x2B) && !ancestry_has(id, 0x33)
@@ -5338,6 +5564,15 @@ struct GameUnitsHost::Impl {
             // +398h block above does.
             const bool profile_call = !kDiveReleaseAltActivationOnlyBound
                 || !kTaskProfileActivationOnlyBound || db_profile_activation;
+            {   // sw3c reach, log only: the block's effect on a tick the ON arm skips.
+                const bool on_call = !kTaskProfileActivationOnlyBound || db_profile_activation;
+                const bool block = unit_is_flight_leader_007b8ad0(slot.process_index)
+                    && !rb->sq_freeze_38e;
+                const bool changes = block && (rb->sq_lock_3ab
+                    || summary.simulated_seconds >= rb->sq_timer_expiry_384);
+                bsp::plane_task_reach_count(bsp::g_plane_task_reach_sw3.dive_release_alt,
+                                            !on_call && changes, block);
+            }
             if (profile_call && unit_is_flight_leader_007b8ad0(slot.process_index)
                 && !rb->sq_freeze_38e) {
                 if (summary.simulated_seconds >= rb->sq_timer_expiry_384 && !rb->sq_lock_3ab) {
@@ -5891,10 +6126,25 @@ struct GameUnitsHost::Impl {
                 (lead_d2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
                     ? 0.0f : static_cast<float>(std::sqrt(lead_d2));
             }
-            float lead_bearing = static_cast<float>(
+            float lead_bearing = 0.0f;
+            if constexpr (bsp::kFlyaboveLeadBearingPc24Cc13Bound) {
+                // cc13-flybearing (rev7 PC24 debt): 009C63C4 FSTP dword stores the
+                // 00BF701A atan2 as a float, 009C63CC FSUBR qword [00CE3830] (pi/2,
+                // the float widened) rounds at PC24, 009C63D2 FSTP dword. ABI:
+                // inline in 009C62B0. FPATAN ignores PC (00BF701A is a CRT trandisp
+                // stub that sets its own control word), so the image's atan2 result is
+                // rounded to float once at 009C63C4. Residual: CRT double atan2 vs x87
+                // FPATAN last-ulp.
+                const float atan2_f = static_cast<float>(
+                    std::atan2(static_cast<double>(lead_z), static_cast<double>(lead_x)));
+                lead_bearing = static_cast<float>(bsp::cc13x87::x87_sub24(
+                    bsp::dive_bomb_constant::kHalfPi, atan2_f));
+            } else {
+            lead_bearing = static_cast<float>(
                 bsp::dive_bomb_constant::kHalfPi -
                 std::atan2(static_cast<double>(lead_z),
                            static_cast<double>(lead_x)));
+            }
             if (lead_bearing < 0.0f) {
                 lead_bearing +=
                     static_cast<float>(bsp::dive_bomb_constant::kTwoPi);
@@ -6729,7 +6979,7 @@ struct GameUnitsHost::Impl {
     // as the dot ((DCh * 0) + E0h) + (E4h * 0) and gates the throttled arm on
     // unit+9F0h > 0 (COMISS / JBE, so NaN fails). Finite inputs are identical
     // either way. False: E0h alone and the helper's !(thr <= 0) gate.
-    static constexpr bool kWaterRateFactorsNanOrderCc13Bound = false;
+    static constexpr bool kWaterRateFactorsNanOrderCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
     // kPlaneDeadMeatRollBound / kPlaneWreckForwardDragBound step counts.
     unsigned long long dead_meat_roll_steps{0};
     unsigned long long dead_meat_spin_steps{0};
@@ -8293,6 +8543,15 @@ struct GameUnitsHost::Impl {
     // ON (SQUADRON_LAND_TASK 5hm): unit+184h is the player flag, so an AI squadron's
     // moveto-self is raised to stage 2 at once (0084E0A4) and the image churns too.
     static constexpr bool kSquadronMoveToSelfBound = true;
+    // Packet s65_moveto_self_wing_follow (SHIP_AI 329.2, 330). 0084E5A8 puts the
+    // moveto-self into the squadron's own director, and each wing's bot takes it
+    // through 0099A170's member arm: the kind-7 moveto task (009C3000) runs the
+    // follow state 009C1FD0 on the leader for every non-leader member. SUBSTITUTION,
+    // labelled, as 009F8615's stop head (cc13-stophead): the host stands each member in
+    // for the director, so the moveto-self also goes to every live wing member once it
+    // is placed. False: the leader's row only, and the wings, whose rows
+    // retire_ended_command_rows stripped, idle on the director tail and fly straight.
+    static constexpr bool kSquadronMoveToSelfWingFollowBound = false;
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -9951,6 +10210,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     unsigned long long ts_override_calls{0}, ts_override_target{0};
     unsigned long long ts_override_within{0}, ts_override_applied{0};
     float ts_override_max_speed{0.0f};
+    // kMovetoTargetSpeedClassCc13Bound census: calls with a target, calls whose class speed
+    // differs from |linear_velocity| by > 1e-3 (or has no live leader), and calls whose
+    // returned speed differs between the two arms.
+    unsigned long long tsc_calls{0}, tsc_speed_differs{0}, tsc_answer_differs{0};
 
     // 009C23B0 (009C23B0-009C2429, __thiscall(approach), RET, ST0). a =
     // [approach+0Ch]+3A0h (squadron+3A0h, `base`); with a target (+44h) and a
@@ -9981,8 +10244,11 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             return static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
                 + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
         };
-        float speed;
-        if constexpr (kMovetoTargetSpeedClassCc13Bound) {
+        // The ON speed, evaluated on both arms so that the OFF arm can count where it
+        // differs (census for the flip, cc9-physics29); `on_base` marks the
+        // no-live-leader arm, which answers `base` on the ON arm.
+        bool on_base = false;
+        const auto class_speed = [&]() -> float {
             // 009C23DB-009C23E9: MOV EDX,[ECX]; CALL [EDX+38h] on the target, made before the
             // reach test, FSTP float. Slot 38h by class, first match, as
             // run_get_entity_speed_008c0820 dispatches it:
@@ -10024,24 +10290,36 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             if (squadron != nullptr) {
                 const std::size_t leader = squadron->flight_leader();   // 007ED470 +3D0h
                 if (leader == bsp::kPlaneSquadronNoUnit || leader >= slots.size() || !slots[leader]) {
+                    on_base = true;
                     return base;
                 }
-                speed = plane_speed(*slots[leader]);                    // leader's 007B8E60
-            } else if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryShip)) {
-                speed = ship_speed(t);                                  // 0080E0F0 -> 0092D730
-            } else if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryPlane)) {
-                speed = plane_speed(t);                                 // 007B8E60
-            } else {
-                speed = linear_speed(t);                                // LABELLED, unread class
+                return plane_speed(*slots[leader]);                     // leader's 007B8E60
             }
-        } else {
-            speed = linear_speed(t);
-        }
+            if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryShip)) {
+                return ship_speed(t);                                   // 0080E0F0 -> 0092D730
+            }
+            if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryPlane)) {
+                return plane_speed(t);                                  // 007B8E60
+            }
+            return linear_speed(t);                                     // LABELLED, unread class
+        };
+        const float on_speed = class_speed();
+        const float off_speed = linear_speed(t);
         const float reach = unit.plane_turn_circle_radius + unit.moveto_follow_dist_68;  // 009C23E3 FSTP
-        if (!(reach > unit.moveto_distance_64)) return base;                 // 009C23F8 JBE
+        const bool within = reach > unit.moveto_distance_64;
+        const double desired = static_cast<double>(bot_desired_speed_007c47f0(unit));  // pure
+        const auto answer = [&](float s) {
+            return within && static_cast<double>(s) > desired ? s : base;
+        };
+        ++tsc_calls;
+        if (on_base || std::fabs(on_speed - off_speed) > 1e-3f) ++tsc_speed_differs;
+        const float on_answer = on_base ? base : answer(on_speed);
+        if (on_answer != answer(off_speed)) ++tsc_answer_differs;
+        if (kMovetoTargetSpeedClassCc13Bound && on_base) return base;
+        const float speed = kMovetoTargetSpeedClassCc13Bound ? on_speed : off_speed;
+        if (!within) return base;                                            // 009C23F8 JBE
         ++ts_override_within;
-        if (!(static_cast<double>(speed) >
-              static_cast<double>(bot_desired_speed_007c47f0(unit)))) return base;  // 009C2412
+        if (!(static_cast<double>(speed) > desired)) return base;           // 009C2412
         ++ts_override_applied;
         if (speed > ts_override_max_speed) ts_override_max_speed = speed;
         return speed;
@@ -10135,6 +10413,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
                         // 009BE3E0 on the follow state +51Ch only (not prepare).
                         (bsp::kStrafeTaskBound && o.strafe_task_installed &&
                          o.strafe_state == bsp::StrafeState::kFollow) ||
+                        // Packet cc9-rocket1: the rocket task's +4Ch 007B7270 takes
+                        // 009BE3E0 on the follow state +520h only.
+                        (bsp::kRocketTaskBound && o.rocket_task_installed &&
+                         o.rk.state == bsp::RocketState::kFollow) ||
                         // Packet cc9_plane_level_bomb_task: 009B8420 answers
                         // 009BE3E0 on follow +534h and prepare +610h.
                         (bsp::kPlaneLevelBombTaskBound && o.level_bomb_task_installed &&
@@ -10909,6 +11191,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         unit.land_task_installed = false;
         unit.land_state = GameUnitSlot::LandTaskState::kNone;
         unit.strafe_task_installed = false;
+        unit.rocket_task_installed = false;
         unit.level_bomb_task_installed = false;
         unit.level_bomb_state = bsp::LevelBombState::kNone;
         unit.attack_command_class = bsp::kRetreatCommandClass;
@@ -11659,6 +11942,8 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // Census for kRocketTargetStopHandlersCc13Bound (cc9-nondet1, log only): task
     // installs, and those whose rocket block is not at its reset state.
     unsigned long long rocket_stop_installs_{0}, rocket_stop_not_reset_{0};
+    // Packet cc9-rocket1 (log only): the 007B9480 feed's asks and true answers.
+    unsigned long long rocket_feed_queries_{0}, rocket_feed_true_{0};
 
     // Packet cc9_aim_error_draw: 009C3DA0 (dive) / 009D02A0 (torpedo). The
     // three draws go through release_altitude_draw_00bd2f10, the stream-1
@@ -20483,8 +20768,9 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
         // 009F83AD..009F8407 tail below.
         const bool target_resolved = over_target != 0u && over_target - 1u < h.slots.size()
             && !gun->unit_dead(over_target - 1u);
-        const bool target_live = [&]() -> bool {
-            if constexpr (bsp::kFreeAttackAcceptTestCc13Bound) {
+        // Both arms (sw3b reach count); the ON arm only reads unit state.
+        const auto target_live_arm = [&](auto accept_test) -> bool {
+            if constexpr (decltype(accept_test)::value) {
                 if (!(target_resolved && category_12)) return target_resolved;
                 // 009F830C 007EE8F0(ECX = squadron; current, target, 00922DC0(target),
                 // 007B58D0(squadron)). LABELLED: the flight leader stands for the
@@ -20544,7 +20830,12 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             } else {
                 return target_resolved;
             }
-        }();
+        };
+        const bool live_on = target_live_arm(std::true_type{});
+        const bool live_off = target_live_arm(std::false_type{});
+        bsp::plane_task_reach_count(bsp::g_plane_task_reach_sw3.free_attack,
+            live_on != live_off, target_resolved && category_12);
+        const bool target_live = bsp::kFreeAttackAcceptTestCc13Bound ? live_on : live_off;
         FreeAttackWorld leash_world(*this, h, *gun);
         if (current == 0x00E08F58u && !early_arm && (!category_12 || target_live)
                 && over_target != 0u && over_target - 1u < h.slots.size()) {
@@ -21329,6 +21620,22 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                                      "0084E595 moveto-self",
                                      h.slots[sq.squadron_unit]->row.name) != nullptr) {
                 ++placed;
+            }
+            if constexpr (Impl::kSquadronMoveToSelfWingFollowBound) {
+                std::size_t wings = 0;
+                for (const std::size_t m : sq.member_units) {
+                    if (placed == 0 || m == bsp::kPlaneSquadronNoUnit || m >= h.slots.size()
+                        || m == sq.squadron_unit || gun->unit_dead(m)) continue;
+                    if (issue_script_command(m, 0x00E08F68u, target, 1,
+                            "0084E595 moveto-self wing",
+                            h.slots[sq.squadron_unit]->row.name) != nullptr) {
+                        ++wings;
+                    }
+                }
+                h.moveto_self_wings += wings;
+                h.log.notef("squadron moveto-self wings: \"%s\" at %.2f s wings=%zu (0099A170 "
+                    "member arm, packet s65_moveto_self_wing_follow)", sq.name.c_str(),
+                    static_cast<double>(now), wings);
             }
             st.moveto_self = true;
             ++h.moveto_self_issues;
@@ -23078,6 +23385,12 @@ bool GameUnitsHost::plane_hit_task_notify_00999aa0(std::size_t plane_index) {
         unit.st_ap.elapsed_44 = 0.0f;               // 009CC403, task+43Ch
         ++unit.st_hit_resets;
         host.record("Bot::hit_task_notify_strafe_009cc400", 0x009cc400u);
+        return true;
+    }
+    if (bsp::kRocketTaskBound && unit.rocket_task_installed) {
+        (void)bsp::rocket_on_hit_007b6d00(unit.rk, 0);   // approach+44h = 0, task+43Ch
+        ++unit.rk_hit_resets;
+        host.record("Bot::hit_task_notify_rocket_007b6d00", 0x007b6d00u);
         return true;
     }
     return false;
@@ -25308,24 +25621,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if constexpr (GameUnitsHost::Impl::kReleaseIssueStageBound) {
                                 // 007C0DE3-007C0DEF: the first rack holding 2Ah that
                                 // is not busy. The host's rack census and ammo.
-                                if (slot_.rack_ammo < 0) {
-                                    const bool authored =
-                                        GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
-                                        slot_.rack_rounds_authored > 0;
-                                    slot_.rack_ammo = authored
-                                            ? slot_.rack_rounds_authored
-                                            : slot_.rack_single_count;
-                                    if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
-                                        // Each rack's own +484h: its authored Ammo,
-                                        // or one round per rack where the census
-                                        // found none (the pool's own fallback).
-                                        slot_.rack_ammo_per_rack.clear();
-                                        for (const int a : slot_.rack_authored_per_rack) {
-                                            slot_.rack_ammo_per_rack.push_back(
-                                                authored ? (a > 0 ? a : 0) : 1);
-                                        }
-                                    }
-                                }
+                                owner_.rack_release_issue_seed_007c0de3(slot_);
                                 // 007C0DCB vtable[210h](2Ah, 0): a torpedo and a
                                 // general bomb both answer 2Ah. With the Vals
                                 // switch the bomb carrier's rack is found too.
@@ -29172,6 +29468,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (c.speed_from_target) {
                                 unit_.plane_desired_speed_2b4 = c.desired_speed;
                                 unit_.plane_air_brake_mode_2d8 = 1;
+                                bsp::plane_task_reach_count(   // sw3c reach, log only
+                                    bsp::g_plane_task_reach_sw3.aim_speed_corr_off,
+                                    unit_.plane_trg_speed_corr_off_2b0 != 1);
                                 if constexpr (bsp::kSeg67bDogfightAimSpeedCorrOffBound) {
                                     // 009A7932: plan+2B0h = 1 (byte), so 0099D924 does not
                                     // raise the speed correction while aiming.
@@ -31708,7 +32007,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.attack_command_class != bsp::kAttackCmdStrafe) {
                             unit_.strafe_task_installed = false;
                             unit_.strafe_state = bsp::StrafeState::kNone;
-                            unit_.st_mv_kind = 0;   // LABELLED: the manoeuvre goes with the task
+                            // LABELLED: the manoeuvre goes with the task. The rocket
+                            // task (cc9-rocket1) pushes the same st_mv_* manoeuvre.
+                            if (!(bsp::kRocketTaskBound &&
+                                  unit_.attack_command_class == bsp::kAttackCmdRocket))
+                                unit_.st_mv_kind = 0;
                             return;
                         }
                         if (unit_.command_target_plus_one == 0) return;
@@ -32312,6 +32615,409 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const int b = kz_state_bucket(unit_.kz.state);
                         if (b >= 0) ++unit_.kz_state_ticks[b];
                         owner_.done("BotTaskKamikaze::arm", 0x009af510u);
+                    }
+
+                    // --- the rocket task (kind 0Bh), 007B7C40 ----------------------
+                    // Packet cc9-rocket1 (bsp::kRocketTaskBound): cc13's reconstruction
+                    // (include/bsp/rocket_task_cc13.hpp) hosted per docs/CC13_ROCKET_TASK.md
+                    // section 7. The task is the strafe task's twin, so the adapter answers
+                    // from the helpers the strafe and kamikaze arms already use.
+                    // SUBSTITUTIONS, labelled: the formation states' vt[4]/vt[8] are not
+                    // modelled (as strafe); the cruise profile 007B7AF0 is not run (its
+                    // twin 009CD020's cadence is unread), so ctl+398h is the script's
+                    // attack altitude, else Pilot/Strike/CruisingAlt; ctl+370h is kept on
+                    // the strafe arm's field (one attack class at a time); the manoeuvre
+                    // is the strafe arm's st_mv_* on its #st keys.
+                    static int rk_state_bucket(bsp::RocketState s) {
+                        switch (s) {
+                            case bsp::RocketState::kMoveTo: return 0;
+                            case bsp::RocketState::kFollow: return 1;
+                            case bsp::RocketState::kPrepare: return 2;
+                            case bsp::RocketState::kGoTowards: return 3;
+                            case bsp::RocketState::kAim: return 4;
+                            case bsp::RocketState::kGoAway: return 5;
+                            case bsp::RocketState::kAttackRun: return 6;
+                            default: return -1;
+                        }
+                    }
+                    struct RocketHostAdapter final : bsp::RocketTaskHost, bsp::RocketRandom {
+                        PlaneBinding& b;
+                        explicit RocketHostAdapter(PlaneBinding& pb) : b(pb) {}
+                        // 00BD2F10 with ECX = 1: the keyed stream-1 stand-in (`name#rk<key>`).
+                        float uniform_00bd2f10(const char* key, float lo, float hi) override {
+                            return b.owner_.stream_set2_draw_00bd2f10(
+                                b.unit_, b.unit_.row.name + "#rk" + key, lo, hi);
+                        }
+                        // 009FADA0 / 009FA260 on the task's ref, carried into the host's
+                        // per-shooter hull_aim_ref as the kamikaze task carries its own
+                        // (the aim tick's projtime becomes the lead).
+                        bool update_target_ref_009fada0(bsp::ApproachTargetRefState& ref, float,
+                                                        std::array<float, 3>& p) override {
+                            return b.kz_target_point(ref, p);
+                        }
+                        void pick_target_ref_009fa260(bsp::ApproachTargetRefState& ref) override {
+                            b.kz_enter_pick_009fa260(ref);
+                        }
+                        bool target_marked_5d() override {
+                            const GameUnitSlot* t = b.st_target();
+                            if (t == nullptr) return true;
+                            if constexpr (bsp::kTargetDisabledByte5dCc13Bound) {
+                                return t->state != nullptr && t->state->simulate != 0;
+                            } else {
+                                return !df_slot_live(*t);   // SUBSTITUTION, labelled, as strafe
+                            }
+                        }
+                        bsp::RocketTargetKinds target_kinds() override {
+                            bsp::RocketTargetKinds k;
+                            const GameUnitSlot* t = b.st_target();
+                            if (t == nullptr) return k;
+                            const auto is = [t](int q) { return bsp::unit_is_kind_of(t->class_id, q); };
+                            k.present = true;
+                            k.ship_06 = is(0x06);
+                            k.carrier_09 = is(0x09);
+                            k.cruiser_0a = is(0x0A);
+                            k.cargo_0b = is(0x0B);
+                            k.battleship_0d = is(0x0D);
+                            return k;
+                        }
+                        bool target_is_unit_5() override {
+                            const GameUnitSlot* t = b.st_target();
+                            return t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x05);
+                        }
+                        // LABELLED, as the torpedo and dive hosts: 007B5BE0 absent.
+                        float target_extent_007b5be0() override { return 0.0f; }
+                        float target_y_100() override {
+                            const GameUnitSlot* t = b.st_target();
+                            return t != nullptr ? t->motion.position[1] : 0.0f;
+                        }
+                        // 007C1EB0(unit, 0, 0): the first rocket platform holding a round
+                        // whose class has IgnitionDelay > 0 and AntiAir clear ([00F874FD]
+                        // = 0 after scene load). SUBSTITUTION, labelled: the platform's
+                        // rounds stand for its attached rocket record.
+                        std::size_t aimed_rack_plus_one() {
+                            b.plane_rack_census();
+                            GameUnitSlot& u = b.unit_;
+                            for (std::size_t i = 0; i < u.orx_rack_kind.size() &&
+                                                    i < u.orx_rack_ammo.size(); ++i) {
+                                if (u.orx_rack_kind[i] != 3 || u.orx_rack_ammo[i] <= 0) continue;
+                                const int bullet = u.orx_rack_bullet[i];
+                                if (bullet != u.rk_cls_bullet) {
+                                    const auto row = b.owner_.read_rocket_bullet_row(bullet);
+                                    u.rk_cls_bullet = bullet;
+                                    u.rk_cls_ign = row.ignition_delay;
+                                    u.rk_cls_vmax = row.vmax;
+                                    u.rk_cls_acc = row.acceleration;
+                                    u.rk_cls_aa = row.anti_air;
+                                }
+                                bsp::RocketPlatformView v;
+                                v.weapon_platform_25 = true;
+                                v.carries_rocket_33 = true;
+                                v.ignition_delay_e0 = u.rk_cls_ign;
+                                v.anti_air_e4 = u.rk_cls_aa;
+                                if (bsp::rocket_platform_qualifies_007c1eb0(v, false)) return i + 1;
+                            }
+                            return 0;
+                        }
+                        bool aimed_rocket_007c1eb0(bsp::RocketAimedRocket& out) override {
+                            if (aimed_rack_plus_one() == 0) return false;
+                            out.ignition_delay_e0 = b.unit_.rk_cls_ign;
+                            out.vmax_d8 = b.unit_.rk_cls_vmax;
+                            out.accel_dc = b.unit_.rk_cls_acc;
+                            out.launch_speed = b.st_speed_vt38();   // LABELLED: the plane's speed
+                            return true;
+                        }
+                        std::array<float, 3> unit_position() override {
+                            return {b.unit_.motion.position[0], b.unit_.motion.position[1],
+                                    b.unit_.motion.position[2]};
+                        }
+                        float heading_50() override { return b.unit_.plane_heading_c6c; }
+                        std::array<float, 3> world_to_body(const std::array<float, 3>& p) override {
+                            float l[3];
+                            b.df_local(p.data(), l);
+                            return {l[0], l[1], l[2]};
+                        }
+                        float class_speed_188() override { return b.unit_.plane_max_spd; }
+                        float class_travel_speed_18c() override { return b.unit_.plane_travel_speed; }
+                        float class_climb_1e4() override { return b.unit_.plane_climb_angle_1e4; }
+                        float class_climb_1ec() override { return b.unit_.plane_climb_angle_1ec; }
+                        float class_drop_1f0() override { return b.unit_.plane_drop_angle; }
+                        bool bomber_kind() override { return b.st_bomber_kind(); }
+                        bool flight_leader_007b8ad0() override {
+                            return b.owner_.unit_is_flight_leader_007b8ad0(b.unit_.process_index);
+                        }
+                        int attack_mode_370() override {
+                            return static_cast<int>(b.unit_.st_attack_mode_370);
+                        }
+                        float ctl_alt_398() override {
+                            float alt = tuning().cruising_alt_660;
+                            const GameUnitSlot* sq = b.owner_.squadron_slot_of(b.unit_.process_index);
+                            if (sq != nullptr && sq->sq_attack_alt_set) alt = sq->sq_alt_398;
+                            return alt;
+                        }
+                        bool alt_loadout_007b58d0() override { return false; }   // [00E17BF2] = 0
+                        int parity_f876b0() override {
+                            return static_cast<int>(b.unit_.process_index);   // LABELLED stand-in
+                        }
+                        bsp::RocketTuning tuning() override {
+                            bsp::RocketTuning t;
+                            if (b.owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = b.owner_.lua.plane_globals();
+                                t.attack_dist_664 = g.pilot_strike_attack_dist;
+                                t.cruising_alt_660 = g.pilot_strike_cruising_alt;
+                                if (g.pilot_strike_reference_speed > 0.0f)
+                                    t.reference_speed_668 = g.pilot_strike_reference_speed;
+                                t.ceiling_210 = g.dynamics_ceiling;
+                                t.climb_dist_544 = g.pilot_general_climb_dist;
+                                t.drop_dist_548 = g.pilot_general_drop_dist;
+                            }
+                            t.cone_670 = b.owner_.strafe_cone_tuning(0x670);
+                            t.cone_674 = b.owner_.strafe_cone_tuning(0x674);
+                            t.cone_678 = b.owner_.strafe_cone_tuning(0x678);
+                            return t;
+                        }
+                        // The unit's PilotBot row as 00901610 loaded it (Strike block).
+                        bsp::RocketStrikeRow robot_row() override {
+                            int i = b.unit_.pilot_skill_index;
+                            if (!kSkillLevelBound || i < 0 || i > 5) i = 1;
+                            const bsp::PilotBotParameters* row = bsp::cc13_torp_goaway::pilot_bot_row(i);
+                            return row != nullptr ? bsp::rocket_strike_row(*row) : bsp::RocketStrikeRow{};
+                        }
+                        bsp::NearFieldProbeResult near_field_probe_007f0280(const float ext[3]) override {
+                            const float w[3] = {0.0f, 0.0f, 0.0f};
+                            return b.nf_probe_squadron_007f0280(ext, w);
+                        }
+                        float fly_to_heading_009fd570(const std::array<float, 3>& point, float standoff,
+                                                      float& side, float range) override {
+                            bsp::FlyToSolverInputs fin;
+                            for (int i = 0; i < 3; ++i) {
+                                fin.point[i] = point[static_cast<std::size_t>(i)];
+                                fin.unit_position[i] = b.unit_.motion.position[i];
+                                fin.unit_lead_vector[i] = b.unit_.plane_world_velocity[i];
+                            }
+                            fin.standoff = standoff;
+                            fin.range = range;
+                            fin.offset_scale = 1.0f;
+                            fin.obstacles = nullptr;
+                            fin.obstacle_count = 0;
+                            b.owner_.fly_to_world_edge_009fdd62(fin);
+                            const bsp::FlyToSolverResult fr = bsp::fly_to_point_heading_009fd570(fin, side);
+                            side = fr.side;
+                            return fr.heading;
+                        }
+                        void set_moveto_ranges_009bde80(float n, float f, float s) override {
+                            b.unit_.rk_moveto_near = n;
+                            b.unit_.rk_moveto_far = f;
+                            b.unit_.rk_moveto_speed = s;
+                        }
+                        void enter_formation_state(bsp::RocketState) override {}   // LABELLED, as strafe
+                        void exit_formation_state(bsp::RocketState) override {}
+                        void tick_formation_state(bsp::RocketState s, float) override {
+                            if (s != bsp::RocketState::kMoveTo) {
+                                b.st_follow_tick_009c1fd0();   // follow and prepare
+                                return;
+                            }
+                            // 009C18C0 with the ranges 009BDE80 stored this think.
+                            b.kz_moveto_tick_009c18c0(b.unit_.rk_moveto_near, b.unit_.rk_moveto_far,
+                                                      b.unit_.rk_moveto_speed);
+                            if (b.st_target() == nullptr) return;
+                            if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
+                                b.unit_.gun_cone_40 = b.owner_.strafe_cone_tuning(0x670);   // 009C1B2D
+                            }
+                            b.owner_.gun_direction_from_plan_009fabe0(b.unit_, 0x009c1b5bu);
+                        }
+                        void apply_plan(const bsp::RocketPlanCommand& c) override {
+                            GameUnitSlot& u = b.unit_;
+                            if (c.speed_written) b.st_speed(c.speed_2b4);
+                            if (c.heading_written) {
+                                u.plan_heading_2c0 = c.heading_2c0;
+                                u.plan_heading_2c0_written = true;
+                                u.plan_heading_mode_2cc = 2;
+                            }
+                            if (c.bank_written) {
+                                u.plan_state.bank_target_2c4 = c.bank_2c4;
+                                u.plan_heading_mode_2cc = 1;
+                                u.plan_heading_2c0_written = false;
+                            }
+                            if (c.pitch_written) {
+                                u.plane_commanded_pitch = c.pitch_2bc;
+                                u.plan_state.pitch_target_2bc = c.pitch_2bc;
+                                u.plan_state.pitch_mode_2d0 = c.pitch_mode_2d0;
+                            }
+                            if (c.throttle_written) {
+                                u.plan_slots[bsp::kPilotSlotThrottle].desired = c.throttle_278;
+                                u.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                                u.plan_slots[bsp::kPilotSlotAirBrake].desired = c.air_brake_2a8;
+                                u.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                                u.plane_air_brake_mode_2d8 = 0;
+                            }
+                            if (c.cruise_written) {
+                                b.st_cruise_pitch_009fba50(c.cruise_base, c.cruise_low,
+                                                           c.cruise_high, c.cruise_scale);
+                            }
+                            if (c.cone_written) u.gun_cone_40 = c.cone_40;
+                            if constexpr (bsp::kBotCommandedDirection68Bound) {
+                                if (c.gun_direction_written) {
+                                    b.owner_.gun_direction_009fabe0(u, 0x007b7c40u,
+                                        b.owner_.commanded_heading_009a1a20(u), c.gun_pitch);
+                                }
+                            }
+                        }
+                        // 00999F50: the strafe arm's manoeuvre (st_mv_*), whose tick and
+                        // retire the rocket arm runs while it is set.
+                        void push_manoeuvre_00999f50(const bsp::RocketManoeuvre& m) override {
+                            GameUnitSlot& u = b.unit_;
+                            if (m.kind != 1 && m.kind != 2) return;
+                            for (int i = 0; i < 3; ++i) u.st_mv_point[i] = m.point[i];
+                            if (m.kind == 1) {
+                                u.st_mv_side = m.side;
+                                u.st_mv_ref_3fc = bsp::tight_turn_pitch_ref_009bafc0(
+                                    u.motion.position[1], b.st_speed_vt38(),
+                                    u.plane_pitch_angle_c64, u.plane_climb_angle_1ec);
+                                u.st_mv_kind = 1;
+                                ++u.st_mv_tightturns;
+                            } else {
+                                // 009BC0A0 -> 009BB910: side = U > 0.5, +3FCh = U + 2.0.
+                                u.st_mv_dist2 = m.distance * m.distance;
+                                u.st_mv_side = b.st_draw("ff_side", 0.0f, 1.0f) > 0.5f;
+                                u.st_mv_timer_3fc = b.st_draw("ff_timer", 0.0f, 1.0f) + 2.0f;
+                                u.st_mv_kind = 2;
+                                ++u.st_mv_flikflaks;
+                            }
+                            b.st_push_ctor_draws();
+                        }
+                        // 0080AA20 then 007BBBA0. SUBSTITUTION, labelled, as the
+                        // opportunistic rocket's release (GUNNERY 202): the host spawns
+                        // the aimed platform's rocket at once and spends one round. The
+                        // homing block is filled only under kRocketHomingBound.
+                        void release_rocket(const bsp::RocketRelease& r) override {
+                            b.owner_.done("Rocket::set_homing_target", 0x0080aa20u);
+                            b.owner_.done("Unit::request_ordnance_release_007bbba0", 0x007bbba0u);
+                            GameUnitSlot& u = b.unit_;
+                            const std::size_t r1 = aimed_rack_plus_one();
+                            const std::size_t index = b.owner_.index_of_slot(u);
+                            if (!r.fire || r1 == 0 || b.owner_.gunnery == nullptr ||
+                                index >= b.owner_.slots.size()) {
+                                ++u.rk_spawn_refused;
+                                return;
+                            }
+                            const GameUnitSlot* t = b.st_target();
+                            const std::size_t target = t != nullptr && df_slot_live(*t)
+                                ? u.command_target_plus_one : 0;
+                            const int bullet = u.orx_rack_bullet[r1 - 1];
+                            if (!b.owner_.gunnery->release_rocket_0080aa20(index, target,
+                                    r.homing_point, r.homing_angle, bullet)) {
+                                ++u.rk_spawn_refused;
+                                return;
+                            }
+                            --u.orx_rack_ammo[r1 - 1];
+                            ++u.rk_spawned;
+                            if (u.rk_spawned <= 3) {
+                                b.owner_.log.notef("rocket task release: unit=%s rack=%zu bullet=%d "
+                                    "target=%zu point=(%.1f,%.1f,%.1f) angle=%.3f left=%d t=%.2f "
+                                    "(007B5430, packet cc9-rocket1)", u.row.name.c_str(), r1 - 1,
+                                    bullet, target, static_cast<double>(r.homing_point[0]),
+                                    static_cast<double>(r.homing_point[1]),
+                                    static_cast<double>(r.homing_point[2]),
+                                    static_cast<double>(r.homing_angle), u.orx_rack_ammo[r1 - 1],
+                                    static_cast<double>(b.owner_.summary.simulated_seconds));
+                            }
+                        }
+                    };
+                    // 0099A170 -> 007B7FD0 -> 007B6A40.
+                    void rk_install_007b7fd0(RocketHostAdapter& h) {
+                        unit_.rocket_task_installed = true;
+                        // 007B6830 builds follow and prepare (two 009C2980), as strafe.
+                        owner_.bot_task_ctor_seeds_0099c6f0(unit_, true, 2);
+                        unit_.rk_target_plus_one = unit_.command_target_plus_one;
+                        // 008A4C41 -> 007ED430(2) at the order, as the strafe install.
+                        unit_.st_attack_mode_370 = bsp::PilotAttackMode::kForced;
+                        unit_.st_mv_kind = 0;   // LABELLED, as strafe: a re-install drops it
+                        ++unit_.rk_installs;
+                        bsp::rocket_task_construct_007b6a40(unit_.rk, h, h);
+                        const GameUnitSlot* t = st_target();
+                        owner_.log.notef("rocket task 007B6A40 kind 0Bh installed %s -> %s: "
+                            "+24h=%.3f goaway_34=%.1f fire_38=%.1f too_close_3c=%.1f "
+                            "glide_2c=%.3f glide_40=%.1f state=%s (packet cc9-rocket1)",
+                            unit_.row.name.c_str(), t != nullptr ? t->row.name.c_str() : "-",
+                            static_cast<double>(unit_.rk.ap.speed_ratio_24),
+                            static_cast<double>(unit_.rk.ap.goaway_dist_34),
+                            static_cast<double>(unit_.rk.ap.fire_dist_38),
+                            static_cast<double>(unit_.rk.ap.too_close_3c),
+                            static_cast<double>(unit_.rk.ap.glide_angle_2c),
+                            static_cast<double>(unit_.rk.ap.glide_dist_40),
+                            bsp::rocket_state_name(unit_.rk.state));
+                    }
+                    // 007B7C40 (task vtable +64h).
+                    void run_rocket_task_arm_007b7c40(float dt) {
+                        if (unit_.attack_command_class != bsp::kAttackCmdRocket) {
+                            unit_.rocket_task_installed = false;
+                            unit_.rk.state = bsp::RocketState::kNone;
+                            return;
+                        }
+                        if (unit_.command_target_plus_one == 0) return;
+                        RocketHostAdapter host{*this};
+                        // SUBSTITUTION, labelled, as strafe: 0099A170 builds a new task
+                        // per order; a new target re-installs.
+                        if (!unit_.rocket_task_installed ||
+                            unit_.rk_target_plus_one != unit_.command_target_plus_one) {
+                            rk_install_007b7fd0(host);
+                        }
+                        const bool leader =
+                            owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
+                        {
+                            // 0099993C: 0099B740 before the arm, as the strafe arm runs it.
+                            bsp::PilotAttackModeInputs in;
+                            in.has_control_block_2fc = true;
+                            in.has_unit_2f4 = true;
+                            in.unit_is_flight_lead = leader;
+                            in.task_authorises_38h = true;
+                            if (owner_.attack_mode_cadence_009998a0(unit_, dt))
+                                unit_.st_attack_mode_370 =
+                                    bsp::pilot_attack_mode_0099b740(unit_.st_attack_mode_370, in);
+                            if (leader) {
+                                const auto* sqn = bsp::plane_squadron_registry().find_by_member_unit(
+                                    unit_.process_index);
+                                if (sqn != nullptr) {
+                                    for (const std::size_t m : sqn->member_units) {
+                                        if (m == bsp::kPlaneSquadronNoUnit || m >= owner_.slots.size()) continue;
+                                        owner_.slots[m]->st_attack_mode_370 = unit_.st_attack_mode_370;
+                                    }
+                                }
+                            }
+                        }
+                        // The pushed manoeuvre is the head while it runs (as strafe).
+                        if (unit_.st_mv_kind != 0) {
+                            st_manoeuvre_tick(dt);
+                            return;
+                        }
+                        const bsp::RocketArmResult r =
+                            bsp::rocket_task_arm_007b7c40(unit_.rk, host, host, dt);
+                        unit_.task_mask_2e4 = unit_.rk.task_2e4;          // 007B7CA8
+                        if (r.released) ++unit_.rk_releases;
+                        if (unit_.rk.ap.has_rocket_d4) ++unit_.rk_rocket_ticks;
+                        if (r.after != r.before) {
+                            ++unit_.rk_transitions;
+                            if (unit_.rk_transition_logs < 40) {
+                                ++unit_.rk_transition_logs;
+                                owner_.log.notef("  rocket %-12s %s -> %s t=%.2f d=%.1f h=%.1f "
+                                    "alt=%.1f mode=%d in_range=%d rocket=%d no_rocket=%d off=%d done=%d",
+                                    unit_.row.name.c_str(), bsp::rocket_state_name(r.before),
+                                    bsp::rocket_state_name(r.after),
+                                    static_cast<double>(owner_.summary.simulated_seconds),
+                                    static_cast<double>(unit_.rk.ap.dist3_50),
+                                    static_cast<double>(unit_.rk.ap.horiz_54),
+                                    static_cast<double>(unit_.motion.position[1]),
+                                    static_cast<int>(unit_.st_attack_mode_370),
+                                    unit_.rk.ap.in_range_4c ? 1 : 0,
+                                    unit_.rk.ap.has_rocket_d4 ? 1 : 0,
+                                    unit_.rk.aim.no_rocket_1c ? 1 : 0, unit_.rk.aim.off_1d ? 1 : 0,
+                                    unit_.rk.ga.done_24 ? 1 : 0);
+                            }
+                        }
+                        ++unit_.rk_arm_ticks;
+                        const int b = rk_state_bucket(unit_.rk.state);
+                        if (b >= 0) ++unit_.rk_state_ticks[b];
+                        owner_.done("BotTaskRocket::arm", 0x007b7c40u);
                     }
 
                     // --- the drop-kamikaze task (kind 5), 009AE8A0 ------------------
@@ -35870,6 +36576,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             arm.unit_free_flight_72c = unit_.plane_control_mode_900 == 7;
                             const bsp::TorpedoArmResult ar =
                                 bsp::torpedo_arm_drop_009d49a0(arm);
+                            if (ar.fell_through_to_0099b6a0) {   // sw3c reach, log only
+                                bsp::plane_task_reach_count(
+                                    bsp::g_plane_task_reach_sw3.torpedo_fallthrough,
+                                    arm.has_squadron_2fc,
+                                    arm.has_squadron_2fc && arm.unit_free_flight_72c);
+                            }
                             if (ar.armed) {
                                 unit_.torpedo_drop_timer = ar.prepare_timer;
                                 unit_.torpedo_timer_armed_since_enter = true;
@@ -36036,99 +36748,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // from `Type` to the constructed class is the device factory's
                     // and is ASSUMED here (docs/PLANE_DEVICE_WALK.md).
                     void plane_rack_census() {
-                        if (unit_.rack_census_done) return;
-                        unit_.rack_census_done = true;
-                        const int type_id = unit_.row.type_id;
-                        const int platforms =
-                            owner_.lua.read_vehicle_class_integer(type_id, "BSPGun", "n", 0);
-                        for (int p = 1; p <= platforms && p <= 64; ++p) {
-                            char key[32];
-                            std::snprintf(key, sizeof(key), "p%d_cat", p);
-                            const int cat = owner_.lua.read_vehicle_class_integer(
-                                type_id, "BSPGun", key, -1);
-                            if (cat != static_cast<int>(bsp::GunneryCategory::kBombPlatform)) continue;
-                            std::snprintf(key, sizeof(key), "p%d_dev", p);
-                            const int class_dev = owner_.lua.read_vehicle_class_integer(
-                                type_id, "BSPGun", key, -1);
-                            // The platform's key, which also indexes the
-                            // equipment entry (packet cc9_lua45_rack_equipment_device).
-                            std::snprintf(key, sizeof(key), "p%d_key", p);
-                            const int pkey = owner_.lua.read_vehicle_class_integer(
-                                type_id, "BSPGun", key, -1);
-                            const int dev = owner_.rack_equipment_device(unit_, type_id, pkey, class_dev);
-                            const std::string type = dev >= 0
-                                ? owner_.lua.read_device_class_string(dev, "Type") : std::string();
-                            if (type == "BombPlatform") {
-                                ++unit_.rack_single_count;
-                                // The platform's authored rounds (packet
-                                // cc9_dive_bomb_carried_rounds). -1 when absent.
-                                const int ammo = owner_.rack_positive_bag_round(unit_,
-                                    owner_.rack_equipment_ammo(unit_, type_id, pkey));
-                                if (ammo > 0) unit_.rack_rounds_authored += ammo;
-                                unit_.rack_authored_per_rack.push_back(ammo);
-                                // Packet cc9_rack_bullet_kind. LABELLED: the class's
-                                // default Bullet[1]; an equipment bag that changes
-                                // the bullet is not read.
-                                unit_.rack_bullet_class_per_rack.push_back(
-                                    owner_.read_device_bullet_class_id(dev));
-                                unit_.rack_bullet_id_per_rack.push_back(
-                                    owner_.read_device_bullet_id(dev));
-                                // 006E0242 00B66330 default [00CE3D30] = 0.6f.
-                                unit_.rack_repeat_per_rack.push_back(
-                                    owner_.lua.read_device_class_number(dev, "RepeatTime",
-                                        owner_.rack_repeat_default()));
-                                // Packet cc9_rack_device_reload: 006E3C00 stores
-                                // 30.0 (00CE38C8); an entry's ReloadTime replaces it
-                                // through 006E3A20 (below 1.0 becomes 1.0), in both
-                                // +48Ch and +490h.
-                                float reload = 30.0f;
-                                const float authored_reload =
-                                    owner_.rack_equipment_reload_time(unit_, type_id, pkey);
-                                if (authored_reload >= 0.0f)
-                                    reload = authored_reload < 1.0f ? 1.0f : authored_reload;
-                                unit_.rack_reload_time_per_rack.push_back(reload);
-                                unit_.rack_reload_left_per_rack.push_back(reload);
-                            } else if (type == "MultiBombPlatform") {
-                                ++unit_.rack_multi_count;
-                            }
-                            if constexpr (bsp::kOpportunisticRocketBound) {
-                                // Packet cc13-oprocket1 (cc9-gunnery39): every rocket
-                                // platform, with its own authored rounds.
-                                const int rk = (type == "BombPlatform" || type == "MultiBombPlatform")
-                                    ? owner_.read_device_rocket_kind(dev) : 0;
-                                if (rk > 0) {
-                                    unit_.orx_rack_kind.push_back(rk);
-                                    unit_.orx_rack_bullet.push_back(owner_.read_device_bullet_id(dev));
-                                    unit_.orx_rack_ammo.push_back(
-                                        owner_.rack_equipment_ammo(unit_, type_id, pkey));
-                                }
-                            }
-                        }
-                        if constexpr (GameUnitsHost::Impl::kRackUnequippedEmptyBound &&
-                                      bsp::kPlaneSceneEquipmentBound) {
-                            // 0095A880(null, 1, 0) hands no rack a round (5ey).
-                            if (unit_.bag_equipment == 0 && unit_.rack_ammo < 0) {
-                                unit_.rack_ammo = 0;
-                                unit_.rack_ammo_per_rack.assign(
-                                    unit_.rack_authored_per_rack.size(), 0);
-                            }
-                        }
-                        if constexpr (GameUnitsHost::Impl::kRackBulletKindBound) {
-                            if (bsp::unit_is_kind_of(unit_.class_id, 0x10)
-                                && !unit_.rack_bullet_class_per_rack.empty()) {
-                                std::string k;
-                                for (std::size_t i = 0; i < unit_.rack_bullet_class_per_rack.size(); ++i) {
-                                    char b[48];
-                                    std::snprintf(b, sizeof(b), "%s%Xh/%.2fs", i ? " " : "",
-                                        unit_.rack_bullet_class_per_rack[i],
-                                        static_cast<double>(unit_.rack_repeat_per_rack[i]));
-                                    k += b;
-                                }
-                                owner_.log.notef("  rack bullet kinds %s (level bomber): [%s] "
-                                    "(007C0D90, packet cc9_rack_bullet_kind)",
-                                    unit_.row.name.c_str(), k.c_str());
-                            }
-                        }
+                        owner_.plane_rack_census(unit_);
                     }
 
                     // 007CEB00-007CEB1D: for each rack, vtable[1FCh]; one true
@@ -37882,6 +38502,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 GameUnitSlot* blk =
                                     owner_.squadron_slot_of(unit_.process_index);
                                 if (leader && blk != nullptr && !blk->sq_alt_set) {
+                                    bsp::plane_task_reach_count(   // sw3c reach, log only
+                                        bsp::g_plane_task_reach_sw3.moveto_lua_alt_order,
+                                        blk->sq_lua_alt_3ad
+                                            && GameUnitsHost::Impl::kMoveToActivationDrawsBound
+                                            && bsp::kMoveToTaskTickBound);
                                     blk->sq_lua_alt_3ad = false;
                                 }
                             }
@@ -42562,6 +43187,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // Packet cc13-depthcharge1: vtable[64h] 009A66C0.
                                 run_depth_charge_task_arm_009a66c0(elapsed);
                             }
+                            if constexpr (bsp::kRocketTaskBound) {
+                                // Packet cc9-rocket1: vtable[64h] 007B7C40.
+                                run_rocket_task_arm_007b7c40(elapsed);
+                            }
                             if constexpr (bsp::kPilotMoveToTaskBound) {
                                 run_moveto_task_install_009c3000();
                                 if constexpr (bsp::kMoveToTaskTickBound) {
@@ -42616,6 +43245,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         || unit_.dogfight_task_installed
                                         || (bsp::kStrafeTaskBound
                                             && unit_.strafe_task_installed)
+                                        || (bsp::kRocketTaskBound
+                                            && unit_.rocket_task_installed)
                                         || (bsp::kPlaneLevelBombTaskBound
                                             && unit_.level_bomb_task_installed)) {
                                     head = "command";
@@ -42640,6 +43271,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if constexpr (GameUnitsHost::Impl::kTaskGunControllerAllTasksBound) {
                                 const bool has_task = unit_.torpedo_task_installed ||
                                     (bsp::kStrafeTaskBound && unit_.strafe_task_installed) ||
+                                    (bsp::kRocketTaskBound && unit_.rocket_task_installed) ||
                                     unit_.dive_bomb_task_installed ||
                                     unit_.moveto_task_installed ||
                                     (kSquadronLandTaskBound && unit_.land_task_installed) ||
@@ -45576,6 +46208,14 @@ void GameUnitsHost::store_unit_ordnance(std::size_t index, std::uint64_t mask) n
     impl_->slots[index]->ordnance_mask = mask;
 }
 
+bool GameUnitsHost::unit_has_rocket_ordnance_007b9480(std::size_t index) {
+    if (index >= impl_->slots.size() || !impl_->slots[index]) return false;
+    const bool has = impl_->plane_has_big_rocket_007b9480(*impl_->slots[index]);
+    ++impl_->rocket_feed_queries_;
+    if (has) ++impl_->rocket_feed_true_;
+    return has;
+}
+
 std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
     if (index >= impl_->slots.size() || !impl_->slots[index]) return 0;
     const GameUnitSlot& u = *impl_->slots[index];
@@ -45617,6 +46257,71 @@ std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
         }
     }
     return mask;
+}
+
+// Packet cc13-rackround (include/bsp/racked_round_entity_cc13.hpp). The racked
+// rounds GetSquadTorpedoes(squadron, true) lists for one plane: 00856420's rounds
+// stay on the world list +21Ch while parented to the rack (+48h), unlaunched
+// (entity+458h, 008561F0), until the drop launches them or a Kill releases them.
+std::size_t GameUnitsHost::racked_torpedo_rounds(std::size_t index, std::vector<int>& racks) {
+    racks.clear();
+    // rev6 N3: the listing reads rack_ammo_per_rack, which only the per-rack seed fills.
+    static_assert(!bsp::kRackedRoundEntityCc13Bound || Impl::kRackRoundsPerRackBound);
+    if constexpr (bsp::kRackedRoundEntityCc13Bound) {
+        if (index < impl_->slots.size() && impl_->slots[index]) {
+            GameUnitSlot& s = *impl_->slots[index];
+            // Lua time, ON only: the census and the first-issue seed, each run once
+            // (rack_census_done, rack_ammo < 0).
+            impl_->plane_rack_census(s);
+            impl_->rack_release_issue_seed_007c0de3(s);
+            const std::size_t n = std::min(s.rack_ammo_per_rack.size(),
+                                           s.rack_bullet_class_per_rack.size());
+            for (std::size_t i = 0; i < n; ++i) {
+                if (s.rack_bullet_class_per_rack[i] == 0x2B && s.rack_ammo_per_rack[i] > 0)
+                    racks.push_back(static_cast<int>(i));
+            }
+        }
+    }
+    return racks.size();
+}
+
+// 008AC5C0 Kill -> 00926D90 on a racked round: the round leaves the rack and none
+// is attached again (no single-rack observer; vtable[224h] only from 006E3350,
+// 006E3410, the drop tail and two messages). LABELLED: the rack's +484h reserve
+// is stored as 0 with it, since the host keeps one count per rack.
+bool GameUnitsHost::kill_racked_round(std::size_t index, int rack, int& before) {
+    bool killed = false;
+    before = 0;
+    if constexpr (bsp::kRackedRoundEntityCc13Bound) {
+        const std::size_t i = static_cast<std::size_t>(rack);
+        if (index < impl_->slots.size() && impl_->slots[index] && rack >= 0) {
+            GameUnitSlot& s = *impl_->slots[index];
+            if (i < s.rack_ammo_per_rack.size() && i < s.rack_bullet_class_per_rack.size()
+                && s.rack_bullet_class_per_rack[i] == 0x2B && s.rack_ammo_per_rack[i] > 0
+                && s.rack_ammo >= 0) {
+                before = s.rack_ammo_per_rack[i];
+                s.rack_ammo_per_rack[i] = 0;
+                // Kept >= 0 so no `rack_ammo < 0` seed runs again over the kill.
+                s.rack_ammo = std::max(0, s.rack_ammo - before);
+                bool torpedo_left = false;
+                for (std::size_t k = 0; k < s.rack_ammo_per_rack.size()
+                                        && k < s.rack_bullet_class_per_rack.size(); ++k) {
+                    if (s.rack_bullet_class_per_rack[k] == 0x2B && s.rack_ammo_per_rack[k] > 0)
+                        torpedo_left = true;
+                }
+                // As a torpedo drop does (game_hosts_gunnery.cpp, cc8_torpedo_breakoff),
+                // but unlike the drop, only when no 2Bh rack is left; the direct write
+                // equals store_unit_ordnance (rev6 N2). 007C1D80's rearm sets it again.
+                const std::uint64_t torpedo_bit = std::uint64_t(1) << (0x2B - 0x08);
+                if (!torpedo_left) s.ordnance_mask &= ~torpedo_bit;
+                killed = true;
+                impl_->log.notef("  racked round killed: %s rack %d, rounds %d -> 0, rack ammo %d, "
+                    "2Bh %s (008AC5C0 -> 00926D90, packet cc13-rackround)", s.row.name.c_str(),
+                    rack, before, s.rack_ammo, torpedo_left ? "kept" : "cleared");
+            }
+        }
+    }
+    return killed;
 }
 
 bool GameUnitsHost::unit_flag_005d(std::size_t index) const {
@@ -48324,6 +49029,10 @@ void GameUnitsHost::report() {
             host.ts_override_calls, host.ts_override_target, host.ts_override_within,
             host.ts_override_applied, static_cast<double>(host.ts_override_max_speed),
             Impl::kMoveToTargetSpeedOverrideBound ? 1 : 0);
+        host.log.notef("summary moveto target speed class census calls=%llu speed_differs=%llu "
+            "answer_differs=%llu bound=%d (009C23DB, kMovetoTargetSpeedClassCc13Bound, cc9-physics29)",
+            host.tsc_calls, host.tsc_speed_differs, host.tsc_answer_differs,
+            Impl::kMovetoTargetSpeedClassCc13Bound ? 1 : 0);
         host.log.notef("summary carrier landing decks built=%llu refreshes=%llu bound=%d "
             "(007593D0 / 006BEE40 / 006BA620, packet cc9_carrier_landing_deck)",
             host.carrier_decks_built, host.carrier_deck_refreshes,
@@ -49135,6 +49844,30 @@ void GameUnitsHost::report() {
         "units=%zu input_one=%zu (00953cc0; current roles0/4=8, flag634=0)",
         host.summary.generic_tick_calls, host.summary.generic_tick_unavailable,
         generic_units, generic_input_one);
+    {   // cc9-sweep3b reach counter for S18 (log only).
+        const bsp::PlaneTaskReachPair& fa = bsp::g_plane_task_reach_sw3.free_attack;
+        host.log.notef("summary mission plane task reach (sw3) free_attack 009F830C "
+            "(kFreeAttackAcceptTestCc13Bound): calls=%llu differs=%llu inner=%llu",
+            fa.calls.load(), fa.differs.load(), fa.inner.load());
+        // cc9-sweep3c reach counters for the plane-logic OFF switches (log only).
+        const bsp::PlaneTaskReachSw3& r = bsp::g_plane_task_reach_sw3;
+        const struct { const char* name; const bsp::PlaneTaskReachPair* pair; } rows[] = {
+            {"aim_speed_corr_off 009A7932 (kSeg67bDogfightAimSpeedCorrOffBound)",
+             &r.aim_speed_corr_off},
+            {"dive_release_alt 009C89E4 (kDiveReleaseAltActivationOnlyBound)",
+             &r.dive_release_alt},
+            {"moveto_lua_alt_order 009C375A (kMoveToActivationLuaAltOrderBound)",
+             &r.moveto_lua_alt_order},
+            {"ai_bag_equipment 00A04608 (kAiPlaneBagEquipmentBound)", &r.ai_bag_equipment},
+            {"torpedo_fallthrough 009D49DA (kTorpedoArmFallthroughReleaseBound)",
+             &r.torpedo_fallthrough},
+        };
+        for (const auto& row : rows) {
+            host.log.notef("summary mission plane task reach (sw3) %s: calls=%llu differs=%llu "
+                "inner=%llu", row.name, row.pair->calls.load(), row.pair->differs.load(),
+                row.pair->inner.load());
+        }
+    }
     host.log.notef("summary mission plane step: steps=%llu free_flight=%llu "
         "ground_roll=%llu surface=%llu none=%llu (007ce040 arm selection)",
         host.summary.plane_steps, host.summary.plane_arm_free_flight,
@@ -49411,6 +50144,34 @@ void GameUnitsHost::report() {
                 static_cast<int>(slot->rack_ret_census), static_cast<int>(slot->rack_ret_idle),
                 slot->torpedo_issue_stage_issues, slot->torpedo_issue_stage_guard_blocked,
                 slot->torpedo_issue_requests_c20);
+        }
+        // Packet cc9-rocket1 (log only): the rocket task 007B7C40 and its 007B9480 feed.
+        {
+            unsigned long long installs = 0, releases = 0, spawned = 0, refused = 0;
+            for (const auto& slot : host.slots) {
+                if (!slot) continue;
+                installs += slot->rk_installs;
+                releases += slot->rk_releases;
+                spawned += slot->rk_spawned;
+                refused += slot->rk_spawn_refused;
+            }
+            host.log.notef("summary rocket task: bound=%d installs=%llu releases=%llu "
+                "spawned=%llu refused=%llu feed_asks=%llu has_rocket_ordnance=%llu "
+                "(007B7C40, 007B9480, packet cc9-rocket1)", bsp::kRocketTaskBound ? 1 : 0,
+                installs, releases, spawned, refused, host.rocket_feed_queries_,
+                host.rocket_feed_true_);
+            for (const auto& slot : host.slots) {
+                if (!slot || slot->rk_installs == 0) continue;
+                const int* s = slot->rk_state_ticks;
+                host.log.notef("  rocket %-12s installs=%llu arm_ticks=%d rocket_ticks=%d "
+                    "transitions=%llu states[moveto=%d follow=%d prepare=%d gotowards=%d aim=%d "
+                    "goaway=%d attackrun=%d] releases=%llu spawned=%llu refused=%llu hits=%llu "
+                    "mv_tight=%d mv_flik=%d state=%s", slot->row.name.c_str(), slot->rk_installs,
+                    slot->rk_arm_ticks, slot->rk_rocket_ticks, slot->rk_transitions, s[0], s[1],
+                    s[2], s[3], s[4], s[5], s[6], slot->rk_releases, slot->rk_spawned,
+                    slot->rk_spawn_refused, slot->rk_hit_resets, slot->st_mv_tightturns,
+                    slot->st_mv_flikflaks, bsp::rocket_state_name(slot->rk.state));
+            }
         }
         // Packet cc13-goaway: 007B5BE0's goaway target term per slot (log only;
         // moved = enters whose target's AA range exceeded the enter's base).

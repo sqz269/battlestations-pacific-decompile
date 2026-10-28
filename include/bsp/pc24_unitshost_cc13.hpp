@@ -85,7 +85,11 @@ namespace bsp {
 // steering, the park yaw and speed scale, the land moveto bearing, the takeoff
 // wobble and squadron spacing, takeoff pitch, yaw and throttle, and the land
 // request pacing and altitude decay.
-inline constexpr bool kPc24UnitsHostCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-28), paired alone and judged by plausibility on six short rows
+// (OFF/ON = origin/main 64af020e2): USN01 415.02 -> 430.02 s, BSM09 450.01 both, LOMP10
+// 1037.44 -> 863.46, PRCP01 689.96 -> 839.22, USN12 1560.40 -> 1555.39, BSM06 h1_i completed
+// 1149.00 -> failed 1079.93. Flooding (USN12 407/406 floods) and deck recovery stay plausible.
+inline constexpr bool kPc24UnitsHostCc13Bound = true;
 
 namespace pc24_unitshost {
 

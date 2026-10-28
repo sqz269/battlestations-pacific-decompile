@@ -140,7 +140,9 @@ void vector3_divide_in_place_0042ae80(std::array<float, 3>& v, float s) noexcept
 // DWORD: a denormal quotient is rounded twice (cc13-fixture9, docs/CC13_FIXTURE_PASS_9.md).
 // vector3_divide_in_place_pc24_0042ae80 models that and is fixture-tested;
 // vector3_divide_in_place_0042ae80 takes it once this is flipped.
-inline constexpr bool kVector3DivideInPlacePc24Cc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-28) without pairs: the sw3 vec3_divide census counts differs=0
+// on every WINS row run (ESMP08: 18749 calls; no other row reaches 0042AE80).
+inline constexpr bool kVector3DivideInPlacePc24Cc13Bound = true;
 void vector3_divide_in_place_pc24_0042ae80(std::array<float, 3>& v, float s) noexcept;
 
 }  // namespace bsp

@@ -69,7 +69,7 @@ void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord
 // +24h..+2Ch, +34h and +38h; the dwords +20h/+3Ch by MOV; and flag_0c at +14h/+30h as one
 // byte, leaving the three bytes after it untouched. OFF keeps the member-wise copy above,
 // which carries signalling NaNs through unchanged and may write the padding after the flag.
-inline constexpr bool kUnitAiOrderCopyPc24Cc13Bound = false;
+inline constexpr bool kUnitAiOrderCopyPc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 // The ON arm on its own, whatever the switch: the leaf fixture compares it with the image.
 void unit_ai_order_copy_image_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src) noexcept;
 
@@ -101,7 +101,7 @@ void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds) 
 // and keeps field_10/field_14, and the image's NaN order: an unordered timer skips
 // the countdown, an unordered gap takes the negative arm, and an unordered step
 // snaps to the target. OFF keeps the whole-sub-record reset above.
-inline constexpr bool kUnitAiOrderResetFieldsCc13Bound = false;
+inline constexpr bool kUnitAiOrderResetFieldsCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 void unit_ai_order_slot_step_0080e000(UnitAiOrderRecord& record, float seconds, bool image_reset) noexcept;
 
 // ---------------------------------------------------------------------------

@@ -9,6 +9,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/game_hosts_lua.hpp"  // kReconLoadForceRefreshCc13Bound (cc13-reconload)
 #include "bsp/strafe_task.hpp"
 #include "bsp/depth_charge_task_cc13.hpp"
+#include "bsp/rocket_task_cc13.hpp"   // kRocketTaskBound, packet cc9-rocket1
 #include "bsp/game_hosts_commands.hpp"
 
 #include "bsp/air_operations.hpp"
@@ -51,6 +52,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
 #include "bsp/mission_ver_cc13.hpp"   // packet cc9_l59_sq_avg_health
+#include "bsp/racked_round_entity_cc13.hpp"  // packet cc13-rackround
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
@@ -1015,6 +1017,21 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
                     record.world[8 + lane] = forward[lane];
                 }
             }
+        } else {
+            // DIAGNOSTIC (cc9-physics29): the OFF census, whether the ON arm would
+            // replace the identity axes (the owner's rows differ from identity).
+            float right[3], up[3], forward[3], translation[3];
+            if (units_.unit_pose(owner, right, up, forward, translation)) {
+                double dev = 0.0;
+                for (int lane = 0; lane < 3; ++lane) {
+                    dev = std::max(dev, std::fabs(static_cast<double>(right[lane]) - (lane == 0)));
+                    dev = std::max(dev, std::fabs(static_cast<double>(up[lane]) - (lane == 1)));
+                    dev = std::max(dev, std::fabs(static_cast<double>(forward[lane]) - (lane == 2)));
+                }
+                log_.notef("air ops launch axes census: squadron=%s owner=%s identity=%d "
+                    "max_dev=%.4f (kBaseLaunchAxesCc13Bound OFF, cc9-physics29 diagnostic)",
+                    record.name.c_str(), home_base.c_str(), dev == 0.0 ? 1 : 0, dev);
+            }
         }
     }
     // cc13-tier1, kAirOpsLaunchFlagAirborneBound (include/bsp/
@@ -1817,6 +1834,11 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
     // Packet cc13-depthcharge1: 007EDA10 -> 007B94F0, kind 2Ch (Type
     // "DepthCharge"). Lands with the task, never apart from it.
     if constexpr (bsp::kDepthChargeTaskBound) in.has_depth_charge_ordnance = set.contains(0x2c);
+    // Packet cc9-rocket1: 007ED970 -> 007B9480, kind 33h with IgnitionDelay > 0.
+    // Lands with the rocket task (bsp::kRocketTaskBound), never apart from it.
+    if constexpr (bsp::kRocketTaskBound) {
+        in.has_rocket_ordnance = units_.unit_has_rocket_ordnance_007b9480(unit_index);
+    }
     if constexpr (kSquadronMemberOrdnanceBound) {
         const bsp::PlaneSquadronHostRecord* sq =
             bsp::plane_squadron_registry().find_by_member_unit(unit_index);
@@ -1832,6 +1854,9 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
                 in.has_torpedo_ordnance |= bsp::ordnance_has_torpedo_2bh(ms);
                 if constexpr (bsp::kDepthChargeTaskBound) {
                     in.has_depth_charge_ordnance |= ms.contains(0x2c);
+                }
+                if constexpr (bsp::kRocketTaskBound) {
+                    in.has_rocket_ordnance |= units_.unit_has_rocket_ordnance_007b9480(m);
                 }
             }
         }
@@ -1880,6 +1905,12 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
         in.has_level_bomb_ordnance ? 1 : 0, in.has_general_bomb_ordnance ? 1 : 0,
         in.has_drop_kamikaze_ordnance ? 1 : 0, in.has_torpedo_ordnance ? 1 : 0,
         in.unit_side, in.target_side);
+    if constexpr (bsp::kRocketTaskBound) {
+        if (in.has_rocket_ordnance) {
+            log_.notef("  %s rocket feed: 007ED970 has_rocket_ordnance=1 surface=%d "
+                "(packet cc9-rocket1)", label, in.target_is_surface ? 1 : 0);
+        }
+    }
     return chosen;
 }
 
@@ -2210,6 +2241,15 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
                     "(slot+28h = %u, 006C56D0; packet cc9_lua47_scene_squadron_orders)",
                     base.c_str(), slot_number, row->name.c_str(), s.launched_squadron);
             }
+        }
+    } else if (record == nullptr && s.launched_squadron != 0u
+               && static_cast<std::size_t>(s.launched_squadron - 1u) < units_.count()) {
+        // Packet cc9-sweep2b reach: the order the ON arm would take, logged only.
+        const GameUnitRow* row = units_.unit_row(s.launched_squadron - 1u);
+        if (row != nullptr && bsp::plane_squadron_registry().find(row->name) != nullptr) {
+            log_.notef("player air ops order reach (kAirOpsSceneSquadronOrdersBound OFF): "
+                "base=\"%s\" slot=%d holds scene squadron %s, refused", base.c_str(),
+                slot_number, row->name.c_str());
         }
     }
     if (record == nullptr) return refuse("the slot holds no squadron this host built");
@@ -4392,12 +4432,71 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // those torpedoes. The flag (argument 1, read only when there are two
         // arguments, 008BF0A7) does not matter to an empty answer.
         if constexpr (kLuaGetSquadTorpedoesBound) {
+            if constexpr (bsp::kRackedRoundEntityCc13Bound) {
+                // Packet cc13-rackround (include/bsp/racked_round_entity_cc13.hpp).
+                // 008BF0A7: the flag only with exactly two arguments. A racked round's
+                // (e+310h)->vtable[38h] (008561F0, entity+458h "launched") is 0, so
+                // only the flag admits it. LABELLED: in-flight torpedoes are gunnery
+                // projectile rows with no Lua object and are not listed; the
+                // squadron's planes are its registry members (the image reads the
+                // +3D0h slots, i <= 4); a dead member lists nothing (its rounds die
+                // with it, 00926D90's child loop).
+                const bool include_all = argument_count_ == 2 && argument_boolean(1);
+                std::size_t planes = 0;
+                std::size_t listed = 0;
+                if (state_ != nullptr) {
+                    lua_newtable(state_);
+                    const int table = lua_gettop(state_);
+                    const std::size_t squadron = index_of(argument_entity(0));
+                    const bsp::PlaneSquadronHostRecord* record = nullptr;
+                    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == squadron) {
+                            record = &r;
+                            break;
+                        }
+                    }
+                    const GameGunneryHost* gunnery = units_.gunnery();
+                    if (record != nullptr && include_all) {
+                        std::vector<int> racks;
+                        for (const std::size_t m : record->member_units) {
+                            if (m == bsp::kPlaneSquadronNoUnit || m >= units_.count()) continue;
+                            if (gunnery != nullptr && gunnery->unit_dead(m)) continue;
+                            ++planes;
+                            units_.racked_torpedo_rounds(m, racks);
+                            for (const int rack : racks) {
+                                bsp::RackedRoundProxy& p = bsp::racked_round_proxy(state_, m, rack);
+                                // A rack listed again after a kill holds a new round
+                                // (a rearm attached one): a new entity, a new table.
+                                lua_pushlightuserdata(state_, &p);
+                                lua_rawget(state_, LUA_REGISTRYINDEX);
+                                if (p.dead || !lua_istable(state_, -1)) {
+                                    lua_pop(state_, 1);
+                                    p.dead = false;
+                                    lua_newtable(state_);
+                                    lua_pushlightuserdata(state_, &p);
+                                    lua_setfield(state_, -2, "Ptr");
+                                    lua_pushlightuserdata(state_, &p);
+                                    lua_pushvalue(state_, -2);
+                                    lua_rawset(state_, LUA_REGISTRYINDEX);
+                                }
+                                // 00B666C0 at keys 1, 2, ...
+                                lua_rawseti(state_, table, static_cast<int>(++listed));
+                            }
+                        }
+                    }
+                    results = 1;
+                }
+                log_.notef("  GetSquadTorpedoes: %s flag=%d -> %zu racked rounds on %zu planes "
+                    "(008BEF80, packet cc13-rackround)", row.unit.c_str(), include_all ? 1 : 0,
+                    listed, planes);
+            } else {
             if (state_ != nullptr) {
                 lua_newtable(state_);
                 results = 1;
             }
             log_.notef("  GetSquadTorpedoes: %s -> {} (008BEF80, PARTIAL: payload "
                 "torpedoes have no Lua objects, packet cc13-fix21)", row.unit.c_str());
+            }
         }
     } else if (std::strcmp(binding->name, "GetSubmarineAirSupply") == 0) {
         // Packet cc13-fix21. 008938E0: 008939DF 00888AA0 on argument 0 (no null and

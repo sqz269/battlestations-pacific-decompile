@@ -37,6 +37,7 @@
 #include "bsp/land_convoy_dead_cc13.hpp"  // packet cc13-dead
 #include "bsp/ship_ai_attackmove_substates.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_unit_get_attack_target
+#include "bsp/ship_damaged_gfx_remove_cc13.hpp"  // packet cc13-gunC C1b
 #include "bsp/entity_orders.hpp"     // packet cc9_unit_get_attack_target
 #include "bsp/game_hosts_gunnery.hpp"  // packet cc9_get_property_class_readers
 #include "bsp/recon_sensor_pass.hpp"   // packet cc9_get_property_class_readers
@@ -83,6 +84,7 @@
 #include "bsp/cc13_lua_natives_wire.hpp"   // packet cc13-luawire
 #include "bsp/unit_weapons.hpp"            // packet cc13-luawire, 008BE7E0's class tests
 #include "bsp/plane_issue_threshold_cc13.hpp"   // packet cc13-issuea0, 008A1F40
+#include "bsp/racked_round_entity_cc13.hpp"     // packet cc13-rackround
 
 extern "C" {
 #include "lauxlib.h"
@@ -584,6 +586,9 @@ int binding_trampoline(lua_State* state) {
     const bool override_hp_row = dispatch_row.address == 0x008c1930u;
     const bool forced_recon_row = kForcedReconLevelBound && dispatch_row.address == 0x008aa8f0u;
     const bool add_damage_row = kLuaAddDamageBound && dispatch_row.address == 0x0088e000u;
+    // Packet cc13-gunC C1b.
+    const bool damaged_gfx_row = bsp::kShipDamagedGfxRemoveCc13Bound
+        && dispatch_row.address == 0x0088f710u;
     const bool aa_enable_row = kLuaAAEnableBound && dispatch_row.address == 0x0089c740u;
     const bool ship_speed_row = kLuaSetShipSpeedBound && dispatch_row.address == 0x00890d30u;
     // Packet cc13_natives1.
@@ -781,6 +786,7 @@ int binding_trampoline(lua_State* state) {
         || support_manager_bann_row || support_manager_permit_row || support_manager_enable_row
         || proximity_trigger_row || remove_trigger_row || ordnance_trigger_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
+        || damaged_gfx_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
         || has_fired_row || water_load_row || break_ship_row || player_commands_row
@@ -1169,6 +1175,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (add_damage_row) {
         if (!host->error_replay()) host->run_add_damage_0088e000(state, argc);
+        return 0;
+    }
+    if (damaged_gfx_row) {
+        if (!host->error_replay()) host->run_set_damaged_gfx_level_0088f710(state, argc);
         return 0;
     }
     if (forced_recon_row) {
@@ -9473,6 +9483,31 @@ int GameMissionLuaHost::run_add_damage_0088e000(lua_State* state, int argument_c
     return 0;
 }
 
+// Packet cc13-gunC C1b (include/bsp/ship_damaged_gfx_remove_cc13.hpp). 0088F710
+// SetDamagedGFXLevel(entity, level): 00888AA0 resolves the entity, 00B66290 the level
+// (lua_tonumber, FSTP to float, _ftol 00BF7420: (int)(float)x), then vtable[1B4h](level)
+// at 0088F851; returns no value. SUBSTITUTION (labelled): an entity with no units-host
+// slot is not reached (the image has no null test there).
+int GameMissionLuaHost::run_set_damaged_gfx_level_0088f710(lua_State* state, int argument_count) {
+    const int level = argument_count >= 2
+        ? static_cast<int>(static_cast<float>(::lua_tonumber(state, 2))) : 0;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || units->gunnery() == nullptr || id <= 0
+        || static_cast<std::size_t>(id) > units->count()) {
+        log_.notef("  SetDamagedGFXLevel 0088f710: entity id %d has no units-host slot "
+            "(packet cc13-gunC C1b)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    const int guns = units->gunnery()->set_damaged_gfx_level_00819cc0(index, level);
+    const GameUnitRow* row = units->unit_row(index);
+    log_.notef("  SetDamagedGFXLevel 0088f710: \"%s\" level=%d guns=%d (packet cc13-gunC C1b)",
+        row != nullptr ? row->name.c_str() : "?", level, guns);
+    log_.implemented("MissionLuaNative::SetDamagedGFXLevel", "0088f710");
+    return 0;
+}
+
 // Packet cc9_lua_hit_listeners. 00988510, the `hit` channel, fed by 0077CE60 on
 // every applied hit. The host's hit rows come from the gunnery host's queue.
 // SUBSTITUTIONS (labelled): the channel is evaluated at the host's frame, for the
@@ -10458,6 +10493,28 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
                     "cc9_lua_kill_script_entity)", id);
                 log_.implemented("MissionLuaNative::Kill", "008ac5c0");
                 return 0;
+            }
+        }
+        if constexpr (bsp::kRackedRoundEntityCc13Bound) {
+            // Packet cc13-rackround (include/bsp/racked_round_entity_cc13.hpp): a
+            // racked torpedo round GetSquadTorpedoes handed out. 008AC756's 00926D90
+            // releases the round, so the rack holds none (kill_racked_round). A
+            // second Kill of the same round returns on +5Fh.
+            if (units != nullptr && ::lua_type(state, 1) == LUA_TTABLE) {
+                ::lua_getfield(state, 1, "Ptr");
+                void* const ptr = ::lua_touserdata(state, -1);
+                ::lua_settop(state, -2);
+                if (bsp::RackedRoundProxy* const round = bsp::find_racked_round_proxy(ptr)) {
+                    int before = 0;
+                    const bool emptied = !round->dead
+                        && units->kill_racked_round(round->plane, round->rack, before);
+                    log_.notef("  Kill 008ac5c0: racked round of unit %zu rack %d, %s (00926D90, "
+                        "packet cc13-rackround)", round->plane, round->rack,
+                        round->dead ? "already dead" : (emptied ? "rack emptied" : "rack already empty"));
+                    round->dead = true;
+                    log_.implemented("MissionLuaNative::Kill", "008ac5c0");
+                    return 0;
+                }
             }
         }
         ++summary_.kill_unresolved;
@@ -11461,13 +11518,27 @@ void GameMissionLuaHost::publish_lobby_settings_005e2f00() {
     bsp::lobby_settings_sync_005e2f00(sync, options, state);
     summary_.lobby_settings_published = sync.table_created();
     log_.implemented("MissionLua::sync_lobby_settings", "005e2f00");
-    log_.notef("LobbySettings: %s (single player, game+1FE4h = 0), fields nil=%zu number=%zu "
-        "string=%zu; mode flags powerups=%d reload_payload=%d map=%d, command points %.1f",
-        sync.nil_global() ? "the global is set nil by the 005e2f93 early-out"
-                          : "a table was published",
-        sync.nil_fields(), sync.number_fields(), sync.string_fields(),
-        sync.flags().powerups_enabled ? 1 : 0, sync.flags().reload_payload_on ? 1 : 0,
-        sync.flags().map_enabled ? 1 : 0, static_cast<double>(sync.command_points()));
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
+        // Packet cc13-skirmish-gate: 005E2F59 sets the global nil on every call, the
+        // published path included, so nil_global() is always true; the table is
+        // what tells the 005E2F93 early-out from a publish.
+        log_.notef("LobbySettings: %s (game+1FE4h = %d), fields nil=%zu number=%zu "
+            "string=%zu; mode flags powerups=%d reload_payload=%d map=%d, command points %.1f",
+            sync.table_created() ? "a table was published"
+                                 : "the global is left nil by the 005e2f93 early-out",
+            static_cast<int>(bsp::session_context().session_word_1fe4),
+            sync.nil_fields(), sync.number_fields(), sync.string_fields(),
+            sync.flags().powerups_enabled ? 1 : 0, sync.flags().reload_payload_on ? 1 : 0,
+            sync.flags().map_enabled ? 1 : 0, static_cast<double>(sync.command_points()));
+    } else {
+        log_.notef("LobbySettings: %s (single player, game+1FE4h = 0), fields nil=%zu number=%zu "
+            "string=%zu; mode flags powerups=%d reload_payload=%d map=%d, command points %.1f",
+            sync.nil_global() ? "the global is set nil by the 005e2f93 early-out"
+                              : "a table was published",
+            sync.nil_fields(), sync.number_fields(), sync.string_fields(),
+            sync.flags().powerups_enabled ? 1 : 0, sync.flags().reload_payload_on ? 1 : 0,
+            sync.flags().map_enabled ? 1 : 0, static_cast<double>(sync.command_points()));
+    }
 }
 
 bool GameMissionLuaHost::run_mission_script_008860b0(const std::string& script_name) {

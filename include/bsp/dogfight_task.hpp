@@ -445,7 +445,9 @@ inline constexpr bool kFollowWaitFloatHelpersCc13Bound = true;
 // - 007E1239/007E123F: (period + 3) rounded before the * 180.
 // False: the double chains used before. Changes only ulp, the 1e-10 floor and
 // NaN cases.
-inline constexpr bool kDogfightPc24Cc13Bound = false;
+// ON (cc9-sweep3c, 2026-10-28) by pairs bundled with kDiveBombPc24Cc13Bound
+// (dive_bomb_task.hpp): one row moved and still won, the rest identical.
+inline constexpr bool kDogfightPc24Cc13Bound = true;
 float follow_wait_value_009be3e0(bool in_position_85, const float member_minus_station[3],
                                  float leader_heading, float dont_wait_hdg, float wait_hdg,
                                  float good_position_dist, float nearby_dist) noexcept;

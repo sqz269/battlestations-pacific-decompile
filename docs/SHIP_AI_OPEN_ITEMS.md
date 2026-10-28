@@ -21126,3 +21126,101 @@ reaches it, so its pair is identical by construction.
 
 Run cap: at most 2 runs per worker (cc9 total about 8). 0x8876086A exit 4 or FMOD create_result=78 at startup
 means device exhaustion: hold and do not retry until the lead reopens.
+
+## 330. cc13 switch flips and the rows they lose (cc9-sweep2b, 2026-10-28)
+
+Flips on agent/cc9-sweep2: 0f0070649 kTorpedoHomeSectorScaleCc13Bound; d3ad11c39 the three
+ship-AI NaN-arm switches (prune, zero reach); 2f03c778c bundle b2 (17 switches, listed in the
+commit); 0174a0ec6 kPc24ShipAiCc13Bound; e331ba421 kPc24GunneryCc13Bound with
+kFollowToBodyPc24Cc13Bound. All faithful, all flipped with losses. Pairs are ref-env, one run
+at a time, OFF d3ad11c39 vs ON exports of the same commit; logs
+`cc9-sweep2\local\sw2br_<row>_sw2c_{off,b2,s4,g5}.log`. Long rows (USN21, IJN18, JM06,
+ESMP08) were not paired on that base and need a light-load re-time on main (provisional).
+
+Rows lost, for the WINS re-plan queue (first divergence and the likely cause):
+- BSM01 `l73_b1_m1` (home sector): EndMission 839.92 s -> no end. Gunnery step 2900 (145 s):
+  enemy torpedo planes replan from the right sector; the plan never takes Donald.
+- BSM06 `h1_i` / `h1_j` (b2, bisected to kShipAiStationKeepingPc24Cc13Bound): failed 1617.45 s /
+  no end. Ship AI step 11460 (573 s): Sagami Maru's station-keeping rudder 0.842 -> 0.843.
+- BSM05 `h1_m3` (b2): failed 333.04 s. Controlled unit frame 170 (8.5 s): forward speed
+  18.611 -> 18.612 (not bisected).
+- PRCP01 `p26_p01_a` (b2): failed 1095.74 s. Ship AI step 2090: Kuroshio (follow) rudder
+  0.132 -> 0.131 (not bisected; station keeping is the likely member).
+- BSM03 `h1_x8` (ship-AI PC24): failed 408.02 s. Controlled unit frame 1630 (81.5 s): heading
+  -18.186 -> -18.187.
+- PRCP01 `p26_p01_a` (ship-AI PC24): failed 1014.33 s. Ship AI step 4840: Cushing rudder
+  -0.969 -> -0.968.
+- BSM06 `h1_i` / `h1_j` (gunnery + follow_to_body): failed 983.88 / 1281.12 s. Gunnery step
+  3400 (170 s): hits 79 -> 70 on the same shots.
+- JM08 `s63_j8_v3` (gunnery + follow_to_body): failed 1604.49 s (HQ destroyed). At 103.7 s the
+  Wildcat #1.1 kill of H6K Mavis 01 lands 0.05 s earlier.
+
+Rows that moved and still won are in each flip commit. 008E6430(0xF) at 008570B5 is identity
+for every campaign row (no power-up store; only MP Swirl differs), so it is not a host gap.
+
+## 331. Units-host PC24 and S18 flips, JM08 zero release; handoff (cc9-sweep3b, 2026-10-28)
+
+cc9-sweep3b paired the last two switches in its queue and flipped both. It used OFF exports vs
+ON exports with `BSP_GUNNERY_RNG_STREAMS=1`, at most one game run alive at a time.
+
+**kPc24UnitsHostCc13Bound** (flip 1a649aab7; paired alone on the plane-bundle base, judged by
+plausibility as for the other PC24 bundles). Rows u01, b9, b6i, l10, p01, u12:
+- USN01 `l69_u1_a`: won 415.02 -> 430.02 s.
+- BSM09: 450.01 s on both sides.
+- LOMP10: 1037.44 -> 863.46 s.
+- PRCP01: 689.96 -> 839.22 s.
+- USN12: 1560.40 -> 1555.39 s.
+- BSM06 `h1_i`: completed 1149.00 s -> **failed 1079.93 s**. This is the one outcome flip; it
+  is a long gunnery row whose OFF side already sits near the edge (see 330 for `h1_i` failing
+  under gunnery + follow_to_body). Not bisected inside the bundle.
+Carriers still recover and launch, strikes release, and flooding still sinks ships on every
+row, so the bundle was flipped as faithful.
+
+**kFreeAttackAcceptTestCc13Bound** (S18). ab36d2284 adds a reach counter, `free_attack` in
+`include/bsp/plane_task_reach_sw3.hpp` (differs = the two gate answers disagree; inner =
+category 1/2 with a resolved target), printed from the units host before
+"summary mission plane step". The census differed on all six rows, but every ON pair was
+gameplay identical to its OFF pair (pair_diff exit 1), so 26f154a1b flips it ON.
+
+**Open: JM08 `s63_j8_v3` zero release under plane-tasks PC24.** With
+kPc24PlaneTasksCc13Bound ON, the 9 Hosho dive bombers release 0 bombs; OFF fails at 1114.01 s
+and ON never ends. kPlaneCachedSpeedB1cCc13Bound alone equals OFF. The flip is landed
+(babbe3cd4) as faithful; the zero release is with cc13 for a static read of the dive entry
+under PC24. Separately, the JM08 arrive-walk move (006C56D0) comes from the plan's frame-300
+launches from airfield slots 1 and 2 being refused ("slot not in state 1 or 5").
+
+**Known loss:** BSM01 `l73_b1_m1` does not end on the current OFF base (not bisected).
+
+State at handoff: no leases, no runs. 1a649aab7, ab36d2284 and 26f154a1b are on
+agent/cc9-sweep3 for the lead to land. Earlier flips (strafe, interp_hi, dive NaN,
+airops_return, follow_wait, arrive walk, retreat, vec3 divide, plane bundle with S7 and
+pc24bear) are already on main (e3c6046c0, babbe3cd4).
+
+## 332. Group A-C OFF-switch split: census, prune flips and one paired flip (cc9-sweep2b, 2026-10-28)
+
+Census at 292c293bd (log-only reach commit) on u01, b9, b6i, l10, p01, u12 and j8v3, OFF export
+`sw2e_off` vs ON export `sw2e_on` (all eleven group A-C switches below except the power-up one);
+logs `cc9-sweep2\local\sw2br_<row>_sw2e_{off,on}.log`.
+
+- Prune flips (b35305ecd), zero reach on all seven rows: kReloadTorpedoesBound,
+  kLuaIsUnitSelectableBound, kLuaGetEntitySpeedBound, kLuaSquadronLandAndKillBound,
+  kAirOpsSceneSquadronOrdersBound, kEngineMovieStopRosterExemptBound (p01 drops ten movie-only
+  squadrons, all exempt_reach=0), kHudUnitHealthColourBound, kAiRocketAccuracyBound, and
+  kPowerupSessionBroadcastCc13Bound (its OFF arm throws wherever it is reached).
+  kVector3DivideInPlacePc24Cc13Bound was flipped by cc9-sweep3b (section 331).
+- Paired flip: kShipAiApproachTimerSeedBound with kDeadLeaderRepublishesFollowerPairBound. Reach:
+  approach enters 0/0/2/3/2/26/40 and formation leaves with members left 5/2/8/7/5/17/20 on
+  u01/b9/b6i/l10/p01/u12/j8v3. u01 and b9 are gameplay-identical. b6i (both fail, Game Over),
+  l10 (both complete, ON at 1117.5 s vs 1195.6 s) and p01 (both complete at 653.16 s) move.
+  u12 gains: OFF fails at 1195.0 s, ON completes at 1625.5 s.
+  - First divergences: b6i at Tatsuno Maru's follow throttle (0.938 vs 0.908 at t=1166.5 s),
+    after the group-0 leader handovers at 709-1083 s, so kDeadLeaderRepublishesFollowerPairBound.
+    p01 at Hayashio (state follow vs stop at 343 s), the unit leaving group 1; that is the same
+    republish, which clears the leaving unit's pair. l10 at Ashigara and u12 at Montpelier, both
+    in attackmove (desired heading 0.42 vs 1.89 and -1.89 vs -2.20): the first approach pass,
+    which the -1.0f seed refills.
+- Loss: JM08 `s63_j8_v3`. OFF has no end in 110000 frames; ON fails at 1635.52 s ("The HQ has
+  been destroyed"). The first divergence is Hawaii in attackmove at step 9900 (about 495 s),
+  desired heading 2.09 vs -2.72, which is the approach seed's first-pass refill. The US line
+  then closes on the HQ, which ends at health 178. This row already failed (HQ destroyed,
+  1604.5 s) under g5 in section 330, so it is a knife edge.

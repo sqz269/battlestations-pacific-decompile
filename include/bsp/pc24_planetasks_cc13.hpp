@@ -14,7 +14,9 @@ namespace bsp {
 //   pc24w1-sweep3-1 (cc13-pc24w1-sweep3-1):
 //     009C4F80 dive_bomb_aim_heading_009c4f80 (dive_bomb_task.cpp)
 //     009C62B0 flyabove tick: dive_bomb_flyabove_altitude_009c6e10 and
-//              dive_bomb_flyabove_bank_009c6857 (dive_bomb_task.cpp)
+//              dive_bomb_flyabove_bank_009c6857 (dive_bomb_task.cpp); the lead
+//              bearing 009C63C4-009C63D2 is not here: it is under
+//              kFlyaboveLeadBearingPc24Cc13Bound (cc13-flybearing)
 //     009AC190 kamikaze_gotowards_tick_009ac190 (kamikaze_task_cc13.cpp)
 //     009AC910 kamikaze_aim_tick_009ac910 (kamikaze_task_cc13.cpp)
 //     0042B2F0 planar_length (kamikaze_task_cc13.cpp)
@@ -91,6 +93,10 @@ namespace bsp {
 // wanderer drift, retreat target and countdown and tight-turn limit; from sweep3-5, the
 // leader turn rate, vehicle and terrain avoidance and carrier holder offsets;
 // from sweep3-6, carrier landing approach, spacing and launch-spot placement.
-inline constexpr bool kPc24PlaneTasksCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-28), bundled with kPlaneCachedSpeedB1cCc13Bound and
+// kDiveFlyaboveAvoidIncrementCc13Bound, judged by plausibility (carriers recover and launch, dive
+// releases happen on BSM04/BSM06). JM08 moves through this switch alone: OFF fails 1114.01 s,
+// ON has no end and its 9 dive-bomb aircraft release nothing.
+inline constexpr bool kPc24PlaneTasksCc13Bound = true;
 
 }  // namespace bsp
