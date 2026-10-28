@@ -97,7 +97,7 @@ Other classes answer `false`, which keeps the count `sound_keys_not_evaluated`:
 
 | Seam | Image | Host |
 | --- | --- | --- |
-| sound banks | 00A83FD0 on [00F8BBE8], FMOD sample loading | `sound_banks_not_loaded`; the record's four references stay null |
+| sound banks | 00A83FD0 on [00F8BBE8], FMOD sample loading | `sound_banks_not_loaded`; the record's four references stay null; acquired from the live sample cache with `kMessageSoundBankCc15Bound` (cc15-bank below) |
 | streamed-dialog probe | [0109CEEC] vtable +0Ch, 00BDD520 | `streamed_probes_not_evaluated`, answers false |
 | voice language | 008D57A0 on [00F88980]: the catalog row's voice_dir, `authentic` with DL_Content_0000062, `english` fallback | the language string the mission frame host was constructed with, logged in the load line; 008D57A0 with `kMessageVoiceLanguageCc15Bound` (cc15-msg2 below) |
 | record miss | 00705E00 creates a `<name>` record timed by [[00E198C4]+A4h]+7Ch/+80h | counted as `clip_record_misses`, answers null; created with `kMessageRecordMissCc15Bound` (cc15-msg2 below) |
@@ -354,3 +354,61 @@ that sets timing reads the flag yet.
 
 **Save untouched.** The four files under Documents\Battlestations-Pacific had the same SHA-256,
 size and mtime before the first run and after the last.
+
+## cc15-bank: 00A83FD0 voice banks (`kMessageSoundBankCc15Bound`, committed OFF)
+
+**What the image does.** 00704590 (BSP_MessageManager_ReadMessageRecord) calls 00A83FD0
+BSP_SoundSampleCache_AcquireByName at 00704E52 (and 00704FE7 for the plain path) with
+`ECX = [00F8BBE8]`, stack `(&temporary, &path)`, RET 8, EAX = &temporary. The answer is a
+D5B074 sample carrying one reference. 00704E6B..00704EBB store it in the record's slot
+cell: InterlockedIncrement ([00CE221C]) on the new value's +4h, InterlockedDecrement
+([00CE2220]) on the old one and on the temporary, and the object's vslot 0 when a count
+reaches zero.
+
+**What the host does ON.** It reuses the cache that is already live, not a second one:
+- `bsp::acquire_sound_sample_00a83fd0` (src/sound_sample_cache.cpp) runs on
+  `GameSoundRuntime::samples().current_sample_cache_00f8bbe8()`. That is the D5B460 cache
+  00A88770 builds at sound startup.
+- A miss builds a 7Ch sample through 00A85440 and 00A84D70 (src/sound_sample.cpp). That
+  loads the .fsb through 00A84740: FMOD createSound from memory, mode 0xA4A, synchronous.
+  A hit retains the cached sample.
+- Retain and release follow the image. The release at zero goes to
+  `SoundSampleRuntime::zero_references_slot_00` (00A82E80), which also unlinks the weak
+  cache entry.
+- `clear_records` releases the four cells last slot first, in 00704060's order.
+- `RecordMissPlayback` retains and releases the same way.
+- The application binds the runtime with `GameMessageManagerHost::bind_sound_runtime`, next
+  to the voice-language binding.
+
+Uncertainty:
+- The record keeps the sample pointer. Its readers, `construct_voice_slot_00702cc0` and
+  `start_voice_clip_005b9050`, still have no game caller. So nothing plays the clip, reads
+  its duration or fires a clip-end callback yet. Those are the next seams.
+- A load exception propagates. The image has no handler there either, but no run raised one.
+
+**Evidence** (base 6acf74fe8; ref env plus BSP_SEARCHER_BOUNDS_INIT=1 on both sides; every
+log has `rng streams: on`):
+- USN04 OFF against an origin/main build (f2ada5180): pair_diff exit 0.
+- USN21 nd1_s46_u21_f, 4 OFF + 4 ON, strictly alternating:
+  - The four OFF logs agree with each other (pair_diff exit 0), and so do the four ON logs.
+  - Every pair ends at MissionStatus 2891.70 s, completed.
+- The other 11 rows plus USN04, one run per side: pair_diff exit 1 (gameplay identical) on
+  every pair. Mission end and outcome are the same on both sides: USN01 385.03 completed,
+  USN02 55.05 failed, PRCP01 521.20 failed, LOMP06 660.11 failed, LOMP10 762.49 completed,
+  JM06 775.93 completed, ESMP08 2053.08 failed, BSM09 848.92 failed. USN04, USN12, IJN18
+  and BSM01 reach no end within their frames.
+- The only moved lines:
+  - the `loaded Messages.lua` line (sound_banks_not_loaded 230 -> 0, or 247 -> 0 on the
+    three Japanese rows);
+  - two new lines: `00A83FD0 sound banks acquired=230 released=230 cache_samples=228`
+    (247/247/245 on the Japanese rows), and `destruct released=460 (494) sound bank
+    references, cache_samples=0`. Every reference is returned and the cache empties.
+- Strict index-by-index diff of the voice/dialog/subtitle/message/hint/objective/Lua/script
+  lines: 0 differing indices on every pair. Two things were masked first: the new
+  `(cc15-bank)` lines and the not_loaded count, and the renderer-constructed pointers.
+- No ON log has a 005B9050, 00702CC0, 005B71D0, 00974070 or 00A81860 row.
+- Lost-device summary on all 32 logs: `lost_polls=0 holds=0 recreations=0
+  create_failures=0 resets=1 reset_failures=0`, and no `present failed`.
+- No startup failures.
+- The four files under Documents\Battlestations-Pacific had the same SHA-256, size and mtime
+  before and after.
