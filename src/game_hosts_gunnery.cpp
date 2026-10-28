@@ -12047,7 +12047,11 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 // it is the image's own filter. LABELLED: the side is the one stored at
                 // the spawn; dead units are not listed. The target velocity is
                 // vtable[34h] (007BBB70, unit+AC8h for a plane) through
-                // unit_linear_velocity, zero when the host has none.
+                // unit_linear_velocity, zero when the host has none. LABELLED: for a
+                // plane parented to a deck, +AC8h is parent-local (OCEAN_WAVE_FIELD
+                // section 84) and the units host's own vtable[34h] stand-in,
+                // avoid_velocity, answers deck_local_vel; this reads the world
+                // velocity instead, so a parked or parented enemy plane differs.
                 std::vector<bsp::RocketFuzeTarget> fuze_targets;
                 if (const auto* t = recon_triples_for(shot.owner_side)) {
                     for (std::size_t k = 0; k < t->lists[1].size(); ++k) {
