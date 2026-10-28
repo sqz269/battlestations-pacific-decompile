@@ -132,6 +132,7 @@
 #include "bsp/squadron_stophead_cc13.hpp"          // packet cc13-stophead
 #include "bsp/squadron_leash_cc13.hpp"             // packet cc13-leash
 #include "bsp/squadron_step_tail_cc13.hpp"         // packet cc13-steptail
+#include "bsp/racked_round_entity_cc13.hpp"        // packet cc13-rackround
 #include "bsp/squadron_ammo_type_rack_round_cc13.hpp"  // packet cc13-ammort
 #include "bsp/director_update_arms.hpp"            // packet cc13-leash: 0080DC70
 #include "bsp/director_target_gate.hpp"
@@ -46256,6 +46257,68 @@ std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
         }
     }
     return mask;
+}
+
+// Packet cc13-rackround (include/bsp/racked_round_entity_cc13.hpp). The racked
+// rounds GetSquadTorpedoes(squadron, true) lists for one plane: 00856420's rounds
+// stay on the world list +21Ch while parented to the rack (+48h), unlaunched
+// (entity+458h, 008561F0), until the drop launches them or a Kill releases them.
+std::size_t GameUnitsHost::racked_torpedo_rounds(std::size_t index, std::vector<int>& racks) {
+    racks.clear();
+    if constexpr (bsp::kRackedRoundEntityCc13Bound) {
+        if (index < impl_->slots.size() && impl_->slots[index]) {
+            GameUnitSlot& s = *impl_->slots[index];
+            // Lua time, ON only: the census and the first-issue seed, each run once
+            // (rack_census_done, rack_ammo < 0).
+            impl_->plane_rack_census(s);
+            impl_->rack_release_issue_seed_007c0de3(s);
+            const std::size_t n = std::min(s.rack_ammo_per_rack.size(),
+                                           s.rack_bullet_class_per_rack.size());
+            for (std::size_t i = 0; i < n; ++i) {
+                if (s.rack_bullet_class_per_rack[i] == 0x2B && s.rack_ammo_per_rack[i] > 0)
+                    racks.push_back(static_cast<int>(i));
+            }
+        }
+    }
+    return racks.size();
+}
+
+// 008AC5C0 Kill -> 00926D90 on a racked round: the round leaves the rack and none
+// is attached again (no single-rack observer; vtable[224h] only from 006E3350,
+// 006E3410, the drop tail and two messages). LABELLED: the rack's +484h reserve
+// is stored as 0 with it, since the host keeps one count per rack.
+bool GameUnitsHost::kill_racked_round(std::size_t index, int rack, int& before) {
+    bool killed = false;
+    before = 0;
+    if constexpr (bsp::kRackedRoundEntityCc13Bound) {
+        const std::size_t i = static_cast<std::size_t>(rack);
+        if (index < impl_->slots.size() && impl_->slots[index] && rack >= 0) {
+            GameUnitSlot& s = *impl_->slots[index];
+            if (i < s.rack_ammo_per_rack.size() && i < s.rack_bullet_class_per_rack.size()
+                && s.rack_bullet_class_per_rack[i] == 0x2B && s.rack_ammo_per_rack[i] > 0
+                && s.rack_ammo >= 0) {
+                before = s.rack_ammo_per_rack[i];
+                s.rack_ammo_per_rack[i] = 0;
+                // Kept >= 0 so no `rack_ammo < 0` seed runs again over the kill.
+                s.rack_ammo = std::max(0, s.rack_ammo - before);
+                bool torpedo_left = false;
+                for (std::size_t k = 0; k < s.rack_ammo_per_rack.size()
+                                        && k < s.rack_bullet_class_per_rack.size(); ++k) {
+                    if (s.rack_bullet_class_per_rack[k] == 0x2B && s.rack_ammo_per_rack[k] > 0)
+                        torpedo_left = true;
+                }
+                // As a torpedo drop does (game_hosts_gunnery.cpp, cc8_torpedo_breakoff);
+                // 007C1D80's rearm sets it again.
+                const std::uint64_t torpedo_bit = std::uint64_t(1) << (0x2B - 0x08);
+                if (!torpedo_left) s.ordnance_mask &= ~torpedo_bit;
+                killed = true;
+                impl_->log.notef("  racked round killed: %s rack %d, rounds %d -> 0, rack ammo %d, "
+                    "2Bh %s (008AC5C0 -> 00926D90, packet cc13-rackround)", s.row.name.c_str(),
+                    rack, before, s.rack_ammo, torpedo_left ? "kept" : "cleared");
+            }
+        }
+    }
+    return killed;
 }
 
 bool GameUnitsHost::unit_flag_005d(std::size_t index) const {
