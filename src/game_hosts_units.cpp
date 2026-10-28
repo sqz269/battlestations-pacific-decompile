@@ -196,6 +196,7 @@
 #include "bsp/pc24_shipai_cc13.hpp"           // pc24w1-sweep2-3 (0074F490)
 #include "bsp/pc24_flightrender_cc13.hpp"     // pc24w1-sweep1-3 (007DB4D0)
 #include "bsp/pc24_planetasks_cc13.hpp"       // pc24w1-sweep3-5 (sites at each body)
+#include "bsp/dive_flyabove_avoid_increment_cc13.hpp"  // cc13-flyavoid, 009C6D59
 
 #include <cfloat>
 #include <cmath>
@@ -33759,7 +33760,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         //
                         // STILL UNBOUND, and labelled: the avoidance increment
                         // 009C6D59 adds to A, which comes out of the unbound
-                        // 007F0280. The 009C64EC query that can veto BL is NOT
+                        // 007F0280 (bound behind kDiveFlyaboveAvoidIncrementCc13Bound,
+                        // OFF, cc13-flyavoid). The 009C64EC query that can veto BL is NOT
                         // in that list any more - it is IsKindOf(RECON_PLANE),
                         // and these are dive bombers.
                         const float bearing_error =
@@ -33934,6 +33936,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // either way. L is pi/2: the 10-degree L of 009C6497
                         // needs flyabove+1Bh, which is 0 in this installation
                         // (kOldStyleBombing1b).
+                        if constexpr (bsp::kDiveFlyaboveAvoidIncrementCc13Bound &&
+                                      GameUnitsHost::Impl::kNearFieldProbeBound) {
+                            // cc13-flyavoid (census S7): 009C6AA3-009C6D59, the
+                            // avoidance increment added to A before the slew
+                            // (include/bsp/dive_flyabove_avoid_increment_cc13.hpp).
+                            // The probe is taken here, after the flag step, with
+                            // the +18h 009C6AA3/009C6B7F read; R is the 009C63A6
+                            // lead range. ABI: inline in 009C62B0. Uncertain: the
+                            // host's 007F0280 candidate set (live 0Fh units in the
+                            // reach prefilter) stands for [unit+C50h]+30h's list.
+                            const bool b18 = unit_.db_flyabove_can_dive_18;
+                            float ext[3];
+                            bsp::near_field_flyover_extents_009c6aa3(b18, ext);
+                            const float w[3] = {30.0f, 0.0f, 0.0f};  // 00CE38C8
+                            const bsp::NearFieldProbeResult pr = nf_probe_007f0280(ext, w);
+                            const float inc = bsp::dive_flyabove_avoid_increment_009c6b7b(
+                                pr, b18, unit_.db_flyabove_lead_range);
+                            const float a = bsp::wrapped_angle_add_00438aa0(
+                                bsp::wrapped_angle_add_00438aa0(
+                                    unit_.plane_heading_c6c,
+                                    bsp::dive_bomb_flyabove_dead_band_009c6a37(
+                                        bearing_error, dead_band_t)),
+                                inc);                                // 009C6D54
+                            in.heading_to_aim_point =
+                                bsp::dive_bomb_flyabove_slew_009c6d6f(
+                                    unit_.plane_heading_c6c, a,
+                                    bsp::dive_bomb_flyabove_constant::
+                                        kHeadingSlewLimit);
+                        } else {
                         in.heading_to_aim_point =
                             bsp::dive_bomb_flyabove_slew_009c6d6f(
                                 unit_.plane_heading_c6c,
@@ -33943,6 +33974,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         bearing_error, dead_band_t)),
                                 bsp::dive_bomb_flyabove_constant::
                                     kHeadingSlewLimit);
+                        }
                         const bsp::DiveBombFlyAboveCommand r =
                             bsp::dive_bomb_flyabove_command_009c6dcd(in);
                         if (!r.wrote_heading) ++unit_.db_flyabove_latched_ticks;
