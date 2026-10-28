@@ -46426,7 +46426,8 @@ std::size_t GameUnitsHost::plane_shot_owner_squadron_head_0072c119(
     const bsp::PlaneSquadronHostRecord* const r =
         bsp::plane_squadron_registry().find_by_member_unit(owner);
     if (r == nullptr) return owner;
-    // [squadron+3D0h], the first seat, read as at 0099B01C (see the pilot step).
+    // [squadron+3D0h], the first seat, read as the pilot step reads it
+    // (+9D4h at 0099B01F, +3D0h at 0099B029).
     const std::size_t head = Impl::kSquadronRemovesDeadBound ? r->flight_leader()
         : r->member_units.empty() ? bsp::kPlaneSquadronNoUnit : r->member_units[0];
     return head < impl_->slots.size() && impl_->slots[head] ? head : owner;
