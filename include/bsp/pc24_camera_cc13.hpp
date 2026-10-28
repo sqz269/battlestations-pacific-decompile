@@ -35,4 +35,4 @@
 //   config+F8h. Its other copy, fov() in
 //   native_global_config_load.cpp, is inline x87 and takes the thread's
 //   precision control as it is.
-inline constexpr bool kPc24CameraCc13Bound = false;
+inline constexpr bool kPc24CameraCc13Bound = true;  // ON by pair (cc9-sweep1b)

@@ -30,4 +30,13 @@ namespace bsp {
 // count as threats and the evasive turns they cause.
 inline constexpr bool kTorpedoCandidateGyroHeadingCc13Bound = false;
 
+// Census (cc9-nondet1, log only), src/game_hosts_ship_ai.cpp: reads at the track
+// (009DC0F9) and threat (00817535) sites, and those where +46Ch and atan2(velocity)
+// differ by more than 1e-3 rad after wrapping (the 10000 sentinel always counts).
+struct TorpedoGyroHeadingCensus {
+    unsigned long long track_reads{0}, track_differs{0};
+    unsigned long long threat_reads{0}, threat_differs{0};
+};
+TorpedoGyroHeadingCensus& torpedo_gyro_heading_census() noexcept;
+
 }  // namespace bsp

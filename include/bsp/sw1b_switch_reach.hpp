@@ -22,6 +22,8 @@ enum class Sw1bReach : int {
     OrthoOffCenterPc24,      // kOrthoOffCenterPc24Cc13Bound, ortho_off_center_lh
     MissionDetailOffsetLerp, // kMissionDetailOffsetLerpBound, 00414130
     ScaleVector4Pc24,        // kScaleVector4Pc24Cc13Bound, 00BEE140
+    CameraPathClosed,        // kPc24CameraCc13Bound, 007AF297 closed test
+    CameraPathKnot,          // kPc24CameraCc13Bound, 007AF5A5 knot length
     Count
 };
 
@@ -41,7 +43,8 @@ inline const char* sw1b_reach_name(Sw1bReach k) noexcept {
         "kKamikazeX87FloatCc13Bound", "kPlaneYawRollCouplingOrderCc13Bound",
         "kDynamicsBuoyancyWholeBodyCc13Bound", "kPlaneDragOrderCc13Bound",
         "kOrthoOffCenterPc24Cc13Bound", "kMissionDetailOffsetLerpBound",
-        "kScaleVector4Pc24Cc13Bound"};
+        "kScaleVector4Pc24Cc13Bound", "kPc24CameraCc13Bound/007AF150-closed",
+        "kPc24CameraCc13Bound/007AF150-knot"};
     return names[static_cast<int>(k)];
 }
 
