@@ -32,6 +32,7 @@
 #include "bsp/weapon_director.hpp"
 #include "bsp/ship_ai_path_cursor.hpp"
 #include "bsp/unit_kind_query.hpp"
+#include "bsp/pc24_unitshost_cc13.hpp"  // packet pc24w1-units-1 (00836920)
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -3362,8 +3363,15 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
                     && host.target_facts->command_target_facts(unit_index, uf)) {
                     const float dx = uf.position_x - tf.position_x;
                     const float dz = uf.position_z - tf.position_z;
-                    const float squared = static_cast<float>(
-                        static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
+                    float squared;
+                    if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                        // 00836A54-00836A64: dz*dz + dx*dx, each op rounded, stored.
+                        using namespace bsp::cc13x87;
+                        squared = static_cast<float>(x87_add24(x87_mul24(dz, dz), x87_mul24(dx, dx)));
+                    } else {
+                        squared = static_cast<float>(
+                            static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
+                    }
                     if (bsp::kCommandArrivalRadiusSquared > static_cast<double>(squared)) {
                         stage.director_raise_primary_stage_0071d810(2); // 00836A7C
                         state.primary_stage = director.stage;
@@ -3819,6 +3827,7 @@ bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
         if (r.hit_pass < 0) {
             const float ddx = point[0] - unit_x;
             const float ddz = point[2] - unit_z;
+            // pc24-lint: allow host diagnostic (path_follow_lookahead_misses counter only)
             if (static_cast<float>(static_cast<double>(ddz) * ddz + static_cast<double>(ddx) * ddx)
                 < static_cast<float>(static_cast<double>(arm_radius) * arm_radius)) {
                 ++host.path_follow_lookahead_misses;

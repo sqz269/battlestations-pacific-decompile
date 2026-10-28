@@ -34,11 +34,11 @@ class GameVfsHost;
 // cc15-msg2: 00705E00's miss arm. A name absent from the record map gets a new record
 // "<name>" timed by the narrative screen's TempCharWait / TempWaitBase, as the image
 // builds it. OFF: the miss is counted and answers null.
-inline constexpr bool kMessageRecordMissCc15Bound = false;
+inline constexpr bool kMessageRecordMissCc15Bound = true;
 // cc15-msg2: 00704590's language is 008D57A0 on the settings block [00F88980] (the
 // catalog row's voice_dir), not the lockit name the host was built with. OFF: the
 // lockit name, as before.
-inline constexpr bool kMessageVoiceLanguageCc15Bound = false;
+inline constexpr bool kMessageVoiceLanguageCc15Bound = true;
 
 // What 007065E0 reads besides its argument: the local party's side kind
 // [[game+18CCh+4*[game+18ECh]]+28h] and the scene record block [game+5FCh]+1064h

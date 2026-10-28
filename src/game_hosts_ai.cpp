@@ -44,6 +44,7 @@
 #include "bsp/plane_squadron_entity.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
+#include "bsp/pc24_unitshost_cc13.hpp"  // packet pc24w1-units-1 (kPc24UnitsHostCc13Bound)
 
 namespace bsp::game {
 
@@ -1162,6 +1163,53 @@ void ai_publish_scene_owner_players(const std::vector<std::pair<std::string, int
 
 void ai_set_unit_owner_player(std::size_t unit, int owner) {
     g_unit_owner_players[unit] = owner;
+}
+
+int ai_team_slot_009ffd20(int team) {
+    // The coordinator's party_slot_of_team / slot_team(0) steps.
+    const int slot0_party = g_scene_slot_parties[0];
+    const int slot0_team = (g_scene_slot_parties_published && slot0_party >= 0) ? slot0_party : 0;
+    return kAiPartyGateUnforcedBound ? (team == slot0_team ? 0 : 4) : team;
+}
+
+namespace {
+
+// 009FFD20's tail after +180h: 8 is no slot, 0..7 the slot, else the team's.
+// LABELLED: single-player (session mode 0) arms only; 009FFD35's
+// [00E188A8]+1FE4h != 0 arm, which answers -1, is not modelled (rev5 N6).
+int slot_from_owner_player(int owner, int team) {
+    if (owner == 8) return -1;
+    if (owner >= 0 && owner < 8) return owner;
+    return ai_team_slot_009ffd20(team);
+}
+
+// +180h by scene entity name: 9 when unauthored or authored twice.
+int scene_owner_player_by_name(const std::string& name) {
+    if (g_scene_owner_player_conflicts.count(name) != 0) return 9;
+    const auto it = g_scene_owner_players.find(name);
+    return it != g_scene_owner_players.end() ? it->second : 9;
+}
+
+}  // namespace
+
+int ai_unit_slot_009ffd20(const GameUnitsHost& units, std::size_t unit) {
+    // The coordinator's unit_slot_009ffd20 / unit_owner_player_0180 steps for a
+    // unit index (no squadron proxy).
+    const int team = units.unit_side_0054(unit);
+    if constexpr (!kAiOwnerPlayerSlotBound) return ai_team_slot_009ffd20(team);
+    int owner = 9;
+    const auto by_index = g_unit_owner_players.find(unit);
+    if (by_index != g_unit_owner_players.end()) {
+        owner = by_index->second;
+    } else if (const GameUnitRow* row = units.unit_row(unit)) {
+        owner = scene_owner_player_by_name(row->name);
+    }
+    return slot_from_owner_player(owner, team);
+}
+
+int ai_scene_unit_slot_009ffd20(int team, const std::string& name) {
+    if constexpr (!kAiOwnerPlayerSlotBound) return ai_team_slot_009ffd20(team);
+    return slot_from_owner_player(scene_owner_player_by_name(name), team);
 }
 
 struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
@@ -3256,13 +3304,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             units.unit_position_00fc(unit, x, y, z);
             const float dx = static_cast<float>(static_cast<double>(point[0]) - x);
             const float dz = static_cast<float>(static_cast<double>(point[2]) - z);
-            const double d2 = static_cast<double>(dz) * dz + static_cast<double>(dx) * dx + 0.0;
-            const float distance = d2 <= 1.0e-10 ? 0.0f : static_cast<float>(std::sqrt(d2));
+            float distance;
+            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                // 00A01175-00A011A4: (dx*dx + 0*0) + dz*dz stored, cutoff, sqrt.
+                distance = bsp::pc24_unitshost::length3_0042b2f0(dx, 0.0f, dz);
+            } else {
+                const double d2 = static_cast<double>(dz) * dz + static_cast<double>(dx) * dx + 0.0;
+                distance = d2 <= 1.0e-10 ? 0.0f : static_cast<float>(std::sqrt(d2));
+            }
             const float factor = bsp::clamped_interpolate_00419010(near_distance, 1.0f,
                 far_distance, 0.0f, distance);
             if (0.0f < factor) {
-                total = static_cast<float>(static_cast<double>(unit_class_weight(unit)) * factor
-                                           + total);
+                if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                    // 00A01203-00A0120B: weight * factor + total, each op rounded.
+                    total = static_cast<float>(bsp::cc13x87::x87_add24(
+                        bsp::cc13x87::x87_mul24(unit_class_weight(unit), factor), total));
+                } else {
+                    total = static_cast<float>(static_cast<double>(unit_class_weight(unit)) * factor
+                                               + total);
+                }
             }
         }
         done("AiCommand::danger_cost_00a010f0", 0x00a010f0u);
@@ -4431,7 +4491,15 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             float x = 0.0f, y = 0.0f, z = 0.0f;
             units.unit_position_00fc(u, x, y, z);
             const float dx = x - tx, dy = y - ty, dz = z - tz;
-            if (r2 < dz * dz + dy * dy + dx * dx) continue;   // 00A1A660 answers 1: skip
+            float d2;
+            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                // 00A1A68E-00A1A69E: (dx*dx + dy*dy) + dz*dz, stored as a float.
+                const float dv[3] = {dx, dy, dz};
+                d2 = bsp::pc24_unitshost::dot3(dv, dv);
+            } else {
+                d2 = dz * dz + dy * dy + dx * dx;
+            }
+            if (r2 < d2) continue;   // 00A1A660 answers 1: skip
             if (units.unit_is_kind_of(u, 0x06) || units.unit_is_kind_of(u, 0x18) ||
                 units.unit_is_kind_of(u, 0x1B)) {
                 ++n;
@@ -4597,8 +4665,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                     if (!(w > 0.0f)) continue;           // 00A2AC02 COMISS 00D7A218, JBE
                     // 00A2AC11-00A2AC3E: (1 - k) * w as a double, + k * s, to float.
                     const double k = static_cast<double>(t.cb_strategic_mul);
-                    const float score = static_cast<float>(
-                        k * static_cast<double>(s) + (1.0 - k) * static_cast<double>(w));
+                    float score;
+                    if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                        // Each op rounded: 1 - k (DE E1), * w, k * s, the sum.
+                        using namespace bsp::cc13x87;
+                        score = static_cast<float>(x87_add24(
+                            x87_mul24(k, s), x87_mul24(x87_sub24(1.0, k), w)));
+                    } else {
+                        score = static_cast<float>(
+                            k * static_cast<double>(s) + (1.0 - k) * static_cast<double>(w));
+                    }
                     if (score > best) {                 // 00A2AC4A FCOMIP, JBE
                         best = score;
                         best_t = ti;

@@ -6,8 +6,9 @@
 // kPc24PlaneTasksCc13Bound (OFF, pc24w1-sweep3-2) rounds per op at 24 bits in
 // 009A3300, 009A5F50, 009A65F0 (with the 0042B2F0 callee, inlined in C++), 009A3770,
 // 009A3CF0, 009A4010 and 009A4940. 009A3290 and 009A3AE0 already round once
-// (an exact factor); see their pc24-lint allow notes. Movers when ON: depth-charge
-// plane approach, release timing and release points.
+// (an exact factor); see their pc24-lint allow notes. pc24w2-dc adds 009A3390's
+// fly-over distance, inlined in depth_charge_task_construct_009a5240. Movers when ON:
+// depth-charge plane approach, release timing and release points.
 
 #include "bsp/depth_charge_task_cc13.hpp"
 
@@ -366,9 +367,18 @@ void depth_charge_task_construct_009a5240(DepthChargeTask& t, DepthChargeTaskHos
     ap.aim_alt_base_3c = tu.aim_alt_range_1_494;                      // 009A3482
     // 009A34AA-009A34E4: U(1.1, 1.3) * TurnCircleRadius + FlyAboveDist * +24h.
     const double u40 = draw(rng, DepthChargeDraw::kFlyAbove40, 1.1f, 1.3f);
-    ap.fly_above_40 = static_cast<float>(u40 * cls.turn_circle_radius_268 +
-                                         static_cast<double>(tu.fly_above_dist_4a8) *
-                                             ap.speed_ratio_24);
+    if constexpr (kPc24PlaneTasksCc13Bound) {
+        // pc24w2-dc: the body is 009A3390 (BSP_BotApproachDepthCharge_Construct, inlined
+        // here): u * radius (009A34AF FMUL), FlyAboveDist * +24h (009A34C3 FMUL), FADDP
+        // (009A34C6), each rounded at PC24, then FSTP float (009A34C8).
+        ap.fly_above_40 = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_mul24(u40, cls.turn_circle_radius_268),
+            cc13x87::x87_mul24(tu.fly_above_dist_4a8, ap.speed_ratio_24)));
+    } else {
+        ap.fly_above_40 = static_cast<float>(u40 * cls.turn_circle_radius_268 +
+                                             static_cast<double>(tu.fly_above_dist_4a8) *
+                                                 ap.speed_ratio_24);
+    }
     ap.attack_range_44 = static_cast<float>(ap.fly_above_40 * depth_charge::kRangeOverFlyAbove);
     ap.range_48 = ap.attack_range_44;                                 // 009A34E4
     ap.bearing_4c = 0.0f;

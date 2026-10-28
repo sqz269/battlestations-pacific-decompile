@@ -1,0 +1,2797 @@
+# cc9-lua74 IJN08 (l74_i08plan.py J:\PROG\battlestations-pacific-decompile-cc9-lua52\local\l74_i08_d.txt -3500 form Kongo=12500:US_Airfield_03|Jap_Airfield|US_Airfield_02,36500:@-1804/7000 Kirishima=12500:US_Airfield_03|US_Airfield_01|US_Airfield_02,40500:DamagedBB|RightBB1|US_Airfield_03,60500:RightBB1|DamagedBB|US_Airfield_03|"Shipyard Entity CB3" Haruna=12500:US_Airfield_02|US_Airfield_03|US_Airfield_01,40500:DamagedBB|RightBB1|US_Airfield_03,60500:RightBB1|DamagedBB|US_Airfield_03|"Shipyard Entity CB3" Hiei=12500:US_Airfield_03|US_Airfield_02|Jap_Airfield,40500:DamagedBB|RightBB1|US_Airfield_03,60500:RightBB1|DamagedBB|US_Airfield_03|"Shipyard Entity CB3" Aoba=12500:Jap_Airfield|US_Airfield_01,18500:US_Airfield_01|US_Airfield_03,24500:US_Shipyard_01|US_Airfield_03,32500:US_Shipyard_02|US_Airfield_03,40500:US_Shipyard_03|US_Airfield_03 Furutaka=12500:US_Airfield_01|Jap_Airfield,24500:US_Shipyard_02|US_Airfield_03,32500:US_Shipyard_01|US_Airfield_03,40500:"Shipyard Entity CB3"|US_Airfield_03 Kinugasa=12500:US_Airfield_01|Jap_Airfield,20500:US_Shipyard_01|US_Airfield_03,28500:US_Shipyard_02|US_Airfield_03,40500:US_Airfield_02|US_Airfield_03 PREF=JapSub1:Cargo4/Cargo1/Cargo3/Cargo5/Cargo2/Cargo6;JapSub2:Cargo6/Cargo2/Cargo5/Cargo1/Cargo3/Cargo4;JapSub3:Cargo6/Cargo4/Cargo3/Cargo5/Cargo1/Cargo2)
+100 select JapSub1
+101 attack JapSub1 Cargo6
+102 attack JapSub1 Cargo2
+103 attack JapSub1 Cargo5
+104 attack JapSub1 Cargo3
+105 attack JapSub1 Cargo1
+106 attack JapSub1 Cargo4
+120 select JapSub2
+121 attack JapSub2 Cargo4
+122 attack JapSub2 Cargo3
+123 attack JapSub2 Cargo1
+124 attack JapSub2 Cargo5
+125 attack JapSub2 Cargo2
+126 attack JapSub2 Cargo6
+140 select JapSub3
+141 attack JapSub3 Cargo2
+142 attack JapSub3 Cargo1
+143 attack JapSub3 Cargo5
+144 attack JapSub3 Cargo3
+145 attack JapSub3 Cargo4
+146 attack JapSub3 Cargo6
+300 select JapSub1
+301 attack JapSub1 Cargo6
+302 attack JapSub1 Cargo2
+303 attack JapSub1 Cargo5
+304 attack JapSub1 Cargo3
+305 attack JapSub1 Cargo1
+306 attack JapSub1 Cargo4
+320 select JapSub2
+321 attack JapSub2 Cargo4
+322 attack JapSub2 Cargo3
+323 attack JapSub2 Cargo1
+324 attack JapSub2 Cargo5
+325 attack JapSub2 Cargo2
+326 attack JapSub2 Cargo6
+340 select JapSub3
+341 attack JapSub3 Cargo2
+342 attack JapSub3 Cargo1
+343 attack JapSub3 Cargo5
+344 attack JapSub3 Cargo3
+345 attack JapSub3 Cargo4
+346 attack JapSub3 Cargo6
+500 select JapSub1
+501 attack JapSub1 Cargo6
+502 attack JapSub1 Cargo2
+503 attack JapSub1 Cargo5
+504 attack JapSub1 Cargo3
+505 attack JapSub1 Cargo1
+506 attack JapSub1 Cargo4
+520 select JapSub2
+521 attack JapSub2 Cargo4
+522 attack JapSub2 Cargo3
+523 attack JapSub2 Cargo1
+524 attack JapSub2 Cargo5
+525 attack JapSub2 Cargo2
+526 attack JapSub2 Cargo6
+540 select JapSub3
+541 attack JapSub3 Cargo2
+542 attack JapSub3 Cargo1
+543 attack JapSub3 Cargo5
+544 attack JapSub3 Cargo3
+545 attack JapSub3 Cargo4
+546 attack JapSub3 Cargo6
+700 select JapSub1
+701 attack JapSub1 Cargo6
+702 attack JapSub1 Cargo2
+703 attack JapSub1 Cargo5
+704 attack JapSub1 Cargo3
+705 attack JapSub1 Cargo1
+706 attack JapSub1 Cargo4
+720 select JapSub2
+721 attack JapSub2 Cargo4
+722 attack JapSub2 Cargo3
+723 attack JapSub2 Cargo1
+724 attack JapSub2 Cargo5
+725 attack JapSub2 Cargo2
+726 attack JapSub2 Cargo6
+740 select JapSub3
+741 attack JapSub3 Cargo2
+742 attack JapSub3 Cargo1
+743 attack JapSub3 Cargo5
+744 attack JapSub3 Cargo3
+745 attack JapSub3 Cargo4
+746 attack JapSub3 Cargo6
+900 select JapSub1
+901 attack JapSub1 Cargo6
+902 attack JapSub1 Cargo2
+903 attack JapSub1 Cargo5
+904 attack JapSub1 Cargo3
+905 attack JapSub1 Cargo1
+906 attack JapSub1 Cargo4
+920 select JapSub2
+921 attack JapSub2 Cargo4
+922 attack JapSub2 Cargo3
+923 attack JapSub2 Cargo1
+924 attack JapSub2 Cargo5
+925 attack JapSub2 Cargo2
+926 attack JapSub2 Cargo6
+940 select JapSub3
+941 attack JapSub3 Cargo2
+942 attack JapSub3 Cargo1
+943 attack JapSub3 Cargo5
+944 attack JapSub3 Cargo3
+945 attack JapSub3 Cargo4
+946 attack JapSub3 Cargo6
+1100 select JapSub1
+1101 attack JapSub1 Cargo6
+1102 attack JapSub1 Cargo2
+1103 attack JapSub1 Cargo5
+1104 attack JapSub1 Cargo3
+1105 attack JapSub1 Cargo1
+1106 attack JapSub1 Cargo4
+1120 select JapSub2
+1121 attack JapSub2 Cargo4
+1122 attack JapSub2 Cargo3
+1123 attack JapSub2 Cargo1
+1124 attack JapSub2 Cargo5
+1125 attack JapSub2 Cargo2
+1126 attack JapSub2 Cargo6
+1140 select JapSub3
+1141 attack JapSub3 Cargo2
+1142 attack JapSub3 Cargo1
+1143 attack JapSub3 Cargo5
+1144 attack JapSub3 Cargo3
+1145 attack JapSub3 Cargo4
+1146 attack JapSub3 Cargo6
+1300 select JapSub1
+1301 attack JapSub1 Cargo6
+1302 attack JapSub1 Cargo2
+1303 attack JapSub1 Cargo5
+1304 attack JapSub1 Cargo3
+1305 attack JapSub1 Cargo1
+1306 attack JapSub1 Cargo4
+1320 select JapSub2
+1321 attack JapSub2 Cargo4
+1322 attack JapSub2 Cargo3
+1323 attack JapSub2 Cargo1
+1324 attack JapSub2 Cargo5
+1325 attack JapSub2 Cargo2
+1326 attack JapSub2 Cargo6
+1340 select JapSub3
+1341 attack JapSub3 Cargo2
+1342 attack JapSub3 Cargo1
+1343 attack JapSub3 Cargo5
+1344 attack JapSub3 Cargo3
+1345 attack JapSub3 Cargo4
+1346 attack JapSub3 Cargo6
+1500 select JapSub1
+1501 attack JapSub1 Cargo6
+1502 attack JapSub1 Cargo2
+1503 attack JapSub1 Cargo5
+1504 attack JapSub1 Cargo3
+1505 attack JapSub1 Cargo1
+1506 attack JapSub1 Cargo4
+1520 select JapSub2
+1521 attack JapSub2 Cargo4
+1522 attack JapSub2 Cargo3
+1523 attack JapSub2 Cargo1
+1524 attack JapSub2 Cargo5
+1525 attack JapSub2 Cargo2
+1526 attack JapSub2 Cargo6
+1540 select JapSub3
+1541 attack JapSub3 Cargo2
+1542 attack JapSub3 Cargo1
+1543 attack JapSub3 Cargo5
+1544 attack JapSub3 Cargo3
+1545 attack JapSub3 Cargo4
+1546 attack JapSub3 Cargo6
+1700 select JapSub1
+1701 attack JapSub1 Cargo6
+1702 attack JapSub1 Cargo2
+1703 attack JapSub1 Cargo5
+1704 attack JapSub1 Cargo3
+1705 attack JapSub1 Cargo1
+1706 attack JapSub1 Cargo4
+1720 select JapSub2
+1721 attack JapSub2 Cargo4
+1722 attack JapSub2 Cargo3
+1723 attack JapSub2 Cargo1
+1724 attack JapSub2 Cargo5
+1725 attack JapSub2 Cargo2
+1726 attack JapSub2 Cargo6
+1740 select JapSub3
+1741 attack JapSub3 Cargo2
+1742 attack JapSub3 Cargo1
+1743 attack JapSub3 Cargo5
+1744 attack JapSub3 Cargo3
+1745 attack JapSub3 Cargo4
+1746 attack JapSub3 Cargo6
+1900 select JapSub1
+1901 attack JapSub1 Cargo6
+1902 attack JapSub1 Cargo2
+1903 attack JapSub1 Cargo5
+1904 attack JapSub1 Cargo3
+1905 attack JapSub1 Cargo1
+1906 attack JapSub1 Cargo4
+1920 select JapSub2
+1921 attack JapSub2 Cargo4
+1922 attack JapSub2 Cargo3
+1923 attack JapSub2 Cargo1
+1924 attack JapSub2 Cargo5
+1925 attack JapSub2 Cargo2
+1926 attack JapSub2 Cargo6
+1940 select JapSub3
+1941 attack JapSub3 Cargo2
+1942 attack JapSub3 Cargo1
+1943 attack JapSub3 Cargo5
+1944 attack JapSub3 Cargo3
+1945 attack JapSub3 Cargo4
+1946 attack JapSub3 Cargo6
+2100 select JapSub1
+2101 attack JapSub1 Cargo6
+2102 attack JapSub1 Cargo2
+2103 attack JapSub1 Cargo5
+2104 attack JapSub1 Cargo3
+2105 attack JapSub1 Cargo1
+2106 attack JapSub1 Cargo4
+2120 select JapSub2
+2121 attack JapSub2 Cargo4
+2122 attack JapSub2 Cargo3
+2123 attack JapSub2 Cargo1
+2124 attack JapSub2 Cargo5
+2125 attack JapSub2 Cargo2
+2126 attack JapSub2 Cargo6
+2140 select JapSub3
+2141 attack JapSub3 Cargo2
+2142 attack JapSub3 Cargo1
+2143 attack JapSub3 Cargo5
+2144 attack JapSub3 Cargo3
+2145 attack JapSub3 Cargo4
+2146 attack JapSub3 Cargo6
+2300 select JapSub1
+2301 attack JapSub1 Cargo6
+2302 attack JapSub1 Cargo2
+2303 attack JapSub1 Cargo5
+2304 attack JapSub1 Cargo3
+2305 attack JapSub1 Cargo1
+2306 attack JapSub1 Cargo4
+2320 select JapSub2
+2321 attack JapSub2 Cargo4
+2322 attack JapSub2 Cargo3
+2323 attack JapSub2 Cargo1
+2324 attack JapSub2 Cargo5
+2325 attack JapSub2 Cargo2
+2326 attack JapSub2 Cargo6
+2340 select JapSub3
+2341 attack JapSub3 Cargo2
+2342 attack JapSub3 Cargo1
+2343 attack JapSub3 Cargo5
+2344 attack JapSub3 Cargo3
+2345 attack JapSub3 Cargo4
+2346 attack JapSub3 Cargo6
+2500 select JapSub1
+2501 attack JapSub1 Cargo6
+2502 attack JapSub1 Cargo2
+2503 attack JapSub1 Cargo5
+2504 attack JapSub1 Cargo3
+2505 attack JapSub1 Cargo1
+2506 attack JapSub1 Cargo4
+2520 select JapSub2
+2521 attack JapSub2 Cargo4
+2522 attack JapSub2 Cargo3
+2523 attack JapSub2 Cargo1
+2524 attack JapSub2 Cargo5
+2525 attack JapSub2 Cargo2
+2526 attack JapSub2 Cargo6
+2540 select JapSub3
+2541 attack JapSub3 Cargo2
+2542 attack JapSub3 Cargo1
+2543 attack JapSub3 Cargo5
+2544 attack JapSub3 Cargo3
+2545 attack JapSub3 Cargo4
+2546 attack JapSub3 Cargo6
+2700 select JapSub1
+2701 attack JapSub1 Cargo6
+2702 attack JapSub1 Cargo2
+2703 attack JapSub1 Cargo5
+2704 attack JapSub1 Cargo3
+2705 attack JapSub1 Cargo1
+2706 attack JapSub1 Cargo4
+2720 select JapSub2
+2721 attack JapSub2 Cargo4
+2722 attack JapSub2 Cargo3
+2723 attack JapSub2 Cargo1
+2724 attack JapSub2 Cargo5
+2725 attack JapSub2 Cargo2
+2726 attack JapSub2 Cargo6
+2740 select JapSub3
+2741 attack JapSub3 Cargo2
+2742 attack JapSub3 Cargo1
+2743 attack JapSub3 Cargo5
+2744 attack JapSub3 Cargo3
+2745 attack JapSub3 Cargo4
+2746 attack JapSub3 Cargo6
+2900 select JapSub1
+2901 attack JapSub1 Cargo6
+2902 attack JapSub1 Cargo2
+2903 attack JapSub1 Cargo5
+2904 attack JapSub1 Cargo3
+2905 attack JapSub1 Cargo1
+2906 attack JapSub1 Cargo4
+2920 select JapSub2
+2921 attack JapSub2 Cargo4
+2922 attack JapSub2 Cargo3
+2923 attack JapSub2 Cargo1
+2924 attack JapSub2 Cargo5
+2925 attack JapSub2 Cargo2
+2926 attack JapSub2 Cargo6
+2940 select JapSub3
+2941 attack JapSub3 Cargo2
+2942 attack JapSub3 Cargo1
+2943 attack JapSub3 Cargo5
+2944 attack JapSub3 Cargo3
+2945 attack JapSub3 Cargo4
+2946 attack JapSub3 Cargo6
+3100 select JapSub1
+3101 attack JapSub1 Cargo6
+3102 attack JapSub1 Cargo2
+3103 attack JapSub1 Cargo5
+3104 attack JapSub1 Cargo3
+3105 attack JapSub1 Cargo1
+3106 attack JapSub1 Cargo4
+3120 select JapSub2
+3121 attack JapSub2 Cargo4
+3122 attack JapSub2 Cargo3
+3123 attack JapSub2 Cargo1
+3124 attack JapSub2 Cargo5
+3125 attack JapSub2 Cargo2
+3126 attack JapSub2 Cargo6
+3140 select JapSub3
+3141 attack JapSub3 Cargo2
+3142 attack JapSub3 Cargo1
+3143 attack JapSub3 Cargo5
+3144 attack JapSub3 Cargo3
+3145 attack JapSub3 Cargo4
+3146 attack JapSub3 Cargo6
+3300 select JapSub1
+3301 attack JapSub1 Cargo6
+3302 attack JapSub1 Cargo2
+3303 attack JapSub1 Cargo5
+3304 attack JapSub1 Cargo3
+3305 attack JapSub1 Cargo1
+3306 attack JapSub1 Cargo4
+3320 select JapSub2
+3321 attack JapSub2 Cargo4
+3322 attack JapSub2 Cargo3
+3323 attack JapSub2 Cargo1
+3324 attack JapSub2 Cargo5
+3325 attack JapSub2 Cargo2
+3326 attack JapSub2 Cargo6
+3340 select JapSub3
+3341 attack JapSub3 Cargo2
+3342 attack JapSub3 Cargo1
+3343 attack JapSub3 Cargo5
+3344 attack JapSub3 Cargo3
+3345 attack JapSub3 Cargo4
+3346 attack JapSub3 Cargo6
+3500 select JapSub1
+3501 attack JapSub1 Cargo6
+3502 attack JapSub1 Cargo2
+3503 attack JapSub1 Cargo5
+3504 attack JapSub1 Cargo3
+3505 attack JapSub1 Cargo1
+3506 attack JapSub1 Cargo4
+3520 select JapSub2
+3521 attack JapSub2 Cargo4
+3522 attack JapSub2 Cargo3
+3523 attack JapSub2 Cargo1
+3524 attack JapSub2 Cargo5
+3525 attack JapSub2 Cargo2
+3526 attack JapSub2 Cargo6
+3540 select JapSub3
+3541 attack JapSub3 Cargo2
+3542 attack JapSub3 Cargo1
+3543 attack JapSub3 Cargo5
+3544 attack JapSub3 Cargo3
+3545 attack JapSub3 Cargo4
+3546 attack JapSub3 Cargo6
+3700 select JapSub1
+3701 attack JapSub1 Cargo6
+3702 attack JapSub1 Cargo2
+3703 attack JapSub1 Cargo5
+3704 attack JapSub1 Cargo3
+3705 attack JapSub1 Cargo1
+3706 attack JapSub1 Cargo4
+3720 select JapSub2
+3721 attack JapSub2 Cargo4
+3722 attack JapSub2 Cargo3
+3723 attack JapSub2 Cargo1
+3724 attack JapSub2 Cargo5
+3725 attack JapSub2 Cargo2
+3726 attack JapSub2 Cargo6
+3740 select JapSub3
+3741 attack JapSub3 Cargo2
+3742 attack JapSub3 Cargo1
+3743 attack JapSub3 Cargo5
+3744 attack JapSub3 Cargo3
+3745 attack JapSub3 Cargo4
+3746 attack JapSub3 Cargo6
+3900 select JapSub1
+3901 attack JapSub1 Cargo6
+3902 attack JapSub1 Cargo2
+3903 attack JapSub1 Cargo5
+3904 attack JapSub1 Cargo3
+3905 attack JapSub1 Cargo1
+3906 attack JapSub1 Cargo4
+3920 select JapSub2
+3921 attack JapSub2 Cargo4
+3922 attack JapSub2 Cargo3
+3923 attack JapSub2 Cargo1
+3924 attack JapSub2 Cargo5
+3925 attack JapSub2 Cargo2
+3926 attack JapSub2 Cargo6
+3940 select JapSub3
+3941 attack JapSub3 Cargo2
+3942 attack JapSub3 Cargo1
+3943 attack JapSub3 Cargo5
+3944 attack JapSub3 Cargo3
+3945 attack JapSub3 Cargo4
+3946 attack JapSub3 Cargo6
+4100 select JapSub1
+4101 attack JapSub1 Cargo6
+4102 attack JapSub1 Cargo2
+4103 attack JapSub1 Cargo5
+4104 attack JapSub1 Cargo3
+4105 attack JapSub1 Cargo1
+4106 attack JapSub1 Cargo4
+4120 select JapSub2
+4121 attack JapSub2 Cargo4
+4122 attack JapSub2 Cargo3
+4123 attack JapSub2 Cargo1
+4124 attack JapSub2 Cargo5
+4125 attack JapSub2 Cargo2
+4126 attack JapSub2 Cargo6
+4140 select JapSub3
+4141 attack JapSub3 Cargo2
+4142 attack JapSub3 Cargo1
+4143 attack JapSub3 Cargo5
+4144 attack JapSub3 Cargo3
+4145 attack JapSub3 Cargo4
+4146 attack JapSub3 Cargo6
+4300 select JapSub1
+4301 attack JapSub1 Cargo6
+4302 attack JapSub1 Cargo2
+4303 attack JapSub1 Cargo5
+4304 attack JapSub1 Cargo3
+4305 attack JapSub1 Cargo1
+4306 attack JapSub1 Cargo4
+4320 select JapSub2
+4321 attack JapSub2 Cargo4
+4322 attack JapSub2 Cargo3
+4323 attack JapSub2 Cargo1
+4324 attack JapSub2 Cargo5
+4325 attack JapSub2 Cargo2
+4326 attack JapSub2 Cargo6
+4340 select JapSub3
+4341 attack JapSub3 Cargo2
+4342 attack JapSub3 Cargo1
+4343 attack JapSub3 Cargo5
+4344 attack JapSub3 Cargo3
+4345 attack JapSub3 Cargo4
+4346 attack JapSub3 Cargo6
+4500 select JapSub1
+4501 attack JapSub1 Cargo6
+4502 attack JapSub1 Cargo2
+4503 attack JapSub1 Cargo5
+4504 attack JapSub1 Cargo3
+4505 attack JapSub1 Cargo1
+4506 attack JapSub1 Cargo4
+4520 select JapSub2
+4521 attack JapSub2 Cargo4
+4522 attack JapSub2 Cargo3
+4523 attack JapSub2 Cargo1
+4524 attack JapSub2 Cargo5
+4525 attack JapSub2 Cargo2
+4526 attack JapSub2 Cargo6
+4540 select JapSub3
+4541 attack JapSub3 Cargo2
+4542 attack JapSub3 Cargo1
+4543 attack JapSub3 Cargo5
+4544 attack JapSub3 Cargo3
+4545 attack JapSub3 Cargo4
+4546 attack JapSub3 Cargo6
+4700 select JapSub1
+4701 attack JapSub1 Cargo6
+4702 attack JapSub1 Cargo2
+4703 attack JapSub1 Cargo5
+4704 attack JapSub1 Cargo3
+4705 attack JapSub1 Cargo1
+4706 attack JapSub1 Cargo4
+4720 select JapSub2
+4721 attack JapSub2 Cargo4
+4722 attack JapSub2 Cargo3
+4723 attack JapSub2 Cargo1
+4724 attack JapSub2 Cargo5
+4725 attack JapSub2 Cargo2
+4726 attack JapSub2 Cargo6
+4740 select JapSub3
+4741 attack JapSub3 Cargo2
+4742 attack JapSub3 Cargo1
+4743 attack JapSub3 Cargo5
+4744 attack JapSub3 Cargo3
+4745 attack JapSub3 Cargo4
+4746 attack JapSub3 Cargo6
+4900 select JapSub1
+4901 attack JapSub1 Cargo6
+4902 attack JapSub1 Cargo2
+4903 attack JapSub1 Cargo5
+4904 attack JapSub1 Cargo3
+4905 attack JapSub1 Cargo1
+4906 attack JapSub1 Cargo4
+4920 select JapSub2
+4921 attack JapSub2 Cargo4
+4922 attack JapSub2 Cargo3
+4923 attack JapSub2 Cargo1
+4924 attack JapSub2 Cargo5
+4925 attack JapSub2 Cargo2
+4926 attack JapSub2 Cargo6
+4940 select JapSub3
+4941 attack JapSub3 Cargo2
+4942 attack JapSub3 Cargo1
+4943 attack JapSub3 Cargo5
+4944 attack JapSub3 Cargo3
+4945 attack JapSub3 Cargo4
+4946 attack JapSub3 Cargo6
+5100 select JapSub1
+5101 attack JapSub1 Cargo6
+5102 attack JapSub1 Cargo2
+5103 attack JapSub1 Cargo5
+5104 attack JapSub1 Cargo3
+5105 attack JapSub1 Cargo1
+5106 attack JapSub1 Cargo4
+5120 select JapSub2
+5121 attack JapSub2 Cargo4
+5122 attack JapSub2 Cargo3
+5123 attack JapSub2 Cargo1
+5124 attack JapSub2 Cargo5
+5125 attack JapSub2 Cargo2
+5126 attack JapSub2 Cargo6
+5140 select JapSub3
+5141 attack JapSub3 Cargo2
+5142 attack JapSub3 Cargo1
+5143 attack JapSub3 Cargo5
+5144 attack JapSub3 Cargo3
+5145 attack JapSub3 Cargo4
+5146 attack JapSub3 Cargo6
+5300 select JapSub1
+5301 attack JapSub1 Cargo6
+5302 attack JapSub1 Cargo2
+5303 attack JapSub1 Cargo5
+5304 attack JapSub1 Cargo3
+5305 attack JapSub1 Cargo1
+5306 attack JapSub1 Cargo4
+5320 select JapSub2
+5321 attack JapSub2 Cargo4
+5322 attack JapSub2 Cargo3
+5323 attack JapSub2 Cargo1
+5324 attack JapSub2 Cargo5
+5325 attack JapSub2 Cargo2
+5326 attack JapSub2 Cargo6
+5340 select JapSub3
+5341 attack JapSub3 Cargo2
+5342 attack JapSub3 Cargo1
+5343 attack JapSub3 Cargo5
+5344 attack JapSub3 Cargo3
+5345 attack JapSub3 Cargo4
+5346 attack JapSub3 Cargo6
+5500 select JapSub1
+5501 attack JapSub1 Cargo6
+5502 attack JapSub1 Cargo2
+5503 attack JapSub1 Cargo5
+5504 attack JapSub1 Cargo3
+5505 attack JapSub1 Cargo1
+5506 attack JapSub1 Cargo4
+5520 select JapSub2
+5521 attack JapSub2 Cargo4
+5522 attack JapSub2 Cargo3
+5523 attack JapSub2 Cargo1
+5524 attack JapSub2 Cargo5
+5525 attack JapSub2 Cargo2
+5526 attack JapSub2 Cargo6
+5540 select JapSub3
+5541 attack JapSub3 Cargo2
+5542 attack JapSub3 Cargo1
+5543 attack JapSub3 Cargo5
+5544 attack JapSub3 Cargo3
+5545 attack JapSub3 Cargo4
+5546 attack JapSub3 Cargo6
+5700 select JapSub1
+5701 attack JapSub1 Cargo6
+5702 attack JapSub1 Cargo2
+5703 attack JapSub1 Cargo5
+5704 attack JapSub1 Cargo3
+5705 attack JapSub1 Cargo1
+5706 attack JapSub1 Cargo4
+5720 select JapSub2
+5721 attack JapSub2 Cargo4
+5722 attack JapSub2 Cargo3
+5723 attack JapSub2 Cargo1
+5724 attack JapSub2 Cargo5
+5725 attack JapSub2 Cargo2
+5726 attack JapSub2 Cargo6
+5740 select JapSub3
+5741 attack JapSub3 Cargo2
+5742 attack JapSub3 Cargo1
+5743 attack JapSub3 Cargo5
+5744 attack JapSub3 Cargo3
+5745 attack JapSub3 Cargo4
+5746 attack JapSub3 Cargo6
+5900 select JapSub1
+5901 attack JapSub1 Cargo6
+5902 attack JapSub1 Cargo2
+5903 attack JapSub1 Cargo5
+5904 attack JapSub1 Cargo3
+5905 attack JapSub1 Cargo1
+5906 attack JapSub1 Cargo4
+5920 select JapSub2
+5921 attack JapSub2 Cargo4
+5922 attack JapSub2 Cargo3
+5923 attack JapSub2 Cargo1
+5924 attack JapSub2 Cargo5
+5925 attack JapSub2 Cargo2
+5926 attack JapSub2 Cargo6
+5940 select JapSub3
+5941 attack JapSub3 Cargo2
+5942 attack JapSub3 Cargo1
+5943 attack JapSub3 Cargo5
+5944 attack JapSub3 Cargo3
+5945 attack JapSub3 Cargo4
+5946 attack JapSub3 Cargo6
+6100 select JapSub1
+6101 attack JapSub1 Cargo6
+6102 attack JapSub1 Cargo2
+6103 attack JapSub1 Cargo5
+6104 attack JapSub1 Cargo3
+6105 attack JapSub1 Cargo1
+6106 attack JapSub1 Cargo4
+6120 select JapSub2
+6121 attack JapSub2 Cargo4
+6122 attack JapSub2 Cargo3
+6123 attack JapSub2 Cargo1
+6124 attack JapSub2 Cargo5
+6125 attack JapSub2 Cargo2
+6126 attack JapSub2 Cargo6
+6140 select JapSub3
+6141 attack JapSub3 Cargo2
+6142 attack JapSub3 Cargo1
+6143 attack JapSub3 Cargo5
+6144 attack JapSub3 Cargo3
+6145 attack JapSub3 Cargo4
+6146 attack JapSub3 Cargo6
+6300 select JapSub1
+6301 attack JapSub1 Cargo6
+6302 attack JapSub1 Cargo2
+6303 attack JapSub1 Cargo5
+6304 attack JapSub1 Cargo3
+6305 attack JapSub1 Cargo1
+6306 attack JapSub1 Cargo4
+6320 select JapSub2
+6321 attack JapSub2 Cargo4
+6322 attack JapSub2 Cargo3
+6323 attack JapSub2 Cargo1
+6324 attack JapSub2 Cargo5
+6325 attack JapSub2 Cargo2
+6326 attack JapSub2 Cargo6
+6340 select JapSub3
+6341 attack JapSub3 Cargo2
+6342 attack JapSub3 Cargo1
+6343 attack JapSub3 Cargo5
+6344 attack JapSub3 Cargo3
+6345 attack JapSub3 Cargo4
+6346 attack JapSub3 Cargo6
+6500 select JapSub1
+6501 attack JapSub1 Cargo6
+6502 attack JapSub1 Cargo2
+6503 attack JapSub1 Cargo5
+6504 attack JapSub1 Cargo3
+6505 attack JapSub1 Cargo1
+6506 attack JapSub1 Cargo4
+6520 select JapSub2
+6521 attack JapSub2 Cargo4
+6522 attack JapSub2 Cargo3
+6523 attack JapSub2 Cargo1
+6524 attack JapSub2 Cargo5
+6525 attack JapSub2 Cargo2
+6526 attack JapSub2 Cargo6
+6540 select JapSub3
+6541 attack JapSub3 Cargo2
+6542 attack JapSub3 Cargo1
+6543 attack JapSub3 Cargo5
+6544 attack JapSub3 Cargo3
+6545 attack JapSub3 Cargo4
+6546 attack JapSub3 Cargo6
+6700 select JapSub1
+6701 attack JapSub1 Cargo6
+6702 attack JapSub1 Cargo2
+6703 attack JapSub1 Cargo5
+6704 attack JapSub1 Cargo3
+6705 attack JapSub1 Cargo1
+6706 attack JapSub1 Cargo4
+6720 select JapSub2
+6721 attack JapSub2 Cargo4
+6722 attack JapSub2 Cargo3
+6723 attack JapSub2 Cargo1
+6724 attack JapSub2 Cargo5
+6725 attack JapSub2 Cargo2
+6726 attack JapSub2 Cargo6
+6740 select JapSub3
+6741 attack JapSub3 Cargo2
+6742 attack JapSub3 Cargo1
+6743 attack JapSub3 Cargo5
+6744 attack JapSub3 Cargo3
+6745 attack JapSub3 Cargo4
+6746 attack JapSub3 Cargo6
+6900 select JapSub1
+6901 attack JapSub1 Cargo6
+6902 attack JapSub1 Cargo2
+6903 attack JapSub1 Cargo5
+6904 attack JapSub1 Cargo3
+6905 attack JapSub1 Cargo1
+6906 attack JapSub1 Cargo4
+6920 select JapSub2
+6921 attack JapSub2 Cargo4
+6922 attack JapSub2 Cargo3
+6923 attack JapSub2 Cargo1
+6924 attack JapSub2 Cargo5
+6925 attack JapSub2 Cargo2
+6926 attack JapSub2 Cargo6
+6940 select JapSub3
+6941 attack JapSub3 Cargo2
+6942 attack JapSub3 Cargo1
+6943 attack JapSub3 Cargo5
+6944 attack JapSub3 Cargo3
+6945 attack JapSub3 Cargo4
+6946 attack JapSub3 Cargo6
+7100 select JapSub1
+7101 attack JapSub1 Cargo6
+7102 attack JapSub1 Cargo2
+7103 attack JapSub1 Cargo5
+7104 attack JapSub1 Cargo3
+7105 attack JapSub1 Cargo1
+7106 attack JapSub1 Cargo4
+7120 select JapSub2
+7121 attack JapSub2 Cargo4
+7122 attack JapSub2 Cargo3
+7123 attack JapSub2 Cargo1
+7124 attack JapSub2 Cargo5
+7125 attack JapSub2 Cargo2
+7126 attack JapSub2 Cargo6
+7140 select JapSub3
+7141 attack JapSub3 Cargo2
+7142 attack JapSub3 Cargo1
+7143 attack JapSub3 Cargo5
+7144 attack JapSub3 Cargo3
+7145 attack JapSub3 Cargo4
+7146 attack JapSub3 Cargo6
+7300 select JapSub1
+7301 attack JapSub1 Cargo6
+7302 attack JapSub1 Cargo2
+7303 attack JapSub1 Cargo5
+7304 attack JapSub1 Cargo3
+7305 attack JapSub1 Cargo1
+7306 attack JapSub1 Cargo4
+7320 select JapSub2
+7321 attack JapSub2 Cargo4
+7322 attack JapSub2 Cargo3
+7323 attack JapSub2 Cargo1
+7324 attack JapSub2 Cargo5
+7325 attack JapSub2 Cargo2
+7326 attack JapSub2 Cargo6
+7340 select JapSub3
+7341 attack JapSub3 Cargo2
+7342 attack JapSub3 Cargo1
+7343 attack JapSub3 Cargo5
+7344 attack JapSub3 Cargo3
+7345 attack JapSub3 Cargo4
+7346 attack JapSub3 Cargo6
+7500 select JapSub1
+7501 attack JapSub1 Cargo6
+7502 attack JapSub1 Cargo2
+7503 attack JapSub1 Cargo5
+7504 attack JapSub1 Cargo3
+7505 attack JapSub1 Cargo1
+7506 attack JapSub1 Cargo4
+7520 select JapSub2
+7521 attack JapSub2 Cargo4
+7522 attack JapSub2 Cargo3
+7523 attack JapSub2 Cargo1
+7524 attack JapSub2 Cargo5
+7525 attack JapSub2 Cargo2
+7526 attack JapSub2 Cargo6
+7540 select JapSub3
+7541 attack JapSub3 Cargo2
+7542 attack JapSub3 Cargo1
+7543 attack JapSub3 Cargo5
+7544 attack JapSub3 Cargo3
+7545 attack JapSub3 Cargo4
+7546 attack JapSub3 Cargo6
+7700 select JapSub1
+7701 attack JapSub1 Cargo6
+7702 attack JapSub1 Cargo2
+7703 attack JapSub1 Cargo5
+7704 attack JapSub1 Cargo3
+7705 attack JapSub1 Cargo1
+7706 attack JapSub1 Cargo4
+7720 select JapSub2
+7721 attack JapSub2 Cargo4
+7722 attack JapSub2 Cargo3
+7723 attack JapSub2 Cargo1
+7724 attack JapSub2 Cargo5
+7725 attack JapSub2 Cargo2
+7726 attack JapSub2 Cargo6
+7740 select JapSub3
+7741 attack JapSub3 Cargo2
+7742 attack JapSub3 Cargo1
+7743 attack JapSub3 Cargo5
+7744 attack JapSub3 Cargo3
+7745 attack JapSub3 Cargo4
+7746 attack JapSub3 Cargo6
+7900 select JapSub1
+7901 attack JapSub1 Cargo6
+7902 attack JapSub1 Cargo2
+7903 attack JapSub1 Cargo5
+7904 attack JapSub1 Cargo3
+7905 attack JapSub1 Cargo1
+7906 attack JapSub1 Cargo4
+7920 select JapSub2
+7921 attack JapSub2 Cargo4
+7922 attack JapSub2 Cargo3
+7923 attack JapSub2 Cargo1
+7924 attack JapSub2 Cargo5
+7925 attack JapSub2 Cargo2
+7926 attack JapSub2 Cargo6
+7940 select JapSub3
+7941 attack JapSub3 Cargo2
+7942 attack JapSub3 Cargo1
+7943 attack JapSub3 Cargo5
+7944 attack JapSub3 Cargo3
+7945 attack JapSub3 Cargo4
+7946 attack JapSub3 Cargo6
+8100 select JapSub1
+8101 attack JapSub1 Cargo6
+8102 attack JapSub1 Cargo2
+8103 attack JapSub1 Cargo5
+8104 attack JapSub1 Cargo3
+8105 attack JapSub1 Cargo1
+8106 attack JapSub1 Cargo4
+8120 select JapSub2
+8121 attack JapSub2 Cargo4
+8122 attack JapSub2 Cargo3
+8123 attack JapSub2 Cargo1
+8124 attack JapSub2 Cargo5
+8125 attack JapSub2 Cargo2
+8126 attack JapSub2 Cargo6
+8140 select JapSub3
+8141 attack JapSub3 Cargo2
+8142 attack JapSub3 Cargo1
+8143 attack JapSub3 Cargo5
+8144 attack JapSub3 Cargo3
+8145 attack JapSub3 Cargo4
+8146 attack JapSub3 Cargo6
+8300 select JapSub1
+8301 attack JapSub1 Cargo6
+8302 attack JapSub1 Cargo2
+8303 attack JapSub1 Cargo5
+8304 attack JapSub1 Cargo3
+8305 attack JapSub1 Cargo1
+8306 attack JapSub1 Cargo4
+8320 select JapSub2
+8321 attack JapSub2 Cargo4
+8322 attack JapSub2 Cargo3
+8323 attack JapSub2 Cargo1
+8324 attack JapSub2 Cargo5
+8325 attack JapSub2 Cargo2
+8326 attack JapSub2 Cargo6
+8340 select JapSub3
+8341 attack JapSub3 Cargo2
+8342 attack JapSub3 Cargo1
+8343 attack JapSub3 Cargo5
+8344 attack JapSub3 Cargo3
+8345 attack JapSub3 Cargo4
+8346 attack JapSub3 Cargo6
+8500 select JapSub1
+8501 attack JapSub1 Cargo6
+8502 attack JapSub1 Cargo2
+8503 attack JapSub1 Cargo5
+8504 attack JapSub1 Cargo3
+8505 attack JapSub1 Cargo1
+8506 attack JapSub1 Cargo4
+8520 select JapSub2
+8521 attack JapSub2 Cargo4
+8522 attack JapSub2 Cargo3
+8523 attack JapSub2 Cargo1
+8524 attack JapSub2 Cargo5
+8525 attack JapSub2 Cargo2
+8526 attack JapSub2 Cargo6
+8540 select JapSub3
+8541 attack JapSub3 Cargo2
+8542 attack JapSub3 Cargo1
+8543 attack JapSub3 Cargo5
+8544 attack JapSub3 Cargo3
+8545 attack JapSub3 Cargo4
+8546 attack JapSub3 Cargo6
+8700 select JapSub1
+8701 attack JapSub1 Cargo6
+8702 attack JapSub1 Cargo2
+8703 attack JapSub1 Cargo5
+8704 attack JapSub1 Cargo3
+8705 attack JapSub1 Cargo1
+8706 attack JapSub1 Cargo4
+8720 select JapSub2
+8721 attack JapSub2 Cargo4
+8722 attack JapSub2 Cargo3
+8723 attack JapSub2 Cargo1
+8724 attack JapSub2 Cargo5
+8725 attack JapSub2 Cargo2
+8726 attack JapSub2 Cargo6
+8740 select JapSub3
+8741 attack JapSub3 Cargo2
+8742 attack JapSub3 Cargo1
+8743 attack JapSub3 Cargo5
+8744 attack JapSub3 Cargo3
+8745 attack JapSub3 Cargo4
+8746 attack JapSub3 Cargo6
+8900 select JapSub1
+8901 attack JapSub1 Cargo6
+8902 attack JapSub1 Cargo2
+8903 attack JapSub1 Cargo5
+8904 attack JapSub1 Cargo3
+8905 attack JapSub1 Cargo1
+8906 attack JapSub1 Cargo4
+8920 select JapSub2
+8921 attack JapSub2 Cargo4
+8922 attack JapSub2 Cargo3
+8923 attack JapSub2 Cargo1
+8924 attack JapSub2 Cargo5
+8925 attack JapSub2 Cargo2
+8926 attack JapSub2 Cargo6
+8940 select JapSub3
+8941 attack JapSub3 Cargo2
+8942 attack JapSub3 Cargo1
+8943 attack JapSub3 Cargo5
+8944 attack JapSub3 Cargo3
+8945 attack JapSub3 Cargo4
+8946 attack JapSub3 Cargo6
+8990 select Kongo
+9000 attack Kongo US_Airfield_02
+9001 attack Kongo Jap_Airfield
+9002 attack Kongo US_Airfield_03
+9030 select Kirishima
+9040 attack Kirishima US_Airfield_02
+9041 attack Kirishima US_Airfield_01
+9042 attack Kirishima US_Airfield_03
+9070 select Haruna
+9080 attack Haruna US_Airfield_01
+9081 attack Haruna US_Airfield_03
+9082 attack Haruna US_Airfield_02
+9100 select JapSub1
+9101 attack JapSub1 Cargo6
+9102 attack JapSub1 Cargo2
+9103 attack JapSub1 Cargo5
+9104 attack JapSub1 Cargo3
+9105 attack JapSub1 Cargo1
+9106 attack JapSub1 Cargo4
+9110 select Hiei
+9120 select JapSub2
+9120 attack Hiei Jap_Airfield
+9121 attack JapSub2 Cargo4
+9121 attack Hiei US_Airfield_02
+9122 attack JapSub2 Cargo3
+9122 attack Hiei US_Airfield_03
+9123 attack JapSub2 Cargo1
+9124 attack JapSub2 Cargo5
+9125 attack JapSub2 Cargo2
+9126 attack JapSub2 Cargo6
+9140 select JapSub3
+9141 attack JapSub3 Cargo2
+9142 attack JapSub3 Cargo1
+9143 attack JapSub3 Cargo5
+9144 attack JapSub3 Cargo3
+9145 attack JapSub3 Cargo4
+9146 attack JapSub3 Cargo6
+9150 select Aoba
+9160 attack Aoba US_Airfield_01
+9161 attack Aoba Jap_Airfield
+9190 select Furutaka
+9200 attack Furutaka Jap_Airfield
+9201 attack Furutaka US_Airfield_01
+9230 select Kinugasa
+9240 attack Kinugasa Jap_Airfield
+9241 attack Kinugasa US_Airfield_01
+9300 select JapSub1
+9301 attack JapSub1 Cargo6
+9302 attack JapSub1 Cargo2
+9303 attack JapSub1 Cargo5
+9304 attack JapSub1 Cargo3
+9305 attack JapSub1 Cargo1
+9306 attack JapSub1 Cargo4
+9320 select JapSub2
+9321 attack JapSub2 Cargo4
+9322 attack JapSub2 Cargo3
+9323 attack JapSub2 Cargo1
+9324 attack JapSub2 Cargo5
+9325 attack JapSub2 Cargo2
+9326 attack JapSub2 Cargo6
+9340 select JapSub3
+9341 attack JapSub3 Cargo2
+9342 attack JapSub3 Cargo1
+9343 attack JapSub3 Cargo5
+9344 attack JapSub3 Cargo3
+9345 attack JapSub3 Cargo4
+9346 attack JapSub3 Cargo6
+9500 select JapSub1
+9501 attack JapSub1 Cargo6
+9502 attack JapSub1 Cargo2
+9503 attack JapSub1 Cargo5
+9504 attack JapSub1 Cargo3
+9505 attack JapSub1 Cargo1
+9506 attack JapSub1 Cargo4
+9520 select JapSub2
+9521 attack JapSub2 Cargo4
+9522 attack JapSub2 Cargo3
+9523 attack JapSub2 Cargo1
+9524 attack JapSub2 Cargo5
+9525 attack JapSub2 Cargo2
+9526 attack JapSub2 Cargo6
+9540 select JapSub3
+9541 attack JapSub3 Cargo2
+9542 attack JapSub3 Cargo1
+9543 attack JapSub3 Cargo5
+9544 attack JapSub3 Cargo3
+9545 attack JapSub3 Cargo4
+9546 attack JapSub3 Cargo6
+9700 select JapSub1
+9701 attack JapSub1 Cargo6
+9702 attack JapSub1 Cargo2
+9703 attack JapSub1 Cargo5
+9704 attack JapSub1 Cargo3
+9705 attack JapSub1 Cargo1
+9706 attack JapSub1 Cargo4
+9720 select JapSub2
+9721 attack JapSub2 Cargo4
+9722 attack JapSub2 Cargo3
+9723 attack JapSub2 Cargo1
+9724 attack JapSub2 Cargo5
+9725 attack JapSub2 Cargo2
+9726 attack JapSub2 Cargo6
+9740 select JapSub3
+9741 attack JapSub3 Cargo2
+9742 attack JapSub3 Cargo1
+9743 attack JapSub3 Cargo5
+9744 attack JapSub3 Cargo3
+9745 attack JapSub3 Cargo4
+9746 attack JapSub3 Cargo6
+9900 select JapSub1
+9901 attack JapSub1 Cargo6
+9902 attack JapSub1 Cargo2
+9903 attack JapSub1 Cargo5
+9904 attack JapSub1 Cargo3
+9905 attack JapSub1 Cargo1
+9906 attack JapSub1 Cargo4
+9920 select JapSub2
+9921 attack JapSub2 Cargo4
+9922 attack JapSub2 Cargo3
+9923 attack JapSub2 Cargo1
+9924 attack JapSub2 Cargo5
+9925 attack JapSub2 Cargo2
+9926 attack JapSub2 Cargo6
+9940 select JapSub3
+9941 attack JapSub3 Cargo2
+9942 attack JapSub3 Cargo1
+9943 attack JapSub3 Cargo5
+9944 attack JapSub3 Cargo3
+9945 attack JapSub3 Cargo4
+9946 attack JapSub3 Cargo6
+10100 select JapSub1
+10101 attack JapSub1 Cargo6
+10102 attack JapSub1 Cargo2
+10103 attack JapSub1 Cargo5
+10104 attack JapSub1 Cargo3
+10105 attack JapSub1 Cargo1
+10106 attack JapSub1 Cargo4
+10120 select JapSub2
+10121 attack JapSub2 Cargo4
+10122 attack JapSub2 Cargo3
+10123 attack JapSub2 Cargo1
+10124 attack JapSub2 Cargo5
+10125 attack JapSub2 Cargo2
+10126 attack JapSub2 Cargo6
+10140 select JapSub3
+10141 attack JapSub3 Cargo2
+10142 attack JapSub3 Cargo1
+10143 attack JapSub3 Cargo5
+10144 attack JapSub3 Cargo3
+10145 attack JapSub3 Cargo4
+10146 attack JapSub3 Cargo6
+10300 select JapSub1
+10301 attack JapSub1 Cargo6
+10302 attack JapSub1 Cargo2
+10303 attack JapSub1 Cargo5
+10304 attack JapSub1 Cargo3
+10305 attack JapSub1 Cargo1
+10306 attack JapSub1 Cargo4
+10320 select JapSub2
+10321 attack JapSub2 Cargo4
+10322 attack JapSub2 Cargo3
+10323 attack JapSub2 Cargo1
+10324 attack JapSub2 Cargo5
+10325 attack JapSub2 Cargo2
+10326 attack JapSub2 Cargo6
+10340 select JapSub3
+10341 attack JapSub3 Cargo2
+10342 attack JapSub3 Cargo1
+10343 attack JapSub3 Cargo5
+10344 attack JapSub3 Cargo3
+10345 attack JapSub3 Cargo4
+10346 attack JapSub3 Cargo6
+10500 select JapSub1
+10501 attack JapSub1 Cargo6
+10502 attack JapSub1 Cargo2
+10503 attack JapSub1 Cargo5
+10504 attack JapSub1 Cargo3
+10505 attack JapSub1 Cargo1
+10506 attack JapSub1 Cargo4
+10520 select JapSub2
+10521 attack JapSub2 Cargo4
+10522 attack JapSub2 Cargo3
+10523 attack JapSub2 Cargo1
+10524 attack JapSub2 Cargo5
+10525 attack JapSub2 Cargo2
+10526 attack JapSub2 Cargo6
+10540 select JapSub3
+10541 attack JapSub3 Cargo2
+10542 attack JapSub3 Cargo1
+10543 attack JapSub3 Cargo5
+10544 attack JapSub3 Cargo3
+10545 attack JapSub3 Cargo4
+10546 attack JapSub3 Cargo6
+10700 select JapSub1
+10701 attack JapSub1 Cargo6
+10702 attack JapSub1 Cargo2
+10703 attack JapSub1 Cargo5
+10704 attack JapSub1 Cargo3
+10705 attack JapSub1 Cargo1
+10706 attack JapSub1 Cargo4
+10720 select JapSub2
+10721 attack JapSub2 Cargo4
+10722 attack JapSub2 Cargo3
+10723 attack JapSub2 Cargo1
+10724 attack JapSub2 Cargo5
+10725 attack JapSub2 Cargo2
+10726 attack JapSub2 Cargo6
+10740 select JapSub3
+10741 attack JapSub3 Cargo2
+10742 attack JapSub3 Cargo1
+10743 attack JapSub3 Cargo5
+10744 attack JapSub3 Cargo3
+10745 attack JapSub3 Cargo4
+10746 attack JapSub3 Cargo6
+10900 select JapSub1
+10901 attack JapSub1 Cargo6
+10902 attack JapSub1 Cargo2
+10903 attack JapSub1 Cargo5
+10904 attack JapSub1 Cargo3
+10905 attack JapSub1 Cargo1
+10906 attack JapSub1 Cargo4
+10920 select JapSub2
+10921 attack JapSub2 Cargo4
+10922 attack JapSub2 Cargo3
+10923 attack JapSub2 Cargo1
+10924 attack JapSub2 Cargo5
+10925 attack JapSub2 Cargo2
+10926 attack JapSub2 Cargo6
+10940 select JapSub3
+10941 attack JapSub3 Cargo2
+10942 attack JapSub3 Cargo1
+10943 attack JapSub3 Cargo5
+10944 attack JapSub3 Cargo3
+10945 attack JapSub3 Cargo4
+10946 attack JapSub3 Cargo6
+10990 select Kongo
+11000 attack Kongo US_Airfield_02
+11001 attack Kongo Jap_Airfield
+11002 attack Kongo US_Airfield_03
+11030 select Kirishima
+11040 attack Kirishima US_Airfield_02
+11041 attack Kirishima US_Airfield_01
+11042 attack Kirishima US_Airfield_03
+11070 select Haruna
+11080 attack Haruna US_Airfield_01
+11081 attack Haruna US_Airfield_03
+11082 attack Haruna US_Airfield_02
+11100 select JapSub1
+11101 attack JapSub1 Cargo6
+11102 attack JapSub1 Cargo2
+11103 attack JapSub1 Cargo5
+11104 attack JapSub1 Cargo3
+11105 attack JapSub1 Cargo1
+11106 attack JapSub1 Cargo4
+11110 select Hiei
+11120 select JapSub2
+11120 attack Hiei Jap_Airfield
+11121 attack JapSub2 Cargo4
+11121 attack Hiei US_Airfield_02
+11122 attack JapSub2 Cargo3
+11122 attack Hiei US_Airfield_03
+11123 attack JapSub2 Cargo1
+11124 attack JapSub2 Cargo5
+11125 attack JapSub2 Cargo2
+11126 attack JapSub2 Cargo6
+11140 select JapSub3
+11141 attack JapSub3 Cargo2
+11142 attack JapSub3 Cargo1
+11143 attack JapSub3 Cargo5
+11144 attack JapSub3 Cargo3
+11145 attack JapSub3 Cargo4
+11146 attack JapSub3 Cargo6
+11150 select Aoba
+11160 attack Aoba US_Airfield_01
+11161 attack Aoba Jap_Airfield
+11190 select Furutaka
+11200 attack Furutaka Jap_Airfield
+11201 attack Furutaka US_Airfield_01
+11230 select Kinugasa
+11240 attack Kinugasa Jap_Airfield
+11241 attack Kinugasa US_Airfield_01
+11300 select JapSub1
+11301 attack JapSub1 Cargo6
+11302 attack JapSub1 Cargo2
+11303 attack JapSub1 Cargo5
+11304 attack JapSub1 Cargo3
+11305 attack JapSub1 Cargo1
+11306 attack JapSub1 Cargo4
+11320 select JapSub2
+11321 attack JapSub2 Cargo4
+11322 attack JapSub2 Cargo3
+11323 attack JapSub2 Cargo1
+11324 attack JapSub2 Cargo5
+11325 attack JapSub2 Cargo2
+11326 attack JapSub2 Cargo6
+11340 select JapSub3
+11341 attack JapSub3 Cargo2
+11342 attack JapSub3 Cargo1
+11343 attack JapSub3 Cargo5
+11344 attack JapSub3 Cargo3
+11345 attack JapSub3 Cargo4
+11346 attack JapSub3 Cargo6
+11500 select JapSub1
+11501 attack JapSub1 Cargo6
+11502 attack JapSub1 Cargo2
+11503 attack JapSub1 Cargo5
+11504 attack JapSub1 Cargo3
+11505 attack JapSub1 Cargo1
+11506 attack JapSub1 Cargo4
+11520 select JapSub2
+11521 attack JapSub2 Cargo4
+11522 attack JapSub2 Cargo3
+11523 attack JapSub2 Cargo1
+11524 attack JapSub2 Cargo5
+11525 attack JapSub2 Cargo2
+11526 attack JapSub2 Cargo6
+11540 select JapSub3
+11541 attack JapSub3 Cargo2
+11542 attack JapSub3 Cargo1
+11543 attack JapSub3 Cargo5
+11544 attack JapSub3 Cargo3
+11545 attack JapSub3 Cargo4
+11546 attack JapSub3 Cargo6
+11700 select JapSub1
+11701 attack JapSub1 Cargo6
+11702 attack JapSub1 Cargo2
+11703 attack JapSub1 Cargo5
+11704 attack JapSub1 Cargo3
+11705 attack JapSub1 Cargo1
+11706 attack JapSub1 Cargo4
+11720 select JapSub2
+11721 attack JapSub2 Cargo4
+11722 attack JapSub2 Cargo3
+11723 attack JapSub2 Cargo1
+11724 attack JapSub2 Cargo5
+11725 attack JapSub2 Cargo2
+11726 attack JapSub2 Cargo6
+11740 select JapSub3
+11741 attack JapSub3 Cargo2
+11742 attack JapSub3 Cargo1
+11743 attack JapSub3 Cargo5
+11744 attack JapSub3 Cargo3
+11745 attack JapSub3 Cargo4
+11746 attack JapSub3 Cargo6
+11900 select JapSub1
+11901 attack JapSub1 Cargo6
+11902 attack JapSub1 Cargo2
+11903 attack JapSub1 Cargo5
+11904 attack JapSub1 Cargo3
+11905 attack JapSub1 Cargo1
+11906 attack JapSub1 Cargo4
+11920 select JapSub2
+11921 attack JapSub2 Cargo4
+11922 attack JapSub2 Cargo3
+11923 attack JapSub2 Cargo1
+11924 attack JapSub2 Cargo5
+11925 attack JapSub2 Cargo2
+11926 attack JapSub2 Cargo6
+11940 select JapSub3
+11941 attack JapSub3 Cargo2
+11942 attack JapSub3 Cargo1
+11943 attack JapSub3 Cargo5
+11944 attack JapSub3 Cargo3
+11945 attack JapSub3 Cargo4
+11946 attack JapSub3 Cargo6
+12990 select Kongo
+13000 attack Kongo US_Airfield_02
+13001 attack Kongo Jap_Airfield
+13002 attack Kongo US_Airfield_03
+13030 select Kirishima
+13040 attack Kirishima US_Airfield_02
+13041 attack Kirishima US_Airfield_01
+13042 attack Kirishima US_Airfield_03
+13070 select Haruna
+13080 attack Haruna US_Airfield_01
+13081 attack Haruna US_Airfield_03
+13082 attack Haruna US_Airfield_02
+13110 select Hiei
+13120 attack Hiei Jap_Airfield
+13121 attack Hiei US_Airfield_02
+13122 attack Hiei US_Airfield_03
+13150 select Aoba
+13160 attack Aoba US_Airfield_01
+13161 attack Aoba Jap_Airfield
+13190 select Furutaka
+13200 attack Furutaka Jap_Airfield
+13201 attack Furutaka US_Airfield_01
+13230 select Kinugasa
+13240 attack Kinugasa Jap_Airfield
+13241 attack Kinugasa US_Airfield_01
+14990 select Kongo
+15000 attack Kongo US_Airfield_02
+15001 attack Kongo Jap_Airfield
+15002 attack Kongo US_Airfield_03
+15030 select Kirishima
+15040 attack Kirishima US_Airfield_02
+15041 attack Kirishima US_Airfield_01
+15042 attack Kirishima US_Airfield_03
+15070 select Haruna
+15080 attack Haruna US_Airfield_01
+15081 attack Haruna US_Airfield_03
+15082 attack Haruna US_Airfield_02
+15110 select Hiei
+15120 attack Hiei Jap_Airfield
+15121 attack Hiei US_Airfield_02
+15122 attack Hiei US_Airfield_03
+15150 select Aoba
+15160 attack Aoba US_Airfield_03
+15161 attack Aoba US_Airfield_01
+15190 select Furutaka
+15200 attack Furutaka Jap_Airfield
+15201 attack Furutaka US_Airfield_01
+15230 select Kinugasa
+15240 attack Kinugasa Jap_Airfield
+15241 attack Kinugasa US_Airfield_01
+16990 select Kongo
+17000 attack Kongo US_Airfield_02
+17001 attack Kongo Jap_Airfield
+17002 attack Kongo US_Airfield_03
+17030 select Kirishima
+17040 attack Kirishima US_Airfield_02
+17041 attack Kirishima US_Airfield_01
+17042 attack Kirishima US_Airfield_03
+17070 select Haruna
+17080 attack Haruna US_Airfield_01
+17081 attack Haruna US_Airfield_03
+17082 attack Haruna US_Airfield_02
+17110 select Hiei
+17120 attack Hiei Jap_Airfield
+17121 attack Hiei US_Airfield_02
+17122 attack Hiei US_Airfield_03
+17150 select Aoba
+17160 attack Aoba US_Airfield_03
+17161 attack Aoba US_Airfield_01
+17190 select Furutaka
+17200 attack Furutaka Jap_Airfield
+17201 attack Furutaka US_Airfield_01
+17230 select Kinugasa
+17240 attack Kinugasa US_Airfield_03
+17241 attack Kinugasa US_Shipyard_01
+18990 select Kongo
+19000 attack Kongo US_Airfield_02
+19001 attack Kongo Jap_Airfield
+19002 attack Kongo US_Airfield_03
+19030 select Kirishima
+19040 attack Kirishima US_Airfield_02
+19041 attack Kirishima US_Airfield_01
+19042 attack Kirishima US_Airfield_03
+19070 select Haruna
+19080 attack Haruna US_Airfield_01
+19081 attack Haruna US_Airfield_03
+19082 attack Haruna US_Airfield_02
+19110 select Hiei
+19120 attack Hiei Jap_Airfield
+19121 attack Hiei US_Airfield_02
+19122 attack Hiei US_Airfield_03
+19150 select Aoba
+19160 attack Aoba US_Airfield_03
+19161 attack Aoba US_Airfield_01
+19190 select Furutaka
+19200 attack Furutaka Jap_Airfield
+19201 attack Furutaka US_Airfield_01
+19230 select Kinugasa
+19240 attack Kinugasa US_Airfield_03
+19241 attack Kinugasa US_Shipyard_01
+20990 select Kongo
+21000 attack Kongo US_Airfield_02
+21001 attack Kongo Jap_Airfield
+21002 attack Kongo US_Airfield_03
+21030 select Kirishima
+21040 attack Kirishima US_Airfield_02
+21041 attack Kirishima US_Airfield_01
+21042 attack Kirishima US_Airfield_03
+21070 select Haruna
+21080 attack Haruna US_Airfield_01
+21081 attack Haruna US_Airfield_03
+21082 attack Haruna US_Airfield_02
+21110 select Hiei
+21120 attack Hiei Jap_Airfield
+21121 attack Hiei US_Airfield_02
+21122 attack Hiei US_Airfield_03
+21150 select Aoba
+21160 attack Aoba US_Airfield_03
+21161 attack Aoba US_Shipyard_01
+21190 select Furutaka
+21200 attack Furutaka US_Airfield_03
+21201 attack Furutaka US_Shipyard_02
+21230 select Kinugasa
+21240 attack Kinugasa US_Airfield_03
+21241 attack Kinugasa US_Shipyard_01
+22990 select Kongo
+23000 attack Kongo US_Airfield_02
+23001 attack Kongo Jap_Airfield
+23002 attack Kongo US_Airfield_03
+23030 select Kirishima
+23040 attack Kirishima US_Airfield_02
+23041 attack Kirishima US_Airfield_01
+23042 attack Kirishima US_Airfield_03
+23070 select Haruna
+23080 attack Haruna US_Airfield_01
+23081 attack Haruna US_Airfield_03
+23082 attack Haruna US_Airfield_02
+23110 select Hiei
+23120 attack Hiei Jap_Airfield
+23121 attack Hiei US_Airfield_02
+23122 attack Hiei US_Airfield_03
+23150 select Aoba
+23160 attack Aoba US_Airfield_03
+23161 attack Aoba US_Shipyard_01
+23190 select Furutaka
+23200 attack Furutaka US_Airfield_03
+23201 attack Furutaka US_Shipyard_02
+23230 select Kinugasa
+23240 attack Kinugasa US_Airfield_03
+23241 attack Kinugasa US_Shipyard_01
+24990 select Kongo
+25000 attack Kongo US_Airfield_02
+25001 attack Kongo Jap_Airfield
+25002 attack Kongo US_Airfield_03
+25030 select Kirishima
+25040 attack Kirishima US_Airfield_02
+25041 attack Kirishima US_Airfield_01
+25042 attack Kirishima US_Airfield_03
+25070 select Haruna
+25080 attack Haruna US_Airfield_01
+25081 attack Haruna US_Airfield_03
+25082 attack Haruna US_Airfield_02
+25110 select Hiei
+25120 attack Hiei Jap_Airfield
+25121 attack Hiei US_Airfield_02
+25122 attack Hiei US_Airfield_03
+25150 select Aoba
+25160 attack Aoba US_Airfield_03
+25161 attack Aoba US_Shipyard_01
+25190 select Furutaka
+25200 attack Furutaka US_Airfield_03
+25201 attack Furutaka US_Shipyard_02
+25230 select Kinugasa
+25240 attack Kinugasa US_Airfield_03
+25241 attack Kinugasa US_Shipyard_02
+26990 select Kongo
+27000 attack Kongo US_Airfield_02
+27001 attack Kongo Jap_Airfield
+27002 attack Kongo US_Airfield_03
+27030 select Kirishima
+27040 attack Kirishima US_Airfield_02
+27041 attack Kirishima US_Airfield_01
+27042 attack Kirishima US_Airfield_03
+27070 select Haruna
+27080 attack Haruna US_Airfield_01
+27081 attack Haruna US_Airfield_03
+27082 attack Haruna US_Airfield_02
+27110 select Hiei
+27120 attack Hiei Jap_Airfield
+27121 attack Hiei US_Airfield_02
+27122 attack Hiei US_Airfield_03
+27150 select Aoba
+27160 attack Aoba US_Airfield_03
+27161 attack Aoba US_Shipyard_01
+27190 select Furutaka
+27200 attack Furutaka US_Airfield_03
+27201 attack Furutaka US_Shipyard_02
+27230 select Kinugasa
+27240 attack Kinugasa US_Airfield_03
+27241 attack Kinugasa US_Shipyard_02
+28990 select Kongo
+29000 attack Kongo US_Airfield_02
+29001 attack Kongo Jap_Airfield
+29002 attack Kongo US_Airfield_03
+29030 select Kirishima
+29040 attack Kirishima US_Airfield_02
+29041 attack Kirishima US_Airfield_01
+29042 attack Kirishima US_Airfield_03
+29070 select Haruna
+29080 attack Haruna US_Airfield_01
+29081 attack Haruna US_Airfield_03
+29082 attack Haruna US_Airfield_02
+29110 select Hiei
+29120 attack Hiei Jap_Airfield
+29121 attack Hiei US_Airfield_02
+29122 attack Hiei US_Airfield_03
+29150 select Aoba
+29160 attack Aoba US_Airfield_03
+29161 attack Aoba US_Shipyard_02
+29190 select Furutaka
+29200 attack Furutaka US_Airfield_03
+29201 attack Furutaka US_Shipyard_01
+29230 select Kinugasa
+29240 attack Kinugasa US_Airfield_03
+29241 attack Kinugasa US_Shipyard_02
+30990 select Kongo
+31000 attack Kongo US_Airfield_02
+31001 attack Kongo Jap_Airfield
+31002 attack Kongo US_Airfield_03
+31030 select Kirishima
+31040 attack Kirishima US_Airfield_02
+31041 attack Kirishima US_Airfield_01
+31042 attack Kirishima US_Airfield_03
+31070 select Haruna
+31080 attack Haruna US_Airfield_01
+31081 attack Haruna US_Airfield_03
+31082 attack Haruna US_Airfield_02
+31110 select Hiei
+31120 attack Hiei Jap_Airfield
+31121 attack Hiei US_Airfield_02
+31122 attack Hiei US_Airfield_03
+31150 select Aoba
+31160 attack Aoba US_Airfield_03
+31161 attack Aoba US_Shipyard_02
+31190 select Furutaka
+31200 attack Furutaka US_Airfield_03
+31201 attack Furutaka US_Shipyard_01
+31230 select Kinugasa
+31240 attack Kinugasa US_Airfield_03
+31241 attack Kinugasa US_Shipyard_02
+32990 select Kongo
+33000 moveto Kongo -1804 7000
+33030 select Kirishima
+33040 attack Kirishima US_Airfield_02
+33041 attack Kirishima US_Airfield_01
+33042 attack Kirishima US_Airfield_03
+33070 select Haruna
+33080 attack Haruna US_Airfield_01
+33081 attack Haruna US_Airfield_03
+33082 attack Haruna US_Airfield_02
+33110 select Hiei
+33120 attack Hiei Jap_Airfield
+33121 attack Hiei US_Airfield_02
+33122 attack Hiei US_Airfield_03
+33150 select Aoba
+33160 attack Aoba US_Airfield_03
+33161 attack Aoba US_Shipyard_02
+33190 select Furutaka
+33200 attack Furutaka US_Airfield_03
+33201 attack Furutaka US_Shipyard_01
+33230 select Kinugasa
+33240 attack Kinugasa US_Airfield_03
+33241 attack Kinugasa US_Shipyard_02
+34990 select Kongo
+35000 moveto Kongo -1804 7000
+35030 select Kirishima
+35040 attack Kirishima US_Airfield_02
+35041 attack Kirishima US_Airfield_01
+35042 attack Kirishima US_Airfield_03
+35070 select Haruna
+35080 attack Haruna US_Airfield_01
+35081 attack Haruna US_Airfield_03
+35082 attack Haruna US_Airfield_02
+35110 select Hiei
+35120 attack Hiei Jap_Airfield
+35121 attack Hiei US_Airfield_02
+35122 attack Hiei US_Airfield_03
+35150 select Aoba
+35160 attack Aoba US_Airfield_03
+35161 attack Aoba US_Shipyard_02
+35190 select Furutaka
+35200 attack Furutaka US_Airfield_03
+35201 attack Furutaka US_Shipyard_01
+35230 select Kinugasa
+35240 attack Kinugasa US_Airfield_03
+35241 attack Kinugasa US_Shipyard_02
+36990 select Kongo
+37000 moveto Kongo -1804 7000
+37030 select Kirishima
+37040 attack Kirishima US_Airfield_03
+37041 attack Kirishima RightBB1
+37042 attack Kirishima DamagedBB
+37070 select Haruna
+37080 attack Haruna US_Airfield_03
+37081 attack Haruna RightBB1
+37082 attack Haruna DamagedBB
+37110 select Hiei
+37120 attack Hiei US_Airfield_03
+37121 attack Hiei RightBB1
+37122 attack Hiei DamagedBB
+37150 select Aoba
+37160 attack Aoba US_Airfield_03
+37161 attack Aoba US_Shipyard_03
+37190 select Furutaka
+37200 attack Furutaka US_Airfield_03
+37201 attack Furutaka "Shipyard Entity CB3"
+37230 select Kinugasa
+37240 attack Kinugasa US_Airfield_03
+37241 attack Kinugasa US_Airfield_02
+38990 select Kongo
+39000 moveto Kongo -1804 7000
+39030 select Kirishima
+39040 attack Kirishima US_Airfield_03
+39041 attack Kirishima RightBB1
+39042 attack Kirishima DamagedBB
+39070 select Haruna
+39080 attack Haruna US_Airfield_03
+39081 attack Haruna RightBB1
+39082 attack Haruna DamagedBB
+39110 select Hiei
+39120 attack Hiei US_Airfield_03
+39121 attack Hiei RightBB1
+39122 attack Hiei DamagedBB
+39150 select Aoba
+39160 attack Aoba US_Airfield_03
+39161 attack Aoba US_Shipyard_03
+39190 select Furutaka
+39200 attack Furutaka US_Airfield_03
+39201 attack Furutaka "Shipyard Entity CB3"
+39230 select Kinugasa
+39240 attack Kinugasa US_Airfield_03
+39241 attack Kinugasa US_Airfield_02
+40990 select Kongo
+41000 moveto Kongo -1804 7000
+41030 select Kirishima
+41040 attack Kirishima US_Airfield_03
+41041 attack Kirishima RightBB1
+41042 attack Kirishima DamagedBB
+41070 select Haruna
+41080 attack Haruna US_Airfield_03
+41081 attack Haruna RightBB1
+41082 attack Haruna DamagedBB
+41110 select Hiei
+41120 attack Hiei US_Airfield_03
+41121 attack Hiei RightBB1
+41122 attack Hiei DamagedBB
+41150 select Aoba
+41160 attack Aoba US_Airfield_03
+41161 attack Aoba US_Shipyard_03
+41190 select Furutaka
+41200 attack Furutaka US_Airfield_03
+41201 attack Furutaka "Shipyard Entity CB3"
+41230 select Kinugasa
+41240 attack Kinugasa US_Airfield_03
+41241 attack Kinugasa US_Airfield_02
+42990 select Kongo
+43000 moveto Kongo -1804 7000
+43030 select Kirishima
+43040 attack Kirishima US_Airfield_03
+43041 attack Kirishima RightBB1
+43042 attack Kirishima DamagedBB
+43070 select Haruna
+43080 attack Haruna US_Airfield_03
+43081 attack Haruna RightBB1
+43082 attack Haruna DamagedBB
+43110 select Hiei
+43120 attack Hiei US_Airfield_03
+43121 attack Hiei RightBB1
+43122 attack Hiei DamagedBB
+43150 select Aoba
+43160 attack Aoba US_Airfield_03
+43161 attack Aoba US_Shipyard_03
+43190 select Furutaka
+43200 attack Furutaka US_Airfield_03
+43201 attack Furutaka "Shipyard Entity CB3"
+43230 select Kinugasa
+43240 attack Kinugasa US_Airfield_03
+43241 attack Kinugasa US_Airfield_02
+44990 select Kongo
+45000 moveto Kongo -1804 7000
+45030 select Kirishima
+45040 attack Kirishima US_Airfield_03
+45041 attack Kirishima RightBB1
+45042 attack Kirishima DamagedBB
+45070 select Haruna
+45080 attack Haruna US_Airfield_03
+45081 attack Haruna RightBB1
+45082 attack Haruna DamagedBB
+45110 select Hiei
+45120 attack Hiei US_Airfield_03
+45121 attack Hiei RightBB1
+45122 attack Hiei DamagedBB
+45150 select Aoba
+45160 attack Aoba US_Airfield_03
+45161 attack Aoba US_Shipyard_03
+45190 select Furutaka
+45200 attack Furutaka US_Airfield_03
+45201 attack Furutaka "Shipyard Entity CB3"
+45230 select Kinugasa
+45240 attack Kinugasa US_Airfield_03
+45241 attack Kinugasa US_Airfield_02
+46990 select Kongo
+47000 moveto Kongo -1804 7000
+47030 select Kirishima
+47040 attack Kirishima US_Airfield_03
+47041 attack Kirishima RightBB1
+47042 attack Kirishima DamagedBB
+47070 select Haruna
+47080 attack Haruna US_Airfield_03
+47081 attack Haruna RightBB1
+47082 attack Haruna DamagedBB
+47110 select Hiei
+47120 attack Hiei US_Airfield_03
+47121 attack Hiei RightBB1
+47122 attack Hiei DamagedBB
+47150 select Aoba
+47160 attack Aoba US_Airfield_03
+47161 attack Aoba US_Shipyard_03
+47190 select Furutaka
+47200 attack Furutaka US_Airfield_03
+47201 attack Furutaka "Shipyard Entity CB3"
+47230 select Kinugasa
+47240 attack Kinugasa US_Airfield_03
+47241 attack Kinugasa US_Airfield_02
+48990 select Kongo
+49000 moveto Kongo -1804 7000
+49030 select Kirishima
+49040 attack Kirishima US_Airfield_03
+49041 attack Kirishima RightBB1
+49042 attack Kirishima DamagedBB
+49070 select Haruna
+49080 attack Haruna US_Airfield_03
+49081 attack Haruna RightBB1
+49082 attack Haruna DamagedBB
+49110 select Hiei
+49120 attack Hiei US_Airfield_03
+49121 attack Hiei RightBB1
+49122 attack Hiei DamagedBB
+49150 select Aoba
+49160 attack Aoba US_Airfield_03
+49161 attack Aoba US_Shipyard_03
+49190 select Furutaka
+49200 attack Furutaka US_Airfield_03
+49201 attack Furutaka "Shipyard Entity CB3"
+49230 select Kinugasa
+49240 attack Kinugasa US_Airfield_03
+49241 attack Kinugasa US_Airfield_02
+50990 select Kongo
+51000 moveto Kongo -1804 7000
+51030 select Kirishima
+51040 attack Kirishima US_Airfield_03
+51041 attack Kirishima RightBB1
+51042 attack Kirishima DamagedBB
+51070 select Haruna
+51080 attack Haruna US_Airfield_03
+51081 attack Haruna RightBB1
+51082 attack Haruna DamagedBB
+51110 select Hiei
+51120 attack Hiei US_Airfield_03
+51121 attack Hiei RightBB1
+51122 attack Hiei DamagedBB
+51150 select Aoba
+51160 attack Aoba US_Airfield_03
+51161 attack Aoba US_Shipyard_03
+51190 select Furutaka
+51200 attack Furutaka US_Airfield_03
+51201 attack Furutaka "Shipyard Entity CB3"
+51230 select Kinugasa
+51240 attack Kinugasa US_Airfield_03
+51241 attack Kinugasa US_Airfield_02
+52990 select Kongo
+53000 moveto Kongo -1804 7000
+53030 select Kirishima
+53040 attack Kirishima US_Airfield_03
+53041 attack Kirishima RightBB1
+53042 attack Kirishima DamagedBB
+53070 select Haruna
+53080 attack Haruna US_Airfield_03
+53081 attack Haruna RightBB1
+53082 attack Haruna DamagedBB
+53110 select Hiei
+53120 attack Hiei US_Airfield_03
+53121 attack Hiei RightBB1
+53122 attack Hiei DamagedBB
+53150 select Aoba
+53160 attack Aoba US_Airfield_03
+53161 attack Aoba US_Shipyard_03
+53190 select Furutaka
+53200 attack Furutaka US_Airfield_03
+53201 attack Furutaka "Shipyard Entity CB3"
+53230 select Kinugasa
+53240 attack Kinugasa US_Airfield_03
+53241 attack Kinugasa US_Airfield_02
+54990 select Kongo
+55000 moveto Kongo -1804 7000
+55030 select Kirishima
+55040 attack Kirishima US_Airfield_03
+55041 attack Kirishima RightBB1
+55042 attack Kirishima DamagedBB
+55070 select Haruna
+55080 attack Haruna US_Airfield_03
+55081 attack Haruna RightBB1
+55082 attack Haruna DamagedBB
+55110 select Hiei
+55120 attack Hiei US_Airfield_03
+55121 attack Hiei RightBB1
+55122 attack Hiei DamagedBB
+55150 select Aoba
+55160 attack Aoba US_Airfield_03
+55161 attack Aoba US_Shipyard_03
+55190 select Furutaka
+55200 attack Furutaka US_Airfield_03
+55201 attack Furutaka "Shipyard Entity CB3"
+55230 select Kinugasa
+55240 attack Kinugasa US_Airfield_03
+55241 attack Kinugasa US_Airfield_02
+56990 select Kongo
+57000 moveto Kongo -1804 7000
+57030 select Kirishima
+57040 attack Kirishima "Shipyard Entity CB3"
+57041 attack Kirishima US_Airfield_03
+57042 attack Kirishima DamagedBB
+57043 attack Kirishima RightBB1
+57070 select Haruna
+57080 attack Haruna "Shipyard Entity CB3"
+57081 attack Haruna US_Airfield_03
+57082 attack Haruna DamagedBB
+57083 attack Haruna RightBB1
+57110 select Hiei
+57120 attack Hiei "Shipyard Entity CB3"
+57121 attack Hiei US_Airfield_03
+57122 attack Hiei DamagedBB
+57123 attack Hiei RightBB1
+57150 select Aoba
+57160 attack Aoba US_Airfield_03
+57161 attack Aoba US_Shipyard_03
+57190 select Furutaka
+57200 attack Furutaka US_Airfield_03
+57201 attack Furutaka "Shipyard Entity CB3"
+57230 select Kinugasa
+57240 attack Kinugasa US_Airfield_03
+57241 attack Kinugasa US_Airfield_02
+57390 select Maru1
+57400 attack Maru1 HQ
+57430 select Maru2
+57440 attack Maru2 HQ
+58990 select Kongo
+59000 moveto Kongo -1804 7000
+59030 select Kirishima
+59040 attack Kirishima "Shipyard Entity CB3"
+59041 attack Kirishima US_Airfield_03
+59042 attack Kirishima DamagedBB
+59043 attack Kirishima RightBB1
+59070 select Haruna
+59080 attack Haruna "Shipyard Entity CB3"
+59081 attack Haruna US_Airfield_03
+59082 attack Haruna DamagedBB
+59083 attack Haruna RightBB1
+59110 select Hiei
+59120 attack Hiei "Shipyard Entity CB3"
+59121 attack Hiei US_Airfield_03
+59122 attack Hiei DamagedBB
+59123 attack Hiei RightBB1
+59150 select Aoba
+59160 attack Aoba US_Airfield_03
+59161 attack Aoba US_Shipyard_03
+59190 select Furutaka
+59200 attack Furutaka US_Airfield_03
+59201 attack Furutaka "Shipyard Entity CB3"
+59230 select Kinugasa
+59240 attack Kinugasa US_Airfield_03
+59241 attack Kinugasa US_Airfield_02
+59390 select Maru1
+59400 attack Maru1 HQ
+59430 select Maru2
+59440 attack Maru2 HQ
+60990 select Kongo
+61000 moveto Kongo -1804 7000
+61030 select Kirishima
+61040 attack Kirishima "Shipyard Entity CB3"
+61041 attack Kirishima US_Airfield_03
+61042 attack Kirishima DamagedBB
+61043 attack Kirishima RightBB1
+61070 select Haruna
+61080 attack Haruna "Shipyard Entity CB3"
+61081 attack Haruna US_Airfield_03
+61082 attack Haruna DamagedBB
+61083 attack Haruna RightBB1
+61110 select Hiei
+61120 attack Hiei "Shipyard Entity CB3"
+61121 attack Hiei US_Airfield_03
+61122 attack Hiei DamagedBB
+61123 attack Hiei RightBB1
+61150 select Aoba
+61160 attack Aoba US_Airfield_03
+61161 attack Aoba US_Shipyard_03
+61190 select Furutaka
+61200 attack Furutaka US_Airfield_03
+61201 attack Furutaka "Shipyard Entity CB3"
+61230 select Kinugasa
+61240 attack Kinugasa US_Airfield_03
+61241 attack Kinugasa US_Airfield_02
+61390 select Maru1
+61400 attack Maru1 HQ
+61430 select Maru2
+61440 attack Maru2 HQ
+62990 select Kongo
+63000 moveto Kongo -1804 7000
+63030 select Kirishima
+63040 attack Kirishima "Shipyard Entity CB3"
+63041 attack Kirishima US_Airfield_03
+63042 attack Kirishima DamagedBB
+63043 attack Kirishima RightBB1
+63070 select Haruna
+63080 attack Haruna "Shipyard Entity CB3"
+63081 attack Haruna US_Airfield_03
+63082 attack Haruna DamagedBB
+63083 attack Haruna RightBB1
+63110 select Hiei
+63120 attack Hiei "Shipyard Entity CB3"
+63121 attack Hiei US_Airfield_03
+63122 attack Hiei DamagedBB
+63123 attack Hiei RightBB1
+63150 select Aoba
+63160 attack Aoba US_Airfield_03
+63161 attack Aoba US_Shipyard_03
+63190 select Furutaka
+63200 attack Furutaka US_Airfield_03
+63201 attack Furutaka "Shipyard Entity CB3"
+63230 select Kinugasa
+63240 attack Kinugasa US_Airfield_03
+63241 attack Kinugasa US_Airfield_02
+63390 select Maru1
+63400 attack Maru1 HQ
+63430 select Maru2
+63440 attack Maru2 HQ
+64990 select Kongo
+65000 moveto Kongo -1804 7000
+65030 select Kirishima
+65040 attack Kirishima "Shipyard Entity CB3"
+65041 attack Kirishima US_Airfield_03
+65042 attack Kirishima DamagedBB
+65043 attack Kirishima RightBB1
+65070 select Haruna
+65080 attack Haruna "Shipyard Entity CB3"
+65081 attack Haruna US_Airfield_03
+65082 attack Haruna DamagedBB
+65083 attack Haruna RightBB1
+65110 select Hiei
+65120 attack Hiei "Shipyard Entity CB3"
+65121 attack Hiei US_Airfield_03
+65122 attack Hiei DamagedBB
+65123 attack Hiei RightBB1
+65150 select Aoba
+65160 attack Aoba US_Airfield_03
+65161 attack Aoba US_Shipyard_03
+65190 select Furutaka
+65200 attack Furutaka US_Airfield_03
+65201 attack Furutaka "Shipyard Entity CB3"
+65230 select Kinugasa
+65240 attack Kinugasa US_Airfield_03
+65241 attack Kinugasa US_Airfield_02
+65390 select Maru1
+65400 attack Maru1 HQ
+65430 select Maru2
+65440 attack Maru2 HQ
+66990 select Kongo
+67000 moveto Kongo -1804 7000
+67030 select Kirishima
+67040 attack Kirishima "Shipyard Entity CB3"
+67041 attack Kirishima US_Airfield_03
+67042 attack Kirishima DamagedBB
+67043 attack Kirishima RightBB1
+67070 select Haruna
+67080 attack Haruna "Shipyard Entity CB3"
+67081 attack Haruna US_Airfield_03
+67082 attack Haruna DamagedBB
+67083 attack Haruna RightBB1
+67110 select Hiei
+67120 attack Hiei "Shipyard Entity CB3"
+67121 attack Hiei US_Airfield_03
+67122 attack Hiei DamagedBB
+67123 attack Hiei RightBB1
+67150 select Aoba
+67160 attack Aoba US_Airfield_03
+67161 attack Aoba US_Shipyard_03
+67190 select Furutaka
+67200 attack Furutaka US_Airfield_03
+67201 attack Furutaka "Shipyard Entity CB3"
+67230 select Kinugasa
+67240 attack Kinugasa US_Airfield_03
+67241 attack Kinugasa US_Airfield_02
+67390 select Maru1
+67400 attack Maru1 HQ
+67430 select Maru2
+67440 attack Maru2 HQ
+68990 select Kongo
+69000 moveto Kongo -1804 7000
+69030 select Kirishima
+69040 attack Kirishima "Shipyard Entity CB3"
+69041 attack Kirishima US_Airfield_03
+69042 attack Kirishima DamagedBB
+69043 attack Kirishima RightBB1
+69070 select Haruna
+69080 attack Haruna "Shipyard Entity CB3"
+69081 attack Haruna US_Airfield_03
+69082 attack Haruna DamagedBB
+69083 attack Haruna RightBB1
+69110 select Hiei
+69120 attack Hiei "Shipyard Entity CB3"
+69121 attack Hiei US_Airfield_03
+69122 attack Hiei DamagedBB
+69123 attack Hiei RightBB1
+69150 select Aoba
+69160 attack Aoba US_Airfield_03
+69161 attack Aoba US_Shipyard_03
+69190 select Furutaka
+69200 attack Furutaka US_Airfield_03
+69201 attack Furutaka "Shipyard Entity CB3"
+69230 select Kinugasa
+69240 attack Kinugasa US_Airfield_03
+69241 attack Kinugasa US_Airfield_02
+69390 select Maru1
+69400 attack Maru1 HQ
+69430 select Maru2
+69440 attack Maru2 HQ
+70990 select Kongo
+71000 moveto Kongo -1804 7000
+71030 select Kirishima
+71040 attack Kirishima "Shipyard Entity CB3"
+71041 attack Kirishima US_Airfield_03
+71042 attack Kirishima DamagedBB
+71043 attack Kirishima RightBB1
+71070 select Haruna
+71080 attack Haruna "Shipyard Entity CB3"
+71081 attack Haruna US_Airfield_03
+71082 attack Haruna DamagedBB
+71083 attack Haruna RightBB1
+71110 select Hiei
+71120 attack Hiei "Shipyard Entity CB3"
+71121 attack Hiei US_Airfield_03
+71122 attack Hiei DamagedBB
+71123 attack Hiei RightBB1
+71150 select Aoba
+71160 attack Aoba US_Airfield_03
+71161 attack Aoba US_Shipyard_03
+71190 select Furutaka
+71200 attack Furutaka US_Airfield_03
+71201 attack Furutaka "Shipyard Entity CB3"
+71230 select Kinugasa
+71240 attack Kinugasa US_Airfield_03
+71241 attack Kinugasa US_Airfield_02
+71390 select Maru1
+71400 attack Maru1 HQ
+71430 select Maru2
+71440 attack Maru2 HQ
+72990 select Kongo
+73000 moveto Kongo -1804 7000
+73030 select Kirishima
+73040 attack Kirishima "Shipyard Entity CB3"
+73041 attack Kirishima US_Airfield_03
+73042 attack Kirishima DamagedBB
+73043 attack Kirishima RightBB1
+73070 select Haruna
+73080 attack Haruna "Shipyard Entity CB3"
+73081 attack Haruna US_Airfield_03
+73082 attack Haruna DamagedBB
+73083 attack Haruna RightBB1
+73110 select Hiei
+73120 attack Hiei "Shipyard Entity CB3"
+73121 attack Hiei US_Airfield_03
+73122 attack Hiei DamagedBB
+73123 attack Hiei RightBB1
+73150 select Aoba
+73160 attack Aoba US_Airfield_03
+73161 attack Aoba US_Shipyard_03
+73190 select Furutaka
+73200 attack Furutaka US_Airfield_03
+73201 attack Furutaka "Shipyard Entity CB3"
+73230 select Kinugasa
+73240 attack Kinugasa US_Airfield_03
+73241 attack Kinugasa US_Airfield_02
+73390 select Maru1
+73400 attack Maru1 HQ
+73430 select Maru2
+73440 attack Maru2 HQ
+74990 select Kongo
+75000 moveto Kongo -1804 7000
+75030 select Kirishima
+75040 attack Kirishima "Shipyard Entity CB3"
+75041 attack Kirishima US_Airfield_03
+75042 attack Kirishima DamagedBB
+75043 attack Kirishima RightBB1
+75070 select Haruna
+75080 attack Haruna "Shipyard Entity CB3"
+75081 attack Haruna US_Airfield_03
+75082 attack Haruna DamagedBB
+75083 attack Haruna RightBB1
+75110 select Hiei
+75120 attack Hiei "Shipyard Entity CB3"
+75121 attack Hiei US_Airfield_03
+75122 attack Hiei DamagedBB
+75123 attack Hiei RightBB1
+75150 select Aoba
+75160 attack Aoba US_Airfield_03
+75161 attack Aoba US_Shipyard_03
+75190 select Furutaka
+75200 attack Furutaka US_Airfield_03
+75201 attack Furutaka "Shipyard Entity CB3"
+75230 select Kinugasa
+75240 attack Kinugasa US_Airfield_03
+75241 attack Kinugasa US_Airfield_02
+75390 select Maru1
+75400 attack Maru1 HQ
+75430 select Maru2
+75440 attack Maru2 HQ
+76990 select Kongo
+77000 moveto Kongo -1804 7000
+77030 select Kirishima
+77040 attack Kirishima "Shipyard Entity CB3"
+77041 attack Kirishima US_Airfield_03
+77042 attack Kirishima DamagedBB
+77043 attack Kirishima RightBB1
+77070 select Haruna
+77080 attack Haruna "Shipyard Entity CB3"
+77081 attack Haruna US_Airfield_03
+77082 attack Haruna DamagedBB
+77083 attack Haruna RightBB1
+77110 select Hiei
+77120 attack Hiei "Shipyard Entity CB3"
+77121 attack Hiei US_Airfield_03
+77122 attack Hiei DamagedBB
+77123 attack Hiei RightBB1
+77150 select Aoba
+77160 attack Aoba US_Airfield_03
+77161 attack Aoba US_Shipyard_03
+77190 select Furutaka
+77200 attack Furutaka US_Airfield_03
+77201 attack Furutaka "Shipyard Entity CB3"
+77230 select Kinugasa
+77240 attack Kinugasa US_Airfield_03
+77241 attack Kinugasa US_Airfield_02
+77390 select Maru1
+77400 attack Maru1 HQ
+77430 select Maru2
+77440 attack Maru2 HQ
+78990 select Kongo
+79000 moveto Kongo -1804 7000
+79030 select Kirishima
+79040 attack Kirishima "Shipyard Entity CB3"
+79041 attack Kirishima US_Airfield_03
+79042 attack Kirishima DamagedBB
+79043 attack Kirishima RightBB1
+79070 select Haruna
+79080 attack Haruna "Shipyard Entity CB3"
+79081 attack Haruna US_Airfield_03
+79082 attack Haruna DamagedBB
+79083 attack Haruna RightBB1
+79110 select Hiei
+79120 attack Hiei "Shipyard Entity CB3"
+79121 attack Hiei US_Airfield_03
+79122 attack Hiei DamagedBB
+79123 attack Hiei RightBB1
+79150 select Aoba
+79160 attack Aoba US_Airfield_03
+79161 attack Aoba US_Shipyard_03
+79190 select Furutaka
+79200 attack Furutaka US_Airfield_03
+79201 attack Furutaka "Shipyard Entity CB3"
+79230 select Kinugasa
+79240 attack Kinugasa US_Airfield_03
+79241 attack Kinugasa US_Airfield_02
+79390 select Maru1
+79400 attack Maru1 HQ
+79430 select Maru2
+79440 attack Maru2 HQ
+80990 select Kongo
+81000 moveto Kongo -1804 7000
+81030 select Kirishima
+81040 attack Kirishima "Shipyard Entity CB3"
+81041 attack Kirishima US_Airfield_03
+81042 attack Kirishima DamagedBB
+81043 attack Kirishima RightBB1
+81070 select Haruna
+81080 attack Haruna "Shipyard Entity CB3"
+81081 attack Haruna US_Airfield_03
+81082 attack Haruna DamagedBB
+81083 attack Haruna RightBB1
+81110 select Hiei
+81120 attack Hiei "Shipyard Entity CB3"
+81121 attack Hiei US_Airfield_03
+81122 attack Hiei DamagedBB
+81123 attack Hiei RightBB1
+81150 select Aoba
+81160 attack Aoba US_Airfield_03
+81161 attack Aoba US_Shipyard_03
+81190 select Furutaka
+81200 attack Furutaka US_Airfield_03
+81201 attack Furutaka "Shipyard Entity CB3"
+81230 select Kinugasa
+81240 attack Kinugasa US_Airfield_03
+81241 attack Kinugasa US_Airfield_02
+81390 select Maru1
+81400 attack Maru1 HQ
+81430 select Maru2
+81440 attack Maru2 HQ
+82990 select Kongo
+83000 moveto Kongo -1804 7000
+83030 select Kirishima
+83040 attack Kirishima "Shipyard Entity CB3"
+83041 attack Kirishima US_Airfield_03
+83042 attack Kirishima DamagedBB
+83043 attack Kirishima RightBB1
+83070 select Haruna
+83080 attack Haruna "Shipyard Entity CB3"
+83081 attack Haruna US_Airfield_03
+83082 attack Haruna DamagedBB
+83083 attack Haruna RightBB1
+83110 select Hiei
+83120 attack Hiei "Shipyard Entity CB3"
+83121 attack Hiei US_Airfield_03
+83122 attack Hiei DamagedBB
+83123 attack Hiei RightBB1
+83150 select Aoba
+83160 attack Aoba US_Airfield_03
+83161 attack Aoba US_Shipyard_03
+83190 select Furutaka
+83200 attack Furutaka US_Airfield_03
+83201 attack Furutaka "Shipyard Entity CB3"
+83230 select Kinugasa
+83240 attack Kinugasa US_Airfield_03
+83241 attack Kinugasa US_Airfield_02
+83390 select Maru1
+83400 attack Maru1 HQ
+83430 select Maru2
+83440 attack Maru2 HQ
+84990 select Kongo
+85000 moveto Kongo -1804 7000
+85030 select Kirishima
+85040 attack Kirishima "Shipyard Entity CB3"
+85041 attack Kirishima US_Airfield_03
+85042 attack Kirishima DamagedBB
+85043 attack Kirishima RightBB1
+85070 select Haruna
+85080 attack Haruna "Shipyard Entity CB3"
+85081 attack Haruna US_Airfield_03
+85082 attack Haruna DamagedBB
+85083 attack Haruna RightBB1
+85110 select Hiei
+85120 attack Hiei "Shipyard Entity CB3"
+85121 attack Hiei US_Airfield_03
+85122 attack Hiei DamagedBB
+85123 attack Hiei RightBB1
+85150 select Aoba
+85160 attack Aoba US_Airfield_03
+85161 attack Aoba US_Shipyard_03
+85190 select Furutaka
+85200 attack Furutaka US_Airfield_03
+85201 attack Furutaka "Shipyard Entity CB3"
+85230 select Kinugasa
+85240 attack Kinugasa US_Airfield_03
+85241 attack Kinugasa US_Airfield_02
+85390 select Maru1
+85400 attack Maru1 HQ
+85430 select Maru2
+85440 attack Maru2 HQ
+86990 select Kongo
+87000 moveto Kongo -1804 7000
+87030 select Kirishima
+87040 attack Kirishima "Shipyard Entity CB3"
+87041 attack Kirishima US_Airfield_03
+87042 attack Kirishima DamagedBB
+87043 attack Kirishima RightBB1
+87070 select Haruna
+87080 attack Haruna "Shipyard Entity CB3"
+87081 attack Haruna US_Airfield_03
+87082 attack Haruna DamagedBB
+87083 attack Haruna RightBB1
+87110 select Hiei
+87120 attack Hiei "Shipyard Entity CB3"
+87121 attack Hiei US_Airfield_03
+87122 attack Hiei DamagedBB
+87123 attack Hiei RightBB1
+87150 select Aoba
+87160 attack Aoba US_Airfield_03
+87161 attack Aoba US_Shipyard_03
+87190 select Furutaka
+87200 attack Furutaka US_Airfield_03
+87201 attack Furutaka "Shipyard Entity CB3"
+87230 select Kinugasa
+87240 attack Kinugasa US_Airfield_03
+87241 attack Kinugasa US_Airfield_02
+87390 select Maru1
+87400 attack Maru1 HQ
+87430 select Maru2
+87440 attack Maru2 HQ
+88990 select Kongo
+89000 moveto Kongo -1804 7000
+89030 select Kirishima
+89040 attack Kirishima "Shipyard Entity CB3"
+89041 attack Kirishima US_Airfield_03
+89042 attack Kirishima DamagedBB
+89043 attack Kirishima RightBB1
+89070 select Haruna
+89080 attack Haruna "Shipyard Entity CB3"
+89081 attack Haruna US_Airfield_03
+89082 attack Haruna DamagedBB
+89083 attack Haruna RightBB1
+89110 select Hiei
+89120 attack Hiei "Shipyard Entity CB3"
+89121 attack Hiei US_Airfield_03
+89122 attack Hiei DamagedBB
+89123 attack Hiei RightBB1
+89150 select Aoba
+89160 attack Aoba US_Airfield_03
+89161 attack Aoba US_Shipyard_03
+89190 select Furutaka
+89200 attack Furutaka US_Airfield_03
+89201 attack Furutaka "Shipyard Entity CB3"
+89230 select Kinugasa
+89240 attack Kinugasa US_Airfield_03
+89241 attack Kinugasa US_Airfield_02
+89390 select Maru1
+89400 attack Maru1 HQ
+89430 select Maru2
+89440 attack Maru2 HQ
+90990 select Kongo
+91000 moveto Kongo -1804 7000
+91030 select Kirishima
+91040 attack Kirishima "Shipyard Entity CB3"
+91041 attack Kirishima US_Airfield_03
+91042 attack Kirishima DamagedBB
+91043 attack Kirishima RightBB1
+91070 select Haruna
+91080 attack Haruna "Shipyard Entity CB3"
+91081 attack Haruna US_Airfield_03
+91082 attack Haruna DamagedBB
+91083 attack Haruna RightBB1
+91110 select Hiei
+91120 attack Hiei "Shipyard Entity CB3"
+91121 attack Hiei US_Airfield_03
+91122 attack Hiei DamagedBB
+91123 attack Hiei RightBB1
+91150 select Aoba
+91160 attack Aoba US_Airfield_03
+91161 attack Aoba US_Shipyard_03
+91190 select Furutaka
+91200 attack Furutaka US_Airfield_03
+91201 attack Furutaka "Shipyard Entity CB3"
+91230 select Kinugasa
+91240 attack Kinugasa US_Airfield_03
+91241 attack Kinugasa US_Airfield_02
+91390 select Maru1
+91400 attack Maru1 HQ
+91430 select Maru2
+91440 attack Maru2 HQ
+92990 select Kongo
+93000 moveto Kongo -1804 7000
+93030 select Kirishima
+93040 attack Kirishima "Shipyard Entity CB3"
+93041 attack Kirishima US_Airfield_03
+93042 attack Kirishima DamagedBB
+93043 attack Kirishima RightBB1
+93070 select Haruna
+93080 attack Haruna "Shipyard Entity CB3"
+93081 attack Haruna US_Airfield_03
+93082 attack Haruna DamagedBB
+93083 attack Haruna RightBB1
+93110 select Hiei
+93120 attack Hiei "Shipyard Entity CB3"
+93121 attack Hiei US_Airfield_03
+93122 attack Hiei DamagedBB
+93123 attack Hiei RightBB1
+93150 select Aoba
+93160 attack Aoba US_Airfield_03
+93161 attack Aoba US_Shipyard_03
+93190 select Furutaka
+93200 attack Furutaka US_Airfield_03
+93201 attack Furutaka "Shipyard Entity CB3"
+93230 select Kinugasa
+93240 attack Kinugasa US_Airfield_03
+93241 attack Kinugasa US_Airfield_02
+93390 select Maru1
+93400 attack Maru1 HQ
+93430 select Maru2
+93440 attack Maru2 HQ
+94990 select Kongo
+95000 moveto Kongo -1804 7000
+95030 select Kirishima
+95040 attack Kirishima "Shipyard Entity CB3"
+95041 attack Kirishima US_Airfield_03
+95042 attack Kirishima DamagedBB
+95043 attack Kirishima RightBB1
+95070 select Haruna
+95080 attack Haruna "Shipyard Entity CB3"
+95081 attack Haruna US_Airfield_03
+95082 attack Haruna DamagedBB
+95083 attack Haruna RightBB1
+95110 select Hiei
+95120 attack Hiei "Shipyard Entity CB3"
+95121 attack Hiei US_Airfield_03
+95122 attack Hiei DamagedBB
+95123 attack Hiei RightBB1
+95150 select Aoba
+95160 attack Aoba US_Airfield_03
+95161 attack Aoba US_Shipyard_03
+95190 select Furutaka
+95200 attack Furutaka US_Airfield_03
+95201 attack Furutaka "Shipyard Entity CB3"
+95230 select Kinugasa
+95240 attack Kinugasa US_Airfield_03
+95241 attack Kinugasa US_Airfield_02
+95390 select Maru1
+95400 attack Maru1 HQ
+95430 select Maru2
+95440 attack Maru2 HQ
+96990 select Kongo
+97000 moveto Kongo -1804 7000
+97030 select Kirishima
+97040 attack Kirishima "Shipyard Entity CB3"
+97041 attack Kirishima US_Airfield_03
+97042 attack Kirishima DamagedBB
+97043 attack Kirishima RightBB1
+97070 select Haruna
+97080 attack Haruna "Shipyard Entity CB3"
+97081 attack Haruna US_Airfield_03
+97082 attack Haruna DamagedBB
+97083 attack Haruna RightBB1
+97110 select Hiei
+97120 attack Hiei "Shipyard Entity CB3"
+97121 attack Hiei US_Airfield_03
+97122 attack Hiei DamagedBB
+97123 attack Hiei RightBB1
+97150 select Aoba
+97160 attack Aoba US_Airfield_03
+97161 attack Aoba US_Shipyard_03
+97190 select Furutaka
+97200 attack Furutaka US_Airfield_03
+97201 attack Furutaka "Shipyard Entity CB3"
+97230 select Kinugasa
+97240 attack Kinugasa US_Airfield_03
+97241 attack Kinugasa US_Airfield_02
+97390 select Maru1
+97400 attack Maru1 HQ
+97430 select Maru2
+97440 attack Maru2 HQ
+98990 select Kongo
+99000 moveto Kongo -1804 7000
+99030 select Kirishima
+99040 attack Kirishima "Shipyard Entity CB3"
+99041 attack Kirishima US_Airfield_03
+99042 attack Kirishima DamagedBB
+99043 attack Kirishima RightBB1
+99070 select Haruna
+99080 attack Haruna "Shipyard Entity CB3"
+99081 attack Haruna US_Airfield_03
+99082 attack Haruna DamagedBB
+99083 attack Haruna RightBB1
+99110 select Hiei
+99120 attack Hiei "Shipyard Entity CB3"
+99121 attack Hiei US_Airfield_03
+99122 attack Hiei DamagedBB
+99123 attack Hiei RightBB1
+99150 select Aoba
+99160 attack Aoba US_Airfield_03
+99161 attack Aoba US_Shipyard_03
+99190 select Furutaka
+99200 attack Furutaka US_Airfield_03
+99201 attack Furutaka "Shipyard Entity CB3"
+99230 select Kinugasa
+99240 attack Kinugasa US_Airfield_03
+99241 attack Kinugasa US_Airfield_02
+99390 select Maru1
+99400 attack Maru1 HQ
+99430 select Maru2
+99440 attack Maru2 HQ
+100990 select Kongo
+101000 moveto Kongo -1804 7000
+101030 select Kirishima
+101040 attack Kirishima "Shipyard Entity CB3"
+101041 attack Kirishima US_Airfield_03
+101042 attack Kirishima DamagedBB
+101043 attack Kirishima RightBB1
+101070 select Haruna
+101080 attack Haruna "Shipyard Entity CB3"
+101081 attack Haruna US_Airfield_03
+101082 attack Haruna DamagedBB
+101083 attack Haruna RightBB1
+101110 select Hiei
+101120 attack Hiei "Shipyard Entity CB3"
+101121 attack Hiei US_Airfield_03
+101122 attack Hiei DamagedBB
+101123 attack Hiei RightBB1
+101150 select Aoba
+101160 attack Aoba US_Airfield_03
+101161 attack Aoba US_Shipyard_03
+101190 select Furutaka
+101200 attack Furutaka US_Airfield_03
+101201 attack Furutaka "Shipyard Entity CB3"
+101230 select Kinugasa
+101240 attack Kinugasa US_Airfield_03
+101241 attack Kinugasa US_Airfield_02
+101390 select Maru1
+101400 attack Maru1 HQ
+101430 select Maru2
+101440 attack Maru2 HQ
+102990 select Kongo
+103000 moveto Kongo -1804 7000
+103030 select Kirishima
+103040 attack Kirishima "Shipyard Entity CB3"
+103041 attack Kirishima US_Airfield_03
+103042 attack Kirishima DamagedBB
+103043 attack Kirishima RightBB1
+103070 select Haruna
+103080 attack Haruna "Shipyard Entity CB3"
+103081 attack Haruna US_Airfield_03
+103082 attack Haruna DamagedBB
+103083 attack Haruna RightBB1
+103110 select Hiei
+103120 attack Hiei "Shipyard Entity CB3"
+103121 attack Hiei US_Airfield_03
+103122 attack Hiei DamagedBB
+103123 attack Hiei RightBB1
+103150 select Aoba
+103160 attack Aoba US_Airfield_03
+103161 attack Aoba US_Shipyard_03
+103190 select Furutaka
+103200 attack Furutaka US_Airfield_03
+103201 attack Furutaka "Shipyard Entity CB3"
+103230 select Kinugasa
+103240 attack Kinugasa US_Airfield_03
+103241 attack Kinugasa US_Airfield_02
+103390 select Maru1
+103400 attack Maru1 HQ
+103430 select Maru2
+103440 attack Maru2 HQ
+104990 select Kongo
+105000 moveto Kongo -1804 7000
+105030 select Kirishima
+105040 attack Kirishima "Shipyard Entity CB3"
+105041 attack Kirishima US_Airfield_03
+105042 attack Kirishima DamagedBB
+105043 attack Kirishima RightBB1
+105070 select Haruna
+105080 attack Haruna "Shipyard Entity CB3"
+105081 attack Haruna US_Airfield_03
+105082 attack Haruna DamagedBB
+105083 attack Haruna RightBB1
+105110 select Hiei
+105120 attack Hiei "Shipyard Entity CB3"
+105121 attack Hiei US_Airfield_03
+105122 attack Hiei DamagedBB
+105123 attack Hiei RightBB1
+105150 select Aoba
+105160 attack Aoba US_Airfield_03
+105161 attack Aoba US_Shipyard_03
+105190 select Furutaka
+105200 attack Furutaka US_Airfield_03
+105201 attack Furutaka "Shipyard Entity CB3"
+105230 select Kinugasa
+105240 attack Kinugasa US_Airfield_03
+105241 attack Kinugasa US_Airfield_02
+105390 select Maru1
+105400 attack Maru1 HQ
+105430 select Maru2
+105440 attack Maru2 HQ
+106990 select Kongo
+107000 moveto Kongo -1804 7000
+107030 select Kirishima
+107040 attack Kirishima "Shipyard Entity CB3"
+107041 attack Kirishima US_Airfield_03
+107042 attack Kirishima DamagedBB
+107043 attack Kirishima RightBB1
+107070 select Haruna
+107080 attack Haruna "Shipyard Entity CB3"
+107081 attack Haruna US_Airfield_03
+107082 attack Haruna DamagedBB
+107083 attack Haruna RightBB1
+107110 select Hiei
+107120 attack Hiei "Shipyard Entity CB3"
+107121 attack Hiei US_Airfield_03
+107122 attack Hiei DamagedBB
+107123 attack Hiei RightBB1
+107150 select Aoba
+107160 attack Aoba US_Airfield_03
+107161 attack Aoba US_Shipyard_03
+107190 select Furutaka
+107200 attack Furutaka US_Airfield_03
+107201 attack Furutaka "Shipyard Entity CB3"
+107230 select Kinugasa
+107240 attack Kinugasa US_Airfield_03
+107241 attack Kinugasa US_Airfield_02
+107390 select Maru1
+107400 attack Maru1 HQ
+107430 select Maru2
+107440 attack Maru2 HQ
+108990 select Kongo
+109000 moveto Kongo -1804 7000
+109030 select Kirishima
+109040 attack Kirishima "Shipyard Entity CB3"
+109041 attack Kirishima US_Airfield_03
+109042 attack Kirishima DamagedBB
+109043 attack Kirishima RightBB1
+109070 select Haruna
+109080 attack Haruna "Shipyard Entity CB3"
+109081 attack Haruna US_Airfield_03
+109082 attack Haruna DamagedBB
+109083 attack Haruna RightBB1
+109110 select Hiei
+109120 attack Hiei "Shipyard Entity CB3"
+109121 attack Hiei US_Airfield_03
+109122 attack Hiei DamagedBB
+109123 attack Hiei RightBB1
+109150 select Aoba
+109160 attack Aoba US_Airfield_03
+109161 attack Aoba US_Shipyard_03
+109190 select Furutaka
+109200 attack Furutaka US_Airfield_03
+109201 attack Furutaka "Shipyard Entity CB3"
+109230 select Kinugasa
+109240 attack Kinugasa US_Airfield_03
+109241 attack Kinugasa US_Airfield_02
+109390 select Maru1
+109400 attack Maru1 HQ
+109430 select Maru2
+109440 attack Maru2 HQ
+110990 select Kongo
+111000 moveto Kongo -1804 7000
+111030 select Kirishima
+111040 attack Kirishima "Shipyard Entity CB3"
+111041 attack Kirishima US_Airfield_03
+111042 attack Kirishima DamagedBB
+111043 attack Kirishima RightBB1
+111070 select Haruna
+111080 attack Haruna "Shipyard Entity CB3"
+111081 attack Haruna US_Airfield_03
+111082 attack Haruna DamagedBB
+111083 attack Haruna RightBB1
+111110 select Hiei
+111120 attack Hiei "Shipyard Entity CB3"
+111121 attack Hiei US_Airfield_03
+111122 attack Hiei DamagedBB
+111123 attack Hiei RightBB1
+111150 select Aoba
+111160 attack Aoba US_Airfield_03
+111161 attack Aoba US_Shipyard_03
+111190 select Furutaka
+111200 attack Furutaka US_Airfield_03
+111201 attack Furutaka "Shipyard Entity CB3"
+111230 select Kinugasa
+111240 attack Kinugasa US_Airfield_03
+111241 attack Kinugasa US_Airfield_02
+111390 select Maru1
+111400 attack Maru1 HQ
+111430 select Maru2
+111440 attack Maru2 HQ
+112990 select Kongo
+113000 moveto Kongo -1804 7000
+113030 select Kirishima
+113040 attack Kirishima "Shipyard Entity CB3"
+113041 attack Kirishima US_Airfield_03
+113042 attack Kirishima DamagedBB
+113043 attack Kirishima RightBB1
+113070 select Haruna
+113080 attack Haruna "Shipyard Entity CB3"
+113081 attack Haruna US_Airfield_03
+113082 attack Haruna DamagedBB
+113083 attack Haruna RightBB1
+113110 select Hiei
+113120 attack Hiei "Shipyard Entity CB3"
+113121 attack Hiei US_Airfield_03
+113122 attack Hiei DamagedBB
+113123 attack Hiei RightBB1
+113150 select Aoba
+113160 attack Aoba US_Airfield_03
+113161 attack Aoba US_Shipyard_03
+113190 select Furutaka
+113200 attack Furutaka US_Airfield_03
+113201 attack Furutaka "Shipyard Entity CB3"
+113230 select Kinugasa
+113240 attack Kinugasa US_Airfield_03
+113241 attack Kinugasa US_Airfield_02
+113390 select Maru1
+113400 attack Maru1 HQ
+113430 select Maru2
+113440 attack Maru2 HQ
+114990 select Kongo
+115000 moveto Kongo -1804 7000
+115030 select Kirishima
+115040 attack Kirishima "Shipyard Entity CB3"
+115041 attack Kirishima US_Airfield_03
+115042 attack Kirishima DamagedBB
+115043 attack Kirishima RightBB1
+115070 select Haruna
+115080 attack Haruna "Shipyard Entity CB3"
+115081 attack Haruna US_Airfield_03
+115082 attack Haruna DamagedBB
+115083 attack Haruna RightBB1
+115110 select Hiei
+115120 attack Hiei "Shipyard Entity CB3"
+115121 attack Hiei US_Airfield_03
+115122 attack Hiei DamagedBB
+115123 attack Hiei RightBB1
+115150 select Aoba
+115160 attack Aoba US_Airfield_03
+115161 attack Aoba US_Shipyard_03
+115190 select Furutaka
+115200 attack Furutaka US_Airfield_03
+115201 attack Furutaka "Shipyard Entity CB3"
+115230 select Kinugasa
+115240 attack Kinugasa US_Airfield_03
+115241 attack Kinugasa US_Airfield_02
+115390 select Maru1
+115400 attack Maru1 HQ
+115430 select Maru2
+115440 attack Maru2 HQ
+116990 select Kongo
+117000 moveto Kongo -1804 7000
+117030 select Kirishima
+117040 attack Kirishima "Shipyard Entity CB3"
+117041 attack Kirishima US_Airfield_03
+117042 attack Kirishima DamagedBB
+117043 attack Kirishima RightBB1
+117070 select Haruna
+117080 attack Haruna "Shipyard Entity CB3"
+117081 attack Haruna US_Airfield_03
+117082 attack Haruna DamagedBB
+117083 attack Haruna RightBB1
+117110 select Hiei
+117120 attack Hiei "Shipyard Entity CB3"
+117121 attack Hiei US_Airfield_03
+117122 attack Hiei DamagedBB
+117123 attack Hiei RightBB1
+117150 select Aoba
+117160 attack Aoba US_Airfield_03
+117161 attack Aoba US_Shipyard_03
+117190 select Furutaka
+117200 attack Furutaka US_Airfield_03
+117201 attack Furutaka "Shipyard Entity CB3"
+117230 select Kinugasa
+117240 attack Kinugasa US_Airfield_03
+117241 attack Kinugasa US_Airfield_02
+117390 select Maru1
+117400 attack Maru1 HQ
+117430 select Maru2
+117440 attack Maru2 HQ
+118990 select Kongo
+119000 moveto Kongo -1804 7000
+119030 select Kirishima
+119040 attack Kirishima "Shipyard Entity CB3"
+119041 attack Kirishima US_Airfield_03
+119042 attack Kirishima DamagedBB
+119043 attack Kirishima RightBB1
+119070 select Haruna
+119080 attack Haruna "Shipyard Entity CB3"
+119081 attack Haruna US_Airfield_03
+119082 attack Haruna DamagedBB
+119083 attack Haruna RightBB1
+119110 select Hiei
+119120 attack Hiei "Shipyard Entity CB3"
+119121 attack Hiei US_Airfield_03
+119122 attack Hiei DamagedBB
+119123 attack Hiei RightBB1
+119150 select Aoba
+119160 attack Aoba US_Airfield_03
+119161 attack Aoba US_Shipyard_03
+119190 select Furutaka
+119200 attack Furutaka US_Airfield_03
+119201 attack Furutaka "Shipyard Entity CB3"
+119230 select Kinugasa
+119240 attack Kinugasa US_Airfield_03
+119241 attack Kinugasa US_Airfield_02
+119390 select Maru1
+119400 attack Maru1 HQ
+119430 select Maru2
+119440 attack Maru2 HQ

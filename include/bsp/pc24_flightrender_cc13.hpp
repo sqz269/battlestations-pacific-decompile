@@ -7,9 +7,10 @@ namespace bsp {
 // significand (extended exponent) before the next op. The OFF arms evaluate each chain in
 // double and round once at the float store.
 //
-// kPc24FlightRenderCc13Bound (packet pc24w1-sweep1-1, OFF): ON = per-op PC24 in the terrain
-// height-field leaves of src/game_hosts_scene_contents.cpp, with each op rounded as the
-// listing does (bsp/cc13_x87_model.hpp x87_*24):
+// kPc24FlightRenderCc13Bound (OFF): ON = per-op PC24, each op rounded as the listing does
+// (bsp/cc13_x87_model.hpp x87_*24). Sites by packet:
+//
+// pc24w1-sweep1-1, the terrain height-field leaves of src/game_hosts_scene_contents.cpp:
 //  * 00ADDA60 TRNV2 origin, 00ADDB65..00ADDB81 and 00ADDBBF..00ADDBCC: (box / 300) - 1.0.
 //  * 00ADA900 height and 00ADABA0 normal: ((world - node) - origin) * float(1 / 9.375),
 //    00ADA922..00ADA93D / 00ADA94A..00ADA968 and 00ADABC4..00ADABDE / 00ADABEB..00ADAC01.
@@ -17,11 +18,16 @@ namespace bsp {
 //    00ADA174..00ADA196 and 00ADA1D3..00ADA201.
 //  * 00ADB480 bilinear: a = h00 + fu * (h10 - h00), b = h01 + fu * (h11 - h01) and
 //    a + fv * (b - a), each product and sum rounded (00ADB4EC..00ADB542).
-//  * 00ADAA40 cell normal: the inlined 004F9B30 cross (each product rounded before its
+//  * 00ADAA40 cell normal: 004F9B30 (CALL at 00ADAB3E), the cross (each product rounded before its
 //    difference, 004F9B54..004F9BA0) and the 00419440 length sum (xx + yy) + zz, the
 //    partial sum rounded but not stored (0041947D..00419485).
-// Movers: terrain heights and normals (00ADB3A0 grid lookups for ground contact, wakes,
-// land-convoy and ground AI clearance) and the TRNV2 origin set at load.
+// 00ADB480 and 00ADAA40 are switched only through the main-thread entries
+// (grid_height_arm_00adb480 / cell_normal_arm_00adaa40 with this switch). The Dyn hull terrain
+// contact (src/hull_terrain_contact.cpp, under DynWorkerPrecisionScope) calls the
+// grid_height_pc53_00adb480 / cell_normal_pc53_00adaa40 entries, which stay 53-bit either way.
+// Movers: main-thread terrain heights and normals only (00ADB3A0 grid lookups for wakes,
+// land-convoy and ground AI clearance), and the TRNV2 origin set at load; not the Dyn hull
+// ground contact.
 //
 // pc24w1-sweep1-2, ocean grid/coverage and plane pose leaves:
 //  * 00B960C0 ocean grid (src/ocean_wave_field.cpp): u * 63, 63 * v and the three lerps
@@ -56,8 +62,56 @@ namespace bsp {
 // Movers: ocean wave heights, plane pose rows, plane turn rates, bearings, climb angles and
 // heading commands.
 //
-// Copies still to narrow: 00ADB480 vsub_bilinear_00adb480 and 004F9B30 quad_cross
-// (game_hosts_scene_contents.cpp, pc24w1-sweep1-4).
+// pc24w1-sweep1-4, the terrain segment walk in src/game_hosts_scene_contents.cpp:
+//  * 00ADC5F0 block_sample: sample * scale + offset, 00ADC62E..00ADC630; also its copy in
+//    cell_height_arm_00adb3a0 (00ADB3A0, CALL EDX at 00ADB42C) on the main-thread arm only.
+//  * 004F9B30 quad_cross (00ADEB80 line-quad test): products rounded before the FSUBRP,
+//    004F9B54..004F9BA0.
+//  * 00AE9BD0 leaf: 004193E0 (CALL at 00AE9C42), the squared length (xx + yy) + zz, 00419401..00419429.
+//  * 00AE9D80 node walk: the mirrors (max + min) - s, y_in / y_out and the leaf end points
+//    s + d * t, 00AE9E8B..00AEA019.
+//  * 00AEA2B0 ray walk: the 00419440 length, direction (q - p) / length, the mirrors and the
+//    slab t = (bound - o) / d, 00AEA2CB..00AEA465.
+//  * 00ADB480 vsub_bilinear_00adb480 (VSUB vertical probe): the bilinear chain as in
+//    grid_height_arm_00adb480.
+//  00ADA240 landscape_entry_segment_hit's march is not live (kTerrainSegmentQuadtreeBound and
+//  kTerrainVerticalSubwalkBound ON) and carries lint allows.
+// Movers: terrain segment hits (line of sight and ground probes through 00ADA240) and the
+// VSUB vertical probe height; not the Dyn hull ground contact.
+//
+// pc24w1-sweep1-5, the rest of the same walk (src/game_hosts_scene_contents.cpp):
+//  * quad_dot / 00ADEB40 scalar_triple: (x*x' + y*y') + z*z', 00ADEB55..00ADEB6B.
+//  * 00ADEB80 line_quad: the inlined dots, 1 / ((v + u) + w) and 1 / ((-v + u) + w) (the
+//    OFF arms sum (w + v) + u), the stored weights and (cu*d + cv*{c,a}) + cw*b,
+//    00ADEC6F..00ADF003.
+//  * 00ADF1B0 tile_walk: the entry times and the cell corners index * 9.375 + base,
+//    00ADF2ED..00ADF514.
+// Movers: the same terrain segment hit points, through the entry times, line_quad and
+// quad_dot only. The 00ADF1B0 corner arm moves no value: FILD i * 9.375 is exact for
+// i <= 32 and both arms round base + product once.
+//
+// pc24w1-sweep1-6, the VSUB vertical walker (00AECC40 under kTerrainVerticalSubwalkBound;
+// src/game_hosts_scene_contents.cpp, no exports):
+//  * 00AEBDE0 vsub_ground bilinear a / b / result; 00AEC090 vsub_cell_edge (00AEAFA0)
+//    s1 * frac + (1 - frac) * s0; 00AEAAA0 vsub_cross (y0 - h0) / (dh - dy); 00AEB7E0
+//    vsub_slope's qword dy; 00AEC120 / 00AEC7C0 y = slope * t + y0; 00AEC3F0 out / n + index.
+// Movers: the near-vertical terrain segment hit points (00ADA240 -> 00AECC40).
+//
+// pc24w1-sweep1-7, the same walker's grid iterator (src/game_hosts_scene_contents.cpp, no
+// exports; found by the wave-2 census of lint-skipped bodies):
+//  * 00AEB430 vsub_iter_init: a * a + 1 before the sqrt (vsub_slope_sq_plus_one) and the
+//    first crossing (1 - frac) * td (vsub_one_minus), for x and for z.
+//  * 00AEAB30 snap, 00AEB1F0 / 00AEB310 / 00AEB0B0 steps: the next crossing td * c + t0
+//    (vsub_next_crossing, FIMUL then FADD).
+//  * 00AECC40 vsub_vertical: the hit point out * size + origin.
+//  Not narrowed: the v + 0.5 before 00BF7420 truncates (00AEAB53, 00AEB23B, 00AEB35B,
+//  00AEB164..00AEB196) is one FADD, and its 24-bit rounding cannot change the truncation
+//  for the non-negative cell and tile coordinates the walk produces.
+//  Correction (rev8 FIX): that is wrong. 00BF7420 truncates the PC24-rounded sum, and
+//  v = 0.49999997f sums to 1 - 2^-25, which ties to even at 1.0: the image gives 1, the
+//  double sum 0. ON now truncates x87_add24(v, 0.5) (vsub_trunc_half) at 00AEAB53,
+//  00AEAB8A, 00AEB23B, 00AEB35B and 00AEB164..00AEB1B3.
+// Movers: the same near-vertical hit points, through the crossing parameters.
 inline constexpr bool kPc24FlightRenderCc13Bound = false;
 
 }  // namespace bsp

@@ -378,7 +378,7 @@ HullTerrainContactStepResult HullTerrainContactSolver::native_narrow_phase(
                                   g <= tz * 32.0f + 32.0f)) {
                                 continue;
                             }
-                            const float h = t.grid_height_00adb480(u, g);
+                            const float h = t.grid_height_pc53_00adb480(u, g);
                             const bool host = w[1] <= h;
                             bool native = false;
                             for (std::int32_t k = 0; k < hits; ++k) {
@@ -509,10 +509,12 @@ HullTerrainContactStepResult HullTerrainContactSolver::step(
                 if (tx < 0 || tz < 0) continue;
                 int& n = per_tile[{tx, tz}];
                 if (n >= kCandidatesPerPair) continue;
-                const float h = t.grid_height_00adb480(u, g);
+                // The 53-bit entries: 00C53630 runs on a Dyn worker at PC53, so these stay on
+                // the double chains whatever kPc24FlightRenderCc13Bound says.
+                const float h = t.grid_height_pc53_00adb480(u, g);
                 if (!(w[1] <= h)) continue;   // 00C54680..00C5468C: y <= h is a contact
                 float normal[3]{};
-                t.cell_normal_00adaa40(i, j, normal);
+                t.cell_normal_pc53_00adaa40(i, j, normal);
                 ++n;
                 ++out.candidates;
                 ++census_.candidates;

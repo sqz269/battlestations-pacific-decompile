@@ -13,8 +13,10 @@ namespace bsp {
 // cone test, the shooter-line point, the float threat sums and 004F2F40's normalize with
 // its 1e-5 floor), src/gameplay_settings_tail.cpp 008383D0 (t*10 - (i+1)) and
 // src/hit_narrowphase.cpp 0085CDB0 (the slab fractions' numerators). 00956C20's blast
-// sum in src/gunnery_tables.cpp already rounds as the image does (exact sum and x0.5,
-// one float rounding, then a float add) and is not switched.
+// sum in src/gunnery_tables.cpp already rounds as the image does and is not switched: the
+// double sum of two floats is not exact, but rounding it to double and then to float equals
+// one float rounding (double rounding is innocuous, 53 >= 2*24 + 2), x0.5 is exact, then a
+// float add.
 // Expected movers when ON: plane gunfire avoidance (flag, direction and timers),
 // weapon hit accuracy samples, and segment/box hit entry points and line-of-fire tests.
 inline constexpr bool kPc24GunneryCc13Bound = false;
