@@ -28,6 +28,7 @@
 #include "bsp/cc13_sinkrng.hpp"     // packet cc13-sinkrng
 #include "bsp/cc13_leak92.hpp"      // packet cc13-leak92
 #include "bsp/unit_motion.hpp"      // unit_step_towards_0042ac60, packet cc9_periscope_out
+#include "bsp/game_hosts_powerups.hpp"  // packet cc13-powerup-bind
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
 #include "bsp/airfield_taxi.hpp"                 // packet cc9_land_park_taxi
 #include "bsp/game_hosts_avoid_zones.hpp"
@@ -67,6 +68,7 @@
 #include "bsp/dive_bomb_goaway_turn.hpp"
 #include "bsp/move_to_glide.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
+#include "bsp/plane_cached_speed_b1c_cc13.hpp"
 #include "bsp/torpedo_goaway_tick.hpp"
 #include "bsp/plane_fly_to_solver.hpp"
 #include "bsp/cc13_seg68.hpp"
@@ -224,6 +226,14 @@ constexpr bool kPartyChangeRefreshesGunneryBound = true;  // ON: SHIP_AI 213, cc
 // reachable from this host, so the value is the authored one recorded against
 // offset +440h in include/bsp/bot_tasks.hpp:266, KMH(300).
 constexpr float kTorpedoReferenceSpeedAuthored = 83.333336f;
+
+// Packet cc13-powerup-bind: 0080FC30's scale, 0080FC4F's product over category
+// 4 (SHIP_SPEED) behind the gate at 0080FC31..0080FC4A, else the 1.0f at
+// 00D7A24C (0080FC6A). The body multiplies max_speed by it once (0080FC5F).
+float unit_reference_speed_scale_0080fc30(std::size_t index) {
+    return game_powerups::powerup_site_product(4, index).value_or(
+        bsp::kUnitReferenceSpeedUnscaled);
+}
 
 
 // Dispatch coverage only; direct_ship_body retains the existing partial
@@ -7192,8 +7202,13 @@ struct GameUnitsHost::Impl {
     }
     static float leader_live_speed_007b8e60(const GameUnitSlot& u) {
         const float* v = u.plane_world_velocity;
+        if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
+            // 007B8E60 FLD [unit+B1Ch], as 007D8020 caches it (per op, 1e-10 floor).
+            return bsp::plane_cached_speed_b1c_007d8020(v);
+        } else {
         return static_cast<float>(std::sqrt(static_cast<double>(v[0]) * v[0] +
             static_cast<double>(v[1]) * v[1] + static_cast<double>(v[2]) * v[2]));
+        }
     }
     // Packet cc9_wing_achieved_speed (docs/PLANE_FOLLOW_LAW.md section 16): the
     // torpedo and dive-bomb moveto speed slot 009C1850 as the image forms it,
@@ -10130,10 +10145,15 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         // here is rf_hdgV, authored 0/DEG(400), so the term is zero either way.
         a.turn_c70 = 0.0f;
         // vtable+38h 007B8E60 BSP_Unit_GetCachedSpeed: the world speed.
+        if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
+            // unit+B1Ch as 007D8020 caches it (per op, 1e-10 floor).
+            a.speed = bsp::plane_cached_speed_b1c_007d8020(u.plane_world_velocity);
+        } else {
         a.speed = static_cast<float>(std::sqrt(
             static_cast<double>(u.plane_world_velocity[0]) * u.plane_world_velocity[0] +
             static_cast<double>(u.plane_world_velocity[1]) * u.plane_world_velocity[1] +
             static_cast<double>(u.plane_world_velocity[2]) * u.plane_world_velocity[2]));
+        }
         // SUBSTITUTION, labelled: ctl+A0h/A4h/A8h (unit+B50h..B58h), which the
         // gains pair with roll, pitch and yaw rate, are not carried; the body
         // angular velocity ctl+48h pitch / +4Ch yaw / +50h roll stands in. Of
@@ -11239,9 +11259,15 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         const float vy = slot.motion.linear_velocity.y;
         const float vz = slot.motion.linear_velocity.z;
         bsp::TorpedoRunTimeInputs in;
+        if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
+            // 009D138C CALL [vtable+38h] = 007B8E60 on a plane: FLD [unit+B1Ch],
+            // the speed 007D8020 caches from ctl+18h (plane_world_velocity).
+            in.unit_speed = bsp::plane_cached_speed_b1c_007d8020(slot.plane_world_velocity);
+        } else {
         // 009D138C unit->vtable[38h], the speed unit_speed_vtable38 takes.
         in.unit_speed = static_cast<float>(std::sqrt(static_cast<double>(vx) * vx +
             static_cast<double>(vy) * vy + static_cast<double>(vz) * vz));
+        }
         // 009D137D FLD [EDI+100h], the altitude, then 007BCC80 at 009D139D.
         in.fall_time = bsp::weapon_fall_time_007bcc80(slot.motion.position[1], vy);
         in.run_speed = torpedo_device_min_007bce20(slot, true);    // 009D13BF
@@ -11983,11 +12009,20 @@ public:
         owner_.done("ShipMotion::rudder_curve_settings", 0x00424c40u);
         return owner_.rudder_curve;
     }
-    bool scale_manager_present() override { return false; }
+    // Packet cc13-powerup-bind, 008118A3..008118BA: the manager, EnablePowerups
+    // and the category 5 (SHIP_TURNFACTOR) list size. All three answer the one
+    // gate, which keeps the shut arm's unscaled 0082ECB0 result (mapped times
+    // 1.0f is exact). Shut whenever kPowerUpSubsystemCc13Bound is OFF.
+    bool scale_manager_present() override { return yaw_product().has_value(); }
     const bsp::ShipClassFields& ship_class() override { return slot_.fields; }
-    bool gameplay_scale_enabled() override { return false; }
-    bool scale_manager_enabled() override { return false; }
+    bool gameplay_scale_enabled() override { return yaw_product().has_value(); }
+    bool scale_manager_enabled() override { return yaw_product().has_value(); }
     float gameplay_scale_008e6430(int) override {
+        const std::optional<float> product = yaw_product();
+        if (product) {
+            owner_.done("ShipMotion::gameplay_scale", 0x008e6430u);
+            return *product;
+        }
         NoGameplayModifiers modifiers;
         const float scale = bsp::gameplay_modifier_product_008e6430(nullptr, 0, modifiers);
         owner_.done("ShipMotion::gameplay_scale", 0x008e6430u);
@@ -12000,6 +12035,14 @@ public:
     float forward_speed{0.0f};
 
 private:
+    std::optional<float> yaw_product() const {
+        std::optional<float> product;
+        if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+            product = game_powerups::powerup_site_product(5, owner_.index_of_slot(slot_));
+        }
+        return product;
+    }
+
     GameUnitsHost::Impl& owner_;
     GameUnitSlot& slot_;
 };
@@ -12273,16 +12316,31 @@ public:
         return height;
     }
 
-    // 008e6430 at 00826a21, run whole over an empty category list. The
-    // accumulator starts at the 1.0f at 00d7a24c and nothing multiplies into it,
-    // so the result is the routine's own value.
+    // 008e6430 at 00826a21. With its gate shut (no power-up store, or an empty
+    // category 4 list) the product is the 1.0f at 00d7a24c.
     float gameplay_scale() override {
         if (!owner_.logged_scale) {
             owner_.logged_scale = true;
-            owner_.log.notef("gameplay scale 008e6430 runs over an empty category list: no "
-                "modifier record is registered in this process, so the product is the 1.0f "
-                "the accumulator starts at (00d7a24c) and the filter 008e4680 is never "
-                "reached");
+            if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+                owner_.log.notef("gameplay scale 008e6430 at 00826a21: the category 4 product "
+                    "from the power-up store when its gate is open, else 1.0f (00d7a24c)");
+            } else {
+                owner_.log.notef("gameplay scale 008e6430 runs over an empty category list: no "
+                    "modifier record is registered in this process, so the product is the 1.0f "
+                    "the accumulator starts at (00d7a24c) and the filter 008e4680 is never "
+                    "reached");
+            }
+        }
+        // Packet cc13-powerup-bind, 00826A06..00826A21: the category 4
+        // (SHIP_SPEED) product behind its gate; the shut arm (00826A2C) is the
+        // 1.0f the empty-list run below also returns.
+        if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+            const std::optional<float> product =
+                game_powerups::powerup_site_product(4, owner_.index_of_slot(slot_));
+            if (product) {
+                owner_.done("ShipMotion::gameplay_scale", 0x008e6430u);
+                return *product;
+            }
         }
         NoGameplayModifiers modifiers;
         const float scale = bsp::gameplay_modifier_product_008e6430(nullptr, 0, modifiers);
@@ -12755,8 +12813,11 @@ public:
     }
 
     float reference_speed() override {
-        return bsp::unit_reference_speed_0080fc30(slot_.motion.max_speed,
-            bsp::kUnitReferenceSpeedUnscaled);
+        float scale = bsp::kUnitReferenceSpeedUnscaled;
+        if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+            scale = unit_reference_speed_scale_0080fc30(owner_.index_of_slot(slot_));
+        }
+        return bsp::unit_reference_speed_0080fc30(slot_.motion.max_speed, scale);
     }
 
     bsp::OceanVec3 body_linear_velocity() override { return slot_.motion.linear_velocity; }
@@ -14629,8 +14690,34 @@ public:
         // routine, which create_units copies out of the VehicleClass row.
         ++reference_calls;
         owner_.done("SceneStartSpeed::unit_reference_speed", 0x0080fc30u);
-        return bsp::unit_reference_speed_0080fc30(slot_.motion.max_speed,
-            bsp::kUnitReferenceSpeedUnscaled);
+        float scale = bsp::kUnitReferenceSpeedUnscaled;
+        if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+            // Packet cc13-powerup-bind phase 2a: this runs inside create_units
+            // before the slot joins the table, so 008E4680 reads the slot itself
+            // (a command building granted earlier in the pass can already have
+            // filled category 4). The caller (00822C20's arm) is noexcept, so
+            // this path must not reach the resolver's throw.
+            const std::size_t index = owner_.index_of_slot(slot_);
+            if (index < owner_.slots.size()) {
+                scale = unit_reference_speed_scale_0080fc30(index);
+            } else {
+                game_powerups::PowerupUnitView view;
+                // 0043F080: +5Ch set, +5Dh, +60h and +5Eh clear.
+                view.live = slot_.scene_flags_available && slot_.state != nullptr
+                    && slot_.state->active != 0 && slot_.state->simulate == 0
+                    && slot_.scene_pending_destroy_0060 == 0 && slot_.scene_destroyed_005e == 0;
+                view.party = slot_.row.party;                              // +54h
+                // LABELLED: the id the slot takes when create_units appends it.
+                view.id = static_cast<std::uint16_t>(owner_.slots.size() + 1);
+                view.slot = ai_scene_unit_slot_009ffd20(slot_.row.party, slot_.row.name);
+                for (int axis = 0; axis < 3; ++axis) {
+                    view.position[axis] = slot_.motion.position[axis];
+                }
+                scale = game_powerups::powerup_site_product_for_view(4, view)
+                    .value_or(bsp::kUnitReferenceSpeedUnscaled);
+            }
+        }
+        return bsp::unit_reference_speed_0080fc30(slot_.motion.max_speed, scale);
     }
 
     void set_order_ring_throttle_0080d9b0(std::uint32_t, float throttle) override {
@@ -21492,6 +21579,18 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             }
         }
         host.slots.push_back(std::move(slot));
+        if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+            // Packet cc13-powerup-bind phase 2a: 006F2780's second call, 008ED720
+            // on the command building's binding (unit+758h). SUBSTITUTION,
+            // labelled: run once the slot is in the table (the grant reads the
+            // building's party and 009FFD20 slot through the resolver), in the
+            // same per-entity pass; 00822C20's reference-speed reads of this
+            // entity come before it either way.
+            if (bsp::unit_is_kind_of(host.slots.back()->class_id, 0x1C)) {
+                game_powerups::command_building_powerup_init_008ed720(
+                    host.slots.size() - 1, entity.powerup_class_id);
+            }
+        }
         if constexpr (kSceneHomeBaseContractBound) {
             // Packet cc9_scene_home_base_contract: a squadron built from a
             // PlaneSquadronGen row gets its row's HomeBase before its pass C.
@@ -23346,8 +23445,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // (neither modelled, so neither is applied), times the
                         // fall cheat when the pitch is negative, clamped to
                         // [0, 100]. The call site then scales by unit+0CC8h and
-                        // either 008E6430(6, unit) or 1.0f; both are unmodelled
-                        // and taken as 1.0. Labelled partial on those three.
+                        // either 008E6430(6, unit) or 1.0f. unit+0CC8h is
+                        // unmodelled and taken as 1.0 (labelled partial on it and
+                        // the two turbo factors); the product comes from the
+                        // power-up store below (packet cc13-powerup-bind).
                         if (unit_.plane_latched_throttle > 0.01f) {
                             float a = unit_.plane_accel * unit_.plane_latched_throttle;
                             if constexpr (GameUnitsHost::Impl::kFollowTurboBound) {
@@ -23387,6 +23488,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             if (a < 0.0f) a = 0.0f;
                             if (a > 100.0f) a = 100.0f;
+                            // Packet cc13-powerup-bind, 007DB7C7..007DB7FF: the
+                            // category 6 (PLANE_SPEED) product behind its gate,
+                            // FLD product, FMUL (unit+0CC8h * a), one rounding.
+                            // The shut arm's 1.0f leaves `a` as it was.
+                            if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+                                if (const std::optional<float> m =
+                                        game_powerups::powerup_site_product(
+                                            6, owner_.index_of_slot(unit_))) {
+                                    a = *m * a;
+                                }
+                            }
                             state.thrust_accel = a;
                         }
                         // --- 007DBA32-007DBC76, drag; 007D9140 ---
@@ -24840,6 +24952,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         float unit_speed_vtable38() override {
                             // 009D3D01, unit->vtable[38h]. The plane's speed,
                             // taken from the live linear velocity.
+                            if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
+                                // 007B8E60 FLD [unit+B1Ch], as 007D8020 caches it
+                                // from ctl+18h (plane_world_velocity).
+                                return bsp::plane_cached_speed_b1c_007d8020(
+                                    slot_.plane_world_velocity);
+                            } else {
                             const float vx = slot_.motion.linear_velocity.x;
                             const float vy = slot_.motion.linear_velocity.y;
                             const float vz = slot_.motion.linear_velocity.z;
@@ -24847,6 +24965,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(vx) * vx +
                                 static_cast<double>(vy) * vy +
                                 static_cast<double>(vz) * vz));
+                            }
                         }
                         bsp::TorpedoApproachControl read_control_block() override {
                             // unit+9D4h. This host has no pilot control block,
@@ -30850,9 +30969,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         float speed = 0.0f;
                         if constexpr (bsp::kPc24UnitsHostCc13Bound) {
                             // pc24w1-units-DE: per-op PC24 of this stand-in dot
-                            // ((vx f0 + vy f1) + vz f2). The image reads ctl+44h, which
-                            // the core step writes (007D80C0 copies it); that writer's
-                            // order is not modelled here.
+                            // ((vx f0 + vy f1) + vz f2). The image reads unit+B2Ch,
+                            // which 007D80C0 writes, reached from 007D9C10 / 007D9C34
+                            // through 0042D0D0; that writer chain's order is not
+                            // modelled here.
                             namespace x8 = bsp::cc13x87;
                             speed = static_cast<float>(x8::x87_add24(
                                 x8::x87_add24(x8::x87_mul24(unit_.motion.linear_velocity.x, f[0]),
@@ -33858,11 +33978,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             tin.bank_c68 = unit_.plane_bank_angle_c68;
                             // unit->vtable[38h]: the same live-velocity length
                             // the torpedo seam's unit_speed_vtable38 returns.
+                            if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
+                                // 007B8E60 FLD [unit+B1Ch], as 007D8020 caches it.
+                                tin.speed_vtable38 = bsp::plane_cached_speed_b1c_007d8020(
+                                    unit_.plane_world_velocity);
+                            } else {
                             const double vx = unit_.motion.linear_velocity.x;
                             const double vy = unit_.motion.linear_velocity.y;
                             const double vz = unit_.motion.linear_velocity.z;
                             tin.speed_vtable38 = static_cast<float>(
                                 std::sqrt(vx * vx + vy * vy + vz * vz));
+                            }
                             tin.pitch_spd_1ac = unit_.plane_pitch_spd;   // class+1ACh
                             // [ESP+14h], 009C59D6: unit+100h less the aim point y.
                             tin.height_above_aim_14 = unit_.motion.position[1] - ap[1];
@@ -42468,9 +42594,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::NativeAdvanceMatrixOps ops;
                             const float blend = ops.interpolate_clamped_00419010(
                                 3.0f, 0.0f, 5.0f, 1.0f, forward_speed);
+                            // Packet cc13-powerup-bind, 007DA067: the difficulty
+                            // scalar is the category 13 (PLANE_TURN) product
+                            // behind its gate, else the 1.0f (00D7A24C).
+                            float difficulty = 1.0f;
+                            if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+                                difficulty = game_powerups::powerup_site_product(
+                                    13, owner_.index_of_slot(unit_)).value_or(1.0f);
+                            }
                             const float angle = bsp::bank_yaw_angle_007da0ae(blend,
                                 unit_.plane_bank_angle_c68, unit_.plane_pitch_angle_c64,
-                                unit_.plane_class_turn_roll_spd, 1.0f, step);
+                                unit_.plane_class_turn_roll_spd, difficulty, step);
                             bsp::AdvanceMatrix live{};
                             float* const rows[3] = {unit_.motion.pose_row0,
                                 unit_.motion.pose_row1, unit_.motion.pose_row2};
@@ -42713,8 +42847,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // SUBSTITUTION, labelled: run here, after the latch, at this
                             // step; its order against 007CE040's other elements is not read.
                             // The recharge factor is 008E6430(9, unit) when [00E0C978] and
-                            // [[00F88C30]+F4h] are set (007CEBAB-007CEBD1), else 1.0f; it is
-                            // taken as 1.0f, as 008E6430(6) is in the thrust. Float per
+                            // [[00F88C30]+F4h] are set (007CEBAB-007CEBD1), else 1.0f; the
+                            // power-up store supplies it (packet cc13-powerup-bind). Float per
                             // operation (24-bit precision assumed).
                             const float tt = unit_.plane_turbo_time;
                             if (tt > 0.0f) {                                         // 007CEB45
@@ -42727,7 +42861,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     }
                                 } else if (!(bsp::unit_is_kind_of(unit_.class_id, 0x17) &&
                                              !unit_.plane_pilot_fires_c24)) {        // 007CEB8F-007CEBA5
-                                    const float c = step / unit_.plane_turbo_recharging_time * 1.0f +
+                                    // Packet cc13-powerup-bind, 007CEBB8..007CEBCC: the
+                                    // category 9 (TURBO_RELOADING) product behind its
+                                    // gate, else the 1.0f (00D7A24C) as before.
+                                    float recharge = 1.0f;
+                                    if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+                                        recharge = game_powerups::powerup_site_product(
+                                            9, owner_.index_of_slot(unit_)).value_or(1.0f);
+                                    }
+                                    const float c = step / unit_.plane_turbo_recharging_time * recharge +
                                         unit_.plane_boost_charge_e84;                // 007CEBE5-007CEBFC
                                     unit_.plane_boost_charge_e84 = c > 1.0f ? 1.0f : c;   // 007CEC16
                                 }
@@ -44186,6 +44328,10 @@ void GameUnitsHost::Impl::set_role_availability_00927d20_impl(std::size_t index,
     // 00927DE1..: a value naming one player (not 8, not 9) also calls
     // unit->vtable[2Ch] on that player's record; 0077F360's tail sets a
     // message-suppress byte for kind-5 units. Neither is modelled (labelled).
+    // 00927E29..00927E31: 00696350(unit, code 5) notifies the unit's observers.
+    // Packet cc13-powerup-bind phase 2a: the power-up manager observes the
+    // command buildings 008ED720 granted through (008ED620 regrants them).
+    game_powerups::powerup_manager_observed_event_008ed620(index, 5);
 }
 
 bool GameUnitsHost::unit_current_role_slot(std::size_t index, std::int32_t role_index,
@@ -45357,7 +45503,7 @@ bool GameUnitsHost::run_cruise_state_step_009e1170(std::size_t index,
     return host.commands.cruise_step(index, host.player_flag_0184(slot),
         unit_forward_speed_0092d730(index),
         bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
-            bsp::kUnitReferenceSpeedUnscaled),
+            unit_reference_speed_scale_0080fc30(index)),
         ordered, &blk, &setters);
 }
 
@@ -45372,7 +45518,7 @@ bool GameUnitsHost::run_cruise_state_step_009e1170(std::size_t index,
     return host.commands.cruise_step(index, host.player_flag_0184(slot),
         unit_forward_speed_0092d730(index),
         bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
-            bsp::kUnitReferenceSpeedUnscaled),
+            unit_reference_speed_scale_0080fc30(index)),
         ordered, &blk, &setters, &request, &avoidance_inputs);
 }
 
@@ -46502,7 +46648,7 @@ bsp::ShipAiThrottleCeilingInputs GameUnitsHost::throttle_ceiling_inputs(
     // 009EC9AB, blk+3C4h: the cached reference speed, the same 0080FC30 value
     // 009E12BD divides by.
     in.reference_speed = bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
-        bsp::kUnitReferenceSpeedUnscaled);
+        unit_reference_speed_scale_0080fc30(index));
     return in;
 }
 
