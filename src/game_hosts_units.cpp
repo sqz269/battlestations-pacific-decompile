@@ -212,6 +212,7 @@
 #include "bsp/pc24_shipai_cc13.hpp"           // pc24w1-sweep2-3 (0074F490)
 #include "bsp/pc24_flightrender_cc13.hpp"     // pc24w1-sweep1-3 (007DB4D0)
 #include "bsp/pc24_planetasks_cc13.hpp"       // pc24w1-sweep3-5 (sites at each body)
+#include "bsp/flyabove_lead_bearing_pc24_cc13.hpp"  // cc13-flybearing
 #include "bsp/dive_flyabove_avoid_increment_cc13.hpp"  // cc13-flyavoid, 009C6D59
 #include "bsp/session_context_cc13.hpp"  // cc13-mp1 (MP2a)
 
@@ -5892,7 +5893,7 @@ struct GameUnitsHost::Impl {
                     ? 0.0f : static_cast<float>(std::sqrt(lead_d2));
             }
             float lead_bearing = 0.0f;
-            if constexpr (bsp::kPc24PlaneTasksCc13Bound) {
+            if constexpr (bsp::kFlyaboveLeadBearingPc24Cc13Bound) {
                 // cc13-flybearing (rev7 PC24 debt): 009C63C4 FSTP dword stores the
                 // 00BF701A atan2 as a float, 009C63CC FSUBR qword [00CE3830] (pi/2,
                 // the float widened) rounds at PC24, 009C63D2 FSTP dword. ABI:
