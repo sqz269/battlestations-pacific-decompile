@@ -9,6 +9,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/game_hosts_lua.hpp"  // kReconLoadForceRefreshCc13Bound (cc13-reconload)
 #include "bsp/strafe_task.hpp"
 #include "bsp/depth_charge_task_cc13.hpp"
+#include "bsp/rocket_task_cc13.hpp"   // kRocketTaskBound, packet cc9-rocket1
 #include "bsp/game_hosts_commands.hpp"
 
 #include "bsp/air_operations.hpp"
@@ -1832,6 +1833,11 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
     // Packet cc13-depthcharge1: 007EDA10 -> 007B94F0, kind 2Ch (Type
     // "DepthCharge"). Lands with the task, never apart from it.
     if constexpr (bsp::kDepthChargeTaskBound) in.has_depth_charge_ordnance = set.contains(0x2c);
+    // Packet cc9-rocket1: 007ED970 -> 007B9480, kind 33h with IgnitionDelay > 0.
+    // Lands with the rocket task (bsp::kRocketTaskBound), never apart from it.
+    if constexpr (bsp::kRocketTaskBound) {
+        in.has_rocket_ordnance = units_.unit_has_rocket_ordnance_007b9480(unit_index);
+    }
     if constexpr (kSquadronMemberOrdnanceBound) {
         const bsp::PlaneSquadronHostRecord* sq =
             bsp::plane_squadron_registry().find_by_member_unit(unit_index);
@@ -1847,6 +1853,9 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
                 in.has_torpedo_ordnance |= bsp::ordnance_has_torpedo_2bh(ms);
                 if constexpr (bsp::kDepthChargeTaskBound) {
                     in.has_depth_charge_ordnance |= ms.contains(0x2c);
+                }
+                if constexpr (bsp::kRocketTaskBound) {
+                    in.has_rocket_ordnance |= units_.unit_has_rocket_ordnance_007b9480(m);
                 }
             }
         }
@@ -1895,6 +1904,12 @@ std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t uni
         in.has_level_bomb_ordnance ? 1 : 0, in.has_general_bomb_ordnance ? 1 : 0,
         in.has_drop_kamikaze_ordnance ? 1 : 0, in.has_torpedo_ordnance ? 1 : 0,
         in.unit_side, in.target_side);
+    if constexpr (bsp::kRocketTaskBound) {
+        if (in.has_rocket_ordnance) {
+            log_.notef("  %s rocket feed: 007ED970 has_rocket_ordnance=1 surface=%d "
+                "(packet cc9-rocket1)", label, in.target_is_surface ? 1 : 0);
+        }
+    }
     return chosen;
 }
 
