@@ -22,7 +22,8 @@ namespace bsp {
 //            callers are 0095E5B0 (Lua read), 00729FA0 (OnActivated) and the +3B8h
 //            set/clear 0072B5A0/007280A0; 0095AD0A does not rebuild, so the latch only
 //            reaches the lists at a rebuild, which the host runs at unit build.
-//   00954210 (0095421F) the player gun seat aim accept, kinds 1/2 and 3.
+//   00954210 (0095421F, before every kind test) the player gun seat accept: the aim
+//            sites (kinds 1/2 and 3), the group 4 torpedo walk and the group 5 walk.
 //   0095EB40 (0095EC52) RateExpectedWeaponDamage, ship AI firepower; 0080DF40
 //            (0080DF59) ReadyTorpedoBarrels goes through the same binding.
 //   009E9910/009E9A50 and 009E99A0/009E9AE0, the sub's ready-tube counts and least
@@ -34,10 +35,22 @@ namespace bsp {
 // own +720h test (0072D1C1, unit_fire_blocked) is unchanged.
 inline constexpr bool kGunOwnerInferiorOperationalCc13Bound = false;
 
-// 00729F10 for a gun whose [gun+3F0h] is `owner`. Called only under the switch.
-template <class Units>
-bool gun_is_operational_00729f10_cc13(const Units& units, std::size_t owner) {
-    return !units.inferior_failure_720(owner);
+// Every hosted 00729F10 site takes gun_is_operational_00729f10_cc13 when this is set
+// and keeps its verbatim "every gun operational" arm otherwise. A packet that fills
+// another term ORs its switch in here.
+inline constexpr bool kGunIsOperationalHostedCc13 = kGunOwnerInferiorOperationalCc13Bound;
+
+// 00729F10 for one gun row (`gun.unit_index` is [gun+3F0h]), the one helper every hosted
+// site shares. Each term is false unless its switch is set.
+template <class Units, class GunRow>
+bool gun_is_operational_00729f10_cc13(const Units& units, const GunRow& gun) {
+    bool owner_inferior_720 = false;             // [[gun+3F0h]+720h], 00729F16
+    if constexpr (kGunOwnerInferiorOperationalCc13Bound) {
+        owner_inferior_720 = units.inferior_failure_720(gun.unit_index);
+    }
+    const bool gun_destroyed_3b8 = false;        // gun+3B8h, 00729F1F: placeholder
+    const bool gun_torn_down_5d = false;         // gun+5Dh, 00729F28: placeholder
+    return !owner_inferior_720 && !gun_destroyed_3b8 && !gun_torn_down_5d;
 }
 
 }  // namespace bsp

@@ -4830,11 +4830,11 @@ public:
             return true;
         }
         owner_.done("ShipAiFirepower::device_is_operational_00729f10", 0x0095ec52u);
-        if constexpr (bsp::kGunOwnerInferiorOperationalCc13Bound) {
+        if constexpr (bsp::kGunIsOperationalHostedCc13) {
             // [device+3F0h] is the gun row's unit (bsp/gun_owner_inferior_operational_cc13.hpp).
             const GameGunRow* gun = gun_row(device);
             return gun == nullptr
-                || bsp::gun_is_operational_00729f10_cc13(owner_.units, gun->unit_index);
+                || bsp::gun_is_operational_00729f10_cc13(owner_.units, *gun);
         } else {
             static_cast<void>(device);
             return bsp::ship_ai_gun_is_operational_00729f10(false, false, false);
@@ -10248,10 +10248,10 @@ public:
 private:
     // 00729F10 through the same answers FirepowerBinding gives 0095EB40: the
     // three bytes have no producer here, so every tube is operational (LABELLED).
-    // Under kGunOwnerInferiorOperationalCc13Bound the +720h term is the owner's latch.
+    // Under kGunIsOperationalHostedCc13, bsp::gun_is_operational_00729f10_cc13.
     bool operational(const GameGunRow& row) const {
-        if constexpr (bsp::kGunOwnerInferiorOperationalCc13Bound) {
-            return bsp::gun_is_operational_00729f10_cc13(owner_.units, row.unit_index);
+        if constexpr (bsp::kGunIsOperationalHostedCc13) {
+            return bsp::gun_is_operational_00729f10_cc13(owner_.units, row);
         } else {
             static_cast<void>(row);
             return bsp::ship_ai_gun_is_operational_00729f10(false, false, false);
