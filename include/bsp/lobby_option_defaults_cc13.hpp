@@ -33,6 +33,12 @@ struct LobbyOptionRegistry {
     std::map<std::int32_t, std::map<std::int32_t, std::uint8_t>> enabled_28;
     // +40h..+8Ch, zeroed by 008D2F50 before the walk; +40h + 4*slot is the slot's
     // "Default" option index (the last one written in lua_next order).
+    // LABELLED: slot 5 (ResourceLimit) has two Default options, 0 and 4, and its value 4
+    // relies on the host's Lua 5.1 node order matching the image's. lua_Number is a
+    // double (00A67797 FLD QWORD); the eight [k] = fields of a constructor make eight hash
+    // nodes (mod 7) and integer keys hash by their double bits, so lua_next walks
+    // 5,1,7,2,0,3,4,6 (5.1.1) or 0,2,7,3,1,4,5,6 (5.1.2 and later). Option 4 is walked
+    // after option 0 either way; with another node layout slot 5 could read 0.
     std::array<std::int32_t, 20> defaults_40{};
 
     // 00575E80(+10h, &slot) then +8h: the inner map's size (operator[], so an absent
@@ -52,6 +58,10 @@ struct LobbyOptionRegistry {
 
 // 005C6850 then 005C49C0 on an availability map (registry+28h, or a map record's +428h
 // when its +424h is set). operator[], so an absent (slot, option) reads 0.
+// The image's map reads (00575E80, 005C6850, 005C49C0) are std::map::operator[] calls:
+// they insert an absent (slot, option) cell as 0 into registry+10h and the availability
+// map. This C++ uses const find, which reads the same 0 without inserting. The two would
+// diverge only if a later reader iterated those maps or read their sizes (+8h).
 template <typename Map>
 std::uint8_t lobby_option_flag(const Map& map, std::int32_t slot, std::int32_t option) noexcept {
     const auto row = map.find(slot);
