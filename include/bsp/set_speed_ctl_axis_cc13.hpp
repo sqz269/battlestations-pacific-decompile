@@ -9,7 +9,10 @@ namespace bsp {
 // (__thiscall on the controller unit+AB0h, one float, RET 4), reached from Lua
 // SquadronSetSpeed 0089F780 -> 0074E1E0 (game_hosts_lua.cpp, unchanged here), the plane
 // vtable slot +3Ch on nine plane vtables, and 007D5D20's property bag (007D64E5,
-// 007D654D; the host's spawn seed does not come through this function):
+// 007D654D; the host's spawn seed does not come through this function). A
+// deck-parented plane reaches SetSpeed only through that property bag, which the host
+// does not route here, so the unit+74h (local) vs host world-row LABELLED note below
+// does not arise on the host's path:
 //   007D9E86..007D9E96: ctl+3Ch/+40h = 0, ctl+44h = speed (the body velocity);
 //   007D9E9B..007D9EBD: ctl+48h..+50h = [00F87574..00F8757C] (the body angular rate);
 //   007D9EC2 007D9C80: ctl+18h..+20h = 0042D0D0(ctl+3Ch, unit+74h, w 0), the body
@@ -22,8 +25,11 @@ namespace bsp {
 // and 0099DA97..0099DAC8 (the throttle error correction).
 // OFF, GameUnitsHost::set_plane_forward_speed_007d9e80 sets the velocity to
 // speed * forward / |forward| with a 1e-6 length guard and leaves the low-pass alone.
-// ON, each axis is f32(speed * row2[i]): the zero body components add nothing in
-// 0042D0D0, so there is no normalisation and no guard. The low-pass is set to the new
+// ON, each axis is f32((0 * row1[i] + 0 * row0[i]) + speed * row2[i]) per x87 op, in
+// 0042D0D0's operand order (0042D0F2..0042D11A): the value is f32(speed * row2[i]), and
+// the zero products only fix the sign of a zero axis (+0 unless all three addends are
+// -0), which the atan2 flight-path pitch (game_hosts_units.cpp, the C7Ch/C84h path)
+// can see. There is no normalisation and no guard. The low-pass is set to the new
 // velocity (and marked valid). LABELLED: the host's pose rows stand for unit+74h, which
 // is the local matrix; they agree for an unparented plane. 007D8020's terms are left to
 // the host's per-step refresh.
