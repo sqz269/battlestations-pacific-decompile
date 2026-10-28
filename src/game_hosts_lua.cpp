@@ -11495,13 +11495,27 @@ void GameMissionLuaHost::publish_lobby_settings_005e2f00() {
     bsp::lobby_settings_sync_005e2f00(sync, options, state);
     summary_.lobby_settings_published = sync.table_created();
     log_.implemented("MissionLua::sync_lobby_settings", "005e2f00");
-    log_.notef("LobbySettings: %s (single player, game+1FE4h = 0), fields nil=%zu number=%zu "
-        "string=%zu; mode flags powerups=%d reload_payload=%d map=%d, command points %.1f",
-        sync.nil_global() ? "the global is set nil by the 005e2f93 early-out"
-                          : "a table was published",
-        sync.nil_fields(), sync.number_fields(), sync.string_fields(),
-        sync.flags().powerups_enabled ? 1 : 0, sync.flags().reload_payload_on ? 1 : 0,
-        sync.flags().map_enabled ? 1 : 0, static_cast<double>(sync.command_points()));
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
+        // Packet cc13-skirmish-gate: 005E2F59 sets the global nil on every call, the
+        // published path included, so nil_global() is always true; the table is
+        // what tells the 005E2F93 early-out from a publish.
+        log_.notef("LobbySettings: %s (game+1FE4h = %d), fields nil=%zu number=%zu "
+            "string=%zu; mode flags powerups=%d reload_payload=%d map=%d, command points %.1f",
+            sync.table_created() ? "a table was published"
+                                 : "the global is left nil by the 005e2f93 early-out",
+            static_cast<int>(bsp::session_context().session_word_1fe4),
+            sync.nil_fields(), sync.number_fields(), sync.string_fields(),
+            sync.flags().powerups_enabled ? 1 : 0, sync.flags().reload_payload_on ? 1 : 0,
+            sync.flags().map_enabled ? 1 : 0, static_cast<double>(sync.command_points()));
+    } else {
+        log_.notef("LobbySettings: %s (single player, game+1FE4h = 0), fields nil=%zu number=%zu "
+            "string=%zu; mode flags powerups=%d reload_payload=%d map=%d, command points %.1f",
+            sync.nil_global() ? "the global is set nil by the 005e2f93 early-out"
+                              : "a table was published",
+            sync.nil_fields(), sync.number_fields(), sync.string_fields(),
+            sync.flags().powerups_enabled ? 1 : 0, sync.flags().reload_payload_on ? 1 : 0,
+            sync.flags().map_enabled ? 1 : 0, static_cast<double>(sync.command_points()));
+    }
 }
 
 bool GameMissionLuaHost::run_mission_script_008860b0(const std::string& script_name) {
