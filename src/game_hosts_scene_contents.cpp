@@ -4585,6 +4585,11 @@ bool line_quad_00adeb80(const float a[3], const float b[3], const float c[3], co
                     pc24::x87_mul24(cw, b[k])));
             }
         } else {
+            // cc13-adeb80: the image sums (-v + u) + w (00ADEF5C, 00ADEF60); this arm sums
+            // (w + -v) + u. Width only, not an operand-order bug: the three terms are floats,
+            // so a double partial sum of two is exact whenever their exponents are within 28,
+            // and the total is then round53 of the exact sum in either order. The order and
+            // the per-op PC24 rounding are both modelled by the kPc24FlightRenderCc13Bound arm.
             const double denom = 1.0 / (static_cast<double>(w) + -static_cast<double>(v) + u);
             const double cu = denom * u, cv = -static_cast<double>(v) * denom, cw = denom * w;
             for (int k = 0; k < 3; ++k) r[k] = terrain_f32(cu * d[k] + cv * a[k] + cw * b[k]);
@@ -4610,6 +4615,8 @@ bool line_quad_00adeb80(const float a[3], const float b[3], const float c[3], co
                 pc24::x87_mul24(cw, b[k])));
         }
     } else {
+        // cc13-adeb80: the image sums (v + u) + w (00ADED7D, 00ADED81); (w + v) + u here is
+        // the same width-only difference as the v < 0 arm above, covered by the ON arm.
         const double denom = 1.0 / (static_cast<double>(w) + v + u);
         const double cu = u * denom, cv = v * denom, cw = denom * w;
         for (int k = 0; k < 3; ++k) r[k] = terrain_f32(cu * d[k] + cv * c[k] + cw * b[k]);
