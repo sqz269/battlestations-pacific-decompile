@@ -67,6 +67,10 @@ struct ShipAiSwitchReach {
     // nodes evaluated, and those where the image's rule and the C++ `<` differ.
     unsigned long long path_dir_evals{0};
     unsigned long long path_dir_differs{0};
+    // 00811D10 kUnitAiOrderCopyPc24Cc13Bound: order-record copies, and those
+    // where the image's FLD/FSTP copy and the member-wise copy differ.
+    unsigned long long order_copy_calls{0};
+    unsigned long long order_copy_differs{0};
 };
 
 inline ShipAiSwitchReach& ship_ai_switch_reach() noexcept {
