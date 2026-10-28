@@ -51,10 +51,43 @@ Validation at this commit: source inspection and `git diff --check`; build and r
 pending. No game runs were started. An empty-vector default run can verify inertness but cannot
 exercise the new delegated page retirement; that proof requires later P3a2/P4 activation.
 
-## Remaining AC4C50 inputs
+## Canonical base-widget property state
 
 AAA710 requires shared mutable white/black guards and quartets at F8BCF0/F8BCE0 and
 F8BCDC/F8BCCC, plus AA7220's E12FC4 Y-scale. These differ from Text's F8BE38 quartet and must not
-borrow it. Their installed DATA and lazy initialization behavior are being recovered before the
-property bindings are supplied. `properties_composed` stays false until the actual reader,
-widget transform/visibility/children, canonical Model/Group, and retirement providers all exist.
+borrow it. The existing retained `GameNativeGuiTextState` now supplies distinct VA-named views of
+these cells; no additional process owner or recovered/native type is invented. Its original
+Text fields and accessors keep their existing identities. E12FC4 and E12FD4 remain two separate
+0.75 cells. The backing views do not perform lazy color initialization or change any guard.
+
+Installed image: `I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe`,
+SHA256 `b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`.
+The PE image base is 00400000. Its .data section has raw size 10000h and virtual size 297EDCh.
+F8BCCC..F8BCF3 lie at section offset 183CCCh, beyond raw data, so both quartets and both DWORD
+guards begin as loader positive zero. E12FC4 lies at section offset AFC4h, with exact disk bytes
+`00 00 40 3F` (float bits 3F400000). Live Ghidra bytes agree with these values. The configured
+project was `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`, checked before the
+read-only DATA/listing batch; no Ghidra annotations changed.
+
+The listing establishes the lazy behavior the existing raw property source must retain:
+
+- AAA8F2 tests bit0 of the low byte of F8BCF0; AAA8FB loads the live D7A24C one; AAA903 ORs the
+  complete DWORD guard with 1; AAA90A/912/91A/922 store the four white lanes in order.
+- AAA975 tests bit0 of F8BCDC; AAA981 ORs its full DWORD with 1; AAA988/990/998 write three
+  positive-zero lanes; AAA9A0 loads live D7A24C; AAA9A8 writes alpha.
+- AAA9FD repeats the CURRENT white guard test for HighColor, after intervening property calls.
+  A prior white result must not be cached across those callbacks.
+- AA7239 loads E12FC4 with FLD; the host state exposes its same mutable float cell rather than
+  substituting the bridge's `kGuiAspectYScale` constant.
+
+The raw `native_gui_widget_property_prefix.cpp` still owns these guard tests and stores; this
+dependency only supplies their shared preimages. AAAED0's future provider must borrow the same
+base-widget views. No alternate white quartet, eager initialization, or per-page reset is added.
+
+## Remaining AC4C50 inputs and validation
+
+`properties_composed` stays false until the actual reader, widget transform/visibility/children,
+canonical Model/Group, and retirement providers all exist. Canonical state and manager binding
+are prerequisites, not proof that AC4C50 or a native Page has executed. Source/data/listing review
+and `git diff --check` are complete; the dependency build is pending. No new game run or native
+page lifecycle acceptance is claimed.
