@@ -211,6 +211,11 @@ constexpr bool kSubmarineWakeDrawsBound = true;
 constexpr bool kUnitDeathLimboPushCc13Bound = true;  // ON (cc9-helm1, 2026-10-23): pairs on 802e1d8b9, six controlled-death rows, every end unchanged, no plan line refused
 static_assert(!kUnitDeathLimboPushCc13Bound || kUnitDeathRouteBound,
               "the limbo arm runs inside the 00959450 death route");
+// Packet cc13-s24: 0072BF10's team stamp (0072C119..0072C13F) replaces a plane
+// owner whose +914h is above 0.0 by its squadron head [[owner+9D4h]+3D0h] before
+// reading the role-1 slot at 0072C145. True: that replacement runs. False: the
+// owner is never replaced (before).
+constexpr bool kShotTeamSquadronHeadCc13Bound = false;
 // Packet cc9_cb_gunfire_gate (docs/GUNNERY_OPEN_ITEMS.md 125): a hit's AddDamage is
 // victim->vtable[1ACh] (008778C6, 00877A2E in 008777D0), and for a CommandBuilding
 // (vtable 00CFB028) that slot is 006F1F20, which damages only while +7D8h == 0.0
@@ -4561,14 +4566,20 @@ struct GameGunneryHost::Impl {
     //   gun+3F0h; an aircraft owner (vtable[5Ch](0Fh)) with +914h > 0.0 (COMISS
     //   [00D7A218], JBE) is replaced by its squadron head [[owner+9D4h]+3D0h];
     //   team = [owner+1B0h] (0072C145), the owner's role-1 slot.
-    // SUBSTITUTIONS, labelled: the category-0 (PLANEGUN) rows stand for the
-    // class 21h test, as in 007C2610; the host keeps no +914h, so the owner is
-    // never replaced by its squadron head.
+    // SUBSTITUTION, labelled: the category-0 (PLANEGUN) rows stand for the
+    // class 21h test, as in 007C2610.
+    // kShotTeamSquadronHeadCc13Bound (packet cc13-s24): ON, the squadron-head
+    // replacement runs (plane_formation_sight_914 is the host's +914h). OFF, the
+    // owner is never replaced (the old substitution).
     int shot_team_id_0072c0f2(const GameGunRow& gun, std::size_t owner) const {
         int team = gun.seat_1ac;
         if (team == 8 && gun.category == 0) {
+            std::size_t stamp_owner = owner;
+            if constexpr (kShotTeamSquadronHeadCc13Bound) {
+                stamp_owner = units.plane_shot_owner_squadron_head_0072c119(owner);
+            }
             std::int32_t slot = team;
-            if (units.unit_current_role_slot(owner, 1, slot)) team = slot;
+            if (units.unit_current_role_slot(stamp_owner, 1, slot)) team = slot;
         }
         return team;
     }
