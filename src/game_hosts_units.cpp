@@ -5161,6 +5161,130 @@ struct GameUnitsHost::Impl {
         return changed;
     }
 
+    // Packet cc13-rackround (A, moved): PlaneBinding::plane_rack_census, the rack
+    // census once per unit, hoisted here so one implementation serves every caller.
+    // The body is the original's, re-indented; `owner_` names this Impl.
+    void plane_rack_census(GameUnitSlot& unit_) {
+        Impl& owner_ = *this;
+        if (unit_.rack_census_done) return;
+        unit_.rack_census_done = true;
+        const int type_id = unit_.row.type_id;
+        const int platforms =
+            owner_.lua.read_vehicle_class_integer(type_id, "BSPGun", "n", 0);
+        for (int p = 1; p <= platforms && p <= 64; ++p) {
+            char key[32];
+            std::snprintf(key, sizeof(key), "p%d_cat", p);
+            const int cat = owner_.lua.read_vehicle_class_integer(
+                type_id, "BSPGun", key, -1);
+            if (cat != static_cast<int>(bsp::GunneryCategory::kBombPlatform)) continue;
+            std::snprintf(key, sizeof(key), "p%d_dev", p);
+            const int class_dev = owner_.lua.read_vehicle_class_integer(
+                type_id, "BSPGun", key, -1);
+            // The platform's key, which also indexes the
+            // equipment entry (packet cc9_lua45_rack_equipment_device).
+            std::snprintf(key, sizeof(key), "p%d_key", p);
+            const int pkey = owner_.lua.read_vehicle_class_integer(
+                type_id, "BSPGun", key, -1);
+            const int dev = owner_.rack_equipment_device(unit_, type_id, pkey, class_dev);
+            const std::string type = dev >= 0
+                ? owner_.lua.read_device_class_string(dev, "Type") : std::string();
+            if (type == "BombPlatform") {
+                ++unit_.rack_single_count;
+                // The platform's authored rounds (packet
+                // cc9_dive_bomb_carried_rounds). -1 when absent.
+                const int ammo = owner_.rack_positive_bag_round(unit_,
+                    owner_.rack_equipment_ammo(unit_, type_id, pkey));
+                if (ammo > 0) unit_.rack_rounds_authored += ammo;
+                unit_.rack_authored_per_rack.push_back(ammo);
+                // Packet cc9_rack_bullet_kind. LABELLED: the class's
+                // default Bullet[1]; an equipment bag that changes
+                // the bullet is not read.
+                unit_.rack_bullet_class_per_rack.push_back(
+                    owner_.read_device_bullet_class_id(dev));
+                unit_.rack_bullet_id_per_rack.push_back(
+                    owner_.read_device_bullet_id(dev));
+                // 006E0242 00B66330 default [00CE3D30] = 0.6f.
+                unit_.rack_repeat_per_rack.push_back(
+                    owner_.lua.read_device_class_number(dev, "RepeatTime",
+                        owner_.rack_repeat_default()));
+                // Packet cc9_rack_device_reload: 006E3C00 stores
+                // 30.0 (00CE38C8); an entry's ReloadTime replaces it
+                // through 006E3A20 (below 1.0 becomes 1.0), in both
+                // +48Ch and +490h.
+                float reload = 30.0f;
+                const float authored_reload =
+                    owner_.rack_equipment_reload_time(unit_, type_id, pkey);
+                if (authored_reload >= 0.0f)
+                    reload = authored_reload < 1.0f ? 1.0f : authored_reload;
+                unit_.rack_reload_time_per_rack.push_back(reload);
+                unit_.rack_reload_left_per_rack.push_back(reload);
+            } else if (type == "MultiBombPlatform") {
+                ++unit_.rack_multi_count;
+            }
+            if constexpr (bsp::kOpportunisticRocketBound) {
+                // Packet cc13-oprocket1 (cc9-gunnery39): every rocket
+                // platform, with its own authored rounds.
+                const int rk = (type == "BombPlatform" || type == "MultiBombPlatform")
+                    ? owner_.read_device_rocket_kind(dev) : 0;
+                if (rk > 0) {
+                    unit_.orx_rack_kind.push_back(rk);
+                    unit_.orx_rack_bullet.push_back(owner_.read_device_bullet_id(dev));
+                    unit_.orx_rack_ammo.push_back(
+                        owner_.rack_equipment_ammo(unit_, type_id, pkey));
+                }
+            }
+        }
+        if constexpr (GameUnitsHost::Impl::kRackUnequippedEmptyBound &&
+                      bsp::kPlaneSceneEquipmentBound) {
+            // 0095A880(null, 1, 0) hands no rack a round (5ey).
+            if (unit_.bag_equipment == 0 && unit_.rack_ammo < 0) {
+                unit_.rack_ammo = 0;
+                unit_.rack_ammo_per_rack.assign(
+                    unit_.rack_authored_per_rack.size(), 0);
+            }
+        }
+        if constexpr (GameUnitsHost::Impl::kRackBulletKindBound) {
+            if (bsp::unit_is_kind_of(unit_.class_id, 0x10)
+                && !unit_.rack_bullet_class_per_rack.empty()) {
+                std::string k;
+                for (std::size_t i = 0; i < unit_.rack_bullet_class_per_rack.size(); ++i) {
+                    char b[48];
+                    std::snprintf(b, sizeof(b), "%s%Xh/%.2fs", i ? " " : "",
+                        unit_.rack_bullet_class_per_rack[i],
+                        static_cast<double>(unit_.rack_repeat_per_rack[i]));
+                    k += b;
+                }
+                owner_.log.notef("  rack bullet kinds %s (level bomber): [%s] "
+                    "(007C0D90, packet cc9_rack_bullet_kind)",
+                    unit_.row.name.c_str(), k.c_str());
+            }
+        }
+    }
+
+    // Packet cc13-rackround (A, moved): TorpedoReleaseOrderBinding's first-issue
+    // seed at 007C0DE3-007C0DEF (the rack ammo, once: it runs only while
+    // rack_ammo < 0). The block is the original's, re-indented.
+    void rack_release_issue_seed_007c0de3(GameUnitSlot& slot_) {
+        if (slot_.rack_ammo < 0) {
+            const bool authored =
+                GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
+                slot_.rack_rounds_authored > 0;
+            slot_.rack_ammo = authored
+                    ? slot_.rack_rounds_authored
+                    : slot_.rack_single_count;
+            if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
+                // Each rack's own +484h: its authored Ammo,
+                // or one round per rack where the census
+                // found none (the pool's own fallback).
+                slot_.rack_ammo_per_rack.clear();
+                for (const int a : slot_.rack_authored_per_rack) {
+                    slot_.rack_ammo_per_rack.push_back(
+                        authored ? (a > 0 ? a : 0) : 1);
+                }
+            }
+        }
+    }
+
     // 007EDAD0 BSP_PlaneSquadron_AmmoType (007EDAD0-007EDB7C, __fastcall(squadron),
     // RET): for each of the +3CCh planes at +3D0h, in turn 007B93F0 (2Bh) -> 2,
     // 007B94F0 (2Ch) -> 3, 007B9400 (33h) -> 4, 007B9500 (31h) -> 5, 007B93E0
@@ -25496,24 +25620,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if constexpr (GameUnitsHost::Impl::kReleaseIssueStageBound) {
                                 // 007C0DE3-007C0DEF: the first rack holding 2Ah that
                                 // is not busy. The host's rack census and ammo.
-                                if (slot_.rack_ammo < 0) {
-                                    const bool authored =
-                                        GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
-                                        slot_.rack_rounds_authored > 0;
-                                    slot_.rack_ammo = authored
-                                            ? slot_.rack_rounds_authored
-                                            : slot_.rack_single_count;
-                                    if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
-                                        // Each rack's own +484h: its authored Ammo,
-                                        // or one round per rack where the census
-                                        // found none (the pool's own fallback).
-                                        slot_.rack_ammo_per_rack.clear();
-                                        for (const int a : slot_.rack_authored_per_rack) {
-                                            slot_.rack_ammo_per_rack.push_back(
-                                                authored ? (a > 0 ? a : 0) : 1);
-                                        }
-                                    }
-                                }
+                                owner_.rack_release_issue_seed_007c0de3(slot_);
                                 // 007C0DCB vtable[210h](2Ah, 0): a torpedo and a
                                 // general bomb both answer 2Ah. With the Vals
                                 // switch the bomb carrier's rack is found too.
@@ -36640,99 +36747,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // from `Type` to the constructed class is the device factory's
                     // and is ASSUMED here (docs/PLANE_DEVICE_WALK.md).
                     void plane_rack_census() {
-                        if (unit_.rack_census_done) return;
-                        unit_.rack_census_done = true;
-                        const int type_id = unit_.row.type_id;
-                        const int platforms =
-                            owner_.lua.read_vehicle_class_integer(type_id, "BSPGun", "n", 0);
-                        for (int p = 1; p <= platforms && p <= 64; ++p) {
-                            char key[32];
-                            std::snprintf(key, sizeof(key), "p%d_cat", p);
-                            const int cat = owner_.lua.read_vehicle_class_integer(
-                                type_id, "BSPGun", key, -1);
-                            if (cat != static_cast<int>(bsp::GunneryCategory::kBombPlatform)) continue;
-                            std::snprintf(key, sizeof(key), "p%d_dev", p);
-                            const int class_dev = owner_.lua.read_vehicle_class_integer(
-                                type_id, "BSPGun", key, -1);
-                            // The platform's key, which also indexes the
-                            // equipment entry (packet cc9_lua45_rack_equipment_device).
-                            std::snprintf(key, sizeof(key), "p%d_key", p);
-                            const int pkey = owner_.lua.read_vehicle_class_integer(
-                                type_id, "BSPGun", key, -1);
-                            const int dev = owner_.rack_equipment_device(unit_, type_id, pkey, class_dev);
-                            const std::string type = dev >= 0
-                                ? owner_.lua.read_device_class_string(dev, "Type") : std::string();
-                            if (type == "BombPlatform") {
-                                ++unit_.rack_single_count;
-                                // The platform's authored rounds (packet
-                                // cc9_dive_bomb_carried_rounds). -1 when absent.
-                                const int ammo = owner_.rack_positive_bag_round(unit_,
-                                    owner_.rack_equipment_ammo(unit_, type_id, pkey));
-                                if (ammo > 0) unit_.rack_rounds_authored += ammo;
-                                unit_.rack_authored_per_rack.push_back(ammo);
-                                // Packet cc9_rack_bullet_kind. LABELLED: the class's
-                                // default Bullet[1]; an equipment bag that changes
-                                // the bullet is not read.
-                                unit_.rack_bullet_class_per_rack.push_back(
-                                    owner_.read_device_bullet_class_id(dev));
-                                unit_.rack_bullet_id_per_rack.push_back(
-                                    owner_.read_device_bullet_id(dev));
-                                // 006E0242 00B66330 default [00CE3D30] = 0.6f.
-                                unit_.rack_repeat_per_rack.push_back(
-                                    owner_.lua.read_device_class_number(dev, "RepeatTime",
-                                        owner_.rack_repeat_default()));
-                                // Packet cc9_rack_device_reload: 006E3C00 stores
-                                // 30.0 (00CE38C8); an entry's ReloadTime replaces it
-                                // through 006E3A20 (below 1.0 becomes 1.0), in both
-                                // +48Ch and +490h.
-                                float reload = 30.0f;
-                                const float authored_reload =
-                                    owner_.rack_equipment_reload_time(unit_, type_id, pkey);
-                                if (authored_reload >= 0.0f)
-                                    reload = authored_reload < 1.0f ? 1.0f : authored_reload;
-                                unit_.rack_reload_time_per_rack.push_back(reload);
-                                unit_.rack_reload_left_per_rack.push_back(reload);
-                            } else if (type == "MultiBombPlatform") {
-                                ++unit_.rack_multi_count;
-                            }
-                            if constexpr (bsp::kOpportunisticRocketBound) {
-                                // Packet cc13-oprocket1 (cc9-gunnery39): every rocket
-                                // platform, with its own authored rounds.
-                                const int rk = (type == "BombPlatform" || type == "MultiBombPlatform")
-                                    ? owner_.read_device_rocket_kind(dev) : 0;
-                                if (rk > 0) {
-                                    unit_.orx_rack_kind.push_back(rk);
-                                    unit_.orx_rack_bullet.push_back(owner_.read_device_bullet_id(dev));
-                                    unit_.orx_rack_ammo.push_back(
-                                        owner_.rack_equipment_ammo(unit_, type_id, pkey));
-                                }
-                            }
-                        }
-                        if constexpr (GameUnitsHost::Impl::kRackUnequippedEmptyBound &&
-                                      bsp::kPlaneSceneEquipmentBound) {
-                            // 0095A880(null, 1, 0) hands no rack a round (5ey).
-                            if (unit_.bag_equipment == 0 && unit_.rack_ammo < 0) {
-                                unit_.rack_ammo = 0;
-                                unit_.rack_ammo_per_rack.assign(
-                                    unit_.rack_authored_per_rack.size(), 0);
-                            }
-                        }
-                        if constexpr (GameUnitsHost::Impl::kRackBulletKindBound) {
-                            if (bsp::unit_is_kind_of(unit_.class_id, 0x10)
-                                && !unit_.rack_bullet_class_per_rack.empty()) {
-                                std::string k;
-                                for (std::size_t i = 0; i < unit_.rack_bullet_class_per_rack.size(); ++i) {
-                                    char b[48];
-                                    std::snprintf(b, sizeof(b), "%s%Xh/%.2fs", i ? " " : "",
-                                        unit_.rack_bullet_class_per_rack[i],
-                                        static_cast<double>(unit_.rack_repeat_per_rack[i]));
-                                    k += b;
-                                }
-                                owner_.log.notef("  rack bullet kinds %s (level bomber): [%s] "
-                                    "(007C0D90, packet cc9_rack_bullet_kind)",
-                                    unit_.row.name.c_str(), k.c_str());
-                            }
-                        }
+                        owner_.plane_rack_census(unit_);
                     }
 
                     // 007CEB00-007CEB1D: for each rack, vtable[1FCh]; one true
