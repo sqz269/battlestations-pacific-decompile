@@ -38,7 +38,7 @@ inline constexpr bool kPlaneResist40DeadbandCc13Bound = true;  // ON by bundle p
 // subtraction from body vy (the landed hold-down, game_hosts_units.cpp). True:
 // those three forms. False: the float 1e-10f gate and one rounding of each
 // double expression, as before.
-inline constexpr bool kPlaneFlightX87Cc13Bound = false;
+inline constexpr bool kPlaneFlightX87Cc13Bound = true;  // ON by bundle pair (cc9-sweep1b)
 
 // ---------------------------------------------------------------------------
 // The pilot control block, unit+9E4h. Five float axes and three bytes, zeroed by
