@@ -42,6 +42,23 @@ def tip_line(root, bases=('main', 'origin/main')) -> str:
     return f'{len(commits)} commits not on main: {shas}'
 
 
+def patch_line(root, branch) -> str:
+    """Patch-equivalence backlog against the published ref, without fetching."""
+    base = next((ref for ref in ('origin/main', 'main') if ref_exists(root, ref)), None)
+    if base is None:
+        return 'unmerged: unknown (neither origin/main nor main exists)'
+    try:
+        cherry = _git(root, 'cherry', base, branch).stdout.splitlines()
+        pending = [line.split()[1] for line in cherry if line.startswith('+')]
+        if not pending:
+            return f'unmerged: none ({branch} fully in {base})'
+        when = _git(root, 'log', '-1', '--format=%ad', '--date=format:%m-%d %H:%M', pending[0]).stdout.strip()
+    except RuntimeError as exc:
+        return f'unmerged: unknown ({exc})'
+    flag = '  INTEGRATE NOW' if len(pending) > 20 else ''
+    return f'unmerged: {len(pending)} patches on {branch} not in {base}, oldest {when}{flag}'
+
+
 def sync(root, remote='origin', base='main', fetch=True) -> int:
     root = Path(root)
     target = f'{remote}/{base}'
