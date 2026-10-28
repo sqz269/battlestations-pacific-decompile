@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/game_native_gui_render_application.hpp"
+#include "bsp/game_native_gui_manager_application.hpp"
 // Process bindings for the reconstructed startup spine, milestone 1 of bsp_game.exe.
 //
 // Addresses: 008f81f0 WinMain, 0073d410 cSkeletonAppMidway::Init, 00becda0/00becee0 the
@@ -771,6 +772,8 @@ private:
     std::unique_ptr<GameNativeShadowTargetApplication> native_shadow_;
     std::unique_ptr<GameNativeGuiEffectProbe> native_gui_probe_;
     std::unique_ptr<GameNativeGuiRenderApplication> native_gui_render_;
+    // cc15-gui4 P1 (kGuiManagerCc15Bound): released right after the shared drain.
+    std::unique_ptr<GameNativeGuiManagerApplication> native_gui_manager_;
     std::unique_ptr<GameNativeLuaServices> lua_services_;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;
