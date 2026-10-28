@@ -3020,6 +3020,38 @@ float length_0042b2f0_pc24(const float v[3]) {
                ? static_cast<float>(pc24::x87_sqrt24(d2))
                : 0.0f;
 }
+
+// cc13-pc24bear, the ON arms of kPc24PlaneTasksCc13Bound for the dive-bomb approach
+// feed's planar pairs. Each image chain loads two floats, FSUBs one float operand
+// and FSTPs the difference as float (009C7B34..009C7B56, 009C5950..009C596F,
+// 009C5207..009C522E), so the differences are rounded before use.
+float dive_bomb_diff_pc24(float a, float b) {
+    return static_cast<float>(bsp::cc13x87::x87_sub24(a, b));
+}
+// 009C7B5A..009C7B8F (+BCh), 009C5A1C..009C5A4D (+5Ch), 009C52C7..009C52F8 (+14h):
+// each square and the sum round to 24 bits, FSTP float; the 1e-10 qword (00CE3820)
+// floor with JBE, then 00BF7030's FSQRT at PC24 and FSTP float.
+float dive_bomb_planar_pc24(float dx, float dz) {
+    namespace pc24 = bsp::cc13x87;
+    const float d2 = static_cast<float>(
+        pc24::x87_add24(pc24::x87_mul24(dz, dz), pc24::x87_mul24(dx, dx)));
+    return static_cast<double>(d2) > 1e-10   // 00CE3820 qword
+               ? static_cast<float>(pc24::x87_sqrt24(d2))
+               : 0.0f;
+}
+// 009C7BB2..009C7BD9 (+C0h) and 009C5AB4..009C5ADB ([ESP+18h]): 00BF701A's atan2
+// is FSTP'd as float, 009C7BBF's FSUBR qword pi/2 (00CE3830) rounds to 24 bits and
+// is FSTP'd, and a negative takes FADD qword 2pi (00CE3828) and another FSTP.
+float dive_bomb_bearing_pc24(float dx, float dz) {
+    namespace pc24 = bsp::cc13x87;
+    const float a = static_cast<float>(
+        std::atan2(static_cast<double>(dz), static_cast<double>(dx)));
+    float b = static_cast<float>(pc24::x87_sub24(bsp::dive_bomb_constant::kHalfPi, a));
+    if (b < 0.0f) {
+        b = static_cast<float>(pc24::x87_add24(b, bsp::dive_bomb_constant::kTwoPi));
+    }
+    return b;
+}
 }  // namespace
 
 struct GameUnitsHost::Impl {
@@ -5336,8 +5368,17 @@ struct GameUnitsHost::Impl {
         const double dz = static_cast<double>(tp[2]) -
                           static_cast<double>(slot.motion.position[2]);
         const double d2 = dx * dx + dz * dz;
-        slot.db_planar_bc = (d2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
-            ? 0.0f : static_cast<float>(std::sqrt(d2));
+        // kPc24PlaneTasksCc13Bound (cc13-pc24bear): ON rounds per op as
+        // 009C7B34..009C7BD9 does, for +BCh here and +C0h below. db_aim_point_3d
+        // (009C8B14, another function) keeps the double dx/dz/d2 in both arms.
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            slot.db_planar_bc = dive_bomb_planar_pc24(
+                dive_bomb_diff_pc24(tp[0], slot.motion.position[0]),
+                dive_bomb_diff_pc24(tp[2], slot.motion.position[2]));
+        } else {
+            slot.db_planar_bc = (d2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
+                ? 0.0f : static_cast<float>(std::sqrt(d2));
+        }
         // Packet cc9_hull_axis: once per (attacker, target), when the range to
         // the aim point first falls inside approach+B8h, the attackrun ->
         // fly-over hand-over range. Diagnostic only, behind the switch.
@@ -5372,7 +5413,11 @@ struct GameUnitsHost::Impl {
                     ? 0.0f : static_cast<float>(std::sqrt(d3));
         }
         // 009C7B8A-009C7BB0: pi/2 - atan2, wrapped into [0, 2pi).
-        {
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            slot.db_bearing_c0 = dive_bomb_bearing_pc24(
+                dive_bomb_diff_pc24(tp[0], slot.motion.position[0]),
+                dive_bomb_diff_pc24(tp[2], slot.motion.position[2]));
+        } else {
             float b = static_cast<float>(bsp::dive_bomb_constant::kHalfPi -
                                          std::atan2(dz, dx));
             if (b < 0.0f) {
@@ -5466,7 +5511,14 @@ struct GameUnitsHost::Impl {
         }
         // 009C5950/009C5960 then 009C5A40 and 009C5AF1: the aim error's range
         // and bearing are taken from that point, not from the aircraft.
-        {
+        // kPc24PlaneTasksCc13Bound (cc13-pc24bear): ON rounds per op as
+        // 009C5950..009C596F, 009C5A1C..009C5A4D and 009C5AB4..009C5ADB do.
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            const float idx = dive_bomb_diff_pc24(tp[0], slot.db_run_in_origin[0]);
+            const float idz = dive_bomb_diff_pc24(tp[2], slot.db_run_in_origin[2]);
+            slot.db_impact_planar_5c = dive_bomb_planar_pc24(idx, idz);
+            slot.db_impact_bearing_18 = dive_bomb_bearing_pc24(idx, idz);
+        } else {
             const double idx = static_cast<double>(tp[0]) -
                                static_cast<double>(slot.db_run_in_origin[0]);
             const double idz = static_cast<double>(tp[2]) -
@@ -5486,7 +5538,13 @@ struct GameUnitsHost::Impl {
         // planar distance from the aircraft to that same predicted impact
         // point. Built with the same epsilon the other two sqrt guards use
         // (00CE3820, 1e-10), which 009C52DB compares the squared sum against.
-        {
+        // kPc24PlaneTasksCc13Bound (cc13-pc24bear): ON rounds per op as
+        // 009C5207..009C522E and 009C52C7..009C52F8 do.
+        if constexpr (kPc24PlaneTasksCc13Bound) {
+            slot.db_impact_throw_14 = dive_bomb_planar_pc24(
+                dive_bomb_diff_pc24(slot.db_run_in_origin[0], slot.motion.position[0]),
+                dive_bomb_diff_pc24(slot.db_run_in_origin[2], slot.motion.position[2]));
+        } else {
             const double wx = static_cast<double>(slot.db_run_in_origin[0]) -
                               static_cast<double>(slot.motion.position[0]);
             const double wz = static_cast<double>(slot.db_run_in_origin[2]) -
@@ -29093,8 +29151,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // true; 009FADA0 drops it for good (st_ref70_dropped).
                     const GameUnitSlot* st_target_70() const {
                         const GameUnitSlot* t = st_target();
+                        // 009FAF90 has run once the target's +5Eh is set: the drop is kept
+                        // (unit_ is a reference, so the latch is writable here), which a
+                        // later +5Eh clear (the garrison revive's reuse of the slot) does
+                        // not undo.
+                        if (t != nullptr && st_ref70_destroyed_009faf90(*t))
+                            unit_.st_ref70_dropped = true;
                         return t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x02) &&
                                !unit_.st_ref70_dropped ? t : nullptr;
+                    }
+                    // 009FAF90, the ref's observer slot +4h: the kill list's row-15 drain
+                    // (009274DE..00927510, 00696330) notifies the target's observers as it
+                    // sets +5Dh/+5Eh/+5Fh, and the ref clears sub+18h and sub+14h
+                    // (009FAFF4/009FAFF7) at once, in any task state. The destroy hook
+                    // 00926390 notifies slot +8h instead, 0042B120 (RET 4) for this ref.
+                    // The host's +5Eh mirror is set by its kill-list drain, so testing it at
+                    // each +70h reader (st_target_70, which latches it) is the clear at
+                    // notify time: no reader runs between the notify and the +5Eh store.
+                    bool st_ref70_destroyed_009faf90(const GameUnitSlot& t) const {
+                        return t.scene_destroyed_005e != 0;
                     }
                     // approach+54h, else approach+70h (009CCF1C-009CCF34, 009CB659-009CB6A4).
                     const GameUnitSlot* st_target_54_70() const {
