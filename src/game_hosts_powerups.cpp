@@ -426,6 +426,8 @@ void command_building_powerup_init_008ed720(std::size_t building,
             // 008ED73E..008ED759: sessions 0 and 1 only; others clear binding+8.
             const std::int32_t session = runtime.host->session_word_1fe4();
             if (session == 0 || session == 1) {
+                // 008ED762: CMP [record+4], 1 / JNZ 008ED9A5 skips unless the creation
+                // record's kind is 1; the scene creation that calls this satisfies it.
                 // 008ED7AB..008ED7C5: a "[" past the first character takes the
                 // bracket arm, 008EC650's pick per "]" chunk, which draws on the
                 // shared random stream (BSP_RandomThreads, 00BD2F10).

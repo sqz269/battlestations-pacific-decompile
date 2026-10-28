@@ -12302,9 +12302,15 @@ public:
     float gameplay_scale() override {
         if (!owner_.logged_scale) {
             owner_.logged_scale = true;
-            owner_.log.notef("gameplay scale 008e6430 at 00826a21: the category 4 product "
-                "from the power-up store when kPowerUpSubsystemCc13Bound and its gate are "
-                "open, else 1.0f (00d7a24c)");
+            if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+                owner_.log.notef("gameplay scale 008e6430 at 00826a21: the category 4 product "
+                    "from the power-up store when its gate is open, else 1.0f (00d7a24c)");
+            } else {
+                owner_.log.notef("gameplay scale 008e6430 runs over an empty category list: no "
+                    "modifier record is registered in this process, so the product is the 1.0f "
+                    "the accumulator starts at (00d7a24c) and the filter 008e4680 is never "
+                    "reached");
+            }
         }
         // Packet cc13-powerup-bind, 00826A06..00826A21: the category 4
         // (SHIP_SPEED) product behind its gate; the shut arm (00826A2C) is the
