@@ -1670,3 +1670,10 @@ avoid zone); 20,3 failed 1290.13 s on e3c2cc5b3 (both Marus sunk by US_Airfield_
 - The default win is late: CB3 dies at 4632.92 s (Hiei/Kirishima/Haruna sail from the north after RightBB1),
   368 s before the 100000-frame budget. Maru2 is lost at 910.45 s in default; Maru1 carries the landing.
 - The IJN08 row moves to `l74_i08_d`.
+
+## 2026-10-27, USN21 plan registered `nd1_s46_u21_f` (cc9-lua74, keeper, from cc9-nondet1)
+
+`config/win_orders/usn21_nd1_s46_u21_f.txt` is cc9-nondet1's copy of ships46's USN21 `f` plan (`s46_u21_b5` plus
+the carrier strikes from `s46_u21gen3.py`), committed unchanged. cc9-nondet1 measured it on main 8eded9e50, ref env:
+**completed 2896.70 s in 8 of 8 runs**. USN21 is a long row (over 60000 frames), so its 20,3 and default timings
+wait for the light-load window of the wave-1 re-time; until then the ref time is nondet1's, not re-run here.
