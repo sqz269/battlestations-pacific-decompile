@@ -24,9 +24,10 @@ namespace bsp {
 //     00745BE0 / 007470B0 frame update): the fire extend and start durations into fire_time_748
 //     (007464FD), the 007463C1 effect choice, the secondary chance and effect draws
 //     (00745D5C, 00745D79) and the U(5, 15) secondary back-off into secondary_clock_750.
-//   - game_hosts_ship_ai.cpp:12488, ShipAiNavBlock::uniform_00bd2f10, the 009E465F draw of
-//     the nav-block constructor 009E4330 (BSP_ShipAi_NavigationBlockConstruct), under
-//     kShipAiTimerDrawsBound; negated into blk+148h, which nothing traced reads.
+//   - game_hosts_ship_ai.cpp:12488, ShipAiNavBlock::uniform_00bd2f10: a ship-AI mover on
+//     stream 0, the 009E465F timer draw of the nav-block constructor 009E4330
+//     (BSP_ShipAi_NavigationBlockConstruct), under kShipAiTimerDrawsBound; negated into
+//     blk+148h, which nothing traced reads.
 //   - game_hosts_units.cpp:3358, 007BCABB U(DeadEngineFireDelay); the value is dropped
 //     (+C14h in the image, nothing reads it), only the draw counts.
 //   - game_hosts_gunnery.cpp:16937, 00822A89 the damage-smoke effect pick (default mode).
@@ -39,8 +40,10 @@ namespace bsp {
 // Under BSP_GUNNERY_RNG_STREAMS=1 stream 0 is keyed per (unit, 0); the FFFFFFh key here is
 // no unit's index (units and paratrooper rounds, F00000h + id, stay below it), so no
 // unit-keyed draw moves in that mode.
-// Stream 1 (ship AI, gunnery, GameGunneryHost::ship_ai_draw) does not move: the image keeps
-// a separate state per stream and registered thread (00BD2ED0, docs/RANDOM_STREAMS.md). The
+// The stream-1 draws (GameGunneryHost::ship_ai_draw, the gunnery and the other stream-1
+// sites) do not move: the image keeps a separate state per stream and registered thread
+// (00BD2ED0, docs/RANDOM_STREAMS.md). Ship AI can still move through its stream-0 draw
+// above. The
 // phases are advanced in publish_pose_004329d0, but nothing modelled reads them, so the
 // camera pose does not move.
 inline constexpr bool kShipCaptainCameraDrawsCc13Bound = false;
