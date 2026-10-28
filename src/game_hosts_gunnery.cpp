@@ -1794,7 +1794,8 @@ constexpr bool kShipDeathMessageBound = true;  // ON: USN02, JM08 pairs identica
 //    in no other vtable, so the existing ship-kind gate in ship_death_message_00827ab0
 //    is the class test. OFF: kill_unit's InferiorFailure arm
 //    returns before the message. Counted either way (adopted_ship_zero).
-constexpr bool kAdoptedShipDeathMessageBound = false;
+//    ON (cc9-recon2, unreached): adopted_ship_zero=0 on all 18 WINS rows (2026-10-28).
+constexpr bool kAdoptedShipDeathMessageBound = true;
 constexpr float kWreckChanceInstalled = 0.3f;
 //  * kShipBreakInTwoDrawsBound (cc9-ships60, SHIP_AI 298): the 98h receiver 00814520
 //    tail-jumps to 00935D30 BSP_UnitController_BreakInTwo, whose two pieces take 11
