@@ -97,6 +97,7 @@
 #include "bsp/unit_weapons.hpp"
 #include "bsp/weapon_director.hpp"
 #include "bsp/plane_pose_commit.hpp"
+#include "bsp/non_turning_mount_slot_frame_cc13.hpp"  // packet cc13-mountfix
 #include "bsp/shipyard_production.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/flak_ver_cc13.hpp"
@@ -2131,6 +2132,32 @@ bool gun_answers_turning_22h(int category) noexcept {
         && category != static_cast<int>(bsp::GunneryCategory::kCatapult);
 }
 
+// Packet cc13-mountfix (kNonTurningMountSlotFrameCc13Bound): rows 0-2 of the
+// 0095F500 platform frame. Rows start as identity (0095FB4E-0095FBC7). Row 1 is
+// the slot's up (0095FD4E-0095FDD8), row 2 its forward (0095FC67-0095FC98) and
+// row 3 p0. Then 0085DC80 (0095FDDE) runs on the matrix that 0072DD20 copies to
+// node 0.
+void mount_basis_from_slot_0095f500(const bsp::GunPlatformSlotFrame& frame, float out[9]) {
+    float m[16] = {1.0f, 0.0f, 0.0f, 0.0f,
+                   frame.up[0], frame.up[1], frame.up[2], 0.0f,
+                   frame.forward[0], frame.forward[1], frame.forward[2], 0.0f,
+                   frame.origin[0], frame.origin[1], frame.origin[2], 1.0f};
+    bsp::orthonormalize_pose_matrix_0085dc80(m);
+    for (int r = 0; r < 3; ++r) {
+        for (int c = 0; c < 3; ++c) out[r * 3 + c] = m[r * 4 + c];
+    }
+}
+
+// Packet cc13-mountfix: the classes whose node-0 local stays 0072DD20's slot
+// frame: racks and base guns (vt[DCh] 0072B2D0 never sets a local). CORRECTION
+// (rev7): MCatapult is excluded. Its 006EC620 -> 006EC240 rotates node 0
+// (+3BCh, the model root, 006ECD80..97) by RotY(-[+4B4h] = rest horz), keeping
+// the translation, as the host's RotY(-horz).
+bool node0_keeps_slot_frame(int category) noexcept {
+    return !gun_answers_turning_22h(category)
+        && category != static_cast<int>(bsp::GunneryCategory::kCatapult);
+}
+
 // 0085A6AC..0085A7xx: each seeded angle is FMOD'ed by 2pi (00CE3828, the CRT
 // fmod at 00BF857A), stored as a float, then moved by 2pi into (-pi, pi]
 // (00CE3D18 = -pi, 00CE3D28 = pi, all three doubles of the float pi).
@@ -3653,6 +3680,34 @@ struct GameGunneryHost::Impl {
     unsigned long long rack_equipment_device_rows{0};   // cc9_lua47_gunnery_rack_device
     unsigned long long land_mounts_from_slot{0};     // cc9_muzzle_no_mount
     unsigned long long land_mounts_identity{0};
+    // Packet cc13-mountfix: racks and base guns (node0_keeps_slot_frame) given a
+    // slot frame, of which rotated (not identity after 0085DC80), and of which with
+    // a nonzero horz at mount (the host-only RotY no longer applied to node 0);
+    // non_turning_aimed: such guns whose angles left their rest after construction
+    // (the aim step), so their old node-0 RotY/RotX moved too. Counted only under ON.
+    unsigned long long non_turning_slot_frames{0};
+    unsigned long long non_turning_slot_rotated{0};
+    unsigned long long non_turning_rest_horz{0};
+    std::set<std::size_t> non_turning_aimed;
+    // Store the node-0 frame for a rack or base gun. Without a slot (nullptr) the
+    // basis stays identity (007F7110). Called only under ON.
+    void store_non_turning_slot_basis(GameGunRow& gun, const bsp::GunPlatformSlotFrame* frame) {
+        if (!node0_keeps_slot_frame(gun.category)) return;
+        static constexpr float kIdentity[9] = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+        if (frame != nullptr) {
+            mount_basis_from_slot_0095f500(*frame, gun.mount_basis_slot);
+        } else {
+            for (int k = 0; k < 9; ++k) gun.mount_basis_slot[k] = kIdentity[k];
+        }
+        ++non_turning_slot_frames;
+        for (int k = 0; k < 9; ++k) {
+            if (gun.mount_basis_slot[k] != kIdentity[k]) {
+                ++non_turning_slot_rotated;
+                break;
+            }
+        }
+        if (gun.angles.horz != 0.0f) ++non_turning_rest_horz;
+    }
     unsigned long long turn_average_tests{0};        // cc9_aa_turn_average
     unsigned long long turn_average_rotations{0};
     unsigned long long mounts_missing{0};
@@ -3781,6 +3836,19 @@ struct GameGunneryHost::Impl {
         // is built from -horz to point the barrel where the host fires.
         bsp::turning_gun_apply_angles_00859550(-kGunHorzSign * gun.angles.horz, gun.angles.vert,
             have_barrel, root_local, barrel_local);
+        if constexpr (kNonTurningMountSlotFrameCc13Bound) {
+            // Packet cc13-mountfix: racks and base guns (vt[DCh] 0072B2D0) keep
+            // 0072DD20's full slot frame as node 0's local. The RotY(-horz) above
+            // is host-only for them. MCatapult is not here: 006EC240 applies the
+            // same RotY to node 0 (CORRECTION, rev7). Only node 0 is replaced;
+            // barrel_local stays as computed above.
+            if (node0_keeps_slot_frame(gun.category)) {
+                const float* b = gun.mount_basis_slot;
+                root_local = {b[0], b[1], b[2], 0.0f, b[3], b[4], b[5], 0.0f,
+                    b[6], b[7], b[8], 0.0f, gun.mount_local[0], gun.mount_local[1],
+                    gun.mount_local[2], 1.0f};
+            }
+        }
         const bsp::CameraMatrix ship{right[0], right[1], right[2], 0.0f,
             up[0], up[1], up[2], 0.0f, forward[0], forward[1], forward[2], 0.0f,
             origin[0], origin[1], origin[2], 1.0f};
@@ -5306,8 +5374,13 @@ const std::vector<std::size_t>& GameGunneryHost::Impl::device_children_of(std::s
 
 // The device node's world frame (rev8 (d)): after the first update, world(node 0) =
 // [RotY(-horz), plus RotX(-vert) when the model has no barrel; T = the slot frame
-// translation] x the owner node's world. 00859550 runs every update with dt > 0 and
-// drops the slot frame's 3x3, so there is no authored base rotation. This is the
+// translation] x the owner node's world. For a TurningGun, 00859550 (vt[DCh] 0085A270)
+// runs every update with dt > 0 and drops the slot frame's 3x3, so there is no authored
+// base rotation. MCatapult's 006EC620 -> 006EC240 does the same with +4B4h/+4B8h (the
+// rest angles): RotY(-rest horz) on node 0, keeping the translation, as the host's
+// RotY(-horz). Racks and base guns (0072B2D0) keep 0072DD20's full slot frame; the
+// host gives them RotY(-horz) instead (host-only) unless
+// kNonTurningMountSlotFrameCc13Bound is ON (packet cc13-mountfix). This is the
 // host's own node-0 pose, device_hierarchy_node_world with pick 0 (its root world).
 // Its have_barrel is "barrel" Note present; the image's +3C8h needs "base" too (setup
 // leaves before the barrel lookup without it), and rev8's census has no barrel-only
@@ -6447,6 +6520,9 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     gun.mount_local[0] = frame.origin[0];
                     gun.mount_local[1] = frame.origin[1];
                     gun.mount_local[2] = frame.origin[2];
+                    if constexpr (kNonTurningMountSlotFrameCc13Bound) {
+                        store_non_turning_slot_basis(gun, &frame);
+                    }
                     ++mounts_from_model;
                     if (units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase)) {
                         ++plane_mounts_from_model;
@@ -6519,6 +6595,9 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 if constexpr (kLandPlatformAttachmentBound) {
                     gun.mount_known = true;
                     for (int k = 0; k < 3; ++k) gun.mount_local[k] = slot ? frame.origin[k] : 0.0f;
+                    if constexpr (kNonTurningMountSlotFrameCc13Bound) {
+                        store_non_turning_slot_basis(gun, slot ? &frame : nullptr);
+                    }
                     done("VehicleClass::bind_slot_frames_0095f500", 0x0095f500u);
                 }
             }
@@ -9721,6 +9800,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (have_target) ++summary.angle_refusals_targeted;
         }
         done("GunBot::set_target_angles_0085aba0", 0x0085aba0u);
+        if constexpr (kNonTurningMountSlotFrameCc13Bound) {
+            // Packet cc13-mountfix census (rev7 NIT): a rack or base gun whose angles
+            // the aim step moved off its rest, so its OFF node 0 moved with them.
+            if (node0_keeps_slot_frame(gun.category)
+                && (gun.angles.horz != gun.rest_horz || gun.angles.vert != gun.rest_vert)) {
+                non_turning_aimed.insert(g);
+            }
+        }
         if (have_target && !aa_trace_target_prefix().empty()
             && unit_state[target].row.name.compare(0, aa_trace_target_prefix().size(),
                    aa_trace_target_prefix()) == 0) {
@@ -11960,7 +12047,11 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 // it is the image's own filter. LABELLED: the side is the one stored at
                 // the spawn; dead units are not listed. The target velocity is
                 // vtable[34h] (007BBB70, unit+AC8h for a plane) through
-                // unit_linear_velocity, zero when the host has none.
+                // unit_linear_velocity, zero when the host has none. LABELLED: for a
+                // plane parented to a deck, +AC8h is parent-local (OCEAN_WAVE_FIELD
+                // section 84) and the units host's own vtable[34h] stand-in,
+                // avoid_velocity, answers deck_local_vel; this reads the world
+                // velocity instead, so a parked or parented enemy plane differs.
                 std::vector<bsp::RocketFuzeTarget> fuze_targets;
                 if (const auto* t = recon_triples_for(shot.owner_side)) {
                     for (std::size_t k = 0; k < t->lists[1].size(); ++k) {
@@ -20211,6 +20302,13 @@ void GameGunneryHost::report() {
             "(0095F500 slot frames / 007F7110 identity, packet cc9_muzzle_no_mount)",
             host.land_mounts_from_slot, host.land_mounts_identity,
             kLandPlatformAttachmentBound ? 1 : 0);
+        if constexpr (kNonTurningMountSlotFrameCc13Bound) {
+            host.log.notef("summary mission gunnery non-turning slot frames=%llu rotated=%llu "
+                "rest_horz=%llu aimed=%zu (0095F500 rows + 0085DC80 as node 0, racks and base "
+                "guns, packet cc13-mountfix)",
+                host.non_turning_slot_frames, host.non_turning_slot_rotated,
+                host.non_turning_rest_horz, host.non_turning_aimed.size());
+        }
         for (const auto& [device, fp] : host.fire_points_by_device) {
             host.log.notef("summary mission gunnery barrel device=%d guns=%zu records=%d image=%d "
                 "loaded=%d mesh=%s", device, fp.guns, fp.records,

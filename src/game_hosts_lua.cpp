@@ -50,6 +50,7 @@
 #include "bsp/lua_binding_mission_2.hpp"
 #include "bsp/scene_unit_creators.hpp"
 #include "bsp/lua_spawn_new.hpp"
+#include "bsp/lua_spawn_cc13.hpp"
 #include "bsp/mission_lobby_settings.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_machine.hpp"
@@ -748,6 +749,8 @@ int binding_trampoline(lua_State* state) {
     // queues is drained into the units host through this host's own frame step,
     // and its callback needs this host's `thisTable`.
     const bool spawn_new_row = dispatch_row.address == 0x0094c480u;
+    // Packet cc13-spawn1.
+    const bool spawn_row = bsp::kLuaSpawnBound && dispatch_row.address == 0x00944680u;
     // Packet cc9_spawn_new_id_queries.
     const bool spawn_id_requested_row = kLuaSpawnNewIdQueriesBound
         && dispatch_row.address == 0x00946380u;
@@ -808,7 +811,7 @@ int binding_trampoline(lua_State* state) {
         // returns below whatever `handled` says; listing them here stops
         // note_native_call recording them as UNIMPLEMENTED.
         || last_catapulted_row || formation_leader_row
-        || launch_row || generate_row || spawn_new_row || scoring_play_time_row
+        || launch_row || generate_row || spawn_new_row || spawn_row || scoring_play_time_row
         || spawn_id_requested_row || spawn_id_remove_row
         || in_border_zone_row
         || select_unit_row || movie_add_row || force_select_row
@@ -1223,6 +1226,9 @@ int binding_trampoline(lua_State* state) {
     }
     if (spawn_new_row && !host->error_replay()) {
         return host->run_spawn_new_00949750(state, argc);
+    }
+    if (spawn_row && !host->error_replay()) {
+        return host->run_spawn_00944680(state, argc);
     }
     if (spawn_id_requested_row || spawn_id_remove_row) {
         // 009458CF..00945923 (and 00945AD3..00945AEC): argument 0 of the
@@ -4140,6 +4146,188 @@ private:
     const bsp::WorldMapBounds* bounds_;
 };
 }  // namespace
+
+// Packet cc13-spawn1: 00944680 Spawn (docs/CC13_LUA_SPAWN.md). The placement is
+// bsp/lua_spawn_cc13.hpp over the world box, the units and the landscape; the
+// creation is GenerateObject's (0046D930 is the creator under both 004C6BA0 and
+// 00944FD0). SUBSTITUTIONS, labelled:
+//  - 00941FC0's draw is on a keyed stream ("LuaSpawn#" + class + "#ring"), not stream 1;
+//  - the hidden record is the scene spawn pool's entry for the class name; a name the
+//    pool does not hold returns nil where the image dereferences a null record;
+//  - vtable+118h / +11Ch become the record's translation and apply_scene_yaw_00467050
+//    of the heading (vtable+11Ch's convention was not read);
+//  - every call creates a new unit; the pool entry is not marked spawned.
+namespace {
+class LuaSpawnWorld final : public bsp::SpawnPlacementHost {
+public:
+    LuaSpawnWorld(const bsp::WorldMapBounds& bounds,
+        std::map<std::string, std::uint64_t>& streams, std::string prefix)
+        : bounds_(bounds), streams_(streams), prefix_(std::move(prefix)) {}
+    float uniform_00bd2f10(const char* key, float low, float high) override {
+        const std::string name = prefix_ + key;
+        auto it = streams_.find(name);
+        if (it == streams_.end()) {
+            std::uint64_t seed = 1469598103934665603ULL;   // FNV-1a over the key
+            for (const unsigned char ch : name) {
+                seed ^= ch;
+                seed *= 1099511628211ULL;
+            }
+            it = streams_.emplace(name, seed).first;
+        }
+        it->second = it->second * 6364136223846793005ULL + 1442695040888963407ULL;
+        const double unit = static_cast<double>(it->second >> 11) * (1.0 / 9007199254740992.0);
+        return static_cast<float>(low + (static_cast<double>(high) - low) * unit);
+    }
+    bool ground_height_00903860(const float point[3], float& height) override {
+        return world_ground_height_00903860(point, height);
+    }
+    bool point_outside_map_0071c4f0(const float point[3]) override {
+        return bsp::point_outside_world_map_0071c4f0(bounds_, {point[0], point[1], point[2]});
+    }
+private:
+    const bsp::WorldMapBounds& bounds_;
+    std::map<std::string, std::uint64_t>& streams_;
+    std::string prefix_;
+};
+}  // namespace
+
+int GameMissionLuaHost::run_spawn_00944680(lua_State* state, int argument_count) {
+    if (state == nullptr || script_orders_ == nullptr) return 0;
+    const bsp::WorldMapBounds* bounds = world_border_bounds();
+    if (argument_count < 8 || ::lua_type(state, 1) != LUA_TSTRING || bounds == nullptr) {
+        ::lua_pushnil(state);
+        return 1;
+    }
+    const std::string class_name = ::lua_tostring(state, 1);
+    SceneSpawnPoolEntry* entry = scene_spawn_pool().find(class_name);
+    if (entry == nullptr) {
+        log_.notef("  Spawn 00944680: \"%s\" is in no held-back record; the image reads "
+            "record+10h of a null record at 00944BF5, this host returns nil", class_name.c_str());
+        ::lua_pushnil(state);
+        return 1;
+    }
+    GameSceneEntityRecord record = entry->record;
+    bsp::SpawnPlacementRequest request;
+    request.party = record.party;                                                 // record+10h
+    request.aircraft = bsp::spawn_class_is_aircraft_00944ead(record.class_name);  // 00944EAD
+    // Slot 2: an entity table (008889C0 at 009447D4; this host's handle is `ID`) or a
+    // vector3 (00888760).
+    float frame[16];
+    bool origin_entity = false;
+    if (::lua_type(state, 3) == LUA_TTABLE) {
+        ::lua_getfield(state, 3, "ID");
+        const int type = ::lua_type(state, -1);
+        const int id = (type == LUA_TNUMBER || type == LUA_TSTRING)
+            ? static_cast<int>(::lua_tonumber(state, -1)) : 0;
+        ::lua_pop(state, 1);
+        if (id > 0 && spawn_ref_entity_frame_008f8680(id, frame)) {
+            origin_entity = true;
+            for (int i = 0; i < 3; ++i) request.origin[i] = frame[12 + i];   // +FCh..+104h
+        }
+    }
+    if (!origin_entity && !read_vector3_00888760(state, 3, request.origin)) {
+        ::lua_pushnil(state);
+        return 1;
+    }
+    request.near_distance = static_cast<float>(::lua_tonumber(state, 4));
+    request.far_distance = static_cast<float>(::lua_tonumber(state, 5));
+    request.height = static_cast<float>(::lua_tonumber(state, 6));
+    // 0094497B / 009449BE: FMUL m64 00CE3D28 (float pi widened) then FDIV m64 00CE3D20
+    // (180.0), each rounded at the main thread's 24-bit precision, then FSTP float; as
+    // lua_binding_spawn's `radians` (00944980..00944998).
+    const auto radians = [](double degrees) {
+        const float scaled = static_cast<float>(degrees * 3.1415927410125732);  // 00CE3D28
+        return static_cast<float>(static_cast<double>(scaled) / 180.0);         // 00CE3D20
+    };
+    request.angle_low = radians(::lua_tonumber(state, 7));
+    request.angle_high = radians(::lua_tonumber(state, 8));
+    if (static_cast<int>(::lua_tointeger(state, 2)) == 1 && origin_entity) {
+        // Mode 1 (009449E4): the origin entity's yaw from its +z row (+ECh, +F4h).
+        const float yaw = bsp::spawn_relative_yaw_00944a2c(frame[8], frame[10]);
+        request.angle_low += yaw;
+        request.angle_high += yaw;
+    }
+    std::string instance_name;
+    const int slot8 = argument_count > 8 ? ::lua_type(state, 9) : LUA_TNONE;
+    if (slot8 == LUA_TSTRING) instance_name = ::lua_tostring(state, 9);
+    // spawn_flag_slot's rule (lua_binding_spawn.hpp), inline as cc13-spawn1 wrote it
+    // (the link collision that kept it inline was removed in c4fd85b25).
+    int flag_slot = argument_count > 8 && (slot8 == LUA_TSTRING || slot8 == LUA_TNIL) ? 9 : 8;
+    if (argument_count <= flag_slot) flag_slot = -1;
+    if (flag_slot >= 0 && ::lua_type(state, flag_slot + 1) == LUA_TBOOLEAN) {
+        request.direct = ::lua_toboolean(state, flag_slot + 1) != 0;
+    }
+
+    bsp::SpawnWorldBox box;
+    box.min_x = bounds->north_west[0];   // +711Ch
+    box.min_y = bounds->north_west[1];   // +7120h
+    box.max_z = bounds->north_west[2];   // +7124h
+    box.max_x = bounds->south_east[0];   // +7128h
+    box.max_y = bounds->south_east[1];   // +712Ch
+    box.min_z = bounds->south_east[2];   // +7130h
+    std::vector<bsp::SpawnPlacementEntity> entities;
+    SpawnPlacementUnits(script_orders_->units(), bounds).placement_entities(entities);
+    LuaSpawnWorld world(*bounds, lua_spawn_streams_, "LuaSpawn#" + class_name + "#");
+    const bsp::SpawnResolvedPosition placed
+        = bsp::lua_spawn_resolve_position(request, box, entities, world);
+    if (!placed.ok) {
+        log_.notef("  Spawn 00944680: \"%s\" found no free point (00944F20), nil",
+            class_name.c_str());
+        ::lua_pushnil(state);
+        return 1;
+    }
+
+    if (!instance_name.empty()) record.name = instance_name;
+    record.world[12] = placed.position[0];
+    record.world[13] = placed.position[1];
+    record.world[14] = placed.position[2];
+    apply_scene_yaw_00467050(record.world, placed.heading);
+    const std::size_t units_before = script_orders_->units().count();
+    const std::uint32_t entity_id = script_orders_->create_unit_from_scene_record_0046db4b(record);
+    if (entity_id == 0u) {
+        log_.notef("  Spawn 00944680: \"%s\" (%s) reached no creator, so nothing was made",
+            class_name.c_str(), record.class_name.c_str());
+        ::lua_pushnil(state);
+        return 1;
+    }
+    bool attached = false;
+    if constexpr (kSEntityInitAllBound) {
+        if (record.class_id == 0x18) {
+            route_push_squadron(static_cast<int>(entity_id), record.name, record.type_id,
+                units_before);
+        } else {
+            route_push_entity(static_cast<int>(entity_id), record.name, record.type_id);
+        }
+        if (PendingEntity* node = find_pending(static_cast<int>(entity_id))) {
+            if constexpr (kGeneratedEntityPartyBound) {
+                node->party = record.party;
+                node->race = record.race;
+                node->generated_party = true;
+            }
+        }
+        run_sentity_init_all_00925f20(false, 0x0046dbe8u);
+        // 00944D8F MOV CL,1 / 00944D93 CALL 00874D00.
+        if (kRunExtraFixedStepBound && extra_fixed_step_ != nullptr) {
+            extra_fixed_step_->run_extra_fixed_step_00874d00(true, 0x00944d93u);
+        } else {
+            run_sentity_init_all_00925f20(false, 0x00874d79u);
+        }
+        attached = init_all_attached(static_cast<int>(entity_id));
+    } else {
+        static_cast<void>(units_before);
+        attached = attach_created_entity_00928a00(static_cast<int>(entity_id), record.name,
+                                                  record.type_id);
+    }
+    log_.notef("  Spawn 00944680: \"%s\" as \"%s\" (%s party=%d) -> id %u at (%.1f %.1f %.1f) "
+        "heading %.3f, %s stage %d%s", class_name.c_str(), record.name.c_str(),
+        record.class_name.c_str(), record.party, entity_id, placed.position[0],
+        placed.position[1], placed.position[2], placed.heading,
+        placed.direct ? "direct" : "search", placed.stage, attached ? "" : ", no thisTable slot");
+    log_.implemented("MissionLuaNative::Spawn", "00944680");
+    if (attached && push_resolved_entity_by_id(state, static_cast<int>(entity_id))) return 1;
+    ::lua_pushnil(state);
+    return 1;
+}
 
 bool GameMissionLuaHost::spawn_ref_entity_frame_008f8680(std::int32_t entity_id,
     float frame[16]) const {
