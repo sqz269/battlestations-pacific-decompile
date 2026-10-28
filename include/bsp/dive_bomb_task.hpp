@@ -1683,7 +1683,10 @@ inline constexpr bool kDiveBombNanComparesCc13Bound = true;
 // - 009C6EDD-009C6EE5: -err * 3.0, then / divisor.
 // - 007BCC86: COMISS 0,h / JC also computes for a NaN height.
 // False: the double chains used before. Changes only ulp and NaN cases.
-inline constexpr bool kDiveBombPc24Cc13Bound = false;
+// ON (cc9-sweep3c, 2026-10-28) by pairs with kDogfightPc24Cc13Bound on 158d8f092:
+// u01, b9, b6i, p01, u12 and j8v3 gameplay identical; LOMP10 p3_l10_b still won,
+// 794.48 -> 988.43 s (first divergence the CB4_AF_sqn02 dive at ~408 s).
+inline constexpr bool kDiveBombPc24Cc13Bound = true;
 
 // ---------------------------------------------------------------------------
 // Which command installs kind 8. docs/ATTACK_COMMANDS.md: 007EEC50 picks the
