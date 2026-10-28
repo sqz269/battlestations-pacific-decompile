@@ -45,10 +45,10 @@ inline constexpr bool kSeg67bDogfightAimSpeedCorrOffBound = false;
 // (007AB590) or building capture, and none of 006E4D50's two stream-1 dispersion
 // draws (006E4F91, 006E4FB1) or the round's 007AB8C0 stream-1 draw.
 // False: unchanged host (no 31h ordnance, bomb-branch impact point).
-inline constexpr bool kLevelBombParatrooperDropBound = false;
+inline constexpr bool kLevelBombParatrooperDropBound = true;  // ON: JM08 pair s64 (docs/CC13_PARATROOPER.md)
 // 006E5479 and 006E549E: the landing target's two U(-50, 50) draws, x then z, on
 // stream 0 of the shared 00BD2F10. False: no draw, the target is the rack point.
-inline constexpr bool kLevelBombParatrooperDropDrawBound = false;
+inline constexpr bool kLevelBombParatrooperDropDrawBound = true;  // ON: JM08 pair s64 (docs/CC13_PARATROOPER.md)
 static_assert(!kLevelBombParatrooperDropDrawBound || kLevelBombParatrooperDropBound,
               "the paratrooper drop draws need the drop path");
 
@@ -65,25 +65,25 @@ static_assert(!kLevelBombParatrooperDropDrawBound || kLevelBombParatrooperDropBo
 // building's capturer list +7DCh, which the ship AI host's capture tick reads
 // as 006F6760 arm 3 (CapturePower per capturer to its side).
 // False: the 31h drop spawns nothing (option 1 only).
-inline constexpr bool kParatrooperRoundBound = false;
+inline constexpr bool kParatrooperRoundBound = true;  // ON: JM08 pair s64 (docs/CC13_PARATROOPER.md)
 static_assert(!kParatrooperRoundBound || kLevelBombParatrooperDropBound,
               "the paratrooper round needs the drop path");
 // 007AB94A in 007AB8C0: U(ParachuteOpenAltitudeMin, Max) on stream 1, once per
 // round 006E3E70 hangs on a 31h rack. False: no draw; +468h is the midpoint.
-inline constexpr bool kParatrooperConstructDrawBound = false;
+inline constexpr bool kParatrooperConstructDrawBound = true;  // ON: JM08 pair s64 (docs/CC13_PARATROOPER.md)
 static_assert(!kParatrooperConstructDrawBound ||
                   (kLevelBombParatrooperDropBound && kParatrooperRoundBound),
               "the paratrooper construct draw needs the round");
 // 006E4F91, 006E4FB1, 006E513C, 006E51AC in 006E4D50: the four stream-1 cone and
 // drift draws the bomb release takes, for a 31h round. False: no draw, no cone,
 // no drift (the release velocity is 006E0A70's alone).
-inline constexpr bool kParatrooperReleaseScatterDrawBound = false;
+inline constexpr bool kParatrooperReleaseScatterDrawBound = true;  // ON: JM08 pair s64 (docs/CC13_PARATROOPER.md)
 static_assert(!kParatrooperReleaseScatterDrawBound ||
                   (kLevelBombParatrooperDropBound && kParatrooperRoundBound),
               "the paratrooper release draws need the round");
 // 004B102F in 004B0F80 (from 007AB6AC): the soldier animation's start phase,
 // U(0, duration) on stream 0, once per soldier. False: no draw.
-inline constexpr bool kParatrooperSoldierAnimDrawBound = false;
+inline constexpr bool kParatrooperSoldierAnimDrawBound = true;  // ON: JM08 pair s64 (docs/CC13_PARATROOPER.md)
 static_assert(!kParatrooperSoldierAnimDrawBound ||
                   (kLevelBombParatrooperDropBound && kParatrooperRoundBound),
               "the paratrooper soldier draw needs the round");
