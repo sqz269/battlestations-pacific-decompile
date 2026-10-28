@@ -2190,6 +2190,10 @@ struct GameUnitSlot {
     // countdown 0 held as its expiry clock, +38Ch freeze, +398h, +3AAh lock).
     bool sq_attack_alt_set{false};
     float sq_alt_398{0.0f};
+    // Packet cc13-issuea0: +390h, which only the Lua native 008A1F40
+    // SquadronSetDropAllBombPercent writes (008A2091 FSTP float). It is 0.0
+    // from the memset at new(414h) until a script sets it.
+    float sq_drop_all_bomb_percent_390{0.0f};
     bool sq_freeze_38c{false};
     bool sq_lock_3aa{false};
     // The one byte +3ADh both natives clear: true while it is 0 (a script
@@ -22435,6 +22439,20 @@ bool GameUnitsHost::set_squadron_travel_speed_008a0630(std::size_t unit_index, f
     return true;
 }
 
+// Packet cc13-issuea0. 008A1F40 SquadronSetDropAllBombPercent: argument 0
+// through 00888AA0 (008A203F; no null test in the image, and a unit with no
+// squadron is refused here), argument 1 through 00B66270, then
+// FSTP float [ESI+390h] (008A2091). There is no other write.
+bool GameUnitsHost::set_squadron_drop_all_bomb_percent_008a1f40(std::size_t unit_index,
+                                                                float percent) {
+    Impl& host = *impl_;
+    GameUnitSlot* sq = host.squadron_slot_of(unit_index);
+    if (sq == nullptr) return false;
+    sq->sq_drop_all_bomb_percent_390 = percent;
+    host.done("PlaneSquadron::set_drop_all_bomb_percent_008a1f40", 0x008a1f40u);
+    return true;
+}
+
 // Packet cc13-luawire 7b. 00951F40(visible) on one entity: attach (1) or detach
 // (0) part +4A4h's spatial node, which is this host's plane_hit_node_detached.
 // The squadron fan-out and its null-member case belong to the 008A13D0 runner.
@@ -24934,10 +24952,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // ON (bsp::kPlaneIssueThresholdZeroCc13Bound, packet
                             // cc13-issuea0): 0079CD36 writes the camera that
                             // 0079CBD0 builds, not this block. The block is
-                            // memset at new(414h), and nothing writes its +390h,
-                            // so the value is 0.0 and 007EEF40 never passes.
+                            // memset at new(414h). The only writer of its +390h
+                            // is the Lua native 008A1F40
+                            // SquadronSetDropAllBombPercent (008A2091), so the
+                            // value is the squadron's authored percent, 0.0
+                            // unless a script sets it.
                             if constexpr (bsp::kPlaneIssueThresholdZeroCc13Bound) {
-                                in.authorise_value_390 = 0.0f;
+                                const GameUnitSlot* const sq390 =
+                                    owner_.squadron_slot_of(slot_.process_index);
+                                in.authorise_value_390 =
+                                    sq390 != nullptr ? sq390->sq_drop_all_bomb_percent_390 : 0.0f;
                             } else {
                             owner_.log.unimplemented(
                                 "PlaneClass::issue_threshold_a0", "0079cd36");

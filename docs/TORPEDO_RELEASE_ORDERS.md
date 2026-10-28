@@ -321,6 +321,19 @@ the seeding block is read.
 - The host's `1.0 * 0.95` stand-in is the OFF arm of `bsp::kPlaneIssueThresholdZeroCc13Bound`.
   The ON arm uses 0.0 (`include/bsp/plane_issue_threshold_cc13.hpp`).
 
+**Further correction (packet cc13-issuea0, review rev4).** The paragraph above is wrong that nothing
+writes `ctl+390h`, and the scan it cites lists the writer.
+
+- The only writer is the Lua binding `008A1F40` `SquadronSetDropAllBombPercent`. It takes the
+  squadron through `00888AA0` from argument 0 and the number through `00B66270`, then
+  `FSTP float [ESI+390h]` at `008A2091`. So `+390h` is the authored "drop all bomb percent".
+- No script in this installation calls the binding, which is why the value stays 0.0 here, with the
+  consequences above.
+- The ON arm of `bsp::kPlaneIssueThresholdZeroCc13Bound` now reads a per-squadron float that defaults
+  to 0.0, and binds the native under the same switch.
+- That switch must be flipped together with `kReleaseOrderLeaderBlockBound`. Without it, the host
+  returns on a failed gate and skips the `007EEF96` leader block that the image's `JBE` lands on.
+
 ## Corrections
 
 ### Correction to `docs/TORPEDO_APPROACH_UPDATE.md` (packet `cc8_torpedo_approach_update`)
