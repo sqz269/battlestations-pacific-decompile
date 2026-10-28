@@ -80,6 +80,22 @@
 //    child's AABB); it is a filter only, so no hit changes.
 //  * the shot-kind gate reads the round's class (is_depth_charge_class), as 00826F44's
 //    view does.
+//  * LABELLED (rev8 C1 review, correcting its own (d)): 00859550 runs only for the
+//    TurningGun classes (vtable[DCh] = 0085A270: 00CFBD20, 00CFBF58, 00CFC190, 00CFE548).
+//    For the non-turning classes - the bomb racks 00CF96A8 / 00CF9918, the base gun
+//    00CFE0A8 and 00CFE308 (vtable[DCh] = 0072B2D0), and MCatapult 00CFAAB8 (006EC620) -
+//    node 0's local keeps 0072DD20's FULL slot frame (3x3 and T), while the host's pose
+//    (device_hierarchy_node_world) uses RotY(-horz) with T only. The hit moves only
+//    where an authored slot frame is rotated; the kMuzzleOffsetsBound muzzle path
+//    carries the same gap.
+//  * ordering (relay arm): the host runs the gun's 008777D0 from DeviceGunAfterRelay's
+//    destructor in apply_hit (game_hosts_gunnery.cpp), after the parent path's
+//    attribution tail; the image runs it at 0043F854, before control returns to
+//    009239A0's attribution. Neither reads the other's state, so the order is harmless.
+//  * LABELLED triangle test: device_trace_segment (game_hosts_gunnery.cpp) is the
+//    house Moller-Trumbore (double-sided, |det| < 1e-12 cutoff, no 007238E0 AABB tree),
+//    the same substitution kShellHullHitTestBound labels, not 00723AA0's own arithmetic.
+//    The nearest-hit rule (`t <= best`, last acceptor on a tie) is 00723D60's.
 // Movers when ON: shells that meet a mount before the hull stop at the mount (nearer
 // point; record kind 9 / segment 0 instead of the hull element's), so the ship's hull
 // pass, flooding and fire rolls run on its element 0, and the gun takes damage; hull
