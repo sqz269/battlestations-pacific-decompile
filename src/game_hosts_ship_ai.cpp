@@ -7441,8 +7441,9 @@ public:
         return owner_.units.unit_forward_speed_0092d730(
             static_cast<std::size_t>(candidate - 1u));
     }
-    // 009F34FD, 0080FC30 on the candidate: its +9C0h times the empty modifier
-    // list's 1.0f, as the follow binding answers it.
+    // 009F34FD, 0080FC30 on the candidate: its +9C0h times the category 4
+    // product (the power-up store, packet cc13-powerup-bind), as the follow
+    // binding answers it.
     float candidate_reference_speed_0080fc30(std::uint32_t candidate) override {
         ++owner_.summary.landing_sweep_candidates;
         if (candidate == 0u) return 1.0f;

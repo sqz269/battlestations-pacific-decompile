@@ -12,6 +12,7 @@
 #include <array>
 #include <cstdint>
 #include <list>
+#include <map>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -40,13 +41,17 @@ inline constexpr bool kPowerupGrantBound = true;
 inline constexpr std::size_t kPowerupPlayerSlots = 8;  // manager+20h and +14Ch, stride 0Ch
 
 // One 1Ch inventory item, the value at list node+8h. 008E6A80 zeroes +0h, +4h
-// and +8h and sets +0Ch to -1; +10h..+18h is the modifier pointer list, which
-// stays empty until a use (008EADA0) that this packet does not reach.
+// and +8h and sets +0Ch to -1; +10h..+18h is the modifier pointer list, which a
+// passive use (008EADA0 -> 008EA250) fills (packet cc13-powerup-bind phase 2a).
 struct PowerupItem {
-    std::uint32_t word_00{};
+    std::uint32_t word_00{};          // +0h, an active item's live record count
     const PowerupClassConfig* cls{};  // +4h, 008E7820 from classID through 008E6CB0
-    std::uint32_t word_08{};
+    // +8h, the granting command building's binding (008ED554), as its units-host
+    // index; kNoBinding for an AddPowerup grant (008E6A80's zero).
+    std::size_t binding{kNoBinding};
     std::int32_t use_limit{-1};       // +0Ch, useLimit (default -1)
+    std::list<game_powerups::PowerupModifier*> modifiers{};  // +10h
+    static constexpr std::size_t kNoBinding = static_cast<std::size_t>(-1);
 };
 
 // What the manager reaches outside itself. The mission frame implements it and
@@ -103,6 +108,10 @@ struct PowerupRuntime {
     // +80h + category*0Ch: the sixteen modifier lists (packet cc13-powerup-bind,
     // include/bsp/game_hosts_powerups.hpp), with the manager's lifetime.
     game_powerups::PowerupCategoryLists category_lists{};
+    // The command buildings whose binding the manager observes (00694A60 after a
+    // 008ED720 grant), by units-host index, with the class 008ED720 stored at
+    // binding+8h. 008ED620 regrants these on code 5.
+    std::map<std::size_t, const PowerupClassConfig*> observed_bindings{};
     PowerupCounts counts{};
     std::string load_error{};
 };
@@ -122,6 +131,14 @@ bool load_powerup_classes_004dc6a0(PowerupRuntime& runtime, PowerupManagerHost& 
 // 004D2BB0's manager release (004D2D84..004D2D96): deletes the manager and
 // empties the inventories, keys and other slots' records; clears the host.
 void destroy_powerup_manager_004d2d84(PowerupRuntime& runtime);
+
+// [game+18ECh]: whether `slot` is the local player's, whose +14Ch values the
+// host keeps.
+bool is_active_slot(PowerupRuntime& runtime, std::int32_t slot);
+// 00617030 on manager+14Ch + slot*0Ch with the class key; a miss inserts the
+// zeroed value (008E3710). Throws for a slot outside 0..7.
+PowerUpSlot& slot_record_00617030(PowerupRuntime& runtime, std::int32_t slot,
+    const PowerupClassConfig* cls);
 
 // 008E6CB0: the class named `name`, or null.
 const PowerupClassConfig* find_powerup_class_008e6cb0(PowerupRuntime& runtime,

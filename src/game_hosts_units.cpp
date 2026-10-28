@@ -12220,16 +12220,14 @@ public:
         return height;
     }
 
-    // 008e6430 at 00826a21, run whole over an empty category list. The
-    // accumulator starts at the 1.0f at 00d7a24c and nothing multiplies into it,
-    // so the result is the routine's own value.
+    // 008e6430 at 00826a21. With its gate shut (no power-up store, or an empty
+    // category 4 list) the product is the 1.0f at 00d7a24c.
     float gameplay_scale() override {
         if (!owner_.logged_scale) {
             owner_.logged_scale = true;
-            owner_.log.notef("gameplay scale 008e6430 runs over an empty category list: no "
-                "modifier record is registered in this process, so the product is the 1.0f "
-                "the accumulator starts at (00d7a24c) and the filter 008e4680 is never "
-                "reached");
+            owner_.log.notef("gameplay scale 008e6430 at 00826a21: the category 4 product "
+                "from the power-up store when kPowerUpSubsystemCc13Bound and its gate are "
+                "open, else 1.0f (00d7a24c)");
         }
         // Packet cc13-powerup-bind, 00826A06..00826A21: the category 4
         // (SHIP_SPEED) product behind its gate; the shut arm (00826A2C) is the
@@ -14559,7 +14557,30 @@ public:
         owner_.done("SceneStartSpeed::unit_reference_speed", 0x0080fc30u);
         float scale = bsp::kUnitReferenceSpeedUnscaled;
         if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
-            scale = unit_reference_speed_scale_0080fc30(owner_.index_of_slot(slot_));
+            // Packet cc13-powerup-bind phase 2a: this runs inside create_units
+            // before the slot joins the table, so 008E4680 reads the slot itself
+            // (a command building granted earlier in the pass can already have
+            // filled category 4). The caller (00822C20's arm) is noexcept, so
+            // this path must not reach the resolver's throw.
+            const std::size_t index = owner_.index_of_slot(slot_);
+            if (index < owner_.slots.size()) {
+                scale = unit_reference_speed_scale_0080fc30(index);
+            } else {
+                game_powerups::PowerupUnitView view;
+                // 0043F080: +5Ch set, +5Dh, +60h and +5Eh clear.
+                view.live = slot_.scene_flags_available && slot_.state != nullptr
+                    && slot_.state->active != 0 && slot_.state->simulate == 0
+                    && slot_.scene_pending_destroy_0060 == 0 && slot_.scene_destroyed_005e == 0;
+                view.party = slot_.row.party;                              // +54h
+                // LABELLED: the id the slot takes when create_units appends it.
+                view.id = static_cast<std::uint16_t>(owner_.slots.size() + 1);
+                view.slot = ai_scene_unit_slot_009ffd20(slot_.row.party, slot_.row.name);
+                for (int axis = 0; axis < 3; ++axis) {
+                    view.position[axis] = slot_.motion.position[axis];
+                }
+                scale = game_powerups::powerup_site_product_for_view(4, view)
+                    .value_or(bsp::kUnitReferenceSpeedUnscaled);
+            }
         }
         return bsp::unit_reference_speed_0080fc30(slot_.motion.max_speed, scale);
     }
@@ -21373,6 +21394,18 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             }
         }
         host.slots.push_back(std::move(slot));
+        if constexpr (game_powerups::kPowerUpSubsystemCc13Bound) {
+            // Packet cc13-powerup-bind phase 2a: 006F2780's second call, 008ED720
+            // on the command building's binding (unit+758h). SUBSTITUTION,
+            // labelled: run once the slot is in the table (the grant reads the
+            // building's party and 009FFD20 slot through the resolver), in the
+            // same per-entity pass; 00822C20's reference-speed reads of this
+            // entity come before it either way.
+            if (bsp::unit_is_kind_of(host.slots.back()->class_id, 0x1C)) {
+                game_powerups::command_building_powerup_init_008ed720(
+                    host.slots.size() - 1, entity.powerup_class_id);
+            }
+        }
         if constexpr (kSceneHomeBaseContractBound) {
             // Packet cc9_scene_home_base_contract: a squadron built from a
             // PlaneSquadronGen row gets its row's HomeBase before its pass C.
@@ -43818,6 +43851,10 @@ void GameUnitsHost::Impl::set_role_availability_00927d20_impl(std::size_t index,
     // 00927DE1..: a value naming one player (not 8, not 9) also calls
     // unit->vtable[2Ch] on that player's record; 0077F360's tail sets a
     // message-suppress byte for kind-5 units. Neither is modelled (labelled).
+    // 00927E29..00927E31: 00696350(unit, code 5) notifies the unit's observers.
+    // Packet cc13-powerup-bind phase 2a: the power-up manager observes the
+    // command buildings 008ED720 granted through (008ED620 regrants them).
+    game_powerups::powerup_manager_observed_event_008ed620(index, 5);
 }
 
 bool GameUnitsHost::unit_current_role_slot(std::size_t index, std::int32_t role_index,

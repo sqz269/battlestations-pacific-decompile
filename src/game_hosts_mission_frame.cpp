@@ -1914,6 +1914,11 @@ public:
 
     void power_ups_pre_pass_008eac80() override {
         owner_.record("PowerUps::pre_pass", 0x008eac80u);
+        // Packet cc13-powerup-bind phase 2a: 008EB110's category sweep follows
+        // 008EAC80 at 008EB139 with only the clock read between; the world
+        // tick's own channels stay empty. SUBSTITUTION, labelled: run from this
+        // hook so it keeps that place ahead of the ready pass.
+        bsp::game_powerups::expire_due_modifiers_008eb110();
     }
     void power_up_expire_008e8c30(void*) override {
         owner_.record("PowerUps::expire", 0x008e8c30u);

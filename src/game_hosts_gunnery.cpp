@@ -3895,6 +3895,10 @@ struct GameGunneryHost::Impl {
         float water_tick{0.0f};       // task+2Ch <- settings+3B0h WaterTickDamage
         float fire_tick{0.0f};        // task+30h <- settings+3ACh FireTickDamage
         float repair_fraction{0.0f};  // settings+3B4h (already / 100) * +3D4h
+        // The two factors apart, for 0093C770's own order when a power-up
+        // product scales the rate (packet cc13-powerup-bind, rev5 N2).
+        float repair_tick_3b4{0.0f};  // settings+3B4h (already / 100)
+        float repair_body_mul_3d4{0.0f};  // settings+3D4h BodyRepairMultiplier
         // Packet cc9_component_failures: the task's failure vector (+18h) and
         // its flags as 0093BCC0 leaves them (+46h = 1, priority 0).
         bsp::RepairTaskState task{};
@@ -5574,9 +5578,10 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             // settings+3B4h as the loader stores it (0083E243 divides by 100.0,
             // bsp/gameplay_settings.hpp); 0093C770 at priority 0 multiplies by
             // BodyRepairMultiplier (settings+3D4h).
-            dc.repair_fraction = bsp::store_repair_tick_percentage_0083e243(
-                flat_scaled(type_id, "dcbody", 1000000.0f, 0.2f))
-                * flat_scaled(type_id, "dcbodymul", kMilliScale, 2.0f);
+            dc.repair_tick_3b4 = bsp::store_repair_tick_percentage_0083e243(
+                flat_scaled(type_id, "dcbody", 1000000.0f, 0.2f));
+            dc.repair_body_mul_3d4 = flat_scaled(type_id, "dcbodymul", kMilliScale, 2.0f);
+            dc.repair_fraction = dc.repair_tick_3b4 * dc.repair_body_mul_3d4;
             dc.task.failure_repair_enabled = true;   // 0093BCC0 +46h = 1
             dc.task.hull_repair_enabled = true;      // +45h = 1
             if (dc.script_hull_repair >= 0) {
@@ -8408,8 +8413,9 @@ public:
                 reload_rate = *m;
             }
         }
+        // [00D7A278] is FLT_MAX as a double (rev5 N1).
         const bsp::BarrelReloadWrite write = bsp::barrel_reload_write_0072cf00(value,
-            1.0e9f, reload_rate, false);
+            std::numeric_limits<float>::max(), reload_rate, false);
         row.fire.barrel_timers[static_cast<std::size_t>(index)] = write.timer;
         owner_.done("Gun::set_barrel_reload_timer_0072cf00", 0x0072cf00u);
     }
@@ -14208,14 +14214,20 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             float heal = dc.task.hull_repair_enabled
                 ? 1.0f * dt * dc.repair_fraction * state.max_health : 0.0f;
             if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
-                // Packet cc13-powerup-bind: 0093C7C5, rate = (float)(m * base)
-                // (0093C7DE..0093C7E6) under the site gate ([00F88C30]+ACh), and
-                // the heal multiplies by rate at 0093C80D. LABELLED: the host's
-                // repair_fraction folds settings+3B4h with the base +3D4h, so m
-                // multiplies after it. Gate shut: the heal as before.
+                // Packet cc13-powerup-bind: 0093C7C5 under the site gate
+                // ([00F88C30]+ACh); rate = m * base, FSTP float (0093C7DE..
+                // 0093C7E6), base = settings+3D4h at priority 0 (0093C78C). Then
+                // (((task+28h * dt) * settings+3B4h) * unit+36Ch) * rate
+                // (0093C802..0093C811), per operation at PC24 (rev5 N2). Gate
+                // shut: the heal as before.
                 if (dc.task.hull_repair_enabled) {
                     if (const auto m = bsp::game_powerups::powerup_site_product(3, i)) {
-                        heal = 1.0f * dt * dc.repair_fraction * *m * state.max_health;
+                        namespace x8 = bsp::cc13x87;
+                        const float rate = static_cast<float>(
+                            x8::x87_mul24(*m, dc.repair_body_mul_3d4));
+                        heal = static_cast<float>(x8::x87_mul24(x8::x87_mul24(
+                            x8::x87_mul24(x8::x87_mul24(1.0f, dt), dc.repair_tick_3b4),
+                            state.max_health), rate));
                     }
                 }
             }
@@ -16418,7 +16430,15 @@ void GameGunneryHost::fixed_step(float step_seconds) {
                 if (g.unit_index != unit || g.category != bsp::kUnitGunneryTorpedoCategory) continue;
                 for (float& timer : g.fire.barrel_timers) {
                     if (static_cast<double>(timer) > 0.0) ++host.summary.reload_torpedoes_barrels;
-                    timer = bsp::barrel_reload_write_0072cf00(0.0f, 1.0e9f, 1.0f, false).timer;
+                    // The same body: 0072CF4E's category 8 product behind its
+                    // gate, [00D7A278] FLT_MAX (packet cc13-powerup-bind, rev5 N1).
+                    float reload_rate = 1.0f;
+                    if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+                        reload_rate = bsp::game_powerups::powerup_site_product(8, g.unit_index)
+                            .value_or(1.0f);
+                    }
+                    timer = bsp::barrel_reload_write_0072cf00(0.0f,
+                        std::numeric_limits<float>::max(), reload_rate, false).timer;
                 }
             }
             ++host.summary.reload_torpedoes_calls;

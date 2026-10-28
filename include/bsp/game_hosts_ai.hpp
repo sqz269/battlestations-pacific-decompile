@@ -499,6 +499,9 @@ void ai_set_unit_owner_player(std::size_t unit, int owner);
 // 009FFD20 BSP_Unit_LossCountingSlot for a units-host index, by the same steps
 // as the coordinator's (packet cc13-powerup-bind: 008E4680's slot arm).
 int ai_unit_slot_009ffd20(const GameUnitsHost& units, std::size_t unit);
+// The same for a scene unit still under creation (not yet in the units table),
+// by its party and scene name (packet cc13-powerup-bind phase 2a).
+int ai_scene_unit_slot_009ffd20(int team, const std::string& name);
 // 009FFD20's single-player arm for a +180h of 9: 0 for the local player's team,
 // else 4.
 int ai_team_slot_009ffd20(int team);

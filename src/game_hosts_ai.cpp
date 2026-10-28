@@ -1171,24 +1171,44 @@ int ai_team_slot_009ffd20(int team) {
     return kAiPartyGateUnforcedBound ? (team == slot0_team ? 0 : 4) : team;
 }
 
+namespace {
+
+// 009FFD20's tail after +180h: 8 is no slot, 0..7 the slot, else the team's.
+// LABELLED: single-player (session mode 0) arms only; 009FFD35's
+// [00E188A8]+1FE4h != 0 arm, which answers -1, is not modelled (rev5 N6).
+int slot_from_owner_player(int owner, int team) {
+    if (owner == 8) return -1;
+    if (owner >= 0 && owner < 8) return owner;
+    return ai_team_slot_009ffd20(team);
+}
+
+// +180h by scene entity name: 9 when unauthored or authored twice.
+int scene_owner_player_by_name(const std::string& name) {
+    if (g_scene_owner_player_conflicts.count(name) != 0) return 9;
+    const auto it = g_scene_owner_players.find(name);
+    return it != g_scene_owner_players.end() ? it->second : 9;
+}
+
+}  // namespace
+
 int ai_unit_slot_009ffd20(const GameUnitsHost& units, std::size_t unit) {
     // The coordinator's unit_slot_009ffd20 / unit_owner_player_0180 steps for a
     // unit index (no squadron proxy).
-    const int team_slot = ai_team_slot_009ffd20(units.unit_side_0054(unit));
-    if constexpr (!kAiOwnerPlayerSlotBound) return team_slot;
+    const int team = units.unit_side_0054(unit);
+    if constexpr (!kAiOwnerPlayerSlotBound) return ai_team_slot_009ffd20(team);
     int owner = 9;
     const auto by_index = g_unit_owner_players.find(unit);
     if (by_index != g_unit_owner_players.end()) {
         owner = by_index->second;
     } else if (const GameUnitRow* row = units.unit_row(unit)) {
-        if (g_scene_owner_player_conflicts.count(row->name) == 0) {
-            const auto it = g_scene_owner_players.find(row->name);
-            if (it != g_scene_owner_players.end()) owner = it->second;
-        }
+        owner = scene_owner_player_by_name(row->name);
     }
-    if (owner == 8) return -1;
-    if (owner >= 0 && owner < 8) return owner;
-    return team_slot;
+    return slot_from_owner_player(owner, team);
+}
+
+int ai_scene_unit_slot_009ffd20(int team, const std::string& name) {
+    if constexpr (!kAiOwnerPlayerSlotBound) return ai_team_slot_009ffd20(team);
+    return slot_from_owner_player(scene_owner_player_by_name(name), team);
 }
 
 struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,

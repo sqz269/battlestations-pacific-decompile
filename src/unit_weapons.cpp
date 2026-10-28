@@ -47,10 +47,12 @@ int next_ready_barrel_007298d0(const float* timers, int barrel_num, int start) n
 BarrelReloadWrite barrel_reload_write_0072cf00(float time, float sentinel_threshold,
                                                float scaled_rate, bool set_full) noexcept {
     BarrelReloadWrite result{};
-    // The rate divide at 0072CF0F..0072CF4D runs only below the threshold, so
-    // the sentinel the no-ammo branch writes survives unchanged.
+    // The rate divide at 0072CF19..0072CF6F runs only below the threshold
+    // (FLD [00D7A278], FCOMI, JBE), so the sentinel the no-ammo branch writes
+    // survives unchanged. The image has no zero-divisor guard: a zero rate
+    // divides as the FDIV does (packet cc13-powerup-bind, rev5 N1).
     float value = time;
-    if (time < sentinel_threshold && scaled_rate != 0.0f) {
+    if (time < sentinel_threshold) {
         value = time / scaled_rate;
     }
     result.timer = value;

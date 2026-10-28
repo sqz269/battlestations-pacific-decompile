@@ -3195,6 +3195,15 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         // the same way (C8h when absent).
         retain_scene_raw_word(bag.find("InferiorRange"), stored.inferior_range_present,
             stored.inferior_range_raw);
+        // Packet cc13-powerup-bind phase 2a: 008ED720's `PowerupClassID`, the
+        // string value without its quotes.
+        if (const SceneProperty* powerup = bag.find("PowerupClassID")) {
+            std::string text = powerup->values.empty() ? std::string() : powerup->values.back();
+            if (text.size() >= 2 && text.front() == '"' && text.back() == '"') {
+                text = text.substr(1, text.size() - 2);
+            }
+            stored.powerup_class_id = text;
+        }
         // 009554C1: the `MinLevel` find that gates the unit+724h bag clone.
         stored.bag_min_level = bag.find("MinLevel") != nullptr;
         // Packet cc9_submarine_depth_level: 00853630's two scene finds, kept

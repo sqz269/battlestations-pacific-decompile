@@ -8,16 +8,35 @@
 // earlier src/powerup_seg58_argon.cpp copies served only as a cross-check and
 // are not called. Names are hypotheses, not recovered symbols.
 //
-// Phase 1 (this commit's scope): the store, 008E6430 and 008E4680, and every
-// host reader routed through powerup_site_product. Nothing inserts into the
-// lists yet, so each gate fails and every site keeps its previous code: the
-// switch ON is identical to OFF.
+// Phase 1: the store, 008E6430 and 008E4680, and every host reader routed
+// through powerup_site_product.
+// Phase 2a: the writers a scene reaches without player input. 008ED720 (a
+// command building's PowerupClassID, plain names only) grants through 008ED4B0,
+// whose passive arm uses the item at once (008EADA0 -> 008EA250 inserts); the
+// manager observes the building (00694A60) and 008ED620 regrants on code 5
+// (00927D20's notify at 00927E31) after 008E8A30 removes the old item; 008EB110
+// expires records past their end time through 008E8C30.
+// Campaign rows: only IJN05 and USN16 author PowerupClassID, always
+// "repairtest", which names no class (008E6CB0 misses), so no list fills there.
+// The multi scenes grant plain names; nine of them (multi\duelOne, scene1 ..
+// scene8) also author the bracket form "S[a,b,..]", which 008ED720 hands to
+// 008EC650 for a draw on the shared random stream. That pick is not modelled
+// (phase 2b): such a building throws "008EC650 shared-stream draw not modelled"
+// with the switch ON, so those nine scenes cannot pair until 2b.
 
 #include <array>
 #include <cstddef>
 #include <cstdint>
 #include <list>
 #include <optional>
+#include <string_view>
+
+namespace bsp {
+struct PowerupClassConfig;
+namespace cc13_powerup {
+struct PowerupItem;
+}  // namespace cc13_powerup
+}  // namespace bsp
 
 namespace bsp::game_powerups {
 
@@ -46,15 +65,19 @@ inline constexpr bool kPowerUpSubsystemCc13Bound = false;
 
 inline constexpr int kPowerupCategoryCount = 16;  // 008EB14E, 16 lists
 
-// One modifier, the value at list node+8h. 008E4680 reads +8h..+10h and
-// 008E6430 multiplies by +14h. The fields the insert (008EA250) writes besides
-// these are added with the insert.
+// One modifier, the value at list node+8h, with 008EA250's template values
+// (008EA27F..008EA2CA). 008E4680 reads +8h..+10h and 008E6430 multiplies by +14h.
 struct PowerupModifier {
-    std::int32_t party{2};          // +8h, compared with unit+54h when below 2
+    cc13_powerup::PowerupItem* item{nullptr};  // +0h, the using item (null once released)
+    std::int32_t category{16};      // +4h
+    std::int32_t party{3};          // +8h, compared with unit+54h when below 2
     std::uint16_t unit_id{0};       // +0Ch, unit vtable[140h]()+174h; 0 = none
     std::uint16_t centre_id{0};     // +0Eh, the binding building's id; 0 = none
     std::int32_t slot{-1};          // +10h, compared with 009FFD20(unit); -1 = none
     float multiplier{1.0f};         // +14h
+    float end_time{1.0e10f};        // +18h, 008EB110 expires it once the clock passes
+    std::int32_t owner_slot{-1};    // +1Ch, the using slot
+    const PowerupClassConfig* cls{nullptr};  // +20h holds the class name; its class here
 };
 
 using PowerupCategoryLists = std::array<std::list<PowerupModifier>, kPowerupCategoryCount>;
@@ -87,6 +110,13 @@ bool powerup_target_applies_to_unit_008e4680(const PowerupModifier& record,
 float gameplay_modifier_product_008e6430(const std::list<PowerupModifier>& list,
     const PowerupUnitView& unit, const PowerupUnitResolver& resolver);
 
+// powerup_site_product throws when the gate is open but the unit has no view
+// (rev5 N4). Three callers sit under a noexcept reconstruction, where a throw
+// terminates: 009E1170's reference_speed (the commands host hands over a value
+// computed before the call), 00822C20's 0080FC30 (StartSpeedSeedBinding reads a
+// slot still under creation through powerup_site_product_for_view, no lookup)
+// and 008777D0's armour (the victim is always in the units table). None reaches
+// the throw unless the host itself is inconsistent.
 // A site's gate and call: the product when EnablePowerups and the category list
 // is not empty, else nullopt (the site's 1.0f arm, which the caller keeps as its
 // previous code). `unit_index` is the units-host index of the unit the site
@@ -99,5 +129,22 @@ std::optional<float> powerup_site_product_for_view(int category, const PowerupUn
 // The resolver the sites use, published by the mission frame while its manager
 // exists; null clears it.
 void publish_powerup_unit_resolver(const PowerupUnitResolver* resolver);
+
+// --- phase 2a --------------------------------------------------------------
+
+// 008ED720 __thiscall(ECX = binding at building+758h, creation record), RET 4,
+// for the building at units-host index `building` and its scene PowerupClassID
+// text: the plain-name lookup (008E6CB0) and, on a hit, the grant 008ED4B0 and
+// the observer registration 00694A60. Throws on the bracket form (008EC650).
+void command_building_powerup_init_008ed720(std::size_t building,
+    std::string_view powerup_class_id);
+
+// 008ED620 __thiscall(ECX = manager, observed, code, arg), RET 0Ch: on code 5 for
+// a unit the manager observes, 008E8A30 then 008ED4B0 on its binding.
+void powerup_manager_observed_event_008ed620(std::size_t unit, int code);
+
+// 008EB110's sweep (008EB139..008EB181): each category list in order, each
+// record whose end time the clock has passed expires through 008E8C30.
+void expire_due_modifiers_008eb110();
 
 }  // namespace bsp::game_powerups
