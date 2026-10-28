@@ -15567,6 +15567,17 @@ very large HP against 100-170 per direct hit and few heavy shots land; torpedoes
   asks for bomb-class ordnance, which the host's ammo count stands for. The remaining conjunct, `gun+358h <= 0`, is
   unmodelled for every gun in this host (`gun_aiming.hpp` `damage_counter`, always 0). The low-byte test of a heap
   pointer cannot be reproduced. **No change.**
+  - Census S17 re-scope (cc13-s17, from listing `00729A80`-`00729B86`, no switch): every `00729A80` gate is
+    inert for a rack or unmodelled for every gun.
+    - `[+3F8h]+34h` is a faithful constant true.
+    - The `+450h`/`+478h` timers and the `[+414h][i]` barrel loop are never written for a rack.
+    - The `+6F8h`/`+6FCh` cooldowns and the waterline test key on the weapon type, which for a rack is
+      BOMBPLATFORM 0Ah: not artillery, not 7, not AA.
+    - `vtable[210h](2Ah, 0)` is the host's ammo test, with the same stop at `006E58D8`.
+
+    The only live differences are `+3B8h` (the destroyed-failure byte: `0072B5BC` sets, `007280C0` clears;
+    `006E58CF` also stops the drop on it) and `+358h` (the damage level). The host models neither for any gun.
+    Modelling them for all guns (`0072B5A0` and friends) is deferred.
 - `006DEF30` (artillery accept): the host already solves `00955630` and lifts the solved direction into the mount
   frame (`kAaKind6GateMountFrameBound`, ON, GUNNERY 197), which is what a non-null `[[bot+50h]+3Ch]` does, then runs
   `0085A8B0`. `gun->vtable[1D4h](target)` = `0072F6E0` answers 1 for kinds 2-4, and for kind 6 the host runs the
