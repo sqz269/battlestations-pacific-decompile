@@ -20,6 +20,20 @@
 // approximation. False: the count is taken at each 007B95E0 call (the old
 // substitution). Movers when ON: leader roll timing while wingmen join or leave a
 // follow state, up to one period (1 s) late.
+//
+// CORRECTION (rev4 FIX 1): the constructor does not seed +3C4h with -1.0. 007F2D30
+// FLD1 -> [ESP+4] (hi 1.0), 007F2D46 FLDZ -> [ESP] (lo 0), ECX = EDI = 1, 007F2D5B CALL
+// 00BD2F10, 007F2D60 FCHS, 007F2D6A FSTP [ESI+3C4h]: the seed is -U(0, 1) on stream 1
+// (+3C0h = 1.0 and +3BCh = 0 stand). kSquadronRecountCountdownSeed is only the value
+// before the host takes that draw. ON draws it when the units host first sees the
+// squadron, at the start of the next fixed step: a STREAM-ORDER MOVER (one stream-1 draw
+// per squadron, not at the constructor's place in the sequence).
+// CORRECTION (rev4 FIX 2): "ahead of the planes' ticks" is wrong. The squadron node
+// registers in tick group 3 (007F2C89 PUSH 3 -> 00875890), units in group 1, and wave 3
+// runs groups 0-4 in order, so the countdown runs after every plane's step and
+// 007B95E0 reads the previous step's recount. ON runs it at the end of the units' fixed
+// step; a squadron created during a step is first ticked the next step. An unordered
+// compare (a NaN) takes the t -= step arm, as 007F3C41's JC does.
 
 namespace bsp {
 

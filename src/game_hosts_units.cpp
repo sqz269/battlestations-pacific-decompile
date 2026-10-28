@@ -10070,17 +10070,40 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         }
     }
     // squadron+3C4h / +3BCh, packet cc13-tranche2 S19.
+    // CORRECTION (rev4 FIX 1): +3C4h is not seeded -1.0. 007F2D30..007F2D6A store
+    // -U(0, 1) from 00BD2F10 on stream 1 (FCHS at 007F2D60); the default below is only
+    // the value before that draw is taken (squadron_wingmen_recount_seed).
     struct WingmenRecount {
         float countdown_3c4 = bsp::kSquadronRecountCountdownSeed;
         int count_3bc = 0;
     };
     std::map<std::string, WingmenRecount> wingmen_recount_;
+    // 007F2D30..007F2D6A at the squadron's construction: +3C4h = -U(0, 1), stream 1.
+    // STREAM-ORDER MOVER, LABELLED: the host draws when it first sees the record, at the
+    // start of the next units' fixed step (the registry has four creators in other
+    // hosts), not at the constructor's own place in the stream-1 sequence. The index is
+    // the flight leader's (0 with none); it keys the stream only under the measurement
+    // option. With no gunnery host the midpoint -0.5 stands in.
+    void squadron_wingmen_recount_seed() {
+        for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
+            if (wingmen_recount_.count(sq.name) != 0) continue;
+            WingmenRecount& r = wingmen_recount_[sq.name];
+            const std::size_t lead = sq.flight_leader();
+            const std::size_t key = lead != bsp::kPlaneSquadronNoUnit ? lead : 0u;
+            r.countdown_3c4 = gunnery != nullptr
+                ? -gunnery->death_mode_draw_00bd2f10(1, key, 0.0f, 1.0f)   // 007F2D5B, FCHS
+                : -0.5f;
+        }
+    }
     // 007F3C3F..007F3C5B, once per fixed step for every squadron. Each float op is
     // stored as a float, which is the image's per-op PC24 result.
     void squadron_wingmen_recount_007f3c3f(float step) {
         for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
-            WingmenRecount& r = wingmen_recount_[sq.name];
-            if (step < r.countdown_3c4) {                                  // 007F3C41 JC
+            const auto it = wingmen_recount_.find(sq.name);
+            if (it == wingmen_recount_.end()) continue;   // created this step: next step
+            WingmenRecount& r = it->second;
+            // 007F3C3F FCOMI step, t / JC: below or unordered (a NaN) takes t -= step.
+            if (!(step >= r.countdown_3c4)) {                              // 007F3C41 JC
                 r.countdown_3c4 -= step;                                   // 007F3D24
             } else {
                 const float reload = bsp::kSquadronRecountPeriod3c0 - step; // 007F3C47
@@ -23573,10 +23596,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     // to the planes' are not modelled), so a round dropped in this step's rack
     // tick first runs in the next step.
     host.para_round_step(step_seconds);
-    // Packet cc13-tranche2 S19: 007F3BA0's countdown and 007EE790 recount. LABELLED
-    // order: ahead of the planes' ticks.
+    // Packet cc13-tranche2 S19: squadrons first seen this step take 007F2D5B's
+    // +3C4h draw here; their 007F3BA0 tick runs at the end of the step (below).
     if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
-        host.squadron_wingmen_recount_007f3c3f(step_seconds);
+        host.squadron_wingmen_recount_seed();
     }
     // Packet cc13-tranche2 S22: the unit+C50h objects' 007E2010 tick for the +30h list.
     // LABELLED order: ahead of the planes' ticks.
@@ -45093,6 +45116,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     } else {
         host.hull_terrain.hull_hull_census(host.hull_census);
         host.hull_census.clear();
+    }
+    // Packet cc13-tranche2 S19 (rev4 FIX 2): 007F3BA0's countdown and 007EE790's
+    // recount. The squadron node registers in tick group 3 (007F2C89 PUSH 3 ->
+    // 00875890) and units in group 1; wave 3 runs groups 0-4 in order, so every
+    // plane's step precedes it and 007B95E0 reads the previous step's recount.
+    if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
+        host.squadron_wingmen_recount_007f3c3f(step_seconds);
     }
     host.summary.total_path_length = 0.0f;
     for (const std::unique_ptr<GameUnitSlot>& slot : host.slots) {
