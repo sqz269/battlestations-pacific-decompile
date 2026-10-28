@@ -1078,7 +1078,12 @@ void GameNativeRendererApplication::release_application_preload_rows() {
     auto& p = *impl_;
     if (!p.mission_ship || !p.mission_ship->preload) return;
     NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
-    try { p.mission_ship->preload->release_borrowed_rows(); }
+    try {
+        check(!requires_process_retention(),
+            "incomplete native renderer cannot release Application preload rows");
+        p.mission_ship->release_late_model_shader_cache(*this);
+        p.mission_ship->preload->release_borrowed_rows();
+    }
     catch (...) { p.phase = Impl::Phase::failed; throw; }
 }
 void GameNativeRendererApplication::construct() {

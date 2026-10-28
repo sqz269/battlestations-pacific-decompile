@@ -102,6 +102,20 @@ struct MissionShipGraph final {
             shader_creation->phase == NativeShaderBinaryCacheOperation::Phase::complete &&
             shader_creation->cache && shader_creation->cache == shader_cache.actual_cache_0108d6ec;
     }
+    void release_late_model_shader_cache(GameNativeRendererApplication& application) {
+        if (!shader_open) return;
+        // 00737F30 releases the borrowed Application's preload rows before
+        // the later renderer drain. Its late-model bracket must close first.
+        // The drain reaches this same one-shot release after entering retiring.
+        check((stage == Stage::ready || stage == Stage::retiring) && shader_creation &&
+            shader_creation == application.shader_cache_creation_operation() &&
+            shader_creation->phase == NativeShaderBinaryCacheOperation::Phase::complete &&
+            shader_creation->cache && shader_creation->cache == shader_cache.actual_cache_0108d6ec &&
+            !application.shader_cache_released(),
+            "mission shader-cache release requires its completed current owner");
+        application.release_shader_cache();
+        shader_open = false;
+    }
     bool requires_process_retention() const noexcept {
         return stage == Stage::preparing || stage == Stage::retiring || stage == Stage::failed ||
             (shader_open && !owns_live_shader_cache()) || (model && model->requires_process_retention()) ||
@@ -400,10 +414,7 @@ struct MissionShipGraph final {
             "incomplete mission ship graph cannot be retired");
         stage = Stage::retiring;
         try {
-            if (shader_open) {
-                application.release_shader_cache();
-                shader_open = false;
-            }
+            release_late_model_shader_cache(application);
             preload->retire_before_native_drain();
             lighting->retire_before_native_drain();
             scene->retire_before_native_drain();
