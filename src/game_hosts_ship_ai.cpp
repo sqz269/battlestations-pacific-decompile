@@ -2571,6 +2571,8 @@ struct GameShipAiHost::Impl {
         }
         if (r.escape_applied) {
             ++row.zone_escape_turns;
+            row.zone_escape_max_turn = std::max(row.zone_escape_max_turn,
+                                                std::fabs(r.escape_turn));
             if (row.zone_escape_first_s < 0.0f) {
                 row.zone_escape_first_s = static_cast<float>(steps) * 0.05f;
             }
