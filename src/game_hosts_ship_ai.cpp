@@ -67,6 +67,7 @@
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/projectile_kinds.hpp"
 #include "bsp/gun_aiming.hpp"
+#include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
 #include "bsp/gun_gravity_arc.hpp"
 #include "bsp/gun_heading_snap.hpp"
 #include "bsp/gameplay_settings_tail.hpp"
@@ -4851,7 +4852,17 @@ public:
             gun->barrel_num, static_cast<int>(gun->fire.barrel_timers.size()), horizon);
     }
 
-    bool device_is_destroyed(bsp::NativeHandle) override { return false; }
+    // [device+3B8h], 0095EC8B. Packet cc13-gunB: set by 0072B5A0 under
+    // kGunDestroyedFailureCc13Bound; nothing sets it otherwise.
+    bool device_is_destroyed(bsp::NativeHandle device) override {
+        if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+            const GameGunRow* gun = gun_row(device);
+            return gun != nullptr && gun->destroyed_3b8;
+        } else {
+            (void)device;
+            return false;
+        }
+    }
 
     // [device+448h], 0095EC98.
     int device_barrel_count(bsp::NativeHandle device) override {
