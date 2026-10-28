@@ -70,6 +70,10 @@ namespace bsp {
 //     007C5F60 launch-spot slide (006CF730's chain); 006C3B10 corridor zp,
 //     ceiling and overshoot; 006C3E50 landing radius (with 007C6760's mix);
 //     006C6020 landing path length; 006C3F80 landing spacing floor, sum and x
+//   cc13-pc24bear (game_hosts_units.cpp update_dive_bomb_approach): the planar
+//     pairs' float differences, sums of squares and bearings at 009C7B34..
+//     009C7BD9 (approach+BCh, +C0h), 009C5950..009C5ADB (+5Ch, [ESP+18h]) and
+//     009C5207..009C52F8 (+14h); 009C8B14's 3D range is not narrowed
 //   Other copies of the same image routines are narrowed by their own
 //   packets, not here: 0042B2F0 in plane_wanderer.cpp (pc24w1-sweep3-4) and
 //   game_hosts_units.cpp avoid_len (pc24w1-sweep3-5); 009AC190's bearing in

@@ -1024,15 +1024,17 @@ DiveBombFlyAboveCommand dive_bomb_flyabove_command_009c6dcd(
 // altitude with cmd+2D0h = EBP = 2, and 009C567F cmd+2D8h = 0. EBP is the 2 that
 // 009C53DD loads and EBX the 1 that 009C53E2's LEA takes from it.
 //
-// PARTIAL, for the same reason as the flyabove: only the heading is bound, and
-// its value is a labelled substitution. The image reads it from the frame slot
-// [ESP+6Ch] at 009C5435, and this body's slots cannot be paired reliably either.
+// PARTIAL, for the same reason as the flyabove: only the heading is bound. The
+// image reads it from the frame slot [ESP+6Ch] at 009C5435, which 009C5357-
+// 009C538A writes as the bearing from the unit to the approach's vt[0] aim
+// point, the same arithmetic as approach+C0h (009C7B34-009C7BD9); the caller
+// passes approach+C0h (cc13-s20).
 // The sibling arm at 009C5414 commands the YAW slot directly (cmd+284h, +288h
 // and +2D4h = 0) and is not bound.
 // ---------------------------------------------------------------------------
 struct DiveBombAimGlideCommandInputs {
-    // SUBSTITUTION, labelled: the bearing to the aim point in place of the
-    // frame slot 009C5435 reads.
+    // [ESP+6Ch] at 009C5435: the bearing to the aim point (approach+C0h's
+    // arithmetic; see above).
     float heading_to_aim_point = 0.0f;
 };
 struct DiveBombAimGlideCommand {

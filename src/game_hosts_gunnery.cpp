@@ -12,6 +12,7 @@
 #include "bsp/mission_result.hpp"
 #include "bsp/gun_aim_terms.hpp"
 #include "bsp/gun_fire_points.hpp"
+#include "bsp/gun_owner_inferior_operational_cc13.hpp"
 #include "bsp/gameplay_settings.hpp"
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/gun_mount_positions.hpp"
@@ -211,6 +212,11 @@ constexpr bool kSubmarineWakeDrawsBound = true;
 constexpr bool kUnitDeathLimboPushCc13Bound = true;  // ON (cc9-helm1, 2026-10-23): pairs on 802e1d8b9, six controlled-death rows, every end unchanged, no plan line refused
 static_assert(!kUnitDeathLimboPushCc13Bound || kUnitDeathRouteBound,
               "the limbo arm runs inside the 00959450 death route");
+// Packet cc13-s24: 0072BF10's team stamp (0072C119..0072C13F) replaces a plane
+// owner whose +914h is above 0.0 by its squadron head [[owner+9D4h]+3D0h] before
+// reading the role-1 slot at 0072C145. True: that replacement runs. False: the
+// owner is never replaced (before).
+constexpr bool kShotTeamSquadronHeadCc13Bound = false;
 // Packet cc9_cb_gunfire_gate (docs/GUNNERY_OPEN_ITEMS.md 125): a hit's AddDamage is
 // victim->vtable[1ACh] (008778C6, 00877A2E in 008777D0), and for a CommandBuilding
 // (vtable 00CFB028) that slot is 006F1F20, which damages only while +7D8h == 0.0
@@ -4561,14 +4567,21 @@ struct GameGunneryHost::Impl {
     //   gun+3F0h; an aircraft owner (vtable[5Ch](0Fh)) with +914h > 0.0 (COMISS
     //   [00D7A218], JBE) is replaced by its squadron head [[owner+9D4h]+3D0h];
     //   team = [owner+1B0h] (0072C145), the owner's role-1 slot.
-    // SUBSTITUTIONS, labelled: the category-0 (PLANEGUN) rows stand for the
-    // class 21h test, as in 007C2610; the host keeps no +914h, so the owner is
-    // never replaced by its squadron head.
+    // SUBSTITUTION, labelled: the category-0 (PLANEGUN) rows stand for the
+    // class 21h test, as in 007C2610.
+    // kShotTeamSquadronHeadCc13Bound (packet cc13-s24): ON, the squadron-head
+    // replacement runs (plane_formation_sight_914 is the host's +914h). OFF, the
+    // owner is never replaced (the old substitution). +914h's writers: 009C230B
+    // (1.0f, the follow sight) and 009BDC80, a 17-byte 1.0f setter with no refs.
     int shot_team_id_0072c0f2(const GameGunRow& gun, std::size_t owner) const {
         int team = gun.seat_1ac;
         if (team == 8 && gun.category == 0) {
+            std::size_t stamp_owner = owner;
+            if constexpr (kShotTeamSquadronHeadCc13Bound) {
+                stamp_owner = units.plane_shot_owner_squadron_head_0072c119(owner);
+            }
             std::int32_t slot = team;
-            if (units.unit_current_role_slot(owner, 1, slot)) team = slot;
+            if (units.unit_current_role_slot(stamp_owner, 1, slot)) team = slot;
         }
         return team;
     }
@@ -6289,7 +6302,12 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 out.device = reinterpret_cast<void*>(slot + 1);
                 out.dead = false;
                 out.is_gun = true;
-                out.operational = true;   // 00729F10 over an undamaged gun
+                if constexpr (bsp::kGunIsOperationalHostedCc13) {
+                    // 00956C98: 00729F10.
+                    out.operational = bsp::gun_is_operational_00729f10_cc13(owner.units, gun);
+                } else {
+                    out.operational = true;   // 00729F10 over an undamaged gun
+                }
                 out.weapon_function = gun.category;
                 out.max_range = gun.max_range;  // 00731020
                 out.flak_alternate_range = gun.max_range;
@@ -15019,7 +15037,13 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         if (unit >= unit_state.size() || unit_state[unit].dead) return;
         for (std::size_t g = 0; g < guns.size(); ++g) {
             GameGunRow& gun = guns[g];
-            if (gun.unit_index != unit) continue;
+            if constexpr (bsp::kGunIsOperationalHostedCc13) {
+                // 0095421F: 00954210(5) asks 00729F10 first.
+                if (gun.unit_index != unit
+                    || !bsp::gun_is_operational_00729f10_cc13(units, gun)) continue;
+            } else {
+                if (gun.unit_index != unit) continue;
+            }
             if (gun.category == 8) {
                 gun.seat_trigger = m.held_34;
                 ++player_group5_triggers;
@@ -15111,7 +15135,13 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         if (gun.unit_index != unit) continue;
         // 00954210(kind 1 or 2): operational (00729F10; unit+720h and gun
         // +3B8h/+5Dh are never set here) and Function 1, 5 or 6.
-        if (!(gun.category == 1 || gun.category == 5 || gun.category == 6)) continue;
+        if constexpr (bsp::kGunIsOperationalHostedCc13) {
+            // 0095421F: 00729F10.
+            if (!bsp::gun_is_operational_00729f10_cc13(units, gun)
+                || !(gun.category == 1 || gun.category == 5 || gun.category == 6)) continue;
+        } else {
+            if (!(gun.category == 1 || gun.category == 5 || gun.category == 6)) continue;
+        }
         float muzzle[3];
         gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
         // 00957DE2..009580AB: the camera ray's point at the gun's bullet range.
@@ -15249,7 +15279,13 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group4(std::size_t unit,
     if (press_arm && m.pressed_35) ++group4_presses;
     for (std::size_t g = 0; g < guns.size(); ++g) {
         GameGunRow& gun = guns[g];
-        if (gun.unit_index != unit || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
+        if constexpr (bsp::kGunIsOperationalHostedCc13) {
+            // 0095421F: 00954210(4) asks 00729F10 before Function 7.
+            if (gun.unit_index != unit || !bsp::gun_is_operational_00729f10_cc13(units, gun)
+                || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
+        } else {
+            if (gun.unit_index != unit || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
+        }
         const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
         const float v = bsp::gun_snap_heading_to_fire_window_007f6190(arcs, bearing, kQuarterPi);
         const bool valid = !bsp::gun_heading_snap_failed(v);
@@ -15483,9 +15519,18 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
         if (gun.unit_index != unit) continue;
         // 00954210(3, dev): operational (00729F10) and 005459B0, the weapon
         // Function [[dev+3F4h]+80h] in {2, 3, 4, 6}.
-        if (!(gun.category == 2 || gun.category == 3 || gun.category == 4
-              || gun.category == 6)) {
-            continue;
+        if constexpr (bsp::kGunIsOperationalHostedCc13) {
+            // 0095421F: 00729F10.
+            if (!bsp::gun_is_operational_00729f10_cc13(units, gun)
+                || !(gun.category == 2 || gun.category == 3 || gun.category == 4
+                     || gun.category == 6)) {
+                continue;
+            }
+        } else {
+            if (!(gun.category == 2 || gun.category == 3 || gun.category == 4
+                  || gun.category == 6)) {
+                continue;
+            }
         }
         ++seat_artillery_guns;
         const bool seat_ai = slot_ai_held_00927f10(gun.seat_1ac);   // 00521E70(dev, 0)

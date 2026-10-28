@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
+#include "bsp/lobby_option_defaults_cc13.hpp"  // packet cc13-mp3 (MP3c)
 #include "bsp/lua_exec_guard.hpp"
 #include "bsp/kamikaze_task_host.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/game_hosts_mission_frame.hpp"
@@ -11363,6 +11364,11 @@ public:
     }
     void publish_mode_flags(const bsp::LobbySettingsModeFlags& flags) override {
         flags_ = flags;
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            // Packet cc13-mp3 (MP3c): 005E2FE2's store to 00E0C978, which the powerup
+            // manager's gate reads.
+            bsp::lobby_session_state().powerups_enabled_00e0c978 = flags.powerups_enabled;
+        }
         // Packet cc9_device_reload_enabled: 005E2FB2 / 005E3017 write 00E17BF2.
         g_device_reload_enabled_00e17bf2 = flags.reload_payload_on;
         // The three bytes 00E0C978, 00E17BF2 and 00E08880. The executable holds
@@ -11403,10 +11409,18 @@ class LobbySettingsOptionsBinding final : public bsp::LobbySettingsOptionSource 
 public:
     explicit LobbySettingsOptionsBinding(GameHostLog& log) : log_(log) {}
     int option_number(int slot, int option) override {
-        static_cast<void>(slot);
-        static_cast<void>(option);
-        log_.unimplemented("MissionLua::lobby_settings_option_number", "008d2f50");
-        return 0;
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            // Packet cc13-mp3 (MP3c): a --skirmish run loads the registry (008D2F50).
+            const bsp::LobbyOptionRegistry& registry = bsp::lobby_session_state().registry;
+            if (registry.loaded) return registry.option_number(slot, option);  // 00575FD0
+            log_.unimplemented("MissionLua::lobby_settings_option_number", "008d2f50");
+            return 0;
+        } else {
+            static_cast<void>(slot);
+            static_cast<void>(option);
+            log_.unimplemented("MissionLua::lobby_settings_option_number", "008d2f50");
+            return 0;
+        }
     }
 
 private:
@@ -11432,6 +11446,11 @@ void GameMissionLuaHost::publish_lobby_settings_005e2f00() {
         state.network_session = context.session_word_1fe4 != 0;
         state.game_mode_forced = context.forced_61c;
         state.effective_game_mode = bsp::effective_game_mode_004bca50(context);
+        // Packet cc13-mp3 (MP3c): 00E1955C as the lobby left it (zero in a campaign run).
+        const bsp::LobbySessionState& lobby = bsp::lobby_session_state();
+        for (std::size_t slot = 0; slot < bsp::kLobbySettingsStoredOptionCount; ++slot) {
+            state.stored_option[slot] = lobby.stored_options_00e1955c[slot];
+        }
     } else {
         state.network_session = false;      // game+1FE4h
         state.game_mode_forced = false;     // game+61Ch

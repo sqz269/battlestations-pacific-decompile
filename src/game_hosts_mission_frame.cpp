@@ -82,6 +82,7 @@
 #include "bsp/memory_stream.hpp"
 #include "bsp/resource_lookup.hpp"
 #include "bsp/session_context_cc13.hpp"
+#include "bsp/lobby_option_defaults_cc13.hpp"
 #include "bsp/ai_coordinator_load_gate_cc13.hpp"  // packet cc13-mp4
 #include "bsp/vfs_mounts.hpp"
 
@@ -1523,8 +1524,15 @@ public:
             return 0;
         }
     }
-    // 005E2F00 forces EnablePowerups to 1 in single player (005E2FAB).
-    bool powerups_enabled_00e0c978() override { return true; }
+    // 005E2F00 forces EnablePowerups to 1 in single player (005E2FAB). Packet cc13-mp3
+    // (MP3c): ON reads the byte 005E2F00 stored (00E1955C[10] == 0 in a session).
+    bool powerups_enabled_00e0c978() override {
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            return bsp::lobby_session_state().powerups_enabled_00e0c978;
+        } else {
+            return true;
+        }
+    }
     void report_powerup_009789a0(std::int32_t slot, const bsp::cc13_powerup::PowerupItem&,
         const std::string& name) override {
         // 009789A0 passes only the name on to 009758E0; the item is unused.
@@ -3482,6 +3490,41 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             continue;
         }
         if (method == "reset_single_player_slots") {
+            // Packet cc13-mp3 (MP3b): in a session 004DFC19 sends the load to the
+            // network branch 004DFC1F..004DFD11, and 004DFD18 never runs; the pools keep
+            // what the skirmish lobby built (start_skirmish: 0076FAD0's 004BB160, the
+            // 007752D0 local claim and 005D5340). scene_state.session_mode is non-zero
+            // only from a context that start_skirmish's ON arm published, so a campaign
+            // load always takes the old body below.
+            if constexpr (bsp::kSkirmishSessionCc13Bound) {
+                if (host.scene_state.session_mode != 0) {
+                    // Exactly one local slot: one claimed, not AI-held player record,
+                    // installed as a current record.
+                    std::size_t local_slots = 0;
+                    for (std::size_t slot = 0; slot < bsp::kSceneSlotRecordCount; ++slot) {
+                        bsp::ParticipantRecordId record;
+                        bsp::ParticipantRecordBytes bytes;
+                        if (host.participants.active_record(slot, record)
+                            && record.pool == bsp::ParticipantPool::Player
+                            && host.participants.read_record_bytes(record, bytes)
+                            && bytes.claimed_08.available && bytes.claimed_08.value != 0
+                            && bytes.ai_held_09.available && bytes.ai_held_09.value == 0) {
+                            ++local_slots;
+                        }
+                    }
+                    if (local_slots != 1) {
+                        throw std::logic_error("004DFD18 skipped in a session without exactly "
+                            "one local participant slot");
+                    }
+                    host.load.participant_local_claimed = true;
+                    host.log.notef("participant pools: 004dfd18 skipped (session %d takes "
+                        "004dfc1f..004dfd11); the lobby's local slot stands",
+                        host.scene_state.session_mode);
+                    host.done(label, step.address);
+                    ++host.load.concrete;
+                    continue;
+                }
+            }
             // 004DFD18 -> 004DFD57 -> 004DFD5C: reset both pools, claim the
             // first player record, then publish current[0]. Neither service
             // writes +0E. The later 004E0851 store is skipped in mode 0.
@@ -4019,15 +4062,16 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     bsp::ParticipantRecordBytes bytes;
                     if (!host.participants.active_record(slot, record)
                         || !host.participants.read_record_bytes(record, bytes)
-                        || !bytes.claimed_08.available || !bytes.ai_held_09.available) {
+                        || !bytes.claimed_08.available || !bytes.ai_held_09.available
+                        || !bytes.ai_enabled_0a.available) {
                         continue;   // LABELLED: an unrepresented record reads as not AI
                     }
                     slots[slot].occupied_08 = bytes.claimed_08.value != 0;
                     slots[slot].ai_09 = bytes.ai_held_09.value != 0;
-                    // LABELLED: +0Ah is not in the pools. 004BB160 writes it with +8h
-                    // and +9h on the mission records (004BB21C..004BB224); a player
-                    // record has +9h clear (004BB30B), so its +0Ah is never decisive.
-                    slots[slot].active_0a = record.pool == bsp::ParticipantPool::Mission;
+                    // Packet cc13-mp3 (MP3b): the pools' +0Ah, which 004BB160 sets on the
+                    // populated mission records and the lobby's 005D5340 rewrites
+                    // through 0076CB90 (rev7 NIT; the "pool == Mission" stand-in is gone).
+                    slots[slot].active_0a = bytes.ai_enabled_0a.value != 0;
                 }
             }
             const bool created = bsp::ai_coordinator_created_at_load_004e17fd(session, slots);
