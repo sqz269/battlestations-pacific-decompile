@@ -11315,6 +11315,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     void hull_aim_pick_009fa260(GameUnitSlot& shooter, const GameUnitSlot& target,
                                 std::size_t target_plus_one);
     unsigned long long aim_lead_applied_{0};
+    // Census for kAimLeadBodyAxisCc13Bound (cc9-nondet1, log only): leads taken in
+    // aim_point_009fada0's tail, and those whose ON (body axis) lead point lies more
+    // than 1e-3 m from the OFF (level heading) one.
+    unsigned long long aim_lead_axis_calls_{0}, aim_lead_axis_differs_{0};
 
     // Packet cc9_aim_error_draw: 009C3DA0 (dive) / 009D02A0 (torpedo). The
     // three draws go through release_altitude_draw_00bd2f10, the stream-1
@@ -13358,18 +13362,39 @@ bool GameUnitsHost::Impl::aim_point_009fada0(GameUnitSlot& shooter,
     // row.x * s, row.y * s, s * row.z, each one float product. OFF: the
     // SUBSTITUTION, labelled, the one neighbour_world_velocity makes: the hull's
     // heading direction, level.
-    if constexpr (bsp::kAimLeadBodyAxisCc13Bound) {
-        pin.velocity = {axis.axis[0] * pin.speed, axis.axis[1] * pin.speed,
-                        pin.speed * axis.axis[2]};
-    } else {
+    const std::array<float, 3> axis_velocity{axis.axis[0] * pin.speed,
+        axis.axis[1] * pin.speed, pin.speed * axis.axis[2]};
     const double hd = static_cast<double>(pose_heading_radians(ts));
-    pin.velocity = {static_cast<float>(std::sin(hd)) * pin.speed, 0.0f,
-                    static_cast<float>(std::cos(hd)) * pin.speed};
+    const std::array<float, 3> level_velocity{static_cast<float>(std::sin(hd)) * pin.speed,
+        0.0f, static_cast<float>(std::cos(hd)) * pin.speed};
+    if constexpr (bsp::kAimLeadBodyAxisCc13Bound) {
+        pin.velocity = axis_velocity;
+    } else {
+        pin.velocity = level_velocity;
     }
     // 008120F8: 00811890(unit, unit+984h), which is 00811940.
     UnitRudderBinding rudder(*this, ts);
     if constexpr (kUnitYawRateForwardSpeedBound) rudder.forward_speed = pin.speed;
     pin.yaw_rate = bsp::unit_current_yaw_rate_00811940(rudder);
+    {
+        // Census (cc9-nondet1, log only): the same tail with each velocity.
+        auto lead_point = [&](const std::array<float, 3>& velocity) {
+            bsp::ShipPredictInputs alt = pin;
+            alt.velocity = velocity;
+            bsp::ApproachTargetRefState alt_lead{};
+            alt_lead.world_point_1c = {out[0], out[1], out[2]};
+            bsp::approach_target_ref_lead_tail_009faf05(alt_lead,
+                bsp::ship_predict_position_008120e0(alt, projtime), alt.position);
+            return alt_lead.world_point_1c;
+        };
+        const auto on = lead_point(axis_velocity);
+        const auto off = lead_point(level_velocity);
+        const double dx = static_cast<double>(on[0]) - off[0];
+        const double dy = static_cast<double>(on[1]) - off[1];
+        const double dz = static_cast<double>(on[2]) - off[2];
+        ++aim_lead_axis_calls_;
+        if (std::sqrt(dx * dx + dy * dy + dz * dz) > 1e-3) ++aim_lead_axis_differs_;
+    }
     const std::array<float, 3> predicted =
         bsp::ship_predict_position_008120e0(pin, projtime);
     bsp::ApproachTargetRefState lead{};
@@ -47307,6 +47332,10 @@ void GameUnitsHost::report() {
             }
         }
     }
+    host.log.notef("summary aim lead body axis census bound=%d leads=%llu differs=%llu "
+        "(009FADA0 tail / 00812090, ON vs OFF lead > 1e-3 m)",
+        bsp::kAimLeadBodyAxisCc13Bound ? 1 : 0, host.aim_lead_axis_calls_,
+        host.aim_lead_axis_differs_);
     host.log.notef("summary ship exit zone bound=%d calls=%llu counting=%llu warnings=%llu "
         "kills=%llu (00826D70 / 00811F50 / 0081BEB0, packet cc9_ship_exit_zone)",
         GameUnitsHost::Impl::kShipOutOfMapExitBound ? 1 : 0, host.ship_exit_calls,
