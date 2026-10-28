@@ -243,3 +243,78 @@ Pairs: gunnery53's successor runs USN04, JM08, USN21 and BSM09, both envs. cc13 
   (`kKamikazeDirectHitCc13Bound`, branch `agent/cc13-kzdirect`, `docs/CC13_KAMIKAZE_DIRECT_HIT.md`),
   which delivers through the immediate funnel; routing it through this queue is its follow-up.
 * The host has no lock (one thread); the image's `00924990` section is not modelled.
+
+## Unobservable gaps left open by the gun packets B, C1 and C2 (cc13-bflush, 2026-10-28)
+
+Read-only audit (cc13-cgbuildA, packet cc13-bflush). These are two gaps between the drain and the flush that
+the gun packets B (`kGunDestroyedFailureCc13Bound`), C1 (`kGunDeviceHitDamageCc13Bound`) and C2
+(`kGunDeviceBlastDamageCc13Bound`) leave open on purpose. Both are labelled in
+`src/game_hosts_gunnery.cpp`. Neither has a switch; the names below are reserved for the
+sketches. No runs were made; the exposure counts come from existing u12 logs.
+
+### kGunDestroyAtFlushCc13Bound (sketch, not built): the gun is destroyed at the flush
+
+- **Image.** The killing hit is applied in drain #1 (`00926700` at `00875E44`). The chain is
+  `00728080` -> `0043F7D0` -> vtable[70h] `0077D1A0` -> `00926C80`, which sets `+60h` and queues
+  the gun on `00F899A8`. The gun is destroyed only at FlushPending (`009273A0` at `00875EC9`):
+  `00926390` sets `+5Dh`, then `00729FA0` -> `0072B5A0` sets `+3B8h` and re-runs `00956C20`.
+  Between the two, the image runs the queued Lua calls (`00888230`, `00875E55`), the think
+  list (`00929460`, `00875E64`), the session pump, creates and InitAll, and drain #2
+  (`00875EC4`).
+- **Host.** `gun_destroyed_failure_0072b5a0` sets `+5Dh`, `+3B8h` and the level at once, inside
+  the drain.
+- **Why it is unobservable today.**
+  - More damage in the window does nothing. Health is already 0, and `00879070` refuses a
+    positive amount on a dead entity (`008790C1`); `00877B90` clamps a negative request to 0.
+    A second `0043F7D0` returns at `00926CBF` because `+60h` is already set. The host refuses
+    the same damage at `+3B8h` instead. Health is the same; only the refused counter differs.
+  - The gun can't be revived in the window: `0072A0D0` needs full health.
+  - Shells already in flight don't depend on their gun's flags.
+  - No host code reads the gun's flags in the window. `run_due_entity_think_00929460` runs an
+    empty field list (`game_hosts_ready.cpp` ~:597). Ship AI and gun fire run outside the
+    window. No Lua native reads gun `+5Dh` or `+3B8h`.
+- **What would make it observable.** Hosting ship-AI brain thinks in `00929460`, or a Lua native
+  that reads device state. One AI evaluation in the step a gun dies would then still count
+  that gun in the image (category lists, `0095EC8B` `device_is_destroyed`) and not in the host.
+- **Fix sketch.** Under the switch, `gun_destroyed_failure_0072b5a0` sets only `destroyed_60`
+  and queues the gun. `GameStepSubsystemsHost::flush_pending_entity_queues_009273a0`
+  (`game_hosts_ready.cpp` ~:619) calls a new gunnery hook that applies `+5Dh`, `+3B8h`, the level
+  and `00956C20`. The OFF arm stays verbatim. Expected movers today: none.
+
+### kDeviceHitAttributionCc13Bound (sketch, not built): device records reach `0077CE60`
+
+- **Image.** When a handler's vtable[ECh] returns AL = 1, `009239A0` walks up the `[+3Ch]`
+  parents (`00923A93..00923AC6`) to a plane, or to a node whose parent is kind 44h. If the top
+  node is kind 2, it calls `0077CE60(top, record)` (`00923ADA`). For a device record (handlers
+  `0043F7F0` and `008777D0`), the top node is the parent ship. `0077CE60` then:
+  - gates on the ship's `+5Ch`, `+5Dh`, `+60h` and `+5Eh`;
+  - computes the damage with `00470740` and armour 0, because the record's `+34h` is -1;
+  - if the damage is above 0.0, writes the last-hit clock `+2E4h` and the attribution block
+    (`+2D4h`, the `+2C4h` attacker via `0077CC80`, the sole-attacker tri-state and the slots);
+  - always calls `00915F20` (MissionScoring_RecordHitDamage) and `00988510` (the "hit" warning
+    channel, which also feeds Lua `AddListener("hit", ...)`);
+  - calls `0090EC40` only when a plane shoots a non-plane.
+- **Host.** Only the ship path attributes (`kill_attribution_0077ce60`, `game_hosts_gunnery.cpp`
+  ~:13560-13603). Two device paths skip it: C1's non-relay early return (~:13252) and every C2
+  mount record (`device_blast_dispatch_009239a0`).
+- **Why it is unobservable today.**
+  - C1 non-relay never ran in the post-flip u12 logs: every log shows device mesh
+    `dispatched == relays`.
+  - C2: 8708 mount records in `sw2br_u12_sw2e_on` and `sw2br_u12_sw2e_off`, and 0 of them lack
+    their unit's own blast record in the same burst. That own record has the same shooter and
+    clock, so:
+    - the attribution writes the same attacker, and the sole-attacker state is unchanged;
+    - the last-hit clock is the same step;
+    - the Lua hit-channel event is throttled per (victim, shooter) by `00988949..00988969`
+      (clock + 2.0, or + 1e-4 for the quick kinds), and on the host by `kLuaHitRateLimitBound`
+      (`game_hosts_lua.cpp` ~:9715).
+  - `00915F20` scoring is not modelled on the host ship path either, so that gap is not
+    specific to devices.
+- **What would make it observable.** A device record with no own-unit record in the same step.
+  Examples: a C1 direct hit that doesn't relay; a blast that reaches a mount but not its hull
+  (a gather change); or a new rate-limit window.
+- **Fix sketch.** Move the ship path's attribution block into one helper keyed by (parent unit,
+  shooter, record). Call it after `device_blast_dispatch_009239a0`, after the gunless dispatch,
+  and at C1's non-relay return. Gate the attribution part on `00470740(record, 0) > 0`; post the
+  hit event unconditionally. The OFF arm stays verbatim. Expected movers on shipped data: none.
+  This is worth doing together with `00915F20` scoring.
