@@ -19,7 +19,8 @@ namespace bsp {
 //         009FB190 registers sub+18h with the target's observer list (00694A60, EDX = the
 //         ref, so its primary table 00D21CB4). Slot +4h, 009FAF90, runs when the target
 //         goes through the kill list: the row-15 drain (009274DE..00927510, 00696330)
-//         sets +5Dh/+5Eh/+5Fh and notifies +4h, and 009FAF90 moves +1Ch by the dying
+//         sets +5Dh/+5Eh/+5Fh and notifies +4h, as does the direct removal 009263C0
+//         (the same flags, then 00925C40 -> 00696330); 009FAF90 moves +1Ch by the dying
 //         target's matrix and clears sub+18h and sub+14h (009FAFF4/009FAFF7), whatever
 //         state the task is in, the goaway included. The damage destroy hook 00926390
 //         notifies slot +8h instead, 0042B120 (RET 4), so a target destroyed by damage
@@ -55,6 +56,16 @@ namespace bsp {
 // all-false flags over +5Eh. Not modelled: 009FAF90's
 // +1Ch freeze (the host's aim point follows st_target, labelled at st_refresh_aim_point),
 // and slots without scene flags (scene_flags_available false), whose +5Eh stays 0.
+// LABELLED, the revive window: the latch is set only when a +70h reader sees +5Eh. During
+// the goaway the only reader is the pitch re-plan, so a garrison member that is Killed
+// and revived in place (game_hosts_ship_ai.cpp, the 006F3660 substitution, which stores
+// all-false flags) within one goaway is never latched and stays a target; in the image the
+// revive is a new object and +70h stays 0. Setting the latch from the revive would mean
+// walking every strafer's target, so it is not done.
+// LABELLED, the install edge: a strafe installed on a kind-2 target that is not kind 5 and
+// is already Killed latches at the first reader here, while the image keeps +70h (009FB190
+// registers after the notify and nothing re-notifies; 009FADA0 tests kind 5 only).
+// Practically unreachable: commands are not issued at Killed targets.
 // Pair the flip with S6's kTargetDisabledByte5dCc13Bound: st_ref70_drop_009fada0 reads
 // +5Dh through S6's binding (state->simulate) whatever that switch is set to.
 // 009CC390 also reads task+44Ch and +468h (009CC3A8, 009CC3B2), but it is dead: undefined
