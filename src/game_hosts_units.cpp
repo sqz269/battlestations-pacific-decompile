@@ -67,6 +67,7 @@
 #include "bsp/dive_bomb_task.hpp"
 #include "bsp/dive_bomb_goaway_turn.hpp"
 #include "bsp/move_to_glide.hpp"
+#include "bsp/target_disabled_byte_5d_cc13.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/plane_cached_speed_b1c_cc13.hpp"
 #include "bsp/torpedo_goaway_tick.hpp"
@@ -30466,8 +30467,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ri.entry.has_ordnance_ce = a.has_ordnance_ce;
                         ri.entry.in_range_cd = a.in_range_cd;
                         ri.has_latched_target = t != nullptr;
-                        // target+5Dh. SUBSTITUTION, labelled: the host's liveness.
-                        ri.target_disabled_5d = t != nullptr && !df_slot_live(*t);
+                        // target+5Dh: 009B8968 / 009B8AF4 / 009B8DA4 CMP [[task+440h]+5Dh],0.
+                        if constexpr (bsp::kTargetDisabledByte5dCc13Bound) {
+                            ri.target_disabled_5d = t != nullptr && t->state != nullptr &&
+                                                    t->state->simulate != 0;
+                        } else {
+                            // SUBSTITUTION, labelled: the host's liveness.
+                            ri.target_disabled_5d = t != nullptr && !df_slot_live(*t);
+                        }
                         bsp::LevelBombBreakOffInputs bin;
                         bin.has_latched_target = ri.has_latched_target;
                         bin.target_disabled_5d = ri.target_disabled_5d;
@@ -30938,8 +30945,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         {
                             bsp::StrafeRangeInputs rin;
                             rin.has_target = t != nullptr;
-                            // target+5Dh. SUBSTITUTION, labelled: the host's liveness.
-                            rin.target_disabled_5d = t != nullptr && !live;
+                            // target+5Dh: 009CCF37 CMP [target+5Dh],0.
+                            if constexpr (bsp::kTargetDisabledByte5dCc13Bound) {
+                                rin.target_disabled_5d = t != nullptr && t->state != nullptr &&
+                                                         t->state->simulate != 0;
+                            } else {
+                                // SUBSTITUTION, labelled: the host's liveness.
+                                rin.target_disabled_5d = t != nullptr && !live;
+                            }
                             rin.unit_height_100 = unit_.motion.position[1];
                             rin.aim_height = unit_.st_aim_point[1];
                             rin.glide_tan_30 = unit_.st_glide_tan_30;
