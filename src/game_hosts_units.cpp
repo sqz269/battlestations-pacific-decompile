@@ -16,6 +16,7 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/aim_lead_body_axis_cc13.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"
+#include "bsp/hull_aim_shared_stream_cc13.hpp"  // packet cc13-hullaimrng
 #include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/game_hosts_ready.hpp"  // kSunkShipFlushBound, packet cc13-jm08
 #include "bsp/hull_terrain_contact.hpp"
@@ -2803,11 +2804,46 @@ void hull_aim_print(GameHostLog& log, const char* why, const GameUnitSlot& shoot
 
 // The world aim point for `shooter` against `target`. Returns false when the
 // target supplies no hull, in which case the caller keeps the origin it had.
+//
+// kHullAimSharedStreamCc13Bound: 00816650's draws on the shared stream 1, in its count
+// and order (include/bsp/hull_aim_shared_stream_cc13.hpp). A target that does not sample
+// its hull has 0042D810 at vtable[100h], which draws nothing.
+bsp::ShipLeadRandomDraws hull_aim_shared_stream_draws_00816650(
+    const bsp::ApproachTargetRefState& st, bool samples, float section_total,
+    GameGunneryHost& stream, std::size_t shooter) {
+    bsp::ShipLeadRandomDraws d{};
+    if (!samples) return d;
+    bool sections = false;
+    if (st.section_chance_64 > 0.0f) {                                   // 00816659, JBE
+        d.section_roll = stream.hull_aim_point_draw_00816650(shooter, 0.0f, 1.0f);  // 0081667C
+        sections = st.section_chance_64 > d.section_roll;                // 00816685, JBE
+    }
+    // 00816769..00816775: FLD m64 [00D7A268] = 9.999999747378752e-05 (1e-4f widened),
+    // FLD the total, FCOMI, JBE.
+    constexpr double kSectionEpsilon = static_cast<double>(1.0e-4f);
+    if (sections && static_cast<double>(section_total) > kSectionEpsilon) {
+        // 0081677B FSUBRP (total - epsilon at PC24), 00816785 FSTP float.
+        const float high = static_cast<float>(
+            bsp::cc13x87::x87_sub24(section_total, kSectionEpsilon));
+        d.pick = stream.hull_aim_point_draw_00816650(shooter, 0.0f, high);  // 00816796
+        return d;
+    }
+    // 00816820: the box, sub+48h; the low ends are -0.0 [00D7A208] SUBSS the extent.
+    d.box_x = stream.hull_aim_point_draw_00816650(shooter, -0.0f - st.spread_48[0],
+                                                  st.spread_48[0]);       // 00816883
+    d.box_y = stream.hull_aim_point_draw_00816650(shooter, 0.0f, st.spread_48[1]);  // 008168A0
+    d.box_z = stream.hull_aim_point_draw_00816650(shooter, -0.0f - st.spread_48[2],
+                                                  st.spread_48[2]);       // 008168D5
+    return d;
+}
+
 bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
                           std::size_t target_plus_one, float out[3],
                           GameHostLog* log = nullptr,
                           const bsp::ApproachTargetSections* sections = nullptr,
-                          GameHostLog* section_log = nullptr) {
+                          GameHostLog* section_log = nullptr,
+                          GameGunneryHost* stream = nullptr,
+                          std::size_t shooter_index = 0) {
     if (shooter.hull_aim_target_plus_one != target_plus_one) {
         // A new ordered target means a new sub-object: 009FB200.
         // kAimErrorDrawBound: the image builds the sub-object once, in the
@@ -2841,8 +2877,20 @@ bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
             bsp::approach_target_ref_unit_draws_substitute(shooter.hull_aim_seed);
         const float section_total = (samples && sections != nullptr)
             ? bsp::approach_target_ref_section_total(st, *sections) : 0.0f;
-        const bsp::ShipLeadRandomDraws draws =
-            bsp::approach_target_ref_draws_from_unit(unit, st.spread_48, section_total);
+        bsp::ShipLeadRandomDraws draws{};
+        if constexpr (bsp::kHullAimSharedStreamCc13Bound) {
+            // LABELLED: with no gunnery host (a bare units host) there is no shared
+            // stream, and the pick keeps the counter-hash values.
+            if (stream != nullptr) {
+                draws = hull_aim_shared_stream_draws_00816650(st, samples, section_total,
+                                                              *stream, shooter_index);
+            } else {
+                draws = bsp::approach_target_ref_draws_from_unit(unit, st.spread_48,
+                                                                 section_total);
+            }
+        } else {
+            draws = bsp::approach_target_ref_draws_from_unit(unit, st.spread_48, section_total);
+        }
         bsp::approach_target_ref_pick_009fa260(st, hull, draws, samples,
                                                samples ? sections : nullptr);
         if (samples && sections != nullptr && st.section_chance_64 > draws.section_roll) {
@@ -13267,7 +13315,7 @@ void GameUnitsHost::Impl::hull_aim_pick_009fa260(GameUnitSlot& shooter,
     float discard[3] = {target.motion.position[0], target.motion.position[1],
                         target.motion.position[2]};
     (void)hull_aim_world_point(shooter, target, target_plus_one, discard, nullptr,
-                               sections_in, &log);
+                               sections_in, &log, gunnery.get(), index_of_slot(shooter));
 }
 
 // Packet cc9_approach_target_lead: 009FADA0's tail 009FAF05-009FAF7D.
@@ -13286,7 +13334,8 @@ bool GameUnitsHost::Impl::aim_point_009fada0(GameUnitSlot& shooter,
         sections_in = &sections;
     }
     const bool hull = hull_aim_world_point(shooter, target, target_plus_one, out, log_out,
-                                           sections_in, &log);
+                                           sections_in, &log, gunnery.get(),
+                                           index_of_slot(shooter));
     const float projtime = shooter.hull_aim_ref.lead_projtime;
     // 009FAF05-009FAF11: JBE past the tail unless projtime > 0.0. The nine
     // hull-sampling vtables carry 008120E0 at +48h; every other target class
