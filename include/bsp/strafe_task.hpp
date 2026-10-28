@@ -61,7 +61,10 @@ inline constexpr bool kAttackChoiceGunsFedBound = true;   // ON: SQUADRON_LAND_T
 // False: the 53-bit models (double chains rounded once at the store), which
 // are the image's pool-worker case, and ordered compares. Changes only ulp
 // and NaN cases.
-inline constexpr bool kStrafeX87FaithfulCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-27) without pairs: the sw3 reach census on all 18 WINS rows
+// (OFF, origin/main 6a9c86448 + 057027d61) counts differs=0 at every site (009CCF06, 009CCF58,
+// 00996510, 00996300), so ON = OFF on those rows by construction.
+inline constexpr bool kStrafeX87FaithfulCc13Bound = true;
 
 // 009CC690's inputs. `ctl` is [task+404h] (approach+0Ch).
 struct StrafeRuleInputs {

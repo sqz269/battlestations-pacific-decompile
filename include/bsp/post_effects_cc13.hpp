@@ -143,7 +143,7 @@ void frustum_planes(float planes[24], float vertical, float horizontal, float ne
 // The image runs it on the main thread at 24-bit precision control:
 // ortho_off_center_lh_pc24 models that per operation and is fixture-tested. The live
 // ortho_off_center_lh keeps the double model while this switch is OFF (cc9 flips it).
-inline constexpr bool kOrthoOffCenterPc24Cc13Bound = false;
+inline constexpr bool kOrthoOffCenterPc24Cc13Bound = true;  // ON by pruning (cc9-sweep1b): reach counter 0 differs on every OFF run (sites 0)
 void ortho_off_center_lh(float out[16], float l, float r, float b, float t, float zn, float zf);
 void ortho_off_center_lh_pc24(float out[16], float l, float r, float b, float t, float zn, float zf);
 

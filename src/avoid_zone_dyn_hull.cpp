@@ -1,4 +1,6 @@
 #include "bsp/avoid_zone_dyn_hull.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_dyn_hull_cc13.hpp"  // packet pc24w2-hull
 #include <algorithm>
 #include <array>
 #include <cfloat>
@@ -292,7 +294,15 @@ bool hull_00c5cae0(const std::vector<V>& p,Triangles& all,int limit) {
             const Triangle& t=*all[j];
             if(!contains(t,vertex)) break;
             const V area=cross(sub(p[t.vertex[1]],p[t.vertex[0]]),sub(p[t.vertex[2]],p[t.vertex[1]]));
-            const double area_limit=static_cast<double>(epsilon)*epsilon*static_cast<double>(0.1f);
+            // pc24w2-hull: 00C5D3C9..00C5D3D5 squares eps (stored as a qword at 00C5D3A5 from
+            // the float) and multiplies by the qword 0.1f at [00D7A3A0], each FMUL rounded at
+            // PC24 on the main thread, then compares unstored with the float magnitude.
+            double area_limit;
+            if constexpr (kPc24DynHullCc13Bound) {
+                area_limit=cc13x87::x87_mul24(cc13x87::x87_mul24(epsilon,epsilon),static_cast<double>(0.1f));
+            } else {
+                area_limit=static_cast<double>(epsilon)*epsilon*static_cast<double>(0.1f);
+            }
             if(above_00c51740(p,t,center,plane_epsilon) || magnitude(area)<area_limit) {
                 extrude_00c51480(all,t.neighbor[0],vertex);
                 j=static_cast<int>(all.size());

@@ -23,6 +23,7 @@
 #include "bsp/bullet_engagement_range.hpp"  // packet cc9_ai_plane_loadout_arm
 #include "bsp/objective_units.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/plane_cached_speed_b1c_cc13.hpp"   // packet cc13-torprun
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
@@ -124,7 +125,10 @@ constexpr bool kShipyardLaunchSkillCc13Bound = true;
 // kSpawnNewMissingClassRaisesBound raise burns a serial; OFF takes it before the
 // reads. Live: MissionLuaNative SpawnNew 0094C480 ->
 // GameMissionLuaHost::run_spawn_new_00949750.
-constexpr bool kSpawnNewNonTableArgumentCc13Bound = false;
+// ON (cc9-recon2, unreached): no log since 2026-10-15 has spawn_new_rejected > 0,
+// and the one missing-class raise (PRCP05, calls=1) has no later SpawnNew whose
+// serial could shift.
+constexpr bool kSpawnNewNonTableArgumentCc13Bound = true;
 
 // Packet cc13-atktgt: UnitGetAttackTarget 008A6DE0's arm by director kind. The
 // image asks director->vtable[48h](2) (008A6F0D). A squadron's director is the
@@ -9947,19 +9951,12 @@ namespace {
 // 1e-10 at 00CE3820, JBE (s2 <= 1e-10 or unordered) -> 0.0 (007D8064 XORPS); else
 // 007D8051 00BF7030 sqrt, 007D8056 FSTP float. LABELLED: computed when the native runs,
 // where the image reads the value 007D8020 cached at the last 007D9C10 / 007D9C80 call.
+// The chain is bsp::plane_cached_speed_b1c_007d8020 (plane_cached_speed_b1c_cc13.hpp),
+// shared with the game_hosts_units.cpp readers (cc13-torprun).
 bool plane_cached_speed_007b8e60(const GameUnitsHost& units, std::size_t index, float& out) {
     float v[3] = {0.0f, 0.0f, 0.0f};
     if (!units.unit_plane_world_velocity(index, v)) return false;
-    const float xx = static_cast<float>(static_cast<double>(v[0]) * v[0]);   // 007D802F
-    const float yy = static_cast<float>(static_cast<double>(v[1]) * v[1]);   // 007D8033
-    const float xy = static_cast<float>(static_cast<double>(yy) + xx);       // 007D8037
-    const float zz = static_cast<float>(static_cast<double>(v[2]) * v[2]);   // 007D8039
-    const float s2 = static_cast<float>(static_cast<double>(xy) + zz);       // 007D803B/3D
-    if (!(static_cast<double>(s2) > 1e-10)) {                                // 007D804F JBE
-        out = 0.0f;                                                          // 007D8064
-        return true;
-    }
-    out = static_cast<float>(std::sqrt(static_cast<double>(s2)));          // 007D8051/56
+    out = bsp::plane_cached_speed_b1c_007d8020(v);
     return true;
 }
 }  // namespace

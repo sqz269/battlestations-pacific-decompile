@@ -12,6 +12,9 @@
 //   src/hud_warning_screen.cpp  0064B870 thrust/turn integration, 0051F050 binocular yaw and
 //                               pitch steps, 00526A40 pick ray end and lock radius
 //   src/game_hosts_hud_world.cpp 005C0F20 direction wedge (005C1864/005C186C)
+// pc24w1-hudgui-1b sites (inside 0064DD30):
+//   src/hud_ship_screen.cpp     0064E358 stick target and ease, 0064F665 submarine circle
+//                               ratio and worst device damage, 0064FD24 dial rate
 // Copies not narrowed by this packet: 0064B870 in src/game_hosts_units.cpp
 // (player_helm_issue_0064b870, packet pc24w1-hudgui-2); 0051F050's helm_aim_axes in
 // src/game_hosts_hud.cpp is a host inverse of the step, not an image chain.
