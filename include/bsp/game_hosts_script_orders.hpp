@@ -662,7 +662,7 @@ inline constexpr bool kLuaDisplayScoresBound = true;   // ON: SQUADRON_LAND_TASK
 // this host launched holds it. False: such a slot refuses ("the slot holds no
 // squadron this host built"), JM08's MainAirFieldEntity 01 with Ki-43 Oscar 01
 // and Gekko 01.
-inline constexpr bool kAirOpsSceneSquadronOrdersBound = false;
+inline constexpr bool kAirOpsSceneSquadronOrdersBound = true;  // cc9-sweep2b: prune flip, zero reach on u01/b9/b6i/l10/p01/u12/j8v3
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50

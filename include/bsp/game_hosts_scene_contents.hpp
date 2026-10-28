@@ -591,7 +591,7 @@ bool scene_database_register_classes_004f2800(GameHostLog& log);
 // exempt root only the children outside it (0046B7CA). True, with
 // kEngineMovieStopRosterBound: those entities are not dropped. False: every
 // GenerateInEngineMovie admit is dropped, as before.
-inline constexpr bool kEngineMovieStopRosterExemptBound = false;
+inline constexpr bool kEngineMovieStopRosterExemptBound = true;  // cc9-sweep2b: prune flip, zero reach on u01/b9/b6i/l10/p01/u12/j8v3
 
 // Packet cc9_shipyard_scene_attach (GUNNERY 136.2, the scene half routed to this lane;
 // docs/SQUADRON_LAND_TASK.md 5ej). True: create_units reads a Shipyard row's bag

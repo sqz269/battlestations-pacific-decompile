@@ -397,7 +397,7 @@ inline constexpr bool kAiLoadoutCarriedTermsBound = true;   // ON: SQUADRON_LAND
 // Packet cc9_ai_rocket_accuracy (docs/SQUADRON_LAND_TASK.md 5dm): the loadout
 // arm's rocket option asks the host's rocket_accuracy (009FE4F1 read whole)
 // instead of bullet_accuracy, which answers 0 for sub-type 12h.
-inline constexpr bool kAiRocketAccuracyBound = false;
+inline constexpr bool kAiRocketAccuracyBound = true;  // cc9-sweep2b: prune flip, zero reach on u01/b9/b6i/l10/p01/u12/j8v3
 
 // 009FE4F1, 009FE270's arm for sub-type 12h, as a pure function to the tuning
 // record offset (0 = the reject arm 009FE6BB).

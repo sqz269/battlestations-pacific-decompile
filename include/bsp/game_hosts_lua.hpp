@@ -503,14 +503,14 @@ inline constexpr bool kLuaSetDeadMeatBound = true;  // ON: BSM01 pair, SQUADRON_
 // run_is_unit_selectable_008ab580 on GameHudHost::unit_selectable_00645060. False: the
 // row stays UNIMPLEMENTED and pushes nothing. Flip with kLuaGetEntitySpeedBound
 // (usn_11 / prcp_11 CheckMontR* test both in one `and`).
-inline constexpr bool kLuaIsUnitSelectableBound = false;  // OFF: committed unpaired
+inline constexpr bool kLuaIsUnitSelectableBound = true;  // cc9-sweep2b: prune flip, zero reach on u01/b9/b6i/l10/p01/u12/j8v3
 // Packet cc13-fix12. 008C0820 GetEntitySpeed(entity): 008C091F 00888AA0, 008C0936
 // unit->vtable[38h]() with no null test, 008C093F FSTP float, 008C094F 00B66480;
 // one result. Slot 38h: ships 0080E0F0 (0092D730 on unit+1018h, the signed body
 // forward speed), planes 007B8E60 (FLD [unit+B1Ch]), PlaneSquadronGen 007ED470 (the
 // leader +3D0h's slot 38h). True: run_get_entity_speed_008c0820. False: UNIMPLEMENTED,
 // nothing pushed.
-inline constexpr bool kLuaGetEntitySpeedBound = false;  // OFF: committed unpaired
+inline constexpr bool kLuaGetEntitySpeedBound = true;  // cc9-sweep2b: prune flip, zero reach on u01/b9/b6i/l10/p01/u12/j8v3
 // Packet cc13-fix18 (docs/CC13_FIX18.md section 2). 008AAB90 ClearForcedReconLevel(entity,
 // party), no result: 008AAC90 00888AA0 resolves argument 0 (no null test), 008AACC1
 // 00B66290 reads argument 1 as the party; 008AACE2 00803B50 on the record
@@ -854,7 +854,7 @@ inline constexpr bool kLuaSquadronSetReleaseAltBound = true;  // ON: BSM09 pair 
 // squadron (007F3A2A). True: the row runs squadron_land_and_kill_008a20e0
 // (src/air_operations.cpp) over the deck registry and the gunnery host's kill.
 // False: the row stays unimplemented (PRCP01 keeps the extra squadrons flying).
-inline constexpr bool kLuaSquadronLandAndKillBound = false;
+inline constexpr bool kLuaSquadronLandAndKillBound = true;  // cc9-sweep2b: prune flip, zero reach on u01/b9/b6i/l10/p01/u12/j8v3
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 1). 008975B0
 // RemoveAllAirBasePlanes(base): 00888AA0 on argument 0, 006BCD20 with DL = 0, then
 // 006C8840 on the block (008976D1): every stock node through 006C7B10 (the stock
