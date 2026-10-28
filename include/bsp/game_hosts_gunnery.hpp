@@ -84,6 +84,7 @@
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/projectile_impact.hpp"
 #include "bsp/rocket_homing_cc13.hpp"
+#include "bsp/rocket_proximity_fuze_cc13.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
 
 namespace bsp {
@@ -163,6 +164,9 @@ struct GameBulletClassRow {
     float ignition_delay{0.0f};       // "IgnitionDelay", classDesc+E0h
     float rocket_vmax{0.0f};          // "VMax", classDesc+D8h
     float rocket_acceleration{0.0f};  // "Acceleration", classDesc+DCh
+    // Packet cc13-rocketfuze: "AntiAir", classDesc+E4h (INFERRED offset), the
+    // proximity fuze gate of 0080A55D. Read for every class; only a rocket uses it.
+    bool anti_air{false};
 };
 
 // One authored `DeviceClass` row, as the gun needs it.

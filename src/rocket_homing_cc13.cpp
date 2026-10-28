@@ -5,7 +5,10 @@
 // float store, as in src/rocket_task_cc13.cpp. The main thread runs the FPU at
 // 24 bits (docs/CC13_FPU_PRECISION.md), so the last bit can differ.
 #include "bsp/rocket_homing_cc13.hpp"
+#include "bsp/rocket_proximity_fuze_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
+
+#include <limits>
 #include "bsp/pc24_planetasks_cc13.hpp"
 #include "bsp/plane_task_reach_sw3.hpp"
 
@@ -262,6 +265,79 @@ RocketAirStepResult rocket_air_step_0080a000(RocketFlight& r, const RocketClassP
     out.axial_speed = rocket_thrust_step_0080a15b(r, c, dt);
     out.homing = rocket_homing_step_0080a25c(r, c, target, out.axial_speed, &out.flight_time,
                                              &out.steer);
+    return out;
+}
+
+// Packet cc13-rocketfuze (rocket_proximity_fuze_cc13.hpp): 0080A5A8..0080A9F2. Every
+// arithmetic op rounds to 24 bits (cc13x87) and every FSTP dword is a float store, in
+// the listing's order.
+RocketFuzeResult rocket_proximity_fuze_0080a55d(const std::array<float, 3>& p,
+                                                const std::array<float, 3>& v, float dt,
+                                                const RocketFuzeTarget* targets,
+                                                std::size_t count, float blast_range) noexcept {
+    using cc13x87::x87_add24;
+    using cc13x87::x87_div24;
+    using cc13x87::x87_mul24;
+    using cc13x87::x87_sub24;
+    const auto f = [](double x) { return static_cast<float>(x); };
+    RocketFuzeResult out;
+    float best_d2 = (std::numeric_limits<float>::max)();   // 0080A5AE 00D7A248 (7F7FFFFF)
+    // [ESP+10h] is written only when a candidate wins (0080A832). With none, best_d2
+    // stays FLT_MAX and the fire test fails before reading it.
+    float best_t = 0.0f;
+    for (std::size_t k = 0; k < count; ++k) {
+        const std::array<float, 3>& tp = targets[k].position;
+        const std::array<float, 3>& tv = targets[k].velocity;
+        const float dx = f(x87_sub24(p[0], tp[0]));            // 0080A638 -> [ESP+30h]
+        const float dy = f(x87_sub24(p[1], tp[1]));            // 0080A65D -> [ESP+28h]
+        const float dz = f(x87_sub24(p[2], tp[2]));            // 0080A67A -> [ESP+1Ch]
+        const float dvx = f(x87_sub24(v[0], tv[0]));           // 0080A688 -> [ESP+2Ch]
+        const float dvy = f(x87_sub24(v[1], tv[1]));           // 0080A696 -> [ESP+48h]
+        const float dvz = f(x87_sub24(v[2], tv[2]));           // 0080A6A4 -> [ESP+34h]
+        // 0080A6BA..0080A6C6: (dvy^2 + dvx^2) + dvz^2 -> [ESP+44h].
+        const float vv = f(x87_add24(x87_add24(x87_mul24(dvy, dvy), x87_mul24(dvx, dvx)),
+                                     x87_mul24(dvz, dvz)));
+        float t = 0.0f;
+        if (!(vv == 0.0f)) {                                   // 0080A6D6 FUCOMIP, JNP on equal
+            // 0080A6E0..0080A6FA: (dvx dx + dvy dy) + dvz dz -> [ESP+1Ch].
+            const float dot = f(x87_add24(x87_add24(x87_mul24(dvx, dx), x87_mul24(dvy, dy)),
+                                          x87_mul24(dvz, dz)));
+            t = f(x87_div24(-static_cast<double>(dot), vv));   // 0080A704 FCHS, FDIVRP
+            if (0.0f > t) t = 0.0f;                            // 0080A712 FCOMIP / JBE
+            if (t > dt) t = dt;                                // 0080A734 FCOMIP / JBE
+        }
+        const float ax = f(x87_mul24(tv[0], t));               // 0080A75A -> [ESP+44h]
+        const float ay = f(x87_mul24(tv[1], t));               // 0080A766 -> [ESP+34h]
+        const float az = f(x87_mul24(tv[2], t));               // 0080A770 -> [ESP+48h]
+        const float rx = f(x87_mul24(v[0], t));                // 0080A77C
+        const float ry = f(x87_mul24(v[1], t));                // 0080A788
+        const float rz = f(x87_mul24(v[2], t));                // 0080A78E
+        const float sx = f(x87_add24(p[0], rx));               // 0080A79C -> [ESP+1Ch]
+        const float sy = f(x87_add24(p[1], ry));               // 0080A7A4 -> [ESP+28h]
+        const float sz = f(x87_add24(p[2], rz));               // 0080A7B0 -> [ESP+30h]
+        const float ex = f(x87_sub24(f(x87_sub24(sx, tp[0])), ax));   // 0080A7B8, 0080A7D8
+        const float ey = f(x87_sub24(f(x87_sub24(sy, tp[1])), ay));   // 0080A7C0, 0080A7E4
+        const float ez = f(x87_sub24(f(x87_sub24(sz, tp[2])), az));   // 0080A7CC, 0080A7F0
+        // 0080A806..0080A812: (ey^2 + ex^2) + ez^2 -> [ESP+18h].
+        const float d2 = f(x87_add24(x87_add24(x87_mul24(ey, ey), x87_mul24(ex, ex)),
+                                     x87_mul24(ez, ez)));
+        if (best_d2 > d2) {                                    // 0080A820 FCOMIP / JBE
+            best_d2 = d2;
+            best_t = t;
+        }
+    }
+    out.best_d2 = best_d2;
+    out.best_t = best_t;
+    const float r2 = f(x87_mul24(blast_range, blast_range));  // 0080A85A -> [ESP+1Ch]
+    out.fire = r2 > best_d2 && dt > best_t;                    // 0080A866, 0080A87B
+    if (!out.fire) return out;
+    out.point = p;
+    if (!(best_t == 0.0f)) {                                   // 0080A889 UCOMISS 00D7A218
+        out.moved = true;
+        for (int i = 0; i < 3; ++i) {                          // 0080A896..0080A8DC
+            out.point[i] = f(x87_add24(p[i], f(x87_mul24(v[i], best_t))));
+        }
+    }
     return out;
 }
 
