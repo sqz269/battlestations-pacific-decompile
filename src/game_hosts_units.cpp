@@ -17,6 +17,7 @@
 #include "bsp/aim_lead_body_axis_cc13.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"
 #include "bsp/hull_aim_shared_stream_cc13.hpp"  // packet cc13-hullaimrng
+#include "bsp/set_speed_ctl_axis_cc13.hpp"  // packet cc13-setspeed
 #include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/game_hosts_ready.hpp"  // kSunkShipFlushBound, packet cc13-jm08
 #include "bsp/hull_terrain_contact.hpp"
@@ -22198,17 +22199,34 @@ void GameUnitsHost::store_commanded_speed_00890e6f(std::size_t unit_index, float
 // world linear velocity copied to ctl+30h..+38h (007D9EC7..007D9ED6).
 // SUBSTITUTION, labelled: the body +Z axis in world is the pose's forward row,
 // the same axis the spawn seed uses; the ctl+30h..+38h copy has no host field.
+// kSetSpeedCtlAxisCc13Bound (include/bsp/set_speed_ctl_axis_cc13.hpp): ctl+30h is
+// the host's plane_velocity_lp_30, and ON stores it and drops the normalisation.
 bool GameUnitsHost::set_plane_forward_speed_007d9e80(std::size_t unit_index, float speed) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size()) return false;
     GameUnitSlot& slot = *host.slots[unit_index];
     if (!slot.plane_velocity_seeded) return false;
     const float* const fwd = slot.motion.pose_row2;
+    if constexpr (bsp::kSetSpeedCtlAxisCc13Bound) {
+        // 007D9C80 -> 0042D0D0(ctl+3Ch = (0, 0, speed), unit+74h, w 0): the products
+        // with zero add nothing, so each axis is f32(speed * row2[i]); no
+        // normalisation and no length guard. The angular term is the zero vector.
+        for (int i = 0; i < 3; ++i) {
+            slot.plane_world_velocity[i] = speed * fwd[i];
+            slot.plane_body_angular[i] = 0.0f;
+        }
+        // 007D9EC7..007D9ED6: ctl+30h..+38h, the low-passed velocity, = ctl+18h..+20h.
+        if constexpr (Impl::kPlaneVelocityLowpassBound) {
+            for (int i = 0; i < 3; ++i) slot.plane_velocity_lp_30[i] = slot.plane_world_velocity[i];
+            slot.plane_velocity_lp_valid = true;
+        }
+    } else {
     const float len = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] + fwd[2] * fwd[2]);
     if (!(len > 1e-6f)) return false;
     for (int i = 0; i < 3; ++i) {
         slot.plane_world_velocity[i] = speed * fwd[i] / len;
         slot.plane_body_angular[i] = 0.0f;
+    }
     }
     slot.motion.linear_velocity = bsp::OceanVec3{
         slot.plane_world_velocity[0], slot.plane_world_velocity[1],
