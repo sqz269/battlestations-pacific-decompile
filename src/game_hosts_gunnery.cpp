@@ -6270,7 +6270,8 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     b.rocket_vmax = lua.read_bullet_class_number(gun.bullet_class, "VMax", 0.0f);
                     b.rocket_acceleration = lua.read_bullet_class_number(
                         gun.bullet_class, "Acceleration", 0.0f);
-                    // Packet cc13-rocketfuze: class +E4h (INFERRED), 0080A563.
+                    // Packet cc13-rocketfuze: class +E4h (00809D9F), 0080A563. Read in
+                    // both builds; the value is used only under kRocketProximityFuzeCc13Bound.
                     b.anti_air = lua.read_bullet_class_bool(gun.bullet_class, "AntiAir", false);
                 }
                 b.damage_min = flat_scaled(type_id, make("dmin"), kMilliScale, 0.0f);
@@ -11946,7 +11947,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
         if constexpr (bsp::kRocketProximityFuzeCc13Bound) {
             // Packet cc13-rocketfuze: 0080A55D..0080A9F2, the tail of the same air
             // step, reached on every step (rocket_proximity_fuze_cc13.hpp). The gate:
-            // class AntiAir (+E4h, INFERRED) or [00F874FD] (kRocketAirGroundTypeSameCc13,
+            // class AntiAir (+E4h) or [00F874FD] (kRocketAirGroundTypeSameCc13,
             // false: the binding is not hosted), a shooter (+3BCh; the host's owner),
             // and not a network client ([00E188A8+1FE4h] != 2, always so here).
             const GameBulletClassRow* const rc = shot.is_rocket ? bullet(shot.bullet_class)
@@ -11954,11 +11955,12 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             if (rc != nullptr && (rc->anti_air || bsp::kRocketAirGroundTypeSameCc13)
                 && shot.owner_unit != 0) {
                 ++rocket_fuze_scans;
-                // [008053C0(shooter+54h)]+DE8h, IsKindOf(0Fh). LABELLED: the side is
-                // the one stored at the spawn; a squadron record (a PlaneSquadronGen,
-                // IsKindOf(18h) in the image) is skipped; dead units are not listed.
-                // The target velocity is vtable[34h] as the homing view stands it:
-                // the forward row at 0092D730 speed.
+                // [008053C0(shooter+54h)]+DE8h, IsKindOf(0Fh). A squadron record is a
+                // PlaneSquadronGen, which 0080A5ED's IsKindOf(0Fh) rejects, so skipping
+                // it is the image's own filter. LABELLED: the side is the one stored at
+                // the spawn; dead units are not listed. The target velocity is
+                // vtable[34h] (007BBB70, unit+AC8h for a plane) through
+                // unit_linear_velocity, zero when the host has none.
                 std::vector<bsp::RocketFuzeTarget> fuze_targets;
                 if (const auto* t = recon_triples_for(shot.owner_side)) {
                     for (std::size_t k = 0; k < t->lists[1].size(); ++k) {
@@ -11967,12 +11969,11 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                             continue;
                         if (i >= unit_state.size() || unit_state[i].dead) continue;
                         if (!units.unit_is_kind_of(i, 0x0f)) continue;
-                        float r[3], u[3], fw[3], o[3];
-                        unit_pose(i, r, u, fw, o);
-                        const float speed = units.unit_forward_speed_0092d730(i);
                         bsp::RocketFuzeTarget e;
                         units.unit_position_00fc(i, e.position[0], e.position[1], e.position[2]);
-                        e.velocity = {fw[0] * speed, fw[1] * speed, fw[2] * speed};
+                        float tv[3] = {0.0f, 0.0f, 0.0f};
+                        if (!units.unit_linear_velocity(i, tv)) tv[0] = tv[1] = tv[2] = 0.0f;
+                        e.velocity = {tv[0], tv[1], tv[2]};
                         fuze_targets.push_back(e);
                     }
                 }
@@ -11993,6 +11994,17 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                     const float at[3] = {fuze.point[0], fuze.point[1], fuze.point[2]};
                     shot.fate = 3;
                     round_bullet_class = shot.bullet_class;
+                    // 0080A94E: 00470350 SetShot(record, [rocket+3DCh] = the rocket)
+                    // before 0084BC60. The shot is non-null, so record+14h =
+                    // shot->vtable[54h]() = 006E2820 HullDamageBase, one 00BD2F10
+                    // U(class+ACh DamageMin, class+B0h DamageMax) draw. It is
+                    // discarded: 0084BE14 sees record+0 = 0 (no hit entity), so
+                    // nothing is queued. It precedes the blast's own draws below.
+                    // The key's unit is the shooter (there is no victim).
+                    static_cast<void>(draw(Draw::hull_damage, shot.gun_row, shot.owner_unit - 1,
+                        rc->damage_min, rc->damage_max));
+                    // 0084BC60 passes buffer+20h = record+4 (the rocket) as the shot,
+                    // so the blast prices with the rocket's class (round_bullet_class).
                     apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, at,
                         no_dir);
                     round_bullet_class = -1;

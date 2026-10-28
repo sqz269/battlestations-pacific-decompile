@@ -164,8 +164,9 @@ struct GameBulletClassRow {
     float ignition_delay{0.0f};       // "IgnitionDelay", classDesc+E0h
     float rocket_vmax{0.0f};          // "VMax", classDesc+D8h
     float rocket_acceleration{0.0f};  // "Acceleration", classDesc+DCh
-    // Packet cc13-rocketfuze: "AntiAir", classDesc+E4h (INFERRED offset), the
-    // proximity fuze gate of 0080A55D. Read for every class; only a rocket uses it.
+    // Packet cc13-rocketfuze: "AntiAir", classDesc+E4h (00809CB0 stores it at
+    // 00809D9F), the proximity fuze gate of 0080A55D. Read for every class in both
+    // builds; only a rocket under kRocketProximityFuzeCc13Bound uses it.
     bool anti_air{false};
 };
 

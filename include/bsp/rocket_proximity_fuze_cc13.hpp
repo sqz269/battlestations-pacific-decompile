@@ -6,12 +6,13 @@
 // (the shooter entity) non-null and [00E188A8+1FE4h] != 2. It is reached on every step:
 // the not-ignited exit 0080A155 and the homing exits 0080A264/0080A279 all jump to
 // 0080A55D.
-//   - class +E4h is the bulletclasses "AntiAir" bool. INFERRED, not read from the
-//     class reader: 007B80A0 tests the same +E4h byte against the same global, and the
-//     AI host reads AntiAir for that predicate. In this installation only the R4M rows
-//     (bullets 11 and 116, Type "Rocket") set it.
+//   - class +E4h is the bulletclasses "AntiAir" bool: BSP_RocketClass_ReadLuaFields
+//     00809CB0 pushes "AntiAir" (00D09030) at 00809D79..00809D9F, calls 00B662F0
+//     GetBooleanOrDefault(0) and stores AL at [esi+E4h]. In this installation only the
+//     R4M rows (bullets 11 and 116, Type "Rocket") set it.
 //   - [00F874FD] is written by 008C1620 SetRocketAirGroundTypeDifferent(flag) as
-//     !flag and zeroed by 004DA7C4 (teardown) and 004DFBE5 (scene load). Single player
+//     !flag, zeroed by 004DA7C4 (teardown) and 004DFBE5 (scene load), and stored from
+//     CL by the setter 004B4060 (MOV [00F874FD],CL; RET), which has no caller. Single player
 //     calls the binding only in JM13 and PRCPJM13, with true, so it stays 0; the
 //     multiplayer scripts pass false. The host keeps it as a bool, false, and does not
 //     host the binding (LABELLED).
