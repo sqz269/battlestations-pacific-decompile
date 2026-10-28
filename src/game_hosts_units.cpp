@@ -90,6 +90,7 @@
 #include "bsp/follow_to_body_pc24_cc13.hpp"  // packet cc13-followbody
 #include "bsp/units_host_deviations_cc13.hpp"  // packet cc13-unitsdev
 #include "bsp/cc13_release_timer.hpp"            // packet cc13-reltimer (009FA3A0 stubs)
+#include "bsp/level_bomb_bay_cc13.hpp"           // packet cc13-lbbay (009B8450, 007CC8E0 bay test)
 #include "bsp/band_0099_cc13.hpp"                // 009D49E0 / 009C8290 (cc13-reltimer2)
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/pilot_order_bindings.hpp"
@@ -934,6 +935,7 @@ struct GameUnitSlot {
     int lb_issue_tail_gate_refused{0};  // 007EEF50 gate (ctl+390h > ctl+374h) refused
     int lb_rack_drops{0};
     int lb_rack_gate_refused{0};
+    int lb_rack_bay_refused{0};   // 007CC8F4-007CC928 bay test (packet cc13-lbbay)
     float lb_first_release_at{-1.0f};
     float lb_first_drop_at{-1.0f};
     float lb_min_impact_miss{-1.0f};          // the aim tick's smallest planar miss
@@ -4212,6 +4214,7 @@ struct GameUnitsHost::Impl {
     // vtable[+50h] is modelled for the torpedo (009D49E0) and dive-bomb
     // (009C8290) tasks only, and a plane with neither task is left alone.
     unsigned long long bay_open_target_writes{0}, bay_open_steps{0};
+    unsigned long long lb_bay_opener_steps{0}, lb_bay_opener_mode2{0};   // packet cc13-lbbay
     void bay_open_step_cc13(GameUnitSlot& s, std::size_t index) {
         namespace rt = bsp::cc13_release_timer;
         if (!bsp::unit_is_kind_of(s.class_id, 0x0F)) return;
@@ -4234,7 +4237,24 @@ struct GameUnitsHost::Impl {
             mode = bsp::band0099::dive_bomb_step_result_009c8290(
                 attacking, d == bsp::DiveBombState::kAimDive);
         } else {
-            return;
+            if constexpr (bsp::kLevelBombBayOpenerCc13Bound) {
+                // 009B8450 (packet cc13-lbbay): the level-bomb task's vtable[+50h],
+                // close_cc = task+4C4h (approach+CCh).
+                if (!s.level_bomb_task_installed
+                    || s.level_bomb_state == bsp::LevelBombState::kNone) {
+                    return;
+                }
+                const bsp::LevelBombState l = s.level_bomb_state;
+                const bool attacking = l == bsp::LevelBombState::kAttackRun
+                    || l == bsp::LevelBombState::kAim || l == bsp::LevelBombState::kPrepare
+                    || l == bsp::LevelBombState::kRelease
+                    || l == bsp::LevelBombState::kGoAway;            // 009B845C-009B8486
+                mode = bsp::level_bomb_step_result_009b8450(attacking, s.lb_ap.close_cc);
+                ++lb_bay_opener_steps;
+                if (mode == 2) ++lb_bay_opener_mode2;
+            } else {
+                return;
+            }
         }
         ++bay_open_steps;
         const bool own_9c3 = bay_rack_holds_round_9c3(s);
@@ -31932,7 +31952,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 006E56F0 for each of the level bomber's single racks, with the
                     // level arm of 007CC8E0 (|bank| and |pitch| <= tuning+550h
                     // LevelBombAngleMax). The bay test is not applied (the per-slot
-                    // byte unit+9C3h is absent here, as at 007BBBA0). After a drop
+                    // byte unit+9C3h is absent here, as at 007BBBA0); with
+                    // kLevelBombDropBayGateCc13Bound it is (packet cc13-lbbay). After a drop
                     // toRepeatTime = desc+E0h, the rack's RepeatTime (006E58AA).
                     void run_level_bomber_rack_tick_006e56f0(float dt) {
                         lb_rack_state_seed();
@@ -31948,6 +31969,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (unit_.rack_ammo_per_rack[i] <= 0) {
                                 unit_.lb_rack_dropping[i] = 0;                // 006E58E1
                                 continue;
+                            }
+                            if constexpr (bsp::kLevelBombDropBayGateCc13Bound) {
+                                // 007CC8F4-007CC928, 007BB110 inlined (packet cc13-lbbay).
+                                const bsp::PlaneActuatorChannel& bay =
+                                    unit_.actuator_block_dec.channel_c;
+                                if (!bsp::cc13_release_timer::unit_can_release_007bb110(
+                                        bay.enabled, bay.value,
+                                        owner_.bay_rack_holds_round_9c3(unit_))) {
+                                    ++unit_.lb_rack_gate_refused;             // 007CC992
+                                    ++unit_.rack_gate_refused;
+                                    ++unit_.lb_rack_bay_refused;
+                                    continue;
+                                }
                             }
                             if (!bsp::level_bomb_attitude_gate_007cc8e0(unit_.plane_bank_angle_c68,
                                     unit_.plane_pitch_angle_c64, angle_max)) {
@@ -48792,6 +48826,10 @@ void GameUnitsHost::report() {
                     static_cast<double>(u.lb_first_drop_at),
                     static_cast<double>(u.lb_min_impact_miss),
                     bsp::level_bomb_state_name(u.level_bomb_state));
+                if constexpr (bsp::kLevelBombDropBayGateCc13Bound) {
+                    host.log.notef("  levelbomb %-16s bay_refused=%d (007CC8F4, packet cc13-lbbay)",
+                        u.row.name.c_str(), u.lb_rack_bay_refused);
+                }
                 if (u.lb_orders_spent + u.lb_orders_cleared + u.lb_passthrough_releases > 0) {
                     host.log.notef("  levelbomb %-16s orders 0099AF53/009B83D0: spent=%d cleared=%d "
                         "passthrough_releases=%d pending_424=%d", u.row.name.c_str(),
@@ -48983,6 +49021,11 @@ void GameUnitsHost::report() {
                 host.log.notef("summary bay opener steps=%llu target_writes=%llu "
                     "(0099B055, 007C6A8D, packet cc13-reltimer2)",
                     host.bay_open_steps, host.bay_open_target_writes);
+            }
+            if constexpr (bsp::kLevelBombBayOpenerCc13Bound) {
+                host.log.notef("summary level-bomb bay opener steps=%llu mode2=%llu "
+                    "(009B8450, packet cc13-lbbay)",
+                    host.lb_bay_opener_steps, host.lb_bay_opener_mode2);
             }
             host.log.notef("summary moveto cruise by_ordnance=%llu bound=%d leg separations=%llu "
                 "bound=%d (009C3650, 009BEC85, packet p16_moveto_cruise)",
