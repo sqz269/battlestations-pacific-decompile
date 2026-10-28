@@ -31065,8 +31065,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // JMP 009FA260 (009AC09E), right after 009AC160. The dirty ref
                     // is carried into hull_aim_ref exactly as kz_target_point
                     // carries it, then picked there, so the next 009FADA0 finds
-                    // both refs clean and does not re-pick. With no live target the
-                    // ref stays dirty and kz_target_point picks as before.
+                    // both refs clean and does not re-pick. DEVIATION, labelled: with
+                    // no live target the image's 009FA260 still clears +41h at
+                    // 009FA2CE (no pick), while this leaves the ref dirty and
+                    // kz_target_point picks later. That is close to the image, since
+                    // 009FB1D9 BindTarget picks when a target is bound.
                     void kz_enter_pick_009fa260(bsp::ApproachTargetRefState& ref) {
                         const GameUnitSlot* t = st_target();
                         if (t == nullptr || !df_slot_live(*t) || !ref.dirty_41) return;
