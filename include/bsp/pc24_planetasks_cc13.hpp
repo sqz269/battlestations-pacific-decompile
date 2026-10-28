@@ -23,6 +23,9 @@ namespace bsp {
 //              plane_follow_phase_a_009c0251 (plane_follow_law.cpp)
 //   pc24w1-sweep3-2 (depth charge; sites listed atop depth_charge_task_cc13.cpp):
 //     009A3300, 009A5F50, 009A65F0, 009A3770, 009A3CF0, 009A4010, 009A4940
+//   pc24w2-dc (wave-2 census): 009A3390's fly-over distance U(1.1, 1.3) * radius +
+//     FlyAboveDist * +24h (009A34AF..009A34C6), inlined in
+//     depth_charge_task_construct_009a5240 (depth_charge_task_cc13.cpp)
 //   pc24w1-sweep3-3 (sites listed in each .cpp):
 //     0041BC20 avoid_zone_sample (game_hosts_avoid_zones.cpp)
 //     009B5C80 level_bomb_aim_tick and 009B6670 level_bomb_prepare_tick
