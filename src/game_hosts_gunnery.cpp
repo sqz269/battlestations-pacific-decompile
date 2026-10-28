@@ -5213,12 +5213,23 @@ bool GameGunneryHost::Impl::device_hit_world_frame(std::size_t gun_row, float ax
 // desc+4Ch, 0087BCF4) and health (+36Ch/+370h from desc+48h). The gun-health state
 // and the subtraction are packet B's (cc13-cgbuildB, apply_gun_damage); until that
 // lands this is the seam, counted only.
+// CORRECTION (cc13-gunC C1 follow-up): B has landed in this branch; the seam calls
+// apply_gun_hit_record_008777d0 (packet B, kGunDestroyedFailureCc13Bound), which
+// seeds nothing here: +368h/+36Ch/+370h come from desc+4Ch/+48h at gun setup (HP
+// default 100, Armour default 0). Only with both switches ON does the gun take the
+// record; with B OFF the hit is counted and the gun keeps its health. A direct mount
+// record carries +14h (the 00470350 draw) and +34h = 0 with no part entries, so only
+// B's hull pass runs.
 void GameGunneryHost::Impl::gun_device_hit_damage_008777d0(std::size_t unit,
     std::size_t gun_row, const bsp::HitRecord& hit) {
-    static_cast<void>(unit);
-    static_cast<void>(gun_row);
-    static_cast<void>(hit);
+    static_cast<void>(unit);   // guns[gun_row].unit_index; B reads it there
     ++device_hit_gun_applies;
+    if constexpr (bsp::kGunDeviceHitDamageCc13Bound && bsp::kGunDestroyedFailureCc13Bound) {
+        apply_gun_hit_record_008777d0(gun_row, hit);
+    } else {
+        static_cast<void>(gun_row);
+        static_cast<void>(hit);
+    }
     done("Device::apply_hit_record_008777d0", 0x008777d0u);
 }
 

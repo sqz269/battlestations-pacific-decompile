@@ -49,6 +49,9 @@
 //    drop -> the parent's path as before; relay -> the parent's path (00826F10,
 //    unchanged) and then the gun's 008777D0; neither -> the gun's 008777D0 only.
 //    gun_device_hit_damage_008777d0 is the seam; the gun-health side is packet B's.
+//    CORRECTION (follow-up): the seam now calls B's apply_gun_hit_record_008777d0(g, hit)
+//    (g = the guns() row) when kGunDestroyedFailureCc13Bound is also ON; with B OFF the
+//    mount still stops the shell and relays it, and the gun takes nothing.
 //  * LABELLED: with neither, the host returns before its attribution tail, where the
 //    image still writes the parent's 0077CE60 block (a plane or land parent).
 // LABELLED:
