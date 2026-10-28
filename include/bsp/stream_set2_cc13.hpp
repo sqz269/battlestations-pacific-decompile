@@ -8,7 +8,11 @@
 // generator, GameGunneryHost::death_mode_draw_00bd2f10(1, ...), which is the same
 // generator ship_ai_draw uses (00BD2F10 with ECX = 1). The routing is in
 // GameUnitsHost::Impl::stream_set2_draw_00bd2f10; release_altitude_draw_00bd2f10 itself is
-// unchanged. With no gunnery host the old keyed draw answers.
+// unchanged. With no gunnery host the old keyed draw answers. S10's
+// follow_stagger_shared_009c2a0a reaches the same generator through
+// ship_ai_draw(process_index), this helper through death_mode_draw_00bd2f10(1,
+// index_of_slot): identical in normal runs, separate keyed streams under
+// BSP_GUNNERY_RNG_STREAMS=1.
 //
 // SHARED-STREAM MOVERS: when ON, every later stream-1 draw shifts (ship AI torpedo and
 // avoidance draws, gunnery death-mode draws, the issue-interval and rack-delay draws, and
@@ -22,8 +26,8 @@ namespace bsp {
 //   Bot task constructor base (0099C6F0): "#tb308" (+308h), in bot_task_ctor_seeds_0099c6f0
 //     and the strafe re-seed; dogfight "#tbmv2c" (+2Ch); torpedo "#tbt1c" (+1Ch). 4 sites.
 //   Dive bomb: release altitude +A8h (009C3F29, the unit-name key), attack distance
-//     U(0.6, 0.8) (009C3F63, unit-name key), "#b8" (009C3F97), profile "#dp" (009C8A66),
-//     "#db_side" (009C8587), "#db_ad1c" (009C6114), "#db_ag1c" (009C579E), "#db_roll"
+//     U(0.6, 0.8) (009C3F81, unit-name key), "#b8" (009C3FB0), profile "#dp" (009C899B),
+//     "#db_side" (009C859E), "#db_ad1c" (009C6114), "#db_ag1c" (009C579E), "#db_roll"
 //     (009C7839). 8 sites. LABELLED: the host draws the side coin after the roll
 //     magnitude; the image draws it before.
 //   Aim error redraw (009C3DA0 dive / 009D02A0 torpedo): h, v, time, unit-name key.
@@ -41,8 +45,8 @@ namespace bsp {
 //   Level bomb: lb_draw, "#lb" + key, except mv44 and ar18 (stream 0) and rk (the rack
 //     delay, kPlaneDeviceWalkSharedDrawBound). 1 wrapper.
 //   Dogfight: df_enter_draw ("#dfmr", "#dfav", "#dfae"), "#dfta" (009A8712), "#dfat"
-//     (009A7D72), "#dfap" (009A99C6), "#dfgb" (009FCED6). 1 wrapper + 4 sites.
-//   Gun avoidance (0099EF2D): "#ga", "#gr". 2 sites.
+//     (009A7D72), "#dfap" (009A99C6), "#dfgb" (009FCED1). 1 wrapper + 4 sites.
+//   Gun avoidance (gate 0099EF2D): "#ga" (0099EF6E), "#gr" (0099EFA0). 2 sites.
 //   Neighbour clocks (007E1E20): "#nb7c", "#nb84", "#nb80"; the formation noise
 //     "#fnoise" (007E21AA). 4 sites. LABELLED: the clocks are seeded at first use.
 //   Dead-meat spin (007D7EA0): "#ds_m", and "#ds_z" / "#ds_p" through 00439950. 2 sites.
