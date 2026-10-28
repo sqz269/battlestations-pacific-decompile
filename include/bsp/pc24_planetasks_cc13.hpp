@@ -14,7 +14,9 @@ namespace bsp {
 //   pc24w1-sweep3-1 (cc13-pc24w1-sweep3-1):
 //     009C4F80 dive_bomb_aim_heading_009c4f80 (dive_bomb_task.cpp)
 //     009C62B0 flyabove tick: dive_bomb_flyabove_altitude_009c6e10 and
-//              dive_bomb_flyabove_bank_009c6857 (dive_bomb_task.cpp)
+//              dive_bomb_flyabove_bank_009c6857 (dive_bomb_task.cpp); the lead
+//              bearing 009C63C4-009C63D2 is not here: it is under
+//              kFlyaboveLeadBearingPc24Cc13Bound (cc13-flybearing)
 //     009AC190 kamikaze_gotowards_tick_009ac190 (kamikaze_task_cc13.cpp)
 //     009AC910 kamikaze_aim_tick_009ac910 (kamikaze_task_cc13.cpp)
 //     0042B2F0 planar_length (kamikaze_task_cc13.cpp)
