@@ -2,6 +2,7 @@
 #include "bsp/ai_tuning_globals.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_misc_cc13.hpp"
+#include "bsp/ship_ai_switch_reach.hpp"
 
 // Evidence: docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md.
 // Target MSVC Win32. Nothing here is a binary-compatible replacement: the native
@@ -807,6 +808,15 @@ float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightK
                 kAiRocketAccuracyBound && o.bullet.sub_type == 0x12
                     ? host.rocket_accuracy(key.attacker, o.bullet, key.target)
                     : host.bullet_accuracy(key.attacker, o.bullet.sub_type, key.target);
+            if (o.bullet.sub_type == 0x12) {
+                // Packet cc9-sweep2b reach: both accuracies are pure reads.
+                ShipAiSwitchReach& reach = ship_ai_switch_reach();
+                ++reach.rocket_accuracy_reads;
+                const float rocket = host.rocket_accuracy(key.attacker, o.bullet, key.target);
+                const float bullet =
+                    host.bullet_accuracy(key.attacker, o.bullet.sub_type, key.target);
+                if (!ship_ai_reach_same_bits(rocket, bullet)) ++reach.rocket_accuracy_differs;
+            }
             if constexpr (kPc24AiPlannersCc13Bound) {
                 // 00A091F6 FMUL +10h and 00A091F9 FMUL damage each round.
                 value = static_cast<float>(

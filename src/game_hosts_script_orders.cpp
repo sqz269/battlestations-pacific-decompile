@@ -2226,6 +2226,15 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
                     base.c_str(), slot_number, row->name.c_str(), s.launched_squadron);
             }
         }
+    } else if (record == nullptr && s.launched_squadron != 0u
+               && static_cast<std::size_t>(s.launched_squadron - 1u) < units_.count()) {
+        // Packet cc9-sweep2b reach: the order the ON arm would take, logged only.
+        const GameUnitRow* row = units_.unit_row(s.launched_squadron - 1u);
+        if (row != nullptr && bsp::plane_squadron_registry().find(row->name) != nullptr) {
+            log_.notef("player air ops order reach (kAirOpsSceneSquadronOrdersBound OFF): "
+                "base=\"%s\" slot=%d holds scene squadron %s, refused", base.c_str(),
+                slot_number, row->name.c_str());
+        }
     }
     if (record == nullptr) return refuse("the slot holds no squadron this host built");
     const std::size_t leader = record->flight_leader();

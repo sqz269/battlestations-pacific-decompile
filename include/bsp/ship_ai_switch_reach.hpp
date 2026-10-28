@@ -71,6 +71,10 @@ struct ShipAiSwitchReach {
     // where the image's FLD/FSTP copy and the member-wise copy differ.
     unsigned long long order_copy_calls{0};
     unsigned long long order_copy_differs{0};
+    // 00A0910B..00A09201 (kAiRocketAccuracyBound): rocket options (sub type 12h)
+    // scored, and those where 009FE4F1's rocket accuracy differs from the bullet one.
+    unsigned long long rocket_accuracy_reads{0};
+    unsigned long long rocket_accuracy_differs{0};
 };
 
 inline ShipAiSwitchReach& ship_ai_switch_reach() noexcept {
