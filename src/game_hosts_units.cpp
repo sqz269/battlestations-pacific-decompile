@@ -74,6 +74,7 @@
 #include "bsp/target_disabled_byte_5d_cc13.hpp"
 #include "bsp/leave_countdown_all_squadrons_cc13.hpp"
 #include "bsp/gameplay_seg47_cc13.hpp"
+#include "bsp/strafe_target_fallback_70_cc13.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/plane_cached_speed_b1c_cc13.hpp"
 #include "bsp/follow_sight_draw_cc13.hpp"
@@ -707,6 +708,10 @@ struct GameUnitSlot {
     bool strafe_task_installed{false};
     bsp::StrafeState strafe_state{bsp::StrafeState::kNone};
     std::size_t st_target_plus_one{0};
+    // Packet cc13-strafe70: approach+70h (target ref sub+18h) dropped by 009FADA0
+    // (009FAE11) once the kind-5 target's +5Dh is set. Read only under
+    // bsp::kStrafeTargetFallback70Cc13Bound.
+    bool st_ref70_dropped{false};
     bsp::StrafeApproachUpdate st_ap{};      // +44h, +CCh, +D0h, +50h
     float st_speed_ratio_24{1.0f};
     float st_glide_angle_2c{0.0f};
@@ -10829,9 +10834,12 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     }
     // Packet cc13-leavecd: 007EE2E0 BSP_PlaneSquadron_IsLeavingOnPurpose(sq,
     // check_leader) for plane m's squadron (include/bsp/leave_countdown_all_squadrons_cc13.hpp).
-    // LABELLED: a plane with no squadron record is its own one-plane squadron; the
-    // squadron's director is its flight leader's, as the spent-RTB path reads it; the
-    // retreat arm is run_retreat_task_tick_009ca130's proxy, so retreats count as before.
+    // LABELLED: a plane with no squadron record is its own one-plane squadron (the image
+    // instead skips 007EE2E0 for a null +9D4h, 007C6C6D JZ 007C6C80, and counts down
+    // whenever the plane is outside the map; moot for bot planes); the squadron's own
+    // director (+174h/+178h/[sq+348h]) is read from its flight leader's, as the spent-RTB
+    // path reads it; the retreat arm is the plane's own proxy from
+    // run_retreat_task_tick_009ca130, so retreats count as before.
     bool leaving_on_purpose_007ee2e0(std::size_t m, bool check_leader) {
         if (m >= slots.size()) return false;
         const bsp::PlaneSquadronHostRecord* sq =
@@ -12439,7 +12447,17 @@ private:
 class UnitOrderIssueBinding final : public bsp::UnitOrderRecordIssueHost {
 public:
     explicit UnitOrderIssueBinding(GameUnitsHost::Impl& owner) : owner_(owner) {}
-    int session_mode() override { return 1; }  // game+1FE4h, single player
+    // game+1FE4h from the session context (packet cc13-mp2d): 0 single player, 1 the
+    // skirmish host, 2 the client. This site acts only on 2 (unit_order_record.cpp:80,
+    // 00816A8D cmp [..+1FE4h],2), so 0 and 1 behave alike. Campaign identity: the OFF
+    // arm is the old literal 1.
+    int session_mode() override {
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            return bsp::session_context().session_word_1fe4;
+        } else {
+            return 1;
+        }
+    }
     bsp::UnitOrderMessageStorage construct_message_0075b430(int) override {
         owner_.record("UnitOrder::construct_message", 0x0075b430u);
         return bsp::UnitOrderMessageStorage{};
@@ -29107,6 +29125,34 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (ti >= owner_.slots.size()) return nullptr;
                         return owner_.slots[ti].get();
                     }
+                    // Packet cc13-strafe70 (include/bsp/strafe_target_fallback_70_cc13.hpp).
+                    // approach+54h: 009CA62C keeps the task's target when vt[5Ch](41h)
+                    // (a NavPoint) answers true.
+                    const GameUnitSlot* st_target_54() const {
+                        const GameUnitSlot* t = st_target();
+                        return t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x41) ? t : nullptr;
+                    }
+                    // approach+70h: 009FB190 stores the target when vt[5Ch](2) answers
+                    // true; 009FADA0 drops it for good (st_ref70_dropped).
+                    const GameUnitSlot* st_target_70() const {
+                        const GameUnitSlot* t = st_target();
+                        return t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x02) &&
+                               !unit_.st_ref70_dropped ? t : nullptr;
+                    }
+                    // approach+54h, else approach+70h (009CCF1C-009CCF34, 009CB659-009CB6A4).
+                    const GameUnitSlot* st_target_54_70() const {
+                        const GameUnitSlot* t = st_target_54();
+                        return t != nullptr ? t : st_target_70();
+                    }
+                    // 009FADA6-009FAE11: with sub+18h and sub+14h (the target when
+                    // vt[5Ch](5) answers true) set and [sub+14h]+5Dh set, both are cleared.
+                    void st_ref70_drop_009fada0() {
+                        const GameUnitSlot* t = st_target_70();
+                        if (t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x05) &&
+                            t->state != nullptr && t->state->simulate != 0) {
+                            unit_.st_ref70_dropped = true;
+                        }
+                    }
                     bool st_bomber_kind() const {
                         // 009CA310 / 0047B850: vt[5Ch](10h) || vt[5Ch](16h).
                         return bsp::unit_is_kind_of(unit_.class_id, 0x10) ||
@@ -29195,6 +29241,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.st_too_close_3c =                                      // 009CA589
                             st_draw("3c", 0.9f, 1.1f) * row.too_close_distance_0e4 * k;
                         unit_.st_ap = bsp::StrafeApproachUpdate{};   // +44h 3600, +CCh 1.0
+                        if constexpr (bsp::kStrafeTargetFallback70Cc13Bound) {
+                            // 009CA5CD 009FB200: the ref is built on the task's target,
+                            // and its 009FADA0 (009FB364) may drop it at once.
+                            unit_.st_ref70_dropped = false;
+                            st_ref70_drop_009fada0();
+                        }
                         unit_.st_ap.countdown_d0 = -st_draw("d0", 0.0f, 1.0f);   // 009CA5FD
                         // +4Ch = 007C2610 BSP_Unit_MinKind21ComponentSpeed (009CA60D).
                         unit_.st_speed_4c = owner_.gunnery
@@ -29286,9 +29338,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.hull_aim_seed = ++g_hull_aim_pick_counter;
                         if constexpr (bsp::kOpportunisticRocketBound) {
                             // 009CA80E: 007B7870(task+38Ch, approach+70h, approach+80h);
-                            // approach+80h is the ref's +54h. LABELLED: the host's
-                            // target ref is the commanded target.
-                            const GameUnitSlot* t = st_target();
+                            // approach+80h is the ref's +54h. OFF: LABELLED, the host's
+                            // target ref is the commanded target. ON
+                            // (kStrafeTargetFallback70Cc13Bound): approach+70h itself.
+                            const GameUnitSlot* t = nullptr;
+                            if constexpr (bsp::kStrafeTargetFallback70Cc13Bound) {
+                                t = st_target_70();
+                            } else {
+                                t = st_target();
+                            }
                             bsp::opportunistic_rocket_set_target_007b7870(
                                 unit_.orx, t != nullptr ? unit_.command_target_plus_one : 0,
                                 t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x0F),
@@ -29485,8 +29543,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     }
                     // 009CB650 (009CB650-009CB77E): the goaway pitch re-plan.
                     void st_goaway_pitch_009cb650() {
-                        const GameUnitSlot* t = st_target();
-                        const bool has = t != nullptr && df_slot_live(*t);   // +54h / +70h
+                        const GameUnitSlot* t = nullptr;
+                        bool has = false;                                    // +54h / +70h
+                        if constexpr (bsp::kStrafeTargetFallback70Cc13Bound) {
+                            t = st_target_54_70();                           // 009CB659-009CB6A4
+                            has = t != nullptr;
+                        } else {
+                            t = st_target();
+                            has = t != nullptr && df_slot_live(*t);
+                        }
                         if (has && unit_.motion.position[1] >= 30.0f) {     // double [00CE7630]
                             // 009FB700(target y + approach+40h): the class climb or
                             // drop angle by the altitude error, Pilot/General/ClimbDist
@@ -31409,8 +31474,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         st_refresh_aim_point();
                         const GameUnitSlot* t = st_target();
                         const bool live = t != nullptr && df_slot_live(*t);
+                        // tr: the range test's target. OFF the commanded target; ON
+                        // (kStrafeTargetFallback70Cc13Bound) approach+54h, else +70h
+                        // after this update's 009FADA0 (009CCEE1) has had its chance to
+                        // drop +70h (009CCF1C-009CCF34).
+                        const GameUnitSlot* tr = t;
+                        if constexpr (bsp::kStrafeTargetFallback70Cc13Bound) {
+                            st_ref70_drop_009fada0();
+                            tr = st_target_54_70();
+                        }
                         {
                             bsp::StrafeRangeInputs rin;
+                            if constexpr (bsp::kStrafeTargetFallback70Cc13Bound) {
+                                rin.has_target = tr != nullptr;
+                                // target+5Dh: 009CCF37 CMP [target+5Dh],0, on +54h / +70h.
+                                if constexpr (bsp::kTargetDisabledByte5dCc13Bound) {
+                                    rin.target_disabled_5d = tr != nullptr && tr->state != nullptr &&
+                                                             tr->state->simulate != 0;
+                                } else {
+                                    // SUBSTITUTION, labelled: the host's liveness.
+                                    rin.target_disabled_5d = tr != nullptr && !df_slot_live(*tr);
+                                }
+                            } else {
                             rin.has_target = t != nullptr;
                             // target+5Dh: 009CCF37 CMP [target+5Dh],0.
                             if constexpr (bsp::kTargetDisabledByte5dCc13Bound) {
@@ -31419,6 +31504,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             } else {
                                 // SUBSTITUTION, labelled: the host's liveness.
                                 rin.target_disabled_5d = t != nullptr && !live;
+                            }
                             }
                             rin.unit_height_100 = unit_.motion.position[1];
                             rin.aim_height = unit_.st_aim_point[1];
@@ -31435,8 +31521,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         bsp::StrafeRuleInputs ri;
                         ri.current = unit_.strafe_state;
                         ri.in_attack_range_448 = unit_.st_ap.in_range_50;
-                        ri.strafe_target_44c = live && bsp::unit_is_kind_of(t->class_id, 0x41);
-                        ri.ref_target_468 = live;   // sub+18h, cleared at 009FAE11 on death
+                        if constexpr (bsp::kStrafeTargetFallback70Cc13Bound) {
+                            // 009CC6ED-009CC6FF / 009CC7EB-009CC7FD: task+44Ch, task+468h.
+                            ri.strafe_target_44c = st_target_54() != nullptr;
+                            ri.ref_target_468 = st_target_70() != nullptr;
+                        } else {
+                            ri.strafe_target_44c = live && bsp::unit_is_kind_of(t->class_id, 0x41);
+                            ri.ref_target_468 = live;   // sub+18h, cleared at 009FAE11 on death
+                        }
                         ri.control_mode_370 = static_cast<int>(unit_.st_attack_mode_370);
                         ri.gotowards_ready = bsp::strafe_gotowards_ready_009cc2f0(
                             unit_.st_gt_aligned_20, unit_.st_gt_dist_18, unit_.plane_max_spd,

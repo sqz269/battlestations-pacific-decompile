@@ -32,14 +32,24 @@ namespace bsp {
 //   proxy (retreat task installed and retreat_squadron_ordered), so a retreating plane counts
 //   as before; the other arms read the flight leader's director (current_command_0071be40,
 //   active_command_descriptor_0071eb60, path_final_point_007b1350) and its role words.
-//   LABELLED: a plane with no squadron record is its own one-plane squadron; squadron+36Ch
-//   is kept per squadron name and only feeds the 00982120 record.
+//   LABELLED: a plane with no squadron record is its own one-plane squadron and the
+//   predicate is asked of it. The image differs there: a plane with a null +9D4h skips
+//   007EE2E0 (007C6C6D JZ 007C6C80) and counts down whenever it is outside the map. Moot
+//   for bot planes, which always have a squadron in the image. squadron+36Ch is kept per
+//   squadron name and only feeds the 00982120 record.
+//   For the flip pair: 007EE2E0's command (vcall +174h), target (vcall +178h) and path
+//   cursor ([sq+348h]) are the squadron's own director; the host reads the flight leader's
+//   director in their place. The retreat arm is the plane's own proxy (its retreat task and
+//   retreat_squadron_ordered), not the squadron's command.
 // Movers: planes outside the map whose squadron (or flight leader) holds a moveto or
 // attackmove to an off-map point, or a moveonpath ending off the map, or whose leader is
 // player-held (role 1) or has +184h set, now count Retreat/ExitTime down and leave the map
 // (Kill(4), "exitzone") when it runs out or at once past Retreat/ExitDist. Retreating
 // planes: unchanged, except that the countdown now runs before the task tick in the same
 // fixed step, and a tick on which the task retires resets the timer instead of freezing it.
+// That order is the host's bot/fixed-step schedule: the image ticks the bot from vtable
+// 00D1F354, not from 007CE040. Under ON the retreat task also ticks on its elapsed time
+// while the countdown ticks on the fixed step.
 inline constexpr bool kLeaveCountdownAllSquadronsCc13Bound = false;
 
 }  // namespace bsp
