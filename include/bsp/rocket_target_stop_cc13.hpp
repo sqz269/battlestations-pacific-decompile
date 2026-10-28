@@ -9,8 +9,8 @@
 //    CALL 009FD0E0;
 //  - the dogfight, strafe and rocket Stops (slot +58h: 009AA9E0, 009CD0D0, 007B7BA0,
 //    byte twins) exit the state (+310h vtable +08h), release the target node (+3C4h set:
-//    006952A0(ECX = +3C4h, EDX = task+3B0h), +3C4h = 0), store [00F87574..7Ch] (zero)
-//    to +3A4h..+3ACh and clear +3C8h. Their only caller, 00999EE0, deletes the task
+//    006952A0(ECX = +3C4h, EDX = task+3B0h), +3C4h = 0), store [00F87574..7Ch] (zero at
+//    load; no direct store to it among the image's disp32 references) to +3A4h..+3ACh and clear +3C8h. Their only caller, 00999EE0, deletes the task
 //    right after (00999F0B, vtable+0 with flag 1), so the cleared block is never read.
 // What a plane observes after a task change is therefore a FRESH block: the new task's
 // constructor values (009FCEF0: class -1, salvo 0, both timers -1.0, target 0, rocket 0).
@@ -28,6 +28,10 @@ namespace bsp {
 // False: the target is cleared at the tick only; the rest of the block carries over.
 // Movers when ON: rocket salvo timing on planes that change task (the RocketCheckTime
 // timer restarts at -1.0, a salvo in progress is dropped, the chosen class resets).
+// Limit (rev9 N1): the host installs a dogfight task only when none is installed
+// (df_arm_body_009ab1c0, `if (!unit_.dogfight_task_installed)`), so a repeated dogfight
+// order on a new target reaches no bot_task_ctor_seeds_0099c6f0 and keeps the block. If
+// the image rebuilds the task on such an order, that reset is missed (unverified).
 inline constexpr bool kRocketTargetStopHandlersCc13Bound = false;
 
 }  // namespace bsp

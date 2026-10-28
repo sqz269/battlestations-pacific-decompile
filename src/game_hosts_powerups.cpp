@@ -8,6 +8,7 @@
 #include "bsp/cc13_powerup.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/game_hosts_ai.hpp"
+#include "bsp/powerup_session_broadcast_cc13.hpp"
 
 #include <iterator>
 #include <random>
@@ -151,6 +152,11 @@ namespace cp = bsp::cc13_powerup;
 
 // [game+1FE4h] == 1 sends message 67 or 68 at 008EA466, 008ED5AB, 008E8AC0 and
 // 008E8CE6. A mission-tree or skirmish run is session 0; hosting is not modelled.
+// kPowerupSessionBroadcastCc13Bound replaces each call with the send.
+// CORRECTION (packet cc13-mp1): only a mission-tree run is session 0. A front-end
+// skirmish is session 1. 005EC990 calls 00770E40, which is Session_SetMode(1), and
+// game+218Ch is set as well (005E6F87). These sends test only +1FE4h, so a skirmish
+// reaches them and this throws (MP5).
 void require_unhosted_session(cp::PowerupRuntime& runtime, const char* where) {
     if (runtime.host->session_word_1fe4() == 1) {
         throw std::logic_error(std::string(where) + ": session 1 power-up messages not modelled");
@@ -223,7 +229,15 @@ void expire_modifier_008e8c30(cp::PowerupRuntime& runtime, PowerupModifier* reco
         runtime.category_lists.at(static_cast<std::size_t>(record->category));
     for (auto it = list.begin(); it != list.end(); ++it) {
         if (&*it == record) {
-            require_unhosted_session(runtime, "008E8C30");  // 008E8CE0, message 68
+            if constexpr (kPowerupSessionBroadcastCc13Bound) {
+                // 008E8CE6..008E8D46: 008E6FB0(record, 2) to the transport peers.
+                if (runtime.host->session_word_1fe4() == 1) {
+                    runtime.host->send_powerup_message68(*record, 2);
+                    ++runtime.counts.session_messages;
+                }
+            } else {
+                require_unhosted_session(runtime, "008E8C30");  // 008E8CE0, message 68
+            }
             list.erase(it);
             break;
         }
@@ -299,7 +313,15 @@ void insert_modifier_008ea250(cp::PowerupRuntime& runtime, std::int32_t category
     default:
         break;                                       // 008EA417 JA
     }
-    require_unhosted_session(runtime, "008EA250");   // 008EA461, message 68
+    if constexpr (kPowerupSessionBroadcastCc13Bound) {
+        // 008EA466..008EA4A9: 008E6FB0(record, 0) to the transport peers.
+        if (runtime.host->session_word_1fe4() == 1) {
+            runtime.host->send_powerup_message68(*record, 0);
+            ++runtime.counts.session_messages;
+        }
+    } else {
+        require_unhosted_session(runtime, "008EA250");   // 008EA461, message 68
+    }
 }
 
 // 008EADA0 __thiscall(ECX = manager, item, slot, unit), RET 0Ch, as 008ED4B0
@@ -370,7 +392,16 @@ void grant_008ed4b0(cp::PowerupRuntime& runtime, std::size_t building,
     host.report_powerup_009789a0(slot, item, view.party == 2 ? "pup_lost" : "pup_gain");
     ++runtime.counts.pup_gain_reports;
     refresh_hud_if_shown_008e4660(runtime);          // 008ED5A0
-    require_unhosted_session(runtime, "008ED4B0");   // 008ED5AB, message 67
+    if constexpr (kPowerupSessionBroadcastCc13Bound) {
+        // 008ED5AB..008ED5EC: 008E6E00(slot, item, 0, building unit, 0) to the
+        // transport peers.
+        if (host.session_word_1fe4() == 1) {
+            host.send_powerup_message67(slot, item, 0);
+            ++runtime.counts.session_messages;
+        }
+    } else {
+        require_unhosted_session(runtime, "008ED4B0");   // 008ED5AB, message 67
+    }
     // 008ED5F1..008ED601: a passive class (class+8 == 3) is used now.
     if (cls->group_08 == 3) use_item_008eada0(runtime, item, slot, view);
 }
@@ -400,7 +431,16 @@ void remove_items_bound_to_008e8a30(cp::PowerupRuntime& runtime, std::size_t bui
         for (auto it = inventory.begin(); it != inventory.end(); ++it) {
             if (it->binding != building) continue;   // 008E8A6D, item+8
             release_item_modifiers_008e6230(runtime, *it);  // 008E8AB1
-            require_unhosted_session(runtime, "008E8A30");  // 008E8AC0, message 67
+            if constexpr (kPowerupSessionBroadcastCc13Bound) {
+                // 008E8AC0..008E8B2F: 008E6E00(slot, item, 2, [binding+4], 0) to the
+                // transport peers.
+                if (runtime.host->session_word_1fe4() == 1) {
+                    runtime.host->send_powerup_message67(slot, *it, 2);
+                    ++runtime.counts.session_messages;
+                }
+            } else {
+                require_unhosted_session(runtime, "008E8A30");  // 008E8AC0, message 67
+            }
             // 008E8B37..008E8B88: an active item's records anywhere drop it.
             if (it->cls != nullptr && it->cls->group_08 == 2) {
                 for (std::list<PowerupModifier>& list : runtime.category_lists) {
