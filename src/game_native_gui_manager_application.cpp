@@ -7,6 +7,7 @@
 #include "bsp/native_singleton_destruction.hpp"
 #include <cstdint>
 #include <cstring>
+#include <exception>
 #include <stdexcept>
 
 namespace bsp::game {
@@ -15,13 +16,16 @@ std::uint32_t word_at(const void* p, std::size_t offset) noexcept {
     std::uint32_t value; std::memcpy(&value, static_cast<const char*>(p) + offset, sizeof value); return value;
 }
 // The manager's page vector (+14h) stays empty while the bridge owns every
-// page, so 00AA6340 never reaches a page virtual. Reaching one means a page
-// entered the vector without a page owner; there is no substitute body.
+// page. A later native page application may borrow these two dispatch sites;
+// until it binds, reaching either retains the original NoPageOwner rejection.
 struct NoPageOwner final : NativeGuiPageLifetimeHost {
-    void call_current_page_virtual_20(void*) override {
+    NativeGuiPageLifetimeHost* delegate{};
+    void call_current_page_virtual_20(void* page) override {
+        if (delegate) { delegate->call_current_page_virtual_20(page); return; }
         throw std::logic_error("native GUI manager drain reached page virtual +20h without a page owner");
     }
-    void call_current_page_virtual_04(void*, std::uint32_t) override {
+    void call_current_page_virtual_04(void* page, std::uint32_t flags) override {
+        if (delegate) { delegate->call_current_page_virtual_04(page, flags); return; }
         throw std::logic_error("native GUI manager drain reached page virtual +04h without a page owner");
     }
 };
@@ -39,6 +43,8 @@ struct GameNativeGuiManagerApplication::Impl {
     NoPageOwner pages;
     NativeGuiMediaFocusLifetimeContext lifetime;
     Phase phase{Phase::prepared};
+    PageLifetimeBinding* page_binding{};
+    bool page_binding_used{};
     Impl(GameHostLog& l, GameSingletonHost& s, GameNativeReadOnlyData& data,
         NativeRenderActualOwners& resources, NativeStringRawPoolContext& strings)
         : log(l), singletons(s),
@@ -58,6 +64,7 @@ GameNativeGuiManagerApplication::GameNativeGuiManagerApplication(GameHostLog& lo
     : impl_(std::make_unique<Impl>(log, singletons, data, resources, strings)) {}
 GameNativeGuiManagerApplication::~GameNativeGuiManagerApplication() {
     auto& p = *impl_;
+    if (p.page_binding || p.pages.delegate) std::terminate();
     if (p.singletons.native_deletion_bindings().native_gui == &p.lifetime)
         p.singletons.native_deletion_bindings().native_gui = nullptr;
 }
@@ -82,6 +89,39 @@ void* GameNativeGuiManagerApplication::get_004c12b0() {
 
 NativePlatformFocusOwnersContext& GameNativeGuiManagerApplication::context() noexcept {
     return impl_->owners;
+}
+
+std::unique_ptr<GameNativeGuiManagerApplication::PageLifetimeBinding>
+GameNativeGuiManagerApplication::bind_page_lifetime_host(NativeGuiPageLifetimeHost& provider) {
+    auto& p = *impl_;
+    // AA5D70 initializes the +14h vector's begin/end/capacity at +18/+1C/+20.
+    // Requiring all three null also rejects binding after an emptied page set.
+    if (p.phase != Impl::Phase::published || !p.gui_00f8bc5c ||
+        p.page_binding_used || p.page_binding || p.pages.delegate || &provider == &p.pages ||
+        word_at(p.gui_00f8bc5c, 0x18) || word_at(p.gui_00f8bc5c, 0x1c) ||
+        word_at(p.gui_00f8bc5c, 0x20))
+        throw std::logic_error("native GUI page lifetime binds once to the warm manager before page allocation");
+    // Allocate the host token before publishing its borrowed callback. Failure
+    // leaves the original rejection intact and changes no native field.
+    auto binding = std::unique_ptr<PageLifetimeBinding>(new PageLifetimeBinding(*this));
+    p.page_binding = binding.get();
+    p.page_binding_used = true;
+    p.pages.delegate = &provider;
+    return binding;
+}
+
+GameNativeGuiManagerApplication::PageLifetimeBinding::~PageLifetimeBinding() noexcept {
+    owner_->release_page_lifetime_binding(*this);
+}
+
+void GameNativeGuiManagerApplication::release_page_lifetime_binding(PageLifetimeBinding& binding) noexcept {
+    auto& p = *impl_;
+    if (binding.owner_ != this || p.page_binding != &binding || !p.pages.delegate ||
+        p.phase != Impl::Phase::drained || p.gui_00f8bc5c)
+        std::terminate();
+    p.pages.delegate = nullptr;
+    p.page_binding = nullptr;
+    binding.owner_ = nullptr;
 }
 
 bool GameNativeGuiManagerApplication::requires_process_retention() const noexcept {

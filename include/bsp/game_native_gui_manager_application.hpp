@@ -5,6 +5,7 @@ namespace bsp {
 class NativeRenderActualOwners;
 struct NativeStringRawPoolContext;
 struct NativePlatformFocusOwnersContext;
+struct NativeGuiPageLifetimeHost;
 }
 
 namespace bsp::game {
@@ -12,7 +13,7 @@ class GameHostLog;
 class GameSingletonHost;
 class GameNativeReadOnlyData;
 
-// cc15-gui4 P1, GUI Step 4: the warm actual 88h GUI manager. Default OFF.
+// cc15-gui4 P1, GUI Step 4: the warm actual 88h GUI manager. Enabled.
 // ON builds the image's manager through the complete raw 004C12B0 getter
 // (constructor 00AA5D70, vtable 00D5BFCC) at 0073BC19, its first call inside
 // 0073BAE0, publishes it in this application's 00F8BC5C cell, registers it with
@@ -39,6 +40,22 @@ inline constexpr bool kGuiManagerCc15Bound = true;
 
 class GameNativeGuiManagerApplication {
 public:
+    // Pure host binding custody, not a native retain. Declare the provider
+    // before this token so reverse destruction drops the token first. Both
+    // survive the shared drain and after_singleton_drain(). Dropping the token
+    // before that acknowledgement or destroying its manager first terminates.
+    // The caller must retain the provider object for the whole token lifetime.
+    class PageLifetimeBinding final {
+    public:
+        ~PageLifetimeBinding() noexcept;
+        PageLifetimeBinding(const PageLifetimeBinding&) = delete;
+        PageLifetimeBinding& operator=(const PageLifetimeBinding&) = delete;
+    private:
+        friend class GameNativeGuiManagerApplication;
+        explicit PageLifetimeBinding(GameNativeGuiManagerApplication& owner) noexcept : owner_(&owner) {}
+        GameNativeGuiManagerApplication* owner_;
+    };
+
     GameNativeGuiManagerApplication(GameHostLog&, GameSingletonHost&, GameNativeReadOnlyData&,
         NativeRenderActualOwners&, NativeStringRawPoolContext&);
     ~GameNativeGuiManagerApplication();
@@ -50,11 +67,17 @@ public:
     void* get_004c12b0();
     // The same actual cells for later borrowers; valid until after the drain.
     NativePlatformFocusOwnersContext& context() noexcept;
+    // Bind once, after the manager getter returns and before its page vector
+    // has allocated storage. The borrowed provider implements the two CURRENT
+    // page virtual calls separately. Unbound calls retain their rejection.
+    // No page load, native call, table replacement or ownership transfer occurs.
+    std::unique_ptr<PageLifetimeBinding> bind_page_lifetime_host(NativeGuiPageLifetimeHost&);
     bool requires_process_retention() const noexcept;
     // After the shared raw drain: the drain's 00AA0FF0 must have cleared the cell.
     void after_singleton_drain();
 
 private:
+    void release_page_lifetime_binding(PageLifetimeBinding&) noexcept;
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
