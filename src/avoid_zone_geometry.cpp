@@ -29,7 +29,8 @@ constexpr double kTwoPiDouble = 6.2831854820251465;
 // correctly rounded root, which FSTP rounds to float, as the double sqrt here does. The
 // OFF arm sums the exact squares in double and rounds once.
 // Census for kPc24AvoidZoneCc13Bound (cc9-nondet1, log only): length_of calls inside the
-// corner rebuild (mission-load zone build) and outside it (detour normals), and how often
+// corner rebuild (not live; the mission-load build is ship_ai_lateral_record.cpp) and
+// outside it (detour normals), and how often
 // the per-op length differs from the double one. Main thread only.
 bool g_in_corner_rebuild = false;
 AvoidZonePc24Census g_avoid_zone_pc24_census{};
