@@ -24,6 +24,8 @@ namespace bsp {
 //   006D31E9/EF (006D31A0 restore, AL = 0)
 //   006D0D67/82 (006D0D50)
 //   006D0DA7/C2 (006D0D90)
+//   0081C57E: 0081C550 stores AL at +749h. That is a ship-class object at +660h, not the
+//     airfield, and 0081C550 has no references.
 // The disp8 +1Ch/+1Dh stores in 006B0000..006D4340 are 006CAC37/3A (006CAC00 ctor,
 // EBX = 0); the rest are message and site constructors. So an airfield answers false
 // either way.
@@ -35,6 +37,9 @@ namespace bsp {
 // Movers: none in this installation's mission Lua, because no script calls GetFailure
 // with either name. Scripts that read GetFailure(carrier, "RunwayFailure") /
 // "HangarFailure" after a SetFailure would change.
+// Lua only: the switch covers 0088F1D0 alone. shipglobals.lua's FailureName rows also
+// name RunwayFailure and HangarFailure (the section path, 0093BED0 / 0093C300). A
+// native caller of vtable+198h with those names is not covered here.
 inline constexpr bool kGetFailureRunwayHangarCc13Bound = false;
 
 }  // namespace bsp

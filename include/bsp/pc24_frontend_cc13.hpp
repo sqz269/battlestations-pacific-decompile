@@ -25,6 +25,6 @@ namespace bsp {
 //   (update_front_end_screen_scroller is never called), so they are pc24_debt.
 // Movers: prompt button x positions, the scroll thumb position and height (pixel
 // layout only).
-inline constexpr bool kPc24FrontendCc13Bound = false;
+inline constexpr bool kPc24FrontendCc13Bound = true;  // ON by pruning (cc9-sweep1b): frontend GUI geometry only
 
 }  // namespace bsp

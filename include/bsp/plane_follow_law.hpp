@@ -344,7 +344,7 @@ const CircleTangentReach& circle_tangent_reach() noexcept;
 // chain evaluated in double and rounded once.  The single-op stores (u, m, b
 // and 004F4430's m +/- b) already round per op.  Same live paths as the
 // unordered switch above; pair separately.  Packet cc13-pc24a.
-inline constexpr bool kCircleTangentPc24Cc13Bound = false;
+inline constexpr bool kCircleTangentPc24Cc13Bound = true;  // ON by bundle pair (cc9-sweep1b)
 bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
                                     float out0[2], float out1[2]) noexcept;
 

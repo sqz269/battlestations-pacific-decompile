@@ -17,6 +17,7 @@
 #include "bsp/native_dyn_general_convex.hpp"
 #include "bsp/native_dyn_narrow_phase.hpp"
 #include "bsp/native_dyn_terrain_convex.hpp"
+#include "bsp/pc24_dyn_hull_cc13.hpp"
 
 #include <algorithm>
 
@@ -45,6 +46,28 @@ public:
     }
     DynWorkerPrecisionScope(const DynWorkerPrecisionScope&) = delete;
     DynWorkerPrecisionScope& operator=(const DynWorkerPrecisionScope&) = delete;
+
+private:
+    unsigned int saved_{0};
+};
+
+// kHullShapeBuildPc24Cc13Bound: the image builds hulls on the main thread at 24 bits
+// (pc24_dyn_hull_cc13.hpp); ON sets _PC_24 for the build and restores the caller's precision.
+class HullBuildPrecisionScope {
+public:
+    HullBuildPrecisionScope() noexcept {
+        if (!kHullShapeBuildPc24Cc13Bound) return;
+        _controlfp_s(&saved_, 0, 0);
+        unsigned int ignored = 0;
+        _controlfp_s(&ignored, _PC_24, _MCW_PC);
+    }
+    ~HullBuildPrecisionScope() {
+        if (!kHullShapeBuildPc24Cc13Bound) return;
+        unsigned int ignored = 0;
+        _controlfp_s(&ignored, saved_ & _MCW_PC, _MCW_PC);
+    }
+    HullBuildPrecisionScope(const HullBuildPrecisionScope&) = delete;
+    HullBuildPrecisionScope& operator=(const HullBuildPrecisionScope&) = delete;
 
 private:
     unsigned int saved_{0};
@@ -212,8 +235,12 @@ HullTerrainContactSolver::HullShape& HullTerrainContactSolver::hull_shape(
                 delete p;
             });
         AvoidZoneDynHullHandle& handle = *h.handle;
-        avoid_zone_dyn_hull_construct_00c5df30(handle, centred.data(),
-                                               static_cast<std::uint32_t>(centred.size()), memory);
+        {
+            // 006FAD70 -> 00C5DEB0 runs on the image's main thread at 24 bits.
+            const HullBuildPrecisionScope build_precision;
+            avoid_zone_dyn_hull_construct_00c5df30(handle, centred.data(),
+                                                   static_cast<std::uint32_t>(centred.size()), memory);
+        }
         const std::uint32_t n = avoid_zone_dyn_hull_vertex_count_00c32d20(handle);
         for (std::uint32_t i = 0; i < n; ++i) local.push_back(handle.data->vertices[i].point);
         ++census_.hull_shapes;

@@ -20,6 +20,7 @@
 #include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/mothership_failure.hpp"
 #include "bsp/get_failure_runway_hangar_cc13.hpp"
+#include "bsp/forced_recon_mission_clear_cc13.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/bullet_engagement_range.hpp"  // packet cc9_ai_plane_loadout_arm
 #include "bsp/objective_units.hpp"
@@ -68,6 +69,7 @@
 #include "bsp/native_lua_class_setters.hpp"
 #include "bsp/native_lua_field_setters.hpp"
 #include "bsp/native_lua_object_boolean.hpp"
+#include "bsp/recon_level_forced_cc13.hpp"
 #include "bsp/recon_values.hpp"
 #include "bsp/recon_slot_lists.hpp"  // packet cc9_recon_publication
 #include "bsp/shipyard_production.hpp"  // packet cc9_lua_add_shipyard_stock
@@ -3014,6 +3016,10 @@ void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noex
     // Packet p17_catapult_adapter: the ships' launch records live with the world.
     bsp::ship_catapult_registry().clear();
     if (orders == nullptr) {
+        // Packet cc13-reconclear: the image's forced recon records live in the units.
+        if constexpr (bsp::kForcedReconMissionClearCc13Bound) {
+            bsp::clear_forced_recon_levels();
+        }
         bsp::spawn_request_queue().clear();
         bsp::set_air_ops_squadron_factory(nullptr);
         bsp::set_air_ops_squadron_plane_count(nullptr, nullptr);
@@ -5829,7 +5835,8 @@ int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const c
     // SUBSTITUTION: the levels come from the host's recon pass the way
     // sync_recon_level_tables_0077b0c0 takes them: the unit's own side reads
     // 2 (0 once dead), a covered side its pass level, an uncovered side 0.
-    // Forced levels (SetForcedReconLevel) are not modelled.
+    // Forced levels (SetForcedReconLevel) replace a party's level only under
+    // kReconLevelForcedCc13Bound; OFF they are not consulted.
     const int own_side = units->unit_side_0054(index);
     const bool dead = gunnery->unit_dead(index);
     ::lua_createtable(state, 0, 3);
@@ -5841,6 +5848,12 @@ int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const c
             const bsp::ReconDetectionLevel detected = pass.level(party, index);
             level = detected == bsp::ReconDetectionLevel::identified ? 2
                 : detected == bsp::ReconDetectionLevel::blip ? 1 : 0;
+        }
+        if constexpr (bsp::kReconLevelForcedCc13Bound) {
+            // 00779C12..00779C1F: record+10h set -> record+8h, the forced level as
+            // SetForcedReconLevel stored it (00805D0E), in place of the computed one.
+            int forced = 0;
+            if (bsp::forced_recon_level_raw(party, index, forced)) level = forced;
         }
         ::lua_pushnumber(state, static_cast<lua_Number>(party));
         ::lua_pushnumber(state, static_cast<lua_Number>(level));
@@ -12398,6 +12411,7 @@ void GameMissionLuaHost::report_mission_script_state() {
     reach("dive_breakoff 009C8B4D (kDiveBombNanComparesCc13Bound)", r.dive_breakoff);
     reach("airops_arrive 006C56D0 (kAirOpsArriveSquadronWalkCc13Bound)", r.airops_arrive);
     reach("airops_return 006C5AD9 (kAirOpsReturnSlotClassArmCc13Bound)", r.airops_return);
+    reach("vec3_divide 0042AE80 (kVector3DivideInPlacePc24Cc13Bound)", r.vec3_divide);
 }
 
 void GameMissionLuaHost::report_natives(std::size_t limit) {

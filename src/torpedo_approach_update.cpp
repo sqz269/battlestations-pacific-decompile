@@ -37,7 +37,7 @@ constexpr bool kTorpedoApproachPc24Cc13Bound = false;
 // 009D3BC8 does and clamps only the walk's copy.
 // Live: game_hosts_units.cpp update_torpedo_approach_009d3420 ->
 // torpedo_approach_update_009d3420 -> torpedo_home_sector_009d3bc8.
-constexpr bool kTorpedoHomeSectorScaleCc13Bound = false;
+constexpr bool kTorpedoHomeSectorScaleCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-27): pairs on 276fdd23c; BSM01 l73_b1_m1 lost, USN21 moved, see commit
 constexpr double kTorpedoHomeSectorScale_00d1fbc8 = 36.0;                 // m64
 // m64, but it holds float(2*pi) widened: 6.2831854820251465, not 2*pi.
 constexpr double kTorpedoHomeSectorTwoPi_00ce3828 = 6.2831854820251465;

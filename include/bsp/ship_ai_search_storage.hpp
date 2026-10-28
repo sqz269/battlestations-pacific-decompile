@@ -55,4 +55,10 @@ private:
     unsigned char* backing_{};
     BoundsBits initial_bounds_;
 };
+
+// Harness determinism aid, not image behaviour (cc9-nondet1,
+// docs/USN21_NONDETERMINISM.md section 6): BSP_SEARCHER_BOUNDS_INIT=1 zeroes
+// the searcher-cache bounds the way kSearcherCacheBoundsInitCc13Bound ON does.
+// Unset or any other value leaves the image-faithful heap leftovers.
+bool searcher_bounds_init_aid() noexcept;
 } // namespace bsp
