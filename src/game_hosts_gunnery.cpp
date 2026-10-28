@@ -18,6 +18,7 @@
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
 #include "bsp/gun_subobject_repair_cc13.hpp"   // packet cc13-gunD
+#include "bsp/ship_damaged_gfx_remove_cc13.hpp"   // packet cc13-gunC C1b
 #include "bsp/camera_multiply.hpp"
 #include "bsp/cc13_tier2_switches.hpp"
 #include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (the 31h release)
@@ -3881,6 +3882,14 @@ struct GameGunneryHost::Impl {
     std::vector<std::vector<std::size_t>> device_children;
     std::size_t device_children_guns{static_cast<std::size_t>(-1)};
     const std::vector<std::size_t>& device_children_of(std::size_t unit);
+    // Packet cc13-gunC C1b (include/bsp/ship_damaged_gfx_remove_cc13.hpp): each unit's
+    // vtable[1B4h] level (+358h, 0 at spawn) and the gun rows 00819CC0 detached from its
+    // spatial child array, in detach order, replayed by device_children_of.
+    std::vector<int> damaged_gfx_level;
+    std::vector<std::vector<std::size_t>> device_children_removed;
+    unsigned long long damaged_gfx_calls{0};
+    unsigned long long damaged_gfx_ship_raises{0};
+    unsigned long long damaged_gfx_mounts_removed{0};
     bool device_hit_world_frame(std::size_t gun_row, float axes[3][3], float origin[3]);
     void gun_device_hit_damage_008777d0(std::size_t unit, std::size_t gun_row,
         const bsp::HitRecord& hit);
@@ -5245,14 +5254,44 @@ GameGunneryHost::Impl::device_hit_mesh(int device_class) {
 const std::vector<std::size_t>& GameGunneryHost::Impl::device_children_of(std::size_t unit) {
     if (device_children_guns != guns.size()) {
         device_children.assign(units.count(), {});
-        for (std::size_t row = 0; row < guns.size(); ++row) {
-            const GameGunRow& gun = guns[row];
-            if (!gun.mount_known || gun.device_class < 0) continue;
-            if (device_hit_mesh(gun.device_class) == nullptr) continue;
-            if (gun.unit_index >= device_children.size()) {
-                device_children.resize(gun.unit_index + 1);
+        if constexpr (bsp::kShipDamagedGfxRemoveCc13Bound) {
+            // C1b: the array holds every device row in build order (00924F90 appends);
+            // 00819CC0's detaches replay as 0098A2C0 swap-removes over that whole array,
+            // then the rows C1 can trace are kept in the resulting order.
+            std::vector<std::vector<std::size_t>> attached(device_children.size());
+            for (std::size_t row = 0; row < guns.size(); ++row) {
+                const GameGunRow& gun = guns[row];
+                if (gun.device_class < 0) continue;
+                if (gun.unit_index >= attached.size()) attached.resize(gun.unit_index + 1);
+                attached[gun.unit_index].push_back(row);
             }
-            device_children[gun.unit_index].push_back(row);
+            if (device_children.size() < attached.size()) device_children.resize(attached.size());
+            for (std::size_t u = 0; u < attached.size(); ++u) {
+                std::vector<std::size_t>& list = attached[u];
+                if (u < device_children_removed.size()) {
+                    for (const std::size_t gone : device_children_removed[u]) {
+                        const auto at = std::find(list.begin(), list.end(), gone);
+                        if (at == list.end()) continue;
+                        *at = list.back();   // 0098A2C0
+                        list.pop_back();
+                    }
+                }
+                for (const std::size_t row : list) {
+                    const GameGunRow& gun = guns[row];
+                    if (!gun.mount_known || device_hit_mesh(gun.device_class) == nullptr) continue;
+                    device_children[u].push_back(row);
+                }
+            }
+        } else {
+            for (std::size_t row = 0; row < guns.size(); ++row) {
+                const GameGunRow& gun = guns[row];
+                if (!gun.mount_known || gun.device_class < 0) continue;
+                if (device_hit_mesh(gun.device_class) == nullptr) continue;
+                if (gun.unit_index >= device_children.size()) {
+                    device_children.resize(gun.unit_index + 1);
+                }
+                device_children[gun.unit_index].push_back(row);
+            }
         }
         device_children_guns = guns.size();
     }
@@ -5621,6 +5660,20 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         // Packet cc13-gunD: GunRepairTickPercentage (0083E290, default 2.0). OFF: the
         // chunk text is unchanged (the literal is only split here).
         chunk += "    f.dcgun = num(SG.GunRepairTickPercentage, 1000000) or 2000000\n";
+    }
+    if constexpr (bsp::kShipDamagedGfxRemoveCc13Bound) {
+        // Packet cc13-gunC C1b: DamagedGFXRemove.Slots, class+7A4h (00833D1B..00833E63,
+        // a next() walk with 00B66290 on each value), as dgrn and dgr1..dgrN.
+        chunk +=
+            "    local dgr = type(row.DamagedGFXRemove) == 'table' and row.DamagedGFXRemove.Slots or nil\n"
+            "    local dgn = 0\n"
+            "    if type(dgr) == 'table' then\n"
+            "      for _, v in pairs(dgr) do\n"
+            "        dgn = dgn + 1\n"
+            "        f['dgr' .. dgn] = tonumber(v) or 0\n"
+            "      end\n"
+            "    end\n"
+            "    f.dgrn = dgn\n";
     }
     chunk +=
         "    f.dcsg = (type(ShipGlobals) == 'table') and 1 or 0\n"
@@ -18428,6 +18481,62 @@ void GameGunneryHost::apply_gun_damage_00728080(std::size_t gun, float amount) {
     impl_->apply_gun_damage_00728080(gun, amount);
 }
 
+// Packet cc13-gunC C1b (include/bsp/ship_damaged_gfx_remove_cc13.hpp). vtable[1B4h] from
+// 0088F710. 00819CE0..00819CF0: the level equal to +358h does nothing; 00877B00 stores
+// it (its model variant is presentation). A ship (00819CC0) with level > 0 (00819CFC)
+// then takes, for each DamagedGFXRemove.Slots key in order and each gun row with that
+// platform key (+38Ch) in build order, with no dead test: 0077D1A0 -> 00926C80 (packet
+// B's chain, idempotent on +60h), then 00710B80's swap-remove from the unit's spatial
+// child array, which a row already detached skips (part +184h is 0). The visibility
+// factor (00B6DA70) and the Funnels loop are presentation, not modelled.
+int GameGunneryHost::set_damaged_gfx_level_00819cc0(std::size_t unit_index, int level) {
+    if constexpr (bsp::kShipDamagedGfxRemoveCc13Bound) {
+        Impl& host = *impl_;
+        if (unit_index >= host.unit_state.size()) return 0;
+        ++host.damaged_gfx_calls;
+        if (host.damaged_gfx_level.size() < host.unit_state.size()) {
+            host.damaged_gfx_level.resize(host.unit_state.size(), 0);
+        }
+        if (host.damaged_gfx_level[unit_index] == level) return 0;          // 00819CF0
+        host.damaged_gfx_level[unit_index] = level;                          // 00877B00
+        host.done("Unit::set_damaged_gfx_level_base_00877b00", 0x00877b00u);
+        if (!host.units.unit_is_kind_of(unit_index, bsp::kUnitGunneryKindShipBase)) return 0;
+        host.done("Ship::set_damaged_gfx_level_00819cc0", 0x00819cc0u);
+        if (level <= 0) return 0;                                            // 00819CFE
+        ++host.damaged_gfx_ship_raises;
+        const int type_id = host.unit_state[unit_index].row.type_id;
+        const int keys = host.flat(type_id, "dgrn", 0);
+        if (host.device_children_removed.size() <= unit_index) {
+            host.device_children_removed.resize(unit_index + 1);
+        }
+        std::vector<std::size_t>& removed = host.device_children_removed[unit_index];
+        int destroyed = 0;
+        for (int k = 1; k <= keys; ++k) {                                    // 00819D10
+            char name[16];
+            std::snprintf(name, sizeof(name), "dgr%d", k);
+            const int key = host.flat(type_id, name, 0);
+            for (std::size_t g = 0; g < host.guns.size(); ++g) {             // +48h / +44h
+                const GameGunRow& gun = host.guns[g];
+                if (gun.unit_index != unit_index || gun.platform_key != key) continue;
+                host.gun_destroyed_failure_0072b5a0(g);                      // 00819D80
+                ++destroyed;
+                if (std::find(removed.begin(), removed.end(), g) != removed.end()) continue;
+                removed.push_back(g);                                        // 00819DB9
+                ++host.damaged_gfx_mounts_removed;
+                host.device_children_guns = static_cast<std::size_t>(-1);
+            }
+        }
+        const GameGunneryHost::Impl::UnitState& state = host.unit_state[unit_index];
+        host.log.notef("gunnery: SetDamagedGFXLevel \"%s\" level=%d slots=%d guns=%d "
+            "(00819CC0, packet cc13-gunC C1b)", state.row.name.c_str(), level, keys, destroyed);
+        return destroyed;
+    } else {
+        static_cast<void>(unit_index);
+        static_cast<void>(level);
+        return 0;
+    }
+}
+
 void GameGunneryHost::override_hp_008c1930(std::size_t unit_index, float value) {
     Impl& host = *impl_;
     ++host.override_hp_calls;
@@ -19847,6 +19956,12 @@ void GameGunneryHost::report() {
         if constexpr (bsp::kBlastGatherShotDrawCc13Bound) {
             host.log.notef("summary mission gunnery blast gather shot draws=%llu (009044F4, packet "
                 "cc13-gunF1)", host.blast_gather_shot_draws);
+        }
+        if constexpr (bsp::kShipDamagedGfxRemoveCc13Bound) {
+            host.log.notef("summary mission gunnery damaged gfx calls=%llu ship_raises=%llu "
+                "mounts_removed=%llu bound=%d (00819CC0, packet cc13-gunC C1b)",
+                host.damaged_gfx_calls, host.damaged_gfx_ship_raises,
+                host.damaged_gfx_mounts_removed, bsp::kShipDamagedGfxRemoveCc13Bound ? 1 : 0);
         }
         if constexpr (bsp::kGunDeviceBlastDamageCc13Bound) {
             host.log.notef("summary mission gunnery device blast records=%llu dispatched=%llu "
