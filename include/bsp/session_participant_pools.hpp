@@ -28,6 +28,12 @@ struct ParticipantRecordBytes {
     ParticipantByte claimed_08;
     ParticipantByte ai_held_09;
     ParticipantByte device_bound_0e;
+    // +0Ah, the per-slot AI-enabled byte (packet cc13-mp3, MP3b). Same semantics as
+    // PlayerRecord::ai_enabled_0a in multiplayer_session_cc13: 004BB160 stores 1 on the
+    // populated mission records (004BB224, 004BB377) and 0 on every player record
+    // (004BB311); 0076CB90 MT_AIENABLE stores current[slot]+0Ah. Read by the
+    // coordinator load gate 004E17FD..004E1834 with +8h and +9h.
+    ParticipantByte ai_enabled_0a;
 };
 
 enum class ParticipantPoolInitialization : std::uint8_t {
@@ -56,6 +62,7 @@ public:
     // is outside this bounded representation and returns false untouched.
     // No scene populates all eight. Trailing mission +9 and every +0E retain
     // their previous values AND availability. Player +8/+9 become known zero.
+    // Also +0Ah: 1 on the populated mission records, 0 on the player records.
     bool reset_flags_004bb160(bool have_scene, std::int32_t scene_slot_count) noexcept;
 
     // Partial 004BB440 (ECX game, nine stack words, RET24h): the first-free
@@ -88,6 +95,11 @@ public:
     // unavailable for a missing identity/byte or slot outside 0..7, including8.
     // Caller-owned output remains untouched on every unavailable read.
     bool try_ai_held_00927f10(std::int32_t slot, std::uint8_t& out) const noexcept;
+
+    // 0076CB90 BSP_Session_SetSlotAiEnabled's store, current[slot]+0Ah = value
+    // (ECX session, stack slot and byte, RET 8). The MT_AIENABLE broadcast is the
+    // caller's. False for a slot outside 0..7 or a missing identity.
+    bool set_slot_ai_enabled_0076cb90(std::size_t slot, std::uint8_t value) noexcept;
 
     // Carries an actual +0E writer without asserting when its delivery occurs.
     bool write_device_bound(ParticipantRecordId record, std::uint8_t value) noexcept;

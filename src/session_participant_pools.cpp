@@ -10,7 +10,8 @@ SessionParticipantPools::SessionParticipantPools(ParticipantPoolInitialization i
         // This is an explicit allocation provenance, not a claim that
         // 004D6BA0 itself writes any of these bytes. Active native pointers
         // are null until the reset/store sequence publishes them.
-        const ParticipantRecordBytes zero{known_byte(0), known_byte(0), known_byte(0)};
+        const ParticipantRecordBytes zero{known_byte(0), known_byte(0), known_byte(0),
+                                          known_byte(0)};
         players_.fill(zero);
         mission_.fill(zero);
     }
@@ -65,6 +66,7 @@ bool SessionParticipantPools::reset_flags_004bb160(bool have_scene,
     for (std::size_t slot = 0; slot < count; ++slot) {
         mission_[slot].claimed_08 = known_byte(1);
         mission_[slot].ai_held_09 = known_byte(1);
+        mission_[slot].ai_enabled_0a = known_byte(1);  // 004BB224 / 004BB377
     }
     // 004BB2D0 clears ONLY +8 of the remaining mission records.
     for (std::size_t slot = count; slot < kSceneSlotRecordCount; ++slot) {
@@ -74,6 +76,7 @@ bool SessionParticipantPools::reset_flags_004bb160(bool have_scene,
     for (ParticipantRecordBytes& record : players_) {
         record.claimed_08 = known_byte(0);
         record.ai_held_09 = known_byte(0);
+        record.ai_enabled_0a = known_byte(0);  // 004BB311
     }
     return true;
 }
@@ -140,6 +143,15 @@ bool SessionParticipantPools::try_ai_held_00927f10(std::int32_t slot,
     const ParticipantRecordBytes* record = record_bytes(active_[static_cast<std::size_t>(slot)]);
     if (!record || !record->ai_held_09.available) return false;
     out = record->ai_held_09.value; // 00927F21: raw AL, no +8 test.
+    return true;
+}
+
+bool SessionParticipantPools::set_slot_ai_enabled_0076cb90(std::size_t slot,
+    std::uint8_t value) noexcept {
+    if (slot >= kSceneSlotRecordCount) return false;
+    ParticipantRecordBytes* record = record_bytes(active_[slot]);
+    if (!record) return false;
+    record->ai_enabled_0a = known_byte(value);  // 0076CBC1, current[slot]+0Ah
     return true;
 }
 

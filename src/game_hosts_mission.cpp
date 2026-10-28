@@ -580,6 +580,9 @@ struct GameMissionHost::Impl {
     // Key by the actual scene path; the semantic side_blocks vector still
     // lacks resolved Party/Race and must not imply a zero participant count.
     std::map<std::string, std::int32_t> participant_scene_counts;
+    // The last parsed scene's side-block Party ordinals (slot record +28h, 004BB160 /
+    // 004C6890 from block +0h), -1 where a block has none. Packet cc13-mp3 (MP3b).
+    std::array<int, 8> scene_slot_parties{-1, -1, -1, -1, -1, -1, -1, -1};
     std::unique_ptr<GameMissionLuaHost> lua;
     GameObserverRuntime* observer_runtime{nullptr};
     std::unique_ptr<GameMissionFrameHost> frame_host;
@@ -616,6 +619,9 @@ struct GameMissionHost::Impl {
     void run_page_machine(float seconds);
     void resolve_skirmish_entry();
     void start_skirmish();
+    std::int32_t skirmish_slot_team(std::size_t slot) const;
+    void join_local_player_007752d0();
+    void lobby_reset_slots_005d5340();
     void build_detail_page_0058c010();
     void start_briefing_005922f0();
     void consume_load_request();
@@ -1552,8 +1558,9 @@ public:
     std::vector<std::string> scene_record_names() override { return {record_.screen.scene}; }
     void set_scene_count_f1af2c(std::int32_t) override {}
     void build_scene_record_004e1d70(const std::string& name) override {
-        // 004E1D70(name, 0, -1, 0) for the one entry, through the host's 004E2770
-        // (clear, build, select index 0).
+        // 004E1D70(name, 0, -1, 0) for the one entry. Host substitution: the image calls
+        // 004E1D70 directly at 0076FC7C once per record; this goes through the host's
+        // 004E2770 (clear, build, select index 0).
         start_.set_pending_scene(name, std::string_view{});
     }
     void select_scene_record_004c6890() override {
@@ -1592,11 +1599,19 @@ public:
     void clear_e17bf2() override {}
     void set_e08178(float) override {}
     void set_game_mode_004bc890() override {
-        // 0076FEA4 SetGameMode(+618h, 0). rev9 N4: every SetGameMode on the skirmish
-        // path stores (m, m, forced 0). The lobby's 005D5660, 005D54E0 and 005D62B0 take
-        // m = [00E19564], or [00E19568] when that is 0..3; 0076FEA4 re-applies +618h and
-        // 004C6AF2 (004C6890 with +1FE4h set) re-applies +614h, both equal to the last m.
-        // So the end state is (M, M, 0), M from the last lobby call, in any order.
+        // 0076FEA4 SetGameMode(+618h, 0). rev9 N4: through session setup, before the
+        // scene load, every SetGameMode on the skirmish path stores (m, m, forced 0).
+        // The lobby's 005D5660, 005D54E0 and 005D62B0 take m = [00E19564], or [00E19568]
+        // when that is 0..3 (005D5660 tests with a signed JG, 005D54E0/005D62B0 with an
+        // unsigned CMOVBE: they agree only for non-negative modes); 0076FEA4 re-applies
+        // +618h and 004C6AF2 (004C6890 with +1FE4h set) re-applies +614h, both equal to
+        // the last m. So the end state of setup is (M, M, 0), M from the last lobby call,
+        // in any order. Later callers break the triple: 004D548E in LoadSceneContents
+        // (9, 0 on its AL == 0 branch) and 0046B999 in KillPass (8, flag EBP).
+        // LABELLED: bsp::set_game_mode_004bc890 stores only the triple. The image's
+        // 004BC8B3.. arm (+1FE4h != 0 and +5FCh != 0) also makes mode-specific scene
+        // edits (mode 7 at 004BC8C7); at 0076FEA4 +1FE4h has just become 1, and +5FCh is
+        // presumed null at the front end, so that arm is not modelled.
         bsp::SessionContext& session = bsp::session_context();
         bsp::set_game_mode_004bc890(session, session.raw_game_mode_618, false);
         owner_.log.implemented("Session::set_game_mode", "004bc890");
@@ -1640,6 +1655,10 @@ void GameMissionHost::Impl::start_skirmish() {
         bsp::cc13cam2::session_set_mode_0076fad0(session_mode, 1, binding);
         log.notef("session set mode 1 (0076fad0): mode=%d route default=%d server state=%d",
             session_mode.mode_f4, binding.route_default_e0af1c, binding.server_state_9c);
+        // Packet cc13-mp3 (MP3b): the host player joins its own lobby, then the lobby
+        // screen enters.
+        join_local_player_007752d0();
+        lobby_reset_slots_005d5340();
     } else {
         // 0076FC7C / 0076FCA6 for the one entry: 004E1D70 then 004C6890.
         start.set_pending_scene(record.screen.scene, std::string_view{});
@@ -1652,6 +1671,157 @@ void GameMissionHost::Impl::start_skirmish() {
         log.unimplemented("Session::set_mode_host", "0076fad0");
     }
     log.unimplemented("MultiGameLobby::apply_selected_map", "005da530");
+}
+
+// Packet cc13-mp3 (MP3b). current[slot]+28h after 0076FAD0's 004BB160: a populated
+// mission record has its scene side block's Party (004BB244..004BB251, block +0h), and
+// 004BB630 copies the slot's mission +28h into a bound player record (004BB64A..004BB650),
+// so the team is the slot's either way. LABELLED: a trailing record (slot >= the scene's
+// MaxPlayerNum) keeps its old +28h; the host takes the zeroed allocation's 0 (0073E163),
+// the value on the first selection after start-up.
+std::int32_t GameMissionHost::Impl::skirmish_slot_team(std::size_t slot) const {
+    std::int32_t count = 0;
+    if (load.selection.have_record && !load.records.empty()) {
+        const auto found = participant_scene_counts.find(load.records.front().scene_path);
+        if (found != participant_scene_counts.end()) count = found->second;
+    }
+    if (static_cast<std::int32_t>(slot) >= count) return 0;
+    const int party = scene_slot_parties[slot];
+    if (party < 0) {
+        throw std::logic_error("skirmish slot record without a side-block Party");
+    }
+    return party;
+}
+
+// Packet cc13-mp3 (MP3b). 007752D0 BSP_MMultiPlayer_ServerAddPlayer for the server's
+// first transport entry, the host's own join (the entry 00784790 skips), then its slot
+// pick and 0076C840 BSP_Session_HostSelectPlayer (multiplayer_session_cc13.cpp).
+// Concrete: the 004BB440 claim, the pick over current[] +9h/+28h and the 004BB630 bind.
+// LABELLED: the profile name, tag, xuid, rank and platform words, the MT_MYPLAYER /
+// MT_SELECTPLAYER / MT_SERVERINFO messages (no entries after the first), and 007F8690's
+// placement are not represented; game+18C8h/+18ECh are only logged.
+// LABELLED guard: the host reads local slot 0 throughout (for example
+// PowerupManagerBinding::local_player_slot_18ec), so any other pick throws. Of this
+// installation's multi scenes, duelOne.scn (Party Japanese, Allied x7) picks slot 1
+// and scene175/902/908.scn (all Japanese) pick -1 (no team-0 AI slot) outside mode 7.
+void GameMissionHost::Impl::join_local_player_007752d0() {
+    bsp::ParticipantRecordId local;
+    if (participants.claim_player_flags_004bb440(local)
+        != bsp::ParticipantClaimResult::Claimed) {
+        throw std::logic_error("007752D0 local join without a free player record");
+    }
+    // 00775D06..00775DC9: mode 7 takes the first AI-held current record; otherwise the
+    // first AI-held record of the team (+28h 0 or 1) with fewer human (+9h clear)
+    // current records, team 0 on a tie, or -1 when that team has none.
+    const std::int32_t mode = bsp::effective_game_mode_004bca50(bsp::session_context());
+    std::int32_t first_team0 = -1, first_team1 = -1, humans0 = 0, humans1 = 0, choice = 0;
+    for (std::size_t j = 0; j < bsp::kSceneSlotRecordCount; ++j) {
+        bsp::ParticipantRecordId current;
+        bsp::ParticipantRecordBytes bytes;
+        if (!participants.active_record(j, current)
+            || !participants.read_record_bytes(current, bytes)
+            || !bytes.ai_held_09.available) {
+            throw std::logic_error("00775D06 slot pick over an unrepresented record");
+        }
+        const std::int32_t team = skirmish_slot_team(j);
+        if (bytes.ai_held_09.value != 0) {
+            if (mode == 7) {
+                choice = static_cast<std::int32_t>(j);
+                break;
+            }
+            if (team == 0) {
+                if (first_team0 < 0) first_team0 = static_cast<std::int32_t>(j);
+            } else if (team == 1 && first_team1 < 0) {
+                first_team1 = static_cast<std::int32_t>(j);
+            }
+        } else if (team == 0) {
+            ++humans0;
+        } else {
+            ++humans1;
+        }
+    }
+    if (mode != 7) choice = humans1 < humans0 ? first_team1 : first_team0;
+    log.notef("skirmish local join (007752d0): player record %zu, mode %d, slot pick %d "
+        "(team0 first %d humans %d, team1 first %d humans %d)", local.index, mode, choice,
+        first_team0, humans0, first_team1, humans1);
+    if (choice != 0) {
+        throw std::logic_error("skirmish local slot " + std::to_string(choice)
+            + " != 0 not modelled");
+    }
+    // 0076C840: the target must be free (-1 or AI-held), the record claimed and not
+    // AI-held; its old slot (+20h, -1 after 004BB160) is not restored.
+    bsp::ParticipantRecordId target;
+    bsp::ParticipantRecordBytes target_bytes;
+    bsp::ParticipantRecordBytes local_bytes;
+    if (!participants.active_record(static_cast<std::size_t>(choice), target)
+        || !participants.read_record_bytes(target, target_bytes)
+        || !participants.read_record_bytes(local, local_bytes)) {
+        throw std::logic_error("0076C840 over an unrepresented record");
+    }
+    if (target_bytes.ai_held_09.value == 0 || local_bytes.claimed_08.value == 0
+        || local_bytes.ai_held_09.value != 0) {
+        log.notef("skirmish local join: 0076c840 refuses slot %d", choice);
+        return;
+    }
+    participants.install_record_004bb630(static_cast<std::size_t>(choice), local);  // 0076C92C
+    log.implemented("Session::host_select_player", "0076c840");
+    log.notef("skirmish local slot (0076c98e 004b4740): game+18ECh=%d, game+18C8h=%zu", choice,
+        local.index);
+}
+
+// Packet cc13-mp3 (MP3b). 005E51D0 BSP_MultiGameLobbyScreen_Enter -> 005D5340
+// (frontend_seg15_22_cc13.cpp multi_game_lobby_reset_slots_005d5340), the AI defaults
+// through 00771E80 -> 0076CB90 (host arm). LABELLED: the Live-service arm
+// (005D5340's slot 198h / [00F8A2FC]+4Dh test, all eight slots off) is not taken: there
+// is no Live service; the MT_AIENABLE broadcasts reach no peer.
+void GameMissionHost::Impl::lobby_reset_slots_005d5340() {
+    const std::int32_t mode = bsp::effective_game_mode_004bca50(bsp::session_context());
+    if (static_cast<std::uint32_t>(mode) > 3u) {
+        log.notef("skirmish lobby enter (005d5340): mode %d keeps 004bb160's +0Ah", mode);
+        return;
+    }
+    // 005D53C0..005D542D: a side is taken by a player record (game+748h pool) that is
+    // claimed and not AI-held (+8h set, +9h clear), at its +28h. A bound record's +28h is
+    // its slot's team (004BB630); LABELLED: an unbound one keeps the zeroed 0.
+    std::array<std::uint8_t, 3> side_taken{};
+    const auto side_index = [](std::int32_t team) {
+        if (team < 0 || team > 2) throw std::logic_error("005D5340 side outside 0..2");
+        return static_cast<std::size_t>(team);
+    };
+    for (std::size_t k = 0; k < bsp::kSceneSlotRecordCount; ++k) {
+        const bsp::ParticipantRecordId player{bsp::ParticipantPool::Player, k};
+        bsp::ParticipantRecordBytes bytes;
+        if (!participants.read_record_bytes(player, bytes) || bytes.claimed_08.value == 0
+            || bytes.ai_held_09.value != 0) {
+            continue;
+        }
+        std::int32_t team = 0;
+        for (std::size_t j = 0; j < bsp::kSceneSlotRecordCount; ++j) {
+            bsp::ParticipantRecordId current;
+            if (participants.active_record(j, current) && current.pool == player.pool
+                && current.index == k) {
+                team = skirmish_slot_team(j);
+            }
+        }
+        side_taken[side_index(team)] = 1;
+    }
+    // 005D5433..005D547C: per current slot, 00771E80(j, 0) when its side is taken, else
+    // 00771E80(j, 1) and the side becomes taken.
+    std::string summary_text;
+    for (std::size_t j = 0; j < bsp::kSceneSlotRecordCount; ++j) {
+        const std::size_t side = side_index(skirmish_slot_team(j));
+        std::uint8_t on = 0;
+        if (side_taken[side] == 0) {
+            on = 1;
+            side_taken[side] = 1;
+        }
+        if (!participants.set_slot_ai_enabled_0076cb90(j, on)) {
+            throw std::logic_error("0076CB90 over an unrepresented record");
+        }
+        summary_text += on != 0 ? '1' : '0';
+    }
+    log.notef("skirmish lobby enter (005d5340): mode %d, +0Ah per slot %s", mode,
+        summary_text.c_str());
 }
 
 void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
@@ -1730,6 +1900,7 @@ void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
                 parties[i] = ordinal;
             }
             ai_publish_scene_slot_parties(parties);
+            scene_slot_parties = parties;
         }
         // Packet cc9_physics1_sea: the g_Ocean/Waves keys 0078C9B0 (called at
         // 004DF87F) loads into the ocean object; a no-op while
