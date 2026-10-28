@@ -7136,6 +7136,11 @@ public:
     //  the gun's vtable[1D4h] = 0072F6E0, which answers 1 while gun+42Ch is zero
     //  and otherwise caches a line-of-fire predicate whose installer is unread;
     //  it stays true here.
+    //  CORRECTION (packet cc13-tranche2, 2026-10-28): the predicate is no longer
+    //  constant true. Under kAaLineOfFireBound (true; installer 00729560, query
+    //  0072CDD0) line_of_fire_refuses() below asks line_of_fire_blocked_0072cdd0
+    //  and caches the answer per (gun, target) as 0072F6E0 does; "stays true"
+    //  holds for the OFF arm only. The hull-frame window substitution still stands.
     enum class AaRefusal { none, window, armour, line_of_fire };
     AaRefusal last_refusal_{AaRefusal::none};
     void bind_aa_acceptance(const GameGunRow& row, std::size_t other,
@@ -8894,6 +8899,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     // then aim = target + t * V. SUBSTITUTION: the 0085E4D0
                     // turn-rate averaging for a turning plane needs the angular
                     // velocity at +AF8h, which this host does not carry.
+                    // CORRECTION (packet cc13-tranche2, 2026-10-28): the averaging
+                    // is no longer omitted. aa_turn_average_00901c20 above
+                    // (kAaTargetTurnAverageBound = true) reads the plane body
+                    // angular rate (unit_plane_body_angular_rate, 00901CE5..00901CFF)
+                    // and rotates V before the intercept.
                     float shooter_velocity[3];
                     unit_velocity(owner_unit, shooter_velocity);
                     float rel_v[3];

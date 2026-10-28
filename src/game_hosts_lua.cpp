@@ -7562,6 +7562,10 @@ int GameMissionLuaHost::run_get_submarine_on_surface_008942c0(lua_State* state,
 // userdata and nothing in the host nulls it yet (the units host records 00928C80),
 // so every entity table answers false until that hook exists; a non-table
 // argument, where the image's GetByName has no table to index, answers true.
+// CORRECTION (packet cc13-tranche2, 2026-10-28): the hook exists. Under
+// kLuaTrulyDeadOnKilledBound (true) on_entity_killed_00928c80 below sets
+// self.Ptr = lightuserdata(0) as 00928D04 does, so a killed entity answers true;
+// "nothing in the host nulls it" holds only for the OFF arm.
 int GameMissionLuaHost::run_truly_dead_00899500(lua_State* state, int argument_count) {
     ++summary_.truly_dead_calls;
     void* ptr = nullptr;
