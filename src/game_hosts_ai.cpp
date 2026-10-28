@@ -45,6 +45,7 @@
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"  // packet pc24w1-units-1 (kPc24UnitsHostCc13Bound)
+#include "bsp/session_context_cc13.hpp"  // packet cc13-mp4 (MP2b, the 004E17FD gate)
 
 namespace bsp::game {
 
@@ -1022,7 +1023,17 @@ private:
 // which is mode 0, and mode 0 is what makes ai_party_think_mode answer
 // GroupWalk and 009FFE50 admit party slots 0 and 4 only. The value is a
 // labelled substitution: the world singleton's +614h has no producer here.
-constexpr int kCampaignGameMode = 0;
+// Packet cc13-mp4 (MP2b): with a session published (+1FE4h != 0) 004BCA50 answers
+// the raw +614h, so the session's mode is taken; a campaign (session word 0) keeps
+// the labelled 0. The OFF arm is the old constant.
+int campaign_game_mode() noexcept {
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
+        const bsp::SessionContext& session = bsp::session_context();
+        return session.session_word_1fe4 != 0 ? session.game_mode_614 : 0;
+    } else {
+        return 0;
+    }
+}
 
 // Packet cc9_ai_party_gate, docs/SHIP_AI_OPEN_ITEMS.md section 60. True: the
 // single-player rule of the image. game+61Ch, the forced-mode byte, is 0 in a
@@ -1098,8 +1109,13 @@ constexpr bool kAiGroupPartyChangeRemovalBound = false;
 // row is a mission-tree launch (session word 0, 61Ch 0), so none has a
 // coordinator; all rows but BSM01 moved (sections 150.5, 150.6).
 constexpr bool kAiCoordinatorLoadGateBound = true;
-// The 004E17FD gate's answer in this process: session word 0, forced byte 0.
-constexpr bool kAiCoordinatorCreatedAtLoad = false;
+// The 004E17FD gate's answer, packet cc13-mp4: published by the mission load
+// (bsp::ai_coordinator_created_at_load_004e17fd, include/bsp/
+// ai_coordinator_load_gate_cc13.hpp) from the session context and the slot records.
+// It replaces the constant kAiCoordinatorCreatedAtLoad = false. Campaign identity:
+// the campaign context has session word 0 and forced byte 0, so the published value
+// is false, the same as the constant; before any publication it is false too.
+bool g_ai_coordinator_created_at_load = false;
 
 // Packet cc9_group_score_list_release, docs/SHIP_AI_OPEN_ITEMS.md section 61.
 // 00A2B8F0 (00A2B8F0-00A2B94D, RET 4, ECX = group+24h) removes the emptied
@@ -1113,8 +1129,16 @@ constexpr bool kAiCoordinatorCreatedAtLoad = false;
 // removal is the release loop's concrete no-op. False: it stays a record.
 constexpr bool kAiGroupScoreListReleaseBound = true;
 // 004BCA50 in a single-player campaign: not forced, no session, and a mode
-// other than 8 or 9 becomes 8 (004BCA72).
-constexpr int kSinglePlayerEffectiveGameMode = 8;
+// other than 8 or 9 becomes 8 (004BCA72). Packet cc13-mp4 (MP2b): read from the
+// session context; the campaign context (mode 8, not forced, no session) answers 8.
+// The OFF arm is the old constant.
+int single_player_effective_game_mode() noexcept {
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
+        return bsp::effective_game_mode_004bca50(bsp::session_context());
+    } else {
+        return 8;
+    }
+}
 
 std::array<int, 8> g_scene_slot_parties{-1, -1, -1, -1, -1, -1, -1, -1};
 bool g_scene_slot_parties_published = false;
@@ -1136,6 +1160,10 @@ std::map<std::size_t, int> g_unit_owner_players;
 // per-class tick at vt+0Ch, which was not read.
 
 }  // namespace
+
+void ai_publish_coordinator_created_at_load(bool created) {
+    g_ai_coordinator_created_at_load = created;
+}
 
 void ai_publish_scene_slot_parties(const std::array<int, 8>& parties) {
     g_scene_slot_parties = parties;
@@ -1969,10 +1997,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
     bool party_admitted(int slot) const {
         if constexpr (kAiPartyGateUnforcedBound) {
-            return bsp::ai_party_ai_enabled_009ffe50(false, false,
-                kSinglePlayerEffectiveGameMode, slot);
+            // MP2b: 009FFE59 reads game+61Ch and 009FFE84 game+1FE4h; the campaign
+            // context answers false, false and mode 8, the constants they replace.
+            if constexpr (bsp::kSkirmishSessionCc13Bound) {
+                const bsp::SessionContext& session = bsp::session_context();
+                return bsp::ai_party_ai_enabled_009ffe50(session.forced_61c,
+                    session.session_word_1fe4 != 0, single_player_effective_game_mode(), slot);
+            } else {
+                return bsp::ai_party_ai_enabled_009ffe50(false, false,
+                    single_player_effective_game_mode(), slot);
+            }
         } else {
-            return bsp::ai_party_ai_enabled(kCampaignGameMode, slot);
+            return bsp::ai_party_ai_enabled(campaign_game_mode(), slot);
         }
     }
 
@@ -3487,7 +3523,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     int game_mode() override {
-        return kAiPartyGateUnforcedBound ? kSinglePlayerEffectiveGameMode : kCampaignGameMode;
+        return kAiPartyGateUnforcedBound ? single_player_effective_game_mode()
+                                         : campaign_game_mode();
     }
     bool party_ai_enabled(int party_slot) override { return party_admitted(party_slot); }
 
@@ -6735,7 +6772,7 @@ void GameAiCoordinatorHost::Impl::admit_generated_squadrons() {
 void GameAiCoordinatorHost::fixed_step(float step_seconds) {
     Impl& host = *impl_;
     if (!host.created) return;
-    if constexpr (kAiCoordinatorLoadGateBound && !kAiCoordinatorCreatedAtLoad) {
+    if (kAiCoordinatorLoadGateBound && !g_ai_coordinator_created_at_load) {
         // 004E17FD..004E1838: the mission load creates the coordinator only for a
         // hosted session or a forced mode; AICreate is the only other caller.
         ++host.coordinator_steps_absent;
@@ -6808,7 +6845,7 @@ void GameAiCoordinatorHost::report() {
     host.log.notef("summary mission ai coordinator load gate bound=%d created_at_load=%d "
         "steps_absent=%llu groups_created=%llu tick_orders=%llu (004E17FD..004E1838, packet "
         "cc9_ai_coordinator_load_gate)", kAiCoordinatorLoadGateBound ? 1 : 0,
-        kAiCoordinatorCreatedAtLoad ? 1 : 0, host.coordinator_steps_absent,
+        g_ai_coordinator_created_at_load ? 1 : 0, host.coordinator_steps_absent,
         s.groups_created, s.tick_orders);
     host.log.notef("summary mission ai auto-merge leave passes=%llu passes_beyond=%llu "
         "followers_beyond=%llu removals=%llu leave_dist=%.1f bound=%d (00A10EC0, packet "
