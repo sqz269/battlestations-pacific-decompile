@@ -17920,7 +17920,8 @@ void GameUnitsHost::Impl::airfield_site_tick_006cf980(std::size_t deck_index, La
 // point 0's world y (the airfield's +7ACh object is not read); the airfield's
 // axes are taken as the world's, so the local offsets are applied in world;
 // +9DCh is kept as launch_spot_cooldown_9dc with the count launch_spot_arms_9dc,
-// for the gunnery crash sweep (block+7Ch is the deck owner).
+// for the gunnery crash sweep (block+7Ch is the deck owner); the orthonormalisation
+// 0085DC80 (called at 007C6029) is the host's own normalise-and-cross.
 bool GameUnitsHost::Impl::place_on_launch_spot_007c5f60(GameUnitSlot& p,
     std::size_t deck_index, LandingDeck& d, bool airfield) {
     float pos[3] = {0.0f, 0.0f, 0.0f};
@@ -17963,7 +17964,7 @@ bool GameUnitsHost::Impl::place_on_launch_spot_007c5f60(GameUnitSlot& p,
         float fwd[3] = {h > 0.0f ? dir[0] * (cp / h) : 0.0f, sp,
                         h > 0.0f ? dir[2] * (cp / h) : cp};
         const float fl = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] + fwd[2] * fwd[2]);
-        // pc24-lint: allow float ops (per-op single precision); the host's own orthonormalisation stands in for 0085DC80, labelled above
+        // pc24-lint: allow single float op: c / fl is one float FDIV, already rounded per op (as at PC24); this |fwd| normalisation and the right/up crosses below are the host's stand-in for 0085DC80 (called at 007C6029), not modelled per op
         for (float& c : fwd) c /= fl;
         // right = up x forward, up = forward x right (the identity pose's handedness).
         float right[3] = {fwd[2], 0.0f, -fwd[0]};
