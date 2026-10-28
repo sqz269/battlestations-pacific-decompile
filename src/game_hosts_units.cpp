@@ -72,6 +72,8 @@
 #include "bsp/dive_bomb_goaway_turn.hpp"
 #include "bsp/move_to_glide.hpp"
 #include "bsp/target_disabled_byte_5d_cc13.hpp"
+#include "bsp/leave_countdown_all_squadrons_cc13.hpp"
+#include "bsp/gameplay_seg47_cc13.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/plane_cached_speed_b1c_cc13.hpp"
 #include "bsp/follow_sight_draw_cc13.hpp"
@@ -1057,6 +1059,9 @@ struct GameUnitSlot {
     bool retreat_squadron_ordered{false};
     float retreat_exit_6f0{0.0f};           // unit+6F0h
     int retreat_exit_state_6ec{0};          // unit+6ECh: 1 inside, 2 counting, 3 expired
+    // Packet cc13-leavecd: the first counting step of a plane that is not retreating
+    // was logged (bsp::kLeaveCountdownAllSquadronsCc13Bound).
+    bool leave_counting_logged{false};
     // Packet cc9_ship_exit_zone: a ship reuses +6ECh / +6F0h above (00826D70 writes the
     // same unit fields); +100Ch is its warning repeat timer.
     float ship_exit_warning_100c{0.0f};     // unit+100Ch
@@ -3076,6 +3081,12 @@ struct GameUnitsHost::Impl {
         retreat_retired{0}, retreat_exits{0}, retreat_exit_members{0},
         retreat_exit_gated{0}, retreat_latches_361{0}, retreat_rtb_installs{0};
     std::vector<std::string> retreat_latched_361;   // squadron+361h, by squadron name
+    // Packet cc13-leavecd (bsp::kLeaveCountdownAllSquadronsCc13Bound): squadron+36Ch,
+    // the 00982120 warning countdown, by squadron name (a plane with no squadron
+    // record by its own name), and the census.
+    std::map<std::string, float> leave_warn_36c;
+    unsigned long long leave_countdown_calls{0}, leave_counting_steps{0},
+        leave_counting_not_retreat{0};
     // BSP_MissionEntity_Kill's cause (00926D90's argument) for the kills this
     // host passes one other than 1; 00929800 names it from 00E0CF04.
     std::vector<int> kill_cause_by_unit;
@@ -10777,6 +10788,112 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         done("BotTaskRetreat::construct", 0x009c9d00u);
         return true;
     }
+    // Packet cc13-leavecd: 007EE2E0 BSP_PlaneSquadron_IsLeavingOnPurpose(sq,
+    // check_leader) for plane m's squadron (include/bsp/leave_countdown_all_squadrons_cc13.hpp).
+    // LABELLED: a plane with no squadron record is its own one-plane squadron; the
+    // squadron's director is its flight leader's, as the spent-RTB path reads it; the
+    // retreat arm is run_retreat_task_tick_009ca130's proxy, so retreats count as before.
+    bool leaving_on_purpose_007ee2e0(std::size_t m, bool check_leader) {
+        if (m >= slots.size()) return false;
+        const bsp::PlaneSquadronHostRecord* sq =
+            bsp::plane_squadron_registry().find_by_member_unit(m);
+        const std::size_t leader = sq != nullptr ? sq->flight_leader() : m;
+        const bool leader_ok = leader != bsp::kPlaneSquadronNoUnit && leader < slots.size();
+        if (check_leader && leader_ok) {
+            const GameUnitSlot& l = *slots[leader];
+            if (l.current_roles_01ac[1] == kLocalPlayerSlot) return true;   // 00927F30(leader, 1)
+            if (l.role_player_0184) return true;                           // leader+184h
+        }
+        // The retreat arm (00E08F90).
+        const GameUnitSlot& u = *slots[m];
+        if (u.retreat_task_installed && u.retreat_squadron_ordered) return true;
+        const bsp::WorldMapBounds* b = lua.world_border_bounds();
+        if (!leader_ok || b == nullptr) return false;
+        const std::uint32_t command = commands.current_command_0071be40(leader);   // vcall +174h
+        if (command == bsp::kCommandAttackMove || command == bsp::kCommandMoveTo) {
+            // vcall +178h: the target's +1h, then its point +8h.
+            bsp::SceneCommandTarget target;
+            int mode = 0;
+            commands.active_command_descriptor_0071eb60(leader, target, mode);
+            if (target.position_valid != 0 && bsp::point_outside_world_map_0071c4f0(*b,
+                    {target.position[0], target.position[1], target.position[2]})) {
+                return true;
+            }
+        }
+        if (command == bsp::kCommandMoveOnPath) {
+            // 0071BFF0(0), 007B1350: the path's last point when its +0Ch byte is set.
+            float last[3]{};
+            if (commands.path_final_point_007b1350(leader, last)
+                && bsp::point_outside_world_map_0071c4f0(*b, {last[0], last[1], last[2]})) {
+                return true;
+            }
+        }
+        return false;
+    }
+    // Packet cc13-leavecd: 007C6C30 for one plane, from its fixed step (00953D98).
+    void leave_countdown_007c6c30(GameUnitSlot& unit, float step) {
+        GameGunneryHost* const gun = gunnery.get();
+        const bsp::WorldMapBounds* b = lua.world_border_bounds();
+        if (gun == nullptr || b == nullptr || !lua.plane_globals_loaded()) return;
+        const std::size_t m = unit.process_index;
+        if (m >= slots.size()) return;
+        ++leave_countdown_calls;
+        const bsp::GameTuningBlock& g = lua.plane_globals();
+        bsp::gameplay_seg47_cc13::ExitCountdownTuning t;
+        t.margin_348 = g.retreat_exit_dist;
+        t.period_34c = g.retreat_exit_time;
+        t.warn_period_350 = g.retreat_warning_repeat_time;
+        const bsp::PlaneSquadronHostRecord* sq =
+            bsp::plane_squadron_registry().find_by_member_unit(m);
+        float& warn = leave_warn_36c[sq != nullptr ? sq->name : unit.row.name];
+        bsp::gameplay_seg47_cc13::ExitCountdownState s;
+        s.timer_6f0 = unit.retreat_exit_6f0;
+        s.state_6ec = unit.retreat_exit_state_6ec;
+        s.has_squadron_9d4 = true;
+        s.flag_9d8 = !unit_is_flight_leader_007b8ad0(m);   // +9D8h != 0: not slot 0
+        s.squadron_warn_36c = warn;
+        const float* p = unit.motion.position;
+        bool send = false;
+        bsp::gameplay_seg47_cc13::ExitCountdownHost h;
+        h.outside_map = [&] {
+            return bsp::point_outside_world_map_0071c4f0(*b, {p[0], p[1], p[2]});
+        };
+        h.squadron_leaving = [&] { return leaving_on_purpose_007ee2e0(m, true); };
+        h.beyond_margin = [&](float margin) {
+            return bsp::point_beyond_map_margin_0059c9b0(*b, p[0], p[2], margin);
+        };
+        h.local_player_role = [&] { return unit.current_roles_01ac[0] == kLocalPlayerSlot; };
+        h.warn_exit_zone = [&] {
+            record("Plane::out_of_action_notice_00982120", 0x00982120u);
+        };
+        h.send_exit_zone = [&] { send = true; };
+        bsp::gameplay_seg47_cc13::out_of_action_countdown_007c6c30(s, gun->unit_dead(m), step, t, h);
+        unit.retreat_exit_6f0 = s.timer_6f0;
+        unit.retreat_exit_state_6ec = s.state_6ec;
+        warn = s.squadron_warn_36c;
+        if (s.state_6ec >= 2) {
+            ++leave_counting_steps;
+            if (unit.retreat_task_installed) {
+                ++unit.retreat_outside_ticks;
+                if (unit.retreat_outside_at < 0.0f)
+                    unit.retreat_outside_at = summary.simulated_seconds;
+            } else {
+                ++leave_counting_not_retreat;
+                if (!unit.leave_counting_logged) {
+                    unit.leave_counting_logged = true;
+                    log.notef("leave countdown: plane \"%s\" squadron \"%s\" counting, not "
+                        "retreating, at %.2f s pos=(%.1f, %.1f) timer=%.2f (00953D98 -> "
+                        "007C6C30 -> 007EE2E0, packet cc13-leavecd)", unit.row.name.c_str(),
+                        sq != nullptr ? sq->name.c_str() : "-",
+                        static_cast<double>(summary.simulated_seconds),
+                        static_cast<double>(p[0]), static_cast<double>(p[2]),
+                        static_cast<double>(s.timer_6f0));
+                }
+            }
+        }
+        if (send) retreat_leave_map_007ee410(m);   // 007C6DC1
+        done("Plane::out_of_action_countdown_007c6c30", 0x007c6c30u);
+    }
     // 007EE410 -> message 50h -> 007CA790 -> 007F31A0 for a plane whose leave
     // countdown ran out. PARTIAL, labelled: 00982120's HUD notices, the Lua
     // ExitZoneParty stores (no script in this installation reads the key), the
@@ -10824,7 +10941,14 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
                 }
             }
             // 007F32C6-007F3323: survivors left, +361h clear, still leaving.
-            if (survivors > 0 && !latched && slots[m]->retreat_squadron_ordered) {
+            // ON (kLeaveCountdownAllSquadronsCc13Bound): 007F32D1 007EE2E0(sq, 0).
+            bool still_leaving = false;
+            if constexpr (bsp::kLeaveCountdownAllSquadronsCc13Bound) {
+                still_leaving = leaving_on_purpose_007ee2e0(m, false);
+            } else {
+                still_leaving = slots[m]->retreat_squadron_ordered;
+            }
+            if (survivors > 0 && !latched && still_leaving) {
                 retreat_latched_361.push_back(sq->name);
                 ++retreat_latches_361;
             }
@@ -23669,7 +23793,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         return unit_.generic_suppress_520;
                     }
                     void class_input_poll_0095dc40(float) override {}
-                    void out_of_action_countdown_007c6c30(float) override {}
+                    // 00953D98 vtable[+1D8h] = 007C6C30, behind the +520h gate. OFF: the
+                    // retreat task's tail runs it instead (run_retreat_task_tick_009ca130).
+                    void out_of_action_countdown_007c6c30(float step) override {
+                        if constexpr (bsp::kLeaveCountdownAllSquadronsCc13Bound) {
+                            owner_.leave_countdown_007c6c30(unit_, step);
+                        } else {
+                            (void)step;
+                        }
+                    }
                     bool free_flight_gate_00d06130_38() override {
                         // 0074E210 BSP_PlaneControlMode_IsFreeFlight: +1D4h == 7.
                         return unit_.plane_control_mode_900 == 7;
@@ -40849,7 +40981,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         default:
                             break;
                         }
-                        // 007C6C30's arms for this plane.
+                        // 007C6C30's arms for this plane. ON
+                        // (kLeaveCountdownAllSquadronsCc13Bound): the plane's fixed step
+                        // runs it for every plane (PlaneBinding::out_of_action_countdown_007c6c30).
+                        if constexpr (!bsp::kLeaveCountdownAllSquadronsCc13Bound) {
                         const bsp::WorldMapBounds* b = owner_.lua.world_border_bounds();
                         if (b == nullptr || !owner_.lua.plane_globals_loaded()) return;
                         const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
@@ -40876,6 +41011,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.retreat_exit_state_6ec = st;
                         if (unit_.retreat_exit_6f0 < 0.0f)
                             owner_.retreat_leave_map_007ee410(unit_.process_index);  // 007C6DE3
+                        }
                     }
 
                     void run_land_task_tick_009b3eb0(float dt) {
@@ -47459,6 +47595,12 @@ void GameUnitsHost::report() {
         "kills=%llu (00826D70 / 00811F50 / 0081BEB0, packet cc9_ship_exit_zone)",
         GameUnitsHost::Impl::kShipOutOfMapExitBound ? 1 : 0, host.ship_exit_calls,
         host.ship_exit_counting, host.ship_exit_warnings, host.ship_exit_kills);
+    if constexpr (bsp::kLeaveCountdownAllSquadronsCc13Bound) {
+        host.log.notef("summary plane leave countdown calls=%llu counting=%llu "
+            "counting_not_retreat=%llu (00953D98 -> 007C6C30, packet cc13-leavecd)",
+            host.leave_countdown_calls, host.leave_counting_steps,
+            host.leave_counting_not_retreat);
+    }
     if constexpr (kSquadronReturnToBaseResolveBound) {
         host.log.notef("summary plane retreat task bound=%d orders=%llu installs=%llu "
             "rtb_installs=%llu refused=%llu retired=%llu exits=%llu exit_members=%llu "
