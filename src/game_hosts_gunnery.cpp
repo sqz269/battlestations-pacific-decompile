@@ -14540,6 +14540,9 @@ void GameGunneryHost::Impl::plane_crash_impact_0084bc60(std::size_t plane, std::
 // inside the radius (00723CFB). The mesh lists its triangles element by element; a run
 // of equal (kind, index) stands for one element (LABELLED in the header). The sphere
 // around the node-0 origin is an exact prune: no vertex lies beyond its radius.
+// LABELLED: one record per device; the image makes one per shape node (0098C510, no
+// dedupe), but every shipped gun model has a single GeomMesh (only hayate_1945 and
+// musashi_1942 have two, and no gun class references them).
 void GameGunneryHost::Impl::gather_device_blast_mounts(std::size_t unit,
     const float centre[3], float range, std::vector<DeviceBlastMount>& out) {
     const float r2 = range * range;
