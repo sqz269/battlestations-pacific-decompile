@@ -91,6 +91,10 @@ namespace bsp {
 // wanderer drift, retreat target and countdown and tight-turn limit; from sweep3-5, the
 // leader turn rate, vehicle and terrain avoidance and carrier holder offsets;
 // from sweep3-6, carrier landing approach, spacing and launch-spot placement.
-inline constexpr bool kPc24PlaneTasksCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-28), bundled with kPlaneCachedSpeedB1cCc13Bound and
+// kDiveFlyaboveAvoidIncrementCc13Bound, judged by plausibility (carriers recover and launch, dive
+// releases happen on BSM04/BSM06). JM08 moves through this switch alone: OFF fails 1114.01 s,
+// ON has no end and its 9 dive-bomb aircraft release nothing.
+inline constexpr bool kPc24PlaneTasksCc13Bound = true;
 
 }  // namespace bsp
