@@ -189,3 +189,36 @@ matched OFF546: exactly the documented A1 records, ordered differences0,
 teardown differences0, frame36 and matching first RNG. The strict serial series
 has started. No other game or heavy build is scheduled during it; P3a2 work is
 static and remains OFF/unbuilt pending an explicit build window.
+
+## Reviewed dormant Page checkpoint
+
+The first matched strict OFF/ON pair passed its exact documented A1 contract:
+raw pair_diff retains the three inventoried startup records, all remaining
+comparison fields match, ordered events and teardown match, and startup frame36
+and RNG0.6207 match. OFF2 then started serially after provenance checks passed.
+The remaining strict repetitions and separate no-bounds-aid pair are pending;
+there has been no retry or acceptance of A1 on main.
+
+GUI checkpoint `c5594a19a` (including earlier raw Group `9f8df5d54`) is frozen in
+the cc15-gui4 worktree. Root constructor review and independent ownership review
+found no source blocker in the complete candidate-vs-common-code diff. It admits
+only the genuine childless/type0-key Screen path, and mapped widget keys reject
+before AA6560. Private context views retain the canonical registry, pools,
+imports and owner families; Page metadata survives native pool return until the
+actual Group/outer/camera/resource/sun/ambient companions retire. The review
+requires a doc-only count correction: AC6825's null B6D890 tail unlinks root
+registration but leaves170; the ordinary cold resource count remains4 until
+genuine Group B6EE10 removal, absent replacement callbacks or other holders.
+
+This checkpoint is OFF, unbuilt and unmerged. Compilation/CTests and OFF
+inertness checks follow the strict A1 window. A focused childless lifecycle
+fixture must establish the dormant ownership path independently; OFF parity
+cannot do so. Actual FE_initial children still need P3b/P3c and a same-tree raw
+Model/Group parenting/lifetime bridge, followed by the joint P4 transfer from
+the current GUI bridge. Foreign owners, unsupported lifetime families, repeated
+activation and failure/pool-reuse behavior remain explicit open checks.
+
+Tooling-only `b63e0311e` fixes brief's false integration backlog by preferring
+the published `origin/main` ref, with local `main` fallback. Two focused Python
+tests pass; no C++ or frozen game artifacts changed. The main checkout remains
+untouched, and CC16 is fully published at that checkpoint.
