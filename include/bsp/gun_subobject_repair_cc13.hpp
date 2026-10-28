@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/gun_destroyed_failure_cc13.hpp"
+#include "bsp/gun_device_hit_damage_cc13.hpp"
 
 // Packet cc13-gunD (gun damage, packet D of the rev8 scope). Header-only switch.
 
@@ -28,11 +29,13 @@ namespace bsp {
 // slot 1CCh 007280A0: +3B8h = 0 (007280C0), vtable[1B4h](0) = 00877B00 (+358h = 0),
 // 008781F0(1) (scene nodes visible, presentation, not modelled), 00925A00, then
 // 00956C20 on [gun+3F0h] (007280DF). 00925A00 runs only when the parent [gun+3Ch] has
-// +5Ch set and +5Dh/+60h/+5Eh clear (LABELLED: the owner's UnitState is not dead); it
-// clears +5Fh (dropping the F899B4 entry), +5Eh, +60h (dropping the F899A8 entry) and
-// +5Dh. LABELLED: the 69h chain applies inline, an early flush, as packet B's 68h
-// chain does; +5Eh and +5Fh have no gun fields (B's destroy path never sets them);
-// a dead owner's rebuild is skipped, as in B. No random draw anywhere on either path.
+// +5Ch set and +5Dh/+60h/+5Eh clear (LABELLED: the owner's UnitState is not dead, which
+// misses an inactive owner and a live owner with +60h or +5Eh set); it clears +5Fh
+// (dropping the F899B4 entry), +5Eh, +60h (dropping the F899A8 entry) and +5Dh. The
+// rebuild runs whatever the gate did. LABELLED: the 69h chain applies inline, an early
+// flush, as packet B's 68h chain does; +5Eh and +5Fh have no gun fields (B's destroy
+// path never sets them); 00876EC0's presentation calls (00710BB0, 0049C940) and
+// 008781F0 are not modelled. No random draw anywhere on either path.
 // Requires packet B's gun fields and destroy chain. Movers: none until packet C1's
 // device hits take gun health down; then ship guns heal at GunRepairTickPercentage per
 // second (2 here, x GunRepairMultiplier only at priority 2) and garrison and fort guns
@@ -41,9 +44,9 @@ namespace bsp {
 // health.
 inline constexpr bool kGunSubobjectRepairCc13Bound = false;
 
-// TODO(cc13-gunD): also require kGunDeviceHitDamageCc13Bound once packet C1 lands.
-static_assert(!kGunSubobjectRepairCc13Bound || kGunDestroyedFailureCc13Bound,
-              "packet D repairs the gun state packet B models");
+static_assert(!kGunSubobjectRepairCc13Bound
+                  || (kGunDestroyedFailureCc13Bound && kGunDeviceHitDamageCc13Bound),
+              "packet D repairs the gun state packet B models, damaged by packet C1");
 
 // 006F47F0's gun repair time ([004C1D10()+40h], GunRepairTime). LABELLED: this
 // installation's commandbuildingglobals.lua (2024-07-13), as the host's other
