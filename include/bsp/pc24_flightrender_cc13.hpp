@@ -107,6 +107,10 @@ namespace bsp {
 //  Not narrowed: the v + 0.5 before 00BF7420 truncates (00AEAB53, 00AEB23B, 00AEB35B,
 //  00AEB164..00AEB196) is one FADD, and its 24-bit rounding cannot change the truncation
 //  for the non-negative cell and tile coordinates the walk produces.
+//  Correction (rev8 FIX): that is wrong. 00BF7420 truncates the PC24-rounded sum, and
+//  v = 0.49999997f sums to 1 - 2^-25, which ties to even at 1.0: the image gives 1, the
+//  double sum 0. ON now truncates x87_add24(v, 0.5) (vsub_trunc_half) at 00AEAB53,
+//  00AEAB8A, 00AEB23B, 00AEB35B and 00AEB164..00AEB1B3.
 // Movers: the same near-vertical hit points, through the crossing parameters.
 inline constexpr bool kPc24FlightRenderCc13Bound = false;
 
