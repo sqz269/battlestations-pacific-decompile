@@ -3042,6 +3042,13 @@ float dive_bomb_planar_pc24(float dx, float dz) {
 // 009C7BB2..009C7BD9 (+C0h) and 009C5AB4..009C5ADB ([ESP+18h]): 00BF701A's atan2
 // is FSTP'd as float, 009C7BBF's FSUBR qword pi/2 (00CE3830) rounds to 24 bits and
 // is FSTP'd, and a negative takes FADD qword 2pi (00CE3828) and another FSTP.
+// SUBSTITUTION, labelled (rev9 N1): std::atan2 in double, then the float cast, stands
+// for 00BF701A LIBCRT_atan2 (MOV EDX,00E15C20; JMP 00C07EE0 __cintrindisp2). Its
+// table entry's byte +0Eh is 10h, not 5, so __trandisp2 loads control word 133Fh
+// (00C081DE..00C081E9: PC = 64-bit, round to nearest) and FPATAN runs at extended
+// precision, not at the caller's PC24; the caller's FSTP then rounds once. The host
+// rounds through double, so a last-bit difference is possible in rare cases. (00BF7030's
+// sqrt, by contrast, keeps the caller's PC bits at 00C083A5, so its FSQRT is PC24.)
 float dive_bomb_bearing_pc24(float dx, float dz) {
     namespace pc24 = bsp::cc13x87;
     const float a = static_cast<float>(
