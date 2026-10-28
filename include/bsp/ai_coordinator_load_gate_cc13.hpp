@@ -24,8 +24,9 @@
 namespace bsp {
 
 // One [game+18CCh + 4i] record's three bytes. +0Ah is written with +8h and +9h by
-// 004BB160 for the scene's mission records (004BB21C..004BB224); the host's
-// participant pools do not model it (the caller labels its source).
+// 004BB160 for the scene's mission records (004BB21C..004BB224) and rewritten per slot
+// by 0076CB90 (the lobby's 005D5340); the caller reads all three from the host's
+// participant pools (packet cc13-mp3).
 struct AiCoordinatorLoadSlot {
     bool occupied_08{false};
     bool ai_09{false};
