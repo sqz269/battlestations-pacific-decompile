@@ -6005,9 +6005,11 @@ struct GameUnitsHost::Impl {
         // whole dive because the turndown ends inverted: cos(pi) = -1 turned
         // `along_track` into MINUS the range, which is what pinned the pitch
         // command at -1.0 for all 344 aimdive ticks of local/usn04_geo2.log.
-        // The image's bearing here is drawn from the LATCHED approach+D8h/+E0h
-        // point rather than the aircraft; that remains a labelled SUBSTITUTION,
-        // unchanged by this fix.
+        // The image's bearing here is drawn from the approach+D8h/+E0h point
+        // rather than the aircraft, and so is this host's: db_impact_bearing_18
+        // (below, packet cc8_dive_release item 2). The old SUBSTITUTION label
+        // was stale (cc13-s20 re-read 009C5950-009C5AF9: [ESP+40h]/[ESP+48h] =
+        // vt[0] aim point - approach+D8h/+E0h, the same arithmetic as 009C7B8A).
         bsp::DiveBombAimHeadingInputs ahin;
         ahin.mid_pitch_blend = kDiveAimHeadingBlendBound;  // GUNNERY 178
         ahin.pitch_c64 = slot.plane_pitch_angle_c64;
@@ -34009,8 +34011,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         bsp::DiveBombAimGlideCommandInputs in;
-                        // SUBSTITUTION, labelled: the bearing to the aim point
-                        // in place of the frame slot 009C5435 reads.
+                        // 009C5435 reads [ESP+6Ch], written at 009C5357-009C538A
+                        // (cc13-s20): pi/2 - atan2 of [ESP+40h]/[ESP+38h], the
+                        // approach vt[0] aim point less unit+FCh/+104h
+                        // (009C51C7-009C51F7), wrapped by 00CE3828. That is
+                        // 009C7B34-009C7BD9's approach+C0h step for step, over
+                        // the same point and position in the same think, so
+                        // db_bearing_c0 is the slot, not a substitution.
+                        // Residual: with approach+48h zero, 009C7B0D skips the
+                        // +C0h write while the slot is still computed fresh.
                         in.heading_to_aim_point = unit_.db_bearing_c0;
                         const bsp::DiveBombAimGlideCommand r =
                             bsp::dive_bomb_aimglide_command_009c542c(in);
