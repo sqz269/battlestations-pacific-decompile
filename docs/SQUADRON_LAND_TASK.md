@@ -18367,3 +18367,35 @@ Queue for the successor, from the lead (2026-10-24):
    that flip lands.
 4. BSM09 `l68_b9_d1` is a nil end (MissionStatus=true, MissionCompleteRan=nil, EndScene not reached), now marked in the
    table.
+
+## cc9-lua74 handoff (2026-10-27, WINS keeper, at about 70% context)
+
+Tree J:\PROG\battlestations-pacific-decompile-cc9-lua52 (agent/cc9-lua52, merged with origin/main fecb3b2e1). Scripts,
+plans and logs named here are in its untracked `local\`; copy them out before the tree is removed.
+
+Run discipline now (lead, 2026-10-27): at most 2 game runs alive per worker (cc9 total about 8), stagger 30 s, NO
+background queue runner. `local\l74_one.ps1 -Row <key> -Env ref|j3|sh [-Tag t]` runs ONE game (rows in
+`local\l74_rows.txt`, log `local\l74r_<tag>_main_<env>.log`, one renderer-init retry); start it with Start-Process and
+wait for the `.done` marker in foreground loops. `python local\l72_q.py '<glob>'` summarizes. Launches stop on
+"HOLD" and resume only on an explicit REOPEN from the lead.
+
+Committed on this lane (all on agent/cc9-lua52, not yet landed when written):
+- 35d7cdaf4 IJN08 row `l74_i08_d` (ref 3011.81 / 20,3 3001.80 / default 4640.73 s on 8eded9e50).
+- 667455b17 USN21 plan `usn21_nd1_s46_u21_f` registered (ref 2896.70 s, nondet1).
+- f61c17833 plan checks, BSM03 lost, BSM01 m1 still wins ref on fecb3b2e1 (821.92 s), JM08 status.
+
+Tools: `local\l74_i08plan.py` (IJN08 planner with PREF), `local\l74_i08key.ps1` (IJN08 key deaths),
+`local\l74_seamap.py` (ASCII map of where ships have been), `local\l74_j8mk.py` (JM08 variants on ships63's v3; it
+reproduces `jm08_s63_j8_v3.txt` byte for byte; x1-x3 retarget the 27820 re-order onto the B-17s).
+
+Open items, in the lead's order:
+1. **JM08** has no winning plan on main. On fecb3b2e1 ref, v3 fails at 1114.01 s (`l74r_j8v3f_main_ref.log`):
+   phase 1 kills only TT01/02/04/05/06, LST 03 and LSM 02; TT03, LST 01/02 and LSM 01 live, and the invasion
+   force (Helena, Auilick, ... ; jm08.lua StartInvasion = NavigatorAttackMove on the HQ once an allied ship is within
+   300 m of (0,0)) shells the HQ from step 14000 (bullets 100 and 13). Needs a phase-1 re-plan (more strikes on the
+   survivors, or keep the trigger ship away), then the B-17/C47 part (ships64's paratrooper ON pair: B-17 first pass
+   ~9.8k at step bucket 28000; C47 release 5-10 s after aim entry at ~1704 s). Wait for the plane flips to settle.
+2. **BSM03** has no winning plan (see WINS_TABLE 2026-10-27 plan checks section); try player-aimed fire.
+3. **Wave-1 re-time** once all five kPc24*Cc13Bound switches have flipped: 21 row-plans x ref/20,3/default. Long rows
+   (USN21, IJN18, JM06, ESMP08) only in the light-load window the lead arranges with cc16 (4 runs per side there).
+4. Plan check ESMP08 (ref) in that window. USN15 still has no winning plan.
