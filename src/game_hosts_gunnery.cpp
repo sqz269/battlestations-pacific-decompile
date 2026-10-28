@@ -16,6 +16,7 @@
 #include "bsp/gameplay_settings.hpp"
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/gun_mount_positions.hpp"
+#include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
 #include "bsp/camera_multiply.hpp"
 #include "bsp/cc13_tier2_switches.hpp"
 #include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (the 31h release)
@@ -4445,6 +4446,17 @@ struct GameGunneryHost::Impl {
     // would duplicate its guns and re-seed its throttle, health and category
     // state. See GameGunneryHost::register_new_units_00864bd0.
     void build_guns(std::size_t first_unit);
+    // 00956C20 for one unit over the guns it owns (build_guns' per-unit body).
+    void rebuild_weapon_category_index_00956c20(std::size_t unit);
+    // Packet cc13-gunB (kGunDestroyedFailureCc13Bound): 00728080 on one gun, and
+    // the 0043F7D0 -> 0072B5A0 destroyed failure at zero health.
+    void apply_gun_damage_00728080(std::size_t g, float amount);
+    void gun_destroyed_failure_0072b5a0(std::size_t g);
+    // 008777D0 on one gun (index into guns), the device-hit entry packet C1 calls.
+    void apply_gun_hit_record_008777d0(std::size_t g, const bsp::HitRecord& hit);
+    unsigned long long gun_damage_calls{0};
+    unsigned long long guns_destroyed{0};
+    unsigned long long gun_fire_destroyed_refusals{0};   // 0073018E (+5Dh), 007301A7 (+358h)
     void build_rank_table();
     void attach_passes(std::size_t first_unit);
     // How many units of the units host this object has already registered.
@@ -5913,6 +5925,20 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             gun.wind_amount = flat_scaled(type_id, make("wind"), kAngleScale, 0.0f);
             gun.muzzle_speed = flat_scaled(type_id, make("v0"), kMilliScale, 0.0f);
             gun.max_range = flat_scaled(type_id, make("range"), kMilliScale, 0.0f);
+            if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+                // Packet cc13-gunB: 0087BCC0 (0043F7B0's first call) seeds +368h from
+                // class +4Ch "Armour" (0087BCF4) and +36Ch / +370h from class +48h
+                // "HP" (0087BD01 / 0087BD11). The damageable-class reader 0087CA80
+                // (the device class's base, 00440770 -> 0087C640) stores "HP" at
+                // +48h (0087CC98, default 100.0) and "Armour" at +4Ch (0087CCCE).
+                if (gun.device_class >= 0) {
+                    gun.armour_368 = lua.read_device_class_number(gun.device_class,
+                        "Armour", 0.0f);
+                    gun.max_health_36c = lua.read_device_class_number(gun.device_class,
+                        "HP", 100.0f);
+                    gun.health_370 = gun.max_health_36c;
+                }
+            }
             // 00731020 answers with descriptor+60h, NOT the authored Lua `Range`:
             // 006E8770 puts `Range` at +68h and never writes +60h. The finalise
             // hook 006E9890 derives +60h from the class sub-type - artillery
@@ -6411,12 +6437,17 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
     // over an existing unit would put a gun this run has destroyed back into
     // its category lists.
     for (std::size_t i = first_unit; i < count; ++i) {
+        rebuild_weapon_category_index_00956c20(i);
+    }
+}
+
+void GameGunneryHost::Impl::rebuild_weapon_category_index_00956c20(std::size_t i) {
         UnitState& state = unit_state[i];
         std::vector<std::size_t> owned;
         for (std::size_t g = 0; g < guns.size(); ++g) {
             if (guns[g].unit_index == i) owned.push_back(g);
         }
-        if (owned.empty()) continue;
+        if (owned.empty()) return;
 
         struct RebuildBinding final : bsp::UnitWeaponCategoryIndexHost {
             RebuildBinding(Impl& owner_in, UnitState& state_in,
@@ -6439,6 +6470,9 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 out.device = reinterpret_cast<void*>(slot + 1);
                 out.dead = false;
                 out.is_gun = true;
+                if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+                    out.dead = gun.destroyed_5d;   // 00956C20's own [dev+5Dh] test
+                }
                 if constexpr (bsp::kGunIsOperationalHostedCc13) {
                     // 00956C98: 00729F10.
                     out.operational = bsp::gun_is_operational_00729f10_cc13(owner.units, gun);
@@ -6506,7 +6540,6 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
         }
         state.row.artillery_max_range = state.artillery_max_range;
         state.row.any_weapon_max_range = state.any_weapon_max_range;
-    }
 }
 
 void GameGunneryHost::Impl::attach_passes(std::size_t first_unit) {
@@ -8558,7 +8591,13 @@ public:
         const std::size_t unit = owner_.guns[gun_].unit_index;
         return unit < owner_.unit_state.size() && owner_.unit_state[unit].dead;
     }
-    bool gun_suppressed() const override { return false; }          // gun+5Dh
+    bool gun_suppressed() const override {                           // gun+5Dh
+        if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+            return owner_.guns[gun_].destroyed_5d;   // 00926390, packet cc13-gunB
+        } else {
+            return false;
+        }
+    }
     void release_fire_target_ref_006952a0() override {
         owner_.record("Gun::release_fire_target_ref_006952a0", 0x006952a0u);
     }
@@ -8621,7 +8660,13 @@ public:
         return kShipyardDestructionRuleBound
             && owner_.units.inferior_failure_720(owner_.guns[gun_].unit_index);
     }
-    bool gun_disabled() const override { return false; }        // gun+3B8h
+    bool gun_disabled() const override {                         // gun+3B8h, 0072D1CD
+        if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+            return owner_.guns[gun_].destroyed_3b8;
+        } else {
+            return false;
+        }
+    }
     void send_fire_message_0ad(std::uint16_t) override {
         ++owner_.guns[gun_].fire_messages;
         ++owner_.summary.fire_messages;
@@ -10038,6 +10083,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         gate.fire_params_armed = true;
         gate.disabled = false;
         gate.damage_counter = 0;
+        if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+            gate.disabled = gun.destroyed_3b8;           // gun+3B8h
+            gate.damage_counter = gun.damage_level_358;  // gun+358h
+        }
         gate.barrel_delay_time = gun.fire.barrel_delay_time;
         gate.secondary_delay = gun.fire.fire_stagger;
         gate.unit_cooldown_applies = kUnitFireCooldownBound
@@ -10073,6 +10122,16 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             ++immediate_fire_clears;
         }
 
+        if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+            // 0073018E: Gun_Fire returns for a set gun+5Dh; 007301A7..007301B6: and
+            // when +358h > 0 outside session mode 2, whichever path called it (here
+            // the forced 008A7200 fire, which skips CanFire). LABELLED: +358h stays 0
+            // (level 0, no model damage rows), so +5Dh is the live term.
+            if (gun.destroyed_5d || gun.damage_level_358 > 0) {
+                ++gun_fire_destroyed_refusals;
+                continue;
+            }
+        }
         // 00730160 BSP_Gun_Fire: the next ready barrel, one projectile, then
         // the two timers.
         const int barrel = bsp::next_ready_barrel_007298d0(gun.fire.barrel_timers.data(),
@@ -15588,6 +15647,10 @@ bool GameGunneryHost::Impl::torpedo_tube_can_fire_1d0(std::size_t g) {
     gate.fire_params_armed = true;
     gate.disabled = false;
     gate.damage_counter = 0;
+    if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+        gate.disabled = gun.destroyed_3b8;           // gun+3B8h
+        gate.damage_counter = gun.damage_level_358;  // gun+358h
+    }
     gate.barrel_delay_time = gun.fire.barrel_delay_time;
     gate.secondary_delay = gun.fire.fire_stagger;
     gate.unit_cooldown_applies = false;   // 006D1E50: not for Function 7
@@ -17642,6 +17705,121 @@ void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float
     after.max_health = state.max_health;
     if (bsp::unit_is_dead(after)
         && host.health_zero_callback_allowed(dispatch_health_changed)) host.kill_unit(unit_index);
+}
+
+// Packet cc13-gunB (kGunDestroyedFailureCc13Bound, include/bsp/
+// gun_destroyed_failure_cc13.hpp). 00728080 BSP_Gun_ApplyDamageIfEnabled: nothing
+// once byte +3B8h is set (00728080 CMP), else 00442AE0 (the role multiplier,
+// config+4Ch) -> 0087D730 (the party multiplier, config+1Ch) -> 00879070 on +370h ->
+// 00877B90, whose 0043F7D0 sends a gun at or below zero (COMISS; NaN lives) down
+// vtable[70h](1). LABELLED: 00442AE0's kind-5 test and 0087D730's device+54h are
+// the owning unit's (difficulty_scaled_damage, as for 0095DA00); the gun's +150h
+// floor is 0.
+void GameGunneryHost::Impl::apply_gun_damage_00728080(std::size_t g, float amount) {
+    if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+        if (g >= guns.size()) return;
+        GameGunRow& gun = guns[g];
+        ++gun.damage_calls;
+        ++gun_damage_calls;
+        if (gun.destroyed_3b8) {                                   // 00728080
+            ++gun.damage_refused;
+            return;
+        }
+        const float scaled = difficulty_scaled_damage(gun.unit_index, amount);
+        bsp::UnitHealth health;
+        health.current_health = gun.health_370;
+        health.max_health = gun.max_health_36c;
+        health.invincibility = 0.0f;
+        const bsp::UnitDamageGates gates;
+        const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates, scaled);
+        if (outcome.refused) {
+            ++gun.damage_refused;
+            return;
+        }
+        const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
+            outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
+        if (write.wrote) gun.health_370 = write.stored_health;
+        if (gun.health_370 <= 0.0f) gun_destroyed_failure_0072b5a0(g);   // 0043F7D0
+        done("Gun::apply_damage_if_enabled_00728080", 0x00728080u);
+    } else {
+        (void)g;
+        (void)amount;
+    }
+}
+
+// The 0043F7D0 death of one gun: vtable[70h](1) 0077D1A0 -> 00926C80 (+60h, once;
+// queues the gun on 00F899A8) -> FlushPending 009273A0 calls only vtable[74h]
+// (0092747F) = 00926390, which sets +5Dh = 1 and +60h = 1, runs 00925C90 and
+// tail-jumps vtable[7Ch] 00729FA0 -> 00440F50 "destroyed" -> 00729FD0 -> message
+// 68h -> 0072B5A0: byte +3B8h = 1 (0072B5BC) and vtable[1B4h](level) -> 00877B00 ->
+// 00876EC0 (+358h). The gun is not deleted; it stays as a wreck. LABELLED: the
+// flush runs here at once, not at the queue's drain later in the frame; 00925C90 is
+// not modelled. LABELLED SUBSTITUTION: level = 0, the host has no model damage
+// rows ([gun+360h]), so +358h stays 0. Then 00956C20 for a live owner (00729FA0
+// and 0072B5A0 both run it), which drops the gun from the category lists. 0072B4C0
+// (the firing effects) is presentation and not modelled. The repair clear 007280A0
+// -> 00925A00 (+5Fh/+5Eh/+60h/+5Dh, 00925A52..00925A73) has no host caller.
+// LABELLED: a dead owner's rebuild is skipped. The image's 0072B5A0 runs 0072B4C0 and
+// 00956C20 on [gun+3F0h] at 0072B606..0072B631 with no owner-dead test, and 00729FA0
+// (00729FB2..00729FC5) calls 00956BA0(gun) instead when the owner's +5Dh or +60h is set.
+void GameGunneryHost::Impl::gun_destroyed_failure_0072b5a0(std::size_t g) {
+    GameGunRow& gun = guns[g];
+    if (gun.destroyed_60) return;                                   // 00926C80
+    gun.destroyed_60 = true;
+    gun.destroyed_5d = true;                                        // 00926390
+    gun.destroyed_3b8 = true;                                       // 0072B5BC
+    gun.damage_level_358 = 0;                                       // 00876EC0, level 0
+    ++guns_destroyed;
+    if (gun.unit_index < unit_state.size() && !unit_state[gun.unit_index].dead) {
+        rebuild_weapon_category_index_00956c20(gun.unit_index);    // 00729FA0, 0072B5A0
+    }
+    done("Gun::apply_set_destroyed_failure_0072b5a0", 0x0072b5a0u);
+}
+
+// Packet cc13-gunB follow-up: 008777D0 BSP_UnitInstance_ApplyHitRecord with ECX = a
+// gun. Hull pass (008777DD..008778D4): skipped when hit+34h is -1; armour = gun+368h,
+// times ProductForUnit(2, [gun+3F0h]) under the powerup gate (0087784F hull and
+// 00877965 parts, the IsKindOf(20h) arms every gun takes; 00877875 / 008779A3 are the
+// non-20h arms, PUSH ESI, the unit itself); 00470510; a positive value goes to
+// vtable[1ACh] = 00728080. Part pass (008778E4..00877A37): each +3Ch entry with +4h
+// != -1 through 004705C0 with the same scaled armour, the largest kept from -FLT_MAX
+// (00D7A244) and dispatched once when above 0.0. Kind 4 (and the hull's IsKindOf(6)
+// alternate, which no gun class takes) read the class vtable[24h] 004407A0 =
+// class+4Ch ([gun+354h]->vt[24h]()), the value 0087BCF4 copies to +368h; exact
+// unless a post-init writer of +368h exists (not scanned). The hit+48h stores
+// before each dispatch have no field on bsp::HitRecord.
+void GameGunneryHost::Impl::apply_gun_hit_record_008777d0(std::size_t g,
+                                                         const bsp::HitRecord& hit) {
+    if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+        if (g >= guns.size()) return;
+        float armour = guns[g].armour_368;
+        if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+            if (const auto m = bsp::game_powerups::powerup_site_product(2, guns[g].unit_index)) {
+                armour = *m * armour;                               // 0087788E..00877899
+            }
+        }
+        if (hit.hull_segment != -1) {
+            const float damage = bsp::hull_damage_00470510(hit, armour);
+            if (damage > 0.0f) apply_gun_damage_00728080(g, damage);   // 008778D2
+        }
+        float best = -3.402823466e+38f;
+        bool any = false;
+        for (int i = 0; i < hit.part_hit_count; ++i) {
+            if (hit.part_hits[i].part_index == -1) continue;
+            const float part = bsp::part_damage_004705c0(hit, armour, i);
+            if (part > best) best = part;
+            any = true;
+        }
+        if (any && best > 0.0f) apply_gun_damage_00728080(g, best);  // 00877A37
+        done("Gun::apply_hit_record_008777d0", 0x008777d0u);
+    } else {
+        (void)g;
+        (void)hit;
+    }
+}
+
+void GameGunneryHost::apply_gun_damage_00728080(std::size_t gun, float amount) {
+    impl_->apply_gun_damage_00728080(gun, amount);
 }
 
 void GameGunneryHost::override_hp_008c1930(std::size_t unit_index, float value) {
