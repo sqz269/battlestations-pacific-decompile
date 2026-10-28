@@ -4077,12 +4077,15 @@ struct GameGunneryHost::Impl {
             u1 = draw(purpose, a, b, -1.0f, 1.0f);
             u2 = draw(purpose, a, b, -1.0f, 1.0f);
             s = u1 * u1 + u2 * u2;
+        // The image has no s == 0 test: u1 == u2 == 0 goes on to log(0) and a NaN rather
+        // than a retry (labelled; the host guard is kept).
         } while (s >= 1.0f || s == 0.0f);
         float k;
         if constexpr (bsp::kPc24GunneryRngCc13Bound) {
             // pc24w2-gunrng: 00BF0F60 calls the CRT log 00BFA910 (_CIlog). With SSE2 present
             // (__use_sse2_mathfcns [0109EEA0], set from CPUID at 00C0AC8F) and the exception
-            // masks at their defaults, it takes __libm_sse2_log (00C148D0), a double result
+            // masks at their defaults, it takes __libm_sse2_log (00C148D0) -- ASSUMED: that
+            // path needs MXCSR == 1F80h and x87 CW & 7Fh == 7Fh, not verified -- a double result
             // the x87 precision control does not touch; 00BF0F65 FSTP dword rounds it to
             // float. std::log stands in for __libm_sse2_log: the two double results can
             // differ in the last ulp, which moves the float only at a rounding boundary.

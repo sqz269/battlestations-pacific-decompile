@@ -10,6 +10,8 @@
 // kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-3): 0041BC20
 // avoid_zone_sample_0041bc20, the two row lerps and the column lerp.
 #include "bsp/pc24_planetasks_cc13.hpp"
+// kPc24UnitsHostCc13Bound (pc24w1-units-1): 00417FA0 avoid_zone_world_to_cell_00417fa0.
+#include "bsp/pc24_unitshost_cc13.hpp"
 
 namespace bsp::game {
 
@@ -51,10 +53,18 @@ AvoidZoneCell avoid_zone_world_to_cell_00417fa0(const bsp::TerrainGridLayerRecor
     AvoidZoneCell c;
     // 00417FA0-00417FB1 / 00417FB3-00417FCA: FADD then FDIV in the x87, each
     // stored to a float.
-    const float u = static_cast<float>((static_cast<double>(x) + layer.half_extent) /
-                                       layer.cell_size);
-    const float v = static_cast<float>((static_cast<double>(z) + layer.half_extent) /
-                                       layer.cell_size);
+    float u, v;
+    if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+        // Each op rounded (PC24).
+        using namespace bsp::cc13x87;
+        u = static_cast<float>(x87_div24(x87_add24(x, layer.half_extent), layer.cell_size));
+        v = static_cast<float>(x87_div24(x87_add24(z, layer.half_extent), layer.cell_size));
+    } else {
+        u = static_cast<float>((static_cast<double>(x) + layer.half_extent) /
+                               layer.cell_size);
+        v = static_cast<float>((static_cast<double>(z) + layer.half_extent) /
+                               layer.cell_size);
+    }
     // 00417FCD-00417FDA: (float)(n - 2.0).
     const float hi = static_cast<float>(static_cast<double>(layer.dimension) - 2.0);
     // 00417FBE COMISS 0.0 > u -> 0, else u > hi -> hi (00417FED).

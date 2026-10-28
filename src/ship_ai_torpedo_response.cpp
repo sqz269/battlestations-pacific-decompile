@@ -2,6 +2,8 @@
 
 #include "bsp/ship_ai_neighbour_candidates.hpp"
 #include "bsp/vector_helpers.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"   // horizon and admits (pc24w2-shipai)
 
 namespace bsp {
 
@@ -27,8 +29,17 @@ bool ship_ai_torpedo_timer_due_009f158a(ShipAiTorpedoTimer& timer, float seconds
 float ship_ai_torpedo_horizon(float period_b44, const ShipAiNavigatorTorpedoRow& row) noexcept {
     // FLD observation; FADD prediction; (spill of period + 3.0); FADD; FSTP.
     const float extra = static_cast<float>(static_cast<double>(period_b44) + kShipAiTorpedoHorizonAdd);
-    const double sum = static_cast<double>(row.observation_hi) + row.predict_hi;
-    return static_cast<float>(sum + extra);
+    float horizon;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009F16AD D9 40 FLD +20h, 009F16B0 D8 40 FADD +14h (kept on the stack, PC24),
+        // 009F16DA D8 44 FADD the stored extra, PC24, then FSTP float (pc24w2-shipai).
+        horizon = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_add24(row.observation_hi, row.predict_hi), extra));
+    } else {
+        const double sum = static_cast<double>(row.observation_hi) + row.predict_hi;
+        horizon = static_cast<float>(sum + extra);
+    }
+    return horizon;
 }
 
 bool ship_ai_torpedo_admits(float own_x, float own_z, float own_vx, float own_vz,
@@ -43,7 +54,15 @@ bool ship_ai_torpedo_admits(float own_x, float own_z, float own_vx, float own_vz
     const float reach_speed = length_2d_00414c60(relative);
     const float reach = reach_speed * horizon;
     const float reach_sq = reach * reach;
-    const float distance_sq = static_cast<float>(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    float distance_sq;
+    if constexpr (kPc24ShipAiCc13Bound) {
+        // 009F17D8-009F17EE: DC C8 FMUL ST0, DE CB FMULP ST3, DE C2 FADDP ST2, each PC24,
+        // stored float at 009F17EE (pc24w2-shipai).
+        distance_sq = static_cast<float>(
+            cc13x87::x87_add24(cc13x87::x87_mul24(dx, dx), cc13x87::x87_mul24(dz, dz)));
+    } else {
+        distance_sq = static_cast<float>(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    }
     if (hull > distance_sq) return true;             // FCOMIP / JBE: strictly inside
     if (!(reach_sq > distance_sq)) return false;      // strict dynamic reach
     const float dot = dx * relative[0] + dz * relative[1];

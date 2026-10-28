@@ -9,7 +9,9 @@
 #include <cstdio>
 #include <cstring>
 
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/gun_bot_remainder.hpp"  // segment_crossing_004f3730
+#include "bsp/pc24_avoid_zone_cc13.hpp"  // packet pc24w2-avoid
 #include "bsp/unit_rudder.hpp"        // wrapped_angle_subtract_00438b10
 
 namespace bsp {
@@ -21,9 +23,22 @@ namespace {
 constexpr double kHalfPiDouble = 1.5707963705062866;
 constexpr double kTwoPiDouble = 6.2831854820251465;
 
+// pc24w2-avoid: under kPc24AvoidZoneCc13Bound the squares and their sum round per op at
+// PC24 and the sum is stored as float before _CIsqrt 00BF7030 (00419276/00419282/0041928A
+// in 00419260; 0041A304/0041A308/0041A30A in the corner rebuild). _CIsqrt returns the
+// correctly rounded root, which FSTP rounds to float, as the double sqrt here does. The
+// OFF arm sums the exact squares in double and rounds once.
 float length_of(float x, float y) noexcept {
-    return static_cast<float>(std::sqrt(static_cast<double>(x) * static_cast<double>(x)
-                                        + static_cast<double>(y) * static_cast<double>(y)));
+    float len;
+    if constexpr (kPc24AvoidZoneCc13Bound) {
+        const float sum = static_cast<float>(
+            cc13x87::x87_add24(cc13x87::x87_mul24(x, x), cc13x87::x87_mul24(y, y)));
+        len = static_cast<float>(std::sqrt(static_cast<double>(sum)));
+    } else {
+        len = static_cast<float>(std::sqrt(static_cast<double>(x) * static_cast<double>(x)
+                                           + static_cast<double>(y) * static_cast<double>(y)));
+    }
+    return len;
 }
 
 // 00419260 BSP_Vector2f_ReciprocalLength returns 1/|v|, or zero for a zero
