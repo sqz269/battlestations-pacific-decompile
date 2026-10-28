@@ -1,8 +1,8 @@
 # cc15-gui4 A1: the startup raw scene domain
 
-Switch: `kNativeRendererStartupCc15Bound` (`include/bsp/game_native_renderer_application.hpp`), OFF.
-Status: reconstructed and source-reviewed, OFF. Prior build/run artifacts exist; the exact
-integration build and run gates are pending. It is not game-validated.
+Switch: `kNativeRendererStartupCc15Bound` (`include/bsp/game_native_renderer_application.hpp`), ON candidate.
+Status: source-reviewed and baseline-gated at `634258460`; publication remains pending the
+latest-common-code USN21 serial gate. This activates the raw domain, without native GUI page drawing.
 
 ## What A1 builds
 
@@ -179,8 +179,10 @@ startup shader preload, repeated GUI traversal, reload or late-plane drawing.
 
 ## A1 activation candidate, 2026-10-28
 
-The switch-only activation candidate sets `kNativeRendererStartupCc15Bound` ON
-over accepted OFF source `5ca4639f0b`. No other switch changes. Acceptance is
-pending the current-code lifecycle, 13-row identity and serial alternating
-USN21 4+4 gates recorded in `docs/CODEX_GUI4_A1_ACTIVATION.md`. This candidate
-does not establish native GUI page drawing or startup shader preload.
+The switch-only activation candidate `634258460` sets
+`kNativeRendererStartupCc15Bound` ON over accepted OFF source `5ca4639f0b`.
+No other switch changes. Its lifecycle and all 13 baseline row contracts pass;
+raw pair diffs retain exit 1 for the exact startup-domain diagnostic and the
+provisional GUI Text type-id records. The serial alternating USN21 4+4 gate
+and no-aid pair remain pending a matching latest-common-code OFF/ON build.
+Exact evidence and limits are in `docs/CODEX_GUI4_A1_ACTIVATION.md`.
