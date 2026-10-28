@@ -106,6 +106,7 @@
 #include "bsp/seg59_ship_lead_s54.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/cc13_damage_smoke.hpp"   // packet cc13-smokepc24 (00822770 PC24 slot count)
+#include "bsp/gun_device_hit_damage_cc13.hpp"   // packet cc13-gunC C1 (0043F7F0)
 
 namespace bsp::game {
 namespace {
@@ -3855,6 +3856,34 @@ struct GameGunneryHost::Impl {
     // segment query returned, set by run_projectiles around apply_hit only.
     int impact_shape_kind{0x0A};
     int impact_hull_segment{-1};
+    // Packet cc13-gunC C1 (include/bsp/gun_device_hit_damage_cc13.hpp): the gun row
+    // whose device mesh the direct impact hit (record+0h is the device), or -1;
+    // set by run_projectiles around apply_hit only, like the two above.
+    long long impact_device_gun{-1};
+    // The device class's GeomMesh in node-0 space, element order, as 00712440 builds
+    // the shapes: one triangle per three points with the element's (kind, index).
+    struct DeviceHitMesh {
+        bool has_mesh{false};
+        std::vector<std::array<float, 3>> tris;
+        std::vector<int> element_kind;    // per triangle, element+04h
+        std::vector<int> element_index;   // per triangle, element+08h
+        float radius{0.0f};               // max |vertex|, the broad-phase sphere
+    };
+    std::map<int, DeviceHitMesh> device_hit_meshes;
+    const DeviceHitMesh* device_hit_mesh(int device_class);
+    // Gun rows offered as children of each unit, rebuilt when the gun list grows.
+    std::vector<std::vector<std::size_t>> device_children;
+    std::size_t device_children_guns{static_cast<std::size_t>(-1)};
+    const std::vector<std::size_t>& device_children_of(std::size_t unit);
+    bool device_hit_world_frame(std::size_t gun_row, float axes[3][3], float origin[3]);
+    void gun_device_hit_damage_008777d0(std::size_t unit, std::size_t gun_row,
+        const bsp::HitRecord& hit);
+    unsigned long long device_hit_traces{0};
+    unsigned long long device_hits_traced{0};
+    unsigned long long device_hits_dispatched{0};
+    unsigned long long device_hit_relays{0};
+    unsigned long long device_hit_drops{0};
+    unsigned long long device_hit_gun_applies{0};
     // Packet cc13-hitq (kHitDeferredDispatchCc13Bound): the deferred hit queue,
     // the std::list at 00F899C0. One node per 00926E80 push: the record as the
     // funnel built it, with the damage draw already made (00470350 runs before
@@ -3877,6 +3906,7 @@ struct GameGunneryHost::Impl {
         int round_bullet_class{-1};
         int impact_shape_kind{0x0A};
         int impact_hull_segment{-1};
+        long long impact_device_gun{-1};        // cc13-gunC C1: record+0h a device
         float hull_damage_draw{0.0f};           // record+14h, drawn at the push
         // Host-only (packet cc13-tooklog): queued by blast_radial_damage with
         // element entries, so its dispatch adds to be_damage_element.
@@ -5071,6 +5101,116 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
         entry.mesh.empty() ? "-" : entry.mesh.c_str(), slots, entry.loaded ? "" : " not read: ",
         entry.loaded ? "" : error.c_str());
     return entry;
+}
+
+// Packet cc13-gunC C1. 00712440 on the device class's Mesh (desc+50h): the GeomMesh
+// triangles in node-0 space, element by element, each tagged with its element's
+// +04h kind and +08h index (007273DB). Null when the model has no GeomMesh, which
+// leaves the mount unhittable (no fallback shape, as in the image).
+const GameGunneryHost::Impl::DeviceHitMesh*
+GameGunneryHost::Impl::device_hit_mesh(int device_class) {
+    auto found = device_hit_meshes.find(device_class);
+    if (found == device_hit_meshes.end()) {
+        DeviceHitMesh& entry = device_hit_meshes[device_class];
+        const std::string mesh = lua.read_device_class_string(device_class, "Mesh");
+        std::vector<std::uint8_t> bytes;
+        std::vector<bsp::GeomMeshResourcePayload> meshes;
+        std::string error;
+        if (!mesh.empty() && lua.read_resource_file(mesh, bytes) && !bytes.empty()) {
+            bsp::read_mmod_geom_meshes(bytes, meshes, error);
+        }
+        float r2 = 0.0f;
+        for (const bsp::GeomMeshResourcePayload& m : meshes) {
+            for (const bsp::GeomMeshElement& el : m.elements) {
+                for (std::uint16_t ord : el.triangle_ordinals) {
+                    if (ord >= m.triangles.size()) continue;
+                    const bsp::GeomMeshTriangle& t = m.triangles[ord];
+                    if (t.v0 >= m.vertices.size() || t.v1 >= m.vertices.size()
+                        || t.v2 >= m.vertices.size()) continue;
+                    for (std::uint16_t vi : {t.v0, t.v1, t.v2}) {
+                        const std::array<float, 3>& v = m.vertices[vi];
+                        entry.tris.push_back(v);
+                        r2 = std::max(r2, v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+                    }
+                    entry.element_kind.push_back(el.kind);
+                    entry.element_index.push_back(static_cast<int>(el.node_index));
+                }
+            }
+        }
+        entry.has_mesh = !entry.tris.empty();
+        entry.radius = std::sqrt(r2);
+        log.notef("gunnery: device %d hit mesh %s: %zu triangles radius %.2f%s%s", device_class,
+            mesh.empty() ? "-" : mesh.c_str(), entry.tris.size() / 3,
+            static_cast<double>(entry.radius), error.empty() ? "" : " error: ", error.c_str());
+        found = device_hit_meshes.find(device_class);
+    }
+    return found->second.has_mesh ? &found->second : nullptr;
+}
+
+// The gun rows each unit's node carries as children (0070F7D0 / 0098B920): a known
+// mount on a device class with a GeomMesh. Rebuilt whenever the gun list grows.
+const std::vector<std::size_t>& GameGunneryHost::Impl::device_children_of(std::size_t unit) {
+    if (device_children_guns != guns.size()) {
+        device_children.assign(units.count(), {});
+        for (std::size_t row = 0; row < guns.size(); ++row) {
+            const GameGunRow& gun = guns[row];
+            if (!gun.mount_known || gun.device_class < 0) continue;
+            if (device_hit_mesh(gun.device_class) == nullptr) continue;
+            if (gun.unit_index >= device_children.size()) {
+                device_children.resize(gun.unit_index + 1);
+            }
+            device_children[gun.unit_index].push_back(row);
+        }
+        device_children_guns = guns.size();
+    }
+    static const std::vector<std::size_t> kNone;
+    return unit < device_children.size() ? device_children[unit] : kNone;
+}
+
+// LABELLED pose (rev8 open item (d)): the device node's world frame, which the image
+// takes from the device entity's +CCh (0098BC70). Stood in for by the platform slot's
+// local position rotated by the gun's current yaw, 00859550's root RotY (the barrel's
+// pitch goes to the barrel node, which carries no collision), carried by the parent's
+// pose, as device_hierarchy_node_world builds node 0. Swap this one function when the
+// entity transform is read. Rows: axes[0..2] the frame's x/y/z, origin its translation.
+bool GameGunneryHost::Impl::device_hit_world_frame(std::size_t gun_row, float axes[3][3],
+    float origin[3]) {
+    if (gun_row >= guns.size()) return false;
+    const GameGunRow& gun = guns[gun_row];
+    if (!gun.mount_known) return false;
+    float right[3], up[3], forward[3], o[3];
+    unit_pose(gun.unit_index, right, up, forward, o);
+    bsp::CameraMatrix root_local{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f, gun.mount_local[0], gun.mount_local[1],
+        gun.mount_local[2], 1.0f};
+    bsp::CameraMatrix barrel_local{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    // CONVENTION BRIDGE as in device_hierarchy_node_world: the image's horz is -host.
+    bsp::turning_gun_apply_angles_00859550(-kGunHorzSign * gun.angles.horz, gun.angles.vert,
+        true, root_local, barrel_local);
+    const bsp::CameraMatrix ship{right[0], right[1], right[2], 0.0f,
+        up[0], up[1], up[2], 0.0f, forward[0], forward[1], forward[2], 0.0f,
+        o[0], o[1], o[2], 1.0f};
+    bsp::CameraMatrix world{};
+    bsp::multiply_camera_matrices_00413920(world, root_local, ship);
+    for (int r = 0; r < 3; ++r) {
+        for (int k = 0; k < 3; ++k) axes[r][k] = world[static_cast<std::size_t>(r * 4 + k)];
+        origin[r] = world[static_cast<std::size_t>(12 + r)];
+    }
+    return true;
+}
+
+// 008777D0 on the device (0043F851), with the device's own armour (unit+368h from
+// desc+4Ch, 0087BCF4) and health (+36Ch/+370h from desc+48h). The gun-health state
+// and the subtraction are packet B's (cc13-cgbuildB, apply_gun_damage); until that
+// lands this is the seam, counted only.
+void GameGunneryHost::Impl::gun_device_hit_damage_008777d0(std::size_t unit,
+    std::size_t gun_row, const bsp::HitRecord& hit) {
+    static_cast<void>(unit);
+    static_cast<void>(gun_row);
+    static_cast<void>(hit);
+    ++device_hit_gun_applies;
+    done("Device::apply_hit_record_008777d0", 0x008777d0u);
 }
 
 GameGunneryHost::Impl::DeviceFirePoints&
@@ -10388,6 +10528,36 @@ public:
     }
     bsp::HitQueryBounds entity_bounds(const void* entity) override {
         bsp::HitQueryBounds bounds;
+        if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+            // cc13-gunC C1: a device child's sphere box; a parent's box grows over
+            // its children, as 0098B530 grows the parent's local AABB.
+            float centre[3], radius = 0.0f;
+            if (is_device(entity)) {
+                if (!device_sphere(device_row(entity), centre, radius)) return bounds;
+                bounds.min = {centre[0] - radius, centre[1] - radius, centre[2] - radius};
+                bounds.max = {centre[0] + radius, centre[1] + radius, centre[2] + radius};
+                return bounds;
+            }
+            const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
+            if (landscape_entry(index) < 0) {
+                float c[3], half[3];
+                if (!box_of(index, c, half)) return bounds;
+                float lo[3] = {c[0] - half[0], c[1] - half[1], c[2] - half[2]};
+                float hi[3] = {c[0] + half[0], c[1] + half[1], c[2] + half[2]};
+                if (parent_offers_devices(index)) {
+                    for (const std::size_t row : owner_.device_children_of(index)) {
+                        if (!device_sphere(row, centre, radius)) continue;
+                        for (int k = 0; k < 3; ++k) {
+                            lo[k] = std::min(lo[k], centre[k] - radius);
+                            hi[k] = std::max(hi[k], centre[k] + radius);
+                        }
+                    }
+                }
+                bounds.min = {lo[0], lo[1], lo[2]};
+                bounds.max = {hi[0], hi[1], hi[2]};
+                return bounds;
+            }
+        }
         const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
         if (landscape_entry(index) >= 0) {
             float lo[3], hi[3];
@@ -10408,6 +10578,9 @@ public:
         return bounds;
     }
     int shape_count(const void* entity) override {
+        if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+            if (is_device(entity)) return 1;   // offered only by child_entity below
+        }
         const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
         if (landscape_entry(index) >= 0) return 1;   // the shape +344h
         if (index == exclude_) return 0;
@@ -10429,10 +10602,36 @@ public:
     }
     bool shape_trace_segment(const void* entity, int, const bsp::HitQueryPoint& from,
         const bsp::HitQueryPoint& to, bsp::HitRecordFill& record) override;
-    int child_count(const void*) override { return 0; }
-    const void* child_entity(const void*, int) override { return nullptr; }
+    // cc13-gunC C1: a unit's device nodes are its children (0070F7D0 / 0098B920),
+    // walked by 0098AC20 for kind filter 0. OFF, none.
+    int child_count(const void* entity) override {
+        if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+            if (is_device(entity)) return 0;
+            const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
+            if (landscape_entry(index) >= 0 || !parent_offers_devices(index)) return 0;
+            return static_cast<int>(owner_.device_children_of(index).size());
+        } else {
+            static_cast<void>(entity);
+            return 0;
+        }
+    }
+    const void* child_entity(const void* entity, int slot) override {
+        if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+            const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
+            const std::vector<std::size_t>& rows = owner_.device_children_of(index);
+            if (slot < 0 || static_cast<std::size_t>(slot) >= rows.size()) return nullptr;
+            return reinterpret_cast<const void*>(kDeviceEntityBase + rows[static_cast<std::size_t>(slot)]);
+        } else {
+            static_cast<void>(entity);
+            static_cast<void>(slot);
+            return nullptr;
+        }
+    }
 
     std::size_t hit_unit{0};   // one based
+    // cc13-gunC C1: one based gun row when the nearest hit is that gun's device
+    // mesh (hit_unit then names its parent); 0 otherwise.
+    std::size_t hit_gun{0};
     // One based index into scene_world_class_lists().objects() of the
     // Landscape the nearest hit landed on; 0 when the nearest hit is a unit.
     std::size_t hit_landscape{0};
@@ -10451,6 +10650,32 @@ private:
         }
     }
     bool box_of(std::size_t index, float centre[3], float half[3]) const;
+    // cc13-gunC C1: device children are handles kDeviceEntityBase + gun row, far
+    // above the unit and Landscape handles.
+    static constexpr std::size_t kDeviceEntityBase = 0x40000000u;
+    static bool is_device(const void* entity) {
+        return reinterpret_cast<std::size_t>(entity) >= kDeviceEntityBase;
+    }
+    static std::size_t device_row(const void* entity) {
+        return reinterpret_cast<std::size_t>(entity) - kDeviceEntityBase;
+    }
+    // LABELLED: a parent offers its mounts only while it offers its own shape (alive,
+    // visible, attached, not excluded); a wreck's mounts are not offered.
+    bool parent_offers_devices(std::size_t index) const {
+        return index != exclude_ && index < owner_.unit_state.size()
+            && !owner_.unit_state[index].dead && owner_.units.unit_alive_and_visible(index)
+            && !owner_.hit_index_detached(index);
+    }
+    bool device_sphere(std::size_t row, float centre[3], float& radius) {
+        if (row >= owner_.guns.size()) return false;
+        const auto* mesh = owner_.device_hit_mesh(owner_.guns[row].device_class);
+        float axes[3][3];
+        if (mesh == nullptr || !owner_.device_hit_world_frame(row, axes, centre)) return false;
+        radius = mesh->radius;
+        return true;
+    }
+    bool device_trace_segment(std::size_t row, const void* entity, const bsp::HitQueryPoint& from,
+        const bsp::HitQueryPoint& to, bsp::HitRecordFill& record);
 
     GameGunneryHost::Impl& owner_;
     std::size_t exclude_;
@@ -10489,6 +10714,9 @@ bool SegmentBinding::box_of(std::size_t index, float centre[3], float half[3]) c
 bool SegmentBinding::shape_trace_segment(const void* entity, int,
     const bsp::HitQueryPoint& from, const bsp::HitQueryPoint& to,
     bsp::HitRecordFill& record) {
+    if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+        if (is_device(entity)) return device_trace_segment(device_row(entity), entity, from, to, record);
+    }
     const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
     if (landscape_entry(index) >= 0) {
         // 0087FF80: the terrain's slot 3Ch, then the record: point, entity =
@@ -10508,6 +10736,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         record.hull_segment = land.hull_segment;   // 0087FFE5
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = 0;
+        hit_gun = 0;
         hit_landscape = static_cast<std::size_t>(land.landscape_object) + 1;
         return true;
     }
@@ -10643,6 +10872,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         }
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = index + 1;
+        hit_gun = 0;
         hit_landscape = 0;
         if (ship_model) ++owner_.shell_mesh_hits;
         return true;
@@ -10687,6 +10917,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         record.hull_segment = kDirectHitHullSegment;
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = index + 1;
+        hit_gun = 0;
         hit_landscape = 0;
         return true;
     }
@@ -10715,7 +10946,76 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
     record.hull_segment = kDirectHitHullSegment;
     bsp::hit_record_set_entity_00470370(record, entity);
     hit_unit = index + 1;
+    hit_gun = 0;
     hit_landscape = 0;
+    return true;
+}
+
+// cc13-gunC C1: 00724510 / 00723E90 / 00723D60 on a device node: the segment into the
+// device frame (device_hit_world_frame, LABELLED), every GeomMesh triangle in element
+// order, the closest accepted (`t <= best`, so the last acceptor wins a tie), and the
+// record filled with that element's kind and index (00723F62 / 00723F6C). The record's
+// entity is the device (0098AC88 names node+4Ch); hit_unit names the parent.
+bool SegmentBinding::device_trace_segment(std::size_t row, const void* entity,
+    const bsp::HitQueryPoint& from, const bsp::HitQueryPoint& to,
+    bsp::HitRecordFill& record) {
+    if (row >= owner_.guns.size()) return false;
+    const GameGunneryHost::Impl::DeviceHitMesh* model
+        = owner_.device_hit_mesh(owner_.guns[row].device_class);
+    float axes[3][3], origin[3];
+    if (model == nullptr || !owner_.device_hit_world_frame(row, axes, origin)) return false;
+    ++owner_.device_hit_traces;
+    const float wf[3] = {from.x, from.y, from.z};
+    const float wt[3] = {to.x, to.y, to.z};
+    float o[3], d[3];
+    for (int i = 0; i < 3; ++i) {
+        o[i] = (wf[0] - origin[0]) * axes[i][0] + (wf[1] - origin[1]) * axes[i][1]
+            + (wf[2] - origin[2]) * axes[i][2];
+        d[i] = (wt[0] - wf[0]) * axes[i][0] + (wt[1] - wf[1]) * axes[i][1]
+            + (wt[2] - wf[2]) * axes[i][2];
+    }
+    float best = 2.0f;
+    int best_kind = 0x0A;
+    int best_index = kDirectHitHullSegment;
+    const auto& tri = model->tris;
+    for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
+        const auto& a = tri[n];
+        const auto& b = tri[n + 1];
+        const auto& c = tri[n + 2];
+        const float e1[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};
+        const float e2[3] = {c[0] - a[0], c[1] - a[1], c[2] - a[2]};
+        const float p[3] = {d[1] * e2[2] - d[2] * e2[1], d[2] * e2[0] - d[0] * e2[2],
+            d[0] * e2[1] - d[1] * e2[0]};
+        const float det = e1[0] * p[0] + e1[1] * p[1] + e1[2] * p[2];
+        if (std::fabs(det) < 1e-12f) continue;
+        const float inv = 1.0f / det;
+        const float s0[3] = {o[0] - a[0], o[1] - a[1], o[2] - a[2]};
+        const float u = (s0[0] * p[0] + s0[1] * p[1] + s0[2] * p[2]) * inv;
+        if (u < 0.0f || u > 1.0f) continue;
+        const float q[3] = {s0[1] * e1[2] - s0[2] * e1[1], s0[2] * e1[0] - s0[0] * e1[2],
+            s0[0] * e1[1] - s0[1] * e1[0]};
+        const float v = (d[0] * q[0] + d[1] * q[1] + d[2] * q[2]) * inv;
+        if (v < 0.0f || u + v > 1.0f) continue;
+        const float t = (e2[0] * q[0] + e2[1] * q[1] + e2[2] * q[2]) * inv;
+        if (t >= 0.0f && t <= 1.0f && t <= best) {
+            best = t;
+            best_kind = model->element_kind[n / 3];
+            best_index = model->element_index[n / 3];
+        }
+    }
+    if (best > 1.0f) return false;
+    bsp::HitQueryPoint point;
+    point.x = wf[0] + (wt[0] - wf[0]) * best;
+    point.y = wf[1] + (wt[1] - wf[1]) * best;
+    point.z = wf[2] + (wt[2] - wf[2]) * best;
+    bsp::shape_hit_fill_0087fec0(record, point, entity);
+    record.shape_kind = best_kind;
+    record.hull_segment = best_index;
+    bsp::hit_record_set_entity_00470370(record, entity);
+    hit_unit = owner_.guns[row].unit_index + 1;
+    hit_gun = row + 1;
+    hit_landscape = 0;
+    ++owner_.device_hits_traced;
     return true;
 }
 
@@ -11613,6 +11913,18 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                     }
                 }
             }
+            // cc13-gunC C1: the nearest hit is a gun's device mesh, so record+0h is
+            // the device and 009239A0 reaches its 0043F7F0, not the parent's OnHit.
+            const bool device_hit = bsp::kGunDeviceHitDamageCc13Bound && query.hit_gun != 0;
+            if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+                impact_device_gun = device_hit ? static_cast<long long>(query.hit_gun - 1) : -1;
+                if (device_hit) {
+                    // Without kHullElementSegmentBound the impact keeps 0Ah / -1 above;
+                    // the device record's own (kind, index) is what 0043F7F0 tests.
+                    impact_shape_kind = record.shape_kind;
+                    impact_hull_segment = record.hull_segment;
+                }
+            }
             if constexpr (kPlaneSpinSideBound) {
                 // 007BBCF0: hit+34h != -1 -> unit+800h = [[hit+38h]+4h], before
                 // 008777D0 applies the damage.
@@ -11622,7 +11934,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 // keeps the oldest hit's kind and this host the newest. RESIDUAL, not
                 // moved (docs/CC13_HIT_DEFERRED_DISPATCH.md).
                 const std::size_t victim = query.hit_unit - 1;
-                if (victim < plane_trace_element_kind.size()
+                if (!device_hit && victim < plane_trace_element_kind.size()
                     && plane_trace_element_kind[victim] >= 0
                     && units.unit_is_kind_of(victim, 0x0f)) {
                     if (plane_spin_side_800.size() <= victim) {
@@ -11642,6 +11954,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 direction, nullptr, shot.team_id_1c);
             impact_shape_kind = 0x0A;
             impact_hull_segment = kDirectHitHullSegment;
+            if constexpr (bsp::kGunDeviceHitDamageCc13Bound) impact_device_gun = -1;
             // 0084BC60 step 7: the impact also spawns the burst that carries a
             // torpedo's warhead. Without it a torpedo does its DamageMin draw
             // and nothing else, which a carrier's Armour cancels exactly.
@@ -12475,9 +12788,11 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     const int saved_class = round_bullet_class;
     const int saved_kind = impact_shape_kind;
     const int saved_segment = impact_hull_segment;
+    const long long saved_device_gun = impact_device_gun;
     round_bullet_class = node.round_bullet_class;
     impact_shape_kind = node.impact_shape_kind;
     impact_hull_segment = node.impact_hull_segment;
+    impact_device_gun = node.impact_device_gun;
     bsp::HitRecord record = node.record;
     record.part_hits = node.parts.empty() ? nullptr : node.parts.data();
     record.part_hit_count = static_cast<int>(node.parts.size());
@@ -12505,6 +12820,7 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     round_bullet_class = saved_class;
     impact_shape_kind = saved_kind;
     impact_hull_segment = saved_segment;
+    impact_device_gun = saved_device_gun;
     deferred_last_dispatched = &node;
 }
 
@@ -12550,6 +12866,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
             node.round_bullet_class = round_bullet_class;
             node.impact_shape_kind = impact_shape_kind;
             node.impact_hull_segment = impact_hull_segment;
+            node.impact_device_gun = impact_device_gun;
             // 00470350 SetShot before the push: the same draw, at the same
             // point in the shared stream, as the OFF body makes below.
             const int queued_class
@@ -12660,6 +12977,52 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     view.shot_is_depth_charge = kDepthChargeInWaterBound && is_depth_charge_class(bullet(priced_class));
     view.shot_is_torpedo = gun.category == bsp::kUnitGunneryTorpedoCategory;
     view.weapon_present = weapon != nullptr;
+
+    // Packet cc13-gunC C1: a direct hit whose record+0h is a gun's device reaches the
+    // device's vtable[ECh], 0043F7F0, from 009239A0's handler loop (00923A70):
+    //   drop (a depth charge, parent not a submarine): 0043F822 returns AL = 0, so
+    //     the loop walks to the parent (+3Ch) and its own handler takes the record:
+    //     the path below, with no gun damage;
+    //   relay (parent kind 6, record+34h != -1): the parent's vtable[ECh] with the same
+    //     record (the path below), then 008777D0 on the device, which returns 1;
+    //   neither: 008777D0 on the device only, and the loop stops there.
+    // 009239A0's attribution then walks from the device to its parent (after that loop) and
+    // credits the parent (0077CE60), as the tail below does for `victim`.
+    struct DeviceGunAfterRelay {
+        GameGunneryHost::Impl* host{nullptr};
+        std::size_t unit{0};
+        std::size_t row{0};
+        const bsp::HitRecord* hit{nullptr};
+        ~DeviceGunAfterRelay() {
+            if (host != nullptr) host->gun_device_hit_damage_008777d0(unit, row, *hit);
+        }
+    } device_after_relay;
+    if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+        const long long device_gun = blast_record == nullptr ? impact_device_gun : -1;
+        impact_device_gun = -1;
+        if (device_gun >= 0) {
+            ++device_hits_dispatched;
+            const bsp::DeviceHitSplit split = bsp::device_hit_split_0043f7f0(
+                is_depth_charge_class(bullet(priced_class)), true,
+                units.unit_is_kind_of(victim, 8), units.unit_is_kind_of(victim, 6),
+                impact_hull_segment);
+            done("Device::relay_hit_0043f7f0", 0x0043f7f0u);
+            if (split.drop) {
+                ++device_hit_drops;
+            } else if (!split.relay) {
+                // LABELLED: the image still writes the parent's 0077CE60 block here;
+                // the host returns before its attribution tail.
+                gun_device_hit_damage_008777d0(victim, static_cast<std::size_t>(device_gun), hit);
+                return;
+            } else {
+                ++device_hit_relays;
+                device_after_relay.host = this;
+                device_after_relay.unit = victim;
+                device_after_relay.row = static_cast<std::size_t>(device_gun);
+                device_after_relay.hit = &hit;
+            }
+        }
+    }
 
     hit_event_fire = 0.0f;
     hit_event_leak = 0.0f;
@@ -18687,6 +19050,12 @@ void GameGunneryHost::report() {
             "bound=%d (00816650 / 0081F980; 00724510 -> 00723AA0, packet cc9_hull_sections)",
             host.artillery_section_points, kShipSectionPointsBound ? 1 : 0, host.shell_mesh_hits,
             kShellHullHitTestBound ? 1 : 0);
+        host.log.notef("summary mission gunnery device mesh traces=%llu hits=%llu dispatched=%llu "
+            "relays=%llu drops=%llu gun_applies=%llu meshes=%zu bound=%d (0043F7F0, packet "
+            "cc13-gunC C1)", host.device_hit_traces, host.device_hits_traced,
+            host.device_hits_dispatched, host.device_hit_relays, host.device_hit_drops,
+            host.device_hit_gun_applies, host.device_hit_meshes.size(),
+            bsp::kGunDeviceHitDamageCc13Bound ? 1 : 0);
         host.log.notef("summary mission gunnery plane mesh hit tests=%llu mesh_hits=%llu "
             "class_box_hits=%llu bound=%d (0087BCC0 -> 00712440 -> 00724510, packet "
             "cc9_plane_mesh_hit)", host.plane_mesh_tests, host.plane_mesh_hits,
