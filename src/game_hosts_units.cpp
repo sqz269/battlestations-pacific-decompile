@@ -49017,12 +49017,12 @@ void GameUnitsHost::report() {
             host.log.notef("summary hull terrain contact bound=%d ships=%zu steps=%llu "
                 "contact_steps=%llu candidates=%llu rejected_normal=%llu solves=%llu rows=%llu "
                 "retired=%llu max_depth=%.2f dyn_hull=%d hull_shapes=%llu raw_points=%llu "
-                "hull_vertices=%llu (00C53630 / 00C3F760 / 00C4B9B0 / 00403720, 00C5DEB0, "
-                "packet cc9_hull_terrain_contact_solver)",
+                "hull_vertices=%llu hull_scope_differs=%llu (00C53630 / 00C3F760 / 00C4B9B0 / "
+                "00403720, 00C5DEB0, packet cc9_hull_terrain_contact_solver)",
                 bsp::kHullTerrainContactSolverBound ? 1 : 0, c.units_touched, c.steps,
                 c.contact_steps, c.candidates, c.rejected_normal, c.solves, c.rows, c.retired,
                 static_cast<double>(c.max_depth), bsp::kHullTerrainDynHullVerticesBound ? 1 : 0,
-                c.hull_shapes, c.raw_points, c.hull_vertices);
+                c.hull_shapes, c.raw_points, c.hull_vertices, c.hull_scope_differs);
             for (const auto& [pair, pc] : host.hull_terrain.hull_pairs()) {
                 const char* a = pair.first < host.slots.size()
                     ? host.slots[pair.first]->row.name.c_str() : "?";
