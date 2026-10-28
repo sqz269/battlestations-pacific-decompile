@@ -20338,35 +20338,73 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
         // 009F830C / 009F8313: so does one 007EE8F0 refuses. SUBSTITUTION (labelled):
         // "the target is not dead" stands for 007EE8F0.
         // CORRECTION (cc13-tranche2 S18): under bsp::kFreeAttackAcceptTestCc13Bound the
-        // gate also asks 007EE8F0 itself (include/bsp/free_attack_accept_test_cc13.hpp).
-        bool target_live = over_target != 0u && over_target - 1u < h.slots.size()
+        // gate also asks 007EE8F0 itself (include/bsp/free_attack_accept_test_cc13.hpp),
+        // for every category 1/2 class: a refusal skips the leash arm and the whole
+        // 009F83AD..009F8407 tail below.
+        const bool target_resolved = over_target != 0u && over_target - 1u < h.slots.size()
             && !gun->unit_dead(over_target - 1u);
-        if constexpr (bsp::kFreeAttackAcceptTestCc13Bound) {
-            if (target_live && category_12 && current == bsp::kAttackCmdDogfight) {
-                // 009F830C 007EE8F0(ECX = squadron; current, target). LABELLED: the
-                // flight leader stands for the squadron's +54h and its slot-0 plane.
+        const bool target_live = [&]() -> bool {
+            if constexpr (bsp::kFreeAttackAcceptTestCc13Bound) {
+                if (!(target_resolved && category_12)) return target_resolved;
+                // 009F830C 007EE8F0(ECX = squadron; current, target, 00922DC0(target),
+                // 007B58D0(squadron)). LABELLED: the flight leader stands for the
+                // squadron's +54h and its slot-0 plane.
                 const std::size_t t = over_target - 1u;
                 bsp::EntityTargetFacts tf;
                 tf.present = true;
                 tf.not_engageable = unit_flag_005d(t);
                 tf.is_plane = unit_is_kind_of(t, 0x0f);
                 tf.is_plane_squadron = unit_is_kind_of(t, 0x18);
+                tf.is_ship_family = unit_is_kind_of(t, 0x06);
+                tf.is_submarine = unit_is_kind_of(t, 0x08);
+                tf.is_airfield = unit_is_kind_of(t, 0x45);
+                tf.is_shipyard = unit_is_kind_of(t, 0x46);
+                tf.is_command_building = unit_is_kind_of(t, 0x1c);
+                tf.is_dummy_target = unit_is_kind_of(t, 0x35);
+                tf.is_land_fort = unit_is_kind_of(t, 0x1b);
+                float pr[3], pu[3], pf[3], pt[3];
+                if (unit_pose(t, pr, pu, pf, pt)) tf.world_y = pt[1];
+                // 00922DC0: MOV DL,1 / JMP 00922C80. The 008DDF90 set arm as the
+                // script-order chooser takes it: slot 0's set (LABELLED), then the
+                // tail with DL = 1. Periscope level and FakedType keep their defaults.
+                bool surface = false;
+                switch (bsp::entity_is_surface_target_00922c80(tf)) {
+                    case bsp::SurfaceTargetAnswer::kYes: surface = true; break;
+                    case bsp::SurfaceTargetAnswer::kNo: surface = false; break;
+                    case bsp::SurfaceTargetAnswer::kUnreadSetBranch: {
+                        bool in_set = false;
+                        if (unit_is_kind_of(t, 0x05)) {
+                            const std::vector<std::size_t> set =
+                                bsp::game::game_objective_sets().units_in_slot(0);
+                            in_set = std::find(set.begin(), set.end(), t) != set.end();
+                        }
+                        surface = in_set || bsp::entity_surface_target_tail_00922c80(tf, true);
+                        break;
+                    }
+                }
                 bsp::AttackFeasibilityInputs in;
                 in.unit_has_weapon_controller = true;               // 007EE8FC, a leader
                 in.target_present = true;                           // 007EE8F6
-                in.target_is_structure = unit_is_kind_of(t, 0x1c);  // 007EE90A
+                in.target_is_structure = tf.is_command_building;    // 007EE90A
                 in.unit_side = unit_side_0054(leader);              // 007EE917
                 in.target_side = unit_side_0054(t);                 // 007EE912
+                in.target_is_surface = surface;                     // the byte argument
                 in.target_is_air = bsp::entity_is_airborne_00922b10(tf);    // 007EEAF5
-                in.guns_available = plane_pilot_fires_0c24(leader);         // 007EEB08
+                in.target_is_strafe_fallback = unit_is_kind_of(t, 0x41);    // 007EEBA7
+                in.guns_available = plane_pilot_fires_0c24(leader);         // 007EEB08/007EEBB7
                 in.self_is_dogfight_excluded = unit_is_kind_of(leader, 0x16); // 007EEB1A
-                in.guns_suppressed = unit_is_kind_of(leader, 0x10)          // 007EEB2C,
+                in.guns_suppressed = unit_is_kind_of(leader, 0x10)          // 007EEB2C/007EEBC2,
                     || in.self_is_dogfight_excluded;                        // 0047B850
-                // The surface byte and the loadout feed arms other than dogfight; the
-                // leash arm below runs for 00E08F58 only.
-                target_live = bsp::attack_command_applies(current, in);
+                // The category 1/2 classes reaching here are artillery 00E08F10, strafe
+                // 00E08F40, attackmove 00E08F78 and dogfight 00E08F58. Attackmove is the
+                // side prologue alone (007EE938); artillery has no arm and falls to
+                // 007EEBD1 -> 007EEBF6 XOR AL,AL, so it is always refused. The ordnance
+                // inputs and the loadout feed none of these four arms.
+                return bsp::attack_command_applies(current, in);
+            } else {
+                return target_resolved;
             }
-        }
+        }();
         FreeAttackWorld leash_world(*this, h, *gun);
         if (current == 0x00E08F58u && !early_arm && (!category_12 || target_live)
                 && over_target != 0u && over_target - 1u < h.slots.size()) {

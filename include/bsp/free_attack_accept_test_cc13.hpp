@@ -24,6 +24,17 @@
 // Movers when ON: a dogfight whose target stopped being an airborne enemy (+5Dh set,
 // a landed or same-side target) or whose leader has no PilotFires skips the leash
 // arm, as in the image; expected rare.
+//
+// CORRECTION (rev7 FIX 1): the refusal at 009F8313 also skips the 009F83AD..009F8407
+// tail (slot 0 / 0080DC70 / 009F7FE0 -> 0071D9E0(2) + 009F7810, then 009F840C's
+// +3Eh -> +3Dh), which the host gates on the same answer for every category 1/2
+// class. The classes reaching 009F82DA are artillery 00E08F10, strafe 00E08F40,
+// attackmove 00E08F78 and dogfight 00E08F58, so the test now runs for all four:
+// strafe's arm 007EEB94..007EEBC7 (the 00922DC0 surface byte, or IsKindOf(41h);
+// +C24h; 0047B850), attackmove's side prologue alone, and artillery, which no arm
+// names (007EEBD1 JNZ 007EEBF6, XOR AL,AL): always refused under ON. More movers
+// when ON: every artillery free attack and any refused strafe/attackmove/dogfight
+// skips the tail's 0071D9E0(2) override stage and 009F7810 timer.
 
 namespace bsp {
 
