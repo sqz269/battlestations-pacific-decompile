@@ -9690,15 +9690,66 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // vtable[38h] speed > 007C47F0 (009C23FA-009C2412), a = that speed.
     // LABELLED: the target's vtable[38h] is its motion.linear_velocity length, as
     // the 009D3D01 site takes it; approach+64h is the host's moveto_distance_64.
+    // kMovetoTargetSpeedClassCc13Bound (OFF) dispatches the slot by class instead.
+    static constexpr bool kMovetoTargetSpeedClassCc13Bound = false;
     float moveto_target_speed_009c23b0(const GameUnitSlot& unit, float base) {
         ++ts_override_calls;
         if (unit.moveto_target_plus_one == 0 || unit.moveto_target_plus_one > slots.size()
             || !slots[unit.moveto_target_plus_one - 1u]) return base;
         ++ts_override_target;
-        const GameUnitSlot& t = *slots[unit.moveto_target_plus_one - 1u];
-        const bsp::OceanVec3& v = t.motion.linear_velocity;
-        const float speed = static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
-            + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
+        const std::size_t target = unit.moveto_target_plus_one - 1u;
+        const GameUnitSlot& t = *slots[target];
+        const auto linear_speed = [](const GameUnitSlot& s) {
+            const bsp::OceanVec3& v = s.motion.linear_velocity;
+            return static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
+                + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
+        };
+        float speed;
+        if constexpr (kMovetoTargetSpeedClassCc13Bound) {
+            // 009C23DB-009C23E9: MOV EDX,[ECX]; CALL [EDX+38h] on the target, made before the
+            // reach test, FSTP float. Slot 38h by class, first match, as
+            // run_get_entity_speed_008c0820 dispatches it:
+            //   PlaneSquadronGen 007ED470: JMP the leader's ([squadron+3D0h]) vtable[38h];
+            //   ships 0080E0F0: ECX = [unit+1018h], JMP 0092D730, the signed body forward
+            //   speed (bsp::unit_forward_speed_0092d730 over the same inputs as
+            //   GameUnitsHost::unit_forward_speed_0092d730);
+            //   planes 007B8E60: FLD [unit+B1Ch].
+            // PENDING: the plane arm (and so the squadron arm) keeps |motion.linear_velocity|
+            // until poolw3's shared +B1Ch helper (kPlaneCachedSpeedB1cCc13Bound) lands; it
+            // should then read 007D8020's value over plane_world_velocity. LABELLED: other
+            // classes' slot-38h bodies were not read and keep |motion.linear_velocity|; a
+            // squadron without a live leader faults in the image and answers `base` here.
+            const auto ship_speed = [](const GameUnitSlot& s) {
+                bsp::UnitBodyAxisSpeedInputs axis{};
+                axis.velocity[0] = s.motion.linear_velocity.x;
+                axis.velocity[1] = s.motion.linear_velocity.y;
+                axis.velocity[2] = s.motion.linear_velocity.z;
+                axis.axis[0] = s.motion.pose_row2[0];
+                axis.axis[1] = s.motion.pose_row2[1];
+                axis.axis[2] = s.motion.pose_row2[2];
+                return bsp::unit_forward_speed_0092d730(axis);
+            };
+            const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+            for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == target) {
+                    squadron = &r;
+                    break;
+                }
+            }
+            if (squadron != nullptr) {
+                const std::size_t leader = squadron->flight_leader();   // 007ED470 +3D0h
+                if (leader == bsp::kPlaneSquadronNoUnit || leader >= slots.size() || !slots[leader]) {
+                    return base;
+                }
+                speed = linear_speed(*slots[leader]);                   // PENDING: leader +B1Ch
+            } else if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryShip)) {
+                speed = ship_speed(t);                                  // 0080E0F0 -> 0092D730
+            } else {
+                speed = linear_speed(t);                                // PENDING plane: +B1Ch
+            }
+        } else {
+            speed = linear_speed(t);
+        }
         const float reach = unit.plane_turn_circle_radius + unit.moveto_follow_dist_68;  // 009C23E3 FSTP
         if (!(reach > unit.moveto_distance_64)) return base;                 // 009C23F8 JBE
         ++ts_override_within;
