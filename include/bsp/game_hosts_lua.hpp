@@ -1969,6 +1969,8 @@ public:
     int run_set_forced_recon_level_008aa8f0(lua_State* state, int argument_count);
     // Packet cc9_lua_add_damage, under kLuaAddDamageBound.
     int run_add_damage_0088e000(lua_State* state, int argument_count);
+    // Packet cc13-gunC C1b, under kShipDamagedGfxRemoveCc13Bound.
+    int run_set_damaged_gfx_level_0088f710(lua_State* state, int argument_count);
     // Packet cc9_lua_aa_enable, under kLuaAAEnableBound.
     int run_aa_enable_0089c740(lua_State* state, int argument_count);
     // Packet cc9_lua_set_ship_speed, under kLuaSetShipSpeedBound.
