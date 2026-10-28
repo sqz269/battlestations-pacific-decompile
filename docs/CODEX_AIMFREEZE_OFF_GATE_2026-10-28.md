@@ -46,7 +46,76 @@ the ON behavior or establish original binary ABI replacement or visual parity.
 
 ## Validation receipts
 
-Fresh build, lint and the 13-row OFF identity gate are recorded below once
-complete. Baseline is the preserved CC16 candidate executable with SHA-256
+Exact tested source: clean commit `93b9a5517d62ef38f0cd0876c1357acf9b5314b0`.
+`./scripts/build.ps1` passed the Win32 Release build and all three existing
+CTest groups (reconstructed math, CC13 leaf differential, tool tests).
+`pc24_lint.py --diff origin/main...HEAD` reported zero findings across the two
+changed implementation files; `git diff --check` was clean. No test cases were
+added. The preserved candidate executable SHA-256 is
+`4692bcf9bfcd2da95cea5cbd0872213a3deb5368b13333000e6a8ac58646430e`.
+
+Baseline is the preserved CC16 candidate executable with SHA-256
 `1a30fa1d6c67b51bef537c69af3179dc8454a0c4ddf608229f97deb1d0c80bdb` and its
-original `cc16-progress/local/codex_cc16_candidate_<row>.log` receipts.
+original `cc16-progress/local/codex_cc16_candidate_<row>.log` receipts. All 13
+baseline manifests were checked before comparison. The original executable,
+logs, manifests and input archives were preserved; the baseline was not rerun.
+
+The new runs used the existing `cc15-gui4/local/gui4_a1_jobs.txt` 13-row matrix,
+the same frame limits and order files, step `0.05`, start press at frame 30,
+death table and gunnery RNG streams enabled, and the same per-row bounds aids.
+At most three candidate runs were active, all Normal priority, through
+`run_game.ps1 -Slots 8`. Run manifests identify the exact candidate hash and
+clean source above. Launch arguments, environment, order-file hashes and
+difficulty matched the corresponding baseline receipts.
+
+All 13 new candidate runs exited 0. Every `pair_diff.py` comparison exited 0.
+Ordered dialog/message/Lua and teardown comparisons had zero index differences
+and zero length differences, using only the existing pointer and worker-ID
+masks from the CC15 comparators. Every mission began at frame 36 with the same
+first RNG draw. Both sides had RNG streams enabled and no freeze census output.
+The line counts below are equal on both sides.
+
+| Mission | First RNG | Dialog/message/Lua lines | Teardown lines |
+| --- | ---: | ---: | ---: |
+| ESMP08 | 0.4933 | 2486 | 638 |
+| JM06 | 0.1578 | 1262 | 241 |
+| USN21 | 0.6207 | 1887 | 413 |
+| IJN18 | 0.4640 | 7013 | 249 |
+| BSM01 | 1 | 526 | 166 |
+| USN12 | 0.1307 | 1457 | 360 |
+| LOMP10 | 0.1119 | 4181 | 244 |
+| BSM09 | 0.0949 | 1178 | 328 |
+| PRCP01 | 0.3605 | 1050 | 290 |
+| USN01 | 0.04169 | 930 | 1935 |
+| USN02 | 1 | 559 | 203 |
+| LOMP06 | 1 | 1717 | 166 |
+| USN04 | 0.4143 | 762 | 248 |
+
+The build-directory XLive DLL has SHA-256
+`75e45ff775053b495370eb5de1d7a28788dba1bad22d7b5b6f310fa658647a91`, versus
+baseline `ddf2c2a86d96f37819147c38991a74ef5c5946ce625e7b4e7914f8382aa13f87`.
+These 32768-byte DLLs differ in exactly six bytes, confined to the four-byte
+`IMAGE_FILE_HEADER.TimeDateStamp` at file offset `0xF8` and
+`IMAGE_DEBUG_DIRECTORY.TimeDateStamp` at `0x1B04` (values 1792360310 versus
+1793194228). Clearing exactly those two fields makes the entire files identical.
+Code, imports, 31 exports, entry point, runtime data, IAT, resources, relocation
+and load-config bytes are identical. Debug type 13 contains identical COFF
+group data; neither DLL has CodeView or path metadata. Both exact DLL hashes
+remain in the per-run input receipts. This provenance comparison added no
+runtime output mask and required no game rerun.
+
+Evidence resides under
+`J:/PROG/battlestations-pacific-decompile-cc13-aimfreezekz/local/`:
+`codex_aimfreeze_off_build.txt`, `codex_aimfreeze_off_lint.txt`,
+`codex_aimfreeze_off_build_receipts.json`,
+`codex_aimfreeze_off_baseline_preflight.json`,
+`codex_aimfreeze_off_xlive_proof.json`,
+`codex_aimfreeze_off_gate_summary.json` (13/13 accepted), the launcher/evaluator
+scripts, and `codex_aimfreeze_off_<row>.log` with manifests and archived inputs.
+Each `codex_aimfreeze_off_pair_<row>.json` has the raw pair report, with adjacent
+`.txt` and `.ordered.txt` receipts. There were no retries or added comparison
+masks. All three partition launchers exited 0 and all candidate processes ended.
+
+Acceptance is for dormant OFF integration against current main on these 13
+rows. All freeze switches stay OFF; ON gameplay behavior, original binary ABI
+compatibility and visual equivalence remain outside this receipt.
