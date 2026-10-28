@@ -17417,14 +17417,17 @@ void GameGunneryHost::Impl::gun_destroyed_failure_0072b5a0(std::size_t g) {
 }
 
 // Packet cc13-gunB follow-up: 008777D0 BSP_UnitInstance_ApplyHitRecord with ECX = a
-// gun. Hull pass (008777DD..008778D4): skipped when hit+34h is -1; armour = gun+368h
-// (the IsKindOf(6) alternate cannot apply to a gun), times ProductForUnit(2,
-// [gun+3F0h]) under the powerup gate (00877875, the IsKindOf(20h) arm); 00470510;
-// a positive value goes to vtable[1ACh] = 00728080. Part pass (008778E4..00877A37):
-// each +3Ch entry with +4h != -1 through 004705C0 with the same scaled armour, the
-// largest kept from -FLT_MAX (00D7A244) and dispatched once when above 0.0. LABELLED:
-// an entry of kind 4 takes [[gun+354h]]+24h in the image, the gun's own armour
-// here; the hit+48h stores before each dispatch have no field on bsp::HitRecord.
+// gun. Hull pass (008777DD..008778D4): skipped when hit+34h is -1; armour = gun+368h,
+// times ProductForUnit(2, [gun+3F0h]) under the powerup gate (0087784F hull and
+// 00877965 parts, the IsKindOf(20h) arms every gun takes; 00877875 / 008779A3 are the
+// non-20h arms, PUSH ESI, the unit itself); 00470510; a positive value goes to
+// vtable[1ACh] = 00728080. Part pass (008778E4..00877A37): each +3Ch entry with +4h
+// != -1 through 004705C0 with the same scaled armour, the largest kept from -FLT_MAX
+// (00D7A244) and dispatched once when above 0.0. Kind 4 (and the hull's IsKindOf(6)
+// alternate, which no gun class takes) read the class vtable[24h] 004407A0 =
+// class+4Ch ([gun+354h]->vt[24h]()), the value 0087BCF4 copies to +368h; exact
+// unless a post-init writer of +368h exists (not scanned). The hit+48h stores
+// before each dispatch have no field on bsp::HitRecord.
 void GameGunneryHost::Impl::apply_gun_hit_record_008777d0(std::size_t g,
                                                          const bsp::HitRecord& hit) {
     if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
