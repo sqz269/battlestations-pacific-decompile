@@ -3980,6 +3980,14 @@ struct GameGunneryHost::Impl {
     unsigned long long device_blast_dispatched{0};
     unsigned long long device_blast_drops{0};
     unsigned long long device_blast_applies{0};
+    // Log only (cc9-sweep3c): deferred nodes whose dispatch ends off the hull
+    // record, so queued_hits == dispatched + these. device_mesh_returns counts the
+    // C1 non-relay return in apply_hit.
+    unsigned long long device_mesh_returns{0};
+    unsigned long long undispatched_device_blast{0};
+    unsigned long long undispatched_device_mesh{0};
+    unsigned long long undispatched_wreck_past_window{0};
+    unsigned long long undispatched_other{0};
     struct DeviceBlastMount {
         std::size_t row{0};
         std::vector<bsp::HitPartEntry> entries;
@@ -13202,6 +13210,10 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     deferred_replay = &node;
     const bool victim_known = node.victim < unit_state.size();
     const float before = victim_known ? unit_state[node.victim].health : 0.0f;
+    const unsigned long long hull_before = summary.dispatched_hits;
+    const unsigned long long blast_before = device_blast_dispatched;
+    const unsigned long long mesh_before = device_mesh_returns;
+    const unsigned long long wreck_before = wreck_hits_past_window;
     if (bsp::kGunDeviceBlastGunlessCc13Bound && node.gunless && node.blast_device_gun >= 0) {
         // Packet cc13-c2b: a gunless burst's mount record (shot 0 or a plane).
         device_blast_dispatch_gunless(node.victim,
@@ -13216,6 +13228,12 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     } else {
         apply_hit(node.shooter, node.gun_row, node.victim, node.point, node.direction,
             node.has_blast ? &record : nullptr, node.team_id);
+    }
+    if (summary.dispatched_hits == hull_before) {   // log only: where the node ended
+        if (device_blast_dispatched != blast_before) ++undispatched_device_blast;
+        else if (device_mesh_returns != mesh_before) ++undispatched_device_mesh;
+        else if (wreck_hits_past_window != wreck_before) ++undispatched_wreck_past_window;
+        else ++undispatched_other;
     }
     deferred_replay = nullptr;
     if (victim_known) {
@@ -13425,6 +13443,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
                 // LABELLED: the image still writes the parent's 0077CE60 block here;
                 // the host returns before its attribution tail.
                 gun_device_hit_damage_008777d0(victim, static_cast<std::size_t>(device_gun), hit);
+                ++device_mesh_returns;
                 return;
             } else {
                 ++device_hit_relays;
@@ -20616,6 +20635,16 @@ void GameGunneryHost::report() {
         s.part_damages, s.fire_messages_9e, s.flood_messages_9e, s.attributions, s.deaths,
         s.kill_credits, static_cast<double>(s.damage_total),
         static_cast<double>(s.first_hit_seconds));
+    if constexpr (kHitDeferredDispatchCc13Bound) {
+        // cc9-sweep3c: `dispatched` above counts hull records only; these are the
+        // queued nodes that ended elsewhere, so queued = dispatched + their sum
+        // (plus nodes still left in the deferred queue).
+        host.log.notef("summary mission gunnery damage off-hull dispatches device_blast=%llu "
+            "device_mesh=%llu wreck_past_window=%llu other=%llu (queued_hits = dispatched + "
+            "these + deferred left)", host.undispatched_device_blast,
+            host.undispatched_device_mesh, host.undispatched_wreck_past_window,
+            host.undispatched_other);
+    }
     {
         double water = 0.0, fire = 0.0, repaired = 0.0;
         std::size_t enabled = 0;
