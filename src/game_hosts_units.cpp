@@ -9707,15 +9707,84 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // vtable[38h] speed > 007C47F0 (009C23FA-009C2412), a = that speed.
     // LABELLED: the target's vtable[38h] is its motion.linear_velocity length, as
     // the 009D3D01 site takes it; approach+64h is the host's moveto_distance_64.
+    // kMovetoTargetSpeedClassCc13Bound (OFF) dispatches the slot by class instead.
+    // Switch pairing: this switch alone decides this site. ON, its plane and
+    // squadron-leader arms take bsp::plane_cached_speed_b1c_007d8020 over
+    // plane_world_velocity unconditionally (the image's vt[38h] is 007B8E60 for every
+    // plane), whatever kPlaneCachedSpeedB1cCc13Bound says; that switch governs only its own
+    // listed readers. So the pairs are: this switch ON vs OFF (all arms move together), and
+    // kPlaneCachedSpeedB1cCc13Bound ON vs OFF separately; the two need no joint pair.
+    static constexpr bool kMovetoTargetSpeedClassCc13Bound = false;
     float moveto_target_speed_009c23b0(const GameUnitSlot& unit, float base) {
         ++ts_override_calls;
         if (unit.moveto_target_plus_one == 0 || unit.moveto_target_plus_one > slots.size()
             || !slots[unit.moveto_target_plus_one - 1u]) return base;
         ++ts_override_target;
-        const GameUnitSlot& t = *slots[unit.moveto_target_plus_one - 1u];
-        const bsp::OceanVec3& v = t.motion.linear_velocity;
-        const float speed = static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
-            + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
+        const std::size_t target = unit.moveto_target_plus_one - 1u;
+        const GameUnitSlot& t = *slots[target];
+        // The OFF expression, moved verbatim into this lambda: the same arithmetic as before
+        // (|motion.linear_velocity| in double, rounded once), not textually identical.
+        const auto linear_speed = [](const GameUnitSlot& s) {
+            const bsp::OceanVec3& v = s.motion.linear_velocity;
+            return static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
+                + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
+        };
+        float speed;
+        if constexpr (kMovetoTargetSpeedClassCc13Bound) {
+            // 009C23DB-009C23E9: MOV EDX,[ECX]; CALL [EDX+38h] on the target, made before the
+            // reach test, FSTP float. Slot 38h by class, first match, as
+            // run_get_entity_speed_008c0820 dispatches it:
+            //   PlaneSquadronGen 007ED470: JMP the leader's ([squadron+3D0h]) vtable[38h];
+            //   ships 0080E0F0: ECX = [unit+1018h], JMP 0092D730, the signed body forward
+            //   speed over the inputs GameUnitsHost::unit_forward_speed_0092d730 reads;
+            //   planes 007B8E60: FLD [unit+B1Ch].
+            // The plane arm and the squadron-leader arm read +B1Ch as
+            // bsp::plane_cached_speed_b1c_007d8020 over plane_world_velocity (007D8020's
+            // per-op chain with its 1e-10 floor; LABELLED there: a recompute, not the cache).
+            // LABELLED: other classes' slot-38h bodies were not read and keep
+            // |motion.linear_velocity|; a squadron without a live leader faults in the image
+            // and answers `base` here.
+            const auto plane_speed = [](const GameUnitSlot& s) {
+                const float v[3] = {s.plane_world_velocity[0], s.plane_world_velocity[1],
+                                    s.plane_world_velocity[2]};
+                return bsp::plane_cached_speed_b1c_007d8020(v);   // 007B8E60 FLD [unit+B1Ch]
+            };
+            // 0092D74E-0092D763: FMUL, FMUL, FADDP, FMUL, FADDP, each to 24 bits, then FSTP
+            // float at 0092D765, in the order of the kSubmarineSeabedSpeedPc24Cc13Bound arm.
+            // Of the host's copies of this speed, this arm and that one are the PC24-faithful
+            // ones; bsp::unit_forward_speed_0092d730 (unit_motion.cpp) and
+            // GameUnitsHost::unit_forward_speed_0092d730 sum in double and round once, which
+            // stays the OFF behaviour at their other callers.
+            const auto ship_speed = [](const GameUnitSlot& s) {
+                const float vy_ry = s.motion.linear_velocity.y * s.motion.pose_row2[1];
+                const float vx_rx = s.motion.linear_velocity.x * s.motion.pose_row2[0];
+                const float sum_yx = vy_ry + vx_rx;
+                const float vz_rz = s.motion.linear_velocity.z * s.motion.pose_row2[2];
+                return sum_yx + vz_rz;
+            };
+            const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+            for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == target) {
+                    squadron = &r;
+                    break;
+                }
+            }
+            if (squadron != nullptr) {
+                const std::size_t leader = squadron->flight_leader();   // 007ED470 +3D0h
+                if (leader == bsp::kPlaneSquadronNoUnit || leader >= slots.size() || !slots[leader]) {
+                    return base;
+                }
+                speed = plane_speed(*slots[leader]);                    // leader's 007B8E60
+            } else if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryShip)) {
+                speed = ship_speed(t);                                  // 0080E0F0 -> 0092D730
+            } else if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryPlane)) {
+                speed = plane_speed(t);                                 // 007B8E60
+            } else {
+                speed = linear_speed(t);                                // LABELLED, unread class
+            }
+        } else {
+            speed = linear_speed(t);
+        }
         const float reach = unit.plane_turn_circle_radius + unit.moveto_follow_dist_68;  // 009C23E3 FSTP
         if (!(reach > unit.moveto_distance_64)) return base;                 // 009C23F8 JBE
         ++ts_override_within;
