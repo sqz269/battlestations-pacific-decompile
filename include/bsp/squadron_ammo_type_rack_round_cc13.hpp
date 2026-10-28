@@ -45,6 +45,9 @@ namespace bsp {
 // Expected movers when ON: Lua ammoType and the RTB exclusion for bag-0 bomber
 // squadrons with no authored rack Ammo (JM08, ESMP08). The census line in
 // squadron_ordnance_census is unchanged.
-inline constexpr bool kSquadronAmmoTypeRackRoundCc13Bound = false;
+// ON (cc9-sweep3c, 2026-10-28) by pairs on becab26e5, ESMP08 esmp08_p12_e8_rb and
+// JM08 s63_j8_v3, 20000 frames each: gameplay identical; the GetProperty ammoType
+// (ESMP08 asked=859 zero=8) and the rtb exclusion (calls=0) lines are equal.
+inline constexpr bool kSquadronAmmoTypeRackRoundCc13Bound = true;
 
 }  // namespace bsp

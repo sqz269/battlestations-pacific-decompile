@@ -882,6 +882,7 @@ inline constexpr bool kAirOpsPlayerLaunchGroupBound = true;   // ON: AIROPS_LAUN
 // registered member slot holds a plane (the image's 007F4BA0 runs after 007F4580
 // made every wing). False: served at the first step any member exists, so only
 // the flight leader receives it.
+// keep OFF: superseded by kAutoAttackMemberOnLaunchBound, AIROPS_LAUNCH_TICK.md:825.
 inline constexpr bool kAutoAttackAllMembersBound = false;  // OFF: mechanism failure (deck members are not visible), measured
 // Packet cc9_auto_attack_member_launch. True: the AutoAttackTarget order served
 // at the first step stays with the squadron, and every member that becomes
