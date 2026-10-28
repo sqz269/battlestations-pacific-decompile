@@ -232,3 +232,86 @@ in the mission graph, including the sun's own registration path.
 
 Recommendation: (b) now, to unblock long milestone-D runs; (a) as a planned packet if
 retail lighting parity for instanced models becomes a goal.
+
+# Preload retirement vs the open mission bracket
+
+A second, independent milestone-D failure, found by cc15. A run that ends before the late
+spawns exits 1 at shutdown with
+`startup failed: mission preload retirement requires the completed quiescent native Application`.
+
+## Result: 8eded9e50 introduces it
+
+Both runs: USN04 in the milestone-D env, 500 mission frames, 800 application frames,
+one run at a time.
+
+| build | `kApplicationCc15Bound` | result | log (this worktree) |
+|---|---|---|---|
+| 8eded9e50^ | false | exit 0, `native mission ship closed: last_mission_frame=500 ... retired` | `local/cc16md_8edp.log` |
+| 8eded9e50 | true | exit 1, failure right after `StartupHost::application_shutdown [00737f30]` | `local/cc16md_8ed.log` |
+
+8eded9e50 changes only `include/bsp/game_hosts.hpp` (the switch, false -> true). Its
+evidence runs used the reference environment. That environment never builds the mission
+ship graph, so it could not see this failure.
+
+## Mechanism
+
+WinMain's order is `application_shutdown` (737F30) -> `application_destruct` (008F8444,
+007379A0 retires the Application) -> `destroy_singleton_lifetime_manager` (008F8449 ->
+`GameNativeRendererApplication::drain_singletons` -> mission ship retirement)
+(`winmain_startup.cpp:231-233`, `game_hosts.cpp:3155`).
+The OFF log shows the same order: `application_shutdown` at line 13125, then
+`mission ship closed` at line 13501.
+
+- OFF: the preload owns its own Application. It retires inside
+  `MissionShipGraph::retire_before_native_drain` (`game_native_mission_ship.inc:394-405`),
+  after the ship releases its shader cache (`shader_open` -> `release_shader_cache()`).
+- ON: the preload borrows the startup Application. 737F30 now calls
+  `release_application_preload_rows()` (`game_hosts.cpp:3022-3023`) ->
+  `release_borrowed_rows()` -> `retire_before_native_drain()`
+  (`game_native_mission_preload.inc:121-147`). That function requires
+  `!context.cache.actual_cache_0108d6ec`. The ship's one-shot shader cache, opened in
+  prepare (`game_native_mission_ship.inc:162`) and deliberately kept open for late model
+  loads, is not released until the later drain.
+
+The throw leaves `application_shutdown`, so `application_destruct` and the drain never run,
+and the process exits 1. **Inferred, not proven:** the failing clause is the cache.
+`phase==ready` is logged as complete, and E1AE90 still equals the target (005DFA1C),
+because the Application is retired only in `application_destruct`.
+
+Relation to the frame-515 fault: none in cause, since the two failures are in different
+phases. In effect they combine: once the frame-515 fault is contained, a full
+milestone-D run with the flip ON still exits 1 at shutdown until this one is fixed.
+
+## Fix options
+
+Default env: every option sits behind `release_application_preload_rows()`, which returns
+when there is no mission ship (`game_native_renderer_application.cpp:1029-1031`). A default
+run never builds one, so no option below can change a default-env run. Still check with
+pair_diff.
+
+Lease holders (2026-10-28): `game_native_mission_ship.inc` and
+`game_native_renderer_application.cpp` are held by `agent/cc15-gui4` (`cc15-gui4-a1`,
+until 2026-10-29T08:54). `game_native_mission_preload.inc` and `game_hosts.cpp` have no
+active lease. `game_hosts.cpp` is cc13's area by convention, so check before editing it.
+
+1. **Close the ship's late-model bracket at 737F30 (recommended).** In
+   `release_application_preload_rows()`, first ask the mission ship to release its
+   shader cache (the existing `shader_open` -> `release_shader_cache()` step, factored
+   into a ship method), then release the rows. The ship's later retirement skips the
+   already-closed bracket. After the loop finishes no late model can load, so the
+   bracket has no remaining user. The original game has no such open bracket (it is a
+   milestone-D accommodation), so closing it here does not depart further from the
+   original. Files: `game_native_mission_ship.inc`, `game_native_renderer_application.cpp`
+   (both leased by cc15-gui4). Cost: small. Risk: low. The check that the cache is the
+   ship's own live owner must hold at 737F30, which needs a milestone-D run that exits 0.
+2. **Retire the whole mission ship graph at 737F30.** Call
+   `mission_ship->retire_before_native_drain(*this)` from `release_application_preload_rows()`.
+   This moves lighting, scene, model, camera, foliage and factory retirement ahead of
+   `application_destruct`, font retirement and platform drain. Same files. Cost: small.
+   Risk: medium. Texture-owner observations and the shutdown residue checks change order,
+   and `drain_singletons`' `requires_process_retention` guard must accept the earlier close.
+3. **Relax the preload check when the bracket belongs to the ship.** In
+   `game_native_mission_preload.inc` (unleased), accept a live cache at 737F30 when it is
+   the ship's own canonical owner. Cost: small. Risk: medium. It weakens an invariant
+   that guards row release while a cache bracket is open. I have not shown that releasing
+   the preloaded effect rows with that cache open is safe.
