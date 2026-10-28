@@ -13730,7 +13730,18 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
         // motion, so think sees the previous step's C7C. The host's
         // refresh_attitude_007c1900 runs before pilot_think_and_commit in each
         // of its three arms (free flight, ground roll/deck, surface), from the
-        // velocity the previous step's motion left, so it holds the same value.
+        // velocity the host holds at that point. In steady free flight that is
+        // the velocity the previous step's motion left, so the values agree.
+        // LABELLED, they differ when the velocity changes between the image's
+        // write and the host's refresh: (a) 007CE040 runs the 007C0910 sweep
+        // collision at 007CEF67, after the 007CEE9C write, so the image's C7C
+        // predates a collision response the host sees; (b) on the ground roll
+        // carrier_deck_carry_in rewrites plane_world_velocity under the
+        // carrier's current matrix just before the refresh; (c) out-of-step
+        // writers zero or replace the velocity (flight_state_notify,
+        // plane_enter_state_two, airfield_site_tick,
+        // carrier_elevator_send_empty_down, carrier_deck_capture), after which
+        // the host keeps a C7C one step older than the image's.
         pitch = u.plane_velocity_elevation_c7c;
     } else {
     double horiz;

@@ -16,7 +16,9 @@ namespace bsp {
 //            |v| > 1 and fell back to unit+C64h. ON adds the C7Ch slot field and its writer
 //            in refresh_attitude_007c1900, which all three host arms (free flight, ground
 //            roll/deck, surface) call before the think. The image writes C7Ch at the end
-//            of the previous step (007CEE9C, after think and motion) from the same velocity.
+//            of the previous step (007CEE9C, after think and motion); the two agree in
+//            steady free flight and differ after a collision response, a deck carry or an
+//            out-of-step velocity write (labelled; see the comment at the reader).
 //   Not a deviation: 0099FBED and 0099FCA0 call 00419510 with EDX = the pass-1 direction
 //            but ECX = an unused temporary ([ESP+468h] / [ESP+45Ch]), so the direction is
 //            never normalized; the host matches and nothing is modelled.
