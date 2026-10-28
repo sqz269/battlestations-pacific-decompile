@@ -36,6 +36,9 @@ public:
     // AA7220's live Y translation/pivot multiplier. This is the distinct
     // initialized E12FC4 cell, not Text's E12FD4 vertical scale or a copy of it.
     float& widget_y_scale_00e12fc4() noexcept { return widget_y_scale_; }
+    // AA2490/camera-store null-header fallback: one readable loader-zero
+    // byte at F8BC60. A distinct process backing, not an Original extent/VA.
+    const char* widget_empty_00f8bc60() const noexcept { return &widget_empty_; }
 
     // Complete 00AB7060..70A0 behavior over this SAME backing. The Original
     // no-argument entry returns F8BE38 in EAX, plain RET. This new typed
@@ -59,6 +62,7 @@ private:
     float widget_black_color_[4]{};
     std::uint32_t widget_black_guard_{};
     float widget_y_scale_;
+    char widget_empty_{};
 };
 
 // Intentionally retained process lifetime, including after GUI/font retirement.
