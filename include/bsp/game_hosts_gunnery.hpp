@@ -248,6 +248,10 @@ struct GameGunRow {
     // model's root node, 0072E9A1-0072E9AA). Valid when mount_known.
     bool mount_known{false};
     float mount_local[3]{0.0f, 0.0f, 0.0f};
+    // Packet cc13-mountfix: rows 0-2 of the same platform frame after 0085DC80
+    // (0095FB4E-0095FDDE). Identity without a slot. Filled and read only
+    // under kNonTurningMountSlotFrameCc13Bound.
+    float mount_basis_slot[9]{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
     int next_fire_barrel{0};          // +44Ch
     float reload_time{0.0f};
     float barrel_delay_time{0.0f};
