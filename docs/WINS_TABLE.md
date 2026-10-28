@@ -1641,3 +1641,32 @@ attack orders on Cleveland, Columbia, Denver, Charles and the destroyers) moved 
 - Any shift of the attack block in -300..+300 wins all three envs, so the e8 timing was the knife-edge, not the
   approach. The USN12 row moves to `l73_u12_n1`.
 - Logs `cc9-lua52\local\l73r_u12n<k>_main_<env>.log`; sibling plans `local\l73_u12_n<k>.txt`.
+
+## 2026-10-27, IJN08 re-plan `l74_i08_d`, all three envs (cc9-lua74, keeper)
+
+Base: main 8eded9e50 (tree build of agent/cc9-lua52, identical to it). `p10_i08_z` on main (1c49c8c0d logs
+`cc9-lua52\local\l74r_i08_main_<env>.log`): ref no end (phase 1 never completes: Cargo4 and Cargo6 survive, the
+JapSubs die to the Fletchers at 622-632 s); default no end (Maru2 captures the HQ at 3593.70 s, but US_Shipyard_03
+never dies: Aoba grounds at (2158,-2778), 3057 m from the shipyard; cc13's static read says this is faithful: the
+neighbour side-window pass at step 41410 turns it north into the Akis, it reverses into the bay and sits in an
+avoid zone); 20,3 failed 1290.13 s on e3c2cc5b3 (both Marus sunk by US_Airfield_03 squadrons).
+
+**`config/win_orders/ijn08_l74_i08_d.txt`** (generator `local\l74_i08plan.py`, a copy of physics9's
+`p9_i08plan.py` with a PREF override; it reproduces `p10_i08_z` byte for byte from z's header arguments):
+- phase 1 uses lua73's re-prioritised sub targets (`local\l73_i08_v3.txt`): JapSub1 Cargo4 first, JapSub2 Cargo6
+  first, JapSub3 Cargo6 then Cargo4 first. All six Cargos sink by 387-399 s in every env.
+- phase 2 is z, except Hiei, Kirishima and Haruna get `"Shipyard Entity CB3"` as the last fallback of their
+  60500 lists (after RightBB1 dies at ~2188 s). Without it (v3 alone) the default env leaves CB3 alive after
+  Furutaka dies at 2235.91 s and never ends.
+
+| Plan | ref | 20,3 | default |
+| --- | --- | --- | --- |
+| `l74_i08_d` | completed 3011.81 s | completed 3001.80 s | completed 4640.73 s |
+| v3 (= `local\l74_i08_a.txt`, no CB3 fallback) | (present-failed, void) | completed 3001.80 s (pf=1, provisional) | **no end** (CB3 alive) |
+| v1 (lua73 `l73_i08_v1`) | (void) | (void) | **failed 2481.30 s** (both Marus sunk) |
+
+- Each d completion logs the guard's sus_prog.exe refusal; pf=0, helm_moveto_unselected=0, helm_role_forced=0
+  (non-provisional). Logs `cc9-lua52\local\l74r_i08d_main_<ref|j3|sh>.log`.
+- The default win is late: CB3 dies at 4632.92 s (Hiei/Kirishima/Haruna sail from the north after RightBB1),
+  368 s before the 100000-frame budget. Maru2 is lost at 910.45 s in default; Maru1 carries the landing.
+- The IJN08 row moves to `l74_i08_d`.
