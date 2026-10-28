@@ -9699,6 +9699,12 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // LABELLED: the target's vtable[38h] is its motion.linear_velocity length, as
     // the 009D3D01 site takes it; approach+64h is the host's moveto_distance_64.
     // kMovetoTargetSpeedClassCc13Bound (OFF) dispatches the slot by class instead.
+    // Switch pairing: this switch alone decides this site. ON, its plane and
+    // squadron-leader arms take bsp::plane_cached_speed_b1c_007d8020 over
+    // plane_world_velocity unconditionally (the image's vt[38h] is 007B8E60 for every
+    // plane), whatever kPlaneCachedSpeedB1cCc13Bound says; that switch governs only its own
+    // listed readers. So the pairs are: this switch ON vs OFF (all arms move together), and
+    // kPlaneCachedSpeedB1cCc13Bound ON vs OFF separately; the two need no joint pair.
     static constexpr bool kMovetoTargetSpeedClassCc13Bound = false;
     float moveto_target_speed_009c23b0(const GameUnitSlot& unit, float base) {
         ++ts_override_calls;
@@ -9723,11 +9729,17 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             //   ships 0080E0F0: ECX = [unit+1018h], JMP 0092D730, the signed body forward
             //   speed over the inputs GameUnitsHost::unit_forward_speed_0092d730 reads;
             //   planes 007B8E60: FLD [unit+B1Ch].
-            // PENDING: the plane arm (and so the squadron arm) keeps |motion.linear_velocity|
-            // until poolw3's shared +B1Ch helper (kPlaneCachedSpeedB1cCc13Bound) lands; it
-            // should then read 007D8020's value over plane_world_velocity. LABELLED: other
-            // classes' slot-38h bodies were not read and keep |motion.linear_velocity|; a
-            // squadron without a live leader faults in the image and answers `base` here.
+            // The plane arm and the squadron-leader arm read +B1Ch as
+            // bsp::plane_cached_speed_b1c_007d8020 over plane_world_velocity (007D8020's
+            // per-op chain with its 1e-10 floor; LABELLED there: a recompute, not the cache).
+            // LABELLED: other classes' slot-38h bodies were not read and keep
+            // |motion.linear_velocity|; a squadron without a live leader faults in the image
+            // and answers `base` here.
+            const auto plane_speed = [](const GameUnitSlot& s) {
+                const float v[3] = {s.plane_world_velocity[0], s.plane_world_velocity[1],
+                                    s.plane_world_velocity[2]};
+                return bsp::plane_cached_speed_b1c_007d8020(v);   // 007B8E60 FLD [unit+B1Ch]
+            };
             // 0092D74E-0092D763: FMUL, FMUL, FADDP, FMUL, FADDP, each to 24 bits, then FSTP
             // float at 0092D765, in the order of the kSubmarineSeabedSpeedPc24Cc13Bound arm.
             // Of the host's copies of this speed, this arm and that one are the PC24-faithful
@@ -9753,11 +9765,13 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
                 if (leader == bsp::kPlaneSquadronNoUnit || leader >= slots.size() || !slots[leader]) {
                     return base;
                 }
-                speed = linear_speed(*slots[leader]);                   // PENDING: leader +B1Ch
+                speed = plane_speed(*slots[leader]);                    // leader's 007B8E60
             } else if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryShip)) {
                 speed = ship_speed(t);                                  // 0080E0F0 -> 0092D730
+            } else if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryPlane)) {
+                speed = plane_speed(t);                                 // 007B8E60
             } else {
-                speed = linear_speed(t);                                // PENDING plane: +B1Ch
+                speed = linear_speed(t);                                // LABELLED, unread class
             }
         } else {
             speed = linear_speed(t);
