@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/gui_lua_reader.hpp"
+#include "bsp/native_lua_field_values.hpp"
 #include <cstddef>
 #include <cstdint>
 
@@ -62,6 +63,80 @@ public:
 private:
     const ObjectHandleResolverSlots& slots_;
     const ObjectHandleTables& tables_;
+};
+
+class NativeLuaFieldResolverAdapter;
+// Persistent per-field invocation backing. It is host metadata plus the SAME
+// 14h temporary that the admitted raw 00888AA0 path constructs and destroys.
+// Retain the frame, adapter, raw input/reader/Lua and table providers on failure;
+// never destroy/replay an entered or failed frame. Complete frames may be reused.
+struct NativeLuaFieldResolverFrame final {
+    enum class Phase { fresh, entered, complete, failed };
+    NativeLuaObjectStorage temporary{};
+    Phase phase{Phase::fresh};
+    std::uint32_t active_site{}, result_bits{};
+    HandleToObjectCallback loaded_number{};
+    ContextValueCallback loaded_table{};
+    NativeLuaFieldResolverFrame() = default;
+    ~NativeLuaFieldResolverFrame() noexcept;
+    NativeLuaFieldResolverFrame(const NativeLuaFieldResolverFrame&) = delete;
+    NativeLuaFieldResolverFrame& operator=(const NativeLuaFieldResolverFrame&) = delete;
+private:
+    friend class NativeLuaFieldResolverAdapter;
+    NativeLuaFieldResolverAdapter* binding_{};
+    NativeLuaFieldResolverFrame* previous_{};
+    bool active_{};
+};
+
+// Qualified source ABI bridge for the actual-storage BD63B0 field reader.
+// The source slots remain owned/installed by the startup host (006AD0D0).
+// Every invocation reads their CURRENT typed target; no callback cast or
+// cached source target is used. Tables are aliases of the canonical live banks.
+// The table arm admits only the installed object_from_lua_table_00888aa0 target
+// and composes its genuine raw B67800 -> B662D0 -> B67700 schedule, without a
+// GuiLuaRef/registry projection. Other table targets are outside this domain.
+//
+// The distinct fixed fastcall cells below are application adapters, not writes
+// to0109CED4/CED8, a BD4FC0 replacement, or drop-in binary/game ABI proof.
+// Serialize entries, activation and lifetime; providers outlive every scope.
+class NativeLuaFieldResolverAdapter final {
+public:
+    NativeLuaFieldResolverAdapter(const ObjectHandleResolverSlots&, ObjectHandleTables,
+        const char* actual_ptr_literal_00cfad08);
+    ~NativeLuaFieldResolverAdapter() noexcept;
+    NativeLuaFieldResolverAdapter(const NativeLuaFieldResolverAdapter&) = delete;
+    NativeLuaFieldResolverAdapter& operator=(const NativeLuaFieldResolverAdapter&) = delete;
+
+    NativeLuaFieldNumberResolver const volatile& number_cell() const noexcept { return number_cell_; }
+    NativeLuaFieldTableResolver const volatile& table_cell() const noexcept { return table_cell_; }
+    bool requires_process_retention() const noexcept;
+
+    // Nesting (including another adapter) restores the previous binding on
+    // normal return/C++ unwind. TLS points at the caller-retained FRAME, not
+    // this automatic scope object. A Lua nonlocal transfer can bypass this
+    // destructor: the active frame/count remain retained, require _Exit and
+    // must never be resumed or silently repaired. Entered failures are sticky.
+    class Activation final {
+    public:
+        Activation(NativeLuaFieldResolverAdapter&, NativeLuaFieldResolverFrame&);
+        ~Activation() noexcept;
+        Activation(const Activation&) = delete;
+        Activation& operator=(const Activation&) = delete;
+    private:
+        NativeLuaFieldResolverFrame& frame_;
+    };
+private:
+    static NativeLuaFieldResolverFrame& active();
+    static std::uint32_t __fastcall resolve_number(std::int32_t);
+    static std::uint32_t __fastcall resolve_table(NativeLuaObjectStorage*);
+    static void fail(NativeLuaFieldResolverFrame&) noexcept;
+    const volatile ObjectHandleResolverSlots& slots_;
+    ObjectHandleTables tables_;
+    const char* ptr_literal_;
+    NativeLuaFieldNumberResolver const volatile number_cell_{&resolve_number};
+    NativeLuaFieldTableResolver const volatile table_cell_{&resolve_table};
+    std::size_t active_scopes_{};
+    bool failed_{};
 };
 
 } // namespace bsp
