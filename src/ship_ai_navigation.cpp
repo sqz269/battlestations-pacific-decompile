@@ -84,6 +84,30 @@ std::uint32_t unit_ai_order_published_offset(int index) noexcept {
 }
 
 void unit_ai_order_copy_00811d10(UnitAiOrderRecord& dst, const UnitAiOrderRecord& src) noexcept {
+    {
+        // Reach counter (cc9-sweep2b, log-only): both copies on scratch records.
+        UnitAiOrderRecord image = dst;
+        UnitAiOrderRecord member = dst;
+        unit_ai_order_copy_image_00811d10(image, src);
+        member.blend_00 = src.blend_00;
+        member.timer_04 = src.timer_04;
+        member.sub_a = src.sub_a;
+        member.sub_b = src.sub_b;
+        const auto sub_same = [](const UnitAiOrderSubRecord& a, const UnitAiOrderSubRecord& b) {
+            return ship_ai_reach_same_bits(a.value_00, b.value_00) &&
+                   ship_ai_reach_same_bits(a.field_04, b.field_04) &&
+                   ship_ai_reach_same_bits(a.field_08, b.field_08) && a.flag_0c == b.flag_0c &&
+                   ship_ai_reach_same_bits(a.field_10, b.field_10) &&
+                   ship_ai_reach_same_bits(a.field_14, b.field_14) && a.field_18 == b.field_18;
+        };
+        ShipAiSwitchReach& reach = ship_ai_switch_reach();
+        ++reach.order_copy_calls;
+        if (!ship_ai_reach_same_bits(image.blend_00, member.blend_00) ||
+            !ship_ai_reach_same_bits(image.timer_04, member.timer_04) ||
+            !sub_same(image.sub_a, member.sub_a) || !sub_same(image.sub_b, member.sub_b)) {
+            ++reach.order_copy_differs;
+        }
+    }
     if constexpr (kUnitAiOrderCopyPc24Cc13Bound) {
         unit_ai_order_copy_image_00811d10(dst, src);
     } else {
