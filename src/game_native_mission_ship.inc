@@ -37,6 +37,7 @@ struct MissionShipGraph final {
     void (*prepare_callback)(void*){};
     const NativeGroupEnvironment* gui_group_environment{};
     RandomThreads* startup_random{};
+    StartupSceneDomain* startup_domain{}; // A1 borrow; null unless kNativeRendererStartupCc15Bound
     bool all_units{};
     std::optional<std::size_t> diagnostic_view_unit;
     bool overlay_window_open{}, overlay_submitted{};
@@ -100,6 +101,20 @@ struct MissionShipGraph final {
         return stage == Stage::ready && shader_open && shader_creation &&
             shader_creation->phase == NativeShaderBinaryCacheOperation::Phase::complete &&
             shader_creation->cache && shader_creation->cache == shader_cache.actual_cache_0108d6ec;
+    }
+    void release_late_model_shader_cache(GameNativeRendererApplication& application) {
+        if (!shader_open) return;
+        // 00737F30 releases the borrowed Application's preload rows before
+        // the later renderer drain. Its late-model bracket must close first.
+        // The drain reaches this same one-shot release after entering retiring.
+        check((stage == Stage::ready || stage == Stage::retiring) && shader_creation &&
+            shader_creation == application.shader_cache_creation_operation() &&
+            shader_creation->phase == NativeShaderBinaryCacheOperation::Phase::complete &&
+            shader_creation->cache && shader_creation->cache == shader_cache.actual_cache_0108d6ec &&
+            !application.shader_cache_released(),
+            "mission shader-cache release requires its completed current owner");
+        application.release_shader_cache();
+        shader_open = false;
     }
     bool requires_process_retention() const noexcept {
         return stage == Stage::preparing || stage == Stage::retiring || stage == Stage::failed ||
@@ -170,7 +185,7 @@ struct MissionShipGraph final {
                 vfs, singletons, owners, model->effect_cache(), model->material_lifetime(),
                 model->model_environment(), commands->render_access(), renderer,
                 *reinterpret_cast<void* const volatile*>(devices.platform_publication.identity()),
-                lua, shader_cache, arguments);
+                lua, shader_cache, arguments, startup_domain ? &startup_domain->scenes : nullptr);
             (void)resources->construct_and_initialize();
             if (prepare_callback) prepare_callback(prepare_context);
             const auto source = unit_source();
@@ -194,7 +209,8 @@ struct MissionShipGraph final {
             for (std::size_t i = 0; i != model->drawable_count(); ++i)
                 scene->attach(model->drawable(i), model->drawable_reference(i), model->profile(model->drawable(i)));
             lighting = std::make_unique<MissionShipLightingGraph>(log, graph, cameras,
-                owners, raw_strings, static_cast<std::uint8_t>(arguments.word_00));
+                owners, raw_strings, static_cast<std::uint8_t>(arguments.word_00),
+                startup_domain ? &startup_domain->registry : nullptr);
             lighting->create_and_bind(scene->raw());
             // Keep this SAME one-shot cache while late mission models can load.
             // B3B7F4/B34890 dereference it in the installed binary shader mode.
@@ -398,10 +414,7 @@ struct MissionShipGraph final {
             "incomplete mission ship graph cannot be retired");
         stage = Stage::retiring;
         try {
-            if (shader_open) {
-                application.release_shader_cache();
-                shader_open = false;
-            }
+            release_late_model_shader_cache(application);
             preload->retire_before_native_drain();
             lighting->retire_before_native_drain();
             scene->retire_before_native_drain();

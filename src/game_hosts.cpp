@@ -2737,6 +2737,12 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     try { native_shadow_->construct(); }
     catch (...) { exit_if_native_shadow_incomplete(); throw; }
     log_.implemented("Phase 7 native shadow target startup", "0073dccb");
+    if constexpr (kNativeRendererStartupCc15Bound) {
+        // cc15-gui4 A1: 0073DD12's position (0073BF80). Open the one raw scene
+        // domain the mission and GUI page graphs borrow. The image's
+        // CD80A0/CD80F0/CD8080 CRT initializers have run by now.
+        native_renderer_->open_startup_scene_domain();
+    }
     log_.unimplemented("Phase 4 renderer_resources", "00b14a10");
     input_ = std::make_unique<InputServices>(*this);
     input_runtime_ = &input_->core;

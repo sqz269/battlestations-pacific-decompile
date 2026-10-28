@@ -20,7 +20,9 @@ struct MissionRenderResourcesGraph {
  NativePostEffect20ConstructionContext post20;
  NativePostEffectConstructionContext post24;
  NativeRenderEffectLifetimeContext effects_lifetime;
- NativeGuiSceneEnvironment scenes;
+ // A1: the startup domain's environment when borrowed; owned otherwise.
+ std::unique_ptr<NativeGuiSceneEnvironment> owned_scenes;
+ NativeGuiSceneEnvironment& scenes;
  NativeDistortionLifetimeContext distortion_lifetime;
  NativeRenderPassCompanionContext pass_companions;
  NativeRenderPassInitializationContext passes;
@@ -54,7 +56,8 @@ struct MissionRenderResourcesGraph {
      NativeMaterialEffectCacheContext& effect_cache,NativeMaterialDestructionAccess& materials,
      NativeModelEnvironment& models,NativeTracelineRenderAccess& draw_entries,
      void* const volatile& current_renderer,void* const volatile& configuration,NativeLuaServiceBindings& lua_services,
-     NativeShaderBinaryCacheContext& binary_cache,NativeRenderResourceInitArguments args)
+     NativeShaderBinaryCacheContext& binary_cache,NativeRenderResourceInitArguments args,
+     NativeGuiSceneEnvironment* startup_scenes=nullptr)
   :resources(r),renderer(current_renderer),lua(lua_services),shader_cache(binary_cache),
    screen_negative_half(*g.profiles(0xce69d0)),screen_one(*g.profiles(0xd7a24c)),
    arguments(args),
@@ -79,7 +82,9 @@ struct MissionRenderResourcesGraph {
        g.profiles(0xd619a0),g.profiles(0xd5e5f8),literal(g,0xd61f0c),
        literal(g,0xd61ee4),literal(g,0xd61ed0)},
    effects_lifetime{owners,r.holders,camera.decrement,g.profiles(0xd61ec0),g.profiles(0xd61eb8)},
-   scenes{g.nodes,host.weak_owners(),*g.profiles(0xd7a24c),g.profiles(0xd62d48)},
+   owned_scenes(startup_scenes ? nullptr : std::make_unique<NativeGuiSceneEnvironment>(NativeGuiSceneEnvironment{
+       g.nodes,host.weak_owners(),*g.profiles(0xd7a24c),g.profiles(0xd62d48)})),
+   scenes(startup_scenes ? *startup_scenes : *owned_scenes),
    distortion_lifetime{effects_lifetime,g.nodes,g.frame,g.profiles(0xd5e600),g.profiles(0xd62d48),
        operation.distortion_scene_owner_3c()},
    pass_companions{owners,effects_lifetime,{g.profiles(0xd5e164),g.profiles(0xd5e178),
