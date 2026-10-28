@@ -1850,7 +1850,9 @@ void GameMissionHost::Impl::lobby_reset_slots_005d5340() {
 // 00E1955C. LABELLED: the image does both when the multiplayer menu opens, before
 // Session_SetMode, with 00E19594 = the game+60Ch of that moment; the host does them after
 // its Session_SetMode with 00E19594 = the chosen entry, because 005D7070 needs that entry's
-// scene uniqueID. The choice of record only matters through its +428h rows: this
+// scene uniqueID. 00688E40 BSP_MultiMenu_OnSceneExit also reconstructs the lobby screen,
+// so the image runs the 005E3290 walk again with that moment's game+60Ch; one skirmish per
+// process never reaches it. The choice of record only matters through its +428h rows: this
 // installation's map records override rows 2 and 3 alone (luaOverrideMultiLobbySettings),
 // and the lobby enter rewrites slot 2, and slot 3 when the mode is 0..3.
 void GameMissionHost::Impl::lobby_multi_menu_init_00689540() {
