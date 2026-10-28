@@ -82,6 +82,34 @@ The manager binding is a once-only borrowed token; unbound page callbacks retain
 the existing rejection. Token release requires completed shared-drain
 acknowledgment. The coordinator therefore moves that acknowledgment before
 page-app reset, while manager destruction stays after page-app reset. The root
-manager/ordering build and both existing suites pass; smoke gates are queued
-after a matrix partition frees a slot. This does not claim that real page
+manager/ordering build and both existing suites pass. This does not claim that real page
 callbacks or the future token borrower have executed.
+
+## First accepted dependency batch
+
+Integrated source `577516563` combines manager `f24b3e21d`, recovered state
+`590cc866d` and the coordinator's acknowledgment order. Its Win32 Release build
+and both existing suites pass. Saved executable SHA-256 is
+`FADF096DF31A59ED556F033994358E4DDEC636C717042FEE431A0898D0339C38`;
+the reference XLive DLL remains byte-identical to the accepted baseline.
+
+Reference USN04 (4800 mission frames) and milestone-D USN04 (1600 frames) both
+exit 0 and compare with the saved accepted code at `pair_diff` exit 0. Ordered
+dialog/message/Lua differences are 0 (762/762 reference, 626/626 milestone-D).
+Teardown is identical (248/248 and 4312/4312 lines). Both start at frame 36;
+first RNG draws are unchanged (0.4143 reference, 1 milestone-D). Milestone-D
+releases 179 preload rows and closes the mission at frame 1600 before final COM
+release. Receipts are `local/codex_gui_dependencies_{ref,msd}*` and
+`local/codex_gui_dependencies_ordered.json`.
+
+These are dormant dependency APIs, not a switch activation or P3a2 runtime
+proof. The real page chain remains OFF. Native page callbacks, bound-token
+lifecycle and widget-property execution will be exercised with their borrower.
+
+P3a2 can borrow actual graphics/stream services from the renderer's grid
+context and compose a page-owned Model companion domain. Its next dependency
+is a genuine raw Lua field resolver: CURRENT source callback signatures add
+explicit contexts, whereas BD63B0 expects ECX/EAX fastcall cells. The worker is
+implementing a qualified adapter over current canonical slots and actual raw
+Lua storage, with nested activation and retained failure frames; no signature
+cast or null placeholder is admitted.

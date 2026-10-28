@@ -48,7 +48,8 @@
     },
     {
       "id": "codex-gui-page-lifetime",
-      "state": "source_and_build_reviewed_pending_lifecycle_smoke",
+      "state": "dependency_integrated_build_and_default_smoke_checked_borrower_unexercised",
+      "done": true,
       "worker": "gui_integration_review",
       "source_ready": false,
       "function_addresses": ["00aa6340", "00aa6540"],
@@ -60,7 +61,8 @@
     },
     {
       "id": "codex-gui-widget-state",
-      "state": "canonical_data_recovered_source_reviewed_pending_integrator_build",
+      "state": "dependency_integrated_build_and_default_smoke_checked_provider_unexercised",
+      "done": true,
       "worker": "gui_integration_review",
       "source_ready": false,
       "function_addresses": [],
@@ -72,11 +74,21 @@
       "notes": "Extend the retained shared GUI state owner with distinct canonical widget guard/quartet cells and Y-scale only after installed DATA and initialization evidence. Never alias Text F8BE38 or guess defaults. No new raw function credit."
     },
     {
-      "id": "codex-gui-p3a2",
-      "state": "source_blocked_on_real_widget_state_and_page_delegate",
+      "id": "codex-gui-raw-field-resolver",
+      "state": "qualified_native_abi_adapter_recovery_and_implementation",
       "worker": "gui_integration_review",
       "source_ready": false,
-      "depends_on": ["codex_cc9_a1_activation", "codex-gui-page-lifetime", "codex-gui-widget-state"],
+      "function_addresses": ["006ad080", "00888aa0"],
+      "data_addresses": ["0109ced4", "0109ced8", "0109cedc"],
+      "output_files": ["include/bsp/object_handle_resolvers.hpp", "src/object_handle_resolvers.cpp"],
+      "notes": "Bridge the canonical CURRENT explicit-context source resolvers to real ECX/EAX fastcall cells for raw Lua field input. Number keeps full32bits; table uses actual NativeLuaObject B67800/userdata/B67700 and only the admitted canonical source target. Nested scoped activation borrows live table aliases and caller-retained frames. No signature reinterpret cast, evaluated Lua-handle projection, OriginalVA publication or new raw-body credit."
+    },
+    {
+      "id": "codex-gui-p3a2",
+      "state": "source_blocked_on_real_raw_field_resolver",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex_cc9_a1_activation", "codex-gui-page-lifetime", "codex-gui-widget-state", "codex-gui-raw-field-resolver"],
       "function_addresses": [
         "00aa3140", "00aa31f0", "00aaa710", "00aaacd4", "00ac4c50",
         "00ac59a0", "00ac6600", "00ac6714", "00ac67cc", "00ac6806"
@@ -86,7 +98,7 @@
         "src/game_native_gui_page_application.cpp",
         "docs/CC15_GUI4_P3A2.md"
       ],
-      "notes": "Screen/root-only real AC4C50 and warm AC59A0 provider composition over borrowed A1 domain. AAACD4 is a child-suffix contract, not added whole-function reconstruction credit. Keep properties_composed=false until canonical widget state and manager page delegate exist; reject unsupported children and preserve native retained-frame lifetime. Packet stays OFF."
+      "notes": "Screen/root-only real AC4C50 and warm AC59A0 provider composition over borrowed A1 domain. AAACD4 is a child-suffix contract, not added whole-function reconstruction credit. Widget state and manager delegate dependencies are prepared; raw field resolver and complete production provider closure remain. Renderer grid-context graphics supply real geometry/stream providers for a page-owned Model companion domain. Keep properties_composed=false until closure; reject unsupported children and preserve native retained-frame lifetime. Packet stays OFF."
     },
     {
       "id": "archive_inflate_stream",
