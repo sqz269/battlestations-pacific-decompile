@@ -3056,6 +3056,7 @@ struct GameUnitsHost::Impl {
         unsigned long long refused_arm{0};     // 007F16D0 did not answer `land at site`
         unsigned long long refused_unread{0};  // the resolution carries an unread input
         unsigned long long refused_ground{0};  // not airborne: land/park, unbound
+        unsigned long long ground_parked{0};   // not airborne: started in land/park (ON)
         unsigned long long refused_dead{0};
         std::string last_refusal;
         double first_install_at{-1.0};
@@ -6995,6 +6996,14 @@ struct GameUnitsHost::Impl {
     // are planes that lost +BF8h and fell below the terrain (a host
     // ground-support artefact). Kept ON for the carrier lift and the hangar hold.
     static constexpr bool kLandParkStateBound = true;
+    // Packet cc9-physics29 landpark (docs/CC13_LAND_PARK.md, OCEAN_WAVE_FIELD 125).
+    // 009B3240 at 009B32AA-009B32B8: a plane that is not airborne (plane+72Ch
+    // vtable[38h], read here as +900h != 7) gets the land task like any other, with
+    // every construction draw, but starts in land/park (task+620h): the state's enter
+    // 009B21A0 is called directly (+1Ch = 0, +18h = 0, +28h = 3.0), with no 009B3680
+    // switch, no exit and no 007B8AD0 leader test. False: the host refuses the task
+    // (the plane keeps no land task; a recalled grounded squadron flies on).
+    static constexpr bool kLandTaskGroundParkStartBound = false;
     // Packet cc9_carrier_elevator (docs/SQUADRON_LAND_TASK.md 5ao). True, on a
     // mother-ship deck: land/park's carrier arm (009B23E4's vtable[5Ch](9)
     // branches: the lift targets 006D0120/006D00E0, ParkVelocity, the +28h
@@ -16214,7 +16223,8 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
         return false;
     }
     // 009B32AA-009B32B8: (plane+72Ch)->vtable[38h], this host's free flight.
-    if (unit.plane_control_mode_900 != 7) {
+    const bool ground_start = unit.plane_control_mode_900 != 7;
+    if (ground_start && !kLandTaskGroundParkStartBound) {
         refuse(c.refused_ground, "not airborne: the task would start in land/park (unbound)");
         return false;
     }
@@ -16265,9 +16275,22 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
     unit.land_installed_at = summary.simulated_seconds;
     // 009B32C2-009B32DD: a flight leader (007B8AD0) starts in moveto (land),
     // a wing member in follow (land); then the state's enter, vtable[4].
-    const bool leader = unit_is_flight_leader_007b8ad0(unit_index);
-    unit.land_state = leader ? GameUnitSlot::LandTaskState::kMoveTo
-                             : GameUnitSlot::LandTaskState::kFollow;
+    bool leader = false;
+    if (ground_start) {
+        // 009B32BA: land/park (task+620h), then its enter 009B21A0 (vtable[4]) directly:
+        // +1Ch = 0.0, +18h = 0, +28h = 3.0 (00CE3854). The taxi target +20h/+24h is not
+        // written by the image's constructor (allocation contents); the host keeps 0.0
+        // (LABELLED: the first off-holder tick may count one retarget).
+        unit.land_state = GameUnitSlot::LandTaskState::kPark;
+        unit.land_park_1c = 0.0f;
+        unit.land_done_18 = false;
+        unit.land_park_timer_28 = 3.0f;
+        ++c.ground_parked;
+    } else {
+        leader = unit_is_flight_leader_007b8ad0(unit_index);
+        unit.land_state = leader ? GameUnitSlot::LandTaskState::kMoveTo
+                                 : GameUnitSlot::LandTaskState::kFollow;
+    }
     ++c.installs;
     if (c.first_install_at < 0.0) c.first_install_at = summary.simulated_seconds;
     const float* hp = unit.motion.position;
@@ -16277,7 +16300,8 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
     log.notef("land task install: plane \"%s\" squadron \"%s\" -> %s at site %s planar %.1f m "
         "alt %.1f angle54=%.4f pitch58=%.4f b0=%.3f at %.2f s (0099A3DD -> 009B41C0, "
         "packet cc9_land_task_reach)", n.c_str(), sq->name.c_str(),
-        leader ? "moveto (land)" : "follow (land)", site_name.c_str(),
+        ground_start ? "park (land, not airborne)" : leader ? "moveto (land)" : "follow (land)",
+        site_name.c_str(),
         std::sqrt(dx * dx + dz * dz), static_cast<double>(hp[1]),
         static_cast<double>(unit.land_angle_54), static_cast<double>(unit.land_pitch_58),
         static_cast<double>(unit.land_request_b0),
@@ -47564,6 +47588,11 @@ void GameUnitsHost::report() {
                 "(packet cc9_land_task_reach)", c.squadron.c_str(), c.placements, c.installs, c.kept,
                 c.refused_arm, c.refused_unread, c.refused_ground, c.refused_dead,
                 c.first_install_at);
+            if (c.ground_parked > 0) {
+                host.log.notef("summary land task squadron \"%s\": ground_parked=%llu "
+                    "(started in land/park, kLandTaskGroundParkStartBound)", c.squadron.c_str(),
+                    c.ground_parked);
+            }
         }
         for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
             if (s->land_installed_at < 0.0) continue;
