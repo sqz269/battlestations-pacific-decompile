@@ -388,6 +388,8 @@ struct ShipAiArmFinalStepResult {
     bool inside_avoid_zone{false};
     // The escape blend actually moved blk+324h.
     bool escape_applied{false};
+    // The turn it added (009DE8E7), for the host's census only.
+    float escape_turn{0.0f};
     // 009DE932: blk+324h was replaced outright by the avoidance vector's
     // bearing.
     bool avoidance_override{false};

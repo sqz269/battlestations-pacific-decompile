@@ -1488,6 +1488,11 @@ public:
         bool swimming{false};
         float water_travel_speed{0.0f};
         bool started_under_water{false};   // torpedo+49Ch (s57_torpedo_from_sub)
+        // record+46Ch: 00856637's commanded heading, 10000.0 [00D0C310] until
+        // 008574A0 seeds it from the hull yaw on the first swim step (the round's
+        // commanded_heading, kept by torpedo_swim3d_step under
+        // kTorpedoSwimDepthHomingBound). Packet cc13-torpgyro.
+        float commanded_heading_46c{10000.0f};
     };
     std::vector<LiveTorpedo> live_torpedoes() const;
     // Packet cc9_navigator_force_torpedo. 008A7200's device walk: every gun of

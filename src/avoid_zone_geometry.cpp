@@ -9,7 +9,9 @@
 #include <cstdio>
 #include <cstring>
 
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/gun_bot_remainder.hpp"  // segment_crossing_004f3730
+#include "bsp/pc24_avoid_zone_cc13.hpp"  // packet pc24w2-avoid
 #include "bsp/unit_rudder.hpp"        // wrapped_angle_subtract_00438b10
 
 namespace bsp {
@@ -21,9 +23,45 @@ namespace {
 constexpr double kHalfPiDouble = 1.5707963705062866;
 constexpr double kTwoPiDouble = 6.2831854820251465;
 
+// pc24w2-avoid: under kPc24AvoidZoneCc13Bound the squares and their sum round per op at
+// PC24 and the sum is stored as float before _CIsqrt 00BF7030 (00419276/00419282/0041928A
+// in 00419260; 0041A304/0041A308/0041A30A in the corner rebuild). _CIsqrt returns the
+// correctly rounded root, which FSTP rounds to float, as the double sqrt here does. The
+// OFF arm sums the exact squares in double and rounds once.
+// Census for kPc24AvoidZoneCc13Bound (cc9-nondet1, log only): length_of calls inside the
+// corner rebuild (not live; the mission-load build is ship_ai_lateral_record.cpp) and
+// outside it (detour normals), and how often
+// the per-op length differs from the double one. Main thread only.
+bool g_in_corner_rebuild = false;
+AvoidZonePc24Census g_avoid_zone_pc24_census{};
+
 float length_of(float x, float y) noexcept {
-    return static_cast<float>(std::sqrt(static_cast<double>(x) * static_cast<double>(x)
-                                        + static_cast<double>(y) * static_cast<double>(y)));
+    {
+        const float per_op = static_cast<float>(std::sqrt(static_cast<double>(static_cast<float>(
+            cc13x87::x87_add24(cc13x87::x87_mul24(x, x), cc13x87::x87_mul24(y, y))))));
+        const float chained = static_cast<float>(std::sqrt(
+            static_cast<double>(x) * static_cast<double>(x)
+            + static_cast<double>(y) * static_cast<double>(y)));
+        const bool differs = std::memcmp(&per_op, &chained, sizeof per_op) != 0;
+        auto& census = g_avoid_zone_pc24_census;
+        if (g_in_corner_rebuild) {
+            ++census.rebuild_calls;
+            if (differs) ++census.rebuild_differs;
+        } else {
+            ++census.detour_calls;
+            if (differs) ++census.detour_differs;
+        }
+    }
+    float len;
+    if constexpr (kPc24AvoidZoneCc13Bound) {
+        const float sum = static_cast<float>(
+            cc13x87::x87_add24(cc13x87::x87_mul24(x, x), cc13x87::x87_mul24(y, y)));
+        len = static_cast<float>(std::sqrt(static_cast<double>(sum)));
+    } else {
+        len = static_cast<float>(std::sqrt(static_cast<double>(x) * static_cast<double>(x)
+                                           + static_cast<double>(y) * static_cast<double>(y)));
+    }
+    return len;
 }
 
 // 00419260 BSP_Vector2f_ReciprocalLength returns 1/|v|, or zero for a zero
@@ -79,6 +117,8 @@ void pull_back_to_zone_boundary(const AvoidZoneTable& table,
 }
 
 } // namespace
+
+const AvoidZonePc24Census& avoid_zone_pc24_census() noexcept { return g_avoid_zone_pc24_census; }
 
 // ---------------------------------------------------------------------------
 // Bearings
@@ -485,6 +525,11 @@ AvoidZoneTangentCorners avoid_zone_tangent_corners_00422500(
 // ---------------------------------------------------------------------------
 
 void avoid_zone_rebuild_corner_data(AvoidZonePolygon& zone) noexcept {
+    struct RebuildScope {
+        bool saved = g_in_corner_rebuild;
+        RebuildScope() noexcept { g_in_corner_rebuild = true; }
+        ~RebuildScope() { g_in_corner_rebuild = saved; }
+    } rebuild_scope;
     const std::int32_t count = static_cast<std::int32_t>(zone.corners.size());
     if (count == 0) return;
 

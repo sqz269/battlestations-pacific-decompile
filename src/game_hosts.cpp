@@ -37,6 +37,8 @@
 #include <shlobj.h>
 
 #include <cfloat>
+#include <intrin.h>
+#include <malloc.h>
 #include <array>
 #include <cstdarg>
 #include <cstdlib>
@@ -1176,7 +1178,40 @@ const ClockTimestamp& GameFrameHost::frame_interval() {
     return interval_result_;
 }
 
+namespace {
+// Diagnostic (cc9-nondet1, docs/USN21_NONDETERMINISM.md section 6), harness only:
+// BSP_STACK_SCRUB=<hex byte>[,<KiB>] fills that much of the main thread's stack below
+// the frame with the byte before every game_on_move, so a stack read the frame never
+// wrote sees the same value in every run, whatever the message pump and Present left.
+struct StackScrub {
+    int byte{-1};
+    std::size_t bytes{0};
+};
+StackScrub read_stack_scrub() noexcept {
+    StackScrub scrub;
+    char text[32]{};
+    const DWORD length = GetEnvironmentVariableA("BSP_STACK_SCRUB", text, sizeof text);
+    if (length == 0 || length >= sizeof text) return scrub;
+    char* end = nullptr;
+    const unsigned long byte = std::strtoul(text, &end, 16);
+    if (end == text || byte > 0xff) return scrub;
+    unsigned long kib = 256;
+    if (*end == ',') kib = std::strtoul(end + 1, nullptr, 10);
+    if (kib == 0 || kib > 768) return scrub;
+    scrub.byte = static_cast<int>(byte);
+    scrub.bytes = static_cast<std::size_t>(kib) * 1024u;
+    return scrub;
+}
+__declspec(noinline) void scrub_stack_below(const StackScrub& scrub) {
+    auto* const area = static_cast<unsigned char*>(_alloca(scrub.bytes));
+    __stosb(area, static_cast<unsigned char>(scrub.byte), scrub.bytes);
+    static_cast<void>(*static_cast<volatile unsigned char*>(area));
+}
+} // namespace
+
 void GameFrameHost::game_on_move(float seconds) {
+    static const StackScrub stack_scrub = read_stack_scrub();
+    if (stack_scrub.byte >= 0) scrub_stack_below(stack_scrub);
     // 004e4a40's front-end branch at 004e4b9d runs for game states 1, 2 and 4, and
     // BSP_Game_UpdateInterfaceOnly 004c40f0 runs for everything else; that split is
     // bsp::front_end_screen_pump_site. The simulation spine the branch falls through to

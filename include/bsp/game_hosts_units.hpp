@@ -914,6 +914,10 @@ public:
     float unit_retardation_0508(std::size_t index) const;
     // The unit's vtable[50h] heading, in radians, as atan2(row2.x, row2.z).
     float unit_heading_radians(std::size_t index) const;
+    // The image's vtable[50h] by class (include/bsp/hud_heading_vtable50_cc13.hpp):
+    // ships 006DFD60 unit+1050h, planes 0074E260 unit+C6Ch, the airfield 006D2040
+    // atan2 of its frame, everything else 0042B8C0's 0. 0 for an unknown index.
+    float unit_heading_vtable50(std::size_t index) const;
     // 00811940 on the unit's live rudder state, the yaw rate 009ed9c1 folds into
     // the heading target.
     float unit_current_yaw_rate_00811940(std::size_t index);
