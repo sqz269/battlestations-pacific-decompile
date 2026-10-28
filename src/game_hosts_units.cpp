@@ -134,6 +134,7 @@
 #include "bsp/squadron_step_tail_cc13.hpp"         // packet cc13-steptail
 #include "bsp/racked_round_entity_cc13.hpp"        // packet cc13-rackround
 #include "bsp/squadron_ammo_type_rack_round_cc13.hpp"  // packet cc13-ammort
+#include "bsp/squadron_ammo_dummy_kinds_cc13.hpp"  // packet cc13-ammodk
 #include "bsp/director_update_arms.hpp"            // packet cc13-leash: 0080DC70
 #include "bsp/director_target_gate.hpp"
 #include "bsp/plane_squadron_entity.hpp"
@@ -5015,7 +5016,15 @@ struct GameUnitsHost::Impl {
         if (type == "DummyKamikazePlane") return 0x2F;
         if (type == "Paratrooper") return 0x31;
         if (type == "Rocket") return 0x33;
-        return 0;
+        if constexpr (bsp::kSquadronAmmoDummyKindsCc13Bound) {
+            // Packet cc13-ammodk: the descriptor ids of docs/ORDNANCE_KIND_IDENTITY.md.
+            if (type == "DummyTarget") return 0x2E;
+            if (type == "DummySubmarine") return 0x30;
+            if (type == "WaterMine") return 0x34;
+            return 0;
+        } else {
+            return 0;
+        }
     }
 
     // The racks of one aircraft in BSPGun order, the order the census walks:
@@ -5294,10 +5303,22 @@ struct GameUnitsHost::Impl {
     // No plane answering: 0.
     int squadron_ammo_type_007edad0(const bsp::PlaneSquadronHostRecord& sq) {
         auto ancestry_has = [](int id, int kind) {
-            if (id == kind) return true;
-            if (kind == 0x2A) return id == 0x2B || id == 0x2C || id == 0x31 || id == 0x33;
-            if (kind == 0x2D) return id == 0x2F;
-            return false;
+            if constexpr (bsp::kSquadronAmmoDummyKindsCc13Bound) {
+                // Packet cc13-ammodk: the descriptor vt[8] census; 2Dh is answered
+                // by DummyKamikazePlane (006EA830) only.
+                if (id == kind) return true;
+                if (kind == 0x2A) {
+                    return id == 0x2B || id == 0x2C || id == 0x2E || id == 0x2F || id == 0x30
+                        || id == 0x31 || id == 0x33 || id == 0x34;
+                }
+                if (kind == 0x2D) return id == 0x2F;
+                return false;
+            } else {
+                if (id == kind) return true;
+                if (kind == 0x2A) return id == 0x2B || id == 0x2C || id == 0x31 || id == 0x33;
+                if (kind == 0x2D) return id == 0x2F;
+                return false;
+            }
         };
         for (const std::size_t m : sq.member_units) {
             if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size()) continue;
@@ -46232,8 +46253,16 @@ std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
             && u.rack_ammo_per_rack.size() == n) {
             const auto bit = [](int kind) { return std::uint64_t(1) << (kind - 0x08); };
             const auto bomb_family = [](int kind) {
-                return kind == 0x2A || kind == 0x2B || kind == 0x2C || kind == 0x2D
-                    || kind == 0x31 || kind == 0x33;
+                if constexpr (bsp::kSquadronAmmoDummyKindsCc13Bound) {
+                    // Packet cc13-ammodk: 007B9320 asks the descriptor vt[8](2Ah)
+                    // (007B935C) and DummyTarget's 006EA6F0 answers 2Eh/2Ah/29h, so a
+                    // loaded 2Eh rack counts toward 2Ah.
+                    return kind == 0x2A || kind == 0x2B || kind == 0x2C || kind == 0x2D
+                        || kind == 0x2E || kind == 0x31 || kind == 0x33;
+                } else {
+                    return kind == 0x2A || kind == 0x2B || kind == 0x2C || kind == 0x2D
+                        || kind == 0x31 || kind == 0x33;
+                }
             };
             bool known = true;
             bool family_loaded = false;
