@@ -236,7 +236,9 @@ struct TorpedoArmResult {
 // Packet cc13-ver6, finding 3a (docs/CC13_VER_6.md). 009D49DA is a tail JMP
 // into 0099B6A0, so the AL 0099AF9B tests is 0099B6A0's. OFF keeps the earlier
 // reading: `consumed = false`, no release.
-inline constexpr bool kTorpedoArmFallthroughReleaseBound = false;
+// ON (cc9-sweep3c, 2026-10-28) without pairs: the sw3 torpedo_fallthrough census
+// counts calls=0 on u01, b9, b6i, l10, p01, u12, j8v3.
+inline constexpr bool kTorpedoArmFallthroughReleaseBound = true;
 TorpedoArmResult torpedo_arm_drop_009d49a0(const TorpedoArmInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------
