@@ -162,3 +162,17 @@ checks, plus a USN04 run with `BSP_NATIVE_MISSION_SHIP=1`, `BSP_NATIVE_MISSION_F
 `BSP_NATIVE_MISSION_UNITS=1` for at least 1600 mission frames that exits 0. Verify the preload rows,
 mission graph and renderer all close, and that no partial state is suppressed. A1 stays OFF;
 these gates do not accept an ON flip.
+
+## Integrator acceptance, 2026-10-28
+
+The reviewed A1 OFF implementation and shutdown repair are integrated in source
+candidate `381792703`. The Win32 Release build and both existing suites passed.
+All 13 current OFF/base pairs passed gameplay, ordered dialog/message/Lua,
+teardown, start-frame and first-RNG checks. Milestone-D USN04 ran 1600 mission
+frames and exited 0, with the preload/Application/mission/renderer closing once
+and no unexpected retained state. The startup-domain switch remains OFF.
+
+Exact executable hashes, row receipts and remaining ON gates are recorded in
+`docs/CODEX_CC16_INTEGRATION_2026-10-28.md`. These receipts validate the current
+domain-only fallback and shutdown correction; they do not accept the ON flip,
+startup shader preload, repeated GUI traversal, reload or late-plane drawing.

@@ -348,3 +348,21 @@ active lease. `game_hosts.cpp` is cc13's area by convention, so check before edi
    the ship's own canonical owner. Cost: small. Risk: medium. It weakens an invariant
    that guards row release while a cache bracket is open. I have not shown that releasing
    the preloaded effect rows with that cache open is safe.
+
+## Shutdown resolution, 2026-10-28
+
+Option 1 is implemented by `a8db93c49` and integrated in candidate `381792703`.
+`MissionShipGraph::release_late_model_shader_cache` checks the completed current
+cache owner and ready/retiring stage, closes the bracket before 00737F30 releases
+the borrowed Application rows, and clears its open flag only after release succeeds.
+The later mission retirement reuses the same idempotent helper. Renderer
+partial-state rejection remains in place.
+
+The current-source Win32 Release build and both existing suites passed. All 13
+default-environment pairs passed gameplay, ordered dialog/message/Lua, teardown,
+start-frame and first-RNG checks against `67aad2827`. Milestone-D USN04 completed
+1600 mission frames and exited 0, releasing 179 preload rows and closing the
+Application, mission graph and renderer once. Only the allowed `error.dds`
+texture residue remains. See `docs/CODEX_CC16_INTEGRATION_2026-10-28.md` for hashes
+and exact receipts. The frame-515 containment and its faithful upload/lighting
+follow-up remain separate; this shutdown proof does not establish late-plane drawing.

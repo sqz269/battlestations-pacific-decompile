@@ -54,12 +54,61 @@ Baseline: `67aad2827`; `./scripts/build.ps1` passed the Win32 Release build and
 both existing suites (`reconstructed_math`, `tool_tests`). Baseline executable:
 SHA-256 `93C811EE06356F25B41018EEC6DCDBED3A1FE457BDFA419CDFD5C9807BFF3132`.
 
-Runtime gate results will be recorded here before publication. The local runner
+Integrated source candidate: `381792703`. Its Win32 Release build and both existing
+suites passed. Candidate executable SHA-256:
+`1A30FA1D6C67B51BEF537C69AF3179DC8454A0C4DDF608229F97DEB1D0C80BDB`.
+`pc24_lint.py` reported zero findings across the five changed implementation files.
+
+All 13 default-environment pairs passed: both exits 0, `pair_diff` exit 0,
+ordered dialog/message/Lua differences 0, teardown differences and length delta 0,
+mission start frame 36 on both sides, and identical first logged RNG draws.
+
+| Mission | First RNG draw, both builds |
+|---|---|
+| ESMP08 | 0.4933 |
+| JM06 | 0.1578 |
+| USN21 | 0.6207 |
+| IJN18 | 0.4640 |
+| BSM01 | 1 |
+| USN12 | 0.1307 |
+| LOMP10 | 0.1119 |
+| BSM09 | 0.0949 |
+| PRCP01 | 0.3605 |
+| USN01 | 0.04169 |
+| USN02 | 1 |
+| LOMP06 | 1 |
+| USN04 | 0.4143 |
+
+Milestone-D USN04 (`BSP_NATIVE_MISSION_SHIP/FRAME/UNITS=1`) ran all 1600 mission
+frames and exited 0. The clean candidate manifest and executable hash agree.
+`local/codex_cc16_candidate_usn04_msd.log` records 179 preload rows released
+(30133), Application publication cleared (30142), lighting retired with empty
+registry (30513), mission graph closed at frame 1600 (30527), renderer closed
+with its worker joined (30530), and final COM release (32110). Each closure occurs
+once. The remaining texture reference is the documented `error.dds` allowance.
+There is no startup failure or unexpected partial-state retention. The bracket's
+earlier release is established by the guarded source path and successful row
+retirement; it has no separate bracket-release log line. Late-plane drawing
+remains unproven by this diagnostic view.
+
+The local runner
 `local/codex_cc16_gate.ps1` reads the existing A1 13-row frame/plan/bounds matrix,
 uses symmetric bounds aids on the designated rows, enables death/RNG streams,
-and launches through `tools/run_game.ps1` with eight slots. It never writes the
+and launches through `tools/run_game.ps1` with eight slots at Normal priority.
+Six comparison lanes were used initially; the first serial baseline launch was
+stopped and replaced by the partitioned matrix, and is not an acceptance receipt.
+The runner never writes the
 installation's save/profile files. Default runs use copied executables in
 `local/codex_cc16_base` and `local/codex_cc16_candidate`, with per-run manifests.
+The baseline was built and copied before the merge. Launcher checkout metadata
+can reflect the later launching checkout; the executable SHA and
+`local/codex_cc16_build_receipts.json` identify the actual saved baseline.
+
+`local/codex_cc16_eval.py` reuses `pair_diff.py` and the existing ordered-subsequence,
+teardown and startup-RNG rules. Ordered comparison masks only the existing
+pointer and worker-thread-ID fields from `gui4_subdiff.py`; no new noise mask was
+added. Per-row evidence is `local/codex_cc16_pair_<row>.json`, `.txt` and
+`.ordered.txt`; the final `local/codex_cc16_gate_summary.json` accepts 13/13.
 
 Two previous GUI milestone-D runs and the historical inaccessible process 40812
 were present at the start of the review and were preserved. Four retained GUI
