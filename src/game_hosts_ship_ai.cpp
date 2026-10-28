@@ -15771,6 +15771,10 @@ void GameShipAiHost::report() {
             reach.path_dir_evals, reach.path_dir_differs,
             bsp::kShipAiPathNodeDirectionUnorderedCc13Bound ? 1 : 0,
             bsp::kShipAiPathSideWalkNanCc13Bound ? 1 : 0);
+        host.log.notef("summary mission order copy reach calls=%llu differs=%llu bound=%d "
+            "(00811D10 kUnitAiOrderCopyPc24Cc13Bound; packet cc9-sweep2b)",
+            reach.order_copy_calls, reach.order_copy_differs,
+            bsp::kUnitAiOrderCopyPc24Cc13Bound ? 1 : 0);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {

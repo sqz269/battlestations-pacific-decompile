@@ -28,6 +28,6 @@ namespace bsp {
 // at most one frame.
 // Movers when ON: minimap icon rotation only (render): shipyards and land vehicles stop
 // turning with their pose, planes follow +C6Ch, ships and airfields change by rounding.
-inline constexpr bool kHudHeadingVtable50Cc13Bound = false;
+inline constexpr bool kHudHeadingVtable50Cc13Bound = true;  // ON by pruning (cc9-sweep1b): minimap icon rotation only
 
 }  // namespace bsp

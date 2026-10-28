@@ -15,7 +15,8 @@ namespace bsp {
 // ON: GameMissionLuaHost::attach_script_orders(nullptr), the world teardown
 // (release_units) that already drops the world-lived dummy kamikaze rounds, catapult
 // records and spawn queue, also calls clear_forced_recon_levels(). That empties the
-// table and the pending 00803B50 clears.
+// table, the raw +8h table (forced_recon_level_raw, packet cc13-reconforce) and the
+// pending 00803B50 clears.
 // The clear runs at teardown only, not at attach, so a SetForcedReconLevel issued
 // before the attach of the same mission is kept. The natives cannot write after the
 // detach, because attach_units_hooks(nullptr) follows it and an unresolved entity
