@@ -64,11 +64,13 @@ private:
     GuiTextureCallbacks callbacks_;
 };
 
+}  // namespace
+
 bool is_active_slot(PowerupRuntime& runtime, std::int32_t slot) {
     return slot == runtime.host->local_player_slot_18ec();
 }
 
-std::size_t slot_index(std::int32_t slot) {
+static std::size_t slot_index(std::int32_t slot) {
     // The image indexes +20h / +14Ch with the slot unchecked; a slot outside
     // 0..7 writes past the arrays. The host cannot model that and stops.
     if (slot < 0 || slot >= static_cast<std::int32_t>(kPowerupPlayerSlots)) {
@@ -96,6 +98,8 @@ PowerUpSlot& slot_record_00617030(PowerupRuntime& runtime, std::int32_t slot,
     }
     return values[position];
 }
+
+namespace {
 
 // A field of the table at `table_slot`. The reader (004425C0 over 00B66FA0's
 // copy) looks the key up in that table; a non-table argument has no fields here
@@ -263,6 +267,8 @@ void destroy_powerup_manager_004d2d84(PowerupRuntime& runtime) {
         runtime.record_keys[slot].clear();
         runtime.other_records[slot].clear();
     }
+    for (auto& list : runtime.category_lists) list.clear();
+    runtime.observed_bindings.clear();
     runtime.counts = PowerupCounts{};
 }
 

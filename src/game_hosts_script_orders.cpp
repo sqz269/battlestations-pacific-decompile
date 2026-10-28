@@ -4838,8 +4838,9 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // entity (ST0), 00890CD2 FSTP dword, 00890CD5 00B66480 PushFloat; one result.
         // 0080FC30 is float([unit+9C0h] * scale), the scale 1.0f (00D7A24C) unless the
         // powerups byte 00E0C978 and [[00F88C30]+B8h] are both set (0080FC31..0080FC4A).
-        // SUBSTITUTIONS (labelled): the scale is the unscaled 1.0f the other hosts
-        // take (the powerup scale 008E6430(4, unit) is not built); unit+9C0h is the
+        // The scale comes from the units host's throttle_ceiling_inputs, which
+        // reads the power-up store under kPowerUpSubsystemCc13Bound (packet
+        // cc13-powerup-bind). SUBSTITUTION (labelled): unit+9C0h is the
         // units host's slot value (00822C20's class MaxSpeed, moved by SetShipMaxSpeed
         // 00890B51). An entity with no units-host slot (a scene marker, or none)
         // pushes nothing and records UNIMPLEMENTED, where the image reads +9C0h of
