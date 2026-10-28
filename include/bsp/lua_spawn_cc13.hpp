@@ -43,9 +43,11 @@
 namespace bsp {
 
 // For the mission Lua host (cc9). True: the `Spawn` row 00944680 is dispatched
-// through lua_spawn_resolve_position. Committed OFF; the suggested glue is in
-// docs/CC13_LUA_SPAWN.md section 6.
-inline constexpr bool kLuaSpawnBound = false;
+// through lua_spawn_resolve_position (GameMissionLuaHost::run_spawn_00944680, the
+// docs/CC13_LUA_SPAWN.md section 9 glue). ON (cc9-sweep2b, 2026-10-28) after pairs at
+// 506c283bc on CHG01/02/05/07/08: every call creates its unit (17/1/10, none on 07/08)
+// on the requested ring, facing the origin.
+inline constexpr bool kLuaSpawnBound = true;
 
 // The RNG key of the one draw (00941FC0). The host prefixes its own consumer and
 // the spawn's identity.
