@@ -68,6 +68,14 @@
 //    a child is offered only while its parent offers its own shape (dead, detached and
 //    excluded parents hide their mounts; the image's 008263E2 / sinking teardown path
 //    for children is not traced).
+//  * child order (cgbuildC, verdict PARTIAL): mount children are walked in ascending
+//    platform key, the order 0095A880 creates them over the key-indexed [class+94h]
+//    (ships: 00810F60 at 0081108D) and 0098B920 appends them; exact for ships until
+//    00819CC0 (damaged-gfx level > 0) detaches the DamagedGFXRemove.Slots mounts
+//    (00710B80 -> 0098A2C0 swap-remove). That removal, and the reorder it causes, are
+//    not modelled: past the damage threshold those detached mounts are unhittable in
+//    the image while the host still offers them (a separate packet). Planes, forts and
+//    airfields are not checked.
 //  * a destroyed gun keeps its mesh, FAITHFUL as far as traced: the destroy chain
 //    0072B5A0 calls the gun's own vtable[1B4h] (0072B604), which on the gun vtables is
 //    00877B00 (MRTGun 00CFE548 + 1B4h = 00877B00; no spatial call), not the ship's

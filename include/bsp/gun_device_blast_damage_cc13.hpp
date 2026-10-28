@@ -44,8 +44,18 @@
 //  * the per-element grouping is by runs of equal (kind, index) in the mesh's element
 //    order; two adjacent elements with the same pair become one entry with the nearer
 //    distance, which 008777D0's maximum over entries cannot tell apart;
-//  * no per-element root-box reject (it only skips elements with no triangle inside);
+//  * no per-element root-box reject: result-exact, since any triangle within the radius
+//    puts the element's box within it too, so the reject only skips elements with no
+//    entry;
 //  * the device draw is Draw::hull_damage keyed like the parent's (gun_row, unit);
+//  * (A) (cgbuildC, verdict PARTIAL) mount children are walked in ascending platform
+//    key, the order 0095A880 creates them over the key-indexed [class+94h] (ships:
+//    00810F60 at 0081108D) and 0098B920 appends them; exact for ships until 00819CC0
+//    (damaged-gfx level > 0) detaches the DamagedGFXRemove.Slots mounts (00710B80 ->
+//    0098A2C0 swap-remove). That removal, and the reorder it causes, are not modelled.
+//    Planes, forts and airfields are not checked. The host walks device_children_of's
+//    gun rows. Each mount record makes a stream-1 draw (00470350 -> 006E7C60 at the
+//    0084BBB1 push), so an order mismatch reorders the draws among one unit's mounts;
 //  * a drop does not run the parent's 00826F10 (its 2Ch gate refuses a non-submarine
 //    ship; a plane or land parent's own handler is not traced), and the 0077CE60
 //    attribution and 009239A0's IsKindOf(44h) notify are not modelled for device
@@ -59,7 +69,9 @@
 // Needs kGunDeviceHitDamageCc13Bound's mesh and pose helpers and, for the gun to take the
 // damage, kGunDestroyedFailureCc13Bound. Movers when ON: guns near a burst lose health
 // and can be destroyed (fire control, AA and gun counts), one extra hull_damage draw per
-// mount record, and the deferred queue's order and length.
+// mount record, and the deferred queue's order and length. A destroyed mount is still
+// gathered and still draws while 00728080 refuses its damage (+3B8h), as in the image.
+// With the switch OFF the host's log is unchanged (the summary line is ON-only).
 
 namespace bsp {
 

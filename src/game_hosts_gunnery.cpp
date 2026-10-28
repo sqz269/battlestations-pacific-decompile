@@ -19439,16 +19439,21 @@ void GameGunneryHost::report() {
             "bound=%d (00816650 / 0081F980; 00724510 -> 00723AA0, packet cc9_hull_sections)",
             host.artillery_section_points, kShipSectionPointsBound ? 1 : 0, host.shell_mesh_hits,
             kShellHullHitTestBound ? 1 : 0);
-        host.log.notef("summary mission gunnery device mesh traces=%llu hits=%llu dispatched=%llu "
-            "relays=%llu drops=%llu gun_applies=%llu meshes=%zu bound=%d (0043F7F0, packet "
-            "cc13-gunC C1)", host.device_hit_traces, host.device_hits_traced,
-            host.device_hits_dispatched, host.device_hit_relays, host.device_hit_drops,
-            host.device_hit_gun_applies, host.device_hit_meshes.size(),
-            bsp::kGunDeviceHitDamageCc13Bound ? 1 : 0);
-        host.log.notef("summary mission gunnery device blast records=%llu dispatched=%llu "
-            "drops=%llu applies=%llu bound=%d (0098C510 children, packet cc13-gunC C2)",
-            host.device_blast_records, host.device_blast_dispatched, host.device_blast_drops,
-            host.device_blast_applies, bsp::kGunDeviceBlastDamageCc13Bound ? 1 : 0);
+        // Packet cc13-gunC: each line only under its own switch, so an OFF log is unchanged.
+        if constexpr (bsp::kGunDeviceHitDamageCc13Bound) {
+            host.log.notef("summary mission gunnery device mesh traces=%llu hits=%llu dispatched=%llu "
+                "relays=%llu drops=%llu gun_applies=%llu meshes=%zu bound=%d (0043F7F0, packet "
+                "cc13-gunC C1)", host.device_hit_traces, host.device_hits_traced,
+                host.device_hits_dispatched, host.device_hit_relays, host.device_hit_drops,
+                host.device_hit_gun_applies, host.device_hit_meshes.size(),
+                bsp::kGunDeviceHitDamageCc13Bound ? 1 : 0);
+        }
+        if constexpr (bsp::kGunDeviceBlastDamageCc13Bound) {
+            host.log.notef("summary mission gunnery device blast records=%llu dispatched=%llu "
+                "drops=%llu applies=%llu bound=%d (0098C510 children, packet cc13-gunC C2)",
+                host.device_blast_records, host.device_blast_dispatched, host.device_blast_drops,
+                host.device_blast_applies, bsp::kGunDeviceBlastDamageCc13Bound ? 1 : 0);
+        }
         host.log.notef("summary mission gunnery plane mesh hit tests=%llu mesh_hits=%llu "
             "class_box_hits=%llu bound=%d (0087BCC0 -> 00712440 -> 00724510, packet "
             "cc9_plane_mesh_hit)", host.plane_mesh_tests, host.plane_mesh_hits,
