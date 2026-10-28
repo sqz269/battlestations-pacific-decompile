@@ -14413,8 +14413,19 @@ std::vector<std::size_t> GameGunneryHost::Impl::blast_gathered_records(std::size
 // Packet cc13-c2b (include/bsp/gun_device_blast_gunless_cc13.hpp). A gunless burst's
 // record for one of `unit`'s mounts: hull_segment -1 (00470470; 0084BAD0 never writes
 // +34h), +28h the burst damage, +24h the radius, +2Ch 0 (00819A20 pushes 0; the crash
-// shot's class is the Kamikaze sub-type 11h, not 10h), hull base 0 and weapon scale 1
-// (shot 0, or a plane whose vtable[54h] is 0042B8D0 FLDZ and [108h] 0042BB30 no weapon).
+// shot's class is the Kamikaze sub-type 11h, not 10h), hull base 0 and weapon scale 1.
+// The crash shot is the plane's primary object (0084C079 arg2 = p+72Ch, 0084C084
+// [EAX+0CCh]; 0084BC60's buffer+20h is that record's +4h). In all eight primary
+// vtables [54h] is 0042B8D0 FLDZ (SetShot: +14h 0, no draw) and [58h] 0042B8E0
+// FLD1 (004705C0 at 004705DA..E4: weapon scale 1); [108h] is 0074E170, which
+// returns p+72Ch, non-null.
+// LABELLED: owner_modifier = 1 for the crash shot, a gap it shares with the
+// existing crash hull record. 004705C0 reads [ret+ACh] = [p+72Ch+0ACh] ([p+7D8h])
+// at 0047060A; when that is non-null and both [00E0C978] (00470614) and
+// [[00F88C30]+94h] (0047061D..0047062A) are set, the modifier is ProductForUnit
+// 008E6430(1, [p+7D8h]) (0047062F), keyed on that unit, not the plane, and it
+// multiplies +28h (00470648..00470650). 1 is exact while either gate is shut or
+// the field is null. The kamikaze (shot 0) is exact: 004705E8 JZ 00470654.
 void GameGunneryHost::Impl::arm_gunless_device_blast(GunlessDeviceBlastFlush& flush,
     std::size_t source, std::size_t unit, const float centre[3], float range, float damage,
     const float point[3]) {
