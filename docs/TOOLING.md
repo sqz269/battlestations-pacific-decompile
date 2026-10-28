@@ -97,6 +97,17 @@ recorded verdict's rows.
 Clock offsets were zero in every pair above. The subtraction of a non-zero offset has not been
 exercised on a real pair.
 
+### Noisy rows: `BSP_SEARCHER_BOUNDS_INIT=1` on both sides
+
+On a load-sensitive row (USN21 at least), set `BSP_SEARCHER_BOUNDS_INIT=1` for both the OFF and
+the ON run. It zeroes the four searcher-cache bounds the image leaves as heap leftovers
+(docs/USN21_NONDETERMINISM.md section 6), so the switch is the only thing that differs between
+the two runs. This is a harness determinism aid, not image behaviour. It is off when the variable
+is unset or holds any value other than `1`. When it is active the log carries one startup line,
+`BSP_SEARCHER_BOUNDS_INIT=1: searcher-cache bounds zeroed (harness determinism aid, not image
+behaviour)`. pair_diff does not treat that line as a run parameter, so check that both logs carry
+it before comparing. Never compare an aided run with an unaided one.
+
 ## 2. `tools/pair_export.py`: an export-flip build
 
 It builds a switch's other state without editing the file that holds it, which is usually leased
