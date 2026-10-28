@@ -81,6 +81,7 @@
 #include "bsp/unit_kind_query.hpp"   // packet p16_torpedo_stock_property
 #include "bsp/cc13_lua_natives_wire.hpp"   // packet cc13-luawire
 #include "bsp/unit_weapons.hpp"            // packet cc13-luawire, 008BE7E0's class tests
+#include "bsp/plane_issue_threshold_cc13.hpp"   // packet cc13-issuea0, 008A1F40
 
 extern "C" {
 #include "lauxlib.h"
@@ -667,6 +668,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc13-fix4.
     const bool land_and_kill_row = kLuaSquadronLandAndKillBound
         && dispatch_row.address == 0x008a20e0u;
+    // Packet cc13-issuea0: its only reader is the ON arm of the 007EEF40 gate.
+    const bool drop_all_bomb_row = bsp::kPlaneIssueThresholdZeroCc13Bound
+        && dispatch_row.address == 0x008a1f40u;
     // Packet cc13-fix5.
     const bool remove_all_stock_row = kLuaRemoveAllAirBasePlanesBound
         && dispatch_row.address == 0x008975b0u;
@@ -801,7 +805,7 @@ int binding_trampoline(lua_State* state) {
         || spawn_id_requested_row || spawn_id_remove_row
         || in_border_zone_row
         || select_unit_row || movie_add_row || force_select_row
-        || release_alt_row || land_and_kill_row
+        || release_alt_row || land_and_kill_row || drop_all_bomb_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
@@ -978,6 +982,12 @@ int binding_trampoline(lua_State* state) {
     }
     if (land_and_kill_row) {
         if (!host->error_replay()) host->run_squadron_land_and_kill_008a20e0(state, argc);
+        return 0;
+    }
+    if (drop_all_bomb_row) {
+        if (!host->error_replay()) {
+            host->run_squadron_set_drop_all_bomb_percent_008a1f40(state, argc);
+        }
         return 0;
     }
     if (in_formation_row && !host->error_replay()) {
@@ -8893,6 +8903,28 @@ int GameMissionLuaHost::run_squadron_set_release_alt_008a24e0(lua_State* state,
         "cc13_natives1)", row != nullptr ? row->name.c_str() : "?",
         static_cast<double>(altitude), force ? 1 : 0, stored ? 1 : 0);
     log_.implemented("MissionLuaNative::SquadronSetReleaseAlt", "008a24e0");
+    return 0;
+}
+
+// Packet cc13-issuea0. 008A1F40 SquadronSetDropAllBombPercent(squadron, percent):
+// argument 0 through 00888AA0 (008A203F), argument 1 through 00B66270 (008A2070),
+// then FSTP float [squadron+390h] (008A2091). No result. Bound only under
+// bsp::kPlaneIssueThresholdZeroCc13Bound, the reader's switch.
+int GameMissionLuaHost::run_squadron_set_drop_all_bomb_percent_008a1f40(lua_State* state,
+    int argument_count) {
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const float percent = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
+    bool stored = false;
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        stored = units->set_squadron_drop_all_bomb_percent_008a1f40(
+            static_cast<std::size_t>(id - 1), percent);
+    }
+    const GameUnitRow* row = stored ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  SquadronSetDropAllBombPercent 008a1f40: \"%s\" percent=%g stored=%d (packet "
+        "cc13-issuea0)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<double>(percent), stored ? 1 : 0);
+    log_.implemented("MissionLuaNative::SquadronSetDropAllBombPercent", "008a1f40");
     return 0;
 }
 
