@@ -141,8 +141,9 @@ struct PlaneSquadronHostRecord {
     // +378h, the force flag 007EEF62 tests before it consults 007B8AD0.
     // 007F2D1E seeds it SET, so a squadron that has not been through 007ED3C0
     // raises a release order for every member unconditionally. `release_orders_
-    // clear_007ed3c0` is reconstructed and nothing in this host calls it,
-    // because its caller is unlocated, so the flag stays set here. Labelled.
+    // clear_007ed3c0` is reconstructed, but nothing in this host calls it, so the
+    // flag stays set here. Labelled. Its caller is 009B9420
+    // BSP_BotTaskLeaveAlone_UpdateCruiseProfile, at 009B944D (packet cc13-issuea0).
     bool force_flag_378{true};
     // The squadron entity's slot. This process has no separate squadron unit:
     // the slot is FUSED with wing 0, the first unit the plan creates

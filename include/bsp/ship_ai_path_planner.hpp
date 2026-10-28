@@ -294,7 +294,7 @@ float ship_ai_path_remaining_length_009d9e50(ShipAiPathPlanBlock& plan,
 // cc13_seg67b.cpp 009D5AE0/5B90 walks, whose live entry is game_hosts_ship_ai.cpp:8728/8729,
 // override_11d4/11d5), 009D9E50 remaining length, the 009E3C6C cursor walk, the
 // ship_ai_path_point.cpp walk and the game_hosts_ship_ai.cpp arc-centre log walk.
-inline constexpr bool kShipAiPathNodeDirectionUnorderedCc13Bound = false;
+inline constexpr bool kShipAiPathNodeDirectionUnorderedCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 std::int32_t ship_ai_path_node_direction_009d9e6c(const ShipAiPathNode& node) noexcept;
 
 // The step the walks take after the decision, 009D9EE6-009D9EFE. Null when

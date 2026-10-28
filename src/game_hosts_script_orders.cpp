@@ -991,6 +991,8 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
         // launch path, 006CC733, pushes as 0. So the squadron is made at the
         // base's own origin, with `State` 1; the axes stay the identity
         // (SUBSTITUTION, labelled: the owner's rotation rows are not copied).
+        // That holds only with kBaseLaunchAxesCc13Bound OFF; ON, the block
+        // below copies the owner's rows 0..2 (cc13-launchaxes).
         // CORRECTED (cc13-tier1): the flag arm REPLACES y (Ceiling + the draw;
         // nothing is added to the owner's height), and 006CC733 is not the only
         // path: LaunchAirBaseSlot(base, slot, true) reaches 006C7490(slot, 1)
@@ -1012,6 +1014,21 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
                     record.world[4 + lane] = up[lane];
                     record.world[8 + lane] = forward[lane];
                 }
+            }
+        } else {
+            // DIAGNOSTIC (cc9-physics29): the OFF census, whether the ON arm would
+            // replace the identity axes (the owner's rows differ from identity).
+            float right[3], up[3], forward[3], translation[3];
+            if (units_.unit_pose(owner, right, up, forward, translation)) {
+                double dev = 0.0;
+                for (int lane = 0; lane < 3; ++lane) {
+                    dev = std::max(dev, std::fabs(static_cast<double>(right[lane]) - (lane == 0)));
+                    dev = std::max(dev, std::fabs(static_cast<double>(up[lane]) - (lane == 1)));
+                    dev = std::max(dev, std::fabs(static_cast<double>(forward[lane]) - (lane == 2)));
+                }
+                log_.notef("air ops launch axes census: squadron=%s owner=%s identity=%d "
+                    "max_dev=%.4f (kBaseLaunchAxesCc13Bound OFF, cc9-physics29 diagnostic)",
+                    record.name.c_str(), home_base.c_str(), dev == 0.0 ? 1 : 0, dev);
             }
         }
     }

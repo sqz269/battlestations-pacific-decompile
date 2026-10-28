@@ -64,6 +64,7 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_missionlua_cc13.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/powerup_session_broadcast_cc13.hpp"
 #include "bsp/render_tail.hpp"
 #include "bsp/session_polls.hpp"
 #include "bsp/session_participant_pools.hpp"
@@ -80,6 +81,9 @@
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/resource_lookup.hpp"
+#include "bsp/session_context_cc13.hpp"
+#include "bsp/lobby_option_defaults_cc13.hpp"
+#include "bsp/ai_coordinator_load_gate_cc13.hpp"  // packet cc13-mp4
 #include "bsp/vfs_mounts.hpp"
 
 #include <array>
@@ -1297,8 +1301,15 @@ public:
     float clock_00f876a4() override { return host_.world_clock; }
     WarningObject* new_powerup_warning_009758e0(const std::string* name) override {
         WarningObjectHostBinding warning_host(host_);
-        // [game+1FE4h] is 0 on a mission-tree launch (kAiCoordinatorCreatedAtLoad).
-        bsp::construct_named_powerup_warning_009758e0(warning_, warning_host, *name, false);
+        // 00975982: the "multi" suffix when [game+1FE4h] != 0 (packet cc13-mp4: from the
+        // session context; a campaign's word is 0, so the argument stays false). The
+        // OFF arm is the old literal false.
+        bool network_session = false;
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            network_session = bsp::session_context().session_word_1fe4 != 0;
+        }
+        bsp::construct_named_powerup_warning_009758e0(warning_, warning_host, *name,
+            network_session);
         return &warning_;
     }
     void report_009763e0(WarningObject* warning) override {
@@ -1504,9 +1515,24 @@ public:
     float clock_00f876a4() override { return host_.world_clock; }
     std::int32_t local_player_slot_18ec() override { return 0; }  // single player
     // A mission-tree launch has no session (kAiCoordinatorCreatedAtLoad).
-    std::int32_t session_word_1fe4() override { return 0; }
-    // 005E2F00 forces EnablePowerups to 1 in single player (005E2FAB).
-    bool powerups_enabled_00e0c978() override { return true; }
+    // Packet cc13-mp1 (MP2a): the session context's game+1FE4h. Campaign identity:
+    // the OFF arm is the old literal 0.
+    std::int32_t session_word_1fe4() override {
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            return bsp::session_context().session_word_1fe4;
+        } else {
+            return 0;
+        }
+    }
+    // 005E2F00 forces EnablePowerups to 1 in single player (005E2FAB). Packet cc13-mp3
+    // (MP3c): ON reads the byte 005E2F00 stored (00E1955C[10] == 0 in a session).
+    bool powerups_enabled_00e0c978() override {
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            return bsp::lobby_session_state().powerups_enabled_00e0c978;
+        } else {
+            return true;
+        }
+    }
     void report_powerup_009789a0(std::int32_t slot, const bsp::cc13_powerup::PowerupItem&,
         const std::string& name) override {
         // 009789A0 passes only the name on to 009758E0; the item is unused.
@@ -1548,9 +1574,23 @@ public:
             host_.record("PowerUps::resolve_air_support_classes", 0x008e34f0u);
         }
     }
+    // kPowerupSessionBroadcastCc13Bound: 0076A9F0 -> 00784790 sends only to the
+    // transport's peers, and this process has none, so the send is recorded only.
     void send_powerup_message67(std::int32_t, const bsp::cc13_powerup::PowerupItem&,
         std::int32_t) override {
-        throw std::logic_error("power-up message 67 without a session");
+        if constexpr (bsp::kPowerupSessionBroadcastCc13Bound) {
+            host_.record("PowerUps::send_message67", 0x0076a9f0u);
+        } else {
+            throw std::logic_error("power-up message 67 without a session");
+        }
+    }
+    void send_powerup_message68(const bsp::game_powerups::PowerupModifier&,
+        std::int32_t) override {
+        if constexpr (bsp::kPowerupSessionBroadcastCc13Bound) {
+            host_.record("PowerUps::send_message68", 0x0076a9f0u);
+        } else {
+            throw std::logic_error("power-up message 68 without a session");
+        }
     }
     std::vector<bsp::PowerUpSlot>& active_slot_records() override {
         return host_.world.power_ups.player_slots;
@@ -2478,8 +2518,17 @@ public:
     // --- the mission-start one-shot --------------------------------------
     bool session_counts_mission_start_004b6260() override {
         owner_.done("MissionFrame::session_counts_mission_start", 0x004b6260u);
-        // No session object, so session+F4h is null and the routine answers no.
-        return bsp::session_counts_mission_004b6260(false, false);
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            // Packet cc13-skirmish-gate: 004B6260 tests session+F4h (game+1FE4h) at
+            // 004B6260 and session+29Ch (game+218Ch) at 004B6269. A skirmish has
+            // both set, so the answer stays no; a campaign has neither.
+            const bsp::SessionContext& session = bsp::session_context();
+            return bsp::session_counts_mission_004b6260(session.session_word_1fe4 != 0,
+                session.skirmish_218c);
+        } else {
+            // No session object, so session+F4h is null and the routine answers no.
+            return bsp::session_counts_mission_004b6260(false, false);
+        }
     }
     void adjust_mission_start_counters_004bcaa0(bool add) override {
         bsp::adjust_mission_counters_004bcaa0(owner_.mission_counters, add);
@@ -3322,6 +3371,18 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
     host.load.participant_count_available = participant_count != nullptr;
     host.load.participant_scene_slots = scene_slot_count;
 
+    // Packet cc13-mp1 (MP2a): game+1FE4h, +614h and +61Ch from the session context,
+    // only when a skirmish context was published. Campaign identity: the OFF arm
+    // writes nothing, so scene_state keeps its old defaults (0, 0, false).
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
+        const bsp::SessionContext& session = bsp::session_context();
+        if (session.session_word_1fe4 != 0) {
+            host.scene_state.session_mode = session.session_word_1fe4;
+            host.scene_state.script_slot = session.game_mode_614;
+            host.scene_state.script_slot_forced = session.forced_61c;
+        }
+    }
+
     // 004e087b picks the script slot; single player always resolves to 8, and
     // 004e0a50 reads the raw slot to choose the arm.
     host.load.script_slot = bsp::normalise_mission_script_slot(
@@ -3438,6 +3499,41 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             continue;
         }
         if (method == "reset_single_player_slots") {
+            // Packet cc13-mp3 (MP3b): in a session 004DFC19 sends the load to the
+            // network branch 004DFC1F..004DFD11, and 004DFD18 never runs; the pools keep
+            // what the skirmish lobby built (start_skirmish: 0076FAD0's 004BB160, the
+            // 007752D0 local claim and 005D5340). scene_state.session_mode is non-zero
+            // only from a context that start_skirmish's ON arm published, so a campaign
+            // load always takes the old body below.
+            if constexpr (bsp::kSkirmishSessionCc13Bound) {
+                if (host.scene_state.session_mode != 0) {
+                    // Exactly one local slot: one claimed, not AI-held player record,
+                    // installed as a current record.
+                    std::size_t local_slots = 0;
+                    for (std::size_t slot = 0; slot < bsp::kSceneSlotRecordCount; ++slot) {
+                        bsp::ParticipantRecordId record;
+                        bsp::ParticipantRecordBytes bytes;
+                        if (host.participants.active_record(slot, record)
+                            && record.pool == bsp::ParticipantPool::Player
+                            && host.participants.read_record_bytes(record, bytes)
+                            && bytes.claimed_08.available && bytes.claimed_08.value != 0
+                            && bytes.ai_held_09.available && bytes.ai_held_09.value == 0) {
+                            ++local_slots;
+                        }
+                    }
+                    if (local_slots != 1) {
+                        throw std::logic_error("004DFD18 skipped in a session without exactly "
+                            "one local participant slot");
+                    }
+                    host.load.participant_local_claimed = true;
+                    host.log.notef("participant pools: 004dfd18 skipped (session %d takes "
+                        "004dfc1f..004dfd11); the lobby's local slot stands",
+                        host.scene_state.session_mode);
+                    host.done(label, step.address);
+                    ++host.load.concrete;
+                    continue;
+                }
+            }
             // 004DFD18 -> 004DFD57 -> 004DFD5C: reset both pools, claim the
             // first player record, then publish current[0]. Neither service
             // writes +0E. The later 004E0851 store is skipped in mode 0.
@@ -3961,6 +4057,40 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 host.messages->construct_00707480();  // logs its own native row
             }
         }
+        if (bsp::kSkirmishSessionCc13Bound && method == "load_warning_bank") {
+            // Packet cc13-mp4: 004E17FD..004E1838, which follows this step's
+            // 004E17E9..004E17FB; neither input changes across them. The campaign
+            // context fails the session/forced test before any slot is read, so a
+            // campaign load publishes false (include/bsp/ai_coordinator_load_gate_cc13.hpp).
+            // OFF: nothing is published and the gate keeps the old constant false.
+            const bsp::SessionContext& session = bsp::session_context();
+            std::array<bsp::AiCoordinatorLoadSlot, 8> slots{};
+            if (session.session_word_1fe4 == 1 || session.forced_61c) {
+                for (std::size_t slot = 0; slot < slots.size(); ++slot) {
+                    bsp::ParticipantRecordId record;
+                    bsp::ParticipantRecordBytes bytes;
+                    if (!host.participants.active_record(slot, record)
+                        || !host.participants.read_record_bytes(record, bytes)
+                        || !bytes.claimed_08.available || !bytes.ai_held_09.available
+                        || !bytes.ai_enabled_0a.available) {
+                        continue;   // LABELLED: an unrepresented record reads as not AI
+                    }
+                    slots[slot].occupied_08 = bytes.claimed_08.value != 0;
+                    slots[slot].ai_09 = bytes.ai_held_09.value != 0;
+                    // Packet cc13-mp3 (MP3b): the pools' +0Ah, which 004BB160 sets on the
+                    // populated mission records and the lobby's 005D5340 rewrites
+                    // through 0076CB90 (rev7 NIT; the "pool == Mission" stand-in is gone).
+                    slots[slot].active_0a = bytes.ai_enabled_0a.value != 0;
+                }
+            }
+            const bool created = bsp::ai_coordinator_created_at_load_004e17fd(session, slots);
+            ai_publish_coordinator_created_at_load(created);
+            if (session.session_word_1fe4 != 0 || session.forced_61c) {
+                host.log.notef("ai coordinator load gate 004E17FD: session=%d forced=%d "
+                    "created=%d (packet cc13-mp4)", session.session_word_1fe4,
+                    session.forced_61c ? 1 : 0, created ? 1 : 0);
+            }
+        }
         if (method == "load_warning_bank" && kMessageManagerCc15Bound
             && host.messages != nullptr && host.messages->constructed()) {
             // 004DFB70's spoken warnings. 004E0FAD's sweep needs [004C1E90()]+8h == 2,
@@ -4018,6 +4148,13 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
     bsp::MissionDeviceWaitInputs inputs{};
     inputs.local_view_mode = host.scene_state.session_mode;
     inputs.session_flag_29c = false;
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
+        // Packet cc13-skirmish-gate: 004DB944 LEA EDI,[EBP+1EF0h] and 004DB94C
+        // CMP byte [EDI+29Ch] read game+218Ch, the skirmish byte 005E6F87 sets.
+        // A skirmish (+1FE4h = 1, +218Ch = 1) therefore takes the device-wait arm
+        // at 004DB955, not the player-count arm at 004DB9BE.
+        inputs.session_flag_29c = bsp::session_context().skirmish_218c;
+    }
     inputs.game_field_624 = 0;
     bsp::MissionEntryPlayerSlot current_slots[bsp::kLocalPlayerSlotCount];
     host.entry.participant_view_available = host.participants.try_entry_slots(current_slots);
@@ -4052,7 +4189,9 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
     host.entry_state.local_view_mode = host.scene_state.session_mode;
     host.entry_state.local_slot_index = 0;
     // game+1FE4h and game+1EE3h, the two fields 004d7970 and the drain's 10h
-    // arm read on the way out of the mission.
+    // arm read on the way out of the mission. Under kSkirmishSessionCc13Bound
+    // scene_state.session_mode already holds the session word (run_scene_load_004dfb70,
+    // packet cc13-mp1), so mission_result's local_player_mode reads it (rev9 N1).
     host.result->set_session_mode(host.scene_state.session_mode);
     host.result->set_session_networked(host.entry_state.one_shots.session_was_networked);
     MissionEntryBinding entry(host);

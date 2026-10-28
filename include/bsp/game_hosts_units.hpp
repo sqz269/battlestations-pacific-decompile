@@ -456,7 +456,7 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // SUBSTITUTION, labelled: motion.linear_velocity and motion.pose_row2 stand in for
 // the image's 00C31F40 (velocity) and 00C32000 (matrix) on [unit+D08h]+2Ch.
 // True: per-op float in that order. False: the double chain rounded once.
-inline constexpr bool kSubmarineSeabedSpeedPc24Cc13Bound = false;
+inline constexpr bool kSubmarineSeabedSpeedPc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 
 // Packet cc9_submarine_dive_teleport (docs/SUBMARINE_MODEL.md section 15). True: a
 // submarine whose scene row authors `Dive` is placed at bands[Dive] at attach
@@ -664,6 +664,8 @@ public:
     // Packet cc13_natives1: 008A24E0's five stores on the squadron's third block
     // (+384h, +38Eh, +39Ch, +3ABh, +3ADh); 009C8920 / 009C7A80 read +39Ch.
     bool set_squadron_release_alt_008a24e0(std::size_t unit_index, float altitude, bool force);
+    // 008A1F40 SquadronSetDropAllBombPercent: squadron+390h (packet cc13-issuea0).
+    bool set_squadron_drop_all_bomb_percent_008a1f40(std::size_t unit_index, float percent);
     bool set_squadron_travel_alt_0089f550(std::size_t unit_index, float altitude, bool force);
     // Packet l68_travel_speed: 008A0630's four stores on the squadron's slot
     // (+388h countdown, +38Fh freeze, +3A0h speed, +3ACh lock).
@@ -1179,6 +1181,14 @@ public:
     // holds `plane` as a member (plane+9D4h null, or already removed).
     // Packet cc13-limbo3: a stock return's pre-clear count is preferred.
     int plane_squadron_live_count_3cc(std::size_t plane) const noexcept;
+    // Packet cc13-s24, 0072C119..0072C13F: a plane owner (vtable[5Ch](0Fh)) whose
+    // +914h is above 0.0 (a follow sight has found a contact) is replaced by its
+    // squadron head [[owner+9D4h]+3D0h]; any other owner is returned unchanged.
+    // LABELLED: with no registry record, or no live head, the owner is kept (the
+    // image does not test +9D4h, and a null +3F0h jumps to 0072C145 and faults
+    // on [EBX+1B0h] with EBX = 0; the host's keep is a safe deviation on paths
+    // the image never takes).
+    std::size_t plane_shot_owner_squadron_head_0072c119(std::size_t owner) const noexcept;
     // The unit index at `position` of the class-`class_id` list, or the unit
     // count when the position is past the end. The order is 00484540's own:
     // appended at the tail, walked from the head.

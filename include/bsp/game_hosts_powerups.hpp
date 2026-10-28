@@ -75,7 +75,10 @@ namespace bsp::game_powerups {
 //   13 PLANE_TURN 007DA067      14 TORPEDO_SPEED 008576A4
 //   15 TORPEDO_TURN 008570B8
 // The host file and line of each site carry the same address.
-inline constexpr bool kPowerUpSubsystemCc13Bound = false;
+// ON (cc9-recon2): campaign identity. Pairs on afa0394fc (phases 1, 2a, 2b):
+// IJN05 and USN16 stock (the "repairtest" scenes), USN02 and LOMP06 WINS rows,
+// all gameplay identical; only the gameplay-scale description line differs.
+inline constexpr bool kPowerUpSubsystemCc13Bound = true;
 
 inline constexpr int kPowerupCategoryCount = 16;  // 008EB14E, 16 lists
 

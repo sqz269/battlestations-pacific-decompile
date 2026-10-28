@@ -197,7 +197,7 @@ inline constexpr bool kCruiseLatchedPlayerArmCc13Bound = true;  // ON (cc9-lua70
 // True: both follow the image. False: as before.
 // Reach: only a NaN unit length (unit+9C8h) or a NaN station offset; every
 // finite input gives the same result either way.
-inline constexpr bool kShipAiStationKeepingNanArmsCc13Bound = false;
+inline constexpr bool kShipAiStationKeepingNanArmsCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-27): prune flip, zero NaN operands on every OFF run; see commit
 
 // Packet cc13-P3 (the 009E04E0 row). The NaN-only deviations the seg67e/f
 // audits left in 009E04E0 (ship_ai_clearance_profile.cpp), each from the disk
@@ -218,7 +218,7 @@ inline constexpr bool kShipAiStationKeepingNanArmsCc13Bound = false;
 // True: all of them follow the image. False: as before.
 // Reach: only a NaN track heading, position or speed; every finite input gives
 // the same result either way.
-inline constexpr bool kShipAiThrottleProfileNanArmsCc13Bound = false;
+inline constexpr bool kShipAiThrottleProfileNanArmsCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-27): prune flip, zero NaN operands on every OFF run; see commit
 
 // Packet cc13-P3 follow-up (rev8 F2, the 009ED6B0 row). The NaN-only deviations
 // left in the navigation arm 009EE580..009EEAAB:
@@ -234,7 +234,7 @@ inline constexpr bool kShipAiThrottleProfileNanArmsCc13Bound = false;
 // True: all of them follow the image. False: as before.
 // Reach: only NaN path, turn or speed inputs; every finite input gives the same
 // result either way.
-inline constexpr bool kShipAiNavigationNanArmsCc13Bound = false;
+inline constexpr bool kShipAiNavigationNanArmsCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-27): prune flip, zero NaN operands on every OFF run; see commit
 
 // Packet cc13-P3 follow-up (rev8 F4, the 009ED6B0 row). The main thread runs
 // the image's x87 at PC24 (docs/CC13_FPU_PRECISION.md), so every FMUL, FADD,
@@ -242,6 +242,6 @@ inline constexpr bool kShipAiNavigationNanArmsCc13Bound = false;
 // The host evaluated several chains in double and rounded once (or compared
 // unrounded). True: each operation rounds to float in listing order
 // (ship_ai_station_keeping.cpp). False: as before.
-inline constexpr bool kShipAiStationKeepingPc24Cc13Bound = false;
+inline constexpr bool kShipAiStationKeepingPc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 
 } // namespace bsp

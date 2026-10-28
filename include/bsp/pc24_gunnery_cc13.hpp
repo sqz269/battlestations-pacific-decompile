@@ -19,6 +19,6 @@ namespace bsp {
 // float add.
 // Expected movers when ON: plane gunfire avoidance (flag, direction and timers),
 // weapon hit accuracy samples, and segment/box hit entry points and line-of-fire tests.
-inline constexpr bool kPc24GunneryCc13Bound = false;
+inline constexpr bool kPc24GunneryCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): joint pair with the gunnery/follow_to_body switch on d3ad11c39; see commit
 
 }  // namespace bsp

@@ -112,6 +112,6 @@ namespace bsp {
 //  double sum 0. ON now truncates x87_add24(v, 0.5) (vsub_trunc_half) at 00AEAB53,
 //  00AEAB8A, 00AEB23B, 00AEB35B and 00AEB164..00AEB1B3.
 // Movers: the same near-vertical hit points, through the crossing parameters.
-inline constexpr bool kPc24FlightRenderCc13Bound = false;
+inline constexpr bool kPc24FlightRenderCc13Bound = true;  // ON by pair (cc9-sweep1b)
 
 }  // namespace bsp

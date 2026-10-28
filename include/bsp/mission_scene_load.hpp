@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "bsp/frontend_entry.hpp"
+#include "bsp/session_context_cc13.hpp"
 
 // The mission scene load: BSP_Game_LoadMissionScene (004dfb70), the handler the
 // state-request drain of docs/GAME_FRAME_CONTROL.md selects for requests 0Ah and
@@ -84,10 +85,21 @@ struct SceneShortNameGameMode {
 // not forced, no session. The 004BCA50 index is then 8, which gives the suffix
 // "SOLO". Hosts that hold the real fields pass them instead.
 inline constexpr SceneShortNameGameMode kSceneShortNameCampaignStandIn{8, false, false};
+// Packet cc13-mp4: the three fields from the session context. The campaign context
+// (mode 8, not forced, session word 0) gives kSceneShortNameCampaignStandIn exactly.
+// The OFF arm is the old stand-in.
+inline SceneShortNameGameMode scene_short_name_mode_from_session() noexcept {
+    if constexpr (kSkirmishSessionCc13Bound) {
+        const SessionContext& session = session_context();
+        return {session.game_mode_614, session.forced_61c, session.session_word_1fe4 != 0};
+    } else {
+        return kSceneShortNameCampaignStandIn;
+    }
+}
 int scene_short_name_mode_index(const SceneShortNameGameMode& mode) noexcept;
 // `append_mode` defaults to the value the native callers above push (1).
 std::string derive_scene_short_name(const std::string& scene_path, bool append_mode = true,
-                                    const SceneShortNameGameMode& mode = kSceneShortNameCampaignStandIn);
+                                    const SceneShortNameGameMode& mode = scene_short_name_mode_from_session());
 
 // 008860b0. The mission script name held in the record table is resolved to
 // "Scripts/missions/" + name + ".lua" and handed to 00885fb0 with 1.

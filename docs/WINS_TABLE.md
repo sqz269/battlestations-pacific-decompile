@@ -1677,3 +1677,90 @@ avoid zone); 20,3 failed 1290.13 s on e3c2cc5b3 (both Marus sunk by US_Airfield_
 the carrier strikes from `s46_u21gen3.py`), committed unchanged. cc9-nondet1 measured it on main 8eded9e50, ref env:
 **completed 2896.70 s in 8 of 8 runs**. USN21 is a long row (over 60000 frames), so its 20,3 and default timings
 wait for the light-load window of the wave-1 re-time; until then the ref time is nondet1's, not re-run here.
+
+## 2026-10-27, plan checks and wave-1 moves so far (cc9-lua74, keeper)
+
+**Plan checks** (lead request after cc15's msg2 runs, which used older plans), main 6d3043215, ref env, one run
+each, pf=0, guard logged (`cc9-lua52\local\l74r_chk_<row>_main_ref.log`): PRCP01 `p26_p01_a` completed 833.02 s,
+USN12 `l73_u12_n1` completed 1485.32 s, USN02 `l72_u2_g4` completed 245.06 s, BSM01 `l73_b1_m1` EndMission 839.92 s.
+All identical to the table; no regression. ESMP08 waits for the light-load window.
+
+**BSM03 `h1_x8` lost** in ref on main 8eee95914 (sw1b's plane flips, incl. kPlaneYawRollCouplingOrderCc13Bound
+da823f099) and still on fecb3b2e1: failed 483.01 s. Kane reaches phase 2 as before (Hatsushimo turns vulnerable and
+attackmoves from step 6390), runs north along x~500 and loses the gun duel by a hair: Kane dies at 482.91 s with
+Hatsushimo at 744 hp (before: Kane killed Hatsushimo at 485.21 s). The H6K Mavis and Gyoraitei 114 kills are gone.
+Re-plan attempts, all ref (`local\l74_b3<k>.txt`, logs `l74r_b3<k>_main_ref.log`), none wins:
+- course point (1300|1500,-2800), (1400,-2700|-2900), (1450,-2850), (1350,-2750), (1380|1420,-2800),
+  (1400,-2780|-2820): no end (Kane never kills Hatsushimo, or phase 2 not reached) or Kane lost at 306-393 s;
+- takehelm at frame 300 or 340: identical 483.01 s;
+- a phase-2 takehelm at 6500/7000: not applied in effect, the map is up (`map_up=1`), so the latch keeps steering
+  (CC13_IJN18LOSS "Steering while the map is up");
+- releasegun at 500/700/800/900: no end, 483.01, 297.05, 276.06 s.
+BSM03 has no winning plan on main. The duel is decided by gunnery after the map latch; a re-plan likely needs
+player-aimed fire (`aim` + `input 0x9D/0x99`, SCRIPTED_HELM) rather than routes. Parked.
+
+**BSM01 `l73_b1_m1`** on main fecb3b2e1, ref: EndMission 821.92 s, guard logged (`l74r_b1m1n_main_ref.log`). sweep2b's
+home-sector pair (no end on 276fdd23c) does not reproduce on this base; 20,3 and default go in the wave re-time.
+
+**JM08 `s63_j8_v3`** on main 8eee95914, ref: failed 1139.04 s (pf=1, provisional). Phase 1 broke: only TT01/02/04/05/06
+die; TT03, LST 01-03 and LSM 01-02 live and the invasion force shells the HQ from step 14000 (bullets 100/7/15). Not
+the 1762.64 s B-17 failure of ships64's pair. Re-plan pending (B-17 re-order variants ready in `local\l74_j8mk.py`,
+which reproduces v3 byte for byte).
+
+Received, no WINS time change: physics29 kLandBeginSteerPc24Cc13Bound (BSM04, USN01, BSM06 i/j, ESMP08 identical;
+BSM01 k1 moved but same end).
+
+## 2026-10-27, new row IJN23, wave-1 moves reported so far, keeper handoff (cc9-lua74)
+
+**New row IJN23 `rc1_i23_c`** (cc9-recon2, recorded from its report): `config/win_orders/ijn23_rc1_i23_c.txt` is a byte
+copy of `cc9-recon1\local\rc1_i23_c.txt` (recon1's plan c: the ships stay home; the converted Airfield1/2 strike the
+wave-4 survivors from 4400 s). 200000 mission frames, `--stop-after-end 40`; every run pf=0, exit 0, guard logged.
+
+| Row (plan) | ref | 20,3 | default |
+| --- | --- | --- | --- |
+| IJN23 `rc1_i23_c` | completed 8226.67 s (build c8132496e) | completed 4695.52 s (export acdcd728b = main 10601a84c) | completed 6269.35 s (acdcd728b; same on 1c49c8c0d) |
+
+Logs `cc9-recon1\local\rc2_{r3,j3,d3}_i23c.log`. The ref run needs more than 150000 frames. IJN23 is a long row.
+
+**Wave-1 moves reported by the flip owners (ref env only, their pairs; not re-timed here):**
+- sweep1b bundle A (main 98c777f05: circle tangent PC24, resist40 deadband, flight x87, yaw-roll order, drag order,
+  mission-detail lerp), logs `cc9-sweep1\local\sw1br_<row>_{bo,ba}_ref.log`:
+  - LOST: BSM03 `h1_x8` 486.00 -> failed 483.01 (yaw-roll order alone); BSM06 `h1_j` 1518.36 -> failed 1530.37
+    (yaw-roll alone); BSM01 `l73_b1_m1` 839.92 -> no end (drag order alone; also lost to sweep2b's home-sector flip).
+  - moved, still winning: USN01 370.03 -> 415.02; BSM09 414.02 -> 450.01; BSM04 941.89 -> 671.96; LOMP10
+    751.49 -> 1037.44; PRCP01 833.02 -> 689.96; USN12 1485.32 (same end, gameplay moved); BSM06 `h1_i` 1149.00;
+    IJN18 EndMission 1410.25 -> 1360.20 and JM06 1922.75 -> 1859.69 (long rows, provisional under load).
+  - identical: USN02, BSM05, LOMP06, IJN08.
+- sweep2b kTorpedoHomeSectorScaleCc13Bound (0f0070649, on main e294dee96): BSM01 m1 no end (first divergence 145 s);
+  USN21 `g56_c2` 2966.77 -> 2886.69 s (provisional).
+- ships64's six paratrooper switches (main e294dee96): JM08 `s63_j8_v3` fails 1762.64 s (HQ, B-17 bombing).
+- sweep3b bundle (main c247d6ed7): kAirOpsArriveSquadronWalkCc13Bound alone moves JM08 v3 4246.98 -> failed
+  2055.93 s: the plan's frame-300 launches from airfield slots 1/2 are refused ("slot is not in state 1 or 5")
+  because a squadron bound at mission start takes the free slot first. follow_wait and retreat move nothing; the
+  other 12 plane rows are identical. sweep3b's earlier e3c6046c0 wave moved no row.
+- Note: my BSM01 m1 ref EndMission 821.92 s on fecb3b2e1 (section above) contradicts sweep1b's and sweep2b's
+  no-end pairs on their bases; take it as one run, to be re-checked in the wave re-time.
+
+### Keeper handoff (cc9-lua74, about 75% context)
+
+Open rows:
+- **JM08**: no winning plan on main. DEFERRED by the lead until the remaining plane/strike flips land (sweep3b plane
+  bundle, units host PC24, kBaseLaunchAxesCc13Bound, S11 whole-flight release, stream set, kamikaze enter pick,
+  ships64 wing-follow). The re-plan must (a) launch from slots that are free at frame 300 or later, (b) fix phase 1
+  (on fecb3b2e1 TT03, LST 01/02 and LSM 01 survive, StartInvasion sends the force at the HQ from ~700 s), (c) give
+  the HQ margin against the B-17 passes, and (d) kill the C47s before their release (5-10 s after aim entry,
+  ~1704 s). Generator `cc9-lua52\local\l74_j8mk.py` (reproduces v3 byte for byte; x1-x3 re-order variants).
+- **BSM03**: lost to kPlaneYawRollCouplingOrderCc13Bound, a faithful flip. 16 ref variants fail (see above); needs
+  player-aimed fire, not routes. Parked.
+- **BSM06**: `h1_j` lost (yaw-roll); `h1_i` still wins ref at 1149.00 s, so the row can move to `h1_i` if it wins
+  20,3/default in the re-time.
+- **BSM01**: no winning plan after the home-sector and drag-order flips (see note above); re-plan on main.
+- **USN15**: no winning plan on main.
+- **USN21** (`usn21_nd1_s46_u21_f`), **ESMP08**, IJN18, JM06, IJN23: long rows; 20,3/default and the ESMP08 plan check
+  only in the light-load window the lead arranges with cc16.
+
+Re-time: do NOT run the full wave until the lead says the wave-1 flips have landed (ship-AI PC24, plane bundle,
+units host, gunnery+followbody, mission Lua still in flight). 22 row-plans x 3 envs (IJN23 added). Run discipline:
+at most 2 runs alive per worker, no background queue runner; `local\l74_one.ps1` runs one game (rows in
+`local\l74_rows.txt`), `python local\l72_q.py '<glob>'` summarizes. IJN08 generator `local\l74_i08plan.py`; the lane
+handoff with tool notes is in docs/SQUADRON_LAND_TASK.md ("cc9-lua74 handoff").
