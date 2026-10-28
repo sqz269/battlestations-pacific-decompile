@@ -39,6 +39,7 @@ namespace bsp {
 // damage rolls) shifts. Pairs on that stream move as a whole, not only the aim point.
 // Direct movers when ON: where dive, torpedo, strafe, rocket and kamikaze attacks aim on a
 // ship's hull (box point or named section), hence hit location and section damage.
-inline constexpr bool kHullAimSharedStreamCc13Bound = false;
+// ON since cc9-nondet2 (2026-10-28), jointly with the other six stream-set switches (docs/USN21_NONDETERMINISM.md 8).
+inline constexpr bool kHullAimSharedStreamCc13Bound = true;
 
 }  // namespace bsp

@@ -75,7 +75,8 @@ namespace bsp {
 // phases, torpedo reset legs, land approach angles, strafe, level bomb and dogfight
 // timers, gun avoidance, neighbour clocks, dead-meat spin, moveto and retreat altitudes,
 // depth charge and opportunistic rocket draws; and every later stream-1 draw.
-inline constexpr bool kStreamSet2SharedDrawsCc13Bound = false;
+// ON since cc9-nondet2 (2026-10-28), jointly with the other six stream-set switches (docs/USN21_NONDETERMINISM.md 8).
+inline constexpr bool kStreamSet2SharedDrawsCc13Bound = true;
 
 // kStreamSet2WandererCc13Bound (OFF). The plane wanderer 007BE060's draws, key
 // "<unit>#wander": 007BE186 (MOV ECX,1 at 007BE172) and 007BE2CF (007BE2C5), and the
@@ -83,6 +84,7 @@ inline constexpr bool kStreamSet2SharedDrawsCc13Bound = false;
 // (LABELLED; the image draws it at construction, 007CFDC6). Census liveness: 37235
 // wanderer draws in u21, 57365 in usn21, so this is the largest single mover.
 // Movers when ON: wanderer drift, and every later stream-1 draw.
-inline constexpr bool kStreamSet2WandererCc13Bound = false;
+// ON since cc9-nondet2 (2026-10-28), jointly with the other six stream-set switches (docs/USN21_NONDETERMINISM.md 8).
+inline constexpr bool kStreamSet2WandererCc13Bound = true;
 
 }  // namespace bsp

@@ -58,13 +58,19 @@ namespace bsp {
 //   - the live-ordnance mask in game_hosts_units.cpp. OFF: class 0 leaves known = false and the
 //     mask untouched. ON: 2Eh keeps it true, so an emptied rack clears its bit.
 //     CORRECTION: ON also adds 2Eh to that block's bomb_family, so a loaded 2Eh rack keeps
-//     the 2Ah bit, as the image counts it. 007B9320 asks the descriptor vt[8](2Ah) at
-//     007B935C, then rejects 2Ch/31h/2Bh/33h/2Dh (007B936B..007B93A7); DummyTarget's test
-//     006EA6F0 answers 2Eh/2Ah/29h only (006EA6F4..006EA701), so it passes. 30h/34h also
-//     answer 2Ah but are on no plane rack, so they are not added;
+//     the 2Ah bit, as the image counts it. The reader is 007B9140's rack walk (007B917B
+//     PUSH 2Ah): rack vt[210h] = 006E3FE0 asks each child round entity vt[5Ch](2Ah)
+//     (006E3FF2), and DummyTarget's entity test 00700AC0 answers 2Eh/2Dh/2Ah
+//     (00700AC4..00700AD1). 30h/34h also answer 2Ah but are on no plane rack, so they are
+//     not added. CORRECTION (rev6 NIT1): this named 007B9320 (descriptor vt[8](2Ah) at
+//     007B935C, DummyTarget's 006EA6F0); that reader rejects 2Bh/2Ch/31h/33h/2Dh
+//     (007B936B..007B93A7), which bomb_family counts, so it cannot be the bit's reader;
 //   - DeviceWalkRack::bullet_class (the cc13_devwalk rack walk) gets 2Eh instead of 0;
 //   - the single-drop test (007C0E30 arm): 2Eh is none of 2Bh/2Ch/33h, so it stays on the
 //     bomb arm, as the image's DummyTarget descriptor does.
-inline constexpr bool kSquadronAmmoDummyKindsCc13Bound = false;
+// ON (cc9-sweep3c, 2026-10-28) without a pair: reached only in TRN1-TRN6, which the
+// harness cannot launch (`--menu-select TRN1`: group 0, detail=0, step=Stopped, units=0),
+// and no WINS row reaches it. Compiles ON (off_switch_on_build).
+inline constexpr bool kSquadronAmmoDummyKindsCc13Bound = true;
 
 }  // namespace bsp

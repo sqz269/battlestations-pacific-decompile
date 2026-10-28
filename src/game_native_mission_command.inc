@@ -18,6 +18,15 @@ struct MissionRenderGlobals {
 };
 static_assert(offsetof(MissionRenderGlobals::Bank,values)==4);
 
+// DIVERGENCE (milestone-D containment, docs/MILESTONE_D_SCENE_RESOURCE_CONFUSION.md):
+// B1E990 calls model v50 B6ED80 with the mission scene's lighting owner (+1C), an
+// actual 3Ch resource. The host companion runtime would run its own registry on
+// that native storage, so this skips the call for the mission ship scene. Its
+// instanced models keep node+170 null, like every root admitted by
+// game_native_mission_scene.inc. false = the original call, which corrupts the
+// resource once late spawns form instance groups.
+inline constexpr bool kMissionUploadSkipsHostAttachOnActualLighting = true;
+
 struct MissionCommandGraph {
  struct Record;
  struct Owners final : NativeRenderActualOwners {
@@ -259,6 +268,8 @@ struct MissionCommandGraph {
  }
  ~MissionCommandGraph() {
   if(failed || pending) std::terminate();
+  if(upload.host_attach_skips)
+   log.notef("native_mission_command host_attach_skips=%u divergence=actual_lighting_B6ED80",upload.host_attach_skips);
   frames.bind_ordinary_execution(nullptr,nullptr);
  }
  NativeTracelineRenderAccess& render_access() noexcept {return render;}
@@ -437,12 +448,20 @@ struct MissionCommandGraph {
   auto& queue=begin_submission();
   try {
    construct_native_string_header_0041e870(pending->scene_label,submission.strings,"Mission ship");
+   const auto skips_before=upload.host_attach_skips;
+   if constexpr (kMissionUploadSkipsHostAttachOnActualLighting)
+    upload.host_attach_excluded_scene=get<void*>(scene,0x1c);
    // B1F4D0 owns this eight-byte argument on both normal and exceptional
    // paths. The consumed header stays unchanged and must not be destroyed.
    submit_native_scene_00b1f4d0(queue,scene,camera,targets,pending->scene_label,
      submission,pending->submission);
+   upload.host_attach_excluded_scene=nullptr;
+   if(!skips_before && upload.host_attach_skips)
+    log.notef("native_mission_command host_attach_skip first: lighting=%p divergence=actual_lighting_B6ED80",
+     get<void*>(scene,0x1c));
    finish_submission(queue,"B1F4D0");
   } catch(...) {
+   upload.host_attach_excluded_scene=nullptr;
    fail_submission();throw;
   }
  }

@@ -37,6 +37,7 @@ namespace bsp {
 // the per-task ones) stay on release_altitude_draw_00bd2f10.
 // Movers when ON: the first follow sight search time of every follow state (+74h),
 // and through the shared stream every later stream-1 draw.
-inline constexpr bool kFollowSightCountdownDrawCc13Bound = false;
+// ON since cc9-nondet2 (2026-10-28), jointly with the other six stream-set switches (docs/USN21_NONDETERMINISM.md 8).
+inline constexpr bool kFollowSightCountdownDrawCc13Bound = true;
 
 }  // namespace bsp

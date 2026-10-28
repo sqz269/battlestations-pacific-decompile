@@ -46,6 +46,7 @@ namespace bsp {
 // above. The
 // phases are advanced in publish_pose_004329d0, but nothing modelled reads them, so the
 // camera pose does not move.
-inline constexpr bool kShipCaptainCameraDrawsCc13Bound = false;
+// ON since cc9-nondet2 (2026-10-28), jointly with the other six stream-set switches (docs/USN21_NONDETERMINISM.md 8).
+inline constexpr bool kShipCaptainCameraDrawsCc13Bound = true;
 
 }  // namespace bsp

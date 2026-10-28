@@ -46288,9 +46288,12 @@ std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
             const auto bit = [](int kind) { return std::uint64_t(1) << (kind - 0x08); };
             const auto bomb_family = [](int kind) {
                 if constexpr (bsp::kSquadronAmmoDummyKindsCc13Bound) {
-                    // Packet cc13-ammodk: 007B9320 asks the descriptor vt[8](2Ah)
-                    // (007B935C) and DummyTarget's 006EA6F0 answers 2Eh/2Ah/29h, so a
-                    // loaded 2Eh rack counts toward 2Ah.
+                    // Packet cc13-ammodk: the 2Ah bit's reader is 007B9140's walk
+                    // (007B917B PUSH 2Ah): rack vt[210h] = 006E3FE0 asks each child
+                    // round entity vt[5Ch](2Ah) (006E3FF2), and DummyTarget's entity
+                    // test 00700AC0 answers 2Eh/2Dh/2Ah (00700AC4..00700AD1), so a
+                    // loaded 2Eh rack counts toward 2Ah. CORRECTION: not 007B9320,
+                    // which rejects 2Bh/2Ch/31h/33h that this family counts.
                     return kind == 0x2A || kind == 0x2B || kind == 0x2C || kind == 0x2D
                         || kind == 0x2E || kind == 0x31 || kind == 0x33;
                 } else {

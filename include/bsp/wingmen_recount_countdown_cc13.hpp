@@ -45,7 +45,8 @@
 
 namespace bsp {
 
-inline constexpr bool kWingmenRecountCountdownCc13Bound = false;
+// ON since cc9-nondet2 (2026-10-28), jointly with the other six stream-set switches (docs/USN21_NONDETERMINISM.md 8).
+inline constexpr bool kWingmenRecountCountdownCc13Bound = true;
 inline constexpr float kSquadronRecountPeriod3c0 = 1.0f;     // ctor seed, +3C0h
 inline constexpr float kSquadronRecountCountdownSeed = -1.0f; // ctor seed, +3C4h
 

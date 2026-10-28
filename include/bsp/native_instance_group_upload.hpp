@@ -14,6 +14,14 @@ struct NativeInstanceGroupUploadAccess {
     SceneAttachmentRuntime& scenes;
     const volatile float& half_00ce3800;
     const volatile float& unsigned_bias_00ce3978;
+    // DIVERGENCE (caller-selected, null = original path): when the command's
+    // lighting owner (scene+1C) is this actual 3Ch resource, the host
+    // SceneAttachmentRuntime must not run B6ED80 on it, because it is native
+    // storage, not a host SceneResource (docs/MILESTONE_D_SCENE_RESOURCE_CONFUSION.md).
+    // The upload skips only that call and counts it; the rest of the upload is
+    // unchanged.
+    const void* host_attach_excluded_scene = nullptr;
+    std::uint32_t host_attach_skips = 0;
 };
 
 // Complete B1E990..B1EB7D normal body, ECX actual44h command, RET; this new
