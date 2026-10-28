@@ -21,6 +21,7 @@
 #include "bsp/gui_lua_runtime.hpp"
 #include "bsp/gui_widget.hpp"
 #include "bsp/locale_tables.hpp"
+#include "bsp/lobby_option_defaults_cc13.hpp"
 #include "bsp/lua_object.hpp"
 #include "bsp/lua_state_owner.hpp"
 #include "bsp/main_menu_mission_detail.hpp"
@@ -53,6 +54,7 @@
 #include <algorithm>
 #include <array>
 #include <atomic>
+#include <cctype>
 #include <cstddef>
 #include <cstdio>
 #include <cstdlib>
@@ -622,6 +624,11 @@ struct GameMissionHost::Impl {
     std::int32_t skirmish_slot_team(std::size_t slot) const;
     void join_local_player_007752d0();
     void lobby_reset_slots_005d5340();
+    void lobby_multi_menu_init_00689540();
+    std::size_t menu_record_for_scene_005d7070() const;
+    std::uint64_t map_content_mask_005d9c50() const;
+    void lobby_enter_settings_005e51d0();
+    void lobby_apply_selected_map_005da530();
     void build_detail_page_0058c010();
     void start_briefing_005922f0();
     void consume_load_request();
@@ -1655,10 +1662,15 @@ void GameMissionHost::Impl::start_skirmish() {
         bsp::cc13cam2::session_set_mode_0076fad0(session_mode, 1, binding);
         log.notef("session set mode 1 (0076fad0): mode=%d route default=%d server state=%d",
             session_mode.mode_f4, binding.route_default_e0af1c, binding.server_state_9c);
+        // Packet cc13-mp3 (MP3c): the lobby option registry and defaults (00689540).
+        lobby_multi_menu_init_00689540();
         // Packet cc13-mp3 (MP3b): the host player joins its own lobby, then the lobby
-        // screen enters.
+        // screen enters (MP3c: its settings writes, then 005D5340).
         join_local_player_007752d0();
+        lobby_enter_settings_005e51d0();
         lobby_reset_slots_005d5340();
+        // Packet cc13-mp3 (MP3c): the host starts the game from the lobby.
+        lobby_apply_selected_map_005da530();
     } else {
         // 0076FC7C / 0076FCA6 for the one entry: 004E1D70 then 004C6890.
         start.set_pending_scene(record.screen.scene, std::string_view{});
@@ -1670,7 +1682,9 @@ void GameMissionHost::Impl::start_skirmish() {
     if constexpr (!bsp::kSkirmishSessionCc13Bound) {
         log.unimplemented("Session::set_mode_host", "0076fad0");
     }
-    log.unimplemented("MultiGameLobby::apply_selected_map", "005da530");
+    if constexpr (!bsp::kSkirmishSessionCc13Bound) {
+        log.unimplemented("MultiGameLobby::apply_selected_map", "005da530");
+    }
 }
 
 // Packet cc13-mp3 (MP3b). current[slot]+28h after 0076FAD0's 004BB160: a populated
@@ -1822,6 +1836,194 @@ void GameMissionHost::Impl::lobby_reset_slots_005d5340() {
     }
     log.notef("skirmish lobby enter (005d5340): mode %d, +0Ah per slot %s", mode,
         summary_text.c_str());
+}
+
+// Packet cc13-mp3 (MP3c). 00689540 GVMultiMenu::Init runs 008D2F50 (the 00576B10
+// registry) and constructs the lobby screen, whose 005E3290 leaves the option defaults in
+// 00E1955C. LABELLED: the image does both when the multiplayer menu opens, before
+// Session_SetMode, with 00E19594 = the game+60Ch of that moment; the host does them after
+// its Session_SetMode with 00E19594 = the chosen entry, because 005D7070 needs that entry's
+// scene uniqueID. The choice of record only matters through its +428h rows: this
+// installation's map records override rows 2 and 3 alone (luaOverrideMultiLobbySettings),
+// and the lobby enter rewrites slot 2, and slot 3 when the mode is 0..3.
+void GameMissionHost::Impl::lobby_multi_menu_init_00689540() {
+    bsp::LobbySessionState& lobby = bsp::lobby_session_state();
+    bsp::LobbyOptionRegistry registry;
+    {
+        // 008D2F50: a fresh owner with library mask 1, then 00B69D40 on the datatable.
+        auto lua_owner = std::make_unique<PcStorageLuaOwner>(
+            scripts.files().owner_environment(scripts.runtime(), scripts.globals()));
+        lua_owner->open_storage_archive_00b6a020(1);
+        const std::string path = "Scripts\\datatables\\MultiGlobals.lua";
+        scripts.runtime().run_file(lua_owner->storage_lua_38(), path);
+        GuiLua51Host reader(*lua_owner->storage_lua_38());
+        const GuiLuaRef root = lua_global_by_name_00b67980(reader, "MultiLobbySettings");
+        const auto integer = [&](const GuiLuaRef& value) {
+            return static_cast<std::int32_t>(reader.to_number(value));  // 00B66290
+        };
+        const auto present = [&](const GuiLuaRef& table, const char* name) {  // !00B65FB0
+            const GuiLuaRef value = reader.get_by_name(table, name);
+            const GuiLuaType type = reader.type_of(value);
+            if (value.valid()) reader.release(value);
+            return type != GuiLuaType::Nil && type != GuiLuaType::None;
+        };
+        // MultiLobbySettings: slot -> option -> the option's own table, each in lua_next order.
+        GuiLuaRef slot{};
+        GuiLuaRef options{};
+        for (bool first = true; reader.type_of(root) == GuiLuaType::Table
+                 && reader.next(root, slot, options, first); first = false) {
+            if (reader.type_of(options) != GuiLuaType::Table) continue;
+            GuiLuaRef option{};
+            GuiLuaRef choices{};
+            for (bool first_option = true; reader.next(options, option, choices, first_option);
+                 first_option = false) {
+                if (reader.type_of(choices) != GuiLuaType::Table) continue;
+                GuiLuaRef key{};
+                GuiLuaRef value{};
+                for (bool first_key = true; reader.next(choices, key, value, first_key);
+                     first_key = false) {
+                    const std::int32_t outer = integer(slot);
+                    const std::int32_t inner = integer(option);
+                    registry.enabled_28[outer][inner] = present(choices, "MenuDIS") ? 0 : 1;
+                    if (present(choices, "Default")) {
+                        if (outer < 0 || outer >= static_cast<std::int32_t>(registry.defaults_40.size())) {
+                            throw std::logic_error("008D2F50 Default outside +40h..+8Ch");
+                        }
+                        registry.defaults_40[static_cast<std::size_t>(outer)] = inner;
+                    }
+                    const GuiLuaType key_type = reader.type_of(key);
+                    if (key_type == GuiLuaType::String && reader.type_of(value) != GuiLuaType::Boolean) {
+                        registry.numbers_1c[outer][inner] = 0;  // a label option
+                    }
+                    if (key_type == GuiLuaType::Number
+                        && static_cast<double>(integer(key)) == reader.to_number(key)) {  // 00B66A60
+                        registry.numbers_1c[outer][inner] = integer(key);
+                    }
+                }
+            }
+        }
+        if (root.valid()) reader.release(root);
+    }
+    // 008D2F50's tail: every map record (the multi records) whose id text is a non-zero
+    // number becomes an enabled slot-1 option keyed by that number, payload its ordinal.
+    std::int32_t ordinal = 0;
+    for (const MissionRecordData& map : tables.multi) {
+        const long number = std::atol(map.screen.name.c_str());
+        if (number == 0) continue;
+        registry.enabled_28[1][static_cast<std::int32_t>(number)] = 1;
+        registry.numbers_1c[1][static_cast<std::int32_t>(number)] = ++ordinal;
+    }
+    registry.loaded = true;
+    lobby.registry = registry;
+    log.implemented("MultiMenu::load_lobby_option_registry", "008d2f50");
+
+    // 005E3290 with 00E19594 = the chosen entry: the availability map is the map record's
+    // +428h when its +424h is set, else registry+28h.
+    lobby.selected_map_00e19594 = skirmish_index;
+    const MissionRecordData& map = tables.multi[menu_record_for_scene_005d7070()];
+    if (map.extra.has_unique_multi_settings) {
+        bsp::lobby_option_defaults_005e3290(lobby.registry, map.extra.unique_multi_settings_by_index,
+            lobby.stored_options_00e1955c);
+    } else {
+        bsp::lobby_option_defaults_005e3290(lobby.registry, lobby.registry.enabled_28,
+            lobby.stored_options_00e1955c);
+    }
+    std::string text;
+    for (std::size_t s = 0; s < lobby.stored_options_00e1955c.size(); ++s) {
+        text += (s == 0 ? "" : ",") + std::to_string(lobby.stored_options_00e1955c[s]);
+    }
+    log.notef("skirmish lobby options (005e3290): map record %s +424h=%d, 00E1955C = {%s}",
+        map.screen.name.c_str(), map.extra.has_unique_multi_settings ? 1 : 0, text.c_str());
+}
+
+// 005D7070 for 00E19594 = the chosen entry. The image takes scene record game+5F0h[index]
+// (one per multi entry, built by 0076FAD0), reads its +1098h uniqueID (29h as 26h, 2Ah as
+// 27h), and returns the first map record whose id text equals it (equal length, then
+// _stricmp), else 0. The host builds only the chosen entry's scene record, so the uniqueID
+// is its header pass's.
+std::size_t GameMissionHost::Impl::menu_record_for_scene_005d7070() const {
+    std::int32_t kind = summary.scene_mission_id;
+    if (kind == 0x29) {
+        kind = 0x26;
+    } else if (kind == 0x2A) {
+        kind = 0x27;
+    }
+    const std::string key = std::to_string(kind);  // 004260B0
+    for (std::size_t i = 0; i < tables.multi.size(); ++i) {
+        const std::string& id = tables.multi[i].screen.name;
+        if (id.size() != key.size()) continue;
+        bool match = true;
+        for (std::size_t c = 0; c < id.size() && match; ++c) {
+            match = std::tolower(static_cast<unsigned char>(id[c]))
+                == std::tolower(static_cast<unsigned char>(key[c]));
+        }
+        if (match) return i;
+    }
+    return 0;
+}
+
+// 005D9C50 over 005D8650's record (005D7070(00E19594)): its +10h contentID.
+std::uint64_t GameMissionHost::Impl::map_content_mask_005d9c50() const {
+    const std::string& name = tables.multi[menu_record_for_scene_005d7070()].extra.content_id;
+    if (name.empty()) return 0;
+    const std::size_t underscore = name.rfind('_');
+    const std::string suffix = name.substr(underscore == std::string::npos ? 0 : underscore + 1);
+    return bsp::lobby_content_mask_005d9c50(static_cast<std::int32_t>(std::atol(suffix.c_str())));
+}
+
+// 005E51D0 (lobby enter), 005E57B0..005E58B7, as the host (+1FE4h == 1).
+void GameMissionHost::Impl::lobby_enter_settings_005e51d0() {
+    bsp::LobbySessionState& lobby = bsp::lobby_session_state();
+    const std::int32_t mode = bsp::effective_game_mode_004bca50(bsp::session_context());
+    lobby.stored_options_00e1955c[2] = mode;                                   // 00E19564
+    if (static_cast<std::uint32_t>(mode) <= 3u) lobby.stored_options_00e1955c[3] = mode;  // 00E19568
+    lobby.selected_map_00e19594 = skirmish_index;                              // 005E57DD, game+60Ch
+    // 005E581C, 005E20A0: from game+60Ch % count, the first map record (cycling) whose
+    // availability [2][00E19564] is 1 becomes the selection. LABELLED: a different pick
+    // means the requested entry disables the mode, which the lobby UI never offers; the
+    // host stops rather than load another map.
+    const std::size_t count = tables.multi.size();  // 00F1AF2C, one scene record per entry
+    std::size_t index = static_cast<std::size_t>(skirmish_index) % count;
+    for (std::size_t tried = 0; tried < count; ++tried) {
+        const MissionRecordData& entry = tables.multi[index];
+        const std::uint8_t on = entry.extra.has_unique_multi_settings
+            ? bsp::lobby_option_flag(entry.extra.unique_multi_settings_by_index, 2, lobby.stored_options_00e1955c[2])
+            : bsp::lobby_option_flag(lobby.registry.enabled_28, 2, lobby.stored_options_00e1955c[2]);
+        if (on == 1) break;
+        index = (count + index + 1) % count;
+    }
+    if (index != static_cast<std::size_t>(skirmish_index)) {
+        throw std::runtime_error("skirmish entry " + tables.multi[static_cast<std::size_t>(skirmish_index)].screen.name
+            + " disables mode " + std::to_string(mode) + " (005E20A0 would select entry "
+            + tables.multi[index].screen.name + ")");
+    }
+    // 005E585A..005E58B7: +2C8h:+2CCh = 005DF510(mode), +2C0h:+2C4h = 005D9C50(mode),
+    // game+2060h/+2064h = their OR. LABELLED: 005DF510 (the VehicleClass unit mask over
+    // every map record) is not modelled and reads 0.
+    lobby.content_mask_2060 = map_content_mask_005d9c50();
+    log.notef("skirmish lobby enter (005e51d0): 00E19564=%d 00E19568=%d 00E19594=%d "
+        "game+2060h=%08x:%08x (005DF510 not modelled)", lobby.stored_options_00e1955c[2],
+        lobby.stored_options_00e1955c[3], lobby.selected_map_00e19594,
+        static_cast<unsigned>(lobby.content_mask_2060 >> 32),
+        static_cast<unsigned>(lobby.content_mask_2060));
+}
+
+// 005DA530 (the lobby's start), as the host. LABELLED: the map list entry (+2F0h/+2F4h)
+// to the command line and 00E195C4 is not represented, and 004C6890(00E19594) is the
+// selection 0076FAD0's binding already made. Then the mask again (005DA61C..005DA64D) and
+// 005D62B0.
+void GameMissionHost::Impl::lobby_apply_selected_map_005da530() {
+    bsp::LobbySessionState& lobby = bsp::lobby_session_state();
+    lobby.content_mask_2060 = map_content_mask_005d9c50();  // +2C8h:+2CCh (005DF510) read as 0
+    // 005D62B0: the mode from 00E19564, or 00E19568 when that is 0..3 (unsigned), set with
+    // forced 0; the fourteen indices copied to game+2020h.
+    std::int32_t mode = lobby.stored_options_00e1955c[2];
+    if (static_cast<std::uint32_t>(mode) < 4u) mode = lobby.stored_options_00e1955c[3];
+    bsp::set_game_mode_004bc890(bsp::session_context(), mode, false);
+    lobby.game_settings_2020 = lobby.stored_options_00e1955c;
+    // 0076C9C0, 00772390 and 00772430 broadcast to peers; a host-only session has none.
+    log.notef("skirmish lobby start (005da530 / 005d62b0): SetGameMode(%d, 0), game+2020h "
+        "takes 00E1955C, broadcasts reach no peer", mode);
 }
 
 void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
