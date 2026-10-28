@@ -158,6 +158,7 @@
 #include "bsp/gun_fire_points.hpp"
 #include "bsp/geom_mesh_resource.hpp"  // GeomMeshResourcePayload, cc9_ship_section_points
 #include "bsp/opportunistic_rocket_cc13.hpp"
+#include "bsp/rocket_target_stop_cc13.hpp"  // cc13-rocketstop, task+38Ch per task
 #include <array>
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
@@ -7194,6 +7195,17 @@ struct GameUnitsHost::Impl {
     void bot_task_ctor_seeds_0099c6f0(GameUnitSlot& unit, bool follow_state,
                                       int follow_constructs = 1) {
         task_gun_block_construct_009faad0(unit);    // 0099C790
+        // cc13-rocketstop, kRocketTargetStopHandlersCc13Bound (include/bsp/
+        // rocket_target_stop_cc13.hpp): the new task's own task+38Ch block. The old
+        // task's Stop (009AA9E0 / 009CD0D0 / 007B7BA0) clears its block and 00999EE0
+        // deletes it; 0099C79C (0099C95C) runs 009FCEF0 on the new one. ABI: none (host
+        // per-plane block). Uncertain: the image's new block leaves +18h unset; the host
+        // keeps the Stop's zero vector there (overwritten by 007B7870 before use).
+        if constexpr (bsp::kRocketTargetStopHandlersCc13Bound && bsp::kOpportunisticRocketBound) {
+            bsp::opportunistic_rocket_clear_target(unit.orx);        // the Stop
+            bsp::opportunistic_rocket_construct_009fcef0(unit.orx);  // 0099C79C
+            unit.orx_owner = 0;
+        }
         if constexpr (kBotTaskCtorSeedsBound) {
             ++bot_task_ctor_seeds;
             const std::string& n = unit.row.name;
@@ -27723,7 +27735,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_opportunistic_rocket_009fd0e0(float dt) {
                         // The dogfight / strafe / rocket Stops clear the target (007B7BA0,
                         // 009AA9E0, 009CD0D0). SUBSTITUTION, labelled: the host clears when
-                        // the task that set it is no longer installed.
+                        // the task that set it is no longer installed. With
+                        // kRocketTargetStopHandlersCc13Bound the task construction
+                        // (bot_task_ctor_seeds_0099c6f0) also rebuilds the block; this
+                        // clear stays for a retire with no new task.
                         if ((unit_.orx_owner == 1 && !unit_.dogfight_task_installed) ||
                             (unit_.orx_owner == 2 && !unit_.strafe_task_installed)) {
                             bsp::opportunistic_rocket_clear_target(unit_.orx);
