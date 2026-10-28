@@ -24,7 +24,11 @@ namespace bsp {
 // not-head-on aim arm ran; it does not persist into maneuver or avoid. The host reseeds in the same order (kPilotPlanReseedBound).
 // True: the not-head-on aim tick stores plan+2B0h = 1.
 // False: unchanged host (+2B0h keeps its previous value, usually 0).
-inline constexpr bool kSeg67bDogfightAimSpeedCorrOffBound = false;
+// ON (cc9-sweep3c, 2026-10-28) by pairs with kDiveReleaseAltActivationOnlyBound on
+// 158d8f092: u01 identical; b9 EndMission 414.02 -> 453.01 s; p01 failed 1098.35 ->
+// 1128.23 s; b6i h1_i LOST (completed 1233.08 -> failed 1004.88 s, the dogfight at
+// ~452 s); j8v3 failed 956.94 s -> no end. Census: differs on every aim tick.
+inline constexpr bool kSeg67bDogfightAimSpeedCorrOffBound = true;
 
 // Packet cc13-para: the level bomber's paratrooper (MParatrooper, kind 31h) path.
 // One switch for the whole mechanism, so the ordnance half (a) cannot run without

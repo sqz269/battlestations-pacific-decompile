@@ -514,7 +514,10 @@ inline constexpr bool kTaskProfileActivationOnlyBound = true;  // GUNNERY 193: O
 // branch as the +398h block. True: with kTaskProfileActivationOnlyBound it runs at
 // activation only, so a non-forced SquadronSetReleaseAlt lasts for the task. False:
 // per think, which ends the script value one think after its 0.5 s countdown.
-inline constexpr bool kDiveReleaseAltActivationOnlyBound = false;
+// ON (cc9-sweep3c, 2026-10-28) by pairs bundled with kSeg67bDogfightAimSpeedCorrOffBound
+// (cc13_seg67b_switches.hpp). The sw3 dive_release_alt census reaches only b9
+// (differs 5 of 57).
+inline constexpr bool kDiveReleaseAltActivationOnlyBound = true;
 
 inline constexpr bool kPlaneRowPositionBound = true;  // ON: mechanism held, one premise miss (docs/CONTROLLED_UNIT.md)
 
