@@ -11417,6 +11417,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         // into a pitch through the same 009FB800 every other
         // state uses, with the commanded altitude as its own
         // reference.  SUBSTITUTION, labelled.
+        // CORRECTION (cc13-tranche2 S25, 2026-10-28): 009F9ED0 is read
+        // (bsp::pitch_command_to_point_009f9ed0, packet cc9_follow_pitch) and runs under
+        // kPlaneFollowFlyToPitch (true) below; the 009FB800 substitution above is the
+        // OFF arm only.
         bsp::PlanePitchCommandInputs pin;
         pin.desired_altitude = cmd.commanded_altitude;
         pin.reference = cmd.commanded_altitude;
