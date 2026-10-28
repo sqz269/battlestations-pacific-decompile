@@ -34,6 +34,26 @@
 // the other mode-1 callers) see falling wrecks until removal and miss a plane that came
 // within R since the last refresh; 007DF4F0's vehicle avoidance refreshes on the fixed
 // step clock.
+//
+// CORRECTION (rev7 S22 FIX + NITs):
+//  * Mover: 007DF360 target_reachable_007df360 (game_hosts_units.cpp, under
+//    kTorpedoLineOfSightBound, ON on main) walks the same nb_near_30, as the image's
+//    007DF360 walks [C50h+30h]. With this switch ON that list refreshes every fixed step,
+//    so torpedo +A9h reachability answers move when it flips.
+//  * Mover: with kStreamSet2SharedDrawsCc13Bound also ON, nb_seed_clocks' stream-1 draws
+//    happen at the first fixed step for every C50h plane (not at that plane's first
+//    think), which reorders the shared stream.
+//  * Label wording: 007E2010 is a plane sub-node (007E1E20 -> 00876020 Reparent, +18h = 2,
+//    under unit+310h), so it runs in wave 2, after wave 1's pose step and before the wave-3
+//    consumers. There is no step lead; the only difference is that the host pass measures
+//    before the pose move, the existing kPlanePoseFirstBound substitution. The pass now
+//    runs before S19's squadron seed, as the plane sub-nodes run before the group-3
+//    squadron node.
+//  * LABELLED split: the image's single +7Ch clock refreshes +30h, +50h and +70h together,
+//    and 007E2010's early return clears all three. Under ON only the +30h copy moves to
+//    the fixed step; nb_clock_70 (friendly_in_line_clock_007e2010, with +80h) and the +50h
+//    list stay on the think.
+//  * The OFF arm of 007F0280's walk is the pre-S22 loop verbatim (no candidate copy).
 
 namespace bsp {
 

@@ -13785,6 +13785,14 @@ void GameUnitsHost::Impl::nb_near_30_tick_007e2010(GameUnitSlot& u, float dt) {
 // 0 or 1 and unit+54h != [[game]+5FCh]+908h; kSceneDefaultDummyAi stands in for +908h,
 // as at 009A184A. LABELLED: run at the start of the units' fixed step, while the plane
 // is in the world.
+// CORRECTION (rev7 S22 NIT 1): not a step lead. 007E2010 runs in wave 2 as a plane
+// sub-node, after the pose step; measuring before the host's pose move is the existing
+// kPlanePoseFirstBound substitution.
+// LABELLED split (rev7 S22 NIT 3): the image's one +7Ch clock refreshes +30h, +50h and
+// +70h together, and 007E2010's early return clears all three. Under ON only the +30h
+// copy (nb_clock_30) moves to the fixed step; the +70h copy (nb_clock_70, with the +80h
+// clock, friendly_in_line_clock_007e2010) and the +50h list stay on the think, so their
+// phases can drift from +30h's.
 bool GameUnitsHost::Impl::nb_has_object_c50(const GameUnitSlot& u) const {
     return u.row.party != bsp::kSceneDefaultDummyAi;
 }
@@ -23600,15 +23608,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     // to the planes' are not modelled), so a round dropped in this step's rack
     // tick first runs in the next step.
     host.para_round_step(step_seconds);
-    // Packet cc13-tranche2 S19: squadrons first seen this step take 007F2D5B's
-    // +3C4h draw here; their 007F3BA0 tick runs at the end of the step (below).
-    if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
-        host.squadron_wingmen_recount_seed();
-    }
     // Packet cc13-tranche2 S22: the unit+C50h objects' 007E2010 tick for the +30h list.
     // LABELLED order: ahead of the planes' ticks.
+    // CORRECTION (rev7 S22 NIT 1/2): 007E2010 is a plane sub-node (007E1E20 -> 00876020
+    // Reparent, +18h = 2, under unit+310h), so the image runs it in wave 2, after wave
+    // 1's pose step and before the wave-3 consumers: there is no step lead. The one
+    // difference is that this pass measures before the host's pose move, the existing
+    // kPlanePoseFirstBound substitution. It now also runs before the S19 seed below, as
+    // the image runs the plane sub-nodes before the group-3 squadron node.
     if constexpr (bsp::kNearFieldProbeCachedListCc13Bound) {
         host.nb_near_30_fixed_step(step_seconds);
+    }
+    // Packet cc13-tranche2 S19: squadrons first seen this step take 007F2D5B's
+    // +3C4h draw here; their 007F3BA0 tick runs at the end of the step (below).
+    // LABELLED: the order of this draw against the S22 pass's first-step
+    // nb_seed_clocks draws (both stream 1) follows the tick order above; the
+    // image's 007F2D5B / 007E1F94 construction order is not traced.
+    if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
+        host.squadron_wingmen_recount_seed();
     }
     if constexpr (Impl::kPlayerRoleBookkeepingBound) {
         if constexpr (Impl::kRoleScreenFixedStepCall) {
@@ -28458,24 +28475,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         std::vector<bsp::NearFieldCandidate> cands;
                         const float reach = extents[0] + extents[1] + extents[2];
-                        std::vector<std::size_t> walk;
                         if constexpr (bsp::kNearFieldProbeCachedListCc13Bound) {
-                            walk = unit_.nb_near_30;                   // 007F03B1 [C50h+30h]
-                        } else {
-                            walk.reserve(owner_.slots.size());
-                            for (std::size_t j = 0; j < owner_.slots.size(); ++j) walk.push_back(j);
-                        }
-                        for (const std::size_t j : walk) {
-                            if (j >= owner_.slots.size()) continue;
-                            if (j == unit_.process_index) continue;   // 007F056F
-                            const GameUnitSlot& o = *owner_.slots[j];
-                            if constexpr (bsp::kNearFieldProbeCachedListCc13Bound) {
+                            for (const std::size_t j : unit_.nb_near_30) {   // 007F03B1 [C50h+30h]
+                                if (j >= owner_.slots.size()) continue;
+                                if (j == unit_.process_index) continue;   // 007F056F
+                                const GameUnitSlot& o = *owner_.slots[j];
                                 // No live test in the walk; a member leaves the list when
                                 // its slot leaves the world (its observer, labelled).
                                 if (!GameUnitsHost::Impl::nb_in_world(o)) continue;
-                            } else {
-                                if (!df_slot_live(o)) continue;
+                                if (!bsp::unit_is_kind_of(o.class_id, 0x0F)) continue;  // 007F03D8
+                                const double dx = static_cast<double>(o.motion.position[0]) - unit_.motion.position[0];
+                                const double dy = static_cast<double>(o.motion.position[1]) - unit_.motion.position[1];
+                                const double dz = static_cast<double>(o.motion.position[2]) - unit_.motion.position[2];
+                                if (dx * dx + dy * dy + dz * dz > static_cast<double>(reach) * reach) continue;
+                                bsp::NearFieldCandidate c;
+                                float pp[3] = {o.motion.position[0], o.motion.position[1], o.motion.position[2]};
+                                df_local(pp, c.local);
+                                c.formation_index_9d0 = nf_formation_index_9d0(j);
+                                cands.push_back(c);
                             }
+                        } else
+                        for (std::size_t j = 0; j < owner_.slots.size(); ++j) {
+                            if (j == unit_.process_index) continue;   // 007F056F
+                            const GameUnitSlot& o = *owner_.slots[j];
+                            if (!df_slot_live(o)) continue;
                             if (!bsp::unit_is_kind_of(o.class_id, 0x0F)) continue;  // 007F03D8
                             const double dx = static_cast<double>(o.motion.position[0]) - unit_.motion.position[0];
                             const double dy = static_cast<double>(o.motion.position[1]) - unit_.motion.position[1];
@@ -34649,6 +34672,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // lead range. ABI: inline in 009C62B0. Uncertain: the
                             // host's 007F0280 candidate set (live 0Fh units in the
                             // reach prefilter) stands for [unit+C50h]+30h's list.
+                            // CORRECTION (cc13-tranche2 S22): with
+                            // bsp::kNearFieldProbeCachedListCc13Bound ON the probe
+                            // walks the real +30h list (nb_near_30), refreshed on
+                            // the fixed-step 3 s clock.
                             const bool b18 = unit_.db_flyabove_can_dive_18;
                             float ext[3];
                             bsp::near_field_flyover_extents_009c6aa3(b18, ext);

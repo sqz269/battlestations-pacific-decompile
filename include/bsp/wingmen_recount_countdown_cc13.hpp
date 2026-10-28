@@ -34,6 +34,14 @@
 // 007B95E0 reads the previous step's recount. ON runs it at the end of the units' fixed
 // step; a squadron created during a step is first ticked the next step. An unordered
 // compare (a NaN) takes the t -= step arm, as 007F3C41's JC does.
+// LABELLED (rev4 NIT 1): a squadron added between steps by a script or Lua creator
+// (scene_contents :2010, script_orders :1108/1219/1376) ticks one step earlier than in
+// the image, where 00874C90 splices the node in after wave 3. Scene-load squadrons are
+// unaffected.
+// LABELLED (rev4 NIT 2): the seed reuses gunnery's Draw::death_mode keyed (leader, 0),
+// so under BSP_GUNNERY_RNG_STREAMS=1 it shares a key with the leader's own death-mode
+// draw. The default shared stream 1 is unaffected; no dedicated draw kind was added
+// (the Draw enum is a cc9 file).
 
 namespace bsp {
 
