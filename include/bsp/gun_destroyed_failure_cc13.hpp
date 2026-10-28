@@ -51,6 +51,6 @@ namespace bsp {
 // 0081F980) have no host reader.
 // Movers: none OFF. ON alone: none either, since nothing damages a gun until packet C
 // (device hits) calls apply_gun_damage_00728080. Inert alone; pairs with C.
-inline constexpr bool kGunDestroyedFailureCc13Bound = false;
+inline constexpr bool kGunDestroyedFailureCc13Bound = true;   // ON: SHIP_AI 330.2
 
 }  // namespace bsp

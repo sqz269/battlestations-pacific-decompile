@@ -456,7 +456,7 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // SUBSTITUTION, labelled: motion.linear_velocity and motion.pose_row2 stand in for
 // the image's 00C31F40 (velocity) and 00C32000 (matrix) on [unit+D08h]+2Ch.
 // True: per-op float in that order. False: the double chain rounded once.
-inline constexpr bool kSubmarineSeabedSpeedPc24Cc13Bound = false;
+inline constexpr bool kSubmarineSeabedSpeedPc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 
 // Packet cc9_submarine_dive_teleport (docs/SUBMARINE_MODEL.md section 15). True: a
 // submarine whose scene row authors `Dive` is placed at bands[Dive] at attach

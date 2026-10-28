@@ -119,13 +119,36 @@
 #include "bsp/segment_distance_2d_cc13.hpp"  // packet cc13-p3b
 #include "bsp/torpedo_candidate_gyro_heading_cc13.hpp"  // packet cc13-torpgyro
 
+namespace bsp {
+TorpedoGyroHeadingCensus& torpedo_gyro_heading_census() noexcept {
+    static TorpedoGyroHeadingCensus census;
+    return census;
+}
+} // namespace bsp
+
 namespace bsp::game {
+
+namespace {
+// Census for kTorpedoCandidateGyroHeadingCc13Bound (cc9-nondet1, log only): whether the
+// commanded heading and the velocity's atan2(x, z) differ by more than 1e-3 rad.
+bool torpedo_gyro_heading_differs(float commanded, float vx, float vz) noexcept {
+    constexpr double kPi = 3.14159265358979323846;
+    double d = static_cast<double>(commanded)
+        - std::atan2(static_cast<double>(vx), static_cast<double>(vz));
+    // The 10000 sentinel (and any non-angle) always counts.
+    if (!(std::fabs(commanded) < 100.0f) || !(std::fabs(d) < 1.0e6)) return true;
+    d = std::fmod(d, 2.0 * kPi);
+    if (d > kPi) d -= 2.0 * kPi;
+    if (d < -kPi) d += 2.0 * kPi;
+    return std::fabs(d) > 1.0e-3;
+}
+} // namespace
 
 // cc13-D6. 009E5E00 returns brain+0B20h only when that target answers
 // vtable[5Ch](1Ch) (a CommandBuilding), else 0. False: the host returns +0B20h
 // unchecked, which matches while standoff mode 4 (the only caller, 009E6B85) keeps
 // the kind-1Ch target it latched with. cc9 orders and pairs the flip.
-inline constexpr bool kEngagementTargetKindTestCc13Bound = false;
+inline constexpr bool kEngagementTargetKindTestCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 // Packet cc9_ship_firepower, docs/SHIP_AI_FIREPOWER.md. True: the eight
 // predicates 0095EB40 asks about a mount answer from the gun rows the gunnery
 // host keeps (barrel timers, arcs, the refined projectile sub-type, the Bullets
@@ -2099,6 +2122,10 @@ struct GameShipAiHost::Impl {
             in.torpedo_position[0] = head->position[0];
             in.torpedo_position[1] = head->position[1];
             in.torpedo_position[2] = head->position[2];
+            ++bsp::torpedo_gyro_heading_census().threat_reads;
+            if (torpedo_gyro_heading_differs(head->commanded_heading_46c, head->velocity[0],
+                                             head->velocity[2]))
+                ++bsp::torpedo_gyro_heading_census().threat_differs;
             if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
                 in.torpedo_heading = head->commanded_heading_46c;   // 00817535
             } else {
@@ -2114,6 +2141,10 @@ struct GameShipAiHost::Impl {
             in.torpedo_position[0] = t.position[0];
             in.torpedo_position[1] = t.position[1];
             in.torpedo_position[2] = t.position[2];
+            ++bsp::torpedo_gyro_heading_census().threat_reads;
+            if (torpedo_gyro_heading_differs(t.commanded_heading_46c, t.velocity[0],
+                                             t.velocity[2]))
+                ++bsp::torpedo_gyro_heading_census().threat_differs;
             if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
                 in.torpedo_heading = t.commanded_heading_46c;       // 00817535
             } else {
@@ -2232,6 +2263,9 @@ struct GameShipAiHost::Impl {
         c.z = t.position[2];
         c.vx = t.velocity[0];
         c.vz = t.velocity[2];
+        ++bsp::torpedo_gyro_heading_census().track_reads;
+        if (torpedo_gyro_heading_differs(t.commanded_heading_46c, t.velocity[0], t.velocity[2]))
+            ++bsp::torpedo_gyro_heading_census().track_differs;
         if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
             // 009DC0F9: record+46Ch, the round's commanded heading.
             c.heading = t.commanded_heading_46c;

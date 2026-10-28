@@ -1015,6 +1015,21 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
                     record.world[8 + lane] = forward[lane];
                 }
             }
+        } else {
+            // DIAGNOSTIC (cc9-physics29): the OFF census, whether the ON arm would
+            // replace the identity axes (the owner's rows differ from identity).
+            float right[3], up[3], forward[3], translation[3];
+            if (units_.unit_pose(owner, right, up, forward, translation)) {
+                double dev = 0.0;
+                for (int lane = 0; lane < 3; ++lane) {
+                    dev = std::max(dev, std::fabs(static_cast<double>(right[lane]) - (lane == 0)));
+                    dev = std::max(dev, std::fabs(static_cast<double>(up[lane]) - (lane == 1)));
+                    dev = std::max(dev, std::fabs(static_cast<double>(forward[lane]) - (lane == 2)));
+                }
+                log_.notef("air ops launch axes census: squadron=%s owner=%s identity=%d "
+                    "max_dev=%.4f (kBaseLaunchAxesCc13Bound OFF, cc9-physics29 diagnostic)",
+                    record.name.c_str(), home_base.c_str(), dev == 0.0 ? 1 : 0, dev);
+            }
         }
     }
     // cc13-tier1, kAirOpsLaunchFlagAirborneBound (include/bsp/

@@ -15,6 +15,7 @@
 #include "bsp/pc24_gunnery_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/aim_lead_body_axis_cc13.hpp"
+#include "bsp/torpedo_candidate_gyro_heading_cc13.hpp"
 #include "bsp/plane_issue_threshold_cc13.hpp"
 #include "bsp/stream_set2_cc13.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"
@@ -212,6 +213,7 @@
 #include "bsp/pc24_shipai_cc13.hpp"           // pc24w1-sweep2-3 (0074F490)
 #include "bsp/pc24_flightrender_cc13.hpp"     // pc24w1-sweep1-3 (007DB4D0)
 #include "bsp/pc24_planetasks_cc13.hpp"       // pc24w1-sweep3-5 (sites at each body)
+#include "bsp/flyabove_lead_bearing_pc24_cc13.hpp"  // cc13-flybearing
 #include "bsp/dive_flyabove_avoid_increment_cc13.hpp"  // cc13-flyavoid, 009C6D59
 #include "bsp/session_context_cc13.hpp"  // cc13-mp1 (MP2a)
 
@@ -3165,7 +3167,7 @@ struct GameUnitsHost::Impl {
         // +3Dh ended, so one command is ended once.
         std::uint32_t fighter_ended_command{0};
     };
-    unsigned long long moveto_self_issues{0}, moveto_self_placed{0};
+    unsigned long long moveto_self_issues{0}, moveto_self_placed{0}, moveto_self_wings{0};
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
     // Packet cc13-steptail (kSquadronGeneralStepTailBound): the head the general
     // tail last issued on, so it issues once per head.
@@ -5891,10 +5893,25 @@ struct GameUnitsHost::Impl {
                 (lead_d2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
                     ? 0.0f : static_cast<float>(std::sqrt(lead_d2));
             }
-            float lead_bearing = static_cast<float>(
+            float lead_bearing = 0.0f;
+            if constexpr (bsp::kFlyaboveLeadBearingPc24Cc13Bound) {
+                // cc13-flybearing (rev7 PC24 debt): 009C63C4 FSTP dword stores the
+                // 00BF701A atan2 as a float, 009C63CC FSUBR qword [00CE3830] (pi/2,
+                // the float widened) rounds at PC24, 009C63D2 FSTP dword. ABI:
+                // inline in 009C62B0. FPATAN ignores PC (00BF701A is a CRT trandisp
+                // stub that sets its own control word), so the image's atan2 result is
+                // rounded to float once at 009C63C4. Residual: CRT double atan2 vs x87
+                // FPATAN last-ulp.
+                const float atan2_f = static_cast<float>(
+                    std::atan2(static_cast<double>(lead_z), static_cast<double>(lead_x)));
+                lead_bearing = static_cast<float>(bsp::cc13x87::x87_sub24(
+                    bsp::dive_bomb_constant::kHalfPi, atan2_f));
+            } else {
+            lead_bearing = static_cast<float>(
                 bsp::dive_bomb_constant::kHalfPi -
                 std::atan2(static_cast<double>(lead_z),
                            static_cast<double>(lead_x)));
+            }
             if (lead_bearing < 0.0f) {
                 lead_bearing +=
                     static_cast<float>(bsp::dive_bomb_constant::kTwoPi);
@@ -6729,7 +6746,7 @@ struct GameUnitsHost::Impl {
     // as the dot ((DCh * 0) + E0h) + (E4h * 0) and gates the throttled arm on
     // unit+9F0h > 0 (COMISS / JBE, so NaN fails). Finite inputs are identical
     // either way. False: E0h alone and the helper's !(thr <= 0) gate.
-    static constexpr bool kWaterRateFactorsNanOrderCc13Bound = false;
+    static constexpr bool kWaterRateFactorsNanOrderCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
     // kPlaneDeadMeatRollBound / kPlaneWreckForwardDragBound step counts.
     unsigned long long dead_meat_roll_steps{0};
     unsigned long long dead_meat_spin_steps{0};
@@ -7336,6 +7353,18 @@ struct GameUnitsHost::Impl {
         // deletes it; 0099C79C (0099C95C) runs 009FCEF0 on the new one. ABI: none (host
         // per-plane block). Uncertain: the image's new block leaves +18h unset; the host
         // keeps the Stop's zero vector there (overwritten by 007B7870 before use).
+        if constexpr (bsp::kOpportunisticRocketBound) {
+            // Census (cc9-nondet1, log only): installs that find the block off its
+            // 009FCEF0 reset state, which the switch would reset.
+            const bsp::OpportunisticRocketState& o = unit.orx;
+            ++rocket_stop_installs_;
+            if (o.class_00 != bsp::OpportunisticRocketClass::kNone || o.salvo_left_0c != 0
+                || o.check_timer_10 != bsp::opportunistic_rocket::kTimerSeed
+                || o.delay_timer_14 != bsp::opportunistic_rocket::kTimerSeed
+                || o.target_plus_one_38 != 0 || o.target_is_plane_3c
+                || o.rocket_plus_one_58 != 0)
+                ++rocket_stop_not_reset_;
+        }
         if constexpr (bsp::kRocketTargetStopHandlersCc13Bound && bsp::kOpportunisticRocketBound) {
             bsp::opportunistic_rocket_clear_target(unit.orx);        // the Stop
             bsp::opportunistic_rocket_construct_009fcef0(unit.orx);  // 0099C79C
@@ -8281,6 +8310,15 @@ struct GameUnitsHost::Impl {
     // ON (SQUADRON_LAND_TASK 5hm): unit+184h is the player flag, so an AI squadron's
     // moveto-self is raised to stage 2 at once (0084E0A4) and the image churns too.
     static constexpr bool kSquadronMoveToSelfBound = true;
+    // Packet s65_moveto_self_wing_follow (SHIP_AI 329.2, 330). 0084E5A8 puts the
+    // moveto-self into the squadron's own director, and each wing's bot takes it
+    // through 0099A170's member arm: the kind-7 moveto task (009C3000) runs the
+    // follow state 009C1FD0 on the leader for every non-leader member. SUBSTITUTION,
+    // labelled, as 009F8615's stop head (cc13-stophead): the host stands each member in
+    // for the director, so the moveto-self also goes to every live wing member once it
+    // is placed. False: the leader's row only, and the wings, whose rows
+    // retire_ended_command_rows stripped, idle on the director tail and fly straight.
+    static constexpr bool kSquadronMoveToSelfWingFollowBound = false;
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -11644,6 +11682,9 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // aim_point_009fada0's tail, and those whose ON (body axis) lead point lies more
     // than 1e-3 m from the OFF (level heading) one.
     unsigned long long aim_lead_axis_calls_{0}, aim_lead_axis_differs_{0};
+    // Census for kRocketTargetStopHandlersCc13Bound (cc9-nondet1, log only): task
+    // installs, and those whose rocket block is not at its reset state.
+    unsigned long long rocket_stop_installs_{0}, rocket_stop_not_reset_{0};
 
     // Packet cc9_aim_error_draw: 009C3DA0 (dive) / 009D02A0 (torpedo). The
     // three draws go through release_altitude_draw_00bd2f10, the stream-1
@@ -21320,6 +21361,22 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                                      "0084E595 moveto-self",
                                      h.slots[sq.squadron_unit]->row.name) != nullptr) {
                 ++placed;
+            }
+            if constexpr (Impl::kSquadronMoveToSelfWingFollowBound) {
+                std::size_t wings = 0;
+                for (const std::size_t m : sq.member_units) {
+                    if (placed == 0 || m == bsp::kPlaneSquadronNoUnit || m >= h.slots.size()
+                        || m == sq.squadron_unit || gun->unit_dead(m)) continue;
+                    if (issue_script_command(m, 0x00E08F68u, target, 1,
+                            "0084E595 moveto-self wing",
+                            h.slots[sq.squadron_unit]->row.name) != nullptr) {
+                        ++wings;
+                    }
+                }
+                h.moveto_self_wings += wings;
+                h.log.notef("squadron moveto-self wings: \"%s\" at %.2f s wings=%zu (0099A170 "
+                    "member arm, packet s65_moveto_self_wing_follow)", sq.name.c_str(),
+                    static_cast<double>(now), wings);
             }
             st.moveto_self = true;
             ++h.moveto_self_issues;
@@ -48075,6 +48132,17 @@ void GameUnitsHost::report() {
         "(009FADA0 tail / 00812090, ON vs OFF lead > 1e-3 m)",
         bsp::kAimLeadBodyAxisCc13Bound ? 1 : 0, host.aim_lead_axis_calls_,
         host.aim_lead_axis_differs_);
+    {
+        const bsp::TorpedoGyroHeadingCensus& tg = bsp::torpedo_gyro_heading_census();
+        host.log.notef("summary torpedo gyro heading census bound=%d track_reads=%llu "
+            "track_differs=%llu threat_reads=%llu threat_differs=%llu (009DC0F9 / 00817535, "
+            "+46Ch vs atan2(v) > 1e-3 rad)", bsp::kTorpedoCandidateGyroHeadingCc13Bound ? 1 : 0,
+            tg.track_reads, tg.track_differs, tg.threat_reads, tg.threat_differs);
+    }
+    host.log.notef("summary rocket target stop census bound=%d installs=%llu not_reset=%llu "
+        "(0099C79C 009FCEF0 reset at task install)",
+        bsp::kRocketTargetStopHandlersCc13Bound ? 1 : 0, host.rocket_stop_installs_,
+        host.rocket_stop_not_reset_);
     host.log.notef("summary ship exit zone bound=%d calls=%llu counting=%llu warnings=%llu "
         "kills=%llu (00826D70 / 00811F50 / 0081BEB0, packet cc9_ship_exit_zone)",
         GameUnitsHost::Impl::kShipOutOfMapExitBound ? 1 : 0, host.ship_exit_calls,
