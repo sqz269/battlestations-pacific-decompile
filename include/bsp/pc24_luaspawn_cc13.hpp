@@ -13,6 +13,7 @@
 
 namespace bsp {
 
-inline constexpr bool kPc24LuaSpawnCc13Bound = false;
+// ON (cc9-recon2): flipped with kPc24MissionLuaCc13Bound; 18 WINS-row pairs on afa0394fc.
+inline constexpr bool kPc24LuaSpawnCc13Bound = true;
 
 }  // namespace bsp

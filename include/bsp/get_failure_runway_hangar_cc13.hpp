@@ -40,6 +40,9 @@ namespace bsp {
 // Lua only: the switch covers 0088F1D0 alone. shipglobals.lua's FailureName rows also
 // name RunwayFailure and HangarFailure (the section path, 0093BED0 / 0093C300). A
 // native caller of vtable+198h with those names is not covered here.
-inline constexpr bool kGetFailureRunwayHangarCc13Bound = false;
+// ON (cc9-recon2, unreached): of the installation's 454 .lua files, every GetFailure
+// call names "InferiorFailure"; RunwayFailure / HangarFailure appear only in
+// SetFailure calls (BSM09, ESMP03) and in the datatables.
+inline constexpr bool kGetFailureRunwayHangarCc13Bound = true;
 
 }  // namespace bsp
