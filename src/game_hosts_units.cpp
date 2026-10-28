@@ -135,6 +135,7 @@
 #include "bsp/racked_round_entity_cc13.hpp"        // packet cc13-rackround
 #include "bsp/squadron_ammo_type_rack_round_cc13.hpp"  // packet cc13-ammort
 #include "bsp/squadron_ammo_dummy_kinds_cc13.hpp"  // packet cc13-ammodk
+#include "bsp/approach_aim_freeze_cc13.hpp"  // packet cc13-aimfreeze3
 #include "bsp/director_update_arms.hpp"            // packet cc13-leash: 0080DC70
 #include "bsp/director_target_gate.hpp"
 #include "bsp/plane_squadron_entity.hpp"
@@ -1454,6 +1455,12 @@ struct GameUnitSlot {
     bsp::ApproachTargetRefState hull_aim_ref{};
     std::size_t hull_aim_target_plus_one{0};
     std::uint32_t hull_aim_seed{0};
+    // Packet cc13-aimfreeze3 (include/bsp/approach_aim_freeze_cc13.hpp): the task whose
+    // aim_point_freeze_009fada0 call latched hull_aim_ref (0 none, 1 dive, 2 level bomb,
+    // 3 torpedo), and the last point that wrapper returned unlatched (sub+1Ch with its
+    // lead, which 009FAF90 transforms again).
+    std::uint8_t aim_freeze_task{0};
+    std::array<float, 3> aim_freeze_last_point{{0.0f, 0.0f, 0.0f}};
     // Packet cc9_hull_axis: the target the in-range print last fired for, so
     // it fires once per (attacker, target). Diagnostic only, behind the switch.
     std::size_t hull_aim_range_printed_plus_one{0};
@@ -5624,7 +5631,20 @@ struct GameUnitsHost::Impl {
         float tp_hull[3] = {slots[ti]->motion.position[0],
                             slots[ti]->motion.position[1],
                             slots[ti]->motion.position[2]};
-        aim_point_009fada0(slot, *slots[ti], ti + 1, tp_hull, &log);
+        if constexpr (bsp::kDiveAimPointFreezeCc13Bound) {
+            // Packet cc13-aimfreeze3: 009FADA0's death head, then 009C7B03 CMP [ESI+48h],0
+            // / JZ 009C7E91: with sub+18h cleared, +D0h = 0 and the body returns.
+            // approach+50h is sub+20h, so it reads the frozen height.
+            (void)aim_point_freeze_009fada0(slot, slots[ti].get(), ti + 1, tp_hull, 1, &log);
+            if (slot.hull_aim_ref.frozen && slot.aim_freeze_task == 1) {
+                if (kFlyoverSpeedBound) slot.db_aim_point_height_50 = tp_hull[1];
+                ++aim_freeze_early_outs_[1];
+                slot.db_in_range_d0 = false;
+                return;
+            }
+        } else {
+            aim_point_009fada0(slot, *slots[ti], ti + 1, tp_hull, &log);
+        }
         const float* const tp = tp_hull;
         // Packet cc9_flyover_speed: approach+50h is sub+20h, the aim point's
         // height that 009FADA0 stores at 009FAEF5 every tick. The enter-time
@@ -6073,7 +6093,18 @@ struct GameUnitsHost::Impl {
             const float* const own_p = slot.motion.position;
             float target_p[3] = {own_p[0], own_p[1], own_p[2]};
             float target_v[3] = {0.0f, 0.0f, 0.0f};
-            if (slot.command_target_plus_one != 0) {
+            // Packet cc13-aimfreeze3: a latched ref answers its frozen point with or
+            // without the target, and 009FA2E0 then finds sub+14h and sub+18h both null
+            // and returns the vector at 00F87574 (taken as zero, LABELLED), the default
+            // target_v already holds.
+            bool frozen_point = false;
+            if constexpr (bsp::kDiveAimPointFreezeCc13Bound) {
+                if (const float* fp = aim_freeze_point(slot, slot.command_target_plus_one, 1)) {
+                    for (int i = 0; i < 3; ++i) target_p[i] = fp[i];
+                    frozen_point = true;
+                }
+            }
+            if (!frozen_point && slot.command_target_plus_one != 0) {
                 const std::size_t ti = slot.command_target_plus_one - 1;
                 if (ti < slots.size()) {
                     const GameUnitSlot& tgt = *slots[ti];
@@ -6319,7 +6350,13 @@ struct GameUnitsHost::Impl {
         // 009C59BA-009C5C9B, reconstructed.
         bsp::DiveBombAimErrorInputs e;
         float target_y = slot.motion.position[1];
-        if (slot.command_target_plus_one != 0) {
+        const float* frozen_59cd = nullptr;
+        if constexpr (bsp::kDiveAimPointFreezeCc13Bound) {
+            // Packet cc13-aimfreeze3: approach->vtable[0] answers the frozen sub+1Ch.
+            frozen_59cd = aim_freeze_point(slot, slot.command_target_plus_one, 1);
+            if (frozen_59cd != nullptr) target_y = frozen_59cd[1];
+        }
+        if (frozen_59cd == nullptr && slot.command_target_plus_one != 0) {
             const std::size_t ti = slot.command_target_plus_one - 1;
             if (ti < slots.size()) {
                 // 009C59CD: the aimdive height [ESP+14h] is unit+100h less
@@ -6503,7 +6540,13 @@ struct GameUnitsHost::Impl {
         // = 210.0, so with the 50.0 margin the glide release opens below 260 m.
         {
             float target_y = slot.motion.position[1];
-            if (slot.command_target_plus_one != 0) {
+            const float* frozen_5278 = nullptr;
+            if constexpr (bsp::kDiveAimPointFreezeCc13Bound) {
+                // Packet cc13-aimfreeze3: approach->vtable[0] answers the frozen sub+1Ch.
+                frozen_5278 = aim_freeze_point(slot, slot.command_target_plus_one, 1);
+                if (frozen_5278 != nullptr) target_y = frozen_5278[1];
+            }
+            if (frozen_5278 == nullptr && slot.command_target_plus_one != 0) {
                 const std::size_t ti = slot.command_target_plus_one - 1;
                 if (ti < slots.size()) {
                     // 009C5278: the aimglide height is taken to approach->vtable[0],
@@ -11951,6 +11994,23 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     bool aim_point_009fada0(GameUnitSlot& shooter, const GameUnitSlot& target,
                             std::size_t target_plus_one, float out[3],
                             GameHostLog* log_out = nullptr);
+    // Packet cc13-aimfreeze3: aim_point_009fada0 with 009FADA0's death head and
+    // 009FAF90's notify, for the switched approach ticks only (dive 009C7A9F, level bomb
+    // 009B7CA1, torpedo 009D34BB; task 1 / 2 / 3), the one place the image runs 009FADA0.
+    // `target` may be null: a latched ref still answers its frozen point. False when
+    // there is no target and no latch (the caller's fallback stands).
+    // aim_freeze_point is the approach->vtable[0] reader's side: the frozen sub+1Ch when
+    // the shooter's ref is latched for `task` (and bound to `target_plus_one`, unless 0),
+    // else null and the caller computes as before.
+    const float* aim_freeze_point(GameUnitSlot& shooter, std::size_t target_plus_one,
+                                  std::uint8_t task);
+    bool aim_point_freeze_009fada0(GameUnitSlot& shooter, const GameUnitSlot* target,
+                                   std::size_t target_plus_one, float out[3],
+                                   std::uint8_t task, GameHostLog* log_out = nullptr);
+    // cc13-aimfreeze3 census (ON only), indexed by task 1..3: death-head freezes,
+    // 009FAF90 double transforms, frozen answers, approach early-outs.
+    unsigned long long aim_freeze_heads_[4]{}, aim_freeze_doubles_[4]{},
+        aim_freeze_reads_[4]{}, aim_freeze_early_outs_[4]{};
     // cc13-kzpick: 009FA260 alone on the shooter's hull aim ref (the pick
     // 009ABF60's tail makes at 009AC09E), with no world point taken and no lead.
     void hull_aim_pick_009fa260(GameUnitSlot& shooter, const GameUnitSlot& target,
@@ -14083,6 +14143,78 @@ bool GameUnitsHost::Impl::aim_point_009fada0(GameUnitSlot& shooter,
     }
     for (int i = 0; i < 3; ++i) out[i] = lead.world_point_1c[i];
     return hull;
+}
+
+// Packet cc13-aimfreeze3 (include/bsp/approach_aim_freeze_cc13.hpp).
+const float* GameUnitsHost::Impl::aim_freeze_point(GameUnitSlot& shooter,
+                                                   std::size_t target_plus_one,
+                                                   std::uint8_t task) {
+    const bsp::ApproachTargetRefState& st = shooter.hull_aim_ref;
+    if (!st.frozen || shooter.aim_freeze_task != task) return nullptr;
+    if (target_plus_one != 0 && target_plus_one != shooter.hull_aim_target_plus_one)
+        return nullptr;
+    ++aim_freeze_reads_[task & 3];
+    return st.world_point_1c.data();
+}
+
+bool GameUnitsHost::Impl::aim_point_freeze_009fada0(GameUnitSlot& shooter,
+                                                    const GameUnitSlot* target,
+                                                    std::size_t target_plus_one,
+                                                    float out[3], std::uint8_t task,
+                                                    GameHostLog* log_out) {
+    bsp::ApproachTargetRefState& st = shooter.hull_aim_ref;
+    const bool bound = target != nullptr && target_plus_one != 0
+        && shooter.hull_aim_target_plus_one == target_plus_one;
+    // sub+18h clear: 009FADA0 does nothing more and sub+1Ch stays as it is.
+    if (const float* fp = aim_freeze_point(shooter, target != nullptr ? target_plus_one : 0,
+                                           task)) {
+        for (int i = 0; i < 3; ++i) out[i] = fp[i];
+        return true;
+    }
+    if (target == nullptr) return false;
+    if (bound && !st.frozen) {
+        const bool marked_5d = target->state != nullptr && target->state->simulate != 0;
+        const bool destroyed_5e = target->scene_destroyed_005e != 0;
+        if (destroyed_5e) {
+            // 009FAF90 (observer slot +4h), LABELLED: the drain's notify reached the ref
+            // before any tick saw +5Dh. 009FAFA6..: sub+1Ch = M x sub+1Ch, the last point
+            // with its lead transformed again; 009FAFF4/009FAFF7 clear sub+18h/sub+14h,
+            // sub+40h and sub+41h are cleared too.
+            std::array<float, 3> w{};
+            bsp::transform_point_004142e0(shooter.aim_freeze_last_point, target->world, w);
+            st.world_point_1c = w;
+            st.tracking = false;
+            st.has_target_40 = false;
+            st.dirty_41 = false;
+            st.frozen = true;
+            shooter.aim_freeze_task = task;
+            ++aim_freeze_doubles_[task & 3];
+            for (int i = 0; i < 3; ++i) out[i] = st.world_point_1c[i];
+            return true;
+        }
+        if (marked_5d) {
+            // 009FADAE..009FAE18: one last sample, M(+CCh) x sub+28h, with no lead, then
+            // sub+14h / sub+18h / sub+41h cleared. A target whose slot +100h is 0042D810
+            // keeps its origin here, as hull_aim_world_point leaves it (LABELLED: the
+            // image transforms the bias-only offset for that class too).
+            if (hull_aim_target_samples_hull(*target) && kHullAimOffsetEnabled) {
+                bsp::approach_target_ref_freeze_009fadae(st, target->world);
+            } else {
+                st.world_point_1c = {target->motion.position[0], target->motion.position[1],
+                                     target->motion.position[2]};
+                st.tracking = false;
+                st.dirty_41 = false;
+                st.frozen = true;
+            }
+            shooter.aim_freeze_task = task;
+            ++aim_freeze_heads_[task & 3];
+            for (int i = 0; i < 3; ++i) out[i] = st.world_point_1c[i];
+            return true;
+        }
+    }
+    (void)aim_point_009fada0(shooter, *target, target_plus_one, out, log_out);
+    shooter.aim_freeze_last_point = {out[0], out[1], out[2]};
+    return true;
 }
 
 bool GameUnitsHost::Impl::avoid_in_dive(const GameUnitSlot& u) {
@@ -25968,6 +26100,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // the long-unfound approach+D0h writer). It is the
                             // hull point, not the target's origin, and there is
                             // no lead term in it.
+                            if constexpr (bsp::kTorpedoAimPointFreezeCc13Bound) {
+                                // Packet cc13-aimfreeze3: 009FADA0 at 009D34BB with its death
+                                // head (or 009FAF90's notify), then 009D34E3 CMP [ESI+CCh],0
+                                // / JZ 009D3E21: a latched ref answers no target, and
+                                // torpedo_approach_update's 009D3E21 arm clears +131h and
+                                // adds dt to +134h.
+                                const GameUnitSlot* const t = target();
+                                float p[3] = {0.0f, 0.0f, 0.0f};
+                                if (t != nullptr) {
+                                    p[0] = t->motion.position[0];
+                                    p[1] = t->motion.position[1];
+                                    p[2] = t->motion.position[2];
+                                }
+                                (void)owner_.aim_point_freeze_009fada0(slot_, t,
+                                    slot_.command_target_plus_one, p, 3);
+                                if (slot_.hull_aim_ref.frozen && slot_.aim_freeze_task == 3) {
+                                    ++owner_.aim_freeze_early_outs_[3];
+                                    return false;
+                                }
+                                if (t == nullptr) return false;
+                                for (int i = 0; i < 3; ++i) out_point[i] = p[i];
+                                return true;
+                            }
                             const GameUnitSlot* const t = target();
                             if (t == nullptr) return false;
                             out_point[0] = t->motion.position[0];
@@ -31021,12 +31176,33 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const GameUnitSlot* t = lb_target();
                         // 009B7CA1: 009FADA0 on the target ref, which reads sub+44h =
                         // approach+74h, last tick's store.
-                        if (t != nullptr) {
+                        if constexpr (bsp::kLevelBombAimPointFreezeCc13Bound) {
+                            // Packet cc13-aimfreeze3: 009FADA0's death head (or 009FAF90's
+                            // notify) latches the ref and lb_aim, approach->vtable[0], holds
+                            // the frozen sub+1Ch, with or without the target. has_target
+                            // below is unchanged (df_slot_live drops a +5Dh target).
                             unit_.hull_aim_ref.lead_projtime = unit_.hull_aim_ref.projtime_44;
-                            float p[3] = {t->motion.position[0], t->motion.position[1],
-                                          t->motion.position[2]};
-                            owner_.aim_point_009fada0(unit_, *t, unit_.lb_target_plus_one, p);
-                            for (int i = 0; i < 3; ++i) unit_.lb_aim[i] = p[i];
+                            float p[3] = {unit_.lb_aim[0], unit_.lb_aim[1], unit_.lb_aim[2]};
+                            if (t != nullptr) {
+                                p[0] = t->motion.position[0];
+                                p[1] = t->motion.position[1];
+                                p[2] = t->motion.position[2];
+                            }
+                            if (owner_.aim_point_freeze_009fada0(unit_, t, unit_.lb_target_plus_one,
+                                                                 p, 2)) {
+                                for (int i = 0; i < 3; ++i) unit_.lb_aim[i] = p[i];
+                            }
+                            // 009B7CF3's early-out, counted only: has_target gates it here.
+                            if (unit_.hull_aim_ref.frozen && unit_.aim_freeze_task == 2)
+                                ++owner_.aim_freeze_early_outs_[2];
+                        } else {
+                            if (t != nullptr) {
+                                unit_.hull_aim_ref.lead_projtime = unit_.hull_aim_ref.projtime_44;
+                                float p[3] = {t->motion.position[0], t->motion.position[1],
+                                              t->motion.position[2]};
+                                owner_.aim_point_009fada0(unit_, *t, unit_.lb_target_plus_one, p);
+                                for (int i = 0; i < 3; ++i) unit_.lb_aim[i] = p[i];
+                            }
                         }
                         bsp::LevelBombApproachInputs in;
                         // ctl+398h, which the leader's profile keeps at DropAlt.
@@ -34829,17 +35005,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // torpedo_goaway_heading_009d0c10 is reused as it stands.
                     // docs/DIVE_BOMB_GOAWAY_TURN.md section 1.
                     float goaway_turn_heading_009c47d0(bsp::DiveBombGoAwayTurnState& gt) {
-                        if (unit_.command_target_plus_one == 0) return gt.heading_1c;
-                        const std::size_t ti = unit_.command_target_plus_one - 1;
-                        if (ti >= owner_.slots.size()) return gt.heading_1c;
-                        const GameUnitSlot& tgt = *owner_.slots[ti];
+                        // Packet cc13-aimfreeze3: approach->vtable[0] answers the frozen
+                        // sub+1Ch, with or without the target.
+                        const float* frozen = nullptr;
+                        if constexpr (bsp::kDiveAimPointFreezeCc13Bound) {
+                            frozen = owner_.aim_freeze_point(unit_,
+                                unit_.command_target_plus_one, 1);
+                        }
+                        float p[3] = {0.0f, 0.0f, 0.0f};
+                        if (frozen != nullptr) {
+                            for (int i = 0; i < 3; ++i) p[i] = frozen[i];
+                        } else {
+                            if (unit_.command_target_plus_one == 0) return gt.heading_1c;
+                            const std::size_t ti = unit_.command_target_plus_one - 1;
+                            if (ti >= owner_.slots.size()) return gt.heading_1c;
+                            const GameUnitSlot& tgt = *owner_.slots[ti];
+                            // arg1, approach->vtable[0](): the fed aim point, the same
+                            // feed 009C6342's fly-over uses (the target's origin while
+                            // kHullAimOffsetEnabled is false).
+                            p[0] = tgt.motion.position[0];
+                            p[1] = tgt.motion.position[1];
+                            p[2] = tgt.motion.position[2];
+                            owner_.aim_point_009fada0(unit_, tgt, ti + 1, p);
+                        }
                         bsp::FlyToSolverInputs fin;
-                        // arg1, approach->vtable[0](): the fed aim point, the same
-                        // feed 009C6342's fly-over uses (the target's origin while
-                        // kHullAimOffsetEnabled is false).
-                        float p[3] = {tgt.motion.position[0], tgt.motion.position[1],
-                                      tgt.motion.position[2]};
-                        owner_.aim_point_009fada0(unit_, tgt, ti + 1, p);
                         for (int i = 0; i < 3; ++i) {
                             fin.point[i] = p[i];
                             fin.unit_position[i] = unit_.motion.position[i];
@@ -35693,15 +35882,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Packet cc9_aimdive_response: 009C5DB8-009C6080, the
                         // yaw, throttle and air-brake commands that follow the
                         // roll. docs/AIMDIVE_RESPONSE.md.
-                        if (kAimDiveTailBound &&
+                        // Packet cc13-aimfreeze3: approach->vtable[0] answers the frozen
+                        // sub+1Ch, with or without the target.
+                        const float* frozen_5df1 = nullptr;
+                        if constexpr (bsp::kDiveAimPointFreezeCc13Bound) {
+                            frozen_5df1 = owner_.aim_freeze_point(unit_,
+                                unit_.command_target_plus_one, 1);
+                        }
+                        if (kAimDiveTailBound && (frozen_5df1 != nullptr || (
                             unit_.command_target_plus_one != 0 &&
-                            unit_.command_target_plus_one - 1 < owner_.slots.size()) {
-                            const std::size_t ti = unit_.command_target_plus_one - 1;
-                            // 009C5DF1: approach->vtable[0], the fed aim point.
-                            float ap[3] = {owner_.slots[ti]->motion.position[0],
-                                           owner_.slots[ti]->motion.position[1],
-                                           owner_.slots[ti]->motion.position[2]};
-                            owner_.aim_point_009fada0(unit_, *owner_.slots[ti], ti + 1, ap);
+                            unit_.command_target_plus_one - 1 < owner_.slots.size()))) {
+                            float ap[3] = {0.0f, 0.0f, 0.0f};
+                            if (frozen_5df1 != nullptr) {
+                                for (int i = 0; i < 3; ++i) ap[i] = frozen_5df1[i];
+                            } else {
+                                const std::size_t ti = unit_.command_target_plus_one - 1;
+                                // 009C5DF1: approach->vtable[0], the fed aim point.
+                                ap[0] = owner_.slots[ti]->motion.position[0];
+                                ap[1] = owner_.slots[ti]->motion.position[1];
+                                ap[2] = owner_.slots[ti]->motion.position[2];
+                                owner_.aim_point_009fada0(unit_, *owner_.slots[ti], ti + 1, ap);
+                            }
                             // 009C5DE0 00B63D50 then 009C5E01 004142E0: the
                             // orthogonal scaled inverse of the pose at +CCh,
                             // i.e. (p - t) . row_j / |row_j|^2.
@@ -37909,7 +38110,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         bool have_point = false;
                         {
                             float p[3] = {0.0f, 0.0f, 0.0f};
-                            if (const GameUnitSlot* const t = goaway_target()) {
+                            // Packet cc13-aimfreeze3: approach+D0h is the frozen sub+1Ch
+                            // once the ref is latched, with or without the target.
+                            const float* frozen_0670 = nullptr;
+                            if constexpr (bsp::kTorpedoAimPointFreezeCc13Bound) {
+                                frozen_0670 = owner_.aim_freeze_point(unit_,
+                                    unit_.command_target_plus_one, 3);
+                            }
+                            if (frozen_0670 != nullptr) {
+                                for (int i = 0; i < 3; ++i) p[i] = frozen_0670[i];
+                                have_point = true;
+                            } else if (const GameUnitSlot* const t = goaway_target()) {
                                 p[0] = t->motion.position[0];
                                 p[1] = t->motion.position[1];
                                 p[2] = t->motion.position[2];
@@ -46242,8 +46453,10 @@ std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
     const GameUnitSlot& u = *impl_->slots[index];
     std::uint64_t mask = u.ordnance_mask;
     if constexpr (Impl::kRackLiveOrdnanceMaskBound) {
-        // 007B9320 / 007B91C0 -> rack vtable[220h] / [210h]: an emptied rack has
-        // no child round to answer with (SQUADRON_LAND_TASK 5eu).
+        // 007B9320 / 007B91C0 -> rack vtable[220h], 007B9140 -> rack vtable[210h]
+        // (007B9174, 006E3FE0): an emptied rack has no child round to answer with
+        // (SQUADRON_LAND_TASK 5eu). CORRECTION: this paired 007B91C0 with [210h];
+        // 007B91C0 calls [220h] at 007B91E4.
         const std::size_t n = u.rack_bullet_class_per_rack.size();
         // With EnableDeviceReload (00E17BF2) set and the squadron's ReloadEnabled
         // +369h (default 1), 006E4060's second arm answers from the rack's own
@@ -48821,6 +49034,21 @@ void GameUnitsHost::report() {
         "(009FADA0 tail / 00812090, ON vs OFF lead > 1e-3 m)",
         bsp::kAimLeadBodyAxisCc13Bound ? 1 : 0, host.aim_lead_axis_calls_,
         host.aim_lead_axis_differs_);
+    {
+        // Packet cc13-aimfreeze3 (include/bsp/approach_aim_freeze_cc13.hpp), ON only.
+        static const char* const kFreezeTasks[4] = {"", "dive", "level_bomb", "torpedo"};
+        const bool freeze_on[4] = {false, bsp::kDiveAimPointFreezeCc13Bound,
+                                   bsp::kLevelBombAimPointFreezeCc13Bound,
+                                   bsp::kTorpedoAimPointFreezeCc13Bound};
+        for (int k = 1; k < 4; ++k) {
+            if (!freeze_on[k]) continue;
+            host.log.notef("summary aim freeze %s heads=%llu doubles=%llu frozen_reads=%llu "
+                "early_outs=%llu (009FADAE death head / 009FAF90 notify, LABELLED; "
+                "packet cc13-aimfreeze3)", kFreezeTasks[k], host.aim_freeze_heads_[k],
+                host.aim_freeze_doubles_[k], host.aim_freeze_reads_[k],
+                host.aim_freeze_early_outs_[k]);
+        }
+    }
     {
         const bsp::TorpedoGyroHeadingCensus& tg = bsp::torpedo_gyro_heading_census();
         host.log.notef("summary torpedo gyro heading census bound=%d track_reads=%llu "
