@@ -11835,7 +11835,16 @@ public:
         owner_.record("Rack::paratrooper_drop_jitter_draw_untaken", 0x006e5479u);
         return 0.0f;
     }
-    int session_mode() const override { return 0; }
+    // game+1FE4h (007AB294 CMP [EAX+1FE4h], 1). Packet cc13-mp4 (MP2b, rev9 N1): from
+    // the session context under the switch; a campaign's word is 0. Campaign
+    // identity: the OFF arm is the old literal 0.
+    int session_mode() const override {
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            return bsp::session_context().session_word_1fe4;
+        } else {
+            return 0;
+        }
+    }
     // game+218Ch from the session context (packet cc13-mp1). Campaign identity: the
     // OFF arm is the old literal false.
     bool session_flag_218c() const override {

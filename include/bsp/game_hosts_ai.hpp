@@ -473,6 +473,10 @@ struct GameAiSummary {
 // block authors no Party). The mission host publishes them after its header
 // pass; the coordinator reads them when kAiPartyGateUnforcedBound is set.
 void ai_publish_scene_slot_parties(const std::array<int, 8>& parties);
+// Packet cc13-mp4: the mission load's 004E17FD..004E1838 answer
+// (bsp::ai_coordinator_created_at_load_004e17fd). Unpublished, it is false, the
+// campaign's value; the coordinator's fixed step reads it.
+void ai_publish_coordinator_created_at_load(bool created);
 // Packet cc9_local_party_source (docs/SHIP_AI_OPEN_ITEMS.md section 125): player
 // slot `slot`'s published party, or `fallback` before publication, outside 0..7 or
 // for a block that authors no Party.
