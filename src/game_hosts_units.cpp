@@ -17,6 +17,7 @@
 #include "bsp/aim_lead_body_axis_cc13.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"
 #include "bsp/hull_aim_shared_stream_cc13.hpp"  // packet cc13-hullaimrng
+#include "bsp/set_speed_ctl_axis_cc13.hpp"  // packet cc13-setspeed
 #include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/game_hosts_ready.hpp"  // kSunkShipFlushBound, packet cc13-jm08
 #include "bsp/hull_terrain_contact.hpp"
@@ -157,6 +158,7 @@
 #include "bsp/gun_fire_points.hpp"
 #include "bsp/geom_mesh_resource.hpp"  // GeomMeshResourcePayload, cc9_ship_section_points
 #include "bsp/opportunistic_rocket_cc13.hpp"
+#include "bsp/rocket_target_stop_cc13.hpp"  // cc13-rocketstop, task+38Ch per task
 #include <array>
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
@@ -7194,6 +7196,17 @@ struct GameUnitsHost::Impl {
     void bot_task_ctor_seeds_0099c6f0(GameUnitSlot& unit, bool follow_state,
                                       int follow_constructs = 1) {
         task_gun_block_construct_009faad0(unit);    // 0099C790
+        // cc13-rocketstop, kRocketTargetStopHandlersCc13Bound (include/bsp/
+        // rocket_target_stop_cc13.hpp): the new task's own task+38Ch block. The old
+        // task's Stop (009AA9E0 / 009CD0D0 / 007B7BA0) clears its block and 00999EE0
+        // deletes it; 0099C79C (0099C95C) runs 009FCEF0 on the new one. ABI: none (host
+        // per-plane block). Uncertain: the image's new block leaves +18h unset; the host
+        // keeps the Stop's zero vector there (overwritten by 007B7870 before use).
+        if constexpr (bsp::kRocketTargetStopHandlersCc13Bound && bsp::kOpportunisticRocketBound) {
+            bsp::opportunistic_rocket_clear_target(unit.orx);        // the Stop
+            bsp::opportunistic_rocket_construct_009fcef0(unit.orx);  // 0099C79C
+            unit.orx_owner = 0;
+        }
         if constexpr (kBotTaskCtorSeedsBound) {
             ++bot_task_ctor_seeds;
             const std::string& n = unit.row.name;
@@ -11315,6 +11328,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     void hull_aim_pick_009fa260(GameUnitSlot& shooter, const GameUnitSlot& target,
                                 std::size_t target_plus_one);
     unsigned long long aim_lead_applied_{0};
+    // Census for kAimLeadBodyAxisCc13Bound (cc9-nondet1, log only): leads taken in
+    // aim_point_009fada0's tail, and those whose ON (body axis) lead point lies more
+    // than 1e-3 m from the OFF (level heading) one.
+    unsigned long long aim_lead_axis_calls_{0}, aim_lead_axis_differs_{0};
 
     // Packet cc9_aim_error_draw: 009C3DA0 (dive) / 009D02A0 (torpedo). The
     // three draws go through release_altitude_draw_00bd2f10, the stream-1
@@ -13359,18 +13376,39 @@ bool GameUnitsHost::Impl::aim_point_009fada0(GameUnitSlot& shooter,
     // row.x * s, row.y * s, s * row.z, each one float product. OFF: the
     // SUBSTITUTION, labelled, the one neighbour_world_velocity makes: the hull's
     // heading direction, level.
-    if constexpr (bsp::kAimLeadBodyAxisCc13Bound) {
-        pin.velocity = {axis.axis[0] * pin.speed, axis.axis[1] * pin.speed,
-                        pin.speed * axis.axis[2]};
-    } else {
+    const std::array<float, 3> axis_velocity{axis.axis[0] * pin.speed,
+        axis.axis[1] * pin.speed, pin.speed * axis.axis[2]};
     const double hd = static_cast<double>(pose_heading_radians(ts));
-    pin.velocity = {static_cast<float>(std::sin(hd)) * pin.speed, 0.0f,
-                    static_cast<float>(std::cos(hd)) * pin.speed};
+    const std::array<float, 3> level_velocity{static_cast<float>(std::sin(hd)) * pin.speed,
+        0.0f, static_cast<float>(std::cos(hd)) * pin.speed};
+    if constexpr (bsp::kAimLeadBodyAxisCc13Bound) {
+        pin.velocity = axis_velocity;
+    } else {
+        pin.velocity = level_velocity;
     }
     // 008120F8: 00811890(unit, unit+984h), which is 00811940.
     UnitRudderBinding rudder(*this, ts);
     if constexpr (kUnitYawRateForwardSpeedBound) rudder.forward_speed = pin.speed;
     pin.yaw_rate = bsp::unit_current_yaw_rate_00811940(rudder);
+    {
+        // Census (cc9-nondet1, log only): the same tail with each velocity.
+        auto lead_point = [&](const std::array<float, 3>& velocity) {
+            bsp::ShipPredictInputs alt = pin;
+            alt.velocity = velocity;
+            bsp::ApproachTargetRefState alt_lead{};
+            alt_lead.world_point_1c = {out[0], out[1], out[2]};
+            bsp::approach_target_ref_lead_tail_009faf05(alt_lead,
+                bsp::ship_predict_position_008120e0(alt, projtime), alt.position);
+            return alt_lead.world_point_1c;
+        };
+        const auto on = lead_point(axis_velocity);
+        const auto off = lead_point(level_velocity);
+        const double dx = static_cast<double>(on[0]) - off[0];
+        const double dy = static_cast<double>(on[1]) - off[1];
+        const double dz = static_cast<double>(on[2]) - off[2];
+        ++aim_lead_axis_calls_;
+        if (std::sqrt(dx * dx + dy * dy + dz * dz) > 1e-3) ++aim_lead_axis_differs_;
+    }
     const std::array<float, 3> predicted =
         bsp::ship_predict_position_008120e0(pin, projtime);
     bsp::ApproachTargetRefState lead{};
@@ -22200,17 +22238,34 @@ void GameUnitsHost::store_commanded_speed_00890e6f(std::size_t unit_index, float
 // world linear velocity copied to ctl+30h..+38h (007D9EC7..007D9ED6).
 // SUBSTITUTION, labelled: the body +Z axis in world is the pose's forward row,
 // the same axis the spawn seed uses; the ctl+30h..+38h copy has no host field.
+// kSetSpeedCtlAxisCc13Bound (include/bsp/set_speed_ctl_axis_cc13.hpp): ctl+30h is
+// the host's plane_velocity_lp_30, and ON stores it and drops the normalisation.
 bool GameUnitsHost::set_plane_forward_speed_007d9e80(std::size_t unit_index, float speed) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size()) return false;
     GameUnitSlot& slot = *host.slots[unit_index];
     if (!slot.plane_velocity_seeded) return false;
     const float* const fwd = slot.motion.pose_row2;
+    if constexpr (bsp::kSetSpeedCtlAxisCc13Bound) {
+        // 007D9C80 -> 0042D0D0(ctl+3Ch = (0, 0, speed), unit+74h, w 0): the products
+        // with zero add nothing, so each axis is f32(speed * row2[i]); no
+        // normalisation and no length guard. The angular term is the zero vector.
+        for (int i = 0; i < 3; ++i) {
+            slot.plane_world_velocity[i] = speed * fwd[i];
+            slot.plane_body_angular[i] = 0.0f;
+        }
+        // 007D9EC7..007D9ED6: ctl+30h..+38h, the low-passed velocity, = ctl+18h..+20h.
+        if constexpr (Impl::kPlaneVelocityLowpassBound) {
+            for (int i = 0; i < 3; ++i) slot.plane_velocity_lp_30[i] = slot.plane_world_velocity[i];
+            slot.plane_velocity_lp_valid = true;
+        }
+    } else {
     const float len = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] + fwd[2] * fwd[2]);
     if (!(len > 1e-6f)) return false;
     for (int i = 0; i < 3; ++i) {
         slot.plane_world_velocity[i] = speed * fwd[i] / len;
         slot.plane_body_angular[i] = 0.0f;
+    }
     }
     slot.motion.linear_velocity = bsp::OceanVec3{
         slot.plane_world_velocity[0], slot.plane_world_velocity[1],
@@ -27707,7 +27762,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_opportunistic_rocket_009fd0e0(float dt) {
                         // The dogfight / strafe / rocket Stops clear the target (007B7BA0,
                         // 009AA9E0, 009CD0D0). SUBSTITUTION, labelled: the host clears when
-                        // the task that set it is no longer installed.
+                        // the task that set it is no longer installed. With
+                        // kRocketTargetStopHandlersCc13Bound the task construction
+                        // (bot_task_ctor_seeds_0099c6f0) also rebuilds the block; this
+                        // clear stays for a retire with no new task.
                         if ((unit_.orx_owner == 1 && !unit_.dogfight_task_installed) ||
                             (unit_.orx_owner == 2 && !unit_.strafe_task_installed)) {
                             bsp::opportunistic_rocket_clear_target(unit_.orx);
@@ -47291,6 +47349,10 @@ void GameUnitsHost::report() {
             }
         }
     }
+    host.log.notef("summary aim lead body axis census bound=%d leads=%llu differs=%llu "
+        "(009FADA0 tail / 00812090, ON vs OFF lead > 1e-3 m)",
+        bsp::kAimLeadBodyAxisCc13Bound ? 1 : 0, host.aim_lead_axis_calls_,
+        host.aim_lead_axis_differs_);
     host.log.notef("summary ship exit zone bound=%d calls=%llu counting=%llu warnings=%llu "
         "kills=%llu (00826D70 / 00811F50 / 0081BEB0, packet cc9_ship_exit_zone)",
         GameUnitsHost::Impl::kShipOutOfMapExitBound ? 1 : 0, host.ship_exit_calls,
