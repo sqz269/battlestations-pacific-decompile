@@ -135,5 +135,19 @@ not qualify native FH3/SEH, Lua nonlocal unwind recovery, arbitrary replacement 
 binary detours, or native Page/game execution.
 
 The exact native signatures and order were checked in the live listing after verifying the bsp
-target/program. Adapter compilation and one focused ABI/current-slot/nested-scope/Lua fixture
-are pending at this source commit. `properties_composed` remains false throughout.
+target/program. The adapter and captured-return strengthening at 76FB1EB96 passed
+`scripts/build.ps1` and the two existing CTests (2/2):
+`local/codex_gui_raw_resolvers_capture_build.log`.
+
+One focused local Source fixture passed at that clean commit:
+`local/codex_gui_resolver_fixture_76fb1eb96/report.json`. It pins source/library/executable hashes
+and links an MSVC Win32 probe with an embedded manifest. It checks full-word zero before low16
+truncation, high ECX/EAX bits, CURRENT source callback replacement, two distinct canonical table
+views, nested normal/C++ scope restoration, real Lua 5.1.1 table-to-userdata lookup on actual
+NativeLuaObjectStorage, reuse after completed temporary destruction, balanced Lua stack/tracked
+references, and final adapter quiescence. The return uses a captured local across cleanup;
+diagnostic metadata is refreshed from that capture and cannot substitute its return value.
+
+The fixture executes Source bodies and linked Lua, not Original executable bodies. It does not
+prove a binary replacement ABI, native FH3/SEH/nonlocal-unwind recovery, Page execution, or game
+parity. No game run or new tracked test suite was added. `properties_composed` remains false.
