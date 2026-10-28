@@ -2815,11 +2815,13 @@ bsp::ShipLeadRandomDraws hull_aim_shared_stream_draws_00816650(
         d.section_roll = stream.hull_aim_point_draw_00816650(shooter, 0.0f, 1.0f);  // 0081667C
         sections = st.section_chance_64 > d.section_roll;                // 00816685, JBE
     }
-    // 00816769..00816775: FLD double 1e-4 [00D7A268], FLD the total, FCOMI, JBE.
-    if (sections && static_cast<double>(section_total) > 1.0e-4) {
-        // 0081677B FSUBRP (total - 1e-4 at PC24), 00816785 FSTP float.
+    // 00816769..00816775: FLD m64 [00D7A268] = 9.999999747378752e-05 (1e-4f widened),
+    // FLD the total, FCOMI, JBE.
+    constexpr double kSectionEpsilon = static_cast<double>(1.0e-4f);
+    if (sections && static_cast<double>(section_total) > kSectionEpsilon) {
+        // 0081677B FSUBRP (total - epsilon at PC24), 00816785 FSTP float.
         const float high = static_cast<float>(
-            bsp::cc13x87::x87_sub24(section_total, 1.0e-4));
+            bsp::cc13x87::x87_sub24(section_total, kSectionEpsilon));
         d.pick = stream.hull_aim_point_draw_00816650(shooter, 0.0f, high);  // 00816796
         return d;
     }
@@ -13310,7 +13312,7 @@ void GameUnitsHost::Impl::hull_aim_pick_009fa260(GameUnitSlot& shooter,
     float discard[3] = {target.motion.position[0], target.motion.position[1],
                         target.motion.position[2]};
     (void)hull_aim_world_point(shooter, target, target_plus_one, discard, nullptr,
-                               sections_in, &log);
+                               sections_in, &log, gunnery.get(), index_of_slot(shooter));
 }
 
 // Packet cc9_approach_target_lead: 009FADA0's tail 009FAF05-009FAF7D.
