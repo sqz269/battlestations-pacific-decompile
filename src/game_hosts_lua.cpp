@@ -9483,11 +9483,13 @@ int GameMissionLuaHost::run_add_damage_0088e000(lua_State* state, int argument_c
 }
 
 // Packet cc13-gunC C1b (include/bsp/ship_damaged_gfx_remove_cc13.hpp). 0088F710
-// SetDamagedGFXLevel(entity, level): 00888AA0 resolves the entity, 00B66290 the level,
-// then vtable[1B4h](level) at 0088F851; returns no value. SUBSTITUTION (labelled): an
-// entity with no units-host slot is not reached (the image has no null test there).
+// SetDamagedGFXLevel(entity, level): 00888AA0 resolves the entity, 00B66290 the level
+// (lua_tonumber, FSTP to float, _ftol 00BF7420: (int)(float)x), then vtable[1B4h](level)
+// at 0088F851; returns no value. SUBSTITUTION (labelled): an entity with no units-host
+// slot is not reached (the image has no null test there).
 int GameMissionLuaHost::run_set_damaged_gfx_level_0088f710(lua_State* state, int argument_count) {
-    const int level = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    const int level = argument_count >= 2
+        ? static_cast<int>(static_cast<float>(::lua_tonumber(state, 2))) : 0;
     GameUnitsHost* units = units_hooks_;
     const int id = air_ops_entity_id(state);
     if (units == nullptr || units->gunnery() == nullptr || id <= 0
