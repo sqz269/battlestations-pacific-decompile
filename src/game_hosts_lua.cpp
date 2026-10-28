@@ -19,6 +19,7 @@
 #include "bsp/air_operations.hpp"
 #include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/mothership_failure.hpp"
+#include "bsp/get_failure_runway_hangar_cc13.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/bullet_engagement_range.hpp"  // packet cc9_ai_plane_loadout_arm
 #include "bsp/objective_units.hpp"
@@ -9879,9 +9880,12 @@ int GameMissionLuaHost::run_set_failure_0088eff0(lua_State* state, int argument_
 // so an unmatched name pushes a stale stack byte. Ship 008135C0: SteeringJam +9E4h,
 // EngineJam +9E5h, Periscope +122Ch == 2, else 00953E60: InferiorFailure +720h.
 // Airfield 006D2350: RunwayFailure +748h, HangarFailure +749h, else 00953E60.
-// SUBSTITUTIONS (labelled): an unmatched name answers false; Periscope, RunwayFailure
-// and HangarFailure answer false (not modelled); +720h is the units host's inferior
-// arm of the airfield destruction rule.
+// Mothership 007589D0 (vtable 00D01630 +198h): RunwayFailure +11A4h, HangarFailure
+// +11A5h (air-ops block+1Ch / +1Dh), else 008135C0.
+// SUBSTITUTIONS (labelled): an unmatched name answers false; Periscope answers false
+// (not modelled); RunwayFailure and HangarFailure answer false unless
+// kGetFailureRunwayHangarCc13Bound (bsp/get_failure_runway_hangar_cc13.hpp) reads the
+// deck's flags; +720h is the units host's inferior arm of the airfield destruction rule.
 int GameMissionLuaHost::run_get_failure_0088f1d0(lua_State* state, int argument_count) {
     ++summary_.get_failure_calls;
     const char* text = argument_count >= 2 ? ::lua_tostring(state, 2) : nullptr;
@@ -9892,7 +9896,23 @@ int GameMissionLuaHost::run_get_failure_0088f1d0(lua_State* state, int argument_
     if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
         const std::size_t index = static_cast<std::size_t>(id - 1);
         const bool ship = units->unit_is_kind_of(index, kFailureShipKindOfClassId);
-        if (ship && units->gunnery() != nullptr && failure_name_equals(name, "SteeringJam")) {
+        bool deck_arm = false;
+        if constexpr (bsp::kGetFailureRunwayHangarCc13Bound) {
+            // 007589D0 / 006D2350: the two names before 008135C0 / 00953E60, runway first.
+            const bsp::MothershipFailureArm arm =
+                units->unit_is_kind_of(index, bsp::kMothershipKindOfClassId)
+                || units->unit_is_kind_of(index, static_cast<int>(bsp::kAirOpsClassIdAirfield))
+                ? bsp::mothership_failure_arm(name) : bsp::MothershipFailureArm::none;
+            if (arm != bsp::MothershipFailureArm::none) {
+                deck_arm = true;
+                // block+1Ch / +1Dh; no registered deck reads clear.
+                const bsp::AirOpsDeck* deck = bsp::air_ops_decks().find_by_entity_id(id);
+                out = deck != nullptr && (arm == bsp::MothershipFailureArm::runway
+                    ? deck->runway_failure : deck->hangar_failure);
+            }
+        }
+        if (deck_arm) {
+        } else if (ship && units->gunnery() != nullptr && failure_name_equals(name, "SteeringJam")) {
             out = units->gunnery()->ship_jam_flag(index, true);
         } else if (ship && units->gunnery() != nullptr
                    && failure_name_equals(name, "EngineJam")) {
