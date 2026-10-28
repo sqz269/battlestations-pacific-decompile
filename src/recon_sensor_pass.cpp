@@ -353,6 +353,13 @@ std::map<std::pair<int, std::size_t>, ReconDetectionLevel>& forced_recon_table()
     static std::map<std::pair<int, std::size_t>, ReconDetectionLevel> table;
     return table;
 }
+// The record's +8h as 00805CF0 stores it (00805D0E), the level argument unclamped, for
+// the readers that take +8h itself (GetProperty "reconlevel", 00779C18). Same keys and
+// lifetime as forced_recon_table.
+std::map<std::pair<int, std::size_t>, int>& forced_recon_raw_table() {
+    static std::map<std::pair<int, std::size_t>, int> table;
+    return table;
+}
 std::vector<std::pair<int, std::size_t>>& forced_recon_clears() {
     static std::vector<std::pair<int, std::size_t>> clears;
     return clears;
@@ -368,6 +375,7 @@ void set_forced_recon_level_00805cf0(std::size_t target, int side, int level) {
     const ReconDetectionLevel value = level <= 0 ? ReconDetectionLevel::none
         : level == 1 ? ReconDetectionLevel::blip : ReconDetectionLevel::identified;
     forced_recon_table()[std::make_pair(side, target)] = value;
+    forced_recon_raw_table()[std::make_pair(side, target)] = level;
 }
 
 bool forced_recon_level(int side, std::size_t target, ReconDetectionLevel& out) {
@@ -378,9 +386,23 @@ bool forced_recon_level(int side, std::size_t target, ReconDetectionLevel& out) 
     return true;
 }
 
-void clear_forced_recon_levels() { forced_recon_table().clear(); }
+// Packet cc13-reconclear: the world teardown, under kForcedReconMissionClearCc13Bound.
+void clear_forced_recon_levels() {
+    forced_recon_table().clear();
+    forced_recon_raw_table().clear();
+    forced_recon_clears().clear();
+}
+
+bool forced_recon_level_raw(int side, std::size_t target, int& out) {
+    const auto& table = forced_recon_raw_table();
+    const auto it = table.find(std::make_pair(side, target));
+    if (it == table.end()) return false;
+    out = it->second;
+    return true;
+}
 
 bool clear_forced_recon_level_00803b50(std::size_t target, int side) {
+    forced_recon_raw_table().erase(std::make_pair(side, target));
     if (forced_recon_table().erase(std::make_pair(side, target)) == 0) return false;
     forced_recon_clears().emplace_back(side, target);
     return true;

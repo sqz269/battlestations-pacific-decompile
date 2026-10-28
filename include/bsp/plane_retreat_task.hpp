@@ -62,7 +62,10 @@ inline constexpr bool kPlaneRetreatTaskBound = true;   // ON: SQUADRON_LAND_TASK
 // - 009C9EA0: the same distance square in float, tested as stored.
 // False: the double chains and ordered compares used before. Changes only
 // ulp, NaN and zero-length cases.
-inline constexpr bool kRetreatX87FaithfulCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-27), after kInterpClamped00419010NanCc13Bound: bundle pairs
+// gameplay identical on every WINS row that reaches 009C9310 with differing outputs
+// (BSM01 899 calls, ESMP08 156, BSM06 i/j 4) and on the rest.
+inline constexpr bool kRetreatX87FaithfulCc13Bound = true;
 
 inline constexpr std::uint32_t kRetreatCommandClass = 0x00E08F90u;   // 009C9E20
 inline constexpr float kRetreatAltitudeDrawLow = -50.0f;     // 00CECA0C, 009C91D6

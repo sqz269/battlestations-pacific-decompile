@@ -13,6 +13,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 
 #include "bsp/air_operations.hpp"
 #include "bsp/air_ops_launch_flag_cc13.hpp"  // cc13-tier1, 006C5050 flag arm
+#include "bsp/base_launch_axes_cc13.hpp"  // cc13-launchaxes, 006C5294 owner rows
 #include "bsp/dive_bomb_task.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
@@ -995,6 +996,24 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
         // path: LaunchAirBaseSlot(base, slot, true) reaches 006C7490(slot, 1)
         // through 006CA8FA. That arm is the block below.
         record.world[13] = owner_row->position[1];
+        // cc13-launchaxes, kBaseLaunchAxesCc13Bound (include/bsp/
+        // base_launch_axes_cc13.hpp). 006C527A-006C5294 REP MOVSD 10h dwords from
+        // owner+CCh: the right, up and forward rows land in the bag matrix rows
+        // 0..2 unchanged (no transform, no orthonormalisation), on both flag
+        // arms; the flag arm below replaces only y. ABI: none (host record).
+        // Uncertain: unit_pose reads the host's slot world, which the motion sync
+        // refreshes; the image's 00414DB0 refresh (owner+C8h clear, 006C526A) has
+        // no separate counterpart here.
+        if constexpr (kBaseLaunchAxesCc13Bound) {
+            float right[3], up[3], forward[3], translation[3];
+            if (units_.unit_pose(owner, right, up, forward, translation)) {
+                for (int lane = 0; lane < 3; ++lane) {
+                    record.world[lane] = right[lane];
+                    record.world[4 + lane] = up[lane];
+                    record.world[8 + lane] = forward[lane];
+                }
+            }
+        }
     }
     // cc13-tier1, kAirOpsLaunchFlagAirborneBound (include/bsp/
     // air_ops_launch_flag_cc13.hpp): 006C5050's flag arm, reached from

@@ -38,4 +38,11 @@ inline constexpr bool kPc24DynHullCc13Bound = false;
 //   per-op form of the same build.
 inline constexpr bool kHullShapeBuildPc24Cc13Bound = false;
 
+// Census (cc9-nondet1, log only): repair-pass face compares, how often the per-op threshold
+// differs from the double one, and how often that flips the extrude decision.
+struct DynHullPc24Census {
+    unsigned long long compares{0}, threshold_differs{0}, decision_differs{0};
+};
+const DynHullPc24Census& dyn_hull_pc24_census() noexcept;
+
 }  // namespace bsp

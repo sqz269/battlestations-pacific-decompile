@@ -9,6 +9,7 @@
 
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_missionlua_cc13.hpp"
+#include "bsp/pc24_luaspawn_cc13.hpp"   // spawn_member_position_00949300 (pc24w2-luaspawn)
 
 namespace bsp {
 namespace {
@@ -343,9 +344,19 @@ SpawnGroupFrame spawn_candidate_frame_0094a140(const SpawnGroupFrame& r, float a
 void spawn_member_position_00949300(const SpawnGroupFrame& f, const float o[3],
                                     float out[3]) noexcept {
     for (int i = 0; i < 3; ++i) {
-        out[i] = static_cast<float>(static_cast<double>(o[0]) * f.m[i] +
-                                    static_cast<double>(o[1]) * f.m[4 + i] +
-                                    static_cast<double>(o[2]) * f.m[8 + i] + f.m[12 + i]);
+        if constexpr (kPc24LuaSpawnCc13Bound) {
+            // 009493E4 CALL 00413920, row 3 of T x M (00413BEE-00413C1C for i = 0):
+            // ((o0*M0i + o1*M1i) + o2*M2i) + 1*M3i, each FMUL/FADDP at PC24; 1*M3i is exact.
+            out[i] = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_add24(cc13x87::x87_add24(cc13x87::x87_mul24(o[0], f.m[i]),
+                                                      cc13x87::x87_mul24(o[1], f.m[4 + i])),
+                                   cc13x87::x87_mul24(o[2], f.m[8 + i])),
+                f.m[12 + i]));
+        } else {
+            out[i] = static_cast<float>(static_cast<double>(o[0]) * f.m[i] +
+                                        static_cast<double>(o[1]) * f.m[4 + i] +
+                                        static_cast<double>(o[2]) * f.m[8 + i] + f.m[12 + i]);
+        }
     }
 }
 

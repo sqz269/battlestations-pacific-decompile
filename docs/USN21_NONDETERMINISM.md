@@ -352,3 +352,45 @@ garbage written during the frame, for example by FMOD or the driver.
 - **nd1_c1 and nd1_s0** survived, but 32757 and 41543 of their frames skipped Present.
 
 The lead stopped hog and stall runs on 2026-10-27.
+
+### The searcher bounds are the only state that varies between plain runs
+
+These runs used plain load and the same s46_u21_f row:
+
+| run | exe | shots | deaths | hits | avoidance refills | free-bearing empty |
+| --- | --- | --- | --- | --- | --- | --- |
+| nd1_sc | 1c49c8c0d, BSP_STACK_SCRUB=cc, 1600x900 window | 146859 | 520 | 10693 | 7235 | |
+| nd1_b1 | 8eded9e50 + 05790190b, kSearcherCacheBoundsInitCc13Bound forced ON (local exe) | 146859 | 520 | 10693 | 7551 | 2985071 |
+| nd1_b2 | the same exe as b1 | 146859 | 520 | 10693 | 7551 | 2985071 |
+
+The c1, s0 and sc refill counts were 6928, 7099 and 7235.
+
+- sc matches c1 and s0 on gameplay, at a different window size and on a different monitor.
+- `local/nd1_first.py` finds that b1 and b2 differ only in the `PlatformLoopCallbacks::pretranslate`
+  call count and its registration line. Every other line matches, including the end summaries,
+  `fmod_calls` and the avoidance and free-bearing counters.
+
+So the four uninitialised searcher-cache bounds (section 3, docs/AVOIDANCE_REFILL_DETERMINISM.md)
+are the only gameplay-side state that changes from run to run, and they are image-faithful. The
+message pump count also varies, but it does not reach the simulation.
+
+Every USN21 split seen so far must therefore come through those bounds. A stall or load changes
+the heap's history, and with it the leftover values; gameplay depends on them only occasionally.
+This report found no host-only order or timing dependence: the Dyn pool is idle, the frame-start
+stack does not matter, and the stale-stack reads on the follow path are modelled as constants.
+
+Options for the lead:
+- Leave the switch OFF. This is faithful to the image, and USN21 pairs stay noisy.
+- Run pair and WINS work with the switch ON as a labelled diagnostic. The switch is a deviation
+  from the image, so flipping it is not a faithful fix.
+
+Not yet run, because the lead holds stall runs: whether a duty-hog run with the switch ON still
+matches b1. That run would close the loop.
+
+Decision (cc9 lead, 2026-10-28):
+- The shipped build stays faithful: kSearcherCacheBoundsInitCc13Bound stays OFF.
+- The environment variable `BSP_SEARCHER_BOUNDS_INIT=1` (src/ship_ai_search_storage.cpp) does
+  the same zeroing at run time. It is a harness determinism aid, not image behaviour. It is off
+  when unset and logs one startup line when active.
+- Pairs and WINS runs on noisy rows (USN21 at least) set it on both sides (docs/TOOLING.md,
+  section 1, "Noisy rows").

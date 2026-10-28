@@ -14,7 +14,10 @@
 #include "bsp/cc13_x87_model.hpp"  // pc24w1-gunnery-2
 #include "bsp/pc24_gunnery_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/aim_lead_body_axis_cc13.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"
+#include "bsp/hull_aim_shared_stream_cc13.hpp"  // packet cc13-hullaimrng
+#include "bsp/set_speed_ctl_axis_cc13.hpp"  // packet cc13-setspeed
 #include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/game_hosts_ready.hpp"  // kSunkShipFlushBound, packet cc13-jm08
 #include "bsp/hull_terrain_contact.hpp"
@@ -67,8 +70,10 @@
 #include "bsp/dive_bomb_task.hpp"
 #include "bsp/dive_bomb_goaway_turn.hpp"
 #include "bsp/move_to_glide.hpp"
+#include "bsp/target_disabled_byte_5d_cc13.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/plane_cached_speed_b1c_cc13.hpp"
+#include "bsp/follow_sight_draw_cc13.hpp"
 #include "bsp/torpedo_goaway_tick.hpp"
 #include "bsp/plane_fly_to_solver.hpp"
 #include "bsp/cc13_seg68.hpp"
@@ -153,6 +158,7 @@
 #include "bsp/gun_fire_points.hpp"
 #include "bsp/geom_mesh_resource.hpp"  // GeomMeshResourcePayload, cc9_ship_section_points
 #include "bsp/opportunistic_rocket_cc13.hpp"
+#include "bsp/rocket_target_stop_cc13.hpp"  // cc13-rocketstop, task+38Ch per task
 #include <array>
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
@@ -196,6 +202,7 @@
 #include "bsp/pc24_shipai_cc13.hpp"           // pc24w1-sweep2-3 (0074F490)
 #include "bsp/pc24_flightrender_cc13.hpp"     // pc24w1-sweep1-3 (007DB4D0)
 #include "bsp/pc24_planetasks_cc13.hpp"       // pc24w1-sweep3-5 (sites at each body)
+#include "bsp/dive_flyabove_avoid_increment_cc13.hpp"  // cc13-flyavoid, 009C6D59
 
 #include <cfloat>
 #include <cmath>
@@ -2799,11 +2806,46 @@ void hull_aim_print(GameHostLog& log, const char* why, const GameUnitSlot& shoot
 
 // The world aim point for `shooter` against `target`. Returns false when the
 // target supplies no hull, in which case the caller keeps the origin it had.
+//
+// kHullAimSharedStreamCc13Bound: 00816650's draws on the shared stream 1, in its count
+// and order (include/bsp/hull_aim_shared_stream_cc13.hpp). A target that does not sample
+// its hull has 0042D810 at vtable[100h], which draws nothing.
+bsp::ShipLeadRandomDraws hull_aim_shared_stream_draws_00816650(
+    const bsp::ApproachTargetRefState& st, bool samples, float section_total,
+    GameGunneryHost& stream, std::size_t shooter) {
+    bsp::ShipLeadRandomDraws d{};
+    if (!samples) return d;
+    bool sections = false;
+    if (st.section_chance_64 > 0.0f) {                                   // 00816659, JBE
+        d.section_roll = stream.hull_aim_point_draw_00816650(shooter, 0.0f, 1.0f);  // 0081667C
+        sections = st.section_chance_64 > d.section_roll;                // 00816685, JBE
+    }
+    // 00816769..00816775: FLD m64 [00D7A268] = 9.999999747378752e-05 (1e-4f widened),
+    // FLD the total, FCOMI, JBE.
+    constexpr double kSectionEpsilon = static_cast<double>(1.0e-4f);
+    if (sections && static_cast<double>(section_total) > kSectionEpsilon) {
+        // 0081677B FSUBRP (total - epsilon at PC24), 00816785 FSTP float.
+        const float high = static_cast<float>(
+            bsp::cc13x87::x87_sub24(section_total, kSectionEpsilon));
+        d.pick = stream.hull_aim_point_draw_00816650(shooter, 0.0f, high);  // 00816796
+        return d;
+    }
+    // 00816820: the box, sub+48h; the low ends are -0.0 [00D7A208] SUBSS the extent.
+    d.box_x = stream.hull_aim_point_draw_00816650(shooter, -0.0f - st.spread_48[0],
+                                                  st.spread_48[0]);       // 00816883
+    d.box_y = stream.hull_aim_point_draw_00816650(shooter, 0.0f, st.spread_48[1]);  // 008168A0
+    d.box_z = stream.hull_aim_point_draw_00816650(shooter, -0.0f - st.spread_48[2],
+                                                  st.spread_48[2]);       // 008168D5
+    return d;
+}
+
 bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
                           std::size_t target_plus_one, float out[3],
                           GameHostLog* log = nullptr,
                           const bsp::ApproachTargetSections* sections = nullptr,
-                          GameHostLog* section_log = nullptr) {
+                          GameHostLog* section_log = nullptr,
+                          GameGunneryHost* stream = nullptr,
+                          std::size_t shooter_index = 0) {
     if (shooter.hull_aim_target_plus_one != target_plus_one) {
         // A new ordered target means a new sub-object: 009FB200.
         // kAimErrorDrawBound: the image builds the sub-object once, in the
@@ -2837,8 +2879,20 @@ bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
             bsp::approach_target_ref_unit_draws_substitute(shooter.hull_aim_seed);
         const float section_total = (samples && sections != nullptr)
             ? bsp::approach_target_ref_section_total(st, *sections) : 0.0f;
-        const bsp::ShipLeadRandomDraws draws =
-            bsp::approach_target_ref_draws_from_unit(unit, st.spread_48, section_total);
+        bsp::ShipLeadRandomDraws draws{};
+        if constexpr (bsp::kHullAimSharedStreamCc13Bound) {
+            // LABELLED: with no gunnery host (a bare units host) there is no shared
+            // stream, and the pick keeps the counter-hash values.
+            if (stream != nullptr) {
+                draws = hull_aim_shared_stream_draws_00816650(st, samples, section_total,
+                                                              *stream, shooter_index);
+            } else {
+                draws = bsp::approach_target_ref_draws_from_unit(unit, st.spread_48,
+                                                                 section_total);
+            }
+        } else {
+            draws = bsp::approach_target_ref_draws_from_unit(unit, st.spread_48, section_total);
+        }
         bsp::approach_target_ref_pick_009fa260(st, hull, draws, samples,
                                                samples ? sections : nullptr);
         if (samples && sections != nullptr && st.section_chance_64 > draws.section_roll) {
@@ -6564,7 +6618,7 @@ struct GameUnitsHost::Impl {
     // floor compares greater, so a NaN on either side keeps the speed. Every
     // product rounds to float on the 24-bit main thread. False: the host's
     // Accel / MaxSpd^2, its left-to-right product and its NaN-to-floor max.
-    static constexpr bool kPlaneDragOrderCc13Bound = false;
+    static constexpr bool kPlaneDragOrderCc13Bound = true;  // ON by bundle pair (cc9-sweep1b)
     // Packet cc13-PL3: 007DA380's water arm 007DA3D0-007DA53F reads the up value
     // as the dot ((DCh * 0) + E0h) + (E4h * 0) and gates the throttled arm on
     // unit+9F0h > 0 (COMISS / JBE, so NaN fails). Finite inputs are identical
@@ -7109,16 +7163,63 @@ struct GameUnitsHost::Impl {
             (void)unit;
         }
     }
-    void bot_task_ctor_seeds_0099c6f0(GameUnitSlot& unit, bool follow_state) {
+    // cc13-sightdraw (kFollowSightCountdownDrawCc13Bound, ON only): 009C2980's +74h,
+    // -U(0.0f, 0.6f) from stream 1 (009C29E0-009C2A19, FCHS exact), drawn from the
+    // shared stream-1 generator once per 009C2980 the task's approach constructor
+    // makes (`constructs`, in call order). The host keeps one +74h per unit, so the
+    // first state's value is returned and the later states' draws only advance the
+    // stream (labelled). Without a gunnery host the keyed draw answers, once.
+    unsigned long long follow_stagger_shared_draws{0};
+    unsigned long long follow_stagger_shared_misses{0};
+    float follow_stagger_shared_009c2a0a(const GameUnitSlot& unit, const std::string& key,
+                                         int constructs = 1) {
+        float v = 0.0f;
+        if (gunnery != nullptr) {
+            for (int i = 0; i < constructs; ++i) {
+                ++follow_stagger_shared_draws;
+                const float d = -gunnery->ship_ai_draw(unit.process_index, 0.0f, 0.6f);
+                if (i == 0) v = d;
+            }
+        } else {
+            ++follow_stagger_shared_misses;
+            v = -release_altitude_draw_00bd2f10(key, 0.0f, 0.6f);
+        }
+        return v;
+    }
+    // `follow_constructs` (cc13-sightdraw, read only under
+    // kFollowSightCountdownDrawCc13Bound): how many 009C2980 calls the task's
+    // approach constructor makes (rel32 callers of 009C2980, construct paths):
+    // dogfight 009A94E0, strafe 009CC020, level bomb 009B75E0 and kamikaze 009AED20
+    // 2; drop kamikaze 009AD720, depth charge 009A4DC0, dive bomb 009C73A0 and
+    // torpedo 009D2DA0 3; moveonpath 009BCC60 1.
+    void bot_task_ctor_seeds_0099c6f0(GameUnitSlot& unit, bool follow_state,
+                                      int follow_constructs = 1) {
         task_gun_block_construct_009faad0(unit);    // 0099C790
+        // cc13-rocketstop, kRocketTargetStopHandlersCc13Bound (include/bsp/
+        // rocket_target_stop_cc13.hpp): the new task's own task+38Ch block. The old
+        // task's Stop (009AA9E0 / 009CD0D0 / 007B7BA0) clears its block and 00999EE0
+        // deletes it; 0099C79C (0099C95C) runs 009FCEF0 on the new one. ABI: none (host
+        // per-plane block). Uncertain: the image's new block leaves +18h unset; the host
+        // keeps the Stop's zero vector there (overwritten by 007B7870 before use).
+        if constexpr (bsp::kRocketTargetStopHandlersCc13Bound && bsp::kOpportunisticRocketBound) {
+            bsp::opportunistic_rocket_clear_target(unit.orx);        // the Stop
+            bsp::opportunistic_rocket_construct_009fcef0(unit.orx);  // 0099C79C
+            unit.orx_owner = 0;
+        }
         if constexpr (kBotTaskCtorSeedsBound) {
             ++bot_task_ctor_seeds;
             const std::string& n = unit.row.name;
             unit.task_phase_308 = -release_altitude_draw_00bd2f10(n + "#tb308", 0.0f, 1.0f);
             unit.ga_timer_3e8 = release_altitude_draw_00bd2f10(n + "#tb3e8", -1.0f, 0.0f);
             unit.ga_rest_3ec = -1.0f;
+            if constexpr (bsp::kFollowSightCountdownDrawCc13Bound) {
+                if (follow_state)
+                    unit.fs_countdown_74 = follow_stagger_shared_009c2a0a(unit, n + "#tb74",
+                                                                          follow_constructs);
+            } else {
             if (follow_state)
                 unit.fs_countdown_74 = -release_altitude_draw_00bd2f10(n + "#tb74", 0.0f, 0.6f);
+            }
         } else {
             (void)unit;
             (void)follow_state;
@@ -9707,15 +9808,84 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // vtable[38h] speed > 007C47F0 (009C23FA-009C2412), a = that speed.
     // LABELLED: the target's vtable[38h] is its motion.linear_velocity length, as
     // the 009D3D01 site takes it; approach+64h is the host's moveto_distance_64.
+    // kMovetoTargetSpeedClassCc13Bound (OFF) dispatches the slot by class instead.
+    // Switch pairing: this switch alone decides this site. ON, its plane and
+    // squadron-leader arms take bsp::plane_cached_speed_b1c_007d8020 over
+    // plane_world_velocity unconditionally (the image's vt[38h] is 007B8E60 for every
+    // plane), whatever kPlaneCachedSpeedB1cCc13Bound says; that switch governs only its own
+    // listed readers. So the pairs are: this switch ON vs OFF (all arms move together), and
+    // kPlaneCachedSpeedB1cCc13Bound ON vs OFF separately; the two need no joint pair.
+    static constexpr bool kMovetoTargetSpeedClassCc13Bound = false;
     float moveto_target_speed_009c23b0(const GameUnitSlot& unit, float base) {
         ++ts_override_calls;
         if (unit.moveto_target_plus_one == 0 || unit.moveto_target_plus_one > slots.size()
             || !slots[unit.moveto_target_plus_one - 1u]) return base;
         ++ts_override_target;
-        const GameUnitSlot& t = *slots[unit.moveto_target_plus_one - 1u];
-        const bsp::OceanVec3& v = t.motion.linear_velocity;
-        const float speed = static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
-            + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
+        const std::size_t target = unit.moveto_target_plus_one - 1u;
+        const GameUnitSlot& t = *slots[target];
+        // The OFF expression, moved verbatim into this lambda: the same arithmetic as before
+        // (|motion.linear_velocity| in double, rounded once), not textually identical.
+        const auto linear_speed = [](const GameUnitSlot& s) {
+            const bsp::OceanVec3& v = s.motion.linear_velocity;
+            return static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
+                + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
+        };
+        float speed;
+        if constexpr (kMovetoTargetSpeedClassCc13Bound) {
+            // 009C23DB-009C23E9: MOV EDX,[ECX]; CALL [EDX+38h] on the target, made before the
+            // reach test, FSTP float. Slot 38h by class, first match, as
+            // run_get_entity_speed_008c0820 dispatches it:
+            //   PlaneSquadronGen 007ED470: JMP the leader's ([squadron+3D0h]) vtable[38h];
+            //   ships 0080E0F0: ECX = [unit+1018h], JMP 0092D730, the signed body forward
+            //   speed over the inputs GameUnitsHost::unit_forward_speed_0092d730 reads;
+            //   planes 007B8E60: FLD [unit+B1Ch].
+            // The plane arm and the squadron-leader arm read +B1Ch as
+            // bsp::plane_cached_speed_b1c_007d8020 over plane_world_velocity (007D8020's
+            // per-op chain with its 1e-10 floor; LABELLED there: a recompute, not the cache).
+            // LABELLED: other classes' slot-38h bodies were not read and keep
+            // |motion.linear_velocity|; a squadron without a live leader faults in the image
+            // and answers `base` here.
+            const auto plane_speed = [](const GameUnitSlot& s) {
+                const float v[3] = {s.plane_world_velocity[0], s.plane_world_velocity[1],
+                                    s.plane_world_velocity[2]};
+                return bsp::plane_cached_speed_b1c_007d8020(v);   // 007B8E60 FLD [unit+B1Ch]
+            };
+            // 0092D74E-0092D763: FMUL, FMUL, FADDP, FMUL, FADDP, each to 24 bits, then FSTP
+            // float at 0092D765, in the order of the kSubmarineSeabedSpeedPc24Cc13Bound arm.
+            // Of the host's copies of this speed, this arm and that one are the PC24-faithful
+            // ones; bsp::unit_forward_speed_0092d730 (unit_motion.cpp) and
+            // GameUnitsHost::unit_forward_speed_0092d730 sum in double and round once, which
+            // stays the OFF behaviour at their other callers.
+            const auto ship_speed = [](const GameUnitSlot& s) {
+                const float vy_ry = s.motion.linear_velocity.y * s.motion.pose_row2[1];
+                const float vx_rx = s.motion.linear_velocity.x * s.motion.pose_row2[0];
+                const float sum_yx = vy_ry + vx_rx;
+                const float vz_rz = s.motion.linear_velocity.z * s.motion.pose_row2[2];
+                return sum_yx + vz_rz;
+            };
+            const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+            for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == target) {
+                    squadron = &r;
+                    break;
+                }
+            }
+            if (squadron != nullptr) {
+                const std::size_t leader = squadron->flight_leader();   // 007ED470 +3D0h
+                if (leader == bsp::kPlaneSquadronNoUnit || leader >= slots.size() || !slots[leader]) {
+                    return base;
+                }
+                speed = plane_speed(*slots[leader]);                    // leader's 007B8E60
+            } else if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryShip)) {
+                speed = ship_speed(t);                                  // 0080E0F0 -> 0092D730
+            } else if (bsp::unit_is_kind_of(t.class_id, bsp::kUnitKindQueryPlane)) {
+                speed = plane_speed(t);                                 // 007B8E60
+            } else {
+                speed = linear_speed(t);                                // LABELLED, unread class
+            }
+        } else {
+            speed = linear_speed(t);
+        }
         const float reach = unit.plane_turn_circle_radius + unit.moveto_follow_dist_68;  // 009C23E3 FSTP
         if (!(reach > unit.moveto_distance_64)) return base;                 // 009C23F8 JBE
         ++ts_override_within;
@@ -10551,7 +10721,12 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         a.countdown_38 = -release_altitude_draw_00bd2f10(n + "#r38", 0.0f, 1.0f);
         retreat_refresh_approach(unit);                       // 009C9282, 009C9289
         // 009C9C5D 009C2980, the follow state's construction draw.
-        const float retreat_follow_74 = -release_altitude_draw_00bd2f10(n + "#rf", 0.0f, 0.6f);
+        float retreat_follow_74;
+        if constexpr (bsp::kFollowSightCountdownDrawCc13Bound) {
+            retreat_follow_74 = follow_stagger_shared_009c2a0a(unit, n + "#rf");
+        } else {
+        retreat_follow_74 = -release_altitude_draw_00bd2f10(n + "#rf", 0.0f, 0.6f);
+        }
         (void)retreat_follow_74;
         unit.retreat_arm_560 = -release_altitude_draw_00bd2f10(n + "#r560", 0.0f, 1.0f);
         unit.retreat_squadron_ordered = squadron_ordered;
@@ -10678,9 +10853,11 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         }
         if constexpr (kFollowSightSearchBound) {
             // 009C211D-009C232A, behind the same release test (009C1FFD-009C2006
-            // returns before it). SUBSTITUTION, labelled: these follow states'
-            // +74h starts at 0.0, where 009C2980 draws -U(0, 0.6) through
-            // 00BD2F10 (009C2A0A); the first tick searches and the period follows.
+            // returns before it). +74h is seeded at each task install with
+            // kBotTaskCtorSeedsBound (bot_task_ctor_seeds_0099c6f0, the retreat and
+            // land installs) as 009C2980's -U(0, 0.6) (009C2A0A). SUBSTITUTION,
+            // labelled: drawn from the host's keyed LCG, not stream 1; under
+            // kFollowSightCountdownDrawCc13Bound from the shared stream-1 generator.
             if (!(unit.torpedo_release_pending_c25 || unit.torpedo_issue_requests_c20 > 0))
                 follow_sight_tick_009c211d(unit, *leader, unit.fs_think_dt, unit.fs_countdown_74);
         }
@@ -11145,7 +11322,15 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     bool aim_point_009fada0(GameUnitSlot& shooter, const GameUnitSlot& target,
                             std::size_t target_plus_one, float out[3],
                             GameHostLog* log_out = nullptr);
+    // cc13-kzpick: 009FA260 alone on the shooter's hull aim ref (the pick
+    // 009ABF60's tail makes at 009AC09E), with no world point taken and no lead.
+    void hull_aim_pick_009fa260(GameUnitSlot& shooter, const GameUnitSlot& target,
+                                std::size_t target_plus_one);
     unsigned long long aim_lead_applied_{0};
+    // Census for kAimLeadBodyAxisCc13Bound (cc9-nondet1, log only): leads taken in
+    // aim_point_009fada0's tail, and those whose ON (body axis) lead point lies more
+    // than 1e-3 m from the OFF (level heading) one.
+    unsigned long long aim_lead_axis_calls_{0}, aim_lead_axis_differs_{0};
 
     // Packet cc9_aim_error_draw: 009C3DA0 (dive) / 009D02A0 (torpedo). The
     // three draws go through release_altitude_draw_00bd2f10, the stream-1
@@ -13126,6 +13311,30 @@ float avoid_interp(float x0, float y0, float x1, float y1, float x) {   // 00419
 
 }  // namespace
 
+// cc13-kzpick (kKamikazeEnterPickCc13Bound): the pick only. hull_aim_world_point
+// is the host's 009FADA0 body: it re-constructs the ref on a new target, picks
+// on the dirty byte (approach_target_ref_pick_009fa260, clearing it) and then
+// stores the world point. That store lands in hull_aim_ref.world_point_1c,
+// which nothing reads before the next 009FADA0 rewrites it, and the point
+// itself is discarded here; the lead tail of aim_point_009fada0 is not run.
+// The sections are the ones aim_point_009fada0 passes.
+void GameUnitsHost::Impl::hull_aim_pick_009fa260(GameUnitSlot& shooter,
+                                                 const GameUnitSlot& target,
+                                                 std::size_t target_plus_one) {
+    bsp::ApproachTargetSections sections;
+    const bsp::ApproachTargetSections* sections_in = nullptr;
+    if (kApproachSectionPointsBound && shooter.hull_aim_ref.section_chance_64 > 0.0f
+        && hull_aim_target_samples_hull(target)
+        && target_plus_one != 0 && target_plus_one - 1 < slots.size()) {
+        sections = approach_target_sections(target_plus_one - 1, target);
+        sections_in = &sections;
+    }
+    float discard[3] = {target.motion.position[0], target.motion.position[1],
+                        target.motion.position[2]};
+    (void)hull_aim_world_point(shooter, target, target_plus_one, discard, nullptr,
+                               sections_in, &log, gunnery.get(), index_of_slot(shooter));
+}
+
 // Packet cc9_approach_target_lead: 009FADA0's tail 009FAF05-009FAF7D.
 bool GameUnitsHost::Impl::aim_point_009fada0(GameUnitSlot& shooter,
                                              const GameUnitSlot& target,
@@ -13142,7 +13351,8 @@ bool GameUnitsHost::Impl::aim_point_009fada0(GameUnitSlot& shooter,
         sections_in = &sections;
     }
     const bool hull = hull_aim_world_point(shooter, target, target_plus_one, out, log_out,
-                                           sections_in, &log);
+                                           sections_in, &log, gunnery.get(),
+                                           index_of_slot(shooter));
     const float projtime = shooter.hull_aim_ref.lead_projtime;
     // 009FAF05-009FAF11: JBE past the tail unless projtime > 0.0. The nine
     // hull-sampling vtables carry 008120E0 at +48h; every other target class
@@ -13160,15 +13370,43 @@ bool GameUnitsHost::Impl::aim_point_009fada0(GameUnitSlot& shooter,
     for (int i = 0; i < 3; ++i) axis.axis[i] = ts.motion.pose_row2[i];
     pin.speed = bsp::unit_forward_speed_0092d730(axis);
     // vtable[34h] = 00812090: the body axis +94h..9Ch times that speed.
-    // SUBSTITUTION, labelled, the one neighbour_world_velocity makes: the
-    // hull's heading direction, level.
+    // ON (bsp::kAimLeadBodyAxisCc13Bound, packet cc13-aimaxis): 008120A3-008120CB,
+    // row.x * s, row.y * s, s * row.z, each one float product. OFF: the
+    // SUBSTITUTION, labelled, the one neighbour_world_velocity makes: the hull's
+    // heading direction, level.
+    const std::array<float, 3> axis_velocity{axis.axis[0] * pin.speed,
+        axis.axis[1] * pin.speed, pin.speed * axis.axis[2]};
     const double hd = static_cast<double>(pose_heading_radians(ts));
-    pin.velocity = {static_cast<float>(std::sin(hd)) * pin.speed, 0.0f,
-                    static_cast<float>(std::cos(hd)) * pin.speed};
+    const std::array<float, 3> level_velocity{static_cast<float>(std::sin(hd)) * pin.speed,
+        0.0f, static_cast<float>(std::cos(hd)) * pin.speed};
+    if constexpr (bsp::kAimLeadBodyAxisCc13Bound) {
+        pin.velocity = axis_velocity;
+    } else {
+        pin.velocity = level_velocity;
+    }
     // 008120F8: 00811890(unit, unit+984h), which is 00811940.
     UnitRudderBinding rudder(*this, ts);
     if constexpr (kUnitYawRateForwardSpeedBound) rudder.forward_speed = pin.speed;
     pin.yaw_rate = bsp::unit_current_yaw_rate_00811940(rudder);
+    {
+        // Census (cc9-nondet1, log only): the same tail with each velocity.
+        auto lead_point = [&](const std::array<float, 3>& velocity) {
+            bsp::ShipPredictInputs alt = pin;
+            alt.velocity = velocity;
+            bsp::ApproachTargetRefState alt_lead{};
+            alt_lead.world_point_1c = {out[0], out[1], out[2]};
+            bsp::approach_target_ref_lead_tail_009faf05(alt_lead,
+                bsp::ship_predict_position_008120e0(alt, projtime), alt.position);
+            return alt_lead.world_point_1c;
+        };
+        const auto on = lead_point(axis_velocity);
+        const auto off = lead_point(level_velocity);
+        const double dx = static_cast<double>(on[0]) - off[0];
+        const double dy = static_cast<double>(on[1]) - off[1];
+        const double dz = static_cast<double>(on[2]) - off[2];
+        ++aim_lead_axis_calls_;
+        if (std::sqrt(dx * dx + dy * dy + dz * dz) > 1e-3) ++aim_lead_axis_differs_;
+    }
     const std::array<float, 3> predicted =
         bsp::ship_predict_position_008120e0(pin, projtime);
     bsp::ApproachTargetRefState lead{};
@@ -16033,7 +16271,11 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
     unit.land_request_ac = 0.5f;
     unit.land_request_b0 = -release_altitude_draw_00bd2f10(n + "#lb0", 0.0f, 0.5f);
     // 009B2EE4 009C2980, the follow state's construction draw.
+    if constexpr (bsp::kFollowSightCountdownDrawCc13Bound) {
+        unit.land_follow_stagger_74 = follow_stagger_shared_009c2a0a(unit, n + "#l74");
+    } else {
     unit.land_follow_stagger_74 = -release_altitude_draw_00bd2f10(n + "#l74", 0.0f, 0.6f);
+    }
     unit.land_mode_50 = 1;                          // 009AFEC7
     unit.land_site_plus_one = owner + 1u;
     unit.land_deck_plus_one = deck + 1u;
@@ -17851,7 +18093,8 @@ void GameUnitsHost::Impl::airfield_site_tick_006cf980(std::size_t deck_index, La
 // point 0's world y (the airfield's +7ACh object is not read); the airfield's
 // axes are taken as the world's, so the local offsets are applied in world;
 // +9DCh is kept as launch_spot_cooldown_9dc with the count launch_spot_arms_9dc,
-// for the gunnery crash sweep (block+7Ch is the deck owner).
+// for the gunnery crash sweep (block+7Ch is the deck owner); the orthonormalisation
+// 0085DC80 (called at 007C6029) is the host's own normalise-and-cross.
 bool GameUnitsHost::Impl::place_on_launch_spot_007c5f60(GameUnitSlot& p,
     std::size_t deck_index, LandingDeck& d, bool airfield) {
     float pos[3] = {0.0f, 0.0f, 0.0f};
@@ -17894,7 +18137,7 @@ bool GameUnitsHost::Impl::place_on_launch_spot_007c5f60(GameUnitSlot& p,
         float fwd[3] = {h > 0.0f ? dir[0] * (cp / h) : 0.0f, sp,
                         h > 0.0f ? dir[2] * (cp / h) : cp};
         const float fl = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] + fwd[2] * fwd[2]);
-        // pc24-lint: allow float ops (per-op single precision); the host's own orthonormalisation stands in for 0085DC80, labelled above
+        // pc24-lint: allow single float op: c / fl is one float FDIV, already rounded per op (as at PC24); this |fwd| normalisation and the right/up crosses below are the host's stand-in for 0085DC80 (called at 007C6029), not modelled per op
         for (float& c : fwd) c /= fl;
         // right = up x forward, up = forward x right (the identity pose's handedness).
         float right[3] = {fwd[2], 0.0f, -fwd[0]};
@@ -21993,17 +22236,34 @@ void GameUnitsHost::store_commanded_speed_00890e6f(std::size_t unit_index, float
 // world linear velocity copied to ctl+30h..+38h (007D9EC7..007D9ED6).
 // SUBSTITUTION, labelled: the body +Z axis in world is the pose's forward row,
 // the same axis the spawn seed uses; the ctl+30h..+38h copy has no host field.
+// kSetSpeedCtlAxisCc13Bound (include/bsp/set_speed_ctl_axis_cc13.hpp): ctl+30h is
+// the host's plane_velocity_lp_30, and ON stores it and drops the normalisation.
 bool GameUnitsHost::set_plane_forward_speed_007d9e80(std::size_t unit_index, float speed) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size()) return false;
     GameUnitSlot& slot = *host.slots[unit_index];
     if (!slot.plane_velocity_seeded) return false;
     const float* const fwd = slot.motion.pose_row2;
+    if constexpr (bsp::kSetSpeedCtlAxisCc13Bound) {
+        // 007D9C80 -> 0042D0D0(ctl+3Ch = (0, 0, speed), unit+74h, w 0): the products
+        // with zero add nothing, so each axis is f32(speed * row2[i]); no
+        // normalisation and no length guard. The angular term is the zero vector.
+        for (int i = 0; i < 3; ++i) {
+            slot.plane_world_velocity[i] = speed * fwd[i];
+            slot.plane_body_angular[i] = 0.0f;
+        }
+        // 007D9EC7..007D9ED6: ctl+30h..+38h, the low-passed velocity, = ctl+18h..+20h.
+        if constexpr (Impl::kPlaneVelocityLowpassBound) {
+            for (int i = 0; i < 3; ++i) slot.plane_velocity_lp_30[i] = slot.plane_world_velocity[i];
+            slot.plane_velocity_lp_valid = true;
+        }
+    } else {
     const float len = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] + fwd[2] * fwd[2]);
     if (!(len > 1e-6f)) return false;
     for (int i = 0; i < 3; ++i) {
         slot.plane_world_velocity[i] = speed * fwd[i] / len;
         slot.plane_body_angular[i] = 0.0f;
+    }
     }
     slot.motion.linear_velocity = bsp::OceanVec3{
         slot.plane_world_velocity[0], slot.plane_world_velocity[1],
@@ -27500,7 +27760,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_opportunistic_rocket_009fd0e0(float dt) {
                         // The dogfight / strafe / rocket Stops clear the target (007B7BA0,
                         // 009AA9E0, 009CD0D0). SUBSTITUTION, labelled: the host clears when
-                        // the task that set it is no longer installed.
+                        // the task that set it is no longer installed. With
+                        // kRocketTargetStopHandlersCc13Bound the task construction
+                        // (bot_task_ctor_seeds_0099c6f0) also rebuilds the block; this
+                        // clear stays for a retire with no new task.
                         if ((unit_.orx_owner == 1 && !unit_.dogfight_task_installed) ||
                             (unit_.orx_owner == 2 && !unit_.strafe_task_installed)) {
                             bsp::opportunistic_rocket_clear_target(unit_.orx);
@@ -28100,7 +28363,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
                         const bsp::DogfightState was = unit_.dogfight_state;
                         if (!unit_.dogfight_task_installed) {
-                            unit_.dogfight_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true); if constexpr (GameUnitsHost::Impl::kBotTaskCtorSeedsBound) unit_.mv_count_2c = -owner_.release_altitude_draw_00bd2f10(unit_.row.name + "#tbmv2c", 0.0f, 1.0f);
+                            unit_.dogfight_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true, 2); if constexpr (GameUnitsHost::Impl::kBotTaskCtorSeedsBound) unit_.mv_count_2c = -owner_.release_altitude_draw_00bd2f10(unit_.row.name + "#tbmv2c", 0.0f, 1.0f);
                         }
                         float attack_dist = 2000.0f;
                         float ceiling = 3000.0f;
@@ -28609,7 +28872,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void st_install_009cc230() {
                         const GameUnitsHost::Impl::PilotStrafeRow& row =
                             GameUnitsHost::Impl::strafe_row(unit_);
-                        unit_.strafe_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
+                        unit_.strafe_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true, 2);
                         unit_.st_profile_activation_pending = true;   // 0099AEB3, after the install
                         unit_.st_target_plus_one = unit_.command_target_plus_one;
                         // 009F9CE0: approach+24h = max(1.0, MaxSpd / Pilot/Strafe/ReferenceSpeed).
@@ -29544,7 +29807,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 009B9030 -> 009B7990: the task, its approach and its states.
                     void lb_install_009b7990() {
                         using namespace bsp::level_bomb;
-                        unit_.level_bomb_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
+                        unit_.level_bomb_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true, 2);
                         unit_.lb_profile_activation_pending = true;   // 0099AEB3
                         unit_.lb_target_plus_one = unit_.command_target_plus_one;
                         bsp::LevelBombApproach& a = unit_.lb_ap;
@@ -30368,8 +30631,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ri.entry.has_ordnance_ce = a.has_ordnance_ce;
                         ri.entry.in_range_cd = a.in_range_cd;
                         ri.has_latched_target = t != nullptr;
-                        // target+5Dh. SUBSTITUTION, labelled: the host's liveness.
-                        ri.target_disabled_5d = t != nullptr && !df_slot_live(*t);
+                        // target+5Dh: 009B8968 / 009B8AF4 / 009B8DA4 CMP [[task+440h]+5Dh],0.
+                        if constexpr (bsp::kTargetDisabledByte5dCc13Bound) {
+                            ri.target_disabled_5d = t != nullptr && t->state != nullptr &&
+                                                    t->state->simulate != 0;
+                        } else {
+                            // SUBSTITUTION, labelled: the host's liveness.
+                            ri.target_disabled_5d = t != nullptr && !df_slot_live(*t);
+                        }
                         bsp::LevelBombBreakOffInputs bin;
                         bin.has_latched_target = ri.has_latched_target;
                         bin.target_disabled_5d = ri.target_disabled_5d;
@@ -30840,8 +31109,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         {
                             bsp::StrafeRangeInputs rin;
                             rin.has_target = t != nullptr;
-                            // target+5Dh. SUBSTITUTION, labelled: the host's liveness.
-                            rin.target_disabled_5d = t != nullptr && !live;
+                            // target+5Dh: 009CCF37 CMP [target+5Dh],0.
+                            if constexpr (bsp::kTargetDisabledByte5dCc13Bound) {
+                                rin.target_disabled_5d = t != nullptr && t->state != nullptr &&
+                                                         t->state->simulate != 0;
+                            } else {
+                                // SUBSTITUTION, labelled: the host's liveness.
+                                rin.target_disabled_5d = t != nullptr && !live;
+                            }
                             rin.unit_height_100 = unit_.motion.position[1];
                             rin.aim_height = unit_.st_aim_point[1];
                             rin.glide_tan_30 = unit_.st_glide_tan_30;
@@ -30962,6 +31237,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         point = {q[0], q[1], q[2]};
                         ref.world_point_1c = point;
                         return true;
+                    }
+                    // cc13-kzpick (kKamikazeEnterPickCc13Bound): 009ABF60's tail
+                    // JMP 009FA260 (009AC09E), right after 009AC160. The dirty ref
+                    // is carried into hull_aim_ref exactly as kz_target_point
+                    // carries it, then picked there, so the next 009FADA0 finds
+                    // both refs clean and does not re-pick. DEVIATION, labelled: with
+                    // no live target the image's 009FA260 still clears +41h at
+                    // 009FA2CE (no pick), while this leaves the ref dirty and
+                    // kz_target_point picks later. That is close to the image, since
+                    // 009FB1D9 BindTarget picks when a target is bound.
+                    void kz_enter_pick_009fa260(bsp::ApproachTargetRefState& ref) {
+                        const GameUnitSlot* t = st_target();
+                        if (t == nullptr || !df_slot_live(*t) || !ref.dirty_41) return;
+                        bsp::ApproachTargetRefState& h = unit_.hull_aim_ref;
+                        h.bias_34 = ref.bias_34;
+                        h.spread_48 = ref.spread_48;
+                        h.centre_54 = ref.centre_54;
+                        h.section_chance_64 = ref.section_chance_64;
+                        h.weight_68 = ref.weight_68;
+                        h.weight_6c = ref.weight_6c;
+                        h.weight_70 = ref.weight_70;
+                        h.dirty_41 = true;
+                        unit_.aim_error_drawn = true;
+                        unit_.hull_aim_seed = ++g_hull_aim_pick_counter;
+                        ref.dirty_41 = false;
+                        owner_.hull_aim_pick_009fa260(unit_, *t, unit_.command_target_plus_one);
                     }
                     // unit vtable[204h] = 007B8E70, unit+B2Ch: the body forward speed.
                     float kz_forward_speed_b2c() const {
@@ -31189,12 +31490,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             b.kz_apply_plan(c);
                         }
                         void clear_gun_block_34_38() override {}
+                        void pick_target_ref_009fa260(bsp::ApproachTargetRefState& ref) override {
+                            b.kz_enter_pick_009fa260(ref);
+                        }
                     };
                     // 0099A170 -> 009AF720 -> 009AEEF0 (009AED20, 009AB920).
                     void kz_install_009af720(KzHost& h) {
                         unit_.kz = bsp::KamikazeTask{};
                         unit_.kz.ap.ref = bsp::approach_target_ref_construct_009fb200(0.0f);
-                        unit_.kamikaze_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
+                        unit_.kamikaze_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true, 2);
                         unit_.kz_target_plus_one = unit_.command_target_plus_one;
                         unit_.kz_attack_mode_370 = bsp::PilotAttackMode::kForced;
                         ++unit_.kz_installs;
@@ -31242,6 +31546,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.kz.state == bsp::KamikazeState::kGoTowards) {
                             bsp::kamikaze_gotowards_enter_009ac160(unit_.kz.gotowards, unit_.kz.ap,
                                 kz_robot_row(unit_), unit_.kz_alt_394, unit_.kz_alt_398, h);
+                            if constexpr (bsp::kKamikazeEnterPickCc13Bound) {
+                                h.pick_target_ref_009fa260(unit_.kz.ap.ref);   // 009AC09E
+                            }
                         }
                         const GameUnitSlot* t = st_target();
                         owner_.log.notef("kamikaze task 009AF720 kind 0Ch installed %s -> %s: "
@@ -31523,7 +31830,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void dkz_install_009aebe0(DkzHost& h) {
                         unit_.dkz = bsp::DropKamikazeTask{};
                         unit_.dkz.ap.ref = bsp::approach_target_ref_construct_009fb200(0.0f);
-                        unit_.drop_kamikaze_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
+                        unit_.drop_kamikaze_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true, 3);
                         unit_.dkz_target_plus_one = unit_.command_target_plus_one;
                         unit_.dkz_attack_mode_370 = bsp::PilotAttackMode::kForced;
                         unit_.dkz_rack = dkz_find_rack();
@@ -31919,7 +32226,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             pin.ctl_380 = -1.0f;
                             pin.ctl_37c = -1.0f;
                             bsp::depth_charge_cruise_profile_009a6500(unit_.dc, host, pin);
-                            unit_.depth_charge_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
+                            unit_.depth_charge_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true, 3);
                             unit_.dc_target_plus_one = unit_.command_target_plus_one;
                         }
                         const bsp::DepthChargeArmResult r =
@@ -31966,7 +32273,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (unit_.command_target_plus_one == 0) return;
                         }
                         if (!unit_.dive_bomb_task_installed) {
-                            unit_.dive_bomb_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true);
+                            unit_.dive_bomb_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true, 3);
                             unit_.db_task_target_plus_one = unit_.command_target_plus_one;
                             unit_.db_profile_activation_pending = true;   // 0099AEB3
                             // 009C7710 leaves +310h on the moveto/follow pair
@@ -33629,7 +33936,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         //
                         // STILL UNBOUND, and labelled: the avoidance increment
                         // 009C6D59 adds to A, which comes out of the unbound
-                        // 007F0280. The 009C64EC query that can veto BL is NOT
+                        // 007F0280 (bound behind kDiveFlyaboveAvoidIncrementCc13Bound,
+                        // OFF, cc13-flyavoid). The 009C64EC query that can veto BL is NOT
                         // in that list any more - it is IsKindOf(RECON_PLANE),
                         // and these are dive bombers.
                         const float bearing_error =
@@ -33804,6 +34112,42 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // either way. L is pi/2: the 10-degree L of 009C6497
                         // needs flyabove+1Bh, which is 0 in this installation
                         // (kOldStyleBombing1b).
+                        if constexpr (bsp::kDiveFlyaboveAvoidIncrementCc13Bound &&
+                                      GameUnitsHost::Impl::kNearFieldProbeBound) {
+                            // cc13-flyavoid (census S7): 009C6AA3-009C6D59, the
+                            // avoidance increment added to A before the slew
+                            // (include/bsp/dive_flyabove_avoid_increment_cc13.hpp).
+                            // The probe is taken here, after the flag step, with
+                            // the +18h 009C6AA3/009C6B7F read; R is the 009C63A6
+                            // lead range. ABI: inline in 009C62B0. Uncertain: the
+                            // host's 007F0280 candidate set (live 0Fh units in the
+                            // reach prefilter) stands for [unit+C50h]+30h's list.
+                            const bool b18 = unit_.db_flyabove_can_dive_18;
+                            float ext[3];
+                            bsp::near_field_flyover_extents_009c6aa3(b18, ext);
+                            const float w[3] = {30.0f, 0.0f, 0.0f};  // 00CE38C8
+                            const bsp::NearFieldProbeResult pr = nf_probe_007f0280(ext, w);
+                            const float inc = bsp::dive_flyabove_avoid_increment_009c6b7b(
+                                pr, b18, unit_.db_flyabove_lead_range);
+                            // rev7 NIT (cc13-flyraw): with 009C6A46's JBE taken
+                            // (T not > 0) frame+44h keeps the raw lead bearing B
+                            // (db_flyabove_lead_bearing, the 009C63E6 store), so
+                            // inc is added to B itself, not to Add(C, Sub(B, C)),
+                            // which can differ by an ulp or at the wrap.
+                            const float a0 = (dead_band_t > 0.0f)
+                                ? bsp::wrapped_angle_add_00438aa0(   // 009C6A97
+                                      unit_.plane_heading_c6c,
+                                      bsp::dive_bomb_flyabove_dead_band_009c6a37(
+                                          bearing_error, dead_band_t))
+                                : unit_.db_flyabove_lead_bearing;
+                            const float a = bsp::wrapped_angle_add_00438aa0(
+                                a0, inc);                            // 009C6D54
+                            in.heading_to_aim_point =
+                                bsp::dive_bomb_flyabove_slew_009c6d6f(
+                                    unit_.plane_heading_c6c, a,
+                                    bsp::dive_bomb_flyabove_constant::
+                                        kHeadingSlewLimit);
+                        } else {
                         in.heading_to_aim_point =
                             bsp::dive_bomb_flyabove_slew_009c6d6f(
                                 unit_.plane_heading_c6c,
@@ -33813,6 +34157,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         bearing_error, dead_band_t)),
                                 bsp::dive_bomb_flyabove_constant::
                                     kHeadingSlewLimit);
+                        }
                         const bsp::DiveBombFlyAboveCommand r =
                             bsp::dive_bomb_flyabove_command_009c6dcd(in);
                         if (!r.wrote_heading) ++unit_.db_flyabove_latched_ticks;
@@ -34189,7 +34534,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                                 return;
                             }
-                            unit_.torpedo_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true); if constexpr (GameUnitsHost::Impl::kBotTaskCtorSeedsBound) unit_.torpedo_ar_countdown_1c = -owner_.release_altitude_draw_00bd2f10(unit_.row.name + "#tbt1c", 0.0f, 1.0f);
+                            unit_.torpedo_task_installed = true; owner_.bot_task_ctor_seeds_0099c6f0(unit_, true, 3); if constexpr (GameUnitsHost::Impl::kBotTaskCtorSeedsBound) unit_.torpedo_ar_countdown_1c = -owner_.release_altitude_draw_00bd2f10(unit_.row.name + "#tbt1c", 0.0f, 1.0f);
                             unit_.torpedo_task_target_plus_one = unit_.command_target_plus_one;
                             // 009D3050 leaves +310h on the moveto/follow pair
                             // 009D2DA0 registered; 009D24E0 leaves +98h at -1.
@@ -35350,8 +35695,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // prediction from the aircraft's state at THIS tick, the
                     // drop's own instant, not the request's.
                     void run_rack_bomb_drop_006e4d50() {
-                        // SUBSTITUTION, labelled: the scatter draws are not
-                        // taken (the host spawn has no dispersion).
+                        // The scatter draws are not taken here. They are taken in
+                        // GameGunneryHost::release_bomb_drop, called below, under
+                        // kBombDropScatterBound (ON, GUNNERY 130.6) and
+                        // kBombDropDriftBound (ON, 173.1). It makes four stream-1
+                        // 00BD2F10 draws in the image's order:
+                        //   006E4F91  U(0, pi)            cone azimuth
+                        //   006E4FB1  U(0, s)             cone angle, through tan
+                        //   006E513C  U(-w, w)            drift, side
+                        //   006E51AC  U(-0.5w, 0.3w)      drift, along
+                        // It then applies the cone to the release velocity and the
+                        // drift to block+38h. In the default run, Draw::bomb_scatter
+                        // is the same shared generator as ship_ai_draw. The record
+                        // below predates that packet, and its old note that the host
+                        // spawn has no dispersion is stale (cc13-bombscatter).
                         owner_.record("Rack::drop_dispersion_006e4f91", 0x006e4f91u);
                         if (owner_.gunnery == nullptr) return;
                         const std::size_t index = owner_.index_of_slot(unit_);
@@ -36801,8 +37158,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 n + "#mt2c", 0.0f, max_alt_offset);
                             unit_.moveto_refresh_58 = -owner_.release_altitude_draw_00bd2f10(
                                 n + "#mt58", 0.0f, 0.5f);
+                            if constexpr (bsp::kFollowSightCountdownDrawCc13Bound) {
+                                unit_.moveto_follow_stagger_74 =
+                                    owner_.follow_stagger_shared_009c2a0a(unit_, n + "#mt74");
+                            } else {
                             unit_.moveto_follow_stagger_74 =
                                 -owner_.release_altitude_draw_00bd2f10(n + "#mt74", 0.0f, 0.6f);
+                            }
                             unit_.moveto_circle_flag_18 = owner_.release_altitude_draw_00bd2f10(
                                 n + "#mt18", 0.0f, 1.0f) >= 0.5f;
                             unit_.moveto_stagger_54c = -owner_.release_altitude_draw_00bd2f10(
@@ -45453,6 +45815,22 @@ float GameUnitsHost::unit_heading_radians(std::size_t index) const {
     return Impl::pose_heading_radians(*host.slots[index]);
 }
 
+float GameUnitsHost::unit_heading_vtable50(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size() || !host.slots[index]) return 0.0f;
+    const GameUnitSlot& slot = *host.slots[index];
+    const int id = slot.class_id;
+    if (id >= 0x06 && id <= 0x0E) return slot.hull_heading_1050;   // 006DFD60
+    if (id >= 0x0F && id <= 0x17) return slot.plane_heading_c6c;   // 0074E260
+    if (id == 0x45) {
+        // 006D2040: atan2(+94h, +9Ch) of the local frame's row 2, FSTP float. The
+        // host's airfield is top level, so its pose rows are the local rows (as at
+        // runway_heading_88).
+        return Impl::pose_heading_radians(slot);
+    }
+    return 0.0f;                                                   // 0042B8C0 FLDZ
+}
+
 float GameUnitsHost::unit_current_yaw_rate_00811940(std::size_t index) {
     Impl& host = *impl_;
     if (index >= host.slots.size()) return 0.0f;
@@ -46969,6 +47347,10 @@ void GameUnitsHost::report() {
             }
         }
     }
+    host.log.notef("summary aim lead body axis census bound=%d leads=%llu differs=%llu "
+        "(009FADA0 tail / 00812090, ON vs OFF lead > 1e-3 m)",
+        bsp::kAimLeadBodyAxisCc13Bound ? 1 : 0, host.aim_lead_axis_calls_,
+        host.aim_lead_axis_differs_);
     host.log.notef("summary ship exit zone bound=%d calls=%llu counting=%llu warnings=%llu "
         "kills=%llu (00826D70 / 00811F50 / 0081BEB0, packet cc9_ship_exit_zone)",
         GameUnitsHost::Impl::kShipOutOfMapExitBound ? 1 : 0, host.ship_exit_calls,

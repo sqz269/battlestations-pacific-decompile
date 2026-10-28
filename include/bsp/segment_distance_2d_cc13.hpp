@@ -21,6 +21,12 @@ namespace bsp {
 //     00414C60 |p - end| (both 0 at or below 1e-10 squared), else |u|.
 // The ON wrapper passes the callers' second segment as ECX/EDX and the first as the stack
 // pair, the order 008206F0's call at 0082178B uses.
+// Same-address copies, not switched: segment_pair_distance_004f49f0
+// (avoid_zone_distance_followup.cpp:91), the naked native_segment_crossing_004f3730
+// (avoid_zone_clearance.cpp:94) and avoid_zone_segment_distance_00419ab0
+// (avoid_zone_segment_math.cpp:363).
+// Pairing: flip together with kTransportLaunchCraftCc13Bound. The OFF transport caller
+// (game_hosts_ship_ai.cpp:14704-14705, seg_b) passes the craft keel ends reversed.
 // Movers when ON: troop transport landing-craft launch (008206F0): which launch slots count
 // as blocked by a nearby ship's keel, so the craft's placement and launch timing.
 inline constexpr bool kSegmentDistance2dCc13Bound = false;

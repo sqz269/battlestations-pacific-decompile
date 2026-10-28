@@ -114,6 +114,7 @@
 #include "bsp/cc13_arc_centre.hpp"
 #include "bsp/cc13_seg67b.hpp"
 #include "bsp/segment_distance_2d_cc13.hpp"  // packet cc13-p3b
+#include "bsp/torpedo_candidate_gyro_heading_cc13.hpp"  // packet cc13-torpgyro
 
 namespace bsp::game {
 
@@ -2059,7 +2060,8 @@ struct GameShipAiHost::Impl {
     // `owner_handle`), 00814420 on the target otherwise (owner != the target):
     // the live torpedoes target->vtable[1D0h] 008173E0 calls a threat.
     // LABELLED: the torpedo's +46Ch is atan2(vx, vz) of the host round (it runs
-    // straight on its launch heading, as torpedo_candidate has it), and a
+    // straight on its launch heading, as torpedo_candidate has it; the round's
+    // commanded heading under kTorpedoCandidateGyroHeadingCc13Bound), and a
     // target with no ship depth input takes class+570h = 0.
     int torpedoes_threatening_00814390(std::size_t target, std::size_t owner_handle, bool own,
                                        bool head_only = false) {
@@ -2094,8 +2096,12 @@ struct GameShipAiHost::Impl {
             in.torpedo_position[0] = head->position[0];
             in.torpedo_position[1] = head->position[1];
             in.torpedo_position[2] = head->position[2];
+            if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
+                in.torpedo_heading = head->commanded_heading_46c;   // 00817535
+            } else {
             in.torpedo_heading = static_cast<float>(std::atan2(
                 static_cast<double>(head->velocity[0]), static_cast<double>(head->velocity[2])));
+            }
             in.water_travel_speed = head->water_travel_speed;
             return bsp::ship_ai_torpedo_threatens_008173e0(in) ? static_cast<int>(list.size()) : 0;
         }
@@ -2105,8 +2111,12 @@ struct GameShipAiHost::Impl {
             in.torpedo_position[0] = t.position[0];
             in.torpedo_position[1] = t.position[1];
             in.torpedo_position[2] = t.position[2];
+            if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
+                in.torpedo_heading = t.commanded_heading_46c;       // 00817535
+            } else {
             in.torpedo_heading = static_cast<float>(std::atan2(
                 static_cast<double>(t.velocity[0]), static_cast<double>(t.velocity[2])));
+            }
             in.water_travel_speed = t.water_travel_speed;
             if (bsp::ship_ai_torpedo_threatens_008173e0(in)) ++count;
         }
@@ -2219,10 +2229,15 @@ struct GameShipAiHost::Impl {
         c.z = t.position[2];
         c.vx = t.velocity[0];
         c.vz = t.velocity[2];
+        if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
+            // 009DC0F9: record+46Ch, the round's commanded heading.
+            c.heading = t.commanded_heading_46c;
+        } else {
         // record+46Ch: the host round keeps its launch heading, so the velocity's
         // own heading in the pose convention atan2(x, z). SUBSTITUTION, labelled.
         c.heading = static_cast<float>(std::atan2(static_cast<double>(t.velocity[0]),
                                                   static_cast<double>(t.velocity[2])));
+        }
         c.run_seconds = t.swim_seconds;
         c.water_travel_speed = t.water_travel_speed;
         c.side = t.owner_side;
@@ -2571,6 +2586,8 @@ struct GameShipAiHost::Impl {
         }
         if (r.escape_applied) {
             ++row.zone_escape_turns;
+            row.zone_escape_max_turn = std::max(row.zone_escape_max_turn,
+                                                std::fabs(r.escape_turn));
             if (row.zone_escape_first_s < 0.0f) {
                 row.zone_escape_first_s = static_cast<float>(steps) * 0.05f;
             }
@@ -14310,7 +14327,11 @@ float length_2d_00414c60(float x, float z) {
 // LABELLED: when 004F3630 finds den (= -|d|) relatively equal to 0 (|d| < 1e-4, d = 0
 // included) it writes nothing and the image reads t from the stack slot that held the
 // point argument (pointer bits) and u from the slot holding d.x * r; this model takes
-// t = 0 for that case, so the result is |d.x * r|.
+// t = 0 for that case, so the result is |d.x * r|. At the only caller (0082178B) the point
+// arguments are main-thread stack locals (K+100h..118h), so the unwritten t is the
+// pointer's bits, which read as a positive denormal below 1.0: the image takes the |u|
+// branch and t = 0 matches it there. It would diverge only for a point at address
+// 3F800000h or above.
 float segment_point_distance_00419ab0(const float start[2], const float end[2],
                                       const float point[2]) {
     namespace x8 = bsp::cc13x87;
@@ -15750,6 +15771,10 @@ void GameShipAiHost::report() {
             reach.path_dir_evals, reach.path_dir_differs,
             bsp::kShipAiPathNodeDirectionUnorderedCc13Bound ? 1 : 0,
             bsp::kShipAiPathSideWalkNanCc13Bound ? 1 : 0);
+        host.log.notef("summary mission order copy reach calls=%llu differs=%llu bound=%d "
+            "(00811D10 kUnitAiOrderCopyPc24Cc13Bound; packet cc9-sweep2b)",
+            reach.order_copy_calls, reach.order_copy_differs,
+            bsp::kUnitAiOrderCopyPc24Cc13Bound ? 1 : 0);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {

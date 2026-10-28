@@ -25,6 +25,7 @@
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_hudgui_cc13.hpp"
+#include "bsp/hud_heading_vtable50_cc13.hpp"  // packet cc13-hudhdg
 
 #include <cmath>
 #include <cstdio>
@@ -587,7 +588,13 @@ void GameHudMinimapHost::update_005c0f20(float seconds) {
     for (const auto& entry : host.icons) {
         const GameUnitRow* row = host.units->unit_row(entry.first);
         if (row == nullptr || entry.second == nullptr) continue;
-        const float unit_heading = row->heading_degrees * 3.1415927f / 180.0f;
+        float unit_heading = 0.0f;
+        if constexpr (bsp::kHudHeadingVtable50Cc13Bound) {
+            // 005C1CA6 CALL [vtable+50h] on the icon's unit.
+            unit_heading = host.units->unit_heading_vtable50(entry.first);
+        } else {
+            unit_heading = row->heading_degrees * 3.1415927f / 180.0f;
+        }
         binding.set_icon_rotation(entry.second,
             bsp::hud_minimap_icon_rotation_005c1ca1(unit_heading, headings.icon));
     }
