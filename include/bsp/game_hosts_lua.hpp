@@ -2134,6 +2134,11 @@ public:
     // 50000 (kSceneMarkerIdBase) and script entities start at 100000.
     static constexpr int kGeneratedSceneMarkerIdBase = 90000;
     int generated_scene_markers_{0};
+    // Packet cc13-spawn1 (bsp::kLuaSpawnBound, OFF): 00944680 Spawn. The placement is
+    // bsp/lua_spawn_cc13.hpp, the creation GenerateObject's. docs/CC13_LUA_SPAWN.md.
+    int run_spawn_00944680(lua_State* state, int argument_count);
+    // The keyed streams 00941FC0's draw takes instead of stream 1.
+    std::map<std::string, std::uint64_t> lua_spawn_streams_;
 
     // Packet cc8_spawn_new_route. 0094C480 SpawnNew is a three-instruction thunk
     // into 00949750 on the manager at *(00F89B3C): it parses ONE Lua table,
