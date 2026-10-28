@@ -14,6 +14,7 @@
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_shipai_cc13.hpp"
+#include "bsp/game_hosts_powerups.hpp"  // packet cc13-powerup-bind
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/attack_target_classify.hpp"
@@ -112,6 +113,8 @@
 #include "bsp/cc13_heading_wrap.hpp"
 #include "bsp/cc13_arc_centre.hpp"
 #include "bsp/cc13_seg67b.hpp"
+#include "bsp/segment_distance_2d_cc13.hpp"  // packet cc13-p3b
+#include "bsp/torpedo_candidate_gyro_heading_cc13.hpp"  // packet cc13-torpgyro
 
 namespace bsp::game {
 
@@ -993,6 +996,21 @@ bool has_ship_navigation_class(int kind) noexcept {
     }
 }
 
+// 00811A30 BSP_Unit_TurnCircleRadiusAtThrottle: 0082E960(class, fraction), a
+// float (0082E97B), divided by ProductForUnit(5, unit) at 00811A81 and stored to
+// float. Packet cc13-powerup-bind: the product under the site gate
+// ([00F88C30]+C4h, 00811A59); gate shut, the image divides by 1.0f, which is the
+// class radius the call sites took before.
+float ship_turn_circle_00811a30(GameUnitsHost& units, std::size_t index, float fraction) {
+    const float radius = units.unit_class_turn_circle_radius_0082e960(index, fraction);
+    if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+        if (const auto m = bsp::game_powerups::powerup_site_product(5, index)) {
+            return radius / *m;
+        }
+    }
+    return radius;
+}
+
 class HullGeometryUnitAccess final : public bsp::ShipAiHullPreStepAccess {
 public:
     HullGeometryUnitAccess(GameUnitsHost& units, std::size_t index,
@@ -1005,7 +1023,7 @@ public:
     }
     float unit_turn_circle_00811a30(float fraction) override {
         // The represented modifier channel5 is empty, so its scale is1.
-        return units_.unit_class_turn_circle_radius_0082e960(index_, fraction);
+        return ship_turn_circle_00811a30(units_, index_, fraction);
     }
     float unit_full_beam_09cc() override {
         return units_.unit_half_width_09cc(index_);
@@ -2042,7 +2060,8 @@ struct GameShipAiHost::Impl {
     // `owner_handle`), 00814420 on the target otherwise (owner != the target):
     // the live torpedoes target->vtable[1D0h] 008173E0 calls a threat.
     // LABELLED: the torpedo's +46Ch is atan2(vx, vz) of the host round (it runs
-    // straight on its launch heading, as torpedo_candidate has it), and a
+    // straight on its launch heading, as torpedo_candidate has it; the round's
+    // commanded heading under kTorpedoCandidateGyroHeadingCc13Bound), and a
     // target with no ship depth input takes class+570h = 0.
     int torpedoes_threatening_00814390(std::size_t target, std::size_t owner_handle, bool own,
                                        bool head_only = false) {
@@ -2077,8 +2096,12 @@ struct GameShipAiHost::Impl {
             in.torpedo_position[0] = head->position[0];
             in.torpedo_position[1] = head->position[1];
             in.torpedo_position[2] = head->position[2];
+            if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
+                in.torpedo_heading = head->commanded_heading_46c;   // 00817535
+            } else {
             in.torpedo_heading = static_cast<float>(std::atan2(
                 static_cast<double>(head->velocity[0]), static_cast<double>(head->velocity[2])));
+            }
             in.water_travel_speed = head->water_travel_speed;
             return bsp::ship_ai_torpedo_threatens_008173e0(in) ? static_cast<int>(list.size()) : 0;
         }
@@ -2088,8 +2111,12 @@ struct GameShipAiHost::Impl {
             in.torpedo_position[0] = t.position[0];
             in.torpedo_position[1] = t.position[1];
             in.torpedo_position[2] = t.position[2];
+            if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
+                in.torpedo_heading = t.commanded_heading_46c;       // 00817535
+            } else {
             in.torpedo_heading = static_cast<float>(std::atan2(
                 static_cast<double>(t.velocity[0]), static_cast<double>(t.velocity[2])));
+            }
             in.water_travel_speed = t.water_travel_speed;
             if (bsp::ship_ai_torpedo_threatens_008173e0(in)) ++count;
         }
@@ -2202,10 +2229,15 @@ struct GameShipAiHost::Impl {
         c.z = t.position[2];
         c.vx = t.velocity[0];
         c.vz = t.velocity[2];
+        if constexpr (bsp::kTorpedoCandidateGyroHeadingCc13Bound) {
+            // 009DC0F9: record+46Ch, the round's commanded heading.
+            c.heading = t.commanded_heading_46c;
+        } else {
         // record+46Ch: the host round keeps its launch heading, so the velocity's
         // own heading in the pose convention atan2(x, z). SUBSTITUTION, labelled.
         c.heading = static_cast<float>(std::atan2(static_cast<double>(t.velocity[0]),
                                                   static_cast<double>(t.velocity[2])));
+        }
         c.run_seconds = t.swim_seconds;
         c.water_travel_speed = t.water_travel_speed;
         c.side = t.owner_side;
@@ -2554,6 +2586,8 @@ struct GameShipAiHost::Impl {
         }
         if (r.escape_applied) {
             ++row.zone_escape_turns;
+            row.zone_escape_max_turn = std::max(row.zone_escape_max_turn,
+                                                std::fabs(r.escape_turn));
             if (row.zone_escape_first_s < 0.0f) {
                 row.zone_escape_first_s = static_cast<float>(steps) * 0.05f;
             }
@@ -4623,7 +4657,7 @@ public:
         // same way (packet cc9_generated_ship_ai_registration, part 2).
         if constexpr (kApproachTurnRadiusBound) {
             owner_.done("ShipAiApproachPoint::unit_turn_radius", 0x00811a30u);
-            return owner_.units.unit_class_turn_circle_radius_0082e960(index_, fraction);
+            return ship_turn_circle_00811a30(owner_.units, index_, fraction);
         } else {
             static_cast<void>(fraction);
             owner_.record("ShipAiApproachPoint::unit_turn_radius", 0x00811a30u);
@@ -5529,7 +5563,7 @@ public:
         return q.damage_cap;
     }
     float unit_turn_radius_00811a30(float rudder) override {
-        return owner_.units.unit_class_turn_circle_radius_0082e960(index_, rudder);
+        return ship_turn_circle_00811a30(owner_.units, index_, rudder);
     }
     int unit_clearance_count_0080df40() override {
         // 009E731B, reached only with +12BAh set and +12B4h above 0.
@@ -6268,7 +6302,7 @@ public:
         in.class_lands_troops_vtable_2c = owner_.units.unit_class_lands_troops_vtable_2c(index_);
         if (kApproachTurnRadiusBound) {
             in.turn_radius_00811a30 =
-                owner_.units.unit_class_turn_circle_radius_0082e960(index_, 1.0f);
+                ship_turn_circle_00811a30(owner_.units, index_, 1.0f);
         }
         const bsp::ShipAiApproachLatchResult r =
             bsp::ship_ai_approach_mode_latch_009f1f47(ctl_.approach, in);
@@ -6421,7 +6455,7 @@ public:
         const double dz = static_cast<double>(point.z) - unit_pos[2];
         const float d = static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
         // 009F22A5..009F22E7: reach = max(00811A30(unit, 1.0) * 2.5, 300.0f).
-        const float turn = owner_.units.unit_class_turn_circle_radius_0082e960(index_, 1.0f);
+        const float turn = ship_turn_circle_00811a30(owner_.units, index_, 1.0f);
         const float reach = std::max(static_cast<float>(turn * 2.5), 300.0f);
         if (!(reach > d)) {
             owner_.done("ShipAiApproach::landing_mode_3", 0x009f21a0u);
@@ -7425,8 +7459,9 @@ public:
         return owner_.units.unit_forward_speed_0092d730(
             static_cast<std::size_t>(candidate - 1u));
     }
-    // 009F34FD, 0080FC30 on the candidate: its +9C0h times the empty modifier
-    // list's 1.0f, as the follow binding answers it.
+    // 009F34FD, 0080FC30 on the candidate: its +9C0h times the category 4
+    // product (the power-up store, packet cc13-powerup-bind), as the follow
+    // binding answers it.
     float candidate_reference_speed_0080fc30(std::uint32_t candidate) override {
         ++owner_.summary.landing_sweep_candidates;
         if (candidate == 0u) return 1.0f;
@@ -8867,7 +8902,7 @@ public:
         return bsp::ship_ai_refresh_torpedo_track_009dc060(t, &c);
     }
     float class_length_three_quarters_00811a30() override {
-        const float radius = owner_.units.unit_class_turn_circle_radius_0082e960(index_,
+        const float radius = ship_turn_circle_00811a30(owner_.units, index_,
             bsp::kShipAiContactGapLengthArg);
         owner_.done("ShipAiThrottleProfile::class_length_00811a30", 0x00811a30u);
         return radius;
@@ -9068,7 +9103,7 @@ public:
         // gameplay modifier product for channel 5, which is 1.0f in this
         // process. The turn-circle half is now a recovered value, so only the
         // divide is a record.
-        const float radius = owner_.units.unit_class_turn_circle_radius_0082e960(index_,
+        const float radius = ship_turn_circle_00811a30(owner_.units, index_,
             1.0f);
         owner_.done("ShipAiClearance::class_length_unit_00811a30", 0x00811a30u);
         return radius;
@@ -10378,7 +10413,7 @@ public:
                                             final_leg);
     }
     float turn_circle_radius_00811a30(float throttle) override {
-        return owner_.units.unit_class_turn_circle_radius_0082e960(index_, throttle);
+        return ship_turn_circle_00811a30(owner_.units, index_, throttle);
     }
     bool state_reached_vtable_2c(const bsp::ShipAiFollowLandXZ& goal) override {
         // 00D21658 slot 2Ch is 009DAB10, the navigation states' shared test
@@ -13304,8 +13339,18 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             if (!units.unit_alive_and_visible(u) || unit_dead(u)) continue;
             // The modifier 008E6430(10, unit) is 1.0f: the list is empty here.
             const float power = u < capture_power_0804.size() ? capture_power_0804[u] : 10.0f;
+            float capture_modifier = 1.0f;
+            if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+                // Packet cc13-powerup-bind: 006F69B9, ProductForUnit(0Ah, ship)
+                // under the site gate ([00F88C30]+100h). Gate shut: 1.0f as
+                // before. The scoring-slot sites 006F6A13 / 006F6B4C / 006F6BA3 /
+                // 006F6CFA feed arrays this host does not model.
+                if (const auto m = bsp::game_powerups::powerup_site_product(0x0A, u)) {
+                    capture_modifier = *m;
+                }
+            }
             strength[party] = bsp::command_building_add_capture_power_006f69d2(
-                strength[party], power, 1.0f);
+                strength[party], power, capture_modifier);
         }
         // Arm 2, 006F6A58..006F6BF8: every pad of +794h whose occupant (006AC220)
         // is IsKindOf(0Ch), alive and active (+5Ch set, +5Dh/+60h/+5Eh clear), has
@@ -13348,6 +13393,21 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
                 strength[c.first] = static_cast<std::int32_t>(
                     static_cast<float>(strength[c.first]) + c.second);   // 006F6C1C..006F6C47
                 ++capture_paratrooper_adds;
+            }
+        }
+        if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+            // Packet cc13-powerup-bind: 006F6D63..006F6DB5, for a building whose
+            // +54h is below 2, the other party's strength (index party == 0)
+            // becomes CVTTSS2SI((float)s / ProductForUnit(0Bh, building)) under
+            // the site gate ([00F88C30]+10Ch). Gate shut: the DIVSS by 1.0f
+            // returns s for every count this host reaches, as before (LABELLED:
+            // the host skips that pass while shut).
+            const int building_party = units.unit_side_0054(b.unit);
+            if (building_party < 2) {
+                if (const auto m = bsp::game_powerups::powerup_site_product(0x0B, b.unit)) {
+                    std::int32_t& opposed = strength[building_party == 0 ? 1 : 0];
+                    opposed = static_cast<std::int32_t>(static_cast<float>(opposed) / *m);
+                }
             }
         }
         const bsp::CommandBuildingTickOutcome tick = bsp::command_building_capture_tick_006f6760(
@@ -14180,7 +14240,150 @@ double segment_point_distance_2d(const double s[4], double px, double pz) {
     return std::sqrt(ex * ex + ez * ez);
 }
 
+// kSegmentDistance2dCc13Bound (packet cc13-p3b): the image's 004F49F0 and helpers, each
+// x87 op at PC24 (bsp::cc13x87), every listing store a float. Points are float2 {x, z}.
+
+// 004F3560 BSP_Math_RelativeEqualFloat(a, b), 004F3560-004F3626, two float stack args,
+// RET 8: 004F356D FSUB at PC24 stored; |a|, |b|, |diff| by SSE (x > 0 ? x : -0.0 - x,
+// [00D7A208] = -0.0); m = |a| when |a| > |b| (FCOMIP, JA; unordered takes |b|); m = 1.0
+// [00D7A24C] when 1 > m (FLD1 FCOMIP, JBE keeps m); equal when m * [00E0830C] (1e-4f,
+// FMUL m32 at PC24, 004F3608) > |diff| (JBE gives 0).
+bool relative_equal_004f3560(float a, float b) {
+    namespace x8 = bsp::cc13x87;
+    auto sse_abs = [](float x) { return x > 0.0f ? x : -0.0f - x; };
+    const float diff = static_cast<float>(x8::x87_sub24(a, b));
+    const float abs_b = sse_abs(b);
+    const float abs_a = sse_abs(a);
+    float m = abs_a > abs_b ? abs_a : abs_b;
+    const float abs_diff = sse_abs(diff);
+    if (1.0f > m) m = 1.0f;
+    return x8::x87_mul24(m, 1.0e-4f) > abs_diff;
+}
+
+// 004F3630 BSP_Math_SegmentParameters2D, 004F3630-004F372E, __fastcall(ECX = a0,
+// EDX = da, b0, db, float* t, float* u), RET 10h. den = db.x*da.y - db.y*da.x
+// (004F3682..004F3692, FSUBP DE E9 = ST1 - ST0) stored; 004F3560(den, 0) -> false with
+// t and u unwritten. t = (((a0.x*db.y + db.x*b0.y) - db.y*b0.x) - db.x*a0.y) / den
+// (004F36B6..004F36FB: FADDP DE C1, FSUBRP DE E2 / DE E5 = ST0 - ST(i), FDIVP DE FE =
+// ST6 / ST0), stored at 004F36FF; u = (((a0.y*da.x + b0.x*da.y) - a0.x*da.y) - b0.y*da.x)
+// / -den (004F3701..004F3725: FADDP DE C3, FSUBRP DE E3, FSUBP DE E9, FCHS, FDIVP DE F9 =
+// ST1 / ST0), stored at 004F3727. Each op at PC24.
+bool segment_parameters_004f3630(const float a0[2], const float da[2], const float b0[2],
+                                 const float db[2], float& t, float& u) {
+    namespace x8 = bsp::cc13x87;
+    const float den = static_cast<float>(
+        x8::x87_sub24(x8::x87_mul24(db[0], da[1]), x8::x87_mul24(db[1], da[0])));
+    if (relative_equal_004f3560(den, 0.0f)) return false;
+    const double n_t = x8::x87_sub24(
+        x8::x87_sub24(x8::x87_add24(x8::x87_mul24(a0[0], db[1]), x8::x87_mul24(db[0], b0[1])),
+                      x8::x87_mul24(db[1], b0[0])),
+        x8::x87_mul24(db[0], a0[1]));
+    t = static_cast<float>(x8::x87_div24(n_t, den));
+    const double n_u = x8::x87_sub24(
+        x8::x87_sub24(x8::x87_add24(x8::x87_mul24(a0[1], da[0]), x8::x87_mul24(b0[0], da[1])),
+                      x8::x87_mul24(a0[0], da[1])),
+        x8::x87_mul24(b0[1], da[0]));
+    u = static_cast<float>(x8::x87_div24(n_u, -static_cast<double>(den)));
+    return true;
+}
+
+// 004F3730 BSP_Math_SegmentCrossing2D, 004F3730-004F37FF, __fastcall(ECX = a0, EDX = a1,
+// b0, b1, float2* out), RET 0Ch: da = a1 - a0 and db = b1 - b0 stored as floats
+// (004F373C..004F3777), 004F3630; false when it is, when t < 0 (FCOMI, JC: unordered too)
+// or 1.0 < t (COMISS, JC), then the same for u (004F37A3..004F37B2). The crossing point it
+// writes (004F37B4..004F37EB) is not used by 004F49F0.
+bool segment_crossing_004f3730(const float a0[2], const float a1[2], const float b0[2],
+                               const float b1[2]) {
+    namespace x8 = bsp::cc13x87;
+    const float da[2] = {static_cast<float>(x8::x87_sub24(a1[0], a0[0])),
+                         static_cast<float>(x8::x87_sub24(a1[1], a0[1]))};
+    const float db[2] = {static_cast<float>(x8::x87_sub24(b1[0], b0[0])),
+                         static_cast<float>(x8::x87_sub24(b1[1], b0[1]))};
+    float t = 0.0f, u = 0.0f;
+    if (!segment_parameters_004f3630(a0, da, b0, db, t, u)) return false;
+    if (!(t >= 0.0f) || 1.0f < t) return false;
+    if (!(u >= 0.0f) || 1.0f < u) return false;
+    return true;
+}
+
+// 00414C60 at PC24 on {x, z}: x*x + z*z (00414C66 FMUL ST0, 00414C6A FMULP, FADDP) stored
+// as a float; 0 at or below double [00CE3820] 1e-10 (FCOMI, JBE: unordered too), else
+// 00BF7030 sqrt stored as a float.
+float length_2d_00414c60(float x, float z) {
+    namespace x8 = bsp::cc13x87;
+    const float s = static_cast<float>(x8::x87_add24(x8::x87_mul24(x, x), x8::x87_mul24(z, z)));
+    return static_cast<double>(s) > 1e-10 ? static_cast<float>(x8::x87_sqrt24(s)) : 0.0f;
+}
+
+// 00419AB0 BSP_Segment2f_PointDistance, 00419AB0-00419BEB, __fastcall(ECX = start,
+// EDX = end, point), RET 4. d = end - start stored (00419AB8..00419ACC); r = 00419260
+// BSP_Vector2f_ReciprocalLength(d): x*x and z*z each stored, their sum stored, 00BF7030
+// sqrt stored, then 0 when it is 0 (FUCOMIP/LAHF/TEST AH,44h/JP: unordered divides) else
+// 1 / len stored (FLD1 FDIVRP DE F1). n = (-(r*d.z), d.x*r) stored (00419AF0..00419B1B);
+// 004F3630(start, d, point, n, &t, &u), its result not tested. 0 > t (COMISS, JBE):
+// |point - start| inline as 00414C60 does it (00419B32..00419B98); t > 1.0 (COMISS, JBE:
+// unordered falls through): 00414C60(point - end) (00419B9B..00419BC5); else |u| (AND
+// 7FFFFFFFh, 00419BC8..00419BE3).
+// LABELLED: when 004F3630 finds den (= -|d|) relatively equal to 0 (|d| < 1e-4, d = 0
+// included) it writes nothing and the image reads t from the stack slot that held the
+// point argument (pointer bits) and u from the slot holding d.x * r; this model takes
+// t = 0 for that case, so the result is |d.x * r|. At the only caller (0082178B) the point
+// arguments are main-thread stack locals (K+100h..118h), so the unwritten t is the
+// pointer's bits, which read as a positive denormal below 1.0: the image takes the |u|
+// branch and t = 0 matches it there. It would diverge only for a point at address
+// 3F800000h or above.
+float segment_point_distance_00419ab0(const float start[2], const float end[2],
+                                      const float point[2]) {
+    namespace x8 = bsp::cc13x87;
+    const float d[2] = {static_cast<float>(x8::x87_sub24(end[0], start[0])),
+                        static_cast<float>(x8::x87_sub24(end[1], start[1]))};
+    const float xx = static_cast<float>(x8::x87_mul24(d[0], d[0]));
+    const float zz = static_cast<float>(x8::x87_mul24(d[1], d[1]));
+    const float len = static_cast<float>(x8::x87_sqrt24(static_cast<float>(x8::x87_add24(xx, zz))));
+    float r = 0.0f;
+    if (!(len == 0.0f)) r = static_cast<float>(x8::x87_div24(1.0, len));
+    const float dxr = static_cast<float>(x8::x87_mul24(d[0], r));
+    const float n[2] = {-static_cast<float>(x8::x87_mul24(r, d[1])), dxr};
+    float t = 0.0f, u = dxr;
+    static_cast<void>(segment_parameters_004f3630(start, d, point, n, t, u));
+    if (0.0f > t) {
+        return length_2d_00414c60(static_cast<float>(x8::x87_sub24(point[0], start[0])),
+                                  static_cast<float>(x8::x87_sub24(point[1], start[1])));
+    }
+    if (t > 1.0f) {
+        return length_2d_00414c60(static_cast<float>(x8::x87_sub24(point[0], end[0])),
+                                  static_cast<float>(x8::x87_sub24(point[1], end[1])));
+    }
+    return std::fabs(u);
+}
+
+// 004F49F0 BSP_Segment2f_SegmentDistance, 004F49F0-004F4ACE, __fastcall(ECX = a0,
+// EDX = a1, b0, b1), RET 8, float in ST0: 0 when 004F3730 says they cross (004F4A0A..
+// 004F4A1C); else d1 = 00419AB0(a0, a1; b0), d2 = (a0, a1; b1), d3 = (b0, b1; a0),
+// d4 = (b0, b1; a1), each stored; m1 = d4 > d3 ? d3 : d4, m2 = d2 > d1 ? d1 : d2,
+// result m1 > m2 ? m2 : m1 (FCOMIP, JBE: unordered takes the second).
+float segment_distance_004f49f0_image(const float a0[2], const float a1[2], const float b0[2],
+                                      const float b1[2]) {
+    if (segment_crossing_004f3730(a0, a1, b0, b1)) return 0.0f;
+    const float d1 = segment_point_distance_00419ab0(a0, a1, b0);
+    const float d2 = segment_point_distance_00419ab0(a0, a1, b1);
+    const float d3 = segment_point_distance_00419ab0(b0, b1, a0);
+    const float d4 = segment_point_distance_00419ab0(b0, b1, a1);
+    const float m1 = d4 > d3 ? d3 : d4;
+    const float m2 = d2 > d1 ? d1 : d2;
+    return m1 > m2 ? m2 : m1;
+}
+
 double segment_distance_2d_004f49f0(const double a[4], const double b[4]) {
+    if constexpr (bsp::kSegmentDistance2dCc13Bound) {
+        // 0082178B passes the craft keel (here b) as ECX/EDX and the other ship's keel
+        // (here a) as the stack pair; the callers hold float values.
+        const float e0[2] = {static_cast<float>(b[0]), static_cast<float>(b[1])};
+        const float e1[2] = {static_cast<float>(b[2]), static_cast<float>(b[3])};
+        const float s0[2] = {static_cast<float>(a[0]), static_cast<float>(a[1])};
+        const float s1[2] = {static_cast<float>(a[2]), static_cast<float>(a[3])};
+        return segment_distance_004f49f0_image(e0, e1, s0, s1);
+    } else {
     auto cross = [](double ox, double oz, double ax, double az, double bx, double bz) {
         return (ax - ox) * (bz - oz) - (az - oz) * (bx - ox);
     };
@@ -14197,6 +14400,7 @@ double segment_distance_2d_004f49f0(const double a[4], const double b[4]) {
     const double to_b = std::min(segment_point_distance_2d(b, a[0], a[1]),
                                  segment_point_distance_2d(b, a[2], a[3]));
     return to_b <= to_a ? to_b : to_a;
+    }
 }
 
 // kTransportLaunchCraftCc13Bound helpers (packet cc13-transport-launch). The

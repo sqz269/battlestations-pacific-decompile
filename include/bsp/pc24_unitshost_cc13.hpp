@@ -16,23 +16,37 @@ namespace bsp {
 // kPc24UnitsHostCc13Bound (OFF): per-op PC24 arithmetic in
 //   units-A (cc13-pc24w1-units-A), the dogfight host bodies:
 //     004142E0 df_local (the host's d . row / |row| stand-in for the vector
-//              times unit+110h)
+//              times unit+110h; pc24w2-units made the ON arm take the image
+//              path, the 00B63D50 inverse at +110h then
+//              Impl::to_body_image_004142e0)
 //     007B4E90 pattern df_heading_of (pi/2 - atan2, +2pi wrap; 009A8873-009A889A)
 //     009A87F0 df_maneuver_enter_009a87f0 (009A89BD-009A89F5)
 //     009A8B20 df_maneuver_tick_009a8b20 (009A8CB3-009A8CC7 ceiling; the speed
-//              is the vtable[38h] stand-in)
+//              is vtable[38h] 007B8E60 = unit+B1Ch, 007D8020's inline
+//              0042B2F0 of ctl+18h)
 //     009A80E0 df_avoid_turn_tick_009a80e0 (009A82CD-009A8312)
 //     00954650 df_predict_00954650 with 0042B2F0, 004F9B30, 00952340, 0085C3F0
 //     009FC7C0 df_set_lead_bound's dist (009FC931-009FC9F6, 0042B2F0) and
 //              df_fine_aim_009f9fc0 (009FCB25 length; the +68h world rebuild is
 //              a host stand-in)
-//     009AAA80 df_early_edge_009aaa80 (009AAB96-009AAC31; speed is the
-//              vtable[38h] stand-in)
+//     009AAA80 df_early_edge_009aaa80 (009AAB96-009AAC31; speed via 007B8E60
+//              / 007D8020 as above)
 //     009A76E0 df_arm_body_009ab1c0 (tan_len 00414C60 at 009A77F4; target
-//              speed stand-in)
+//              speed, probably 007B8E60 / 007D8020 as above)
+//   units-1 (cc13-pc24w1-units-1):
+//     00A010F0 tick_danger_cost_00a010f0, 00A29FD0 capture_plan_00a29fd0 and
+//              00A1A660 in capture_defenders_00a24870 (game_hosts_ai.cpp)
+//     00417FA0 avoid_zone_world_to_cell_00417fa0 (game_hosts_avoid_zones.cpp)
+//     00836920 director_step_00836920 arrival radius (game_hosts_commands.cpp)
+//     006F5CC0 ensure_parent_link_71c_006f5cc0 (game_hosts_units.cpp)
+//     007B11F0 start_index_for_position_007b11f0 (gameplay_seg46_cc13.cpp)
+//     00743060, 007410C0 and 00742400 (group arc, lateral offset) land convoy
+//              arithmetic (land_and_structures.cpp)
 // Expected movers when ON: dogfight lead points and fine-aim angles, the arc
 // predictor's arc/straight verdicts, maneuver headings and pitch, the avoid
-// turn's bank decay, and early-edge target pickups.
+// turn's bank decay, and early-edge target pickups; AI danger costs, capture
+// planning and defender counts, avoid-zone cells, arrival-radius stage raises,
+// command-building adoption, path start indices and land convoy arcs.
 //   units-DE (cc13-pc24w1-units-DE), the strafe/ordnance and flight-core host
 //   bodies (PlaneBinding methods unless named otherwise):
 //     009CA870 st_gotowards_tick (3-D and planar squared distances)

@@ -430,6 +430,7 @@ ShipAiArmFinalStepResult ship_ai_arm_final_step_009de5b0(
                 wrapped_angle_add_00438aa0(blk.heading_target_324, escape.turn);
             blk.last_writer_324 = 0x009DE8E7u;
             result.escape_applied = true;
+            result.escape_turn = escape.turn;
         }
     }
 

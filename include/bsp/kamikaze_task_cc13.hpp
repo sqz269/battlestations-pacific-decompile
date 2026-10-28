@@ -36,6 +36,17 @@ namespace bsp {
 // at the stores, as before.
 inline constexpr bool kKamikazeX87FloatCc13Bound = true;  // ON by pruning (cc9-sweep1b): reach counter 0 differs on every OFF run (sites 0)
 
+// cc13-kzpick (OFF). 009AC160 tail-jumps to 009ABF60 (009AC17F), and 009ABF60
+// tail-jumps to 009FA260, the pick, at 009AC09E: entering gotowards picks the
+// aim point at once, with the dirty byte cleared, so the next 009FADA0 finds
+// it clean and does not re-pick. True: kamikaze_enter and the host's own
+// 009AC160 call (kz_install_009af720, game_hosts_units.cpp) call
+// KamikazeTaskHost::pick_target_ref_009fa260 right after 009AC160; KzHost
+// overrides it to carry the dirty ref into the unit's hull aim ref and pick
+// there. False: the pick waits for the host's next 009FADA0 (kz_target_point),
+// which re-picks on the dirty byte.
+inline constexpr bool kKamikazeEnterPickCc13Bound = false;
+
 // ---------------------------------------------------------------------------
 // Shared pieces
 // ---------------------------------------------------------------------------
@@ -363,6 +374,9 @@ struct KamikazeTaskHost {
     // The plan sink.
     virtual void apply_plan(const KamikazePlanCommand& c) = 0;
     virtual void clear_gun_block_34_38() = 0;
+    // 009FA260 on ap.ref, the tail of 009ABF60 (kKamikazeEnterPickCc13Bound
+    // only). The default does nothing; the live host (KzHost) overrides it.
+    virtual void pick_target_ref_009fa260(ApproachTargetRefState& ref) { (void)ref; }
 };
 
 // 009AEEF0 after the base and the approach: seeds the approach and enters the

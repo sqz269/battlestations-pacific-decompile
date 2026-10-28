@@ -9,6 +9,9 @@
 #include <cmath>
 #include <vector>
 
+// kPc24UnitsHostCc13Bound (pc24w1-units-1): 00743060, 007410C0 and 00742400.
+#include "bsp/pc24_unitshost_cc13.hpp"
+
 namespace bsp {
 namespace {
 
@@ -78,8 +81,18 @@ LandConvoyArcStep land_convoy_advance_arc_00743060(const LandConvoyFormation& fo
     // through binary32 once (packet cc9_land_convoy_movement: was three
     // binary32 roundings).
     const double scale = land_convoy_direction_scale(formation.reverse);
-    out.live_arc = static_cast<float>(static_cast<double>(live_arc)
-        + static_cast<double>(formation.speed) * scale * static_cast<double>(t));
+    if constexpr (bsp::kPc24UnitsHostCc13Bound)
+    {
+        // (speed * scale) * t + live, each op rounded (PC24).
+        using namespace bsp::cc13x87;
+        out.live_arc = static_cast<float>(x87_add24(
+            x87_mul24(x87_mul24(formation.speed, scale), t), live_arc));
+    }
+    else
+    {
+        out.live_arc = static_cast<float>(static_cast<double>(live_arc)
+            + static_cast<double>(formation.speed) * scale * static_cast<double>(t));
+    }
 
     // 007430D8-007430F0 and 007430FE-00743114: two loops, not two conditionals.
     // The length comes from [[convoy+344h]+28h], which is zero until 007420B0
@@ -100,8 +113,18 @@ LandConvoyArcStep land_convoy_advance_arc_00743060(const LandConvoyFormation& fo
 
     // 00743126-0074313E: the odometer takes the absolute speed, so it grows on
     // a reversed convoy too, and it is never wrapped.
-    out.odometer = static_cast<float>(static_cast<double>(odometer)
-        + static_cast<double>(t) * std::fabs(static_cast<double>(formation.speed)));
+    if constexpr (bsp::kPc24UnitsHostCc13Bound)
+    {
+        // 00743134-0074313E: |speed| * t + odometer, each op rounded.
+        using namespace bsp::cc13x87;
+        out.odometer = static_cast<float>(x87_add24(
+            x87_mul24(std::fabs(formation.speed), t), odometer));
+    }
+    else
+    {
+        out.odometer = static_cast<float>(static_cast<double>(odometer)
+            + static_cast<double>(t) * std::fabs(static_cast<double>(formation.speed)));
+    }
     return out;
 }
 
@@ -121,8 +144,20 @@ float land_convoy_restore_arc_007410c0(const LandConvoyFormation& formation,
     }
     // 007410E5..007410FA: speed * scale * dt + committed, one binary32 store.
     const double scale = land_convoy_direction_scale(formation.reverse);
-    return static_cast<float>(static_cast<double>(formation.speed) * scale
-        * static_cast<double>(dt) + static_cast<double>(committed_arc));
+    float arc;
+    if constexpr (bsp::kPc24UnitsHostCc13Bound)
+    {
+        // Each op rounded (PC24).
+        using namespace bsp::cc13x87;
+        arc = static_cast<float>(x87_add24(
+            x87_mul24(x87_mul24(formation.speed, scale), dt), committed_arc));
+    }
+    else
+    {
+        arc = static_cast<float>(static_cast<double>(formation.speed) * scale
+            * static_cast<double>(dt) + static_cast<double>(committed_arc));
+    }
+    return arc;
 }
 
 // ---------------------------------------------------------------------------
@@ -135,8 +170,19 @@ float land_convoy_group_arc_00742400(const LandConvoyFormation& formation,
     // 00742552..00742577: FILD group, * scale, * RowGap, + live, one binary32
     // store.
     const double scale = land_convoy_direction_scale(formation.reverse);
-    float arc = static_cast<float>(static_cast<double>(group) * scale
-        * static_cast<double>(formation.row_gap) + static_cast<double>(live_arc));
+    float arc;
+    if constexpr (bsp::kPc24UnitsHostCc13Bound)
+    {
+        // Each op rounded (PC24).
+        using namespace bsp::cc13x87;
+        arc = static_cast<float>(x87_add24(
+            x87_mul24(x87_mul24(group, scale), formation.row_gap), live_arc));
+    }
+    else
+    {
+        arc = static_cast<float>(static_cast<double>(group) * scale
+            * static_cast<double>(formation.row_gap) + static_cast<double>(live_arc));
+    }
 
     // 00742581-007425A9: one conditional each way, unlike 00743060's loops. A
     // row gap wider than the path therefore leaves the arc outside [0, length),
@@ -161,9 +207,22 @@ float land_convoy_lateral_offset_00742400(const LandConvoyFormation& formation,
 {
     // 00742622-00742644, in x87 double precision: the file index is centred on
     // (columns - 1) * 0.5 before scaling by the column gap.
-    const double centred = static_cast<double>(lane)
-                           - (static_cast<double>(formation.columns) - 1.0) * 0.5;
-    return static_cast<float>(centred) * formation.column_gap;
+    float offset;
+    if constexpr (bsp::kPc24UnitsHostCc13Bound)
+    {
+        // lane - (columns - 1) * 0.5 (DE E9 at 00742642), * gap; each op rounded.
+        using namespace bsp::cc13x87;
+        offset = static_cast<float>(x87_mul24(
+            x87_sub24(lane, x87_mul24(x87_sub24(formation.columns, 1.0), 0.5)),
+            formation.column_gap));
+    }
+    else
+    {
+        const double centred = static_cast<double>(lane)
+                               - (static_cast<double>(formation.columns) - 1.0) * 0.5;
+        offset = static_cast<float>(centred) * formation.column_gap;
+    }
+    return offset;
 }
 
 LandConvoySlot land_convoy_slot_00742400(const LandConvoyFormation& formation, int index) noexcept

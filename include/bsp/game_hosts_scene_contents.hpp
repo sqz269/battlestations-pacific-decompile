@@ -160,6 +160,10 @@ struct GameSceneEntityRecord {
     // adopts the forts, airfields and shipyards within it.
     bool inferior_range_present{false};
     std::int32_t inferior_range_raw{200};
+    // Packet cc13-powerup-bind phase 2a: `PowerupClassID` (00D1628C), which
+    // 008ED720 reads from the creation record's bag through 008F2260 / 008F0DF0
+    // for the command building's power-up binding; "" when absent.
+    std::string powerup_class_id;
     // 009554C1-009554DF: BSP_UnitInstance_InitializeSceneBindings clones the bag
     // to unit+724h only when the merged bag finds `MinLevel` (00CFB24C, the
     // CommandBuildingInferior group default); 006F5DCF adopts only an entity

@@ -1,7 +1,23 @@
-// HUD and GUI screens of partition segments 16, 28 and 4 (packet cc13_gui5_screens3).
+// HUD and GUI screens and the hint system (packet cc13_gui5_screens3 and its follow-ups):
+//   - the hints screen 34h (hud_hints_*, 0054D860..0054E6B0), with hud_hints_show_0054e020;
+//   - the hint tracker: TriggerHint 00690FD0, the stored-hint and history helpers
+//     (00690B20, 00690C30, 0068EE00, 00690CA0, 00690CD0), the loader 0068F030 and the
+//     reload 006921B0;
+//   - the idle camera screen 2Ch (0054EFC0..00550410) and its shot loader 00551440;
+//   - GUI parking 004D6480, the hint/system pause setters 004D94F0/004D95F0, the GUI layer
+//     visibility 004D9830 and the scene cloud-area loader 004E7220;
+//   - the HintSystem Lua wrappers (008D1F50..008D2BB0, 0088CEC0).
 // Evidence and uncertainty: docs/CC13_GUI_SCREENS_3.md. Names are hypotheses; each routine
-// carries its address, original ABI and the listing range it was checked against. None of
-// this is wired into the game host; it is reconstructed and build-tested only.
+// carries its address, original ABI and the listing range it was checked against.
+// Wiring: game_hint_passes.cpp (packet cc15-hint2, docs/CC15_OBJECT_PROFILE_HINTS.md section
+// 6) drives the hints screen, TriggerHint and 004D9830 from the game host, and
+// game_profile_owner.cpp calls the hint loader, history rebuild and reload. The idle camera,
+// parking, pause setters, cloud loader, Lua wrappers and stored-hint helpers have no callers
+// outside this file (frontend_*_cc13.cpp reach 004D95F0 / 004D6480 through their own host
+// interfaces, not these bodies).
+// Switches: kPc24HudGuiCc13Bound (OFF, include/bsp/pc24_hudgui_cc13.hpp, packet
+// pc24w1-hudgui-2) rounds 0054E020's pause title and button y per op (0054E1D0..E1E2,
+// 0054E206..E216); its OFF arm is the earlier double chain.
 
 #include "bsp/gui_screens_3.hpp"
 #include "bsp/cc13_x87_model.hpp"

@@ -23,6 +23,10 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_gunnery_cc13.hpp"    // packet pc24w1-gunnery-1
 #include "bsp/pc24_gunnery_rng_cc13.hpp"  // packet pc24w2-gunrng
+#include "bsp/pc24_avoid_zone_cc13.hpp"  // census, cc9-nondet1
+#include "bsp/pc24_dyn_hull_cc13.hpp"  // census, cc9-nondet1
+#include "bsp/game_hosts_powerups.hpp"  // packet cc13-powerup-bind
+#include <optional>
 
 #include <array>
 #include <deque>
@@ -2182,6 +2186,23 @@ float length3(const float v[3]) noexcept {
     return std::sqrt(dot3(v, v));
 }
 
+// Packet cc13-powerup-bind: what 008E4680 reads off a torpedo projectile, the
+// unit 008570B8 and 008576A4 pass (ECX of 00856BB0 / EBX of 00857480).
+// PROVISIONAL: the projectile is live (+5Ch set), its +54h is the owner's side
+// (copied from [gun+3F0h]+54h), it has no unit id a record can name, and its
+// +180h is 9, so 009FFD20 answers the team slot.
+bsp::game_powerups::PowerupUnitView torpedo_powerup_view(const GameProjectileRow& shot) {
+    bsp::game_powerups::PowerupUnitView view;
+    view.live = true;
+    view.party = shot.owner_side;
+    view.id = 0;
+    view.slot = ai_team_slot_009ffd20(shot.owner_side);
+    view.position[0] = shot.position[0];
+    view.position[1] = shot.position[1];
+    view.position[2] = shot.position[2];
+    return view;
+}
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -3387,6 +3408,10 @@ struct GameGunneryHost::Impl {
     // Packet s52_sink_draws: calls of 00933DA0 / 00933BB0, the stream-1 draws
     // taken, and the effects (recorded).
     unsigned long long sink_grid_calls{0};
+    // Census for kPc24GunneryRngCc13Bound (cc9-nondet1): calls of each site and how
+    // often the per-op result differs from the double chain.
+    unsigned long long pc24_rng_normal_calls{0}, pc24_rng_normal_differs{0};
+    unsigned long long pc24_rng_grid_calls{0}, pc24_rng_grid_differs{0};
     unsigned long long sink_spray_calls{0};
     unsigned long long sink_draws{0};
     unsigned long long sink_effects{0};
@@ -3877,6 +3902,10 @@ struct GameGunneryHost::Impl {
         float water_tick{0.0f};       // task+2Ch <- settings+3B0h WaterTickDamage
         float fire_tick{0.0f};        // task+30h <- settings+3ACh FireTickDamage
         float repair_fraction{0.0f};  // settings+3B4h (already / 100) * +3D4h
+        // The two factors apart, for 0093C770's own order when a power-up
+        // product scales the rate (packet cc13-powerup-bind, rev5 N2).
+        float repair_tick_3b4{0.0f};  // settings+3B4h (already / 100)
+        float repair_body_mul_3d4{0.0f};  // settings+3D4h BodyRepairMultiplier
         // Packet cc9_component_failures: the task's failure vector (+18h) and
         // its flags as 0093BCC0 leaves them (+46h = 1, priority 0).
         bsp::RepairTaskState task{};
@@ -4081,6 +4110,16 @@ struct GameGunneryHost::Impl {
         // than a retry (labelled; the host guard is kept).
         } while (s >= 1.0f || s == 0.0f);
         float k;
+        {
+            // Census (cc9-nondet1, log only): both chains, counted where they differ.
+            const float log_s = static_cast<float>(std::log(static_cast<double>(s)));
+            const float per_op = static_cast<float>(std::sqrt(static_cast<double>(
+                static_cast<float>(cc13x87::x87_div24(cc13x87::x87_mul24(log_s, -2.0), s)))));
+            const float chained = static_cast<float>(std::sqrt(-2.0
+                * std::log(static_cast<double>(s)) / static_cast<double>(s)));
+            ++pc24_rng_normal_calls;
+            if (std::memcmp(&per_op, &chained, sizeof per_op) != 0) ++pc24_rng_normal_differs;
+        }
         if constexpr (bsp::kPc24GunneryRngCc13Bound) {
             // pc24w2-gunrng: 00BF0F60 calls the CRT log 00BFA910 (_CIlog). With SSE2 present
             // (__use_sse2_mathfcns [0109EEA0], set from CPUID at 00C0AC8F) and the exception
@@ -5575,9 +5614,10 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             // settings+3B4h as the loader stores it (0083E243 divides by 100.0,
             // bsp/gameplay_settings.hpp); 0093C770 at priority 0 multiplies by
             // BodyRepairMultiplier (settings+3D4h).
-            dc.repair_fraction = bsp::store_repair_tick_percentage_0083e243(
-                flat_scaled(type_id, "dcbody", 1000000.0f, 0.2f))
-                * flat_scaled(type_id, "dcbodymul", kMilliScale, 2.0f);
+            dc.repair_tick_3b4 = bsp::store_repair_tick_percentage_0083e243(
+                flat_scaled(type_id, "dcbody", 1000000.0f, 0.2f));
+            dc.repair_body_mul_3d4 = flat_scaled(type_id, "dcbodymul", kMilliScale, 2.0f);
+            dc.repair_fraction = dc.repair_tick_3b4 * dc.repair_body_mul_3d4;
             dc.task.failure_repair_enabled = true;   // 0093BCC0 +46h = 1
             dc.task.hull_repair_enabled = true;      // +45h = 1
             if (dc.script_hull_repair >= 0) {
@@ -7828,10 +7868,15 @@ public:
         return record->rows.data();
     }
 
-    float unit_environment_factor(std::size_t) override {
+    float unit_environment_factor(std::size_t index) override {
         // 008E6430(0Ch, observer) is gated on [00E0C978] and [[00F88C30]+118h].
         // This process builds no gameplay-modifier list, which is the same
         // empty-list 1.0f the hit path already takes at 008E6430.
+        if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+            // Packet cc13-powerup-bind: 0080491E reads the category-12 list.
+            // Gate shut: the 1.0f above.
+            if (const auto m = bsp::game_powerups::powerup_site_product(12, index)) return *m;
+        }
         return bsp::kReconSensorDefaultFactor;
     }
 
@@ -8394,8 +8439,19 @@ public:
         if (index < 0 || static_cast<std::size_t>(index) >= row.fire.barrel_timers.size()) {
             return;
         }
+        float reload_rate = 1.0f;
+        if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+            // Packet cc13-powerup-bind: 0072CF4E, ProductForUnit(8, gun+3F0h)
+            // under the site gate (EnablePowerups, [00F88C30]+E8h); below the
+            // [00D7A278] threshold the time is FDIV'd by it (0072CF67..0072CF6F).
+            // Gate shut: 1.0f as before.
+            if (const auto m = bsp::game_powerups::powerup_site_product(8, row.unit_index)) {
+                reload_rate = *m;
+            }
+        }
+        // [00D7A278] is FLT_MAX as a double (rev5 N1).
         const bsp::BarrelReloadWrite write = bsp::barrel_reload_write_0072cf00(value,
-            1.0e9f, 1.0f, false);
+            std::numeric_limits<float>::max(), reload_rate, false);
         row.fire.barrel_timers[static_cast<std::size_t>(index)] = write.timer;
         owner_.done("Gun::set_barrel_reload_timer_0072cf00", 0x0072cf00u);
     }
@@ -10014,11 +10070,22 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 ++throw_fan_shots;
             } else {
                 // 00730540..0073058F: theta = U(0, 2pi), radius = tan(m) * U(0, 1).
-                const float theta = draw(Draw::bullet_throw, g, 0, 0.0f, 6.28318548f);
+                float theta = draw(Draw::bullet_throw, g, 0, 0.0f, 6.28318548f);
                 const float u = draw(Draw::bullet_throw, g, 0, 0.0f, 1.0f);
-                const float radius = static_cast<float>(std::tan(magnitude) * u);
+                float radius = static_cast<float>(std::tan(magnitude) * u);
                 // 007305D6 (sub-types 4..7) times unit+63Ch = 1.0; 0073062C times
                 // 00470440(7) = 1.0. Then 00730654..0073075E, not renormalised.
+                if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+                    // Packet cc13-powerup-bind: 00730619, 00470440(7, gun+3F0h)
+                    // under its gate (EnablePowerups, [00F88C30]+DCh). Both
+                    // gun+400h (theta) and +404h (radius) take (float)(x * m)
+                    // (0073062C..0073064A); the cosine at 00730658 reads the
+                    // scaled theta. Gate shut: both as before.
+                    if (const auto m = bsp::game_powerups::powerup_site_product(7, owner_unit)) {
+                        theta = theta * *m;
+                        radius = radius * *m;
+                    }
+                }
                 float a[3] = {up[1] * direction[2] - up[2] * direction[1],
                     up[2] * direction[0] - up[0] * direction[2],
                     up[0] * direction[1] - up[1] * direction[0]};
@@ -11127,7 +11194,20 @@ void GameGunneryHost::Impl::torpedo_swim3d_step(GameProjectileRow& shot, float d
             return kGunneryLiveWaterSurfaceBound
                 ? bsp::ocean_live_field_water_height_0078cf20(x, z) : 0.0f;
         }
-        float gameplay_modifier(int) override { return 1.0f; }
+        float gameplay_modifier(int key) override {
+            if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+                // Packet cc13-powerup-bind: 008570B8, ProductForUnit(0Fh, the
+                // torpedo) under the site gate ([00F88C30]+13Ch). Gate shut:
+                // 1.0f as before.
+                if (const auto m = bsp::game_powerups::powerup_site_product_for_view(key,
+                        torpedo_powerup_view(shot))) {
+                    return *m;
+                }
+            } else {
+                (void)key;
+            }
+            return 1.0f;
+        }
         bsp::BombMatrix4x3 world_matrix() override { return r.m; }
         bsp::BombMatrix4x3 local_matrix() override { return r.m; }
         void set_local_matrix(const bsp::BombMatrix4x3& m) override { r.m = m; }
@@ -11143,9 +11223,24 @@ void GameGunneryHost::Impl::torpedo_swim3d_step(GameProjectileRow& shot, float d
     // 008576C6..0085775D: + forward * record+470h * dt (the 008E6430(0Eh)
     // modifier taken as 1).
     const float thrust = round != nullptr ? round->swim_speed : 0.0f;
-    r.st.velocity.x += r.m.forward.x * thrust * dt;
-    r.st.velocity.y += r.m.forward.y * thrust * dt;
-    r.st.velocity.z += r.m.forward.z * thrust * dt;
+    std::optional<float> swim_product;
+    if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+        // Packet cc13-powerup-bind: 008576A4, ProductForUnit(0Eh, the torpedo)
+        // under the site gate ([00F88C30]+130h); each component takes
+        // ((forward * +470h) * m) * dt (008576C6..0085772F). Gate shut: the
+        // 1.0f arm (0085776A), which is the previous code.
+        swim_product = bsp::game_powerups::powerup_site_product_for_view(0x0E,
+            torpedo_powerup_view(shot));
+    }
+    if (swim_product) {
+        r.st.velocity.x += r.m.forward.x * thrust * *swim_product * dt;
+        r.st.velocity.y += r.m.forward.y * thrust * *swim_product * dt;
+        r.st.velocity.z += r.m.forward.z * thrust * *swim_product * dt;
+    } else {
+        r.st.velocity.x += r.m.forward.x * thrust * dt;
+        r.st.velocity.y += r.m.forward.y * thrust * dt;
+        r.st.velocity.z += r.m.forward.z * thrust * dt;
+    }
     shot.flight.velocity.x = r.st.velocity.x;
     shot.flight.velocity.y = r.st.velocity.y;
     shot.flight.velocity.z = r.st.velocity.z;
@@ -12259,7 +12354,18 @@ public:
         // ungated, a record that is meant to carry its damage in the part pass
         // must leave +14h at zero; apply_torpedo_blast does.
         const float armour = owner_.unit_state[victim_].armour;
-        const float damage = bsp::hull_damage_00470510(hit_, armour);
+        // Packet cc13-powerup-bind: 0087784F / 00877875 (hull) and 00877965 /
+        // 008779A3 (each part entry) take ProductForUnit(2, x) under the site
+        // gate (EnablePowerups, [00F88C30]+A0h) and store armour = (float)(m *
+        // armour) (0087788E..00877899, 008779C0..008779C8); x is unit+3F0h for an
+        // IsKindOf(20h) gun, else the unit. LABELLED: a hit victim here is always
+        // a unit, never a gun. Gate shut: the armour as before.
+        std::optional<float> armour_product;
+        if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+            armour_product = bsp::game_powerups::powerup_site_product(2, victim_);
+        }
+        const auto scaled_armour = [&](float a) { return armour_product ? *armour_product * a : a; };
+        const float damage = bsp::hull_damage_00470510(hit_, scaled_armour(armour));
         owner_.done("ShipHit::base_hit_record_008777d0", 0x008777d0u);
         bool applied_any = add_damage(damage);
         if (applied_any) ++owner_.summary.hull_damages;
@@ -12279,7 +12385,7 @@ public:
                 if (e.part_index == -1) continue;
                 const float a = e.kind == bsp::kUnitHitPartEntryAlternateArmour
                     ? owner_.unit_state[victim_].underwater_armour : armour;
-                const float part = bsp::part_damage_004705c0(hit_, a, i);
+                const float part = bsp::part_damage_004705c0(hit_, scaled_armour(a), i);
                 owner_.done("ShipHit::part_damage_004705c0", 0x004705c0u);
                 if (part > best) { best = part; best_index = i; }
             }
@@ -12287,7 +12393,7 @@ public:
             return applied_any;
         }
         for (int i = 0; i < hit_.part_hit_count; ++i) {
-            const float part = bsp::part_damage_004705c0(hit_, armour, i);
+            const float part = bsp::part_damage_004705c0(hit_, scaled_armour(armour), i);
             owner_.done("ShipHit::part_damage_004705c0", 0x004705c0u);
             if (add_damage(part)) applied_any = true;
         }
@@ -12484,6 +12590,16 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     hit.hull_segment = kHullElementSegmentBound ? impact_hull_segment : kDirectHitHullSegment;
     hit.weapon_scale = 1.0f;   // shot->vtable[58h] = 006E7C90, gun+43Ch, default 1.0f
     hit.owner_modifier = 1.0f; // 008E6430 over an empty modifier list
+    if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+        // Packet cc13-powerup-bind: 0047057F / 0047062F, ProductForUnit(1, owner)
+        // under the site gate (EnablePowerups, [00F88C30]+94h). The owner is
+        // 004704E0's [shot+4h]->vtable[108h]()+ACh: 006E7C40 gives the shot base
+        // at projectile+170h. PROVISIONAL: its +ACh is the firing unit, the
+        // shooter here. Gate shut: 1.0f as before.
+        if (const auto m = bsp::game_powerups::powerup_site_product(1, shooter)) {
+            hit.owner_modifier = *m;
+        }
+    }
     hit.part_hits = nullptr;
     hit.part_hit_count = 0;
     done("Projectile::hit_record_set_shot_00470350", 0x00470350u);
@@ -13659,6 +13775,15 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         blast.hull_segment = kDirectHitHullSegment;
         blast.weapon_scale = 1.0f;
         blast.owner_modifier = 1.0f;
+        if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+            // Packet cc13-powerup-bind: 0084BC60's blast record carries the shot
+            // (buffer+20h, 00470350 at 0084BBA7), so 004705C0 takes
+            // ProductForUnit(1, owner) at 0047062F as the direct hit does.
+            // PROVISIONAL: the owner is the shooter. Gate shut: 1.0f as before.
+            if (const auto m = bsp::game_powerups::powerup_site_product(1, shooter)) {
+                blast.owner_modifier = *m;
+            }
+        }
         if (!element_entries.empty()) {
             blast.part_hits = element_entries.data();
             blast.part_hit_count = static_cast<int>(element_entries.size());
@@ -13742,9 +13867,21 @@ public:
     }
     const bsp::DamageControlSettings& game_settings() override { return settings_; }
     // 00F88C30 is never created in this process: the factor is 1.0.
-    bool modifier_manager_present() override { return false; }
-    bool modifier_manager_enabled() override { return false; }
-    float gameplay_modifier_product(int, std::uint32_t) override { return 1.0f; }
+    // Packet cc13-powerup-bind (ON): 0093C592's gate and product for this
+    // binding's unit (unit_; the leaf's handle is unit_ + 1). With the gate shut
+    // the leaf takes kRepairUnitScale (1.0f) through either test, as before.
+    bool modifier_manager_present() override { return repair_product().has_value(); }
+    bool modifier_manager_enabled() override { return repair_product().has_value(); }
+    float gameplay_modifier_product(int, std::uint32_t) override {
+        return repair_product().value_or(1.0f);
+    }
+    std::optional<float> repair_product() const {
+        if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+            return bsp::game_powerups::powerup_site_product(3, unit_);
+        } else {
+            return std::nullopt;
+        }
+    }
     // 0093BED0 reaches this with SessionMode 0 (single player).
     bool failure_rolls_enabled() override { return true; }
     // 008782A0: the first section row whose +4h and +8h equal (kind, index).
@@ -14110,8 +14247,26 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             // 0093C770, then 00877B90(max) when the heal overshoots. 0093C776: a
             // clear +45h makes the rate 0 (XORPS at 0093C77C); the host then skips
             // the 00879810(-0) call, as it already does for an undamaged hull.
-            const float heal = dc.task.hull_repair_enabled
+            float heal = dc.task.hull_repair_enabled
                 ? 1.0f * dt * dc.repair_fraction * state.max_health : 0.0f;
+            if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+                // Packet cc13-powerup-bind: 0093C7C5 under the site gate
+                // ([00F88C30]+ACh); rate = m * base, FSTP float (0093C7DE..
+                // 0093C7E6), base = settings+3D4h at priority 0 (0093C78C). Then
+                // (((task+28h * dt) * settings+3B4h) * unit+36Ch) * rate
+                // (0093C802..0093C811), per operation at PC24 (rev5 N2). Gate
+                // shut: the heal as before.
+                if (dc.task.hull_repair_enabled) {
+                    if (const auto m = bsp::game_powerups::powerup_site_product(3, i)) {
+                        namespace x8 = bsp::cc13x87;
+                        const float rate = static_cast<float>(
+                            x8::x87_mul24(*m, dc.repair_body_mul_3d4));
+                        heal = static_cast<float>(x8::x87_mul24(x8::x87_mul24(
+                            x8::x87_mul24(x8::x87_mul24(1.0f, dt), dc.repair_tick_3b4),
+                            state.max_health), rate));
+                    }
+                }
+            }
             if (state.health < state.max_health && heal > 0.0f) {
                 const float before = state.health;
                 damage(-heal);   // 00879810 negates into 00879070
@@ -14132,13 +14287,23 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             done("DamageControl::repair_failures_0093c520", 0x0093c520u);
         }
         // 0093C120 water, then 0093C210 fire: the elapsed part of this step.
+        // Packet cc13-powerup-bind: 0093C16A / 0093C25A make the divisor
+        // (float)(m * base) (0093C183..0093C18B) under the site gate
+        // ([00F88C30]+ACh); base is 1.0f for the constructor's priority 0. Gate
+        // shut: 1.0f as before.
+        float timer_divisor = 1.0f;
+        if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+            if (const auto m = bsp::game_powerups::powerup_site_product(3, i)) {
+                timer_divisor = *m * 1.0f;
+            }
+        }
         const auto timer = [&](float& seconds, float rate, double& total) {
             const float before = seconds;
             seconds = before - dt;
             if (seconds < 0.0f) seconds = 0.0f;
             const float elapsed = before - seconds;
             if (elapsed > 0.0f) {
-                const float amount = elapsed * rate / 1.0f;
+                const float amount = elapsed * rate / timer_divisor;
                 const float h0 = state.health;
                 damage(amount);   // unit vtable[1ACh]
                 total += h0 - state.health;
@@ -16301,7 +16466,15 @@ void GameGunneryHost::fixed_step(float step_seconds) {
                 if (g.unit_index != unit || g.category != bsp::kUnitGunneryTorpedoCategory) continue;
                 for (float& timer : g.fire.barrel_timers) {
                     if (static_cast<double>(timer) > 0.0) ++host.summary.reload_torpedoes_barrels;
-                    timer = bsp::barrel_reload_write_0072cf00(0.0f, 1.0e9f, 1.0f, false).timer;
+                    // The same body: 0072CF4E's category 8 product behind its
+                    // gate, [00D7A278] FLT_MAX (packet cc13-powerup-bind, rev5 N1).
+                    float reload_rate = 1.0f;
+                    if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+                        reload_rate = bsp::game_powerups::powerup_site_product(8, g.unit_index)
+                            .value_or(1.0f);
+                    }
+                    timer = bsp::barrel_reload_write_0072cf00(0.0f,
+                        std::numeric_limits<float>::max(), reload_rate, false).timer;
                 }
             }
             ++host.summary.reload_torpedoes_calls;
@@ -16783,6 +16956,22 @@ void GameGunneryHost::ship_systems_sink_draws_00933da0_00933bb0(std::size_t unit
         // 00933DC2..00933E1C: class+A4h is the host's width, class+A0h its length
         // (as in damage_smoke_tick_008227e0); _ftol truncates.
         int nx, ny;
+        {
+            // Census (cc9-nondet1, log only): per-op vs double grid counts.
+            const auto per_op = [](float extent) {
+                const float scaled = static_cast<float>(cc13x87::x87_mul24(extent, 1.5));
+                return static_cast<int>(
+                    cc13x87::x87_add24(cc13x87::x87_div24(scaled, 15.0), 1.0));
+            };
+            const auto chained = [](float extent) {
+                return static_cast<int>(static_cast<double>(extent) * 1.5 / 15.0 + 1.0);
+            };
+            ++host.pc24_rng_grid_calls;
+            if (per_op(us.hull_width) != chained(us.hull_width)
+                || per_op(us.hull_length) != chained(us.hull_length)) {
+                ++host.pc24_rng_grid_differs;
+            }
+        }
         if constexpr (bsp::kPc24GunneryRngCc13Bound) {
             // pc24w2-gunrng: extent * 1.5 (qword [00CE3D78]; 00933DCE x, 00933DD6 y) is
             // stored as a float (00933DD2, 00933DDC), / 15.0 (qword [00CF3F20]; 00933DEC x,
@@ -18260,6 +18449,20 @@ void GameGunneryHost::report() {
                 "spray_calls=%llu draws=%llu effects=%llu (00933DA0 / 00933BB0, stream 1, "
                 "packet s52_sink_draws)", kShipSystemsSinkDrawsBound ? 1 : 0,
                 host.sink_grid_calls, host.sink_spray_calls, host.sink_draws, host.sink_effects);
+            host.log.notef("summary mission pc24 gunnery rng census bound=%d normal_calls=%llu "
+                "normal_differs=%llu grid_calls=%llu grid_differs=%llu (00BF0DF0 / 00933DA0, "
+                "per-op vs double)", bsp::kPc24GunneryRngCc13Bound ? 1 : 0,
+                host.pc24_rng_normal_calls, host.pc24_rng_normal_differs,
+                host.pc24_rng_grid_calls, host.pc24_rng_grid_differs);
+            const bsp::AvoidZonePc24Census& az = bsp::avoid_zone_pc24_census();
+            const bsp::DynHullPc24Census& dh = bsp::dyn_hull_pc24_census();
+            host.log.notef("summary mission pc24 avoid zone census bound=%d rebuild_calls=%llu "
+                "rebuild_differs=%llu detour_calls=%llu detour_differs=%llu (00419260 / 0041A2FC); "
+                "dyn hull bound=%d compares=%llu threshold_differs=%llu decision_differs=%llu "
+                "(00C5D3C9)", bsp::kPc24AvoidZoneCc13Bound ? 1 : 0, az.rebuild_calls,
+                az.rebuild_differs, az.detour_calls, az.detour_differs,
+                bsp::kPc24DynHullCc13Bound ? 1 : 0, dh.compares, dh.threshold_differs,
+                dh.decision_differs);
             host.log.notef("summary mission submarine wake draws bound=%d picks=%llu sprays=%llu "
                 "(008546E4 / 008546FC, stream 1, packet s53_sub_wake_draws)",
                 kSubmarineWakeDrawsBound ? 1 : 0, host.sub_wake_picks, host.sub_wake_sprays);
@@ -19171,6 +19374,7 @@ std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() cons
         t.swimming = shot.swimming;
         t.water_travel_speed = row->water_travel_speed;
         t.started_under_water = shot.started_under_water;
+        t.commanded_heading_46c = shot.commanded_heading;
         out.push_back(t);
     }
     return out;
