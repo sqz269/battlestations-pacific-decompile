@@ -9,10 +9,13 @@ namespace bsp {
 // message 67 (008E6E00, MT_POWERUP 43h) or 68 (008E6FB0, MT_POWERUP_EFFECT 44h) on
 // the stack, hands it to 0076A9F0(ECX = game+1EF0h; &msg, 0) and destroys it.
 // 0076A9F0 is MOV ECX,[ECX+188h]; JMP 00784790, and 00784790
-// BSP_SessionTransport_BroadcastExcept only walks the transport's peer list at +8h
-// (EnterCS, 00783C80 serialize, LeaveCS per peer). It has no local or loopback arm,
-// so with no peers the send changes nothing. Every send arm rejoins the path that
-// already did the local work:
+// BSP_SessionTransport_BroadcastExcept walks the transport's list at +8h from
+// ++begin(): 0078479A..007847AA take the first node and step past it, so the first
+// entry (presumably the local one) is never sent to. Each later entry gets EnterCS,
+// 00783C80 serialize, LeaveCS. On an empty list the begin() check at 007847A3 calls
+// the _SECURE_SCL trap 00BF6713. There is no local or loopback arm, so with no
+// entries after the first ("zero peers" below) the send changes nothing. Every send
+// arm rejoins the path that already did the local work:
 //   008E8CE6 (008E8C30 expire, 68 op 2)   -> 008E8D4E, the list erase
 //   008EA466 (008EA250 insert, 68 op 0)   -> 008EA4AE, the epilogue
 //   008ED5AB (008ED4B0 grant, 67 op 0)    -> 008ED5F1, the passive use
@@ -21,7 +24,8 @@ namespace bsp {
 // and PowerupManagerBinding::send_powerup_message67 throws (game_hosts_mission_frame.cpp;
 // it also serves 008EDFB7 GrantItem and 008EA06B PrepareFromLua in cc13_powerup.cpp).
 // ON: each site calls send_powerup_message67 / send_powerup_message68 and counts it;
-// the binding records the 0076A9F0 send to an empty peer list and returns.
+// the binding records the 0076A9F0 send to a list with no entries after the first
+// and returns.
 // Movers: none on game state; a session-1 run no longer throws here.
 // Dependency: the binding's session_word_1fe4() (game_hosts_mission_frame.cpp) returns
 // 0 until MP2a's SessionContext supplies the session mode, so the ON arms compile but

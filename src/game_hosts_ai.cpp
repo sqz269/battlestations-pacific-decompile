@@ -1116,6 +1116,11 @@ constexpr bool kAiCoordinatorLoadGateBound = true;
 // the campaign context has session word 0 and forced byte 0, so the published value
 // is false, the same as the constant; before any publication it is false too.
 bool g_ai_coordinator_created_at_load = false;
+// rev7 NIT 2: the read under kSkirmishSessionCc13Bound, so the OFF build folds the
+// gate to the old constant false (only a skirmish context publishes it).
+bool ai_coordinator_created_at_load() noexcept {
+    return bsp::kSkirmishSessionCc13Bound ? g_ai_coordinator_created_at_load : false;
+}
 
 // Packet cc9_group_score_list_release, docs/SHIP_AI_OPEN_ITEMS.md section 61.
 // 00A2B8F0 (00A2B8F0-00A2B94D, RET 4, ECX = group+24h) removes the emptied
@@ -6772,7 +6777,7 @@ void GameAiCoordinatorHost::Impl::admit_generated_squadrons() {
 void GameAiCoordinatorHost::fixed_step(float step_seconds) {
     Impl& host = *impl_;
     if (!host.created) return;
-    if (kAiCoordinatorLoadGateBound && !g_ai_coordinator_created_at_load) {
+    if (kAiCoordinatorLoadGateBound && !ai_coordinator_created_at_load()) {
         // 004E17FD..004E1838: the mission load creates the coordinator only for a
         // hosted session or a forced mode; AICreate is the only other caller.
         ++host.coordinator_steps_absent;
@@ -6845,7 +6850,7 @@ void GameAiCoordinatorHost::report() {
     host.log.notef("summary mission ai coordinator load gate bound=%d created_at_load=%d "
         "steps_absent=%llu groups_created=%llu tick_orders=%llu (004E17FD..004E1838, packet "
         "cc9_ai_coordinator_load_gate)", kAiCoordinatorLoadGateBound ? 1 : 0,
-        g_ai_coordinator_created_at_load ? 1 : 0, host.coordinator_steps_absent,
+        ai_coordinator_created_at_load() ? 1 : 0, host.coordinator_steps_absent,
         s.groups_created, s.tick_orders);
     host.log.notef("summary mission ai auto-merge leave passes=%llu passes_beyond=%llu "
         "followers_beyond=%llu removals=%llu leave_dist=%.1f bound=%d (00A10EC0, packet "
