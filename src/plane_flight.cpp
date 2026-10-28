@@ -86,10 +86,21 @@ float pitch_command_to_point_009f9ed0(float altitude_error, float distance,
                              static_cast<double>(altitude_error)));   // 009F9EE8
     }
     if (0.0 > static_cast<double>(t)) {
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            // cc13-tranche2: the FADD double [00CE3828] is rounded once at PC24 before
+            // the float store. No mover (rev7 S25 NIT): t and 2pi are both float
+            // values, so t + 2pi is exact in double and the OFF path also rounds once.
+            t = static_cast<float>(cc13x87::x87_add24(t, two_pi));      // 009F9F02
+        } else {
         t = static_cast<float>(static_cast<double>(t) + two_pi);        // 009F9F02
+        }
     }
     if (static_cast<double>(t) > pi) {
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            t = static_cast<float>(cc13x87::x87_sub24(t, two_pi));      // 009F9F2A
+        } else {
         t = static_cast<float>(static_cast<double>(t) - two_pi);        // 009F9F2A
+        }
     }
     return (class_climb_angle_1e4 > t) ? t : class_climb_angle_1e4;     // 009F9F59
 }
