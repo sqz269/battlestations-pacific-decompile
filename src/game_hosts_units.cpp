@@ -138,6 +138,7 @@
 #include "bsp/squadron_ammo_type_rack_round_cc13.hpp"  // packet cc13-ammort
 #include "bsp/squadron_ammo_dummy_kinds_cc13.hpp"  // packet cc13-ammodk
 #include "bsp/approach_aim_freeze_cc13.hpp"  // packet cc13-aimfreeze3
+#include "bsp/approach_ref_freeze_planes_cc13.hpp"  // packet cc13-aimfreezekz
 #include "bsp/director_update_arms.hpp"            // packet cc13-leash: 0080DC70
 #include "bsp/director_target_gate.hpp"
 #include "bsp/plane_squadron_entity.hpp"
@@ -1466,8 +1467,8 @@ struct GameUnitSlot {
     std::uint32_t hull_aim_seed{0};
     // Packet cc13-aimfreeze3 (include/bsp/approach_aim_freeze_cc13.hpp): the task whose
     // aim_point_freeze_009fada0 call latched hull_aim_ref (0 none, 1 dive, 2 level bomb,
-    // 3 torpedo), and the last point that wrapper returned unlatched (sub+1Ch with its
-    // lead, which 009FAF90 transforms again).
+    // 3 torpedo, 4 kamikaze, 5 rocket, 6 depth charge), and the last point returned
+    // unlatched (sub+1Ch with its lead, which 009FAF90 transforms again).
     std::uint8_t aim_freeze_task{0};
     std::array<float, 3> aim_freeze_last_point{{0.0f, 0.0f, 0.0f}};
     // Packet cc9_hull_axis: the target the in-range print last fired for, so
@@ -12043,10 +12044,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     bool aim_point_freeze_009fada0(GameUnitSlot& shooter, const GameUnitSlot* target,
                                    std::size_t target_plus_one, float out[3],
                                    std::uint8_t task, GameHostLog* log_out = nullptr);
-    // cc13-aimfreeze3 census (ON only), indexed by task 1..3: death-head freezes,
+    // cc13-aimfreeze3 / cc13-aimfreezekz census (ON only), indexed by task 1..6: death-head freezes,
     // 009FAF90 double transforms, frozen answers, approach early-outs.
-    unsigned long long aim_freeze_heads_[4]{}, aim_freeze_doubles_[4]{},
-        aim_freeze_reads_[4]{}, aim_freeze_early_outs_[4]{};
+    unsigned long long aim_freeze_heads_[8]{}, aim_freeze_doubles_[8]{},
+        aim_freeze_reads_[8]{}, aim_freeze_early_outs_[8]{};
     // cc13-kzpick: 009FA260 alone on the shooter's hull aim ref (the pick
     // 009ABF60's tail makes at 009AC09E), with no world point taken and no lead.
     void hull_aim_pick_009fa260(GameUnitSlot& shooter, const GameUnitSlot& target,
@@ -14189,7 +14190,7 @@ const float* GameUnitsHost::Impl::aim_freeze_point(GameUnitSlot& shooter,
     if (!st.frozen || shooter.aim_freeze_task != task) return nullptr;
     if (target_plus_one != 0 && target_plus_one != shooter.hull_aim_target_plus_one)
         return nullptr;
-    ++aim_freeze_reads_[task & 3];
+    ++aim_freeze_reads_[task & 7];
     return st.world_point_1c.data();
 }
 
@@ -14224,7 +14225,7 @@ bool GameUnitsHost::Impl::aim_point_freeze_009fada0(GameUnitSlot& shooter,
             st.dirty_41 = false;
             st.frozen = true;
             shooter.aim_freeze_task = task;
-            ++aim_freeze_doubles_[task & 3];
+            ++aim_freeze_doubles_[task & 7];
             for (int i = 0; i < 3; ++i) out[i] = st.world_point_1c[i];
             return true;
         }
@@ -14243,7 +14244,7 @@ bool GameUnitsHost::Impl::aim_point_freeze_009fada0(GameUnitSlot& shooter,
                 st.frozen = true;
             }
             shooter.aim_freeze_task = task;
-            ++aim_freeze_heads_[task & 3];
+            ++aim_freeze_heads_[task & 7];
             for (int i = 0; i < 3; ++i) out[i] = st.world_point_1c[i];
             return true;
         }
@@ -32506,10 +32507,37 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // task's aim error (009ABF60) and spread (009AF0A0) are carried
                     // into it on the dirty byte, as redraw_aim_error carries 009C3DA0's,
                     // and its projtime (009AF1F1) into the lead tail.
+                    // `freeze_task` (packet cc13-aimfreezekz, include/bsp/
+                    // approach_ref_freeze_planes_cc13.hpp): 4 kamikaze, 5 rocket, 0 none
+                    // (drop kamikaze, whose rule leaves the attack states in the death tick).
                     bool kz_target_point(bsp::ApproachTargetRefState& ref,
-                                         std::array<float, 3>& point) {
+                                         std::array<float, 3>& point,
+                                         std::uint8_t freeze_task = 0) {
                         const GameUnitSlot* t = st_target();
-                        if (t == nullptr || !df_slot_live(*t)) return false;   // 009FAE11
+                        const bool freeze = bsp::kApproachRefFreezePlanesCc13Bound
+                            && freeze_task != 0;
+                        if (t == nullptr || !df_slot_live(*t)) {               // 009FAE11
+                            if (freeze) {
+                                // ON: the caller's sub+18h stays clear (false), and the
+                                // point is the latch's: frozen M x sub+28h after +5Dh (or
+                                // 009FAF90's), else the live point while only +60h/+5Ch
+                                // fail; nothing with no target and no latch.
+                                float q[3] = {0.0f, 0.0f, 0.0f};
+                                if (t != nullptr) {
+                                    for (int i = 0; i < 3; ++i) q[i] = t->motion.position[i];
+                                }
+                                if (owner_.aim_point_freeze_009fada0(unit_, t,
+                                        unit_.command_target_plus_one, q, freeze_task)) {
+                                    point = {q[0], q[1], q[2]};
+                                    ref.world_point_1c = point;
+                                    if (unit_.hull_aim_ref.frozen
+                                        && unit_.aim_freeze_task == freeze_task) {
+                                        ++owner_.aim_freeze_early_outs_[freeze_task];
+                                    }
+                                }
+                            }
+                            return false;
+                        }
                         bsp::ApproachTargetRefState& h = unit_.hull_aim_ref;
                         if (ref.dirty_41) {
                             h.bias_34 = ref.bias_34;
@@ -32528,7 +32556,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         h.lead_projtime = ref.projtime_44;
                         float q[3] = {t->motion.position[0], t->motion.position[1],
                                       t->motion.position[2]};
-                        owner_.aim_point_009fada0(unit_, *t, unit_.command_target_plus_one, q);
+                        if (freeze) {
+                            // ON: the same call through the latch, which also keeps the
+                            // last unlatched point for 009FAF90's double transform.
+                            (void)owner_.aim_point_freeze_009fada0(unit_, t,
+                                unit_.command_target_plus_one, q, freeze_task);
+                        } else {
+                            owner_.aim_point_009fada0(unit_, *t, unit_.command_target_plus_one, q);
+                        }
                         point = {q[0], q[1], q[2]};
                         ref.world_point_1c = point;
                         return true;
@@ -32730,7 +32765,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         bool update_target_ref_009fada0(bsp::ApproachTargetRefState& ref, float,
                                                         std::array<float, 3>& p) override {
-                            return b.kz_target_point(ref, p);
+                            return b.kz_target_point(ref, p, 4);   // cc13-aimfreezekz: kamikaze
                         }
                         bool target_kind_0e() override {
                             const GameUnitSlot* t = b.st_target();
@@ -32959,7 +32994,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // (the aim tick's projtime becomes the lead).
                         bool update_target_ref_009fada0(bsp::ApproachTargetRefState& ref, float,
                                                         std::array<float, 3>& p) override {
-                            return b.kz_target_point(ref, p);
+                            return b.kz_target_point(ref, p, 5);   // cc13-aimfreezekz: rocket
                         }
                         void pick_target_ref_009fa260(bsp::ApproachTargetRefState& ref) override {
                             b.kz_enter_pick_009fa260(ref);
@@ -33767,12 +33802,34 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bool update_target_ref_009fada0(bsp::ApproachTargetRefState&, float,
                                                             std::array<float, 3>& point) override {
                                 const GameUnitSlot* t = a.st_target();
-                                if (t == nullptr) return false;
-                                float p[3] = {t->motion.position[0], t->motion.position[1],
-                                              t->motion.position[2]};
-                                a.owner_.aim_point_009fada0(a.unit_, *t, a.unit_.command_target_plus_one, p);
-                                point = {p[0], p[1], p[2]};
-                                return df_slot_live(*t);
+                                if constexpr (bsp::kApproachRefFreezePlanesCc13Bound) {
+                                    // Packet cc13-aimfreezekz (task 6): through the latch, so a
+                                    // dead target answers the frozen no-lead point (009FADAE /
+                                    // 009FAF90) rather than its live pose plus the lead.
+                                    float p[3] = {0.0f, 0.0f, 0.0f};
+                                    if (t != nullptr) {
+                                        for (int i = 0; i < 3; ++i) p[i] = t->motion.position[i];
+                                    }
+                                    if (!a.owner_.aim_point_freeze_009fada0(a.unit_, t,
+                                            a.unit_.command_target_plus_one, p, 6)) {
+                                        return false;
+                                    }
+                                    point = {p[0], p[1], p[2]};
+                                    const bool live = t != nullptr && df_slot_live(*t);
+                                    if (!live && a.unit_.hull_aim_ref.frozen
+                                        && a.unit_.aim_freeze_task == 6) {
+                                        ++a.owner_.aim_freeze_early_outs_[6];
+                                    }
+                                    return live;
+                                } else {
+                                    if (t == nullptr) return false;
+                                    float p[3] = {t->motion.position[0], t->motion.position[1],
+                                                  t->motion.position[2]};
+                                    a.owner_.aim_point_009fada0(a.unit_, *t,
+                                        a.unit_.command_target_plus_one, p);
+                                    point = {p[0], p[1], p[2]};
+                                    return df_slot_live(*t);
+                                }
                             }
                             void pick_target_ref_009fa260(bsp::ApproachTargetRefState&) override {}
                             void clear_target_ref_009fb5e0(bsp::ApproachTargetRefState&) override {}
@@ -49149,11 +49206,17 @@ void GameUnitsHost::report() {
         host.aim_lead_axis_differs_);
     {
         // Packet cc13-aimfreeze3 (include/bsp/approach_aim_freeze_cc13.hpp), ON only.
-        static const char* const kFreezeTasks[4] = {"", "dive", "level_bomb", "torpedo"};
-        const bool freeze_on[4] = {false, bsp::kDiveAimPointFreezeCc13Bound,
+        // Tasks 4..6: packet cc13-aimfreezekz (include/bsp/approach_ref_freeze_planes_cc13.hpp);
+        // their early_outs are the orphaned-target ticks answered with the frozen point.
+        static const char* const kFreezeTasks[7] = {"", "dive", "level_bomb", "torpedo",
+                                                    "kamikaze", "rocket", "depth_charge"};
+        const bool freeze_on[7] = {false, bsp::kDiveAimPointFreezeCc13Bound,
                                    bsp::kLevelBombAimPointFreezeCc13Bound,
-                                   bsp::kTorpedoAimPointFreezeCc13Bound};
-        for (int k = 1; k < 4; ++k) {
+                                   bsp::kTorpedoAimPointFreezeCc13Bound,
+                                   bsp::kApproachRefFreezePlanesCc13Bound,
+                                   bsp::kApproachRefFreezePlanesCc13Bound,
+                                   bsp::kApproachRefFreezePlanesCc13Bound};
+        for (int k = 1; k < 7; ++k) {
             if (!freeze_on[k]) continue;
             host.log.notef("summary aim freeze %s heads=%llu doubles=%llu frozen_reads=%llu "
                 "early_outs=%llu (009FADAE death head / 009FAF90 notify, LABELLED; "
