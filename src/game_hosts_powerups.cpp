@@ -10,8 +10,10 @@
 #include "bsp/game_hosts_ai.hpp"
 
 #include <iterator>
+#include <random>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace bsp::game_powerups {
 
@@ -415,6 +417,119 @@ void remove_items_bound_to_008e8a30(cp::PowerupRuntime& runtime, std::size_t bui
     }
 }
 
+// LABELLED stand-in for 00BD2FC0 with ECX = 0, BSP_RandomThreads stream 0, the
+// only stream 008EC650 draws on. Stream 0; its seed and MT sequence are not
+// modelled, so the values differ from the image's. Stream 1, the gameplay
+// stream (GameGunneryHost::ship_ai_draw), is unaffected: nothing here draws on
+// it. Private to this file; the gunnery and HUD stream-0 consumers keep their
+// own draws (a shared stream-0 generator is the follow-up, see the header).
+std::uint32_t stream0_stand_in_00bd2fc0(cp::PowerupRuntime& runtime) {
+    static std::mt19937 generator;  // default seed, not the image's
+    ++runtime.counts.stream0_draws;
+    return static_cast<std::uint32_t>(generator());
+}
+
+// 00585EB0 then 00584110: strip the set's characters from the front, then the back.
+void trim_set_both(std::string& text, std::string_view set) {
+    const std::size_t first = text.find_first_not_of(set);
+    if (first == std::string::npos) {
+        text.clear();
+        return;
+    }
+    text.erase(0, first);
+    text.erase(text.find_last_not_of(set) + 1);
+}
+
+// 008E65E0 on manager+1B8h (008E5BB0 lower bound, then the _stricmp equality
+// test): the random_names row for a token, or null.
+const std::vector<NativeString>* random_names_row(cp::PowerupRuntime& runtime,
+    const std::string& token) {
+    if (!runtime.manager->random_names_1b8) return nullptr;
+    PowerupNameVectorMap& rows = *runtime.manager->random_names_1b8;
+    NativeStringStorage& strings = crt_string_storage();
+    NativeString key;
+    key.assign_0041e870(strings, token.c_str());
+    const auto found = lower_bound_powerup_names_008e5bb0(rows, key);
+    const bool hit = found != rows.end()
+        && !native_string_less_case_insensitive_00443d00(key, found->first);
+    key.release_to(strings);
+    return hit ? &found->second : nullptr;
+}
+
+// 008EC650 __thiscall(ECX = manager, NativeString* out, NativeString chunk),
+// RET 0Ch: the name one "]" chunk of a bracketed PowerupClassID picks.
+std::string pick_from_bracket_list_008ec650(cp::PowerupRuntime& runtime,
+    const std::string& chunk) {
+    // 008EC6A9..008EC6BC: the first character is the mode (0 for an empty chunk).
+    const char mode = chunk.empty() ? '\0' : chunk[0];
+    std::string result;  // 008EC67E: stays empty unless a pick lands
+    auto& cache = runtime.bracket_picks;  // manager+1ACh
+    auto entry = cache.find(chunk);       // 008EC83F 008E65E0, keyed by the chunk
+    if (entry == cache.end()) {
+        // 008EC6DF..008EC7DB: the chunk less its first character, "[]" trimmed
+        // from both ends, "," appended.
+        std::string list = chunk.empty() ? std::string{} : chunk.substr(1);
+        trim_set_both(list, "[]");
+        list += ',';
+        std::vector<std::string> names;
+        std::size_t pos = 0;  // ebp
+        while (pos < list.size()) {  // 008ECA86
+            // 008EC870..008EC8AF: strcspn for ","; the appended "," means one
+            // is always found, so the image's -1 arm (a restart at 0) is
+            // unreachable; it throws here rather than loop.
+            std::size_t end = list.find(',', pos);
+            if (end == std::string::npos) {
+                throw std::logic_error("008EC650 token without ','");
+            }
+            // 008EC8B3..008EC94A: a "*" token gets the mode letter inserted in
+            // front of it, so "*" looks up "<mode>*".
+            if (list[pos] == '*') {
+                list.insert(pos, 1, mode);  // 00531030, 008E64A0
+                end += 1;
+            }
+            if (pos <= end) {  // 008EC94E
+                // 008EC961..008ECA5B: a random_names row expands to its names,
+                // any other token is kept as it is.
+                const std::string token = list.substr(pos, end - pos);
+                if (const std::vector<NativeString>* row = random_names_row(runtime, token)) {
+                    for (const NativeString& name : *row) {
+                        names.emplace_back(name.data() != nullptr
+                            ? std::string(name.data(), name.length()) : std::string{});
+                    }
+                } else {
+                    names.push_back(token);
+                }
+            }
+            pos = end + 1;  // 008ECA7F
+        }
+        if (mode == 'A') {
+            // 008ECA97..008ECAEE: one draw now, and the cache keeps that name.
+            const std::uint32_t draw = stream0_stand_in_00bd2fc0(runtime);
+            if (names.empty()) {
+                throw std::logic_error("008EC650 'A' chunk with no names (image DIV by zero)");
+            }
+            names = std::vector<std::string>{names[draw % names.size()]};
+        }
+        entry = cache.emplace(chunk, std::move(names)).first;  // 008EC460
+    }
+    // 008ECB18..008ECB9A: the cache row for the chunk.
+    std::vector<std::string>& row = entry->second;
+    if (mode == 'A') {
+        // 008ECBB5..008ECC04, no draw. The key is case-insensitive, so an 'A'
+        // chunk can meet a row an "a" chunk built; an emptied row is the
+        // image's invalid-parameter report (008ECBCD).
+        if (row.empty()) throw std::logic_error("008EC650 'A' pick from an empty row");
+        result = row.front();
+    } else if (!row.empty()) {
+        // 008ECCAD..008ECD63: one draw per pick, uniform by modulo.
+        const std::uint32_t draw = stream0_stand_in_00bd2fc0(runtime);
+        const std::size_t index = draw % row.size();
+        result = row[index];
+        if (mode == 'T') row.erase(row.begin() + static_cast<std::ptrdiff_t>(index));  // 008ECD66..008ECDB8
+    }
+    return result;
+}
+
 }  // namespace
 
 void command_building_powerup_init_008ed720(std::size_t building,
@@ -429,19 +544,50 @@ void command_building_powerup_init_008ed720(std::size_t building,
                 // 008ED762: CMP [record+4], 1 / JNZ 008ED9A5 skips unless the creation
                 // record's kind is 1; the scene creation that calls this satisfies it.
                 // 008ED7AB..008ED7C5: a "[" past the first character takes the
-                // bracket arm, 008EC650's pick per "]" chunk, which draws on the
-                // shared random stream (BSP_RandomThreads, 00BD2F10).
+                // bracket arm, 008EC650's pick per "]" chunk.
                 const std::size_t bracket = powerup_class_id.find('[');
                 if (bracket != std::string_view::npos && bracket > 0) {
-                    throw std::logic_error("008EC650 shared-stream draw not modelled");
-                }
-                // 008ED964..008ED99D: the plain name (008E6CB0) into binding+8;
-                // on a hit, the grant and the observer registration (00694A60).
-                const PowerupClassConfig* cls =
-                    cp::find_powerup_class_008e6cb0(runtime, powerup_class_id);
-                if (cls != nullptr) {
-                    grant_008ed4b0(runtime, building, cls);
-                    runtime.observed_bindings[building] = cls;
+                    const std::string text(powerup_class_id);
+                    const PowerupClassConfig* bound = nullptr;  // binding+8
+                    bool observed = false;
+                    std::size_t pos = 0;  // esi
+                    while (pos < text.size()) {  // 008ED901
+                        // 008ED7D5..008ED806: strcspn for "]". With none left the
+                        // image's -1 sends esi back to 0 and it loops forever,
+                        // regranting each chunk; that throws here instead.
+                        const std::size_t close = text.find(']', pos);
+                        if (close == std::string::npos) {
+                            throw std::logic_error("008ED720 bracket tail without ']' (image loops forever)");
+                        }
+                        if (pos < close) {  // 008ED809
+                            // 008ED81A..008ED87C: the chunk with " |" trimmed from
+                            // both ends, through 008EC650.
+                            std::string chunk = text.substr(pos, close - pos);
+                            trim_set_both(chunk, " |");
+                            const std::string pick = pick_from_bracket_list_008ec650(runtime, chunk);
+                            // 008ED8A5..008ED8D5: each chunk's class into
+                            // binding+8 (null on a miss); a hit grants and
+                            // registers the observer (00694A60, refcounted).
+                            bound = cp::find_powerup_class_008e6cb0(runtime, pick);
+                            if (bound != nullptr) {
+                                grant_008ed4b0(runtime, building, bound);
+                                observed = true;
+                            }
+                        }
+                        pos = close + 1;  // 008ED8FE
+                    }
+                    // 008ED620 reads binding+8 when it fires, so the regrant
+                    // takes the last chunk's class, null when that chunk missed.
+                    if (observed) runtime.observed_bindings[building] = bound;
+                } else {
+                    // 008ED964..008ED99D: the plain name (008E6CB0) into binding+8;
+                    // on a hit, the grant and the observer registration (00694A60).
+                    const PowerupClassConfig* cls =
+                        cp::find_powerup_class_008e6cb0(runtime, powerup_class_id);
+                    if (cls != nullptr) {
+                        grant_008ed4b0(runtime, building, cls);
+                        runtime.observed_bindings[building] = cls;
+                    }
                 }
             }
         }

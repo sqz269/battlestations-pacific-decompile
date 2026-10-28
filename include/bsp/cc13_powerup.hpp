@@ -83,11 +83,26 @@ public:
     virtual void set_active_slot_notify_gate(bool inventory_nonempty) = 0;
 };
 
+// _stricmp's order in the C locale: bytes compared after folding A..Z to a..z.
+struct AsciiCaseLess {
+    bool operator()(const std::string& a, const std::string& b) const noexcept {
+        const std::size_t n = a.size() < b.size() ? a.size() : b.size();
+        for (std::size_t i = 0; i < n; ++i) {
+            unsigned char x = static_cast<unsigned char>(a[i]);
+            unsigned char y = static_cast<unsigned char>(b[i]);
+            if (x >= 'A' && x <= 'Z') x = static_cast<unsigned char>(x + ('a' - 'A'));
+            if (y >= 'A' && y <= 'Z') y = static_cast<unsigned char>(y + ('a' - 'A'));
+            if (x != y) return x < y;
+        }
+        return a.size() < b.size();
+    }
+};
+
 struct PowerupCounts {
     unsigned long long class_records{}, texture_requests{};
     unsigned long long add_calls{}, add_two_argument{}, grants{}, grants_gated{},
         grant_class_misses{}, pup_gain_reports{}, screen_rebuilds{}, hint_triggers{},
-        session_messages{}, air_support_resolves{};
+        session_messages{}, air_support_resolves{}, stream0_draws{};
     unsigned long long prepare_calls{}, prepare_loads{};
     unsigned long long available_calls{}, available_entries{}, records_inserted{};
 };
@@ -112,6 +127,10 @@ struct PowerupRuntime {
     // 008ED720 grant), by units-host index, with the class 008ED720 stored at
     // binding+8h. 008ED620 regrants these on code 5.
     std::map<std::size_t, const PowerupClassConfig*> observed_bindings{};
+    // +1ACh: 008EC650's pick cache, keyed by the whole chunk under 008E5BB0's
+    // _stricmp order: an 'A' chunk's one fixed pick, any other chunk's expanded
+    // list (a 'T' pick erases its name).
+    std::map<std::string, std::vector<std::string>, AsciiCaseLess> bracket_picks{};
     PowerupCounts counts{};
     std::string load_error{};
 };
