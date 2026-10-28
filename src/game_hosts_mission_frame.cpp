@@ -82,6 +82,7 @@
 #include "bsp/memory_stream.hpp"
 #include "bsp/resource_lookup.hpp"
 #include "bsp/session_context_cc13.hpp"
+#include "bsp/lobby_option_defaults_cc13.hpp"
 #include "bsp/ai_coordinator_load_gate_cc13.hpp"  // packet cc13-mp4
 #include "bsp/vfs_mounts.hpp"
 
@@ -1523,8 +1524,15 @@ public:
             return 0;
         }
     }
-    // 005E2F00 forces EnablePowerups to 1 in single player (005E2FAB).
-    bool powerups_enabled_00e0c978() override { return true; }
+    // 005E2F00 forces EnablePowerups to 1 in single player (005E2FAB). Packet cc13-mp3
+    // (MP3c): ON reads the byte 005E2F00 stored (00E1955C[10] == 0 in a session).
+    bool powerups_enabled_00e0c978() override {
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            return bsp::lobby_session_state().powerups_enabled_00e0c978;
+        } else {
+            return true;
+        }
+    }
     void report_powerup_009789a0(std::int32_t slot, const bsp::cc13_powerup::PowerupItem&,
         const std::string& name) override {
         // 009789A0 passes only the name on to 009758E0; the item is unused.
