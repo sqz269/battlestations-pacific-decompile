@@ -31,14 +31,14 @@ namespace bsp {
 // third fold, after dyn+34h is rotated in) as well as to dyn+1Ch and dyn+04h.
 // True: the accumulator overload of fold_world_into_body_007d8470 zeroes each
 // body_resist_40 component under 0.001f in place. False: only the first two.
-inline constexpr bool kPlaneResist40DeadbandCc13Bound = false;
+inline constexpr bool kPlaneResist40DeadbandCc13Bound = true;  // ON by bundle pair (cc9-sweep1b)
 // The main thread's x87 runs at 24-bit precision. 007DBA67 compares the float
 // speed squared against the double 1e-10 (00CE3820); 007DBEBB-007DBEC1 rounds
 // throttle * 26.0 before 0.6 - it; 007D8D6D rounds speed * 0.1 before the
 // subtraction from body vy (the landed hold-down, game_hosts_units.cpp). True:
 // those three forms. False: the float 1e-10f gate and one rounding of each
 // double expression, as before.
-inline constexpr bool kPlaneFlightX87Cc13Bound = false;
+inline constexpr bool kPlaneFlightX87Cc13Bound = true;  // ON by bundle pair (cc9-sweep1b)
 
 // ---------------------------------------------------------------------------
 // The pilot control block, unit+9E4h. Five float axes and three bytes, zeroed by
