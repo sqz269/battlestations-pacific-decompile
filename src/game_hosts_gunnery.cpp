@@ -4422,6 +4422,8 @@ struct GameGunneryHost::Impl {
     // the 0043F7D0 -> 0072B5A0 destroyed failure at zero health.
     void apply_gun_damage_00728080(std::size_t g, float amount);
     void gun_destroyed_failure_0072b5a0(std::size_t g);
+    // 008777D0 on one gun (index into guns), the device-hit entry packet C1 calls.
+    void apply_gun_hit_record_008777d0(std::size_t g, const bsp::HitRecord& hit);
     unsigned long long gun_damage_calls{0};
     unsigned long long guns_destroyed{0};
     unsigned long long gun_fire_level_refusals{0};   // 007301A7
@@ -17409,6 +17411,45 @@ void GameGunneryHost::Impl::gun_destroyed_failure_0072b5a0(std::size_t g) {
         rebuild_weapon_category_index_00956c20(gun.unit_index);    // 00729FA0, 0072B5A0
     }
     done("Gun::apply_set_destroyed_failure_0072b5a0", 0x0072b5a0u);
+}
+
+// Packet cc13-gunB follow-up: 008777D0 BSP_UnitInstance_ApplyHitRecord with ECX = a
+// gun. Hull pass (008777DD..008778D4): skipped when hit+34h is -1; armour = gun+368h
+// (the IsKindOf(6) alternate cannot apply to a gun), times ProductForUnit(2,
+// [gun+3F0h]) under the powerup gate (00877875, the IsKindOf(20h) arm); 00470510;
+// a positive value goes to vtable[1ACh] = 00728080. Part pass (008778E4..00877A37):
+// each +3Ch entry with +4h != -1 through 004705C0 with the same scaled armour, the
+// largest kept from -FLT_MAX (00D7A244) and dispatched once when above 0.0. LABELLED:
+// an entry of kind 4 takes [[gun+354h]]+24h in the image, the gun's own armour
+// here; the hit+48h stores before each dispatch have no field on bsp::HitRecord.
+void GameGunneryHost::Impl::apply_gun_hit_record_008777d0(std::size_t g,
+                                                         const bsp::HitRecord& hit) {
+    if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+        if (g >= guns.size()) return;
+        float armour = guns[g].armour_368;
+        if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+            if (const auto m = bsp::game_powerups::powerup_site_product(2, guns[g].unit_index)) {
+                armour = *m * armour;                               // 0087788E..00877899
+            }
+        }
+        if (hit.hull_segment != -1) {
+            const float damage = bsp::hull_damage_00470510(hit, armour);
+            if (damage > 0.0f) apply_gun_damage_00728080(g, damage);   // 008778D2
+        }
+        float best = -3.402823466e+38f;
+        bool any = false;
+        for (int i = 0; i < hit.part_hit_count; ++i) {
+            if (hit.part_hits[i].part_index == -1) continue;
+            const float part = bsp::part_damage_004705c0(hit, armour, i);
+            if (part > best) best = part;
+            any = true;
+        }
+        if (any && best > 0.0f) apply_gun_damage_00728080(g, best);  // 00877A37
+        done("Gun::apply_hit_record_008777d0", 0x008777d0u);
+    } else {
+        (void)g;
+        (void)hit;
+    }
 }
 
 void GameGunneryHost::apply_gun_damage_00728080(std::size_t gun, float amount) {

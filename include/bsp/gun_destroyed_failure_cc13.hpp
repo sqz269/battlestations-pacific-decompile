@@ -37,10 +37,13 @@ namespace bsp {
 //     latch 0072D2EC (+5Dh);
 //   00956C20's own [dev+5Dh] test in the rebuild;
 //   RateExpectedWeaponDamage 0095EC8B (+3B8h).
-// IsOperational 00729F10's +3B8h and +5Dh terms are a follow-up inside packet A's
-// helper (gun_is_operational_00729f10_cc13), which routes the rebuild, the seat
-// filters, ship AI firepower 0095EC52 and the submarine tube walk; until then those
-// sites see the gun as operational, except through the rebuild's +5Dh test.
+//   IsOperational 00729F10's +3B8h and +5Dh terms, inside packet A's helper
+//     gun_is_operational_00729f10_cc13 (include/bsp/gun_owner_inferior_operational_cc13.hpp;
+//     this switch is ORed into kGunIsOperationalHostedCc13), which routes the rebuild,
+//     the seat filters, ship AI firepower 0095EC52 and the submarine tube walk.
+// Device hits: GameGunneryHost::Impl::apply_gun_hit_record_008777d0, the gun's
+// 008777D0 (armour +368h, 00470510 / 004705C0, vtable[1ACh] = 00728080), which packet
+// C1 calls under its own switch.
 // Not wired: Live*Barrels 0081259F / 008126CF / 0081277F feed only
 // RefreshFirepowerRatios 008127E0, whose callers (Lua GetFirepower 0088DC10, bind
 // 0081F980) have no host reader.

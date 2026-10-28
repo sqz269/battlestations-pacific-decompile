@@ -4833,6 +4833,8 @@ public:
         owner_.done("ShipAiFirepower::device_is_operational_00729f10", 0x0095ec52u);
         if constexpr (bsp::kGunIsOperationalHostedCc13) {
             // [device+3F0h] is the gun row's unit (bsp/gun_owner_inferior_operational_cc13.hpp).
+            // LABELLED: a handle with no gun row answers operational (the image
+            // has no such case; every list node holds a gun).
             const GameGunRow* gun = gun_row(device);
             return gun == nullptr
                 || bsp::gun_is_operational_00729f10_cc13(owner_.units, *gun);
