@@ -11,6 +11,7 @@
 #include "bsp/native_camera_owner.hpp"
 #include "bsp/native_group_owner.hpp"
 #include "bsp/native_group_pool.hpp"
+#include "bsp/native_group_storage_lifetime.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/native_gui_page_construction.hpp"
 #include "bsp/native_gui_page_properties_continuation.hpp"
@@ -25,6 +26,7 @@
 #include "bsp/native_vfs_name_resolution.hpp"
 #include "bsp/native_vfs_owner_services.hpp"
 #include <cstddef>
+#include <array>
 #include <stdexcept>
 #include <utility>
 #include <vector>
@@ -80,41 +82,90 @@ struct GameNativeGuiPageApplication::Impl {
             throw std::logic_error("native GUI Page+18 (AC4C50) is not composed before P3a2");
         }
     };
-    // B6D890 from AC6806 on the page's raw Group root, null scene, recurse 0.
+    // The raw Group's distinct current18 is B8EEC0. Its canonical zero terminal
+    // may still hold an actual3Ch scene resource; its genuine raw destructor
+    // closes that field. Never route it through a legacy SceneResource* owner.
+    struct GroupTrees final : NativeNodeTreeRetirementDispatch {
+        Impl& app;
+        explicit GroupTrees(Impl& value) : app(value) {}
+        const volatile Word* resolve_profile(Word profile) const override {
+            if (profile == kGroupProfile) return table(app.data, profile, 0x58);
+            return app.scene_domain.node.trees.dispatch.resolve_profile(profile);
+        }
+        void invoke_virtual18(Word target, void* actual) override {
+            if (target != 0x00b8eec0) {
+                app.scene_domain.node.trees.dispatch.invoke_virtual18(target, actual);
+                return;
+            }
+            for (auto& page : app.pages) {
+                if (page->group_slot != actual || !page->reference || page->reference->retired()) continue;
+                require(app.renderer.actual_owners().find(actual) == page->reference.get(),
+                    "raw GUI Group release requires its same canonical owner");
+                release_native_group_storage_00b8eec0(actual, page->group_release_frame,
+                    app.group_trees, page->group_release);
+                return;
+            }
+            throw std::logic_error("raw GUI Group current18 has no live page-root owner");
+        }
+        void invoke_virtual0(Word target, void* actual, RenderCommandReference& reference) override {
+            for (auto& page : app.pages) {
+                if (page->group_slot != actual || page->reference.get() != &reference ||
+                    !page->reference || page->reference->retired()) continue;
+                require(target == 0x00bd30e0 &&
+                    static_cast<void*>(&reference.reference_count) == static_cast<unsigned char*>(actual) + 4 &&
+                    reference.reference_count.load(std::memory_order_relaxed) == 0 &&
+                    app.renderer.actual_owners().find(actual) == &reference,
+                    "raw GUI Group terminal requires the same current zero-count owner");
+                reference.release_zero_references();
+                return;
+            }
+            app.scene_domain.node.trees.dispatch.invoke_virtual0(target, actual, reference);
+        }
+    };
+    // B6D890 from AC4C50 and AC6806 on the SAME raw page-root Group. Each
+    // normal page construction has two distinct prepared attachment frames.
     struct Roots final : NativeNodeSceneChildDispatch {
         Impl& app;
         explicit Roots(Impl& value) : app(value) {}
         const volatile Word* resolve_profile(Word profile) const override {
             require(profile == kGroupProfile, "native GUI page root admits only its raw Group profile");
-            return app.environment.vtable_00d634f8;
+            return app.group_identity.actual_profile_00d634f8;
         }
         void invoke_child(Word target, void* actual, Word requested, Word recursion) override {
-            require(target == 0x00b6ed80 && !requested && !recursion,
-                "native GUI page root requires the genuine null-lighting B6ED80 attachment");
+            require(target == 0x00b6ed80 && !recursion,
+                "native GUI page root requires its genuine B6ED80 attachment with recurse0");
             for (auto& page : app.pages) {
-                if (!page->reference || &page->group->storage.node != actual) continue;
-                auto& reference = *page->reference;
-                require(page->group->phase == NativeGroupOwner::Phase::live &&
-                    app.renderer.actual_owners().find(actual) == &reference,
-                    "native GUI page root lost its same canonical Group");
-                auto& attachment = reference.scene_attachment();
-                require(attachment.attach_scene && !attachment.scene,
-                    "native GUI page Group cannot substitute a logical lighting owner");
-                attachment.attach_scene(app.environment.nodes.scenes, attachment, nullptr, false);
+                if (!page->reference || page->group_slot != actual || page->reference->retired()) continue;
+                require(app.renderer.actual_owners().find(actual) == page->reference.get(),
+                    "native GUI page root lost its same canonical raw Group");
+                require(page->attachment_count < page->attachments.size(),
+                    "raw GUI page root exceeded its two prepared constructor attachments");
+                auto& invocation = page->attachments[page->attachment_count++];
+                invocation.frame.scene_argument = requested;
+                invocation.frame.recursion_argument = recursion;
+                set_native_node_scene_storage_00b6ed80(actual, invocation.frame,
+                    app.scene_domain.node.scenes, invocation.acquired);
                 return;
             }
             throw std::logic_error("native GUI page root has no child below its Group before P3b/P3c");
         }
     };
-    // The page's raw Group (manager-owned through page+4C) and its canonical
-    // companion. Construction frames live only until AC6806 returns.
+    struct RootAttachment {
+        NativeNodeSceneAttachmentFrame frame{};
+        NativeNodeSceneAttachmentAcquired acquired{};
+    };
+    // The page's raw Group is owned through page+4C. All raw lifetime and
+    // attachment backing survives until its native owner has actually retired.
     struct Page {
         Impl* app{};
         void* group_slot{};
-        std::unique_ptr<NativeGroupOwner> group;
-        std::unique_ptr<NativeGroupReference> reference;
-        NativeRenderActualOwnerRegistry::BindingAdmission admission;
-        bool registered{}, retired{};
+        NativeGroupStorageLifetimeFrame group_lifetime_frame{};
+        NativeGroupStorageLifetimeAcquired group_lifetime;
+        std::unique_ptr<NativeGroupStorageReference> reference;
+        NativeNodeTreeRetirementFrame group_release_frame{};
+        NativeGroupStorageReleaseAcquired group_release;
+        std::array<RootAttachment, 2> attachments{};
+        std::size_t attachment_count{};
         void* page{};
     };
     struct Construction {
@@ -135,9 +186,13 @@ struct GameNativeGuiPageApplication::Impl {
     const bool& crt_sse2_conversion;
     GameNativeVfsRawServices raw;
     NativeStringRawPoolContext& strings;
+    GameNativeRendererSceneDomain scene_domain;
     LightTypeBootstrap node_types;
     NativeGroupTypes group_types;
-    NativeGroupEnvironment environment;
+    GroupTrees group_dispatch;
+    NativeNodeTreeRetirementContext group_trees;
+    NativeNodeBaseDestructionContext group_node;
+    NativeGroupStorageIdentityContext group_identity;
     Lookup lookup;
     Properties properties;
     Roots roots;
@@ -158,19 +213,22 @@ struct GameNativeGuiPageApplication::Impl {
         const ObjectHandleResolverSlots& resolvers, const bool& sse2_conversion)
         : log(output), manager(gui), renderer(app), data(mapped),
           installed_resolvers(resolvers), crt_sse2_conversion(sse2_conversion), raw(vfs.borrow_raw_services()),
-          strings(vfs.raw_strings()),
+          strings(vfs.raw_strings()), scene_domain(app.startup_scene_domain()),
           node_types(vfs.native_owners().types(), vfs.native_types().light_types()),
           group_types(vfs.native_owners().types(), node_types, vfs.native_types().group_types()),
-          environment{game_native_resource_pool_process().group_pool_010902f4(),
-              app.camera_environment().nodes, group_types,
-              {app.node_constants().one_00d7a24c, app.node_constants().positive_bound_00ce4970},
-              table(mapped, kGroupProfile, 0x58), table(mapped, 0x00d62c88, 0x58), &app.node_constants()},
+          group_dispatch(*this),
+          group_trees{scene_domain.node.trees.point_lights, app.actual_owners(),
+              scene_domain.node.trees.decrement_00ce2220, group_dispatch, scene_domain.node.trees.frames},
+          group_node{scene_domain.node.scenes, group_trees, strings, scene_domain.node.world},
+          group_identity{group_node, app.actual_owners(),
+              game_native_resource_pool_process().group_pool_010902f4(), table(mapped, kGroupProfile, 0x58)},
           lookup(mapped), properties(mapped), roots(*this),
           paths{vfs.raw_strings(), literal(mapped, 0x00d5cb18, 11), literal(mapped, 0x00cfd2c8, 5)} {
-        auto& node_names = environment.nodes.require_raw_name_pool();
+        auto& node_names = scene_domain.node.strings;
         require(&node_names.actual_published_01090aa8 == &strings.actual_published_01090aa8 &&
             &node_names.actual_manager_publication_01090aa0 == &strings.actual_manager_publication_01090aa0 &&
-            environment.vtable_00d62c88 == app.camera_environment().vtable_00d62c88,
+            &scene_domain.node.scenes.owners == &app.actual_owners() &&
+            &scene_domain.camera.node_constants.one_00d7a24c == &app.node_constants().one_00d7a24c,
             "native GUI pages require the same canonical node/string/table domains");
         layer_atexit = game_native_gui_layer_pool_process().initialize_once_00cd73d0();
     }
@@ -178,19 +236,6 @@ struct GameNativeGuiPageApplication::Impl {
         require(!active && !failed, "native GUI page chain cannot reenter or replay interrupted work");
     }
     void fail(std::uint32_t site) noexcept { failed_site = site; failed = std::current_exception(); }
-    static void retire(void* context, NativeGroupReference& same_reference) noexcept {
-        auto& app = *static_cast<Impl*>(context);
-        for (auto& page : app.pages) {
-            if (page->reference.get() != &same_reference) continue;
-            if (!page->registered || page->group_slot != &same_reference.group_owner().storage.node)
-                std::terminate();
-            app.renderer.actual_owners().unbind(page->group_slot, same_reference);
-            page->registered = false;
-            page->retired = true;
-            return;
-        }
-        std::terminate();
-    }
     void release(NativeString& header, bool& live) {
         live = false;
         destroy_native_string_header_0041dd20(&header, strings);
@@ -199,13 +244,10 @@ struct GameNativeGuiPageApplication::Impl {
     void create_group(Page& page, const void* name) {
         page.group_slot = allocate_native_group_slot_00b8f450();                    // 00AA58FF
         require(page.group_slot != nullptr, "native GUI page Group pool returned null");
-        page.admission = renderer.actual_owners().prepare_binding(page.group_slot);
-        page.group = std::make_unique<NativeGroupOwner>(page.group_slot, NativeGroupPool::slot_bytes, environment);
-        construct_native_group_00b8f5e0(*page.group, name, *environment.raw_node_constants);  // 00AA5914
-        page.reference = std::make_unique<NativeGroupReference>(*page.group,
-            NativeGroupCompanionDisposal{this, &Impl::retire});
-        renderer.actual_owners().publish(std::move(page.admission), *page.reference);
-        page.registered = true;
+        construct_native_group_00b8f5e0(page.group_slot, NativeGroupPool::slot_bytes,
+            name, strings, renderer.node_constants());                                    // 00AA5914
+        page.reference = std::make_unique<NativeGroupStorageReference>(page.group_slot,
+            group_identity, page.group_lifetime_frame, page.group_lifetime);
     }
 };
 
@@ -242,9 +284,12 @@ void* GameNativeGuiPageApplication::load_page_00aa5840(void* actual_manager,
     }
     require(p.properties_composed, "native GUI page construction waits for AC4C50 (P3a2)");
 
+    // Publish retained metadata before the first native name/pool/Lua effect.
+    // Failure transport below must not allocate while preserving live frames.
+    p.retained_frames.push_back(std::make_unique<Impl::Construction>());
+    auto& retained = p.retained_frames.back();
+    auto& f = *retained;
     p.active = true;
-    auto frames = std::make_unique<Impl::Construction>();
-    auto& f = *frames;
     Impl::Page* record{};
     std::uint32_t site = 0x00aa587a;
     try {
@@ -276,7 +321,7 @@ void* GameNativeGuiPageApplication::load_page_00aa5840(void* actual_manager,
         site = 0x00ac6600;
         NativeGuiPageConstructionContext prefix_context{p.raw.strings, word(p.data, 0x00d7a2f0),
             word(p.data, 0x00ce3804), p.renderer.node_constants().one_00d7a24c};
-        initialize_native_gui_page_00ac6600_prefix(record->page, name, &record->group->storage.node,
+        initialize_native_gui_page_00ac6600_prefix(record->page, name, record->group_slot,
             static_cast<std::uint32_t>(screen_flag), prefix_context, f.prefix);
         site = 0x00ac6714;
         auto& lua = p.renderer.lua_service_binding();
@@ -295,7 +340,7 @@ void* GameNativeGuiPageApplication::load_page_00aa5840(void* actual_manager,
         register_native_gui_page_00aa52a0(actual_manager, page);
         site = 0x00aa595c;
         p.release(f.path, f.path_live);
-        frames.reset();
+        retained.reset();
         p.active = false;
         p.log.notef("native GUI page loaded: page=%p group=%p manager=%p flag=%d",
             page, record->group_slot, actual_manager, screen_flag);
@@ -303,7 +348,6 @@ void* GameNativeGuiPageApplication::load_page_00aa5840(void* actual_manager,
     } catch (...) {
         if (!p.active) throw; // model-route rejection consumed both headers
         p.fail(site);
-        p.retained_frames.push_back(std::move(frames));
         p.active = false;
         throw;
     }

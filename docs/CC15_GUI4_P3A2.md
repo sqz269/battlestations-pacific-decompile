@@ -23,6 +23,39 @@ a resolver adapter, warm colors, bind the manager token, or set `properties_comp
 integrator owns the matching two-argument addition at the startup host's constructor call and
 will build the combined change; the intermediate signature-only branch is not build-qualified.
 
+## Raw page-root provider preparation
+
+The staged P3a2 root path uses the existing raw B8F5E0 constructor and
+`NativeGroupStorageReference`, replacing the P3a1 legacy `NativeGroupOwner`/`NativeGroupReference`.
+Actual3Ch scene resources must not enter legacy `SceneResource*` attachments or destructors
+(`native_node_scene_attachment.hpp` explicitly excludes that composition).
+
+The local raw Group context shares A1's real owners, imports, scene gates and world dispatch.
+It provides the genuine current18 B8EEC0 path before the shared B6F310 tail, using a separate
+persistent group-release frame/acquisition. B6DFA0 reaches that current18 body; skipping directly
+to B6F310 would omit borrowed-node A0 cleanup. The group constructor starts actual+4 at 1;
+canonical metadata binding adds no reference. B6F310 consumes the creator credit once through
+its native byte44 gate. No additional decrement is added.
+
+Observed-zero BD30E0 routes through the SAME raw Group reference, which reloads current+04
+B8F8C0 and completes raw group/node cleanup plus pool return. This terminal is allowed while
+page+4C is still populated: AA8320 clears that field only after B6DFA0 returns. The later PAGE
+deleting+04 is a separate operation. If other native credits remain, the Group companion,
+frames and context survive the Page until actual retirement; no early unique_ptr reset is used.
+
+The two constructor B6D890 sites have disjoint prepared raw B6ED80 attachment frames. Their
+scene argument may be the acquired actual lighting resource or null; neither is a host scene
+projection. Repeated activation/visibility traversal is outside this constructor-only admission.
+This work does not broaden A1's current18 dispatch or claim its repeated-lifetime runtime proof.
+
+Construction-frame ownership is published before native name/pool/Lua effects, so the failure
+catch marks sticky failure without allocating to save an already-live frame. Pending native
+effects and frames remain retained for the existing process-exit policy.
+
+Status at this checkpoint: static preparation only, unbuilt under the integrator's strict-run
+build hold. `properties_composed` remains false; AC4C50/childless AAA710 and Page retirement
+closure are still being wired. No new game run or function/whole-chain acceptance is claimed.
+
 ## Warm-manager page lifetime binding
 
 The manager previously fixed its private lifetime context to `NoPageOwner`; populated AA6340

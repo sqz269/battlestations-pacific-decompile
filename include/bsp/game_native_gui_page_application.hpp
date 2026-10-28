@@ -33,6 +33,8 @@ class GameNativeGuiPageApplication final {
 public:
     // Starts the F8BF50 layer pool (CD73D0) and binds the Group environment.
     // No page, Group or Lua state is created here.
+    // Requires the renderer's A1 startup scene domain to be open. Page roots
+    // use raw Group lifetime providers, never legacy SceneResource* bindings.
     // Borrow the startup host's CURRENT installed Source resolver cells and
     // its stable GUI conversion capability bool through shared native drain.
     // Neither argument is an Original-VA publication or the live0109EEA4 word.
