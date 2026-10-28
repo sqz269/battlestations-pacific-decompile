@@ -5,6 +5,7 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include "bsp/ocean_spectrum.hpp"
 #include "bsp/projectile_helpers.hpp"
 #include "bsp/hull_terrain_contact.hpp"
@@ -12157,7 +12158,15 @@ public:
         return bsp::part_damage_004705c0(hit_, armour, part_hit_index);
     }
 
-    int session_mode() override { return 0; }
+    // game+1FE4h from the session context (packet cc13-mp2c). Campaign identity: the
+    // OFF arm is the old literal 0.
+    int session_mode() override {
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            return bsp::session_context().session_word_1fe4;
+        } else {
+            return 0;
+        }
+    }
     // 00827065..00827075: the victim's party against the local player's.
     bool unit_is_local_players() override {
         return kDifficultyMultipliersBound && owner_.unit_in_player_party(victim_);
@@ -14604,7 +14613,15 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
 
     struct KillBinding final : bsp::KillCreditHost {
         explicit KillBinding(Impl& owner_in) : owner(owner_in) {}
-        int session_mode() override { return 0; }
+        // game+1FE4h from the session context (packet cc13-mp2c). Campaign identity:
+        // the OFF arm is the old literal 0.
+        int session_mode() override {
+            if constexpr (bsp::kSkirmishSessionCc13Bound) {
+                return bsp::session_context().session_word_1fe4;
+            } else {
+                return 0;
+            }
+        }
         bool skip_friendly_losses() override { return false; }
         // 0091BDE6..0091BDF3: [[game+18CCh+[game+18ECh]*4]+28h], the local
         // player's party (SHIP_AI 125). It is compared only when manager+1484h is set.

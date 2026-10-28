@@ -82,6 +82,7 @@
 #include "bsp/memory_stream.hpp"
 #include "bsp/resource_lookup.hpp"
 #include "bsp/session_context_cc13.hpp"
+#include "bsp/ai_coordinator_load_gate_cc13.hpp"  // packet cc13-mp4
 #include "bsp/vfs_mounts.hpp"
 
 #include <array>
@@ -1299,8 +1300,15 @@ public:
     float clock_00f876a4() override { return host_.world_clock; }
     WarningObject* new_powerup_warning_009758e0(const std::string* name) override {
         WarningObjectHostBinding warning_host(host_);
-        // [game+1FE4h] is 0 on a mission-tree launch (kAiCoordinatorCreatedAtLoad).
-        bsp::construct_named_powerup_warning_009758e0(warning_, warning_host, *name, false);
+        // 00975982: the "multi" suffix when [game+1FE4h] != 0 (packet cc13-mp4: from the
+        // session context; a campaign's word is 0, so the argument stays false). The
+        // OFF arm is the old literal false.
+        bool network_session = false;
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            network_session = bsp::session_context().session_word_1fe4 != 0;
+        }
+        bsp::construct_named_powerup_warning_009758e0(warning_, warning_host, *name,
+            network_session);
         return &warning_;
     }
     void report_009763e0(WarningObject* warning) override {
@@ -3997,6 +4005,39 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 host.messages->construct_00707480();  // logs its own native row
             }
         }
+        if (bsp::kSkirmishSessionCc13Bound && method == "load_warning_bank") {
+            // Packet cc13-mp4: 004E17FD..004E1838, which follows this step's
+            // 004E17E9..004E17FB; neither input changes across them. The campaign
+            // context fails the session/forced test before any slot is read, so a
+            // campaign load publishes false (include/bsp/ai_coordinator_load_gate_cc13.hpp).
+            // OFF: nothing is published and the gate keeps the old constant false.
+            const bsp::SessionContext& session = bsp::session_context();
+            std::array<bsp::AiCoordinatorLoadSlot, 8> slots{};
+            if (session.session_word_1fe4 == 1 || session.forced_61c) {
+                for (std::size_t slot = 0; slot < slots.size(); ++slot) {
+                    bsp::ParticipantRecordId record;
+                    bsp::ParticipantRecordBytes bytes;
+                    if (!host.participants.active_record(slot, record)
+                        || !host.participants.read_record_bytes(record, bytes)
+                        || !bytes.claimed_08.available || !bytes.ai_held_09.available) {
+                        continue;   // LABELLED: an unrepresented record reads as not AI
+                    }
+                    slots[slot].occupied_08 = bytes.claimed_08.value != 0;
+                    slots[slot].ai_09 = bytes.ai_held_09.value != 0;
+                    // LABELLED: +0Ah is not in the pools. 004BB160 writes it with +8h
+                    // and +9h on the mission records (004BB21C..004BB224); a player
+                    // record has +9h clear (004BB30B), so its +0Ah is never decisive.
+                    slots[slot].active_0a = record.pool == bsp::ParticipantPool::Mission;
+                }
+            }
+            const bool created = bsp::ai_coordinator_created_at_load_004e17fd(session, slots);
+            ai_publish_coordinator_created_at_load(created);
+            if (session.session_word_1fe4 != 0 || session.forced_61c) {
+                host.log.notef("ai coordinator load gate 004E17FD: session=%d forced=%d "
+                    "created=%d (packet cc13-mp4)", session.session_word_1fe4,
+                    session.forced_61c ? 1 : 0, created ? 1 : 0);
+            }
+        }
         if (method == "load_warning_bank" && kMessageManagerCc15Bound
             && host.messages != nullptr && host.messages->constructed()) {
             // 004DFB70's spoken warnings. 004E0FAD's sweep needs [004C1E90()]+8h == 2,
@@ -4088,7 +4129,9 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
     host.entry_state.local_view_mode = host.scene_state.session_mode;
     host.entry_state.local_slot_index = 0;
     // game+1FE4h and game+1EE3h, the two fields 004d7970 and the drain's 10h
-    // arm read on the way out of the mission.
+    // arm read on the way out of the mission. Under kSkirmishSessionCc13Bound
+    // scene_state.session_mode already holds the session word (run_scene_load_004dfb70,
+    // packet cc13-mp1), so mission_result's local_player_mode reads it (rev9 N1).
     host.result->set_session_mode(host.scene_state.session_mode);
     host.result->set_session_networked(host.entry_state.one_shots.session_was_networked);
     MissionEntryBinding entry(host);
