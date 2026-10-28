@@ -50,9 +50,11 @@ page+4C is still populated: AA8320 clears that field only after B6DFA0 returns. 
 deleting+04 is a separate operation. If other native credits remain, the Group companion,
 frames and context survive the Page until actual retirement; no early unique_ptr reset is used.
 
-The two constructor B6D890 sites have disjoint prepared raw B6ED80 attachment frames. Their
-scene argument may be the acquired actual lighting resource or null; neither is a host scene
-projection. Repeated activation/visibility traversal is outside this constructor-only admission.
+Two raw B6ED80 attachment frames are reserved for constructor dispatch. AC4CF2's nonnull B6D890
+reaches the genuine attachment using the acquired actual lighting resource. AC6825's null
+B6D890 detaches A4/root links without a current50 call and leaves170 and its credit for the
+genuine B6EE10 during Group retirement. Neither path projects a host scene.
+Repeated activation/visibility traversal is outside this constructor-only admission.
 This work does not broaden A1's current18 dispatch or claim its repeated-lifetime runtime proof.
 
 Construction-frame ownership is published before native name/pool/Lua effects, so the failure
@@ -314,8 +316,9 @@ already null and the child/timed/parent branches are excluded. Any admission/cal
 latches retention, including failures during drain. Metadata never rereads a returned Page slot.
 
 For cold AC59A0, resource construction starts at1, outer1C retain makes2, and its creator release
-leaves1. Camera170 and sun178 bring that to3. AC4CF2's Group170 hold can temporarily make4;
-AC6825's null-root tail releases it, so4 is not a postconstruction invariant. Camera-store
+leaves1. Camera170 and sun178 bring that to3. AC4CF2's Group170 hold makes4. AC6825's null
+B6D890 detaches A4/root links but leaves170; the ordinary count remains4 until genuine Group
+B6EE10 releases that hold, absent callback replacements or other holders. Camera-store
 create/remove borrow pointers and add no camera/outer/resource credit. Ambient construction,
 setter retain and creator release leave its ordinary count1, absent extra/replaced callbacks.
 
