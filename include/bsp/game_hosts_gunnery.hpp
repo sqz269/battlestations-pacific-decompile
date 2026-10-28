@@ -84,6 +84,7 @@
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/projectile_impact.hpp"
 #include "bsp/rocket_homing_cc13.hpp"
+#include "bsp/rocket_proximity_fuze_cc13.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
 
 namespace bsp {
@@ -163,6 +164,10 @@ struct GameBulletClassRow {
     float ignition_delay{0.0f};       // "IgnitionDelay", classDesc+E0h
     float rocket_vmax{0.0f};          // "VMax", classDesc+D8h
     float rocket_acceleration{0.0f};  // "Acceleration", classDesc+DCh
+    // Packet cc13-rocketfuze: "AntiAir", classDesc+E4h (00809CB0 stores it at
+    // 00809D9F), the proximity fuze gate of 0080A55D. Read for every class in both
+    // builds; only a rocket under kRocketProximityFuzeCc13Bound uses it.
+    bool anti_air{false};
 };
 
 // One authored `DeviceClass` row, as the gun needs it.
@@ -248,6 +253,10 @@ struct GameGunRow {
     // model's root node, 0072E9A1-0072E9AA). Valid when mount_known.
     bool mount_known{false};
     float mount_local[3]{0.0f, 0.0f, 0.0f};
+    // Packet cc13-mountfix: rows 0-2 of the same platform frame after 0085DC80
+    // (0095FB4E-0095FDDE). Identity without a slot. Filled and read only
+    // under kNonTurningMountSlotFrameCc13Bound.
+    float mount_basis_slot[9]{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
     int next_fire_barrel{0};          // +44Ch
     float reload_time{0.0f};
     float barrel_delay_time{0.0f};

@@ -8,9 +8,10 @@
 //   - the ignition timer and its gravity bookkeeping (0080A024-0080A148);
 //   - the thrust along the world forward row (0080A14E-0080A250);
 //   - the homing branch (0080A25C-0080A559), which no host ran before.
-// NOT reconstructed: the proximity fuze 0080A55D onwards (class+E4h or
+// NOT reconstructed here: the proximity fuze 0080A55D onwards (class+E4h or
 // [00F874FD], against IsKindOf(0Fh) in the recon slot's list, radius class+70h),
-// and the ignition notice record+310h->vtable[3Ch] (effects).
+// which is rocket_proximity_fuze_cc13.hpp (packet cc13-rocketfuze), and the
+// ignition notice record+310h->vtable[3Ch] (effects), which is not reconstructed.
 //
 // The homing block is written only by 0080AA20 (BSP_Rocket_SetHomingTarget),
 // whose two callers are the plane AI: the rocket task's aim tick 007B56F6

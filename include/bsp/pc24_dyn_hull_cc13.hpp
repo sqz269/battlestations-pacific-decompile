@@ -22,7 +22,9 @@ namespace bsp {
 // Movers: which near-degenerate faces the repair pass extrudes, so hull shapes for avoid
 // zones and terrain contact. Separate from kPc24AvoidZoneCc13Bound because the hull also
 // serves terrain contact.
-inline constexpr bool kPc24DynHullCc13Bound = false;
+// ON since cc9-nondet2 (2026-10-28), jointly with kHullShapeBuildPc24Cc13Bound: gameplay
+// identical on all 12 pairs (docs/USN21_NONDETERMINISM.md 8).
+inline constexpr bool kPc24DynHullCc13Bound = true;
 
 // kHullShapeBuildPc24Cc13Bound (OFF), packet cc13-hullscope (rev9 P9):
 //   HullTerrainContactSolver::hull_shape (src/hull_terrain_contact.cpp), the host's copy of
@@ -36,7 +38,8 @@ inline constexpr bool kPc24DynHullCc13Bound = false;
 //   vertices and convex records), so contact points, penetration depths and the contact
 //   impulses ship hulls get; pairs with kPc24DynHullCc13Bound, whose ON chain is the
 //   per-op form of the same build.
-inline constexpr bool kHullShapeBuildPc24Cc13Bound = false;
+// ON since cc9-nondet2 (2026-10-28), jointly with kPc24DynHullCc13Bound (see above).
+inline constexpr bool kHullShapeBuildPc24Cc13Bound = true;
 
 // Census (cc9-nondet1, log only): repair-pass face compares, how often the per-op threshold
 // differs from the double one, and how often that flips the extrude decision.

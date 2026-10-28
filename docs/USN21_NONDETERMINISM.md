@@ -441,3 +441,55 @@ Queued when this was written:
 
 Each result is judged by plausibility. Rows that move go to cc9-lua74 after a flip. A flip
 commit takes a one-commit lease on the header, then pc24_lint and a full build.
+
+## 8. Results of the section 7 queue (cc9-nondet2, 2026-10-28)
+
+Each flip was judged by plausibility and had no NaN or inf in any ON log. pair_diff ran
+against the OFF halves listed in section 7. The raw logs are deleted, except for chain5's.
+
+| Switch | Commit | Identical | Moved, same outcome | Outcome moved |
+|---|---|---|---|---|
+| S4 kAimLeadBodyAxisCc13Bound | 81da632dd | ijn18 | bsm09, usn01, lomp10, usn12, bsm01, esmp08, usn21 (aided) | prcp01 |
+| S5 kTorpedoCandidateGyroHeadingCc13Bound | 8034859ab | bsm09, usn01, bsm01 | lomp06, prcp01, usn12, esmp08, usn21 (aided), jm06 | usn02, ijn18 |
+| S15 kRocketTargetStopHandlersCc13Bound | 6f827a3d2 | bsm09, usn01, lomp10, prcp01, bsm01, jm06, ijn18, usn21 (aided) | esmp08 | none |
+| kPc24DynHullCc13Bound + kHullShapeBuildPc24Cc13Bound | a4e705339 | all 11 rows and usn21 (aided) | none | none |
+
+Outcome movers:
+- S4, prcp01: completed at 689.96 s, now failed at 745.94 s. The first divergence is at
+  t=239.36: one Enterprise_sqn01 plane is 1 m off in Junyo_sqn09's free-attack list, and hits
+  differ from t=245. The air battle then shifts (deaths 136 -> 156) and an Isuzu torpedo sinks
+  Enterprise at 745.99 s.
+- S5, usn02: completed at 245 s, now failed at 130 s. The evasive turns change: Witte clears
+  Yamakaze's torpedo (5.4 -> 21.7 m), and Asagumo's torpedoes sink Houston at 127 s.
+- S5, ijn18: ended at 1360 s, now failed at 720 s, after Balt4 sinks Zao at 717 s.
+- S5, jm06: completes at 2415 s, not 1860 s.
+
+The hullscope census b3ed16b1e is reverted in 8fc3df24f. Its shadow build allocated from the
+game pool and doubled the dyn hull census counts. The hull pair still ran on its exe: the ON
+side has both switches set, and the census code is log-only.
+
+chain5, the 7-switch stream-set joint pair, used `ssoff` (cen2) vs `sson`, aided on both
+sides. Every row moved, which fits a shared stream-1 reshuffle:
+- usn01: completes at 1004.88 s, not 415.02 s. Convoy2 survives the TBD strike, then dies at
+  821 s to SaltLakeCity. The Nell wave comes late, and Coastal Gun 01 sinks Dunlap and
+  Northampton at 987-988 s.
+- bsm06: completed at 1149 s, now failed at 1155 s. Michishio sinks John D. Ford at 1153.9 s.
+  OFF, the Ford finished Tatsuno Maru at 1148 s.
+- lomp10: completes at 816 s, not 1037 s.
+- prcp01: completes at 755 s, not 690 s.
+- bsm09, usn12 and jm08: same outcome.
+
+The flip commit is not made yet, because S1's constant was not identified. S3 is
+kShipCaptainCameraDrawsCc13Bound and S10 is kFollowSightCountdownDrawCc13Bound. The logs
+`local\nd1_ssoff_*` and `nd1_sson_*` are kept until that commit.
+
+Pair caveat: chain6's rows other than usn21 ran unaided on both sides. Unaided runs still
+reproduced. The hull pair was gameplay identical on 11 unaided rows. The prcp01 run on
+`ssoff` (aided) matched the S4 census `s4c` (unaided) in every headline count. The S5 and
+S15 moves are therefore not searcher-bound noise.
+
+Tools in the worker tree's `local\`:
+- `nd2_pair.ps1 -Off <p> -On <p> -Rows <list>` prints the GAMEPLAY block and the NaN count.
+- `nd2_firstdiv.py OFF ON` prints the first differing line that has a sim time.
+- `nd2_wait.ps1 -File <sus file> -Pattern '^end <row> '` waits in the foreground, for up to
+  560 s.
