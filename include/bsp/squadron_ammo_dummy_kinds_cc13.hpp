@@ -35,13 +35,33 @@ namespace bsp {
 // ON: those Types read as 2Eh / 30h / 34h, and ancestry 2Ah follows the descriptor census
 // above; 2Dh stays 2F only. 007B9320 then answers 1 for a 2E/30/34 rack, as the image does.
 //
-// Movers (mechanism only): every reader of the rack class id for a rack firing those Types:
-// 007EDAD0 squadron ammo type (1 instead of 0), 007B9140 holds-a-round (also the dogfight
-// drop gate), 007B92E0 any-rack-empty. In this installation the only plane racks with them
-// are device 83 "gunnerytarget" (bullet 142, DummyTarget, Ammo 5) on VehicleClass 110 (C47
-// Skytrain, unitclass_testbomber) and 649 (unitclass_l2d). No shipped mission spawns
-// either class (no PrepareClass or scene Type; mission C-47s are class 136). DummySubmarine
-// (devices 144/500) and WaterMine (154) are not plane platforms. So there is no live mover.
+// Reach. In this installation the only plane racks with these Types are device 83
+// "gunnerytarget" (bullet 142, DummyTarget, Ammo 5) on VehicleClass 110 (C47 Skytrain,
+// unitclass_testbomber) and 649 (unitclass_l2d). DummySubmarine (devices 144/500) and
+// WaterMine (154) are not plane platforms.
+// CORRECTION (rev6): both classes ARE spawned. global.enums maps TesztBomber = 110 and
+// TesztBomberJP = 649, and six live training scenes place a TesztBomber[JP]
+// PlaneSquadronWNavpoint (SubType Divebomber, Equipment 1):
+//   - ijn_airtraining.scn:4987 (TRN1), ijn_seatraining.scn:6420 (TRN2),
+//     ijn_seatraining3.scn:6420 (TRN5);
+//   - usn_airtraining.scn:4734 (TRN3), usn_seatraining.scn:6302 (TRN4),
+//     usn_seatraining2.scn:6302 (TRN6).
+// (ijn_seatraining2's row is commented out at missiontree.lua:278-309.) The first check
+// grepped numeric ids only; scene files name classes by enum symbol.
+//
+// Movers when ON, in those training rows (every reader of the rack class id):
+//   - 007EDAD0 squadron ammo type 0 -> 1: the 009FFED3 rtb gate, the Lua ammoType
+//     (game_hosts_lua.cpp, GetProperty), cc13_seg62_seg65.cpp's reader;
+//   - 007B9140 holds-a-round: the dogfight drop gate (df_can_drop_007b9140), the
+//     script-orders and Lua readers;
+//   - 007B92E0 any-rack-empty (script orders);
+//   - the live-ordnance mask in game_hosts_units.cpp. OFF: class 0 leaves known = false and the
+//     mask untouched. ON: 2Eh keeps it true, so an emptied rack clears its bit.
+//     LABELLED: that block's bomb_family has no 2Eh, so a loaded 2Eh rack does not keep
+//     the 2Ah bit, though the image's 007B9320 counts it as 2Ah;
+//   - DeviceWalkRack::bullet_class (the cc13_devwalk rack walk) gets 2Eh instead of 0;
+//   - the single-drop test (007C0E30 arm): 2Eh is none of 2Bh/2Ch/33h, so it stays on the
+//     bomb arm, as the image's DummyTarget descriptor does.
 inline constexpr bool kSquadronAmmoDummyKindsCc13Bound = false;
 
 }  // namespace bsp
