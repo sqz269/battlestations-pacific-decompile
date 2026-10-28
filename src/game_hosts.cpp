@@ -472,6 +472,27 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             menu_select.assign(argv[++index]);
+        } else if (std::strcmp(argument, "--skirmish") == 0) {
+            // Packet cc13-mp1: a MissionTree.multi entry by its Lua `id` or by
+            // its 0-based list index.
+            if (index + 1 >= argc) {
+                error = "--skirmish needs a multiplayer map id or list index";
+                return false;
+            }
+            skirmish.assign(argv[++index]);
+        } else if (std::strcmp(argument, "--skirmish-mode") == 0) {
+            if (index + 1 >= argc) {
+                error = "--skirmish-mode needs a game mode from 0 to 7";
+                return false;
+            }
+            const char* const text = argv[++index];
+            char* end = nullptr;
+            const long mode = std::strtol(text, &end, 10);
+            if (end == text || *end != '\0' || mode < 0 || mode > 7) {
+                error = "--skirmish-mode needs a game mode from 0 to 7";
+                return false;
+            }
+            skirmish_mode = static_cast<int>(mode);
         } else if (std::strcmp(argument, "--mission-frames") == 0) {
             // Milestone 2f: how many in-mission frames of 004e4a40 to run once
             // the load has finished and 004da6c0 has written game state 0Dh.
@@ -790,6 +811,17 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
             }
         }
     }
+    // Packet cc13-mp1: --skirmish replaces --menu-select's campaign selection, and
+    // --skirmish-mode means nothing without it.
+    if (!skirmish.empty() && !menu_select.empty()) {
+        error = "--skirmish and --menu-select select different lists; give one";
+        return false;
+    }
+    if (skirmish.empty() && skirmish_mode >= 0) {
+        error = "--skirmish-mode needs --skirmish";
+        return false;
+    }
+    if (!skirmish.empty() && skirmish_mode < 0) skirmish_mode = 0;
     return true;
 }
 
@@ -2874,7 +2906,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     GameMessageManagerHost::bind_voice_language_settings(settings_host_->language_catalog(),
         settings_view_.gameplay.language_index_04);
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, *singletons_, options_.press_start_frame,
-        *vfs_, *scripts_, locale_->tables(), options_.menu_select, options_.mission_frames,
+        *vfs_, *scripts_, locale_->tables(),
+        options_.skirmish.empty() ? options_.menu_select : options_.skirmish,
+        options_.mission_frames,
         profiler_, summary_.language, options_.mission_complete_frame, options_.order_frame,
         options_.order_throttle, options_.order_rudder, options_.mission_frame_seconds,
         options_.trajectory_csv, options_.order_command, options_.order_command_target,
@@ -2888,6 +2922,13 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // Packet cc9_scripted_helm_orders, --helm-orders <file>, the same way.
     if (!options_.helm_orders_path.empty() && menu_->mission() != nullptr) {
         menu_->mission()->set_helm_orders(options_.helm_orders_path);
+    }
+    // Packet cc13-mp1, --skirmish: the requested id above names a MissionTree.multi
+    // entry, and the mission host takes the multiplayer path with this mode.
+    if (!options_.skirmish.empty() && menu_->mission() != nullptr) {
+        menu_->mission()->set_skirmish(options_.skirmish_mode);
+        log_.notef("--skirmish %s --skirmish-mode %d", options_.skirmish.c_str(),
+            options_.skirmish_mode);
     }
     // Packet cc13-torpranges, --difficulty <0..2>, the same way: game+6B0h.
     if (options_.difficulty >= 0 && menu_->mission() != nullptr) {

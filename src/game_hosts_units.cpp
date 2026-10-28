@@ -203,6 +203,7 @@
 #include "bsp/pc24_flightrender_cc13.hpp"     // pc24w1-sweep1-3 (007DB4D0)
 #include "bsp/pc24_planetasks_cc13.hpp"       // pc24w1-sweep3-5 (sites at each body)
 #include "bsp/dive_flyabove_avoid_increment_cc13.hpp"  // cc13-flyavoid, 009C6D59
+#include "bsp/session_context_cc13.hpp"  // cc13-mp1 (MP2a)
 
 #include <cfloat>
 #include <cmath>
@@ -11835,7 +11836,8 @@ public:
         return 0.0f;
     }
     int session_mode() const override { return 0; }
-    bool session_flag_218c() const override { return false; }
+    // game+218Ch: false unless a skirmish context was published (packet cc13-mp1).
+    bool session_flag_218c() const override { return bsp::session_context().skirmish_218c; }
     Vec3 world_position() override { return unreached(Vec3{}); }
     float ground_height_at(const Vec3&) override { return unreached(0.0f); }
     bool ground_normal_at(const Vec3&, Vec3&) override { return unreached(false); }

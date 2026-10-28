@@ -1019,6 +1019,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
             " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
             " [--press-start-frame N] [--menu-select <mission id>] [--mission-frames N]"
+            " [--skirmish <multi id|index> [--skirmish-mode 0..7]]"
             " [--window-monitor <n|primary|smallest|largest>] [--window-origin X,Y]"
             " [--window-resolution <WxH|fit>]"
             " [--mission-complete-frame N]"
