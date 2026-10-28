@@ -2878,7 +2878,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         // until the joint FE_initial flip.
         if (!native_gui_pages_ && native_gui_manager_ && native_data_ && native_renderer_)
             native_gui_pages_ = std::make_unique<GameNativeGuiPageApplication>(log_,
-                *native_gui_manager_, *native_renderer_, *vfs_, *native_data_);
+                *native_gui_manager_, *native_renderer_, *vfs_, *native_data_,
+                object_handle_resolvers(), gui_sse2_conversion());
     }
     frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
         settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));
