@@ -5790,10 +5790,23 @@ struct GameUnitsHost::Impl {
                 (lead_d2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
                     ? 0.0f : static_cast<float>(std::sqrt(lead_d2));
             }
-            float lead_bearing = static_cast<float>(
+            float lead_bearing = 0.0f;
+            if constexpr (bsp::kPc24PlaneTasksCc13Bound) {
+                // cc13-flybearing (rev7 PC24 debt): 009C63C4 FSTP dword stores the
+                // 00BF701A atan2 as a float, 009C63CC FSUBR qword [00CE3830] (pi/2,
+                // the float widened) rounds at PC24, 009C63D2 FSTP dword. ABI:
+                // inline in 009C62B0. Uncertain: the CRT atan2 is double here,
+                // rounded to float at the store (the image's FPATAN runs at PC24).
+                const float atan2_f = static_cast<float>(
+                    std::atan2(static_cast<double>(lead_z), static_cast<double>(lead_x)));
+                lead_bearing = static_cast<float>(bsp::cc13x87::x87_sub24(
+                    bsp::dive_bomb_constant::kHalfPi, atan2_f));
+            } else {
+            lead_bearing = static_cast<float>(
                 bsp::dive_bomb_constant::kHalfPi -
                 std::atan2(static_cast<double>(lead_z),
                            static_cast<double>(lead_x)));
+            }
             if (lead_bearing < 0.0f) {
                 lead_bearing +=
                     static_cast<float>(bsp::dive_bomb_constant::kTwoPi);
