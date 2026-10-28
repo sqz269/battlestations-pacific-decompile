@@ -1,0 +1,19 @@
+#pragma once
+
+// PC24 wave 2, packet pc24w2-avoid. The avoid-zone geometry runs on the main thread, whose
+// x87 runs at 24-bit precision control: every FADD/FMUL rounds to a 24-bit significand
+// before the next op. ON evaluates the 2-D length per op through the cc13x87 helpers
+// (include/bsp/cc13_x87_model.hpp); OFF keeps the earlier double sum rounded once.
+namespace bsp {
+
+// kPc24AvoidZoneCc13Bound (OFF), src/avoid_zone_geometry.cpp length_of:
+//   00419260 reciprocal length (normalized()): x*x and y*y each FMUL and FSTP float
+//            (00419276, 00419282), FADD 0041928A, FSTP float, then _CIsqrt 00BF7030.
+//            Live through zone_detour_corners_00422500 and the corner rebuild.
+//   0041A2FC..0041A325 edge length in the corner rebuild: FMUL 0041A304 / FMULP 0041A308,
+//            FADDP 0041A30A, FSTP float, then _CIsqrt 0041A320.
+// Movers: avoid-zone corner normals, edge lengths and detour corners, so ship paths
+// around zones.
+inline constexpr bool kPc24AvoidZoneCc13Bound = false;
+
+}  // namespace bsp

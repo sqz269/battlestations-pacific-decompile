@@ -4440,3 +4440,49 @@ carrier touchdowns), tree build against an origin/main 1c49c8c0d export (`local\
 - Still open: the BSM01 aborts predate f706267fe, so their arm is unread. The BSM01 census run on the diagnostic
   build (`p29_b1k1`, plan `bsm01_l72_b1_k1.txt`) could not start: from 12:02 the session was disconnected (FMOD
   init 61). Rerun it once a console session is back.
+
+## 124. The wingman abort's inputs: the 70 m tie zone; `kLandBeginSteerPc24Cc13Bound` flipped ON (cc9-physics29, 2026-10-27)
+
+**Inputs of the section 123 abort.** 9c520c017 adds a log-only `land spacing zero` line to 006C3F80. It is printed
+when the own-mode-4 arm leaves a land/begin or land/final plane's spacing at 0, and it shows the plane the gap is
+measured to. Rerun of `p27_os_l0` on the tree build of 9c520c017 (flip ON, ref env, 36000 frames, no present
+failures). Same touchdowns, aborts and end as before (failed 1605.44 s). Excerpt: `local\p29_l0c_kept.txt`.
+
+| t (s) | Enterprise_sqn01\|.-III | Gap | Plane counted ahead |
+| --- | --- | --- | --- |
+| 1580.37 | enters land/begin (mode 4), A8 = 694.9 | not measured | |
+| 1580.67 | spacing 0 | 74.1 m at 32.06 m/s = 2.31 s, k=2, least 249.1 | sqn01\|.-II at path 610.0 |
+| 1581.27 | spacing 0 | 82.3 m at 32.52 m/s = 2.53 s | sqn01\|.-II at path 582.9 |
+| 1581.87 | enters land/abort (009B3DB2) | | |
+
+- The limit is 0.4 x F = 4.32 s (F = 1.2 x FollowDistTime 9 = 10.8 s).
+- sqn01|.-II entered land/begin at 1576.66 s with A8 = 799.3. It still flies at about 50 m/s and opens the gap.
+  The `fast=0` |.-III flies at 32 m/s.
+- How |.-III got mode 4 so close behind |.-II: 006C3F80 counts another plane only if its path is more than 70 m
+  ([00E08E50]) shorter, or if it is the squadron head. Inside ±70 m the tie-break decides: spawn index, then side
+  byte, then `own < other` on the plane pointers, which the host models as unit index (LABELLED).
+- For |.-III against |.-II (same spawn, same side, later unit), the tie-break does not count |.-II. So while the
+  gap is under 70 m, |.-III sees only the head (k=1, a large gap), its spacing stays positive, and 006C7960 gives
+  mode 4. It enters land/begin at 1580.37 s.
+- Within 0.3 s the gap passes 70 m, |.-II starts to count, the spacing falls to 0 and the final aborts.
+- The image's tie-break depends on heap order. With wingmen allocated in squadron order (|.-II below |.-III) it
+  agrees with the host, so this reads as faithful behaviour, not a host gap. The only unproven input is that
+  allocation order. A different order would make |.-III count |.-II inside the tie zone and hold it in mode 3.
+- The second abort (1591.88 s) is the corridor test 457 m off the centre line, as in section 123.
+
+**`kLandBeginSteerPc24Cc13Bound` (009B1420 + 009B1D70 per-op PC24, widened by f269e7d8e): pairs and flip.**
+Pairs on 7552807ec, OFF tree build against an ON export (`local\p29_bs2_on`), ref env, one run at a time:
+
+| Row (plan) | pair_diff | End (both) |
+| --- | --- | --- |
+| BSM04 `bsm04_h1_f` | 1, gameplay identical (one `land final flight` vb sign) | completed 941.89 s |
+| USN01 `usn01_l69_u1_a` | 0 | completed 370.03 s |
+| BSM06 `bsm06_h1_i` | 1, gameplay identical | completed 1518.36 s |
+| BSM06 `bsm06_h1_j` | 1, gameplay identical | completed 1518.36 s |
+| ESMP08 `esmp08_p12_e8_rb` | 1, gameplay identical | completed 1284.28 s |
+| BSM01 `bsm01_l72_b1_k1` | 3: six Japanese plane death times move 0.2-2.2 s after 735 s | EndMission 827.92 s, 51 touchdowns |
+
+- The rows that move are the rows with land/begin flyers, so the mechanism matches. No WINS time moves (sent to
+  cc9-lua74).
+- Flipped ON in 178bd8751. A full build with the switch ON passes, and `pc24_lint --staged` exits 0.
+- Logs: `local\p29_bs2_<row>_{off,on}.log`. Diffs: `local\p29_pd_<row>.txt`.
