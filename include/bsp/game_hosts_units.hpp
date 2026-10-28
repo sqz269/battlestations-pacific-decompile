@@ -1181,6 +1181,12 @@ public:
     // holds `plane` as a member (plane+9D4h null, or already removed).
     // Packet cc13-limbo3: a stock return's pre-clear count is preferred.
     int plane_squadron_live_count_3cc(std::size_t plane) const noexcept;
+    // Packet cc13-s24, 0072C119..0072C13F: a plane owner (vtable[5Ch](0Fh)) whose
+    // +914h is above 0.0 (a follow sight has found a contact) is replaced by its
+    // squadron head [[owner+9D4h]+3D0h]; any other owner is returned unchanged.
+    // LABELLED: with no registry record, or no live head, the owner is kept (the
+    // image does not test +9D4h).
+    std::size_t plane_shot_owner_squadron_head_0072c119(std::size_t owner) const noexcept;
     // The unit index at `position` of the class-`class_id` list, or the unit
     // count when the position is past the end. The order is 00484540's own:
     // appended at the tail, walked from the head.
