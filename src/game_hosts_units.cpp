@@ -15,6 +15,7 @@
 #include "bsp/pc24_gunnery_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/aim_lead_body_axis_cc13.hpp"
+#include "bsp/torpedo_candidate_gyro_heading_cc13.hpp"
 #include "bsp/plane_issue_threshold_cc13.hpp"
 #include "bsp/stream_set2_cc13.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"
@@ -7335,6 +7336,18 @@ struct GameUnitsHost::Impl {
         // deletes it; 0099C79C (0099C95C) runs 009FCEF0 on the new one. ABI: none (host
         // per-plane block). Uncertain: the image's new block leaves +18h unset; the host
         // keeps the Stop's zero vector there (overwritten by 007B7870 before use).
+        if constexpr (bsp::kOpportunisticRocketBound) {
+            // Census (cc9-nondet1, log only): installs that find the block off its
+            // 009FCEF0 reset state, which the switch would reset.
+            const bsp::OpportunisticRocketState& o = unit.orx;
+            ++rocket_stop_installs_;
+            if (o.class_00 != bsp::OpportunisticRocketClass::kNone || o.salvo_left_0c != 0
+                || o.check_timer_10 != bsp::opportunistic_rocket::kTimerSeed
+                || o.delay_timer_14 != bsp::opportunistic_rocket::kTimerSeed
+                || o.target_plus_one_38 != 0 || o.target_is_plane_3c
+                || o.rocket_plus_one_58 != 0)
+                ++rocket_stop_not_reset_;
+        }
         if constexpr (bsp::kRocketTargetStopHandlersCc13Bound && bsp::kOpportunisticRocketBound) {
             bsp::opportunistic_rocket_clear_target(unit.orx);        // the Stop
             bsp::opportunistic_rocket_construct_009fcef0(unit.orx);  // 0099C79C
@@ -11643,6 +11656,9 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // aim_point_009fada0's tail, and those whose ON (body axis) lead point lies more
     // than 1e-3 m from the OFF (level heading) one.
     unsigned long long aim_lead_axis_calls_{0}, aim_lead_axis_differs_{0};
+    // Census for kRocketTargetStopHandlersCc13Bound (cc9-nondet1, log only): task
+    // installs, and those whose rocket block is not at its reset state.
+    unsigned long long rocket_stop_installs_{0}, rocket_stop_not_reset_{0};
 
     // Packet cc9_aim_error_draw: 009C3DA0 (dive) / 009D02A0 (torpedo). The
     // three draws go through release_altitude_draw_00bd2f10, the stream-1
@@ -48068,6 +48084,17 @@ void GameUnitsHost::report() {
         "(009FADA0 tail / 00812090, ON vs OFF lead > 1e-3 m)",
         bsp::kAimLeadBodyAxisCc13Bound ? 1 : 0, host.aim_lead_axis_calls_,
         host.aim_lead_axis_differs_);
+    {
+        const bsp::TorpedoGyroHeadingCensus& tg = bsp::torpedo_gyro_heading_census();
+        host.log.notef("summary torpedo gyro heading census bound=%d track_reads=%llu "
+            "track_differs=%llu threat_reads=%llu threat_differs=%llu (009DC0F9 / 00817535, "
+            "+46Ch vs atan2(v) > 1e-3 rad)", bsp::kTorpedoCandidateGyroHeadingCc13Bound ? 1 : 0,
+            tg.track_reads, tg.track_differs, tg.threat_reads, tg.threat_differs);
+    }
+    host.log.notef("summary rocket target stop census bound=%d installs=%llu not_reset=%llu "
+        "(0099C79C 009FCEF0 reset at task install)",
+        bsp::kRocketTargetStopHandlersCc13Bound ? 1 : 0, host.rocket_stop_installs_,
+        host.rocket_stop_not_reset_);
     host.log.notef("summary ship exit zone bound=%d calls=%llu counting=%llu warnings=%llu "
         "kills=%llu (00826D70 / 00811F50 / 0081BEB0, packet cc9_ship_exit_zone)",
         GameUnitsHost::Impl::kShipOutOfMapExitBound ? 1 : 0, host.ship_exit_calls,
