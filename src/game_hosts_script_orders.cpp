@@ -52,6 +52,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
 #include "bsp/mission_ver_cc13.hpp"   // packet cc9_l59_sq_avg_health
+#include "bsp/racked_round_entity_cc13.hpp"  // packet cc13-rackround
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
@@ -4431,12 +4432,71 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // those torpedoes. The flag (argument 1, read only when there are two
         // arguments, 008BF0A7) does not matter to an empty answer.
         if constexpr (kLuaGetSquadTorpedoesBound) {
+            if constexpr (bsp::kRackedRoundEntityCc13Bound) {
+                // Packet cc13-rackround (include/bsp/racked_round_entity_cc13.hpp).
+                // 008BF0A7: the flag only with exactly two arguments. A racked round's
+                // (e+310h)->vtable[38h] (008561F0, entity+458h "launched") is 0, so
+                // only the flag admits it. LABELLED: in-flight torpedoes are gunnery
+                // projectile rows with no Lua object and are not listed; the
+                // squadron's planes are its registry members (the image reads the
+                // +3D0h slots, i <= 4); a dead member lists nothing (its rounds die
+                // with it, 00926D90's child loop).
+                const bool include_all = argument_count_ == 2 && argument_boolean(1);
+                std::size_t planes = 0;
+                std::size_t listed = 0;
+                if (state_ != nullptr) {
+                    lua_newtable(state_);
+                    const int table = lua_gettop(state_);
+                    const std::size_t squadron = index_of(argument_entity(0));
+                    const bsp::PlaneSquadronHostRecord* record = nullptr;
+                    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == squadron) {
+                            record = &r;
+                            break;
+                        }
+                    }
+                    const GameGunneryHost* gunnery = units_.gunnery();
+                    if (record != nullptr && include_all) {
+                        std::vector<int> racks;
+                        for (const std::size_t m : record->member_units) {
+                            if (m == bsp::kPlaneSquadronNoUnit || m >= units_.count()) continue;
+                            if (gunnery != nullptr && gunnery->unit_dead(m)) continue;
+                            ++planes;
+                            units_.racked_torpedo_rounds(m, racks);
+                            for (const int rack : racks) {
+                                bsp::RackedRoundProxy& p = bsp::racked_round_proxy(state_, m, rack);
+                                // A rack listed again after a kill holds a new round
+                                // (a rearm attached one): a new entity, a new table.
+                                lua_pushlightuserdata(state_, &p);
+                                lua_rawget(state_, LUA_REGISTRYINDEX);
+                                if (p.dead || !lua_istable(state_, -1)) {
+                                    lua_pop(state_, 1);
+                                    p.dead = false;
+                                    lua_newtable(state_);
+                                    lua_pushlightuserdata(state_, &p);
+                                    lua_setfield(state_, -2, "Ptr");
+                                    lua_pushlightuserdata(state_, &p);
+                                    lua_pushvalue(state_, -2);
+                                    lua_rawset(state_, LUA_REGISTRYINDEX);
+                                }
+                                // 00B666C0 at keys 1, 2, ...
+                                lua_rawseti(state_, table, static_cast<int>(++listed));
+                            }
+                        }
+                    }
+                    results = 1;
+                }
+                log_.notef("  GetSquadTorpedoes: %s flag=%d -> %zu racked rounds on %zu planes "
+                    "(008BEF80, packet cc13-rackround)", row.unit.c_str(), include_all ? 1 : 0,
+                    listed, planes);
+            } else {
             if (state_ != nullptr) {
                 lua_newtable(state_);
                 results = 1;
             }
             log_.notef("  GetSquadTorpedoes: %s -> {} (008BEF80, PARTIAL: payload "
                 "torpedoes have no Lua objects, packet cc13-fix21)", row.unit.c_str());
+            }
         }
     } else if (std::strcmp(binding->name, "GetSubmarineAirSupply") == 0) {
         // Packet cc13-fix21. 008938E0: 008939DF 00888AA0 on argument 0 (no null and

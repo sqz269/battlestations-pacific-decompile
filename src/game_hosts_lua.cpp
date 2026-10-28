@@ -84,6 +84,7 @@
 #include "bsp/cc13_lua_natives_wire.hpp"   // packet cc13-luawire
 #include "bsp/unit_weapons.hpp"            // packet cc13-luawire, 008BE7E0's class tests
 #include "bsp/plane_issue_threshold_cc13.hpp"   // packet cc13-issuea0, 008A1F40
+#include "bsp/racked_round_entity_cc13.hpp"     // packet cc13-rackround
 
 extern "C" {
 #include "lauxlib.h"
@@ -10492,6 +10493,28 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
                     "cc9_lua_kill_script_entity)", id);
                 log_.implemented("MissionLuaNative::Kill", "008ac5c0");
                 return 0;
+            }
+        }
+        if constexpr (bsp::kRackedRoundEntityCc13Bound) {
+            // Packet cc13-rackround (include/bsp/racked_round_entity_cc13.hpp): a
+            // racked torpedo round GetSquadTorpedoes handed out. 008AC756's 00926D90
+            // releases the round, so the rack holds none (kill_racked_round). A
+            // second Kill of the same round returns on +5Fh.
+            if (units != nullptr && ::lua_type(state, 1) == LUA_TTABLE) {
+                ::lua_getfield(state, 1, "Ptr");
+                void* const ptr = ::lua_touserdata(state, -1);
+                ::lua_settop(state, -2);
+                if (bsp::RackedRoundProxy* const round = bsp::find_racked_round_proxy(ptr)) {
+                    int before = 0;
+                    const bool emptied = !round->dead
+                        && units->kill_racked_round(round->plane, round->rack, before);
+                    log_.notef("  Kill 008ac5c0: racked round of unit %zu rack %d, %s (00926D90, "
+                        "packet cc13-rackround)", round->plane, round->rack,
+                        round->dead ? "already dead" : (emptied ? "rack emptied" : "rack already empty"));
+                    round->dead = true;
+                    log_.implemented("MissionLuaNative::Kill", "008ac5c0");
+                    return 0;
+                }
             }
         }
         ++summary_.kill_unresolved;

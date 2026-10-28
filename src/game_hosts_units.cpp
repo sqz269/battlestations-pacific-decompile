@@ -46265,6 +46265,8 @@ std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
 // (entity+458h, 008561F0), until the drop launches them or a Kill releases them.
 std::size_t GameUnitsHost::racked_torpedo_rounds(std::size_t index, std::vector<int>& racks) {
     racks.clear();
+    // rev6 N3: the listing reads rack_ammo_per_rack, which only the per-rack seed fills.
+    static_assert(!bsp::kRackedRoundEntityCc13Bound || Impl::kRackRoundsPerRackBound);
     if constexpr (bsp::kRackedRoundEntityCc13Bound) {
         if (index < impl_->slots.size() && impl_->slots[index]) {
             GameUnitSlot& s = *impl_->slots[index];
@@ -46307,8 +46309,9 @@ bool GameUnitsHost::kill_racked_round(std::size_t index, int rack, int& before) 
                     if (s.rack_bullet_class_per_rack[k] == 0x2B && s.rack_ammo_per_rack[k] > 0)
                         torpedo_left = true;
                 }
-                // As a torpedo drop does (game_hosts_gunnery.cpp, cc8_torpedo_breakoff);
-                // 007C1D80's rearm sets it again.
+                // As a torpedo drop does (game_hosts_gunnery.cpp, cc8_torpedo_breakoff),
+                // but unlike the drop, only when no 2Bh rack is left; the direct write
+                // equals store_unit_ordnance (rev6 N2). 007C1D80's rearm sets it again.
                 const std::uint64_t torpedo_bit = std::uint64_t(1) << (0x2B - 0x08);
                 if (!torpedo_left) s.ordnance_mask &= ~torpedo_bit;
                 killed = true;
