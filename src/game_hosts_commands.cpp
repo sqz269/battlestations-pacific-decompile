@@ -33,6 +33,7 @@
 #include "bsp/ship_ai_path_cursor.hpp"
 #include "bsp/unit_kind_query.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"  // packet pc24w1-units-1 (00836920)
+#include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -157,6 +158,16 @@ constexpr bool kCommandMessageCc13Bound = true;
 // != 2 or {0, 1}, so 0 and the earlier 1 take the same arm. The byte 00E0C978
 // (005E2F99..005E2FAB), which is SET to 1 in single player, is a different global.
 constexpr int kSessionModeSinglePlayer = 0;
+
+// game+1FE4h from the session context (packet cc13-mp2c), read by every use below.
+// Campaign identity: the OFF arm is the old constant kSessionModeSinglePlayer (0).
+int session_mode_1fe4() noexcept {
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
+        return bsp::session_context().session_word_1fe4;
+    } else {
+        return kSessionModeSinglePlayer;
+    }
+}
 
 // The three command objects whose apply takes 00816e30's movement fall-through:
 // the test at 00816f5e..00816f7a is false for them, so 00816f7c..00817330 does
@@ -1119,7 +1130,7 @@ public:
             return pushed;
         }
         const bool pushed = bsp::director_set_command_008358d0(*this, command, local,
-            kSessionModeSinglePlayer);
+            session_mode_1fe4());
         squadron_row_ = false;
         chain_.owner.done("WeaponDirector::set_command", 0x008358d0u);
         return pushed;
@@ -1353,7 +1364,7 @@ public:
         }
         // [[00E188A8]+1EF0h]+F4h is game+1FE4h, the session mode.
         chain_.owner.done("WeaponDirector::session_echo_gate", 0x006e38e0u);
-        return kSessionModeSinglePlayer == 0 || kSessionModeSinglePlayer == 1;
+        return session_mode_1fe4() == 0 || session_mode_1fe4() == 1;
     }
     void echo_command() override {
         if (!kAttackPushEndsOverrideBound) {
@@ -1365,7 +1376,7 @@ public:
         chain_.owner.done("WeaponDirector::echo_command", 0x0071e2e0u);
         if (chain_.director.override_stage >= 2) return;
         chain_.director.override_stage = 2;
-        if (kSessionModeSinglePlayer == 2) return;
+        if (session_mode_1fe4() == 2) return;
         ++chain_.owner.summary.override_push_echoes;
         if (chain_.owner.summary.override_push_echoes <= 12) {
             chain_.owner.log.notef("  override ended by a pushed attack order: %s, head `%s`, "
@@ -1790,7 +1801,7 @@ void DirectorBinding::route_set_command_message(std::uint32_t command,
         chain_.pending_command = command;
         chain_.pending_target = target;
         chain_.pending_flag = flag;
-        bsp::gameunit_apply_set_command_00721a40(*this, kSessionModeSinglePlayer, flag);
+        bsp::gameunit_apply_set_command_00721a40(*this, session_mode_1fe4(), flag);
         chain_.owner.done("GameUnitMessage::apply_set_command", 0x00721a40u);
         return;
     }
@@ -2315,7 +2326,7 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
                 ++setcmd_object_dropped;
             }
             DirectorBinding binding(chain);
-            bsp::gameunit_apply_set_command_00721a40(binding, kSessionModeSinglePlayer,
+            bsp::gameunit_apply_set_command_00721a40(binding, session_mode_1fe4(),
                 chain.pending_flag);
             done("GameUnitMessage::apply_set_command", 0x00721a40u);
             // The drain's scalar delete (0071E3B0 -> 0071CB40) after the dispatch.
@@ -2328,7 +2339,7 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
             unit_object_of(message.target_handle, message.set_target.object));
         chain.pending_flag = message.set_flag;
         DirectorBinding binding(chain);
-        bsp::gameunit_apply_set_command_00721a40(binding, kSessionModeSinglePlayer,
+        bsp::gameunit_apply_set_command_00721a40(binding, session_mode_1fe4(),
             message.set_flag);
         done("GameUnitMessage::apply_set_command", 0x00721a40u);
         break;
@@ -2646,7 +2657,7 @@ public:
         // and the queue only advances when that message is received. In a local
         // session this process is both ends, so it routes its own message back
         // into 00721A40's 5Dh arm here rather than recording the send.
-        if (!bsp::stage_raise_sends_message(stage, kSessionModeSinglePlayer)) return;
+        if (!bsp::stage_raise_sends_message(stage, session_mode_1fe4())) return;
         if (chain_.owner.route_clear_command(chain_.unit.index, player_)) {
             queue_advanced = true;
         }
@@ -2956,7 +2967,7 @@ public:
         z = 0.0f;
         owner_.done("WeaponDirector::default_command_position", 0x00f87574u);
     }
-    int session_mode() override { return kSessionModeSinglePlayer; }
+    int session_mode() override { return session_mode_1fe4(); }
     bool unit_flag_184h() override {
         static_cast<void>(unit_);
         return player_;
@@ -3041,7 +3052,7 @@ public:
         state_.queue_stage = stage;
         director_.stage = stage;
         owner_.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
-        if (bsp::stage_raise_sends_message(stage, kSessionModeSinglePlayer)) {
+        if (bsp::stage_raise_sends_message(stage, session_mode_1fe4())) {
             sends_clear_command = true;
         }
     }
@@ -3053,7 +3064,7 @@ public:
             if (!bsp::stage_raise_applies(state_.override_stage, stage)) return;
             state_.override_stage = stage;
             owner_.done("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
-            if (bsp::stage_raise_sends_message(stage, kSessionModeSinglePlayer)) {
+            if (bsp::stage_raise_sends_message(stage, session_mode_1fe4())) {
                 clears_override = true;
             }
             return;
@@ -3061,7 +3072,7 @@ public:
         if (!bsp::stage_raise_applies(override_stage_, stage)) return;
         override_stage_ = stage;
         owner_.done("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
-        if (bsp::stage_raise_sends_message(stage, kSessionModeSinglePlayer)) {
+        if (bsp::stage_raise_sends_message(stage, session_mode_1fe4())) {
             owner_.record("WeaponDirector::clear_override_command", 0x0071e610u);
         }
     }
@@ -3853,7 +3864,7 @@ bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
                 ++host.summary.stage_raises;
                 ++host.path_follow_finish_raises;
                 host.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
-                if (bsp::stage_raise_sends_message(2, kSessionModeSinglePlayer)) {
+                if (bsp::stage_raise_sends_message(2, session_mode_1fe4())) {
                     host.route_clear_command(unit_index, host.player_of(unit_index));
                 }
             } else {
@@ -4054,7 +4065,7 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
                     director.stage = 2;
                     ++host.summary.stage_raises;
                     host.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
-                    if (bsp::stage_raise_sends_message(2, kSessionModeSinglePlayer)) {
+                    if (bsp::stage_raise_sends_message(2, session_mode_1fe4())) {
                         host.done("WeaponDirector::build_clear_command", 0x0071c730u);
                         host.route_clear_command(d, player,
                             bsp::clear_command_message_for_queue_stage_done());

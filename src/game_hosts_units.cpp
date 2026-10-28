@@ -203,6 +203,7 @@
 #include "bsp/pc24_flightrender_cc13.hpp"     // pc24w1-sweep1-3 (007DB4D0)
 #include "bsp/pc24_planetasks_cc13.hpp"       // pc24w1-sweep3-5 (sites at each body)
 #include "bsp/dive_flyabove_avoid_increment_cc13.hpp"  // cc13-flyavoid, 009C6D59
+#include "bsp/session_context_cc13.hpp"  // cc13-mp1 (MP2a)
 
 #include <cfloat>
 #include <cmath>
@@ -11835,7 +11836,15 @@ public:
         return 0.0f;
     }
     int session_mode() const override { return 0; }
-    bool session_flag_218c() const override { return false; }
+    // game+218Ch from the session context (packet cc13-mp1). Campaign identity: the
+    // OFF arm is the old literal false.
+    bool session_flag_218c() const override {
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            return bsp::session_context().skirmish_218c;
+        } else {
+            return false;
+        }
+    }
     Vec3 world_position() override { return unreached(Vec3{}); }
     float ground_height_at(const Vec3&) override { return unreached(0.0f); }
     bool ground_normal_at(const Vec3&, Vec3&) override { return unreached(false); }
@@ -22285,11 +22294,18 @@ bool GameUnitsHost::set_plane_forward_speed_007d9e80(std::size_t unit_index, flo
     if (!slot.plane_velocity_seeded) return false;
     const float* const fwd = slot.motion.pose_row2;
     if constexpr (bsp::kSetSpeedCtlAxisCc13Bound) {
-        // 007D9C80 -> 0042D0D0(ctl+3Ch = (0, 0, speed), unit+74h, w 0): the products
-        // with zero add nothing, so each axis is f32(speed * row2[i]); no
-        // normalisation and no length guard. The angular term is the zero vector.
+        // 007D9C80 -> 0042D0D0(ctl+3Ch = (0, 0, speed), unit+74h, w 0): each axis is
+        // f32((0 * row1[i] + 0 * row0[i]) + speed * row2[i]) per x87 op
+        // (0042D0F2..0042D11A for i = 0, then +4h / +8h). The zero products only
+        // decide the sign of a zero result; no normalisation and no length guard.
+        // The angular term is the zero vector.
+        namespace pc24 = bsp::cc13x87;
+        const float* const row0 = slot.motion.pose_row0;
+        const float* const row1 = slot.motion.pose_row1;
         for (int i = 0; i < 3; ++i) {
-            slot.plane_world_velocity[i] = speed * fwd[i];
+            slot.plane_world_velocity[i] = static_cast<float>(pc24::x87_add24(
+                pc24::x87_add24(pc24::x87_mul24(0.0f, row1[i]), pc24::x87_mul24(0.0f, row0[i])),
+                pc24::x87_mul24(speed, fwd[i])));
             slot.plane_body_angular[i] = 0.0f;
         }
         // 007D9EC7..007D9ED6: ctl+30h..+38h, the low-passed velocity, = ctl+18h..+20h.
