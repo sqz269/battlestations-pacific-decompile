@@ -29,6 +29,6 @@ namespace bsp {
 // (game_hosts_ship_ai.cpp:14704-14705, seg_b) passes the craft keel ends reversed.
 // Movers when ON: troop transport landing-craft launch (008206F0): which launch slots count
 // as blocked by a nearby ship's keel, so the craft's placement and launch timing.
-inline constexpr bool kSegmentDistance2dCc13Bound = false;
+inline constexpr bool kSegmentDistance2dCc13Bound = true;   // ON: SHIP_AI 330.3
 
 }  // namespace bsp
