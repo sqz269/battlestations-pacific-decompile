@@ -1467,8 +1467,8 @@ struct GameUnitSlot {
     std::uint32_t hull_aim_seed{0};
     // Packet cc13-aimfreeze3 (include/bsp/approach_aim_freeze_cc13.hpp): the task whose
     // aim_point_freeze_009fada0 call latched hull_aim_ref (0 none, 1 dive, 2 level bomb,
-    // 3 torpedo), and the last point that wrapper returned unlatched (sub+1Ch with its
-    // lead, which 009FAF90 transforms again).
+    // 3 torpedo, 4 kamikaze, 5 rocket, 6 depth charge), and the last point returned
+    // unlatched (sub+1Ch with its lead, which 009FAF90 transforms again).
     std::uint8_t aim_freeze_task{0};
     std::array<float, 3> aim_freeze_last_point{{0.0f, 0.0f, 0.0f}};
     // Packet cc9_hull_axis: the target the in-range print last fired for, so
@@ -12044,7 +12044,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     bool aim_point_freeze_009fada0(GameUnitSlot& shooter, const GameUnitSlot* target,
                                    std::size_t target_plus_one, float out[3],
                                    std::uint8_t task, GameHostLog* log_out = nullptr);
-    // cc13-aimfreeze3 census (ON only), indexed by task 1..3: death-head freezes,
+    // cc13-aimfreeze3 / cc13-aimfreezekz census (ON only), indexed by task 1..6: death-head freezes,
     // 009FAF90 double transforms, frozen answers, approach early-outs.
     unsigned long long aim_freeze_heads_[8]{}, aim_freeze_doubles_[8]{},
         aim_freeze_reads_[8]{}, aim_freeze_early_outs_[8]{};
