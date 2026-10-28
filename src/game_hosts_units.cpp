@@ -163,6 +163,7 @@
 #include "bsp/opportunistic_rocket_cc13.hpp"
 #include "bsp/rocket_target_stop_cc13.hpp"  // cc13-rocketstop, task+38Ch per task
 #include "bsp/free_attack_accept_test_cc13.hpp"  // cc13-tranche2 S18
+#include "bsp/wingmen_recount_countdown_cc13.hpp"  // cc13-tranche2 S19
 #include "bsp/attack_target_classify.hpp"
 #include <array>
 #include "bsp/pose_refresh.hpp"
@@ -10035,17 +10036,48 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // (007BCC20) is non-negative. SUBSTITUTION, labelled: the image recounts when
     // 007EE790's countdown expires and reads the previous buffer index; this host
     // counts at the call.
+    // CORRECTION (cc13-tranche2 S19): under bsp::kWingmenRecountCountdownCc13Bound the
+    // count is 007EE790's, held per squadron and retaken on the 007F3C3F countdown
+    // (squadron_wingmen_recount_007f3c3f, include/bsp/wingmen_recount_countdown_cc13.hpp).
+    int count_following_wingmen_007ee790(const bsp::PlaneSquadronHostRecord& sq) const {
+        int active = 0;
+        for (std::size_t i = 1; i < sq.member_units.size(); ++i) {
+            const std::size_t m = sq.member_units[i];
+            if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size() || !slots[m]) continue;
+            if (member_follows_007bcc20(*slots[m])) ++active;
+        }
+        return active;
+    }
     bool plane_is_leader_with_wingmen_007b95e0(const GameUnitSlot& unit) const {
         const bsp::PlaneSquadronHostRecord* sq =
             bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
         if (sq == nullptr || sq->flight_leader() != unit.process_index) return false;
-        int active = 0;
-        for (std::size_t i = 1; i < sq->member_units.size(); ++i) {
-            const std::size_t m = sq->member_units[i];
-            if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size() || !slots[m]) continue;
-            if (member_follows_007bcc20(*slots[m])) ++active;
+        if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
+            const auto it = wingmen_recount_.find(sq->name);
+            return it != wingmen_recount_.end() && it->second.count_3bc > 0;  // +3BCh
+        } else {
+            return count_following_wingmen_007ee790(*sq) > 0;
         }
-        return active > 0;
+    }
+    // squadron+3C4h / +3BCh, packet cc13-tranche2 S19.
+    struct WingmenRecount {
+        float countdown_3c4 = bsp::kSquadronRecountCountdownSeed;
+        int count_3bc = 0;
+    };
+    std::map<std::string, WingmenRecount> wingmen_recount_;
+    // 007F3C3F..007F3C5B, once per fixed step for every squadron. Each float op is
+    // stored as a float, which is the image's per-op PC24 result.
+    void squadron_wingmen_recount_007f3c3f(float step) {
+        for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
+            WingmenRecount& r = wingmen_recount_[sq.name];
+            if (step < r.countdown_3c4) {                                  // 007F3C41 JC
+                r.countdown_3c4 -= step;                                   // 007F3D24
+            } else {
+                const float reload = bsp::kSquadronRecountPeriod3c0 - step; // 007F3C47
+                r.countdown_3c4 = reload + r.countdown_3c4;                // 007F3C53
+                r.count_3bc = count_following_wingmen_007ee790(sq);        // 007F3C5B
+            }
+        }
     }
     int moveto_blend_calls_{0};
     int leader_turn_roll_uses{0};
@@ -23446,6 +23478,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     // to the planes' are not modelled), so a round dropped in this step's rack
     // tick first runs in the next step.
     host.para_round_step(step_seconds);
+    // Packet cc13-tranche2 S19: 007F3BA0's countdown and 007EE790 recount. LABELLED
+    // order: ahead of the planes' ticks.
+    if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
+        host.squadron_wingmen_recount_007f3c3f(step_seconds);
+    }
     if constexpr (Impl::kPlayerRoleBookkeepingBound) {
         if constexpr (Impl::kRoleScreenFixedStepCall) {
             host.role_screen_update_0067bb50();
