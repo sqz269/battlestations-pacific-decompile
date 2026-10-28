@@ -39,5 +39,5 @@
 // capture-zone landing/capture flags at the radius edge, and the player helm levers.
 // 0043B370's gauge chain already has its own switch, kShipScreenGaugeProductRoundCc13Bound.
 namespace bsp {
-inline constexpr bool kPc24HudGuiCc13Bound = false;
+inline constexpr bool kPc24HudGuiCc13Bound = true;  // ON by pair (cc9-sweep1b)
 }  // namespace bsp
