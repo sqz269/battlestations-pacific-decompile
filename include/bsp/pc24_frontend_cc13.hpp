@@ -20,8 +20,8 @@ namespace bsp {
 //   006834A0 compute_scroll_bar_geometry (frontend_screen_animation.cpp): the
 //            thumb height candidate (track + min_height) - range, 006834FD DE C2
 //            FADDP ST2 / 006834FF DE E9 FSUBP ST1 / 00683501 FSTP float.
-//   Not switched: 00683820's dragged_thumb_y (00683918) and
-//   scroll_offset_from_thumb_y (00683980) have no host caller
+//   Not switched: 00683820's dragged_thumb_y (00683911..00683966) and
+//   scroll_offset_from_thumb_y (0068397C..00683994) have no host caller
 //   (update_front_end_screen_scroller is never called), so they are pc24_debt.
 // Movers: prompt button x positions, the scroll thumb position and height (pixel
 // layout only).

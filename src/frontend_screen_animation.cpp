@@ -87,8 +87,10 @@ ScrollBarGeometry compute_scroll_bar_geometry(
 
 float thumb_progress_from_scroll(float offset, float range, float travel) noexcept
 {
-    // FLD [+1Ch]; FDIV [ESP]; FMUL [+2Ch]; FSTP. The quotient is never narrowed
-    // to float, so the divide and the multiply share one rounding.
+    // FLD [+1Ch]; FDIV [ESP]; FMUL [+2Ch]; FSTP. OFF path: the quotient is never
+    // narrowed to float, so the divide and the multiply share one rounding; that holds
+    // only at 53/64-bit precision control. At PC24 the FDIV rounds before the FMUL
+    // (the ON arm).
     if constexpr (kPc24FrontendCc13Bound) {
         // 00683464 FDIV and 00683467 FMUL each round at PC24 (the main thread's
         // precision control), so the quotient rounds before the multiply; 0068346A
