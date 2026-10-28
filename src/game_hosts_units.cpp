@@ -3059,6 +3059,7 @@ struct GameUnitsHost::Impl {
         unsigned long long refused_arm{0};     // 007F16D0 did not answer `land at site`
         unsigned long long refused_unread{0};  // the resolution carries an unread input
         unsigned long long refused_ground{0};  // not airborne: land/park, unbound
+        unsigned long long ground_parked{0};   // not airborne: started in land/park (ON)
         unsigned long long refused_dead{0};
         std::string last_refusal;
         double first_install_at{-1.0};
@@ -3521,6 +3522,11 @@ struct GameUnitsHost::Impl {
     unsigned long long lhc_own_ok{0}, lhc_own_far{0}, lhc_leave{0}, lhc_trace{0};
     unsigned long long lfm_trace{0};  // cc9-physics28: land final mode-loss lines
     unsigned long long lsp_trace{0};  // cc9-physics29: land spacing-zero lines
+    // cc9-physics29 (diagnostic): the OFF census of kUnitsHostDeviationsCc13Bound, the
+    // calls where the ON arm would give a different moveto distance or pass-1 pitch.
+    unsigned long long uhd_moveto_calls{0}, uhd_moveto_differs{0};
+    unsigned long long uhd_pitch_calls{0}, uhd_pitch_differs{0}, uhd_pitch_lowspeed{0};
+    double uhd_pitch_maxdiff{0.0};
     double lhc_dd_r_sum{0.0}, lhc_delta_fail_sum{0.0}, lhc_r_moved_sum{0.0};
     double lhc_point_moved_sum{0.0}, lhc_own_d_r_sum{0.0};
     bool landing_turn_in_006c5e20(const LandingDeck& d, const GameUnitSlot& p) const;
@@ -6993,6 +6999,14 @@ struct GameUnitsHost::Impl {
     // are planes that lost +BF8h and fell below the terrain (a host
     // ground-support artefact). Kept ON for the carrier lift and the hangar hold.
     static constexpr bool kLandParkStateBound = true;
+    // Packet cc9-physics29 landpark (docs/CC13_LAND_PARK.md, OCEAN_WAVE_FIELD 125).
+    // 009B3240 at 009B32AA-009B32B8: a plane that is not airborne (plane+72Ch
+    // vtable[38h], read here as +900h != 7) gets the land task like any other, with
+    // every construction draw, but starts in land/park (task+620h): the state's enter
+    // 009B21A0 is called directly (+1Ch = 0, +18h = 0, +28h = 3.0), with no 009B3680
+    // switch, no exit and no 007B8AD0 leader test. False: the host refuses the task
+    // (the plane keeps no land task; a recalled grounded squadron flies on).
+    static constexpr bool kLandTaskGroundParkStartBound = false;
     // Packet cc9_carrier_elevator (docs/SQUADRON_LAND_TASK.md 5ao). True, on a
     // mother-ship deck: land/park's carrier arm (009B23E4's vtable[5Ch](9)
     // branches: the lift targets 006D0120/006D00E0, ParkVelocity, the +28h
@@ -14139,6 +14153,17 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     pitch = avoid_len(v_world) > 1.0f
         ? static_cast<float>(std::atan2(static_cast<double>(v_world[1]), horiz))
         : u.plane_pitch_angle_c64;
+    // DIAGNOSTIC (cc9-physics29): the ON arm would read C7Ch, which the writer in
+    // refresh_attitude_007c1900 now keeps in both modes (read only by this census
+    // when OFF).
+    ++uhd_pitch_calls;
+    if (pitch != u.plane_velocity_elevation_c7c) {
+        ++uhd_pitch_differs;
+        if (!(avoid_len(v_world) > 1.0f)) ++uhd_pitch_lowspeed;
+        const double dd = std::fabs(static_cast<double>(pitch)
+            - static_cast<double>(u.plane_velocity_elevation_c7c));
+        if (dd > uhd_pitch_maxdiff) uhd_pitch_maxdiff = dd;
+    }
     }
     const float bank = u.plane_bank_angle_c68;
     float bank_f = std::fabs(bank);
@@ -16245,7 +16270,8 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
         return false;
     }
     // 009B32AA-009B32B8: (plane+72Ch)->vtable[38h], this host's free flight.
-    if (unit.plane_control_mode_900 != 7) {
+    const bool ground_start = unit.plane_control_mode_900 != 7;
+    if (ground_start && !kLandTaskGroundParkStartBound) {
         refuse(c.refused_ground, "not airborne: the task would start in land/park (unbound)");
         return false;
     }
@@ -16296,9 +16322,22 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
     unit.land_installed_at = summary.simulated_seconds;
     // 009B32C2-009B32DD: a flight leader (007B8AD0) starts in moveto (land),
     // a wing member in follow (land); then the state's enter, vtable[4].
-    const bool leader = unit_is_flight_leader_007b8ad0(unit_index);
-    unit.land_state = leader ? GameUnitSlot::LandTaskState::kMoveTo
-                             : GameUnitSlot::LandTaskState::kFollow;
+    bool leader = false;
+    if (ground_start) {
+        // 009B32BA: land/park (task+620h), then its enter 009B21A0 (vtable[4]) directly:
+        // +1Ch = 0.0, +18h = 0, +28h = 3.0 (00CE3854). The taxi target +20h/+24h is not
+        // written by the image's constructor (allocation contents); the host keeps 0.0
+        // (LABELLED: the first off-holder tick may count one retarget).
+        unit.land_state = GameUnitSlot::LandTaskState::kPark;
+        unit.land_park_1c = 0.0f;
+        unit.land_done_18 = false;
+        unit.land_park_timer_28 = 3.0f;
+        ++c.ground_parked;
+    } else {
+        leader = unit_is_flight_leader_007b8ad0(unit_index);
+        unit.land_state = leader ? GameUnitSlot::LandTaskState::kMoveTo
+                                 : GameUnitSlot::LandTaskState::kFollow;
+    }
     ++c.installs;
     if (c.first_install_at < 0.0) c.first_install_at = summary.simulated_seconds;
     const float* hp = unit.motion.position;
@@ -16308,7 +16347,8 @@ bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index
     log.notef("land task install: plane \"%s\" squadron \"%s\" -> %s at site %s planar %.1f m "
         "alt %.1f angle54=%.4f pitch58=%.4f b0=%.3f at %.2f s (0099A3DD -> 009B41C0, "
         "packet cc9_land_task_reach)", n.c_str(), sq->name.c_str(),
-        leader ? "moveto (land)" : "follow (land)", site_name.c_str(),
+        ground_start ? "park (land, not airborne)" : leader ? "moveto (land)" : "follow (land)",
+        site_name.c_str(),
         std::sqrt(dx * dx + dz * dz), static_cast<double>(hp[1]),
         static_cast<double>(unit.land_angle_54), static_cast<double>(unit.land_pitch_58),
         static_cast<double>(unit.land_request_b0),
@@ -37395,6 +37435,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         } else {
                             unit_.moveto_distance_64 = d2 <= 1e-6
                                 ? 0.0f : static_cast<float>(std::sqrt(d2));
+                            // DIAGNOSTIC (cc9-physics29): the ON arm gives 0 unless
+                            // d2 > 1e-10 (NaN too); count the calls where the two differ.
+                            ++owner_.uhd_moveto_calls;
+                            if (!(d2 > 1.0e-10) != (d2 <= 1e-6)) ++owner_.uhd_moveto_differs;
                         }
                         owner_.record("BotApproach::refresh_path_leg_009fd050", 0x009fd050u);
                         if constexpr (bsp::kLegAltitudeManagerBound
@@ -42215,7 +42259,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_heading_c6c = a.heading;
                             unit_.plane_bank_angle_c68 = a.bank;
                         }
-                        if constexpr (bsp::kUnitsHostDeviationsCc13Bound) {
+                        {   // cc9-physics29: written in both modes; OFF reads it only
+                            // in the terrain_avoidance_0099f1c0 census (diagnostic).
                             // cc13-unitsdev: 007C1BCD..007C1CA8, unit+C7Ch from the
                             // world velocity +AC8h: |v| = sqrt((y*y + x*x) + z*z)
                             // stored, 0 at or below 1e-10 [00CE3820]; only when
@@ -47603,6 +47648,13 @@ void GameUnitsHost::report() {
     host.log.notef("summary unit yaw rate 00811940 bound=%d calls=%llu nonzero=%llu "
         "(packet cc9_unit_yaw_rate_forward_speed)", kUnitYawRateForwardSpeedBound ? 1 : 0,
         host.yaw_rate_calls_00811940, host.yaw_rate_nonzero_00811940);
+    if constexpr (!bsp::kUnitsHostDeviationsCc13Bound) {
+        host.log.notef("summary units host deviations census (OFF, cc9-physics29): moveto "
+            "calls=%llu differs=%llu | pass-1 pitch calls=%llu differs=%llu lowspeed=%llu "
+            "maxdiff=%.6f rad (kUnitsHostDeviationsCc13Bound)", host.uhd_moveto_calls,
+            host.uhd_moveto_differs, host.uhd_pitch_calls, host.uhd_pitch_differs,
+            host.uhd_pitch_lowspeed, host.uhd_pitch_maxdiff);
+    }
     if constexpr (kSquadronLandTaskBound) {
         unsigned long long installs = 0, kept = 0, refused = 0, empty = 0, reqs = 0, refused_states = 0;
         for (const Impl::LandTaskCensus& c : host.land_census) {
@@ -47614,6 +47666,11 @@ void GameUnitsHost::report() {
                 "(packet cc9_land_task_reach)", c.squadron.c_str(), c.placements, c.installs, c.kept,
                 c.refused_arm, c.refused_unread, c.refused_ground, c.refused_dead,
                 c.first_install_at);
+            if (c.ground_parked > 0) {
+                host.log.notef("summary land task squadron \"%s\": ground_parked=%llu "
+                    "(started in land/park, kLandTaskGroundParkStartBound)", c.squadron.c_str(),
+                    c.ground_parked);
+            }
         }
         for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
             if (s->land_installed_at < 0.0) continue;
