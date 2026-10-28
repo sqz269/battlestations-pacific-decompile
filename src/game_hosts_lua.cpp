@@ -11,6 +11,7 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include "bsp/lua_exec_guard.hpp"
 #include "bsp/kamikaze_task_host.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/game_hosts_mission_frame.hpp"
@@ -11388,9 +11389,18 @@ void GameMissionLuaHost::publish_lobby_settings_005e2f00() {
     // publishes no table at all. game+1FE4h is zero here, so that is the path
     // taken, and the executable now takes it rather than inventing a table.
     bsp::LobbySettingsGameState state{};
-    state.network_session = false;      // game+1FE4h
-    state.game_mode_forced = false;     // game+61Ch
-    state.effective_game_mode = 8;      // 004bca50, the single-player campaign
+    // From the session context (packet cc13-mp2c). Campaign identity: the OFF arm is
+    // the old literals false, false, 8.
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
+        const bsp::SessionContext& context = bsp::session_context();
+        state.network_session = context.session_word_1fe4 != 0;
+        state.game_mode_forced = context.forced_61c;
+        state.effective_game_mode = bsp::effective_game_mode_004bca50(context);
+    } else {
+        state.network_session = false;      // game+1FE4h
+        state.game_mode_forced = false;     // game+61Ch
+        state.effective_game_mode = 8;      // 004bca50, the single-player campaign
+    }
     LobbySettingsBinding sync(state_, log_);
     LobbySettingsOptionsBinding options(log_);
     bsp::lobby_settings_sync_005e2f00(sync, options, state);
