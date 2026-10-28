@@ -48,23 +48,36 @@
 // shell (the round reaches the hull behind it) and no blast record.
 //
 // LABELLED (not modelled or substituted):
-//  * The cause gate: a gun's +70h is 1 unless its parent is already destroyed, when it
-//    takes the parent's +70h; a cause other than 1 skips 00729FD0 in the image (no
-//    +3B8h, no 0072B5A0). The host runs packet B's chain whatever the owner's cause.
+//  * The cause gate: 00926C80 keeps a gun's +70h when it is already set (00926CD1 CMP
+//    [EDI+70h],0 / JNZ 00926CF7); else it takes the parent's +70h when the parent's +60h
+//    is set (00926CDB..00926CEB); else 1. A cause other than 1 skips 00729FD0 in the
+//    image (no +3B8h, no 0072B5A0). The host runs packet B's chain whatever the cause.
 //  * The flush runs at once (packet B's early-flush label); 00925C90's observer notify,
 //    the WarningManager killed telemetry (00986480) and the MP 4Eh broadcast of
 //    0077D1A0 are not modelled. 0072B4C0 (the firing effects) is not run on this path;
 //    +5Dh already stops the gun firing.
 //  * The visibility factor and the funnel loop are presentation only; not modelled.
+//    Nor is the rest of 00819CC0's level > 0 tail (cc13 rev5 N1), which runs whether or
+//    not the class lists slots: class+7C8h..+7CCh into ship+664h[i] (44h stride), each
+//    released by 00B6DFA0 (00819E90..00819F20); then by class+694h (00819F27): when > 0,
+//    max(1, class+688h) iterations each with a 00BD2FC0 ECX = 0 draw (0081A000, DIV by
+//    the +7F8h size at 0081A007), otherwise one draw at 0081A380 (DIV at 0081A387, which
+//    would fault on an empty +7F8h vector). Those are stream-0 draws on every level > 0
+//    call; the host's stream 0 is its labelled substitute (death_mode_draw_00bd2f10), and
+//    none of them is drawn here.
 //  * MT_DAMAGEDGFXLEVEL (00878350's arm, vtable[1B4h]([msg+20h])) is MP only.
-//  * The image's spatial child array also holds kind-1Eh devices the host has no gun
-//    row for (a platform with no gunnery category); they take part in its swap-removes
-//    and not in the host's. A gun row added to a unit after a removal is placed as if it
+//  * The image's spatial child array (parent+FCh/+100h) holds every spatial child, not
+//    only kind-1Eh devices: devices the host has no gun row for (a platform with no
+//    gunnery category) and any non-device child. They take part in its swap-removes and
+//    not in the host's, so the host's device-only order is exact only when no such child
+//    follows a removed mount (cc13 rev5 N4). A gun row added to a unit after a removal is placed as if it
 //    had been there before it (no ship gains guns after spawn).
 //  * Non-ship units keep the level only (00877B00's +358h); their own vtable[1B4h]
 //    overrides are not modelled. Nothing re-attaches a removed mount (level 0 included).
 //  * The Slots values are read with pairs() and tonumber in the host's interpreter, the
 //    image's next() walk and 00B66290.
+//  * The Lua level argument is (int)(float)x as 00B66290 takes it (lua_tonumber, FSTP to
+//    float, _ftol 00BF7420; cc13 rev5 N3).
 //
 // Movers when ON: USN01 Cassin (usn_1_pearl.scn `Type = E ShipClasses : Mahan`; Mahan
 // 1941 lists slots 20, 21, 50): at luaCassinDie
