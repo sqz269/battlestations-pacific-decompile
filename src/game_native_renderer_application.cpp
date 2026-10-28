@@ -54,6 +54,15 @@
 #include "bsp/native_gui_scene_storage.hpp"
 #include "bsp/native_node_root_propagation.hpp"
 #include "bsp/native_node_scene_attachment.hpp"
+#include "bsp/native_camera_storage_construct.hpp"
+#include "bsp/native_light_lifetime.hpp"
+#include "bsp/native_node_tree_retirement.hpp"
+#include "bsp/native_node_raw_transform.hpp"
+#include "bsp/native_group_storage_lifetime.hpp"
+#include "bsp/native_point_light_links.hpp"
+#include "bsp/native_gui_scene_fields.hpp"
+#include "bsp/native_scene_resource_storage.hpp"
+#include "bsp/directional_light_pool.hpp"
 #include <cmath>
 #include <vector>
 #include "bsp/game_hosts.hpp"
@@ -185,6 +194,7 @@ NativeVertexDeclarationLoadingContext application_declaration_loading(
 #include "game_native_renderer_textures.inc"
 #include "game_native_renderer_grid.inc"
 #include "game_native_renderer_camera.inc"
+#include "game_native_renderer_gui_scene.inc"
 #include "game_native_mission_camera.inc"
 #include "game_native_mission_foliage.inc"
 #include "game_native_renderer_shaders.inc"
@@ -508,6 +518,8 @@ struct GameNativeRendererApplication::Impl {
     // Plain metadata drops before its borrowed providers; no Native owner lives
     // here. Appending preserves every earlier Impl member offset.
     std::unique_ptr<NativeInstanceGeneratorContext> instance_generator_context;
+    // A1: declared before every borrower so it outlives them.
+    std::unique_ptr<StartupSceneDomain> startup_domain;
     std::unique_ptr<MissionShipGraph> mission_ship;
 
     Impl(GameHostLog& log_,GameSingletonHost& host,GameVfsHost& files,
@@ -621,6 +633,38 @@ bool GameNativeRendererApplication::shader_cache_released() const noexcept {
 }
 NativeShaderBinaryCacheContext& GameNativeRendererApplication::shader_cache_context() noexcept {
     return impl_->shaders.cache;
+}
+void GameNativeRendererApplication::open_startup_scene_domain() {
+    auto& p=*impl_;
+    check(p.phase==Impl::Phase::ready && !p.startup_domain && !p.mission_ship,
+        "startup scene domain opens once in the ready renderer before any mission graph");
+    p.startup_domain=std::make_unique<StartupSceneDomain>(p.graph,p.cameras,p.singletons,
+        p.owners,p.raw,p.renderer);
+    auto& d=*p.startup_domain;
+    p.log.notef("native renderer startup domain (A1): registry/gate=%p scene_environment=%p "
+        "node=%p camera=%p viewport=%p directional=%p pool_01090154=%p fog=%p "
+        "types=CD80A0,CD80F0 pool=CD8080 frames=%zu reservation=%zu bytes",
+        static_cast<void*>(&d.registry.gate),static_cast<void*>(&d.scenes),static_cast<void*>(&d.node),
+        static_cast<void*>(&d.camera),static_cast<void*>(&d.viewport),static_cast<void*>(&d.directional),
+        static_cast<void*>(&d.directional.pool_01090154),static_cast<void*>(&d.fog),
+        StartupSceneDomain::frame_slots,StartupSceneDomain::reservation_bytes());
+}
+bool GameNativeRendererApplication::startup_scene_domain_open() const noexcept {
+    return impl_->startup_domain!=nullptr;
+}
+GameNativeRendererSceneDomain GameNativeRendererApplication::startup_scene_domain() {
+    auto& p=*impl_;
+    check(p.startup_domain!=nullptr,"startup scene domain is not open");
+    auto& d=*p.startup_domain;
+    return {d.scene_identity,d.registry.scene_fields,d.registry.resource_identity,d.camera,
+        d.directional,d.fog_constants,d.fog,d.node};
+}
+void GameNativeRendererApplication::bind_startup_scene_child_delegate(NativeNodeSceneChildDispatch* delegate) {
+    auto& p=*impl_;
+    check(p.startup_domain!=nullptr,"startup scene domain is not open");
+    check(!delegate || !p.startup_domain->children.delegate || p.startup_domain->children.delegate==delegate,
+        "startup scene domain admits one scene-child delegate");
+    p.startup_domain->children.delegate=delegate;
 }
 NativeShaderDescriptorReadContext& GameNativeRendererApplication::shader_descriptor_reader() noexcept {
     return impl_->descriptors.reader;
@@ -873,6 +917,10 @@ void GameNativeRendererApplication::configure_mission_ship(GameInputRuntime& inp
         p.declaration_cache, p.section_layouts, p.raw, p.vfs, p.mesh_field_vfs,
         p.singletons, p.owners, p.lua_services.binding(), p.shaders.cache, p.renderer,
         p.entry_cache_publication, input, clock, args, std::move(units));
+    if constexpr (kNativeRendererStartupCc15Bound) {
+        check(p.startup_domain != nullptr, "A1 mission ship borrows the opened startup scene domain");
+        p.mission_ship->startup_domain = p.startup_domain.get();
+    }
     p.textures.observation_context = &p.log;
     p.textures.observe_cleanup = &observe_mission_cache_cleanup;
     // Exact exit allow-list for the error.dds residue the Original leaves
@@ -1030,7 +1078,12 @@ void GameNativeRendererApplication::release_application_preload_rows() {
     auto& p = *impl_;
     if (!p.mission_ship || !p.mission_ship->preload) return;
     NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
-    try { p.mission_ship->preload->release_borrowed_rows(); }
+    try {
+        check(!requires_process_retention(),
+            "incomplete native renderer cannot release Application preload rows");
+        p.mission_ship->release_late_model_shader_cache(*this);
+        p.mission_ship->preload->release_borrowed_rows();
+    }
     catch (...) { p.phase = Impl::Phase::failed; throw; }
 }
 void GameNativeRendererApplication::construct() {

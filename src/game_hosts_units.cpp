@@ -77,6 +77,7 @@
 #include "bsp/leave_countdown_all_squadrons_cc13.hpp"
 #include "bsp/gameplay_seg47_cc13.hpp"
 #include "bsp/strafe_target_fallback_70_cc13.hpp"
+#include "bsp/strafe_aim_point_freeze_cc13.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/plane_cached_speed_b1c_cc13.hpp"
 #include "bsp/follow_sight_draw_cc13.hpp"
@@ -90,6 +91,7 @@
 #include "bsp/follow_to_body_pc24_cc13.hpp"  // packet cc13-followbody
 #include "bsp/units_host_deviations_cc13.hpp"  // packet cc13-unitsdev
 #include "bsp/cc13_release_timer.hpp"            // packet cc13-reltimer (009FA3A0 stubs)
+#include "bsp/level_bomb_bay_cc13.hpp"           // packet cc13-lbbay (009B8450, 007CC8E0 bay test)
 #include "bsp/band_0099_cc13.hpp"                // 009D49E0 / 009C8290 (cc13-reltimer2)
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/pilot_order_bindings.hpp"
@@ -723,6 +725,12 @@ struct GameUnitSlot {
     // (009FAE11) once the kind-5 target's +5Dh is set. Read only under
     // bsp::kStrafeTargetFallback70Cc13Bound.
     bool st_ref70_dropped{false};
+    // Packet cc13-strafeaimfreeze (bsp::kStrafeAimPointFreezeCc13Bound): sub+1Ch frozen
+    // by 009FADA0's head drop or 009FAF90, and the census of each path.
+    bool st_aim_frozen{false};
+    int st_aim_freeze_5d{0};
+    int st_aim_freeze_notify{0};
+    int st_aim_frozen_refreshes{0};
     bsp::StrafeApproachUpdate st_ap{};      // +44h, +CCh, +D0h, +50h
     float st_speed_ratio_24{1.0f};
     float st_glide_angle_2c{0.0f};
@@ -936,6 +944,7 @@ struct GameUnitSlot {
     int lb_issue_tail_gate_refused{0};  // 007EEF50 gate (ctl+390h > ctl+374h) refused
     int lb_rack_drops{0};
     int lb_rack_gate_refused{0};
+    int lb_rack_bay_refused{0};   // 007CC8F4-007CC928 bay test (packet cc13-lbbay)
     float lb_first_release_at{-1.0f};
     float lb_first_drop_at{-1.0f};
     float lb_min_impact_miss{-1.0f};          // the aim tick's smallest planar miss
@@ -4220,10 +4229,22 @@ struct GameUnitsHost::Impl {
     // vtable[+50h] is modelled for the torpedo (009D49E0) and dive-bomb
     // (009C8290) tasks only, and a plane with neither task is left alone.
     unsigned long long bay_open_target_writes{0}, bay_open_steps{0};
+    unsigned long long lb_bay_opener_steps{0}, lb_bay_opener_mode2{0};   // packet cc13-lbbay
+    unsigned long long lb_bay_opener_shadowed{0};   // level task live under a torpedo/dive task
     void bay_open_step_cc13(GameUnitSlot& s, std::size_t index) {
         namespace rt = bsp::cc13_release_timer;
         if (!bsp::unit_is_kind_of(s.class_id, 0x0F)) return;
         int mode = 1;
+        if constexpr (bsp::kLevelBombBayOpenerCc13Bound) {
+            // The host's torpedo -> dive -> level order stands for the image's
+            // first task in bot+58h/+5Ch whose +50h is not 1; count the overlap.
+            if (s.level_bomb_task_installed
+                && ((s.torpedo_task_installed && s.torpedo_state != bsp::TorpedoState::kNone)
+                    || (s.dive_bomb_task_installed
+                        && s.dive_bomb_state != bsp::DiveBombState::kNone))) {
+                ++lb_bay_opener_shadowed;
+            }
+        }
         if (s.torpedo_task_installed && s.torpedo_state != bsp::TorpedoState::kNone) {
             const bsp::TorpedoState t = s.torpedo_state;
             const bool listed = t == bsp::TorpedoState::kAim || t == bsp::TorpedoState::kDone
@@ -4242,7 +4263,22 @@ struct GameUnitsHost::Impl {
             mode = bsp::band0099::dive_bomb_step_result_009c8290(
                 attacking, d == bsp::DiveBombState::kAimDive);
         } else {
-            return;
+            if constexpr (bsp::kLevelBombBayOpenerCc13Bound) {
+                // 009B8450 (packet cc13-lbbay): the level-bomb task's vtable[+50h],
+                // close_cc = task+4C4h (approach+CCh, "bayDoorState"). A task with
+                // no state answers 1 (009B8496), and 007C6A8D still reads C20h.
+                if (!s.level_bomb_task_installed) return;
+                const bsp::LevelBombState l = s.level_bomb_state;
+                const bool attacking = l == bsp::LevelBombState::kAttackRun
+                    || l == bsp::LevelBombState::kAim || l == bsp::LevelBombState::kPrepare
+                    || l == bsp::LevelBombState::kRelease
+                    || l == bsp::LevelBombState::kGoAway;            // 009B845C-009B8486
+                mode = bsp::level_bomb_step_result_009b8450(attacking, s.lb_ap.close_cc);
+                ++lb_bay_opener_steps;
+                if (mode == 2) ++lb_bay_opener_mode2;
+            } else {
+                return;
+            }
         }
         ++bay_open_steps;
         const bool own_9c3 = bay_rack_holds_round_9c3(s);
@@ -29924,12 +29960,68 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // which 009FADA0 (009CCED0's first call, 009CCEDF) keeps on the
                     // target's hull. With no target the ref keeps its last point.
                     void st_refresh_aim_point() {
+                        if constexpr (bsp::kStrafeAimPointFreezeCc13Bound) {
+                            // Packet cc13-strafeaimfreeze (strafe_aim_point_freeze_cc13.hpp).
+                            const GameUnitSlot* t = st_target();
+                            if (unit_.st_aim_frozen) {
+                                // 1. sub+18h is null: 009FADA0 no longer writes +1Ch.
+                                // The slot's own flag, not st_ref70_dropped: a goaway
+                                // reader can latch that on +5Eh before path 2 has run.
+                                ++unit_.st_aim_frozen_refreshes;
+                            } else if (t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x02) &&
+                                       st_ref70_destroyed_009faf90(*t)) {
+                                // 2. 009FAF90 (009FAFC6..009FAFEC): +1Ch = target+CCh x
+                                // +1Ch, the world point transformed a second time, when
+                                // the kill-list notify (+5Eh) reaches a ref 009FADA0 has
+                                // not dropped. LABELLED: applied at this update with the
+                                // matrix the host has now, not at the drain.
+                                const std::array<float, 3> world{unit_.st_aim_point[0],
+                                    unit_.st_aim_point[1], unit_.st_aim_point[2]};
+                                std::array<float, 3> out{};
+                                bsp::transform_point_004142e0(world, t->world, out);
+                                for (int i = 0; i < 3; ++i) unit_.st_aim_point[i] = out[i];
+                                unit_.st_aim_frozen = true;
+                                unit_.st_ref70_dropped = true;
+                                ++unit_.st_aim_freeze_notify;
+                            } else if (t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x02) &&
+                                       bsp::unit_is_kind_of(t->class_id, 0x05) &&
+                                       t->state != nullptr && t->state->simulate != 0) {
+                                // 3. 009FADA6..009FAE11, the head of 009FADA0: the ref
+                                // holds the target (kind 2, 009FB200), sub+14h is set (the
+                                // target is kind 5) and [sub+14h]+5Dh is set
+                                // (state->simulate): +1Ch = target+CCh x +28h, no lead and
+                                // no re-pick, and the ref lets go (the latch
+                                // st_ref70_drop_009fada0 sets just after this call).
+                                // LABELLED: a target that does not sample the hull has no
+                                // host +28h; its point is its position, as the OFF arm
+                                // gives it.
+                                if (kHullAimOffsetEnabled && hull_aim_target_samples_hull(*t) &&
+                                    unit_.hull_aim_target_plus_one == unit_.command_target_plus_one) {
+                                    std::array<float, 3> out{};
+                                    bsp::transform_point_004142e0(unit_.hull_aim_ref.body_offset_28,
+                                                                  t->world, out);
+                                    for (int i = 0; i < 3; ++i) unit_.st_aim_point[i] = out[i];
+                                } else {
+                                    for (int i = 0; i < 3; ++i)
+                                        unit_.st_aim_point[i] = t->motion.position[i];
+                                }
+                                unit_.st_aim_frozen = true;
+                                ++unit_.st_aim_freeze_5d;
+                            } else if (t != nullptr) {
+                                // 4. The OFF refresh.
+                                float p[3] = {t->motion.position[0], t->motion.position[1],
+                                              t->motion.position[2]};
+                                owner_.aim_point_009fada0(unit_, *t, unit_.command_target_plus_one, p);
+                                for (int i = 0; i < 3; ++i) unit_.st_aim_point[i] = p[i];
+                            }
+                        } else {
                         const GameUnitSlot* t = st_target();
                         if (t == nullptr) return;
                         float p[3] = {t->motion.position[0], t->motion.position[1],
                                       t->motion.position[2]};
                         owner_.aim_point_009fada0(unit_, *t, unit_.command_target_plus_one, p);
                         for (int i = 0; i < 3; ++i) unit_.st_aim_point[i] = p[i];
+                        }
                     }
                     // 009CAD00 (009CAD00-009CAD8B): the horizontal distance to the
                     // aim point, 0 at or below double [00CE3820].
@@ -30003,6 +30095,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009CA5CD 009FB200: the ref is built on the task's target,
                             // and its 009FADA0 (009FB364) may drop it at once.
                             unit_.st_ref70_dropped = false;
+                            // cc13-strafeaimfreeze: a new ref, so no frozen point. LABELLED:
+                            // a drop at 009FB364 freezes at the first refresh instead.
+                            unit_.st_aim_frozen = false;
                             st_ref70_drop_009fada0();
                         }
                         unit_.st_ap.countdown_d0 = -st_draw("d0", 0.0f, 1.0f);   // 009CA5FD
@@ -32109,7 +32204,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 006E56F0 for each of the level bomber's single racks, with the
                     // level arm of 007CC8E0 (|bank| and |pitch| <= tuning+550h
                     // LevelBombAngleMax). The bay test is not applied (the per-slot
-                    // byte unit+9C3h is absent here, as at 007BBBA0). After a drop
+                    // byte unit+9C3h is absent here, as at 007BBBA0); with
+                    // kLevelBombDropBayGateCc13Bound it is (packet cc13-lbbay). After a drop
                     // toRepeatTime = desc+E0h, the rack's RepeatTime (006E58AA).
                     void run_level_bomber_rack_tick_006e56f0(float dt) {
                         lb_rack_state_seed();
@@ -32125,6 +32221,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (unit_.rack_ammo_per_rack[i] <= 0) {
                                 unit_.lb_rack_dropping[i] = 0;                // 006E58E1
                                 continue;
+                            }
+                            if constexpr (bsp::kLevelBombDropBayGateCc13Bound) {
+                                // 007CC8F4-007CC928, 007BB110 inlined (packet cc13-lbbay).
+                                const bsp::PlaneActuatorChannel& bay =
+                                    unit_.actuator_block_dec.channel_c;
+                                if (!bsp::cc13_release_timer::unit_can_release_007bb110(
+                                        bay.enabled, bay.value,
+                                        owner_.bay_rack_holds_round_9c3(unit_))) {
+                                    ++unit_.lb_rack_gate_refused;             // 007CC992
+                                    ++unit_.rack_gate_refused;
+                                    ++unit_.lb_rack_bay_refused;
+                                    continue;
+                                }
                             }
                             if (!bsp::level_bomb_attitude_gate_007cc8e0(unit_.plane_bank_angle_c68,
                                     unit_.plane_pitch_angle_c64, angle_max)) {
@@ -49065,6 +49174,10 @@ void GameUnitsHost::report() {
                     static_cast<double>(u.lb_first_drop_at),
                     static_cast<double>(u.lb_min_impact_miss),
                     bsp::level_bomb_state_name(u.level_bomb_state));
+                if constexpr (bsp::kLevelBombDropBayGateCc13Bound) {
+                    host.log.notef("  levelbomb %-16s bay_refused=%d (007CC8F4, packet cc13-lbbay)",
+                        u.row.name.c_str(), u.lb_rack_bay_refused);
+                }
                 if (u.lb_orders_spent + u.lb_orders_cleared + u.lb_passthrough_releases > 0) {
                     host.log.notef("  levelbomb %-16s orders 0099AF53/009B83D0: spent=%d cleared=%d "
                         "passthrough_releases=%d pending_424=%d", u.row.name.c_str(),
@@ -49277,6 +49390,12 @@ void GameUnitsHost::report() {
                 host.log.notef("summary bay opener steps=%llu target_writes=%llu "
                     "(0099B055, 007C6A8D, packet cc13-reltimer2)",
                     host.bay_open_steps, host.bay_open_target_writes);
+            }
+            if constexpr (bsp::kLevelBombBayOpenerCc13Bound) {
+                host.log.notef("summary level-bomb bay opener steps=%llu mode2=%llu "
+                    "shadowed_by_torpedo_or_dive=%llu (009B8450, packet cc13-lbbay)",
+                    host.lb_bay_opener_steps, host.lb_bay_opener_mode2,
+                    host.lb_bay_opener_shadowed);
             }
             host.log.notef("summary moveto cruise by_ordnance=%llu bound=%d leg separations=%llu "
                 "bound=%d (009C3650, 009BEC85, packet p16_moveto_cruise)",
@@ -50980,6 +51099,17 @@ void GameUnitsHost::report() {
                     host.log.notef("summary mission strafe profile activations bound=%d "
                         "activations=%d leader_seeds=%d (009CD020 / 009CD0AA, cc9-gunnery38 O1)",
                         GameUnitsHost::Impl::kStrafeProfileActivationSeedBound ? 1 : 0, pa, ps);
+                    if constexpr (bsp::kStrafeAimPointFreezeCc13Bound) {
+                        int f5d = 0, fnt = 0, frr = 0;
+                        for (const auto& slot : host.slots) {
+                            f5d += slot->st_aim_freeze_5d;
+                            fnt += slot->st_aim_freeze_notify;
+                            frr += slot->st_aim_frozen_refreshes;
+                        }
+                        host.log.notef("summary mission strafe aim_freeze head_5d=%d notify_5e=%d "
+                            "frozen_refreshes=%d (009FADA0 / 009FAF90, packet cc13-strafeaimfreeze)",
+                            f5d, fnt, frr);
+                    }
                 }
             }
             {
