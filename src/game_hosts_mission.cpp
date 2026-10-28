@@ -1614,7 +1614,7 @@ public:
         // +618h and 004C6AF2 (004C6890 with +1FE4h set) re-applies +614h, both equal to
         // the last m. So the end state of setup is (M, M, 0), M from the last lobby call,
         // in any order. Later callers break the triple: 004D548E in LoadSceneContents
-        // (9, 0 on its AL == 0 branch) and 0046B999 in KillPass (8, flag EBP).
+        // (9, 0 on its AL == 0 branch) and 0046B99B in KillPass (8, flag EBP).
         // LABELLED: bsp::set_game_mode_004bc890 stores only the triple. The image's
         // 004BC8B3.. arm (+1FE4h != 0 and +5FCh != 0) also makes mode-specific scene
         // edits (mode 7 at 004BC8C7); at 0076FEA4 +1FE4h has just become 1, and +5FCh is
@@ -1758,6 +1758,13 @@ void GameMissionHost::Impl::join_local_player_007752d0() {
     log.notef("skirmish local join (007752d0): player record %zu, mode %d, slot pick %d "
         "(team0 first %d humans %d, team1 first %d humans %d)", local.index, mode, choice,
         first_team0, humans0, first_team1, humans1);
+    if (choice < 0) {
+        // In the image -1 is a real outcome: no AI-held slot on the chosen team, so
+        // 0076C840 leaves the local player unbound. LABELLED: the host does not model an
+        // unbound host player.
+        throw std::logic_error("skirmish local join: no free slot (-1); an unbound host "
+            "player is not modelled");
+    }
     if (choice != 0) {
         throw std::logic_error("skirmish local slot " + std::to_string(choice)
             + " != 0 not modelled");
