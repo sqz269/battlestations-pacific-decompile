@@ -59,7 +59,9 @@ namespace bsp {
 //   006F5CC0 garrison d2 006F5D97..006F5DB3 (game_hosts_ship_ai.cpp build_capture_buildings)
 //   009EAA10 sub attack countdown reload 009EAA2A..009EAA3C (ship_ai_sub_attack.cpp)
 //   009F1420 torpedo horizon 009F16AD..009F16DE and admission distance 009F17D8..009F17EE
-//            (ship_ai_torpedo_response.cpp)
+//            (ship_ai_torpedo_response.cpp). The other copy of these chains,
+//            ship_ai_brain_prepass_schedule.cpp (the x87-exact form: horizon at :42 and
+//            :145, reaches at :172), is not switched.
 // Movers: ship headings, throttle and path picks, submarine depth, torpedo run times and hits.
 inline constexpr bool kPc24ShipAiCc13Bound = false;
 
