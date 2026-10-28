@@ -4222,9 +4222,15 @@ int GameMissionLuaHost::run_spawn_00944680(lua_State* state, int argument_count)
     request.near_distance = static_cast<float>(::lua_tonumber(state, 4));
     request.far_distance = static_cast<float>(::lua_tonumber(state, 5));
     request.height = static_cast<float>(::lua_tonumber(state, 6));
-    // 0094497B / 009449BE: degrees * pi (00CE3D28) / 180 (00CE3D20).
-    request.angle_low = static_cast<float>(::lua_tonumber(state, 7) * 3.141592653589793 / 180.0);
-    request.angle_high = static_cast<float>(::lua_tonumber(state, 8) * 3.141592653589793 / 180.0);
+    // 0094497B / 009449BE: FMUL m64 00CE3D28 (float pi widened) then FDIV m64 00CE3D20
+    // (180.0), each rounded at the main thread's 24-bit precision, then FSTP float; as
+    // lua_binding_spawn's `radians` (00944980..00944998).
+    const auto radians = [](double degrees) {
+        const float scaled = static_cast<float>(degrees * 3.1415927410125732);  // 00CE3D28
+        return static_cast<float>(static_cast<double>(scaled) / 180.0);         // 00CE3D20
+    };
+    request.angle_low = radians(::lua_tonumber(state, 7));
+    request.angle_high = radians(::lua_tonumber(state, 8));
     if (static_cast<int>(::lua_tointeger(state, 2)) == 1 && origin_entity) {
         // Mode 1 (009449E4): the origin entity's yaw from its +z row (+ECh, +F4h).
         const float yaw = bsp::spawn_relative_yaw_00944a2c(frame[8], frame[10]);
@@ -4234,8 +4240,8 @@ int GameMissionLuaHost::run_spawn_00944680(lua_State* state, int argument_count)
     std::string instance_name;
     const int slot8 = argument_count > 8 ? ::lua_type(state, 9) : LUA_TNONE;
     if (slot8 == LUA_TSTRING) instance_name = ::lua_tostring(state, 9);
-    // spawn_flag_slot's rule (lua_binding_spawn.hpp), inline: that object's
-    // spawn_request_id_matches collides with lua_spawn_new.obj's at link time.
+    // spawn_flag_slot's rule (lua_binding_spawn.hpp), inline as cc13-spawn1 wrote it
+    // (the link collision that kept it inline was removed in c4fd85b25).
     int flag_slot = argument_count > 8 && (slot8 == LUA_TSTRING || slot8 == LUA_TNIL) ? 9 : 8;
     if (argument_count <= flag_slot) flag_slot = -1;
     if (flag_slot >= 0 && ::lua_type(state, flag_slot + 1) == LUA_TBOOLEAN) {
