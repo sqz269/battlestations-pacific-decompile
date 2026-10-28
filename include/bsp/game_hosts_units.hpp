@@ -895,6 +895,9 @@ public:
     bool set_unit_world_basis_007c9540(std::size_t index, const float right[3],
         const float up[3], const float forward[3]) noexcept;
     std::uint64_t unit_ordnance(std::size_t index) const noexcept;
+    // Packet cc9-rocket1: 007B9480 on one plane (kind 33h with IgnitionDelay > 0),
+    // the PilotSetTarget feed of has_rocket_ordnance under bsp::kRocketTaskBound.
+    bool unit_has_rocket_ordnance_007b9480(std::size_t index);
     bool unit_flag_0061(std::size_t index) const;
     // 0092d730 over the unit's body axis and linear velocity, the same value the
     // trajectory dump's fwd_speed column carries.
