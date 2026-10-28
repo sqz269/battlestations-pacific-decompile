@@ -1,12 +1,16 @@
-# GUI P3a2 provider prerequisites
+# GUI P3a2 childless Source composition
 
-P3a1 composes AA5840 through the page tail but rejects a miss before native construction while
-`properties_composed` is false. P3a2 must compose the real AC4C50 -> warm AC59A0 -> AAA710 chain,
-initially for a Screen/root with no children. A1's startup scene domain supplies the shared
-scene/camera/light/fog inputs. Shader preload and Text preparation stay in their existing phases.
+P3a1 composes AA5840 through the page tail. The dormant P3a2 Source path now prepares real
+AC4C50 -> warm AC59A0 -> AAA710 properties/interaction and AAACD4's actual enumeration/type0
+skip path for a childless type1 Screen/root. A mapped widget key rejects before AA6560 or Model
+construction, with entered state retained. A1 supplies the canonical scene/camera/light/fog
+inputs. Shader preload and Text resource preparation stay in their existing phases.
 
-The page-chain switch remains OFF. This packet does not call the page loader, change bridge
-ownership, or claim native page runtime/lifecycle acceptance.
+The page-chain switch remains OFF and the startup host's `if constexpr` excludes application
+construction and loading. `properties_composed` becomes true only at the end of an explicitly
+constructed application's admitted provider binding. This is static, unbuilt work under the
+integrator's A1 strict-run hold; it does not claim native Page/runtime/lifecycle acceptance.
+FE_initial's real children and the joint P3b/P3c/P4 owner transfer remain the activation target.
 
 ## Retained constructor inputs
 
@@ -18,10 +22,11 @@ callback tuple. The second is the existing stable once-sampled Source GUI capabi
 not the Original0109EEA4 selector word. Its owner remains alive past page retirement and shared
 native drain. Actual radius conversion separately borrows the canonical live CRT word.
 
-This signature dependency only retains references. It does not activate a provider, construct
-a resolver adapter, warm colors, bind the manager token, or set `properties_composed`. The
-integrator owns the matching two-argument addition at the startup host's constructor call and
-will build the combined change; the intermediate signature-only branch is not build-qualified.
+The earlier E7EC9A535 signature dependency only retained references. The integrator added the
+matching two arguments and build-qualified that combined dependency on common code621. The
+current childless composition prepares its adapter/providers when explicitly constructed;
+it preserves these reference identities and keeps color guards lazy. No dormant constructor
+or page operation executes with the page-chain switch OFF.
 
 ## Raw page-root provider preparation
 
@@ -30,7 +35,9 @@ The staged P3a2 root path uses the existing raw B8F5E0 constructor and
 Actual3Ch scene resources must not enter legacy `SceneResource*` attachments or destructors
 (`native_node_scene_attachment.hpp` explicitly excludes that composition).
 
-The local raw Group context shares A1's real owners, imports, scene gates and world dispatch.
+The local raw Group context borrows A1's real owners, imports, registry and world dispatch.
+Its private scene gate adds a genuine Group-derived predicate, and its private tree dispatch
+admits the retained raw Group/camera/directional companions. It does not mutate A1's gate.
 It provides the genuine current18 B8EEC0 path before the shared B6F310 tail, using a separate
 persistent group-release frame/acquisition. B6DFA0 reaches that current18 body; skipping directly
 to B6F310 would omit borrowed-node A0 cleanup. The group constructor starts actual+4 at 1;
@@ -52,9 +59,9 @@ Construction-frame ownership is published before native name/pool/Lua effects, s
 catch marks sticky failure without allocating to save an already-live frame. Pending native
 effects and frames remain retained for the existing process-exit policy.
 
-Status at this checkpoint: static preparation only, unbuilt under the integrator's strict-run
-build hold. `properties_composed` remains false; AC4C50/childless AAA710 and Page retirement
-closure are still being wired. No new game run or function/whole-chain acceptance is claimed.
+Status: static composition only, unbuilt under the integrator's strict-run build hold. The
+provider graph and childless Page retirement are wired but have no compilation/lifecycle proof.
+No new game run or function/whole-chain acceptance is claimed.
 
 ## Warm-manager page lifetime binding
 
@@ -72,8 +79,9 @@ vectors, repeated binding, self-delegation, and binding before publication or af
 before changing any field. Token allocation precedes callback publication.
 
 The binding adds no native owner/reference, changes no manager field or vtable, and performs no
-native call. Unbound dispatch preserves the original two `NoPageOwner` exceptions. No current
-host creates a token, so the existing warm-manager path stays unbound.
+native call. Unbound dispatch preserves the original two `NoPageOwner` exceptions. The P3a2
+constructor acquires a token only after preparing its admitted provider graph; that constructor
+is excluded from the current host by the OFF switch.
 
 The provider is declared before its retained token and survives shared native drain plus
 `after_singleton_drain()`. Token destruction before that acknowledgement terminates; it cannot
@@ -135,12 +143,16 @@ The raw `native_gui_widget_property_prefix.cpp` still owns these guard tests and
 dependency only supplies their shared preimages. AAAED0's future provider must borrow the same
 base-widget views. No alternate white quartet, eager initialization, or per-page reset is added.
 
-## Remaining AC4C50 inputs and validation
+The same retained state owner supplies `widget_empty_00f8bc60()`: one distinct zero-readable
+Source byte. The installed loader-zero DATA and nine read-only references (camera-store
+AA3280/AA5132/AA4BC3; key typing AA2498; atlas/texture AA2678) qualify that bounded empty-string
+view. No initializer/store was observed, and no larger extent or fixed-VA publication is claimed.
 
-`properties_composed` stays false until the actual reader, widget transform/visibility/children,
-canonical Model/Group, and retirement providers all exist. Canonical state and manager binding
-are prerequisites, not proof that AC4C50 or a native Page has executed. Source/data/listing review
-and `git diff --check` are complete. The combined dependency build at 590CC866D passed
+## Dependency validation
+
+Canonical state and manager binding are prerequisites, not proof that AC4C50 or a native Page
+has executed. General widget/model children are still outside this packet. The combined
+dependency build at 590CC866D passed
 `scripts/build.ps1` and both existing CTests (2/2); receipt:
 `local/codex_gui_dependencies_build.log`. No new game run or native page lifecycle acceptance
 is claimed.
@@ -148,7 +160,8 @@ is claimed.
 ## Qualified raw field resolver adapter
 
 `NativeLuaFieldResolverAdapter` in `object_handle_resolvers.hpp/.cpp` supplies the two real
-fastcall cell types required by `NativeLuaFieldValueBindings`. It is currently uncalled.
+fastcall cell types required by `NativeLuaFieldValueBindings`. P3a2 uses it only inside its
+dormant admitted property calls; the OFF host does not enter it.
 It borrows the startup host's installed `ObjectHandleResolverSlots` and canonical
 `ObjectHandleTables` aliases, not copied table counters/pointers or another object registry.
 The canonical tables are available from `GameNativeEntityRegistryProcess::handle_tables()`.
@@ -198,4 +211,142 @@ diagnostic metadata is refreshed from that capture and cannot substitute its ret
 
 The fixture executes Source bodies and linked Lua, not Original executable bodies. It does not
 prove a binary replacement ABI, native FH3/SEH/nonlocal-unwind recovery, Page execution, or game
-parity. No game run or new tracked test suite was added. `properties_composed` remains false.
+parity. No game run or new tracked test suite was added for that dependency.
+
+## Childless admission and call order
+
+`load_page_00aa5840` retains the real lookup, `.mmod` probe, raw Group/Layer construction,
+script/reader continuations, AC6806 tail and manager registration. The model probe-hit route
+still rejects after returning its two names. A miss enters this admitted property chain:
+
+1. AC4C50 reads Priority through CURRENT reader+0C and publishes FC/118; reads RenderOrder into
+   11C; loads CURRENT Page+78 and requires AC59A0. The warm specialization reloads F8BC5C at each
+   original getter site. It uses actual camera-store, outer scene, resource, camera, fog and sun
+   providers, with genuine renderer graphics/viewport/pose/string/registry/import inputs.
+2. After current78 returns, read CURRENT Page+EC then CURRENT4C; call real B6D890. AA7DC0 uses
+   the canonical live half constant and actual Group transform path. AAA710 runs its recovered
+   ten property reads, lazy CURRENT guards, widescreen fixup, type1 Visible skip, MouseBlock /
+   MouseHit schedule and AA7220 transform. Source raw fields use the qualified resolver above.
+3. AAACD4 initializes all 250 tag cells, loads CURRENT reader+18 before the count store, and
+   invokes real BD5F50 over that reader and retained native-query scratch. The native successful
+   domain remains at most 250 supported keys, with valid Lua/tracking storage; no synthetic
+   enumerator, filtered keys or fake empty table is installed.
+4. In native enumeration order, every string key constructs the actual temporary name, calls
+   AA2490 with all 17 real class literals and `_stricmp`, and returns that name. A type0 result
+   follows the genuine skip path, including loop-cell updates/current count reload. Numeric
+   keys follow their native skip path. Any mapped class records its type and rejects at AAAD89,
+   before AA6560/Model creation. Its entered root/frame state stays retained; name cleanup runs
+   once. The owning UCRT comparator is a Source binding, not Original BF7FBF vendor-body proof.
+
+The declaration documents this childless/type0-key admission. Required reached transform,
+visibility, field, type-query and enumeration callbacks are real. Child/timed/parent callbacks
+outside admission reject rather than fabricating success. This is an exact admitted Source
+specialization, not whole AAA710/AC4C50 general-children credit. FE_initial's real Icon/Icon/Text
+children require P3b/P3c and the joint P4 bridge-owner transfer; production keys/assets remain
+unchanged.
+
+The bounded installed inventory receipt is
+`J:/PROG/battlestations-pacific-decompile-codex-gui-frame-lifetime/local/gui-childless-installed-inventory-2026-10-28.md`.
+Its 159 loose Lua files include 158 literal `GuiScreen = {` selections, all containing a
+double-quoted AA2490-mapped key token. `_debugtexts.lua` has `Template_Text`. No safely childless
+candidate was qualified. This conservative text inventory includes nonexecuted/nested tokens,
+does not cover all assets/quoting/VFS paths, and establishes no `.mmod` absence or runtime result.
+It is not proof that no childless page exists. A later single synthetic Lua lifecycle fixture,
+if authorized, would qualify only its Source case and cannot replace FE_initial acceptance.
+
+## One canonical domain, private context views
+
+The page owns only metadata views and failure backing. It does not copy an ambient companion,
+canonical mutable state, acquired allocation or reference owner. The relationship required by
+`native_gui_scene_acquisition_storage.cpp` is preserved:
+
+| View | Canonical inputs and local link |
+| --- | --- |
+| Private scene gate | SAME registry, current light token/bootstrap, Camera/Node/Light/Directional tables; Group-derived binding only is local. |
+| Private scene/node/tree contexts | SAME owner registry, increment/decrement cells, point-light allocation domain, strings, world/child dispatch and recursive frame provider; local tree dispatch. |
+| Camera lifetime/constructor | SAME camera pool, viewport/fog tables, retained-owner provider, constants, graphics/viewport, pose/look-at; lifetime.node is the SAME local node view. |
+| Directional identity/lifetime | SAME directional pool/table/owners/shadow provider; lifetime.node is that SAME local node view. |
+| Outer identity/storage | SAME weak domain, strings, owner registry, decrement and live one cell; storage.tree is that SAME local tree view. |
+| Resource, fog and scene fields | Borrow A1's existing contexts directly; no alternate ambient owner or count is introduced. |
+
+Group scene registration reaches B83D50 with D634F8/current0C B8F650. The local derived provider
+uses the existing `NativeGroupTypes::is_type_00b8f650` over canonical0109032C and the initialized
+common root/node domain. It does not answer an invented constant "Group is not Light". Neither
+the private derived pointer nor the page tree zero dispatch is installed into A1's frozen gate.
+The existing renderer child-delegate API alone supplies the page's genuine raw B6ED80 Group
+attachment; the canonical A1 camera/directional child providers remain unchanged.
+
+The outer destructor's root walk uses this local tree dispatch. Group current18 is B8EEC0;
+camera/sun current18 is genuine B6F310 with separate persistent per-owner frames/acquisitions.
+At observed SAME actual+4 zero, only those exact retained typed canonical companions are
+admitted. Their current0 BD30E0 reloads their genuine current04 terminal: Group B8F8C0, camera
+B71FE0, directional B7C820. Group and camera170 may still be live; their real node-base B6F440 /
+B6EE10 removes that scene. No A1 scene-null guard or extra B6D890 preclear is applied. Unknown
+retained130 families reject, and initial childless Group retirement requires130 null.
+The constructor-created camera's438 retained owner and sun's174 shadow are initially null;
+this packet adds no family provider for a later unsupported retained/shadow zero terminal.
+
+## Type provenance and Page retirement
+
+Source startup already runs TextProcess CD71F0 then CD7210 on the canonical VFS counter/common
+root. CD7210 initializes current Text F8BE28 and Element F8BC88. The dormant page constructor
+now runs Layer pool CD73D0, then the existing `initialize_layer_type_once_00cd73f0` on that SAME
+counter/root before binding any predicate/provider. Its actual guard F8BF48, name D5CB0C, two
+captured CURRENT Element/root IDs and postincrement publication establish F8BF88[3]; the getter
+rejects before completed initialization. A PE loader-zero snapshot alone is not runtime type
+publication. Existing postinitialization owner contracts reject retarget/replay; borrowed type
+cells stay valid through callbacks and retirement.
+
+AA8320 captures the CURRENT Page class-cell address before the AB6A30 Text descriptor getter,
+then invokes genuine AA38B0 against CURRENT Layer F8BF88[3]. Zero IDs remain ordinary matches.
+A true glyph-family result rejects the unsupported188h extent instead of hardcoding false or
+reading beyond the124h Layer. The later AA9730 base predicate uses CURRENT Element F8BC88 and
+Text F8BE28 under the same initialized-domain contract. The provisional 19/18 ->21/20 startup
+ID shift is GUI Text/Element; these are not Rect/Surface resource IDs. Source CRT numeric order
+remains provisional and is not Original CRT-order acceptance.
+
+The manager's separate CURRENT+20/+04 calls retain their original order. Page+20 admits an
+actual empty child ring and its same raw root; B6DFA0 may run Group+04 before Page+4C clears.
+It then clears Page4C. Only the later Page+04 requires completed scene release, empty child ring,
+null parent and zero timed begin/count/capacity, and calls genuine AA38F0 ->AC5480 ->AA9730.
+This restricted scalar path never reaches the legacy node companion branches because4C is
+already null and the child/timed/parent branches are excluded. Any admission/callback failure
+latches retention, including failures during drain. Metadata never rereads a returned Page slot.
+
+For cold AC59A0, resource construction starts at1, outer1C retain makes2, and its creator release
+leaves1. Camera170 and sun178 bring that to3. AC4CF2's Group170 hold can temporarily make4;
+AC6825's null-root tail releases it, so4 is not a postconstruction invariant. Camera-store
+create/remove borrow pointers and add no camera/outer/resource credit. Ambient construction,
+setter retain and creator release leave its ordinary count1, absent extra/replaced callbacks.
+
+Outer B72430 releases resource1C before its remaining roots and clears1C after the callback.
+Sun unregisters before releasing its scene; resource B82ED0 does not detach suns. Canonical
+resource D63168/current0 BD30E0/current4 B83410 drops the ambient before registry/name/free.
+Per-Page metadata/contexts outlive the Page pool return and remain until every raw Group,
+outer, camera, resource, sun and nested ambient companion is retired. No constructor-complete
+frame recycling occurs; an unresolved companion prevents application teardown/unhooking.
+
+## Frame and acceptance limits
+
+All application scratch arrays/records have explicit initialized Source preimages. Camera pose
+position/world argument views intentionally share the final look-at argument word, preserving
+the existing provider's explicit alias contract. This is not a claim about Original private
+stack bytes, native FH3/SEH, binary ABI or Lua nonlocal-unwind recovery. The native scene outer
+root reservation is256, and the raw Group has two constructor attachment slots. Exhaustion
+rejects with entered state retained; repeated activation/visibility traversal is outside this
+packet. No A1 frame capacity or runtime admission is expanded.
+
+Construction ownership is published before native effects, and sticky failure transport does
+not allocate. Current property/reader/resolver frames survive failures; a nonlocal Lua escape
+keeps its retained activation and follows the existing process-exit policy. Provider metadata,
+allocations and startup logs precede the manager token, the last throwing construction step.
+After shared native drain, the manager acknowledges it before Page-application reset; the
+delegate remains live through all actual retirements and the token is never prematurely reset.
+
+Current validation: static source/provider/call-order review and `git diff --check` only. No
+P3a2 compile, probe or game run was performed during A1's immutable strict window. After the
+integrator opens a build window, first compile with `scripts/build.ps1` and the existing 2 CTests;
+then gate an immutable candidate with the page chain OFF for inertness. A focused future childless Lua lifecycle
+fixture must independently demonstrate real Group/scene/resource/ambient cleanup. OFF game
+parity cannot prove unreachable native lifecycle behavior. Real FE_initial, children, rendering,
+repeated activation and joint P4 retirement remain outstanding.

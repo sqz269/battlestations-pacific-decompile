@@ -16,23 +16,27 @@ class GameVfsHost;
 // page-chain/P4 flip on FE_initial, which also retires the bridge for that page;
 // there is never a second native owner of a page.
 //
-// P3a1 (this packet) composes the whole AA5840 schedule over existing native
+// P3a1 composes the AA5840 schedule over existing native
 // bodies: AA3140 lookup, ".mmod" (00D0E67C) concatenation and BDF4C0 probe, the
 // raw Group root (B8F450 + B8F5E0 with the caller's name), the AC51A0 slot from
 // F8BF50 (CD73D0 runs in the constructor), AC6600 as its prefix, AC6714 script,
 // AC67CC reader and AC6806 tail stages, then AA52A0 and the path release.
-// AC6806's current Page+18 is AC4C50, which needs the warm AC59A0 scene
-// acquisition; that composition is packet P3a2. Until it exists, load rejects
-// a missed lookup before any native effect. The .mmod model route (004C1400 /
-// B80D70 / factory+8) is not composed: a probe hit rejects after releasing
-// both name headers. Page widgets (AAACD4 -> AA6560) are P3b/P3c.
+// P3a2 admits a childless type1 Screen/root: real AC4C50, warm AC59A0,
+// AAA710 properties/interaction and actual AAACD4 key enumeration/type0 skips.
+// A mapped widget key rejects BEFORE AA6560/Model construction, retaining
+// the already-entered graph. Real FE_initial widgets remain P3b/P3c/P4; this
+// childless admission is neither general children nor whole-function credit.
+// The .mmod model route (004C1400 / B80D70 / factory+8) remains uncomposed:
+// a probe hit rejects after releasing both name headers.
 // Evidence: Ghidra 00AA5840 (SEH CB71F0) and src/cc13_gui1.cpp's whole-body model.
 inline constexpr bool kNativeGuiPageChainCc15Bound = false;
 
 class GameNativeGuiPageApplication final {
 public:
-    // Starts the F8BF50 layer pool (CD73D0) and binds the Group environment.
-    // No page, Group or Lua state is created here.
+    // Starts F8BF50 (CD73D0), initializes the canonical Layer lineage
+    // (CD73F0) and prepares private context views over the renderer domain.
+    // No page, Group or Lua state is created. Logs/metadata precede the
+    // once-only borrowed manager lifetime token, the last throwing step.
     // Requires the renderer's A1 startup scene domain to be open. Page roots
     // use raw Group lifetime providers, never legacy SceneResource* bindings.
     // Borrow the startup host's CURRENT installed Source resolver cells and
@@ -49,6 +53,9 @@ public:
     // screen_flag, char add_reference) RET 0Ch -> page. actual_manager must be
     // the published 00F8BC5C manager. A hit takes CE221C on page+4 when
     // add_reference is nonzero. Serialized with every GUI entry; no reentry.
+    // Misses admit only the real childless/type0-key route described above,
+    // including the native <=250-supported-key reader domain. Timed entries,
+    // nonnull parents and glyph extents are outside retirement admission.
     void* load_page_00aa5840(void* actual_manager, const void* actual_name_header,
         std::int32_t screen_flag, std::uint8_t add_reference);
 
