@@ -11,6 +11,8 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
+#include "bsp/lobby_option_defaults_cc13.hpp"  // packet cc13-mp3 (MP3c)
 #include "bsp/lua_exec_guard.hpp"
 #include "bsp/kamikaze_task_host.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/game_hosts_mission_frame.hpp"
@@ -20,6 +22,7 @@
 #include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/mothership_failure.hpp"
 #include "bsp/get_failure_runway_hangar_cc13.hpp"
+#include "bsp/forced_recon_mission_clear_cc13.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/bullet_engagement_range.hpp"  // packet cc9_ai_plane_loadout_arm
 #include "bsp/objective_units.hpp"
@@ -68,6 +71,7 @@
 #include "bsp/native_lua_class_setters.hpp"
 #include "bsp/native_lua_field_setters.hpp"
 #include "bsp/native_lua_object_boolean.hpp"
+#include "bsp/recon_level_forced_cc13.hpp"
 #include "bsp/recon_values.hpp"
 #include "bsp/recon_slot_lists.hpp"  // packet cc9_recon_publication
 #include "bsp/shipyard_production.hpp"  // packet cc9_lua_add_shipyard_stock
@@ -78,6 +82,7 @@
 #include "bsp/unit_kind_query.hpp"   // packet p16_torpedo_stock_property
 #include "bsp/cc13_lua_natives_wire.hpp"   // packet cc13-luawire
 #include "bsp/unit_weapons.hpp"            // packet cc13-luawire, 008BE7E0's class tests
+#include "bsp/plane_issue_threshold_cc13.hpp"   // packet cc13-issuea0, 008A1F40
 
 extern "C" {
 #include "lauxlib.h"
@@ -664,6 +669,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc13-fix4.
     const bool land_and_kill_row = kLuaSquadronLandAndKillBound
         && dispatch_row.address == 0x008a20e0u;
+    // Packet cc13-issuea0: its only reader is the ON arm of the 007EEF40 gate.
+    const bool drop_all_bomb_row = bsp::kPlaneIssueThresholdZeroCc13Bound
+        && dispatch_row.address == 0x008a1f40u;
     // Packet cc13-fix5.
     const bool remove_all_stock_row = kLuaRemoveAllAirBasePlanesBound
         && dispatch_row.address == 0x008975b0u;
@@ -798,7 +806,7 @@ int binding_trampoline(lua_State* state) {
         || spawn_id_requested_row || spawn_id_remove_row
         || in_border_zone_row
         || select_unit_row || movie_add_row || force_select_row
-        || release_alt_row || land_and_kill_row
+        || release_alt_row || land_and_kill_row || drop_all_bomb_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
@@ -975,6 +983,12 @@ int binding_trampoline(lua_State* state) {
     }
     if (land_and_kill_row) {
         if (!host->error_replay()) host->run_squadron_land_and_kill_008a20e0(state, argc);
+        return 0;
+    }
+    if (drop_all_bomb_row) {
+        if (!host->error_replay()) {
+            host->run_squadron_set_drop_all_bomb_percent_008a1f40(state, argc);
+        }
         return 0;
     }
     if (in_formation_row && !host->error_replay()) {
@@ -3014,6 +3028,10 @@ void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noex
     // Packet p17_catapult_adapter: the ships' launch records live with the world.
     bsp::ship_catapult_registry().clear();
     if (orders == nullptr) {
+        // Packet cc13-reconclear: the image's forced recon records live in the units.
+        if constexpr (bsp::kForcedReconMissionClearCc13Bound) {
+            bsp::clear_forced_recon_levels();
+        }
         bsp::spawn_request_queue().clear();
         bsp::set_air_ops_squadron_factory(nullptr);
         bsp::set_air_ops_squadron_plane_count(nullptr, nullptr);
@@ -5829,7 +5847,8 @@ int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const c
     // SUBSTITUTION: the levels come from the host's recon pass the way
     // sync_recon_level_tables_0077b0c0 takes them: the unit's own side reads
     // 2 (0 once dead), a covered side its pass level, an uncovered side 0.
-    // Forced levels (SetForcedReconLevel) are not modelled.
+    // Forced levels (SetForcedReconLevel) replace a party's level only under
+    // kReconLevelForcedCc13Bound; OFF they are not consulted.
     const int own_side = units->unit_side_0054(index);
     const bool dead = gunnery->unit_dead(index);
     ::lua_createtable(state, 0, 3);
@@ -5841,6 +5860,12 @@ int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const c
             const bsp::ReconDetectionLevel detected = pass.level(party, index);
             level = detected == bsp::ReconDetectionLevel::identified ? 2
                 : detected == bsp::ReconDetectionLevel::blip ? 1 : 0;
+        }
+        if constexpr (bsp::kReconLevelForcedCc13Bound) {
+            // 00779C12..00779C1F: record+10h set -> record+8h, the forced level as
+            // SetForcedReconLevel stored it (00805D0E), in place of the computed one.
+            int forced = 0;
+            if (bsp::forced_recon_level_raw(party, index, forced)) level = forced;
         }
         ::lua_pushnumber(state, static_cast<lua_Number>(party));
         ::lua_pushnumber(state, static_cast<lua_Number>(level));
@@ -7538,6 +7563,10 @@ int GameMissionLuaHost::run_get_submarine_on_surface_008942c0(lua_State* state,
 // userdata and nothing in the host nulls it yet (the units host records 00928C80),
 // so every entity table answers false until that hook exists; a non-table
 // argument, where the image's GetByName has no table to index, answers true.
+// CORRECTION (packet cc13-tranche2, 2026-10-28): the hook exists. Under
+// kLuaTrulyDeadOnKilledBound (true) on_entity_killed_00928c80 below sets
+// self.Ptr = lightuserdata(0) as 00928D04 does, so a killed entity answers true;
+// "nothing in the host nulls it" holds only for the OFF arm.
 int GameMissionLuaHost::run_truly_dead_00899500(lua_State* state, int argument_count) {
     ++summary_.truly_dead_calls;
     void* ptr = nullptr;
@@ -8879,6 +8908,28 @@ int GameMissionLuaHost::run_squadron_set_release_alt_008a24e0(lua_State* state,
         "cc13_natives1)", row != nullptr ? row->name.c_str() : "?",
         static_cast<double>(altitude), force ? 1 : 0, stored ? 1 : 0);
     log_.implemented("MissionLuaNative::SquadronSetReleaseAlt", "008a24e0");
+    return 0;
+}
+
+// Packet cc13-issuea0. 008A1F40 SquadronSetDropAllBombPercent(squadron, percent):
+// argument 0 through 00888AA0 (008A203F), argument 1 through 00B66270 (008A2070),
+// then FSTP float [squadron+390h] (008A2091). No result. Bound only under
+// bsp::kPlaneIssueThresholdZeroCc13Bound, the reader's switch.
+int GameMissionLuaHost::run_squadron_set_drop_all_bomb_percent_008a1f40(lua_State* state,
+    int argument_count) {
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const float percent = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
+    bool stored = false;
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        stored = units->set_squadron_drop_all_bomb_percent_008a1f40(
+            static_cast<std::size_t>(id - 1), percent);
+    }
+    const GameUnitRow* row = stored ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  SquadronSetDropAllBombPercent 008a1f40: \"%s\" percent=%g stored=%d (packet "
+        "cc13-issuea0)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<double>(percent), stored ? 1 : 0);
+    log_.implemented("MissionLuaNative::SquadronSetDropAllBombPercent", "008a1f40");
     return 0;
 }
 
@@ -11313,6 +11364,11 @@ public:
     }
     void publish_mode_flags(const bsp::LobbySettingsModeFlags& flags) override {
         flags_ = flags;
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            // Packet cc13-mp3 (MP3c): 005E2FE2's store to 00E0C978, which the powerup
+            // manager's gate reads.
+            bsp::lobby_session_state().powerups_enabled_00e0c978 = flags.powerups_enabled;
+        }
         // Packet cc9_device_reload_enabled: 005E2FB2 / 005E3017 write 00E17BF2.
         g_device_reload_enabled_00e17bf2 = flags.reload_payload_on;
         // The three bytes 00E0C978, 00E17BF2 and 00E08880. The executable holds
@@ -11353,10 +11409,18 @@ class LobbySettingsOptionsBinding final : public bsp::LobbySettingsOptionSource 
 public:
     explicit LobbySettingsOptionsBinding(GameHostLog& log) : log_(log) {}
     int option_number(int slot, int option) override {
-        static_cast<void>(slot);
-        static_cast<void>(option);
-        log_.unimplemented("MissionLua::lobby_settings_option_number", "008d2f50");
-        return 0;
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            // Packet cc13-mp3 (MP3c): a --skirmish run loads the registry (008D2F50).
+            const bsp::LobbyOptionRegistry& registry = bsp::lobby_session_state().registry;
+            if (registry.loaded) return registry.option_number(slot, option);  // 00575FD0
+            log_.unimplemented("MissionLua::lobby_settings_option_number", "008d2f50");
+            return 0;
+        } else {
+            static_cast<void>(slot);
+            static_cast<void>(option);
+            log_.unimplemented("MissionLua::lobby_settings_option_number", "008d2f50");
+            return 0;
+        }
     }
 
 private:
@@ -11375,9 +11439,23 @@ void GameMissionLuaHost::publish_lobby_settings_005e2f00() {
     // publishes no table at all. game+1FE4h is zero here, so that is the path
     // taken, and the executable now takes it rather than inventing a table.
     bsp::LobbySettingsGameState state{};
-    state.network_session = false;      // game+1FE4h
-    state.game_mode_forced = false;     // game+61Ch
-    state.effective_game_mode = 8;      // 004bca50, the single-player campaign
+    // From the session context (packet cc13-mp2c). Campaign identity: the OFF arm is
+    // the old literals false, false, 8.
+    if constexpr (bsp::kSkirmishSessionCc13Bound) {
+        const bsp::SessionContext& context = bsp::session_context();
+        state.network_session = context.session_word_1fe4 != 0;
+        state.game_mode_forced = context.forced_61c;
+        state.effective_game_mode = bsp::effective_game_mode_004bca50(context);
+        // Packet cc13-mp3 (MP3c): 00E1955C as the lobby left it (zero in a campaign run).
+        const bsp::LobbySessionState& lobby = bsp::lobby_session_state();
+        for (std::size_t slot = 0; slot < bsp::kLobbySettingsStoredOptionCount; ++slot) {
+            state.stored_option[slot] = lobby.stored_options_00e1955c[slot];
+        }
+    } else {
+        state.network_session = false;      // game+1FE4h
+        state.game_mode_forced = false;     // game+61Ch
+        state.effective_game_mode = 8;      // 004bca50, the single-player campaign
+    }
     LobbySettingsBinding sync(state_, log_);
     LobbySettingsOptionsBinding options(log_);
     bsp::lobby_settings_sync_005e2f00(sync, options, state);
@@ -12398,6 +12476,7 @@ void GameMissionLuaHost::report_mission_script_state() {
     reach("dive_breakoff 009C8B4D (kDiveBombNanComparesCc13Bound)", r.dive_breakoff);
     reach("airops_arrive 006C56D0 (kAirOpsArriveSquadronWalkCc13Bound)", r.airops_arrive);
     reach("airops_return 006C5AD9 (kAirOpsReturnSlotClassArmCc13Bound)", r.airops_return);
+    reach("vec3_divide 0042AE80 (kVector3DivideInPlacePc24Cc13Bound)", r.vec3_divide);
 }
 
 void GameMissionLuaHost::report_natives(std::size_t limit) {

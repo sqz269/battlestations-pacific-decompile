@@ -36,7 +36,7 @@ inline constexpr bool kProfileLoadCc15Bound = true;
 // (the save's <name>\quick read through 008D6DC0) and 008D5B50 run on the live
 // settings 00F88980, and 008D5B50's sinks reach the host state that exists.
 // Nothing is written to the save. docs/CC15_PROFILE_LOAD.md section 6.
-inline constexpr bool kQuickSettingsApplyCc15Bound = false;
+inline constexpr bool kQuickSettingsApplyCc15Bound = true;
 
 // cc15-prof2. game+6B0h is profile+60h (SelectedDifficulty) of the game+650h
 // profile, which 0058BF52/0058BF58 copy into game+6ACh. Off: chosen_difficulty()

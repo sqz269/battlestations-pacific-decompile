@@ -130,6 +130,10 @@ struct GameMissionSummary {
     std::string selected_id;           // the record's Lua `id`
     std::string selected_title;        // the record's Lua `name`
     std::string selected_scene;        // the record's `sceneFile`
+    // Packet cc13-mp1, --skirmish: the MissionTree.multi entry and the lobby mode.
+    bool skirmish{false};
+    std::int32_t skirmish_index{-1};   // index into tables.multi (game+60Ch's list)
+    std::int32_t skirmish_mode{-1};    // game+618h
     // 005861b0
     std::size_t detail_pages_loaded{0};
     std::size_t detail_widgets_bound{0};
@@ -233,6 +237,11 @@ public:
     void set_helm_orders(std::string path);
     // Packet cc13-torpranges: --difficulty <0..2>, game+6B0h (chosen_difficulty).
     void set_chosen_difficulty(std::int32_t value);
+
+    // Packet cc13-mp1, --skirmish: the requested id names a MissionTree.multi entry
+    // (by Lua `id`, or a 0-based list index) and `mode` is the lobby's game mode,
+    // game+618h. Call before the main menu publishes; the campaign pages are skipped.
+    void set_skirmish(std::int32_t mode);
 
     // True when --menu-select named a mission, so the run drives the path.
     bool requested() const noexcept;

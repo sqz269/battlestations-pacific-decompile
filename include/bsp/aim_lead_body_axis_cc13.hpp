@@ -17,7 +17,9 @@ namespace bsp {
 //   is exact; there is no PC24 chain.
 //
 // ON: velocity = motion.pose_row2 * speed, the same axis the host already reads two
-// lines above for 0092D730's speed (LABELLED: pose_row2 stands in for unit+94h).
+// lines above for 0092D730's speed. LABELLED: +74h is the unit's LOCAL matrix and
+// pose_row2 is the host's WORLD row. The two are equal only for a root entity (no
+// parent). For a child entity the two would differ by the parent's rotation.
 // OFF: the level heading direction (sin h, 0, cos h) * speed, as before.
 //
 // Not switched: the other 00812090 stand-ins keep the level heading in
@@ -25,10 +27,12 @@ namespace bsp {
 // the torpedo walk (~2342), the 009E2773 site (~4040) and the site at ~10092.
 // Each has its own copy and none shares a helper with the aim lead.
 //
-// Movers when ON: aim points (lead) for ships, torpedoes and planes against
-// pitching targets: the lead gains the forward axis's y component and loses the
-// level direction's horizontal length. For a level hull, pose_row2 equals
-// (sin h, 0, cos h) up to rounding, so ships move little.
+// Movers when ON: the lead aim points of the shooters (ships, torpedoes and planes
+// through aim_point_009fada0's callers). The targets are the hull-sampling classes,
+// whose vtables carry 008120E0 at +48h. Against a pitching target the lead gains
+// the forward axis's y component and loses the level direction's horizontal length.
+// For a level hull, pose_row2 equals (sin h, 0, cos h) up to rounding, so the lead
+// moves little.
 inline constexpr bool kAimLeadBodyAxisCc13Bound = false;
 
 }  // namespace bsp

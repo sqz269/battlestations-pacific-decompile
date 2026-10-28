@@ -1,5 +1,6 @@
 #include "bsp/ship_ai_search_storage.hpp"
 #include <cassert>
+#include <cstdlib>
 #include <cstring>
 #include <type_traits>
 #include <utility>
@@ -56,13 +57,25 @@ SearchRecord& record(unsigned char* backing, std::size_t index) noexcept {
 }
 } // namespace
 
+bool searcher_bounds_init_aid() noexcept {
+    static const bool active = [] {
+        char* text = nullptr;
+        std::size_t length = 0;
+        const bool set = _dupenv_s(&text, &length, "BSP_SEARCHER_BOUNDS_INIT") == 0
+            && text != nullptr && std::strcmp(text, "1") == 0;
+        std::free(text);
+        return set;
+    }();
+    return active;
+}
+
 ShipAiSearchStorage::ShipAiSearchStorage(const AvoidZoneAllocationAccess& allocation)
     : allocation_(allocation) {
     // Required native allocation contract is nonnull-or-throw, with matching
     // free callbacks; no allocation fallback, zero fill or exception swallowing.
     backing_ = static_cast<unsigned char*>(allocation_.allocate_record_00bf681b(
         allocation_.context, static_cast<std::uint32_t>(storage_bytes)));
-    if constexpr (kSearcherCacheBoundsInitCc13Bound) {
+    if (kSearcherCacheBoundsInitCc13Bound || searcher_bounds_init_aid()) {
         // Deviation (see the switch): the four bound floats of each record, as
         // zero bytes.
         for (std::size_t i = 0; i < kShipAiAvoidZoneSearcherCount; ++i) {

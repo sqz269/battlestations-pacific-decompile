@@ -2074,6 +2074,7 @@ public:
     int run_squadron_set_release_alt_008a24e0(lua_State* state, int argument_count);
     // Packet cc13-fix4, under kLuaSquadronLandAndKillBound.
     int run_squadron_land_and_kill_008a20e0(lua_State* state, int argument_count);
+    int run_squadron_set_drop_all_bomb_percent_008a1f40(lua_State* state, int argument_count);
     // Packet cc13-fix5, under kLuaRemoveAllAirBasePlanesBound.
     int run_remove_all_air_base_planes_008975b0(lua_State* state, int argument_count);
     // Packet cc13-fix5, under kLuaStartLanding2Bound.

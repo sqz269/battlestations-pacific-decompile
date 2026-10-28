@@ -76,7 +76,12 @@ public:
     // 008E34F0 on a found class (acts only on group 1, air support).
     virtual void resolve_air_support_classes_008e34f0(PowerupClassConfig& cls) = 0;
     // 008E6E00 + 0076A9F0 + 007657D0: message 67 to the session (host only).
+    // 008E6E00 is __thiscall(msg, slot -> +18h, item, op -> +28h, unit_a -> +2Eh,
+    // unit_b -> +2Ch), RET 14h; the unit ids are not passed here.
     virtual void send_powerup_message67(std::int32_t slot, const PowerupItem& item,
+        std::int32_t op) = 0;
+    // 008E6FB0(msg, record, op) + 0076A9F0 + 007658C0: message 68 (host only).
+    virtual void send_powerup_message68(const game_powerups::PowerupModifier& record,
         std::int32_t op) = 0;
     // The active slot's +14Ch map values as 008EB110 walks them, and its gate
     // (the inventory size at +28h + slot*0Ch).

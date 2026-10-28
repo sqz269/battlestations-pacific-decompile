@@ -314,3 +314,35 @@ separate from the native 006F6760 arm 3, which this packet models.
   `paratrooper drop target: ... spawned=1`, the record `Rack::paratrooper_release_006e4d50`, and the summaries
   `summary paratrooper rounds` (units host) and `summary mission capture paratroopers` (ship AI host; printed
   OFF too, with adds=0).
+
+## JM08 pair and flip (cc9-ships64, 2026-10-27)
+
+All six switches were paired together on 8eded9e50, plan `config/win_orders/jm08_s63_j8_v3.txt`, reference env
+(`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`), 110000 frames. The logs are in cc9-ships44 `local\`: OFF
+`s64_off2_j8.log`, ON `s64_on2_j8.log` (export `local\s64_paraon`, SHA-256 6AE861089D5F), and
+`s64_pd_j8.txt` (pair_diff exit 3, moved).
+
+- OFF completes at 4246.98 s, the same second as ships63's reference. It logs the guard refusal,
+  helm_moveto_unselected=0 and helm_role_forced=0. An earlier OFF on 6a9c86448 (`s64_off_j8.log`) also completed
+  at 4246.98 s after one D3D device reset (`present failed hr=0x88760868`, recovered, frames_presented=44409). The
+  lead ruled it valid.
+- ON fails at 1762.64 s with "Mission Failed - The HQ has been destroyed!".
+- The death rows are identical until 1713 s, after the C47 spawn at 1571 s.
+- As predicted, the C47 wings take LevelBomb attackrun/follow (ord=1) instead of goaway. C47 #4.2 and #4.5|.-IV
+  enter LevelBomb/aim at 1702-1706 s, d=4440 m, alt about 1290, in_range=1. A static check by cc13 found three of
+  the four C47s at min_miss 295/227/180 m, seconds from the 300 m / 85 degree release, when the HQ died 58.5 s after
+  aim entry.
+- Not reached: release, drop, landing, soldiers and capture. The summary has constructs=20, construct_draws=20,
+  drops=0, landed=0 and damage_calls=0; capture paratroopers adds=0.
+- The HQ loss is not caused by paratroopers. HQ damage in 1500-1770 s is two bullet 71 hits plus bullet 72
+  (B-17): OFF 234 hits for 9416.9, ON 237 hits for 9417.2. OFF bottoms out at 9.4 hp at 1762.54 s; ON takes one
+  more bomb and dies at 1762.64 s. This knife edge is moved by the 20 stream-1 construct draws and by the C47s
+  loitering at about 1290 m in the AA picture.
+- **Flipped ON** by the house rule: the part the run reaches matches the prediction, and a faithful fix flips even
+  if it loses a win. The JM08 re-plan went to cc9-lua74; it needs the HQ to last 5-10 s longer at about 1762 s and
+  then to survive the paratroopers.
+- **Still unexercised in a live run:** the drop, round, landing and capture half (option 2). The first plan that
+  reaches a C47 release validates it; check the "Log lines for a pair" rows above in that run.
+- Deviation noted by cc13, not switched: the host's rack gate (plane_level_bomb_task.cpp:551) tests attitude only,
+  while the image also tests the bay doors. The host is therefore more permissive. This is a candidate for an OFF
+  switch.

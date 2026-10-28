@@ -257,6 +257,9 @@ void recon_sensor_pass_rebuild_008073c0(ReconSensorPassState& state, float dt,
 // empty unless SetForcedReconLevel (008AA8F0, kForcedReconLevelBound) writes it.
 void set_forced_recon_level_00805cf0(std::size_t target, int side, int level);
 bool forced_recon_level(int side, std::size_t target, ReconDetectionLevel& out);
+// The record's +8h itself (the level argument, unclamped: scripts force 4), for
+// readers of +8h such as GetProperty "reconlevel" (00779C18). Packet cc13-reconforce.
+bool forced_recon_level_raw(int side, std::size_t target, int& out);
 void clear_forced_recon_levels();
 // Packet cc13-fix18 (docs/CC13_FIX18.md), ClearForcedReconLevel 008AAB90. 00803B50
 // __fastcall(ECX = record), RET: old = +10h ? +8h : +4h (00803B52-00803B5E); +10h = 0

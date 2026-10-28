@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/game_native_gui_render_application.hpp"
+#include "bsp/game_native_gui_manager_application.hpp"
 // Process bindings for the reconstructed startup spine, milestone 1 of bsp_game.exe.
 //
 // Addresses: 008f81f0 WinMain, 0073d410 cSkeletonAppMidway::Init, 00becda0/00becee0 the
@@ -221,6 +222,18 @@ struct GameExecutableOptions {
     // through 00580940, builds the mission-detail page 0058c010, takes the page's play
     // action 005922f0 and stops at the mission load request. Empty selects nothing.
     std::string menu_select;
+    // Packet cc13-mp1 (MP1), --skirmish <multi id|index> [--skirmish-mode <0..7>]:
+    // load one entry of the mission tree's flat multiplayer list (MissionTree.multi,
+    // the 434h records at [[00E198AC]+5Ch]+28h) instead of a campaign mission. The
+    // image reaches it through the multiplayer front end, the path its own AutoTest
+    // driver 00427190 automates (screens 8..0Bh). LABELLED harness entry, like
+    // --menu-select. Empty selects nothing and leaves the campaign path untouched.
+    // Mutually exclusive with --menu-select.
+    std::string skirmish;
+    // The lobby's game mode for --skirmish, game+618h: 0..3 IslandCapture 1v1..4v4,
+    // 4 Duel, 5 Escort, 6 Siege, 7 Competitive. -1 when --skirmish is absent; 0
+    // when --skirmish is given without it.
+    int skirmish_mode{-1};
     // --mission-frames N, milestone 2f: once --menu-select's load has run to
     // its end and 004da6c0 has entered game state 0Dh, run N frames of the
     // in-mission branch of 004e4a40 headless. Zero or negative runs none, which
@@ -759,6 +772,8 @@ private:
     std::unique_ptr<GameNativeShadowTargetApplication> native_shadow_;
     std::unique_ptr<GameNativeGuiEffectProbe> native_gui_probe_;
     std::unique_ptr<GameNativeGuiRenderApplication> native_gui_render_;
+    // cc15-gui4 P1 (kGuiManagerCc15Bound): released right after the shared drain.
+    std::unique_ptr<GameNativeGuiManagerApplication> native_gui_manager_;
     std::unique_ptr<GameNativeLuaServices> lua_services_;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;

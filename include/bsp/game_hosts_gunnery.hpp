@@ -296,6 +296,19 @@ struct GameGunRow {
     bool seat_cmd_pending{false};
     float seat_cmd_horz{0.0f};
     float seat_cmd_vert{0.0f};
+    // Packet cc13-gunB (kGunDestroyedFailureCc13Bound, include/bsp/
+    // gun_destroyed_failure_cc13.hpp): the gun as a damageable device. 0087BCC0
+    // seeds +368h, +36Ch and +370h from the device class's Armour and HP; read only
+    // when the switch is on.
+    float armour_368{0.0f};
+    float max_health_36c{100.0f};
+    float health_370{100.0f};
+    bool destroyed_60{false};         // entity +60h, 00926C80 / 00926390
+    bool destroyed_5d{false};         // entity +5Dh, 00926390 (a wreck, not deleted)
+    bool destroyed_3b8{false};        // 0072B5BC
+    int damage_level_358{0};          // 00876EC0 through 00877B00
+    unsigned long long damage_calls{0};
+    unsigned long long damage_refused{0};
 };
 
 // Packet cc9_player_gun_seat. ON binds message 79h's group 1/2 arm
@@ -1282,7 +1295,7 @@ public:
     // * refresh_unit_side(): re-reads unit+54h into the unit's gunnery row after a
     //   CommandBuilding's neutralize or flip (00928F50 SetPartyRace);
     // * repair_unit_to_fraction(): 006F47F0's hull arm, health += max * fraction,
-    //   clamped to max (the parts arm is not modelled).
+    //   clamped to max (the parts arm is repair_unit_guns_006f47f0, packet cc13-gunD).
     void refresh_unit_side(std::size_t unit_index);
     void repair_unit_to_fraction(std::size_t unit_index, float fraction);
     // Packet cc9_lua_hit_listeners: one record per gunnery hit that reached the
@@ -1331,6 +1344,13 @@ public:
     // 0088E000): the party multiplier, the invincibility floor and the death funnel,
     // as a hit's damage takes them. No caller yet (packet cc9_difficulty_multipliers).
     void apply_script_damage_0095da00(std::size_t unit_index, float amount);
+    // Packet cc13-gunB: 00728080 on one gun row (index into guns()), through
+    // 00442AE0, 0087D730, 00879070 and, at zero health, the 0072B5A0 destroyed
+    // failure. A no-op unless kGunDestroyedFailureCc13Bound. No caller yet (packet C).
+    void apply_gun_damage_00728080(std::size_t gun, float amount);
+    // Packet cc13-gunD: 006F47F0's gun loop on one unit's guns, `fraction` =
+    // Repair[level] * a / GunRepairTime. A no-op unless kGunSubobjectRepairCc13Bound.
+    void repair_unit_guns_006f47f0(std::size_t unit_index, float fraction);
     // Packet p16_torpedo_stock_property: 00815850 for a ship, the value
     // GetProperty(ship, "TorpedoStock") pushes. False for an index the host
     // does not hold.
@@ -1539,6 +1559,10 @@ public:
     // generator every gunnery draw uses, in call order. BSP_GUNNERY_RNG_STREAMS=1:
     // its own generator keyed by (unit), a measurement substitution.
     float ship_ai_draw(std::size_t unit_index, float low, float high);
+    // 00816650's 00BD2F10(ECX=1) draws for 009FA260's hull aim pick, on the same shared
+    // generator (include/bsp/hull_aim_shared_stream_cc13.hpp). BSP_GUNNERY_RNG_STREAMS=1:
+    // keyed by (shooter unit).
+    float hull_aim_point_draw_00816650(std::size_t unit_index, float low, float high);
     // 009F6A20 (BSP_WeaponDirector_AutoTargetConstruct) at 009F6A8F: 00BD2F10(ECX=1,
     // 0.0f, 1.0f), negated into the auto-target think countdown, once per director.
     // Default: the shared stream-1 generator. BSP_GUNNERY_RNG_STREAMS=1: its own

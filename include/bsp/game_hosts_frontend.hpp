@@ -44,6 +44,7 @@ class LocaleTables;
 namespace bsp::game {
 
 class GameNativeRendererApplication;
+class GameNativeGuiManagerApplication;
 
 class GameHostLog;
 class GameVfsHost;
@@ -166,6 +167,9 @@ public:
     // renderer before initial startup. The existing manager slots borrow the
     // returned references; this binding owns them until explicit retirement.
     void bind_native_gui_resources(GameNativeRendererApplication&);
+    // kGuiManagerCc15Bound: 0073BC19's 004C12B0 also builds the borrowed actual
+    // manager. The bridge ManagerState stays the hosted callers' stand-in.
+    void bind_native_gui_manager(GameNativeGuiManagerApplication&);
     // End manager texture borrowers before calling, before renderer drain.
     // Interrupted native work requires process retention and cannot be retried.
     void retire_native_gui_resources();

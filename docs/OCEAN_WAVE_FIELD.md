@@ -4486,3 +4486,55 @@ Pairs on 7552807ec, OFF tree build against an ON export (`local\p29_bs2_on`), re
   cc9-lua74).
 - Flipped ON in 178bd8751. A full build with the switch ON passes, and `pc24_lint --staged` exits 0.
 - Logs: `local\p29_bs2_<row>_{off,on}.log`. Diffs: `local\p29_pd_<row>.txt`.
+
+## 125. A grounded plane's land task starts in land/park: `kLandTaskGroundParkStartBound` ON; the tie-break check (cc9-physics29, 2026-10-27)
+
+**Why.** USNOS `s63_os_g` (ships63/64): Midway_sqn198 launches late, at 3717 s, and the plan's periodic recall
+(`order Midway 3 2`, frame 74523) reaches it while its planes are still on the deck.
+- `install_land_task_core_009b41c0` refused the land task because the planes were not airborne.
+- The squadron kept the `land` command (00E08FA0) with no task. No torpedo task was installed, and it flew straight
+  off the map (range to Musashi 21.9 km -> 514 km).
+- It never reached an attack-entry test, so the formation-gap, range and beached gates played no part.
+
+**The image** (docs/CC13_LAND_PARK.md, cc13): 009B3240 installs the task with every construction draw. At
+009B32AA-009B32B8 a plane that is not airborne starts in land/park (task+620h), and that state's enter 009B21A0 is
+called directly: +1Ch 0, +18h 0, +28h 3.0. There is no 009B3680 switch, no exit and no 007B8AD0 leader test. The
+park state, its tick, its done test and the abort -> takeoff push were already hosted.
+
+**Switch.** 0270ac1d6 (OFF) adds `kLandTaskGroundParkStartBound` and a `ground_parked` summary line. The OFF arm
+keeps the refusal and its log text unchanged.
+
+**Census, OFF.** The existing `summary land task squadron ... ground=` counter is non-vacuous: s63_g_os has
+ground=5. It reads 0 on every WINS plane row:
+- current-base OFF logs for b1k1, b3, b4, b6i, b6j, b9, l10, p01, u01, u12 and u21;
+- the 10-24 refs for e8, i18, j6 and j8v3.
+No WINS row can move.
+
+**Plausibility pair.** `s63_os_g` cut to 80000 frames, tree build of 0270ac1d6 against the ON export
+`local\p29_lp_on`. pair_diff exit 3, and neither side ends the mission.
+- **Grounded refusals and parks.** OFF has 8 grounded refusals. ON has 0, and 9 squadrons log `ground_parked`.
+- **What a parked plane does.** Example: Intrepid_sqn53|.-II is installed in park on the deck at 2051.43 s. The
+  takeoff task already queued for it then flies it off the deck at 2065.34 s. The land task resumes in park and is
+  done at once (not on a holder), so it goes to abort, then standby, then begin at 2151.52 s, and it lands.
+- **Nothing stuck.** No plane stays in park: at most two `state=620` lines per plane.
+- **Totals (OFF -> ON).** Land installs 189 -> 226, touchdowns 79 -> 78, plane deaths 192 -> 193.
+- **Device loss.** The ON run lost the D3D device once (2 `present failed`, exit 1 after the loop finished). The
+  simulation is not affected.
+- **Flip.** Flipped ON in the commit with this section.
+- **Follow-ups not done** (`cc9_ground_retakeoff`, docs/CC13_LAND_PARK.md section 5):
+  - (a) the host leaves out the image's first push condition, plane vtable[38h] not airborne;
+  - (b) with +904h set and +900h == 5 (reachable through the dead-owner done at 009B22DC), the image starts the
+    pushed takeoff in takeoff/parking, which the host does not bind.
+
+**Tie-break check (section 124 correction).** cc13: wingmen |.-II and |.-III of one squadron carry +9D8h slots 1 and
+2 (007F4B43-4B60). The slot compare (006C41CF-006C4210) decides before the side byte or the pointer.
+- **(a) Direction.** The host's `count = own_spawn > other_spawn` matches the image's `other <= own` on distinct
+  slots. So |.-III (slot 2) DOES count |.-II (slot 1) inside the ±70 m zone.
+- **Section 124 was wrong.** Its explanation (the tie-break left |.-II uncounted) is withdrawn.
+- **Open.** How |.-III got mode 4 at 1580.37 s, when its spacing as a mode-3 plane should have been 0 (gap about
+  70 m at 32 m/s, 2.2 s < 5.4 s). It needs a mode-3 spacing line (the 9c520c017 line only covers own-4) and the
+  order of the 006C7960 / 006C3F80 passes within a sequencer tick.
+- **(b) Writers of +9D8h.** The host reads the slot from `member_spawn_index`. The image rewriters 007ED0D0, 007ED1D0
+  and 007ED260 exist only as cc13 native reconstructions (`native_plane_squadron_insert/reindex`); whether the
+  game host calls them is not checked.
+- The abort stays faithful-pending.

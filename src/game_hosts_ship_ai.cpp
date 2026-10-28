@@ -12,6 +12,8 @@
 
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/gun_owner_inferior_operational_cc13.hpp"
+#include "bsp/gun_subobject_repair_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_shipai_cc13.hpp"
 #include "bsp/game_hosts_powerups.hpp"  // packet cc13-powerup-bind
@@ -67,6 +69,7 @@
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/projectile_kinds.hpp"
 #include "bsp/gun_aiming.hpp"
+#include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
 #include "bsp/gun_gravity_arc.hpp"
 #include "bsp/gun_heading_snap.hpp"
 #include "bsp/gameplay_settings_tail.hpp"
@@ -4823,13 +4826,23 @@ public:
     // BOUND: the same three bytes the gunnery host's own fire gate answers
     // (FireRequestBinding: unit_fire_blocked, gun_disabled, gun_suppressed),
     // all clear there, so every mount is operational as it is for firing.
-    bool device_is_operational(bsp::NativeHandle) override {
+    bool device_is_operational(bsp::NativeHandle device) override {
         if (!kShipFirepowerBound) {
             owner_.record("ShipAiFirepower::device_is_operational_00729f10", 0x0095ec52u);
             return true;
         }
         owner_.done("ShipAiFirepower::device_is_operational_00729f10", 0x0095ec52u);
-        return bsp::ship_ai_gun_is_operational_00729f10(false, false, false);
+        if constexpr (bsp::kGunIsOperationalHostedCc13) {
+            // [device+3F0h] is the gun row's unit (bsp/gun_owner_inferior_operational_cc13.hpp).
+            // LABELLED: a handle with no gun row answers operational (the image
+            // has no such case; every list node holds a gun).
+            const GameGunRow* gun = gun_row(device);
+            return gun == nullptr
+                || bsp::gun_is_operational_00729f10_cc13(owner_.units, *gun);
+        } else {
+            static_cast<void>(device);
+            return bsp::ship_ai_gun_is_operational_00729f10(false, false, false);
+        }
     }
 
     // 0095EC84, 00727D70: the [device+448h] reload timers at [device+414h] that
@@ -4851,7 +4864,17 @@ public:
             gun->barrel_num, static_cast<int>(gun->fire.barrel_timers.size()), horizon);
     }
 
-    bool device_is_destroyed(bsp::NativeHandle) override { return false; }
+    // [device+3B8h], 0095EC8B. Packet cc13-gunB: set by 0072B5A0 under
+    // kGunDestroyedFailureCc13Bound; nothing sets it otherwise.
+    bool device_is_destroyed(bsp::NativeHandle device) override {
+        if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+            const GameGunRow* gun = gun_row(device);
+            return gun != nullptr && gun->destroyed_3b8;
+        } else {
+            (void)device;
+            return false;
+        }
+    }
 
     // [device+448h], 0095EC98.
     int device_barrel_count(bsp::NativeHandle device) override {
@@ -10127,7 +10150,7 @@ public:
             for (std::size_t b = 0; b < barrels; ++b) {
                 if (row.fire.barrel_timers[b] <= horizon) { loaded = true; break; }
             }
-            if (loaded && operational()) ++ready;
+            if (loaded && operational(row)) ++ready;
         }
         return ready;
     }
@@ -10135,7 +10158,7 @@ public:
         build_tubes_009e97b0();
         float least = 3600.0f;                               // 00CFDEB0
         for (const std::size_t gun : fore ? ctl_.sub_tubes_fore : ctl_.sub_tubes_aft) {
-            if (!operational()) continue;
+            if (!operational(owner_.gunnery->guns()[gun])) continue;
             const GameGunRow& row = owner_.gunnery->guns()[gun];
             // 00729920: the least of the first [+448h] barrel timers (<= keeps).
             float timer = 3600.0f;
@@ -10239,7 +10262,15 @@ public:
 private:
     // 00729F10 through the same answers FirepowerBinding gives 0095EB40: the
     // three bytes have no producer here, so every tube is operational (LABELLED).
-    static bool operational() { return bsp::ship_ai_gun_is_operational_00729f10(false, false, false); }
+    // Under kGunIsOperationalHostedCc13, bsp::gun_is_operational_00729f10_cc13.
+    bool operational(const GameGunRow& row) const {
+        if constexpr (bsp::kGunIsOperationalHostedCc13) {
+            return bsp::gun_is_operational_00729f10_cc13(owner_.units, row);
+        } else {
+            static_cast<void>(row);
+            return bsp::ship_ai_gun_is_operational_00729f10(false, false, false);
+        }
+    }
     // 009E97B0, once per brain (+0AC8h): the unit's Function-7 guns split by the
     // sign of their node's forward axis (node+110h, row 2 of the world matrix)
     // against the hull's (+0ECh..+0F4h), and the least WaterTravelSpeed
@@ -13271,6 +13302,11 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
                 continue;
             }
             gunnery_draws->repair_unit_to_fraction(b.unit, repair / b.repair_time_180);
+            if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+                // 006F48BC..006F49E3, the gun loop: Repair[level] * a / GunRepairTime.
+                gunnery_draws->repair_unit_guns_006f47f0(b.unit,
+                    repair / bsp::kCommandBuildingGunRepairTime);
+            }
             ++capture_repair_steps;
             for (const CaptureBuilding::GarrisonRecord& r : b.garrison) {
                 if (!r.linked) continue;
@@ -13278,6 +13314,10 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
                 if (units.unit_is_kind_of(r.unit, 0x45)) rate = b.airfield_repair_188;
                 else if (units.unit_is_kind_of(r.unit, 0x46)) rate = b.shipyard_repair_18c;
                 gunnery_draws->repair_unit_to_fraction(r.unit, repair / rate);
+                if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+                    gunnery_draws->repair_unit_guns_006f47f0(r.unit,
+                        repair / bsp::kCommandBuildingGunRepairTime);   // 006F48BC
+                }
                 ++capture_repair_garrison;
             }
         }
@@ -13466,8 +13506,20 @@ void GameShipAiHost::Impl::apply_capture_flip_006f4d10(CaptureBuilding& b,
         // Packet s52_cb_repair: f = Repair[+770h] * 1.0 / 1.0 (006F481E..006F4828),
         // the level before the flip's D4h level 0 below.
         const int lv = b.level_770 < 0 ? 0 : (b.level_770 > 3 ? 3 : b.level_770);
-        if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit,
-            kCommandBuildingStepRepairBound ? kCommandBuildingRepairLevel[lv] : 1.0f);
+        if constexpr (bsp::kGunSubobjectRepairCc13Bound) {
+            if (flip.repair) {
+                gunnery_draws->repair_unit_to_fraction(b.unit,
+                    kCommandBuildingStepRepairBound ? kCommandBuildingRepairLevel[lv] : 1.0f);
+                // 006F48CE..006F48D5 with a = 1.0: Repair[level] * 1.0 / GunRepairTime.
+                gunnery_draws->repair_unit_guns_006f47f0(b.unit, static_cast<float>(
+                    bsp::cc13x87::x87_div24(bsp::cc13x87::x87_mul24(
+                        kCommandBuildingRepairLevel[lv], 1.0f),
+                    bsp::kCommandBuildingGunRepairTime)));
+            }
+        } else {
+            if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit,
+                kCommandBuildingStepRepairBound ? kCommandBuildingRepairLevel[lv] : 1.0f);
+        }
     }
     // 006F5362..006F53A4: D4h with level 0, after the repair.
     if (kCommandBuildingLevelBound) command_building_level_006f38e0(b, 0, "flip D4h 006F5362");
@@ -15771,6 +15823,10 @@ void GameShipAiHost::report() {
             reach.path_dir_evals, reach.path_dir_differs,
             bsp::kShipAiPathNodeDirectionUnorderedCc13Bound ? 1 : 0,
             bsp::kShipAiPathSideWalkNanCc13Bound ? 1 : 0);
+        host.log.notef("summary mission order copy reach calls=%llu differs=%llu bound=%d "
+            "(00811D10 kUnitAiOrderCopyPc24Cc13Bound; packet cc9-sweep2b)",
+            reach.order_copy_calls, reach.order_copy_differs,
+            bsp::kUnitAiOrderCopyPc24Cc13Bound ? 1 : 0);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {

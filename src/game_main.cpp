@@ -41,6 +41,7 @@
 #include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/ship_ai_search_storage.hpp"
 #include "bsp/game_native_data_bootstrap.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/game_native_particle_pools.hpp"
@@ -1018,6 +1019,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
             " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
             " [--press-start-frame N] [--menu-select <mission id>] [--mission-frames N]"
+            " [--skirmish <multi id|index> [--skirmish-mode 0..7]]"
             " [--window-monitor <n|primary|smallest|largest>] [--window-origin X,Y]"
             " [--window-resolution <WxH|fit>]"
             " [--mission-complete-frame N]"
@@ -1286,6 +1288,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     if (options.present_interval >= 0) {
         log.notef("present interval %s (harness override)",
             options.present_interval == 0 ? "vsync" : "immediate");
+    }
+    // cc9-nondet1: printed only when active, so an unset run logs what it did before.
+    if (bsp::searcher_bounds_init_aid()) {
+        log.notef("BSP_SEARCHER_BOUNDS_INIT=1: searcher-cache bounds zeroed "
+            "(harness determinism aid, not image behaviour)");
     }
     if (!options.ai_drive_unit.empty()) {
         log.notef("--ai-drive %s=%.3f,%.3f: a labelled diagnostic stand-in for the ship AI "
