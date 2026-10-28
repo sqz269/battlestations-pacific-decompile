@@ -1295,7 +1295,7 @@ public:
     // * refresh_unit_side(): re-reads unit+54h into the unit's gunnery row after a
     //   CommandBuilding's neutralize or flip (00928F50 SetPartyRace);
     // * repair_unit_to_fraction(): 006F47F0's hull arm, health += max * fraction,
-    //   clamped to max (the parts arm is not modelled).
+    //   clamped to max (the parts arm is repair_unit_guns_006f47f0, packet cc13-gunD).
     void refresh_unit_side(std::size_t unit_index);
     void repair_unit_to_fraction(std::size_t unit_index, float fraction);
     // Packet cc9_lua_hit_listeners: one record per gunnery hit that reached the
@@ -1348,6 +1348,9 @@ public:
     // 00442AE0, 0087D730, 00879070 and, at zero health, the 0072B5A0 destroyed
     // failure. A no-op unless kGunDestroyedFailureCc13Bound. No caller yet (packet C).
     void apply_gun_damage_00728080(std::size_t gun, float amount);
+    // Packet cc13-gunD: 006F47F0's gun loop on one unit's guns, `fraction` =
+    // Repair[level] * a / GunRepairTime. A no-op unless kGunSubobjectRepairCc13Bound.
+    void repair_unit_guns_006f47f0(std::size_t unit_index, float fraction);
     // Packet p16_torpedo_stock_property: 00815850 for a ship, the value
     // GetProperty(ship, "TorpedoStock") pushes. False for an index the host
     // does not hold.
