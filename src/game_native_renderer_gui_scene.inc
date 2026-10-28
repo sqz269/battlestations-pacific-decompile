@@ -95,8 +95,9 @@ struct StartupSceneDomain {
   }
  };
  // Prepared persistent frames for recursive tree retirement and scene
- // attachment. Acquisition is pure metadata over a fixed reservation; an
- // exhausted pool rejects rather than allocating inside a native walk.
+ // attachment. Acquisition is pure metadata over a fixed reservation. Only
+ // outer completion permits reuse; entered/failed and not-yet-entered slots
+ // stay reserved. Exhaustion rejects rather than allocating in a native walk.
  static constexpr std::size_t frame_slots=256;
  struct TreeSlot { NativeNodeTreeRetirementFrame frame{}; NativeNodeTreeRetirementAcquired acquired{}; };
  struct SceneSlot { NativeNodeSceneAttachmentFrame frame{}; NativeNodeSceneAttachmentAcquired acquired{}; };
@@ -104,11 +105,18 @@ struct StartupSceneDomain {
   NodeDispatch& nodes;
   NativeNodeTreeRetirementContext* context{};
   std::unique_ptr<std::array<TreeSlot,frame_slots>> slots{std::make_unique<std::array<TreeSlot,frame_slots>>()};
-  std::size_t used{};
+  std::size_t used{}; // handed-out prefix, including retained incomplete calls
   explicit Trees(NodeDispatch& n):nodes(n) {}
   TreeSlot& next() {
-   check(used<frame_slots,"startup scene domain exhausted its prepared tree frames");
-   return (*slots)[used++];
+   std::size_t index{};
+   for(;index<used;++index)if((*slots)[index].acquired.complete)break;
+   if(index==used){
+    check(used<frame_slots,"startup scene domain exhausted its prepared tree frames");
+    ++used;
+   }
+   auto& slot=(*slots)[index];
+   slot.frame={};slot.acquired={};
+   return slot;
   }
   NativeNodeTreeRetirementInvocation recursive_unregister(void*) override {
    auto& slot=next();return {slot.frame,slot.acquired};
@@ -142,8 +150,19 @@ struct StartupSceneDomain {
   NativeNodeSceneAttachmentContext* context{};
   NativeNodeSceneChildDispatch* delegate{};
   std::unique_ptr<std::array<SceneSlot,frame_slots>> slots{std::make_unique<std::array<SceneSlot,frame_slots>>()};
-  std::size_t used{};
+  std::size_t used{}; // handed-out prefix, including retained incomplete calls
   Children(NodeDispatch& n,NativeRenderActualOwnerRegistry& o):nodes(n),owners(o) {}
+  SceneSlot& next() {
+   std::size_t index{};
+   for(;index<used;++index)if((*slots)[index].acquired.complete)break;
+   if(index==used){
+    check(used<frame_slots,"startup scene domain exhausted its prepared attachment frames");
+    ++used;
+   }
+   auto& slot=(*slots)[index];
+   slot.frame={};slot.acquired={};
+   return slot;
+  }
   const volatile U* resolve_profile(U profile) const override {
    if(delegate && !admitted_profile(profile))return delegate->resolve_profile(profile);
    return nodes.resolve_profile(profile);
@@ -154,8 +173,7 @@ struct StartupSceneDomain {
    const bool is_camera=reference && dynamic_cast<NativeCameraStorageReference*>(reference);
    const bool is_directional=reference && dynamic_cast<NativeDirectionalLightStorageReference*>(reference);
    if((target==0xb6ed80 && is_camera) || (target==0xb7c020 && is_directional)){
-    check(used<frame_slots,"startup scene domain exhausted its prepared attachment frames");
-    auto& slot=(*slots)[used++];
+    auto& slot=next();
     slot.frame.scene_argument=scene;slot.frame.recursion_argument=recursion;
     if(is_camera)set_native_node_scene_storage_00b6ed80(child,slot.frame,*context,slot.acquired);
     else attach_native_light_scene_storage_00b7c020(child,slot.frame,*context,slot.acquired);

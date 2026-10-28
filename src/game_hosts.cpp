@@ -2064,12 +2064,11 @@ GameStartupHost::~GameStartupHost() {
         if (native_renderer_) native_renderer_->drain_singletons();
         else singletons_->shutdown();
         if(scripts_)scripts_->input().after_singleton_drain();
-        if constexpr (kNativeGuiPageChainCc15Bound) native_gui_pages_.reset();
         if constexpr (kGuiManagerCc15Bound) {
             if (native_gui_manager_) {
-                // The deletion arm and cells lived through the drain; the
-                // singleton host is deleted below, so the binding goes first.
-                try { native_gui_manager_->after_singleton_drain(); native_gui_manager_.reset(); }
+                // Acknowledge the completed raw drain before the page owner
+                // drops its borrowed manager lifetime binding.
+                try { native_gui_manager_->after_singleton_drain(); }
                 catch (const std::exception& error) {
                     try { log_.notef("native GUI manager drain incomplete: %s", error.what()); log_.close(); }
                     catch (...) {}
@@ -2077,6 +2076,10 @@ GameStartupHost::~GameStartupHost() {
                 }
             }
         }
+        if constexpr (kNativeGuiPageChainCc15Bound) native_gui_pages_.reset();
+        // Page bindings are gone; the singleton host is deleted below, so
+        // the manager's deletion binding and publication cells go first.
+        if constexpr (kGuiManagerCc15Bound) native_gui_manager_.reset();
         if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
     }
     close_native_gui_probe_after_drain();
@@ -2875,7 +2878,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         // until the joint FE_initial flip.
         if (!native_gui_pages_ && native_gui_manager_ && native_data_ && native_renderer_)
             native_gui_pages_ = std::make_unique<GameNativeGuiPageApplication>(log_,
-                *native_gui_manager_, *native_renderer_, *vfs_, *native_data_);
+                *native_gui_manager_, *native_renderer_, *vfs_, *native_data_,
+                object_handle_resolvers(), gui_sse2_conversion());
     }
     frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
         settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));

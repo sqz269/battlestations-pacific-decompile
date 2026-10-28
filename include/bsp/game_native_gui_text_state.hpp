@@ -24,6 +24,22 @@ public:
     std::uint32_t& default_color_mask_00f8be48() noexcept { return default_color_mask_; }
     float& blend_factor_00f8be54() noexcept { return blend_factor_; }
 
+    // Base-widget AAA710/AAAED0 cells, distinct from Text's F8BE38 quartet.
+    // These are raw backing views only. The existing property body performs
+    // its CURRENT guard tests, OR and ordered stores; borrowing never warms
+    // either color or resets a guard. Every raw widget property provider must
+    // use this same process backing, including callbacks between reads.
+    float (&widget_white_color_00f8bce0() noexcept)[4] { return widget_white_color_; }
+    std::uint32_t& widget_white_guard_00f8bcf0() noexcept { return widget_white_guard_; }
+    float (&widget_black_color_00f8bccc() noexcept)[4] { return widget_black_color_; }
+    std::uint32_t& widget_black_guard_00f8bcdc() noexcept { return widget_black_guard_; }
+    // AA7220's live Y translation/pivot multiplier. This is the distinct
+    // initialized E12FC4 cell, not Text's E12FD4 vertical scale or a copy of it.
+    float& widget_y_scale_00e12fc4() noexcept { return widget_y_scale_; }
+    // AA2490/camera-store null-header fallback: one readable loader-zero
+    // byte at F8BC60. A distinct process backing, not an Original extent/VA.
+    const char* widget_empty_00f8bc60() const noexcept { return &widget_empty_; }
+
     // Complete 00AB7060..70A0 behavior over this SAME backing. The Original
     // no-argument entry returns F8BE38 in EAX, plain RET. This new typed
     // interface instead borrows the caller's established D7A24C float cell.
@@ -41,6 +57,12 @@ private:
     float default_color_[4]{};
     std::uint32_t default_color_mask_{};
     float blend_factor_{};
+    float widget_white_color_[4]{};
+    std::uint32_t widget_white_guard_{};
+    float widget_black_color_[4]{};
+    std::uint32_t widget_black_guard_{};
+    float widget_y_scale_;
+    char widget_empty_{};
 };
 
 // Intentionally retained process lifetime, including after GUI/font retirement.

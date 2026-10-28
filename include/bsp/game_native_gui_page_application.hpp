@@ -3,6 +3,7 @@
 #include <exception>
 #include <memory>
 
+namespace bsp { struct ObjectHandleResolverSlots; }
 namespace bsp::game {
 class GameHostLog;
 class GameNativeGuiManagerApplication;
@@ -32,8 +33,12 @@ class GameNativeGuiPageApplication final {
 public:
     // Starts the F8BF50 layer pool (CD73D0) and binds the Group environment.
     // No page, Group or Lua state is created here.
+    // Borrow the startup host's CURRENT installed Source resolver cells and
+    // its stable GUI conversion capability bool through shared native drain.
+    // Neither argument is an Original-VA publication or the live0109EEA4 word.
     GameNativeGuiPageApplication(GameHostLog&, GameNativeGuiManagerApplication&,
-        GameNativeRendererApplication&, GameVfsHost&, GameNativeReadOnlyData&);
+        GameNativeRendererApplication&, GameVfsHost&, GameNativeReadOnlyData&,
+        const ObjectHandleResolverSlots&, const bool& crt_sse2_conversion);
     ~GameNativeGuiPageApplication() noexcept;
     GameNativeGuiPageApplication(const GameNativeGuiPageApplication&) = delete;
     GameNativeGuiPageApplication& operator=(const GameNativeGuiPageApplication&) = delete;
