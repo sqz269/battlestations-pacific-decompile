@@ -4426,7 +4426,7 @@ struct GameGunneryHost::Impl {
     void apply_gun_hit_record_008777d0(std::size_t g, const bsp::HitRecord& hit);
     unsigned long long gun_damage_calls{0};
     unsigned long long guns_destroyed{0};
-    unsigned long long gun_fire_level_refusals{0};   // 007301A7
+    unsigned long long gun_fire_destroyed_refusals{0};   // 0073018E (+5Dh), 007301A7 (+358h)
     void build_rank_table();
     void attach_passes(std::size_t first_unit);
     // How many units of the units host this object has already registered.
@@ -10012,7 +10012,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             // the forced 008A7200 fire, which skips CanFire). LABELLED: +358h stays 0
             // (level 0, no model damage rows), so +5Dh is the live term.
             if (gun.destroyed_5d || gun.damage_level_358 > 0) {
-                ++gun_fire_level_refusals;
+                ++gun_fire_destroyed_refusals;
                 continue;
             }
         }
@@ -17420,6 +17420,9 @@ void GameGunneryHost::Impl::apply_gun_damage_00728080(std::size_t g, float amoun
 // and 0072B5A0 both run it), which drops the gun from the category lists. 0072B4C0
 // (the firing effects) is presentation and not modelled. The repair clear 007280A0
 // -> 00925A00 (+5Fh/+5Eh/+60h/+5Dh, 00925A52..00925A73) has no host caller.
+// LABELLED: a dead owner's rebuild is skipped. The image's 0072B5A0 runs 0072B4C0 and
+// 00956C20 on [gun+3F0h] at 0072B606..0072B631 with no owner-dead test, and 00729FA0
+// (00729FB2..00729FC5) calls 00956BA0(gun) instead when the owner's +5Dh or +60h is set.
 void GameGunneryHost::Impl::gun_destroyed_failure_0072b5a0(std::size_t g) {
     GameGunRow& gun = guns[g];
     if (gun.destroyed_60) return;                                   // 00926C80

@@ -26,7 +26,9 @@ namespace bsp {
 // +358h stays 0 and +3B8h carries every gate; device+54h (0087D730's party test) is
 // the owning unit's side; +150h (the invincibility floor) is 0; 0072B4C0 (stop the
 // firing effects) and 00925C90 are not modelled; the pending-destroy flush runs at
-// once rather than at the queue's drain later in the frame.
+// once rather than at the queue's drain later in the frame (the 68h chain applies
+// inline, an early flush); a dead owner's rebuild (0072B631's 00956C20, 00729FA0's
+// 00956BA0) is skipped.
 //
 // Readers wired under ON (game_hosts_gunnery.cpp, game_hosts_ship_ai.cpp):
 //   CanFire 00729A80 / 0085A830 gate.disabled (+3B8h) and gate.damage_counter (+358h),
