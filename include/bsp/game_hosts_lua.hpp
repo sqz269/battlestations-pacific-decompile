@@ -1563,6 +1563,10 @@ public:
     // `Bullets[index][key]` as a string; "" when absent. Used for `Type`.
     std::string read_bullet_class_string(int index, const char* key);
 
+    // `Bullets[index][key]` as a Lua boolean; `fallback` when absent or not a
+    // boolean. Packet cc13-rocketfuze (`AntiAir`).
+    bool read_bullet_class_bool(int index, const char* key, bool fallback);
+
     // `DeviceClass[index][key]` as a string; "" when absent or not a string.
     // Used for the device row's `Mesh` model path. docs/GUN_BARREL_COUNT.md.
     std::string read_device_class_string(int index, const char* key);
