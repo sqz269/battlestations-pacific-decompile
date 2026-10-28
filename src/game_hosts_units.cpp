@@ -132,6 +132,7 @@
 #include "bsp/squadron_stophead_cc13.hpp"          // packet cc13-stophead
 #include "bsp/squadron_leash_cc13.hpp"             // packet cc13-leash
 #include "bsp/squadron_step_tail_cc13.hpp"         // packet cc13-steptail
+#include "bsp/squadron_ammo_type_rack_round_cc13.hpp"  // packet cc13-ammort
 #include "bsp/director_update_arms.hpp"            // packet cc13-leash: 0080DC70
 #include "bsp/director_target_gate.hpp"
 #include "bsp/plane_squadron_entity.hpp"
@@ -5086,9 +5087,18 @@ struct GameUnitsHost::Impl {
             if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size()) continue;
             GameUnitSlot& s = *slots[m];
             const std::vector<PlaneOrdnanceRack>& racks = ordnance_racks(s);
+            // kSquadronAmmoTypeRackRoundCc13Bound: 007B91C0 walks the same rack
+            // slots as 007B9140, so ON takes plane_rack_holds_round's answer.
+            auto holds = [&](const PlaneOrdnanceRack& r) {
+                if constexpr (bsp::kSquadronAmmoTypeRackRoundCc13Bound) {
+                    return plane_rack_holds_round(s, r);
+                } else {
+                    return rack_holds_round(s, r);
+                }
+            };
             auto has = [&](int kind) {
                 for (const PlaneOrdnanceRack& r : racks) {
-                    if (r.class_id != 0 && rack_holds_round(s, r) && ancestry_has(r.class_id, kind)) {
+                    if (r.class_id != 0 && holds(r) && ancestry_has(r.class_id, kind)) {
                         return true;
                     }
                 }
@@ -5100,7 +5110,7 @@ struct GameUnitsHost::Impl {
             if (has(0x31)) return 5;
             if (has(0x2F)) return 6;
             for (const PlaneOrdnanceRack& r : racks) {
-                if (r.class_id == 0 || !rack_holds_round(s, r)) continue;
+                if (r.class_id == 0 || !holds(r)) continue;
                 const int id = r.class_id;
                 if (ancestry_has(id, 0x2A) && !ancestry_has(id, 0x2C) && !ancestry_has(id, 0x31)
                     && !ancestry_has(id, 0x2B) && !ancestry_has(id, 0x33)
