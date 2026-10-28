@@ -285,7 +285,10 @@ struct MissionRecordExtra {
 // MultiLobbySettings indices (scripts/datatables/multiglobals.lua), produce
 // nothing. ON: every enumerated key is entered as an integer key (kind 1) and
 // the negated MenuDIS lands in unique_multi_settings_by_index, as in the image.
-inline constexpr bool kMissionUniqueMultiSettingsIntegerKeysCc13Bound = false;
+// ON (cc9-recon2): no host code reads either container; this installation's
+// missiontree.lua builds every table through luaOverrideMultiLobbySettings over
+// MultiGlobals rows 0-12, whose option keys are integers too. BSM01 pair identical.
+inline constexpr bool kMissionUniqueMultiSettingsIntegerKeysCc13Bound = true;
 
 struct MissionRecordData {
     MissionRecord screen{};

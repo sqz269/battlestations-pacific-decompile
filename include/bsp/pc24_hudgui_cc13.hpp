@@ -12,9 +12,31 @@
 //   src/hud_warning_screen.cpp  0064B870 thrust/turn integration, 0051F050 binocular yaw and
 //                               pitch steps, 00526A40 pick ray end and lock radius
 //   src/game_hosts_hud_world.cpp 005C0F20 direction wedge (005C1864/005C186C)
+// pc24w1-hudgui-1b sites (inside 0064DD30):
+//   src/hud_ship_screen.cpp     0064E358 stick target and ease, 0064F665 submarine circle
+//                               ratio and worst device damage, 0064FD24 dial rate
 // Copies not narrowed by this packet: 0064B870 in src/game_hosts_units.cpp
 // (player_helm_issue_0064b870, packet pc24w1-hudgui-2); 0051F050's helm_aim_axes in
 // src/game_hosts_hud.cpp is a host inverse of the step, not an image chain.
+//
+// pc24w1-hudgui-2 sites:
+//   src/award_trackers.cpp      00692FD0 zone distance^2 and radius^2 (00693189, 00693252)
+//   src/game_hosts_units.cpp    0064B870 player_helm_issue: the lever quantization
+//                               (0064BA99/0064BAA4, 0064BAD7/0064BADD); the same
+//                               routine's integration copy in src/hud_warning_screen.cpp
+//                               (integrated_controls_0064b870) is pc24w1-hudgui-1's
+//   src/gui_framebox.cpp        00ACF9B0 sub2/scaled_sub2/uv_border/uv_border_y (their
+//                               inline asm runs at the host's precision) and the uv
+//                               middles (00ACFBC2, 00ACFC4B)
+//   src/gui_render_order.cpp    00AA3E00 0.5/size + 0.5 and 0.5/size + 0.375
+//   src/gui_screens_3.cpp       0054E020 the pause title and button y (0054E1D0..E1E2,
+//                               0054E206..E216)
+//   src/world_entities.cpp      006DC1A0 the tinted highlight alpha (006DC552/006DC561)
+//   src/world_map_bounds.cpp    004D5BD0's layout 004C71C0 (004C72BC..004C7448) and
+//                               008AECD0's (dx*dx + 0*0) + dz*dz (008AEEDF..008AEEEB)
+// Expected movers when ON: HUD and GUI layout (frame boxes, hint panel, camera
+// placement), marker alpha, the world border zone corners and the border push, the
+// capture-zone landing/capture flags at the radius edge, and the player helm levers.
 // 0043B370's gauge chain already has its own switch, kShipScreenGaugeProductRoundCc13Bound.
 namespace bsp {
 inline constexpr bool kPc24HudGuiCc13Bound = false;

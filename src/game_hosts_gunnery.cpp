@@ -22,6 +22,7 @@
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq (the deferred hit queue)
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_gunnery_cc13.hpp"    // packet pc24w1-gunnery-1
+#include "bsp/pc24_gunnery_rng_cc13.hpp"  // packet pc24w2-gunrng
 
 #include <array>
 #include <deque>
@@ -1768,6 +1769,15 @@ constexpr bool kOverrideHpHealthZeroBound = true;  // ON: faithful, no reach (SH
 //    breakup (00761310, presentation; recorded). LABELLED: run once, at the host's
 //    health-zero kill. False: no message and no draw. Packet cc9_ship_death_message.
 constexpr bool kShipDeathMessageBound = true;  // ON: USN02, JM08 pairs identical (SHIP_AI 239)
+//  * kAdoptedShipDeathMessageBound (cc9-recon2, OFF): 00827A90 calls 00958A30 at
+//    00827AAB and tests only [this+370h] <= 0 afterwards (00827AB0), so a ship-family
+//    unit with +71Ch set (00958A30's InferiorFailure arm, not destroyed) still sends 9Ah
+//    or draws the breakup. Slot 1B0h holds 00827A90 in eight of the nine ship-family
+//    vtables and its tail-jump thunk 00758390 in the ninth (00D017E0 = 00758390), and
+//    in no other vtable, so the existing ship-kind gate in ship_death_message_00827ab0
+//    is the class test. OFF: kill_unit's InferiorFailure arm
+//    returns before the message. Counted either way (adopted_ship_zero).
+constexpr bool kAdoptedShipDeathMessageBound = false;
 constexpr float kWreckChanceInstalled = 0.3f;
 //  * kShipBreakInTwoDrawsBound (cc9-ships60, SHIP_AI 298): the 98h receiver 00814520
 //    tail-jumps to 00935D30 BSP_UnitController_BreakInTwo, whose two pieces take 11
@@ -4067,9 +4077,28 @@ struct GameGunneryHost::Impl {
             u1 = draw(purpose, a, b, -1.0f, 1.0f);
             u2 = draw(purpose, a, b, -1.0f, 1.0f);
             s = u1 * u1 + u2 * u2;
+        // The image has no s == 0 test: u1 == u2 == 0 goes on to log(0) and a NaN rather
+        // than a retry (labelled; the host guard is kept).
         } while (s >= 1.0f || s == 0.0f);
-        const float k = static_cast<float>(std::sqrt(-2.0 * std::log(static_cast<double>(s))
-            / static_cast<double>(s)));
+        float k;
+        if constexpr (bsp::kPc24GunneryRngCc13Bound) {
+            // pc24w2-gunrng: 00BF0F60 calls the CRT log 00BFA910 (_CIlog). With SSE2 present
+            // (__use_sse2_mathfcns [0109EEA0], set from CPUID at 00C0AC8F) and the exception
+            // masks at their defaults, it takes __libm_sse2_log (00C148D0) -- ASSUMED: that
+            // path needs MXCSR == 1F80h and x87 CW & 7Fh == 7Fh, not verified -- a double result
+            // the x87 precision control does not touch; 00BF0F65 FSTP dword rounds it to
+            // float. std::log stands in for __libm_sse2_log: the two double results can
+            // differ in the last ulp, which moves the float only at a rounding boundary.
+            // Then L * -2.0 (00BF0F6D, qword [00D19660], exact) / s (00BF0F73 FDIV, rounded
+            // at PC24), FSTP float (00BF0F77), _CIsqrt (00BF0F7F), FSTP float (00BF0F84).
+            const float log_s = static_cast<float>(std::log(static_cast<double>(s)));
+            const float ratio = static_cast<float>(
+                cc13x87::x87_div24(cc13x87::x87_mul24(log_s, -2.0), s));
+            k = static_cast<float>(std::sqrt(static_cast<double>(ratio)));
+        } else {
+            k = static_cast<float>(std::sqrt(-2.0 * std::log(static_cast<double>(s))
+                / static_cast<double>(s)));
+        }
         return k * u1 * sigma + mean;
     }
 
@@ -4526,6 +4555,7 @@ struct GameGunneryHost::Impl {
         unsigned long long messages_9a{0}, kamikaze_removals{0}, no_breakup_nodes{0};
         unsigned long long breakup_draws{0}, breakups_98{0}, break_in_two_draws{0};
         unsigned long long break_in_two_puff_draws{0};   // kShipBreakInTwoPuffDrawsCc13Bound
+        unsigned long long adopted_ship_zero{0};         // kAdoptedShipDeathMessageBound
     } ship_death;
     unsigned long long override_hp_kills{0};
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
@@ -14151,6 +14181,13 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
             const std::size_t owner = units.parent_link_71c(victim);
             if (owner < unit_state.size()) {
                 inferior_failure_health_zero_00958a30(victim, owner);
+                // 00827AB0: the ship slot tests the health after 00958A30 returns.
+                if (units.ship_death_message_class(victim).ship) {
+                    ++ship_death.adopted_ship_zero;
+                    if constexpr (kShipDeathMessageBound && kAdoptedShipDeathMessageBound) {
+                        ship_death_message_00827ab0(victim);
+                    }
+                }
                 return;
             }
         }
@@ -16745,8 +16782,23 @@ void GameGunneryHost::ship_systems_sink_draws_00933da0_00933bb0(std::size_t unit
         ++host.sink_grid_calls;
         // 00933DC2..00933E1C: class+A4h is the host's width, class+A0h its length
         // (as in damage_smoke_tick_008227e0); _ftol truncates.
-        const int nx = static_cast<int>(static_cast<double>(us.hull_width) * 1.5 / 15.0 + 1.0);
-        const int ny = static_cast<int>(static_cast<double>(us.hull_length) * 1.5 / 15.0 + 1.0);
+        int nx, ny;
+        if constexpr (bsp::kPc24GunneryRngCc13Bound) {
+            // pc24w2-gunrng: extent * 1.5 (qword [00CE3D78]; 00933DCE x, 00933DD6 y) is
+            // stored as a float (00933DD2, 00933DDC), / 15.0 (qword [00CF3F20]; 00933DEC x,
+            // 00933E0F y), + 1 (FLD1; 00933DF0 x, 00933E13 y), each rounded at PC24, then
+            // 00BF7420 truncates the register (00933DF4, 00933E17).
+            const auto count = [](float extent) {
+                const float scaled = static_cast<float>(cc13x87::x87_mul24(extent, 1.5));
+                return static_cast<int>(
+                    cc13x87::x87_add24(cc13x87::x87_div24(scaled, 15.0), 1.0));
+            };
+            nx = count(us.hull_width);
+            ny = count(us.hull_length);
+        } else {
+            nx = static_cast<int>(static_cast<double>(us.hull_width) * 1.5 / 15.0 + 1.0);
+            ny = static_cast<int>(static_cast<double>(us.hull_length) * 1.5 / 15.0 + 1.0);
+        }
         if (kShipSystemsSinkDrawsBound && nx > 0 && ny > 0) {
             for (int i = 0; i < nx * ny; ++i) {
                 ++host.sink_draws;
@@ -18227,6 +18279,9 @@ void GameGunneryHost::report() {
                 d.break_in_two_draws,
                 kShipDeathMessageBound ? 1 : 0, host.override_hp_kills,
                 kOverrideHpHealthZeroBound ? 1 : 0);
+            host.log.notef("summary mission gunnery adopted ship health zero=%llu bound=%d "
+                "(00827AAB -> 00958A30 +71Ch arm, then 00827AB0)", d.adopted_ship_zero,
+                kAdoptedShipDeathMessageBound ? 1 : 0);
             if constexpr (bsp::kShipBreakInTwoPuffDrawsCc13Bound) {
                 host.log.notef("summary mission gunnery ship break in two puff draws=%llu "
                     "(00935D30 -> 0092A240, packet cc13-frontier)", d.break_in_two_puff_draws);

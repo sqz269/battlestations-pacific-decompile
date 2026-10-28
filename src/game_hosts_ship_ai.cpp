@@ -9198,6 +9198,9 @@ public:
             using namespace bsp::cc13x87;
             const float x_sq = static_cast<float>(x87_mul24(x, x));
             const float z_sq = static_cast<float>(x87_mul24(z, z));
+            // 00419260 calls the CRT sqrt (00BF7030), which sets 53-bit PC (027F)
+            // before FSQRT; x87_sqrt24 matches only because the radicand is already a
+            // stored float (0041928E).
             const float length =
                 static_cast<float>(x87_sqrt24(static_cast<double>(
                     static_cast<float>(x87_add24(x_sq, z_sq)))));
@@ -13112,9 +13115,20 @@ void GameShipAiHost::Impl::build_capture_buildings() {
                 float ex = 0.0f, ey = 0.0f, ez = 0.0f;
                 units.unit_position_00fc(e, ex, ey, ez);
                 const float dx = ex - bx, dy = ey - by, dz = ez - bz;
-                const float d2 = static_cast<float>(
-                    (static_cast<double>(dx) * dx + static_cast<double>(dy) * dy)
-                    + static_cast<double>(dz) * dz);
+                float d2;
+                if constexpr (bsp::kPc24ShipAiCc13Bound) {
+                    // 006F5D97-006F5DB3: DE CA FMULP dy*dy, DE CB FMULP dx*dx, DE C2 FADDP,
+                    // DC C8 FMUL ST0 dz*dz, DE C1 FADDP, each PC24, stored float
+                    // (pc24w2-shipai).
+                    d2 = static_cast<float>(bsp::cc13x87::x87_add24(
+                        bsp::cc13x87::x87_add24(bsp::cc13x87::x87_mul24(dx, dx),
+                                                bsp::cc13x87::x87_mul24(dy, dy)),
+                        bsp::cc13x87::x87_mul24(dz, dz)));
+                } else {
+                    d2 = static_cast<float>(
+                        (static_cast<double>(dx) * dx + static_cast<double>(dy) * dy)
+                        + static_cast<double>(dz) * dz);
+                }
                 if (static_cast<double>(d2) > static_cast<double>(r2)) continue;
                 CaptureBuilding::GarrisonRecord r;
                 r.unit = e;
@@ -15547,6 +15561,12 @@ void GameShipAiHost::report() {
             kMovieUpdateEmptyTrackClockCc13Bound ? 1 : 0,
             kMovieStepStaleTrackFlagCc13Bound ? 1 : 0,
             kSubmarineSeabedSpeedPc24Cc13Bound ? 1 : 0);
+        host.log.notef("summary mission path direction reach evals=%llu differs=%llu "
+            "bound=%d%d (009D9E6C kShipAiPathNodeDirectionUnorderedCc13Bound, "
+            "kShipAiPathSideWalkNanCc13Bound; packet cc9-sweep2b)",
+            reach.path_dir_evals, reach.path_dir_differs,
+            bsp::kShipAiPathNodeDirectionUnorderedCc13Bound ? 1 : 0,
+            bsp::kShipAiPathSideWalkNanCc13Bound ? 1 : 0);
         reach = bsp::ShipAiSwitchReach{};
     }
     for (const GameShipAiRow& row : host.rows) {

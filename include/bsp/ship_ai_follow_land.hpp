@@ -489,7 +489,7 @@ ShipAiFollowLandXZ ship_ai_land_pad_approach_point_006ac5d0(const ShipAiLandPadL
 // Separately, and not switched, ship_ai_land_pad_approach_point_xyz_006ac5d0 yields out+4 =
 // [+210h] + 0.0 inside the corridor and [+210h] - 0.0 outside it (double 00D7A258 at 006ACA98 /
 // 006ACB01). cc9 orders and pairs the flip.
-inline constexpr bool kPadApproachPointImageCc13Bound = false;
+inline constexpr bool kPadApproachPointImageCc13Bound = true;  // ON by pruning (cc9-sweep1b): reach counter 0 differs on every OFF run (calls 0, unreached)
 // Reach counter for kPadApproachPointImageCc13Bound (log only, sw1): calls to the
 // per-call arm, those where the image's and the host's corridor tests disagree, and
 // hold-offs whose clearance compare is unordered.

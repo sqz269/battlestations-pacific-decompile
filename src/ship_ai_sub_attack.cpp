@@ -4,6 +4,8 @@
 // makes through FSTP/MOVSS is rounded to float here with f().
 
 #include "bsp/ship_ai_sub_attack.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_shipai_cc13.hpp"   // 009EAA10 countdown reload (pc24w2-shipai)
 
 #include "bsp/geometry_helpers.hpp"
 #include "bsp/ship_ai_switch_reach.hpp"
@@ -551,8 +553,15 @@ ShipAiSubAttackTick ship_ai_sub_attack_tick_009eaa90(ShipAiSubAttackState& paren
     if (dt < countdown) {                                               // 009EAA28 JC
         parent.countdown_cc = f(static_cast<double>(countdown) - dt);
     } else {
-        parent.countdown_cc = f(static_cast<double>(countdown)
-                                + (static_cast<double>(parent.interval_c8) - dt));
+        if constexpr (kPc24ShipAiCc13Bound) {
+            // 009EAA2A D8 AE FSUBR [ESI+C8h] interval - dt, 009EAA3A DE C1 FADDP + countdown,
+            // each PC24 (pc24w2-shipai).
+            parent.countdown_cc = f(cc13x87::x87_add24(
+                countdown, cc13x87::x87_sub24(parent.interval_c8, dt)));
+        } else {
+            parent.countdown_cc = f(static_cast<double>(countdown)
+                                    + (static_cast<double>(parent.interval_c8) - dt));
+        }
         if (!parent.fire_current) {
             if (ship_ai_sub_attack_approach_to_fire_009e9d90(parent.approach.tube, host)) {
                 // 007B6EE0: approach vtable[8] (007B3DC0, RET), then fire vtable[4].

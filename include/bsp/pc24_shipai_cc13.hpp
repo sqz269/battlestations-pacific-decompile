@@ -39,6 +39,29 @@ namespace bsp {
 // Sites (pc24w1-sweep2-2, listed in the ship_ai_approach_update.cpp block comment):
 //   009F1BC0, 009E46F0, 009E7FC0, 009E76D0 slot total (also used by ship_ai_ring_scan.cpp),
 //   009E5E90, 009E6A90, 009E6E80, 009E9190, 0095E9A0 (ship_ai_approach_update.cpp)
+// Sites (pc24w1-sweep2-3):
+//   007ADD70 path follow step cursor (ship_ai_path_cursor.cpp)
+//   00416270 free bearing sum of products (ship_ai_free_bearing.cpp)
+//   006BC0C0 heading to direction, 00828F20 class derived motion (ship_ai_throttle_ring.cpp)
+//   0074F490 leak model build, the 00937F0B..00937F19 term (game_hosts_units.cpp)
+//   009E4A60 / 009E9EB0 sub attack (ship_ai_sub_attack.cpp) carry only pc24-lint allow
+//            comments; their live chains are under kShipAiFireStepPc24Cc13Bound, not here
+// Sites (pc24w1-sweep2-6):
+//   009D0C10 torpedo goaway heading (torpedo_goaway_tick.cpp)
+//   009D56F0 throttle band index (ship_ai_clearance_profile.cpp)
+//   009D6B40 throttle profile index (ship_ai_obstacle_tables.cpp)
+//   009DB820 goal planar distance, 009F1420 goal vector refresh (ship_ai_goal_vector.cpp)
+//   009E4330 nav block constructor (ship_ai_nav_block_ctor.cpp)
+//   009E6400 decay score, 009E6870 arc cost (ship_ai_ring_scan.cpp)
+//   009E76D0 wobble phase (ship_ai_ring_scan.cpp and ship_ai_approach_update.cpp)
+//   009E9190 traffic gate 009E929B..009E92E1 (ship_ai_approach_update.cpp)
+// Sites (pc24w2-shipai, census P3):
+//   006F5CC0 garrison d2 006F5D97..006F5DB3 (game_hosts_ship_ai.cpp build_capture_buildings)
+//   009EAA10 sub attack countdown reload 009EAA2A..009EAA3C (ship_ai_sub_attack.cpp)
+//   009F1420 torpedo horizon 009F16AD..009F16DE and admission distance 009F17D8..009F17EE
+//            (ship_ai_torpedo_response.cpp). The other copy of these chains,
+//            ship_ai_brain_prepass_schedule.cpp (the x87-exact form: horizon at :42 and
+//            :145, reaches at :172), is not switched.
 // Movers: ship headings, throttle and path picks, submarine depth, torpedo run times and hits.
 inline constexpr bool kPc24ShipAiCc13Bound = false;
 
