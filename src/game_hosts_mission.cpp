@@ -53,6 +53,7 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <map>
 #include <new>
@@ -554,6 +555,10 @@ struct GameMissionHost::Impl {
     std::string order_unit;   // milestone 2n, --order-unit <name>
     std::string helm_orders_path;   // packet cc9_scripted_helm_orders
     std::int32_t chosen_difficulty_override{-1};   // packet cc13-torpranges, --difficulty
+    // Packet cc13-mp1, --skirmish: requested_id names a MissionTree.multi entry.
+    bool skirmish{false};
+    std::int32_t skirmish_mode{-1};     // game+618h
+    std::int32_t skirmish_index{-1};    // into tables.multi
     // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>.
     std::string ai_drive_unit;
     float ai_drive_throttle{0.0f};
@@ -607,6 +612,8 @@ struct GameMissionHost::Impl {
 
     void publish_selection_00580940();
     void run_page_machine(float seconds);
+    void resolve_skirmish_entry();
+    void start_skirmish();
     void build_detail_page_0058c010();
     void start_briefing_005922f0();
     void consume_load_request();
@@ -1429,6 +1436,74 @@ void GameMissionHost::Impl::start_briefing_005922f0() {
     }
 }
 
+// Packet cc13-mp1 (MP1). The image enters a skirmish through the multiplayer front
+// end: the main menu's skirmish item 005E6F70 sets game+218Ch and requests states 6
+// and 7; the mode selector's 005EC990 calls 00770E40 (Session_SetMode(1)), whose
+// 0076FAD0 builds one scene record per MissionTree.multi entry (0076FC7C
+// 004E1D70(record+24h, 0, -1, 0), record+24h the sceneFile text) and selects
+// game+60Ch (0076FCA6 004C6890); the lobby's 005DA530 selects the chosen map
+// (005DA604 004C6890([00E19594])) and 004DA6C0 enters the mission once loaded. The
+// image's AutoTest driver 00427190 automates exactly that (docs/CC13_SEG1.md, screens
+// 8..0Bh: the mode-selector values 3,0,1,2,4,4,4, then 004C6890(+1Ch), 005E1CF0(0),
+// 005DA530, then 004DA6C0).
+// LABELLED harness entry: the entry is picked by its Lua `id` (case-blind, the
+// compare 005C3470 uses) or by its 0-based list index, the image's game+60Ch. Only
+// that entry's record is built (the image builds all of them and selects one), the
+// session, lobby and mode state are not modelled (MP2a/MP3), and the load is asked
+// for with 00439020's two requests, as the campaign start does.
+void GameMissionHost::Impl::resolve_skirmish_entry() {
+    skirmish_index = -1;
+    const std::string& wanted = requested_id;
+    bool numeric = !wanted.empty();
+    for (const char c : wanted) numeric = numeric && c >= '0' && c <= '9';
+    if (numeric) {
+        const unsigned long index = std::strtoul(wanted.c_str(), nullptr, 10);
+        if (index < tables.multi.size()) skirmish_index = static_cast<std::int32_t>(index);
+    } else {
+        for (std::size_t i = 0; i < tables.multi.size(); ++i) {
+            const std::string& id = tables.multi[i].screen.name;
+            if (_stricmp(id.c_str(), wanted.c_str()) == 0) {
+                skirmish_index = static_cast<std::int32_t>(i);
+                break;
+            }
+        }
+    }
+    summary.skirmish_index = skirmish_index;
+    summary.requested_found = skirmish_index >= 0;
+    if (skirmish_index < 0) {
+        log.notef("--skirmish %s names no MissionTree.multi entry (%zu entries); nothing is "
+            "loaded", wanted.c_str(), tables.multi.size());
+        return;
+    }
+    const MissionRecordData& record = tables.multi[static_cast<std::size_t>(skirmish_index)];
+    summary.selected_id = record.screen.name;
+    summary.selected_title = record.screen.title;
+    summary.selected_scene = record.screen.scene;
+    log.notef("skirmish selection: multi[%d] id=%s name=%s scene=%s mode=%d (packet cc13-mp1)",
+        skirmish_index, record.screen.name.c_str(), record.screen.title.c_str(),
+        record.screen.scene.c_str(), skirmish_mode);
+}
+
+void GameMissionHost::Impl::start_skirmish() {
+    if (skirmish_index < 0
+        || static_cast<std::size_t>(skirmish_index) >= tables.multi.size()) {
+        log.notef("no skirmish entry was resolved; the run stops");
+        return;
+    }
+    const MissionRecordData& record = tables.multi[static_cast<std::size_t>(skirmish_index)];
+    MissionStatsBinding stats(*this);
+    PendingSceneBinding scene(*this);
+    MissionStartBinding start(*this, scene, stats);
+    // 0076FC7C / 0076FCA6 for the one entry: 004E1D70 then 004C6890.
+    start.set_pending_scene(record.screen.scene, std::string_view{});
+    // LABELLED: the multiplayer start's own request path is not traced (MP3).
+    start.request_mission_start();
+    summary.requests_queued = load.requests.size();
+    summary.load_requested = !load.requests.empty();
+    log.unimplemented("Session::set_mode_host", "0076fad0");
+    log.unimplemented("MultiGameLobby::apply_selected_map", "005da530");
+}
+
 void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
     const std::string& scene_path) {
     participant_scene_counts.erase(scene_path);
@@ -1718,6 +1793,13 @@ void GameMissionHost::set_chosen_difficulty(std::int32_t value) {
     impl_->chosen_difficulty_override = value;
 }
 
+void GameMissionHost::set_skirmish(std::int32_t mode) {
+    impl_->skirmish = true;
+    impl_->skirmish_mode = mode;
+    impl_->summary.skirmish = true;
+    impl_->summary.skirmish_mode = mode;
+}
+
 void GameMissionHost::set_ai_drive(std::string unit, float throttle, float rudder) {
     impl_->ai_drive_unit = std::move(unit);
     impl_->ai_drive_throttle = throttle;
@@ -1806,7 +1888,10 @@ void GameMissionHost::load_mission_tree_005caaf0() {
         host.summary.selected_title = record->screen.title;
         host.summary.selected_scene = record->screen.scene;
     }
-    if (!host.summary.requested_found) {
+    if (host.skirmish) {
+        // Packet cc13-mp1: the id names a MissionTree.multi entry, not a campaign one.
+        host.resolve_skirmish_entry();
+    } else if (!host.summary.requested_found) {
         host.log.notef("mission id %s is not in the tree; 005caaf0's tail clamps the "
             "selection to the first mission of the first group", host.requested_id.c_str());
     }
@@ -2139,6 +2224,13 @@ bool GameMissionHost::advance(float seconds) {
 
     switch (host.step) {
     case GameMissionStep::Idle:
+        if (host.skirmish) {
+            // Packet cc13-mp1: the multiplayer front end, not the campaign pages.
+            host.start_skirmish();
+            host.step = host.summary.load_requested ? GameMissionStep::LoadRequested
+                                                    : GameMissionStep::Stopped;
+            return host.summary.load_requested;
+        }
         host.publish_selection_00580940();
         host.step = GameMissionStep::PublishList;
         return true;
