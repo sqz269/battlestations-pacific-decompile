@@ -15,6 +15,7 @@
 #include "bsp/pc24_gunnery_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/aim_lead_body_axis_cc13.hpp"
+#include "bsp/plane_issue_threshold_cc13.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"
 #include "bsp/ship_ai_switch_reach.hpp"
 #include "bsp/game_hosts_ready.hpp"  // kSunkShipFlushBound, packet cc13-jm08
@@ -24785,10 +24786,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // - so the descriptor value stands in at 1.0 while
                             // the 0.95 scale is the native's own. SUBSTITUTION,
                             // with the address.
+                            // ON (bsp::kPlaneIssueThresholdZeroCc13Bound, packet
+                            // cc13-issuea0): 0079CD36 writes the camera that
+                            // 0079CBD0 builds, not this block. The block is
+                            // memset at new(414h), and nothing writes its +390h,
+                            // so the value is 0.0 and 007EEF40 never passes.
+                            if constexpr (bsp::kPlaneIssueThresholdZeroCc13Bound) {
+                                in.authorise_value_390 = 0.0f;
+                            } else {
                             owner_.log.unimplemented(
                                 "PlaneClass::issue_threshold_a0", "0079cd36");
                             in.authorise_value_390 = static_cast<float>(
                                 1.0 * bsp::kIssueThresholdScale_00ceffb0);
+                            }
 
                             slot_.torpedo_issue_threshold_390 =
                                 in.authorise_value_390;
