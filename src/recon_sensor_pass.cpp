@@ -386,9 +386,11 @@ bool forced_recon_level(int side, std::size_t target, ReconDetectionLevel& out) 
     return true;
 }
 
+// Packet cc13-reconclear: the world teardown, under kForcedReconMissionClearCc13Bound.
 void clear_forced_recon_levels() {
     forced_recon_table().clear();
     forced_recon_raw_table().clear();
+    forced_recon_clears().clear();
 }
 
 bool forced_recon_level_raw(int side, std::size_t target, int& out) {

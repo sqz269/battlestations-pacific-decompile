@@ -20,6 +20,7 @@
 #include "bsp/plane_task_reach_sw3.hpp"
 #include "bsp/mothership_failure.hpp"
 #include "bsp/get_failure_runway_hangar_cc13.hpp"
+#include "bsp/forced_recon_mission_clear_cc13.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/bullet_engagement_range.hpp"  // packet cc9_ai_plane_loadout_arm
 #include "bsp/objective_units.hpp"
@@ -3015,6 +3016,10 @@ void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noex
     // Packet p17_catapult_adapter: the ships' launch records live with the world.
     bsp::ship_catapult_registry().clear();
     if (orders == nullptr) {
+        // Packet cc13-reconclear: the image's forced recon records live in the units.
+        if constexpr (bsp::kForcedReconMissionClearCc13Bound) {
+            bsp::clear_forced_recon_levels();
+        }
         bsp::spawn_request_queue().clear();
         bsp::set_air_ops_squadron_factory(nullptr);
         bsp::set_air_ops_squadron_plane_count(nullptr, nullptr);

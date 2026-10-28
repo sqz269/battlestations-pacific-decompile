@@ -17,6 +17,14 @@ namespace bsp {
 // host's computed level otherwise. OFF: the computed level only, as before.
 // Not the image's lifetime: the forced table is process-wide and nothing calls
 // clear_forced_recon_levels, while the image's records live and die with the unit.
+// (cc13-reconclear's kForcedReconMissionClearCc13Bound clears both tables at world
+// teardown.)
+// Image quirk, not modelled (latent): SetForcedReconLevel's squadron member loop
+// (008AAA8E..008AAACB) reads the member from squadron+3D0h + i*4 only while i <= 4
+// (008AAAA1 CMP EBP,4 / JA). Above 4, EAX = 0 (008AAAAE), so the record passed to
+// 00805CF0 at 008AAAB8 is the null unit's: ECX = party*34h + 1E8h, a near-null
+// address. The host's member loop in run_set_forced_recon_level_008aa8f0 forces every
+// member_units entry instead.
 // Movers: GetProperty(unit, "reconlevel")[party] after SetForcedReconLevel, read by
 // luaGetReconLevel (commandhelpers.lua 1816), messagesender.lua 230 (ReconCheck message
 // gates) and chg_7_cargo.lua (516, 707).
