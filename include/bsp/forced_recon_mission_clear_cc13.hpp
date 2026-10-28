@@ -28,6 +28,7 @@ namespace bsp {
 // Movers when ON: only the second and later missions of one process whose earlier
 // mission called SetForcedReconLevel (561 calls in this installation's Lua, including
 // global\commandhelpers.lua). A single-mission run is unchanged.
-inline constexpr bool kForcedReconMissionClearCc13Bound = false;
+// ON (cc9-recon2): flipped with kReconLevelForcedCc13Bound; a no-op for single-mission runs.
+inline constexpr bool kForcedReconMissionClearCc13Bound = true;
 
 }  // namespace bsp

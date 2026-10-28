@@ -2803,8 +2803,10 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     // only from the records, so it is not in the mission. LABELLED: with the
     // skip on the first frame (kEngineMovieEntryBound) it is not created at all
     // instead of created and killed; the registration pass is left as it was.
-    bool survives_stop = false;
-    if (bsp::game::kEngineMovieStopRosterExemptBound) {
+    // Packet cc9-sweep2b reach: the exempt test is evaluated with the switch OFF
+    // too, so the drop line below can say whether ON would have kept the entity.
+    bool exempt_reach = false;
+    {
         // 0046F26C-0046F2E1: the +158h set; 0046B7CA tests a root, then an
         // exempt root's children.
         auto exempt = [](const std::string& class_name) {
@@ -2813,10 +2815,11 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             const int id = static_cast<int>(row->class_id);
             return id == 0x44 || id == 0x5E || id == 0x1D || id == 0x47 || id == 0x3D;
         };
-        survives_stop = hidden_property_bool(bag.find(bsp::kSceneHiddenPropertyKey))
+        exempt_reach = hidden_property_bool(bag.find(bsp::kSceneHiddenPropertyKey))
             || (exempt(entity.class_name)
                 && (authored_parent.scene_id == 0 || exempt(authored_parent.class_name)));
     }
+    const bool survives_stop = bsp::game::kEngineMovieStopRosterExemptBound && exempt_reach;
     if (bsp::game::kEngineMovieEntryBound && bsp::game::kEngineMovieStopRosterBound
             && !survives_stop
             && gate.generate && gate.rule == SceneGateRule::EngineMovieFallback) {
@@ -2824,8 +2827,9 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         record.generated = false;
         rule_name = "EngineMovieFallback, killed at the movie's stop (0046B730)";
         owner.log.notef("scene movie-only entity dropped: %s (%s), admitted by the "
-            "GenerateInEngineMovie fallback with no +24h record (kEngineMovieStopRosterBound)",
-            entity.name.c_str(), entity.class_name.c_str());
+            "GenerateInEngineMovie fallback with no +24h record (kEngineMovieStopRosterBound) "
+            "exempt_reach=%d", entity.name.c_str(), entity.class_name.c_str(),
+            exempt_reach ? 1 : 0);
     }
     if (!gate.generate) {
         record.skipped_because = std::string("gate rejected: ") + rule_name;

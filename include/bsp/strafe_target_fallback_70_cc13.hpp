@@ -78,6 +78,6 @@ namespace bsp {
 // goaway break-off the arm is suspended, so ON keeps a target killed by damage until the
 // next approach update, but drops a Killed one at once; and the 007B7870 rocket target
 // goes to 0 after the target dies.
-inline constexpr bool kStrafeTargetFallback70Cc13Bound = false;
+inline constexpr bool kStrafeTargetFallback70Cc13Bound = true;  // ON by joint pair (cc9-sweep1b)
 
 }  // namespace bsp
