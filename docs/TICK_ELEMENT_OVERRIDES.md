@@ -138,6 +138,12 @@ plus the tail block `007F3D24..007F3D30` that ends in `JMP 0x7F3C60`, `INT3` fro
    otherwise it becomes `t + (period - step)` with the period at `squadron+3C0h`, and
    `007EE790(squadron)` fires. The constructor seeds the period with `1.0f` and the
    countdown with `-1.0f`, so it fires on the first step.
+   **Correction (cc13-tranche2 S19, rev4):** the countdown seed is not `-1.0f`. `007F2D30`
+   `FLD1` and `007F2D46` `FLDZ` push the bounds (1.0, 0), `ECX = 1`, `007F2D5B` calls
+   `00BD2F10` and `007F2D60` `FCHS`es the result before `007F2D6A` stores `+3C4h`, so it is
+   `-U(0, 1)` on stream 1. It still fires on the first step, since the seed is not positive.
+   The node runs in tick group 3 (`007F2C89` `PUSH 3` -> `00875890`), after the units'
+   group 1.
 4. `007F3C60`: `squadron+3B0h = squadron+3B8h`, then the member loop over
    `[squadron+3D0h][0 .. squadron+3CCh)`. Per member: raise `member+2ECh` to
    `squadron+2ECh`; skip an inactive member (`member+904h`); `007B8AD0(member)` and OR the

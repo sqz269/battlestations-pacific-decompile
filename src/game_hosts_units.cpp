@@ -164,6 +164,10 @@
 #include "bsp/geom_mesh_resource.hpp"  // GeomMeshResourcePayload, cc9_ship_section_points
 #include "bsp/opportunistic_rocket_cc13.hpp"
 #include "bsp/rocket_target_stop_cc13.hpp"  // cc13-rocketstop, task+38Ch per task
+#include "bsp/free_attack_accept_test_cc13.hpp"  // cc13-tranche2 S18
+#include "bsp/wingmen_recount_countdown_cc13.hpp"  // cc13-tranche2 S19
+#include "bsp/near_field_probe_cached_list_cc13.hpp"  // cc13-tranche2 S22
+#include "bsp/attack_target_classify.hpp"
 #include <array>
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
@@ -9573,6 +9577,10 @@ struct GameUnitsHost::Impl {
         return true;
     }
     void vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt);
+    static bool nb_in_world(const GameUnitSlot& o);
+    void nb_near_30_tick_007e2010(GameUnitSlot& u, float dt);
+    bool nb_has_object_c50(const GameUnitSlot& u) const;
+    void nb_near_30_fixed_step(float step);
     bool friendly_in_line_007b96d0(GameUnitSlot& u, float dt);
     void friendly_in_line_clock_007e2010(GameUnitSlot& u, float dt);
     bool friendly_in_line_eval_007dedb0(GameUnitSlot& u);
@@ -10127,17 +10135,71 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // (007BCC20) is non-negative. SUBSTITUTION, labelled: the image recounts when
     // 007EE790's countdown expires and reads the previous buffer index; this host
     // counts at the call.
+    // CORRECTION (cc13-tranche2 S19): under bsp::kWingmenRecountCountdownCc13Bound the
+    // count is 007EE790's, held per squadron and retaken on the 007F3C3F countdown
+    // (squadron_wingmen_recount_007f3c3f, include/bsp/wingmen_recount_countdown_cc13.hpp).
+    int count_following_wingmen_007ee790(const bsp::PlaneSquadronHostRecord& sq) const {
+        int active = 0;
+        for (std::size_t i = 1; i < sq.member_units.size(); ++i) {
+            const std::size_t m = sq.member_units[i];
+            if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size() || !slots[m]) continue;
+            if (member_follows_007bcc20(*slots[m])) ++active;
+        }
+        return active;
+    }
     bool plane_is_leader_with_wingmen_007b95e0(const GameUnitSlot& unit) const {
         const bsp::PlaneSquadronHostRecord* sq =
             bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
         if (sq == nullptr || sq->flight_leader() != unit.process_index) return false;
-        int active = 0;
-        for (std::size_t i = 1; i < sq->member_units.size(); ++i) {
-            const std::size_t m = sq->member_units[i];
-            if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size() || !slots[m]) continue;
-            if (member_follows_007bcc20(*slots[m])) ++active;
+        if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
+            const auto it = wingmen_recount_.find(sq->name);
+            return it != wingmen_recount_.end() && it->second.count_3bc > 0;  // +3BCh
+        } else {
+            return count_following_wingmen_007ee790(*sq) > 0;
         }
-        return active > 0;
+    }
+    // squadron+3C4h / +3BCh, packet cc13-tranche2 S19.
+    // CORRECTION (rev4 FIX 1): +3C4h is not seeded -1.0. 007F2D30..007F2D6A store
+    // -U(0, 1) from 00BD2F10 on stream 1 (FCHS at 007F2D60); the default below is only
+    // the value before that draw is taken (squadron_wingmen_recount_seed).
+    struct WingmenRecount {
+        float countdown_3c4 = bsp::kSquadronRecountCountdownSeed;
+        int count_3bc = 0;
+    };
+    std::map<std::string, WingmenRecount> wingmen_recount_;
+    // 007F2D30..007F2D6A at the squadron's construction: +3C4h = -U(0, 1), stream 1.
+    // STREAM-ORDER MOVER, LABELLED: the host draws when it first sees the record, at the
+    // start of the next units' fixed step (the registry has four creators in other
+    // hosts), not at the constructor's own place in the stream-1 sequence. The index is
+    // the flight leader's (0 with none); it keys the stream only under the measurement
+    // option. With no gunnery host the midpoint -0.5 stands in.
+    void squadron_wingmen_recount_seed() {
+        for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
+            if (wingmen_recount_.count(sq.name) != 0) continue;
+            WingmenRecount& r = wingmen_recount_[sq.name];
+            const std::size_t lead = sq.flight_leader();
+            const std::size_t key = lead != bsp::kPlaneSquadronNoUnit ? lead : 0u;
+            r.countdown_3c4 = gunnery != nullptr
+                ? -gunnery->death_mode_draw_00bd2f10(1, key, 0.0f, 1.0f)   // 007F2D5B, FCHS
+                : -0.5f;
+        }
+    }
+    // 007F3C3F..007F3C5B, once per fixed step for every squadron. Each float op is
+    // stored as a float, which is the image's per-op PC24 result.
+    void squadron_wingmen_recount_007f3c3f(float step) {
+        for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
+            const auto it = wingmen_recount_.find(sq.name);
+            if (it == wingmen_recount_.end()) continue;   // created this step: next step
+            WingmenRecount& r = it->second;
+            // 007F3C3F FCOMI step, t / JC: below or unordered (a NaN) takes t -= step.
+            if (!(step >= r.countdown_3c4)) {                              // 007F3C41 JC
+                r.countdown_3c4 -= step;                                   // 007F3D24
+            } else {
+                const float reload = bsp::kSquadronRecountPeriod3c0 - step; // 007F3C47
+                r.countdown_3c4 = reload + r.countdown_3c4;                // 007F3C53
+                r.count_3bc = count_following_wingmen_007ee790(sq);        // 007F3C5B
+            }
+        }
     }
     int moveto_blend_calls_{0};
     int leader_turn_roll_uses{0};
@@ -11444,6 +11506,10 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         // into a pitch through the same 009FB800 every other
         // state uses, with the commanded altitude as its own
         // reference.  SUBSTITUTION, labelled.
+        // CORRECTION (cc13-tranche2 S25, 2026-10-28): 009F9ED0 is read
+        // (bsp::pitch_command_to_point_009f9ed0, packet cc9_follow_pitch) and runs under
+        // kPlaneFollowFlyToPitch (true) below; the 009FB800 substitution above is the
+        // OFF arm only.
         bsp::PlanePitchCommandInputs pin;
         pin.desired_altitude = cmd.commanded_altitude;
         pin.reference = cmd.commanded_altitude;
@@ -13755,6 +13821,82 @@ static const std::string& plane_rate_trace_name() {
     return value;
 }
 
+// 007E2010 / 007E11D0 for the +30h copy: the +7Ch clock advanced by dt and, when it
+// reaches +88h = 3.0, members at or beyond R = 1080 dropped and every world entity
+// answering IsKindOf(6) or (0Fh) within R and not yet listed appended. "In the world
+// list" is a slot with a live state object not marked destroyed (wrecks stay listed,
+// as the refresh has no death test). Labelled, as for kPlaneFinderBound.
+bool GameUnitsHost::Impl::nb_in_world(const GameUnitSlot& o) {
+    return o.state != nullptr && o.state->active != 0 && o.scene_destroyed_005e == 0 &&
+           o.scene_pending_destroy_0060 == 0;
+}
+
+void GameUnitsHost::Impl::nb_near_30_tick_007e2010(GameUnitSlot& u, float dt) {
+    const bsp::PlaneNeighbourRadii radii = bsp::plane_neighbour_radii_007e11d0(3.0f);
+    const float* p0 = u.world.data() + 12;                          // unit+FCh..+104h
+    auto dist2 = [&](const GameUnitSlot& o) {
+        const double dx = static_cast<double>(o.world[12]) - p0[0];
+        const double dy = static_cast<double>(o.world[13]) - p0[1];
+        const double dz = static_cast<double>(o.world[14]) - p0[2];
+        return dx * dx + dy * dy + dz * dz;
+    };
+    nb_seed_clocks(u);
+    u.nb_clock_30 += dt;
+    if (u.nb_clock_30 >= 3.0f) {
+        const double lim = static_cast<double>(radii.near_any) * radii.near_any;
+        auto& v = u.nb_near_30;
+        for (std::size_t k = 0; k < v.size();) {
+            if (v[k] >= slots.size() || !nb_in_world(*slots[v[k]]) || dist2(*slots[v[k]]) >= lim) {
+                v[k] = v.back();
+                v.pop_back();
+            } else {
+                ++k;
+            }
+        }
+        for (std::size_t j = 0; j < slots.size(); ++j) {
+            const GameUnitSlot& o = *slots[j];
+            if (&o == &u || !nb_in_world(o)) continue;
+            if (!bsp::unit_is_kind_of(o.class_id, 0x06) && !bsp::unit_is_kind_of(o.class_id, 0x0F)) {
+                continue;
+            }
+            if (!(dist2(o) < lim)) continue;
+            bool listed = false;
+            for (const std::size_t e : v) listed = listed || e == j;
+            if (!listed) v.push_back(j);
+        }
+        u.nb_clock_30 -= 3.0f;
+    }
+}
+
+// cc13-tranche2 S22 (include/bsp/near_field_probe_cached_list_cc13.hpp): the unit+C50h
+// object is a tick element (007E2010 is its vtable 00D06B88 slot +0Ch), so its +30h
+// list advances with the fixed step. 007D61C0..007D621F builds it when [game+1FE4h] is
+// 0 or 1 and unit+54h != [[game]+5FCh]+908h; kSceneDefaultDummyAi stands in for +908h,
+// as at 009A184A. LABELLED: run at the start of the units' fixed step, while the plane
+// is in the world.
+// CORRECTION (rev7 S22 NIT 1): not a step lead. 007E2010 runs in wave 2 as a plane
+// sub-node, after the pose step; measuring before the host's pose move is the existing
+// kPlanePoseFirstBound substitution.
+// LABELLED split (rev7 S22 NIT 3): the image's one +7Ch clock refreshes +30h, +50h and
+// +70h together, and 007E2010's early return clears all three. Under ON only the +30h
+// copy (nb_clock_30) moves to the fixed step; the +70h copy (nb_clock_70, with the +80h
+// clock, friendly_in_line_clock_007e2010) and the +50h list stay on the think, so their
+// phases can drift from +30h's.
+bool GameUnitsHost::Impl::nb_has_object_c50(const GameUnitSlot& u) const {
+    return u.row.party != bsp::kSceneDefaultDummyAi;
+}
+
+void GameUnitsHost::Impl::nb_near_30_fixed_step(float step) {
+    for (const auto& slot : slots) {
+        if (!slot) continue;
+        GameUnitSlot& u = *slot;
+        if (!bsp::unit_is_kind_of(u.class_id, 0x0F) || !nb_has_object_c50(u) || !nb_in_world(u)) {
+            continue;
+        }
+        nb_near_30_tick_007e2010(u, step);
+    }
+}
+
 // 0099B670 -> 007DF4F0 (__thiscall(neighbours = unit+C50h, pilot), RET 4,
 // body 007DF4F0-007E073E), for one plane per think. The unit+C50h object is
 // built for AI planes not of the local player's party (007D621F), which
@@ -13768,44 +13910,10 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
     // interval, and "in the world list" is a slot with a live state object
     // not marked destroyed (wrecks stay listed, as the refresh has no death
     // test). Labelled, as for kPlaneFinderBound.
-    const bsp::PlaneNeighbourRadii radii = bsp::plane_neighbour_radii_007e11d0(3.0f);
     const float* p0 = u.world.data() + 12;                          // unit+FCh..+104h
-    auto dist2 = [&](const GameUnitSlot& o) {
-        const double dx = static_cast<double>(o.world[12]) - p0[0];
-        const double dy = static_cast<double>(o.world[13]) - p0[1];
-        const double dz = static_cast<double>(o.world[14]) - p0[2];
-        return dx * dx + dy * dy + dz * dz;
-    };
-    auto in_world = [](const GameUnitSlot& o) {
-        return o.state != nullptr && o.state->active != 0 && o.scene_destroyed_005e == 0 &&
-               o.scene_pending_destroy_0060 == 0;
-    };
-    nb_seed_clocks(u);
-    u.nb_clock_30 += dt;
-    if (u.nb_clock_30 >= 3.0f) {
-        const double lim = static_cast<double>(radii.near_any) * radii.near_any;
-        auto& v = u.nb_near_30;
-        for (std::size_t k = 0; k < v.size();) {
-            if (v[k] >= slots.size() || !in_world(*slots[v[k]]) || dist2(*slots[v[k]]) >= lim) {
-                v[k] = v.back();
-                v.pop_back();
-            } else {
-                ++k;
-            }
-        }
-        for (std::size_t j = 0; j < slots.size(); ++j) {
-            const GameUnitSlot& o = *slots[j];
-            if (&o == &u || !in_world(o)) continue;
-            if (!bsp::unit_is_kind_of(o.class_id, 0x06) && !bsp::unit_is_kind_of(o.class_id, 0x0F)) {
-                continue;
-            }
-            if (!(dist2(o) < lim)) continue;
-            bool listed = false;
-            for (const std::size_t e : v) listed = listed || e == j;
-            if (!listed) v.push_back(j);
-        }
-        u.nb_clock_30 -= 3.0f;
-    }
+    // cc13-tranche2 S22: under bsp::kNearFieldProbeCachedListCc13Bound the refresh runs
+    // once per fixed step for every plane (nb_near_30_tick_007e2010), not here.
+    if constexpr (!bsp::kNearFieldProbeCachedListCc13Bound) nb_near_30_tick_007e2010(u, dt);
     if (u.nb_near_30.empty()) return;                               // 007DF53B this+34h
 
     const bool free_flight = u.plane_control_mode_900 == 7;
@@ -20353,8 +20461,74 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
         // 009F82EE: a category 1/2 command with no target leaves for 009F8412;
         // 009F830C / 009F8313: so does one 007EE8F0 refuses. SUBSTITUTION (labelled):
         // "the target is not dead" stands for 007EE8F0.
-        const bool target_live = over_target != 0u && over_target - 1u < h.slots.size()
+        // CORRECTION (cc13-tranche2 S18): under bsp::kFreeAttackAcceptTestCc13Bound the
+        // gate also asks 007EE8F0 itself (include/bsp/free_attack_accept_test_cc13.hpp),
+        // for every category 1/2 class: a refusal skips the leash arm and the whole
+        // 009F83AD..009F8407 tail below.
+        const bool target_resolved = over_target != 0u && over_target - 1u < h.slots.size()
             && !gun->unit_dead(over_target - 1u);
+        const bool target_live = [&]() -> bool {
+            if constexpr (bsp::kFreeAttackAcceptTestCc13Bound) {
+                if (!(target_resolved && category_12)) return target_resolved;
+                // 009F830C 007EE8F0(ECX = squadron; current, target, 00922DC0(target),
+                // 007B58D0(squadron)). LABELLED: the flight leader stands for the
+                // squadron's +54h and its slot-0 plane.
+                const std::size_t t = over_target - 1u;
+                bsp::EntityTargetFacts tf;
+                tf.present = true;
+                tf.not_engageable = unit_flag_005d(t);
+                tf.is_plane = unit_is_kind_of(t, 0x0f);
+                tf.is_plane_squadron = unit_is_kind_of(t, 0x18);
+                tf.is_ship_family = unit_is_kind_of(t, 0x06);
+                tf.is_submarine = unit_is_kind_of(t, 0x08);
+                tf.is_airfield = unit_is_kind_of(t, 0x45);
+                tf.is_shipyard = unit_is_kind_of(t, 0x46);
+                tf.is_command_building = unit_is_kind_of(t, 0x1c);
+                tf.is_dummy_target = unit_is_kind_of(t, 0x35);
+                tf.is_land_fort = unit_is_kind_of(t, 0x1b);
+                float pr[3], pu[3], pf[3], pt[3];
+                if (unit_pose(t, pr, pu, pf, pt)) tf.world_y = pt[1];
+                // 00922DC0: MOV DL,1 / JMP 00922C80. The 008DDF90 set arm as the
+                // script-order chooser takes it: slot 0's set (LABELLED), then the
+                // tail with DL = 1. Periscope level and FakedType keep their defaults.
+                bool surface = false;
+                switch (bsp::entity_is_surface_target_00922c80(tf)) {
+                    case bsp::SurfaceTargetAnswer::kYes: surface = true; break;
+                    case bsp::SurfaceTargetAnswer::kNo: surface = false; break;
+                    case bsp::SurfaceTargetAnswer::kUnreadSetBranch: {
+                        bool in_set = false;
+                        if (unit_is_kind_of(t, 0x05)) {
+                            const std::vector<std::size_t> set =
+                                bsp::game::game_objective_sets().units_in_slot(0);
+                            in_set = std::find(set.begin(), set.end(), t) != set.end();
+                        }
+                        surface = in_set || bsp::entity_surface_target_tail_00922c80(tf, true);
+                        break;
+                    }
+                }
+                bsp::AttackFeasibilityInputs in;
+                in.unit_has_weapon_controller = true;               // 007EE8FC, a leader
+                in.target_present = true;                           // 007EE8F6
+                in.target_is_structure = tf.is_command_building;    // 007EE90A
+                in.unit_side = unit_side_0054(leader);              // 007EE917
+                in.target_side = unit_side_0054(t);                 // 007EE912
+                in.target_is_surface = surface;                     // the byte argument
+                in.target_is_air = bsp::entity_is_airborne_00922b10(tf);    // 007EEAF5
+                in.target_is_strafe_fallback = unit_is_kind_of(t, 0x41);    // 007EEBA7
+                in.guns_available = plane_pilot_fires_0c24(leader);         // 007EEB08/007EEBB7
+                in.self_is_dogfight_excluded = unit_is_kind_of(leader, 0x16); // 007EEB1A
+                in.guns_suppressed = unit_is_kind_of(leader, 0x10)          // 007EEB2C/007EEBC2,
+                    || in.self_is_dogfight_excluded;                        // 0047B850
+                // The category 1/2 classes reaching here are artillery 00E08F10, strafe
+                // 00E08F40, attackmove 00E08F78 and dogfight 00E08F58. Attackmove is the
+                // side prologue alone (007EE938); artillery has no arm and falls to
+                // 007EEBD1 -> 007EEBF6 XOR AL,AL, so it is always refused. The ordnance
+                // inputs and the loadout feed none of these four arms.
+                return bsp::attack_command_applies(current, in);
+            } else {
+                return target_resolved;
+            }
+        }();
         FreeAttackWorld leash_world(*this, h, *gun);
         if (current == 0x00E08F58u && !early_arm && (!category_12 || target_live)
                 && over_target != 0u && over_target - 1u < h.slots.size()) {
@@ -23525,6 +23699,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     // to the planes' are not modelled), so a round dropped in this step's rack
     // tick first runs in the next step.
     host.para_round_step(step_seconds);
+    // Packet cc13-tranche2 S22: the unit+C50h objects' 007E2010 tick for the +30h list.
+    // LABELLED order: ahead of the planes' ticks.
+    // CORRECTION (rev7 S22 NIT 1/2): 007E2010 is a plane sub-node (007E1E20 -> 00876020
+    // Reparent, +18h = 2, under unit+310h), so the image runs it in wave 2, after wave
+    // 1's pose step and before the wave-3 consumers: there is no step lead. The one
+    // difference is that this pass measures before the host's pose move, the existing
+    // kPlanePoseFirstBound substitution. It now also runs before the S19 seed below, as
+    // the image runs the plane sub-nodes before the group-3 squadron node.
+    if constexpr (bsp::kNearFieldProbeCachedListCc13Bound) {
+        host.nb_near_30_fixed_step(step_seconds);
+    }
+    // Packet cc13-tranche2 S19: squadrons first seen this step take 007F2D5B's
+    // +3C4h draw here; their 007F3BA0 tick runs at the end of the step (below).
+    // LABELLED: the order of this draw against the S22 pass's first-step
+    // nb_seed_clocks draws (both stream 1) follows the tick order above; the
+    // image's 007F2D5B / 007E1F94 construction order is not traced. "Both stream
+    // 1" holds only under kStreamSet2SharedDrawsCc13Bound: with it OFF the nb seeds
+    // draw from db_release_rng (release_altitude_draw_00bd2f10), not gunnery's
+    // stream 1, and the two seeds do not interact (rev7 S22 FIX 2).
+    if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
+        host.squadron_wingmen_recount_seed();
+    }
     if constexpr (Impl::kPlayerRoleBookkeepingBound) {
         if constexpr (Impl::kRoleScreenFixedStepCall) {
             host.role_screen_update_0067bb50();
@@ -28360,10 +28556,39 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // refreshed every 3 s by 007E11D0) and keeps vtable[5Ch](0Fh);
                     // this scans every live aircraft directly, without the 3 s lag.
                     // The box is at most 140 m, far inside the list's 1080 m.
+                    // CORRECTION (cc13-tranche2 S22): under
+                    // bsp::kNearFieldProbeCachedListCc13Bound the walk is the list itself
+                    // (include/bsp/near_field_probe_cached_list_cc13.hpp).
                     bsp::NearFieldProbeResult nf_probe_007f0280(const float extents[3],
                                                                 const float weights[3]) {
+                        if constexpr (bsp::kNearFieldProbeCachedListCc13Bound) {
+                            // 007F039F..007F03AB: no C50h object -> the squadron arm 007F0481.
+                            if (!owner_.nb_has_object_c50(unit_)) {
+                                return nf_probe_squadron_007f0280(extents, weights);
+                            }
+                        }
                         std::vector<bsp::NearFieldCandidate> cands;
                         const float reach = extents[0] + extents[1] + extents[2];
+                        if constexpr (bsp::kNearFieldProbeCachedListCc13Bound) {
+                            for (const std::size_t j : unit_.nb_near_30) {   // 007F03B1 [C50h+30h]
+                                if (j >= owner_.slots.size()) continue;
+                                if (j == unit_.process_index) continue;   // 007F056F
+                                const GameUnitSlot& o = *owner_.slots[j];
+                                // No live test in the walk; a member leaves the list when
+                                // its slot leaves the world (its observer, labelled).
+                                if (!GameUnitsHost::Impl::nb_in_world(o)) continue;
+                                if (!bsp::unit_is_kind_of(o.class_id, 0x0F)) continue;  // 007F03D8
+                                const double dx = static_cast<double>(o.motion.position[0]) - unit_.motion.position[0];
+                                const double dy = static_cast<double>(o.motion.position[1]) - unit_.motion.position[1];
+                                const double dz = static_cast<double>(o.motion.position[2]) - unit_.motion.position[2];
+                                if (dx * dx + dy * dy + dz * dz > static_cast<double>(reach) * reach) continue;
+                                bsp::NearFieldCandidate c;
+                                float pp[3] = {o.motion.position[0], o.motion.position[1], o.motion.position[2]};
+                                df_local(pp, c.local);
+                                c.formation_index_9d0 = nf_formation_index_9d0(j);
+                                cands.push_back(c);
+                            }
+                        } else
                         for (std::size_t j = 0; j < owner_.slots.size(); ++j) {
                             if (j == unit_.process_index) continue;   // 007F056F
                             const GameUnitSlot& o = *owner_.slots[j];
@@ -34575,6 +34800,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // lead range. ABI: inline in 009C62B0. Uncertain: the
                             // host's 007F0280 candidate set (live 0Fh units in the
                             // reach prefilter) stands for [unit+C50h]+30h's list.
+                            // CORRECTION (cc13-tranche2 S22): with
+                            // bsp::kNearFieldProbeCachedListCc13Bound ON the probe
+                            // walks the real +30h list (nb_near_30), refreshed on
+                            // the fixed-step 3 s clock.
                             const bool b18 = unit_.db_flyabove_can_dive_18;
                             float ext[3];
                             bsp::near_field_flyover_extents_009c6aa3(b18, ext);
@@ -45049,6 +45278,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     } else {
         host.hull_terrain.hull_hull_census(host.hull_census);
         host.hull_census.clear();
+    }
+    // Packet cc13-tranche2 S19 (rev4 FIX 2): 007F3BA0's countdown and 007EE790's
+    // recount. The squadron node registers in tick group 3 (007F2C89 PUSH 3 ->
+    // 00875890) and units in group 1; wave 3 runs groups 0-4 in order, so every
+    // plane's step precedes it and 007B95E0 reads the previous step's recount.
+    if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
+        host.squadron_wingmen_recount_007f3c3f(step_seconds);
     }
     host.summary.total_path_length = 0.0f;
     for (const std::unique_ptr<GameUnitSlot>& slot : host.slots) {
