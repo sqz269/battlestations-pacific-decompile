@@ -171,7 +171,7 @@ ShipAiAttackMoveRingSlot ship_ai_attackmove_ring_slot_009e5530(int index,
 // ties (OFF uses the float cos / sin). The wraps and the
 // quarter-turn subtract are already exact in double: every constant is a float
 // widened to double.
-inline constexpr bool kAttackMoveRingPc24Cc13Bound = false;
+inline constexpr bool kAttackMoveRingPc24Cc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 
 // What the whole 009E5530 calls out of the image.
 struct ShipAiAttackMoveRingConstructHost {

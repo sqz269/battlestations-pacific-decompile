@@ -148,7 +148,7 @@ bool torpedo_gyro_heading_differs(float commanded, float vx, float vz) noexcept 
 // vtable[5Ch](1Ch) (a CommandBuilding), else 0. False: the host returns +0B20h
 // unchecked, which matches while standoff mode 4 (the only caller, 009E6B85) keeps
 // the kind-1Ch target it latched with. cc9 orders and pairs the flip.
-inline constexpr bool kEngagementTargetKindTestCc13Bound = false;
+inline constexpr bool kEngagementTargetKindTestCc13Bound = true;  // ON (cc9-sweep2b, 2026-10-28): bundle b2 pairs on d3ad11c39; see commit
 // Packet cc9_ship_firepower, docs/SHIP_AI_FIREPOWER.md. True: the eight
 // predicates 0095EB40 asks about a mount answer from the gun rows the gunnery
 // host keeps (barrel timers, arcs, the refined projectile sub-type, the Bullets
