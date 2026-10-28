@@ -45,6 +45,7 @@
 #include "bsp/in_mission_interface_runtime.hpp"
 #include "bsp/ingame_interface.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/ship_captain_camera_draws_cc13.hpp"
 #include "bsp/unit_kind_query.hpp"
 
 #include <algorithm>
@@ -1542,9 +1543,28 @@ void GameHudHost::Impl::bind_mission_camera_0064da40() {
     if (movie_active) destroy_movie_camera("0064DA40 installed the ShipCaptain (004BC410 at 0064DC9C)");
     if (!camera_bound) {
         bsp::construct_ship_captain_0064b650(camera);
+        if constexpr (bsp::kShipCaptainCameraDrawsCc13Bound) {
+            // The three 00BD2F10 phase draws of 00432750 (stream 0, ECX = 0).
+            GameGunneryHost* draw_host = units != nullptr ? units->gunnery() : nullptr;
+            if (draw_host != nullptr) {
+                // SHARED-STREAM MOVER: the host's stream-0 generator, in draw order.
+                // FFFFFFh is the index no unit has, as the movie-camera draw below uses,
+                // so under BSP_GUNNERY_RNG_STREAMS=1 no unit's keyed draws move.
+                float draws[3];
+                for (float& d : draws) {
+                    d = draw_host->death_mode_draw_00bd2f10(0, 0xFFFFFFu, 0.0f,
+                        bsp::kShipCaptainPhaseHigh00ce3d9c);
+                }
+                bsp::seed_ship_captain_phases_00432938(camera, draws);
+                done("MissionCamera::phase_draws", 0x00432938u);
+            } else {
+                for (int i = 0; i < 3; ++i) record("MissionCamera::phase_draw", 0x00bd2f10u);
+            }
+        } else {
         // The three 00BD2F10 phase draws of 00432750, not taken (see
         // bsp::construct_ship_captain_0064b650).
         for (int i = 0; i < 3; ++i) record("MissionCamera::phase_draw", 0x00bd2f10u);
+        }
     }
     camera_unit = index;
     bsp::ShipCaptainTargetView view{};
