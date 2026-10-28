@@ -10800,9 +10800,12 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     }
     // Packet cc13-leavecd: 007EE2E0 BSP_PlaneSquadron_IsLeavingOnPurpose(sq,
     // check_leader) for plane m's squadron (include/bsp/leave_countdown_all_squadrons_cc13.hpp).
-    // LABELLED: a plane with no squadron record is its own one-plane squadron; the
-    // squadron's director is its flight leader's, as the spent-RTB path reads it; the
-    // retreat arm is run_retreat_task_tick_009ca130's proxy, so retreats count as before.
+    // LABELLED: a plane with no squadron record is its own one-plane squadron (the image
+    // instead skips 007EE2E0 for a null +9D4h, 007C6C6D JZ 007C6C80, and counts down
+    // whenever the plane is outside the map; moot for bot planes); the squadron's own
+    // director (+174h/+178h/[sq+348h]) is read from its flight leader's, as the spent-RTB
+    // path reads it; the retreat arm is the plane's own proxy from
+    // run_retreat_task_tick_009ca130, so retreats count as before.
     bool leaving_on_purpose_007ee2e0(std::size_t m, bool check_leader) {
         if (m >= slots.size()) return false;
         const bsp::PlaneSquadronHostRecord* sq =
