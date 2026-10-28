@@ -19374,6 +19374,7 @@ std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() cons
         t.swimming = shot.swimming;
         t.water_travel_speed = row->water_travel_speed;
         t.started_under_water = shot.started_under_water;
+        t.commanded_heading_46c = shot.commanded_heading;
         out.push_back(t);
     }
     return out;

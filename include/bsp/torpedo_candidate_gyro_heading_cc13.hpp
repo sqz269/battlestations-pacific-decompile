@@ -1,0 +1,29 @@
+#pragma once
+
+// The ship AI's torpedo heading as the image reads it, torpedo record+46Ch (packet
+// cc13-torpgyro). Header-only switch.
+
+namespace bsp {
+
+// kTorpedoCandidateGyroHeadingCc13Bound (OFF): two ship-AI readers take a live torpedo's
+// heading from torpedo+46Ch:
+//   009DC060 (the track refresh after 009F0AD0's admission, 009EADC2): 009DC0F9 FLD
+//     [torpedo+46Ch], 009DC102 FSTP track+20h;
+//   008173E0 (the threat test 00814390 / 00814420 run): 00817535 FLD [torpedo+46Ch].
+// +46Ch is the commanded heading: 00856637 installs the launch command's heading (the
+// TorpedoBot run line plus AngleErr, or the player's order), else 10000.0 [00D0C310];
+// 00857480 at 008574A0 replaces the sentinel with the hull's yaw on the first swim step
+// (008574E8); 00857061 turns the swimming torpedo toward it. OFF, the host's
+// GameShipAiHost torpedo_candidate and torpedoes_threatening_00814390 use
+// atan2(vx, vz) of the round's velocity (a LABELLED SUBSTITUTION). ON they read
+// GameGunneryHost::LiveTorpedo::commanded_heading_46c, the round's commanded_heading,
+// which torpedo_swim3d_step keeps as the image does (kTorpedoGyroHeadingBound,
+// kTorpedoSwimDepthHomingBound), the 10000.0 sentinel included for a torpedo not yet
+// swimming. LABELLED: under the kTorpedoSwimThrustBound arm (homing OFF) nothing seeds
+// the sentinel.
+// Movers when ON: ship AI torpedo evasion: the torpedo tracks' heading (track+20h) and the
+// threat test's answer for torpedoes still turning onto their gyro heading or not yet
+// swimming, hence which torpedoes count as threats and the evasive turns they cause.
+inline constexpr bool kTorpedoCandidateGyroHeadingCc13Bound = false;
+
+}  // namespace bsp
