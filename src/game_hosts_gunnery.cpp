@@ -5167,12 +5167,19 @@ const std::vector<std::size_t>& GameGunneryHost::Impl::device_children_of(std::s
     return unit < device_children.size() ? device_children[unit] : kNone;
 }
 
-// LABELLED pose (rev8 open item (d)): the device node's world frame, which the image
-// takes from the device entity's +CCh (0098BC70). Stood in for by the platform slot's
-// local position rotated by the gun's current yaw, 00859550's root RotY (the barrel's
-// pitch goes to the barrel node, which carries no collision), carried by the parent's
-// pose, as device_hierarchy_node_world builds node 0. Swap this one function when the
-// entity transform is read. Rows: axes[0..2] the frame's x/y/z, origin its translation.
+// The device node's world frame (rev8 (d)): after the first update, world(node 0) =
+// [RotY(-horz), plus RotX(-vert) when the model has no barrel; T = the slot frame
+// translation] x the owner node's world. 00859550 runs every update with dt > 0 and
+// drops the slot frame's 3x3, so there is no authored base rotation. This is the
+// host's own node-0 pose, device_hierarchy_node_world with pick 0 (its root world).
+// Its have_barrel is "barrel" Note present; the image's +3C8h needs "base" too (setup
+// leaves before the barrel lookup without it), and rev8's census has no barrel-only
+// model (312 both, 56 base only, 11 neither), so the two agree on every model.
+// LABELLED gaps: the parent's pose stands in for [gun+3Ch]->vtable[18h] (hull-oriented,
+// unit scale); 0072DD20's kind 46h/44h parent re-expression, recoil and the slot +94h
+// override are not applied; before its first update tick the image's root still
+// carries the full slot frame. Rows: axes[0..2] the frame's x/y/z, origin its
+// translation.
 bool GameGunneryHost::Impl::device_hit_world_frame(std::size_t gun_row, float axes[3][3],
     float origin[3]) {
     if (gun_row >= guns.size()) return false;
@@ -5180,19 +5187,9 @@ bool GameGunneryHost::Impl::device_hit_world_frame(std::size_t gun_row, float ax
     if (!gun.mount_known) return false;
     float right[3], up[3], forward[3], o[3];
     unit_pose(gun.unit_index, right, up, forward, o);
-    bsp::CameraMatrix root_local{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f, gun.mount_local[0], gun.mount_local[1],
-        gun.mount_local[2], 1.0f};
-    bsp::CameraMatrix barrel_local{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-    // CONVENTION BRIDGE as in device_hierarchy_node_world: the image's horz is -host.
-    bsp::turning_gun_apply_angles_00859550(-kGunHorzSign * gun.angles.horz, gun.angles.vert,
-        true, root_local, barrel_local);
-    const bsp::CameraMatrix ship{right[0], right[1], right[2], 0.0f,
-        up[0], up[1], up[2], 0.0f, forward[0], forward[1], forward[2], 0.0f,
-        o[0], o[1], o[2], 1.0f};
+    const DeviceFirePoints& fp = device_fire_points(gun.device_class);
     bsp::CameraMatrix world{};
-    bsp::multiply_camera_matrices_00413920(world, root_local, ship);
+    if (!device_hierarchy_node_world(gun, fp, 0, right, up, forward, o, world)) return false;
     for (int r = 0; r < 3; ++r) {
         for (int k = 0; k < 3; ++k) axes[r][k] = world[static_cast<std::size_t>(r * 4 + k)];
         origin[r] = world[static_cast<std::size_t>(12 + r)];

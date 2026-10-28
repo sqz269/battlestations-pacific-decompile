@@ -52,13 +52,27 @@
 //  * LABELLED: with neither, the host returns before its attribution tail, where the
 //    image still writes the parent's 0077CE60 block (a plane or land parent).
 // LABELLED:
-//  * pose: the device frame is the platform slot's local position, rotated by the
-//    gun's current yaw (00859550's root RotY), carried by the parent's pose. The image
-//    uses the device entity's world matrix +CCh; any authored base yaw or offset is
-//    rev8's open item (d). device_hit_world_frame is the one function to swap.
+//  * pose (rev8 (d)): node 0's world is [RotY(-horz), and RotX(-vert) when the model has
+//    no barrel; T = the slot translation] x the owner's world (00859550 every update
+//    with dt > 0 drops the slot frame's 3x3). The host takes it from
+//    device_hierarchy_node_world (pick 0), the muzzle path's own pose. Gaps: the
+//    parent's pose stands in for [gun+3Ch]->vtable[18h] (hull-oriented, unit scale);
+//    0072DD20's kind 46h/44h parent re-expression, recoil and the slot +94h override
+//    are not applied; before the first update tick the image's root still carries the
+//    full slot frame. have_barrel is "barrel" Note only where the image's +3C8h also
+//    needs "base"; rev8's census has no barrel-only device model, so they agree.
 //  * a gun whose mount the host does not know (no platform attachment) is not offered;
 //    a child is offered only while its parent offers its own shape (dead, detached and
-//    excluded parents hide their mounts); a destroyed gun keeps its mesh.
+//    excluded parents hide their mounts; the image's 008263E2 / sinking teardown path
+//    for children is not traced).
+//  * a destroyed gun keeps its mesh, FAITHFUL as far as traced: the destroy chain
+//    0072B5A0 calls the gun's own vtable[1B4h] (0072B604), which on the gun vtables is
+//    00877B00 (MRTGun 00CFE548 + 1B4h = 00877B00; no spatial call), not the ship's
+//    00819CC0 that detaches (00710B80); 0072B4C0 is effects and 00956C20 the category
+//    index; neither is one of 0098A500's five callers (deeper callees not swept).
+//    009239A0's gate reads only +5Eh/+5Fh, so a dead gun's
+//    mesh still stops shells and relays them to the ship, and 00728080 refuses the gun
+//    damage at +3B8h.
 //  * the children's broad phase is a sphere around the node-0 origin (the image's is the
 //    child's AABB); it is a filter only, so no hit changes.
 //  * the shot-kind gate reads the round's class (is_depth_charge_class), as 00826F44's
