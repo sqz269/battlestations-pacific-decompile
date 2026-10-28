@@ -1,5 +1,8 @@
 #include "bsp/frontend_prompt_layout.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_frontend_cc13.hpp"
+
 #include <cstring>
 
 namespace bsp {
@@ -49,7 +52,14 @@ void layout_prompt_buttons_00530a60(const FrontEndPromptScreen& screen,
         }
     }
     const float available = host.group_width_00aa6740();
-    const float gap = static_cast<float>((static_cast<double>(available) - total) / spaces);
+    float gap;
+    if constexpr (kPc24FrontendCc13Bound) {
+        // 00530B37 FSUB, 00530B3B FIDIV, each rounded at PC24; 00530B3F FSTP float.
+        gap = static_cast<float>(cc13x87::x87_div24(
+            cc13x87::x87_sub24(available, total), static_cast<double>(spaces)));
+    } else {
+    gap = static_cast<float>((static_cast<double>(available) - total) / spaces);
+    }
     float x = gap;
     for (const auto button : order) {
         if (!enabled(screen, button)) continue;
@@ -57,7 +67,13 @@ void layout_prompt_buttons_00530a60(const FrontEndPromptScreen& screen,
         if (button != PromptWidget::No) {
             // Width is read AFTER SetLocalX, even when no later button is on.
             const float width = normalized_width(host, button);
+            if constexpr (kPc24FrontendCc13Bound) {
+                // 00530B76/78 (first step) and 00530BB2/B6: width + gap, then + x,
+                // each rounded at PC24; FSTP float.
+                x = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_add24(width, gap), x));
+            } else {
             x = static_cast<float>((static_cast<double>(width) + gap) + x);
+            }
         }
     }
 }

@@ -160,6 +160,10 @@ struct GameSceneEntityRecord {
     // adopts the forts, airfields and shipyards within it.
     bool inferior_range_present{false};
     std::int32_t inferior_range_raw{200};
+    // Packet cc13-powerup-bind phase 2a: `PowerupClassID` (00D1628C), which
+    // 008ED720 reads from the creation record's bag through 008F2260 / 008F0DF0
+    // for the command building's power-up binding; "" when absent.
+    std::string powerup_class_id;
     // 009554C1-009554DF: BSP_UnitInstance_InitializeSceneBindings clones the bag
     // to unit+724h only when the merged bag finds `MinLevel` (00CFB24C, the
     // CommandBuildingInferior group default); 006F5DCF adopts only an entity
@@ -728,6 +732,16 @@ struct SceneTerrainHeightField {
     void local_normal_00ada1c0(float x, float z, float out[3]) const noexcept;
     float grid_height_00adb480(float u, float v) const noexcept;       // slot 48h
     void cell_normal_00adaa40(int i, int j, float out[3]) const noexcept;  // slot 30h
+    // The same two bodies for callers on a 53-bit Dyn worker (the hull terrain narrow
+    // phase, src/hull_terrain_contact.cpp): always the double chains, whatever
+    // kPc24FlightRenderCc13Bound says, since only the main thread runs at 24 bits.
+    float grid_height_pc53_00adb480(float u, float v) const noexcept;
+    void cell_normal_pc53_00adaa40(int i, int j, float out[3]) const noexcept;
+    // kPc24Bound picks the per-op 24-bit chains (main thread) or the double ones.
+    template <bool kPc24Bound> float grid_height_arm_00adb480(float u, float v) const noexcept;
+    template <bool kPc24Bound> void cell_normal_arm_00adaa40(int i, int j, float out[3]) const noexcept;
+    // 00ADB3A0 with its 00ADC5F0 sample chain per op (kPc24Bound) or in double.
+    template <bool kPc24Bound> float cell_height_arm_00adb3a0(int i, int j) const noexcept;
 
     // Packet cc9_terrain_segment_quadtree: the tree 00AEA820 builds at the end
     // of 00ADDA60 (20-byte nodes at +3Ch: min y, max y, first child or -1, tile

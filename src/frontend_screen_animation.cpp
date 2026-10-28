@@ -1,5 +1,8 @@
 #include "bsp/frontend_screen_animation.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_frontend_cc13.hpp"
+
 #include <cmath>
 
 // Reconstruction of the front-end screen scroll block, 00683300..00683A8F.
@@ -62,8 +65,16 @@ ScrollBarGeometry compute_scroll_bar_geometry(
     if (range < track) {
         // FADDP ST2,ST0 then FSUBP at 006834FD: (track + min_height) - range in
         // one x87 expression, stored to a float slot at 00683501.
-        const float candidate =
+        float candidate;
+        if constexpr (kPc24FrontendCc13Bound) {
+            // 006834FD DE C2 FADDP ST2 (track + min_height) and 006834FF DE E9
+            // FSUBP ST1 (that - range) each round at PC24; 00683501 FSTP float.
+            candidate = static_cast<float>(
+                cc13x87::x87_sub24(cc13x87::x87_add24(track, min_height), range));
+        } else {
+        candidate =
             static_cast<float>((static_cast<double>(track) + min_height) - range);
+        }
         // FCOMIP/JBE at 0068350B: keep min_height unless candidate is greater.
         geometry.thumb_height = (min_height < candidate) ? candidate : min_height;
         geometry.thumb_travel = range;
@@ -76,10 +87,20 @@ ScrollBarGeometry compute_scroll_bar_geometry(
 
 float thumb_progress_from_scroll(float offset, float range, float travel) noexcept
 {
-    // FLD [+1Ch]; FDIV [ESP]; FMUL [+2Ch]; FSTP. The quotient is never narrowed
-    // to float, so the divide and the multiply share one rounding.
+    // FLD [+1Ch]; FDIV [ESP]; FMUL [+2Ch]; FSTP. OFF path: the quotient is never
+    // narrowed to float, so the divide and the multiply share one rounding; that holds
+    // only at 53/64-bit precision control. At PC24 the FDIV rounds before the FMUL
+    // (the ON arm).
+    if constexpr (kPc24FrontendCc13Bound) {
+        // 00683464 FDIV and 00683467 FMUL each round at PC24 (the main thread's
+        // precision control), so the quotient rounds before the multiply; 0068346A
+        // FSTP float.
+        return static_cast<float>(
+            cc13x87::x87_mul24(cc13x87::x87_div24(offset, range), travel));
+    } else {
     return static_cast<float>(
         static_cast<double>(offset) / static_cast<double>(range) * travel);
+    }
 }
 
 float scroll_offset_toward_start(float offset, float delta) noexcept

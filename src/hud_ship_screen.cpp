@@ -155,14 +155,31 @@ void ship_screen_stick_0064a9f0(ShipScreenHost& host, float ease) {
 
 float ship_screen_ease_stick_0064e358(float current, float throttle) noexcept {
     // 0064E358..0064E39F: clamp((throttle + 0.5) / 1.5, 0, 1) through 00415620.
-    float target = static_cast<float>((static_cast<double>(throttle) + kStickOffset) / kStickRange);
+    float target;
+    if constexpr (kPc24HudGuiCc13Bound) {
+        // 0064E378 DC 05 FADD 0.5, 0064E386 DC 35 FDIV 1.5, each PC24.
+        target = static_cast<float>(
+            cc13x87::x87_div24(cc13x87::x87_add24(throttle, kStickOffset), kStickRange));
+    } else {
+        target = static_cast<float>((static_cast<double>(throttle) + kStickOffset) / kStickRange);
+    }
     if (target < 0.0f) target = 0.0f;
     if (target > 1.0f) target = 1.0f;
     if (current == target) return current;                           // 0064E3B8 FUCOMIP
     const float gap = std::fabs(static_cast<float>(static_cast<double>(target) - current));
     if (gap < kStickSnap) return target;                             // 0064E3E2
-    return static_cast<float>((static_cast<double>(target) - current) / kStickEaseDivisor +
-                              current);                               // 0064E3E4..0064E3EC
+    float eased;
+    if constexpr (kPc24HudGuiCc13Bound) {
+        // 0064E3C2 D8 E1 FSUB target - current, stored float at 0064E3C4; 0064E3E4
+        // DC 35 FDIV 3.0, 0064E3EA DE C1 FADDP + current, each PC24.
+        const float diff = static_cast<float>(cc13x87::x87_sub24(target, current));
+        eased = static_cast<float>(
+            cc13x87::x87_add24(cc13x87::x87_div24(diff, kStickEaseDivisor), current));
+    } else {
+        eased = static_cast<float>((static_cast<double>(target) - current) / kStickEaseDivisor +
+                                   current);                          // 0064E3E4..0064E3EC
+    }
+    return eased;
 }
 
 void ship_screen_controls_0064e415(ShipScreenState& screen, ShipScreenHost& host, float dt) {
@@ -265,12 +282,14 @@ void ship_screen_damage_panel_0064f665(ShipScreenState& screen, ShipScreenHost& 
         const float alpha = rgba[3];                                  // [ESP+A0h]
         if (i == screen.damage_select_150) {
             if (kHlFadeUpLimit > alpha) {                             // 0064F751 COMISS
+                // pc24-lint: allow dt + dt (DC C0) is exact, so the sum with alpha has one rounding
                 rgba[3] = static_cast<float>(
                     (static_cast<double>(dt) + dt) + alpha);          // 0064F75B..0064F76B
             } else {
                 rgba[3] = 1.0f;                                       // 0064F7A0
             }
         } else if (alpha > 0.0f) {                                    // 0064F780
+            // pc24-lint: allow dt + dt (DC C0) is exact, so alpha minus it has one rounding
             rgba[3] = static_cast<float>(
                 static_cast<double>(alpha) - (static_cast<double>(dt) + dt));  // 0064F785
         } else {
@@ -284,8 +303,15 @@ void ship_screen_damage_panel_0064f665(ShipScreenState& screen, ShipScreenHost& 
         // shown strictly between 0.01 and 0.99.
         const float held = host.controlled_float_125c();
         const float full = host.settings_4c4();
-        const float ratio = static_cast<float>(
-            (static_cast<double>(full) - held) / full);
+        float ratio;
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // 0064F7FC-0064F80C: D8 64 FSUB held, D8 B0 FDIV full, each PC24.
+            ratio = static_cast<float>(
+                cc13x87::x87_div24(cc13x87::x87_sub24(full, held), full));
+        } else {
+            ratio = static_cast<float>(
+                (static_cast<double>(full) - held) / full);
+        }
         if (ratio > kCircleShowAbove && kSubCircleHideFrom > ratio) {
             show_circle(screen, host, ShipScreenWidget::Circle3, ratio);
         } else {
@@ -313,9 +339,17 @@ void ship_screen_damage_panel_0064f665(ShipScreenState& screen, ShipScreenHost& 
         const ShipDeviceTerms d = host.controlled_device(i);
         if (!d.kind_04 || d.kind_0f || !d.kind_20) continue;          // 0064FC05..0064FC30
         if (d.config_80 == 1 || !d.byte_378) continue;                // 0064FC32..0064FC47
-        const double full = d.full_36c;
-        const double damage = (full - d.current_370) / full;          // 0064FC49..0064FC5F
-        if (damage > worst) worst = static_cast<float>(damage);       // 0064FC67..0064FC6D
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // 0064FC49-0064FC5F: D8 A7 FSUB current, DE F1 FDIVRP (full - current) / full,
+            // each PC24; the quotient stays on the stack for the FCOMI at 0064FC67.
+            const double damage = cc13x87::x87_div24(
+                cc13x87::x87_sub24(d.full_36c, d.current_370), d.full_36c);
+            if (damage > worst) worst = static_cast<float>(damage);
+        } else {
+            const double full = d.full_36c;
+            const double damage = (full - d.current_370) / full;      // 0064FC49..0064FC5F
+            if (damage > worst) worst = static_cast<float>(damage);   // 0064FC67..0064FC6D
+        }
     }
     if (worst > kCircleShowAbove) {                                   // 0064FC82 COMISS
         show_circle(screen, host, ShipScreenWidget::Circle4, worst);
@@ -429,8 +463,10 @@ void ship_screen_gauge_0043b370(ShipScreenState::Gauge& gauge, int index, ShipSc
     rate_on = static_cast<float>(static_cast<double>(rate_on) * kGaugeDamping);   // 0043B3FB
     const float step_on = static_cast<float>(static_cast<double>(gain) * rate_on);
     const float next_on = static_cast<float>(static_cast<double>(step_on) + gauge.value_10);
+    // pc24-lint: allow reach counter replica of the OFF arm; kShipScreenGaugeProductRoundCc13Bound is ON
     float rate_off = static_cast<float>(static_cast<double>(gain) * gap + gauge.rate_14);
     rate_off = static_cast<float>(static_cast<double>(rate_off) * kGaugeDamping); // 0043B3FB
+    // pc24-lint: allow reach counter replica of the OFF arm; kShipScreenGaugeProductRoundCc13Bound is ON
     const float next_off = static_cast<float>(static_cast<double>(gain) * rate_off
                                               + gauge.value_10);
     ++g_ship_screen_gauge_reach.ticks;
@@ -452,8 +488,15 @@ void ship_screen_gauges_0064fd24(ShipScreenState& screen, ShipScreenHost& host, 
     if (screen.dir_target_128 != r) {
         const float old = screen.dir_target_128;
         screen.dir_target_128 = r;                                    // 0064FD9B
-        screen.dir_rate_12c = static_cast<float>(
-            (static_cast<double>(old) - r) * kDirRateGain + screen.dir_rate_12c);
+        if constexpr (kPc24HudGuiCc13Bound) {
+            // 0064FD99 DE E9 FSUBP old - r, 0064FDA3 FMUL 4.0, 0064FDA9 FADD rate, each PC24.
+            screen.dir_rate_12c = static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_mul24(cc13x87::x87_sub24(old, r), kDirRateGain),
+                screen.dir_rate_12c));
+        } else {
+            screen.dir_rate_12c = static_cast<float>(
+                (static_cast<double>(old) - r) * kDirRateGain + screen.dir_rate_12c);
+        }
     }
     if (screen.dir_rate_12c != 0.0f) host.dir_clock_step(screen);     // 0064FDBB..0064FDCE
     if (!screen.has_unit) return;                                     // 0064FFAB

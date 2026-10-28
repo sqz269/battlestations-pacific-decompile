@@ -21,6 +21,7 @@ void path_entity_noop_007b0b90(std::uint32_t) noexcept {}
 
 #include "bsp/engine_seg4_6_9_cc13.hpp"  // point_segment_distance_0046ff70
 #include "bsp/unit_rudder.hpp"           // clamped_interpolate_00419010
+#include "bsp/pc24_unitshost_cc13.hpp"   // pc24w1-units-1: 007B11F0
 
 #include <cmath>
 
@@ -417,7 +418,14 @@ int start_index_for_position_007b11f0(PathJoinSource& source, const Vec3& pos, b
     const float rcp = source.reciprocal_length_00419260(ex, ez);  // 007B12C2, stored
     const float ux = f32(static_cast<double>(ex) * rcp);
     const float uz = f32(static_cast<double>(rcp) * ez);
-    const float s = f32(static_cast<double>(uz) * dz + static_cast<double>(ux) * dx);  // 007B12F9
+    float s;
+    if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+        // 007B12E7-007B12F9: uz*dz + ux*dx, each op rounded.
+        s = f32(bsp::cc13x87::x87_add24(bsp::cc13x87::x87_mul24(uz, dz),
+                                        bsp::cc13x87::x87_mul24(ux, dx)));
+    } else {
+        s = f32(static_cast<double>(uz) * dz + static_cast<double>(ux) * dx);  // 007B12F9
+    }
     return s > 0.0f ? candidate : nearest;  // 007B1303 FCOMPI(s, 0), JA keeps the candidate
 }
 
