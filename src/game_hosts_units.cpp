@@ -46453,8 +46453,10 @@ std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
     const GameUnitSlot& u = *impl_->slots[index];
     std::uint64_t mask = u.ordnance_mask;
     if constexpr (Impl::kRackLiveOrdnanceMaskBound) {
-        // 007B9320 / 007B91C0 -> rack vtable[220h] / [210h]: an emptied rack has
-        // no child round to answer with (SQUADRON_LAND_TASK 5eu).
+        // 007B9320 / 007B91C0 -> rack vtable[220h], 007B9140 -> rack vtable[210h]
+        // (007B9174, 006E3FE0): an emptied rack has no child round to answer with
+        // (SQUADRON_LAND_TASK 5eu). CORRECTION: this paired 007B91C0 with [210h];
+        // 007B91C0 calls [220h] at 007B91E4.
         const std::size_t n = u.rack_bullet_class_per_rack.size();
         // With EnableDeviceReload (00E17BF2) set and the squadron's ReloadEnabled
         // +369h (default 1), 006E4060's second arm answers from the rack's own
