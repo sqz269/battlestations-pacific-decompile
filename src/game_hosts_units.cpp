@@ -9699,6 +9699,8 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         ++ts_override_target;
         const std::size_t target = unit.moveto_target_plus_one - 1u;
         const GameUnitSlot& t = *slots[target];
+        // The OFF expression, moved verbatim into this lambda: the same arithmetic as before
+        // (|motion.linear_velocity| in double, rounded once), not textually identical.
         const auto linear_speed = [](const GameUnitSlot& s) {
             const bsp::OceanVec3& v = s.motion.linear_velocity;
             return static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
@@ -9711,23 +9713,25 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             // run_get_entity_speed_008c0820 dispatches it:
             //   PlaneSquadronGen 007ED470: JMP the leader's ([squadron+3D0h]) vtable[38h];
             //   ships 0080E0F0: ECX = [unit+1018h], JMP 0092D730, the signed body forward
-            //   speed (bsp::unit_forward_speed_0092d730 over the same inputs as
-            //   GameUnitsHost::unit_forward_speed_0092d730);
+            //   speed over the inputs GameUnitsHost::unit_forward_speed_0092d730 reads;
             //   planes 007B8E60: FLD [unit+B1Ch].
             // PENDING: the plane arm (and so the squadron arm) keeps |motion.linear_velocity|
             // until poolw3's shared +B1Ch helper (kPlaneCachedSpeedB1cCc13Bound) lands; it
             // should then read 007D8020's value over plane_world_velocity. LABELLED: other
             // classes' slot-38h bodies were not read and keep |motion.linear_velocity|; a
             // squadron without a live leader faults in the image and answers `base` here.
+            // 0092D74E-0092D763: FMUL, FMUL, FADDP, FMUL, FADDP, each to 24 bits, then FSTP
+            // float at 0092D765, in the order of the kSubmarineSeabedSpeedPc24Cc13Bound arm.
+            // Of the host's copies of this speed, this arm and that one are the PC24-faithful
+            // ones; bsp::unit_forward_speed_0092d730 (unit_motion.cpp) and
+            // GameUnitsHost::unit_forward_speed_0092d730 sum in double and round once, which
+            // stays the OFF behaviour at their other callers.
             const auto ship_speed = [](const GameUnitSlot& s) {
-                bsp::UnitBodyAxisSpeedInputs axis{};
-                axis.velocity[0] = s.motion.linear_velocity.x;
-                axis.velocity[1] = s.motion.linear_velocity.y;
-                axis.velocity[2] = s.motion.linear_velocity.z;
-                axis.axis[0] = s.motion.pose_row2[0];
-                axis.axis[1] = s.motion.pose_row2[1];
-                axis.axis[2] = s.motion.pose_row2[2];
-                return bsp::unit_forward_speed_0092d730(axis);
+                const float vy_ry = s.motion.linear_velocity.y * s.motion.pose_row2[1];
+                const float vx_rx = s.motion.linear_velocity.x * s.motion.pose_row2[0];
+                const float sum_yx = vy_ry + vx_rx;
+                const float vz_rz = s.motion.linear_velocity.z * s.motion.pose_row2[2];
+                return sum_yx + vz_rz;
             };
             const bsp::PlaneSquadronHostRecord* squadron = nullptr;
             for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
