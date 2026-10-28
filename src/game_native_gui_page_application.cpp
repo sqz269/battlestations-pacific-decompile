@@ -19,6 +19,7 @@
 #include "bsp/native_gui_page_script_continuation.hpp"
 #include "bsp/native_gui_script_paths.hpp"
 #include "bsp/native_node_scene_attachment.hpp"
+#include "bsp/object_handle_resolvers.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_vfs_name_resolution.hpp"
@@ -130,6 +131,8 @@ struct GameNativeGuiPageApplication::Impl {
     GameNativeGuiManagerApplication& manager;
     GameNativeRendererApplication& renderer;
     GameNativeReadOnlyData& data;
+    const ObjectHandleResolverSlots& installed_resolvers;
+    const bool& crt_sse2_conversion;
     GameNativeVfsRawServices raw;
     NativeStringRawPoolContext& strings;
     LightTypeBootstrap node_types;
@@ -151,8 +154,10 @@ struct GameNativeGuiPageApplication::Impl {
     std::exception_ptr failed;
 
     Impl(GameHostLog& output, GameNativeGuiManagerApplication& gui, GameNativeRendererApplication& app,
-        GameVfsHost& vfs, GameNativeReadOnlyData& mapped)
-        : log(output), manager(gui), renderer(app), data(mapped), raw(vfs.borrow_raw_services()),
+        GameVfsHost& vfs, GameNativeReadOnlyData& mapped,
+        const ObjectHandleResolverSlots& resolvers, const bool& sse2_conversion)
+        : log(output), manager(gui), renderer(app), data(mapped),
+          installed_resolvers(resolvers), crt_sse2_conversion(sse2_conversion), raw(vfs.borrow_raw_services()),
           strings(vfs.raw_strings()),
           node_types(vfs.native_owners().types(), vfs.native_types().light_types()),
           group_types(vfs.native_owners().types(), node_types, vfs.native_types().group_types()),
@@ -206,8 +211,9 @@ struct GameNativeGuiPageApplication::Impl {
 
 GameNativeGuiPageApplication::GameNativeGuiPageApplication(GameHostLog& log,
     GameNativeGuiManagerApplication& manager, GameNativeRendererApplication& renderer,
-    GameVfsHost& files, GameNativeReadOnlyData& data)
-    : impl_(std::make_unique<Impl>(log, manager, renderer, files, data)) {
+    GameVfsHost& files, GameNativeReadOnlyData& data,
+    const ObjectHandleResolverSlots& resolvers, const bool& sse2_conversion)
+    : impl_(std::make_unique<Impl>(log, manager, renderer, files, data, resolvers, sse2_conversion)) {
     log.notef("native GUI page chain bound: layer_pool=00f8bf50 atexit=%d group_pool=010902f4 "
         "properties=%s", impl_->layer_atexit, impl_->properties_composed ? "ac4c50" : "rejected");
 }

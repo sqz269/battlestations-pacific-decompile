@@ -8,6 +8,21 @@ scene/camera/light/fog inputs. Shader preload and Text preparation stay in their
 The page-chain switch remains OFF. This packet does not call the page loader, change bridge
 ownership, or claim native page runtime/lifecycle acceptance.
 
+## Retained constructor inputs
+
+The page application preserves its first five constructor arguments and then borrows
+`const ObjectHandleResolverSlots&` followed by `const bool& crt_sse2_conversion`. The startup
+host supplies `object_handle_resolvers()` and `gui_sse2_conversion()`. The first is the SAME
+Phase0-installed Source cell owner, retained and reloaded through the raw adapter, not a copied
+callback tuple. The second is the existing stable once-sampled Source GUI capability bool,
+not the Original0109EEA4 selector word. Its owner remains alive past page retirement and shared
+native drain. Actual radius conversion separately borrows the canonical live CRT word.
+
+This signature dependency only retains references. It does not activate a provider, construct
+a resolver adapter, warm colors, bind the manager token, or set `properties_composed`. The
+integrator owns the matching two-argument addition at the startup host's constructor call and
+will build the combined change; the intermediate signature-only branch is not build-qualified.
+
 ## Warm-manager page lifetime binding
 
 The manager previously fixed its private lifetime context to `NoPageOwner`; populated AA6340
