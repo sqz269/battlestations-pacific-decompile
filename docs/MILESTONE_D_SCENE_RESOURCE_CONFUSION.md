@@ -233,6 +233,39 @@ in the mission graph, including the sun's own registration path.
 Recommendation: (b) now, to unblock long milestone-D runs; (a) as a planned packet if
 retail lighting parity for instanced models becomes a goal.
 
+## (b) as implemented
+
+`kMissionUploadSkipsHostAttachOnActualLighting` (`src/game_native_mission_command.inc`,
+ON) is labelled DIVERGENCE. In `MissionCommandGraph::submit_scene` (the "Mission ship"
+scene only; the labelled GUI overlay submission is unchanged), it sets
+`NativeInstanceGroupUploadAccess::host_attach_excluded_scene` to the submitted scene's
+`+0x1C` and clears it after B1F4D0, on both the normal and the exceptional path. The
+upload (`native_instance_group_upload.cpp`) skips only `set_node_scene_00b6ed80` when the
+lighting owner equals that identity, and counts the skip. The `0x00B6ED80` table check
+and `resolve_key` still run. The graph logs
+`native_mission_command host_attach_skip first: lighting=%p` once, and
+`host_attach_skips=%u` from its destructor. With the switch OFF, the identity stays null
+and the upload is the original call.
+
+Gates (2026-10-28, branch `agent/cc16-mdcrash`):
+
+- `./scripts/build.ps1`: switch OFF exit 0, switch ON exit 0, both existing tests passing
+  each time.
+- Milestone-D env USN04, 1600 mission frames, screenshot at mission frame 560
+  (`local/cc16md_b_on1600.*`). Every frame ran (loop finished at 1900 application frames;
+  last native command frame 1861). Before the fix, the same build stalled or crashed near
+  frame 515. `host_attach_skip first: lighting=1EF844F0` appears at line 10845, right after
+  the late loads. The screenshot shows the fixed diagnostic view on the controlled carrier
+  and two escorts. That camera is not aimed at the late planes, so this capture does
+  not prove that they draw. The run then exits 1 at shutdown with the separate
+  preload-retirement failure below. That throw skips the graph destructor, so the exit
+  count line is absent from this run.
+- Default env (no native env vars) USN04, 1600 mission frames, this branch vs origin/main
+  c75e164f9 (`local/cc16md_pair_base.log`, `local/cc16md_pair_fix.log`): `pair_diff`
+  **exit 0**. Death, unit and native tables are identical; the only noise is
+  `PlatformLoopCallbacks::pretranslate` 8 -> 9.
+- `tools/pc24_lint.py` on the three changed files: 0 findings.
+
 # Preload retirement vs the open mission bracket
 
 A second, independent milestone-D failure, found by cc15. A run that ends before the late
