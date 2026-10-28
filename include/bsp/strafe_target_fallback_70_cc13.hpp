@@ -48,7 +48,8 @@ namespace bsp {
 // kind 5) keeps +70h here until the next 009FADA0 run sees its +5Dh.
 // Pair the flip with S6's kTargetDisabledByte5dCc13Bound: st_ref70_drop_009fada0 reads
 // +5Dh through S6's binding (state->simulate) whatever that switch is set to.
-// 009CC390 also reads task+44Ch, but it is dead: undefined code with no references.
+// 009CC390 also reads task+44Ch and +468h (009CC3A8, 009CC3B2), but it is dead: undefined
+// code with no references.
 // Missing: NavPoint targets. Host slots carry vehicle classes, none of them kind 41h, and
 // the strafe arm returns at its top without a command target, so +54h stays unset here.
 // Movers: a strafe target with +5Ch clear or +5Eh/+60h set before +5Dh (OFF: no target,
