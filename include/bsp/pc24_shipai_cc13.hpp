@@ -55,6 +55,11 @@ namespace bsp {
 //   009E6400 decay score, 009E6870 arc cost (ship_ai_ring_scan.cpp)
 //   009E76D0 wobble phase (ship_ai_ring_scan.cpp and ship_ai_approach_update.cpp)
 //   009E9190 traffic gate 009E929B..009E92E1 (ship_ai_approach_update.cpp)
+// Sites (pc24w2-shipai, census P3):
+//   006F5CC0 garrison d2 006F5D97..006F5DB3 (game_hosts_ship_ai.cpp build_capture_buildings)
+//   009EAA10 sub attack countdown reload 009EAA2A..009EAA3C (ship_ai_sub_attack.cpp)
+//   009F1420 torpedo horizon 009F16AD..009F16DE and admission distance 009F17D8..009F17EE
+//            (ship_ai_torpedo_response.cpp)
 // Movers: ship headings, throttle and path picks, submarine depth, torpedo run times and hits.
 inline constexpr bool kPc24ShipAiCc13Bound = false;
 

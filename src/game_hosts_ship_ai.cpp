@@ -13115,9 +13115,20 @@ void GameShipAiHost::Impl::build_capture_buildings() {
                 float ex = 0.0f, ey = 0.0f, ez = 0.0f;
                 units.unit_position_00fc(e, ex, ey, ez);
                 const float dx = ex - bx, dy = ey - by, dz = ez - bz;
-                const float d2 = static_cast<float>(
-                    (static_cast<double>(dx) * dx + static_cast<double>(dy) * dy)
-                    + static_cast<double>(dz) * dz);
+                float d2;
+                if constexpr (bsp::kPc24ShipAiCc13Bound) {
+                    // 006F5D97-006F5DB3: DE CA FMULP dy*dy, DE CB FMULP dx*dx, DE C2 FADDP,
+                    // DC C8 FMUL ST0 dz*dz, DE C1 FADDP, each PC24, stored float
+                    // (pc24w2-shipai).
+                    d2 = static_cast<float>(bsp::cc13x87::x87_add24(
+                        bsp::cc13x87::x87_add24(bsp::cc13x87::x87_mul24(dx, dx),
+                                                bsp::cc13x87::x87_mul24(dy, dy)),
+                        bsp::cc13x87::x87_mul24(dz, dz)));
+                } else {
+                    d2 = static_cast<float>(
+                        (static_cast<double>(dx) * dx + static_cast<double>(dy) * dy)
+                        + static_cast<double>(dz) * dz);
+                }
                 if (static_cast<double>(d2) > static_cast<double>(r2)) continue;
                 CaptureBuilding::GarrisonRecord r;
                 r.unit = e;
