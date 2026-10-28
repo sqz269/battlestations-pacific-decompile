@@ -19,7 +19,10 @@ namespace bsp {
 // Host mirror GameUnitSlot::state->simulate (GameUnitsHost::unit_flag_005d): cleared at
 // creation, set at the destroy (kSunkShipFlushBound ships, kPlaneDeathFlagsBound planes,
 // the stock-return destroy) and by store_scene_node_flags at the kill list. Not mirrored:
-// the deadMeat spawn write.
+// the deadMeat spawn write; 00922FE1 in SceneNode_Kill (in practice it only re-sets +5Dh
+// on nodes whose +5Eh is already set, or at teardown); 009263F4 in 009263C0 (no callers;
+// its inline copy is 009274CE); and the 00925A73 CancelPendingDestroy clear (reached only
+// from Gun_ApplyClearDestroyedFailure, on guns, which are not host slots).
 // OFF: both sites take !df_slot_live(target) (+5Ch set and +5Dh/+5Eh/+60h clear) as
 // "disabled". ON: the +5Dh byte alone, in game_hosts_units.cpp.
 // Movers: a latched target with +5Ch clear (scene node inactive) or +60h set before its
