@@ -29093,8 +29093,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // true; 009FADA0 drops it for good (st_ref70_dropped).
                     const GameUnitSlot* st_target_70() const {
                         const GameUnitSlot* t = st_target();
+                        // 009FAF90 has run once the target's +5Eh is set: the drop is kept
+                        // (unit_ is a reference, so the latch is writable here), which a
+                        // later +5Eh clear (the garrison revive's reuse of the slot) does
+                        // not undo.
+                        if (t != nullptr && st_ref70_destroyed_009faf90(*t))
+                            unit_.st_ref70_dropped = true;
                         return t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x02) &&
                                !unit_.st_ref70_dropped ? t : nullptr;
+                    }
+                    // 009FAF90, the ref's observer slot +4h: the kill list's row-15 drain
+                    // (009274DE..00927510, 00696330) notifies the target's observers as it
+                    // sets +5Dh/+5Eh/+5Fh, and the ref clears sub+18h and sub+14h
+                    // (009FAFF4/009FAFF7) at once, in any task state. The destroy hook
+                    // 00926390 notifies slot +8h instead, 0042B120 (RET 4) for this ref.
+                    // The host's +5Eh mirror is set by its kill-list drain, so testing it at
+                    // each +70h reader (st_target_70, which latches it) is the clear at
+                    // notify time: no reader runs between the notify and the +5Eh store.
+                    bool st_ref70_destroyed_009faf90(const GameUnitSlot& t) const {
+                        return t.scene_destroyed_005e != 0;
                     }
                     // approach+54h, else approach+70h (009CCF1C-009CCF34, 009CB659-009CB6A4).
                     const GameUnitSlot* st_target_54_70() const {
