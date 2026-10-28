@@ -1677,3 +1677,35 @@ avoid zone); 20,3 failed 1290.13 s on e3c2cc5b3 (both Marus sunk by US_Airfield_
 the carrier strikes from `s46_u21gen3.py`), committed unchanged. cc9-nondet1 measured it on main 8eded9e50, ref env:
 **completed 2896.70 s in 8 of 8 runs**. USN21 is a long row (over 60000 frames), so its 20,3 and default timings
 wait for the light-load window of the wave-1 re-time; until then the ref time is nondet1's, not re-run here.
+
+## 2026-10-27, plan checks and wave-1 moves so far (cc9-lua74, keeper)
+
+**Plan checks** (lead request after cc15's msg2 runs, which used older plans), main 6d3043215, ref env, one run
+each, pf=0, guard logged (`cc9-lua52\local\l74r_chk_<row>_main_ref.log`): PRCP01 `p26_p01_a` completed 833.02 s,
+USN12 `l73_u12_n1` completed 1485.32 s, USN02 `l72_u2_g4` completed 245.06 s, BSM01 `l73_b1_m1` EndMission 839.92 s.
+All identical to the table; no regression. ESMP08 waits for the light-load window.
+
+**BSM03 `h1_x8` lost** in ref on main 8eee95914 (sw1b's plane flips, incl. kPlaneYawRollCouplingOrderCc13Bound
+da823f099) and still on fecb3b2e1: failed 483.01 s. Kane reaches phase 2 as before (Hatsushimo turns vulnerable and
+attackmoves from step 6390), runs north along x~500 and loses the gun duel by a hair: Kane dies at 482.91 s with
+Hatsushimo at 744 hp (before: Kane killed Hatsushimo at 485.21 s). The H6K Mavis and Gyoraitei 114 kills are gone.
+Re-plan attempts, all ref (`local\l74_b3<k>.txt`, logs `l74r_b3<k>_main_ref.log`), none wins:
+- course point (1300|1500,-2800), (1400,-2700|-2900), (1450,-2850), (1350,-2750), (1380|1420,-2800),
+  (1400,-2780|-2820): no end (Kane never kills Hatsushimo, or phase 2 not reached) or Kane lost at 306-393 s;
+- takehelm at frame 300 or 340: identical 483.01 s;
+- a phase-2 takehelm at 6500/7000: not applied in effect, the map is up (`map_up=1`), so the latch keeps steering
+  (CC13_IJN18LOSS "Steering while the map is up");
+- releasegun at 500/700/800/900: no end, 483.01, 297.05, 276.06 s.
+BSM03 has no winning plan on main. The duel is decided by gunnery after the map latch; a re-plan likely needs
+player-aimed fire (`aim` + `input 0x9D/0x99`, SCRIPTED_HELM) rather than routes. Parked.
+
+**BSM01 `l73_b1_m1`** on main fecb3b2e1, ref: EndMission 821.92 s, guard logged (`l74r_b1m1n_main_ref.log`). sweep2b's
+home-sector pair (no end on 276fdd23c) does not reproduce on this base; 20,3 and default go in the wave re-time.
+
+**JM08 `s63_j8_v3`** on main 8eee95914, ref: failed 1139.04 s (pf=1, provisional). Phase 1 broke: only TT01/02/04/05/06
+die; TT03, LST 01-03 and LSM 01-02 live and the invasion force shells the HQ from step 14000 (bullets 100/7/15). Not
+the 1762.64 s B-17 failure of ships64's pair. Re-plan pending (B-17 re-order variants ready in `local\l74_j8mk.py`,
+which reproduces v3 byte for byte).
+
+Received, no WINS time change: physics29 kLandBeginSteerPc24Cc13Bound (BSM04, USN01, BSM06 i/j, ESMP08 identical;
+BSM01 k1 moved but same end).
