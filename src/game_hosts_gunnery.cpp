@@ -18039,13 +18039,17 @@ void GameGunneryHost::Impl::gun_full_health_destroyed_stop_0072a0d0(std::size_t 
 }
 
 // 007280A0 on message 69h: +3B8h = 0 (007280C0); vtable[1B4h](0) = 00877B00, +358h = 0
-// (00876EC0); 008781F0(1), the scene nodes shown again (presentation, not modelled);
-// 00925A00 (00925A1F..00925A38: the parent [gun+3Ch] has +5Ch set and +5Dh, +60h, +5Eh
-// clear; LABELLED: the owner's UnitState is not dead), which clears +5Fh and +5Eh (no
-// gun fields: B's destroy path never sets them), +60h (00925A70; B flushes at once, so
-// no F899A8 entry is left) and +5Dh (00925A73); then 00956C20 on [gun+3F0h] (007280DF),
-// which takes the gun back into the category lists. LABELLED: a dead owner's rebuild
-// is skipped, as in gun_destroyed_failure_0072b5a0.
+// through 00876EC0 (its presentation calls, 00710BB0 model group selection and 0049C940,
+// are not modelled); 008781F0(1), the scene nodes shown again (presentation, not
+// modelled); 00925A00 (00925A1F..00925A38: the parent [gun+3Ch] has +5Ch set and +5Dh,
+// +60h, +5Eh clear), which clears +5Fh and +5Eh (no gun fields: B's destroy path never
+// sets them), +60h (00925A70; B flushes at once, so no F899A8 entry is left) and +5Dh
+// (00925A73); then, whatever the gate did (007280B2's non-69h JZ and the 69h path both
+// reach 007280D9), 00956C20 on [gun+3F0h] (007280DF), which takes the gun back into the
+// category lists. The host rebuild is safe on a dead owner (it touches only that unit's
+// lists). LABELLED: the gate is the owner's UnitState not dead, which misses an owner
+// with +5Ch clear (inactive) and a live owner with +60h (pending destroy) or +5Eh set;
+// there the host clears +5Dh/+60h and the image keeps them.
 void GameGunneryHost::Impl::gun_clear_destroyed_failure_007280a0(std::size_t g) {
     GameGunRow& gun = guns[g];
     gun.destroyed_3b8 = false;                                      // 007280C0
@@ -18056,6 +18060,8 @@ void GameGunneryHost::Impl::gun_clear_destroyed_failure_007280a0(std::size_t g) 
         gun.destroyed_60 = false;                                   // 00925A70
         gun.destroyed_5d = false;                                   // 00925A73
         done("MissionEntity::cancel_pending_destroy_00925a00", 0x00925a00u);
+    }
+    if (gun.unit_index < unit_state.size()) {
         rebuild_weapon_category_index_00956c20(gun.unit_index);    // 007280DF
     }
     ++guns_revived;
