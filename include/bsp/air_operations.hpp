@@ -756,7 +756,11 @@ std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squ
 // and there are two plain stores. For a squadron this deck just launched, ON
 // leaves its own slot untouched (OFF rewrites it to the values it already
 // has) and can bind an earlier idle slot of the same class and count to it.
-inline constexpr bool kAirOpsArriveSquadronWalkCc13Bound = false;
+// ON (cc9-sweep3b, 2026-10-27), faithful, flipped although it MOVES JM08 s63_j8_v3 (ref):
+// completed 4246.98 s -> failed 2055.93 s. A squadron bound at mission start takes the free
+// slot before its holder, so the plan's frame-300 launch from slot 1 is refused (slot not in
+// state 1 or 5). Identical on the other 12 WINS rows with planes. Re-plan sent to cc9-lua74.
+inline constexpr bool kAirOpsArriveSquadronWalkCc13Bound = true;
 
 // 006C58A0, sub-update 1 of 006CDC70 and the only one before the game-state
 // gate. Returns how many entries it placed.
