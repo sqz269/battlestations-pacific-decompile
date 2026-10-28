@@ -1185,7 +1185,9 @@ public:
     // +914h is above 0.0 (a follow sight has found a contact) is replaced by its
     // squadron head [[owner+9D4h]+3D0h]; any other owner is returned unchanged.
     // LABELLED: with no registry record, or no live head, the owner is kept (the
-    // image does not test +9D4h).
+    // image does not test +9D4h, and a null +3F0h jumps to 0072C145 and faults
+    // on [EBX+1B0h] with EBX = 0; the host's keep is a safe deviation on paths
+    // the image never takes).
     std::size_t plane_shot_owner_squadron_head_0072c119(std::size_t owner) const noexcept;
     // The unit index at `position` of the class-`class_id` list, or the unit
     // count when the position is past the end. The order is 00484540's own:

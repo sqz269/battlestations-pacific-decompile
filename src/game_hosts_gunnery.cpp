@@ -4570,7 +4570,8 @@ struct GameGunneryHost::Impl {
     // class 21h test, as in 007C2610.
     // kShotTeamSquadronHeadCc13Bound (packet cc13-s24): ON, the squadron-head
     // replacement runs (plane_formation_sight_914 is the host's +914h). OFF, the
-    // owner is never replaced (the old substitution).
+    // owner is never replaced (the old substitution). +914h's writers: 009C230B
+    // (1.0f, the follow sight) and 009BDC80, a 17-byte 1.0f setter with no refs.
     int shot_team_id_0072c0f2(const GameGunRow& gun, std::size_t owner) const {
         int team = gun.seat_1ac;
         if (team == 8 && gun.category == 0) {
