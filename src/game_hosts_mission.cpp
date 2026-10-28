@@ -1558,8 +1558,9 @@ public:
     std::vector<std::string> scene_record_names() override { return {record_.screen.scene}; }
     void set_scene_count_f1af2c(std::int32_t) override {}
     void build_scene_record_004e1d70(const std::string& name) override {
-        // 004E1D70(name, 0, -1, 0) for the one entry, through the host's 004E2770
-        // (clear, build, select index 0).
+        // 004E1D70(name, 0, -1, 0) for the one entry. Host substitution: the image calls
+        // 004E1D70 directly at 0076FC7C once per record; this goes through the host's
+        // 004E2770 (clear, build, select index 0).
         start_.set_pending_scene(name, std::string_view{});
     }
     void select_scene_record_004c6890() override {
@@ -1598,11 +1599,19 @@ public:
     void clear_e17bf2() override {}
     void set_e08178(float) override {}
     void set_game_mode_004bc890() override {
-        // 0076FEA4 SetGameMode(+618h, 0). rev9 N4: every SetGameMode on the skirmish
-        // path stores (m, m, forced 0). The lobby's 005D5660, 005D54E0 and 005D62B0 take
-        // m = [00E19564], or [00E19568] when that is 0..3; 0076FEA4 re-applies +618h and
-        // 004C6AF2 (004C6890 with +1FE4h set) re-applies +614h, both equal to the last m.
-        // So the end state is (M, M, 0), M from the last lobby call, in any order.
+        // 0076FEA4 SetGameMode(+618h, 0). rev9 N4: through session setup, before the
+        // scene load, every SetGameMode on the skirmish path stores (m, m, forced 0).
+        // The lobby's 005D5660, 005D54E0 and 005D62B0 take m = [00E19564], or [00E19568]
+        // when that is 0..3 (005D5660 tests with a signed JG, 005D54E0/005D62B0 with an
+        // unsigned CMOVBE: they agree only for non-negative modes); 0076FEA4 re-applies
+        // +618h and 004C6AF2 (004C6890 with +1FE4h set) re-applies +614h, both equal to
+        // the last m. So the end state of setup is (M, M, 0), M from the last lobby call,
+        // in any order. Later callers break the triple: 004D548E in LoadSceneContents
+        // (9, 0 on its AL == 0 branch) and 0046B999 in KillPass (8, flag EBP).
+        // LABELLED: bsp::set_game_mode_004bc890 stores only the triple. The image's
+        // 004BC8B3.. arm (+1FE4h != 0 and +5FCh != 0) also makes mode-specific scene
+        // edits (mode 7 at 004BC8C7); at 0076FEA4 +1FE4h has just become 1, and +5FCh is
+        // presumed null at the front end, so that arm is not modelled.
         bsp::SessionContext& session = bsp::session_context();
         bsp::set_game_mode_004bc890(session, session.raw_game_mode_618, false);
         owner_.log.implemented("Session::set_game_mode", "004bc890");
