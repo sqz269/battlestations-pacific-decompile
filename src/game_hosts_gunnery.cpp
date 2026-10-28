@@ -12,6 +12,7 @@
 #include "bsp/mission_result.hpp"
 #include "bsp/gun_aim_terms.hpp"
 #include "bsp/gun_fire_points.hpp"
+#include "bsp/gun_owner_inferior_operational_cc13.hpp"
 #include "bsp/gameplay_settings.hpp"
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/gun_mount_positions.hpp"
@@ -6301,7 +6302,13 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 out.device = reinterpret_cast<void*>(slot + 1);
                 out.dead = false;
                 out.is_gun = true;
-                out.operational = true;   // 00729F10 over an undamaged gun
+                if constexpr (bsp::kGunOwnerInferiorOperationalCc13Bound) {
+                    // 00956C98: 00729F10, the owner's +720h latch.
+                    out.operational = bsp::gun_is_operational_00729f10_cc13(owner.units,
+                                                                            gun.unit_index);
+                } else {
+                    out.operational = true;   // 00729F10 over an undamaged gun
+                }
                 out.weapon_function = gun.category;
                 out.max_range = gun.max_range;  // 00731020
                 out.flak_alternate_range = gun.max_range;
@@ -15123,7 +15130,13 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         if (gun.unit_index != unit) continue;
         // 00954210(kind 1 or 2): operational (00729F10; unit+720h and gun
         // +3B8h/+5Dh are never set here) and Function 1, 5 or 6.
-        if (!(gun.category == 1 || gun.category == 5 || gun.category == 6)) continue;
+        if constexpr (bsp::kGunOwnerInferiorOperationalCc13Bound) {
+            // 0095421F: 00729F10 with the owner's +720h latch.
+            if (!bsp::gun_is_operational_00729f10_cc13(units, gun.unit_index)
+                || !(gun.category == 1 || gun.category == 5 || gun.category == 6)) continue;
+        } else {
+            if (!(gun.category == 1 || gun.category == 5 || gun.category == 6)) continue;
+        }
         float muzzle[3];
         gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
         // 00957DE2..009580AB: the camera ray's point at the gun's bullet range.
@@ -15495,9 +15508,18 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
         if (gun.unit_index != unit) continue;
         // 00954210(3, dev): operational (00729F10) and 005459B0, the weapon
         // Function [[dev+3F4h]+80h] in {2, 3, 4, 6}.
-        if (!(gun.category == 2 || gun.category == 3 || gun.category == 4
-              || gun.category == 6)) {
-            continue;
+        if constexpr (bsp::kGunOwnerInferiorOperationalCc13Bound) {
+            // 0095421F: 00729F10 with the owner's +720h latch.
+            if (!bsp::gun_is_operational_00729f10_cc13(units, gun.unit_index)
+                || !(gun.category == 2 || gun.category == 3 || gun.category == 4
+                     || gun.category == 6)) {
+                continue;
+            }
+        } else {
+            if (!(gun.category == 2 || gun.category == 3 || gun.category == 4
+                  || gun.category == 6)) {
+                continue;
+            }
         }
         ++seat_artillery_guns;
         const bool seat_ai = slot_ai_held_00927f10(gun.seat_1ac);   // 00521E70(dev, 0)
