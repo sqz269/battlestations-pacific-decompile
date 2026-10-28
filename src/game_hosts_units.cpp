@@ -12400,7 +12400,17 @@ private:
 class UnitOrderIssueBinding final : public bsp::UnitOrderRecordIssueHost {
 public:
     explicit UnitOrderIssueBinding(GameUnitsHost::Impl& owner) : owner_(owner) {}
-    int session_mode() override { return 1; }  // game+1FE4h, single player
+    // game+1FE4h from the session context (packet cc13-mp2d): 0 single player, 1 the
+    // skirmish host, 2 the client. This site acts only on 2 (unit_order_record.cpp:80,
+    // 00816A8D cmp [..+1FE4h],2), so 0 and 1 behave alike. Campaign identity: the OFF
+    // arm is the old literal 1.
+    int session_mode() override {
+        if constexpr (bsp::kSkirmishSessionCc13Bound) {
+            return bsp::session_context().session_word_1fe4;
+        } else {
+            return 1;
+        }
+    }
     bsp::UnitOrderMessageStorage construct_message_0075b430(int) override {
         owner_.record("UnitOrder::construct_message", 0x0075b430u);
         return bsp::UnitOrderMessageStorage{};
