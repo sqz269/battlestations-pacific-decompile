@@ -35480,8 +35480,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // prediction from the aircraft's state at THIS tick, the
                     // drop's own instant, not the request's.
                     void run_rack_bomb_drop_006e4d50() {
-                        // SUBSTITUTION, labelled: the scatter draws are not
-                        // taken (the host spawn has no dispersion).
+                        // The scatter draws are not taken here. They are taken in
+                        // GameGunneryHost::release_bomb_drop, called below, under
+                        // kBombDropScatterBound (ON, GUNNERY 130.6) and
+                        // kBombDropDriftBound (ON, 173.1). It makes four stream-1
+                        // 00BD2F10 draws in the image's order:
+                        //   006E4F91  U(0, pi)            cone azimuth
+                        //   006E4FB1  U(0, s)             cone angle, through tan
+                        //   006E513C  U(-w, w)            drift, side
+                        //   006E51AC  U(-0.5w, 0.3w)      drift, along
+                        // It then applies the cone to the release velocity and the
+                        // drift to block+38h. In the default run, Draw::bomb_scatter
+                        // is the same shared generator as ship_ai_draw. The record
+                        // below predates that packet, and its old note that the host
+                        // spawn has no dispersion is stale (cc13-bombscatter).
                         owner_.record("Rack::drop_dispersion_006e4f91", 0x006e4f91u);
                         if (owner_.gunnery == nullptr) return;
                         const std::size_t index = owner_.index_of_slot(unit_);
