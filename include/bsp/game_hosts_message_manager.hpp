@@ -29,6 +29,7 @@ struct VoiceClipRecord;
 namespace bsp::game {
 
 class GameHostLog;
+class GameSoundRuntime;
 class GameVfsHost;
 
 // cc15-msg2: 00705E00's miss arm. A name absent from the record map gets a new record
@@ -39,6 +40,13 @@ inline constexpr bool kMessageRecordMissCc15Bound = true;
 // catalog row's voice_dir), not the lockit name the host was built with. OFF: the
 // lockit name, as before.
 inline constexpr bool kMessageVoiceLanguageCc15Bound = true;
+// cc15-bank: 00704590's hits call 00A83FD0 BSP_SoundSampleCache_AcquireByName on
+// [00F8BBE8] with the .fsb path, and the record's slot keeps the D5B074 sample it
+// answers. ON: the host runs the reconstructed 00A83FD0 (sound_sample_cache.cpp) on
+// the live GameSoundRuntime's cache, and retains/releases the samples as the image
+// does (+4h interlocked count, vslot 0 at zero). OFF: the call is counted, answers
+// null, and the four references stay null.
+inline constexpr bool kMessageSoundBankCc15Bound = false;
 
 // What 007065E0 reads besides its argument: the local party's side kind
 // [[game+18CCh+4*[game+18ECh]]+28h] and the scene record block [game+5FCh]+1064h
@@ -64,6 +72,8 @@ struct MessageManagerSummary {
     unsigned long long voice_probe_hits{0};    // [0109CEEC] vtable +8h true
     unsigned long long voice_probe_misses{0};
     unsigned long long sound_banks_not_loaded{0};       // 00A83FD0 seam
+    unsigned long long sound_banks_loaded{0};           // 00A83FD0 answers (cc15-bank ON)
+    unsigned long long sound_bank_references_released{0};// references dropped (cc15-bank ON)
     unsigned long long streamed_probes_not_evaluated{0};// [0109CEEC] vtable +0Ch seam
     unsigned long long resolve_hits{0};        // 00705E00 found
     unsigned long long resolve_misses{0};      // 00705E00 miss
@@ -84,6 +94,9 @@ public:
     // must outlive every manager; the application binds them once after settings load.
     static void bind_voice_language_settings(const std::vector<LanguageEntry>& catalog,
         const int& language_index_04);
+    // The core sound runtime whose sample cache is [00F8BBE8] (read only under
+    // kMessageSoundBankCc15Bound). Borrowed; every manager is destroyed before it.
+    static void bind_sound_runtime(GameSoundRuntime* runtime) noexcept;
     ~GameMessageManagerHost();
     GameMessageManagerHost(const GameMessageManagerHost&) = delete;
     GameMessageManagerHost& operator=(const GameMessageManagerHost&) = delete;
