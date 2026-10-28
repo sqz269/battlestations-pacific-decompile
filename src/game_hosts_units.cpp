@@ -46253,8 +46253,16 @@ std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
             && u.rack_ammo_per_rack.size() == n) {
             const auto bit = [](int kind) { return std::uint64_t(1) << (kind - 0x08); };
             const auto bomb_family = [](int kind) {
-                return kind == 0x2A || kind == 0x2B || kind == 0x2C || kind == 0x2D
-                    || kind == 0x31 || kind == 0x33;
+                if constexpr (bsp::kSquadronAmmoDummyKindsCc13Bound) {
+                    // Packet cc13-ammodk: 007B9320 asks the descriptor vt[8](2Ah)
+                    // (007B935C) and DummyTarget's 006EA6F0 answers 2Eh/2Ah/29h, so a
+                    // loaded 2Eh rack counts toward 2Ah.
+                    return kind == 0x2A || kind == 0x2B || kind == 0x2C || kind == 0x2D
+                        || kind == 0x2E || kind == 0x31 || kind == 0x33;
+                } else {
+                    return kind == 0x2A || kind == 0x2B || kind == 0x2C || kind == 0x2D
+                        || kind == 0x31 || kind == 0x33;
+                }
             };
             bool known = true;
             bool family_loaded = false;

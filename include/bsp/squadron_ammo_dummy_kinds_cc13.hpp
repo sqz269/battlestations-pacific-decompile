@@ -57,8 +57,11 @@ namespace bsp {
 //   - 007B92E0 any-rack-empty (script orders);
 //   - the live-ordnance mask in game_hosts_units.cpp. OFF: class 0 leaves known = false and the
 //     mask untouched. ON: 2Eh keeps it true, so an emptied rack clears its bit.
-//     LABELLED: that block's bomb_family has no 2Eh, so a loaded 2Eh rack does not keep
-//     the 2Ah bit, though the image's 007B9320 counts it as 2Ah;
+//     CORRECTION: ON also adds 2Eh to that block's bomb_family, so a loaded 2Eh rack keeps
+//     the 2Ah bit, as the image counts it. 007B9320 asks the descriptor vt[8](2Ah) at
+//     007B935C, then rejects 2Ch/31h/2Bh/33h/2Dh (007B936B..007B93A7); DummyTarget's test
+//     006EA6F0 answers 2Eh/2Ah/29h only (006EA6F4..006EA701), so it passes. 30h/34h also
+//     answer 2Ah but are on no plane rack, so they are not added;
 //   - DeviceWalkRack::bullet_class (the cc13_devwalk rack walk) gets 2Eh instead of 0;
 //   - the single-drop test (007C0E30 arm): 2Eh is none of 2Bh/2Ch/33h, so it stays on the
 //     bomb arm, as the image's DummyTarget descriptor does.
