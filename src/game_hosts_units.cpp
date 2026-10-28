@@ -23712,7 +23712,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     // +3C4h draw here; their 007F3BA0 tick runs at the end of the step (below).
     // LABELLED: the order of this draw against the S22 pass's first-step
     // nb_seed_clocks draws (both stream 1) follows the tick order above; the
-    // image's 007F2D5B / 007E1F94 construction order is not traced.
+    // image's 007F2D5B / 007E1F94 construction order is not traced. "Both stream
+    // 1" holds only under kStreamSet2SharedDrawsCc13Bound: with it OFF the nb seeds
+    // draw from db_release_rng (release_altitude_draw_00bd2f10), not gunnery's
+    // stream 1, and the two seeds do not interact (rev7 S22 FIX 2).
     if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
         host.squadron_wingmen_recount_seed();
     }

@@ -43,6 +43,13 @@
 //  * Mover: with kStreamSet2SharedDrawsCc13Bound also ON, nb_seed_clocks' stream-1 draws
 //    happen at the first fixed step for every C50h plane (not at that plane's first
 //    think), which reorders the shared stream.
+//  * Mover, the default case (rev7 S22 FIX 2): with this switch ON alone (and
+//    BSP_GUNNERY_RNG_STREAMS unset), nb_seed_clocks -> stream_set2_draw_00bd2f10<false>
+//    -> release_altitude_draw_00bd2f10 draws from the shared, unkeyed host state
+//    db_release_rng, which every release_altitude_draw_00bd2f10 caller shares (it is not
+//    gunnery's stream 1). The first seed moves from a plane's first neighbour think to
+//    the first fixed step, for every in-world C50h plane, including planes that never
+//    think neighbours, so db_release_rng draws are reordered and added.
 //  * Label wording: 007E2010 is a plane sub-node (007E1E20 -> 00876020 Reparent, +18h = 2,
 //    under unit+310h), so it runs in wave 2, after wave 1's pose step and before the wave-3
 //    consumers. There is no step lead; the only difference is that the host pass measures
