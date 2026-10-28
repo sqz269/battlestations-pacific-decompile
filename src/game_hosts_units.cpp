@@ -5340,6 +5340,15 @@ struct GameUnitsHost::Impl {
             // +398h block above does.
             const bool profile_call = !kDiveReleaseAltActivationOnlyBound
                 || !kTaskProfileActivationOnlyBound || db_profile_activation;
+            {   // sw3c reach, log only: the block's effect on a tick the ON arm skips.
+                const bool on_call = !kTaskProfileActivationOnlyBound || db_profile_activation;
+                const bool block = unit_is_flight_leader_007b8ad0(slot.process_index)
+                    && !rb->sq_freeze_38e;
+                const bool changes = block && (rb->sq_lock_3ab
+                    || summary.simulated_seconds >= rb->sq_timer_expiry_384);
+                bsp::plane_task_reach_count(bsp::g_plane_task_reach_sw3.dive_release_alt,
+                                            !on_call && changes, block);
+            }
             if (profile_call && unit_is_flight_leader_007b8ad0(slot.process_index)
                 && !rb->sq_freeze_38e) {
                 if (summary.simulated_seconds >= rb->sq_timer_expiry_384 && !rb->sq_lock_3ab) {
@@ -29220,6 +29229,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (c.speed_from_target) {
                                 unit_.plane_desired_speed_2b4 = c.desired_speed;
                                 unit_.plane_air_brake_mode_2d8 = 1;
+                                bsp::plane_task_reach_count(   // sw3c reach, log only
+                                    bsp::g_plane_task_reach_sw3.aim_speed_corr_off,
+                                    unit_.plane_trg_speed_corr_off_2b0 != 1);
                                 if constexpr (bsp::kSeg67bDogfightAimSpeedCorrOffBound) {
                                     // 009A7932: plan+2B0h = 1 (byte), so 0099D924 does not
                                     // raise the speed correction while aiming.
@@ -35918,6 +35930,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             arm.unit_free_flight_72c = unit_.plane_control_mode_900 == 7;
                             const bsp::TorpedoArmResult ar =
                                 bsp::torpedo_arm_drop_009d49a0(arm);
+                            if (ar.fell_through_to_0099b6a0) {   // sw3c reach, log only
+                                bsp::plane_task_reach_count(
+                                    bsp::g_plane_task_reach_sw3.torpedo_fallthrough,
+                                    arm.has_squadron_2fc,
+                                    arm.has_squadron_2fc && arm.unit_free_flight_72c);
+                            }
                             if (ar.armed) {
                                 unit_.torpedo_drop_timer = ar.prepare_timer;
                                 unit_.torpedo_timer_armed_since_enter = true;
@@ -37930,6 +37948,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 GameUnitSlot* blk =
                                     owner_.squadron_slot_of(unit_.process_index);
                                 if (leader && blk != nullptr && !blk->sq_alt_set) {
+                                    bsp::plane_task_reach_count(   // sw3c reach, log only
+                                        bsp::g_plane_task_reach_sw3.moveto_lua_alt_order,
+                                        blk->sq_lua_alt_3ad
+                                            && GameUnitsHost::Impl::kMoveToActivationDrawsBound
+                                            && bsp::kMoveToTaskTickBound);
                                     blk->sq_lua_alt_3ad = false;
                                 }
                             }
@@ -49188,6 +49211,24 @@ void GameUnitsHost::report() {
         host.log.notef("summary mission plane task reach (sw3) free_attack 009F830C "
             "(kFreeAttackAcceptTestCc13Bound): calls=%llu differs=%llu inner=%llu",
             fa.calls.load(), fa.differs.load(), fa.inner.load());
+        // cc9-sweep3c reach counters for the plane-logic OFF switches (log only).
+        const bsp::PlaneTaskReachSw3& r = bsp::g_plane_task_reach_sw3;
+        const struct { const char* name; const bsp::PlaneTaskReachPair* pair; } rows[] = {
+            {"aim_speed_corr_off 009A7932 (kSeg67bDogfightAimSpeedCorrOffBound)",
+             &r.aim_speed_corr_off},
+            {"dive_release_alt 009C89E4 (kDiveReleaseAltActivationOnlyBound)",
+             &r.dive_release_alt},
+            {"moveto_lua_alt_order 009C375A (kMoveToActivationLuaAltOrderBound)",
+             &r.moveto_lua_alt_order},
+            {"ai_bag_equipment 00A04608 (kAiPlaneBagEquipmentBound)", &r.ai_bag_equipment},
+            {"torpedo_fallthrough 009D49DA (kTorpedoArmFallthroughReleaseBound)",
+             &r.torpedo_fallthrough},
+        };
+        for (const auto& row : rows) {
+            host.log.notef("summary mission plane task reach (sw3) %s: calls=%llu differs=%llu "
+                "inner=%llu", row.name, row.pair->calls.load(), row.pair->differs.load(),
+                row.pair->inner.load());
+        }
     }
     host.log.notef("summary mission plane step: steps=%llu free_flight=%llu "
         "ground_roll=%llu surface=%llu none=%llu (007ce040 arm selection)",
