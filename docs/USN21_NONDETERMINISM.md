@@ -386,3 +386,11 @@ Options for the lead:
 
 Not yet run, because the lead holds stall runs: whether a duty-hog run with the switch ON still
 matches b1. That run would close the loop.
+
+Decision (cc9 lead, 2026-10-28):
+- The shipped build stays faithful: kSearcherCacheBoundsInitCc13Bound stays OFF.
+- The environment variable `BSP_SEARCHER_BOUNDS_INIT=1` (src/ship_ai_search_storage.cpp) does
+  the same zeroing at run time. It is a harness determinism aid, not image behaviour. It is off
+  when unset and logs one startup line when active.
+- Pairs and WINS runs on noisy rows (USN21 at least) set it on both sides (docs/TOOLING.md,
+  section 1, "Noisy rows").
