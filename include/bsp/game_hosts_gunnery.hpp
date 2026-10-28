@@ -1534,6 +1534,10 @@ public:
     // generator every gunnery draw uses, in call order. BSP_GUNNERY_RNG_STREAMS=1:
     // its own generator keyed by (unit), a measurement substitution.
     float ship_ai_draw(std::size_t unit_index, float low, float high);
+    // 00816650's 00BD2F10(ECX=1) draws for 009FA260's hull aim pick, on the same shared
+    // generator (include/bsp/hull_aim_shared_stream_cc13.hpp). BSP_GUNNERY_RNG_STREAMS=1:
+    // keyed by (shooter unit).
+    float hull_aim_point_draw_00816650(std::size_t unit_index, float low, float high);
     // 009F6A20 (BSP_WeaponDirector_AutoTargetConstruct) at 009F6A8F: 00BD2F10(ECX=1,
     // 0.0f, 1.0f), negated into the auto-target think countdown, once per director.
     // Default: the shared stream-1 generator. BSP_GUNNERY_RNG_STREAMS=1: its own
