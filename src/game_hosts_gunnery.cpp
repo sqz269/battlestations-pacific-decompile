@@ -9347,9 +9347,20 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 gun.angles.target_vert);
             done("Gun::arc_route_deltas_007f6530", 0x007f6530u);
             const float pre_horz = gun.angles.horz, pre_vert = gun.angles.vert;
-            if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
-                ++gun.aim_steps;
-                ++summary.aim_steps;
+            if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+                // Packet cc13-trav: 0085AD96, a set gun+3B8h (0072B5BC) skips the whole
+                // step. LABELLED: 0085AD8C's owner test ([gun+3F0h]+5Dh) is this loop's
+                // `if (state.dead) continue;`, UnitState::dead taken as the owner's +5Dh.
+                if (!gun.destroyed_3b8
+                    && bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
+                    ++gun.aim_steps;
+                    ++summary.aim_steps;
+                }
+            } else {
+                if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
+                    ++gun.aim_steps;
+                    ++summary.aim_steps;
+                }
             }
             done("Gun::step_aim_0085ad80", 0x0085ad80u);
             ++wave_order_pre_steps;
@@ -9428,9 +9439,19 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 gun.angles.horz, gun.angles.vert, gun.angles.target_horz,
                 gun.angles.target_vert);
             done("Gun::arc_route_deltas_007f6530", 0x007f6530u);
-            if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
-                ++gun.aim_steps;
-                ++summary.aim_steps;
+            if constexpr (bsp::kGunDestroyedFailureCc13Bound) {
+                // Packet cc13-trav: 0085AD96 (gun+3B8h) as above; the owner test is the
+                // loop's state.dead skip (LABELLED).
+                if (!gun.destroyed_3b8
+                    && bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
+                    ++gun.aim_steps;
+                    ++summary.aim_steps;
+                }
+            } else {
+                if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
+                    ++gun.aim_steps;
+                    ++summary.aim_steps;
+                }
             }
             done("Gun::step_aim_0085ad80", 0x0085ad80u);
         }
