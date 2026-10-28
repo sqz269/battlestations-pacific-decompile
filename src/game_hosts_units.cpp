@@ -165,6 +165,7 @@
 #include "bsp/rocket_target_stop_cc13.hpp"  // cc13-rocketstop, task+38Ch per task
 #include "bsp/free_attack_accept_test_cc13.hpp"  // cc13-tranche2 S18
 #include "bsp/wingmen_recount_countdown_cc13.hpp"  // cc13-tranche2 S19
+#include "bsp/near_field_probe_cached_list_cc13.hpp"  // cc13-tranche2 S22
 #include "bsp/attack_target_classify.hpp"
 #include <array>
 #include "bsp/pose_refresh.hpp"
@@ -9487,6 +9488,10 @@ struct GameUnitsHost::Impl {
         return true;
     }
     void vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt);
+    static bool nb_in_world(const GameUnitSlot& o);
+    void nb_near_30_tick_007e2010(GameUnitSlot& u, float dt);
+    bool nb_has_object_c50(const GameUnitSlot& u) const;
+    void nb_near_30_fixed_step(float step);
     bool friendly_in_line_007b96d0(GameUnitSlot& u, float dt);
     void friendly_in_line_clock_007e2010(GameUnitSlot& u, float dt);
     bool friendly_in_line_eval_007dedb0(GameUnitSlot& u);
@@ -13700,6 +13705,74 @@ static const std::string& plane_rate_trace_name() {
     return value;
 }
 
+// 007E2010 / 007E11D0 for the +30h copy: the +7Ch clock advanced by dt and, when it
+// reaches +88h = 3.0, members at or beyond R = 1080 dropped and every world entity
+// answering IsKindOf(6) or (0Fh) within R and not yet listed appended. "In the world
+// list" is a slot with a live state object not marked destroyed (wrecks stay listed,
+// as the refresh has no death test). Labelled, as for kPlaneFinderBound.
+bool GameUnitsHost::Impl::nb_in_world(const GameUnitSlot& o) {
+    return o.state != nullptr && o.state->active != 0 && o.scene_destroyed_005e == 0 &&
+           o.scene_pending_destroy_0060 == 0;
+}
+
+void GameUnitsHost::Impl::nb_near_30_tick_007e2010(GameUnitSlot& u, float dt) {
+    const bsp::PlaneNeighbourRadii radii = bsp::plane_neighbour_radii_007e11d0(3.0f);
+    const float* p0 = u.world.data() + 12;                          // unit+FCh..+104h
+    auto dist2 = [&](const GameUnitSlot& o) {
+        const double dx = static_cast<double>(o.world[12]) - p0[0];
+        const double dy = static_cast<double>(o.world[13]) - p0[1];
+        const double dz = static_cast<double>(o.world[14]) - p0[2];
+        return dx * dx + dy * dy + dz * dz;
+    };
+    nb_seed_clocks(u);
+    u.nb_clock_30 += dt;
+    if (u.nb_clock_30 >= 3.0f) {
+        const double lim = static_cast<double>(radii.near_any) * radii.near_any;
+        auto& v = u.nb_near_30;
+        for (std::size_t k = 0; k < v.size();) {
+            if (v[k] >= slots.size() || !nb_in_world(*slots[v[k]]) || dist2(*slots[v[k]]) >= lim) {
+                v[k] = v.back();
+                v.pop_back();
+            } else {
+                ++k;
+            }
+        }
+        for (std::size_t j = 0; j < slots.size(); ++j) {
+            const GameUnitSlot& o = *slots[j];
+            if (&o == &u || !nb_in_world(o)) continue;
+            if (!bsp::unit_is_kind_of(o.class_id, 0x06) && !bsp::unit_is_kind_of(o.class_id, 0x0F)) {
+                continue;
+            }
+            if (!(dist2(o) < lim)) continue;
+            bool listed = false;
+            for (const std::size_t e : v) listed = listed || e == j;
+            if (!listed) v.push_back(j);
+        }
+        u.nb_clock_30 -= 3.0f;
+    }
+}
+
+// cc13-tranche2 S22 (include/bsp/near_field_probe_cached_list_cc13.hpp): the unit+C50h
+// object is a tick element (007E2010 is its vtable 00D06B88 slot +0Ch), so its +30h
+// list advances with the fixed step. 007D61C0..007D621F builds it when [game+1FE4h] is
+// 0 or 1 and unit+54h != [[game]+5FCh]+908h; kSceneDefaultDummyAi stands in for +908h,
+// as at 009A184A. LABELLED: run at the start of the units' fixed step, while the plane
+// is in the world.
+bool GameUnitsHost::Impl::nb_has_object_c50(const GameUnitSlot& u) const {
+    return u.row.party != bsp::kSceneDefaultDummyAi;
+}
+
+void GameUnitsHost::Impl::nb_near_30_fixed_step(float step) {
+    for (const auto& slot : slots) {
+        if (!slot) continue;
+        GameUnitSlot& u = *slot;
+        if (!bsp::unit_is_kind_of(u.class_id, 0x0F) || !nb_has_object_c50(u) || !nb_in_world(u)) {
+            continue;
+        }
+        nb_near_30_tick_007e2010(u, step);
+    }
+}
+
 // 0099B670 -> 007DF4F0 (__thiscall(neighbours = unit+C50h, pilot), RET 4,
 // body 007DF4F0-007E073E), for one plane per think. The unit+C50h object is
 // built for AI planes not of the local player's party (007D621F), which
@@ -13713,44 +13786,10 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
     // interval, and "in the world list" is a slot with a live state object
     // not marked destroyed (wrecks stay listed, as the refresh has no death
     // test). Labelled, as for kPlaneFinderBound.
-    const bsp::PlaneNeighbourRadii radii = bsp::plane_neighbour_radii_007e11d0(3.0f);
     const float* p0 = u.world.data() + 12;                          // unit+FCh..+104h
-    auto dist2 = [&](const GameUnitSlot& o) {
-        const double dx = static_cast<double>(o.world[12]) - p0[0];
-        const double dy = static_cast<double>(o.world[13]) - p0[1];
-        const double dz = static_cast<double>(o.world[14]) - p0[2];
-        return dx * dx + dy * dy + dz * dz;
-    };
-    auto in_world = [](const GameUnitSlot& o) {
-        return o.state != nullptr && o.state->active != 0 && o.scene_destroyed_005e == 0 &&
-               o.scene_pending_destroy_0060 == 0;
-    };
-    nb_seed_clocks(u);
-    u.nb_clock_30 += dt;
-    if (u.nb_clock_30 >= 3.0f) {
-        const double lim = static_cast<double>(radii.near_any) * radii.near_any;
-        auto& v = u.nb_near_30;
-        for (std::size_t k = 0; k < v.size();) {
-            if (v[k] >= slots.size() || !in_world(*slots[v[k]]) || dist2(*slots[v[k]]) >= lim) {
-                v[k] = v.back();
-                v.pop_back();
-            } else {
-                ++k;
-            }
-        }
-        for (std::size_t j = 0; j < slots.size(); ++j) {
-            const GameUnitSlot& o = *slots[j];
-            if (&o == &u || !in_world(o)) continue;
-            if (!bsp::unit_is_kind_of(o.class_id, 0x06) && !bsp::unit_is_kind_of(o.class_id, 0x0F)) {
-                continue;
-            }
-            if (!(dist2(o) < lim)) continue;
-            bool listed = false;
-            for (const std::size_t e : v) listed = listed || e == j;
-            if (!listed) v.push_back(j);
-        }
-        u.nb_clock_30 -= 3.0f;
-    }
+    // cc13-tranche2 S22: under bsp::kNearFieldProbeCachedListCc13Bound the refresh runs
+    // once per fixed step for every plane (nb_near_30_tick_007e2010), not here.
+    if constexpr (!bsp::kNearFieldProbeCachedListCc13Bound) nb_near_30_tick_007e2010(u, dt);
     if (u.nb_near_30.empty()) return;                               // 007DF53B this+34h
 
     const bool free_flight = u.plane_control_mode_900 == 7;
@@ -23501,6 +23540,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
         host.squadron_wingmen_recount_007f3c3f(step_seconds);
     }
+    // Packet cc13-tranche2 S22: the unit+C50h objects' 007E2010 tick for the +30h list.
+    // LABELLED order: ahead of the planes' ticks.
+    if constexpr (bsp::kNearFieldProbeCachedListCc13Bound) {
+        host.nb_near_30_fixed_step(step_seconds);
+    }
     if constexpr (Impl::kPlayerRoleBookkeepingBound) {
         if constexpr (Impl::kRoleScreenFixedStepCall) {
             host.role_screen_update_0067bb50();
@@ -28336,14 +28380,37 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // refreshed every 3 s by 007E11D0) and keeps vtable[5Ch](0Fh);
                     // this scans every live aircraft directly, without the 3 s lag.
                     // The box is at most 140 m, far inside the list's 1080 m.
+                    // CORRECTION (cc13-tranche2 S22): under
+                    // bsp::kNearFieldProbeCachedListCc13Bound the walk is the list itself
+                    // (include/bsp/near_field_probe_cached_list_cc13.hpp).
                     bsp::NearFieldProbeResult nf_probe_007f0280(const float extents[3],
                                                                 const float weights[3]) {
+                        if constexpr (bsp::kNearFieldProbeCachedListCc13Bound) {
+                            // 007F039F..007F03AB: no C50h object -> the squadron arm 007F0481.
+                            if (!owner_.nb_has_object_c50(unit_)) {
+                                return nf_probe_squadron_007f0280(extents, weights);
+                            }
+                        }
                         std::vector<bsp::NearFieldCandidate> cands;
                         const float reach = extents[0] + extents[1] + extents[2];
-                        for (std::size_t j = 0; j < owner_.slots.size(); ++j) {
+                        std::vector<std::size_t> walk;
+                        if constexpr (bsp::kNearFieldProbeCachedListCc13Bound) {
+                            walk = unit_.nb_near_30;                   // 007F03B1 [C50h+30h]
+                        } else {
+                            walk.reserve(owner_.slots.size());
+                            for (std::size_t j = 0; j < owner_.slots.size(); ++j) walk.push_back(j);
+                        }
+                        for (const std::size_t j : walk) {
+                            if (j >= owner_.slots.size()) continue;
                             if (j == unit_.process_index) continue;   // 007F056F
                             const GameUnitSlot& o = *owner_.slots[j];
-                            if (!df_slot_live(o)) continue;
+                            if constexpr (bsp::kNearFieldProbeCachedListCc13Bound) {
+                                // No live test in the walk; a member leaves the list when
+                                // its slot leaves the world (its observer, labelled).
+                                if (!GameUnitsHost::Impl::nb_in_world(o)) continue;
+                            } else {
+                                if (!df_slot_live(o)) continue;
+                            }
                             if (!bsp::unit_is_kind_of(o.class_id, 0x0F)) continue;  // 007F03D8
                             const double dx = static_cast<double>(o.motion.position[0]) - unit_.motion.position[0];
                             const double dy = static_cast<double>(o.motion.position[1]) - unit_.motion.position[1];
