@@ -46,7 +46,7 @@ inline constexpr bool kMessageVoiceLanguageCc15Bound = true;
 // the live GameSoundRuntime's cache, and retains/releases the samples as the image
 // does (+4h interlocked count, vslot 0 at zero). OFF: the call is counted, answers
 // null, and the four references stay null.
-inline constexpr bool kMessageSoundBankCc15Bound = false;
+inline constexpr bool kMessageSoundBankCc15Bound = true;
 
 // What 007065E0 reads besides its argument: the local party's side kind
 // [[game+18CCh+4*[game+18ECh]]+28h] and the scene record block [game+5FCh]+1064h
