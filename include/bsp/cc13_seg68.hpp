@@ -248,7 +248,9 @@ float filter_distance_to_target_009f7150(SquadronAutoTargetHost& host,
 // 009F72A0 __thiscall(filterC, target) RET 4.
 float filter_c_distance_score_009f72a0(SquadronAutoTargetHost& host,
                                        const SquadronAutoTarget& self, Handle target);
-// 009F7F40 __thiscall(filterC, target) RET 4 (not a Ghidra function).
+// 009F7F40 __thiscall(filterC, target) RET 4. Not a Ghidra function when seg68 was
+// written; Ghidra now has FUN_009f7f40 (body 009F7F40-009F7FDA), named
+// BSP_AutoTargetFilterC_AcceptGuardCircle by cc13-nits. Game code, not library.
 bool filter_c_accept_guard_circle_009f7f40(SquadronAutoTargetHost& host,
                                            const SquadronAutoTarget& self, Handle target);
 // 009F7BA0 __thiscall(filter, target) RET 4.

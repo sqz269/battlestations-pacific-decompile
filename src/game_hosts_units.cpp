@@ -10912,7 +10912,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         a.period_34 = bsp::kRetreatRefreshPeriod;
         a.countdown_38 = -stream_set2_draw_00bd2f10(unit, n + "#r38", 0.0f, 1.0f);
         retreat_refresh_approach(unit);                       // 009C9282, 009C9289
-        // 009C9C5D 009C2980, the follow state's construction draw.
+        // 009C9C63 009C2980, the follow state's construction draw.
         float retreat_follow_74;
         if constexpr (bsp::kFollowSightCountdownDrawCc13Bound) {
             retreat_follow_74 = follow_stagger_shared_009c2a0a(unit, n + "#rf");
