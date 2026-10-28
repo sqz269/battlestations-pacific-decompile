@@ -532,7 +532,9 @@ inline constexpr bool kMoveToLuaAltZeroOffsetBound = true;  // GUNNERY 193: ON b
 // True: the store moves there, so a script altitude that the activation retires
 // still zeroes the freshly drawn +2Ch. False: the store follows the install's
 // refresh, and the activation's +2Ch survives.
-inline constexpr bool kMoveToActivationLuaAltOrderBound = false;
+// ON (cc9-sweep3c, 2026-10-28) without pairs: the sw3 moveto_lua_alt_order census
+// counts differs=0 (no install clears a live +3ADh) on u01, b9, b6i, l10, p01, u12, j8v3.
+inline constexpr bool kMoveToActivationLuaAltOrderBound = true;
 
 class GameUnitsHost {
 public:
