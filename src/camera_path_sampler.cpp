@@ -3,6 +3,7 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/material_effect_plane.hpp"
 #include "bsp/pc24_camera_cc13.hpp"
+#include "bsp/sw1b_switch_reach.hpp"
 #include <cmath>
 #include <cstring>
 
@@ -633,6 +634,19 @@ CameraPathKnotTotals derive_camera_path_knots_007af150(
         const double cz = static_cast<double>(first[2]) - last[2];
         totals.closed_24 = cz * cz + cy * cy + cx * cx < 1.0;   // 007AF297
     }
+    {                                                      // sw1b reach (log only)
+        const float cx = first[0] - last[0];
+        const float cy = first[1] - last[1];
+        const float cz = first[2] - last[2];
+        const bool on = 1.0f > static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_add24(cc13x87::x87_mul24(cx, cx), cc13x87::x87_mul24(cy, cy)),
+            cc13x87::x87_mul24(cz, cz)));
+        const double dx = static_cast<double>(first[0]) - last[0];
+        const double dy = static_cast<double>(first[1]) - last[1];
+        const double dz = static_cast<double>(first[2]) - last[2];
+        // pc24-lint: allow sw1b reach counter, replica of the OFF arm (log only)
+        sw1b_note(Sw1bReach::CameraPathClosed, on != (dz * dz + dy * dy + dx * dx < 1.0));
+    }
     totals.running_1c = 0.0f;                              // 007AF2BE
     for (std::size_t i = 0; i < n; ++i) {
         CameraPathKnotWords& k = knots[i];
@@ -653,6 +667,13 @@ CameraPathKnotTotals derive_camera_path_knots_007af150(
                 (static_cast<double>(dy) * dy + static_cast<double>(dx) * dx)
                 + static_cast<double>(dz) * dz);               // 007AF5A5
         }
+        sw1b_note(Sw1bReach::CameraPathKnot,               // sw1b reach (log only)
+            static_cast<float>(cc13x87::x87_add24(
+                cc13x87::x87_add24(cc13x87::x87_mul24(dy, dy), cc13x87::x87_mul24(dx, dx)),
+                cc13x87::x87_mul24(dz, dz))),
+            // pc24-lint: allow sw1b reach counter, replica of the OFF arm (log only)
+            static_cast<float>((static_cast<double>(dy) * dy + static_cast<double>(dx) * dx)
+                + static_cast<double>(dz) * dz));
         const float duration = static_cast<double>(d2) > 1e-10   // 00CE3820
             ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
         k[7] = duration;                                   // 007AF5FB +1C
