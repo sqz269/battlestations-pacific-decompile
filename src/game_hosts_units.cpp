@@ -7177,15 +7177,13 @@ struct GameUnitsHost::Impl {
     }
     static float leader_live_speed_007b8e60(const GameUnitSlot& u) {
         const float* v = u.plane_world_velocity;
-        float speed;
         if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
             // 007B8E60 FLD [unit+B1Ch], as 007D8020 caches it (per op, 1e-10 floor).
-            speed = bsp::plane_cached_speed_b1c_007d8020(v);
+            return bsp::plane_cached_speed_b1c_007d8020(v);
         } else {
-        speed = static_cast<float>(std::sqrt(static_cast<double>(v[0]) * v[0] +
+        return static_cast<float>(std::sqrt(static_cast<double>(v[0]) * v[0] +
             static_cast<double>(v[1]) * v[1] + static_cast<double>(v[2]) * v[2]));
         }
-        return speed;
     }
     // Packet cc9_wing_achieved_speed (docs/PLANE_FOLLOW_LAW.md section 16): the
     // torpedo and dive-bomb moveto speed slot 009C1850 as the image forms it,
@@ -24811,22 +24809,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         float unit_speed_vtable38() override {
                             // 009D3D01, unit->vtable[38h]. The plane's speed,
                             // taken from the live linear velocity.
-                            float speed;
                             if constexpr (bsp::kPlaneCachedSpeedB1cCc13Bound) {
                                 // 007B8E60 FLD [unit+B1Ch], as 007D8020 caches it
                                 // from ctl+18h (plane_world_velocity).
-                                speed = bsp::plane_cached_speed_b1c_007d8020(
+                                return bsp::plane_cached_speed_b1c_007d8020(
                                     slot_.plane_world_velocity);
                             } else {
                             const float vx = slot_.motion.linear_velocity.x;
                             const float vy = slot_.motion.linear_velocity.y;
                             const float vz = slot_.motion.linear_velocity.z;
-                            speed = static_cast<float>(std::sqrt(
+                            return static_cast<float>(std::sqrt(
                                 static_cast<double>(vx) * vx +
                                 static_cast<double>(vy) * vy +
                                 static_cast<double>(vz) * vz));
                             }
-                            return speed;
                         }
                         bsp::TorpedoApproachControl read_control_block() override {
                             // unit+9D4h. This host has no pilot control block,

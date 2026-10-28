@@ -21,8 +21,8 @@ namespace bsp {
 //   007D8039 FMUL ST0 z*z, 007D803B FADDP (y*y + x*x) + z*z, 007D803D FSTP float s2
 //   007D8041-007D804F FCOMI against the double 1e-10 at 00CE3820, JBE
 //     (s2 <= 1e-10 or unordered) -> 0.0f (007D8064 XORPS)
-//   else 007D8051 00BF7030 sqrt (53-bit FSQRT of the float s2), 007D8056 FSTP float:
-//     the correctly rounded float sqrt.
+//   else 007D8051 00BF7030 sqrt of the float s2 (the CRT path keeps PC24),
+//     007D8056 FSTP float: the correctly rounded float sqrt either way.
 // Each product of two floats and each sum of two floats is formed in double and
 // rounded once to float, which is the per-op PC24 rounding (the double result is
 // exact, or rounds no differently from the float result, for these operands).
@@ -37,8 +37,9 @@ namespace bsp {
 // liftoff, 007C71E0 deck reparent): all are followed by a refresh in the image.
 // The exception is carrier_deck_carry_in (game_hosts_units.cpp), which rotates
 // deck_local_vel into plane_world_velocity at the head of the ground-roll arm,
-// before pilot_think_and_commit's AI reads; a rotation keeps |v|, so the
-// recompute differs from the cached value there only by the rotation's rounding.
+// before pilot_think_and_commit's AI reads; assuming orthonormal carrier rows, a
+// rotation keeps |v|, so the recompute differs from the cached value there only by
+// the rotation's rounding.
 inline float plane_cached_speed_b1c_007d8020(const float v[3]) {
     const float xx = static_cast<float>(static_cast<double>(v[0]) * v[0]);   // 007D802F
     const float yy = static_cast<float>(static_cast<double>(v[1]) * v[1]);   // 007D8033
@@ -54,14 +55,22 @@ inline float plane_cached_speed_b1c_007d8020(const float v[3]) {
 // previous value: float(sqrt(x*x + y*y + z*z)) in double, rounded once, with no
 // 1e-10 floor, over plane_world_velocity (the leader and follow-hold readers) or
 // over motion.linear_velocity (the torpedo and dive-bomb readers).
-// Sites (src/game_hosts_units.cpp):
-//   009D1360 torpedo_run_time_009d1360, 009D138C (callers 009D19A4 aim tick,
-//            009D27D1 done/prepare tick)
-//   leader_live_speed_007b8e60: 007F294A squadron placement, 009BFC58/009BFCC3
-//            follow law leader, and the plane-task readers that call it
-//   follow_hold_attitude: PlaneFollowHoldAttitude::speed (own and leader)
-//   009D3D01 TorpedoApproachBinding::unit_speed_vtable38
-//   009C58D0 dive-bomb aimdive tick, tin.speed_vtable38
+// Sites (src/game_hosts_units.cpp, host line : image call):
+//   torpedo_run_time_009d1360 (:11232), image 009D138C; called from the aim tick
+//            (:35674, 009D19A4) and the done/prepare tick (:25619, 009D27D1)
+//   leader_live_speed_007b8e60 (:7180), read at:
+//     :9054   007F2920 squadron placement, 007F294A
+//     :10948  009BEE30 follow law leader, 009BFC58/009BFCC3
+//     :29522  009B5B00 level_bomb_release_enter, 009B5B2C
+//     :29825  009B6D20 level-bomb moveto tick, 009B6D4F-009B6D5A
+//     :29959  009B8100 level_bomb_prepare_arm, 009B8121
+//     :29982  009B6670 level_bomb_prepare_tick in.live_speed_38, 009B6B56/009B6B59
+//     :37743  009B1420 land-begin steer, 009B1A11 and 009B1A7A
+//     (:30068 and :38045 are log lines only)
+//   follow_hold_attitude (:10118), PlaneFollowHoldAttitude::speed own and leader
+//            (:9842/:9843), 009BEE56 hold arm
+//   TorpedoApproachBinding::unit_speed_vtable38 (:24812), image 009D3D01
+//   dive-bomb aimdive tick tin.speed_vtable38 (:33847), image 009C5EDB-009C5EDE
 // Not switched: game_hosts_lua.cpp GetEntitySpeed already uses the helper (live
 // under kLuaGetEntitySpeedBound); moveto_target_speed_009c23b0 is class-dispatched
 // (plane +B1Ch, squadron leader's +B1Ch, ship 0092D730) and is a separate packet;
