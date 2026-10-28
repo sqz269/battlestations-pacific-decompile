@@ -2873,6 +2873,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // and the settings index [00F88980]+4h (read only under kMessageVoiceLanguageCc15Bound).
     GameMessageManagerHost::bind_voice_language_settings(settings_host_->language_catalog(),
         settings_view_.gameplay.language_index_04);
+    // cc15-bank: the sample cache [00F8BBE8] 00A83FD0 reads (under kMessageSoundBankCc15Bound).
+    GameMessageManagerHost::bind_sound_runtime(sound_ ? &sound_->core : nullptr);
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, *singletons_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(), options_.menu_select, options_.mission_frames,
         profiler_, summary_.language, options_.mission_complete_frame, options_.order_frame,
