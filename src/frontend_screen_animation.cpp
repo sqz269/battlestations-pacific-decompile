@@ -1,5 +1,8 @@
 #include "bsp/frontend_screen_animation.hpp"
 
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/pc24_frontend_cc13.hpp"
+
 #include <cmath>
 
 // Reconstruction of the front-end screen scroll block, 00683300..00683A8F.
@@ -78,8 +81,16 @@ float thumb_progress_from_scroll(float offset, float range, float travel) noexce
 {
     // FLD [+1Ch]; FDIV [ESP]; FMUL [+2Ch]; FSTP. The quotient is never narrowed
     // to float, so the divide and the multiply share one rounding.
+    if constexpr (kPc24FrontendCc13Bound) {
+        // 00683464 FDIV and 00683467 FMUL each round at PC24 (the main thread's
+        // precision control), so the quotient rounds before the multiply; 0068346A
+        // FSTP float.
+        return static_cast<float>(
+            cc13x87::x87_mul24(cc13x87::x87_div24(offset, range), travel));
+    } else {
     return static_cast<float>(
         static_cast<double>(offset) / static_cast<double>(range) * travel);
+    }
 }
 
 float scroll_offset_toward_start(float offset, float delta) noexcept
