@@ -31,7 +31,8 @@
     },
     {
       "id": "codex_aimfreeze_off_4d0350e9e",
-      "state": "off_candidate_identity_matrix_in_progress",
+      "state": "off_packet_integrated_reviewed_build_and_13_row_identity_checked",
+      "done": true,
       "worker": "aimfreeze_off_gate",
       "source_ready": false,
       "function_addresses": [
@@ -44,7 +45,7 @@
         "src/game_hosts_units.cpp",
         "docs/CODEX_AIMFREEZE_OFF_GATE_2026-10-28.md"
       ],
-      "notes": "Pending source4d0350e9e merged with main5ca4639f0 in worker candidate93b9a5517. Default and all prerequisite freeze switches remain OFF. Fresh Win32 build/three existing suites and PC24 lint passed;13-row OFF identity pending. No ON/runtime freeze-behavior acceptance."
+      "notes": "Source4d0350e9e integrated after clean93b9a5517 passed all13 OFF identity rows, ordered events, teardown, startup36/firstRNG and manifest/provider checks. Fresh Win32 build/three existing suites and PC24 lint passed. XLive differs only in its two timestamp fields. All new/base freeze switches remain OFF; no ON/runtime freeze-behavior acceptance."
     },
     {
       "id": "codex-gui-page-lifetime",
@@ -75,7 +76,8 @@
     },
     {
       "id": "codex-gui-raw-field-resolver",
-      "state": "qualified_native_abi_adapter_recovery_and_implementation",
+      "state": "qualified_source_abi_adapter_integrated_build_and_fixture_checked",
+      "done": true,
       "worker": "gui_integration_review",
       "source_ready": false,
       "function_addresses": ["006ad080", "00888aa0"],
@@ -84,11 +86,42 @@
       "notes": "Bridge the canonical CURRENT explicit-context source resolvers to real ECX/EAX fastcall cells for raw Lua field input. Number keeps full32bits; table uses actual NativeLuaObject B67800/userdata/B67700 and only the admitted canonical source target. Nested scoped activation borrows live table aliases and caller-retained frames. No signature reinterpret cast, evaluated Lua-handle projection, OriginalVA publication or new raw-body credit."
     },
     {
-      "id": "codex-gui-p3a2",
-      "state": "source_blocked_on_real_raw_field_resolver",
+      "id": "codex-gui-page-source-borrows",
+      "state": "inert_constructor_borrows_integrated_build_checked",
+      "done": true,
       "worker": "gui_integration_review",
       "source_ready": false,
-      "depends_on": ["codex_cc9_a1_activation", "codex-gui-page-lifetime", "codex-gui-widget-state", "codex-gui-raw-field-resolver"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/game_native_gui_page_application.hpp", "src/game_native_gui_page_application.cpp", "src/game_hosts.cpp"],
+      "notes": "Append canonical CURRENT installed resolver slots and stable startup-owned Source GUI capability reference to the page constructor; root passes existing accessors. No provider activation or Original selector alias. Page chain remains OFF."
+    },
+    {
+      "id": "codex-gui-frame-reuse",
+      "state": "unreached_provider_fix_integrated_source_and_build_checked",
+      "done": true,
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "function_addresses": ["00b6f310", "00b6d850", "00b6ed80", "00b7c020"],
+      "output_files": ["src/game_native_renderer_gui_scene.inc", "docs/CODEX_GUI_SCENE_FRAME_REUSE.md"],
+      "notes": "Reuse only outer-completed frames in existing256-slot prepared prefix; reset frame/Acquired before handoff. Retain incomplete/not-entered reservations. Source ownership/completion proof and integrated build pass; currentA1-only path never enters these providers. No direct allocator/GUI/reload runtime proof or new raw-body credit."
+    },
+    {
+      "id": "codex-gui-widget-empty",
+      "state": "readable_zero_seed_view_integrated_build_checked",
+      "done": true,
+      "worker": "primary",
+      "source_ready": false,
+      "function_addresses": [],
+      "data_addresses": ["00f8bc60"],
+      "output_files": ["include/bsp/game_native_gui_text_state.hpp"],
+      "notes": "Distinct one-byte readable loader-zero view for AA2490 and camera-store null-header fallbacks. Nine bounded DATA/address refs, no observed initializer/store; no Original extent/VA/mutable-alias claim."
+    },
+    {
+      "id": "codex-gui-p3a2",
+      "state": "childless_raw_root_provider_composition_in_progress",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex_cc9_a1_activation", "codex-gui-page-lifetime", "codex-gui-widget-state", "codex-gui-raw-field-resolver", "codex-gui-page-source-borrows", "codex-gui-frame-reuse", "codex-gui-widget-empty"],
       "function_addresses": [
         "00aa3140", "00aa31f0", "00aaa710", "00aaacd4", "00ac4c50",
         "00ac59a0", "00ac6600", "00ac6714", "00ac67cc", "00ac6806"

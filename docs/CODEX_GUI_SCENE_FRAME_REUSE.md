@@ -65,6 +65,8 @@ The startup switches and immutable A1 test executables are unchanged.
 
 The bounded source review checks both acquisition paths, outer completion,
 argument-cell use and registry allocation handoff. `git diff --check` passes.
-The strict Win32 build and existing CTests are pending an integrator-scheduled
-window after the active A1 validation. No additional test API, probe, game run,
-real-allocator runtime or GUI/reload validation is claimed.
+The integrated `6216ea1af` Win32 Release build and both existing CTests pass
+(`local/codex_common_final_off_build.log` in the coordinator worktree). Reference
+USN04 and milestone-D1600 also exit0 with unchanged ordered/teardown/start/RNG
+and pair_diff0, but these paths do not enter this allocator. No additional test
+API, direct allocator probe, real-allocator runtime or GUI/reload validation is claimed.

@@ -113,3 +113,54 @@ explicit contexts, whereas BD63B0 expects ECX/EAX fastcall cells. The worker is
 implementing a qualified adapter over current canonical slots and actual raw
 Lua storage, with nested activation and retained failure frames; no signature
 cast or null placeholder is admitted.
+
+## Second accepted batch and common-code freeze
+
+Plane OFF source `93b9a5517`, final evidence `f8a97eb8c`, passes all 13 identity
+rows with original masks, Normal priority, exact manifests and no retries.
+Ordered events, teardown, start36 and first draws match. Its separate fresh
+Win32 build passed three existing suites and lint. The XLive DLL differs from
+the preserved reference in six timestamp bytes only; normalizing the two PE
+timestamp fields makes both files byte-identical. All new/base freeze flags stay OFF.
+
+Raw resolver source `76fb1eb96` passes Win32 build/two existing suites plus one
+focused actual-storage Lua fixture: ECX/EAX bits, CURRENT callback mutation,
+nested normal/C++ restoration, real Ptr userdata lookup, balanced tracking/stack,
+and completed-frame reuse. The pointer result is captured locally before temporary
+cleanup and returned from that captured value. Its adapter remains uncalled;
+Original code/nonlocal unwind/game equivalence are not claimed.
+
+The page constructor now retains startup-owned resolver/capability references
+through the existing accessors; the latter is a Source CPU capability, not an
+Original CRT selector alias. The page and property-composition switches remain OFF.
+
+The shared GUI state also supplies a distinct one-byte readable empty-string view
+for F8BC60. Supported PE loader-zero and live Ghidra bytes agree. The bounded
+DATA/address references are AA3360/AA334E (find camera store), AA5137/AA5132 (create),
+AA4BD5/AA4BC3 (remove), AA2498 (widget-key null-header fallback), and AA2678/AA266D
+(texture/atlas resolution). No initializer/store was observed in that census.
+No array extent, Original-VA publication or mutable alias is inferred.
+
+Completed startup scene frames now reuse their prepared slot only after outer
+completion; incomplete and not-yet-entered slots remain reserved. Heap registry
+ownership has left a successful acquisition before reuse. The 256 reservation,
+interfaces and native ownership calls are unchanged. These providers are not
+entered by the current A1-only production path; direct allocator and GUI/reload
+runtime proof remains open. See `CODEX_GUI_SCENE_FRAME_REUSE.md`.
+
+Frozen common OFF source: `6216ea1af`, executable SHA-256
+`5461327DE616FEF8485E49A86DCE17901399092B62ACC4621A0A0C4DA06FC926`.
+Matching XLive is the byte-identical accepted baseline DLL. The combined build
+and both existing suites pass. Common-code reference USN04 and milestone-D1600
+exit0, pair_diff0, ordered differences0, teardown differences/length delta0,
+start36 and identical first RNG (0.4143 / 1 respectively). Artifacts are under
+`local/codex_common_final_off`, with raw logs/comparisons/ordered receipts sharing
+that prefix. This snapshot is immutable for A1's latest-common-code comparison.
+
+A1 candidate `634258460` completed its 13-row matrix against source5ca4639f0:
+all gameplay/native/summary/ordered/start/RNG/teardown contracts pass. Raw
+pair_diff1 is retained for exactly the documented startup note and provisional
+type-ID transition19/18 to21/20. Evidence commit is `8330382ab`. It remains
+unpublished until a matching common-code ON build passes strict serial USN21
+OFF/ON four-plus-four (all OFF self-agree) and the separate no-bounds-aid pair.
+Other gameplay runs/heavy builds are held during that final acceptance window.
