@@ -42,6 +42,13 @@ rejection, caught reentry, incomplete use or later raw118 escape poisons/retains
 the graph. No competing consumer, reset/replay, second decrement or cleanup is
 provided.
 
+`CreditProgress.active_consumer` and its `active_font_*` /
+`active_retirement_*` identities describe the CURRENT token independently of
+historical `consumer`/record fields. Stage authority requires `active && !failed`
+and exact typed records. Construction stores this metadata before remaining
+entry checks; normal token close clears it. Failure retains diagnostic identity
+without dereferencing a local token. The snapshot copies retained metadata only.
+
 The setter token also admits its initial healthy no-credit null operation.
 After a setter really returns the issued credit, a later raw118 may capture
 null and complete without overwriting the saved setter consumer/history.

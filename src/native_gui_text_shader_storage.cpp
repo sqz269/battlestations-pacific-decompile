@@ -404,9 +404,7 @@ bool ensure_shader(void* raw, const ShaderView& c,
 } // namespace
 NativeGuiTextShaderStorageFrame::CreditProgress
 NativeGuiTextShaderStorageFrame::credit_progress() const noexcept {
-    auto progress = credit_;
-    progress.active = active_consumer_ != nullptr;
-    return progress;
+    return credit_; // retained metadata only; never follow the local token
 }
 bool NativeGuiTextShaderStorageFrame::matches_credit_backing(
     const NativeGuiTextShaderStorageContext& context,
@@ -498,8 +496,13 @@ NativeGuiTextShaderStorageFrame::CreditConsumer::CreditConsumer(
             frame_.credit_.producer != RawPhase::entered && frame_.prepared_raw_context_ &&
             frame_.prepared_reference_frame_,
             "Raw font-name shader consumer requires fresh stable credited preparation");
+        frame_.credit_.active_consumer = kind_;
+        frame_.credit_.active_font_context = font_context_;
+        frame_.credit_.active_font_frame = font_frame_;
+        frame_.credit_.active_font_acquired = font_acquired_;
         frame_.authenticate_bound_reference(reference);
         frame_.active_consumer_ = this;
+        frame_.credit_.active = true;
         active_ = true;
     } catch (...) {
         frame_.credit_.failed = true;
@@ -517,6 +520,10 @@ NativeGuiTextShaderStorageFrame::CreditConsumer::CreditConsumer(
             frame_.prepared_reference_frame_,
             "Raw118 shader consumer requires stable credited preparation and no prior entry");
         frame_.retirement_started_ = true; // private one-shot BEFORE all remaining admission
+        frame_.credit_.active_consumer = kind_;
+        frame_.credit_.active_retirement_context = retirement_context_;
+        frame_.credit_.active_retirement_acquired = retirement_acquired_;
+        frame_.credit_.active_retirement_shader = &acquired.shader;
         const auto& scalar = frame_.prepared_reference_frame_->scalar;
         require(context.font_shader_frame == &frame_ && &acquired == &scalar.destruction &&
             &acquired.shader == &scalar.destruction.shader && scalar.started &&
@@ -533,6 +540,7 @@ NativeGuiTextShaderStorageFrame::CreditConsumer::CreditConsumer(
                 "Raw118 shader consumer requires SAME live retiring canonical122 companion");
         }
         frame_.active_consumer_ = this;
+        frame_.credit_.active = true;
         active_ = true;
     } catch (...) {
         frame_.credit_.failed = true;
@@ -647,10 +655,21 @@ void NativeGuiTextShaderStorageFrame::CreditConsumer::complete() {
     stage_ = Stage::complete;
     active_ = false;
     frame_.active_consumer_ = nullptr;
+    frame_.credit_.active = false;
+    frame_.credit_.active_consumer = Consumer::none;
+    frame_.credit_.active_font_context = nullptr;
+    frame_.credit_.active_font_frame = nullptr;
+    frame_.credit_.active_font_acquired = nullptr;
+    frame_.credit_.active_retirement_context = nullptr;
+    frame_.credit_.active_retirement_acquired = nullptr;
+    frame_.credit_.active_retirement_shader = nullptr;
 }
 void NativeGuiTextShaderStorageFrame::CreditConsumer::fail() noexcept {
     frame_.credit_.failed = true;
-    if (frame_.active_consumer_ == this) frame_.active_consumer_ = nullptr;
+    if (frame_.active_consumer_ == this) {
+        frame_.active_consumer_ = nullptr;
+        frame_.credit_.active = false;
+    }
     active_ = false;
     stage_ = Stage::failed;
 }

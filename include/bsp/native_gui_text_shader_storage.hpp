@@ -88,6 +88,16 @@ struct NativeGuiTextShaderStorageFrame final {
         bool failed{}, active{}, capture_entered{}, decrement_entered{};
         bool decrement_returned{}, zero_entered{}, zero_returned{}, slot_cleared{};
         bool consumer_returned{};
+        // CURRENT invocation, separate from the historical nonnull consumer
+        // below. Authority requires active && !failed. On failure these are
+        // retained diagnostic identities only; snapshots never follow a token.
+        Consumer active_consumer{Consumer::none};
+        const NativeGuiTextRawFontNameStorageContext* active_font_context{};
+        const NativeGuiTextRawFontNameStorageFrame* active_font_frame{};
+        const NativeGuiTextRawFontNameStorageAcquired* active_font_acquired{};
+        const NativeGuiTextRawModelRetirementContext* active_retirement_context{};
+        const NativeGuiTextRetirementAcquired* active_retirement_acquired{};
+        const NativeGuiTextRetirementShader* active_retirement_shader{};
         void* actual_text{};
         void* effect{}; // diagnostic after terminal; never dereference it
         const NativeGuiTextRawModelReference* reference{};
