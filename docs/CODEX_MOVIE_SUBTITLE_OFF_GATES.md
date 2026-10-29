@@ -72,6 +72,40 @@ That check concerns the actual VFS provider and full-extent read, not movie
 callback reachability, subtitle playback or a hash of the returned VFS buffer.
 No synthetic Lua result will be presented as native runtime equivalence.
 
-Runtime results are pending. No ON, new native-function body, ABI or full
+## Rejected harness layout and authorized neutral attempt
+
+The first completed JM06 pair had exits 0/0, pair_diff 0, teardown differences 0,
+matching start frame 36/first RNG0.8964 and zero subtitle callback activity.
+It was nevertheless rejected: the ordered check correctly reported two
+startup routing-path differences, because the initial artifact directory
+movie_subtitle_off409 itself matched the existing SUB expression.
+
+The primary reviewed the exact two lines and authorized ONE fresh neutral-layout
+attempt. All four old game runs exited0 and drained naturally; the old failure
+logs, manifests, inputs and comparison reports remain preserved. No old run is
+promoted into an accepted pair. No source fix, rebuild, rebase, new mask,
+retiming or software retry is involved.
+
+The primary later authorized cleanup of only obsolete owned USN21. Immediate
+identity revalidation found both captured processes already exited, so no
+process was closed or terminated. The obsolete attempt remains explicitly
+aborted_obsolete_layout_no_acceptance. USN21 reached requested/ran/simulated
+80000 frames, exited0 and took56.87 minutes; that is duration context only.
+
+Every fresh runtime binary/backend/plan/log path is under local/off409.
+The unchanged SUB expression was applied to all101 runtime paths: zero matches.
+Only local routing constants changed in the runner/evaluator. Immutable bytes,
+common backend, original thirteen jobs, environment and comparison logic are
+unchanged. Fresh logs are required on both sides for all thirteen pairs.
+
+The new external controller has a four-hour per-game failure watchdog.
+It changes no game CLI, environment, source or comparison. Timeout sets STOP
+and fails acceptance; only captured processes matching exact path/hash,
+current user, command, parent and start time may be stopped, child first.
+There is no image-name/process-tree killing. Original controllers remain
+preserved. A synthetic watchdog startup/retirement check launched no game and
+performed no termination; it is not gameplay or timeout-path proof.
+
+Runtime results of the neutral attempt are pending. No ON, new native-function body, ABI or full
 gameplay-completion credit follows from this OFF gate. Evidence is bounded to
 exact common source409; later main changes require explicit integration review.
