@@ -200,3 +200,11 @@ the shared false guard. The exact small CPP change `1df710914` passes the common
 Win32 Release build and both suites (12.17 seconds) after C54DA0 integration.
 Matching frozen OFF/ON runtime candidates are separate; this change grants no
 activation or gameplay credit.
+
+Endpoint initialization C4CE60 and pointer removal C55DF0 now add two compiled/
+unwired bodies. Original29 census becomes25 with four metadata-only:
+C320D0,C55A60,C5A850,C5A8B0. The real14-byte vector cleanup0040A050 is recovered
+separately outside that original census; reused destructor/vendor/unwind bodies
+earn no duplicate credit. Complete source/listing review, final pointer-body
+object audit, actual entry/dependency link and common build2/2 pass. Native
+caller/context/ABI/exception custody and full activation remain open.
