@@ -534,3 +534,12 @@ both fresh predicates reject stale new progress. Native consumption/call/EH
 order and every DEFAULT ownership guard stay unchanged. No new runtime proof.
 Widget Model lifetime plana1c2 is dispatched as a disjoint typed shared-schedule
 transport; raw main-geometry379 is frozen for independent source review/build.
+
+Raw main geometry379 now passes both source reviews, Win32 build/tests2/2 and
+emitted-object inspection (0805D283). One x87 sentinel load/FST/FSTP operand
+schedule and SSE zeroXYZ are present; original capture/import/transform epochs
+remain explicit. The entry is absent from the game map and has no caller.
+It supplies no primary creation/publication, main-section/retirement, Font or
+Page activation and no runtime/FP/ABI proof. Concrete primary producer and shader
+credit-receipt linkage are under disjoint bounded audits; all ownership gates
+remain in force.
