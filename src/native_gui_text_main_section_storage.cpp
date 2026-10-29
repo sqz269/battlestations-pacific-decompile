@@ -295,6 +295,12 @@ bool NativeGuiTextMainSectionStorageFrame::matches(const Context& c, const Acqui
     Phase expected) const noexcept {
     return &context_ == &c && &acquired_ == &a && phase_ == expected;
 }
+bool NativeGuiTextMainSectionStorageFrame::matches_created_normal(const Context& c, const Acquired& a,
+    const void* text, const void* mesh, const void* section, const void* material) const noexcept {
+    return matches(c, a, Phase::complete) && created_normal_ &&
+        created_text_ == text && created_mesh_ == mesh &&
+        created_section_ == section && created_material_ == material;
+}
 void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
     NativeGuiTextRawModelReference& reference, Context& c, Frame& f, Acquired& a) {
     require(&f.context_ == &c && &f.acquired_ == &a, "main section needs SAME installed frame/context/acquisition");
@@ -333,10 +339,13 @@ void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
         live_mesh(a.current_geometry, c);
         a.section_count = read(a.current_geometry, 0x58); a.mesh_gate_read = true;
         if (a.section_count == 0) {
+            f.created_text_ = raw;
+            f.created_mesh_ = a.current_geometry;
             auto& s = a.section;
             location(a, 0x00ab86fe, Acquired::Boundary::section);
             s.section_creator = r.geometry.create_native_section_00533fa0(s.section);
             require(s.section_creator, "main arm excludes native null section/fault continuation");
+            f.created_section_ = s.section_creator;
             location(a, 0x00ab8708, Acquired::Boundary::append);
             append_native_mesh_draw_section_00b73c60(*static_cast<NativeMeshStorage*>(a.current_geometry), s.section_creator);
             s.appended = true;
@@ -349,6 +358,7 @@ void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
                 r.geometry.actual_owners(), r.effects, s.material);
             require(s.material_creator && s.material.phase == NativeMaterialFactoryAcquired::Phase::complete &&
                 s.material_creator->effect_7c, "main arm requires real nonnull GuiDefault material/effect");
+            f.created_material_ = s.material_creator;
             r.geometry.register_native_material_creator(s.material, r.materials, r.material_vtable_00d5e520);
             a.captured_name_data = reinterpret_cast<void*>(f.name_[1]); // AB872E BEFORE disarm
             a.native_eh_state = -1;
@@ -383,6 +393,7 @@ void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
         a.root_returned = true;
         require(f.phase_ == Phase::entered && a.phase == Phase::entered && !a.failure,
             "main section cannot complete after caught reentry or an escaped invocation");
+        f.created_normal_ = f.created_text_ && f.created_mesh_ && f.created_section_ && f.created_material_;
         a.phase = f.phase_ = Phase::complete;
     } catch (...) {
         if (!a.failure) {

@@ -1,0 +1,71 @@
+{
+  "packet": "codex-movie-subtitle-vfs",
+  "date": "2026-10-28",
+  "source_parent": "609ef74158b525c1d860bd5351dbfd195ce2689e",
+  "parent_acceptance": "primary_review_pending_not_promoted_by_this_packet",
+  "accepted_source_baseline": "d0a2656fe",
+  "status": "actual_vfs_provider_wiring_reviewed_default_off_win32_build_existing_tests_passed_runtime_pending",
+  "switch": { "name": "kMovieSubtitlesBound", "value": false },
+  "native_consumer": "00AB0520",
+  "original_abi_unchanged": "ECX=movie; stack path; RET 4; new C++ host interface is not native ABI compatible",
+  "additional_native_function_body_credit": 0,
+  "source_files": [
+    "include/bsp/game_hosts_mission_result.hpp",
+    "src/game_hosts_mission_result.cpp",
+    "src/game_hosts_mission_frame.cpp"
+  ],
+  "source_sha256": {
+    "include/bsp/game_hosts_mission_result.hpp": "7D409B6EFF3781415E45570CA8AFAFFD204609F9CA9340202738980120368AA0",
+    "src/game_hosts_mission_result.cpp": "6CAF305E262AE818484C76AE63E434EBDC0E75CA1C35934835BA498106ABEB97",
+    "src/game_hosts_mission_frame.cpp": "CC0B4D9CC4EE0863AE2D27791BE36051A4D6C37A0B159E5AF9C27BF224B7CB60"
+  },
+  "provider_contract": {
+    "owner": "Borrow the same GameVfsHost already held by GameMissionFrameHost::Impl; result owns no provider",
+    "constructor_calls": "Sole production result construction in src/game_hosts_mission_frame.cpp forwards vfs",
+    "existence": "00AB0616 manager vtable+8; NativeVfsRuntimeBindings validates 00BDD440; direct actual mount existence, no resolve_existing aliases",
+    "file_visible": "Native AL stored to +104h at 00AB061A and cleared at 00AB00D1; separate bridge projection flag, no MovieWidgetState/raw-layout change",
+    "read": "GameVfsHost::open(path,2) through actual 00BDF310 provider graph, complete backing and full-extent checks",
+    "parse": "Existing loader called only with successfully read complete bytes; parsing readiness distinct from existence",
+    "failure": "Provider exceptions propagate; failed open/incomplete/short stream is never converted into successful empty parsing",
+    "disposal": "Existing provider completes native stream release; local memory-stream view is scoped; no VFS cleanup in bridge clear/destructor",
+    "off": "Original three callback log paths preserved; constructors perform no provider I/O"
+  },
+  "preserved_parent_files": [
+    "include/bsp/movie_subtitles.hpp",
+    "src/movie_subtitles.cpp",
+    "reports/cc16_movie_subtitle_integration.json",
+    "docs/CODEX_MOVIE_SUBTITLE_INTEGRATION.md"
+  ],
+  "build": {
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "max_nodes": 4,
+    "log": "local/codex_movie_subtitle_vfs_build_20261028.log",
+    "status": "passed",
+    "exit_code": 0,
+    "log_sha256": "DCE1E0E753BEDA40EEB79B3196CF12F7837DC847DC27F60E992237CF70BE9616",
+    "existing_tests": { "passed": 2, "failed": 0, "seconds": 12.73, "names": ["reconstructed_math", "tool_tests"] },
+    "artifacts": {
+      "build/win32/Release/bsp_game.exe": "59A8E98B212CC2B54C264C3CE27DCCE8AA8A008CB04A94D5E80F6D8D7C078621",
+      "build/win32/Release/xlive_stub.dll": "7205FBD05B971ACA369C78AFDFE07F6DB1F55CD3935F0758EFF5DE145CCF053E",
+      "build/win32/Release/bsp_core.lib": "C521B0370374A01F402DE1B467CB0BB53675FF4B452680FC2EDED3C85D5F58AC"
+    }
+  },
+  "remaining_activation": [
+    "Root-owned exact OFF identity and installed native VFS validation",
+    "Real page selection and callback reachability",
+    "Real decoder handle and Bink realtime clock",
+    "Text/localisation delivery and widget ownership",
+    "Actual subtitle option and live language providers",
+    "Native extratitles storage, cloned-widget calls and lifetime",
+    "Original Lua libraries, override execution, errors and owner/reference storage"
+  ],
+  "games_launched": 0,
+  "ad_hoc_probes_launched": 0,
+  "new_tests_added": 0,
+  "ghidra_mutations": 0,
+  "ledger_changes": 0,
+  "cmake_changes": 0,
+  "provider_implementation_changes": 0,
+  "install_save_profile_changes": 0
+}

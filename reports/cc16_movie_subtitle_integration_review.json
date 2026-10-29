@@ -1,0 +1,287 @@
+{
+  "packet": "codex-movie-subtitle-integration-review",
+  "status": "approve_off_source_integration_with_current_static_delta_review_and_historical_receipts",
+  "reviewed_at_utc": "2026-10-29T16:21:10.304961+00:00",
+  "reviewed_main": "ad524e7dc72e037a07f9fc62cc4e4c176e756736",
+  "physical_review_checkout": "5f686b664f86470a064993fbb6b86513c29735d1",
+  "merge_base": "409689e5e813d4aaaeb656abeb827d06a5842016",
+  "source_commits": [
+    "609ef74158b525c1d860bd5351dbfd195ce2689e",
+    "4561c11dc8f3971f8e70ac899942cbaf185eaea4"
+  ],
+  "candidate_source": "f49e064d5e393c5ad8d0dfdd54d686b5669b2585",
+  "runtime_metadata_freeze": "063c4be212b2e475a706b65d2f4ca067fe2656f0",
+  "final_receipt_commit": "1e7078eafa460a5a3f00ff67703f8ab050b33895",
+  "cumulative_paths": [
+    "docs/CODEX_MOVIE_SUBTITLE_INTEGRATION.md",
+    "docs/CODEX_MOVIE_SUBTITLE_OFF_GATES.md",
+    "docs/CODEX_MOVIE_SUBTITLE_VFS.md",
+    "include/bsp/game_hosts_mission_result.hpp",
+    "include/bsp/movie_subtitles.hpp",
+    "reports/cc16_movie_subtitle_integration.json",
+    "reports/cc16_movie_subtitle_off_gates.json",
+    "reports/cc16_movie_subtitle_vfs.json",
+    "src/game_hosts_mission_frame.cpp",
+    "src/game_hosts_mission_result.cpp",
+    "src/movie_subtitles.cpp"
+  ],
+  "source_rows": [
+    {
+      "path": "include/bsp/game_hosts_mission_result.hpp",
+      "baseline_and_current_sha256": "34b64f686acba1d736feb3be44c41e2bc48f9f045d5f2184e61fd6da5dee00d3",
+      "candidate_sha256": "7d409b6eff3781415e45570ca8afaffd204609f9ca9340202738980120368aa0"
+    },
+    {
+      "path": "include/bsp/movie_subtitles.hpp",
+      "baseline_and_current_sha256": "d571849516945a99441644df05efa9ceeb5b156e5cfacf0bc49deaa7fcc0bf5f",
+      "candidate_sha256": "be5df5e08f355ccafba3c519c8bcc135ccee59e26648162001f164911773abbb"
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "baseline_and_current_sha256": "8c262bf1cf521daf62cae7a7abfdfe9b6c901598173f3e3693424535377bb821",
+      "candidate_sha256": "cc0b4d9cc4ee0863ae2d27791be36051a4d6c37a0b159e5af9c27bf224b7cb60"
+    },
+    {
+      "path": "src/game_hosts_mission_result.cpp",
+      "baseline_and_current_sha256": "7fb84404ec788a3901f742c6f4d5ff297b16bb366a36343d9f79058f6893ad66",
+      "candidate_sha256": "6caf305e262ae818484c76ae63e434ebdc0e75ca1c35934835ba498106abeb97"
+    },
+    {
+      "path": "src/movie_subtitles.cpp",
+      "baseline_and_current_sha256": "66ad3487b9f5d62206421a81f0e596cdc39a44b86c9e4f3473f65d11008519b1",
+      "candidate_sha256": "0d1970eba4abc1a4fb38dca15c528f16da1b99ee6e85dc74643f2dc194b3506f"
+    }
+  ],
+  "current_main_source_build_delta_count": 91,
+  "current_main_delta_scope": "GUI/font/Text/raw Model/host, ship-AI/settings-tail and Dyn source/build changes; not a same-binary baseline",
+  "post_checkout_changes": [
+    "CMakeLists.txt",
+    "include/bsp/cc16_dyn_endpoint_init.hpp",
+    "include/bsp/cc16_dyn_pointer_retire.hpp",
+    "src/cc16_dyn_endpoint_init.cpp",
+    "src/cc16_dyn_pointer_retire.cpp"
+  ],
+  "apply_checks": {
+    "source": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "patch_sha256": "dbd80bfbb82aa92500c068c45e1f34280cd906ce6cc5fa7830057a0b2d60cfc6"
+    },
+    "cumulative": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "patch_sha256": "503965522987db4151d3cd0f99fece5c93e9598f61ef46a5705aa6d0da3e664a"
+    }
+  },
+  "applicability_proof": "git apply --check succeeded at physical checkout 5f686b664; all eleven patch paths have identical blobs/absence at reviewed main ad524e7dc",
+  "expected_source_conflicts": [],
+  "required_source_corrections": [],
+  "integration_route": "Merge finalized agent/codex-nongui-backlog branch; alternatively import exact eleven-path cumulative delta. 1e7078eaf alone modifies missing OFF evidence files; include e9df37911/063c4be21 history or complete final files. Do not replay f49 merge onto main.",
+  "source_static_boundary": [
+    "kMovieSubtitlesBound remains constexpr false",
+    "OFF callback bodies/logging unchanged",
+    "same retained GameVfsHost borrowed through sole result constructor caller",
+    "no VFS/mount/provider calls in new constructors",
+    "Lua schedule helper has no global objects/static constructors/registrations",
+    "CMake already compiles module and links Lua"
+  ],
+  "unchanged_provider_paths": [
+    {
+      "path": "include/bsp/game_hosts_vfs.hpp",
+      "baseline_and_current_sha256": "397bf3eb722ff71175b5e7011a569bf16efeeead5d3f132f3cfc4995fc22f058"
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "baseline_and_current_sha256": "df8cd0f4e723e20a331ce4de87fa6f3e547c6254bb013cafca4ed515d516fc4a"
+    },
+    {
+      "path": "include/bsp/native_vfs_runtime_bindings.hpp",
+      "baseline_and_current_sha256": "05e6f26c575e02312cf15596c30c4a98b21c6040591b431c7c77c7ba11530fe7"
+    },
+    {
+      "path": "src/native_vfs_runtime_bindings.cpp",
+      "baseline_and_current_sha256": "e69777aaf6eba33658f9cb2d38aa0dba4995df07165cbf215bcd8e54becfd7a9"
+    },
+    {
+      "path": "include/bsp/memory_stream.hpp",
+      "baseline_and_current_sha256": "19c1175ea33d69f91fd1a6cd723a8c01d17a7c0527e19a356c0b5c8cc15f4f5f"
+    },
+    {
+      "path": "src/memory_stream.cpp",
+      "baseline_and_current_sha256": "c00ea6ceeb773513d7738988da4749f4fad0bc28963231792b2746bc478b425e"
+    },
+    {
+      "path": "include/bsp/movie_decoder.hpp",
+      "baseline_and_current_sha256": "9151e8eacc41a208769eab8347539c5b15201a330f329b593585cfe620b3dbd7"
+    },
+    {
+      "path": "src/movie_decoder.cpp",
+      "baseline_and_current_sha256": "75f54deb390ef8d333ba07df4e0579f9efedc22c9bb78e0cae9fec8e6d814908"
+    },
+    {
+      "path": "include/bsp/movie_player.hpp",
+      "baseline_and_current_sha256": "03b1dfd456e1ea97b8cd173e962ae6482982e975875560f35a29108bd61fb12c"
+    },
+    {
+      "path": "src/movie_player.cpp",
+      "baseline_and_current_sha256": "20165a62377e27ae5e4a223844e4b70ec2a432580d10cf321fa4475e2ab1224d"
+    },
+    {
+      "path": "include/bsp/movie_factory_followup.hpp",
+      "baseline_and_current_sha256": "4b208a04568c712cf41d4b7d1ef490975bc4813fe8397322d114ac477a55e60f"
+    },
+    {
+      "path": "src/movie_factory_followup.cpp",
+      "baseline_and_current_sha256": "00a8b4866bfa3ba88f537a53d94191cef0efbd56f54f1a41aa1d3fe177f2f8c6"
+    },
+    {
+      "path": "include/bsp/native_platform_focus_owners.hpp",
+      "baseline_and_current_sha256": "0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865"
+    },
+    {
+      "path": "src/native_platform_focus_owners.cpp",
+      "baseline_and_current_sha256": "efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73"
+    },
+    {
+      "path": "src/game_native_gui_manager_application.cpp",
+      "baseline_and_current_sha256": "a3bc4aa99e159228c3366f77c4bfb00fc33cfb7e6688d1faf260ffbadb3a3219"
+    },
+    {
+      "path": "include/bsp/game_settings.hpp",
+      "baseline_and_current_sha256": "7540576def3a0a1f2a786329f532ae235701bc82d8c30e8934adddf4fc33b729"
+    },
+    {
+      "path": "src/game_settings.cpp",
+      "baseline_and_current_sha256": "849bf139b5ff6cdb6f98bc6c5ef4d0360d451e3cf8315cffb6e73c3fdf4a434e"
+    },
+    {
+      "path": "include/bsp/locale_tables.hpp",
+      "baseline_and_current_sha256": "8a71acfda63ce30feb69b93005d0ffc0ff86e71b9622950c64a7b5089faa5abf"
+    },
+    {
+      "path": "src/locale_tables.cpp",
+      "baseline_and_current_sha256": "d18e6056f48e8c8b2a7cd5db980dc998a840e27b16c28b87b6a315cb4997f17c"
+    },
+    {
+      "path": "src/game_profile_load.cpp",
+      "baseline_and_current_sha256": "34f1a2aa7e4be96e4b4acd4d611b9391863a563b1090559fd44dd5594cedaaaf"
+    }
+  ],
+  "evidence_retention": {
+    "keep_original_exact409_off13_pairs": true,
+    "keep_original_native_vfs_cli_checks": true,
+    "accepted_pairs": 13,
+    "fresh_runs": 28,
+    "callback_markers": "all old/new subtitle markers absent in frozen409 runs",
+    "receipt_git_blob_sha1": "e4c14c8e78e0f673a447100d12f204dd837d219d",
+    "receipt_sha256": "3f36c263e59b6cfd6f417b45b5d00a92d5386d1a51b9cf63954a83d8f25fd1f6",
+    "current_main_gameplay_proof": false,
+    "current_main_vfs_runtime_proof": false,
+    "justification": "Unchanged direct source/provider contracts support OFF integration risk assessment; original binary/environment/input/run provenance remains exact409 and is not relabelled.",
+    "required_integration_validation": "Integrator runs standard Win32 Release build and existing checks after final pending Dyn source integration. Review any later change to these source/provider paths; current-main runtime claims require separately frozen current-main runs."
+  },
+  "historical_document_note": "609 source document dependency 3 and both initial JSON runtime_pending states describe their original checkpoints. Keep receipts historical; append an explicit supersession cross-link for the working-directory probe, replaced by 456 and gated by 1e.",
+  "next_packets": [
+    {
+      "rank": 1,
+      "packet": "codex-movie-live-locale",
+      "state": "concrete genuine provider closure ready for scoped implementation after source integration",
+      "owned_addresses": [
+        "00AADBA0"
+      ],
+      "read_only_reuse_addresses": [
+        "00425850",
+        "00AA09D0"
+      ],
+      "owned_source_files": [
+        "include/bsp/game_hosts_mission_frame.hpp",
+        "src/game_hosts_mission_frame.cpp",
+        "include/bsp/game_hosts_mission_result.hpp",
+        "src/game_hosts_mission_result.cpp",
+        "src/game_hosts_mission.cpp"
+      ],
+      "caller": "GameMissionHost::Impl retains LocaleTables& at src/game_hosts_mission.cpp:501; its load path constructs the sole frame at:2666",
+      "implementation": "Forward that same retained LocaleTables reference through frame/result into MovieBridge. Read language() for each schedule selection. Use existing actual CRT _stricmp semantics for english; do not cache the initial summary string, fabricate a NativeString header, or invent a false language provider. Preserve the frame's existing copied language argument for unrelated consumers; add the borrowed current-table reference only for the movie path.",
+      "ownership": "Locale owner already outlives GameMissionHost; frame/result/movie are nested borrowers. No GameStartupHost or active GUI/Text/raw Model owner-file edit is required.",
+      "exclusions": "Keep OFF. No settings+14/decoder clock/Text/widgets/extratitles/Lua-contract closure, new native body or ABI credit.",
+      "future_gate_plan": [
+        "standard scripts/build.ps1 and existing checks",
+        "verify genuine locale setter/current table custody and unchanged OFF callbacks; root chooses matched exact-source OFF gates",
+        "actual English/non-English callback and playback proof only after remaining genuine providers and ON gates"
+      ]
+    },
+    {
+      "rank": 2,
+      "packet": "movie-media-settings-owner-handoff",
+      "state": "requires GUI owner contract",
+      "addresses": [
+        "004C1710",
+        "00A4C5A0",
+        "008D5B50",
+        "00A4C3F0"
+      ],
+      "dependency": "GameNativeGuiManagerApplication retains the separate actual_media_00f8aef8 cell initialized null. Getter/constructor exists, but constructor does not initialize +14. The concrete profile settings override at src/game_profile_load.cpp:368 explicitly calls missing(ui_set_subtitles_enabled,004c1710+14h). Bind actual settings application before read; settings+09 is not the native manager+14 publication.",
+      "files": "GUI coordinator owns context/publication/deletion handoff; subtitle worker must not replace that context or edit its active files."
+    },
+    {
+      "rank": 3,
+      "packet": "movie-factory-decoder-runtime-custody",
+      "state": "clock-only closure not ready",
+      "addresses": [
+        "007366B0",
+        "00737710",
+        "00737730",
+        "00AAE770",
+        "00A4CA40",
+        "00A4CD70",
+        "00A4CD30",
+        "00AADBA0"
+      ],
+      "imports": [
+        "00CE23B8 BinkGetRealtime",
+        "00CE23D0 BinkSetSoundSystem",
+        "00CE23D4 BinkOpenDirectSound"
+      ],
+      "dependency": "No production BinkImports binding or concrete MovieDecoderHost exists. MovieBridge page/child lookup returns null, decoder_open false and decoder_is_open false. Native loaded hook stores factory result at movie+F0; realtime reads its handle+4. Recover actual owner/module/factory lifetime, source/current calls and renderer resource transport before any clock wiring. MovieFactoryPrefix is not proof of complete allocation size.",
+      "ownership": "Future new codec-owner files and subtitle bridge can be disjoint; actual GUI widget/page/resource owner contract remains the other coordinator's prerequisite."
+    },
+    {
+      "rank": 4,
+      "packet": "movie-native-widget-extratitles-lua-contract",
+      "state": "blocked by named genuine dependencies",
+      "dependency": "Native Text child/localisation/widget clone ownership, extratitles virtual54/50 calls, original Lua library/override/error/owner semantics and callback reachability remain unclosed; compiled raw Font/Text work is not proof those movie callers execute."
+    }
+  ],
+  "native_evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_and_snapshot_count": 77631,
+    "wrappers": [
+      "ghidra ensure",
+      "ghidra count",
+      "lookup/show/callers"
+    ],
+    "assembly_anchors": [
+      "00AAE794..00AAE7AD factory vslot4 and movie+F0 store",
+      "00AADBB3..00AADBC7 handle+4 and BinkGetRealtime(handle,buffer,0)",
+      "00AADBCD..00AADC0A IMUL/FILD/unsigned correction/FDIV"
+    ],
+    "mutation": false
+  },
+  "validation": {
+    "new_games": 0,
+    "new_runtime_probes": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "source_edits": 0,
+    "ledger_or_shared_cmake_edits": 0,
+    "ghidra_mutations": 0,
+    "ignored_local_index_and_patch_scratch_generated": true
+  },
+  "current_main_runtime_validated": false,
+  "switch_on_authorized": false,
+  "additional_body_credit": 0,
+  "abi_claim": false
+}

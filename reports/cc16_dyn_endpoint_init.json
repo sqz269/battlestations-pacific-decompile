@@ -1,0 +1,200 @@
+{
+  "packet": "codex-dyn-endpoint-init",
+  "source": "src/cc16_dyn_endpoint_init.cpp",
+  "header": "include/bsp/cc16_dyn_endpoint_init.hpp",
+  "integration_status": "reconstructed_build_tested_unwired",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_queries": "verifying bsp.py ghidra full body bytes/listing, helper, EH map and cleanup funclet"
+  },
+  "functions": [
+    {
+      "address": "00c4ce60",
+      "bytes": 187,
+      "instructions": 66,
+      "name_hypothesis": "initialize_endpoint_00c4ce60",
+      "original_abi": "ECX token, DL flag, stack(endpoint,bounds), RET8; returns endpoint EAX"
+    },
+    {
+      "address": "0040a050",
+      "bytes": 14,
+      "instructions": 7,
+      "name_hypothesis": "release_vector_storage_0040a050",
+      "original_abi": "EAX actual vector data-word address, RET; no semantic return established"
+    }
+  ],
+  "native_evidence": [
+    {
+      "address": "00c4ce60",
+      "bytes": 187,
+      "sha256": "499109ed808358e657f6e68b19da78f16c5004eb5c734c3f021d32a4bba080f9",
+      "hex": "64a1000000006aff684582cc00508b4424146489250000000053568b742418890e88561c8b08894e048b50048956088b4808894e0c8b500c8956108b4810894e148b501433db89561857895e30895e34895e38b80a0000003bd8895c241473426a28894638e8f486faff8bf883c40433c0395e3476198bcf3bcb74088b56308b1482891183c00183c1043b463472e98b46303bc3740950e88d9afaff83c404897e308b4c240c885e2c5f8bc65e64890d000000005b83c40cc20800",
+      "instructions": 66
+    },
+    {
+      "address": "0040a050",
+      "bytes": 14,
+      "sha256": "8adf0381aabd6f74f55c51c2763135147e02097db6eb0a0afc4aeea305b9c747",
+      "hex": "8b0085c0740750e82dc97e0059c3",
+      "instructions": 7
+    },
+    {
+      "address": "00cc823a",
+      "bytes": 11,
+      "sha256": "7599f991f8cc2cfcb3f6140935311b24e570b4cded6b0b615aa52aa217616b82",
+      "hex": "8b450483c030e90b1e74ff",
+      "instructions": 3
+    },
+    {
+      "address": "00e04098",
+      "bytes": 8,
+      "sha256": "b8ede4cdd1529f8379dee3bc6e3a6d500ed974ed69d0f1a1c50eb0190d6c1d74",
+      "hex": "ffffffff3a82cc00"
+    },
+    {
+      "address": "00e040a0",
+      "bytes": 36,
+      "sha256": "cf46a6a99d15ca78b3c46c80d110d5e70b081f61f71dc3c59252b5df2f168714",
+      "hex": "22059319010000009840e000000000000000000000000000000000000000000001000000"
+    }
+  ],
+  "rows": [
+    {
+      "address": "00c4cec5",
+      "native": "00bf55be",
+      "function": "00c4ce60",
+      "kind": "call"
+    },
+    {
+      "address": "00c4cef7",
+      "native": "00bf6989",
+      "function": "00c4ce60",
+      "kind": "call"
+    },
+    {
+      "address": "0040a057",
+      "native": "00bf6989",
+      "function": "0040a050",
+      "kind": "call"
+    },
+    {
+      "address": "00cc8240",
+      "native": "0040a050",
+      "function": "00cc823a",
+      "kind": "tail_jump"
+    }
+  ],
+  "semantics": {
+    "raw_bounds": "six interleaved volatile dword loads/stores after token and byte flag; alias effects retained",
+    "vector": "zero30/34/38, publish cap10 before actualnew40, live unsigned count/data copies with zero-computed-destination skip, reload old data then free before new publication",
+    "unwind": "state0 atCEBA; FuncInfoE040A0 maxState1 and mapE04098 previous=-1/actionCC823A, actual endpoint+30 ->real0040A050; C++ catch composes cleanup then rethrows",
+    "cleanup": "helper captures current data once, frees iff nonzero, no fields cleared; no newbuffer refund",
+    "final_flag": "byte2C cleared only on normal completion",
+    "guard": "EBX0/EAX10 unsigned JNC is unreachable at ordinary entry; no allocation/null/extent/callback guard added"
+  },
+  "independent_review": {
+    "reviewer": "/root/dyn_ambient_math",
+    "dependent_packet_commit": "28d67fc121620e3c1770f7f1a4463ee838854953",
+    "scope": "all66+7 original instructions, real source/header, live EH data and actual cleanup action",
+    "blocking_mismatches": 0,
+    "findings": "alias copies, allocator-visible field epochs, publication/cleanup and normal flag timing match; no native SEH or cleanup-throw transport claim"
+  },
+  "validation": {
+    "accepted_base": "264ed96b4",
+    "configuration": "MSVC Win32 Release",
+    "build_registered": true,
+    "build_tested": true,
+    "build_log": "local/cc16_dyn_endpoint_pointer_main_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "suite_seconds": 12.61,
+    "forced_entry_link": {
+      "executable": "local/cc16_dyn_batch_link_probe_b.exe",
+      "executable_sha256": "71860e295651d61311f4ae9537c1a724d286db5a87d803ad0bb66388ea08e484",
+      "map": "local/cc16_dyn_batch_link_probe_b.map",
+      "map_sha256": "d3432897b7e98c40ec085c5d1460322a081073dc65b06f9aad186925c161b4d1",
+      "source_sha256": "567b547328bf4ebcd6a8e2d29e6239792e86d8c5dbff7520be70614bddd959c3",
+      "command_sha256": "180224fa95b7cfc2f72bc73627827eb0eedc965d4aa4de0e6a5c28de80e6c945",
+      "forced_entries": [
+        "initialize_endpoint_00c4ce60",
+        "release_vector_storage_0040a050",
+        "remove_and_destroy_00c55df0",
+        "allocate_endpoint_00c55a60",
+        "update_broadphase_00c5a850"
+      ],
+      "resolved_real_dependencies": [
+        "destroy_native_dyn_world_00c4dc60",
+        "rebuild_radix_pairs_00c54da0",
+        "MSVCRT stack probes"
+      ],
+      "manifest_embedded_by_command": true,
+      "executed": false,
+      "dummy_objects_or_providers": false,
+      "game_map_entries": 0,
+      "artifact_policy": "dedicated final batch-b filenames retained without reuse"
+    },
+    "fixture_tested": false,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "new_tests": false,
+    "probe_or_game_executable_launched": false,
+    "source_sha256": "a8dea08ef139bb32739f3084ccdd87cc9e1d57bb9996e60193114382a81999dc",
+    "header_sha256": "d9dd910c448bc39d1286f60b6c9638d6629f2a5c4c05d555506cdbb0a6470e42",
+    "compiled_object_sha256": "5b2273a6559732292f2d7606d485a4c759e29a0faeb25307eead993cb4518db7",
+    "ghidra_annotations": {
+      "backup": "local/ghidra-annotations-20261029T160443Z.json",
+      "saved": true,
+      "refreshed_exports": true,
+      "preserved_prior_comments": true,
+      "target": "bsp /battlestationspacific.exe"
+    },
+    "final_common_main": {
+      "accepted_upstream": "5f686b664",
+      "build_log": "local/cc16_dyn_endpoint_pointer_common_build.log",
+      "existing_suites_passed": 2,
+      "suite_seconds": 10.29,
+      "compiled_object_unchanged": true,
+      "game_map_entries": 0
+    },
+    "historical_link_observation": {
+      "executable": "local/cc16_dyn_link_probe.exe",
+      "executable_sha256": "8aa7069ea7667d1bde5df02d9001ad5c4f5aa269c5e1643b29d70d72f3982e79",
+      "map": "local/cc16_dyn_link_probe.map",
+      "map_sha256": "3f85c4463b232b35129eb4665a8f5a5bb24c81735e872a146540b18f98c668c3",
+      "forced_entries": [
+        "initialize_endpoint_00c4ce60",
+        "release_vector_storage_0040a050",
+        "remove_and_destroy_00c55df0"
+      ],
+      "resolved_real_destructor": "destroy_native_dyn_world_00c4dc60",
+      "manifest_embedded_by_link_command": true,
+      "executed": false,
+      "stub_or_dummy_provider": false,
+      "game_map_entries": 0,
+      "artifact_note": "temporary path was reused during later static checks; historical observed hash only, use current forced_entry_link for retained artifact"
+    },
+    "later_combined_build": {
+      "build_log": "local/cc16_sap_entry_allocate_main_build.log",
+      "existing_suites_passed": 2,
+      "suite_seconds": 11.23,
+      "compiled_object_unchanged": true
+    }
+  },
+  "credit": {
+    "new_in_house_bodies": 2,
+    "original_29_body_census": 1,
+    "unwind_or_vendor_bodies": 0
+  },
+  "remaining": [
+    "genuine caller/object/bounds/CRT custody and reachability",
+    "original register ABI, FH3/SEH/frame/fault/cleanup-throw and exception transport",
+    "native differential, provider failure paths and gameplay"
+  ]
+}

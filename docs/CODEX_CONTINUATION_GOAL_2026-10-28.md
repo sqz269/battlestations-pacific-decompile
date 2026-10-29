@@ -761,3 +761,85 @@ controllers returned exit0. Outcomes include natural completion, loss, frame
 bound and result teardown, not a universal win claim. Aggregate input/hash/lane
 audit is in progress; USN02 has no independent live-priority sample. This is a
 current reference corpus only, with no candidate pair/ON/strict4+4 acceptance.
+
+The13-row aggregate reference audit now passes17 input/receipt/job/lane/controller
+checks. Root read the full report and copied/hash-verified29 audit artifacts to
+the original packet's evaluation folder. Outcomes:5 completed,5 bounded/no-end,
+1 nil-status result,2 failed; all13processes exit0/injected0. Actual Normal
+samples cover5/13 only; selection is recorded for13, with unsampled rows kept
+explicit. audit.json SHA755594ece00a1ce101f19d258386a0e7c3f30c033178e452566eaa0eedf1a126.
+This accepts the frozen reference dataset, not candidate identity or an ON gate.
+
+Final helper4e6ed742 and closed owner6a180f08 are now composed with Root staged
+guards, CMake and the fifth private host switch (FALSE). Root and independent
+reviews accept the helper/owner with the ordinary before-scalar prefix check
+restored; the helper grants only the Font slice. All five private switches are
+FALSE; coupled Win32/checks2/2 pass11.22s. Actual Font work remains unexecuted.
+Prepare the exact13-row default OFF candidate against the audited5b01 corpus
+before the independently preregistered real-provider Font/MSD private cases.
+
+The original OFF9356c19f13-row comparison is complete: all processes/controllers
+exit0, but only12 pairs pass. USN12 changes three final clear_37c values; its
+gameplay/native/normalized summaries/ordered streams/teardown match. The failed
+cohort remains sealed. Four separate trace/bounds observations show aided
+reference/candidate299072-row trace identity, while unaided traces differ; they
+do not retroactively pass the original cohort or prove general causality.
+
+Real Font work exposed a separate Widget base-entry guard still reading the
+ended Font slice. Targeted fix903bd6550 keeps every other Widget predicate and
+requires the same sealed helper at exact raw118 base Stage. Root and independent
+Source review accept it. Six corrected private cases (three modes, GUI0/1 pairs)
+then exit0 with full owner/Text/Model/Mesh/Font/renderer closure and only the
+existing COM residue cohort. Independent audit128/129 keeps genuine RNG-event
+proof open: the primary parser matched lof_expiry_draw=1, a feature flag.
+All sealed reports remain unchanged with additive corrections.
+
+Published Dyn/subtitle Source5c2547156 is merged in staging3ff670d5e; subtitle
+and all five Font switches stay FALSE. Common Win32/checks2/2 pass10.37s;
+restoration87398bfe7 has the same complete C++ tree and checks2/2 pass11.77s.
+One newly preregistered current-source593cf035 same-binary GUI0/1 USN04 pair
+uses4800 mission/5100 total frames. Both runs/controller exit0 and observe the
+same first logged genuine plane-death sample at93.60s/value0.4143 (51 samples
+each); all34 scoped checks pass. Root independently rehashed59 sealed artifacts,
+all51 raw event records and the lifecycle sequence. This is neither the globally first RNG call
+nor retroactive event proof for the six earlier80-second cases.
+
+A separate26-case controlled cohort is running frozen all-OFF122145f6 against
+fresh5b references with the existing bounds-init aid explicitly set on BOTH
+sides. It qualifies only that labelled input domain and frozen Source. Newer-main
+compatibility, final independent audits and publication remain separate. Original
+failed OFF13, production ON13/USN21strict4+4, MainSection, Page/P4, FE_initial,
+nonempty content/glyph/layout/visual rendering, lighting and native ABI remain
+open. The continuing goal remains active.
+
+Controlled26 has now completed all13 pairs with pair0 and all14 final producer
+checks true: all26 runs/three actual controllers exit0; registered outcomes,
+inputs, Normal samples, full/mission/shutdown order and teardown match. All337
+artifact hashes verify independently in Root. Peak3, forecast7/8, exact frozen
+EXEs/52 sampled PIDs drained, old5 preserved; all26COM0/0. Raw strict false
+results remain. RNG provenance is nine plane first logged samples, one earlier
+USN01 LandFort sample and three equal absences. This qualifies only the explicit
+symmetric bounds-aid122/5b domain. The original plain9356 failure is unchanged.
+
+Latest5c Source/caller compatibility is separately reviewed:157 protected Font/
+Model/Widget/provider blobs are unchanged, but dormant Subtitle OFF changes its
+MovieBridge heap/layout work and the live VFS borrow. No old PE/object/ABI identity
+is inherited. The new current593 long common pair supplies current shared SDK/
+owner closure and genuine logged-event evidence. Both corrections and exact
+artifact/source scopes are retained; all five Font switches and subtitle stay OFF.
+
+Final independent controlled-cohort audit359/359 passes. Root read its full
+report and retained hash-verified JSON/Markdown/index copies. The6AC/6B0 same-line
+auditor assumption correction is explicit, with original false records preserved;
+all registered difficulty/input/observer gates remain. This closes the labelled
+controlled122/5b cohort only. Current common593 runtime, reviewed5c caller/layout
+composition and all-OFF873 restoration remain their separate evidence scopes.
+
+The next MainSection dependency now distinguishes created-normal completion from
+the existing COMPLETE skip branch. Private Frame identities are captured at the
+real zero58/Section/Material epochs and published only after late parenting/root
+normal return. Root and independent actual-diff review accept the22-line change;
+Win32/checks2/2 pass12.91s. This is metadata provenance only, not an owner, native
+credit, scalar permission or runtime/ABI proof. Three bounded reviews are defining
+the retained MainSection lifetime, real caller/provider graph and shared admission
+changes before implementation; first faithful AB8530 main creation precedes Font.

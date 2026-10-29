@@ -200,3 +200,30 @@ the shared false guard. The exact small CPP change `1df710914` passes the common
 Win32 Release build and both suites (12.17 seconds) after C54DA0 integration.
 Matching frozen OFF/ON runtime candidates are separate; this change grants no
 activation or gameplay credit.
+
+Endpoint initialization C4CE60 and pointer removal C55DF0 now add two compiled/
+unwired bodies. Original29 census becomes25 with four metadata-only:
+C320D0,C55A60,C5A850,C5A8B0. The real14-byte vector cleanup0040A050 is recovered
+separately outside that original census; reused destructor/vendor/unwind bodies
+earn no duplicate credit. Complete source/listing review, final pointer-body
+object audit, actual entry/dependency link and common build2/2 pass. Native
+caller/context/ABI/exception custody and full activation remain open.
+
+The real pool allocator C55A60 and SAP update entry C5A850 add two more
+compiled, link-tested and unwired bodies. The original 29-body census is now
+27; only C320D0 and C5A8B0 remain metadata-only in that fixed list. Both complete
+normal bodies passed primary and independent source/listing review, the
+combined Win32 build and both suites (11.23 seconds), and original-call checks
+(9 allocator rows; 14 dispatch rows including the previous two entries).
+Dedicated retained batch-b link artifacts force all five recent entries and
+resolve actual dependencies without execution or fake providers. Separate
+partials, unreferenced in-house code, FP debt, genuine caller/provider/ABI
+wiring and gameplay activation remain beyond that census. The goal is active.
+
+The finalized subtitle source/VFS branch is admitted OFF after full source-
+delta review and a combined Win32 build with both suites passing11.44s. Its
+13OFF pairs and two VFS checks remain historical exact409 evidence. The next
+ready closure is the existing live mission LocaleTables reference; decoder,
+settings, Text/widget/extratitles, Lua and callback activation are still open.
+Accuracy evidence is three OFF/ON pairs (six runs), with twelve owned process
+captures; its independent final-binary/current-source review is separate.

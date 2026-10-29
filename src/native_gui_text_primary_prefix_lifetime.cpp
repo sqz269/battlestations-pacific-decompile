@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
+#include "bsp/native_gui_text_font_lifetime_storage.hpp"
 #include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -184,13 +185,33 @@ void shape(void* actual, const Context& g, const NativeGuiTextRetirementAcquired
     require(read(actual, 0x4c) == bits(g.producer_context.primary.actual) &&
         !read(actual, 0x70) && !read(actual, 0x6c) &&
         !read(actual, 0x88) && !read(actual, 0x8c) && !read(actual, 0x90) &&
-        !read(actual, 0x108) && !read(actual, 0x180) && !read(actual, 0x184) &&
+        !read(actual, 0x180) && !read(actual, 0x184) &&
         !read(actual, 0x18c) && !read(actual, 0x190) && !read(actual, 0x198) &&
-        !read(actual, 0x19c) && !read(actual, 0x1a0) && !read(actual, 0x1ec) &&
+        !read(actual, 0x19c) && !read(actual, 0x1a0) &&
         !read(actual, 0xec) && !read(actual, 0xf0) && !read(actual, 0xf4) && !read(actual, 0xf8) &&
-        !read(actual, 0x1a4) && !read(actual, 0x1a8) && !read(actual, 0x1c0) && !read(actual, 0x1c4) &&
-        !read(actual, 0x1c8) && !read(actual, 0x1cc),
+        !read(actual, 0x1a4) && !read(actual, 0x1a8) && !read(actual, 0x1c0) && !read(actual, 0x1c4),
         "prefix Text adds ONLY its genuine primary4C to the empty DEFAULT payload");
+    auto& publication = g.text.factory_context.publication;
+    auto* const font = publication.retirement.font_lifetime;
+    using Font = NativeGuiTextFontLifetimeStorageFrame;
+    if (font && font->phase() == Font::Phase::sealed) {
+        const auto& scalar = g.text.factory_context.reference_frame.scalar;
+        const auto font_stage = progress ? (progress->base_entered ? Font::Stage::base : Font::Stage::raw118_body)
+            : scalar.started ? Font::Stage::raw118_preentry
+            : g.text.publication.reference &&
+                g.text.publication.reference->phase() == NativeGuiTextRawModelReference::Phase::retiring
+                ? Font::Stage::scalar_preentry : Font::Stage::before_scalar;
+        const auto* const font_progress = progress ? progress : scalar.started ? &scalar.destruction : nullptr;
+        font->require_live(actual, font_stage, font_progress);
+    } else {
+        // Before the real geometry completes/seals, only the old empty Font
+        // fields are legal. An entered/failed graph cannot select fallback.
+        require(!font || (!progress && font->phase() == Font::Phase::prepared && font->post_text_quiescent()),
+            "unsealed Font graph must be genuinely prepared and wholly unused");
+        require(!read(actual, 0x108) && !read(actual, 0x1ec) &&
+            !read(actual, 0x1c8) && !read(actual, 0x1cc),
+            "prefix without sealed Font provenance keeps its original empty Font fields");
+    }
     void* const head = ptr(read(actual, 0x68));
     require(head && !(bits(head) & 3u) && read(head) == bits(head) && read(head, 4) == bits(head),
         "prefix Text requires its actual finite empty AA9390 ring");

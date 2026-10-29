@@ -97,8 +97,10 @@ ONLY worker ID, not alpha. Existing worker normalization gives ordered SUB0.
 MSD pair has identical gameplay/native1550/summary830 and ten exact ON-only
 diagnostics; pair_diff exit1 is that expected raw diagnostic difference. Full
 SUB626/626 has only raw worker-ID difference; the existing normalization gives
-zero, as does the mission sequence. Startup36 and first-RNG compare pairwise:
-reference0.4143/0.4143, MSD1/1. Raw teardown4314/4317 indexdiff366, lengthdelta3,
+zero, as does the mission sequence. Startup36 matches. The historical parser
+reported reference0.4143/0.4143 and MSD1/1; the MSD values were feature-flag
+false positives, not observed RNG events (see the correction below).
+Raw teardown4314/4317 indexdiff366, lengthdelta3,
 is exactly three inserted rows: owner retirement, owner close and Font producer
 detach. The projected existing sequence is unchanged;366 is not366 native edits.
 
@@ -126,8 +128,9 @@ four private constants FALSE. Win32/checks2/2 pass (10.23s),
 OFF game is claimed. This four-case bounded metadata evidence does not supply
 13-row OFF identity, strictUSN21 4+4 or production activation.
 
-Independent final audit passes109/109 preregistered metadata checks with no
-pending/failed checks. Root read the complete report and copied/hash-verified
+The sealed historical evaluator returned109/109. Its combined first-RNG result
+does not establish MSD event coverage; the correction below keeps that proof
+open. Root read the complete report and copied/hash-verified
 all24 evaluator artifacts to the attempt's `evaluation/`; initial evaluator
 assumption reports remain preserved. `evaluation_hashes.json` records every
 copied file. Final review.json SHA256:
@@ -136,3 +139,22 @@ review.md SHA256:
 49997F1CBAE8B0A9EC3DE49DCA4ACA2840F5DCA1D59F1D094179C5A61A30C793;
 review.py SHA256:
 719D652734DE7A4D905E45E026017F8235B206A3CCF43258C5051D0E5BB73AAC.
+
+## RNG observation correction, 2026-10-29
+
+The old evaluator's `draw=([-0-9.]+)` search also matches the substring in
+`lof_expiry_draw=1`, an AA acceptance feature flag. In the two1600-frame MSD
+logs that is the only broad match: off line26678, on line26685. Neither log
+contains a genuine word-boundary `draw=` event. Startup36 and feature-flag
+equality remain factual; actual MSD first-logged-RNG coverage is unobserved.
+Do not count the old combined check as a passed event-observation gate.
+
+The additive correction is
+`local/cc16_5c_source_rng_addenda_20261029/rng_correction.json` in the Frame
+worktree, SHA052f5dc8e36e8b6ca45aa80f479dff7467d129d2e518654717720b176cf691f2.
+All original reports, logs, receipts and hashes remain unchanged. The same
+false positive affected the later six short Font-work cases; their lifecycle
+evidence is separate from RNG-event coverage. A newly registered longer
+current-source pair observes matching genuine plane-death samples; it does not
+retroactively supply an event to either historical cohort. See
+[the Font-work qualification](CODEX_GUI_RAW_FONT_WORK_QUALIFICATION.md).
