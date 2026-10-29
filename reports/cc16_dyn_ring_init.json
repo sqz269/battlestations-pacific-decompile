@@ -1,0 +1,116 @@
+{
+  "packet": "codex-dyn-ring-init",
+  "function": "00c33510",
+  "body_start": "00c33510",
+  "body_end_inclusive": "00c33645",
+  "body_bytes": 310,
+  "source": "src/cc16_dyn_ring_init.cpp",
+  "header": "include/bsp/cc16_dyn_ring_init.hpp",
+  "cpp_name_hypothesis": "bsp::cc16_dyn_ring_init::initialize_dyn_ring_indices_00c33510",
+  "original_abi": {
+    "receiver": "ESI",
+    "stack_argument_bytes": 0,
+    "return_instruction": "RET at 00c33645",
+    "semantic_return": "not established",
+    "incidental_eax_at_exit": "next-array base loaded from receiver+0c",
+    "preserved_observed": [
+      "EBX",
+      "EDI",
+      "ESI"
+    ]
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py ghidra client target verification before each live query"
+  },
+  "rows": [
+    {
+      "address": "00c3352f",
+      "native": "00bf55be",
+      "function": "00c33510",
+      "kind": "call",
+      "contract": "allocate wrapping uint32 count*4 bytes for previous indices; capacity already assigned"
+    },
+    {
+      "address": "00c33561",
+      "native": "00bf6989",
+      "function": "00c33510",
+      "kind": "call",
+      "contract": "free nonnull old previous-index block after copy and before replacement"
+    },
+    {
+      "address": "00c335a4",
+      "native": "00bf55be",
+      "function": "00c33510",
+      "kind": "call",
+      "contract": "allocate wrapping uint32 count*4 bytes for next indices; capacity already assigned"
+    },
+    {
+      "address": "00c335d6",
+      "native": "00bf6989",
+      "function": "00c33510",
+      "kind": "call",
+      "contract": "free nonnull old next-index block after copy and before replacement"
+    }
+  ],
+  "incoming_reference": {
+    "site": "00c4d605",
+    "caller": "00c4d5a0",
+    "caller_body_end_inclusive": "00c4d971",
+    "kind": "UNCONDITIONAL_CALL",
+    "source": "live xrefs; caller proto; indexed callers census",
+    "caller_incoming_sites_in_current_index": 0,
+    "runtime_activation": "unestablished; caller body recovery or full dead-chain evidence required"
+  },
+  "reviewed_corner_cases": [
+    "previous resize precedes next resize; count reloaded between them",
+    "unsigned resize comparisons and uint32 count*4 wrap",
+    "capacity assigned before allocation; old data copy precedes old free and pointer replacement",
+    "per-slot null checks do not imply allocation-failure handling",
+    "signed ring loop; unconditional endpoint writes for zero and signed-negative counts",
+    "shrink retains allocation; one-element ring links to itself"
+  ],
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_batch1_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object": "build/win32/bsp_core.dir/Release/cc16_dyn_ring_init.obj",
+    "compiled_object_sha256": "375dc54448e8b808a4ea67427d50f8951e3f02ea18b4286afec304a18a4e7e06",
+    "library": "build/win32/Release/bsp_core.lib",
+    "function_symbol_present_in_game_map": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "tests_added": false,
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T023246Z.json",
+    "exports_refreshed": true,
+    "proof_level": "complete body reviewed and compiled in bsp_core; real host/native ABI wiring remains open"
+  },
+  "remaining_integrator_work": [
+    "caller/provider custody and original register-ABI integration",
+    "original root reachability or qualified dead-chain closure",
+    "runtime acceptance only for a genuinely reachable activated path"
+  ],
+  "worker_validation": {
+    "assembly_review": "complete 00c33510..00c33645",
+    "live_byte_span_read": true,
+    "source_compile_tested": "MSVC x86 object-only compile: C++17 /permissive- /EHsc /W4 /WX; exit 0",
+    "call_report_verification": "4 call rows checked, 0 failed",
+    "build_registered": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "ghidra_mutated": false,
+    "tests_added": false
+  }
+}

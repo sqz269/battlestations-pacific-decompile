@@ -242,3 +242,198 @@ startup/deletion hookup. No getter or raw Icon caller is activated, no queue or
 file delivery is fabricated, and no build is allowed during the A1 hold.
 Any eventual getter must use the SAME service bound into the process singleton
 deletion dispatcher and retain its full provider graph through native drain.
+
+The Icon process dependency is now frozen at `82c09a739` in cc15-gui4. Root
+reviewed all three new files: one private null publication, successful-only
+preparation over the exact borrowed raw context, and status separating normal
+registered-owner retention from incomplete/failed operations. No source blocker
+was found. It remains unbuilt, unmerged, unregistered in CMake and uncalled;
+root's same-service deletion hookup and later lifecycle proof are still pending.
+
+The raw Model audit found that existing raw parenting kernels already cover
+the native hierarchy operations. The generic child suffix still transports
+logical Model/scene bindings, so sharing actual counts or raw names cannot make
+it compatible with the Page's actual3Ch resource family. A bounded library-only
+packet, `codex-gui-raw-model-storage`, now prepares genuine B75030/B750C0/
+B75290/B74F20 storage/lifetime/reference providers in new files. It must retain
+the single normal decrement epoch, fresh member-unwind epoch, current flags
+after destruction and same real pool/node/import/actual-owner domains. This
+does not publish a child or make the shared Model/tree/scene transport ready.
+
+A separate read-only A2 audit source-proved genuine input metadata preparation
+immediately after shadow success, before73DD12. It retains the same input
+contexts and empty SDK trackers, while BOTH the input_runtime_ facade pointer
+and actual backend startup remain at73DD8E. It requires the already-live sound,
+XLive, clock and platform domain, so it cannot move before73D8CC with factories.
+The null-backend cursor guard is genuine; the preceding load pump still runs
+XLive and window message callbacks. Full preload execution/failure containment,
+factory ownership/retirement and resource order remain separate obligations.
+No A2 source change or live trial is accepted.
+
+Raw Model packet `48195196e` is committed in its own
+`agent/codex-gui-raw-model-storage` worktree. Root reviewed all three new files
+and independently compared the four current assembly exports and existing
+state1/state0 unwind evidence. No source blocker was found: normal/member
+decrement epochs, callback replacement reloads, late low-byte flags read, same
+actual+4/canonical registry and live pool provenance match the qualified
+contract. Retired metadata after failure is explicitly not cleanup/pool-return
+proof. The packet remains unbuilt, unmerged and uncalled, with CMake/testing and
+raw child/scene/tree transport still pending. It adds no body credit.
+
+The follow-on routing audit found no missing native Model parenting/scene/tree
+body for the default family: D62DE8 current1C is B6D7B0, current18 B6F310,
+current50/54 B6ED80/B6EE10, with real006EF860 type queries and 481's zero
+terminal. The shared router/retained record bindings beside Group/camera/sun
+remain primary work; one mutable invocation frame cannot support callback
+reentry. The one additional missing raw storage entry, B75170 geometry
+association, is dispatched in new files as `codex-gui-raw-model-geometry` over
+the still-unbuilt 481 source. Its incomplete prerequisite is recorded explicitly.
+
+The Text audit confirms AB9650 always constructs an internal188 shadow Model,
+mesh/section and GuiDefault effect graph. A default-only wrapper over the old
+Model transport would need replacement before the intended Page integration,
+so that wrapper is not dispatched. The useful next boundary is a coherent raw
+Model variant through Text sections85, constructor93, retirement118 and
+reference122. It must preserve Text188 publication before canonical metadata
+admission, actual counts/creator releases, same point-light/node domains and
+retained raw Model/frame/reference regions. Existing interfaces fix the legacy
+Model family; casts cannot connect 481. Genuine GuiDefault/cache/Lua readiness
+and general primary4C/Page retirement remain separate prerequisites. API design
+is read-only pending primary review; no Text transport edit is accepted yet.
+
+## Final matched A1 gates and next source batch
+
+The frozen common A1 pair completed all strict four-OFF/four-ON runs. Root read
+`common_strict_evaluation.json`: eight valid manifests, exact serial provenance,
+all seven row contracts/receipts/remainders passing, OFF self-comparisons pair0,
+ON comparisons pair1 only for the exact inventoried A1 records, and ordered0.
+All four OFF runs agree; startup frame36/RNG0.6207 and teardown match. The
+separate no-aid pair also completed successfully on the same binaries, with the
+bounds variable absent and the exact reference trace environment. No failures,
+retries or masks changed. Final receipt/doc review precedes A1 publication; the
+runtime hold is lifted after these scheduled games.
+
+Geometry packet `d403f5411` is frozen above481. Root reviewed all new source and
+the current B75170 assembly: no source blocker, still unbuilt. Its one-shot
+frame borrows the four actual DWORD operands; publication/import epochs,
+callback replacement, late scalar reads, one sentinel sample and the authored
+SSE unordered/store sequence match the qualified Source contract. Compile and
+emitted-code/FP evidence remain pending.
+
+Primary approved the concrete Text raw-Model API and dispatched
+`codex-gui-text-raw-model-transport` across the eight Text files plus a new
+evidence document. It adds explicit raw85/93/118 overloads and a separate typed
+raw122 reference, preserving every legacy interface/caller. Model481 and
+geometryd403 remain named unaccepted prerequisites. Text188 publication stays
+before canonical admission, and host_metadata failure must propagate distinctly
+from native constructor cleanup/slot return. Stable raw Model, argument, frame,
+reference and disposal regions remain retained. No factory, properties,
+nonempty content, Page activation or function-body credit is implied. The
+private default-only Model router must use genuine same-domain providers;
+general shared Page/primary4C routing remains later work.
+
+A1 evidence branch `010be6972` is now accepted by the integrator and merged.
+Root checked the strict aggregate and separate no-aid validator/receipt, found
+no remaining scheduled game, and preserved the GUI Text/Element Known Limits
+correction. Integrated src/include and CMake sources match the tested `6c8016fa7`
+snapshot. The A1 switch is ON; Page construction/drawing, shader preload and
+allocator/reload paths remain outside its accepted scope. The reviewed dormant
+source dependencies now enter their separate Win32 build/inertness batch.
+
+## Dormant dependency batch accepted
+
+Integrator source `eb18518db8953f215dbf4fa5384d76d555906546` merges frozen
+Page c559/066, Icon82, raw Model481 and geometryd403. CMake registers both Model
+TUs in bsp_core and Icon process metadata in bsp_game. The initial compile
+exposed a missing complete platform-publication header in Page CPP; the include
+fix resolved its cascading aggregate errors. MSVC Win32 Release and both CTests
+pass. Page chain stays OFF and all new library/service callers remain uncalled.
+
+Immutable executable SHA-256 is
+`05F362BB61DC3618D6CB560A0F3F3AEB332E720282CA726F0D62B04A89D2A0D2`,
+with the same accepted DDF2 XLive. Root's snapshot/build receipt lives in
+`local/codex_gui_dependencies_snapshot`; emitted geometry object disassembly
+confirms the authored SSE scalar sequence. No FP execution proof is inferred.
+
+Fresh reference4800 and milestone-D1600 pairs against accepted A1 ON799 pass
+exit0/rawpair0, ordered0, teardown0, frame36/RNG0.4143 and1 respectively. The
+first baseline survived a worker interruption; root preserved it and continued
+the three remaining scheduled runs. Its real slot1/core4 assignment was pinned
+before the first candidate, temporarily reserving only a free slot0 without
+replacing locks or stopping processes. Full argument/source/DLL/difficulty/env
+audits and serial nonoverlap pass. No comparison or game was retried. Receipts:
+`cc9/local/codex_gui_deps_inert_20261028`.
+
+The five Model entries are recorded only as qualified fragments, with original
+ABI, evidence and runtime limits. No whole-body credit grows. Actual Page,
+Model, Icon-service, exception/reentry/reuse and raw Text lifecycles remain open.
+Frozen Text e75 has passed root constructor and independent ownership review
+within DEFAULT scope; its separate build and acceptance batch follows.
+
+## Raw Text transport build accepted
+
+Dormant dependency batch is published on main at fb071f275. Remote Dyn source
+changes merged cleanly and the combined Win32 build passed both existing CTests;
+the frozen eb185 gameplay results above retain their exact original provenance.
+
+Frozen Text e75 is integrated at 93a52f36d. Both source reviews passed and the
+Win32 Release build passed reconstructed_math and tool_tests. The existing
+legacy Text APIs/callers are preserved. Raw85/93/118 and separate raw122 now
+compile with the actual Model481/geometryd403 transport. No new test cases or
+body credit were added. The private genuine Model router, real GuiDefault/cache/
+Lua readiness, DEFAULT factory binding and actual lifecycle/exception/reuse
+proof remain explicit next dependencies. Page activation remains OFF.
+
+Workers are preparing the Model-only router, raw DEFAULT factory contract and
+early shared procedural-factory lifetime needed for A2. Shared host changes
+remain with the primary integrator; no second factory domain is authorized.
+
+Input metadata preparation now precedes the73DD12 position, while the sole
+input_runtime_ publication and native backend startup stay at73DD8E. The real
+existing clock/XInput/platform/sound graph supplies the same borrowed core to a
+future sampler. Win32 Release and both existing CTests pass; no input/gameplay
+or shader-loading runtime proof is claimed. See CODEX_A2_INPUT_METADATA.md.
+
+A2 OFF candidate source now binds one early host-owned procedural factory
+domain, retained startup sampler/effect/73BF80 preload and borrowed mission
+views. Independent review found a stale mission borrow after host owner reset;
+both closure paths now detach it. Quiescent retirement precedes native drain,
+full renderer closure precedes host acknowledgment, and entered failures keep
+the whole graph through immediate process exit. Frozen builds/gates follow;
+this source composition does not activate A2. The genuine private Model-only
+router e769 is separately merged/registered and Win32 build-tested, still
+uncalled with actual DEFAULT lifecycle proof pending.
+
+## A2 startup activation accepted
+
+Corrected ONdfa82aafb and OFF51e6199da differ only in the A2 bool across all
+C++/include/CMake sources. Both builds pass the two existing CTests. Corrected
+smokes and all four serial reference4800/native-MSD1600 runs exit0; gameplay,
+mission ordered traces, startup36 and first RNG match. Root reviewed the frozen
+independent predicates, every raw-difference category and ordered edit inventory.
+The original failed334 smoke and its distinct artifact remain preserved.
+
+A2 now runs the genuine early BBCB40 factory setup and real73BF80 preload/cache
+bracket once, borrowing the canonical Application rows and sharing the same
+owners with mission rendering. The switch is ON. Native Page stays OFF. Ref
+rawpair1 has only the inventoried startup/cleanup rows and Lua getter diagnostic;
+MSD rawpair0 and actual shutdown400/400diff0. The old rawteardown70 is preserved
+and explained by one preload row moving to startup.
+
+MSD retains exactly the unchanged accepted error.dds/profileD61948/ref1 residue
+with one skipped release/one entry and final COMdevice1/api1. The generic raw
+COM-zero failure remains visible; a separate exact Source/baseline qualification
+supports this bounded activation. Reference/smoke COM0/0. See
+CODEX_A2_STARTUP_PRELOAD.md and the gate directory's frozen evaluation.
+This does not close full GUI/visual/interaction, raw Text/Icon/Model/Page
+lifecycles, queued-callback failure, allocator/reload or Original ABI proof.
+
+Private Model node/scene/type provider2049 and DEFAULT AA1380 helperba2 now
+pass root/independent source review and the integratedcb6ba1195 Win32 build,
+including both existing CTests. Both TUs are compiled in bsp_core, with no
+production caller, new native body credit or actual DEFAULT lifecycle proof.
+The next retained-owner composition must connect the real renderer services and
+raw-compatible widget lifetime dispatch; legacy Text-reference dispatch cannot
+stand in for the new raw122 companion. Actual creation belongs after genuine
+Text type startup in a legitimate cache bracket, with retained frames/providers
+through complete renderer drain, failure and surviving Model credits/flags0.

@@ -51,6 +51,8 @@
 #include "bsp/game_native_mission_command.hpp"
 #include "bsp/game_native_mission_lighting.hpp"
 #include "bsp/game_native_mission_factories.hpp"
+#include "bsp/game_native_gui_sampler_application.hpp"
+#include "bsp/game_native_gui_effect_application.hpp"
 #include "bsp/native_gui_scene_storage.hpp"
 #include "bsp/native_node_root_propagation.hpp"
 #include "bsp/native_node_scene_attachment.hpp"
@@ -207,6 +209,7 @@ NativeVertexDeclarationLoadingContext application_declaration_loading(
 #include "game_native_mission_command.inc"
 #include "game_native_mission_scene.inc"
 #include "game_native_mission_preload.inc"
+#include "game_native_renderer_startup_preload.inc"
 #include "game_native_mission_lighting.inc"
 #include "game_native_mission_ship.inc"
 
@@ -520,6 +523,9 @@ struct GameNativeRendererApplication::Impl {
     std::unique_ptr<NativeInstanceGeneratorContext> instance_generator_context;
     // A1: declared before every borrower so it outlives them.
     std::unique_ptr<StartupSceneDomain> startup_domain;
+    GameNativeMissionFactories* startup_factories{};
+    bool startup_factories_retired{};
+    std::unique_ptr<StartupShaderPreload> startup_preload;
     std::unique_ptr<MissionShipGraph> mission_ship;
 
     Impl(GameHostLog& log_,GameSingletonHost& host,GameVfsHost& files,
@@ -905,6 +911,30 @@ bool GameNativeRendererApplication::mission_ship_requested() noexcept {
     char text[2]{};
     return GetEnvironmentVariableA("BSP_NATIVE_MISSION_SHIP", text, sizeof text) == 1 && text[0] == '1';
 }
+void GameNativeRendererApplication::bind_startup_factories(GameNativeMissionFactories& factories) {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::prepared && !p.startup_factories,
+        "startup factories bind once before renderer construction");
+    factories.require_lookup_ready();
+    p.startup_factories = &factories;
+}
+void GameNativeRendererApplication::preload_startup_shaders(GameInputRuntime& input) {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::ready && p.borrowed_platform_publication && p.frames &&
+        p.startup_factories && !p.startup_factories_retired && !p.startup_preload &&
+        !p.shaders.cache.actual_cache_0108d6ec,
+        "startup preload requires ready renderer, sole live factories and closed cache");
+    p.startup_factories->require_lookup_ready();
+    p.startup_preload = std::make_unique<StartupShaderPreload>();
+    try {
+        p.startup_preload->open(p.log, *this, p.mesh_field_vfs, p.singletons,
+            p.profiles.data, input, p.owners, p.lua_services.binding(), p.shaders.cache, p.renderer);
+    } catch (const std::exception& error) {
+        p.phase = Impl::Phase::failed;
+        p.log.notef("native A2 startup preload failed before completion: %s", error.what());
+        throw;
+    } catch (...) { p.phase = Impl::Phase::failed; throw; }
+}
 void GameNativeRendererApplication::configure_mission_ship(GameInputRuntime& input,
     const NativeFrameClockPublicationContext& clock, NativeRenderResourceInitArguments args,
     std::function<GameNativeMissionUnitSource()> units) {
@@ -917,6 +947,13 @@ void GameNativeRendererApplication::configure_mission_ship(GameInputRuntime& inp
         p.declaration_cache, p.section_layouts, p.raw, p.vfs, p.mesh_field_vfs,
         p.singletons, p.owners, p.lua_services.binding(), p.shaders.cache, p.renderer,
         p.entry_cache_publication, input, clock, args, std::move(units));
+    if (p.startup_factories) {
+        check(!p.startup_factories_retired && p.startup_preload &&
+            p.startup_preload->phase == StartupShaderPreload::Phase::ready,
+            "mission must borrow completed startup factories/preload together");
+        p.mission_ship->factories = p.startup_factories;
+        p.mission_ship->preload = p.startup_preload->graph.get();
+    }
     if constexpr (kNativeRendererStartupCc15Bound) {
         check(p.startup_domain != nullptr, "A1 mission ship borrows the opened startup scene domain");
         p.mission_ship->startup_domain = p.startup_domain.get();
@@ -1076,13 +1113,14 @@ void GameNativeRendererApplication::submit_mission_overlay_scene(void* queue, vo
 }
 void GameNativeRendererApplication::release_application_preload_rows() {
     auto& p = *impl_;
-    if (!p.mission_ship || !p.mission_ship->preload) return;
+    if (!p.startup_preload && (!p.mission_ship || !p.mission_ship->preload)) return;
     NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
     try {
         check(!requires_process_retention(),
             "incomplete native renderer cannot release Application preload rows");
-        p.mission_ship->release_late_model_shader_cache(*this);
-        p.mission_ship->preload->release_borrowed_rows();
+        if (p.mission_ship) p.mission_ship->release_late_model_shader_cache(*this);
+        if (p.startup_preload) p.startup_preload->release_rows();
+        else p.mission_ship->preload->release_borrowed_rows();
     }
     catch (...) { p.phase = Impl::Phase::failed; throw; }
 }
@@ -1251,6 +1289,7 @@ bool GameNativeRendererApplication::requires_process_retention() const noexcept 
         || (!impl_->shaders.quiescent() && !mission_cache) || !impl_->shadow.quiescent()
         || impl_->section_layout_acquisition_pending()
         || (impl_->mission_ship && impl_->mission_ship->requires_process_retention())
+        || (impl_->startup_preload && impl_->startup_preload->requires_process_retention())
         || (impl_->section_layouts.has_live_companions() &&
             !(impl_->mission_ship && impl_->mission_ship->owns_live_layouts()));
 }
@@ -1260,8 +1299,18 @@ void GameNativeRendererApplication::drain_singletons() {
     if (impl_->mission_ship && impl_->phase != Impl::Phase::drained)
         observe_mission_texture_owners(impl_->log, impl_->texture_loading.owners, "before_retire");
     if (impl_->mission_ship) impl_->mission_ship->retire_before_native_drain(*this);
+    if (impl_->startup_preload) impl_->startup_preload->retire_before_native_drain();
+    if (impl_->startup_factories && !impl_->startup_factories_retired) {
+        impl_->startup_factories->retire_before_native_drain();
+        impl_->startup_factories_retired = true;
+    }
     if(impl_->phase==Impl::Phase::ready)impl_->phase=Impl::Phase::draining;
-    try { impl_->singletons.shutdown();after_native_drain(); }
+    try {
+        impl_->singletons.shutdown();after_native_drain();
+        // Host acknowledges/releases its owner only after this full closure.
+        // Detach before a later idempotent host/destructor drain.
+        impl_->startup_factories = nullptr;
+    }
     catch(...) {impl_->phase=Impl::Phase::failed;throw;}
 }
 void GameNativeRendererApplication::after_native_drain() {
@@ -1281,6 +1330,7 @@ void GameNativeRendererApplication::after_native_drain() {
     // Effect metadata rechecks this method. Publish completed native drain
     // before entering its closure so that reentry observes that same fact.
     if (p.mission_ship) p.mission_ship->after_native_drain();
+    if (p.startup_preload) p.startup_preload->after_native_drain();
     if (p.mission_ship)
         observe_mission_texture_owners(p.log, p.texture_loading.owners, "after_drain");
     p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null queue=null worker=joined");

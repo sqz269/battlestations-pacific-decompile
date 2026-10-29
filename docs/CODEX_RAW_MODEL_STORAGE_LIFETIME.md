@@ -1,6 +1,6 @@
 # Qualified raw Model storage lifetime
 
-Status: **UNBUILT, static source packet only**. Base `f031fb80e` has the accepted
+Status: **Win32 build-checked; direct lifecycle runtime unproved**. Worker base `f031fb80e` has the accepted
 common C++ state `6216ea1af`. This packet adds only the raw construction,
 member-cleanup, destruction, scalar-deletion and canonical-reference providers.
 It changes no semantic Model implementation, Group context, CMake/ledger entry,
@@ -134,8 +134,13 @@ Geometry/property transports and Text/Icon factories remain their own work.
 Shared Group/tree/resource contracts must close before independence or actual
 FE_initial readiness can be claimed.
 
-Validation here is bounded source/assembly inspection and `git diff --check`.
-No build, test, probe, Original-body execution or game run was performed during
-the strict A1 hold. Primary integration must add the build entry and perform the
-required Win32 build/checks in an authorized window. This packet has no compile,
-runtime, raw-GUI lifecycle or game-parity proof.
+The worker checkpoint had only source/assembly and whitespace checks during the
+strict A1 hold. Integrator source `eb18518db` registers this TU in bsp_core and
+passes MSVC Win32 Release plus both existing CTests. Inactive reference USN04
+4800 and milestone-D1600 pairs against accepted A1 ON799 both exit0/pair0,
+ordered0/teardown0, frame36 and matching RNG0.4143/1. Receipts are under cc9's
+`local/codex_gui_deps_inert_20261028`; executable SHA is
+`05F362BB61DC3618D6CB560A0F3F3AEB332E720282CA726F0D62B04A89D2A0D2`.
+These game runs do not call the new Model providers. Direct lifecycle,
+exception, pool reuse, Original ABI and native GUI proof remain open. Five raw
+provider records are fragments only; no whole-body reconstruction count grows.

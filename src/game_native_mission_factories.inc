@@ -94,6 +94,18 @@ void GameNativeMissionFactories::create() {
     }
 }
 
+void GameNativeMissionFactories::require_lookup_ready() {
+    auto& p = *impl_;
+    mission_factory_detail::require(p.phase == Impl::Phase::live,
+        "mission factory lookup admission requires its completed live setup");
+    try {
+        p.application.require_lookup_ready();
+    } catch (...) {
+        p.phase = Impl::Phase::failed;
+        throw;
+    }
+}
+
 bool GameNativeMissionFactories::requires_process_retention() const noexcept {
     const auto phase = impl_->phase;
     return phase == Impl::Phase::creating || phase == Impl::Phase::retiring || phase == Impl::Phase::failed;

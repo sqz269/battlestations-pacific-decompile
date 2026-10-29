@@ -1,8 +1,11 @@
 # Private DEFAULT Model node/scene/type dispatch
 
-Status: **UNBUILT new-file-only Source preparation**. Existing e75 Text and
-e769/481/d403 Model files remain unchanged. No CMake/ledger/body credit,
-activation, build, probe, game or Ghidra mutation accompanies this packet.
+Status: **integrated, source-reviewed and Win32 build-tested preparation**.
+Root and independent review passed for frozen2049; integrated sourcecb6ba1195
+registers both new helpers in bsp_core. MSVC Win32 Release and both existing
+CTests pass (`local/codex_default_helpers_build.log`). Existing e75 and
+e769/481/d403 files remain unchanged. No production caller, lifecycle probe,
+game, activation, ledger/body credit or Ghidra mutation is supplied.
 
 `NativeModelStorageNodeDispatch` implements the three existing parenting,
 scene-child and derived-type interfaces with genuine existing bodies. It is a
@@ -105,4 +108,5 @@ native_node_parenting_storage.cpp81-107 and native_node_scene_attachment.cpp51-
 124, plus B6F440's D62C88 stamp at native_node_base_destruction.cpp121. These
 interfaces already state their native addresses/ABI/uncertainties. This packet
 adds Source composition only; Original register/private-stack/FH3/SEH, emitted
-code and native repeated-lifetime behavior remain unproved. Root owns builds.
+code and native repeated-lifetime behavior remain unproved. Compilation does
+not prove actual DEFAULT Text/Model callbacks, failure/reentry or slot reuse.

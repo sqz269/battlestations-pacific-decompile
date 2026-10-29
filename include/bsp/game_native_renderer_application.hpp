@@ -69,10 +69,14 @@ class GameNativeReadOnlyData;
 class GameNativeLuaServices;
 class GameHostLog;
 class GameInputRuntime;
+class GameNativeMissionFactories;
 // cc15-gui4 A1: open the application's one raw scene domain (registry/gate,
 // scene environment, node/camera/viewport/light/fog contexts) at the 0073DD12
 // startup position; the opt-in mission graph and the GUI pages borrow it.
-inline constexpr bool kNativeRendererStartupCc15Bound = false;
+inline constexpr bool kNativeRendererStartupCc15Bound = true;
+// A2 candidate: early shared procedural factories and the real73BF80 cache/
+// preload bracket. Keep OFF until the integrated owner graph passes its gates.
+inline constexpr bool kNativeShaderPreloadStartupCc16Bound = true;
 // Borrowed views of that domain, valid from open_startup_scene_domain() until
 // the renderer is destroyed. Every member shares one owner registry, string
 // domain, import cells and live one cell, as AC59A0's admission requires.
@@ -122,6 +126,13 @@ public:
         GameNativeLuaServices&, GameNativeReadOnlyData&, void* const volatile& clock,
         NativePlatformLoadPublication actual_platform_0109cf04);
     ~GameNativeRendererApplication();
+    // Borrow the host's sole live BBCB40 domain before renderer construction.
+    // Host retains it through this renderer's successful full drain, then
+    // acknowledges its parent drain before dropping providers/metadata.
+    void bind_startup_factories(GameNativeMissionFactories&);
+    // Called at73DD12 with the genuine pre-startup input metadata. The same
+    // core's native backend is still constructed at73DD8E by the host.
+    void preload_startup_shaders(GameInputRuntime&);
     GameNativeRendererApplication(const GameNativeRendererApplication&) = delete;
     GameNativeRendererApplication& operator=(const GameNativeRendererApplication&) = delete;
     void construct();

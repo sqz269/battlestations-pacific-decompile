@@ -8,6 +8,7 @@
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_mission_factories.hpp"
 #include "bsp/native_render_resource_init.hpp"
 #include "bsp/game_native_font_probe.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -1916,12 +1917,49 @@ void GameStartupHost::exit_if_native_lua_interrupted() noexcept {
 }
 
 void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
-    if (!native_renderer_ || !native_renderer_->requires_process_retention()) return;
+    const bool factories_incomplete = native_startup_factories_ &&
+        (startup_factories_phase_ != StartupFactoriesPhase::live ||
+            native_startup_factories_->requires_process_retention());
+    if (!factories_incomplete &&
+        (!native_renderer_ || !native_renderer_->requires_process_retention())) return;
     try {
         log_.note("native renderer incomplete; actual destructor requires completed device/default surfaces, retaining native ownership until exit");
         log_.close();
     } catch (...) { std::fputs("bsp_game: incomplete native renderer requires process exit\n", stderr); }
     std::_Exit(1);
+}
+
+void GameStartupHost::drain_native_singletons() {
+    if (!native_startup_factories_) {
+        if (native_renderer_) native_renderer_->drain_singletons();
+        else singletons_->shutdown();
+        return;
+    }
+    // Font/GUI borrowers have retired; renderer drain retires its remaining
+    // lookup-capable consumers, then the shared factory table, before shutdown.
+    // BBC5D0 leaves dangling table bits until parent drain. Never let a later
+    // failure unwind VFS/data/strings merely because the facade says retired.
+    try {
+        if (startup_factories_phase_ != StartupFactoriesPhase::live)
+            throw std::logic_error("shared startup factories cannot replay retirement");
+        startup_factories_phase_ = StartupFactoriesPhase::retiring;
+        if (native_renderer_) native_renderer_->drain_singletons();
+        else {
+            native_startup_factories_->retire_before_native_drain();
+            singletons_->shutdown();
+        }
+        startup_factories_phase_ = StartupFactoriesPhase::retired;
+        // Renderer closure has returned and detached its borrow, including
+        // any prepared-phase return; all provider objects are still alive.
+        native_startup_factories_->after_native_drain();
+        native_startup_factories_.reset();
+        startup_factories_phase_ = StartupFactoriesPhase::closed;
+    } catch (...) {
+        startup_factories_phase_ = StartupFactoriesPhase::failed;
+        try { log_.note("shared startup factory drain incomplete; retaining the entire provider graph until exit"); log_.close(); }
+        catch (...) { std::fputs("bsp_game: shared startup factory drain requires process exit\n", stderr); }
+        std::_Exit(1);
+    }
 }
 
 void GameStartupHost::exit_if_native_fonts_interrupted() noexcept {
@@ -2061,8 +2099,7 @@ GameStartupHost::~GameStartupHost() {
     // through the actual raw singleton drain, including exceptional startup.
     if (singletons_) {
         prepare_native_platform_drain();
-        if (native_renderer_) native_renderer_->drain_singletons();
-        else singletons_->shutdown();
+        drain_native_singletons();
         if(scripts_)scripts_->input().after_singleton_drain();
         if constexpr (kGuiManagerCc15Bound) {
             if (native_gui_manager_) {
@@ -2412,6 +2449,25 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     VfsStartupState vfs_state;
     vfs_->phase2(vfs_state);
 
+    if constexpr (kNativeShaderPreloadStartupCc16Bound) {
+        // Original73D8CC: real BBCB40 before platform construction and the
+        // archive tail. Core/raw VFS and canonical strings/registry exist now.
+        if (startup_factories_phase_ != StartupFactoriesPhase::unattempted)
+            throw std::logic_error("shared startup factories cannot be reconstructed");
+        native_startup_factories_ = std::make_unique<GameNativeMissionFactories>(
+            log_, *vfs_, *singletons_, *native_data_);
+        startup_factories_phase_ = StartupFactoriesPhase::prepared;
+        startup_factories_phase_ = StartupFactoriesPhase::creating;
+        try {
+            native_startup_factories_->create();
+            startup_factories_phase_ = StartupFactoriesPhase::live;
+        } catch (...) {
+            startup_factories_phase_ = StartupFactoriesPhase::failed;
+            exit_if_native_renderer_incomplete();
+            throw;
+        }
+    }
+
     // Phase 3, platform, window and save storage (0073d8c0-0073d988).
     // The native image imports XInputEnable before WinMain. Keep the selected
     // source SDK alive before any CreateWindow activation messages, then lend
@@ -2474,6 +2530,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     bind_legacy_crt_math_runtime(application_math_runtime);
     native_renderer_ = std::make_unique<GameNativeRendererApplication>(log_, *singletons_,
         *vfs_, *lua_services_, *native_data_, clock_publication_01090ab0_, NativePlatformLoadPublication(native_platform_->publication));
+    if constexpr (kNativeShaderPreloadStartupCc16Bound)
+        native_renderer_->bind_startup_factories(*native_startup_factories_);
     native_renderer_->construct();
     renderer_api_ = &native_renderer_->api();
     renderer_parameters_ = &native_renderer_->parameters();
@@ -2740,14 +2798,22 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     try { native_shadow_->construct(); }
     catch (...) { exit_if_native_shadow_incomplete(); throw; }
     log_.implemented("Phase 7 native shadow target startup", "0073dccb");
+    // Prepare the one input metadata/context graph before 73DD12's load pump.
+    // This constructs no native backend/actions and leaves input_runtime_ null;
+    // the sampler can borrow input_->core without moving native 73DD8E effects.
+    // Sound/XLive, XInput, platform and the frame clock already outlive it.
+    input_ = std::make_unique<InputServices>(*this);
     if constexpr (kNativeRendererStartupCc15Bound) {
         // cc15-gui4 A1: 0073DD12's position (0073BF80). Open the one raw scene
         // domain the mission and GUI page graphs borrow. The image's
         // CD80A0/CD80F0/CD8080 CRT initializers have run by now.
         native_renderer_->open_startup_scene_domain();
     }
+    if constexpr (kNativeShaderPreloadStartupCc16Bound) {
+        try { native_renderer_->preload_startup_shaders(input_->core); }
+        catch (...) { exit_if_native_renderer_incomplete(); throw; }
+    }
     log_.unimplemented("Phase 4 renderer_resources", "00b14a10");
-    input_ = std::make_unique<InputServices>(*this);
     input_runtime_ = &input_->core;
     input_runtime_->startup();
     log_.implemented("Phase 5 input_backend_initialize", "0073dd8e");
@@ -3285,8 +3351,7 @@ void GameStartupHost::destroy_singleton_lifetime_manager() {
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
     retire_native_fonts_before_drain();
     prepare_native_platform_drain();
-    if (native_renderer_) native_renderer_->drain_singletons();
-    else singletons_->shutdown();
+    drain_native_singletons();
     close_native_gui_probe_after_drain();
     close_native_gui_text_after_drain();
     close_native_platform_after_drain();

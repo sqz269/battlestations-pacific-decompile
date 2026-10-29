@@ -95,4 +95,22 @@ void destroy_native_gui_text_storage_00ab8250(void* actual_text,
 void* delete_native_gui_text_storage_00ab8ee0(void* actual_text,
     const volatile std::uint32_t& actual_flags_word,
     NativeGuiTextRetirementContext&, NativeGuiTextScalarRetirementAcquired&);
+
+struct NativeGuiTextRawModelRetirementContext {
+    NativeGuiTextRawModelSectionStorageContext& resources;
+    NativeGuiTextRawModelRecord& model; // SAME independent85 record, not Text slot storage
+    NativeGuiWidgetLifetimeContext& base;
+    NativeGuiTextGlyphChildrenContext& glyphs;
+    NativeGuiTextPool& actual_pool_00f8bdf0;
+};
+// DEFAULT-only overloads. The real base/container helpers are borrowed only
+// in their admitted empty branches, with CURRENT initialized type lineages.
+// Raw188 uses the caller's genuine Model-only raw tree/481 terminal domain.
+// Keep its independent model record after Text pool return until actual full
+// Model cleanup/pool return and quiescence; retired metadata alone proves neither.
+void destroy_native_gui_text_storage_00ab8250(void* actual_text,
+    NativeGuiTextRawModelRetirementContext&, NativeGuiTextRetirementAcquired&);
+void* delete_native_gui_text_storage_00ab8ee0(void* actual_text,
+    const volatile std::uint32_t& actual_flags_word,
+    NativeGuiTextRawModelRetirementContext&, NativeGuiTextScalarRetirementAcquired&);
 } // namespace bsp
