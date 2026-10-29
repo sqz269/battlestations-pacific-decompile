@@ -1,6 +1,7 @@
 # Raw Text AB8CE0 producer transport
 
-**UNBUILT, uncalled Source preparation** over accepted `d02ef8958`, following
+**Integrated, source-reviewed and build/object-checked; raw entry uncalled.**
+Worker Source preparation is over accepted `d02ef8958`, following
 plan `1719da0cc`. This packet changes only shader_storage.hpp/.cpp,
 reference.hpp/.cpp and this evidence note. It adds no Native body credit,
 production caller, public switch, Font export, cache, count, owner or registry.
@@ -112,3 +113,22 @@ qualification was run. Root owns compilation/existing checks. Typed Font
 borrowing, credit consumption/retirement, failure/flags0/reuse and actual content/
 Page/rendering remain separate gates; this library transport is not independent
 production or FE_initial readiness.
+
+## Root integration evidence
+
+Root and independent source reviews pass frozen `d13bd7195`. All five source
+comparisons against d02 were independently reproduced. The merged CPP hash
+matches the copied worker receipt under `local/cc16_raw_shader_source_review/`.
+The combined MSVC Win32 build and both existing suites pass (11.83 seconds),
+receipt `local/cc16_raw_shader_producer_build.log`. No CMake/source registration
+change was required; these existing TUs were already compiled.
+
+Final shader object SHA256:
+`104CA7D4CCD973967D2AD8708A1CD5FFCD74B89ACED7BE049C2884E71F443AE3`.
+Focused emitted-object comparison against the saved pre-refactor object finds
+both ordered SSE helpers byte-identical,39 bytes each; report
+`local/cc16_raw_shader_emitted_sse_review.json` records hashes. This is static
+helper evidence, not FP execution, whole-body compiler equivalence or ABI proof.
+No new test case, fixture or game was run for the raw overload. The existing
+DEFAULT graph keeps its null reservation and every ownership/Font/caller gate
+above remains; both private host qualification routes stay OFF in main.

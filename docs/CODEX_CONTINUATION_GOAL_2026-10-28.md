@@ -561,3 +561,13 @@ independently validates the shared LEGACY path: gameplay/ordered449+299/start36/
 RNG1 same, exact accepted Icon diagnostics and baseline error.dds/COM1+1 only.
 Private route restoredOFFb95a64a57/build2/2. New raw primary helper remains
 uncalled and gains no runtime/ABI/Page credit. See widget evidence doc.
+
+Shader producer transportd13 now passes both source reviews/all5 comparisons and
+Win32/build2/2. Its immutable prebound Frame/context enables concrete raw receipt
+backing without changing DEFAULT ownership; both ordered SSE helpers are exactly
+39-byte-identical in saved before/after objects (static evidence only). No raw
+caller/Font export/nonempty retirement is enabled. Primary producerdb55 is frozen
+with peer review passed and root review ongoing; all its escapes retain without
+inferred ctor-slot EH. Geometry readiness540 confirms genuine constructor74=0
+permits a future no-content geometry lifecycle, but Text ownership/routing/full
+custody bridges still block it. P4 remains OFF.
