@@ -43,6 +43,14 @@ The latter records owner entry even when379 preflight throws before its own
 Acquired becomes entered; those booleans grant no native ownership permission.
 Use C++17 typed references/pointer-count extents, no erased provider callback.
 
+Coordinate the future header as one closed immutable operation choice: no
+operation, geometry-only, or geometry plus the later created-main-section graph.
+The choice grants no authority without the exact private affinities/provenance.
+Do not install independent selectable shortcuts: pending/failed main-section
+work must never fall back to geometry-only or empty prefix admission. Initial
+raw122 reservation accepts the fully installed, untouched operation graph;
+retirement requires that chosen graph's exact complete history.
+
 Install the whole optional graph before factory/pool effects, alongside both
 already-prepared Model records and slots. Actual aliases remain primary=db55's
 record, internal188=the exact nested raw85 record, geometry=the existing SAME
@@ -130,3 +138,8 @@ observation API. The first private domain conservatively stays retained instead.
    no main-section/content calls, exact retirement and renderer-FIRST closure.
    Check existing suites/build and focused real lifecycle evidence; add no broad
    tests/public test API. No AAA710, failure/reuse, ABI, UI or FE_initial claim.
+
+Root and independent lifetime-adapter review accept this source plan, including
+the closed operation choice and both-Model mesh proof. The late bounds-zero
+callback/import obligation remains a real fixture blocker until audited; plan
+acceptance supplies no implementation or runtime credit.

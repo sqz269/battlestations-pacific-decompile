@@ -16,6 +16,66 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-gui-raw-prefix-geometry-lifetime",
+      "state": "in_progress_reviewed_typed_operation_header_and_lifetime_preparation",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": [
+        "codex-gui-raw-primary-prefix-lifetime",
+        "codex-gui-raw-text-main-geometry"
+      ],
+      "function_addresses": [
+        "00ab7700",
+        "00ab8250",
+        "00ab8ee0"
+      ],
+      "output_files": [
+        "include/bsp/native_gui_text_prefix_geometry_lifetime.hpp",
+        "src/native_gui_text_prefix_geometry_lifetime.cpp",
+        "docs/CODEX_GUI_RAW_PREFIX_GEOMETRY_LIFETIME.md",
+        "include/bsp/native_gui_text_primary_prefix_lifetime.hpp",
+        "src/native_gui_text_primary_prefix_lifetime.cpp",
+        "src/native_gui_text_reference.cpp"
+      ],
+      "notes": "Reviewed179c plus root closed immutable operation choice. Freeze typed C++17 API before disjoint owner code. Exact completed379 plus db55 private affinity only; stage-aware both-Model mesh proof and full operation raw122 fresh reservation, no native body changes. No pending/failed fallback or erased Mesh companion reads. Late bounds-zero audit blocks fixture. No host/CMake/shared metadata/Ghidra mutation/build/game or main-section admission."
+    },
+    {
+      "id": "codex-gui-raw-prefix-geometry-owner",
+      "state": "waiting_geometry_typed_header_freeze_disjoint_owner_preparation",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": [
+        "codex-gui-raw-prefix-geometry-lifetime",
+        "codex-gui-raw-primary-prefix-owner"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/game_native_raw_default_text_owner.hpp",
+        "src/game_native_raw_default_text_owner.cpp",
+        "docs/CODEX_GUI_RAW_PREFIX_GEOMETRY_OWNER.md"
+      ],
+      "notes": "Reviewed179c disjoint owner half. Prepare closed immutable geometry-only operation graph before factory; use exact frozen helper API when ready. Explicit379 after real prefix/name completion; genuine scratch/providers, no flag forcing. Preserve DEFAULT/prefix bodies and actual both mesh+Model+Text settlement; all extra-credit/flags0/failure retain. No caller/host gate/mainsection/Font/content/hierarchy/ABI/runtime credit."
+    },
+    {
+      "id": "codex-gui-raw-prefix-geometry-bounds-zero-audit",
+      "state": "in_progress_read_only_closed_provider_late_bounds_zero_audit",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "depends_on": [
+        "codex-gui-raw-text-main-geometry",
+        "codex-gui-raw-primary-prefix-owner"
+      ],
+      "function_addresses": [
+        "00aa70e0",
+        "00aa7220",
+        "00b6db10"
+      ],
+      "output_files": [
+        "docs/CODEX_GUI_RAW_PREFIX_GEOMETRY_BOUNDS_ZERO_AUDIT.md"
+      ],
+      "notes": "Independent source/assembly-only audit of exact379 closed real-provider call graph: prove or explicitly block genuine ctor Text+74 remaining zero at AA70E0 late epoch. Include native callbacks/imports/alias/synchronization and external mutation exclusion, not outer before/after flag snapshots. No source/provider substitution/flags repair/fake element0/Ghidra writes/build/game. Output concrete fixture prerequisite and uncertainty."
+    },
+    {
       "id": "codex-gui-raw-text-main-section-storage",
       "state": "integrated_two_reviews_win32_build_uncalled_reservation_pending",
       "worker": "gameplay_integration_review",
@@ -27,23 +87,23 @@
     },
     {
       "id": "codex-gui-raw-primary-prefix-lifetime",
-      "state": "integrated_two_reviews_win32_build_private_fixture_off",
+      "state": "integrated_two_reviews_build_private_prefix_fixture_accepted_off",
       "worker": "gui_integration_review",
       "source_ready": false,
       "depends_on": ["codex-gui-raw-text-primary-model-producer", "codex-gui-raw-widget-model-lifetime", "codex-gui-raw-text-cleanup-return-progress"],
       "function_addresses": ["00ab8250", "00ab8ee0"],
       "output_files": ["include/bsp/native_gui_text_primary_prefix_lifetime.hpp", "src/native_gui_text_primary_prefix_lifetime.cpp", "docs/CODEX_GUI_RAW_PRIMARY_PREFIX_LIFETIME.md", "include/bsp/native_gui_text_retirement.hpp", "src/native_gui_text_retirement.cpp", "src/native_gui_text_reference.cpp"],
-      "notes": "Frozen9359/e52 with root C++17 typed pointer/count, pure exact dispatcher context/acquired/array affinity, explicit internal node context. Both source reviews and integrated Win32/checks2/2 pass. Selected receipt-authorized prefix lifetime retains every escape; DEFAULT policy/scalar lateflags/disposal preserved. Private host fixture OFF and preregistered; no runtime/74/Font/content/parenting/body/ABI credit."
+      "notes": "Frozen9359/e52 plus reviewed C++17 typed pointer/count and pure exact dispatcher affinity. Win32/checks2/2 pass. ONE genuine empty-prefix lifecycle b8d4cffa5 independently audit53/53: exact receipt/name return, Text+both Models scalar/flags1/pool custody, renderer-first close. Historical DEFAULT comparison rawpair1/fullworkerID1/knownCOM1+1 explicitly qualified. OFFrestored e4c2c0159/build2/2. No geometry/content/hierarchy/failure/flags0/reuse/production/body/ABI credit."
     },
     {
       "id": "codex-gui-raw-primary-prefix-owner",
-      "state": "integrated_two_reviews_win32_build_private_fixture_off",
+      "state": "integrated_two_reviews_build_private_prefix_fixture_accepted_off",
       "worker": "gui_frame_lifetime",
       "source_ready": false,
       "depends_on": ["codex-gui-raw-primary-prefix-lifetime", "codex-gui-raw-text-primary-model-producer"],
       "function_addresses": [],
       "output_files": ["include/bsp/game_native_raw_default_text_owner.hpp", "src/game_native_raw_default_text_owner.cpp", "docs/CODEX_GUI_RAW_PRIMARY_PREFIX_OWNER.md"],
-      "notes": "Frozen3671; root+independent reviews and six DEFAULT source comparisons pass. Same real name41E870/db55/41DD20, canonical raw122 and collective BOTH-Model+Text flags1/physicalreturn custody. Win32/checks2/2 pass with adapter integration; explicit internal node context aliases. Private OFF host qualification preregistered, not executed. No74/content/Font/parenting/runtime/body/ABI claim."
+      "notes": "Frozen3671 plus pure-affinity context alias; source reviews and six DEFAULT comparisons pass. ONE genuine primary-prefix fixture b8d4cffa5 completes actual Text+both Models flags1/poolreturn and real name receipt/custody with independent audit53/53. Exact historical raw differences and baselineCOM1+1 retained. Frozen report/hash bundle in local/cc16_primary_prefix_qualification_20261029; private constant restoredOFFe4c2c0159/build2/2. No379/content/Font/parenting/production/ABI or failure/flags0/reuse proof."
     },
     {
       "id": "codex-gui-raw-text-primary-model-producer",

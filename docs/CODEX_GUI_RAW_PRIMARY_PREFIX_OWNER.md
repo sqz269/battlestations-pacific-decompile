@@ -11,7 +11,11 @@ comparisons passed. Root integrated adapter `e52fe7c7`, the C++17 typed extent
 and pure dispatcher-affinity fixes, plus explicit internal node context backing.
 The complete OFF build passes existing checks 2/2 (10.17 seconds) in
 `local/cc16_primary_prefix_main_section_complete_off_build.log`. The separate
-private host fixture is preregistered; no runtime/ABI/visual credit is claimed.
+private host fixture subsequently completed ONE empty prefix lifecycle with
+independent audit53/53. Frozen source `b8d4cffa5`, actual Text+both Models custody
+and historical DEFAULT comparison are recorded in
+`CODEX_GUI_RAW_PRIMARY_PREFIX_QUALIFICATION.md`. Route restored OFF `e4c2c0159`,
+build2/2; no production/ABI/visual or failure/flags0/reuse credit is claimed.
 
 Baseline is accepted `8a0442cdac8323cc0dbbc2eebe5ae53025e698f8`; private Frame
 proof dependency is `17c5dddfbed18d12a077984beedbc6d1209b427c`. The two-header API

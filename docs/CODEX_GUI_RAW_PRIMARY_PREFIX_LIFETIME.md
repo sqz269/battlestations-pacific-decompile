@@ -119,8 +119,11 @@ Root and independent review accepted the frozen packet and integration fixes.
 The first build exposed C++20 span/private-getter incompatibilities; their logs
 are preserved. The final C++17 pointer/count and pure affinity correction builds
 with existing checks 2/2 (`local/cc16_primary_prefix_main_section_complete_off_build.log`).
-The raw scalar tail, late LOW BYTE and disposal-last order are unchanged. No
-game or Ghidra mutation has run. The private OFF host fixture is preregistered
-in `CODEX_GUI_RAW_PRIMARY_PREFIX_QUALIFICATION.md`. No active caller, attach/
+The raw scalar tail, late LOW BYTE and disposal-last order are unchanged.
+One real-provider empty-prefix lifecycle subsequently passed independent
+artifact audit53/53 at frozen `b8d4cffa5`; see
+`CODEX_GUI_RAW_PRIMARY_PREFIX_QUALIFICATION.md` for raw/qualified differences,
+custody and hashes. Private route restored OFF `e4c2c0159`, build2/2. No Ghidra
+mutation or production activation occurred. No active caller, attach/
 reparent/74/properties18/loaded78, fullAAA710/child completion, ABI/failure/reuse
 proof, content/rendering or actual FE_initial acceptance follows.

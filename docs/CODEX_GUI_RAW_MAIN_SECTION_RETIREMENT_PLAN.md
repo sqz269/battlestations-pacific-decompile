@@ -37,6 +37,13 @@ over the SAME existing primary/internal records/providers; no second Model recor
 Install an immutable default-null typed pointer in the existing prefix context
 BEFORE Text allocation/raw122 binding. Existing DEFAULT/prefix callers keep null.
 
+Coordinate with the geometry-lifetime plan as one closed immutable operation
+choice, not two independently selectable optional shortcuts. A pending/failed
+main-section graph cannot fall back to geometry-only or empty-prefix admission.
+The choice alone grants no authority; only the chosen graph's exact complete
+affinities/provenance admit retirement. Initial raw122 reserves its fully
+installed untouched graph before those effects.
+
 Add a pure main-section Frame.matches(context,acquisition,phase) view, analogous
 to3c217. Its current phase() alone cannot prove private affinity. Require BOTH
 exact379 COMPLETE affinity and exact main-section COMPLETE affinity, !failure
@@ -106,5 +113,12 @@ Bounded files: NEW lifetime HPP/CPP; pure matches in main-section HPP/CPP; typed
 option/branch in primary-prefix lifetime HPP/CPP; reservation in reference.cpp;
 optional concrete storage/settlement in raw-default owner HPP/CPP. Root owns CMake
 and integration. Split leases across those owners; do not broaden constructor85,
-native bodies, layout/streams/Font/content/hierarchy or74. Actual linking, gates,
+native bodies, layout/streams/Font/content/hierarchy, AAA710/current74 dispatch
+or flag forcing. Explicit379 still executes the actual AB7700 body and retains
+the geometry plan's genuine late bounds-zero obligation. Actual linking, gates,
 callback/failure/reuse and runtime/ABI proof remain outstanding.
+
+Root and independent Model/owner review accept this source plan and the closed
+operation-choice clarification. The terminal-chain proof depends on the exact
+provenance-backed sole graph remaining unchanged through callbacks. No new
+operation implementation, owner admission or runtime gate is accepted here.
