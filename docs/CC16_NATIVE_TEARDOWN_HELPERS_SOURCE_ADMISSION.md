@@ -29,3 +29,7 @@ tables/code/free heaps and whole OnDestroy/application binding remain required.
 No register/frame/FH/SEH/fault/nonlocal/concurrency or gameplay acceptance follows.
 The ledger retains the old projection records explicitly without duplicate body
 credit. Analysis comments preserve prior text and qualify the actual boundaries.
+
+The latest publication refresh includes `dc2c60c3f`, passes both existing checks
+(12.55s test time) and fresh actual-entry links. Candidate helper sources remain
+exact; the earlier receipts remain sealed separately in the report.

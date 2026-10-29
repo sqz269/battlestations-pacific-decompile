@@ -30,3 +30,8 @@ decoder/renderer/VFS/Lua borrowers, complete ordinary parents and original
 FH3/SEH remain separate. The consumer readiness report rejects wrapping the
 by-value projected hook or casting semantic widgets into native storage.
 Root/subtitle/child-page guards remain OFF; the full activation goal is active.
+
+After incorporating `dc2c60c3f`, the refreshed common build passes2/2 (12.55s
+test time). Fresh object/map audits again find zero graph references in the OFF
+Host/production map and no app-owner/Bink symbols in the singleton object. Real
+entry links pass; frozen copies preserve both build generations independently.

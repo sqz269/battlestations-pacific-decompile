@@ -27,3 +27,8 @@ C55EA0/C55F50 still select old normal paths. Their complete nested cleanup first
 requires the separately recovered C37740 task-constructor actions. Same actual
 owner/heap/publication custody, custom domains, original ABI/FH/SEH and runtime
 adoption remain explicit. New native/vendor/activation credit is zero.
+
+The publication refresh includes dormant GUI composition `dc2c60c3f`. Both
+existing suites pass again (12.55s test time), all ten candidate source pins
+remain exact, and fresh actual-entry links pass. The report records this later
+build separately and preserves the original code/build/object receipts.
