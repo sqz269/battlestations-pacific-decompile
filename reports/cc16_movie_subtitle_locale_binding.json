@@ -1,0 +1,163 @@
+{
+  "packet": "codex-movie-live-locale",
+  "status": "genuine_live_locale_reference_wired_build_checked_guard_off_runtime_unvalidated",
+  "base_commit": "5c2547156c0d8d83d79f7b2600c6f6ea99cd975a",
+  "recorded_utc": "2026-10-29T16:49:25.027040+00:00",
+  "owned_native_address": "00AADBA0",
+  "read_only_native_contract_addresses": [
+    "00425850",
+    "00AA09D0"
+  ],
+  "source_state": "Base 5c2547156 plus the exact five owned source-file deltas; no source edits after build launch",
+  "source_sha256": {
+    "include/bsp/game_hosts_mission_frame.hpp": "6aa9fe1ee3de77ff4f0a3f4125c2b0ff62349bf16b7ad71fea59374caf1386d6",
+    "src/game_hosts_mission_frame.cpp": "63069582a2a2d193e51dea7085185f28f6b2b580098735966748909df9a0a796",
+    "include/bsp/game_hosts_mission_result.hpp": "9854bddaa6be72410f295508bbd64a10a9878e6512c59dfe4038f4f75f1fb5d7",
+    "src/game_hosts_mission_result.cpp": "f4be4960d0475fb11050987c2b905c4f2839cc1f53dcf190dd9ca3784fa3228c",
+    "src/game_hosts_mission.cpp": "79b7a34465c0fb3c3415f4a3103669bb386c407adf22b6416b4eadabe29ea945"
+  },
+  "source_patch_sha256": "7dfd5c1304f6491234ea8f1042fc2fa9c809844fe1b85dbc98177f01711c5757",
+  "source_freeze": {
+    "path": "local/movie_subtitle_locale_source_freeze.json",
+    "sha256": "f3992da42eaee444df64267fe446f097dc21eb547d4031d981cd8e9e8a47157b",
+    "captured_utc": "2026-10-29T16:44:14.011028+00:00",
+    "post_build_hashes_match": true
+  },
+  "constructor_chain": [
+    {
+      "path": "src/game_hosts.cpp",
+      "line": 3121,
+      "contract": "existing startup passes locale_->tables() to GameMenuHost; read-only"
+    },
+    {
+      "path": "src/game_hosts_menu.cpp",
+      "line": 1947,
+      "contract": "existing menu passes same locale reference to GameMissionHost; read-only"
+    },
+    {
+      "path": "src/game_hosts_mission.cpp",
+      "line": 501,
+      "contract": "GameMissionHost::Impl retains LocaleTables&"
+    },
+    {
+      "path": "src/game_hosts_mission.cpp",
+      "line": 2667,
+      "contract": "sole frame construction passes locale; independent copied language argument preserved"
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "line": 283,
+      "contract": "frame Impl forwards the same reference into its result constructor"
+    },
+    {
+      "path": "src/game_hosts_mission_result.cpp",
+      "line": 315,
+      "contract": "result forwards reference to MovieBridge"
+    },
+    {
+      "path": "src/game_hosts_mission_result.cpp",
+      "line": 267,
+      "contract": "MovieBridge retains const LocaleTables&; no table ownership, clone or snapshot"
+    }
+  ],
+  "selection": {
+    "path": "src/game_hosts_mission_result.cpp",
+    "line": 196,
+    "contract": "Every actual schedule selection reads locale_.language().c_str() and uses ::_stricmp(...,english)==0; no cached Boolean, fabricated header or default-language provider.",
+    "table_setter": "LocaleTables::set_language_00aa09d0 updates the same object's language_; const borrower sees later changes when selected",
+    "copied_language_argument_unchanged": true
+  },
+  "lifetime": {
+    "scene_reload": "GameMissionHost::Impl resets old frame before replacing Lua owner, then forwards the retained table to the new frame",
+    "destruction": "frame declared after lua and destroyed before it; frame Impl detaches mission result before member destruction; application deletes menu/mission before locale",
+    "locale_read_in_constructor": false,
+    "locale_copied": false,
+    "locale_drained_by_borrower": false,
+    "ownership_transferred": false
+  },
+  "native_evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_and_snapshot_functions": 77631,
+    "wrappers": [
+      "ghidra ensure",
+      "ghidra count",
+      "lookup/show"
+    ],
+    "original_abi": {
+      "00AADBA0": "ECX movie, no consumed stack arguments, RET at 00AADE44",
+      "00425850": "ECX actual NativeString header, stack C-string, AL bool, RET4"
+    },
+    "source_anchors": [
+      "00AADCC4 pushes english; 00AADCC9 adds 4018h to current 00F8BC4C; 00AADCCF calls 00425850",
+      "00425850 nonnull pair delegates to 00BF7FBF CRT _stricmp"
+    ],
+    "reconstructed_comparer": "src/native_string_compare.cpp uses actual _stricmp; new binding uses the same nonnull C-string semantics without fabricating a NativeString header",
+    "ghidra_mutations": 0
+  },
+  "build": {
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "parallel_nodes": 4,
+    "exit_code": 0,
+    "log": {
+      "path": "local/movie_subtitle_locale_build.log",
+      "sha256": "b6516b222f5365a9f2072dcb1d62b761202e155aaf8b94769bbcde43981ad235"
+    },
+    "existing_ctest_checks": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "passed": 2,
+    "failed": 0,
+    "total_seconds": 11.97,
+    "last_ctest_log": {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "sha256": "a2485eb72ff815154c7ac35d9384da0e1086fa8bc57d1ea9f58110c51764a477"
+    },
+    "artifacts": [
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7442432,
+        "sha256": "d97cd276e75569870c039e0d91894dac3299ab1d4836a4f722eab5564a8a7f79"
+      },
+      {
+        "path": "build/win32/Release/xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "32cd5d709b63f30a97e55ec99995b2d55b6a384ac47cf9988f339ddd09745fc0"
+      }
+    ],
+    "coverage": "Default-OFF build only; no ON runtime or callback consumption proof"
+  },
+  "switch": {
+    "name": "kMovieSubtitlesBound",
+    "value": false
+  },
+  "provider_scope": "Only current-language input is bound to its real retained table; runtime consumption remains unvalidated",
+  "remaining_blockers": [
+    "actual Bink decoder owner/imports and realtime clock",
+    "real MediaManager+14 subtitle option application/publication",
+    "native movie page/child callback reachability",
+    "Text/localisation/widget/extratitles lifetime and delivery",
+    "original Lua library/override/error/owner contract"
+  ],
+  "historical_evidence": {
+    "receipt": "reports/cc16_movie_subtitle_off_gates.json",
+    "original_base": "409689e5e813d4aaaeb656abeb827d06a5842016",
+    "used_as_runtime_proof_for_this_new_packet": false
+  },
+  "validation": {
+    "new_tests_added": 0,
+    "new_test_frameworks": 0,
+    "game_runs": 0,
+    "runtime_probes": 0,
+    "source_files_modified": 5,
+    "shared_cmake_or_ledger_edits": 0,
+    "original_install_save_profile_writes": 0
+  },
+  "additional_native_body_credit": 0,
+  "abi_compatible": false,
+  "on_activated": false,
+  "callback_reachability_validated": false,
+  "playback_validated": false
+}

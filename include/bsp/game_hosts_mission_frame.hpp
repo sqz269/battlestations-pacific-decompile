@@ -32,6 +32,7 @@
 #include "bsp/game_native_mission_units.hpp"
 
 namespace bsp {
+class LocaleTables;
 class SessionParticipantPools;
 struct SceneRecord;
 }
@@ -177,9 +178,11 @@ struct GameMissionFrameRunSummary {
 // slot records the load fills are read again by the entry and the frame.
 class GameMissionFrameHost {
 public:
+    // The same live locale owner is borrowed by result/movie callbacks and must
+    // outlive this frame. The independent language argument remains a copy.
     GameMissionFrameHost(GameHostLog& log, GameVfsHost& vfs, GameMissionLuaHost& lua,
-        bsp::SessionParticipantPools& participants, GameFrameProfiler* profiler,
-        std::string language, GameHudHost* hud = nullptr);
+        bsp::SessionParticipantPools& participants, const bsp::LocaleTables& locale,
+        GameFrameProfiler* profiler, std::string language, GameHudHost* hud = nullptr);
     ~GameMissionFrameHost();
     GameMissionFrameHost(const GameMissionFrameHost&) = delete;
     GameMissionFrameHost& operator=(const GameMissionFrameHost&) = delete;

@@ -280,14 +280,14 @@ constexpr bool kScaledDeltaWriteBound = true;
 
 struct GameMissionFrameHost::Impl {
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameMissionLuaHost& lua_in,
-        bsp::SessionParticipantPools& participants_in,
+        bsp::SessionParticipantPools& participants_in, const bsp::LocaleTables& locale_in,
         GameFrameProfiler* profiler_in, std::string language_in)
         : log(log_in), vfs(vfs_in), lua(lua_in), participants(participants_in), profiler(profiler_in),
           language(std::move(language_in)) {
         // Both take references to members declared below, which are already
         // default constructed when this body runs.
         fixed_step = std::make_unique<GameFixedStepHost>(log, dynamics);
-        result = std::make_unique<GameMissionResultHost>(log, control, vfs);
+        result = std::make_unique<GameMissionResultHost>(log, control, vfs, locale_in);
         // Milestone 2m: the six fan-out rows whose reconstructions are on main.
         step_subsystems = std::make_unique<GameStepSubsystemsHost>(log);
         fixed_step->attach_subsystems(step_subsystems.get());
@@ -3014,9 +3014,10 @@ void report_scene_markers(GameHostLog& log,
 
 GameMissionFrameHost::GameMissionFrameHost(GameHostLog& log, GameVfsHost& vfs,
     GameMissionLuaHost& lua, bsp::SessionParticipantPools& participants,
-    GameFrameProfiler* profiler, std::string language,
+    const bsp::LocaleTables& locale, GameFrameProfiler* profiler, std::string language,
     GameHudHost* hud)
-    : impl_(std::make_unique<Impl>(log, vfs, lua, participants, profiler, std::move(language))) {
+    : impl_(std::make_unique<Impl>(log, vfs, lua, participants, locale, profiler,
+          std::move(language))) {
     impl_->hud = hud;
     g_warning_owner = impl_.get();
 }
