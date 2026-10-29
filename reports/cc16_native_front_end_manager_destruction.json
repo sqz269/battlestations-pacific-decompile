@@ -1,0 +1,495 @@
+{
+  "packet": "codex-native-front-end-manager-destruction",
+  "status": "whole_raw_normal_parent_source_strict_compiled; required_whole_pause_and_actual_providers_unclosed; NO_activation",
+  "base_main": "e64249b004a989f162a1b7b9cda3493606535e88",
+  "created_at_utc": "2026-10-29T22:01:05.296518+00:00",
+  "ownership": {
+    "addresses": [
+      "004DA650"
+    ],
+    "files": [
+      "include/bsp/native_front_end_manager_destruction.hpp",
+      "src/native_front_end_manager_destruction.cpp",
+      "docs/CC16_NATIVE_FRONT_END_MANAGER_DESTRUCTION.md",
+      "reports/cc16_native_front_end_manager_destruction.json"
+    ],
+    "CMake_shared_source_ledger_Ghidra_guard_mutations": false
+  },
+  "source_interface": {
+    "function": "void destroy_native_front_end_managers_004da650(NativeGameStorage&,NativeFrontEndManagerDestructionContext&)",
+    "required_pause_interface": "NativeFrontEndManagerDestructionCalls::call_004d95f0(NativeGameStorage& actual_game_ecx,uint32_t value)=0; wholecallee, no defaults",
+    "context": "fourrequiredactualvolatilevoid*cellreferences + SAME NativeGameLifetimeCalls& +requiredwholepausecalls&",
+    "ownership": "borrowedonly; no cell/table/allocator/nativeGameclass/stateprotocol manufacture",
+    "no_extra_protocol": "normalparentonly; no catch/replay/terminalrecord/rollback added"
+  },
+  "genuine_inputs": [
+    {
+      "input": "actualGame",
+      "supplier": "SAME liveactualNativeGameStorage usedby rawOnDestroy; existingdefinition native_game_construction.hpp isalign4 bytes71A0",
+      "limit": "not GamePauseState projection or reinterpretation; wholepausecallee requires actualGame backing"
+    },
+    {
+      "input": "pause",
+      "supplier": "root mustsupply whole actual004D95F0 implementation/retaineddependencies",
+      "limit": "140instruction child notimplemented; reset_interface_stack/semanticpauseclass isnotqualified binding"
+    },
+    {
+      "input": "fourcurrentcells",
+      "supplier": "SAME actualE198AC/E198B4/E198B8/E198C4 publications usedby their owners",
+      "limit": "no copiedpointer snapshots/privateglobals/castsfromsemanticmanagerfields/defaultcells"
+    },
+    {
+      "input": "lifetime_calls",
+      "supplier": "SAME actualNativeGameLifetimeContext::calls instance usedbyGame lifetime/OnDestroy",
+      "limit": "realvirtual_scalar mustresolve actualcapturedcurrenttablebyte0 withflags1 andmatchingheap; not a fake/projected destructor callback"
+    }
+  ],
+  "native_evidence": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra ensure --status before eachreadbatch; originalexports/proto/instruction-context andon-diskPE only",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "address": "004DA650",
+    "end": "004DA6BA",
+    "bytes": 107,
+    "instruction_count": 38,
+    "preliminary_39_corrected": true,
+    "count_basis": "4prefixinstructions +4rows*8 +POP/RET=38; independentCapstone+savedlisting",
+    "body_sha256": "de86dcf6b8c97dce481c962b085cefd813f36b124f81bc03fc449c5e563d6070",
+    "body_hex": "56 33 f6 56 e8 97 ef ff ff 8b 0d ac 98 e1 00 3b ce 74 0e 8b 01 8b 10 6a 01 ff d2 89 35 ac 98 e1 00 8b 0d b4 98 e1 00 3b ce 74 0e 8b 01 8b 10 6a 01 ff d2 89 35 b4 98 e1 00 8b 0d b8 98 e1 00 3b ce 74 0e 8b 01 8b 10 6a 01 ff d2 89 35 b8 98 e1 00 8b 0d c4 98 e1 00 3b ce 74 0e 8b 01 8b 10 6a 01 ff d2 89 35 c4 98 e1 00 5e c3",
+    "listing": [
+      "004da650: push esi",
+      "004da651: xor esi, esi",
+      "004da653: push esi",
+      "004da654: call 0x4d95f0",
+      "004da659: mov ecx, dword ptr [0xe198ac]",
+      "004da65f: cmp ecx, esi",
+      "004da661: je 0x4da671",
+      "004da663: mov eax, dword ptr [ecx]",
+      "004da665: mov edx, dword ptr [eax]",
+      "004da667: push 1",
+      "004da669: call edx",
+      "004da66b: mov dword ptr [0xe198ac], esi",
+      "004da671: mov ecx, dword ptr [0xe198b4]",
+      "004da677: cmp ecx, esi",
+      "004da679: je 0x4da689",
+      "004da67b: mov eax, dword ptr [ecx]",
+      "004da67d: mov edx, dword ptr [eax]",
+      "004da67f: push 1",
+      "004da681: call edx",
+      "004da683: mov dword ptr [0xe198b4], esi",
+      "004da689: mov ecx, dword ptr [0xe198b8]",
+      "004da68f: cmp ecx, esi",
+      "004da691: je 0x4da6a1",
+      "004da693: mov eax, dword ptr [ecx]",
+      "004da695: mov edx, dword ptr [eax]",
+      "004da697: push 1",
+      "004da699: call edx",
+      "004da69b: mov dword ptr [0xe198b8], esi",
+      "004da6a1: mov ecx, dword ptr [0xe198c4]",
+      "004da6a7: cmp ecx, esi",
+      "004da6a9: je 0x4da6b9",
+      "004da6ab: mov eax, dword ptr [ecx]",
+      "004da6ad: mov edx, dword ptr [eax]",
+      "004da6af: push 1",
+      "004da6b1: call edx",
+      "004da6b3: mov dword ptr [0xe198c4], esi",
+      "004da6b9: pop esi",
+      "004da6ba: ret "
+    ],
+    "export_sha256": {
+      "004da650/assembly.txt": "47d4ed05928229ba1f3ba7049b37aa4650bc62ebb675043f055c5344c262f0f9",
+      "004da650/decompiled.c": "b3a2ad98fe6dfb9a8a224516c53b6e69cc2591cbb22a4ee246f87fce2b0de79c",
+      "004d95f0/assembly.txt": "75add013d0a2ba0d6f4a23b847882b95f4a9a3e2cdeb0b3d0bd89a09559fc3bc",
+      "004d95f0/decompiled.c": "eafd764f12611545a8776fa533505a72c289210344b6bf67638c3d4c16f94ccf"
+    },
+    "live_sites": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction\\local\\native-front-end-manager-destruction\\native_sites.json",
+      "sha256": "0fb71e0d347a91330763394394fdbbfa4db63511b74872976071647220dfa48f",
+      "instructions": {
+        "004da654": {
+          "address": "004da654",
+          "instruction": "CALL 0x004d95f0",
+          "context_before": [
+            "004da653: PUSH ESI"
+          ],
+          "context_after": [
+            "004da659: MOV ECX,dword ptr [0x00e198ac]"
+          ],
+          "mnemonic": "CALL",
+          "patterns_detected": [
+            "control_flow"
+          ]
+        },
+        "004da669": {
+          "address": "004da669",
+          "instruction": "CALL EDX",
+          "context_before": [
+            "004da667: PUSH 0x1"
+          ],
+          "context_after": [
+            "004da66b: MOV dword ptr [0x00e198ac],ESI"
+          ],
+          "mnemonic": "CALL",
+          "patterns_detected": [
+            "control_flow"
+          ]
+        },
+        "004da681": {
+          "address": "004da681",
+          "instruction": "CALL EDX",
+          "context_before": [
+            "004da67f: PUSH 0x1"
+          ],
+          "context_after": [
+            "004da683: MOV dword ptr [0x00e198b4],ESI"
+          ],
+          "mnemonic": "CALL",
+          "patterns_detected": [
+            "control_flow"
+          ]
+        },
+        "004da699": {
+          "address": "004da699",
+          "instruction": "CALL EDX",
+          "context_before": [
+            "004da697: PUSH 0x1"
+          ],
+          "context_after": [
+            "004da69b: MOV dword ptr [0x00e198b8],ESI"
+          ],
+          "mnemonic": "CALL",
+          "patterns_detected": [
+            "control_flow"
+          ]
+        },
+        "004da6b1": {
+          "address": "004da6b1",
+          "instruction": "CALL EDX",
+          "context_before": [
+            "004da6af: PUSH 0x1"
+          ],
+          "context_after": [
+            "004da6b3: MOV dword ptr [0x00e198c4],ESI"
+          ],
+          "mnemonic": "CALL",
+          "patterns_detected": [
+            "control_flow"
+          ]
+        }
+      }
+    }
+  },
+  "original_ABI_and_hidden_input": {
+    "parent": "incomingECX actualGame; nostackinputs;plainRET,preservesESI. Current no-inputannotation incomplete, not modified.",
+    "proof": [
+      "4DA650 PUSHESI",
+      "4DA651 XORESI,ESI",
+      "4DA653 PUSHESI(0)",
+      "4DA654 CALL4D95F0; incomingECX untouched",
+      "4D960D MOVESI,ECX;thenGame+61F/620/1FE4 reads",
+      "4D9826 RET4 consumes stackedword"
+    ],
+    "new_Cpp_API_limit": "explicitGame reference+context transport,not Originalregister/stack/EAX-result or FH/SEHreplacement",
+    "existing_raw_caller": "native_game_on_destroy.cpp calls required.call_004da650(game) at004DC5E9; sameactualGame reaches newinterface onlyafterrootbinds thisparent"
+  },
+  "rows": [
+    {
+      "address": "004DA654",
+      "native": "004D95F0",
+      "function": "004DA650",
+      "phase": "firstwholepausecall_GameECX_andstackzero"
+    },
+    {
+      "cell": "00E198AC",
+      "capture": "004DA659",
+      "address": "004DA669",
+      "native": "00E198AC+vtable00",
+      "function": "004DA650",
+      "kind": "indirect",
+      "clear_after_normal_return": "004DA66B",
+      "payload_vtable_byte_offset": 0,
+      "flags": 1,
+      "null_capture": "skipcallandclear",
+      "replacement": "clearCURRENTcellunconditionallyafterreturn; donotcompareagainstcaptured"
+    },
+    {
+      "cell": "00E198B4",
+      "capture": "004DA671",
+      "address": "004DA681",
+      "native": "00E198B4+vtable00",
+      "function": "004DA650",
+      "kind": "indirect",
+      "clear_after_normal_return": "004DA683",
+      "payload_vtable_byte_offset": 0,
+      "flags": 1,
+      "null_capture": "skipcallandclear",
+      "replacement": "clearCURRENTcellunconditionallyafterreturn; donotcompareagainstcaptured"
+    },
+    {
+      "cell": "00E198B8",
+      "capture": "004DA689",
+      "address": "004DA699",
+      "native": "00E198B8+vtable00",
+      "function": "004DA650",
+      "kind": "indirect",
+      "clear_after_normal_return": "004DA69B",
+      "payload_vtable_byte_offset": 0,
+      "flags": 1,
+      "null_capture": "skipcallandclear",
+      "replacement": "clearCURRENTcellunconditionallyafterreturn; donotcompareagainstcaptured"
+    },
+    {
+      "cell": "00E198C4",
+      "capture": "004DA6A1",
+      "address": "004DA6B1",
+      "native": "00E198C4+vtable00",
+      "function": "004DA650",
+      "kind": "indirect",
+      "clear_after_normal_return": "004DA6B3",
+      "payload_vtable_byte_offset": 0,
+      "flags": 1,
+      "null_capture": "skipcallandclear",
+      "replacement": "clearCURRENTcellunconditionallyafterreturn; donotcompareagainstcaptured"
+    }
+  ],
+  "normal_sequence": [
+    "whole requiredpausecall(game,0) before anyparentmanagerpublicationread",
+    "currentAC capture,nonnullrealvirtual_scalar(captured,0,1),postreturncurrentACclear",
+    "currentB4 freshcapture,nonnullsamecalltuple,postreturncurrentB4clear",
+    "currentB8 freshcapture,nonnullsamecalltuple,postreturncurrentB8clear",
+    "currentC4 freshcapture,nonnullsamecalltuple,postreturncurrentC4clear"
+  ],
+  "callback_and_failure_semantics": {
+    "captured_receiver": "onevolatilevalue readperrow,usedonlyfornulltestandscalarargument; notdereferencedaftercallbackmaydeleteit",
+    "current_publication": "samecellunconditionallyclearedafter normalcallreturn, including replacementpointer; no equalitycheck or replacement-destructor loop",
+    "later_rows": "freshloadsafterprecedingcallbacks,notan earlysnapshot",
+    "pause_exception": "propagates; noparentmanagerread/clearentered",
+    "scalar_exception": "propagatesnaturally; no postclearfor thatrow or laterrowaccess, reachedchild/priorroweffectspreserved",
+    "preconditions": "serializedstableContext/cells/providers/Game andvalidactualtable/heapgraph; noarbitraryconcurrent/reentrantparentusage",
+    "no_recovery": "no catch/finalizer/retry/replaystate/rollback/successfulfallback supplied"
+  },
+  "old_semantic_boundary": {
+    "preserved": true,
+    "source": "frontend_managers.cpp destroy_front_end_managers_004da650",
+    "limits": "projectedmain/multi/optionsdestroy routines, reset_interface_stack approximation, in_mission merelyclearedwithoutslot0destruction; notrawGame/cell/interfaceclosure",
+    "unchanged_inputs": [
+      {
+        "path": "include/bsp/frontend_managers.hpp",
+        "sha256": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "src/frontend_managers.cpp",
+        "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "include/bsp/native_game_on_destroy.hpp",
+        "sha256": "96a100da9a58bbd9632f8a25d7f442e1a291e2f98f9dde3beb6c113ae40759f4",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "src/native_game_on_destroy.cpp",
+        "sha256": "90862d3277029dbb7b74e0d3d19ac1e8f9b7601d43700abd3daaa485723c0670",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "include/bsp/native_game_lifetime.hpp",
+        "sha256": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "src/native_game_lifetime.cpp",
+        "sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "include/bsp/native_game_construction.hpp",
+        "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+        "unchanged_from_base": true
+      }
+    ]
+  },
+  "emitted_inspection": {
+    "compiler": "MSVC19.51.36244 Win32 /MD",
+    "public_parent_calls": 5,
+    "normal_postscalar_zero_stores": 4,
+    "pause_call": "firstC++servicevirtualcall passesactualGame referenceandzero; firstmanagercapture followsreturn",
+    "scalar_args": "pushflags1,pushpayloadbyteoffset0,pushcaptured; currentcellstore0onlyafterreturn;4nullbranches",
+    "host_service_ABI_note": "compileradjustsNativeGameLifetimeCalls this by+4 anduseshostservicevtableoffset14h; thisisC++multipleinheritance dispatch,NOT payloadvtablebyteoffset (explicitargument0).",
+    "audit": {
+      "machine": "0x014c",
+      "functions": {
+        "?destroy_native_front_end_managers_004da650@bsp@@YAXAAUNativeGameStorage@1@AAUNativeFrontEndManagerDestructionContext@1@@Z": {
+          "bytes": 146,
+          "sha256": "e6927eeebd341933b78e7880b819f1c7be6a2f7027e1b03846715e4acaf78fbb",
+          "hex": "56 8b 74 24 0c 57 6a 00 ff 74 24 10 8b 4e 14 8b 01 ff 50 04 8b 3e 8b 4e 10 8b 07 85 c0 74 13 6a 01 83 c1 04 6a 00 50 8b 01 ff 50 14 c7 07 00 00 00 00 8b 7e 04 8b 4e 10 8b 07 85 c0 74 13 6a 01 83 c1 04 6a 00 50 8b 01 ff 50 14 c7 07 00 00 00 00 8b 7e 08 8b 4e 10 8b 07 85 c0 74 13 6a 01 83 c1 04 6a 00 50 8b 01 ff 50 14 c7 07 00 00 00 00 8b 4e 10 8b 76 0c 8b 06 85 c0 74 13 6a 01 83 c1 04 6a 00 50 8b 01 ff 50 14 c7 06 00 00 00 00 5f 5e c3",
+          "listing": [
+            "0000: push esi",
+            "0001: mov esi, dword ptr [esp + 0xc]",
+            "0005: push edi",
+            "0006: push 0",
+            "0008: push dword ptr [esp + 0x10]",
+            "000c: mov ecx, dword ptr [esi + 0x14]",
+            "000f: mov eax, dword ptr [ecx]",
+            "0011: call dword ptr [eax + 4]",
+            "0014: mov edi, dword ptr [esi]",
+            "0016: mov ecx, dword ptr [esi + 0x10]",
+            "0019: mov eax, dword ptr [edi]",
+            "001b: test eax, eax",
+            "001d: je 0x32",
+            "001f: push 1",
+            "0021: add ecx, 4",
+            "0024: push 0",
+            "0026: push eax",
+            "0027: mov eax, dword ptr [ecx]",
+            "0029: call dword ptr [eax + 0x14]",
+            "002c: mov dword ptr [edi], 0",
+            "0032: mov edi, dword ptr [esi + 4]",
+            "0035: mov ecx, dword ptr [esi + 0x10]",
+            "0038: mov eax, dword ptr [edi]",
+            "003a: test eax, eax",
+            "003c: je 0x51",
+            "003e: push 1",
+            "0040: add ecx, 4",
+            "0043: push 0",
+            "0045: push eax",
+            "0046: mov eax, dword ptr [ecx]",
+            "0048: call dword ptr [eax + 0x14]",
+            "004b: mov dword ptr [edi], 0",
+            "0051: mov edi, dword ptr [esi + 8]",
+            "0054: mov ecx, dword ptr [esi + 0x10]",
+            "0057: mov eax, dword ptr [edi]",
+            "0059: test eax, eax",
+            "005b: je 0x70",
+            "005d: push 1",
+            "005f: add ecx, 4",
+            "0062: push 0",
+            "0064: push eax",
+            "0065: mov eax, dword ptr [ecx]",
+            "0067: call dword ptr [eax + 0x14]",
+            "006a: mov dword ptr [edi], 0",
+            "0070: mov ecx, dword ptr [esi + 0x10]",
+            "0073: mov esi, dword ptr [esi + 0xc]",
+            "0076: mov eax, dword ptr [esi]",
+            "0078: test eax, eax",
+            "007a: je 0x8f",
+            "007c: push 1",
+            "007e: add ecx, 4",
+            "0081: push 0",
+            "0083: push eax",
+            "0084: mov eax, dword ptr [ecx]",
+            "0086: call dword ptr [eax + 0x14]",
+            "0089: mov dword ptr [esi], 0",
+            "008f: pop edi",
+            "0090: pop esi",
+            "0091: ret "
+          ],
+          "calls": [
+            "0011: dword ptr [eax + 4]",
+            "0029: dword ptr [eax + 0x14]",
+            "0048: dword ptr [eax + 0x14]",
+            "0067: dword ptr [eax + 0x14]",
+            "0086: dword ptr [eax + 0x14]"
+          ],
+          "zero_stores": [
+            "002c: dword ptr [edi], 0",
+            "004b: dword ptr [edi], 0",
+            "006a: dword ptr [edi], 0",
+            "0089: dword ptr [esi], 0"
+          ]
+        },
+        "?delete_current@?A0x99f275b3@bsp@@YAXACRAXAAUNativeGameLifetimeCalls@2@@Z": {
+          "bytes": 36,
+          "sha256": "b62916226725f434b5987b6bac73f82ff05624f91db029536f85c38fef220ac6",
+          "hex": "56 8b 74 24 08 8b 16 85 d2 74 17 8b 4c 24 0c 83 c1 04 6a 01 6a 00 52 8b 01 ff 50 14 c7 06 00 00 00 00 5e c3",
+          "listing": [
+            "0000: push esi",
+            "0001: mov esi, dword ptr [esp + 8]",
+            "0005: mov edx, dword ptr [esi]",
+            "0007: test edx, edx",
+            "0009: je 0x22",
+            "000b: mov ecx, dword ptr [esp + 0xc]",
+            "000f: add ecx, 4",
+            "0012: push 1",
+            "0014: push 0",
+            "0016: push edx",
+            "0017: mov eax, dword ptr [ecx]",
+            "0019: call dword ptr [eax + 0x14]",
+            "001c: mov dword ptr [esi], 0",
+            "0022: pop esi",
+            "0023: ret "
+          ],
+          "calls": [
+            "0019: dword ptr [eax + 0x14]"
+          ],
+          "zero_stores": [
+            "001c: dword ptr [esi], 0"
+          ]
+        }
+      },
+      "parent_calls": 5,
+      "success_zero_stores": 4
+    },
+    "object_audit_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction\\local\\native-front-end-manager-destruction\\object_audit.json",
+    "object_audit_sha256": "8acd82d3372109dd492e5e54cf24390be122f73ec2919298543ed41febdce4c5"
+  },
+  "validation": {
+    "strict_Win32_compile": {
+      "passed": true,
+      "flags": [
+        "/std:c++17",
+        "/MD",
+        "/O2",
+        "/Gy",
+        "/fp:strict",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/c",
+        "/FAs"
+      ],
+      "object": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction\\local\\native-front-end-manager-destruction\\native_front_end_manager_destruction.obj",
+      "bytes": 1953,
+      "machine": "0x014c",
+      "sha256": "dc876074046b3118b24b81b06159fc467b5510a589dbc0050756f59ec9ce7e5e",
+      "assembly": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction\\local\\native-front-end-manager-destruction\\native_front_end_manager_destruction.asm",
+      "assembly_sha256": "3a475167b8a584bcbd35c83291f0da9fe145f6a45cc514ad6883112f77aae93e"
+    },
+    "original_call_verifier": {
+      "state": "complete",
+      "direct_rows": 1,
+      "indirect_rows": 4,
+      "indirect_note": "indirectcallee identitiescannotbestaticallyverified; exacttransferopcodes+tablebyte0flow separatelyinspected",
+      "passed": true,
+      "direct_checked": 1,
+      "failed": 0,
+      "indirect_not_statically_checked": 4,
+      "all_five_transfer_sites_live_instruction_context_match": true
+    },
+    "new_tests_fixtures_probes_games_Dll_calls": false,
+    "full_build": false,
+    "CMake_or_Ghidra_write": false
+  },
+  "source_sha256": {
+    "include/bsp/native_front_end_manager_destruction.hpp": "82cd89a5ce6dab66de8b96284b1eb185b1d2d959d3deebd3d2e0fefa8067839c",
+    "src/native_front_end_manager_destruction.cpp": "4139ddadcca01ae630b4e9a00a93b5d5d2b1418042a015abd2c7ed459860fac5"
+  },
+  "remaining_root_obligations": [
+    "Supplywholeactual4D95F0pausebinding withsameRawGame,actualfields/dependencies; no projectedGamePauseState/resetstacksubstitute.",
+    "Borrowallfouractualpublicationcells andtheSAME actualGameLifetimeCallsscalarservice withgenuinecurrenttables/matchingheaps,retainedthroughcallbacks.",
+    "WireNativeGameOnDestroyCalls::call_004da650 onlyafterindependentreview andcommonCMake/buildintegration; no sourcehook suppliedhere.",
+    "Qualifyactualscalardeletingbodies,rawGame/OnDestroylifecycle/failurecustody,nativeFH/SEH/fault/frame/ABIandruntimebehaviorseparately."
+  ],
+  "credit": {
+    "whole_normal_parent_source": true,
+    "duplicate_native_body_credit": 0,
+    "vendor_bodies": 0,
+    "binary_ABI": false,
+    "activation": false,
+    "runtime": false,
+    "gameplay": false
+  }
+}
