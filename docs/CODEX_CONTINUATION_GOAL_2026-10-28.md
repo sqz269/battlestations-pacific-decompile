@@ -667,3 +667,12 @@ new storage. Independent Source review and OFF build/checks2/2 (11.15s) pass.
 Actual ON alias/import/module/null/bounds and complete geometry paired fixture
 remain unproven. Font plan9953 is reviewed: genuine data exists; typed linkage,
 raw AB8C30 publication and cached1EC EFFECT-credit retirement remain separate.
+
+Attempt03 (5e4/43E4) now executes and settles the real prefix+geometry lifecycle:
+BOTH cases exit0/599+1, actual both-Mesh/Models/Text closure, native1427/summary764
+and gameplay match. Preserve this as lifecycle evidence, not full qualification:
+the std getter's path still names an EXE thunk, missing planned standard-DLL
+archive proof. Query heap alias/map/live path succeeds. Route restored OFFf561.
+The standard getter now uses the exact named IAT cell too; Win32/MD probe and
+OFF build2/2 pass. Fresh both-alias frozen map/runtime archives and paired audit
+remain gates; no production/ABI/failure/reuse activation is inferred.

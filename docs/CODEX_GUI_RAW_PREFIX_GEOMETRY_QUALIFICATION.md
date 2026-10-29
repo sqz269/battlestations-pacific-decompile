@@ -126,3 +126,24 @@ IAT, with no alternate storage; actual game module/null/entry-zero/geometry and
 paired lifecycle gates remain open. A 32-bit module path can report System32;
 archive through the same 32-bit filesystem namespace and verify PE Machine14C,
 not an x64 reader's different System32 file. Keep archives outside the EXE folder.
+
+## Third attempt: lifecycle passed, complete module receipt pending
+
+Frozen `5e4fdc5a215e3ba007218f1512b3ece418c947d0`, executable
+`43E4B618CC8EEB459BF5DBB797D9CC7B2E2410C2715E316AEF71771EA7C1F8AC`,
+completed BOTH same-binary cases exit0/599+1. ON reached real geometry and actual
+collective retirement/closure (owner stages625/3685/9515/9640), preceding Font
+retirement and renderer-first closure. Gameplay21/native1427/summary764 match.
+All artifacts are in `local/cc16_prefix_geometry_qualification_20261029_attempt03`.
+The frozen map/PE prove query alias==real named query IAT10595564. The live query
+and callnewh modules agree; the actual x86 heap DLL archive is hashverified through
+32-bit filesystem view. Source private route restored OFFf56118e59/build2/2 10.63s.
+
+Full preregistered qualification is NOT accepted: `std::get_new_handler` also
+has an EXE declaration thunk, so its logged path did not identify the actual
+MSVCP runtime. That gap is retained, not relabeled as a DLL receipt. The standard
+getter now uses its exact named import-cell alias too, with no storage, parsing,
+replacement call or setter. A focused Win32/MD C++17 probe confirms actual heap
+ucrtbase, standardMSVCP140, declarationEXE and lookups1111. The OFF build/checks
+2/2 pass (11.13s). A fresh frozen map must pin BOTH aliases to their named IAT
+cells; both actual runtime paths/files and full paired audit remain required.

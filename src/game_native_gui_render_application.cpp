@@ -52,6 +52,8 @@
 // identifies an EXE thunk. This alias reads the actual loader-resolved slot.
 extern "C" { extern _PNH (__cdecl * const volatile bsp_cc16_query_new_handler_import)(); }
 #pragma comment(linker, "/alternatename:_bsp_cc16_query_new_handler_import=__imp___query_new_handler")
+extern "C" { extern std::new_handler (__cdecl * const volatile bsp_cc16_std_get_new_handler_import)() noexcept; }
+#pragma comment(linker, "/alternatename:_bsp_cc16_std_get_new_handler_import=__imp_?get_new_handler@std@@YAP6AXXZXZ")
 
 namespace bsp::game {
 namespace {
@@ -795,8 +797,9 @@ void GameStartupHost::prepare_native_gui_text_resources() {
                 reinterpret_cast<LPCSTR>(query_target), &query_module);
             const BOOL call_loaded = GetModuleHandleExA(module_flags,
                 reinterpret_cast<LPCSTR>(&_callnewh), &call_module);
-            const BOOL standard_loaded = GetModuleHandleExA(module_flags,
-                reinterpret_cast<LPCSTR>(&std::get_new_handler), &standard_module);
+            const auto standard_target = bsp_cc16_std_get_new_handler_import;
+            const BOOL standard_loaded = standard_target && GetModuleHandleExA(module_flags,
+                reinterpret_cast<LPCSTR>(standard_target), &standard_module);
             log_.notef("raw prefix geometry CRT resolved modules: query_ok=%d call_ok=%d standard_ok=%d query=%p call=%p standard=%p",
                 query_loaded ? 1 : 0, call_loaded ? 1 : 0, standard_loaded ? 1 : 0,
                 static_cast<void*>(query_module), static_cast<void*>(call_module), static_cast<void*>(standard_module));
