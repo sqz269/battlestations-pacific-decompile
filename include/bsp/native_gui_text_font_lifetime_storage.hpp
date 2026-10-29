@@ -46,7 +46,7 @@ struct NativeGuiTextFontLifetimeRegion final {
 };
 struct NativeGuiTextFontLifetimeRegions final {
     // Concrete fixed storage, no erased callback/provider or ownership claim.
-    std::array<NativeGuiTextFontLifetimeRegion, 40> entries{};
+    std::array<NativeGuiTextFontLifetimeRegion, 48> entries{};
     std::size_t count{};
 };
 
