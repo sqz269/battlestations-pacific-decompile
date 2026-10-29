@@ -242,3 +242,26 @@ startup/deletion hookup. No getter or raw Icon caller is activated, no queue or
 file delivery is fabricated, and no build is allowed during the A1 hold.
 Any eventual getter must use the SAME service bound into the process singleton
 deletion dispatcher and retain its full provider graph through native drain.
+
+The Icon process dependency is now frozen at `82c09a739` in cc15-gui4. Root
+reviewed all three new files: one private null publication, successful-only
+preparation over the exact borrowed raw context, and status separating normal
+registered-owner retention from incomplete/failed operations. No source blocker
+was found. It remains unbuilt, unmerged, unregistered in CMake and uncalled;
+root's same-service deletion hookup and later lifecycle proof are still pending.
+
+The raw Model audit found that existing raw parenting kernels already cover
+the native hierarchy operations. The generic child suffix still transports
+logical Model/scene bindings, so sharing actual counts or raw names cannot make
+it compatible with the Page's actual3Ch resource family. A bounded library-only
+packet, `codex-gui-raw-model-storage`, now prepares genuine B75030/B750C0/
+B75290/B74F20 storage/lifetime/reference providers in new files. It must retain
+the single normal decrement epoch, fresh member-unwind epoch, current flags
+after destruction and same real pool/node/import/actual-owner domains. This
+does not publish a child or make the shared Model/tree/scene transport ready.
+
+A separate read-only A2 audit is checking whether the genuine input metadata
+can be prepared before shader preload while leaving actual backend startup at
+73DD8E. The candidate uses the existing null-backend message guard and the same
+input contexts; subconstructor, callback and failure/drain obligations must be
+proved before any host reorder. No A2 source change or live trial is accepted.

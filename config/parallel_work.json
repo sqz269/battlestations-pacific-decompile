@@ -16,10 +16,24 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
-      "id": "codex-gui-icon-delayed-custody",
-      "state": "deferred_process_metadata_source_in_progress_A1_build_hold",
-      "worker": "gui_integration_review",
+      "id": "codex-gui-raw-model-storage",
+      "state": "qualified_raw_library_provider_source_in_progress_A1_build_hold",
+      "worker": "gui_frame_lifetime",
       "source_ready": true,
+      "depends_on": [],
+      "function_addresses": ["00b75030", "00b750c0", "00b75290", "00b74f20"],
+      "output_files": [
+        "include/bsp/native_model_storage_lifetime.hpp",
+        "src/native_model_storage_lifetime.cpp",
+        "docs/CODEX_RAW_MODEL_STORAGE_LIFETIME.md"
+      ],
+      "notes": "Qualified standalone raw188h Model constructor/member cleanup/destructor/scalar deleter/canonical actual+4 reference over existing real node, pool, import and actual-owner providers. Preserve B750C0 single captured decrement epoch, B74F20 fresh epoch and B75290 post-destructor current flags low-byte. New files only; keep semantic Model/child/parenting files unchanged. No fake family transport, logical SceneResource association, second count, application activation or new whole-body credit. Root owns CMake/ledger integration after A1 hold. This library packet is source-preparable independently; raw child transport, Model006EF860/current1C/tree/scene dispatch and P3a2 publication are NOT independent-ready or included."
+    },
+    {
+      "id": "codex-gui-icon-delayed-custody",
+      "state": "static_checkpoint_source_reviewed_unbuilt_A1_hold",
+      "worker": "gui_integration_review",
+      "source_ready": false,
       "depends_on": [],
       "function_addresses": ["00ab5700", "00ab50e0", "00ab5560", "00ab57c0"],
       "output_files": [
