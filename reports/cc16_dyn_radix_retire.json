@@ -1,0 +1,97 @@
+{
+  "packet": "codex-dyn-radix-retire",
+  "integration_status": "reconstructed_build_tested_unwired",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "verification": "provided BSP client identity verification plus complete assembly and full live byte spans"
+  },
+  "functions": [
+    {
+      "address": "00c40cc0",
+      "end": "00c40d48",
+      "bytes": 137,
+      "name": "remove_radix_slot_00c40cc0",
+      "ghidra_name": "BSP_DynRadix_RemoveSlot_00C40CC0",
+      "abi": "EAX object, ESI manager, RET0; EBX/EDI saved, ESI preserved and EBP conditionally saved; no established semantic EAX return",
+      "behavior": "swap last packed entry into object WORD index, update moved object index, preserve unsigned underflow-growth arm and live-copy reloads"
+    },
+    {
+      "address": "00c40d50",
+      "end": "00c40d6c",
+      "bytes": 29,
+      "name": "retire_radix_object_00c40d50",
+      "ghidra_name": "Dyn_SAPRadixBroadPhaseManager_vslot1",
+      "abi": "ECX manager, one stack object pointer, RET4; ESI/EDI saved; no established semantic EAX return",
+      "behavior": "compose actual slot removal, then original BF65AC free binding on the same captured object"
+    }
+  ],
+  "rows": [
+    {
+      "address": "00c40cfd",
+      "native": "00bf55be",
+      "function": "00c40cc0",
+      "kind": "call"
+    },
+    {
+      "address": "00c40d38",
+      "native": "00bf6989",
+      "function": "00c40cc0",
+      "kind": "call"
+    },
+    {
+      "address": "00c40d5a",
+      "native": "00c40cc0",
+      "function": "00c40d50",
+      "kind": "call"
+    },
+    {
+      "address": "00c40d60",
+      "native": "00bf65ac",
+      "function": "00c40d50",
+      "kind": "call"
+    }
+  ],
+  "contracts": {
+    "required_crt": [
+      "operator_new_00bf55be",
+      "free_00bf6989"
+    ],
+    "additional_distinct_binding": "ObjectFree00BF65AC supplied by actual caller; no alias to BF6989 assumed",
+    "fabricated_storage_or_vtable": false,
+    "unsigned_underflow_guard_preserved": true,
+    "incoming_vtable": "existing RTTI table00D7A118 slot1; not exhaustive root reachability"
+  },
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_radix_retire_build.log",
+    "accepted_base": "452dea24d",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object_sha256": "e0455eaca64f36ddb11825026e4af6ce5268ae64e0f5ad8364188c2b3484dbff",
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "new_tests": false,
+    "callsite_verification": "four original native call rows, zero failures",
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T044036Z.json",
+    "saved": true,
+    "exports_refreshed": true
+  },
+  "remaining_obligations": [
+    "genuine manager/object/heap/free and vtable/root custody",
+    "original register/stack ABI adapter if required by actual integration",
+    "runtime gates for any reachable activated host path",
+    "C37210 genuine vtable provider still unresolved"
+  ],
+  "scope_exclusions": [
+    "no CRT/vendor body credit",
+    "no empty-vector safety rewrite, default provider or exception cleanup",
+    "no original fault state, public native ABI or gameplay acceptance"
+  ]
+}
