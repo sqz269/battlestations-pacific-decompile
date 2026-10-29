@@ -693,3 +693,12 @@ mask/exception. OFF9b08/build2/2 verified. One empty prefix+explicit379 lifecycl
 is accepted within its closed-provider domain; production/UI/AAA710/main-section/
 Font/content/hierarchy/ABI and failure/reuse remain open. Font source halves
 are frozen separately for cross-review and combined build, not activated.
+
+Font owner103/c315 and producer e758 now pass root and independent cross-review.
+A separate4fd fix closes raw retirement-entry caught-rejection latches while
+leaving legacy guards and actual cleanup unchanged. Eleven owner/six original
+producer/eight follow-up comparisons pass. Combined OFF Win32/checks2/2 pass
+(9.78s). Typed real Font export, fresh-only pre122 shader backing, terminal
+retirement guard and explicit post-parent detach are compiled but have no host
+caller yet. RawAB8C30 and cached1EC EFFECT-credit consumption remain execution
+blockers; the next bounded evidence plan is dispatched, with no widening.

@@ -1,6 +1,8 @@
 # Genuine Font producer/raw-owner metadata link
 
-UNBUILT, uncalled Source packet. Base `f7f6dd79d`, corrected packet files
+Integrated and Win32 build-tested, still uncalled. Frozen e758 plus separate
+raw retirement-entry fix4fd preserve their original Source evidence. Base
+`f7f6dd79d`, corrected packet files
 `ac093fdca`, agreed owner API `103def30aac1862924f87e0343f1c96e45ef04e0`.
 Owner bodies are the separate required packet `c315339fe2da560d56a421eda32a2d718d0c77f5`;
 headers alone do not link. This producer freezes against the agreed API.
@@ -120,3 +122,11 @@ Separate retirement-entry follow-up receipt retains all six comparisons plus
 token-identical raw/legacy entry checks against e758. Ignored JSON
 local/codex_raw_font_producer_retire_entry_comparison.json SHA256
 7f9bc4f9564dbfdd28fe07e73f0a5cfc088bbf2fc3511737c28e05a3fbef3c6b.
+
+Root and independent owner Source review accepted the combined producer and
+sticky-entry fix. Owner API103/bodyc315 is integrated; six original and eight
+follow-up Source comparisons pass. The combined OFF Win32 build and existing
+checks2/2 pass (9.78s), `local/cc16_raw_font_link_integrated_off_build.log`.
+No host caller, live Font-link lifecycle, shader/108/1EC or production gate is
+accepted by this build. Root must attach and detach the exact endpoints in a
+separate reviewed, preregistered lifecycle before claiming execution.

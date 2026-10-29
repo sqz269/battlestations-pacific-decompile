@@ -1,6 +1,7 @@
 # Raw Font owner metadata link
 
-**UNBUILT metadata-only owner implementation; no caller.** Base is
+**Integrated metadata link; Win32 build-tested, still uncalled.** API103 and
+bodyc315 were separately frozen. Base is
 `f7f6dd79d0658a8c40b0a60b0f58547857086ed6`, reviewed plan9953. This packet
 owns only raw-default Text owner HPP/CPP and this doc; producer worker owns
 the combined Font Host/App half. No source activation, native-body credit,
@@ -118,3 +119,10 @@ paths, real name/db55/return, real379 entry, native scalar schedule, companion
 disposal and renderer-FIRST closure. All match; diff checks pass. No compiler,
 tests, probe, game or Ghidra run occurred. Root must review both owner/producer
 bodies, build, and keep future Font field/effect/retirement gates separate.
+
+Root and independent producer review accepted owner c315 with the exact Host/
+App contract; all eleven preserved-body comparisons pass. Combined producer
+e758 plus raw retirement-entry sticky fix4fd is integrated. Win32 and existing
+checks2/2 pass (9.78s), `local/cc16_raw_font_link_integrated_off_build.log`.
+No host caller is attached yet. This proves compilation and Source contracts,
+not linked Font runtime, lookup/shader, Font108 or cached1EC ownership acceptance.
