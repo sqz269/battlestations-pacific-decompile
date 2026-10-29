@@ -75,6 +75,12 @@ public:
     // for the real equal-name path. Existing preparation modes remain separate.
     void prepare_primary_prefix_geometry_font_work_in_ready_renderer(
         std::size_t model_call_capacity, FontWork);
+    // Separate closed Font-selection then created-main-section fragment graph.
+    // Requires the SAME completed actual Font Host/App link. Installs every
+    // fixed input/selector/shader/helper backing before pools/raw122; no native
+    // Font or shader effects during preparation. Existing modes stay separate.
+    void prepare_primary_prefix_geometry_font_main_section_in_ready_renderer(
+        std::size_t model_call_capacity);
     // Caller owns the REAL later canonical cache bracket. SAME Lua Activation
     // covers ba2 AA1380 and SEPARATE raw122 publication. False is native null
     // allocation, not a failed constructor. No private cache/warm substitute.
@@ -95,6 +101,10 @@ public:
     // input headers around raw setter calls and run the real shader producer.
     // Shader caller credit is consumed by second setter OR later raw118 once.
     bool construct_primary_prefix_geometry_font_work_in_open_shader_cache();
+    // Same factory93/separate122/primary/name/ONE379, then real Viper19 Font
+    // selection/input return BEFORE real AB8530 Main creation and lifetime seal.
+    // No AB8CE0 producer, content, properties, rendering or full ABA8D0 claim.
+    bool construct_primary_prefix_geometry_font_main_section_in_open_shader_cache();
     // Only this sole unpublished Text, actual count1, quiescent providers and
     // the genuine canonical direct scalar path are admitted. Retained flags1
     // cell is reread late by AB8EE0; no Text decrement/second cleanup is added.
