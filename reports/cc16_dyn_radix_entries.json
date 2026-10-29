@@ -1,0 +1,127 @@
+{
+  "packet": "codex-dyn-radix-entries",
+  "status": "complete_normal_body_source_reviewed_unbuilt_unwired",
+  "baseline": "d0a2656fe4fc09135c866836a6ec278750055b92",
+  "scope": {
+    "routines": [
+      {
+        "address": "00c37180",
+        "inclusive_end": "00c37202",
+        "last_instruction": "00c37200",
+        "bytes": 131,
+        "coverage": "complete normal body",
+        "old_name": "DYN_physics_00c37180",
+        "source_name": "bsp::cc16_dyn_radix_entries::append_object_00c37180",
+        "prior_reconstruction": "metadata_only_no_function_body_verified_oct24"
+      }
+    ],
+    "files": [
+      "include/bsp/cc16_dyn_radix_entries.hpp",
+      "src/cc16_dyn_radix_entries.cpp",
+      "docs/CC16_DYN_RADIX_ENTRIES.md",
+      "reports/cc16_dyn_radix_entries.json"
+    ],
+    "shared_ledger_cmake_and_ghidra_mutations": false,
+    "vendor_bodies": false
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra proto verifies configured project/program before every analysis batch"
+  },
+  "original_abi": {
+    "receiver": "ESI",
+    "stack_arguments": ["object pointer"],
+    "ret_pop_bytes": 4,
+    "preserved": ["EBX", "EDI", "EBP", "ESI"],
+    "eax_on_normal_return": "supplied object pointer; semantic return unproven",
+    "cpp_interface": "explicit void function; no native ABI adapter"
+  },
+  "layout": {
+    "manager_04": "raw entry storage pointer",
+    "manager_08": "uint32 count",
+    "manager_0c": "uint32 capacity",
+    "entry_stride_bytes": 8,
+    "entry_00": "uninterpreted first dword; untouched for appended row",
+    "entry_04": "object pointer",
+    "object_20": "old count truncated to uint16"
+  },
+  "calls": [
+    {
+      "function": "00c37180",
+      "address": "00c3719e",
+      "native": "00bf55be",
+      "role": "required operator new provider; uint32 new_count times 8 bytes"
+    },
+    {
+      "function": "00c37180",
+      "address": "00c371df",
+      "native": "00bf6989",
+      "role": "required free provider for nonzero current old storage"
+    }
+  ],
+  "caller_evidence": [
+    {
+      "function": "00c55d30",
+      "address": "00c55d79",
+      "native": "00c37180",
+      "role": "successful object allocation path; ESI retained from ECX"
+    },
+    {
+      "function": "00c55d30",
+      "address": "00c55d88",
+      "native": "00c37180",
+      "role": "failed object allocation path; null object remains unguarded"
+    }
+  ],
+  "contracts": [
+    "uint32 count addition and allocation-size multiplication wrap",
+    "grow only if new count is unsigned-greater than old count and capacity",
+    "capacity written before operator new callback",
+    "copy two ordered dwords per old row; reload count and old storage as in listing",
+    "per-row zero destination check retained with uint32 cursor arithmetic",
+    "free old storage before publishing grown storage",
+    "publish new count before row+4 object pointer and object+20 low16 index",
+    "new row first dword remains untouched; no added null or overflow guard"
+  ],
+  "evidence": [
+    "exports/bsp/functions/00c37180/decompiled.c",
+    "exports/bsp/functions/00c37180/assembly.txt",
+    "exports/bsp/functions/00c55d30/decompiled.c",
+    "exports/bsp/functions/00c55d30/assembly.txt",
+    "bsp.py lookup 00C37180",
+    "bsp.py callers 00C37180 --sites --limit 8"
+  ],
+  "uncertainty": [
+    "descriptive function and field names are hypotheses",
+    "first entry dword and complete object layout are not interpreted",
+    "semantic native return value is not established",
+    "no native exception transport or invalid-memory fault equivalence claim"
+  ],
+  "validation": {
+    "source_assembly_review": true,
+    "callsite_verification": "verify_report_calls.py: 4 JSON call rows checked, 0 failed; 2 Markdown call claims checked, 0 failed",
+    "build": "integrator_owned_not_run_by_worker",
+    "new_tests": 0,
+    "game_or_probe_launches": 0,
+    "native_abi_or_game_validated": false
+  },
+  "integration_obligations": [
+    "integrator registers source, builds MSVC Win32 and runs relevant existing checks",
+    "integrator replaces shared C30000 metadata-only ledger row after review",
+    "integrator owns any Ghidra naming/comment mutation under write lock",
+    "recover and connect caller 00C55D30 or accept an evidenced dead chain before runtime activation"
+  ],
+  "next_parent_packet_evidence": {
+    "address": "00c55d30",
+    "inclusive_end": "00c55d93",
+    "bytes": 100,
+    "last_instruction": "00c55d91",
+    "last_instruction_text": "RET 0xc",
+    "direct_callee_set": ["00bf681b", "00c37180"],
+    "status": "metadata_only_no_function_body_verified_oct24; outside current implementation lease"
+  }
+}
