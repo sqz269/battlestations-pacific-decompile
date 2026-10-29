@@ -64,6 +64,11 @@ public:
     // Constructor Text+74 must remain zero through the closed real-provider
     // operation; no outer guard, flag repair or element fallback supplies that.
     void prepare_primary_prefix_geometry_metadata_in_ready_renderer(std::size_t model_call_capacity);
+    // Separate closed geometry+created-main-section graph. Install its exact
+    // lifetime/frame/cache backing before pools/raw122; this first domain has
+    // no FontWork or Font export requirement. No native effects during prepare.
+    void prepare_primary_prefix_geometry_main_section_metadata_in_ready_renderer(
+        std::size_t model_call_capacity);
     // Requires the completed actual Font Host/App link. Installs ALL input,
     // selector/shader/lifetime backing before pools/raw122; no native Font work.
     // Optional second distinct invocation uses Arial18 to invalidate or Viper19
@@ -82,6 +87,10 @@ public:
     // body. This is explicit private entry, not AAA710/current74 scheduling.
     // No main-section, Font/content, parenting, rendering or host gate is added.
     bool construct_primary_prefix_geometry_in_open_shader_cache();
+    // Same factory93/separate122/primary/name/ONE379, then the genuine later
+    // AB8530 main arm and its private created-normal witness/lifetime seal.
+    // No Font/content/layout/stream/current74 dispatch or renderer activation.
+    bool construct_primary_prefix_geometry_main_section_in_open_shader_cache();
     // Same genuine primary+geometry, then seal helper, construct/return genuine
     // input headers around raw setter calls and run the real shader producer.
     // Shader caller credit is consumed by second setter OR later raw118 once.

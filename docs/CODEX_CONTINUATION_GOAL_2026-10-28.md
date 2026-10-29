@@ -843,3 +843,8 @@ Win32/checks2/2 pass12.91s. This is metadata provenance only, not an owner, nati
 credit, scalar permission or runtime/ABI proof. Three bounded reviews are defining
 the retained MainSection lifetime, real caller/provider graph and shared admission
 changes before implementation; first faithful AB8530 main creation precedes Font.
+
+The immutable compound operation API is independently reviewed and Win32/checks
+2/2 pass15.28s. Existing guards still reject its new kind, and no caller selects
+it. Helper storage and owner implementation proceed in disjoint worker files;
+Root integrates the staged shared guards. All runtime flags remain OFF.
