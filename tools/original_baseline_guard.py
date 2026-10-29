@@ -38,6 +38,7 @@ DWORD, HANDLE = W.DWORD, W.HANDLE
 LOW, MEDIUM = 0x1000, 0x2000
 TOKEN_QUERY, TOKEN_ALL_ACCESS = 8, 0xF01FF
 RETAIL = Path("I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe")
+KNOWN_XLIVE_SHA256 = "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2"
 
 
 class SID_AND_ATTRIBUTES(C.Structure):
@@ -81,7 +82,8 @@ class LOAD_DLL_INFO(C.Structure):
 
 class DEBUG_UNION(C.Union):
     _fields_ = [("exception", EXCEPTION_INFO), ("create", CREATE_PROCESS_INFO),
-                ("dll", LOAD_DLL_INFO), ("exit_code", DWORD), ("padding", C.c_byte * 160)]
+                ("dll", LOAD_DLL_INFO), ("unload_base", PVOID),
+                ("exit_code", DWORD), ("padding", C.c_byte * 160)]
 
 
 class DEBUG_EVENT(C.Structure):
@@ -165,6 +167,8 @@ api(K, "VirtualProtectEx", W.BOOL, HANDLE, PVOID, SIZE, DWORD, C.POINTER(DWORD))
 api(K, "VirtualAllocEx", PVOID, HANDLE, PVOID, SIZE, DWORD, DWORD)
 api(K, "FlushInstructionCache", W.BOOL, HANDLE, PVOID, SIZE)
 api(K, "QueryFullProcessImageNameW", W.BOOL, HANDLE, DWORD, W.LPWSTR, C.POINTER(DWORD))
+api(K, "GetFinalPathNameByHandleW", DWORD, HANDLE, W.LPWSTR, DWORD, DWORD)
+api(K, "K32GetMappedFileNameW", DWORD, HANDLE, PVOID, W.LPWSTR, DWORD)
 api(K, "DuplicateHandle", W.BOOL, HANDLE, HANDLE, HANDLE, C.POINTER(HANDLE), DWORD, W.BOOL, DWORD)
 api(K, "IsWow64Process", W.BOOL, HANDLE, C.POINTER(W.BOOL))
 api(S, "SHGetSpecialFolderPathW", W.BOOL, W.HWND, W.LPWSTR, C.c_int, W.BOOL)
@@ -532,6 +536,140 @@ def process_token_info(process):
         close(token)
 
 
+def module_record(process, base, file_handle=None, known_path=None, known_size=None):
+    """Bounded read-only evidence; missing optional loader metadata is retained."""
+    result = {"base": base, "base_hex": f"{base:08x}", "loaded": True}
+    try:
+        if known_path:
+            result["path"] = str(known_path)
+        else:
+            name = C.create_unicode_buffer(32768)
+            length = K.GetFinalPathNameByHandleW(file_handle, name, len(name), 0) if file_handle else 0
+            if length and length < len(name):
+                result["path"] = name.value[4:] if name.value.startswith("\\\\?\\") else name.value
+            else:
+                length = K.K32GetMappedFileNameW(process, base, name, len(name))
+                if length:
+                    result["path"] = name.value
+        if known_size:
+            result["size"] = known_size
+        else:
+            dos = read_remote(process, base, 64)
+            pe_offset = struct.unpack_from("<I", dos, 0x3C)[0]
+            if dos[:2] != b"MZ" or not 64 <= pe_offset <= 0x100000:
+                raise RuntimeError("Invalid module DOS header")
+            header = read_remote(process, base + pe_offset, 0x60)
+            if header[:4] != b"PE\0\0":
+                raise RuntimeError("Invalid module PE signature")
+            result["size"] = struct.unpack_from("<I", header, 0x50)[0]
+        if result.get("path") and Path(result["path"]).name.lower() == "xlive.dll":
+            result["sha256"] = sha(Path(result["path"]))
+    except BaseException as exc:
+        result["diagnostic_error"] = f"{type(exc).__name__}: {exc}"
+    return result
+
+
+def address_module(state, address):
+    for module in reversed(state.get("modules", [])):
+        if module.get("loaded") and module["base"] <= address < module["base"] + module.get("size", 0):
+            return {"path": module.get("path"), "base": module["base"],
+                    "rva": address - module["base"]}
+    return None
+
+
+def exception_diagnostic(process, thread_id, state, exception):
+    record = exception.record
+    result = {"unix": time.time(), "thread_id": thread_id,
+        "code": f"{record.code:08x}", "first_chance": bool(exception.first_chance),
+        "known_folder_hook_established": state["hooked"],
+        "exception_address": record.address or 0,
+        "exception_module": address_module(state, record.address or 0),
+        "parameters": list(record.parameters[:min(record.count, 15)])}
+    thread = K.OpenThread(0x8, False, thread_id)
+    try:
+        checked(thread, "OpenThread exception diagnostic")
+        context = WOW64_CONTEXT()
+        context.flags = 0x1000B
+        checked(K.Wow64GetThreadContext(thread, C.byref(context)), "Wow64GetThreadContext exception")
+        result["registers"] = {n: getattr(context, n) for n in
+            ("Eip", "Esp", "Ebp", "Eax", "Ebx", "Ecx", "Edx", "Esi", "Edi", "EFlags")}
+        result["eip_module"] = address_module(state, context.Eip)
+        result["x87_control_word"] = context.float.control & 0xFFFF
+        try:
+            result["instruction_bytes"] = read_remote(process, context.Eip, 32).hex()
+        except OSError as exc:
+            result["instruction_error"] = str(exc)
+        try:
+            words = list(struct.unpack("<64I", read_remote(process, context.Esp, 256)))
+            result["stack_address"], result["stack_words"] = context.Esp, words
+            result["stack_code_pointers"] = [
+                {"offset": i * 4, "value": v, "module": address_module(state, v)}
+                for i, v in enumerate(words) if address_module(state, v)][:24]
+        except OSError as exc:
+            result["stack_error"] = str(exc)
+        frames, frame = [], context.Ebp
+        for _ in range(8):
+            if not 0x10000 <= frame <= 0xFFFFFFF7:
+                break
+            try:
+                next_frame, return_address = struct.unpack("<II", read_remote(process, frame, 8))
+            except OSError:
+                break
+            frames.append({"ebp": frame, "next_ebp": next_frame, "return_address": return_address,
+                           "module": address_module(state, return_address)})
+            if not frame < next_frame <= frame + 0x100000:
+                break
+            frame = next_frame
+        result["ebp_frames"] = frames
+    except BaseException as exc:
+        result["diagnostic_error"] = f"{type(exc).__name__}: {exc}"
+    finally:
+        close(thread)
+    return result
+
+
+def known_xlive_debug_close(process, stage, state, diagnostic, enabled):
+    """Opt-in for ONE proven debugger-only CloseHandle(HMODULE) exception.
+
+    Microsoft documents the debugger-specific exception for invalid handles:
+    https://learn.microsoft.com/windows/win32/api/handleapi/nf-handleapi-closehandle
+    Installed xlive bytes (not a whole-source-build identity claim) show
+    GetModuleHandleA(NULL) -> VirtualProtect -> CloseHandle at RVA 17C26A.
+    A real live return+argument pair and the exact loaded DLL hash are required.
+    """
+    evidence = {"enabled": enabled, "continued": False}
+    if (not enabled or diagnostic["code"] != "c0000008" or not diagnostic["first_chance"]
+            or state["hooked"] or state.get("known_xlive_debug_close_continued")):
+        evidence["reason"] = "policy disabled, wrong exception phase, guarded entry already reached, or already handled once"
+        return evidence
+    modules = [m for m in state.get("modules", []) if m.get("loaded")
+        and m.get("sha256") == KNOWN_XLIVE_SHA256
+        and Path(m.get("path", "")).name.lower() == "xlive.dll"
+        and Path(m.get("path", "")) == stage / "game/xlive.dll"]
+    words = diagnostic.get("stack_words", [])
+    for module in modules:
+        return_address = module["base"] + 0x17C270
+        pairs = [i for i in range(len(words) - 1)
+                 if words[i] == return_address and words[i + 1] == state["base"]]
+        if not pairs:
+            continue
+        expected_call = b"\xff\x15" + struct.pack("<I", module["base"] + 0x4DD0D8)
+        try:
+            actual_call = read_remote(process, module["base"] + 0x17C26A, 6)
+        except OSError as exc:
+            evidence["call_read_error"] = str(exc)
+            continue
+        if actual_call != expected_call:
+            continue
+        evidence.update(continued=True, reason="exact loaded xlive SHA/callsite/live return+main-HMODULE argument matched",
+            module=module, return_address=return_address, invalid_handle=state["base"],
+            stack_pair_offset=pairs[0] * 4, call_instruction=actual_call.hex())
+        state["known_xlive_debug_close_continued"] = True
+        return evidence
+    evidence["reason"] = "exact loaded DLL, call instruction, and live CloseHandle return/argument pair did not all match"
+    return evidence
+
+
 def arm_motion(process, state):
     address = state["base"] + state["motion_rva"]
     if read_remote(process, address, 1).hex() != state["motion_entry_byte"]:
@@ -571,7 +709,8 @@ def motion_capture(process, thread_id, state, capture=True):
 
 
 def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=None,
-              arguments=(), protected_roots=(), probe=False, motion_discovery=True):
+              arguments=(), protected_roots=(), probe=False, motion_discovery=True,
+              handle_known_xlive_debug_close=False):
     drain = Path(os.environ["USERPROFILE"]) / ".bsp/DRAIN"
     def check_drain():
         if drain.exists() and os.environ.get("BSP_IGNORE_DRAIN") != "1":
@@ -607,6 +746,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
             "known_folder": "entry-time SHGetSpecialFolderPathA IAT hook; CSIDL_PERSONAL flags masked",
             "child_policy": "DEBUG_PROCESS; only byte-identical images under stage; otherwise terminate owned job",
             "motion_discovery": "private discover-motion.request marker arms restored one-shot entry" if discovery_enabled else "disabled",
+            "known_xlive_debug_close_policy": "opt-in exact SHA+live return/argument+callsite, first chance before OEP, once" if handle_known_xlive_debug_close else "disabled; exceptions are not swallowed",
             "disk_binary_modified": False, "started_unix": time.time(), "probe": probe}
     write_receipt(receipt, data)
     try:
@@ -718,6 +858,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                                  "motion_entry_byte": info["motion_entry_byte"],
                                  "motion_rva": info["motion_rva"], "controlled_rva": info["controlled_rva"],
                                  "token": child_info, "hooked": False, "loader_breakpoints": 0}
+                        state["modules"] = [module_record(handle, base, known_path=path, known_size=info["image_size"])]
                         owned[event.pid] = (handle, state)
                         live.add(event.pid)
                         data["processes"].append(state)
@@ -728,7 +869,21 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                     finally:
                         close(creation.hFile)
                 elif event.code == 6:  # LOAD_DLL_DEBUG_EVENT
-                    close(event.u.dll.hFile)
+                    try:
+                        if event.pid in owned:
+                            handle, state = owned[event.pid]
+                            if len(state["modules"]) < 256:
+                                state["modules"].append(module_record(handle, event.u.dll.base, event.u.dll.hFile))
+                            else:
+                                state["module_records_dropped"] = state.get("module_records_dropped", 0) + 1
+                    finally:
+                        close(event.u.dll.hFile)
+                elif event.code == 7:  # UNLOAD_DLL_DEBUG_EVENT
+                    if event.pid in owned:
+                        for module in reversed(owned[event.pid][1]["modules"]):
+                            if module["base"] == event.u.unload_base and module.get("loaded"):
+                                module["loaded"] = False
+                                break
                 elif event.code == 1:
                     exception = event.u.exception
                     record = exception.record
@@ -752,6 +907,23 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                             status = 0x80010001  # DBG_EXCEPTION_NOT_HANDLED
                     else:
                         status = 0x80010001
+                        diagnostics = state.setdefault("exception_diagnostics", [])
+                        important = record.code in (0xC0000008, 0xC0000005, 0xC000001D, 0xC00000FD) or not exception.first_chance
+                        if len(diagnostics) < 8 or important:
+                            diagnostic = exception_diagnostic(handle, event.tid, state, exception)
+                            if record.code == 0xC0000008:
+                                diagnostic["known_xlive_debug_close"] = known_xlive_debug_close(
+                                    handle, stage, state, diagnostic, handle_known_xlive_debug_close)
+                                if diagnostic["known_xlive_debug_close"]["continued"]:
+                                    status = 0x10002
+                            if len(diagnostics) >= 24:
+                                diagnostics[-1] = diagnostic
+                                state["exception_records_dropped"] = state.get("exception_records_dropped", 0) + 1
+                            else:
+                                diagnostics.append(diagnostic)
+                            # Persist first/second chance evidence BEFORE replying
+                            # to Windows, including the default NOT_HANDLED path.
+                            write_receipt(receipt, data)
                         if not exception.first_chance:
                             data["last_unhandled_exception"] = {"pid": event.pid,
                                 "code": f"{record.code:08x}", "address": f"{record.address or 0:08x}"}
@@ -837,8 +1009,21 @@ extern "C" __declspec(dllexport) DWORD motion_probe_controlled = 0x12345000;
 extern "C" __declspec(dllexport) __declspec(naked) void __stdcall motion_probe_entry(float) {
     __asm { ret 4 }
 }
+volatile LONG probe_invalid_handle_caught = 0;
+void NTAPI guard_probe_tls(PVOID, DWORD reason, PVOID) {
+    if (reason != DLL_PROCESS_ATTACH) return;
+    __try { CloseHandle((HANDLE)GetModuleHandleA(NULL)); }
+    __except(GetExceptionCode() == EXCEPTION_INVALID_HANDLE ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH) {
+        probe_invalid_handle_caught = 1;
+    }
+}
+#pragma section(".CRT$XLB", long, read)
+extern "C" __declspec(allocate(".CRT$XLB")) PIMAGE_TLS_CALLBACK guard_probe_tls_anchor = guard_probe_tls;
+#pragma comment(linker, "/INCLUDE:__tls_used")
+#pragma comment(linker, "/INCLUDE:_guard_probe_tls_anchor")
 int main(int argc, char** argv) {
     if (argc != 5) return 90;
+    const bool generic_invalid_handle_caught = probe_invalid_handle_caught != 0;
     char a[MAX_PATH] = {}, b[MAX_PATH] = {}, c[MAX_PATH] = {}, desktop[MAX_PATH] = {};
     const bool personal = SHGetSpecialFolderPathA(NULL, a, CSIDL_PERSONAL, FALSE) && !_stricmp(a, argv[1]);
     const bool flags = SHGetSpecialFolderPathA(NULL, b, CSIDL_PERSONAL | CSIDL_FLAG_DONT_VERIFY, FALSE) &&
@@ -854,13 +1039,13 @@ int main(int argc, char** argv) {
     f = CreateFileA(argv[3], GENERIC_WRITE, 0, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
     const DWORD denial = GetLastError(); const bool denied = f == INVALID_HANDLE_VALUE && denial == ERROR_ACCESS_DENIED;
     if (f != INVALID_HANDLE_VALUE) CloseHandle(f);
-    const bool passed = personal && flags && fallback && allowed && denied;
+    const bool passed = personal && flags && fallback && allowed && denied && generic_invalid_handle_caught;
     FILE* report = NULL;
     if (fopen_s(&report, argv[4], "w") || !report) return 91;
     for (char* p = desktop; *p; ++p) if (*p == '\\') *p = '/';
     for (char* p = argv[2]; *p; ++p) if (*p == '\\') *p = '/';
-    fprintf(report, "{\"personal_redirect\":%s,\"csidl_flags\":%s,\"fallback\":%s,\"fallback_return\":%d,\"fallback_error\":%lu,\"other_folder\":\"%s\",\"expected_other_folder\":\"%s\",\"private_write\":%s,\"medium_write_denied\":%s,\"denial_error\":%lu,\"passed\":%s}\n",
-        personal?"true":"false", flags?"true":"false", fallback?"true":"false", fallback_return, fallback_error, desktop, argv[2], allowed?"true":"false", denied?"true":"false", denial, passed?"true":"false");
+    fprintf(report, "{\"personal_redirect\":%s,\"csidl_flags\":%s,\"fallback\":%s,\"fallback_return\":%d,\"fallback_error\":%lu,\"other_folder\":\"%s\",\"expected_other_folder\":\"%s\",\"private_write\":%s,\"medium_write_denied\":%s,\"denial_error\":%lu,\"generic_invalid_handle_caught\":%s,\"passed\":%s}\n",
+        personal?"true":"false", flags?"true":"false", fallback?"true":"false", fallback_return, fallback_error, desktop, argv[2], allowed?"true":"false", denied?"true":"false", denial, generic_invalid_handle_caught?"true":"false", passed?"true":"false");
     fclose(report);
     const DWORD begin = GetTickCount();
     while (GetTickCount() - begin < 1500) {
@@ -909,7 +1094,7 @@ def safety_probe(root):
     (stage / "discover-motion.request").write_text("safety-probe\n", encoding="utf-8")
     data = run_guard(stage, exe, stage, documents, root / "probe-launch.json", 30,
         arguments=[str(documents), str(folder(0x24)), str(medium / "must-not-exist.txt"), str(result)],
-        protected_roots=[medium], probe=True)
+        protected_roots=[medium], probe=True, handle_known_xlive_debug_close=True)
     if not result.exists():
         raise RuntimeError(f"Probe did not produce a result; receipt: {root / 'probe-launch.json'}")
     evidence = json.loads(result.read_text(encoding="utf-8"))
@@ -918,7 +1103,14 @@ def safety_probe(root):
         and captures[0]["matches_controlled_pointer"] and captures[0]["engine_dt_bytes"] == "8988883c"
         and all(s.get("motion_entry_restored") for s in data["processes"]))
     evidence["one_shot_motion_capture"] = motion_ok
-    evidence["passed"] = evidence["passed"] and motion_ok
+    diagnostics = [d for s in data["processes"] for d in s.get("exception_diagnostics", [])]
+    invalid_handle = [d for d in diagnostics if d["code"] == "c0000008"]
+    diagnostic_ok = (bool(invalid_handle) and all(d["first_chance"]
+        and not d["known_folder_hook_established"]
+        and not d["known_xlive_debug_close"]["continued"]
+        and d.get("registers") and d.get("stack_words") and d.get("eip_module") for d in invalid_handle))
+    evidence["generic_invalid_handle_not_swallowed"] = diagnostic_ok
+    evidence["passed"] = evidence["passed"] and motion_ok and diagnostic_ok
     if not evidence.get("passed") or (medium / "must-not-exist.txt").exists():
         raise RuntimeError(f"Isolation probe failed: {evidence}")
     return {"phase": "probe_passed", "root": str(root), "evidence": evidence,
@@ -940,6 +1132,8 @@ def main():
     launch.add_argument("--original-exe", type=Path, default=RETAIL)
     launch.add_argument("--seconds", "--timeout", type=int, default=900)
     launch.add_argument("--no-motion-discovery", action="store_true")
+    launch.add_argument("--handle-known-xlivedebugclose", action="store_true",
+        help="Opt in to one first-chance invalid-HMODULE CloseHandle exception only with exact loaded xlive hash/call/live stack proof")
     launch.add_argument("arguments", nargs=argparse.REMAINDER)
     probe = sub.add_parser("probe")
     probe.add_argument("--root", type=Path, required=True)
@@ -956,7 +1150,8 @@ def main():
             result = run_guard(args.stage, exe, args.cwd or exe.parent,
                 args.documents or args.stage / "Documents", args.receipt, args.seconds,
                 original_exe=ordinary(args.original_exe), arguments=args.arguments, protected_roots=roots,
-                motion_discovery=not args.no_motion_discovery)
+                motion_discovery=not args.no_motion_discovery,
+                handle_known_xlive_debug_close=args.handle_known_xlivedebugclose)
         print(json.dumps({k: result[k] for k in ("phase", "stage", "root", "root_pid", "receipt", "evidence") if k in result}))
         return 0
     except BaseException as exc:
