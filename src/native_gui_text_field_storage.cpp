@@ -339,7 +339,7 @@ void* raw_font_receiver(NativeGuiTextRawModelReference& reference) {
         m.association.phase == NativeModelStorageGeometryPhase::complete &&
         m.association.context == &r.association &&
         m.association.frame == &c.construction_frame.sections.association &&
-        r.geometry.actual_owners().find(m.actual) == &*m.reference,
+        &r.geometry.actual_owners() == &c.owners && c.owners.find(m.actual) == &*m.reference,
         "raw Font setter requires the exact completed93/85/internal188 provider graph");
     require(read(raw) == 0x00d5c6c8, "raw Font setter excludes active destruction/base prefixes");
     return raw;

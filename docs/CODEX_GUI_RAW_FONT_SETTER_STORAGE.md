@@ -1,6 +1,6 @@
 # Raw Font-name setter storage
 
-**Source preparation, UNBUILT and uncalled.** Base3d3e60822, pure canonical122
+**Source preparation, uncalled; Root build evidence below.** Base3d3e60822, pure canonical122
 frame matcher5b01ff0b2, API checkpointc073b4f42 and shared shader implementation
 ee1145133. Only field_storage HPP/CPP and this doc change. No caller, owner
 FRESH/108/1EC admission, retirement/reference/CMake/shared metadata or Ghidra
@@ -95,3 +95,20 @@ rendering, Font replacement across all users, cached-credit consumption by a rea
 caller, failure/reentry behavior and runtime/ABI acceptance remain unproved.
 No build, test, game or Ghidra mutation ran for this packet; Source order and
 unchanged legacy surfaces were inspected, with no new native-body credit.
+
+## Root integration
+
+Root and independent shader/lifetime reviewer read the complete cf0d2d5f source
+and accept the exact private normal-publication/credit-consumer contract. All
+eleven legacy/native-schedule comparisons pass. The first combined build caught
+an invalid find call through the generic actual-owner base interface. Root now
+checks explicit geometry-owner domain identity and calls find on the SAME
+canonical c.owners registry, without a cast, fallback, new provider or native
+body change. Independent Source review accepts that correction.
+
+Combined Win32 and existing checks2/2 pass (10.73s),
+`local/cc16_raw_font_setter_credit_corrected_build.log`. The earlier failed build
+log is retained. Header/APIc073 is unchanged. This is compiled library code;
+existing owner/raw122/DEFAULT/prefix/geometry/FRESH/108/1EC admission and callers
+are unchanged. The concrete staged lifetime helper, actual input-name caller
+history, terminal Font custody and separate real execution fixture remain open.
