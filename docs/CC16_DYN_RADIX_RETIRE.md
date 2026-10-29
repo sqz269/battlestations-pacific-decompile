@@ -52,3 +52,7 @@ both existing suites (12.09 seconds) and all four native call rows. Receipt:
 both exports refreshed and previous values retained in
 `local/ghidra-annotations-20261029T044036Z.json`. No native-ABI or runtime
 acceptance is added by these checks.
+
+Promotion also merges accepted `b920a83f1`. Its three coordination/plan
+metadata files change no source, headers, CMake or build scripts relative to
+tested `07ea8e4e7`; the existing exact source/build receipt remains applicable.
