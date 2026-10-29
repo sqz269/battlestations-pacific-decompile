@@ -47,7 +47,7 @@ success; any escaped invocation retains the whole graph. Preserve the separate
 host-metadata rejection boundary, native provider failure and genuine existing
 unwind; never infer cleanup, retry, reset fields or add speculative returns.
 
-## Preferred smallest next packet: owned members only
+## Initial proposal: owned members only (not admitted)
 
 Prepare a library-only raw **owned-member retirement admission** over the
 existing AB8250/AB8EE0 body. Still require empty4C/parent/children/timed/vector,
@@ -128,7 +128,19 @@ actual retirement; disposal still destroys ONLY the Text companion LAST.
    meet together on actual FE_initial. Member-only source preparation and the
    accepted empty fixture provide no independent-ready or FE_initial credit.
 
-Next source dispatch should be the owned-members admission packet after root
-reviews this API; main geometry and raw primary/widget routing remain separately
-leased work. Build/existing checks and one later real-provider lifecycle gate
-are future evidence, not results of this document-only audit.
+Independent review found no retained genuine raw-Model Text header producer/
+publication receipt. Raw93 seeds empty headers; generic raw string operations
+do not record Text publication, and AB8C30's retained operation takes the legacy
+reference and also publishes a Font borrow. Neither can authorize this proposal.
+Cached1EC registry/profile/count likewise does not prove a Text-owned credit.
+The proposed enum and owned-member entry are therefore NOT dispatched.
+
+The actual next packet adds only independent unwind-returned metadata and fresh
+checks alongside normal progress, preserving every DEFAULT93/122/widget/owner
+admission. Normal null-data completion uses normal_actions_returned; nonnull
+return also needs its actual returned record. Unwind consumption is before the
+helper and must gain separate returned proof. A future genuine raw producer
+must record exact Text/header/width, entered/completed/failure and pool/backing
+custody before ownership can expand. Main geometry and raw primary/widget routing
+remain separately leased work. No build/runtime acceptance follows from this
+document-only refinement.
