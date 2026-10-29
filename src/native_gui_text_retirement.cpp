@@ -42,7 +42,7 @@ bool disjoint(Region left, Region right) noexcept {
 bool fresh(const NativeGuiTextRetirementAcquired& a) noexcept {
     return !a.started && !a.complete && a.native_eh_state == -1 && !a.destination &&
         a.boundary == Boundary::none && !a.shader.decrement_entered &&
-        !a.shadow.started && !a.glyphs.started && !a.unwind_actions_consumed;
+        !a.shadow.started && !a.glyphs.started && !a.unwind_actions_consumed && !a.unwind_actions_returned;
 }
 void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diagnostic_bytes,
     NativeGuiTextRetirementContext& c, const volatile Word* flags = nullptr) {
@@ -290,6 +290,9 @@ void unwind(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
                 a.base_returned = true; break;
             default: std::terminate();
             }
+            // Independent metadata only: consumption precedes the call, but
+            // completion is published only after its actual normal return.
+            a.unwind_actions_returned |= Word{1} << state;
         }
     } catch (...) {
         if constexpr (std::is_same_v<Context, NativeGuiTextRawModelRetirementContext>) {
