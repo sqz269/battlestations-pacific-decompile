@@ -1,0 +1,298 @@
+{
+  "packet": "codex-bink-runtime-library",
+  "status": "authored_and_strict_win32_object_compiled_unwired_pending_independent_admission",
+  "base_commit": "6bb21d924cf205d53002ea50501988c8d0dea195",
+  "created_utc": "2026-10-29T18:56:46.391777+00:00",
+  "owned_files": [
+    "include/bsp/bink_runtime_library.hpp",
+    "src/bink_runtime_library.cpp",
+    "docs/CC16_BINK_RUNTIME_LIBRARY.md",
+    "reports/cc16_bink_runtime_library.json"
+  ],
+  "claimed_addresses": [],
+  "source_sha256": {
+    "include/bsp/bink_runtime_library.hpp": "510edc8d0f710009872357e976d6fb62bfb9dca50430eb8100155d9713e66007",
+    "src/bink_runtime_library.cpp": "0e3b46555ea02931a6dc298a1966fa6fcc82739588db438b107a73dd5a94cb94"
+  },
+  "unchanged_interface_sha256": {
+    "include/bsp/movie_decoder.hpp": "9151e8eacc41a208769eab8347539c5b15201a330f329b593585cfe620b3dbd7",
+    "include/bsp/movie_factory_followup.hpp": "4b208a04568c712cf41d4b7d1ef490975bc4813fe8397322d114ac477a55e60f",
+    "src/movie_factory_followup.cpp": "00a8b4866bfa3ba88f537a53d94191cef0efbd56f54f1a41aa1d3fe177f2f8c6"
+  },
+  "installed_dll": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\binkw32.dll",
+    "bytes": 178440,
+    "sha256": "7f22055e8f62e228eb90f09846f9b668e0a0b1d29057af6e3b7bff1e08c0d724",
+    "machine": "0x014c x86",
+    "optional_magic": "0x010b PE32",
+    "coff_timestamp": "0x496e3fa5",
+    "named_exports": 72,
+    "required_exports": [
+      {
+        "name": "_BinkOpen@8",
+        "ordinal": 44,
+        "hint": "2B",
+        "rva": "0x0000D690",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkClose@4",
+        "ordinal": 16,
+        "hint": "F",
+        "rva": "0x0000F850",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkSetSoundTrack@8",
+        "ordinal": 65,
+        "hint": "40",
+        "rva": "0x0000D320",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkSetVolume@12",
+        "ordinal": 67,
+        "hint": "42",
+        "rva": "0x000101E0",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkDoFrame@4",
+        "ordinal": 25,
+        "hint": "18",
+        "rva": "0x0000F340",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkCopyToBuffer@28",
+        "ordinal": 20,
+        "hint": "13",
+        "rva": "0x0000E750",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkNextFrame@4",
+        "ordinal": 43,
+        "hint": "2A",
+        "rva": "0x0000F3C0",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkWait@4",
+        "ordinal": 70,
+        "hint": "45",
+        "rva": "0x0000FAC0",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkGetRealtime@12",
+        "ordinal": 33,
+        "hint": "20",
+        "rva": "0x0000FF30",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkGoto@12",
+        "ordinal": 40,
+        "hint": "27",
+        "rva": "0x0000F660",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkPause@8",
+        "ordinal": 49,
+        "hint": "30",
+        "rva": "0x0000FC40",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkSetSoundSystem@8",
+        "ordinal": 64,
+        "hint": "3F",
+        "rva": "0x0000CEA0",
+        "original_import_present": true
+      },
+      {
+        "name": "_BinkOpenDirectSound@4",
+        "ordinal": 45,
+        "hint": "2C",
+        "rva": "0x00011FC0",
+        "original_import_present": true
+      }
+    ],
+    "all13_match_current_installed_executable_imports": true,
+    "runtime_hash_enforcement": "Artifact identity is a composition/launch freeze obligation. The owner accepts only an explicit absolute path; it does not hard-code a local install path/hash or discover a default DLL."
+  },
+  "installed_executable": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "inspection": "PE import metadata only"
+  },
+  "typing": {
+    "decoder_imports": "All eleven existing BinkImports member types are reused through decltype; no existing type/header changed.",
+    "factory_set_sound_system": "int32 (__stdcall*)(BinkSoundSystemOpen, uint32)",
+    "factory_open_direct_sound": "BinkSoundSystemOpen = BinkSoundOpen (__stdcall*)(uint32)",
+    "opaque_sound_open": "int32 (__stdcall*)(opaque BinkSoundState*, uint32 frequency, int32 bits, int32 channels, uint32 flags, BinkHandle*)",
+    "public_declaration_provenance": {
+      "url": "https://raw.githubusercontent.com/ioquake/jedi-outcast/e4d728c502c1c50b01bcdaf1076f56d0fe7b982e/code/win32/bink.h",
+      "revision": "e4d728c502c1c50b01bcdaf1076f56d0fe7b982e",
+      "full_header_sha256": "0cec162271197a935802d744c3a40d4eb4d57913e00373e7afdf71bcee2d74d5",
+      "header_version": "1.0p / 2000-06-26, public API type corroboration only; not the installed 2009 SDK",
+      "declarations": [
+        {
+          "line": 46,
+          "text": "typedef s32  (RADLINK PTR4* BINKSNDOPEN)     (struct BINKSND PTR4* BnkSnd, u32 freq, s32 bits, s32 chans, u32 flags, HBINK bink);"
+        },
+        {
+          "line": 56,
+          "text": "typedef BINKSNDOPEN  (RADLINK PTR4* BINKSNDSYSOPEN) (u32 param);"
+        },
+        {
+          "line": 425,
+          "text": "RADEXPFUNC s32  RADEXPLINK BinkSetSoundSystem(BINKSNDSYSOPEN open, u32 param);"
+        },
+        {
+          "line": 429,
+          "text": "RADEXPFUNC BINKSNDOPEN RADEXPLINK BinkOpenDirectSound(u32 param); // don't call directly"
+        }
+      ],
+      "scope": "Public sound API declarations only; no vendor function implementation/body inspection or invocation."
+    },
+    "qualification": "The public header is an older declaration reference for the two sound callback types only, not the installed SDK or evidence for the eleven newer decoder signatures. Installed exact @8/@4 decorations corroborate Win32 widths; no dynamic call/ABI result is claimed."
+  },
+  "module_contract": {
+    "path_validation": "Reject relative/empty/root-relative paths, missing explicit extension and embedded NUL before loading. No implicit .dll filename append; caller supplies the audited installed absolute path.",
+    "load_api": "LoadLibraryExW(path, nullptr, LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LOAD_LIBRARY_SEARCH_SYSTEM32)",
+    "search_policy": "Explicit filename; dependency filesystem search uses only its directory and System32, under normal Windows loader reuse/known-module rules. No bare-name filesystem search, process path mutation, alternate dependency/export or retry fallback.",
+    "binding": "Resolve all13 exact decorated names with GetProcAddress before construction publishes an owner. No zero/missing-export/default shim.",
+    "publication": "Noncopy/nonmove public owner; stable unique Impl stores module plus both tables. Only const references are exposed after successful construction.",
+    "constructor_failure": "Completed RAII BinkModule member releases only its own unescaped LoadLibrary reference if any later lookup/exception aborts Impl. No imported function or factory callback has been called by this owner. Errors name the path, missing export where applicable, and captured Win32 error.",
+    "normal_teardown": "Composition must close every real decoder handle, finish sound callback/native work and drain dependent shared/native owners before destroying the library. Its own LoadLibrary reference is then released once; dependent table members are destroyed first. No automatic decoder/sound cleanup is invented.",
+    "interrupted_teardown": "Retain the complete dependent runtime aggregate INCLUDING this library object/Impl, its stable import tables and module until process exit. A composing unique_ptr must retain/release the entire aggregate on an interrupted native path; do not unwind this library or keep only a copied table/HMODULE. The import owner has no handle census and cannot certify consumer teardown.",
+    "existing_patterns": [
+      "src/xlive_library.cpp: absolute path validation, checked Win32 module/export operations, memcpy function-pointer conversion",
+      "src/fmod_configuration_library.cpp: actual module RAII and checked lookup/error convention",
+      "src/game_sound_runtime.cpp: failed native cleanup blocks discard; higher composition owns survivor retention"
+    ]
+  },
+  "integration_boundary": {
+    "cmake_changed": false,
+    "startup_factory_renderer_changed": false,
+    "existing_vfs_or_locale_changed": false,
+    "existing_import_types_changed": false,
+    "guards_changed": false,
+    "automatically_instantiated": false,
+    "imported_functions_called_by_owner": false,
+    "dll_loaded_during_packet": false,
+    "dll_executed_during_packet": false,
+    "vendor_body_inspected": false,
+    "new_decoder_handle_created": false
+  },
+  "required_next_composition": [
+    "Root-owned CMake source admission and installed-path selection/freeze",
+    "Actual retained factory publication/registration/deletion with same shared manager and current-publication reread",
+    "One retained library borrowed by actual factory and concrete MovieDecoderHost through normal close/shared drain and interrupted-native retention",
+    "Genuine retained VFS filename preparation, native string pool and failure custody",
+    "Actual renderer resource/surface ownership and release",
+    "Real Bink handle plus BinkGetRealtime clock triple; live locale/settings, widget/localisation/extratitles and Lua/callback reachability"
+  ],
+  "validation": {
+    "kind": "Strict Win32 Release object compile only; not CMake admission/link/full-suite/runtime validation",
+    "compile_receipt": {
+      "source_commit": "6bb21d924cf205d53002ea50501988c8d0dea195",
+      "exit_code": 0,
+      "finished_utc": "2026-10-29T18:58:53.2442576Z",
+      "started_utc": "2026-10-29T18:58:50.1649590Z",
+      "vs_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community",
+      "configuration": "Win32 Release strict object only"
+    },
+    "flags": [
+      "/c",
+      "/std:c++17",
+      "/permissive-",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/EHsc",
+      "/O2",
+      "/MD",
+      "/DWIN32",
+      "/D_WINDOWS",
+      "/DNDEBUG"
+    ],
+    "object_machine": "0x014c x86",
+    "compiler_file_version": "19.51.36244.0",
+    "source_hashes_match_compiled_input": true,
+    "new_tests": 0,
+    "tests_run": false,
+    "games_or_probes": 0,
+    "metadata_and_compile_artifacts": [
+      {
+        "path": "local/bink_runtime_library/bink_exports.txt",
+        "bytes": 4202,
+        "sha256": "003d09ee6c832cf75a9b311878f7f8afc1c9f2736b9e13aecfc0ce9bb4ee7424"
+      },
+      {
+        "path": "local/bink_runtime_library/bink_headers.txt",
+        "bytes": 8518,
+        "sha256": "a1fe050213fcbbdd77954af1f046ed599b72921d6764b0a6eb7d422b7217cec0"
+      },
+      {
+        "path": "local/bink_runtime_library/bink_runtime_library.obj",
+        "bytes": 189097,
+        "sha256": "fad2fd9f0957610a96dce406a2829d2349b0109931183be2b6f2a5de0dc8b9a0"
+      },
+      {
+        "path": "local/bink_runtime_library/compiler_version.txt",
+        "bytes": 15,
+        "sha256": "5a8084e8afa98b7292dccc675f84c0bf935000f2cfb7b5afb92f064f2cb022bf"
+      },
+      {
+        "path": "local/bink_runtime_library/compile_receipt.json",
+        "bytes": 320,
+        "sha256": "c72f4073c03a87df82e2194cdc052ac62a9e76722b5fb60b11905c670dfffcea"
+      },
+      {
+        "path": "local/bink_runtime_library/compile_win32.cmd",
+        "bytes": 579,
+        "sha256": "657b7c3ef9fb31f296bf16963c3b93544aec6f3dd09357f741888085145b0225"
+      },
+      {
+        "path": "local/bink_runtime_library/compile_win32.log",
+        "bytes": 26,
+        "sha256": "3487220c64a19b9c10ce798b276a3d1e55a96f9b6347b7b16e6e24947eb8201b"
+      },
+      {
+        "path": "local/bink_runtime_library/object_headers.txt",
+        "bytes": 412436,
+        "sha256": "42f4535e63d57f02e78e25690aa44fc1e211bd3b69a08899367a54fbd3d59a70"
+      },
+      {
+        "path": "local/bink_runtime_library/original_imports.txt",
+        "bytes": 24992,
+        "sha256": "33a3588b33d9dd1ac0a217e7cd8eacaa45c451feb1903d260ebe9b4cc99c0bad"
+      },
+      {
+        "path": "local/bink_runtime_library/public_sound_declarations.json",
+        "bytes": 1101,
+        "sha256": "cc8c7e3d0678767dcad3e1347b180a9ee8257abdf460ae40aacf33dce53c875a"
+      },
+      {
+        "path": "local/bink_runtime_library/required_exports.json",
+        "bytes": 1901,
+        "sha256": "2943c084217f3c22abd40c03e384a5e6e37178a2b4d485eb9cc32b400122f41c"
+      }
+    ],
+    "all13_source_binding_names_match_metadata": true
+  },
+  "review": "Author self-review only; no independent review/admission claim. Root review and composed runtime gates remain required.",
+  "credit": {
+    "native_body": 0,
+    "vendor_body": 0,
+    "original_abi": false,
+    "decoder_clock_readiness": false,
+    "subtitle_activation": false,
+    "subtitle_playback": false
+  },
+  "guard": "Existing kMovieSubtitlesBound remains OFF; no guard/source activation edit."
+}
