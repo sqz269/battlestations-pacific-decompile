@@ -11,8 +11,16 @@
       "instruction_count": 110,
       "cpp_name_hypothesis": "bsp::cc16_dyn_sap_update::append_axis_endpoints_00c40900",
       "receiver": "ECX storage",
-      "stack_arguments": ["endpoint", "axis"],
-      "preserved": ["EBX", "EBP", "ESI", "EDI"],
+      "stack_arguments": [
+        "endpoint",
+        "axis"
+      ],
+      "preserved": [
+        "EBX",
+        "EBP",
+        "ESI",
+        "EDI"
+      ],
       "return_instruction": "RET 8",
       "observed_eax": "captured initial count+1 modulo 2^32; no semantic native return contract asserted",
       "native_bytes_sha256": "dfaf2f7ca4b0b61d694bbd942dc65b5599e1672d24d56d23e76b9900ab2915bf",
@@ -24,9 +32,19 @@
       "body_bytes": 1189,
       "instruction_count": 357,
       "cpp_name_hypothesis": "bsp::cc16_dyn_sap_update::update_axis_endpoints_00c4c700",
-      "register_arguments": ["ESI axis"],
-      "stack_arguments": ["storage", "endpoint"],
-      "preserved": ["EBX", "EBP", "EDI", "ESI unchanged"],
+      "register_arguments": [
+        "ESI axis"
+      ],
+      "stack_arguments": [
+        "storage",
+        "endpoint"
+      ],
+      "preserved": [
+        "EBX",
+        "EBP",
+        "EDI",
+        "ESI unchanged"
+      ],
       "return_instruction": "RET 8",
       "public_return": "void; incidental native EAX values are not presented as a semantic result",
       "native_bytes_sha256": "5de6c2fe74f05c23efc9deb866acc26ae74a639a159944061f5e7bd64386007a",
@@ -44,21 +62,81 @@
     "native_bytes": "complete bounded bsp.py ghidra bytes spans, contiguous addresses and lengths asserted"
   },
   "rows": [
-    {"address": "00c40936", "native": "00bf55be", "function": "00c40900", "kind": "call", "contract": "actual CRT new; first equality growth capacity published before allocation"},
-    {"address": "00c40973", "native": "00bf6989", "function": "00c40900", "kind": "call", "contract": "actual CRT free of nonnull first old vector"},
-    {"address": "00c409ae", "native": "00bf55be", "function": "00c40900", "kind": "call", "contract": "actual CRT new; second equality growth after first append"},
-    {"address": "00c409e7", "native": "00bf6989", "function": "00c40900", "kind": "call", "contract": "actual CRT free of nonnull second old vector"},
-    {"address": "00c4c83c", "native": "00c4c5d0", "function": "00c4c700", "kind": "call", "contract": "minimum moves forward across maximum: first=moving, storage, other"},
-    {"address": "00c4c938", "native": "00c40a30", "function": "00c4c700", "kind": "call", "contract": "minimum moves backward across maximum: storage, first=moving, second=other"},
-    {"address": "00c4ca4a", "native": "00c40a30", "function": "00c4c700", "kind": "call", "contract": "maximum moves forward across minimum: storage, first=moving, second=other"},
-    {"address": "00c4cb55", "native": "00c4c5d0", "function": "00c4c700", "kind": "call", "contract": "maximum moves backward across minimum: first=moving, storage, other"}
+    {
+      "address": "00c40936",
+      "native": "00bf55be",
+      "function": "00c40900",
+      "kind": "call",
+      "contract": "actual CRT new; first equality growth capacity published before allocation"
+    },
+    {
+      "address": "00c40973",
+      "native": "00bf6989",
+      "function": "00c40900",
+      "kind": "call",
+      "contract": "actual CRT free of nonnull first old vector"
+    },
+    {
+      "address": "00c409ae",
+      "native": "00bf55be",
+      "function": "00c40900",
+      "kind": "call",
+      "contract": "actual CRT new; second equality growth after first append"
+    },
+    {
+      "address": "00c409e7",
+      "native": "00bf6989",
+      "function": "00c40900",
+      "kind": "call",
+      "contract": "actual CRT free of nonnull second old vector"
+    },
+    {
+      "address": "00c4c83c",
+      "native": "00c4c5d0",
+      "function": "00c4c700",
+      "kind": "call",
+      "contract": "minimum moves forward across maximum: first=moving, storage, other"
+    },
+    {
+      "address": "00c4c938",
+      "native": "00c40a30",
+      "function": "00c4c700",
+      "kind": "call",
+      "contract": "minimum moves backward across maximum: storage, first=moving, second=other"
+    },
+    {
+      "address": "00c4ca4a",
+      "native": "00c40a30",
+      "function": "00c4c700",
+      "kind": "call",
+      "contract": "maximum moves forward across minimum: storage, first=moving, second=other"
+    },
+    {
+      "address": "00c4cb55",
+      "native": "00c4c5d0",
+      "function": "00c4c700",
+      "kind": "call",
+      "contract": "maximum moves backward across minimum: first=moving, storage, other"
+    }
   ],
   "contracts": {
     "actual_raw_objects_and_same_crt": true,
-    "direct_reconstructed_dependencies": ["cc16_dyn_storage::add_endpoint_pair_00c40a30", "cc16_dyn_pair_retire::retire_endpoint_pair_00c4c5d0"],
-    "required_crt": ["operator_new_00bf55be", "free_00bf6989", "malloc_00bf9f1a"],
+    "direct_reconstructed_dependencies": [
+      "cc16_dyn_storage::add_endpoint_pair_00c40a30",
+      "cc16_dyn_pair_retire::retire_endpoint_pair_00c4c5d0"
+    ],
+    "required_crt": [
+      "operator_new_00bf55be",
+      "free_00bf6989",
+      "malloc_00bf9f1a"
+    ],
     "append": "captured initial count keys; equality-only uint32 growth and byte-count wrap; per-destination zero checks; ordered fresh reads",
-    "x87_sites": ["00c4c70b FLD", "00c4c724 FSTP", "00c4c741 FLD", "00c4c74b FSTP"],
+    "x87_sites": [
+      "00c4c70b FLD",
+      "00c4c724 FSTP",
+      "00c4c741 FLD",
+      "00c4c74b FSTP"
+    ],
     "x87": "explicit MSVC x86 inline FLD/FSTP with ambient control/status/stack; no control-word replacement or integer-copy substitution",
     "sort_key": "((0u-(bits>>31))|0x80000000u)^bits after native x87 store",
     "ordering": "minimum complete before maximum index reread; signed forward size tests; unsigned adjacent keys; equal keys stable",
@@ -71,10 +149,103 @@
     "semantic_native_return_contract_claimed": false
   },
   "incoming_evidence": [
-    {"callee": "00c40900", "callers": ["00c4cbf0", "00c54da0"], "source": "live bounded caller query; parents outside packet"},
-    {"callee": "00c4c700", "callers": ["00c4cbf0", "00c4cbb0", "00c5a850"], "source": "live bounded caller query; parents outside packet"}
+    {
+      "callee": "00c40900",
+      "callers": [
+        "00c4cbf0",
+        "00c54da0"
+      ],
+      "source": "live bounded caller query; parents outside packet"
+    },
+    {
+      "callee": "00c4c700",
+      "callers": [
+        "00c4cbf0",
+        "00c4cbb0",
+        "00c5a850"
+      ],
+      "source": "live bounded caller query; parents outside packet"
+    }
   ],
   "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "accepted_base": "c458c4d24",
+    "source_candidates": [
+      "9434d4a37",
+      "57f644d5b",
+      "a5b6836e2",
+      "primary frozen SAP retire source"
+    ],
+    "build_log": "local/cc16_sap_accuracy_off_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object_sha256": "923055aaebd18f35426ee297284f48148270e02d2ab9c808e11bdea4914b88aa",
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "new_tests": false,
+    "source_cpp_sha256": "ebb2891e70cbc5357b90980e53190a98402610ead2686774a1874f4b27139377",
+    "final_object_fp_prefix": [
+      "00000000: push        ebp",
+      "00000001: mov         ebp,esp",
+      "00000003: push        ecx",
+      "00000004: mov         ecx,dword ptr [ebp+0Ch]",
+      "00000007: push        ebx",
+      "00000008: push        esi",
+      "00000009: mov         esi,dword ptr [ebp+10h]",
+      "0000000C: push        edi",
+      "0000000D: lea         eax,[esi+1]",
+      "00000010: lea         eax,[ecx+eax*4]",
+      "00000013: mov         dword ptr [ebp-4],eax",
+      "00000016: mov         eax,dword ptr [ebp-4]",
+      "00000019: fld         dword ptr [eax]",
+      "0000001B: mov         edi,dword ptr [ebp+8]",
+      "0000001E: lea         eax,[esi*2+1]",
+      "00000025: add         eax,esi",
+      "00000027: lea         ebx,[edi+eax*4]",
+      "0000002A: movzx       eax,word ptr [ecx+esi*2+20h]",
+      "0000002F: mov         edx,dword ptr [ebx]",
+      "00000031: shl         eax,3",
+      "00000034: add         edx,eax",
+      "00000036: mov         dword ptr [ebp+8],edx",
+      "00000039: mov         eax,dword ptr [ebp+8]",
+      "0000003C: fstp        dword ptr [eax]",
+      "0000003E: mov         eax,dword ptr [edx]",
+      "00000040: mov         ecx,eax",
+      "00000042: shr         ecx,1Fh",
+      "00000045: neg         ecx",
+      "00000047: or          ecx,80000000h",
+      "0000004D: xor         ecx,eax",
+      "0000004F: mov         eax,dword ptr [ebp+0Ch]",
+      "00000052: mov         dword ptr [edx],ecx",
+      "00000054: movzx       ecx,word ptr [eax+esi*2+26h]",
+      "00000059: lea         eax,[eax+esi*4]",
+      "0000005C: add         eax,10h",
+      "0000005F: mov         dword ptr [ebp+8],eax",
+      "00000062: mov         eax,dword ptr [ebp+8]",
+      "00000065: fld         dword ptr [eax]",
+      "00000067: mov         eax,dword ptr [ebx]",
+      "00000069: lea         edx,[eax+ecx*8]",
+      "0000006C: mov         dword ptr [ebp+8],edx",
+      "0000006F: mov         eax,dword ptr [ebp+8]",
+      "00000072: fstp        dword ptr [eax]"
+    ],
+    "object_inspection": "local/final_sap_update_object.txt; exact four FLD/FSTP operations, no intervening call or FP-control change",
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T052526Z.json",
+    "saved": true,
+    "exports_refreshed": true
+  },
+  "remaining_integrator_work": [
+    "genuine original game/root reachability or qualified dead-chain closure",
+    "real caller/object/CRT custody and native ABI transport where needed",
+    "required runtime gates before reachable activation"
+  ],
+  "worker_validation": {
     "assembly_review": "complete 110-instruction and 357-instruction refreshed listings plus full contiguous live byte spans",
     "source_compile_tested": "MSVC x86 C++17 object-only /permissive- /EHsc /fp:strict /O2 /W4 /WX; exit 0",
     "object_sha256": "679f8e35226f6fbe045071560ac67a3f451dbe8e93d6c928640f7c706c9e5a11",
@@ -89,9 +260,5 @@
     "tests_added": false,
     "ghidra_mutated": false
   },
-  "remaining_integrator_work": [
-    "shared CMake/ledger registration, Ghidra annotations/save/refresh and common Win32 build with existing checks",
-    "genuine caller and CRT custody wiring without fabricated objects/providers",
-    "original register/stack ABI adapters, fixture/native differential and game validation before activation"
-  ]
+  "integration_status": "reconstructed_build_tested_unwired"
 }

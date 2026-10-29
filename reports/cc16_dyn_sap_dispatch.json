@@ -1,0 +1,220 @@
+{
+  "packet": "codex-dyn-sap-dispatch",
+  "source": "src/cc16_dyn_sap_dispatch.cpp",
+  "header": "include/bsp/cc16_dyn_sap_dispatch.hpp",
+  "accepted_upstream": "c458c4d24",
+  "private_dependency_commit": "57f644d5bd31d0f46ad49899c8ec5219fde33786",
+  "functions": [
+    {
+      "start": "00c4cbb0",
+      "body_end_inclusive": "00c4cbe5",
+      "body_bytes": 54,
+      "instruction_count": 23,
+      "cpp_name_hypothesis": "bsp::cc16_dyn_sap_dispatch::update_flagged_endpoint_00c4cbb0",
+      "receiver": "ECX manager",
+      "stack_arguments": [
+        "endpoint"
+      ],
+      "return_instruction": "RET 4",
+      "preserved": [
+        "EBX",
+        "EDI",
+        "ESI saved/restored on taken branch",
+        "EBP unchanged"
+      ],
+      "native_bytes_sha256": "382b9302327409916d445ba52b2979841e7e7f73e28c556b409cc9ae9dd06d16",
+      "export_assembly_sha256": "d0c8ae5ef10f449aa14dfa0deb34a3fbe62bd0ed1232d96bedd28e807ff0dfbe"
+    },
+    {
+      "start": "00c4cbf0",
+      "body_end_inclusive": "00c4cc82",
+      "body_bytes": 147,
+      "instruction_count": 48,
+      "cpp_name_hypothesis": "bsp::cc16_dyn_sap_dispatch::process_pending_endpoints_00c4cbf0",
+      "register_arguments": [
+        "EDI manager"
+      ],
+      "stack_arguments": [],
+      "return_instruction": "RET 0",
+      "native_stack_frame": "AND ESP,FFFFFFF8 aligns down to eight bytes; not a public ABI adapter",
+      "preserved": [
+        "EBP",
+        "EBX",
+        "ESI",
+        "EDI unchanged"
+      ],
+      "native_bytes_sha256": "ce166c3efcdcd31171920932ec472740986a654f2b974032b1445ece552133e1",
+      "export_assembly_sha256": "384f0c141eb694939807652d96f98ad70cc9823615f6d60c5c4495d68684c60f"
+    }
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py ghidra verifying client before every live batch",
+    "fresh_export_utc": "2026-10-29T04:57:58Z",
+    "native_bytes": "complete bounded bsp.py ghidra bytes spans; contiguous addresses and lengths asserted"
+  },
+  "rows": [
+    {
+      "address": "00c4cbc3",
+      "native": "00c4c700",
+      "function": "00c4cbb0",
+      "kind": "call",
+      "contract": "axis0 ESI, same manager and endpoint stack arguments"
+    },
+    {
+      "address": "00c4cbcf",
+      "native": "00c4c700",
+      "function": "00c4cbb0",
+      "kind": "call",
+      "contract": "axis1 ESI, same objects; flag not rechecked"
+    },
+    {
+      "address": "00c4cbdb",
+      "native": "00c4c700",
+      "function": "00c4cbb0",
+      "kind": "call",
+      "contract": "axis2 ESI, same objects; flag not rechecked"
+    },
+    {
+      "address": "00c4cc1e",
+      "native": "00c40900",
+      "function": "00c4cbf0",
+      "kind": "call",
+      "contract": "axis0; ECX manager, stack(endpoint,axis)"
+    },
+    {
+      "address": "00c4cc28",
+      "native": "00c40900",
+      "function": "00c4cbf0",
+      "kind": "call",
+      "contract": "axis1; same captured endpoint and manager"
+    },
+    {
+      "address": "00c4cc32",
+      "native": "00c40900",
+      "function": "00c4cbf0",
+      "kind": "call",
+      "contract": "axis2; same captured endpoint and manager"
+    },
+    {
+      "address": "00c4cc3d",
+      "native": "00c40b30",
+      "function": "00c4cbf0",
+      "kind": "call",
+      "contract": "EAX axis0, ECX endpoint, EDX manager; direct recovered left-only body"
+    },
+    {
+      "address": "00c4cc4b",
+      "native": "00c40b30",
+      "function": "00c4cbf0",
+      "kind": "call",
+      "contract": "EAX axis1, ECX endpoint, EDX manager; direct recovered left-only body"
+    },
+    {
+      "address": "00c4cc57",
+      "native": "00c4c700",
+      "function": "00c4cbf0",
+      "kind": "call",
+      "contract": "ESI axis2, stack(manager,endpoint); flag publication follows return"
+    }
+  ],
+  "contracts": {
+    "actual_raw_objects_and_same_crt": true,
+    "required_crt": [
+      "operator_new_00bf55be",
+      "free_00bf6989",
+      "malloc_00bf9f1a"
+    ],
+    "direct_reconstructed_dependencies": [
+      "cc16_dyn_sap_update::append_axis_endpoints_00c40900",
+      "cc16_dyn_sap_endpoints::update_keys_move_left_00c40b30",
+      "cc16_dyn_sap_update::update_axis_endpoints_00c4c700"
+    ],
+    "flagged_update": "one byte flag check, fixed axes0/1/2 full update, no direct flag write",
+    "pending": "data+194h/count+198h; unsigned uint32 iteration; endpoint captured once, data/count freshly loaded each iteration",
+    "per_endpoint_order": [
+      "append axis0",
+      "append axis1",
+      "append axis2",
+      "move keys left axis0",
+      "move keys left axis1",
+      "full update axis2",
+      "uint32 index increment",
+      "flag+2Ch=1",
+      "fresh unsigned count compare"
+    ],
+    "normal_completion": "write pending count zero, including initially empty path",
+    "exception_visible_state": "no catch/cleanup; prior leaf changes/flags persist, current final flag store is skipped if a leaf throws, pending count is not cleared by this wrapper",
+    "allocation_failure_guard": false,
+    "exception_rollback": false,
+    "fabricated_class_global_vtable_default_provider_or_stub": false,
+    "semantic_native_return_contract_claimed": false
+  },
+  "incoming_evidence": [
+    {
+      "callee": "00c4cbb0",
+      "vtable": "00d7a13c",
+      "slot": 2,
+      "slot_address": "00d7a144",
+      "source": "existing RTTI/export annotation and live DATA xref; no host vtable wiring"
+    },
+    {
+      "callee": "00c4cbf0",
+      "site": "00c5a864",
+      "caller": "00c5a850",
+      "source": "live unconditional-call xref; caller outside packet"
+    }
+  ],
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "accepted_base": "c458c4d24",
+    "source_candidates": [
+      "9434d4a37",
+      "57f644d5b",
+      "a5b6836e2",
+      "primary frozen SAP retire source"
+    ],
+    "build_log": "local/cc16_sap_accuracy_off_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object_sha256": "d82dd6ed5fb1825b8dc255507dc616f034cf1ab6506a49b1e68af1af5162acea",
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "new_tests": false,
+    "source_cpp_sha256": "e9931c465d4100ed5c22938fdf852ee4a1028720ebfbca05bdd950db4b9fc56e",
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T052526Z.json",
+    "saved": true,
+    "exports_refreshed": true
+  },
+  "remaining_integrator_work": [
+    "genuine original game/root reachability or qualified dead-chain closure",
+    "real caller/object/CRT custody and native ABI transport where needed",
+    "required runtime gates before reachable activation"
+  ],
+  "worker_validation": {
+    "assembly_review": "complete refreshed 23/48-instruction listings plus complete contiguous live bytes",
+    "source_compile_tested": "MSVC x86 C++17 object-only /permissive- /EHsc /fp:strict /O2 /W4 /WX; exit 0",
+    "object_sha256": "7048bbcb2915b02e771f584045b700bacc48b66eb45f1fb47cc21c1800f8afa6",
+    "generated_assembly": "nine direct dependency calls, exact axis/argument order, single flag gate, post-call flag publication and live unsigned pending count/data reads reviewed",
+    "call_report_verification": "9 call rows checked, 0 failed",
+    "build_registered": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "tests_added": false,
+    "ghidra_mutated": false
+  },
+  "integration_status": "reconstructed_build_tested_unwired"
+}

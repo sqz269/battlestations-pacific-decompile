@@ -1,0 +1,105 @@
+{
+  "packet": "codex-dyn-sap-retire",
+  "functions": [
+    {
+      "address": "00c4c550",
+      "name": "retire_endpoint_pairs_00c4c550",
+      "original_abi": "EBX manager, stack endpoint, RET4; no established semantic EAX result"
+    },
+    {
+      "address": "00c4cc90",
+      "name": "remove_and_recycle_endpoint_00c4cc90",
+      "original_abi": "ECX manager, stack endpoint, RET4; no established semantic EAX result"
+    }
+  ],
+  "rows": [
+    {
+      "address": "00c4c591",
+      "native": "00c40e50",
+      "function": "00c4c550",
+      "kind": "call"
+    },
+    {
+      "address": "00c4cca2",
+      "native": "00c40800",
+      "function": "00c4cc90",
+      "kind": "call"
+    },
+    {
+      "address": "00c4ccb0",
+      "native": "00c40800",
+      "function": "00c4cc90",
+      "kind": "call"
+    },
+    {
+      "address": "00c4ccbe",
+      "native": "00c40800",
+      "function": "00c4cc90",
+      "kind": "call"
+    },
+    {
+      "address": "00c4ccc4",
+      "native": "00c4c550",
+      "function": "00c4cc90",
+      "kind": "call"
+    },
+    {
+      "address": "00c4cd34",
+      "native": "00bf6989",
+      "function": "00c4cc90",
+      "kind": "call"
+    },
+    {
+      "address": "00c4cd6e",
+      "native": "00bf6989",
+      "function": "00c4cc90",
+      "kind": "call"
+    }
+  ],
+  "independent_review": {
+    "commit": "576e6a353b242bce8a47b78555ec210a1e74beb2",
+    "report": "reports/cc16_dyn_sap_retire_review.json",
+    "source_sha256": "824effa7ab9cb6281efcaed1c2c062333aed0c1fedebe0b9dcf85eec7c4ad13b",
+    "header_sha256": "c40c212d0cda946a0f2480e8ff5e2e1bdaacf1b37d5f9d37e4c3f8e8a319f569",
+    "source_listing_discrepancies": 0,
+    "scope": "static normal-body review only"
+  },
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr"
+  },
+  "integration_status": "reconstructed_build_tested_unwired",
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "accepted_base": "c458c4d24",
+    "source_candidates": [
+      "9434d4a37",
+      "57f644d5b",
+      "a5b6836e2",
+      "primary frozen SAP retire source"
+    ],
+    "build_log": "local/cc16_sap_accuracy_off_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object_sha256": "3155621400e8ef7c0a4481e9cf5b3fef8b5e05b58e24cfc55b6d3662438cccfa",
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "new_tests": false,
+    "source_cpp_sha256": "824effa7ab9cb6281efcaed1c2c062333aed0c1fedebe0b9dcf85eec7c4ad13b",
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T052526Z.json",
+    "saved": true,
+    "exports_refreshed": true
+  },
+  "remaining_integrator_work": [
+    "genuine original game/root reachability or qualified dead-chain closure",
+    "real caller/object/CRT custody and native ABI transport where needed",
+    "required runtime gates before reachable activation"
+  ]
+}

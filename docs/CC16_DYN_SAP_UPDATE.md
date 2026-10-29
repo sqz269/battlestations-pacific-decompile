@@ -81,3 +81,16 @@ ABI compatibility, native differential behavior and game validation remain
 unproven. Defined incoming bodies include `00C4CBF0` (both routines),
 `00C54DA0` (append), and `00C4CBB0`/`00C5A850` (update); this packet claims
 no reconstruction or wiring of those parents.
+
+## Primary integration
+
+The primary reviewed the complete source/assembly bodies and registered the
+module in `bsp_core`. The combined Win32 Release build over accepted
+`c458c4d24` with source candidates `57f644d5`/`a5b6836e` and the dormant
+accuracy correction passed both existing suites (10.69 seconds). Native
+call rows passed; final-object inspection confirms the actual x87 copy epochs.
+Receipt: `local/cc16_sap_accuracy_off_build.log`. Metadata-only placeholders
+now name compiled/unwired bodies. Locked annotations were saved and exports
+refreshed; previous values are in
+`local/ghidra-annotations-20261029T052526Z.json`. Genuine game/root, caller
+and CRT custody, original register/fault ABI and runtime gates remain open.

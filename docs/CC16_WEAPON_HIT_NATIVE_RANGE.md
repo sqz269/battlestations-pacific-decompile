@@ -126,3 +126,16 @@ Keep the accepted PC24 cohort fixed; toggle only the new guard. Preserve
 the existing seeds/draw policy, frame caps, retained artifacts and comparison
 rules. Root coordinates any resulting timing or WINS decision. Until those
 gates pass, the new live path remains OFF and activation is unaccepted.
+
+## Primary source integration
+
+The primary verified the canonical cell producer/startup/getter chain and
+old API preservation. The common Win32 build and both suites passed with
+this guard still OFF; the actual final ship-AI object has zero conversion-
+getter symbol references. Final helper disassembly retains FMUL at+73,
+address-only ECX load at+75 and qualified converter CALL at+78 without
+intermediate spill, plus the native unordered branches. Receipt:
+`local/cc16_sap_accuracy_off_build.log`; object/symbol dumps are named in
+the JSON report. No new original-body, whole-function/interpolation, ABI
+or game-activation credit follows. The independent native-window fixture
+receipt and matched live gates are separate prerequisites before ON.
