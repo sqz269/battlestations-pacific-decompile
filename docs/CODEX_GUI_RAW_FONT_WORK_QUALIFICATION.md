@@ -57,3 +57,22 @@ OFF9356c19f. Win32 and existing checks2/2 pass11.83s; the ignored restoration
 receipt hashes the rebuilt outputs and all three frozen candidate receipts.
 This is compilation/freeze evidence only. No private Font candidate executed;
 the separate frozen OFF9356c19f13-row comparison is still running.
+
+The running OFF13 cohort has an actual blocking USN12 `pair_diff` exit1:
+the final AI table changes only `clear_37c` for Montpelier2041.1->10000.0,
+Columbia10000.0->1556.4 and Spence10000.0->2581.6. Native1812 and summary933
+rows, gameplay/deaths/units, existing ordered full/mission and teardown checks
+match. This does not satisfy the registered pair0 gate. No mask or rerun has
+been accepted to remove the failure. The game finished15:31:46Z, before the
+prospective independent private-fixture overlap amendment15:35:10Z.
+
+The formatter is `game_hosts_ship_ai.cpp`15318-15327; the value is copied
+from the real clearance block at11545 after009EF910. Its static-zone providers
+read the avoidance search cache. `ship_ai_search_storage.cpp` deliberately
+leaves four cache bounds as heap contents unless the existing labelled harness
+aid `BSP_SEARCHER_BOUNDS_INIT=1` is set; it is absent for this USN12 cohort.
+The AI/clearance/cache/provider sources and pair observer are byte-identical
+between5b01 and9356. The known cache issue is a hypothesis for this discrepancy,
+not proof of its cause. A separately preregistered trace/bounds experiment may
+test it; it cannot turn the original failed13-row cohort into a pass. Publication
+remains blocked pending disposition of this evidence and the private fixtures.
