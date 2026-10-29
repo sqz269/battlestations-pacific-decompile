@@ -128,6 +128,10 @@ public:
     // Resolve/request frames are retained together if a nested call fails.
     bool request_file_store(const char* path, std::uint32_t native_callback);
     std::uint32_t file_store_request_failure_site() const noexcept;
+    // BDD600 normalizes the actual mutable header, probes with D683E8 and
+    // replaces it on success. Copy its final spelling back on TRUE and FALSE.
+    // Exceptions propagate; this is not BDD6E0 or candidate/extension search.
+    bool probe_and_replace_file_name(std::string& mutable_name);
     // BDF4C0 mutates the pooled caller name even on a normal false result.
     // Copy that final spelling back before releasing the complete native frame.
     // An interrupted native call retains its frame/header in this runtime;

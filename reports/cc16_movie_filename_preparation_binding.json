@@ -1,0 +1,192 @@
+{
+  "packet": "codex-movie-native-filename-provider",
+  "status": "exact_bdd600_api_exposed_win32_build_existing_checks_passed_unattached_runtime_unvalidated",
+  "base_commit": "1e10d9de40bda6596ebdb89487a657cdba034d8d",
+  "requested_initial_main": "5c2547156c0d8d83d79f7b2600c6f6ea99cd975a",
+  "base_note": "origin/main had advanced to Font lifecycle publication 1e10d9de4; all four VFS files identical to requested 5c base",
+  "recorded_utc": "2026-10-29T18:11:46.795388+00:00",
+  "address": "00BDD600",
+  "new_api": [
+    "GameNativeVfsRuntime::probe_and_replace_file_name(std::string&)",
+    "GameVfsHost::probe_and_replace_file_name(std::string&)"
+  ],
+  "source_sha256": {
+    "include/bsp/game_native_vfs_runtime.hpp": "57c378aabe457270e7d71e64f581aa8a2a31249976d8405e6dd51eb932e57ab1",
+    "src/game_native_vfs_runtime.cpp": "f231e017c239f774d37bf3fa06718f9aa16c34d64547c9b41704a5d607c84a2e",
+    "include/bsp/game_hosts_vfs.hpp": "1e3878ed0f752e14946c132fdee509a76f07c95cd52676bc00fafdbeb7ad0326",
+    "src/game_hosts_vfs.cpp": "7394248062dc8b98f55e06ea172e93fb3da3243a897f9e04dcb652a70750e087"
+  },
+  "source_patch_sha256": "f1ed012af5eda2dbfc01836059bf77eb175233fbcbaa175122e6a7f14b601020",
+  "existing_vfs_body_checks": [
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "marker": "GameNativeVfsRuntime::exists(",
+      "body_sha256": "367632326a3960e0fcfbfc7ae7821c0be84665b0b215c91a5878d0ceae751fb6",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "marker": "GameNativeVfsRuntime::resolve_existing(",
+      "body_sha256": "fb213d4360ab9b284b4d908ccc47cc3016f5e4981b74d8a6b6a16adb5e8fad37",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "marker": "GameNativeVfsRuntime::direct_resolve(",
+      "body_sha256": "f7d56bb9207a8c742a4a5d83cc86c7106da2ece2b9d7a66a10652f7d6710a2ea",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "marker": "GameNativeVfsRuntime::read_all(",
+      "body_sha256": "4d06b5d2a9b7ca9cd7b544027fc1e128791db6591c4d26e2ed4a328d1b9a16d9",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "marker": "PooledHeader(ActualNativeStringPoolStorage& storage, const char* text)",
+      "body_sha256": "55658f7ff9f689a5f9eb830ea3b54c5cdcb4eefe8bcb02fde31e79a98aab546e",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "marker": "GameVfsHost::exists(",
+      "body_sha256": "c4e62fa47b145b433626070bbef433ebfa1dde8747d658889926d6b505beff9f",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "marker": "GameVfsHost::resolve_existing(",
+      "body_sha256": "6d55f2eee7b75cade37c27057f281b5e3941daa738274268d0f424a3e3f4b881",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "marker": "GameVfsHost::direct_resolve(",
+      "body_sha256": "5c5196e6dedaeba0beca27c67a90fbf30aef4e4d6e0fabe71db0f5abd8bc5d06",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "marker": "GameVfsHost::open(",
+      "body_sha256": "9f7eb11572e422cdf5b10939ef463afa86dcd04254ad399f71a63960e3236196",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "marker": "GameVfsHost::active_runtime()",
+      "body_sha256": "fd072f614e6ffd177827b56b945d656ef036cb03914dc48805c49c7c1fa19b7b",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/game_hosts_vfs.hpp",
+      "marker": "invoke_native(Operation&& operation)",
+      "body_sha256": "99326f565039d2f2b337c1fa427bdcdb81a8ed4d611930bf05db848435acb724",
+      "unchanged": true
+    }
+  ],
+  "source_contract": {
+    "caller": "std::string in/out bridge, not an original native ABI entry",
+    "manager": "current actual_manager() retained by existing GameNativeVfsRuntime",
+    "context": "same Impl::lookup with actual D683E8 name-probe profile",
+    "string_pool": "exact impl_->lookup.physical.strings, also used by BDD600 kernel",
+    "input": "new length-aware PooledHeader overload uses existing NativeString resize0041DD40 on same actual storage and copies full byte count, including embedded NUL; existing C-string overload unchanged",
+    "native": "existing replace_native_vfs_file_name_00bdd600, src/native_vfs_lookup_routes.cpp:281",
+    "normal_return": "unconditionally copy final native header spelling before returning found; both TRUE/FALSE preserve mutation",
+    "empty": "clear std::string only for genuine native length0, never as a provider-error/default-result fallback"
+  },
+  "lifetime_and_errors": {
+    "readiness": "Host rejects unready core with logic_error before native entry; runtime also requires registered core",
+    "reentry": "new runtime API rejects an existing name_resolution invocation; no retained resolution/request frame is cleared or replaced",
+    "visitor": "existing BDD600 kernel owns its D683E8 visitor and normal/C++-exception cleanup; no fake BDD6E0 acquired-frame model introduced",
+    "caller_header": "actual PooledHeader remains live through the kernel and normal copy-out, then releases through the same native string pool; construction failure releases owned input storage",
+    "host_failure": "same invoke_native catches any propagated operation error, latches native_operation_failed_ and rethrows; active_runtime blocks reentry and requires_process_retention remains authoritative",
+    "exceptional_output": "no successful FALSE/empty result on exceptions; destination copy-out occurs only after normal native return",
+    "unchanged": "existing process-retention and native provider failure policies are not bypassed"
+  },
+  "preserved": {
+    "exists": true,
+    "direct_resolve_BDD6E0": true,
+    "resolve_existing_BDF4C0": true,
+    "open": true,
+    "old_c_string_header_constructor": true,
+    "invoke_native_and_active_runtime": true,
+    "kernel_unchanged": {
+      "path": "src/native_vfs_lookup_routes.cpp",
+      "sha256": "e50285d46eb3a2eb3d3f21c28ee7d1ef1133c0b4c581152c726a4991bff57a9f"
+    }
+  },
+  "unattached": {
+    "playback_caller": false,
+    "decoder_clock_widget_provider_added": false,
+    "subtitle_guard_changed": false,
+    "locale_c30_tree_unchanged": true
+  },
+  "native_evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_snapshot_functions": 77631,
+    "original_abi": "ECX actual manager; stack mutable 8h NativeString header; AL 0/1; RET4 at 00BDD6A9/00BDD6D0",
+    "assembly": [
+      "00BDD61A loads caller header from stack; 00BDD61F captures manager",
+      "00BDD623 normalizes before D683E8 visitor construction at 00BDD62A",
+      "00BDD64A traverses; 00BDD653 selects false path; 00BDD6B8 destroys visitor then returns AL0",
+      "success destroys visitor and returns AL1; existing kernel owns both normal and C++-exception cleanup"
+    ],
+    "queries": "verified ensure/count and bounded show pseudocode/assembly; no Ghidra/ledger mutation"
+  },
+  "build": {
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "parallel_nodes": 4,
+    "exit_code": 0,
+    "existing_ctest_checks": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "passed": 2,
+    "failed": 0,
+    "total_seconds": 13.21,
+    "log": {
+      "path": "local/movie_filename_preparation_build.log",
+      "sha256": "bf0c51934929da8d88a6344326d186fcfda35aef371e75929867bd46df6a7221"
+    },
+    "last_ctest_log": {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "sha256": "27831d090733bbef7c27d69fa3b770fd93b874782f37e69f1e2b20a2d52b256b"
+    },
+    "artifacts": [
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7456256,
+        "sha256": "dce9f8e69555a78d956ccb52bd5d59fff8255bfd440cfcb2d2d8f00aad9de2bc"
+      },
+      {
+        "path": "build/win32/Release/xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "c92b28c8be07462bceb0aca3a4652ed0e0d83546b374b8a658e7fac8be22162a"
+      }
+    ],
+    "scope": "compile/link and existing checks; new unattached API was not runtime-exercised; no C++ edits after build launch"
+  },
+  "focused_fixture": {
+    "added": false,
+    "risk": "accidentally retaining old spelling when native returned FALSE after normalization",
+    "resolution": "copy-out is independent of found and source-reviewed against existing BDD600; default no new tests. Runtime provider evidence remains separate."
+  },
+  "validation": {
+    "source_files": 4,
+    "new_tests": 0,
+    "new_test_frameworks": 0,
+    "games": 0,
+    "runtime_probes": 0,
+    "shared_cmake_or_ledger_edits": 0,
+    "ghidra_mutations": 0,
+    "install_save_profile_writes": 0
+  },
+  "remaining": "Real Bink module/factory/decoder owner, native dialog/widget/clock/renderer-lifetime and subtitle callback contracts remain required; no API attachment or ON change.",
+  "additional_native_body_credit": 0,
+  "abi_claim": false,
+  "activation": false,
+  "playback_claim": false
+}

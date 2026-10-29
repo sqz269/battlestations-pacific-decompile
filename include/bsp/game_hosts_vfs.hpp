@@ -93,6 +93,9 @@ public:
     // Unused by the native dispatch, retained only for legacy parser signatures.
     const VfsCandidateRegistrations& search_registrations() const noexcept { return unused_registrations_; }
     bool exists(const std::string&) override;
+    // Exact BDD600 in/out filename preparation; requires the ready native core.
+    // A normal false still publishes the native-normalized name.
+    bool probe_and_replace_file_name(std::string&);
     bool resolve_existing(std::string&) override;
     bool direct_resolve(const std::string&, std::string&) override;
     VfsMemoryOpen open(const std::string&, std::uint32_t) override;
