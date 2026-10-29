@@ -95,7 +95,8 @@ bool fresh(const NativeGuiTextScalarRetirementAcquired& a) noexcept {
         !d.started && !d.complete && !d.exception_cleanup_started && d.native_eh_state == -1 &&
         !d.destination && d.boundary == NativeGuiTextRetirementAcquired::Boundary::none &&
         !d.shader.decrement_entered && !d.shadow.started && !d.glyphs.started &&
-        !d.normal_actions_entered && !d.normal_actions_returned && !d.unwind_actions_consumed;
+        !d.normal_actions_entered && !d.normal_actions_returned && !d.unwind_actions_consumed &&
+        !d.unwind_actions_returned;
 }
 template<class Check>
 void known_borrowed(NativeGuiTextRawModelReferenceContext& c,

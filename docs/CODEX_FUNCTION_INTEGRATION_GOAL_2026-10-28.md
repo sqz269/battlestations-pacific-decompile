@@ -175,3 +175,28 @@ earns no acceptance. Neutral `off409` retry uses unchanged binaries, backend,
 plans, flags and evaluator/masks, with a four-hour owned-process failure
 watchdog. Its first JM06 pair passed all unchanged checks. Those receipts
 remain specific to their exact frozen source and executable hashes.
+
+The accuracy fixture `8c2fa31e` is now accepted for its narrow original
+post-spill window and direct conversion scope: eight plus eight paired
+checks pass and the legacy API differs in six of eight cases. Production
+source equivalence to `9434d4a37` was checked through accepted `86d56331f`.
+Synthetic mode cells, endpoint weight1 and masked PC24/PC53 are the tested
+boundary; arbitrary interpolation, full function/startup/CRT and game ON
+remain unqualified. A separate exact86d OFF/ON pair is being prepared; the
+subtitle matrix has released one logical lane after its VFS checks.
+
+The full variance/radix rebuild `00C54DA0` now adds one compiled/unwired body,
+bringing the original 29-body census to 23 with six metadata-only entries:
+`00C320D0`, `00C4CE60`, `00C55A60`, `00C55DF0`, `00C5A850`, `00C5A8B0`.
+Independent full instruction/CFG/FP/bridge review passes, as do the common
+Win32 build, both existing suites, twelve original call checks and an actual
+entry/dependency link. The link-only executable was never executed and the
+game map contains no entry. No original ABI, game activation, vendor-body or
+additional address credit is asserted. The full-activation goal remains active.
+
+The shared accuracy caller now keeps its legacy return in the `if constexpr`
+else arm, avoiding MSVC C4702 under `/WX` in a private ON build while retaining
+the shared false guard. The exact small CPP change `1df710914` passes the common
+Win32 Release build and both suites (12.17 seconds) after C54DA0 integration.
+Matching frozen OFF/ON runtime candidates are separate; this change grants no
+activation or gameplay credit.

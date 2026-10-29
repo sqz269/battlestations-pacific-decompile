@@ -1,6 +1,7 @@
 # Raw Text main geometry: 00AB7700
 
-**UNBUILT source preparation.** This packet adds only
+**Integrated, source-reviewed and build/object-checked, still uncalled.** The
+worker packet adds only
 `native_gui_text_main_geometry_storage.hpp/.cpp` and this evidence file. It
 implements an uncalled, qualified Source transport for an already reconstructed
 body; no new body/library credit, Original ABI or production activation follows.
@@ -128,3 +129,21 @@ still reject primary4C. Genuine primary publication/shared Model/Group routing,
 raw main-section transport and retirement admission are separate integration
 gates. Font borrower/field/shader, raw live-visitor properties/content, glyph
 children, actual FE_initial rendering and repeated/reload lifetimes remain open.
+
+## Root integration evidence
+
+Root and independent source reviews pass frozen `379ff94e`, including the
+original AB7700 listing and constructor-only unwind evidence. Root registered
+the new TU in `bsp_core` through `cmake/startup.cmake`; the combined MSVC Win32
+build and both existing suites pass (13.49 seconds), receipt
+`local/cc16_text_main_geometry_build.log`.
+
+Final object SHA256:
+`0805D283CAA3E53044B9DDE33124237AE591CAF8D28F8FC8722AB9644DDFDB81`.
+Dump `local/cc16_text_main_geometry_object.txt` confirms association helper
+offsets18/1D/20 are one FLD, FST(arg3), FSTP(arg2), followed by geometry/zero
+stores26/29 and return30. Position helper has XORPS09 and MOVSS0F/13/18.
+This is emitted-order evidence only, not FP execution or Original ABI proof.
+The actual game map has zero occurrences of the entry; source search has no
+production caller. No game, new fixture or new test case was run for this helper.
+Every primary-publication/main-section/retirement/Font/Page gate above remains.
