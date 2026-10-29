@@ -51,13 +51,16 @@ bool matches(const Slot& s, const Context& c, Selector::Phase phase) noexcept {
         s.frame.prepared_input_header8() == s.input.header8 && region(s.input.header8, 8) &&
         !(bits(s.input.header8) & 3u);
 }
-bool aliases(const Context& c) noexcept {
+bool aliases(const Context& c, const Frame& frame) noexcept {
     const auto* p = prefix(c);
     if (!p) return false;
     auto& f = p->text.factory_context;
     const auto& r = f.publication;
     const auto& strings = r.construction_context.sections.strings;
-    return p->operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_only &&
+    return (p->operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_only ||
+        (p->operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_main_section_font &&
+            p->operation.font_lifetime() == &frame && p->operation.main_section() &&
+            p->operation.font_lifetime() == r.retirement.font_lifetime)) &&
         p->operation.geometry() == &c.geometry &&
         &f.reference_frame == &c.reference_frame && &r.construction == &f.construction &&
         &r.retirement.model == &f.construction.sections.model &&
@@ -273,7 +276,7 @@ void NativeGuiTextFontLifetimeStorageFrame::fail() noexcept {
 void NativeGuiTextFontLifetimeStorageFrame::prepare_before_text_allocation() {
     try {
         enter();
-        require(phase_ == Phase::fresh && !actual_ && !reference_ && aliases(context_),
+        require(phase_ == Phase::fresh && !actual_ && !reference_ && aliases(context_, *this),
             "Font lifetime preparation needs one exact unentered prefix/geometry/selector/shader graph");
         const auto& c = context_;
         const auto& p = *prefix(c);
@@ -302,7 +305,7 @@ void NativeGuiTextFontLifetimeStorageFrame::prepare_before_text_allocation() {
 void NativeGuiTextFontLifetimeStorageFrame::seal_after_prefix_geometry(void* actual) {
     try {
         enter();
-        require(phase_ == Phase::prepared && !actual_ && !reference_ && aliases(context_) &&
+        require(phase_ == Phase::prepared && !actual_ && !reference_ && aliases(context_, *this) &&
             selector_fresh(context_.initial, context_) && (!context_.second || selector_fresh(*context_.second, context_)) &&
             shader_fresh(context_), "Font lifetime sealing precedes all selector/input/shader effects");
         const auto& p = *prefix(context_);
@@ -349,7 +352,7 @@ void NativeGuiTextFontLifetimeStorageFrame::seal_after_prefix_geometry(void* act
 }
 void NativeGuiTextFontLifetimeStorageFrame::admit(void* actual, Stage stage,
     const NativeGuiTextRetirementAcquired* progress) {
-    require(phase_ == Phase::sealed && actual && actual == actual_ && reference_ && aliases(context_),
+    require(phase_ == Phase::sealed && actual && actual == actual_ && reference_ && aliases(context_, *this),
         "Font lifetime admission needs its previously sealed canonical live Text graph");
     const auto& c = context_;
     const auto& p = *prefix(c);
@@ -477,7 +480,7 @@ NativeGuiTextFontLifetimeRegions NativeGuiTextFontLifetimeStorageFrame::live_reg
 }
 bool NativeGuiTextFontLifetimeStorageFrame::post_text_quiescent() const noexcept {
     const auto& c = context_;
-    if (active_ || failure_ || phase_ == Phase::failed || !aliases(c)) return false;
+    if (active_ || failure_ || phase_ == Phase::failed || !aliases(c, *this)) return false;
     const auto& p = *prefix(c);
     const auto& f = p.text.factory_context;
     const auto& a = p.text.factory;
