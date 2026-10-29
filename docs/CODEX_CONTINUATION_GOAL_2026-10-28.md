@@ -164,3 +164,81 @@ type-ID transition19/18 to21/20. Evidence commit is `8330382ab`. It remains
 unpublished until a matching common-code ON build passes strict serial USN21
 OFF/ON four-plus-four (all OFF self-agree) and the separate no-bounds-aid pair.
 Other gameplay runs/heavy builds are held during that final acceptance window.
+
+## Matched activation pair
+
+The A1 gate worker merged the frozen common code into its candidate at clean
+`6c8016fa756932161f09d4ccc5617ecd8adf8e51`. Its source/include diff against
+`6216ea1af` is only `kNativeRendererStartupCc15Bound: false -> true`.
+Win32 Release and both existing suites pass; lint reports zero findings.
+The common ON executable SHA-256 is
+`799F5FD80A1C35FBB002DE0504A1D6B608044AF14F30C4B124667448B38F3972`.
+Both sides use XLive SHA-256
+`DDF2C2A86D96F37819147C38991A74EF5C5946CE625E7B4E7914F8382AA13F87`.
+The common pair is copied under the cc9 worktree's
+`local/codex_a1_activation`; earlier634/5ca inputs remain immutable.
+
+Common ON reference/milestone-D smoke checks precede the approved strict
+serial alternating eight USN21 runs and the separate no-aid pair. Root holds
+other game/heavy-build work. Any first OFF-self disagreement or unexpected ON
+delta stops the series for review, without hidden retries. A1 remains OFF on
+main until those results are accepted.
+
+The common ON reference and milestone-D1600 checks have now passed against
+matched OFF546: exactly the documented A1 records, ordered differences0,
+teardown differences0, frame36 and matching first RNG. The strict serial series
+has started. No other game or heavy build is scheduled during it; P3a2 work is
+static and remains OFF/unbuilt pending an explicit build window.
+
+## Reviewed dormant Page checkpoint
+
+The first matched strict OFF/ON pair passed its exact documented A1 contract:
+raw pair_diff retains the three inventoried startup records, all remaining
+comparison fields match, ordered events and teardown match, and startup frame36
+and RNG0.6207 match. OFF2 then started serially after provenance checks passed.
+The remaining strict repetitions and separate no-bounds-aid pair are pending;
+there has been no retry or acceptance of A1 on main.
+
+GUI checkpoint `c5594a19a` (including earlier raw Group `9f8df5d54`) is frozen in
+the cc15-gui4 worktree. Root constructor review and independent ownership review
+found no source blocker in the complete candidate-vs-common-code diff. It admits
+only the genuine childless/type0-key Screen path, and mapped widget keys reject
+before AA6560. Private context views retain the canonical registry, pools,
+imports and owner families; Page metadata survives native pool return until the
+actual Group/outer/camera/resource/sun/ambient companions retire. The review
+caught a doc-only count error, corrected in `066a46466` with unchanged source:
+AC6825's null B6D890 tail unlinks root
+registration but leaves170; the ordinary cold resource count remains4 until
+genuine Group B6EE10 removal, absent replacement callbacks or other holders.
+
+This checkpoint is OFF, unbuilt and unmerged. Compilation/CTests and OFF
+inertness checks follow the strict A1 window. A focused childless lifecycle
+fixture must establish the dormant ownership path independently; OFF parity
+cannot do so. Actual FE_initial children still need P3b/P3c and a same-tree raw
+Model/Group parenting/lifetime bridge, followed by the joint P4 transfer from
+the current GUI bridge. Foreign owners, unsupported lifetime families, repeated
+activation and failure/pool-reuse behavior remain explicit open checks.
+
+Tooling-only `b63e0311e` fixes brief's false integration backlog by preferring
+the published `origin/main` ref, with local `main` fallback. Two focused Python
+tests pass; no C++ or frozen game artifacts changed. The main checkout remains
+untouched, and CC16 is fully published at that checkpoint.
+
+The P3b/P3c source map confirms that raw Text and Icon construction/reference/
+retirement providers already exist, while their active applications retain
+semantic field authority. They cannot be overlaid on the complete raw payloads.
+Installed FE_initial has two active Icons and one nonempty Text; its installed
+Lua is customized (SHA-256
+`3BAB3FC8A29569D0F7DA13CC3C69D3B1232C57772CED58A2E06985700F332CFA`).
+Full raw Text content/glyph publication, Icon construction/properties/rebuild,
+shared Model/Group parenting/lifetime closure and startup resource order remain.
+
+One bounded independent metadata dependency is dispatched as
+`codex-gui-icon-delayed-custody`: a deferred process owner for the single typed
+F8BD98 Source backing and existing genuine delayed-load service. Even ordinary
+raw Icon destruction calls AB5700 when delayed loading is false. The worker
+owns only new process CPP/HPP and its evidence document; root owns the shared
+startup/deletion hookup. No getter or raw Icon caller is activated, no queue or
+file delivery is fabricated, and no build is allowed during the A1 hold.
+Any eventual getter must use the SAME service bound into the process singleton
+deletion dispatcher and retain its full provider graph through native drain.

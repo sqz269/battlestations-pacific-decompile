@@ -16,8 +16,22 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-gui-icon-delayed-custody",
+      "state": "deferred_process_metadata_source_in_progress_A1_build_hold",
+      "worker": "gui_integration_review",
+      "source_ready": true,
+      "depends_on": [],
+      "function_addresses": ["00ab5700", "00ab50e0", "00ab5560", "00ab57c0"],
+      "output_files": [
+        "include/bsp/game_native_gui_icon_process.hpp",
+        "src/game_native_gui_icon_process.cpp",
+        "docs/CODEX_GUI_ICON_DELAYED_PROCESS.md"
+      ],
+      "notes": "Bounded deferred Source process owner for the single F8BD98 backing and existing genuine NativeGuiIconDelayedLoads service. Verify Original loader preimage; borrow the canonical raw string/manager domain once and reject retargeting. No native getter, queue/delivery, raw Icon activation, semantic adapter cast, shared host/CMake/deletion edit, or new body credit. Root owns binding the SAME singletons native_deletion_bindings().gui_icon_delayed_loads before any getter and keeping graph through drain. Distinguish interrupted operation from ordinary registered owner retention. Static source preparation only during strict A1; compile/runtime acceptance follows the hold. Independent of publishing children into P3a2; that still requires shared raw Model/Group closure."
+    },
+    {
       "id": "codex_cc9_a1_activation",
-      "state": "on_candidate_runtime_gates_in_progress",
+      "state": "matrix_passed_matched_common_code_strict_serial_in_progress",
       "worker": "gameplay_integration_review",
       "source_ready": false,
       "function_addresses": [],
@@ -27,7 +41,7 @@
         "docs/CC15_GUI4_A1.md",
         "docs/CODEX_GUI4_A1_ACTIVATION.md"
       ],
-      "notes": "OFF implementation accepted on main5ca4639f0. Switch-only ON candidate634258460; reference USN04 and milestone-D1600 exit0. Await13-row ON comparison, serial alternating USN21 four OFF/four ON, no-aid pair and integrator acceptance. Expected A1 diagnostic/type-id deltas are inventoried exactly; no global noise-mask change. No new body credit."
+      "notes": "Switch-only634258460 passed all13 exact A1 contracts vs5ca and milestone-D1600; rawpair1 retained for exactlydocumented startup/typeID records, no globalmaskchange. MatchingcommonOFF621 SHA5461327d...fc926 and commonON6c8016fa7 SHA799f5fd8...f3972 differ in src/include only at A1flag; bothbuild2/2 and shareXLive. Final common lifecycle/strict serialUSN21 fourOFF/fourON/noaid gates remain before integratoracceptance. No new body credit."
     },
     {
       "id": "codex_aimfreeze_off_4d0350e9e",
@@ -118,7 +132,7 @@
     },
     {
       "id": "codex-gui-p3a2",
-      "state": "childless_raw_root_provider_composition_in_progress",
+      "state": "childless_static_checkpoint_source_reviewed_unbuilt_A1_hold",
       "worker": "gui_integration_review",
       "source_ready": false,
       "depends_on": ["codex_cc9_a1_activation", "codex-gui-page-lifetime", "codex-gui-widget-state", "codex-gui-raw-field-resolver", "codex-gui-page-source-borrows", "codex-gui-frame-reuse", "codex-gui-widget-empty"],
@@ -131,7 +145,7 @@
         "src/game_native_gui_page_application.cpp",
         "docs/CC15_GUI4_P3A2.md"
       ],
-      "notes": "Screen/root-only real AC4C50 and warm AC59A0 provider composition over borrowed A1 domain. AAACD4 is a child-suffix contract, not added whole-function reconstruction credit. Widget state and manager delegate dependencies are prepared; raw field resolver and complete production provider closure remain. Renderer grid-context graphics supply real geometry/stream providers for a page-owned Model companion domain. Keep properties_composed=false until closure; reject unsupported children and preserve native retained-frame lifetime. Packet stays OFF."
+      "notes": "Frozen c5594a19a plus earlier9f8df5d54 composes genuine childless Screen/root AC4C50, warm AC59A0 and actual AAA710/type0-key suffix over private views of the canonical domain. Root constructor and independent full ownership reviews found no source blocker; doc-only066a46466 corrects the cold resource count (null B6D890 leaves170), with identical source. Candidate remains OFF, unbuilt and unmerged during immutable strict A1 gates. Compile/CTests, OFF inertness gates and focused lifecycle execution remain. Real FE_initial children need P3b/P3c plus same-tree Model/Group parenting/lifetime closure and joint P4 bridge transfer; no filtered enumerator, fake providers or whole-function credit."
     },
     {
       "id": "archive_inflate_stream",

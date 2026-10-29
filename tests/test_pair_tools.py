@@ -27,6 +27,22 @@ def commit(cwd, name):
 
 
 class SyncAncestorDecision(unittest.TestCase):
+    def test_patch_backlog_prefers_published_main_over_stale_local_main(self):
+        tmp = Path(tempfile.mkdtemp())
+        git(tmp, 'init', '-q', '-b', 'main')
+        commit(tmp, 'a')
+        git(tmp, 'checkout', '-q', '-b', 'agent/w')
+        published = commit(tmp, 'b')
+        git(tmp, 'update-ref', 'refs/remotes/origin/main', published)
+
+        self.assertEqual(branch_sync.patch_line(tmp, 'agent/w'),
+                         'unmerged: none (agent/w fully in origin/main)')
+        commit(tmp, 'c')
+        self.assertIn('1 patches on agent/w not in origin/main,', branch_sync.patch_line(tmp, 'agent/w'))
+
+        git(tmp, 'update-ref', '-d', 'refs/remotes/origin/main')
+        self.assertIn('2 patches on agent/w not in main,', branch_sync.patch_line(tmp, 'agent/w'))
+
     def test_fast_forward_then_refuse_unlanded(self):
         tmp = Path(tempfile.mkdtemp())
         git(tmp, 'init', '-q', '--bare', '-b', 'main', 'origin.git')
