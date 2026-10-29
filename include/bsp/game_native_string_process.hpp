@@ -29,6 +29,11 @@ public:
     // Source admission only: one Application graph for this process, even
     // after normal retirement. Never reset or use as a native reference count.
     bool claim_application_domain() noexcept;
+    // Sole typed Source authority for loader-zero Original F8AEFC, retained
+    // with the SAME manager process through CRT/atexit. This is not a literal
+    // fixed-address native mapping. Borrow the cell; do not copy/reset it.
+    // Access creates no factory, registration, module or sound state.
+    void* volatile& movie_factory_00f8aefc() noexcept;
     NativeStringPoolStorage* volatile& pool_01090aa8() noexcept { return pool_; }
     volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }
     NativeStringRawPoolContext& raw_context() noexcept { return raw_; }
@@ -76,6 +81,9 @@ private:
     // uses the SAME manager_ authority, not another private singleton manager.
     void* volatile application_00e1ae90_{};
     bool application_domain_claimed_{};
+    // Append after every established authority/field. The process owns this
+    // ONE writable publication; application hosts only borrow its reference.
+    void* volatile movie_factory_00f8aefc_{};
 };
 
 // Intentionally retained through process termination. No C++ exit destructor

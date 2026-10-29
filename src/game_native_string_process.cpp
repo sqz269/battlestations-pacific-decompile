@@ -30,6 +30,10 @@ bool GameNativeStringProcess::claim_application_domain() noexcept {
     return true;
 }
 
+void* volatile& GameNativeStringProcess::movie_factory_00f8aefc() noexcept {
+    return movie_factory_00f8aefc_;
+}
+
 const char* GameNativeStringProcess::property_empty_00e177e4() const noexcept {
     return &property_empty_00e177e4_;
 }

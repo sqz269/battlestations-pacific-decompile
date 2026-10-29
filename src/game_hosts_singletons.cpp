@@ -43,6 +43,9 @@ GameSingletonHost::~GameSingletonHost() {
 SoundLifetimeAccess GameSingletonHost::sound_lifetime() noexcept {
     return SoundLifetimeAccess(manager_publication_01090aa0_);
 }
+void* volatile& GameSingletonHost::movie_factory_publication_00f8aefc() noexcept {
+    return game_native_string_process().movie_factory_00f8aefc();
+}
 NativeAllocationStatsConstructorContext& GameSingletonHost::allocation_stats_context() noexcept {
     return allocation_stats_context_;
 }

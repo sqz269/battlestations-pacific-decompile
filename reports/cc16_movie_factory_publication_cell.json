@@ -1,0 +1,244 @@
+{
+  "packet": "codex-movie-factory-publication-cell",
+  "status": "typed_Source_publication_provider_build_and_existing_checks_passed; root_factory_binding_REQUIRED; NO_activation",
+  "base_main": "605373bf732e4bd3089e8f07ddca226ab4d635a3",
+  "reviewed_at_utc": "2026-10-29T20:25:53.600623+00:00",
+  "ownership": {
+    "files": [
+      "include/bsp/game_native_string_process.hpp",
+      "src/game_native_string_process.cpp",
+      "include/bsp/game_hosts_singletons.hpp",
+      "src/game_hosts_singletons.cpp",
+      "docs/CC16_MOVIE_FACTORY_PUBLICATION_CELL.md",
+      "reports/cc16_movie_factory_publication_cell.json"
+    ],
+    "addresses": [],
+    "source_change": "19 inserted lines only; append one process cell plus process/Host reference accessors",
+    "shared_metadata_or_Ghidra_mutation": false,
+    "no_other_feature_or_publication_mutation": true
+  },
+  "primary_approval": {
+    "approved": true,
+    "decision": "same admitted typed Source-cell authority as actual01090AA0 manager, explicitly not literal native-address mapping",
+    "reason": "existing canonical mutable producer has noF8A000/F8AEFC page or role; one authority appended to existing permanently retained process, not a parallel shadow",
+    "scope": "processhpp/cpp,Hosthpp/cpp,doc/report only; no V2 protocol/page extension, Startup, constructor/drain or dispatch calls"
+  },
+  "read_only_inputs": [
+    {
+      "commit": "8f14bfd2b64b0f163c997824a0f1d19b4de49ff0",
+      "path": "docs/CC16_MOVIE_FACTORY_OWNER_CONTRACT.md",
+      "sha256_git_blob": "0aa91cafa93ee80bb26254f472684aa3fffe3f00c9e8cad7fd5717046c30893d",
+      "role": "read-only input; factory source still root-pending admission"
+    },
+    {
+      "commit": "1214cca8f15a8a733211a390f1e4c5ce153f6c9f",
+      "path": "docs/CC16_MOVIE_FACTORY_STARTUP_EH.md",
+      "sha256_git_blob": "607581e00897072974d6091b39e27f7536f48570bc323a6c18cd8368a698848a",
+      "role": "read-only input; factory source still root-pending admission"
+    },
+    {
+      "commit": "6d4c288834c36f5ddc83da629336077389732da7",
+      "path": "include/bsp/game_movie_factory_owner.hpp",
+      "sha256_git_blob": "86016d14b24133bb8c06996e2f8141dd14e42af0774a6558f9710df9044546ff",
+      "role": "read-only input; factory source still root-pending admission"
+    }
+  ],
+  "actual_manager_supplier": {
+    "host_accessor": "GameSingletonHost::manager_publication_01090aa0()",
+    "host_member": "manager_publication_01090aa0_ is a REFERENCE",
+    "constructor_binding": "game_native_string_process().manager_01090aa0()",
+    "process_storage": "GameNativeStringProcess::manager_",
+    "source": "src/game_hosts_singletons.cpp constructor; include/bsp/game_native_string_process.hpp existing accessor/field",
+    "domain": "SoundLifetimeAccess(actual manager cell) uses existing raw actual-storage path, not another semantic domain"
+  },
+  "new_supplier": {
+    "host_accessor": "void* volatile& GameSingletonHost::movie_factory_publication_00f8aefc() noexcept",
+    "host_implementation": "return game_native_string_process().movie_factory_00f8aefc();",
+    "process_accessor": "void* volatile& GameNativeStringProcess::movie_factory_00f8aefc() noexcept",
+    "process_implementation": "return movie_factory_00f8aefc_;",
+    "authoritative_storage": "ONE appended private void* volatile movie_factory_00f8aefc_{};",
+    "initialization": "C++ null pointer once when retained process is created; matches supported Win32 loader-zero publication role",
+    "native_address_equivalence": false,
+    "host_shadow_field": false,
+    "snapshots_copies_default_fallback_or_reset": false,
+    "read_only_data_at_cast_or_write": false,
+    "native_factory_or_Bink_call": false
+  },
+  "lifetime": {
+    "owner": "existing game_native_string_process() function-local static pointer initialized by new GameNativeStringProcess",
+    "permanence": "heap process object is intentionally never deleted; static pointer has no ownership destructor; source cells/raw bindings survive application Host destruction, normal manager drain and late CRT/atexit/thread teardown until OS exit",
+    "normal": "no accessor/Host constructor/destructor resets this cell; admitted future native owner publish/clear operations alone mutate its contents",
+    "terminal": "same process authority remains valid while root retains interrupted factory/module/provider aggregate; permanence does not make dangling publication or ordinary raw drain safe",
+    "failure": "no new allocation or factory effects in Host accessor on a valid Host; Host constructor already obtains the same retained process for manager authority; new cell uses default member initialization only"
+  },
+  "original_PE_zero_provenance": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "file_bytes": 12223752,
+    "address": "00F8AEFC",
+    "image_base": "0x400000",
+    "rva": "0xb8aefc",
+    "section": ".data",
+    "section_rva": "0xa08000",
+    "section_delta": "0x182efc",
+    "section_raw_size": "0x10000",
+    "section_virtual_size": "0x297edc",
+    "section_characteristics": "0xc0000040",
+    "read_write": true,
+    "DWORD_wholly_zero_fill": true,
+    "initial_bytes": "00 00 00 00",
+    "limit": "on-disk image/loader provenance, not current game publication, physical source-cell address or binary ABI proof"
+  },
+  "canonical_page_boundary": {
+    "existing_owner": "GameNativeCanonicalDataOwner / GameNativeMutableCrtData",
+    "mutable_pages": [
+      "00E15000",
+      "00E16000",
+      "0109E000"
+    ],
+    "existing_protocol": "CanonicalCrtV2 capability, two reservation bands/three writable page roles",
+    "existing_roles": [
+      "cookie/complement",
+      "NLG descriptor",
+      "failure block",
+      "feature/debugger word roles"
+    ],
+    "no_F8A000_page_or_F8AEFC_role": true,
+    "read_only_owner_limit": "GameNativeReadOnlyData is original .rdata token/literal storage; cannot supply mutable F8AEFC publication",
+    "protocol_or_page_extension_added": false,
+    "fixed_address_future": "requires its own explicit producer/capability/admission; no numeric pointer reinterpretation or writable RO cast offered"
+  },
+  "layout_and_semantics": {
+    "GameSingletonHost": "public method declaration and out-of-line body only; no member/include/constructor/drain change, so source object layout unchanged",
+    "GameNativeStringProcess": "new cell appended after application_domain_claimed_; every preexisting field declaration/order and constructor/raw binding remains unchanged; existing pointer alignment already present",
+    "serialized_nodes_or_native_object_layouts_changed": false,
+    "other_publications_feature_words_or_claim_flags_changed": false,
+    "proof_kind": "source diff plus strict Win32 compilation; not full Original ABI or runtime address proof"
+  },
+  "consumer_contract": {
+    "required_borrow": "singletons.movie_factory_publication_00f8aefc() by void* volatile& for ALL future bootstrap/unregister/destructor/current-publication shutdown/shared-deletion contexts",
+    "manager_borrow": "SAME singletons.manager_publication_01090aa0() actual process authority",
+    "pending_owner": "GameMovieFactoryOwner candidate6d4 requires this actual reference; no integration or activation supplied here",
+    "forbidden_substitution": "do not copy current pointer into another authority, add parallel Host cell, reset publication during Host construction/drain, create fallback/default cell or cast RO data_at pointer",
+    "remaining_native_order": "007366B0 publication at00736706,00736750 clear at007367B9 and captured-owner flags/free remain future admitted owner operations, not called by this packet",
+    "EH_limit": "state21 raw-free cleanup can leave publication/manager residue dangling; root must enter terminal aggregate retention before ordinary drain"
+  },
+  "validation": {
+    "strict_Win32_objects": {
+      "passed": true,
+      "compiler": "MSVC19.51 via VS18 Community vcvars32.bat",
+      "flags": [
+        "/std:c++17",
+        "/permissive-",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/EHsc",
+        "/O2",
+        "/MD",
+        "/MP2",
+        "/c"
+      ],
+      "objects": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-movie-factory-publication-cell\\build\\movie-publication-cell\\game_native_string_process.obj",
+          "bytes": 7699,
+          "machine": "0x014c",
+          "sha256": "6caa229de6479ce55acf34a9ee874f0999fd154a4847ffc7f4b25995adee87d2"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-movie-factory-publication-cell\\build\\movie-publication-cell\\game_hosts_singletons.obj",
+          "bytes": 55931,
+          "machine": "0x014c",
+          "sha256": "4132112dfce6a58552342c11fb0056a8dc84ef182b49c3bcef6f7cc5288cb60d"
+        }
+      ]
+    },
+    "standard_build": {
+      "command": "./scripts/build.ps1",
+      "state": "complete",
+      "passed": true,
+      "private_configuration": "build/win32",
+      "BSP_CL_MP": 2,
+      "BSP_PCH": "ON(default)",
+      "log": "local/output/movie-publication-build.log",
+      "configure_log": "local/output/movie-publication-configure.log",
+      "exit_code": 0,
+      "log_sha256": "515f9f828edb2b0ed9c208e629e258b522d4319088527132b73e82a2bce8c35b",
+      "configure_log_sha256": "62c69907814828ec5b21793190fd6bdb8148c86c79bfc597e192e294175996ff",
+      "cache_sha256": "508c09fef7e8956147c7e615cfa8527ceab51dce20405f109e2c4adde6a96676",
+      "existing_checks": [
+        {
+          "name": "reconstructed_math",
+          "passed": true
+        },
+        {
+          "name": "tool_tests",
+          "passed": true
+        }
+      ],
+      "existing_checks_total": "2/2 passed",
+      "built_game_executable": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-movie-factory-publication-cell\\build\\win32\\Release\\bsp_game.exe",
+        "bytes": 7475712,
+        "sha256": "51daec1335353e3869622adda6c5a5808583716998c76eea43e8ee50238cc693",
+        "executed": false
+      }
+    },
+    "existing_checks": "git diff --check; insertion/ownership source inspection; standard build plus existing reconstructed_math and tool_tests (2/2 passed)",
+    "new_tests_added": false,
+    "new_probes_games_or_Bink_calls_run": false,
+    "publication_cell_live_or_game_witness": false
+  },
+  "source_hashes": {
+    "before_605": {
+      "include/bsp/game_native_string_process.hpp": "43a0642984f29202ade63a4a81389482fc783d9d47d75260104b2fa2fa3ea0c1",
+      "src/game_native_string_process.cpp": "5f182d932d10a6e0f3cd7c1dc20ca4dae2f74750a58607476615f34d5fea6a26",
+      "include/bsp/game_hosts_singletons.hpp": "53a2669d7357deae08a586aa8117d69fa4bd3bfd5500ea1838655aaa24653d30",
+      "src/game_hosts_singletons.cpp": "ecddae131891b13a8909aed3a2e4fea7841a19c17672ce6f79d9351e87d2bd9d"
+    },
+    "after": {
+      "include/bsp/game_native_string_process.hpp": "ec2c6715a64888c87e61f4703073d094a62340f548aaa9a6a668f33787a3a518",
+      "src/game_native_string_process.cpp": "703f35233ccfc376633034f80854b1cfb1ffe621a8018424a324d18535f6612f",
+      "include/bsp/game_hosts_singletons.hpp": "0bb1cce85717ff94c44e12e6f2a071ea30fac43baa13d99539fe354385821648",
+      "src/game_hosts_singletons.cpp": "cca7ac5b6943b5332b92e4b9c0014c1fdeead64519d0fb81036c4407a67180c7"
+    },
+    "canonical_provider_unchanged": {
+      "include/bsp/game_native_mutable_crt_data.hpp": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "src/game_native_mutable_crt_data.cpp": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "include/bsp/game_native_data_bootstrap.hpp": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a",
+      "src/game_native_data_bootstrap.cpp": "380bf1ebc8ba9691f19fd2ae33ce167cdf5b33e9095f9fc4f5d172489e2f879d",
+      "include/bsp/game_native_readonly_data.hpp": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    }
+  },
+  "remaining_root_obligations": [
+    "Admit this one logical Source authority, then pass SAME accessor reference to all future movie contexts; no literal fixed-address mapping credit.",
+    "Independently admit Bink module and GameMovieFactoryOwner6d4 source, mandatory matched heap provider/canonical manager identity checks and stable owner context.",
+    "Bind genuine CFEA60/CFEA78 deletion routes before registration; implement real Startup order and current-publication explicit shutdown dispatch.",
+    "Keep actual factory/module/tables/callbacks/decoders/native borrowers through normal raw drain, and retain terminal aggregate before ordinary teardown on interrupted work.",
+    "Schedule genuine frozen runtime/ABI/sound/playback/gameplay evidence after actual source hooks are admitted; this accessor supplies no activation/decoder success."
+  ],
+  "not_run_or_changed": [
+    "factory allocation/construction",
+    "Bink load/import/sound calls",
+    "Startup/deletion dispatch/shutdown activation",
+    "new tests/probes/games",
+    "Ghidra imports/mutations",
+    "shared ledger/metadata",
+    "page protocol/mapping changes",
+    "feature guard/word flips",
+    "private accuracy changes"
+  ],
+  "credit": {
+    "typed_Source_publication_provider": true,
+    "literal_native_F8AEFC_mapping": false,
+    "new_native_bodies": 0,
+    "vendor_bodies": 0,
+    "binary_ABI": false,
+    "runtime": false,
+    "activation": false,
+    "playback": false,
+    "gameplay": false
+  },
+  "completed_at_utc": "2026-10-29T20:29:53.851401+00:00"
+}

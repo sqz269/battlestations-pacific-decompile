@@ -89,6 +89,10 @@ public:
     void* volatile& manager_publication_01090aa0() noexcept {
         return manager_publication_01090aa0_;
     }
+    // Borrow the SAME permanent process cell as future factory/bootstrap,
+    // deletion and shutdown consumers. No host-owned cell or owner is made.
+    // Source authority only, not an Original fixed-address F8AEFC mapping.
+    void* volatile& movie_factory_publication_00f8aefc() noexcept;
     // Same cell installed in the CEB198 deletion binding (cleared by 509FD0).
     NativeLoadingQueueOwnerStorage* volatile& loading_queue_publication_00e18d4c() noexcept {
         return loading_queue_publication_00e18d4c_;
