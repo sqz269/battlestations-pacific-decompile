@@ -16,6 +16,56 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-main-section-operation-choice",
+      "state": "api_reviewed_win32_pass_unwired",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": [
+        "codex-main-section-created-witness"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/native_gui_text_primary_prefix_lifetime.hpp",
+        "docs/CODEX_GUI_RAW_MAIN_SECTION_ADMISSION.md"
+      ],
+      "notes": "Immutable geometry_main_section kind binds SAME Geometry context and const MainSection lifetime Frame. Old None/GeometryOnly constructors leave main pointer NULL. API only; existing graph guards reject the unimplemented kind. No owner call or permission until coupled helper/guard integration."
+    },
+    {
+      "id": "codex-main-section-lifetime-storage",
+      "state": "contract_agreed_api_implementation_pending",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": [
+        "codex-main-section-created-witness",
+        "codex-main-section-operation-choice"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/native_gui_text_main_section_lifetime_storage.hpp",
+        "src/native_gui_text_main_section_lifetime_storage.cpp",
+        "docs/CODEX_GUI_RAW_MAIN_SECTION_LIFETIME_STORAGE.md"
+      ],
+      "notes": "New retained typed helper over SAME existing379 and real post-constructor MainSection Context/Frame/Acquisition/reference Frame. Pure pre-pool prepare, private created-normal seal, exact staged live sole-graph proof, metadata-only durable terminal settlement after Mesh/Section/Material erase. No duplicate379, Font export, native count forcing, late payload rediscovery or body/ABI credit. Root owns shared guards/operation/CMake; early API enables owner composition."
+    },
+    {
+      "id": "codex-main-section-owner-caller",
+      "state": "contract_agreed_api_implementation_pending",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": [
+        "codex-main-section-created-witness",
+        "codex-main-section-lifetime-storage",
+        "codex-main-section-operation-choice"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/game_native_raw_default_text_owner.hpp",
+        "src/game_native_raw_default_text_owner.cpp",
+        "docs/CODEX_GUI_RAW_MAIN_SECTION_OWNER_CALLER.md"
+      ],
+      "notes": "New immutable private geometry+MainSection owner mode, before Font/content as real ABA8D0 caller order. SAME raw122/db55/379/sections resources/cache/Lua/VFS/actual models; all graph backing before pools. Real AB8530 main fragment, private created witness and exact chosen lifetime; sticky whole-graph retention and actual Mesh terminal chain. Existing owner modes remain ordinary, renderer verification first, reset MainGraph before Geometry. No public switch or runtime activation."
+    },
+    {
       "id": "codex-main-section-created-witness",
       "state": "source_two_reviews_win32_build_pass_library_uncalled",
       "worker": "cc16-progress",
