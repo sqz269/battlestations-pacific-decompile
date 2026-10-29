@@ -18,6 +18,9 @@ class GameNativeFontApplication;
 // child factory, layout/content adapter or renderer/frontend activation.
 class GameNativeRawDefaultTextOwner final {
 public:
+    // Closed C++ choices, fixed before preparation. No public environment or
+    // activation switch. Every choice first sets Viper19 and runs real AB8CE0.
+    enum class FontWork { shader_then_retirement, invalidate_shader, equal_name };
     GameNativeRawDefaultTextOwner(GameHostLog&, GameNativeRendererApplication&,
         GameVfsHost&, GameSingletonHost&, GameNativeReadOnlyData&,
         GameNativeGuiSamplerApplicationBindings);
@@ -61,6 +64,12 @@ public:
     // Constructor Text+74 must remain zero through the closed real-provider
     // operation; no outer guard, flag repair or element fallback supplies that.
     void prepare_primary_prefix_geometry_metadata_in_ready_renderer(std::size_t model_call_capacity);
+    // Requires the completed actual Font Host/App link. Installs ALL input,
+    // selector/shader/lifetime backing before pools/raw122; no native Font work.
+    // Optional second distinct invocation uses Arial18 to invalidate or Viper19
+    // for the real equal-name path. Existing preparation modes remain separate.
+    void prepare_primary_prefix_geometry_font_work_in_ready_renderer(
+        std::size_t model_call_capacity, FontWork);
     // Caller owns the REAL later canonical cache bracket. SAME Lua Activation
     // covers ba2 AA1380 and SEPARATE raw122 publication. False is native null
     // allocation, not a failed constructor. No private cache/warm substitute.
@@ -73,6 +82,10 @@ public:
     // body. This is explicit private entry, not AAA710/current74 scheduling.
     // No main-section, Font/content, parenting, rendering or host gate is added.
     bool construct_primary_prefix_geometry_in_open_shader_cache();
+    // Same genuine primary+geometry, then seal helper, construct/return genuine
+    // input headers around raw setter calls and run the real shader producer.
+    // Shader caller credit is consumed by second setter OR later raw118 once.
+    bool construct_primary_prefix_geometry_font_work_in_open_shader_cache();
     // Only this sole unpublished Text, actual count1, quiescent providers and
     // the genuine canonical direct scalar path are admitted. Retained flags1
     // cell is reread late by AB8EE0; no Text decrement/second cleanup is added.
