@@ -16,6 +16,79 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-raw-font-effect-credit",
+      "state": "in_progress_private_shader_credit_api_then_body",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": [
+        "codex-gui-raw-font-setter-credit-plan",
+        "codex-raw-text-reference-frame-match"
+      ],
+      "function_addresses": [
+        "00ab8ce0"
+      ],
+      "output_files": [
+        "include/bsp/native_gui_text_shader_storage.hpp",
+        "src/native_gui_text_shader_storage.cpp",
+        "docs/CODEX_GUI_RAW_FONT_EFFECT_CREDIT.md"
+      ],
+      "notes": "Exactmain3d baseline. Freeze immutable shared typed header/API first for setter/raw118 consumers, then genuine raw knownB318 normal-completion private issuance and exact-once state. Pinned canonical122 Frame, innercache HIT caller_acquired, no loaded/published/count1 requirement. No admission/owner/caller changes; all native provider order and legacy semantics preserved. Worker owns onlyshader pair/doc; no builds/games/Ghidrawrites/shared metadata."
+    },
+    {
+      "id": "codex-raw-font-setter-storage",
+      "state": "in_progress_raw_font_setter_header_provenance_and_shared_body",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": [
+        "codex-gui-raw-font-setter-credit-plan",
+        "codex-raw-font-effect-credit"
+      ],
+      "function_addresses": [
+        "00ab8c30"
+      ],
+      "output_files": [
+        "include/bsp/native_gui_text_field_storage.hpp",
+        "src/native_gui_text_field_storage.cpp",
+        "docs/CODEX_GUI_RAW_FONT_SETTER_STORAGE.md"
+      ],
+      "notes": "Exactmain3d baseline. Actual-font-only raw context, immutable invocation/input/header authority, shared original AB8C30 body with unchanged legacy schedule; exact nonnull1EC consumer will use frozen shader API. No dummycurrentcallbacks, Font04 refcount, zero-only final surrogate, admission/owner/caller changes. Leased field pair/doc only; no builds/games/Ghidrawrites/sharedmetadata."
+    },
+    {
+      "id": "codex-raw-font-credit-retirement",
+      "state": "in_progress_raw118_exact_shared_credit_consumer",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "depends_on": [
+        "codex-gui-raw-font-setter-credit-plan",
+        "codex-raw-font-effect-credit"
+      ],
+      "function_addresses": [
+        "00ab8250"
+      ],
+      "output_files": [
+        "include/bsp/native_gui_text_retirement.hpp",
+        "src/native_gui_text_retirement.cpp",
+        "docs/CODEX_GUI_RAW_FONT_CREDIT_RETIREMENT.md"
+      ],
+      "notes": "Exactmain3d baseline. Exact canonical scalar.destruction.shader record, lateCURRENT1EC/CE2220/decrement/conditionalzero/clear observations through fixed private shader receipt. Preserve legacy/rawnativebody EH/stringbit6 returned proof/lateflags/unbind/disposalLAST. Current admission unchanged; Root owns reference/widget/owner integration. Worker owns retirement pair/doc only; no builds/games/Ghidrawrites/sharedmetadata."
+    },
+    {
+      "id": "codex-raw-text-reference-frame-match",
+      "state": "source_two_reviews_win32_build_pass_no_admission_change",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": [
+        "codex-gui-raw-font-setter-credit-plan"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/native_gui_text_reference.hpp",
+        "src/native_gui_text_reference.cpp",
+        "docs/CODEX_GUI_RAW_REFERENCE_FRAME_MATCH.md"
+      ],
+      "notes": "Pure live canonical RawModelReference matches_reference_frame compares onlyPRIVATE constructor Frame address. No fields/layout/native bodies/admission or credit authority. Needed to verify immutable shader Frame pin to exact scalar.destruction record. Root+independent Source review and Win32/existing checks2/2 pass10.54s. Post-erasedcompanion calls forbidden; saved metadata only thereafter."
+    },
+    {
       "id": "codex-raw-main-section-frame-match",
       "state": "integrated_source_two_reviews_win32_build_uncalled",
       "worker": "gui_frame_lifetime",

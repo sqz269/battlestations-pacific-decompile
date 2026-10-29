@@ -150,6 +150,9 @@ public:
     Phase phase() const noexcept { return phase_; }
     void* storage() const noexcept { return identity_; } // diagnostic after failure/retirement
     const NativeGuiTextRawModelReferenceContext& storage_context() const noexcept { return context_; }
+    // Pure private122 constructor-frame identity, while this companion is live.
+    // No scalar progress, native liveness, credit or retirement authority.
+    bool matches_reference_frame(const NativeGuiTextReferenceFrame&) const noexcept;
     void release_zero_references() noexcept override;
     void* delete_current_scalar_00ab8ee0(const volatile std::uint32_t& caller_flags);
 private:

@@ -720,3 +720,12 @@ Independent audit accepts only preregistered metadata criteria. All four private
 constants restored FALSE; combined Win32/checks2/2 pass10.23s. Pure MainSection
 Frame.matches9a446f8a is independently reviewed/compiled, still has no caller or
 liveness/retirement authority. Font setter/1EC plan remains the next boundary.
+
+The next three disjoint Source packets are active: raw-font-only AB8C30/header
+provenance, private shader normal-completion/exact-once credit record, and raw118
+consumer integration. No admission/caller widening yet. A small pure canonical
+raw122 matches_reference_frame predicate closes the missing constructor-Frame
+identity check; Root plus independent Source review and Win32/checks2/2 pass
+(10.54s). It grants no credit/liveness and must not be called after the companion
+erases itself. The shared shader consumer API must freeze before both consumers
+complete, including truthful equal-name/no-capture and pre-capture failure paths.

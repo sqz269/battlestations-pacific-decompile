@@ -619,6 +619,10 @@ NativeGuiTextRawModelReference::NativeGuiTextRawModelReference(void* raw,
 NativeGuiTextRawModelReference::~NativeGuiTextRawModelReference() {
     if (phase_ != Phase::retired) std::terminate();
 }
+bool NativeGuiTextRawModelReference::matches_reference_frame(
+    const NativeGuiTextReferenceFrame& frame) const noexcept {
+    return &frame_ == &frame;
+}
 void NativeGuiTextRawModelReference::require_slot(Word profile, unsigned slot, Word target) const {
     if (profile != text_profile || profile_[slot] != target)
         throw std::logic_error("Raw Text lacks its genuine CURRENT scalar/zero selector");
