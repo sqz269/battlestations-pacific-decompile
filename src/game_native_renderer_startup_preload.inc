@@ -17,8 +17,11 @@ struct StartupShaderPreload final {
         NativeLuaServiceBindings& lua, NativeShaderBinaryCacheContext& cache,
         void* const volatile& renderer) {
         check(phase == Phase::prepared, "startup shader preload cannot replay");
-        phase = Phase::opening;
         try {
+            // These constructors assemble borrowed C++ metadata only. Keep
+            // the renderer quiescent for its genuine material-profile getter;
+            // marking native entry here would make that getter reject itself.
+            // Every failure below is still latched before it can escape.
             samplers = std::make_unique<GameNativeGuiSamplerApplication>(log, application,
                 files, singletons, data, GameNativeGuiSamplerApplicationBindings{input,
                     application.borrow_platform_publication_0109cf04()});
@@ -27,6 +30,7 @@ struct StartupShaderPreload final {
             graph = std::make_unique<MissionShipShaderPreloadGraph>(log,
                 singletons.manager_publication_01090aa0(), effects->native_effect_cache(),
                 owners, lua, cache, renderer);
+            phase = Phase::opening; // Before the FIRST native preload effect.
             graph->create();
             phase = Phase::ready;
         } catch (...) { phase = Phase::failed; throw; }

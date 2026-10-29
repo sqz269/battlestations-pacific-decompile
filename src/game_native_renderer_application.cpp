@@ -929,6 +929,10 @@ void GameNativeRendererApplication::preload_startup_shaders(GameInputRuntime& in
     try {
         p.startup_preload->open(p.log, *this, p.mesh_field_vfs, p.singletons,
             p.profiles.data, input, p.owners, p.lua_services.binding(), p.shaders.cache, p.renderer);
+    } catch (const std::exception& error) {
+        p.phase = Impl::Phase::failed;
+        p.log.notef("native A2 startup preload failed before completion: %s", error.what());
+        throw;
     } catch (...) { p.phase = Impl::Phase::failed; throw; }
 }
 void GameNativeRendererApplication::configure_mission_ship(GameInputRuntime& input,
