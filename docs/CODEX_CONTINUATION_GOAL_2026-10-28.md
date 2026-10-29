@@ -941,3 +941,23 @@ whole prior-source FALSE projection accept; Win32/existing checks2/2 pass10.09s.
 All eight private choices remain FALSE. Fresh current-artifact preregistration/
 runtime is open; only four new owner diagnostics are prospectively specified.
 Earlier Font/Main71 acceptance does not qualify the changed host/owner layout.
+
+Fresh fixed dc2c DEFAULT source-equal caller qualification now PASSES181/181,
+independently replayed byte-identically plus34/34 current artifact checks. Fresh
+mapped pair/restore checks2/2 pass10.77s/11.27s/12.15s; static linkage56/56 and final
+payload41/41 pass.111 sealed files/6004 inputs verify,106 actual Normal samples
+cover eight drained trial PIDs, old5 remain, and all parent/launcher/controller/
+outer exits are naturally0 with effective difficulty1 and no timeout/forced stop.
+Exact4 owner diagnostics/2 teardown insertions preserve native1641/summary874,
+full762/mission589 ordering and genuine first LOGGED plane record93.60/.4143.
+Raw MSDpair1/rawstrict1/rawteardown368 remain distinct from projected acceptance.
+No379 CRT interval, live module affinity, full13/USN21/fullcaller/content/Page/P4,
+visual/Original ABI or production credit follows. All eight choices remain FALSE.
+
+The next raw ABA8D0 EMPTY-UNCHANGED route retains the original private Main-created
+authority and uses distinct fresh Ensure invocation records, followed by real wide
+copy/late CURRENT Font108+48/current empty EC and captured cleanup. Existing raw
+getter/BD1510 can express cleanup without a new generic free API. Typed leaf
+reservation/regions, pending-input/temp retirement custody and spare callback
+budget still need reviewed integration; PREPARED Main admits no generic content
+permission. No forced flags, fake prior nonempty state or new readiness is claimed.

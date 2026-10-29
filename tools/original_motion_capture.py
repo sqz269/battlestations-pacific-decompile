@@ -19,6 +19,11 @@ Example (unit is hexadecimal, with or without 0x):
 A JSON sidecar records executable identity, timing limitations, failures, and
 completion state. Existing outputs are never overwritten. No dependencies
 beyond Python's standard library are required.
+
+For a one-shot validated read of the controlled-unit global (no debugger):
+    python tools/original_motion_capture.py --pid 1234 --discover-controlled
+Discovery prints JSON, or writes a new JSON file when --output is supplied.
+It does not start a capture or follow later selection changes.
 """
 
 from __future__ import annotations
@@ -40,6 +45,7 @@ import time
 
 
 IMAGE_BASE = 0x00400000
+CONTROLLED_GLOBAL = 0x00E188D8  # include/bsp/controlled_unit.hpp; store at 004C0893
 PROCESS_VM_READ = 0x0010
 PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
 STILL_ACTIVE = 259
@@ -52,6 +58,7 @@ FIELDS = (
     "monotonic_ns", "wall_utc", "sample_span", "unit_id", "class_ptr",
     "controller_ptr", "rigidbody_ptr", "smoothed_rudder", "up_x", "up_y", "up_z",
     "vel_x", "vel_y", "vel_z", "angvel_x", "angvel_y", "angvel_z",
+    "controlled_global_before", "controlled_global_after", "controlled_relationship",
 )
 
 
@@ -240,24 +247,98 @@ def motion_sample(reader: ProcessReader, unit: int) -> tuple[dict, tuple[int, in
     return result, (class_ptr, controller, body)
 
 
+def read_controlled(reader: ProcessReader) -> tuple[int | None, str | None]:
+    try:
+        return reader.u32(CONTROLLED_GLOBAL), None
+    except SampleError as error:
+        return None, str(error)
+
+
+def controlled_observation(unit: int, before: int | None, after: int | None,
+                           errors: tuple[str | None, str | None], valid_sample: bool = True) -> dict:
+    direct = valid_sample and unit != 0 and before == after == unit
+    result = {"global_address": f"0x{CONTROLLED_GLOBAL:08X}",
+              "pointer_before": None if before is None else f"0x{before:08X}",
+              "pointer_after": None if after is None else f"0x{after:08X}",
+              "candidate_unit": f"0x{unit:08X}",
+              "relationship": "direct_match" if direct else "relationship_unverified"}
+    if any(errors):
+        result["read_errors"] = [error for error in errors if error]
+    if not direct:
+        result["reason"] = ("global read unavailable" if any(errors) else
+                            "no valid ship motion state" if not valid_sample else
+                            "global changed during sample" if before != after else
+                            "no controlled unit" if before == 0 else
+                            "different pointer; driven-sub-unit relationship was not evaluated")
+    return result
+
+
+def discover_controlled(args) -> int:
+    reader = ProcessReader(args.pid)
+    try:
+        identity = reader.identity(args.expect_sha256)
+        if reader.exit_code() != STILL_ACTIVE:
+            raise CaptureError("target process has already exited")
+        before_time = time.perf_counter_ns()
+        before, before_error = read_controlled(reader)
+        unit = args.unit if args.unit is not None else (before or 0)
+        report = {"schema_version": 1, "kind": "original_game_controlled_unit_discovery",
+                  "pid": args.pid, "recorded_utc": utc_now(), "executable": identity,
+                  "status": "no_valid_ship_state", "unit_address": f"0x{unit:08X}",
+                  "read_rights": ["PROCESS_QUERY_LIMITED_INFORMATION", "PROCESS_VM_READ"],
+                  "limitations": ["Unsuspended reads are not atomic or a motion-tick trace.",
+                                  "A different pointer leaves any driven-sub-unit relationship unverified.",
+                                  "A valid ship snapshot does not establish the mission or visible state."]}
+        try:
+            pointer(unit, UNIT_END)
+            sample, _ = motion_sample(reader, unit)
+        except SampleError as error:
+            report["sample_error"] = str(error)
+        else:
+            report["motion"] = sample
+        after, after_error = read_controlled(reader)
+        observation = controlled_observation(unit, before, after, (before_error, after_error),
+                                             valid_sample="motion" in report)
+        report["controlled_global"] = observation
+        report["sample_span"] = (time.perf_counter_ns() - before_time) / 1e9
+        if "motion" in report:
+            report["status"] = observation["relationship"]
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            with args.output.open("x", encoding="utf-8") as stream:
+                json.dump(report, stream, indent=2)
+                stream.write("\n")
+        print(json.dumps(report, indent=2))
+        return 0 if report["status"] == "direct_match" else 2
+    finally:
+        reader.close()
+
+
 def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--pid", required=True, type=int)
-    parser.add_argument("--unit", required=True, type=lambda value: int(value, 16),
+    parser.add_argument("--unit", type=lambda value: int(value, 16),
                         help="hexadecimal unit base, ECX - 310h at 00825F20 entry")
+    parser.add_argument("--discover-controlled", action="store_true",
+                        help="one-shot read/validation of global 00E188D8; --unit optionally checks a candidate")
     parser.add_argument("--seconds", type=float, default=20, help="wall duration, >0 and <=300 (default 20)")
     parser.add_argument("--hz", type=float, default=20, help="wall sample rate, 1..100 (default 20)")
-    parser.add_argument("--output", type=Path, help="new CSV; default local/original_motion_<pid>_<UTC>.csv")
+    parser.add_argument("--output", type=Path, help="new CSV (capture) or JSON (discovery); discovery defaults to stdout")
     parser.add_argument("--manifest", type=Path, help="new JSON sidecar; default <CSV>.metadata.json")
     parser.add_argument("--expect-sha256", help="require this on-disk original executable SHA-256")
     parser.add_argument("--max-failures", type=int, default=20, help="stop after consecutive failed samples (default 20)")
     args = parser.parse_args(argv)
     if not 1 <= args.pid <= 0xFFFFFFFF:
         parser.error("--pid must be a positive DWORD")
-    try:
-        pointer(args.unit, UNIT_END)
-    except SampleError as error:
-        parser.error(str(error))
+    if args.unit is None and not args.discover_controlled:
+        parser.error("--unit is required unless --discover-controlled is supplied")
+    if args.unit is not None:
+        try:
+            pointer(args.unit, UNIT_END)
+        except SampleError as error:
+            parser.error(str(error))
+    if args.discover_controlled and args.manifest:
+        parser.error("--manifest applies only to captures; discovery uses --output for its JSON report")
     if not math.isfinite(args.seconds) or not 0 < args.seconds <= 300:
         parser.error("--seconds must be finite, >0 and <=300")
     if not math.isfinite(args.hz) or not 1 <= args.hz <= 100:
@@ -268,9 +349,12 @@ def parse_args(argv=None):
                               or any(c not in "0123456789abcdefABCDEF" for c in args.expect_sha256)):
         parser.error("--expect-sha256 must contain exactly 64 hexadecimal digits")
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-    args.output = (args.output or REPO / "local" / f"original_motion_{args.pid}_{stamp}.csv").resolve()
-    args.manifest = (args.manifest or args.output.with_suffix(".metadata.json")).resolve()
-    if args.output == args.manifest:
+    if args.output is not None:
+        args.output = args.output.resolve()
+    if not args.discover_controlled:
+        args.output = args.output or REPO / "local" / f"original_motion_{args.pid}_{stamp}.csv"
+        args.manifest = (args.manifest or args.output.with_suffix(".metadata.json")).resolve()
+    if args.output is not None and args.output == args.manifest:
         parser.error("CSV and manifest must be different files")
     return args
 
@@ -307,6 +391,11 @@ def capture(args) -> int:
                              "axis_squared_length": [0.5, 2], "up_forward_dot_abs_max": 0.25},
             "attempted_samples": 0, "successful_samples": 0, "failed_samples": 0,
             "skipped_deadlines": 0, "failure_counts": {}, "failure_examples": [],
+            "controlled_global": {
+                "global_address": f"0x{CONTROLLED_GLOBAL:08X}",
+                "evidence": "include/bsp/controlled_unit.hpp; store 004C0893",
+                "semantics": "before/after each valid sample; direct equality only, never auto-follow selection",
+                "relationship_counts": {}, "first_valid_sample": None, "last_valid_sample": None},
         }
         with args.output.open("x", newline="", encoding="utf-8") as csv_stream:
             with args.manifest.open("x", encoding="utf-8") as manifest_stream:
@@ -320,6 +409,7 @@ def capture(args) -> int:
             interval = round(1e9 / args.hz)
             next_due, previous, origin, stable_identity = start, None, None, None
             failures = Counter()
+            relationships = Counter()
             consecutive = 0
             result_code = 0
             try:
@@ -336,6 +426,7 @@ def capture(args) -> int:
                         break
                     metadata["attempted_samples"] += 1
                     before = time.perf_counter_ns()
+                    controlled_before, controlled_before_error = read_controlled(reader)
                     try:
                         sample, current_identity = motion_sample(reader, args.unit)
                         if stable_identity is not None and current_identity != stable_identity:
@@ -353,6 +444,18 @@ def capture(args) -> int:
                             result_code = 2
                             break
                     else:
+                        controlled_after, controlled_after_error = read_controlled(reader)
+                        observation = controlled_observation(args.unit, controlled_before, controlled_after,
+                                                             (controlled_before_error, controlled_after_error))
+                        relationship = observation["relationship"]
+                        relationships[relationship] += 1
+                        controlled_meta = metadata["controlled_global"]
+                        if controlled_meta["first_valid_sample"] is None:
+                            controlled_meta["first_valid_sample"] = observation
+                        controlled_meta["last_valid_sample"] = observation
+                        sample.update(controlled_global_before=observation["pointer_before"] or "",
+                                      controlled_global_after=observation["pointer_after"] or "",
+                                      controlled_relationship=relationship)
                         after = time.perf_counter_ns()
                         midpoint = (before + after) // 2
                         if origin is None:
@@ -381,6 +484,7 @@ def capture(args) -> int:
             finally:
                 metadata.update(ended_utc=utc_now(), elapsed_wall_seconds=(time.perf_counter_ns() - start) / 1e9,
                                 failure_counts=dict(failures))
+                metadata["controlled_global"]["relationship_counts"] = dict(relationships)
                 # We own this exclusively-created sidecar; preserve incomplete status
                 # if an external termination prevents reaching this final update.
                 with args.manifest.open("w", encoding="utf-8") as stream:
@@ -397,7 +501,7 @@ def capture(args) -> int:
 def main(argv=None) -> int:
     args = parse_args(argv)
     try:
-        return capture(args)
+        return discover_controlled(args) if args.discover_controlled else capture(args)
     except (CaptureError, OSError, ValueError) as error:
         print(f"original_motion_capture: {error}", file=sys.stderr)
         return 1

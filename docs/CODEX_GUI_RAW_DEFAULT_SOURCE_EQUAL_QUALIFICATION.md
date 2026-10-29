@@ -21,7 +21,10 @@ constructed5/0, retired7/1 and after-parent closed9/1. No Font link/detach or CR
 quartet is supplied by this route. The coupled Win32 build/existing checks2/2
 pass10.09s. Independent actual host Source review accepts; whole previous Source
 is reproduced under the explicit new-choice FALSE projection. Fresh binary/input/
-protocol/runtime qualification remains open. All eight private choices are
+protocol/runtime qualification was initially open at that Source checkpoint.
+Fresh dc2c four-case private qualification subsequently passes181/181, independently
+replayed byte-identically plus34/34 actual artifact checks (see runtime record).
+All eight private choices are
 FALSE; no startup subsystem is activated.
 
 This is an empty-source equality fragment, not whole ABB630/ABAED0, properties,
