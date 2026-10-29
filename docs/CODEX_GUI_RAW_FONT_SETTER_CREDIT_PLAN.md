@@ -173,3 +173,13 @@ required. No layout, nonempty content/glyph, production FE_initial or ABI claim.
 The native providers exist. Missing closure is the typed raw setter/private
 header publication, exact EFFECT-credit consumption and staged lifetime admission,
 not another Font constructor, guessed global or replacement provider.
+
+## Root plan integration
+
+Root read the complete frozen e8dda4430bf0f13efccfacf13d9213d765892cdc plan.
+It is accepted as the next implementation boundary, without new admission or
+caller authority. The separate genuine Font METADATA lifecycle now passes the
+four-case/109-check qualification; all four private switches are restored FALSE.
+That evidence leaves this setter, private header issuance, Text EFFECT-credit
+issuance/consumption and staged retirement work open. Any implementation must
+close its entire bounded lifetime contract before the FRESH-only guard changes.
