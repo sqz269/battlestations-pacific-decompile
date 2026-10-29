@@ -1,6 +1,7 @@
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
 #include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
+#include "native_gui_text_font_main_admission.hpp"
 #include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -196,7 +197,17 @@ void shape(void* actual, const Context& g, const NativeGuiTextRetirementAcquired
     auto* const font = publication.retirement.font_lifetime;
     const auto* const main = g.operation.main_section();
     using Font = NativeGuiTextFontLifetimeStorageFrame;
-    if (main) {
+    if (gui_text_font_main_detail::selected(g)) {
+        using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
+        const auto& scalar = g.text.factory_context.reference_frame.scalar;
+        const auto paired_stage = progress ? (progress->base_entered ? Main::Stage::base : Main::Stage::raw118_body)
+            : scalar.started ? Main::Stage::raw118_preentry
+            : g.text.publication.reference &&
+                g.text.publication.reference->phase() == NativeGuiTextRawModelReference::Phase::retiring
+                ? Main::Stage::scalar_preentry : Main::Stage::before_scalar;
+        gui_text_font_main_detail::require_live(actual, g, paired_stage,
+            progress ? progress : scalar.started ? &scalar.destruction : nullptr);
+    } else if (main) {
         using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
         require(!font && g.operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_main_section,
             "first MainSection domain excludes simultaneous Font lifetime permission");

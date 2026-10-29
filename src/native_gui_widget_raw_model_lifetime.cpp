@@ -2,6 +2,7 @@
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
 #include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
 #include "native_gui_text_cache_backing.hpp"
+#include "native_gui_text_font_main_admission.hpp"
 #include "bsp/native_node_destruction.hpp"
 #include <exception>
 #include <initializer_list>
@@ -71,6 +72,21 @@ template<class Check> void borrowed(NativeGuiWidgetRawModelLifetimeContext& c, C
                     require(valid(region), "raw widget MainSection cache needs valid retained extents");
                     check(region);
                 });
+    }
+    if (prefix && gui_text_font_main_detail::selected(*prefix)) {
+        const auto q = gui_text_font_main_detail::peers(*prefix);
+        const auto regions = q.font.metadata_regions();
+        require(regions.count <= regions.entries.size(), "raw widget Font/Main Font metadata exceeds fixed backing");
+        for (std::size_t i = 0; i != regions.count; ++i) {
+            const Region region{regions.entries[i].begin, regions.entries[i].bytes};
+            require(valid(region), "raw widget Font/Main Font metadata requires valid retained extents");
+            check(region);
+        }
+        gui_text_backing_detail::shader_cache_backing<Region>(q.font.prepared_context().shader.cache,
+            [&](Region region) {
+                require(valid(region), "raw widget Font/Main shader backing requires valid retained extents");
+                check(region);
+            });
     }
 }
 void require_fresh(NativeGuiWidgetRawModelRoute& q) {
@@ -185,7 +201,12 @@ void NativeGuiWidgetRawModelSlots::require_domain(void* actual) {
     auto* const font = f.publication.retirement.font_lifetime;
     const auto* const compound_prefix = f.publication.retirement.primary_prefix;
     const auto* const main = compound_prefix ? compound_prefix->operation.main_section() : nullptr;
-    if (main) {
+    if (compound_prefix && gui_text_font_main_detail::selected(*compound_prefix)) {
+        require(&compound_prefix->widget == &c && &compound_prefix->text == &c.text,
+            "raw widget Font/Main base needs its SAME Text/widget graph");
+        gui_text_font_main_detail::require_live(actual, *compound_prefix,
+            NativeGuiTextMainSectionLifetimeStorageFrame::Stage::base, &f.reference_frame.scalar.destruction);
+    } else if (main) {
         using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
         require(!font && compound_prefix->operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_main_section &&
             main->phase() == Main::Phase::sealed && &compound_prefix->widget == &c && &compound_prefix->text == &c.text,

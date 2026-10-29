@@ -1,5 +1,6 @@
 #include "bsp/native_gui_text_retirement.hpp"
 #include "native_gui_text_cache_backing.hpp"
+#include "native_gui_text_font_main_admission.hpp"
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
@@ -195,7 +196,9 @@ void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diag
         const auto* const main = c.primary_prefix->operation.main_section();
         const auto& prepared = main->prepared_context();
         const auto& scalar = prepared.reference_frame.scalar;
-        require(prefix && !c.font_lifetime && main->phase() == Main::Phase::sealed &&
+        const bool paired = gui_text_font_main_detail::selected(*c.primary_prefix);
+        if (paired) (void)gui_text_font_main_detail::peers(*c.primary_prefix);
+        require(prefix && (paired || !c.font_lifetime) && main->phase() == Main::Phase::sealed &&
             &prepared.reference_frame == &c.primary_prefix->text.factory_context.reference_frame,
             "MainSection retirement requires its sealed exact compound graph");
         const bool destructor = diagnostics == &scalar.destruction && diagnostic_bytes == sizeof(scalar.destruction);
@@ -243,6 +246,17 @@ void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diag
             if (!own_frame) require(disjoint(writes[1], borrowed), "Text diagnostics cannot alias Font/provider backing");
             if (flags) require(disjoint({flags, sizeof(Word)}, borrowed), "Text flags cannot alias Font/provider backing");
         }
+        if (c.primary_prefix && gui_text_font_main_detail::selected(*c.primary_prefix))
+            gui_text_backing_detail::shader_cache_backing<Region>(prepared.shader.cache,
+                [&](Region borrowed) {
+                    require(borrowed.begin && borrowed.size &&
+                        static_cast<std::uint64_t>(bits(borrowed.begin)) + borrowed.size <= 0x100000000ull,
+                        "Font/Main shader retirement requires representable retained backing");
+                    for (const auto region : writes)
+                        require(disjoint(region, borrowed), "Text retirement writes cannot alias Font/Main shader backing");
+                    if (flags) require(disjoint({flags, sizeof(Word)}, borrowed),
+                        "Text flags cannot alias Font/Main shader backing");
+                });
     }
     if (!prefix) raw_default_admission(raw, c);
 }

@@ -1,5 +1,6 @@
 #include "bsp/native_gui_text_reference.hpp"
 #include "native_gui_text_cache_backing.hpp"
+#include "native_gui_text_font_main_admission.hpp"
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
 #include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
@@ -141,6 +142,13 @@ void known_shader_borrowed(const NativeGuiTextRawModelReferenceContext& c, Check
 void fresh_shader_binding(const NativeGuiTextRawModelReferenceContext& c,
     const NativeGuiTextReferenceFrame& expected) {
     const auto* const f = c.font_shader_frame;
+    if (c.retirement.primary_prefix && gui_text_font_main_detail::selected(*c.retirement.primary_prefix)) {
+        const auto q = gui_text_font_main_detail::peers(*c.retirement.primary_prefix);
+        require(q.main.phase() == NativeGuiTextMainSectionLifetimeStorageFrame::Phase::prepared &&
+            q.font.phase() == NativeGuiTextFontLifetimeStorageFrame::Phase::prepared,
+            "Initial Font/Main raw122 bind requires BOTH untouched prepared slices");
+        q.main.require_live(nullptr, NativeGuiTextMainSectionLifetimeStorageFrame::Stage::bound);
+    }
     if (c.retirement.font_lifetime) {
         const auto& font = c.retirement.font_lifetime->prepared_context();
         require(f == &font.shader && c.retirement.font_shader_frame == f && &font.reference_frame == &expected &&
@@ -370,7 +378,9 @@ void known_borrowed(NativeGuiTextRawModelReferenceContext& c,
         using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
         const auto* const main = t.primary_prefix->operation.main_section();
         const auto& prepared = main->prepared_context();
-        require(!t.font_lifetime && &prepared.reference_frame == &t.primary_prefix->text.factory_context.reference_frame &&
+        const bool paired = gui_text_font_main_detail::selected(*t.primary_prefix);
+        if (paired) (void)gui_text_font_main_detail::peers(*t.primary_prefix);
+        require((paired || !t.font_lifetime) && &prepared.reference_frame == &t.primary_prefix->text.factory_context.reference_frame &&
             t.primary_prefix->operation.geometry() == &prepared.geometry,
             "MainSection reservation requires the SAME compound graph and canonical reference Frame");
         const auto regions = main->phase() == Main::Phase::sealed
@@ -395,7 +405,13 @@ void known_borrowed(NativeGuiTextRawModelReferenceContext& c,
         const auto& font = t.font_lifetime->prepared_context();
         require(c.font_shader_frame == &font.shader && t.font_shader_frame == &font.shader,
             "Font reservation requires SAME fixed shader in both raw122 and retirement contexts");
-        const auto regions = t.font_lifetime->metadata_regions();
+        const bool paired = t.primary_prefix && gui_text_font_main_detail::selected(*t.primary_prefix);
+        if (paired) (void)gui_text_font_main_detail::peers(*t.primary_prefix);
+        using Font = NativeGuiTextFontLifetimeStorageFrame;
+        const auto regions = paired && t.font_lifetime->phase() == Font::Phase::sealed
+            ? t.font_lifetime->live_regions(t.primary_prefix->text.factory.raw_slot,
+                t.primary_prefix->text.publication.scalar_entered ? Font::Stage::scalar_preentry : Font::Stage::bound)
+            : t.font_lifetime->metadata_regions();
         require(regions.count <= regions.entries.size(), "Font metadata region count exceeds its fixed backing");
         for (std::size_t i = 0; i != regions.count; ++i) {
             const auto& region = regions.entries[i];
