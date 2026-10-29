@@ -141,6 +141,11 @@ void require_shader_quiescent(const NativeGuiTextRawModelReferenceContext& c) {
     require(frame->phase == NativeGuiTextShaderStorageFrame::Phase::fresh ||
         frame->phase == NativeGuiTextShaderStorageFrame::Phase::complete,
         "Raw Text binding/scalar excludes an entered or failed reserved shader invocation");
+    const auto progress = frame->credit_progress();
+    using Shader = NativeGuiTextShaderStorageFrame;
+    require(!progress.failed && !progress.active &&
+        (progress.producer == Shader::RawPhase::fresh || progress.producer == Shader::RawPhase::complete),
+        "Raw Text reservation excludes privately entered, failed or active shader work");
 }
 template<class Check>
 void known_shader_borrowed(const NativeGuiTextRawModelReferenceContext& c, Check check) {
@@ -162,6 +167,12 @@ void fresh_shader_binding(const NativeGuiTextRawModelReferenceContext& c) {
     const auto* const f = c.font_shader_frame;
     if (!f) return;
     using Frame = NativeGuiTextShaderStorageFrame;
+    const auto progress = f->credit_progress();
+    require(progress.producer == Frame::RawPhase::fresh && progress.credit == Frame::CreditPhase::none &&
+        progress.consumer == Frame::Consumer::none && !progress.failed && !progress.active && !progress.retirement_started &&
+        !progress.actual_text && !progress.reference && !progress.reference_context &&
+        !progress.reference_frame && !progress.cache,
+        "Raw Text initial bind excludes any previous private shader producer/consumer history");
     require(f->prepared_raw_context() && f->phase == Frame::Phase::fresh &&
         f->boundary == Frame::Boundary::none && f->escaped_boundary == Frame::Boundary::none &&
         !f->destination && !f->selected_name && !f->captured_configuration && !f->captured_font &&

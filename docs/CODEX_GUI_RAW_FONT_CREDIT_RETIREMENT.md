@@ -89,3 +89,14 @@ Comparison JSON SHA256:
 df51c1f5a801a31aa1e13114b62377ccc76b24d07759b08a1e53bb0365adf202.
 Comparison script SHA256:
 f9145b11010af2936446eb75eeb0fafce51c07f09026c7131b0e1a4fe99bfdd7.
+
+## Root integration
+
+Root read the complete84d2 source diff and document, verified the exact observer
+and boundary restoration sites, and integrated it with the actual shader body
+ee114. Six existing-schedule comparisons and independent shader authority review
+pass. Combined Win32 and existing checks2/2 pass (11.46s),
+`local/cc16_raw_font_credit_private_history_corrected_build.log`.
+Source integration does not remove the existing strict raw118 preflight or
+owner/FRESH/header/108/1EC restrictions. Staged lifetime admission and a genuine
+caller remain required before a credited retirement can execute.

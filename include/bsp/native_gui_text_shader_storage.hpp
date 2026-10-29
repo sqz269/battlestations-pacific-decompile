@@ -88,6 +88,7 @@ struct NativeGuiTextShaderStorageFrame final {
         bool failed{}, active{}, capture_entered{}, decrement_entered{};
         bool decrement_returned{}, zero_entered{}, zero_returned{}, slot_cleared{};
         bool consumer_returned{};
+        bool retirement_started{}; // snapshot of private one-shot entry, including null/no-producer
         // CURRENT invocation, separate from the historical nonnull consumer
         // below. Authority requires active && !failed. On failure these are
         // retained diagnostic identities only; snapshots never follow a token.
