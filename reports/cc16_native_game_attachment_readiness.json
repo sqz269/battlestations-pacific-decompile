@@ -1,0 +1,1101 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-game-attachment-readiness",
+  "status": "readiness_audit_complete_genuine_application_composition_and_normal_shutdown_blocked",
+  "baseline": {
+    "head": "605373bf732e4bd3089e8f07ddca226ab4d635a3",
+    "origin_main_at_start": "605373bf732e4bd3089e8f07ddca226ab4d635a3",
+    "prior_readiness": "3dea1fe67775660434911aaf4449ec716ffe9c83",
+    "tree": "J:/PROG/battlestations-pacific-decompile-codex-native-game-attachment-readiness",
+    "branch": "agent/codex-native-game-attachment-readiness",
+    "scope": "Exact accepted accuracy605 baseline; no source or acceptance change."
+  },
+  "ownership": {
+    "kind": "file_only",
+    "addresses": [],
+    "files": [
+      "docs/CC16_NATIVE_GAME_ATTACHMENT_READINESS.md",
+      "reports/cc16_native_game_attachment_readiness.json"
+    ],
+    "source_edits": false,
+    "shared_metadata_edits": false,
+    "ghidra_mutations": false
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "vendor_bodies": 0,
+    "original_abi": 0,
+    "activation": 0,
+    "builds_run": 0,
+    "tests_run": 0,
+    "fixtures_run": 0,
+    "probes_run": 0,
+    "games_run": 0,
+    "dll_calls_run": 0,
+    "original_install_save_profile_mutated": false
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "Each live bsp.py ghidra client() calls Client.verify() against config/target.json before its read-only query; no inline scripts or mutations.",
+    "installed_pe_sha256_from_prior_pinned_target": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installed_pe_rehashed_this_packet": false
+  },
+  "current_root": {
+    "actual_application_storage": "GameStartupHost::native_application_[7], 1Ch, actual +14h is word5; construct_native_application_00737970 explicitly writes null.",
+    "application_guard": {
+      "name": "kApplicationCc15Bound",
+      "value": true
+    },
+    "fanout_guard": {
+      "name": "kGatedFanoutBodiesBound",
+      "value": true
+    },
+    "world_active_guard": {
+      "name": "kWorldActiveByteBound",
+      "value": true,
+      "scope": "Projected mission World gate, not raw Game custody."
+    },
+    "runtime_application_instances": 0,
+    "frame_application_instances": 0,
+    "attach_invocations": 0,
+    "native_game_initial_pointer": null,
+    "null_path": "GameFixedStepHost::simulate_physics_world_00c5c540 records 00875E0C and returns before the native world step.",
+    "search_scope": "Complete src/include symbol searches; definitions and declarations are not invocation proof.",
+    "raw_game_primary_table_slots": 1,
+    "other_original_game_methods_admitted_by_scalar_table": false,
+    "phase_requirement": "Frame constructor completed, runtime live, actual Application+14 == canonical E188A8 == runtime.storage(). Non-null E188A8 alone is insufficient."
+  },
+  "native_epochs": [
+    {
+      "site": "0073D93C",
+      "target": "00438E40",
+      "contract": "ECX actual initialization mode, EAX duplicate; store current E1AE78 at 0073D945 before parsing 0073D94A.",
+      "current_source": "mode parsed directly; duplicate/publication absent"
+    },
+    {
+      "site": "0073E155",
+      "target": "00BF55BE",
+      "contract": "71A0h allocation then whole zeroing at 73E163; fragment inside 73D410"
+    },
+    {
+      "site": "0073E188",
+      "target": "0041E870",
+      "contract": "Capture E1AE78 at73E17E; temporary raw8h string uses canonical pool."
+    },
+    {
+      "site": "0073E1A1",
+      "target": "004DDB90",
+      "contract": "ECX Game, stack raw name header, EAX Game; publish Application+14 at73E1AF after return."
+    },
+    {
+      "site": "0073E1CE",
+      "target": "00419CC0",
+      "contract": "Release temporary via same pool and subsequent BD1510 at73E1D5."
+    },
+    {
+      "site": "0073E466",
+      "target": "00BF6989",
+      "contract": "Free duplicate captured at73E45C, clear E1AE78 at73E46E, then4E5540 at73E477."
+    },
+    {
+      "site": "00737FB9",
+      "target": "004DC5C0",
+      "contract": "Full Game OnDestroy before scalar deletion; current helper is only a fragment."
+    },
+    {
+      "site": "00737FCB",
+      "target": "current Game primary slot0",
+      "contract": "Reload actual Application+14, ECX receiver and flags1; clear actual Application+14 only after return at737FCD."
+    },
+    {
+      "site": "00C38164",
+      "target": "00C38189 -> 00BF681B; 00C3819F -> 00C36F10",
+      "contract": "Actual 248h allocation and SAPBroadPhaseManager2 construction; no SAPRadix selection."
+    }
+  ],
+  "original_interfaces": [
+    {
+      "address": "004DDB90",
+      "body": "004DDB90..004DE266",
+      "abi": "ECX actual Game, one stack raw8h name header, EAX Game, RET4 at4DE264",
+      "source": "src/native_game_construction.cpp",
+      "qualification": "Full normal storage source with required real contexts; original EH/ABI not admitted."
+    },
+    {
+      "address": "004DCF90",
+      "body": "004DCF90..004DD5A6",
+      "abi": "ECX actual Game; storage destructor",
+      "source": "src/native_game_lifetime.cpp",
+      "qualification": "Normal source and retained failure diagnostics; not the preceding OnDestroy phase."
+    },
+    {
+      "address": "004DE270",
+      "body": "004DE270..004DE28D",
+      "abi": "ECX Game, stack flags, EAX original Game, RET4 at4DE28B",
+      "qualification": "Calls4DCF90; flags&1 frees throughBF6989; actual matching allocation required."
+    },
+    {
+      "address": "00C31A40",
+      "body": "00C31A40..00C31A49",
+      "abi": "ECX World, stack callback owner; storeWorld+24 thenRET4",
+      "qualification": "No null world guard or substitute callback."
+    },
+    {
+      "address": "00C38070",
+      "body": "00C38070..00C38461",
+      "abi": "Stack scene/world; EAX scene; RET8 atC3845F",
+      "qualification": "Ordinary E8h scene with actual248h SAP2 owner."
+    },
+    {
+      "address": "004DC5C0",
+      "body": "004DC5C0..004DC69A",
+      "bytes": 219,
+      "instruction_starts": 67,
+      "abi": "ECX Game capturedESI; no stack arguments; final tailJMP4A9AC0 at4DC696",
+      "current_source": "mission_lua_teardown_004dc5c0 implements only steps7-9",
+      "whole_parent_implemented_by_named_fragment": false
+    }
+  ],
+  "available_suppliers": [
+    {
+      "role": "canonical Game/settings/profile SDK",
+      "provider": "GameNativeSettingsProcess::game_00e188a8(), settings(), profile_context()",
+      "adoption": "Borrow actual process cells; raw game+650 is distinct from projected menu profile."
+    },
+    {
+      "role": "canonical string and manager domain",
+      "provider": "GameVfsHost::borrow_raw_services()/raw_strings(); GameNativeStringProcess",
+      "adoption": "SameAA0/AA8/AA4 through frame, fields, profile, resources, teardown and manager drain."
+    },
+    {
+      "role": "raw Game profile constructor",
+      "provider": "GameNativePlayerProfileContext",
+      "adoption": "Concrete definitions-only provider; binds actual settings/SDK and mapped literals."
+    },
+    {
+      "role": "raw table storage",
+      "provider": "GameNativeGameTables",
+      "adoption": "23x16h rows/count and12x97 ranks; explicit opaque upper24-bit preimage; once-only borrow while count0."
+    },
+    {
+      "role": "constructor constants",
+      "provider": "GameNativeReadOnlyData exact referenced immutable data and reference bundles",
+      "adoption": "No mutable E188A8/E1AE78 cell from read-only image data; preserve volatile reads/float epochs."
+    },
+    {
+      "role": "resource manager and five parser owners",
+      "provider": "GameVfsHost::raw_resource_manager_context()/raw_game_resource_parsers_context()",
+      "adoption": "Actual GameNativeResourceApplication publications and canonical raw domain, not projected objects."
+    },
+    {
+      "role": "grid graphics and CPU services",
+      "provider": "GameNativeRendererApplication::game_grid_context()",
+      "adoption": "Same renderer/strings/CPU lifetime; three explicit descriptor20/24 preimages; no zero policy guessed."
+    },
+    {
+      "role": "Lua bootstrap/files",
+      "provider": "GameNativeLuaServices::bootstrap(), binding().files() and Activation",
+      "adoption": "Retain around every real interpreter entry; interrupted Lua remains qualified."
+    },
+    {
+      "role": "actual FOV divisor",
+      "provider": "GameNativeSettingsApplication::fov_divisor_00f889b4()",
+      "adoption": "Actual settings+34h cell, not read-view copy."
+    },
+    {
+      "role": "GlobalConfig sound",
+      "provider": "GameSoundRuntime::samples()/lifetime_bindings(), SoundSampleRuntime::sample_cache_context(), NativeGlobalConfigSampleDispatch",
+      "adoption": "ActualF8BBE8 via lifetime bindings, same component lifetime; admitted raw/Source sample union only."
+    },
+    {
+      "role": "observers",
+      "provider": "GameSingletonHost::observers().lifetime()",
+      "adoption": "Same real dispatch/process/manager domain through shared drain."
+    },
+    {
+      "role": "Dyn and contact reports",
+      "provider": "GameNativeDynProcess::dynamics()/world_step()/contact_reports()/body_creation()",
+      "adoption": "StartedCC8950/CC89C0, genuine mutable conversion cell and actual pool; construction still occurs in Game ctor."
+    },
+    {
+      "role": "lifetime virtual forwarding",
+      "provider": "NativeGameCurrentVirtualCalls",
+      "adoption": "Concrete not abstract, but creates no callable tables, objects or allocation custody. Definitions-only."
+    }
+  ],
+  "blockers": [
+    {
+      "id": "B1",
+      "kind": "missing application producer handoff",
+      "detail": "No instantiated Game aggregate/frame/runtime or attach call. Bind actualApplication+14 and canonicalGame cell. Native mode duplicate/E1AE78 producer/free-clear epochs are absent though real438E40 helper exists."
+    },
+    {
+      "id": "B2",
+      "kind": "missing context composition",
+      "detail": "Full NativeGameConstructionContext and NativeGameLifetimeContext aggregate absent, including raw profile/table owner and exact provider lifetimes. Body source availability is not root invocation."
+    },
+    {
+      "id": "B3",
+      "kind": "unbound opaque native inputs",
+      "detail": "GameNativeGameTables unit frame upper24-bit preimage and three grid descriptor20/24 pairs require real trace/proven custody or separately explicit qualified source policy; no guessed zero/default."
+    },
+    {
+      "id": "B4",
+      "kind": "missing GlobalConfig composition",
+      "detail": "No application GlobalConfigContext/NativeGlobalConfigLoadContext/NativeGlobalConfigSoundContext. Require canonicalF878E4, existing actualsound cache/lifetime, Lua/bootstrap/files/FOV, and same registered deletion binding before owner registration."
+    },
+    {
+      "id": "B5",
+      "kind": "mutable authority and child producer custody",
+      "detail": "Game movie/grid/lifetime publication cells, class registry+six actual10h vectors, Lua0108FF30/40 headers and embeddedE0AF14 flag lack matching application composition. Existing0Ch Lua x360comp/region owner is not these headers; projected hosts/STL vectors are not raw storage."
+    },
+    {
+      "id": "B6",
+      "kind": "current-table admission",
+      "detail": "NativeGameCurrentVirtualCalls requires genuinely callable current child tables; rawGrid stores numericCFD484. Raw family-specific source dispatch or genuine table production and exact lifetime/allocator admission are required. Runtime primarytable only supplies scalar slot0."
+    },
+    {
+      "id": "B7",
+      "kind": "partial normal shutdown parent",
+      "detail": "Full219B/67-op4DC5C0 is not the existing three-Lua-step fragment. Preserve real OnDestroy before4DE270; do not bypass it or clearApplication+14 before scalar return."
+    },
+    {
+      "id": "B8",
+      "kind": "ordinary scene and body producer admission",
+      "detail": "Raw4DE610 requires unbound WorldConstructServices, actual4BCh missionWorld and real callback/lifetime closure; current world sentinel1 projection and world-active byte are insufficient. No game host calls C5D580 on the new rawDynWorld. Preserve genuine SAP2 create/remove/delete path."
+    }
+  ],
+  "on_destroy_missing_parent": {
+    "native_body": "004DC5C0..004DC69A",
+    "direct_callees": [
+      "004254B0",
+      "0046F3E0",
+      "004DA780",
+      "004DA650",
+      "00992AC0",
+      "00B65E80",
+      "008844F0",
+      "004A9AC0"
+    ],
+    "direct_edge_note": "4A9AC0 is final tailJMP, not CALL.",
+    "indirect_sites": [
+      "004DC5FF",
+      "004DC62C",
+      "004DC644",
+      "004DC65C",
+      "004DC674",
+      "004DC68C"
+    ],
+    "required_order": [
+      "trace/state5D4=10h",
+      "scene database destroy",
+      "session teardown",
+      "front-end managers",
+      "conditionalF8A2FC slot8 thenonline destroy",
+      "clear borrowedLuaowner",
+      "release realmachine",
+      "delete then clear1A08/21A0/21D8/E18678/E1867C",
+      "tail4A9AC0"
+    ],
+    "existing_fragment": "include/bsp/mission_lobby_settings.hpp:174-202 and src/mission_lobby_settings.cpp:191; only borrowedLua/machine/host steps7-9, no application raw-host binding."
+  },
+  "sap_policy": {
+    "ordinary_chain": [
+      "4DDB90",
+      "C55F50/C420E0",
+      "C41AD0",
+      "C38070",
+      "248h allocation/C36F10",
+      "World+444 scene",
+      "scene+AC SAPBroadPhaseManager2"
+    ],
+    "step_chain": [
+      "00875E0C",
+      "C5C540",
+      "C5BB30",
+      "C57070",
+      "scene+AC/current table+0C"
+    ],
+    "body_create": "C50470 -> C54AA0 SAP2 proxy; native descriptor producer C5D580 remains separate application work.",
+    "body_remove": "C4C380",
+    "manager_delete": "004043D0",
+    "sap_radix_substitution_allowed": false,
+    "all_dyn_classes_activation_claim": false,
+    "empty_world_step_is_body_collision_witness": false
+  },
+  "proposed_future_packet": {
+    "ready_for_attachment_now": false,
+    "proposed_type": "bsp::game::GameNativeGameApplication (hypothesis)",
+    "new_files": [
+      "include/bsp/game_native_game_application.hpp",
+      "src/game_native_game_application.cpp"
+    ],
+    "required_caller_files": [
+      "include/bsp/game_hosts.hpp",
+      "src/game_hosts.cpp",
+      "include/bsp/game_hosts_mission.hpp",
+      "src/game_hosts_mission.cpp",
+      "include/bsp/game_hosts_mission_frame.hpp",
+      "src/game_hosts_mission_frame.cpp"
+    ],
+    "existing_attach_api_reused": "GameFixedStepHost::attach_native_game(GameNativeGameRuntime*)",
+    "root_hook": "GameStartupHost::run_initialize_phases immediately after native73E14B diagnostic checkpoint, before real Game entry; actualmode duplication earlier at73D93C, duplicate retirement73E466/46E.",
+    "mission_hook": "Startup uses existingmenu_->mission() after menu construction, before currentskirmish/difficulty setters; no menu-file change required for present sole construction site. Retain same runtime inMissionHost and apply it on every frame replacement atline2667; bind actualImpl::fixed_step createdline289, following observer binding.",
+    "shutdown_hook": "Quiesce/detach every frame/Lua extra-step/job borrower; fullOnDestroy737FB9 then scalarflags1 at737FCB then clearactualApplication+14 at737FCD; keep all providers through Game destruction and rawmanager drain.",
+    "guard": "Only after provider closure, a new default-OFF admission guard; no existing current guard can activate absent owner.",
+    "stop_conditions": [
+      "any missing raw producer or canonical cell authority",
+      "unqualified numeric child method table",
+      "missing fullnormal OnDestroy or realcallee provider",
+      "mismatched allocator/strings/calls/Dyncontexts",
+      "incomplete native operation or callback graph"
+    ],
+    "no_fake_owner_or_returning_callback": true,
+    "no_source_credit_for_reused_bodies": true
+  },
+  "failure_limits": [
+    "Source normal storage and retained diagnostic operations are not originalFH3/SEH/fault/ABI equivalence.",
+    "Partial/running runtime and child operations reject replay and may terminate on destruction; root needs whole-aggregate retention/exit before manager drain.",
+    "Frame flags1 scalar deletion frees owned71A0 allocation; do not callfree_retained_storage afterward. Scalar frame does not clearApplication+14.",
+    "Diagnostic acknowledgement supplies no cleanup, rollback or callback restoration.",
+    "Dyn profile oldC50390/C44000 normal-only paths remain used; additiveBF65AC cleanup overload availability is not adoption.",
+    "NativeLuaServiceBindings::Activation does not qualify foreignC++ exception or nonlocal transport acrossLuaCframes."
+  ],
+  "source_pins": [
+    {
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/bsp.py",
+      "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+      "bytes": 103131,
+      "sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "bytes": 14518,
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "git_blob": "04f8a795156feeb734856a7747100e7dfbc6f9d5",
+      "bytes": 46822,
+      "sha256": "69af1a3c2359cb9d670f5f423cff65d4acd928590a3f05d55cdfd889ae7eb28a"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "git_blob": "7cfe6f89bb83fb7b61fd3226efc86277ba07ff09",
+      "bytes": 178007,
+      "sha256": "ac82e24e0f6cdd9d52aad47a9bc45b545d651fbd9d3056aafb2feb4f65033223"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "git_blob": "18909178937d4a3fbd4ddf9073819b959f3fa47a",
+      "bytes": 80404,
+      "sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7"
+    },
+    {
+      "path": "include/bsp/game_native_game_runtime.hpp",
+      "git_blob": "82d6f97019a8ced315745431c1d80759d0251779",
+      "bytes": 2173,
+      "sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a"
+    },
+    {
+      "path": "src/game_native_game_runtime.cpp",
+      "git_blob": "ad9f8b3518827f1b1117ea55c92a2b1de23fa78d",
+      "bytes": 4780,
+      "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca"
+    },
+    {
+      "path": "include/bsp/game_native_game_application_frame.hpp",
+      "git_blob": "3be78aa1c3e7004e1e75a7f278a4ccfbf2e58cdf",
+      "bytes": 4893,
+      "sha256": "888edb0cdab9adbf87935c81923890940342435840358081cf88178d0c1fcd33"
+    },
+    {
+      "path": "src/game_native_game_application_frame.cpp",
+      "git_blob": "965a53b7a9ecf78978677f6a930154da1bd3768c",
+      "bytes": 7687,
+      "sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09"
+    },
+    {
+      "path": "include/bsp/game_hosts_fixed_step.hpp",
+      "git_blob": "836f41cd95402bdefd26750d896ab31c38b30848",
+      "bytes": 18494,
+      "sha256": "254eca0c16d8ffd59c8af0e88af9a0559a91ae9fd577a4b18917aa547f549ee7"
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "git_blob": "2387327fd643ed6a4c718d8746cce1024fa2de80",
+      "bytes": 25208,
+      "sha256": "b95fc61fe7a511d83dccd057a9149cea8a79ed6c596ff242f15f84ba41612d03"
+    },
+    {
+      "path": "include/bsp/game_hosts_menu.hpp",
+      "git_blob": "b2fd10f60f8a2a4de10e30dff43db77e7a3c6946",
+      "bytes": 14176,
+      "sha256": "a7fe3146065a71cdbcf9a6f62dd2674f617722dc4615e0c0a00e03d8278c6dcf"
+    },
+    {
+      "path": "src/game_hosts_menu.cpp",
+      "git_blob": "53bd558c0b9511967eadaec0d014626f20c44ae2",
+      "bytes": 113822,
+      "sha256": "f0c936fa3f0f1ca9b739b1c66428d2f4b5af2b1f15081ea2a36c5346ad4bb052"
+    },
+    {
+      "path": "include/bsp/game_hosts_mission.hpp",
+      "git_blob": "68122cb30e3739f18c91370bde0e1bc0bc02a410",
+      "bytes": 13403,
+      "sha256": "4b2a9581722a37e284315a30db2d073d53e8a02657a14f3be4a9db30e9b9f2d6"
+    },
+    {
+      "path": "src/game_hosts_mission.cpp",
+      "git_blob": "8f1d15dd700525115594ee013586309ab098fe51",
+      "bytes": 146744,
+      "sha256": "79b7a34465c0fb3c3415f4a3103669bb386c407adf22b6416b4eadabe29ea945"
+    },
+    {
+      "path": "include/bsp/game_hosts_mission_frame.hpp",
+      "git_blob": "839adcd63bb7ae1d27aa62dd3098d24bb98a77a2",
+      "bytes": 14335,
+      "sha256": "6aa9fe1ee3de77ff4f0a3f4125c2b0ff62349bf16b7ad71fea59374caf1386d6"
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "git_blob": "2257b8333afc3e71fa2bfcd2f8686d7e510efb54",
+      "bytes": 316563,
+      "sha256": "63069582a2a2d193e51dea7085185f28f6b2b580098735966748909df9a0a796"
+    },
+    {
+      "path": "include/bsp/native_game_construction.hpp",
+      "git_blob": "e83a2b3736edfb4d6fa699526a003861d3805977",
+      "bytes": 7095,
+      "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e"
+    },
+    {
+      "path": "src/native_game_construction.cpp",
+      "git_blob": "ad55eb59309369dff06d596cbdf3efd1e4c7037a",
+      "bytes": 14665,
+      "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e"
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "git_blob": "0f2f50a4b1ad95e354e352354a210d43e227c9ba",
+      "bytes": 9440,
+      "sha256": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136"
+    },
+    {
+      "path": "src/native_game_lifetime.cpp",
+      "git_blob": "bca722876e5b4cfd4033c20b2be6adec7e2b3f6f",
+      "bytes": 21717,
+      "sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90"
+    },
+    {
+      "path": "include/bsp/native_game_current_virtual_calls.hpp",
+      "git_blob": "8de8416376a3ec486f1bb3a6a81a8118cf041fe9",
+      "bytes": 2159,
+      "sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46"
+    },
+    {
+      "path": "src/native_game_current_virtual_calls.cpp",
+      "git_blob": "2bca11481b05e0cc04777e766f2652d6b3b2bd5f",
+      "bytes": 1691,
+      "sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f"
+    },
+    {
+      "path": "include/bsp/native_game_physics_lifetime.hpp",
+      "git_blob": "1afc7f6aef423a3fedb65beeea64830069856437",
+      "bytes": 6288,
+      "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+    },
+    {
+      "path": "src/native_game_physics_lifetime.cpp",
+      "git_blob": "5fb98e8e73cd280c681e0e67e8d5f625e97dc1d5",
+      "bytes": 13632,
+      "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+    },
+    {
+      "path": "include/bsp/game_native_dyn_process.hpp",
+      "git_blob": "8bcec5f9e26075a4c706266722701d1c23434366",
+      "bytes": 2723,
+      "sha256": "a2fd23518752eb7232a0076a039123202f6be1c2ef50fd17a5c9eaff17bdcee6"
+    },
+    {
+      "path": "src/game_native_dyn_process.cpp",
+      "git_blob": "2340457588570a29286cddb3c153e1af7e264624",
+      "bytes": 8919,
+      "sha256": "6ca1af2006f4462e1807d03821183bcf7925404bb77bbdbb32399ee78d32e4e2"
+    },
+    {
+      "path": "include/bsp/game_native_player_profile_context.hpp",
+      "git_blob": "88f22f94767119dc6855bee68365ea1888a37882",
+      "bytes": 1667,
+      "sha256": "e28106bdf2a14bb82fa35a0fd4b465422e6081488b831f77515b690c7f8a373b"
+    },
+    {
+      "path": "src/game_native_player_profile_context.cpp",
+      "git_blob": "c45e6c87b13b1af29c42df94400400e02603de64",
+      "bytes": 871,
+      "sha256": "36687e71130eac32af0ac0bec59555fd95df8496e459097d1b68630df41fb36f"
+    },
+    {
+      "path": "include/bsp/game_native_game_tables.hpp",
+      "git_blob": "e5eb7b86ef82e88242a122dfa87de444d10cb8ee",
+      "bytes": 1612,
+      "sha256": "df5e57025a0c1ac61b8c9809be9bc888c0eb134ff1ee64340b576233d0f0cfeb"
+    },
+    {
+      "path": "src/game_native_game_tables.cpp",
+      "git_blob": "d1a656c767c436420ea9497b715be9ab6921541a",
+      "bytes": 705,
+      "sha256": "8d36b08e9999ac5113ceed719b743f8fd211f887b858149460835fd16aa0c489"
+    },
+    {
+      "path": "include/bsp/native_game_tables.hpp",
+      "git_blob": "0978540fddeea88fc548f239ca0032458f023591",
+      "bytes": 1948,
+      "sha256": "f17e77015efb5ea9f1909479682bd5c602e1f5f8ac1b34e63ed852d7107e1743"
+    },
+    {
+      "path": "src/native_game_tables.cpp",
+      "git_blob": "a373d40cade5df54364ce4eae00e3c236037cc70",
+      "bytes": 6174,
+      "sha256": "c5f443a1b2e3b417b8885a83d24e74e212468fbc51813c809a5fe8bd705ed4b1"
+    },
+    {
+      "path": "include/bsp/game_native_settings_process.hpp",
+      "git_blob": "c3af3aab298f334d35c33ac276eeab3a2a17e29e",
+      "bytes": 2203,
+      "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6"
+    },
+    {
+      "path": "src/game_native_settings_process.cpp",
+      "git_blob": "3fdec928d327e44bab7297a987591d43c7fd4d95",
+      "bytes": 7791,
+      "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b"
+    },
+    {
+      "path": "include/bsp/game_native_settings_application.hpp",
+      "git_blob": "313bab85fb4df16ea6cee3ff537d4fbb76026191",
+      "bytes": 2280,
+      "sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760"
+    },
+    {
+      "path": "src/game_native_settings_application.cpp",
+      "git_blob": "c7798be90dd59ad8c59f556e18ecb7025bda8bd7",
+      "bytes": 11474,
+      "sha256": "4e442e6362764777f48eed986d0666e9b65fde269200eefaa6c0aef03e6d94a5"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "git_blob": "3a71d3c268f93f565638c0bfe70c95ea877b9285",
+      "bytes": 4950,
+      "sha256": "43a0642984f29202ade63a4a81389482fc783d9d47d75260104b2fa2fa3ea0c1"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "git_blob": "97fa588dece2f718a2a1648ef5a72b5d616cfb17",
+      "bytes": 9863,
+      "sha256": "57c378aabe457270e7d71e64f581aa8a2a31249976d8405e6dd51eb932e57ab1"
+    },
+    {
+      "path": "include/bsp/game_hosts_vfs.hpp",
+      "git_blob": "00d36ad12ab70f56c72886fc750163115162d645",
+      "bytes": 12974,
+      "sha256": "1e3878ed0f752e14946c132fdee509a76f07c95cd52676bc00fafdbeb7ad0326"
+    },
+    {
+      "path": "include/bsp/game_native_resource_application.hpp",
+      "git_blob": "65f39fb8afec562767db9f11e2116d4d6e26f83c",
+      "bytes": 3728,
+      "sha256": "6e2a16b82e0b07374d0d1ad3bfa5d5d718182f06fccdbf40dfcd6425032350f6"
+    },
+    {
+      "path": "src/game_native_resource_application.cpp",
+      "git_blob": "7e025cbfed54f5aa01534f0f37d7ba7246887f4c",
+      "bytes": 16565,
+      "sha256": "83ed3891956c0f2699f6f4807877c330ddd5d3c6dfedd2836b0446966ab2f236"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "git_blob": "427d7f7b5762081595c7d34c460c46d173e874c4",
+      "bytes": 20443,
+      "sha256": "2ce5d69fe894fb0a730234f15dc236d6d6d869e53e29387a962ac0e6d99e42be"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "git_blob": "5baacc9a3bb8b4856951e8780485dea44502e951",
+      "bytes": 80060,
+      "sha256": "3ed5485d8b619dce29caed0c1fa2b810b71504478bbb4ce44ca683c9e398ae7f"
+    },
+    {
+      "path": "include/bsp/native_game_grid.hpp",
+      "git_blob": "4a44fea8e79a5af1b60cf4ee17823656d7809997",
+      "bytes": 5796,
+      "sha256": "22389375b044ac8a3e75fc43d18db5b70ee37983e92cb1947d8e599246bda13a"
+    },
+    {
+      "path": "src/native_game_grid.cpp",
+      "git_blob": "7244837f706e627ae678486f3b17f960c051a3dc",
+      "bytes": 22715,
+      "sha256": "27c9d4e2844de811d8b62e6660d08f39dbcec89eabd2df30c93138409c1eede3"
+    },
+    {
+      "path": "include/bsp/game_native_lua_services.hpp",
+      "git_blob": "e65575d7d77f549cbbd3a26bc6a222d51ee2d3a7",
+      "bytes": 1332,
+      "sha256": "8f3944745d91adeedfd48964026f5506fb6116c2ae49b7e796802b890b7f4707"
+    },
+    {
+      "path": "src/game_native_lua_services.cpp",
+      "git_blob": "4db37e5e61e542e2ff22b53bd6e33d067b42e4dd",
+      "bytes": 3183,
+      "sha256": "9a8b02210f9274fa18e30454fc5e0ae2e6649820145aa623d933b614af406bb7"
+    },
+    {
+      "path": "include/bsp/game_native_lua_globals.hpp",
+      "git_blob": "6af98fc4681b66dca9060a1c1b3c7efa4b4aabed",
+      "bytes": 1638,
+      "sha256": "3e84148f240b3d09b318a5a276ccff59f01d8c02be737fb1c729f93064a728e6"
+    },
+    {
+      "path": "include/bsp/native_lua_service_bindings.hpp",
+      "git_blob": "ab5a5b6e35045f2a1af64ce580b90e4d5d14e28e",
+      "bytes": 2281,
+      "sha256": "1614271db4ab18e13ad1443bea31d77b5339d12515c79bc72a3bfd8d96f08093"
+    },
+    {
+      "path": "include/bsp/vfs_lua_scripts.hpp",
+      "git_blob": "7f941f5c72846f14e3914d1de4baaebb2de49905",
+      "bytes": 2655,
+      "sha256": "9b01a287b90977e07ad549fc4b25d0bce4ddcc182250be0100e9f4517434d181"
+    },
+    {
+      "path": "include/bsp/global_config.hpp",
+      "git_blob": "ecd627f026e2821bfe6dc87583f99fd3d04f9283",
+      "bytes": 4312,
+      "sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76"
+    },
+    {
+      "path": "src/global_config.cpp",
+      "git_blob": "551550917f25cf96ba756cebc77815424062d29c",
+      "bytes": 7970,
+      "sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc"
+    },
+    {
+      "path": "include/bsp/native_global_config_load.hpp",
+      "git_blob": "f9c84135484d9e08b42280643c8dc303f01bc680",
+      "bytes": 2693,
+      "sha256": "ee56688b89c34e85b12718de2c308c1d574fcb739c7d44e7d874ae1f12d079dd"
+    },
+    {
+      "path": "include/bsp/native_global_config_fields.hpp",
+      "git_blob": "9d47937ea57c05a4742f6ae2d37dfa16e3aa9e8c",
+      "bytes": 1473,
+      "sha256": "c8b78c0382a8d994d37107c969acf691dc6f781e409523691fe821042b435803"
+    },
+    {
+      "path": "include/bsp/native_global_config_sample_dispatch.hpp",
+      "git_blob": "8005173515da82b82804c785f3ea53cb2d0a68a2",
+      "bytes": 1731,
+      "sha256": "8657e8f424294ccf42a9bd334aa93c5a95a410d38a43c0ebcac0e2e2a9363498"
+    },
+    {
+      "path": "include/bsp/game_sound_runtime.hpp",
+      "git_blob": "82568ef1384e93785a93eba2a220d5084bba348b",
+      "bytes": 5374,
+      "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957"
+    },
+    {
+      "path": "include/bsp/sound_sample_runtime.hpp",
+      "git_blob": "1630dbb61c3d0eb956fa559f8a9ad50eba48b1f9",
+      "bytes": 2285,
+      "sha256": "56d9973e57397b155d36b5b14d3d66cec31522946e3a3a007c3635b4cd7fd123"
+    },
+    {
+      "path": "include/bsp/sound_system_owner.hpp",
+      "git_blob": "31094e55e31ba307184980116b8abd90e66ebe09",
+      "bytes": 9465,
+      "sha256": "68206cebc39f894e3653d55a76018ecf07f105cac5fed614515cd24029b5d215"
+    },
+    {
+      "path": "include/bsp/game_observer_runtime.hpp",
+      "git_blob": "4afa2c892ea3bc20956d6a5d1e10dcda48eec2e1",
+      "bytes": 1967,
+      "sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "git_blob": "1d57e3d7b5d04682c11c63e958652a430b936217",
+      "bytes": 9967,
+      "sha256": "53a2669d7357deae08a586aa8117d69fa4bd3bfd5500ea1838655aaa24653d30"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "git_blob": "d5581f5bc287893203cce6018473630cfd71c791",
+      "bytes": 21418,
+      "sha256": "d86fc0e5780408014c503a22e91e337705d7a88b851e7ccc1cc88d4d1166e8b6"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "git_blob": "cf6a7f491e3a0ca9a36c72959d7b1dd1f0650249",
+      "bytes": 28481,
+      "sha256": "6adcd53136c540495ff1d08c9b3b2dc9fd7ff139ee9d10bcec5f7dbdcbdec1ab"
+    },
+    {
+      "path": "include/bsp/native_string_duplicate.hpp",
+      "git_blob": "a3c211324e0a44deab01eca75af8dfad848c516b",
+      "bytes": 933,
+      "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+    },
+    {
+      "path": "src/native_string_duplicate.cpp",
+      "git_blob": "f745264df105154fe437e331df18d4f2418c2160",
+      "bytes": 1554,
+      "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+    },
+    {
+      "path": "include/bsp/dyn_scene_runtime.hpp",
+      "git_blob": "0c83cbe93345ec571978cf334904d834f9170ad3",
+      "bytes": 2890,
+      "sha256": "db87cad3d2b995ee64da4e0a4dfa3651d4b881b545a89d52c4c1501a0b141c7c"
+    },
+    {
+      "path": "src/dyn_scene_runtime.cpp",
+      "git_blob": "f7bd78041461379d442d13578f83b7c84003610f",
+      "bytes": 4583,
+      "sha256": "6efa488d22e05beb310164dd2633e102caab5b07c4ba96b6c7030333beeec32a"
+    },
+    {
+      "path": "include/bsp/dyn_body_creation.hpp",
+      "git_blob": "335fe601cc9fb0b638e8b844a58df5154abfddeb",
+      "bytes": 6090,
+      "sha256": "35f59585c7185b17577c13395220a88c1d60b91d482ff445b34700151153ecf5"
+    },
+    {
+      "path": "src/dyn_body_creation.cpp",
+      "git_blob": "a7e584061270434878d3e03d950961d08ff67fd0",
+      "bytes": 17747,
+      "sha256": "a0d493c127f179fadd32aa686d1a4fb91aea34029d8ec4a8898e6e5f696b3940"
+    },
+    {
+      "path": "include/bsp/native_game_dynamics.hpp",
+      "git_blob": "51b8b01d805789799ee8a8faacacd20ec3cac5a0",
+      "bytes": 819,
+      "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290"
+    },
+    {
+      "path": "src/native_dyn_world_step.cpp",
+      "git_blob": "ac4b833b5ce91315ec237da0204432adc05ba14c",
+      "bytes": 58885,
+      "sha256": "f729543cd630a87b383d2fb21f1ef387f6e92ab9b7c68cf242a172cd91c94935"
+    },
+    {
+      "path": "src/native_dyn_collision_pass.cpp",
+      "git_blob": "8e7f7571a123e7ea6da661d7a74ae9bf590b3d82",
+      "bytes": 56090,
+      "sha256": "112743077813a1690f59771e180ccd75eae029e3a9a6786d486b2fac3cf697f6"
+    },
+    {
+      "path": "include/bsp/native_game_contact_reports.hpp",
+      "git_blob": "e6e756477cd69bd3e4099c807f3f24a8fe95eaa4",
+      "bytes": 3562,
+      "sha256": "52cb25ae9fd81cc9c0c1dd6a3dd8aa65985c476fd1cf846a01466d08edefd7c1"
+    },
+    {
+      "path": "include/bsp/mission_lobby_settings.hpp",
+      "git_blob": "75bac570007724f19e038ab74315e173d866f0b9",
+      "bytes": 11508,
+      "sha256": "9e532288c073c709e2adf3b139f98611b0d1e45bbafa6e7ca0a2f39f0b4bcb50"
+    },
+    {
+      "path": "src/mission_lobby_settings.cpp",
+      "git_blob": "767d05ae47d4a1501fede2f880e72cf3ce1b376a",
+      "bytes": 9124,
+      "sha256": "7dc53658dd9a0e037143fd82fd3c127483e8ca1d347f743d47fca074cbd55c79"
+    },
+    {
+      "path": "include/bsp/oct18_tail_a.hpp",
+      "git_blob": "236989ea251856372d869c90434ce10c5f4e3752",
+      "bytes": 28399,
+      "sha256": "623b45904d9f7a9558cf9a3aca26e51d8336fa60f511cc68f3d63faac86f81d7"
+    },
+    {
+      "path": "src/oct18_tail_a.cpp",
+      "git_blob": "aa28639f185c2d3e461cde88f60967d5cbbdaac1",
+      "bytes": 111176,
+      "sha256": "afe458f3af69587a6f0b42bc61e5dda6585247411e4173b8cc4b6a1d648f7eaa"
+    },
+    {
+      "path": "src/world_construct.cpp",
+      "git_blob": "857b9d9fa6158306473e945561c0ba73ca3e63b4",
+      "bytes": 7176,
+      "sha256": "953f15e2459480e2b1136da214ef56442dfd0a80a173c0aa5314e6d612994ae7"
+    },
+    {
+      "path": "include/bsp/native_world_parent_headers.hpp",
+      "git_blob": "d8e32f55f38e9193d02f7c9eae6cb63a002678bb",
+      "bytes": 1906,
+      "sha256": "88d4a93b104d2a309fee7a115278c2a999a30e2b1667a004bf83f1f2928e25ba"
+    },
+    {
+      "path": "include/bsp/game_entry.hpp",
+      "git_blob": "9ce24744180120f39fe32d94996dee642a48e657",
+      "bytes": 5510,
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+    },
+    {
+      "path": "include/bsp/app_shutdown.hpp",
+      "git_blob": "d59d0c891e54886986dbd34c5b09f8bd7511d360",
+      "bytes": 11615,
+      "sha256": "b1d746a79d81408ee9e05fda19fb289fe5c1cd02aaf215eac89580d1512086ce"
+    },
+    {
+      "path": "src/app_shutdown.cpp",
+      "git_blob": "e20732e0c3f128dbc5a3e23fbb5b984fb175c0bc",
+      "bytes": 4509,
+      "sha256": "56223c2bbc99310ca1c3048d50ab777f337930fc9d7e891358b452eed9e0215a"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "git_blob": "0424b6fe7d30e249ca9e2dc444b9d0db80a4cc3f",
+      "bytes": 11091,
+      "sha256": "dd001e140d8799f99aba2d593c90bfa1592051ee780b62e14c2f265d80567f1e"
+    },
+    {
+      "path": "include/bsp/dyn_profile_scopes.hpp",
+      "git_blob": "a37ab8151673c17096a4f47057e2e468db16079c",
+      "bytes": 3010,
+      "sha256": "1ce9b126405212887e03e05bbd558d8a035eb252024aa42031cf126a059c5d80"
+    },
+    {
+      "path": "src/dyn_profile_scopes.cpp",
+      "git_blob": "61b51ccd5fa147e0a6aba0f0a6a2856801eb1a07",
+      "bytes": 5349,
+      "sha256": "7177b2f2174174c93dd6dd20e9f8c585d9f54573669fb8a945b747ea0523e7d0"
+    },
+    {
+      "path": "src/dyn_engine_runtime.cpp",
+      "git_blob": "2aed397d03a8370f1824f41d6f11f9b276e98167",
+      "bytes": 4778,
+      "sha256": "eeda95d61df753129db8a480f5bf8229071ab90134dfff81fa92b976ce700e3a"
+    }
+  ],
+  "audit_utc": "2026-10-29T20:45:22.261110+00:00",
+  "source_searches": [
+    {
+      "term": "GameNativeGameRuntime",
+      "hits": [
+        {
+          "path": "include/bsp/game_hosts_fixed_step.hpp",
+          "lines": [
+            33,
+            232,
+            304
+          ]
+        },
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "lines": [
+            31,
+            42,
+            72
+          ]
+        },
+        {
+          "path": "include/bsp/game_native_game_runtime.hpp",
+          "lines": [
+            18,
+            21,
+            23,
+            24,
+            25
+          ]
+        },
+        {
+          "path": "src/game_hosts_fixed_step.cpp",
+          "lines": [
+            302
+          ]
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "lines": [
+            16,
+            24,
+            42,
+            43,
+            44,
+            51,
+            79,
+            97
+          ]
+        },
+        {
+          "path": "src/game_native_game_runtime.cpp",
+          "lines": [
+            13,
+            38,
+            41,
+            42,
+            44,
+            49,
+            55,
+            61,
+            62,
+            66,
+            73,
+            74,
+            75,
+            76,
+            77
+          ]
+        }
+      ],
+      "qualification": "Text references; declarations/definitions are not caller or execution proof."
+    },
+    {
+      "term": "attach_native_game",
+      "hits": [
+        {
+          "path": "include/bsp/game_hosts_fixed_step.hpp",
+          "lines": [
+            232
+          ]
+        },
+        {
+          "path": "src/game_hosts_fixed_step.cpp",
+          "lines": [
+            302
+          ]
+        }
+      ],
+      "qualification": "Text references; declarations/definitions are not caller or execution proof."
+    },
+    {
+      "term": "GameNativeGameApplicationFrame",
+      "hits": [
+        {
+          "path": "include/bsp/game_native_game_application_frame.hpp",
+          "lines": [
+            16,
+            42,
+            46,
+            47,
+            48,
+            49,
+            50
+          ]
+        },
+        {
+          "path": "src/game_native_game_application_frame.cpp",
+          "lines": [
+            15,
+            27,
+            34,
+            37,
+            40,
+            46,
+            50,
+            77,
+            95,
+            102,
+            107,
+            121,
+            128
+          ]
+        }
+      ],
+      "qualification": "Text references; declarations/definitions are not caller or execution proof."
+    },
+    {
+      "term": "NativeGameCurrentVirtualCalls",
+      "hits": [
+        {
+          "path": "include/bsp/native_game_current_virtual_calls.hpp",
+          "lines": [
+            28
+          ]
+        },
+        {
+          "path": "src/native_game_current_virtual_calls.cpp",
+          "lines": [
+            15,
+            31,
+            37,
+            43
+          ]
+        }
+      ],
+      "qualification": "Text references; declarations/definitions are not caller or execution proof."
+    },
+    {
+      "term": "NativeGlobalConfigLoadContext",
+      "hits": [
+        {
+          "path": "include/bsp/game_native_settings_application.hpp",
+          "lines": [
+            36
+          ]
+        },
+        {
+          "path": "include/bsp/native_game_construction.hpp",
+          "lines": [
+            46,
+            92
+          ]
+        },
+        {
+          "path": "include/bsp/native_global_config_load.hpp",
+          "lines": [
+            11,
+            41,
+            51
+          ]
+        },
+        {
+          "path": "src/native_game_construction.cpp",
+          "lines": [
+            70
+          ]
+        },
+        {
+          "path": "src/native_global_config_load.cpp",
+          "lines": [
+            121,
+            183
+          ]
+        }
+      ],
+      "qualification": "Text references; declarations/definitions are not caller or execution proof."
+    },
+    {
+      "term": "WorldConstructServices",
+      "hits": [
+        {
+          "path": "include/bsp/oct18_tail_a.hpp",
+          "lines": [
+            489,
+            490,
+            502
+          ]
+        },
+        {
+          "path": "src/oct18_tail_a.cpp",
+          "lines": [
+            1882,
+            1945
+          ]
+        }
+      ],
+      "qualification": "Text references; declarations/definitions are not caller or execution proof."
+    }
+  ]
+}
