@@ -75,3 +75,8 @@ on BOTH sides; complete COM-zero is not claimed. The selected Normal runner
 priority has no independent live sample. Main route is restored OFF atf1bfc515f
 and its Win32 build/both CTests pass. Raw Text content/visual consumer, failure,
 flags0/foreign credit/reentry and repeated reuse remain open.
+
+The publication tree merges accepted main `86d56331f52634550414fcf3314abd5d49731472`.
+Its combined Win32 build passed both existing suites (14.06 seconds); receipt:
+`local/cc16_default_owner_combined_build.log`. The normal qualification route
+remains OFF. This build check adds no further native lifecycle or visual proof.
