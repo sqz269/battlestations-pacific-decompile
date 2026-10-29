@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Run a byte-identical x86 retail copy inside a low-integrity, owned job.
+"""Run a byte-identical x86 retail copy inside a restricted, owned job.
 
 This is a launch-time safety guard, not a binary replacement. A restored entry
 breakpoint and SHGetSpecialFolderPathA's in-memory IAT slot establish isolation.
 A private request marker optionally arms a restored one-shot motion breakpoint.
-The kernel's low-integrity write barrier protects the real
-installation/profile even before entry (including loader/TLS execution).
+Default low mode uses the kernel's mandatory-integrity write barrier. Optional
+medium-restricted mode uses full restricting SIDs and a fresh, exhaustive source
+DACL denial audit, including parent DELETE_CHILD and ACL/owner rights. Both
+barriers apply before entry (including loader/TLS execution).
 
 prepare must run on an EMPTY private local/ directory before ordinary copying.
 launch never detaches: it services debug events until exit or the bounded
@@ -43,6 +45,10 @@ KNOWN_XLIVE_SHA256 = "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3
 
 class SID_AND_ATTRIBUTES(C.Structure):
     _fields_ = [("Sid", PVOID), ("Attributes", DWORD)]
+
+
+class GENERIC_MAPPING(C.Structure):
+    _fields_ = [("read", DWORD), ("write", DWORD), ("execute", DWORD), ("all", DWORD)]
 
 
 class STARTUPINFO(C.Structure):
@@ -144,6 +150,13 @@ api(A, "ConvertSidToStringSidW", W.BOOL, PVOID, C.POINTER(PVOID))
 api(A, "GetNamedSecurityInfoW", DWORD, W.LPWSTR, C.c_int, DWORD, PVOID, PVOID,
     PVOID, C.POINTER(PVOID), C.POINTER(PVOID))
 api(A, "GetAce", W.BOOL, PVOID, DWORD, C.POINTER(PVOID))
+api(A, "DuplicateTokenEx", W.BOOL, HANDLE, DWORD, PVOID, C.c_int, C.c_int, C.POINTER(HANDLE))
+api(A, "GetSecurityDescriptorLength", DWORD, PVOID)
+api(A, "AccessCheck", W.BOOL, PVOID, HANDLE, DWORD, C.POINTER(GENERIC_MAPPING),
+    PVOID, C.POINTER(DWORD), C.POINTER(DWORD), C.POINTER(W.BOOL))
+api(A, "InitializeAcl", W.BOOL, PVOID, DWORD, DWORD)
+api(A, "AddAce", W.BOOL, PVOID, DWORD, DWORD, PVOID, DWORD)
+api(A, "AddAccessAllowedAceEx", W.BOOL, PVOID, DWORD, DWORD, DWORD, PVOID)
 api(A, "CreateProcessAsUserW", W.BOOL, HANDLE, W.LPCWSTR, W.LPWSTR, PVOID, PVOID,
     W.BOOL, DWORD, PVOID, W.LPCWSTR, C.POINTER(STARTUPINFO), C.POINTER(PROCESS_INFORMATION))
 api(K, "CreateJobObjectW", HANDLE, PVOID, W.LPCWSTR)
@@ -210,7 +223,40 @@ def token_summary(token):
     scalar = lambda kind: int.from_bytes(token_data(token, kind).raw, "little")
     return {"integrity_rid": sid_rid(sid), "mandatory_policy": scalar(27),
             "token_type": scalar(8), "has_restrictions": bool(scalar(21)),
-            "ui_access": bool(scalar(26))}
+            "ui_access": bool(scalar(26)), "restricting_sids": token_sids(token, 11)}
+
+
+def sid_string(sid):
+    value = PVOID()
+    checked(A.ConvertSidToStringSidW(sid, C.byref(value)), "ConvertSidToStringSidW")
+    try:
+        return C.wstring_at(value)
+    finally:
+        K.LocalFree(value)
+
+
+def token_sids(token, kind, required_attributes=0):
+    data = token_data(token, kind)
+    count = DWORD.from_buffer(data).value
+    if not count:
+        return []
+    alignment = C.alignment(SID_AND_ATTRIBUTES)
+    offset = (C.sizeof(DWORD) + alignment - 1) & ~(alignment - 1)
+    entries = (SID_AND_ATTRIBUTES * count).from_buffer(data, offset)
+    return [sid_string(entry.Sid) for entry in entries
+            if entry.Attributes & required_attributes == required_attributes]
+
+
+def expected_restricting_sids(include_world=True):
+    current = HANDLE()
+    checked(A.OpenProcessToken(K.GetCurrentProcess(), TOKEN_QUERY, C.byref(current)), "OpenProcessToken logon SID")
+    try:
+        logons = token_sids(current, 2, 0xC0000000)
+        if len(logons) != 1:
+            raise RuntimeError(f"Expected exactly one current logon SID, found {logons}")
+        return ["S-1-5-32-545", logons[0], *(["S-1-1-0"] if include_world else [])]
+    finally:
+        close(current)
 
 
 def verify_low(token):
@@ -221,20 +267,110 @@ def verify_low(token):
     return info
 
 
-def restricted_token():
+def verify_token(token, mode="low"):
+    if mode == "low":
+        return verify_low(token)
+    info = token_summary(token)
+    if (mode != "medium-restricted" or info["integrity_rid"] != MEDIUM
+            or not info["mandatory_policy"] & 1 or info["token_type"] != 1
+            or info["ui_access"] or not info["has_restrictions"]
+            or sorted(info["restricting_sids"]) != sorted(expected_restricting_sids())):
+        raise RuntimeError(f"Unsafe medium restricted token: {info}")
+    info["default_dacl"] = default_dacl_summary(token)
+    for sid in expected_restricting_sids(False):
+        if not any(a.get("sid") == sid and a.get("mask") == 0x10000000
+                   for a in info["default_dacl"]["aces"] if a["type"] == 0):
+            raise RuntimeError(f"Token default DACL lacks required Users/LOGON grant: {info}")
+    if any(a.get("sid") == "S-1-1-0" and a.get("mask", 0) & 0x500D0156
+           for a in info["default_dacl"]["aces"] if a["type"] == 0):
+        raise RuntimeError("Refuse a token default DACL granting World writes")
+    return info
+
+
+def default_dacl_summary(token):
+    data = token_data(token, 6)
+    acl = PVOID.from_buffer(data).value
+    if not acl:
+        raise RuntimeError("Null token default DACL refused")
+    size, count = C.c_ushort.from_address(acl + 2).value, C.c_ushort.from_address(acl + 4).value
+    if count > 128:
+        raise RuntimeError("Token default DACL ACE limit exceeded")
+    aces = []
+    for i in range(count):
+        ace = PVOID()
+        checked(A.GetAce(acl, i, C.byref(ace)), "GetAce token default DACL")
+        kind = C.c_ubyte.from_address(ace.value).value
+        item = {"type": kind, "flags": C.c_ubyte.from_address(ace.value + 1).value}
+        if kind in (0, 1):
+            item.update(mask=DWORD.from_address(ace.value + 4).value, sid=sid_string(ace.value + 8))
+        aces.append(item)
+    return {"sha256": hashlib.sha256(C.string_at(acl, size)).hexdigest(), "aces": aces}
+
+
+def configure_token_default_dacl(token):
+    """Only the new token's future objects; never a shared/existing ACL."""
+    old = token_data(token, 6)
+    acl = PVOID.from_buffer(old).value
+    if not acl:
+        raise RuntimeError("Null token default DACL refused")
+    revision = C.c_ubyte.from_address(acl).value
+    old_size, count = C.c_ushort.from_address(acl + 2).value, C.c_ushort.from_address(acl + 4).value
+    allocated = []
+    try:
+        for value in expected_restricting_sids(False):  # Never World GENERIC_ALL.
+            sid = PVOID()
+            checked(A.ConvertStringSidToSidW(value, C.byref(sid)), "Convert default DACL SID")
+            allocated.append(sid)
+        size = old_size + sum(8 + A.GetLengthSid(sid) for sid in allocated)
+        if size > 65535:
+            raise RuntimeError("Token default DACL size limit exceeded")
+        new = C.create_string_buffer(size)
+        checked(A.InitializeAcl(new, size, revision), "InitializeAcl token default DACL")
+        for i in range(count):
+            ace = PVOID()
+            checked(A.GetAce(acl, i, C.byref(ace)), "Read original token default ACE")
+            length = C.c_ushort.from_address(ace.value + 2).value
+            checked(A.AddAce(new, revision, 0xFFFFFFFF, ace, length), "Preserve token default ACE")
+        for sid in allocated:
+            checked(A.AddAccessAllowedAceEx(new, revision, 0, 0x10000000, sid), "Grant future token objects Users/LOGON")
+        pointer = PVOID(C.addressof(new))
+        checked(A.SetTokenInformation(token, 6, C.byref(pointer), C.sizeof(pointer)), "Set token-only default DACL")
+    finally:
+        for pointer in allocated:
+            K.LocalFree(pointer)
+
+
+def restricted_token(mode="low"):
     current, result, sid = HANDLE(), HANDLE(), PVOID()
+    allocated = []
     checked(A.OpenProcessToken(K.GetCurrentProcess(), TOKEN_ALL_ACCESS, C.byref(current)), "OpenProcessToken")
     try:
+        restrict = None
+        if mode == "medium-restricted":
+            entries = []
+            for value in expected_restricting_sids():
+                pointer = PVOID()
+                checked(A.ConvertStringSidToSidW(value, C.byref(pointer)), "Convert restricting SID")
+                allocated.append(pointer)
+                entries.append(SID_AND_ATTRIBUTES(pointer, 0))
+            restrict = (SID_AND_ATTRIBUTES * len(entries))(*entries)
+        elif mode != "low":
+            raise RuntimeError(f"Unknown token mode: {mode}")
         # Strip privileges; no foreign token, credential, or elevation fallback.
-        checked(A.CreateRestrictedToken(current, 1, 0, None, 0, None, 0, None,
+        # Full restrictions, including DELETE_CHILD. WRITE_RESTRICTED is unsafe
+        # here: Windows permits directory DELETE_CHILD through that variant.
+        checked(A.CreateRestrictedToken(current, 1,
+                                        0, None, 0, None, len(restrict) if restrict is not None else 0, restrict,
                                         C.byref(result)), "CreateRestrictedToken")
-        checked(A.ConvertStringSidToSidW("S-1-16-4096", C.byref(sid)), "ConvertStringSidToSidW")
+        checked(A.ConvertStringSidToSidW("S-1-16-8192" if restrict is not None else "S-1-16-4096", C.byref(sid)), "ConvertStringSidToSidW")
         label = SID_AND_ATTRIBUTES(sid, 0x20)
         checked(A.SetTokenInformation(result, 25, C.byref(label),
-                                     C.sizeof(label) + A.GetLengthSid(sid)), "SetTokenInformation low IL")
+                                     C.sizeof(label) + A.GetLengthSid(sid)), "SetTokenInformation integrity level")
         # Changing TokenMandatoryPolicy requires SeTcbPrivilege on this host.
         # Inherit it from the caller and require NO_WRITE_UP; never elevate.
-        verify_low(result)
+        if mode == "medium-restricted":
+            configure_token_default_dacl(result)
+        verify_token(result, mode)
         return result
     except BaseException:
         close(result)
@@ -243,6 +379,96 @@ def restricted_token():
         close(current)
         if sid:
             K.LocalFree(sid)
+        for pointer in allocated:
+            K.LocalFree(pointer)
+
+
+WRITE_RIGHTS = {"write_data_or_add_file": 0x2, "append_or_add_subdirectory": 0x4,
+    "write_ea": 0x10, "delete_child": 0x40, "write_attributes": 0x100,
+    "delete": 0x10000, "write_dacl": 0x40000, "write_owner": 0x80000}
+
+
+def access_descriptor(path):
+    descriptor = PVOID()
+    # AccessCheck requires OWNER and GROUP as well as the DACL. Include LABEL
+    # for receipt/cache identity; source medium labels are verified separately.
+    err = A.GetNamedSecurityInfoW(str(path), 1, 0x17, None, None, None, None, C.byref(descriptor))
+    if err:
+        raise OSError(err, f"Read-only security descriptor query: {path}")
+    return descriptor
+
+
+def access_write_rights(path, impersonation, cache=None):
+    descriptor = access_descriptor(path)
+    try:
+        raw = C.string_at(descriptor, A.GetSecurityDescriptorLength(descriptor))
+        key = hashlib.sha256(raw).hexdigest()
+        directory = Path(path).is_dir()
+        cache_key = (key, directory)
+        if cache is not None and cache_key in cache:
+            return key, cache[cache_key]
+        mapping = GENERIC_MAPPING(0x120089, 0x120116, 0x1200A0, 0x1F01FF)
+        allowed = []
+        for name, right in WRITE_RIGHTS.items():
+            if name == "delete_child" and not directory:
+                continue  # Directory-only right, not a meaningful file access.
+            privileges = C.create_string_buffer(1024)
+            size, granted, status = DWORD(len(privileges)), DWORD(), W.BOOL()
+            checked(A.AccessCheck(descriptor, impersonation, right, C.byref(mapping), privileges,
+                C.byref(size), C.byref(granted), C.byref(status)), "AccessCheck source write right")
+            if status.value or granted.value & right:
+                allowed.append(name)
+        if cache is not None:
+            cache[cache_key] = allowed
+        return key, allowed
+    finally:
+        K.LocalFree(descriptor)
+
+
+def audit_source_writes(token, roots, receipt=None):
+    """No original file opens for writing; evaluate the actual token's rights."""
+    impersonation = HANDLE()
+    checked(A.DuplicateTokenEx(token, TOKEN_QUERY, None, 2, 2, C.byref(impersonation)), "DuplicateTokenEx audit impersonation")
+    cache, seen, violations = {}, set(), []
+    result = {"method": "AccessCheck actual restricted token duplicated at SecurityImpersonation",
+        "token": verify_token(token, "medium-restricted"),
+        "rights_checked_individually": WRITE_RIGHTS, "roots": [str(r) for r in roots],
+        "objects_checked": 0, "unique_descriptors": 0, "violations": violations,
+        "complete": False, "passed": False}
+    def inspect(path):
+        path = ordinary(path)
+        if path in seen:
+            return
+        seen.add(path)
+        descriptor_hash, allowed = access_write_rights(path, impersonation, cache)
+        result["objects_checked"] += 1
+        if allowed:
+            if len(violations) < 32:
+                violations.append({"path": str(path), "allowed": allowed, "descriptor_sha256": descriptor_hash})
+            result["violation_count"] = result.get("violation_count", 0) + 1
+        if result["objects_checked"] > 200000:
+            raise RuntimeError("Source effective-access audit limit exceeded")
+    try:
+        for root in roots:
+            root = ordinary(root, False)
+            for parent in reversed(root.parents):
+                inspect(parent)
+            if not root.exists():
+                continue
+            if root.is_file():
+                inspect(root)
+                continue
+            for base, dirs, files in os.walk(root, followlinks=False, onerror=walk_error):
+                inspect(Path(base))
+                for name in [*dirs, *files]:
+                    inspect(Path(base) / name)
+        result.update(complete=True, passed=not violations, unique_descriptors=len(cache))
+        return result
+    finally:
+        close(impersonation)
+        result["unique_descriptors"] = len(cache)
+        if receipt:
+            write_receipt(receipt, result)
 
 
 def label(path):
@@ -363,14 +589,99 @@ def prepare(stage, receipt):
     return data
 
 
-def scan_tree(root, low):
+def audit_private_writes(token, stage):
+    impersonation = HANDLE()
+    checked(A.DuplicateTokenEx(token, TOKEN_QUERY, None, 2, 2, C.byref(impersonation)), "DuplicateTokenEx private audit")
+    cache, missing, count = {}, [], 0
+    try:
+        for base, dirs, files in os.walk(stage, followlinks=False, onerror=walk_error):
+            for path in [Path(base), *(Path(base) / n for n in files)]:
+                ordinary(path)
+                _, allowed = access_write_rights(path, impersonation, cache)
+                wanted = set(WRITE_RIGHTS) - (set() if path.is_dir() else {"delete_child"})
+                absent = sorted(wanted - set(allowed))
+                if absent and len(missing) < 32:
+                    missing.append({"path": str(path), "denied_required_private_rights": absent})
+                count += 1
+                if count > 200000:
+                    raise RuntimeError("Private access audit limit exceeded")
+        return {"objects_checked": count, "unique_descriptors": len(cache),
+                "complete": True, "passed": not missing, "missing": missing}
+    finally:
+        close(impersonation)
+
+
+def prepare_medium(stage, receipt, executable=None, original_exe=RETAIL, protected_roots=None, probe=False):
+    stage = private(stage)
+    executable = private(executable or stage / "game/battlestationspacific.exe", stage)
+    receipt = private(receipt, exists=False)
+    original_exe = ordinary(original_exe)
+    protected_documents = folder(5) / "Battlestations-Pacific"
+    protected_roots = protected_roots or [original_exe.parent, protected_documents]
+    original_hash, copied_hash = sha(original_exe), sha(executable)
+    if original_hash != copied_hash:
+        raise RuntimeError("Medium preparation requires a byte-identical private executable")
+    before = documents_snapshot(protected_documents)
+    data = {"schema": "bsp.original-baseline.guard.medium.prepare.v1", "phase": "checking",
+        "stage_root": str(stage), "executable": str(executable), "original_exe": str(original_exe),
+        "sha256": copied_hash, "token_mode": "medium-restricted", "creation_flags": 1,
+        "live_launch_allowed": False, "probe": probe, "operations": [], "started_unix": time.time()}
+    token = None
+    try:
+        # Inspect every copy before inheritable ACL changes. No junctions or
+        # multiply-linked files may transmit a private mutation to originals.
+        current_label = label(executable)["rid"]
+        if current_label not in (LOW, MEDIUM):
+            raise RuntimeError("Unexpected private executable label")
+        data["sandbox_scan_before"] = scan_tree(stage, True,
+            medium_executable=executable if current_label == MEDIUM else None)
+        token = restricted_token("medium-restricted")
+        data["token"] = verify_token(token, "medium-restricted")
+        data["source_write_audit"] = audit_source_writes(token, protected_roots)
+        if not data["source_write_audit"]["complete"] or not data["source_write_audit"]["passed"]:
+            raise RuntimeError("Original source effective-access audit permits mutation; no private permissions changed")
+        # Only verified private ordinary copies. This inherited grant deliberately
+        # permits the restricting Users SID to access the private clone.
+        for target, args in ((stage, ["/grant:r", "*S-1-5-32-545:(OI)(CI)F"]),
+                             (executable, ["/setintegritylevel", "M"])):
+            done = subprocess.run(["icacls.exe", str(target), *args], capture_output=True, text=True)
+            data["operations"].append({"path": str(target), "arguments": args,
+                "exit_code": done.returncode, "stdout": done.stdout.strip(), "stderr": done.stderr.strip()})
+            if done.returncode:
+                raise RuntimeError(f"Private medium preparation failed: {data['operations'][-1]}")
+        data["sandbox_scan_after"] = scan_tree(stage, True, medium_executable=executable)
+        data["private_write_audit"] = audit_private_writes(token, stage)
+        if not data["private_write_audit"]["passed"]:
+            raise RuntimeError("Private copy did not inherit the required Users access")
+        data["phase"] = "prepared_medium"
+    except BaseException as exc:
+        data.update(phase="failed", error=f"{type(exc).__name__}: {exc}")
+        raise
+    finally:
+        close(token)
+        data["original_documents_unchanged"] = documents_snapshot(protected_documents) == before
+        data["original_executable_unchanged"] = sha(original_exe) == original_hash
+        data["copied_executable_bytes_unchanged"] = sha(executable) == copied_hash
+        data["ended_unix"] = time.time()
+        if not all(data[k] for k in ("original_documents_unchanged", "original_executable_unchanged", "copied_executable_bytes_unchanged")):
+            data.update(phase="failed", error="Medium preparation preservation check failed")
+        write_receipt(receipt, data)
+        if data["phase"] == "prepared_medium":
+            write_receipt(stage / ".guard-medium.json", data)
+    if data["phase"] != "prepared_medium":
+        raise RuntimeError(data["error"])
+    return data
+
+
+def scan_tree(root, low, medium_executable=None):
     root = ordinary(root)
     count = 0
     for base, dirs, files in os.walk(root, followlinks=False, onerror=walk_error):
         for p in [Path(base), *(Path(base) / n for n in files)]:
             ordinary(p)
             info = label(p)
-            if (low and (info["rid"] != LOW or not info["policy"] & 1)) or (
+            expected = MEDIUM if medium_executable and p == medium_executable else LOW
+            if (low and (info["rid"] != expected or not info["policy"] & 1)) or (
                     not low and (info["rid"] < MEDIUM or not info["policy"] & 1)):
                 raise RuntimeError(f"Unsafe {'sandbox' if low else 'protected'} label {p}: {info}")
             if low and p.is_file() and p.stat().st_nlink != 1:
@@ -381,7 +692,7 @@ def scan_tree(root, low):
         for name in dirs:
             ordinary(Path(base) / name)
     return {"root": str(root), "objects_checked": count,
-            "required_integrity": "low" if low else "medium-or-higher", "no_write_up": True}
+            "required_integrity": "low except private medium executable" if medium_executable else "low" if low else "medium-or-higher", "no_write_up": True}
 
 
 def documents_snapshot(root):
@@ -529,11 +840,11 @@ def duplicate(handle):
     return out
 
 
-def process_token_info(process):
+def process_token_info(process, mode="low"):
     token = HANDLE()
     checked(A.OpenProcessToken(process, TOKEN_QUERY, C.byref(token)), "OpenProcessToken child")
     try:
-        return verify_low(token)
+        return verify_token(token, mode)
     finally:
         close(token)
 
@@ -749,7 +1060,8 @@ def directinput_observation(process, thread_id, state, capture=True):
 
 def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=None,
               arguments=(), protected_roots=(), probe=False, motion_discovery=True,
-              handle_known_xlive_debug_close=False, observe_directinput_startup=False):
+              handle_known_xlive_debug_close=False, observe_directinput_startup=False,
+              token_mode="low"):
     drain = Path(os.environ["USERPROFILE"]) / ".bsp/DRAIN"
     def check_drain():
         if drain.exists() and os.environ.get("BSP_IGNORE_DRAIN") != "1":
@@ -757,6 +1069,15 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
     check_drain()
     stage = private(stage)
     executable, cwd, documents = [private(p, stage) for p in (executable, cwd, documents)]
+    if token_mode not in ("low", "medium-restricted"):
+        raise RuntimeError("Unsupported token mode; WRITE_RESTRICTED is forbidden")
+    if token_mode == "medium-restricted":
+        marker = private(stage / ".guard-medium.json", stage)
+        prepared = json.loads(marker.read_text(encoding="utf-8"))
+        if (prepared.get("schema") != "bsp.original-baseline.guard.medium.prepare.v1"
+                or prepared.get("phase") != "prepared_medium" or Path(prepared.get("stage_root", "")) != stage
+                or Path(prepared.get("executable", "")) != executable or prepared.get("sha256") != sha(executable)):
+            raise RuntimeError("Private medium preparation receipt does not match this executable/stage")
     receipt = private(receipt, exists=False)
     if receipt.is_relative_to(cwd) and receipt == executable:
         raise RuntimeError("Receipt collides with executable")
@@ -780,10 +1101,12 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
         raise RuntimeError(f"Unexpected retail PE layout: {info}")
     data = {"schema": "bsp.original-baseline.guard.launch.v1", "phase": "checking", "guard_pid": os.getpid(), "stage": str(stage),
             "executable": str(executable), "cwd": str(cwd), "documents": str(documents),
+            "arguments": list(arguments),
             "protected_documents": str(protected_documents), "seconds": seconds,
             "sha256": expected_hash, "original_exe": str(original_exe) if original_exe else None,
             "pe": info, "processes": [], "live_launch_allowed": False,
-            "isolation": "restricted primary token, low mandatory IL/no-write-up, owned kill-on-close job",
+            "token_mode": token_mode, "creation_flags": 1,
+            "isolation": "full restricted Users+LOGON+World token, fresh source DACL denial audit, owned kill-on-close job" if token_mode == "medium-restricted" else "restricted primary token, low mandatory IL/no-write-up, owned kill-on-close job",
             "known_folder": "entry-time SHGetSpecialFolderPathA IAT hook; CSIDL_PERSONAL flags masked",
             "child_policy": "DEBUG_PROCESS; only byte-identical images under stage; otherwise terminate owned job",
             "motion_discovery": "private discover-motion.request marker arms restored one-shot entry" if discovery_enabled else "disabled",
@@ -792,8 +1115,9 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
             "disk_binary_modified": False, "started_unix": time.time(), "probe": probe}
     write_receipt(receipt, data)
     try:
-        data["sandbox_scan"] = scan_tree(stage, True)
-        data["protected_scans"] = [scan_tree(r, False) for r in protected_roots]
+        data["sandbox_scan"] = scan_tree(stage, True,
+            medium_executable=executable if token_mode == "medium-restricted" else None)
+        data["protected_scans"] = [scan_tree(r, False) for r in protected_roots] if token_mode == "low" else []
         before = documents_snapshot(protected_documents)
     except BaseException as exc:
         data.update(phase="failed", error=f"Preflight {type(exc).__name__}: {exc}")
@@ -804,8 +1128,15 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
     owned, live = {}, set()
     failed, exit_seen, suspended_created = None, False, False
     try:
-        token = restricted_token()
-        data["token"] = verify_low(token)
+        token = restricted_token(token_mode)
+        data["token"] = verify_token(token, token_mode)
+        if token_mode == "medium-restricted":
+            if not protected_roots:
+                raise RuntimeError("Medium mode requires protected source audit roots")
+            data["source_write_audit"] = audit_source_writes(token, protected_roots)
+            write_receipt(receipt, data)
+            if not data["source_write_audit"]["complete"] or not data["source_write_audit"]["passed"]:
+                raise RuntimeError("Original source permits restricted-token mutation; launch refused")
         job = K.CreateJobObjectW(None, None)
         checked(job, "CreateJobObjectW")
         limits = JOB_EXTENDED()
@@ -830,7 +1161,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                                       C.byref(si), C.byref(pi)), "CreateProcessAsUserW restricted suspended")
         suspended_created = True
         data["root_pid"] = pi.dwProcessId
-        process_token_info(pi.hProcess)
+        process_token_info(pi.hProcess, token_mode)
         wow64 = W.BOOL()
         checked(K.IsWow64Process(pi.hProcess, C.byref(wow64)), "IsWow64Process")
         if not wow64:
@@ -891,7 +1222,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                         private(path, stage)
                         if sha(path) != expected_hash:
                             raise RuntimeError(f"Unexpected child executable: {path}")
-                        child_info = process_token_info(creation.hProcess)
+                        child_info = process_token_info(creation.hProcess, token_mode)
                         handle = duplicate(creation.hProcess)
                         base = creation.base
                         state = {"pid": event.pid, "path": str(path), "base": base,
@@ -1057,8 +1388,10 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
 
 PROBE_SOURCE = r'''
 #define WIN32_LEAN_AND_MEAN
+#define DIRECTINPUT_VERSION 0x0800
 #include <windows.h>
 #include <shlobj.h>
+#include <dinput.h>
 #include <cstdio>
 #include <cstring>
 extern "C" __declspec(dllexport) DWORD motion_probe_controlled = 0x12345000;
@@ -1089,6 +1422,11 @@ int main(int argc, char** argv) {
     const BOOL fallback_return = SHGetSpecialFolderPathA(NULL, desktop, CSIDL_WINDOWS, FALSE);
     const DWORD fallback_error = GetLastError();
     const bool fallback = fallback_return && !_stricmp(desktop, argv[2]);
+    IDirectInput8A* directinput = NULL;
+    const HRESULT directinput_hr = DirectInput8Create(GetModuleHandleA(NULL), 0x0800,
+        IID_IDirectInput8A, (void**)&directinput, NULL);
+    const bool directinput_ok = SUCCEEDED(directinput_hr) && directinput != NULL;
+    if (directinput) directinput->Release();
     char target[MAX_PATH]; sprintf_s(target, "%s\\private-write.txt", argv[1]);
     HANDLE f = CreateFileA(target, GENERIC_WRITE, 0, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
     const bool allowed = f != INVALID_HANDLE_VALUE;
@@ -1096,13 +1434,24 @@ int main(int argc, char** argv) {
     f = CreateFileA(argv[3], GENERIC_WRITE, 0, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
     const DWORD denial = GetLastError(); const bool denied = f == INVALID_HANDLE_VALUE && denial == ERROR_ACCESS_DENIED;
     if (f != INVALID_HANDLE_VALUE) CloseHandle(f);
-    const bool passed = personal && flags && fallback && allowed && denied && generic_invalid_handle_caught;
+    char parent[MAX_PATH], protected_child[MAX_PATH]; strcpy_s(parent, argv[3]);
+    char* last = strrchr(parent, '\\'); if (!last) return 93; *last = 0;
+    sprintf_s(protected_child, "%s\\protected-child.txt", parent);
+    f = CreateFileA(parent, FILE_DELETE_CHILD, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+        NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
+    const DWORD delete_child_error = GetLastError();
+    const bool delete_child_denied = f == INVALID_HANDLE_VALUE && delete_child_error == ERROR_ACCESS_DENIED;
+    if (f != INVALID_HANDLE_VALUE) CloseHandle(f);
+    const BOOL deleted = DeleteFileA(protected_child); const DWORD delete_error = GetLastError();
+    const bool protected_delete_denied = !deleted && delete_error == ERROR_ACCESS_DENIED;
+    const bool passed = personal && flags && fallback && allowed && denied && generic_invalid_handle_caught
+        && delete_child_denied && protected_delete_denied;
     FILE* report = NULL;
     if (fopen_s(&report, argv[4], "w") || !report) return 91;
     for (char* p = desktop; *p; ++p) if (*p == '\\') *p = '/';
     for (char* p = argv[2]; *p; ++p) if (*p == '\\') *p = '/';
-    fprintf(report, "{\"personal_redirect\":%s,\"csidl_flags\":%s,\"fallback\":%s,\"fallback_return\":%d,\"fallback_error\":%lu,\"other_folder\":\"%s\",\"expected_other_folder\":\"%s\",\"private_write\":%s,\"medium_write_denied\":%s,\"denial_error\":%lu,\"generic_invalid_handle_caught\":%s,\"passed\":%s}\n",
-        personal?"true":"false", flags?"true":"false", fallback?"true":"false", fallback_return, fallback_error, desktop, argv[2], allowed?"true":"false", denied?"true":"false", denial, generic_invalid_handle_caught?"true":"false", passed?"true":"false");
+    fprintf(report, "{\"personal_redirect\":%s,\"csidl_flags\":%s,\"fallback\":%s,\"fallback_return\":%d,\"fallback_error\":%lu,\"other_folder\":\"%s\",\"expected_other_folder\":\"%s\",\"private_write\":%s,\"medium_write_denied\":%s,\"denial_error\":%lu,\"generic_invalid_handle_caught\":%s,\"delete_child_denied\":%s,\"protected_delete_denied\":%s,\"directinput_hresult\":%lu,\"directinput_ok\":%s,\"passed\":%s}\n",
+        personal?"true":"false", flags?"true":"false", fallback?"true":"false", fallback_return, fallback_error, desktop, argv[2], allowed?"true":"false", denied?"true":"false", denial, generic_invalid_handle_caught?"true":"false", delete_child_denied?"true":"false", protected_delete_denied?"true":"false", (unsigned long)directinput_hr, directinput_ok?"true":"false", passed?"true":"false");
     fclose(report);
     const DWORD begin = GetTickCount();
     while (GetTickCount() - begin < 1500) {
@@ -1119,12 +1468,15 @@ int main(int argc, char** argv) {
 '''
 
 
-def safety_probe(root):
+def safety_probe(root, token_mode="low"):
     root = private(root, exists=False)
     root.mkdir(parents=True, exist_ok=False)
     stage, medium = root / "stage", root / "medium"
     stage.mkdir()
     medium.mkdir()
+    protected_child = medium / "protected-child.txt"
+    protected_child.write_text("protected-kernel-fixture\n", encoding="utf-8")
+    protected_hash = sha(protected_child)
     if label(medium)["rid"] < MEDIUM:
         raise RuntimeError("Probe medium fixture is not medium integrity")
     prepare(stage, stage / "guard-prepare.json")
@@ -1142,16 +1494,20 @@ def safety_probe(root):
     batch = root / "compile_probe.cmd"
     batch.write_text('@echo off\ncall "' + str(vcvars) + '" x86 >nul\nif errorlevel 1 exit /b %errorlevel%\n' +
         subprocess.list2cmdline(["cl.exe", "/nologo", "/W4", "/O2", "/MT", str(source),
-            "/Fe:" + str(exe), "/Fo:" + str(stage / "guard_probe.obj"), "/link", "/MANIFEST:EMBED", "shell32.lib"]) + "\n", encoding="utf-8")
+            "/Fe:" + str(exe), "/Fo:" + str(stage / "guard_probe.obj"), "/link", "/MANIFEST:EMBED",
+            "shell32.lib", "dinput8.lib", "dxguid.lib"]) + "\n", encoding="utf-8")
     done = subprocess.run(["cmd.exe", "/d", "/c", str(batch)], cwd=root, capture_output=True, text=True)
     (root / "compile.log").write_text(done.stdout + done.stderr, encoding="utf-8")
     if done.returncode:
         raise RuntimeError(f"Probe compile failed ({done.returncode}): {root / 'compile.log'}")
     result = stage / "probe-result.json"
+    if token_mode == "medium-restricted":
+        prepare_medium(stage, root / "probe-medium-prepare.json", executable=exe,
+            original_exe=exe, protected_roots=[medium], probe=True)
     (stage / "discover-motion.request").write_text("safety-probe\n", encoding="utf-8")
     data = run_guard(stage, exe, stage, documents, root / "probe-launch.json", 30,
         arguments=[str(documents), str(folder(0x24)), str(medium / "must-not-exist.txt"), str(result)],
-        protected_roots=[medium], probe=True, handle_known_xlive_debug_close=True)
+        protected_roots=[medium], probe=True, handle_known_xlive_debug_close=True, token_mode=token_mode)
     if not result.exists():
         raise RuntimeError(f"Probe did not produce a result; receipt: {root / 'probe-launch.json'}")
     evidence = json.loads(result.read_text(encoding="utf-8"))
@@ -1172,17 +1528,19 @@ def safety_probe(root):
     try:
         run_guard(stage, exe, stage, documents, crash_receipt, 15,
             arguments=["--fixture-crash-exit"], protected_roots=[medium], probe=True,
-            handle_known_xlive_debug_close=True)
+            handle_known_xlive_debug_close=True, token_mode=token_mode)
     except RuntimeError:
         crashed = json.loads(crash_receipt.read_text(encoding="utf-8"))
         crash_rejected = (crashed["phase"] == "crashed" and
             crashed["child_exit_failures"][0]["exit_code"] == 0xC0000005 and
             crashed["protected_documents_unchanged"] and crashed["disk_executable_unchanged"])
     evidence["nonzero_child_exit_rejected"] = crash_rejected
-    evidence["passed"] = evidence["passed"] and motion_ok and diagnostic_ok and crash_rejected
+    evidence["protected_child_unchanged"] = protected_child.exists() and sha(protected_child) == protected_hash
+    evidence["passed"] = (evidence["passed"] and motion_ok and diagnostic_ok and crash_rejected
+        and evidence["protected_child_unchanged"] and (token_mode == "low" or evidence["directinput_ok"]))
     if not evidence.get("passed") or (medium / "must-not-exist.txt").exists():
         raise RuntimeError(f"Isolation probe failed: {evidence}")
-    return {"phase": "probe_passed", "root": str(root), "evidence": evidence,
+    return {"phase": "probe_passed", "root": str(root), "token_mode": token_mode, "evidence": evidence,
             "receipt": str(root / "probe-launch.json"), "root_pid": data["root_pid"]}
 
 
@@ -1192,6 +1550,11 @@ def main():
     prep = sub.add_parser("prepare")
     prep.add_argument("--stage", type=Path, required=True)
     prep.add_argument("--receipt", type=Path, required=True)
+    med = sub.add_parser("prepare-medium")
+    med.add_argument("--stage", type=Path, required=True)
+    med.add_argument("--receipt", type=Path, required=True)
+    med.add_argument("--exe", type=Path)
+    med.add_argument("--original-exe", type=Path, default=RETAIL)
     launch = sub.add_parser("launch")
     launch.add_argument("--stage", type=Path, required=True)
     launch.add_argument("--receipt", type=Path, required=True)
@@ -1200,30 +1563,38 @@ def main():
     launch.add_argument("--documents", type=Path)
     launch.add_argument("--original-exe", type=Path, default=RETAIL)
     launch.add_argument("--seconds", "--timeout", type=int, default=900)
+    launch.add_argument("--token-mode", choices=("low", "medium-restricted"), default="low")
     launch.add_argument("--no-motion-discovery", action="store_true")
     launch.add_argument("--handle-known-xlivedebugclose", action="store_true",
         help="Opt in to one first-chance invalid-HMODULE CloseHandle exception only with exact loaded xlive hash/call/live stack proof")
     launch.add_argument("--observe-directinput-startup", action="store_true",
         help="Record EAX HRESULT and [EDI] once after DirectInput8Create, restore the breakpoint and continue without changing results")
+    launch.add_argument("--arg", action="append", dest="game_arguments", default=[],
+        help="One native game argument; repeat --arg=VALUE (equals supports values starting with '-')")
     launch.add_argument("arguments", nargs=argparse.REMAINDER)
     probe = sub.add_parser("probe")
     probe.add_argument("--root", type=Path, required=True)
+    probe.add_argument("--token-mode", choices=("low", "medium-restricted"), default="low")
     args = parser.parse_args()
     try:
         if args.mode == "prepare":
             result = prepare(args.stage, args.receipt)
+        elif args.mode == "prepare-medium":
+            result = prepare_medium(args.stage, args.receipt, args.exe, args.original_exe)
         elif args.mode == "probe":
-            result = safety_probe(args.root)
+            result = safety_probe(args.root, args.token_mode)
         else:
             exe = args.exe or args.stage / "game/battlestationspacific.exe"
             real_documents = folder(5) / "Battlestations-Pacific"
             roots = [args.original_exe.parent, real_documents if real_documents.exists() else real_documents.parent]
             result = run_guard(args.stage, exe, args.cwd or exe.parent,
                 args.documents or args.stage / "Documents", args.receipt, args.seconds,
-                original_exe=ordinary(args.original_exe), arguments=args.arguments, protected_roots=roots,
+                original_exe=ordinary(args.original_exe),
+                arguments=[*args.game_arguments, *(args.arguments[1:] if args.arguments[:1] == ["--"] else args.arguments)],
+                protected_roots=roots,
                 motion_discovery=not args.no_motion_discovery,
                 handle_known_xlive_debug_close=args.handle_known_xlivedebugclose,
-                observe_directinput_startup=args.observe_directinput_startup)
+                observe_directinput_startup=args.observe_directinput_startup, token_mode=args.token_mode)
         print(json.dumps({k: result[k] for k in ("phase", "stage", "root", "root_pid", "receipt", "evidence") if k in result}))
         return 0
     except BaseException as exc:
