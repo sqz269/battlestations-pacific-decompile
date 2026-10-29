@@ -132,3 +132,10 @@ metadata before this interval. The owner and geometry guards now borrow the
 existing canonical raw122 state.widget_y_scale cell, preserving current volatile
 loads. This changes no reached Text74 store/callback analysis; the same mutable
 cell and its full retained backing must remain disjoint from Text and scratch.
+
+Attempt04 d6d709bdc supplies the conditional audit's actual import/module/null/
+entry and whole-owner lifecycle receipts, with independent artifact audit84/84.
+BOTH exact named IAT aliases, actual Win32 heap/MSVCP archives and complete owner
+settlement are pinned in `CODEX_GUI_RAW_PREFIX_GEOMETRY_QUALIFICATION.md`.
+The closed-provider/serialization/no foreign mutation contract remains the scope
+of this ONE empty private lifecycle; no broader callback/failure/ABI proof follows.

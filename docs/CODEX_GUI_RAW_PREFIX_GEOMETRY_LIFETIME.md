@@ -135,7 +135,8 @@ checks2/2 (11.41s), `local/cc16_prefix_geometry_integrated_off_build.log`.
 Independent final helper Source review also passes, including actual B73B60
 outputs and both durable Mesh histories. The preregistered real-provider fixture
 remains open. Failure/reuse/ABI/content/rendering/FE_initial
-and every unsupported branch remain open. No geometry probe or game has run.
+and every unsupported branch remain open. The frozen source packet itself was
+uncalled at handoff; later private runtime qualification is recorded below.
 
 The first private geometry ON attempt afe1 stopped in metadata preparation:
 E12FC4 was incorrectly requested from the verified RO service. It reached no379
@@ -143,3 +144,11 @@ body. Owner binding and both geometry preflight guards now use the existing
 canonical mutable state cell, with no arithmetic/schedule change. Failed logs
 are retained; corrected OFF build passes2/2 (11.57s). Corrected geometry runtime
 acceptance remains open.
+
+Subsequent corrected attempt04 d6d709bdc completes the real empty prefix+379
+lifecycle and passes independent artifact audit84/84. Frozen BOTH-alias map,
+actual CRT module/archive, same-binary GUI_TEXT0/1 and durable BOTH Mesh/Models/
+Text closure evidence is in `CODEX_GUI_RAW_PREFIX_GEOMETRY_QUALIFICATION.md`.
+Root verified the copied report hashes. Private route restored OFF9b08ca808,
+Win32/checks2/2; no main-section/AAA710/Font/content/rendering, failure/reuse or
+native ABI acceptance follows. All prior failure/partial artifacts remain intact.

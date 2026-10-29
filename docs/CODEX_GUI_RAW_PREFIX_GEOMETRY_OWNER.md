@@ -145,4 +145,12 @@ The first afe1 ON case failed before factory/geometry when this metadata ctor
 incorrectly queried E12FC4 through the RO service. The original failed artifacts
 remain in local/cc16_prefix_geometry_qualification_20261029. Root corrected the
 binding to the shared mutable state and matching guards; independent Source
-review and corrected OFF Win32/checks2/2 (11.57s) pass. No379 runtime pass follows.
+review and corrected OFF Win32/checks2/2 (11.57s) pass. That attempt proves no379
+runtime pass; it remains preserved independently of later success.
+
+Corrected attempt04 d6d709bdc later passes the actual empty geometry lifecycle
+and independent audit84/84. Actual Source-enforced BOTH Mesh/Models/Text custody,
+module/import/archive receipts and same-binary pair are recorded in
+`CODEX_GUI_RAW_PREFIX_GEOMETRY_QUALIFICATION.md`. Route restored OFF9b08ca808,
+build/checks2/2. This is no broader caller, Font/content/hierarchy/ABI or
+failure/flags0/reuse acceptance.

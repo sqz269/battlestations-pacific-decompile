@@ -147,3 +147,49 @@ replacement call or setter. A focused Win32/MD C++17 probe confirms actual heap
 ucrtbase, standardMSVCP140, declarationEXE and lookups1111. The OFF build/checks
 2/2 pass (11.13s). A fresh frozen map must pin BOTH aliases to their named IAT
 cells; both actual runtime paths/files and full paired audit remain required.
+
+## Fourth attempt: independent qualified acceptance
+
+Frozen source `d6d709bdcbf6feb127bfc5c03bf62a50d9f6ef3a`, executable
+`6F47926541E1B8CC6E2B24D51C8ECF2E487320BBF81BEBD44109AAA431401F44`,
+passes BOTH same-binary cases exit0/599+1. Artifacts are retained separately in
+`local/cc16_prefix_geometry_qualification_20261029_attempt04`.
+
+The frozen map and PE prove query alias==named query IAT10595564 and standard
+alias==named MSVCP getter IAT1059528C. Actual runtime query/call modules match;
+the logged heap path is System32/ucrtbase.dll and actual standard path is
+System32/MSVCP140.dll. Both are archived through 32-bit PowerShell filesystem
+view in `runtime_modules`, outside the EXE directory, and verified Machine14C:
+
+- Heap SHA256 `E4F8F92EEF00FF6A0C6D418AF756A59D5A4B818D0D1DE0D96CC193B4D6759432`.
+- Standard SHA256 `F0CDA2A0CF1FE6FBBF579B9098462329D3AAA7513A207AF2E0F33B01456E388A`.
+
+ON has four owner stages625/3685/9515/9640, with real construction, actual Text/
+BOTH Model/BOTH Mesh settlement and renderer-first closure. Immediate actual
+null-handler and live entry-zero guards returned before the genuine379 body.
+Root comparison shows equal gameplay21/native1427/summary764. Raw PTR/SUB full449
+has one worker-ID difference; prior normalization yields0. Mission raw299diff0.
+Raw pair1 is preserved with eight precise ON-only lifecycle/CRT diagnostic rows.
+Historical b8prefix comparison remains separate. Known error.dds/COM1+1 is the
+sole existing residue exception; no new masks or COM-zero claim.
+
+Private route restored OFF `9b08ca8083c040f80d20c2a66f5aa02ca24418f4`, Win32 and
+existing checks2/2 pass (10.81s). The independent full artifact audit passes84/84;
+no production, AAA710/current74 dispatch, main-section/content, hierarchy, ABI,
+failure/reuse or visual acceptance follows from this private lifecycle.
+
+Root copied and hash-verified the full eleven-file independent review bundle to
+`local/cc16_prefix_geometry_qualification_20261029_attempt04/evaluation`:
+
+- `audit.json`: `516990B3FECF830856B64587CD3017C7771BA68D968EF64CD67F0CB58D0A15B5`.
+- `audit.md`: `2C639DE92C35D98741BD81945CBAC7EB19B475750D4D6057F68014B9E1E539A1`.
+- `report_hashes.json`: `9316D2395ECBFC1C8AD89455BAE0F2C2EE6486BBC46453A26D8AD2E7C9F7DBBD`.
+
+Same-binary raw teardown1404/1406 has indexdiff99/lengthdelta2, exactly two
+inserted owner rows. Historical1406/1406 has indexdiff2/delta0, exactly two label
+replacements. These metrics remain raw; they are not changed-native-event counts.
+Normal priority is runner-selected, with no independent live priority sample.
+Runtime files were read through Win32 filesystem view; physical NT/SysWOW64 path
+resolution is not separately claimed. This ONE empty private lifecycle retains
+the reviewed closed-provider/no-foreign-mutation domain; broader execution and
+production gates remain open. Earlier failed/partial attempts stay unqualified.

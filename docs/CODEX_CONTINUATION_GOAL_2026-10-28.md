@@ -676,3 +676,20 @@ archive proof. Query heap alias/map/live path succeeds. Route restored OFFf561.
 The standard getter now uses the exact named IAT cell too; Win32/MD probe and
 OFF build2/2 pass. Fresh both-alias frozen map/runtime archives and paired audit
 remain gates; no production/ABI/failure/reuse activation is inferred.
+
+Fresh attempt04 (d6d/6F47) passes BOTH cases exit0/599+1 with actual geometry and
+collective closure. Frozen map/PE pin BOTH named IAT aliases; live actual heap
+and MSVCP paths plus Win32-namespace Machine14C archives now exist. Root raw pair
+has only8ON diagnostic rows, gameplay/native1427/summary764 same, rawmission299
+same and full449 differs only workerID under existing normalization. RestoreOFF
+9b08/build2/2 10.81s. Full independent artifact/teardown audit remains pending;
+all prior failure/partial attempts remain preserved and unqualified as recorded.
+
+Full independent attempt04 audit now passes84/84. Root copied/hash-verified all
+eleven report files: exact BOTH-IAT/map and actual x86 runtime archives, real
+Source-enforced custody, same-binary/historical rawpair/ordered/startRNG/teardown
+qualifications and exact known residue cohort. Raw COMzero remainsfalse; no new
+mask/exception. OFF9b08/build2/2 verified. One empty prefix+explicit379 lifecycle
+is accepted within its closed-provider domain; production/UI/AAA710/main-section/
+Font/content/hierarchy/ABI and failure/reuse remain open. Font source halves
+are frozen separately for cross-review and combined build, not activated.
