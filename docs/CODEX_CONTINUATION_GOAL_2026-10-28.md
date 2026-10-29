@@ -454,4 +454,5 @@ string cells as the permanent process wrappers. A focused raw-only correction
 now checks every cell address and the typed actual-manager mode, retaining
 local object identities, legacy guards and all provider lifetimes. No native
 allocation/get/free body or class layout/vtable changed. Root and independent
-review pass; rebuild and the subsequent genuine owner lifecycle remain separate.
+review pass; frozenef69872ae Win32 Release and both existing CTests pass. The
+subsequent genuine owner lifecycle remains separate.
