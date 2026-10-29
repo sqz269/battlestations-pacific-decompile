@@ -206,7 +206,8 @@ only the genuine childless/type0-key Screen path, and mapped widget keys reject
 before AA6560. Private context views retain the canonical registry, pools,
 imports and owner families; Page metadata survives native pool return until the
 actual Group/outer/camera/resource/sun/ambient companions retire. The review
-requires a doc-only count correction: AC6825's null B6D890 tail unlinks root
+caught a doc-only count error, corrected in `066a46466` with unchanged source:
+AC6825's null B6D890 tail unlinks root
 registration but leaves170; the ordinary cold resource count remains4 until
 genuine Group B6EE10 removal, absent replacement callbacks or other holders.
 
@@ -222,3 +223,22 @@ Tooling-only `b63e0311e` fixes brief's false integration backlog by preferring
 the published `origin/main` ref, with local `main` fallback. Two focused Python
 tests pass; no C++ or frozen game artifacts changed. The main checkout remains
 untouched, and CC16 is fully published at that checkpoint.
+
+The P3b/P3c source map confirms that raw Text and Icon construction/reference/
+retirement providers already exist, while their active applications retain
+semantic field authority. They cannot be overlaid on the complete raw payloads.
+Installed FE_initial has two active Icons and one nonempty Text; its installed
+Lua is customized (SHA-256
+`3BAB3FC8A29569D0F7DA13CC3C69D3B1232C57772CED58A2E06985700F332CFA`).
+Full raw Text content/glyph publication, Icon construction/properties/rebuild,
+shared Model/Group parenting/lifetime closure and startup resource order remain.
+
+One bounded independent metadata dependency is dispatched as
+`codex-gui-icon-delayed-custody`: a deferred process owner for the single typed
+F8BD98 Source backing and existing genuine delayed-load service. Even ordinary
+raw Icon destruction calls AB5700 when delayed loading is false. The worker
+owns only new process CPP/HPP and its evidence document; root owns the shared
+startup/deletion hookup. No getter or raw Icon caller is activated, no queue or
+file delivery is fabricated, and no build is allowed during the A1 hold.
+Any eventual getter must use the SAME service bound into the process singleton
+deletion dispatcher and retain its full provider graph through native drain.
