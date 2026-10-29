@@ -2740,6 +2740,11 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     try { native_shadow_->construct(); }
     catch (...) { exit_if_native_shadow_incomplete(); throw; }
     log_.implemented("Phase 7 native shadow target startup", "0073dccb");
+    // Prepare the one input metadata/context graph before 73DD12's load pump.
+    // This constructs no native backend/actions and leaves input_runtime_ null;
+    // the sampler can borrow input_->core without moving native 73DD8E effects.
+    // Sound/XLive, XInput, platform and the frame clock already outlive it.
+    input_ = std::make_unique<InputServices>(*this);
     if constexpr (kNativeRendererStartupCc15Bound) {
         // cc15-gui4 A1: 0073DD12's position (0073BF80). Open the one raw scene
         // domain the mission and GUI page graphs borrow. The image's
@@ -2747,7 +2752,6 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         native_renderer_->open_startup_scene_domain();
     }
     log_.unimplemented("Phase 4 renderer_resources", "00b14a10");
-    input_ = std::make_unique<InputServices>(*this);
     input_runtime_ = &input_->core;
     input_runtime_->startup();
     log_.implemented("Phase 5 input_backend_initialize", "0073dd8e");

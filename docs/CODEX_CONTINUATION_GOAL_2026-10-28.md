@@ -387,3 +387,9 @@ proof remain explicit next dependencies. Page activation remains OFF.
 Workers are preparing the Model-only router, raw DEFAULT factory contract and
 early shared procedural-factory lifetime needed for A2. Shared host changes
 remain with the primary integrator; no second factory domain is authorized.
+
+Input metadata preparation now precedes the73DD12 position, while the sole
+input_runtime_ publication and native backend startup stay at73DD8E. The real
+existing clock/XInput/platform/sound graph supplies the same borrowed core to a
+future sampler. Win32 Release and both existing CTests pass; no input/gameplay
+or shader-loading runtime proof is claimed. See CODEX_A2_INPUT_METADATA.md.
