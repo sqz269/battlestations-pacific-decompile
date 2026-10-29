@@ -17,9 +17,9 @@
   "packets": [
     {
       "id": "codex-gui-text-raw-model-transport",
-      "state": "api_reviewed_coherent_raw_overloads_source_in_progress_A1_build_hold",
+      "state": "integrated_source_reviewed_win32_build_passed_default_runtime_unproven",
       "worker": "gui_integration_review",
-      "source_ready": true,
+      "source_ready": false,
       "depends_on": ["codex-gui-raw-model-storage", "codex-gui-raw-model-geometry", "codex-gui-widget-state"],
       "function_addresses": ["00ab8530", "00ab9650", "00ab8250", "00ab8ee0"],
       "output_files": [
@@ -29,7 +29,7 @@
         "include/bsp/native_gui_text_reference.hpp", "src/native_gui_text_reference.cpp",
         "docs/CODEX_GUI_TEXT_RAW_MODEL_TRANSPORT.md"
       ],
-      "notes": "Approved explicit rawModel overloads across Text85/93/118 plus separate typed raw122 reference, preserving legacy interfaces/callers with limited private body factoring. Use frozen481 + d403 B75170 concrete retained DWORD frame; no erased callback, ModelOwner cast, dummy scene environment, copied count or fake effect. Mandatory internal188 publication precedes canonical admission; host_metadata failure propagates distinctly from native ctor cleanup/slot return. Real GuiDefault/cache/Lua and genuine same-domain Model-only routing are entry prerequisites; general primary4C/Page/children/nonemptycontent remain later. Named Model prerequisites are prepared but unbuilt, not production-ready. No factory wrapper/activation, CMake/ledger/body credit or build during A1 hold."
+      "notes": "Frozen e75 integrated at93a52f36d after root constructor and independent ownership review; MSVC Win32 Release and both existing CTests pass. Explicit rawModel overloads85/93/118 plus separate typed raw122 preserve legacy interfaces/callers. Uses accepted481+d403 concrete retained DWORD frame. Mandatory188 publication precedes canonical admission; host_metadata failure stays distinct from native constructor cleanup/slot return. Genuine same-domain Model-only router and GuiDefault/cache/Lua readiness remain entry requirements, with DEFAULT factory binding still pending. No actual raw lifecycle/exception/reuse, FP/ABI or production-caller proof, no Page/children/nonemptycontent activation and no new body credit."
     },
     {
       "id": "codex-gui-raw-model-geometry",

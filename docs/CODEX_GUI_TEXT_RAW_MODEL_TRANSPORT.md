@@ -212,11 +212,14 @@ this new raw transport. Cached listing reads here made no Ghidra changes.
 
 All new APIs are MSVC Win32 Source interfaces, not native register/private-stack,
 FH3/SEH, Original object-lifetime or binary-detour ABI proof. No body/name ledger
-credit is added. Static review and whitespace checks are the only checks in
-this packet. Compilation and lifecycle/exception/pool-reuse proof are pending.
+credit is added. Root reviewed construction/failure transport and independently
+reviewed identity/retirement/disposal ownership before accepting frozen e75.
+The integrated MSVC Win32 Release build and both existing CTests passed at
+93a52f36d4c4347c26d6e65093f49596880417a0. Build log:
+`local/codex_text_transport_build_e75.log`. No new tests were added.
+Lifecycle/exception/pool-reuse and production-caller proof remain pending.
 
-After root review/integration and coordinated availability: Win32 CMake build
-and the existing checks first. Any subsequent narrow DEFAULT lifecycle fixture
+After coordinated availability, any subsequent narrow DEFAULT lifecycle fixture
 must use real renderer/cache/Lua/GuiDefault, pool/type/owner and private Model
 router providers and explicitly report fixture-only evidence. Failure custody,
 CURRENT callbacks/imports/flags and post-return nonreuse require separate proof;

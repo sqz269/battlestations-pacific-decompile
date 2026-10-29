@@ -369,3 +369,21 @@ ABI, evidence and runtime limits. No whole-body credit grows. Actual Page,
 Model, Icon-service, exception/reentry/reuse and raw Text lifecycles remain open.
 Frozen Text e75 has passed root constructor and independent ownership review
 within DEFAULT scope; its separate build and acceptance batch follows.
+
+## Raw Text transport build accepted
+
+Dormant dependency batch is published on main at fb071f275. Remote Dyn source
+changes merged cleanly and the combined Win32 build passed both existing CTests;
+the frozen eb185 gameplay results above retain their exact original provenance.
+
+Frozen Text e75 is integrated at 93a52f36d. Both source reviews passed and the
+Win32 Release build passed reconstructed_math and tool_tests. The existing
+legacy Text APIs/callers are preserved. Raw85/93/118 and separate raw122 now
+compile with the actual Model481/geometryd403 transport. No new test cases or
+body credit were added. The private genuine Model router, real GuiDefault/cache/
+Lua readiness, DEFAULT factory binding and actual lifecycle/exception/reuse
+proof remain explicit next dependencies. Page activation remains OFF.
+
+Workers are preparing the Model-only router, raw DEFAULT factory contract and
+early shared procedural-factory lifetime needed for A2. Shared host changes
+remain with the primary integrator; no second factory domain is authorized.
