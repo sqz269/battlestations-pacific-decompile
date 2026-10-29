@@ -193,3 +193,10 @@ Win32 build, both existing suites, twelve original call checks and an actual
 entry/dependency link. The link-only executable was never executed and the
 game map contains no entry. No original ABI, game activation, vendor-body or
 additional address credit is asserted. The full-activation goal remains active.
+
+The shared accuracy caller now keeps its legacy return in the `if constexpr`
+else arm, avoiding MSVC C4702 under `/WX` in a private ON build while retaining
+the shared false guard. The exact small CPP change `1df710914` passes the common
+Win32 Release build and both suites (12.17 seconds) after C54DA0 integration.
+Matching frozen OFF/ON runtime candidates are separate; this change grants no
+activation or gameplay credit.
