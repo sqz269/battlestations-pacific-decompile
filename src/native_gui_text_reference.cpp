@@ -1,4 +1,8 @@
 #include "bsp/native_gui_text_reference.hpp"
+#include "bsp/native_gui_text_shader_storage.hpp"
+#include "bsp/native_material_effect_programs.hpp"
+#include "bsp/native_texture_loading_cache.hpp"
+#include "bsp/native_vfs_name_resolution.hpp"
 #include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_string_process.hpp"
@@ -95,7 +99,86 @@ bool fresh(const NativeGuiTextScalarRetirementAcquired& a) noexcept {
         !d.started && !d.complete && !d.exception_cleanup_started && d.native_eh_state == -1 &&
         !d.destination && d.boundary == NativeGuiTextRetirementAcquired::Boundary::none &&
         !d.shader.decrement_entered && !d.shadow.started && !d.glyphs.started &&
-        !d.normal_actions_entered && !d.normal_actions_returned && !d.unwind_actions_consumed;
+        !d.normal_actions_entered && !d.normal_actions_returned && !d.unwind_actions_consumed &&
+        !d.unwind_actions_returned;
+}
+template<class Check>
+void shader_texture_backing(const NativeTextureCacheAcquired& a, Check check) {
+    check(Region{&a, sizeof(a)});
+    // Still-owned C++ objects only. A base extent is not the opaque derived
+    // operation's full extent, which remains the existing caller obligation.
+    if (a.resolution.operation) check(Region{a.resolution.operation.get(), sizeof(*a.resolution.operation)});
+    if (a.fallback_resolution.operation)
+        check(Region{a.fallback_resolution.operation.get(), sizeof(*a.fallback_resolution.operation)});
+    if (a.fallback) shader_texture_backing(*a.fallback, check);
+}
+template<class Check>
+void shader_cache_backing(const NativeMaterialEffectCacheAcquired& a, Check check) {
+    check(Region{&a, sizeof(a)});
+    if (a.key_resolution) {
+        const auto& k = *a.key_resolution;
+        check(Region{&k, sizeof(k)});
+        if (k.changed_resolution.acquired)
+            check(Region{k.changed_resolution.acquired.get(), sizeof(*k.changed_resolution.acquired)});
+        if (k.original_resolution.acquired)
+            check(Region{k.original_resolution.acquired.get(), sizeof(*k.original_resolution.acquired)});
+    }
+    const auto& loader = a.loader;
+    if (loader.name_resolution.acquired)
+        check(Region{loader.name_resolution.acquired.get(), sizeof(*loader.name_resolution.acquired)});
+    if (loader.programs) check(Region{loader.programs.get(), sizeof(*loader.programs)});
+    if (loader.constructor_texture) shader_texture_backing(*loader.constructor_texture, check);
+    if (loader.fallback) shader_cache_backing(*loader.fallback, check);
+}
+void require_shader_quiescent(const NativeGuiTextRawModelReferenceContext& c) {
+    const auto* const frame = c.font_shader_frame;
+    if (!frame) return;
+    require(representable({frame, sizeof(*frame)}) && !(bits(frame) & 3u),
+        "Raw Text shader reservation requires aligned representable retained Frame storage");
+    require(frame->phase == NativeGuiTextShaderStorageFrame::Phase::fresh ||
+        frame->phase == NativeGuiTextShaderStorageFrame::Phase::complete,
+        "Raw Text binding/scalar excludes an entered or failed reserved shader invocation");
+}
+template<class Check>
+void known_shader_borrowed(const NativeGuiTextRawModelReferenceContext& c, Check check) {
+    require_shader_quiescent(c);
+    const auto* const frame = c.font_shader_frame;
+    if (!frame) return;
+    check(Region{frame, sizeof(*frame)});
+    const auto* const context = frame->prepared_raw_context();
+    require(context && representable({context, sizeof(*context)}),
+        "Raw Text shader reservation needs its immutable real prepared context");
+    check(Region{context, sizeof(*context)});
+    check(Region{&context->fonts, sizeof(context->fonts)});
+    const Region platform{context->configuration_0109cf04.identity(), sizeof(void*)};
+    require(representable(platform), "Raw Text shader needs its actual retained platform publication CELL");
+    check(platform); // No current platform/Font/native resource/header read.
+    shader_cache_backing(frame->cache, check);
+}
+void fresh_shader_binding(const NativeGuiTextRawModelReferenceContext& c) {
+    const auto* const f = c.font_shader_frame;
+    if (!f) return;
+    using Frame = NativeGuiTextShaderStorageFrame;
+    require(f->prepared_raw_context() && f->phase == Frame::Phase::fresh &&
+        f->boundary == Frame::Boundary::none && f->escaped_boundary == Frame::Boundary::none &&
+        !f->destination && !f->selected_name && !f->captured_configuration && !f->captured_font &&
+        !f->captured_renderer && !f->result && !f->renderer_profile && !f->renderer_target &&
+        !f->active_call_site && !f->escaped_call_site && f->native_eh_state == -1 &&
+        !f->cached && !f->override_selected && !f->height_matches && !f->font_scale_matches &&
+        !f->empty_constructed && !f->empty_compared && !f->empty_returned && !f->default_constructed &&
+        !f->renderer_entered && !f->renderer_returned && !f->shader_published &&
+        !f->cleanup_entered && !f->cleanup_returned && !f->exception_cleanup_started && !f->attempted &&
+        !f->captured_name_data && !f->captured_name_bytes &&
+        f->cache.phase == NativeMaterialEffectCacheAcquired::Phase::not_started &&
+        !f->cache.loaded && !f->cache.result && !f->cache.cache_published && !f->cache.caller_acquired &&
+        !f->cache.key_resolution && f->cache.loader.phase == NativeMaterialEffectLoadPhase::not_started &&
+        !f->cache.loader.raw_slot && !f->cache.loader.creator && !f->cache.loader.companion &&
+        !f->cache.loader.owner_record && !f->cache.loader.constructor_complete &&
+        !f->cache.loader.registered && !f->cache.loader.returned &&
+        !f->cache.loader.name_resolution.acquired && !f->cache.loader.programs &&
+        !f->cache.loader.fallback && !f->cache.loader.constructor_texture,
+        "Raw Text initial DEFAULT bind reserves only a genuinely fresh shader producer Frame");
+    // names[] intentionally has no initialization; inspect no native header.
 }
 template<class Check>
 void known_borrowed(NativeGuiTextRawModelReferenceContext& c,
@@ -167,6 +250,10 @@ void known_borrowed(NativeGuiTextRawModelReferenceContext& c,
             check(region);
         }
     }
+    known_shader_borrowed(c, [&](Region region) {
+        require(representable(region), "Raw Text shader borrowed record needs a valid retained extent");
+        check(region);
+    });
     // Abstract/opaque provider implementations, actual pool/slab allocations,
     // effect loader frames and retained creator records have transitive caller
     // extent contracts. A base sizeof above never proves a derived extent.
@@ -243,6 +330,7 @@ Admission preflight(void* companion, void* raw, NativeGuiTextRawModelReferenceCo
         for (const auto region : writes)
             require(disjoint(region, borrowed), "Raw Text binding writes cannot alias the retained producer graph");
     });
+    fresh_shader_binding(c);
     const auto& a = c.construction;
     auto& p = c.construction_context;
     auto& f = c.construction_frame.sections;
@@ -432,6 +520,7 @@ void NativeGuiTextRawModelReference::delete_vslot04(void* raw, Word captured_pro
         throw std::logic_error("Raw Text zero scalar adapter rejects reentry before raw access");
     if (raw != identity_ || flags != 1)
         throw std::logic_error("Raw Text BD30E0 needs SAME actual identity/literal1");
+    require_shader_quiescent(context_);
     require_slot(captured_profile, 1, scalar_target);
     auto& storage = context_.retirement;
     auto& acquired = frame_.scalar;
@@ -445,6 +534,7 @@ void NativeGuiTextRawModelReference::release_zero_references() noexcept {
     const auto saved = completion();
     phase_ = Phase::zero_dispatch;
     try {
+        require_shader_quiescent(context_);
         if (context_.owners.find(identity_) != this || reference_count.load(std::memory_order_relaxed) != 0)
             throw std::logic_error("Raw Text zero terminal requires SAME canonical observed-zero binding");
         require_slot(read(identity_), 0, zero_target);

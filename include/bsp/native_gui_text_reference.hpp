@@ -115,6 +115,7 @@ NativeGuiTextReference& bind_native_gui_text_reference(void* companion_storage,
     NativeGuiTextReferenceDisposal);
 
 class NativeGuiTextRawModelReference;
+struct NativeGuiTextShaderStorageFrame;
 struct NativeGuiTextRawModelReferenceDisposal {
     void* context;
     std::size_t context_bytes;
@@ -127,6 +128,9 @@ struct NativeGuiTextRawModelReferenceContext {
     NativeGuiTextRawModelDefaultStorageFrame& construction_frame;
     const NativeGuiTextRawModelDefaultStorageAcquired& construction;
     NativeGuiTextRawModelRetirementContext& retirement;
+    // Optional concrete future producer backing, fixed before bind. Reserve
+    // its known extents without authorizing a shader/header ownership domain.
+    const NativeGuiTextShaderStorageFrame* const font_shader_frame{};
 };
 
 // Separate canonical122 binding for completed DEFAULT raw-Model93 only. It

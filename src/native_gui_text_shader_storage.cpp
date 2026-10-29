@@ -1,8 +1,10 @@
 #include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
+#include "bsp/game_native_string_process.hpp"
 #include "bsp/native_material_effect_programs.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/native_string_raw_domain.hpp"
 #include <exception>
 #include <initializer_list>
 #include <stdexcept>
@@ -11,6 +13,23 @@ namespace bsp {
 namespace {
 using Word = std::uint32_t;
 using Frame = NativeGuiTextShaderStorageFrame;
+// Private borrows only. No Model transport, context copy, current-cell value
+// snapshot or native ownership is introduced by the common body view.
+struct ShaderView {
+    game::GameNativeReadOnlyData& data;
+    NativeRenderActualOwnerRegistry& owners;
+    NativeMaterialEffectCacheContext& cache;
+    NativeStringRawPoolContext& strings;
+    const volatile Word& one_00d7a24c;
+};
+ShaderView view(const NativeGuiTextReferenceContext& c) {
+    return {c.data, c.owners, c.retirement.resources.effects,
+        c.retirement.resources.strings, c.construction_context.one_00d7a24c};
+}
+ShaderView view(const NativeGuiTextRawModelReferenceContext& c) {
+    return {c.data, c.owners, c.retirement.resources.effects,
+        c.retirement.resources.strings, c.construction_context.one_00d7a24c};
+}
 static_assert(sizeof(void*) == sizeof(Word));
 Word bits(const volatile void* p) noexcept { return reinterpret_cast<Word>(p); }
 void* pointer(Word p) noexcept { return reinterpret_cast<void*>(p); }
@@ -83,6 +102,72 @@ void* preflight(NativeGuiTextReference& reference, NativeGuiTextShaderStorageCon
         exclude_frame({context.unknown_renderer48, sizeof(*context.unknown_renderer48)}, frame);
     return raw; // Metadata only; no Text count or native cache/name/global read.
 }
+void* preflight(NativeGuiTextRawModelReference& reference, NativeGuiTextShaderStorageContext& context,
+    Frame& frame) {
+    const auto& c = reference.storage_context();
+    void* const raw = reference.storage();
+    require(reference.phase() == NativeGuiTextRawModelReference::Phase::bound && raw &&
+        !(bits(raw) & 3u) && c.owners.find(raw) == &reference &&
+        static_cast<void*>(&reference.reference_count) == at(raw, 4) &&
+        c.font_shader_frame == &frame && frame.prepared_raw_context() == &context,
+        "Raw-Model Text shader requires SAME bound canonical122 and reserved immutable Frame/context");
+    const auto& a = c.construction;
+    auto& r = c.retirement.resources;
+    auto& m = c.retirement.model;
+    require(a.started && a.complete && a.base_complete && a.derived_complete && a.sections_entered &&
+        a.destination == raw && !a.exception_cleanup_started && !a.base_lifetime_ended &&
+        !a.consumed_cleanup_actions && a.failure == decltype(a.failure)::none &&
+        a.sections.complete && !a.sections.exception_cleanup_started &&
+        a.sections.failure == decltype(a.sections.failure)::none && a.sections.model_registered &&
+        a.sections.model_constructed && a.sections.shadow_published &&
+        &c.construction_context.sections == &r && &a.sections.model == &m &&
+        m.actual && m.reference && !m.reference->retired() && m.construction.complete &&
+        m.construction.metadata_bound && m.construction.actual_model == m.actual &&
+        m.construction.context == &r.model.storage && !m.lifetime.started &&
+        !m.lifetime.scalar_started && !m.release.started &&
+        m.association.phase == NativeModelStorageGeometryPhase::complete &&
+        m.association.context == &r.association &&
+        m.association.frame == &c.construction_frame.sections.association &&
+        c.owners.find(m.actual) == &*m.reference,
+        "Raw-Model Text shader requires its SAME genuine completed93/85/188/B75170 graph");
+    require(frame.phase == Frame::Phase::fresh && !frame.destination && !frame.selected_name &&
+        frame.native_eh_state == -1 && !frame.renderer_entered && !frame.shader_published &&
+        frame.cache.phase == NativeMaterialEffectCacheAcquired::Phase::not_started &&
+        !frame.cache.loaded && !frame.cache.result && !frame.cache.caller_acquired &&
+        !frame.cache.cache_published && !frame.cache.key_resolution,
+        "Raw-Model Text shader requires fresh independently retained producer backing");
+    require(!(bits(&frame) & 3u) &&
+        static_cast<std::uint64_t>(bits(&frame)) + sizeof(frame) <= 0x100000000ull,
+        "Raw-Model Text shader frame requires aligned representable storage");
+    auto& cache = r.effects;
+    auto& effects = cache.effects;
+    require(effects.cache == &cache && &cache.strings == &r.material_strings &&
+        &effects.construction.strings == &r.material_strings &&
+        &effects.programs.strings == &r.material_strings &&
+        &effects.owners.string_storage() == &r.material_strings &&
+        &effects.owners.actual_owners() == &c.owners && &r.materials.retained_owners == &c.owners &&
+        &effects.construction.current_renderer_00f8d394 == &effects.programs.current_renderer_00f8d394 &&
+        same_native_string_storage_raw_pool_cells(r.material_strings, r.strings) &&
+        same_native_string_raw_pool_cells(r.strings, r.string_process.raw_context()),
+        "Raw-Model Text shader must borrow SAME actual typed/raw strings/cache/renderer/owner graph");
+    for (const Region borrowed : {Region{raw, 0x1f8}, {&reference, sizeof(reference)},
+        {&c, sizeof(c)}, {&c.owners, sizeof(c.owners)}, {&c.data, sizeof(c.data)},
+        {&c.construction_context, sizeof(c.construction_context)},
+        {&c.construction_frame, sizeof(c.construction_frame)}, {&a, sizeof(a)},
+        {&c.retirement, sizeof(c.retirement)}, {&r, sizeof(r)}, {&m, sizeof(m)},
+        {m.actual, 0x188}, {&*m.reference, sizeof(*m.reference)},
+        {&r.model, sizeof(r.model)}, {&r.model.storage, sizeof(r.model.storage)},
+        {&r.material_strings, sizeof(r.material_strings)}, {&r.strings, sizeof(r.strings)},
+        {&cache, sizeof(cache)}, {&effects, sizeof(effects)},
+        {&effects.construction, sizeof(effects.construction)}, {&effects.programs, sizeof(effects.programs)},
+        {&effects.owners, sizeof(effects.owners)},
+        {&effects.construction.current_renderer_00f8d394, sizeof(void*)},
+        {&c.construction_context.one_00d7a24c, sizeof(Word)},
+        {&context, sizeof(context)}, {&context.fonts, sizeof(context.fonts)},
+        {context.configuration_0109cf04.identity(), sizeof(void*)}})
+        exclude_frame(borrowed, frame);
+    return raw; // No current native Text/name/config/Font/renderer value read.
+}
 void location(Frame& frame, Word site, Frame::Boundary boundary) noexcept {
     frame.active_call_site = site;
     frame.boundary = boundary; // Source boundary; never Native exception-origin proof.
@@ -130,8 +215,8 @@ bool ordered_font_scale_match(void* font, const volatile Word* one) noexcept {
     return matched != 0;
 }
 void* load_current_renderer(const void* name, std::int32_t state, Word site,
-    const NativeGuiTextReferenceContext& c, NativeGuiTextShaderStorageContext& context, Frame& frame) {
-    auto& cache = c.retirement.resources.effects;
+    const ShaderView& c, NativeGuiTextShaderStorageContext& context, Frame& frame, bool known_only) {
+    auto& cache = c.cache;
     frame.captured_renderer = cache.effects.construction.current_renderer_00f8d394;
     require(frame.captured_renderer, "Raw Text shader requires CURRENT actual renderer");
     exclude_frame({frame.captured_renderer, 4}, frame);
@@ -153,6 +238,7 @@ void* load_current_renderer(const void* name, std::int32_t state, Word site,
         result = load_native_renderer_material_effect_00b318b0(
             frame.captured_renderer, name, cache, &frame.cache);
     } else {
+        require(!known_only, "Raw-Model Text shader rejects unsupported captured CURRENT renderer48");
         require(context.unknown_renderer48,
             "Raw Text shader requires genuine provider for CURRENT unknown renderer48");
         result = context.unknown_renderer48->call_renderer_48(frame.captured_renderer,
@@ -162,7 +248,7 @@ void* load_current_renderer(const void* name, std::int32_t state, Word site,
     frame.renderer_returned = true;
     return result;
 }
-void cleanup_name(const NativeGuiTextReferenceContext& c, Frame& frame) noexcept {
+void cleanup_name(const ShaderView& c, Frame& frame) noexcept {
     frame.exception_cleanup_started = true;
     const auto state = frame.native_eh_state;
     frame.native_eh_state = -1; // Consume before entering the required raw cleanup.
@@ -171,7 +257,7 @@ void cleanup_name(const NativeGuiTextReferenceContext& c, Frame& frame) noexcept
     location(frame, state == 0 ? 0x00cb7fe3u : 0x00cb7febu, Frame::Boundary::string_return);
     try {
         destroy_native_string_header_0041dd20(header(frame, static_cast<unsigned>(state)),
-            c.retirement.resources.strings);
+            c.strings);
         frame.cleanup_returned = true;
     } catch (...) {
         std::terminate(); // No retry/double return after cleanup escape.
@@ -179,14 +265,15 @@ void cleanup_name(const NativeGuiTextReferenceContext& c, Frame& frame) noexcept
 }
 } // namespace
 
+NativeGuiTextShaderStorageFrame::NativeGuiTextShaderStorageFrame(
+    const NativeGuiTextShaderStorageContext& context) noexcept : prepared_raw_context_(&context) {}
 NativeGuiTextShaderStorageFrame::~NativeGuiTextShaderStorageFrame() noexcept {
     if (phase == Phase::entered || phase == Phase::failed) std::terminate();
 }
-bool ensure_native_gui_text_font_shader_storage_00ab8ce0(NativeGuiTextReference& reference,
-    NativeGuiTextShaderStorageContext& context, Frame& frame) {
-    void* const raw = preflight(reference, context, frame);
-    const auto& c = reference.storage_context();
-    auto& strings = c.retirement.resources.strings;
+namespace {
+bool ensure_shader(void* raw, const ShaderView& c,
+    NativeGuiTextShaderStorageContext& context, Frame& frame, bool known_only) {
+    auto& strings = c.strings;
     frame.destination = raw;
     frame.phase = Frame::Phase::entered;
     try {
@@ -207,7 +294,8 @@ bool ensure_native_gui_text_font_shader_storage_00ab8ce0(NativeGuiTextReference&
         frame.empty_returned = true;
         if (has_override) {
             frame.override_selected = true;
-            void* const effect = load_current_renderer(at(raw, 0x1c0), -1, 0x00ab8d5b, c, context, frame);
+            void* const effect = load_current_renderer(at(raw, 0x1c0), -1, 0x00ab8d5b,
+                c, context, frame, known_only);
             write(raw, 0x1ec, bits(effect)); // Transfer owned return, no added retain.
             frame.shader_published = true;
         } else {
@@ -225,7 +313,7 @@ bool ensure_native_gui_text_font_shader_storage_00ab8ce0(NativeGuiTextReference&
                     "Raw Text shader requires SAME live image Font/actual-owner domain");
                 exclude_frame({&font, sizeof(font)}, frame);
                 exclude_frame({frame.captured_font, 0xac}, frame);
-                point = ordered_font_scale_match(frame.captured_font, &c.construction_context.one_00d7a24c);
+                point = ordered_font_scale_match(frame.captured_font, &c.one_00d7a24c);
                 frame.font_scale_matches = point;
             }
             const unsigned index = point ? 0u : 1u;
@@ -235,7 +323,7 @@ bool ensure_native_gui_text_font_shader_storage_00ab8ce0(NativeGuiTextReference&
             construct_native_string_header_0041e870(header(frame, index), strings, literal);
             frame.default_constructed = true;
             void* const effect = load_current_renderer(header(frame, index), point ? 0 : 1,
-                point ? 0x00ab8dcdu : 0x00ab8e18u, c, context, frame);
+                point ? 0x00ab8dcdu : 0x00ab8e18u, c, context, frame, known_only);
             void* data;
             if (point) {
                 data = pointer(read(header(frame, 0), 4)); // AB8DCF BEFORE publication.
@@ -260,5 +348,16 @@ bool ensure_native_gui_text_font_shader_storage_00ab8ce0(NativeGuiTextReference&
         frame.phase = Frame::Phase::failed;
         throw; // Keep acquired credits, raw publication and independent metadata.
     }
+}
+} // namespace
+bool ensure_native_gui_text_font_shader_storage_00ab8ce0(NativeGuiTextReference& reference,
+    NativeGuiTextShaderStorageContext& context, Frame& frame) {
+    void* const raw = preflight(reference, context, frame);
+    return ensure_shader(raw, view(reference.storage_context()), context, frame, false);
+}
+bool ensure_native_gui_text_font_shader_storage_00ab8ce0(NativeGuiTextRawModelReference& reference,
+    NativeGuiTextShaderStorageContext& context, Frame& frame) {
+    void* const raw = preflight(reference, context, frame);
+    return ensure_shader(raw, view(reference.storage_context()), context, frame, true);
 }
 } // namespace bsp

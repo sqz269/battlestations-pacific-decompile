@@ -238,10 +238,10 @@ void NativeGuiWidgetRawModelSlots::fail() noexcept {
     if (acquired_.glyph == Phase::entered) acquired_.glyph = Phase::failed;
     // active remains visible after any entered escape. Never auto-dispose.
 }
-[[noreturn]] void NativeGuiWidgetRawModelSlots::reject(const char* message) {
+void NativeGuiWidgetRawModelSlots::reject(const char* message) {
     fail(); throw std::logic_error(message);
 }
-[[noreturn]] void NativeGuiWidgetRawModelSlots::reject_glyph(
+void NativeGuiWidgetRawModelSlots::reject_glyph(
     NativeGuiWidgetRawModelLifetimeContext& c, void* actual) {
     require(&context() == &c, "raw glyph rejection requires SAME bound context");
     acquired_.glyph = Phase::entered;

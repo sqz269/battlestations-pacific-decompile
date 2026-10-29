@@ -16,24 +16,74 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-gui-raw-primary-prefix-lifetime",
+      "state": "in_progress_typed_receipt_authorized_prefix_retirement_bridge",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-text-primary-model-producer", "codex-gui-raw-widget-model-lifetime", "codex-gui-raw-text-cleanup-return-progress"],
+      "function_addresses": ["00ab8250", "00ab8ee0"],
+      "output_files": ["include/bsp/native_gui_text_primary_prefix_lifetime.hpp", "src/native_gui_text_primary_prefix_lifetime.cpp", "docs/CODEX_GUI_RAW_PRIMARY_PREFIX_LIFETIME.md", "include/bsp/native_gui_text_retirement.hpp", "src/native_gui_text_retirement.cpp", "src/native_gui_text_reference.cpp"],
+      "notes": "Reviewed eab plan: immutable typed optional graph defaultnull, private db55 receipt plus exact records only authority for primary4C. Preserve DEFAULT93/122/constructor cleanup; partial producer/name effects retain. Actual raw118 base routes into2ee only for matching completed prefix; selected raw escapes retain/no inferred unwind. Stage-aware BOTH-model/producer/slots/name known regions and unchanged lateflags/disposal. No379/74, Font/content/parenting or host caller/body credit. Header/API coordinated with disjoint owner worker before dependent code."
+    },
+    {
+      "id": "codex-gui-raw-primary-prefix-owner",
+      "state": "in_progress_disjoint_owner_prefix_preparation_and_collective_custody",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-primary-prefix-lifetime", "codex-gui-raw-text-primary-model-producer"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/game_native_raw_default_text_owner.hpp", "src/game_native_raw_default_text_owner.cpp", "docs/CODEX_GUI_RAW_PRIMARY_PREFIX_OWNER.md"],
+      "notes": "Disjoint eab owner half after agreed typed adapter API. Existing DEFAULT entry preserved; explicit prefix-only graph installed/prepared before native pools and both private providers/slots bound before factory. Real AA1380/raw93/separate122, genuine external raw-name helper stage, db55 prefix only. Receipt-authorized scalar and actual BOTH-model+Text flags/poolreturn settlement before reset; no ended payload/name reads or extra decrement. All partial/failed/extra-credit/flags0 graphs retained. No host gate/379/74/Font/content/parenting/fullAAA710/body credit."
+    },
+    {
+      "id": "codex-gui-raw-text-primary-model-producer",
+      "state": "integrated_two_reviews_win32_build_prefix_provenance_uncalled",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-text-default-factory", "codex-gui-raw-model-dispatch", "codex-gui-raw-model-node-dispatch"],
+      "function_addresses": ["00aaad95", "00aaadb1"],
+      "output_files": ["include/bsp/native_gui_text_primary_model_storage.hpp", "src/native_gui_text_primary_model_storage.cpp", "docs/CODEX_GUI_RAW_TEXT_PRIMARY_MODEL_STORAGE.md"],
+      "notes": "Frozendb55 passes root+independent source reviews and Win32 build/tests2/2. Pure e769->2049 preparation beforeTextfactory; real ready processpool/B74EB0 canonicalreceiver->B74D00, B75030/B6F5A0-origin credit and one481 binding addingnone. Verified publicationAAADC4 before DWORD138clearAAADC9; private prefix provenance receipt issuedafterallreturns. ALL escapes retain: noNativeEHorigin proof, noB74750/destructor/unlock/namecleanup/rollback. Game map entryabsent/uncalled. No attach/reparent/74/18/78/fullchild/runtime/ABI/bodycredit. Name-owner/raw118/allModelcustody bridges remain open."
+    },
+    {
+      "id": "codex-gui-raw-text-shader-producer-storage",
+      "state": "integrated_two_reviews_win32_build_sse_object_equal_raw_uncalled",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-text-raw-model-transport", "codex-gui-raw-text-cleanup-return-progress"],
+      "function_addresses": ["00ab8ce0"],
+      "output_files": ["include/bsp/native_gui_text_shader_storage.hpp", "src/native_gui_text_shader_storage.cpp", "include/bsp/native_gui_text_reference.hpp", "src/native_gui_text_reference.cpp", "docs/CODEX_GUI_RAW_TEXT_SHADER_PRODUCER_STORAGE.md"],
+      "notes": "Frozend13 passes root+independent source reviews and all5 legacy source comparisons; merged CPP receipt hash verified. Win32/build2/2 pass. Final object104CA7D4 has both39-byte ordered SSE helpers byte-identical to accepted baseline, static only. Immutable typed Frame/context before strictDEFAULTraw122; known-borrowed/lateflags cover still-owned C++ metadata, active/failed producer blocks scalar/zero. Raw knownB318B0 only; no caller, Font export/branchforcing, owned1EC/header admission or body credit. Real Font borrower/provider closure, credit consumption/replacement and cached-effect retirement remain open; cached/null results grant no credit."
+    },
+    {
       "id": "codex-gui-raw-text-main-geometry",
-      "state": "in_progress_qualified_uncalled_transport_no_activation",
+      "state": "integrated_two_reviews_win32_build_x87_object_checked_uncalled",
       "worker": "gui_frame_lifetime",
       "source_ready": false,
       "depends_on": ["codex-gui-text-raw-model-transport", "codex-gui-raw-model-geometry", "codex-gui-raw-model-node-dispatch"],
       "function_addresses": ["00ab7700"],
       "output_files": ["include/bsp/native_gui_text_main_geometry_storage.hpp", "src/native_gui_text_main_geometry_storage.cpp", "docs/CODEX_GUI_RAW_TEXT_MAIN_GEOMETRY_STORAGE.md"],
-      "notes": "Reviewed b95 plan: raw current74 transport only, explicit separate canonical primary/internal188 records and genuine mesh/d403/raw transforms. Preserve preallocation4C capture, single x87 D7A260 argument sample versus late setter sample, current creator decrement/terminal and captured-profile/currentreceiver split. New files only; no production caller, primary publication, nonempty retirement, Font/content/Page or extra body credit."
+      "notes": "Frozen379ff94e passes root+independent source review, registered bsp_core TU, Win32 build and both existing suites2/2. Final object0805D283 confirms one FLD/FST/FSTP before geometry/zero stores and SSE zeroXYZ; no FP execution claim. Exact separate primary/internal188 aliases, genuine mesh/d403/transforms, preallocation4C capture, separately late setter sample, current creator decrement/terminal and captured-profile/currentreceiver preserved. Game map entry absent and no production caller. Primary publication/main-section/routing/nonempty retirement/Font/content/Page remain open; no runtime/ABI or extra body credit."
     },
     {
       "id": "codex-gui-raw-text-cleanup-return-progress",
-      "state": "in_progress_cleanup_metadata_default_admission_preserved",
+      "state": "integrated_source_reviewed_win32_build_cleanup_metadata_default_preserved",
       "worker": "gui_integration_review",
       "source_ready": false,
       "depends_on": ["codex-gui-text-raw-model-transport"],
       "function_addresses": ["00ab8250", "00ab8ee0"],
       "output_files": ["include/bsp/native_gui_text_retirement.hpp", "src/native_gui_text_retirement.cpp", "src/native_gui_text_reference.cpp", "docs/CODEX_GUI_RAW_TEXT_CLEANUP_RETURN_PROGRESS.md"],
-      "notes": "Independent 3cb proposal review found no genuine raw owned-header publication receipt. Actual packet adds only separate UNWIND-returned metadata/fresh checks alongside normal progress; consumed-before-call is not completion. Keep all DEFAULT guards/93+122/private owner admission unchanged. No owned_members enum, cached-effect credit, producer substitution, nonempty ownership or body credit."
+      "notes": "276880ca9 source reviewed and integrated; common Win32 build and existing suites2/2 pass. Adds only separate UNWIND-returned metadata/fresh checks alongside normal progress; consumed-before-call is not completion. All DEFAULT guards/93+122/private owner admission unchanged. Independent3cb review found no genuine raw owned-header publication receipt; no owned_members enum, cached-effect credit, producer substitution, nonempty ownership, new runtime/unwind-failure or body credit."
+    },
+    {
+      "id": "codex-gui-raw-widget-model-lifetime",
+      "state": "integrated_two_reviews_build_legacy_empty_regression_raw_api_uncalled",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-model-dispatch", "codex-gui-raw-model-node-dispatch", "codex-gui-raw-default-widget-lifetime"],
+      "function_addresses": ["00aa8320", "00aa9730", "00ab73b0"],
+      "output_files": ["include/bsp/native_gui_widget_lifetime.hpp", "src/native_gui_widget_lifetime.cpp", "include/bsp/native_gui_widget_raw_model_lifetime.hpp", "src/native_gui_widget_raw_model_lifetime.cpp", "docs/CODEX_GUI_RAW_WIDGET_MODEL_LIFETIME.md"],
+      "notes": "Frozen2ee passes root+independent source review; legacy scene/base native tokens and unwind body match. Pure exact-record auth wrapper, concrete primary/internal routes and distinct outer B6DFA0 frames; active raw118 BASE-only, all raw escapes retained/no base unwind, TRUE188/parent/child/timed reject. Register/build2/2 after metadata-only noreturn annotation repair. One frozen35a4e92f5 genuine EMPTY DEFAULT regression through LEGACY context independently accepted: gameplay/ordered449+299/start36/RNG1 same, only3Icon rows/pretranslate noise, teardown only2Icon inserts; exact error.dds/COM1+1 baseline retained. Route restoredOFFb95/build2/2. New raw API uncalled; primary producer/retirement/private-widget/all-Model custody remain open. No general raw runtime/ABI/body credit."
     },
     {
       "id": "codex-gui-raw-default-text-owner",

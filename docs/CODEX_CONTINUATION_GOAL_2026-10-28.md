@@ -527,3 +527,67 @@ completion. Owned-member/cached-effect admission cannot expand before genuine
 raw acquisition/publication receipts exist. Font borrower plan likewise requires
 all-user terminal custody and explicit post-parent-drain unlink; DEFAULT and
 AB7700 remain Font-independent. Full P4 activation stays OFF.
+
+Cleanup diagnostics276880ca9 now build with both existing suites passing. The
+independent unwind-returned mask is set only after each real helper returns;
+both fresh predicates reject stale new progress. Native consumption/call/EH
+order and every DEFAULT ownership guard stay unchanged. No new runtime proof.
+Widget Model lifetime plana1c2 is dispatched as a disjoint typed shared-schedule
+transport; raw main-geometry379 is frozen for independent source review/build.
+
+Raw main geometry379 now passes both source reviews, Win32 build/tests2/2 and
+emitted-object inspection (0805D283). One x87 sentinel load/FST/FSTP operand
+schedule and SSE zeroXYZ are present; original capture/import/transform epochs
+remain explicit. The entry is absent from the game map and has no caller.
+It supplies no primary creation/publication, main-section/retirement, Font or
+Page activation and no runtime/FP/ABI proof. Concrete primary producer and shader
+credit-receipt linkage are under disjoint bounded audits; all ownership gates
+remain in force.
+
+Reviewed producer plans a281/1719 are integrated and dispatched in disjoint files:
+primary4C allocation/constructor/bind/publication PREFIX with real constructor-
+origin credit, and raw AB8CE0 overload with immutable prebound concrete receipt
+backing. Neither is an ownership-admission/production-caller authorization.
+Baseline widget/shader objects from accepted4ace89234 are retained under
+`local/cc16_raw_transport_baseline_objects/` for focused static comparison of
+the shared-schedule refactors. This adds no runtime or binary ABI evidence.
+
+Raw widget transport2ee now passes two source reviews and corrected Win32
+build/tests2/2. It shares legacy native schedules; concrete new raw routing is
+active-base-only and all raw escapes retain without inferred exception cleanup.
+Compiler noreturn annotations alone were removed after a preserved /WX warning;
+the rejection bodies still throw. One existing empty DEFAULT replay35a4e92f5
+independently validates the shared LEGACY path: gameplay/ordered449+299/start36/
+RNG1 same, exact accepted Icon diagnostics and baseline error.dds/COM1+1 only.
+Private route restoredOFFb95a64a57/build2/2. New raw primary helper remains
+uncalled and gains no runtime/ABI/Page credit. See widget evidence doc.
+
+Shader producer transportd13 now passes both source reviews/all5 comparisons and
+Win32/build2/2. Its immutable prebound Frame/context enables concrete raw receipt
+backing without changing DEFAULT ownership; both ordered SSE helpers are exactly
+39-byte-identical in saved before/after objects (static evidence only). No raw
+caller/Font export/nonempty retirement is enabled. Primary producerdb55 is frozen
+with peer review passed and root review ongoing; all its escapes retain without
+inferred ctor-slot EH. Geometry readiness540 confirms genuine constructor74=0
+permits a future no-content geometry lifecycle, but Text ownership/routing/full
+custody bridges still block it. P4 remains OFF.
+
+Primary producerdb55 now passes both source reviews and Win32/tests2/2. Root
+verified actual canonical allocator thunk and publicationAAADC4/138clearAAADC9,
+recorded precise diagnostic sites and registered the uncalled TU. No caller,
+whole-child/AAA710, runtime or ABI credit follows. Plans eab/540 pin the next
+receipt-authorized prefix-only retirement/owner bridge; they preserve DEFAULT
+construction/binding and require actual settlement for BOTH Models plus Text.
+
+The prefix retirement adapter and owner halves are dispatched with disjoint
+files and an early shared typed-header contract. An independent audit checks the
+real external raw-string name stage; no fabricated header or inferred name/EH
+cleanup is allowed. Existing DEFAULT behavior remains and no host caller/gate is
+added by these source packets. First scope excludes74, Font/content and parenting;
+geometry compatibility540 is preparation for a later separate composition.
+
+Adapter review identified and closed one private-state API gap: producer Frame
+now exposes a pure typed identity/phase match, with Win32/tests2/2 passing. It
+adds no native operation or credit. The agreed adapter header also distinguishes
+owner preentry from both real raw118 preflight stages; an independent audit
+confirmed the existing authentication supports each without a new count gate.
