@@ -120,3 +120,8 @@ do not add a late snapshot, force flags, install handlers or fake element0.
 Source follow-ups c448+761 supply actual null-handler and live entry-zero gates.
 Root must still review the constructed owner/lifetime graph and record ON binary
 imports/actual guard inputs before closing this conditional audit for a fixture.
+
+Root and independent Model/owner review accepted this conditional Source audit.
+The private host is also preparing a read-only live-module identity/path receipt
+for actual query/callnewh/std-getter function addresses. It remains unbuilt and
+does not replace ON import, actual null-handler/entry-zero and whole-graph gates.

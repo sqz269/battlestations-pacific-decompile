@@ -632,3 +632,10 @@ existing COMPLETE affinity. Root plus independent source review and Win32/checks
 2/2 (11.85s) pass. The geometry fixture preregisters two same-binary GUI_TEXT0/1
 cases plus historical prefix comparison; it remains blocked on complete reviewed
 source and the genuine late-bounds-zero audit, with all private routes OFF.
+
+Bounds auditf933 now passes root and independent Source review conditionally.
+The owner follow-up761 authenticates live bound Text and CURRENT74zero after
+both actual null-handler queries, immediately before379. Closed real allocator/
+import/matrix/store analysis preserves that zero through lateAA70E6; constructor
+zero across earlier Lua is not assumed. Host live-module/import receipts and
+complete adapter/owner graph review/build plus real paired fixture remain gates.
