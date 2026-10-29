@@ -43,6 +43,7 @@
 #include <Windows.h>
 
 #include <algorithm>
+#include <cstring>
 #include <stdexcept>
 #include <limits>
 #include <utility>
@@ -79,6 +80,17 @@ struct PooledHeader {
         if (!text) throw std::invalid_argument("Native VFS path is null");
         try {
             value.assign_0041e870(strings, text);
+        } catch (...) {
+            value.release_to(strings);
+            throw;
+        }
+    }
+    // A mutable native header carries an explicit length, including embedded NUL.
+    PooledHeader(ActualNativeStringPoolStorage& storage, const std::string& text)
+        : strings(storage) {
+        try {
+            value.resize_0041dd40(strings, static_cast<std::uint32_t>(text.size()), true);
+            if (!text.empty()) std::memcpy(value.data(), text.data(), text.size());
         } catch (...) {
             value.release_to(strings);
             throw;
@@ -554,6 +566,22 @@ bool GameNativeVfsRuntime::request_file_store(const char* path, std::uint32_t ca
 }
 std::uint32_t GameNativeVfsRuntime::file_store_request_failure_site() const noexcept {
     return impl_->filestore_request ? impl_->filestore_request->acquired.failure_site() : 0;
+}
+bool GameNativeVfsRuntime::probe_and_replace_file_name(std::string& mutable_name) {
+    if (!impl_->core_registered)
+        throw std::logic_error("Native VFS core is not registered");
+    if (impl_->name_resolution)
+        throw std::logic_error("Native VFS name resolution retains an interrupted invocation");
+    PooledHeader name(impl_->lookup.physical.strings, mutable_name);
+    const bool found = replace_native_vfs_file_name_00bdd600(actual_manager(),
+        &name.value, impl_->lookup);
+    // BDD600 normalizes before probing, so normal FALSE must also copy back.
+    // Only a genuine zero-length native result clears the caller's string.
+    if (name.value.length() != 0)
+        mutable_name.assign(name.value.data(), name.value.length());
+    else
+        mutable_name.clear();
+    return found;
 }
 bool GameNativeVfsRuntime::resolve_existing(std::string& mutable_name) {
     if (!impl_->core_registered)

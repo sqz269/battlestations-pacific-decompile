@@ -223,6 +223,11 @@ bool GameVfsHost::exists(const std::string& name) {
 void GameVfsHost::pump_pending() {
     invoke_native([&] { active_runtime().pump_pending(); });
 }
+bool GameVfsHost::probe_and_replace_file_name(std::string& name) {
+    if (!core_ready_)
+        throw std::logic_error("Filename preparation requires completed VFS core startup");
+    return invoke_native([&] { return active_runtime().probe_and_replace_file_name(name); });
+}
 bool GameVfsHost::resolve_existing(std::string& name) {
     if (!core_ready_) return false;
     return invoke_native([&] { return active_runtime().resolve_existing(name); });
