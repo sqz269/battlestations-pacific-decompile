@@ -29,7 +29,8 @@ bool disjoint(Region a, Region b) noexcept {
     return static_cast<std::uint64_t>(bits(a.p)) + a.n <= bits(b.p) ||
         static_cast<std::uint64_t>(bits(b.p)) + b.n <= bits(a.p);
 }
-template<class Check> void borrowed(NativeGuiWidgetRawModelLifetimeContext& c, Check check) {
+template<class Check> void borrowed(NativeGuiWidgetRawModelLifetimeContext& c, Check check,
+    const NativeGuiWidgetRawModelLifetimeAcquired* binding_self = nullptr) {
     auto& f = c.text.factory_context;
     for (const Region r : {Region{&c, sizeof(c)}, {&c.text, sizeof(c.text)},
         {&c.authentication, sizeof(c.authentication)}, {&c.widget, sizeof(c.widget)},
@@ -77,9 +78,23 @@ template<class Check> void borrowed(NativeGuiWidgetRawModelLifetimeContext& c, C
         const auto q = gui_text_font_main_detail::peers(*prefix);
         const auto regions = q.font.metadata_regions();
         require(regions.count <= regions.entries.size(), "raw widget Font/Main Font metadata exceeds fixed backing");
+        if (binding_self) {
+            require(&prefix->widget == &c && &prefix->text == &c.text &&
+                &prefix->authentication == &c.authentication &&
+                &prefix->widget_acquired == binding_self,
+                "raw widget slot binding requires its exact canonical prefix role");
+            std::size_t self_views = 0;
+            for (std::size_t i = 0; i != regions.count; ++i)
+                if (regions.entries[i].begin == binding_self &&
+                    regions.entries[i].bytes == sizeof(*binding_self)) ++self_views;
+            require(self_views == 1, "raw widget slot binding requires one exact owned metadata view");
+        }
         for (std::size_t i = 0; i != regions.count; ++i) {
             const Region region{regions.entries[i].begin, regions.entries[i].bytes};
             require(valid(region), "raw widget Font/Main Font metadata requires valid retained extents");
+            // Only bind writes its own canonical acquisition record. Other
+            // consumers still borrow it; duplicate/partial views still reject.
+            if (binding_self && region.p == binding_self && region.n == sizeof(*binding_self)) continue;
             check(region);
         }
         gui_text_backing_detail::shader_cache_backing<Region>(q.font.prepared_context().shader.cache,
@@ -163,7 +178,7 @@ void NativeGuiWidgetRawModelSlots::bind(NativeGuiWidgetRawModelLifetimeContext& 
     borrowed(c, [&](Region r) {
         require(valid(r) && disjoint(writes[0], r) && disjoint(writes[1], r),
             "raw widget slot writes cannot alias known producer backing");
-    });
+    }, &acquired_);
     context_ = &c; acquired_.bound = true; // no getter, table value or native effect
 }
 NativeGuiWidgetRawModelLifetimeContext& NativeGuiWidgetRawModelSlots::context() {

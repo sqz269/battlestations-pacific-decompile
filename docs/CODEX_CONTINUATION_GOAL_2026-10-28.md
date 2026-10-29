@@ -897,3 +897,18 @@ unqualified; the earlier separate Font and FontNULL Main cohorts supply no credi
 Raw source-equal ABAED0 and empty-unchanged ABA8D0 are the next bounded caller
 dependencies. Localisation, changed/nonempty content, actual properties, layout,
 Page/P4 and Original ABI remain open. The continuation goal remains active.
+
+The first joint Font/Main runtime cohort is preserved as FAIL: the first three
+controls exit naturally0, then GUI1 exits1 at slot preparation before raw Text
+allocation/CRT logging. Font metadata contains the slot binder's own canonical
+acquisition record, causing an impossible self-disjointness check. All cohort
+processes drain naturally without forced stops; the old five remain. Independent
+replay reproduces the exact evaluator FAIL and verifies98 sealed files/5995 inputs.
+GUI1 actual Normal samples/effective difficulty and CRT exports are unobserved.
+
+The bind-only typed-role repair keeps all foreign/partial/duplicate/later-region
+checks, passes independent Source review and Win32/existing checks2/2 (12.69s).
+All seven switches remain FALSE; fresh qualification of repaired Source is open.
+Attempt1's earlier prelaunch Source-drift rejection is retained separately; runtime
+now uses a dedicated fixed-commit execution tree. Raw ABAED0 unchanged-source
+library work is implemented/object-compiled and under independent Source review.
