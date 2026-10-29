@@ -1,0 +1,736 @@
+{
+  "packet": "codex-dyn-radix-manager-review",
+  "owner": "agent/codex-dyn-radix-manager-review",
+  "review_base": "6bb21d924cf205d53002ea50501988c8d0dea195",
+  "candidate_commit": "2947ca96010887ce48c5f5e7ef42d006e8730822",
+  "pinned_source_admission": "541c8b471acb979a4d84b37af8eb2587f332ec16",
+  "status": "no_normal_source_admission_blocker_qualified_static_cleanup_only_old_failure_debt_and_transport_runtime_limits_retained",
+  "documentation": "docs/CC16_DYN_RADIX_MANAGER_UPDATE_REVIEW.md",
+  "blocking_findings_for_normal_admission": [],
+  "source_edits": false,
+  "ghidra_mutations": false,
+  "shared_metadata_edits": false,
+  "tests_run": false,
+  "probes_run": false,
+  "games_run": false,
+  "review_body_credit": 0,
+  "vendor_credit": 0,
+  "abi_credit": 0,
+  "runtime_credit": 0,
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "fresh_live_reads": 9,
+    "body_reads": 6,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "function": {
+    "address": "00c5a8b0",
+    "body_end_inclusive": "00c5b175",
+    "bytes": 2246,
+    "instructions": 654,
+    "native_sha256": "c9fa16f24060e7f21e482b8b32ac02e5ad61c412ff665fbd0e784201cd998b96",
+    "original_abi": "ECX actual raw manager; no stack arguments; plain RET; EDX not an input; EBP/EBX/ESI/EDI preserved.",
+    "new_cpp_api": "bsp::cc16_dyn_radix_manager_update::update_radix_manager_00c5a8b0",
+    "private_kernel_abi": "fastcall ECX manager, EDX unused, stack Context pointer; RET4",
+    "name_is_hypothesis": true,
+    "drop_in_abi_proof": false
+  },
+  "candidate_source_pins": [
+    {
+      "path": "src/cc16_dyn_radix_manager_update.cpp",
+      "unchanged_candidate_to_admitted_checkout": true,
+      "bytes": 38658,
+      "sha256": "9dcddca90e57ce56b5ea0c819c7d87ed319ce213ad42f46b0b2528be7cfa2255"
+    },
+    {
+      "path": "include/bsp/cc16_dyn_radix_manager_update.hpp",
+      "unchanged_candidate_to_admitted_checkout": true,
+      "bytes": 2108,
+      "sha256": "be9e31d0b54d284800d824487fb22564140ee8b41309ce449acc009aac289572"
+    }
+  ],
+  "fresh_object_verification": {
+    "passed": true,
+    "flags": "/std:c++17 /permissive- /EHsc /W4 /WX /fp:strict /O2 /Ob2 /MD",
+    "native_rows_read_and_checked": 654,
+    "emitted_kernel_instructions": 704,
+    "branches_checked": 52,
+    "distinct_branch_targets": 41,
+    "normal_call_relocations": 11,
+    "explicit_adaptations": 25,
+    "unexplained_encoding_differences": 0,
+    "reachable_listed_instructions": 654,
+    "omitted_unreachable_gaps": [
+      {
+        "start": "00C5AB2B",
+        "size": 5
+      },
+      {
+        "start": "00C5ABC8",
+        "size": 8
+      },
+      {
+        "start": "00C5AFAD",
+        "size": 3
+      }
+    ],
+    "before_after_cleanup_functions_identical": 11,
+    "object_sha256": "f8a024caf6dcedf39b48839715259a90ced6349ada8368db75d720e49d1c973a",
+    "method": "Read complete native/source bodies; inspected and locally reused retained static scripts with only root path changed; fresh verified live bytes and fresh COFF objects before/after cleanup header availability."
+  },
+  "native_calls": [
+    {
+      "address": "00C5A8D1",
+      "native": "00BF9410",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "Actual fixed10A0 compiler stack probe BF9410; ECX/EDX/nonvolatiles/FP preserved, actual stack changed; no heap scratch",
+      "emitted_symbol": "__alloca_probe",
+      "postcall_live_volatile": [
+        "ecx"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": null
+    },
+    {
+      "address": "00C5A9FA",
+      "native": "00BF55BE",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF55BE new(wrapping captured_count*8); scratch capacity already published; original caller ADD4",
+      "emitted_symbol": "?new_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    },
+    {
+      "address": "00C5AA33",
+      "native": "00BF6989",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF6989 free(live reloaded scratch old data), before replacement publication; original caller ADD4",
+      "emitted_symbol": "?free_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    },
+    {
+      "address": "00C5AA59",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual current parent; stack actual D79C80 SAPSort pointer,id9; EAX appended node, native RET8; no active EH scope",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AA95",
+      "native": "00BF79F0",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF79F0 memset(S+B0,0,1000h); actual canonical0109EEA4 reference forwarded to existing qualified provider, original caller ADD12; Sort state-1",
+      "emitted_symbol": "?memset_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -12
+    },
+    {
+      "address": "00C5ACB7",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79C88 SAPSweep pointer,id10; EAX node, native RET8; no active EH scope before enter completes",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AD43",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79C94 SAPObjectNum pointer,id11; EAX node, native RET8; failure leaves only active Sweep",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AE69",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79CA4 SAPPossiblePairNum pointer,id12; EAX node, native RET8; failure leaves Object then Sweep",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AF19",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79CB8 SAPPairNum pointer,id13; EAX node, native RET8; failure leaves PossiblePair,Object,Sweep",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AF94",
+      "native": "00BF55BE",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF55BE new(wrapping (2*capacity+2)*8); pair capacity published before call; return spill before ADD4 is S+14; failure leaves all four scopes",
+      "emitted_symbol": "?new_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    },
+    {
+      "address": "00C5AFDE",
+      "native": "00BF6989",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF6989 free(live reloaded pair old data), before replacement publication; original caller ADD4; failure leaves all four scopes",
+      "emitted_symbol": "?free_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    }
+  ],
+  "native_unwind_tails": [
+    {
+      "address": "00CC84E0",
+      "native": "00C38040",
+      "function": "00CC84DA",
+      "kind": "tail_jump",
+      "state": 0,
+      "previous_state": -1,
+      "scope_from_S": "80h",
+      "native_EBP_offset": "-1040h",
+      "name": "Sweep"
+    },
+    {
+      "address": "00CC84EB",
+      "native": "00C38040",
+      "function": "00CC84E5",
+      "kind": "tail_jump",
+      "state": 1,
+      "previous_state": 0,
+      "scope_from_S": "68h",
+      "native_EBP_offset": "-1058h",
+      "name": "Object"
+    },
+    {
+      "address": "00CC84F6",
+      "native": "00C38040",
+      "function": "00CC84F0",
+      "kind": "tail_jump",
+      "state": 2,
+      "previous_state": 1,
+      "scope_from_S": "50h",
+      "native_EBP_offset": "-1070h",
+      "name": "PossiblePair"
+    },
+    {
+      "address": "00CC8501",
+      "native": "00C38040",
+      "function": "00CC84FB",
+      "kind": "tail_jump",
+      "state": 3,
+      "previous_state": 2,
+      "scope_from_S": "98h",
+      "native_EBP_offset": "-1028h",
+      "name": "Pair"
+    }
+  ],
+  "call_row_verification": {
+    "checked": 15,
+    "failed": 0,
+    "log": "local/cc16_dyn_radix_manager_update_review/call_rows.log"
+  },
+  "frame_contract": {
+    "S": "ESP after original four register saves",
+    "histogram": "S+B0..S+10AF, 4096 bytes",
+    "context": "S+10B0",
+    "state": "S+10BC",
+    "footer_context": "ESP+10AC after POP EDI at C5B133",
+    "shim_frame_recovery": {
+      "new_free": "original argument pointer +4",
+      "append": "+8",
+      "memset": "+12"
+    },
+    "shim_cleanup": "Extra PUSH ESP word only, plus original RET8 for append; original caller ADDs retained.",
+    "pair_return_spill": "C5AF99 still has ESP=S-4; original [ESP+18] is S+14 before ADD4.",
+    "stack_cfg_joins_checked": true,
+    "native_FS_registration": false,
+    "FH_adaptations": "Reserved zero handler and two NOP FS-write substitutions; no original/unmapped handler registration."
+  },
+  "FP_contract": {
+    "x87_instructions": 101,
+    "fstp_sites": 27,
+    "maximum_added_depth": 4,
+    "depth_at_calls_and_returns": 0,
+    "entry_contract": "Valid MSVC/native ABI x87 entry; no FP control changes.",
+    "sensitive_operands": [
+      "C5ADB7 DC C9: FMUL ST1,ST0",
+      "C5ADC3 D8 C9: FMUL ST0,ST1",
+      "Both DC C8 self-multiplies retained"
+    ],
+    "epochs": "Three FLD/FSTP keys versus fourth/tail MOVSS; all float spills, unspilled products, FCOMIP/FSTP/JA and JBE sequences retained.",
+    "half_load_flags": "MOV-only borrowed-cell adaptation preserves signed CMP flags C5AD8D..C5AE23.",
+    "wrappers": "No FP arithmetic/control instructions; public wrapper MOVUPS copies pointer bits.",
+    "ambient_controls": "Inherited x87/MXCSR, no PC/rounding/mask default; fault cleanup remains unproved."
+  },
+  "genuine_custody": {
+    "required_inputs": [
+      "actual raw manager",
+      "DynLiveCrt matching allocation domain",
+      "actual initialized profile and 48h nodes",
+      "actual stable 0109E9F8 publication cell",
+      "actual mutable 0109EEA4 feature cell",
+      "actual double D7A280 cell",
+      "all five actual image name pointers"
+    ],
+    "half_observed_hex": "000000000000e03f",
+    "half_default_supplied": false,
+    "publication_reload_epochs": 14,
+    "mode_snapshot": false,
+    "name_addresses": [
+      "00d79c80",
+      "00d79c88",
+      "00d79c94",
+      "00d79ca4",
+      "00d79cb8"
+    ],
+    "profile_ids": [
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "memset": "Real qualified BF79F0 provider; feature reference forwarded unread by bridge; native gate reads actual value. Existing SSE2/DF/extent/frame-disjointness contracts remain.",
+    "live_binding_proof": false
+  },
+  "actual_compiler_probe": {
+    "library": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+    "archive_sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+    "symbol": "__alloca_probe",
+    "code_sha256": "f8675b4976f7b8efc0bd917aebab734d11ca90222d20bcd2a166ce9914ed2b6e",
+    "bytes": "518d4c24042bc81bc0f7d023c88bc42500f0ffff3bc8720a8bc159948b00890424c32d001000008500ebe9",
+    "instructions": [
+      "push ecx",
+      "lea ecx, [esp + 4]",
+      "sub ecx, eax",
+      "sbb eax, eax",
+      "not eax",
+      "and ecx, eax",
+      "mov eax, esp",
+      "and eax, 0xfffff000",
+      "cmp ecx, eax",
+      "jb 0x22",
+      "mov eax, ecx",
+      "pop ecx",
+      "xchg esp, eax",
+      "mov eax, dword ptr [eax]",
+      "mov dword ptr [esp], eax",
+      "ret",
+      "sub eax, 0x1000",
+      "test dword ptr [eax], eax",
+      "jmp 0x14"
+    ],
+    "relocations": [],
+    "proof": "exact 43 native bytes; __chkstk aliases same definition; ECX restored, EDX and FP untouched"
+  },
+  "probe_review": {
+    "archives_checked": 4,
+    "native_bytes": 43,
+    "exact_native_match": true,
+    "ECX_preserved": true,
+    "EDX_nonvolatiles_FP_untouched": true,
+    "relocations": 0,
+    "real_stack_probe_and_allocation": true,
+    "stub_used": false,
+    "qualification": "Archive code and object relocation proof; final linked module/caller custody remains integrator-owned. No vendor body/reconstruction credit."
+  },
+  "EH_action_review": {
+    "funcinfo": "00e04498",
+    "max_state": 4,
+    "unwind_map": "00e04478",
+    "map_words": [
+      "FFFFFFFF",
+      "00CC84DA",
+      "00000000",
+      "00CC84E5",
+      "00000001",
+      "00CC84F0",
+      "00000002",
+      "00CC84FB"
+    ],
+    "scope_offsets_from_S": {
+      "0_sweep": "80",
+      "1_object": "68",
+      "2_possible_pair": "50",
+      "3_pair": "98"
+    },
+    "demotion_before_action": true,
+    "real_C38040_dependency": true,
+    "sort_cleanup": false,
+    "rollback": false,
+    "scope_storage_alive_during_local_bridge_catch": true,
+    "qualification": "Static composition of real C38040 actions only. Ordinary C++ rethrow/caller stack and nonvolatile restoration across unregistered naked kernel/shim frames is not established or executed.",
+    "native_FH_SEH_fault_unmasked_FP_stack_overflow_transport_proof": false,
+    "secondary_cleanup_exception_proof": false,
+    "CPP_cleanup_runtime_fixture": false,
+    "nested_C50390_failure_equivalence": false
+  },
+  "dependency_epochs": {
+    "candidate_base": "5c2547156c0d8d83d79f7b2600c6f6ea99cd975a",
+    "pre_cleanup_checkout_head": "c30ce9b7d9c838b2af1249c897889b32126dc515",
+    "pre_cleanup_all_eleven_unchanged": true,
+    "late_checkout_head": "4cc539c7b9761fe55da6f295cc916d022406ff0e",
+    "late_changed_paths": [
+      "include/bsp/dyn_profile_scopes.hpp",
+      "src/dyn_profile_scopes.cpp",
+      "include/bsp/dyn_engine_runtime.hpp",
+      "src/dyn_engine_runtime.cpp"
+    ],
+    "late_receipt_is_observed_checkout_hashes": true,
+    "late_all_eleven_unchanged": false,
+    "ScopeContext_layout_unchanged": true,
+    "old_four_argument_symbol": "?dyn_profile_node_append_child_00c50390@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDIABUAvoidZoneDynHullMemory@1@@Z",
+    "new_cleanup_overload_adopted": false,
+    "genuine_new_BF65AC_provider_present": false,
+    "qualification": "Late header availability/old-API refactor is not adoption. C5 still uses old four-argument C50390 and its old three-argument C44000 normal-only path. Separate genuine binding/caller change remains required.",
+    "files": [
+      {
+        "path": "include/bsp/cc15_dyn_live.hpp",
+        "base_to_pinned_admission_unchanged": true,
+        "current_checkout_matches_pinned_admission": true,
+        "base": {
+          "bytes": 9922,
+          "sha256": "a830daec86ecd9f6808301ce05e15d8215548d57d2bbee0471b1d2b6c5b9b294"
+        },
+        "admitted": {
+          "bytes": 9922,
+          "sha256": "a830daec86ecd9f6808301ce05e15d8215548d57d2bbee0471b1d2b6c5b9b294"
+        },
+        "current": {
+          "bytes": 9922,
+          "sha256": "a830daec86ecd9f6808301ce05e15d8215548d57d2bbee0471b1d2b6c5b9b294"
+        }
+      },
+      {
+        "path": "include/bsp/dyn_profile_scopes.hpp",
+        "base_to_pinned_admission_unchanged": true,
+        "current_checkout_matches_pinned_admission": false,
+        "base": {
+          "bytes": 1900,
+          "sha256": "b2c47f9188c30b96c8768f76aaaee28d64a1aff80355230bbd0fdc2622588773"
+        },
+        "admitted": {
+          "bytes": 1900,
+          "sha256": "b2c47f9188c30b96c8768f76aaaee28d64a1aff80355230bbd0fdc2622588773"
+        },
+        "current": {
+          "bytes": 3010,
+          "sha256": "1ce9b126405212887e03e05bbd558d8a035eb252024aa42031cf126a059c5d80"
+        }
+      },
+      {
+        "path": "src/dyn_profile_scopes.cpp",
+        "base_to_pinned_admission_unchanged": true,
+        "current_checkout_matches_pinned_admission": false,
+        "base": {
+          "bytes": 4110,
+          "sha256": "302f51bd0274fcbd04947bec1bf789e2fc4a6014cc40bceefc1b601770ceea37"
+        },
+        "admitted": {
+          "bytes": 4110,
+          "sha256": "302f51bd0274fcbd04947bec1bf789e2fc4a6014cc40bceefc1b601770ceea37"
+        },
+        "current": {
+          "bytes": 5349,
+          "sha256": "7177b2f2174174c93dd6dd20e9f8c585d9f54573669fb8a945b747ea0523e7d0"
+        }
+      },
+      {
+        "path": "include/bsp/dyn_engine_runtime.hpp",
+        "base_to_pinned_admission_unchanged": true,
+        "current_checkout_matches_pinned_admission": false,
+        "base": {
+          "bytes": 2552,
+          "sha256": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a"
+        },
+        "admitted": {
+          "bytes": 2552,
+          "sha256": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a"
+        },
+        "current": {
+          "bytes": 3299,
+          "sha256": "2217fde53118820512482ca218e4b73e482801d61e3271bbb81f224b54418393"
+        }
+      },
+      {
+        "path": "src/dyn_engine_runtime.cpp",
+        "base_to_pinned_admission_unchanged": true,
+        "current_checkout_matches_pinned_admission": false,
+        "base": {
+          "bytes": 3427,
+          "sha256": "7b2608638c893d8135993072ed01ae1e8fbdd0070db8fc31242e227d0ace8360"
+        },
+        "admitted": {
+          "bytes": 3427,
+          "sha256": "7b2608638c893d8135993072ed01ae1e8fbdd0070db8fc31242e227d0ace8360"
+        },
+        "current": {
+          "bytes": 4778,
+          "sha256": "eeda95d61df753129db8a480f5bf8229071ab90134dfff81fa92b976ce700e3a"
+        }
+      },
+      {
+        "path": "include/bsp/cc13_dyn1.hpp",
+        "base_to_pinned_admission_unchanged": true,
+        "current_checkout_matches_pinned_admission": true,
+        "base": {
+          "bytes": 21078,
+          "sha256": "f963de36f8cc8e137a056335510b4e33515ac2533fbd7aeca04da48dec83aece"
+        },
+        "admitted": {
+          "bytes": 21078,
+          "sha256": "f963de36f8cc8e137a056335510b4e33515ac2533fbd7aeca04da48dec83aece"
+        },
+        "current": {
+          "bytes": 21078,
+          "sha256": "f963de36f8cc8e137a056335510b4e33515ac2533fbd7aeca04da48dec83aece"
+        }
+      },
+      {
+        "path": "src/cc13_dyn1.cpp",
+        "base_to_pinned_admission_unchanged": true,
+        "current_checkout_matches_pinned_admission": true,
+        "base": {
+          "bytes": 48750,
+          "sha256": "23cdb09bfea0b435577eda510cadcffa37cb78419d3a3795c379fd03bd07286a"
+        },
+        "admitted": {
+          "bytes": 48750,
+          "sha256": "23cdb09bfea0b435577eda510cadcffa37cb78419d3a3795c379fd03bd07286a"
+        },
+        "current": {
+          "bytes": 48750,
+          "sha256": "23cdb09bfea0b435577eda510cadcffa37cb78419d3a3795c379fd03bd07286a"
+        }
+      },
+      {
+        "path": "include/bsp/native_crt_memset.hpp",
+        "base_to_pinned_admission_unchanged": true,
+        "current_checkout_matches_pinned_admission": true,
+        "base": {
+          "bytes": 2568,
+          "sha256": "82636e0cffb8c123053bd7e9778be85837d5f2bfae142bc8d788a089defcea1e"
+        },
+        "admitted": {
+          "bytes": 2568,
+          "sha256": "82636e0cffb8c123053bd7e9778be85837d5f2bfae142bc8d788a089defcea1e"
+        },
+        "current": {
+          "bytes": 2568,
+          "sha256": "82636e0cffb8c123053bd7e9778be85837d5f2bfae142bc8d788a089defcea1e"
+        }
+      },
+      {
+        "path": "src/native_crt_memset.cpp",
+        "base_to_pinned_admission_unchanged": true,
+        "current_checkout_matches_pinned_admission": true,
+        "base": {
+          "bytes": 8332,
+          "sha256": "d40837c0989ddb2e0958deec750c0b264e6475e8febaad590c5a4f35db55a0d9"
+        },
+        "admitted": {
+          "bytes": 8332,
+          "sha256": "d40837c0989ddb2e0958deec750c0b264e6475e8febaad590c5a4f35db55a0d9"
+        },
+        "current": {
+          "bytes": 8332,
+          "sha256": "d40837c0989ddb2e0958deec750c0b264e6475e8febaad590c5a4f35db55a0d9"
+        }
+      },
+      {
+        "path": "include/bsp/native_legacy_sbo_string.hpp",
+        "base_to_pinned_admission_unchanged": true,
+        "current_checkout_matches_pinned_admission": true,
+        "base": {
+          "bytes": 2115,
+          "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+        },
+        "admitted": {
+          "bytes": 2115,
+          "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+        },
+        "current": {
+          "bytes": 2115,
+          "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+        }
+      },
+      {
+        "path": "src/native_legacy_sbo_string.cpp",
+        "base_to_pinned_admission_unchanged": true,
+        "current_checkout_matches_pinned_admission": true,
+        "base": {
+          "bytes": 7772,
+          "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+        },
+        "admitted": {
+          "bytes": 7772,
+          "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+        },
+        "current": {
+          "bytes": 7772,
+          "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+        }
+      }
+    ]
+  },
+  "qualified_findings": [
+    {
+      "id": "inherited_constructor_failure_debt",
+      "normal_admission_blocker": false,
+      "finding": "No new flat BF65AC binding or five-argument call. Additive cleanup availability does not close nested C50390/C44000 construction failure for C5."
+    },
+    {
+      "id": "naked_frame_exception_transport",
+      "normal_admission_blocker": false,
+      "finding": "Real local cleanup action/state composition is checked; rethrow transport across unregistered naked frames and original FH/SEH/fault behavior remain unproved."
+    },
+    {
+      "id": "activation_and_ABI",
+      "normal_admission_blocker": false,
+      "finding": "New C++ ABI and required actual storage/providers remain explicit. Source registration supplies no original caller/vtable, live binding, differential, gameplay or timing proof."
+    }
+  ],
+  "retained_artifacts": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/input_pins_before_cleanup.json",
+      "bytes": 7426,
+      "sha256": "8bc3bdae7044119e70803b6fb47f93b780168bac9183f6185153c12e6569c503"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/input_pins.json",
+      "bytes": 7430,
+      "sha256": "abf7d92fef306b4c7c283195b3f0889bc81b32cfac81f07f5ad7730232961f5c"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/source_before_cleanup.obj",
+      "bytes": 13170,
+      "sha256": "ee9356e1eb8e42fc0b3d72599c41417c39cf5780c15dd20f3160b093ac86fd68"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/source.obj",
+      "bytes": 13170,
+      "sha256": "f8a024caf6dcedf39b48839715259a90ced6349ada8368db75d720e49d1c973a"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/compile_before_cleanup.log",
+      "bytes": 35,
+      "sha256": "0d7c73c11c5316498471c730332fea940c14a1e7f23ac254294714bfd813a862"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/compile.log",
+      "bytes": 35,
+      "sha256": "0d7c73c11c5316498471c730332fea940c14a1e7f23ac254294714bfd813a862"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/audit_before_cleanup.json",
+      "bytes": 21156,
+      "sha256": "96234451d770ed59f8790a4db527c46e2f7498957fd2bfe9b8273686889c486d"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/audit.json",
+      "bytes": 21156,
+      "sha256": "76266cc08fc1bf0e22e60f0268e4255892263f608ee807b2c300a067eebacb16"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/coff_comparison.json",
+      "bytes": 2244,
+      "sha256": "b42f42182ddc3e27e51cbda02b7629158d6e1f14fdb33c0d2eb4f5087520f173"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/probe_audit.json",
+      "bytes": 9385,
+      "sha256": "5f7b2a668fa284aa6aba041205401b27b570bd43cc800841df257c5cc20a4c89"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/live_body.bin",
+      "bytes": 2246,
+      "sha256": "c9fa16f24060e7f21e482b8b32ac02e5ad61c412ff665fbd0e784201cd998b96"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/call_rows.log",
+      "bytes": 148,
+      "sha256": "a9548b3a750e0ae4e70b771bff7887abe87c2ee7590767780ab186417ccf807a"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/live_half.txt",
+      "bytes": 45,
+      "sha256": "81fea576b44cac3a69373898ff463326bafee9c1c5551e0a5b946fd7c530e90f"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/live_names.txt",
+      "bytes": 385,
+      "sha256": "b92339e8efeab331f6268d03cb284dd79b1206959d90d8ac813eb2d0d7c07b68"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/live_probe.txt",
+      "bytes": 211,
+      "sha256": "58677c83ec12ebf3514736e549e6b6e21f559543e657aeb86194f7492e900402"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/audit.py",
+      "bytes": 16440,
+      "sha256": "fe670eeafb91c23c13518ca18e58be15d6e43e4d1c9b4e21c47a4979e776d645"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/probe_audit.py",
+      "bytes": 3226,
+      "sha256": "b761ce95d24dd39a34e2cf29d1b89cce595f410105c3d70c1cec3f0e73b8cc19"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/fetch_live.py",
+      "bytes": 606,
+      "sha256": "44be25b0a5b88b5e8509fa1974a06e52aeb9c10d28c57e6827f420155fec7099"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/prepare_review.py",
+      "bytes": 3233,
+      "sha256": "21e3934821adefee4f1c481bba7392296adf290b86382e35ffe24f8782ad6041"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-dyn-radix-manager-review/local/cc16_dyn_radix_manager_update_review/compare_objects.py",
+      "bytes": 2195,
+      "sha256": "721aa9b0d2723d4f01554e8064bf9594c1aa10c09edd4bc4146d6478c8b38776"
+    }
+  ]
+}
