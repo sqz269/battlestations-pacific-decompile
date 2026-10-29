@@ -1,11 +1,13 @@
 #include "bsp/native_gui_text_default_storage.hpp"
 #include "bsp/native_gui_widget_base_storage.hpp"
 #include "bsp/game_native_string_process.hpp"
+#include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/native_wide_string.hpp"
 #include <cstdlib>
 #include <exception>
 #include <initializer_list>
 #include <stdexcept>
+#include <type_traits>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Raw Text default construction requires MSVC Win32.
@@ -101,8 +103,108 @@ void preflight(void* raw, NativeGuiTextDefaultStorageFrame& f,
         &actual.models.constants.unchanged_00d7a260 == &actual.unchanged_00d7a260,
         "Text default requires the same genuine raw constants, string, owner and cleanup domains");
 }
-void unwind(void* raw, NativeGuiTextDefaultStorageContext& c,
-    NativeGuiTextDefaultStorageAcquired& a) noexcept {
+void raw_base_admission(void* raw, NativeGuiTextRawModelDefaultStorageContext& c) {
+    auto& p = game::game_native_gui_text_process();
+    require(&c.lifetime.actual_base_lineage_00f8bc88 == &p.element_lineage_00f8bc88() &&
+        &c.lifetime.actual_text_descriptor_00f8be28 == &p.text_lineage_00f8be28()[0],
+        "Raw Text cleanup requires the CURRENT canonical initialized type cells");
+    const Word descriptor = native_gui_text_descriptor_00ab6a30(c.lifetime.actual_text_descriptor_00f8be28);
+    require(!native_gui_widget_is_kind_of_00a9e070(descriptor, c.lifetime.actual_base_lineage_00f8bc88),
+        "Raw Text DEFAULT cleanup does not admit a CURRENT base-lineage Text match");
+    void* const head = reinterpret_cast<void*>(word(raw, 0x68));
+    require(!word(raw, 0x4c) && !word(raw, 0x70) && !word(raw, 0x6c) && head &&
+        word(head) == reinterpret_cast<Word>(head) && word(head, 4) == reinterpret_cast<Word>(head) &&
+        !word(raw, 0x88) && !word(raw, 0x8c) && !word(raw, 0x90) &&
+        !word(raw, 0x180) && !word(raw, 0x184) && !word(raw, 0x18c) && !word(raw, 0x190) &&
+        !word(raw, 0x198) && !word(raw, 0x19c) && !word(raw, 0x1a0) && !word(raw, 0x1ec) &&
+        !word(raw, 0xec) && !word(raw, 0xf0) && !word(raw, 0xf4) && !word(raw, 0xf8) &&
+        !word(raw, 0x1a4) && !word(raw, 0x1a8) && !word(raw, 0x1c0) && !word(raw, 0x1c4) &&
+        !word(raw, 0x1c8) && !word(raw, 0x1cc),
+        "Raw Text DEFAULT base cleanup requires genuine empty parent/children/timed/glyph/shader branches");
+}
+void preflight(void* raw, NativeGuiTextRawModelDefaultStorageFrame& f,
+    NativeGuiTextRawModelDefaultStorageContext& c, NativeGuiTextRawModelDefaultStorageAcquired& a) {
+    auto& s = c.sections;
+    auto& storage = s.model.storage;
+    auto& node = storage.node;
+    auto& owners = s.geometry.actual_owners();
+    const auto mesh = s.geometry.mesh_constants();
+    require(raw && (reinterpret_cast<std::uintptr_t>(raw) & 3u) == 0 &&
+        !a.started && !a.complete && a.native_eh_state == -1 && !a.sections.started &&
+        a.failure == decltype(a.failure)::none && a.sections.failure == decltype(a.failure)::none &&
+        !a.sections.model.actual && !a.sections.model.construction.started && !a.sections.model.reference &&
+        !a.sections.model.lifetime.started && !a.sections.model.lifetime.scalar_started &&
+        !a.sections.model.release.started && !a.sections.mesh.started &&
+        !a.sections.shadow_section.section.started && !a.sections.main_section.section.started &&
+        a.sections.shadow_section.material.phase == NativeMaterialFactoryAcquired::Phase::empty &&
+        a.sections.main_section.material.phase == NativeMaterialFactoryAcquired::Phase::empty &&
+        !a.sections.parenting.started &&
+        a.sections.model.association.phase == NativeModelStorageGeometryPhase::fresh &&
+        f.sections.association.phase() == NativeModelStorageGeometryPhase::fresh,
+        "Raw Text default requires its WHOLE fresh stable producer graph before the first pool effect");
+    const Region writes[] = {{raw, 0x1f4}, {&f, sizeof(f)}, {&a, sizeof(a)},
+        {&f.sections, sizeof(f.sections)}, {&f.sections.locals[0], sizeof(f.sections.locals)},
+        {&f.sections.arguments[0], sizeof(f.sections.arguments)},
+        {&f.sections.parenting, sizeof(f.sections.parenting)}};
+    for (std::size_t i = 0; i != 7; ++i) {
+        for (std::size_t j = i + 1; j != 7; ++j)
+            require(disjoint(writes[i], writes[j]), "Raw Text default caller regions must be disjoint");
+        for (const Region borrowed : {Region{&c, sizeof(c)}, {&s, sizeof(s)},
+            {&c.lifetime, sizeof(c.lifetime)}, {&c.state, sizeof(c.state)},
+            {&s.model, sizeof(s.model)}, {&storage, sizeof(storage)}, {&node, sizeof(node)},
+            {&storage.pool_01090054, sizeof(storage.pool_01090054)},
+            {&storage.pool_01090054.storage(), sizeof(storage.pool_01090054.storage())},
+            {&s.association, sizeof(s.association)}, {&s.geometry, sizeof(s.geometry)},
+            {&s.materials, sizeof(s.materials)}, {&s.material_strings, sizeof(s.material_strings)},
+            {&s.strings, sizeof(s.strings)}, {&s.string_process, sizeof(s.string_process)},
+            {&s.effects, sizeof(s.effects)}, {&s.parenting, sizeof(s.parenting)},
+            {&storage.constants, sizeof(storage.constants)}, {&c.one_00d7a24c, sizeof(Word)},
+            {&c.shadow_offset_00d5c5c0, sizeof(Word)}, {&c.normal_rgb_00ce3e18, sizeof(Word)},
+            {&c.disabled_alpha_00ce3800, sizeof(Word)}})
+            require(disjoint(writes[i], borrowed), "Raw Text default writes cannot alias its borrowed graph");
+    }
+    require(&c.state == &game::game_native_gui_text_state() &&
+        &c.one_00d7a24c == &storage.constants.one_00d7a24c &&
+        &s.association.storage == &storage && &s.parenting.node == &node &&
+        c.lifetime.actual_base_table_00d5c130 && c.lifetime.nodes.uses_raw_name_pool() &&
+        &c.lifetime.nodes.require_raw_name_pool() == &s.strings &&
+        &node.trees.point_lights == &c.lifetime.nodes.point_lights &&
+        &node.strings == &s.strings && &s.strings == &s.string_process.raw_context() &&
+        &s.material_strings == &s.string_process.strings() && &s.materials.retained_owners == &owners &&
+        &node.scenes.owners == &owners && &node.trees.owners == &owners &&
+        &node.scenes.decrement_00ce2220 == &node.trees.decrement_00ce2220 && node.trees.decrement_00ce2220 &&
+        &s.effects.effects.owners.actual_owners() == &owners &&
+        &s.effects.strings == &s.material_strings && &s.materials.parameter_names == &s.material_strings &&
+        &s.effects.effects.construction.strings == &s.material_strings && s.effects.effects.cache == &s.effects &&
+        &mesh.maximum_00ce4970 == &storage.constants.positive_bound_00ce4970 &&
+        &mesh.minimum_00ce4adc == &storage.constants.negative_bound_00ce4adc &&
+        s.model.actual_profile_00d62de8 && s.model.actual_profile_00d62de8[0] == 0x00bd30e0 &&
+        s.model.actual_profile_00d62de8[1] == 0x00b75290 && s.model.actual_profile_00d62de8[3] == 0x006ef860 &&
+        node.world.resolve_profile(0x00d62de8) == s.model.actual_profile_00d62de8 &&
+        node.trees.dispatch.resolve_profile(0x00d62de8) == s.model.actual_profile_00d62de8 &&
+        s.parenting.dispatch.resolve_profile(0x00d62de8) == s.model.actual_profile_00d62de8 &&
+        s.effects.effects.construction.current_renderer_00f8d394 &&
+        word(s.effects.effects.construction.current_renderer_00f8d394) == 0x00d5f0a8 &&
+        s.effects.effects.renderer_profile_00d5f0a8 &&
+        s.effects.effects.renderer_profile_00d5f0a8[0x48 / 4] == 0x00b318b0 &&
+        s.shadow_00d15ec4 && s.guidefault_00d5c25c && s.material_vtable_00d5e520,
+        "Raw Text default requires the same genuine Model/pool/import/string/type/effect providers");
+    auto& p = game::game_native_gui_text_process();
+    require(&c.lifetime.actual_base_lineage_00f8bc88 == &p.element_lineage_00f8bc88() &&
+        &c.lifetime.actual_text_descriptor_00f8be28 == &p.text_lineage_00f8be28()[0] &&
+        !native_gui_widget_is_kind_of_00a9e070(native_gui_text_descriptor_00ab6a30(
+            c.lifetime.actual_text_descriptor_00f8be28), c.lifetime.actual_base_lineage_00f8bc88),
+        "Raw Text default needs initialized CURRENT canonical lineage and an admitted empty base branch");
+}
+void before_base(void*, NativeGuiTextDefaultStorageContext&, NativeGuiTextDefaultStorageAcquired&) {}
+void before_base(void* raw, NativeGuiTextRawModelDefaultStorageContext& c,
+    NativeGuiTextRawModelDefaultStorageAcquired& a) {
+    a.failure = decltype(a.failure)::host_metadata;
+    raw_base_admission(raw, c); // reauthenticate AFTER preceding cleanup callbacks
+    a.failure = decltype(a.failure)::provider_call;
+}
+template<class Context, class Acquired>
+void unwind(void* raw, Context& c, Acquired& a) {
     a.exception_cleanup_started = true;
     try {
         // Source C++ projection of DEEEAC, regardless of a SOURCE provider's
@@ -110,6 +212,7 @@ void unwind(void* raw, NativeGuiTextDefaultStorageContext& c,
         // Original/native exception classification or discover creators here.
         while (a.native_eh_state >= 0) {
             const auto state = a.native_eh_state;
+            if (state == 0) before_base(raw, c, a);
             a.native_eh_state = state - 1;
             a.consumed_cleanup_actions |= Word{1} << state;
             switch (state) {
@@ -131,7 +234,14 @@ void unwind(void* raw, NativeGuiTextDefaultStorageContext& c,
             default: std::terminate();
             }
         }
-    } catch (...) { std::terminate(); }
+    } catch (...) {
+        // Extra raw admission failure is retained, never interpreted as a
+        // second native cleanup exception. Genuine cleanup escape terminates.
+        if constexpr (std::is_same_v<Acquired, NativeGuiTextRawModelDefaultStorageAcquired>) {
+            if (a.failure == decltype(a.failure)::host_metadata) throw;
+        }
+        std::terminate();
+    }
 }
 } // namespace
 
@@ -143,13 +253,47 @@ void tidy_native_gui_text_pointer_vector_005d6cf0(void* vector) noexcept {
     word(vector, 0xc) = 0;
 }
 
-void* construct_native_gui_text_default_storage_00ab9650(void* raw,
-    NativeGuiTextDefaultStorageFrame& f, NativeGuiTextDefaultStorageContext& c,
-    NativeGuiTextDefaultStorageAcquired& a) {
+namespace {
+void provider(NativeGuiTextDefaultStorageAcquired&) noexcept {}
+void provider(NativeGuiTextRawModelDefaultStorageAcquired& a) noexcept {
+    a.failure = decltype(a.failure)::provider_call;
+}
+void completed(void*, NativeGuiTextDefaultStorageContext&, NativeGuiTextDefaultStorageAcquired&) {}
+void completed(void* raw, NativeGuiTextRawModelDefaultStorageContext& c,
+    NativeGuiTextRawModelDefaultStorageAcquired& a) {
+    a.failure = decltype(a.failure)::host_metadata;
+    raw_base_admission(raw, c);
+    require(word(raw) == 0x00d5c6c8 && a.sections.complete &&
+        a.sections.model.reference && a.sections.model.construction.complete &&
+        a.sections.model.association.phase == NativeModelStorageGeometryPhase::complete &&
+        word(raw, 0x188) == reinterpret_cast<Word>(a.sections.model.actual),
+        "Raw Text DEFAULT completion requires its genuine completed internal Model graph");
+    a.failure = decltype(a.failure)::none;
+}
+void failed(void* raw, NativeGuiTextDefaultStorageContext& c, NativeGuiTextDefaultStorageAcquired& a) {
+    if (a.native_eh_state >= 0) unwind(raw, c, a);
+}
+void failed(void* raw, NativeGuiTextRawModelDefaultStorageContext& c,
+    NativeGuiTextRawModelDefaultStorageAcquired& a) {
+    if (a.failure == decltype(a.failure)::host_metadata ||
+        a.sections.failure == decltype(a.failure)::host_metadata) {
+        a.failure = decltype(a.failure)::host_metadata;
+        return; // NO native ctor unwind/slot-return permission for extra admission
+    }
+    if (a.native_eh_state >= 0) {
+        a.failure = decltype(a.failure)::host_metadata;
+        raw_base_admission(raw, c);
+        a.failure = decltype(a.failure)::provider_call;
+        unwind(raw, c, a);
+    }
+}
+template<class Frame, class Context, class Acquired>
+void* construct_default(void* raw, Frame& f, Context& c, Acquired& a) {
     preflight(raw, f, c, a);
     a.started = true;
     a.destination = raw;
     try {
+        provider(a);
         a.active_call_site = 0x00ab9671;
         construct_native_gui_widget_base_00aa9390(raw, 3, c.one_00d7a24c);
         a.base_complete = true;
@@ -223,13 +367,27 @@ void* construct_native_gui_text_default_storage_00ab9650(void* raw,
         a.sections_entered = true;
         a.active_call_site = 0x00ab98d8;
         ensure_native_gui_text_sections_storage_00ab8530(raw, f.sections, c.sections, a.sections);
+        completed(raw, c, a);
         a.complete = true;
         return raw;
     } catch (...) {
         // AA9390 failure is outer state-1 and its own provider already cleans
         // the failed base prefix. After successful base construction, unwind
         // only the represented Text subobjects/base, never independent creators.
-        if (a.native_eh_state >= 0) unwind(raw, c, a);
+        failed(raw, c, a);
+        throw;
+    }
+}
+} // namespace
+void* construct_native_gui_text_default_storage_00ab9650(void* raw,
+    NativeGuiTextDefaultStorageFrame& f, NativeGuiTextDefaultStorageContext& c,
+    NativeGuiTextDefaultStorageAcquired& a) { return construct_default(raw, f, c, a); }
+void* construct_native_gui_text_default_storage_00ab9650(void* raw,
+    NativeGuiTextRawModelDefaultStorageFrame& f, NativeGuiTextRawModelDefaultStorageContext& c,
+    NativeGuiTextRawModelDefaultStorageAcquired& a) {
+    try { return construct_default(raw, f, c, a); }
+    catch (...) {
+        if (!a.started) a.failure = decltype(a.failure)::host_metadata;
         throw;
     }
 }
