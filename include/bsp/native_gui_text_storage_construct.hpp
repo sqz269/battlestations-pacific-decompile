@@ -2,6 +2,8 @@
 #include "bsp/native_instance_geometry.hpp"
 #include "bsp/native_material_effect_cache.hpp"
 #include "bsp/native_node_parenting_storage.hpp"
+#include "bsp/native_model_storage_geometry.hpp"
+#include <optional>
 
 namespace bsp {
 namespace game { class GameNativeStringProcess; }
@@ -87,4 +89,73 @@ struct NativeGuiTextSectionStorageAcquired {
 void ensure_native_gui_text_sections_storage_00ab8530(void* actual_text,
     NativeGuiTextSectionStorageFrame&, NativeGuiTextSectionStorageContext&,
     NativeGuiTextSectionStorageAcquired&);
+
+// Explicit raw-Model transport. No legacy Model environment, callback cast or
+// semantic Text field authority is supplied. All referents are genuine retained
+// providers; GuiDefault/effect-cache/Lua readiness is an external precondition.
+struct NativeGuiTextRawModelSectionStorageContext {
+    NativeModelStorageIdentityContext& model;
+    NativeModelStorageGeometryContext& association;
+    GuiNativeGeometryOwners& geometry;
+    NativeMaterialDestructionAccess& materials;
+    NativeStringStorage& material_strings;
+    NativeStringRawPoolContext& strings;
+    game::GameNativeStringProcess& string_process;
+    NativeMaterialEffectCacheContext& effects;
+    NativeNodeParentingContext& parenting;
+    const volatile std::uint32_t* material_vtable_00d5e520;
+    const char* shadow_00d15ec4;
+    const char* guidefault_00d5c25c;
+};
+// The four B75170 operands have real DWORD lifetimes. AB8618/8620 spill
+// DIRECTLY to arguments[3]/[2], then PUSH EBX/0 publish [1]/[0]. No float
+// snapshot, wrong-type reference or temporary operand frame is introduced.
+struct NativeGuiTextRawModelSectionStorageFrame {
+    volatile std::uint32_t (&locals)[4];
+    volatile std::uint32_t (&arguments)[4];
+    NativeModelStorageGeometryFrame association;
+    NativeNodeParentingFrame& parenting;
+    NativeGuiTextRawModelSectionStorageFrame(volatile std::uint32_t (&l)[4],
+        volatile std::uint32_t (&args)[4], NativeNodeParentingFrame& p) noexcept
+        : locals(l), arguments(args), association(args[0], args[1], args[2], args[3]), parenting(p) {}
+};
+struct NativeGuiTextRawModelRecord {
+    // Independent of Text/companion storage. Keep through credits, entered
+    // failure and any unreturned Model physical slot (also completed flags0).
+    void* actual{};
+    NativeModelStorageConstructAcquired construction;
+    NativeModelStorageLifetimeFrame lifetime_frame{};
+    NativeModelStorageLifetimeAcquired lifetime;
+    std::optional<NativeModelStorageReference> reference;
+    NativeModelStorageGeometryAcquired association;
+    NativeNodeTreeRetirementFrame release_frame{};
+    NativeNodeTreeRetirementAcquired release;
+};
+struct NativeGuiTextRawModelSectionStorageAcquired {
+    using Failure = NativeGuiTextSectionStorageAcquired::Failure;
+    bool started{}, complete{}, exception_cleanup_started{};
+    bool model_constructed{}, shadow_published{}, model_registered{};
+    bool raw_model_return_entered{}, raw_model_returned{}, raw_mesh_return_entered{};
+    bool conditional_name_consumed{};
+    std::uint32_t active_call_site{}, completed_name_returns{};
+    std::int32_t native_eh_state{-1};
+    Failure failure{Failure::none};
+    NativeGuiTextRawModelRecord model;
+    void* captured_shadow_receiver{};
+    GuiNativeMeshAcquired mesh;
+    NativeMeshStorage* mesh_creator{};
+    NativeGuiTextSectionStorageSection shadow_section, main_section;
+    NativeTextureSurfaceReferenceIncrement shadow_pair_decrement{}, main_pair_decrement{};
+    NativeGuiTextSectionStorageRelease mesh_release;
+    NativeNodeSetParentAcquired parenting;
+};
+
+// DEFAULT-only admission: no primary4C/parent/children/timed/glyph/cursor/
+// cached Text shader publication or mutation. Internal188 is mandatory.
+// Prepare the WHOLE frame/acquisition/model/provider graph before ANY pool
+// effect. Entered/failed frames cannot be replayed, recycled or destroyed.
+// host_metadata is extra admission, not Native ctor failure/cleanup permission.
+void ensure_native_gui_text_sections_storage_00ab8530(void* actual_text,
+    NativeGuiTextRawModelSectionStorageFrame&, NativeGuiTextRawModelSectionStorageContext&,
+    NativeGuiTextRawModelSectionStorageAcquired&);
 } // namespace bsp
