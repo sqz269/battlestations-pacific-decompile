@@ -49,6 +49,11 @@ It never replaces a different stored owner: original and attempted owner are
 notified/retained. No cleanup is inferred even before irreversible export.
 Both raw completions recheck entered state/failure so a caught nested failure
 cannot be overwritten to successful binding/detach/retirement.
+Follow-up to frozen e758: Host interrupted-retirement and App phase-entry
+rejections also notify the already-admitted raw owner and latch both layers.
+A provider catching recursive preflight failure cannot rescue the outer call.
+Legacy NONE entry keeps its original precheck/throw without the raw catch;
+successful native retirement and repeated completed Host closure are unchanged.
 
 The stable owner, this producer/host, collection/descriptors, renderer/VFS and
 transitive provider/frame backing must survive through Font retirement AND
@@ -111,3 +116,7 @@ Ignored receipt: local/codex_raw_font_producer_source_comparison.json, SHA256
 c348b95ac7b4b661d113bae3a77bbd85c8b095fe41271cf8577d2f615c301353.
 Its retained read-only comparison script has SHA256
 1328b0089f0cc6906e118a6829e6ec62c805754170868ad2303e134bd3bee860.
+Separate retirement-entry follow-up receipt retains all six comparisons plus
+token-identical raw/legacy entry checks against e758. Ignored JSON
+local/codex_raw_font_producer_retire_entry_comparison.json SHA256
+7f9bc4f9564dbfdd28fe07e73f0a5cfc088bbf2fc3511737c28e05a3fbef3c6b.

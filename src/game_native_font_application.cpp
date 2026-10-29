@@ -298,8 +298,15 @@ void GameNativeFontApplication::detach_raw_text_owner_after_parent_drain(GameNat
 }
 void GameNativeFontApplication::retire_fonts() {
     auto& app = *impl_;
-    require(app.phase == Impl::Phase::fresh || app.phase == Impl::Phase::ready,
-        "Native fonts cannot replay incomplete or completed retirement");
+    if (app.raw_owner && app.raw_binding != Impl::RawBinding::none) {
+        try {
+            require(app.phase == Impl::Phase::fresh || app.phase == Impl::Phase::ready,
+                "Native fonts cannot replay incomplete or completed retirement");
+        } catch (...) { fail_raw_text_owner_link(*app.raw_owner); throw; }
+    } else {
+        require(app.phase == Impl::Phase::fresh || app.phase == Impl::Phase::ready,
+            "Native fonts cannot replay incomplete or completed retirement");
+    }
     const bool raw = app.raw_binding != Impl::RawBinding::none;
     if (raw) {
         try {

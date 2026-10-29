@@ -215,11 +215,25 @@ void GameFontHost::detach_raw_text_owner_after_parent_drain(GameNativeRawDefault
 void GameFontHost::retire_native_fonts() {
     auto& host = *impl_;
     if (host.native_retired) return;
-    if (host.native_failed || host.native_retirement_attempted ||
-        host.text_binding == Impl::TextBinding::export_pending ||
-        host.text_binding == Impl::TextBinding::bind_entered ||
-        host.text_binding == Impl::TextBinding::detach_entered || host.text_binding == Impl::TextBinding::detached)
-        throw std::logic_error("Native font host cannot replay an interrupted operation");
+    if (host.raw_owner) {
+        try {
+            if (host.native_failed || host.native_retirement_attempted ||
+                host.text_binding == Impl::TextBinding::export_pending ||
+                host.text_binding == Impl::TextBinding::bind_entered ||
+                host.text_binding == Impl::TextBinding::detach_entered || host.text_binding == Impl::TextBinding::detached)
+                throw std::logic_error("Native font host cannot replay an interrupted operation");
+        } catch (...) {
+            host.native_failed = true;
+            host.native.fail_raw_text_owner_link(*host.raw_owner);
+            throw;
+        }
+    } else {
+        if (host.native_failed || host.native_retirement_attempted ||
+            host.text_binding == Impl::TextBinding::export_pending ||
+            host.text_binding == Impl::TextBinding::bind_entered ||
+            host.text_binding == Impl::TextBinding::detach_entered || host.text_binding == Impl::TextBinding::detached)
+            throw std::logic_error("Native font host cannot replay an interrupted operation");
+    }
     host.native_retirement_attempted = true; // Before every callee preflight.
     try {
         const auto count = host.native.produced_fonts();
