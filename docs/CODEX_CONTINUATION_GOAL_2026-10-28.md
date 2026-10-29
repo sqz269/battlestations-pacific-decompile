@@ -848,3 +848,18 @@ The immutable compound operation API is independently reviewed and Win32/checks
 2/2 pass15.28s. Existing guards still reject its new kind, and no caller selects
 it. Helper storage and owner implementation proceed in disjoint worker files;
 Root integrates the staged shared guards. All runtime flags remain OFF.
+
+MainSection's retained helper, real owner caller, shared six-stage guards and
+private disabled host composition are now coupled. Independent full helper/owner
+Source reviews accept; Root reproduces29/29 old-path/null-mode comparisons and
+the full Win32 build/existing checks2/2 pass13.04s. Geometry destructor settlement
+stays geometric-only after MainGraph reset; whole-owner settlement checks Main
+while both graphs live. Late checks use actual null-header completion and retained
+Model terminal records after Mesh/Section/Material entry erasure.
+
+All six private raw switches remain FALSE, no new tests or MainSection game runs.
+Receipt/source/log/EXE hashes and copied independent review are retained under
+local/cc16_main_section_integration_20261029. Current-binary MainSection runtime
+preregistration/qualification is next; old Font/bounds cohorts supply no credit.
+Broader Page/P4/FE_initial/content/glyph/layout/lighting and Original ABI remain
+open, so the continuing integration goal remains active.

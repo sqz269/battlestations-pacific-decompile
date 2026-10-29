@@ -6,10 +6,10 @@ Frame. It is not an independently selectable extra pointer beside geometry-only
 permission. Existing None/GeometryOnly constructors retain their old kind and
 geometry identity and leave the new pointer null.
 
-This first API step grants no ownership, constructor, scalar or cleanup authority.
-Current shared guards deliberately reject the new kind until the exact retained
-helper and staged checks are coupled. No existing owner selects it. The new helper
-is a C++ interface hypothesis, not a recovered native class or Original ABI.
+The API alone grants no ownership, constructor, scalar or cleanup authority.
+The coupled shared guards require the exact retained helper and staged checks.
+The new helper is a C++ interface hypothesis, not a recovered native class or
+Original ABI.
 
 Implementation must reserve the whole graph before raw122/pools, admit exact
 untouched metadata before379 and before MainSection, and require the real83f
@@ -26,6 +26,30 @@ and native body/cleanup schedules remain intact. The new material cache backing
 uses the existing typed recursive walker and remains alive through actual renderer
 verification; a base sizeof or fixed-array truncation is not a transitive proof.
 
-Independent actual-diff review accepts the immutable API. Win32 build and both
-existing checks pass (15.28s). No caller, runtime fixture, production switch,
-native-body credit or ABI proof follows from this declaration.
+The prepared helper admits reservation-only Stage::bound before raw122 and at
+the db55/379 boundaries. Scalar and destructor stages require sealed private
+created-normal provenance. Prefix and Widget checks route the compound operation
+to the helper before either empty-Font fallback. Whole-owner settlement requires
+the helper's retained post-Text records while both graphs remain alive. Geometry's
+own durable Mesh predicate accepts the compound kind without following its helper
+pointer, because Geometry is reset after MainGraph.
+
+The reference guard reserves all stable helper backing and checks live extents
+when sealed. Exact expected-reference Frame backing is intentionally writable by
+raw122/scalar, as on the existing Font route. Retirement checks Text, diagnostics
+and flags against current live spans and the shared typed recursive material-cache
+walker. That walker remains separate from the fixed region array and performs no
+native registry or returned-companion lookup.
+
+Independent actual-diff review accepts the immutable API. Its Win32 build and both
+existing checks pass (15.28s). The coupled helper/owner/shared guards and disabled
+host build passes both checks (13.04s). Independent full helper and owner Source
+reviews accept their frozen bodies; Root reproduces all29 prior-path Source
+comparisons. One Root Widget local-variable shadowing warning was corrected before
+the successful builds. No new tests were added.
+
+All six private raw qualification switches remain FALSE. The local integration
+receipt and copied independent review are under
+`local/cc16_main_section_integration_20261029/`; the receipt pins actual source,
+build log and EXE hashes. This is Source/build/artifact evidence, not a MainSection
+runtime fixture, production switch, native-body credit or ABI proof.

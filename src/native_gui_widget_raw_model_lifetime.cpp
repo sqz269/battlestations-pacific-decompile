@@ -1,5 +1,7 @@
 #include "bsp/native_gui_widget_raw_model_lifetime.hpp"
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
+#include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
+#include "native_gui_text_cache_backing.hpp"
 #include "bsp/native_node_destruction.hpp"
 #include <exception>
 #include <initializer_list>
@@ -50,6 +52,25 @@ template<class Check> void borrowed(NativeGuiWidgetRawModelLifetimeContext& c, C
             {&route->tree, sizeof(route->tree)},
             {&route->tree_acquired, sizeof(route->tree_acquired)}, {&route->node, sizeof(route->node)},
             {&route->node_acquired, sizeof(route->node_acquired)}}) check(r);
+    }
+    const auto* const prefix = f.publication.retirement.primary_prefix;
+    if (const auto* const main = prefix ? prefix->operation.main_section() : nullptr) {
+        // Metadata/cache survives both native Model terminal callbacks. Do not
+        // rediscover ended Mesh/Section/Material or returned Text headers here.
+        const auto regions = main->metadata_regions();
+        require(regions.count <= regions.entries.size(), "raw widget MainSection metadata exceeds fixed backing");
+        for (std::size_t i = 0; i != regions.count; ++i) {
+            const Region region{regions.entries[i].begin, regions.entries[i].bytes};
+            require(valid(region), "raw widget MainSection metadata needs valid retained extents");
+            check(region);
+        }
+        const auto& acquired = main->prepared_context().acquired;
+        if (acquired.section.material.cache)
+            gui_text_backing_detail::shader_cache_backing<Region>(*acquired.section.material.cache,
+                [&](Region region) {
+                    require(valid(region), "raw widget MainSection cache needs valid retained extents");
+                    check(region);
+                });
     }
 }
 void require_fresh(NativeGuiWidgetRawModelRoute& q) {
@@ -162,7 +183,15 @@ void NativeGuiWidgetRawModelSlots::require_domain(void* actual) {
     auto& c = context();
     auto& f = c.text.factory_context;
     auto* const font = f.publication.retirement.font_lifetime;
-    if (font) {
+    const auto* const compound_prefix = f.publication.retirement.primary_prefix;
+    const auto* const main = compound_prefix ? compound_prefix->operation.main_section() : nullptr;
+    if (main) {
+        using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
+        require(!font && compound_prefix->operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_main_section &&
+            main->phase() == Main::Phase::sealed && &compound_prefix->widget == &c && &compound_prefix->text == &c.text,
+            "raw widget MainSection boundary needs its exact sealed compound graph");
+        main->require_live(actual, Main::Stage::base, &f.reference_frame.scalar.destruction);
+    } else if (font) {
         using Font = NativeGuiTextFontLifetimeStorageFrame;
         const auto* const prefix = font->prepared_context().geometry.prefix;
         require(font->phase() == Font::Phase::sealed && prefix &&

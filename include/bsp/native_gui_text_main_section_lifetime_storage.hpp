@@ -6,7 +6,7 @@
 #include <exception>
 
 namespace bsp {
-class NativeGuiTextShaderStorageFrame;
+struct NativeGuiTextShaderStorageFrame;
 
 // Install the whole nonmoving graph before Text allocation/raw122. These are
 // the SAME existing379/db55/188/resources, not another Model/geometry/cache.
@@ -75,6 +75,7 @@ private:
     mutable bool active_{};
     mutable std::exception_ptr failure_;
     void* actual_{};
+    NativeGuiTextRawModelReference* reference_{}; // opaque after disposal
     void* primary_{};
     void* internal_{};
     void* mesh_{};
@@ -83,6 +84,9 @@ private:
     void* material_{};
     const NativeGuiTextShaderStorageFrame* shader_{};
     bool empty_font_sealed_{};
+    void enter() const;
+    void leave() const;
+    void fail() const noexcept;
     void admit(void*, Stage, const NativeGuiTextRetirementAcquired*) const;
 };
 } // namespace bsp
