@@ -1,0 +1,97 @@
+{
+  "packet": "codex-dyn-sap-update",
+  "source": "src/cc16_dyn_sap_update.cpp",
+  "header": "include/bsp/cc16_dyn_sap_update.hpp",
+  "accepted_upstream": "c458c4d24",
+  "functions": [
+    {
+      "start": "00c40900",
+      "body_end_inclusive": "00c40a2a",
+      "body_bytes": 299,
+      "instruction_count": 110,
+      "cpp_name_hypothesis": "bsp::cc16_dyn_sap_update::append_axis_endpoints_00c40900",
+      "receiver": "ECX storage",
+      "stack_arguments": ["endpoint", "axis"],
+      "preserved": ["EBX", "EBP", "ESI", "EDI"],
+      "return_instruction": "RET 8",
+      "observed_eax": "captured initial count+1 modulo 2^32; no semantic native return contract asserted",
+      "native_bytes_sha256": "dfaf2f7ca4b0b61d694bbd942dc65b5599e1672d24d56d23e76b9900ab2915bf",
+      "export_assembly_sha256": "3fd40a5a20788011448e2f785528630251cc5be3cc74fcf884011e01a49d039f"
+    },
+    {
+      "start": "00c4c700",
+      "body_end_inclusive": "00c4cba4",
+      "body_bytes": 1189,
+      "instruction_count": 357,
+      "cpp_name_hypothesis": "bsp::cc16_dyn_sap_update::update_axis_endpoints_00c4c700",
+      "register_arguments": ["ESI axis"],
+      "stack_arguments": ["storage", "endpoint"],
+      "preserved": ["EBX", "EBP", "EDI", "ESI unchanged"],
+      "return_instruction": "RET 8",
+      "public_return": "void; incidental native EAX values are not presented as a semantic result",
+      "native_bytes_sha256": "5de6c2fe74f05c23efc9deb866acc26ae74a639a159944061f5e7bd64386007a",
+      "export_assembly_sha256": "34bbb0c4b915bf80f7bad82c2b37cf95deb082273f9ab3ed7068b1ec7fdd83e8"
+    }
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py ghidra verifying client before every live batch",
+    "fresh_export_utc": "2026-10-29T04:47:40Z",
+    "native_bytes": "complete bounded bsp.py ghidra bytes spans, contiguous addresses and lengths asserted"
+  },
+  "rows": [
+    {"address": "00c40936", "native": "00bf55be", "function": "00c40900", "kind": "call", "contract": "actual CRT new; first equality growth capacity published before allocation"},
+    {"address": "00c40973", "native": "00bf6989", "function": "00c40900", "kind": "call", "contract": "actual CRT free of nonnull first old vector"},
+    {"address": "00c409ae", "native": "00bf55be", "function": "00c40900", "kind": "call", "contract": "actual CRT new; second equality growth after first append"},
+    {"address": "00c409e7", "native": "00bf6989", "function": "00c40900", "kind": "call", "contract": "actual CRT free of nonnull second old vector"},
+    {"address": "00c4c83c", "native": "00c4c5d0", "function": "00c4c700", "kind": "call", "contract": "minimum moves forward across maximum: first=moving, storage, other"},
+    {"address": "00c4c938", "native": "00c40a30", "function": "00c4c700", "kind": "call", "contract": "minimum moves backward across maximum: storage, first=moving, second=other"},
+    {"address": "00c4ca4a", "native": "00c40a30", "function": "00c4c700", "kind": "call", "contract": "maximum moves forward across minimum: storage, first=moving, second=other"},
+    {"address": "00c4cb55", "native": "00c4c5d0", "function": "00c4c700", "kind": "call", "contract": "maximum moves backward across minimum: first=moving, storage, other"}
+  ],
+  "contracts": {
+    "actual_raw_objects_and_same_crt": true,
+    "direct_reconstructed_dependencies": ["cc16_dyn_storage::add_endpoint_pair_00c40a30", "cc16_dyn_pair_retire::retire_endpoint_pair_00c4c5d0"],
+    "required_crt": ["operator_new_00bf55be", "free_00bf6989", "malloc_00bf9f1a"],
+    "append": "captured initial count keys; equality-only uint32 growth and byte-count wrap; per-destination zero checks; ordered fresh reads",
+    "x87_sites": ["00c4c70b FLD", "00c4c724 FSTP", "00c4c741 FLD", "00c4c74b FSTP"],
+    "x87": "explicit MSVC x86 inline FLD/FSTP with ambient control/status/stack; no control-word replacement or integer-copy substitution",
+    "sort_key": "((0u-(bits>>31))|0x80000000u)^bits after native x87 store",
+    "ordering": "minimum complete before maximum index reread; signed forward size tests; unsigned adjacent keys; equal keys stable",
+    "crossings": "copied tag reread from freshly loaded data; wrapping ushort index update before flag and four ordered unsigned overlap comparisons",
+    "publication": "own truncated index then tag then data-pointer reload and key",
+    "allocation_failure_guard": false,
+    "missing_pair_guard": false,
+    "exception_rollback": false,
+    "fabricated_class_global_default_provider_or_stub": false,
+    "semantic_native_return_contract_claimed": false
+  },
+  "incoming_evidence": [
+    {"callee": "00c40900", "callers": ["00c4cbf0", "00c54da0"], "source": "live bounded caller query; parents outside packet"},
+    {"callee": "00c4c700", "callers": ["00c4cbf0", "00c4cbb0", "00c5a850"], "source": "live bounded caller query; parents outside packet"}
+  ],
+  "validation": {
+    "assembly_review": "complete 110-instruction and 357-instruction refreshed listings plus full contiguous live byte spans",
+    "source_compile_tested": "MSVC x86 C++17 object-only /permissive- /EHsc /fp:strict /O2 /W4 /WX; exit 0",
+    "object_sha256": "679f8e35226f6fbe045071560ac67a3f451dbe8e93d6c928640f7c706c9e5a11",
+    "generated_assembly": "two FLD/FSTP pairs retained in required order with no intervening helper calls or control-word writes",
+    "call_report_verification": "8 call rows checked, 0 failed",
+    "build_registered": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "tests_added": false,
+    "ghidra_mutated": false
+  },
+  "remaining_integrator_work": [
+    "shared CMake/ledger registration, Ghidra annotations/save/refresh and common Win32 build with existing checks",
+    "genuine caller and CRT custody wiring without fabricated objects/providers",
+    "original register/stack ABI adapters, fixture/native differential and game validation before activation"
+  ]
+}
