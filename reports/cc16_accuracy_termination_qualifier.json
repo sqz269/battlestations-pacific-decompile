@@ -1,0 +1,670 @@
+{
+  "packet": "codex-accuracy-termination-audit",
+  "status": "additive_read_only_qualification; no_substantive_numerical_gate_failure_or_forced_cleanup_evidence_found",
+  "review_base": "605373bf732e4bd3089e8f07ddca226ab4d635a3",
+  "audited_at_utc": "2026-10-29T21:02:42.714140+00:00",
+  "ownership": {
+    "files": [
+      "docs/CC16_ACCURACY_TERMINATION_QUALIFIER.md",
+      "reports/cc16_accuracy_termination_qualifier.json"
+    ],
+    "addresses": [],
+    "sealed_receipts_launcher_source_tools_or_Ghidra_changed": false
+  },
+  "sealed_cohort": {
+    "host_root": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime",
+    "host_head": "2c25911ef30940f93ef3a56c6202198013b59b45",
+    "runtime_results": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\runtime_results.json",
+    "runtime_results_sha256": "2f5dfc16cf391d4271d49d950a1cfc880ba781bc3cbb75e037046743e3f49571",
+    "logical_game_runs": 4,
+    "current_main_ON_acceptance_recorded": false,
+    "runtime_artifacts_rehashed": 52,
+    "mismatches": 0,
+    "checked_artifact_pins": [
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\run_off_native4800.log.inputs\\xlive_stub.dll",
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\run_off_native4800.log",
+        "sha256": "e4eb55ff519c3bc1949a4551d261a222137ed8a21dcb621961a37d02378a0870"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\run_off_native4800.log.manifest.json",
+        "sha256": "3edae246f5809f751ed4d77d4f8b7fa7937c5d381bc968567767a24dc4b8429e"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\run_off_native4800.log.watchdog.json",
+        "sha256": "6cc9f39b1e800154c20033bd13334494b4297b982674580c5f0e1066ecf8f71a"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\audit_off_native4800.json",
+        "sha256": "457edf2f93b67851e621779cb4a4513bf0fe1dbf656c55d729d18627cf3c3bb6"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\run_off_native4800.log.controller_done",
+        "sha256": "a86fb2908c387ce3af8d323d4048755ef88ba66da14296842eee1667f37e5f78"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\run_on_native4800.log.inputs\\xlive_stub.dll",
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\run_on_native4800.log",
+        "sha256": "8abce67e8c460565fd4e2f7f0735c564559122351fd00ab44d599042c2af68c4"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\run_on_native4800.log.manifest.json",
+        "sha256": "bfa106529d2bc5a84840be0e7cb90c6ff3e4338b771ffc71b62d2a3bbf3f16d5"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\run_on_native4800.log.watchdog.json",
+        "sha256": "f81aa81486a4086d534e43bf029fe5d28487b870149b96441d2dee6020c6913a"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\audit_on_native4800.json",
+        "sha256": "11ebccb14f27da0bc36f02d7736d003ea834b6599ef8643b2dee9c48a75d85ad"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\run_on_native4800.log.controller_done",
+        "sha256": "81ede1711948606a7473db24d5ff58fed2b830ea241d2bcec6bd26a6f7bc8ebd"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\evaluation_native4800.json",
+        "sha256": "cd11a733ffa516fe8d919fe098a8681984451f69dcf053feb59f82e8cb8d5932"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\pair_native4800.json",
+        "sha256": "ac20fc5a489d5b8a9299eeb30cf96c446c93b38001f102df6c63bf23046c1c8b"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\pair_native4800.txt",
+        "sha256": "cab75f94514ad4b133f98bd09ca2b7aa38bccc92d9672524bf3fdbdf6ca25e23"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\teardown_native4800.txt",
+        "sha256": "227fd58cc55e2e845356bfcacf55119c5b5be0cd9076e7c42301a6cb36291be0"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\sampled_rng_gate.json",
+        "sha256": "a727eb7eae07959956f0dccd834a69fc543b37620a96f7cdc085663c7e65b35b"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\matrix.done",
+        "sha256": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\controller.stdout",
+        "sha256": "51757e8d49fc77536912ca117f5e6130771cf1b7b701d066111248c88030b0c4"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\controller.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\events.jsonl",
+        "sha256": "151e65b3312c48f32173711bc39ee028f3bf9278fda25c2c8610f4f9f6d3d20d"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\frozen.json",
+        "sha256": "5d3e5a1db5d6c5cea659f8c7759b8810495942200413853dcfb1117a28c29a05"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\criteria.json",
+        "sha256": "5d31402db265b14e9d184682c2ac7dfc9a324349b4ed10106c21209e40d61ca0"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_native4800\\launch_plan.json",
+        "sha256": "e76730be0111524b82c773829163c6534f6d9cdd2feb914601150b86ee92f1dc"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.inputs\\xlive_stub.dll",
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.inputs\\ijn18_l67_i18_d.txt",
+        "sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log",
+        "sha256": "e6f057e5c7115f0f5b6f79c7644a31a4d658fe48461486d75c267abb0082659a"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.manifest.json",
+        "sha256": "5696da21ff982172611016ee32282bfc75eb570399244868ffe48328d2a0c507"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.watchdog.json",
+        "sha256": "803bbc750bec51129ab6cb308844e0144ca641235e09449d614974e146693c8e"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\audit_off_ijn18_4800.json",
+        "sha256": "027395c93376cddea77d2d4d7c80ecc200e5babd9f3595b7ca694683408f0980"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.controller_done",
+        "sha256": "3281d303d0cb8bf0264e88263df374b39e041a7dac9438f2c750c314c00967fa"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.inputs\\xlive_stub.dll",
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.inputs\\ijn18_l67_i18_d.txt",
+        "sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log",
+        "sha256": "33dd3bc13a1fa6c7f8303e700e0c5000b033a90d1f5b0ed30c35cf23f0e81fd7"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.manifest.json",
+        "sha256": "e4393fb9cc2f1e73af36fcdaf573e569c0e5b066e38015e8e70c3acb64f103c0"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.watchdog.json",
+        "sha256": "19786db6229af9e7a1bb995cdbe6a06e9c07ca287fd82826f0bf6e5c336b5c17"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\audit_on_ijn18_4800.json",
+        "sha256": "0823c10d03aa3a518106b6836c1435e9ccce1d9d56b101d3ddf6fad898aca4d8"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.controller_done",
+        "sha256": "7ed7625e9687e961137327d899d29a985ff72190684122ff00a14821a5abd5b3"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\evaluation_ijn18_4800.json",
+        "sha256": "7ac4c02895674764345d2dd2ae8e2a3eee01e04e5dc3730dc36da0a4719e847d"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\pair_ijn18_4800.json",
+        "sha256": "d49cd61e007b805ed4e50cee3209d35d968287370511a3958cd2856cac74267d"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\pair_ijn18_4800.txt",
+        "sha256": "ca486afbdc57829a4da0b72295d8c1ccb8a4448ff46e302b3798350113c1daf3"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\teardown_ijn18_4800.txt",
+        "sha256": "237fa60fa9519de6bdb0ffc6ae46954a914cccd87cd619c59011f414ab7ea768"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\sampled_rng_gate.json",
+        "sha256": "0e228e995f1625fd0349db96a39482089ad288b6e022dad06f2e1f3df941565a"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\matrix.done",
+        "sha256": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\controller.stdout",
+        "sha256": "c1d310a5cb521a9750acc301a1267384ac92d9127dbd8bd6e2384307b1a31c96"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\controller.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\events.jsonl",
+        "sha256": "19253a79e4390a485ca4c58cf9e0f1f626fa26de77bb784cf320aa2564aac3b3"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\frozen.json",
+        "sha256": "c693520e8d6661362766b7f9b22ad8649e3a2efd736f72e0cbe222bf41e7d9ad"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\criteria.json",
+        "sha256": "3c713aa522084e9613909c7ad49297da1ba2cdd423ff8a56ec95938f37a51d74"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_ijn18_4800\\launch_plan.json",
+        "sha256": "35f3ad954d9ff556dc6da889dd425ee1c2e4c94c9421aa6cac67277cf27e2964"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_current\\root_approval_20261029T193341Z.json",
+        "sha256": "445f42b3fc7407121a24adcf1aa9a1e0ce6f67c18867d3551d064bf01a443ccb"
+      },
+      {
+        "relative_path": "local\\accuracy_rng_current\\native_pass_before_IJN.json",
+        "sha256": "197a8537cc74a4824b018f64d20dc488004b5e9e443cc816f7d66126ba2b6e97"
+      }
+    ]
+  },
+  "authentic_binaries": {
+    "off": {
+      "build_commit": "2b05bd3c5330aa42f5fd8baf83d77875e5d4cc54",
+      "published_source_commit": "2c25911ef30940f93ef3a56c6202198013b59b45",
+      "exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\off\\bsp_game.exe",
+        "size": 7475712,
+        "sha256": "8a83cf434cdd6d525696fb4574ce2db760b2c64dbff8781143b850653a1ba049",
+        "machine": "0x14c",
+        "optional_header_magic": "0x10b"
+      },
+      "map": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\source_evidence\\off\\bsp_game.map",
+        "size": 11310580,
+        "sha256": "eaeff43282ef2b9a7ae85d966a38b4243a648f2721369000c4ebe459a3e1932e"
+      }
+    },
+    "on": {
+      "build_commit": "2c182d11caa173b852404e625c680a0979720fcb",
+      "published_source_commit": "2c182d11caa173b852404e625c680a0979720fcb",
+      "exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\on\\bsp_game.exe",
+        "size": 7475712,
+        "sha256": "7c22b561ae0f6cc38276d62e1468ceab358827ca043ff634842a8aa0aab9056a",
+        "machine": "0x14c",
+        "optional_header_magic": "0x10b"
+      },
+      "map": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\source_evidence\\on\\bsp_game.map",
+        "size": 11311206,
+        "sha256": "71e733f315a3e76ea667c6300fff2267d3bc46a5db0cf9e73f9f86d0f3789a2e"
+      }
+    }
+  },
+  "backend": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\common\\xlive_stub.dll",
+    "size": 32768,
+    "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+  },
+  "controller_host": {
+    "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+    "sha256": "2a6769a3330dc1084d0154bfde7d164ab750ca7f700f313f9d417c1be78b2233",
+    "version": "7.6.9",
+    "json_date_kind": "String",
+    "no_profile": true
+  },
+  "actual_launcher": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\tools\\run_game.ps1",
+    "sha256": "a4c592733d561d83e09b3367ae2e36871bc46f251e4a7e23851e8976eb471e84",
+    "frozen_inputs_copy_sha_matches": true,
+    "actual_call_site": "run_accuracy.ps1 invokes ./tools/run_game.ps1; frozen86 is retained historical input, not a different executed termination policy",
+    "invocation": "& $Exe @arguments 2>&1 | Select-Object -Last 1; $code=$LASTEXITCODE",
+    "measurement": "one logical native pipeline result stored in manifest.exit_code/finished_utc BEFORE separate tagged drain; no per-PID WaitForExit/ExitCode receipt",
+    "selector": "Name=bsp_game.exe plus instance-tag regex; NOT executable path despite obsolete comment",
+    "selector_errors": "Get-CimInstance -ErrorAction SilentlyContinue; empty old query alone is not strict natural completion",
+    "sole_StopProcess_branch": "after while waited<1200, 2-second sleep/increment, if tagged survivors then Stop-Process -Force and stopped-lingering message",
+    "minimum_force_wait_seconds": 1200,
+    "StopProcess_branch_count": 1,
+    "branch_executed_in_these_runs": false,
+    "basis": "all four recorded full controller durations below1200, stdout has no stopped-lingering text; immutable source branch control flow",
+    "PS7_GUI_limit": "Frozen images subsystem2 and external PS7.6.9 use native pipeline; pipeline completion is the recorded boundary, not separately saved terminal statuses. No new assertion that an early pipe close occurred here or that ordinary bootstrap-parent code returns early."
+  },
+  "watchdog_and_controller": {
+    "identity_binding": "held process handle plus exact EXE/hash/log/tag, owner, creation time, parent relation and Normal priority",
+    "success_condition": "manifest.exit_code nonnull + manifest finish before14400-second limit + fresh strict full-EXE/log/tag CIM matchingActiveCount0",
+    "strict_query": "owned_watchdog.ps1 ErrorActionPreference=Stop; acquisition failures do not become successful query output",
+    "normal_receipts": "all four finished_before_hard_limit, logical game_exit0, actions[]",
+    "terminal_measurement_limit": "success branch saves no terminal ExitCode for each held process; handle acquisition is not itself a terminal-status record",
+    "DoneMarker": "controller finally writes marker after launcher returns, before waiting up to15sec for watchdog; finish event written after watchdog retirement",
+    "watchdog_DoneMarker_fallback": "separate fallback status controller_finished_without_active_timeout when marker exists and no active candidates; not the four recorded normal statuses",
+    "force_branch": "14400-second exact-identity watchdog timeout paths only; no actions recorded and all durations far below limit"
+  },
+  "runs": [
+    {
+      "case": "native4800",
+      "side": "off",
+      "logical_exit_code": 0,
+      "manifest_started_utc": "2026-10-29T19:33:45.1825300Z",
+      "manifest_finished_utc": "2026-10-29T19:35:14.4967334Z",
+      "manifest_elapsed_seconds": 89.314203,
+      "controller_done_marker_utc": "2026-10-29T19:35:15.0194956Z",
+      "manifest_to_done_marker_seconds": 0.522762,
+      "controller_finish_event_utc": "2026-10-29T19:35:17.1232485Z",
+      "manifest_to_controller_finish_seconds": 2.626515,
+      "watchdog_status": "finished_before_hard_limit",
+      "watchdog_actions": [],
+      "captured_pids": [
+        {
+          "pid": 125512,
+          "parent_pid": 48608,
+          "is_native_child": false,
+          "captured_process_handle": true,
+          "priority": "Normal"
+        },
+        {
+          "pid": 67940,
+          "parent_pid": 125512,
+          "is_native_child": true,
+          "captured_process_handle": true,
+          "priority": "Normal"
+        }
+      ],
+      "independent_terminal_codes_saved": false,
+      "manifest_natural_drain_fields_present": false,
+      "original_and_strict_checks_pass": true,
+      "sample_count": 51,
+      "accuracy_calls": 0,
+      "completed_ratings": 0,
+      "ring_bearings": 0,
+      "after_completed_sample": null,
+      "stdout_stop_message_present": false,
+      "stderr_bytes": 0,
+      "controller_start_event_utc": "2026-10-29T19:33:44.4718605Z",
+      "controller_elapsed_seconds": 92.651388
+    },
+    {
+      "case": "native4800",
+      "side": "on",
+      "logical_exit_code": 0,
+      "manifest_started_utc": "2026-10-29T19:35:18.1218047Z",
+      "manifest_finished_utc": "2026-10-29T19:36:47.3323479Z",
+      "manifest_elapsed_seconds": 89.210543,
+      "controller_done_marker_utc": "2026-10-29T19:36:47.8710807Z",
+      "manifest_to_done_marker_seconds": 0.538733,
+      "controller_finish_event_utc": "2026-10-29T19:36:49.0342549Z",
+      "manifest_to_controller_finish_seconds": 1.701907,
+      "watchdog_status": "finished_before_hard_limit",
+      "watchdog_actions": [],
+      "captured_pids": [
+        {
+          "pid": 102728,
+          "parent_pid": 48608,
+          "is_native_child": false,
+          "captured_process_handle": true,
+          "priority": "Normal"
+        },
+        {
+          "pid": 92428,
+          "parent_pid": 102728,
+          "is_native_child": true,
+          "captured_process_handle": true,
+          "priority": "Normal"
+        }
+      ],
+      "independent_terminal_codes_saved": false,
+      "manifest_natural_drain_fields_present": false,
+      "original_and_strict_checks_pass": true,
+      "sample_count": 51,
+      "accuracy_calls": 0,
+      "completed_ratings": 0,
+      "ring_bearings": 0,
+      "after_completed_sample": null,
+      "stdout_stop_message_present": false,
+      "stderr_bytes": 0,
+      "controller_start_event_utc": "2026-10-29T19:35:17.5488013Z",
+      "controller_elapsed_seconds": 91.485453
+    },
+    {
+      "case": "ijn18_4800",
+      "side": "off",
+      "logical_exit_code": 0,
+      "manifest_started_utc": "2026-10-29T19:38:49.1643891Z",
+      "manifest_finished_utc": "2026-10-29T19:41:38.9613725Z",
+      "manifest_elapsed_seconds": 169.796983,
+      "controller_done_marker_utc": "2026-10-29T19:41:39.8145774Z",
+      "manifest_to_done_marker_seconds": 0.853205,
+      "controller_finish_event_utc": "2026-10-29T19:41:41.2790040Z",
+      "manifest_to_controller_finish_seconds": 2.317632,
+      "watchdog_status": "finished_before_hard_limit",
+      "watchdog_actions": [],
+      "captured_pids": [
+        {
+          "pid": 92316,
+          "parent_pid": 121052,
+          "is_native_child": true,
+          "captured_process_handle": true,
+          "priority": "Normal"
+        },
+        {
+          "pid": 121052,
+          "parent_pid": 121588,
+          "is_native_child": false,
+          "captured_process_handle": true,
+          "priority": "Normal"
+        }
+      ],
+      "independent_terminal_codes_saved": false,
+      "manifest_natural_drain_fields_present": false,
+      "original_and_strict_checks_pass": true,
+      "sample_count": 1,
+      "accuracy_calls": 2843254,
+      "completed_ratings": 432180,
+      "ring_bearings": 10821,
+      "after_completed_sample": {
+        "line": 15375,
+        "unit": "Recon2",
+        "time": "67.05",
+        "draw": "0.4640",
+        "mode": "powerlost",
+        "c10": "1000.00"
+      },
+      "stdout_stop_message_present": false,
+      "stderr_bytes": 0,
+      "controller_start_event_utc": "2026-10-29T19:38:48.4468301Z",
+      "controller_elapsed_seconds": 172.832174
+    },
+    {
+      "case": "ijn18_4800",
+      "side": "on",
+      "logical_exit_code": 0,
+      "manifest_started_utc": "2026-10-29T19:41:42.7099059Z",
+      "manifest_finished_utc": "2026-10-29T19:44:35.2287776Z",
+      "manifest_elapsed_seconds": 172.518872,
+      "controller_done_marker_utc": "2026-10-29T19:44:35.6862179Z",
+      "manifest_to_done_marker_seconds": 0.45744,
+      "controller_finish_event_utc": "2026-10-29T19:44:36.6589839Z",
+      "manifest_to_controller_finish_seconds": 1.430206,
+      "watchdog_status": "finished_before_hard_limit",
+      "watchdog_actions": [],
+      "captured_pids": [
+        {
+          "pid": 125420,
+          "parent_pid": 3148,
+          "is_native_child": true,
+          "captured_process_handle": true,
+          "priority": "Normal"
+        },
+        {
+          "pid": 3148,
+          "parent_pid": 121588,
+          "is_native_child": false,
+          "captured_process_handle": true,
+          "priority": "Normal"
+        }
+      ],
+      "independent_terminal_codes_saved": false,
+      "manifest_natural_drain_fields_present": false,
+      "original_and_strict_checks_pass": true,
+      "sample_count": 1,
+      "accuracy_calls": 2843254,
+      "completed_ratings": 432180,
+      "ring_bearings": 10821,
+      "after_completed_sample": {
+        "line": 15375,
+        "unit": "Recon2",
+        "time": "67.05",
+        "draw": "0.4640",
+        "mode": "powerlost",
+        "c10": "1000.00"
+      },
+      "stdout_stop_message_present": false,
+      "stderr_bytes": 0,
+      "controller_start_event_utc": "2026-10-29T19:41:41.6785864Z",
+      "controller_elapsed_seconds": 174.980397
+    }
+  ],
+  "authentic_parent_code": {
+    "evidence_kind": "static source plus authentic retained ON reconstructed EXE/map, not current root objects or Original retail ABI",
+    "source_pins": [
+      {
+        "path": "src/game_main.cpp",
+        "sha256_frozen_host_file": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7",
+        "blobs": {
+          "2b05bd3c5330aa42f5fd8baf83d77875e5d4cc54": "18909178937d4a3fbd4ddf9073819b959f3fa47a",
+          "2c182d11caa173b852404e625c680a0979720fcb": "18909178937d4a3fbd4ddf9073819b959f3fa47a",
+          "2c25911ef30940f93ef3a56c6202198013b59b45": "18909178937d4a3fbd4ddf9073819b959f3fa47a"
+        },
+        "same_blob_across_OFF_ON_host": true
+      },
+      {
+        "path": "src/game_native_data_bootstrap.cpp",
+        "sha256_frozen_host_file": "380bf1ebc8ba9691f19fd2ae33ce167cdf5b33e9095f9fc4f5d172489e2f879d",
+        "blobs": {
+          "2b05bd3c5330aa42f5fd8baf83d77875e5d4cc54": "b37fe02f39f358a9f2a9ac48b4dcd367ec95c1d0",
+          "2c182d11caa173b852404e625c680a0979720fcb": "b37fe02f39f358a9f2a9ac48b4dcd367ec95c1d0",
+          "2c25911ef30940f93ef3a56c6202198013b59b45": "b37fe02f39f358a9f2a9ac48b4dcd367ec95c1d0"
+        },
+        "same_blob_across_OFF_ON_host": true
+      }
+    ],
+    "parent_symbol_address": "1000C990",
+    "ordinary_path": [
+      "real GameNativeDataBootstrapChild process_handle",
+      "WaitForSingleObject(handle,INFINITE) requiresWAIT_OBJECT_0",
+      "GetExitCodeProcess(same handle,&exit_code) must succeed",
+      "retrieved exit code retained across mapped-child wrapper destruction",
+      "return retrieved child code"
+    ],
+    "authentic_ON_call_sites": {
+      "wait": "1000CAB7 -> IAT1059A134",
+      "get_exit": "1000CAD6 -> IAT1059A140",
+      "retrieved_code_to_ESI": "1000CAE7",
+      "retrieved_code_to_EAX": "1000CAFA",
+      "return": "1000CB15"
+    },
+    "ICF_note": "process_handle address10015370 has linker ICF aliases; source/callsite receiver establishes this use, numeric address alone is not unique function provenance",
+    "image_subsystem": 2,
+    "image_base": "0x10000000",
+    "static_spans": [
+      {
+        "name": "wait_and_exit_call",
+        "address": "1000CAB4",
+        "bytes": 51,
+        "hex": "6a ff 56 ff 15 34 a1 59 10 85 c0 75 55 eb 07 b9 05 00 00 00 cd 29 8d 45 b8 c7 45 b8 00 00 00 00 50 56 ff 15 40 a1 59 10 85 c0 75 07 68 68 b0 59 10 eb 34",
+        "sha256": "239878de00a6fa4d7ffefd85d94a85b92e2969158c344d823d6f22531f051752"
+      },
+      {
+        "name": "forwarded_return",
+        "address": "1000CAE7",
+        "bytes": 47,
+        "hex": "8b 75 b8 8d 4d 8c e8 7e 57 2f 00 8d 4d c0 e8 36 a7 ff ff 8b c6 8b 4d f4 64 89 0d 00 00 00 00 59 5e 8b 4d f0 33 cd e8 fe a0 55 00 8b e5 5d c3",
+        "sha256": "5d5c46d715f2ac48920e1255b8ffa24481f4e87abf9f167dacdcbe2413bcb21b"
+      }
+    ],
+    "mapped_child_close": "after successful mapping acknowledgement, ordinary destructor closes handles/view; mapping-failure TerminateProcess is separate failure path",
+    "inference_limit": "genuinely measured ordinary parent exit forwards child status; does not retrospectively add independent all-eight OS terminal records to pipeline manifests"
+  },
+  "reported_posthoc_absence": {
+    "source": "primary task brief, not a new audit process query",
+    "reported": "strict CIM found none of eight historical captured PIDs present",
+    "qualification": "later absence only; not historical exit status or independent per-PID termination-cause proof"
+  },
+  "preserved_scoped_gates": [
+    {
+      "case": "native4800",
+      "status": "passed_original_and_strict_sampled_projection_gates",
+      "event_sequences_equal": true,
+      "ordered": {
+        "lines": [
+          762,
+          762
+        ],
+        "index_diffs": 0,
+        "masks": "unchanged inherited pointer and worker/render-thread IDs"
+      },
+      "teardown": "teardown lines off=10749 on=10749 index_diffs=0 length_delta=0"
+    },
+    {
+      "case": "ijn18_4800",
+      "status": "passed_original_and_strict_sampled_projection_gates",
+      "event_sequences_equal": true,
+      "ordered": {
+        "lines": [
+          636,
+          636
+        ],
+        "index_diffs": 0,
+        "masks": "unchanged inherited pointer and worker/render-thread IDs"
+      },
+      "teardown": "teardown lines off=238 on=238 index_diffs=0 length_delta=0"
+    }
+  ],
+  "recommended_additive_wording": "Four exact frozen logical game runs reported exit0 and passed original/strict sampled RNG, event and teardown projection gates. The audited legacy launcher/watchdog force branches were not reached. Independent terminal OS codes for all eight sampled parent/child processes and a strict NoForceStop natural-drain flag were not recorded.",
+  "new_witness_policy": {
+    "rerun_needed_to_preserve_existing_numerical_claims": false,
+    "no_speculative_rejection_or_receipt_rewrite": true,
+    "fresh_witness_needed_for_NEW_strict_natural_drain_claim": true,
+    "peer_source_commit": "631c9a3d50be0efd88a53f5c9ab29ab83dc6b85f",
+    "peer_source_path": "tools/run_game.ps1",
+    "peer_source_sha256_git_blob": "d1ce35b574b8370dfb6217f3d802b1df52b5103d6c12921e94e0638824f7bdc1",
+    "peer_source_runtime_qualified_here": false,
+    "future_required_flags": [
+      "explicit-NoForceStop",
+      "drain.no_force_stop=true",
+      "drain.natural_completed=true",
+      "drain.timed_out=false",
+      "empty forced_stop_requested_pids and retained_pids",
+      "original manifest.exit_code0 and effective launcher_exit_code0",
+      "successful exact frozen process/slot identity checks"
+    ],
+    "all_eight_OS_codes_claim": "add independent held-identity terminal ExitCode receipts; helper manifest flag alone is not those records",
+    "sealed_original_receipts": "remain unchanged; do not backfill new fields or infer new policy retroactively"
+  },
+  "input_script_hashes": {
+    "local\\accuracy_rng_native4800\\inputs\\run_accuracy.ps1": {
+      "sha256": "bc7f70c0bbaf23ee5b4fe9d41f2696639de5fa6b6e61ac95b04ef9271d7dd761",
+      "bytes": 4067
+    },
+    "local\\accuracy_rng_native4800\\inputs\\owned_watchdog.ps1": {
+      "sha256": "354c26677ed99733bb3898606c9fc09490b321fb01e32510a8524d312895f245",
+      "bytes": 7158
+    },
+    "local\\accuracy_rng_native4800\\inputs\\watchdog_host.ps1": {
+      "sha256": "d42215cca71d265810883cb3df327bc8b28060a31ba9dfb701b93c227a940e9c",
+      "bytes": 543
+    },
+    "local\\accuracy_rng_native4800\\inputs\\run_game.ps1": {
+      "sha256": "a4c592733d561d83e09b3367ae2e36871bc46f251e4a7e23851e8976eb471e84",
+      "bytes": 17614
+    },
+    "local\\accuracy_rng_native4800\\inputs\\run_game_frozen86.ps1": {
+      "sha256": "2bf602e3fd37a1423baa377c1566e3ef863f108052a7913f807a1f111345c453",
+      "bytes": 16471
+    },
+    "local\\accuracy_rng_ijn18_4800\\inputs\\run_accuracy.ps1": {
+      "sha256": "bc7f70c0bbaf23ee5b4fe9d41f2696639de5fa6b6e61ac95b04ef9271d7dd761",
+      "bytes": 4067
+    },
+    "local\\accuracy_rng_ijn18_4800\\inputs\\owned_watchdog.ps1": {
+      "sha256": "354c26677ed99733bb3898606c9fc09490b321fb01e32510a8524d312895f245",
+      "bytes": 7158
+    },
+    "local\\accuracy_rng_ijn18_4800\\inputs\\watchdog_host.ps1": {
+      "sha256": "d42215cca71d265810883cb3df327bc8b28060a31ba9dfb701b93c227a940e9c",
+      "bytes": 543
+    },
+    "local\\accuracy_rng_ijn18_4800\\inputs\\run_game.ps1": {
+      "sha256": "a4c592733d561d83e09b3367ae2e36871bc46f251e4a7e23851e8976eb471e84",
+      "bytes": 17614
+    },
+    "local\\accuracy_rng_ijn18_4800\\inputs\\run_game_frozen86.ps1": {
+      "sha256": "2bf602e3fd37a1423baa377c1566e3ef863f108052a7913f807a1f111345c453",
+      "bytes": 16471
+    }
+  },
+  "audit_actions": {
+    "read_only_file_hash_source_map_PE_inspection": true,
+    "new_game_or_probe": false,
+    "live_process_query": false,
+    "StopProcess_or_other_process_control": false,
+    "tests_build_or_Dll_calls": false,
+    "tool_or_receipt_edit": false,
+    "Ghidra_mutation": false
+  },
+  "scope_limits": [
+    "exact frozen current accuracy cohort only",
+    "no broad retail/full ABI/objective completion/gameplay claim",
+    "no new natural-drain runtime witness",
+    "no source, body or activation credit"
+  ],
+  "credit": {
+    "native_bodies": 0,
+    "vendor_bodies": 0,
+    "activation": false,
+    "new_gameplay_evidence": false
+  }
+}
