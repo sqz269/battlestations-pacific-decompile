@@ -1,0 +1,173 @@
+# Prepare byte copies for an original retail baseline. This revision deliberately
+# cannot start the game: copying its working directory does not redirect the
+# SHGetSpecialFolderPathA(CSIDL_PERSONAL) save/options path (IAT 00CE22F0).
+# A low-integrity guard plus pre-entry Documents redirection must own live launch.
+# No install/profile ACL, registry setting, junction, hardlink or original file changes.
+[CmdletBinding()]
+param(
+    [string]$GameRoot = 'I:/SteamLibrary/steamapps/common/Battlestations Pacific',
+    [string]$StageRoot = '',
+    [string]$GuardPath = '',
+    [switch]$PrepareOnly,
+    [int]$WaitSeconds = 120,
+    [ValidateRange(1, 14)][int]$Slots = 14
+)
+
+$ErrorActionPreference = 'Stop'
+if (-not $PrepareOnly) {
+    throw 'LIVE LAUNCH BLOCKED: a verified low-integrity guard with pre-entry Documents redirection is required. Use -PrepareOnly to copy a private baseline tree; environment variables alone do not isolate retail saves.'
+}
+$coord = Join-Path $env:USERPROFILE '.bsp'
+$drain = Join-Path $coord 'DRAIN'
+function Assert-NotDraining {
+    if (Test-Path -LiteralPath $drain) { throw "DRAIN is set ($drain): baseline preparation/launch refused." }
+}
+function Assert-NoReparseAncestor([string]$path) {
+    $probe = $path
+    while ($probe) {
+        if (Test-Path -LiteralPath $probe) {
+            $item = Get-Item -LiteralPath $probe -Force
+            if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Reparse point refused: $probe" }
+        }
+        $parent = Split-Path $probe -Parent
+        if ($parent -eq $probe) { break }
+        $probe = $parent
+    }
+}
+function Assert-NoReparseTree([string]$path) {
+    Assert-NoReparseAncestor $path
+    $link = Get-ChildItem -LiteralPath $path -Recurse -Force -ErrorAction Stop |
+        Where-Object { $_.Attributes -band [IO.FileAttributes]::ReparsePoint } | Select-Object -First 1
+    if ($link) { throw "Source reparse point refused: $($link.FullName)" }
+}
+function Is-InTree([string]$path, [string]$root) {
+    $path.Equals($root, [StringComparison]::OrdinalIgnoreCase) -or
+        $path.StartsWith($root.TrimEnd('\') + '\', [StringComparison]::OrdinalIgnoreCase)
+}
+function Copy-PrivateTree([string]$source, [string]$destination, [string]$log) {
+    Assert-NotDraining
+    # Data/attributes/timestamps only. Never copy ACLs, follow reparse points,
+    # use hardlinks, mirror deletions, or point any writable path at the source.
+    & robocopy.exe $source $destination /E /COPY:DAT /DCOPY:DAT /XJ /R:0 /W:0 /NP /NFL /NDL "/LOG:$log" | Out-Null
+    if ($LASTEXITCODE -ge 8) { throw "Private copy failed ($LASTEXITCODE); see $log. Source was not changed." }
+}
+function Hash-Record([string]$path, [string]$relative) {
+    $item = Get-Item -LiteralPath $path
+    [ordered]@{ path = $relative; length = $item.Length; sha256 = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() }
+}
+
+Assert-NotDraining
+$source = (Resolve-Path -LiteralPath $GameRoot).Path.TrimEnd('\')
+$personal = [Environment]::GetFolderPath([Environment+SpecialFolder]::MyDocuments)
+if (-not $personal) { throw 'Unable to resolve the current Documents known folder.' }
+$profileSource = Join-Path $personal 'Battlestations-Pacific'
+if (-not $StageRoot) {
+    $StageRoot = Join-Path (Join-Path $PSScriptRoot '..\local\original-baseline') ((Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+}
+$stage = [IO.Path]::GetFullPath($StageRoot).TrimEnd('\')
+if ((Is-InTree $stage $source) -or (Is-InTree $source $stage) -or (Is-InTree $stage $personal)) {
+    throw 'StageRoot must be separate from the installed game and current Documents tree.'
+}
+if (Test-Path -LiteralPath $stage) { throw "StageRoot must be new; refusing to reuse $stage" }
+Assert-NoReparseAncestor $stage
+Assert-NoReparseTree $source
+if (Test-Path -LiteralPath $profileSource) { Assert-NoReparseTree $profileSource }
+$required = @('battlestationspacific.exe', 'xlive.dll', 'binkw32.dll', 'd3dx9_40.dll', 'fmodex.dll', 'fmod_event.dll')
+foreach ($name in $required) {
+    if (-not (Test-Path -LiteralPath (Join-Path $source $name) -PathType Leaf)) { throw "Required retail file missing: $name" }
+}
+
+if (-not (Test-Path -LiteralPath $coord)) { New-Item -ItemType Directory -Path $coord | Out-Null }
+$retailLock = Join-Path $coord 'bsp_original_baseline.lock'
+$slotFile = $null
+$retailOwned = $false
+$deadline = (Get-Date).AddSeconds($WaitSeconds)
+$receiptPath = Join-Path $stage 'preparation.json'
+$integritySetup = 'pending separate guard; ordinary private byte copies only'
+if (-not $GuardPath) {
+    $adjacentGuard = Join-Path $PSScriptRoot 'original_baseline_guard.py'
+    if (Test-Path -LiteralPath $adjacentGuard -PathType Leaf) { $GuardPath = $adjacentGuard }
+}
+if ($GuardPath) { $GuardPath = (Resolve-Path -LiteralPath $GuardPath).Path }
+$owner = if ($env:BSP_AGENT) { $env:BSP_AGENT } else { Split-Path (Get-Location) -Leaf }
+function New-OwnedLock([string]$path) {
+    $stream = [IO.File]::Open($path, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::Read)
+    try {
+        $bytes = [Text.Encoding]::UTF8.GetBytes("$owner $(Get-Date -Format s) pid=$PID log=$receiptPath")
+        $stream.Write($bytes, 0, $bytes.Length)
+    } finally { $stream.Dispose() }
+}
+try {
+    # Never reclaim someone else's stale-looking lock. run_game.ps1 can read
+    # these slot records normally; this preparer never touches its processes.
+    New-OwnedLock $retailLock
+    $retailOwned = $true
+    while (-not $slotFile) {
+        Assert-NotDraining
+        $taggedGames = @(Get-CimInstance Win32_Process -Filter "Name='bsp_game.exe'" -ErrorAction Stop)
+        for ($slot = 0; $slot -lt $Slots; $slot++) {
+            $tagPattern = '--instance-tag"?\s+"?slot' + $slot + '("|\s|$)'
+            if (@($taggedGames | Where-Object { $_.CommandLine -match $tagPattern })) { continue }
+            $candidate = Join-Path $coord "bsp_game.slot$slot.lock"
+            try { New-OwnedLock $candidate; $slotFile = $candidate; break }
+            catch [IO.IOException] { if (-not (Test-Path -LiteralPath $candidate)) { throw } }
+        }
+        if (-not $slotFile) {
+            if ((Get-Date) -ge $deadline) { throw "No shared game slot became free within $WaitSeconds seconds." }
+            Start-Sleep -Seconds 2
+        }
+    }
+    Assert-NotDraining
+    New-Item -ItemType Directory -Path $stage | Out-Null
+    # Guard prepare accepts only a new empty stage, grants current-user control
+    # there and verifies inheritable low integrity before any private copy exists.
+    # Without it, copies remain preparation-only and live launch stays blocked.
+    if ($GuardPath) {
+        & python $GuardPath prepare --stage $stage --receipt (Join-Path $stage 'guard-prepare.json')
+        if ($LASTEXITCODE -ne 0) { throw 'Guard preparation failed; no retail files were copied or launched.' }
+        $integritySetup = 'guard prepare succeeded before copies; low-integrity launch and pre-entry redirection still required'
+    }
+    $copyGame = Join-Path $stage 'game'
+    $copyDocuments = Join-Path $stage 'Documents'
+    Copy-PrivateTree $source $copyGame (Join-Path $stage 'copy-game.log')
+    New-Item -ItemType Directory -Path $copyDocuments | Out-Null
+    if (Test-Path -LiteralPath $profileSource) {
+        Copy-PrivateTree $profileSource (Join-Path $copyDocuments 'Battlestations-Pacific') (Join-Path $stage 'copy-profile.log')
+    }
+    Assert-NoReparseTree $stage
+    $files = @()
+    # Hash every root file, covering executable, emulator, other DLLs/config,
+    # and local mod state. Full-copy logs describe all other copied assets.
+    foreach ($file in Get-ChildItem -LiteralPath $source -File -Force) {
+        $original = Hash-Record $file.FullName $file.Name
+        $copy = Hash-Record (Join-Path $copyGame $file.Name) $file.Name
+        if ($original.sha256 -ne $copy.sha256) { throw "Retail copy hash mismatch: $($file.Name)" }
+        $files += $original
+    }
+    $profiles = @()
+    if (Test-Path -LiteralPath $profileSource) {
+        foreach ($file in Get-ChildItem -LiteralPath $profileSource -File -Recurse -Force) {
+            $relative = $file.FullName.Substring($profileSource.Length).TrimStart('\')
+            $original = Hash-Record $file.FullName $relative
+            $copy = Hash-Record (Join-Path (Join-Path $copyDocuments 'Battlestations-Pacific') $relative) $relative
+            if ($original.sha256 -ne $copy.sha256) { throw "Private profile copy hash mismatch: $relative" }
+            $profiles += $original
+        }
+    }
+    $receipt = [ordered]@{
+        schema = 'bsp.original-baseline.preparation.v1'; prepared_utc = [DateTime]::UtcNow.ToString('o')
+        source_game = $source; source_profile = $profileSource; stage_root = $stage
+        private_game = $copyGame; private_documents = $copyDocuments
+        copy_method = 'robocopy full byte copy; COPY:DAT; DCOPY:DAT; no links or ACL copying'
+        root_files_sha256 = $files; profile_files_sha256 = $profiles
+        integrity_setup = $integritySetup; guard_path = $GuardPath
+        live_launch_allowed = $false
+        blocker = 'Requires verified low-integrity process token and pre-entry SHGetSpecialFolderPathA(CSIDL_PERSONAL) redirection to private_documents. This script never starts retail.'
+    }
+    $receipt | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $receiptPath -Encoding UTF8
+    Write-Output "Prepared private retail copy: $receiptPath"
+    Write-Output 'LIVE LAUNCH BLOCKED: preparation is not runtime save isolation; no game process was started.'
+} finally {
+    if ($slotFile) { Remove-Item -LiteralPath $slotFile -ErrorAction SilentlyContinue }
+    if ($retailOwned) { Remove-Item -LiteralPath $retailLock -ErrorAction SilentlyContinue }
+}
