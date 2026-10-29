@@ -93,7 +93,7 @@
 namespace bsp::game {
 namespace {
 // Private single-lifecycle qualification. Normal host startup stays lazy.
-constexpr bool kGuiIconDelayedLifecycleQualificationCc16Bound = false;
+constexpr bool kGuiIconDelayedLifecycleQualificationCc16Bound = true;
 }
 // Harness only (src/game_hosts_mission.cpp): --stop-after-end has stopped the mission.
 bool harness_stopped_after_end() noexcept;
