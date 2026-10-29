@@ -115,3 +115,16 @@ dynamic compaction reloads, ambient x87 key publication and stable unsigned
 leftward movement. Both suites, all five native caller rows and critical
 final-object FP inspection pass. The bodies remain unwired pending genuine
 parent/root custody; see `CC16_DYN_SAP_ENDPOINTS.md`.
+
+The pair-reference append `00C37390` and pooled pair allocation/link
+`00C40A30` now have reviewed, compiled source with direct composition and
+required actual heap custody. Both suites and all nine native call rows
+pass; annotations are saved/exported. Original caller/root activation is
+still open. See `CC16_DYN_STORAGE.md`.
+
+The radix slot-removal `00C40CC0` and RTTI slot1 retirement `00C40D50`
+now have compiled, unwired bodies. Their original unsigned-underflow branch
+and distinct BF65AC object-free binding are retained. Both suites and all
+four native call rows pass; annotations/exports are saved. Genuine object,
+manager, vtable/root and free-provider custody remain open. See
+`CC16_DYN_RADIX_RETIRE.md`.

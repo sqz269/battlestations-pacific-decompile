@@ -59,6 +59,8 @@ target_sources(bsp_core PRIVATE
   src/cc16_dyn_radix_constructor.cpp)
 target_sources(bsp_core PRIVATE src/cc16_dyn_triplet.cpp)
 target_sources(bsp_core PRIVATE src/cc16_dyn_sap_endpoints.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_storage.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_radix_retire.cpp)
 target_sources(bsp_core PRIVATE
   src/sim_damage_seg54_argon.cpp src/powerup_seg58_argon.cpp
   src/warning_string_seg64_argon.cpp src/hardware_options_seg66_argon.cpp)

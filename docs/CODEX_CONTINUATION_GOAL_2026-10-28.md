@@ -437,3 +437,13 @@ raw-compatible widget lifetime dispatch; legacy Text-reference dispatch cannot
 stand in for the new raw122 companion. Actual creation belongs after genuine
 Text type startup in a legitimate cache bracket, with retained frames/providers
 through complete renderer drain, failure and surviving Model credits/flags0.
+
+Owner plan9c54471 is reviewed and integrated as a plan. The frame worker owns
+new retained-owner files, and the GUI worker owns the separate private DEFAULT
+widget-dispatch API. Shared hook review identifies the existing GUI Text opt-in,
+early idle metadata preparation, later genuine mission cache callback, retirement
+before Font drain and renderer-first metadata closure. No new public test-only
+flag is needed. The earlier suspected sampler admission blocker was corrected
+against exact source: its gate is layout-only; full-retention metadata/profile
+borrows still happen early. Implementation and one genuine lifecycle gate remain
+open; A2 stays accepted ON and no full Page/GUI activation follows.

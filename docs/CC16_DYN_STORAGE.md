@@ -87,3 +87,15 @@ The live call-report verifier checked all nine rows with zero failures.
 This packet adds no tests, game execution, fixture claim, binary ABI
 compatibility or activation acceptance. Primary integration owns central
 metadata, annotations, common build and genuine host validation.
+
+## Primary integration
+
+The primary reviewed both complete source/assembly bodies, verified all nine
+native call rows, registered the module directly in `bsp_core` and built the
+combined tree over accepted `893cf58e6` plus worker `c6d625c1`. The Win32
+Release build and both existing suites passed (11.03 seconds); receipt:
+`local/cc16_dyn_storage_build.log`. Both metadata-only placeholders now name
+the compiled, unwired bodies. Locked Ghidra naming/comments were saved, both
+exports refreshed and prior annotations preserved in
+`local/ghidra-annotations-20261029T043641Z.json`. No original ABI, fixture,
+root reachability or game-activation acceptance follows from this batch.
