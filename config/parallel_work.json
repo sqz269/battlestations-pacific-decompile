@@ -16,6 +16,26 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-gui-raw-default-text-owner",
+      "state": "owner_api_reviewed_private_widget_api_dependency_in_progress",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-text-default-factory", "codex-gui-raw-model-node-dispatch", "codex-gui-raw-default-widget-lifetime"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/game_native_raw_default_text_owner.hpp", "src/game_native_raw_default_text_owner.cpp", "docs/CODEX_GUI_RAW_DEFAULT_TEXT_OWNER_PLAN.md"],
+      "notes": "Approved new-file-only retained owner architecture from9c54471: dedicated genuine sampler/effect metadata, one pre-pool attempt over exact e75/e769/2049/ba2 records and separate raw122 bind/disposal. Actual type startup precedes early idle preparation; real creation belongs existing later mission cache callback with genuine Lua, no warm-cache assumption or new native cache/factory. Sole unpublished Text scalar retirement, Model/external-credit/flags0 failure custody and renderer-first parent verification precede metadata closure. No owner source or lifecycle acceptance yet; primary owns shared hooks/build/runtime gate."
+    },
+    {
+      "id": "codex-gui-raw-default-widget-lifetime",
+      "state": "private_default_widget_api_proposal_in_progress",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-text-raw-model-transport", "codex-gui-raw-text-default-factory"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/native_gui_text_default_widget_lifetime.hpp", "src/native_gui_text_default_widget_lifetime.cpp"],
+      "notes": "New closed DEFAULT binding required because shared widget dispatch admits legacy NativeGuiTextReference rather than raw122. Genuine actual tables, A9E070/AB83D0 and A9BD50 bodies, exact raw93/raw122 record/lifetime and captured-target semantics; legitimate constructor/base destruction prefixes need precise admission. Excluded child/timed/hierarchy/scene arms must reject honestly with retained failure, no false/no-op or legacy raw188 routing. API proposal precedes edits; no production or runtime proof."
+    },
+    {
       "id": "codex-gui-raw-model-node-dispatch",
       "state": "integrated_two_source_reviews_win32_build_checked_uncalled",
       "worker": "gui_frame_lifetime",

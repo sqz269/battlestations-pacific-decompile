@@ -229,3 +229,22 @@ This packet does not qualify actual FE_initial children, P3b/c production
 bindings or P4 frontend/rendering/interaction/repeated-lifetime acceptance.
 The prepared Page/Icon/Model dependencies and their runtime admission remain
 named, separately reviewed dependencies; no FullGUI independence claim follows.
+
+## Canonical string-cell admission correction
+
+The genuine VFS owns raw and typed string wrapper OBJECTS distinct from the
+permanent GameNativeStringProcess wrappers. They reference the same native
+pool01090AA8, disabled01090AA4 and manager01090AA0 CELLS. Renderer node/base
+runtimes and effect/material services borrow those VFS objects. Requiring their
+object addresses to equal the permanent process wrappers prevented the real
+owner graph from entering the raw APIs.
+
+Raw85/93/118/122 now compare every raw cell ADDRESS at the process boundary.
+Typed admission requires the existing final ActualNativeStringPoolStorage,
+actual-manager constructor mode and those same three cell addresses. The new
+const metadata predicate invokes no getter/allocator and samples no cell value;
+semantic-lifetime storage and equal-valued different cells remain excluded.
+Local node/base/material/effect object-identity checks remain exact. Both views
+and all backing still live through every call/failure/drain. Legacy guards,
+object fields/vtables and native allocation/get/free bodies are unchanged.
+Root and independent source review pass; the focused rebuild follows.

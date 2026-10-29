@@ -1,0 +1,81 @@
+{
+  "packet": "codex-dyn-triplet-equality",
+  "integration_status": "reconstructed_build_tested_unwired",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_spans": [
+    {
+      "address": "00c39040",
+      "length": 186,
+      "sha256": "540c54df3f9b1db912de486cd670e1efe89036be82e55855cc59d6ec2dcbbed4"
+    },
+    {
+      "address": "00c48140",
+      "length": 40,
+      "sha256": "229be29127cebeecc224a187a95713bf66413dbe9cd4411949df92fc117fdbcc"
+    }
+  ],
+  "original_abi": {
+    "leaf": "EAX left, EDX right, RET0, EAX0/1; EBX/ESI/EDI saved and EBP untouched",
+    "wrapper": "EAX left, stack right, RET4; leaf return passed through"
+  },
+  "rows": [
+    {
+      "address": "00c4815d",
+      "native": "00c39040",
+      "function": "00c48140",
+      "kind": "call",
+      "binding": "direct recovered leaf; actual reversed local triplet and unchanged right pointer"
+    }
+  ],
+  "analysis_boundary": {
+    "previous_indexed_caller": "00c48100",
+    "actual_undefined_entry": "00c48140",
+    "actual_end_inclusive": "00c48167",
+    "preceding_function_ends": "00c4813f",
+    "following_padding": "00c48168..00c4816f INT3",
+    "following_entry": "00c48170",
+    "live_instruction_context_before_definition": "No instruction at00c4815d",
+    "definition_receipt": "reports/cc16_dyn_triplet_definition.json"
+  },
+  "behavior": {
+    "leaf": "three ordered phase-gated raw-DWORD comparisons up to cyclic rotation",
+    "wrapper": "capture input words1,2,0; arrange local2,1,0; directly compose leaf",
+    "input_writes": false,
+    "floating_point_operations": false,
+    "external_provider": false,
+    "null_or_length_guard_added": false,
+    "volatile_input_read_epochs_preserved": true
+  },
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_triplet_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "new_tests": false,
+    "proof_level": "complete assembly/live bytes, exact caller register/stack inspection, source compilation and existing checks",
+    "compiled_object_sha256": "cdb3f988294230b70521053d5c37c52d55cf09f106c1a024d68fc572eed15493",
+    "accepted_base": "90d44021a",
+    "callsite_verification": "one exact native call row, zero failures",
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T042530Z.json",
+    "exports_refreshed": true,
+    "saved_function_count": 77631
+  },
+  "remaining_obligations": [
+    "genuine original root/caller reachability or qualified original dead-chain closure",
+    "native ABI custody before binary substitution",
+    "runtime gates for any reachable activated host path"
+  ]
+}
