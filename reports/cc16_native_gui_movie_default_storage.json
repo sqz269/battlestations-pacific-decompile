@@ -1,0 +1,628 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-movie-default-storage",
+  "base": "71dbafc86780bd90afbb69873b7f5d2badc5a3f7",
+  "status": "raw_normal_source_strict_win32_objects_and_static_store_inspection_passed_common_admission_pending",
+  "sources": [
+    "src/native_gui_movie_default_storage.cpp"
+  ],
+  "headers": [
+    "include/bsp/native_gui_movie_default_storage.hpp"
+  ],
+  "documentation": "docs/CC16_NATIVE_GUI_MOVIE_DEFAULT_STORAGE.md",
+  "functions": [
+    {
+      "address": "00aafe20",
+      "hypothesis_name": "construct_native_gui_movie_default_00aafe20",
+      "previous_source": "gui_movie_construct_00aafe20(GuiMovieFields&) in engine_seg49_64_78_cc13.cpp remains unchanged",
+      "source": "src/native_gui_movie_default_storage.cpp",
+      "inclusive_body_end": "00aafead",
+      "exclusive_body_end": "00aafeae",
+      "native_bytes": 142,
+      "native_instruction_starts": 32,
+      "original_abi": "ECX actual destination; ESI preserves receiver; EAX same destination; plain RET, no stack args. Original FH frame/handler CB7834 not reproduced.",
+      "source_api": "cdecl void*(void* actual_storage,const volatile uint32_t& actual_one_00d7a24c); required explicit raw storage/actual cell, no default/no noexcept.",
+      "qualification": "Whole normal raw constructor composition through the real existing base helper; new C++ interface, no original binary ABI/EH/transport/caller/runtime claim."
+    }
+  ],
+  "native_call_rows": [
+    {
+      "function": "00aafe20",
+      "address": "00aafe3b",
+      "native": "00aa9390",
+      "kind": "call",
+      "actual_argument": "type10 pushed at00AAFE37, nativeECX same raw receiver",
+      "source_target": "construct_native_gui_widget_base_00aa9390(actual_storage,10,actual_one_00d7a24c)"
+    }
+  ],
+  "contract": {
+    "storage": "Actual fresh DWORD-aligned raw130h destination; no typed semantic overlay, whole-value initialization or replacement heap.",
+    "actual_one": "Required initialized address-stable/disjoint actual D7A24C storage retained through call; base performs separate live word reads before and after its genuine sentinel allocation. New wrapper does not read/cache/default it.",
+    "return": "Same incoming raw destination address; object observation confirms EAX<-ESI.",
+    "profile": "Native D5C270 word written as identity metadata only; never a callable native table.",
+    "pool": "Existing GuiMoviePoolTraits has130h payload in134h slot; trailing slab-index DWORD not touched. No allocate/free/slot return or ownership transfer added.",
+    "failure": "Existing actual base C++ failure cleanup propagates; no new catch, repair/rollback/destructor or native FH3 registration. Caller retains separate pool/operation custody.",
+    "serialization": "Fresh destination lifetime and inputs stay valid/disjoint; no overlapping reconstruction or arbitrary reentry promise."
+  },
+  "derived_stores": [
+    {
+      "offset": 0,
+      "bytes": 4,
+      "value": 14008944,
+      "instruction": 11206210
+    },
+    {
+      "offset": 236,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206216
+    },
+    {
+      "offset": 240,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206222
+    },
+    {
+      "offset": 248,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206228
+    },
+    {
+      "offset": 252,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206234
+    },
+    {
+      "offset": 256,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206240
+    },
+    {
+      "offset": 260,
+      "bytes": 1,
+      "value": 0,
+      "instruction": 11206246
+    },
+    {
+      "offset": 261,
+      "bytes": 1,
+      "value": 0,
+      "instruction": 11206252
+    },
+    {
+      "offset": 264,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206258
+    },
+    {
+      "offset": 272,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206264
+    },
+    {
+      "offset": 276,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206270
+    },
+    {
+      "offset": 280,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206276
+    },
+    {
+      "offset": 292,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206286
+    },
+    {
+      "offset": 296,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206292
+    },
+    {
+      "offset": 300,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206298
+    }
+  ],
+  "untouched": {
+    "derived_ranges_inclusive": [
+      "00f4..00f7",
+      "0106..0107",
+      "010c..010f",
+      "011c..0123"
+    ],
+    "explicit_original_words": [
+      "00f4",
+      "010c",
+      "011c",
+      "0120"
+    ],
+    "additional_examples": [
+      "00e4..00eb",
+      "all bytes outside unchangedAA9390 and exact derived stores",
+      "trailing slot index at0130"
+    ],
+    "source_written_bytes_including_profile": 54,
+    "store_count": 15,
+    "whole_payload_zeroed": false,
+    "GuiMovieFields_or_MovieWidgetState_cast": false
+  },
+  "unchanged_base": {
+    "header": "include/bsp/native_gui_widget_base_storage.hpp",
+    "source": "src/native_gui_widget_base_storage.cpp",
+    "real_helper": "construct_native_gui_widget_base_00aa9390",
+    "identity_schema": "NativeGuiTextIdentityPrefix remains8 bytes, reference count offset4; existing generic raw prefix/base, not a complete semantic Text object.",
+    "same_readiness_hashes": true,
+    "not_a_stub_or_fallback": true,
+    "strict_definition_available": true,
+    "fresh_full_AA9390_native_audit": false,
+    "qualification": "Previously reconstructed actual complete normal base source reused unchanged; this packet verifies its identity/context/definition and required actual input, not a new independent full base-body proof."
+  },
+  "validation": {
+    "strict_win32_objects": {
+      "passed": true,
+      "units": [
+        "src/native_gui_movie_default_storage.cpp",
+        "src/native_gui_widget_base_storage.cpp"
+      ],
+      "flags": "/c /std:c++17 /O2 /Ob2 /DNDEBUG /MD /EHsc /W4 /WX /fp:strict",
+      "compiler": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe",
+        "bytes": 830824,
+        "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c"
+      },
+      "receipt": "local/native_gui_movie_default_storage/compile.log"
+    },
+    "native_call_rows": {
+      "passed": true,
+      "checked": 1,
+      "failed": 0,
+      "checker": "tools/verify_report_calls.py",
+      "receipt": "local\\native_gui_movie_default_storage\\verify_report_calls.log"
+    },
+    "static_instruction_inspection": {
+      "kind": "static_PE_COFF_store_and_relocation_inspection_no_execution",
+      "native_entry": "00aafe20",
+      "native_bytes": 142,
+      "native_ops": 32,
+      "native_bytes_sha256": "d3b5e4fd890aa8e80177acad4cff7cea6b74d66e674b8645eedd1880a4f45269",
+      "native_sole_call": {
+        "site": "00aafe3b",
+        "target": "00aa9390"
+      },
+      "source_entry_symbol": "?construct_native_gui_movie_default_00aafe20@bsp@@YAPAXPAXADI@Z",
+      "source_code_bytes": 164,
+      "source_code_ops": 25,
+      "source_code_sha256": "b8a91acbf07fb1c88ffbeff6474c602f2c0f2bcd364c4313e443f7846ebcf282",
+      "source_call_relocations": [
+        {
+          "offset": 13,
+          "symbol": "?construct_native_gui_widget_base_00aa9390@bsp@@YAPAUNativeGuiTextIdentityPrefix@1@PAXIADI@Z",
+          "type": 20
+        }
+      ],
+      "matching_real_base_definition_in_separate_strict_object": true,
+      "ordered_store_contract_equal": true,
+      "native_stores": [
+        {
+          "offset": 0,
+          "bytes": 4,
+          "value": 14008944,
+          "instruction": 11206210
+        },
+        {
+          "offset": 236,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206216
+        },
+        {
+          "offset": 240,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206222
+        },
+        {
+          "offset": 248,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206228
+        },
+        {
+          "offset": 252,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206234
+        },
+        {
+          "offset": 256,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206240
+        },
+        {
+          "offset": 260,
+          "bytes": 1,
+          "value": 0,
+          "instruction": 11206246
+        },
+        {
+          "offset": 261,
+          "bytes": 1,
+          "value": 0,
+          "instruction": 11206252
+        },
+        {
+          "offset": 264,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206258
+        },
+        {
+          "offset": 272,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206264
+        },
+        {
+          "offset": 276,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206270
+        },
+        {
+          "offset": 280,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206276
+        },
+        {
+          "offset": 292,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206286
+        },
+        {
+          "offset": 296,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206292
+        },
+        {
+          "offset": 300,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 11206298
+        }
+      ],
+      "source_stores": [
+        {
+          "offset": 0,
+          "bytes": 4,
+          "value": 14008944,
+          "instruction": 17
+        },
+        {
+          "offset": 236,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 26
+        },
+        {
+          "offset": 240,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 38
+        },
+        {
+          "offset": 248,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 48
+        },
+        {
+          "offset": 252,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 58
+        },
+        {
+          "offset": 256,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 68
+        },
+        {
+          "offset": 260,
+          "bytes": 1,
+          "value": 0,
+          "instruction": 78
+        },
+        {
+          "offset": 261,
+          "bytes": 1,
+          "value": 0,
+          "instruction": 85
+        },
+        {
+          "offset": 264,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 92
+        },
+        {
+          "offset": 272,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 102
+        },
+        {
+          "offset": 276,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 112
+        },
+        {
+          "offset": 280,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 122
+        },
+        {
+          "offset": 292,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 132
+        },
+        {
+          "offset": 296,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 142
+        },
+        {
+          "offset": 300,
+          "bytes": 4,
+          "value": 0,
+          "instruction": 152
+        }
+      ],
+      "source_and_native_written_bytes": 54,
+      "untouched_derived_ranges_exclusive": [
+        [
+          244,
+          248
+        ],
+        [
+          262,
+          264
+        ],
+        [
+          268,
+          272
+        ],
+        [
+          284,
+          292
+        ]
+      ],
+      "native_and_source_register_binary_ABI_claim": false,
+      "note": "Source cdecl args/stack/EH/encodings differ; compare exact stores and genuine call only. Header-instantiated unrelated COMDATs are not this entry."
+    },
+    "final_link": false,
+    "cmake_registered": false,
+    "common_build": "primary pending",
+    "tests": 0,
+    "new_tests": 0,
+    "fixtures": 0,
+    "native_code_executions": 0,
+    "probes": 0,
+    "games": 0,
+    "module_loads": 0
+  },
+  "target": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "verified_project": "bsp",
+    "verified_program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 77631,
+    "snapshot_function_count": 77631,
+    "native_bytes_sha256": "d3b5e4fd890aa8e80177acad4cff7cea6b74d66e674b8645eedd1880a4f45269",
+    "inspection": "Target-verified bsp show pseudocode then all assembly/live142 bytes, followed by bounded disk disasm; static original PE/COFF inspection, no original code executed."
+  },
+  "unchanged_scope": {
+    "semantic_api_and_consumers": true,
+    "AA1770_factory": true,
+    "AAFFF0_copy": true,
+    "AAFEF0_destructor": true,
+    "AAD560_properties": true,
+    "AAE770_loaded_hook": true,
+    "decoder_consumer": true,
+    "Page_child_policy": true,
+    "FP_models": true,
+    "GameHosts_sources": true,
+    "CMake_shared_ledgers": true,
+    "Ghidra": true,
+    "installation_and_saved_state": true,
+    "frozen_font_peer": true
+  },
+  "guards": {
+    "changes": 0,
+    "subtitle": false,
+    "child_Page": false,
+    "movie_root": "Separate private38e16 default-OFF packet was not imported into this published-base worktree; no change or admission here."
+  },
+  "remaining": [
+    "Primary independent review, CMake admission and common build/link",
+    "Actual AA1770/copy/raw destructor/property/loaded-hook/provider and Page-child composition remain separate",
+    "No decoder consumer, renderer/VFS/Lua/Text/settings/actual clock/callback lifetime activation from this constructor",
+    "Original register/stack ABI, native FH3/SEH/fault/private-stack/allocator identity and runtime playback remain unclaimed"
+  ],
+  "credit": {
+    "additional_native_bodies": 0,
+    "duplicate_native_bodies": 0,
+    "vendor_bodies": 0,
+    "original_ABI": 0,
+    "activation": 0
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "source_pins": [
+    {
+      "path": "include/bsp/native_gui_movie_default_storage.hpp",
+      "bytes": 1311,
+      "sha256": "b0a20c56f0b4bbbcabba47537e029355a8e935f35de959c65df871bdeef18459",
+      "git_blob": "9a1e20567dd9b56f06d876ffaef10dc73e2ddf07",
+      "new_owned_file": true
+    },
+    {
+      "path": "src/native_gui_movie_default_storage.cpp",
+      "bytes": 1662,
+      "sha256": "54625e168768812717df102b4ce8f41ce897a6ebe347e9c58b7412a563148065",
+      "git_blob": "911c301e1e2bb497de575c46fd05bfc8332c4ffc",
+      "new_owned_file": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "bytes": 1081,
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab",
+      "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf",
+      "new_owned_file": false,
+      "baseline_blob": "61c72c99fab59f5c86da392495d7bae5381607cf"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "bytes": 3008,
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+      "new_owned_file": false,
+      "baseline_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5"
+    },
+    {
+      "path": "include/bsp/native_gui_text_identity.hpp",
+      "bytes": 4245,
+      "sha256": "6de31247104e9d98b5b369846bd8c743058c14aeae8ce0520ce15fd3926335a6",
+      "git_blob": "002c6855b1de966a5a690fca0914971c4683a227",
+      "new_owned_file": false,
+      "baseline_blob": "002c6855b1de966a5a690fca0914971c4683a227"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+      "bytes": 12674,
+      "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3",
+      "git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718",
+      "new_owned_file": false,
+      "baseline_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "bytes": 3180,
+      "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925",
+      "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3",
+      "new_owned_file": false,
+      "baseline_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 46822,
+      "sha256": "69af1a3c2359cb9d670f5f423cff65d4acd928590a3f05d55cdfd889ae7eb28a",
+      "git_blob": "04f8a795156feeb734856a7747100e7dfbc6f9d5",
+      "new_owned_file": false,
+      "baseline_blob": "04f8a795156feeb734856a7747100e7dfbc6f9d5"
+    },
+    {
+      "path": "src/game_hosts_mission_result.cpp",
+      "bytes": 34180,
+      "sha256": "f4be4960d0475fb11050987c2b905c4f2839cc1f53dcf190dd9ca3784fa3228c",
+      "git_blob": "4aa1c95d387d5084ce12e742303d6a87772bc77d",
+      "new_owned_file": false,
+      "baseline_blob": "4aa1c95d387d5084ce12e742303d6a87772bc77d"
+    },
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "bytes": 3811,
+      "sha256": "8a21c044261937a47938887584b94650d1d04ab1584d3c447af276a6c04cebcb",
+      "git_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9",
+      "new_owned_file": false,
+      "baseline_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9"
+    }
+  ],
+  "native_export_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aafe20\\decompiled.c",
+      "bytes": 914,
+      "sha256": "a1114f9f50f5ac427883df349b1a8887b96086a40eb5cdeab1ca1a33c53548f3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aafe20\\assembly.txt",
+      "bytes": 1059,
+      "sha256": "9d181a53a58642c7f6e19a26a6ffcccc7666dd279a74a5678bb3b3d5e3fb4c96"
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/native_gui_movie_default_storage/compile.cmd",
+      "bytes": 1101,
+      "sha256": "c337f62a092c27f60c1bb84e0092c220e927cbf2457c02bcbbad725f26e14468"
+    },
+    {
+      "path": "local/native_gui_movie_default_storage/compile.log",
+      "bytes": 74,
+      "sha256": "f3ff1071f6f072408329707bf3df9756d6c49884fcd04bc25627d50fd43f98a5"
+    },
+    {
+      "path": "local/native_gui_movie_default_storage/movie_default.obj",
+      "bytes": 2870,
+      "sha256": "ef4b5ae4f16328e321caa7e96339d564fe194dbeb3f52c86c058dcdbbf1cfc45"
+    },
+    {
+      "path": "local/native_gui_movie_default_storage/widget_base.obj",
+      "bytes": 7951,
+      "sha256": "5f3df9c01229106fe0fd630c35f238c96cf8ca4dc01964f5a268c68d4a46f1c5"
+    },
+    {
+      "path": "local/native_gui_movie_default_storage/movie_default.symbols.txt",
+      "bytes": 3146,
+      "sha256": "86e23be86140d0430a9131159fbbeb9909998141397d83d03eccc03ed3a97bc5"
+    },
+    {
+      "path": "local/native_gui_movie_default_storage/widget_base.symbols.txt",
+      "bytes": 11133,
+      "sha256": "c2d24624537b674559055d5a5f80c6a3c4e1551e6039d01dbba0ef724108fb99"
+    },
+    {
+      "path": "local/native_gui_movie_default_storage/movie_default.assembly.txt",
+      "bytes": 3581,
+      "sha256": "04bcab0f643bb44c3faa1c70d3e3c407f1e2af5dbffa3cd451199449eab365c4"
+    },
+    {
+      "path": "local/native_gui_movie_default_storage/static_audit.py",
+      "bytes": 5017,
+      "sha256": "0b5d9707bf7b56cf76c4cdc4d5bd73902496997f9d70d709ac2e0ccc4f5b0b57"
+    },
+    {
+      "path": "local/native_gui_movie_default_storage/static_audit.json",
+      "bytes": 4505,
+      "sha256": "dcf0e97efa9b600e603d7d122e21e64257c9da9c0e251cf227964a1025a992e2"
+    },
+    {
+      "path": "local\\native_gui_movie_default_storage\\verify_report_calls.log",
+      "bytes": 83,
+      "sha256": "2f62156d6834ec0d38a783e6d8b708f771d7ce33bb91a36b9b3eaf24f659d3f7"
+    }
+  ],
+  "evidence_utc": "2026-10-29T23:00:25.405809+00:00"
+}
