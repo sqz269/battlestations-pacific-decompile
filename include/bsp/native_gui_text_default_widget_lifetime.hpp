@@ -17,7 +17,7 @@ struct NativeGuiTextDefaultWidgetLifetimeRecord final {
 };
 struct NativeGuiTextDefaultWidgetLifetimeCall final {
     enum class Operation { none, bind, table, class_query, scalar_admission,
-        child_scene, child_delete, timed_delete, remove_all };
+        child_scene, child_delete, timed_delete, remove_all, raw_model_authentication };
     Operation operation{Operation::none};
     void* receiver{}; // diagnostic only after failure/retirement
     const void* pointer_cell{}; // diagnostic after the synchronous list call
@@ -55,6 +55,11 @@ public:
     // Owner calls BEFORE scalar_entered, literal flags1 and its existing
     // canonical raw122 direct scalar call. No count test/change is added here.
     void require_default_before_scalar();
+    // Source admission ONLY for a separately qualified raw Model transport.
+    // Exact bound record/provider; existing lifetime/profile authentication,
+    // no DEFAULT branch permission, type answer or captured selector result.
+    void require_raw_model_transport_receiver(void* actual,
+        NativeGuiTextDefaultWidgetLifetimeRecord& expected_record);
 
     const volatile std::uint32_t* current_table(void*, std::uint32_t captured_profile) override;
     bool call_class_query_0c(void*, std::uint32_t captured_target,

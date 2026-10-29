@@ -1,4 +1,5 @@
 #include "bsp/native_gui_widget_lifetime.hpp"
+#include "bsp/native_gui_widget_raw_model_lifetime.hpp"
 #include "bsp/native_gui_widget_base_storage.hpp"
 #include "bsp/native_live_effect_manager.hpp"
 #include "bsp/native_logical_vertex_owner.hpp"
@@ -107,14 +108,69 @@ Word native_gui_text_descriptor_00ab6a30(const volatile Word& descriptor) noexce
 void release_native_gui_text_glyph_00ab73b0(void* text, NativeGuiWidgetLifetimeContext& c) {
     release_node_slot(text, 0x188, c);
 }
-void release_native_gui_widget_scene_00aa8320(void* owner, NativeGuiWidgetLifetimeContext& c) {
+namespace {
+struct LegacySchedule {
+    NativeGuiWidgetLifetimeContext& widget;
+    void begin_scene(void*) {}
+    void finish_scene() {}
+    void boundary(void*) {}
+    void child_scene() {}
+    void child_delete() {}
+    void timed_delete() {}
+    void query(Word, Word, bool) {}
+    void glyph(void* owner) { release_native_gui_text_glyph_00ab73b0(owner, widget); }
+    void primary(void* owner, bool) { release_node_slot(owner, 0x4c, widget); }
+    void parent(void* owner, void* parent) {
+        auto& c = widget;
+        void* captured_owner = owner;
+        if (pointer(owner, 0x4c)) {
+            set_native_node_parent_null_00b6e680(c.nodes,
+                node(pointer(owner, 0x4c), c).transform());
+            propagate_native_node_root_00b6d890(c.nodes,
+                node(pointer(owner, 0x4c), c).transform(), nullptr);
+            if (void* parent_node = pointer(parent, 0x4c))
+                unlink_native_node_child_00b6d940(node(parent_node, c).transform(),
+                    node(pointer(owner, 0x4c), c).transform());
+        }
+        c.bindings.remove_all_00a9bd50(at(parent, 0x64), &captured_owner);
+        word(owner, 0x70) = 0;
+    }
+    void unwind(void* owner, int state) { unwind_base(owner, state); }
+};
+struct RawSchedule {
+    NativeGuiWidgetRawModelLifetimeContext& raw;
+    NativeGuiWidgetLifetimeContext& widget;
+    bool nested;
+    explicit RawSchedule(NativeGuiWidgetRawModelLifetimeContext& c, bool base)
+        : raw(c), widget(c.widget), nested(base) {}
+    void begin_scene(void* owner) { raw.slots.begin_scene(raw, owner, nested); }
+    void finish_scene() { raw.slots.finish_scene(nested); }
+    void boundary(void* owner) { raw.slots.boundary(owner); }
+    void child_scene() { raw.slots.reject("raw widget child scene is outside the qualified base domain"); }
+    void child_delete() { raw.slots.reject("raw widget child scalar is outside the qualified base domain"); }
+    void timed_delete() { raw.slots.reject("raw widget timed scalar is outside the qualified base domain"); }
+    void query(Word target, Word descriptor, bool result) { raw.slots.query(target, descriptor, result); }
+    void glyph(void* owner) { raw.slots.reject_glyph(raw, owner); }
+    void primary(void* owner, bool late) {
+        if (void* const captured = pointer(owner, 0x4c)) {
+            raw.slots.release_captured(captured, late ? raw.slots.late_primary() : raw.slots.scene_primary());
+            word(owner, 0x4c) = 0; // native original slot clear AFTER callback, even replacement
+        }
+    }
+    void parent(void*, void*) { raw.slots.reject("raw widget parent arm has no admitted hierarchy transport"); }
+    void unwind(void*, int) { raw.slots.fail(); } // ALL raw escapes retain; no invented native origin
+};
+template<class Schedule> void release_scene(void* owner, Schedule& schedule) {
+    auto& c = schedule.widget;
+    schedule.begin_scene(owner);
     void* cursor = pointer(pointer(owner, 0x68));
     for (;;) {
         if (cursor == pointer(owner, 0x68)) break;
+        schedule.child_scene();
         validate(cursor != pointer(owner, 0x68));
         void* child = pointer(cursor, 8);
         const Word target = table(child, c)[0x20 / 4];
-        if (target == 0x00aa8320u) release_native_gui_widget_scene_00aa8320(child, c);
+        if (target == 0x00aa8320u) release_scene(child, schedule);
         else c.bindings.call_child_scene_20(child, target);
         validate(cursor != pointer(owner, 0x68));
         cursor = pointer(cursor); // AFTER callback; never cached before it.
@@ -126,16 +182,21 @@ void release_native_gui_widget_scene_00aa8320(void* owner, NativeGuiWidgetLifeti
     const bool is_text = target == 0x00a9e070u ?
         native_gui_widget_is_kind_of_00a9e070(descriptor, c.actual_base_lineage_00f8bc88) :
         c.bindings.call_class_query_0c(owner, target, descriptor);
-    if (is_text) release_native_gui_text_glyph_00ab73b0(owner, c);
-    release_node_slot(owner, 0x4c, c);
+    schedule.query(target, descriptor, is_text);
+    if (is_text) schedule.glyph(owner);
+    schedule.primary(owner, false);
+    schedule.finish_scene();
 }
-void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetLifetimeContext& c) {
+template<class Schedule> void destroy_base(void* owner, Schedule& schedule) {
+    auto& c = schedule.widget;
     word(owner) = 0x00d5c130u;
     int unwind_state = 2;
     try {
-        release_native_gui_widget_scene_00aa8320(owner, c);
+        release_scene(owner, schedule);
+        schedule.boundary(owner);
         void* cursor = pointer(pointer(owner, 0x68));
         while (word(owner, 0x6c) != 0) {
+            schedule.child_delete();
             validate(at(owner, 0x64) != nullptr);
             validate(cursor != pointer(owner, 0x68));
             if (void* child = pointer(cursor, 8)) {
@@ -147,21 +208,12 @@ void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetLifetim
             cursor = pointer(pointer(owner, 0x68));
         }
         if (void* parent = pointer(owner, 0x70)) {
-            void* captured_owner = owner;
-            if (pointer(owner, 0x4c)) {
-                set_native_node_parent_null_00b6e680(c.nodes,
-                    node(pointer(owner, 0x4c), c).transform());
-                propagate_native_node_root_00b6d890(c.nodes,
-                    node(pointer(owner, 0x4c), c).transform(), nullptr);
-                if (void* parent_node = pointer(parent, 0x4c))
-                    unlink_native_node_child_00b6d940(node(parent_node, c).transform(),
-                        node(pointer(owner, 0x4c), c).transform());
-            }
-            c.bindings.remove_all_00a9bd50(at(parent, 0x64), &captured_owner);
-            word(owner, 0x70) = 0;
+            schedule.parent(owner, parent);
         }
-        release_node_slot(owner, 0x4c, c);
+        schedule.primary(owner, true);
+        schedule.boundary(owner);
         if (signed_word(owner, 0x8c) > 0) {
+            schedule.timed_delete();
             Word index = 0;
             Word next_count = 1;
             do {
@@ -185,8 +237,30 @@ void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetLifetim
         word(owner) = 0x00d5c104u;
         destroy_native_ref_counted_base_00bd30f0(owner);
     } catch (...) {
-        unwind_base(owner, unwind_state);
+        schedule.unwind(owner, unwind_state);
         throw;
     }
+}
+} // namespace
+void release_native_gui_widget_scene_00aa8320(void* owner, NativeGuiWidgetLifetimeContext& c) {
+    LegacySchedule schedule{c}; release_scene(owner, schedule);
+}
+void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetLifetimeContext& c) {
+    LegacySchedule schedule{c}; destroy_base(owner, schedule);
+}
+void release_native_gui_widget_scene_00aa8320(void* owner, NativeGuiWidgetRawModelLifetimeContext& c) {
+    try { RawSchedule schedule(c, false); release_scene(owner, schedule); }
+    catch (...) { c.slots.fail(); throw; }
+}
+void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetRawModelLifetimeContext& c) {
+    try {
+        c.slots.begin_base(c, owner);
+        RawSchedule schedule(c, true); destroy_base(owner, schedule);
+        c.slots.finish_base(); // metadata ONLY: base/containers have ended
+    } catch (...) { c.slots.fail(); throw; }
+}
+void release_native_gui_text_glyph_00ab73b0(void* owner, NativeGuiWidgetRawModelLifetimeContext& c) {
+    try { c.slots.reject_glyph(c, owner); }
+    catch (...) { c.slots.fail(); throw; }
 }
 } // namespace bsp
