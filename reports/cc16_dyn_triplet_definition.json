@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00c48140",
+    "end_address": "00c48168"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00c48140",
+    "end_address": "00c48167",
+    "bytes_disassembled": 40,
+    "message": "Successfully disassembled 40 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00c48140",
+    "disassemble_first": false,
+    "name": "BSP_DynTriplet_ReversedCyclicEqual_00C48140"
+   },
+   "result": {
+    "success": true,
+    "address": "00c48140",
+    "function_name": "BSP_DynTriplet_ReversedCyclicEqual_00C48140",
+    "entry_point": "00c48140",
+    "body_size": 40,
+    "message": "Function created successfully at 00c48140",
+    "warnings": [
+     "Function name 'BSP_DynTriplet_ReversedCyclicEqual_00C48140' \u2014 main part 'DynTriplet_ReversedCyclicEqual_00C48140' is not PascalCase. Expected: DyntripletReversedcyclicequal00c48140",
+     "Function name 'BSP_DynTriplet_ReversedCyclicEqual_00C48140' \u2014 main part 'DynTriplet_ReversedCyclicEqual_00C48140' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_DynTriplet_ReversedCyclicEqual_00C48140' does not start with a recognized verb. First word 'Dyn' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00c48140",
+   "end": "00c48168",
+   "name": "BSP_DynTriplet_ReversedCyclicEqual_00C48140",
+   "after": "Function: BSP_DynTriplet_ReversedCyclicEqual_00C48140 at 00c48140\nSignature: undefined BSP_DynTriplet_ReversedCyclicEqual_00C48140(void)\nEntry: 00c48140\nBody: 00c48140 - 00c48167"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

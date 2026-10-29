@@ -1,0 +1,91 @@
+{
+  "packet": "codex-unregistered-module-admission",
+  "accepted_base": "2ea6c0329ec62e111a8bb112a8180a4d4166fcd5",
+  "scope": "Compile-only admission of four unchanged existing C++ modules; no source/provider/activation/ledger changes",
+  "modules": [
+    {
+      "module": "sim_damage_seg54_argon",
+      "source": "src/sim_damage_seg54_argon.cpp",
+      "source_sha256": "080737ecabf5dfe8485e84d9eb33ee439cb9c276ed91627f9a70e0d13d25d4c5",
+      "header_sha256": "afc93177aa065b2daf6df0d620dc724f182f3f2540f9307ce3475fa33e5a77d3",
+      "object": "build/win32/bsp_core.dir/Release/sim_damage_seg54_argon.obj",
+      "object_sha256": "540acb2a8f12254583c1ae923d2ab7ca51568279835d62ceed49d2b04e029bcc",
+      "generated_project_registered": true,
+      "library_members": [
+        "bsp_core.dir\\Release\\sim_damage_seg54_argon.obj"
+      ],
+      "linked_game_map_lines": 0,
+      "new_body_credit": false,
+      "host_or_provider_changes": false
+    },
+    {
+      "module": "powerup_seg58_argon",
+      "source": "src/powerup_seg58_argon.cpp",
+      "source_sha256": "ab0f43401a4178b94d338f51d58ace7b9e89c26d859798fdb4b43c018f545a15",
+      "header_sha256": "11d239859db5b36d38feca4c135bae156f2a7d36b500d0ea61b1dbb0193e1dd9",
+      "object": "build/win32/bsp_core.dir/Release/powerup_seg58_argon.obj",
+      "object_sha256": "c97dd27e9742886106841fed854973351ef392f9a4f4a9f5a07e0637b7699e65",
+      "generated_project_registered": true,
+      "library_members": [
+        "bsp_core.dir\\Release\\powerup_seg58_argon.obj"
+      ],
+      "linked_game_map_lines": 0,
+      "new_body_credit": false,
+      "host_or_provider_changes": false
+    },
+    {
+      "module": "warning_string_seg64_argon",
+      "source": "src/warning_string_seg64_argon.cpp",
+      "source_sha256": "3a07de0a1382d4d0849a43444a413e39a3ca095e26492cce3b77d17279698203",
+      "header_sha256": "d0c59a86f283ba0fe59717863cdb5d70edc8e3772b2b9c8749af5b9e67f7475c",
+      "object": "build/win32/bsp_core.dir/Release/warning_string_seg64_argon.obj",
+      "object_sha256": "5614fdc95628221b223320cb4641cccfeea5bc66fc3dfdddf39c2703270bdee7",
+      "generated_project_registered": true,
+      "library_members": [
+        "bsp_core.dir\\Release\\warning_string_seg64_argon.obj"
+      ],
+      "linked_game_map_lines": 0,
+      "new_body_credit": false,
+      "host_or_provider_changes": false
+    },
+    {
+      "module": "hardware_options_seg66_argon",
+      "source": "src/hardware_options_seg66_argon.cpp",
+      "source_sha256": "6ab70eaad9b95b688eaef152d3146e3b8ffcdf95adc34caacae7cfab9923b709",
+      "header_sha256": "5875bfa7475f23fb1e7c06c710301ce4cf5c4c2afc41c84abbc743b23a3df104",
+      "object": "build/win32/bsp_core.dir/Release/hardware_options_seg66_argon.obj",
+      "object_sha256": "b5974f6d86cd53d16e7c49fdf3fa20828fae22648179bd4a33436e2b7ff2db92",
+      "generated_project_registered": true,
+      "library_members": [
+        "bsp_core.dir\\Release\\hardware_options_seg66_argon.obj"
+      ],
+      "linked_game_map_lines": 0,
+      "new_body_credit": false,
+      "host_or_provider_changes": false
+    }
+  ],
+  "validation": {
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/codex_module_admission_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "generated_project": "build/win32/bsp_core.vcxproj",
+    "library": "build/win32/Release/bsp_core.lib",
+    "library_sha256": "9fe0c55123bf5fd9bdc2599ed160594464446a5343d71118027f6d2981df027f",
+    "game_map": "build/win32/bsp_game.map",
+    "game_map_sha256": "9bef1e926b19b3fc20ae7ffa136ffe9e537e1334f2b23711fc153a65d64e8993",
+    "executable_sha256": "3fcc6f088b4a7f2e3abe7c7762451b1c3af196191f6d9390fda8f022abfb86a6",
+    "new_tests": false,
+    "game_runs": false,
+    "abi_or_game_validation": false
+  },
+  "limits": [
+    "Archive member presence proves compilation and inclusion in the static library, not extraction into a linked caller",
+    "Namespace separation does not reconcile same-native-address semantic alternatives",
+    "Required raw storage/process cells/CRT and virtual providers remain unresolved",
+    "Hardware/vendor library portions receive no reconstruction credit",
+    "No original ABI, whole-module semantic review, activation or gameplay acceptance"
+  ]
+}
