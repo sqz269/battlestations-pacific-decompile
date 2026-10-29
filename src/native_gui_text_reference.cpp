@@ -183,11 +183,11 @@ void fresh_shader_binding(const NativeGuiTextRawModelReferenceContext& c) {
     // names[] intentionally has no initialization; inspect no native header.
 }
 template<class Check>
-void prefix_route_borrowed(NativeGuiWidgetRawModelRoute& q, Check check) {
+void prefix_route_borrowed(NativeGuiWidgetRawModelRoute& q,
+    NativeModelStorageNodeDispatchContext& nc, Check check) {
     auto& m = q.record;
     auto& s = m.model.storage;
     auto& n = s.node;
-    auto& nc = q.node.context();
     for (const Region r : {Region{&q, sizeof(q)}, {&m, sizeof(m)}, {&m.model, sizeof(m.model)},
         {&m.actual, sizeof(m.actual)}, {&m.reference, sizeof(m.reference)},
         {&m.construction, sizeof(m.construction)}, {&m.lifetime_frame, sizeof(m.lifetime_frame)},
@@ -228,14 +228,14 @@ void known_prefix_borrowed(const NativeGuiTextRawModelReferenceContext& c, Check
         {&g->widget, sizeof(g->widget)}, {&g->widget.slots, sizeof(g->widget.slots)},
         {&g->widget_acquired, sizeof(g->widget_acquired)}})
         check(r);
-    prefix_route_borrowed(g->widget.primary, check);
-    prefix_route_borrowed(g->widget.internal188, check);
+    prefix_route_borrowed(g->widget.primary, g->producer_context.primary_node_context, check);
+    prefix_route_borrowed(g->widget.internal188, g->internal_node_context, check);
     for (const auto calls : {g->primary_calls, g->internal_calls}) {
-        const auto bytes = static_cast<std::uint64_t>(calls.size()) * sizeof(NativeModelStorageNodeCall);
-        require(calls.data() && bytes && bytes <= 0xffffffffu &&
-            static_cast<std::uint64_t>(bits(calls.data())) + bytes <= 0x100000000ull,
+        const auto bytes = static_cast<std::uint64_t>(calls.count) * sizeof(NativeModelStorageNodeCall);
+        require(calls.data && bytes && bytes <= 0xffffffffu &&
+            static_cast<std::uint64_t>(bits(calls.data)) + bytes <= 0x100000000ull,
             "prefix flags need actual retained prepared-call array extents");
-        check(Region{calls.data(), static_cast<std::size_t>(bytes)});
+        check(Region{calls.data, static_cast<std::size_t>(bytes)});
     }
     if (f.disposal.context) check(Region{f.disposal.context, f.disposal.context_bytes});
     // Header ADDRESS/extent only, even after successful41DD20. Never inspect

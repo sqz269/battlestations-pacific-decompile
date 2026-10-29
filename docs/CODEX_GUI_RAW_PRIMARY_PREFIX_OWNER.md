@@ -1,9 +1,17 @@
 # Private raw primary-prefix Text owner
 
-**UNBUILT source preparation; no caller or host gate.** This packet owns only
+**Integrated and Win32 build-tested; private host fixture remains OFF.**
+Frozen source packet `3671d452b` originally had no caller or build. It owns only
 `game_native_raw_default_text_owner.hpp/.cpp` and this doc. Default constructor,
 preparation, AA1380/raw93/separate122 path and its Native order remain. No CMake,
 configuration, Ghidra, tests, build, probe, game, install or body credit change.
+
+Root and independent review accepted the owner; all six DEFAULT source
+comparisons passed. Root integrated adapter `e52fe7c7`, the C++17 typed extent
+and pure dispatcher-affinity fixes, plus explicit internal node context backing.
+The complete OFF build passes existing checks 2/2 (10.17 seconds) in
+`local/cc16_primary_prefix_main_section_complete_off_build.log`. The separate
+private host fixture is preregistered; no runtime/ABI/visual credit is claimed.
 
 Baseline is accepted `8a0442cdac8323cc0dbbc2eebe5ae53025e698f8`; private Frame
 proof dependency is `17c5dddfbed18d12a077984beedbc6d1209b427c`. The two-header API

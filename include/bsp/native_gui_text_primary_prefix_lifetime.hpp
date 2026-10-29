@@ -1,7 +1,7 @@
 #pragma once
 #include "bsp/native_gui_text_primary_model_storage.hpp"
 #include "bsp/native_gui_widget_raw_model_lifetime.hpp"
-#include <span>
+#include <cstddef>
 
 namespace bsp {
 // Actual external raw8B input and its independently retained Source progress.
@@ -19,6 +19,13 @@ struct NativeGuiTextPrimaryPrefixNameProgress final {
     bool return_entered{}, returned{}, return_failed{};
 };
 
+// Immutable concrete array extent for the existing C++17 build. This borrows
+// the exact node-dispatch constructor operands; it owns no calls or records.
+struct NativeGuiTextPrimaryPrefixCalls final {
+    const NativeModelStorageNodeCall* const data;
+    const std::size_t count;
+};
+
 // Build the whole nonmoving graph before effects. Bind internal tree/node and
 // widget history, prepare db55 primary tree/node, then bind2ee slots BEFORE Text
 // allocation. All references name the actual objects, never copied progress or
@@ -32,9 +39,10 @@ struct NativeGuiTextPrimaryPrefixLifetimeContext final {
     const NativeGuiTextPrimaryModelStorageAcquired& producer;
     const NativeGuiTextPrimaryPrefixNameProgress& name;
     NativeGuiWidgetRawModelLifetimeContext& widget;
+    NativeModelStorageNodeDispatchContext& internal_node_context;
     NativeGuiWidgetRawModelLifetimeAcquired& widget_acquired;
-    const std::span<const NativeModelStorageNodeCall> primary_calls;
-    const std::span<const NativeModelStorageNodeCall> internal_calls;
+    const NativeGuiTextPrimaryPrefixCalls primary_calls;
+    const NativeGuiTextPrimaryPrefixCalls internal_calls;
 };
 
 // Metadata-only selection: false ONLY for untouched prepared primary/name;

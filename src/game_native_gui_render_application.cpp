@@ -52,6 +52,11 @@ namespace {
 // The ON candidate exercises one unpublished DEFAULT lifecycle without a new
 // environment option, scene/overlay, cache owner or public test-only interface.
 constexpr bool kRawDefaultTextQualificationCc16Bound = false;
+// Separate private fixture for the genuine primary Model prefix. Its owner
+// selects the receipt-authorized lifetime route; it adds no content or layout.
+constexpr bool kRawPrimaryPrefixQualificationCc16Bound = false;
+static_assert(!(kRawDefaultTextQualificationCc16Bound &&
+    kRawPrimaryPrefixQualificationCc16Bound));
 using Word = std::uint32_t;
 void require(bool value, const char* message) {
     if (!value) throw std::logic_error(message);
@@ -739,19 +744,23 @@ void GameStartupHost::initialize_native_gui_render() {
         GetEnvironmentVariableA("BSP_NATIVE_MISSION_FRAME", frame_flag, sizeof frame_flag) == 1 &&
         frame_flag[0] == '1',
         "BSP_NATIVE_GUI_TEXT=1 requires BSP_NATIVE_MISSION_SHIP=1 and BSP_NATIVE_MISSION_FRAME=1");
-    if constexpr (kRawDefaultTextQualificationCc16Bound) {
+    if constexpr (kRawDefaultTextQualificationCc16Bound ||
+        kRawPrimaryPrefixQualificationCc16Bound) {
         require(!GameNativeGuiRenderApplication::nodes_requested(),
-            "raw DEFAULT qualification requires the GUI node overlay disabled");
+            "raw Text qualification requires the GUI node overlay disabled");
         require(!native_gui_render_ && !native_raw_default_text_ && native_renderer_ &&
             vfs_ && singletons_ && native_data_ && input_runtime_,
-            "raw DEFAULT qualification requires the existing ready startup owners");
+            "raw Text qualification requires the existing ready startup owners");
         native_raw_default_text_ = std::make_unique<GameNativeRawDefaultTextOwner>(
             log_, *native_renderer_, *vfs_, *singletons_, *native_data_,
             GameNativeGuiSamplerApplicationBindings{*input_runtime_,
                 native_renderer_->borrow_platform_publication_0109cf04()});
-        // Explicit caller budget for this one DEFAULT graph, not an Original
+        // Explicit caller budget for this one retained graph, not an Original
         // constant or a universal nesting bound. Exhaustion retains failure.
-        native_raw_default_text_->prepare_metadata_in_ready_renderer(64);
+        if constexpr (kRawPrimaryPrefixQualificationCc16Bound)
+            native_raw_default_text_->prepare_primary_prefix_metadata_in_ready_renderer(64);
+        else
+            native_raw_default_text_->prepare_metadata_in_ready_renderer(64);
         return;
     }
     require(!native_gui_render_ && native_renderer_ && vfs_ && singletons_ && native_data_ &&
@@ -762,8 +771,12 @@ void GameStartupHost::initialize_native_gui_render() {
 }
 void GameStartupHost::prepare_native_gui_text_resources() {
     if (native_raw_default_text_) {
-        require(native_raw_default_text_->construct_default_in_open_shader_cache(),
-            "raw DEFAULT qualification requires a nonnull native factory result");
+        if constexpr (kRawPrimaryPrefixQualificationCc16Bound)
+            require(native_raw_default_text_->construct_primary_prefix_in_open_shader_cache(),
+                "raw primary-prefix qualification requires a nonnull native factory result");
+        else
+            require(native_raw_default_text_->construct_default_in_open_shader_cache(),
+                "raw DEFAULT qualification requires a nonnull native factory result");
         return;
     }
     if (native_gui_render_) native_gui_render_->prepare_text_in_open_shader_cache();

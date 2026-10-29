@@ -1,6 +1,7 @@
 # Raw Text post-constructor main section storage
 
-UNBUILT, uncalled library preparation. New header/CPP only, over accepted
+Integrated and Win32 build-tested, still uncalled. Frozen source `33536a12`
+plus sticky-failure fix `19999fc57` add the new header/CPP over accepted
 `c0f123938` plus pure geometry-affinity dependency `3c2176634`. Plan is
 `6ea0b62eb`; no existing constructor/retirement/owner/host/CMake/ledger edit.
 No body credit, caller, public switch, Font/content transport or runtime proof.
@@ -98,8 +99,11 @@ providers, frames, flags0/failed records and opaque backing through real credit
 settlement and parent drain. After any terminal/normal name return, saved native
 identities are diagnostic only; use independently retained metadata.
 
-Validation: bounded Source/signature/alias/order review and whitespace checks;
-no compiler, CTest, new tests, probe, game, Ghidra mutation or ABI acceptance.
-Root owns compilation/integration. Actual use, Font/content, hierarchy, raw
+Validation: root and independent Source/signature/alias/order reviews, including
+the caught-reentry failure fix. Root added the missing concrete effect-programs
+include, registered the TU and passed Win32 plus existing checks 2/2 (10.17s),
+`local/cc16_primary_prefix_main_section_complete_off_build.log`. Initial compiler
+failure remains preserved. No new tests, probe, game or Ghidra mutation ran.
+Actual use, Font/content, hierarchy, raw
 retirement custody, allocator reuse, rendering and Original private-stack/
 thiscall/FP/FH3/SEH compatibility remain separate gates.

@@ -21,22 +21,25 @@ bool untouched_name(const NativeGuiTextPrimaryPrefixNameProgress& n) noexcept {
     return !n.construct_entered && !n.construct_returned && !n.construct_failed &&
         !n.return_entered && !n.returned && !n.return_failed;
 }
-void calls(const NativeGuiWidgetRawModelRoute& q, std::span<const NativeModelStorageNodeCall> span) {
-    const auto bytes = static_cast<std::uint64_t>(span.size()) * sizeof(NativeModelStorageNodeCall);
-    require(span.data() && span.size() && bytes <= 0xffffffffu &&
-        !(bits(span.data()) % alignof(NativeModelStorageNodeCall)) &&
-        static_cast<std::uint64_t>(bits(span.data())) + bytes <= 0x100000000ull &&
+void calls(const NativeGuiWidgetRawModelRoute& q,
+    const NativeModelStorageNodeDispatchContext& node, NativeGuiTextPrimaryPrefixCalls span) {
+    const auto bytes = static_cast<std::uint64_t>(span.count) * sizeof(NativeModelStorageNodeCall);
+    require(span.data && span.count && bytes <= 0xffffffffu &&
+        !(bits(span.data) % alignof(NativeModelStorageNodeCall)) &&
+        static_cast<std::uint64_t>(bits(span.data)) + bytes <= 0x100000000ull &&
+        q.node.matches(node, q.node_acquired, span.data, span.count) &&
+        q.tree.matches(q.record, q.tree_acquired) &&
         q.node_acquired.bound && !q.node_acquired.poisoned && !q.node_acquired.entry_failed &&
-        !q.node_acquired.capacity_failed && q.node_acquired.used <= span.size() &&
+        !q.node_acquired.capacity_failed && q.node_acquired.used <= span.count &&
         q.tree_acquired.bound && !q.tree_acquired.poisoned &&
         q.tree_acquired.current18.phase != CallPhase::entered && q.tree_acquired.current18.phase != CallPhase::failed &&
         q.tree_acquired.current0.phase != CallPhase::entered && q.tree_acquired.current0.phase != CallPhase::failed,
         "prefix lifetime needs real retained quiescent Model call backing");
-    for (const auto& call : span)
-        require(call.phase != CallPhase::entered && call.phase != CallPhase::failed,
+    for (std::size_t i = 0; i != span.count; ++i)
+        require(span.data[i].phase != CallPhase::entered && span.data[i].phase != CallPhase::failed,
             "prefix lifetime cannot abandon an entered/failed Model provider invocation");
-    // Node's private array pointer/count are not exposed. These spans MUST be
-    // the actual constructor operands; their hidden provenance is caller proof.
+    // Exact private context/acquired/array affinity is checked above. Full
+    // opaque/transitive provider extents remain the caller's obligation.
 }
 void aliases(const Context& g) {
     auto& f = g.text.factory_context;
@@ -55,11 +58,10 @@ void aliases(const Context& g) {
         &p.primary.reference == &primary.record.reference && &p.primary.construction == &primary.record.construction &&
         &p.primary.lifetime_frame == &primary.record.lifetime_frame && &p.primary.lifetime == &primary.record.lifetime &&
         &p.primary.release_frame == &primary.record.release_frame && &p.primary.release == &primary.record.release &&
-        &p.primary_node_context == &primary.node.context() && &p.primary_nodes == &primary.node &&
+        &p.primary_nodes == &primary.node &&
         &p.primary_node_context.record == &primary.record && &p.primary_node_context.tree_dispatch == &primary.tree &&
-        &primary.tree.context() == &primary.record && &internal.tree.context() == &internal.record &&
-        &internal.node.context().record == &internal.record &&
-        &internal.node.context().tree_dispatch == &internal.tree && &p.internal188 == &internal.record &&
+        &g.internal_node_context.record == &internal.record &&
+        &g.internal_node_context.tree_dispatch == &internal.tree && &p.internal188 == &internal.record &&
         &internal.record.actual == &nested.actual && &internal.record.reference == &nested.reference &&
         &internal.record.construction == &nested.construction &&
         &internal.record.lifetime_frame == &nested.lifetime_frame && &internal.record.lifetime == &nested.lifetime &&
@@ -75,7 +77,8 @@ void aliases(const Context& g) {
         same_native_string_raw_pool_cells(g.name.strings, internal.record.model.storage.node.strings) &&
         same_native_string_raw_pool_cells(g.name.strings, t.construction_context.sections.strings),
         "prefix name must bind its same external8B storage and real retained VFS/Model string cells");
-    calls(primary, g.primary_calls); calls(internal, g.internal_calls);
+    calls(primary, p.primary_node_context, g.primary_calls);
+    calls(internal, g.internal_node_context, g.internal_calls);
 }
 void untouched_primary(const Context& g) {
     const auto& a = g.producer;

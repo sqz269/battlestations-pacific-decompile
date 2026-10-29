@@ -597,3 +597,12 @@ the real ABA8EC/AB8530 post-constructor arm and genuine late15Czero continuation
 no replayed raw85/new188 or fabricated layout. Its required geometry Frame
 affinity view is build-checked. This remains separate from the first prefix-only
 ownership fixture and adds no caller, rendering or runtime credit.
+
+Prefix adapter e52/owner3671 now pass root and independent source reviews and
+Win32 plus existing checks2/2. Root corrected unbuilt packet compatibility:
+C++17 typed const array extents and pure dispatcher context/acquired/array
+identity views replace span/private access; no native body or admission changes.
+Main-section335 plus independently reviewed sticky-failure19999 is compiled but
+uncalled; it still needs future owner reservation/retirement admission. Both
+private host constants remain OFF. The concrete prefix-only lifecycle fixture
+is preregistered; no74/Font/content/parenting/visual/ABI activation is claimed.

@@ -1,6 +1,7 @@
 #include "bsp/native_gui_text_main_section_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_string_process.hpp"
+#include "bsp/native_material_effect_programs.hpp"
 #include "bsp/native_string_raw_domain.hpp"
 #include "bsp/native_string_pool_owner.hpp"
 #include "bsp/native_string_pool_storage.hpp"

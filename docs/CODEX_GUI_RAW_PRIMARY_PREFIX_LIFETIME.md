@@ -1,6 +1,8 @@
 # Qualified raw Text primary-prefix lifetime
 
-**UNBUILT, uncalled library source preparation.** Base `8a0442cda`, pure db55
+**Integrated and Win32 build-tested; private host fixture remains OFF.**
+Frozen source packet `e52fe7c7` was unbuilt and uncalled when handed off.
+Base `8a0442cda`, pure db55
 Frame identity/state dependency `17c5dddfb`, plan eab, producer db55 and shared
 raw widget transport2ee. This packet owns only the new primary_prefix_lifetime
 HPP/CPP/doc and existing retirement HPP/CPP/reference CPP. No owner/host caller,
@@ -20,9 +22,14 @@ Whole Attempt construction takes forward addresses only. After all objects are
 live, bind internal e769/2049 and widget history, execute db55.Frame.prepare,
 then2ee slots.bind BEFORE Text AA1380. The new context/constant raw118 pointer
 is the adapter's immutable binding; no extra mutable seal or ownership registry.
-Concrete public tree/node contexts are compared. Their private array/count and
-hidden companion/frame bindings remain explicit caller provenance; the supplied
-typed spans MUST be those actual constructor operands, with full live extents.
+The integrated C++17 transport uses a fixed typed const pointer/count pair.
+Pure `const noexcept matches` views compare both dispatchers' private context
+and acquisition identities and the node dispatcher's exact array pointer/count.
+The internal node context is an explicit retained reference, alongside the
+producer's primary node context. These views grant no liveness or dispatch
+permission; existing bound, stage, receipt and poison checks remain separate.
+Full opaque provider extents and hidden companion/frame bindings remain caller
+provenance. No private context getter or C++ language-standard change is needed.
 
 The selector is metadata-only and can still describe provenance after scalar;
 it is NOT liveness/settlement permission. False requires exact private Frame
@@ -108,8 +115,12 @@ the owner must prove Text scalar/destructor/late-flags/pool/disposal and BOTH
 Models' actual complete scalar/flags1/pool returns, with no poisoned/pending
 operations. Healthy !retention or retired metadata alone is insufficient.
 
-Validation is bounded source/timing/name/alias/extent/whitespace review only.
-No build, test, probe, game or Ghidra mutation was run. Root owns compilation and
-the first later real-provider prefix lifecycle. No current caller, attach/
+Root and independent review accepted the frozen packet and integration fixes.
+The first build exposed C++20 span/private-getter incompatibilities; their logs
+are preserved. The final C++17 pointer/count and pure affinity correction builds
+with existing checks 2/2 (`local/cc16_primary_prefix_main_section_complete_off_build.log`).
+The raw scalar tail, late LOW BYTE and disposal-last order are unchanged. No
+game or Ghidra mutation has run. The private OFF host fixture is preregistered
+in `CODEX_GUI_RAW_PRIMARY_PREFIX_QUALIFICATION.md`. No active caller, attach/
 reparent/74/properties18/loaded78, fullAAA710/child completion, ABI/failure/reuse
 proof, content/rendering or actual FE_initial acceptance follows.

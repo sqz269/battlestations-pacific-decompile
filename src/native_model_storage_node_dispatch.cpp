@@ -70,6 +70,11 @@ NativeModelStorageNodeDispatch::~NativeModelStorageNodeDispatch() {
     for (std::size_t i = 0; i < acquired_.used; ++i)
         if (calls_[i].phase == Phase::entered) std::terminate();
 }
+bool NativeModelStorageNodeDispatch::matches(const NativeModelStorageNodeDispatchContext& c,
+    const NativeModelStorageNodeDispatchAcquired& a,
+    const NativeModelStorageNodeCall* calls, std::size_t count) const noexcept {
+    return context_ == &c && &acquired_ == &a && calls_ == calls && call_count_ == count;
+}
 void NativeModelStorageNodeDispatch::bind(NativeModelStorageNodeDispatchContext& c) {
     auto& m = c.record;
     auto& n = m.model.storage.node;

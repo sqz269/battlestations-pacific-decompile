@@ -256,7 +256,8 @@ struct GameNativeRawDefaultTextOwner::Impl::PrimaryPrefix {
           slots(slots_acquired), widget_context{a.widget_record, *a.widgets, a.widgets->context(),
               primary_route, internal_route, slots},
           context{a.widget_record, *a.widgets, a.widget_acquired, producer_context, producer_frame, producer,
-              name, widget_context, slots_acquired, {calls.get(), count}, {a.node_calls.get(), a.node_call_capacity}} {
+              name, widget_context, a.node_record, slots_acquired,
+              {calls.get(), count}, {a.node_calls.get(), a.node_call_capacity}} {
         // Forward references above take addresses ONLY. In particular the
         // Attempt's factory/history objects are not inspected until bind().
     }
