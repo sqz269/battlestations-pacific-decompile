@@ -17,9 +17,9 @@
   "packets": [
     {
       "id": "codex-gui-text-raw-model-transport",
-      "state": "api_reviewed_coherent_raw_overloads_source_in_progress_A1_build_hold",
+      "state": "integrated_source_reviewed_win32_build_passed_default_runtime_unproven",
       "worker": "gui_integration_review",
-      "source_ready": true,
+      "source_ready": false,
       "depends_on": ["codex-gui-raw-model-storage", "codex-gui-raw-model-geometry", "codex-gui-widget-state"],
       "function_addresses": ["00ab8530", "00ab9650", "00ab8250", "00ab8ee0"],
       "output_files": [
@@ -29,11 +29,11 @@
         "include/bsp/native_gui_text_reference.hpp", "src/native_gui_text_reference.cpp",
         "docs/CODEX_GUI_TEXT_RAW_MODEL_TRANSPORT.md"
       ],
-      "notes": "Approved explicit rawModel overloads across Text85/93/118 plus separate typed raw122 reference, preserving legacy interfaces/callers with limited private body factoring. Use frozen481 + d403 B75170 concrete retained DWORD frame; no erased callback, ModelOwner cast, dummy scene environment, copied count or fake effect. Mandatory internal188 publication precedes canonical admission; host_metadata failure propagates distinctly from native ctor cleanup/slot return. Real GuiDefault/cache/Lua and genuine same-domain Model-only routing are entry prerequisites; general primary4C/Page/children/nonemptycontent remain later. Named Model prerequisites are prepared but unbuilt, not production-ready. No factory wrapper/activation, CMake/ledger/body credit or build during A1 hold."
+      "notes": "Frozen e75 integrated at93a52f36d after root constructor and independent ownership review; MSVC Win32 Release and both existing CTests pass. Explicit rawModel overloads85/93/118 plus separate typed raw122 preserve legacy interfaces/callers. Uses accepted481+d403 concrete retained DWORD frame. Mandatory188 publication precedes canonical admission; host_metadata failure stays distinct from native constructor cleanup/slot return. Genuine same-domain Model-only router and GuiDefault/cache/Lua readiness remain entry requirements, with DEFAULT factory binding still pending. No actual raw lifecycle/exception/reuse, FP/ABI or production-caller proof, no Page/children/nonemptycontent activation and no new body credit."
     },
     {
       "id": "codex-gui-raw-model-geometry",
-      "state": "static_checkpoint_source_reviewed_unbuilt_A1_hold",
+      "state": "integrated_build_object_sse_checked_inactive_reference_msd_passed",
       "worker": "gui_frame_lifetime",
       "source_ready": false,
       "depends_on": ["codex-gui-raw-model-storage"],
@@ -43,11 +43,11 @@
         "src/native_model_storage_geometry.cpp",
         "docs/CODEX_RAW_MODEL_STORAGE_GEOMETRY.md"
       ],
-      "notes": "Bounded raw B75170 geometry association over qualified rawModel481 context/current imported increment/decrement and actual-owner current0 services. Requires481 library source, still unbuilt; dependency is source-level, not accepted production closure. Capture incoming then old180; publish new, sample increment then separately decrement, preserve callback replacements; late scalar argument-cell reads share one sampled D7A260 sentinel, equality skips only references and unordered stores. New files only, keep481 source/semantic Model/Text/Page/shared APIs frozen. Root owns CMake/testing/ledger integration; no activation/body credit. Raw Text85/93/118/122 transport and shared Model/Group routing remain separate coordinated dependencies."
+      "notes": "Integrated eb18518db: MSVC Win32 build2/2, emitted scalar SSE sequence inspected, inactive reference4800/MSD1600 pairs0 against A1 ON799. Raw B75170 uses genuine481 context/current imports/actual-owner current0; captured geometry, preserved replacements, late DWORD cells and one sentinel. No direct alias/FP/callback/lifecycle execution or Original ABI proof and no activation/body credit. Text transport and shared Model/Group/Page routing remain separate work."
     },
     {
       "id": "codex-gui-raw-model-storage",
-      "state": "static_checkpoint_source_reviewed_unbuilt_A1_hold",
+      "state": "integrated_build_checked_inactive_reference_msd_passed",
       "worker": "gui_frame_lifetime",
       "source_ready": false,
       "depends_on": [],
@@ -57,11 +57,11 @@
         "src/native_model_storage_lifetime.cpp",
         "docs/CODEX_RAW_MODEL_STORAGE_LIFETIME.md"
       ],
-      "notes": "Qualified standalone raw188h Model constructor/member cleanup/destructor/scalar deleter/canonical actual+4 reference over existing real node, pool, import and actual-owner providers. Preserve B750C0 single captured decrement epoch, B74F20 fresh epoch and B75290 post-destructor current flags low-byte. New files only; keep semantic Model/child/parenting files unchanged. No fake family transport, logical SceneResource association, second count, application activation or new whole-body credit. Root owns CMake/ledger integration after A1 hold. This library packet is source-preparable independently; raw child transport, Model006EF860/current1C/tree/scene dispatch and P3a2 publication are NOT independent-ready or included."
+      "notes": "Integrated eb18518db: qualified raw188h constructor/member/destructor/scalar/canonical actual+4 reference registered in bsp_core; MSVC Win32 build2/2 and inactive reference/MSD pairs0. Normal captured decrement epoch, fresh unwind epoch and late flags preserved. Four fragments only, no whole-body credit or direct lifecycle/exception/reuse/ABI proof. Semantic Model files unchanged; genuine shared raw child/type/scene/tree routing remains separate."
     },
     {
       "id": "codex-gui-icon-delayed-custody",
-      "state": "static_checkpoint_source_reviewed_unbuilt_A1_hold",
+      "state": "integrated_uncalled_metadata_build_inactive_reference_msd_passed",
       "worker": "gui_integration_review",
       "source_ready": false,
       "depends_on": [],
@@ -71,7 +71,7 @@
         "src/game_native_gui_icon_process.cpp",
         "docs/CODEX_GUI_ICON_DELAYED_PROCESS.md"
       ],
-      "notes": "Bounded deferred Source process owner for the single F8BD98 backing and existing genuine NativeGuiIconDelayedLoads service. Verify Original loader preimage; borrow the canonical raw string/manager domain once and reject retargeting. No native getter, queue/delivery, raw Icon activation, semantic adapter cast, shared host/CMake/deletion edit, or new body credit. Root owns binding the SAME singletons native_deletion_bindings().gui_icon_delayed_loads before any getter and keeping graph through drain. Distinguish interrupted operation from ordinary registered owner retention. Static source preparation only during strict A1; compile/runtime acceptance follows the hold. Independent of publishing children into P3a2; that still requires shared raw Model/Group closure."
+      "notes": "Integrated eb18518db in bsp_game: single verified loader-zero F8BD98 Source backing and deferred genuine delayed-service metadata; build2/2 and inactive reference/MSD pairs0. Getter/preparation remain uncalled; host deletion hookup, actual getter/drain/failure proof and raw Icon activation are NOT supplied. Future root caller must bind SAME service before get and retain providers through drain; normal registered retention is distinct from interrupted failure. No body credit."
     },
     {
       "id": "codex_cc9_a1_activation",
@@ -176,7 +176,7 @@
     },
     {
       "id": "codex-gui-p3a2",
-      "state": "childless_static_checkpoint_source_reviewed_unbuilt_A1_hold",
+      "state": "integrated_page_off_build_inactive_reference_msd_passed",
       "worker": "gui_integration_review",
       "source_ready": false,
       "depends_on": ["codex_cc9_a1_activation", "codex-gui-page-lifetime", "codex-gui-widget-state", "codex-gui-raw-field-resolver", "codex-gui-page-source-borrows", "codex-gui-frame-reuse", "codex-gui-widget-empty"],
@@ -189,7 +189,7 @@
         "src/game_native_gui_page_application.cpp",
         "docs/CC15_GUI4_P3A2.md"
       ],
-      "notes": "Frozen c5594a19a plus earlier9f8df5d54 composes genuine childless Screen/root AC4C50, warm AC59A0 and actual AAA710/type0-key suffix over private views of the canonical domain. Root constructor and independent full ownership reviews found no source blocker; doc-only066a46466 corrects the cold resource count (null B6D890 leaves170), with identical source. Candidate remains OFF, unbuilt and unmerged during immutable strict A1 gates. Compile/CTests, OFF inertness gates and focused lifecycle execution remain. Real FE_initial children need P3b/P3c plus same-tree Model/Group parenting/lifetime closure and joint P4 bridge transfer; no filtered enumerator, fake providers or whole-function credit."
+      "notes": "Integrated eb18518db: c559/9f8 childless AC4C50/AC59A0/AAA710 type0-key composition, doc066 count correction and complete platform-header include fix. MSVC Win32 build2/2, inactive reference4800/MSD1600 pairs0 against accepted A1 ON799. Page chain remains OFF; actual childless lifecycle, shared-owner/reentry/reuse and GUI proof remain open. Real FE_initial needs Text/Icon and common raw Model/Group routing plus joint P4 bridge transfer. No fake enumerator/provider or whole-function credit."
     },
     {
       "id": "archive_inflate_stream",

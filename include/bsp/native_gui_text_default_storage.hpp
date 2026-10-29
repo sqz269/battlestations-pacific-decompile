@@ -57,4 +57,40 @@ void tidy_native_gui_text_pointer_vector_005d6cf0(void* actual_vector) noexcept;
 void* construct_native_gui_text_default_storage_00ab9650(void* actual_destination,
     NativeGuiTextDefaultStorageFrame&, NativeGuiTextDefaultStorageContext&,
     NativeGuiTextDefaultStorageAcquired&);
+
+struct NativeGuiTextRawModelDefaultStorageContext {
+    NativeGuiTextRawModelSectionStorageContext& sections;
+    NativeGuiWidgetLifetimeContext& lifetime;
+    game::GameNativeGuiTextState& state;
+    const volatile std::uint32_t& shadow_offset_00d5c5c0;
+    const volatile std::uint32_t& normal_rgb_00ce3e18;
+    const volatile std::uint32_t& one_00d7a24c;
+    const volatile std::uint32_t& disabled_alpha_00ce3800;
+};
+struct NativeGuiTextRawModelDefaultStorageFrame {
+    NativeGuiTextRawModelSectionStorageFrame& sections;
+};
+struct NativeGuiTextRawModelDefaultStorageAcquired {
+    using Failure = NativeGuiTextSectionStorageAcquired::Failure;
+    bool started{}, complete{}, base_complete{}, derived_complete{}, sections_entered{};
+    bool exception_cleanup_started{}, base_lifetime_ended{};
+    std::int32_t native_eh_state{-1};
+    std::uint32_t active_call_site{}, consumed_cleanup_actions{};
+    void* destination{};
+    Failure failure{Failure::none};
+    NativeGuiTextRawModelSectionStorageAcquired sections;
+};
+// Same default stores/native schedule, qualified raw internal188 transport.
+// Extra85 host_metadata failure propagates WITHOUT outer Native unwind; retain
+// Text and all independent creators. No future AA1380 failed-slot return may
+// classify that state as ordinary Native constructor failure.
+// The lifetime borrows canonical initialized Text/Element cells and SAME real
+// string/point-light providers as the raw Model node context. A genuine CURRENT
+// base-lineage Text match rejects (zero is ordinary). Reauthenticate DEFAULT
+// empty branches after callbacks before cleanup. Admission failure preserves
+// reached state, including interrupted cleanup; no automatic retry/slot return.
+// Native private stack/FH3/SEH/binary ABI remain outside this Source interface.
+void* construct_native_gui_text_default_storage_00ab9650(void* actual_destination,
+    NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,
+    NativeGuiTextRawModelDefaultStorageAcquired&);
 } // namespace bsp

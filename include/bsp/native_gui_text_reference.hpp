@@ -113,4 +113,73 @@ private:
 NativeGuiTextReference& bind_native_gui_text_reference(void* companion_storage,
     void* actual_text, NativeGuiTextReferenceContext&, NativeGuiTextReferenceFrame&,
     NativeGuiTextReferenceDisposal);
+
+class NativeGuiTextRawModelReference;
+struct NativeGuiTextRawModelReferenceDisposal {
+    void* context;
+    std::size_t context_bytes;
+    void (*retire)(void*, NativeGuiTextRawModelReference&) noexcept;
+};
+struct NativeGuiTextRawModelReferenceContext {
+    NativeRenderActualOwnerRegistry& owners;
+    game::GameNativeReadOnlyData& data;
+    NativeGuiTextRawModelDefaultStorageContext& construction_context;
+    NativeGuiTextRawModelDefaultStorageFrame& construction_frame;
+    const NativeGuiTextRawModelDefaultStorageAcquired& construction;
+    NativeGuiTextRawModelRetirementContext& retirement;
+};
+
+// Separate canonical122 binding for completed DEFAULT raw-Model93 only. It
+// deliberately cannot enter the legacy Text field/content APIs. Same actual
+// Text/count/profile; no retain, counter copy, semantic cast or second owner.
+// Bind failure is EXTRA host admission: preserve the completed raw graph,
+// never call AA1380's native failed-constructor slot return or retry.
+class NativeGuiTextRawModelReference final : public RenderCommandReference,
+    private NativeRefCountedDeleteCalls {
+public:
+    using Phase = NativeGuiTextReference::Phase;
+    ~NativeGuiTextRawModelReference() override;
+    NativeGuiTextRawModelReference(const NativeGuiTextRawModelReference&) = delete;
+    NativeGuiTextRawModelReference& operator=(const NativeGuiTextRawModelReference&) = delete;
+    NativeGuiTextRawModelReference(NativeGuiTextRawModelReference&&) = delete;
+    NativeGuiTextRawModelReference& operator=(NativeGuiTextRawModelReference&&) = delete;
+    Phase phase() const noexcept { return phase_; }
+    void* storage() const noexcept { return identity_; } // diagnostic after failure/retirement
+    const NativeGuiTextRawModelReferenceContext& storage_context() const noexcept { return context_; }
+    void release_zero_references() noexcept override;
+    void* delete_current_scalar_00ab8ee0(const volatile std::uint32_t& caller_flags);
+private:
+    friend NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference(void*, void*,
+        NativeGuiTextRawModelReferenceContext&, NativeGuiTextReferenceFrame&,
+        NativeGuiTextRawModelReferenceDisposal);
+    NativeGuiTextRawModelReference(void*, NativeGuiTextRawModelReferenceContext&,
+        NativeGuiTextReferenceFrame&, NativeGuiTextRawModelReferenceDisposal,
+        const volatile std::uint32_t*, std::atomic<std::int32_t>&);
+    void delete_vslot04(void*, std::uint32_t captured_profile, std::uint32_t flags) override;
+    void require_slot(std::uint32_t, unsigned, std::uint32_t) const;
+    struct Completion {
+        void* identity;
+        NativeRenderActualOwnerRegistry* owners;
+        NativeGuiTextRawModelReferenceDisposal disposal;
+    };
+    Completion completion() const noexcept;
+    void finish_success(Completion) noexcept;
+    void* const identity_;
+    NativeGuiTextRawModelReferenceContext& context_;
+    NativeGuiTextReferenceFrame& frame_;
+    const NativeGuiTextRawModelReferenceDisposal disposal_;
+    const volatile std::uint32_t* const profile_;
+    Phase phase_{Phase::bound};
+};
+// Same disjointness, current-slot, one-shot/failure, saved-disposal-LAST and
+// post-pool no-payload-read contracts as legacy122. The NEW raw Model record,
+// its optional canonical reference, construction/lifetime/tree/geometry frames,
+// Acquired and DWORD operands stay INDEPENDENT of the returned Text slot and
+// Text companion. Disposal MUST preserve those and every provider while any
+// Model credit/failure/physical-slot custody remains (including Model flags0).
+// retired() alone never proves Model cleanup or physical return. Opaque/
+// transitive provider backing remains a caller proof.
+NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference(void* companion_storage,
+    void* actual_text, NativeGuiTextRawModelReferenceContext&, NativeGuiTextReferenceFrame&,
+    NativeGuiTextRawModelReferenceDisposal);
 } // namespace bsp
