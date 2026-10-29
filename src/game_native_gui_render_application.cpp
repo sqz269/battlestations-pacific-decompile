@@ -54,7 +54,7 @@ namespace {
 constexpr bool kRawDefaultTextQualificationCc16Bound = false;
 // Separate private fixture for the genuine primary Model prefix. Its owner
 // selects the receipt-authorized lifetime route; it adds no content or layout.
-constexpr bool kRawPrimaryPrefixQualificationCc16Bound = false;
+constexpr bool kRawPrimaryPrefixQualificationCc16Bound = true;
 static_assert(!(kRawDefaultTextQualificationCc16Bound &&
     kRawPrimaryPrefixQualificationCc16Bound));
 using Word = std::uint32_t;
