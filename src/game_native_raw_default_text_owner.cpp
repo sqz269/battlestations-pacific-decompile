@@ -21,6 +21,7 @@
 #include "bsp/native_node_destruction.hpp"
 #include "bsp/native_camera_owner.hpp"
 #include "bsp/native_lua_service_bindings.hpp"
+#include "bsp/native_shader_binary_cache.hpp"
 #include <cstdint>
 #include <exception>
 #include <stdexcept>
