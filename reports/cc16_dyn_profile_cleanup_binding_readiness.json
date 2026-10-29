@@ -1,0 +1,522 @@
+{
+  "schema_version": 1,
+  "packet": "codex-dyn-profile-cleanup-binding-readiness",
+  "status": "default_domain_flat_supplier_proven_source_proposal_ready_custom_domain_unclosed",
+  "utc": "2026-10-29T20:31:12.203031+00:00",
+  "baseline": {
+    "head": "605373bf732e4bd3089e8f07ddca226ab4d635a3",
+    "prior_provider_baseline": "2c25911ef30940f93ef3a56c6202198013b59b45",
+    "provider_source_delta": [],
+    "branch": "agent/codex-dyn-profile-cleanup-binding-readiness",
+    "tree": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-cleanup-binding-readiness",
+    "prior_readiness_commit": "3dea1fe67775660434911aaf4449ec716ffe9c83",
+    "accuracy_guard_on": true,
+    "accuracy_scope": "Already admitted605 evidence unchanged; no relabel or added scope."
+  },
+  "ownership": {
+    "kind": "file_only",
+    "addresses": [],
+    "files": [
+      "docs/CC16_DYN_PROFILE_CLEANUP_BINDING_READINESS.md",
+      "reports/cc16_dyn_profile_cleanup_binding_readiness.json"
+    ]
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "vendor_bodies": 0,
+    "activation": 0,
+    "production_source_edits": 0,
+    "builds_run": 0,
+    "tests_run": 0,
+    "fixtures_run": 0,
+    "probes_run": 0,
+    "games_run": 0,
+    "dll_edits": 0,
+    "ghidra_mutations": 0,
+    "ledger_mutations": 0,
+    "frozen_accuracy_receipts_changed": false
+  },
+  "memory_type": {
+    "name": "AvoidZoneDynHullMemory",
+    "fields": [
+      "void* context",
+      "void* (*allocate)(void*,size_t)",
+      "void (*release)(void*,void*)"
+    ],
+    "public_custom_binding": "game_native_dyn_process(CameraAxesCrtAccess const&, AvoidZoneDynHullMemory const&)",
+    "first_bind_rule": "Stable function-local process; exact context/allocate/release and CRT pointer comparison on later accesses.",
+    "public_actual_access": "GameNativeDynProcess::dynamics().engine.memory / publication pointers",
+    "default_tuple": {
+      "context": "nullptr",
+      "allocate": "private allocate -> ::operator new(bytes)",
+      "release": "private release -> ::operator delete(pointer)"
+    },
+    "lifetime": "Owner copies callback tuple; external custom context/pointees remain caller lifetime responsibility."
+  },
+  "native_allocation_epochs": {
+    "C50390_raw48h": {
+      "call": "00c503a9",
+      "entry": "00bf681b"
+    },
+    "C50390_parent_vector": {
+      "call": "00c503f6",
+      "entry": "00bf55be"
+    },
+    "C50390_parent_vector_free": {
+      "call": "00c5042f",
+      "entry": "00bf6989"
+    },
+    "Root_raw48h": {
+      "call": "00c50328",
+      "entry": "00bf681b"
+    },
+    "source_facade_limit": "Current caller memory.allocate handles both native allocation entries; source custody is not full original entry/failure equivalence."
+  },
+  "callers": [
+    {
+      "family": "scope_enter_C57020",
+      "file": "src/dyn_profile_scopes.cpp",
+      "line": 87,
+      "memory": "context.memory",
+      "flat_supplier_current": null,
+      "qualified_child_overload_adopted": false
+    },
+    {
+      "family": "native_collision",
+      "file": "src/native_dyn_collision_pass.cpp",
+      "line": 16,
+      "memory": "*Context::profile_memory = c.profile.memory",
+      "other_domain": "c.memory for scene/ordinary collision allocations",
+      "flat_supplier_current": null,
+      "qualified_child_overload_adopted": false
+    },
+    {
+      "family": "native_world_step",
+      "file": "src/native_dyn_world_step.cpp",
+      "line": 14,
+      "memory": "c.owner->collision.profile.memory",
+      "other_domain": "collision.memory for ordinary world-step arrays",
+      "other_routes": [
+        "enter_bridge -> calls.enter_profile_00c57020",
+        "collision_bridge -> calls.collision_pass_00c57070"
+      ],
+      "flat_supplier_current": null,
+      "qualified_child_overload_adopted": false
+    },
+    {
+      "family": "native_solver_mode1",
+      "file": "src/native_dyn_solver_mode1.cpp",
+      "line": 16,
+      "memory": "Context::memory = &profile.memory",
+      "owner_copy": "NativeDynSolverMode1Runtime copies DynProfileScopeContext by value",
+      "precondition": "Supported profile allocator must be world allocator; not dynamically discovered.",
+      "flat_supplier_current": null,
+      "qualified_child_overload_adopted": false
+    },
+    {
+      "family": "C5A8B0",
+      "file": "src/cc16_dyn_radix_manager_update.cpp",
+      "line": 88,
+      "memory": "context.profile->memory",
+      "other_domain": "Radix vector callbacks come from separately supplied DynLiveCrt; not evidence for node BF65AC.",
+      "flat_supplier_current": null,
+      "qualified_child_overload_adopted": false
+    },
+    {
+      "family": "Root_C50310",
+      "file": "src/dyn_engine_runtime.cpp",
+      "line": 77,
+      "memory": "DynEngineRuntimeContext::memory for48h Root node; same engine context allocates9Ch profile",
+      "qualified_constructor_overload_adopted": false,
+      "flat_supplier_current": null
+    }
+  ],
+  "normal_teardown": {
+    "node_function": "delete_native_dyn_profile_node_00c35400",
+    "vector": "BF6989 source service -> supplied engine memory.release(context,p)",
+    "raw_node": "BF65AC source service -> supplied engine memory.release(context,p)",
+    "sbo_text": "physics_free_profile_text_00bf65ac -> singleton_lifetime_free",
+    "engine": "C421B0 and C4DDE0 use actual engine memory",
+    "world": "C4DDE0 separately uses dynamics.world.scene->memory",
+    "limit": "Existing contextual member delegates are not independently proved flat providers for custom raw-node allocation."
+  },
+  "flat_provider": {
+    "existing_type": "bsp::DynProfilePartialNodeDelete = void (__cdecl*)(void*)",
+    "genuine_default_target": "global unsized scalar ::operator delete(void*)",
+    "proposed_expression": "static_cast<DynProfilePartialNodeDelete>(&::operator delete)",
+    "matching_allocation": "Only actual default process scalar ::operator new raw48h allocations.",
+    "operation": "Direct raw-allocation release function call; no C++ delete expression or fabricated native class/destructor.",
+    "current_public_accessor_exists": false,
+    "source_proof": "Explicit default allocate/release pair in game_native_dyn_process.cpp plus retained Release map/SDK source; no inference from callback names.",
+    "custom_flat_supplier_found": false,
+    "custom_requirement": "Actual allocator owner must supply a matching flat release with retained context lifetime. If inherently stateful without flat entry, separately review a context-bearing delete binding/overload.",
+    "rejected_substitutions": [
+      "casting AvoidZoneDynHullMemory.release to one-argument callback",
+      "casting contextual member physics/solver BF65AC methods",
+      "using BF6989 merely because native BF6989 JMPs BF65AC",
+      "using singleton_lifetime_free on arbitrary node-memory domains",
+      "installing a new global to forward an arbitrary allocation context",
+      "native image code address cast to host function pointer",
+      "missing/null qualified callback silently selecting old normal-only append"
+    ]
+  },
+  "crt_evidence": {
+    "retained_project": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_core.vcxproj",
+      "sha256": "56cae9cc74fec02ad7ff7d8282a622d6abc2058aa198053a09c6932dadf98826",
+      "release_runtime": "MultiThreadedDLL /MD",
+      "platform": "Win32",
+      "toolset": "v145"
+    },
+    "retained_map": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_game.map",
+      "sha256": "71e733f315a3e76ea667c6300fff2267d3bc46a5db0cf9e73f9f86d0f3789a2e",
+      "mtime_utc": "2026-10-29T19:11:49.770390+00:00",
+      "selected_rows": [
+        "0001:002fd760       ?singleton_lifetime_free@bsp@@YAXPAX@Z 102fe760 f   bsp_core:singleton_lifetime.obj",
+        "0001:0030e700       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 1030f700 f   bsp_core:singleton_lifetime.obj",
+        "0001:00565bb0       ??2@YAPAXI@Z               10566bb0 f   MSVCRT:new_scalar.obj",
+        "0001:00566530       ??3@YAXPAX@Z               10567530 f   MSVCRT:delete_scalar.obj",
+        "0001:005674ba       _free                      105684ba f   ucrt:api-ms-win-crt-heap-l1-1-0.dll",
+        "0001:00567526       _malloc                    10568526 f   ucrt:api-ms-win-crt-heap-l1-1-0.dll"
+      ],
+      "scope": "Retained current candidate link evidence, no new build/execution and no linked vendor-object byte-identity claim."
+    },
+    "installed_sdk": {
+      "directory": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\crt\\src\\vcruntime",
+      "new_scalar_cpp_sha256": "fb7f0d8cd2233d10467ac7e39c7afc2cdb6b194249c5f56b7602794529fa1192",
+      "delete_scalar_cpp_sha256": "2b6434312792f6a340719b6e6c46b148411e2dcf792cbc1f5ae9c5d9980d5b43",
+      "new": "malloc(size), _callnewh retry; SIZE_MAX decline has separate exception branch.",
+      "release_delete": "free(block)",
+      "debug_delete": "_free_dbg(block,_UNKNOWN_BLOCK)"
+    },
+    "limits": [
+      "No original CRT binary identity",
+      "No custom replacement-new/custom allocator/module inference",
+      "No Debug compatibility inference from Release",
+      "No full allocation failure or FH/SEH equivalence"
+    ],
+    "native_alias": {
+      "entry": "00bf6989",
+      "bytes": "e91efcffff",
+      "target": "00bf65ac",
+      "scope": "Original-image identity only; does not prove host provider/domain identity."
+    }
+  },
+  "singleton_domain": {
+    "allocate": "singleton_lifetime_allocate: std::malloc(host_bytes), _callnewh retry, bad_alloc on decline",
+    "free": "singleton_lifetime_free: std::free",
+    "profile_use": "NativeLegacySboString heap text and its matching normal teardown",
+    "flat_free_exists": true,
+    "raw_dyn_node_supplier_selected": false,
+    "reason": "Keep actual producer pair, despite shared current Release backend; custom domain and failure semantics are not inferred."
+  },
+  "pending_movie_comparison": {
+    "candidate": "6d4c288834c36f5ddc83da629336077389732da7",
+    "accepted_at_baseline": false,
+    "header": "J:\\PROG\\battlestations-pacific-decompile-codex-game-movie-factory-owner\\include\\bsp\\game_movie_factory_owner.hpp",
+    "header_sha256": "86016d14b24133bb8c06996e2f8141dd14e42af0774a6558f9710df9044546ff",
+    "source_sha256": "39ca1d6d4b7696096326fc8fad51424d62e98b1b1f379f5d44ef1ce455c617db",
+    "type": "GameMovieFactoryAllocation",
+    "required_pair": "allocate_00bf681b(size_t) / free_00bf65ac(void*) noexcept; no default implementation",
+    "documented_actual_supplier": "singleton_lifetime_allocate({object,bytes,bytes}) / singleton_lifetime_free",
+    "observed_source": "allocate exactly4; free observation.captured_allocation through same required allocation object",
+    "scope": "Factual distinction shared with movie_factory_startup_eh; no cross-Dyn supplier assumption or candidate admission."
+  },
+  "qualified_child_cleanup": {
+    "available": "C50390 fivearg + C44000 fourarg overloads",
+    "state_start": "00c503b7 after captured raw48h allocation",
+    "state_end": "00c503d6 before parent-vector growth",
+    "actions": [
+      "C44000 current-vector BF6989 via real0040A900, no field clear",
+      "Then C50390 captured raw48h BF65AC on constructor exception, rethrow"
+    ],
+    "excludes": [
+      "raw allocation exception before state0",
+      "later parent-growth failure/orphan rollback",
+      "original FH3/SEH/fault/frame/secondary-cleanup equivalence"
+    ],
+    "current_caller_adoption": false
+  },
+  "minimal_proposal": {
+    "status": "Ready for primary source review for recognized default domain; not production edits or activation.",
+    "existing_files_only": [
+      "include/bsp/game_native_dyn_process.hpp",
+      "src/game_native_dyn_process.cpp",
+      "include/bsp/dyn_profile_scopes.hpp",
+      "src/dyn_profile_scopes.cpp",
+      "include/bsp/cc16_dyn_radix_manager_update.hpp",
+      "src/cc16_dyn_radix_manager_update.cpp"
+    ],
+    "supplier_accessor": {
+      "proposed_signature": "DynProfilePartialNodeDelete GameNativeDynProcess::profile_partial_node_delete_00bf65ac() const",
+      "checks": "Under existing lock/initialized contract, compare actual owner memory context/allocate/release to existing process_memory tuple exactly.",
+      "success": "Return actual global unsized scalar operator delete target.",
+      "other_tuple": "Missing qualified custody, no fallback/global forwarding owner or second singleton."
+    },
+    "scope_enter_overload": "Existing four C57020 args plus required DynProfilePartialNodeDelete; cold call real fivearg C50390.",
+    "C5_overload": "Existing six C5 args plus required DynProfilePartialNodeDelete; append_bridge calls real fivearg C50390.",
+    "preserve": [
+      "All old normal-only APIs",
+      "DynProfileScopeContext field/layout10h Win32",
+      "DynProfileScopeStorage14h",
+      "C57020 publication/cache/RDTSC epochs",
+      "C5 four scope leave actions and original frame/context contracts",
+      "No FP operation/control change or different allocator policy"
+    ],
+    "private_context": "Add only after existing C5 context28h prefix; explicit legacy vs qualified bridge selection; inspect emitted offsets and call-origin stack.",
+    "actual_caller_custody": "Use supplier only with that same process actual engine/profile allocation tuple and publication cell; not an unrelated context or DynLiveCrt.",
+    "no_activation_claim": "Radix manager/game producer still missing; explicit source composition only."
+  },
+  "later_native_caller_batch": {
+    "files": [
+      "include/bsp/native_dyn_collision_pass.hpp",
+      "src/native_dyn_collision_pass.cpp",
+      "include/bsp/native_dyn_world_step.hpp",
+      "src/native_dyn_world_step.cpp",
+      "include/bsp/native_dyn_solver_mode1.hpp",
+      "src/native_dyn_solver_mode1.cpp",
+      "include/bsp/game_native_dyn_process.hpp",
+      "src/game_native_dyn_process.cpp"
+    ],
+    "inputs": "Same required matched flat provider through additive qualified overloads/runtime construction; old APIs remain normal-only.",
+    "current_private_prefix_bytes": {
+      "collision": 20,
+      "world_step": 16,
+      "solver_mode1": 20,
+      "C5": 40
+    },
+    "prefix_scope": "Current x86 source layouts/static assertions, no compilation performed here.",
+    "world_routes": [
+      "direct append",
+      "enter_profile dispatch",
+      "collision_pass dispatch"
+    ],
+    "override_custody": "Qualified calls interface/owner must preserve or explicitly qualify existing overrides; do not bypass them and silently claim full adoption.",
+    "solver": "Qualified runtime task-table entry must select qualified execute path and retain copied scope context/provider.",
+    "custom_process": "Do not auto-switch without genuine matching provider."
+  },
+  "root_scope": {
+    "address": "00c50310",
+    "normal_source_only_current": true,
+    "state_start": "00c50335 after BF681B allocation capture",
+    "protected_epochs": [
+      "C44000 constructor",
+      "head stores+0,+4,+8",
+      "publication0109E9F8 atC50367",
+      "BF79F0 atC5036D"
+    ],
+    "state_reset_before_epilogue": false,
+    "handler": "00cc836e -> FuncInfo00e041d0",
+    "max_state": 1,
+    "unwind_map": {
+      "address": "00e041c8",
+      "bytes": "ffffffff6383cc00",
+      "previous_state": -1,
+      "action": "00cc8363"
+    },
+    "action_bytes": "8b45f050e840e2f2ff59c3",
+    "action": "Load captured [EBP-10], push/call BF65AC, popECX/RET; no field/publication clear.",
+    "distinct_from_C50390": true,
+    "future_files": [
+      "include/bsp/dyn_engine_runtime.hpp",
+      "src/dyn_engine_runtime.cpp"
+    ],
+    "future_contract": "Separate additive Root overload with matching deleter, qualified C44000 and captured-allocation scope through publication/tail operation; do not replace with child append or ctor-only catch.",
+    "publication_failure_limit": "No rollback/clear or reloaded-node substitution; native SEH/FP/feature/memset fault equivalence remains separate from EHsc C++ catch.",
+    "source_tail": "std::memset now; native BF79F0/actual feature binding and original transport separately qualified.",
+    "enclosing_scopes": "C55EA0/C55F50 propagation requires separate original allocation-scope review.",
+    "default_name": "Root short SBO does not naturally allocate/fail long string; do not force name to manufacture activation."
+  },
+  "future_validation_only": [
+    "Strict Win32 compile and final-object/call/context offset inspection",
+    "Use proportionate existing cleanup evidence; any focused new fixture must address a concrete uncovered binding risk and preserve FP/CRT state",
+    "Original ABI/FH3/SEH/fault/frame/secondary cleanup and outer scopes remain qualified",
+    "Real game/profile/manager producer plus separately frozen actual runtime evidence required for activation"
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "read_only_live_scope": "BSP verified target via C50310 proto before capped disasm/byte batches; no inline Ghidra scripts or mutation."
+  },
+  "evidence": {
+    "doc_sha256": "4a93973d72e01fc7e97463e05c5b608cca2bc8546551162ccc8610d312114a0c",
+    "source_and_accepted_receipt_fingerprints": [
+      {
+        "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+        "git_blob": "483e7f06a925322c85ce375dc30acd4e1541457a",
+        "sha256": "3fd5fecb9e29d82393c25315ddcd6046119e3c7666d7d5ab97236c79d8e91c45"
+      },
+      {
+        "path": "include/bsp/game_native_dyn_process.hpp",
+        "git_blob": "8bcec5f9e26075a4c706266722701d1c23434366",
+        "sha256": "a2fd23518752eb7232a0076a039123202f6be1c2ef50fd17a5c9eaff17bdcee6"
+      },
+      {
+        "path": "src/game_native_dyn_process.cpp",
+        "git_blob": "2340457588570a29286cddb3c153e1af7e264624",
+        "sha256": "6ca1af2006f4462e1807d03821183bcf7925404bb77bbdbb32399ee78d32e4e2"
+      },
+      {
+        "path": "include/bsp/dyn_profile_scopes.hpp",
+        "git_blob": "a37ab8151673c17096a4f47057e2e468db16079c",
+        "sha256": "1ce9b126405212887e03e05bbd558d8a035eb252024aa42031cf126a059c5d80"
+      },
+      {
+        "path": "src/dyn_profile_scopes.cpp",
+        "git_blob": "61b51ccd5fa147e0a6aba0f0a6a2856801eb1a07",
+        "sha256": "7177b2f2174174c93dd6dd20e9f8c585d9f54573669fb8a945b747ea0523e7d0"
+      },
+      {
+        "path": "include/bsp/dyn_engine_runtime.hpp",
+        "git_blob": "a6828d517457166cc9078606f84cd76d482b6bbd",
+        "sha256": "2217fde53118820512482ca218e4b73e482801d61e3271bbb81f224b54418393"
+      },
+      {
+        "path": "src/dyn_engine_runtime.cpp",
+        "git_blob": "2aed397d03a8370f1824f41d6f11f9b276e98167",
+        "sha256": "eeda95d61df753129db8a480f5bf8229071ab90134dfff81fa92b976ce700e3a"
+      },
+      {
+        "path": "include/bsp/native_dyn_collision_pass.hpp",
+        "git_blob": "b791990aeed201c1aee3eb080ef16f94fbeeb5df",
+        "sha256": "ff578a824f0ff6044a0231f2c3f24660bf682c96be9e2ebe78bbffcc28aca2c9"
+      },
+      {
+        "path": "src/native_dyn_collision_pass.cpp",
+        "git_blob": "8e7f7571a123e7ea6da661d7a74ae9bf590b3d82",
+        "sha256": "112743077813a1690f59771e180ccd75eae029e3a9a6786d486b2fac3cf697f6"
+      },
+      {
+        "path": "include/bsp/native_dyn_world_step.hpp",
+        "git_blob": "a63ae0f411c38b54a1d7c6973fac4a604c02fd17",
+        "sha256": "38d374b7daf95914c7e237e88f999af251e27f51013bd602e51d5266308e0912"
+      },
+      {
+        "path": "src/native_dyn_world_step.cpp",
+        "git_blob": "ac4b833b5ce91315ec237da0204432adc05ba14c",
+        "sha256": "f729543cd630a87b383d2fb21f1ef387f6e92ab9b7c68cf242a172cd91c94935"
+      },
+      {
+        "path": "include/bsp/native_dyn_solver_mode1.hpp",
+        "git_blob": "60a10bfcd9f51e856f60a6b04b4ff01904884585",
+        "sha256": "aeb6dba1a7a5c989f84f550f2600ab5623c4d82682fe1d7061483d5fbac5fade"
+      },
+      {
+        "path": "src/native_dyn_solver_mode1.cpp",
+        "git_blob": "62e4084f0430e4a7fa2ac29ca6e65c29dae7c06c",
+        "sha256": "f71eabaed4962be31d3e6103906e6cb52200c0ab575d54241b3101ca1f45e5ea"
+      },
+      {
+        "path": "include/bsp/native_dyn_solver_mode0.hpp",
+        "git_blob": "8861b226ddd3628be704f7abbb6f275d94c2d478",
+        "sha256": "8d5239d9619c28962c1fc6cb01309fffc37803c100ab9ca4f1e09d5750b5e8d3"
+      },
+      {
+        "path": "src/native_dyn_solver_mode0.cpp",
+        "git_blob": "8481ab6e909abffae07ff44334f8cc0168235f50",
+        "sha256": "ab656b24c29b16218f9942d35bd378a22bb1b7417637f27ce6b27076e772948b"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_radix_manager_update.hpp",
+        "git_blob": "0effeb39a5343ffd5cf208e0d59a17fe2224ef86",
+        "sha256": "be9e31d0b54d284800d824487fb22564140ee8b41309ce449acc009aac289572"
+      },
+      {
+        "path": "src/cc16_dyn_radix_manager_update.cpp",
+        "git_blob": "f8afaa555257209459958df35b2732d2c9085027",
+        "sha256": "9dcddca90e57ce56b5ea0c819c7d87ed319ce213ad42f46b0b2528be7cfa2255"
+      },
+      {
+        "path": "include/bsp/cc15_dyn_live.hpp",
+        "git_blob": "e6ad5722b18e6355c69af2b69be68b71fbce7eca",
+        "sha256": "a830daec86ecd9f6808301ce05e15d8215548d57d2bbee0471b1d2b6c5b9b294"
+      },
+      {
+        "path": "include/bsp/native_game_physics_lifetime.hpp",
+        "git_blob": "1afc7f6aef423a3fedb65beeea64830069856437",
+        "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+      },
+      {
+        "path": "src/native_game_physics_lifetime.cpp",
+        "git_blob": "5fb98e8e73cd280c681e0e67e8d5f625e97dc1d5",
+        "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+      },
+      {
+        "path": "include/bsp/native_legacy_sbo_string.hpp",
+        "git_blob": "1ede441960632c9f604e8ade53c16c9c461d9830",
+        "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+      },
+      {
+        "path": "src/native_legacy_sbo_string.cpp",
+        "git_blob": "f8c0f47406710a7e078d7cf09c0529e3838665c5",
+        "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "include/bsp/native_game_dynamics.hpp",
+        "git_blob": "51b8b01d805789799ee8a8faacacd20ec3cac5a0",
+        "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290"
+      },
+      {
+        "path": "include/bsp/native_game_construction.hpp",
+        "git_blob": "e83a2b3736edfb4d6fa699526a003861d3805977",
+        "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e"
+      },
+      {
+        "path": "src/native_game_construction.cpp",
+        "git_blob": "ad55eb59309369dff06d596cbdf3efd1e4c7037a",
+        "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e"
+      },
+      {
+        "path": "include/bsp/system_camera_axes.hpp",
+        "git_blob": "55c1dc58431c80cddc69535d4d4042ad8d697c22",
+        "sha256": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "git_blob": "77f08796a11ff8a8538e72e6e07019a3b19bb4ff",
+        "sha256": "f8ba57bcf733dff041e995e97d0acfe7b01106b07e4cb0b2e64081dfae519dd6"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "git_blob": "fc44f226c994e6fdea911757d0fe710e2555db74",
+        "sha256": "592a749882de86e5a4cde58aacf7d868af611a124cb3ca2e69b8998684859b14"
+      },
+      {
+        "path": "reports/cc16_dyn_profile_append_cleanup.json",
+        "git_blob": "328f09aeb882f5113671b07427d161b3b92967e2",
+        "sha256": "369a200f54f78a20c58a67d126ee92e1803f8c662f64eff4ef01c60f7784a975"
+      },
+      {
+        "path": "docs/CC16_DYN_PROFILE_APPEND_CLEANUP.md",
+        "git_blob": "902933dafd5bf38a593548ebc5a6222c4dd453e9",
+        "sha256": "9b5ba8434619fa59f61988042f879dff0bfc58261dc9e61ded193928763dbc4a"
+      }
+    ],
+    "bounded_original_queries": [
+      "bsp show C50310 --asm --lines48",
+      "bsp show C50390 --asm --lines49",
+      "bsp ghidra proto C50310",
+      "bsp ghidra disasm CC836E",
+      "bsp ghidra bytes E041D0 --length48",
+      "bsp ghidra bytes E041C8 --length8",
+      "bsp ghidra disasm CC8363",
+      "bsp ghidra bytes CC8363 --length11",
+      "bsp ghidra disasm CC8378",
+      "bsp ghidra bytes BF6989 --length5"
+    ],
+    "export_qualification": "Root handler/funclet were not already exported; used bounded read-only live disasm, no export or definition mutation."
+  }
+}
