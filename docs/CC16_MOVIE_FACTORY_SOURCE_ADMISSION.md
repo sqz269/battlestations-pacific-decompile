@@ -49,6 +49,11 @@ entries through real code, CRT/Lua/zlib/Windows dependencies and the actual PCH
 object. It supplies no fake providers and was never executed. This proves
 symbol closure, not module loading, sound, runtime allocation or playback.
 
+The publication refresh also incorporates the reviewed Font-before-Main source
+batch `d8cb0f162`. The combined tree passes the same two suites in 12.22 seconds;
+all seven private text switches remain OFF. The report preserves the earlier
+frozen link receipt and records this later common build separately.
+
 Root still must bind the actual matched singleton heap, both `CFEA60/CFEA78`
 deletion routes, correct Startup order, explicit current-publication shutdown,
 normal callback/decoder closure and terminal retention before shared drain.
