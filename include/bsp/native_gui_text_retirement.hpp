@@ -35,6 +35,10 @@ struct NativeGuiTextRetirementAcquired {
     volatile std::int32_t native_eh_state{-1};
     std::uint32_t active_call_site{}, disarmed_cleanup_actions{};
     std::uint32_t normal_actions_entered{}, normal_actions_returned{}, unwind_actions_consumed{};
+    // SAME state-bit numbering0..6. Consumed/disarmed is recorded BEFORE the
+    // unwind helper; returned is recorded only AFTER that helper returns.
+    // A returned null-data cleanup need not have called a pool return.
+    std::uint32_t unwind_actions_returned{};
     Boundary boundary{Boundary::none};
     void* destination{};
     NativeGuiTextRetirementShader shader;
