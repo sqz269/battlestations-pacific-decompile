@@ -1,0 +1,1016 @@
+{
+  "schema_version": 1,
+  "packet": "codex-dyn-manager-binding-readiness",
+  "status": "readiness_audit_complete_activation_blocked_by_genuine_owner_root_and_dispatch_custody",
+  "audit_utc": "2026-10-29T20:11:16.322272+00:00",
+  "baseline": {
+    "head": "2c25911ef30940f93ef3a56c6202198013b59b45",
+    "origin_main_at_start": "2c25911ef30940f93ef3a56c6202198013b59b45",
+    "tree": "J:/PROG/battlestations-pacific-decompile-codex-dyn-manager-binding-readiness",
+    "branch": "agent/codex-dyn-manager-binding-readiness",
+    "scope": "Exact baseline only; concurrent main/publication changes are not silently included.",
+    "accuracy_private_on_excluded": "2c182d11caa173b852404e625c680a0979720fcb"
+  },
+  "ownership": {
+    "kind": "file_only",
+    "addresses": [],
+    "files": [
+      "docs/CC16_DYN_MANAGER_BINDING_READINESS.md",
+      "reports/cc16_dyn_manager_binding_readiness.json"
+    ],
+    "source_edits": false,
+    "shared_metadata_edits": false,
+    "ghidra_mutations": false
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "vendor_bodies": 0,
+    "activation": 0,
+    "builds_run": 0,
+    "tests_run": 0,
+    "fixtures_run": 0,
+    "probes_run": 0,
+    "games_run": 0,
+    "original_install_save_profile_mutated": false,
+    "inherited_29_body_build_scope": "See accepted final-body admission receipt, not new validation here."
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_read_contract": "Bounded BSP proto/bytes queries, configured BSP target and matching live program/entry; no scripts or writes.",
+    "last_live_constructor_proto": {
+      "entry": "00c37210",
+      "end_inclusive": "00c37236",
+      "instructions": 13,
+      "bytes": 39
+    }
+  },
+  "actual_root": {
+    "startup": "game_main.cpp:1221 -> GameNativeDynProcess CC8950 then CC89C0; dispatch/convex owners, not engine/profile/world allocation.",
+    "construction_chain": [
+      "004ddb90 -> 00c55f50 -> 00c55ea0 -> 00c50310",
+      "game+14 = engine; 00c420e0 -> 00c41ad0 -> 00c38070",
+      "00c38070 allocates 248h manager -> 00c36f10 SAPBroadPhaseManager2",
+      "world+444 = E8h scene; scene+AC = manager; game+18 = 48Ch world; C31A40 callback owner"
+    ],
+    "source_dispatch_supplier": "GameNativeDynProcess::Impl::sap / NativeDynSapRuntime::table()",
+    "simulation_chain": [
+      "GameFixedStepHost::simulate_physics_world_00c5c540",
+      "attached GameNativeGameRuntime::simulate_physics_00875e0c reloads actual game+18",
+      "00c5c540 -> 00c5bb30 -> 00c57070",
+      "00c574c2..00c574cd load scene+AC, [manager], table+0C, call slot3"
+    ],
+    "application_producer_present": false,
+    "negative_source_evidence": [
+      "GameFixedStepHost::native_game_ initialized nullptr",
+      "attach_native_game has definition but no invocation across src",
+      "GameNativeGameRuntime and GameNativeGameApplicationFrame constructors have no application instantiation across src"
+    ],
+    "null_route": "Fixed-step method records site and returns; it does not create a substitute world.",
+    "required_application_types": [
+      "NativeGameConstructionContext",
+      "NativeGameLifetimeContext",
+      "GameNativeGameRuntime",
+      "GameNativeGameApplicationFrame",
+      "NativeStringRawPoolContext"
+    ],
+    "required_application_cells": [
+      "actual application+14 game pointer",
+      "actual duplicate name 00e1ae78",
+      "actual game 00e188a8 and all construction/lifetime context publications"
+    ],
+    "alternate_manager_selector_found": false
+  },
+  "unsafe_table_only_change": {
+    "safe": false,
+    "hardwired_hooks": [
+      {
+        "file": "src/dyn_body_creation.cpp",
+        "function": "dyn_body_register_broadphase_00c50470",
+        "line": 287,
+        "target": "00c54aa0 SAP2 create; explicitly excludes other manager classes"
+      },
+      {
+        "file": "src/dyn_body_creation.cpp",
+        "function": "refresh_proxy",
+        "line": 147,
+        "operation": "writes SAP2 proxy bounds/layout before update dispatch"
+      },
+      {
+        "file": "src/native_game_physics_lifetime.cpp",
+        "function": "physics_broadphase_remove",
+        "line": 58,
+        "target": "00c4c380 SAP2 remove"
+      },
+      {
+        "file": "src/native_game_physics_lifetime.cpp",
+        "function": "physics_delete_broadphase_004043d0",
+        "line": 59,
+        "target": "004043d0 SAP2 scalar delete"
+      }
+    ],
+    "requirement": "Prove manager selection/owner and coordinate create, update, pair enumeration, removal and scalar lifetime; never reinterpret the 248h SAP2 manager as a 2Ch-minimum radix manager."
+  },
+  "providers": {
+    "profile": {
+      "available_access": "GameNativeDynProcess::dynamics().engine",
+      "cells": "Actual source-owner Impl engine_0109e9fc/profile_0109e9f8; not original-address global dereferences.",
+      "must_first_construct": "C55F50/C50310 actual 9Ch profile and 48h nodes; startup alone leaves cells null.",
+      "context": "DynProfileScopeContext { same memory, same profile publication pointer }",
+      "root_name_current": "Host literal Root; not native address identity. Genuine D79DC8 bytes can be borrowed from mapped data.",
+      "publication_epoch": "C50310 three head words, publish actual profile cell, clear90h tail."
+    },
+    "body": "GameNativeDynProcess::body_creation() after CC89C0 retains actual convex pool/shape table; does not prove unknown C55DF0 removed-object type.",
+    "feature": {
+      "supplier": "GameNativeCanonicalDataOwner::mutable_crt_data().feature_word()",
+      "actual_address": "0109eea4",
+      "access": "GameNativeDynProcess::crt_conversion_0109eea4() after convex startup",
+      "requirements": "Retain the actual volatile reference and callback epochs; no snapshot or CPUID substitution."
+    },
+    "half": {
+      "supplier": "GameNativeReadOnlyData::data_at(0xD7A280,8)",
+      "bytes": "000000000000e03f",
+      "already_mapped_band": "00d70000",
+      "requirements": "Borrow genuine cell for actual mapper lifetime; no native-code execution or default constant."
+    },
+    "names": [
+      {
+        "address": "00d79c80",
+        "value": "SAPSort",
+        "bytes_including_nul": 8
+      },
+      {
+        "address": "00d79c88",
+        "value": "SAPSweep",
+        "bytes_including_nul": 9
+      },
+      {
+        "address": "00d79c94",
+        "value": "SAPObjectNum",
+        "bytes_including_nul": 13
+      },
+      {
+        "address": "00d79ca4",
+        "value": "SAPPossiblePairNum",
+        "bytes_including_nul": 19
+      },
+      {
+        "address": "00d79cb8",
+        "value": "SAPPairNum",
+        "bytes_including_nul": 11
+      }
+    ],
+    "name_supplier": "Same verified read-only D70000 band via data_at; RadixManagerProfileNames borrows pointers.",
+    "crt": {
+      "type": "bsp::cc15_dyn_live::DynLiveCrt",
+      "required_fields": [
+        "operator_new_00bf681b",
+        "operator_new_00bf55be",
+        "free_00bf6989",
+        "malloc_00bf9f1a"
+      ],
+      "game_source_instance_found": false,
+      "other_required_types": [
+        "cc16_dyn_radix_owner::Heap",
+        "cc16_dyn_radix_entries::Heap",
+        "cc16_dyn_radix_retire::ObjectFree00BF65AC",
+        "DynProfilePartialNodeDelete"
+      ],
+      "source_default_process_heap": "AvoidZoneDynHullMemory -> ::operator new / ::operator delete; custom first binding may differ.",
+      "profile_sbo_heap": "singleton_lifetime_allocate (malloc/new-handler) / singleton_lifetime_free (free), separately owned.",
+      "requirements": "Match each actual allocation producer; preserve BF65AC object vs BF6989 storage contracts and engine/world domains. Host service equivalence is not original CRT binary identity."
+    },
+    "raw_radix_manager": {
+      "supplier_found": false,
+      "original_extent_proven": "at least2Ch, not an established allocation policy",
+      "lifetime_owner_found": false,
+      "selection_policy_found": false
+    }
+  },
+  "constructor": {
+    "address": "00c37210",
+    "status_at_baseline": "partial",
+    "normal_body_complete": true,
+    "missing_instruction_reconstruction": false,
+    "body_sha256": "3ef730a6dfaf25c93827c89028a4d6e7ffb539eed403857651c2f45b4ec70a35",
+    "native_abi": "EAX manager/result; ECX zero; no stack arguments; plain RET; other GPRs unchanged.",
+    "stores": "D7A118 identity at+0, ten zero DWORDs+4..28 in order",
+    "cpp_type": "bsp::cc16_dyn_radix_constructor::VtableBinding",
+    "remaining_partial_reasons": [
+      "No genuine callable D7A118 provider",
+      "No proven raw-manager selected owner/allocation/lifetime/root"
+    ],
+    "defined_not_undefined_now": true,
+    "stale_comment": "CC13_DYN1.md / cc13_dyn1.hpp still describe old undefined status; definition receipt and live proto take precedence."
+  },
+  "radix_vtable": {
+    "image_identity": "00d7a118",
+    "slot_count": 8,
+    "words": [
+      "00c55d30",
+      "00c40d50",
+      "00403c40",
+      "00c5a8b0",
+      "00c32c30",
+      "00c40d70",
+      "00c32c20",
+      "004041f0"
+    ],
+    "following_rtti_locator": "00d7c814 at00d7a138, not ninth slot",
+    "callable_host_provider_present": false,
+    "slots": [
+      {
+        "slot": 0,
+        "target": "00c55d30",
+        "source": "create_object_00c55d30",
+        "native": "ECX manager,3stackwords,RET0C,EAX object",
+        "dependencies": "actual24h-object BF681B and entries BF55BE/BF6989 heap"
+      },
+      {
+        "slot": 1,
+        "target": "00c40d50",
+        "source": "retire_radix_object_00c40d50",
+        "native": "ECX manager,stackobject,RET4",
+        "dependencies": "same object/domain, DynLiveCrt, distinct BF65AC"
+      },
+      {
+        "slot": 2,
+        "target": "00403c40",
+        "source": "oct18_rec::radix_noop_00403c40",
+        "native": "RET4 unchanged registers/flags"
+      },
+      {
+        "slot": 3,
+        "target": "00c5a8b0",
+        "source": "update_radix_manager_00c5a8b0",
+        "native": "ECX manager,RET",
+        "dependencies": "CRT/profile/feature/half/five names; qualified compiler EH scope limits"
+      },
+      {
+        "slot": 4,
+        "target": "00c32c30",
+        "source": "cc13_dyn1::radix_pair_count_00c32c30",
+        "native": "ECX manager,RET,EAX count"
+      },
+      {
+        "slot": 5,
+        "target": "00c40d70",
+        "source": "cc13_dyn1::radix_first_pair_00c40d70",
+        "native": "ECX manager,RET,EAX pair ornull"
+      },
+      {
+        "slot": 6,
+        "target": "00c32c20",
+        "source": "cc13_dyn1::radix_next_pair_00c32c20",
+        "native": "stackpair,RET4,EAX pair+8"
+      },
+      {
+        "slot": 7,
+        "target": "004041f0",
+        "source_provider": null,
+        "ledger_status": "library_instantiation_out_of_scope",
+        "native": "ECX manager,stackflags,RET4,EAX capturedmanager",
+        "actual_epochs": [
+          "conditional live+1C BF6989",
+          "conditional live+10 BF6989",
+          "conditional live+4 BF6989",
+          "store base identity00d7a0e4",
+          "flags&1 conditional BF65AC(capturedmanager)",
+          "return capturedmanagerbits"
+        ],
+        "closure": "Qualified real library/provider composition; no vendor body reconstruction credit."
+      }
+    ],
+    "base_restore": {
+      "identity": "00d7a0e4",
+      "native_words": [
+        "00bf698e",
+        "00bf698e",
+        "00403c40",
+        "00bf698e",
+        "00bf698e",
+        "00bf698e",
+        "00bf698e",
+        "00403c60"
+      ],
+      "requirements": "Prove identity-only destroyed-object use with no dispatch, or bind actual host base methods/purecall/scalar. No invented RTTI or returning stub."
+    },
+    "image_table_warning": "Mapped original rdata is non-executable and contains native code tokens. It cannot serve as the callable C++ table or be cast into host method pointers."
+  },
+  "profile_cleanup": {
+    "available_qualified_overloads": [
+      "C50390 five arguments, required DynProfilePartialNodeDelete",
+      "C44000 four arguments, actual vector-memory BF6989"
+    ],
+    "actual_normal_only_callers": [
+      {
+        "file": "src/cc16_dyn_radix_manager_update.cpp",
+        "line": 88,
+        "hook": "append_bridge -> fourarg C50390"
+      },
+      {
+        "file": "src/dyn_profile_scopes.cpp",
+        "line": 87,
+        "hook": "C57020 cold path -> fourarg C50390"
+      },
+      {
+        "file": "src/native_dyn_collision_pass.cpp",
+        "line": 16,
+        "hook": "append_bridge -> fourarg C50390"
+      },
+      {
+        "file": "src/native_dyn_world_step.cpp",
+        "line": 14,
+        "hook": "append_bridge -> fourarg C50390"
+      },
+      {
+        "file": "src/native_dyn_solver_mode1.cpp",
+        "line": 16,
+        "hook": "append_bridge -> fourarg C50390"
+      },
+      {
+        "file": "src/dyn_engine_runtime.cpp",
+        "line": 77,
+        "hook": "Root C50310 -> threearg C44000"
+      }
+    ],
+    "context_has_bf65ac_binding": false,
+    "scope": "Qualified C++ ctor-only cleanup: actual current-vector BF6989 no clear; raw captured48h allocation BF65AC only on constructor exception.",
+    "excluded": "Allocation failures before constructor and later parent-growth/orphan rollback; original FH3/SEH/fault/frame transport.",
+    "c5_scope_cleanup": "Four real C38040 leave actions retained; sort has no action. Independent of pending nested ctor overload adoption.",
+    "no_automatic_promotion": true
+  },
+  "graph": {
+    "tool": "tools/bsp.py callers/callees --unwired --path-from-host",
+    "negative_paths": [
+      "00c37210",
+      "00c37030",
+      "00c5a8b0",
+      "00c5a850",
+      "00c320d0",
+      "00c40fc0",
+      "00c4d5a0"
+    ],
+    "path_bound": 12,
+    "direct_callers": {
+      "00c37210": [],
+      "00c37030": [],
+      "00c55d30": [
+        "00d7a118 vslot0/data_ptr"
+      ],
+      "00c5a8b0": [
+        "00d7a118 vslot3/data_ptr"
+      ],
+      "00c55a60": [
+        "00d7a13c vslot0/data_ptr"
+      ],
+      "00c36f10": [
+        "00c38070 call at00c3819f"
+      ],
+      "00c55df0": [
+        "separate undefined00c5b180 call at00c5b183"
+      ]
+    },
+    "wire_classifier_rows": [
+      {
+        "address": "00403c40",
+        "name": "radix_noop_00403c40",
+        "source": "src/oct18_rec.cpp",
+        "category": "core",
+        "state": "callees_done_no_wired_caller",
+        "callers": 0,
+        "wired_callers": 0,
+        "callees": 0,
+        "missing_callees": [],
+        "library_bound_callees": [],
+        "address_taken": true,
+        "host_has_own": false
+      },
+      {
+        "address": "00c320d0",
+        "name": "bsp::cc16_dyn_profile_report::report_profile_node_00c320d0",
+        "source": "src/cc16_dyn_profile_report.cpp",
+        "category": "other",
+        "state": "callees_done_no_wired_caller",
+        "callers": 4,
+        "wired_callers": 0,
+        "callees": 2,
+        "missing_callees": [],
+        "library_bound_callees": [],
+        "address_taken": false,
+        "host_has_own": false
+      },
+      {
+        "address": "00c37210",
+        "name": "construct_manager_00c37210",
+        "source": "src/cc16_dyn_radix_constructor.cpp",
+        "category": "other",
+        "state": "callees_done_no_wired_caller",
+        "callers": 0,
+        "wired_callers": 0,
+        "callees": 0,
+        "missing_callees": [],
+        "library_bound_callees": [],
+        "address_taken": false,
+        "host_has_own": false
+      },
+      {
+        "address": "00c55d30",
+        "name": "create_object_00c55d30",
+        "source": "src/cc16_dyn_radix_owner.cpp",
+        "category": "other",
+        "state": "callees_done_no_wired_caller",
+        "callers": 0,
+        "wired_callers": 0,
+        "callees": 1,
+        "missing_callees": [],
+        "library_bound_callees": [],
+        "address_taken": true,
+        "host_has_own": false
+      },
+      {
+        "address": "00c5a850",
+        "name": "update_broadphase_00c5a850",
+        "source": "src/cc16_dyn_sap_dispatch.cpp",
+        "category": "other",
+        "state": "callees_done_no_wired_caller",
+        "callers": 0,
+        "wired_callers": 0,
+        "callees": 3,
+        "missing_callees": [],
+        "library_bound_callees": [],
+        "address_taken": true,
+        "host_has_own": false
+      },
+      {
+        "address": "00c5a8b0",
+        "name": "bsp::cc16_dyn_radix_manager_update::update_radix_manager_00c5a8b0",
+        "source": "src/cc16_dyn_radix_manager_update.cpp",
+        "category": "other",
+        "state": "callees_done_no_wired_caller",
+        "callers": 0,
+        "wired_callers": 0,
+        "callees": 1,
+        "missing_callees": [],
+        "library_bound_callees": [],
+        "address_taken": true,
+        "host_has_own": false
+      },
+      {
+        "address": "00c36f10",
+        "name": "DYN_SAPBroadPhaseManager2_Construct_00C36F10",
+        "source": "src/dyn_body_creation.cpp",
+        "category": "other",
+        "state": "wired",
+        "callers": 1,
+        "wired_callers": 1,
+        "callees": 2,
+        "missing_callees": [],
+        "library_bound_callees": [],
+        "address_taken": false,
+        "host_has_own": false,
+        "ident": [
+          "dyn_sap_manager_construct_00c36f10"
+        ],
+        "ident_via": "suffix_body"
+      },
+      {
+        "address": "00c38070",
+        "name": "DYN_CollisionSystem_Construct_00C38070",
+        "source": "src/dyn_scene_runtime.cpp",
+        "category": "other",
+        "state": "wired",
+        "callers": 1,
+        "wired_callers": 0,
+        "callees": 2,
+        "missing_callees": [],
+        "library_bound_callees": [],
+        "address_taken": false,
+        "host_has_own": false,
+        "ident": [
+          "dyn_scene_construct_00c38070"
+        ],
+        "ident_via": "address_comment"
+      }
+    ],
+    "wire_classifier_limit": "File-level identifier-reference approximation, behind-switch code counts; not runtime callability/owner/ABI/FH proof. C38070 classified wired despite missing attached native game. Partial C37210 row does not promote ledger status.",
+    "root_census_limit": "Zero refs agrees with retained positive-controlled raw census but does not exclude every computed/indirect encoding.",
+    "wire_inputs": {
+      "head": "2c25911ef30940f93ef3a56c6202198013b59b45",
+      "index_built_utc": "2026-10-29T19:54:44.755931+00:00",
+      "source_text_sha256": "ef655d1092c74f74952fcd928b47945fd69db80304c724c94ddf94376b8c7b0a",
+      "map_text_sha256": "524effc41d71aaeaeeefd8e8f450d90d2bcaacacd9ab8d38dd7e326536b0ab86",
+      "tool_sha256": "bfb1eb98b6dccdaa20f094d361b7b46ef72fe44760d4f8b98b8c814dac51a263",
+      "scope_tool_sha256": "b901b3aa5f6b5716923bec20afa270790d91339351e3ed4dc971199c2d7e5183",
+      "identifier_manifests": {
+        "wire_identifiers_gui.json": "20c659d0a2575a16b1544b3ce85e13f723310ac39c686b2ae0ee505d8a6f2678",
+        "wire_identifiers_high.json": "3b6663b1a273db30df91a6bb97e746385ff8c6832a688dc149ee6697ba310dd5",
+        "wire_identifiers_host_tail.json": "83560e10416a550192694b9b959987f5ead547f916158df56cf2df9057c06975",
+        "wire_identifiers_hosts.json": "b5cf8b2d07a407ae3d8eb8480633461a6afab7e4c9d34f25371b029044462f8c",
+        "wire_identifiers_low.json": "3d3424f9077d56f18c7ebe751ecab964a6bee9de5bbc806a0175ec2fa0dad3c9",
+        "wire_identifiers_primary_models.json": "166174e9c2fc52b90258b77bd17c2642ee538a183f1e8961b5fd982fcbf63f91",
+        "wire_identifiers_render_pools.json": "eb248e8e7c2db6438d42ee1f6d09e2b4a811383e00387217d698076ece5ec52a"
+      }
+    },
+    "wire_json_sha256": "46e4421fcbb442652860c608ca3ed17a671cbc2ee06e68e40dfe83a3c0cb2cbf",
+    "index_sha256": "84b0e8ead678408ae9f8af0b8739794954d7838ef4b07e7806731a2a33ca85fb",
+    "auxiliary_map": {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_game.map",
+      "copy": "build/win32/bsp_game.map",
+      "raw_sha256": "71e733f315a3e76ea667c6300fff2267d3bc46a5db0cf9e73f9f86d0f3789a2e",
+      "source_mtime_utc": "2026-10-29T19:11:49.770390+00:00",
+      "use": "Identifier resolution only; no new build or current executable validation. Build commit not independently attributed by this map copy.",
+      "text_hash_note": "wire_readiness separately hashes decoded/universal-newline map text; raw file hash differs."
+    }
+  },
+  "next_packets": [
+    {
+      "name": "C5_cold_profile_required_BF65AC_adoption",
+      "status": "ready_for_bounded_source_contract_repair_not_activation",
+      "files": [
+        "include/bsp/cc16_dyn_radix_manager_update.hpp",
+        "src/cc16_dyn_radix_manager_update.cpp"
+      ],
+      "inputs": [
+        "actual DynProfilePartialNodeDelete matching actual48h raw-node allocation"
+      ],
+      "hook": "C5 append_bridge selects existing fivearg C50390; retain actual callback in context and audit emitted offsets/four scope actions.",
+      "stop": "No runtime adoption without actual manager owner/domain; no null/default/SBO-free substitution."
+    },
+    {
+      "name": "existing_profile_callers_actual_domain_adoption",
+      "status": "source_batch_requires_explicit_first_bind_custody_and_frame_review",
+      "files": [
+        "include/bsp/dyn_profile_scopes.hpp",
+        "src/dyn_profile_scopes.cpp",
+        "include/bsp/game_native_dyn_process.hpp",
+        "src/game_native_dyn_process.cpp",
+        "src/native_dyn_collision_pass.cpp",
+        "src/native_dyn_world_step.cpp",
+        "src/native_dyn_solver_mode1.cpp"
+      ],
+      "inputs": [
+        "actual process first-bind matching BF65AC",
+        "existing same profile memory/cell"
+      ],
+      "hook": "Qualified cold append call sites and all copied profile contexts, including custom-memory owner binding.",
+      "separate_root_review": [
+        "include/bsp/dyn_engine_runtime.hpp",
+        "src/dyn_engine_runtime.cpp"
+      ],
+      "stop": "Root C44000/enclosing EH needs original-scope evidence; no blanket overload promotion or ABI/SEH claim."
+    },
+    {
+      "name": "real_radix_table_owner",
+      "status": "blocked_on_genuine_slot7_and_base_provider_contract_then_static_closure_only",
+      "proposed_new_files": [
+        "include/bsp/native_dyn_radix_runtime.hpp",
+        "src/native_dyn_radix_runtime.cpp"
+      ],
+      "inputs": [
+        "raw manager from proven selected owner",
+        "DynLiveCrt",
+        "radix owner/entry heaps",
+        "distinct BF65AC",
+        "actual profile context",
+        "actual0109EEA4 reference",
+        "actualD7A280 reference",
+        "RadixManagerProfileNames",
+        "qualified real004041F0/base provider"
+      ],
+      "hook": "C37210 VtableBinding store; eight stable source thunks preserving evidenced ECX/stack/RET and lifetimes.",
+      "stop": "No fake native class/table/defaults/stubs; no actual root found; static table completion alone is not activation."
+    },
+    {
+      "name": "ordinary_game_owner_then_proven_manager_selection",
+      "status": "blocked_on_real_application_context_producer_and_native_selection_evidence",
+      "actual_hook_files": [
+        "src/game_native_game_application_frame.cpp",
+        "src/game_native_game_runtime.cpp",
+        "src/game_hosts_fixed_step.cpp"
+      ],
+      "coordinated_manager_files": [
+        "include/bsp/dyn_scene_runtime.hpp",
+        "src/dyn_scene_runtime.cpp",
+        "include/bsp/dyn_body_creation.hpp",
+        "src/dyn_body_creation.cpp",
+        "include/bsp/native_game_physics_lifetime.hpp",
+        "src/native_game_physics_lifetime.cpp",
+        "include/bsp/game_native_dyn_process.hpp",
+        "src/game_native_dyn_process.cpp"
+      ],
+      "hook": "Actual construction/publication/lifetime owner -> completed GameNativeGameRuntime -> attach_native_game, then only a proven native selector.",
+      "stop": "Do not replace SAP2 or allocate an invented radix manager to create activity. SAP D7A13C additionally needs real C37030 source/EH closure."
+    }
+  ],
+  "other_unclosed_roots": {
+    "C320D0": "C35390/C37B10/C40FC0 nonrecursive callers metadata-only/no host path; genuine sink, position words, cache-slot1 denominator and D7A220 required.",
+    "C55DF0": "Only separate undefined C5B180 wrapper; unknown removed-object provenance and required real destruction/body context.",
+    "C4D5A0": "No host path in graph model; ring composition/fixture is not a manager root."
+  },
+  "guards": {
+    "dyn_manager_guard_to_flip": null,
+    "game_physics_attachment": "native_game_ nullptr, no attach invocation found",
+    "mission_flags": "BSP_NATIVE_MISSION_SHIP / FRAME do not supply missing game/manager owner",
+    "accuracy_native_range_bound_at_baseline": false,
+    "accuracy_scope": "Private ON and all frozen receipts remain separate and untouched."
+  },
+  "mandatory_future_gates": [
+    "Actual selected manager/storage/owner lifetime and matching creation/removal/scalar domains established before switch.",
+    "Strict optimized Win32 compile/link plus final object/call/context-offset/stack review for chosen provider and original ABI bridges.",
+    "Focused original-machine constructor/table/owner fixture with nonempty endpoint/pair work, allocation/publication/order comparison and native call-return obligations.",
+    "Explicitly limited masked PC24/PC53 fixture controls with caller FP state preserved; no game control forcing or algebraic double approximation.",
+    "Qualified partial-cleanup adoption requires actual constructor-failure boundary and matching BF65AC/BF6989 evidence; preserve stated original FH3/SEH/fault limits.",
+    "Only after natural root adoption: separately frozen guarded gameplay compare with actual create/update/pair/remove/teardown calls and completed returns, exact sources/binaries/backend/inputs and held-identity watchdog.",
+    "Absent calls or samples inconclusive; historical ring/accuracy evidence cannot admit a new Dyn path."
+  ],
+  "remaining_debt": [
+    "original ABI/register/flags transport beyond individually evidenced source thunks",
+    "original FH3/SEH/fault/frame identity and exception transport",
+    "native OOM/partial mutation/secondary cleanup failures/concurrency",
+    "full ambient x87/MXCSR exception/rounding/denormal domains beyond bounded accepted evidence",
+    "natural selected manager/application caller and allocator/vtable custody"
+  ],
+  "evidence": {
+    "commands_used": [
+      "python tools/bsp.py brief",
+      "python tools/bsp.py index --if-stale",
+      "python tools/wire_readiness.py --limit 12",
+      "python tools/bsp.py callers C37210 --unwired --path-from-host --limit 5",
+      "python tools/bsp.py callers C37030 --unwired --path-from-host --limit 5",
+      "python tools/bsp.py callers C5A8B0 --unwired --path-from-host --limit 5",
+      "python tools/bsp.py callers C5A850 --unwired --path-from-host --limit 5",
+      "python tools/bsp.py callers C55D30 --unwired --depth 2 --limit 8",
+      "python tools/bsp.py callees C5A8B0 --limit 16",
+      "python tools/bsp.py show C37030 --lines 55",
+      "python tools/bsp.py show 004041F0 --asm --lines 43",
+      "python tools/bsp.py ghidra proto C37210 --lines 10",
+      "python tools/bsp.py ghidra bytes D7A114 --length 80",
+      "python tools/bsp.py ghidra bytes D7A0E0 --length 60",
+      "python tools/bsp.py ghidra bytes D79C80 --length 68",
+      "python tools/bsp.py ghidra bytes D7A280 --length 8"
+    ],
+    "tool_setup": "Initial wire_readiness attempt lacked local map; copied only the real auxiliary candidate map, no compile. Source/index remained this baseline.",
+    "doc_sha256": "5e59d763217b3cbedadd38f5f95ee197e7db2139efb3adbf132644a73771a4ce",
+    "source_and_accepted_evidence_fingerprints": [
+      {
+        "path": "include/bsp/game_native_dyn_process.hpp",
+        "git_blob": "8bcec5f9e26075a4c706266722701d1c23434366",
+        "sha256": "a2fd23518752eb7232a0076a039123202f6be1c2ef50fd17a5c9eaff17bdcee6"
+      },
+      {
+        "path": "src/game_native_dyn_process.cpp",
+        "git_blob": "2340457588570a29286cddb3c153e1af7e264624",
+        "sha256": "6ca1af2006f4462e1807d03821183bcf7925404bb77bbdbb32399ee78d32e4e2"
+      },
+      {
+        "path": "include/bsp/game_native_game_runtime.hpp",
+        "git_blob": "82d6f97019a8ced315745431c1d80759d0251779",
+        "sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a"
+      },
+      {
+        "path": "src/game_native_game_runtime.cpp",
+        "git_blob": "ad9f8b3518827f1b1117ea55c92a2b1de23fa78d",
+        "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca"
+      },
+      {
+        "path": "include/bsp/game_native_game_application_frame.hpp",
+        "git_blob": "3be78aa1c3e7004e1e75a7f278a4ccfbf2e58cdf",
+        "sha256": "888edb0cdab9adbf87935c81923890940342435840358081cf88178d0c1fcd33"
+      },
+      {
+        "path": "src/game_native_game_application_frame.cpp",
+        "git_blob": "965a53b7a9ecf78978677f6a930154da1bd3768c",
+        "sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09"
+      },
+      {
+        "path": "include/bsp/game_hosts_fixed_step.hpp",
+        "git_blob": "836f41cd95402bdefd26750d896ab31c38b30848",
+        "sha256": "254eca0c16d8ffd59c8af0e88af9a0559a91ae9fd577a4b18917aa547f549ee7"
+      },
+      {
+        "path": "src/game_hosts_fixed_step.cpp",
+        "git_blob": "2387327fd643ed6a4c718d8746cce1024fa2de80",
+        "sha256": "b95fc61fe7a511d83dccd057a9149cea8a79ed6c596ff242f15f84ba41612d03"
+      },
+      {
+        "path": "src/game_main.cpp",
+        "git_blob": "18909178937d4a3fbd4ddf9073819b959f3fa47a",
+        "sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "git_blob": "7cfe6f89bb83fb7b61fd3226efc86277ba07ff09",
+        "sha256": "ac82e24e0f6cdd9d52aad47a9bc45b545d651fbd9d3056aafb2feb4f65033223"
+      },
+      {
+        "path": "include/bsp/gameplay_settings_tail.hpp",
+        "git_blob": "8ddcf8aafec8a8e78074474f7f3c9c608cae4d4e",
+        "sha256": "c119bf856e423b6b249b397975d5b903cd1341b12449691a82d11ba06960db37"
+      },
+      {
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+      },
+      {
+        "path": "src/game_native_readonly_data.cpp",
+        "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+      },
+      {
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "git_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+        "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1"
+      },
+      {
+        "path": "src/game_native_mutable_crt_data.cpp",
+        "git_blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+        "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39"
+      },
+      {
+        "path": "include/bsp/game_native_data_bootstrap.hpp",
+        "git_blob": "0fff23e432b46cab3978466f0f13f69bbdf4f144",
+        "sha256": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a"
+      },
+      {
+        "path": "src/game_native_data_bootstrap.cpp",
+        "git_blob": "b37fe02f39f358a9f2a9ac48b4dcd367ec95c1d0",
+        "sha256": "380bf1ebc8ba9691f19fd2ae33ce167cdf5b33e9095f9fc4f5d172489e2f879d"
+      },
+      {
+        "path": "include/bsp/native_game_construction.hpp",
+        "git_blob": "e83a2b3736edfb4d6fa699526a003861d3805977",
+        "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e"
+      },
+      {
+        "path": "src/native_game_construction.cpp",
+        "git_blob": "ad55eb59309369dff06d596cbdf3efd1e4c7037a",
+        "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e"
+      },
+      {
+        "path": "include/bsp/native_game_physics_lifetime.hpp",
+        "git_blob": "1afc7f6aef423a3fedb65beeea64830069856437",
+        "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+      },
+      {
+        "path": "src/native_game_physics_lifetime.cpp",
+        "git_blob": "5fb98e8e73cd280c681e0e67e8d5f625e97dc1d5",
+        "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+      },
+      {
+        "path": "include/bsp/dyn_engine_runtime.hpp",
+        "git_blob": "a6828d517457166cc9078606f84cd76d482b6bbd",
+        "sha256": "2217fde53118820512482ca218e4b73e482801d61e3271bbb81f224b54418393"
+      },
+      {
+        "path": "src/dyn_engine_runtime.cpp",
+        "git_blob": "2aed397d03a8370f1824f41d6f11f9b276e98167",
+        "sha256": "eeda95d61df753129db8a480f5bf8229071ab90134dfff81fa92b976ce700e3a"
+      },
+      {
+        "path": "include/bsp/dyn_profile_scopes.hpp",
+        "git_blob": "a37ab8151673c17096a4f47057e2e468db16079c",
+        "sha256": "1ce9b126405212887e03e05bbd558d8a035eb252024aa42031cf126a059c5d80"
+      },
+      {
+        "path": "src/dyn_profile_scopes.cpp",
+        "git_blob": "61b51ccd5fa147e0a6aba0f0a6a2856801eb1a07",
+        "sha256": "7177b2f2174174c93dd6dd20e9f8c585d9f54573669fb8a945b747ea0523e7d0"
+      },
+      {
+        "path": "include/bsp/native_dyn_collision_pass.hpp",
+        "git_blob": "b791990aeed201c1aee3eb080ef16f94fbeeb5df",
+        "sha256": "ff578a824f0ff6044a0231f2c3f24660bf682c96be9e2ebe78bbffcc28aca2c9"
+      },
+      {
+        "path": "src/native_dyn_collision_pass.cpp",
+        "git_blob": "8e7f7571a123e7ea6da661d7a74ae9bf590b3d82",
+        "sha256": "112743077813a1690f59771e180ccd75eae029e3a9a6786d486b2fac3cf697f6"
+      },
+      {
+        "path": "include/bsp/native_dyn_world_step.hpp",
+        "git_blob": "a63ae0f411c38b54a1d7c6973fac4a604c02fd17",
+        "sha256": "38d374b7daf95914c7e237e88f999af251e27f51013bd602e51d5266308e0912"
+      },
+      {
+        "path": "src/native_dyn_world_step.cpp",
+        "git_blob": "ac4b833b5ce91315ec237da0204432adc05ba14c",
+        "sha256": "f729543cd630a87b383d2fb21f1ef387f6e92ab9b7c68cf242a172cd91c94935"
+      },
+      {
+        "path": "include/bsp/native_dyn_solver_mode1.hpp",
+        "git_blob": "60a10bfcd9f51e856f60a6b04b4ff01904884585",
+        "sha256": "aeb6dba1a7a5c989f84f550f2600ab5623c4d82682fe1d7061483d5fbac5fade"
+      },
+      {
+        "path": "src/native_dyn_solver_mode1.cpp",
+        "git_blob": "62e4084f0430e4a7fa2ac29ca6e65c29dae7c06c",
+        "sha256": "f71eabaed4962be31d3e6103906e6cb52200c0ab575d54241b3101ca1f45e5ea"
+      },
+      {
+        "path": "include/bsp/dyn_body_creation.hpp",
+        "git_blob": "335fe601cc9fb0b638e8b844a58df5154abfddeb",
+        "sha256": "35f59585c7185b17577c13395220a88c1d60b91d482ff445b34700151153ecf5"
+      },
+      {
+        "path": "src/dyn_body_creation.cpp",
+        "git_blob": "a7e584061270434878d3e03d950961d08ff67fd0",
+        "sha256": "a0d493c127f179fadd32aa686d1a4fb91aea34029d8ec4a8898e6e5f696b3940"
+      },
+      {
+        "path": "include/bsp/dyn_scene_runtime.hpp",
+        "git_blob": "0c83cbe93345ec571978cf334904d834f9170ad3",
+        "sha256": "db87cad3d2b995ee64da4e0a4dfa3651d4b881b545a89d52c4c1501a0b141c7c"
+      },
+      {
+        "path": "src/dyn_scene_runtime.cpp",
+        "git_blob": "f7bd78041461379d442d13578f83b7c84003610f",
+        "sha256": "6efa488d22e05beb310164dd2633e102caab5b07c4ba96b6c7030333beeec32a"
+      },
+      {
+        "path": "include/bsp/dyn_world_runtime.hpp",
+        "git_blob": "979dc2619b3135ae1140becef313229ee57f607c",
+        "sha256": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19"
+      },
+      {
+        "path": "src/dyn_world_runtime.cpp",
+        "git_blob": "2d5b0d9689d4bb8f08e2be8430463b5f64234f16",
+        "sha256": "e4ab60cdd8ed206c82c77eaf44f383de90f868826388d11fb5ea5ca6d97c8399"
+      },
+      {
+        "path": "include/bsp/dyn_world_factory.hpp",
+        "git_blob": "f23a3729480bf73ac87eee299df1752168ac32e7",
+        "sha256": "4e32f788fd38fdf5acbef4a530c43b709c2e62e8017e428a58e0539d257c0b29"
+      },
+      {
+        "path": "src/dyn_world_factory.cpp",
+        "git_blob": "dc7c3f0e73b299193a4bac254d7a4ff8ce5bfb43",
+        "sha256": "e9e38479cca106aaf0726f19ab47916a0d7ce69844fdf7d8df2de3ab3b07e9d4"
+      },
+      {
+        "path": "include/bsp/native_dyn_sap_processing.hpp",
+        "git_blob": "d10be28412fd34b14029516302a9bca3c8d835f1",
+        "sha256": "1886a950958a4859308d9e9b066ccc39df1724e129669ed7ef20bbb626b01c99"
+      },
+      {
+        "path": "src/native_dyn_sap_processing.cpp",
+        "git_blob": "8accdc3149f7c3edf67d39119687e548e17226e3",
+        "sha256": "39b668ba4be6a01ea93d3e6e5e05b00b7d6d47c90916ebf21dadc35a4f057ac3"
+      },
+      {
+        "path": "include/bsp/cc15_dyn_live.hpp",
+        "git_blob": "e6ad5722b18e6355c69af2b69be68b71fbce7eca",
+        "sha256": "a830daec86ecd9f6808301ce05e15d8215548d57d2bbee0471b1d2b6c5b9b294"
+      },
+      {
+        "path": "include/bsp/cc13_dyn1.hpp",
+        "git_blob": "bc34d151d032152c947f569828e3f8dba319fb1e",
+        "sha256": "f963de36f8cc8e137a056335510b4e33515ac2533fbd7aeca04da48dec83aece"
+      },
+      {
+        "path": "src/cc13_dyn1.cpp",
+        "git_blob": "27ec142632130637433b3b64124f70fc36ccd2c5",
+        "sha256": "23cdb09bfea0b435577eda510cadcffa37cb78419d3a3795c379fd03bd07286a"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_radix_constructor.hpp",
+        "git_blob": "5e8b9383798bad98762b03c3fdd19fdcc7ad5b83",
+        "sha256": "37c627fda1b18a4fe880b6f1763f1153b789a7895e62586e87323f6cc540352a"
+      },
+      {
+        "path": "src/cc16_dyn_radix_constructor.cpp",
+        "git_blob": "5bbed1e4a9cacb263b66ec01ec7e332ca9def6ce",
+        "sha256": "3029c49e1165b3303313925f4712ec494f0bd0c1656b1c02d4a410e6c5302115"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_radix_owner.hpp",
+        "git_blob": "34c206789dbaf595d9ff05d1f079d374fb36d8e0",
+        "sha256": "368e7247c8a9a8fc963ade70d669da4f465de602a116df88b6c4dd7e6c7f3f7c"
+      },
+      {
+        "path": "src/cc16_dyn_radix_owner.cpp",
+        "git_blob": "77bb855e558739e0f0064c7ba75649339369ad50",
+        "sha256": "a26306b9f69dad9ea49b19af2a7e294ad07e2cc27e9ab45b63c5dfbc987a3bdc"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_radix_entries.hpp",
+        "git_blob": "96103b1536e78b417f2d20e51fd49a8f6acc47a6",
+        "sha256": "ca15a4971d34cadc5ef7045543eb0b1f3772333054abf4ad68a586ece5d88e97"
+      },
+      {
+        "path": "src/cc16_dyn_radix_entries.cpp",
+        "git_blob": "3831538e85d60e69ea33138215dd67deb212b225",
+        "sha256": "c76d06f2acba0c23aef3bd5569c61f812bd7d205fce6a29e55b098503f649aa6"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_radix_retire.hpp",
+        "git_blob": "e2635bd845c98879ec55b586a058413d27896d9e",
+        "sha256": "0b9bf256bcaef43af7a3142f966236514fd6884aac320efebd2cd1471b977eb6"
+      },
+      {
+        "path": "src/cc16_dyn_radix_retire.cpp",
+        "git_blob": "19662ab27f5ba9a323870229d7b4008da948d427",
+        "sha256": "d3f5aa98de4202a0c86d7e730954dba910ea155e87922b53ff98b442948ac38c"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_radix_manager_update.hpp",
+        "git_blob": "0effeb39a5343ffd5cf208e0d59a17fe2224ef86",
+        "sha256": "be9e31d0b54d284800d824487fb22564140ee8b41309ce449acc009aac289572"
+      },
+      {
+        "path": "src/cc16_dyn_radix_manager_update.cpp",
+        "git_blob": "f8afaa555257209459958df35b2732d2c9085027",
+        "sha256": "9dcddca90e57ce56b5ea0c819c7d87ed319ce213ad42f46b0b2528be7cfa2255"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_radix_update.hpp",
+        "git_blob": "e5608350adf3b6172783f84ef23d55f99d603ec0",
+        "sha256": "595bd6ee8c3bad0782098bff4aa1d50ead0ec786e9eac834d3b06630719bdfc7"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_endpoint_allocate.hpp",
+        "git_blob": "d23d31a21685f9f9719cf14f667a052206a44223",
+        "sha256": "20c3aaa424c8eeba1b8a975b47079910ef95db4db4db29afce72b0c6a5bd56ba"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_endpoint_init.hpp",
+        "git_blob": "43603dd9eb0dcc7067cc96ae5cbd95e5dc1178cb",
+        "sha256": "d9dd910c448bc39d1286f60b6c9638d6629f2a5c4c05d555506cdbb0a6470e42"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_sap_dispatch.hpp",
+        "git_blob": "7c420bbca6d0a473b1582f443c4ad503515bd1ed",
+        "sha256": "5a4ba2ddf1ef6f594774dd75f52d4bf33e05df9bbbdad4209ec8fb843183406e"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_sap_retire.hpp",
+        "git_blob": "8dbae3cb5b4bea253edb4ac0cba79f868ea1d791",
+        "sha256": "c40c212d0cda946a0f2480e8ff5e2e1bdaacf1b37d5f9d37e4c3f8e8a319f569"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_profile_report.hpp",
+        "git_blob": "188ad3d401f673aa6d7a79c5eecb029bd3444aeb",
+        "sha256": "bf76d1b560bbdd0a2bbda614e5636b7ada7cfdf7368d2364bc7c3d622f2d57a2"
+      },
+      {
+        "path": "include/bsp/cc16_dyn_pointer_retire.hpp",
+        "git_blob": "8c1bef2d588d53d9eadfd1f873a84d2a1a2a459f",
+        "sha256": "0fc9451b107ad0d37d7390639075f034b4699a1d68dfb1ea163eaa5b3283f017"
+      },
+      {
+        "path": "src/cc16_dyn_sap_dispatch.cpp",
+        "git_blob": "c9e82e8528106dfe9027c87ac2cadabf8c93c231",
+        "sha256": "1eb029709c3d2612b28d6a2417fec738657f712f1deed35b7ba9c5297cd6ae30"
+      },
+      {
+        "path": "include/bsp/oct18_rec.hpp",
+        "git_blob": "4a7f5788fac9e2d2d37826e29cc9d1f9b84c028e",
+        "sha256": "1c3477f261b14285325ffbca59b5272e2ea96f1c6adc7607e07bec0a2ca09a6f"
+      },
+      {
+        "path": "src/oct18_rec.cpp",
+        "git_blob": "0f6edecda667e4a699b5a5cc11e8f6736b594015",
+        "sha256": "861658fe5b90b83a6cdb080dfe27f33700a9f8294bab042cb2f87c2f2ff2adcc"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "src/native_legacy_sbo_string.cpp",
+        "git_blob": "f8c0f47406710a7e078d7cf09c0529e3838665c5",
+        "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+      },
+      {
+        "path": "docs/CC16_DYN_FINAL_BODY_SOURCE_ADMISSION.md",
+        "git_blob": "3c6fe78925a3207f4b4b3a0d8c78651b6eb2efc8",
+        "sha256": "112ff4b8514130c5398276a14b4825b2e6e9584a7f87edae2c06efb98a0e54cc"
+      },
+      {
+        "path": "reports/cc16_dyn_final_body_source_admission.json",
+        "git_blob": "5d3630b13346009df5a29c8617b705d7246d980a",
+        "sha256": "32ea067e005508c6c90a484cede96fd63cbe9beb6bd9675c5009b0d1acb4b329"
+      },
+      {
+        "path": "reports/cc16_dyn_radix_constructor.json",
+        "git_blob": "bee65e9379ef9b7c7805f9f30fcba3a22a0c9132",
+        "sha256": "3d5980455b3f7056008122e9c32889807d12d3b75ada0e0cb48f9071c86ad25e"
+      },
+      {
+        "path": "reports/cc16_dyn_radix_constructor_definition.json",
+        "git_blob": "741637bcbee4a5e3e90377afc7cc8dd5547ba41d",
+        "sha256": "14e4e079547f7c777a1c22413826a183c458e8ab0f4d3a3d8f38ab3987204129"
+      },
+      {
+        "path": "reports/cc16_dyn_profile_append_cleanup.json",
+        "git_blob": "328f09aeb882f5113671b07427d161b3b92967e2",
+        "sha256": "369a200f54f78a20c58a67d126ee92e1803f8c662f64eff4ef01c60f7784a975"
+      }
+    ]
+  }
+}
