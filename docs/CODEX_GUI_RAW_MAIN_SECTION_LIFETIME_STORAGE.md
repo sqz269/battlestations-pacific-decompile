@@ -81,3 +81,16 @@ readable live allocations, no external Text/Model/mesh mutation or slot reuse,
 and full opaque/transitive nonaliasing/lifetime proof. This does not close
 Original register/FH3/SEH ABI, faults, allocation failures, streams/layout,
 Font+section/content, rendering, reuse or production/runtime qualification.
+
+Integration addendum: frozen helper16d4f95820cb7d9a78210ce15bc05b721e60ca64
+received an independent complete580-line Source review with no blocker. Root's
+coupled ownerf63/helper/shared-guard/private-FALSE-host Win32 build and both
+existing checks passed (13.04 seconds). The prior helper-only coupled build
+also passed (12.34 seconds), after Root's owned Widget local-shadow naming fix.
+Focused self-review found no further change needed: constructor/fresh destructor
+follow no forward prefix; prepare precedes all pools; active failures stay
+sticky; actual Type/Font/native reads are absent from post-terminal proof;
+the eight/four region schema fits16, and recursive cache backing stays in the
+shared walker. The CPP remains exactly the independently reviewed16d snapshot.
+These are Source/compilation/check results only. No new runtime, native/Original
+ABI, caller activation or production qualification is claimed.
