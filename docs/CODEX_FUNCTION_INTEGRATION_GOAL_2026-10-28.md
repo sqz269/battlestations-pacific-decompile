@@ -72,3 +72,14 @@ the preflight does not activate or newly reconstruct their functions.
 
 Further packet decisions and accepted receipts will be appended as the goal
 advances. A census or a single integrated packet does not complete this goal.
+
+## Radix owner source composition
+
+The next body, `00C55D30..00C55D93`, now composes the recovered `00C37180`
+directly through the same actual manager/object and required heap providers.
+Its allocation/store/copy/null path and all three native call sites were
+independently reviewed. Direct core registration, Win32 build and both existing
+suites passed; the placeholder is replaced by an unwired body record. No native
+ABI or gameplay proof is claimed. The undefined `00C37210` constructor and its
+real vtable identity are being recovered next, with exact boundary evidence
+required before any saved-analysis function definition.
