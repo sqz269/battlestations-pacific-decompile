@@ -1,0 +1,872 @@
+{
+  "packet": "codex-dyn-profile-qualified-binding",
+  "owner": "agent/codex-dyn-profile-qualified-binding",
+  "date_utc": "2026-10-29T21:00:33.368323+00:00",
+  "base_commit": "605373bf732e4bd3089e8f07ddca226ab4d635a3",
+  "approved_proposal": "713c8776330c076604279ec18fa4baee982020e9",
+  "status": "additive_default_domain_supplier_and_qualified_scope_C5_source_strict_objects_build_tests_static_checked_unwired",
+  "source": [
+    "src/game_native_dyn_process.cpp",
+    "src/dyn_profile_scopes.cpp",
+    "src/cc16_dyn_radix_manager_update.cpp"
+  ],
+  "headers": [
+    "include/bsp/game_native_dyn_process.hpp",
+    "include/bsp/dyn_profile_scopes.hpp",
+    "include/bsp/cc16_dyn_radix_manager_update.hpp"
+  ],
+  "docs": [
+    "docs/CC16_DYN_PROFILE_QUALIFIED_BINDING.md"
+  ],
+  "new_in_house_body_credit": 0,
+  "vendor_body_credit": 0,
+  "activation_credit": 0,
+  "scope": {
+    "owned_files": [
+      "src/game_native_dyn_process.cpp",
+      "src/dyn_profile_scopes.cpp",
+      "src/cc16_dyn_radix_manager_update.cpp",
+      "include/bsp/game_native_dyn_process.hpp",
+      "include/bsp/dyn_profile_scopes.hpp",
+      "include/bsp/cc16_dyn_radix_manager_update.hpp",
+      "docs/CC16_DYN_PROFILE_QUALIFIED_BINDING.md",
+      "reports/cc16_dyn_profile_qualified_binding.json"
+    ],
+    "address_lease": [],
+    "shared_CMake_metadata_changes": false,
+    "ghidra_mutations": false,
+    "production_source_changes_outside_six": false,
+    "runtime_or_original_install_mutation": false,
+    "new_tests": 0,
+    "games_run": 0,
+    "probes_run": 0,
+    "ad_hoc_native_fixtures_run": 0
+  },
+  "default_supplier": {
+    "API": "DynProfilePartialNodeDelete GameNativeDynProcess::profile_partial_node_delete_00bf65ac() const",
+    "requirements": "Same actual process after completed dispatch startup, held existing startup mutex.",
+    "recognized_tuple": {
+      "context": "process_memory.context (nullptr)",
+      "allocate": "exact process_memory.allocate -> global scalar ::operator new",
+      "release": "exact process_memory.release -> global unsized scalar ::operator delete"
+    },
+    "success": "Real unsized scalar ::operator delete pointer; no delete expression or native-class fabrication.",
+    "unmatched": "Throws std::logic_error; no generic memory.release/BF6989 fallback, global forwarding context or second process owner.",
+    "first_bind_wins_unchanged": true,
+    "matched_object_domain_only": true,
+    "object_relocation": "IMAGE_REL_I386_DIR32 -> ??3@YAXPAX@Z",
+    "final_link_target": "0001:00566540       ??3@YAXPAX@Z               10567540 f   MSVCRT:delete_scalar.obj",
+    "flat_provider_lifetime": "Actual same-module/MD source allocator lifetime; no arbitrary custom/module/native-CRT identity inference.",
+    "does_not_construct_profile": true
+  },
+  "APIs": [
+    {
+      "function": "dyn_profile_scope_enter_00c57020",
+      "old_arguments": 4,
+      "old_contract": "normal-only real4arg C50390",
+      "new_arguments": 5,
+      "new_required_argument": "DynProfilePartialNodeDelete",
+      "new_contract": "Real5arg C50390 on cold path, existing actual cache/publication/RDTSC epochs.",
+      "null_behavior": "std::invalid_argument before scope/profile access or mutation",
+      "legacy_null_placeholder": "Compile-time false helper never inspects/uses it; not a qualified fallback."
+    },
+    {
+      "function": "cc16_dyn_radix_manager_update::update_radix_manager_00c5a8b0",
+      "old_arguments": 6,
+      "old_contract": "Explicit normal_only selector -> real4arg C50390",
+      "new_arguments": 7,
+      "new_required_argument": "DynProfilePartialNodeDelete",
+      "new_contract": "Explicit qualified selector -> real5arg C50390; provider is not taken from DynLiveCrt.",
+      "null_behavior": "std::invalid_argument before manager/profile access or kernel invocation",
+      "no_null_or_missing_provider_fallback": true
+    }
+  ],
+  "layout": {
+    "Win32_pointer_bytes": 4,
+    "ScopeContext_bytes": 16,
+    "ScopeStorage_bytes": 20,
+    "ScopeContext_fields": {
+      "memory": 0,
+      "profile_cell": 12
+    },
+    "ScopeContext_changed": false,
+    "C5_old_prefix_bytes": 40,
+    "C5_total_private_context_bytes": 48,
+    "C5_offsets": {
+      "CRT": 0,
+      "feature": 4,
+      "half": 8,
+      "profile_cell": 12,
+      "profile_context": 16,
+      "names": 20,
+      "qualification_tail": 40,
+      "partial_delete_tail": 44
+    },
+    "assertions_compiled_strict_and_common": true
+  },
+  "function": {
+    "original_address": "00C5A8B0",
+    "original_end_inclusive": "00C5B175",
+    "bytes": 2246,
+    "original_ABI": "ECX rawmanager; no stackargs; plainRET; preserved callee-saved regs; incidental EAX not semantic.",
+    "CPP_ABI": "Separate cdecl6arg legacy and7arg qualified APIs, not original binary/vtable entry replacements.",
+    "new_native_body": false,
+    "kernel_body_changed": false
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra Client.verify before each live query checks configured project/program/language/base",
+    "live_bytes_compared_to_installed_pe": 2246,
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutations": false
+  },
+  "native_call_rows_scope": "Unchanged original11 body calls and4 unwind tails; added C++ overload selection independently inspected in COFF.",
+  "rows": [
+    {
+      "address": "00C5A8D1",
+      "native": "00BF9410",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "Actual fixed10A0 compiler stack probe BF9410; ECX/EDX/nonvolatiles/FP preserved, actual stack changed; no heap scratch",
+      "emitted_symbol": "__alloca_probe",
+      "postcall_live_volatile": [
+        "ecx"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": null
+    },
+    {
+      "address": "00C5A9FA",
+      "native": "00BF55BE",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF55BE new(wrapping captured_count*8); scratch capacity already published; original caller ADD4",
+      "emitted_symbol": "?new_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    },
+    {
+      "address": "00C5AA33",
+      "native": "00BF6989",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF6989 free(live reloaded scratch old data), before replacement publication; original caller ADD4",
+      "emitted_symbol": "?free_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    },
+    {
+      "address": "00C5AA59",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual current parent; stack actual D79C80 SAPSort pointer,id9; EAX appended node, native RET8; no active EH scope",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AA95",
+      "native": "00BF79F0",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF79F0 memset(S+B0,0,1000h); actual canonical0109EEA4 reference forwarded to existing qualified provider, original caller ADD12; Sort state-1",
+      "emitted_symbol": "?memset_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -12
+    },
+    {
+      "address": "00C5ACB7",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79C88 SAPSweep pointer,id10; EAX node, native RET8; no active EH scope before enter completes",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AD43",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79C94 SAPObjectNum pointer,id11; EAX node, native RET8; failure leaves only active Sweep",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AE69",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79CA4 SAPPossiblePairNum pointer,id12; EAX node, native RET8; failure leaves Object then Sweep",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AF19",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79CB8 SAPPairNum pointer,id13; EAX node, native RET8; failure leaves PossiblePair,Object,Sweep",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AF94",
+      "native": "00BF55BE",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF55BE new(wrapping (2*capacity+2)*8); pair capacity published before call; return spill before ADD4 is S+14; failure leaves all four scopes",
+      "emitted_symbol": "?new_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    },
+    {
+      "address": "00C5AFDE",
+      "native": "00BF6989",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF6989 free(live reloaded pair old data), before replacement publication; original caller ADD4; failure leaves all four scopes",
+      "emitted_symbol": "?free_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    }
+  ],
+  "unwind_actions": [
+    {
+      "address": "00CC84E0",
+      "native": "00C38040",
+      "function": "00CC84DA",
+      "kind": "tail_jump",
+      "state": 0,
+      "previous_state": -1,
+      "scope_from_S": "80h",
+      "native_EBP_offset": "-1040h",
+      "name": "Sweep"
+    },
+    {
+      "address": "00CC84EB",
+      "native": "00C38040",
+      "function": "00CC84E5",
+      "kind": "tail_jump",
+      "state": 1,
+      "previous_state": 0,
+      "scope_from_S": "68h",
+      "native_EBP_offset": "-1058h",
+      "name": "Object"
+    },
+    {
+      "address": "00CC84F6",
+      "native": "00C38040",
+      "function": "00CC84F0",
+      "kind": "tail_jump",
+      "state": 2,
+      "previous_state": 1,
+      "scope_from_S": "50h",
+      "native_EBP_offset": "-1070h",
+      "name": "PossiblePair"
+    },
+    {
+      "address": "00CC8501",
+      "native": "00C38040",
+      "function": "00CC84FB",
+      "kind": "tail_jump",
+      "state": 3,
+      "previous_state": 2,
+      "scope_from_S": "98h",
+      "native_EBP_offset": "-1028h",
+      "name": "Pair"
+    }
+  ],
+  "native_and_FP_audit": {
+    "native_bytes": 2246,
+    "native_sha256": "c9fa16f24060e7f21e482b8b32ac02e5ad61c412ff665fbd0e784201cd998b96",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "listing_sha256": "5346ced903900ab006b95da21d36b51f0c414b6255f520a17fc00fcbb39e469d",
+    "instructions": 654,
+    "kernel_instructions": 704,
+    "branches": 52,
+    "branch_targets": 41,
+    "reachable_listed_instructions": 654,
+    "maximum_added_x87_depth": 4,
+    "x87_instruction_count": 101,
+    "fstp_instruction_count": 27,
+    "native_probe_sha256": "f8675b4976f7b8efc0bd917aebab734d11ca90222d20bcd2a166ce9914ed2b6e",
+    "eh_unwind_map": [
+      "FFFFFFFF",
+      "00CC84DA",
+      "00000000",
+      "00CC84E5",
+      "00000001",
+      "00CC84F0",
+      "00000002",
+      "00CC84FB"
+    ]
+  },
+  "bridge_contract": {
+    "calls": 11,
+    "all_modeled_call_return_added_x87_depths_zero": true,
+    "ordinary_call_post_live_volatile": "EAX only where consumed; fixed probe separately retains live ECX contract.",
+    "new_append_cpp_branch": "At the modeled zero-added-x87-depth boundary; real child returns in EAX.",
+    "CPP_cleanup_bytes": {
+      "qualified_append": 20,
+      "legacy_append": 16
+    },
+    "actual_native_shim_cleanup_unchanged": true,
+    "S_context": 4272,
+    "footer_context_from_actual_ESP": 4268,
+    "returned_buffer_spill_from_S": 20,
+    "four_real_scope_leaves_retained": true,
+    "sort_unwind_action": null,
+    "new_FP_arithmetic_or_control_changes": 0,
+    "public_C5_SSE": "MOVUPS data copies only",
+    "ambient_control_contract": "Existing original x87/MXCSR instruction schedule, spills, rounding and exception qualifications inherited; no control forcing or double arithmetic replacement.",
+    "exception_transport": "Static C++ cleanup actions and actual callee composition only; rethrow across unregistered naked kernel/original FH3/SEH/fault/frame/secondary-failure transport remains unproven."
+  },
+  "baseline_new_object_comparison": {
+    "strict_existing_functions_machine_equal": 15,
+    "source_relevant_function_count": 14,
+    "compiler_unique_ptr_helper_count": 1,
+    "vendor_body_credit": 0,
+    "functions": [
+      {
+        "name": "?kernel@?anonymous@cc16_dyn_radix_manager_update@bsp@@YIXPAX0PBUContext@123@@Z",
+        "bytes": 2360,
+        "instructions": 704,
+        "machine_sha256": "392b0dcc2d6aa8e16149d90af6af8ebc0f7d5a1b5fc7e82e775cd00e2644f692",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?new_shim@?anonymous@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+        "bytes": 19,
+        "instructions": 5,
+        "machine_sha256": "6323631fd042751e8be1ac602690f5fe27df6b52aae89331c7c93f6955a46f12",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?free_shim@?anonymous@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+        "bytes": 19,
+        "instructions": 5,
+        "machine_sha256": "6323631fd042751e8be1ac602690f5fe27df6b52aae89331c7c93f6955a46f12",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?append_shim@?anonymous@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+        "bytes": 24,
+        "instructions": 7,
+        "machine_sha256": "d7c39e9df7f8012d071b23bb2d3544481ea01fbeb15bdd0078c4821d15dba204",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?memset_shim@?anonymous@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+        "bytes": 27,
+        "instructions": 7,
+        "machine_sha256": "93224d3ed1463858fbc49952a8a904edc7ab2e6244c633d110db9904d8b64a5d",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?unwind_profiles@?anonymous@cc16_dyn_radix_manager_update@bsp@@YAXPAE@Z",
+        "bytes": 106,
+        "instructions": 33,
+        "machine_sha256": "403a2c1328c64777f08a6d401e2903c892789255c52b784ce1f68c11bb46fa44",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?dyn_profile_scope_enter_00c57020@bsp@@YAPAUDynProfileScopeStorage@1@AAU21@IPBDABUDynProfileScopeContext@1@@Z",
+        "bytes": 111,
+        "instructions": 48,
+        "machine_sha256": "b7191ce4bc8103784175acdab7e9f4c4cedaddfc19a50169cd5387cef40a86b1",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?dyn_profile_scope_leave_00c5bcd7@bsp@@YAXABUDynProfileScopeStorage@1@ABUDynProfileScopeContext@1@@Z",
+        "bytes": 77,
+        "instructions": 35,
+        "machine_sha256": "ad78f5bc21f57359323e777081c88a1771c89278bdb575bf61e246e4b1201fdb",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?dyn_profile_node_append_child_00c50390@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDIABUAvoidZoneDynHullMemory@1@@Z",
+        "bytes": 54,
+        "instructions": 21,
+        "machine_sha256": "0956e3f5ab3b04cd58997992d03ffa9668d41aa7d4734494dff6348ddbf8dbe1",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?dyn_profile_node_append_child_00c50390@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDIABUAvoidZoneDynHullMemory@1@P6AXPAX@Z@Z",
+        "bytes": 148,
+        "instructions": 59,
+        "machine_sha256": "f30ea2ac289572306cbee196dece900674926a15da4fc7cf5ae6a2adf43bc0fe",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?game_native_dyn_process@game@bsp@@YAAAVGameNativeDynProcess@12@ABUCameraAxesCrtAccess@2@ABUAvoidZoneDynHullMemory@2@@Z",
+        "bytes": 273,
+        "instructions": 82,
+        "machine_sha256": "3e6a0b69d8d70195fdaf40bd5c3e9d038e6d3d784f640469fd238596cb83a58b",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?game_native_dyn_process@game@bsp@@YAAAVGameNativeDynProcess@12@ABUCameraAxesCrtAccess@2@@Z",
+        "bytes": 273,
+        "instructions": 76,
+        "machine_sha256": "620587b2f924e67863e2f46024276f2b2c78c6770609784e0671ec9986a49eb5",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?allocate@?anonymous@game@bsp@@YAPAXPAXI@Z",
+        "bytes": 13,
+        "instructions": 4,
+        "machine_sha256": "dd3136d4bc89be415c3905575bcba42ea5a26176662cab900da00871e2599b33",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?release@?anonymous@game@bsp@@YAXPAX0@Z",
+        "bytes": 11,
+        "instructions": 4,
+        "machine_sha256": "4be7eee07bf62c6899070c14e323c9455c6367bdddedef435e8c6e61adf7b7c1",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      },
+      {
+        "name": "?release@?$unique_ptr@UConvexBinding@Impl@GameNativeDynProcess@game@bsp@@U?$default_delete@UConvexBinding@Impl@GameNativeDynProcess@game@bsp@@@std@@@std@@QAEPAUConvexBinding@Impl@GameNativeDynProcess@game@bsp@@XZ",
+        "bytes": 9,
+        "instructions": 3,
+        "machine_sha256": "98a8eaeb25734e07d3996a59a70e5a8eb2b6963db2e10ee40fbb8abc24e466a4",
+        "bytes_equal": true,
+        "relocations_equal_after_anonymous_namespace_name_normalization": true
+      }
+    ],
+    "normalization": "Anonymous namespace symbol hashes only; actual opcode bytes identical, normalized relocation offsets/targets/kinds identical.",
+    "scope": "Baseline and changed source each compiled with the same strict flags; not whole-object identity."
+  },
+  "post_build_common_object_proof": {
+    "functions_compared": 12,
+    "machine_equal": 7,
+    "CPP_frame_differences": 5,
+    "same_bytes": "C5kernel,4shims,append bridge,default supplier",
+    "different_bytes": "4 public C++ wrappers and private unwind helper use balanced EBP-relative common frames instead of strict ESP-relative frames; inert NOP padding also differs.",
+    "transport_checks": {
+      "null_guards": {
+        "C5": {
+          "before_caller_object_access": true,
+          "failure_calls": [
+            "??0invalid_argument@std@@QAE@PBD@Z",
+            "__CxxThrowException@8"
+          ]
+        },
+        "scope": {
+          "before_caller_object_access": true,
+          "failure_calls": [
+            "??0invalid_argument@std@@QAE@PBD@Z",
+            "__CxxThrowException@8"
+          ]
+        }
+      },
+      "C5_context_prefix_bytes": 40,
+      "C5_context_total_bytes": 48,
+      "legacy_tail": "mode0/provider0 at context+28/+2C",
+      "qualified_tail": "mode1/required argument provider at context+28/+2C",
+      "one_context_stack_argument_to_same_kernel": true,
+      "scope_qualified_append_targets": [
+        "?dyn_profile_node_append_child_00c50390@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDIABUAvoidZoneDynHullMemory@1@P6AXPAX@Z@Z"
+      ],
+      "scope_legacy_cpp_append_selection": {
+        "append_calls": [],
+        "inlined": true,
+        "normal_constructor_calls": [
+          "?dyn_profile_node_construct_00c44000@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDI@Z"
+        ],
+        "meaning": "Common compiler inlines normal4arg C50390 and emits the normal3arg C44000; no qualified child overload is selected."
+      },
+      "each_scope_variant_has_one_RDTSC": true,
+      "common_unwind_core_equal_after_balanced_EBP_frame_and_NOP_normalization": true
+    },
+    "no_whole_object_identity_claim": true,
+    "final_map": {
+      "path": "build/win32/bsp_game.map",
+      "sha256": "7ea6daa6e9ae4b627138e6d373d72f8f664e0299164638f1341de791aea9c482",
+      "actual_unsized_delete": "0001:00566540       ??3@YAXPAX@Z               10567540 f   MSVCRT:delete_scalar.obj",
+      "actual_scalar_new": "0001:00565bc0       ??2@YAPAXI@Z               10566bc0 f   MSVCRT:new_scalar.obj",
+      "qualified_getter_scope_and_both_C5_public_symbols_absent": [
+        "?profile_partial_node_delete_00bf65ac@GameNativeDynProcess@game@bsp@@QBEP6AXPAX@ZXZ",
+        "?dyn_profile_scope_enter_00c57020@bsp@@YAPAUDynProfileScopeStorage@1@AAU21@IPBDABUDynProfileScopeContext@1@P6AXPAX@Z@Z",
+        "?update_radix_manager_00c5a8b0@cc16_dyn_radix_manager_update@bsp@@YAXPAXABUDynLiveCrt@cc15_dyn_live@2@ABUDynProfileScopeContext@2@ADIADNABURadixManagerProfileNames@12@P6AX0@Z@Z",
+        "?update_radix_manager_00c5a8b0@cc16_dyn_radix_manager_update@bsp@@YAXPAXABUDynLiveCrt@cc15_dyn_live@2@ABUDynProfileScopeContext@2@ADIADNABURadixManagerProfileNames@12@@Z"
+      ],
+      "scope": "Object DIR32 names real unsized scalar delete; final linked symbol resolves to actual MSVCRT delete_scalar.obj. Unreferenced qualified APIs remain unwired, not game activation."
+    }
+  },
+  "verification": {
+    "strict_objects": {
+      "count": 6,
+      "source_variants": [
+        "baseline605",
+        "qualified"
+      ],
+      "compiler": "MSVC19.51.36244.0 / toolset14.51.36231 Win32",
+      "flags": "/MD /std:c++17 /O2 /Gy /fp:strict /EHsc /W4 /WX /c /FAs",
+      "result": "passed",
+      "executables_created_or_run": 0
+    },
+    "required_build": {
+      "script": "scripts/build.ps1 -Configuration Release",
+      "BSP_CL_MP": 2,
+      "BSP_PCH": "ON",
+      "ctest_passed": 2,
+      "ctest_failed": 0,
+      "ctest_total_seconds": 12.94,
+      "log_sha256": "005982200959c2c64a5163751091c27a6106cc1292f934248ba899419f881742"
+    },
+    "actual_call_verifier": {
+      "checked": 15,
+      "failed": 0,
+      "receipt": "local\\cc16_dyn_profile_qualified_binding\\packet_call_verification.txt",
+      "command": "python tools/verify_report_calls.py reports/cc16_dyn_profile_qualified_binding.json",
+      "existing_accepted_row_receipt": "local/cc16_dyn_profile_qualified_binding/call_verification.txt"
+    },
+    "runtime_binding_execution": false,
+    "new_tests_added": false
+  },
+  "old_new_call_limits": {
+    "old_APIs": "Remain normal-only; old source construction/runtime wiring unchanged.",
+    "new_APIs": "Only explicit caller selecting new overload with genuine matching flat provider receives qualified child construction.",
+    "ScopeContext": "No new field, no implicit callback inference.",
+    "null": "Both qualified API paths reject before caller-object access even if no cold append would occur.",
+    "custom_memory": "Getter reports unqualified; lower-level explicit qualified API still requires a separately proven actual provider, never default substitution.",
+    "profile_object": "Actual constructed9Ch owner/48h nodes/cell and allocator lifetime still required.",
+    "Root_C50310": "OUT: native state0 through publication/BF79F0 is longer than child constructor scope; no Root overload/engine propagation changed.",
+    "collision_world_solver": "OUT: direct old append bridges and world enter/collision dispatch still normal-only.",
+    "C5_owner_vtable_game": "OUT: no raw selected manager producer/table/game attachment or new activation.",
+    "final_game_map": "New supplier/qualified scope/both C5 public variants absent as recorded; legacy C57020 remains present."
+  },
+  "unchanged_dependency_fingerprints": [
+    {
+      "path": "src/dyn_engine_runtime.cpp",
+      "git_blob": "2aed397d03a8370f1824f41d6f11f9b276e98167",
+      "sha256": "eeda95d61df753129db8a480f5bf8229071ab90134dfff81fa92b976ce700e3a"
+    },
+    {
+      "path": "include/bsp/dyn_engine_runtime.hpp",
+      "git_blob": "a6828d517457166cc9078606f84cd76d482b6bbd",
+      "sha256": "2217fde53118820512482ca218e4b73e482801d61e3271bbb81f224b54418393"
+    },
+    {
+      "path": "src/native_dyn_collision_pass.cpp",
+      "git_blob": "8e7f7571a123e7ea6da661d7a74ae9bf590b3d82",
+      "sha256": "112743077813a1690f59771e180ccd75eae029e3a9a6786d486b2fac3cf697f6"
+    },
+    {
+      "path": "include/bsp/native_dyn_collision_pass.hpp",
+      "git_blob": "b791990aeed201c1aee3eb080ef16f94fbeeb5df",
+      "sha256": "ff578a824f0ff6044a0231f2c3f24660bf682c96be9e2ebe78bbffcc28aca2c9"
+    },
+    {
+      "path": "src/native_dyn_world_step.cpp",
+      "git_blob": "ac4b833b5ce91315ec237da0204432adc05ba14c",
+      "sha256": "f729543cd630a87b383d2fb21f1ef387f6e92ab9b7c68cf242a172cd91c94935"
+    },
+    {
+      "path": "include/bsp/native_dyn_world_step.hpp",
+      "git_blob": "a63ae0f411c38b54a1d7c6973fac4a604c02fd17",
+      "sha256": "38d374b7daf95914c7e237e88f999af251e27f51013bd602e51d5266308e0912"
+    },
+    {
+      "path": "src/native_dyn_solver_mode1.cpp",
+      "git_blob": "62e4084f0430e4a7fa2ac29ca6e65c29dae7c06c",
+      "sha256": "f71eabaed4962be31d3e6103906e6cb52200c0ab575d54241b3101ca1f45e5ea"
+    },
+    {
+      "path": "include/bsp/native_dyn_solver_mode1.hpp",
+      "git_blob": "60a10bfcd9f51e856f60a6b04b4ff01904884585",
+      "sha256": "aeb6dba1a7a5c989f84f550f2600ab5623c4d82682fe1d7061483d5fbac5fade"
+    },
+    {
+      "path": "src/native_game_physics_lifetime.cpp",
+      "git_blob": "5fb98e8e73cd280c681e0e67e8d5f625e97dc1d5",
+      "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+    },
+    {
+      "path": "include/bsp/native_game_physics_lifetime.hpp",
+      "git_blob": "1afc7f6aef423a3fedb65beeea64830069856437",
+      "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "git_blob": "f8c0f47406710a7e078d7cf09c0529e3838665c5",
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+    },
+    {
+      "path": "include/bsp/gameplay_settings_tail.hpp",
+      "git_blob": "a84336a70e8b559fc91a6a44c15d12c018f97b6d",
+      "sha256": "2a0e1c311d5bcd77caf2e8ac2e649bd1733c6d30a65482b25b947d34d6a59bb5"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "git_blob": "77f08796a11ff8a8538e72e6e07019a3b19bb4ff",
+      "sha256": "f8ba57bcf733dff041e995e97d0acfe7b01106b07e4cb0b2e64081dfae519dd6"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "git_blob": "a8006a087d8a4f5dc5fdb8aa33d80fd5293925a1",
+      "sha256": "1d60a9496071cbe8484c7e22ee5798ebc4d70f3a5fbed1bd982bf60010c3bb9b"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "git_blob": "fc44f226c994e6fdea911757d0fe710e2555db74",
+      "sha256": "592a749882de86e5a4cde58aacf7d868af611a124cb3ca2e69b8998684859b14"
+    }
+  ],
+  "changed_source_fingerprints": [
+    {
+      "path": "src/game_native_dyn_process.cpp",
+      "baseline_git_blob": "2340457588570a29286cddb3c153e1af7e264624",
+      "sha256": "54ec1cb0688d099fc46c0e00b79799e19416d3879c5b72258fe4f0b14c21350b"
+    },
+    {
+      "path": "src/dyn_profile_scopes.cpp",
+      "baseline_git_blob": "61b51ccd5fa147e0a6aba0f0a6a2856801eb1a07",
+      "sha256": "b942eba99e2c9bd81bd18c83748e850a23a55633785e16c8549c929450e37fc8"
+    },
+    {
+      "path": "src/cc16_dyn_radix_manager_update.cpp",
+      "baseline_git_blob": "f8afaa555257209459958df35b2732d2c9085027",
+      "sha256": "c6ca3ff74b6994040179f1d236ce2ec3c76b79e9e6462e2a8cf5054bdaed4e40"
+    },
+    {
+      "path": "include/bsp/game_native_dyn_process.hpp",
+      "baseline_git_blob": "8bcec5f9e26075a4c706266722701d1c23434366",
+      "sha256": "9e6e6f3c6824250f131366d7805bacc508d3157e1c562cc4cc73269ed339ffa2"
+    },
+    {
+      "path": "include/bsp/dyn_profile_scopes.hpp",
+      "baseline_git_blob": "a37ab8151673c17096a4f47057e2e468db16079c",
+      "sha256": "73ad91c854c772ffda264eb6548b9b0c2513fd7099c8e3169d9526c6724ab3cc"
+    },
+    {
+      "path": "include/bsp/cc16_dyn_radix_manager_update.hpp",
+      "baseline_git_blob": "0effeb39a5343ffd5cf208e0d59a17fe2224ef86",
+      "sha256": "102c01e57505aa9b3eba24cecc8ea5520728d200fa81bc68fb587f87e39e8133"
+    }
+  ],
+  "artifact_receipts": {
+    "directory": "local/cc16_dyn_profile_qualified_binding",
+    "doc_sha256": "7334022059930239f910abe8b2e5798a9b190165589fc9598c19c62e592211a7",
+    "files": [
+      {
+        "path": "prepare_strict.py",
+        "sha256": "71b70988a51be4b2d08772079d2b756c4f8b6a55a3787b4e9c469860759d3572"
+      },
+      {
+        "path": "strict_compile.cmd",
+        "sha256": "7a09abaf22a682cc86811e91fee77b80cff8974d8fff162195134bdaf2c8ce09"
+      },
+      {
+        "path": "strict_compile.log",
+        "sha256": "64359a7940c296061a5612c8bece07ea29f58550c86ed2338e4952d0f36a7e9a"
+      },
+      {
+        "path": "configure.log",
+        "sha256": "048a24a99155ac4aab8529fb3450acc6f2132180431a9b0fcbf1152698e82fe4"
+      },
+      {
+        "path": "build.log",
+        "sha256": "005982200959c2c64a5163751091c27a6106cc1292f934248ba899419f881742"
+      },
+      {
+        "path": "prepare_native_audit.py",
+        "sha256": "ec401f7b68f97256cab6050a2fe5c4f5ca268c2a40b2ac40a51f6944de06a3ac"
+      },
+      {
+        "path": "native_audit.py",
+        "sha256": "7ed9723f589d565b2958632deaf5c1efdfc32c72f29fc36d8bae9c9bb53683d4"
+      },
+      {
+        "path": "native_audit_provenance.json",
+        "sha256": "41bf4f184e1a3cc856d895e22bc96c2db5603b883fe6c1561fdc695f163ddee0"
+      },
+      {
+        "path": "native_audit.stdout.jsonl",
+        "sha256": "c5ae0984dcb4272de39247aebf0f75bbf4567fcf753770706367c9e3fb4cfdd8"
+      },
+      {
+        "path": "audit.json",
+        "sha256": "1298bd88943753e1be2b0ca530c75f70cce8b27a975a63278b9b6644083f650c"
+      },
+      {
+        "path": "object_audit.py",
+        "sha256": "2d22bdd89389b66de5b0dd6b5c2385a12998e86249753cb9c914695cf9fa67ac"
+      },
+      {
+        "path": "object_audit.json",
+        "sha256": "61239fcbd3ff335ec6d6680038fc72105d7ad96aff7ebb73d708fb104c99a94e"
+      },
+      {
+        "path": "common_audit.py",
+        "sha256": "a91363e6bb74c48e8b465ce6fcdce4874c75b29562f8b08d120ef99480143248"
+      },
+      {
+        "path": "common_audit.json",
+        "sha256": "b4a83ab826547139b603a380517a5fbae196b6ed0c72ec46eadd17e97bf6b933"
+      },
+      {
+        "path": "common_audit.stdout.json",
+        "sha256": "55062df64f0c4c33593a9cc57bdfce42684f2355949eed35ac418562ee0e5fc4"
+      },
+      {
+        "path": "call_verification.txt",
+        "sha256": "870c13bb83a3b040e931a4e6a4fe847684d5743c4f2ac6d5d8f17506d97e5066"
+      },
+      {
+        "path": "write_report.py",
+        "sha256": "3bb6b5ebfd3200cd9c38c25acd52f47431f3de0a639d9e0084905206fda70e7b"
+      },
+      {
+        "path": "packet_call_verification.txt",
+        "sha256": "d0e2adbfd683a398072348fd84f0bac77125c19693ab79825791a3fc92c5a590"
+      },
+      {
+        "path": "baseline/dyn_profile_scopes.obj",
+        "sha256": "b1627be30fb318f993727471a33325041a3f9976712901e78ab72345bdac97a7"
+      },
+      {
+        "path": "baseline/dyn_profile_scopes.asm",
+        "sha256": "150be1abc8dae497a14c80885fb61698295df72b657839eb21892ff0a471d320"
+      },
+      {
+        "path": "baseline/cc16_dyn_radix_manager_update.obj",
+        "sha256": "62e9c816ce4b3cc5bd70cafd7580137fc068d31f0f6e79453175c15c1a6d693e"
+      },
+      {
+        "path": "baseline/cc16_dyn_radix_manager_update.asm",
+        "sha256": "3d878c4aa33f6df3153135827dcebf1afd7188f05ee616a288aa39dc6560017c"
+      },
+      {
+        "path": "baseline/game_native_dyn_process.obj",
+        "sha256": "dac86b2592678f64238f6ffcf6c5306f548fc5f2deb72c90271b57ad49f2bb3b"
+      },
+      {
+        "path": "baseline/game_native_dyn_process.asm",
+        "sha256": "56edfde2a49eb1af05e8cb72a1364b34305ec881e1a7f4b233eeacf9d87e4561"
+      },
+      {
+        "path": "qualified/dyn_profile_scopes.obj",
+        "sha256": "5f7e01c41c16c352f25b41ba5c0a243f27134b20849816ce4f6fca7a5ec75163"
+      },
+      {
+        "path": "qualified/dyn_profile_scopes.asm",
+        "sha256": "05c39602d0f5994bc65f423ef61f714e63660f33769fdad1a0e0d5f9eb89947d"
+      },
+      {
+        "path": "qualified/cc16_dyn_radix_manager_update.obj",
+        "sha256": "804fca2bb90a8c25bc9a90b4c39a24d081b12d8911d70a021dae92fa90816236"
+      },
+      {
+        "path": "qualified/cc16_dyn_radix_manager_update.asm",
+        "sha256": "5326ee3b197e867d5deb04b9747d090bc7485babaa29e7760b78bfe58ef94f80"
+      },
+      {
+        "path": "qualified/game_native_dyn_process.obj",
+        "sha256": "b646d9d9c9f9d81256aade3d95061721e2690a4c2a0035c110121056be58a758"
+      },
+      {
+        "path": "qualified/game_native_dyn_process.asm",
+        "sha256": "7dde19c536bdb2b85ebb29d83e079c7a947318fe33b80ef46eee6b9fff1e437d"
+      },
+      {
+        "path": "baseline/src/game_native_dyn_process.cpp",
+        "sha256": "6ca1af2006f4462e1807d03821183bcf7925404bb77bbdbb32399ee78d32e4e2"
+      },
+      {
+        "path": "baseline/src/dyn_profile_scopes.cpp",
+        "sha256": "7177b2f2174174c93dd6dd20e9f8c585d9f54573669fb8a945b747ea0523e7d0"
+      },
+      {
+        "path": "baseline/src/cc16_dyn_radix_manager_update.cpp",
+        "sha256": "9dcddca90e57ce56b5ea0c819c7d87ed319ce213ad42f46b0b2528be7cfa2255"
+      },
+      {
+        "path": "baseline/include/bsp/game_native_dyn_process.hpp",
+        "sha256": "a2fd23518752eb7232a0076a039123202f6be1c2ef50fd17a5c9eaff17bdcee6"
+      },
+      {
+        "path": "baseline/include/bsp/dyn_profile_scopes.hpp",
+        "sha256": "1ce9b126405212887e03e05bbd558d8a035eb252024aa42031cf126a059c5d80"
+      },
+      {
+        "path": "baseline/include/bsp/cc16_dyn_radix_manager_update.hpp",
+        "sha256": "be9e31d0b54d284800d824487fb22564140ee8b41309ce449acc009aac289572"
+      }
+    ],
+    "common_objects": [
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\cc16_dyn_radix_manager_update.obj",
+        "sha256": "a79a3fcf07b58d3e629d7240e63c7ac9aa5fab14c3ed4e0b3de26e89afaab270"
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\dyn_profile_scopes.obj",
+        "sha256": "0a3bf0288d7550f58e5e65cec20923e3d65ee517714ff7aaf9452fdb2ff6855c"
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\game_native_dyn_process.obj",
+        "sha256": "ff9d99b7d38326caf397dc1d7bdecb5d9816c69440844ae879b5d89720fe2a7c"
+      }
+    ],
+    "game_executable_built_not_run": {
+      "path": "build/win32/Release/bsp_game.exe",
+      "sha256": "debaa23396789cc703796a75eec6a050c6e38d812d2b63e194b1e1299630fa51"
+    },
+    "CMake_cache_sha256": "f28a4ef709fee6a051336fc5977bb7b81ae014c5914d2cdb1b92fe5e3feecabc",
+    "test_log_sha256": "5078b986a35d19c176396ca555d3b1656d0224222d62b41bb1832048e9696da2"
+  }
+}

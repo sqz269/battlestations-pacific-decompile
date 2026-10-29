@@ -136,6 +136,15 @@ int GameNativeDynProcess::initialize_once_00cc8950(){
 const NativeGameDynamicsContext& GameNativeDynProcess::dynamics(){
     auto& i=*impl_;std::lock_guard lock(i.startup_mutex);i.require_initialized();return i.bindings;
 }
+DynProfilePartialNodeDelete GameNativeDynProcess::profile_partial_node_delete_00bf65ac() const {
+    auto& i=*impl_;
+    std::lock_guard lock(i.startup_mutex);
+    i.require_initialized();
+    if(i.memory.context!=process_memory.context
+        ||i.memory.allocate!=process_memory.allocate||i.memory.release!=process_memory.release)
+        throw std::logic_error("Dyn profile partial cleanup requires the actual process scalar-new domain");
+    return static_cast<DynProfilePartialNodeDelete>(&::operator delete);
+}
 const NativeDynWorldStepContext& GameNativeDynProcess::world_step(){
     auto& i=*impl_;std::lock_guard lock(i.startup_mutex);i.require_initialized();return i.step_context;
 }

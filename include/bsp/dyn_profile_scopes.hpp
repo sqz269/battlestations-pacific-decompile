@@ -44,6 +44,15 @@ DynProfileNodeStorage* dyn_profile_node_append_child_00c50390(
 DynProfileScopeStorage* dyn_profile_scope_enter_00c57020(DynProfileScopeStorage&,
     std::uint32_t id, const char* name, const DynProfileScopeContext&);
 
+// Additive qualified child-construction path. Required matching raw-node
+// BF65AC provider; null is rejected before any profile/scope access or mutation.
+// The cold append selects the real five-argument C50390. The existing overload
+// stays normal-only; ScopeContext/ScopeStorage layouts are unchanged. No Root,
+// native collision/world/solver caller adoption or original FH3/SEH follows.
+DynProfileScopeStorage* dyn_profile_scope_enter_00c57020(DynProfileScopeStorage&,
+    std::uint32_t id, const char* name, const DynProfileScopeContext&,
+    DynProfilePartialNodeDelete delete_partial_00bf65ac);
+
 //Complete inline fragment00C5BCD7..00C5BD03 within00C5BB30, not a standalone
 //native function. Scope was native ESP+4C. Execute RDTSC, update node last/sum
 //and count modulo64/32, then pop the actual global current node through+0.
