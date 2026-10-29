@@ -777,3 +777,60 @@ restored; the helper grants only the Font slice. All five private switches are
 FALSE; coupled Win32/checks2/2 pass11.22s. Actual Font work remains unexecuted.
 Prepare the exact13-row default OFF candidate against the audited5b01 corpus
 before the independently preregistered real-provider Font/MSD private cases.
+
+The original OFF9356c19f13-row comparison is complete: all processes/controllers
+exit0, but only12 pairs pass. USN12 changes three final clear_37c values; its
+gameplay/native/normalized summaries/ordered streams/teardown match. The failed
+cohort remains sealed. Four separate trace/bounds observations show aided
+reference/candidate299072-row trace identity, while unaided traces differ; they
+do not retroactively pass the original cohort or prove general causality.
+
+Real Font work exposed a separate Widget base-entry guard still reading the
+ended Font slice. Targeted fix903bd6550 keeps every other Widget predicate and
+requires the same sealed helper at exact raw118 base Stage. Root and independent
+Source review accept it. Six corrected private cases (three modes, GUI0/1 pairs)
+then exit0 with full owner/Text/Model/Mesh/Font/renderer closure and only the
+existing COM residue cohort. Independent audit128/129 keeps genuine RNG-event
+proof open: the primary parser matched lof_expiry_draw=1, a feature flag.
+All sealed reports remain unchanged with additive corrections.
+
+Published Dyn/subtitle Source5c2547156 is merged in staging3ff670d5e; subtitle
+and all five Font switches stay FALSE. Common Win32/checks2/2 pass10.37s;
+restoration87398bfe7 has the same complete C++ tree and checks2/2 pass11.77s.
+One newly preregistered current-source593cf035 same-binary GUI0/1 USN04 pair
+uses4800 mission/5100 total frames. Both runs/controller exit0 and observe the
+same first logged genuine plane-death sample at93.60s/value0.4143 (51 samples
+each); all34 scoped checks pass. Root independently rehashed59 sealed artifacts,
+all51 raw event records and the lifecycle sequence. This is neither the globally first RNG call
+nor retroactive event proof for the six earlier80-second cases.
+
+A separate26-case controlled cohort is running frozen all-OFF122145f6 against
+fresh5b references with the existing bounds-init aid explicitly set on BOTH
+sides. It qualifies only that labelled input domain and frozen Source. Newer-main
+compatibility, final independent audits and publication remain separate. Original
+failed OFF13, production ON13/USN21strict4+4, MainSection, Page/P4, FE_initial,
+nonempty content/glyph/layout/visual rendering, lighting and native ABI remain
+open. The continuing goal remains active.
+
+Controlled26 has now completed all13 pairs with pair0 and all14 final producer
+checks true: all26 runs/three actual controllers exit0; registered outcomes,
+inputs, Normal samples, full/mission/shutdown order and teardown match. All337
+artifact hashes verify independently in Root. Peak3, forecast7/8, exact frozen
+EXEs/52 sampled PIDs drained, old5 preserved; all26COM0/0. Raw strict false
+results remain. RNG provenance is nine plane first logged samples, one earlier
+USN01 LandFort sample and three equal absences. This qualifies only the explicit
+symmetric bounds-aid122/5b domain. The original plain9356 failure is unchanged.
+
+Latest5c Source/caller compatibility is separately reviewed:157 protected Font/
+Model/Widget/provider blobs are unchanged, but dormant Subtitle OFF changes its
+MovieBridge heap/layout work and the live VFS borrow. No old PE/object/ABI identity
+is inherited. The new current593 long common pair supplies current shared SDK/
+owner closure and genuine logged-event evidence. Both corrections and exact
+artifact/source scopes are retained; all five Font switches and subtitle stay OFF.
+
+Final independent controlled-cohort audit359/359 passes. Root read its full
+report and retained hash-verified JSON/Markdown/index copies. The6AC/6B0 same-line
+auditor assumption correction is explicit, with original false records preserved;
+all registered difficulty/input/observer gates remain. This closes the labelled
+controlled122/5b cohort only. Current common593 runtime, reviewed5c caller/layout
+composition and all-OFF873 restoration remain their separate evidence scopes.
