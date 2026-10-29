@@ -124,6 +124,14 @@ while ($slot -lt 0) {
         Write-Error "DRAIN is set ($env:USERPROFILE\.bsp\DRAIN): not starting $logFull. Stop queuing runs; report to your lead." -ErrorAction Continue
         exit 75
     }
+    # Fixed-lane selection must still reject a log owned by ANY lane. This
+    # read-only pass neither clears stale locks nor reserves other processors.
+    foreach ($otherLock in @(Get-ChildItem -LiteralPath $lockDir -Filter 'bsp_game.slot*.lock' -File -ErrorAction SilentlyContinue)) {
+        $otherText = (Get-Content -LiteralPath $otherLock.FullName -ErrorAction SilentlyContinue) -join ' '
+        if ($otherText -match 'log=(.+)$' -and $Matches[1].Trim() -ieq $logFull) {
+            throw "log path $logFull is in use by $($otherLock.Name) ($otherText); give every run its own -Log"
+        }
+    }
     for ($k = $slotStart; $k -lt $slotEnd; $k++) {
         $candidate = Join-Path $lockDir "bsp_game.slot$k.lock"
         if (Test-Path $candidate) {
