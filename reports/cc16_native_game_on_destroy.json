@@ -1,0 +1,535 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-game-on-destroy",
+  "worker": "agent/codex-native-game-on-destroy",
+  "source_base": "605373bf732e4bd3089e8f07ddca226ab4d635a3",
+  "origin_main_at_start": "f1431e56da01920b5eec31747ff86078e7222a57",
+  "status": "complete_normal_raw_parent_source_strict_win32_object_passed_required_genuine_site_bindings_and_root_admission_pending",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "language": "x86:LE:32:default",
+  "ghidra_worker_read_only": true,
+  "sources": [
+    "src/native_game_on_destroy.cpp"
+  ],
+  "headers": [
+    "include/bsp/native_game_on_destroy.hpp"
+  ],
+  "documentation": "docs/CC16_NATIVE_GAME_ON_DESTROY.md",
+  "original": {
+    "address": "004DC5C0",
+    "end_inclusive": "004DC69A",
+    "bytes": 219,
+    "instruction_starts": 67,
+    "sha256": "8c32ce9af196221132a316e98d790da4b2162420d718879aba910e57b2a94cd4",
+    "direct_call_sites": 7,
+    "indirect_call_sites": 6,
+    "tail_jumps": 1,
+    "abi": "ECX actual Game captured in ESI; no stack arguments; preserves ESI/EDI then tail JMP 004A9AC0 at 004DC696.",
+    "source_interface": "void on_destroy_native_game_004dc5c0(NativeGameStorage&, NativeGameOnDestroyContext&, NativeGameOnDestroyOperation&)",
+    "name_qualification": "OnDestroy is supported by original GGame::OnDestroy() trace; descriptive C++ names are hypotheses.",
+    "sole_native_caller": "00737FB9 in 00737F30; result discarded before EAX receives scalar table slot0 at 737FC7.",
+    "native_tail_register_result_transport_claimed": false,
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_capture_equals_current_disk_span": true
+  },
+  "call_rows": [
+    {
+      "function": "004DC5C0",
+      "address": "004DC5C9",
+      "native": "004254B0",
+      "binding": "Private exact C3 RET shim with actual mapped CE7C98 argument; verified no-op, zero additional body credit."
+    },
+    {
+      "function": "004DC5C0",
+      "address": "004DC5DB",
+      "native": "0046F3E0",
+      "binding": "Required whole-callee site binding; no default."
+    },
+    {
+      "function": "004DC5C0",
+      "address": "004DC5E2",
+      "native": "004DA780",
+      "binding": "Required whole-callee site binding carrying actual Game ECX; screen fragment excluded."
+    },
+    {
+      "function": "004DC5C0",
+      "address": "004DC5E9",
+      "native": "004DA650",
+      "binding": "Required whole-callee site binding carrying actual call-site Game ECX; incomplete frontend projection excluded."
+    },
+    {
+      "function": "004DC5C0",
+      "address": "004DC601",
+      "native": "00992AC0",
+      "binding": "Required whole-callee binding using actual current globals after the prior callback; no repeated gate."
+    },
+    {
+      "function": "004DC5C0",
+      "address": "004DC60C",
+      "native": "00B65E80",
+      "binding": "Existing close_native_lua_state_00b669a0 matches complete normal actual-storage effects; no native call-transport claim."
+    },
+    {
+      "function": "004DC5C0",
+      "address": "004DC617",
+      "native": "008844F0",
+      "binding": "Required whole raw helper, unconditionally on current Game+1A08 including null; no semantic MissionLuaHostState cast."
+    },
+    {
+      "function": "004DC5C0",
+      "address": "004DC696",
+      "native": "004A9AC0",
+      "kind": "tail_jump",
+      "binding": "Qualified NativeGameLifetimeCalls::call_004a9ac0 forces genuine default validation and existing class cleanup; void C++ result, no physical tail transport."
+    }
+  ],
+  "indirect_sites": [
+    {
+      "site": "004DC5FF",
+      "receiver": "Single current F8A2FC capture from 4DC5EE",
+      "slot_bytes": 8,
+      "stack_words": 0,
+      "binding": "Required current_online_slot_08 with genuinely callable current table."
+    },
+    {
+      "site": "004DC62C",
+      "receiver": "Current Game+1A08 reloaded AFTER 8844F0",
+      "slot_bytes": 0,
+      "flags": 1,
+      "post_return_clear": "004DC62E"
+    },
+    {
+      "site": "004DC644",
+      "receiver": "Current Game+21A0",
+      "slot_bytes": 0,
+      "flags": 1,
+      "post_return_clear": "004DC646"
+    },
+    {
+      "site": "004DC65C",
+      "receiver": "Current Game+21D8",
+      "slot_bytes": 0,
+      "flags": 1,
+      "post_return_clear": "004DC65E"
+    },
+    {
+      "site": "004DC674",
+      "receiver": "Current actual E18678",
+      "slot_bytes": 0,
+      "flags": 1,
+      "post_return_clear": "004DC676"
+    },
+    {
+      "site": "004DC68C",
+      "receiver": "Current actual E1867C",
+      "slot_bytes": 0,
+      "flags": 1,
+      "post_return_clear": "004DC68E"
+    }
+  ],
+  "semantics": {
+    "state_store": "DWORD Game+5D4=10h after the real trace RET and before 46F3E0.",
+    "storage": "Actual existing NativeGameStorage, 71A0h; no fabricated class, layout or global.",
+    "pointer_arithmetic": "Explicit Win32 unsigned DWORD address additions on the admitted valid owner; no bounds fallback.",
+    "online_epoch": "Capture actual volatile F8A2FC once. Null skips both online calls; initially nonnull always calls 992AC0 after slot8 even if the callback changes the publication.",
+    "lua_epoch": "Reuse complete normal B65E80 state04/owns00/close/post-clear effects via B669A0; ownership and tracking stay untouched.",
+    "machine_epoch": "Unconditionally call 8844F0 on current Game+1A08, then reload that field before guarded scalar deletion.",
+    "scalar_epoch": "Capture each current receiver at its native epoch; call slot0 flags1; clear the CURRENT field/publication after return even if replaced. No initial-null clear.",
+    "final_epoch": "Force existing validated class cleanup after the last publication clear; no raw Game access afterward.",
+    "shared_context": "Borrow the SAME NativeGameLifetimeContext; no duplicated E18678/E1867C/calls/profile/classes.",
+    "reentrancy": "Serialized owner/operation and stable context reference bindings; callback field mutation observed, no arbitrary parent reentry or concurrency guarantee.",
+    "failure": "C++ catch marks failed and rethrows with completed effects retained; no rollback or replay. External resolution before diagnostic acknowledgement; no original SEH/fault claim."
+  },
+  "required_bindings": [
+    {
+      "name": "call_0046f3e0",
+      "reason": "Existing Seg6 body can compose genuine services; current SceneDatabaseSeg6Host explicitly rejects its deleting virtual call, so it is not an admitted default."
+    },
+    {
+      "name": "call_004da780",
+      "reason": "Existing clear_all_screen_set_levels covers only 4DA99D..4DA9CF, not the whole session parent with 55 callees."
+    },
+    {
+      "name": "call_004da650",
+      "reason": "Existing frontend helper clears its in-mission pointer without destruction; not the whole callee."
+    },
+    {
+      "name": "current_online_slot_08",
+      "reason": "Requires a captured real receiver, its current callable table/code, and the no-argument ECX shape. PE tokens do not supply executable providers."
+    },
+    {
+      "name": "call_00992ac0",
+      "reason": "Requires real current publication/factory custody after the slot8 callback; no local copies or successful returning stub."
+    },
+    {
+      "name": "call_008844f0",
+      "reason": "Existing helper takes semantic MissionLuaHostState with C++ containers, not the actual raw14h host."
+    }
+  ],
+  "other_required_custody": [
+    "Actual volatile F8A2FC authority and mapped CE7C98 literal.",
+    "Same valid NativeGameLifetimeContext with matching calls/profile/classes/raw strings and manager.",
+    "Admitted actual scalar child families, current method tables and matching allocation domains.",
+    "All providers, context and raw owner survive their calls and retained operations.",
+    "Whole application OnDestroy/scalar-delete/post-clear order remains unwired."
+  ],
+  "reused_dependencies": [
+    {
+      "source": "src/native_lua_objects.cpp",
+      "entry": "close_native_lua_state_00b669a0",
+      "native_role": "Complete normal B65E80 effect equivalence; no binary entry ABI or fault proof."
+    },
+    {
+      "source": "src/native_game_lifetime.cpp",
+      "entry": "NativeGameLifetimeCalls::call_004a9ac0",
+      "native_role": "Qualified real default validates classes/profile/calls/string/manager before raw class cleanup."
+    },
+    {
+      "source": "src/native_game_class_cleanup.cpp",
+      "entry": "clear_native_game_class_globals_004a9ac0",
+      "native_role": "Existing full normal raw class cleanup, zero new body credit."
+    },
+    {
+      "source": "src/native_game_current_virtual_calls.cpp",
+      "entry": "NativeGameCurrentVirtualCalls",
+      "native_role": "Available Source glue only; requires admitted current callable child tables, not automatically selected or bound."
+    }
+  ],
+  "old_partial_api": {
+    "entry": "mission_lua_teardown_004dc5c0",
+    "files": [
+      "include/bsp/mission_lobby_settings.hpp",
+      "src/mission_lobby_settings.cpp"
+    ],
+    "scope": "Old steps7-9 only; unchanged.",
+    "modified": false,
+    "caller_adoption_changed": false
+  },
+  "validation": {
+    "strict_object": {
+      "passed": true,
+      "architecture": "MSVCWin32",
+      "flags": "/c /std:c++17 /O2 /Ob2 /DNDEBUG /MD /EHsc /W4 /WX /fp:strict /Iinclude",
+      "compiler_version": "19.51.36244.0",
+      "compiler_sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+      "path": "local/native_game_on_destroy/native_game_on_destroy.obj",
+      "coff_machine": "014C",
+      "sha256": "5ee8c068386a872dc2b2f759d183ec7cc099492892936e59a6ac64a24ce22322"
+    },
+    "emitted_sequence": {
+      "trace_call": "+68",
+      "state_store": "+77",
+      "online_load_gate": "+B3/+BB",
+      "online_slot8_then_destroy": "+CD/+DB",
+      "lua_close": "+F1",
+      "machine_load_call_reload": "+105/+110/+113",
+      "field_scalars_clears": [
+        "+136/+140",
+        "+16A/+174",
+        "+19E/+1A8"
+      ],
+      "publication_scalars_clears": [
+        "+1D4/+1E1",
+        "+206/+210"
+      ],
+      "final_validated_class_call": "+22D",
+      "scope": "Typed Source COFF control/epoch audit, not native byte identity.",
+      "qualified_default_dependency": "NativeGameLifetimeCalls::call_004a9ac0 is a real direct COFF external; overrides cannot bypass default validation."
+    },
+    "private_trace": {
+      "final_bytes": "c3",
+      "exact_original_noop": true,
+      "initial_ret0_artifact": "local/native_game_on_destroy/initial_ret0.obj",
+      "initial_bytes": "c2 00 00",
+      "correction": "MSVC inline assembler RET encoded RET0. Source now emits 0xC3; final strict object passed and its one-byte section was parsed.",
+      "coff_section": 36,
+      "coff_symbol": "?trace_ret_004254b0@?A0x425288ed@bsp@@YAXPBD@Z"
+    },
+    "call_verification": {
+      "passed": true,
+      "direct_and_tail_rows_checked": 8,
+      "failed": 0,
+      "indirect_sites_separately_instruction_audited": 6,
+      "receipt": "local/native_game_on_destroy/call_verification.txt"
+    },
+    "common_build_or_link_run": false,
+    "tests_run": 0,
+    "probes_run": 0,
+    "games_run": 0,
+    "dll_calls_run": 0
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "duplicate_native_bodies": 0,
+    "vendor_bodies": 0,
+    "original_abi": 0,
+    "activation": 0
+  },
+  "limitations": [
+    "Complete parent normal orchestration requires all six genuine bindings and actual storage/provider contracts; an interface alone is not activation.",
+    "No original FH3/SEH/fault transport, physical tail/EAX/flags/FP result, binary ABI or invalid-storage equivalence.",
+    "Lua nonlocal errors, foreign C++ transport and callback behavior remain qualified by the real providers.",
+    "No root Runtime attachment, guard flip, shared startup/CMake/ledger/deletion change or SAPRadix substitution.",
+    "Accepted accuracy cohort untouched; no old receipt promoted to new runtime proof."
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_game_on_destroy.hpp",
+      "bytes": 3654,
+      "sha256": "96a100da9a58bbd9632f8a25d7f442e1a291e2f98f9dde3beb6c113ae40759f4",
+      "git_blob": "e0b4b7e246b1d219cdf23fc45dcfb9650105dd43",
+      "baseline_blob": null
+    },
+    {
+      "path": "src/native_game_on_destroy.cpp",
+      "bytes": 4976,
+      "sha256": "90862d3277029dbb7b74e0d3d19ac1e8f9b7601d43700abd3daaa485723c0670",
+      "git_blob": "514563564cfb3cd28a41e5d32200bcef24c144a5",
+      "baseline_blob": null
+    },
+    {
+      "path": "include/bsp/native_game_construction.hpp",
+      "bytes": 7095,
+      "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "git_blob": "e83a2b3736edfb4d6fa699526a003861d3805977",
+      "baseline_blob": "e83a2b3736edfb4d6fa699526a003861d3805977"
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "bytes": 9440,
+      "sha256": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136",
+      "git_blob": "0f2f50a4b1ad95e354e352354a210d43e227c9ba",
+      "baseline_blob": "0f2f50a4b1ad95e354e352354a210d43e227c9ba"
+    },
+    {
+      "path": "src/native_game_lifetime.cpp",
+      "bytes": 21717,
+      "sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+      "git_blob": "bca722876e5b4cfd4033c20b2be6adec7e2b3f6f",
+      "baseline_blob": "bca722876e5b4cfd4033c20b2be6adec7e2b3f6f"
+    },
+    {
+      "path": "include/bsp/native_game_class_cleanup.hpp",
+      "bytes": 6159,
+      "sha256": "9be5dd2f28906897af1707d56a385bb1a597c6479037a7f0be71f5c13fcdfd76",
+      "git_blob": "26703505fbe5620fe2d03e1917162e5f6fef90bc",
+      "baseline_blob": "26703505fbe5620fe2d03e1917162e5f6fef90bc"
+    },
+    {
+      "path": "src/native_game_class_cleanup.cpp",
+      "bytes": 13682,
+      "sha256": "b2bddd47b55db619fc2e2f345fce67a1c9d8f9c3af3d3a434a2937289bff877c",
+      "git_blob": "11f8b55779dea5a6110210d4a10d389a3a75ebda",
+      "baseline_blob": "11f8b55779dea5a6110210d4a10d389a3a75ebda"
+    },
+    {
+      "path": "include/bsp/native_lua_objects.hpp",
+      "bytes": 10058,
+      "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+      "git_blob": "05f2faddc5a19c66efc3b18faef0a7c3301258be",
+      "baseline_blob": "05f2faddc5a19c66efc3b18faef0a7c3301258be"
+    },
+    {
+      "path": "src/native_lua_objects.cpp",
+      "bytes": 17434,
+      "sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+      "git_blob": "609a4fbaec32550e750a758806c29e21237e7eeb",
+      "baseline_blob": "609a4fbaec32550e750a758806c29e21237e7eeb"
+    },
+    {
+      "path": "include/bsp/native_game_current_virtual_calls.hpp",
+      "bytes": 2159,
+      "sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46",
+      "git_blob": "8de8416376a3ec486f1bb3a6a81a8118cf041fe9",
+      "baseline_blob": "8de8416376a3ec486f1bb3a6a81a8118cf041fe9"
+    },
+    {
+      "path": "src/native_game_current_virtual_calls.cpp",
+      "bytes": 1691,
+      "sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f",
+      "git_blob": "2bca11481b05e0cc04777e766f2652d6b3b2bd5f",
+      "baseline_blob": "2bca11481b05e0cc04777e766f2652d6b3b2bd5f"
+    },
+    {
+      "path": "include/bsp/mission_lobby_settings.hpp",
+      "bytes": 11508,
+      "sha256": "9e532288c073c709e2adf3b139f98611b0d1e45bbafa6e7ca0a2f39f0b4bcb50",
+      "git_blob": "75bac570007724f19e038ab74315e173d866f0b9",
+      "baseline_blob": "75bac570007724f19e038ab74315e173d866f0b9"
+    },
+    {
+      "path": "src/mission_lobby_settings.cpp",
+      "bytes": 9124,
+      "sha256": "7dc53658dd9a0e037143fd82fd3c127483e8ca1d347f743d47fca074cbd55c79",
+      "git_blob": "767d05ae47d4a1501fede2f880e72cf3ce1b376a",
+      "baseline_blob": "767d05ae47d4a1501fede2f880e72cf3ce1b376a"
+    },
+    {
+      "path": "include/bsp/main_menu_path.hpp",
+      "bytes": 16590,
+      "sha256": "19896856f3eb0bc0e2ff5a59513dd562163d404d38f6c70b650aba926b4cad70",
+      "git_blob": "f3c8153259c73ad7ced857df316a148dd4b86a6d",
+      "baseline_blob": "f3c8153259c73ad7ced857df316a148dd4b86a6d"
+    },
+    {
+      "path": "src/main_menu_path.cpp",
+      "bytes": 13788,
+      "sha256": "a73de5cdea164b95626201a40eacfa49d162186ee741ed56acc35e2600b584d0",
+      "git_blob": "fa1b4c4b71123ed6fc5cafc0fd10ca3b32416f23",
+      "baseline_blob": "fa1b4c4b71123ed6fc5cafc0fd10ca3b32416f23"
+    },
+    {
+      "path": "include/bsp/frontend_managers.hpp",
+      "bytes": 22929,
+      "sha256": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a",
+      "git_blob": "d6132c8834c5bfd1a9c2e58d2259d23fc74b2570",
+      "baseline_blob": "d6132c8834c5bfd1a9c2e58d2259d23fc74b2570"
+    },
+    {
+      "path": "src/frontend_managers.cpp",
+      "bytes": 23865,
+      "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461",
+      "git_blob": "f974df50bc6e81d406e202734190c391c668a06d",
+      "baseline_blob": "f974df50bc6e81d406e202734190c391c668a06d"
+    },
+    {
+      "path": "include/bsp/engine_seg11_35_66_cc13.hpp",
+      "bytes": 100941,
+      "sha256": "a1e887ab61e81af37ec7e743217cf76943b255b31a8c4084e209375c034279f4",
+      "git_blob": "42c2e66b142fac13140ab337a713eab64e28a95a",
+      "baseline_blob": "42c2e66b142fac13140ab337a713eab64e28a95a"
+    },
+    {
+      "path": "src/engine_seg11_35_66_cc13.cpp",
+      "bytes": 206645,
+      "sha256": "86d443153ac95f6de31721c79b7bc9c706c4be28487ebfd223736c8fdabfd367",
+      "git_blob": "d3ac98e5caad5a78a3eed116c6833435f26ad1a4",
+      "baseline_blob": "d3ac98e5caad5a78a3eed116c6833435f26ad1a4"
+    },
+    {
+      "path": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "bytes": 55787,
+      "sha256": "bdfc54da13f7c748669dca38e19c767fcb24fc090f6211e83e479e348962ca33",
+      "git_blob": "90a752af07ada787634e3f3ac973cccce973e13f",
+      "baseline_blob": "90a752af07ada787634e3f3ac973cccce973e13f"
+    },
+    {
+      "path": "src/landscape_lua_seg55_argon.cpp",
+      "bytes": 63918,
+      "sha256": "30e87cf86e4b46906f438a9234e957a311f10c92d58fd89206c6ed22a682d27d",
+      "git_blob": "2efdb3f1e5f51610e251fb57328c996c5c085c88",
+      "baseline_blob": "2efdb3f1e5f51610e251fb57328c996c5c085c88"
+    },
+    {
+      "path": "include/bsp/seg6_cc13.hpp",
+      "bytes": 19353,
+      "sha256": "467d145179e08b6cdd5ced598b06df3495752be44afac43ae0976480ace91add",
+      "git_blob": "96bb204024f6d3c3fb518d7437a3a34160af0e4d",
+      "baseline_blob": "96bb204024f6d3c3fb518d7437a3a34160af0e4d"
+    },
+    {
+      "path": "src/seg6_cc13.cpp",
+      "bytes": 64665,
+      "sha256": "956d2b67bbeacd966960d2093611edc06700017d867070de894bcbdabd488812",
+      "git_blob": "f94230911487c1937eef59626fd4f2daec185e61",
+      "baseline_blob": "f94230911487c1937eef59626fd4f2daec185e61"
+    },
+    {
+      "path": "src/game_hosts_scene_contents.cpp",
+      "bytes": 322630,
+      "sha256": "7d297cdb1ab3d4994b17ba28a6790decf653f5b243ce6003092cf17100616038",
+      "git_blob": "180e8831f1a2259077593f50f1425925edebf22f",
+      "baseline_blob": "180e8831f1a2259077593f50f1425925edebf22f"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "baseline_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "tools/bsp.py",
+      "bytes": 103131,
+      "sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+      "baseline_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "bytes": 14518,
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "baseline_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542"
+    },
+    {
+      "path": "tools/verify_report_calls.py",
+      "bytes": 20467,
+      "sha256": "f3f412b6f8eaeb6c4b212e34cca6a2567c2ed4015d0a942268d752911f6913ef",
+      "git_blob": "72ff1e896ef495dc4eebc157f686486d55172713",
+      "baseline_blob": "72ff1e896ef495dc4eebc157f686486d55172713"
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/native_game_on_destroy/native_asm.txt",
+      "bytes": 2030,
+      "sha256": "8fa2edfd3fe2234b315289b18aa9fefc502194abb87f4caca3a832f8a8f2ba51"
+    },
+    {
+      "path": "local/native_game_on_destroy/native_bytes.txt",
+      "bytes": 1058,
+      "sha256": "857f7712832bc6f0c55febee5f2ad72a0dcccfb3518c14deeef23d53456776e1"
+    },
+    {
+      "path": "local/native_game_on_destroy/native_capture.json",
+      "bytes": 229,
+      "sha256": "ecc6e4e739c33e3dea9ec3910c7d7e78568d8553941151250d867bd2a89d4b03"
+    },
+    {
+      "path": "local/native_game_on_destroy/compile.cmd",
+      "bytes": 682,
+      "sha256": "83d2352bfb876e47745ba9babb7e73a8c93e195b9546016b5cf91e4d231af8d5"
+    },
+    {
+      "path": "local/native_game_on_destroy/compile.log",
+      "bytes": 28,
+      "sha256": "5a8f122ccd67f130774b203a501fa5821ac79ef3b82f126d6d5f81e896935d6d"
+    },
+    {
+      "path": "local/native_game_on_destroy/native_game_on_destroy.obj",
+      "bytes": 13565,
+      "sha256": "5ee8c068386a872dc2b2f759d183ec7cc099492892936e59a6ac64a24ce22322"
+    },
+    {
+      "path": "local/native_game_on_destroy/object_symbols.txt",
+      "bytes": 20221,
+      "sha256": "61441adaf589a8ac3cb0befa9af068d4d8749e11f3fc58279d0abcfd96c29a8d"
+    },
+    {
+      "path": "local/native_game_on_destroy/object_assembly.txt",
+      "bytes": 28792,
+      "sha256": "a08fd4925844a5875363e4cacfddc160217f66e7c6739fb01ba52c5ad74bd532"
+    },
+    {
+      "path": "local/native_game_on_destroy/call_verification.txt",
+      "bytes": 73,
+      "sha256": "5c7ed6a4af818c106162ed983254e6a5bed323aa4a930e7765a631b299a20b4c"
+    },
+    {
+      "path": "local/native_game_on_destroy/initial_ret0.obj",
+      "bytes": 13380,
+      "sha256": "2299a080ce79ade4699884cb32894adafda6f6f1bfe205bbb2534a93c2512f05"
+    },
+    {
+      "path": "local/native_game_on_destroy/initial_ret0_assembly.txt",
+      "bytes": 28777,
+      "sha256": "55a7708695d3ccf12f925d1f75f2932cddb130e94b7c00078c441bc7ddd52200"
+    }
+  ],
+  "audit_utc": "2026-10-29T21:10:49.522881+00:00",
+  "abi_compatible": false,
+  "game_validated": false,
+  "compiled_source": true
+}
