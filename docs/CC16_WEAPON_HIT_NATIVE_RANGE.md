@@ -146,3 +146,10 @@ Win32 build and both suites passed (13.68 seconds); receipt:
 core object hashes remain identical to the inspected objects. The fresh
 OFF ship-AI symbol dump still contains zero conversion-getter references.
 These checks add no native-ABI or game-activation acceptance.
+
+The primary accepted the narrow `8c2fa31e` native fixture after reviewing
+its byte/dependency/frame boundary, source equivalence and process/control
+receipts. All eight post-spill and eight direct conversion pairs pass;
+legacy differs in six of eight controls. This qualifies only the recorded
+window/endpoint/synthetic-cell/control cases. Actual-host OFF/ON gates and
+caller witness remain pending; the production guard stays false.
