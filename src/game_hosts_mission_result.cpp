@@ -37,10 +37,13 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_profile_owner.hpp"
+#include "bsp/movie_subtitles.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/session_context_cc13.hpp"
 
 #include <cstdio>
+#include <fstream>
+#include <iterator>
 
 namespace bsp::game {
 namespace {
@@ -54,6 +57,13 @@ constexpr float kEndMovieLocalZ = -200.0f;
 // 0089a390's prefix: BSP_NativeString_Resize(7, 1) at 0089a3c7 then the concat
 // at 0089a3fc, which is seven characters plus the script's name.
 constexpr const char* kMoviePrefix = "movies/";
+
+// codex-movie-subtitle-source: dormant schedule projection, not the complete
+// 00AB0520/00AADBA0/00AB00C0 widget bodies. OFF preserves the existing callbacks.
+// ON acceptance also needs the native file-store/widget/settings contracts and
+// a real decoder clock; this bridge currently opens no page or decoder.
+// See docs/CODEX_MOVIE_SUBTITLE_INTEGRATION.md. Kept OFF pending root gates.
+inline constexpr bool kMovieSubtitlesBound = false;
 
 void format_address(std::uint32_t value, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(value));
@@ -76,8 +86,29 @@ struct GameMissionResultHost::MovieBridge final : public bsp::MoviePlayerHost {
     void ensure_movie_resources(bsp::MovieWidgetState&) override {
         log_.unimplemented("MoviePlayer::ensure_resources", "00aae770");
     }
-    void prepare_movie_subtitles(bsp::MovieWidgetState&, const bsp::NativeString&) override {
-        log_.unimplemented("MoviePlayer::prepare_subtitles", "00ab0520");
+    void prepare_movie_subtitles(bsp::MovieWidgetState&, const bsp::NativeString& filename) override {
+        if constexpr (!kMovieSubtitlesBound) {
+            log_.unimplemented("MoviePlayer::prepare_subtitles", "00ab0520");
+        } else {
+            reset_subtitles();
+            const std::string movie(filename.data() != nullptr ? filename.data() : "",
+                filename.length());
+            const std::string path = bsp::movie_subtitle_script_path_00ab0520(movie);
+            // Labelled substitution: a working-directory-relative stream, not the
+            // native [0109CEEC] file-store vtable+8 probe. No game-root path is supplied
+            // to this bridge, so this does not establish native +104h file visibility.
+            std::ifstream in(path, std::ios::binary);
+            if (!in) return;
+            const std::string source((std::istreambuf_iterator<char>(in)),
+                std::istreambuf_iterator<char>());
+            std::string error;
+            subtitle_schedule_ready_ =
+                bsp::load_movie_subtitle_script_00ab0520(source, subtitles_, error);
+            log_.implemented("MovieSubtitleSchedule::prepare_rows", "00ab0520");
+            log_.notef("movie subtitle schedule %s ready=%d rows=%u%s%s", path.c_str(),
+                subtitle_schedule_ready_ ? 1 : 0, static_cast<unsigned>(subtitles_.size()),
+                error.empty() ? "" : " error=", error.c_str());
+        }
     }
     bool decoder_open(void*, const bsp::NativeString&, bool, int) override {
         log_.unimplemented("MoviePlayer::decoder_open", "00aae770+vtable0c");
@@ -120,10 +151,34 @@ struct GameMissionResultHost::MovieBridge final : public bsp::MoviePlayerHost {
         log_.unimplemented("MoviePlayer::update_widget", "00aa87b0");
     }
     void update_movie_subtitles(bsp::MovieWidgetState&) override {
-        log_.unimplemented("MoviePlayer::update_subtitles", "00aadba0");
+        if constexpr (!kMovieSubtitlesBound) {
+            log_.unimplemented("MoviePlayer::update_subtitles", "00aadba0");
+        } else {
+            if (!subtitle_schedule_ready_) return;
+            // 00AADBA0 gets this triple from BinkGetRealtime. Zero denotes missing
+            // input here; there is no fabricated playback time or decoder call.
+            if (realtime_frame_rate_ == 0) {
+                log_.unimplemented("MoviePlayer::update_subtitles_realtime", "00aadba0");
+                return;
+            }
+            const float time = bsp::movie_subtitle_time_00aadba0(realtime_frame_num_,
+                realtime_frame_rate_, realtime_frame_rate_div_);
+            const bsp::MovieSubtitleStep step = bsp::movie_subtitle_update_00aadba0(subtitles_,
+                subtitle_cursor_, time, subtitles_enabled_, language_is_english_);
+            if (step.expired_cleared || step.action == bsp::MovieSubtitleText::Clear)
+                set_subtitle_text({});
+            if (step.action == bsp::MovieSubtitleText::Show)
+                set_subtitle_text(subtitles_[step.index].text);
+            log_.implemented("MovieSubtitleSchedule::select_line", "00aadba0");
+        }
     }
     void clear_movie_subtitles(bsp::MovieWidgetState&) override {
-        log_.unimplemented("MoviePlayer::clear_subtitles", "00ab00c0");
+        if constexpr (!kMovieSubtitlesBound) {
+            log_.unimplemented("MoviePlayer::clear_subtitles", "00ab00c0");
+        } else {
+            reset_subtitles();
+            log_.implemented("MovieSubtitleSchedule::clear_rows", "00ab00c0");
+        }
     }
 
     // --- bsp::MoviePlayerHost ---------------------------------------------
@@ -160,8 +215,33 @@ struct GameMissionResultHost::MovieBridge final : public bsp::MoviePlayerHost {
         log_.unimplemented("MoviePlayer::destroy_callback_owner", "00695870");
     }
 
+    void reset_subtitles() {
+        subtitle_schedule_ready_ = false;
+        subtitles_.clear();
+        subtitle_cursor_ = 0;
+        set_subtitle_text({});
+    }
+    // The native Text child/localisation delivery is absent. Retaining/logging
+    // a selected key is a projection and does not display a subtitle widget.
+    void set_subtitle_text(const std::string& text) {
+        if (text == subtitle_text_) return;
+        subtitle_text_ = text;
+        log_.notef("movie subtitle text projection \"%s\"", subtitle_text_.c_str());
+    }
+
     GameHostLog& log_;
     bsp::MovieWidgetState widget_{};
+    bool subtitle_schedule_ready_{false};
+    std::vector<bsp::MovieSubtitle> subtitles_;
+    std::uint32_t subtitle_cursor_{0};
+    std::string subtitle_text_;
+    // Unavailable inputs remain marked absent until real bindings supply them.
+    std::uint32_t realtime_frame_num_{0};
+    std::uint32_t realtime_frame_rate_{0};
+    std::uint32_t realtime_frame_rate_div_{0};
+    // Native options +14h and language comparison are not bound by this packet.
+    bool subtitles_enabled_{false};
+    bool language_is_english_{false};
 };
 
 struct GameMissionResultHost::CompletionBridge final : public bsp::GameMovieCompletionHost {
