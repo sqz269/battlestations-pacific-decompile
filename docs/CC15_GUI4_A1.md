@@ -1,8 +1,9 @@
 # cc15-gui4 A1: the startup raw scene domain
 
 Switch: `kNativeRendererStartupCc15Bound` (`include/bsp/game_native_renderer_application.hpp`), ON candidate.
-Status: source-reviewed and baseline-gated at `634258460`; publication remains pending the
-latest-common-code USN21 serial gate. This activates the raw domain, without native GUI page drawing.
+Status: source-reviewed; the original baseline at `634258460` and matched-common-code gates
+at `6c8016fa7` pass. Publication awaits integrator review. This activates the raw domain,
+without native GUI page drawing.
 
 ## What A1 builds
 
@@ -183,8 +184,14 @@ startup shader preload, repeated GUI traversal, reload or late-plane drawing.
 
 The switch-only activation candidate `634258460` sets
 `kNativeRendererStartupCc15Bound` ON over accepted OFF source `5ca4639f0b`.
-No other switch changes. Its lifecycle and all 13 baseline row contracts pass;
-raw pair diffs retain exit 1 for the exact startup-domain diagnostic and the
-provisional GUI Text type-id records. The serial alternating USN21 4+4 gate
-and no-aid pair remain pending a matching latest-common-code OFF/ON build.
-Exact evidence and limits are in `docs/CODEX_GUI4_A1_ACTIVATION.md`.
+No other switch changes. Its lifecycle and all 13 original baseline row
+contracts pass. Matched-common-code ON source `6c8016fa7` differs from OFF
+`6216ea1af` only in this header flag and passes the build, current reference/MSD
+smokes, serial alternating USN21 4+4, and separate reference USN21 no-aid pair.
+All four strict OFF runs agree (raw pair exit 0); all four ON comparisons and
+the no-aid pair retain raw exit 1 for only the exact startup-domain diagnostic
+and provisional GUI Text/Element type-id records. Ordered events, startup frame
+36, first logged draw and teardown agree. Immutable input, DLL, argument,
+difficulty/environment and nonoverlapping serial timestamp audits pass.
+Exact source hashes, receipts and remaining scope limits are in
+`docs/CODEX_GUI4_A1_ACTIVATION.md`. Root review/publication remains separate.
