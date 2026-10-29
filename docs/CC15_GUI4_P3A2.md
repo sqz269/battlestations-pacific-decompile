@@ -346,10 +346,14 @@ allocations and startup logs precede the manager token, the last throwing constr
 After shared native drain, the manager acknowledges it before Page-application reset; the
 delegate remains live through all actual retirements and the token is never prematurely reset.
 
-Current validation: static source/provider/call-order review and `git diff --check` only. No
-P3a2 compile, probe or game run was performed during A1's immutable strict window. After the
-integrator opens a build window, first compile with `scripts/build.ps1` and the existing 2 CTests;
-then gate an immutable candidate with the page chain OFF for inertness. A focused future childless Lua lifecycle
-fixture must independently demonstrate real Group/scene/resource/ambient cleanup. OFF game
-parity cannot prove unreachable native lifecycle behavior. Real FE_initial, children, rendering,
-repeated activation and joint P4 retirement remain outstanding.
+Integrator validation: source `eb18518db` builds MSVC Win32 Release and passes both existing
+CTests. The first compile required the complete platform-publication header; aggregate errors
+were cascades, with no missing binding or invented constant. Candidate SHA
+`05F362BB61DC3618D6CB560A0F3F3AEB332E720282CA726F0D62B04A89D2A0D2`
+matches accepted A1 ON799 in fresh reference4800/MSD1600 pairs: both exit0/pair0, ordered0,
+teardown0, frame36 and unchanged RNG0.4143/1. Page chain remains OFF. Receipts are in cc9's
+`local/codex_gui_deps_inert_20261028`, with the completed first baseline preserved across a
+worker interruption and its actual slot1/core4 pinned for all runs. No comparison was retried.
+A focused future childless Lua lifecycle fixture must independently demonstrate real
+Group/scene/resource/ambient cleanup. OFF game parity cannot prove unreachable native paths.
+Real FE_initial, children, rendering, repeated activation and joint P4 retirement remain open.

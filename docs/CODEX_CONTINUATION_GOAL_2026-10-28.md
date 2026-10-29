@@ -339,3 +339,33 @@ correction. Integrated src/include and CMake sources match the tested `6c8016fa7
 snapshot. The A1 switch is ON; Page construction/drawing, shader preload and
 allocator/reload paths remain outside its accepted scope. The reviewed dormant
 source dependencies now enter their separate Win32 build/inertness batch.
+
+## Dormant dependency batch accepted
+
+Integrator source `eb18518db8953f215dbf4fa5384d76d555906546` merges frozen
+Page c559/066, Icon82, raw Model481 and geometryd403. CMake registers both Model
+TUs in bsp_core and Icon process metadata in bsp_game. The initial compile
+exposed a missing complete platform-publication header in Page CPP; the include
+fix resolved its cascading aggregate errors. MSVC Win32 Release and both CTests
+pass. Page chain stays OFF and all new library/service callers remain uncalled.
+
+Immutable executable SHA-256 is
+`05F362BB61DC3618D6CB560A0F3F3AEB332E720282CA726F0D62B04A89D2A0D2`,
+with the same accepted DDF2 XLive. Root's snapshot/build receipt lives in
+`local/codex_gui_dependencies_snapshot`; emitted geometry object disassembly
+confirms the authored SSE scalar sequence. No FP execution proof is inferred.
+
+Fresh reference4800 and milestone-D1600 pairs against accepted A1 ON799 pass
+exit0/rawpair0, ordered0, teardown0, frame36/RNG0.4143 and1 respectively. The
+first baseline survived a worker interruption; root preserved it and continued
+the three remaining scheduled runs. Its real slot1/core4 assignment was pinned
+before the first candidate, temporarily reserving only a free slot0 without
+replacing locks or stopping processes. Full argument/source/DLL/difficulty/env
+audits and serial nonoverlap pass. No comparison or game was retried. Receipts:
+`cc9/local/codex_gui_deps_inert_20261028`.
+
+The five Model entries are recorded only as qualified fragments, with original
+ABI, evidence and runtime limits. No whole-body credit grows. Actual Page,
+Model, Icon-service, exception/reentry/reuse and raw Text lifecycles remain open.
+Frozen Text e75 has passed root constructor and independent ownership review
+within DEFAULT scope; its separate build and acceptance batch follows.

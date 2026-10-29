@@ -4,7 +4,8 @@ This dormant P3c0 dependency supplies one typed Source F8BD98 backing cell and
 retained C++ service metadata. It composes the existing genuine
 `NativeGuiIconDelayedLoads`; no Icon, native singleton, manager, registration,
 reference count, delayed entry or file-delivery path is created here. The new
-files are explicitly **unbuilt** during the integrator's immutable A1 series.
+worker files remained **unbuilt** during the immutable A1 series. Integrator
+compilation and inactive-path checks are recorded below.
 
 ## Original preimage and evidence
 
@@ -121,9 +122,13 @@ supplied. DelayedTextureLoad=true remains unsupported. Root must still supply
 genuine raw Icon factory/properties/rebuild/current dispatch and parent/child
 retirement before production activation.
 
-Validation here is source review, PE/DATA provenance and `git diff --check`.
-No build, probe, fixture, game run or shared-source mutation occurred. Merely
-compiling this uncalled module cannot exercise a native getter or lifetime.
-After the hold, root must register the TU, compile and run the existing checks;
-later same-service binding/normal drain/failure custody need independent proof.
-Frozen P3a2 c5594a19a +066a46466 and all A1 files remain unchanged.
+Integrator source `eb18518db` registers the TU in bsp_game and passes MSVC Win32
+Release plus both existing CTests. Candidate SHA
+`05F362BB61DC3618D6CB560A0F3F3AEB332E720282CA726F0D62B04A89D2A0D2`
+passes inactive reference4800/MSD1600 comparisons against accepted A1 ON799:
+both exit0/pair0, ordered0, teardown0 and unchanged startup/RNG. The process
+getter/preparation is uncalled in these runs, and no shared deletion hook was
+added. Same-service binding, normal native drain and failure custody still need
+independent proof before any raw Icon getter. Compilation cannot establish it.
+The worker checkpoint kept P3a2 c5594a19a +066a46466 and A1 files unchanged.
+Integrator validation includes the documented Page header/include fix and accepted A1 ON.

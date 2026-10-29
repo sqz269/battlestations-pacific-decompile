@@ -1,8 +1,9 @@
 # Qualified raw Model geometry association
 
-Status: **UNBUILT**, `source_ready=false`. This source-only dependency is based
-on frozen `48195196e`, which is itself not build-accepted. Its three files were
-checked byte-for-byte against that commit and are unchanged. This packet owns
+Status: **Win32 build/object-checked; direct runtime unproved**. This dependency is based
+on frozen `48195196e`; both are now covered by the integrator build below.
+The worker checked that parent packet byte-for-byte before adding this entry.
+Its source CPP/HPP remain unchanged; integration adds validation documentation. This packet owns
 only three new files and B75170; it changes no Text/Model/Group implementation,
 shared transport, CMake/ledger entry, activation or function-body credit.
 
@@ -73,8 +74,8 @@ changes reach the same authored scalar instruction order. The helper neither
 changes the FP control state nor clears exception status. Current MXCSR applies
 to its UCOMISS instructions, including signaling-NaN/denormal behavior.
 
-This is an authored MSVC Win32/SSE Source implementation, not a measured compiler
-object result. Extra Source metadata/admission and C++ calls have their own ABI;
+Integrator object inspection confirms the authored MSVC Win32/SSE scalar
+sequence. Extra Source metadata/admission and C++ calls have their own ABI;
 Original GPR/EFLAGS/XMM outputs, private stack identity, register transport,
 RET10h compatibility and binary detours are not promised. No x87 operation is
 introduced. Unmasked FP traps, SEH/nonlocal escape recovery and Original fault
@@ -127,8 +128,13 @@ internal Text188 construction, Model scene/tree routing, Group integration,
 primary4C publication and nonempty content remain primary/GUI-worker decisions.
 This does not make the child graph independence-ready or GUI-complete.
 
-Only static source/assembly review, base-file byte checks and diff checks were
-performed. No build, test, probe, game run, CMake integration or activation was
-performed during the strict A1 hold. Compile/object inspection and appropriate
-Source aliasing/callback/FP checks remain pending an authorized build window;
-no runtime or Original ABI parity is claimed.
+The worker checkpoint had only static checks during the A1 hold. Integrator
+source `eb18518db` registers this TU, passes MSVC Win32 Release and both existing
+CTests, and retains object disassembly in
+`cc16-progress/local/codex_gui_dependencies_geometry_disasm.txt`. The emitted
+scalar helper preserves MOVSS/UCOMISS/LAHF/TEST44/JNP and conditional stores,
+with one sentinel sample and the late second operand. Inactive reference/MSD
+pairs pass rawpair0/ordered0/teardown0 against accepted A1 ON799 using candidate
+SHA `05F362BB61DC3618D6CB560A0F3F3AEB332E720282CA726F0D62B04A89D2A0D2`.
+These runs never call this provider. Actual alias/callback/FP execution,
+lifecycle and Original ABI parity remain unproved; no new whole-body credit.
