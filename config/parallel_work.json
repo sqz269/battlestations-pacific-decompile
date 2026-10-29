@@ -16,6 +16,26 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-gui-raw-primary-prefix-lifetime",
+      "state": "in_progress_typed_receipt_authorized_prefix_retirement_bridge",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-text-primary-model-producer", "codex-gui-raw-widget-model-lifetime", "codex-gui-raw-text-cleanup-return-progress"],
+      "function_addresses": ["00ab8250", "00ab8ee0"],
+      "output_files": ["include/bsp/native_gui_text_primary_prefix_lifetime.hpp", "src/native_gui_text_primary_prefix_lifetime.cpp", "docs/CODEX_GUI_RAW_PRIMARY_PREFIX_LIFETIME.md", "include/bsp/native_gui_text_retirement.hpp", "src/native_gui_text_retirement.cpp", "src/native_gui_text_reference.cpp"],
+      "notes": "Reviewed eab plan: immutable typed optional graph defaultnull, private db55 receipt plus exact records only authority for primary4C. Preserve DEFAULT93/122/constructor cleanup; partial producer/name effects retain. Actual raw118 base routes into2ee only for matching completed prefix; selected raw escapes retain/no inferred unwind. Stage-aware BOTH-model/producer/slots/name known regions and unchanged lateflags/disposal. No379/74, Font/content/parenting or host caller/body credit. Header/API coordinated with disjoint owner worker before dependent code."
+    },
+    {
+      "id": "codex-gui-raw-primary-prefix-owner",
+      "state": "in_progress_disjoint_owner_prefix_preparation_and_collective_custody",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-primary-prefix-lifetime", "codex-gui-raw-text-primary-model-producer"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/game_native_raw_default_text_owner.hpp", "src/game_native_raw_default_text_owner.cpp", "docs/CODEX_GUI_RAW_PRIMARY_PREFIX_OWNER.md"],
+      "notes": "Disjoint eab owner half after agreed typed adapter API. Existing DEFAULT entry preserved; explicit prefix-only graph installed/prepared before native pools and both private providers/slots bound before factory. Real AA1380/raw93/separate122, genuine external raw-name helper stage, db55 prefix only. Receipt-authorized scalar and actual BOTH-model+Text flags/poolreturn settlement before reset; no ended payload/name reads or extra decrement. All partial/failed/extra-credit/flags0 graphs retained. No host gate/379/74/Font/content/parenting/fullAAA710/body credit."
+    },
+    {
       "id": "codex-gui-raw-text-primary-model-producer",
       "state": "integrated_two_reviews_win32_build_prefix_provenance_uncalled",
       "worker": "gui_frame_lifetime",

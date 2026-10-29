@@ -578,3 +578,10 @@ recorded precise diagnostic sites and registered the uncalled TU. No caller,
 whole-child/AAA710, runtime or ABI credit follows. Plans eab/540 pin the next
 receipt-authorized prefix-only retirement/owner bridge; they preserve DEFAULT
 construction/binding and require actual settlement for BOTH Models plus Text.
+
+The prefix retirement adapter and owner halves are dispatched with disjoint
+files and an early shared typed-header contract. An independent audit checks the
+real external raw-string name stage; no fabricated header or inferred name/EH
+cleanup is allowed. Existing DEFAULT behavior remains and no host caller/gate is
+added by these source packets. First scope excludes74, Font/content and parenting;
+geometry compatibility540 is preparation for a later separate composition.
