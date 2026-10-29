@@ -1,0 +1,765 @@
+{
+  "packet": "codex-dyn-radix-manager-update",
+  "owner": "agent/codex-dyn-radix-manager-update",
+  "date": "2026-10-29",
+  "base_commit": "5c2547156c0d8d83d79f7b2600c6f6ea99cd975a",
+  "status": "complete_normal_instruction_schedule_and_four_CPP_scope_cleanup_actions_compile_static_verified_unwired_genuine_binding_and_nested_failure_limits_open",
+  "source": "src/cc16_dyn_radix_manager_update.cpp",
+  "header": "include/bsp/cc16_dyn_radix_manager_update.hpp",
+  "docs": [
+    "docs/CC16_DYN_RADIX_MANAGER_UPDATE.md"
+  ],
+  "new_in_house_body_credit": 1,
+  "reused_callee_credit": 0,
+  "vendor_body_credit": 0,
+  "activation_credit": 0,
+  "function": {
+    "start": "00C5A8B0",
+    "end_inclusive": "00C5B175",
+    "bytes": 2246,
+    "instructions": 654,
+    "branches": 52,
+    "branch_targets": 41,
+    "calls": 11,
+    "name_hypothesis": "bsp::cc16_dyn_radix_manager_update::update_radix_manager_00c5a8b0",
+    "rtti_evidence": "00D7A118 slot3, type descriptor00E17218, native Dyn::SAPRadixBroadPhaseManager",
+    "original_abi": "ECX actual raw manager, EDX not input, no stack args/plain RET; EBP/EBX/ESI/EDI preserved; final EAX owner residue not a semantic API result",
+    "private_abi": "fastcall ECX manager, ignored EDX, one Context stack pointer/RET4; no original binary adapter",
+    "public_abi": "ordinary C++ void(manager,realCRT,realProfileContext,actualFeatureReference,actualHalfReference,actualNamePointers)",
+    "native_sha256": "c9fa16f24060e7f21e482b8b32ac02e5ad61c412ff665fbd0e784201cd998b96",
+    "assembly_manifest_sha256": "5346ced903900ab006b95da21d36b51f0c414b6255f520a17fc00fcbb39e469d",
+    "unowned_wrapper": "00C5B180..00C5B189 excluded; no attribution ofC5B183 tothisbody"
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra Client.verify before each live query checks configured project/program/language/base",
+    "live_bytes_compared_to_installed_pe": 2246,
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutations": false
+  },
+  "rows": [
+    {
+      "address": "00C5A8D1",
+      "native": "00BF9410",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "Actual fixed10A0 compiler stack probe BF9410; ECX/EDX/nonvolatiles/FP preserved, actual stack changed; no heap scratch",
+      "emitted_symbol": "__alloca_probe",
+      "postcall_live_volatile": [
+        "ecx"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": null
+    },
+    {
+      "address": "00C5A9FA",
+      "native": "00BF55BE",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF55BE new(wrapping captured_count*8); scratch capacity already published; original caller ADD4",
+      "emitted_symbol": "?new_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    },
+    {
+      "address": "00C5AA33",
+      "native": "00BF6989",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF6989 free(live reloaded scratch old data), before replacement publication; original caller ADD4",
+      "emitted_symbol": "?free_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    },
+    {
+      "address": "00C5AA59",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual current parent; stack actual D79C80 SAPSort pointer,id9; EAX appended node, native RET8; no active EH scope",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AA95",
+      "native": "00BF79F0",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF79F0 memset(S+B0,0,1000h); actual canonical0109EEA4 reference forwarded to existing qualified provider, original caller ADD12; Sort state-1",
+      "emitted_symbol": "?memset_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -12
+    },
+    {
+      "address": "00C5ACB7",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79C88 SAPSweep pointer,id10; EAX node, native RET8; no active EH scope before enter completes",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AD43",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79C94 SAPObjectNum pointer,id11; EAX node, native RET8; failure leaves only active Sweep",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AE69",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79CA4 SAPPossiblePairNum pointer,id12; EAX node, native RET8; failure leaves Object then Sweep",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AF19",
+      "native": "00C50390",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "ESI actual parent; actual D79CB8 SAPPairNum pointer,id13; EAX node, native RET8; failure leaves PossiblePair,Object,Sweep",
+      "emitted_symbol": "?append_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -8
+    },
+    {
+      "address": "00C5AF94",
+      "native": "00BF55BE",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF55BE new(wrapping (2*capacity+2)*8); pair capacity published before call; return spill before ADD4 is S+14; failure leaves all four scopes",
+      "emitted_symbol": "?new_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [
+        "eax"
+      ],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    },
+    {
+      "address": "00C5AFDE",
+      "native": "00BF6989",
+      "function": "00C5A8B0",
+      "kind": "call",
+      "contract": "cdecl BF6989 free(live reloaded pair old data), before replacement publication; original caller ADD4; failure leaves all four scopes",
+      "emitted_symbol": "?free_shim@?A0x717bd229@cc16_dyn_radix_manager_update@bsp@@YAXXZ",
+      "postcall_live_volatile": [],
+      "added_x87_depth": 0,
+      "original_argument_stack_from_S": -4
+    }
+  ],
+  "unwind_actions": [
+    {
+      "address": "00CC84E0",
+      "native": "00C38040",
+      "function": "00CC84DA",
+      "kind": "tail_jump",
+      "state": 0,
+      "previous_state": -1,
+      "scope_from_S": "80h",
+      "native_EBP_offset": "-1040h",
+      "name": "Sweep"
+    },
+    {
+      "address": "00CC84EB",
+      "native": "00C38040",
+      "function": "00CC84E5",
+      "kind": "tail_jump",
+      "state": 1,
+      "previous_state": 0,
+      "scope_from_S": "68h",
+      "native_EBP_offset": "-1058h",
+      "name": "Object"
+    },
+    {
+      "address": "00CC84F6",
+      "native": "00C38040",
+      "function": "00CC84F0",
+      "kind": "tail_jump",
+      "state": 2,
+      "previous_state": 1,
+      "scope_from_S": "50h",
+      "native_EBP_offset": "-1070h",
+      "name": "PossiblePair"
+    },
+    {
+      "address": "00CC8501",
+      "native": "00C38040",
+      "function": "00CC84FB",
+      "kind": "tail_jump",
+      "state": 3,
+      "previous_state": 2,
+      "scope_from_S": "98h",
+      "native_EBP_offset": "-1028h",
+      "name": "Pair"
+    }
+  ],
+  "exception_contract": {
+    "native_handler": "00CC8506",
+    "func_info": "00E04498",
+    "max_state": 4,
+    "unwind_map": "00E04478",
+    "unwind_map_words": [
+      "FFFFFFFF",
+      "00CC84DA",
+      "00000000",
+      "00CC84E5",
+      "00000001",
+      "00CC84F0",
+      "00000002",
+      "00CC84FB"
+    ],
+    "sort_cleanup": false,
+    "implementation": "Compiler /EHsc catch in each genuine call bridge, demote actual original frame state before each real C38040 action while its original scope storage is still live, then rethrow",
+    "native_FS_registration": false,
+    "native_handler_slot": "reserved0",
+    "native_FS_writes": "two explicit NOP adaptations",
+    "native_FH_SEH_transport_proof": false,
+    "async_unmasked_FP_fault_cleanup_proof": false,
+    "secondary_cleanup_exception_equivalence": false,
+    "nested_C50390_failure_equivalence": false,
+    "C50390_inherited_limit": "Accepted source supports normal valid-storage construction/append. Native CC8383/E041FC state0 has CC8378 -> BF65AC partial-node cleanup which accepted source at this base does not recreate. Pending repair is not accepted evidence here.",
+    "rollback": false,
+    "CPP_cleanup_runtime_fixture": false
+  },
+  "genuine_context_contract": {
+    "required_inputs": [
+      "actual raw manager and valid native vector/endpoint storage",
+      "actual DynLiveCrt BF55BE/BF6989 slots and allocator custody",
+      "actual DynProfileScopeContext with profile0109E9F8 cell and real9Ch/48h storage/memory services",
+      "actual stable canonical0109EEA4 cell reference",
+      "actual00D7A280 volatile double cell reference, live bytes000000000000E03F",
+      "actual D79C80/88/94/A4/B8 name pointers"
+    ],
+    "default_providers": false,
+    "fabricated_class_or_global": false,
+    "copied_profile_name_literals": false,
+    "feature_value_eagerly_loaded": false,
+    "profile_cold_calls": "direct real dyn_profile_node_append_child_00c50390, genuine ESI parent/name/id/memory",
+    "cleanup_calls": "direct real cc13_dyn1::profile_scope_leave_00c38040, native live14hscope and genuine profile context",
+    "provider_lifetimes": "All table/cell/name/profile/rawstorage inputs and their ownership domains remain valid and stable through normal execution and C++ cleanup. Profile publication value is reloaded at all14 native epochs.",
+    "runtime_caller_binding": "open; no default caller, vtable, hook or activation supplied"
+  },
+  "behavior": {
+    "manager_words": {
+      "input_data": "04",
+      "input_count": "08 captured once",
+      "scratch": "10/14/18",
+      "pairs": "1C/20/24",
+      "selected_axis": "28"
+    },
+    "keys": "first3/group use FLD/FSTP, fourth/tails MOVSS; exact sortable bit transform/reloads",
+    "radix": "4096B interleaved4histograms, native exclusive prefixes and four stable byte passes, final original buffer",
+    "scratch_growth": "unsigned comparisons, wrapping count*8, capacity before new, live size/data copy/reloads and old-free-before-publication",
+    "sweep": "captured signed count, low16tag+20, selected-axis orderedJA break; six exact full AABB orderedJA rejections, unordered passes",
+    "pairs": "unsigned pointer order; count/cap equality, wrapping2cap+2 and bytes*8, realnew/free, livecopy and zero-computed-destination checks, count increment",
+    "variance": "unscaled secondMoment-sum*sum, float spills, ordered greater axis selection, ties/unordered retain earlier axis",
+    "profiling": "ids9..13, ownercache30/34/38/3C/40, actual names and coldnodeallocation, activeparent/publication/RDTSC/order, realcurrentnode pop",
+    "timing": "real nonserialized RDTSC, modulo64 elapsed/total and modulo32callcounts; physical durations differ with newcode/bridgeoverhead",
+    "overflow_or_null_repair": false,
+    "heap_histogram": false
+  },
+  "object_audit": {
+    "strict_compile_passed": true,
+    "compiler": "MSVC x86 19.51.36244.0, VCTools14.51.36231",
+    "flags": "/c /std:c++17 /permissive- /EHsc /W4 /WX /fp:strict /O2 /Iinclude /FAs",
+    "original_rows_compared": 654,
+    "emitted_kernel_instructions": 704,
+    "added_instructions": 50,
+    "adapted_rows": 25,
+    "adaptations": [
+      {
+        "address": "00C5A8B8",
+        "instructions": [
+          "push 0"
+        ]
+      },
+      {
+        "address": "00C5A8C4",
+        "instructions": [
+          "nop"
+        ]
+      },
+      {
+        "address": "00C5A8CB",
+        "instructions": [
+          "push dword ptr [ebp + 8]"
+        ]
+      },
+      {
+        "address": "00C5AA3E",
+        "instructions": [
+          "mov eax, dword ptr [esp + 0x10b0]",
+          "mov eax, dword ptr [eax + 0xc]",
+          "mov eax, dword ptr [eax]"
+        ]
+      },
+      {
+        "address": "00C5AA54",
+        "instructions": [
+          "mov edx, dword ptr [esp + 0x10b4]",
+          "mov edx, dword ptr [edx + 0x14]",
+          "push edx"
+        ]
+      },
+      {
+        "address": "00C5AA61",
+        "instructions": [
+          "mov eax, dword ptr [esp + 0x10b0]",
+          "mov eax, dword ptr [eax + 0xc]",
+          "mov eax, dword ptr [eax]"
+        ]
+      },
+      {
+        "address": "00C5AC90",
+        "instructions": [
+          "mov eax, dword ptr [esp + 0x10b0]",
+          "mov eax, dword ptr [eax + 0xc]",
+          "mov eax, dword ptr [eax]"
+        ]
+      },
+      {
+        "address": "00C5ACB2",
+        "instructions": [
+          "mov edx, dword ptr [esp + 0x10b4]",
+          "mov edx, dword ptr [edx + 0x18]",
+          "push edx"
+        ]
+      },
+      {
+        "address": "00C5ACBF",
+        "instructions": [
+          "mov eax, dword ptr [esp + 0x10b0]",
+          "mov eax, dword ptr [eax + 0xc]",
+          "mov eax, dword ptr [eax]"
+        ]
+      },
+      {
+        "address": "00C5AD2B",
+        "instructions": [
+          "mov eax, dword ptr [esp + 0x10b0]",
+          "mov eax, dword ptr [eax + 0xc]",
+          "mov eax, dword ptr [eax]"
+        ]
+      },
+      {
+        "address": "00C5AD3E",
+        "instructions": [
+          "mov edx, dword ptr [esp + 0x10b4]",
+          "mov edx, dword ptr [edx + 0x1c]",
+          "push edx"
+        ]
+      },
+      {
+        "address": "00C5AD4A",
+        "instructions": [
+          "mov eax, dword ptr [esp + 0x10b0]",
+          "mov eax, dword ptr [eax + 0xc]",
+          "mov eax, dword ptr [eax]"
+        ]
+      },
+      {
+        "address": "00C5ADB1",
+        "instructions": [
+          "mov edx, dword ptr [esp + 0x10b0]",
+          "mov edx, dword ptr [edx + 8]",
+          "fld qword ptr [edx]"
+        ]
+      },
+      {
+        "address": "00C5AE29",
+        "instructions": [
+          "mov edx, dword ptr [esp + 0x10b0]",
+          "mov edx, dword ptr [edx + 0xc]",
+          "mov edx, dword ptr [edx]"
+        ]
+      },
+      {
+        "address": "00C5AE64",
+        "instructions": [
+          "mov edx, dword ptr [esp + 0x10b4]",
+          "mov edx, dword ptr [edx + 0x20]",
+          "push edx"
+        ]
+      },
+      {
+        "address": "00C5AE6E",
+        "instructions": [
+          "mov edx, dword ptr [esp + 0x10b0]",
+          "mov edx, dword ptr [edx + 0xc]",
+          "mov edx, dword ptr [edx]"
+        ]
+      },
+      {
+        "address": "00C5AEFD",
+        "instructions": [
+          "mov eax, dword ptr [esp + 0x10b0]",
+          "mov eax, dword ptr [eax + 0xc]",
+          "mov eax, dword ptr [eax]"
+        ]
+      },
+      {
+        "address": "00C5AF14",
+        "instructions": [
+          "mov edx, dword ptr [esp + 0x10b4]",
+          "mov edx, dword ptr [edx + 0x24]",
+          "push edx"
+        ]
+      },
+      {
+        "address": "00C5AF24",
+        "instructions": [
+          "mov eax, dword ptr [esp + 0x10b0]",
+          "mov eax, dword ptr [eax + 0xc]",
+          "mov eax, dword ptr [eax]"
+        ]
+      },
+      {
+        "address": "00C5B021",
+        "instructions": [
+          "mov eax, dword ptr [esp + 0x10b0]",
+          "mov eax, dword ptr [eax + 0xc]",
+          "mov eax, dword ptr [eax]"
+        ]
+      },
+      {
+        "address": "00C5B05C",
+        "instructions": [
+          "mov edx, dword ptr [esp + 0x10b0]",
+          "mov edx, dword ptr [edx + 0xc]",
+          "mov edx, dword ptr [edx]"
+        ]
+      },
+      {
+        "address": "00C5B09F",
+        "instructions": [
+          "mov eax, dword ptr [esp + 0x10b0]",
+          "mov eax, dword ptr [eax + 0xc]",
+          "mov eax, dword ptr [eax]"
+        ]
+      },
+      {
+        "address": "00C5B154",
+        "instructions": [
+          "mov eax, dword ptr [esp + 0x10ac]",
+          "mov eax, dword ptr [eax + 0xc]",
+          "mov eax, dword ptr [eax]"
+        ]
+      },
+      {
+        "address": "00C5B168",
+        "instructions": [
+          "nop"
+        ]
+      },
+      {
+        "address": "00C5B175",
+        "instructions": [
+          "ret 4"
+        ]
+      }
+    ],
+    "all_branch_destinations_match": true,
+    "calls_with_correct_rel32_symbols": 11,
+    "unexplained_encoding_differences": 0,
+    "equivalent_encoding_differences": [],
+    "unreachable_native_alignment_gaps": [
+      {
+        "start": "00C5AB2B",
+        "size": 5
+      },
+      {
+        "start": "00C5ABC8",
+        "size": 8
+      },
+      {
+        "start": "00C5AFAD",
+        "size": 3
+      }
+    ],
+    "reachable_original_rows": 654,
+    "stack_CFG_joins": "pass fromS after4saves throughrestoringMOVESP,EBP; every argument stack and context lookup checked",
+    "footer_context_offset": "ESP+10AC atC5B154 afterPOPEDI; ordinarybodyESP+10B0",
+    "pair_return_spill": "C5AF99 originalESP=S-4; ESP+18=S+14 beforecallerADD4",
+    "shims": "actual emittedpushorders, C++cdeclcallerADD8/16, originalcalleeRET8 plusoneword and originalcallerADD4/12 retained",
+    "postcall_liveness": "everyordinarycall requiresatmostEAX; probe ECX alive and provenpreserved; each new EDX scratchdead, signedflagsliveacrosshalfload",
+    "object_sha256": "f9e646f15481456c0afb10fadd6661fff8b87e1fa5af62391e8fca71a61a4bfc",
+    "source_sha256": "9dcddca90e57ce56b5ea0c819c7d87ed319ce213ad42f46b0b2528be7cfa2255"
+  },
+  "FP_contract": {
+    "x87_instructions": 101,
+    "FSTP_sites": 27,
+    "maximum_added_x87_depth": 4,
+    "call_and_return_added_x87_depth": 0,
+    "all_FP_opcode_and_operand_directions_match": true,
+    "critical_direction": "C5ADB7 DC C9 FMUL ST1,ST0 versusC5ADC3 D8 C9 FMUL ST0,ST1; exactselfmultiples DC C8 retained",
+    "all_FSTP_epochs_and_unspilled_intermediates_retained": true,
+    "control_word_or_MXCSR_mutation": false,
+    "approximate_CPP_double_math": false,
+    "CPP_bridges_and_cleanup_FP_instruction_count": 0,
+    "public_wrapper_SSE": "two MOVUPS pointer-data copies only, noFP arithmetic/conversion/statechange",
+    "ambient": "x87PC/RC/masks/status/NaN/denormal effects inherited; exactFLD/FSTP/FCOMIP/FSTP/JA/JBE sequences. Rawbody performs noFP-state reset. Fault transport/locations remainqualified.",
+    "fixture_or_runtime_FP_proof": false
+  },
+  "vendor_probe": {
+    "call_request": "10A0h",
+    "stack_alignment": "nativeANDESP,-8",
+    "native_bytes": 43,
+    "native_sha256": "f8675b4976f7b8efc0bd917aebab734d11ca90222d20bcd2a166ce9914ed2b6e",
+    "libraries": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\libcmt.lib",
+        "archive_sha256": "9f0229b54ae7c995bd4a1e590354db8bc09e4b789604c8528fccaf4665eed388",
+        "symbol": "__alloca_probe",
+        "code_sha256": "f8675b4976f7b8efc0bd917aebab734d11ca90222d20bcd2a166ce9914ed2b6e",
+        "proof": "exact 43 native bytes; __chkstk aliases same definition; ECX restored, EDX and FP untouched"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\libcmtd.lib",
+        "archive_sha256": "01b874b3611c8262417cea5b5614b11d9782b8e97b5d0047f073217d9cfc78c5",
+        "symbol": "__alloca_probe",
+        "code_sha256": "f8675b4976f7b8efc0bd917aebab734d11ca90222d20bcd2a166ce9914ed2b6e",
+        "proof": "exact 43 native bytes; __chkstk aliases same definition; ECX restored, EDX and FP untouched"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+        "archive_sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+        "symbol": "__alloca_probe",
+        "code_sha256": "f8675b4976f7b8efc0bd917aebab734d11ca90222d20bcd2a166ce9914ed2b6e",
+        "proof": "exact 43 native bytes; __chkstk aliases same definition; ECX restored, EDX and FP untouched"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrtd.lib",
+        "archive_sha256": "05898c7bcf65ea6c3ac2c6b363031d8e2c0f8e89dad1a0e5e33736f0c05a9ef3",
+        "symbol": "__alloca_probe",
+        "code_sha256": "f8675b4976f7b8efc0bd917aebab734d11ca90222d20bcd2a166ce9914ed2b6e",
+        "proof": "exact 43 native bytes; __chkstk aliases same definition; ECX restored, EDX and FP untouched"
+      }
+    ],
+    "credit": 0
+  },
+  "dependency_source_fingerprints_at_base": [
+    {
+      "path": "include/bsp/cc15_dyn_live.hpp",
+      "git_blob": "e6ad5722b18e6355c69af2b69be68b71fbce7eca",
+      "sha256": "a830daec86ecd9f6808301ce05e15d8215548d57d2bbee0471b1d2b6c5b9b294"
+    },
+    {
+      "path": "include/bsp/dyn_profile_scopes.hpp",
+      "git_blob": "27ba14d3f56d2b706fc24a28db0eab65ccd80c9a",
+      "sha256": "b2c47f9188c30b96c8768f76aaaee28d64a1aff80355230bbd0fdc2622588773"
+    },
+    {
+      "path": "src/dyn_profile_scopes.cpp",
+      "git_blob": "2fb0bcab5a5bae79eb81c0b242d1e00b6238f6dc",
+      "sha256": "302f51bd0274fcbd04947bec1bf789e2fc4a6014cc40bceefc1b601770ceea37"
+    },
+    {
+      "path": "include/bsp/dyn_engine_runtime.hpp",
+      "git_blob": "8723f3bf5c10716be712222b09e199efe75627dc",
+      "sha256": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a"
+    },
+    {
+      "path": "src/dyn_engine_runtime.cpp",
+      "git_blob": "714298c034e26df6d6427ee8de26a518cde903f6",
+      "sha256": "7b2608638c893d8135993072ed01ae1e8fbdd0070db8fc31242e227d0ace8360"
+    },
+    {
+      "path": "include/bsp/cc13_dyn1.hpp",
+      "git_blob": "bc34d151d032152c947f569828e3f8dba319fb1e",
+      "sha256": "f963de36f8cc8e137a056335510b4e33515ac2533fbd7aeca04da48dec83aece"
+    },
+    {
+      "path": "src/cc13_dyn1.cpp",
+      "git_blob": "27ec142632130637433b3b64124f70fc36ccd2c5",
+      "sha256": "23cdb09bfea0b435577eda510cadcffa37cb78419d3a3795c379fd03bd07286a"
+    },
+    {
+      "path": "include/bsp/native_crt_memset.hpp",
+      "git_blob": "1daac39b2a08df4764a084f9f31144933d5c0733",
+      "sha256": "82636e0cffb8c123053bd7e9778be85837d5f2bfae142bc8d788a089defcea1e"
+    },
+    {
+      "path": "src/native_crt_memset.cpp",
+      "git_blob": "1cd7eee18f59e50f00a248688a2d7ca7251cd636",
+      "sha256": "d40837c0989ddb2e0958deec750c0b264e6475e8febaad590c5a4f35db55a0d9"
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "git_blob": "1ede441960632c9f604e8ade53c16c9c461d9830",
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "git_blob": "f8c0f47406710a7e078d7cf09c0529e3838665c5",
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+    }
+  ],
+  "verification": {
+    "type": "compile and bounded static PE/live-bytes/COFF/CFG/call analysis only",
+    "actual_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/cc16_dyn_radix_manager_update.json",
+      "checked": 15,
+      "failed": 0,
+      "original_body_call_rows": 11,
+      "unwind_tail_rows": 4,
+      "receipt": "call_verification.txt"
+    },
+    "native_execution": false,
+    "game_execution": false,
+    "new_tests": false,
+    "shared_CMake_or_ledger_or_name_edits": false,
+    "common_build": "integrator responsibility; not run byworker"
+  },
+  "remaining_limits": [
+    "genuine caller/vtable/profile/allocator binding and activation not supplied",
+    "not original binaryABI or originalFH3/SEH/fault/stackoverflow transport",
+    "existing C50390 partial-construction/OOM cleanup limit at pinnedbase; pending repair not assumed",
+    "no cycle-for-cycle RDTSCidentity, concurrency/reentrancy proof or newruntimefixture",
+    "no nativefixture/gameplay/runtimeequivalence claim"
+  ],
+  "artifact_receipts": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-radix-manager-update\\local\\cc16_dyn_radix_manager_update",
+    "files": [
+      {
+        "file": "build.log",
+        "bytes": 35,
+        "sha256": "0d7c73c11c5316498471c730332fea940c14a1e7f23ac254294714bfd813a862"
+      },
+      {
+        "file": "source.obj",
+        "bytes": 13161,
+        "sha256": "f9e646f15481456c0afb10fadd6661fff8b87e1fa5af62391e8fca71a61a4bfc"
+      },
+      {
+        "file": "source.asm",
+        "bytes": 95501,
+        "sha256": "6518e5a727be694d6a7ed5b6555d807179152e14ea5527bca2a99f33c8b68b45"
+      },
+      {
+        "file": "audit.py",
+        "bytes": 16115,
+        "sha256": "a1fe56c2ab3590a832695d4e6eb13dd2f3be4a8ce189c9be689be3da87f2ca71"
+      },
+      {
+        "file": "audit.json",
+        "bytes": 21156,
+        "sha256": "adb0d117b3fa81820fb1d34e21a3a71faf923ecbf3d86b9aecc25f00a707dc4f"
+      },
+      {
+        "file": "audit.stdout.jsonl",
+        "bytes": 3184,
+        "sha256": "5e147dd2cf4044cb8256e6978401971915bfa3aeb65459f043dceb0ce1e6e9a9"
+      },
+      {
+        "file": "probe_audit.py",
+        "bytes": 3168,
+        "sha256": "49a7da6ede1eaa0851a827ce47ed8b8ad7c1b6e8545ae0d60249a6b3bb506416"
+      },
+      {
+        "file": "probe_audit.json",
+        "bytes": 9385,
+        "sha256": "5f7b2a668fa284aa6aba041205401b27b570bd43cc800841df257c5cc20a4c89"
+      },
+      {
+        "file": "generate.py",
+        "bytes": 9997,
+        "sha256": "3a8c17f0c49214784f8be65c35b16cf29cb7c147c1827557a2f3912f79f8b8aa"
+      },
+      {
+        "file": "write_report.py",
+        "bytes": 13107,
+        "sha256": "72ff1f0355346237a6dec9fa50a3ee0673d50d53e6222d81391d85edf85a1b01"
+      },
+      {
+        "file": "kernel.inc",
+        "bytes": 32440,
+        "sha256": "6152afa3c84686eaebae0c31560e435be1ad6fec3e07ac0944c28da973210f6a"
+      },
+      {
+        "file": "live_body.bin",
+        "bytes": 2246,
+        "sha256": "c9fa16f24060e7f21e482b8b32ac02e5ad61c412ff665fbd0e784201cd998b96"
+      },
+      {
+        "file": "live_probe.txt",
+        "bytes": 211,
+        "sha256": "58677c83ec12ebf3514736e549e6b6e21f559543e657aeb86194f7492e900402"
+      },
+      {
+        "file": "live_half.txt",
+        "bytes": 45,
+        "sha256": "81fea576b44cac3a69373898ff463326bafee9c1c5551e0a5b946fd7c530e90f"
+      },
+      {
+        "file": "call_verification.txt",
+        "bytes": 76,
+        "sha256": "870c13bb83a3b040e931a4e6a4fe847684d5743c4f2ac6d5d8f17506d97e5066"
+      },
+      {
+        "file": "live_0.txt",
+        "bytes": 1848,
+        "sha256": "bcca25307a92a0963a729b4517c86a689111c4ee532bbc087d07ca46888f18f8"
+      },
+      {
+        "file": "live_1.txt",
+        "bytes": 1848,
+        "sha256": "f4b49129d457e93634240aefcb18dafc372a700fd0a21ded7c369358db189f90"
+      },
+      {
+        "file": "live_2.txt",
+        "bytes": 1848,
+        "sha256": "30366a6ac09df7c0d154235946f832a83c1a7ded1b43b7c77bbc81c98a5b9326"
+      },
+      {
+        "file": "live_3.txt",
+        "bytes": 1848,
+        "sha256": "91576f0cb90b836de1bc7fb75d533ea222e7264124e92265be3b7ce6c3b39ee7"
+      },
+      {
+        "file": "live_4.txt",
+        "bytes": 1848,
+        "sha256": "dc69221f9b1836b3dd2438df12dd461902d31f16e4306d95c2a63e9f7a28d308"
+      },
+      {
+        "file": "live_5.txt",
+        "bytes": 1577,
+        "sha256": "d4ed45a8d105a8011359c473641b68d6e04beeeb034dac0ce088c493fb266787"
+      }
+    ],
+    "header_sha256": "be9e31d0b54d284800d824487fb22564140ee8b41309ce449acc009aac289572",
+    "documentation_sha256": "a3afed6a2feaf730d7bf97cea6ca1721e202a3048640d8e436b5716d11dbe331"
+  }
+}
