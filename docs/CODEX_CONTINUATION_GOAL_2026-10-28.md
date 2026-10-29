@@ -911,4 +911,7 @@ checks, passes independent Source review and Win32/existing checks2/2 (12.69s).
 All seven switches remain FALSE; fresh qualification of repaired Source is open.
 Attempt1's earlier prelaunch Source-drift rejection is retained separately; runtime
 now uses a dedicated fixed-commit execution tree. Raw ABAED0 unchanged-source
-library work is implemented/object-compiled and under independent Source review.
+library passes independent full Source review and coupled Win32/existing checks2/2
+(10.58s). It is registered in bsp_core and only as an early-equal ledger fragment;
+native owner/host invocation and runtime remain open. The separate closed owner
+contract is being prepared without broadening property/localisation/content scope.
