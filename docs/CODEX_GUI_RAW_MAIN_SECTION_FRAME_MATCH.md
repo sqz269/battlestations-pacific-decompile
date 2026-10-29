@@ -1,6 +1,6 @@
 # Main-section Frame constructor identity view
 
-**UNBUILT source-only library helper; no caller or activation.** Exact baseline
+**Source-only library helper; no caller or activation.** Exact baseline
 `4a934a3d5225ce85f199bdff2d3abc8e29b05b8a`, containing33536 main-section storage
 and19999 sticky-failure behavior. This packet owns only
 `native_gui_text_main_section_storage.hpp/.cpp` and this new doc. The Root's
@@ -65,3 +65,13 @@ probe, game, CMake/shared metadata or Ghidra mutation was performed.
 Root owns independent review/build. Original register/private-stack/FH3/SEH/FP
 ABI, actual allocation/credits/retirement, caller admission, repeated/reentrant
 use, gameplay/rendering and runtime acceptance remain separate qualifications.
+
+## Root integration verification
+
+Frozen9a446f8a11bd30def6e00798fb3ec1d1523cc06f was independently reviewed and
+merged after the private Font runtime cases. The method reads only the two
+private constructor references and private phase; no member data/layout change
+or native body change accompanies it. Combined Win32 and existing checks2/2
+pass (10.23s), `local/cc16_raw_font_metadata_restored_off_main_section_build.log`.
+Source84466023263bcd5d6ff8d1545a0d9ec8f8bfd939 has all four private modes FALSE.
+This is compiled library metadata, with no MainSection caller/runtime credit.

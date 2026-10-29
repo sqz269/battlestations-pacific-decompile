@@ -127,6 +127,12 @@ Root and independent owner Source review accepted the combined producer and
 sticky-entry fix. Owner API103/bodyc315 is integrated; six original and eight
 follow-up Source comparisons pass. The combined OFF Win32 build and existing
 checks2/2 pass (9.78s), `local/cc16_raw_font_link_integrated_off_build.log`.
-No host caller, live Font-link lifecycle, shader/108/1EC or production gate is
-accepted by this build. Root must attach and detach the exact endpoints in a
-separate reviewed, preregistered lifecycle before claiming execution.
+That build alone did not accept any host caller or live Font-link lifecycle.
+
+The later reviewed caller7158974cd and frozen candidateb697 execute the exact
+combined link, terminal guard and explicit BOTH-layer post-parent detach in a
+preregistered four-case reference/MSD1600 lifecycle, all exit0. Independent audit
+accepts the bounded metadata criteria; raw full-strict remains separately FALSE.
+See CODEX_GUI_RAW_FONT_METADATA_QUALIFICATION.md for exact artifacts and scope.
+All four private constants are restored FALSE; combined Win32/checks2/2 pass
+10.23s. No Font108/shader/setter/1EC or production activation is accepted.

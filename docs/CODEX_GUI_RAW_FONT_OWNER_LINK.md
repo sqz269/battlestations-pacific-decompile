@@ -124,5 +124,14 @@ Root and independent producer review accepted owner c315 with the exact Host/
 App contract; all eleven preserved-body comparisons pass. Combined producer
 e758 plus raw retirement-entry sticky fix4fd is integrated. Win32 and existing
 checks2/2 pass (9.78s), `local/cc16_raw_font_link_integrated_off_build.log`.
-No host caller is attached yet. This proves compilation and Source contracts,
-not linked Font runtime, lookup/shader, Font108 or cached1EC ownership acceptance.
+At that build stage no host caller was attached; only compilation and Source
+contracts were established.
+
+The later private caller7158974cd and candidateb697 now execute the genuine
+metadata link/terminal retirement guard/post-parent detach in a preregistered
+four-case reference/MSD1600 lifecycle. All cases exit0; independent evidence
+audit accepts the bounded metadata criteria, with raw full-strict differences
+retained separately. See CODEX_GUI_RAW_FONT_METADATA_QUALIFICATION.md for exact
+artifacts, comparisons and limitations. All four private modes are restored
+FALSE, with combined Win32/checks2/2 pass10.23s. No lookup/shader, Font108,
+cached1EC ownership, MainSection or production gate is granted.

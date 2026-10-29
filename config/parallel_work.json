@@ -16,8 +16,24 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-raw-main-section-frame-match",
+      "state": "integrated_source_two_reviews_win32_build_uncalled",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": [
+        "codex-gui-raw-text-main-section-storage"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/native_gui_text_main_section_storage.hpp",
+        "src/native_gui_text_main_section_storage.cpp",
+        "docs/CODEX_GUI_RAW_MAIN_SECTION_FRAME_MATCH.md"
+      ],
+      "notes": "Frozen9a446f8a, exact4a baseline; Root independently reviewed pure Context/Acquired/private-phase identity view. No new fields/layout/native body or sticky failure edits. Restored-OFF integrated Win32/checks2/2 pass10.23s. No MainSection caller/owner/lifetime choice, liveness/sole-credit/retirement authority or runtime/ABI claim."
+    },
+    {
       "id": "codex-raw-font-host-qualification",
-      "state": "in_progress_private_off_caller_build_pass_source_review_pending",
+      "state": "private_four_case_metadata_lifecycle_review_pass_all_modes_off",
       "worker": "cc16-progress",
       "source_ready": false,
       "depends_on": [
@@ -30,7 +46,7 @@
         "src/game_native_gui_render_application.cpp",
         "docs/CODEX_GUI_RAW_FONT_METADATA_QUALIFICATION.md"
       ],
-      "notes": "Separate FALSE private Font metadata mode; exclusive combined producer link after stable owner storage before preparation, existing geometry route, actual Font retirement guard and post-parent both-layer detach before owner reset. All four source gates OFF. Win32/checks2/2 10.99s pass. Independent caller/lifetime review and preregistered default identity plus MSD USN04 >=1500 exit0 remain gates. No FontShader/setter/108/1EC execution or UI/ABI activation."
+      "notes": "Caller7158974cd Root+independent Source review; frozenb697/EXE194A completes4serial cases exit0: parent/candidate reference4800mission, samecandidate MSD1600 GUI_TEXT0/1 withSHIP/FRAME/UNITS1. Reference pair0/native1641/summary874; MSD gameplay/native1550/summary830 and exactly10ON diagnostics. Full/mission SUB onlyrawworker difference, accepted normalization0. Rawfullstrict remainsFALSE with existingnoise edits preserved; exact3teardown insertions and olderror.dds COMcohort only. Genuine Font link/terminalretireguard/postparentdetach proven onlymetadataFRESH/no108/shader/setter/1EC. All4modes restoredFALSE844660; Win32/checks2/2 pass10.23s. Independent audit preregcriteria pass. No13row/USN21strict4+4/production/ABI/failure/reuse credit."
     },
     {
       "id": "codex-gui-raw-font-setter-credit-plan",
@@ -54,7 +70,7 @@
     },
     {
       "id": "codex-gui-raw-font-owner-link",
-      "state": "integrated_two_reviews_win32_build_metadata_only_uncalled",
+      "state": "integrated_private_font_metadata_lifecycle_pass_shader_fresh_only",
       "worker": "gui_frame_lifetime",
       "source_ready": false,
       "depends_on": [
@@ -67,11 +83,11 @@
         "src/game_native_raw_default_text_owner.cpp",
         "docs/CODEX_GUI_RAW_FONT_OWNER_LINK.md"
       ],
-      "notes": "FrozenAPI103/bodyc315 integratedwithproducere758/4fd. Root+independentproducer Source review and11oldmodecomparisons pass; combinedOFFWin32/checks2/2 9.78s. RealFontcollection/domain handshake, genuine d13 FRESH-onlycontext/Framebefore122, terminalFontretireguard andmetadata-onlypostparentdetach. Stickysharedfailure/no deadFontpayloadreads. No hostcaller/runtime/exportactivation/108/shader/1EC widening; exactfuturelinksremainblocked."
+      "notes": "Owner103/c315 withproducer e758/4fd Root+independent Source review and4private reference/MSD1600 cases pass exactmetadata criteria. Genuine combined link beforeprepare, FRESH-only shader backing, terminalactualFontretirementguard andpostparentdetach execute; all4private hostflags restoredFALSE. Combined Win32/checks2/2 pass10.23s. Raw108/setter/shader/1EC/MainSection/production and13row/strict4+4 remainseparate."
     },
     {
       "id": "codex-gui-raw-font-producer-link",
-      "state": "integrated_two_reviews_win32_build_metadata_only_uncalled",
+      "state": "integrated_private_font_metadata_lifecycle_pass_shader_fresh_only",
       "worker": "gameplay_integration_review",
       "source_ready": false,
       "depends_on": [
@@ -88,7 +104,7 @@
         "src/native_font_resources.cpp",
         "docs/CODEX_GUI_RAW_FONT_PRODUCER_LINK.md"
       ],
-      "notes": "Frozene758 plus separate4fd rawretiremententrystickyfix integratedwithactualowner103/c315. Root+independentowner Source review;6legacy/nativepayload and8followupcomparisons pass; OFFWin32/checks2/2 9.78s. ExclusivecombinedHost/App/rawownerlink beforeexport, original/attemptedownerfailurecustody, terminalguardwhileREADYbeforeNativeFontretire, privateRETIRED savedidentitydetach andnormalbound-retiredretention. Resourcepairunchanged. No hostcaller/runtime/shader/108/1ECactivation."
+      "notes": "Exclusive actual Host/App/rawowner export e758+stickyentryfix4fd integratedwithowner103/c315. Root+independentreviews,6legacy/nativepayload+8followup comparisons and4private reference/MSD1600 cases pass metadata criteria. ActualterminalguardbeforeFontretire and BOTH-layer savedidentitydetach afterparentdrain beforeownerreset verified. All4flagsFALSE; Win32/checks2/2 pass10.23s. No108/shader/setter/1EC,13row/strict4+4/production/ABI/failure/reuse acceptance."
     },
     {
       "id": "codex-gui-raw-font-export-plan",

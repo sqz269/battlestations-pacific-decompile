@@ -710,3 +710,13 @@ closure and precedes reset. OFF Win32/checks2/2 pass (10.99s). Source/lifetime
 review and runtime evidence remain pending. Four separate planned USN04 cases
 cover exact-parent/default reference and same-candidate MSD1600 GUI_TEXT0/1;
 they do not constitute13-row OFF identity, strict4+4 or production activation.
+
+Caller7158974cd passed independent lifetime review. Frozenb697 completed all
+four reference/MSD1600 cases exit0, genuine producer link through actual Font
+retirement and post-parent detach. Native/summary/gameplay pairs agree; ordered
+SUB differs only worker ID before existing normalization. Raw strict full log
+differences and exact existing COM residue remain recorded, not relabeled zero.
+Independent audit accepts only preregistered metadata criteria. All four private
+constants restored FALSE; combined Win32/checks2/2 pass10.23s. Pure MainSection
+Frame.matches9a446f8a is independently reviewed/compiled, still has no caller or
+liveness/retirement authority. Font setter/1EC plan remains the next boundary.
