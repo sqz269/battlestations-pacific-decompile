@@ -116,6 +116,17 @@ before/after snapshot. This packet neither forces that flag nor fabricates
 element0. The independent BoundLateZero audit remains a fixture blocker until
 its provider/alias/synchronization obligations are accepted by root.
 
+A separate follow-up to preserved `c4482de9668cbe394278b9ceb134c48797f63b3b`
+adds read-only CURRENT Text+74==0 admission inside the armed progress try, after
+the null-handler queries and immediately before379. Independent publication/
+disposal markers and SAME canonical bound reference/context/registry identity
+are required BEFORE reading that actual live Text byte. Earlier GuiDefault/Lua
+work is not assumed to preserve constructorzero. This entry observation PLUS
+the separately closed379 entry-to-late-AA70E6 proof establishes latezero; the
+entry observation alone does not. Rejection sets progress.failed and retains
+the entire already-created prefix. There is no flag write, repair or forced
+snapshot substituted for the actual late body read.
+
 Read-only `local/codex_raw_prefix_geometry_owner_source_review.py` compares eight
 existing bodies against4a1: DEFAULT/prefix prepare and construct, real name/
 producer/return, full native scalar schedule, companion disposal, renderer-FIRST

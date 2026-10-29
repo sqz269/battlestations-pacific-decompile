@@ -255,6 +255,18 @@ struct GameNativeRawDefaultTextOwner::Impl::Geometry {
         try {
             require(_query_new_handler() == nullptr && std::get_new_handler() == nullptr,
                 "private geometry requires both real allocation handlers absent at its actual entry");
+            const auto* const prefix = lifetime.prefix;
+            require(prefix && prefix->text.publication.bind_complete && !prefix->text.publication.bind_failed &&
+                !prefix->text.publication.companion_disposal_entered && !prefix->text.publication.disposed &&
+                prefix->text.publication.reference == &reference &&
+                reference.phase() == NativeGuiTextRawModelReference::Phase::bound && reference.storage() &&
+                reference.storage() == prefix->text.factory.raw_slot &&
+                &reference.storage_context() == &prefix->text.factory_context.publication &&
+                prefix->text.factory_context.publication.owners.find(reference.storage()) == &reference,
+                "private geometry bounds entry needs its SAME live canonical bound Text");
+            const auto* const actual = static_cast<const volatile unsigned char*>(reference.storage());
+            require(actual[0x74] == 0,
+                "private geometry requires CURRENT Text bounds flag zero at its actual entry");
             construct_native_gui_text_main_geometry_storage_00ab7700(reference, construction, frame, acquired);
             progress.returned = true; // NORMAL body return FIRST, before Source metadata validation.
             require_native_gui_text_prefix_geometry_reservation(*lifetime.prefix);
