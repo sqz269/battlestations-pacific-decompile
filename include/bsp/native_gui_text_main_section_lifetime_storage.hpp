@@ -29,8 +29,10 @@ struct NativeGuiTextMainSectionLifetimeRegions final {
     std::size_t count{};
 };
 
-// Metadata admission only. First domain: created main section, Font-empty,
-// childless/unparented, one sole Section/Material and no streams/layout/content.
+// Metadata admission only: created main section, childless/unparented, one sole
+// Section/Material and no streams/layout/content. The original kind is Font-empty.
+// The explicit Font+Main kind admits ONLY this structural slice: the coordinator
+// separately checks the fixed Font helper while both are alive. No peer traversal.
 // This helper neither invokes379/AB8530 nor performs a native owner operation.
 class NativeGuiTextMainSectionLifetimeStorageFrame final {
 public:
@@ -61,7 +63,9 @@ public:
         const NativeGuiTextRetirementAcquired* exact_destruction = nullptr) const;
 
     // Persistent C++ records ONLY after native callbacks/entry erasure. This
-    // closes this graph's Text debt, not renderer/effect-cache/provider custody.
+    // closes this graph's structural Text debt, not renderer/effect-cache/provider
+    // custody or the compound Font slice. It never reads the Font peer, even if
+    // that peer's metadata has already ended during owner teardown.
     bool post_text_quiescent() const noexcept;
     void require_post_text_quiescent() const;
     bool requires_process_retention() const noexcept;

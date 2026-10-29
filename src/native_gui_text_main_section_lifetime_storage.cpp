@@ -38,13 +38,17 @@ void append(NativeGuiTextMainSectionLifetimeRegions& r, const void* p, std::size
     r.entries[r.count++] = {p, n};
 }
 const NativeGuiTextPrimaryPrefixLifetimeContext* prefix(const Context& c) noexcept { return c.geometry.prefix; }
+bool with_font(const Context& c) noexcept {
+    const auto* p = prefix(c);
+    return p && p->operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_main_section_font;
+}
 bool aliases(const Context& c, const Frame& frame) noexcept {
     const auto* p = prefix(c);
     if (!p) return false;
     const auto& f = p->text.factory_context;
     const auto& r = f.publication;
     const auto& m = c.construction;
-    return p->operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_main_section &&
+    return (p->operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_main_section || with_font(c)) &&
         p->operation.geometry() == &c.geometry && p->operation.main_section() == &frame &&
         &c.reference_frame == &f.reference_frame && &m.text == &p->text &&
         &m.authentication == &p->authentication && &m.primary_context == &p->producer_context &&
@@ -53,7 +57,9 @@ bool aliases(const Context& c, const Frame& frame) noexcept {
         &m.geometry == &c.geometry.acquired && &m.resources == &r.construction_context.sections &&
         &r.construction == &f.construction && &r.retirement.resources == &m.resources &&
         &r.retirement.model == &f.construction.sections.model &&
-        r.retirement.primary_prefix == p && !r.retirement.font_lifetime &&
+        r.retirement.primary_prefix == p && (with_font(c) ?
+            p->operation.font_lifetime() && p->operation.font_lifetime() == r.retirement.font_lifetime :
+            !r.retirement.font_lifetime) &&
         &r.retirement.base == &p->authentication.context() &&
         &r.construction_context.lifetime == &p->authentication.context() &&
         &p->widget.text == &p->text && &p->widget.authentication == &p->authentication &&
@@ -160,6 +166,12 @@ bool header_entered(const NativeGuiTextRetirementAcquired& d) noexcept {
     return (d.normal_actions_entered & bit6) || (d.normal_actions_returned & bit6) ||
         (d.unwind_actions_consumed & bit6) || (d.unwind_actions_returned & bit6) ||
         d.strings[0].return_entered || d.strings[0].returned;
+}
+bool normal_header_returned(const NativeGuiTextRetirementAcquired& d) noexcept {
+    // Structural return epoch only. The separate Font slice authenticates the
+    // captured NULL/non-NULL header identity, length, getter and actual return.
+    return (d.normal_actions_entered & bit6) && (d.normal_actions_returned & bit6) &&
+        !d.exception_cleanup_started && d.strings[0].data_captured;
 }
 bool null_header_returned(const NativeGuiTextRetirementAcquired& d) noexcept {
     const auto& s = d.strings[0];
@@ -345,8 +357,9 @@ void NativeGuiTextMainSectionLifetimeStorageFrame::prepare_before_text_allocatio
             "Main-section preparation needs exact whole-Attempt fresh metadata");
         const auto& p = *prefix(context_); const auto& f = p.text.factory_context;
         const auto& s = p.text.publication; const auto& a = p.text.factory; const auto& scalar = context_.reference_frame.scalar;
-        shader_ = f.publication.font_shader_frame;
-        require(shader_unused(context_, shader_, false, false) &&
+        const bool font = with_font(context_);
+        if (!font) shader_ = f.publication.font_shader_frame;
+        require((font || shader_unused(context_, shader_, false, false)) &&
             a.phase == NativeGuiTextDefaultFactoryStorageAcquired::Phase::fresh && !a.started && !a.complete &&
             !a.raw_slot && !a.failure && !f.construction.started &&
             !s.bind_entered && !s.bind_complete && !s.bind_failed && !s.reference && !s.scalar_entered &&
@@ -371,13 +384,16 @@ void NativeGuiTextMainSectionLifetimeStorageFrame::prepare_before_text_allocatio
 void NativeGuiTextMainSectionLifetimeStorageFrame::seal_after_main_section(void* actual) {
     try {
         enter();
+        const bool font = phase_ == Phase::prepared && with_font(context_);
         require(phase_ == Phase::prepared && !actual_ && !reference_ && aliases(context_, *this) &&
-            actual && shader_unused(context_, shader_, false, false), "Main-section seal follows one prepared unused Font domain");
+            actual && (font || shader_unused(context_, shader_, false, false)),
+            font ? "Main structural seal follows one prepared constructor graph" :
+                "Main-section seal follows one prepared unused Font domain");
         const auto& p = *prefix(context_); const auto& f = p.text.factory_context;
         const auto& pub = p.text.publication; const auto& a = context_.acquired;
         void* const mesh = context_.geometry.acquired.captured_mesh;
         void* const section = a.section.section.creator; void* const material = a.section.material.material;
-        require(f.publication.retirement.font_lifetime == nullptr && pub.bind_complete && !pub.bind_failed &&
+        require((font || f.publication.retirement.font_lifetime == nullptr) && pub.bind_complete && !pub.bind_failed &&
             !pub.scalar_entered && !pub.scalar_failed && !pub.companion_disposal_entered && !pub.disposed &&
             p.text.factory.phase == NativeGuiTextDefaultFactoryStorageAcquired::Phase::complete && p.text.factory.complete &&
             !p.text.factory.failure && p.text.factory.raw_slot == actual &&
@@ -394,8 +410,9 @@ void NativeGuiTextMainSectionLifetimeStorageFrame::seal_after_main_section(void*
             static_cast<const void*>(&reference->reference_count) == offset(actual, 4) &&
             reference->reference_count.load(std::memory_order_relaxed) == 1 && prebody(context_.reference_frame.scalar.destruction),
             "Main-section seal needs the SAME live canonical122 generation before scalar");
-        require(!read(actual, 0x108) && !read(actual, 0x1c8) && !read(actual, 0x1cc) && !read(actual, 0x1ec),
-            "First main-section domain precedes Font/header/shader/content publication");
+        if (!font)
+            require(!read(actual, 0x108) && !read(actual, 0x1c8) && !read(actual, 0x1cc) && !read(actual, 0x1ec),
+                "First main-section domain precedes Font/header/shader/content publication");
         // This helper never reads Text188. The ordinary descriptor predicate
         // remains before that slot in Root's existing prefix/body schedules.
         live_graph(context_, context_.geometry.construction.primary.actual, context_.geometry.construction.internal188.actual,
@@ -414,21 +431,22 @@ void NativeGuiTextMainSectionLifetimeStorageFrame::seal_after_main_section(void*
                     "Native Text/Mesh/Section/Material slots cannot alias main lifetime metadata");
         actual_ = actual; reference_ = reference; mesh_ = mesh; shadow_mesh_ = shadow_mesh;
         section_ = section; material_ = material; primary_ = context_.geometry.construction.primary.actual;
-        internal_ = context_.geometry.construction.internal188.actual; empty_font_sealed_ = true;
+        internal_ = context_.geometry.construction.internal188.actual; empty_font_sealed_ = !font;
         phase_ = Phase::sealed; leave();
     } catch (...) { fail(); throw; }
 }
 void NativeGuiTextMainSectionLifetimeStorageFrame::admit(void* actual, Stage stage,
     const NativeGuiTextRetirementAcquired* progress) const {
     require(aliases(context_, *this), "Main-section operation/context/reference aliases cannot change");
+    const bool font = with_font(context_);
     const auto& p = *prefix(context_); const auto& f = p.text.factory_context; const auto& pub = p.text.publication;
     const auto& scalar = context_.reference_frame.scalar; const auto& d = scalar.destruction;
     if (stage == Stage::bound && !progress && phase_ == Phase::prepared) {
-        require(!actual_ && !reference_ && main_fresh(context_) && shader_unused(context_, shader_, false, false),
+        require(!actual_ && !reference_ && main_fresh(context_) && (font || shader_unused(context_, shader_, false, false)),
             "Prepared Main bound is only an exact untouched reservation, never a fallback after entry");
         if (!actual) return; // pure pre122/db55/379 reservation; no native/getter access.
         require(pub.bind_complete && !pub.bind_failed && pub.reference && !pub.scalar_entered && !pub.scalar_failed &&
-            !pub.companion_disposal_entered && !pub.disposed && f.publication.font_shader_frame == shader_ &&
+            !pub.companion_disposal_entered && !pub.disposed && (font || f.publication.font_shader_frame == shader_) &&
             p.text.factory.raw_slot == actual && p.text.factory.complete && !p.text.factory.failure &&
             !scalar.started && !scalar.complete && prebody(d), "Prepared bound Text must be its canonical unentered122");
         require(pub.reference->phase() == NativeGuiTextRawModelReference::Phase::bound &&
@@ -437,7 +455,7 @@ void NativeGuiTextMainSectionLifetimeStorageFrame::admit(void* actual, Stage sta
         p.authentication.require_raw_model_transport_receiver(actual, p.text);
         return; // no main Section/Mesh/current-field permission.
     }
-    require(phase_ == Phase::sealed && actual_ && reference_ && empty_font_sealed_ &&
+    require(phase_ == Phase::sealed && actual_ && reference_ && (font || empty_font_sealed_) &&
         geometry_complete(context_, actual_, mesh_) && shadow_complete(context_, shadow_mesh_) &&
         main_complete(context_, actual_, mesh_, section_, material_), "Main permission requires its private sealed whole graph");
     if (stage == Stage::bound && !actual && !progress) return; // metadata reservation only, including after producers.
@@ -450,8 +468,9 @@ void NativeGuiTextMainSectionLifetimeStorageFrame::admit(void* actual, Stage sta
         !p.authentication_acquired.poisoned && !p.authentication_acquired.active,
         "Main independent records reject failed/returned objects BEFORE any pointer access");
     const bool raw = stage == Stage::raw118_preentry || stage == Stage::raw118_body || stage == Stage::base;
-    require(shader_unused(context_, shader_, raw, false) && no_shader_release(d.shader),
-        "Font-empty Main requires private unused/actual-null-retirement shader history");
+    if (!font)
+        require(shader_unused(context_, shader_, raw, false) && no_shader_release(d.shader),
+            "Font-empty Main requires private unused/actual-null-retirement shader history");
     if (raw) require(progress == &d && pub.scalar_entered && scalar.started && scalar.destructor_entered,
         "Main raw118 stage requires exact canonical scalar.destruction");
     else require(!progress, "Main pre-scalar stage cannot accept a replacement destruction record");
@@ -477,7 +496,9 @@ void NativeGuiTextMainSectionLifetimeStorageFrame::admit(void* actual, Stage sta
             "Main base follows real normal member returns"); break;
     }
     if (header_entered(d) || stage == Stage::base) {
-        require(null_header_returned(d), "Main ended empty header requires actual bit6 normal NULL return");
+        require(font ? normal_header_returned(d) : null_header_returned(d),
+            font ? "Main structural boundary requires actual bit6 normal return" :
+                "Main ended empty header requires actual bit6 normal NULL return");
         return; // No four Font words, ended188, native Mesh/Section/Material or companion lookup.
     }
     require(reference_->storage() == actual && &reference_->storage_context() == &f.publication &&
@@ -486,8 +507,9 @@ void NativeGuiTextMainSectionLifetimeStorageFrame::admit(void* actual, Stage sta
             reference_->phase() == NativeGuiTextRawModelReference::Phase::bound :
             reference_->phase() == NativeGuiTextRawModelReference::Phase::retiring), "Main live stage cannot replace canonical122");
     p.authentication.require_raw_model_transport_receiver(actual, p.text);
-    require(!read(actual, 0x108) && !read(actual, 0x1c8) && !read(actual, 0x1cc) && !read(actual, 0x1ec),
-        "Main before-header domain still requires actual empty Font/header/shader");
+    if (!font)
+        require(!read(actual, 0x108) && !read(actual, 0x1c8) && !read(actual, 0x1cc) && !read(actual, 0x1ec),
+            "Main before-header domain still requires actual empty Font/header/shader");
     require(!primary_release_started(context_), "Main live graph cannot be polled after its owning release can enter");
     live_graph(context_, primary_, internal_, mesh_, shadow_mesh_, section_, material_);
 }
@@ -520,9 +542,10 @@ NativeGuiTextMainSectionLifetimeRegions NativeGuiTextMainSectionLifetimeStorageF
 }
 bool NativeGuiTextMainSectionLifetimeStorageFrame::post_text_quiescent() const noexcept {
     if (active_ || failure_ || phase_ == Phase::failed || !aliases(context_, *this)) return false;
+    const bool font = with_font(context_);
     if (phase_ == Phase::prepared && !actual_ && !reference_)
-        return main_fresh(context_) && shader_unused(context_, shader_, false, false); // unused MAIN debt only.
-    if (phase_ != Phase::sealed || !actual_ || !reference_ || !empty_font_sealed_ ||
+        return main_fresh(context_) && (font || shader_unused(context_, shader_, false, false)); // unused MAIN debt only.
+    if (phase_ != Phase::sealed || !actual_ || !reference_ || (!font && !empty_font_sealed_) ||
         !geometry_complete(context_, actual_, mesh_) || !shadow_complete(context_, shadow_mesh_) ||
         !main_complete(context_, actual_, mesh_, section_, material_)) return false;
     const auto& p = *prefix(context_); const auto& a = p.text.factory; const auto& pub = p.text.publication;
@@ -533,8 +556,9 @@ bool NativeGuiTextMainSectionLifetimeStorageFrame::post_text_quiescent() const n
         !scalar.started || !scalar.complete || !scalar.destructor_entered || !scalar.destructor_returned ||
         !scalar.flags_captured || !(scalar.captured_flags_byte & 1u) || !scalar.pool_return_entered || !scalar.pool_returned ||
         !d.started || !d.complete || d.destination != actual_ || d.exception_cleanup_started ||
-        !d.base_entered || !d.base_returned || !null_header_returned(d) || !no_shader_release(d.shader) ||
-        !shader_unused(context_, shader_, false, true) || p.authentication_acquired.active || p.authentication_acquired.poisoned ||
+        !d.base_entered || !d.base_returned || (font ? !normal_header_returned(d) :
+            !null_header_returned(d) || !no_shader_release(d.shader) || !shader_unused(context_, shader_, false, true)) ||
+        p.authentication_acquired.active || p.authentication_acquired.poisoned ||
         p.widget_acquired.active || p.widget_acquired.poisoned ||
         p.widget_acquired.base != NativeGuiWidgetRawModelLifetimeAcquired::Phase::complete ||
         p.widget_acquired.scene != NativeGuiWidgetRawModelLifetimeAcquired::Phase::complete ||
@@ -559,7 +583,8 @@ bool NativeGuiTextMainSectionLifetimeStorageFrame::requires_process_retention() 
     if (active_ || phase_ == Phase::failed || failure_) return true;
     if (phase_ == Phase::fresh) return false; // forward graph may not be constructed yet.
     if (!aliases(context_, *this)) return true;
-    if (phase_ == Phase::prepared) return !main_fresh(context_) || !shader_unused(context_, shader_, false, false);
+    const bool font = with_font(context_);
+    if (phase_ == Phase::prepared) return !main_fresh(context_) || (!font && !shader_unused(context_, shader_, false, false));
     if (!main_complete(context_, actual_, mesh_, section_, material_) || !cache_quiescent(context_.acquired.section.material.cache.get())) return true;
     const auto& p = *prefix(context_); const auto& scalar = context_.reference_frame.scalar;
     const auto bad_route = [](const NativeGuiWidgetRawModelRoute& r) noexcept {
@@ -570,7 +595,7 @@ bool NativeGuiTextMainSectionLifetimeStorageFrame::requires_process_retention() 
         p.authentication_acquired.active || p.authentication_acquired.poisoned ||
         p.widget_acquired.active || p.widget_acquired.poisoned || bad_route(p.widget.primary) || bad_route(p.widget.internal188) ||
         !calls_settled(p.primary_calls) || !calls_settled(p.internal_calls)) return true;
-    if (shader_) {
+    if (!font && shader_) {
         const auto s = shader_->credit_progress();
         if (s.failed || s.active || s.producer != Shader::RawPhase::fresh || s.credit != Shader::CreditPhase::none ||
             s.consumer != Shader::Consumer::none || shader_->phase != Shader::Phase::fresh) return true;

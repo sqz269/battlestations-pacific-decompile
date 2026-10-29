@@ -1,5 +1,6 @@
 #include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
 #include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
+#include "native_gui_text_font_main_admission.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include <atomic>
 #include <cstddef>
@@ -64,21 +65,30 @@ const Context* graph(const Prefix& p) {
     using Kind = NativeGuiTextPrimaryPrefixOperation::Kind;
     const auto* c = p.operation.geometry();
     const auto* const main = p.operation.main_section();
+    const bool paired = gui_text_font_main_detail::selected(p);
     if (p.operation.kind() == Kind::none) {
-        require(!c && !main, "no-operation prefix cannot carry a geometry shortcut");
+        require(!c && !main && !p.operation.font_lifetime(), "no-operation prefix cannot carry a geometry shortcut");
         return nullptr;
     }
-    require((p.operation.kind() == Kind::geometry_only || p.operation.kind() == Kind::geometry_main_section) &&
+    require((p.operation.kind() == Kind::geometry_only || p.operation.kind() == Kind::geometry_main_section || paired) &&
         c && aliases(p, *c),
         "prefix operation needs the EXACT immutable379 context/backing graph");
     if (p.operation.kind() == Kind::geometry_only)
-        require(!main, "geometry-only operation cannot carry MainSection permission");
+        require(!main && !p.operation.font_lifetime(), "geometry-only operation cannot carry compound peer permission");
     else {
         using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
         require(main && &main->prepared_context().geometry == c &&
             &main->prepared_context().reference_frame == &p.text.factory_context.reference_frame &&
             (main->phase() == Main::Phase::prepared || main->phase() == Main::Phase::sealed),
             "compound operation needs its SAME prepared or sealed MainSection graph");
+        if (paired) {
+            const auto q = gui_text_font_main_detail::peers(p);
+            using Font = NativeGuiTextFontLifetimeStorageFrame;
+            require(q.font.phase() == Font::Phase::prepared || q.font.phase() == Font::Phase::sealed,
+                "Font/Main reservation needs the exact prepared or sealed Font slice");
+            if (q.font.phase() == Font::Phase::prepared)
+                require(q.font.post_text_quiescent(), "Prepared Font/Main reservation must have untouched Font debt");
+        } else require(!p.operation.font_lifetime(), "Main-only operation cannot carry a Font peer");
     }
     auto& publication = p.text.factory_context.publication;
     auto& construction = c->construction;
@@ -219,9 +229,11 @@ void require_native_gui_text_prefix_geometry_primary(void* geometry, const Prefi
 
 bool native_gui_text_prefix_geometry_meshes_settled(const Prefix& p) noexcept {
     using Kind = NativeGuiTextPrimaryPrefixOperation::Kind;
-    if (p.operation.kind() == Kind::none) return !p.operation.geometry() && !p.operation.main_section();
+    if (p.operation.kind() == Kind::none)
+        return !p.operation.geometry() && !p.operation.main_section() && !p.operation.font_lifetime();
     const auto* const c = p.operation.geometry();
-    const bool main = p.operation.kind() == Kind::geometry_main_section;
+    const bool main = p.operation.kind() == Kind::geometry_main_section ||
+        p.operation.kind() == Kind::geometry_main_section_font;
     if ((!main && p.operation.kind() != Kind::geometry_only) || !c || !complete(p, *c) || !shadow_metadata(p)) return false;
     // Geometry's own destructor also uses this predicate AFTER MainGraph reset.
     // Compound owner settlement checks Main while both graphs are still alive;
