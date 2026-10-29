@@ -14,6 +14,7 @@
 #include "bsp/game_native_gui_text_state.hpp"
 #include "bsp/native_gui_text_default_widget_lifetime.hpp"
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
+#include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
 #include "bsp/native_model_storage_node_dispatch.hpp"
 #include "bsp/native_game_grid.hpp"
 #include "bsp/gui_text_native_renderer.hpp"
@@ -26,6 +27,8 @@
 #include "bsp/native_shader_binary_cache.hpp"
 #include <cstdint>
 #include <exception>
+#include <new>
+#include <new.h>
 #include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -49,10 +52,11 @@ const volatile Word* table(GameNativeReadOnlyData& data, Word address, std::size
 
 struct GameNativeRawDefaultTextOwner::Impl {
     enum class Phase { fresh, preparing, prepared, creating, empty, bound, retiring, retired, closing, closed, failed };
-    enum class Mode { default_lifecycle, primary_prefix };
+    enum class Mode { default_lifecycle, primary_prefix, primary_prefix_geometry };
     struct Services;
     struct Attempt;
     struct PrimaryPrefix;
+    struct Geometry;
     GameHostLog& log;
     GameNativeRendererApplication& renderer;
     GameVfsHost& vfs;
@@ -196,6 +200,68 @@ struct GameNativeRawDefaultTextOwner::Impl::Attempt {
     }
 };
 
+struct GameNativeRawDefaultTextOwner::Impl::Geometry {
+    const NativeNodeMappedRawTransformProfiles transforms;
+    NativeModelStorageGeometryContext association;
+    NativeGuiTextMainGeometryStorageContext construction;
+    volatile Word arguments[4]{};
+    volatile Word position[3]{};
+    NativeGuiWidgetTransformScratch transform_scratch{};
+    GuiWidgetBounds bounds_scratch{};
+    NativeGuiTextMainGeometryStorageAcquired acquired;
+    NativeGuiTextPrefixGeometryProgress progress;
+    NativeGuiTextMainGeometryStorageFrame frame;
+    const NativeGuiTextPrefixGeometryLifetimeContext lifetime;
+
+    Geometry(Services& s, NativeModelStorageDispatchContext& primary,
+        NativeModelStorageDispatchContext& internal,
+        const NativeGuiTextPrimaryPrefixLifetimeContext* prefix)
+        : transforms(s.owner.data), association{primary.model.storage, cell(s.owner.data, 0x00d7a260)},
+          construction{primary, internal, association, s.geometry, transforms,
+              *static_cast<const volatile float*>(s.owner.data.data_at(0x00d7a24c, 4)),
+              *static_cast<const volatile float*>(s.owner.data.data_at(0x00d7a208, 4)),
+              *static_cast<const volatile float*>(s.owner.data.data_at(0x00e12fc4, 4)),
+              *static_cast<const volatile double*>(s.owner.data.data_at(0x00d7a280, 8))},
+          frame(construction, arguments, position, transform_scratch, bounds_scratch),
+          lifetime{prefix, construction, frame, acquired, progress,
+              arguments, position, transform_scratch, bounds_scratch} {
+        // prefix is a forward ADDRESS only. All native operands/scratch have
+        // real initialized private backing; no native flag or payload is set.
+    }
+    ~Geometry() noexcept {
+        if (retain() || (progress.returned &&
+            (!lifetime.prefix || !native_gui_text_prefix_geometry_meshes_settled(*lifetime.prefix))))
+            std::terminate();
+    }
+    bool unused() const noexcept {
+        using P = NativeGuiTextMainGeometryStoragePhase;
+        return frame.matches_backing(construction, arguments, position, transform_scratch, bounds_scratch) &&
+            frame.phase() == P::fresh && acquired.phase == P::fresh && !acquired.failure &&
+            !progress.entered && !progress.returned && !progress.failed && !acquired.destination &&
+            !acquired.primary_captured && !acquired.mesh_entered && !acquired.mesh.started &&
+            !acquired.association_entered && !acquired.creator_release_entered && !acquired.position_entered;
+    }
+    bool retain() const noexcept {
+        using P = NativeGuiTextMainGeometryStoragePhase;
+        if (!frame.matches_backing(construction, arguments, position, transform_scratch, bounds_scratch) ||
+            progress.failed || acquired.failure || frame.phase() == P::entered || frame.phase() == P::failed ||
+            acquired.phase == P::entered || acquired.phase == P::failed) return true;
+        if (!progress.entered) return !unused();
+        return !progress.returned || !frame.matches(construction, acquired, P::complete) || acquired.phase != P::complete;
+    }
+    void construct_geometry(NativeGuiTextRawModelReference& reference) {
+        require(unused(), "private geometry requires its exact unused installed operation graph");
+        progress.entered = true; // BEFORE379 preflight, even if its own acquisition stays fresh on failure.
+        try {
+            require(_query_new_handler() == nullptr && std::get_new_handler() == nullptr,
+                "private geometry requires both real allocation handlers absent at its actual entry");
+            construct_native_gui_text_main_geometry_storage_00ab7700(reference, construction, frame, acquired);
+            progress.returned = true; // NORMAL body return FIRST, before Source metadata validation.
+            require_native_gui_text_prefix_geometry_reservation(*lifetime.prefix);
+        } catch (...) { progress.failed = true; throw; }
+    }
+};
+
 struct GameNativeRawDefaultTextOwner::Impl::PrimaryPrefix {
     Services& services;
     NativeGuiTextRawModelRecord primary; // destroyed LAST, after metadata providers
@@ -223,6 +289,7 @@ struct GameNativeRawDefaultTextOwner::Impl::PrimaryPrefix {
     NativeGuiWidgetRawModelLifetimeAcquired slots_acquired;
     NativeGuiWidgetRawModelSlots slots;
     NativeGuiWidgetRawModelLifetimeContext widget_context;
+    std::unique_ptr<Geometry> geometry;
     const NativeGuiTextPrimaryPrefixLifetimeContext context;
 
     PrimaryPrefix(Attempt& a, Services& s, std::size_t count)
@@ -255,18 +322,23 @@ struct GameNativeRawDefaultTextOwner::Impl::PrimaryPrefix {
           internal_route{a.tree_record, a.tree_dispatch, a.tree_acquired, a.node_dispatch, a.node_acquired},
           slots(slots_acquired), widget_context{a.widget_record, *a.widgets, a.widgets->context(),
               primary_route, internal_route, slots},
+          geometry(s.mode == Mode::primary_prefix_geometry ?
+              std::make_unique<Geometry>(s, record, a.tree_record, &context) : nullptr),
           context{a.widget_record, *a.widgets, a.widget_acquired, producer_context, producer_frame, producer,
               name, widget_context, a.node_record, slots_acquired,
-              {calls.get(), count}, {a.node_calls.get(), a.node_call_capacity}} {
+              {calls.get(), count}, {a.node_calls.get(), a.node_call_capacity},
+              geometry ? NativeGuiTextPrimaryPrefixOperation(geometry->lifetime) : NativeGuiTextPrimaryPrefixOperation{}} {
         // Forward references above take addresses ONLY. In particular the
         // Attempt's factory/history objects are not inspected until bind().
     }
     void bind() {
         producer_frame.prepare_before_text_allocation();
         slots.bind(widget_context); // BOTH exact Model providers now bound; Context already installed
+        if (geometry) require_native_gui_text_prefix_geometry_reservation(context);
     }
     ~PrimaryPrefix() {
         if (!unused() && !settled()) std::terminate();
+        geometry.reset(); // while immutable Context and BOTH Model records/providers remain alive
         primary.reference.reset(); // already retired, while every provider/context is still alive
     }
     void construct() {
@@ -297,11 +369,13 @@ struct GameNativeRawDefaultTextOwner::Impl::PrimaryPrefix {
             !name.return_entered && !name.returned && !name.return_failed &&
             !slots_acquired.active && !slots_acquired.poisoned && slots_acquired.scene == S::fresh &&
             slots_acquired.base == S::fresh && slots_acquired.glyph == S::fresh &&
-            !tree_acquired.poisoned && !node_acquired.poisoned && !node_acquired.used;
+            !tree_acquired.poisoned && !node_acquired.poisoned && !node_acquired.used &&
+            (!geometry || geometry->unused());
     }
     bool retain() const noexcept {
         using P = NativeGuiTextPrimaryModelStoragePhase;
         using S = NativeGuiWidgetRawModelLifetimeAcquired::Phase;
+        if (geometry && geometry->retain()) return true;
         if ((producer.phase == P::fresh && !producer_frame.matches(producer_context, producer, P::fresh)) ||
             (producer.phase == P::prepared && !producer_frame.matches(producer_context, producer, P::prepared)) ||
             (producer.phase == P::complete && !producer_frame.matches(producer_context, producer, P::complete))) return true;
@@ -339,7 +413,8 @@ struct GameNativeRawDefaultTextOwner::Impl::PrimaryPrefix {
             tree_acquired.current04_entered && tree_acquired.current04_returned &&
             slots_acquired.bound && slots_acquired.scene == S::complete && slots_acquired.base == S::complete &&
             slots_acquired.scene4c.entered && slots_acquired.scene4c.returned && slots_acquired.scene4c.unlink.complete &&
-            (!slots_acquired.late4c.entered || (slots_acquired.late4c.returned && slots_acquired.late4c.unlink.complete));
+            (!slots_acquired.late4c.entered || (slots_acquired.late4c.returned && slots_acquired.late4c.unlink.complete)) &&
+            (!geometry || native_gui_text_prefix_geometry_meshes_settled(context));
     }
 };
 
@@ -378,7 +453,7 @@ GameNativeRawDefaultTextOwner::Impl::Attempt::Attempt(Services& s, std::size_t c
       default_context{sections, widgets->context(), s.text_state, cell(s.owner.data, 0x00d5c5c0),
           cell(s.owner.data, 0x00ce3e18), cell(s.owner.data, 0x00d7a24c), cell(s.owner.data, 0x00ce3800)},
       default_frame{section_frame},
-      primary_prefix(s.mode == Mode::primary_prefix ? std::make_unique<PrimaryPrefix>(*this, s, capacity) : nullptr),
+      primary_prefix(s.mode != Mode::default_lifecycle ? std::make_unique<PrimaryPrefix>(*this, s, capacity) : nullptr),
       retirement{sections, construction.sections.model, widgets->context(), glyphs, s.process.pool_00f8bdf0(),
           primary_prefix ? &primary_prefix->context : nullptr},
       reference_context{s.owner.renderer.actual_owners(), s.owner.data, default_context, default_frame, construction, retirement},
@@ -463,7 +538,9 @@ bool GameNativeRawDefaultTextOwner::Impl::retain() const noexcept {
 }
 void GameNativeRawDefaultTextOwner::Impl::observe(const char* event) noexcept {
     const bool prefix = services && services->mode == Mode::primary_prefix;
-    try { log.notef(prefix ? "raw PRIMARY PREFIX Text owner: %s phase=%u custody_settled=%d" :
+    const bool geometry = services && services->mode == Mode::primary_prefix_geometry;
+    try { log.notef(geometry ? "raw PRIMARY PREFIX GEOMETRY Text owner: %s phase=%u custody_settled=%d" :
+            prefix ? "raw PRIMARY PREFIX Text owner: %s phase=%u custody_settled=%d" :
             "raw DEFAULT Text owner: %s phase=%u custody_settled=%d",
         event, static_cast<unsigned>(phase), custody_settled() ? 1 : 0); }
     catch (...) {} // diagnostics never change native ownership/disposition
@@ -497,6 +574,19 @@ void GameNativeRawDefaultTextOwner::prepare_primary_prefix_metadata_in_ready_ren
     p.phase = Impl::Phase::preparing;
     try {
         p.services = std::make_unique<Impl::Services>(p, Impl::Mode::primary_prefix);
+        p.services->prepare(capacity);
+        p.phase = Impl::Phase::prepared;
+        p.observe("metadata_prepared");
+    } catch (...) { p.fail(); throw; }
+}
+void GameNativeRawDefaultTextOwner::prepare_primary_prefix_geometry_metadata_in_ready_renderer(std::size_t capacity) {
+    auto& p = *impl_;
+    require(p.phase == Impl::Phase::fresh && capacity &&
+        static_cast<std::uint64_t>(capacity) * sizeof(NativeModelStorageNodeCall) <= 0xffffffffu,
+        "raw prefix-geometry metadata requires a fresh owner and explicit prepared call budget");
+    p.phase = Impl::Phase::preparing;
+    try {
+        p.services = std::make_unique<Impl::Services>(p, Impl::Mode::primary_prefix_geometry);
         p.services->prepare(capacity);
         p.phase = Impl::Phase::prepared;
         p.observe("metadata_prepared");
@@ -552,6 +642,35 @@ bool GameNativeRawDefaultTextOwner::construct_primary_prefix_in_open_shader_cach
         a.primary_prefix->construct(); // genuine name -> db55 receipt -> genuine name return; no74
         p.phase = Impl::Phase::bound;
         p.observe("constructed_and_published_private_prefix");
+        return true;
+    } catch (...) { p.fail(); throw; }
+}
+bool GameNativeRawDefaultTextOwner::construct_primary_prefix_geometry_in_open_shader_cache() {
+    auto& p = *impl_;
+    require(p.phase == Impl::Phase::prepared && p.services && p.services->attempt &&
+        p.services->mode == Impl::Mode::primary_prefix_geometry && p.services->attempt->primary_prefix &&
+        p.services->attempt->primary_prefix->geometry,
+        "raw prefix-geometry construction requires its once-prepared complete operation graph");
+    auto& s = *p.services;
+    auto& a = *s.attempt;
+    p.phase = Impl::Phase::creating;
+    try {
+        require(s.shader_cache.actual_cache_0108d6ec && !s.samplers->requires_process_retention() &&
+            !s.effects->requires_process_retention(), "raw prefix geometry needs the real caller-owned open cache");
+        NativeLuaServiceBindings::Activation activation(s.lua);
+        void* const result = make_native_gui_text_default_factory_storage_00aa1380(a.factory_context, a.factory);
+        if (!result) { p.phase = Impl::Phase::empty; p.observe("native_empty"); return false; }
+        a.publication.bind_entered = true;
+        try {
+            auto& reference = bind_native_gui_text_raw_model_reference(a.companion, result, a.reference_context,
+                a.reference_frame, a.factory_context.disposal);
+            a.publication.reference = &reference;
+            a.publication.bind_complete = true;
+        } catch (...) { a.publication.bind_failed = true; throw; }
+        a.primary_prefix->construct(); // unchanged real name -> db55 receipt -> real name return
+        a.primary_prefix->geometry->construct_geometry(*a.publication.reference); // ONE explicit379 body
+        p.phase = Impl::Phase::bound;
+        p.observe("constructed_and_published_private_prefix_geometry");
         return true;
     } catch (...) { p.fail(); throw; }
 }
