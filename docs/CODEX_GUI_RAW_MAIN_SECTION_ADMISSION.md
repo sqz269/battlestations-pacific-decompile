@@ -15,8 +15,10 @@ Implementation must reserve the whole graph before raw122/pools, admit exact
 untouched metadata before379 and before MainSection, and require the real83f
 private created-normal witness plus a canonical sole Section/Material graph for
 scalar permission. A pending, failed or skipped graph cannot fall back to an
-earlier operation. The faithful first ABA8D0 sequence creates the main section
-before Font/content; Font108/1EC remain empty in this first domain.
+earlier operation. This private first domain creates the AB8530 Main fragment
+with Font108/1EC empty. Actual ABB630 Font selection precedes the outer ABA8D0
+Main ensure; this domain does not qualify that whole caller. See the runtime
+evidence and caller correction in CODEX_GUI_RAW_MAIN_SECTION_RUNTIME.md.
 
 Root owns the shared geometry/reference/retirement/prefix/Widget changes. The two
 late empty-Font fallbacks must use exact bit6-return metadata for the compound

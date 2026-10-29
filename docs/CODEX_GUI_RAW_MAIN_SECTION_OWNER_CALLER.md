@@ -118,3 +118,14 @@ The full owner/helper/shared-guard/private-FALSE-host Win32 build passes both
 existing checks13.04s. All six private raw qualification switches stay FALSE.
 Local Root receipts are in `local/cc16_main_section_integration_20261029/`.
 No MainSection runtime, production, rendering or Original ABI credit is added.
+
+## Subsequent private runtime and caller correction
+
+The separate four-case frozen61/631 protocol now qualifies the FontNULL AB8530
+Main fragment and collective lifetime only; CODEX_GUI_RAW_MAIN_SECTION_RUNTIME.md
+records exact artifacts, raw false comparisons and independent audits. All six
+private switches remain FALSE. Whole ABA8D0 is not qualified: actual ABB630 selects
+Font before its later ABAED0/ABA8D0 submission, and ABA8D0 dereferences existing
+Text108/Font48 after Main ensure. Shader construction belongs after changed-nonempty
+AB8400. A future combined owner must follow that evidenced order rather than
+promoting the earlier Main-first private composition into a native caller claim.

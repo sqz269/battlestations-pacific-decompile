@@ -18,3 +18,10 @@ The change was prompted by prospective MainSection protocol review, before any
 trial. No game, forced cleanup, timeout recovery or runtime qualification is
 claimed by this Source change. It adds no executable argument, game-state change,
 installation/profile write or production native switch.
+
+The subsequent four registered MainSection trials all select NoForceStop and
+complete naturally with parent/launcher exits0, waited0, no timeout or requested-
+stop/retained PIDs. Independent actual process audits show all8 sampled trial PIDs
+gone and all five old processes preserved. This exercises the natural success
+path; no timeout, forced cleanup or recovery was executed. Runtime artifacts and
+exact Source scope are recorded in CODEX_GUI_RAW_MAIN_SECTION_RUNTIME.md.
