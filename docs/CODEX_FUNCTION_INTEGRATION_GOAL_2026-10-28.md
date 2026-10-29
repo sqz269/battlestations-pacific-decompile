@@ -83,3 +83,16 @@ suites passed; the placeholder is replaced by an unwired body record. No native
 ABI or gameplay proof is claimed. The undefined `00C37210` constructor and its
 real vtable identity are being recovered next, with exact boundary evidence
 required before any saved-analysis function definition.
+
+## Ring-family source closure
+
+The owner, preparation, query and two predicate bodies are now reviewed and
+registered in the common Win32 build. Their typed source graph composes the
+same required heap custody and additional exact ambient-control math bodies.
+Both existing suites passed; final-object byte inspection and one focused
+original-machine normal-path comparison passed. See
+`CC16_DYN_RING_FAMILY_INTEGRATION.md`. These five records replace prior
+metadata-only placeholders, while original game/root activation remains open.
+The separately discovered 39-byte radix constructor is defined and saved in
+Ghidra but remains partial pending genuine vtable custody. No new activation,
+vendor-body or duplicate math-address credit is claimed.

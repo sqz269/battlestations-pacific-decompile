@@ -387,5 +387,125 @@
     "original game installation",
     "saves/profile",
     "machine power/process settings"
-  ]
+  ],
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_ring_family_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object": "build/win32/bsp_core.dir/Release/cc16_dyn_ambient_math.obj",
+    "compiled_object_sha256": "597398dde08a0956e6348c2c9e5ae42339363acc48d9b1409c5b404bc8a37ab1",
+    "source_candidate": "2f76638f6d2d0dfaa3caac8bb85ad7fa7b776cb3",
+    "accepted_base": "51e6199dab817a68b022aa1ca9438ad3798bda82",
+    "fixture_tested": true,
+    "fixture_scope": "One fixed concave-five normal-path composition, masked PC24/PC53 RN; synthetic-normal-contract heap. No original CRT/EH/failure/public ABI or game/root proof.",
+    "fixture_report": "reports/cc16_dyn_ring_native_fixture.json",
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T041856Z.json",
+    "exports_refreshed": true,
+    "integration_document": "docs/CC16_DYN_RING_FAMILY_INTEGRATION.md",
+    "post_main_merge": {
+      "accepted_main": "6c158055f1b7f76a3b7cc47f2d91f5d84374ae9b",
+      "integrated_source": "d27df3911 plus focused fixture a64b3a76c",
+      "build_log": "local/cc16_dyn_ring_family_main_build.log",
+      "existing_suites_passed": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "compiled_object_sha256": "597398dde08a0956e6348c2c9e5ae42339363acc48d9b1409c5b404bc8a37ab1",
+      "game_validated": false
+    }
+  },
+  "integration_status": "source_integrated_build_and_focused_fixture_tested_unwired",
+  "integrator_object_verification": {
+    "object": "build\\win32\\bsp_core.dir\\Release\\cc16_dyn_ambient_math.obj",
+    "object_sha256": "597398dde08a0956e6348c2c9e5ae42339363acc48d9b1409c5b404bc8a37ab1",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "x86",
+    "bodies": [
+      {
+        "native_address": "00C377F0",
+        "length": 104,
+        "instructions": 35,
+        "exact_bytes": true,
+        "differing_offsets": [],
+        "relocations": [],
+        "sha256": "a76903724f146a68fc4815a7b131b3cea18247e7aef33fb9a3b1b5f6e5d83450",
+        "symbol": "?ccw_native_body_00c377f0@?A0x4aecd560@cc16_dyn_ambient_math@bsp@@YAXXZ"
+      },
+      {
+        "native_address": "00C37860",
+        "length": 293,
+        "instructions": 111,
+        "exact_bytes": true,
+        "differing_offsets": [],
+        "relocations": [],
+        "sha256": "a1b1f99bfff1b431e96c393b5035896b0c51414ca59c4492c390835f701ac92c",
+        "symbol": "?barycentric_native_body_00c37860@?A0x4aecd560@cc16_dyn_ambient_math@bsp@@YAXXZ"
+      }
+    ],
+    "wrappers": [
+      {
+        "symbol": "?ccw_2d_ambient_00c377f0@cc16_dyn_ambient_math@bsp@@YAIMMMMMM@Z",
+        "instructions": 15,
+        "calls": 1,
+        "call_targets": [
+          "?ccw_native_body_00c377f0@?A0x4aecd560@cc16_dyn_ambient_math@bsp@@YAXXZ"
+        ],
+        "fp_or_sse_instructions": [],
+        "assembly": [
+          "push ebp",
+          "mov ebp, esp",
+          "push ecx",
+          "push dword ptr [ebp + 0x1c]",
+          "push dword ptr [ebp + 0x18]",
+          "push dword ptr [ebp + 0x14]",
+          "push dword ptr [ebp + 0x10]",
+          "push dword ptr [ebp + 0xc]",
+          "push dword ptr [ebp + 8]",
+          "call 0x1b",
+          "mov dword ptr [ebp - 4], eax",
+          "mov eax, dword ptr [ebp - 4]",
+          "mov esp, ebp",
+          "pop ebp",
+          "ret"
+        ]
+      },
+      {
+        "symbol": "?barycentric_2d_ambient_00c37860@cc16_dyn_ambient_math@bsp@@YAXPAM00MMMMMMMM@Z",
+        "instructions": 16,
+        "calls": 1,
+        "call_targets": [
+          "?barycentric_native_body_00c37860@?A0x4aecd560@cc16_dyn_ambient_math@bsp@@YAXXZ"
+        ],
+        "fp_or_sse_instructions": [],
+        "assembly": [
+          "push ebp",
+          "mov ebp, esp",
+          "push dword ptr [ebp + 0x30]",
+          "push dword ptr [ebp + 0x2c]",
+          "push dword ptr [ebp + 0x28]",
+          "push dword ptr [ebp + 0x24]",
+          "push dword ptr [ebp + 0x20]",
+          "push dword ptr [ebp + 0x1c]",
+          "push dword ptr [ebp + 0x18]",
+          "push dword ptr [ebp + 0x14]",
+          "mov eax, dword ptr [ebp + 8]",
+          "mov ecx, dword ptr [ebp + 0xc]",
+          "mov edx, dword ptr [ebp + 0x10]",
+          "call 0x29",
+          "pop ebp",
+          "ret"
+        ]
+      }
+    ],
+    "execution_performed": false
+  }
 }

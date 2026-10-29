@@ -14,8 +14,20 @@
       "return_contract": "whole EAX is 0 or 1; all nonzero final query results normalized",
       "cursor_writes": false,
       "edge_writes": false,
-      "orientation_indices": ["P(n),n,N(n)", "N(n),p,N(p)"],
-      "query": {"eax_walk_start": "N(N(n))", "ebx_triangle2": "N(n)", "stack_args": ["owner", "p", "p", "n"]}
+      "orientation_indices": [
+        "P(n),n,N(n)",
+        "N(n),p,N(p)"
+      ],
+      "query": {
+        "eax_walk_start": "N(N(n))",
+        "ebx_triangle2": "N(n)",
+        "stack_args": [
+          "owner",
+          "p",
+          "p",
+          "n"
+        ]
+      }
     },
     {
       "start": "00c41230",
@@ -28,8 +40,20 @@
       "return_contract": "whole EAX is 0 or 1; all nonzero final query results normalized",
       "cursor_writes": false,
       "edge_writes": false,
-      "orientation_indices": ["P(p),p,N(p)", "P(n),n,P(p)"],
-      "query": {"eax_walk_start": "N(n)", "ebx_triangle2": "n", "stack_args": ["owner", "P(p)", "P(p)", "p"]}
+      "orientation_indices": [
+        "P(p),p,N(p)",
+        "P(n),n,P(p)"
+      ],
+      "query": {
+        "eax_walk_start": "N(n)",
+        "ebx_triangle2": "n",
+        "stack_args": [
+          "owner",
+          "P(p)",
+          "P(p)",
+          "p"
+        ]
+      }
     }
   ],
   "target": {
@@ -41,12 +65,48 @@
     "verified_by": "bsp.py ghidra client target verification before each live batch"
   },
   "rows": [
-    {"address": "00c411c1", "native": "00c377f0", "function": "00c41190", "kind": "call", "source_binding": "direct exact ambient-x87 ccw variant; same six float words"},
-    {"address": "00c411fb", "native": "00c377f0", "function": "00c41190", "kind": "call", "source_binding": "direct exact ambient-x87 ccw variant; same six float words"},
-    {"address": "00c4121b", "native": "00c410e0", "function": "00c41190", "kind": "call", "source_binding": "required typed ring triangle query, whole uint32 return"},
-    {"address": "00c41263", "native": "00c377f0", "function": "00c41230", "kind": "call", "source_binding": "direct exact ambient-x87 ccw variant; same six float words"},
-    {"address": "00c4129d", "native": "00c377f0", "function": "00c41230", "kind": "call", "source_binding": "direct exact ambient-x87 ccw variant; same six float words"},
-    {"address": "00c412be", "native": "00c410e0", "function": "00c41230", "kind": "call", "source_binding": "required typed ring triangle query, whole uint32 return"}
+    {
+      "address": "00c411c1",
+      "native": "00c377f0",
+      "function": "00c41190",
+      "kind": "call",
+      "source_binding": "direct exact ambient-x87 ccw variant; same six float words"
+    },
+    {
+      "address": "00c411fb",
+      "native": "00c377f0",
+      "function": "00c41190",
+      "kind": "call",
+      "source_binding": "direct exact ambient-x87 ccw variant; same six float words"
+    },
+    {
+      "address": "00c4121b",
+      "native": "00c410e0",
+      "function": "00c41190",
+      "kind": "call",
+      "source_binding": "required typed ring triangle query, whole uint32 return"
+    },
+    {
+      "address": "00c41263",
+      "native": "00c377f0",
+      "function": "00c41230",
+      "kind": "call",
+      "source_binding": "direct exact ambient-x87 ccw variant; same six float words"
+    },
+    {
+      "address": "00c4129d",
+      "native": "00c377f0",
+      "function": "00c41230",
+      "kind": "call",
+      "source_binding": "direct exact ambient-x87 ccw variant; same six float words"
+    },
+    {
+      "address": "00c412be",
+      "native": "00c410e0",
+      "function": "00c41230",
+      "kind": "call",
+      "source_binding": "required typed ring triangle query, whole uint32 return"
+    }
   ],
   "precision": {
     "predicate_arithmetic_instructions": false,
@@ -68,8 +128,16 @@
   "required_dependency": {
     "start": "00c410e0",
     "body_end_inclusive": "00c41187",
-    "register_inputs": ["EAX walk start", "EBX triangle2"],
-    "stack_inputs": ["owner", "stop", "triangle0", "triangle1"],
+    "register_inputs": [
+      "EAX walk start",
+      "EBX triangle2"
+    ],
+    "stack_inputs": [
+      "owner",
+      "stop",
+      "triangle0",
+      "triangle1"
+    ],
     "return_instruction": "RET 10h",
     "typed_contract": "triangle_ring_clear_00c410e0(owner, query)",
     "body_supplied_by_predicate_packet": false,
@@ -77,10 +145,59 @@
   },
   "separate_parent_dependency": "00c4d370; separate candidate dependency composed by bindings, not implemented in predicates",
   "incoming_evidence": [
-    {"callee": "00c41190", "site": "00c4d737", "caller": "00c4d5a0"},
-    {"callee": "00c41230", "site": "00c4d63b", "caller": "00c4d5a0"}
+    {
+      "callee": "00c41190",
+      "site": "00c4d737",
+      "caller": "00c4d5a0"
+    },
+    {
+      "callee": "00c41230",
+      "site": "00c4d63b",
+      "caller": "00c4d5a0"
+    }
   ],
   "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_ring_family_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object": "build/win32/bsp_core.dir/Release/cc16_dyn_ring_predicates.obj",
+    "compiled_object_sha256": "1f821cc1ed0de1bb68819663de0283a64b9fe487d85901d95ccecf4a8af90229",
+    "source_candidate": "2f76638f6d2d0dfaa3caac8bb85ad7fa7b776cb3",
+    "accepted_base": "51e6199dab817a68b022aa1ca9438ad3798bda82",
+    "fixture_tested": true,
+    "fixture_scope": "One fixed concave-five normal-path composition, masked PC24/PC53 RN; synthetic-normal-contract heap. No original CRT/EH/failure/public ABI or game/root proof.",
+    "fixture_report": "reports/cc16_dyn_ring_native_fixture.json",
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T041856Z.json",
+    "exports_refreshed": true,
+    "integration_document": "docs/CC16_DYN_RING_FAMILY_INTEGRATION.md",
+    "post_main_merge": {
+      "accepted_main": "6c158055f1b7f76a3b7cc47f2d91f5d84374ae9b",
+      "integrated_source": "d27df3911 plus focused fixture a64b3a76c",
+      "build_log": "local/cc16_dyn_ring_family_main_build.log",
+      "existing_suites_passed": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "compiled_object_sha256": "1f821cc1ed0de1bb68819663de0283a64b9fe487d85901d95ccecf4a8af90229",
+      "game_validated": false
+    }
+  },
+  "remaining_integrator_work": [
+    "post-integration call-report checks",
+    "parent provider binding and required dependency recovery",
+    "common Win32 build registration and checks",
+    "centralized metadata and locked Ghidra annotation",
+    "runtime reference or complete dead-chain closure"
+  ],
+  "worker_validation": {
     "assembly_review": "both full bodies; full live byte spans; downstream argument ABI inspected",
     "source_compile_tested": "ambient binding revision: MSVC x86 object-only compile, C++17 /permissive- /EHsc /fp:strict /O2 /W4 /WX; exit 0",
     "object_argument_proof": "raw MOVSS float-word copies to ambient CCW, no conversion/arithmetic inserted",
@@ -93,11 +210,5 @@
     "ghidra_mutated": false,
     "tests_added": false
   },
-  "remaining_integrator_work": [
-    "post-integration call-report checks",
-    "parent provider binding and required dependency recovery",
-    "common Win32 build registration and checks",
-    "centralized metadata and locked Ghidra annotation",
-    "runtime reference or complete dead-chain closure"
-  ]
+  "integration_status": "source_integrated_build_and_focused_fixture_tested_unwired"
 }

@@ -38,7 +38,12 @@
     "stack_arguments": [],
     "ret_pop_bytes": 0,
     "last_instruction": "00c4d594 RET",
-    "preserved": ["EBX", "EBP", "EDI", "ESI"],
+    "preserved": [
+      "EBX",
+      "EBP",
+      "EDI",
+      "ESI"
+    ],
     "eax": "ignored by parent; source returns void",
     "cpp_transport": "explicit owner/CRT/query provider; no native ABI or exception-transport adapter"
   },
@@ -55,20 +60,34 @@
   },
   "search_contract": {
     "orientation": "original ambient x87 instruction sequence; positive ordered determinant required",
-    "float_spills": ["anchor_dx", "anchor_dy", "next_dx", "next_dy"],
+    "float_spills": [
+      "anchor_dx",
+      "anchor_dy",
+      "next_dx",
+      "next_dy"
+    ],
     "determinant": "FMUL/FMUL/FSUBP stays in x87 through FCOMIP against zero",
     "native_reject_condition": "JBE after FCOMIP/FSTP; source SETA captures complement",
     "controls": "actual ambient x87/MXCSR, no control changes or fixed precision substitute",
     "query_eax": "cached_next[cached_next[captured_anchor]]",
     "query_ebx": "cached_next[captured_anchor]",
-    "query_stack": ["owner", "captured_previous", "captured_previous", "captured_anchor"],
+    "query_stack": [
+      "owner",
+      "captured_previous",
+      "captured_previous",
+      "captured_anchor"
+    ],
     "query_result": "whole uint32 tested for zero",
     "rejection": "owner+04 becomes cached_next[captured_anchor]; no added loop bound"
   },
   "publication_contract": {
     "first": "owner+34 = fresh_previous_data[captured successful anchor]",
     "second": "owner+30 = cached_next_data[captured successful anchor]",
-    "scratch_append_value_offsets": [52, 4, 48],
+    "scratch_append_value_offsets": [
+      52,
+      4,
+      48
+    ],
     "value_reload": "after each growth/free and only if append destination is nonzero",
     "growth": "equality only; uint32 capacity*2+2; byte size*4; capacity before allocation",
     "copy": "reload count/data per iteration; per-destination null test and uint32 cursor wrap",
@@ -77,16 +96,56 @@
     "exceptions": "no catch/rollback/cleanup; already-published mutations remain"
   },
   "calls": [
-    {"function":"00c4d370","address":"00c4d421","native":"00c410e0","role":"required actual query provider"},
-    {"function":"00c4d370","address":"00c4d467","native":"00bf55be","role":"first scratch growth"},
-    {"function":"00c4d370","address":"00c4d49e","native":"00bf6989","role":"first old scratch free"},
-    {"function":"00c4d370","address":"00c4d4d2","native":"00bf55be","role":"second scratch growth"},
-    {"function":"00c4d370","address":"00c4d503","native":"00bf6989","role":"second old scratch free"},
-    {"function":"00c4d370","address":"00c4d537","native":"00bf55be","role":"third scratch growth"},
-    {"function":"00c4d370","address":"00c4d56e","native":"00bf6989","role":"third old scratch free"}
+    {
+      "function": "00c4d370",
+      "address": "00c4d421",
+      "native": "00c410e0",
+      "role": "required actual query provider"
+    },
+    {
+      "function": "00c4d370",
+      "address": "00c4d467",
+      "native": "00bf55be",
+      "role": "first scratch growth"
+    },
+    {
+      "function": "00c4d370",
+      "address": "00c4d49e",
+      "native": "00bf6989",
+      "role": "first old scratch free"
+    },
+    {
+      "function": "00c4d370",
+      "address": "00c4d4d2",
+      "native": "00bf55be",
+      "role": "second scratch growth"
+    },
+    {
+      "function": "00c4d370",
+      "address": "00c4d503",
+      "native": "00bf6989",
+      "role": "second old scratch free"
+    },
+    {
+      "function": "00c4d370",
+      "address": "00c4d537",
+      "native": "00bf55be",
+      "role": "third scratch growth"
+    },
+    {
+      "function": "00c4d370",
+      "address": "00c4d56e",
+      "native": "00bf6989",
+      "role": "third old scratch free"
+    }
   ],
   "caller_evidence": [
-    {"function":"00c4d5a0","address":"00c4d622","native":"00c4d370","role":"ring owner preparation dependency"}
+    {
+      "function": "00c4d5a0",
+      "address": "00c4d622",
+      "native": "00c4d370",
+      "role": "ring owner preparation dependency"
+    }
   ],
   "providers": {
     "crt": "existing cc15_dyn_live::DynLiveCrt, actual shared custody, only BF55BE and BF6989 used",
@@ -113,6 +172,47 @@
     "local/cc16_dyn_ring_prepare_object.txt"
   ],
   "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_ring_family_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object": "build/win32/bsp_core.dir/Release/cc16_dyn_ring_prepare.obj",
+    "compiled_object_sha256": "1c8b2ac5bdee4fb1ea805c961ada40d746c14a810dfc27e96beefdb532e86bc4",
+    "source_candidate": "2f76638f6d2d0dfaa3caac8bb85ad7fa7b776cb3",
+    "accepted_base": "51e6199dab817a68b022aa1ca9438ad3798bda82",
+    "fixture_tested": true,
+    "fixture_scope": "One fixed concave-five normal-path composition, masked PC24/PC53 RN; synthetic-normal-contract heap. No original CRT/EH/failure/public ABI or game/root proof.",
+    "fixture_report": "reports/cc16_dyn_ring_native_fixture.json",
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T041856Z.json",
+    "exports_refreshed": true,
+    "integration_document": "docs/CC16_DYN_RING_FAMILY_INTEGRATION.md",
+    "post_main_merge": {
+      "accepted_main": "6c158055f1b7f76a3b7cc47f2d91f5d84374ae9b",
+      "integrated_source": "d27df3911 plus focused fixture a64b3a76c",
+      "build_log": "local/cc16_dyn_ring_family_main_build.log",
+      "existing_suites_passed": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "compiled_object_sha256": "1c8b2ac5bdee4fb1ea805c961ada40d746c14a810dfc27e96beefdb532e86bc4",
+      "game_validated": false
+    }
+  },
+  "integration_obligations": [
+    "primary registers source, updates shared C40000 ledger and annotations, and runs common build/checks",
+    "accept and explicitly connect the recovered ring owner preparation hook",
+    "supply accepted real C410E0 query and complete ambient barycentric provider; no fixed precision fallback",
+    "close owner's other predicate dependencies",
+    "establish actual incoming runtime path or accept evidenced original dead-chain treatment before activation"
+  ],
+  "worker_validation": {
     "source_and_original_assembly_review": true,
     "strict_win32_object_compile": "passed, zero warnings: /std:c++17 /EHsc /W4 /WX /fp:strict /arch:SSE2 /O2 /c",
     "object_instruction_review": "original ordered x87 sequence/four float spills/unspilled determinant/FCOMIP/FSTP/SETA retained",
@@ -122,11 +222,5 @@
     "game_or_probe_executables": 0,
     "native_abi_fp_differential_or_runtime_validated": false
   },
-  "integration_obligations": [
-    "primary registers source, updates shared C40000 ledger and annotations, and runs common build/checks",
-    "accept and explicitly connect the recovered ring owner preparation hook",
-    "supply accepted real C410E0 query and complete ambient barycentric provider; no fixed precision fallback",
-    "close owner's other predicate dependencies",
-    "establish actual incoming runtime path or accept evidenced original dead-chain treatment before activation"
-  ]
+  "integration_status": "source_integrated_build_and_focused_fixture_tested_unwired"
 }
