@@ -69,7 +69,7 @@ constexpr bool kRawPrimaryPrefixQualificationCc16Bound = false;
 constexpr bool kRawPrefixGeometryQualificationCc16Bound = false;
 // Genuine Font producer/owner metadata only, over the same empty geometry
 // fixture. FontShader remains FRESH; this does not assign Text108 or call it.
-constexpr bool kRawFontMetadataQualificationCc16Bound = false;
+constexpr bool kRawFontMetadataQualificationCc16Bound = true;
 static_assert(static_cast<unsigned>(kRawDefaultTextQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrimaryPrefixQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrefixGeometryQualificationCc16Bound) +
