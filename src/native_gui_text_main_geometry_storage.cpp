@@ -162,6 +162,12 @@ bool NativeGuiTextMainGeometryStorageFrame::matches(const Context& c, const Acqu
     Phase expected) const noexcept {
     return &context_ == &c && acquired_ == &a && phase_ == expected;
 }
+bool NativeGuiTextMainGeometryStorageFrame::matches_backing(const Context& c,
+    const volatile Word (&arguments)[4], const volatile Word (&position)[3],
+    const NativeGuiWidgetTransformScratch& scratch, const GuiWidgetBounds& bounds) const noexcept {
+    return &context_ == &c && &arguments_[0] == &arguments[0] && &position_[0] == &position[0] &&
+        &transform_scratch_ == &scratch && &bounds_scratch_ == &bounds;
+}
 void NativeGuiTextMainGeometryStorageFrame::preflight(NativeGuiTextRawModelReference& reference,
     Acquired& a) {
     require(phase_ == Phase::fresh && !acquired_ && association_.phase() == NativeModelStorageGeometryPhase::fresh &&

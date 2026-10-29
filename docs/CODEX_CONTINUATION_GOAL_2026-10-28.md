@@ -624,3 +624,11 @@ pre-raw122 storage, owner custody and metadata-only settlement after self-erasin
 mesh/section/material terminals. Keep operation choice closed: failed later
 work never falls back to an earlier graph. Explicit379 is AB7700 itself, not an
 AAA710 continuation; its real late bounds-zero obligation remains a fixture gate.
+
+Geometry integration preparation adds a pure `matches_backing` view over the
+379 Frame's exact context, argument/position arrays and transform/bounds scratch.
+It is usable before acquisition binds, grants no scalar authority and preserves
+existing COMPLETE affinity. Root plus independent source review and Win32/checks
+2/2 (11.85s) pass. The geometry fixture preregisters two same-binary GUI_TEXT0/1
+cases plus historical prefix comparison; it remains blocked on complete reviewed
+source and the genuine late-bounds-zero audit, with all private routes OFF.

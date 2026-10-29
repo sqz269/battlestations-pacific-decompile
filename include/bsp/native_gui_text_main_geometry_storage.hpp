@@ -85,6 +85,12 @@ public:
     bool matches(const NativeGuiTextMainGeometryStorageContext&,
         const NativeGuiTextMainGeometryStorageAcquired&,
         NativeGuiTextMainGeometryStoragePhase) const noexcept;
+    // Pure constructor-backing identity, including before acquisition binds.
+    // It grants no completion, native liveness, ownership or dispatch permission.
+    bool matches_backing(const NativeGuiTextMainGeometryStorageContext&,
+        const volatile std::uint32_t (&arguments)[4],
+        const volatile std::uint32_t (&position)[3],
+        const NativeGuiWidgetTransformScratch&, const GuiWidgetBounds&) const noexcept;
 private:
     friend void construct_native_gui_text_main_geometry_storage_00ab7700(
         NativeGuiTextRawModelReference&, NativeGuiTextMainGeometryStorageContext&,
