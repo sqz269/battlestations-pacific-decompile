@@ -67,6 +67,9 @@ constexpr bool kRawDefaultTextQualificationCc16Bound = false;
 constexpr bool kRawPrimaryPrefixQualificationCc16Bound = false;
 // Explicit AB7700 body fixture after the genuine prefix, with ctor bounds0.
 constexpr bool kRawPrefixGeometryQualificationCc16Bound = false;
+// Real main Section before Font/content, using the SAME retained geometry graph.
+// Separate private qualification only; runtime proof and activation are pending.
+constexpr bool kRawMainSectionQualificationCc16Bound = false;
 // Genuine Font producer/owner metadata only, over the same empty geometry
 // fixture. FontShader remains FRESH; this does not assign Text108 or call it.
 constexpr bool kRawFontMetadataQualificationCc16Bound = false;
@@ -76,6 +79,7 @@ constexpr auto kRawFontWorkChoiceCc16Bound = GameNativeRawDefaultTextOwner::Font
 static_assert(static_cast<unsigned>(kRawDefaultTextQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrimaryPrefixQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrefixGeometryQualificationCc16Bound) +
+    static_cast<unsigned>(kRawMainSectionQualificationCc16Bound) +
     static_cast<unsigned>(kRawFontMetadataQualificationCc16Bound) +
     static_cast<unsigned>(kRawFontWorkQualificationCc16Bound) <= 1u);
 using Word = std::uint32_t;
@@ -767,6 +771,7 @@ void GameStartupHost::initialize_native_gui_render() {
         "BSP_NATIVE_GUI_TEXT=1 requires BSP_NATIVE_MISSION_SHIP=1 and BSP_NATIVE_MISSION_FRAME=1");
     if constexpr (kRawDefaultTextQualificationCc16Bound ||
         kRawPrimaryPrefixQualificationCc16Bound || kRawPrefixGeometryQualificationCc16Bound ||
+        kRawMainSectionQualificationCc16Bound ||
         kRawFontMetadataQualificationCc16Bound || kRawFontWorkQualificationCc16Bound) {
         require(!GameNativeGuiRenderApplication::nodes_requested(),
             "raw Text qualification requires the GUI node overlay disabled");
@@ -786,7 +791,9 @@ void GameStartupHost::initialize_native_gui_render() {
         }
         // Explicit caller budget for this one retained graph, not an Original
         // constant or a universal nesting bound. Exhaustion retains failure.
-        if constexpr (kRawFontWorkQualificationCc16Bound)
+        if constexpr (kRawMainSectionQualificationCc16Bound)
+            native_raw_default_text_->prepare_primary_prefix_geometry_main_section_metadata_in_ready_renderer(64);
+        else if constexpr (kRawFontWorkQualificationCc16Bound)
             native_raw_default_text_->prepare_primary_prefix_geometry_font_work_in_ready_renderer(64, kRawFontWorkChoiceCc16Bound);
         else if constexpr (kRawPrefixGeometryQualificationCc16Bound || kRawFontMetadataQualificationCc16Bound)
             native_raw_default_text_->prepare_primary_prefix_geometry_metadata_in_ready_renderer(64);
@@ -805,7 +812,7 @@ void GameStartupHost::initialize_native_gui_render() {
 void GameStartupHost::prepare_native_gui_text_resources() {
     if (native_raw_default_text_) {
         if constexpr (kRawPrefixGeometryQualificationCc16Bound || kRawFontMetadataQualificationCc16Bound ||
-            kRawFontWorkQualificationCc16Bound) {
+            kRawFontWorkQualificationCc16Bound || kRawMainSectionQualificationCc16Bound) {
             HMODULE query_module{}, call_module{}, standard_module{}, query_declaration_module{};
             constexpr DWORD module_flags = GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
                 GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT;
@@ -839,7 +846,10 @@ void GameStartupHost::prepare_native_gui_text_resources() {
             require(_query_new_handler() == nullptr && std::get_new_handler() == nullptr,
                 "raw prefix-geometry qualification requires actual null CRT new handlers");
             log_.note("raw prefix geometry qualification: crt_new_handlers=null");
-            if constexpr (kRawFontWorkQualificationCc16Bound)
+            if constexpr (kRawMainSectionQualificationCc16Bound)
+                require(native_raw_default_text_->construct_primary_prefix_geometry_main_section_in_open_shader_cache(),
+                    "raw MainSection qualification requires a nonnull native factory result");
+            else if constexpr (kRawFontWorkQualificationCc16Bound)
                 require(native_raw_default_text_->construct_primary_prefix_geometry_font_work_in_open_shader_cache(),
                     "raw Font-work qualification requires a nonnull native factory result");
             else
