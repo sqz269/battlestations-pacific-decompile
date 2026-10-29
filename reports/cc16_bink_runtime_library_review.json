@@ -1,0 +1,499 @@
+{
+  "packet": "codex-bink-runtime-library-review",
+  "owner": "agent/codex-bink-runtime-library-review",
+  "review_base": "61c13da1218bb93a3f952d4aa0fc831c86af3f33",
+  "candidate_commit": "68ab882bbe7709822936c15b21f6e9804076ffb2",
+  "status": "no_static_source_admission_blocker_callback_declarations_qualified_runtime_ABI_identity_and_aggregate_composition_pending",
+  "documentation": "docs/CC16_BINK_RUNTIME_LIBRARY_REVIEW.md",
+  "blocking_findings_for_static_source_admission": [],
+  "source_pins": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library/include/bsp/bink_runtime_library.hpp",
+      "bytes": 2171,
+      "sha256": "510edc8d0f710009872357e976d6fb62bfb9dca50430eb8100155d9713e66007"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library/src/bink_runtime_library.cpp",
+      "bytes": 4198,
+      "sha256": "0e3b46555ea02931a6dc298a1966fa6fcc82739588db438b107a73dd5a94cb94"
+    }
+  ],
+  "existing_interfaces": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/include/bsp/movie_decoder.hpp",
+      "bytes": 7025,
+      "sha256": "9151e8eacc41a208769eab8347539c5b15201a330f329b593585cfe620b3dbd7",
+      "unchanged_from_candidate_receipt": true
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/include/bsp/movie_factory_followup.hpp",
+      "bytes": 1804,
+      "sha256": "4b208a04568c712cf41d4b7d1ef490975bc4813fe8397322d114ac477a55e60f",
+      "unchanged_from_candidate_receipt": true
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/src/movie_factory_followup.cpp",
+      "bytes": 1250,
+      "sha256": "00a8b4866bfa3ba88f537a53d94191cef0efbd56f54f1a41aa1d3fe177f2f8c6",
+      "unchanged_from_candidate_receipt": true
+    }
+  ],
+  "installed_metadata": {
+    "dll": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/binkw32.dll",
+      "bytes": 178440,
+      "sha256": "7f22055e8f62e228eb90f09846f9b668e0a0b1d29057af6e3b7bff1e08c0d724"
+    },
+    "executable": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "machine": "014c",
+    "optional_magic": "010b",
+    "coff_timestamp": "496e3fa5",
+    "required_exports": [
+      {
+        "name": "_BinkOpen@8",
+        "ordinal": 44,
+        "rva": "0000D690",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkClose@4",
+        "ordinal": 16,
+        "rva": "0000F850",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkSetSoundTrack@8",
+        "ordinal": 65,
+        "rva": "0000D320",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkSetVolume@12",
+        "ordinal": 67,
+        "rva": "000101E0",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkDoFrame@4",
+        "ordinal": 25,
+        "rva": "0000F340",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkCopyToBuffer@28",
+        "ordinal": 20,
+        "rva": "0000E750",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkNextFrame@4",
+        "ordinal": 43,
+        "rva": "0000F3C0",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkWait@4",
+        "ordinal": 70,
+        "rva": "0000FAC0",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkGetRealtime@12",
+        "ordinal": 33,
+        "rva": "0000FF30",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkGoto@12",
+        "ordinal": 40,
+        "rva": "0000F660",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkPause@8",
+        "ordinal": 49,
+        "rva": "0000FC40",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkSetSoundSystem@8",
+        "ordinal": 64,
+        "rva": "0000CEA0",
+        "forwarder_text": ""
+      },
+      {
+        "name": "_BinkOpenDirectSound@4",
+        "ordinal": 45,
+        "rva": "00011FC0",
+        "forwarder_text": ""
+      }
+    ],
+    "all13_original_imports_present": true,
+    "public_header_copies": [
+      {
+        "url": "https://raw.githubusercontent.com/ioquake/jedi-outcast/e4d728c502c1c50b01bcdaf1076f56d0fe7b982e/code/win32/bink.h",
+        "revision": "e4d728c502c1c50b01bcdaf1076f56d0fe7b982e",
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/bink.h",
+        "bytes": 23433,
+        "sha256": "0cec162271197a935802d744c3a40d4eb4d57913e00373e7afdf71bcee2d74d5"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/ioquake/jedi-outcast/e4d728c502c1c50b01bcdaf1076f56d0fe7b982e/code/win32/rad.h",
+        "revision": "e4d728c502c1c50b01bcdaf1076f56d0fe7b982e",
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/rad.h",
+        "bytes": 30157,
+        "sha256": "298e860962567d5af2556e6c7f8db42f43ee1ef328cf5deb1efd9a0b1941ad71"
+      }
+    ],
+    "scope": "Static file metadata and unmatched older declaration copies only; no target DLL load or vendor body inspection/execution."
+  },
+  "thirteen_type_and_name_rows": [
+    {
+      "name": "_BinkOpen@8",
+      "ordinal": 44,
+      "rva": "0000D690",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "BinkHandle*",
+      "arguments": "const char*,uint32",
+      "Win32_argument_bytes": 8,
+      "typing_scope": "Existing BinkImports decltype"
+    },
+    {
+      "name": "_BinkClose@4",
+      "ordinal": 16,
+      "rva": "0000F850",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "void",
+      "arguments": "BinkHandle*",
+      "Win32_argument_bytes": 4,
+      "typing_scope": "Existing BinkImports decltype"
+    },
+    {
+      "name": "_BinkSetSoundTrack@8",
+      "ordinal": 65,
+      "rva": "0000D320",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "void",
+      "arguments": "uint32,const uint32*",
+      "Win32_argument_bytes": 8,
+      "typing_scope": "Existing BinkImports decltype"
+    },
+    {
+      "name": "_BinkSetVolume@12",
+      "ordinal": 67,
+      "rva": "000101E0",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "void",
+      "arguments": "BinkHandle*,uint32,int32",
+      "Win32_argument_bytes": 12,
+      "typing_scope": "Existing BinkImports decltype"
+    },
+    {
+      "name": "_BinkDoFrame@4",
+      "ordinal": 25,
+      "rva": "0000F340",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "int32",
+      "arguments": "BinkHandle*",
+      "Win32_argument_bytes": 4,
+      "typing_scope": "Existing BinkImports decltype"
+    },
+    {
+      "name": "_BinkCopyToBuffer@28",
+      "ordinal": 20,
+      "rva": "0000E750",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "int32",
+      "arguments": "BinkHandle*,void*,int32,uint32,uint32,uint32,uint32",
+      "Win32_argument_bytes": 28,
+      "typing_scope": "Existing BinkImports decltype"
+    },
+    {
+      "name": "_BinkNextFrame@4",
+      "ordinal": 43,
+      "rva": "0000F3C0",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "void",
+      "arguments": "BinkHandle*",
+      "Win32_argument_bytes": 4,
+      "typing_scope": "Existing BinkImports decltype"
+    },
+    {
+      "name": "_BinkWait@4",
+      "ordinal": 70,
+      "rva": "0000FAC0",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "int32",
+      "arguments": "BinkHandle*",
+      "Win32_argument_bytes": 4,
+      "typing_scope": "Existing BinkImports decltype"
+    },
+    {
+      "name": "_BinkGetRealtime@12",
+      "ordinal": 33,
+      "rva": "0000FF30",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "void",
+      "arguments": "BinkHandle*,BinkRealtime*,uint32",
+      "Win32_argument_bytes": 12,
+      "typing_scope": "Existing BinkImports decltype"
+    },
+    {
+      "name": "_BinkGoto@12",
+      "ordinal": 40,
+      "rva": "0000F660",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "void",
+      "arguments": "BinkHandle*,uint32,uint32",
+      "Win32_argument_bytes": 12,
+      "typing_scope": "Existing BinkImports decltype"
+    },
+    {
+      "name": "_BinkPause@8",
+      "ordinal": 49,
+      "rva": "0000FC40",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "int32",
+      "arguments": "BinkHandle*,int32",
+      "Win32_argument_bytes": 8,
+      "typing_scope": "Existing BinkImports decltype"
+    },
+    {
+      "name": "_BinkSetSoundSystem@8",
+      "ordinal": 64,
+      "rva": "0000CEA0",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "int32",
+      "arguments": "BinkSoundSystemOpen,uint32",
+      "Win32_argument_bytes": 8,
+      "typing_scope": "New sound declaration corroborated by unmatched old header"
+    },
+    {
+      "name": "_BinkOpenDirectSound@4",
+      "ordinal": 45,
+      "rva": "00011FC0",
+      "forwarder_text": "",
+      "calling_convention": "__stdcall",
+      "result": "BinkSoundOpen function pointer",
+      "arguments": "uint32",
+      "Win32_argument_bytes": 4,
+      "typing_scope": "New sound declaration corroborated by unmatched old header"
+    }
+  ],
+  "sound_callback_type": {
+    "BinkSoundOpen": "int32 (__stdcall*)(opaque BinkSoundState*,uint32 frequency,int32 bits,int32 channels,uint32 flags,BinkHandle*)",
+    "BinkSoundSystemOpen": "BinkSoundOpen (__stdcall*)(uint32 argument)",
+    "open_direct_sound_member": "BinkSoundSystemOpen; returns a function pointer, not int32 or a sound-state pointer",
+    "opaque_state_allocated_or_projected": false,
+    "source_shape_correct": true,
+    "installed_runtime_ABI_proven": false
+  },
+  "declaration_evidence": {
+    "kind": "Older vendor header copies in a game-source repository, not a matched installed SDK or direct vendor certification",
+    "revision": "e4d728c502c1c50b01bcdaf1076f56d0fe7b982e",
+    "version": "1.0p",
+    "header_date": "2000-06-26",
+    "bink_declaration_lines": [
+      46,
+      56,
+      425,
+      429
+    ],
+    "rad_win32_linkage_lines": [
+      84,
+      85,
+      86,
+      87,
+      166,
+      167
+    ],
+    "rad_integer_lines": [
+      225,
+      226
+    ],
+    "Win32_macro_interpretation": "_WIN32 -> __RADWIN__/__RADNT__/__RAD32__; RADLINK and RADEXPLINK become __stdcall; signed/unsigned long are32bit on target Win32.",
+    "known_old_version_differences": [
+      "Old SetSoundTrack has one argument; installed export has @8 and current source has two.",
+      "Old SetVolume has two arguments; installed export has @12 and current source has three."
+    ],
+    "local_search": "Selected installed game directory and J:/PROG case-insensitive bink*.h/rad.h filename search: no matching installed SDK found.",
+    "vendor_public_search": "Targeted RAD public declaration searches did not locate a matching-version API declaration.",
+    "qualification": "Corroborates two new sound callback declarations only. Decoration verifies stack byte counts, not return type, signedness or pointee layout. No promotion of all13 to installed runtime ABI proof."
+  },
+  "original_factory_context": {
+    "constructor": "00737710",
+    "argument": 0,
+    "callback_thunk": "00a4d35c",
+    "callback_live_disk_bytes": "ff25d423ce00",
+    "callback_iat": "00ce23d4",
+    "setter_thunk": "00a4d356",
+    "setter_iat": "00ce23d0",
+    "result_ignored": true,
+    "callback_ghidra_function_defined": false,
+    "qualification": "Only original game caller/thunks read. Supports callback identity/outer stack shape; does not prove internal vendor callback behavior or return type."
+  },
+  "native_calls": [
+    {
+      "address": "00737725",
+      "native": "00a4d356",
+      "function": "00737710",
+      "contract": "Existing factory passes zero and callback thunk A4D35C to BinkSetSoundSystem; result ignored."
+    }
+  ],
+  "static_ownership_review": {
+    "module_completed_before_lookup": true,
+    "pre_acquisition_allocations": "filesystem path/display string and Impl allocation can fail before acquisition, without an owned module reference.",
+    "post_acquisition_constructor_failure": "Completed BinkModule member releases its own unescaped load reference if a required lookup/error allocation throws.",
+    "publication": "Both tables become observable only after all13 successful required lookups and public constructor return.",
+    "normal_destruction": "Tables destroyed before module FreeLibrary; no decoder/sound teardown fabricated.",
+    "stable_borrowed_storage": "Noncopyable/nonmovable owner with heap Impl; copied function pointers remain borrowed.",
+    "interrupted_path_requirement": "Retain entire dependent aggregate through process exit, including library object, HMODULE, table storage, callbacks, host/handles and renderer/native owners.",
+    "HMODULE_only_retention_sufficient": false,
+    "automatic_handle_or_callback_drain_tracking": false,
+    "actual_composition_proof": false
+  },
+  "path_and_loader_review": {
+    "absolute_required": true,
+    "embedded_NUL_rejected": true,
+    "explicit_extension_required": true,
+    "load_attempts": 1,
+    "API": "LoadLibraryExW",
+    "flags": [
+      "LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR",
+      "LOAD_LIBRARY_SEARCH_SYSTEM32"
+    ],
+    "bare_name_or_flag_fallback": false,
+    "process_search_path_mutation": false,
+    "GetLastError_captured_before_error_string_allocation": true,
+    "qualification": "Restricts dependency filesystem search; Windows module reuse/redirection and actual mapped identity/hash remain runtime composition/gate obligations. No DLL was loaded in this review.",
+    "primary_API_reference": "https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibraryexw"
+  },
+  "existing_patterns_reviewed": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/src/xlive_library.cpp",
+      "bytes": 3507,
+      "sha256": "b2478f049a7c73c6099f24a05fb9d494a5706dbdd251c06557f8d23f452fab17"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/src/fmod_configuration_library.cpp",
+      "bytes": 24627,
+      "sha256": "dc7c1cd3403ab4aa0439ce9b296326b43cc4dd69393fb4c763befec70fbf3d10"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/src/movie_decoder.cpp",
+      "bytes": 11100,
+      "sha256": "75f54deb390ef8d333ba07df4e0579f9efedc22c9bb78e0cae9fec8e6d814908"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/src/movie_factory_followup.cpp",
+      "bytes": 1250,
+      "sha256": "00a8b4866bfa3ba88f537a53d94191cef0efbd56f54f1a41aa1d3fe177f2f8c6"
+    }
+  ],
+  "validation": {
+    "strict_Win32_object_passed": true,
+    "object_machine": "014c",
+    "flags": "/std:c++17 /permissive- /W4 /WX /fp:strict /EHsc /O2 /MD /DWIN32 /D_WINDOWS /DNDEBUG",
+    "all13_lookup_names_exact": true,
+    "all13_original_imports_present": true,
+    "all13_declared_stdcall_byte_counts_match_decoration": true,
+    "constructor_executed_in_review": false,
+    "target_DLL_loaded": false,
+    "imported_function_called": false,
+    "tests_run": false,
+    "probes_run": false,
+    "games_run": false,
+    "CMake_link_or_full_suite_acceptance_claimed": false
+  },
+  "qualified_findings": [
+    {
+      "id": "SDK_and_ABI",
+      "finding": "Correct qualified callback shape, but unmatched old declarations and export metadata do not establish installed runtime ABI."
+    },
+    {
+      "id": "actual_mapped_identity",
+      "finding": "Explicit path and restricted search are source policy, not a runtime mapped-image identity/hash receipt."
+    },
+    {
+      "id": "aggregate_lifetime",
+      "finding": "Normal drain and interrupted whole-aggregate retention are explicit caller preconditions; actual composition remains pending."
+    }
+  ],
+  "source_shared_metadata_Ghidra_edits": false,
+  "credit": {
+    "native_body": 0,
+    "vendor_body": 0,
+    "ABI": 0,
+    "activation": 0,
+    "playback": 0
+  },
+  "guard": "kMovieSubtitlesBound remains OFF; candidate source stays pending root admission/composition.",
+  "retained_artifacts": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/metadata_audit.json",
+      "bytes": 3303,
+      "sha256": "55b975045d57b94950ec2cbe5dc85d2202f010f29e619e855a185ec8a2a2ab23"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/dll_metadata.txt",
+      "bytes": 12216,
+      "sha256": "3dc8f68ef6dc03abb716cc23c95b4b55573b827c3b62b21cd59c8bdc5c58c4c8"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/exe_imports.txt",
+      "bytes": 24992,
+      "sha256": "33a3588b33d9dd1ac0a217e7cd8eacaa45c451feb1903d260ebe9b4cc99c0bad"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/bink.h",
+      "bytes": 23433,
+      "sha256": "0cec162271197a935802d744c3a40d4eb4d57913e00373e7afdf71bcee2d74d5"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/rad.h",
+      "bytes": 30157,
+      "sha256": "298e860962567d5af2556e6c7f8db42f43ee1ef328cf5deb1efd9a0b1941ad71"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/metadata_audit.py",
+      "bytes": 2992,
+      "sha256": "7e200c5e801ae49877492b5cc928677128ac231a29feca909e4cd508384e86b6"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/compile.cmd",
+      "bytes": 525,
+      "sha256": "80f6badad29243349a2b3785c9aa478e57d30475b3f66664b2c242bfa56cb624"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/compile.log",
+      "bytes": 26,
+      "sha256": "3487220c64a19b9c10ce798b276a3d1e55a96f9b6347b7b16e6e24947eb8201b"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/bink_runtime_library.obj",
+      "bytes": 189113,
+      "sha256": "b1d7191b2c59785a848bbf0ed3d82384cfeed4a301f6b5f9ada5ba8133c3c00e"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-bink-runtime-library-review/local/bink_runtime_library_review/call_verification.log",
+      "bytes": 78,
+      "sha256": "fe5b4e40057a26b65201ed6a95ca9b8d460ce8190611576e3994a735be9c815b"
+    }
+  ]
+}
