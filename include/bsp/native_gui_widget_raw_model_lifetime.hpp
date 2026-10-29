@@ -54,8 +54,10 @@ public:
     NativeGuiWidgetRawModelReleaseAcquired& scene_primary() noexcept { return acquired_.scene4c; }
     NativeGuiWidgetRawModelReleaseAcquired& late_primary() noexcept { return acquired_.late4c; }
     void query(std::uint32_t target, std::uint32_t descriptor, bool result) noexcept;
-    [[noreturn]] void reject(const char*);
-    [[noreturn]] void reject_glyph(NativeGuiWidgetRawModelLifetimeContext&, void*);
+    // Concrete implementations always throw. Keep compile-time noreturn off
+    // these cross-TU qualification hooks so shared schedules remain compilable.
+    void reject(const char*);
+    void reject_glyph(NativeGuiWidgetRawModelLifetimeContext&, void*);
     void fail() noexcept;
 private:
     void authenticate(void*);
