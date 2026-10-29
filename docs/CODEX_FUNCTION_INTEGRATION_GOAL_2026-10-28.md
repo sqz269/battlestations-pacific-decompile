@@ -102,3 +102,9 @@ and its newly defined 40-byte wrapper `00C48140`. The old index attributed
 the wrapper call to preceding `00C48100`; exact boundary/ABI inspection and
 a saved definition correct that evidence. Common build and both suites pass;
 genuine root activation remains unresolved. See `CC16_DYN_TRIPLET.md`.
+
+The four existing omitted modules are now registered in the common core build.
+The generated project and static-library member inspection confirm all four
+compiled objects; the game map contains none of their names. Both existing
+suites pass. This removes their compile-registration gap without changing
+providers, host calls, switches or body credit. See `CODEX_MODULE_ADMISSION.md`.
