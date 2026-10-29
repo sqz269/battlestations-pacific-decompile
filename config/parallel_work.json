@@ -27,13 +27,23 @@
     },
     {
       "id": "codex-gui-raw-text-cleanup-return-progress",
-      "state": "in_progress_cleanup_metadata_default_admission_preserved",
+      "state": "integrated_source_reviewed_win32_build_cleanup_metadata_default_preserved",
       "worker": "gui_integration_review",
       "source_ready": false,
       "depends_on": ["codex-gui-text-raw-model-transport"],
       "function_addresses": ["00ab8250", "00ab8ee0"],
       "output_files": ["include/bsp/native_gui_text_retirement.hpp", "src/native_gui_text_retirement.cpp", "src/native_gui_text_reference.cpp", "docs/CODEX_GUI_RAW_TEXT_CLEANUP_RETURN_PROGRESS.md"],
-      "notes": "Independent 3cb proposal review found no genuine raw owned-header publication receipt. Actual packet adds only separate UNWIND-returned metadata/fresh checks alongside normal progress; consumed-before-call is not completion. Keep all DEFAULT guards/93+122/private owner admission unchanged. No owned_members enum, cached-effect credit, producer substitution, nonempty ownership or body credit."
+      "notes": "276880ca9 source reviewed and integrated; common Win32 build and existing suites2/2 pass. Adds only separate UNWIND-returned metadata/fresh checks alongside normal progress; consumed-before-call is not completion. All DEFAULT guards/93+122/private owner admission unchanged. Independent3cb review found no genuine raw owned-header publication receipt; no owned_members enum, cached-effect credit, producer substitution, nonempty ownership, new runtime/unwind-failure or body credit."
+    },
+    {
+      "id": "codex-gui-raw-widget-model-lifetime",
+      "state": "in_progress_qualified_uncalled_shared_schedule_transport",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-model-dispatch", "codex-gui-raw-model-node-dispatch", "codex-gui-raw-default-widget-lifetime"],
+      "function_addresses": ["00aa8320", "00aa9730", "00ab73b0"],
+      "output_files": ["include/bsp/native_gui_widget_lifetime.hpp", "src/native_gui_widget_lifetime.cpp", "include/bsp/native_gui_widget_raw_model_lifetime.hpp", "src/native_gui_widget_raw_model_lifetime.cpp", "docs/CODEX_GUI_RAW_WIDGET_MODEL_LIFETIME.md"],
+      "notes": "Reviewed a1c2 plan: share native AA8320/AA9730 schedules through typed Model primitives, preserve legacy wrappers and all capture/call/store/EH order. Concrete two-record primary/internal188 provider with distinct outer B6DFA0 frames; first domain childless/unparented/no-timed and reached Models unattached/default. True Text188 remains rejected until jointly closed; primary producer/publication, retirement/private-widget integration/all-Model custody remain later gates. No body credit or activation."
     },
     {
       "id": "codex-gui-raw-default-text-owner",

@@ -527,3 +527,10 @@ completion. Owned-member/cached-effect admission cannot expand before genuine
 raw acquisition/publication receipts exist. Font borrower plan likewise requires
 all-user terminal custody and explicit post-parent-drain unlink; DEFAULT and
 AB7700 remain Font-independent. Full P4 activation stays OFF.
+
+Cleanup diagnostics276880ca9 now build with both existing suites passing. The
+independent unwind-returned mask is set only after each real helper returns;
+both fresh predicates reject stale new progress. Native consumption/call/EH
+order and every DEFAULT ownership guard stay unchanged. No new runtime proof.
+Widget Model lifetime plana1c2 is dispatched as a disjoint typed shared-schedule
+transport; raw main-geometry379 is frozen for independent source review/build.
