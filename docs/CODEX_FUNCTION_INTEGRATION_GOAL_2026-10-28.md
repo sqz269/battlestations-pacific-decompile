@@ -83,3 +83,41 @@ suites passed; the placeholder is replaced by an unwired body record. No native
 ABI or gameplay proof is claimed. The undefined `00C37210` constructor and its
 real vtable identity are being recovered next, with exact boundary evidence
 required before any saved-analysis function definition.
+
+## Ring-family source closure
+
+The owner, preparation, query and two predicate bodies are now reviewed and
+registered in the common Win32 build. Their typed source graph composes the
+same required heap custody and additional exact ambient-control math bodies.
+Both existing suites passed; final-object byte inspection and one focused
+original-machine normal-path comparison passed. See
+`CC16_DYN_RING_FAMILY_INTEGRATION.md`. These five records replace prior
+metadata-only placeholders, while original game/root activation remains open.
+The separately discovered 39-byte radix constructor is defined and saved in
+Ghidra but remains partial pending genuine vtable custody. No new activation,
+vendor-body or duplicate math-address credit is claimed.
+
+The next integer packet recovers the `00C39040` cyclic triplet comparison
+and its newly defined 40-byte wrapper `00C48140`. The old index attributed
+the wrapper call to preceding `00C48100`; exact boundary/ABI inspection and
+a saved definition correct that evidence. Common build and both suites pass;
+genuine root activation remains unresolved. See `CC16_DYN_TRIPLET.md`.
+
+The four existing omitted modules are now registered in the common core build.
+The generated project and static-library member inspection confirm all four
+compiled objects; the game map contains none of their names. Both existing
+suites pass. This removes their compile-registration gap without changing
+providers, host calls, switches or body credit. See `CODEX_MODULE_ADMISSION.md`.
+
+The next endpoint packet replaces metadata-only `00C40800` and `00C40B30`
+with complete compiled source. It retains two-stage tagged-index removal,
+dynamic compaction reloads, ambient x87 key publication and stable unsigned
+leftward movement. Both suites, all five native caller rows and critical
+final-object FP inspection pass. The bodies remain unwired pending genuine
+parent/root custody; see `CC16_DYN_SAP_ENDPOINTS.md`.
+
+The pair-reference append `00C37390` and pooled pair allocation/link
+`00C40A30` now have reviewed, compiled source with direct composition and
+required actual heap custody. Both suites and all nine native call rows
+pass; annotations are saved/exported. Original caller/root activation is
+still open. See `CC16_DYN_STORAGE.md`.

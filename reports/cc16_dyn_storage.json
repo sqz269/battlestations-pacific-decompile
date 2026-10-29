@@ -1,0 +1,187 @@
+{
+  "packet": "codex-dyn-storage",
+  "source": "src/cc16_dyn_storage.cpp",
+  "header": "include/bsp/cc16_dyn_storage.hpp",
+  "accepted_upstream": "90d44021a",
+  "functions": [
+    {
+      "start": "00c37390",
+      "body_end_inclusive": "00c373fc",
+      "body_bytes": 109,
+      "cpp_name_hypothesis": "bsp::cc16_dyn_storage::append_pair_reference_00c37390",
+      "original_receiver": "ESI",
+      "stack_argument_bytes": 4,
+      "return_instruction": "RET 4",
+      "eax_observed": "computed append-slot address; semantic return use unestablished",
+      "native_fields": "endpoint+30 data,+34 size,+38 capacity"
+    },
+    {
+      "start": "00c40a30",
+      "body_end_inclusive": "00c40b2d",
+      "body_bytes": 254,
+      "cpp_name_hypothesis": "bsp::cc16_dyn_storage::add_endpoint_pair_00c40a30",
+      "original_receiver": "EDI",
+      "stack_argument_bytes": 8,
+      "stack_arguments": [
+        "first endpoint",
+        "second endpoint"
+      ],
+      "return_instruction": "RET 8",
+      "eax_observed": "second append-slot address; semantic return use unestablished",
+      "native_fields": "storage+28 page data,+2c size,+30 capacity,+34 free head,+48 sentinel,+50 tail,+58 live count"
+    }
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "provided BSP client before live batches"
+  },
+  "rows": [
+    {
+      "address": "00c373a5",
+      "native": "00bf55be",
+      "function": "00c37390",
+      "kind": "call",
+      "contract": "required CRT new; capacity already changed"
+    },
+    {
+      "address": "00c373d7",
+      "native": "00bf6989",
+      "function": "00c37390",
+      "kind": "call",
+      "contract": "nonnull old endpoint reference buffer"
+    },
+    {
+      "address": "00c40a46",
+      "native": "00bf9f1a",
+      "function": "00c40a30",
+      "kind": "call",
+      "contract": "malloc 0x3e80 bytes; 1000 records of 16 bytes"
+    },
+    {
+      "address": "00c40a82",
+      "native": "00bf55be",
+      "function": "00c40a30",
+      "kind": "call",
+      "contract": "page-pointer vector growth after free-head publication"
+    },
+    {
+      "address": "00c40ab4",
+      "native": "00bf6989",
+      "function": "00c40a30",
+      "kind": "call",
+      "contract": "nonnull old page-pointer array"
+    },
+    {
+      "address": "00c40b02",
+      "native": "00c37390",
+      "function": "00c40a30",
+      "kind": "call",
+      "contract": "direct first-endpoint append in unsigned-below arm"
+    },
+    {
+      "address": "00c40b0a",
+      "native": "00c37390",
+      "function": "00c40a30",
+      "kind": "call",
+      "contract": "direct second-endpoint append in unsigned-below arm"
+    },
+    {
+      "address": "00c40b1b",
+      "native": "00c37390",
+      "function": "00c40a30",
+      "kind": "call",
+      "contract": "direct first-endpoint append in unsigned-greater/equal arm"
+    },
+    {
+      "address": "00c40b23",
+      "native": "00c37390",
+      "function": "00c40a30",
+      "kind": "call",
+      "contract": "direct second-endpoint append in unsigned-greater/equal arm"
+    }
+  ],
+  "incoming_evidence": [
+    {
+      "site": "00c4c938",
+      "caller": "00c4c700",
+      "source": "live xrefs and bounded instruction context"
+    },
+    {
+      "site": "00c4ca4a",
+      "caller": "00c4c700",
+      "source": "live xrefs and bounded instruction context"
+    },
+    {
+      "site": "00c552fb",
+      "caller": "00c54da0",
+      "source": "live xrefs and bounded instruction context"
+    },
+    {
+      "site": "00c4c6ec",
+      "caller": "00c4c680",
+      "caller_end_inclusive": "00c4c6f5",
+      "source": "disk bytes; caller currently undefined in Ghidra; no source/definition claimed"
+    }
+  ],
+  "contracts": {
+    "required_crt": [
+      "operator_new_00bf55be",
+      "free_00bf6989",
+      "malloc_00bf9f1a"
+    ],
+    "same_actual_crt_custody": true,
+    "raw_actual_object_bases": true,
+    "fabricated_type_global_allocator_or_service": false,
+    "growth": "equality-only; unsigned live-count loops; uint32 capacity*2+2 and byte/address wrap",
+    "page_link_initialization": "999 forward links at record+0c, final record+0c zero",
+    "payload_order": "unsigned endpoint address order; greater/equal arm stores second word first",
+    "endpoint_append_order": "first argument then second, including equal endpoints",
+    "exception_rollback_or_failure_guard": false,
+    "source_composition": "parent calls recovered leaf directly"
+  },
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_storage_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "accepted_base": "893cf58e6",
+    "source_candidate": "c6d625c1ad64c1571899d83d2b109a86639a9947",
+    "callsite_verification": "nine original call rows, zero failures",
+    "compiled_object_sha256": "3f37d40158c74a39dfd401d11d7349ecc9f0043de9edceb4d85a996a2533390f",
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "tests_added": false,
+    "primary_review": "both complete source bodies and assembly; typed raw-object/CRT composition; page/list and callback-sensitive publication order",
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T043641Z.json",
+    "saved": true,
+    "exports_refreshed": true
+  },
+  "remaining_integrator_work": [
+    "genuine caller wiring and host/root validation or qualified dead-chain closure",
+    "original register/stack ABI custody if required by actual integration",
+    "runtime gates for any reachable activated path"
+  ],
+  "worker_validation": {
+    "assembly_review": "both complete bodies plus live full byte spans and bounded caller evidence",
+    "source_compile_tested": "MSVC x86 C++17 object-only: /permissive- /EHsc /fp:strict /O2 /W4 /WX; exit 0",
+    "call_report_verification": "9 call rows checked, 0 failed",
+    "build_registered": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "tests_added": false,
+    "ghidra_mutated": false
+  },
+  "integration_status": "reconstructed_build_tested_unwired"
+}

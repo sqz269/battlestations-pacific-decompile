@@ -1,0 +1,656 @@
+{
+  "packet": "codex-dyn-ring-native-fixture",
+  "candidate_commit": "2f76638f6d2d0dfaa3caac8bb85ad7fa7b776cb3",
+  "fixture": "tests/cc16_dyn_ring_native_fixture.cpp",
+  "fixture_source_sha256": "02a551dda693e98d369b96cf2397d85fe1435d4957af132cee9a7dde8758e7a8",
+  "purpose": "one focused original-machine versus bound-C++ normal-path composition check",
+  "infrastructure_reused": [
+    "tools/verify_cc13_leaf_reference.py byte/live audit and strict relocation pattern",
+    "tests/cc13_leaf_fixture_tests.cpp private payload/native ABI pattern",
+    "tools/native_vfs_device_fixture.py isolated subprocess/manifest pattern"
+  ],
+  "input": {
+    "name": "single fixed nondegenerate concave-five polygon authorized as replacement for convex-four",
+    "points": [
+      [
+        0,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        0.8,
+        0.9
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "storage": "one actual packed float[5][2] buffer and input-owner record shared by both routes"
+  },
+  "original_reference": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "target_project": "bsp",
+    "target_program": "/battlestationspacific.exe",
+    "ranges": [
+      {
+        "address": "00c33510",
+        "length": 310,
+        "sha256": "cb85ecb20f95bd93d59dfd601dcbb7a60189b17b6586452621140dae15523ae7",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c4d5a0",
+        "length": 978,
+        "sha256": "1511a929c5e71d52e6010fe7eb868865f8e731728c6334386f1166582e2af7c3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c4d370",
+        "length": 549,
+        "sha256": "3de1b7cc5080fc80e7996d00ed4d315a337d6896fdb68a1adf9eac268b7bc34b",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c410e0",
+        "length": 168,
+        "sha256": "eea452a6b276e76735c159bb151ae11648902b57e7ca1531eaca071cfd82beab",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c41190",
+        "length": 155,
+        "sha256": "bad46e62207e5580a055e17aeeedad4d29ec4644c43d7a67067afa015d136ce3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c41230",
+        "length": 158,
+        "sha256": "997ea40b05d387155576edb3b4fac77d55d6b31e982369de26b4fc4e001ddaec",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c377f0",
+        "length": 104,
+        "sha256": "a76903724f146a68fc4815a7b131b3cea18247e7aef33fb9a3b1b5f6e5d83450",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00c37860",
+        "length": 293,
+        "sha256": "a1b1f99bfff1b431e96c393b5035896b0c51414ca59c4492c390835f701ac92c",
+        "live_matches_disk": true
+      },
+      {
+        "address": "0040d7b0",
+        "length": 92,
+        "sha256": "e3d48ff42769de2c27aae8a61df509a1c49f5bba93645a07496285309b62bc61",
+        "live_matches_disk": true
+      }
+    ],
+    "payload_bytes": 2876,
+    "payload_sha256": "9e549deab27f23f5b442846e9c2aea69ad8e4aadbb79d682ee7b2f885bdd1f61",
+    "relocations": 35,
+    "call_relocations": 34,
+    "unknown_call_or_data_dependencies": 0,
+    "oracle": "exact hash-pinned installed PE instruction bytes, never hand-coded math"
+  },
+  "rows": [
+    {
+      "address": "00c3352f",
+      "native": "00bf55be",
+      "function": "00c33510",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c33561",
+      "native": "00bf6989",
+      "function": "00c33510",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c335a4",
+      "native": "00bf55be",
+      "function": "00c33510",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c335d6",
+      "native": "00bf6989",
+      "function": "00c33510",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d605",
+      "native": "00c33510",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c4d622",
+      "native": "00c4d370",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c4d63b",
+      "native": "00c41230",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c4d67a",
+      "native": "00bf55be",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d6df",
+      "native": "00bf6989",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d737",
+      "native": "00c41190",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c4d763",
+      "native": "00bf55be",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d793",
+      "native": "00bf6989",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d7df",
+      "native": "00bf55be",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d818",
+      "native": "00bf6989",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d878",
+      "native": "00bf55be",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d8b6",
+      "native": "0040d7b0",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c4d8d6",
+      "native": "00bf6989",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d8f5",
+      "native": "00bf6989",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d921",
+      "native": "0040d7b0",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c4d421",
+      "native": "00c410e0",
+      "function": "00c4d370",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c4d467",
+      "native": "00bf55be",
+      "function": "00c4d370",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d49e",
+      "native": "00bf6989",
+      "function": "00c4d370",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d4d2",
+      "native": "00bf55be",
+      "function": "00c4d370",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d503",
+      "native": "00bf6989",
+      "function": "00c4d370",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d537",
+      "native": "00bf55be",
+      "function": "00c4d370",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c4d56e",
+      "native": "00bf6989",
+      "function": "00c4d370",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    },
+    {
+      "address": "00c41134",
+      "native": "00c37860",
+      "function": "00c410e0",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c411c1",
+      "native": "00c377f0",
+      "function": "00c41190",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c411fb",
+      "native": "00c377f0",
+      "function": "00c41190",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c4121b",
+      "native": "00c410e0",
+      "function": "00c41190",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c41263",
+      "native": "00c377f0",
+      "function": "00c41230",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c4129d",
+      "native": "00c377f0",
+      "function": "00c41230",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "00c412be",
+      "native": "00c410e0",
+      "function": "00c41230",
+      "kind": "call",
+      "binding": "exact private payload target"
+    },
+    {
+      "address": "0040d7c2",
+      "native": "00bf55be",
+      "function": "0040d7b0",
+      "kind": "call",
+      "binding": "real synthetic-normal-contract heap callback"
+    }
+  ],
+  "seh_boundary": {
+    "original_handler": "00cc82db",
+    "handler_immediate_site": "00c4d5a2",
+    "relocation": "owned nonreturning failure handler, with own-process VEH rejection during kernel calls",
+    "normal_fs_registration_and_restoration_checked": true,
+    "exception_cleanup_or_equivalence_tested": false,
+    "any_kernel_exception": "rejects entire fixture; no result or exception fallback"
+  },
+  "heap": {
+    "label": "synthetic-normal-contract",
+    "required_callbacks": "actual std::malloc/std::free through original cdecl size/pointer contracts",
+    "comparison": "ordered operation/size/logical allocation identity; active contents and capacities",
+    "raw_pointer_or_original_crt_identity_claim": false,
+    "allocation_failure_contract_tested": false,
+    "post_capture_cleanup": "all remaining own blocks freed outside compared constructor trace"
+  },
+  "modes": [
+    {
+      "mode": "PC24_RN_masked",
+      "native_equals_bound_cpp": true,
+      "native_registers_esp_return": true,
+      "fp_controls_fs_and_x87_top_preserved": true,
+      "native_oracle": {
+        "count": 2,
+        "anchor": 4,
+        "next_cursor": 4,
+        "previous_cursor": 0,
+        "next": {
+          "allocation_id": 2,
+          "size": 5,
+          "capacity": 5,
+          "values": [
+            4,
+            2,
+            3,
+            4,
+            0
+          ]
+        },
+        "previous": {
+          "allocation_id": 1,
+          "size": 5,
+          "capacity": 5,
+          "values": [
+            4,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        "scratch": {
+          "allocation_id": 4,
+          "size": 0,
+          "capacity": 6,
+          "values": []
+        },
+        "chains": {
+          "allocation_id": 6,
+          "size": 2,
+          "capacity": 2,
+          "values": [
+            {
+              "allocation_id": 7,
+              "size": 4,
+              "capacity": 4,
+              "values": [
+                0,
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "allocation_id": 8,
+              "size": 3,
+              "capacity": 3,
+              "values": [
+                0,
+                3,
+                4
+              ]
+            }
+          ]
+        },
+        "pairs": {
+          "allocation_id": 5,
+          "size": 1,
+          "capacity": 2,
+          "values": [
+            [
+              0,
+              3
+            ]
+          ]
+        }
+      },
+      "ordered_heap_events": [
+        {
+          "operation": "allocate",
+          "allocation_id": 1,
+          "bytes": 20
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 2,
+          "bytes": 20
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 3,
+          "bytes": 8
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 4,
+          "bytes": 24
+        },
+        {
+          "operation": "free",
+          "allocation_id": 3,
+          "bytes": 8
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 5,
+          "bytes": 16
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 6,
+          "bytes": 24
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 7,
+          "bytes": 16
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 8,
+          "bytes": 12
+        }
+      ]
+    },
+    {
+      "mode": "PC53_RN_masked",
+      "native_equals_bound_cpp": true,
+      "native_registers_esp_return": true,
+      "fp_controls_fs_and_x87_top_preserved": true,
+      "native_oracle": {
+        "count": 2,
+        "anchor": 4,
+        "next_cursor": 4,
+        "previous_cursor": 0,
+        "next": {
+          "allocation_id": 2,
+          "size": 5,
+          "capacity": 5,
+          "values": [
+            4,
+            2,
+            3,
+            4,
+            0
+          ]
+        },
+        "previous": {
+          "allocation_id": 1,
+          "size": 5,
+          "capacity": 5,
+          "values": [
+            4,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        "scratch": {
+          "allocation_id": 4,
+          "size": 0,
+          "capacity": 6,
+          "values": []
+        },
+        "chains": {
+          "allocation_id": 6,
+          "size": 2,
+          "capacity": 2,
+          "values": [
+            {
+              "allocation_id": 7,
+              "size": 4,
+              "capacity": 4,
+              "values": [
+                0,
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "allocation_id": 8,
+              "size": 3,
+              "capacity": 3,
+              "values": [
+                0,
+                3,
+                4
+              ]
+            }
+          ]
+        },
+        "pairs": {
+          "allocation_id": 5,
+          "size": 1,
+          "capacity": 2,
+          "values": [
+            [
+              0,
+              3
+            ]
+          ]
+        }
+      },
+      "ordered_heap_events": [
+        {
+          "operation": "allocate",
+          "allocation_id": 1,
+          "bytes": 20
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 2,
+          "bytes": 20
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 3,
+          "bytes": 8
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 4,
+          "bytes": 24
+        },
+        {
+          "operation": "free",
+          "allocation_id": 3,
+          "bytes": 8
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 5,
+          "bytes": 16
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 6,
+          "bytes": 24
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 7,
+          "bytes": 16
+        },
+        {
+          "operation": "allocate",
+          "allocation_id": 8,
+          "bytes": 12
+        }
+      ]
+    }
+  ],
+  "process": {
+    "exe": "local/cc16_dyn_ring_fixture/bsp_ring_native_probe.exe",
+    "exe_sha256": "06f93d8cc4ffe91480ea05cd3f44feac55dbe4d056af75533744ebf858c2b3e3",
+    "manifest_embedded_as_invoker": true,
+    "owned_pid": 81880,
+    "timeout_seconds": 15,
+    "timed_out": false,
+    "returncode": 0,
+    "elapsed_seconds": 0.1252404999686405,
+    "stderr_bytes": 0,
+    "process_terminated_by_watchdog": false
+  },
+  "verification": {
+    "seed_command": "python tools/ghidra_export.py verify-seeds",
+    "seed_ranges_verified": 8,
+    "seeds_rechecked_immediately_before_native_execution": true,
+    "own_fp_controls_restored": true,
+    "compile": "MSVC x86 C++17 /permissive- /EHsc /fp:strict /O2 /Gy /Gw /W4 /WX",
+    "link": "/MANIFEST:EMBED /SAFESEH:NO /OPT:REF /INCREMENTAL:NO; bcrypt.lib",
+    "kernel_sources_read_only": true,
+    "game_or_original_install_profile_save_writes": false,
+    "ghidra_cmake_or_ledger_mutations": false,
+    "call_report_verification": "34 call rows checked, 0 failed"
+  },
+  "coverage_limits": [
+    "one geometry only, two representative masked round-nearest precision modes",
+    "pair output entails both predicate call paths by parent control flow; no instruction-hit tracing",
+    "no allocation failure, exception cleanup, other rounding modes, NaNs, denormals or malformed rings",
+    "native/public ABI distinctions remain; no CRT, game, gameplay or actual-root identity claim"
+  ],
+  "acceptance": {
+    "function_credit_from_fixture": false,
+    "activation_acceptance_from_fixture": false,
+    "original_caller_reachability_or_complete_dead_chain": "unresolved",
+    "dependency_common_build_review": "primary integrator responsibility"
+  }
+}
