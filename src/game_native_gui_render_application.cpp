@@ -47,6 +47,12 @@
 #include <string>
 #include <utility>
 
+// Host Win32 import-cell alias only: no storage or replacement function.
+// The SDK's query declaration lacks dllimport, so its named function address
+// identifies an EXE thunk. This alias reads the actual loader-resolved slot.
+extern "C" { extern _PNH (__cdecl * const volatile bsp_cc16_query_new_handler_import)(); }
+#pragma comment(linker, "/alternatename:_bsp_cc16_query_new_handler_import=__imp___query_new_handler")
+
 namespace bsp::game {
 namespace {
 // Private qualification route over the existing GUI Text opt-in. Keep OFF in
@@ -779,20 +785,33 @@ void GameStartupHost::initialize_native_gui_render() {
 void GameStartupHost::prepare_native_gui_text_resources() {
     if (native_raw_default_text_) {
         if constexpr (kRawPrefixGeometryQualificationCc16Bound) {
-            HMODULE query_module{}, call_module{}, standard_module{};
+            HMODULE query_module{}, call_module{}, standard_module{}, query_declaration_module{};
             constexpr DWORD module_flags = GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
                 GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT;
-            require(GetModuleHandleExA(module_flags, reinterpret_cast<LPCSTR>(&_query_new_handler), &query_module) &&
-                GetModuleHandleExA(module_flags, reinterpret_cast<LPCSTR>(&_callnewh), &call_module) &&
-                GetModuleHandleExA(module_flags, reinterpret_cast<LPCSTR>(&std::get_new_handler), &standard_module) &&
-                query_module == call_module,
-                "raw prefix-geometry qualification requires the same live CRT heap module");
+            const auto query_target = bsp_cc16_query_new_handler_import;
+            const BOOL declaration_loaded = GetModuleHandleExA(module_flags,
+                reinterpret_cast<LPCSTR>(&_query_new_handler), &query_declaration_module);
+            const BOOL query_loaded = query_target && GetModuleHandleExA(module_flags,
+                reinterpret_cast<LPCSTR>(query_target), &query_module);
+            const BOOL call_loaded = GetModuleHandleExA(module_flags,
+                reinterpret_cast<LPCSTR>(&_callnewh), &call_module);
+            const BOOL standard_loaded = GetModuleHandleExA(module_flags,
+                reinterpret_cast<LPCSTR>(&std::get_new_handler), &standard_module);
+            log_.notef("raw prefix geometry CRT resolved modules: query_ok=%d call_ok=%d standard_ok=%d query=%p call=%p standard=%p",
+                query_loaded ? 1 : 0, call_loaded ? 1 : 0, standard_loaded ? 1 : 0,
+                static_cast<void*>(query_module), static_cast<void*>(call_module), static_cast<void*>(standard_module));
+            require(query_loaded && call_loaded && standard_loaded,
+                "raw prefix-geometry qualification requires live CRT function modules");
+            require(query_module == call_module,
+                "raw prefix-geometry qualification requires the same resolved CRT heap module");
             char heap_path[MAX_PATH]{}, standard_path[MAX_PATH]{};
             const DWORD heap_length = GetModuleFileNameA(query_module, heap_path, MAX_PATH);
             const DWORD standard_length = GetModuleFileNameA(standard_module, standard_path, MAX_PATH);
             require(heap_length && heap_length < MAX_PATH && standard_length && standard_length < MAX_PATH,
                 "raw prefix-geometry qualification requires complete live CRT module paths");
             log_.notef("raw prefix geometry CRT modules: heap=%s standard=%s", heap_path, standard_path);
+            log_.notef("raw prefix geometry CRT query import: declaration_in_exe=%d resolved_slot=1",
+                declaration_loaded && query_declaration_module == GetModuleHandleA(nullptr) ? 1 : 0);
             // Actual host allocation callbacks must be absent in this closed
             // fixture; query both CRT interfaces without changing either one.
             require(_query_new_handler() == nullptr && std::get_new_handler() == nullptr,

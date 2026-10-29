@@ -95,3 +95,34 @@ SAME raw122.construction_context.state cell. No mapping expansion, new global,
 copied0.75 or native arithmetic/action-order change is made. Independent Source
 review and corrected OFF Win32/checks2/2 (11.57s) pass. Private route restored OFF
 in e96cb1318; a separate corrected candidate/paired run remains required.
+
+## Second preserved attempt: import address representation
+
+Corrected candidate `19e0be4967e6a22acfd316897484e545de8e508f`, executable
+`FDA1B47664030B87E77DB1D1BC34FB8E18CE5B61B338CEC473B13E53CF598B3B`,
+again passed OFF. ON passed metadata preparation, then exited1 at the live CRT
+module gate before factory/prefix/379 and the actual handler queries. Complete
+artifacts remain in `local/cc16_prefix_geometry_qualification_20261029_attempt02`.
+Failure-receipt SHA256:
+`B02EB66960918A01BA27CAF03C106C5C74F8B0AF6A1A7AF9F63EE2AE20D9B8F5`.
+The route was restored OFF in `933b1ef528c76c1c4bbeb455508b4c8ea274b289`.
+
+SDK26100 `new.h` declares `_query_new_handler` without dllimport;
+`corecrt_malloc.h` marks `_callnewh` dllimport. Frozen PE/map show the query's
+EXE FF25 thunk10563E06 resolving through its named IAT10595564. Comparing its
+declaration module with the actual `_callnewh` DLL compared different levels.
+
+The corrected private proof reads the existing named `__imp___query_new_handler`
+cell through an exact Win32 linker alias. It declares no storage and changes no
+import, handler or function call. It performs no raw thunk/PE parsing. The original
+direct query remains unchanged; only the module-proof address is resolved.
+An independent Source review accepted the alias, and corrected OFF Win32/checks
+2/2 pass (11.15s). A focused /MD Win32/SDK26100 probe with embedded manifest
+reports declaration=EXE, resolved=ucrtbase.dll, callnewh=same, lookups111/sameheap1
+(`local/crt_iat_probe`). This proves address lowering only, not game state/geometry.
+
+A new frozen ON map/import receipt must show the alias is the real named query
+IAT, with no alternate storage; actual game module/null/entry-zero/geometry and
+paired lifecycle gates remain open. A 32-bit module path can report System32;
+archive through the same 32-bit filesystem namespace and verify PE Machine14C,
+not an x64 reader's different System32 file. Keep archives outside the EXE folder.

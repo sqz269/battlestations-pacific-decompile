@@ -657,3 +657,13 @@ fromE12FD4). Owner plus both379/helper guards are corrected without RO expansion
 value copies, flag forcing or arithmetic/schedule edits. Independent Source
 review and corrected OFF Win32/checks2/2 (11.57s) pass; corrected paired fixture
 is still required. Private geometry restored OFFe96cb1318 before the correction.
+
+Corrected attempt02 (19e0/FDA1) passes OFF and metadata ON, then stops at the CRT
+module gate before factory/prefix/379. Preserve all artifacts, restore OFF933b.
+SDK/PE/Win32 probe proves query's named address is an EXE import thunk while
+callnewh is a DLL target. The private proof now reads the existing named query
+IAT via a declaration-only linker alias, with no raw parsing/import mutation or
+new storage. Independent Source review and OFF build/checks2/2 (11.15s) pass.
+Actual ON alias/import/module/null/bounds and complete geometry paired fixture
+remain unproven. Font plan9953 is reviewed: genuine data exists; typed linkage,
+raw AB8C30 publication and cached1EC EFFECT-credit retirement remain separate.

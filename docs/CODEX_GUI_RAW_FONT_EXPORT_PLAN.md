@@ -123,4 +123,11 @@ detach HPP/CPP; separately reviewed raw AB8C30 and cached1EC retirement/reservat
 Root alone coordinates host call sites/CMake. Preserve current DEFAULT, prefix,
 geometry/parenting/content gates. Font export can be prepared independently;
 actual shader invocation remains BLOCKED by the raw field/credit/lifetime links,
-then combined source review/build and a separately authorized fixture.
+then combined source review/build and a separately preregistered/gated fixture
+within the active reconstruction goal.
+
+Root and independent Model/owner Source review accepted this plan. The actual
+Font storage and native image providers exist; the link is metadata work rather
+than another Font constructor. Raw AB8C30 publication and cached1EC effect-credit
+consumption/retirement remain separate execution gates. No raw Font export or
+shader caller has been implemented or activated by this document.
