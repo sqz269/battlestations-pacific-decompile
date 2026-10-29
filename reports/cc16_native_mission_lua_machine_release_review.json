@@ -1,0 +1,422 @@
+{
+  "packet": "codex-native-mission-lua-machine-release-review",
+  "status": "no_blocking_finding_for_bounded_normal_raw_source_operation; NO_runtime_or_application_admission",
+  "candidate": "f8b4efc7dbfa8eeaccb5e2bcbcea67e5b6aad821",
+  "candidate_base": "5ec9904f55e48f5d3cd871444b510b5cb5e1532b",
+  "review_tree_head": "f8b4efc7dbfa8eeaccb5e2bcbcea67e5b6aad821",
+  "reviewed_at_utc": "2026-10-29T22:19:57.464983+00:00",
+  "ownership": {
+    "files": [
+      "docs/CC16_NATIVE_MISSION_LUA_MACHINE_RELEASE_REVIEW.md",
+      "reports/cc16_native_mission_lua_machine_release_review.json"
+    ],
+    "addresses": [],
+    "candidate_source_CMake_tool_ledger_Ghidra_or_caller_writes": false
+  },
+  "full_reviewed_inputs": {
+    "new_header_source_document": true,
+    "three_actual_source_functions": [
+      "release_native_mission_lua_machine_008844f0",
+      "NativeGameCurrentVirtualCalls::virtual_scalar",
+      "NativeGamePhysicsLifetimeCalls::physics_virtual_scalar"
+    ],
+    "candidate_pins": [
+      {
+        "path": "include/bsp/native_mission_lua_machine_release.hpp",
+        "sha256_git_blob": "d633058757380240c117b3ad6f71671cb9303632190ac261898776c8c4d601e0",
+        "sha256_worktree": "d633058757380240c117b3ad6f71671cb9303632190ac261898776c8c4d601e0"
+      },
+      {
+        "path": "src/native_mission_lua_machine_release.cpp",
+        "sha256_git_blob": "0495473be085237a6b759a551e7be6e94304596596c584f3fd0041293cf2e3c0",
+        "sha256_worktree": "0495473be085237a6b759a551e7be6e94304596596c584f3fd0041293cf2e3c0"
+      },
+      {
+        "path": "docs/CC16_NATIVE_MISSION_LUA_MACHINE_RELEASE.md",
+        "sha256_git_blob": "82d284ba15f4a2d20548a2e09821cdbf04eeebe11e9da5005ef260e060a5d47c",
+        "sha256_worktree": "82d284ba15f4a2d20548a2e09821cdbf04eeebe11e9da5005ef260e060a5d47c"
+      },
+      {
+        "path": "reports/cc16_native_mission_lua_machine_release.json",
+        "sha256_git_blob": "8ee91e2f89b3b9c8471060458b17b3599c995ec86819effdec0b98e0c47b01ee",
+        "sha256_worktree": "8ee91e2f89b3b9c8471060458b17b3599c995ec86819effdec0b98e0c47b01ee"
+      }
+    ],
+    "unchanged_dependency_pins_verified": [
+      {
+        "path": "include/bsp/native_game_current_virtual_calls.hpp",
+        "baseline_blob": "8de8416376a3ec486f1bb3a6a81a8118cf041fe9",
+        "sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46"
+      },
+      {
+        "path": "src/native_game_current_virtual_calls.cpp",
+        "baseline_blob": "2bca11481b05e0cc04777e766f2652d6b3b2bd5f",
+        "sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f"
+      },
+      {
+        "path": "include/bsp/native_game_physics_lifetime.hpp",
+        "baseline_blob": "1afc7f6aef423a3fedb65beeea64830069856437",
+        "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+      },
+      {
+        "path": "src/native_game_physics_lifetime.cpp",
+        "baseline_blob": "5fb98e8e73cd280c681e0e67e8d5f625e97dc1d5",
+        "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+      },
+      {
+        "path": "include/bsp/native_game_lifetime.hpp",
+        "baseline_blob": "0f2f50a4b1ad95e354e352354a210d43e227c9ba",
+        "sha256": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136"
+      },
+      {
+        "path": "include/bsp/native_game_class_cleanup.hpp",
+        "baseline_blob": "26703505fbe5620fe2d03e1917162e5f6fef90bc",
+        "sha256": "9be5dd2f28906897af1707d56a385bb1a597c6479037a7f0be71f5c13fcdfd76"
+      },
+      {
+        "path": "include/bsp/settings_seg29_cc13.hpp",
+        "baseline_blob": "8f3b5994e23a34a7d8d3bb2e8b9420be04738b13",
+        "sha256": "71eac28bfcc7cf1ffdecf63e96e342107450c69bf50a0fd7eabfbd19007a0946"
+      },
+      {
+        "path": "src/settings_seg29_cc13.cpp",
+        "baseline_blob": "0042393a06ad3a75db575178a67d8cae412c7222",
+        "sha256": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24"
+      },
+      {
+        "path": "include/bsp/landscape_lua_seg55_argon.hpp",
+        "baseline_blob": "90a752af07ada787634e3f3ac973cccce973e13f",
+        "sha256": "bdfc54da13f7c748669dca38e19c767fcb24fc090f6211e83e479e348962ca33"
+      },
+      {
+        "path": "src/landscape_lua_seg55_argon.cpp",
+        "baseline_blob": "2efdb3f1e5f51610e251fb57328c996c5c085c88",
+        "sha256": "30e87cf86e4b46906f438a9234e957a311f10c92d58fd89206c6ed22a682d27d"
+      },
+      {
+        "path": "include/bsp/mission_lobby_settings.hpp",
+        "baseline_blob": "75bac570007724f19e038ab74315e173d866f0b9",
+        "sha256": "9e532288c073c709e2adf3b139f98611b0d1e45bbafa6e7ca0a2f39f0b4bcb50"
+      },
+      {
+        "path": "src/mission_lobby_settings.cpp",
+        "baseline_blob": "767d05ae47d4a1501fede2f880e72cf3ce1b376a",
+        "sha256": "7dc53658dd9a0e037143fd82fd3c127483e8ca1d347f743d47fca074cbd55c79"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "topic": "whole_native_boundary",
+      "verdict": "pass",
+      "evidence": "27B/12ops endRET0088450A;5CC at0088450B..0F are padding. Oldplate50E is overbroad."
+    },
+    {
+      "topic": "host_and_machine_null",
+      "verdict": "pass",
+      "evidence": "Unconditionalrawhost+4 read, nohostnullguard. Onlycapturedmachine null skipscallandclear. ActualGameOnDestroy calls helper unconditionally; nullhost is not admitted."
+    },
+    {
+      "topic": "current_capture_and_replacement",
+      "verdict": "pass",
+      "evidence": "Capturemachine once; actualcurrenttable0(flags1); retainsincominghost independentlyof anycallerpublicationreplace; clearsretainedhost+4 onlyafternormalreturnevenifcellreplaced; no childread afterdeletion."
+    },
+    {
+      "topic": "exceptions",
+      "verdict": "bounded_standard_Cpp_flow",
+      "evidence": "No catches/finalizers/retries/repair added. C++callbackexception doesnotreachsuccessclear; reached targeteffects remain. No FH/SEH/foreign/Lua nonlocal transportproof."
+    },
+    {
+      "topic": "genuine_concrete_chain",
+      "verdict": "pass",
+      "evidence": "FinalrealNativeGameCurrentVirtualCalls reference with explicitqualifiedcall; actualimplementationexplicitlyqualifiesexistingphysics_virtual_scalar. No newabstract/default/noop callback, projectedclass, global, heap orcode-address translation."
+    },
+    {
+      "topic": "callee_and_heap_custody",
+      "verdict": "REQUIRED_not_supplied",
+      "evidence": "Genuinehost/childconstructor,currentcallabletable/code,Win32thiscallshape,matchingheap,componentandhostlifetime remaincallerpreconditions; originalPEprofilewords/projectedLuaClass existence not sufficient."
+    },
+    {
+      "topic": "direct_call_honesty",
+      "verdict": "pass",
+      "evidence": "OriginalbodyonlyCALL EDX at884500;0directcalls. KnownCF8394\u21926B87C0 role is staticidentity/ABI fact only,notforcedruntime target or host-callablepointer."
+    }
+  ],
+  "native_proof": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra ensure --status before each readbatch, savedlisting/freshlive32bytes/liveindirectinstructioncontext/retailPE",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "address": "008844F0",
+    "end_inclusive": "0088450A",
+    "bytes": 27,
+    "instructions": 12,
+    "body_sha256": "64dd024293fc26e34fb40751955fa34e556258ec669f77abc1b4663d19f2a886",
+    "body_hex": "56 8b f1 8b 4e 04 85 c9 74 0f 8b 01 8b 10 6a 01 ff d2 c7 46 04 00 00 00 00 5e c3",
+    "listing": [
+      "008844f0: push esi",
+      "008844f1: mov esi, ecx",
+      "008844f3: mov ecx, dword ptr [esi + 4]",
+      "008844f6: test ecx, ecx",
+      "008844f8: je 0x884509",
+      "008844fa: mov eax, dword ptr [ecx]",
+      "008844fc: mov edx, dword ptr [eax]",
+      "008844fe: push 1",
+      "00884500: call edx",
+      "00884502: mov dword ptr [esi + 4], 0",
+      "00884509: pop esi",
+      "0088450a: ret "
+    ],
+    "export_sha256": "cf47f2704323ad5d3142b7792fefa6d9a8484187454ce6487115ae2a38a1fe11",
+    "padding": {
+      "address": "0088450B..0088450F",
+      "hex": "cc cc cc cc cc",
+      "not_body": true
+    },
+    "direct_calls": 0,
+    "indirect_calls": 1,
+    "indirect_site": {
+      "site": "00884500",
+      "operand": "EDX",
+      "current_vtable_byte_slot": 0,
+      "flags": 1,
+      "postreturn_clear": "00884502",
+      "live_context_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-release-review\\local\\native-mission-lua-machine-release-review\\live_site.json",
+      "live_context_sha256": "b3e495a507804285e3bbfd2400ff153ec0b8c74ab8176979e678f38812c7915c"
+    },
+    "original_ABI": "ECXrawhost,nativezeroStackargs/plainRET,ESIpreserved; incidentalEAX/flags not sourceinterfacecontract",
+    "known_original_child_role": "CF8394 firstword006B87C0,nextwordnSlu; native6B87C0 endsRET4, butactualrebuiltcallabletable/childconstructor/free custody not admittedhere"
+  },
+  "source_and_emitted_chain": {
+    "raw_helper": {
+      "capture": "volatileDWORDactualhost+4 usingWin32wrappingaddressarithmetic",
+      "no_host_class_inference": true,
+      "interface": "void(void*actual_host,NativeGameCurrentVirtualCalls&actual_dispatch)",
+      "transport": "38B, unconditional+4load,testcaptured only,flags1/slot0/capturepushes,this+4,directrealREL32component,postcallretainedhost4clear"
+    },
+    "concrete_component": {
+      "declaration": "existingconcretefinalNativeGameCurrentVirtualCalls",
+      "transport": "8B,this+18h thenqualifiedtailREL32 torealphysicsmethod; not an overridableemptybinding"
+    },
+    "physics_dispatcher": {
+      "transport": "22B,ECX=capturedfromsourcearg,currentvptrloadandmethod[table+slot],pushfullflags,indirectCALLEAX,RET0Ch",
+      "child_stack_contract": "actualWin32thiscallchild mustconsumeoneflagDWORD(RET4); RET0ChcleansthreeSOURCEarguments",
+      "not_native_fields": "compilerthis+4/+18h relate toC++serviceinheritance, notactualhostorchildfields"
+    },
+    "FP_scope": "noFP arithmetic/controlwordoperations inthreeinspectedfunctions; noclaimaboutcalleeFPsideeffects",
+    "original_entry_ABI_equivalence": false
+  },
+  "fresh_strict_compile": {
+    "passed": true,
+    "compiler": "MSVC19.51.36244 Win32 viaVS18Community vcvars32",
+    "flags": [
+      "/c",
+      "/std:c++17",
+      "/O2",
+      "/Ob2",
+      "/DNDEBUG",
+      "/MD",
+      "/EHsc",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/Iinclude",
+      "/FAs"
+    ],
+    "sources": [
+      "src/native_mission_lua_machine_release.cpp",
+      "src/native_game_current_virtual_calls.cpp",
+      "src/native_game_physics_lifetime.cpp"
+    ],
+    "objects": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-release-review\\local\\native-mission-lua-machine-release-review\\native_mission_lua_machine_release.obj",
+        "bytes": 1593,
+        "sha256": "ffcf5369e3a69d6ab9200bcd8d5cb3ea54e8682b1ee8c55dea0c5a46b22fa17d",
+        "machine": "0x014c",
+        "assembly_sha256": "197d85d4bd95bf344bd486296694c35389452d4f56283c7a44810a9b4e9baa94"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-release-review\\local\\native-mission-lua-machine-release-review\\native_game_current_virtual_calls.obj",
+        "bytes": 2699,
+        "sha256": "eb384abe9e98bf6087b18f772d82f3207908f1d76e1caece8536570385854bbb",
+        "machine": "0x014c",
+        "assembly_sha256": "efd24de1bf777e2904d50527e34a3ad2df35ab76bee4fab5bc3cc07ef3b8adb9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-release-review\\local\\native-mission-lua-machine-release-review\\native_game_physics_lifetime.obj",
+        "bytes": 29108,
+        "sha256": "d1dbe365dc3c1de4622d271fe2204abb89e77d4706001609aa7b78b7c1084c19",
+        "machine": "0x014c",
+        "assembly_sha256": "2de94fc863a7b62911cdf110a9ff22a0964d1d9c69ca2a5aa0a3550179924839"
+      }
+    ],
+    "executables_created_or_run": 0,
+    "tests_fullbuild_or_probes_run": false
+  },
+  "independent_COFF_inspection": {
+    "method": "independent inline COFF section/symbol/relocation parser; strip only trailing compilerINT3alignment outside selected function",
+    "fresh_retained_exact": true,
+    "functions": {
+      "release": {
+        "symbol": "?release_native_mission_lua_machine_008844f0@bsp@@YAXPAXAAUNativeGameCurrentVirtualCalls@1@@Z",
+        "bytes": 38,
+        "code_sha256": "3c738fce4e547b8196a6078c92e6a75f9a506feecb4b84c3d01867ffb9ff629e",
+        "hex": "56 8b 74 24 08 8b 46 04 85 c0 74 18 8b 4c 24 0c 6a 01 6a 00 50 8d 49 04 e8 00 00 00 00 c7 46 04 00 00 00 00 5e c3",
+        "relocations": [
+          {
+            "offset": 25,
+            "symbol": "?virtual_scalar@NativeGameCurrentVirtualCalls@bsp@@UAEXPAXII@Z",
+            "kind": 20
+          }
+        ],
+        "listing": [
+          "0000: push esi",
+          "0001: mov esi, dword ptr [esp + 8]",
+          "0005: mov eax, dword ptr [esi + 4]",
+          "0008: test eax, eax",
+          "000a: je 0x24",
+          "000c: mov ecx, dword ptr [esp + 0xc]",
+          "0010: push 1",
+          "0012: push 0",
+          "0014: push eax",
+          "0015: lea ecx, [ecx + 4]",
+          "0018: call 0x1d",
+          "001d: mov dword ptr [esi + 4], 0",
+          "0024: pop esi",
+          "0025: ret "
+        ]
+      },
+      "current_calls": {
+        "symbol": "?virtual_scalar@NativeGameCurrentVirtualCalls@bsp@@UAEXPAXII@Z",
+        "bytes": 8,
+        "code_sha256": "a20427e40577a2cc7a0512429a0a6831c3ac8970bab393d01d00905fcc001906",
+        "hex": "83 c1 18 e9 00 00 00 00",
+        "relocations": [
+          {
+            "offset": 4,
+            "symbol": "?physics_virtual_scalar@NativeGamePhysicsLifetimeCalls@bsp@@UAEXPAXII@Z",
+            "kind": 20
+          }
+        ],
+        "listing": [
+          "0000: add ecx, 0x18",
+          "0003: jmp 8"
+        ]
+      },
+      "physics_calls": {
+        "symbol": "?physics_virtual_scalar@NativeGamePhysicsLifetimeCalls@bsp@@UAEXPAXII@Z",
+        "bytes": 22,
+        "code_sha256": "079db75e0fbf42fb6bbff9b7fd6974e5d25b11188a2d3ae53fc1101157bed29c",
+        "hex": "8b 4c 24 04 8b 44 24 08 ff 74 24 0c 8b 11 8b 04 02 ff d0 c2 0c 00",
+        "relocations": [],
+        "listing": [
+          "0000: mov ecx, dword ptr [esp + 4]",
+          "0004: mov eax, dword ptr [esp + 8]",
+          "0008: push dword ptr [esp + 0xc]",
+          "000c: mov edx, dword ptr [ecx]",
+          "000e: mov eax, dword ptr [edx + eax]",
+          "0011: call eax",
+          "0013: ret 0xc"
+        ]
+      }
+    },
+    "static_detail_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-release-review\\local\\native-mission-lua-machine-release-review\\object_audit.json",
+    "static_detail_sha256": "4f2e3ae5f9899e1213bf87c0e5c371e6cd6f297f7b42660765abc9bcd2084d1d"
+  },
+  "retained_author_proof": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-release\\local\\native_mission_lua_machine_release",
+    "files": [
+      {
+        "path": "compile.cmd",
+        "sha256": "b6334ef79241553a7d3b04fc1bb594f17f9211c078f66211622a7c1584ebe962"
+      },
+      {
+        "path": "compile.log",
+        "sha256": "2d10ad02b402cca1bef61f9da2f76859bc2e6c7f64a33da7d24136c1e4ff770a"
+      },
+      {
+        "path": "release.obj",
+        "sha256": "c49753b81169795d81d623c932ab90edcf022957a14cf5083a016a0653ecc766"
+      },
+      {
+        "path": "release.asm",
+        "sha256": "506590cbf31d7b4bb5015a178202e26757ead46fb148562893c0dd0e21f56c7d"
+      },
+      {
+        "path": "current_calls.obj",
+        "sha256": "5e4e9adc53bdbc9de3058d2537dc711905361c2db5e7ccf47e0cef6d5853722d"
+      },
+      {
+        "path": "current_calls.asm",
+        "sha256": "8bdf8014fbd6728b14c9766754ff50e2e05cb9f5001e96dd543ea6af7baf16a9"
+      },
+      {
+        "path": "physics_calls.obj",
+        "sha256": "7907247ce7e6505f3562afd94af19dc049c8515dfdfc0e1bb016482ced17983e"
+      },
+      {
+        "path": "physics_calls.asm",
+        "sha256": "1509530f9d33997923de0711eaaa176708afe3b68db9c1be1b8c0e4db54947d4"
+      },
+      {
+        "path": "live_target.txt",
+        "sha256": "b8945fa9e6f257d43b751bfadd2a63b44f10ba17a4c8523da48c568c8d36260e"
+      },
+      {
+        "path": "live_bytes.txt",
+        "sha256": "2940d41a346f2ec9b97221aea783970eadca624bb64b51c78a4f211e164f5033"
+      },
+      {
+        "path": "native_asm.txt",
+        "sha256": "377ebd8dce0267ea9466364066cdba11bfc0eb55c278dc6fff1dbc3e86a32c5d"
+      },
+      {
+        "path": "audit.py",
+        "sha256": "d2cb90c761b3541a6588fcdd0294b05b63eadfc17e04afa84598f141e900d713"
+      },
+      {
+        "path": "audit.json",
+        "sha256": "e85ca6588aafb2b4e8530e395cad3bb9a46e434240ee5ca9b8a04295fb4c90c6"
+      },
+      {
+        "path": "audit.stdout.json",
+        "sha256": "79ffe3bf3513a20946540caf151df07bddaab5e95014578f622c357cf7379ddc"
+      },
+      {
+        "path": "write_report.py",
+        "sha256": "1cee9624c65f3c5f707a5c64d843accaa6738db36b543d8900fedc3d260120ed"
+      }
+    ],
+    "verified_count": 15,
+    "all_hashes_match": true,
+    "parser_provenance": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-on-destroy-review\\local\\native_game_on_destroy_review\\audit.py",
+      "sha256": "527fd620542b70b1a3d3c9821eb3da8a3bfbf46e11c12527c3425d124a819b9e",
+      "scope": "Only genericCOFF class extracted; no production code or prior native audit executed."
+    }
+  },
+  "remaining_admission_limits": [
+    "RootCMake/build/link registration andOnDestroy call_008844f0 binding mustuseactualrawhost atthatunconditionalsite; no addednullguard orsemanticcontainersubstitute.",
+    "Genuinehostconstructionandlaterhostscalar004DC62C areseparate; helperdoesnotfreehostorownitslifetime.",
+    "Actualchildconstructor/callabletable/code/heapandthiscallABI mustbequalifiedandretained; originalnumericPEentriesareinadmissibleashostcallabletables.",
+    "FH/SEH/foreignexception/Lua nonlocaltransport,invalidstoragefaultidentity,nativeEAX/flags/frames,concurrency/reentrancy/runtimebehavior remainunproved.",
+    "No completionofotherOnDestroyproviders,originalgameinstallation/fullABI/gameplayparityoractivationclaim."
+  ],
+  "review_actions": {
+    "source_PE_COFF_hash_inspection": true,
+    "fresh_strict_three_object_compile": true,
+    "Ghidra_read_only": true,
+    "new_tests_fixtures_fullbuild_probes_games_target_Dll_calls": false,
+    "source_tool_ledger_Ghidra_or_application_binding_write": false
+  },
+  "credit": {
+    "native_bodies": 0,
+    "vendor_bodies": 0,
+    "binary_ABI": false,
+    "activation": false,
+    "runtime": false,
+    "new_gameplay_evidence": false
+  }
+}

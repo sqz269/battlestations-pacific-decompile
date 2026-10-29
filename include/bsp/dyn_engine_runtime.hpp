@@ -30,7 +30,7 @@ DynProfileNodeStorage* dyn_profile_node_construct_00c44000(
 // begins after +4/+8/+C
 // zeroing. A C++ exception then composes real0040A900 current-data capture/
 // conditional release with no field clear, before rethrowing. No raw-node free
-// occurs here; C50390's separate BF65AC owner handles that allocation.
+// occurs here; C50390 or qualified C50310 supplies separate BF65AC ownership.
 // Original FH3/SEH, fault and frame transport are not supplied by this API.
 DynProfileNodeStorage* dyn_profile_node_construct_00c44000(
     DynProfileNodeStorage&, const char* name, std::uint32_t word_2c,
@@ -39,8 +39,28 @@ DynProfileNodeStorage* dyn_profile_node_construct_00c44000(
 // 00C50310..00C50382. Native ESI=profile, EAX=profile, plain RET.
 // Allocates the actual48h Root node, publishes the profile after its three head
 // words, then clears the90h tail. It does not initialize the engine global.
+// This existing overload remains normal-only.
 DynProfileStorage* dyn_profile_construct_00c50310(
     DynProfileStorage&, const DynEngineRuntimeContext&);
+
+// Required genuine matching-heap raw-node release, distinct from the context's
+// BF6989 vector release. Must return normally. Kept here without including
+// dyn_profile_scopes.hpp (which itself depends on this header).
+using DynProfileRootPartialNodeDelete = void (__cdecl*)(void* original_allocation);
+
+// Additive qualified Root interface; rejects a null provider before caller
+// data access. Allocate48 BEFORE the catch, then compose qualified C44000's
+// real A900 vector cleanup. Root state0 covers that construction, all profile
+// head stores, actual publication and the tail source operation through return.
+// A C++ exception frees ONLY the originally captured raw allocation and rethrows;
+// no head/publication clear, current-node reload, retry or rollback is added.
+// The existing std::memset tail is not native BF79F0/fault/SEH proof. Original
+// FH3/frame/ABI and C55EA0/C55F50 caller propagation remain separate. The same
+// actual memory/publication and matching provider must be supplied and retained;
+// a nonnull pointer alone does not authenticate an arbitrary custom context.
+DynProfileStorage* dyn_profile_construct_00c50310(
+    DynProfileStorage&, const DynEngineRuntimeContext&,
+    DynProfileRootPartialNodeDelete delete_partial_00bf65ac);
 
 // 00C55EA0..00C55F4E. Native stack(engine*,descriptor*), EAX=engine, RET8.
 // Fresh14h engine owns its profile and real358h task manager. Descriptor points
