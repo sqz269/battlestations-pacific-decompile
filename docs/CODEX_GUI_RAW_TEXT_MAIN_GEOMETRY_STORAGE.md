@@ -148,3 +148,9 @@ This is emitted-order evidence only, not FP execution or Original ABI proof.
 The actual game map has zero occurrences of the entry; source search has no
 production caller. No game, new fixture or new test case was run for this helper.
 Every primary-publication/main-section/retirement/Font/Page gate above remains.
+
+The later section consumer required a pure Frame affinity view, matching exact
+context/acquisition addresses and private phase without native access or credit.
+Source `3c2176634` adds that const noexcept method. Win32 build and both suites
+pass (11.56 seconds), receipt `local/cc16_main_geometry_frame_view_build.log`.
+This does not authorize a section caller or change the existing geometry body.

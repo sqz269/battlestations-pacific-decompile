@@ -591,3 +591,9 @@ now exposes a pure typed identity/phase match, with Win32/tests2/2 passing. It
 adds no native operation or credit. The agreed adapter header also distinguishes
 owner preentry from both real raw118 preflight stages; an independent audit
 confirmed the existing authentication supports each without a new count gate.
+
+Later main-section plan6ea is reviewed and dispatched in new files. It follows
+the real ABA8EC/AB8530 post-constructor arm and genuine late15Czero continuation;
+no replayed raw85/new188 or fabricated layout. Its required geometry Frame
+affinity view is build-checked. This remains separate from the first prefix-only
+ownership fixture and adds no caller, rendering or runtime credit.

@@ -16,6 +16,16 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-gui-raw-text-main-section-storage",
+      "state": "in_progress_qualified_post_constructor_section_fragment_uncalled",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-text-primary-model-producer", "codex-gui-raw-text-main-geometry", "codex-gui-raw-model-node-dispatch"],
+      "function_addresses": ["00ab86cb", "00ab87b4"],
+      "output_files": ["include/bsp/native_gui_text_main_section_storage.hpp", "src/native_gui_text_main_section_storage.cpp", "docs/CODEX_GUI_RAW_TEXT_MAIN_SECTION_STORAGE.md"],
+      "notes": "Reviewed6ea plan: real later ABA8EC/AB8530 nonnull188 main arm and late constructor15Czero continuation. Reuse genuine mesh/section/material/cache/raw-string providers; exact current receiver/geometry reloads, publication/count order, captured name return and one CE2220 for both creator releases. No constructor85 replay/new188/layout fabrication. Real B6E680(null) and B6D890(null); changed nonzero flag/foreign/hierarchy rejects retaining effects. Requires exact producer/geometry Frame affinity; no caller/content/Font/rendering/teardown or extra body credit."
+    },
+    {
       "id": "codex-gui-raw-primary-prefix-lifetime",
       "state": "in_progress_typed_receipt_authorized_prefix_retirement_bridge",
       "worker": "gui_integration_review",
