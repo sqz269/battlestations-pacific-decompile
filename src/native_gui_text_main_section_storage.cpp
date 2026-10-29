@@ -291,6 +291,10 @@ NativeGuiTextMainSectionStorageFrame::NativeGuiTextMainSectionStorageFrame(Conte
 NativeGuiTextMainSectionStorageFrame::~NativeGuiTextMainSectionStorageFrame() noexcept {
     if (phase_ == Phase::entered || phase_ == Phase::failed) std::terminate();
 }
+bool NativeGuiTextMainSectionStorageFrame::matches(const Context& c, const Acquired& a,
+    Phase expected) const noexcept {
+    return &context_ == &c && &acquired_ == &a && phase_ == expected;
+}
 void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
     NativeGuiTextRawModelReference& reference, Context& c, Frame& f, Acquired& a) {
     require(&f.context_ == &c && &f.acquired_ == &a, "main section needs SAME installed frame/context/acquisition");

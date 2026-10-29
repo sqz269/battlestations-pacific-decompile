@@ -68,6 +68,11 @@ public:
     NativeGuiTextMainSectionStorageFrame(const NativeGuiTextMainSectionStorageFrame&) = delete;
     NativeGuiTextMainSectionStorageFrame& operator=(const NativeGuiTextMainSectionStorageFrame&) = delete;
     NativeGuiTextMainSectionStoragePhase phase() const noexcept { return phase_; }
+    // Pure exact constructor-binding/private-phase view, including FRESH.
+    // No native payload/provider read, liveness, credit or retirement authority.
+    bool matches(const NativeGuiTextMainSectionStorageContext&,
+        const NativeGuiTextMainSectionStorageAcquired&,
+        NativeGuiTextMainSectionStoragePhase) const noexcept;
 private:
     friend void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
         NativeGuiTextRawModelReference&, NativeGuiTextMainSectionStorageContext&,
