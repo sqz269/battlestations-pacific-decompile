@@ -73,6 +73,12 @@ public:
     bool matches(const NativeGuiTextMainSectionStorageContext&,
         const NativeGuiTextMainSectionStorageAcquired&,
         NativeGuiTextMainSectionStoragePhase) const noexcept;
+    // Private created-branch/whole-normal-return witness. COMPLETE alone also
+    // includes the native skip branch. These identities do not confer native
+    // ownership or liveness and are diagnostic only after their terminals.
+    bool matches_created_normal(const NativeGuiTextMainSectionStorageContext&,
+        const NativeGuiTextMainSectionStorageAcquired&, const void* text,
+        const void* mesh, const void* section, const void* material) const noexcept;
 private:
     friend void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
         NativeGuiTextRawModelReference&, NativeGuiTextMainSectionStorageContext&,
@@ -82,6 +88,11 @@ private:
     volatile std::uint32_t name_[2];
     NativeNodeParentingFrame parenting_;
     NativeGuiTextMainSectionStoragePhase phase_{NativeGuiTextMainSectionStoragePhase::fresh};
+    const void* created_text_{};
+    const void* created_mesh_{};
+    const void* created_section_{};
+    const void* created_material_{};
+    bool created_normal_{};
 };
 
 // Qualified AB8530 CURRENT-nonnull188 path, main arm AB86CB..AB87B4 ONLY.

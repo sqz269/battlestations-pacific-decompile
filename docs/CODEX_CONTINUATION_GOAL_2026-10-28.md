@@ -834,3 +834,12 @@ auditor assumption correction is explicit, with original false records preserved
 all registered difficulty/input/observer gates remain. This closes the labelled
 controlled122/5b cohort only. Current common593 runtime, reviewed5c caller/layout
 composition and all-OFF873 restoration remain their separate evidence scopes.
+
+The next MainSection dependency now distinguishes created-normal completion from
+the existing COMPLETE skip branch. Private Frame identities are captured at the
+real zero58/Section/Material epochs and published only after late parenting/root
+normal return. Root and independent actual-diff review accept the22-line change;
+Win32/checks2/2 pass12.91s. This is metadata provenance only, not an owner, native
+credit, scalar permission or runtime/ABI proof. Three bounded reviews are defining
+the retained MainSection lifetime, real caller/provider graph and shared admission
+changes before implementation; first faithful AB8530 main creation precedes Font.

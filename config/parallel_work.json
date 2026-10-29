@@ -16,6 +16,23 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-main-section-created-witness",
+      "state": "source_two_reviews_win32_build_pass_library_uncalled",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": [
+        "codex-gui-raw-text-main-section-storage",
+        "codex-raw-main-section-frame-match"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/native_gui_text_main_section_storage.hpp",
+        "src/native_gui_text_main_section_storage.cpp",
+        "docs/CODEX_GUI_RAW_MAIN_SECTION_CREATED_WITNESS.md"
+      ],
+      "notes": "Private created-only whole-normal-return identity witness, independent of mutable public COMPLETE/skip markers. Actual zero58 branch captures Text/Mesh, real nonnull00533FA0 and00535320/effect return capture Section/Material; publish after late parenting/root normal return plus existing anti-reentry/failure fence. Exact constructor-bound Context/Acquisition/private COMPLETE/four-identity pure reader; no native payload/provider reads or lifetime/scalar/credit authority. Existing matcher/skip/native call/import/cleanup schedules unchanged; sizeof(Frame) extent includes new fields. Root plus independent actual22-line Source diff review pass; Win32/existing checks2/2 pass12.91s, no new tests. Library uncalled; future lifetime must additionally prove canonical sole live graph/counts1, actual creator-return history and retained terminal chain. No native ABI, fixture, production switch or new native-body credit."
+    },
+    {
       "id": "codex-raw-font-owner-caller",
       "state": "integrated_private_three_mode_lifecycle_closed_all_gates_off",
       "worker": "gui_integration_review",
