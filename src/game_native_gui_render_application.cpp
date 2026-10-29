@@ -64,7 +64,7 @@ constexpr bool kRawDefaultTextQualificationCc16Bound = false;
 // selects the receipt-authorized lifetime route; it adds no content or layout.
 constexpr bool kRawPrimaryPrefixQualificationCc16Bound = false;
 // Explicit AB7700 body fixture after the genuine prefix, with ctor bounds0.
-constexpr bool kRawPrefixGeometryQualificationCc16Bound = true;
+constexpr bool kRawPrefixGeometryQualificationCc16Bound = false;
 static_assert(static_cast<unsigned>(kRawDefaultTextQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrimaryPrefixQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrefixGeometryQualificationCc16Bound) <= 1u);
