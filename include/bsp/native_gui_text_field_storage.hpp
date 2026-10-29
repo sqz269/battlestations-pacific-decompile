@@ -89,6 +89,118 @@ void set_native_gui_text_font_name_storage_00ab8c30(NativeGuiTextReference&,
     const void* actual_name_header8, NativeGuiTextFieldStorageContext&,
     NativeGuiTextFieldStorageFrame&, NativeGuiTextFieldStorageAcquired&);
 
+// Raw Font-name transport only. No unused legacy color/current callback facade.
+struct NativeGuiTextRawFontNameStorageContext { NativeFontResourceOwners& fonts; };
+class NativeGuiTextRawFontNameStorageFrame;
+struct NativeGuiTextRawFontNameStorageAcquired;
+class NativeGuiTextRawFontNameStoragePublication final {
+public:
+    enum class Origin { resized_normal, inherited_self };
+    NativeGuiTextRawFontNameStoragePublication(const NativeGuiTextRawFontNameStoragePublication&) = delete;
+    NativeGuiTextRawFontNameStoragePublication& operator=(const NativeGuiTextRawFontNameStoragePublication&) = delete;
+    bool issued() const noexcept { return issued_; } // private producer state, never supplied back
+    const void* text_identity() const noexcept { return text_; }
+    const void* header_identity() const noexcept { return header_; }
+    const void* data_identity() const noexcept { return data_; } // diagnostic after return
+    std::uint32_t length() const noexcept { return length_; }
+    const void* font_identity() const noexcept { return font_; } // borrowed; no Font credit
+    std::uint32_t alpha_bits() const noexcept { return alpha_; }
+    Origin origin() const noexcept { return origin_; }
+    const NativeGuiTextRawModelReferenceContext* reference_context() const noexcept { return reference_context_; }
+    const NativeGuiTextReferenceFrame* reference_frame() const noexcept { return reference_frame_; }
+    const NativeGuiTextRawFontNameStorageContext* context() const noexcept { return context_; }
+    const NativeGuiTextRawFontNameStorageFrame* frame() const noexcept { return frame_; }
+    const NativeGuiTextRawFontNameStorageAcquired* acquisition() const noexcept { return acquisition_; }
+    const NativeStringRawPoolContext* strings() const noexcept { return strings_; }
+    const NativeFontResourceOwners* fonts() const noexcept { return fonts_; }
+    const NativeGuiTextRawFontNameStoragePublication* previous() const noexcept { return previous_; }
+private:
+    friend struct NativeGuiTextRawFontNameStorageAcquired;
+    friend void set_native_gui_text_font_name_storage_00ab8c30(NativeGuiTextRawModelReference&,
+        const void*, NativeGuiTextRawFontNameStorageContext&,
+        NativeGuiTextRawFontNameStorageFrame&, NativeGuiTextRawFontNameStorageAcquired&);
+    NativeGuiTextRawFontNameStoragePublication() noexcept = default;
+    bool issued_{};
+    Origin origin_{Origin::resized_normal};
+    const void* text_{}; const void* header_{}; const void* data_{}; const void* font_{};
+    std::uint32_t length_{}, alpha_{};
+    const NativeGuiTextRawModelReferenceContext* reference_context_{};
+    const NativeGuiTextReferenceFrame* reference_frame_{};
+    const NativeGuiTextRawFontNameStorageContext* context_{};
+    const NativeGuiTextRawFontNameStorageFrame* frame_{};
+    const NativeGuiTextRawFontNameStorageAcquired* acquisition_{};
+    const NativeStringRawPoolContext* strings_{};
+    const NativeFontResourceOwners* fonts_{};
+    const NativeGuiTextRawFontNameStoragePublication* previous_{};
+};
+struct NativeGuiTextRawFontNameStorageAcquired final {
+    NativeGuiTextRawFontNameStorageAcquired() noexcept = default;
+    NativeGuiTextRawFontNameStorageAcquired(const NativeGuiTextRawFontNameStorageAcquired&) = delete;
+    NativeGuiTextRawFontNameStorageAcquired& operator=(const NativeGuiTextRawFontNameStorageAcquired&) = delete;
+    NativeGuiTextFieldStorageAcquired diagnostics; // never sealing/reentry authority
+    bool failed() const noexcept { return failed_; }
+    const NativeGuiTextRawFontNameStoragePublication* publication() const noexcept;
+    // Fresh storage identity for preinstalled later invocations/extent checks;
+    // unissued storage is never prior-header or lifetime authority.
+    const NativeGuiTextRawFontNameStoragePublication* publication_storage() const noexcept { return &publication_; }
+private:
+    friend class NativeGuiTextRawFontNameStorageFrame;
+    friend void set_native_gui_text_font_name_storage_00ab8c30(NativeGuiTextRawModelReference&,
+        const void*, NativeGuiTextRawFontNameStorageContext&,
+        NativeGuiTextRawFontNameStorageFrame&, NativeGuiTextRawFontNameStorageAcquired&);
+    const NativeGuiTextRawFontNameStorageFrame* bound_frame_{};
+    bool failed_{};
+    NativeGuiTextRawFontNameStoragePublication publication_;
+};
+class NativeGuiTextRawFontNameStorageFrame final {
+public:
+    enum class Phase { fresh, entered, complete, failed };
+    enum class HeaderEntry { unobserved, constructor_empty, prior_normal };
+    // Addresses only, including an uninitialized caller8B input. Keep every
+    // referent independently alive through failure/Text return/parent closure.
+    NativeGuiTextRawFontNameStorageFrame(const NativeGuiTextRawFontNameStorageContext&,
+        const void* actual_input_header8, const NativeGuiTextReferenceFrame&,
+        NativeGuiTextShaderStorageFrame&, NativeGuiTextRawFontNameStorageAcquired&,
+        const NativeGuiTextRawFontNameStoragePublication* prior_header = nullptr) noexcept;
+    ~NativeGuiTextRawFontNameStorageFrame() noexcept;
+    NativeGuiTextRawFontNameStorageFrame(const NativeGuiTextRawFontNameStorageFrame&) = delete;
+    NativeGuiTextRawFontNameStorageFrame& operator=(const NativeGuiTextRawFontNameStorageFrame&) = delete;
+    const NativeGuiTextRawFontNameStorageContext* prepared_context() const noexcept { return context_; }
+    const void* prepared_input_header8() const noexcept { return input_; }
+    const NativeGuiTextReferenceFrame* prepared_reference_frame() const noexcept { return reference_frame_; }
+    const NativeGuiTextShaderStorageFrame* prepared_shader_frame() const noexcept { return &shader_; }
+    const NativeGuiTextRawFontNameStorageAcquired* acquisition() const noexcept { return acquired_; }
+    const NativeGuiTextRawFontNameStoragePublication* prior_header() const noexcept { return prior_; }
+    const NativeGuiTextFieldStorageFrame& body_frame() const noexcept { return body_; }
+    Phase phase() const noexcept { return phase_; }
+    HeaderEntry entry_header() const noexcept { return entry_header_; }
+    bool normal_equal_name() const noexcept { return phase_ == Phase::complete && equal_name_; }
+    bool matches(const NativeGuiTextRawFontNameStorageContext&, const void*,
+        const NativeGuiTextReferenceFrame&, const NativeGuiTextShaderStorageFrame&,
+        const NativeGuiTextRawFontNameStorageAcquired&, Phase) const noexcept;
+private:
+    friend void set_native_gui_text_font_name_storage_00ab8c30(NativeGuiTextRawModelReference&,
+        const void*, NativeGuiTextRawFontNameStorageContext&,
+        NativeGuiTextRawFontNameStorageFrame&, NativeGuiTextRawFontNameStorageAcquired&);
+    const NativeGuiTextRawFontNameStorageContext* const context_;
+    const void* const input_;
+    const NativeGuiTextReferenceFrame* const reference_frame_;
+    NativeGuiTextShaderStorageFrame& shader_; // actual mutable credited frame, never const_cast
+    NativeGuiTextRawFontNameStorageAcquired* const acquired_;
+    const NativeGuiTextRawFontNameStoragePublication* const prior_;
+    NativeGuiTextFieldStorageFrame body_; // only actual reached native scratch
+    Phase phase_{Phase::fresh};
+    HeaderEntry entry_header_{HeaderEntry::unobserved};
+    bool equal_name_{};
+};
+// Uncalled library dependency. Does not relax owner FRESH/108/1EC, raw122 or
+// scalar admission. Input construction/return is the genuine retained caller's
+// responsibility. Equal-name grants no new publication. Existing/self1C8 needs
+// the exact private prior receipt. All failures/reentry poison, never cleanup.
+void set_native_gui_text_font_name_storage_00ab8c30(NativeGuiTextRawModelReference&,
+    const void* actual_name_header8, NativeGuiTextRawFontNameStorageContext&,
+    NativeGuiTextRawFontNameStorageFrame&, NativeGuiTextRawFontNameStorageAcquired&);
+
 // Whole normal AB6A70[39B]: store LOWBYTE at77, then CURRENT80(3 or0).
 // This is native vslot7C, not the Font property at byte108.
 void set_native_gui_text_flag77_storage_00ab6a70(NativeGuiTextReference&,
