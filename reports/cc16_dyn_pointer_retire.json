@@ -1,0 +1,212 @@
+{
+  "packet": "codex-dyn-pointer-retire",
+  "owner": "agent/codex-dyn-pointer-retire",
+  "date": "2026-10-28",
+  "base_commit": "308883b75",
+  "status": "complete_instruction_schedule_direct_real_callee_composed_compile_verified_unwired_caller_binding_open",
+  "source": "src/cc16_dyn_pointer_retire.cpp",
+  "header": "include/bsp/cc16_dyn_pointer_retire.hpp",
+  "docs": [
+    "docs/CC16_DYN_POINTER_RETIRE.md"
+  ],
+  "new_in_house_body_credit": 1,
+  "reused_callee_credit": 0,
+  "vendor_body_credit": 0,
+  "function": {
+    "start": "00C55DF0",
+    "end_inclusive": "00C55E9F",
+    "bytes": 176,
+    "instructions": 72,
+    "branches": 13,
+    "calls": 4,
+    "name_hypothesis": "bsp::cc16_dyn_pointer_retire::remove_and_destroy_00c55df0",
+    "original_abi": "ESI raw list {data,count,capacity} offsets0/4/8; EDX pointer-equality needle; no stack arguments; plain RET; ESI unchanged, EBP/EDI saved, EBX saved/restored only on growth path",
+    "private_abi": "same ESI/EDX plus one extra Context pointer stack argument, RET4; four inserted context pushes and call shims",
+    "public_abi": "new ordinary C++ cdecl void(list,search_pointer,context reference); native EAX/flags residue is not a public result contract",
+    "native_sha256": "c22318b75d909c0ee124db6bc5d813d3149781f1bf9b4a4607b2e7b819e0d6c4",
+    "assembly_manifest_sha256": "f84965a646d1e9d78f4beec55512930379234632e216d78de0160a1007a9e9e6"
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra Client.verify before each live batch checks configured project/program/language/base",
+    "live_bytes_compared_to_installed_pe": 176,
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutations": false
+  },
+  "rows": [
+    {
+      "address": "00c55e2f",
+      "native": "00bf55be",
+      "function": "00c55df0",
+      "kind": "call",
+      "contract": "cdecl new(wrapping desired_count*4), caller removes4; desired capacity published before call; actual required allocator slot0"
+    },
+    {
+      "address": "00c55e5f",
+      "native": "00bf6989",
+      "function": "00c55df0",
+      "kind": "call",
+      "contract": "cdecl storage free(current old data), caller removes4; data reloaded after copy; actual distinct allocator slot1"
+    },
+    {
+      "address": "00c55e8f",
+      "native": "00c4dc60",
+      "function": "00c55df0",
+      "kind": "call",
+      "contract": "one STACK captured removed object; native RET4; direct real existing source implementation with explicit genuine memory/services/progress/body context"
+    },
+    {
+      "address": "00c55e95",
+      "native": "00bf65ac",
+      "function": "00c55df0",
+      "kind": "call",
+      "contract": "cdecl object free(captured removed object), separate push after destructor returns; caller removes4; actual distinct allocator slot2"
+    }
+  ],
+  "behavior": {
+    "search": "pointer equality, captured wrapping end pointer; no missing/empty check; reads end-4 then captured cursor value, overwrites cursor with last value before count reload",
+    "normal_removal": "desired=count-1; unsigned desired<=count skips resize; publishes desired count before testing captured nonnull for real destructor/free",
+    "underflow": "count0 produces FFFFFFFF desired; capacity and wrapping byte arithmetic, callback timing, copy and zero-fill branches retained literally",
+    "resize": "capacity published before new; returned pointer retained; copy uses live count/data reloads and suppresses only zero computed destination; old data reloaded/freed before new pointer publication",
+    "zero_fill": "reloads current count/data; pointer arithmetic and index increments wrap; only a zero computed destination suppresses write",
+    "destruction": "captured removed pointer unchanged; count publication precedes callback; null skips destructor and object free; real destructor then distinct BF65AC only on normal return",
+    "null_allocation_return": "no invented success guard; native skip/copy/free/publication arithmetic remains",
+    "not_found_or_empty_guard": false,
+    "rollback": false,
+    "exception_catch": false,
+    "class_cast": false,
+    "default_provider": false
+  },
+  "genuine_context_contract": {
+    "allocators": "three mandatory explicit cdecl function pointers; BF55BE new, BF6989 storage free and BF65AC object free remain distinct slots/custody",
+    "constructor_requires_all_five_arguments": true,
+    "borrowed_values": [
+      "actual allocator table",
+      "actual destruction AvoidZoneDynHullMemory",
+      "actual NativeGamePhysicsLifetimeCalls",
+      "caller-owned NativeGamePhysicsLifetimeProgress",
+      "explicit actual DynBodyCreationContext pointer"
+    ],
+    "body_pointer_policy": "no default; explicit null allowed only if actual existing lifetime/attachment policy permits ordinary virtual dispatch; no null supplied by this implementation",
+    "direct_callee": "bsp::destroy_native_dyn_world_00c4dc60",
+    "direct_callee_source": "src/native_game_physics_lifetime.cpp",
+    "direct_callee_header": "include/bsp/native_game_physics_lifetime.hpp",
+    "direct_callee_proof_reused": "existing complete normal body/construction-context evidence in docs/NATIVE_GAME_PHYSICS_LIFETIME_R132.md; this packet freshly verifies native stack argument and RET4, not a new callee differential run",
+    "object_type": "raw void pointer; existing callee name is not new class/construction proof; caller must establish compatible fields and genuine original construction contexts before binding",
+    "lifetime": "context and all borrowed objects/providers remain valid during synchronous kernel call; bridges do not retain them or publish context into native storage"
+  },
+  "incoming_evidence": {
+    "indexed_site": "00C5B183",
+    "current_ghidra_status": "undefined code; no instruction at site",
+    "current_C5A8B0_body_end_inclusive": "00C5B175",
+    "independent_pe_decode_span": [
+      "00C5B180",
+      "00C5B189"
+    ],
+    "independent_pe_decode": [
+      "PUSH ESI",
+      "MOV ESI,[EAX]",
+      "CALL C55DF0 at C5B183",
+      "POP ESI",
+      "RET"
+    ],
+    "conclusion": "old attribution inside C5A8B0 is wrong; separate pointer-to-list wrapper only; removed object class/construction/context binding unproven",
+    "wrapper_body_reconstruction_credit": 0
+  },
+  "validation": {
+    "compiler": "MSVC x86 19.51.36244.0",
+    "compile_flags": "/c /std:c++17 /permissive- /EHsc /fp:strict /O2 /W4 /WX",
+    "compile_exit_code": 0,
+    "source_sha256": "64c23345bafc14eefee073b448636d2cdd39c8e9e167c4713d06a016831a36fe",
+    "header_sha256": "0fc9451b107ad0d37d7390639075f034b4699a1d68dfb1ea163eaa5b3283f017",
+    "doc_sha256": "39e90d614a05ed8d25cf2ced6f0e1c9c8d068a07b68315d91a2fbf912977e45a",
+    "object_sha256": "855aa6743716109835695aa1de906bb589a1cc11afe490747a7887650461d361",
+    "native_instructions_compared": 72,
+    "compiled_kernel_instructions": 76,
+    "branch_sites_compared": 13,
+    "unique_branch_targets": 11,
+    "call_relocations_compared": 4,
+    "source_manifest_matches_listing_once_in_order": true,
+    "all_unadapted_ids_operands_widths_registers_addressing_order_match": true,
+    "equivalent_encoding_difference": [
+      {
+        "address": "00C55DFC",
+        "native_encoding_hex": "8d642400",
+        "emitted_encoding_hex": "8d2424",
+        "instruction": "lea esp, [esp]"
+      }
+    ],
+    "absolute_data_operands": [],
+    "cfg_reachable_native_instructions": 72,
+    "stack_joins_and_return_balanced": true,
+    "call_site_context_offsets": [
+      {
+        "site": "00C55E2F",
+        "target": "00BF55BE",
+        "symbol": "?allocate_shim@?A0xaf7dcf0e@cc16_dyn_pointer_retire@bsp@@YAXXZ",
+        "context_operand": "dword ptr [esp + 0x14]",
+        "native_esp_from_entry": -16,
+        "context_offset_asserted": 20
+      },
+      {
+        "site": "00C55E5F",
+        "target": "00BF6989",
+        "symbol": "?storage_free_shim@?A0xaf7dcf0e@cc16_dyn_pointer_retire@bsp@@YAXXZ",
+        "context_operand": "dword ptr [esp + 0x14]",
+        "native_esp_from_entry": -16,
+        "context_offset_asserted": 20
+      },
+      {
+        "site": "00C55E8F",
+        "target": "00C4DC60",
+        "symbol": "?destroy_shim@?A0xaf7dcf0e@cc16_dyn_pointer_retire@bsp@@YAXXZ",
+        "context_operand": "dword ptr [esp + 0x10]",
+        "native_esp_from_entry": -12,
+        "context_offset_asserted": 16
+      },
+      {
+        "site": "00C55E95",
+        "target": "00BF65AC",
+        "symbol": "?object_free_shim@?A0xaf7dcf0e@cc16_dyn_pointer_retire@bsp@@YAXXZ",
+        "context_operand": "dword ptr [esp + 0x10]",
+        "native_esp_from_entry": -12,
+        "context_offset_asserted": 16
+      }
+    ],
+    "shim_cleanup": "new/storagefree/objectfree RET4 removes inserted context; destructor RET8 removes context plus native RET4 argument; all copied bridge args8 removed; private kernel RET4 removes own context",
+    "bridge_emission": "three distinct allocator slots called indirectly with original argument; real destructor symbol relocation and five actual borrowed arguments; public wrapper loads ESI/EDX, pushes reference and restores ESI/EBP",
+    "volatile_result_liveness": "only BF55BE EAX is consumed and forwarded unchanged to EBX; remaining volatile GPR/flags results not consumed before resets/overwrites",
+    "fp": "kernel has no FP/SSE instructions; inspected bridge/public paths add no FP/SSE conversions/arithmetic",
+    "call_report_verification": "4 call rows checked, 0 failed",
+    "full_build_or_link_run": false,
+    "tests_added_or_run": false,
+    "native_differential_run": false,
+    "game_or_probe_run": false,
+    "ignored_artifacts": "local/cc16_dyn_pointer_retire/{source.obj,source.asm,live_bytes.txt,audit.py,audit.json}",
+    "local_artifact_sha256": {
+      "source.obj": "855aa6743716109835695aa1de906bb589a1cc11afe490747a7887650461d361",
+      "source.asm": "34abb12fa322055169a77d42b7d6ee5adecf218fef79385fedd066e03d6dd7a4",
+      "live_bytes.txt": "4b10cbb589dbd22d3ac989683495239d4efa98a4d3a9de9981b50705e9296536",
+      "audit.py": "a7f34fb07d700a5bb8549d68318a9724be11f0cda8534efd81419265699016eb",
+      "audit.json": "279947ed35b1d6d08478ca1361c850c00458d46b2f065b8a1fc9949b69656e1a"
+    },
+    "reused_dependency_sha256": {
+      "src/native_game_physics_lifetime.cpp": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4",
+      "include/bsp/native_game_physics_lifetime.hpp": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e",
+      "include/bsp/dyn_body_creation.hpp": "35f59585c7185b17577c13395220a88c1d60b91d482ff445b34700151153ecf5",
+      "include/bsp/avoid_zone_dyn_hull.hpp": "3fd5fecb9e29d82393c25315ddcd6046119e3c7666d7d5ab97236c79d8e91c45"
+    }
+  },
+  "remaining_root_work": [
+    "register source and run integrated Win32 build/link/checks with final object/symbol inspection",
+    "establish real removed-object compatibility, caller binding and original memory/services/body context lifetime/custody",
+    "update shared metadata/Ghidra annotation only after lease release",
+    "original ABI/FH3/SEH/unwind/fault and exception transport, allocation failure/destructor exception execution, native differential and gameplay remain unproven"
+  ],
+  "activation_credit": false,
+  "changed_shared_build_metadata_ghidra_existing_source_install_save_profile_power_process_settings": false
+}
