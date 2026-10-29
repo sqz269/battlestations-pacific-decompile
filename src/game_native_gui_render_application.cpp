@@ -71,7 +71,7 @@ constexpr bool kRawPrefixGeometryQualificationCc16Bound = false;
 // fixture. FontShader remains FRESH; this does not assign Text108 or call it.
 constexpr bool kRawFontMetadataQualificationCc16Bound = false;
 // Closed real Font/credit work fixture. No public option; keep OFF in main.
-constexpr bool kRawFontWorkQualificationCc16Bound = false;
+constexpr bool kRawFontWorkQualificationCc16Bound = true;
 constexpr auto kRawFontWorkChoiceCc16Bound = GameNativeRawDefaultTextOwner::FontWork::shader_then_retirement;
 static_assert(static_cast<unsigned>(kRawDefaultTextQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrimaryPrefixQualificationCc16Bound) +
