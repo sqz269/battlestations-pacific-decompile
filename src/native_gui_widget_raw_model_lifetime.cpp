@@ -1,4 +1,5 @@
 #include "bsp/native_gui_widget_raw_model_lifetime.hpp"
+#include "bsp/native_gui_text_font_lifetime_storage.hpp"
 #include "bsp/native_node_destruction.hpp"
 #include <exception>
 #include <initializer_list>
@@ -152,13 +153,30 @@ void NativeGuiWidgetRawModelSlots::require_domain(void* actual) {
     // FIRST domain only. No188 read: raw118 may have retired that Model already.
     require(!read(actual, 0x70) && !read(actual, 0x6c) &&
         !read(actual, 0x88) && !read(actual, 0x8c) && !read(actual, 0x90) &&
-        !read(actual, 0x108) && !read(actual, 0x180) && !read(actual, 0x184) &&
+        !read(actual, 0x180) && !read(actual, 0x184) &&
         !read(actual, 0x18c) && !read(actual, 0x190) &&
-        !read(actual, 0x198) && !read(actual, 0x19c) && !read(actual, 0x1a0) && !read(actual, 0x1ec) &&
+        !read(actual, 0x198) && !read(actual, 0x19c) && !read(actual, 0x1a0) &&
         !read(actual, 0xec) && !read(actual, 0xf0) && !read(actual, 0xf4) && !read(actual, 0xf8) &&
-        !read(actual, 0x1a4) && !read(actual, 0x1a8) && !read(actual, 0x1c0) && !read(actual, 0x1c4) &&
-        !read(actual, 0x1c8) && !read(actual, 0x1cc),
-        "raw widget transport excludes parent/child/timed/Font/glyph/content/shader state");
+        !read(actual, 0x1a4) && !read(actual, 0x1a8) && !read(actual, 0x1c0) && !read(actual, 0x1c4),
+        "raw widget transport excludes parent/child/timed/glyph/content state");
+    auto& c = context();
+    auto& f = c.text.factory_context;
+    auto* const font = f.publication.retirement.font_lifetime;
+    if (font) {
+        using Font = NativeGuiTextFontLifetimeStorageFrame;
+        const auto* const prefix = font->prepared_context().geometry.prefix;
+        require(font->phase() == Font::Phase::sealed && prefix &&
+            &prefix->widget == &c && &prefix->text == &c.text,
+            "raw widget Font boundary needs its exact sealed prefix/helper graph");
+        // authenticate() already established the genuine raw118 base entry.
+        // Its real bit6 return has ended the owned header: validate retained
+        // records only, never reread Text108/1EC/1C8/1CC or ended payloads.
+        font->require_live(actual, Font::Stage::base, &f.reference_frame.scalar.destruction);
+    } else {
+        require(!read(actual, 0x108) && !read(actual, 0x1ec) &&
+            !read(actual, 0x1c8) && !read(actual, 0x1cc),
+            "raw widget without sealed Font provenance keeps its original empty Font fields");
+    }
     void* head = reinterpret_cast<void*>(read(actual, 0x68));
     require(head && !(bits(head) & 3u) && read(head) == bits(head) && read(head, 4) == bits(head),
         "raw widget transport requires the genuine finite empty AA9390 list");

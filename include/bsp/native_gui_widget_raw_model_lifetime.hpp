@@ -76,6 +76,10 @@ private:
 // Retired unused188 is metadata only. No initial93/122/118/owner admission is
 // widened, no primary producer/publication, parent/child/timed/generic scene or
 // TRUE Text188 branch supplied. The existing DEFAULT owner cannot call this.
+// At the genuine raw118 base entry only, an installed sealed Font helper for
+// this exact prefix/Widget graph validates its ended Font slice from retained
+// metadata. Without that helper the original four empty Font fields remain
+// mandatory; parent/child/timed/glyph/content and Model checks are unchanged.
 void release_native_gui_widget_scene_00aa8320(void*, NativeGuiWidgetRawModelLifetimeContext&);
 void destroy_native_gui_widget_base_00aa9730(void*, NativeGuiWidgetRawModelLifetimeContext&);
 void release_native_gui_text_glyph_00ab73b0(void*, NativeGuiWidgetRawModelLifetimeContext&);

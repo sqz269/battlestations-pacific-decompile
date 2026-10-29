@@ -76,3 +76,12 @@ between5b01 and9356. The known cache issue is a hypothesis for this discrepancy,
 not proof of its cause. A separately preregistered trace/bounds experiment may
 test it; it cannot turn the original failed13-row cohort into a pass. Publication
 remains blocked pending disposition of this evidence and the private fixtures.
+
+Private attempt1 also failed and is preserved under the runtime protocol packet:
+shader GUI0 exited0; GUI1 reached1900 total/1600 mission frames and constructed
+the genuine Font graph, then exited1 at the separate AA9730 Widget transport
+empty-Font guard. Later invalidation/equal cases were never launched. Only
+metadata_prepared/constructed and failed phase10 are observed; retirement,
+parent drain, closed and detach are not proved. The targeted sealed-helper
+base-stage admission is Source-reviewed and builds OFF (checks2/2,10.20s), as
+recorded in the staged-guard document. No fixture acceptance or retry is claimed.

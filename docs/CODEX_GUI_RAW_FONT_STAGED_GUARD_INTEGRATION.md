@@ -49,3 +49,20 @@ composition; final helper review confirms no whole-prefix recursion and truthful
 late-header records. Coupled Win32/checks2/2 pass (11.22s),
 `local/cc16_font_lifetime_owner_staged_off_build.log`, with all five switches FALSE.
 The frozen default13 counterpart and actual private work cases are still gates.
+
+The first real shader-retirement fixture completed1600 mission/1900 total
+frames but failed at AA9730 base entry: its separate raw Widget Model transport
+still required zero108/1EC/1C8/1CC. The failed attempt is preserved and does not
+prove Text retirement, renderer closure or Font detach.
+
+The transport now keeps every non-Font zero/ring/Model predicate and requires
+either its original four zero Font fields, or the exact sealed Font helper for
+the same prefix.widget/context.text graph. After existing raw118-base
+authentication it calls Stage::base with the exact scalar.destruction record.
+That stage requires actual normal member returns and actual bit6 header return,
+then reads retained metadata only. Pending/failed/unsealed helper work never
+falls back. No dead Font slice, callback cycle or new DEFAULT permission is
+introduced. Root plus independent Source review accept CPP40f2a5ad; all-five-OFF
+Win32/checks2/2 pass10.20s in
+`local/cc16_font_widget_base_admission_off_build.log`. A new frozen candidate and
+prospective runtime attempt remain required.
