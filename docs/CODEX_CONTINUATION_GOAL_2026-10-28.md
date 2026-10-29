@@ -648,3 +648,12 @@ host modes stay mutually exclusive/OFF. Same-runtime CRT import/live module
 paths, real null-handler/entry-zero guards and the preregistered two same-binary
 cases remain runtime gates. A separate read-only actual Font export plan is
 in progress; it grants no Font108/cache1EC ownership or shader caller authority.
+
+First geometry candidate afe1: OFFexit0/599+1, ONexit1 before factory/geometry
+because metadata treated mutableE12FC4 as RO. Preserve the complete failed
+artifact set and failure receipt; no379 execution accepted. The actual existing
+raw122.state.widget_y_scale getter supplies that writable Source cell (distinct
+fromE12FD4). Owner plus both379/helper guards are corrected without RO expansion,
+value copies, flag forcing or arithmetic/schedule edits. Independent Source
+review and corrected OFF Win32/checks2/2 (11.57s) pass; corrected paired fixture
+is still required. Private geometry restored OFFe96cb1318 before the correction.

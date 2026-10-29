@@ -206,10 +206,10 @@ void NativeGuiTextMainGeometryStorageFrame::preflight(NativeGuiTextRawModelRefer
         "Text74 requires exact nested188 aliases and a distinct same-domain primary481 record");
     require(bits(&c.one_00d7a24c) == bits(t.data.data_at(0x00d7a24c, 4)) &&
         bits(&c.negative_zero_00d7a208) == bits(t.data.data_at(0x00d7a208, 4)) &&
-        bits(&c.y_scale_00e12fc4) == bits(t.data.data_at(0x00e12fc4, 4)) &&
+        bits(&c.y_scale_00e12fc4) == bits(&t.construction_context.state.widget_y_scale_00e12fc4()) &&
         bits(&c.half_00d7a280) == bits(t.data.data_at(0x00d7a280, 8)) &&
         bits(&c.association.unchanged_00d7a260) == bits(t.data.data_at(0x00d7a260, 4)),
-        "Text74 constants must be the genuine SAME live Original cells");
+        "Text74 readonly constants and shared mutable Y-scale must keep their canonical domains");
     same_node_domain(c.primary, t);
     same_node_domain(c.internal188, t);
     separate_records(c.primary, c.internal188);

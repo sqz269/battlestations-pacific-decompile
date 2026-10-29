@@ -36,8 +36,10 @@ borrows the same primary and exact internal188 dispatch records, actual geometry
 owner, held read-only data and primary storage. It creates no Model record,
 native object, pool, process, cache, reference credit or replacement node runtime.
 Mapped transform profiles use the real readonly-data aliases. The association
-uses the primary's storage and real D7A260 cell; float/double constants borrow
-the same D7A24C/D7A208/E12FC4/D7A280 addresses expected by379.
+uses the primary's storage and real D7A260 cell; read-only float/double constants
+borrow D7A24C/D7A208/D7A280. Mutable E12FC4 borrows the existing Services.text_state
+widget_y_scale getter, the EXACT state object installed in raw122 construction.
+It is distinct from E12FD4 and is not fetched from the read-only-data service.
 
 Four actual DWORD arguments, three actual position DWORDs, the complete1DCh
 transform scratch and bounds scratch have initialized private backing. These
@@ -138,3 +140,9 @@ and existing checks2/2 pass (11.41s),
 the actual ON CRT imports/module mapping or geometry execution.
 These are Source checks, not emitted FP, original register/FH3/SEH/ABI, allocator,
 exception/reuse, native UI or game proof. Root owns build and later fixture gates.
+
+The first afe1 ON case failed before factory/geometry when this metadata ctor
+incorrectly queried E12FC4 through the RO service. The original failed artifacts
+remain in local/cc16_prefix_geometry_qualification_20261029. Root corrected the
+binding to the shared mutable state and matching guards; independent Source
+review and corrected OFF Win32/checks2/2 (11.57s) pass. No379 runtime pass follows.

@@ -74,3 +74,24 @@ Private `kRawPrefixGeometryQualificationCc16Bound` wiring is prepared false,
 with all three fixture constants mutually exclusive. Its owner preparation and
 ready-cache construction methods are compiled. No runtime, production, AAA710, content/rendering,
 failure/reuse or native ABI credit claimed.
+
+## Preserved failed attempt and provider correction
+
+Candidate `afe1c0808f5b8f4d727a47facff2d37f997b63a4`, executable
+`179D2C948DA141FA37EAB9DDD9D7E696015F344561FF8170000C166ACDCB9C63`,
+passed OFF (exit0/599+1). ON exited1 during metadata preparation with
+`Requested native data span is outside the verified read-only section`.
+Neither geometry nor live CRT gates ran. Both final logs/manifests, frozen binary,
+pre-registration/import receipts and failure receipt remain in
+`local/cc16_prefix_geometry_qualification_20261029`; no overwrite or runtime pass.
+Failure-receipt SHA256 is
+`BE66CD56FA6087E924F3C11ECE0EA7E0276ABC32C97A1323A0DB9067F5FC644C`.
+
+E12FC4 lies in writable `.data`, with original bytes0000403F. The RO service
+correctly rejects it beyond endE07B24. The established process state already
+provides its distinct mutable widget_y_scale cell, used by the page path.
+Owner construction and both379/geometry-lifetime address guards now borrow the
+SAME raw122.construction_context.state cell. No mapping expansion, new global,
+copied0.75 or native arithmetic/action-order change is made. Independent Source
+review and corrected OFF Win32/checks2/2 (11.57s) pass. Private route restored OFF
+in e96cb1318; a separate corrected candidate/paired run remains required.

@@ -42,8 +42,11 @@ operand-array and scratch addresses without binding acquired_ or reading values.
 It authenticates full concrete reservations even while Frame is FRESH. Its
 existing matches(Context,Acquired,COMPLETE) supplies later private completion
 affinity. The same canonical GuiNativeGeometryOwners, raw85/internal Model,
-db55 primary Model, Model storage and D7A24C/D7A208/E12FC4/D7A280/D7A260 cell
-addresses are required. No Model/native pool/reference or geometry domain is copied.
+db55 primary Model, Model storage and D7A24C/D7A208/D7A280/D7A260 read-only
+cell addresses are required. E12FC4 is instead the SAME canonical
+raw122.construction_context.state.widget_y_scale_00e12fc4() mutable backing,
+already shared with the page path. It is not a read-only VA span or a copied
+0.75 value. No Model/native pool/reference or geometry domain is copied.
 
 ## Provenance is distinct from scalar admission
 
@@ -133,3 +136,10 @@ Independent final helper Source review also passes, including actual B73B60
 outputs and both durable Mesh histories. The preregistered real-provider fixture
 remains open. Failure/reuse/ABI/content/rendering/FE_initial
 and every unsupported branch remain open. No geometry probe or game has run.
+
+The first private geometry ON attempt afe1 stopped in metadata preparation:
+E12FC4 was incorrectly requested from the verified RO service. It reached no379
+body. Owner binding and both geometry preflight guards now use the existing
+canonical mutable state cell, with no arithmetic/schedule change. Failed logs
+are retained; corrected OFF build passes2/2 (11.57s). Corrected geometry runtime
+acceptance remains open.

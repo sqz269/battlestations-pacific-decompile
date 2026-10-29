@@ -220,7 +220,7 @@ struct GameNativeRawDefaultTextOwner::Impl::Geometry {
           construction{primary, internal, association, s.geometry, transforms,
               *static_cast<const volatile float*>(s.owner.data.data_at(0x00d7a24c, 4)),
               *static_cast<const volatile float*>(s.owner.data.data_at(0x00d7a208, 4)),
-              *static_cast<const volatile float*>(s.owner.data.data_at(0x00e12fc4, 4)),
+              s.text_state.widget_y_scale_00e12fc4(),
               *static_cast<const volatile double*>(s.owner.data.data_at(0x00d7a280, 8))},
           frame(construction, arguments, position, transform_scratch, bounds_scratch),
           lifetime{prefix, construction, frame, acquired, progress,

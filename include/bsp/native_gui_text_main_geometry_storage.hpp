@@ -27,6 +27,7 @@ struct NativeGuiTextMainGeometryStorageContext {
     const NativeNodeMappedRawTransformProfiles& transforms;
     const volatile float& one_00d7a24c;
     const volatile float& negative_zero_00d7a208;
+    // SAME canonical raw122 construction_context.state mutable cell, not RO.
     const volatile float& y_scale_00e12fc4;
     const volatile double& half_00d7a280;
 };

@@ -77,9 +77,10 @@ const Context* graph(const Prefix& p) {
             bits(publication.data.data_at(0x00d7a260, sizeof(Word))) &&
         bits(&construction.one_00d7a24c) == bits(publication.data.data_at(0x00d7a24c, sizeof(float))) &&
         bits(&construction.negative_zero_00d7a208) == bits(publication.data.data_at(0x00d7a208, sizeof(float))) &&
-        bits(&construction.y_scale_00e12fc4) == bits(publication.data.data_at(0x00e12fc4, sizeof(float))) &&
+        bits(&construction.y_scale_00e12fc4) ==
+            bits(&publication.construction_context.state.widget_y_scale_00e12fc4()) &&
         bits(&construction.half_00d7a280) == bits(publication.data.data_at(0x00d7a280, sizeof(double))),
-        "prefix379 must borrow its SAME canonical owners and actual live constant cells");
+        "prefix379 must borrow SAME canonical owners, readonly constants and shared mutable widget scale");
     return c;
 }
 bool mesh_metadata(const GuiNativeMeshAcquired& m, const void* identity) noexcept {

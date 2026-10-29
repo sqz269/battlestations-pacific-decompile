@@ -125,3 +125,10 @@ Root and independent Model/owner review accepted this conditional Source audit.
 The private host is also preparing a read-only live-module identity/path receipt
 for actual query/callnewh/std-getter function addresses. It remains unbuilt and
 does not replace ON import, actual null-handler/entry-zero and whole-graph gates.
+
+Observed integration correction: E12FC4 is writable `.data` (deltaAFC4, bytes
+0000403F), not part of GameNativeReadOnlyData. The first ON attempt failed in
+metadata before this interval. The owner and geometry guards now borrow the
+existing canonical raw122 state.widget_y_scale cell, preserving current volatile
+loads. This changes no reached Text74 store/callback analysis; the same mutable
+cell and its full retained backing must remain disjoint from Text and scratch.
