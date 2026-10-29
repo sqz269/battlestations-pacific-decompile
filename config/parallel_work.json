@@ -16,6 +16,20 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-gui-raw-model-geometry",
+      "state": "qualified_raw_geometry_provider_source_in_progress_A1_build_hold",
+      "worker": "gui_frame_lifetime",
+      "source_ready": true,
+      "depends_on": ["codex-gui-raw-model-storage"],
+      "function_addresses": ["00b75170"],
+      "output_files": [
+        "include/bsp/native_model_storage_geometry.hpp",
+        "src/native_model_storage_geometry.cpp",
+        "docs/CODEX_RAW_MODEL_STORAGE_GEOMETRY.md"
+      ],
+      "notes": "Bounded raw B75170 geometry association over qualified rawModel481 context/current imported increment/decrement and actual-owner current0 services. Requires481 library source, still unbuilt; dependency is source-level, not accepted production closure. Capture incoming then old180; publish new, sample increment then separately decrement, preserve callback replacements; late scalar argument-cell reads share one sampled D7A260 sentinel, equality skips only references and unordered stores. New files only, keep481 source/semantic Model/Text/Page/shared APIs frozen. Root owns CMake/testing/ledger integration; no activation/body credit. Raw Text85/93/118/122 transport and shared Model/Group routing remain separate coordinated dependencies."
+    },
+    {
       "id": "codex-gui-raw-model-storage",
       "state": "static_checkpoint_source_reviewed_unbuilt_A1_hold",
       "worker": "gui_frame_lifetime",

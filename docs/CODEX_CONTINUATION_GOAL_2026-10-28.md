@@ -279,3 +279,24 @@ actual+4/canonical registry and live pool provenance match the qualified
 contract. Retired metadata after failure is explicitly not cleanup/pool-return
 proof. The packet remains unbuilt, unmerged and uncalled, with CMake/testing and
 raw child/scene/tree transport still pending. It adds no body credit.
+
+The follow-on routing audit found no missing native Model parenting/scene/tree
+body for the default family: D62DE8 current1C is B6D7B0, current18 B6F310,
+current50/54 B6ED80/B6EE10, with real006EF860 type queries and 481's zero
+terminal. The shared router/retained record bindings beside Group/camera/sun
+remain primary work; one mutable invocation frame cannot support callback
+reentry. The one additional missing raw storage entry, B75170 geometry
+association, is dispatched in new files as `codex-gui-raw-model-geometry` over
+the still-unbuilt 481 source. Its incomplete prerequisite is recorded explicitly.
+
+The Text audit confirms AB9650 always constructs an internal188 shadow Model,
+mesh/section and GuiDefault effect graph. A default-only wrapper over the old
+Model transport would need replacement before the intended Page integration,
+so that wrapper is not dispatched. The useful next boundary is a coherent raw
+Model variant through Text sections85, constructor93, retirement118 and
+reference122. It must preserve Text188 publication before canonical metadata
+admission, actual counts/creator releases, same point-light/node domains and
+retained raw Model/frame/reference regions. Existing interfaces fix the legacy
+Model family; casts cannot connect 481. Genuine GuiDefault/cache/Lua readiness
+and general primary4C/Page retirement remain separate prerequisites. API design
+is read-only pending primary review; no Text transport edit is accepted yet.
