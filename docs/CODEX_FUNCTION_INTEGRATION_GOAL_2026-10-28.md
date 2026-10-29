@@ -108,3 +108,10 @@ The generated project and static-library member inspection confirm all four
 compiled objects; the game map contains none of their names. Both existing
 suites pass. This removes their compile-registration gap without changing
 providers, host calls, switches or body credit. See `CODEX_MODULE_ADMISSION.md`.
+
+The next endpoint packet replaces metadata-only `00C40800` and `00C40B30`
+with complete compiled source. It retains two-stage tagged-index removal,
+dynamic compaction reloads, ambient x87 key publication and stable unsigned
+leftward movement. Both suites, all five native caller rows and critical
+final-object FP inspection pass. The bodies remain unwired pending genuine
+parent/root custody; see `CC16_DYN_SAP_ENDPOINTS.md`.
