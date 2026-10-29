@@ -17,3 +17,10 @@ now pass (both existing checks,13.04s); Root confirms all six switches FALSE.
 A separate current-binary runtime preregistration is still required. Older Font,
 geometry and bounds-aid cohorts do not qualify this new native graph. No MainSection
 runtime, native ABI, rendering or gameplay proof is claimed.
+
+The subsequent frozen CPP61/execution631 four-case protocol passes private
+AB8530 Main-fragment lifecycle/identity checks with all main switches restored
+FALSE. Its raw strict/MSD comparisons remain false and exactly inventoried;
+CODEX_GUI_RAW_MAIN_SECTION_RUNTIME.md records independent replay and scope.
+Actual ABB630 Font selection precedes outer ABA8D0 Main ensure, so these FontNULL
+trials grant no whole caller, Font+Main or Page/P4 activation credit.

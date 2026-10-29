@@ -863,3 +863,24 @@ local/cc16_main_section_integration_20261029. Current-binary MainSection runtime
 preregistration/qualification is next; old Font/bounds cohorts supply no credit.
 Broader Page/P4/FE_initial/content/glyph/layout/lighting and Original ABI remain
 open, so the continuing integration goal remains active.
+
+Four frozen CPP61/execution631 private AB8530 Main-fragment runs now pass the
+registered protocol: all four natural parent/launcher exits0,174/174 evaluator
+checks identically replayed independently,60/60 separate artifact/CRT/drain checks,
+5980 input pins and134 sealed runtime files verified. The new opt-in NoForceStop
+launcher prevents a1200s forced cleanup from masquerading as natural completion;
+its Source review, syntax check and existing tool_tests pass. No timeout cleanup
+was exercised. All8 sampled trial PIDs drain, old5 remain, and all six main flags
+stay FALSE. Native1641/summary874/full+mission order and exact old DDS residue agree.
+Raw MSD pair1 and both raw strict1 remain preserved; only the exact8 Source mode
+diagnostics and2 ordered teardown insertions are projected. First LOGGED genuine
+plane rows match t93.60/draw0.4143; this is not globally first RNG/float-bit proof.
+
+Actual caller correction supersedes earlier Main-before-Font wording: ABB630
+selects Font before conditional ABAED0→ABA8D0, which ensures Main then dereferences
+preexisting Text108/Font48. Shader follows changed-nonempty AB8400. The FontNULL
+fixture qualifies only AB8530. Revised combined lifetime/owner/shared-guard contracts
+must respect that order, independent slices and fixed pre-pool graph construction;
+raw property/localisation/content/glyph/layout/parenting and Page/P4 remain open.
+Later main/source/PE changes inherit no frozen61 runtime credit. See the dedicated
+MainSection runtime evidence doc and local packet/audits for exact artifact scope.

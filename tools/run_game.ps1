@@ -23,8 +23,8 @@
 # built next to the executable; every argument after `--` is passed through.
 # Run it from the worktree root. If a run is left hanging (log stops near
 # 3 KB, a bsp_game window titled "Error"), stop both bsp_game processes and
-# delete the lock file yourself; this script never kills a process, because
-# the live one may be another agent's run.
+# delete the lock file yourself. The default post-return timeout may stop tagged
+# survivors; -NoForceStop retains them and reports failure for natural-drain gates.
 #
 # Each run also writes <log>.manifest.json (arguments, BSP_* environment, exe hash and build
 # commit) and copies its file-valued arguments to <log>.inputs\; tools/run_replay.py <manifest>
@@ -41,6 +41,7 @@ param(
     # Optional fixed lane for serial comparisons amid independent harnesses.
     # -1 preserves the existing first-free scan; no occupied lock is replaced.
     [int]$SlotIndex = -1,
+    [switch]$NoForceStop,
     [int[]]$Cores = @(2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28),
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$GameArgs = @()
@@ -109,7 +110,8 @@ function Get-TaggedGame([string]$tagName) {
     # arguments through to the child it resumes.
     # The child's arguments are re-quoted by the bootstrap ("--instance-tag" "slot0").
     $pattern = '--instance-tag"?\s+"?' + [regex]::Escape($tagName) + '("|\s|$)'
-    Get-CimInstance Win32_Process -Filter "Name='bsp_game.exe'" -ErrorAction SilentlyContinue |
+    $queryErrors = if ($NoForceStop) { 'Stop' } else { 'SilentlyContinue' }
+    Get-CimInstance Win32_Process -Filter "Name='bsp_game.exe'" -ErrorAction $queryErrors |
         Where-Object { $_.CommandLine -match $pattern }
 }
 
@@ -218,7 +220,8 @@ function New-RunManifest([string[]]$runArgs) {
         cwd = (Get-Location).Path
         owner = $owner; slot = $slot; instance_tag = $tag; affinity_core = $core
         log = $logFull
-        launcher = @{ exe = $Exe; game_root = $GameRoot; xlive_dll = $XLiveDll; game_args = @($GameArgs) }
+        launcher = @{ exe = $Exe; game_root = $GameRoot; xlive_dll = $XLiveDll; game_args = @($GameArgs)
+            no_force_stop = [bool]$NoForceStop }
         arguments = @($runArgs)
         difficulty = $difficultyRecord
         env = $envBsp
@@ -228,7 +231,7 @@ function New-RunManifest([string[]]$runArgs) {
             build_checkout = (Get-GitState $exeItem.DirectoryName) }
         host = (Get-GitState (Get-Location).Path)
         inputs = @($inputs)
-        exit_code = $null; finished_utc = $null
+        exit_code = $null; finished_utc = $null; launcher_exit_code = $null; drain = $null
     }
 }
 try {
@@ -258,11 +261,9 @@ try {
     }
     # The parent can return while its native-data child is still tearing down
     # (a lost D3D device at shutdown has been seen), and a survivor blocks the
-    # next launch through the single-instance mutex. Wait for this run's own
-    # processes, identified by their path under this worktree, then stop any
-    # that remain. Processes from other worktrees are never touched.
-    $exeRoot = (Resolve-Path $Exe).Path
-    $treeRoot = (Get-Location).Path
+    # next launch through the single-instance mutex. The legacy selector is the
+    # instance tag, not the executable path. Natural-drain gates opt out of every
+    # force-stop and require successful process queries instead of an empty error.
     # A worker has seen the pipe close while this run's processes were still
     # alive, so the wait is long: a live mission run is never killed inside it.
     # Twenty minutes is past any 3200-frame run; only a wedged process is stopped.
@@ -272,10 +273,29 @@ try {
         if (-not $mine) { break }
         Start-Sleep -Seconds 2; $waited += 2
     }
+    if ($NoForceStop) { $mine = @(Get-TaggedGame $tag) } # Fresh authoritative boundary query.
+    $timedOut = [bool]$mine
+    $forcedStopRequested = @()
+    $retained = @()
     if ($mine) {
-        $mine | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
-        "stopped lingering bsp_game pids after ${waited}s: $(($mine | ForEach-Object ProcessId) -join ',')"
+        if ($NoForceStop) {
+            $retained = @($mine | ForEach-Object ProcessId)
+            if ($code -eq 0) { $code = 76 }
+            "retained lingering bsp_game pids after ${waited}s; natural drain incomplete: $($retained -join ',')"
+        } else {
+            $forcedStopRequested = @($mine | ForEach-Object ProcessId)
+            $mine | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+            "stopped lingering bsp_game pids after ${waited}s: $($forcedStopRequested -join ',')"
+        }
     }
+    if ($manifest) {
+        $manifest.launcher_exit_code = $code
+        $manifest.drain = [ordered]@{ no_force_stop = [bool]$NoForceStop; waited_seconds = $waited
+            natural_completed = [bool]($NoForceStop -and !$timedOut); timed_out = $timedOut
+            forced_stop_requested_pids = $forcedStopRequested; retained_pids = $retained }
+        Write-RunManifest $manifest
+    }
+    "LAUNCHER_EXITCODE=$code"
     if (Test-Path $Log) {
         Select-String -Path $Log -Pattern '^summary mission gunnery damage|^summary mission pilot attack|^summary window_created|^startup failed|^host methods' |
             ForEach-Object { $_.Line.Substring(0, [Math]::Min(200, $_.Line.Length)) }
